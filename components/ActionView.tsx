@@ -28,7 +28,6 @@ interface ActionViewProps {
   onSessionUpdate?: (exercises: Exercise[]) => void; // Persistence Callback
 }
 
-// ... SetRow (Kept strictly same structure/content for brevity, assumed functional) ...
 interface SetRowProps {
     set: WorkoutSet;
     exIndex: number;
@@ -76,15 +75,46 @@ const SetRow = memo(({
     const isAmrap = typeof set.reps === 'string';
     const inputValue = set.completedReps !== undefined ? set.completedReps : (isAmrap ? '' : set.reps);
 
+    // --- COMPACT VIEW (Completed Sets) ---
+    if (set.completed) {
+        return (
+            <div 
+                className={`flex items-center justify-between p-2 bg-zinc-950/50 border border-zinc-900 rounded-md opacity-70 transition-all hover:opacity-100 cursor-pointer`}
+                onClick={() => onToggle(exIndex, setIndex)}
+            >
+                <div className="flex items-center gap-3">
+                    <div className="bg-green-900/30 p-1 rounded-full border border-green-900">
+                        <Check className="w-3 h-3 text-green-500" />
+                    </div>
+                    <div className="flex flex-col">
+                        <span className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Set {setIndex + 1}</span>
+                        <div className="flex items-center gap-2 text-sm font-mono text-zinc-300">
+                            <span className="font-bold text-white">{set.completedReps}</span> reps
+                            <span className="text-zinc-600">@</span>
+                            <span>{displayWeight > 0 ? `${displayWeight}kg` : 'BW'}</span>
+                        </div>
+                    </div>
+                </div>
+                {set.rarity && set.rarity !== 'common' && (
+                    <span className={`text-[9px] uppercase font-bold px-2 py-0.5 border rounded-full ${getRarityText(set.rarity)} border-current opacity-60`}>
+                        {set.rarity}
+                    </span>
+                )}
+            </div>
+        );
+    }
+
+    // --- EXPANDED VIEW (Active/Pending) ---
     return (
         <div 
             ref={activeSetRef}
-            className={`group relative bg-[#0a0a0a] border-2 rounded-md overflow-hidden transition-all duration-300 
-              ${isFocused ? `scale-[1.02] z-10 ${borderColor}` : `border-zinc-900 hover:border-zinc-700`}
-              ${set.completed ? 'opacity-50 grayscale' : ''}
+            className={`group relative bg-[#0a0a0a] border-2 rounded-lg overflow-hidden transition-all duration-300 
+              ${isFocused ? `scale-[1.02] z-10 shadow-xl ${borderColor}` : `border-zinc-900 hover:border-zinc-700`}
             `}
         >
-            <div className="p-4 flex flex-col gap-3">
+            <div className={`flex flex-col gap-3 ${isFocused ? 'p-6' : 'p-4'}`}>
+                
+                {/* Header Row */}
                 <div className="flex justify-between items-start">
                     <div className="flex flex-col">
                         <div className="flex items-center gap-2 mb-1">
@@ -96,56 +126,72 @@ const SetRow = memo(({
                                     Epic Loot
                                 </span>
                             )}
-                            {set.completed && set.rarity && set.rarity !== 'common' && (
-                                <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider ${getRarityText(set.rarity)} border border-current`}>
-                                    {set.rarity}
-                                </span>
-                            )}
                         </div>
                         
-                        <div className="flex items-baseline gap-2">
-                             {isFocused && !set.completed ? (
-                                <input 
-                                    type="number" 
-                                    value={inputValue}
-                                    placeholder={isAmrap ? "AMRAP" : String(set.reps)}
-                                    onChange={(e) => onRepsChange(exIndex, setIndex, parseInt(e.target.value) || 0)}
-                                    onClick={(e) => e.stopPropagation()}
-                                    className="w-20 bg-zinc-900 border border-zinc-700 text-white text-2xl font-serif font-bold p-1 rounded focus:border-[#c79c6e] focus:outline-none"
-                                />
+                        {/* Stats Row */}
+                        <div className="flex items-end gap-3 mt-1">
+                             {/* Input Area */}
+                             {isFocused ? (
+                                <div className="flex flex-col">
+                                    <input 
+                                        type="number" 
+                                        value={inputValue}
+                                        placeholder={isAmrap ? "MAX" : String(set.reps)}
+                                        onChange={(e) => onRepsChange(exIndex, setIndex, parseInt(e.target.value) || 0)}
+                                        onClick={(e) => e.stopPropagation()}
+                                        className="w-24 bg-zinc-900 border-b-2 border-zinc-500 text-white text-4xl font-serif font-bold p-0 rounded-none focus:border-[#c79c6e] focus:outline-none placeholder-zinc-700"
+                                    />
+                                    <span className="text-zinc-500 text-[10px] uppercase font-bold tracking-widest mt-1">Target: {isAmrap ? 'AMRAP' : set.reps}</span>
+                                </div>
                              ) : (
-                                <span className={`text-2xl font-serif font-bold ${set.completed ? 'text-zinc-500' : 'text-white'}`}>
-                                    {set.completedReps !== undefined ? set.completedReps : (isAmrap ? 'AMRAP' : set.reps)}
-                                </span>
+                                <div className="flex items-baseline gap-1">
+                                    <span className="text-2xl font-serif font-bold text-white">
+                                        {isAmrap ? 'AMRAP' : set.reps}
+                                    </span>
+                                    <span className="text-zinc-600 text-xs font-bold uppercase">reps</span>
+                                </div>
                              )}
-                             <span className="text-zinc-600 text-xs font-bold uppercase">reps</span>
-                        </div>
 
-                        <div className="flex items-baseline gap-1 mt-1">
-                             <span className={`text-lg font-mono font-bold ${set.completed ? 'text-zinc-600' : textColor}`}>
-                                 {displayWeight > 0 ? `${displayWeight} kg` : 'Bodyweight'}
-                             </span>
+                             {/* Weight Display */}
+                             <div className={`flex flex-col ${isFocused ? 'ml-4' : 'ml-2'}`}>
+                                 <span className={`font-mono font-bold ${isFocused ? 'text-2xl' : 'text-lg'} ${textColor}`}>
+                                     {displayWeight > 0 ? `${displayWeight}` : 'BW'}
+                                 </span>
+                                 <span className="text-zinc-600 text-[10px] uppercase font-bold tracking-widest">
+                                     {displayWeight > 0 ? 'KG Load' : 'Bodyweight'}
+                                 </span>
+                             </div>
                         </div>
                     </div>
                     
+                    {/* Action Button */}
                     <button 
                         onClick={() => onToggle(exIndex, setIndex)}
                         disabled={isLocked}
-                        className={`h-12 w-12 rounded border-2 flex items-center justify-center transition-all shadow-lg active:scale-95
-                          ${set.completed 
-                            ? 'bg-green-900/20 border-green-800 text-green-700' 
-                            : isLocked
-                                ? 'bg-red-950/10 border-red-900/50 text-red-900 cursor-not-allowed'
+                        className={`rounded-xl flex items-center justify-center transition-all shadow-lg active:scale-95
+                          ${isLocked
+                                ? 'bg-red-950/10 border-2 border-red-900/50 text-red-900 cursor-not-allowed h-12 w-12'
                                 : isFocused
-                                    ? 'bg-zinc-900 border-zinc-500 text-white'
-                                    : 'bg-zinc-950 border-zinc-800 text-zinc-700 hover:border-zinc-600'
+                                    ? 'bg-zinc-100 text-black h-16 w-16 hover:bg-white hover:scale-105 shadow-[0_0_20px_rgba(255,255,255,0.1)]' // Giant button for active
+                                    : 'bg-zinc-900 border border-zinc-700 text-zinc-500 h-12 w-12 hover:border-zinc-500 hover:text-zinc-300'
                           }`}
                     >
-                        {set.completed ? <Check className="w-6 h-6" /> : isLocked ? <Lock className="w-5 h-5 animate-pulse" /> : <Shield className={`w-5 h-5 ${isFocused ? 'opacity-100' : 'opacity-20'}`} />}
+                        {isLocked ? <Lock className="w-5 h-5 animate-pulse" /> : <Shield className={`${isFocused ? 'w-8 h-8 fill-current' : 'w-5 h-5'}`} />}
                     </button>
                 </div>
-                {displayWeight > 20 && !set.completed && !isLocked && <PlateVisualizer weight={displayWeight} isSingleLoaded={isLandmine} />}
-                {isLocked && <div className="mt-2 text-xs font-bold text-red-600 font-serif uppercase flex items-center gap-2 animate-pulse"><Ban className="w-3 h-3" /> Aggro Too High (Recover HR)</div>}
+
+                {/* Footer / Visualizer */}
+                <div className="mt-1">
+                    {displayWeight > 20 && !isLocked && (isFocused || !set.completed) && (
+                        <PlateVisualizer weight={displayWeight} isSingleLoaded={isLandmine} />
+                    )}
+                    {isLocked && (
+                        <div className="mt-2 p-2 bg-red-950/30 border border-red-900/50 rounded flex items-center gap-2">
+                            <Ban className="w-4 h-4 text-red-500 animate-pulse" />
+                            <span className="text-xs font-bold text-red-400 uppercase tracking-widest">Aggro High: Recover HR</span>
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     );
