@@ -3,6 +3,7 @@
   "description": "A station-based logistics coordinator for complex home gym workouts. Minimizes setup fatigue and optimizes transition times.",
   "requestFramePermissions": [
     "bluetooth",
-    "camera"
+    "camera",
+    "microphone"
   ]
 }

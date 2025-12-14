@@ -30,9 +30,24 @@ export const useVoiceCommand = (onCommand: (type: string, value: number | string
           processCommand(transcriptText);
         };
 
+        // Handle permission denial or other fatal errors
+        recognition.onerror = (event: any) => {
+            console.error("Speech Recognition Error:", event.error);
+            if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
+                setIsListening(false);
+            }
+        };
+
         recognition.onend = () => {
+          // Only auto-restart if we are still supposed to be listening
           if (isListening) {
-            recognition.start(); // Auto-restart if it cuts out while active
+            try {
+                recognition.start();
+            } catch (e) {
+                // If restart fails (e.g. permanent permission denial), stop the state
+                console.error("Failed to restart recognition", e);
+                setIsListening(false);
+            }
           }
         };
 
@@ -90,14 +105,17 @@ export const useVoiceCommand = (onCommand: (type: string, value: number | string
     if (!recognitionRef.current) return;
 
     if (isListening) {
-      recognitionRef.current.stop();
+      try {
+        recognitionRef.current.stop();
+      } catch (e) { console.error(e); }
       setIsListening(false);
     } else {
       try {
         recognitionRef.current.start();
         setIsListening(true);
       } catch (e) {
-        console.error("Mic Error", e);
+        console.error("Mic Start Error", e);
+        setIsListening(false);
       }
     }
   }, [isListening]);

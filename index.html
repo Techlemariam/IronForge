@@ -8,7 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Lato:wght@400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <script>
       tailwind.config = {
         darkMode: 'class',
@@ -17,15 +17,26 @@
             fontFamily: {
               serif: ['Cinzel', 'serif'],
               sans: ['Lato', 'sans-serif'],
-              mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+              mono: ['JetBrains Mono', 'monospace'],
             },
             colors: {
               zinc: {
                 850: '#1f1f22',
-                900: '#111111', // Darker, like a dungeon
-                950: '#050505', // Void
+                900: '#111111', 
+                950: '#050505', 
               },
-              // WoW Rarity Colors
+              forge: {
+                800: '#2a2b2e',
+                900: '#151719',
+                950: '#0b0c0d',
+                border: '#3f4148'
+              },
+              magma: {
+                500: '#ef4444',
+                DEFAULT: '#ff3300',
+                glow: '#ff5500',
+                dim: '#7f1d1d'
+              },
               rarity: {
                 poor: '#9d9d9d',
                 common: '#ffffff',
@@ -35,7 +46,6 @@
                 legendary: '#ff8000',
                 artifact: '#e6cc80'
               },
-              // Class Colors (Warrior Orange)
               warrior: {
                 500: '#c79c6e',
                 900: '#46321d',
@@ -43,37 +53,33 @@
             },
             backgroundImage: {
               'paper': "url('https://www.transparenttextures.com/patterns/aged-paper.png')",
+              'metal': "url('https://www.transparenttextures.com/patterns/carbon-fibre.png')",
+            },
+            animation: {
+              'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
             }
           }
         }
       }
     </script>
     <style>
-      /* Custom scrollbar for RPG feel */
       ::-webkit-scrollbar {
-        width: 10px;
+        width: 8px;
+        height: 8px;
       }
       ::-webkit-scrollbar-track {
-        background: #111; 
-        border-left: 1px solid #333;
+        background: #0b0c0d; 
+        border-left: 1px solid #151719;
       }
       ::-webkit-scrollbar-thumb {
-        background: #444; 
+        background: #3f4148; 
         border: 1px solid #000;
-        border-radius: 2px;
+        border-radius: 0px;
       }
       ::-webkit-scrollbar-thumb:hover {
         background: #555; 
       }
       
-      /* Tooltip Styles */
-      .rpg-tooltip {
-        background: rgba(0,0,0,0.9);
-        border: 1px solid #777;
-        box-shadow: 0 0 10px rgba(0,0,0,0.8);
-      }
-
-      /* Cinematic Overlay (Vignette & Scanlines) */
       .cinematic-overlay {
         position: fixed;
         top: 0;
@@ -94,10 +100,9 @@
         z-index: 9998;
         background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%);
         background-size: 100% 4px;
-        opacity: 0.3;
+        opacity: 0.15;
       }
       
-      /* React Flow Overrides */
       .react-flow__attribution { display: none; }
       .react-flow__node { cursor: pointer; }
     </style>
@@ -120,9 +125,9 @@
 </script>
 <link rel="stylesheet" href="https://esm.sh/reactflow@11.10.4/dist/style.css" />
 </head>
-  <body class="bg-[#050505] text-zinc-200 antialiased selection:bg-rarity-epic selection:text-white font-sans relative">
+  <body class="bg-forge-950 text-zinc-300 antialiased selection:bg-magma selection:text-white font-sans relative overflow-hidden">
     <div class="scanlines"></div>
     <div class="cinematic-overlay"></div>
-    <div id="root"></div>
+    <div id="root" class="h-screen w-screen overflow-hidden"></div>
   </body>
 </html>
