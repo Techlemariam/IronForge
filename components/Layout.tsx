@@ -1,4 +1,3 @@
-
 import React from 'react';
 import TTB_Radar from './TTB_Radar';
 import { TTBIndices, IntervalsWellness } from '../types';
@@ -88,7 +87,7 @@ const NavButton: React.FC<{ icon: React.ReactNode, label: string, onClick: () =>
         className={`w-full flex items-center gap-3 px-3 py-2 rounded transition-all duration-200 group ${active ? 'bg-forge-800 text-white border-l-2 border-magma' : 'text-zinc-500 hover:bg-forge-800 hover:text-zinc-300'}`}
     >
         <span className={`transition-colors ${active ? 'text-magma' : 'group-hover:text-zinc-300'}`}>
-            {React.cloneElement(icon as React.ReactElement, { size: 18 })}
+            {React.cloneElement(icon as React.ReactElement<{ size?: number | string }>, { size: 18 })}
         </span>
         <span className="text-sm font-bold uppercase tracking-wide">{label}</span>
     </button>

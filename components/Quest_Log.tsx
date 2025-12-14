@@ -21,11 +21,13 @@ const Quest_Log: React.FC<QuestLogProps> = ({ session, history = [], onComplete,
   // Flatten the session blocks into a linear list of exercises for the "Map"
   useEffect(() => {
     const flatList: Exercise[] = [];
-    session.blocks.forEach(block => {
-        if (block.exercises) {
-            block.exercises.forEach(ex => flatList.push({ ...ex })); // Shallow copy to track state locally
-        }
-    });
+    if (session && session.blocks) {
+        session.blocks.forEach(block => {
+            if (block.exercises) {
+                block.exercises.forEach(ex => flatList.push({ ...ex })); // Shallow copy to track state locally
+            }
+        });
+    }
     setExercises(flatList);
   }, [session]);
 
@@ -38,25 +40,32 @@ const Quest_Log: React.FC<QuestLogProps> = ({ session, history = [], onComplete,
 
   const handleSetLog = (weight: number, reps: number, rpe: number) => {
     const currentEx = exercises[activeExIndex];
+    if (!currentEx) return;
+
     // Find first incomplete set
-    const setIndex = currentEx.sets.findIndex(s => !s.completed);
+    // Guard sets array to prevent crashes if sets is undefined
+    const currentSets = currentEx.sets || [];
+    const setIndex = currentSets.findIndex(s => !s.completed);
     
     if (setIndex === -1) return; // Should not happen
 
     const updatedExercises = [...exercises];
-    const targetSet = updatedExercises[activeExIndex].sets[setIndex];
+    // Ensure we are working with a valid set object
+    if (!updatedExercises[activeExIndex] || !updatedExercises[activeExIndex].sets[setIndex]) return;
+    
+    const targetSet = { ...updatedExercises[activeExIndex].sets[setIndex] };
     
     // --- 1. CALCULATE CONTEXT DATA ---
     
     // A. Global PR (From History)
-    // Defensive check for history existence
-    const safeHistory = history || [];
+    // Defensive check for history existence (Safe Array)
+    const safeHistory = Array.isArray(history) ? history : [];
     const globalPr = safeHistory
         .filter(h => h.exerciseId === currentEx.id)
         .reduce((max, h) => Math.max(max, h.e1rm), 0);
 
     // B. Session PR (From current session sets so far)
-    const sessionPr = currentEx.sets
+    const sessionPr = currentSets
         .filter(s => s.completed && s.e1rm)
         .reduce((max, s) => Math.max(max, s.e1rm || 0), 0);
 
@@ -76,6 +85,9 @@ const Quest_Log: React.FC<QuestLogProps> = ({ session, history = [], onComplete,
     targetSet.completedReps = reps;
     targetSet.rarity = rarity;
     targetSet.e1rm = currentE1RM;
+
+    // Update the set in the exercise
+    updatedExercises[activeExIndex].sets[setIndex] = targetSet;
 
     setExercises(updatedExercises);
 
