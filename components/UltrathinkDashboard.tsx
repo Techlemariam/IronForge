@@ -1,0 +1,230 @@
+
+import React, { useEffect, useState } from 'react';
+import { IntervalsWellness, WeaknessAudit, TSBForecast, TitanLoadCalculation, TTBIndices, IntervalsEvent, ExerciseLog } from '../types';
+import { Brain, TrendingUp, AlertTriangle, Calendar, Battery, Activity, Flame, Wind, Trophy, Gauge } from 'lucide-react';
+import { AnalyticsService } from '../services/analytics';
+import { AnalyticsWorkerService } from '../services/analyticsWorker'; // NEW
+import { StorageService } from '../services/storage';
+import TTBCompass from './TTBCompass';
+
+interface UltrathinkDashboardProps {
+  wellness: IntervalsWellness | null;
+  audit: WeaknessAudit;
+  forecast: TSBForecast[];
+  ttb?: TTBIndices;
+  events?: IntervalsEvent[];
+}
+
+const UltrathinkDashboard: React.FC<UltrathinkDashboardProps> = ({ wellness, audit, forecast, ttb, events = [] }) => {
+  const [acwrData, setAcwrData] = useState<{acwr: number, acute: number, chronic: number} | null>(null);
+
+  // --- WORKER COMPUTATION ---
+  useEffect(() => {
+      const runHeavyMath = async () => {
+          const history = await StorageService.getHistory();
+          if (history && wellness) {
+              const res = await AnalyticsWorkerService.computeAdvancedStats(history, wellness);
+              setAcwrData({
+                  acwr: res.acwr,
+                  acute: res.acuteLoad,
+                  chronic: res.chronicLoad
+              });
+          }
+      };
+      runHeavyMath();
+  }, [wellness]);
+
+  if (!wellness) return null;
+
+  const titanAnalysis: TitanLoadCalculation = AnalyticsService.calculateTitanLoad(5000, 0.85, 45);
+  const upcomingRace = events.find(e => new Date(e.start_date_local) >= new Date());
+
+  // ACWR Color Logic
+  let acwrColor = "text-green-500";
+  let acwrStatus = "Optimal Zone";
+  if (acwrData) {
+      if (acwrData.acwr > 1.5) { acwrColor = "text-red-500 animate-pulse"; acwrStatus = "DANGER: High Injury Risk"; }
+      else if (acwrData.acwr > 1.3) { acwrColor = "text-orange-500"; acwrStatus = "Caution: Overreaching"; }
+      else if (acwrData.acwr < 0.8) { acwrColor = "text-zinc-500"; acwrStatus = "Detraining"; }
+  }
+
+  return (
+    <div className="space-y-6 animate-fade-in">
+        
+        {/* Header */}
+        <div className="flex items-center gap-3 border-b border-zinc-800 pb-4">
+            <div className="p-2 bg-purple-900/20 border border-purple-500/50 rounded-lg">
+                <Brain className="w-6 h-6 text-purple-400" />
+            </div>
+            <div>
+                <h2 className="text-lg font-black uppercase tracking-tight text-white">Ultrathink Engine</h2>
+                <p className="text-xs text-purple-400 font-mono">Predictive Biometrics & Logistics</p>
+            </div>
+        </div>
+        
+        {/* TTB & Weakness Row */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* TTB Compass (Visual) */}
+            {ttb && (
+                <div className="bg-zinc-900/50 border border-zinc-800 rounded-lg p-4 flex justify-center items-center">
+                    <TTBCompass indices={ttb} />
+                </div>
+            )}
+
+            {/* Weakness Auditor Card */}
+            <div className="md:col-span-2 bg-zinc-900/50 border border-zinc-800 rounded-lg p-5 relative overflow-hidden group">
+                <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                    <Activity className="w-24 h-24 text-zinc-500" />
+                </div>
+                
+                <h3 className="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-3 flex items-center gap-2">
+                    <TrendingUp className="w-4 h-4" />
+                    Performance Auditor
+                </h3>
+
+                {audit.detected ? (
+                    <div className="space-y-3 relative z-10">
+                        <div className="flex items-start gap-3 bg-red-950/20 border border-red-900/50 p-3 rounded">
+                            <AlertTriangle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+                            <div>
+                                <span className="text-red-400 font-bold text-sm block mb-1">Bottleneck Identified: {audit.type}</span>
+                                <p className="text-zinc-400 text-xs leading-relaxed">{audit.message}</p>
+                            </div>
+                        </div>
+                    </div>
+                ) : (
+                    <div className="text-green-500 text-sm flex items-center gap-2">
+                        <Activity className="w-4 h-4" />
+                        <span>System Nominal. No obvious bottlenecks detected.</span>
+                    </div>
+                )}
+            </div>
+        </div>
+
+        {/* ACWR (NEW OPTIMIZATION) */}
+        {acwrData && (
+            <div className="bg-[#1a1a1a] border border-zinc-800 rounded-lg p-5 flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                    <div className={`p-3 rounded-full border bg-zinc-900 ${acwrData.acwr > 1.3 ? 'border-red-900 text-red-500' : 'border-green-900 text-green-500'}`}>
+                        <Gauge className="w-6 h-6" />
+                    </div>
+                    <div>
+                        <h3 className="text-sm font-bold text-white uppercase tracking-wider">ACWR Score</h3>
+                        <div className="flex items-baseline gap-2 mt-1">
+                            <span className={`text-2xl font-black ${acwrColor}`}>{acwrData.acwr}</span>
+                            <span className="text-xs text-zinc-500 font-mono uppercase">{acwrStatus}</span>
+                        </div>
+                    </div>
+                </div>
+                <div className="text-right text-xs font-mono text-zinc-500">
+                    <div>Acute: <span className="text-white">{acwrData.acute}</span></div>
+                    <div>Chronic: <span className="text-white">{acwrData.chronic}</span></div>
+                </div>
+            </div>
+        )}
+
+        {/* Existing Widgets (Events, VO2, Load, PR Forecast) */}
+        {upcomingRace && (
+            <div className="bg-[#1a1a1a] border border-[#ffd700]/50 rounded-lg p-4 flex items-center gap-4 animate-slide-up relative overflow-hidden">
+                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20 pointer-events-none"></div>
+                <div className="p-3 bg-[#ffd700]/20 rounded-full border border-[#ffd700] text-[#ffd700]">
+                    <Trophy className="w-6 h-6 animate-pulse" />
+                </div>
+                <div>
+                    <h3 className="text-sm font-black text-white uppercase tracking-widest">Upcoming Boss Fight</h3>
+                    <div className="flex items-center gap-2 mt-1">
+                        <span className="text-[#ffd700] font-bold text-lg">{upcomingRace.name}</span>
+                        <span className="text-zinc-500 text-xs font-mono bg-black/50 px-2 rounded">
+                            {new Date(upcomingRace.start_date_local).toLocaleDateString()}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        )}
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-zinc-900/50 border border-zinc-800 rounded-lg p-5 flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                    <div className="p-3 bg-cyan-950/30 border border-cyan-900 rounded-full text-cyan-500">
+                        <Wind className="w-6 h-6" />
+                    </div>
+                    <div>
+                        <h3 className="text-sm font-bold text-white uppercase tracking-wider">Elite Engine</h3>
+                        <div className="flex items-baseline gap-2 mt-1">
+                            <span className="text-2xl font-black text-cyan-400">{wellness.vo2max || '--'}</span>
+                            <span className="text-xs text-zinc-500 font-mono">ml/kg/min</span>
+                        </div>
+                    </div>
+                </div>
+                <div className="text-right">
+                    <div className="text-[10px] text-zinc-500 uppercase font-bold tracking-widest mb-1">Target: Sub-70 Club</div>
+                    <div className="w-24 h-2 bg-zinc-800 rounded-full overflow-hidden ml-auto">
+                        <div 
+                            className="h-full bg-cyan-500 shadow-[0_0_10px_#22d3ee]" 
+                            style={{ width: `${Math.min(((wellness.vo2max || 50) / 70) * 100, 100)}%` }}
+                        />
+                    </div>
+                </div>
+            </div>
+
+            <div className="bg-zinc-900/50 border border-zinc-800 rounded-lg p-5 relative">
+                 <h3 className="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-3 flex items-center gap-2">
+                    <Flame className="w-4 h-4" />
+                    Overload Calculator
+                </h3>
+                <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                         <div className="flex flex-col">
+                             <span className="text-[10px] uppercase font-bold text-zinc-600">Standard HR Load</span>
+                             <span className="text-xl font-mono font-bold text-zinc-400">{titanAnalysis.standardTss} TSS</span>
+                         </div>
+                         <div className="text-zinc-700 text-xs">vs</div>
+                         <div className="flex flex-col text-right">
+                             <span className="text-[10px] uppercase font-bold text-orange-600">Titan Load (CNS)</span>
+                             <span className="text-xl font-mono font-bold text-orange-500">{titanAnalysis.titanLoad} TL</span>
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div className="bg-zinc-900/50 border border-zinc-800 rounded-lg p-5">
+             <h3 className="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-4 flex items-center gap-2">
+                <Calendar className="w-4 h-4" />
+                Predictive PR Window (7-Day Forecast)
+            </h3>
+            
+            <div className="space-y-2">
+                {forecast.map((day) => {
+                    const isOptimal = day.label.includes('Optimal');
+                    const isRisk = day.label.includes('High Risk');
+                    
+                    return (
+                        <div key={day.dayOffset} className="flex items-center gap-4 text-xs">
+                            <div className="w-8 font-mono text-zinc-600">
+                                {day.dayOffset === 0 ? 'TDY' : `+${day.dayOffset}d`}
+                            </div>
+                            <div className="flex-1 h-2 bg-zinc-800 rounded-full overflow-hidden relative">
+                                <div 
+                                    className={`absolute h-full rounded-full transition-all ${
+                                        day.tsb < 0 ? 'right-1/2 bg-red-500' : 'left-1/2 bg-green-500'
+                                    }`}
+                                    style={{ 
+                                        width: `${Math.min(Math.abs(day.tsb) * 2, 50)}%`
+                                    }}
+                                />
+                                <div className="absolute left-1/2 w-px h-full bg-zinc-600"></div>
+                            </div>
+                            <div className={`w-24 text-right font-bold ${isOptimal ? 'text-green-400' : isRisk ? 'text-red-400' : 'text-zinc-500'}`}>
+                                {day.tsb > 0 ? `+${day.tsb}` : day.tsb} TSB
+                            </div>
+                        </div>
+                    );
+                })}
+            </div>
+        </div>
+    </div>
+  );
+};
+
+export default UltrathinkDashboard;
