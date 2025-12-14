@@ -20,13 +20,12 @@ interface SessionRunnerProps {
 const SessionRunner: React.FC<SessionRunnerProps> = ({ session, onExit }) => {
   const [activeSession, setActiveSession] = useState<Session>(session);
   const [hasCheckedIn, setHasCheckedIn] = useState(false);
-  // Quest_Log handles exercise state internally mostly, but we can track phases if needed.
-  // For the new Quest_Log, we pass the whole session and let it render the map.
   const [completed, setCompleted] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   
   // Data for Gamification
   const [wellnessData, setWellnessData] = useState<IntervalsWellness | null>(null);
+  const [historyLogs, setHistoryLogs] = useState<ExerciseLog[]>([]);
   const [exportStatus, setExportStatus] = useState<'IDLE' | 'UPLOADING' | 'SUCCESS' | 'ERROR'>('IDLE');
   const [foundRecovery, setFoundRecovery] = useState<ActiveSessionState | null>(null);
   const [checkingRecovery, setCheckingRecovery] = useState(true);
@@ -34,7 +33,7 @@ const SessionRunner: React.FC<SessionRunnerProps> = ({ session, onExit }) => {
   const achievementContext = useContext(AchievementContext);
   const { purchasedSkillIds } = useSkills(); 
   
-  // Bluetooth HRM (Can be visualized in Quest_Log via context or prop if we want to add it back later)
+  // Bluetooth HRM
   const { bpm } = useBluetoothHeartRate();
 
   // --- CHECK FOR CRASH RECOVERY ---
@@ -49,23 +48,16 @@ const SessionRunner: React.FC<SessionRunnerProps> = ({ session, onExit }) => {
       checkRecovery();
   }, []);
 
-  // --- RESTORE SESSION ---
-  const handleRestore = () => {
-      if (!foundRecovery) return;
-      setActiveSession(foundRecovery.sessionData);
-      setHasCheckedIn(true);
-      setFoundRecovery(null);
-  };
-
-  const handleDiscard = async () => {
-      await StorageService.clearActiveSession();
-      setFoundRecovery(null);
-  };
-
-  // --- FETCH WELLNESS ---
+  // --- LOAD HISTORY & WELLNESS ---
   useEffect(() => {
-      const fetchWellness = async () => {
+      const fetchData = async () => {
           if (foundRecovery) return; 
+          
+          // 1. Fetch History for PR logic
+          const history = await StorageService.getHistory();
+          setHistoryLogs(history);
+
+          // 2. Fetch Settings & Wellness
           const settings = await StorageService.getState<AppSettings>('settings');
           if (settings && settings.intervalsApiKey) {
                const today = new Date().toISOString().split('T')[0];
@@ -80,8 +72,21 @@ const SessionRunner: React.FC<SessionRunnerProps> = ({ session, onExit }) => {
                setWellnessData({ id: 'sim', bodyBattery: 75, sleepScore: 70 });
           }
       };
-      if (!checkingRecovery) fetchWellness();
+      if (!checkingRecovery) fetchData();
   }, [checkingRecovery, foundRecovery]);
+
+  // --- RESTORE SESSION ---
+  const handleRestore = () => {
+      if (!foundRecovery) return;
+      setActiveSession(foundRecovery.sessionData);
+      setHasCheckedIn(true);
+      setFoundRecovery(null);
+  };
+
+  const handleDiscard = async () => {
+      await StorageService.clearActiveSession();
+      setFoundRecovery(null);
+  };
 
   // --- SAVE LOGIC ---
   useEffect(() => {
@@ -253,6 +258,7 @@ const SessionRunner: React.FC<SessionRunnerProps> = ({ session, onExit }) => {
   return (
     <Quest_Log 
         session={activeSession}
+        history={historyLogs}
         onComplete={() => setCompleted(true)}
         onAbort={handleAbort}
     />

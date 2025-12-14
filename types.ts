@@ -22,6 +22,7 @@ export interface Set {
   completed: boolean;
   isPrZone?: boolean;
   rarity?: Rarity; // Visual style
+  e1rm?: number; // Calculated estimated 1RM for this set performance
 }
 
 export interface Exercise {

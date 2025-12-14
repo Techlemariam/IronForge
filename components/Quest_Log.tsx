@@ -1,16 +1,19 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Session, Exercise, Set as WorkoutSet, ExerciseLogic } from '../types';
-import { playSound, fireConfetti, calculateRarity } from '../utils';
+import { Session, Exercise, Set as WorkoutSet, ExerciseLogic, ExerciseLog } from '../types';
+import { playSound, fireConfetti } from '../utils';
+import { calculateE1RM } from '../utils/math';
+import { determineRarity } from '../utils/loot';
 import ExerciseCard from './ui/ExerciseCard';
 
 interface QuestLogProps {
   session: Session;
+  history: ExerciseLog[]; // Required for Global PR calculation
   onComplete: () => void;
   onAbort: () => void;
 }
 
-const Quest_Log: React.FC<QuestLogProps> = ({ session, onComplete, onAbort }) => {
+const Quest_Log: React.FC<QuestLogProps> = ({ session, history = [], onComplete, onAbort }) => {
   const [exercises, setExercises] = useState<Exercise[]>([]);
   const [activeExIndex, setActiveExIndex] = useState(0);
   const activeRef = useRef<HTMLDivElement>(null);
@@ -43,20 +46,40 @@ const Quest_Log: React.FC<QuestLogProps> = ({ session, onComplete, onAbort }) =>
     const updatedExercises = [...exercises];
     const targetSet = updatedExercises[activeExIndex].sets[setIndex];
     
-    // Update Set Data
+    // --- 1. CALCULATE CONTEXT DATA ---
+    
+    // A. Global PR (From History)
+    // Defensive check for history existence
+    const safeHistory = history || [];
+    const globalPr = safeHistory
+        .filter(h => h.exerciseId === currentEx.id)
+        .reduce((max, h) => Math.max(max, h.e1rm), 0);
+
+    // B. Session PR (From current session sets so far)
+    const sessionPr = currentEx.sets
+        .filter(s => s.completed && s.e1rm)
+        .reduce((max, s) => Math.max(max, s.e1rm || 0), 0);
+
+    // C. Current Performance
+    const currentE1RM = calculateE1RM(weight, reps, rpe);
+
+    // D. Target RPE (Default to 8 if not specified)
+    // Check if target set has specific RPE instruction, otherwise assume 8
+    const targetRpe = targetSet.isPrZone ? 9 : 8;
+
+    // --- 2. DETERMINE RARITY ---
+    const rarity = determineRarity(weight, reps, rpe, targetRpe, globalPr, sessionPr);
+
+    // --- 3. UPDATE STATE ---
     targetSet.completed = true;
     targetSet.weight = weight;
     targetSet.completedReps = reps;
-    
-    // Rarity Calculation
-    let rarity = calculateRarity(targetSet, currentEx.logic);
-    // Explicit override if RPE is maxed
-    if (rpe >= 9.5) rarity = 'legendary'; 
     targetSet.rarity = rarity;
+    targetSet.e1rm = currentE1RM;
 
     setExercises(updatedExercises);
 
-    // Audio/Visual Feedback based on Rarity
+    // --- 4. FEEDBACK ---
     if (rarity === 'legendary') {
         playSound('loot_epic');
         fireConfetti();
@@ -66,7 +89,7 @@ const Quest_Log: React.FC<QuestLogProps> = ({ session, onComplete, onAbort }) =>
         playSound('ding');
     }
 
-    // Check if Exercise is Complete
+    // --- 5. PROGRESSION LOGIC ---
     const allComplete = updatedExercises[activeExIndex].sets.every(s => s.completed);
     if (allComplete) {
         if (activeExIndex < exercises.length - 1) {
