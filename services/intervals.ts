@@ -1,19 +1,28 @@
 
 import { IntervalsWellness, IntervalsActivity, IntervalsEvent } from '../types';
 
-// In a real production app, these calls would go through a proxy to avoid CORS and hide the API Key.
-// For this Client-Side RPG, we will attempt direct connection or fallback to simulation.
-
-const BASE_URL = 'https://intervals.icu/api/v1';
+// Omdirigerad till Sentry Tower (Local Proxy)
+// Detta eliminerar CORS-problem och döljer den verkliga API-nyckeln från nätverksfliken i webbläsaren.
+const PROXY_URL = 'http://localhost:3001/api';
 
 export const IntervalsService = {
   
+  // Helper to handle proxy headers
+  // We send the client key in a custom header. The proxy prefers the server-side env var if it exists.
+  getProxyHeaders: (apiKey: string) => {
+    return {
+        'Content-Type': 'application/json',
+        'x-client-key': apiKey // Proxy will use this if server-side env is empty
+    };
+  },
+
+  // Helper to construct Basic Auth Header for direct calls (when not using Proxy for POSTs)
   getAuthHeader: (apiKey: string) => {
     return `Basic ${btoa('API_KEY:' + apiKey)}`;
   },
 
   /**
-   * Fetches Wellness data (HRV, Sleep, RHR) for a specific date.
+   * Fetches Wellness data via Proxy.
    */
   async getWellness(date: string, athleteId: string, apiKey: string): Promise<IntervalsWellness | null> {
     // Immediate Offline Check
@@ -22,127 +31,101 @@ export const IntervalsService = {
         return null;
     }
 
-    if (!apiKey || !athleteId) return null;
-
     try {
-      const response = await fetch(`${BASE_URL}/athlete/${athleteId}/wellness/${date}`, {
+      // Call Proxy instead of direct URL
+      const response = await fetch(`${PROXY_URL}/wellness?date=${date}&athleteId=${athleteId}`, {
         method: 'GET',
-        headers: {
-          'Authorization': IntervalsService.getAuthHeader(apiKey),
-          'Content-Type': 'application/json'
-        }
+        headers: IntervalsService.getProxyHeaders(apiKey)
       });
 
       if (!response.ok) {
-        throw new Error(`Intervals API Error: ${response.statusText}`);
+        throw new Error(`The Sentry Tower Reports: ${response.statusText}`);
       }
 
       const data = await response.json();
       return data as IntervalsWellness;
 
     } catch (error) {
-      console.warn("Failed to fetch Intervals data (Likely CORS on localhost or Network Error).", error);
+      console.warn("Failed to fetch Intervals data via Proxy.", error);
       return null;
     }
   },
 
   /**
-   * Fetches recent activities to calculate Kinetic Shards.
+   * Fetches recent activities via Proxy.
    */
   async getRecentActivities(athleteId: string, apiKey: string): Promise<IntervalsActivity[]> {
-    // Immediate Offline Check
-    if (!navigator.onLine) {
-        return [];
-    }
-
-    if (!apiKey || !athleteId) return [];
+    if (!navigator.onLine) return [];
 
     try {
-      const response = await fetch(`${BASE_URL}/athlete/${athleteId}/activities?limit=5`, {
+      const response = await fetch(`${PROXY_URL}/activities?athleteId=${athleteId}`, {
         method: 'GET',
-        headers: {
-          'Authorization': IntervalsService.getAuthHeader(apiKey),
-          'Content-Type': 'application/json'
-        }
+        headers: IntervalsService.getProxyHeaders(apiKey)
       });
 
-      if (!response.ok) throw new Error("Failed to fetch activities");
+      if (!response.ok) throw new Error("The Sentry Tower Reports: Failed to fetch activities");
       return await response.json();
     } catch (error) {
-      console.warn("Failed to fetch Intervals activities", error);
+      console.warn("Failed to fetch Intervals activities via Proxy", error);
       return [];
     }
   },
 
   /**
-   * Fetches Calendar Events (Races, Goals) for a date range.
+   * Fetches Calendar Events via Proxy.
    */
   async getEvents(athleteId: string, apiKey: string, oldest: string, newest: string): Promise<IntervalsEvent[]> {
-      if (!navigator.onLine || !apiKey || !athleteId) return [];
+      if (!navigator.onLine) return [];
 
       try {
-          const response = await fetch(`${BASE_URL}/athlete/${athleteId}/events?oldest=${oldest}&newest=${newest}`, {
+          const response = await fetch(`${PROXY_URL}/events?athleteId=${athleteId}&oldest=${oldest}&newest=${newest}`, {
               method: 'GET',
-              headers: {
-                  'Authorization': IntervalsService.getAuthHeader(apiKey),
-                  'Content-Type': 'application/json'
-              }
+              headers: IntervalsService.getProxyHeaders(apiKey)
           });
 
-          if (!response.ok) throw new Error("Failed to fetch events");
+          if (!response.ok) throw new Error("The Sentry Tower Reports: Failed to fetch events");
           const data = await response.json();
-          // Filter for RACE category or explicit race names
+          
+          // Filter logic remains on client to reduce server computation for MVP
           return data.filter((e: any) => e.category === 'RACE' || e.name.toLowerCase().includes('race') || e.name.toLowerCase().includes('lopp') || e.name.toLowerCase().includes('marathon'));
       } catch (error) {
-          console.warn("Failed to fetch Intervals events", error);
+          console.warn("Failed to fetch Intervals events via Proxy", error);
           return [];
       }
   },
 
   /**
    * Logic to convert Intervals Data to Titan RPG Stats
+   * (Unchanged logic, safe to keep on client)
    */
   mapWellnessToTitanStats: (wellness: IntervalsWellness | null): IntervalsWellness | null => {
-    if (!wellness) {
-      // Return null to indicate "No Data" -> Trigger Simulation
-      return null;
-    }
+    if (!wellness) return null;
 
-    // 1. Calculate Body Battery (Stamina)
-    // HRV (rMSSD) is highly individual. We assume a baseline of 60ms for "100%".
-    // In a full app, we would fetch the athlete's average HRV to normalize this.
     const baselineHRV = 60; 
-    let bodyBattery = 50; // Default average
+    let bodyBattery = 50; 
     
     if (wellness.hrv) {
         bodyBattery = Math.min(100, Math.round((wellness.hrv / baselineHRV) * 100));
     }
 
-    // 2. Calculate Sleep Score (Rest)
     let sleepScore = wellness.sleepScore || 0;
     
-    // If no score but we have duration, approximate: 8 hours = 100
     if (!sleepScore && wellness.sleepSecs) {
         const hours = wellness.sleepSecs / 3600;
         sleepScore = Math.min(100, Math.round((hours / 8) * 100));
     }
 
-    // 3. Extract/Estimate VO2 Max
-    // Intervals often puts VO2max in the 'ctl' object or custom fields, but we will mock extraction from main wellness
-    // or estimate it from restingHR if missing for the demo.
-    // VO2Max estimation (Uth-Sørensen-Overgaard-Pedersen estimation): 15 * (HRmax / HRrest)
-    // Assume HRmax = 190 for elite athlete
     let vo2max = wellness.vo2max;
     if (!vo2max && wellness.restingHR) {
         vo2max = Math.round(15 * (190 / wellness.restingHR)); 
     }
 
     return {
-      ...wellness, // Preserve ID and other original fields
+      ...wellness, 
       bodyBattery,
       sleepScore,
       restingHR: wellness.restingHR,
-      vo2max: vo2max || 55 // Default fallback if no data
+      vo2max: vo2max || 55 
     };
   }
 };

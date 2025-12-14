@@ -1,5 +1,6 @@
+
 import React, { useRef, useMemo } from 'react';
-import { Canvas, useFrame, ThreeElements } from '@react-three/fiber';
+import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, PerspectiveCamera, Environment } from '@react-three/drei';
 import { TitanAttributes } from '../types';
 import * as THREE from 'three';
@@ -7,7 +8,20 @@ import * as THREE from 'three';
 // Fix for R3F types not automatically augmenting JSX.IntrinsicElements
 declare global {
   namespace JSX {
-    interface IntrinsicElements extends ThreeElements {}
+    interface IntrinsicElements {
+      meshStandardMaterial: any;
+      group: any;
+      mesh: any;
+      boxGeometry: any;
+      sphereGeometry: any;
+      capsuleGeometry: any;
+      cylinderGeometry: any;
+      ambientLight: any;
+      spotLight: any;
+      pointLight: any;
+      gridHelper: any;
+      circleGeometry: any;
+    }
   }
 }
 
