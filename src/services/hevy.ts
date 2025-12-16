@@ -16,38 +16,22 @@ export const getHevyRoutines = async (params: { page: number, pageSize: number }
 };
 
 /**
- * Fetches the complete list of exercise templates (The Codex) from all pages.
+ * Fetches the complete list of exercise templates (The Codex) from the backend proxy.
+ * The proxy handles fetching all pages from the Hevy API.
  */
 export const getHevyExerciseTemplates = async () => {
     try {
-        // First, get the first page to determine pagination details
-        const firstPageResponse = await api.get('/api/hevy/exercise-templates', { params: { page: 1, page_size: 100 } });
-        const firstPageData = firstPageResponse.data;
-        const totalPages = firstPageData.total_pages;
-        
-        let allTemplates = [...firstPageData.exercise_templates];
+        // The backend endpoint is designed to fetch all templates, so no parameters are needed.
+        const response = await api.get('/api/hevy/exercise-templates');
 
-        // If there is more than one page, fetch the rest
-        if (totalPages > 1) {
-            const pagePromises = [];
-            for (let i = 2; i <= totalPages; i++) {
-                pagePromises.push(api.get('/api/hevy/exercise-templates', { params: { page: i, page_size: 100 } }));
-            }
-            
-            const otherPageResponses = await Promise.all(pagePromises);
-            
-            for(const response of otherPageResponses) {
-                allTemplates.push(...response.data.exercise_templates);
-            }
-        }
+        // The backend returns a { exercise_templates: [...] } object.
+        // We will reconstruct a response object that matches the previous structure for component compatibility.
+        const allTemplates = response.data.exercise_templates || [];
 
-        // Return a single, consolidated object
         return {
-            ...firstPageData,
             exercise_templates: allTemplates,
             page: 1,
-            page_size: allTemplates.length,
-            total_pages: 1,
+            total_pages: 1, // Since we have all data, it's a single "page".
             total_records: allTemplates.length
         };
 

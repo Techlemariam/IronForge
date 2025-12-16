@@ -1,47 +1,54 @@
-
+// src/components/game/Weakness_Radar.tsx
 import React from 'react';
-import { ShieldAlert } from 'lucide-react';
+import { MuscleVolume } from '../../utils/weaknessAuditor';
 
 interface WeaknessRadarProps {
-    weeklyVolume: { [key: string]: number };
+    muscleData: MuscleVolume[];
+    isLoading: boolean;
 }
 
-const WeaknessRadar: React.FC<WeaknessRadarProps> = ({ weeklyVolume }) => {
-    const totalVolume = Object.values(weeklyVolume).reduce((acc, val) => acc + val, 0);
+/**
+ * Determines the color code based on volume.
+ * Green: High volume
+ * Orange: Medium volume
+ * Red: Low volume
+ */
+const getVolumeColor = (volume: number, maxVolume: number): string => {
+    if (maxVolume === 0) return 'bg-gray-700'; // Default if no volume
+    const ratio = volume / maxVolume;
 
-    const getTierColor = (volume: number) => {
-        if (totalVolume === 0) return '#6b7280';
-        const percentage = (volume / totalVolume) * 100;
-        if (percentage < 20) return '#ef4444'; // Red
-        if (percentage < 35) return '#f97316'; // Orange
-        return '#22c55e'; // Green
-    };
+    if (ratio > 0.66) return 'bg-green-600';
+    if (ratio > 0.33) return 'bg-orange-500';
+    return 'bg-red-600';
+};
 
-    const hasData = Object.keys(weeklyVolume).length > 0;
+const WeaknessRadar: React.FC<WeaknessRadarProps> = ({ muscleData, isLoading }) => {
+    if (isLoading) {
+        return <div className="text-center p-4">Analyzing Battle Logs...</div>;
+    }
+
+    if (!muscleData || muscleData.length === 0) {
+        return <div className="text-center p-4">No training data available to analyze.</div>;
+    }
+
+    const maxVolume = Math.max(...muscleData.map(d => d.volume), 0);
 
     return (
-        <div>
-            <h3 className="text-center font-mono text-rune uppercase tracking-widest mb-6">Weakness Radar</h3>
-            {hasData ? (
-                <div className="flex justify-around items-end">
-                    {Object.entries(weeklyVolume).map(([muscle, volume]) => (
-                        <div key={muscle} className="text-center w-20">
-                            <div
-                                className="w-12 h-12 md:w-16 md:h-16 rounded-full mx-auto mb-2 transition-all"
-                                style={{ backgroundColor: getTierColor(volume) }}
-                            />
-                            <p className="text-sm font-bold capitalize">{muscle.replace(/_/g, ' ')}</p>
-                            <p className="text-xs text-forge-muted">{volume} sets</p>
+        <div className="bg-gray-800 p-4 rounded-lg shadow-lg">
+            <h3 className="text-lg font-bold text-center mb-4">Weakness Radar</h3>
+            <div className="space-y-2">
+                {muscleData.map(({ muscleGroup, volume }) => (
+                    <div key={muscleGroup} className="grid grid-cols-3 items-center gap-2">
+                        <div className="text-sm font-medium text-gray-300">{muscleGroup}</div>
+                        <div className="col-span-2 bg-gray-700 rounded-full h-4">
+                             <div 
+                                className={`h-4 rounded-full ${getVolumeColor(volume, maxVolume)}`}
+                                style={{ width: `${maxVolume > 0 ? (volume / maxVolume) * 100 : 0}%` }}
+                             ></div>
                         </div>
-                    ))}
-                </div>
-            ) : (
-                <div className="text-center p-8 flex flex-col items-center justify-center text-forge-muted">
-                    <ShieldAlert className="w-12 h-12 text-yellow-600/80 mb-4" />
-                    <p className="text-yellow-400/90 font-semibold">Insufficient Data for Analysis</p>
-                    <p className="text-xs mt-2">Complete more workouts to activate the radar.</p>
-                </div>
-            )}
+                    </div>
+                ))}
+            </div>
         </div>
     );
 };
