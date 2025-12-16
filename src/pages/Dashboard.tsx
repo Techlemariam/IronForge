@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import RoutineSelector from '../features/training/RoutineSelector';
 import IronMines from '../features/training/IronMines';
+import QuestCompletion from '../features/training/components/QuestCompletion';
 import { Exercise } from '../types/ironforge';
 import { mapHevyToQuest, mapQuestToHevyPayload } from '../utils/hevyAdapter';
 import { HevyRoutine, HevyExerciseTemplate } from '../types/hevy';
@@ -10,9 +11,8 @@ import { LoadingSpinner } from '../components/ui/LoadingSpinner';
 import ForgeCard from '../components/ui/ForgeCard';
 import ForgeButton from '../components/ui/ForgeButton';
 
-type View = 'citadel' | 'war_room' | 'iron_mines';
+type View = 'citadel' | 'war_room' | 'iron_mines' | 'quest_completion';
 
-// --- Skeleton Loader for Codex ---
 const CodexLoader: React.FC = () => (
     <div className='flex flex-col items-center justify-center h-full text-center p-8'>
         <LoadingSpinner />
@@ -21,7 +21,6 @@ const CodexLoader: React.FC = () => (
     </div>
 );
 
-// --- The Citadel View ---
 const Citadel: React.FC<{ onEnterMines: () => void }> = ({ onEnterMines }) => (
     <div className="w-full h-full flex flex-col p-4 md:p-8 animate-fade-in">
         <header className='flex-shrink-0'>
@@ -30,7 +29,6 @@ const Citadel: React.FC<{ onEnterMines: () => void }> = ({ onEnterMines }) => (
                     <h2 className='font-heading text-lg tracking-widest uppercase'>Iron Acolyte</h2>
                     <p className='font-mono text-sm text-forge-muted'>Status: Combat Ready</p>
                 </div>
-                {/* Placeholder for TTB Radar / HP Bar */}
                 <div className='w-1/3 h-4 bg-black border border-blood rounded-full'>
                     <div className="w-3/4 h-full bg-blood" />
                 </div>
@@ -56,7 +54,6 @@ const Citadel: React.FC<{ onEnterMines: () => void }> = ({ onEnterMines }) => (
     </div>
 );
 
-// --- Main Dashboard Container ---
 const Dashboard: React.FC = () => {
   const [currentView, setCurrentView] = useState<View>('citadel');
   const [activeQuest, setActiveQuest] = useState<Exercise[] | null>(null);
@@ -88,21 +85,34 @@ const Dashboard: React.FC = () => {
     setCurrentView('iron_mines');
   };
 
-  const handleQuestComplete = async () => {
+  const handleQuestComplete = () => {
+    setCurrentView('quest_completion');
+  };
+
+  const handleSaveWorkout = async (isPrivate: boolean) => {
     if (!activeQuest || !startTime) return;
-    const payload = mapQuestToHevyPayload(activeQuest, questTitle, startTime, new Date());
+    
+    const payload = mapQuestToHevyPayload(activeQuest, questTitle, startTime, new Date(), isPrivate);
+
     try {
       await saveWorkoutToHevy(payload);
       alert("VICTORY! The Archive (Hevy) has been updated.");
     } catch (error) {
-      console.error(error);
-      alert("WARNING: Loot secured locally, but Uplink to Hevy failed.");
+      console.error("Uplink to Hevy failed:", error);
+      alert("WARNING: Loot secured locally, but Uplink to Hevy failed. Check console for details.");
     } finally {
       setActiveQuest(null);
       setQuestTitle('');
       setStartTime(null);
       setCurrentView('citadel');
     }
+  };
+
+  const handleQuestAbort = () => {
+    setActiveQuest(null);
+    setQuestTitle('');
+    setStartTime(null);
+    setCurrentView('citadel');
   };
   
   const renderView = () => {
@@ -114,7 +124,9 @@ const Dashboard: React.FC = () => {
           case 'war_room':
               return <RoutineSelector onSelectRoutine={handleRoutineSelect} />;
           case 'iron_mines':
-              return <IronMines initialData={activeQuest!} title={questTitle} onComplete={handleQuestComplete} />;
+              return <IronMines initialData={activeQuest!} title={questTitle} onComplete={handleQuestComplete} onAbort={handleQuestAbort} />;
+          case 'quest_completion':
+              return <QuestCompletion onSave={handleSaveWorkout} onCancel={handleQuestAbort} />;
           default:
               return <Citadel onEnterMines={() => setCurrentView('war_room')} />;
       }

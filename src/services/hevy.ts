@@ -1,82 +1,75 @@
 
-import axios from 'axios';
-
-// --- Dynamic Configuration ---
-// These values are now fetched from local storage, set via the ConfigModal.
-const getApiKey = () => localStorage.getItem('hevy_api_key');
-const getProxyUrl = () => {
-    let url = localStorage.getItem('hevy_proxy_url');
-    // Ensure the proxy URL doesn't end with a slash
-    if (url && url.endsWith('/')) {
-        url = url.slice(0, -1);
-    }
-    return url;
-}
-
-// --- Axios Instance with Dynamic Headers ---
-// An interceptor is used to dynamically insert the API key into every request.
-const api = axios.create();
-
-api.interceptors.request.use(config => {
-    const proxyUrl = getProxyUrl();
-    const apiKey = getApiKey();
-
-    if (!proxyUrl || !apiKey) {
-        return Promise.reject(new Error('API Key or Proxy URL is not configured.'));
-    }
-
-    // The full Hevy API URL is constructed by combining the proxy and the target path
-    config.baseURL = `${proxyUrl}/https://api.hevyapp.com/v1/`;
-    config.headers['x-api-key'] = apiKey;
-    config.headers['Content-Type'] = 'application/json';
-    
-    // Remove the proxy part from the request URL if it's accidentally included
-    if (config.url.startsWith(proxyUrl)) {
-        config.url = config.url.substring(proxyUrl.length);
-    }
-
-    return config;
-});
+import api from './api';
 
 /**
- * Fetches the user's routines from the Hevy API.
+ * Fetches the user's routines from the Hevy API via the local proxy.
  */
-export const getHevyRoutines = async () => {
+export const getHevyRoutines = async (params: { page: number, pageSize: number } = { page: 1, pageSize: 10 }) => {
     try {
-        // The request is now just the path, the base URL and headers are handled by the interceptor
-        const response = await api.get('/routines', {
-            params: { page: 1, pageSize: 20 } // Increased page size
-        });
+        const response = await api.get('/api/hevy/routines', { params });
         return response.data;
     } catch (error) {
-        console.error("Failed to fetch Hevy routines:", error.message);
+        console.error("Failed to fetch Hevy routines:", error);
         throw error;
     }
 };
 
 /**
- * Fetches the complete list of exercise templates (The Codex).
+ * Fetches the complete list of exercise templates (The Codex) from all pages.
  */
 export const getHevyExerciseTemplates = async () => {
     try {
-        const response = await api.get('/exercise_templates');
-        return response.data;
+        // First, get the first page to determine pagination details
+        const firstPageResponse = await api.get('/api/hevy/exercise-templates', { params: { page: 1, page_size: 100 } });
+        const firstPageData = firstPageResponse.data;
+        const totalPages = firstPageData.total_pages;
+        
+        let allTemplates = [...firstPageData.exercise_templates];
+
+        // If there is more than one page, fetch the rest
+        if (totalPages > 1) {
+            const pagePromises = [];
+            for (let i = 2; i <= totalPages; i++) {
+                pagePromises.push(api.get('/api/hevy/exercise-templates', { params: { page: i, page_size: 100 } }));
+            }
+            
+            const otherPageResponses = await Promise.all(pagePromises);
+            
+            for(const response of otherPageResponses) {
+                allTemplates.push(...response.data.exercise_templates);
+            }
+        }
+
+        // Return a single, consolidated object
+        return {
+            ...firstPageData,
+            exercise_templates: allTemplates,
+            page: 1,
+            page_size: allTemplates.length,
+            total_pages: 1,
+            total_records: allTemplates.length
+        };
+
     } catch (error) {
-        console.error("Failed to fetch Hevy Exercise Codex:", error.message);
+        console.error("Failed to fetch Hevy Exercise Codex:", error);
         throw error;
     }
 };
 
 /**
- * Saves a workout to the Hevy API.
+ * Saves a workout to the Hevy API via the local proxy.
  * @param payload The workout data formatted for Hevy's API.
  */
 export const saveWorkoutToHevy = async (payload: any) => {
     try {
-        const response = await api.post('/workouts', payload);
+        const response = await api.post('/api/hevy/workout', payload);
         return response.data;
     } catch (error) {
-        console.error("Failed to save workout to Hevy:", error.response?.data || error.message);
+        console.error("Failed to save workout to Hevy:", error);
+        // It's helpful to log the specific error from the API if available
+        if (error.response) {
+            console.error('Hevy Save Error:', error.response.data);
+        }
         throw error;
     }
 };

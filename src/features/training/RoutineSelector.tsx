@@ -32,7 +32,7 @@ const MissionBriefing: React.FC<{ routine: HevyRoutine; onInitiate: (routine: He
             <div>
                 <h3 className="font-body text-sm uppercase tracking-wider text-forge-muted mb-2">Targeted Encounters</h3>
                 <ul className="list-disc list-inside font-mono text-white">
-                    {routine.exercises.map(ex => <li key={ex.id}>{ex.name}</li>)}
+                    {routine.exercises.map((ex, index) => <li key={`${ex.id}-${index}`}>{ex.name}</li>)}
                 </ul>
             </div>
             {routine.notes && (

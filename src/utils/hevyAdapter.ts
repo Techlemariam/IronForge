@@ -18,14 +18,12 @@ export const mapHevyToQuest = (routine: HevyRoutine, exerciseNameMap: Map<string
       targetRPE: 8,   // Default value
     }));
 
-    // !!! THE FINAL FIX !!!
-    // Look up the exercise name in the map. If it's not found, use the ID as a fallback.
     const exerciseName = exerciseNameMap.get(hevyExerciseSummary.exercise_template_id) || `ID: ${hevyExerciseSummary.exercise_template_id}`;
 
     return {
       id: parseInt(hevyExerciseSummary.exercise_template_id.substring(0, 8), 16) || index,
       hevyId: hevyExerciseSummary.exercise_template_id,
-      name: exerciseName, // The true name!
+      name: exerciseName,
       type: 'strength',
       sets: questSets,
       completed: false
@@ -33,38 +31,50 @@ export const mapHevyToQuest = (routine: HevyRoutine, exerciseNameMap: Map<string
   });
 };
 
-// src/utils/hevyAdapter.ts - TILLÄGG
-
-// Hjälpfunktion för att bygga payloaden
+/**
+ * THE FORGE
+ * Converts a completed Quest back into the format Hevy expects for a workout log.
+ */
 export const mapQuestToHevyPayload = (
     exercises: Exercise[], 
-    title: string, 
+    questTitle: string, 
     startTime: Date, 
-    endTime: Date
+    endTime: Date,
+    isPrivate: boolean
 ) => {
+    const hevyExercises = exercises
+        .map(ex => {
+            const completedSets = ex.sets
+                .filter(set => set.completed === true && set.weight !== undefined && set.completedReps !== undefined)
+                .map(set => ({
+                    type: "normal",
+                    weight_kg: set.weight,
+                    reps: set.completedReps,
+                    rpe: set.targetRPE, // Using targetRPE as the logged RPE value
+                    distance_meters: null,
+                    duration_seconds: null,
+                }));
+
+            if (completedSets.length === 0) {
+                return null; // This exercise won't be included if no sets were logged
+            }
+
+            return {
+                exercise_template_id: ex.hevyId,
+                superset_id: null,
+                notes: null,
+                sets: completedSets,
+            };
+        })
+        .filter((ex): ex is NonNullable<typeof ex> => ex !== null); // Filter out exercises with no logged sets
+
     return {
         workout: {
-            title: title,
+            title: questTitle,
             start_time: startTime.toISOString(),
             end_time: endTime.toISOString(),
-            is_private: false, // Eller true om du vill
-            comments: "Logged via IronForge Architect. #IronForge",
-            exercises: exercises.map((ex, index) => ({
-                exercise_template_id: ex.hevyId, // Kritiskt: Vi måste ha sparat detta ID från GET-anropet!
-                superset_id: null,
-                notes: "",
-                sets: ex.sets
-                    .filter(set => set.loggedWeight && set.loggedReps) // Spara bara loggade sets
-                    .map((set, setIndex) => ({
-                        type: "normal", // Kan utökas med logik för 'warmup' etc.
-                        weight_kg: set.loggedWeight,
-                        reps: set.loggedReps,
-                        rpe: set.loggedRPE,
-                        distance_meters: null,
-                        duration_seconds: null,
-                        index: setIndex
-                    }))
-            })).filter(ex => ex.sets.length > 0) // Ta bort övningar där inga set loggats
+            is_private: isPrivate,
+            exercises: hevyExercises
         }
     };
 };

@@ -14,9 +14,10 @@ interface IronMinesProps {
   initialData: Exercise[];
   title: string;
   onComplete: () => void;
+  onAbort: () => void;
 }
 
-const IronMines: React.FC<IronMinesProps> = ({ initialData, title, onComplete }) => {
+const IronMines: React.FC<IronMinesProps> = ({ initialData, title, onComplete, onAbort }) => {
   const [exercises, setExercises] = useState<Exercise[]>(initialData);
   const [activeExIndex, setActiveExIndex] = useState(0);
   const [startTime] = useState(new Date());
@@ -38,13 +39,11 @@ const IronMines: React.FC<IronMinesProps> = ({ initialData, title, onComplete })
 
       const targetSet = { ...currentEx.sets[setIndex] };
 
-      // --- Calculations ---
       const sessionPr = currentEx.sets.filter(s => s.completed && s.e1rm).reduce((max, s) => Math.max(max, s.e1rm || 0), 0);
       const currentE1RM = calculateE1RM(weight, reps, rpe);
       const isPr = currentE1RM > sessionPr;
       const rarity = determineRarity(currentE1RM, sessionPr, isPr);
 
-      // --- Update Set Data ---
       targetSet.completed = true;
       targetSet.weight = weight;
       targetSet.completedReps = reps;
@@ -53,7 +52,6 @@ const IronMines: React.FC<IronMinesProps> = ({ initialData, title, onComplete })
       targetSet.isPr = isPr;
       currentEx.sets[setIndex] = targetSet;
       
-      // --- Sound & Animation Hooks ---
       if (isPr) {
           playSound('pr');
           fireConfetti();
@@ -64,7 +62,6 @@ const IronMines: React.FC<IronMinesProps> = ({ initialData, title, onComplete })
           playSound('ding');
       }
 
-      // --- Advance to next exercise ---
       const allSetsInExerciseComplete = currentEx.sets.every(s => s.completed);
       if (allSetsInExerciseComplete && activeExIndex < newExercises.length - 1) {
           setTimeout(() => setActiveExIndex(prev => prev + 1), 1200);
@@ -88,6 +85,14 @@ const IronMines: React.FC<IronMinesProps> = ({ initialData, title, onComplete })
 
   const isQuestFullyCompleted = completedSets === totalSets;
 
+  const handleButtonClick = () => {
+    if (isQuestFullyCompleted) {
+      onComplete();
+    } else {
+      onAbort();
+    }
+  };
+
   return (
     <div className="flex flex-col h-full w-full p-4 md:p-8 animate-fade-in">
       <header className="flex-shrink-0 mb-6">
@@ -95,7 +100,7 @@ const IronMines: React.FC<IronMinesProps> = ({ initialData, title, onComplete })
             <h1 className="font-heading text-2xl md:text-3xl text-magma uppercase tracking-widest">{title}</h1>
             <ForgeButton 
                 variant={isQuestFullyCompleted ? 'magma' : 'default'}
-                onClick={onComplete}
+                onClick={handleButtonClick}
                 size="sm"
             >
                 {isQuestFullyCompleted ? 'Complete Protocol' : 'Abort Protocol'}

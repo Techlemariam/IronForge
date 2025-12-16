@@ -53,7 +53,7 @@ const ExerciseView: React.FC<ExerciseViewProps> = ({ exercise, isActive, isCompl
         
         <div className="space-y-2 mb-4">
           {exercise.sets.map((set, index) => (
-            <SetRow key={set.id} set={set} setNumber={index + 1} />
+            <SetRow key={`${exercise.id}-${set.id}-${index}`} set={set} setNumber={index + 1} />
           ))}
         </div>
 

@@ -13,21 +13,20 @@ interface ConfigModalProps {
 
 const ConfigModal: React.FC<ConfigModalProps> = ({ isOpen, onClose }) => {
   const [apiKey, setApiKey] = useState('');
-  const [proxyUrl, setProxyUrl] = useState('');
 
   useEffect(() => {
-    // Load saved settings from localStorage
+    // Load saved API key from localStorage
     const savedApiKey = localStorage.getItem('hevy_api_key');
-    const savedProxyUrl = localStorage.getItem('hevy_proxy_url');
     if (savedApiKey) setApiKey(savedApiKey);
-    if (savedProxyUrl) setProxyUrl(savedProxyUrl);
   }, []);
 
   const handleSave = () => {
+    // Save the API Key
     localStorage.setItem('hevy_api_key', apiKey);
-    localStorage.setItem('hevy_proxy_url', proxyUrl);
+    // Set a dummy placeholder for the proxy URL to satisfy any legacy code.
+    // The actual proxying is now handled by vite.config.ts.
+    localStorage.setItem('hevy_proxy_url', '/api'); 
     onClose();
-    // Optional: Add a success message or trigger a re-fetch of data
     alert('Configuration saved. The page will now reload to apply changes.');
     window.location.reload();
   };
@@ -58,19 +57,13 @@ const ConfigModal: React.FC<ConfigModalProps> = ({ isOpen, onClose }) => {
             
             <div className="space-y-4">
                 <p className='font-mono text-sm text-forge-muted'>
-                    Provide your Hevy API credentials to establish the data uplink. This information is stored locally on your device.
+                    Provide your Hevy API key to establish the data uplink. This information is stored locally on your device.
                 </p>
                 <ForgeInput
                     label="Hevy API Key"
                     value={apiKey}
                     onChange={e => setApiKey(e.target.value)}
                     placeholder="Enter your API Key"
-                />
-                <ForgeInput
-                    label="CORS Proxy URL"
-                    value={proxyUrl}
-                    onChange={e => setProxyUrl(e.target.value)}
-                    placeholder="Enter your proxy URL"
                 />
             </div>
 
