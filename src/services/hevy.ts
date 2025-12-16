@@ -1,5 +1,6 @@
 
 import api from './api';
+import { HevyWorkout } from '../types/hevy';
 
 /**
  * Fetches the user's routines from the Hevy API via the local proxy.
@@ -70,6 +71,47 @@ export const saveWorkoutToHevy = async (payload: any) => {
         if (error.response) {
             console.error('Hevy Save Error:', error.response.data);
         }
+        throw error;
+    }
+};
+
+export interface HevyWorkoutResponse {
+    page: number;
+    page_count: number;
+    workouts: HevyWorkout[];
+}
+
+/**
+ * Fetches the user's workout history from the Hevy API.
+ * It handles API pagination to retrieve the desired number of workouts.
+ * @param desiredCount The total number of workouts to retrieve.
+ */
+export const getHevyWorkoutHistory = async (desiredCount: number = 30): Promise<{ workouts: HevyWorkout[] }> => {
+    const pageSize = 10; // Max page size allowed by the Hevy API
+    const numPagesToFetch = Math.ceil(desiredCount / pageSize);
+    let allWorkouts: HevyWorkout[] = [];
+
+    try {
+        for (let page = 1; page <= numPagesToFetch; page++) {
+            const response = await api.get(`/api/hevy/workouts?page=${page}&pageSize=${pageSize}`);
+            
+            if (response.status === 200 && response.data.workouts) {
+                allWorkouts.push(...response.data.workouts);
+                // If a page returns fewer items than the page size, it's the last page of results.
+                if (response.data.workouts.length < pageSize) {
+                    break;
+                }
+            } else {
+                 // Log a warning instead of throwing an error to make the function more resilient.
+                 console.warn(`Warning: Could not fetch page ${page} of Hevy workout history. Status: ${response.status}`);
+            }
+        }
+        // Return a flat array of workouts, capped at the desired count.
+        return { workouts: allWorkouts.slice(0, desiredCount) };
+
+    } catch (error) {
+        console.error("Hevy History Service Error:", error);
+        // Re-throw the error to be handled by the calling component.
         throw error;
     }
 };

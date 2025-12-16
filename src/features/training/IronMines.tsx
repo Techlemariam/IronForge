@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { Exercise } from '../../types/ironforge';
+import { Exercise, Set } from '../../types/ironforge';
 import { calculateE1RM } from '../../utils/math';
 import { determineRarity } from '../../utils/loot';
 import { playSound, fireConfetti } from '../../utils';
@@ -9,6 +9,8 @@ import ForgeButton from '../../components/ui/ForgeButton';
 import { AnimatePresence } from 'framer-motion';
 import Stopwatch from '../../components/game/Stopwatch';
 import ProgressBar from '../../components/game/ProgressBar';
+import BerserkerMode from './components/BerserkerMode';
+import BerserkerChoice from './components/BerserkerChoice';
 
 interface IronMinesProps {
   initialData: Exercise[];
@@ -21,6 +23,9 @@ const IronMines: React.FC<IronMinesProps> = ({ initialData, title, onComplete, o
   const [exercises, setExercises] = useState<Exercise[]>(initialData);
   const [activeExIndex, setActiveExIndex] = useState(0);
   const [startTime] = useState(new Date());
+  const [showBerserkerChoice, setShowBerserkerChoice] = useState(false);
+  const [isBerserkerMode, setIsBerserkerMode] = useState(false);
+  const [questOver, setQuestOver] = useState(false);
   const activeRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -31,44 +36,91 @@ const IronMines: React.FC<IronMinesProps> = ({ initialData, title, onComplete, o
 
   const handleSetLog = (weight: number, reps: number, rpe: number) => {
     setExercises(currentExercises => {
-      const newExercises = [...currentExercises];
-      const currentEx = newExercises[activeExIndex];
-      const setIndex = currentEx.sets.findIndex(s => !s.completed);
+        const newExercises = currentExercises.map(ex => ({...ex, sets: ex.sets.map(s => ({...s}))}));
+        const currentEx = newExercises[activeExIndex];
+        const setIndex = currentEx.sets.findIndex(s => !s.completed);
 
-      if (setIndex === -1) return currentExercises; 
+        if (setIndex === -1) return currentExercises; 
 
-      const targetSet = { ...currentEx.sets[setIndex] };
+        const targetSet = currentEx.sets[setIndex];
 
-      const sessionPr = currentEx.sets.filter(s => s.completed && s.e1rm).reduce((max, s) => Math.max(max, s.e1rm || 0), 0);
-      const currentE1RM = calculateE1RM(weight, reps, rpe);
-      const isPr = currentE1RM > sessionPr;
-      const rarity = determineRarity(currentE1RM, sessionPr, isPr);
+        const sessionPr = currentEx.sets.filter(s => s.completed && s.e1rm).reduce((max, s) => Math.max(max, s.e1rm || 0), 0);
+        const currentE1RM = calculateE1RM(weight, reps, rpe);
+        const isPr = currentE1RM > sessionPr;
+        const rarity = determineRarity(currentE1RM, sessionPr, isPr);
 
-      targetSet.completed = true;
-      targetSet.weight = weight;
-      targetSet.completedReps = reps;
-      targetSet.rarity = rarity;
-      targetSet.e1rm = currentE1RM;
-      targetSet.isPr = isPr;
-      currentEx.sets[setIndex] = targetSet;
-      
-      if (isPr) {
-          playSound('pr');
-          fireConfetti();
-      } else if (rarity === 'legendary') {
-          playSound('loot_legendary');
-          fireConfetti();
-      } else {
-          playSound('ding');
-      }
+        targetSet.completed = true;
+        targetSet.weight = weight;
+        targetSet.completedReps = reps;
+        targetSet.rarity = rarity;
+        targetSet.e1rm = currentE1RM;
+        targetSet.isPr = isPr;
+        
+        if (isPr) {
+            playSound('pr');
+            fireConfetti();
+        } else if (rarity === 'legendary') {
+            playSound('loot_legendary');
+            fireConfetti();
+        } else {
+            playSound('ding');
+        }
 
-      const allSetsInExerciseComplete = currentEx.sets.every(s => s.completed);
-      if (allSetsInExerciseComplete && activeExIndex < newExercises.length - 1) {
-          setTimeout(() => setActiveExIndex(prev => prev + 1), 1200);
-      }
-      
-      return newExercises;
+        const allSetsInExerciseComplete = currentEx.sets.every(s => s.completed);
+        const isLastExercise = activeExIndex === newExercises.length - 1;
+
+        if (allSetsInExerciseComplete) {
+            if(isLastExercise) {
+                setTimeout(() => setShowBerserkerChoice(true), 1000);
+            } else {
+                setTimeout(() => setActiveExIndex(prev => prev + 1), 1200);
+            }
+        }
+        
+        return newExercises;
     });
+  };
+
+  const handleBerserkerAccept = () => {
+    setShowBerserkerChoice(false);
+    setIsBerserkerMode(true);
+  };
+
+  const handleBerserkerDecline = () => {
+    setShowBerserkerChoice(false);
+    setQuestOver(true);
+  };
+
+  const handleBerserkerComplete = (reps: number) => {
+    setExercises(currentExercises => {
+        const lastExerciseIndex = currentExercises.length - 1;
+
+        const berserkerSet: Set = {
+            id: `berserker-${Date.now()}`,
+            type: 'AMRAP',
+            completed: true,
+            weight: 0, 
+            targetReps: reps,
+            completedReps: reps,
+            targetRPE: 10,
+            isPr: true, 
+            rarity: 'legendary', 
+            e1rm: 0, 
+        };
+
+        return currentExercises.map((exercise, index) => {
+            if (index === lastExerciseIndex) {
+                return {
+                    ...exercise,
+                    sets: [...exercise.sets, berserkerSet]
+                };
+            }
+            return exercise;
+        });
+    });
+
+    setIsBerserkerMode(false);
+    setQuestOver(true);
   };
   
   const { completedSets, totalSets } = useMemo(() => {
@@ -83,7 +135,13 @@ const IronMines: React.FC<IronMinesProps> = ({ initialData, title, onComplete, o
     return { completedSets: completed, totalSets: total };
   }, [exercises]);
 
-  const isQuestFullyCompleted = completedSets === totalSets;
+  const isQuestFullyCompleted = useMemo(() => {
+    if (questOver) return true;
+    if (exercises.length === 0) return false;
+    const lastEx = exercises[exercises.length - 1];
+    const lastSet = lastEx.sets[lastEx.sets.length - 1];
+    return lastSet.type === 'AMRAP' && lastSet.completed;
+  }, [exercises, questOver]);
 
   const handleButtonClick = () => {
     if (isQuestFullyCompleted) {
@@ -102,6 +160,7 @@ const IronMines: React.FC<IronMinesProps> = ({ initialData, title, onComplete, o
                 variant={isQuestFullyCompleted ? 'magma' : 'default'}
                 onClick={handleButtonClick}
                 size="sm"
+                disabled={!isQuestFullyCompleted && completedSets < totalSets}
             >
                 {isQuestFullyCompleted ? 'Complete Protocol' : 'Abort Protocol'}
             </ForgeButton>
@@ -128,6 +187,20 @@ const IronMines: React.FC<IronMinesProps> = ({ initialData, title, onComplete, o
             ))}
           </AnimatePresence>
       </main>
+      
+      {showBerserkerChoice && (
+        <BerserkerChoice 
+          onAccept={handleBerserkerAccept} 
+          onDecline={handleBerserkerDecline} 
+        />
+      )}
+
+      {isBerserkerMode && (
+          <BerserkerMode 
+            lastExerciseName={exercises[activeExIndex].name}
+            onComplete={handleBerserkerComplete} 
+          />
+      )}
     </div>
   );
 };
