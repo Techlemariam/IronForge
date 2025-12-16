@@ -1,66 +1,110 @@
-interface Window {
-  // Safari/Old Chrome support
-  webkitAudioContext: typeof AudioContext;
-}
+export {};
 
-// Fallback if @types/web-bluetooth is not installed in the environment
-interface Navigator {
-  bluetooth: Bluetooth;
-}
+declare global {
+  interface Window {
+    // Safari/Old Chrome support
+    webkitAudioContext: typeof AudioContext;
+  }
 
-interface Bluetooth {
-  requestDevice(options?: RequestDeviceOptions): Promise<BluetoothDevice>;
-  getAvailability(): Promise<boolean>;
-}
+  // Fallback if @types/web-bluetooth is not installed in the environment
+  interface Navigator {
+    bluetooth: Bluetooth;
+  }
 
-interface RequestDeviceOptions {
-  filters?: BluetoothLEScanFilter[];
-  optionalServices?: BluetoothServiceUUID[];
-  acceptAllDevices?: boolean;
-}
+  interface Bluetooth {
+    requestDevice(options?: RequestDeviceOptions): Promise<BluetoothDevice>;
+    getAvailability(): Promise<boolean>;
+  }
 
-interface BluetoothLEScanFilter {
-  name?: string;
-  namePrefix?: string;
-  services?: BluetoothServiceUUID[];
-}
+  interface RequestDeviceOptions {
+    filters?: BluetoothLEScanFilter[];
+    optionalServices?: BluetoothServiceUUID[];
+    acceptAllDevices?: boolean;
+  }
 
-type BluetoothServiceUUID = number | string;
+  interface BluetoothLEScanFilter {
+    name?: string;
+    namePrefix?: string;
+    services?: BluetoothServiceUUID[];
+  }
 
-interface BluetoothDevice extends EventTarget {
-  id: string;
-  name?: string;
-  gatt?: BluetoothRemoteGATTServer;
-  watchAdvertisements(): Promise<void>;
-  unwatchAdvertisements(): void;
-  readonly watchingAdvertisements: boolean;
-  addEventListener(type: string, listener: EventListener): void;
-}
+  type BluetoothServiceUUID = number | string;
 
-interface BluetoothRemoteGATTServer {
-  device: BluetoothDevice;
-  connected: boolean;
-  connect(): Promise<BluetoothRemoteGATTServer>;
-  disconnect(): void;
-  getPrimaryService(service: BluetoothServiceUUID): Promise<BluetoothRemoteGATTService>;
-}
+  interface BluetoothDevice extends EventTarget {
+    id: string;
+    name?: string;
+    gatt?: BluetoothRemoteGATTServer;
+    watchAdvertisements(): Promise<void>;
+    unwatchAdvertisements(): void;
+    readonly watchingAdvertisements: boolean;
+    addEventListener(type: string, listener: EventListener): void;
+  }
 
-interface BluetoothRemoteGATTService {
-  uuid: string;
-  isPrimary: boolean;
-  device: BluetoothDevice;
-  getCharacteristic(characteristic: BluetoothCharacteristicUUID): Promise<BluetoothRemoteGATTCharacteristic>;
-}
+  interface BluetoothRemoteGATTServer {
+    device: BluetoothDevice;
+    connected: boolean;
+    connect(): Promise<BluetoothRemoteGATTServer>;
+    disconnect(): void;
+    getPrimaryService(service: BluetoothServiceUUID): Promise<BluetoothRemoteGATTService>;
+  }
 
-type BluetoothCharacteristicUUID = number | string;
+  interface BluetoothRemoteGATTService {
+    uuid: string;
+    isPrimary: boolean;
+    device: BluetoothDevice;
+    getCharacteristic(characteristic: BluetoothCharacteristicUUID): Promise<BluetoothRemoteGATTCharacteristic>;
+  }
 
-interface BluetoothRemoteGATTCharacteristic extends EventTarget {
-  uuid: string;
-  service: BluetoothRemoteGATTService;
-  value?: DataView;
-  readValue(): Promise<DataView>;
-  writeValue(value: BufferSource): Promise<void>;
-  startNotifications(): Promise<BluetoothRemoteGATTCharacteristic>;
-  stopNotifications(): Promise<BluetoothRemoteGATTCharacteristic>;
-  addEventListener(type: string, listener: EventListener): void;
+  type BluetoothCharacteristicUUID = number | string;
+
+  interface BluetoothRemoteGATTCharacteristic extends EventTarget {
+    uuid: string;
+    service: BluetoothRemoteGATTService;
+    value?: DataView;
+    readValue(): Promise<DataView>;
+    writeValue(value: BufferSource): Promise<void>;
+    startNotifications(): Promise<BluetoothRemoteGATTCharacteristic>;
+    stopNotifications(): Promise<BluetoothRemoteGATTCharacteristic>;
+    addEventListener(type: string, listener: EventListener): void;
+  }
+
+  // React Three Fiber Intrinsic Elements (Global JSX)
+  namespace JSX {
+    interface IntrinsicElements {
+      meshStandardMaterial: any;
+      group: any;
+      mesh: any;
+      boxGeometry: any;
+      sphereGeometry: any;
+      capsuleGeometry: any;
+      cylinderGeometry: any;
+      ambientLight: any;
+      spotLight: any;
+      pointLight: any;
+      gridHelper: any;
+      circleGeometry: any;
+      primitive: any;
+    }
+  }
+
+  // React Three Fiber Intrinsic Elements (React.JSX for React 18+)
+  namespace React {
+    namespace JSX {
+      interface IntrinsicElements {
+        meshStandardMaterial: any;
+        group: any;
+        mesh: any;
+        boxGeometry: any;
+        sphereGeometry: any;
+        capsuleGeometry: any;
+        cylinderGeometry: any;
+        ambientLight: any;
+        spotLight: any;
+        pointLight: any;
+        gridHelper: any;
+        circleGeometry: any;
+        primitive: any;
+      }
+    }
+  }
 }

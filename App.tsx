@@ -132,8 +132,11 @@ export default function App() {
             let events: IntervalsEvent[] = [];
 
             if (activeSettings.intervalsApiKey && navigator.onLine) {
+                // 1. Fetch Wellness
                 const rawW = await IntervalsService.getWellness(today, activeSettings.intervalsAthleteId, activeSettings.intervalsApiKey);
                 wellness = IntervalsService.mapWellnessToTitanStats(rawW);
+                
+                // 2. Fetch Events
                 const dateOffset = (days: number) => {
                     const d = new Date();
                     d.setDate(d.getDate() + days);
@@ -141,6 +144,17 @@ export default function App() {
                 };
                 events = await IntervalsService.getEvents(activeSettings.intervalsAthleteId, activeSettings.intervalsApiKey, dateOffset(-7), dateOffset(14));
                 setUpcomingEvents(events);
+
+                // 3. Fetch Planned Daily Quest
+                const plannedQuest = await IntervalsService.getPlannedWorkout(today, activeSettings.intervalsAthleteId, activeSettings.intervalsApiKey);
+                if (plannedQuest) {
+                    setAvailableSessions(prev => {
+                        // Avoid duplicates if re-fetched
+                        if (prev.find(s => s.id === plannedQuest.id)) return prev;
+                        return [plannedQuest, ...prev];
+                    });
+                }
+
             } else {
                 wellness = { id: 'simulated', bodyBattery: 85, sleepScore: 90, ctl: 60, atl: 40, tsb: -5, vo2max: 58 };
             }

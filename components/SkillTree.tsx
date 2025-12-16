@@ -12,7 +12,7 @@ import ReactFlow, {
 } from 'reactflow';
 import { SKILL_TREE, SESSIONS } from '../data';
 import { SkillNode, SkillStatus, ExerciseLogic, IntervalsWellness } from '../types';
-import { Lock, Zap, ArrowLeft, X, TrendingUp, Scroll, Wind, Sparkles, TrendingDown, Shield, Check } from 'lucide-react';
+import { Lock, Zap, ArrowLeft, X, TrendingUp, Scroll, Wind, Sparkles, TrendingDown, Shield, Check, ArrowUpCircle } from 'lucide-react';
 import { useSkills } from '../context/SkillContext';
 import { calculateAdaptiveCost, getMaxTM } from '../utils';
 
@@ -38,8 +38,14 @@ const checkRequirement = (req: SkillNode['requirements'][0], unlockedIds: Set<st
 };
 
 // --- CUSTOM NODE COMPONENT ---
-const CustomSkillNode = ({ data, selected }: NodeProps) => {
-    const { node, status } = data;
+interface CustomNodeData {
+    node: SkillNode;
+    status: SkillStatus;
+    isAffordable: boolean;
+}
+
+const CustomSkillNode = ({ data, selected }: NodeProps<CustomNodeData>) => {
+    const { node, status, isAffordable } = data;
     const isMastered = status === SkillStatus.MASTERED;
     const isUnlocked = status === SkillStatus.UNLOCKED;
     const isLocked = status === SkillStatus.LOCKED;
@@ -57,10 +63,17 @@ const CustomSkillNode = ({ data, selected }: NodeProps) => {
         iconColor = isEndurance ? "text-cyan-400" : "text-[#ffd700]";
         glow = isEndurance ? "shadow-[0_0_20px_rgba(6,182,212,0.5)]" : "shadow-[0_0_20px_rgba(255,215,0,0.5)]";
     } else if (isUnlocked) {
-        borderClass = "border-zinc-400";
-        bgClass = "bg-zinc-900";
-        iconColor = "text-zinc-200";
-        glow = "animate-pulse shadow-[0_0_10px_rgba(255,255,255,0.2)]";
+        if (isAffordable) {
+            borderClass = "border-green-500";
+            bgClass = "bg-zinc-900";
+            iconColor = "text-green-400";
+            glow = "animate-pulse shadow-[0_0_15px_rgba(74,222,128,0.4)]";
+        } else {
+            borderClass = "border-zinc-400";
+            bgClass = "bg-zinc-900";
+            iconColor = "text-zinc-200";
+            glow = "shadow-[0_0_10px_rgba(255,255,255,0.1)]";
+        }
     }
 
     if (selected) {
@@ -82,6 +95,13 @@ const CustomSkillNode = ({ data, selected }: NodeProps) => {
                  {node.category === 'endurance' && <Wind className="w-8 h-8" />}
             </div>
 
+            {/* Affordability Badge */}
+            {isUnlocked && isAffordable && (
+                <div className="absolute -top-1 -right-1 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center shadow-lg border border-black z-10 animate-bounce">
+                    <ArrowUpCircle className="w-3 h-3 text-black" />
+                </div>
+            )}
+
             {/* Locked Overlay */}
             {isLocked && (
                 <div className="absolute inset-0 bg-black/60 rounded-full flex items-center justify-center">
@@ -101,7 +121,7 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onExit, unlockedIds, wellness }) 
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
 
   // --- DATA PREPARATION ---
-  const { nodes, edges } = useMemo(() => {
+  const { nodes, edges, masteryStats } = useMemo(() => {
     // 1. Calculate Status
     const nodesWithStatus = SKILL_TREE.map(node => {
         if (purchasedSkillIds.has(node.id)) return { ...node, status: SkillStatus.MASTERED };
@@ -118,7 +138,11 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onExit, unlockedIds, wellness }) 
         id: node.id,
         type: 'skillNode',
         position: { x: node.x, y: node.y },
-        data: { node, status: node.status },
+        data: { 
+            node, 
+            status: node.status,
+            isAffordable: node.status === SkillStatus.UNLOCKED && canAfford(node.id)
+        },
     }));
 
     // 3. Map to React Flow Edges
@@ -142,8 +166,21 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onExit, unlockedIds, wellness }) 
         });
     });
 
-    return { nodes: flowNodes, edges: flowEdges };
-  }, [unlockedIds, wellness, purchasedSkillIds]);
+    // 4. Calculate Stats
+    const totalNodes = SKILL_TREE.length;
+    const masteredCount = purchasedSkillIds.size;
+    const affordableCount = nodesWithStatus.filter(n => n.status === SkillStatus.UNLOCKED && canAfford(n.id)).length;
+
+    return { 
+        nodes: flowNodes, 
+        edges: flowEdges,
+        masteryStats: {
+            total: totalNodes,
+            mastered: masteredCount,
+            affordable: affordableCount
+        }
+    };
+  }, [unlockedIds, wellness, purchasedSkillIds, availableTalentPoints, availableKineticShards, canAfford]);
 
   const [rfNodes, setNodes, onNodesChange] = useNodesState(nodes);
   const [rfEdges, setEdges, onEdgesChange] = useEdgesState(edges);
@@ -177,22 +214,48 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onExit, unlockedIds, wellness }) 
             <span className="hidden sm:inline">Back to Hub</span>
         </button>
         
-        <div className="flex flex-col items-end pointer-events-auto gap-2">
-             <div className="bg-zinc-900 border-2 border-[#c79c6e] px-4 py-2 rounded shadow-xl text-white">
-                <h1 className="text-sm font-serif font-bold text-[#c79c6e] uppercase tracking-widest flex items-center gap-2">
-                    <Sparkles className="w-4 h-4" />
-                    Talent Tree
-                </h1>
+        <div className="flex flex-col items-end pointer-events-auto gap-3">
+             {/* Progress Card */}
+             <div className="bg-zinc-900 border-2 border-[#c79c6e] px-4 py-3 rounded shadow-xl text-white min-w-[220px]">
+                <div className="flex justify-between items-center mb-2">
+                    <h1 className="text-sm font-serif font-bold text-[#c79c6e] uppercase tracking-widest flex items-center gap-2">
+                        <Sparkles className="w-4 h-4" />
+                        Talent Tree
+                    </h1>
+                    <span className="text-xs font-mono text-zinc-400">{masteryStats.mastered}/{masteryStats.total}</span>
+                </div>
+                
+                {/* Progress Bar */}
+                <div className="w-full h-1.5 bg-zinc-800 rounded-full overflow-hidden mb-3 border border-zinc-800">
+                    <div 
+                        className="h-full bg-[#c79c6e] shadow-[0_0_10px_#c79c6e] transition-all duration-700" 
+                        style={{ width: `${(masteryStats.mastered/masteryStats.total)*100}%` }}
+                    ></div>
+                </div>
+
+                {/* Available Notification */}
+                {masteryStats.affordable > 0 ? (
+                    <div className="text-[10px] text-green-400 font-bold uppercase tracking-wide flex items-center gap-1 animate-pulse">
+                        <ArrowUpCircle className="w-3 h-3" />
+                        {masteryStats.affordable} Upgrade{masteryStats.affordable > 1 ? 's' : ''} Available
+                    </div>
+                ) : (
+                    <div className="text-[10px] text-zinc-600 font-bold uppercase tracking-wide flex items-center gap-1">
+                        <Lock className="w-3 h-3" />
+                        More XP Required
+                    </div>
+                )}
              </div>
              
+             {/* Resources */}
              <div className="flex gap-2">
-                <div className="bg-zinc-900 border border-[#ffd700] px-3 py-1 rounded shadow-lg text-[#ffd700] flex items-center gap-2">
+                <div className="bg-zinc-900 border border-[#ffd700] px-3 py-1.5 rounded shadow-lg text-[#ffd700] flex items-center gap-2 min-w-[80px] justify-center">
                     <span className="text-xs font-bold uppercase tracking-wider">TP</span>
-                    <span className="font-mono font-bold">{availableTalentPoints}</span>
+                    <span className="font-mono font-bold text-lg">{availableTalentPoints}</span>
                 </div>
-                <div className="bg-zinc-900 border border-cyan-400 px-3 py-1 rounded shadow-lg text-cyan-400 flex items-center gap-2">
+                <div className="bg-zinc-900 border border-cyan-400 px-3 py-1.5 rounded shadow-lg text-cyan-400 flex items-center gap-2 min-w-[80px] justify-center">
                     <span className="text-xs font-bold uppercase tracking-wider">KS</span>
-                    <span className="font-mono font-bold">{availableKineticShards}</span>
+                    <span className="font-mono font-bold text-lg">{availableKineticShards}</span>
                 </div>
              </div>
         </div>

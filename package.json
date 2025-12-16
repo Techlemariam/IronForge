@@ -1,33 +1,41 @@
 {
-  "name": "ironforge",
+  "name": "ironforge-rpg",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "server": "node server.js",
+    "start": "concurrently \"npm run server\" \"npm run dev\""
   },
   "dependencies": {
-    "react": "^19.2.3",
-    "react-dom": "^19.2.3",
-    "lucide-react": "^0.561.0",
     "@google/genai": "^1.33.0",
+    "@mediapipe/tasks-vision": "0.10.9",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.4.2",
-    "@supabase/supabase-js": "2.39.0",
-    "reactflow": "11.10.4",
-    "@mediapipe/tasks-vision": "0.10.9",
-    "three": "^0.182.0",
+    "@supabase/supabase-js": "^2.39.0",
+    "axios": "^1.6.0",
     "cors": "^2.8.5",
-    "express": "^5.2.1",
-    "dotenv": "^17.2.3",
-    "axios": "^1.13.2"
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "lucide-react": "^0.561.0",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "reactflow": "^11.10.4",
+    "three": "^0.182.0"
   },
   "devDependencies": {
-    "@types/node": "^22.14.0",
-    "@vitejs/plugin-react": "^5.0.0",
-    "typescript": "~5.8.2",
-    "vite": "^6.2.0"
+    "@types/react": "^19.2.3",
+    "@types/react-dom": "^19.2.3",
+    "@types/three": "^0.182.0",
+    "@vitejs/plugin-react": "^4.0.0",
+    "autoprefixer": "^10.4.14",
+    "concurrently": "^8.2.0",
+    "postcss": "^8.4.27",
+    "tailwindcss": "^3.3.3",
+    "typescript": "^5.0.2",
+    "vite": "^4.4.5"
   }
 }

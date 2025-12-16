@@ -22,6 +22,7 @@ const SessionRunner: React.FC<SessionRunnerProps> = ({ session, onExit }) => {
   const [hasCheckedIn, setHasCheckedIn] = useState(false);
   const [completed, setCompleted] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [showAbandonConfirm, setShowAbandonConfirm] = useState(false);
   
   // Data for Gamification
   const [wellnessData, setWellnessData] = useState<IntervalsWellness | null>(null);
@@ -166,11 +167,13 @@ const SessionRunner: React.FC<SessionRunnerProps> = ({ session, onExit }) => {
       }
   };
 
-  const handleAbort = () => {
-      if (window.confirm("Abandon Quest? All progress lost.")) {
-          StorageService.clearActiveSession();
-          onExit();
-      }
+  const handleAbortRequest = () => {
+      setShowAbandonConfirm(true);
+  };
+
+  const confirmAbandon = async () => {
+      await StorageService.clearActiveSession();
+      onExit();
   };
 
   // --- RECOVERY UI ---
@@ -256,12 +259,41 @@ const SessionRunner: React.FC<SessionRunnerProps> = ({ session, onExit }) => {
 
   // --- MAIN TRAINING VIEW (QUEST LOG) ---
   return (
-    <Quest_Log 
-        session={activeSession}
-        history={historyLogs}
-        onComplete={() => setCompleted(true)}
-        onAbort={handleAbort}
-    />
+    <>
+        {showAbandonConfirm && (
+            <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-sm p-6 animate-fade-in font-serif">
+                <div className="bg-[#111] border-2 border-red-900 w-full max-w-sm rounded-lg p-6 shadow-[0_0_50px_rgba(220,38,38,0.3)]">
+                    <h3 className="text-red-500 font-bold uppercase text-lg mb-4 flex items-center gap-2">
+                        <AlertTriangle className="w-6 h-6" />
+                        Abandon Quest?
+                    </h3>
+                    <p className="text-zinc-400 text-sm mb-8 leading-relaxed font-sans">
+                        Retreating now will forfeit all progress made in this session. Are you sure you want to return to the dashboard?
+                    </p>
+                    <div className="space-y-3">
+                        <button 
+                            onClick={confirmAbandon} 
+                            className="w-full py-4 bg-red-900/20 border border-red-600/50 text-red-500 hover:bg-red-900 hover:text-white font-bold uppercase tracking-widest rounded transition-all"
+                        >
+                            Confirm Retreat
+                        </button>
+                        <button 
+                            onClick={() => setShowAbandonConfirm(false)} 
+                            className="w-full py-3 bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white font-mono text-xs uppercase rounded"
+                        >
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        )}
+        <Quest_Log 
+            session={activeSession}
+            history={historyLogs}
+            onComplete={() => setCompleted(true)}
+            onAbort={handleAbortRequest}
+        />
+    </>
   );
 };
 

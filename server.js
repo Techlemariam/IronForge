@@ -17,6 +17,7 @@ app.use(express.json());
 // If these are set in the server environment, they override client-provided keys.
 const SERVER_API_KEY = process.env.INTERVALS_API_KEY;
 const SERVER_ATHLETE_ID = process.env.INTERVALS_ATHLETE_ID;
+const HEVY_API_KEY = process.env.HEVY_API_KEY;
 
 const INTERVALS_BASE_URL = 'https://intervals.icu/api/v1';
 
@@ -99,7 +100,78 @@ app.get('/api/events', async (req, res) => {
     }
 });
 
+// 4. GET Planned Workout (Today's Specific Quest)
+app.get('/api/planned-workout', async (req, res) => {
+    const { date, athleteId } = req.query;
+    const clientKey = req.headers['x-client-key'];
+    const targetId = SERVER_ATHLETE_ID || athleteId;
+    const authHeader = getAuthHeader(clientKey);
+
+    if (!authHeader || !targetId) {
+        return res.status(401).json({ error: 'Access Denied. Missing Credentials.' });
+    }
+
+    try {
+        // Fetch events for the specific date
+        const response = await axios.get(`${INTERVALS_BASE_URL}/athlete/${targetId}/events?oldest=${date}&newest=${date}`, {
+            headers: { 'Authorization': authHeader }
+        });
+        
+        // Filter for the first workout found
+        // Intervals categorizes structured training as 'WORKOUT'
+        const workout = response.data.find(e => e.category === 'WORKOUT');
+        
+        if (workout) {
+            res.json(workout);
+        } else {
+            res.status(404).json({ message: 'No workout planned for today.' });
+        }
+    } catch (error) {
+        console.error(`[Proxy Error] Planned Workout: ${error.message}`);
+        res.status(error.response?.status || 500).json({ error: 'Failed to fetch planned workout.' });
+    }
+});
+
+// ---------------------------------------------------------
+// HEVY ENDPOINTS (The Armory)
+// ---------------------------------------------------------
+
+// 1. GET ROUTINES (Dina sparade passmallar)
+app.get('/api/hevy/routines', async (req, res) => {
+    if (!HEVY_API_KEY) return res.status(500).send({ error: "Hevy Uplink Offline. Missing API Key." });
+
+    try {
+        const response = await axios.get('https://api.hevyapp.com/v1/routines', {
+            headers: { 'hevy-api-token': HEVY_API_KEY }
+        });
+        res.json(response.data);
+    } catch (error) {
+        console.error("Hevy Routines Error:", error.message);
+        res.status(500).send({ error: "Could not fetch Battle Plans." });
+    }
+});
+
+// 2. GET WORKOUT HISTORY (För framtida analys/Weakness Auditor)
+app.get('/api/hevy/workouts', async (req, res) => {
+    if (!HEVY_API_KEY) return res.status(500).send({ error: "Hevy Uplink Offline. Missing API Key." });
+    
+    // Hämta de senaste 10 passen som default
+    const page = req.query.page || 1;
+    const pageSize = req.query.pageSize || 10;
+
+    try {
+        const response = await axios.get(`https://api.hevyapp.com/v1/workouts?page=${page}&pageSize=${pageSize}`, {
+            headers: { 'hevy-api-token': HEVY_API_KEY }
+        });
+        res.json(response.data);
+    } catch (error) {
+        console.error("Hevy History Error:", error.message);
+        res.status(500).send({ error: "Could not analyze past battles." });
+    }
+});
+
 app.listen(PORT, () => {
     console.log(`🏰 The Sentry Tower (Proxy) is active on port ${PORT}`);
     console.log(`🔒 Security Level: ${SERVER_API_KEY ? 'MAXIMUM (Server Key Active)' : 'STANDARD (Client Key Pass-through)'}`);
+    console.log(`🏋️ Hevy Integration: ${HEVY_API_KEY ? 'ONLINE' : 'OFFLINE (Key Missing)'}`);
 });

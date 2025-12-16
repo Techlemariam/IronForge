@@ -75,6 +75,19 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({ unlockedIds, onClose, m
       return id.replace('ex_', '').replace(/_/g, ' '); 
   };
 
+  const formatDate = (dateString: string) => {
+      try {
+          return new Date(dateString).toLocaleDateString(undefined, { 
+              weekday: 'short', 
+              year: 'numeric', 
+              month: 'short', 
+              day: 'numeric' 
+          });
+      } catch (e) {
+          return dateString;
+      }
+  };
+
   // --- WOW THEME CONSTANTS ---
   const WOW_GOLD = "text-[#FFD100]";
   const WOW_GREEN = "text-[#1eff00]";
@@ -244,7 +257,9 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({ unlockedIds, onClose, m
                                         <div className="bg-[#1a1a1a] px-4 py-2 border-b border-zinc-800 flex justify-between items-center">
                                             <div className="flex items-center gap-2">
                                                 <Calendar className="w-3 h-3 text-zinc-500" />
-                                                <span className="text-xs font-bold font-sans text-zinc-300">{date}</span>
+                                                <span className="text-xs font-bold font-sans text-zinc-300">
+                                                    {formatDate(date)}
+                                                </span>
                                             </div>
                                             <span className="text-[10px] font-mono text-zinc-600 uppercase">
                                                 Complete
@@ -252,12 +267,12 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({ unlockedIds, onClose, m
                                         </div>
                                         <div className="p-4 space-y-2">
                                             {logs.map((log, idx) => (
-                                                <div key={idx} className="flex justify-between items-center text-sm">
+                                                <div key={idx} className="flex justify-between items-center text-sm border-b border-zinc-800/50 pb-2 last:border-0 last:pb-0">
                                                     <span className={`font-serif capitalize ${log.isEpic ? 'text-rarity-epic font-bold' : 'text-zinc-400'}`}>
                                                         {getExerciseName(log.exerciseId)}
                                                     </span>
                                                     <div className="flex items-center gap-3">
-                                                        {log.isEpic && <Skull className="w-3 h-3 text-rarity-epic" />}
+                                                        {log.isEpic && <Skull className="w-3 h-3 text-rarity-epic animate-pulse" />}
                                                         <span className="font-mono font-bold text-zinc-200">
                                                             {log.e1rm}kg <span className="text-[9px] text-zinc-600 font-normal">e1RM</span>
                                                         </span>

@@ -115,18 +115,24 @@ const Quest_Log: React.FC<QuestLogProps> = ({ session, history = [], onComplete,
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#050505] pb-24 font-serif">
+    <div className="flex flex-col h-full w-full bg-[#050505] font-serif overflow-y-auto overflow-x-hidden relative scroll-smooth">
       
       {/* Header / Dungeon Name */}
-      <div className="sticky top-0 z-50 bg-[#0a0a0a]/95 backdrop-blur-md border-b border-[#46321d] p-4 flex justify-between items-center shadow-2xl">
+      <div className="sticky top-0 z-40 bg-[#0a0a0a]/95 backdrop-blur-md border-b border-[#46321d] p-4 flex justify-between items-center shadow-lg">
           <div>
               <h1 className="text-xl font-bold text-[#c79c6e] uppercase tracking-widest">{session.name}</h1>
               <span className="text-[10px] text-zinc-500 font-mono uppercase tracking-wider">{session.zoneName || 'The Iron Mines'}</span>
           </div>
-          <button onClick={onAbort} className="text-zinc-600 hover:text-red-500 font-bold text-xs uppercase">Abandon</button>
+          <button 
+            type="button"
+            onClick={onAbort} 
+            className="text-zinc-600 hover:text-red-500 font-bold text-xs uppercase active:scale-95 transition-transform p-2 border border-transparent hover:border-red-900/30 rounded"
+          >
+            Abandon
+          </button>
       </div>
 
-      <div className="p-4 space-y-12">
+      <div className="p-4 space-y-8 pb-32">
         {exercises.map((ex, index) => {
             const isActive = index === activeExIndex;
             const isCompleted = index < activeExIndex;
