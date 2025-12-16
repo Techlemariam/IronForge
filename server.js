@@ -170,6 +170,26 @@ app.get('/api/hevy/workouts', async (req, res) => {
     }
 });
 
+// POST: Spara avslutat pass till Hevy
+app.post('/api/hevy/workout', async (req, res) => {
+    if (!HEVY_API_KEY) return res.status(500).send({ error: "Hevy Uplink Offline." });
+
+    const workoutData = req.body; // Måste vara formaterat enligt Hevy docs
+
+    try {
+        const response = await axios.post('https://api.hevyapp.com/v1/workouts', workoutData, {
+            headers: { 
+                'hevy-api-token': HEVY_API_KEY,
+                'Content-Type': 'application/json' 
+            }
+        });
+        res.json(response.data);
+    } catch (error) {
+        console.error("Hevy Save Error:", error.response?.data || error.message);
+        res.status(500).send({ error: "Failed to save quest to Hevy Archive." });
+    }
+});
+
 app.listen(PORT, () => {
     console.log(`🏰 The Sentry Tower (Proxy) is active on port ${PORT}`);
     console.log(`🔒 Security Level: ${SERVER_API_KEY ? 'MAXIMUM (Server Key Active)' : 'STANDARD (Client Key Pass-through)'}`);
