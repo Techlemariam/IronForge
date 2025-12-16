@@ -1,8 +1,7 @@
-
 import axios from 'axios';
 import { Exercise } from '../types/ironforge';
 
-const API_BASE_URL = 'http://localhost:3001/api';
+const API_BASE_URL = '/api';
 
 // This is a PURE data transformation function. No API calls.
 // It maps our internal Quest format to the format Hevy's API expects.
@@ -54,5 +53,23 @@ export const saveQuestToHevy = async (questTitle: string, exercises: Exercise[])
         // It's better to return a structured error
         const errorMessage = error.response?.data?.error || error.message;
         return { success: false, data: errorMessage };
+    }
+};
+
+/**
+ * Fetches the user's routines from the Hevy API via our proxy.
+ */
+export const getHevyRoutines = async () => {
+    try {
+        const response = await axios.get(`${API_BASE_URL}/hevy/routines`, {
+            params: {
+                page: 1,
+                pageSize: 10 // FIX: Corrected pageSize to be within API limits
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Failed to fetch Hevy routines:", error);
+        throw error; // Re-throw to be caught by the UI component
     }
 };

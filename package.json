@@ -8,7 +8,8 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "server": "node server.js",
-    "start": "concurrently \"npm run server\" \"npm run dev\""
+    "start": "concurrently \"npm run server\" \"npm run dev\"",
+    "start2": "HEVY_API_KEY='643d13fc-7935-450c-b228-aa98cecc7973' concurrently \"npm run server\" \" npm run dev \""
   },
   "dependencies": {
     "@google/genai": "^1.33.0",
