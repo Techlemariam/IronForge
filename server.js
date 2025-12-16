@@ -1,3 +1,4 @@
+
 import express from 'express';
 import cors from 'cors';
 import axios from 'axios';
@@ -85,13 +86,27 @@ app.get('/api/hevy/workouts', async (req, res) => {
     }
 });
 
+// POST: Spara avslutat pass till Hevy
 app.post('/api/hevy/workout', async (req, res) => {
     if (!HEVY_API_KEY) return res.status(500).send({ error: "Hevy Uplink Offline." });
+
+    console.log("Receiving workout data...");
+    const payload = req.body;
+
     try {
-        const response = await axios.post('https://api.hevyapp.com/v1/workouts', req.body, { headers: { 'api-key': HEVY_API_KEY, 'Content-Type': 'application/json' } });
+        // Hevy API förväntar sig data i formatet { "workout": { ... } }
+        const response = await axios.post('https://api.hevyapp.com/v1/workouts', payload, {
+            headers: { 
+                'hevy-api-token': HEVY_API_KEY,
+                'Content-Type': 'application/json' 
+            }
+        });
+        console.log("Workout saved successfully to Hevy!");
         res.json(response.data);
     } catch (error) {
-        res.status(error.response?.status || 500).send({ error: "Failed to save quest to Hevy Archive.", details: error.response?.data });
+        console.error("Hevy Save Error:", error.response?.data || error.message);
+        // Skicka tillbaka felet till frontend så vi kan visa det
+        res.status(500).send({ error: "Failed to save to Archive.", details: error.response?.data });
     }
 });
 

@@ -1,4 +1,4 @@
-'''
+
 export type Rarity = 'poor' | 'common' | 'uncommon' | 'rare' | 'epic' | 'legendary';
 
 export enum ExerciseLogic {
@@ -6,25 +6,22 @@ export enum ExerciseLogic {
   TM_PERCENT = '531_tm_percent',
 }
 
-export interface Set {
+export interface WorkoutSet {
   id: string;
-  reps: number | string;
-  completedReps?: number;
-  weight?: number;
   completed: boolean;
-  rarity?: Rarity;
-  e1rm?: number;
+  weight?: number;
   targetReps: number;
   targetRPE: number;
-  isPrZone?: boolean;
+  completedReps?: number;
+  rarity?: Rarity;
+  e1rm?: number;
+  isPr?: boolean;
 }
 
 export interface Exercise {
   id: string;
   name: string;
-  type: 'strength';
-  sets: Set[];
-  completed: boolean;
-  logic?: ExerciseLogic;
+  hevyId: string;
+  sets: WorkoutSet[];
 }
-''
+

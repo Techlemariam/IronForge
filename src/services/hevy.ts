@@ -1,70 +1,56 @@
+
 import axios from 'axios';
-import { Exercise } from '../types/ironforge';
 
-const API_BASE_URL = '/api';
-
-// This is a PURE data transformation function. No API calls.
-// It maps our internal Quest format to the format Hevy's API expects.
-const transformToHevyPayload = (questTitle: string, exercises: Exercise[]) => {
-    const hevyExercises = exercises.map(ex => ({
-        exercise_template_id: ex.hevyId, // Correctly use the string ID
-        sets: ex.sets.map((set, i) => ({
-            type: "normal",
-            weight_kg: set.weight || 0,
-            reps: set.completedReps || 0,
-            index: i
-        }))
-    }));
-
-    return {
-        workout: {
-            title: questTitle,
-            start_time: new Date(Date.now() - 3600 * 1000).toISOString(), // Placeholder: 1h ago
-            end_time: new Date().toISOString(),
-            exercises: hevyExercises
-        }
-    };
+// --- Dynamic Configuration ---
+// These values are now fetched from local storage, set via the ConfigModal.
+const getApiKey = () => localStorage.getItem('hevy_api_key');
+const getProxyUrl = () => {
+    let url = localStorage.getItem('hevy_proxy_url');
+    // Ensure the proxy URL doesn't end with a slash
+    if (url && url.endsWith('/')) {
+        url = url.slice(0, -1);
+    }
+    return url;
 }
 
+// --- Axios Instance with Dynamic Headers ---
+// An interceptor is used to dynamically insert the API key into every request.
+const api = axios.create();
 
-/**
- * Saves a completed quest to the Hevy Archive via our server.
- */
-export const saveQuestToHevy = async (questTitle: string, exercises: Exercise[]): Promise<{ success: boolean; data?: any }> => {
-    try {
-        // !!! THE FIX !!!
-        // Corrected the typo from transformToHehyPayload to transformToHevyPayload
-        const payload = transformToHevyPayload(questTitle, exercises);
+api.interceptors.request.use(config => {
+    const proxyUrl = getProxyUrl();
+    const apiKey = getApiKey();
 
-        console.log("Engraving Quest to Hevy Archive...", payload);
-
-        const response = await axios.post(`${API_BASE_URL}/hevy/workout`, payload);
-        
-        console.log("Hevy Archive Response:", response.data);
-        return { success: true, data: response.data };
-
-    } catch (error) {
-        console.error("Failed to engrave quest:", error);
-        const errorMessage = error.response?.data?.error || error.message;
-        return { success: false, data: errorMessage };
+    if (!proxyUrl || !apiKey) {
+        return Promise.reject(new Error('API Key or Proxy URL is not configured.'));
     }
-};
+
+    // The full Hevy API URL is constructed by combining the proxy and the target path
+    config.baseURL = `${proxyUrl}/https://api.hevyapp.com/v1/`;
+    config.headers['x-api-key'] = apiKey;
+    config.headers['Content-Type'] = 'application/json';
+    
+    // Remove the proxy part from the request URL if it's accidentally included
+    if (config.url.startsWith(proxyUrl)) {
+        config.url = config.url.substring(proxyUrl.length);
+    }
+
+    return config;
+});
 
 /**
- * Fetches the user's routines from the Hevy API via our proxy.
+ * Fetches the user's routines from the Hevy API.
  */
 export const getHevyRoutines = async () => {
     try {
-        const response = await axios.get(`${API_BASE_URL}/hevy/routines`, {
-            params: {
-                page: 1,
-                pageSize: 10
-            }
+        // The request is now just the path, the base URL and headers are handled by the interceptor
+        const response = await api.get('/routines', {
+            params: { page: 1, pageSize: 20 } // Increased page size
         });
         return response.data;
     } catch (error) {
-        console.error("Failed to fetch Hevy routines:", error);
-        throw error; // Re-throw to be caught by the UI component
+        console.error("Failed to fetch Hevy routines:", error.message);
+        throw error;
     }
 };
 
@@ -73,10 +59,24 @@ export const getHevyRoutines = async () => {
  */
 export const getHevyExerciseTemplates = async () => {
     try {
-        const response = await axios.get(`${API_BASE_URL}/hevy/exercise-templates`);
+        const response = await api.get('/exercise_templates');
         return response.data;
     } catch (error) {
-        console.error("Failed to fetch Hevy Exercise Codex:", error);
+        console.error("Failed to fetch Hevy Exercise Codex:", error.message);
+        throw error;
+    }
+};
+
+/**
+ * Saves a workout to the Hevy API.
+ * @param payload The workout data formatted for Hevy's API.
+ */
+export const saveWorkoutToHevy = async (payload: any) => {
+    try {
+        const response = await api.post('/workouts', payload);
+        return response.data;
+    } catch (error) {
+        console.error("Failed to save workout to Hevy:", error.response?.data || error.message);
         throw error;
     }
 };

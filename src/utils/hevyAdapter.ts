@@ -32,3 +32,39 @@ export const mapHevyToQuest = (routine: HevyRoutine, exerciseNameMap: Map<string
     };
   });
 };
+
+// src/utils/hevyAdapter.ts - TILLÄGG
+
+// Hjälpfunktion för att bygga payloaden
+export const mapQuestToHevyPayload = (
+    exercises: Exercise[], 
+    title: string, 
+    startTime: Date, 
+    endTime: Date
+) => {
+    return {
+        workout: {
+            title: title,
+            start_time: startTime.toISOString(),
+            end_time: endTime.toISOString(),
+            is_private: false, // Eller true om du vill
+            comments: "Logged via IronForge Architect. #IronForge",
+            exercises: exercises.map((ex, index) => ({
+                exercise_template_id: ex.hevyId, // Kritiskt: Vi måste ha sparat detta ID från GET-anropet!
+                superset_id: null,
+                notes: "",
+                sets: ex.sets
+                    .filter(set => set.loggedWeight && set.loggedReps) // Spara bara loggade sets
+                    .map((set, setIndex) => ({
+                        type: "normal", // Kan utökas med logik för 'warmup' etc.
+                        weight_kg: set.loggedWeight,
+                        reps: set.loggedReps,
+                        rpe: set.loggedRPE,
+                        distance_meters: null,
+                        duration_seconds: null,
+                        index: setIndex
+                    }))
+            })).filter(ex => ex.sets.length > 0) // Ta bort övningar där inga set loggats
+        }
+    };
+};
