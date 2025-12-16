@@ -17,94 +17,85 @@ const SERVER_API_KEY = process.env.INTERVALS_API_KEY;
 const SERVER_ATHLETE_ID = process.env.INTERVALS_ATHLETE_ID;
 const HEVY_API_KEY = process.env.HEVY_API_KEY;
 
-const INTERVALS_BASE_URL = 'https://intervals.icu/api/v1';
+// --- HEVY ENDPOINTS (The Armory) ---
 
-// Helper to construct Auth Header
-const getAuthHeader = (clientKey) => {
-    const key = SERVER_API_KEY || clientKey;
-    if (!key) return null;
-    return `Basic ${Buffer.from('API_KEY:' + key).toString('base64')}`;
-};
+// GET ALL EXERCISE TEMPLATES (The Complete Codex)
+app.get('/api/hevy/exercise-templates', async (req, res) => {
+    if (!HEVY_API_KEY) return res.status(500).send({ error: "Hevy Uplink Offline. Missing API Key." });
 
-// --- PROXY ENDPOINTS ---
+    try {
+        console.log("Assembling the Complete Exercise Codex...");
+        const firstPageResponse = await axios.get('https://api.hevyapp.com/v1/exercise_templates', {
+            headers: { 'api-key': HEVY_API_KEY },
+            params: { pageSize: 100, page: 1 } 
+        });
 
-// ... (Intervals.icu endpoints remain unchanged) ...
+        let allTemplates = firstPageResponse.data.exercise_templates;
+        const pageCount = firstPageResponse.data.page_count;
 
-// ---------------------------------------------------------
-// HEVY ENDPOINTS (The Armory)
-// ---------------------------------------------------------
+        if (pageCount > 1) {
+            const pagePromises = [];
+            for (let i = 2; i <= pageCount; i++) {
+                pagePromises.push(
+                    axios.get('https://api.hevyapp.com/v1/exercise_templates', {
+                        headers: { 'api-key': HEVY_API_KEY },
+                        params: { pageSize: 100, page: i }
+                    })
+                );
+            }
+            const subsequentPageResponses = await Promise.all(pagePromises);
+            subsequentPageResponses.forEach(response => {
+                allTemplates = allTemplates.concat(response.data.exercise_templates);
+            });
+        }
 
-// 1. GET ROUTINES
+        console.log(`Codex Assembled. Total Exercises: ${allTemplates.length}`);
+        res.json({ exercise_templates: allTemplates });
+
+    } catch (error) {
+        console.error("Hevy Codex Assembly Error:", error.response?.data || error.message);
+        res.status(error.response?.status || 500).send({ 
+            error: "Could not assemble the Exercise Codex.",
+            details: error.response?.data
+        });
+    }
+});
+
+
+// Other endpoints...
 app.get('/api/hevy/routines', async (req, res) => {
     if (!HEVY_API_KEY) return res.status(500).send({ error: "Hevy Uplink Offline. Missing API Key." });
-
     try {
-        // Manually construct query string to prevent errors
-        const params = new URLSearchParams({
-            page: req.query.page || 1,
-            pageSize: req.query.pageSize || 50,
-        }).toString();
-
-        const response = await axios.get(`https://api.hevyapp.com/v1/routines?${params}`, {
-            headers: { 'api-key': HEVY_API_KEY },
-        });
+        const params = new URLSearchParams({ page: req.query.page || 1, pageSize: req.query.pageSize || 50 }).toString();
+        const response = await axios.get(`https://api.hevyapp.com/v1/routines?${params}`, { headers: { 'api-key': HEVY_API_KEY } });
         res.json(response.data);
     } catch (error) {
-        console.error("Hevy Routines Error:", error.response?.data || error.message);
-        res.status(error.response?.status || 500).send({ 
-            error: "Could not fetch Battle Plans.",
-            details: error.response?.data
-        });
+        res.status(error.response?.status || 500).send({ error: "Could not fetch Battle Plans.", details: error.response?.data });
     }
 });
 
-// 2. GET WORKOUT HISTORY
 app.get('/api/hevy/workouts', async (req, res) => {
     if (!HEVY_API_KEY) return res.status(500).send({ error: "Hevy Uplink Offline. Missing API Key." });
-    
     try {
-        // Manually construct query string
-        const params = new URLSearchParams({
-            page: req.query.page || 1,
-            pageSize: req.query.pageSize || 10,
-        }).toString();
-
-        const response = await axios.get(`https://api.hevyapp.com/v1/workouts?${params}`, {
-            headers: { 'api-key': HEVY_API_KEY },
-        });
+        const params = new URLSearchParams({ page: req.query.page || 1, pageSize: req.query.pageSize || 10 }).toString();
+        const response = await axios.get(`https://api.hevyapp.com/v1/workouts?${params}`, { headers: { 'api-key': HEVY_API_KEY } });
         res.json(response.data);
     } catch (error) {
-        console.error("Hevy History Error:", error.response?.data || error.message);
-        res.status(error.response?.status || 500).send({ 
-            error: "Could not analyze past battles.",
-            details: error.response?.data 
-        });
+        res.status(error.response?.status || 500).send({ error: "Could not analyze past battles.", details: error.response?.data });
     }
 });
 
-// POST: Save workout to Hevy
 app.post('/api/hevy/workout', async (req, res) => {
     if (!HEVY_API_KEY) return res.status(500).send({ error: "Hevy Uplink Offline." });
-
     try {
-        const response = await axios.post('https://api.hevyapp.com/v1/workouts', req.body, {
-            headers: { 
-                'api-key': HEVY_API_KEY,
-                'Content-Type': 'application/json' 
-            }
-        });
+        const response = await axios.post('https://api.hevyapp.com/v1/workouts', req.body, { headers: { 'api-key': HEVY_API_KEY, 'Content-Type': 'application/json' } });
         res.json(response.data);
     } catch (error) {
-        console.error("Hevy Save Error:", error.response?.data || error.message);
-        res.status(error.response?.status || 500).send({ 
-            error: "Failed to save quest to Hevy Archive.",
-            details: error.response?.data
-        });
+        res.status(error.response?.status || 500).send({ error: "Failed to save quest to Hevy Archive.", details: error.response?.data });
     }
 });
+
 
 app.listen(PORT, () => {
     console.log(`🏰 The Sentry Tower (Proxy) is active on port ${PORT}`);
-    console.log(`🔒 Security Level: ${SERVER_API_KEY ? 'MAXIMUM (Server Key Active)' : 'STANDARD (Client Key Pass-through)'}`);
-    console.log(`🏋️ Hevy Integration: ${HEVY_API_KEY ? 'ONLINE' : 'OFFLINE (Key Missing)'}`);
 });

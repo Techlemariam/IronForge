@@ -25,7 +25,8 @@ const Quest_Log: React.FC<QuestLogProps> = ({ initialData, title, onComplete }) 
     }
   }, [activeExIndex]);
 
-  const completeQuest = async () => {
+  // For saving a COMPLETED quest
+  const completeAndSyncQuest = async () => {
     console.log("Quest Complete. Syncing to Hevy...");
     await saveQuestToHevy(title, exercises);
     
@@ -33,6 +34,12 @@ const Quest_Log: React.FC<QuestLogProps> = ({ initialData, title, onComplete }) 
     fireConfetti();
     setTimeout(onComplete, 1000);
   };
+
+  // For ABANDONING an incomplete quest
+  const abandonQuest = () => {
+      console.log("Quest Abandoned. Returning to selection.");
+      onComplete(); // Go back without saving
+  }
 
   const handleSetLog = (weight: number, reps: number, rpe: number) => {
     const currentEx = exercises[activeExIndex];
@@ -95,8 +102,10 @@ const Quest_Log: React.FC<QuestLogProps> = ({ initialData, title, onComplete }) 
 
   const handleBerserkerFinish = () => {
     setBerserkerActive(false);
-    completeQuest();
+    completeAndSyncQuest();
   };
+  
+  const isQuestFullyCompleted = exercises.every(ex => ex.sets.every(s => s.completed));
 
   return (
     <div className="flex flex-col h-full w-full bg-[#050505] font-serif overflow-y-auto overflow-x-hidden relative scroll-smooth">
@@ -113,10 +122,10 @@ const Quest_Log: React.FC<QuestLogProps> = ({ initialData, title, onComplete }) 
           </div>
           <button 
             type="button"
-            onClick={completeQuest} 
+            onClick={isQuestFullyCompleted ? completeAndSyncQuest : abandonQuest} 
             className="text-zinc-600 hover:text-red-500 font-bold text-xs uppercase active:scale-95 transition-transform p-2 border border-transparent hover:border-red-900/30 rounded"
           >
-            {exercises.every(ex => ex.sets.every(s => s.completed)) ? 'Finish & Sync' : 'Abandon'}
+            {isQuestFullyCompleted ? 'Finish & Sync' : 'Abandon'}
           </button>
         </div>
 

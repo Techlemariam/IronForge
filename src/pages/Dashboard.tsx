@@ -1,18 +1,45 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import RoutineSelector from '../features/training/RoutineSelector';
 import Quest_Log from '../features/training/Quest_Log';
 import { Exercise } from '../types/ironforge';
 import { mapHevyToQuest } from '../utils/hevyAdapter';
-import { HevyRoutine } from '../types/hevy';
+import { HevyRoutine, HevyExerciseTemplate } from '../types/hevy';
+import { getHevyExerciseTemplates } from '../services/hevy';
 
 const Dashboard: React.FC = () => {
   const [activeQuest, setActiveQuest] = useState<Exercise[] | null>(null);
   const [questTitle, setQuestTitle] = useState<string>('');
+  const [exerciseNameMap, setExerciseNameMap] = useState<Map<string, string>>(new Map());
+  const [isCodexLoading, setIsCodexLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const fetchExerciseNames = async () => {
+      try {
+        console.log("Fetching the Exercise Codex...");
+        const templatesData = await getHevyExerciseTemplates();
+        // !!! THE REAL FIX !!!
+        // The Hevy API returns the array in a key that matches the endpoint name.
+        const templates: HevyExerciseTemplate[] = templatesData.exercise_templates || [];
+        const nameMap = new Map<string, string>();
+        templates.forEach(template => {
+          nameMap.set(template.id, template.title);
+        });
+        setExerciseNameMap(nameMap);
+        console.log(`Codex loaded with ${nameMap.size} entries.`);
+      } catch (error) {
+        console.error("Failed to load Exercise Codex:", error);
+      } finally {
+        setIsCodexLoading(false);
+      }
+    };
+
+    fetchExerciseNames();
+  }, []);
 
   const handleRoutineSelect = (routine: HevyRoutine) => {
     console.log("Routine Selected:", routine.title);
-    const dungeonData = mapHevyToQuest(routine);
+    const dungeonData = mapHevyToQuest(routine, exerciseNameMap);
     setQuestTitle(routine.title);
     setActiveQuest(dungeonData);
   };
@@ -32,7 +59,11 @@ const Dashboard: React.FC = () => {
       )}
 
       {!activeQuest ? (
-        <RoutineSelector onSelectRoutine={handleRoutineSelect} />
+        isCodexLoading ? (
+          <p className="text-center text-white">Decoding the ancient codex...</p>
+        ) : (
+          <RoutineSelector onSelectRoutine={handleRoutineSelect} />
+        )
       ) : (
         <Quest_Log 
           initialData={activeQuest} 
