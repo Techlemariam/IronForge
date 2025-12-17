@@ -6,6 +6,7 @@ import { AnalyticsService } from '../services/analytics';
 import { AnalyticsWorkerService } from '../services/analyticsWorker'; // NEW
 import { StorageService } from '../services/storage';
 import TTBCompass from './TTBCompass';
+import { Alert, AlertTitle, AlertDescription } from '../src/components/ui/Alert';
 
 interface UltrathinkDashboardProps {
   wellness: IntervalsWellness | null;
@@ -83,15 +84,13 @@ const UltrathinkDashboard: React.FC<UltrathinkDashboardProps> = ({ wellness, aud
                 </h3>
 
                 {audit.detected ? (
-                    <div className="space-y-3 relative z-10">
-                        <div className="flex items-start gap-3 bg-red-950/20 border border-red-900/50 p-3 rounded">
-                            <AlertTriangle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
-                            <div>
-                                <span className="text-red-400 font-bold text-sm block mb-1">Bottleneck Identified: {audit.type}</span>
-                                <p className="text-zinc-400 text-xs leading-relaxed">{audit.message}</p>
-                            </div>
-                        </div>
-                    </div>
+                    <Alert variant="destructive">
+                        <AlertTriangle className="h-4 w-4" />
+                        <AlertTitle>Bottleneck Identified: {audit.type}</AlertTitle>
+                        <AlertDescription>
+                            {audit.message}
+                        </AlertDescription>
+                    </Alert>
                 ) : (
                     <div className="text-green-500 text-sm flex items-center gap-2">
                         <Activity className="w-4 h-4" />

@@ -14,25 +14,28 @@ const forecastData = [
 
 const PredictivePRWindow: React.FC = () => {
   return (
-    <div className="bg-stone-900 border-2 border-stone-700 p-4 rounded-lg shadow-lg">
-      <h3 className="font-serif text-sm uppercase tracking-widest text-amber-400 mb-4">
-        PREDICTIVE PR WINDOW (7-DAY FORECAST)
-      </h3>
-      <div className="space-y-2">
-        {forecastData.map((item) => (
-          <div key={item.day} className="flex items-center justify-between">
-            <span className="font-mono text-xs text-stone-400 w-8">{item.day}</span>
-            <div className="flex-1 bg-stone-800 rounded-full h-4 mx-2">
-              <div
-                className="bg-green-500 h-4 rounded-full"
-                style={{ width: `${item.barPercentage}%` }}
-              ></div>
+    <div className="bg-[#111] border-2 border-[#46321d] rounded-lg shadow-2xl relative overflow-hidden group p-4">
+      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/dark-matter.png')] opacity-20"></div>
+      <div className="relative z-10">
+        <h3 className="font-serif text-sm uppercase tracking-widest text-warrior-light mb-4">
+          PREDICTIVE PR WINDOW (7-DAY FORECAST)
+        </h3>
+        <div className="space-y-2">
+          {forecastData.map((item) => (
+            <div key={item.day} className="flex items-center justify-between">
+              <span className="font-mono text-xs text-rarity-common w-8">{item.day}</span>
+              <div className="flex-1 bg-forge-800 rounded-full h-4 mx-2">
+                <div
+                  className="bg-rarity-legendary h-4 rounded-full"
+                  style={{ width: `${item.barPercentage}%` }}
+                ></div>
+              </div>
+              <span className="font-mono text-xs text-warrior w-12 text-right">
+                {item.tsb}{item.value} TSB
+              </span>
             </div>
-            <span className="font-mono text-xs text-stone-300 w-12 text-right">
-              {item.tsb}{item.value} TSB
-            </span>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );
