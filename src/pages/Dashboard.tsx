@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import RoutineSelector from '../features/training/RoutineSelector';
 import IronMines from '../features/training/IronMines';
 import QuestCompletion from '../features/training/components/QuestCompletion';
-import { Exercise } from '../types/ironforge';
+import { Exercise, IntervalsWellness, TTBIndices } from '../types/ironforge';
 import { mapHevyToQuest, mapQuestToHevyPayload } from '../utils/hevyAdapter';
 import { HevyRoutine, HevyExerciseTemplate } from '../types/hevy';
 import { getHevyExerciseTemplates, saveWorkoutToHevy, getHevyWorkoutHistory } from '../services/hevy';
@@ -12,6 +12,13 @@ import { LoadingSpinner } from '../components/ui/LoadingSpinner';
 import ForgeCard from '../components/ui/ForgeCard';
 import ForgeButton from '../components/ui/ForgeButton';
 import WeaknessRadar from '../components/game/Weakness_Radar';
+import CharacterSheet from '../../components/CharacterSheet';
+import { User, Settings } from 'lucide-react';
+import { SkillProvider } from '../../context/SkillContext';
+import TTBCompass from '../../components/TTBCompass';
+import PredictivePRWindow from '../../components/TTB_Radar';
+import { CampaignTracker } from '../../components/CampaignTracker';
+
 
 type View = 'citadel' | 'war_room' | 'iron_mines' | 'quest_completion';
 
@@ -23,65 +30,47 @@ const CodexLoader: React.FC = () => (
     </div>
 );
 
-const Citadel: React.FC<{ onEnterMines: () => void; weaknessData: MuscleVolume[] | null; isAnalysisLoading: boolean }> = ({ onEnterMines, weaknessData, isAnalysisLoading }) => {
+const Citadel: React.FC<{
+    onEnterMines: () => void;
+    weaknessData: MuscleVolume[] | null;
+    isAnalysisLoading: boolean;
+    onOpenCharacterSheet: () => void;
+    ttb: TTBIndices | null;
+    wellness: IntervalsWellness | null;
+    level: number;
+}> = ({ onEnterMines, weaknessData, isAnalysisLoading, onOpenCharacterSheet, ttb, wellness, level }) => {
     const [isRadarVisible, setIsRadarVisible] = useState(false);
 
     return (
         <div className="w-full h-full flex flex-col p-4 md:p-8 animate-fade-in">
-            <header className='flex-shrink-0'>
-                <ForgeCard className="flex items-center justify-between">
-                    <div>
-                        <h2 className='font-heading text-lg tracking-widest uppercase'>Iron Acolyte</h2>
-                        <p className='font-mono text-sm text-forge-muted'>Status: Combat Ready</p>
-                    </div>
-                    <div className='w-1/3 h-4 bg-black border border-blood rounded-full'>
-                        <div className="w-3/4 h-full bg-blood" />
-                    </div>
-                </ForgeCard>
+            <header className='absolute top-0 left-0 right-0 p-4 flex justify-between items-center'>
+                <div className="font-serif text-lg text-amber-400 tracking-widest">
+                    IRONFORGE
+                </div>
+                <div className="flex items-center gap-3">
+                    <button onClick={onOpenCharacterSheet} className="text-gray-600 hover:text-white transition-colors">
+                        <User className="w-5 h-5" />
+                    </button>
+                    <button className="text-gray-600 hover:text-white transition-colors">
+                        <Settings className="w-5 h-5" />
+                    </button>
+                </div>
             </header>
 
             <main className='flex-grow flex flex-col items-center justify-center'>
-                <div className='text-center'>
-                    <h1 className="font-heading text-4xl md:text-6xl text-white tracking-widest">IRONFORGE</h1>
-                    <p className="font-mono text-rune">The body is a weapon. Keep it sharp.</p>
-                </div>
-
-                <div className="mt-8 w-full max-w-md">
-                    <button
-                        onClick={() => setIsRadarVisible(true)}
-                        className="w-full p-4 bg-gray-900 border border-gray-700 rounded-lg text-center hover:border-blood transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                        disabled={isAnalysisLoading || !weaknessData}
-                    >
-                        <span className="font-mono text-rune uppercase tracking-widest">Weakness Radar</span>
-                    </button>
-                </div>
-
-                {isRadarVisible && weaknessData && (
-                    <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 animate-fade-in-fast">
-                        <ForgeCard className="max-w-lg w-full m-4">
-                            <WeaknessRadar muscleData={weaknessData} isLoading={isAnalysisLoading} />
-                            <div className="mt-6 flex justify-center">
-                                <ForgeButton
-                                    onClick={() => setIsRadarVisible(false)}
-                                    variant='secondary'
-                                >
-                                    Close
-                                </ForgeButton>
-                            </div>
-                        </ForgeCard>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-6xl mx-auto">
+                    {/* Left Column */}
+                    <div className="md:col-span-1 flex flex-col gap-8">
+                        {ttb && <TTBCompass indices={ttb} />}
+                        <PredictivePRWindow />
                     </div>
-                )}
-            </main>
 
-            <footer className='flex-shrink-0 flex justify-center'>
-                <ForgeButton 
-                    variant="magma"
-                    onClick={onEnterMines} 
-                    className='px-10 py-4 animate-pulse'
-                >
-                    Enter The War Room
-                </ForgeButton>
-            </footer>
+                    {/* Right Column */}
+                    <div className="md:col-span-2">
+                        <CampaignTracker wellness={wellness} ttb={ttb} level={level} />
+                    </div>
+                </div>
+            </main>
         </div>
     );
 }
@@ -95,22 +84,32 @@ const Dashboard: React.FC = () => {
   const [startTime, setStartTime] = useState<Date | null>(null);
   const [weaknessData, setWeaknessData] = useState<MuscleVolume[] | null>(null);
   const [isAnalysisLoading, setIsAnalysisLoading] = useState<boolean>(true);
+  const [isCharacterSheetOpen, setIsCharacterSheetOpen] = useState(false);
+  const [unlockedAchievements, setUnlockedAchievements] = useState<Set<string>>(new Set(['ach_first_quest', 'ach_reach_level_5']));
+  const [wellnessData, setWellnessData] = useState<IntervalsWellness | null>(null);
+  const [ttb, setTtb] = useState<TTBIndices | null>(null);
+  const [level, setLevel] = useState<number>(1);
+
 
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
         setIsCodexLoading(true);
         setIsAnalysisLoading(true);
-        
-        // Fetch exercise templates to map IDs to names
+
         const templatesData = await getHevyExerciseTemplates();
         const nameMap = new Map(templatesData.exercise_templates.map((t: HevyExerciseTemplate) => [t.id, t.title]));
         setExerciseNameMap(nameMap);
-        
-        // Fetch workout history and analyze weaknesses
+
         const historyResponse = await getHevyWorkoutHistory(30);
         const analysisResults = auditWeaknesses(historyResponse.workouts);
         setWeaknessData(analysisResults);
+
+        // Mock data for new components
+        setTtb({ strength: 75, endurance: 60, wellness: 85, lowest: 'endurance' });
+        setWellnessData({ ctl: 20, ramp_rate: 2 });
+        setLevel(4);
+
 
       } catch (error) {
         console.error("Failed to load initial data:", error);
@@ -136,7 +135,7 @@ const Dashboard: React.FC = () => {
 
   const handleSaveWorkout = async (isPrivate: boolean) => {
     if (!activeQuest || !startTime) return;
-    
+
     const payload = mapQuestToHevyPayload(activeQuest, questTitle, startTime, new Date(), isPrivate);
 
     try {
@@ -159,13 +158,13 @@ const Dashboard: React.FC = () => {
     setStartTime(null);
     setCurrentView('citadel');
   };
-  
+
   const renderView = () => {
       if(isCodexLoading) return <CodexLoader />;
 
       switch(currentView) {
           case 'citadel':
-              return <Citadel onEnterMines={() => setCurrentView('war_room')} weaknessData={weaknessData} isAnalysisLoading={isAnalysisLoading} />;
+              return <Citadel onEnterMines={() => setCurrentView('war_room')} weaknessData={weaknessData} isAnalysisLoading={isAnalysisLoading} onOpenCharacterSheet={() => setIsCharacterSheetOpen(true)} ttb={ttb} wellness={wellnessData} level={level} />;
           case 'war_room':
               return <RoutineSelector onSelectRoutine={handleRoutineSelect} />;
           case 'iron_mines':
@@ -173,13 +172,28 @@ const Dashboard: React.FC = () => {
           case 'quest_completion':
               return <QuestCompletion onSave={handleSaveWorkout} onCancel={handleQuestAbort} />;
           default:
-              return <Citadel onEnterMines={() => setCurrentView('war_room')} weaknessData={weaknessData} isAnalysisLoading={isAnalysisLoading} />;
+              return <Citadel onEnterMines={() => setCurrentView('war_room')} weaknessData={weaknessData} isAnalysisLoading={isAnalysisLoading} onOpenCharacterSheet={() => setIsCharacterSheetOpen(true)} ttb={ttb} wellness={wellnessData} level={level} />;
       }
   }
 
   return (
-    <div className="w-full max-w-5xl mx-auto h-screen">
+    <div 
+      className="relative w-full max-w-5xl mx-auto h-screen bg-black overflow-hidden"
+      style={{ backgroundImage: "url('https://www.transparenttextures.com/patterns/hexellence.png')" }}
+    >
+        <div className="absolute top-0 left-0 text-[20rem] font-serif font-black text-white/5 opacity-5 -translate-x-1/4 -translate-y-1/4 select-none pointer-events-none">
+            AL
+        </div>
+        <div className="absolute top-0 right-0 text-[20rem] font-serif font-black text-white/5 opacity-5 translate-x-1/4 -translate-y-1/4 select-none pointer-events-none">
+            HY
+        </div>
+
       {renderView()}
+      {isCharacterSheetOpen && (
+        <SkillProvider unlockedAchievementIds={unlockedAchievements} wellness={wellnessData}>
+          <CharacterSheet unlockedIds={unlockedAchievements} onClose={() => setIsCharacterSheetOpen(false)} />
+        </SkillProvider>
+      )}
     </div>
   );
 };
