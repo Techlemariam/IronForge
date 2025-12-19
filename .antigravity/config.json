@@ -1,0 +1,44 @@
+{
+  "version": "1.0",
+  "project": {
+    "name": "OptimizedProject",
+    "primaryLanguage": "typescript"
+  },
+  "indexing": {
+    "location": "remote",
+    "depth": "auto",
+    "exclude": [
+      "**/node_modules/**",
+      "**/.next/**",
+      "**/dist/**",
+      "**/build/**",
+      "**/coverage/**",
+      "**/.git/**",
+      "**/*.{png,jpg,jpeg,gif,svg,ico,mp4,wmv}",
+      "**/public/assets/**",
+      "**/package-lock.json",
+      "**/yarn.lock"
+    ],
+    "includeOnlySource": true,
+    "maxFileSizeMB": 2
+  },
+  "agent": {
+    "autonomy": "assisted",
+    "maxLocalThreads": 2,
+    "remoteExecution": true,
+    "enableLiveBrowserPreview": false,
+    "artifactGeneration": "on-demand"
+  },
+  "performance": {
+    "lowPowerMode": true,
+    "cacheCleaningIntervalHours": 24,
+    "ui": {
+      "animations": false,
+      "reduceMotion": true
+    }
+  },
+  "errorHandling": {
+    "autoRetryOnNetworkFail": true,
+    "logLevel": "error"
+  }
+}

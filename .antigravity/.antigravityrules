@@ -1,0 +1,36 @@
+# 🛠️ Systemregler & Arkitektoniska Guardrails
+
+## 1. Kodkvalitet & Senioritet
+- **Produktionsklarhet:** Leverera aldrig platshållare, mock-data eller "TODO"-kommentarer. All kod ska vara redo för deployment.
+- **Edge Cases:** Identifiera och hantera nätverksfel, tomma tillstånd (empty states) och ogiltig input proaktivt.
+- **Ingen "Yapping":** Undvik långa förklaringar av grundläggande koncept. Gå direkt på den tekniska lösningen och arkitektoniska beslut.
+
+## 2. Next.js & TypeScript Standard
+- **App Router:** Använd Next.js App Router som standard. Prioritera Server Components (RSC) för datahämtning.
+- **Client Components:** Använd endast 'use client' för interaktivitet eller när React hooks krävs. Flytta dessa så långt ner i komponentträdet som möjligt.
+- **Strikt Typing:** Använd aldrig `any`. Definiera exakta interfaces. Använd `satisfies` för bättre typ-inferens där lämpligt.
+- **Zod-validering:** All extern data (API-anrop, formulär, miljövariabler) SKA valideras med Zod-scheman.
+
+## 3. Arkitektur & Mönster
+- **Separation of Concerns:** Håll affärslogik separerad från UI-komponenter. Använd "Service Layer" eller dedikerade "Actions" för komplex logik.
+- **Dependency Injection:** Designa kod för testbarhet. Undvik hårdkodade globala beroenden.
+- **Pragmatisk Clean Architecture:** Följ principerna men undvik överabstraktion som ökar kognitiv belastning.
+
+## 4. Databas & State (PostgreSQL + Prisma/Drizzle)
+- **Typ-synkronisering:** Utgå alltid från databasschemat som "Source of Truth".
+- **Prestanda:** Minimera antalet DB-anrop. Använd joins istället för multipla queries där det är effektivare.
+- **Säkerhet:** SQL-injektion ska vara omöjligt genom användning av ORM eller parametriserade queries.
+
+## 5. Felhantering (The "Parent-Proof" Standard)
+- **Robusthet:** Eftersom min tid är begränsad får koden inte kräva manuell debugging av triviala fel.
+- **Error Boundaries:** Implementera felhantering på komponentnivå.
+- **Loggning:** Inkludera strukturerad loggning (`try/catch` med kontextuell info) som underlättar asynkron felsökning.
+
+## 6. Testning & Verifiering
+- **Test-First:** Vid buggfixar, generera först ett misslyckat test (Vitest eller Playwright).
+- **Automatisering:** Skriv tester som kan köras autonomt i Antigravitys terminal/browser-miljö.
+
+## 7. Kommunikation & Workflow
+- **Beslutslogik:** Vid arkitektoniska val, presentera kort för- och nackdelar (Trade-offs).
+- **Artifacts:** Använd Artifacts för större kodblock, arkitekturdiagram (Mermaid) och implementeringsplaner.
+- **Iterativ utveckling:** Bryt ner stora uppgifter i mindre, verifierbara steg som kan godkännas ett i taget.
