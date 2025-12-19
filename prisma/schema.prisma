@@ -1,0 +1,156 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String   @id @default(cuid())
+  heroName          String?
+  email             String?  @unique
+  gold              Int      @default(0)
+  level             Int      @default(1)
+  totalExperience   Int      @default(0)
+  
+  // Integrations / Settings
+  intervalsApiKey    String?
+  intervalsAthleteId String?
+  hevyApiKey         String?
+  prioritizeHyperPro Boolean @default(false)
+  
+  // Relations
+  exerciseLogs      ExerciseLog[]
+  meditationLogs    MeditationLog[]
+  grimoireEntries   GrimoireEntry[]
+  unlockedMonsters  UnlockedMonster[]
+  skills            UserSkill[]
+  achievements      UserAchievement[]
+  equipment         UserEquipment[]
+  pvpProfile        PvPProfile?
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model ExerciseLog {
+  id          Int      @id @default(autoincrement())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  date        DateTime @default(now())
+  exerciseId  String
+  e1rm        Float
+  rpe         Float
+  isEpic      Boolean  @default(false)
+  
+  @@index([userId, date])
+}
+
+model MeditationLog {
+  id              Int      @id @default(autoincrement())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id])
+  date            DateTime @default(now())
+  durationMinutes Int
+  source          String   // e.g., "Headspace", "Calm"
+  
+  @@index([userId, date])
+}
+
+model GrimoireEntry {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  date        DateTime @default(now())
+  type        String   // ACHIEVEMENT, PR, LEVEL_UP, etc.
+  title       String
+  description String?
+  rarity      String   @default("common")
+  metadata    Json?
+  
+  @@index([userId, date])
+}
+
+model UnlockedMonster {
+  userId     String
+  monsterId  String
+  unlockedAt DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id])
+  
+  @@id([userId, monsterId])
+}
+
+model UserSkill {
+  userId    String
+  skillId   String
+  status    String   @default("UNLOCKED") // UNLOCKED, MASTERED
+  user      User     @relation(fields: [userId], references: [id])
+  
+  @@id([userId, skillId])
+}
+
+model UserAchievement {
+  userId        String
+  achievementId String
+  unlockedAt    DateTime @default(now())
+  user          User     @relation(fields: [userId], references: [id])
+  
+  @@id([userId, achievementId])
+}
+
+model UserEquipment {
+  userId      String
+  equipmentId String
+  isOwned     Boolean  @default(true)
+  user        User     @relation(fields: [userId], references: [id])
+  
+  @@id([userId, equipmentId])
+}
+
+model RaidBoss {
+  id          String   @id
+  name        String
+  totalHp     BigInt
+  currentHp   BigInt
+  image       String?
+  description String?
+  rewards     String[]
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+}
+
+
+model ChatMessage {
+  id        String   @id @default(uuid())
+  userName  String
+  message   String
+  timestamp DateTime @default(now())
+  type      String   @default("CHAT") // CHAT, LOG
+}
+
+// --- IRON COLOSSEUM (PvP) ---
+
+model PvPProfile {
+  userId             String   @id
+  user               User     @relation(fields: [userId], references: [id])
+  rankScore          Int      @default(1000) // MMR / Elo, starts at 1000
+  wins               Int      @default(0)
+  losses             Int      @default(0)
+  totalDamageDealt   BigInt   @default(0)
+  highestWilksScore  Float    @default(0)
+  season             Int      @default(1)
+  
+  updatedAt          DateTime @updatedAt
+}
+
+model BattleLog {
+  id          String   @id @default(cuid())
+  attackerId  String
+  defenderId  String
+  winnerId    String
+  timestamp   DateTime @default(now())
+  battleType  String   @default("DUEL") // DUEL, BOSS_RAID
+  logData     Json?    // e.g. { attackerWilks: 400, defenderWilks: 380, lift: "Squat" }
+}
