@@ -7,7 +7,7 @@ interface ForgeCardProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const ForgeCard: React.FC<ForgeCardProps> = ({ children, className, ...props }) => {
   const cardClasses = twMerge(
-    'bg-obsidian border border-forge-border rounded-lg p-4 md:p-6 shadow-lg',
+    'bg-forge-900/60 backdrop-blur-md border border-forge-border rounded-lg p-4 md:p-6 shadow-xl hover:border-forge-border/80 transition-colors duration-300',
     className
   );
 

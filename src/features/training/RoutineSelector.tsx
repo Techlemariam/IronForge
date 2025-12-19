@@ -17,41 +17,42 @@ const MissionBriefing: React.FC<{ routine: HevyRoutine; onInitiate: (routine: He
       className="fixed inset-0 bg-black/50 z-40 flex items-center justify-center p-4"
       onClick={onCancel}
     >
-      <ForgeCard
-          as={motion.div} // Use motion component
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: 20, opacity: 0 }}
-          className="w-full max-w-lg shadow-2xl border-magma/50"
-          onClick={(e: React.MouseEvent) => e.stopPropagation()} // Prevent closing when clicking inside
+      <motion.div
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        exit={{ y: 20, opacity: 0 }}
+        className="w-full max-w-lg"
+        onClick={(e: React.MouseEvent) => e.stopPropagation()}
       >
-        <h2 className="font-heading text-2xl text-magma tracking-widest uppercase mb-2">Mission Briefing</h2>
-        <p className="font-mono text-lg text-white mb-6 border-b-2 border-forge-border pb-4">{routine.title}</p>
-        
-        <div className="space-y-4">
+        <ForgeCard className="shadow-2xl border-magma/50">
+          <h2 className="font-heading text-2xl text-magma tracking-widest uppercase mb-2">Mission Briefing</h2>
+          <p className="font-mono text-lg text-white mb-6 border-b-2 border-forge-border pb-4">{routine.title}</p>
+
+          <div className="space-y-4">
             <div>
-                <h3 className="font-body text-sm uppercase tracking-wider text-forge-muted mb-2">Targeted Encounters</h3>
-                <ul className="list-disc list-inside font-mono text-white">
-                    {routine.exercises.map((ex, index) => <li key={`${ex.id}-${index}`}>{ex.name}</li>)}
-                </ul>
+              <h3 className="font-body text-sm uppercase tracking-wider text-forge-muted mb-2">Targeted Encounters</h3>
+              <ul className="list-disc list-inside font-mono text-white">
+                {routine.exercises?.map((ex, index) => <li key={`${ex.exercise_template.id}-${index}`}>{ex.exercise_template.title}</li>)}
+              </ul>
             </div>
             {routine.notes && (
-                 <div>
-                    <h3 className="font-body text-sm uppercase tracking-wider text-forge-muted mb-2">Intel</h3>
-                    <p className='font-mono text-sm text-white/80 italic'>"{routine.notes}"</p>
-                </div>
+              <div>
+                <h3 className="font-body text-sm uppercase tracking-wider text-forge-muted mb-2">Intel</h3>
+                <p className='font-mono text-sm text-white/80 italic'>"{routine.notes}"</p>
+              </div>
             )}
-        </div>
-        
-        <div className="mt-8 flex justify-end space-x-4">
+          </div>
+
+          <div className="mt-8 flex justify-end space-x-4">
             <ForgeButton variant="default" onClick={onCancel}>
-                Cancel
+              Cancel
             </ForgeButton>
             <ForgeButton variant="magma" onClick={() => onInitiate(routine)}>
-                Initiate Protocol
+              Initiate Protocol
             </ForgeButton>
-        </div>
-      </ForgeCard>
+          </div>
+        </ForgeCard>
+      </motion.div>
     </motion.div>
   )
 }
@@ -84,11 +85,11 @@ const RoutineSelector: React.FC<{ onSelectRoutine: (routine: HevyRoutine) => voi
   return (
     <>
       <AnimatePresence>
-        {selected && 
-          <MissionBriefing 
-            routine={selected} 
-            onCancel={() => setSelected(null)} 
-            onInitiate={onSelectRoutine} 
+        {selected &&
+          <MissionBriefing
+            routine={selected}
+            onCancel={() => setSelected(null)}
+            onInitiate={onSelectRoutine}
           />}
       </AnimatePresence>
 
@@ -96,39 +97,46 @@ const RoutineSelector: React.FC<{ onSelectRoutine: (routine: HevyRoutine) => voi
         <h1 className="font-heading text-2xl md:text-3xl text-white mb-8 tracking-widest uppercase text-center">
           The War Room
         </h1>
-        
-        <motion.div 
+
+        <motion.div
           className="grid gap-4 md:grid-cols-2 lg:grid-cols-3"
           initial="hidden" animate="visible"
-          variants={{ 
+          variants={{
             visible: { transition: { staggerChildren: 0.05 } },
           }}
         >
           {routines.map((routine) => (
-            <ForgeCard
-              as={motion.button} // Use motion component
+            <motion.div
               key={routine.id}
-              onClick={() => setSelected(routine)}
-              className="group relative text-left border-l-4 border-l-magma transition-all duration-300 hover:border-magma hover:shadow-glow-magma transform hover:-translate-y-1"
               variants={{ hidden: { y: 20, opacity: 0 }, visible: { y: 0, opacity: 1 } }}
+              className="w-full"
             >
-              <div>
-                <h3 className="font-heading text-lg text-white group-hover:text-magma mb-2 transition-colors duration-300">
-                  {routine.title}
-                </h3>
-                <div className="font-mono text-xs uppercase tracking-wide text-forge-muted">
-                  {routine.exercises.length} Encounters
-                </div>
-              </div>
-            </ForgeCard>
+              <button
+                className="w-full text-left"
+                onClick={() => setSelected(routine)}
+              >
+                <ForgeCard
+                  className="group relative border-l-4 border-l-magma transition-all duration-300 hover:border-magma hover:shadow-glow-magma transform hover:-translate-y-1"
+                >
+                  <div>
+                    <h3 className="font-heading text-lg text-white group-hover:text-magma mb-2 transition-colors duration-300">
+                      {routine.title}
+                    </h3>
+                    <div className="font-mono text-xs uppercase tracking-wide text-forge-muted">
+                      {routine.exercises?.length || 0} Encounters
+                    </div>
+                  </div>
+                </ForgeCard>
+              </button>
+            </motion.div>
           ))}
         </motion.div>
 
         {routines.length === 0 && !loading && (
-            <ForgeCard className="text-center p-10 font-mono text-forge-muted border-dashed mt-8">
-                <h3 className="text-lg font-heading text-white mb-2">No Missions Found</h3>
-                <p className="text-sm">The War Room is empty. Create routines in Hevy to plan your incursions.</p>
-            </ForgeCard>
+          <ForgeCard className="text-center p-10 font-mono text-forge-muted border-dashed mt-8">
+            <h3 className="text-lg font-heading text-white mb-2">No Missions Found</h3>
+            <p className="text-sm">The War Room is empty. Create routines in Hevy to plan your incursions.</p>
+          </ForgeCard>
         )}
       </div>
     </>

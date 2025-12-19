@@ -1,6 +1,7 @@
 
 import api from './api';
-import { HevyWorkout } from '../types/hevy';
+import axios from 'axios';
+import { HevyWorkout, HevyExerciseTemplate } from '../types/hevy';
 
 /**
  * Fetches the user's routines from the Hevy API via the local proxy.
@@ -21,12 +22,8 @@ export const getHevyRoutines = async (params: { page: number, pageSize: number }
  */
 export const getHevyExerciseTemplates = async () => {
     try {
-        // The backend endpoint is designed to fetch all templates, so no parameters are needed.
         const response = await api.get('/api/hevy/exercise-templates');
-
-        // The backend returns a { exercise_templates: [...] } object.
-        // We will reconstruct a response object that matches the previous structure for component compatibility.
-        const allTemplates = response.data.exercise_templates || [];
+        const allTemplates: HevyExerciseTemplate[] = response.data.exercise_templates || [];
 
         return {
             exercise_templates: allTemplates,
@@ -52,7 +49,7 @@ export const saveWorkoutToHevy = async (payload: any) => {
     } catch (error) {
         console.error("Failed to save workout to Hevy:", error);
         // It's helpful to log the specific error from the API if available
-        if (error.response) {
+        if (axios.isAxiosError(error) && error.response) {
             console.error('Hevy Save Error:', error.response.data);
         }
         throw error;
@@ -78,7 +75,7 @@ export const getHevyWorkoutHistory = async (desiredCount: number = 30): Promise<
     try {
         for (let page = 1; page <= numPagesToFetch; page++) {
             const response = await api.get(`/api/hevy/workouts?page=${page}&pageSize=${pageSize}`);
-            
+
             if (response.status === 200 && response.data.workouts) {
                 allWorkouts.push(...response.data.workouts);
                 // If a page returns fewer items than the page size, it's the last page of results.
@@ -86,8 +83,8 @@ export const getHevyWorkoutHistory = async (desiredCount: number = 30): Promise<
                     break;
                 }
             } else {
-                 // Log a warning instead of throwing an error to make the function more resilient.
-                 console.warn(`Warning: Could not fetch page ${page} of Hevy workout history. Status: ${response.status}`);
+                // Log a warning instead of throwing an error to make the function more resilient.
+                console.warn(`Warning: Could not fetch page ${page} of Hevy workout history. Status: ${response.status}`);
             }
         }
         // Return a flat array of workouts, capped at the desired count.

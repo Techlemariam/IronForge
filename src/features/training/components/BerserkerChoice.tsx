@@ -26,10 +26,10 @@ const BerserkerChoice: React.FC<BerserkerChoiceProps> = ({ onAccept, onDecline }
         </p>
 
         <div className="flex justify-center space-x-4">
-          <ForgeButton onClick={onDecline} variant="secondary" size="lg">
+          <ForgeButton onClick={onDecline} variant="default">
             End Protocol
           </ForgeButton>
-          <ForgeButton onClick={onAccept} variant="blood" size="lg" className="animate-pulse">
+          <ForgeButton onClick={onAccept} variant="magma" className="animate-pulse">
             Unleash Fury
           </ForgeButton>
         </div>

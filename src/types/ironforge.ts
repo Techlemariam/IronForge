@@ -16,6 +16,8 @@ export interface WorkoutSet {
   rarity?: Rarity;
   e1rm?: number;
   isPr?: boolean;
+  type?: string;
+  reps?: number | string;
 }
 
 export interface Exercise {
@@ -23,5 +25,7 @@ export interface Exercise {
   name: string;
   hevyId: string;
   sets: WorkoutSet[];
+  trainingMax?: number;
+  notes?: string;
 }
 

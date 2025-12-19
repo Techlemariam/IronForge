@@ -4,18 +4,21 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview",
-    "server": "node server.js",
-    "start": "concurrently \"npm run server\" \"npm run dev\"",
-    "start2": "HEVY_API_KEY='643d13fc-7935-450c-b228-aa98cecc7973' concurrently \"npm run server\" \" npm run dev \""
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "test": "vitest run",
+    "test:e2e": "cypress run",
+    "test:e2e:open": "cypress open",
+    "lint": "next lint"
   },
   "dependencies": {
     "@google/genai": "^1.33.0",
     "@mediapipe/tasks-vision": "0.10.9",
+    "@prisma/client": "^6.0.0",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.4.2",
+    "@supabase/ssr": "^0.8.0",
     "@supabase/supabase-js": "^2.39.0",
     "@types/canvas-confetti": "^1.9.0",
     "@types/howler": "^2.2.12",
@@ -23,29 +26,30 @@
     "canvas-confetti": "^1.9.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "cors": "^2.8.5",
     "dotenv": "^16.3.1",
-    "express": "^4.18.2",
     "framer-motion": "^12.23.26",
     "howler": "^2.2.4",
     "lucide-react": "^0.561.0",
+    "next": "^16.1.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
-    "react-router-dom": "^7.10.1",
     "reactflow": "^11.10.4",
     "tailwind-merge": "^3.4.0",
-    "three": "^0.182.0"
+    "three": "^0.182.0",
+    "zustand": "^5.0.9"
   },
   "devDependencies": {
     "@types/react": "^19.2.3",
     "@types/react-dom": "^19.2.3",
     "@types/three": "^0.182.0",
-    "@vitejs/plugin-react": "^4.0.0",
     "autoprefixer": "^10.4.14",
-    "concurrently": "^8.2.0",
+    "cypress": "^15.8.1",
     "postcss": "^8.4.27",
     "tailwindcss": "^3.3.3",
     "typescript": "^5.0.2",
-    "vite": "^4.4.5"
+    "vitest": "^4.0.16",
+    "prisma": "^6.0.0",
+    "eslint": "^8.56.0",
+    "eslint-config-next": "14.1.0"
   }
 }

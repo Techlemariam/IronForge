@@ -1,16 +1,32 @@
 
-// src/types/hevy.ts - TILLÄGG
-
 export interface HevySet {
     weight_kg: number;
     reps: number;
-    // ... andra set-detaljer
+    index?: number;
+    type?: string;
+}
+
+export interface HevyExerciseTemplate {
+    id: string;
+    title: string;
+    primary_muscle_group?: string;
+}
+
+export interface HevyRoutine {
+    id: string;
+    title: string;
+    folder_id?: number | null;
+    updated_at?: string;
+    created_at?: string;
+    notes?: string;
+    exercises?: HevyExercise[];
 }
 
 export interface HevyExercise {
     exercise_template_id: string;
-    exercise_template: { title: string; primary_muscle_group: string; }; // Viktigt för analysen!
+    exercise_template: HevyExerciseTemplate;
     sets: HevySet[];
+    notes?: string;
 }
 
 export interface HevyWorkout {

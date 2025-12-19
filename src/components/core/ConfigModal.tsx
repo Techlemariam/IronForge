@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import ForgeCard from '../ui/ForgeCard';
 import ForgeInput from '../ui/ForgeInput';
 import ForgeButton from '../ui/ForgeButton';
+import MigrationTool from '../settings/MigrationTool';
 import { X } from 'lucide-react';
 
 interface ConfigModalProps {
@@ -25,7 +26,7 @@ const ConfigModal: React.FC<ConfigModalProps> = ({ isOpen, onClose }) => {
     localStorage.setItem('hevy_api_key', apiKey);
     // Set a dummy placeholder for the proxy URL to satisfy any legacy code.
     // The actual proxying is now handled by vite.config.ts.
-    localStorage.setItem('hevy_proxy_url', '/api'); 
+    localStorage.setItem('hevy_proxy_url', '/api');
     onClose();
     alert('Configuration saved. The page will now reload to apply changes.');
     window.location.reload();
@@ -41,38 +42,43 @@ const ConfigModal: React.FC<ConfigModalProps> = ({ isOpen, onClose }) => {
           className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4"
           onClick={onClose}
         >
-          <ForgeCard 
-            as={motion.div} 
+          <motion.div
             initial={{ y: -30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -30, opacity: 0 }}
-            className="w-full max-w-md relative border-magma/50 shadow-glow-magma/50"
+            className="w-full max-w-md relative"
             onClick={(e: React.MouseEvent) => e.stopPropagation()}
           >
-            <button onClick={onClose} className="absolute top-3 right-3 text-forge-muted hover:text-white transition-colors">
+            <ForgeCard className="w-full shadow-glow-magma/50 border-magma/50">
+              <button onClick={onClose} className="absolute top-3 right-3 text-forge-muted hover:text-white transition-colors">
                 <X size={20} />
-            </button>
+              </button>
 
-            <h2 className="font-heading text-xl text-magma tracking-widest uppercase mb-4">System Configuration</h2>
-            
-            <div className="space-y-4">
+              <h2 className="font-heading text-xl text-magma tracking-widest uppercase mb-4">System Configuration</h2>
+
+              <div className="space-y-4">
                 <p className='font-mono text-sm text-forge-muted'>
-                    Provide your Hevy API key to establish the data uplink. This information is stored locally on your device.
+                  Provide your Hevy API key to establish the data uplink. This information is stored locally on your device.
                 </p>
                 <ForgeInput
-                    label="Hevy API Key"
-                    value={apiKey}
-                    onChange={e => setApiKey(e.target.value)}
-                    placeholder="Enter your API Key"
+                  label="Hevy API Key"
+                  value={apiKey}
+                  onChange={e => setApiKey(e.target.value)}
+                  placeholder="Enter your API Key"
                 />
-            </div>
 
-            <div className="mt-6 flex justify-end">
-              <ForgeButton variant="magma" onClick={handleSave}>
-                Save & Reload
-              </ForgeButton>
-            </div>
-          </ForgeCard>
+                <div className="border-t border-white/10 my-6 pt-4">
+                  <MigrationTool />
+                </div>
+              </div>
+
+              <div className="mt-6 flex justify-end">
+                <ForgeButton variant="magma" onClick={handleSave}>
+                  Save & Reload
+                </ForgeButton>
+              </div>
+            </ForgeCard>
+          </motion.div>
         </motion.div>
       )}
     </AnimatePresence>
