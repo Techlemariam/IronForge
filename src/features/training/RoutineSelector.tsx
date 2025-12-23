@@ -8,7 +8,7 @@ import ForgeCard from '../../components/ui/ForgeCard'; // <-- INTEGRATED
 import ForgeButton from '../../components/ui/ForgeButton'; // <-- INTEGRATED
 
 // --- Mission Briefing Modal ---
-const MissionBriefing: React.FC<{ routine: HevyRoutine; onInitiate: (routine: HevyRoutine) => void; onCancel: () => void; }> = ({ routine, onInitiate, onCancel }) => {
+const MissionBriefing: React.FC<{ routine: HevyRoutine; exerciseNameMap: Map<string, string>; onInitiate: (routine: HevyRoutine) => void; onCancel: () => void; }> = ({ routine, exerciseNameMap, onInitiate, onCancel }) => {
   return (
     <motion.div
       initial={{ opacity: 0, backdropFilter: 'blur(0px)' }}
@@ -32,13 +32,20 @@ const MissionBriefing: React.FC<{ routine: HevyRoutine; onInitiate: (routine: He
             <div>
               <h3 className="font-body text-sm uppercase tracking-wider text-forge-muted mb-2">Targeted Encounters</h3>
               <ul className="list-disc list-inside font-mono text-white">
-                {routine.exercises?.map((ex, index) => <li key={`${ex.exercise_template.id}-${index}`}>{ex.exercise_template.title}</li>)}
+                {routine.exercises?.map((ex, index) => {
+                  const name = exerciseNameMap.get(ex.exercise_template_id) || ex.exercise_template?.title || 'Unknown Exercise';
+                  return (
+                    <li key={`${ex.exercise_template_id || 'unknown'}-${index}`}>
+                      {name}
+                    </li>
+                  );
+                })}
               </ul>
             </div>
             {routine.notes && (
               <div>
                 <h3 className="font-body text-sm uppercase tracking-wider text-forge-muted mb-2">Intel</h3>
-                <p className='font-mono text-sm text-white/80 italic'>"{routine.notes}"</p>
+                <p className='font-mono text-sm text-white/80 italic'>&quot;{routine.notes}&quot;</p>
               </div>
             )}
           </div>
@@ -58,7 +65,7 @@ const MissionBriefing: React.FC<{ routine: HevyRoutine; onInitiate: (routine: He
 }
 
 // --- Main Component: The War Room ---
-const RoutineSelector: React.FC<{ onSelectRoutine: (routine: HevyRoutine) => void; }> = ({ onSelectRoutine }) => {
+const RoutineSelector: React.FC<{ exerciseNameMap: Map<string, string>; onSelectRoutine: (routine: HevyRoutine) => void; }> = ({ exerciseNameMap, onSelectRoutine }) => {
   const [routines, setRoutines] = useState<HevyRoutine[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -88,6 +95,7 @@ const RoutineSelector: React.FC<{ onSelectRoutine: (routine: HevyRoutine) => voi
         {selected &&
           <MissionBriefing
             routine={selected}
+            exerciseNameMap={exerciseNameMap}
             onCancel={() => setSelected(null)}
             onInitiate={onSelectRoutine}
           />}

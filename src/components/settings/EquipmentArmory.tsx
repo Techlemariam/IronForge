@@ -149,7 +149,7 @@ const EquipmentArmory: React.FC = () => {
 
                 <div className="flex justify-center mt-12">
                     <p className="text-xs font-mono text-forge-muted opacity-50">
-                        ID: {StorageService.db ? 'DB_CONNECTED' : 'DB_OFFLINE'} // v1.2.0
+                        ID: {StorageService.db ? 'DB_CONNECTED' : 'DB_OFFLINE'} {/* v1.2.0 */}
                     </p>
                 </div>
             </div>

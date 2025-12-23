@@ -1,10 +1,11 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { RaidBoss, ChatMessage } from '../../types';
-import { Skull, Swords, Shield, Users, Send, Info, WifiOff } from 'lucide-react';
+import { Skull, Swords, Shield, Users, Send, Info, WifiOff, Zap } from 'lucide-react';
 import { cn } from '../../lib/utils';
-import { getSupabase } from '../../lib/supabase';
+import { createClient } from '@/utils/supabase/client';
 import { RealtimeChannel } from '@supabase/supabase-js';
+import { sendChatAction, attackBossAction, getUserStatsAction } from '@/actions/guild';
 
 interface GuildHallProps {
     onClose: () => void;
@@ -20,12 +21,30 @@ const DEFAULT_BOSS: RaidBoss = {
     rewards: ['Kinetic Shard x50', 'Golem Core', 'Title: Golem Smasher'],
 };
 
+const ATTACK_COST = 5;
+
+interface FloatingText {
+    id: number;
+    text: string;
+    x: number;
+    y: number;
+    color: string;
+}
+
 export const GuildHall: React.FC<GuildHallProps> = ({ onClose }) => {
     const [messages, setMessages] = useState<ChatMessage[]>([]);
     const [input, setInput] = useState('');
     const [boss, setBoss] = useState<RaidBoss>(DEFAULT_BOSS);
     const [isConnected, setIsConnected] = useState(false);
     const [onlineCount, setOnlineCount] = useState(1);
+
+    // Performance Coach State
+    const [kineticEnergy, setKineticEnergy] = useState<number>(0);
+    const [heroName, setHeroName] = useState<string>('Titan');
+
+    // Visual Juice State
+    const [floatingTexts, setFloatingTexts] = useState<FloatingText[]>([]);
+    const [shake, setShake] = useState(false);
 
     // Animation state
     const [hpAnim, setHpAnim] = useState(boss.currentHp);
@@ -37,13 +56,15 @@ export const GuildHall: React.FC<GuildHallProps> = ({ onClose }) => {
         let mounted = true;
 
         const init = async () => {
-            const supabase = await getSupabase();
-            if (!supabase) {
-                console.warn("Guild Hall: No Supabase connection found.");
-                return;
-            }
-
+            const supabase = createClient();
             setIsConnected(true);
+
+            // Fetch User Stats (Ammo)
+            const userStats = await getUserStatsAction();
+            if (userStats && mounted) {
+                setKineticEnergy(userStats.kineticEnergy);
+                setHeroName(userStats.heroName || 'Titan');
+            }
 
             // 1. Fetch Initial Boss State
             const { data: bossData } = await supabase
@@ -53,7 +74,6 @@ export const GuildHall: React.FC<GuildHallProps> = ({ onClose }) => {
                 .single();
 
             if (bossData) {
-                // Map DB fields to Type (if needed, but looks matching)
                 const mappedBoss: RaidBoss = {
                     id: bossData.id,
                     name: bossData.name,
@@ -77,7 +97,14 @@ export const GuildHall: React.FC<GuildHallProps> = ({ onClose }) => {
                 .limit(50);
 
             if (chatData && mounted) {
-                setMessages(chatData.reverse() as ChatMessage[]);
+                const mappedMessages = chatData.map((msg: any) => ({
+                    id: msg.id,
+                    userName: msg.user_name,
+                    message: msg.message,
+                    timestamp: msg.timestamp,
+                    type: msg.type
+                }));
+                setMessages(mappedMessages.reverse());
             }
 
             // 3. Subscribe to Changes
@@ -96,7 +123,15 @@ export const GuildHall: React.FC<GuildHallProps> = ({ onClose }) => {
                     'postgres_changes',
                     { event: 'INSERT', schema: 'public', table: 'chat_messages' },
                     (payload) => {
-                        const newMsg = payload.new as ChatMessage;
+                        const newMsgRaw = payload.new;
+                        const newMsg: ChatMessage = {
+                            id: newMsgRaw.id,
+                            userName: newMsgRaw.user_name,
+                            message: newMsgRaw.message,
+                            timestamp: newMsgRaw.timestamp,
+                            type: newMsgRaw.type
+                        };
+
                         if (mounted) {
                             setMessages(prev => [...prev, newMsg]);
                         }
@@ -104,10 +139,11 @@ export const GuildHall: React.FC<GuildHallProps> = ({ onClose }) => {
                 )
                 .on('presence', { event: 'sync' }, () => {
                     const state = channel.presenceState();
-                    if (mounted) setOnlineCount(Object.keys(state).length + 1); // +1 self? Presence logic varies
+                    if (mounted) setOnlineCount(Object.keys(state).length + 1);
                 })
                 .subscribe();
 
+            await channel.track({ online_at: new Date().toISOString() });
             channelRef.current = channel;
         };
 
@@ -133,57 +169,77 @@ export const GuildHall: React.FC<GuildHallProps> = ({ onClose }) => {
         return () => clearInterval(interval);
     }, [boss.currentHp]);
 
+    // Floating Text Animation Loop
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setFloatingTexts(prev => prev.map(ft => ({ ...ft, y: ft.y - 2 })).filter(ft => ft.y > -50));
+        }, 30);
+        return () => clearInterval(interval);
+    }, []);
+
     const hpPct = (hpAnim / boss.totalHp) * 100;
+
+    const spawnFloatingText = (text: string, color: string = 'white') => {
+        // Random offset
+        const xOffset = Math.random() * 100 - 50;
+        const yOffset = Math.random() * 50 - 25;
+
+        const newText: FloatingText = {
+            id: Date.now() + Math.random(),
+            text,
+            x: xOffset,
+            y: yOffset,
+            color
+        };
+        setFloatingTexts(prev => [...prev, newText]);
+    };
 
     const handleSendMessage = async () => {
         if (!input.trim()) return;
-
-        const user = 'Titan'; // Hardcoded for now, would come from Auth
-        const supabase = await getSupabase();
-
-        // Optimistic Update
-        const tempId = Date.now().toString();
-        // const optimisticMsg: ChatMessage = { id: tempId, user, message: input, timestamp: new Date().toISOString(), type: 'CHAT' };
-        // setMessages(prev => [...prev, optimisticMsg]);
+        const msgToSend = input;
         setInput('');
 
-        if (supabase) {
-            await supabase.from('chat_messages').insert({
-                user_name: user,
-                message: input,
-                type: 'CHAT'
-            });
+        try {
+            await sendChatAction(msgToSend);
+        } catch (e) {
+            console.error("Failed to send message", e);
         }
     };
 
-    const handleAttack = async () => {
+    const handleAttack = async (e: React.MouseEvent) => {
         if (!boss.id) return;
-        const damage = Math.floor(Math.random() * 100) + 50; // Random damage
-        const supabase = await getSupabase();
 
-        // Optimistic UI update handled by subscription mostly, but we can animate a "hit" here if we wanted
+        // 1. Check Energy (Optimistic Check)
+        if (kineticEnergy < ATTACK_COST) {
+            spawnFloatingText("LOW ENERGY!", "#ef4444"); // Red
+            return;
+        }
 
-        if (supabase) {
-            // Check current HP first or use an RPC for atomic decrement? 
-            // For MVP, simple update:
-            const newHp = Math.max(0, boss.currentHp - damage);
+        // 2. Consume Energy Optimistically
+        setKineticEnergy(prev => Math.max(0, prev - ATTACK_COST));
 
-            // Log the attack
-            await supabase.from('chat_messages').insert({
-                user_name: 'System',
-                message: `Titan dealt ${damage} damage to ${boss.name}!`,
-                type: 'LOG'
-            });
+        // 3. Visual Juice
+        setShake(true);
+        setTimeout(() => setShake(false), 200);
 
-            // Update Boss
-            await supabase.from('raid_bosses')
-                .update({ current_hp: newHp })
-                .eq('id', boss.id);
+        // 4. Server Action
+        try {
+            const result = await attackBossAction(boss.id);
+            if (result.damage) {
+                spawnFloatingText(`-${result.damage}`, "#facc15"); // Yellow
+            }
+        } catch (err: any) {
+            console.error("Attack failed", err);
+            // Revert Energy on fail? Or just let it sync next time.
+            spawnFloatingText("MISS!", "#a1a1aa");
         }
     };
 
     return (
-        <div className="h-full bg-forge-900 overflow-hidden flex flex-col font-serif animate-fade-in">
+        <div className={cn(
+            "h-full bg-forge-900 overflow-hidden flex flex-col font-serif animate-fade-in transition-transform duration-75",
+            shake ? "translate-x-1 translate-y-1" : ""
+        )}>
             {/* Header */}
             <div className="bg-black/50 border-b border-forge-border p-6 flex justify-between items-center shrink-0">
                 <div className="flex items-center gap-4">
@@ -197,8 +253,10 @@ export const GuildHall: React.FC<GuildHallProps> = ({ onClose }) => {
                                 {isConnected ? <Users className="w-3 h-3 text-cyan-500" /> : <WifiOff className="w-3 h-3 text-red-500" />}
                                 {isConnected ? `${onlineCount} Online` : 'Offline Mode'}
                             </span>
-                            <span className="w-1 h-1 bg-zinc-700 rounded-full"></span>
-                            <span className="flex items-center gap-1 text-red-500"><Skull className="w-3 h-3" /> Raid Active</span>
+                            <span className="flex items-center gap-1 text-yellow-500">
+                                <Zap className="w-3 h-3 text-yellow-500" /> {kineticEnergy} Energy
+                                <span className="opacity-50 text-[10px] ml-1">(Cost: {ATTACK_COST})</span>
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -214,9 +272,29 @@ export const GuildHall: React.FC<GuildHallProps> = ({ onClose }) => {
                 {/* Main Battle Area */}
                 <div className="flex-1 p-8 flex flex-col items-center justify-center relative overflow-hidden bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-red-900/10 via-forge-900 to-forge-900">
 
+                    {/* Floating Texts Layer */}
+                    <div className="absolute inset-0 pointer-events-none flex items-center justify-center overflow-visible">
+                        {floatingTexts.map(ft => (
+                            <div
+                                key={ft.id}
+                                className="absolute text-4xl font-black animate-float-up"
+                                style={{
+                                    transform: `translate(${ft.x}px, ${ft.y}px)`,
+                                    color: ft.color,
+                                    textShadow: '0 2px 4px rgba(0,0,0,0.8)'
+                                }}
+                            >
+                                {ft.text}
+                            </div>
+                        ))}
+                    </div>
+
                     {/* Boss Visualization */}
                     <div
-                        className="relative group cursor-pointer transition-transform active:scale-95"
+                        className={cn(
+                            "relative group cursor-pointer transition-transform active:scale-95 select-none",
+                            kineticEnergy < ATTACK_COST ? "opacity-50 cursor-not-allowed filter grayscale" : ""
+                        )}
                         onClick={handleAttack}
                     >
                         <div className="text-[12rem] animate-pulse-slow drop-shadow-[0_0_50px_rgba(239,68,68,0.3)] filter grayscale-[0.2] transition-all group-hover:scale-110 group-active:filter-none">
@@ -226,8 +304,15 @@ export const GuildHall: React.FC<GuildHallProps> = ({ onClose }) => {
                             <span className="text-red-500 font-black tracking-[0.2em] uppercase text-sm">{boss.name}</span>
                         </div>
                         {/* Tooltip for Attack */}
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                            <span className="text-4xl font-black text-red-500 text-shadow-neon stroke-black">CLICK TO ATTACK</span>
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none flex flex-col items-center gap-1">
+                            {kineticEnergy >= ATTACK_COST ? (
+                                <>
+                                    <span className="text-4xl font-black text-red-500 text-shadow-neon stroke-black whitespace-nowrap">CLICK TO ATTACK</span>
+                                    <span className="text-xs font-bold text-yellow-500 bg-black/80 px-2 py-1 rounded uppercase">Costs {ATTACK_COST} Energy</span>
+                                </>
+                            ) : (
+                                <span className="text-2xl font-black text-zinc-500 text-shadow-neon stroke-black whitespace-nowrap">NEED ENERGY</span>
+                            )}
                         </div>
                     </div>
 
@@ -259,7 +344,7 @@ export const GuildHall: React.FC<GuildHallProps> = ({ onClose }) => {
                                 <Info className="w-3 h-3 text-cyan-500" /> Intelligence
                             </h3>
                             <p className="text-xs text-zinc-300 leading-relaxed italic">
-                                "{boss.description}"
+                                &quot;{boss.description}&quot;
                             </p>
                         </div>
                         <div className="bg-black/40 border border-zinc-800 p-4 rounded-lg">
@@ -286,11 +371,6 @@ export const GuildHall: React.FC<GuildHallProps> = ({ onClose }) => {
                     </div>
 
                     <div className="flex-1 overflow-y-auto p-4 space-y-4 font-sans no-scrollbar flex flex-col-reverse">
-                        {/* Flex-col-reverse keeps latest at bottom visually if we map normally, but we are appending...
-                             Actually, standard chat usually pushes up.
-                             Let's just use flex-col and auto-scroll locally or rely on user scrolling.
-                             Actually, reverse mapping is easier for 'stick to bottom'.
-                         */}
                         {[...messages].reverse().map((msg) => (
                             <div key={msg.id} className={cn(
                                 "p-3 rounded-lg border text-xs leading-relaxed animate-slide-in",
@@ -301,9 +381,9 @@ export const GuildHall: React.FC<GuildHallProps> = ({ onClose }) => {
                                 <div className="flex justify-between items-center mb-1">
                                     <span className={cn(
                                         "font-black uppercase tracking-tighter",
-                                        msg.user === 'Titan' ? "text-cyan-500" : "text-zinc-500"
+                                        msg.userName === 'Titan' ? "text-cyan-500" : "text-zinc-500"
                                     )}>
-                                        {msg.user}
+                                        {msg.userName}
                                     </span>
                                     <span className="text-[9px] opacity-30">
                                         {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}

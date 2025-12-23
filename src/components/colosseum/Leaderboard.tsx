@@ -1,33 +1,58 @@
 import React from 'react';
-import { Crown, Swords, Shield, Skull } from 'lucide-react';
+import { Crown, Swords, Shield, Skull, Globe, MapPin, Trophy } from 'lucide-react';
+import Link from 'next/link';
 
-interface PvPPlayer {
+export interface PvPPlayer {
     userId: string;
     heroName: string;
     rankScore: number;
     highestWilksScore: number;
     wins: number;
     level: number;
+    title?: string | null;
+    city?: string | null;
 }
 
 interface LeaderboardProps {
     players: PvPPlayer[];
     currentUserId?: string;
+    scope: 'GLOBAL' | 'CITY' | 'COUNTRY';
+    currentCity?: string;
 }
 
-const Leaderboard: React.FC<LeaderboardProps> = ({ players, currentUserId }) => {
+const Leaderboard: React.FC<LeaderboardProps> = ({ players, currentUserId, scope, currentCity }) => {
     return (
         <div className="w-full bg-zinc-950 border-2 border-zinc-800 rounded-xl overflow-hidden shadow-2xl">
             {/* Header */}
-            <div className="bg-zinc-900/50 p-4 border-b border-zinc-800 flex justify-between items-center">
-                <h3 className="text-xl font-heading text-[#ffd700] uppercase tracking-widest flex items-center gap-2">
-                    <Crown className="w-6 h-6" /> Champions of the Arena
-                </h3>
-                <div className="text-xs font-mono text-zinc-500 uppercase">Season 1</div>
+            <div className="bg-zinc-900/50 p-4 border-b border-zinc-800 flex flex-col gap-4">
+                <div className="flex justify-between items-center">
+                    <h3 className="text-xl font-heading text-[#ffd700] uppercase tracking-widest flex items-center gap-2">
+                        <Crown className="w-6 h-6" /> Champions of the Arena
+                    </h3>
+                    <div className="text-xs font-mono text-zinc-500 uppercase">Season 1</div>
+                </div>
+
+                {/* Filters */}
+                <div className="flex gap-2 text-xs font-bold uppercase tracking-wider">
+                    <Link
+                        href="/colosseum?scope=GLOBAL"
+                        className={`px-3 py-1 rounded border transition-colors ${scope === 'GLOBAL' ? 'bg-[#ffd700] text-black border-[#ffd700]' : 'bg-zinc-900 text-zinc-500 border-zinc-700 hover:border-zinc-500'}`}
+                    >
+                        <Globe className="w-3 h-3 inline mr-1" /> Global
+                    </Link>
+                    {currentCity && (
+                        <Link
+                            href={`/colosseum?scope=CITY&city=${currentCity}`}
+                            className={`px-3 py-1 rounded border transition-colors ${scope === 'CITY' ? 'bg-[#ffd700] text-black border-[#ffd700]' : 'bg-zinc-900 text-zinc-500 border-zinc-700 hover:border-zinc-500'}`}
+                        >
+                            <MapPin className="w-3 h-3 inline mr-1" /> {currentCity}
+                        </Link>
+                    )}
+                </div>
             </div>
 
             {/* List */}
-            <div className="divide-y divide-zinc-900">
+            <div className="divide-y divide-zinc-900 max-h-[600px] overflow-y-auto">
                 {players.map((player, index) => {
                     const isMe = player.userId === currentUserId;
                     const rankColor = index === 0 ? 'text-yellow-400' : index === 1 ? 'text-zinc-300' : index === 2 ? 'text-amber-600' : 'text-zinc-600';
@@ -45,10 +70,18 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ players, currentUserId }) => 
                                             {player.heroName || 'Unknown Gladiator'}
                                         </h4>
                                         <span className="bg-zinc-800 text-zinc-500 text-[10px] px-1 rounded border border-zinc-700">Lvl {player.level}</span>
+                                        {player.title && (
+                                            <span className="bg-red-900/30 text-red-400 text-[10px] px-2 py-0.5 rounded border border-red-900/50 uppercase tracking-widest font-black flex items-center gap-1">
+                                                <Trophy className="w-3 h-3" /> {player.title}
+                                            </span>
+                                        )}
                                     </div>
                                     <div className="flex items-center gap-3 text-xs text-zinc-500 font-mono">
                                         <span className="flex items-center gap-1"><Swords className="w-3 h-3" /> {player.wins} Wins</span>
                                         <span className="flex items-center gap-1"><Skull className="w-3 h-3" /> Wilks: {player.highestWilksScore.toFixed(2)}</span>
+                                        {player.city && (
+                                            <span className="flex items-center gap-1 text-zinc-600"><MapPin className="w-3 h-3" /> {player.city}</span>
+                                        )}
                                     </div>
                                 </div>
                             </div>

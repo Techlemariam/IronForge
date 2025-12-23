@@ -1,12 +1,13 @@
-
 import React, { useEffect, useState } from 'react';
 import { IntervalsWellness, WeaknessAudit, TSBForecast, TitanLoadCalculation, TTBIndices, IntervalsEvent, ExerciseLog } from '../types';
-import { Brain, TrendingUp, AlertTriangle, Calendar, Battery, Activity, Flame, Wind, Trophy, Gauge } from 'lucide-react';
+import { TrainingPath } from '../types/training';
+import { Brain, TrendingUp, AlertTriangle, Calendar, Battery, Activity, Flame, Wind, Trophy, Gauge, ShieldAlert, ZapOff } from 'lucide-react';
 import { AnalyticsService } from '../services/analytics';
 import { AnalyticsWorkerService } from '../services/analyticsWorker';
 import { StorageService } from '../services/storage';
 import TTBCompass from './TTBCompass';
 import { Alert, AlertTitle, AlertDescription } from './ui/Alert';
+import { TrainingMemoryManager } from '../services/trainingMemoryManager';
 
 interface UltrathinkDashboardProps {
     wellness: IntervalsWellness | null;
@@ -15,9 +16,10 @@ interface UltrathinkDashboardProps {
     ttb?: TTBIndices;
     events?: IntervalsEvent[];
     titanAnalysis?: TitanLoadCalculation;
+    activePath?: TrainingPath;
 }
 
-const UltrathinkDashboard: React.FC<UltrathinkDashboardProps> = ({ wellness, audit, forecast, ttb, events = [], titanAnalysis }) => {
+const UltrathinkDashboard: React.FC<UltrathinkDashboardProps> = ({ wellness, audit, forecast, ttb, events = [], titanAnalysis, activePath = 'HYBRID_WARDEN' }) => {
     const [acwrData, setAcwrData] = useState<{ acwr: number, acute: number, chronic: number } | null>(null);
 
     // --- WORKER COMPUTATION ---
@@ -51,6 +53,22 @@ const UltrathinkDashboard: React.FC<UltrathinkDashboardProps> = ({ wellness, aud
         else if (acwrData.acwr < 0.8) { acwrColor = "text-zinc-500"; acwrStatus = "Detraining"; }
     }
 
+    // --- PARENTING SECURITY LAYER ---
+    const debuffs = wellness ? TrainingMemoryManager.calculateDebuffs(wellness.sleepScore || 100, wellness.hrv || 50) : [];
+    const isSurvivalMode = wellness ? TrainingMemoryManager.shouldEnterSurvivalMode({
+        ctl: wellness.ctl || 0,
+        atl: wellness.atl || 0,
+        tsb: wellness.tsb || 0,
+        hrv: wellness.hrv || 50,
+        sleepScore: wellness.sleepScore || 100,
+        bodyBattery: wellness.bodyBattery || 100, // Added bodyBattery
+        strengthDelta: 0
+    }, activePath) : false;
+
+    // ... useEffect ...
+
+    // ... if (!wellness) return null ...
+
     return (
         <div className="space-y-6 animate-fade-in">
 
@@ -64,6 +82,34 @@ const UltrathinkDashboard: React.FC<UltrathinkDashboardProps> = ({ wellness, aud
                     <p className="text-xs text-purple-400 font-mono">Predictive Biometrics & Logistics</p>
                 </div>
             </div>
+
+            {/* SURVIVAL MODE ALERT */}
+            {isSurvivalMode && (
+                <div className="bg-red-950/30 border border-red-500/50 rounded-lg p-4 animate-pulse flex items-start gap-3">
+                    <ShieldAlert className="w-6 h-6 text-red-500 shrink-0 mt-1" />
+                    <div>
+                        <h3 className="text-sm font-black text-red-500 uppercase tracking-widest">⚠️ SURVIVAL MODE ACTIVE</h3>
+                        <p className="text-xs text-red-400 mt-1">
+                            System integrity critical. All anabolic protocols suspended.
+                            Active Debuffs: {debuffs.map(d => d.reason).join(', ') || 'Low TSB'}.
+                        </p>
+                    </div>
+                </div>
+            )}
+
+            {/* CAPACITY WARN (If not survival but debuffs exist) */}
+            {!isSurvivalMode && debuffs.length > 0 && (
+                <div className="bg-orange-950/30 border border-orange-500/50 rounded-lg p-3 flex items-center gap-3">
+                    <ZapOff className="w-5 h-5 text-orange-500" />
+                    <div className="flex-1">
+                        <h3 className="text-xs font-bold text-orange-500 uppercase">Capacity Reduced</h3>
+                        <p className="text-[10px] text-orange-400">
+                            {debuffs.map(d => d.reason).join(' + ')} detected.
+                            High intensity load restricted.
+                        </p>
+                    </div>
+                </div>
+            )}
 
             {/* TTB & Weakness Row */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

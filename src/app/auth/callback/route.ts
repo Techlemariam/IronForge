@@ -11,6 +11,29 @@ export async function GET(request: Request) {
         const supabase = await createClient()
         const { error } = await supabase.auth.exchangeCodeForSession(code)
         if (!error) {
+            // SYNC: Ensure the user exists in the public schema
+            const { data: { user } } = await supabase.auth.getUser()
+
+            if (user) {
+                // Check if user exists
+                const { data: existingUser } = await supabase
+                    .from('User')
+                    .select('id')
+                    .eq('id', user.id)
+                    .single()
+
+                if (!existingUser) {
+                    // Create new user record
+                    await supabase.from('User').insert({
+                        id: user.id,
+                        email: user.email,
+                        heroName: user.email?.split('@')[0] || 'Hero',
+                        subscriptionTier: 'FREE', // Default
+                        updatedAt: new Date().toISOString()
+                    })
+                }
+            }
+
             return NextResponse.redirect(`${origin}${next}`)
         }
     }

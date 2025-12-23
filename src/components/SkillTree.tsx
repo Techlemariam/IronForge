@@ -291,8 +291,8 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onExit, unlockedIds, wellness }) 
                     <div className="flex justify-between items-start mb-4">
                         <div className="flex items-center gap-3">
                             <div className={`w-12 h-12 rounded border-2 flex items-center justify-center ${selectedNodeData.status === SkillStatus.MASTERED
-                                    ? (selectedNodeData.node.currency === 'kinetic_shard' ? 'bg-cyan-950/50 border-cyan-500 text-cyan-400' : 'bg-yellow-950/50 border-yellow-500 text-yellow-400')
-                                    : 'bg-zinc-900 border-zinc-700 text-zinc-600'
+                                ? (selectedNodeData.node.currency === 'kinetic_shard' ? 'bg-cyan-950/50 border-cyan-500 text-cyan-400' : 'bg-yellow-950/50 border-yellow-500 text-yellow-400')
+                                : 'bg-zinc-900 border-zinc-700 text-zinc-600'
                                 }`}>
                                 {selectedNodeData.node.category === 'push' && <Zap className="w-6 h-6" />}
                                 {selectedNodeData.node.category === 'legs' && <TrendingUp className="w-6 h-6" />}
@@ -315,7 +315,7 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onExit, unlockedIds, wellness }) 
 
                     {/* Description */}
                     <div className="bg-zinc-900/50 p-3 rounded border border-white/5 mb-4">
-                        <p className="text-zinc-300 italic leading-relaxed">"{selectedNodeData.node.description}"</p>
+                        <p className="text-zinc-300 italic leading-relaxed">&quot;{selectedNodeData.node.description}&quot;</p>
                     </div>
 
                     {/* Requirements */}
@@ -350,6 +350,9 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onExit, unlockedIds, wellness }) 
                             <div className="border-t border-white/10 pt-3 mt-2">
                                 <div className="flex justify-between items-center mb-3">
                                     <span className="text-xs text-zinc-500 uppercase font-bold tracking-widest">Cost</span>
+                                    <p className="text-zinc-500 font-serif italic mt-2 max-w-lg">
+                                        &quot;Choose wisely, Titan. Each path demands sacrifice, but grants power beyond measure.&quot;
+                                    </p>
                                     <div className="flex items-center gap-2">
                                         {hasModifier && (
                                             <span className={`text-[10px] font-bold ${modifier > 0 ? 'text-red-400' : 'text-green-400'}`}>

@@ -1,4 +1,4 @@
-
+/* eslint-disable react/no-unescaped-entities */
 import React, { useMemo, useState, useRef, useEffect } from 'react';
 import { SKILL_TREE, SESSIONS } from '../../data/static';
 import { SkillNode, SkillStatus, ExerciseLogic, IntervalsWellness } from '../../types';
@@ -41,7 +41,7 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onExit, unlockedIds, wellness }) 
     };
 
     // --- DATA LOGIC ---
-    const checkRequirement = (req: SkillNode['requirements'][0]): boolean => {
+    const checkRequirement = React.useCallback((req: SkillNode['requirements'][0]): boolean => {
         // 1. Check Achievements
         if (req.type === 'achievement_count') {
             return unlockedIds.size >= req.value;
@@ -64,7 +64,7 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onExit, unlockedIds, wellness }) 
 
         if (req.exercise_id === 'any') return true;
         return false;
-    };
+    }, [unlockedIds]);
 
     const nodesWithStatus = useMemo(() => {
         const statusMap = new Map<string, SkillStatus>();
@@ -93,7 +93,7 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onExit, unlockedIds, wellness }) 
             return { ...node, status: SkillStatus.LOCKED };
         });
 
-    }, [unlockedIds]);
+    }, [checkRequirement]);
 
     const totalMastery = nodesWithStatus.filter(n => n.status === SkillStatus.MASTERED).length;
 
@@ -259,8 +259,8 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onExit, unlockedIds, wellness }) 
                     <div className="flex justify-between items-start mb-4">
                         <div className="flex items-center gap-3">
                             <div className={`w-10 h-10 rounded border flex items-center justify-center ${selectedNode.status === SkillStatus.MASTERED
-                                    ? (selectedNode.currency === 'kinetic_shard' ? 'bg-cyan-900/20 border-cyan-500 text-cyan-500' : 'bg-yellow-900/20 border-yellow-500 text-yellow-500')
-                                    : 'bg-zinc-900 border-zinc-700 text-zinc-600'
+                                ? (selectedNode.currency === 'kinetic_shard' ? 'bg-cyan-900/20 border-cyan-500 text-cyan-500' : 'bg-yellow-900/20 border-yellow-500 text-yellow-500')
+                                : 'bg-zinc-900 border-zinc-700 text-zinc-600'
                                 }`}>
                                 {selectedNode.category === 'push' && <Zap className="w-5 h-5" />}
                                 {selectedNode.category === 'legs' && <TrendingUp className="w-5 h-5" />}
@@ -270,8 +270,8 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onExit, unlockedIds, wellness }) 
                             </div>
                             <div>
                                 <h3 className={`font-serif font-bold text-lg leading-none ${selectedNode.status === SkillStatus.MASTERED
-                                        ? 'text-white'
-                                        : selectedNode.status === SkillStatus.UNLOCKED ? 'text-zinc-300' : 'text-zinc-600'
+                                    ? 'text-white'
+                                    : selectedNode.status === SkillStatus.UNLOCKED ? 'text-zinc-300' : 'text-zinc-600'
                                     }`}>
                                     {selectedNode.title}
                                 </h3>
@@ -284,7 +284,7 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onExit, unlockedIds, wellness }) 
                     </div>
 
                     <div className="bg-zinc-900/50 p-3 rounded border border-white/5 mb-4">
-                        <p className="text-zinc-300 italic leading-relaxed">"{selectedNode.description}"</p>
+                        <p className="text-zinc-300 italic leading-relaxed">&quot;{selectedNode.description}&quot;</p>
                     </div>
 
                     {/* Adaptive Cost Calculation */}
@@ -315,6 +315,7 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onExit, unlockedIds, wellness }) 
                                 </div>
                             </div>
                         );
+                        /* eslint-disable-next-line react/no-unescaped-entities */
                     })()}
                 </div>
             )}

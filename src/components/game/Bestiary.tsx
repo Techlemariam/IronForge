@@ -44,7 +44,7 @@ export const Bestiary: React.FC<BestiaryProps> = ({ userLevel, onClose }) => {
                         <Skull className="w-8 h-8 text-rarity-legendary" />
                         The Bestiary
                     </h1>
-                    <p className="text-rarity-common text-xs italic mt-1">"Target identification and threat assessment for the aspiring Titan."</p>
+                    <p className="text-rarity-common text-xs italic mt-1">&quot;Target identification and threat assessment for the aspiring Titan.&quot;</p>
                 </div>
                 <button
                     onClick={onClose}

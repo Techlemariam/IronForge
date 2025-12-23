@@ -31,7 +31,7 @@ const OverchargePrompt: React.FC<OverchargePromptProps> = ({ onAccept, onDecline
 
                 <div className="bg-black/50 p-3 rounded mb-4 border border-zinc-800">
                     <p className="text-zinc-200 text-sm font-serif italic text-center">
-                        "The Iron Gods demand a true challenge. Increase load to <span className="text-yellow-400 font-bold">{suggestedWeight}kg</span>?"
+                        &quot;The Iron Gods demand a true challenge. Increase load to <span className="text-yellow-400 font-bold">{suggestedWeight}kg</span>?&quot;
                     </p>
                     <div className="mt-2 text-[10px] text-center uppercase tracking-widest text-yellow-600 font-bold">
                         Reward: 2x XP + Rare Loot

@@ -11,6 +11,8 @@ import BerserkerChoice from './components/BerserkerChoice';
 import VisionRepCounter from '../../components/VisionRepCounter';
 import { Eye, EyeOff } from 'lucide-react';
 import { cn } from '../../lib/utils';
+import { logTitanSet } from '../../actions/training';
+import { toast } from 'sonner';
 
 // --- DUNGEON MODE IMPORTS ---
 import DungeonInterface from '../../components/game/dungeon/DungeonInterface';
@@ -53,6 +55,7 @@ const IronMines: React.FC<IronMinesProps> = ({ initialData, title, onComplete, o
       return acc + (weight * reps);
     }, 0);
     setTotalHp(Math.max(calculatedHp, 1000));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -122,6 +125,18 @@ const IronMines: React.FC<IronMinesProps> = ({ initialData, title, onComplete, o
           setTimeout(() => setActiveExIndex(prev => prev + 1), 1200);
         }
       }
+
+      // --- TITAN INTELLIGENCE: LOG SET ---
+      // Fire and forget server action to update XP
+      logTitanSet(currentEx.id, reps, weight, rpe)
+        .then(res => {
+          if (res.success && res.xpGained) {
+            toast.success(`+${res.xpGained} XP | +${res.energyGained} Energy`, {
+              description: res.newLevel && res.newLevel > (res.newLevel - 1) ? `LEVEL UP! You represent Rank ${res.newLevel}` : undefined
+            });
+          }
+        })
+        .catch(err => console.error("Titan Log Failed", err));
 
       return newExercises;
     });

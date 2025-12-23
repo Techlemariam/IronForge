@@ -5,8 +5,8 @@ import { twMerge } from 'tailwind-merge';
 import { motion } from 'framer-motion';
 
 interface SetRowProps {
-  set: WorkoutSet;
-  setNumber: number;
+    set: WorkoutSet;
+    setNumber: number;
 }
 
 const SetRow: React.FC<SetRowProps> = ({ set, setNumber }) => {
@@ -14,7 +14,7 @@ const SetRow: React.FC<SetRowProps> = ({ set, setNumber }) => {
 
     const baseClasses = "grid grid-cols-5 items-center font-mono text-sm p-2 rounded-md transition-all duration-300";
     const pendingClasses = "bg-obsidian/30";
-    
+
     // Dynamic classes based on rarity
     const rarityStyles: { [key: string]: string } = {
         common: 'bg-void/40',
@@ -24,7 +24,7 @@ const SetRow: React.FC<SetRowProps> = ({ set, setNumber }) => {
         legendary: 'bg-orange-500/10 border-l-2 border-orange-400 shadow-glow-orange/30',
     };
 
-    const rowClass = twMerge(baseClasses, completed ? rarityStyles[rarity] || pendingClasses : pendingClasses);
+    const rowClass = twMerge(baseClasses, completed ? rarityStyles[rarity || 'common'] || pendingClasses : pendingClasses);
 
     // Animation variants
     const rowVariants = {
@@ -33,16 +33,16 @@ const SetRow: React.FC<SetRowProps> = ({ set, setNumber }) => {
     }
 
     return (
-        <motion.div 
+        <motion.div
             className={rowClass}
             variants={rowVariants}
             initial="visible"
             animate={"visible"}
-            transition={{duration: 0.5}}
+            transition={{ duration: 0.5 }}
             layout
         >
             <div className="flex items-center space-x-2">
-                 {completed ? <Check size={16} className={`text-${rarity === 'legendary' ? 'orange-400' : 'magma'}`} /> : <div className='w-4 h-4 border-2 border-forge-border rounded-full' />}
+                {completed ? <Check size={16} className={`text-${rarity === 'legendary' ? 'orange-400' : 'magma'}`} /> : <div className='w-4 h-4 border-2 border-forge-border rounded-full' />}
                 <span className="font-body uppercase">Set {setNumber}</span>
             </div>
 
@@ -51,7 +51,7 @@ const SetRow: React.FC<SetRowProps> = ({ set, setNumber }) => {
                     <span className="text-center font-bold">{weight} kg</span>
                     <span className="text-center font-bold">{completedReps} reps</span>
                     <div className="flex items-center justify-center">
-                        {isPr && <Crown size={14} className="text-yellow-400 mr-1"/>}
+                        {isPr && <Crown size={14} className="text-yellow-400 mr-1" />}
                         <span className="opacity-80">@{targetRPE}</span>
                     </div>
                     <div className="flex items-center justify-end space-x-1 text-rune">

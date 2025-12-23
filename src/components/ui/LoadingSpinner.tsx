@@ -1,8 +1,24 @@
+import { cn } from '@/lib/utils';
 
-import React from 'react';
+interface LoadingSpinnerProps {
+  size?: 'sm' | 'md' | 'lg';
+  color?: string;
+  className?: string; // Add className prop for flexible styling
+}
 
-export const LoadingSpinner: React.FC = () => {
+export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ size = 'md', color, className }) => {
+  const sizeClasses = {
+    sm: 'h-4 w-4 border-2',
+    md: 'h-12 w-12 border-4',
+    lg: 'h-16 w-16 border-4'
+  };
+
   return (
-    <div className="border-t-4 border-magma-DEFAULT border-solid rounded-full animate-spin h-12 w-12"></div>
+    <div className={cn(
+      "rounded-full animate-spin border-solid border-t-transparent", // Base classes
+      sizeClasses[size],
+      color ? color : "border-magma-DEFAULT", // Default color if not provided
+      className
+    )}></div>
   );
 };

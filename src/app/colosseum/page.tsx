@@ -5,21 +5,31 @@ import { Swords, Users } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
 
-export default async function ColosseumPage() {
-    // Fetch Leaderboard Data from Real DB
-    const leaderboardData = await prisma.pvpProfile.findMany({
-        orderBy: { rankScore: 'desc' },
-        take: 20,
-        include: { user: { select: { heroName: true, level: true } } }
+import { getLeaderboard, LeaderboardScope } from '@/lib/leaderboard';
+
+export default async function ColosseumPage({ searchParams }: { searchParams: Promise<{ scope?: string, city?: string }> }) {
+    const { scope: scopeParam, city: cityParam } = await searchParams;
+    const scope = (scopeParam as LeaderboardScope) || 'GLOBAL';
+    const city = cityParam || 'Gothenburg'; // Default to Gothenburg for demo if city not passed
+    // NOTE: In real app, we should fetch current user's city to use as default.
+    // For now we assume a default or pass it via props/headers if available.
+
+    const leaderboardData = await getLeaderboard({
+        scope,
+        type: 'PVP_RANK',
+        city: scope === 'CITY' ? city : undefined,
+        limit: 50
     });
 
-    const formattedPlayers = leaderboardData.map((p: any) => ({
+    const formattedPlayers = leaderboardData.map(p => ({
         userId: p.userId,
-        heroName: p.user.heroName || 'Anonymous',
+        heroName: p.heroName,
         rankScore: p.rankScore,
         highestWilksScore: p.highestWilksScore,
         wins: p.wins,
-        level: p.user.level
+        level: p.level,
+        title: p.title,
+        city: p.city
     }));
 
     return (
@@ -32,7 +42,7 @@ export default async function ColosseumPage() {
                         The Iron Colosseum
                     </h1>
                     <p className="text-zinc-500 font-serif italic mt-2 max-w-lg">
-                        "Here, titles are earned in sweat and iron. Prove your strength against the Titans of the Forge."
+                        &quot;Here, titles are earned in sweat and iron. Prove your strength against the Titans of the Forge.&quot;
                     </p>
                 </div>
                 <div className="flex gap-4 mt-4 md:mt-0">
@@ -74,7 +84,11 @@ export default async function ColosseumPage() {
 
                 {/* RIGHT COLUMN: LEADERBOARD */}
                 <div className="lg:col-span-2">
-                    <Leaderboard players={formattedPlayers} />
+                    <Leaderboard
+                        players={formattedPlayers}
+                        scope={scope}
+                        currentCity={city}
+                    />
                 </div>
 
             </div>

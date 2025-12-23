@@ -219,7 +219,7 @@ const PreWorkoutCheck: React.FC<PreWorkoutCheckProps> = ({ session, onProceed, o
                                     Debuff: Exhaustion
                                 </h3>
                                 <p className="text-zinc-400 text-sm mb-4 leading-relaxed font-sans">
-                                    Vitality is critically low. Recommended action is to downgrade quest difficulty to 'Survival'.
+                                    Vitality is critically low. Recommended action is to downgrade quest difficulty to &apos;Survival&apos;.
                                 </p>
                                 <div className="space-y-3">
                                     <button

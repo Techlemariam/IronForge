@@ -31,7 +31,7 @@ export const WorldMap: React.FC<WorldMapProps> = ({ userLevel, onClose }) => {
                         <MapIcon className="w-8 h-8 text-cyan-500" />
                         World Map
                     </h1>
-                    <p className="text-rarity-common text-xs italic mt-1">"Charting the path from Initiate to Elite Titan."</p>
+                    <p className="text-rarity-common text-xs italic mt-1">&quot;Charting the path from Initiate to Elite Titan.&quot;</p>
                 </div>
                 <button
                     onClick={onClose}
@@ -101,7 +101,7 @@ export const WorldMap: React.FC<WorldMapProps> = ({ userLevel, onClose }) => {
                                 {/* Detail Tooltip (always visible or on hover? let's do simplified mobile-friendly) */}
                                 {unlocked && (
                                     <div className="mt-2 bg-black/80 border border-zinc-800 p-2 rounded max-w-[120px] opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <p className="text-[8px] text-zinc-400 leading-tight italic">"{zone.description}"</p>
+                                        <p className="text-[8px] text-zinc-400 leading-tight italic">&quot;{zone.description}&quot;</p>
                                     </div>
                                 )}
                             </div>

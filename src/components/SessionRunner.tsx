@@ -47,6 +47,7 @@ const SessionRunner: React.FC<SessionRunnerProps> = ({ session, onExit }) => {
             setCheckingRecovery(false);
         };
         checkRecovery();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // --- LOAD HISTORY & WELLNESS ---
@@ -143,6 +144,7 @@ const SessionRunner: React.FC<SessionRunnerProps> = ({ session, onExit }) => {
         if (completed) {
             saveResults();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [completed]);
 
     const handleExport = async () => {
@@ -187,7 +189,7 @@ const SessionRunner: React.FC<SessionRunnerProps> = ({ session, onExit }) => {
                         <h2 className="text-xl font-black uppercase tracking-widest">Session Interrupted</h2>
                     </div>
                     <p className="text-zinc-300 mb-6 font-sans text-sm">
-                        Resume "{foundRecovery.sessionData.name}"?
+                        Resume &quot;{foundRecovery.sessionData.name}&quot;?
                     </p>
                     <div className="space-y-3">
                         <button onClick={handleRestore} className="w-full py-4 bg-green-600 text-white font-black uppercase rounded">Resume Quest</button>

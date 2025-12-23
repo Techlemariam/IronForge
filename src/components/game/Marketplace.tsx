@@ -98,7 +98,7 @@ const Marketplace: React.FC<MarketplaceProps> = ({ onClose }) => {
                         <ShoppingBag className="w-8 h-8 text-yellow-500" />
                         <div>
                             <h1 className="text-3xl font-black text-yellow-500 uppercase tracking-widest">Goblin Market</h1>
-                            <p className="text-zinc-400 text-sm font-serif italic">"Wares for the worthy..."</p>
+                            <p className="text-zinc-400 text-sm font-serif italic">&quot;Wares for the worthy...&quot;</p>
                         </div>
                     </div>
                     <div className="flex items-center gap-6">

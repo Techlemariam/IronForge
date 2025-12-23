@@ -33,6 +33,7 @@ const VisionRepCounter: React.FC<VisionRepCounterProps> = ({ isActive, onRepCoun
         return () => {
             stopCamera();
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isActive]);
 
     const startCamera = async () => {
@@ -82,7 +83,7 @@ const VisionRepCounter: React.FC<VisionRepCounterProps> = ({ isActive, onRepCoun
                 radius: (data) => DrawingUtils.lerp(data.from!.z, -0.15, 0.1, 5, 1),
                 color: result.metrics.isBelowParallel ? "#1eff00" : "#00e5ff"
             });
-            
+
             drawingUtils.drawConnectors(result.landmarks, PoseLandmarker.POSE_CONNECTIONS, {
                 color: "#ffffff",
                 lineWidth: 2
@@ -111,11 +112,11 @@ const VisionRepCounter: React.FC<VisionRepCounterProps> = ({ isActive, onRepCoun
                     <span className="text-cyan-500 font-mono animate-pulse">Initializing Ghost Spotter...</span>
                 </div>
             )}
-            
-            <video 
-                ref={videoRef} 
-                className="absolute inset-0 w-full h-full object-cover opacity-60" 
-                muted 
+
+            <video
+                ref={videoRef}
+                className="absolute inset-0 w-full h-full object-cover opacity-60"
+                muted
                 playsInline
             />
             <canvas ref={canvasRef} className="absolute inset-0 w-full h-full z-10" />
@@ -150,7 +151,7 @@ const VisionRepCounter: React.FC<VisionRepCounterProps> = ({ isActive, onRepCoun
                 </div>
             </div>
 
-            <button 
+            <button
                 onClick={onClose}
                 className="absolute top-2 right-2 p-2 bg-black/50 text-white rounded-full hover:bg-red-900 pointer-events-auto z-30"
             >

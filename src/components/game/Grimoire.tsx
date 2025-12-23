@@ -94,7 +94,7 @@ export const Grimoire: React.FC<GrimoireProps> = ({ onClose }) => {
                     </div>
                     <div>
                         <h1 className="text-3xl font-black text-white uppercase tracking-tighter">The Grimoire</h1>
-                        <p className="text-rarity-common text-xs italic">"A chronicles of feats, failures, and far-reaching potential."</p>
+                        <p className="text-rarity-common text-xs italic">&quot;A chronicles of feats, failures, and far-reaching potential.&quot;</p>
                     </div>
                 </div>
                 <button
@@ -147,7 +147,7 @@ export const Grimoire: React.FC<GrimoireProps> = ({ onClose }) => {
                                     </span>
                                 </div>
                                 <p className="text-sm text-rarity-common leading-relaxed italic">
-                                    "{entry.description}"
+                                    &quot;{entry.description}&quot;
                                 </p>
 
                                 {entry.metadata && (
