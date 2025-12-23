@@ -125,7 +125,11 @@ export default async function Page() {
     }
 
     // 5. Progression & Oracle
-    const progression = await ProgressionService.getProgressionState();
+    const progression = await ProgressionService.getProgressionState(user.id);
+    if (!progression) {
+        // Fallback or error
+        throw new Error("Could not load progression");
+    }
 
     // Bio-Engine Recovery Check
     const recoveryAnalysis = await RecoveryService.analyzeRecovery(user.id);
@@ -197,6 +201,7 @@ export default async function Page() {
             recoveryLevel={recoveryLevel}
             totalExperience={dbUser?.totalExperience || 0}
             weeklyMastery={weeklyMastery}
+            userId={user.id}
         />
     );
 }
