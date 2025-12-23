@@ -21,10 +21,18 @@ IronForge has successfully migrated to **Next.js 16**. The legacy Express proxy 
 2.  **The API Layer (Route Handlers):**
     *   **Location:** `src/app/api/*`
     *   **Hevy Integration:** `src/app/api/hevy/*`
-    *   **Intervals Integration:** `src/app/api/intervals/*`
-    *   **Auth:** `src/app/api/auth/*` (Supabase SSR).
+    *   **Intervals Integration:** `src/app/api/intervals/*` (via `src/lib/intervals.ts`)
+    *   **Auth:** `src/app/auth/*` (Supabase SSR callback).
+    *   **AI Oracle:** `src/app/api/chat/*` (Gemini integration).
+    *   **Webhooks:** `src/app/api/webhooks/*` (Intervals/Hevy real-time updates).
+    *   **Sync:** `src/app/api/sync/*` (Manual sync triggers).
 
-3.  **Persistence Layer:**
+3.  **The Bio-Engine (New):**
+    *   **Purpose:** Tracks physiological data (FTP, HRV, Zones).
+    *   **Source of Truth:** Intervals.icu.
+    *   **Synchronization:** Server Actions (`syncBiometrics`) + Cron jobs.
+
+4.  **Persistence Layer:**
     *   **DB:** Supabase (PostgreSQL).
     *   **ORM:** Prisma Client (`@prisma/client`).
     *   **Auth:** Supabase Auth Helpers (`@supabase/ssr`).
@@ -43,6 +51,34 @@ IronForge has successfully migrated to **Next.js 16**. The legacy Express proxy 
 
 ---
 
+## ⚒️ The Forge (Crafting System)
+**Location:** `src/features/game/TheForge.tsx`
+**Server Actions:** `src/actions/inventory.ts`
+
+### Purpose
+The Forge is IronForge's in-game crafting system where players convert workout materials (Scrap) and currency (Gold) into equipment items with rarity tiers.
+
+### Data Flow
+```mermaid
+graph LR
+    A[DashboardClient] -->|loads| B[TheForge Component]
+    B -->|calls| C[Server Actions]
+    C -->|reads/writes| D[Supabase: user_items]
+    C -->|validates| E[Crafting Recipes]
+```
+
+### Key Types (`src/types/ironforge.ts`)
+- `Item`: Equipment with id, name, rarity, stats, equipped flag
+- `ItemRarity`: `common | rare | epic | legendary`
+- `CraftingRecipe`: Requirements and output for crafting
+
+### Integration Points
+- **Dashboard:** Accessed via navigation from `DashboardClient.tsx`
+- **Inventory:** Reads/writes to Supabase `user_items` table
+- **Sound Effects:** Uses `playSound()` for crafting feedback
+
+---
+
 ## 🛡️ Critical Design Patterns
 1.  **Server-First:** ALWAYS prefer running logic on the server.
     *   Use **Server Actions** for mutations (saving data).
@@ -54,7 +90,10 @@ IronForge has successfully migrated to **Next.js 16**. The legacy Express proxy 
 
 ## 🧹 Cleanup Status
 *   `server.js`: **REMOVED** (Do not recreate).
-*   `vite.config.ts`: **DEPRECATED** (Pending removal).
+*   `vite.config.ts`: **REMOVED** (Migration complete).
 *   `react-router-dom`: **DEPRECATED** (Use Next.js `Link` and `useRouter`).
+*   **Lint:** ✅ All errors resolved (2025-12-22).
+*   **Build:** ✅ Compiles successfully.
+*   **Tests:** ✅ 20/20 unit tests passing.
 
 > **Rule:** All new development must strictly use Next.js paradigms. Do not fall back to Vite patterns.
