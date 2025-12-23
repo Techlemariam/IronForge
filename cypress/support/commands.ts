@@ -1,10 +1,14 @@
 /// <reference types="cypress" />
 
-declare namespace Cypress {
-    interface Chainable {
-        login(): Chainable<void>;
+declare global {
+    namespace Cypress {
+        interface Chainable {
+            login(): Chainable;
+        }
     }
 }
+
+export { };
 
 Cypress.Commands.add('login', () => {
     // 1. Define Test User Credentials
