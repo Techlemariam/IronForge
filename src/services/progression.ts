@@ -1,108 +1,99 @@
 
-import { StorageService } from './storage';
+import prisma from '@/lib/prisma';
 import { ACHIEVEMENTS } from '../data/static';
 
 /**
- * Progression Service
- * Handles XP calculation and level management.
+ * Progression Service (Server-Side)
+ * Handles XP and Gold management using Prisma.
  */
 
 const XP_PER_ACHIEVEMENT_POINT = 100;
-const XP_PER_TITAN_LOAD_UNIT = 10;
 const XP_LEVEL_THRESHOLD = 1000;
 
 export const ProgressionService = {
 
     /**
-     * Calculates total XP based on stored achievements and workout history.
+     * Awards Gold to a user.
      */
-    async calculateTotalXp(): Promise<number> {
-        // 1. Calculate XP from Achievements
-        const unlockedAchievementIds = await StorageService.getState<string[]>('achievements') || [];
-        const achievementXp = unlockedAchievementIds.reduce((acc, id) => {
-            const ach = ACHIEVEMENTS.find(a => a.id === id);
-            return acc + (ach ? ach.points * XP_PER_ACHIEVEMENT_POINT : 0);
-        }, 0);
-
-        // 2. Calculate XP from Workout History (Titan Load Proxy)
-        const history = await StorageService.getHistory();
-        // For now, we use a simple proxy: each logged set gives 50 XP
-        // In a real scenario, we'd pull Titan Load from AnalyticsService
-        const workoutXp = history.length * 50;
-
-        return achievementXp + workoutXp;
+    async awardGold(userId: string, amount: number) {
+        return prisma.user.update({
+            where: { id: userId },
+            data: { gold: { increment: amount } }
+        });
     },
 
     /**
-     * Calculates total Gold.
-     * Gold is earned by:
-     * 1. Completing Workouts (10 Gold per session)
-     * 2. Unlocking Achievements (50 Gold per achievement)
-     * 3. Manual adjustments (Marketplace purchases deduct gold)
-     * 
-     * NOTE: Since we don't have a transaction ledger yet, we store the *current balance* directly in StorageService.
-     * The logic below is for initial seed or backup. 
-     * Ideally, we should just read 'gold' from storage.
+     * Awards Experience to a user and handles leveling.
      */
-    async getCurrentGold(): Promise<number> {
-        // Try to get stored gold balance
-        const storedGold = await StorageService.getGold();
+    async addExperience(userId: string, amount: number) {
+        const user = await prisma.user.findUnique({
+            where: { id: userId },
+            select: { totalExperience: true, level: true }
+        });
 
-        // IF no gold is stored (first run after update), calculate retroactive gold
-        if (storedGold === 0) {
-            const history = await StorageService.getHistory();
-            const unlockedAchievementIds = await StorageService.getState<string[]>('achievements') || [];
+        if (!user) throw new Error("User not found");
 
-            // Retroactive formula: 10g per workout + 50g per achievement
-            const retroactiveGold = (history.length * 10) + (unlockedAchievementIds.length * 50);
+        const newTotalXp = user.totalExperience + amount;
+        const newLevel = Math.floor(newTotalXp / XP_LEVEL_THRESHOLD) + 1;
 
-            // Save this initial balance so we can deduct from it later
-            if (retroactiveGold > 0) {
-                await StorageService.saveGold(retroactiveGold);
-                return retroactiveGold;
+        return prisma.user.update({
+            where: { id: userId },
+            data: {
+                totalExperience: newTotalXp,
+                level: newLevel
             }
-        }
-
-        return storedGold;
+        });
     },
 
     /**
-     * Awards Gold to the user.
+     * Awards an achievement and its associated rewards.
      */
-    async awardGold(amount: number): Promise<number> {
-        const current = await this.getCurrentGold();
-        const newBalance = current + amount;
-        await StorageService.saveGold(newBalance);
-        return newBalance;
+    async awardAchievement(userId: string, achievementId: string) {
+        const achievement = ACHIEVEMENTS.find(a => a.id === achievementId);
+        if (!achievement) return;
+
+        // 1. Record the achievement
+        await prisma.userAchievement.upsert({
+            where: { userId_achievementId: { userId, achievementId } },
+            create: { userId, achievementId },
+            update: {} // Already has it
+        });
+
+        // 2. Award rewards
+        const goldReward = achievement.points * 50;
+        const xpReward = achievement.points * XP_PER_ACHIEVEMENT_POINT;
+
+        await this.awardGold(userId, goldReward);
+        await this.addExperience(userId, xpReward);
     },
 
     /**
-     * Maps total XP to a Level.
+     * Gets the full progression state for a user.
      */
-    calculateLevel(totalXp: number): number {
-        // Linear leveling for now: 1000 XP per level, starting at level 1
-        const level = Math.floor(totalXp / XP_LEVEL_THRESHOLD) + 1;
-        return Math.max(1, level);
-    },
+    async getProgressionState(userId: string) {
+        const user = await prisma.user.findUnique({
+            where: { id: userId },
+            select: {
+                level: true,
+                totalExperience: true,
+                gold: true,
+                kineticEnergy: true
+            }
+        });
 
-    /**
-     * Gets the full progression state.
-     */
-    async getProgressionState(): Promise<{ level: number; totalXp: number; xpToNextLevel: number; progressPct: number; gold: number }> {
-        const totalXp = await this.calculateTotalXp();
-        const level = this.calculateLevel(totalXp);
-        const gold = await this.getCurrentGold();
+        if (!user) return null;
 
-        const xpInCurrentLevel = totalXp % XP_LEVEL_THRESHOLD;
+        const xpInCurrentLevel = user.totalExperience % XP_LEVEL_THRESHOLD;
         const progressPct = (xpInCurrentLevel / XP_LEVEL_THRESHOLD) * 100;
         const xpToNextLevel = XP_LEVEL_THRESHOLD - xpInCurrentLevel;
 
         return {
-            level,
-            totalXp,
+            level: user.level,
+            totalXp: user.totalExperience,
             xpToNextLevel,
             progressPct,
-            gold
+            gold: user.gold,
+            kineticEnergy: user.kineticEnergy
         };
     }
 };

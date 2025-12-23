@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import axios from 'axios';
+import { ProgressionService } from '@/services/progression';
 
 // Defines the shape of a Hevy Webhook Payload (Notification only)
 interface HevyWebhookEvent {
@@ -98,7 +99,14 @@ export async function POST(request: NextRequest) {
 
         console.log(`[Hevy Webhook] Successfully logged ${logsCreated} exercises for User ${user.heroName || user.id}`);
 
-        return NextResponse.json({ success: true, message: 'Workout processed', logs: logsCreated }, { status: 200 });
+        // 5. Award Rewards (Manager automation)
+        // Fixed reward: 25 Gold per workout session + 50 XP per exercise
+        await ProgressionService.awardGold(user.id, 25);
+        await ProgressionService.addExperience(user.id, logsCreated * 50);
+
+        console.log(`[Hevy Webhook] Automated rewards granted: 25g, ${logsCreated * 50}xp`);
+
+        return NextResponse.json({ success: true, message: 'Workout processed & Rewards granted', logs: logsCreated }, { status: 200 });
 
     } catch (error: any) {
         console.error('[Hevy Webhook] Error:', error.response?.data || error.message);
