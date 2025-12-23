@@ -44,6 +44,7 @@ model User {
   subscriptionExpiry DateTime?         // Null for Lifetime
   
   exerciseLogs       ExerciseLog[]
+  cardioLogs         CardioLog[]
   grimoireEntries    GrimoireEntry[]
   meditationLogs     MeditationLog[]
   pvpProfile         PvpProfile?
@@ -58,6 +59,20 @@ model User {
   titles             UserTitle[]
   activeTitle        Title?            @relation("ActiveTitle", fields: [activeTitleId], references: [id])
   activeTitleId      String?
+}
+
+model CardioLog {
+  id               Int      @id @default(autoincrement())
+  userId           String
+  date             DateTime @default(now())
+  intervalsId      String   @unique
+  type             String   // e.g. "Run", "Ride"
+  duration         Int      // Moving time in seconds
+  load             Float    // TSS
+  averageHr        Float?
+  user             User     @relation(fields: [userId], references: [id])
+
+  @@index([userId, date])
 }
 
 model Title {
