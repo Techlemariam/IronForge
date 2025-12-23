@@ -1,0 +1,48 @@
+name: Database Guard
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'prisma/schema.prisma'
+      - 'prisma/migrations/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'prisma/schema.prisma'
+      - 'prisma/migrations/**'
+
+jobs:
+  prisma-check:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: ironforge_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+      - name: Verify Prisma Drift
+        run: |
+          export DATABASE_URL=postgresql://postgres:password@localhost:5432/ironforge_test?schema=public
+          npx prisma migrate dev --name drift-check --create-only
+          if [ -n "$(ls -A prisma/migrations/$(ls -t prisma/migrations | head -1) | grep migration.sql)" ]; then
+            echo "Error: Detected database drift or uncommitted changes in schema.prisma"
+            exit 1
+          fi
+        env:
+          DATABASE_URL: postgresql://postgres:password@localhost:5432/ironforge_test?schema=public
