@@ -8,7 +8,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Swords, Shield, Heart, Zap, Skull, Trophy } from 'lucide-react';
 import { playSound } from '@/utils'; // Assuming sound utils exist or using previously defined ones
 import { LootReveal } from '@/components/game/LootReveal';
-import { Equipment as Item } from '@/types'; // Using Equipment as Item for now, or define local interface
+// Local type matching LootReveal's expectations
+type LootItem = {
+    id: string;
+    name: string;
+    rarity: string;
+    image: string | null;
+};
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 
 interface CombatArenaProps {
@@ -21,7 +27,7 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
     const [boss, setBoss] = useState<Monster | null>(null); // Use appropriate type
     const [isLoading, setIsLoading] = useState(true);
     const [isProcessingTurn, setIsProcessingTurn] = useState(false);
-    const [droppedItem, setDroppedItem] = useState<Item | null>(null);
+    const [droppedItem, setDroppedItem] = useState<LootItem | null>(null);
     const [rewards, setRewards] = useState<{ xp: number; gold: number } | null>(null);
 
     const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -234,9 +240,8 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
                         {/* Loot Reveal Modal Integration */}
                         {droppedItem && (
                             <LootReveal
-                                isOpen={true}
                                 item={droppedItem}
-                                onClose={() => { /* Wait for main close? Or specific close */ }}
+                                onClose={() => { /* LootReveal closes when item is claimed */ }}
                             />
                         )}
                     </motion.div>

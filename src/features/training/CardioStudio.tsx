@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic';
 import {
     X,
     Bike,
+    Footprints,
     ExternalLink,
     Maximize2,
     Columns,
@@ -13,18 +14,22 @@ import {
     Pause,
     Volume2,
     VolumeX,
-    RotateCcw
+    RotateCcw,
+    Activity
 } from 'lucide-react';
 
 // Dynamic import to avoid SSR issues with react-player
 const ReactPlayer = dynamic(() => import('react-player/lazy'), { ssr: false });
 
-interface CyclingStudioProps {
+export type CardioMode = 'cycling' | 'running';
+
+interface CardioStudioProps {
+    mode: CardioMode;
     onClose: () => void;
 }
 
 /**
- * Layout modes for the Cycling Studio
+ * Layout modes for the Cardio Studio
  * - split: 50/50 side by side
  * - video-pip: Video fullscreen, Zwift in small PiP (bottom-left)
  * - zwift-pip: Zwift fullscreen, Video in small PiP (bottom-left)
@@ -44,20 +49,43 @@ const LAYOUT_ICONS: Record<LayoutMode, React.ReactNode> = {
     'zwift-pip': <PictureInPicture2 className="w-4 h-4 rotate-180" />,
 };
 
-// Storage keys
-const STORAGE_KEYS = {
-    VIDEO_URL: 'cycling_studio_video_url',
-    LAYOUT: 'cycling_studio_layout',
-} as const;
-
-export default function CyclingStudio({ onClose }: CyclingStudioProps) {
+export default function CardioStudio({ mode, onClose }: CardioStudioProps) {
     const [layoutMode, setLayoutMode] = useState<LayoutMode>('split');
     const [videoUrl, setVideoUrl] = useState('');
     const [inputUrl, setInputUrl] = useState('');
     const [isPlaying, setIsPlaying] = useState(true);
     const [isMuted, setIsMuted] = useState(false);
 
-    // Load from localStorage on mount
+    // Storage keys are now mode-specific
+    const STORAGE_KEYS = useMemo(() => ({
+        VIDEO_URL: `cardio_studio_${mode}_video_url`,
+        LAYOUT: `cardio_studio_${mode}_layout`,
+    }), [mode]);
+
+    // Mode-specific configuration
+    const config = useMemo(() => {
+        if (mode === 'cycling') {
+            return {
+                title: 'Cycling Studio',
+                subtitle: 'Cycle + Zwift Integration',
+                icon: <Bike className="w-6 h-6 text-white" />,
+                placeholderText: 'Paste a YouTube URL or video link above to start your cycling session',
+                accentColor: 'from-cyan-500 to-cyan-600',
+                headerGradient: 'from-cyan-900/30 to-zinc-900/30'
+            };
+        } else {
+            return {
+                title: 'Treadmill Studio',
+                subtitle: 'Run + Zwift Integration',
+                icon: <Footprints className="w-6 h-6 text-white" />,
+                placeholderText: 'Paste a YouTube URL or video link above to start your running session',
+                accentColor: 'from-orange-500 to-orange-600',
+                headerGradient: 'from-orange-900/30 to-zinc-900/30'
+            };
+        }
+    }, [mode]);
+
+    // Load from localStorage on mount or mode change
     useEffect(() => {
         try {
             const savedUrl = localStorage.getItem(STORAGE_KEYS.VIDEO_URL);
@@ -66,14 +94,20 @@ export default function CyclingStudio({ onClose }: CyclingStudioProps) {
             if (savedUrl) {
                 setInputUrl(savedUrl);
                 setVideoUrl(savedUrl);
+            } else {
+                setInputUrl('');
+                setVideoUrl('');
             }
+
             if (savedLayout && ['split', 'video-pip', 'zwift-pip'].includes(savedLayout)) {
                 setLayoutMode(savedLayout);
+            } else {
+                setLayoutMode('split');
             }
         } catch (e) {
-            console.warn('Failed to load cycling studio settings:', e);
+            console.warn('Failed to load cardio studio settings:', e);
         }
-    }, []);
+    }, [STORAGE_KEYS]);
 
     // Persist videoUrl to localStorage
     useEffect(() => {
@@ -84,7 +118,7 @@ export default function CyclingStudio({ onClose }: CyclingStudioProps) {
                 console.warn('Failed to save video URL:', e);
             }
         }
-    }, [videoUrl]);
+    }, [videoUrl, STORAGE_KEYS]);
 
     // Persist layout to localStorage
     useEffect(() => {
@@ -93,7 +127,7 @@ export default function CyclingStudio({ onClose }: CyclingStudioProps) {
         } catch (e) {
             console.warn('Failed to save layout:', e);
         }
-    }, [layoutMode]);
+    }, [layoutMode, STORAGE_KEYS]);
 
     // Keyboard shortcuts
     useEffect(() => {
@@ -170,11 +204,12 @@ export default function CyclingStudio({ onClose }: CyclingStudioProps) {
             case 'video-pip':
                 return `${base} w-full h-full`;
             case 'zwift-pip':
-                return `${base} absolute bottom-4 left-4 w-80 h-48 z-20 rounded-lg overflow-hidden shadow-2xl border-2 border-cyan-500/50 hover:scale-105 hover:z-30 cursor-pointer`;
+                const borderColor = mode === 'cycling' ? 'border-cyan-500/50' : 'border-orange-500/50';
+                return `${base} absolute bottom-4 left-4 w-80 h-48 z-20 rounded-lg overflow-hidden shadow-2xl border-2 ${borderColor} hover:scale-105 hover:z-30 cursor-pointer`;
             default:
                 return `${base} w-1/2 h-full`;
         }
-    }, [layoutMode]);
+    }, [layoutMode, mode]);
 
     const zwiftClasses = useMemo(() => {
         const base = 'bg-zinc-900 flex flex-col items-center justify-center transition-all duration-300';
@@ -182,13 +217,14 @@ export default function CyclingStudio({ onClose }: CyclingStudioProps) {
             case 'split':
                 return `${base} w-1/2 h-full`;
             case 'video-pip':
-                return `${base} absolute bottom-4 left-4 w-80 h-48 z-20 rounded-lg overflow-hidden shadow-2xl border-2 border-orange-500/50 hover:scale-105 hover:z-30 cursor-pointer`;
+                const borderColor = mode === 'cycling' ? 'border-orange-500/50' : 'border-cyan-500/50';
+                return `${base} absolute bottom-4 left-4 w-80 h-48 z-20 rounded-lg overflow-hidden shadow-2xl border-2 ${borderColor} hover:scale-105 hover:z-30 cursor-pointer`;
             case 'zwift-pip':
                 return `${base} w-full h-full`;
             default:
                 return `${base} w-1/2 h-full`;
         }
-    }, [layoutMode]);
+    }, [layoutMode, mode]);
 
     const handleClearVideo = useCallback(() => {
         setVideoUrl('');
@@ -198,35 +234,35 @@ export default function CyclingStudio({ onClose }: CyclingStudioProps) {
         } catch (e) {
             console.warn('Failed to clear video URL:', e);
         }
-    }, []);
+    }, [STORAGE_KEYS]);
 
     return (
         <div className="flex flex-col h-full bg-zinc-950 text-white">
             {/* Header */}
-            <header className="flex items-center justify-between px-6 py-4 bg-gradient-to-r from-cyan-900/30 to-orange-900/30 border-b border-zinc-800">
+            <header className={`flex items-center justify-between px-6 py-4 bg-gradient-to-r ${config.headerGradient} border-b border-zinc-800`}>
                 <div className="flex items-center gap-3">
-                    <div className="p-2 bg-gradient-to-br from-cyan-500 to-orange-500 rounded-lg">
-                        <Bike className="w-6 h-6 text-white" />
+                    <div className={`p-2 bg-gradient-to-br ${config.accentColor} rounded-lg shadow-lg`}>
+                        {config.icon}
                     </div>
                     <div>
-                        <h1 className="text-xl font-bold tracking-tight">Cycling Studio</h1>
-                        <p className="text-xs text-zinc-400">Video + Zwift Integration</p>
+                        <h1 className="text-xl font-bold tracking-tight">{config.title}</h1>
+                        <p className="text-xs text-zinc-400">{config.subtitle}</p>
                     </div>
                 </div>
 
                 {/* Layout Switcher */}
                 <div className="flex items-center gap-2 bg-zinc-900 rounded-lg p-1">
-                    {LAYOUT_OPTIONS.map(({ mode, label, shortcut }) => (
+                    {LAYOUT_OPTIONS.map(({ mode: m, label, shortcut }) => (
                         <button
-                            key={mode}
-                            onClick={() => setLayoutMode(mode)}
-                            className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-all ${layoutMode === mode
-                                ? 'bg-gradient-to-r from-cyan-600 to-orange-600 text-white shadow-lg'
+                            key={m}
+                            onClick={() => setLayoutMode(m)}
+                            className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-all ${layoutMode === m
+                                ? 'bg-gradient-to-r from-zinc-700 to-zinc-600 text-white shadow-lg'
                                 : 'text-zinc-400 hover:text-white hover:bg-zinc-800'
                                 }`}
                             title={`${label} (${shortcut})`}
                         >
-                            {LAYOUT_ICONS[mode]}
+                            {LAYOUT_ICONS[m]}
                             <span className="hidden md:inline">{label}</span>
                         </button>
                     ))}
@@ -249,11 +285,11 @@ export default function CyclingStudio({ onClose }: CyclingStudioProps) {
                     onChange={(e) => setInputUrl(e.target.value)}
                     onKeyDown={handleKeyDown}
                     placeholder="Paste YouTube URL or video link..."
-                    className="flex-1 bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/50"
+                    className="flex-1 bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500/50"
                 />
                 <button
                     onClick={handleLoadVideo}
-                    className="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white font-semibold rounded-lg transition-colors flex items-center gap-2"
+                    className={`px-4 py-2 bg-zinc-700 hover:bg-zinc-600 text-white font-semibold rounded-lg transition-colors flex items-center gap-2 border border-zinc-600`}
                 >
                     <Play className="w-4 h-4" />
                     Load
@@ -311,11 +347,9 @@ export default function CyclingStudio({ onClose }: CyclingStudioProps) {
                         />
                     ) : (
                         <div className="flex flex-col items-center justify-center text-zinc-600 p-8">
-                            <Play className="w-16 h-16 mb-4 opacity-30" />
+                            <Activity className="w-16 h-16 mb-4 opacity-30" />
                             <p className="text-lg font-medium mb-2">No Video Loaded</p>
-                            <p className="text-sm text-zinc-500 text-center max-w-xs">
-                                Paste a YouTube URL or video link above to start your cycling session
-                            </p>
+                            <p className="text-sm text-zinc-500 text-center max-w-xs">{config.placeholderText}</p>
                         </div>
                     )}
                 </div>
@@ -331,9 +365,9 @@ export default function CyclingStudio({ onClose }: CyclingStudioProps) {
                             <span className="text-3xl font-black text-white">Z</span>
                         </div>
 
-                        <h3 className="text-xl font-bold text-white mb-2">Zwift</h3>
+                        <h3 className="text-xl font-bold text-white mb-2">Zwift {mode === 'running' ? 'Run' : ''}</h3>
                         <p className="text-sm text-zinc-400 mb-6 max-w-xs">
-                            Launch Zwift in a separate window for the best cycling experience
+                            Launch Zwift in a separate window for the best {mode === 'cycling' ? 'cycling' : 'running'} experience
                         </p>
 
                         <div className="flex flex-col gap-3 w-full max-w-xs">
@@ -367,7 +401,7 @@ export default function CyclingStudio({ onClose }: CyclingStudioProps) {
             <footer className="flex items-center justify-between px-6 py-2 bg-zinc-900 border-t border-zinc-800 text-xs text-zinc-500">
                 <div className="flex items-center gap-4">
                     <span>Layout: <span className="text-zinc-300">{LAYOUT_OPTIONS.find(l => l.mode === layoutMode)?.label}</span></span>
-                    {videoUrl && <span>Video: <span className="text-cyan-400 truncate max-w-xs">{videoUrl}</span></span>}
+                    {videoUrl && <span>Video: <span className="text-zinc-400 truncate max-w-xs">{videoUrl}</span></span>}
                 </div>
                 <div className="flex items-center gap-2">
                     <kbd className="px-1.5 py-0.5 bg-zinc-800 rounded text-zinc-400">Space</kbd>
@@ -381,4 +415,3 @@ export default function CyclingStudio({ onClose }: CyclingStudioProps) {
         </div>
     );
 }
-

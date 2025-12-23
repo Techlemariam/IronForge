@@ -32,21 +32,21 @@ export const useVoiceCommand = (onCommand: (type: string, value: number | string
 
         // Handle permission denial or other fatal errors
         recognition.onerror = (event: any) => {
-            console.error("Speech Recognition Error:", event.error);
-            if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
-                setIsListening(false);
-            }
+          console.error("Speech Recognition Error:", event.error);
+          if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
+            setIsListening(false);
+          }
         };
 
         recognition.onend = () => {
           // Only auto-restart if we are still supposed to be listening
           if (isListening) {
             try {
-                recognition.start();
+              recognition.start();
             } catch (e) {
-                // If restart fails (e.g. permanent permission denial), stop the state
-                console.error("Failed to restart recognition", e);
-                setIsListening(false);
+              // If restart fails (e.g. permanent permission denial), stop the state
+              console.error("Failed to restart recognition", e);
+              setIsListening(false);
             }
           }
         };
@@ -54,6 +54,7 @@ export const useVoiceCommand = (onCommand: (type: string, value: number | string
         recognitionRef.current = recognition;
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isListening]);
 
   const processCommand = (text: string) => {
@@ -63,10 +64,10 @@ export const useVoiceCommand = (onCommand: (type: string, value: number | string
         'one': 1, 'two': 2, 'three': 3, 'four': 4, 'five': 5,
         'six': 6, 'seven': 7, 'eight': 8, 'nine': 9, 'ten': 10
       };
-      
+
       const match = str.match(/\d+/);
       if (match) return parseInt(match[0]);
-      
+
       for (const [word, num] of Object.entries(wordsToNumbers)) {
         if (str.includes(word)) return num;
       }
@@ -95,9 +96,9 @@ export const useVoiceCommand = (onCommand: (type: string, value: number | string
 
     // 3. Completion Command ("Complete", "Done", "Finish", "Next")
     if (text.includes('complete') || text.includes('done') || text.includes('finish') || text.includes('next')) {
-        setLastCommand('Complete Set');
-        onCommand('COMPLETE', 0);
-        return;
+      setLastCommand('Complete Set');
+      onCommand('COMPLETE', 0);
+      return;
     }
   };
 

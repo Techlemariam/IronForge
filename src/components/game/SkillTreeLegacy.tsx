@@ -150,7 +150,7 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onExit, unlockedIds, wellness }) 
                     className="pointer-events-auto flex items-center gap-2 text-[#46321d] hover:text-black transition-colors uppercase font-serif font-bold text-xs tracking-widest bg-[#c79c6e] border-2 border-[#46321d] px-4 py-2 rounded shadow-xl"
                 >
                     <ArrowLeft className="w-4 h-4" />
-                    <span className="hidden sm:inline">Close Talent Tree</span>
+                    <span className="hidden sm:inline">Close Neural Lattice</span>
                 </button>
 
                 <div className="flex flex-col items-end pointer-events-auto">

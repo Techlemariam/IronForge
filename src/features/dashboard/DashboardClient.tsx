@@ -14,13 +14,15 @@ import { mapSessionToQuest } from '@/utils/typeMappers';
 import { OracleRecommendation } from '@/types';
 import OracleCard from '@/components/OracleCard';
 import UltrathinkDashboard from '@/components/UltrathinkDashboard';
-import { ProgressionService } from '@/services/progression';
+import { getProgressionAction } from '@/actions/progression';
 import GeminiLiveCoach from '@/components/GeminiLiveCoach';
-import { Mic, Bike } from 'lucide-react';
+import { Mic, Bike, Footprints } from 'lucide-react';
 import SettingsCog from '@/components/core/SettingsCog';
 import ConfigModal from '@/components/core/ConfigModal';
 import TrainingCenter from '@/features/training/TrainingCenter';
 import { TrainingPath, LayerLevel, WeeklyMastery } from '@/types/training';
+import { CardioMode } from '@/features/training/CardioStudio';
+import { OracleChat } from '@/components/OracleChat';
 
 // Dynamic Imports with disabling SSR for client-heavy features
 const RoutineSelector = dynamic(() => import('@/features/training/RoutineSelector'), { ssr: false });
@@ -28,7 +30,7 @@ const IronMines = dynamic(() => import('@/features/training/IronMines'), { ssr: 
 const CombatArena = dynamic(() => import('@/features/game/CombatArena'), { ssr: false });
 const Marketplace = dynamic(() => import('@/components/game/Marketplace'), { ssr: false });
 const TheForge = dynamic(() => import('@/features/game/TheForge'), { ssr: false });
-const CyclingStudio = dynamic(() => import('@/features/training/CyclingStudio'), { ssr: false });
+const CardioStudio = dynamic(() => import('@/features/training/CardioStudio'), { ssr: false });
 
 // UI Components
 const CoachToggle: React.FC<{ onClick: () => void }> = ({ onClick }) => (
@@ -40,7 +42,7 @@ const CoachToggle: React.FC<{ onClick: () => void }> = ({ onClick }) => (
     </button>
 );
 
-type View = 'citadel' | 'war_room' | 'iron_mines' | 'quest_completion' | 'armory' | 'bestiary' | 'world_map' | 'grimoire' | 'guild_hall' | 'arena' | 'marketplace' | 'combat_arena' | 'forge' | 'training_center' | 'cycling_studio';
+type View = 'citadel' | 'war_room' | 'iron_mines' | 'quest_completion' | 'armory' | 'bestiary' | 'world_map' | 'grimoire' | 'guild_hall' | 'arena' | 'marketplace' | 'combat_arena' | 'forge' | 'training_center' | 'cardio_studio';
 
 interface DashboardState {
     isCodexLoading: boolean;
@@ -65,6 +67,7 @@ interface DashboardState {
     recoveryLevel: LayerLevel;
     totalExperience: number;
     weeklyMastery?: WeeklyMastery;
+    cardioMode?: CardioMode;
 }
 
 type DashboardAction =
@@ -80,7 +83,8 @@ type DashboardAction =
     | { type: 'START_GENERATED_QUEST'; payload: Session }
     | { type: 'RECALCULATE_PROGRESSION'; payload: { level: number } }
     | { type: 'TOGGLE_COACH' }
-    | { type: 'UPDATE_PATH'; payload: TrainingPath };
+    | { type: 'UPDATE_PATH'; payload: TrainingPath }
+    | { type: 'SET_CARDIO_MODE'; payload: CardioMode };
 
 const dashboardReducer = (state: DashboardState, action: DashboardAction): DashboardState => {
     switch (action.type) {
@@ -127,6 +131,7 @@ const dashboardReducer = (state: DashboardState, action: DashboardAction): Dashb
             return { ...state, level: action.payload.level };
         case 'TOGGLE_COACH': return { ...state, isCoachOpen: !state.isCoachOpen };
         case 'UPDATE_PATH': return { ...state, activePath: action.payload };
+        case 'SET_CARDIO_MODE': return { ...state, cardioMode: action.payload, currentView: 'cardio_studio' };
         default: return state;
     }
 };
@@ -156,7 +161,8 @@ const Citadel: React.FC<{ state: DashboardState; dispatch: React.Dispatch<Dashbo
                 <NavButton onClick={() => dispatch({ type: 'SET_VIEW', payload: 'world_map' })}>World Map</NavButton>
                 <NavButton onClick={() => dispatch({ type: 'SET_VIEW', payload: 'arena' })}>Arena</NavButton>
                 <NavButton onClick={() => dispatch({ type: 'SET_VIEW', payload: 'marketplace' })}>Market</NavButton>
-                <NavButton onClick={() => dispatch({ type: 'SET_VIEW', payload: 'cycling_studio' })}><Bike className="w-4 h-4 inline mr-1" />Cycling</NavButton>
+                <NavButton onClick={() => dispatch({ type: 'SET_CARDIO_MODE', payload: 'cycling' })}><Bike className="w-4 h-4 inline mr-1" />Cycling</NavButton>
+                <NavButton onClick={() => dispatch({ type: 'SET_CARDIO_MODE', payload: 'running' })}><Footprints className="w-4 h-4 inline mr-1" />Treadmill</NavButton>
             </div>
         </section>
 
@@ -300,6 +306,7 @@ export interface InitialDataProps {
     recoveryLevel?: LayerLevel;
     totalExperience: number;
     weeklyMastery?: WeeklyMastery;
+    userId: string;
 }
 
 const DashboardClient: React.FC<InitialDataProps> = (initialData) => {
@@ -325,7 +332,8 @@ const DashboardClient: React.FC<InitialDataProps> = (initialData) => {
         mobilityLevel: initialData.mobilityLevel || 'NONE',
         recoveryLevel: initialData.recoveryLevel || 'NONE',
         totalExperience: initialData.totalExperience,
-        weeklyMastery: initialData.weeklyMastery
+        weeklyMastery: initialData.weeklyMastery,
+        cardioMode: 'cycling'
     };
 
     const [state, dispatch] = useReducer(dashboardReducer, initialStateFromProps);
@@ -361,8 +369,10 @@ const DashboardClient: React.FC<InitialDataProps> = (initialData) => {
             console.error("Uplink to Hevy failed:", error);
             alert("WARNING: Loot secured locally, but Uplink to Hevy failed. Check console for details.");
         } finally {
-            const newProgression = await ProgressionService.getProgressionState();
-            dispatch({ type: 'RECALCULATE_PROGRESSION', payload: { level: newProgression.level } });
+            const newProgression = await getProgressionAction();
+            if (newProgression) {
+                dispatch({ type: 'RECALCULATE_PROGRESSION', payload: { level: newProgression.level } });
+            }
             dispatch({ type: 'SAVE_WORKOUT' });
         }
     };
@@ -392,7 +402,7 @@ const DashboardClient: React.FC<InitialDataProps> = (initialData) => {
             case 'arena': return <Arena onClose={() => dispatch({ type: 'SET_VIEW', payload: 'citadel' })} />;
             case 'marketplace': return <Marketplace onClose={() => dispatch({ type: 'SET_VIEW', payload: 'citadel' })} />;
             case 'combat_arena': return state.activeBossId ? <CombatArena bossId={state.activeBossId} onClose={() => dispatch({ type: 'SET_VIEW', payload: 'world_map' })} /> : <Citadel state={state} dispatch={dispatch} />;
-            case 'cycling_studio': return <CyclingStudio onClose={() => dispatch({ type: 'SET_VIEW', payload: 'citadel' })} />;
+            case 'cardio_studio': return <CardioStudio mode={state.cardioMode || 'cycling'} onClose={() => dispatch({ type: 'SET_VIEW', payload: 'citadel' })} />;
 
             default: return <Citadel state={state} dispatch={dispatch} />;
         }
@@ -425,6 +435,14 @@ const DashboardClient: React.FC<InitialDataProps> = (initialData) => {
 
             <CoachToggle onClick={() => dispatch({ type: 'TOGGLE_COACH' })} />
             <GeminiLiveCoach isOpen={state.isCoachOpen} onClose={() => dispatch({ type: 'TOGGLE_COACH' })} />
+
+            <OracleChat context={{
+                userId: initialData.userId,
+                path: state.activePath,
+                wellness: state.wellnessData,
+                mastery: state.weeklyMastery,
+                indices: state.ttb
+            }} />
         </div>
     );
 };

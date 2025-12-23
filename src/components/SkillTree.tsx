@@ -1,3 +1,4 @@
+'use client';
 
 import React, { useMemo, useState, useCallback, useEffect } from 'react';
 import ReactFlow, {
@@ -8,60 +9,66 @@ import ReactFlow, {
     Handle,
     Position,
     NodeProps,
-    Edge
+    Edge,
+    Node
 } from 'reactflow';
-import { SKILL_TREE, SESSIONS } from '../data/static';
-import { SkillNode, SkillStatus, ExerciseLogic, IntervalsWellness } from '../types';
-import { Lock, Zap, ArrowLeft, X, TrendingUp, Scroll, Wind, Sparkles, TrendingDown, Shield, Check, ArrowUpCircle } from 'lucide-react';
+import 'reactflow/dist/style.css'; // Ensure base styles are imported
+
+import { SKILL_TREE_V2, getNodeById } from '../data/skill-tree-v2';
+import { SkillNodeV2, SkillStatus, NodeTier } from '../types/skills';
+import { IntervalsWellness } from '../types';
+import { Lock, Zap, ArrowLeft, X, TrendingUp, Scroll, Wind, Sparkles, TrendingDown, Shield, Check, ArrowUpCircle, Octagon, Crown, Star } from 'lucide-react';
 import { useSkills } from '../context/SkillContext';
-import { calculateAdaptiveCost, getMaxTM } from '../utils';
+import { calculateAdaptiveCost } from '../utils';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface SkillTreeProps {
     onExit: () => void;
-    unlockedIds: Set<string>;
     wellness: IntervalsWellness | null;
 }
 
-// --- LOGIC HELPERS ---
-const checkRequirement = (req: SkillNode['requirements'][0], unlockedIds: Set<string>, wellness: IntervalsWellness | null): boolean => {
-    if (req.type === 'achievement_count') return unlockedIds.size >= req.value;
-    if (req.type === 'vo2max_value') {
-        if (!wellness || !wellness.vo2max) return false;
-        return req.comparison === 'gte' ? wellness.vo2max >= req.value : wellness.vo2max <= req.value;
-    }
-    if (req.type === '1rm_weight') {
-        const maxTM = getMaxTM(req.exercise_id);
-        return req.comparison === 'gte' ? maxTM >= req.value : maxTM <= req.value;
-    }
-    if (req.exercise_id === 'any') return true;
-    return false;
+// --- TIER VISUAL CONSTANTS ---
+const TIER_SIZE = {
+    minor: 50,
+    notable: 70,
+    keystone: 100
 };
 
 // --- CUSTOM NODE COMPONENT ---
 interface CustomNodeData {
-    node: SkillNode;
+    node: SkillNodeV2;
     status: SkillStatus;
     isAffordable: boolean;
+    tier: NodeTier;
+    isActiveKeystone: boolean;
 }
 
 const CustomSkillNode = ({ data, selected }: NodeProps<CustomNodeData>) => {
-    const { node, status, isAffordable } = data;
+    const { node, status, isAffordable, tier, isActiveKeystone } = data;
     const isMastered = status === SkillStatus.MASTERED;
     const isUnlocked = status === SkillStatus.UNLOCKED;
     const isLocked = status === SkillStatus.LOCKED;
     const isEndurance = node.currency === 'kinetic_shard';
+
+    // Base Sizes
+    const size = TIER_SIZE[tier];
+    const iconSize = tier === 'keystone' ? 48 : (tier === 'notable' ? 32 : 24);
 
     // Style Logic
     let borderClass = "border-zinc-800";
     let bgClass = "bg-[#0a0a0a]";
     let iconColor = "text-zinc-600";
     let glow = "";
+    let borderStyle = "border-2";
+
+    if (tier === 'keystone') borderStyle = "border-4";
+    if (tier === 'notable') borderStyle = "border-3";
 
     if (isMastered) {
         borderClass = isEndurance ? "border-cyan-500" : "border-[#ffd700]";
-        bgClass = isEndurance ? "bg-cyan-950" : "bg-yellow-950";
+        bgClass = isEndurance ? "bg-cyan-950" : "bg-yellow-950/50";
         iconColor = isEndurance ? "text-cyan-400" : "text-[#ffd700]";
-        glow = isEndurance ? "shadow-[0_0_20px_rgba(6,182,212,0.5)]" : "shadow-[0_0_20px_rgba(255,215,0,0.5)]";
+        glow = isEndurance ? "shadow-[0_0_30px_rgba(6,182,212,0.6)]" : "shadow-[0_0_30px_rgba(255,215,0,0.6)]";
     } else if (isUnlocked) {
         if (isAffordable) {
             borderClass = "border-green-500";
@@ -80,23 +87,41 @@ const CustomSkillNode = ({ data, selected }: NodeProps<CustomNodeData>) => {
         borderClass = "border-white ring-2 ring-white";
     }
 
+    // Feature: Active Keystone Animation
+    if (isActiveKeystone) {
+        glow += " ring-4 ring-yellow-500 ring-opacity-50 animate-pulse";
+    }
+
+    // Shape for Keystone (Octagon-ish via CSS clip-path or just rounded-xl)
+    // Using rounded-full for all for consistency with ReactFlow handles, can customize later.
+    const shapeClass = tier === 'keystone' ? "rounded-full" : "rounded-full";
+
     return (
-        <div className={`relative w-16 h-16 rounded-full border-2 ${borderClass} ${bgClass} ${glow} flex items-center justify-center transition-all duration-300`}>
-            {/* Handles for connections (Hidden visually but needed for React Flow logic) */}
-            <Handle type="target" position={Position.Top} className="opacity-0" />
-            <Handle type="source" position={Position.Bottom} className="opacity-0" />
+        <div
+            style={{ width: size, height: size }}
+            className={`relative ${shapeClass} ${borderStyle} ${borderClass} ${bgClass} ${glow} flex items-center justify-center transition-all duration-300 group`}
+        >
+            {/* Handles for connections */}
+            <Handle type="target" position={Position.Top} className="opacity-0 w-full h-full" isConnectable={false} />
+            <Handle type="source" position={Position.Bottom} className="opacity-0 w-full h-full" isConnectable={false} />
 
             {/* Icon */}
-            <div className={`${iconColor}`}>
-                {node.category === 'push' && <Zap className="w-8 h-8" />}
-                {node.category === 'legs' && <TrendingUp className="w-8 h-8" />}
-                {node.category === 'pull' && <Lock className="w-8 h-8" />}
-                {node.category === 'core' && <Shield className="w-8 h-8" />}
-                {node.category === 'endurance' && <Wind className="w-8 h-8" />}
+            <div className={`${iconColor} flex items-center justify-center`}>
+                {tier === 'keystone' && <Crown size={iconSize} />}
+                {tier === 'notable' && <Star size={iconSize} />}
+                {tier === 'minor' && (
+                    <>
+                        {node.path === 'juggernaut' && <Shield size={iconSize} />}
+                        {node.path === 'engine' && <Wind size={iconSize} />}
+                        {node.path === 'warden' && <Zap size={iconSize} />}
+                        {node.path === 'titan' && <TrendingUp size={iconSize} />}
+                        {node.path === 'sage' && <Sparkles size={iconSize} />}
+                    </>
+                )}
             </div>
 
             {/* Affordability Badge */}
-            {isUnlocked && isAffordable && (
+            {isUnlocked && isAffordable && !isMastered && (
                 <div className="absolute -top-1 -right-1 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center shadow-lg border border-black z-10 animate-bounce">
                     <ArrowUpCircle className="w-3 h-3 text-black" />
                 </div>
@@ -104,10 +129,15 @@ const CustomSkillNode = ({ data, selected }: NodeProps<CustomNodeData>) => {
 
             {/* Locked Overlay */}
             {isLocked && (
-                <div className="absolute inset-0 bg-black/60 rounded-full flex items-center justify-center">
-                    <Lock className="w-6 h-6 text-zinc-600" />
+                <div className={`absolute inset-0 bg-black/60 ${shapeClass} flex items-center justify-center`}>
+                    <Lock className="w-1/2 h-1/2 text-zinc-600" />
                 </div>
             )}
+
+            {/* Hover Tooltip (Simple) */}
+            <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-black text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 whitespace-nowrap pointer-events-none z-50 border border-zinc-700">
+                {node.title}
+            </div>
         </div>
     );
 };
@@ -116,71 +146,76 @@ const nodeTypes = {
     skillNode: CustomSkillNode,
 };
 
-const SkillTree: React.FC<SkillTreeProps> = ({ onExit, unlockedIds, wellness }) => {
-    const { purchasedSkillIds, unlockSkill, canAfford, availableTalentPoints, availableKineticShards } = useSkills();
+const SkillTree: React.FC<SkillTreeProps> = ({ onExit, wellness }) => {
+    const {
+        purchasedSkillIds,
+        unlockSkill,
+        canAfford,
+        availableTalentPoints,
+        availableKineticShards,
+        getNodeStatus,
+        refundSkill,
+        activeKeystoneId
+    } = useSkills();
+
     const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
 
     // --- DATA PREPARATION ---
-    const { nodes, edges, masteryStats } = useMemo(() => {
-        // 1. Calculate Status
-        const nodesWithStatus = SKILL_TREE.map(node => {
-            if (purchasedSkillIds.has(node.id)) return { ...node, status: SkillStatus.MASTERED };
+    const { nodes, edges } = useMemo(() => {
+        // 1. Map to React Flow Nodes
+        const flowNodes: Node[] = SKILL_TREE_V2.map(node => {
+            const status = getNodeStatus(node.id);
+            const affordable = status === SkillStatus.UNLOCKED && canAfford(node.id);
 
-            const reqsMet = node.requirements.every(req => checkRequirement(req, unlockedIds, wellness));
-            const parentsMastered = node.parents.length === 0 || node.parents.every(pid => purchasedSkillIds.has(pid));
-
-            if (reqsMet && parentsMastered) return { ...node, status: SkillStatus.UNLOCKED };
-            return { ...node, status: SkillStatus.LOCKED };
+            return {
+                id: node.id,
+                type: 'skillNode',
+                position: { x: node.position.x, y: node.position.y },
+                data: {
+                    node,
+                    status,
+                    isAffordable: affordable,
+                    tier: node.tier,
+                    isActiveKeystone: activeKeystoneId === node.id
+                },
+                // Z-Index: Keystones on top, then Notables, then Minors
+                zIndex: node.tier === 'keystone' ? 3 : (node.tier === 'notable' ? 2 : 1),
+            };
         });
 
-        // 2. Map to React Flow Nodes
-        const flowNodes = nodesWithStatus.map(node => ({
-            id: node.id,
-            type: 'skillNode',
-            position: { x: node.x, y: node.y },
-            data: {
-                node,
-                status: node.status,
-                isAffordable: node.status === SkillStatus.UNLOCKED && canAfford(node.id)
-            },
-        }));
-
-        // 3. Map to React Flow Edges
+        // 2. Map to React Flow Edges
         const flowEdges: Edge[] = [];
-        nodesWithStatus.forEach(node => {
+        SKILL_TREE_V2.forEach(node => {
             node.parents.forEach(parentId => {
-                const parent = nodesWithStatus.find(n => n.id === parentId);
-                const isActive = parent?.status === SkillStatus.MASTERED;
+                const parentNode = SKILL_TREE_V2.find(n => n.id === parentId);
+                const parentStatus = getNodeStatus(parentId);
+                const nodeStatus = getNodeStatus(node.id);
+
+                // Edge is "active" if both nodes are mastered (path connected)
+                // OR if parent is mastered and this node is unlocked/mastered (path reachable)
+                const isPathActive = (parentStatus === SkillStatus.MASTERED && nodeStatus !== SkillStatus.LOCKED);
+                const isFullyMastered = (parentStatus === SkillStatus.MASTERED && nodeStatus === SkillStatus.MASTERED);
+
                 const isEndurance = node.currency === 'kinetic_shard';
 
                 flowEdges.push({
                     id: `e-${parentId}-${node.id}`,
                     source: parentId,
                     target: node.id,
-                    animated: isActive,
+                    animated: isPathActive && !isFullyMastered,
                     style: {
-                        stroke: isActive ? (isEndurance ? '#06b6d4' : '#ffd700') : '#333',
-                        strokeWidth: isActive ? 2 : 2
+                        stroke: isFullyMastered
+                            ? (isEndurance ? '#06b6d4' : '#ffd700')
+                            : (isPathActive ? '#555' : '#333'),
+                        strokeWidth: isFullyMastered ? 3 : 1,
+                        opacity: isPathActive ? 1 : 0.3
                     },
                 });
             });
         });
 
-        // 4. Calculate Stats
-        const totalNodes = SKILL_TREE.length;
-        const masteredCount = purchasedSkillIds.size;
-        const affordableCount = nodesWithStatus.filter(n => n.status === SkillStatus.UNLOCKED && canAfford(n.id)).length;
-
-        return {
-            nodes: flowNodes,
-            edges: flowEdges,
-            masteryStats: {
-                total: totalNodes,
-                mastered: masteredCount,
-                affordable: affordableCount
-            }
-        };
-    }, [unlockedIds, wellness, purchasedSkillIds, availableTalentPoints, availableKineticShards, canAfford]);
+        return { nodes: flowNodes, edges: flowEdges };
+    }, [getNodeStatus, canAfford, activeKeystoneId]);
 
     const [rfNodes, setNodes, onNodesChange] = useNodesState(nodes);
     const [rfEdges, setEdges, onEdgesChange] = useEdgesState(edges);
@@ -197,72 +232,58 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onExit, unlockedIds, wellness }) 
 
     const selectedNodeData = useMemo(() => {
         if (!selectedNodeId) return null;
-        const n = nodes.find(n => n.id === selectedNodeId);
-        return n ? n.data : null;
-    }, [selectedNodeId, nodes]);
+        const n = SKILL_TREE_V2.find(n => n.id === selectedNodeId);
+        if (!n) return null;
+        const status = getNodeStatus(n.id);
+        const affordable = canAfford(n.id);
+        return { ...n, status, affordable };
+    }, [selectedNodeId, getNodeStatus, canAfford]);
+
+    const handleUnlock = () => {
+        if (selectedNodeId) {
+            const res = unlockSkill(selectedNodeId);
+            if (!res.success) {
+                // Could verify toast here
+            }
+        }
+    };
+
+    const handleRefund = () => {
+        if (selectedNodeId) {
+            refundSkill(selectedNodeId);
+        }
+    }
 
     return (
-        <div className="h-screen w-screen bg-[#050505] flex flex-col font-sans text-zinc-200">
-
-            {/* --- HUD --- */}
-            <div className="absolute top-0 left-0 right-0 z-40 p-6 flex justify-between items-start pointer-events-none">
-                <button
-                    onClick={onExit}
-                    className="pointer-events-auto flex items-center gap-2 text-[#46321d] hover:text-black transition-colors uppercase font-serif font-bold text-xs tracking-widest bg-[#c79c6e] border-2 border-[#46321d] px-4 py-2 rounded shadow-xl"
-                >
-                    <ArrowLeft className="w-4 h-4" />
-                    <span className="hidden sm:inline">Back to Hub</span>
-                </button>
-
-                <div className="flex flex-col items-end pointer-events-auto gap-3">
-                    {/* Progress Card */}
-                    <div className="bg-zinc-900 border-2 border-[#c79c6e] px-4 py-3 rounded shadow-xl text-white min-w-[220px]">
-                        <div className="flex justify-between items-center mb-2">
-                            <h1 className="text-sm font-serif font-bold text-[#c79c6e] uppercase tracking-widest flex items-center gap-2">
-                                <Sparkles className="w-4 h-4" />
-                                Talent Tree
-                            </h1>
-                            <span className="text-xs font-mono text-zinc-400">{masteryStats.mastered}/{masteryStats.total}</span>
-                        </div>
-
-                        {/* Progress Bar */}
-                        <div className="w-full h-1.5 bg-zinc-800 rounded-full overflow-hidden mb-3 border border-zinc-800">
-                            <div
-                                className="h-full bg-[#c79c6e] shadow-[0_0_10px_#c79c6e] transition-all duration-700"
-                                style={{ width: `${(masteryStats.mastered / masteryStats.total) * 100}%` }}
-                            ></div>
-                        </div>
-
-                        {/* Available Notification */}
-                        {masteryStats.affordable > 0 ? (
-                            <div className="text-[10px] text-green-400 font-bold uppercase tracking-wide flex items-center gap-1 animate-pulse">
-                                <ArrowUpCircle className="w-3 h-3" />
-                                {masteryStats.affordable} Upgrade{masteryStats.affordable > 1 ? 's' : ''} Available
-                            </div>
-                        ) : (
-                            <div className="text-[10px] text-zinc-600 font-bold uppercase tracking-wide flex items-center gap-1">
-                                <Lock className="w-3 h-3" />
-                                More XP Required
-                            </div>
-                        )}
+        <div className="fixed inset-0 z-50 bg-[#050505] flex flex-col text-white animate-in fade-in duration-300">
+            {/* Header */}
+            <div className="flex items-center justify-between p-4 border-b border-zinc-900 bg-[#0a0a0a] z-10 shadow-md">
+                <div className="flex items-center gap-4">
+                    <button onClick={onExit} className="p-2 hover:bg-zinc-800 rounded-full transition-colors text-zinc-400 hover:text-white">
+                        <ArrowLeft className="w-6 h-6" />
+                    </button>
+                    <div>
+                        <h1 className="text-xl font-bold uppercase tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 to-yellow-200">
+                            Neural Lattice
+                        </h1>
+                        <p className="text-xs text-zinc-500 font-mono">V2.0 // NEURAL LINK ESTABLISHED</p>
                     </div>
+                </div>
 
-                    {/* Resources */}
-                    <div className="flex gap-2">
-                        <div className="bg-zinc-900 border border-[#ffd700] px-3 py-1.5 rounded shadow-lg text-[#ffd700] flex items-center gap-2 min-w-[80px] justify-center">
-                            <span className="text-xs font-bold uppercase tracking-wider">TP</span>
-                            <span className="font-mono font-bold text-lg">{availableTalentPoints}</span>
-                        </div>
-                        <div className="bg-zinc-900 border border-cyan-400 px-3 py-1.5 rounded shadow-lg text-cyan-400 flex items-center gap-2 min-w-[80px] justify-center">
-                            <span className="text-xs font-bold uppercase tracking-wider">KS</span>
-                            <span className="font-mono font-bold text-lg">{availableKineticShards}</span>
-                        </div>
+                <div className="flex items-center gap-6">
+                    <div className="flex items-center gap-2 px-4 py-2 bg-yellow-950/30 border border-yellow-900/50 rounded-lg">
+                        <div className="w-3 h-3 bg-yellow-500 rounded-full shadow-[0_0_10px_rgba(234,179,8,0.5)]"></div>
+                        <span className="font-mono font-bold text-yellow-500">{availableTalentPoints} TP</span>
+                    </div>
+                    <div className="flex items-center gap-2 px-4 py-2 bg-cyan-950/30 border border-cyan-900/50 rounded-lg">
+                        <div className="w-3 h-3 bg-cyan-500 rounded-full shadow-[0_0_10px_rgba(6,182,212,0.5)]"></div>
+                        <span className="font-mono font-bold text-cyan-400">{availableKineticShards} KS</span>
                     </div>
                 </div>
             </div>
 
-            {/* --- REACT FLOW CANVAS --- */}
-            <div className="flex-1 border-t border-zinc-900 relative">
+            {/* Main Area */}
+            <div className="flex-1 relative">
                 <ReactFlow
                     nodes={rfNodes}
                     edges={rfEdges}
@@ -271,129 +292,122 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onExit, unlockedIds, wellness }) 
                     onNodeClick={onNodeClick}
                     nodeTypes={nodeTypes}
                     fitView
-                    minZoom={0.5}
+                    minZoom={0.2}
                     maxZoom={2}
+                    defaultEdgeOptions={{ type: 'default', animated: false }}
                     className="bg-[#050505]"
                 >
                     <Background color="#222" gap={20} size={1} />
-                    <Controls className="bg-zinc-800 border-zinc-700 text-white" />
+                    <Controls position="bottom-right" className="bg-zinc-900 border-zinc-800 fill-zinc-400" />
                 </ReactFlow>
 
-                {/* Atmosphere Overlay */}
-                <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,transparent_20%,#050505_100%)]"></div>
-            </div>
-
-            {/* --- DETAILS DRAWER --- */}
-            {selectedNodeData && (
-                <div className="absolute bottom-6 right-6 z-50 animate-slide-up w-80 bg-[#111] border-2 border-[#444] text-zinc-300 rounded-lg shadow-[0_0_50px_rgba(0,0,0,0.8)] p-6 font-sans text-sm backdrop-blur-md">
-
-                    {/* Header */}
-                    <div className="flex justify-between items-start mb-4">
-                        <div className="flex items-center gap-3">
-                            <div className={`w-12 h-12 rounded border-2 flex items-center justify-center ${selectedNodeData.status === SkillStatus.MASTERED
-                                ? (selectedNodeData.node.currency === 'kinetic_shard' ? 'bg-cyan-950/50 border-cyan-500 text-cyan-400' : 'bg-yellow-950/50 border-yellow-500 text-yellow-400')
-                                : 'bg-zinc-900 border-zinc-700 text-zinc-600'
-                                }`}>
-                                {selectedNodeData.node.category === 'push' && <Zap className="w-6 h-6" />}
-                                {selectedNodeData.node.category === 'legs' && <TrendingUp className="w-6 h-6" />}
-                                {selectedNodeData.node.category === 'pull' && <Lock className="w-6 h-6" />}
-                                {selectedNodeData.node.category === 'core' && <Shield className="w-6 h-6" />}
-                                {selectedNodeData.node.category === 'endurance' && <Wind className="w-6 h-6" />}
+                {/* Info Drawer */}
+                <AnimatePresence>
+                    {selectedNodeData && (
+                        <motion.div
+                            initial={{ x: '100%' }}
+                            animate={{ x: 0 }}
+                            exit={{ x: '100%' }}
+                            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+                            className="absolute top-0 right-0 h-full w-full md:w-96 bg-[#0a0a0a]/95 backdrop-blur-xl border-l border-zinc-800 shadow-2xl p-6 overflow-y-auto z-20"
+                        >
+                            <div className="flex justify-end mb-4">
+                                <button onClick={() => setSelectedNodeId(null)} className="p-1 hover:bg-zinc-800 rounded text-zinc-500">
+                                    <X className="w-6 h-6" />
+                                </button>
                             </div>
-                            <div>
-                                <h3 className={`font-serif font-bold text-lg leading-none ${selectedNodeData.status === SkillStatus.MASTERED ? 'text-white' : 'text-zinc-400'
-                                    }`}>
-                                    {selectedNodeData.node.title}
-                                </h3>
-                                <span className="text-[10px] uppercase font-bold tracking-wider text-zinc-600">
-                                    {selectedNodeData.node.category} Mastery
-                                </span>
-                            </div>
-                        </div>
-                        <button onClick={() => setSelectedNodeId(null)}><X className="w-5 h-5 hover:text-white transition-colors" /></button>
-                    </div>
 
-                    {/* Description */}
-                    <div className="bg-zinc-900/50 p-3 rounded border border-white/5 mb-4">
-                        <p className="text-zinc-300 italic leading-relaxed">&quot;{selectedNodeData.node.description}&quot;</p>
-                    </div>
-
-                    {/* Requirements */}
-                    {selectedNodeData.status !== SkillStatus.MASTERED && selectedNodeData.node.requirements.length > 0 && (
-                        <div className="mb-3 text-xs">
-                            <span className="uppercase font-bold text-red-400">Prerequisites:</span>
-                            <ul className="mt-1 space-y-1">
-                                {selectedNodeData.node.requirements.map((req: any, i: number) => {
-                                    const met = checkRequirement(req, unlockedIds, wellness);
-                                    return (
-                                        <li key={i} className={`flex items-center gap-2 ${met ? 'text-green-500' : 'text-zinc-500'}`}>
-                                            {met ? <Check className="w-3 h-3" /> : <Lock className="w-3 h-3" />}
-                                            <span>
-                                                {req.type === 'vo2max_value' && `VO2 Max ≥ ${req.value}`}
-                                                {req.type === 'achievement_count' && `Unlock ${req.value} Achievements`}
-                                                {req.type === '1rm_weight' && `Lift ${req.value}kg+ (1RM)`}
-                                            </span>
-                                        </li>
-                                    )
-                                })}
-                            </ul>
-                        </div>
-                    )}
-
-                    {/* Action Bar */}
-                    {(() => {
-                        const { cost, modifier } = calculateAdaptiveCost(selectedNodeData.node, wellness);
-                        const hasModifier = modifier !== 0;
-                        const canBuy = canAfford(selectedNodeData.node.id);
-
-                        return (
-                            <div className="border-t border-white/10 pt-3 mt-2">
-                                <div className="flex justify-between items-center mb-3">
-                                    <span className="text-xs text-zinc-500 uppercase font-bold tracking-widest">Cost</span>
-                                    <p className="text-zinc-500 font-serif italic mt-2 max-w-lg">
-                                        &quot;Choose wisely, Titan. Each path demands sacrifice, but grants power beyond measure.&quot;
-                                    </p>
-                                    <div className="flex items-center gap-2">
-                                        {hasModifier && (
-                                            <span className={`text-[10px] font-bold ${modifier > 0 ? 'text-red-400' : 'text-green-400'}`}>
-                                                {modifier > 0 ? '+Stress Tax' : '-Rested Discount'}
-                                            </span>
-                                        )}
-                                        <div className={`text-sm font-bold flex items-center gap-1 ${selectedNodeData.node.currency === 'kinetic_shard' ? 'text-cyan-400' : 'text-[#ffd700]'}`}>
-                                            {cost} {selectedNodeData.node.currency === 'kinetic_shard' ? 'KS' : 'TP'}
-                                        </div>
+                            <div className="flex flex-col gap-6">
+                                {/* Header */}
+                                <div>
+                                    <div className="flex items-center gap-2 mb-2">
+                                        {selectedNodeData.tier === 'keystone' && <span className="text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 bg-yellow-900/50 text-yellow-500 rounded border border-yellow-700">Keystone</span>}
+                                        {selectedNodeData.tier === 'notable' && <span className="text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 bg-purple-900/50 text-purple-400 rounded border border-purple-700">Notable</span>}
+                                        <span className="text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 bg-zinc-800 text-zinc-400 rounded">{selectedNodeData.path}</span>
                                     </div>
+                                    <h2 className={`text-3xl font-black uppercase italic leading-none ${selectedNodeData.tier === 'keystone' ? 'text-yellow-500' : 'text-white'}`}>
+                                        {selectedNodeData.title}
+                                    </h2>
                                 </div>
 
-                                {selectedNodeData.status === SkillStatus.UNLOCKED ? (
-                                    <button
-                                        onClick={() => unlockSkill(selectedNodeData.node.id)}
-                                        disabled={!canBuy}
-                                        className={`w-full py-3 font-bold uppercase tracking-widest text-xs rounded transition-all flex items-center justify-center gap-2
-                                    ${canBuy
-                                                ? 'bg-[#c79c6e] hover:bg-[#d4a87a] text-[#46321d] shadow-[0_0_15px_rgba(199,156,110,0.4)]'
-                                                : 'bg-zinc-800 text-zinc-500 cursor-not-allowed'}
-                                `}
-                                    >
-                                        <Lock className="w-3 h-3" />
-                                        {canBuy ? 'Unlock Talent' : 'Insufficient Funds'}
-                                    </button>
-                                ) : selectedNodeData.status === SkillStatus.MASTERED ? (
-                                    <div className="w-full py-3 bg-green-900/30 border border-green-800 text-green-500 font-bold uppercase tracking-widest text-xs rounded flex items-center justify-center gap-2">
-                                        <Check className="w-4 h-4" />
-                                        Talent Acquired
+                                {/* Description */}
+                                <p className="text-zinc-400 text-sm leading-relaxed">
+                                    {selectedNodeData.description}
+                                </p>
+
+                                {/* Effects */}
+                                <div className="space-y-3">
+                                    <div className="text-xs font-bold uppercase text-zinc-500 tracking-wider">Effects</div>
+                                    {selectedNodeData.effects && (
+                                        <div className="bg-zinc-900/50 p-4 rounded border border-zinc-800 space-y-2">
+                                            {Object.entries(selectedNodeData.effects).map(([key, value]) => {
+                                                if (typeof value === 'boolean' && value) return <div key={key} className="text-green-400 flex items-center gap-2"><Check size={14} /> <span>Unlocks: {key.replace('unlocks', '')}</span></div>;
+                                                if (typeof value === 'number') return <div key={key} className="text-zinc-300 flex items-center gap-2"><ArrowUpCircle size={14} className="text-green-500" /> <span>{key}: +{value}</span></div>;
+                                                return null;
+                                            })}
+                                            {/* Fallback for now if object rendering is simple. Phase 5 will pretty print effects */}
+                                        </div>
+                                    )}
+
+                                    {/* Drawbacks (Keystone) */}
+                                    {selectedNodeData.drawbacks && (
+                                        <div className="bg-red-950/10 p-4 rounded border border-red-900/30 space-y-2">
+                                            <div className="text-xs font-bold uppercase text-red-500 tracking-wider mb-1">Opportunity Cost</div>
+                                            <p className="text-red-400 text-xs italic">
+                                                By accepting this power, you accept its burden.
+                                            </p>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Cost & Action */}
+                                <div className="mt-auto pt-8 border-t border-zinc-800 flex flex-col gap-4">
+                                    <div className="flex justify-between items-center text-sm">
+                                        <span className="text-zinc-500">Cost:</span>
+                                        <span className={`font-mono font-bold ${selectedNodeData.currency === 'talent_point' ? 'text-yellow-500' : 'text-cyan-400'}`}>
+                                            {selectedNodeData.cost} {selectedNodeData.currency === 'talent_point' ? 'TP' : 'KS'}
+                                        </span>
                                     </div>
-                                ) : (
-                                    <div className="w-full py-3 bg-zinc-900 border border-zinc-800 text-zinc-600 font-bold uppercase tracking-widest text-xs rounded text-center flex items-center justify-center gap-2">
-                                        <Lock className="w-3 h-3" />
-                                        Locked
-                                    </div>
-                                )}
+
+                                    {selectedNodeData.status === SkillStatus.LOCKED && (
+                                        <button disabled className="w-full py-4 bg-zinc-900 text-zinc-500 font-bold uppercase tracking-widest rounded cursor-not-allowed border border-zinc-800 flex items-center justify-center gap-2">
+                                            <Lock size={16} /> Locked
+                                        </button>
+                                    )}
+
+                                    {selectedNodeData.status === SkillStatus.UNLOCKED && (
+                                        <button
+                                            onClick={handleUnlock}
+                                            disabled={!selectedNodeData.affordable}
+                                            className={`w-full py-4 font-bold uppercase tracking-widest rounded transition-all flex items-center justify-center gap-2
+                                                ${selectedNodeData.affordable
+                                                    ? 'bg-green-600 hover:bg-green-500 text-black shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:scale-105'
+                                                    : 'bg-zinc-800 text-zinc-500 cursor-not-allowed'}
+                                            `}
+                                        >
+                                            {selectedNodeData.affordable ? 'Unlock Node' : 'Insufficient Resources'}
+                                        </button>
+                                    )}
+
+                                    {selectedNodeData.status === SkillStatus.MASTERED && (
+                                        <>
+                                            <div className="w-full py-4 bg-yellow-950/20 text-yellow-500 font-bold uppercase tracking-widest rounded border border-yellow-500/20 flex items-center justify-center gap-2">
+                                                <Check size={16} /> Mastered
+                                            </div>
+                                            {selectedNodeData.tier !== 'keystone' && (
+                                                <button onClick={handleRefund} className="text-xs text-zinc-600 hover:text-red-400 underline decoration-zinc-800 underline-offset-4 transition-colors">
+                                                    Refund Point
+                                                </button>
+                                            )}
+                                        </>
+
+                                    )}
+                                </div>
                             </div>
-                        );
-                    })()}
-                </div>
-            )}
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </div>
         </div>
     );
 };

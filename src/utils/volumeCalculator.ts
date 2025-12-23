@@ -43,6 +43,7 @@ export const calculateWeeklyVolume = (
     recentWorkouts.forEach(workout => {
         workout.exercises.forEach(exercise => {
             // Find which muscle group this exercise belongs to
+            if (!exercise.exercise_template) return;
             const exerciseTitle = exercise.exercise_template.title;
             const muscleGroup = getMuscleGroupForExercise(exerciseTitle);
 
