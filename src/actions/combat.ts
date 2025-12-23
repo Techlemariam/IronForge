@@ -9,6 +9,21 @@ import { Monster } from '@/types';
 import { LootSystem } from '@/services/game/LootSystem';
 import { revalidatePath } from 'next/cache';
 
+// Type for Prisma Monster with hp/level (schema has these but client may be stale)
+type PrismaMonster = {
+    id: string;
+    name: string;
+    title: string;
+    description: string;
+    type: string;
+    difficulty: string;
+    level: number;
+    hp: number;
+    weakness: string | null;
+    stats: unknown;
+    image: string | null;
+};
+
 // Simple in-memory cache for MVP combat sessions (Not persist across server restarts)
 // In prod, use Redis or DB table `CombatSession`
 const ACTIVE_SESSIONS: Record<string, { state: CombatState; bossId: string; userId: string }> = {};
@@ -39,7 +54,7 @@ export async function startBossFight(bossId: string) {
     // We can't easily get wellness here without importing intervals client which might be slow.
     // Let's use stored user stats if available or re-calc. 
     // `calculateTitanAttributes` needs wellness. Let's pass null and accept base stats.
-    const attributes = calculateTitanAttributes(unlockedIds, null, purchasedSkillIds, []);
+    const attributes = calculateTitanAttributes(unlockedIds, null, new Set(purchasedSkillIds), []);
 
     // Player Max HP = Endurance * 10 + Strength * 5
     const playerMaxHp = (attributes.endurance * 10) + (attributes.strength * 5) + (dbUser.level * 20);
@@ -48,7 +63,7 @@ export async function startBossFight(bossId: string) {
     // Hardcoded lookup for MVP from static data or DB
     // Assuming MONSTERS is available or we fetch from DB Monster table created in previous step
     // Let's try to fetch from DB first
-    let boss = await prisma.monster.findUnique({ where: { id: bossId } });
+    let boss = await prisma.monster.findUnique({ where: { id: bossId } }) as PrismaMonster | null;
 
     // Fallback to static if not in DB (or if we prefer static data for now)
     if (!boss) {
@@ -98,12 +113,12 @@ export async function performCombatAction(action: CombatAction, clientState?: Co
     const unlockedIds = new Set<string>();
     dbUser.achievements.forEach(ua => unlockedIds.add(ua.achievementId));
     const purchasedSkillIds = dbUser.skills.map(s => s.skillId);
-    const attributes = calculateTitanAttributes(unlockedIds, null, purchasedSkillIds, []);
+    const attributes = calculateTitanAttributes(unlockedIds, null, new Set(purchasedSkillIds), []);
 
     // 2. Get Boss
     // Since we stored bossId, fetch it again. 
     // We create a "Monster" object compatible with CombatEngine
-    const dbBoss = await prisma.monster.findUnique({ where: { id: session.bossId } });
+    const dbBoss = await prisma.monster.findUnique({ where: { id: session.bossId } }) as PrismaMonster | null;
     if (!dbBoss) return { success: false, message: 'Boss not found' };
     // Map Prisma Monster to Type Monster if needed, mostly same fields
     // Ensure all required fields are present for CombatEngine: name, level, maxHp

@@ -6,7 +6,8 @@ async function fetchIntervals(endpoint: string, apiKey: string) {
         return null;
     }
 
-    const authHeader = apiKey.length > 50 ? `Bearer ${apiKey}` : `Basic ${btoa(apiKey + ':')}`;
+    // Intervals.icu uses Basic Auth with "API_KEY" as username and the actual key as password
+    const authHeader = `Basic ${btoa('API_KEY:' + apiKey)}`;
 
     const response = await fetch(`${BASE_URL}${endpoint}`, {
         headers: {

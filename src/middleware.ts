@@ -17,6 +17,6 @@ export const config = {
          * Let's exclude them for now to avoid breaking the sync during transition.
          * Feel free to remove "api" from exclusion if you want global protection.
          */
-        '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+        '/((?!_next/static|_next/image|favicon.ico|api/|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
     ],
 }

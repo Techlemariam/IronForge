@@ -1,6 +1,14 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
+// Polyfill for Supabase dependency in Edge Runtime
+const globalAny = globalThis as any;
+if (typeof globalAny.process === 'undefined') {
+    globalAny.process = { env: {}, versions: { node: '18.0.0' } };
+} else if (!globalAny.process.versions) {
+    globalAny.process.versions = { node: '18.0.0' };
+}
+
 export async function updateSession(request: NextRequest) {
     let supabaseResponse = NextResponse.next({
         request,
@@ -14,14 +22,14 @@ export async function updateSession(request: NextRequest) {
                 getAll() {
                     return request.cookies.getAll()
                 },
-                setAll(cookiesToSet) {
-                    cookiesToSet.forEach(({ name, value, options }) =>
+                setAll(cookiesToSet: any) {
+                    cookiesToSet.forEach(({ name, value, options }: any) =>
                         request.cookies.set(name, value)
                     )
                     supabaseResponse = NextResponse.next({
                         request,
                     })
-                    cookiesToSet.forEach(({ name, value, options }) =>
+                    cookiesToSet.forEach(({ name, value, options }: any) =>
                         supabaseResponse.cookies.set(name, value, options)
                     )
                 },

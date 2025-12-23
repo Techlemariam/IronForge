@@ -159,7 +159,7 @@ export const StorageService = {
         });
     },
 
-    async saveState(key: 'achievements' | 'skills' | 'settings' | 'equipment' | 'gold' | 'inventory' | 'unlocked_monsters', data: any): Promise<void> {
+    async saveState(key: 'achievements' | 'skills' | 'skills_v2' | 'settings' | 'equipment' | 'gold' | 'inventory' | 'unlocked_monsters', data: any): Promise<void> {
         await this.ensureInit();
         if (!this.db) return;
         return new Promise((resolve, reject) => {
@@ -176,7 +176,7 @@ export const StorageService = {
         });
     },
 
-    async getState<T>(key: 'achievements' | 'skills' | 'settings' | 'equipment' | 'gold' | 'inventory' | 'unlocked_monsters'): Promise<T | null> {
+    async getState<T>(key: 'achievements' | 'skills' | 'skills_v2' | 'settings' | 'equipment' | 'gold' | 'inventory' | 'unlocked_monsters'): Promise<T | null> {
         await this.ensureInit();
         if (!this.db) return null;
         return new Promise((resolve, reject) => {
