@@ -1,5 +1,6 @@
 
 import { Monster, Zone } from '../types';
+import { GameItem, CraftingRecipe } from '../types/game';
 
 export const MONSTERS: Monster[] = [
     {
@@ -94,5 +95,86 @@ export const ZONES: Zone[] = [
         icon: '🌊',
         isDiscovered: true,
         region: 'Ethereal'
+    }
+];
+
+export const ITEMS: GameItem[] = [
+    {
+        id: 'item_iron_ore',
+        name: 'Iron Ore',
+        description: 'Raw ore mined from the depths of the gym logic.',
+        type: 'material',
+        rarity: 'common',
+        value: 5,
+        image: '🪨',
+        stackable: true
+    },
+    {
+        id: 'item_flux',
+        name: 'Kinetic Flux',
+        description: 'A stabilizing agent found in high-rep ranges.',
+        type: 'material',
+        rarity: 'common',
+        value: 10,
+        image: '✨',
+        stackable: true
+    },
+    {
+        id: 'item_titan_ingot',
+        name: 'Titan Ingot',
+        description: 'Refined metal, strong enough to forge god-tier equipment.',
+        type: 'material',
+        rarity: 'rare',
+        value: 50,
+        image: '🧱',
+        stackable: true
+    },
+    {
+        id: 'item_potion_haste',
+        name: 'Potion of Haste',
+        description: 'Temporarily increases workout speed (reduces rest times).',
+        type: 'consumable',
+        rarity: 'uncommon',
+        effect: 'Reduces Rest Timers by 15% for 1 hour.',
+        value: 25,
+        image: '🧪',
+        stackable: true
+    },
+    {
+        id: 'item_potion_power',
+        name: 'Elixir of Power',
+        description: 'Surges with pre-workout energy.',
+        type: 'consumable',
+        rarity: 'rare',
+        effect: '+5% Estimated 1RM for next session.',
+        value: 100,
+        image: '🍷',
+        stackable: true
+    }
+];
+
+export const RECIPES: CraftingRecipe[] = [
+    {
+        id: 'recipe_refine_iron',
+        name: 'Refine Iron',
+        resultItemId: 'item_titan_ingot',
+        resultCount: 1,
+        materials: [
+            { itemId: 'item_iron_ore', count: 2 },
+            { itemId: 'item_flux', count: 1 }
+        ],
+        goldCost: 20,
+        craftingTimeSeconds: 5
+    },
+    {
+        id: 'recipe_brew_haste',
+        name: 'Brew Haste Potion',
+        resultItemId: 'item_potion_haste',
+        resultCount: 1,
+        materials: [
+            { itemId: 'item_flux', count: 3 }
+        ],
+        goldCost: 50,
+        craftingTimeSeconds: 10
     }
 ];

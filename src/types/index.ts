@@ -13,6 +13,21 @@ export enum ExerciseLogic {
 
 export type Rarity = 'poor' | 'common' | 'uncommon' | 'rare' | 'epic' | 'legendary';
 
+export enum SubscriptionTier {
+    FREE = 'FREE',
+    PRO = 'PRO',
+    LIFETIME = 'LIFETIME'
+}
+
+export interface User {
+    id: string;
+    email: string;
+    subscriptionTier: SubscriptionTier;
+    subscriptionStatus?: string;
+    subscriptionExpiry?: Date;
+    // Add other fields as they become necessary for frontend
+}
+
 export interface Set {
     id: string;
     reps: number | string; // Target: string for "AMRAP"
@@ -92,7 +107,7 @@ export interface RaidBoss {
 
 export interface ChatMessage {
     id: string;
-    user: string;
+    userName: string;
     message: string;
     timestamp: string;
     type: 'CHAT' | 'LOG';
@@ -105,7 +120,18 @@ export enum SkillStatus {
     MASTERED = 'MASTERED'
 }
 
-export type SkillCategory = 'push' | 'pull' | 'legs' | 'core' | 'endurance';
+export type SkillCategory =
+    // Legacy categories (deprecated, kept for backward compatibility)
+    | 'push'
+    | 'pull'
+    | 'legs'
+    | 'core'
+    // New Path-aligned categories
+    | 'strength'      // Juggernaut alignment (merged push + legs)
+    | 'hypertrophy'   // Titan alignment
+    | 'endurance'     // Engine alignment
+    | 'hybrid'        // Warden alignment
+    | 'utility';      // Renamed from 'core' (all paths)
 
 export interface SkillRequirement {
     type: 'achievement_count' | 'vo2max_value' | '1rm_weight' | 'rep_count';

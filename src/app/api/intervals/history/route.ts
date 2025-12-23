@@ -1,15 +1,9 @@
 import { NextResponse } from 'next/server';
-import axios from 'axios';
-
-// Get environment variables directly (server-side safe)
-const API_KEY = process.env.INTERVALS_API_KEY;
-const USER_ID = process.env.INTERVALS_USER_ID;
+import { getActivities } from '@/lib/intervals';
+import { createClient } from '@/utils/supabase/server';
+import prisma from '@/lib/prisma';
 
 export async function GET(request: Request) {
-    if (!API_KEY || !USER_ID) {
-        return NextResponse.json({ error: "Oracle Uplink Failed. API keys missing." }, { status: 500 });
-    }
-
     const { searchParams } = new URL(request.url);
     const today = new Date().toISOString().split('T')[0];
     const threeMonthsAgo = new Date();
@@ -18,15 +12,26 @@ export async function GET(request: Request) {
     const oldest = searchParams.get('oldest') || threeMonthsAgo.toISOString().split('T')[0];
     const newest = searchParams.get('newest') || today;
 
-    const url = `https://intervals.icu/api/v1/athlete/${USER_ID}/activities?oldest=${oldest}&newest=${newest}&include=tss,duration,type,zone_stats`;
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const dbUser = await prisma.user.findUnique({
+        where: { id: user.id },
+        select: { intervalsApiKey: true, intervalsAthleteId: true }
+    });
+
+    if (!dbUser?.intervalsApiKey || !dbUser?.intervalsAthleteId) {
+        return NextResponse.json({ error: "Intervals.icu not connected" }, { status: 400 });
+    }
 
     try {
-        const response = await axios.get(url, {
-            headers: { 'Authorization': `Bearer ${API_KEY}` }
-        });
-        return NextResponse.json(response.data);
+        const data = await getActivities(oldest, newest, dbUser.intervalsApiKey, dbUser.intervalsAthleteId);
+        return NextResponse.json(data);
     } catch (error: any) {
-        console.error("Intervals History Error:", error.message);
         return NextResponse.json({ error: "Could not retrieve historical cardio data." }, { status: 500 });
     }
 }

@@ -8,6 +8,7 @@ import { HevyWorkout, HevyExerciseTemplate } from '../types/hevy';
  */
 export const getHevyRoutines = async (params: { page: number, pageSize: number } = { page: 1, pageSize: 10 }) => {
     try {
+        console.log("Calling getHevyRoutines...");
         const response = await api.get('/api/hevy/routines', { params });
         return response.data;
     } catch (error) {
@@ -20,9 +21,11 @@ export const getHevyRoutines = async (params: { page: number, pageSize: number }
  * Fetches the complete list of exercise templates (The Codex) from the backend proxy.
  * The proxy handles fetching all pages from the Hevy API.
  */
-export const getHevyExerciseTemplates = async () => {
+export const getHevyExerciseTemplates = async (apiKey?: string | null, baseUrl?: string) => {
     try {
-        const response = await api.get('/api/hevy/exercise-templates');
+        const url = baseUrl ? `${baseUrl}/api/hevy/exercise-templates` : '/api/hevy/exercise-templates';
+        const headers = apiKey ? { 'X-Hevy-API-Key': apiKey } : {};
+        const response = await api.get(url, { headers });
         const allTemplates: HevyExerciseTemplate[] = response.data.exercise_templates || [];
 
         return {
@@ -67,14 +70,18 @@ export interface HevyWorkoutResponse {
  * It handles API pagination to retrieve the desired number of workouts.
  * @param desiredCount The total number of workouts to retrieve.
  */
-export const getHevyWorkoutHistory = async (desiredCount: number = 30): Promise<{ workouts: HevyWorkout[] }> => {
+export const getHevyWorkoutHistory = async (desiredCount: number = 30, apiKey?: string | null, baseUrl?: string): Promise<{ workouts: HevyWorkout[] }> => {
     const pageSize = 10; // Max page size allowed by the Hevy API
     const numPagesToFetch = Math.ceil(desiredCount / pageSize);
     let allWorkouts: HevyWorkout[] = [];
 
     try {
         for (let page = 1; page <= numPagesToFetch; page++) {
-            const response = await api.get(`/api/hevy/workouts?page=${page}&pageSize=${pageSize}`);
+            const path = `/api/hevy/workouts?page=${page}&pageSize=${pageSize}`;
+            const url = baseUrl ? `${baseUrl}${path}` : path;
+            const headers = apiKey ? { 'X-Hevy-API-Key': apiKey } : {};
+
+            const response = await api.get(url, { headers });
 
             if (response.status === 200 && response.data.workouts) {
                 allWorkouts.push(...response.data.workouts);

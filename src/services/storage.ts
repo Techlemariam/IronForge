@@ -24,6 +24,11 @@ export const StorageService = {
     db: null as IDBDatabase | null,
 
     async init(): Promise<void> {
+        // SSR SAFEGUARD: If running on server, do nothing.
+        if (typeof window === 'undefined' || !window.indexedDB) {
+            return;
+        }
+
         if (this.db) return;
 
         return new Promise((resolve, reject) => {
@@ -94,6 +99,7 @@ export const StorageService = {
 
     async saveLog(log: ExerciseLog): Promise<void> {
         await this.ensureInit();
+        if (!this.db) return;
         return new Promise((resolve, reject) => {
             const transaction = this.db!.transaction(['logs'], 'readwrite');
             const store = transaction.objectStore('logs');
@@ -108,6 +114,7 @@ export const StorageService = {
 
     async saveMeditation(log: MeditationLog): Promise<void> {
         await this.ensureInit();
+        if (!this.db) return;
         return new Promise((resolve, reject) => {
             const transaction = this.db!.transaction(['meditation'], 'readwrite');
             const store = transaction.objectStore('meditation');
@@ -122,6 +129,7 @@ export const StorageService = {
 
     async getMeditationHistory(): Promise<MeditationLog[]> {
         await this.ensureInit();
+        if (!this.db) return [];
         return new Promise((resolve, reject) => {
             const transaction = this.db!.transaction(['meditation'], 'readonly');
             const store = transaction.objectStore('meditation');
@@ -137,6 +145,7 @@ export const StorageService = {
 
     async getHistory(): Promise<ExerciseLog[]> {
         await this.ensureInit();
+        if (!this.db) return [];
         return new Promise((resolve, reject) => {
             const transaction = this.db!.transaction(['logs'], 'readonly');
             const store = transaction.objectStore('logs');
@@ -152,6 +161,7 @@ export const StorageService = {
 
     async saveState(key: 'achievements' | 'skills' | 'settings' | 'equipment' | 'gold' | 'inventory' | 'unlocked_monsters', data: any): Promise<void> {
         await this.ensureInit();
+        if (!this.db) return;
         return new Promise((resolve, reject) => {
             const transaction = this.db!.transaction(['state'], 'readwrite');
             const store = transaction.objectStore('state');
@@ -168,6 +178,7 @@ export const StorageService = {
 
     async getState<T>(key: 'achievements' | 'skills' | 'settings' | 'equipment' | 'gold' | 'inventory' | 'unlocked_monsters'): Promise<T | null> {
         await this.ensureInit();
+        if (!this.db) return null;
         return new Promise((resolve, reject) => {
             const transaction = this.db!.transaction(['state'], 'readonly');
             const store = transaction.objectStore('state');
@@ -210,6 +221,8 @@ export const StorageService = {
     // --- AUDITOR REPORTS PERSISTENCE ---
     async saveAuditorReport(report: any): Promise<void> {
         await this.ensureInit();
+        if (!this.db) return; // Server-side or init failed safely
+
         return new Promise((resolve, reject) => {
             const transaction = this.db!.transaction(['auditor_reports'], 'readwrite');
             const store = transaction.objectStore('auditor_reports');
@@ -221,6 +234,8 @@ export const StorageService = {
 
     async getLatestAuditorReport(): Promise<any | null> {
         await this.ensureInit();
+        if (!this.db) return null; // Server-side or init failed safely
+
         return new Promise((resolve, reject) => {
             const transaction = this.db!.transaction(['auditor_reports'], 'readonly');
             const store = transaction.objectStore('auditor_reports');
@@ -237,6 +252,7 @@ export const StorageService = {
     // --- ACTIVE SESSION PERSISTENCE ---
     async saveActiveSession(state: ActiveSessionState): Promise<void> {
         await this.ensureInit();
+        if (!this.db) return;
         return new Promise((resolve, reject) => {
             const transaction = this.db!.transaction(['active_session'], 'readwrite');
             const store = transaction.objectStore('active_session');
@@ -248,6 +264,7 @@ export const StorageService = {
 
     async getActiveSession(): Promise<ActiveSessionState | null> {
         await this.ensureInit();
+        if (!this.db) return null;
         return new Promise((resolve, reject) => {
             const transaction = this.db!.transaction(['active_session'], 'readonly');
             const store = transaction.objectStore('active_session');
@@ -259,6 +276,7 @@ export const StorageService = {
 
     async clearActiveSession(): Promise<void> {
         await this.ensureInit();
+        if (!this.db) return;
         return new Promise((resolve, reject) => {
             const transaction = this.db!.transaction(['active_session'], 'readwrite');
             const store = transaction.objectStore('active_session');
@@ -271,6 +289,7 @@ export const StorageService = {
     // --- GRIMOIRE & BESTIARY ---    
     async getGrimoireEntries(): Promise<import('../types').GrimoireEntry[]> {
         await this.ensureInit();
+        if (!this.db) return [];
         return new Promise((resolve, reject) => {
             const transaction = this.db!.transaction(['grimoire'], 'readonly');
             const store = transaction.objectStore('grimoire');
@@ -286,6 +305,7 @@ export const StorageService = {
 
     async saveGrimoireEntry(entry: import('../types').GrimoireEntry): Promise<void> {
         await this.ensureInit();
+        if (!this.db) return;
         return new Promise((resolve, reject) => {
             const transaction = this.db!.transaction(['grimoire'], 'readwrite');
             const store = transaction.objectStore('grimoire');

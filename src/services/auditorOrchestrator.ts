@@ -22,13 +22,14 @@ const HISTORY_DEPTH = 30; // Fetch last 30 workouts to ensure full week coverage
  * @param forceRefresh - If true, ignores cache and forces a new API call (logic handled by caller or here)
  * @returns The generated AuditReport
  */
-export const runFullAudit = async (forceRefresh: boolean = false): Promise<AuditReport> => {
+export const runFullAudit = async (forceRefresh: boolean = false, apiKey?: string | null, baseUrl?: string): Promise<AuditReport> => {
     // 1. Check cache first? 
     // Usually Orchestrator is called when we WANT a refresh. 
     // But we can check if we have a very recent report (e.g. < 1 hour old) to save API calls.
     // For MVP, we will assume this is triggered explicitly or on app load if stale.
 
     if (!forceRefresh) {
+        // SSR SAFEGUARD: StorageService returns null on server, so this is safe.
         const cached = await StorageService.getLatestAuditorReport();
         if (cached) {
             const reportAge = Date.now() - new Date(cached.timestamp).getTime();
@@ -42,7 +43,7 @@ export const runFullAudit = async (forceRefresh: boolean = false): Promise<Audit
 
     console.log("Orchestrator: Fetching workout history...");
     // 2. Fetch Data
-    const history = await getHevyWorkoutHistory(HISTORY_DEPTH);
+    const history = await getHevyWorkoutHistory(HISTORY_DEPTH, apiKey, baseUrl);
 
     // 3. Transform Data
     console.log("Orchestrator: Calculating volumes...");
@@ -54,7 +55,10 @@ export const runFullAudit = async (forceRefresh: boolean = false): Promise<Audit
 
     // 5. Persist
     console.log("Orchestrator: Caching report...");
-    await StorageService.saveAuditorReport(report);
+    // Only save if we are in a client environment capable of storage
+    if (typeof window !== 'undefined') {
+        await StorageService.saveAuditorReport(report);
+    }
 
     return report;
 };

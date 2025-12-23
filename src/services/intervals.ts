@@ -4,9 +4,10 @@ export class IntervalsClient {
 
   // No longer need keys here, as they are on the server
 
-  async getWellness(date: string): Promise<IntervalsWellness> {
+  async getWellness(date: string, baseUrl?: string): Promise<IntervalsWellness> {
     try {
-      const response = await fetch(`/api/intervals/wellness?date=${date}`);
+      const url = baseUrl ? `${baseUrl}/api/intervals/wellness?date=${date}` : `/api/intervals/wellness?date=${date}`;
+      const response = await fetch(url);
 
       if (!response.ok) {
         console.error(`Failed to fetch wellness data: ${response.statusText}`);
@@ -38,9 +39,10 @@ export class IntervalsClient {
     }
   }
 
-  async getActivities(startDate: string, endDate: string): Promise<IntervalsActivity[]> {
+  async getActivities(startDate: string, endDate: string, baseUrl?: string): Promise<IntervalsActivity[]> {
     try {
-      const response = await fetch(`/api/intervals/history?oldest=${startDate}&newest=${endDate}`);
+      const url = baseUrl ? `${baseUrl}/api/intervals/history?oldest=${startDate}&newest=${endDate}` : `/api/intervals/history?oldest=${startDate}&newest=${endDate}`;
+      const response = await fetch(url);
 
       if (!response.ok) {
         console.error(`Failed to fetch activities: ${response.statusText}`);
@@ -54,9 +56,10 @@ export class IntervalsClient {
     }
   }
 
-  async getEvents(startDate: string, endDate: string): Promise<IntervalsEvent[]> {
+  async getEvents(startDate: string, endDate: string, baseUrl?: string): Promise<IntervalsEvent[]> {
     try {
-      const response = await fetch(`/api/intervals/events?oldest=${startDate}&newest=${endDate}`);
+      const url = baseUrl ? `${baseUrl}/api/intervals/events?oldest=${startDate}&newest=${endDate}` : `/api/intervals/events?oldest=${startDate}&newest=${endDate}`;
+      const response = await fetch(url);
 
       if (!response.ok) {
         console.error(`Failed to fetch events: ${response.statusText}`);

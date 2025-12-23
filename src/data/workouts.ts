@@ -1,0 +1,9584 @@
+import { WorkoutDefinition } from '../types/training';
+
+export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
+    {
+        "id": "run_rre1",
+        "code": "RRe1",
+        "name": "Running Recovery 1",
+        "description": "20 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 20,
+        "durationLabel": "20 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 17,
+            "MUSCULAR": 20,
+            "METABOLIC": 13
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 20m Z1"
+    },
+    {
+        "id": "run_rre2",
+        "code": "RRe2",
+        "name": "Running Recovery 2",
+        "description": "25 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 25,
+        "durationLabel": "25 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 18,
+            "MUSCULAR": 23,
+            "METABOLIC": 17
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 25m Z1"
+    },
+    {
+        "id": "run_rre3",
+        "code": "RRe3",
+        "name": "Running Recovery 3",
+        "description": "30 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 30,
+        "durationLabel": "30 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 20,
+            "MUSCULAR": 25,
+            "METABOLIC": 20
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 30m Z1"
+    },
+    {
+        "id": "run_rre4",
+        "code": "RRe4",
+        "name": "Running Recovery 4",
+        "description": "35 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 35,
+        "durationLabel": "35 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 22,
+            "MUSCULAR": 28,
+            "METABOLIC": 23
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 35m Z1"
+    },
+    {
+        "id": "run_rre5",
+        "code": "RRe5",
+        "name": "Running Recovery 5",
+        "description": "40 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 40,
+        "durationLabel": "40 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 23,
+            "MUSCULAR": 30,
+            "METABOLIC": 27
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 40m Z1"
+    },
+    {
+        "id": "run_rre6",
+        "code": "RRe6",
+        "name": "Running Recovery 6",
+        "description": "45 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 45,
+        "durationLabel": "45 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 25,
+            "MUSCULAR": 33,
+            "METABOLIC": 30
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 45m Z1"
+    },
+    {
+        "id": "run_rre7",
+        "code": "RRe7",
+        "name": "Running Recovery 7",
+        "description": "50 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 50,
+        "durationLabel": "50 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 27,
+            "MUSCULAR": 35,
+            "METABOLIC": 33
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 50m Z1"
+    },
+    {
+        "id": "run_rre8",
+        "code": "RRe8",
+        "name": "Running Recovery 8",
+        "description": "55 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 55,
+        "durationLabel": "55 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 28,
+            "MUSCULAR": 38,
+            "METABOLIC": 37
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 55m Z1"
+    },
+    {
+        "id": "run_rre9",
+        "code": "RRe9",
+        "name": "Running Recovery 9",
+        "description": "60 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 60,
+        "durationLabel": "60 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 30,
+            "MUSCULAR": 40,
+            "METABOLIC": 40
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 60m Z1"
+    },
+    {
+        "id": "run_rf1",
+        "code": "RF1",
+        "name": "Running Foundation 1",
+        "description": "5 minutes in Zone 1, 10 minutes Zone 2, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 20,
+        "durationLabel": "20 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 17,
+            "MUSCULAR": 20,
+            "METABOLIC": 13
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 10m Z2\n- 5m Z1"
+    },
+    {
+        "id": "run_rf2",
+        "code": "RF2",
+        "name": "Running Foundation 2",
+        "description": "5 minutes in Zone 1, 15 minutes Zone 2, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 25,
+        "durationLabel": "25 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 18,
+            "MUSCULAR": 23,
+            "METABOLIC": 17
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 15m Z2\n- 5m Z1"
+    },
+    {
+        "id": "run_rf3",
+        "code": "RF3",
+        "name": "Running Foundation 3",
+        "description": "5 minutes in Zone 1, 20 minutes Zone 2, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 30,
+        "durationLabel": "30 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 20,
+            "MUSCULAR": 25,
+            "METABOLIC": 20
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 20m Z2\n- 5m Z1"
+    },
+    {
+        "id": "run_rf4",
+        "code": "RF4",
+        "name": "Running Foundation 4",
+        "description": "5 minutes in Zone 1, 25 minutes Zone 2, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 35,
+        "durationLabel": "35 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 22,
+            "MUSCULAR": 28,
+            "METABOLIC": 23
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 25m Z2\n- 5m Z1"
+    },
+    {
+        "id": "run_rf5",
+        "code": "RF5",
+        "name": "Running Foundation 5",
+        "description": "5 minutes in Zone 1, 30 minutes Zone 2, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 40,
+        "durationLabel": "40 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 23,
+            "MUSCULAR": 30,
+            "METABOLIC": 27
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 30m Z2\n- 5m Z1"
+    },
+    {
+        "id": "run_rf6",
+        "code": "RF6",
+        "name": "Running Foundation 6",
+        "description": "5 minutes in Zone 1, 35 minutes Zone 2, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 45,
+        "durationLabel": "45 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 25,
+            "MUSCULAR": 33,
+            "METABOLIC": 30
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 35m Z2\n- 5m Z1"
+    },
+    {
+        "id": "run_rf7",
+        "code": "RF7",
+        "name": "Running Foundation 7",
+        "description": "5 minutes in Zone 1, 40 minutes Zone 2, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 50,
+        "durationLabel": "50 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 27,
+            "MUSCULAR": 35,
+            "METABOLIC": 33
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 40m Z2\n- 5m Z1"
+    },
+    {
+        "id": "run_rf8",
+        "code": "RF8",
+        "name": "Running Foundation 8",
+        "description": "5 minutes in Zone 1, 45 minutes Zone 2, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 55,
+        "durationLabel": "55 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 28,
+            "MUSCULAR": 38,
+            "METABOLIC": 37
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 45m Z2\n- 5m Z1"
+    },
+    {
+        "id": "run_rf9",
+        "code": "RF9",
+        "name": "Running Foundation 9",
+        "description": "5 minutes in Zone 1, 50 minutes Zone 2, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 60,
+        "durationLabel": "60 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 30,
+            "MUSCULAR": 40,
+            "METABOLIC": 40
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 50m Z2\n- 5m Z1"
+    },
+    {
+        "id": "run_rf10",
+        "code": "RF10",
+        "name": "Running Foundation 10",
+        "description": "5 minutes in Zone 1, 60 minutes Zone 2, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 70,
+        "durationLabel": "70 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 33,
+            "MUSCULAR": 45,
+            "METABOLIC": 47
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 60m Z2\n- 5m Z1"
+    },
+    {
+        "id": "run_rf11",
+        "code": "RF11",
+        "name": "Running Foundation 11",
+        "description": "5 minutes in Zone 1, 70 minutes Zone 2, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 80,
+        "durationLabel": "80 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 37,
+            "MUSCULAR": 50,
+            "METABOLIC": 53
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 70m Z2\n- 5m Z1"
+    },
+    {
+        "id": "run_rf12",
+        "code": "RF12",
+        "name": "Running Foundation 12",
+        "description": "5 minutes in Zone 1, 80 minutes Zone 2, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 90,
+        "durationLabel": "90 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 40,
+            "MUSCULAR": 55,
+            "METABOLIC": 60
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 80m Z2\n- 5m Z1"
+    },
+    {
+        "id": "run_rf13",
+        "code": "RF13",
+        "name": "Running Foundation 13",
+        "description": "5 minutes in Zone 1, 60 minutes Zone 2, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 70,
+        "durationLabel": "70 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 33,
+            "MUSCULAR": 45,
+            "METABOLIC": 47
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 60m Z2\n- 5m Z1"
+    },
+    {
+        "id": "run_rf14",
+        "code": "RF14",
+        "name": "Running Foundation 14",
+        "description": "5 minutes in Zone 1, 90 minutes Zone 2, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 100,
+        "durationLabel": "100 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 43,
+            "MUSCULAR": 60,
+            "METABOLIC": 67
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 90m Z2\n- 5m Z1"
+    },
+    {
+        "id": "run_rf15",
+        "code": "RF15",
+        "name": "Running Foundation 15",
+        "description": "5 minutes in Zone 1, 100 minutes Zone 2, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 110,
+        "durationLabel": "110 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 47,
+            "MUSCULAR": 65,
+            "METABOLIC": 73
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 100m Z2\n- 5m Z1"
+    },
+    {
+        "id": "run_rf16",
+        "code": "RF16",
+        "name": "Running Foundation 16",
+        "description": "5 minutes in Zone 1, 95 minutes Zone 2, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 105,
+        "durationLabel": "105 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 45,
+            "MUSCULAR": 63,
+            "METABOLIC": 70
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 95m Z2\n- 5m Z1"
+    },
+    {
+        "id": "run_rf17",
+        "code": "RF17",
+        "name": "Running Foundation 17",
+        "description": "5 minutes in Zone 1, 110 minutes Zone 2, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 120,
+        "durationLabel": "120 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 50,
+            "MUSCULAR": 70,
+            "METABOLIC": 80
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 110m Z2\n- 5m Z1"
+    },
+    {
+        "id": "run_rae1",
+        "code": "RAe1",
+        "name": "Running Aerobic Intervals 1",
+        "description": "10 minutes Zone 1, 3 x (10 minutes Zone 2/3 minutes Zone 1) 10 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 60,
+        "durationLabel": "60 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 80,
+            "MUSCULAR": 70,
+            "METABOLIC": 80
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n3x\n  - 10m Z2\n  - 3m Z1\n- 10m Z1"
+    },
+    {
+        "id": "run_rae2",
+        "code": "RAe2",
+        "name": "Running Aerobic Intervals 2",
+        "description": "15 minutes Zone 1, 3 x (10 minutes Zone 2/3 minutes Zone 1) 35 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 90,
+        "durationLabel": "90 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 15m Z1\n3x\n  - 10m Z2\n  - 3m Z1\n- 35m Z1"
+    },
+    {
+        "id": "run_rae3",
+        "code": "RAe3",
+        "name": "Running Aerobic Intervals 3",
+        "description": "12 minutes Zone 1, 4 x (10 minutes Zone 2/3 minutes Zone 1) 12 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 75,
+        "durationLabel": "75 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 98,
+            "MUSCULAR": 85,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 12m Z1\n4x\n  - 10m Z2\n  - 3m Z1\n- 12m Z1"
+    },
+    {
+        "id": "run_rae4",
+        "code": "RAe4",
+        "name": "Running Aerobic Intervals 4",
+        "description": "15 minutes Zone 1, 3 x (15 minutes Zone 2/5 minutes Zone 1) 15 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 90,
+        "durationLabel": "90 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 15m Z1\n3x\n  - 15m Z2\n  - 5m Z1\n- 15m Z1"
+    },
+    {
+        "id": "run_rae5",
+        "code": "RAe5",
+        "name": "Running Aerobic Intervals 5",
+        "description": "10 minutes Zone 1, 4 x (15 minutes Zone 2/5 minutes Zone 1)",
+        "type": "RUN",
+        "durationMin": 90,
+        "durationLabel": "90 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n4x\n  - 15m Z2\n  - 5m Z1"
+    },
+    {
+        "id": "run_rae6",
+        "code": "RAe6",
+        "name": "Running Aerobic Intervals 6",
+        "description": "10 minutes Zone 1, 4 x (15 minutes Zone 2/5 minutes Zone 1) 15 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 105,
+        "durationLabel": "105 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n4x\n  - 15m Z2\n  - 5m Z1\n- 15m Z1"
+    },
+    {
+        "id": "run_rae7",
+        "code": "RAe7",
+        "name": "Running Aerobic Intervals 7",
+        "description": "10 minutes Zone 1, 4 x (15 minutes Zone 2/5 minutes Zone 1) 30 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 120,
+        "durationLabel": "120 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n4x\n  - 15m Z2\n  - 5m Z1\n- 30m Z1"
+    },
+    {
+        "id": "run_rae8",
+        "code": "RAe8",
+        "name": "Running Aerobic Intervals 8",
+        "description": "10 minutes Zone 1, 4 x (15 minutes Zone 2/5 minutes Zone 1) 45 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 135,
+        "durationLabel": "135 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n4x\n  - 15m Z2\n  - 5m Z1\n- 45m Z1"
+    },
+    {
+        "id": "run_rae9",
+        "code": "RAe9",
+        "name": "Running Aerobic Intervals 9",
+        "description": "10 minutes Zone 1, 4 x (15 minutes Zone 2/5 minutes Zone 1) 60 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 150,
+        "durationLabel": "150 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n4x\n  - 15m Z2\n  - 5m Z1\n- 60m Z1"
+    },
+    {
+        "id": "run_rae10",
+        "code": "RAe10",
+        "name": "Running Aerobic Intervals 10",
+        "description": "10 minutes Zone 1, 3 x (15 minutes Zone 2/5 minutes Zone 1) 35 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 105,
+        "durationLabel": "105 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n3x\n  - 15m Z2\n  - 5m Z1\n- 35m Z1"
+    },
+    {
+        "id": "run_rae11",
+        "code": "RAe11",
+        "name": "Running Aerobic Intervals 11",
+        "description": "10 minutes Zone 1, 3 x (15 minutes Zone 2/5 minutes Zone 1) 50 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 120,
+        "durationLabel": "120 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n3x\n  - 15m Z2\n  - 5m Z1\n- 50m Z1"
+    },
+    {
+        "id": "run_rae12",
+        "code": "RAe12",
+        "name": "Running Aerobic Intervals 12",
+        "description": "10 minutes Zone 1, 3 x (15 minutes Zone 2/5 minutes Zone 1) 65 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 135,
+        "durationLabel": "135 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n3x\n  - 15m Z2\n  - 5m Z1\n- 65m Z1"
+    },
+    {
+        "id": "run_rae13",
+        "code": "RAe13",
+        "name": "Running Aerobic Intervals 13",
+        "description": "10 minutes Zone 1, 3 x (15 minutes Zone 2/5 minutes Zone 1) 80 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 150,
+        "durationLabel": "150 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n3x\n  - 15m Z2\n  - 5m Z1\n- 80m Z1"
+    },
+    {
+        "id": "run_rae14",
+        "code": "RAe14",
+        "name": "Running Aerobic Intervals 14",
+        "description": "10 minutes Zone 1, 3 x (4 minutes Zone 2/1 minutes Zone 1) 95 minutes Zone 2",
+        "type": "RUN",
+        "durationMin": 120,
+        "durationLabel": "120 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n3x\n  - 4m Z2\n  - 1m Z1\n- 95m Z2"
+    },
+    {
+        "id": "run_rae15",
+        "code": "RAe15",
+        "name": "Running Aerobic Intervals 15",
+        "description": "10 minutes Zone 1, 3 x (5 minutes Zone 2/1 minutes Zone 1) 102 minutes Zone 2",
+        "type": "RUN",
+        "durationMin": 130,
+        "durationLabel": "130 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n3x\n  - 5m Z2\n  - 1m Z1\n- 102m Z2"
+    },
+    {
+        "id": "run_rae16",
+        "code": "RAe16",
+        "name": "Running Aerobic Intervals 16",
+        "description": "10 minutes Zone 1, 3 x (6 minutes Zone 2/1 minutes Zone 1) 109 minutes Zone 2",
+        "type": "RUN",
+        "durationMin": 140,
+        "durationLabel": "140 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n3x\n  - 6m Z2\n  - 1m Z1\n- 109m Z2"
+    },
+    {
+        "id": "run_rae17",
+        "code": "RAe17",
+        "name": "Running Aerobic Intervals 17",
+        "description": "10 minutes Zone 1, 3 x (7 minutes Zone 2/1 minutes Zone 1) 116 minutes Zone 2",
+        "type": "RUN",
+        "durationMin": 150,
+        "durationLabel": "150 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n3x\n  - 7m Z2\n  - 1m Z1\n- 116m Z2"
+    },
+    {
+        "id": "run_rae18",
+        "code": "RAe18",
+        "name": "Running Aerobic Intervals 18",
+        "description": "10 minutes Zone 1, 3 x (8 minutes Zone 2/1 minutes Zone 1) 123 minutes Zone 2",
+        "type": "RUN",
+        "durationMin": 160,
+        "durationLabel": "160 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n3x\n  - 8m Z2\n  - 1m Z1\n- 123m Z2"
+    },
+    {
+        "id": "run_rae19",
+        "code": "RAe19",
+        "name": "Running Aerobic Intervals 19",
+        "description": "10 minutes Zone 1, 3 x (9 minutes Zone 2/1 minutes Zone 1) 130 minutes Zone 2",
+        "type": "RUN",
+        "durationMin": 170,
+        "durationLabel": "170 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n3x\n  - 9m Z2\n  - 1m Z1\n- 130m Z2"
+    },
+    {
+        "id": "run_rae20",
+        "code": "RAe20",
+        "name": "Running Aerobic Intervals 20",
+        "description": "10 minutes Zone 1, 3 x (10 minutes Zone 2/1 minutes Zone 1) 137 minutes Zone 2",
+        "type": "RUN",
+        "durationMin": 180,
+        "durationLabel": "180 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n3x\n  - 10m Z2\n  - 1m Z1\n- 137m Z2"
+    },
+    {
+        "id": "run_rae21",
+        "code": "RAe21",
+        "name": "Running Aerobic Intervals 21",
+        "description": "10 minutes Zone 1, 4 x (15 minutes Zone 2/1 minutes Zone 1) 90 minutes Zone 2",
+        "type": "RUN",
+        "durationMin": 165,
+        "durationLabel": "165 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n4x\n  - 15m Z2\n  - 1m Z1\n- 90m Z2"
+    },
+    {
+        "id": "run_rae22",
+        "code": "RAe22",
+        "name": "Running Aerobic Intervals 22",
+        "description": "10 minutes Zone 1, 3 x (10 minutes Zone 2/2 minutes Zone 1)",
+        "type": "RUN",
+        "durationMin": 46,
+        "durationLabel": "46 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 64,
+            "MUSCULAR": 56,
+            "METABOLIC": 61
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n3x\n  - 10m Z2\n  - 2m Z1"
+    },
+    {
+        "id": "run_rl1",
+        "code": "RL1",
+        "name": "Running Long 1",
+        "description": "1 mile Zone 1, 4.5 miles Zone 2, 0.5 mile Zone 1",
+        "type": "RUN",
+        "durationMin": 60,
+        "durationLabel": "6 mi",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 80,
+            "MUSCULAR": 70,
+            "METABOLIC": 80
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 1m Z1\n- 4m Z2\n- 0m Z1"
+    },
+    {
+        "id": "run_rl2",
+        "code": "RL2",
+        "name": "Running Long 2",
+        "description": "1 mile Zone 1, 5.5 miles Zone 2, 0.5 mile Zone 1",
+        "type": "RUN",
+        "durationMin": 70,
+        "durationLabel": "7 mi",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 92,
+            "MUSCULAR": 80,
+            "METABOLIC": 93
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 1m Z1\n- 5m Z2\n- 0m Z1"
+    },
+    {
+        "id": "run_rl3",
+        "code": "RL3",
+        "name": "Running Long 3",
+        "description": "1 mile Zone 1, 6.5 miles Zone 2, 0.5 mile Zone 1",
+        "type": "RUN",
+        "durationMin": 80,
+        "durationLabel": "8 mi",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 90,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 1m Z1\n- 6m Z2\n- 0m Z1"
+    },
+    {
+        "id": "run_rl4",
+        "code": "RL4",
+        "name": "Running Long 4",
+        "description": "1 mile Zone 1, 7.5 miles Zone 2, 0.5 mile Zone 1",
+        "type": "RUN",
+        "durationMin": 90,
+        "durationLabel": "9 mi",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 1m Z1\n- 7m Z2\n- 0m Z1"
+    },
+    {
+        "id": "run_rl5",
+        "code": "RL5",
+        "name": "Running Long 5",
+        "description": "1 mile Zone 1, 8.5 miles Zone 2, 0.5 mile Zone 1",
+        "type": "RUN",
+        "durationMin": 100,
+        "durationLabel": "10 mi",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 1m Z1\n- 8m Z2\n- 0m Z1"
+    },
+    {
+        "id": "run_rl6",
+        "code": "RL6",
+        "name": "Running Long 6",
+        "description": "1 mile Zone 1, 9.5 miles Zone 2, 0.5 mile Zone 1",
+        "type": "RUN",
+        "durationMin": 110,
+        "durationLabel": "11 mi",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 1m Z1\n- 9m Z2\n- 0m Z1"
+    },
+    {
+        "id": "run_rl7",
+        "code": "RL7",
+        "name": "Running Long 7",
+        "description": "1 mile Zone 1, 10.5 miles Zone 2, 0.5 mile Zone 1",
+        "type": "RUN",
+        "durationMin": 120,
+        "durationLabel": "12 mi",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 1m Z1\n- 10m Z2\n- 0m Z1"
+    },
+    {
+        "id": "run_rl8",
+        "code": "RL8",
+        "name": "Running Long 8",
+        "description": "1 mile Zone 1, 11.5 miles Zone 2, 0.5 mile Zone 1",
+        "type": "RUN",
+        "durationMin": 130,
+        "durationLabel": "13 mi",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 1m Z1\n- 11m Z2\n- 0m Z1"
+    },
+    {
+        "id": "run_rl9",
+        "code": "RL9",
+        "name": "Running Long 9",
+        "description": "1 mile Zone 1, 12.5 miles Zone 2, 0.5 mile Zone 1",
+        "type": "RUN",
+        "durationMin": 140,
+        "durationLabel": "14 mi",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 1m Z1\n- 12m Z2\n- 0m Z1"
+    },
+    {
+        "id": "run_rl10",
+        "code": "RL10",
+        "name": "Running Long 10",
+        "description": "1 mile Zone 1, 13.5 miles Zone 2, 0.5 mile Zone 1",
+        "type": "RUN",
+        "durationMin": 150,
+        "durationLabel": "15 mi",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 1m Z1\n- 13m Z2\n- 0m Z1"
+    },
+    {
+        "id": "run_rl11",
+        "code": "RL11",
+        "name": "Running Long 11",
+        "description": "1 mile Zone 1, 14.5 miles Zone 2, 0.5 mile Zone 1",
+        "type": "RUN",
+        "durationMin": 160,
+        "durationLabel": "16 mi",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 1m Z1\n- 14m Z2\n- 0m Z1"
+    },
+    {
+        "id": "run_rl12",
+        "code": "RL12",
+        "name": "Running Long 12",
+        "description": "1 mile Zone 1, 15.5 miles Zone 2, 0.5 mile Zone 1",
+        "type": "RUN",
+        "durationMin": 170,
+        "durationLabel": "17 mi",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 1m Z1\n- 15m Z2\n- 0m Z1"
+    },
+    {
+        "id": "run_rl13",
+        "code": "RL13",
+        "name": "Running Long 13",
+        "description": "1 mile Zone 1, 16.5 miles Zone 2, 0.5 mile Zone 1",
+        "type": "RUN",
+        "durationMin": 180,
+        "durationLabel": "18 mi",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 1m Z1\n- 16m Z2\n- 0m Z1"
+    },
+    {
+        "id": "run_rl14",
+        "code": "RL14",
+        "name": "Running Long 14",
+        "description": "1 mile Zone 1, 17.5 miles Zone 2, 0.5 mile Zone 1",
+        "type": "RUN",
+        "durationMin": 190,
+        "durationLabel": "19 mi",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 1m Z1\n- 17m Z2\n- 0m Z1"
+    },
+    {
+        "id": "run_rl15",
+        "code": "RL15",
+        "name": "Running Long 15",
+        "description": "1 mile Zone 1, 18.5 miles Zone 2, 0.5 mile Zone 1",
+        "type": "RUN",
+        "durationMin": 200,
+        "durationLabel": "20 mi",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 1m Z1\n- 18m Z2\n- 0m Z1"
+    },
+    {
+        "id": "run_rci1",
+        "code": "RCI1",
+        "name": "Running Cruise Intervals 1",
+        "description": "5 minutes Zone 1, 21 minutes Zone 2, 3 x (5 minutes Zone 3/3 minutes Zone 1) 5 minutes Zone 2, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 60,
+        "durationLabel": "60 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 50,
+            "MUSCULAR": 60,
+            "METABOLIC": 60
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 21m Z2\n3x\n  - 5m Z3\n  - 3m Z1\n- 5m Z2\n- 5m Z1"
+    },
+    {
+        "id": "run_rci2",
+        "code": "RCI2",
+        "name": "Running Cruise Intervals 2",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 4 x (5 minutes Zone 3/3 minutes Zone 1) 5 minutes Zone 2, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 52,
+        "durationLabel": "52 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 45,
+            "MUSCULAR": 53,
+            "METABOLIC": 52
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n4x\n  - 5m Z3\n  - 3m Z1\n- 5m Z2\n- 5m Z1"
+    },
+    {
+        "id": "run_rci3",
+        "code": "RCI3",
+        "name": "Running Cruise Intervals 3",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 4 x (8 minutes Zone 3/3 minutes Zone 1) 5 minutes Zone 2, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 64,
+        "durationLabel": "64 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 53,
+            "MUSCULAR": 63,
+            "METABOLIC": 64
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n4x\n  - 8m Z3\n  - 3m Z1\n- 5m Z2\n- 5m Z1"
+    },
+    {
+        "id": "run_rci4",
+        "code": "RCI4",
+        "name": "Running Cruise Intervals 4",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 4 x (10 minutes Zone 3/3 minutes Zone 1) 5 minutes Zone 2, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 72,
+        "durationLabel": "72 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 58,
+            "MUSCULAR": 70,
+            "METABOLIC": 72
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n4x\n  - 10m Z3\n  - 3m Z1\n- 5m Z2\n- 5m Z1"
+    },
+    {
+        "id": "run_rci5",
+        "code": "RCI5",
+        "name": "Running Cruise Intervals 5",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 4 x (12 minutes Zone 3/3 minutes Zone 1) 5 minutes Zone 2, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 80,
+        "durationLabel": "80 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 63,
+            "MUSCULAR": 77,
+            "METABOLIC": 80
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n4x\n  - 12m Z3\n  - 3m Z1\n- 5m Z2\n- 5m Z1"
+    },
+    {
+        "id": "run_rci6",
+        "code": "RCI6",
+        "name": "Running Cruise Intervals 6",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 4 x (15 minutes Zone 3/3 minutes Zone 1) 5 minutes Zone 2, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 92,
+        "durationLabel": "92 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 71,
+            "MUSCULAR": 87,
+            "METABOLIC": 92
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n4x\n  - 15m Z3\n  - 3m Z1\n- 5m Z2\n- 5m Z1"
+    },
+    {
+        "id": "run_rci7",
+        "code": "RCI7",
+        "name": "Running Cruise Intervals 7",
+        "description": "15 minutes Zone 1, 11 minutes Zone 2, 2 x (10 minutes Zone 3/4 minutes Zone 1) 11 minutes Zone 2, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 70,
+        "durationLabel": "70 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 57,
+            "MUSCULAR": 68,
+            "METABOLIC": 70
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 15m Z1\n- 11m Z2\n2x\n  - 10m Z3\n  - 4m Z1\n- 11m Z2\n- 5m Z1"
+    },
+    {
+        "id": "run_rci8",
+        "code": "RCI8",
+        "name": "Running Cruise Intervals 8",
+        "description": "5 minutes Zone 1, 10 minutes Zone 2, 4 x (6 minutes Zone 3/3 minutes Zone 1) 14 minutes Zone 2, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 70,
+        "durationLabel": "70 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 57,
+            "MUSCULAR": 68,
+            "METABOLIC": 70
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 10m Z2\n4x\n  - 6m Z3\n  - 3m Z1\n- 14m Z2\n- 5m Z1"
+    },
+    {
+        "id": "run_rci9",
+        "code": "RCI9",
+        "name": "Running Cruise Intervals 9",
+        "description": "5 minutes Zone 1, 10 minutes Zone 2, 4 x (7 minutes Zone 3/3 minutes Zone 1) 14 minutes Zone 2, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 74,
+        "durationLabel": "74 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 59,
+            "MUSCULAR": 72,
+            "METABOLIC": 74
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 10m Z2\n4x\n  - 7m Z3\n  - 3m Z1\n- 14m Z2\n- 5m Z1"
+    },
+    {
+        "id": "run_rci10",
+        "code": "RCI10",
+        "name": "Running Cruise Intervals 10",
+        "description": "5 minutes Zone 1, 6 minutes Zone 2, 3 x (6 minutes Zone 3/2 minutes Zone 1) 5 minutes Zone 2, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 45,
+        "durationLabel": "45 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 40,
+            "MUSCULAR": 48,
+            "METABOLIC": 45
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 6m Z2\n3x\n  - 6m Z3\n  - 2m Z1\n- 5m Z2\n- 5m Z1"
+    },
+    {
+        "id": "run_rci11",
+        "code": "RCI11",
+        "name": "Running Cruise Intervals 11",
+        "description": "5 minutes Zone 1, 6 minutes Zone 2, 4 x (6 minutes Zone 3/2 minutes Zone 1) 5 minutes Zone 2, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 53,
+        "durationLabel": "53 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 45,
+            "MUSCULAR": 54,
+            "METABOLIC": 53
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 6m Z2\n4x\n  - 6m Z3\n  - 2m Z1\n- 5m Z2\n- 5m Z1"
+    },
+    {
+        "id": "run_rci12",
+        "code": "RCI12",
+        "name": "Running Cruise Intervals 12",
+        "description": "5 minutes Zone 1, 10 minutes Zone 2, 4 x (7 minutes Zone 3/2 minutes Zone 1) 5 minutes Zone 2, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 61,
+        "durationLabel": "61 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 51,
+            "MUSCULAR": 61,
+            "METABOLIC": 61
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 10m Z2\n4x\n  - 7m Z3\n  - 2m Z1\n- 5m Z2\n- 5m Z1"
+    },
+    {
+        "id": "run_rci13",
+        "code": "RCI13",
+        "name": "Running Cruise Intervals 13",
+        "description": "10 minutes Zone 1, 3 x (3 minutes Zone 3/2 minutes Zone 1) 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 30,
+        "durationLabel": "30 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 30,
+            "MUSCULAR": 35,
+            "METABOLIC": 30
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n3x\n  - 3m Z3\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_rci14",
+        "code": "RCI14",
+        "name": "Running Cruise Intervals 14",
+        "description": "5 minutes Zone 1, 10 minutes Zone 2, 4 x (10 minutes Zone 3/4 minutes Zone 1)",
+        "type": "RUN",
+        "durationMin": 71,
+        "durationLabel": "71 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 57,
+            "MUSCULAR": 69,
+            "METABOLIC": 71
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 10m Z2\n4x\n  - 10m Z3\n  - 4m Z1"
+    },
+    {
+        "id": "run_rci15",
+        "code": "RCI15",
+        "name": "Running Cruise Intervals 15",
+        "description": "15 minutes Zone 1, 3 x (4 minutes Zone 3/2 minutes Zone 1) 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 38,
+        "durationLabel": "38 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 35,
+            "MUSCULAR": 42,
+            "METABOLIC": 38
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 15m Z1\n3x\n  - 4m Z3\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_rt1",
+        "code": "RT1",
+        "name": "Running Tempo 1",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 15 minutes Zone 3, 5 minutes Zone 2, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 35,
+        "durationLabel": "35 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 33,
+            "MUSCULAR": 39,
+            "METABOLIC": 35
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n- 15m Z3\n- 5m Z2\n- 5m Z1"
+    },
+    {
+        "id": "run_rt2",
+        "code": "RT2",
+        "name": "Running Tempo 2",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 18 minutes Zone 3, 5 minutes Zone 2, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 38,
+        "durationLabel": "38 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 35,
+            "MUSCULAR": 42,
+            "METABOLIC": 38
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n- 18m Z3\n- 5m Z2\n- 5m Z1"
+    },
+    {
+        "id": "run_rt3",
+        "code": "RT3",
+        "name": "Running Tempo 3",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 20 minutes Zone 3, 5 minutes Zone 2, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 40,
+        "durationLabel": "40 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 37,
+            "MUSCULAR": 43,
+            "METABOLIC": 40
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n- 20m Z3\n- 5m Z2\n- 5m Z1"
+    },
+    {
+        "id": "run_rt4",
+        "code": "RT4",
+        "name": "Running Tempo 4",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 24 minutes Zone 3, 5 minutes Zone 2, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 44,
+        "durationLabel": "44 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 39,
+            "MUSCULAR": 47,
+            "METABOLIC": 44
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n- 24m Z3\n- 5m Z2\n- 5m Z1"
+    },
+    {
+        "id": "run_rt5",
+        "code": "RT5",
+        "name": "Running Tempo 5",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 28 minutes Zone 3, 5 minutes Zone 2, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 48,
+        "durationLabel": "48 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 42,
+            "MUSCULAR": 50,
+            "METABOLIC": 48
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n- 28m Z3\n- 5m Z2\n- 5m Z1"
+    },
+    {
+        "id": "run_rt6",
+        "code": "RT6",
+        "name": "Running Tempo 6",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 30 minutes Zone 3, 5 minutes Zone 2, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 50,
+        "durationLabel": "50 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 43,
+            "MUSCULAR": 52,
+            "METABOLIC": 50
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n- 30m Z3\n- 5m Z2\n- 5m Z1"
+    },
+    {
+        "id": "run_rt7",
+        "code": "RT7",
+        "name": "Running Tempo 7",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 32 minutes Zone 3, 5 minutes Zone 2, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 52,
+        "durationLabel": "52 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 45,
+            "MUSCULAR": 53,
+            "METABOLIC": 52
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n- 32m Z3\n- 5m Z2\n- 5m Z1"
+    },
+    {
+        "id": "run_rt8",
+        "code": "RT8",
+        "name": "Running Tempo 8",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 36 minutes Zone 3, 5 minutes Zone 2, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 56,
+        "durationLabel": "56 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 47,
+            "MUSCULAR": 57,
+            "METABOLIC": 56
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n- 36m Z3\n- 5m Z2\n- 5m Z1"
+    },
+    {
+        "id": "run_rt9",
+        "code": "RT9",
+        "name": "Running Tempo 9",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 40 minutes Zone 3, 5 minutes Zone 2, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 60,
+        "durationLabel": "60 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 50,
+            "MUSCULAR": 60,
+            "METABOLIC": 60
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n- 40m Z3\n- 5m Z2\n- 5m Z1"
+    },
+    {
+        "id": "run_rt10",
+        "code": "RT10",
+        "name": "Running Tempo 10",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 45 minutes Zone 3, 5 minutes Zone 2, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 65,
+        "durationLabel": "65 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 53,
+            "MUSCULAR": 64,
+            "METABOLIC": 65
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n- 45m Z3\n- 5m Z2\n- 5m Z1"
+    },
+    {
+        "id": "run_rt11",
+        "code": "RT11",
+        "name": "Running Tempo 11",
+        "description": "5 minutes Zone 1, 15 minutes Zone 2, 10 minutes Zone 3, 15 minutes Zone 2, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 50,
+        "durationLabel": "50 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 43,
+            "MUSCULAR": 52,
+            "METABOLIC": 50
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 15m Z2\n- 10m Z3\n- 15m Z2\n- 5m Z1"
+    },
+    {
+        "id": "run_rt12",
+        "code": "RT12",
+        "name": "Running Tempo 12",
+        "description": "5 minutes Zone 1, 15 minutes Zone 2, 10 minutes Zone 3, 20 minutes Zone 2, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 55,
+        "durationLabel": "55 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 47,
+            "MUSCULAR": 56,
+            "METABOLIC": 55
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 15m Z2\n- 10m Z3\n- 20m Z2\n- 5m Z1"
+    },
+    {
+        "id": "run_rt13",
+        "code": "RT13",
+        "name": "Running Tempo 13",
+        "description": "5 minutes Zone 1, 10 minutes Zone 2, 20 minutes Zone 3, 10 minutes Zone 2, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 50,
+        "durationLabel": "50 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 43,
+            "MUSCULAR": 52,
+            "METABOLIC": 50
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 10m Z2\n- 20m Z3\n- 10m Z2\n- 5m Z1"
+    },
+    {
+        "id": "run_rt14",
+        "code": "RT14",
+        "name": "Running Tempo 14",
+        "description": "5 minutes Zone 1, 10 minutes Zone 2, 24 minutes Zone 3, 10 minutes Zone 2, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 54,
+        "durationLabel": "54 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 46,
+            "MUSCULAR": 55,
+            "METABOLIC": 54
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 10m Z2\n- 24m Z3\n- 10m Z2\n- 5m Z1"
+    },
+    {
+        "id": "run_rt15",
+        "code": "RT15",
+        "name": "Running Tempo 15",
+        "description": "5 minutes Zone 1, 10 minutes Zone 2, 32 minutes Zone 3, 10 minutes Zone 2, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 62,
+        "durationLabel": "62 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 51,
+            "MUSCULAR": 62,
+            "METABOLIC": 62
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 10m Z2\n- 32m Z3\n- 10m Z2\n- 5m Z1"
+    },
+    {
+        "id": "run_rt16",
+        "code": "RT16",
+        "name": "Running Tempo 16",
+        "description": "10 minutes Zone 1, 10 minutes Zone 2, 20 minutes Zone 3, 10 minutes Zone 2, 10 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 60,
+        "durationLabel": "60 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 50,
+            "MUSCULAR": 60,
+            "METABOLIC": 60
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n- 10m Z2\n- 20m Z3\n- 10m Z2\n- 10m Z1"
+    },
+    {
+        "id": "run_rt17",
+        "code": "RT17",
+        "name": "Running Tempo 17",
+        "description": "10 minutes Zone 1, 10 minutes Zone 2, 36 minutes Zone 3, 10 minutes Zone 2, 10 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 76,
+        "durationLabel": "76 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 61,
+            "MUSCULAR": 73,
+            "METABOLIC": 76
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n- 10m Z2\n- 36m Z3\n- 10m Z2\n- 10m Z1"
+    },
+    {
+        "id": "run_rt18",
+        "code": "RT18",
+        "name": "Running Tempo 18",
+        "description": "5 minutes Zone 1, 10 minutes Zone 2, 40 minutes Zone 3, 10 minutes Zone 2, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 70,
+        "durationLabel": "70 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 57,
+            "MUSCULAR": 68,
+            "METABOLIC": 70
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 10m Z2\n- 40m Z3\n- 10m Z2\n- 5m Z1"
+    },
+    {
+        "id": "run_rt19",
+        "code": "RT19",
+        "name": "Running Tempo 19",
+        "description": "5 minutes Zone 1, 10 minutes Zone 2, 20 minutes Zone 3, 50 minutes Zone 2, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 90,
+        "durationLabel": "90 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 70,
+            "MUSCULAR": 85,
+            "METABOLIC": 90
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 10m Z2\n- 20m Z3\n- 50m Z2\n- 5m Z1"
+    },
+    {
+        "id": "run_rt20",
+        "code": "RT20",
+        "name": "Running Tempo 20",
+        "description": "5 minutes Zone 1, 10 minutes Zone 2, 25 minutes Zone 3, 50 Minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 90,
+        "durationLabel": "90 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 70,
+            "MUSCULAR": 85,
+            "METABOLIC": 90
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 10m Z2\n- 25m Z3\n- 50m Z1"
+    },
+    {
+        "id": "run_rff1",
+        "code": "RFF1",
+        "name": "Running Fast Finish 1",
+        "description": "5 minutes Zone 1, 15 minutes Zone 2, 5 minutes Zone 3",
+        "type": "RUN",
+        "durationMin": 25,
+        "durationLabel": "25 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 39,
+            "MUSCULAR": 35,
+            "METABOLIC": 33
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 15m Z2\n- 5m Z3"
+    },
+    {
+        "id": "run_rff2",
+        "code": "RFF2",
+        "name": "Running Fast Finish 2",
+        "description": "5 minutes Zone 1, 20 minutes Zone 2, 5 minutes Zone 3",
+        "type": "RUN",
+        "durationMin": 30,
+        "durationLabel": "30 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 45,
+            "MUSCULAR": 40,
+            "METABOLIC": 40
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 20m Z2\n- 5m Z3"
+    },
+    {
+        "id": "run_rff3",
+        "code": "RFF3",
+        "name": "Running Fast Finish 3",
+        "description": "5 minutes Zone 1, 15 minutes Zone 2, 10 minutes Zone 3",
+        "type": "RUN",
+        "durationMin": 30,
+        "durationLabel": "30 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 45,
+            "MUSCULAR": 40,
+            "METABOLIC": 40
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 15m Z2\n- 10m Z3"
+    },
+    {
+        "id": "run_rff4",
+        "code": "RFF4",
+        "name": "Running Fast Finish 4",
+        "description": "5 minutes Zone 1, 25 minutes Zone 2, 10 minutes Zone 3",
+        "type": "RUN",
+        "durationMin": 40,
+        "durationLabel": "40 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 57,
+            "MUSCULAR": 50,
+            "METABOLIC": 53
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 25m Z2\n- 10m Z3"
+    },
+    {
+        "id": "run_rff5",
+        "code": "RFF5",
+        "name": "Running Fast Finish 5",
+        "description": "5 minutes Zone 1, 25 minutes Zone 2, 12 minutes Zone 3",
+        "type": "RUN",
+        "durationMin": 42,
+        "durationLabel": "42 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 59,
+            "MUSCULAR": 52,
+            "METABOLIC": 56
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 25m Z2\n- 12m Z3"
+    },
+    {
+        "id": "run_rff6",
+        "code": "RFF6",
+        "name": "Running Fast Finish 6",
+        "description": "5 minutes Zone 1, 30 minutes Zone 2, 12 minutes Zone 3",
+        "type": "RUN",
+        "durationMin": 47,
+        "durationLabel": "47 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 65,
+            "MUSCULAR": 57,
+            "METABOLIC": 63
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 30m Z2\n- 12m Z3"
+    },
+    {
+        "id": "run_rff7",
+        "code": "RFF7",
+        "name": "Running Fast Finish 7",
+        "description": "5 minutes Zone 1, 35 minutes Zone 2, 12 minutes Zone 3",
+        "type": "RUN",
+        "durationMin": 52,
+        "durationLabel": "52 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 71,
+            "MUSCULAR": 62,
+            "METABOLIC": 69
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 35m Z2\n- 12m Z3"
+    },
+    {
+        "id": "run_rff8",
+        "code": "RFF8",
+        "name": "Running Fast Finish 8",
+        "description": "5 minutes Zone 1, 35 minutes Zone 2, 15 minutes Zone 3",
+        "type": "RUN",
+        "durationMin": 55,
+        "durationLabel": "55 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 74,
+            "MUSCULAR": 65,
+            "METABOLIC": 73
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 35m Z2\n- 15m Z3"
+    },
+    {
+        "id": "run_rff9",
+        "code": "RFF9",
+        "name": "Running Fast Finish 9",
+        "description": "5 minutes Zone 1, 40 minutes Zone 2, 15 minutes Zone 3",
+        "type": "RUN",
+        "durationMin": 60,
+        "durationLabel": "60 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 80,
+            "MUSCULAR": 70,
+            "METABOLIC": 80
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 40m Z2\n- 15m Z3"
+    },
+    {
+        "id": "run_rff10",
+        "code": "RFF10",
+        "name": "Running Fast Finish 10",
+        "description": "5 minutes Zone 1, 45 minutes Zone 2, 15 minutes Zone 3",
+        "type": "RUN",
+        "durationMin": 65,
+        "durationLabel": "65 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 86,
+            "MUSCULAR": 75,
+            "METABOLIC": 87
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 45m Z2\n- 15m Z3"
+    },
+    {
+        "id": "run_rff11",
+        "code": "RFF11",
+        "name": "Running Fast Finish 11",
+        "description": "5 minutes Zone 1, 45 minutes Zone 2, 10 minutes Zone 3",
+        "type": "RUN",
+        "durationMin": 60,
+        "durationLabel": "60 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 80,
+            "MUSCULAR": 70,
+            "METABOLIC": 80
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 45m Z2\n- 10m Z3"
+    },
+    {
+        "id": "run_rlff1",
+        "code": "RLFF1",
+        "name": "Running Long Fast Finish 1",
+        "description": "0.5 mile Zone 1, 8.5 miles Zone 2, 1 mile Zone 3",
+        "type": "RUN",
+        "durationMin": 100,
+        "durationLabel": "10 mi",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 0m Z1\n- 8m Z2\n- 1m Z3"
+    },
+    {
+        "id": "run_rlff2",
+        "code": "RLFF2",
+        "name": "Running Long Fast Finish 2",
+        "description": "0.5 mile Zone 1, 10.5 miles Zone 2, 1 mile Zone 3",
+        "type": "RUN",
+        "durationMin": 120,
+        "durationLabel": "12 mi",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 0m Z1\n- 10m Z2\n- 1m Z3"
+    },
+    {
+        "id": "run_rlff3",
+        "code": "RLFF3",
+        "name": "Running Long Fast Finish 3",
+        "description": "0.5 mile Zone 1, 12 miles Zone 2, 1.5 miles Zone 3",
+        "type": "RUN",
+        "durationMin": 140,
+        "durationLabel": "14 mi",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 0m Z1\n- 12m Z2\n- 1m Z3"
+    },
+    {
+        "id": "run_rlff4",
+        "code": "RLFF4",
+        "name": "Running Long Fast Finish 4",
+        "description": "0.5 mile Zone 1, 14 miles Zone 2, 1.5 miles Zone 3",
+        "type": "RUN",
+        "durationMin": 160,
+        "durationLabel": "16 mi",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 0m Z1\n- 14m Z2\n- 1m Z3"
+    },
+    {
+        "id": "run_rlff5",
+        "code": "RLFF5",
+        "name": "Running Long Fast Finish 5",
+        "description": "0.5 mile Zone 1, 15.5 miles Zone 2, 2 miles Zone 3",
+        "type": "RUN",
+        "durationMin": 180,
+        "durationLabel": "18 mi",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 0m Z1\n- 15m Z2\n- 2m Z3"
+    },
+    {
+        "id": "run_rlff6",
+        "code": "RLFF6",
+        "name": "Running Long Fast Finish 6",
+        "description": "0.5 mile Zone 1, 17.5 miles Zone 2, 2 miles Zone 3",
+        "type": "RUN",
+        "durationMin": 200,
+        "durationLabel": "20 mi",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 0m Z1\n- 17m Z2\n- 2m Z3"
+    },
+    {
+        "id": "run_rhr1",
+        "code": "RHR1",
+        "name": "Running Hill Repeats 1",
+        "description": "5 minutes Zone 1, 32 minutes Zone 2, 4 x (30 seconds Zone 5 uphill/90 seconds Zone 1)",
+        "type": "RUN",
+        "durationMin": 45,
+        "durationLabel": "45 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 63,
+            "MUSCULAR": 55,
+            "METABOLIC": 60
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 32m Z2\n4x\n  - 30s Z5\n  - 90s Z1"
+    },
+    {
+        "id": "run_rhr2",
+        "code": "RHR2",
+        "name": "Running Hill Repeats 2",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 6 x (30 seconds Zone 5 uphill/90 seconds Zone 1) 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 27,
+        "durationLabel": "27 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 42,
+            "MUSCULAR": 37,
+            "METABOLIC": 36
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n6x\n  - 30s Z5\n  - 90s Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_rhr3",
+        "code": "RHR3",
+        "name": "Running Hill Repeats 3",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 8 x (30 seconds Zone 5 uphill/90 seconds Zone 1) 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 31,
+        "durationLabel": "31 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 46,
+            "MUSCULAR": 41,
+            "METABOLIC": 41
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n8x\n  - 30s Z5\n  - 90s Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_rhr4",
+        "code": "RHR4",
+        "name": "Running Hill Repeats 4",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 6 x (1 minute Zone 5 uphill/2 minutes Zone 1) 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 33,
+        "durationLabel": "33 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 49,
+            "MUSCULAR": 43,
+            "METABOLIC": 44
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n6x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_rhr5",
+        "code": "RHR5",
+        "name": "Running Hill Repeats 5",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 10 x (30 seconds Zone 5 uphill/90 seconds Zone 1) 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 35,
+        "durationLabel": "35 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 51,
+            "MUSCULAR": 45,
+            "METABOLIC": 47
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n10x\n  - 30s Z5\n  - 90s Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_rhr6",
+        "code": "RHR6",
+        "name": "Running Hill Repeats 6",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 12 x (30 seconds Zone 5 uphill/90 seconds Zone 1) 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 39,
+        "durationLabel": "39 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 56,
+            "MUSCULAR": 49,
+            "METABOLIC": 52
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n12x\n  - 30s Z5\n  - 90s Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_rhr7",
+        "code": "RHR7",
+        "name": "Running Hill Repeats 7",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 8 x (1 minute Zone 5 uphill/2 minutes Zone 1) 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 39,
+        "durationLabel": "39 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 56,
+            "MUSCULAR": 49,
+            "METABOLIC": 52
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n8x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_rhr8",
+        "code": "RHR8",
+        "name": "Running Hill Repeats 8",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 6 x (1.5 minutes Zone 5 uphill/2.5 minutes Zone 1) 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 39,
+        "durationLabel": "39 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 56,
+            "MUSCULAR": 49,
+            "METABOLIC": 52
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n6x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_rhr9",
+        "code": "RHR9",
+        "name": "Running Hill Repeats 9",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 10 x (1 minute Zone 5 uphill/2 minutes Zone 1) 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 45,
+        "durationLabel": "45 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 63,
+            "MUSCULAR": 55,
+            "METABOLIC": 60
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n10x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_rhr10",
+        "code": "RHR10",
+        "name": "Running Hill Repeats 10",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 8 x (1.5 minutes Zone 5 uphill/2.5 minutes Zone 1) 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 47,
+        "durationLabel": "47 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 65,
+            "MUSCULAR": 57,
+            "METABOLIC": 63
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n8x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_rhr11",
+        "code": "RHR11",
+        "name": "Running Hill Repeats 11",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 12 x (1 minute Zone 5 uphill/2 minutes Zone 1) 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 51,
+        "durationLabel": "51 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 70,
+            "MUSCULAR": 61,
+            "METABOLIC": 68
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n12x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_rhr12",
+        "code": "RHR12",
+        "name": "Running Hill Repeats 12",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 10 x (1.5 minutes Zone 5 uphill/2.5 minutes Zone 1) 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 55,
+        "durationLabel": "55 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 74,
+            "MUSCULAR": 65,
+            "METABOLIC": 73
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n10x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_rhr13",
+        "code": "RHR13",
+        "name": "Running Hill Repeats 13",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 12 x (1.5 minutes Zone 5 uphill/2.5 minutes Zone 1) 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 63,
+        "durationLabel": "63 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 84,
+            "MUSCULAR": 73,
+            "METABOLIC": 84
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n12x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_rhr14",
+        "code": "RHR14",
+        "name": "Running Hill Repeats 14",
+        "description": "5 minutes Zone 1, 20 minutes Zone 2, 10 x (30 seconds Zone 5 uphill/90 seconds Zone 1) 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 50,
+        "durationLabel": "50 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 68,
+            "MUSCULAR": 60,
+            "METABOLIC": 67
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 20m Z2\n10x\n  - 30s Z5\n  - 90s Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_rmi1",
+        "code": "RMI1",
+        "name": "Running Mixed Intervals 1",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 1 minute Zone 5, 2 minutes Zone 1, 3 minutes Zone 4, 2 minutes Zone 1, 5 minutes Zone 3, 2 minutes Zone 1, 3 minutes Zone 4, 2 minutes Zone 1, 1 minute Zone 5, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 36,
+        "durationLabel": "36 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 52,
+            "MUSCULAR": 46,
+            "METABOLIC": 48
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n- 1m Z5\n- 2m Z1\n- 3m Z4\n- 2m Z1\n- 5m Z3\n- 2m Z1\n- 3m Z4\n- 2m Z1\n- 1m Z5\n- 5m Z1"
+    },
+    {
+        "id": "run_rmi2",
+        "code": "RMI2",
+        "name": "Running Mixed Intervals 2",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 1.5 minute Zone 5, 2 minutes Zone 1, 5 minutes Zone 4, 2 minutes Zone 1, 10 minutes Zone 3, 2 minutes Zone 1, 5 minutes Zone 4, 2 minutes Zone 1, 1.5 minute Zone 5, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 46,
+        "durationLabel": "46 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 64,
+            "MUSCULAR": 56,
+            "METABOLIC": 61
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n- 1m Z5\n- 2m Z1\n- 5m Z4\n- 2m Z1\n- 10m Z3\n- 2m Z1\n- 5m Z4\n- 2m Z1\n- 1m Z5\n- 5m Z1"
+    },
+    {
+        "id": "run_rmi3",
+        "code": "RMI3",
+        "name": "Running Mixed Intervals 3",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 2 x (1 minute Zone 5/2 minutes Zone 1), 2 x (3 minutes Zone 4/2 minutes Zone 1), 10 minutes Zone 3, 2 minutes Zone 1, 2 x (3 minutes Zone 4/2 minutes Zone 1), 2 x (1 minute Zone 5/2 minutes Zone 1), 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 59,
+        "durationLabel": "59 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 79,
+            "MUSCULAR": 69,
+            "METABOLIC": 79
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n2x\n  - 1m Z5\n  - 2m Z1\n2x\n  - 3m Z4\n  - 2m Z1\n- 10m Z3\n- 2m Z1\n2x\n  - 3m Z4\n  - 2m Z1\n2x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_rmi4",
+        "code": "RMI4",
+        "name": "Running Mixed Intervals 4",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 2 x (1.5 minutes Zone 5/2.5 minutes Zone 1), 2 x (5 minutes Zone 4/2 minutes Zone 1), 10 minutes Zone 3, 2 minutes Zone 1, 2 x (1.5 minutes Zone 5/2.5 minutes Zone 1), 2 x (5 minutes Zone 4/2 minutes Zone 1), 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 71,
+        "durationLabel": "71 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 93,
+            "MUSCULAR": 81,
+            "METABOLIC": 95
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n2x\n  - 1m Z5\n  - 2m Z1\n2x\n  - 5m Z4\n  - 2m Z1\n- 10m Z3\n- 2m Z1\n2x\n  - 1m Z5\n  - 2m Z1\n2x\n  - 5m Z4\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_ran1",
+        "code": "RAn1",
+        "name": "Running Anaerobic Intervals 1",
+        "description": "15 minutes Zone 1, 4 x (2.5 minutes Zone 4/5 minutes Zone 1) 15 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 60,
+        "durationLabel": "60 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 80,
+            "MUSCULAR": 70,
+            "METABOLIC": 80
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 15m Z1\n4x\n  - 2m Z4\n  - 5m Z1\n- 15m Z1"
+    },
+    {
+        "id": "run_ran2",
+        "code": "RAn2",
+        "name": "Running Anaerobic Intervals 2",
+        "description": "15 minutes Zone 1, 5 x (2.5 minutes Zone 4/5 minutes Zone 1) 7.5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 60,
+        "durationLabel": "60 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 80,
+            "MUSCULAR": 70,
+            "METABOLIC": 80
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 15m Z1\n5x\n  - 2m Z4\n  - 5m Z1\n- 7m Z1"
+    },
+    {
+        "id": "run_ran3",
+        "code": "RAn3",
+        "name": "Running Anaerobic Intervals 3",
+        "description": "15 minutes Zone 1, 6 x (2.5 minutes Zone 4/5 minutes Zone 1)",
+        "type": "RUN",
+        "durationMin": 60,
+        "durationLabel": "60 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 80,
+            "MUSCULAR": 70,
+            "METABOLIC": 80
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 15m Z1\n6x\n  - 2m Z4\n  - 5m Z1"
+    },
+    {
+        "id": "run_ran4",
+        "code": "RAn4",
+        "name": "Running Anaerobic Intervals 4",
+        "description": "15 minutes Zone 1, 4 x (2.5 minutes Zone 4/5 minutes Zone 1)",
+        "type": "RUN",
+        "durationMin": 45,
+        "durationLabel": "45 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 63,
+            "MUSCULAR": 55,
+            "METABOLIC": 60
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 15m Z1\n4x\n  - 2m Z4\n  - 5m Z1"
+    },
+    {
+        "id": "run_ran5",
+        "code": "RAn5",
+        "name": "Running Anaerobic Intervals 5",
+        "description": "15 minutes Zone 1, 3 x (2.5 minutes Zone 4/5 minutes Zone 1) 7 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 45,
+        "durationLabel": "45 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 63,
+            "MUSCULAR": 55,
+            "METABOLIC": 60
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 15m Z1\n3x\n  - 2m Z4\n  - 5m Z1\n- 7m Z1"
+    },
+    {
+        "id": "run_rsi1",
+        "code": "RSI1",
+        "name": "Running Short Intervals 1",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 6 x (1 minute Zone 5/2 minutes Zone 1) 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 33,
+        "durationLabel": "33 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 49,
+            "MUSCULAR": 43,
+            "METABOLIC": 44
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n6x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_rsi2",
+        "code": "RSI2",
+        "name": "Running Short Intervals 2",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 8 x (1 minute Zone 5/2 minutes Zone 1) 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 39,
+        "durationLabel": "39 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 56,
+            "MUSCULAR": 49,
+            "METABOLIC": 52
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n8x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_rsi3",
+        "code": "RSI3",
+        "name": "Running Short Intervals 3",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 6 x (1.5 minutes Zone 5/2.5 minutes Zone 1) 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 39,
+        "durationLabel": "39 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 56,
+            "MUSCULAR": 49,
+            "METABOLIC": 52
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n6x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_rsi4",
+        "code": "RSI4",
+        "name": "Running Short Intervals 4",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 10 x (1 minute Zone 5/2 minutes Zone 1) 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 45,
+        "durationLabel": "45 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 63,
+            "MUSCULAR": 55,
+            "METABOLIC": 60
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n10x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_rsi5",
+        "code": "RSI5",
+        "name": "Running Short Intervals 5",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 8 x (1.5 minutes Zone 5/2.5 minutes Zone 1) 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 47,
+        "durationLabel": "47 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 65,
+            "MUSCULAR": 57,
+            "METABOLIC": 63
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n8x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_rsi6",
+        "code": "RSI6",
+        "name": "Running Short Intervals 6",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 12 x (1 minute Zone 5/2 minutes Zone 1) 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 51,
+        "durationLabel": "51 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 70,
+            "MUSCULAR": 61,
+            "METABOLIC": 68
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n12x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_rsi7",
+        "code": "RSI7",
+        "name": "Running Short Intervals 7",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 10 x (1.5 minutes Zone 5/2.5 minutes Zone 1) 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 55,
+        "durationLabel": "55 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 74,
+            "MUSCULAR": 65,
+            "METABOLIC": 73
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n10x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_rsi8",
+        "code": "RSI8",
+        "name": "Running Short Intervals 8",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 12 x (1.5 minutes Zone 5/2.5 minutes Zone 1) 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 63,
+        "durationLabel": "63 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 84,
+            "MUSCULAR": 73,
+            "METABOLIC": 84
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n12x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_rsi9",
+        "code": "RSI9",
+        "name": "Running Short Intervals 9",
+        "description": "5 minutes Zone 1, 26 minutes Zone 2, 8 x (1 minutes Zone 5/2 minutes Zone 1) 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 60,
+        "durationLabel": "60 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 80,
+            "MUSCULAR": 70,
+            "METABOLIC": 80
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 26m Z2\n8x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_rsi10",
+        "code": "RSI10",
+        "name": "Running Short Intervals 10",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 8 x (1 minutes Zone 5/2 minutes Zone 1) 10 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 44,
+        "durationLabel": "44 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 61,
+            "MUSCULAR": 54,
+            "METABOLIC": 59
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n8x\n  - 1m Z5\n  - 2m Z1\n- 10m Z1"
+    },
+    {
+        "id": "run_rsi11",
+        "code": "RSI11",
+        "name": "Running Short Intervals 11",
+        "description": "5 minutes Zone 1, 15 minutes Zone 2, 10 x (1 minutes Zone 5/2 minutes Zone 1) 10 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 60,
+        "durationLabel": "60 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 80,
+            "MUSCULAR": 70,
+            "METABOLIC": 80
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 15m Z2\n10x\n  - 1m Z5\n  - 2m Z1\n- 10m Z1"
+    },
+    {
+        "id": "run_rli1",
+        "code": "RLI1",
+        "name": "Running Long Intervals 1",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 3 x (3 minutes Zone 4/2 minutes Zone 1) 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 30,
+        "durationLabel": "30 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 45,
+            "MUSCULAR": 40,
+            "METABOLIC": 40
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n3x\n  - 3m Z4\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_rli2",
+        "code": "RLI2",
+        "name": "Running Long Intervals 2",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 4 x (3 minutes Zone 4/2 minutes Zone 1) 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 35,
+        "durationLabel": "35 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 51,
+            "MUSCULAR": 45,
+            "METABOLIC": 47
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n4x\n  - 3m Z4\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_rli3",
+        "code": "RLI3",
+        "name": "Running Long Intervals 3",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 3 x (5 minutes Zone 4/3 minutes Zone 1) 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 39,
+        "durationLabel": "39 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 56,
+            "MUSCULAR": 49,
+            "METABOLIC": 52
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n3x\n  - 5m Z4\n  - 3m Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_rli4",
+        "code": "RLI4",
+        "name": "Running Long Intervals 4",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 5 x (3 minutes Zone 4/2 minutes Zone 1) 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 40,
+        "durationLabel": "40 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 57,
+            "MUSCULAR": 50,
+            "METABOLIC": 53
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n5x\n  - 3m Z4\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_rli5",
+        "code": "RLI5",
+        "name": "Running Long Intervals 5",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 6 x (3 minutes Zone 4/2 minutes Zone 1) 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 45,
+        "durationLabel": "45 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 63,
+            "MUSCULAR": 55,
+            "METABOLIC": 60
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n6x\n  - 3m Z4\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_rli6",
+        "code": "RLI6",
+        "name": "Running Long Intervals 6",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 4 x (5 minutes Zone 4/3 minutes Zone 1) 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 47,
+        "durationLabel": "47 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 65,
+            "MUSCULAR": 57,
+            "METABOLIC": 63
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n4x\n  - 5m Z4\n  - 3m Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_rli7",
+        "code": "RLI7",
+        "name": "Running Long Intervals 7",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 5 x (5 minutes Zone 4/3 minutes Zone 1) 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 55,
+        "durationLabel": "55 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 74,
+            "MUSCULAR": 65,
+            "METABOLIC": 73
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n5x\n  - 5m Z4\n  - 3m Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_rli8",
+        "code": "RLI8",
+        "name": "Running Long Intervals 8",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 6 x (5 minutes Zone 4/3 minutes Zone 1) 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 63,
+        "durationLabel": "63 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 84,
+            "MUSCULAR": 73,
+            "METABOLIC": 84
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n6x\n  - 5m Z4\n  - 3m Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_rli9",
+        "code": "RLI9",
+        "name": "Running Long Intervals 9",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 7 x (5 minutes Zone 4/3 minutes Zone 1) 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 71,
+        "durationLabel": "71 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 93,
+            "MUSCULAR": 81,
+            "METABOLIC": 95
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n7x\n  - 5m Z4\n  - 3m Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_rli10",
+        "code": "RLI10",
+        "name": "Running Long Intervals 10",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 8 x (5 minutes Zone 4/3 minutes Zone 1) 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 79,
+        "durationLabel": "79 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 89,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n8x\n  - 5m Z4\n  - 3m Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_rli11",
+        "code": "RLI11",
+        "name": "Running Long Intervals 11",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 5 x (4 minutes Zone 4/2 minutes Zone 1) 5 minutes Zone 2, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 50,
+        "durationLabel": "50 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 68,
+            "MUSCULAR": 60,
+            "METABOLIC": 67
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n5x\n  - 4m Z4\n  - 2m Z1\n- 5m Z2\n- 5m Z1"
+    },
+    {
+        "id": "run_rli12",
+        "code": "RLI12",
+        "name": "Running Long Intervals 12",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 4 x (4 minutes Zone 4/2 minutes Zone 1) 5 minutes Zone 2, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 44,
+        "durationLabel": "44 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 61,
+            "MUSCULAR": 54,
+            "METABOLIC": 59
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n4x\n  - 4m Z4\n  - 2m Z1\n- 5m Z2\n- 5m Z1"
+    },
+    {
+        "id": "run_rsp1",
+        "code": "RSP1",
+        "name": "Running Speed Play 1",
+        "description": "5 minutes Zone 1, 28 minutes Zone 2, 4 x (1 minute Zone 4/2 minutes Zone 1)",
+        "type": "RUN",
+        "durationMin": 45,
+        "durationLabel": "45 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 63,
+            "MUSCULAR": 55,
+            "METABOLIC": 60
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 28m Z2\n4x\n  - 1m Z4\n  - 2m Z1"
+    },
+    {
+        "id": "run_rsp2",
+        "code": "RSP2",
+        "name": "Running Speed Play 2",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 3 x (2 minutes Zone 4/2 minutes Zone 1) 8 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 30,
+        "durationLabel": "30 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 45,
+            "MUSCULAR": 40,
+            "METABOLIC": 40
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n3x\n  - 2m Z4\n  - 2m Z1\n- 8m Z1"
+    },
+    {
+        "id": "run_rsp3",
+        "code": "RSP3",
+        "name": "Running Speed Play 3",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 5 x (1 minute Zone 4/2 minutes Zone 1) 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 30,
+        "durationLabel": "30 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 45,
+            "MUSCULAR": 40,
+            "METABOLIC": 40
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n5x\n  - 1m Z4\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_rsp4",
+        "code": "RSP4",
+        "name": "Running Speed Play 4",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 4 x (2 minutes Zone 4/2 minutes Zone 1) 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 31,
+        "durationLabel": "31 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 46,
+            "MUSCULAR": 41,
+            "METABOLIC": 41
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n4x\n  - 2m Z4\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_rsp5",
+        "code": "RSP5",
+        "name": "Running Speed Play 5",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 6 x (1 minute Zone 4/2 minutes Zone 1) 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 33,
+        "durationLabel": "33 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 49,
+            "MUSCULAR": 43,
+            "METABOLIC": 44
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n6x\n  - 1m Z4\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_rsp6",
+        "code": "RSP6",
+        "name": "Running Speed Play 6",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 5 x (2 minutes Zone 4/2 minutes Zone 1) 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 35,
+        "durationLabel": "35 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 51,
+            "MUSCULAR": 45,
+            "METABOLIC": 47
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n5x\n  - 2m Z4\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_rsp7",
+        "code": "RSP7",
+        "name": "Running Speed Play 7",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 7 x (1 minute Zone 4/2 minutes Zone 1) 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 36,
+        "durationLabel": "36 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 52,
+            "MUSCULAR": 46,
+            "METABOLIC": 48
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n7x\n  - 1m Z4\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_rsp8",
+        "code": "RSP8",
+        "name": "Running Speed Play 8",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 6 x (2 minutes Zone 4/2 minutes Zone 1) 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 39,
+        "durationLabel": "39 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 56,
+            "MUSCULAR": 49,
+            "METABOLIC": 52
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n6x\n  - 2m Z4\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_rsp9",
+        "code": "RSP9",
+        "name": "Running Speed Play 9",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 8 x (1 minute Zone 4/2 minutes Zone 1) 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 39,
+        "durationLabel": "39 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 56,
+            "MUSCULAR": 49,
+            "METABOLIC": 52
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n8x\n  - 1m Z4\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_rsp10",
+        "code": "RSP10",
+        "name": "Running Speed Play 10",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 9 x (1 minute Zone 4/2 minutes Zone 1) 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 42,
+        "durationLabel": "42 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 59,
+            "MUSCULAR": 52,
+            "METABOLIC": 56
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n9x\n  - 1m Z4\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_rsp11",
+        "code": "RSP11",
+        "name": "Running Speed Play 11",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 7 x (2 minutes Zone 4/2 minutes Zone 1) 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 43,
+        "durationLabel": "43 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 60,
+            "MUSCULAR": 53,
+            "METABOLIC": 57
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n7x\n  - 2m Z4\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_rsp12",
+        "code": "RSP12",
+        "name": "Running Speed Play 12",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 10 x (1 minute Zone 4/2 minutes Zone 1) 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 45,
+        "durationLabel": "45 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 63,
+            "MUSCULAR": 55,
+            "METABOLIC": 60
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n10x\n  - 1m Z4\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_rsp13",
+        "code": "RSP13",
+        "name": "Running Speed Play 13",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 8 x (2 minutes Zone 4/2 minutes Zone 1) 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 47,
+        "durationLabel": "47 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 65,
+            "MUSCULAR": 57,
+            "METABOLIC": 63
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n8x\n  - 2m Z4\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_rsp14",
+        "code": "RSP14",
+        "name": "Running Speed Play 14",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 9 x (2 minutes Zone 4/2 minutes Zone 1) 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 51,
+        "durationLabel": "51 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 70,
+            "MUSCULAR": 61,
+            "METABOLIC": 68
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n9x\n  - 2m Z4\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_rsp15",
+        "code": "RSP15",
+        "name": "Running Speed Play 15",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 12 x (1 minute Zone 4/2 minutes Zone 1) 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 51,
+        "durationLabel": "51 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 70,
+            "MUSCULAR": 61,
+            "METABOLIC": 68
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n12x\n  - 1m Z4\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_rsp16",
+        "code": "RSP16",
+        "name": "Running Speed Play 16",
+        "description": "5 minutes Zone 1, 20 minutes Zone 2, 7 x (1 minute Zone 4/2 minutes Zone 1) 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 51,
+        "durationLabel": "51 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 70,
+            "MUSCULAR": 61,
+            "METABOLIC": 68
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 20m Z2\n7x\n  - 1m Z4\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_rsp17",
+        "code": "RSP17",
+        "name": "Running Speed Play 17",
+        "description": "5 minutes Zone 1, 20 minutes Zone 2, 10 x (1 minute Zone 4/2 minutes Zone 1) 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 60,
+        "durationLabel": "60 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 80,
+            "MUSCULAR": 70,
+            "METABOLIC": 80
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 20m Z2\n10x\n  - 1m Z4\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_rsp18",
+        "code": "RSP18",
+        "name": "Running Speed Play 18",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 7 x (2 minute Zone 4/2 minutes Zone 1) 5 minutes Zone 2, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 48,
+        "durationLabel": "48 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 66,
+            "MUSCULAR": 58,
+            "METABOLIC": 64
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n7x\n  - 2m Z4\n  - 2m Z1\n- 5m Z2\n- 5m Z1"
+    },
+    {
+        "id": "run_rsp19",
+        "code": "RSP19",
+        "name": "Running Speed Play 19",
+        "description": "5 minutes Zone 1, 15 minutes Zone 2, 8 x (1 minute Zone 4/2 minutes Zone 1) 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 50,
+        "durationLabel": "50 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 68,
+            "MUSCULAR": 60,
+            "METABOLIC": 67
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 15m Z2\n8x\n  - 1m Z4\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "run_rsp20",
+        "code": "RSP20",
+        "name": "Running Speed Play 20",
+        "description": "5 minutes Zone 1, 15 minutes Zone 2, 5 x (2 minute Zone 4/2 minutes Zone 1) 10 minutes Zone 2, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 55,
+        "durationLabel": "55 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 74,
+            "MUSCULAR": 65,
+            "METABOLIC": 73
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 15m Z2\n5x\n  - 2m Z4\n  - 2m Z1\n- 10m Z2\n- 5m Z1"
+    },
+    {
+        "id": "run_rsp21",
+        "code": "RSP21",
+        "name": "Running Speed Play 21",
+        "description": "5 minutes Zone 1, 10 minutes Zone 2, 5 x (2 minute Zone 4/2 minutes Zone 1) 10 minutes Zone 2, 5 minutes Zone 1",
+        "type": "RUN",
+        "durationMin": 50,
+        "durationLabel": "50 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 68,
+            "MUSCULAR": 60,
+            "METABOLIC": 67
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 10m Z2\n5x\n  - 2m Z4\n  - 2m Z1\n- 10m Z2\n- 5m Z1"
+    },
+    {
+        "id": "run_rlsp1",
+        "code": "RLSP1",
+        "name": "Running Long Speed Play 1",
+        "description": "0.5 mile Zone 1, 1 mile Zone 2, 8 x (0.25 mile Zone 3/0.75 mile Zone 2) 0.5 mile Zone 1",
+        "type": "RUN",
+        "durationMin": 100,
+        "durationLabel": "10 mi",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 0m Z1\n- 1m Z2\n8x\n  - 0m Z3\n  - 0m Z2\n- 0m Z1"
+    },
+    {
+        "id": "run_rlsp2",
+        "code": "RLSP2",
+        "name": "Running Long Speed Play 2",
+        "description": "0.5 mile Zone 1, 1 mile Zone 2, 10 x (0.25 mile Zone 3/0.75 mile Zone 2) 0.5 mile Zone 1",
+        "type": "RUN",
+        "durationMin": 120,
+        "durationLabel": "12mi",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 0m Z1\n- 1m Z2\n10x\n  - 0m Z3\n  - 0m Z2\n- 0m Z1"
+    },
+    {
+        "id": "run_rlsp3",
+        "code": "RLSP3",
+        "name": "Running Long Speed Play 3",
+        "description": "0.5 mile Zone 1, 1 mile Zone 2, 12 x (0.25 mile Zone 3/0.75 mile Zone 2) 0.5 mile Zone 1",
+        "type": "RUN",
+        "durationMin": 140,
+        "durationLabel": "14 mi",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 0m Z1\n- 1m Z2\n12x\n  - 0m Z3\n  - 0m Z2\n- 0m Z1"
+    },
+    {
+        "id": "run_rlsp4",
+        "code": "RLSP4",
+        "name": "Running Long Speed Play 4",
+        "description": "0.5 mile Zone 1, 1 mile Zone 2, 14 x (0.25 mile Zone 3/0.75 mile Zone 2) 0.5 mile Zone 1",
+        "type": "RUN",
+        "durationMin": 160,
+        "durationLabel": "16 mi",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 0m Z1\n- 1m Z2\n14x\n  - 0m Z3\n  - 0m Z2\n- 0m Z1"
+    },
+    {
+        "id": "run_rlsp5",
+        "code": "RLSP5",
+        "name": "Running Long Speed Play 5",
+        "description": "0.5 mile Zone 1, 1 mile Zone 2, 16 x (0.25 mile Zone 3/0.75 mile Zone 2) 0.5 mile Zone 1",
+        "type": "RUN",
+        "durationMin": 180,
+        "durationLabel": "18 mi",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 0m Z1\n- 1m Z2\n16x\n  - 0m Z3\n  - 0m Z2\n- 0m Z1"
+    },
+    {
+        "id": "run_rlsp6",
+        "code": "RLSP6",
+        "name": "Running Long Speed Play 6",
+        "description": "0.5 mile Zone 1, 1 mile Zone 2, 18 x (0.25 mile Zone 3/0.75 mile Zone 2) 0.5 mile Zone 1",
+        "type": "RUN",
+        "durationMin": 200,
+        "durationLabel": "20 mi",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 0m Z1\n- 1m Z2\n18x\n  - 0m Z3\n  - 0m Z2\n- 0m Z1"
+    },
+    {
+        "id": "run_rlms",
+        "code": "RLMS",
+        "name": "Running Long Marathon Simulator",
+        "description": "1.5 miles Zone 1, 16 miles at race pace, 1 mile Zone 2, 1.5 miles Zone 1",
+        "type": "RUN",
+        "durationMin": 200,
+        "durationLabel": "20 mi",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 1m Z1\n- 1m Z2\n- 1m Z1"
+    },
+    {
+        "id": "run_rta1",
+        "code": "RTa1",
+        "name": "Running Taper 1",
+        "description": "5 minutes Zone 1, 6 x (20\" Zone 4/40\" rest)",
+        "type": "RUN",
+        "durationMin": 10,
+        "durationLabel": "10 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 22,
+            "MUSCULAR": 20,
+            "METABOLIC": 13
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n6x\n  - 20s Z4\n  - 40s Z1"
+    },
+    {
+        "id": "bike_cre1",
+        "code": "CRe1",
+        "name": "Cycling Recovery (CRe) CRe1",
+        "description": "20 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 20,
+        "durationLabel": "20 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 7,
+            "MUSCULAR": 10,
+            "METABOLIC": 13
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 20m Z1"
+    },
+    {
+        "id": "bike_cre2",
+        "code": "CRe2",
+        "name": "Cycling Recovery (CRe) CRe2",
+        "description": "25 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 25,
+        "durationLabel": "25 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 8,
+            "MUSCULAR": 13,
+            "METABOLIC": 17
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 25m Z1"
+    },
+    {
+        "id": "bike_cre3",
+        "code": "CRe3",
+        "name": "Cycling Recovery (CRe) CRe3",
+        "description": "30 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 30,
+        "durationLabel": "30 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 10,
+            "MUSCULAR": 15,
+            "METABOLIC": 20
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 30m Z1"
+    },
+    {
+        "id": "bike_cre4",
+        "code": "CRe4",
+        "name": "Cycling Recovery (CRe) CRe4",
+        "description": "35 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 35,
+        "durationLabel": "35 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 12,
+            "MUSCULAR": 18,
+            "METABOLIC": 23
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 35m Z1"
+    },
+    {
+        "id": "bike_cre5",
+        "code": "CRe5",
+        "name": "Cycling Recovery (CRe) CRe5",
+        "description": "40 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 40,
+        "durationLabel": "40 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 13,
+            "MUSCULAR": 20,
+            "METABOLIC": 27
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 40m Z1"
+    },
+    {
+        "id": "bike_cre6",
+        "code": "CRe6",
+        "name": "Cycling Recovery (CRe) CRe6",
+        "description": "45 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 45,
+        "durationLabel": "45 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 15,
+            "MUSCULAR": 23,
+            "METABOLIC": 30
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 45m Z1"
+    },
+    {
+        "id": "bike_cre7",
+        "code": "CRe7",
+        "name": "Cycling Recovery (CRe) CRe7",
+        "description": "50 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 50,
+        "durationLabel": "50 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 17,
+            "MUSCULAR": 25,
+            "METABOLIC": 33
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 50m Z1"
+    },
+    {
+        "id": "bike_cre8",
+        "code": "CRe8",
+        "name": "Cycling Recovery (CRe) CRe8",
+        "description": "55 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 55,
+        "durationLabel": "55 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 18,
+            "MUSCULAR": 28,
+            "METABOLIC": 37
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 55m Z1"
+    },
+    {
+        "id": "bike_cre9",
+        "code": "CRe9",
+        "name": "Cycling Recovery (CRe) CRe9",
+        "description": "60 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 60,
+        "durationLabel": "60 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 20,
+            "MUSCULAR": 30,
+            "METABOLIC": 40
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 60m Z1"
+    },
+    {
+        "id": "bike_cre10",
+        "code": "CRe10",
+        "name": "Cycling Recovery (CRe) CRe10",
+        "description": "75 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 75,
+        "durationLabel": "75 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 25,
+            "MUSCULAR": 38,
+            "METABOLIC": 50
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 75m Z1"
+    },
+    {
+        "id": "bike_cre11",
+        "code": "CRe11",
+        "name": "Cycling Recovery (CRe) CRe11",
+        "description": "90 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 90,
+        "durationLabel": "90 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 30,
+            "MUSCULAR": 45,
+            "METABOLIC": 60
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 90m Z1"
+    },
+    {
+        "id": "bike_cre12",
+        "code": "CRe12",
+        "name": "Cycling Recovery (CRe) CRe12",
+        "description": "105 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 105,
+        "durationLabel": "105 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 35,
+            "MUSCULAR": 53,
+            "METABOLIC": 70
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 105m Z1"
+    },
+    {
+        "id": "bike_cre13",
+        "code": "CRe13",
+        "name": "Cycling Recovery (CRe) CRe13",
+        "description": "120 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 120,
+        "durationLabel": "120 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 40,
+            "MUSCULAR": 60,
+            "METABOLIC": 80
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 120m Z1"
+    },
+    {
+        "id": "bike_cre14",
+        "code": "CRe14",
+        "name": "Cycling Recovery (CRe) CRe14",
+        "description": "150 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 150,
+        "durationLabel": "150 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 50,
+            "MUSCULAR": 75,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 150m Z1"
+    },
+    {
+        "id": "bike_cf1",
+        "code": "CF1",
+        "name": "Cycling Foundation (CF) CF1",
+        "description": "5 minutes in Zone 1, 15 minutes Zone 2",
+        "type": "BIKE",
+        "durationMin": 20,
+        "durationLabel": "20 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 7,
+            "MUSCULAR": 10,
+            "METABOLIC": 13
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 15m Z2"
+    },
+    {
+        "id": "bike_cf2",
+        "code": "CF2",
+        "name": "Cycling Foundation (CF) CF2",
+        "description": "5 minutes in Zone 1, 15 minutes Zone 2, 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 25,
+        "durationLabel": "25 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 8,
+            "MUSCULAR": 13,
+            "METABOLIC": 17
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 15m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_cf3",
+        "code": "CF3",
+        "name": "Cycling Foundation (CF) CF3",
+        "description": "5 minutes in Zone 1, 20 minutes Zone 2, 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 30,
+        "durationLabel": "30 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 10,
+            "MUSCULAR": 15,
+            "METABOLIC": 20
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 20m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_cf4",
+        "code": "CF4",
+        "name": "Cycling Foundation (CF) CF4",
+        "description": "5 minutes in Zone 1, 25 minutes Zone 2, 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 35,
+        "durationLabel": "35 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 12,
+            "MUSCULAR": 18,
+            "METABOLIC": 23
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 25m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_cf5",
+        "code": "CF5",
+        "name": "Cycling Foundation (CF) CF5",
+        "description": "5 minutes in Zone 1, 30 minutes Zone 2, 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 40,
+        "durationLabel": "40 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 13,
+            "MUSCULAR": 20,
+            "METABOLIC": 27
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 30m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_cf6",
+        "code": "CF6",
+        "name": "Cycling Foundation (CF) CF6",
+        "description": "5 minutes in Zone 1, 35 minutes Zone 2, 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 45,
+        "durationLabel": "45 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 15,
+            "MUSCULAR": 23,
+            "METABOLIC": 30
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 35m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_cf7",
+        "code": "CF7",
+        "name": "Cycling Foundation (CF) CF7",
+        "description": "5 minutes in Zone 1, 40 minutes Zone 2, 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 50,
+        "durationLabel": "50 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 17,
+            "MUSCULAR": 25,
+            "METABOLIC": 33
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 40m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_cf8",
+        "code": "CF8",
+        "name": "Cycling Foundation (CF) CF8",
+        "description": "5 minutes in Zone 1, 45 minutes Zone 2, 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 55,
+        "durationLabel": "55 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 18,
+            "MUSCULAR": 28,
+            "METABOLIC": 37
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 45m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_cf9",
+        "code": "CF9",
+        "name": "Cycling Foundation (CF) CF9",
+        "description": "5 minutes in Zone 1, 50 minutes Zone 2, 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 60,
+        "durationLabel": "60 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 20,
+            "MUSCULAR": 30,
+            "METABOLIC": 40
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 50m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_cf10",
+        "code": "CF10",
+        "name": "Cycling Foundation (CF) CF10",
+        "description": "15 minutes in Zone 1, 35 minutes Zone 2, 10 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 60,
+        "durationLabel": "60 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 20,
+            "MUSCULAR": 30,
+            "METABOLIC": 40
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 15m Z1\n- 35m Z2\n- 10m Z1"
+    },
+    {
+        "id": "bike_cf11",
+        "code": "CF11",
+        "name": "Cycling Foundation (CF) CF11",
+        "description": "30 minutes in Zone 1, 50 minutes Zone 2, 10 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 90,
+        "durationLabel": "90 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 30,
+            "MUSCULAR": 45,
+            "METABOLIC": 60
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 30m Z1\n- 50m Z2\n- 10m Z1"
+    },
+    {
+        "id": "bike_cf12",
+        "code": "CF12",
+        "name": "Cycling Foundation (CF) CF12",
+        "description": "40 minutes in Zone 1, 55 minutes Zone 2, 10 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 105,
+        "durationLabel": "105 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 35,
+            "MUSCULAR": 53,
+            "METABOLIC": 70
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 40m Z1\n- 55m Z2\n- 10m Z1"
+    },
+    {
+        "id": "bike_cf13",
+        "code": "CF13",
+        "name": "Cycling Foundation (CF) CF13",
+        "description": "50 minutes in Zone 1, 60 minutes Zone 2, 10 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 120,
+        "durationLabel": "120 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 40,
+            "MUSCULAR": 60,
+            "METABOLIC": 80
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 50m Z1\n- 60m Z2\n- 10m Z1"
+    },
+    {
+        "id": "bike_cf14",
+        "code": "CF14",
+        "name": "Cycling Foundation (CF) CF14",
+        "description": "60 minutes in Zone 1, 65 minutes Zone 2, 10 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 135,
+        "durationLabel": "135 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 45,
+            "MUSCULAR": 68,
+            "METABOLIC": 90
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 60m Z1\n- 65m Z2\n- 10m Z1"
+    },
+    {
+        "id": "bike_cf15",
+        "code": "CF15",
+        "name": "Cycling Foundation (CF) CF15",
+        "description": "70 minutes in Zone 1, 70 minutes Zone 2, 10 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 150,
+        "durationLabel": "150 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 50,
+            "MUSCULAR": 75,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 70m Z1\n- 70m Z2\n- 10m Z1"
+    },
+    {
+        "id": "bike_cf16",
+        "code": "CF16",
+        "name": "Cycling Foundation (CF) CF16",
+        "description": "80 minutes in Zone 1, 75 minutes Zone 2, 10 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 165,
+        "durationLabel": "165 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 55,
+            "MUSCULAR": 83,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 80m Z1\n- 75m Z2\n- 10m Z1"
+    },
+    {
+        "id": "bike_cf17",
+        "code": "CF17",
+        "name": "Cycling Foundation (CF) CF17",
+        "description": "90 minutes in Zone 1, 80 minutes Zone 2, 10 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 180,
+        "durationLabel": "180 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 60,
+            "MUSCULAR": 90,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 90m Z1\n- 80m Z2\n- 10m Z1"
+    },
+    {
+        "id": "bike_cf18",
+        "code": "CF18",
+        "name": "Cycling Foundation (CF) CF18",
+        "description": "100 minutes in Zone 1, 85 minutes Zone 2, 10 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 195,
+        "durationLabel": "195 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 65,
+            "MUSCULAR": 98,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 100m Z1\n- 85m Z2\n- 10m Z1"
+    },
+    {
+        "id": "bike_cf19",
+        "code": "CF19",
+        "name": "Cycling Foundation (CF) CF19",
+        "description": "110 minutes in Zone 1, 90 minutes Zone 2, 10 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 210,
+        "durationLabel": "210 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 70,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 110m Z1\n- 90m Z2\n- 10m Z1"
+    },
+    {
+        "id": "bike_cf20",
+        "code": "CF20",
+        "name": "Cycling Foundation (CF) CF20",
+        "description": "120 minutes in Zone 1, 95 minutes Zone 2, 10 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 225,
+        "durationLabel": "225 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 75,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 120m Z1\n- 95m Z2\n- 10m Z1"
+    },
+    {
+        "id": "bike_cf21",
+        "code": "CF21",
+        "name": "Cycling Foundation (CF) CF21",
+        "description": "130 minutes in Zone 1, 100 minutes Zone 2, 10 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 240,
+        "durationLabel": "240 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 80,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 130m Z1\n- 100m Z2\n- 10m Z1"
+    },
+    {
+        "id": "bike_cf22",
+        "code": "CF22",
+        "name": "Cycling Foundation (CF) CF22",
+        "description": "140 minutes in Zone 1, 120 minutes Zone 2, 10 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 270,
+        "durationLabel": "270 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 90,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 140m Z1\n- 120m Z2\n- 10m Z1"
+    },
+    {
+        "id": "bike_cf23",
+        "code": "CF23",
+        "name": "Cycling Foundation (CF) CF23",
+        "description": "150 minutes in Zone 1, 140 minutes Zone 2, 10 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 300,
+        "durationLabel": "300 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 150m Z1\n- 140m Z2\n- 10m Z1"
+    },
+    {
+        "id": "bike_cf24",
+        "code": "CF24",
+        "name": "Cycling Foundation (CF) CF24",
+        "description": "160 minutes in Zone 1, 160 minutes Zone 2, 10 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 330,
+        "durationLabel": "330 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 160m Z1\n- 160m Z2\n- 10m Z1"
+    },
+    {
+        "id": "bike_cf25",
+        "code": "CF25",
+        "name": "Cycling Foundation (CF) CF25",
+        "description": "170 minutes in Zone 1, 180 minutes Zone 2, 10 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 360,
+        "durationLabel": "360 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 170m Z1\n- 180m Z2\n- 10m Z1"
+    },
+    {
+        "id": "bike_cf26",
+        "code": "CF26",
+        "name": "Cycling Foundation (CF) CF26",
+        "description": "5 minutes in Zone 1, 65 minutes Zone 2, 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 75,
+        "durationLabel": "75 min",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 25,
+            "MUSCULAR": 38,
+            "METABOLIC": 50
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 65m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_cae1",
+        "code": "CAe1",
+        "name": "Cycling Aerobic Intervals (CAe) CAe1",
+        "description": "10 minutes Zone 1, 2 x (20 minutes Zone 2/5 minutes Zone 1) 10 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 70,
+        "durationLabel": "70 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 82,
+            "MUSCULAR": 70,
+            "METABOLIC": 93
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n2x\n  - 20m Z2\n  - 5m Z1\n- 10m Z1"
+    },
+    {
+        "id": "bike_cae2",
+        "code": "CAe2",
+        "name": "Cycling Aerobic Intervals (CAe) CAe2",
+        "description": "15 minutes Zone 1, 3 x (15 minutes Zone 2/5 minutes Zone 1) 15 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 90,
+        "durationLabel": "90 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 90,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 15m Z1\n3x\n  - 15m Z2\n  - 5m Z1\n- 15m Z1"
+    },
+    {
+        "id": "bike_cae3",
+        "code": "CAe3",
+        "name": "Cycling Aerobic Intervals (CAe) CAe3",
+        "description": "15 minutes Zone 1, 4 x (15 minutes Zone 2/5 minutes Zone 1) 15 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 110,
+        "durationLabel": "110 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 15m Z1\n4x\n  - 15m Z2\n  - 5m Z1\n- 15m Z1"
+    },
+    {
+        "id": "bike_cae4",
+        "code": "CAe4",
+        "name": "Cycling Aerobic Intervals (CAe) CAe4",
+        "description": "20 minutes Zone 1, 3 x (20 minutes Zone 2/7 minutes Zone 1) 20 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 121,
+        "durationLabel": "121 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 20m Z1\n3x\n  - 20m Z2\n  - 7m Z1\n- 20m Z1"
+    },
+    {
+        "id": "bike_cae5",
+        "code": "CAe5",
+        "name": "Cycling Aerobic Intervals (CAe) CAe5",
+        "description": "10 minutes Zone 1, 5 x (15 minutes Zone 2/5 minutes Zone 1) 10 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 120,
+        "durationLabel": "120 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n5x\n  - 15m Z2\n  - 5m Z1\n- 10m Z1"
+    },
+    {
+        "id": "bike_cae6",
+        "code": "CAe6",
+        "name": "Cycling Aerobic Intervals (CAe) CAe6",
+        "description": "10 minutes Zone 1, 4 x (20 minutes Zone 2/7 minutes Zone 1) 10 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 128,
+        "durationLabel": "128 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n4x\n  - 20m Z2\n  - 7m Z1\n- 10m Z1"
+    },
+    {
+        "id": "bike_cae7",
+        "code": "CAe7",
+        "name": "Cycling Aerobic Intervals (CAe) CAe7",
+        "description": "12 minutes Zone 1, 4 x (25 minutes Zone 2/7 minutes Zone 1) 10 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 150,
+        "durationLabel": "150 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 12m Z1\n4x\n  - 25m Z2\n  - 7m Z1\n- 10m Z1"
+    },
+    {
+        "id": "bike_cae8",
+        "code": "CAe8",
+        "name": "Cycling Aerobic Intervals (CAe) CAe8",
+        "description": "10 minutes Zone 1, 4 x (30 minutes Zone 2/10 minutes Zone 1) 10 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 180,
+        "durationLabel": "180 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n4x\n  - 30m Z2\n  - 10m Z1\n- 10m Z1"
+    },
+    {
+        "id": "bike_cae9",
+        "code": "CAe9",
+        "name": "Cycling Aerobic Intervals (CAe) CAe9",
+        "description": "10 minutes Zone 1, 5 x (25 minutes Zone 2/7 minutes Zone 1) 10 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 180,
+        "durationLabel": "180 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n5x\n  - 25m Z2\n  - 7m Z1\n- 10m Z1"
+    },
+    {
+        "id": "bike_cae10",
+        "code": "CAe10",
+        "name": "Cycling Aerobic Intervals (CAe) CAe10",
+        "description": "5 minutes Zone 1, 5 x (30 minutes Zone 2/10 minutes Zone 1) 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 210,
+        "durationLabel": "210 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n5x\n  - 30m Z2\n  - 10m Z1\n- 5m Z1"
+    },
+    {
+        "id": "bike_cae11",
+        "code": "CAe11",
+        "name": "Cycling Aerobic Intervals (CAe) CAe11",
+        "description": "5 minutes Zone 1, 6 x (30 minutes Zone 2/10 minutes Zone 1) 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 250,
+        "durationLabel": "250 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n6x\n  - 30m Z2\n  - 10m Z1\n- 5m Z1"
+    },
+    {
+        "id": "bike_cae12",
+        "code": "CAe12",
+        "name": "Cycling Aerobic Intervals (CAe) CAe12",
+        "description": "10 minutes Zone 1, 6 x (30 minutes Zone 2/10 minutes Zone 1) 20 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 270,
+        "durationLabel": "270 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n6x\n  - 30m Z2\n  - 10m Z1\n- 20m Z1"
+    },
+    {
+        "id": "bike_cae13",
+        "code": "CAe13",
+        "name": "Cycling Aerobic Intervals (CAe) CAe13",
+        "description": "10 minutes Zone 1, 6 x (30 minutes Zone 2/10 minutes Zone 1) 35 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 285,
+        "durationLabel": "285 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n6x\n  - 30m Z2\n  - 10m Z1\n- 35m Z1"
+    },
+    {
+        "id": "bike_cae14",
+        "code": "CAe14",
+        "name": "Cycling Aerobic Intervals (CAe) CAe14",
+        "description": "10 minutes Zone 1, 6 x (30 minutes Zone 2/10 minutes Zone 1) 50 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 300,
+        "durationLabel": "300 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n6x\n  - 30m Z2\n  - 10m Z1\n- 50m Z1"
+    },
+    {
+        "id": "bike_cae15",
+        "code": "CAe15",
+        "name": "Cycling Aerobic Intervals (CAe) CAe15",
+        "description": "10 minutes Zone 1, 6 x (30 minutes Zone 2/10 minutes Zone 1) 65 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 315,
+        "durationLabel": "315 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n6x\n  - 30m Z2\n  - 10m Z1\n- 65m Z1"
+    },
+    {
+        "id": "bike_cae16",
+        "code": "CAe16",
+        "name": "Cycling Aerobic Intervals (CAe) CAe16",
+        "description": "10 minutes Zone 1, 6 x (30 minutes Zone 2/10 minutes Zone 1) 80 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 330,
+        "durationLabel": "330 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n6x\n  - 30m Z2\n  - 10m Z1\n- 80m Z1"
+    },
+    {
+        "id": "bike_cae17",
+        "code": "CAe17",
+        "name": "Cycling Aerobic Intervals (CAe) CAe17",
+        "description": "10 minutes Zone 1, 6 x (30 minutes Zone 2/10 minutes Zone 1) 95 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 345,
+        "durationLabel": "345 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n6x\n  - 30m Z2\n  - 10m Z1\n- 95m Z1"
+    },
+    {
+        "id": "bike_cae18",
+        "code": "CAe18",
+        "name": "Cycling Aerobic Intervals (CAe) CAe18",
+        "description": "10 minutes Zone 1, 6 x (30 minutes Zone 2/10 minutes Zone 1) 110 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 360,
+        "durationLabel": "360 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n6x\n  - 30m Z2\n  - 10m Z1\n- 110m Z1"
+    },
+    {
+        "id": "bike_cae19",
+        "code": "CAe19",
+        "name": "Cycling Aerobic Intervals (CAe) CAe19",
+        "description": "10 minutes Zone 1, 4 x (30 minutes Zone 2/10 minutes Zone 1) 40 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 210,
+        "durationLabel": "210 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n4x\n  - 30m Z2\n  - 10m Z1\n- 40m Z1"
+    },
+    {
+        "id": "bike_cae20",
+        "code": "CAe20",
+        "name": "Cycling Aerobic Intervals (CAe) CAe20",
+        "description": "10 minutes Zone 1, 4 x (30 minutes Zone 2/10 minutes Zone 1) 70 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 240,
+        "durationLabel": "240 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n4x\n  - 30m Z2\n  - 10m Z1\n- 70m Z1"
+    },
+    {
+        "id": "bike_cae21",
+        "code": "CAe21",
+        "name": "Cycling Aerobic Intervals (CAe) CAe21",
+        "description": "10 minutes Zone 1, 4 x (30 minutes Zone 2/10 minutes Zone 1) 100 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 270,
+        "durationLabel": "270 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n4x\n  - 30m Z2\n  - 10m Z1\n- 100m Z1"
+    },
+    {
+        "id": "bike_cae22",
+        "code": "CAe22",
+        "name": "Cycling Aerobic Intervals (CAe) CAe22",
+        "description": "10 minutes Zone 1, 4 x (30 minutes Zone 2/10 minutes Zone 1) 130 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 300,
+        "durationLabel": "300 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n4x\n  - 30m Z2\n  - 10m Z1\n- 130m Z1"
+    },
+    {
+        "id": "bike_cae23",
+        "code": "CAe23",
+        "name": "Cycling Aerobic Intervals (CAe) CAe23",
+        "description": "10 minutes Zone 1, 4 x (30 minutes Zone 2/10 minutes Zone 1) 160 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 330,
+        "durationLabel": "330 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n4x\n  - 30m Z2\n  - 10m Z1\n- 160m Z1"
+    },
+    {
+        "id": "bike_cae24",
+        "code": "CAe24",
+        "name": "Cycling Aerobic Intervals (CAe) CAe24",
+        "description": "10 minutes Zone 1, 4 x (30 minutes Zone 2/10 minutes Zone 1) 190 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 360,
+        "durationLabel": "360 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n4x\n  - 30m Z2\n  - 10m Z1\n- 190m Z1"
+    },
+    {
+        "id": "bike_cae25",
+        "code": "CAe25",
+        "name": "Cycling Aerobic Intervals (CAe) CAe25",
+        "description": "10 minutes Zone 1, 4 x (30 minutes Zone 2/10 minutes Zone 1) 220 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 390,
+        "durationLabel": "390 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n4x\n  - 30m Z2\n  - 10m Z1\n- 220m Z1"
+    },
+    {
+        "id": "bike_cae26",
+        "code": "CAe26",
+        "name": "Cycling Aerobic Intervals (CAe) CAe26",
+        "description": "10 minutes Zone 1, 4 x (30 minutes Zone 2/10 minutes Zone 1) 250 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 420,
+        "durationLabel": "420 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n4x\n  - 30m Z2\n  - 10m Z1\n- 250m Z1"
+    },
+    {
+        "id": "bike_cae27",
+        "code": "CAe27",
+        "name": "Cycling Aerobic Intervals (CAe) CAe27",
+        "description": "10 minutes Zone 1, 10 minutes Zone 2, 3 x (4 minutes Zone 2/1 minute Zone 1)\n205 minutes Zone 2",
+        "type": "BIKE",
+        "durationMin": 240,
+        "durationLabel": "240 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n- 10m Z2\n3x\n  - 4m Z2\n  - 1m Z1\n- 205m Z2"
+    },
+    {
+        "id": "bike_cae28",
+        "code": "CAe28",
+        "name": "Cycling Aerobic Intervals (CAe) CAe28",
+        "description": "10 minutes Zone 1, 10 minutes Zone 2, 3 x (5 minutes Zone 2/1 minute Zone 1)\n222 minutes Zone 2",
+        "type": "BIKE",
+        "durationMin": 260,
+        "durationLabel": "260 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n- 10m Z2\n3x\n  - 5m Z2\n  - 1m Z1\n- 222m Z2"
+    },
+    {
+        "id": "bike_cae29",
+        "code": "CAe29",
+        "name": "Cycling Aerobic Intervals (CAe) CAe29",
+        "description": "10 minutes Zone 1, 10 minutes Zone 2, 3 x (6 minutes Zone 2/1 minute Zone 1)\n239 minutes Zone 2",
+        "type": "BIKE",
+        "durationMin": 280,
+        "durationLabel": "280 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n- 10m Z2\n3x\n  - 6m Z2\n  - 1m Z1\n- 239m Z2"
+    },
+    {
+        "id": "bike_cae30",
+        "code": "CAe30",
+        "name": "Cycling Aerobic Intervals (CAe) CAe30",
+        "description": "10 minutes Zone 1, 10 minutes Zone 2, 3 x (7 minutes Zone 2/1 minute Zone 1)\n256 minutes Zone 2",
+        "type": "BIKE",
+        "durationMin": 300,
+        "durationLabel": "300 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n- 10m Z2\n3x\n  - 7m Z2\n  - 1m Z1\n- 256m Z2"
+    },
+    {
+        "id": "bike_cae31",
+        "code": "CAe31",
+        "name": "Cycling Aerobic Intervals (CAe) CAe31",
+        "description": "10 minutes Zone 1, 10 minutes Zone 2, 3 x (8 minutes Zone 2/1 minute Zone 1)\n273 minutes Zone 2",
+        "type": "BIKE",
+        "durationMin": 320,
+        "durationLabel": "320 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n- 10m Z2\n3x\n  - 8m Z2\n  - 1m Z1\n- 273m Z2"
+    },
+    {
+        "id": "bike_cae32",
+        "code": "CAe32",
+        "name": "Cycling Aerobic Intervals (CAe) CAe32",
+        "description": "10 minutes Zone 1, 10 minutes Zone 2, 3 x (9 minutes Zone 2/1 minute Zone 1)\n290 minutes Zone 2",
+        "type": "BIKE",
+        "durationMin": 340,
+        "durationLabel": "340 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n- 10m Z2\n3x\n  - 9m Z2\n  - 1m Z1\n- 290m Z2"
+    },
+    {
+        "id": "bike_cae33",
+        "code": "CAe33",
+        "name": "Cycling Aerobic Intervals (CAe) CAe33",
+        "description": "10 minutes Zone 1, 10 minutes Zone 2, 3 x (10 minutes Zone 2/1 minute Zone\n1) 307 minutes Zone 2",
+        "type": "BIKE",
+        "durationMin": 360,
+        "durationLabel": "360 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n- 10m Z2\n3x\n  - 10m Z2\n  - 1m Z1\n- 307m Z2"
+    },
+    {
+        "id": "bike_cae34",
+        "code": "CAe34",
+        "name": "Cycling Aerobic Intervals (CAe) CAe34",
+        "description": "10 minutes Zone 1, 5 x (30 minutes Zone 2/10 minutes Zone 1) 120 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 330,
+        "durationLabel": "330 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n5x\n  - 30m Z2\n  - 10m Z1\n- 120m Z1"
+    },
+    {
+        "id": "bike_cae35",
+        "code": "CAe35",
+        "name": "Cycling Aerobic Intervals (CAe) CAe35",
+        "description": "10 minutes Zone 1, 4 x (30 minutes Zone 2/10 minutes Zone 1) 40 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 210,
+        "durationLabel": "210 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n4x\n  - 30m Z2\n  - 10m Z1\n- 40m Z1"
+    },
+    {
+        "id": "bike_cae36",
+        "code": "CAe36",
+        "name": "Cycling Aerobic Intervals (CAe) CAe36",
+        "description": "30 minutes Zone 1, 4 x (20 minutes Zone 2/10 minutes Zone 1)",
+        "type": "BIKE",
+        "durationMin": 150,
+        "durationLabel": "150 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 30m Z1\n4x\n  - 20m Z2\n  - 10m Z1"
+    },
+    {
+        "id": "bike_cae37",
+        "code": "CAe37",
+        "name": "Cycling Aerobic Intervals (CAe) CAe37",
+        "description": "30 minutes Zone 1, 4 x (20 minutes Zone 2/10 minutes Zone 1), 15 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 165,
+        "durationLabel": "165 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 30m Z1\n4x\n  - 20m Z2\n  - 10m Z1\n- 15m Z1"
+    },
+    {
+        "id": "bike_cci1",
+        "code": "CCI1",
+        "name": "Cycling Cruise Intervals (CCI) CCI1",
+        "description": "5 minutes Zone 1, 20 minutes Zone 2, 3 x (5 minutes Zone 3/3 minutes Zone 1)\n5 minutes Zone 2, 6 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 60,
+        "durationLabel": "60 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 40,
+            "MUSCULAR": 50,
+            "METABOLIC": 60
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 20m Z2\n3x\n  - 5m Z3\n  - 3m Z1\n- 5m Z2\n- 6m Z1"
+    },
+    {
+        "id": "bike_cci2",
+        "code": "CCI2",
+        "name": "Cycling Cruise Intervals (CCI) CCI2",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 4 x (5 minutes Zone 3/3 minutes Zone 1)\n13 minutes Zone 2, 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 60,
+        "durationLabel": "60 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 40,
+            "MUSCULAR": 50,
+            "METABOLIC": 60
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n4x\n  - 5m Z3\n  - 3m Z1\n- 13m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_cci3",
+        "code": "CCI3",
+        "name": "Cycling Cruise Intervals (CCI) CCI3",
+        "description": "5 minutes Zone 1, 10 minutes Zone 2, 4 x (6 minutes Zone 3/3 minutes Zone 1)\n5 minutes Zone 2, 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 61,
+        "durationLabel": "61 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 41,
+            "MUSCULAR": 51,
+            "METABOLIC": 61
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 10m Z2\n4x\n  - 6m Z3\n  - 3m Z1\n- 5m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_cci4",
+        "code": "CCI4",
+        "name": "Cycling Cruise Intervals (CCI) CCI4",
+        "description": "5 minutes Zone 1, 10 minutes Zone 2, 4 x (7 minutes Zone 3/3 minutes Zone 1)\n5 minutes Zone 2, 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 65,
+        "durationLabel": "65 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 43,
+            "MUSCULAR": 54,
+            "METABOLIC": 65
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 10m Z2\n4x\n  - 7m Z3\n  - 3m Z1\n- 5m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_cci5",
+        "code": "CCI5",
+        "name": "Cycling Cruise Intervals (CCI) CCI5",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 4 x (8 minutes Zone 3/3 minutes Zone 1)\n5 minutes Zone 2, 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 64,
+        "durationLabel": "64 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 43,
+            "MUSCULAR": 53,
+            "METABOLIC": 64
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n4x\n  - 8m Z3\n  - 3m Z1\n- 5m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_cci6",
+        "code": "CCI6",
+        "name": "Cycling Cruise Intervals (CCI) CCI6",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 4 x (10 minutes Zone 3/3 minutes Zone 1)\n5 minutes Zone 2, 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 72,
+        "durationLabel": "72 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 48,
+            "MUSCULAR": 60,
+            "METABOLIC": 72
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n4x\n  - 10m Z3\n  - 3m Z1\n- 5m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_cci7",
+        "code": "CCI7",
+        "name": "Cycling Cruise Intervals (CCI) CCI7",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 4 x (12 minutes Zone 3/3 minutes Zone 1)\n5 minutes Zone 2, 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 80,
+        "durationLabel": "80 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 53,
+            "MUSCULAR": 67,
+            "METABOLIC": 80
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n4x\n  - 12m Z3\n  - 3m Z1\n- 5m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_cci8",
+        "code": "CCI8",
+        "name": "Cycling Cruise Intervals (CCI) CCI8",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 4 x (15 minutes Zone 3/3 minutes Zone 1)\n5 minutes Zone 2, 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 92,
+        "durationLabel": "92 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 61,
+            "MUSCULAR": 77,
+            "METABOLIC": 92
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n4x\n  - 15m Z3\n  - 3m Z1\n- 5m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_cci9",
+        "code": "CCI9",
+        "name": "Cycling Cruise Intervals (CCI) CCI9",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 5 x (12 minutes Zone 3/3 minutes Zone 1)\n5 minutes Zone 2, 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 95,
+        "durationLabel": "95 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 63,
+            "MUSCULAR": 79,
+            "METABOLIC": 95
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n5x\n  - 12m Z3\n  - 3m Z1\n- 5m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_cci10",
+        "code": "CCI10",
+        "name": "Cycling Cruise Intervals (CCI) CCI10",
+        "description": "10 minutes Zone 1, 15 minutes Zone 2, 4 x (8 minutes Zone 3/3 minutes Zone\n1) 40 minutes Zone 2, 10 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 119,
+        "durationLabel": "119 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 79,
+            "MUSCULAR": 99,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n- 15m Z2\n4x\n  - 8m Z3\n  - 3m Z1\n- 40m Z2\n- 10m Z1"
+    },
+    {
+        "id": "bike_cci11",
+        "code": "CCI11",
+        "name": "Cycling Cruise Intervals (CCI) CCI11",
+        "description": "10 minutes Zone 1, 15 minutes Zone 2, 4 x (8 minutes Zone 3/3 minutes Zone\n1) 71 minutes Zone 2, 10 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 150,
+        "durationLabel": "150 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n- 15m Z2\n4x\n  - 8m Z3\n  - 3m Z1\n- 71m Z2\n- 10m Z1"
+    },
+    {
+        "id": "bike_cci12",
+        "code": "CCI12",
+        "name": "Cycling Cruise Intervals (CCI) CCI12",
+        "description": "10 minutes Zone 1, 10 minutes Zone 2, 2 x (10 minutes Zone 3/4 minutes Zone\n1) 12 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 60,
+        "durationLabel": "60 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 40,
+            "MUSCULAR": 50,
+            "METABOLIC": 60
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n- 10m Z2\n2x\n  - 10m Z3\n  - 4m Z1\n- 12m Z1"
+    },
+    {
+        "id": "bike_cci13",
+        "code": "CCI13",
+        "name": "Cycling Cruise Intervals (CCI) CCI13",
+        "description": "10 minutes Zone 1, 10 minutes Zone 2, 4 x (6 minutes Zone 3/3 minutes Zone\n1) 29 minutes Zone 2, 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 90,
+        "durationLabel": "90 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 60,
+            "MUSCULAR": 75,
+            "METABOLIC": 90
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n- 10m Z2\n4x\n  - 6m Z3\n  - 3m Z1\n- 29m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_cci14",
+        "code": "CCI14",
+        "name": "Cycling Cruise Intervals (CCI) CCI14",
+        "description": "10 minutes Zone 1, 10 minutes Zone 2, 4 x (7 minutes Zone 3/3 minutes Zone\n1) 25 minutes Zone 2, 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 90,
+        "durationLabel": "90 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 60,
+            "MUSCULAR": 75,
+            "METABOLIC": 90
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n- 10m Z2\n4x\n  - 7m Z3\n  - 3m Z1\n- 25m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_cci15",
+        "code": "CCI15",
+        "name": "Cycling Cruise Intervals (CCI) CCI15",
+        "description": "10 minutes Zone 1, 10 minutes Zone 2, 4 x (8 minutes Zone 3/3 minutes Zone\n1) 21 minutes Zone 2, 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 90,
+        "durationLabel": "90 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 60,
+            "MUSCULAR": 75,
+            "METABOLIC": 90
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n- 10m Z2\n4x\n  - 8m Z3\n  - 3m Z1\n- 21m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_cci16",
+        "code": "CCI16",
+        "name": "Cycling Cruise Intervals (CCI) CCI16",
+        "description": "10 minutes Zone 1, 10 minutes Zone 2, 4 x (9 minutes Zone 3/3 minutes Zone\n1) 17 minutes Zone 2, 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 90,
+        "durationLabel": "90 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 60,
+            "MUSCULAR": 75,
+            "METABOLIC": 90
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n- 10m Z2\n4x\n  - 9m Z3\n  - 3m Z1\n- 17m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_cci17",
+        "code": "CCI17",
+        "name": "Cycling Cruise Intervals (CCI) CCI17",
+        "description": "10 minutes Zone 1, 3 x (3 minutes Zone 3/2 minutes Zone 1) 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 30,
+        "durationLabel": "30 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 20,
+            "MUSCULAR": 25,
+            "METABOLIC": 30
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n3x\n  - 3m Z3\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "bike_cci18",
+        "code": "CCI18",
+        "name": "Cycling Cruise Intervals (CCI) CCI18",
+        "description": "10 minutes Zone 1, 10 minutes Zone 2, 4 x (6 minutes Zone 3/3 minutes Zone\n1) 44 minutes Zone 2, 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 105,
+        "durationLabel": "105 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 70,
+            "MUSCULAR": 88,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n- 10m Z2\n4x\n  - 6m Z3\n  - 3m Z1\n- 44m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_cci19",
+        "code": "CCI19",
+        "name": "Cycling Cruise Intervals (CCI) CCI19",
+        "description": "20 minutes Zone 1, 10 minutes Zone 2, 4 x (6 minutes Zone 3/3 minutes Zone\n1) 49 minutes Zone 2, 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 120,
+        "durationLabel": "120 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 80,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 20m Z1\n- 10m Z2\n4x\n  - 6m Z3\n  - 3m Z1\n- 49m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_cci20",
+        "code": "CCI20",
+        "name": "Cycling Cruise Intervals (CCI) CCI20",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 4 x (5 minutes Zone 3/3 minutes Zone 1)\n43 minutes Zone 2, 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 90,
+        "durationLabel": "90 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 60,
+            "MUSCULAR": 75,
+            "METABOLIC": 90
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n4x\n  - 5m Z3\n  - 3m Z1\n- 43m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_cci21",
+        "code": "CCI21",
+        "name": "Cycling Cruise Intervals (CCI) CCI21",
+        "description": "10 minutes Zone 1, 10 minutes Zone 2, 2 x (10 minutes Zone 3/4 minutes Zone\n1) 10 minutes Zone 2, 32 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 90,
+        "durationLabel": "90 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 60,
+            "MUSCULAR": 75,
+            "METABOLIC": 90
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n- 10m Z2\n2x\n  - 10m Z3\n  - 4m Z1\n- 10m Z2\n- 32m Z1"
+    },
+    {
+        "id": "bike_cci22",
+        "code": "CCI22",
+        "name": "Cycling Cruise Intervals (CCI) CCI22",
+        "description": "10 minutes Zone 1, 20 minutes Zone 2, 3 x (3 minutes Zone 3/2 minutes Zone\n1) 30 minutes Zone 2, 15 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 90,
+        "durationLabel": "90 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 60,
+            "MUSCULAR": 75,
+            "METABOLIC": 90
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n- 20m Z2\n3x\n  - 3m Z3\n  - 2m Z1\n- 30m Z2\n- 15m Z1"
+    },
+    {
+        "id": "bike_cci23",
+        "code": "CCI23",
+        "name": "Cycling Cruise Intervals (CCI) CCI23",
+        "description": "10 minutes Zone 1, 20 minutes Zone 2, 3 x (5 minutes Zone 3/2 minutes Zone\n1) 30 minutes Zone 2, 10 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 91,
+        "durationLabel": "91 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 61,
+            "MUSCULAR": 76,
+            "METABOLIC": 91
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n- 20m Z2\n3x\n  - 5m Z3\n  - 2m Z1\n- 30m Z2\n- 10m Z1"
+    },
+    {
+        "id": "bike_cci24",
+        "code": "CCI24",
+        "name": "Cycling Cruise Intervals (CCI) CCI24",
+        "description": "10 minutes Zone 1, 20 minutes Zone 2, 3 x (5 minutes Zone 3/2 minutes Zone\n1) 60 minutes Zone 2, 10 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 120,
+        "durationLabel": "120 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 80,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n- 20m Z2\n3x\n  - 5m Z3\n  - 2m Z1\n- 60m Z2\n- 10m Z1"
+    },
+    {
+        "id": "bike_ct1",
+        "code": "CT1",
+        "name": "Cycling Tempo (CT) CT1",
+        "description": "15 minutes Zone 1, 5 minutes Zone 3, 40 minutes Zone 2",
+        "type": "BIKE",
+        "durationMin": 60,
+        "durationLabel": "60 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 40,
+            "MUSCULAR": 50,
+            "METABOLIC": 60
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 15m Z1\n- 5m Z3\n- 40m Z2"
+    },
+    {
+        "id": "bike_ct2",
+        "code": "CT2",
+        "name": "Cycling Tempo (CT) CT2",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 15 minutes Zone 3, 5 minutes Zone 2, 5\nminutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 35,
+        "durationLabel": "35 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 23,
+            "MUSCULAR": 29,
+            "METABOLIC": 35
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n- 15m Z3\n- 5m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_ct3",
+        "code": "CT3",
+        "name": "Cycling Tempo (CT) CT3",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 18 minutes Zone 3, 5 minutes Zone 2, 5\nminutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 38,
+        "durationLabel": "38 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 25,
+            "MUSCULAR": 32,
+            "METABOLIC": 38
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n- 18m Z3\n- 5m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_ct4",
+        "code": "CT4",
+        "name": "Cycling Tempo (CT) CT4",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 20 minutes Zone 3, 5 minutes Zone 2, 5\nminutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 40,
+        "durationLabel": "40 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 27,
+            "MUSCULAR": 33,
+            "METABOLIC": 40
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n- 20m Z3\n- 5m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_ct5",
+        "code": "CT5",
+        "name": "Cycling Tempo (CT) CT5",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 24 minutes Zone 3, 5 minutes Zone 2, 5\nminutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 44,
+        "durationLabel": "44 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 29,
+            "MUSCULAR": 37,
+            "METABOLIC": 44
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n- 24m Z3\n- 5m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_ct6",
+        "code": "CT6",
+        "name": "Cycling Tempo (CT) CT6",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 28 minutes Zone 3, 5 minutes Zone 2, 5\nminutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 48,
+        "durationLabel": "48 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 32,
+            "MUSCULAR": 40,
+            "METABOLIC": 48
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n- 28m Z3\n- 5m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_ct7",
+        "code": "CT7",
+        "name": "Cycling Tempo (CT) CT7",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 30 minutes Zone 3, 5 minutes Zone 2, 5\nminutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 50,
+        "durationLabel": "50 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 33,
+            "MUSCULAR": 42,
+            "METABOLIC": 50
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n- 30m Z3\n- 5m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_ct8",
+        "code": "CT8",
+        "name": "Cycling Tempo (CT) CT8",
+        "description": "5 minutes Zone 1, 10 minutes Zone 2, 30 minutes Zone 3, 10minutes Zone 2, 5\nminutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 60,
+        "durationLabel": "60 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 40,
+            "MUSCULAR": 50,
+            "METABOLIC": 60
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 10m Z2\n- 30m Z3\n- 10m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_ct9",
+        "code": "CT9",
+        "name": "Cycling Tempo (CT) CT9",
+        "description": "5 minutes Zone 1, 10 minutes Zone 2, 20 minutes Zone 3, 35minutes Zone 2, 5\nminutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 75,
+        "durationLabel": "75 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 50,
+            "MUSCULAR": 63,
+            "METABOLIC": 75
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 10m Z2\n- 20m Z3\n- 35m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_ct10",
+        "code": "CT10",
+        "name": "Cycling Tempo (CT) CT10",
+        "description": "5 minutes Zone 1, 10 minutes Zone 2, 30 minutes Zone 3, 40minutes Zone 2, 5\nminutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 90,
+        "durationLabel": "90 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 60,
+            "MUSCULAR": 75,
+            "METABOLIC": 90
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 10m Z2\n- 30m Z3\n- 40m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_ct11",
+        "code": "CT11",
+        "name": "Cycling Tempo (CT) CT11",
+        "description": "5 minutes Zone 1, 10 minutes Zone 2, 20 minutes Zone 3, 65minutes Zone 2, 5\nminutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 105,
+        "durationLabel": "105 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 70,
+            "MUSCULAR": 88,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 10m Z2\n- 20m Z3\n- 65m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_ct12",
+        "code": "CT12",
+        "name": "Cycling Tempo (CT) CT12",
+        "description": "5 minutes Zone 1, 10 minutes Zone 2, 30 minutes Zone 3, 70minutes Zone 2, 5\nminutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 120,
+        "durationLabel": "120 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 80,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 10m Z2\n- 30m Z3\n- 70m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_ct13",
+        "code": "CT13",
+        "name": "Cycling Tempo (CT) CT13",
+        "description": "5 minutes Zone 1, 10 minutes Zone 2, 20 minutes Zone 3, 95minutes Zone 2, 5\nminutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 135,
+        "durationLabel": "135 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 90,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 10m Z2\n- 20m Z3\n- 95m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_ct14",
+        "code": "CT14",
+        "name": "Cycling Tempo (CT) CT14",
+        "description": "5 minutes Zone 1, 10 minutes Zone 2, 30 minutes Zone 3, 100minutes Zone 2, 5\nminutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 150,
+        "durationLabel": "150 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 10m Z2\n- 30m Z3\n- 100m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_ct15",
+        "code": "CT15",
+        "name": "Cycling Tempo (CT) CT15",
+        "description": "5 minutes Zone 1, 10 minutes Zone 2, 20 minutes Zone 3, 125minutes Zone 2, 5\nminutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 165,
+        "durationLabel": "165 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 10m Z2\n- 20m Z3\n- 125m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_ct16",
+        "code": "CT16",
+        "name": "Cycling Tempo (CT) CT16",
+        "description": "5 minutes Zone 1, 10 minutes Zone 2, 30 minutes Zone 3, 130minutes Zone 2, 5\nminutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 180,
+        "durationLabel": "180 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 10m Z2\n- 30m Z3\n- 130m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_ct17",
+        "code": "CT17",
+        "name": "Cycling Tempo (CT) CT17",
+        "description": "5 minutes Zone 1, 10 minutes Zone 2, 20 minutes Zone 3, 155minutes Zone 2, 5\nminutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 195,
+        "durationLabel": "195 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 10m Z2\n- 20m Z3\n- 155m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_ct18",
+        "code": "CT18",
+        "name": "Cycling Tempo (CT) CT18",
+        "description": "5 minutes Zone 1, 10 minutes Zone 2, 30 minutes Zone 3, 160minutes Zone 2, 5\nminutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 210,
+        "durationLabel": "210 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 10m Z2\n- 30m Z3\n- 160m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_ct19",
+        "code": "CT19",
+        "name": "Cycling Tempo (CT) CT19",
+        "description": "5 minutes Zone 1, 10 minutes Zone 2, 20 minutes Zone 3, 185minutes Zone 2, 5\nminutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 225,
+        "durationLabel": "225 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 10m Z2\n- 20m Z3\n- 185m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_ct20",
+        "code": "CT20",
+        "name": "Cycling Tempo (CT) CT20",
+        "description": "5 minutes Zone 1, 10 minutes Zone 2, 30 minutes Zone 3, 190minutes Zone 2, 5\nminutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 240,
+        "durationLabel": "240 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 10m Z2\n- 30m Z3\n- 190m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_ct21",
+        "code": "CT21",
+        "name": "Cycling Tempo (CT) CT21",
+        "description": "5 minutes Zone 1, 10 minutes Zone 2, 20 minutes Zone 3, 215minutes Zone 2, 5\nminutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 255,
+        "durationLabel": "255 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 10m Z2\n- 20m Z3\n- 215m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_ct22",
+        "code": "CT22",
+        "name": "Cycling Tempo (CT) CT22",
+        "description": "5 minutes Zone 1, 10 minutes Zone 2, 30 minutes Zone 3, 220minutes Zone 2, 5\nminutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 270,
+        "durationLabel": "270 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 10m Z2\n- 30m Z3\n- 220m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_ct23",
+        "code": "CT23",
+        "name": "Cycling Tempo (CT) CT23",
+        "description": "5 minutes Zone 1, 10 minutes Zone 2, 20 minutes Zone 3, 245minutes Zone 2, 5\nminutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 285,
+        "durationLabel": "285 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 10m Z2\n- 20m Z3\n- 245m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_ct24",
+        "code": "CT24",
+        "name": "Cycling Tempo (CT) CT24",
+        "description": "5 minutes Zone 1, 10 minutes Zone 2, 30 minutes Zone 3, 250minutes Zone 2, 5\nminutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 300,
+        "durationLabel": "300 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 10m Z2\n- 30m Z3\n- 250m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_ct25",
+        "code": "CT25",
+        "name": "Cycling Tempo (CT) CT25",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 32 minutes Zone 3, 5 minutes Zone 2, 5\nminutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 52,
+        "durationLabel": "52 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 35,
+            "MUSCULAR": 43,
+            "METABOLIC": 52
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n- 32m Z3\n- 5m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_ct26",
+        "code": "CT26",
+        "name": "Cycling Tempo (CT) CT26",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 36 minutes Zone 3, 5 minutes Zone 2, 5\nminutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 56,
+        "durationLabel": "56 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 37,
+            "MUSCULAR": 47,
+            "METABOLIC": 56
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n- 36m Z3\n- 5m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_ct27",
+        "code": "CT27",
+        "name": "Cycling Tempo (CT) CT27",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 40 minutes Zone 3, 5 minutes Zone 2, 5\nminutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 60,
+        "durationLabel": "60 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 40,
+            "MUSCULAR": 50,
+            "METABOLIC": 60
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n- 40m Z3\n- 5m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_ct28",
+        "code": "CT28",
+        "name": "Cycling Tempo (CT) CT28",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 45 minutes Zone 3, 5 minutes Zone 2, 5\nminutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 65,
+        "durationLabel": "65 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 43,
+            "MUSCULAR": 54,
+            "METABOLIC": 65
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n- 45m Z3\n- 5m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_ct29",
+        "code": "CT29",
+        "name": "Cycling Tempo (CT) CT29",
+        "description": "5 minutes Zone 1, 15 minutes Zone 2, 15 minutes Zone 3, 15 minutes Zone 2, 5\nminutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 55,
+        "durationLabel": "55 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 37,
+            "MUSCULAR": 46,
+            "METABOLIC": 55
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 15m Z2\n- 15m Z3\n- 15m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_ct30",
+        "code": "CT30",
+        "name": "Cycling Tempo (CT) CT30",
+        "description": "5 minutes Zone 1, 15 minutes Zone 2, 20 minutes Zone 3, 15 minutes Zone 2, 5\nminutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 60,
+        "durationLabel": "60 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 40,
+            "MUSCULAR": 50,
+            "METABOLIC": 60
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 15m Z2\n- 20m Z3\n- 15m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_ct31",
+        "code": "CT31",
+        "name": "Cycling Tempo (CT) CT31",
+        "description": "5 minutes Zone 1, 15 minutes Zone 2, 24 minutes Zone 3, 11 minutes Zone 2, 5\nminutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 60,
+        "durationLabel": "60 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 40,
+            "MUSCULAR": 50,
+            "METABOLIC": 60
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 15m Z2\n- 24m Z3\n- 11m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_ct32",
+        "code": "CT32",
+        "name": "Cycling Tempo (CT) CT32",
+        "description": "5 minutes Zone 1, 15 minutes Zone 2, 32 minutes Zone 3, 15 minutes Zone 2, 5\nminutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 72,
+        "durationLabel": "72 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 48,
+            "MUSCULAR": 60,
+            "METABOLIC": 72
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 15m Z2\n- 32m Z3\n- 15m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_ct33",
+        "code": "CT33",
+        "name": "Cycling Tempo (CT) CT33",
+        "description": "5 minutes Zone 1, 10 minutes Zone 2, 40 minutes Zone 3, 10 minutes Zone 2, 5\nminutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 70,
+        "durationLabel": "70 min",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 47,
+            "MUSCULAR": 58,
+            "METABOLIC": 70
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 10m Z2\n- 40m Z3\n- 10m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_cff1",
+        "code": "CFF1",
+        "name": "Cycling Fast Finish (CFF) CFF1",
+        "description": "5 minutes Zone 1, 15 minutes Zone 2, 5 minutes Zone 3",
+        "type": "BIKE",
+        "durationMin": 25,
+        "durationLabel": "25 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 29,
+            "MUSCULAR": 25,
+            "METABOLIC": 33
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 15m Z2\n- 5m Z3"
+    },
+    {
+        "id": "bike_cff2",
+        "code": "CFF2",
+        "name": "Cycling Fast Finish (CFF) CFF2",
+        "description": "5 minutes Zone 1, 20 minutes Zone 2, 5 minutes Zone 3",
+        "type": "BIKE",
+        "durationMin": 30,
+        "durationLabel": "30 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 35,
+            "MUSCULAR": 30,
+            "METABOLIC": 40
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 20m Z2\n- 5m Z3"
+    },
+    {
+        "id": "bike_cff3",
+        "code": "CFF3",
+        "name": "Cycling Fast Finish (CFF) CFF3",
+        "description": "5 minutes Zone 1, 15 minutes Zone 2, 10 minutes Zone 3",
+        "type": "BIKE",
+        "durationMin": 30,
+        "durationLabel": "30 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 35,
+            "MUSCULAR": 30,
+            "METABOLIC": 40
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 15m Z2\n- 10m Z3"
+    },
+    {
+        "id": "bike_cff4",
+        "code": "CFF4",
+        "name": "Cycling Fast Finish (CFF) CFF4",
+        "description": "5 minutes Zone 1, 25 minutes Zone 2, 10 minutes Zone 3",
+        "type": "BIKE",
+        "durationMin": 40,
+        "durationLabel": "40 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 47,
+            "MUSCULAR": 40,
+            "METABOLIC": 53
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 25m Z2\n- 10m Z3"
+    },
+    {
+        "id": "bike_cff5",
+        "code": "CFF5",
+        "name": "Cycling Fast Finish (CFF) CFF5",
+        "description": "5 minutes Zone 1, 25 minutes Zone 2, 12 minutes Zone 3",
+        "type": "BIKE",
+        "durationMin": 42,
+        "durationLabel": "42 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 49,
+            "MUSCULAR": 42,
+            "METABOLIC": 56
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 25m Z2\n- 12m Z3"
+    },
+    {
+        "id": "bike_cff6",
+        "code": "CFF6",
+        "name": "Cycling Fast Finish (CFF) CFF6",
+        "description": "5 minutes Zone 1, 30 minutes Zone 2, 12 minutes Zone 3",
+        "type": "BIKE",
+        "durationMin": 47,
+        "durationLabel": "47 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 55,
+            "MUSCULAR": 47,
+            "METABOLIC": 63
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 30m Z2\n- 12m Z3"
+    },
+    {
+        "id": "bike_cff7",
+        "code": "CFF7",
+        "name": "Cycling Fast Finish (CFF) CFF7",
+        "description": "5 minutes Zone 1, 35 minutes Zone 2, 12 minutes Zone 3",
+        "type": "BIKE",
+        "durationMin": 52,
+        "durationLabel": "52 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 61,
+            "MUSCULAR": 52,
+            "METABOLIC": 69
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 35m Z2\n- 12m Z3"
+    },
+    {
+        "id": "bike_cff8",
+        "code": "CFF8",
+        "name": "Cycling Fast Finish (CFF) CFF8",
+        "description": "5 minutes Zone 1, 35 minutes Zone 2, 15 minutes Zone 3",
+        "type": "BIKE",
+        "durationMin": 55,
+        "durationLabel": "55 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 64,
+            "MUSCULAR": 55,
+            "METABOLIC": 73
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 35m Z2\n- 15m Z3"
+    },
+    {
+        "id": "bike_cff9",
+        "code": "CFF9",
+        "name": "Cycling Fast Finish (CFF) CFF9",
+        "description": "5 minutes Zone 1, 40 minutes Zone 2, 15 minutes Zone 3",
+        "type": "BIKE",
+        "durationMin": 60,
+        "durationLabel": "60 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 70,
+            "MUSCULAR": 60,
+            "METABOLIC": 80
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 40m Z2\n- 15m Z3"
+    },
+    {
+        "id": "bike_cff10",
+        "code": "CFF10",
+        "name": "Cycling Fast Finish (CFF) CFF10",
+        "description": "5 minutes Zone 1, 45 minutes Zone 2, 15 minutes Zone 3",
+        "type": "BIKE",
+        "durationMin": 65,
+        "durationLabel": "65 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 76,
+            "MUSCULAR": 65,
+            "METABOLIC": 87
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 45m Z2\n- 15m Z3"
+    },
+    {
+        "id": "bike_cff11",
+        "code": "CFF11",
+        "name": "Cycling Fast Finish (CFF) CFF11",
+        "description": "5 minutes Zone 1, 55 minutes Zone 2, 15 minutes Zone 3",
+        "type": "BIKE",
+        "durationMin": 75,
+        "durationLabel": "75 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 88,
+            "MUSCULAR": 75,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 55m Z2\n- 15m Z3"
+    },
+    {
+        "id": "bike_cff12",
+        "code": "CFF12",
+        "name": "Cycling Fast Finish (CFF) CFF12",
+        "description": "5 minutes Zone 1, 70 minutes Zone 2, 15 minutes Zone 3",
+        "type": "BIKE",
+        "durationMin": 90,
+        "durationLabel": "90 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 90,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 70m Z2\n- 15m Z3"
+    },
+    {
+        "id": "bike_cff13",
+        "code": "CFF13",
+        "name": "Cycling Fast Finish (CFF) CFF13",
+        "description": "5 minutes Zone 1, 85 minutes Zone 2, 15 minutes Zone 3",
+        "type": "BIKE",
+        "durationMin": 105,
+        "durationLabel": "105 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 85m Z2\n- 15m Z3"
+    },
+    {
+        "id": "bike_cff14",
+        "code": "CFF14",
+        "name": "Cycling Fast Finish (CFF) CFF14",
+        "description": "5 minutes Zone 1, 100 minutes Zone 2, 15 minutes Zone 3",
+        "type": "BIKE",
+        "durationMin": 120,
+        "durationLabel": "120 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 100m Z2\n- 15m Z3"
+    },
+    {
+        "id": "bike_cff15",
+        "code": "CFF15",
+        "name": "Cycling Fast Finish (CFF) CFF15",
+        "description": "5 minutes Zone 1, 115 minutes Zone 2, 15 minutes Zone 3",
+        "type": "BIKE",
+        "durationMin": 135,
+        "durationLabel": "135 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 115m Z2\n- 15m Z3"
+    },
+    {
+        "id": "bike_cff16",
+        "code": "CFF16",
+        "name": "Cycling Fast Finish (CFF) CFF16",
+        "description": "5 minutes Zone 1, 130 minutes Zone 2, 15 minutes Zone 3",
+        "type": "BIKE",
+        "durationMin": 150,
+        "durationLabel": "150 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 130m Z2\n- 15m Z3"
+    },
+    {
+        "id": "bike_cff17",
+        "code": "CFF17",
+        "name": "Cycling Fast Finish (CFF) CFF17",
+        "description": "5 minutes Zone 1, 145 minutes Zone 2, 15 minutes Zone 3",
+        "type": "BIKE",
+        "durationMin": 165,
+        "durationLabel": "165 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 145m Z2\n- 15m Z3"
+    },
+    {
+        "id": "bike_cff18",
+        "code": "CFF18",
+        "name": "Cycling Fast Finish (CFF) CFF18",
+        "description": "5 minutes Zone 1, 160 minutes Zone 2, 15 minutes Zone 3",
+        "type": "BIKE",
+        "durationMin": 180,
+        "durationLabel": "180 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 160m Z2\n- 15m Z3"
+    },
+    {
+        "id": "bike_cff19",
+        "code": "CFF19",
+        "name": "Cycling Fast Finish (CFF) CFF19",
+        "description": "5 minutes Zone 1, 175 minutes Zone 2, 15 minutes Zone 3",
+        "type": "BIKE",
+        "durationMin": 195,
+        "durationLabel": "195 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 175m Z2\n- 15m Z3"
+    },
+    {
+        "id": "bike_cff20",
+        "code": "CFF20",
+        "name": "Cycling Fast Finish (CFF) CFF20",
+        "description": "5 minutes Zone 1, 190 minutes Zone 2, 15 minutes Zone 3",
+        "type": "BIKE",
+        "durationMin": 210,
+        "durationLabel": "210 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 190m Z2\n- 15m Z3"
+    },
+    {
+        "id": "bike_cff21",
+        "code": "CFF21",
+        "name": "Cycling Fast Finish (CFF) CFF21",
+        "description": "5 minutes Zone 1, 205 minutes Zone 2, 15 minutes Zone 3",
+        "type": "BIKE",
+        "durationMin": 225,
+        "durationLabel": "225 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 205m Z2\n- 15m Z3"
+    },
+    {
+        "id": "bike_cff22",
+        "code": "CFF22",
+        "name": "Cycling Fast Finish (CFF) CFF22",
+        "description": "5 minutes Zone 1, 220 minutes Zone 2, 15 minutes Zone 3",
+        "type": "BIKE",
+        "durationMin": 240,
+        "durationLabel": "240 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 220m Z2\n- 15m Z3"
+    },
+    {
+        "id": "bike_cff23",
+        "code": "CFF23",
+        "name": "Cycling Fast Finish (CFF) CFF23",
+        "description": "5 minutes Zone 1, 250 minutes Zone 2, 15 minutes Zone 3",
+        "type": "BIKE",
+        "durationMin": 270,
+        "durationLabel": "270 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 250m Z2\n- 15m Z3"
+    },
+    {
+        "id": "bike_cff24",
+        "code": "CFF24",
+        "name": "Cycling Fast Finish (CFF) CFF24",
+        "description": "5 minutes Zone 1, 280 minutes Zone 2, 15 minutes Zone 3",
+        "type": "BIKE",
+        "durationMin": 300,
+        "durationLabel": "300 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 280m Z2\n- 15m Z3"
+    },
+    {
+        "id": "bike_cff25",
+        "code": "CFF25",
+        "name": "Cycling Fast Finish (CFF) CFF25",
+        "description": "5 minutes Zone 1, 310 minutes Zone 2, 15 minutes Zone 3",
+        "type": "BIKE",
+        "durationMin": 330,
+        "durationLabel": "330 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 310m Z2\n- 15m Z3"
+    },
+    {
+        "id": "bike_cff26",
+        "code": "CFF26",
+        "name": "Cycling Fast Finish (CFF) CFF26",
+        "description": "5 minutes Zone 1, 340 minutes Zone 2, 15 minutes Zone 3",
+        "type": "BIKE",
+        "durationMin": 360,
+        "durationLabel": "360 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 340m Z2\n- 15m Z3"
+    },
+    {
+        "id": "bike_cff27",
+        "code": "CFF27",
+        "name": "Cycling Fast Finish (CFF) CFF27",
+        "description": "5 minutes Zone 1, 45 minutes Zone 2, 10 minutes Zone 3",
+        "type": "BIKE",
+        "durationMin": 60,
+        "durationLabel": "60 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 70,
+            "MUSCULAR": 60,
+            "METABOLIC": 80
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 45m Z2\n- 10m Z3"
+    },
+    {
+        "id": "bike_cfo1",
+        "code": "CFo1",
+        "name": "Cycling Force (CFo) CFo1",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 6 x (30 seconds Zone 5 uphill or\nsimulated/90 seconds Zone 1) 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 27,
+        "durationLabel": "27 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 32,
+            "MUSCULAR": 27,
+            "METABOLIC": 36
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n6x\n  - 30s Z5\n  - 90s Z1\n- 5m Z1"
+    },
+    {
+        "id": "bike_cfo2",
+        "code": "CFo2",
+        "name": "Cycling Force (CFo) CFo2",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 8 x (30 seconds Zone 5 uphill or\nsimulated/90 seconds Zone 1) 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 31,
+        "durationLabel": "31 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 36,
+            "MUSCULAR": 31,
+            "METABOLIC": 41
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n8x\n  - 30s Z5\n  - 90s Z1\n- 5m Z1"
+    },
+    {
+        "id": "bike_cfo3",
+        "code": "CFo3",
+        "name": "Cycling Force (CFo) CFo3",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 6 x (1 minute Zone 5 uphill or\nsimulated/2 minutes Zone 1) 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 33,
+        "durationLabel": "33 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 39,
+            "MUSCULAR": 33,
+            "METABOLIC": 44
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n6x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "bike_cfo4",
+        "code": "CFo4",
+        "name": "Cycling Force (CFo) CFo4",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 10 x (30 seconds Zone 5 uphill or\nsimulated/90 seconds Zone 1) 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 35,
+        "durationLabel": "35 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 41,
+            "MUSCULAR": 35,
+            "METABOLIC": 47
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n10x\n  - 30s Z5\n  - 90s Z1\n- 5m Z1"
+    },
+    {
+        "id": "bike_cfo5",
+        "code": "CFo5",
+        "name": "Cycling Force (CFo) CFo5",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 12 x (30 seconds Zone 5 uphill or\nsimulated/90 seconds Zone 1) 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 39,
+        "durationLabel": "39 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 46,
+            "MUSCULAR": 39,
+            "METABOLIC": 52
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n12x\n  - 30s Z5\n  - 90s Z1\n- 5m Z1"
+    },
+    {
+        "id": "bike_cfo6",
+        "code": "CFo6",
+        "name": "Cycling Force (CFo) CFo6",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 8 x (1 minute Zone 5 uphill or\nsimulated/2 minutes Zone 1) 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 39,
+        "durationLabel": "39 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 46,
+            "MUSCULAR": 39,
+            "METABOLIC": 52
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n8x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "bike_cfo7",
+        "code": "CFo7",
+        "name": "Cycling Force (CFo) CFo7",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 6 x (1.5 minutes Zone 5 uphill or\nsimulated/2.5 minutes Zone 1) 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 39,
+        "durationLabel": "39 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 46,
+            "MUSCULAR": 39,
+            "METABOLIC": 52
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n6x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "bike_cfo8",
+        "code": "CFo8",
+        "name": "Cycling Force (CFo) CFo8",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 10 x (1 minute Zone 5 uphill or\nsimulated/2 minutes Zone 1) 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 45,
+        "durationLabel": "45 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 53,
+            "MUSCULAR": 45,
+            "METABOLIC": 60
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n10x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "bike_cfo9",
+        "code": "CFo9",
+        "name": "Cycling Force (CFo) CFo9",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 8 x (1.5 minutes Zone 5 uphill or\nsimulated/2.5 minutes Zone 1) 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 47,
+        "durationLabel": "47 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 55,
+            "MUSCULAR": 47,
+            "METABOLIC": 63
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n8x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "bike_cfo10",
+        "code": "CFo10",
+        "name": "Cycling Force (CFo) CFo10",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 12 x (1 minute Zone 5 uphill or\nsimulated/2 minutes Zone 1) 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 51,
+        "durationLabel": "51 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 60,
+            "MUSCULAR": 51,
+            "METABOLIC": 68
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n12x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "bike_cfo11",
+        "code": "CFo11",
+        "name": "Cycling Force (CFo) CFo11",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 10 x (1.5 minutes Zone 5 uphill or\nsimulated/2.5 minutes Zone 1) 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 55,
+        "durationLabel": "55 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 64,
+            "MUSCULAR": 55,
+            "METABOLIC": 73
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n10x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "bike_cfo12",
+        "code": "CFo12",
+        "name": "Cycling Force (CFo) CFo12",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 12 x (1.5 minutes Zone 5 uphill or\nsimulated/2.5 minutes Zone 1) 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 63,
+        "durationLabel": "63 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 74,
+            "MUSCULAR": 63,
+            "METABOLIC": 84
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n12x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "bike_cfo13",
+        "code": "CFo13",
+        "name": "Cycling Force (CFo) CFo13",
+        "description": "5 minutes Zone 1, 10 minutes Zone 2, 10 x (1.5 minutes Zone 5 uphill or\nsimulated/2.5 minutes Zone 1) 10 Zone 2, 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 70,
+        "durationLabel": "70 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 82,
+            "MUSCULAR": 70,
+            "METABOLIC": 93
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 10m Z2\n10x\n  - 1m Z5\n  - 2m Z1\n- 10m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_cfo14",
+        "code": "CFo14",
+        "name": "Cycling Force (CFo) CFo14",
+        "description": "15 minutes Zone 1, 15 minutes Zone 2, 10 x (1 minute Zone 5 uphill or\nsimulated/2 minutes Zone 1), 70 minutes Zone 2, 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 135,
+        "durationLabel": "135 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 15m Z1\n- 15m Z2\n10x\n  - 1m Z5\n  - 2m Z1\n- 70m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_cfo15",
+        "code": "CFo15",
+        "name": "Cycling Force (CFo) CFo15",
+        "description": "15 minutes Zone 1, 15 minutes Zone 2, 10 x (1 minute Zone 5 uphill or\nsimulated/2 minutes Zone 1), 85 minutes Zone 2, 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 150,
+        "durationLabel": "150 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 15m Z1\n- 15m Z2\n10x\n  - 1m Z5\n  - 2m Z1\n- 85m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_cfo16",
+        "code": "CFo16",
+        "name": "Cycling Force (CFo) CFo16",
+        "description": "15 minutes Zone 1, 15 minutes Zone 2, 10 x (1 minute Zone 5 uphill or\nsimulated/2 minutes Zone 1), 115 minutes Zone 2, 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 180,
+        "durationLabel": "180 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 15m Z1\n- 15m Z2\n10x\n  - 1m Z5\n  - 2m Z1\n- 115m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_cfo17",
+        "code": "CFo17",
+        "name": "Cycling Force (CFo) CFo17",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 12 x (30 seconds Zone 5 uphill or\nsimulated/90 seconds Zone 1), 35 minutes Zone 2, 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 74,
+        "durationLabel": "74 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 86,
+            "MUSCULAR": 74,
+            "METABOLIC": 99
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n12x\n  - 30s Z5\n  - 90s Z1\n- 35m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_cfo18",
+        "code": "CFo18",
+        "name": "Cycling Force (CFo) CFo18",
+        "description": "5 minutes Zone 1, 10 minutes Zone 2, 6 x (1 minute Zone 5 uphill or\nsimulated/2 minutes Zone 1), 40 minutes Zone 2, 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 78,
+        "durationLabel": "78 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 91,
+            "MUSCULAR": 78,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 10m Z2\n6x\n  - 1m Z5\n  - 2m Z1\n- 40m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_cfo19",
+        "code": "CFo19",
+        "name": "Cycling Force (CFo) CFo19",
+        "description": "5 minutes Zone 1, 15 minutes Zone 2, 8 x (1 minute Zone 5 uphill or\nsimulated/2 minutes Zone 1), 46 minutes Zone 2",
+        "type": "BIKE",
+        "durationMin": 90,
+        "durationLabel": "90 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 90,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 15m Z2\n8x\n  - 1m Z5\n  - 2m Z1\n- 46m Z2"
+    },
+    {
+        "id": "bike_cfo20",
+        "code": "CFo20",
+        "name": "Cycling Force (CFo) CFo20",
+        "description": "10 minutes Zone 1, 15 minutes Zone 2, 10 x (1 minute Zone 5 uphill or\nsimulated/2 minutes Zone 1), 105 minutes Zone 2, 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 165,
+        "durationLabel": "165 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n- 15m Z2\n10x\n  - 1m Z5\n  - 2m Z1\n- 105m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_cfo21",
+        "code": "CFo21",
+        "name": "Cycling Force (CFo) CFo21",
+        "description": "15 minutes Zone 1, 15 minutes Zone 2, 10 x (1 minute Zone 5 uphill or\nsimulated/2 minutes Zone 1), 55 minutes Zone 2, 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 120,
+        "durationLabel": "120 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 15m Z1\n- 15m Z2\n10x\n  - 1m Z5\n  - 2m Z1\n- 55m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_cfo22",
+        "code": "CFo22",
+        "name": "Cycling Force (CFo) CFo22",
+        "description": "10 minutes Zone 1, 10 minutes Zone 2, 8 x (30 seconds Zone 5 uphill or\nsimulated/60 seconds Zone 1) 28 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 60,
+        "durationLabel": "60 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 70,
+            "MUSCULAR": 60,
+            "METABOLIC": 80
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n- 10m Z2\n8x\n  - 30s Z5\n  - 60s Z1\n- 28m Z1"
+    },
+    {
+        "id": "bike_cfo23",
+        "code": "CFo23",
+        "name": "Cycling Force (CFo) CFo23",
+        "description": "15 minutes Zone 1, 15 minutes Zone 2, 10 x (1 minute Zone 5 uphill or\nsimulated/2 minutes Zone 1), 40 minutes Zone 2, 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 105,
+        "durationLabel": "105 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 15m Z1\n- 15m Z2\n10x\n  - 1m Z5\n  - 2m Z1\n- 40m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_cfo24",
+        "code": "CFo24",
+        "name": "Cycling Force (CFo) CFo24",
+        "description": "15 minutes Zone 1, 15 minutes Zone 2, 5 x (1 minute Zone 5 uphill or\nsimulated/2 minutes Zone 1), 25 minutes Zone 2, 20 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 90,
+        "durationLabel": "90 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 90,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 15m Z1\n- 15m Z2\n5x\n  - 1m Z5\n  - 2m Z1\n- 25m Z2\n- 20m Z1"
+    },
+    {
+        "id": "bike_cmi1",
+        "code": "CMI1",
+        "name": "Cycling Mixed Intervals (CMI) CMI1",
+        "description": "20 minutes Zone 1, 2 x (20 minutes Zone 3/15 minutes Zone 1), 10 x (1 minute\nZone 4/2 minutes Zone 1)",
+        "type": "BIKE",
+        "durationMin": 120,
+        "durationLabel": "120 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 20m Z1\n2x\n  - 20m Z3\n  - 15m Z1\n10x\n  - 1m Z4\n  - 2m Z1"
+    },
+    {
+        "id": "bike_cmi2",
+        "code": "CMI2",
+        "name": "Cycling Mixed Intervals (CMI) CMI2",
+        "description": "20 minutes Zone 1, 2 x (20 minutes Zone 3/15 minutes Zone 1), 10 x (1 minute\nZone 4/2 minutes Zone 1) 30 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 150,
+        "durationLabel": "150 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 20m Z1\n2x\n  - 20m Z3\n  - 15m Z1\n10x\n  - 1m Z4\n  - 2m Z1\n- 30m Z1"
+    },
+    {
+        "id": "bike_cmi3",
+        "code": "CMI3",
+        "name": "Cycling Mixed Intervals (CMI) CMI3",
+        "description": "20 minutes Zone 1, 2 x (20 minutes Zone 3/15 minutes Zone 1), 10 x (1 minute\nZone 4/2 minutes Zone 1) 45 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 165,
+        "durationLabel": "165 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 20m Z1\n2x\n  - 20m Z3\n  - 15m Z1\n10x\n  - 1m Z4\n  - 2m Z1\n- 45m Z1"
+    },
+    {
+        "id": "bike_cmi4",
+        "code": "CMI4",
+        "name": "Cycling Mixed Intervals (CMI) CMI4",
+        "description": "20 minutes Zone 1, 2 x (20 minutes Zone 3/15 minutes Zone 1), 10 x (1 minute\nZone 4/2 minutes Zone 1) 60 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 180,
+        "durationLabel": "180 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 20m Z1\n2x\n  - 20m Z3\n  - 15m Z1\n10x\n  - 1m Z4\n  - 2m Z1\n- 60m Z1"
+    },
+    {
+        "id": "bike_cmi5",
+        "code": "CMI5",
+        "name": "Cycling Mixed Intervals (CMI) CMI5",
+        "description": "20 minutes Zone 1, 2 x (20 minutes Zone 3/15 minutes Zone 1), 10 x (1 minute\nZone 4/2 minutes Zone 1) 90 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 210,
+        "durationLabel": "210 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 20m Z1\n2x\n  - 20m Z3\n  - 15m Z1\n10x\n  - 1m Z4\n  - 2m Z1\n- 90m Z1"
+    },
+    {
+        "id": "bike_cmi6",
+        "code": "CMI6",
+        "name": "Cycling Mixed Intervals (CMI) CMI6",
+        "description": "20 minutes Zone 1, 2 x (20 minutes Zone 3/15 minutes Zone 1), 5 x (1 minute\nZone 4/2 minutes Zone 1) 15 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 120,
+        "durationLabel": "120 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 20m Z1\n2x\n  - 20m Z3\n  - 15m Z1\n5x\n  - 1m Z4\n  - 2m Z1\n- 15m Z1"
+    },
+    {
+        "id": "bike_can1",
+        "code": "CAn1",
+        "name": "Cycling Anaerobic Intervals (CAn) CAn1",
+        "description": "15 minutes Zone 1, 4 x (2.5 minutes Zone 4/5 minutes Zone 1) 15 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 60,
+        "durationLabel": "60 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 70,
+            "MUSCULAR": 60,
+            "METABOLIC": 80
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 15m Z1\n4x\n  - 2m Z4\n  - 5m Z1\n- 15m Z1"
+    },
+    {
+        "id": "bike_can2",
+        "code": "CAn2",
+        "name": "Cycling Anaerobic Intervals (CAn) CAn2",
+        "description": "15 minutes Zone 1, 5 x (2.5 minutes Zone 4/5 minutes Zone 1) 10 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 63,
+        "durationLabel": "62.5 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 73,
+            "MUSCULAR": 63,
+            "METABOLIC": 83
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 15m Z1\n5x\n  - 2m Z4\n  - 5m Z1\n- 10m Z1"
+    },
+    {
+        "id": "bike_can3",
+        "code": "CAn3",
+        "name": "Cycling Anaerobic Intervals (CAn) CAn3",
+        "description": "10 minutes Zone 1, 6 x (2.5 minutes Zone 4/5 minutes Zone 1) 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 60,
+        "durationLabel": "60 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 70,
+            "MUSCULAR": 60,
+            "METABOLIC": 80
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n6x\n  - 2m Z4\n  - 5m Z1\n- 5m Z1"
+    },
+    {
+        "id": "bike_can4",
+        "code": "CAn4",
+        "name": "Cycling Anaerobic Intervals (CAn) CAn4",
+        "description": "10 minutes Zone 1, 6 x (2.5 minutes Zone 4/5 minutes Zone 1) 30 minutes Zone\n2, 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 90,
+        "durationLabel": "90 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 90,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n6x\n  - 2m Z4\n  - 5m Z1\n- 30m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_can5",
+        "code": "CAn5",
+        "name": "Cycling Anaerobic Intervals (CAn) CAn5",
+        "description": "10 minutes Zone 1, 6 x (2.5 minutes Zone 4/5 minutes Zone 1) 60 minutes Zone\n2, 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 120,
+        "durationLabel": "120 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n6x\n  - 2m Z4\n  - 5m Z1\n- 60m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_can6",
+        "code": "CAn6",
+        "name": "Cycling Anaerobic Intervals (CAn) CAn6",
+        "description": "10 minutes Zone 1, 10 minutes Zone 2, 6 x (2.5 minutes Zone 4/5 minutes Zone\n1) 80 minutes Zone 2, 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 150,
+        "durationLabel": "150 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n- 10m Z2\n6x\n  - 2m Z4\n  - 5m Z1\n- 80m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_can7",
+        "code": "CAn7",
+        "name": "Cycling Anaerobic Intervals (CAn) CAn7",
+        "description": "10 minutes Zone 1, 10 minutes Zone 2, 3 x (2.5 minutes Zone 4/5 minutes Zone\n1) 45 minutes Zone 2, 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 92,
+        "durationLabel": "92 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 92,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n- 10m Z2\n3x\n  - 2m Z4\n  - 5m Z1\n- 45m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_can8",
+        "code": "CAn8",
+        "name": "Cycling Anaerobic Intervals (CAn) CAn8",
+        "description": "10 minutes Zone 1, 10 minutes Zone 2, 4 x (2.5 minutes Zone 4/5 minutes Zone\n1) 95 minutes Zone 2, 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 150,
+        "durationLabel": "150 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 100,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n- 10m Z2\n4x\n  - 2m Z4\n  - 5m Z1\n- 95m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_can9",
+        "code": "CAn9",
+        "name": "Cycling Anaerobic Intervals (CAn) CAn9",
+        "description": "10 minutes Zone 1, 10 minutes Zone 2, 3 x (2.5 minutes Zone 4/5 minutes Zone\n1) 17 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 60,
+        "durationLabel": "60 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 70,
+            "MUSCULAR": 60,
+            "METABOLIC": 80
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n- 10m Z2\n3x\n  - 2m Z4\n  - 5m Z1\n- 17m Z1"
+    },
+    {
+        "id": "bike_csp1",
+        "code": "CSP1",
+        "name": "Cycling Speed Play (CSP) CSP1",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 3 x (2 minutes Zone 4/2 minutes Zone 1)\n5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 27,
+        "durationLabel": "27 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 32,
+            "MUSCULAR": 27,
+            "METABOLIC": 36
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n3x\n  - 2m Z4\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "bike_csp2",
+        "code": "CSP2",
+        "name": "Cycling Speed Play (CSP) CSP2",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 5 x (1 minute Zone 4/2 minutes Zone 1)\n30 minutes Zone 2, 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 60,
+        "durationLabel": "60 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 70,
+            "MUSCULAR": 60,
+            "METABOLIC": 80
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n5x\n  - 1m Z4\n  - 2m Z1\n- 30m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_csp3",
+        "code": "CSP3",
+        "name": "Cycling Speed Play (CSP) CSP3",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 4 x (2 minutes Zone 4/2 minutes Zone 1)\n5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 31,
+        "durationLabel": "31 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 36,
+            "MUSCULAR": 31,
+            "METABOLIC": 41
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n4x\n  - 2m Z4\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "bike_csp4",
+        "code": "CSP4",
+        "name": "Cycling Speed Play (CSP) CSP4",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 6 x (1 minute Zone 4/2 minutes Zone 1),\n27 minutes Zone 2, 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 60,
+        "durationLabel": "60 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 70,
+            "MUSCULAR": 60,
+            "METABOLIC": 80
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n6x\n  - 1m Z4\n  - 2m Z1\n- 27m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_csp5",
+        "code": "CSP5",
+        "name": "Cycling Speed Play (CSP) CSP5",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 5 x (2 minutes Zone 4/2 minutes Zone 1)\n5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 35,
+        "durationLabel": "35 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 41,
+            "MUSCULAR": 35,
+            "METABOLIC": 47
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n5x\n  - 2m Z4\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "bike_csp6",
+        "code": "CSP6",
+        "name": "Cycling Speed Play (CSP) CSP6",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 7 x (1 minute Zone 4/2 minutes Zone 1)\n30 minutes Zone 2, 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 66,
+        "durationLabel": "66 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 77,
+            "MUSCULAR": 66,
+            "METABOLIC": 88
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n7x\n  - 1m Z4\n  - 2m Z1\n- 30m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_csp7",
+        "code": "CSP7",
+        "name": "Cycling Speed Play (CSP) CSP7",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 6 x (2 minutes Zone 4/2 minutes Zone 1)\n5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 39,
+        "durationLabel": "39 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 46,
+            "MUSCULAR": 39,
+            "METABOLIC": 52
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n6x\n  - 2m Z4\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "bike_csp8",
+        "code": "CSP8",
+        "name": "Cycling Speed Play (CSP) CSP8",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 8 x (1 minute Zone 4/2 minutes Zone 1)\n26 minutes Zone 2",
+        "type": "BIKE",
+        "durationMin": 60,
+        "durationLabel": "60 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 70,
+            "MUSCULAR": 60,
+            "METABOLIC": 80
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n8x\n  - 1m Z4\n  - 2m Z1\n- 26m Z2"
+    },
+    {
+        "id": "bike_csp9",
+        "code": "CSP9",
+        "name": "Cycling Speed Play (CSP) CSP9",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 9 x (1 minute Zone 4/2 minutes Zone 1) 5\nminutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 42,
+        "durationLabel": "42 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 49,
+            "MUSCULAR": 42,
+            "METABOLIC": 56
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n9x\n  - 1m Z4\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "bike_csp10",
+        "code": "CSP10",
+        "name": "Cycling Speed Play (CSP) CSP10",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 7 x (2 minutes Zone 4/2 minutes Zone 1)\n17 minutes Zone 2, 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 60,
+        "durationLabel": "60 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 70,
+            "MUSCULAR": 60,
+            "METABOLIC": 80
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n7x\n  - 2m Z4\n  - 2m Z1\n- 17m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_csp11",
+        "code": "CSP11",
+        "name": "Cycling Speed Play (CSP) CSP11",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 10 x (1 minute Zone 4/2 minutes Zone 1)\n5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 45,
+        "durationLabel": "45 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 53,
+            "MUSCULAR": 45,
+            "METABOLIC": 60
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n10x\n  - 1m Z4\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "bike_csp12",
+        "code": "CSP12",
+        "name": "Cycling Speed Play (CSP) CSP12",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 8 x (2 minutes Zone 4/2 minutes Zone 1)\n13 minutes Zone 2, 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 60,
+        "durationLabel": "60 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 70,
+            "MUSCULAR": 60,
+            "METABOLIC": 80
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n8x\n  - 2m Z4\n  - 2m Z1\n- 13m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_csp13",
+        "code": "CSP13",
+        "name": "Cycling Speed Play (CSP) CSP13",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 9 x (2 minutes Zone 4/2 minutes Zone 1)\n5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 51,
+        "durationLabel": "51 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 60,
+            "MUSCULAR": 51,
+            "METABOLIC": 68
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n9x\n  - 2m Z4\n  - 2m Z1\n- 5m Z1"
+    },
+    {
+        "id": "bike_csp14",
+        "code": "CSP14",
+        "name": "Cycling Speed Play (CSP) CSP14",
+        "description": "5 minutes Zone 1, 5 minutes Zone 2, 12 x (1 minute Zone 4/2 minutes Zone 1)\n10 minutes Zone 2, 5 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 61,
+        "durationLabel": "61 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 71,
+            "MUSCULAR": 61,
+            "METABOLIC": 81
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 5m Z1\n- 5m Z2\n12x\n  - 1m Z4\n  - 2m Z1\n- 10m Z2\n- 5m Z1"
+    },
+    {
+        "id": "bike_csp15",
+        "code": "CSP15",
+        "name": "Cycling Speed Play (CSP) CSP15",
+        "description": "10 minutes Zone 1, 15 minutes Zone 2, 6 x (2 minute Zone 4/2 minutes Zone 1)\n15 minutes Zone 2, 15 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 79,
+        "durationLabel": "79 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 92,
+            "MUSCULAR": 79,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n- 15m Z2\n6x\n  - 2m Z4\n  - 2m Z1\n- 15m Z2\n- 15m Z1"
+    },
+    {
+        "id": "bike_csp16",
+        "code": "CSP16",
+        "name": "Cycling Speed Play (CSP) CSP16",
+        "description": "10 minutes Zone 1, 15 minutes Zone 2, 8 x (2 minute Zone 4/2 minutes Zone 1)\n15 minutes Zone 2, 15 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 87,
+        "durationLabel": "87 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 87,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n- 15m Z2\n8x\n  - 2m Z4\n  - 2m Z1\n- 15m Z2\n- 15m Z1"
+    },
+    {
+        "id": "bike_csp17",
+        "code": "CSP17",
+        "name": "Cycling Speed Play (CSP) CSP17",
+        "description": "10 minutes Zone 1, 15 minutes Zone 2, 8 x (1 minute Zone 4/2 minutes Zone 1)\n15 minutes Zone 2, 15 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 79,
+        "durationLabel": "79 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 92,
+            "MUSCULAR": 79,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 10m Z1\n- 15m Z2\n8x\n  - 1m Z4\n  - 2m Z1\n- 15m Z2\n- 15m Z1"
+    },
+    {
+        "id": "bike_csp18",
+        "code": "CSP18",
+        "name": "Cycling Speed Play (CSP) CSP18",
+        "description": "21 minutes Zone 1, 15 minutes Zone 2, 8 x (1 minute Zone 4/2 minutes Zone 1)\n15 minutes Zone 2, 15 minutes Zone 1",
+        "type": "BIKE",
+        "durationMin": 90,
+        "durationLabel": "90 min",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 90,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 21m Z1\n- 15m Z2\n8x\n  - 1m Z4\n  - 2m Z1\n- 15m Z2\n- 15m Z1"
+    },
+    {
+        "id": "swim_sre1",
+        "code": "SRe1",
+        "name": "Swim Recovery (SRe)",
+        "description": "1500 Zone 1",
+        "type": "SWIM",
+        "durationMin": 30,
+        "durationLabel": "1500m",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 10,
+            "MUSCULAR": 20,
+            "METABOLIC": 20
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 1500m Z1"
+    },
+    {
+        "id": "swim_sre2",
+        "code": "SRe2",
+        "name": "Swim Recovery (SRe)",
+        "description": "1600 Zone 1",
+        "type": "SWIM",
+        "durationMin": 32,
+        "durationLabel": "1600m",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 11,
+            "MUSCULAR": 21,
+            "METABOLIC": 21
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 1600m Z1"
+    },
+    {
+        "id": "swim_sre3",
+        "code": "SRe3",
+        "name": "Swim Recovery (SRe)",
+        "description": "1750 Zone 1",
+        "type": "SWIM",
+        "durationMin": 35,
+        "durationLabel": "1750m",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 12,
+            "MUSCULAR": 23,
+            "METABOLIC": 23
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 1750m Z1"
+    },
+    {
+        "id": "swim_sre4",
+        "code": "SRe4",
+        "name": "Swim Recovery (SRe)",
+        "description": "2000 Zone 1",
+        "type": "SWIM",
+        "durationMin": 40,
+        "durationLabel": "2000m",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 13,
+            "MUSCULAR": 25,
+            "METABOLIC": 27
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 2000m Z1"
+    },
+    {
+        "id": "swim_sre5",
+        "code": "SRe5",
+        "name": "Swim Recovery (SRe)",
+        "description": "2250 Zone 1",
+        "type": "SWIM",
+        "durationMin": 45,
+        "durationLabel": "2250m",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 15,
+            "MUSCULAR": 28,
+            "METABOLIC": 30
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 2250m Z1"
+    },
+    {
+        "id": "swim_sre6",
+        "code": "SRe6",
+        "name": "Swim Recovery (SRe)",
+        "description": "2500 Zone 1",
+        "type": "SWIM",
+        "durationMin": 50,
+        "durationLabel": "2500m",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 17,
+            "MUSCULAR": 30,
+            "METABOLIC": 33
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 2500m Z1"
+    },
+    {
+        "id": "swim_sre7",
+        "code": "SRe7",
+        "name": "Swim Recovery (SRe)",
+        "description": "2750 Zone 1",
+        "type": "SWIM",
+        "durationMin": 55,
+        "durationLabel": "2750m",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 18,
+            "MUSCULAR": 33,
+            "METABOLIC": 37
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 2750m Z1"
+    },
+    {
+        "id": "swim_sre8",
+        "code": "SRe8",
+        "name": "Swim Recovery (SRe)",
+        "description": "3000 Zone 1",
+        "type": "SWIM",
+        "durationMin": 60,
+        "durationLabel": "3000m",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 20,
+            "MUSCULAR": 35,
+            "METABOLIC": 40
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 3000m Z1"
+    },
+    {
+        "id": "swim_sre9",
+        "code": "SRe9",
+        "name": "Swim Recovery (SRe)",
+        "description": "1000 Zone 1",
+        "type": "SWIM",
+        "durationMin": 20,
+        "durationLabel": "1000m",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 7,
+            "MUSCULAR": 15,
+            "METABOLIC": 13
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 1000m Z1"
+    },
+    {
+        "id": "swim_sf1",
+        "code": "SF1",
+        "name": "Swim Foundation (SF)",
+        "description": "300 Zone 1, 900 Zone 2, 300 Zone 1",
+        "type": "SWIM",
+        "durationMin": 30,
+        "durationLabel": "1500m",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 10,
+            "MUSCULAR": 20,
+            "METABOLIC": 20
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 300m Z1\n- 900m Z2\n- 300m Z1"
+    },
+    {
+        "id": "swim_sf2",
+        "code": "SF2",
+        "name": "Swim Foundation (SF)",
+        "description": "300 Zone 1, 1000 Zone 2, 300 Zone 1",
+        "type": "SWIM",
+        "durationMin": 32,
+        "durationLabel": "1600m",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 11,
+            "MUSCULAR": 21,
+            "METABOLIC": 21
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 300m Z1\n- 1000m Z2\n- 300m Z1"
+    },
+    {
+        "id": "swim_sf3",
+        "code": "SF3",
+        "name": "Swim Foundation (SF)",
+        "description": "300 Zone 1, 1150 Zone 2, 300 Zone 1",
+        "type": "SWIM",
+        "durationMin": 35,
+        "durationLabel": "1750m",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 12,
+            "MUSCULAR": 23,
+            "METABOLIC": 23
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 300m Z1\n- 1150m Z2\n- 300m Z1"
+    },
+    {
+        "id": "swim_sf4",
+        "code": "SF4",
+        "name": "Swim Foundation (SF)",
+        "description": "300 Zone 1, 1400 Zone 2, 300 Zone 1",
+        "type": "SWIM",
+        "durationMin": 40,
+        "durationLabel": "2000m",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 13,
+            "MUSCULAR": 25,
+            "METABOLIC": 27
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 300m Z1\n- 1400m Z2\n- 300m Z1"
+    },
+    {
+        "id": "swim_sf5",
+        "code": "SF5",
+        "name": "Swim Foundation (SF)",
+        "description": "300 Zone 1, 1650 Zone 2, 300 Zone 1",
+        "type": "SWIM",
+        "durationMin": 45,
+        "durationLabel": "2250m",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 15,
+            "MUSCULAR": 28,
+            "METABOLIC": 30
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 300m Z1\n- 1650m Z2\n- 300m Z1"
+    },
+    {
+        "id": "swim_sf6",
+        "code": "SF6",
+        "name": "Swim Foundation (SF)",
+        "description": "300 Zone 1, 1900 Zone 2, 300 Zone 1",
+        "type": "SWIM",
+        "durationMin": 50,
+        "durationLabel": "2500m",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 17,
+            "MUSCULAR": 30,
+            "METABOLIC": 33
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 300m Z1\n- 1900m Z2\n- 300m Z1"
+    },
+    {
+        "id": "swim_sf7",
+        "code": "SF7",
+        "name": "Swim Foundation (SF)",
+        "description": "250 Zone 1, 2250 Zone 2, 250 Zone 1",
+        "type": "SWIM",
+        "durationMin": 55,
+        "durationLabel": "2750m",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 18,
+            "MUSCULAR": 33,
+            "METABOLIC": 37
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 250m Z1\n- 2250m Z2\n- 250m Z1"
+    },
+    {
+        "id": "swim_sf8",
+        "code": "SF8",
+        "name": "Swim Foundation (SF)",
+        "description": "250 Zone 1, 2500 Zone 2, 250 Zone 1",
+        "type": "SWIM",
+        "durationMin": 60,
+        "durationLabel": "3000m",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 20,
+            "MUSCULAR": 35,
+            "METABOLIC": 40
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 250m Z1\n- 2500m Z2\n- 250m Z1"
+    },
+    {
+        "id": "swim_sf9",
+        "code": "SF9",
+        "name": "Swim Foundation (SF)",
+        "description": "250 Zone 1, 3000 Zone 2, 250 Zone 1",
+        "type": "SWIM",
+        "durationMin": 70,
+        "durationLabel": "3500m",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 23,
+            "MUSCULAR": 40,
+            "METABOLIC": 47
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 250m Z1\n- 3000m Z2\n- 250m Z1"
+    },
+    {
+        "id": "swim_sf10",
+        "code": "SF10",
+        "name": "Swim Foundation (SF)",
+        "description": "250 Zone 1, 3500 Zone 2, 250 Zone 1",
+        "type": "SWIM",
+        "durationMin": 80,
+        "durationLabel": "4000m",
+        "intensity": "LOW",
+        "resourceCost": {
+            "CNS": 27,
+            "MUSCULAR": 45,
+            "METABOLIC": 53
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 250m Z1\n- 3500m Z2\n- 250m Z1"
+    },
+    {
+        "id": "swim_sae1",
+        "code": "SAe1",
+        "name": "Swim Aerobic Intervals (SAe)",
+        "description": "250 Zone 1, 4 x (500 Zone 2, 60\" rest) 250 Zone 1",
+        "type": "SWIM",
+        "durationMin": 50,
+        "durationLabel": "2500m",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 58,
+            "MUSCULAR": 55,
+            "METABOLIC": 67
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 250m Z1\n4x\n  - 60s Z1\n- 250m Z1"
+    },
+    {
+        "id": "swim_sae2",
+        "code": "SAe2",
+        "name": "Swim Aerobic Intervals (SAe)",
+        "description": "250 Zone 1, 5 x (500 Zone 2, 60\" rest) 250 Zone 1",
+        "type": "SWIM",
+        "durationMin": 60,
+        "durationLabel": "3000m",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 70,
+            "MUSCULAR": 65,
+            "METABOLIC": 80
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 250m Z1\n5x\n  - 60s Z1\n- 250m Z1"
+    },
+    {
+        "id": "swim_sae3",
+        "code": "SAe3",
+        "name": "Swim Aerobic Intervals (SAe)",
+        "description": "250 Zone 1, 6 x (500 Zone 2, 60\" rest) 250 Zone 1",
+        "type": "SWIM",
+        "durationMin": 70,
+        "durationLabel": "3500m",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 82,
+            "MUSCULAR": 75,
+            "METABOLIC": 93
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 250m Z1\n6x\n  - 60s Z1\n- 250m Z1"
+    },
+    {
+        "id": "swim_sae4",
+        "code": "SAe4",
+        "name": "Swim Aerobic Intervals (SAe)",
+        "description": "250 Zone 1, 3 x (1000 Zone 2, 60\" rest) 250 Zone 1",
+        "type": "SWIM",
+        "durationMin": 70,
+        "durationLabel": "3500m",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 82,
+            "MUSCULAR": 75,
+            "METABOLIC": 93
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 250m Z1\n3x\n  - 60s Z1\n- 250m Z1"
+    },
+    {
+        "id": "swim_sae5",
+        "code": "SAe5",
+        "name": "Swim Aerobic Intervals (SAe)",
+        "description": "150 Zone 1, 7 x (500 Zone 2, 60\" rest) 150 Zone 1",
+        "type": "SWIM",
+        "durationMin": 76,
+        "durationLabel": "3800m",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 89,
+            "MUSCULAR": 81,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 150m Z1\n7x\n  - 60s Z1\n- 150m Z1"
+    },
+    {
+        "id": "swim_sae6",
+        "code": "SAe6",
+        "name": "Swim Aerobic Intervals (SAe)",
+        "description": "250 Zone 1, 4 x (1000 Zone 2, 60\" rest) 250 Zone 1",
+        "type": "SWIM",
+        "durationMin": 90,
+        "durationLabel": "4500m",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 100,
+            "MUSCULAR": 95,
+            "METABOLIC": 100
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 250m Z1\n4x\n  - 60s Z1\n- 250m Z1"
+    },
+    {
+        "id": "swim_sae7",
+        "code": "SAe7",
+        "name": "Swim Aerobic Intervals (SAe)",
+        "description": "250 Zone 1, 3 x (500 Zone 2, 60\" rest) 250 Zone 1",
+        "type": "SWIM",
+        "durationMin": 40,
+        "durationLabel": "2000m",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 47,
+            "MUSCULAR": 45,
+            "METABOLIC": 53
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 250m Z1\n3x\n  - 60s Z1\n- 250m Z1"
+    },
+    {
+        "id": "swim_sci1",
+        "code": "SCI1",
+        "name": "Swim Cruise Interval (SCI)",
+        "description": "500 Zone 1, 5 x (100 Zone 3/15\" rest) 500 Zone 1",
+        "type": "SWIM",
+        "durationMin": 30,
+        "durationLabel": "1500m",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 20,
+            "MUSCULAR": 30,
+            "METABOLIC": 30
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 500m Z1\n5x\n  - 100m Z3\n  - 15s Z1\n- 500m Z1"
+    },
+    {
+        "id": "swim_sci2",
+        "code": "SCI2",
+        "name": "Swim Cruise Interval (SCI)",
+        "description": "500 Zone 1, 5 x (100 Zone 3/15\" rest) 500 Zone 2, 500 Zone 1",
+        "type": "SWIM",
+        "durationMin": 40,
+        "durationLabel": "2000m",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 27,
+            "MUSCULAR": 38,
+            "METABOLIC": 40
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 500m Z1\n5x\n  - 100m Z3\n  - 15s Z1\n- 500m Z2\n- 500m Z1"
+    },
+    {
+        "id": "swim_sci3",
+        "code": "SCI3",
+        "name": "Swim Cruise Interval (SCI)",
+        "description": "500 Zone 1, 500 Zone 2, 5 x (100 Zone 3/15\" rest) 500 Zone 2, 500 Zone 1",
+        "type": "SWIM",
+        "durationMin": 50,
+        "durationLabel": "2500m",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 33,
+            "MUSCULAR": 47,
+            "METABOLIC": 50
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 500m Z1\n- 500m Z2\n5x\n  - 100m Z3\n  - 15s Z1\n- 500m Z2\n- 500m Z1"
+    },
+    {
+        "id": "swim_sci4",
+        "code": "SCI4",
+        "name": "Swim Cruise Interval (SCI)",
+        "description": "250 Zone 1, 10 x (100 Zone 3/15\" rest) 250 Zone 1",
+        "type": "SWIM",
+        "durationMin": 30,
+        "durationLabel": "1500m",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 20,
+            "MUSCULAR": 30,
+            "METABOLIC": 30
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 250m Z1\n10x\n  - 100m Z3\n  - 15s Z1\n- 250m Z1"
+    },
+    {
+        "id": "swim_sci5",
+        "code": "SCI5",
+        "name": "Swim Cruise Interval (SCI)",
+        "description": "250 Zone 1, 10 x (100 Zone 3/15\" rest) 500 Zone 2, 250 Zone 1",
+        "type": "SWIM",
+        "durationMin": 40,
+        "durationLabel": "2000m",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 27,
+            "MUSCULAR": 38,
+            "METABOLIC": 40
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 250m Z1\n10x\n  - 100m Z3\n  - 15s Z1\n- 500m Z2\n- 250m Z1"
+    },
+    {
+        "id": "swim_sci6",
+        "code": "SCI6",
+        "name": "Swim Cruise Interval (SCI)",
+        "description": "250 Zone 1, 500 Zone 2, 10 x (100 Zone 3/15\" rest) 500 Zone 2, 250 Zone 1",
+        "type": "SWIM",
+        "durationMin": 50,
+        "durationLabel": "2500m",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 33,
+            "MUSCULAR": 47,
+            "METABOLIC": 50
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 250m Z1\n- 500m Z2\n10x\n  - 100m Z3\n  - 15s Z1\n- 500m Z2\n- 250m Z1"
+    },
+    {
+        "id": "swim_sci7",
+        "code": "SCI7",
+        "name": "Swim Cruise Interval (SCI)",
+        "description": "250 Zone 1, 500 Zone 2, 15 x (100 Zone 3/15\" rest) 500 Zone 2, 250 Zone 1",
+        "type": "SWIM",
+        "durationMin": 60,
+        "durationLabel": "3000m",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 40,
+            "MUSCULAR": 55,
+            "METABOLIC": 60
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 250m Z1\n- 500m Z2\n15x\n  - 100m Z3\n  - 15s Z1\n- 500m Z2\n- 250m Z1"
+    },
+    {
+        "id": "swim_sci8",
+        "code": "SCI8",
+        "name": "Swim Cruise Interval (SCI)",
+        "description": "500 Zone 1, 5 x (200 Zone 3/15\" rest) 500 Zone 1",
+        "type": "SWIM",
+        "durationMin": 40,
+        "durationLabel": "2000m",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 27,
+            "MUSCULAR": 38,
+            "METABOLIC": 40
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 500m Z1\n5x\n  - 200m Z3\n  - 15s Z1\n- 500m Z1"
+    },
+    {
+        "id": "swim_sci9",
+        "code": "SCI9",
+        "name": "Swim Cruise Interval (SCI)",
+        "description": "500 Zone 1, 7 x (200 Zone 3/15\" rest) 500 Zone 1",
+        "type": "SWIM",
+        "durationMin": 48,
+        "durationLabel": "2400m",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 32,
+            "MUSCULAR": 45,
+            "METABOLIC": 48
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 500m Z1\n7x\n  - 200m Z3\n  - 15s Z1\n- 500m Z1"
+    },
+    {
+        "id": "swim_sci10",
+        "code": "SCI10",
+        "name": "Swim Cruise Interval (SCI)",
+        "description": "500 Zone 1, 10 x (200 Zone 3/15\" rest) 500 Zone 1",
+        "type": "SWIM",
+        "durationMin": 60,
+        "durationLabel": "3000m",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 40,
+            "MUSCULAR": 55,
+            "METABOLIC": 60
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 500m Z1\n10x\n  - 200m Z3\n  - 15s Z1\n- 500m Z1"
+    },
+    {
+        "id": "swim_sci11",
+        "code": "SCI11",
+        "name": "Swim Cruise Interval (SCI)",
+        "description": "500 Zone 1, 3 x (300 Zone 3/15\" rest) 500 Zone 1",
+        "type": "SWIM",
+        "durationMin": 38,
+        "durationLabel": "1900m",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 25,
+            "MUSCULAR": 37,
+            "METABOLIC": 38
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 500m Z1\n3x\n  - 300m Z3\n  - 15s Z1\n- 500m Z1"
+    },
+    {
+        "id": "swim_sci12",
+        "code": "SCI12",
+        "name": "Swim Cruise Interval (SCI)",
+        "description": "500 Zone 1, 5 x (300 Zone 3/15\" rest) 500 Zone 1",
+        "type": "SWIM",
+        "durationMin": 50,
+        "durationLabel": "2500m",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 33,
+            "MUSCULAR": 47,
+            "METABOLIC": 50
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 500m Z1\n5x\n  - 300m Z3\n  - 15s Z1\n- 500m Z1"
+    },
+    {
+        "id": "swim_sci13",
+        "code": "SCI13",
+        "name": "Swim Cruise Interval (SCI)",
+        "description": "500 Zone 1, 500 Zone 2, 5 x (300 Zone 3/15\" rest) 500 Zone 2, 500 Zone 1",
+        "type": "SWIM",
+        "durationMin": 70,
+        "durationLabel": "3500m",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 47,
+            "MUSCULAR": 63,
+            "METABOLIC": 70
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 500m Z1\n- 500m Z2\n5x\n  - 300m Z3\n  - 15s Z1\n- 500m Z2\n- 500m Z1"
+    },
+    {
+        "id": "swim_sci14",
+        "code": "SCI14",
+        "name": "Swim Cruise Interval (SCI)",
+        "description": "300 Zone 1, 3 x (200 Zone 3/15\" rest) 300 Zone 1",
+        "type": "SWIM",
+        "durationMin": 24,
+        "durationLabel": "1200m",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 16,
+            "MUSCULAR": 25,
+            "METABOLIC": 24
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 300m Z1\n3x\n  - 200m Z3\n  - 15s Z1\n- 300m Z1"
+    },
+    {
+        "id": "swim_sci15",
+        "code": "SCI15",
+        "name": "Swim Cruise Interval (SCI)",
+        "description": "300 Zone 1, 3 x (300 Zone 3/15\" rest) 300 Zone 1",
+        "type": "SWIM",
+        "durationMin": 30,
+        "durationLabel": "1500m",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 20,
+            "MUSCULAR": 30,
+            "METABOLIC": 30
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 300m Z1\n3x\n  - 300m Z3\n  - 15s Z1\n- 300m Z1"
+    },
+    {
+        "id": "swim_sci16",
+        "code": "SCI16",
+        "name": "Swim Cruise Interval (SCI)",
+        "description": "500 Zone 1, 5 x (200 Zone 3/15\" rest) 250 Zone 1",
+        "type": "SWIM",
+        "durationMin": 35,
+        "durationLabel": "1750m",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 23,
+            "MUSCULAR": 34,
+            "METABOLIC": 35
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 500m Z1\n5x\n  - 200m Z3\n  - 15s Z1\n- 250m Z1"
+    },
+    {
+        "id": "swim_sci17",
+        "code": "SCI17",
+        "name": "Swim Cruise Interval (SCI)",
+        "description": "150 Zone 1, 6 x (200 Zone 3/15\" rest) 150 Zone 1",
+        "type": "SWIM",
+        "durationMin": 30,
+        "durationLabel": "1500m",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 20,
+            "MUSCULAR": 30,
+            "METABOLIC": 30
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 150m Z1\n6x\n  - 200m Z3\n  - 15s Z1\n- 150m Z1"
+    },
+    {
+        "id": "swim_st1",
+        "code": "ST1",
+        "name": "Swim Tempo (ST)",
+        "description": "250 Zone 1, 500 Zone 3, 500 Zone 2, 250 Zone 1",
+        "type": "SWIM",
+        "durationMin": 30,
+        "durationLabel": "1500m",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 20,
+            "MUSCULAR": 30,
+            "METABOLIC": 30
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 250m Z1\n- 500m Z3\n- 500m Z2\n- 250m Z1"
+    },
+    {
+        "id": "swim_st2",
+        "code": "ST2",
+        "name": "Swim Tempo (ST)",
+        "description": "250 Zone 1, 500 Zone 3, 750 Zone 2, 250 Zone 1",
+        "type": "SWIM",
+        "durationMin": 35,
+        "durationLabel": "1750m",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 23,
+            "MUSCULAR": 34,
+            "METABOLIC": 35
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 250m Z1\n- 500m Z3\n- 750m Z2\n- 250m Z1"
+    },
+    {
+        "id": "swim_st3",
+        "code": "ST3",
+        "name": "Swim Tempo (ST)",
+        "description": "250 Zone 1, 500 Zone 3, 1000 Zone 2, 250 Zone 1",
+        "type": "SWIM",
+        "durationMin": 40,
+        "durationLabel": "2000m",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 27,
+            "MUSCULAR": 38,
+            "METABOLIC": 40
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 250m Z1\n- 500m Z3\n- 1000m Z2\n- 250m Z1"
+    },
+    {
+        "id": "swim_st4",
+        "code": "ST4",
+        "name": "Swim Tempo (ST)",
+        "description": "250 Zone 1, 750 Zone 3, 1000 Zone 2, 250 Zone 1",
+        "type": "SWIM",
+        "durationMin": 45,
+        "durationLabel": "2250m",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 30,
+            "MUSCULAR": 43,
+            "METABOLIC": 45
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 250m Z1\n- 750m Z3\n- 1000m Z2\n- 250m Z1"
+    },
+    {
+        "id": "swim_st5",
+        "code": "ST5",
+        "name": "Swim Tempo (ST)",
+        "description": "250 Zone 1, 1000 Zone 3, 1000 Zone 2, 250 Zone 1",
+        "type": "SWIM",
+        "durationMin": 50,
+        "durationLabel": "2500m",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 33,
+            "MUSCULAR": 47,
+            "METABOLIC": 50
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 250m Z1\n- 1000m Z3\n- 1000m Z2\n- 250m Z1"
+    },
+    {
+        "id": "swim_st6",
+        "code": "ST6",
+        "name": "Swim Tempo (ST)",
+        "description": "500 Zone 1, 1000 Zone 3, 1000 Zone 2, 500 Zone 1",
+        "type": "SWIM",
+        "durationMin": 60,
+        "durationLabel": "3000m",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 40,
+            "MUSCULAR": 55,
+            "METABOLIC": 60
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 500m Z1\n- 1000m Z3\n- 1000m Z2\n- 500m Z1"
+    },
+    {
+        "id": "swim_st7",
+        "code": "ST7",
+        "name": "Swim Tempo (ST)",
+        "description": "500 Zone 1, 1000 Zone 3, 500 Zone 1",
+        "type": "SWIM",
+        "durationMin": 40,
+        "durationLabel": "2000m",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 27,
+            "MUSCULAR": 38,
+            "METABOLIC": 40
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 500m Z1\n- 1000m Z3\n- 500m Z1"
+    },
+    {
+        "id": "swim_st8",
+        "code": "ST8",
+        "name": "Swim Tempo (ST)",
+        "description": "500 Zone 1, 1000 Zone 3, 250 Zone 1",
+        "type": "SWIM",
+        "durationMin": 35,
+        "durationLabel": "1750m",
+        "intensity": "MEDIUM",
+        "resourceCost": {
+            "CNS": 23,
+            "MUSCULAR": 34,
+            "METABOLIC": 35
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 500m Z1\n- 1000m Z3\n- 250m Z1"
+    },
+    {
+        "id": "swim_smi1",
+        "code": "SMI1",
+        "name": "Swim Mixed Intervals (SMI)",
+        "description": "500 Zone 1, 5 x (100 Zone 3/15\" rest) 250 Zone 1, 5 x (50\nZone 4/20\" rest) 250 Zone 1",
+        "type": "SWIM",
+        "durationMin": 35,
+        "durationLabel": "1750m",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 41,
+            "MUSCULAR": 40,
+            "METABOLIC": 47
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 500m Z1\n5x\n  - 100m Z3\n  - 15s Z1\n- 250m Z1\n5x\n  - 50m Z4\n  - 20s Z1\n- 250m Z1"
+    },
+    {
+        "id": "swim_smi2",
+        "code": "SMI2",
+        "name": "Swim Mixed Intervals (SMI)",
+        "description": "500 Zone 1, 5 x (100 Zone 3/15\" rest) 250 Zone 1, 10 x (25\nZone 5/10\" rest) 250 Zone 1",
+        "type": "SWIM",
+        "durationMin": 35,
+        "durationLabel": "1750m",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 41,
+            "MUSCULAR": 40,
+            "METABOLIC": 47
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 500m Z1\n5x\n  - 100m Z3\n  - 15s Z1\n- 250m Z1\n10x\n  - 25m Z5\n  - 10s Z1\n- 250m Z1"
+    },
+    {
+        "id": "swim_smi3",
+        "code": "SMI3",
+        "name": "Swim Mixed Intervals (SMI)",
+        "description": "250 Zone 1, 10 x (100 Zone 3/15\" rest), 500 Zone 1, 7 x (50\nZone 4/20\" rest) 250 Zone 1",
+        "type": "SWIM",
+        "durationMin": 47,
+        "durationLabel": "2350m",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 55,
+            "MUSCULAR": 52,
+            "METABOLIC": 63
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 250m Z1\n10x\n  - 100m Z3\n  - 15s Z1\n- 500m Z1\n7x\n  - 50m Z4\n  - 20s Z1\n- 250m Z1"
+    },
+    {
+        "id": "swim_smi4",
+        "code": "SMI4",
+        "name": "Swim Mixed Intervals (SMI)",
+        "description": "250 Zone 1, 500 Zone 2, 10 x (100 Zone 3/15\" rest), 150\nZone 1, 7 x (50 Zone 4/20\" rest) 500 Zone 2, 250 Zone 1",
+        "type": "SWIM",
+        "durationMin": 60,
+        "durationLabel": "3000m",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 70,
+            "MUSCULAR": 65,
+            "METABOLIC": 80
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 250m Z1\n- 500m Z2\n10x\n  - 100m Z3\n  - 15s Z1\n- 150m Z1\n7x\n  - 50m Z4\n  - 20s Z1\n- 500m Z2\n- 250m Z1"
+    },
+    {
+        "id": "swim_smi5",
+        "code": "SMI5",
+        "name": "Swim Mixed Intervals (SMI)",
+        "description": "300 Zone 1, 10 x (100 Zone 3/15\" rest), 300 Zone 1, 10 x\n(50 Zone 4/20\" rest) 300 Zone 1",
+        "type": "SWIM",
+        "durationMin": 48,
+        "durationLabel": "2400m",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 56,
+            "MUSCULAR": 53,
+            "METABOLIC": 64
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 300m Z1\n10x\n  - 100m Z3\n  - 15s Z1\n- 300m Z1\n10x\n  - 50m Z4\n  - 20s Z1\n- 300m Z1"
+    },
+    {
+        "id": "swim_smi6",
+        "code": "SMI6",
+        "name": "Swim Mixed Intervals (SMI)",
+        "description": "500 Zone 1, 5 x (200 Zone 3/15\" rest) 250 Zone 1, 10 x (25\nZone 5/10\" rest) 500 Zone 1",
+        "type": "SWIM",
+        "durationMin": 50,
+        "durationLabel": "2500m",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 58,
+            "MUSCULAR": 55,
+            "METABOLIC": 67
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 500m Z1\n5x\n  - 200m Z3\n  - 15s Z1\n- 250m Z1\n10x\n  - 25m Z5\n  - 10s Z1\n- 500m Z1"
+    },
+    {
+        "id": "swim_smi7",
+        "code": "SMI7",
+        "name": "Swim Mixed Intervals (SMI)",
+        "description": "500 Zone 1, 5 x (200 Zone 3/15\" rest) 250 Zone 1, 10 x (25\nZone 5/10\" rest) 500 Zone 2, 500 Zone 1",
+        "type": "SWIM",
+        "durationMin": 60,
+        "durationLabel": "3000m",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 70,
+            "MUSCULAR": 65,
+            "METABOLIC": 80
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 500m Z1\n5x\n  - 200m Z3\n  - 15s Z1\n- 250m Z1\n10x\n  - 25m Z5\n  - 10s Z1\n- 500m Z2\n- 500m Z1"
+    },
+    {
+        "id": "swim_smi8",
+        "code": "SMI8",
+        "name": "Swim Mixed Intervals (SMI)",
+        "description": "500 Zone 2, 3 x (100 Zone 3/15\" rest), 500 Zone 1, 6 x (50\nZone 4/20\" rest) 300 Zone 1",
+        "type": "SWIM",
+        "durationMin": 38,
+        "durationLabel": "1900m",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 44,
+            "MUSCULAR": 43,
+            "METABOLIC": 51
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 500m Z2\n3x\n  - 100m Z3\n  - 15s Z1\n- 500m Z1\n6x\n  - 50m Z4\n  - 20s Z1\n- 300m Z1"
+    },
+    {
+        "id": "swim_ssi1",
+        "code": "SSI1",
+        "name": "Swim Short Intervals (SSI)",
+        "description": "250 Zone 1, 500 Zone 2, 10 x (25 Zone 5/10\" rest) 500 Zone 2, 250 Zone 1",
+        "type": "SWIM",
+        "durationMin": 35,
+        "durationLabel": "1750m",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 41,
+            "MUSCULAR": 40,
+            "METABOLIC": 47
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 250m Z1\n- 500m Z2\n10x\n  - 25m Z5\n  - 10s Z1\n- 500m Z2\n- 250m Z1"
+    },
+    {
+        "id": "swim_ssi2",
+        "code": "SSI2",
+        "name": "Swim Short Intervals (SSI)",
+        "description": "250 Zone 1, 500 Zone 2, 12 x (25 Zone 5/10\" rest) 1000 Zone 2, 250 Zone 1",
+        "type": "SWIM",
+        "durationMin": 46,
+        "durationLabel": "2300m",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 54,
+            "MUSCULAR": 51,
+            "METABOLIC": 61
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 250m Z1\n- 500m Z2\n12x\n  - 25m Z5\n  - 10s Z1\n- 1000m Z2\n- 250m Z1"
+    },
+    {
+        "id": "swim_ssp1",
+        "code": "SSP1",
+        "name": "Swim Speed Play (SSP)",
+        "description": "250 Zone 1, 500 Zone 2, 5 x (50 Zone 4/20\" rest) 500 Zone 2, 250 Zone 1",
+        "type": "SWIM",
+        "durationMin": 35,
+        "durationLabel": "1750m",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 41,
+            "MUSCULAR": 40,
+            "METABOLIC": 47
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 250m Z1\n- 500m Z2\n5x\n  - 50m Z4\n  - 20s Z1\n- 500m Z2\n- 250m Z1"
+    },
+    {
+        "id": "swim_ssp2",
+        "code": "SSP2",
+        "name": "Swim Speed Play (SSP)",
+        "description": "250 Zone 1, 500 Zone 2, 7 x (50 Zone 4/20\" rest) 500 Zone 2, 500 Zone 1",
+        "type": "SWIM",
+        "durationMin": 42,
+        "durationLabel": "2100m",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 49,
+            "MUSCULAR": 47,
+            "METABOLIC": 56
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 250m Z1\n- 500m Z2\n7x\n  - 50m Z4\n  - 20s Z1\n- 500m Z2\n- 500m Z1"
+    },
+    {
+        "id": "swim_ssp3",
+        "code": "SSP3",
+        "name": "Swim Speed Play (SSP)",
+        "description": "500 Zone 1, 500 Zone 2, 10 x (50 Zone 4/20\" rest) 500 Zone 2, 500 Zone 1",
+        "type": "SWIM",
+        "durationMin": 50,
+        "durationLabel": "2500m",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 58,
+            "MUSCULAR": 55,
+            "METABOLIC": 67
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 500m Z1\n- 500m Z2\n10x\n  - 50m Z4\n  - 20s Z1\n- 500m Z2\n- 500m Z1"
+    },
+    {
+        "id": "swim_ssp4",
+        "code": "SSP4",
+        "name": "Swim Speed Play (SSP)",
+        "description": "500 Zone 1, 500 Zone 2, 12 x (50 Zone 4/20\" rest) 1000 Zone 2, 500 Zone 1",
+        "type": "SWIM",
+        "durationMin": 62,
+        "durationLabel": "3100m",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 72,
+            "MUSCULAR": 67,
+            "METABOLIC": 83
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 500m Z1\n- 500m Z2\n12x\n  - 50m Z4\n  - 20s Z1\n- 1000m Z2\n- 500m Z1"
+    },
+    {
+        "id": "swim_ssp5",
+        "code": "SSP5",
+        "name": "Swim Speed Play (SSP)",
+        "description": "250 Zone 1, 500 Zone 2, 10 x (50 Zone 4/20\" rest) 250 Zone 1",
+        "type": "SWIM",
+        "durationMin": 30,
+        "durationLabel": "1500m",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 35,
+            "MUSCULAR": 35,
+            "METABOLIC": 40
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 250m Z1\n- 500m Z2\n10x\n  - 50m Z4\n  - 20s Z1\n- 250m Z1"
+    },
+    {
+        "id": "swim_ssp6",
+        "code": "SSP6",
+        "name": "Swim Speed Play (SSP)",
+        "description": "250 Zone 1, 500 Zone 2, 15 x (50 Zone 4/20\" rest) 250 Zone 1",
+        "type": "SWIM",
+        "durationMin": 35,
+        "durationLabel": "1750m",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 41,
+            "MUSCULAR": 40,
+            "METABOLIC": 47
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 250m Z1\n- 500m Z2\n15x\n  - 50m Z4\n  - 20s Z1\n- 250m Z1"
+    },
+    {
+        "id": "swim_ssp7",
+        "code": "SSP7",
+        "name": "Swim Speed Play (SSP)",
+        "description": "250 Zone 1, 200 Zone 2, 10 x (50 Zone 4/20\" rest) 250 Zone 1",
+        "type": "SWIM",
+        "durationMin": 24,
+        "durationLabel": "1200m",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 28,
+            "MUSCULAR": 29,
+            "METABOLIC": 32
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 250m Z1\n- 200m Z2\n10x\n  - 50m Z4\n  - 20s Z1\n- 250m Z1"
+    },
+    {
+        "id": "swim_sta1",
+        "code": "STa1",
+        "name": "Swim Time Trial (STT) and Swim Taper (STa)",
+        "description": "400 Zone 1, 4 x (50 Zone 4 / 30\" rest), 400 Zone 1",
+        "type": "SWIM",
+        "durationMin": 20,
+        "durationLabel": "1000m",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 23,
+            "MUSCULAR": 25,
+            "METABOLIC": 27
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 400m Z1\n4x\n  - 50m Z4\n  - 30s Z1\n- 400m Z1"
+    },
+    {
+        "id": "swim_stt1",
+        "code": "STT1",
+        "name": "Swim Time Trial (STT) and Swim Taper (STa)",
+        "description": "250 Zone 1, 400 Zone 3, 120\" rest, 200 Zone 3, 120\" rest, 1000 Zone 1",
+        "type": "SWIM",
+        "durationMin": 37,
+        "durationLabel": "1850m",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 43,
+            "MUSCULAR": 42,
+            "METABOLIC": 49
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 250m Z1\n- 400m Z3\n- 120s Z1\n- 200m Z3\n- 120s Z1\n- 1000m Z1"
+    },
+    {
+        "id": "swim_stt2",
+        "code": "STT2",
+        "name": "Swim Time Trial (STT) and Swim Taper (STa)",
+        "description": "200 Zone 1, 400 Zone 3, 120\" rest, 200 Zone 3, 120\" rest, 200 Zone 1",
+        "type": "SWIM",
+        "durationMin": 20,
+        "durationLabel": "1000m",
+        "intensity": "HIGH",
+        "resourceCost": {
+            "CNS": 23,
+            "MUSCULAR": 25,
+            "METABOLIC": 27
+        },
+        "recommendedPaths": [
+            "ENGINE",
+            "HYBRID_WARDEN"
+        ],
+        "intervalsIcuString": "- 200m Z1\n- 400m Z3\n- 120s Z1\n- 200m Z3\n- 120s Z1\n- 200m Z1"
+    }
+];

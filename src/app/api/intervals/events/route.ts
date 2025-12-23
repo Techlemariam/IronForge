@@ -1,14 +1,9 @@
 import { NextResponse } from 'next/server';
-import axios from 'axios';
-
-const API_KEY = process.env.INTERVALS_API_KEY;
-const USER_ID = process.env.INTERVALS_USER_ID;
+import { getEvents } from '@/lib/intervals';
+import { createClient } from '@/utils/supabase/server';
+import prisma from '@/lib/prisma';
 
 export async function GET(request: Request) {
-    if (!API_KEY || !USER_ID) {
-        return NextResponse.json({ error: "Intervals credentials missing on server." }, { status: 500 });
-    }
-
     const { searchParams } = new URL(request.url);
     const oldest = searchParams.get('oldest');
     const newest = searchParams.get('newest');
@@ -17,15 +12,26 @@ export async function GET(request: Request) {
         return NextResponse.json({ error: "Missing date range parameters (oldest, newest)" }, { status: 400 });
     }
 
-    const url = `https://intervals.icu/api/v1/athlete/${USER_ID}/events?oldest=${oldest}&newest=${newest}`;
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const dbUser = await prisma.user.findUnique({
+        where: { id: user.id },
+        select: { intervalsApiKey: true, intervalsAthleteId: true }
+    });
+
+    if (!dbUser?.intervalsApiKey || !dbUser?.intervalsAthleteId) {
+        return NextResponse.json({ error: "Intervals.icu not connected" }, { status: 400 });
+    }
 
     try {
-        const response = await axios.get(url, {
-            headers: { 'Authorization': `Bearer ${API_KEY}` }
-        });
-        return NextResponse.json(response.data);
+        const data = await getEvents(oldest, newest, dbUser.intervalsApiKey, dbUser.intervalsAthleteId);
+        return NextResponse.json(data);
     } catch (error: any) {
-        console.error("Intervals Events Error:", error.message);
         return NextResponse.json({ error: "Failed to fetch events" }, { status: 500 });
     }
 }

@@ -4,10 +4,17 @@ import { canPerformExercise, EquipmentType } from '../data/equipmentDb';
 import { muscleMap } from '../data/muscleMap';
 import { StorageService } from './storage';
 import { GeminiService } from './gemini';
+import { TrainingMemoryManager } from './trainingMemoryManager';
+import { WORKOUT_LIBRARY } from '../data/workouts';
+import { TrainingPath, WorkoutDefinition, WeeklyMastery } from '../types/training';
+import { BUILD_VOLUME_TARGETS, PATH_INFO } from '../data/builds';
+
+// RecoveryService import removed to keep Oracle isomorphic (Client/Server safe)
 
 /**
  * The Oracle
  * An adaptive coaching engine that prescribes the next action based on physiological state and progression goals.
+ * Now Path-aware: recommendations are filtered/prioritized based on user's active training path.
  */
 export const OracleService = {
 
@@ -16,10 +23,56 @@ export const OracleService = {
         ttb: TTBIndices,
         events: IntervalsEvent[] = [],
         auditReport?: AuditReport | null,
-        titanAnalysis?: TitanLoadCalculation | null
+        titanAnalysis?: TitanLoadCalculation | null,
+        recoveryAnalysis?: { state: string; reason: string } | null,
+        activePath: TrainingPath = 'HYBRID_WARDEN',
+        weeklyMastery?: WeeklyMastery
     ): Promise<OracleRecommendation> => {
 
-        // --- PRIORITY 0: EVENT RADAR (Races & Competitions) ---
+        // Get path info for context
+        const pathInfo = PATH_INFO[activePath];
+
+        // Calculate debuffs from wellness data
+        const debuffs = TrainingMemoryManager.calculateDebuffs(
+            wellness.sleepScore || 100,
+            wellness.hrv || 50
+        );
+
+        // Check if user should be in survival mode
+        const survivalMode = TrainingMemoryManager.shouldEnterSurvivalMode({
+            ctl: wellness.ctl || 0,
+            atl: wellness.atl || 0,
+            tsb: wellness.tsb || 0,
+            hrv: wellness.hrv || 50,
+            sleepScore: wellness.sleepScore || 100,
+            bodyBattery: wellness.bodyBattery || 100,
+            strengthDelta: 0
+        });
+
+        if (survivalMode) {
+            return {
+                type: 'RECOVERY',
+                title: 'SURVIVAL MODE ACTIVE',
+                rationale: `Multiple recovery debuffs detected. All training reduced to maintenance volume until recovery improves. ${debuffs.map(d => d.reason).join(', ')}`,
+                priorityScore: 125, // Highest priority
+                targetExercise: 'Light Mobility / Walking'
+            };
+        }
+
+        // --- PRIORITY 0: PHYSICAL RECOVERY (Bio-Engine) ---
+        // We check this first because if the body is broken, no amount of motivation matters.
+        // Dependent on injected analysis (Server-Side only usually)
+        if (recoveryAnalysis && recoveryAnalysis.state === 'LOW_RECOVERY') {
+            return {
+                type: 'RECOVERY',
+                title: 'BIO-ENGINE WARNING: RECOVERY',
+                rationale: `Bio-Engine metrics indicate Low Recovery (${recoveryAnalysis.reason}). Titan Protocol suspended. Active recovery authorized.`,
+                priorityScore: 120, // Higher than everything
+                targetExercise: 'Yoga / Meditation'
+            };
+        }
+
+        // --- PRIORITY 0.1: EVENT RADAR (Races & Competitions) ---
         const today = new Date();
         const raceComingUp = events.find(e => {
             const eventDate = new Date(e.start_date_local);
@@ -257,32 +310,167 @@ export const OracleService = {
                 ]
             };
 
+            // Path-aware priority adjustment: Engine path gets higher priority for cardio
+            const priorityBoost = activePath === 'ENGINE' ? 10 : 0;
+
             return {
                 type: 'CARDIO_VALIDATION',
-                title: 'AERO ATTACK PROTOCOL',
+                title: activePath === 'ENGINE' ? '🔥 ENGINE PATH: VO2 MAX QUEST' : 'AERO ATTACK PROTOCOL',
                 generatedSession: enduranceSession,
-                rationale: `Endurance Index (${ttb.endurance}) is lagging. To maintain Elite status, you must validate your engine. I have added a VO2 Max quest to your log.`,
-                priorityScore: 90
+                rationale: activePath === 'ENGINE'
+                    ? `As an Engine, endurance is your PRIMARY stat. Endurance Index (${ttb.endurance}) needs attention. This is your moment to shine!`
+                    : `Endurance Index (${ttb.endurance}) is lagging. ${activePath === 'IRON_JUGGERNAUT' ? 'Light cardio to support recovery.' : 'VO2 Max quest added to your log.'}`,
+                priorityScore: 90 + priorityBoost
             };
         }
 
         if (ttb.lowest === 'strength') {
+            // Path-aware priority adjustment: Juggernaut/Titan get higher priority for strength
+            const priorityBoost = (activePath === 'IRON_JUGGERNAUT' || activePath === 'TITAN') ? 10 : 0;
+
+            // For Engine path, suggest lighter strength work to avoid interference
+            if (activePath === 'ENGINE') {
+                return {
+                    type: 'GRIND',
+                    title: 'ENGINE PATH: STRENGTH MAINTENANCE',
+                    sessionId: 'session_b',
+                    targetExercise: 'Belt Squat',
+                    rationale: `Strength Index (${ttb.strength}) is low, but as an Engine your cardio is priority. Perform maintenance volume (MEV) only to preserve muscle.`,
+                    priorityScore: 70 // Lower priority for Engine path
+                };
+            }
+
             return {
                 type: 'PR_ATTEMPT',
-                title: 'STRENGTH FOCUS: LANDMINE',
+                title: activePath === 'IRON_JUGGERNAUT' ? '⚔️ JUGGERNAUT PATH: PR QUEST' : 'STRENGTH FOCUS: LANDMINE',
                 sessionId: 'session_a',
                 targetExercise: 'Landmine Press',
-                rationale: `Strength Index (${ttb.strength}) has decayed. It has been too long since your last Epic set. You are primed for a PR attempt.`,
-                priorityScore: 90
+                rationale: activePath === 'IRON_JUGGERNAUT'
+                    ? `As a Juggernaut, strength is your PRIMARY stat. Strength Index (${ttb.strength}) demands attention. Time to move some iron!`
+                    : `Strength Index (${ttb.strength}) has decayed. You are primed for a PR attempt.`,
+                priorityScore: 90 + priorityBoost
             };
         }
 
+        // --- PRIORITY 3: LIBRARY SELECTION (The Oracle's Choice) ---
+        // If no high-priority overrides (Race, Injury, Titan Protocol), select best workout from library.
+
+        // 1. Filter candidates
+        let candidates = WORKOUT_LIBRARY.filter(w => {
+            // Equipment check (Mock: assume full access or filter by type if needed)
+            // Ideally: canPerformExercise(w.type, ...);
+            return true;
+        });
+
+        // Survival Mode Filter
+        if (survivalMode) {
+            candidates = candidates.filter(w => w.intensity === 'LOW');
+        }
+
+        // 2. Score candidates
+        const rankedCandidates = candidates.map(workout => {
+            let score = 0;
+
+            // Factor A: Path Alignment (Weight: 40%)
+            if (workout.recommendedPaths?.includes(activePath)) {
+                score += 40;
+            }
+
+            // Factor B: Fatigue State / Intensity Match (Weight: 30%)
+            // TSB < -10 => Prefer LOW intensity
+            // TSB > 10 => Prefer HIGH intensity
+            const currentTsb = wellness.tsb || 0;
+            if (currentTsb < -10) {
+                if (workout.intensity === 'LOW') score += 30;
+                else if (workout.intensity === 'HIGH') score -= 20; // Penalize High Int when tired
+            } else if (currentTsb > 10) {
+                if (workout.intensity === 'HIGH') score += 30;
+                else if (workout.intensity === 'LOW') score -= 10; // Slightly penalize Low Int when fresh
+            } else {
+                // Neutral TSB (-10 to 10) - Prefer MEDIUM
+                if (workout.intensity === 'MEDIUM') score += 20;
+            }
+
+            // Factor C: Duration Constraint (Weight: 10%)
+            // (Placeholder: Prefer 45-60 min default)
+            if (workout.durationMin >= 45 && workout.durationMin <= 60) {
+                score += 10;
+            }
+
+            // Factor D: History / Variety (Weight: 20%)
+            // Check recency in events (if available)
+            const recentlyDone = events.some(e =>
+                e.start_date_local &&
+                new Date(e.start_date_local) < today && // Past event
+                e.name?.includes(workout.code) // Simple code match
+            );
+            if (recentlyDone) {
+                score -= 20; // Variety penalty
+            }
+
+            return { workout, score };
+        });
+
+        // 3. Sort and Pick
+        rankedCandidates.sort((a, b) => b.score - a.score);
+        const topPick = rankedCandidates[0];
+
+        if (topPick) {
+            const w = topPick.workout;
+
+            // Convert to Session format for UI
+            const generatedSession: Session = {
+                id: `oracle_gen_${w.id}_${Date.now()}`,
+                name: `${w.code}: ${w.name}`,
+                zoneName: w.type === 'RUN' ? 'The Treadmill' : w.type === 'BIKE' ? 'The Turbo' : 'The Pool',
+                difficulty: w.intensity === 'HIGH' ? 'Mythic' : w.intensity === 'LOW' ? 'Normal' : 'Heroic',
+                isGenerated: true,
+                blocks: [
+                    {
+                        id: 'main_block',
+                        name: 'Main Set',
+                        type: BlockType.STATION,
+                        exercises: [
+                            {
+                                id: 'ex_1',
+                                name: w.name,
+                                logic: ExerciseLogic.FIXED_REPS,
+                                instructions: w.intervalsIcuString ? [w.intervalsIcuString] : [w.description],
+                                sets: [{ id: 's1', reps: w.durationLabel || `${w.durationMin} min`, completed: false }]
+                            }
+                        ]
+                    }
+                ]
+            };
+
+            // Enhanced Rationale with Weekly Targets
+            const target = BUILD_VOLUME_TARGETS[activePath];
+            let progressContext = "";
+            if (weeklyMastery) {
+                const cardioRemaining = Math.max(0, target.cardioTss - weeklyMastery.cardioTss);
+                if (w.type === 'RUN' || w.type === 'BIKE' || w.type === 'SWIM') {
+                    progressContext = cardioRemaining > 0
+                        ? `Focusing on Cardio Mastery (${cardioRemaining} TSS remaining).`
+                        : `Cardio Mastery achieved! This session maintains your base.`;
+                }
+            }
+
+            return {
+                type: 'GRIND',
+                title: `${pathInfo.icon} ${pathInfo.name.toUpperCase()}: DAILY MISSION`,
+                generatedSession: generatedSession,
+                rationale: `Oracle Analysis: Best fit for ${activePath} path (Score: ${topPick.score}). ${w.intensity} intensity selected based on TSB (${wellness.tsb || 0}). ${progressContext}`,
+                priorityScore: 80
+            };
+        }
+
+        // Fallback if no specific workout found (should rarely happen with full library)
         return {
             type: 'GRIND',
-            title: 'MAINTENANCE: BELT SQUAT',
+            title: `${pathInfo.icon} ${pathInfo.name.toUpperCase()}: DAILY MISSION`,
             sessionId: 'session_b',
             targetExercise: 'Belt Squat',
-            rationale: `All systems balanced (TTB ~${ttb.strength}). Proceed with standard volume accumulation to build Titan Load.`,
+            rationale: `All systems balanced. Focus on ${activePath} fundamentals.`,
             priorityScore: 50
         };
     },
