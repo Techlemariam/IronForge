@@ -1,0 +1,15 @@
+{
+    "version": "1.0",
+    "lastUpdated": "2025-12-23T23:45:00Z",
+    "queue": [
+        {
+            "id": "2025-12-23-001",
+            "from": "manager",
+            "to": "coder",
+            "priority": "low",
+            "title": "Refactor legacy services to Server Actions",
+            "status": "pending",
+            "createdAt": "2025-12-23T23:45:00Z"
+        }
+    ]
+}

@@ -1,0 +1,23 @@
+{
+    "conversations": [
+        {
+            "id": "2025-12-23-agent-upgrade",
+            "date": "2025-12-23",
+            "title": "Agent System 11/10 Upgrade",
+            "summary": "Upgraded agent system from 7.5 to 11/10 with memory, CVP, workflows sync",
+            "keyDecisions": [
+                "Added agent:* scripts to package.json",
+                "Created DEBT.md for tech debt tracking",
+                "Implemented CVP (Context Verification Protocol)",
+                "Created .agent/memory/ for session persistence",
+                "Fixed build errors with PrismaMonster type"
+            ],
+            "filesCreated": [
+                ".github/workflows/agent-verify.yml",
+                "docs/CONTEXT.md",
+                ".agent/workflows/cleanup.md",
+                ".agent/memory/*"
+            ]
+        }
+    ]
+}

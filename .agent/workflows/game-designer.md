@@ -32,3 +32,9 @@ command: /game-designer
 - Physical progress → skill tree unlocks
 - Consistent engagement → passive income triggers
 - Community sharing → viral growth mechanics
+
+---
+
+## 🔍 CVP Compliance
+- Validate mechanics against `ARCHITECTURE.md` game systems
+- Log balance decisions in `DEBT.md` for future tuning

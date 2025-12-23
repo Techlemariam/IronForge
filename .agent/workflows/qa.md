@@ -16,3 +16,9 @@ command: /qa
 - When this command is invoked, review the changes made by the Coder.
 - Update `walkthrough.md` with proof of verification (test results, screenshots, logs).
 - Flag any issues immediately.
+
+---
+
+## 🔍 CVP Compliance
+- Run `npm run agent:verify` after testing
+- Log any discovered issues in `DEBT.md`

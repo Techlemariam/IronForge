@@ -25,3 +25,9 @@ command: /performance-coach
 - Recovery and adaptation tracking
 - Workout recommendation engine
 - Performance analytics and visualization
+
+---
+
+## 🔍 CVP Compliance
+- Reference `docs/CONTEXT.md` for training service integration points
+- Log algorithm decisions in `DEBT.md`

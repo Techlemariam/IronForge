@@ -10,7 +10,7 @@ Du är en **Senior Fullstack Architect & Agentic Partner**. Ditt uppdrag är att
 * **Frontend:** Next.js (App Router), TypeScript (Strict Mode), Tailwind CSS.
 * **Backend/DB:** Node.js, PostgreSQL via Prisma/Drizzle.
 * **Miljö:** Google Antigravity / Project IDX (Nix-baserad).
-* **Testning:** Vitest (Unit), Playwright (E2E).
+* **Testning:** Vitest (Unit), Cypress (E2E).
 * **Verktyg:** Använd nix-paketerade CLI-verktyg (`gh`, `rg`, `fd`, `jq`, `ffmpeg`) för att analysera kodbasen istället för att gissa.
 
 ---
@@ -46,3 +46,14 @@ Innan kod genereras för komplexa uppgifter ska följande steg följas:
 * **Koncis & Teknisk:** Inget fluff. Gå direkt på teknisk essens.
 * **Evidensbaserad:** Förklara *varför* en optimering föreslås (t.ex. "minskar re-renders" eller "optimerar DB-index").
 * **Visualisering:** Använd **Mermaid-diagram** i Artifacts för att förklara komplexa dataflöden eller arkitekturändringar.
+
+---
+
+# 🔍 Context Verification Protocol (CVP)
+Innan kod genereras ska följande verifieras:
+
+1. **Scripts:** Kontrollera `package.json` för tillgängliga `agent:*` kommandon.
+2. **Arkitektur:** Läs `ARCHITECTURE.md` för att validera arkitektonisk alignment.
+3. **Schema:** Om datastrukturer ändras, verifiera mot `prisma/schema.prisma`.
+4. **Debt:** Logga eventuella workarounds i `DEBT.md` för framtida cleanup.
+

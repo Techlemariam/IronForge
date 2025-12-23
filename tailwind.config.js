@@ -1,6 +1,6 @@
-const plugin = require('tailwindcss/plugin');
+import plugin from 'tailwindcss/plugin';
 
-module.exports = {
+export default {
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -14,7 +14,7 @@ module.exports = {
           900: '#0b0c0d',
           800: '#151719',
           700: '#1f2225',
-          border: '#2c2f33', 
+          border: '#2c2f33',
         },
         magma: {
           DEFAULT: '#ff3300',
@@ -42,11 +42,11 @@ module.exports = {
           '100%': { opacity: '1' },
         },
         'pulse-glow': {
-          '0%, 100%': { 
+          '0%, 100%': {
             boxShadow: '0 0 20px rgba(255, 128, 0, 0.4)',
             borderColor: 'rgba(255, 128, 0, 0.7)'
           },
-          '50%': { 
+          '50%': {
             boxShadow: '0 0 30px rgba(255, 128, 0, 0.8)',
             borderColor: 'rgba(255, 128, 0, 1)'
           },
@@ -72,7 +72,7 @@ module.exports = {
     },
   },
   plugins: [
-    plugin(function({ addUtilities, theme }) {
+    plugin(function ({ addUtilities, theme }) {
       const newUtilities = {
         '.custom-scrollbar': {
           '::-webkit-scrollbar': {
@@ -92,7 +92,7 @@ module.exports = {
       };
       addUtilities(newUtilities, ['responsive', 'hover']);
     }),
-    plugin(function({ theme, e, addUtilities }) {
+    plugin(function ({ theme, e, addUtilities }) {
       const textShadows = theme('textShadow');
       const utilities = Object.entries(textShadows).map(([key, value]) => ({
         [`.text-shadow-${e(key)}`]: {

@@ -29,6 +29,12 @@ Att agera orkestrator. Du kodar inte (om det inte är trivialt). Du designar int
 4.  **QA (`/qa`):** Skapa/kör tester. Uppdatera `walkthrough.md`.
 5.  **Manager:** Slutrapport och "Mission Complete".
 
+### 📤 4. The "Handoff" (Asynkron Delegation)
+*Mål: Manager delegerar utan att vara närvarande.*
+1.  **Manager:** Skapar `.agent/handoffs/{id}.md` + `queue.json` entry
+2.  **Sub-Agent:** Läser handoff → Utför → Uppdaterar status
+3.  **Manager:** Reviews vid nästa session
+
 ### 🐛 2. The "Bug Hunt" (Felrättning)
 *Mål: Laga utan att krascha annat.*
 1.  **QA (`/qa`):** Reproducera felet. Skapa ett rött testcase.
@@ -49,3 +55,11 @@ Innan du byter till en sub-agent, säkerställ:
 3.  **Rules:** Har du påmint om `ARCHITECTURE.md` om det är kritiskt?
 
 *Använd denna handbook för att alltid välja rätt verktyg för uppgiften.*
+
+---
+
+## 🔍 Context Verification Protocol (CVP)
+Innan delegering, verifiera:
+1. **Scripts:** Kolla `package.json` → `agent:*` kommandon
+2. **Arkitektur:** Läs `ARCHITECTURE.md` och `docs/CONTEXT.md`
+3. **Debt:** Logga workarounds i `DEBT.md`

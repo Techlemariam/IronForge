@@ -1,5 +1,6 @@
 ---
 description: The UI/UX Alchemist
+command: /ui-ux
 ---
 
 # The UI/UX Alchemist
@@ -16,3 +17,9 @@ description: The UI/UX Alchemist
 - Work closely with the **Game Designer** to translate mechanics into intuitive UI.
 - Use Tailwind exclusively and avoid inline styles.
 - Create reusable, atomic components in `/src/components/ui`.
+
+---
+
+## 🔍 CVP Compliance
+- Follow **Context Verification Protocol** in `.antigravityrules`
+- Log UI debt or workarounds in `DEBT.md`

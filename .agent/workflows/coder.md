@@ -24,3 +24,5 @@ När Managern delegerar, starta alltid med att identifiera:
 - When this command is invoked, focus on *doing*. Write the code.
 - Minimize chatter; prioritize code generation and file edits.
 - Consult the `implementation_plan.md` for guidance.
+- Follow the **Context Verification Protocol (CVP)** in `.antigravityrules` before generating code.
+- Log any workarounds in `DEBT.md` for future cleanup.

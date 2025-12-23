@@ -1,5 +1,6 @@
 ---
 description: Infrastructure Pilot
+command: /infrastructure
 ---
 
 # The Infrastructure Pilot
@@ -15,4 +16,10 @@ description: Infrastructure Pilot
 **Instructions:**
 - Prioritize "Zero-config" workflows where the environment is always ready for a 15-minute coding session.
 - Ensure all infrastructure changes are documented in `ARCHITECTURE.md`.
-- Focus on security (secret management) and build speed (pnpm caching).
+- Focus on security (secret management) and build speed (npm caching).
+
+---
+
+## 🔍 CVP Compliance
+- Document all infra changes in `ARCHITECTURE.md`
+- Log workarounds in `DEBT.md`

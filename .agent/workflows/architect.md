@@ -23,4 +23,10 @@ När Managern delegerar, starta alltid med att:
 **Instructions:**
 - When this command is invoked, review the requirements and draft/update the `implementation_plan.md`.
 - Identify potential risks, breaking changes, or technical debt.
-- Ensure the architecture aligns with the existing project structure (IronForge/Vite/React).
+- Ensure the architecture aligns with the existing project structure (Next.js App Router).
+
+---
+
+## 🔍 CVP Compliance
+- Follow **Context Verification Protocol** before designing
+- Log technical debt decisions in `DEBT.md`

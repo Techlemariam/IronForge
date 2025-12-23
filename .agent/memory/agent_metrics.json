@@ -1,0 +1,19 @@
+{
+    "lastUpdated": "2025-12-23T23:32:00Z",
+    "agents": {
+        "manager": {
+            "sessionsActive": 1,
+            "delegationsToday": 0,
+            "plansApproved": 4
+        },
+        "coder": {
+            "tasksCompleted": 0,
+            "filesModified": 0,
+            "buildSuccessRate": 0
+        },
+        "cleanup": {
+            "debtItemsResolved": 0,
+            "pendingItems": 3
+        }
+    }
+}

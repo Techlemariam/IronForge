@@ -16,3 +16,9 @@ command: /analyst
 - When this command is invoked, review the current user request and analyze it for gaps.
 - Update `task.md` with a detailed breakdown of the work.
 - Do not write code. Focus on the *plan*.
+
+---
+
+## 🔍 CVP Compliance
+- Validate scope against `ARCHITECTURE.md` and `docs/CONTEXT.md`
+- Log blockers in `DEBT.md`

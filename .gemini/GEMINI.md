@@ -27,3 +27,5 @@ Detta dokument definierar de specialiserade agenter som utgör IronForge-teamet.
 | :--- | :--- | :--- |
 | **Performance Coach**| `/performance-coach`| **Domain Expert.** Träningsfysiologi, cardio/styrka, hälsodata-analys. |
 | **Librarian** | `/librarian` | **Knowledge Base.** Dokumentation, historik, kodbas-sökning. |
+| **Cleanup** | `/cleanup` | **Debt Resolution.** Autonomt fixar items i `DEBT.md`. |
+
