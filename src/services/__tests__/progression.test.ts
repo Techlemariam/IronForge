@@ -1,15 +1,19 @@
+
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { ProgressionService } from '../progression';
-import { StorageService } from '../storage';
+import prisma from '@/lib/prisma';
 import { ACHIEVEMENTS } from '../../data/static';
 
-// Mock StorageService
-vi.mock('../storage', () => ({
-    StorageService: {
-        getState: vi.fn(),
-        getHistory: vi.fn(),
-        getGold: vi.fn(),
-        saveGold: vi.fn()
+// Mock Prisma
+vi.mock('@/lib/prisma', () => ({
+    default: {
+        user: {
+            update: vi.fn(),
+            findUnique: vi.fn(),
+        },
+        userAchievement: {
+            upsert: vi.fn(),
+        }
     }
 }));
 
@@ -18,61 +22,73 @@ describe('ProgressionService', () => {
         vi.clearAllMocks();
     });
 
-    describe('calculateLevel', () => {
-        it('starts at level 1 with 0 XP', () => {
-            expect(ProgressionService.calculateLevel(0)).toBe(1);
-        });
-
-        it('levels up every 1000 XP', () => {
-            expect(ProgressionService.calculateLevel(999)).toBe(1);
-            expect(ProgressionService.calculateLevel(1000)).toBe(2);
-            expect(ProgressionService.calculateLevel(2500)).toBe(3);
-        });
-    });
-
-    describe('calculateTotalXp', () => {
-        it('calculates XP from achievements correctly', async () => {
-            // Mock achievements: Assume first achievement in static list gives 5 points (500 XP)
-            const mockAchId = ACHIEVEMENTS[0].id;
-            const points = ACHIEVEMENTS[0].points;
-
-            vi.mocked(StorageService.getState).mockResolvedValue([mockAchId]);
-            vi.mocked(StorageService.getHistory).mockResolvedValue([]); // No workout XP
-
-            const xp = await ProgressionService.calculateTotalXp();
-            expect(xp).toBe(points * 100);
-        });
-
-        it('calculates XP from workout history correctly', async () => {
-            vi.mocked(StorageService.getState).mockResolvedValue([]); // No achievements
-            // Mock 10 workouts
-            vi.mocked(StorageService.getHistory).mockResolvedValue(new Array(10));
-
-            const xp = await ProgressionService.calculateTotalXp();
-            // 10 workouts * 50 XP = 500 XP
-            expect(xp).toBe(500);
-        });
-
-        it('sums achievement and workout XP', async () => {
-            const mockAchId = ACHIEVEMENTS[0].id;
-            const points = ACHIEVEMENTS[0].points;
-
-            vi.mocked(StorageService.getState).mockResolvedValue([mockAchId]);
-            vi.mocked(StorageService.getHistory).mockResolvedValue(new Array(10));
-
-            const xp = await ProgressionService.calculateTotalXp();
-            expect(xp).toBe((points * 100) + 500);
-        });
-    });
-
     describe('awardGold', () => {
-        it('adds gold to current balance and saves', async () => {
-            vi.mocked(StorageService.getGold).mockResolvedValue(100);
+        it('increments gold balance via prisma', async () => {
+            await ProgressionService.awardGold('user_123', 50);
+            expect(prisma.user.update).toHaveBeenCalledWith({
+                where: { id: 'user_123' },
+                data: { gold: { increment: 50 } }
+            });
+        });
+    });
 
-            const newTotal = await ProgressionService.awardGold(50);
+    describe('addExperience', () => {
+        it('calculates level and updates user experience', async () => {
+            vi.mocked(prisma.user.findUnique).mockResolvedValue({
+                totalExperience: 500,
+                level: 1
+            } as any);
 
-            expect(StorageService.saveGold).toHaveBeenCalledWith(150);
-            expect(newTotal).toBe(150);
+            await ProgressionService.addExperience('user_123', 600);
+
+            expect(prisma.user.update).toHaveBeenCalledWith({
+                where: { id: 'user_123' },
+                data: {
+                    totalExperience: 1100,
+                    level: 2
+                }
+            });
+        });
+    });
+
+    describe('awardAchievement', () => {
+        it('awards achievement, gold and xp', async () => {
+            const achievement = ACHIEVEMENTS[0];
+            vi.mocked(prisma.user.findUnique).mockResolvedValue({
+                totalExperience: 0,
+                level: 1
+            } as any);
+
+            const awardGoldSpy = vi.spyOn(ProgressionService, 'awardGold');
+            const addExpSpy = vi.spyOn(ProgressionService, 'addExperience');
+
+            await ProgressionService.awardAchievement('user_123', achievement.id);
+
+            expect(prisma.userAchievement.upsert).toHaveBeenCalled();
+            expect(awardGoldSpy).toHaveBeenCalledWith('user_123', achievement.points * 50);
+            expect(addExpSpy).toHaveBeenCalledWith('user_123', achievement.points * 100);
+        });
+    });
+
+    describe('getProgressionState', () => {
+        it('maps user state to progression object', async () => {
+            vi.mocked(prisma.user.findUnique).mockResolvedValue({
+                totalExperience: 1200,
+                level: 2,
+                gold: 500,
+                kineticEnergy: 100
+            } as any);
+
+            const state = await ProgressionService.getProgressionState('user_123');
+
+            expect(state).toEqual({
+                level: 2,
+                totalXp: 1200,
+                xpToNextLevel: 800,
+                progressPct: 20,
+                gold: 500,
+                kineticEnergy: 100
+            });
         });
     });
 });
