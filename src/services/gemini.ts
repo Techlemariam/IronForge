@@ -150,5 +150,143 @@ export const GeminiService = {
             console.error("Oracle Generation Error", e);
             return "The Oracle focuses on the data.";
         }
+    },
+
+    /**
+     * Generates a full 7-day training plan based on user constraints and physiology.
+     */
+    async generateWeeklyPlanAI(
+        userProfile: {
+            heroName: string;
+            level: number;
+            trainingPath: string;
+            equipment: string[];
+            injuries: string[];
+        },
+        context: {
+            wellness: IntervalsWellness;
+            ttb: TTBIndices;
+            intent: string; // e.g. "Hypertrophy", "Strength", "Peak Week"
+            daysPerWeek: number;
+        }
+    ): Promise<any> {
+        if (!process.env.API_KEY) throw new Error("No API Key");
+
+        const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+
+        const prompt = `
+            You are The Iron Oracle, creating a 7-day training program for a specific Titan.
+
+            User Profile:
+            - Hero: ${userProfile.heroName} (Level ${userProfile.level})
+            - Path: ${userProfile.trainingPath}
+            - Equipment: ${userProfile.equipment.join(', ')}
+            - Injuries: ${userProfile.injuries.join(', ') || "None"}
+
+            Context:
+            - Intent: ${context.intent}
+            - Frequency: ${context.daysPerWeek} days/week
+            - Physiology: Body Battery ${context.wellness.bodyBattery}, Strength Balance ${context.ttb.strength}
+
+            Directives:
+            1. Generate a 7-day plan (Monday-Sunday).
+            2. Respect the 'daysPerWeek' constraint - assign "Rest Day" to others.
+            3. progressive overload principles appropriate for the '${context.intent}'.
+            4. Adjust volume based on Body Battery (if < 30, force deload).
+
+            Output JSON Schema:
+            {
+                "weekRationale": "Brief explanation of the microcycle focus...",
+                "days": [
+                    {
+                        "dayOfWeek": 0 (Mon) to 6 (Sun),
+                        "focus": "Legs / Push / Rest",
+                        "isRestDay": boolean,
+                        "session": {
+                             "name": "Session Title",
+                             "difficulty": "Normal | Heroic | Mythic",
+                             "blocks": [ ... standard Session Block / Exercise structure ... ]
+                        } (or null if rest)
+                    }
+                ]
+            }
+        `;
+
+        try {
+            const response = await ai.models.generateContent({
+                model: 'gemini-2.5-flash',
+                contents: prompt,
+                config: {
+                    responseMimeType: "application/json",
+                    responseSchema: {
+                        type: Type.OBJECT,
+                        properties: {
+                            weekRationale: { type: Type.STRING },
+                            days: {
+                                type: Type.ARRAY,
+                                items: {
+                                    type: Type.OBJECT,
+                                    properties: {
+                                        dayOfWeek: { type: Type.NUMBER },
+                                        focus: { type: Type.STRING },
+                                        isRestDay: { type: Type.BOOLEAN },
+                                        session: {
+                                            type: Type.OBJECT,
+                                            nullable: true,
+                                            properties: {
+                                                id: { type: Type.STRING },
+                                                name: { type: Type.STRING },
+                                                zoneName: { type: Type.STRING },
+                                                difficulty: { type: Type.STRING },
+                                                blocks: {
+                                                    type: Type.ARRAY,
+                                                    items: {
+                                                        type: Type.OBJECT,
+                                                        properties: {
+                                                            id: { type: Type.STRING },
+                                                            name: { type: Type.STRING },
+                                                            type: { type: Type.STRING },
+                                                            exercises: {
+                                                                type: Type.ARRAY,
+                                                                items: {
+                                                                    type: Type.OBJECT,
+                                                                    properties: {
+                                                                        id: { type: Type.STRING },
+                                                                        name: { type: Type.STRING },
+                                                                        logic: { type: Type.STRING },
+                                                                        sets: {
+                                                                            type: Type.ARRAY,
+                                                                            items: {
+                                                                                type: Type.OBJECT,
+                                                                                properties: {
+                                                                                    id: { type: Type.STRING },
+                                                                                    reps: { type: Type.STRING },
+                                                                                    weightPct: { type: Type.NUMBER, nullable: true }
+                                                                                }
+                                                                            }
+                                                                        },
+                                                                        instructions: { type: Type.ARRAY, items: { type: Type.STRING } }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            return JSON.parse(response.text || "{}");
+
+        } catch (error) {
+            console.error("Gemini Planning Error:", error);
+            throw error;
+        }
     }
 };

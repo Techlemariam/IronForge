@@ -202,6 +202,7 @@ export default async function Page() {
             totalExperience={dbUser?.totalExperience || 0}
             weeklyMastery={weeklyMastery}
             userId={user.id}
+            intervalsConnected={!!(dbUser?.intervalsApiKey && dbUser?.intervalsAthleteId)}
         />
     );
 }

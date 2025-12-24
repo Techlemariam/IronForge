@@ -41,12 +41,26 @@ export const runFullAudit = async (forceRefresh: boolean = false, apiKey?: strin
     }
 
     console.log("Orchestrator: Fetching workout history...");
-    // 2. Fetch Data
-    const history = await getHevyWorkouts(apiKey || '', 1, HISTORY_DEPTH);
+    // 2. Fetch Data (Hevy limit is 10 per page)
+    const PAGE_SIZE = 10;
+    const pagesNeeded = Math.ceil(HISTORY_DEPTH / PAGE_SIZE);
+    let allWorkouts: any[] = [];
+
+    for (let p = 1; p <= pagesNeeded; p++) {
+        const result = await getHevyWorkouts(apiKey || '', p, PAGE_SIZE);
+        if (result.workouts) {
+            allWorkouts.push(...result.workouts);
+        }
+        // If we got fewer than PAGE_SIZE, we've reached the end
+        if (result.workouts.length < PAGE_SIZE) break;
+    }
+
+    // Trim to exactly HISTORY_DEPTH if needed
+    const history = allWorkouts.slice(0, HISTORY_DEPTH);
 
     // 3. Transform Data
-    console.log("Orchestrator: Calculating volumes...");
-    const volumes = calculateWeeklyVolume(history.workouts);
+    console.log(`Orchestrator: Calculating volumes for ${history.length} workouts...`);
+    const volumes = calculateWeeklyVolume(history);
 
     // 4. Analyze
     console.log("Orchestrator: Running Auditor analysis...");

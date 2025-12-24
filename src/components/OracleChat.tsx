@@ -3,7 +3,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useChat } from 'ai/react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Send, Sparkles, User, Brain, X, MessageSquare } from 'lucide-react';
+import { Send, Sparkles, User, Brain, X, MessageSquare, Terminal } from 'lucide-react';
+import { ProgramGenerator } from './ProgramGenerator';
 
 interface OracleChatProps {
     context?: any;
@@ -11,6 +12,7 @@ interface OracleChatProps {
 
 export const OracleChat: React.FC<OracleChatProps> = ({ context }) => {
     const [isOpen, setIsOpen] = useState(false);
+    const [showProgramGenerator, setShowProgramGenerator] = useState(false);
     const scrollRef = useRef<HTMLDivElement>(null);
 
     const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
@@ -121,8 +123,17 @@ export const OracleChat: React.FC<OracleChatProps> = ({ context }) => {
                             <div className="relative group">
                                 <input
                                     value={input}
-                                    onChange={handleInputChange}
-                                    placeholder="Ask the Oracle..."
+                                    onChange={(e) => {
+                                        const val = e.target.value;
+                                        if (val === '/program') {
+                                            setShowProgramGenerator(true);
+                                            handleInputChange({ ...e, target: { ...e.target, value: '' } });
+                                            setIsOpen(false);
+                                            return;
+                                        }
+                                        handleInputChange(e);
+                                    }}
+                                    placeholder="Ask the Oracle... (/program for generator)"
                                     className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pl-4 pr-12 text-sm text-white focus:outline-none focus:border-indigo-500 transition-all placeholder:text-zinc-600"
                                 />
                                 <button
@@ -137,6 +148,8 @@ export const OracleChat: React.FC<OracleChatProps> = ({ context }) => {
                     </motion.div>
                 )}
             </AnimatePresence>
+
+            <ProgramGenerator isOpen={showProgramGenerator} onClose={() => setShowProgramGenerator(false)} />
         </>
     );
 };
