@@ -16,9 +16,10 @@ import ActionView from './ActionView';
 interface SessionRunnerProps {
     session: Session;
     onExit: () => void;
+    onComplete?: (results?: any) => void;
 }
 
-const SessionRunner: React.FC<SessionRunnerProps> = ({ session, onExit }) => {
+const SessionRunner: React.FC<SessionRunnerProps> = ({ session, onExit, onComplete }) => {
     const [activeSession, setActiveSession] = useState<Session>(session);
     const [hasCheckedIn, setHasCheckedIn] = useState(false);
     const [completed, setCompleted] = useState(false);
@@ -139,6 +140,7 @@ const SessionRunner: React.FC<SessionRunnerProps> = ({ session, onExit }) => {
                 console.error("Failed to save session", e);
             } finally {
                 setIsSaving(false);
+                if (onComplete) onComplete();
             }
         };
 

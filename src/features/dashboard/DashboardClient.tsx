@@ -10,7 +10,7 @@ import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { CampaignTracker } from '@/components/CampaignTracker';
 import { HevyExerciseTemplate, HevyRoutine } from '@/types/hevy';
 import { mapHevyToQuest, mapQuestToHevyPayload } from '@/utils/hevyAdapter';
-import { mapSessionToQuest } from '@/utils/typeMappers';
+import { mapSessionToQuest, mapQuestToSession } from '@/utils/typeMappers';
 import { OracleRecommendation } from '@/types';
 import OracleCard from '@/components/OracleCard';
 import UltrathinkDashboard from '@/components/UltrathinkDashboard';
@@ -27,6 +27,7 @@ import { OracleChat } from '@/components/OracleChat';
 // Dynamic Imports with disabling SSR for client-heavy features
 const RoutineSelector = dynamic(() => import('@/features/training/RoutineSelector'), { ssr: false });
 const IronMines = dynamic(() => import('@/features/training/IronMines'), { ssr: false });
+const SessionRunner = dynamic(() => import('@/components/SessionRunner'), { ssr: false });
 const CombatArena = dynamic(() => import('@/features/game/CombatArena'), { ssr: false });
 const Marketplace = dynamic(() => import('@/components/game/Marketplace'), { ssr: false });
 const TheForge = dynamic(() => import('@/features/game/TheForge'), { ssr: false });
@@ -387,7 +388,16 @@ const DashboardClient: React.FC<InitialDataProps> = (initialData) => {
                 onClose={() => dispatch({ type: 'SET_VIEW', payload: 'citadel' })}
             />;
             case 'war_room': return <RoutineSelector exerciseNameMap={state.exerciseNameMap} onSelectRoutine={(routine) => dispatch({ type: 'SELECT_ROUTINE', payload: { routine, nameMap: state.exerciseNameMap } })} />;
-            case 'iron_mines': return <IronMines initialData={state.activeQuest!} title={state.questTitle} onComplete={() => dispatch({ type: 'COMPLETE_QUEST' })} onAbort={() => dispatch({ type: 'ABORT_QUEST' })} />;
+            // Using SessionRunner (New UX) instead of IronMines
+            case 'iron_mines': return <SessionRunner
+                session={mapQuestToSession(state.activeQuest!, state.questTitle)}
+                onComplete={(results) => {
+                    // Need to map results back if we want to save properly with legacy handleSaveWorkout
+                    // For now, let's just trigger complete.
+                    dispatch({ type: 'COMPLETE_QUEST' });
+                }}
+                onExit={() => dispatch({ type: 'ABORT_QUEST' })}
+            />;
             case 'quest_completion': return <QuestCompletion onSave={handleSaveWorkout} onCancel={() => dispatch({ type: 'ABORT_QUEST' })} />;
             case 'forge': return <TheForge onClose={() => dispatch({ type: 'SET_VIEW', payload: 'citadel' })} />;
             case 'armory': return <EquipmentArmory />;
