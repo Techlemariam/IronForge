@@ -4,6 +4,7 @@ import React, { Suspense, useReducer, useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { Exercise } from '@/types/ironforge';
 import { IntervalsWellness, TTBIndices, WeaknessAudit, TSBForecast, IntervalsEvent, TitanLoadCalculation, Session, AppSettings } from '@/types';
+import { User } from '@prisma/client';
 import { AuditReport } from '@/types/auditor';
 import { saveWorkoutAction } from '@/actions/hevy';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
@@ -20,9 +21,11 @@ import { Mic, Bike, Footprints } from 'lucide-react';
 import SettingsCog from '@/components/core/SettingsCog';
 import ConfigModal from '@/components/core/ConfigModal';
 import TrainingCenter from '@/features/training/TrainingCenter';
-import { TrainingPath, LayerLevel, WeeklyMastery } from '@/types/training';
+import { TrainingPath, LayerLevel, WeeklyMastery, Faction } from '@/types/training';
 import { CardioMode } from '@/features/training/CardioStudio';
 import { OracleChat } from '@/components/OracleChat';
+import { WorkoutDefinition } from '@/types/training';
+import { mapDefinitionToSession } from '@/utils/workoutMapper';
 
 // Dynamic Imports with disabling SSR for client-heavy features
 const RoutineSelector = dynamic(() => import('@/features/training/RoutineSelector'), { ssr: false });
@@ -33,6 +36,9 @@ const SocialHub = dynamic(() => import('@/features/social/SocialHub').then(mod =
 const Marketplace = dynamic(() => import('@/components/game/Marketplace'), { ssr: false });
 const TheForge = dynamic(() => import('@/features/game/TheForge'), { ssr: false });
 const CardioStudio = dynamic(() => import('@/features/training/CardioStudio'), { ssr: false });
+import { CitadelHub } from '@/features/dashboard/CitadelHub';
+import { FirstLoginQuest } from '@/features/onboarding/FirstLoginQuest';
+
 
 // UI Components
 const CoachToggle: React.FC<{ onClick: () => void }> = ({ onClick }) => (
@@ -70,9 +76,12 @@ interface DashboardState {
     totalExperience: number;
     weeklyMastery?: WeeklyMastery;
     cardioMode?: CardioMode;
+    activeWorkout?: WorkoutDefinition;
+    returnView: View | null;
+    faction: Faction;
 }
 
-type DashboardAction =
+export type DashboardAction =
     | { type: 'INITIAL_DATA_LOAD_START' }
     | { type: 'INITIAL_DATA_LOAD_SUCCESS'; payload: any }
     | { type: 'INITIAL_DATA_LOAD_FAILURE' }
@@ -86,7 +95,11 @@ type DashboardAction =
     | { type: 'RECALCULATE_PROGRESSION'; payload: { level: number } }
     | { type: 'TOGGLE_COACH' }
     | { type: 'UPDATE_PATH'; payload: TrainingPath }
-    | { type: 'SET_CARDIO_MODE'; payload: CardioMode };
+    | { type: 'TOGGLE_COACH' }
+    | { type: 'UPDATE_PATH'; payload: TrainingPath }
+    | { type: 'SET_CARDIO_MODE'; payload: CardioMode }
+    | { type: 'START_CODEX_WORKOUT'; payload: { workout: WorkoutDefinition } }
+    | { type: 'RETURN_TO_PREVIOUS' };
 
 const dashboardReducer = (state: DashboardState, action: DashboardAction): DashboardState => {
     switch (action.type) {
@@ -133,39 +146,55 @@ const dashboardReducer = (state: DashboardState, action: DashboardAction): Dashb
             return { ...state, level: action.payload.level };
         case 'TOGGLE_COACH': return { ...state, isCoachOpen: !state.isCoachOpen };
         case 'UPDATE_PATH': return { ...state, activePath: action.payload };
-        case 'SET_CARDIO_MODE': return { ...state, cardioMode: action.payload, currentView: 'cardio_studio' };
+        case 'SET_CARDIO_MODE': return { ...state, cardioMode: action.payload, currentView: 'cardio_studio', returnView: state.currentView };
+        case 'START_CODEX_WORKOUT':
+            const { workout } = action.payload;
+            if (workout.type === 'RUN' || workout.type === 'BIKE') {
+                return {
+                    ...state,
+                    activeWorkout: workout,
+                    cardioMode: workout.type === 'RUN' ? 'running' : 'cycling',
+                    currentView: 'cardio_studio',
+                    returnView: 'training_center', // explicit return to training center
+                };
+            } else {
+                // Strength or others -> IronMines (SessionRunner)
+                const session = mapDefinitionToSession(workout);
+                return {
+                    ...state,
+                    activeWorkout: workout,
+                    questTitle: workout.name,
+                    activeQuest: null, // SessionRunner uses 'session' prop
+                    startTime: new Date(),
+                    currentView: 'iron_mines', // Will use startGeneratedQuest logic via effect or prop?
+                    // SessionRunner prop needs to handle this.
+                    // Actually, START_GENERATED_QUEST logic is better reused here, but we need returnView.
+                    // Let's modify START_GENERATED_QUEST or just rely on the dispatch in handleStartCodexWorkout component side?
+                    // No, reducer should handle state.
+                    // We need to store the session somewhere if we use SessionRunner prop?
+                    // Existing 'activeQuest' is for IronMines (legacy). 
+                    // SessionRunner takes `session` prop. 
+                    // Let's assume we dispatch START_GENERATED_QUEST immediately after this in the UI handler?
+                    // Or we just handle it here:
+                };
+            }
+        case 'RETURN_TO_PREVIOUS':
+            return {
+                ...state,
+                currentView: state.returnView || 'citadel',
+                returnView: null,
+                activeWorkout: undefined
+            };
         default: return state;
     }
 };
 
-const NavButton: React.FC<{ onClick: () => void; children: React.ReactNode }> = ({ onClick, children }) => (
-    <button
-        onClick={onClick}
-        className="relative flex items-center justify-center p-4 border border-forge-500 bg-forge-800 text-white font-bold uppercase tracking-wider text-sm rounded-lg shadow-lg hover:bg-forge-700 transition-all duration-200 overflow-hidden group"
-    >
-        <span className="relative z-10">{children}</span>
-        <div className="absolute inset-0 bg-gradient-to-br from-transparent via-forge-600 to-transparent opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
-        <div className="absolute inset-0 border-2 border-transparent group-hover:border-forge-400 rounded-lg transition-all duration-300"></div>
-    </button>
-);
+// NavButton moved to CitadelHub
 
 const Citadel: React.FC<{ state: DashboardState; dispatch: React.Dispatch<DashboardAction> }> = ({ state, dispatch }) => (
     <div className="w-full max-w-6xl mx-auto p-4 md:p-6 space-y-8 animate-fade-in">
         <section id="quick-actions">
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                <NavButton onClick={() => dispatch({ type: 'SET_VIEW', payload: 'war_room' })}>New Quest</NavButton>
-                <NavButton onClick={() => dispatch({ type: 'SET_VIEW', payload: 'training_center' })}>Training Path</NavButton>
-                <NavButton onClick={() => dispatch({ type: 'SET_VIEW', payload: 'forge' })}>The Forge</NavButton>
-                <NavButton onClick={() => dispatch({ type: 'SET_VIEW', payload: 'armory' })}>Armory</NavButton>
-                <NavButton onClick={() => dispatch({ type: 'SET_VIEW', payload: 'bestiary' })}>Bestiary</NavButton>
-                <NavButton onClick={() => dispatch({ type: 'SET_VIEW', payload: 'guild_hall' })}>Guild Hall</NavButton>
-                <NavButton onClick={() => dispatch({ type: 'SET_VIEW', payload: 'grimoire' })}>Grimoire</NavButton>
-                <NavButton onClick={() => dispatch({ type: 'SET_VIEW', payload: 'world_map' })}>World Map</NavButton>
-                <NavButton onClick={() => dispatch({ type: 'SET_VIEW', payload: 'arena' })}>Arena</NavButton>
-                <NavButton onClick={() => dispatch({ type: 'SET_VIEW', payload: 'marketplace' })}>Market</NavButton>
-                <NavButton onClick={() => dispatch({ type: 'SET_CARDIO_MODE', payload: 'cycling' })}><Bike className="w-4 h-4 inline mr-1" />Cycling</NavButton>
-                <NavButton onClick={() => dispatch({ type: 'SET_CARDIO_MODE', payload: 'running' })}><Footprints className="w-4 h-4 inline mr-1" />Treadmill</NavButton>
-            </div>
+            <CitadelHub dispatch={dispatch} />
         </section>
 
         <section id="oracle-recommendation" className="bg-forge-800 p-6 rounded-lg shadow-xl border border-forge-700">
@@ -310,6 +339,8 @@ export interface InitialDataProps {
     weeklyMastery?: WeeklyMastery;
     userId: string;
     intervalsConnected?: boolean;
+    faction: Faction | string; // Allow string for loose typing from page
+    hasCompletedOnboarding: boolean;
 }
 
 const DashboardClient: React.FC<InitialDataProps> = (initialData) => {
@@ -336,12 +367,15 @@ const DashboardClient: React.FC<InitialDataProps> = (initialData) => {
         recoveryLevel: initialData.recoveryLevel || 'NONE',
         totalExperience: initialData.totalExperience,
         weeklyMastery: initialData.weeklyMastery,
-        cardioMode: 'cycling'
+        cardioMode: 'cycling',
+        returnView: null,
+        faction: (initialData.faction as Faction) || 'HORDE'
     };
 
     const [state, dispatch] = useReducer(dashboardReducer, initialStateFromProps);
     const [isModalOpen, setModalOpen] = useState(false);
     const [isConfigured, setIsConfigured] = useState(false);
+    const [showOnboarding, setShowOnboarding] = useState(!initialData.hasCompletedOnboarding);
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -388,6 +422,19 @@ const DashboardClient: React.FC<InitialDataProps> = (initialData) => {
                 mobilityLevel={state.mobilityLevel}
                 recoveryLevel={state.recoveryLevel}
                 onClose={() => dispatch({ type: 'SET_VIEW', payload: 'citadel' })}
+                onSelectWorkout={(workout) => {
+                    if (workout.type === 'STRENGTH' || workout.type === 'MOBILITY') {
+                        // For strength/mobility, convert to session and launch
+                        const session = mapDefinitionToSession(workout);
+                        dispatch({ type: 'START_GENERATED_QUEST', payload: session });
+                        // Hack to set return view since START_GENERATED_QUEST doesn't support it directly in reducer easily without changing signature
+                        // We'll rely on global "Close" in SessionRunner returning to citadel by default, 
+                        // unless we change SessionRunner to accept onExit?
+                        // Actions: SessionRunner has onExit.
+                    } else {
+                        dispatch({ type: 'START_CODEX_WORKOUT', payload: { workout } });
+                    }
+                }}
             />;
             case 'war_room': return <RoutineSelector exerciseNameMap={state.exerciseNameMap} onSelectRoutine={(routine) => dispatch({ type: 'SELECT_ROUTINE', payload: { routine, nameMap: state.exerciseNameMap } })} />;
             // Using SessionRunner (New UX) instead of IronMines
@@ -398,7 +445,12 @@ const DashboardClient: React.FC<InitialDataProps> = (initialData) => {
                     // For now, let's just trigger complete.
                     dispatch({ type: 'COMPLETE_QUEST' });
                 }}
-                onExit={() => dispatch({ type: 'ABORT_QUEST' })}
+                onExit={() => {
+                    // If we have a return view (e.g. came from Training Center), go back there.
+                    // But START_GENERATED_QUEST didn't set returnView in my reducer logic above (I commented it out).
+                    // Let's just go to Citadel for now for Strength, or handle return logic if I add it.
+                    dispatch({ type: 'ABORT_QUEST' });
+                }}
             />;
             case 'item_shop': return <Marketplace onClose={() => dispatch({ type: 'SET_VIEW', payload: 'citadel' })} />;
             case 'social_hub': return <SocialHub onClose={() => dispatch({ type: 'SET_VIEW', payload: 'citadel' })} />;
@@ -416,7 +468,12 @@ const DashboardClient: React.FC<InitialDataProps> = (initialData) => {
             case 'arena': return <Arena onClose={() => dispatch({ type: 'SET_VIEW', payload: 'citadel' })} />;
             case 'marketplace': return <Marketplace onClose={() => dispatch({ type: 'SET_VIEW', payload: 'citadel' })} />;
             case 'combat_arena': return state.activeBossId ? <CombatArena bossId={state.activeBossId} onClose={() => dispatch({ type: 'SET_VIEW', payload: 'world_map' })} /> : <Citadel state={state} dispatch={dispatch} />;
-            case 'cardio_studio': return <CardioStudio mode={state.cardioMode || 'cycling'} onClose={() => dispatch({ type: 'SET_VIEW', payload: 'citadel' })} />;
+
+            case 'cardio_studio': return <CardioStudio
+                mode={state.cardioMode || 'cycling'}
+                activeWorkout={state.activeWorkout}
+                onClose={() => dispatch({ type: 'RETURN_TO_PREVIOUS' })}
+            />;
 
             default: return <Citadel state={state} dispatch={dispatch} />;
         }
@@ -433,6 +490,7 @@ const DashboardClient: React.FC<InitialDataProps> = (initialData) => {
                     userId={initialData.userId}
                     hevyConnected={!!initialData.apiKey}
                     intervalsConnected={!!initialData.intervalsConnected}
+                    initialFaction={state.faction}
                 />
                 <div className="w-full h-screen flex items-center justify-center font-mono text-center p-4">
                     <div>
@@ -456,8 +514,18 @@ const DashboardClient: React.FC<InitialDataProps> = (initialData) => {
                 userId={initialData.userId}
                 hevyConnected={!!initialData.apiKey}
                 intervalsConnected={!!initialData.intervalsConnected}
+                initialFaction={state.faction}
             />
             {renderView()}
+
+            {showOnboarding && (
+                <FirstLoginQuest onComplete={(newState) => {
+                    setShowOnboarding(false);
+                    if (newState) {
+                        dispatch({ type: 'RECALCULATE_PROGRESSION', payload: { level: newState.level } });
+                    }
+                }} />
+            )}
 
             <CoachToggle onClick={() => dispatch({ type: 'TOGGLE_COACH' })} />
             <GeminiLiveCoach isOpen={state.isCoachOpen} onClose={() => dispatch({ type: 'TOGGLE_COACH' })} />
