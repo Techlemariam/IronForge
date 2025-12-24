@@ -29,6 +29,7 @@ const RoutineSelector = dynamic(() => import('@/features/training/RoutineSelecto
 const IronMines = dynamic(() => import('@/features/training/IronMines'), { ssr: false });
 const SessionRunner = dynamic(() => import('@/components/SessionRunner'), { ssr: false });
 const CombatArena = dynamic(() => import('@/features/game/CombatArena'), { ssr: false });
+const SocialHub = dynamic(() => import('@/features/social/SocialHub').then(mod => mod.SocialHub), { ssr: false });
 const Marketplace = dynamic(() => import('@/components/game/Marketplace'), { ssr: false });
 const TheForge = dynamic(() => import('@/features/game/TheForge'), { ssr: false });
 const CardioStudio = dynamic(() => import('@/features/training/CardioStudio'), { ssr: false });
@@ -43,7 +44,7 @@ const CoachToggle: React.FC<{ onClick: () => void }> = ({ onClick }) => (
     </button>
 );
 
-type View = 'citadel' | 'war_room' | 'iron_mines' | 'quest_completion' | 'armory' | 'bestiary' | 'world_map' | 'grimoire' | 'guild_hall' | 'arena' | 'marketplace' | 'combat_arena' | 'forge' | 'training_center' | 'cardio_studio';
+type View = 'citadel' | 'war_room' | 'iron_mines' | 'quest_completion' | 'armory' | 'bestiary' | 'world_map' | 'grimoire' | 'guild_hall' | 'arena' | 'marketplace' | 'combat_arena' | 'forge' | 'training_center' | 'cardio_studio' | 'social_hub' | 'item_shop';
 
 interface DashboardState {
     isCodexLoading: boolean;
@@ -308,6 +309,7 @@ export interface InitialDataProps {
     totalExperience: number;
     weeklyMastery?: WeeklyMastery;
     userId: string;
+    intervalsConnected?: boolean;
 }
 
 const DashboardClient: React.FC<InitialDataProps> = (initialData) => {
@@ -398,6 +400,8 @@ const DashboardClient: React.FC<InitialDataProps> = (initialData) => {
                 }}
                 onExit={() => dispatch({ type: 'ABORT_QUEST' })}
             />;
+            case 'item_shop': return <Marketplace onClose={() => dispatch({ type: 'SET_VIEW', payload: 'citadel' })} />;
+            case 'social_hub': return <SocialHub onClose={() => dispatch({ type: 'SET_VIEW', payload: 'citadel' })} />;
             case 'quest_completion': return <QuestCompletion onSave={handleSaveWorkout} onCancel={() => dispatch({ type: 'ABORT_QUEST' })} />;
             case 'forge': return <TheForge onClose={() => dispatch({ type: 'SET_VIEW', payload: 'citadel' })} />;
             case 'armory': return <EquipmentArmory />;
@@ -423,7 +427,13 @@ const DashboardClient: React.FC<InitialDataProps> = (initialData) => {
             <div className="bg-void min-h-screen text-white flex items-center justify-center p-4">
                 <div className="scanlines" />
                 <SettingsCog onClick={() => setModalOpen(true)} />
-                <ConfigModal isOpen={isModalOpen} onClose={() => setModalOpen(false)} />
+                <ConfigModal
+                    isOpen={isModalOpen}
+                    onClose={() => setModalOpen(false)}
+                    userId={initialData.userId}
+                    hevyConnected={!!initialData.apiKey}
+                    intervalsConnected={!!initialData.intervalsConnected}
+                />
                 <div className="w-full h-screen flex items-center justify-center font-mono text-center p-4">
                     <div>
                         <h2 className="text-xl text-magma uppercase tracking-widest">Configuration Required</h2>
@@ -440,7 +450,13 @@ const DashboardClient: React.FC<InitialDataProps> = (initialData) => {
         <div className="bg-forge-900 min-h-screen bg-noise">
             <div className="scanlines pointer-events-none fixed inset-0 z-50 opacity-5" />
             <SettingsCog onClick={() => setModalOpen(true)} />
-            <ConfigModal isOpen={isModalOpen} onClose={() => setModalOpen(false)} />
+            <ConfigModal
+                isOpen={isModalOpen}
+                onClose={() => setModalOpen(false)}
+                userId={initialData.userId}
+                hevyConnected={!!initialData.apiKey}
+                intervalsConnected={!!initialData.intervalsConnected}
+            />
             {renderView()}
 
             <CoachToggle onClick={() => dispatch({ type: 'TOGGLE_COACH' })} />
