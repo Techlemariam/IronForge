@@ -43,3 +43,44 @@ export const mapSessionToQuest = (exercises: DomainExercise[] | undefined): Lega
     if (!exercises) return [];
     return exercises.map(mapDomainExerciseToLegacy);
 };
+
+export const mapLegacySetToDomain = (set: LegacySet): DomainSet => {
+    return {
+        id: set.id,
+        completed: set.completed,
+        weight: set.weight,
+        reps: set.reps || set.targetReps,
+        completedReps: set.completedReps,
+        rarity: set.rarity,
+        e1rm: set.e1rm,
+        isPrZone: set.isPr,
+        type: set.type,
+        // Default new fields
+        weightPct: undefined
+    };
+};
+
+export const mapLegacyExerciseToDomain = (ex: LegacyExercise): DomainExercise => {
+    return {
+        id: ex.id,
+        name: ex.name,
+        hevyId: ex.hevyId,
+        logic: 'fixed_reps' as any, // Default to fixed reps enum
+        trainingMax: ex.trainingMax,
+        sets: ex.sets.map(mapLegacySetToDomain),
+        notes: ex.notes
+    };
+};
+
+export const mapQuestToSession = (exercises: LegacyExercise[], title: string): import('@/types').Session => {
+    return {
+        id: 'active_session_' + Date.now(),
+        name: title,
+        blocks: [{
+            id: 'block_1',
+            name: 'Main Block',
+            type: 'station' as any,
+            exercises: exercises.map(mapLegacyExerciseToDomain)
+        }]
+    };
+};

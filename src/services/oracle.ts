@@ -1,4 +1,4 @@
-import { IntervalsWellness, OracleRecommendation, TTBIndices, Session, BlockType, ExerciseLogic, IntervalsEvent, TitanLoadCalculation } from '../types';
+import { IntervalsWellness, OracleRecommendation, TTBIndices, Session, BlockType, ExerciseLogic, IntervalsEvent, TitanLoadCalculation, InAppWorkoutLog } from '../types';
 import { AuditReport, WeaknessLevel } from '../types/auditor';
 import { canPerformExercise, EquipmentType } from '../data/equipmentDb';
 import { muscleMap } from '../data/muscleMap';
@@ -491,5 +491,95 @@ export const OracleService = {
             });
         }
         return validExercises;
+    },
+
+    /**
+     * Generates a full 7-day training plan based on current context.
+     * Uses consult() iteratively with day-specific adjustments.
+     */
+    generateWeekPlan: async (
+        context: {
+            wellness: IntervalsWellness;
+            ttb: TTBIndices;
+            auditReport?: AuditReport | null;
+            activePath: TrainingPath;
+            weeklyMastery?: WeeklyMastery;
+            inAppLogs?: InAppWorkoutLog[];
+        }
+    ): Promise<{
+        id: string;
+        weekStart: string;
+        days: Array<{
+            dayOfWeek: number;
+            date: string;
+            recommendation: OracleRecommendation;
+            isRestDay: boolean;
+        }>;
+        createdAt: string;
+    }> => {
+        const today = new Date();
+        // Find next Monday (or today if Monday)
+        const dayOfWeek = today.getDay();
+        const daysUntilMonday = dayOfWeek === 0 ? 1 : dayOfWeek === 1 ? 0 : 8 - dayOfWeek;
+        const weekStart = new Date(today);
+        weekStart.setDate(today.getDate() + daysUntilMonday);
+        weekStart.setHours(0, 0, 0, 0);
+
+        const days: Array<{
+            dayOfWeek: number;
+            date: string;
+            recommendation: OracleRecommendation;
+            isRestDay: boolean;
+        }> = [];
+
+        // Generate recommendations for each day
+        for (let i = 0; i < 7; i++) {
+            const dayDate = new Date(weekStart);
+            dayDate.setDate(weekStart.getDate() + i);
+
+            // Day-specific logic: Sunday (6) and Wednesday (2) as rest days by default
+            const isRestDay = i === 2 || i === 6; // Wednesday and Sunday
+
+            if (isRestDay) {
+                days.push({
+                    dayOfWeek: i,
+                    date: dayDate.toISOString().split('T')[0],
+                    recommendation: {
+                        type: 'RECOVERY',
+                        title: 'SCHEDULED REST DAY',
+                        rationale: 'Strategic recovery to maximize adaptation. Active rest (walking, stretching) permitted.',
+                        priorityScore: 0
+                    },
+                    isRestDay: true
+                });
+            } else {
+                // Consult Oracle for this day with slightly modified context
+                // (In a more advanced version, we'd track cumulative fatigue)
+                const rec = await OracleService.consult(
+                    context.wellness,
+                    context.ttb,
+                    [],
+                    context.auditReport,
+                    null,
+                    null,
+                    context.activePath,
+                    context.weeklyMastery
+                );
+
+                days.push({
+                    dayOfWeek: i,
+                    date: dayDate.toISOString().split('T')[0],
+                    recommendation: rec,
+                    isRestDay: false
+                });
+            }
+        }
+
+        return {
+            id: `plan_${Date.now()}`,
+            weekStart: weekStart.toISOString().split('T')[0],
+            days,
+            createdAt: new Date().toISOString()
+        };
     }
 };

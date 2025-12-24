@@ -1,4 +1,12 @@
 
+// Re-exports from sibling type files
+export type { AuditReport } from './auditor';
+export type { TrainingPath, WeeklyMastery } from './training';
+
+// Local imports for internal use
+import type { AuditReport } from './auditor';
+import type { TrainingPath, WeeklyMastery } from './training';
+
 export enum BlockType {
     WARMUP = 'warmup',
     STATION = 'station',
@@ -277,6 +285,44 @@ export interface OracleRecommendation {
     generatedSession?: Session;
     sessionId?: string;
     targetExercise?: string;
+}
+
+/**
+ * Full weekly plan containing recommendations for each day
+ */
+export interface WeeklyPlan {
+    id: string;
+    weekStart: string; // ISO date (Monday)
+    days: DayPlan[];
+    createdAt: string;
+}
+
+export interface DayPlan {
+    dayOfWeek: number; // 0 = Monday, 6 = Sunday
+    date: string; // ISO date
+    recommendation: OracleRecommendation;
+    isRestDay: boolean;
+}
+
+/**
+ * Context for generating a weekly plan
+ */
+export interface PlanContext {
+    wellness: IntervalsWellness;
+    ttb: TTBIndices;
+    auditReport?: AuditReport | null;
+    activePath: TrainingPath;
+    weeklyMastery?: WeeklyMastery;
+    inAppLogs?: InAppWorkoutLog[];
+}
+
+export interface InAppWorkoutLog {
+    id: string;
+    date: string;
+    type: 'STRENGTH' | 'CARDIO';
+    durationMin: number;
+    setsCompleted?: number;
+    tssEstimate?: number;
 }
 
 export interface ValhallaPayload {
