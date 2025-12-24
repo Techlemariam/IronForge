@@ -27,7 +27,8 @@ export default async function Page() {
 
     // 0b. Fetch DB User & Config
     const dbUser = await prisma.user.findUnique({
-        where: { id: user.id }
+        where: { id: user.id },
+        include: { achievements: true }
     });
 
     const headersList = await headers();
@@ -183,6 +184,8 @@ export default async function Page() {
         mobilitySets: weeklyMobilitySessions
     };
 
+    const hasCompletedOnboarding = dbUser?.achievements.some(a => a.achievementId === 'ONBOARDING_COMPLETED') || false;
+
     return (
         <DashboardClient
             apiKey={hevyApiKey}
@@ -203,6 +206,8 @@ export default async function Page() {
             weeklyMastery={weeklyMastery}
             userId={user.id}
             intervalsConnected={!!(dbUser?.intervalsApiKey && dbUser?.intervalsAthleteId)}
+            faction={(dbUser as any)?.faction || 'HORDE'}
+            hasCompletedOnboarding={hasCompletedOnboarding}
         />
     );
 }
