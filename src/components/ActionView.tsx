@@ -1,10 +1,11 @@
 
 import React, { useState, useEffect, useCallback, useRef, useContext, memo } from 'react';
 import { Block, Set as WorkoutSet, ExerciseLogic, IntervalsWellness, AppSettings, Exercise } from '../types';
-import { Check, Trophy, Ban, Info, ExternalLink, X, Lock, Zap, MousePointer2, Sword, Shield, Crown, FlaskConical, LogOut, Flame, Battery, HeartPulse, Mic, Camera, Waves, ArrowUp, ArrowDown, Timer } from 'lucide-react';
+import { Check, Trophy, Ban, Info, ExternalLink, X, Lock, Zap, MousePointer2, Sword, Shield, Crown, FlaskConical, LogOut, Flame, Battery, HeartPulse, Mic, Camera, Waves, ArrowUp, ArrowDown, Timer, Plus, Copy } from 'lucide-react';
 import { roundToPlates, fireConfetti, calculateRarity, playSound, calculateTitanRank } from '../utils';
 import { calculateApre, ApreSuggestion } from '../utils/apre';
 import PlateVisualizer from './PlateVisualizer';
+import ExerciseLibrary from './ExerciseLibrary';
 import HeartRateMonitor from './HeartRateMonitor';
 import VisionRepCounter from './VisionRepCounter';
 import { AchievementContext } from '../context/AchievementContext';
@@ -25,6 +26,7 @@ interface ActionViewProps {
     onBtSimulate: () => void;
     btError?: string | null;
     wellness: IntervalsWellness | null;
+    previousStats?: Record<string, { weight: number, reps: number, e1rm: number }>;
     onSessionUpdate?: (exercises: Exercise[]) => void; // Persistence Callback
 }
 
@@ -39,11 +41,14 @@ interface SetRowProps {
     rarity: string;
     onToggle: (exIdx: number, setIdx: number) => void;
     onRepsChange: (exIdx: number, setIdx: number, newReps: number) => void;
+    onWeightChange: (exIdx: number, setIdx: number, newWeight: number) => void;
+    onRpeChange: (exIdx: number, setIdx: number, newRpe: number) => void;
     activeSetRef: React.RefObject<HTMLDivElement | null> | null;
+    previous?: { weight: number, reps: number, e1rm: number };
 }
 
 const SetRow = memo(({
-    set, exIndex, setIndex, isFocused, isLocked, displayWeight, isLandmine, rarity, onToggle, onRepsChange, activeSetRef
+    set, exIndex, setIndex, isFocused, isLocked, displayWeight, isLandmine, rarity, onToggle, onRepsChange, onWeightChange, onRpeChange, activeSetRef, previous
 }: SetRowProps) => {
 
     const getRarityBorder = (rarity: string) => {
@@ -129,37 +134,110 @@ const SetRow = memo(({
                         </div>
 
                         {/* Stats Row */}
-                        <div className="flex items-end gap-3 mt-1">
-                            {/* Input Area */}
-                            {isFocused ? (
-                                <div className="flex flex-col">
-                                    <input
-                                        type="number"
-                                        value={inputValue}
-                                        placeholder={isAmrap ? "MAX" : String(set.reps)}
-                                        onChange={(e) => onRepsChange(exIndex, setIndex, parseInt(e.target.value) || 0)}
-                                        onClick={(e) => e.stopPropagation()}
-                                        className="w-24 bg-zinc-900 border-b-2 border-zinc-500 text-white text-4xl font-serif font-bold p-0 rounded-none focus:border-[#c79c6e] focus:outline-none placeholder-zinc-700"
-                                    />
-                                    <span className="text-zinc-500 text-[10px] uppercase font-bold tracking-widest mt-1">Target: {isAmrap ? 'AMRAP' : set.reps}</span>
-                                </div>
-                            ) : (
-                                <div className="flex items-baseline gap-1">
-                                    <span className="text-2xl font-serif font-bold text-white">
-                                        {isAmrap ? 'AMRAP' : set.reps}
-                                    </span>
-                                    <span className="text-zinc-600 text-xs font-bold uppercase">reps</span>
+                        <div className="flex flex-col gap-2 mt-2">
+                            {/* Previous Params Ghost */}
+                            {isFocused && previous && (previous.e1rm > 0) && (
+                                <div className="text-[10px] text-zinc-500 font-mono flex items-center gap-2 mb-1">
+                                    <span className="uppercase tracking-widest text-zinc-600">Last:</span>
+                                    {previous.weight > 0 ? (
+                                        <>
+                                            <span>{previous.weight}kg x {previous.reps}</span>
+                                            <span className="text-zinc-700">|</span>
+                                        </>
+                                    ) : null}
+                                    <span>e1RM: {previous.e1rm}</span>
+                                    <button
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            if (previous.weight > 0) onWeightChange(exIndex, setIndex, previous.weight);
+                                            if (previous.reps > 0) onRepsChange(exIndex, setIndex, previous.reps);
+                                            playSound('ding');
+                                        }}
+                                        className="ml-2 p-0.5 hover:bg-zinc-800 rounded text-zinc-600 hover:text-indigo-400 transition-colors"
+                                        title="Copy Last Set"
+                                    >
+                                        <Copy className="w-3 h-3" />
+                                    </button>
                                 </div>
                             )}
 
-                            {/* Weight Display */}
-                            <div className={`flex flex-col ${isFocused ? 'ml-4' : 'ml-2'}`}>
-                                <span className={`font-mono font-bold ${isFocused ? 'text-2xl' : 'text-lg'} ${textColor}`}>
-                                    {displayWeight > 0 ? `${displayWeight}` : 'BW'}
-                                </span>
-                                <span className="text-zinc-600 text-[10px] uppercase font-bold tracking-widest">
-                                    {displayWeight > 0 ? 'KG Load' : 'Bodyweight'}
-                                </span>
+                            <div className="flex items-end gap-4">
+                                {/* REPS INPUT */}
+                                <div className="flex flex-col items-center">
+                                    {isFocused ? (
+                                        <>
+                                            <div className="flex items-center gap-2">
+                                                <button onClick={(e) => { e.stopPropagation(); onRepsChange(exIndex, setIndex, Math.max(0, (set.completedReps || (typeof set.reps === 'number' ? set.reps : 0) || 0) - 1)); }} className="w-8 h-8 rounded-full bg-zinc-800 text-zinc-400 hover:bg-zinc-700 flex items-center justify-center font-bold">-</button>
+                                                <input
+                                                    type="number"
+                                                    value={inputValue}
+                                                    placeholder={isAmrap ? "MAX" : String(set.reps)}
+                                                    onChange={(e) => onRepsChange(exIndex, setIndex, parseInt(e.target.value) || 0)}
+                                                    onClick={(e) => e.stopPropagation()}
+                                                    className="w-16 bg-zinc-900 border-b-2 border-zinc-500 text-white text-3xl font-serif font-bold text-center p-0 rounded-none focus:border-[#c79c6e] focus:outline-none placeholder-zinc-700"
+                                                />
+                                                <button onClick={(e) => { e.stopPropagation(); onRepsChange(exIndex, setIndex, (set.completedReps || (typeof set.reps === 'number' ? set.reps : 0) || 0) + 1); }} className="w-8 h-8 rounded-full bg-zinc-800 text-zinc-400 hover:bg-zinc-700 flex items-center justify-center font-bold">+</button>
+                                            </div>
+                                            <span className="text-zinc-500 text-[9px] uppercase font-bold tracking-widest mt-1">Reps</span>
+                                        </>
+                                    ) : (
+                                        <div className="flex items-baseline gap-1">
+                                            <span className="text-2xl font-serif font-bold text-white">
+                                                {isAmrap ? 'AMRAP' : set.reps}
+                                            </span>
+                                            <span className="text-zinc-600 text-xs font-bold uppercase">reps</span>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* WEIGHT INPUT */}
+                                <div className="flex flex-col items-center">
+                                    {isFocused ? (
+                                        <>
+                                            <div className="flex items-center gap-2">
+                                                <button onClick={(e) => { e.stopPropagation(); onWeightChange(exIndex, setIndex, Math.max(0, displayWeight - 2.5)); }} className="w-8 h-8 rounded-full bg-zinc-800 text-zinc-400 hover:bg-zinc-700 flex items-center justify-center font-bold">-</button>
+                                                <input
+                                                    type="number"
+                                                    value={displayWeight}
+                                                    onChange={(e) => onWeightChange(exIndex, setIndex, parseFloat(e.target.value) || 0)}
+                                                    onClick={(e) => e.stopPropagation()}
+                                                    className="w-20 bg-zinc-900 border-b-2 border-zinc-500 text-white text-3xl font-serif font-bold text-center p-0 rounded-none focus:border-blue-500 focus:outline-none"
+                                                />
+                                                <button onClick={(e) => { e.stopPropagation(); onWeightChange(exIndex, setIndex, displayWeight + 2.5); }} className="w-8 h-8 rounded-full bg-zinc-800 text-zinc-400 hover:bg-zinc-700 flex items-center justify-center font-bold">+</button>
+                                            </div>
+                                            <span className="text-zinc-500 text-[9px] uppercase font-bold tracking-widest mt-1">KG Load</span>
+                                        </>
+                                    ) : (
+                                        <div className="flex flex-col items-center ml-2">
+                                            <span className={`font-mono font-bold ${isFocused ? 'text-2xl' : 'text-lg'} ${textColor}`}>
+                                                {displayWeight > 0 ? `${displayWeight}` : 'BW'}
+                                            </span>
+                                            <span className="text-zinc-600 text-[10px] uppercase font-bold tracking-widest">
+                                                Weight
+                                            </span>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* RPE INPUT (Only when focused) */}
+                                {isFocused && (
+                                    <div className="flex flex-col items-center ml-2 animate-fade-in-left">
+                                        <div className="bg-zinc-900 p-1 rounded-lg border border-zinc-800 flex flex-col items-center">
+                                            <input
+                                                type="number"
+                                                max={10}
+                                                min={1}
+                                                step={0.5}
+                                                value={set.rpe || ''}
+                                                placeholder="-"
+                                                onChange={(e) => onRpeChange(exIndex, setIndex, parseFloat(e.target.value))}
+                                                onClick={(e) => e.stopPropagation()}
+                                                className="w-10 bg-transparent text-center text-yellow-500 font-bold text-xl focus:outline-none"
+                                            />
+                                            <span className="text-[8px] text-zinc-500 uppercase font-bold">RPE</span>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -202,7 +280,9 @@ const SetRow = memo(({
         prev.set.rarity === next.set.rarity &&
         prev.isFocused === next.isFocused &&
         prev.isLocked === next.isLocked &&
-        prev.displayWeight === next.displayWeight
+        prev.displayWeight === next.displayWeight &&
+        prev.set.rpe === next.set.rpe &&
+        prev.previous === next.previous
     );
 });
 
@@ -218,6 +298,7 @@ const ActionView: React.FC<ActionViewProps> = ({
     onBtSimulate,
     btError,
     wellness,
+    previousStats = {},
     onSessionUpdate
 }) => {
     const [exercises, setExercises] = useState(block.exercises || []);
@@ -340,6 +421,28 @@ const ActionView: React.FC<ActionViewProps> = ({
             const newExercises = [...prev];
             const newSet = { ...newExercises[exIndex].sets[setIndex] };
             newSet.completedReps = newReps;
+            newExercises[exIndex].sets[setIndex] = newSet;
+            return newExercises;
+        });
+    }, []);
+
+    const handleWeightChange = useCallback((exIndex: number, setIndex: number, newWeight: number) => {
+        setExercises(prev => {
+            const newExercises = [...prev];
+            const newSet = { ...newExercises[exIndex].sets[setIndex] };
+            newSet.weight = newWeight;
+            // Also update percent if applicable, relative to TM? simpler to just set absolute weight for now
+            // If it was logic based, we might break the logic link, but user override is king.
+            newExercises[exIndex].sets[setIndex] = newSet;
+            return newExercises;
+        });
+    }, []);
+
+    const handleRpeChange = useCallback((exIndex: number, setIndex: number, newRpe: number) => {
+        setExercises(prev => {
+            const newExercises = [...prev];
+            const newSet = { ...newExercises[exIndex].sets[setIndex] };
+            newSet.rpe = newRpe;
             newExercises[exIndex].sets[setIndex] = newSet;
             return newExercises;
         });
@@ -714,6 +817,9 @@ const ActionView: React.FC<ActionViewProps> = ({
                                                 rarity={displayRarity}
                                                 onToggle={handleToggleSet}
                                                 onRepsChange={handleRepsChange}
+                                                onWeightChange={handleWeightChange}
+                                                onRpeChange={handleRpeChange}
+                                                previous={previousStats[ex.id]} // Simplified: same previous for all sets of same exercise
                                                 activeSetRef={isFocused ? activeSetRef : null}
                                             />
                                         );
@@ -724,10 +830,44 @@ const ActionView: React.FC<ActionViewProps> = ({
                     })}
                 </div>
 
-                <div className="text-center text-zinc-700 text-xs font-serif uppercase tracking-widest mt-8 flex flex-col gap-1">
+                <div className="text-center text-zinc-700 text-xs font-serif uppercase tracking-widest mt-8 flex flex-col gap-3">
+                    <button
+                        onClick={() => setOpenInfoId('ADD_EXERCISE')} // repurposed for modal 
+                        className="flex items-center justify-center gap-2 py-3 px-6 bg-zinc-900 border border-zinc-800 rounded mx-auto hover:bg-zinc-800 hover:text-white transition-all text-zinc-500 font-bold w-full max-w-xs"
+                    >
+                        <Plus className="w-4 h-4" /> Add Exercise
+                    </button>
                     <span>[ WASD Controls Active ]</span>
                 </div>
             </div>
+
+            {/* EXERCISE LIBRARY MODAL */}
+            {openInfoId === 'ADD_EXERCISE' && (
+                <div className="fixed inset-0 z-[100] animate-fade-in">
+                    <ExerciseLibrary
+                        onSelect={(exId) => {
+                            // Mock adding exercise logic - needing real exercise data lookup
+                            // For now, we will just add a dummy "New Exercise" or fetch from Library logic
+                            // Since ExerciseLibrary has mock data, we need to map it to our Exercise type
+
+                            const newExercise: Exercise = {
+                                id: exId + '_' + Date.now(),
+                                name: 'New Exercise', // Should get from library
+                                logic: ExerciseLogic.FIXED_REPS,
+                                sets: [
+                                    { id: 'new_set_1', reps: 10, weight: 20, completed: false, type: 'straight' },
+                                    { id: 'new_set_2', reps: 10, weight: 20, completed: false, type: 'straight' },
+                                    { id: 'new_set_3', reps: 10, weight: 20, completed: false, type: 'straight' }
+                                ]
+                            };
+                            setExercises(prev => [...prev, newExercise]);
+                            setOpenInfoId(null);
+                            playSound('quest_accept');
+                        }}
+                        onClose={() => setOpenInfoId(null)}
+                    />
+                </div>
+            )}
 
             <div className="p-6 bg-zinc-950 border-t border-zinc-900 sticky bottom-0 z-40">
                 <div className="flex items-center justify-between mb-2 text-[10px] font-bold uppercase tracking-widest text-zinc-600">

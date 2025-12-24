@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Swords, Trophy, Skull, Shield, Zap, User } from 'lucide-react';
-import { ProgressionService } from '../../services/progression';
+import { getProgressionAction, awardGoldAction } from '../../actions/progression';
 import { StorageService } from '../../services/storage';
 import { playSound } from '../../utils';
 
@@ -29,8 +29,9 @@ const Arena: React.FC<ArenaProps> = ({ onClose }) => {
 
     useEffect(() => {
         const loadPlayer = async () => {
-            const progression = await ProgressionService.getProgressionState();
-            const startHp = 100 + (progression.level * 10);
+            const progression = await getProgressionAction();
+            const playerLevel = progression?.level ?? 1;
+            const startHp = 100 + (playerLevel * 10);
 
             // Load Inventory for Stats
             const inventory = await StorageService.getState<string[]>('inventory') || [];
@@ -44,7 +45,7 @@ const Arena: React.FC<ArenaProps> = ({ onClose }) => {
 
             setPlayer({
                 name: 'Titan',
-                level: progression.level,
+                level: playerLevel,
                 hp: startHp,
                 maxHp: startHp,
                 isPlayer: true,
@@ -135,7 +136,7 @@ const Arena: React.FC<ArenaProps> = ({ onClose }) => {
     const handleVictory = async () => {
         const rewardGold = 25;
         const rewardXp = 50; // We might want to add XP too?
-        await ProgressionService.awardGold(rewardGold);
+        await awardGoldAction(rewardGold);
         setLogs(prev => [...prev, `Victory! Earned ${rewardGold} Gold.`]);
     };
 

@@ -11,6 +11,7 @@ import { useSkills } from '../context/SkillContext';
 import { StorageService, ActiveSessionState } from '../services/storage';
 import { IntegrationService } from '../services/integration';
 import { intervalsClient } from '../services/intervals';
+import ActionView from './ActionView';
 
 interface SessionRunnerProps {
     session: Session;
@@ -290,11 +291,31 @@ const SessionRunner: React.FC<SessionRunnerProps> = ({ session, onExit }) => {
                     </div>
                 </div>
             )}
-            <QuestLog
-                sessions={[activeSession]}
-                history={historyLogs}
-                onSelectSession={() => { }}
-                level={1}
+
+            {/* ActionView: The Main Workout Interface */}
+            <ActionView
+                block={activeSession.blocks[0]} // TODO: Handle multi-block sessions better
+                onComplete={() => setCompleted(true)}
+                onAbort={handleAbortRequest}
+                bpm={bpm}
+                isBtConnected={!!bpm} // Simplified for now
+                onBtConnect={() => { /* Bluetooth handled by hook */ }}
+                onBtSimulate={() => { /* Simulation handled by hook */ }}
+                wellness={wellnessData}
+                previousStats={historyLogs.reduce((acc, log) => {
+                    // Find latest log for this exercise
+                    if (!acc[log.exerciseId] || new Date(log.date) > new Date(acc[log.exerciseId].date)) {
+                        // We need to store date to compare, but return clean object
+                        // For this reduce, we'll store specific props. 
+                        // Note: ExerciseLog in schema doesn't have 'weight/reps' directly visible in basic type sometimes, 
+                        // assuming ExerciseLog has e1rm. 
+                        // Actually, we generally save the 'best set' stats.
+                        // Let's assume we can approximate valid previous from logs or we need to change how we fetch history.
+                        // For now, let's just use e1rm if available.
+                        acc[log.exerciseId] = { weight: 0, reps: 0, e1rm: log.e1rm, date: log.date };
+                    }
+                    return acc;
+                }, {} as any)}
             />
         </>
     );

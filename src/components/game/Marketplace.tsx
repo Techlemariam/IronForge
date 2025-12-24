@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ShoppingBag, X, Zap, Shield, Heart, Skull } from 'lucide-react';
-import { ProgressionService } from '../../services/progression';
+import { getProgressionAction, awardGoldAction } from '../../actions/progression';
 import { StorageService } from '../../services/storage';
 import { playSound } from '../../utils';
 
@@ -59,9 +59,11 @@ const Marketplace: React.FC<MarketplaceProps> = ({ onClose }) => {
 
     useEffect(() => {
         const loadEconomy = async () => {
-            const currentGold = await ProgressionService.getCurrentGold();
-            const currentInv = await StorageService.getState<string[]>('inventory') || []; // Hypothetical inventory key
-            setGold(currentGold);
+            const state = await getProgressionAction();
+            if (state) {
+                setGold(state.gold);
+            }
+            const currentInv = await StorageService.getState<string[]>('inventory') || [];
             setInventory(currentInv);
         };
         loadEconomy();
@@ -70,8 +72,10 @@ const Marketplace: React.FC<MarketplaceProps> = ({ onClose }) => {
     const handleBuy = async (item: ShopItem) => {
         if (gold >= item.cost) {
             // Deduct Gold
-            const newBalance = await ProgressionService.awardGold(-item.cost); // Negative award = deduct
-            setGold(newBalance);
+            const result = await awardGoldAction(-item.cost); // Negative award = deduct
+            if (result) {
+                setGold(result.gold);
+            }
 
             // Add to Inventory (Hypothetical)
             const newInv = [...inventory, item.id];

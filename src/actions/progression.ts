@@ -15,3 +15,17 @@ export async function getProgressionAction() {
         return null;
     }
 }
+
+export async function awardGoldAction(amount: number) {
+    try {
+        const supabase = await createClient();
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) throw new Error("Unauthorized");
+
+        return await ProgressionService.awardGold(user.id, amount);
+    } catch (e) {
+        console.error("Award Gold Action Error:", e);
+        return null;
+    }
+}
+
