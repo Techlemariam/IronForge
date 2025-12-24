@@ -1,5 +1,4 @@
-
-import { getHevyWorkoutHistory } from './hevy';
+import { getHevyWorkouts } from '@/lib/hevy';
 import { calculateWeeklyVolume } from '../utils/volumeCalculator';
 import { auditWeaknesses } from '../utils/weaknessAuditor';
 import { StorageService } from './storage';
@@ -43,7 +42,7 @@ export const runFullAudit = async (forceRefresh: boolean = false, apiKey?: strin
 
     console.log("Orchestrator: Fetching workout history...");
     // 2. Fetch Data
-    const history = await getHevyWorkoutHistory(HISTORY_DEPTH, apiKey, baseUrl);
+    const history = await getHevyWorkouts(apiKey || '', 1, HISTORY_DEPTH);
 
     // 3. Transform Data
     console.log("Orchestrator: Calculating volumes...");

@@ -94,8 +94,8 @@ export const OracleChat: React.FC<OracleChatProps> = ({ context }) => {
                                             {m.role === 'user' ? <User className="w-4 h-4 text-white" /> : <Sparkles className="w-4 h-4 text-indigo-400" />}
                                         </div>
                                         <div className={`p-3 rounded-2xl text-sm leading-relaxed ${m.role === 'user'
-                                                ? 'bg-indigo-600 text-white rounded-tr-none'
-                                                : 'bg-white/5 text-zinc-100 border border-white/5 rounded-tl-none font-medium'
+                                            ? 'bg-indigo-600 text-white rounded-tr-none'
+                                            : 'bg-white/5 text-zinc-100 border border-white/5 rounded-tl-none font-medium'
                                             }`}>
                                             {m.content}
                                         </div>

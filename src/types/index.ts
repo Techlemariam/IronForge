@@ -38,6 +38,7 @@ export interface Set {
     isPrZone?: boolean;
     rarity?: Rarity; // Visual style
     e1rm?: number; // Calculated estimated 1RM for this set performance
+    rpe?: number; // Rate of Perceived Exertion
     type?: string;
 }
 
