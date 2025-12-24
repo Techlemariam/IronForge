@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ironforge.dev/schemas/knowledge-graph.json",
+  "version": "1.0",
+  "metadata": {
+    "lastUpdated": null,
+    "nodeCount": 0,
+    "edgeCount": 0,
+    "coverage": 0
+  },
+  "nodes": [],
+  "edges": [],
+  "queries": {
+    "impact": "Find all nodes that depend on target",
+    "gaps": "Find nodes without test coverage",
+    "orphans": "Find nodes with no incoming edges"
+  }
+}

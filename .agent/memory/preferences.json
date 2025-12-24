@@ -1,0 +1,46 @@
+{
+  "$schema": "https://ironforge.dev/schemas/preferences.json",
+  "version": "1.0",
+  "description": "Agent learning and preference memory",
+  "user": {
+    "communication": {
+      "verbosity": "concise",
+      "language": "sv",
+      "technicalLevel": "expert",
+      "preferredFormat": "markdown"
+    },
+    "workflow": {
+      "autoApprove": ["health-check", "generate-tests"],
+      "alwaysAsk": ["deploy", "cleanup"],
+      "preferredOrder": ["analyst", "architect", "coder", "qa"]
+    },
+    "coding": {
+      "preferredPatterns": ["server-components", "zod-validation", "prisma"],
+      "avoidPatterns": ["any-type", "inline-styles"],
+      "testingFramework": "vitest"
+    }
+  },
+  "learning": {
+    "acceptedSuggestions": [],
+    "rejectedSuggestions": [],
+    "frequentCommands": {},
+    "errorPatterns": [],
+    "successPatterns": []
+  },
+  "contextual": {
+    "lastSession": {
+      "timestamp": null,
+      "activeTask": null,
+      "openFiles": [],
+      "lastCommand": null
+    },
+    "projectPhase": "development",
+    "currentSprint": null
+  },
+  "thresholds": {
+    "autoRetryLimit": 3,
+    "confidenceThreshold": 0.8,
+    "debtAlertLimit": 5,
+    "testCoverageMin": 80
+  }
+}

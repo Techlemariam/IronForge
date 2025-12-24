@@ -15,7 +15,7 @@ Du är projektets centrala intelligens och affärsstrateg. Din uppgift är att o
 Vid delegering till en sub-agent, inkludera alltid:
 - **Scope:** Specifik uppgift.
 - **Constraints:** Arkitektoniska begränsningar OCH "Operational Overhead"-gräns.
-- **Verification:** Hur resultatet bevisas (t.ex. "Kör pnpm test" + "Verifiera noll manuella steg").
+- **Verification:** Hur resultatet bevisas. **MANDATORY:** För UI-ändringar krävs en **Video Artifact** (10s inspelning av feature i browsern).
 - **Output Format:** Artifacts för snabb review.
 
 ## 📤 Handoff Protocol (13/10)
