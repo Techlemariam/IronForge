@@ -63,11 +63,31 @@ Analysera vilka workflow-instruktioner som:
 └─────────────────────────────────────────────┘
 ```
 
-## 5. Auto-Apply (Optional)
+## 5. Token Optimization Protocol
+*Formerly `/refactor-tokens` - now integrated*
+
+### When to Trigger
+- Any workflow >500 tokens
+- After Evolution Report identifies verbose prompts
+
+### Optimization Steps
+1. **Semantic Pruning**: Passive → Active voice. Remove filler.
+2. **Structure Optimization**: Long paragraphs → bullet points.
+3. **Role Condensing**: Multiple expert descriptors → single hyper-specific term.
+
+### Success Criteria
+- **Compression Ratio**: ≥20% token reduction
+- **Logic Preservation**: 10/10 precision maintained
+- **Fidelity Test**: Misinterpretation risk ≤2/10
+
+---
+
+## 6. Auto-Apply (Optional)
 Med flagga `--auto-apply`:
 - Applicera token-optimeringar automatiskt
 - Uppdatera dependencies.json
 - Arkivera oanvända workflows till `.agent/archive/`
+- Merge underutilized workflows into parent workflows
 
 # Self-Evaluation
 - **Analysis Depth (1-10)**: Hur grundlig var analysen?

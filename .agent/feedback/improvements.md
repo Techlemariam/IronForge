@@ -49,9 +49,9 @@
 
 | Workflow | Last Used | Recommendation |
 |:---------|:----------|:---------------|
-| `/performance-coach` | Never (in logs) | Monitor for 30 days |
-| `/librarian` | Never (in logs) | Monitor for 30 days |
-| `/refactor-tokens` | Never (in logs) | Consider merging into `/evolve` |
+| `/performance-coach` | - | ✅ KEEP - Domain expertise (träningsfysiologi) |
+| `/librarian` | - | ✅ KEEP - Documentation/context value |
+| `/refactor-tokens` | Never (in logs) | ✅ Merged into `/evolve` (2025-12-25) |
 
 ---
 
