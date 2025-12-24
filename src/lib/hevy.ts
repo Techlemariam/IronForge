@@ -7,8 +7,9 @@ const EXTERNAL_BASE_URL = 'https://api.hevyapp.com/v1';
  * This is safe to call from both server components and API routes.
  */
 export const getHevyWorkouts = async (apiKey: string, page: number = 1, pageSize: number = 10): Promise<{ workouts: HevyWorkout[], page_count: number }> => {
+    const effectivePageSize = Math.min(pageSize, 10);
     try {
-        const response = await fetch(`${EXTERNAL_BASE_URL}/workouts?page=${page}&pageSize=${pageSize}`, {
+        const response = await fetch(`${EXTERNAL_BASE_URL}/workouts?page=${page}&pageSize=${effectivePageSize}`, {
             headers: {
                 'api-key': apiKey,
                 'accept': 'application/json'
