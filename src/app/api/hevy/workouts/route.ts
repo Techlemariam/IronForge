@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import axios from 'axios';
+import { getHevyWorkouts } from '@/lib/hevy';
 
 export async function GET(request: Request) {
     const hevyApiKey = request.headers.get('x-hevy-api-key');
@@ -8,20 +9,18 @@ export async function GET(request: Request) {
     }
 
     const { searchParams } = new URL(request.url);
-    const params = Object.fromEntries(searchParams.entries());
+    const page = parseInt(searchParams.get('page') || '1');
+    const pageSize = parseInt(searchParams.get('pageSize') || '10');
 
     try {
-        const response = await axios.get('https://api.hevyapp.com/v1/workouts', {
-            headers: { 'api-key': hevyApiKey },
-            params: params
-        });
-        return NextResponse.json(response.data);
+        const data = await getHevyWorkouts(hevyApiKey, page, pageSize);
+        return NextResponse.json(data);
     } catch (error: any) {
-        console.error("Failed to fetch Hevy workouts:", error.response?.data || error.message);
+        console.error("Failed to fetch Hevy workouts:", error.message);
         return NextResponse.json({
             error: "Could not analyze past battles.",
-            details: error.response?.data
-        }, { status: error.response?.status || 500 });
+            message: error.message
+        }, { status: 500 });
     }
 }
 

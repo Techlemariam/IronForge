@@ -1,10 +1,10 @@
 'use server'
 
-
-import axios from 'axios';
 import { HevyExerciseTemplate } from '@/types/hevy';
-import { createClient } from '@/utils/supabase/server';
+import axios from 'axios';
 import prisma from '@/lib/prisma';
+import { getHevyTemplates } from '@/lib/hevy';
+import { createClient } from '@/utils/supabase/server';
 
 
 export async function getHevyTemplatesAction(apiKey: string) {
@@ -13,44 +13,16 @@ export async function getHevyTemplatesAction(apiKey: string) {
     }
 
     try {
-        const url = 'https://api.hevyapp.com/v1/exercise_templates';
-        let allExercises: HevyExerciseTemplate[] = [];
-        let page = 1;
-        let keepFetching = true;
-
-        while (keepFetching) {
-            try {
-                const response = await axios.get(url, {
-                    headers: { 'api-key': apiKey },
-                    params: { per_page: 100, page: page }
-                });
-
-                const exercises = response.data.exercise_templates;
-                if (exercises && exercises.length > 0) {
-                    allExercises.push(...exercises);
-                    page++;
-                } else {
-                    keepFetching = false;
-                }
-            } catch (error: any) {
-                if (error.response && error.response.data && error.response.data.error === 'Page not found') {
-                    keepFetching = false;
-                } else {
-                    throw error;
-                }
-            }
-        }
-
+        const allExercises = await getHevyTemplates(apiKey);
         return {
             exercise_templates: allExercises,
             page: 1,
             total_pages: 1,
             total_records: allExercises.length
         };
-
     } catch (error: any) {
         console.error("Server Action Hevy Error:", error.message);
-        throw new Error("Failed to fetch Hevy templates: " + (error.response?.data?.error || error.message));
+        throw new Error("Failed to fetch Hevy templates: " + error.message);
     }
 }
 
