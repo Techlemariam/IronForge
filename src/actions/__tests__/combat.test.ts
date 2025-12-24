@@ -136,7 +136,7 @@ describe('Combat Server Actions', () => {
                 logs: []
             });
 
-            const result = await performCombatAction({ type: 'basic_attack' } as any);
+            const result = await performCombatAction({ type: 'ATTACK' } as any);
 
             expect(result.success).toBe(true);
             expect(result.newState.bossHp).toBe(900);
@@ -167,7 +167,7 @@ describe('Combat Server Actions', () => {
                 logs: []
             });
 
-            const result = await performCombatAction({ type: 'basic_attack' } as any);
+            const result = await performCombatAction({ type: 'ATTACK' } as any);
 
             expect(result.success).toBe(true);
             expect(result.loot).toBeDefined(); // From mocked LootSystem
