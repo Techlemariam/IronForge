@@ -17,7 +17,8 @@
     "postinstall": "prisma generate"
   },
   "dependencies": {
-    "@ai-sdk/google": "^2.0.51",
+    "@ai-sdk/google": "^1.2.22",
+    "@ai-sdk/react": "^3.0.3",
     "@google/genai": "^1.33.0",
     "@mediapipe/tasks-vision": "0.10.9",
     "@prisma/client": "^6.0.0",
@@ -27,7 +28,7 @@
     "@supabase/supabase-js": "^2.47.10",
     "@types/canvas-confetti": "^1.9.0",
     "@types/howler": "^2.2.12",
-    "ai": "^5.0.116",
+    "ai": "^4.0.0",
     "axios": "^1.6.0",
     "canvas-confetti": "^1.9.4",
     "class-variance-authority": "^0.7.1",
@@ -46,7 +47,7 @@
     "zustand": "^5.0.9"
   },
   "devDependencies": {
-    "@types/react": "^19.2.3",
+    "@types/react": "^19.0.0",
     "@types/react-dom": "^19.2.3",
     "@types/three": "^0.182.0",
     "autoprefixer": "^10.4.14",
