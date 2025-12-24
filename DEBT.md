@@ -4,7 +4,7 @@
 
 | Date | File | Issue | Owner | Status |
 |:-----|:-----|:------|:------|:-------|
-| 2025-12-23 | `src/services/*` | Legacy adapters - ska konverteras till Server Actions | @architect | Open |
+| 2025-12-23 | `src/services/*` | Legacy adapters - ska konverteras till Server Actions (Started: Progression/Hevy) | @architect | In Progress |
 | 2025-12-23 | `src/actions/combat.ts` | Prisma Monster type mismatch - fixed with PrismaMonster type | @coder | ✅ Resolved |
 | 2025-12-23 | `src/features/game/CombatArena.tsx` | `Equipment` type missing `rarity`/`image` props for `LootReveal` | @coder | ✅ Resolved (was false positive) |
 
