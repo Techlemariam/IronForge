@@ -8,6 +8,7 @@ import { calculateTitanAttributes } from '@/utils';
 import { Monster } from '@/types';
 import { LootSystem } from '@/services/game/LootSystem';
 import { revalidatePath } from 'next/cache';
+import { StartBossFightSchema, PerformCombatActionInputSchema } from '@/types/schemas';
 
 // Type for Prisma Monster with hp/level (schema has these but client may be stale)
 type PrismaMonster = {
@@ -29,6 +30,7 @@ type PrismaMonster = {
 const ACTIVE_SESSIONS: Record<string, { state: CombatState; bossId: string; userId: string }> = {};
 
 export async function startBossFight(bossId: string) {
+    const { bossId: validatedBossId } = StartBossFightSchema.parse({ bossId });
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
@@ -63,7 +65,7 @@ export async function startBossFight(bossId: string) {
     // Hardcoded lookup for MVP from static data or DB
     // Assuming MONSTERS is available or we fetch from DB Monster table created in previous step
     // Let's try to fetch from DB first
-    let boss = await prisma.monster.findUnique({ where: { id: bossId } }) as PrismaMonster | null;
+    let boss = await prisma.monster.findUnique({ where: { id: validatedBossId } }) as PrismaMonster | null;
 
     // Fallback to static if not in DB (or if we prefer static data for now)
     if (!boss) {
@@ -84,12 +86,13 @@ export async function startBossFight(bossId: string) {
     };
 
     // Store Session
-    ACTIVE_SESSIONS[user.id] = { state: initialState, bossId, userId: user.id };
+    ACTIVE_SESSIONS[user.id] = { state: initialState, bossId: validatedBossId, userId: user.id };
 
     return { success: true, state: initialState, boss };
 }
 
 export async function performCombatAction(action: CombatAction, clientState?: CombatState) {
+    const { action: validatedAction, clientState: validatedClientState } = PerformCombatActionInputSchema.parse({ action, clientState });
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
@@ -136,7 +139,7 @@ export async function performCombatAction(action: CombatAction, clientState?: Co
     };
 
     // 3. Process Turn
-    const result = CombatEngine.processTurn(session.state, action, attributes, boss);
+    const result = CombatEngine.processTurn(session.state, validatedAction, attributes, boss);
 
     // Update Session
     session.state = result.newState;
@@ -182,4 +185,33 @@ export async function performCombatAction(action: CombatAction, clientState?: Co
         loot,
         reward
     };
+}
+
+export async function fleeFromCombat(goldCost: number = 50) {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) return { success: false, message: 'Not authenticated' };
+
+    const session = ACTIVE_SESSIONS[user.id];
+    if (!session) return { success: false, message: 'No active combat session' };
+
+    // Fetch user to check gold
+    const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
+    if (!dbUser) return { success: false, message: 'User not found' };
+
+    if (dbUser.gold < goldCost) {
+        return { success: false, message: `Not enough gold (need ${goldCost}, have ${dbUser.gold})` };
+    }
+
+    // Deduct gold
+    await prisma.user.update({
+        where: { id: user.id },
+        data: { gold: { decrement: goldCost } },
+    });
+
+    // Clear combat session
+    delete ACTIVE_SESSIONS[user.id];
+
+    return { success: true, goldSpent: goldCost };
 }

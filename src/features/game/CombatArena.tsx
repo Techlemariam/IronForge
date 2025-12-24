@@ -3,9 +3,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Monster } from '@/types';
 import { CombatState } from '@/services/game/CombatEngine';
-import { startBossFight, performCombatAction } from '@/actions/combat';
+import { startBossFight, performCombatAction, fleeFromCombat } from '@/actions/combat';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Swords, Shield, Heart, Zap, Skull, Trophy } from 'lucide-react';
+import { Swords, Shield, Heart, Zap, Skull, Trophy, DoorOpen } from 'lucide-react';
 import { playSound } from '@/utils'; // Assuming sound utils exist or using previously defined ones
 import { LootReveal } from '@/components/game/LootReveal';
 // Local type matching LootReveal's expectations
@@ -96,6 +96,24 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
         }
     };
 
+    const handleFlee = async () => {
+        if (isProcessingTurn) return;
+        setIsProcessingTurn(true);
+        try {
+            const res = await fleeFromCombat(50);
+            if (res.success) {
+                playSound('flee' as any);
+                onClose();
+            } else {
+                alert(res.message || 'Could not flee');
+            }
+        } catch (e) {
+            console.error(e);
+        } finally {
+            setIsProcessingTurn(false);
+        }
+    };
+
     if (isLoading) return <div className="flex items-center justify-center h-screen bg-black text-white"><LoadingSpinner /></div>;
     if (!gameState || !boss) return null;
 
@@ -177,7 +195,7 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
                 </div>
 
                 {/* Action Bar */}
-                <div className="max-w-4xl mx-auto grid grid-cols-4 gap-4">
+                <div className="max-w-4xl mx-auto grid grid-cols-5 gap-4">
                     <ActionButton
                         icon={<Swords className="w-6 h-6" />}
                         label="Attack"
@@ -205,6 +223,13 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
                         color="bg-purple-600 hover:bg-purple-500"
                         isSpecial
                         onClick={() => handleAction('ULTIMATE')}
+                        disabled={isProcessingTurn || gameState.isVictory || gameState.isDefeat}
+                    />
+                    <ActionButton
+                        icon={<DoorOpen className="w-6 h-6" />}
+                        label="Flee"
+                        color="bg-amber-600 hover:bg-amber-500"
+                        onClick={handleFlee}
                         disabled={isProcessingTurn || gameState.isVictory || gameState.isDefeat}
                     />
                 </div>
