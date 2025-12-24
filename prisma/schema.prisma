@@ -59,6 +59,7 @@ model User {
   titles             UserTitle[]
   activeTitle        Title?            @relation("ActiveTitle", fields: [activeTitleId], references: [id])
   activeTitleId      String?
+  weeklyPlans        WeeklyPlan[]
 }
 
 model CardioLog {
@@ -281,4 +282,15 @@ model BattleLog {
   timestamp  DateTime @default(now())
   battleType String   @default("DUEL")
   logData    Json?
+}
+
+model WeeklyPlan {
+  id        String   @id @default(cuid())
+  userId    String
+  weekStart DateTime
+  plan      Json     // Array of 7 OracleRecommendations
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@index([userId, weekStart])
 }
