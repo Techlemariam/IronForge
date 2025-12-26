@@ -2,7 +2,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import DashboardClient, { InitialDataProps } from '../DashboardClient';
+import DashboardClient from '../DashboardClient';
 
 // Mock dynamic imports
 vi.mock('next/dynamic', () => ({
@@ -14,11 +14,25 @@ vi.mock('next/dynamic', () => ({
 }));
 
 // Mock Lucide React
-vi.mock('lucide-react', () => ({
-    Mic: () => <div data-testid="icon-mic" />,
-    Bike: () => <div data-testid="icon-bike" />,
-    Footprints: () => <div data-testid="icon-footprints" />,
-}));
+// Mock Lucide React
+vi.mock('lucide-react', () => {
+    const MockIcon = () => <div data-testid="mock-icon" />;
+    return {
+        Mic: MockIcon,
+        Bike: MockIcon,
+        Footprints: MockIcon,
+        Sword: MockIcon,
+        Map: MockIcon,
+        Castle: MockIcon,
+        Dumbbell: MockIcon,
+        Scroll: MockIcon,
+        Skull: MockIcon,
+        ShoppingBag: MockIcon,
+        Shield: MockIcon,
+        Users: MockIcon,
+        Gavel: MockIcon,
+    };
+});
 
 // Mock Child Components to simplify testing
 vi.mock('@/components/core/SettingsCog', () => ({
@@ -42,6 +56,9 @@ vi.mock('@/components/GeminiLiveCoach', () => ({
 vi.mock('@/components/OracleChat', () => ({
     OracleChat: () => <div data-testid="oracle-chat">Oracle Chat</div>
 }));
+vi.mock('@/features/dashboard/CitadelHub', () => ({
+    CitadelHub: () => <div data-testid="citadel-hub">Citadel Hub</div>
+}));
 
 // Mock Actions
 vi.mock('@/actions/hevy', () => ({
@@ -52,22 +69,39 @@ vi.mock('@/actions/progression', () => ({
 }));
 
 describe('DashboardClient', () => {
-    const mockInitialData: InitialDataProps = {
-        userId: 'test-user',
-        nameMap: new Map(),
-        ttb: {} as any,
+    // Correctly structure the props based on new DashboardClientProps interface
+    const mockDashboardData: any = {
         wellness: {} as any,
-        level: 5,
-        auditReport: {} as any,
-        oracleRec: null as any,
-        weaknessAudit: {} as any,
-        forecast: [],
+        activities: [],
         events: [],
+        ttb: {} as any,
+        recommendation: {
+            id: 'mock-rec',
+            type: 'QUEST',
+            title: 'Mock Quest',
+            description: 'Mock Description',
+            confidence: 0.9,
+            reasoning: 'AI Logic',
+            generatedSession: null,
+            sessionId: null,
+            stats: {}
+        } as any,
+        auditReport: {} as any,
+        forecast: [],
         titanAnalysis: null,
-        totalExperience: 1000,
-        apiKey: 'valid-api-key', // Configured
+        activePath: 'HYBRID_WARDEN',
+        weeklyMastery: {} as any
+    };
+
+    const mockProps = {
+        initialData: mockDashboardData,
+        userData: { id: 'test-user', hevyApiKey: 'valid-api-key' },
+        hevyTemplates: [],
+        hevyRoutines: [],
         intervalsConnected: true,
-        faction: 'HORDE'
+        stravaConnected: false,
+        faction: 'HORDE',
+        hasCompletedOnboarding: true
     };
 
     beforeEach(() => {
@@ -75,21 +109,22 @@ describe('DashboardClient', () => {
     });
 
     it('renders the Citadel view by default when configured', async () => {
-        render(<DashboardClient {...mockInitialData} />);
+        render(<DashboardClient {...mockProps} />);
 
-        expect(await screen.findByText("Oracle's Wisdom")).toBeTruthy();
+        expect(screen.getByTestId('oracle-card')).toBeTruthy();
         expect(screen.getByTestId('ultrathink-dashboard')).toBeTruthy();
         expect(screen.getByTestId('campaign-tracker')).toBeTruthy();
-        expect(screen.getByText('The Forge')).toBeTruthy();
-        expect(screen.getByText('Training Path')).toBeTruthy();
     });
 
     it('shows configuration scanlines if not configured', () => {
-        const unconfiguredData = { ...mockInitialData, apiKey: null };
+        const unconfiguredProps = {
+            ...mockProps,
+            userData: { id: 'test-user', hevyApiKey: null }
+        };
         // Mock localStorage
         vi.spyOn(Storage.prototype, 'getItem').mockReturnValue(null);
 
-        render(<DashboardClient {...unconfiguredData} />);
+        render(<DashboardClient {...unconfiguredProps} />);
 
         expect(screen.getByText('Configuration Required')).toBeTruthy();
         expect(screen.getByTestId('settings-cog')).toBeTruthy();
