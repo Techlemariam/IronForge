@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { getHevyRoutines } from '../../services/hevy';
+import { getHevyRoutinesAction } from '../../actions/hevy';
 import { HevyRoutine } from '../../types/hevy';
 import { LoadingSpinner } from '../../components/ui/LoadingSpinner';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -74,7 +74,9 @@ const RoutineSelector: React.FC<{ exerciseNameMap: Map<string, string>; onSelect
   useEffect(() => {
     const fetchRoutines = async () => {
       try {
-        const data = await getHevyRoutines();
+        const apiKey = localStorage.getItem('hevy_api_key');
+        if (!apiKey) throw new Error('API Key Missing');
+        const data = await getHevyRoutinesAction(apiKey);
         setRoutines(data.routines || []);
       } catch (err) {
         console.error(err);
