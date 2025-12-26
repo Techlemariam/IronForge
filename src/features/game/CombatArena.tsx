@@ -125,7 +125,11 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
     }, [gameState?.logs]);
 
     const handleAction = async (type: 'ATTACK' | 'DEFEND' | 'HEAL' | 'ULTIMATE') => {
-        if (isProcessingTurn || !gameState) return;
+        if (isProcessingTurn || !gameState) {
+            playSound('ui_error');
+            return;
+        }
+        playSound('ui_click');
         setIsProcessingTurn(true);
 
         try {
@@ -476,9 +480,10 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
 const ActionButton: React.FC<{ icon: React.ReactNode, label: string, color: string, onClick: () => void, disabled?: boolean, isSpecial?: boolean }> = ({ icon, label, color, onClick, disabled, isSpecial }) => (
     <button
         onClick={onClick}
+        onMouseEnter={() => !disabled && playSound('ui_hover')}
         disabled={disabled}
         className={`
-            relative group flex flex-col items-center justify-center p-4 rounded-xl transition-all duration-200
+            relative group flex flex-col items-center justify-center p-4 rounded-xl transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black
             ${disabled ? 'bg-zinc-900 opacity-50 cursor-not-allowed grayscale' : `${color} shadow-lg hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:-translate-y-1 active:scale-95`}
             ${isSpecial ? 'border-2 border-yellow-400' : ''}
         `}
