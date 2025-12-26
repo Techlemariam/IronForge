@@ -48,6 +48,7 @@ IronForge uses a hybrid architecture with **Next.js Server Actions** for client-
 | `getHevyWorkoutHistoryAction()` | Fetches recent workout history. | Auth User |
 | `saveWorkoutAction(payload)` | Logs a workout back to Hevy. | Auth User |
 | `connectIntervals(key, id)` | Connects to Intervals.icu. | Auth User |
+| `importHevyHistoryAction(workouts)` | Bulk imports Hevy workout history. | Auth User |
 | `disconnectIntervals()` | Removes Intervals.icu connection. | Auth User |
 | `getWellnessAction(date)` | Fetches wellness data for specific date. | Auth User |
 | `getActivitiesAction(start, end)` | Fetches activities in date range. | Auth User |
