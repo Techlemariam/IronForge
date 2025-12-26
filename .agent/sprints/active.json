@@ -1,29 +1,6 @@
 {
-    "version": "1.0",
-    "activeSprint": null,
-    "template": {
-        "phases": [
-            {
-                "order": 1,
-                "agent": "analyst",
-                "task": "Define requirements in task.md"
-            },
-            {
-                "order": 2,
-                "agent": "architect",
-                "task": "Create implementation_plan.md"
-            },
-            {
-                "order": 3,
-                "agent": "coder",
-                "task": "Implement the plan"
-            },
-            {
-                "order": 4,
-                "agent": "qa",
-                "task": "Verify with agent:verify + walkthrough"
-            }
-        ]
-    },
-    "history": []
+  "version": "1.0",
+  "sourceOfTruth": ".agent/sprints/current.md",
+  "status": "active",
+  "lastSync": null
 }

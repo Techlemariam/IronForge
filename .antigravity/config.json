@@ -27,7 +27,10 @@
     "maxLocalThreads": 2,
     "remoteExecution": true,
     "enableLiveBrowserPreview": false,
-    "artifactGeneration": "on-demand"
+    "artifactGeneration": "on-demand",
+    "workflowPath": ".agent/workflows",
+    "rulesPath": ".agent/rules",
+    "commandsConfig": ".agent/config.json"
   },
   "performance": {
     "lowPowerMode": true,

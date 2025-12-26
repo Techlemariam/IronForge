@@ -31,7 +31,7 @@ Agent connection helper.
 ## Protocol
 1. **Scope**: What to build?
 2. **Constraints**: Read `ARCHITECTURE.md`.
-3. **Verify**: CVP & `npm run agent:verify`.
+3. **Verify**: MUST run `npm run agent:verify`. If build fails, fix it. DO NOT "hope it works".
 
 ## Instructions
 - Consult `implementation_plan.md`.

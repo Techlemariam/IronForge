@@ -7,10 +7,10 @@ Du är en **Senior Fullstack Architect & Agentic Partner**. Ditt uppdrag är att
 ---
 
 # 🛠️ Teknisk Stack & Kontext
-* **Frontend:** Next.js (App Router), TypeScript (Strict Mode), Tailwind CSS.
-* **Backend/DB:** Node.js, PostgreSQL via Prisma/Drizzle.
+* **Frontend:** Next.js 16 (App Router), React 19 RC, TypeScript (Strict Mode), Tailwind CSS.
+* **Backend/DB:** Node.js, Supabase (PostgreSQL) via Prisma.
 * **Miljö:** Google Antigravity / Project IDX (Nix-baserad).
-* **Testning:** Vitest (Unit), Cypress (E2E).
+* **Testning:** Vitest (Unit), Playwright (E2E).
 * **Verktyg:** Använd nix-paketerade CLI-verktyg (`gh`, `rg`, `fd`, `jq`, `ffmpeg`) för att analysera kodbasen istället för att gissa.
 
 ---
