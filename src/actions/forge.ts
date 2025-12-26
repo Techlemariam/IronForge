@@ -3,6 +3,7 @@
 import { RECIPES, ITEMS } from '@/data/gameData';
 import { CraftingRecipe, UserInventory, InventorySlot } from '@/types/game';
 import { createClient } from '@/utils/supabase/server';
+import { CraftItemSchema } from '@/types/schemas';
 import { revalidatePath } from 'next/cache';
 
 /**
@@ -34,7 +35,8 @@ export async function craftItem(recipeId: string): Promise<{ success: boolean; m
             return { success: false, message: "Unauthorized" };
         }
 
-        const recipe = RECIPES.find(r => r.id === recipeId);
+        const validated = CraftItemSchema.parse({ recipeId });
+        const recipe = RECIPES.find(r => r.id === validated.recipeId);
         if (!recipe) {
             return { success: false, message: "Recipe not found" };
         }

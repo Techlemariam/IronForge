@@ -7,10 +7,10 @@ import { getHevyTemplates } from '@/lib/hevy';
 import { createClient } from '@/utils/supabase/server';
 
 
+import { HevyHelperSchema, ImportHevyHistorySchema } from '@/types/schemas';
+
 export async function getHevyTemplatesAction(apiKey: string) {
-    if (!apiKey) {
-        throw new Error("Hevy API Key is required.");
-    }
+    const { apiKey: validatedKey } = HevyHelperSchema.pick({ apiKey: true }).parse({ apiKey });
 
     try {
         const allExercises = await getHevyTemplates(apiKey);
@@ -29,9 +29,7 @@ export async function getHevyTemplatesAction(apiKey: string) {
 
 
 export async function getHevyRoutinesAction(apiKey: string, page: number = 1, pageSize: number = 10) {
-    if (!apiKey) {
-        throw new Error("Hevy API Key is required.");
-    }
+    const { apiKey: key, page: p, pageSize: ps } = HevyHelperSchema.pick({ apiKey: true, page: true, pageSize: true }).parse({ apiKey, page, pageSize });
 
     try {
         const response = await axios.get('https://api.hevyapp.com/v1/routines', {
@@ -46,9 +44,7 @@ export async function getHevyRoutinesAction(apiKey: string, page: number = 1, pa
 }
 
 export async function getHevyWorkoutHistoryAction(apiKey: string, count: number = 30) {
-    if (!apiKey) {
-        throw new Error("Hevy API Key is required.");
-    }
+    const { apiKey: key, count: c } = HevyHelperSchema.pick({ apiKey: true, count: true }).parse({ apiKey, count });
 
     const pageSize = 10;
     const numPagesToFetch = Math.ceil(count / pageSize);
@@ -79,12 +75,11 @@ export async function getHevyWorkoutHistoryAction(apiKey: string, count: number 
 
 
 export async function saveWorkoutAction(apiKey: string, payload: any) {
+    const { apiKey: validatedKey } = HevyHelperSchema.pick({ apiKey: true }).parse({ apiKey });
+    // Note: payload validation is tricky as strict Hevy schema might reject valid calls if our types are incomplete.
+    // Ideally we validate payload too, but for now we secure the API key.
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
-
-    if (!apiKey) {
-        throw new Error("Hevy API Key is required.");
-    }
 
     try {
         const response = await axios.post('https://api.hevyapp.com/v1/workouts', payload, {
@@ -131,6 +126,8 @@ export async function saveWorkoutAction(apiKey: string, payload: any) {
 }
 
 export async function importHevyHistoryAction(workouts: any[]) {
+    // Validate strict structure
+    const { workouts: validatedWorkouts } = ImportHevyHistorySchema.parse({ workouts });
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
 

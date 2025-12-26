@@ -1,6 +1,6 @@
 'use server'
 
-import { getWellness, getActivities, getEvents } from '@/lib/intervals';
+import { getWellness, getActivities, getEvents, getAthleteSettings } from '@/lib/intervals';
 import { createClient } from '@/utils/supabase/server';
 import prisma from '@/lib/prisma';
 import { IntervalsWellness, IntervalsActivity, IntervalsEvent } from '@/types';
@@ -71,7 +71,17 @@ export async function getEventsAction(startDate: string, endDate: string): Promi
         const data = await getEvents(startDate, endDate, apiKey, athleteId);
         return data as unknown as IntervalsEvent[];
     } catch (error: any) {
-        console.error("Server Action Intervals Events Error:", error.message);
         return [];
+    }
+}
+
+export async function getAthleteSettingsAction() {
+    try {
+        const { apiKey, athleteId } = await getIntervalsCredentials();
+        const data = await getAthleteSettings(apiKey, athleteId);
+        return data;
+    } catch (error: any) {
+        console.error("Server Action Intervals Settings Error:", error.message);
+        return null;
     }
 }

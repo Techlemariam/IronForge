@@ -27,10 +27,10 @@ type PrismaMonster = {
 
 // Simple in-memory cache for MVP combat sessions (Not persist across server restarts)
 // In prod, use Redis or DB table `CombatSession`
-const ACTIVE_SESSIONS: Record<string, { state: CombatState; bossId: string; userId: string }> = {};
+const ACTIVE_SESSIONS: Record<string, { state: CombatState; bossId: string; userId: string; tier: string }> = {};
 
-export async function startBossFight(bossId: string) {
-    const { bossId: validatedBossId } = StartBossFightSchema.parse({ bossId });
+export async function startBossFight(bossId: string, tier: 'STORY' | 'HEROIC' | 'TITAN_SLAYER' = 'HEROIC') {
+    const { bossId: validatedBossId, tier: validatedTier } = StartBossFightSchema.parse({ bossId, tier });
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
@@ -73,20 +73,31 @@ export async function startBossFight(bossId: string) {
         return { success: false, message: 'Boss not found' };
     }
 
+    // Apply Tier Scaling
+    let hpMultiplier = 1.0;
+
+    if (validatedTier === 'STORY') {
+        hpMultiplier = 0.7;
+    } else if (validatedTier === 'TITAN_SLAYER') {
+        hpMultiplier = 1.5;
+    }
+
+    const scaledBossHp = Math.floor(boss.hp * hpMultiplier);
+
     // 3. Initialize State
     const initialState: CombatState = {
         playerHp: playerMaxHp,
         playerMaxHp: playerMaxHp,
-        bossHp: boss.hp,
-        bossMaxHp: boss.hp,
+        bossHp: scaledBossHp,
+        bossMaxHp: scaledBossHp,
         turnCount: 1,
-        logs: [`Encounter started: ${boss.name} (Lvl ${boss.level})`],
+        logs: [`Encounter started: ${boss.name} (${validatedTier} Mode)`],
         isVictory: false,
         isDefeat: false
     };
 
     // Store Session
-    ACTIVE_SESSIONS[user.id] = { state: initialState, bossId: validatedBossId, userId: user.id };
+    ACTIVE_SESSIONS[user.id] = { state: initialState, bossId: validatedBossId, userId: user.id, tier: validatedTier };
 
     return { success: true, state: initialState, boss };
 }
@@ -132,14 +143,32 @@ export async function performCombatAction(action: CombatAction, clientState?: Co
         level: dbBoss.level,
         description: dbBoss.description,
         image: dbBoss.image || '',
+        element: 'Physical', // Default if DB doesn't have it yet, or map if added to Prisma
         hp: dbBoss.hp,
         maxHp: dbBoss.hp,
         weakness: [], // dbBoss.weakness not in Prisma model? Check schema. Assumed empty for now.
         associatedExerciseIds: []
     };
 
+    // Apply Tier Damage Scaling to Boss Logic? 
+    // The CombatEngine needs to know about scaling damage. 
+    // We can either pass a scaled boss object or modifying CombatEngine.
+    // Let's modify the boss object we pass to CombatEngine.
+
+    const tier = session.tier || 'HEROIC';
+    let damageMultiplier = 1.0;
+    if (tier === 'STORY') damageMultiplier = 0.7;
+    if (tier === 'TITAN_SLAYER') damageMultiplier = 1.3;
+
+    // Temporary Boss Object for calculation
+    // We only need to adjust power if CombatEngine uses level or stats.
+    // CombatEngine uses: `boss.level * 15 + (boss.maxHp / 100)`
+    // We can simulate this by adjusting level relative to tier.
+
+    const scaledBoss = { ...boss, level: Math.floor(boss.level * damageMultiplier) };
+
     // 3. Process Turn
-    const result = CombatEngine.processTurn(session.state, validatedAction, attributes, boss);
+    const result = CombatEngine.processTurn(session.state, validatedAction, attributes, scaledBoss as any);
 
     // Update Session
     session.state = result.newState;
@@ -154,23 +183,29 @@ export async function performCombatAction(action: CombatAction, clientState?: Co
         // We need 'activityData' from a real workout usually, here we mock it or base on Boss difficulty
 
         // Bonus chance for boss kill?
+        // loot = await LootSystem.generateLoot(boss.id, user.id);
         const lootRoll = await LootSystem.rollForLoot(user.id);
         loot = lootRoll;
 
-        // Award XP / Gold
-        const xpReward = boss.level * 50;
-        const goldReward = boss.level * 25;
+        // Award XP/Gold
+        // Tier Scaling for Rewards
+        let rewardMultiplier = 1.0;
+        if (tier === 'STORY') rewardMultiplier = 0.5;
+        if (tier === 'TITAN_SLAYER') rewardMultiplier = 2.0;
+
+        const xp = Math.floor((boss.level * 50) * rewardMultiplier);
+        const gold = Math.floor((boss.level * 25) * rewardMultiplier);
+
+        reward = { xp, gold };
 
         await prisma.user.update({
             where: { id: user.id },
             data: {
-                totalExperience: { increment: xpReward },
-                gold: { increment: goldReward },
-                // Maybe increment 'boss_kills' stat/achievement
+                totalExperience: { increment: xp },
+                gold: { increment: gold },
+                kineticEnergy: { increment: 5 } // Fixed 5 kinetic energy
             }
         });
-
-        reward = { xp: xpReward, gold: goldReward };
 
         delete ACTIVE_SESSIONS[user.id]; // Clear session
         revalidatePath('/armory'); // Update inventory
