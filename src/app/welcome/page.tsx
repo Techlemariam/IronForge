@@ -11,9 +11,9 @@ export default function WelcomePage() {
             {/* Navigation */}
             <nav className="fixed top-0 w-full z-50 bg-forge-950/80 backdrop-blur-md border-b border-white/5">
                 <div className="container mx-auto px-6 h-16 flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 bg-warrior rounded flex items-center justify-center">
-                            <Swords className="w-5 h-5 text-black" />
+                    <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 bg-warrior rounded flex items-center justify-center overflow-hidden border border-warrior/50 shadow-[0_0_15px_rgba(255,215,0,0.2)]">
+                            <img src="/logo-rpg.png" alt="IronForge Logo" className="w-full h-full object-cover" />
                         </div>
                         <span className="font-serif text-xl tracking-widest uppercase font-bold text-shadow-glow">IronForge</span>
                     </div>
