@@ -1,0 +1,9 @@
+{
+  "commands": [
+    {
+      "trigger": "/bootstrap",
+      "action": "load_rule('.agent/rules/00-bootstrap-protocol.md')",
+      "description": "Initialiserar en ny IronForge-modul med full scaffolding."
+    }
+  ]
+}

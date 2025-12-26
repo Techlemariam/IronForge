@@ -1,0 +1,56 @@
+{
+  "$schema": "https://ironforge.dev/schemas/handoff.json",
+  "version": "1.0",
+  "description": "Inter-agent handoff protocol schema",
+  "handoff": {
+    "id": "",
+    "timestamp": "",
+    "from": {
+      "agent": "",
+      "workflow": "",
+      "mode": ""
+    },
+    "to": {
+      "agent": "",
+      "workflow": "",
+      "suggestedMode": ""
+    },
+    "context": {
+      "objective": "",
+      "completedSteps": [],
+      "pendingSteps": [],
+      "artifacts": [],
+      "constraints": [],
+      "userPreferences": {}
+    },
+    "state": {
+      "files_modified": [],
+      "files_created": [],
+      "tests_status": "",
+      "build_status": "",
+      "current_errors": []
+    },
+    "instructions": {
+      "priority": "normal",
+      "deadline": null,
+      "notes": ""
+    }
+  },
+  "templates": {
+    "architect_to_coder": {
+      "from": { "agent": "architect", "workflow": "/architect" },
+      "to": { "agent": "coder", "workflow": "/coder", "suggestedMode": "implement" },
+      "requiredContext": ["implementation_plan.md", "ARCHITECTURE.md"]
+    },
+    "coder_to_qa": {
+      "from": { "agent": "coder", "workflow": "/coder" },
+      "to": { "agent": "qa", "workflow": "/generate-tests" },
+      "requiredContext": ["files_modified", "implementation_plan.md"]
+    },
+    "qa_to_deploy": {
+      "from": { "agent": "qa", "workflow": "/health-check" },
+      "to": { "agent": "infrastructure", "workflow": "/deploy" },
+      "requiredContext": ["test_results", "build_status"]
+    }
+  }
+}

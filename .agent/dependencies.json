@@ -1,0 +1,68 @@
+{
+  "$schema": "https://ironforge.dev/schemas/dependencies.json",
+  "version": "1.0",
+  "description": "Workflow dependency graph for IronForge agent system",
+  "workflows": {
+    "/deploy": {
+      "requires": ["/health-check", "/generate-tests"],
+      "softRequires": ["/optimize-tokens"],
+      "blockedBy": [],
+      "description": "Deployment requires green health and tests"
+    },
+    "/feature": {
+      "requires": [],
+      "chain": ["/analyst", "/architect", "/coder", "/generate-tests", "/polish", "/health-check"],
+      "description": "Meta-pipeline, self-manages dependencies"
+    },
+    "/health-check": {
+      "requires": [],
+      "blockedBy": [],
+      "description": "Can run independently"
+    },
+    "/generate-tests": {
+      "requires": [],
+      "blockedBy": [],
+      "description": "Can run independently on any file"
+    },
+    "/coder": {
+      "requires": [],
+      "softRequires": ["/architect"],
+      "description": "Works best after architecture is defined"
+    },
+    "/architect": {
+      "requires": [],
+      "softRequires": ["/analyst"],
+      "description": "Works best after requirements are gathered"
+    },
+    "/cleanup": {
+      "requires": ["/health-check"],
+      "description": "Should only clean after audit identifies issues"
+    },
+    "/optimize-tokens": {
+      "requires": [],
+      "blockedBy": [],
+      "description": "Can run independently"
+    },
+    "/polish": {
+      "requires": [],
+      "softRequires": ["/coder"],
+      "description": "Works best after UI is implemented"
+    },
+    "/bootstrap": {
+      "requires": [],
+      "blockedBy": [],
+      "description": "Entry point for new modules"
+    },
+    "/startup": {
+      "requires": [],
+      "blockedBy": [],
+      "autoRun": true,
+      "description": "Runs automatically at session start"
+    }
+  },
+  "enforcement": {
+    "mode": "warn",
+    "blockOnMissingHardDependency": true,
+    "suggestSoftDependencies": true
+  }
+}
