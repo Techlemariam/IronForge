@@ -16,9 +16,16 @@ model User {
   level              Int               @default(1)
   totalExperience    Int               @default(0)
   kineticEnergy      Int               @default(0)
+  bodyWeight         Float             @default(75.0) // kg, default for Wilks
   intervalsApiKey    String?
   intervalsAthleteId String?
   hevyApiKey         String?
+  
+  // Strava
+  stravaAccessToken  String?
+  stravaRefreshToken String?
+  stravaExpiresAt    Int?              // Unix timestamp
+  stravaAthleteId    String?
   prioritizeHyperPro Boolean           @default(false)
   ftpCycle           Int?              @default(200)
   ftpRun             Int?              @default(250)
@@ -56,6 +63,7 @@ model User {
   // Location & Titles
   city               String?
   country            String?
+  faction            Faction           @default(HORDE)
   titles             UserTitle[]
   activeTitle        Title?            @relation("ActiveTitle", fields: [activeTitleId], references: [id])
   activeTitleId      String?
@@ -117,6 +125,11 @@ enum SubscriptionTier {
   FREE
   PRO
   LIFETIME
+}
+
+enum Faction {
+  ALLIANCE
+  HORDE
 }
 
 model ExerciseLog {
