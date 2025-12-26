@@ -2,20 +2,22 @@ import React from 'react';
 // import { NavAction, View } from '@/types/navigation'; // Removing unused import
 import { Sword, Map, Castle, Mic, Footprints, Bike, Dumbbell, Scroll, Skull, ShoppingBag, Shield, Users, Gavel } from 'lucide-react';
 import { DashboardAction } from '@/features/dashboard/DashboardClient';
+import { playSound } from '@/utils';
 
 // Shared NavButton Style
 const NavButton: React.FC<{ onClick: () => void; children: React.ReactNode; icon?: React.ReactNode, variant?: 'magma' | 'nature' | 'iron' }> = ({ onClick, children, icon, variant = 'magma' }) => {
     const variants = {
-        magma: 'border-red-900/50 bg-gradient-to-br from-red-950 to-orange-950 hover:border-red-500 text-red-200',
-        nature: 'border-green-900/50 bg-gradient-to-br from-green-950 to-emerald-950 hover:border-green-500 text-green-200',
-        iron: 'border-blue-900/50 bg-gradient-to-br from-slate-950 to-blue-950 hover:border-blue-500 text-blue-200'
+        magma: 'border-red-900/50 bg-gradient-to-br from-red-950 to-orange-950 hover:border-red-500 text-red-200 focus-visible:ring-2 focus-visible:ring-red-500',
+        nature: 'border-green-900/50 bg-gradient-to-br from-green-950 to-emerald-950 hover:border-green-500 text-green-200 focus-visible:ring-2 focus-visible:ring-green-500',
+        iron: 'border-blue-900/50 bg-gradient-to-br from-slate-950 to-blue-950 hover:border-blue-500 text-blue-200 focus-visible:ring-2 focus-visible:ring-blue-500'
     };
 
     return (
         <button
-            onClick={onClick}
+            onClick={() => { playSound('ui_click'); onClick(); }}
+            onMouseEnter={() => playSound('ui_hover')}
             className={`
-                relative flex items-center p-3 border rounded-lg shadow-lg transition-all duration-200 group w-full text-left
+                relative flex items-center p-3 border rounded-lg shadow-lg transition-all duration-200 group w-full text-left focus:outline-none
                 ${variants[variant]}
             `}
         >

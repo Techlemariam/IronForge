@@ -26,6 +26,7 @@ import { CardioMode } from '@/features/training/CardioStudio';
 import { OracleChat } from '@/components/OracleChat';
 import { WorkoutDefinition } from '@/types/training';
 import { mapDefinitionToSession } from '@/utils/workoutMapper';
+import { playSound } from '@/utils';
 
 // Dynamic Imports with disabling SSR for client-heavy features
 const RoutineSelector = dynamic(() => import('@/features/training/RoutineSelector'), { ssr: false });
@@ -43,7 +44,7 @@ import { FirstLoginQuest } from '@/features/onboarding/FirstLoginQuest';
 // UI Components
 const CoachToggle: React.FC<{ onClick: () => void }> = ({ onClick }) => (
     <button
-        onClick={onClick}
+        onClick={() => { playSound('ui_click'); onClick(); }}
         className="fixed bottom-6 right-6 z-40 bg-purple-900 border-2 border-purple-500 rounded-full p-4 shadow-[0_0_20px_rgba(168,85,247,0.4)] hover:scale-110 transition-transform group"
     >
         <Mic className="w-6 h-6 text-white group-hover:animate-pulse" />
@@ -502,7 +503,7 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
         return (
             <div className="bg-void min-h-screen text-white flex items-center justify-center p-4">
                 <div className="scanlines" />
-                <SettingsCog onClick={() => setModalOpen(true)} />
+                <SettingsCog onClick={() => { playSound('ui_click'); setModalOpen(true); }} />
                 <ConfigModal
                     isOpen={isModalOpen}
                     onClose={() => setModalOpen(false)}
@@ -528,7 +529,7 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
     return (
         <div className="bg-forge-900 min-h-screen bg-noise">
             <div className="scanlines pointer-events-none fixed inset-0 z-50 opacity-5" />
-            <SettingsCog onClick={() => setModalOpen(true)} />
+            <SettingsCog onClick={() => { playSound('ui_click'); setModalOpen(true); }} />
             <ConfigModal
                 isOpen={isModalOpen}
                 onClose={() => setModalOpen(false)}
