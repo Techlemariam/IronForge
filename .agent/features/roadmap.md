@@ -6,15 +6,19 @@
 
 ## 📋 Backlog (Ready for Analysis)
 ### High Priority (ROI ≥ 3.0)
-<!-- No pending high priority items -->
+- [ ] Mobile App Store Listing <!-- status: pending | priority: high | roi: 3.0 | effort: M | source: evolve/analyst -->
 
 ### Medium Priority (ROI 2.0-2.9)
+- [ ] Weekly Challenges <!-- status: pending | priority: medium | roi: 2.8 | effort: M | source: evolve/game-designer -->
 - [ ] DashboardClient Refactor <!-- status: pending | priority: medium | roi: 2.5 | source: evolve/architect -->
-- [ ] Consolidate Leaderboard Implementations <!-- status: pending | priority: medium | roi: 1.5 | effort: S | source: idea -->
-- [ ] Power/Pace Zone Training <!-- status: pending | priority: medium | roi: 1.0 | effort: L | source: idea -->
+- [ ] Zone-Based Buffs (Cardio Titan) <!-- status: pending | priority: medium | roi: 2.5 | effort: M | source: evolve/titan-coach -->
+- [ ] E2E Critical Path Test <!-- status: pending | priority: medium | roi: 2.3 | effort: S | source: evolve/qa -->
+- [ ] Consolidate Leaderboard Implementations <!-- status: pending | priority: medium | roi: 2.0 | effort: S | source: evolve/ui-ux -->
+- [ ] Power/Pace Zone Training <!-- status: pending | priority: medium | roi: 2.2 | effort: L | source: evolve/performance-coach -->
 
 ### Low Priority (ROI < 2.0)
 <!-- No pending low priority items -->
+
 
 ## ✅ Shipped
 - [x] Agent Orchestration Level 1-4 <!-- date: 2025-12-24 -->

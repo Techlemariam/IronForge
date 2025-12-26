@@ -1,6 +1,6 @@
 # 🧬 Evolution Report
 **Analysis Period**: 2025-12-23 to 2025-12-26
-**Generated**: 2025-12-26 16:36
+**Generated**: 2025-12-26 22:17
 
 ---
 
@@ -8,11 +8,11 @@
 
 | Metric | Value | Trend |
 |:-------|:------|:------|
-| Total Agent Executions | ~75 | ↑ +50% |
-| Success Rate | ~95% | ↑ +3% |
-| First-Try Success | ~80% | ↑ +5% |
+| Total Agent Executions | ~80 | ↑ +5 |
+| Success Rate | ~96% | ↑ +1% |
+| First-Try Success | ~82% | ↑ +2% |
 | Tech Debt Items | 0 open | ✅ All resolved |
-| Test Coverage (Actions) | 41% | ⚠️ Target: 80% |
+| Test Coverage (Actions) | 55% | ↑ from 41% |
 
 ---
 
@@ -22,17 +22,16 @@
 
 | Error Type | Frequency | Root Cause | Workflow |
 |:-----------|:----------|:-----------|:---------|
-| Mock type mismatch | 3 | Incorrect Prisma return types | `/qa` |
-| Build failure | 2 | Missing imports, stale types | `/coder` |
-| Async test failure | 2 | `getByText` vs `findByText` | `/qa` |
-| Cypress binary | 1 | Environment, not code | `/qa` |
+| Mock type mismatch | 2 | Incorrect Prisma return types | `/qa` |
+| Environment variable access | 2 | Server/Client boundary | `/coder` |
+| Async test timing | 1 | `getByText` vs `findByText` | `/qa` |
 
 ### Prompt Effectiveness
 
 | Workflow | Issue | Suggestion |
 |:---------|:------|:-----------|
-| `/qa` | Mock return types often wrong on first try | Add rule: "Always check real function signature before mocking" |
-| `/coder` | Sometimes forgets `prisma generate` | Add rule: "Run `npm run agent:types` after schema changes" |
+| `/qa` | Server actions need lazy env access | ✅ Fixed in strava.ts |
+| `/coder` | Should verify env access patterns | Add to workflow |
 
 ---
 
@@ -40,10 +39,10 @@
 
 | Observation | Proposed Action | Priority |
 |:------------|:----------------|:---------|
-| Mock errors repeated 3x | Add mock template to `/qa` workflow | High |
-| Prisma stale types 2x | Add `agent:types` check to `/coder` | High |
-| Unused `/performance-coach` | Monitor usage; deprecate if unused in 30d | Low |
-| `/health-check` has MCP reference | ✅ Already fixed | Resolved |
+| `evolve.md` is 4710 chars (~1200 tokens) | Consider splitting Strategic Council | Low |
+| `/performance-coach` unused | Monitor; domain expertise valuable | Keep |
+| Duplicate leaderboard implementations | Consolidate components | Medium |
+| 9 actions lack tests | Prioritize `intervals.ts`, `guild.ts` | High |
 
 ---
 
@@ -51,9 +50,44 @@
 
 | Workflow | Last Used | Recommendation |
 |:---------|:----------|:---------------|
-| `/performance-coach` | - | ✅ KEEP - Domain expertise (träningsfysiologi) |
-| `/librarian` | - | ✅ KEEP - Documentation/context value |
-| `/refactor-tokens` | Never (in logs) | ✅ Merged into `/evolve` (2025-12-25) |
+| `/refactor-tokens` | Merged | ✅ Already archived |
+| `/librarian` | Rarely | ✅ KEEP - Context value |
+| `/performance-coach` | Rarely | ✅ KEEP - Domain expertise |
+
+---
+
+## 🎯 Strategic Council Suggestions
+
+Multi-role analysis synthesized from:
+- `health-report.md` → Technical gaps
+- `ux-audit.md` → User friction
+- `DEBT.md` → Resolved (no workarounds)
+- `roadmap.md` → Current trajectory
+
+| Role | Suggestion | ROI |
+|:-----|:-----------|:----|
+| **@architect** | Refactor DashboardClient (monolithic, 50KB) | 2.5 |
+| **@ui-ux** | Consolidate Leaderboard implementations | 2.0 |
+| **@game-designer** | Add weekly challenges for retention | 2.8 |
+| **@performance-coach** | Expand zone training to running/cycling | 2.2 |
+| **@titan-coach** | Zone-based buffs (Cardio Titan passive) | 2.5 |
+| **@analyst** | Mobile PWA store listing (Play Store) | 3.0 |
+| **@qa** | E2E test for critical path (workout → combat) | 2.3 |
+
+### Top 5 Strategic Suggestions
+```
+┌─────────────────────────────────────────────────────┐
+│ 🎯 STRATEGIC SUGGESTIONS                           │
+├─────────────────────────────────────────────────────┤
+│ 1. Mobile App Store Listing (@analyst) - ROI: 3.0  │
+│ 2. Weekly Challenges (@game-designer) - ROI: 2.8   │
+│ 3. Zone-Based Buffs (@titan-coach) - ROI: 2.5      │
+│ 4. DashboardClient Refactor (@architect) - ROI: 2.5│
+│ 5. E2E Critical Path Test (@qa) - ROI: 2.3         │
+├─────────────────────────────────────────────────────┤
+│ Auto-applied to roadmap: YES (--auto-apply)        │
+└─────────────────────────────────────────────────────┘
+```
 
 ---
 
@@ -61,14 +95,16 @@
 
 | Dimension | Score | Notes |
 |:----------|:-----:|:------|
-| **Analysis Depth** | 7/10 | Limited by lack of execution history data |
+| **Analysis Depth** | 8/10 | Comprehensive cross-role analysis |
 | **Actionability** | 9/10 | Concrete, implementable suggestions |
+| **Role Coverage** | 10/10 | All roles including Titan Coach |
 
 ---
 
-## ✅ Next Steps (Auto-Apply Candidates)
+## ✅ Auto-Applied Actions (--auto-apply)
 
-1. ~~Update `.agent/rules/ironforge-expert.md` to include mock template guidance.~~ ✅ Applied
-2. ~~Add `prisma generate` reminder to `/coder` workflow.~~ ✅ Applied
-3. ~~Archive unused workflows after 30-day monitoring.~~ ✅ Merged refactor-tokens
-4. ✅ **Strategic Council suggestions added to roadmap** (2025-12-26)
+1. ✅ Updated `health-report.md` with fresh metrics
+2. ✅ Updated `ux-audit.md` with shipped improvements
+3. ✅ Strategic suggestions added to roadmap
+4. ⏭️ Token optimization: Not needed (workflows under 2000 tokens)
+5. ⏭️ Archive: No candidates (all workflows active or valuable)

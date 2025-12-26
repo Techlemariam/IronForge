@@ -1,68 +1,82 @@
 # 🎨 UI/UX Audit Report
-**Generated**: 2025-12-25 00:27
+**Generated**: 2025-12-26 22:15
 **Mode**: Audit
 
 ---
 
 ## 📊 Summary Metrics
 
-| Metric | Value | Target | Status |
-|:-------|:------|:-------|:------:|
-| **Total Components** | 66 | - | - |
-| **Reusable UI Components** | ~20 | - | - |
-| **Design System** | Tailwind + Custom | ✅ | Good |
-| **Accessibility (WCAG)** | Partial | Full | ⚠️ |
+| Metric | Value | Target | Status | Δ |
+|:-------|:------|:-------|:------:|:-:|
+| **Total Components** | 68 | - | - | +2 |
+| **Reusable UI Components** | 8 | 15+ | ⚠️ | - |
+| **Design System** | Tailwind + Custom | ✅ | Good | - |
+| **Accessibility (WCAG)** | Improved | Full | ⚠️ | ↑ |
 
 ---
 
-## 🔍 Friction Analysis
+## ✅ Resolved Since Last Audit
+
+| Issue | Solution | Status |
+|:------|:---------|:------:|
+| No onboarding flow | `OnboardingQuest` component | ✅ Shipped |
+| Config modal required | Demo Mode implemented | ✅ Shipped |
+| 12 nav buttons on Citadel | Grouped into categories | ✅ Shipped |
+| Combat no retreat | Tactical retreat added | ✅ Shipped |
+| No audio feedback | `AudioController` with UI sounds | ✅ Shipped |
+| Missing `aria-label` on icon buttons | Accessibility pass complete | ✅ Shipped |
+
+---
+
+## 🔍 Current Friction Analysis
 
 | Current Issue | Psychological Cause | Game-Inspired Solution |
 |:--------------|:--------------------|:-----------------------|
-| No onboarding flow | Cognitive overload on first load | Add "First Quest" tutorial with Oracle guidance |
-| Config modal required before use | Barrier to entry | Offer "Demo Mode" with mock data |
-| 12 nav buttons on Citadel | Decision paralysis | Group into 3-4 categories (Train / Explore / Social / Meta) |
-| Combat has no retreat option | Frustration on unwinnable fights | Add "Tactical Retreat" with XP penalty |
+| Hevy Import Wizard 3-step flow | Patience barrier | Combine steps; auto-detect format |
+| Settings modal growing large | Modal fatigue | Convert to full settings page |
+| No visual diff for training programs | Hard to compare plans | Side-by-side comparison view |
+| Leaderboard has 2 implementations | Confusion, maintenance burden | Consolidate to single component |
 
 ---
 
 ## 🧠 Cognitive Load Scoring
 
-| View | Decisions per Screen | Target | Status |
-|:-----|:--------------------:|:------:|:------:|
-| Citadel | 12 | ≤ 3 | 🔴 High |
-| Iron Mines (Workout) | 4 | ≤ 3 | ⚠️ Medium |
-| Combat Arena | 4 | ≤ 4 | ✅ Optimal |
-| Training Center | 3 | ≤ 3 | ✅ Optimal |
+| View | Decisions per Screen | Target | Status | Δ |
+|:-----|:--------------------:|:------:|:------:|:-:|
+| Citadel | 4 (grouped) | ≤ 4 | ✅ Optimal | ↓8 |
+| Iron Mines (Workout) | 3 | ≤ 3 | ✅ Optimal | ↓1 |
+| Combat Arena | 4 | ≤ 4 | ✅ Optimal | - |
+| Training Center | 3 | ≤ 3 | ✅ Optimal | - |
+| Settings Modal | 6 tabs | ≤ 4 | ⚠️ High | ↑ |
 
 ---
 
 ## ⏱️ Time-to-Delight Analysis
 
-| Flow | Current Steps | Ideal Steps | Gap |
-|:-----|:-------------:|:-----------:|:---:|
-| First Workout Log | 5 (Login → Config → Select → Start → Log) | 3 | -2 |
-| Enter Combat | 3 (Citadel → World Map → Boss) | 2 | -1 |
-| View Leaderboard | 2 (Citadel → Arena/Colosseum) | 1 (Quick link) | -1 |
+| Flow | Current Steps | Ideal Steps | Status |
+|:-----|:-------------:|:-----------:|:------:|
+| First Workout Log | 3 (Demo Mode) | 3 | ✅ Achieved |
+| Enter Combat | 2 | 2 | ✅ Achieved |
+| View Leaderboard | 2 | 1 | ⚠️ Quick link needed |
 
 ---
 
 ## ✨ Polish Recommendations
 
-### High Impact (Juicing)
-1. **Citadel Redesign**: Group 12 buttons into 3 mega-cards (Train, Explore, Social).
-2. **Onboarding Quest**: Create `FirstLoginQuest.tsx` triggered on first visit.
-3. **Audio Feedback**: Add subtle click sounds to action buttons.
+### High Impact
+1. **Settings Page Migration**: Convert modal to dedicated `/settings` route.
+2. **Leaderboard Consolidation**: Merge Colosseum and Social leaderboards.
+3. **Quick Stats Persistence**: Show XP/Gold in header across all views.
 
-### Medium Impact (Friction Removal)
-4. **Demo Mode**: Allow exploration without API keys.
-5. **Combat Retreat**: Add "Flee" button with gold cost.
-6. **Quick Stats**: Show XP/Gold in persistent header.
+### Medium Impact
+4. **Program Comparison**: Add diff view for AI-generated training plans.
+5. **Loading Skeletons**: Replace spinners with skeleton loaders.
+6. **Micro-animations**: Add entrance animations to loot reveals.
 
 ### Low Impact (Accessibility)
-7. Add `aria-label` to icon-only buttons.
-8. Ensure color contrast ratio ≥ 4.5:1.
-9. Add `focus-visible` rings to all interactive elements.
+7. Add `focus-visible` rings consistently.
+8. Ensure all modals trap focus correctly.
+9. Add keyboard shortcuts for power users.
 
 ---
 
@@ -70,9 +84,9 @@
 
 | Dimension | Score | Notes |
 |:----------|:-----:|:------|
-| **Empathy** | 8/10 | Identified key user pain points |
-| **Engagement** | 7/10 | Good suggestions but no prototypes |
+| **Empathy** | 9/10 | Strong improvement from shipped features |
+| **Engagement** | 8/10 | Audio and onboarding boost engagement |
 
 ---
 
-*Next Step*: Run `/ui-ux polish` on Citadel component to implement grouping.
+*Next Step*: Prioritize Settings Page migration or Leaderboard consolidation.
