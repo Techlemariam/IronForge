@@ -10,7 +10,7 @@ import { AchievementContext } from '../context/AchievementContext';
 import { useSkills } from '../context/SkillContext';
 import { StorageService, ActiveSessionState } from '../services/storage';
 import { IntegrationService } from '../services/integration';
-import { intervalsClient } from '../services/intervals';
+import { getWellnessAction } from '../actions/intervals';
 import ActionView from './ActionView';
 
 interface SessionRunnerProps {
@@ -66,7 +66,7 @@ const SessionRunner: React.FC<SessionRunnerProps> = ({ session, onExit, onComple
             if (settings && settings.intervalsApiKey) {
                 const today = new Date().toISOString().split('T')[0];
                 if (navigator.onLine) {
-                    const w = await intervalsClient.getWellness(today);
+                    const w = await getWellnessAction(today);
                     // Inline mapping
                     const titanW = { ...w, bodyBattery: w.bodyBattery || 0, sleepScore: w.sleepScore || 0 };
                     setWellnessData(titanW);

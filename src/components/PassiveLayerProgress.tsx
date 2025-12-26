@@ -12,13 +12,17 @@ interface PassiveLayerProgressProps {
     recoveryLevel: LayerLevel;
     mobilitySessionsCompleted?: number; // Current progress
     recoverySessionsCompleted?: number;
+    mobilityBonuses?: any;
+    recoveryBonuses?: any;
 }
 
 export const PassiveLayerProgress: React.FC<PassiveLayerProgressProps> = ({
     mobilityLevel,
     recoveryLevel,
     mobilitySessionsCompleted = 0,
-    recoverySessionsCompleted = 0
+    recoverySessionsCompleted = 0,
+    mobilityBonuses,
+    recoveryBonuses
 }) => {
     return (
         <div className="space-y-4">
@@ -33,7 +37,7 @@ export const PassiveLayerProgress: React.FC<PassiveLayerProgressProps> = ({
                     level={mobilityLevel}
                     sessions={mobilitySessionsCompleted}
                     icon={<Zap className="w-5 h-5 text-yellow-400" />}
-                    bonuses={MOBILITY_LAYER_BONUSES[mobilityLevel]}
+                    bonuses={mobilityBonuses || MOBILITY_LAYER_BONUSES[mobilityLevel]}
                     color="yellow"
                 />
 
@@ -43,7 +47,7 @@ export const PassiveLayerProgress: React.FC<PassiveLayerProgressProps> = ({
                     level={recoveryLevel}
                     sessions={recoverySessionsCompleted}
                     icon={<Moon className="w-5 h-5 text-indigo-400" />}
-                    bonuses={RECOVERY_LAYER_BONUSES[recoveryLevel]}
+                    bonuses={recoveryBonuses || RECOVERY_LAYER_BONUSES[recoveryLevel]}
                     color="indigo"
                 />
             </div>
@@ -72,7 +76,7 @@ const LayerCard: React.FC<LayerCardProps> = ({ title, level, sessions, icon, bon
     const progressPercent = Math.min((sessions / nextLevelReq) * 100, 100);
 
     return (
-        <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-4 relative overflow-hidden group">
+        <div className="bg-black/20 border border-white/5 rounded-xl p-4 relative overflow-hidden group backdrop-blur-sm hover:bg-black/30 transition-all">
             <div className="flex justify-between items-start mb-2 relative z-10">
                 <div className="flex items-center gap-3">
                     <div className={`p-2 rounded bg-${color}-500/10 border border-${color}-500/20`}>
@@ -92,9 +96,9 @@ const LayerCard: React.FC<LayerCardProps> = ({ title, level, sessions, icon, bon
             </div>
 
             {/* Progress Bar */}
-            <div className="w-full h-1.5 bg-zinc-800 rounded-full mb-3 overflow-hidden">
+            <div className="w-full h-2 bg-black/40 rounded-full mb-3 overflow-hidden border border-white/5">
                 <motion.div
-                    className={`h-full bg-${color}-500`}
+                    className={`h-full bg-gradient-to-r from-${color}-500 to-${color}-400 shadow-[0_0_10px_rgba(var(--${color}-500),0.5)]`}
                     initial={{ width: 0 }}
                     animate={{ width: `${progressPercent}%` }}
                 />

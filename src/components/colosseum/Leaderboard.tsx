@@ -1,5 +1,6 @@
 import React from 'react';
-import { Crown, Swords, Shield, Skull, Globe, MapPin, Trophy } from 'lucide-react';
+import { Crown, Swords, Skull, Globe, MapPin, Trophy, Shield } from 'lucide-react';
+import { getPvpRank, getRankTitle, type Faction } from '@/lib/pvpRanks';
 import Link from 'next/link';
 
 export interface PvPPlayer {
@@ -11,6 +12,7 @@ export interface PvPPlayer {
     level: number;
     title?: string | null;
     city?: string | null;
+    faction?: Faction;
 }
 
 interface LeaderboardProps {
@@ -56,6 +58,8 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ players, currentUserId, scope
                 {players.map((player, index) => {
                     const isMe = player.userId === currentUserId;
                     const rankColor = index === 0 ? 'text-yellow-400' : index === 1 ? 'text-zinc-300' : index === 2 ? 'text-amber-600' : 'text-zinc-600';
+                    const pvpRank = getPvpRank(player.rankScore);
+                    const rankTitle = getRankTitle(player.rankScore, player.faction || 'HORDE');
 
                     return (
                         <div key={player.userId} className={`flex items-center justify-between p-4 hover:bg-zinc-900/40 transition-colors ${isMe ? 'bg-blue-900/10 border-l-2 border-blue-500' : ''}`}>
@@ -70,8 +74,17 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ players, currentUserId, scope
                                             {player.heroName || 'Unknown Gladiator'}
                                         </h4>
                                         <span className="bg-zinc-800 text-zinc-500 text-[10px] px-1 rounded border border-zinc-700">Lvl {player.level}</span>
+                                        {/* PvP Rank Title */}
+                                        <span className={`text-[10px] px-2 py-0.5 rounded border uppercase tracking-widest font-black flex items-center gap-1 ${player.faction === 'ALLIANCE'
+                                                ? 'bg-blue-900/30 text-blue-400 border-blue-900/50'
+                                                : 'bg-red-900/30 text-red-400 border-red-900/50'
+                                            }`}>
+                                            <Shield className="w-3 h-3" />
+                                            <span className="text-zinc-500">R{pvpRank.rank}</span>
+                                            {rankTitle}
+                                        </span>
                                         {player.title && (
-                                            <span className="bg-red-900/30 text-red-400 text-[10px] px-2 py-0.5 rounded border border-red-900/50 uppercase tracking-widest font-black flex items-center gap-1">
+                                            <span className="bg-amber-900/30 text-amber-400 text-[10px] px-2 py-0.5 rounded border border-amber-900/50 uppercase tracking-widest font-black flex items-center gap-1">
                                                 <Trophy className="w-3 h-3" /> {player.title}
                                             </span>
                                         )}

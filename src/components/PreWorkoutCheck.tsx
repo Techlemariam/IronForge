@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Activity, Battery, ShieldAlert, CheckCircle2, Moon, Lock, RefreshCw, Zap, Wifi, Wind, X } from 'lucide-react';
 import { Session, AppSettings } from '../types';
 import { autoRegulateSession, playSound } from '../utils';
-import { intervalsClient } from '../services/intervals';
+import { getWellnessAction } from '../actions/intervals';
 import { useSkills } from '../context/SkillContext';
 import { StorageService } from '../services/storage';
 
@@ -39,9 +39,9 @@ const PreWorkoutCheck: React.FC<PreWorkoutCheckProps> = ({ session, onProceed, o
 
             if (navigator.onLine) {
                 const today = new Date().toISOString().split('T')[0];
-                const wellness = await intervalsClient.getWellness(today);
+                const wellness = await getWellnessAction(today);
                 realData = { bodyBattery: wellness.bodyBattery || 0, sleepScore: wellness.sleepScore || 0 };
-                if (realData) setDataSource('INTERVALS');
+                if (realData.bodyBattery && realData.sleepScore) setDataSource('INTERVALS'); // Simple check if data is valid
             }
         } catch (e) {
             console.error("Scan failed or settings not found", e);

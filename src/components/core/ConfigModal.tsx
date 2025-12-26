@@ -14,9 +14,12 @@ interface ConfigModalProps {
   userId: string;
   hevyConnected: boolean;
   intervalsConnected: boolean;
+  stravaConnected: boolean;
+  initialFaction: any;
+  checkDemoStatus?: boolean;
 }
 
-const ConfigModal: React.FC<ConfigModalProps> = ({ isOpen, onClose, userId, hevyConnected, intervalsConnected }) => {
+const ConfigModal: React.FC<ConfigModalProps> = ({ isOpen, onClose, userId, hevyConnected, intervalsConnected, stravaConnected, initialFaction, checkDemoStatus }) => {
   return (
     <AnimatePresence>
       {isOpen && (
@@ -48,6 +51,9 @@ const ConfigModal: React.FC<ConfigModalProps> = ({ isOpen, onClose, userId, hevy
                   userId={userId}
                   hevyConnected={hevyConnected}
                   intervalsConnected={intervalsConnected}
+                  stravaConnected={stravaConnected}
+                  checkDemoStatus={checkDemoStatus}
+                  initialFaction={initialFaction}
                   onIntegrationChanged={() => {
                     // Optional: Trigger full page reload if deep state needs refresh
                     // window.location.reload(); 
