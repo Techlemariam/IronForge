@@ -329,7 +329,7 @@ class AudioController {
         return this.ctx;
     }
 
-    public play(type: 'ding' | 'quest_accept' | 'fail' | 'loot_epic' | 'achievement' | 'mystery_alert') {
+    public play(type: 'ding' | 'quest_accept' | 'fail' | 'loot_epic' | 'achievement' | 'mystery_alert' | 'ui_click' | 'ui_hover' | 'ui_error') {
         const ctx = this.getContext();
         if (!ctx || !this.masterGain) return;
 
@@ -427,6 +427,35 @@ class AudioController {
                 osc.start(now);
                 osc.stop(now + 0.5);
                 break;
+
+            case 'ui_click':
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(800, now);
+                osc.frequency.exponentialRampToValueAtTime(400, now + 0.05);
+                gain.gain.setValueAtTime(0.3, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
+                osc.start(now);
+                osc.stop(now + 0.05);
+                break;
+
+            case 'ui_hover':
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(1200, now);
+                gain.gain.setValueAtTime(0.05, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.02);
+                osc.start(now);
+                osc.stop(now + 0.02);
+                break;
+
+            case 'ui_error':
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(120, now);
+                osc.frequency.linearRampToValueAtTime(80, now + 0.2);
+                gain.gain.setValueAtTime(0.4, now);
+                gain.gain.linearRampToValueAtTime(0, now + 0.2);
+                osc.start(now);
+                osc.stop(now + 0.2);
+                break;
         }
     }
 }
@@ -434,7 +463,7 @@ class AudioController {
 export const audioController = new AudioController();
 
 // Wrapper for backward compatibility
-export const playSound = (type: 'ding' | 'quest_accept' | 'fail' | 'loot_epic' | 'achievement' | 'mystery_alert') => {
+export const playSound = (type: 'ding' | 'quest_accept' | 'fail' | 'loot_epic' | 'achievement' | 'mystery_alert' | 'ui_click' | 'ui_hover' | 'ui_error') => {
     audioController.play(type);
 };
 
