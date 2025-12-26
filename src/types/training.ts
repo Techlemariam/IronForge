@@ -20,6 +20,8 @@ export type TrainingPath =
     | 'ENGINE'           // VO2max/Uthållighet (80/20 cardio)
     | 'HYBRID_WARDEN';   // Balanserad (Viada-style hybrid)
 
+export type Faction = 'ALLIANCE' | 'HORDE';
+
 /**
  * Path display information for UI
  */
@@ -185,6 +187,7 @@ export interface WorkoutDefinition {
     intensity: 'LOW' | 'MEDIUM' | 'HIGH';
     resourceCost: Partial<Record<RecoveryResource, number>>; // Estimated cost
     recommendedPaths?: TrainingPath[]; // Best fit paths
+    rewards?: { xp: number; gold: number; }; // Gamification rewards
 }
 
 /**
@@ -204,5 +207,3 @@ export interface WeeklyMastery {
     cardioTss: number;
     mobilitySets: number;
 }
-
-

@@ -216,6 +216,20 @@ export interface IntervalsActivity {
     id?: string;
     icu_intensity?: number;
     moving_time: number;
+    zone_times?: number[]; // Time in seconds for each zone (Z1-Z7)
+}
+
+export interface AthleteSettings {
+    id: string;
+    name: string;
+    timezone: string;
+    resting_hr?: number;
+    max_hr?: number;
+    lthr?: number;
+    ftp?: number;
+    run_ftp?: number;
+    heart_rate_zones?: { min: number; max: number; name?: string }[];
+    power_zones?: any[];
 }
 
 export interface IntervalsEvent {
@@ -343,10 +357,15 @@ export interface ValhallaSyncResult {
 // --- BESTIARY ---
 export type MonsterType = 'Giant' | 'Beast' | 'Undead' | 'Elemental' | 'Construct' | 'Dragon';
 
+export type MonsterElement = 'Physical' | 'Fire' | 'Ice' | 'Lightning' | 'Earth' | 'Shadow' | 'Holy';
+
+export type BossTier = 'STORY' | 'HEROIC' | 'TITAN_SLAYER';
+
 export interface Monster {
     id: string;
     name: string;
     type: MonsterType;
+    element?: MonsterElement; // Optional for backward compatibility
     level: number;
     description: string;
     image: string; // URL or emoji/icon name

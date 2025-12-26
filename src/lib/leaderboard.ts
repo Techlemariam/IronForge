@@ -20,6 +20,7 @@ export interface LeaderboardEntry {
     city: string | null;
     level: number;
     highestWilksScore: number;
+    faction: string; // Using string to avoid compile errors if Prisma types aren't fully regen'd
     avatar?: string; // Future Use
 }
 
@@ -71,5 +72,6 @@ export async function getLeaderboard({
         city: u.city,
         level: u.level,
         highestWilksScore: u.pvpProfile?.highestWilksScore || 0,
+        faction: (u as any).faction || 'HORDE',
     }));
 }

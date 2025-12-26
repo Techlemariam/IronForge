@@ -21,13 +21,13 @@ const HISTORY_DEPTH = 30; // Fetch last 30 workouts to ensure full week coverage
  * @param forceRefresh - If true, ignores cache and forces a new API call (logic handled by caller or here)
  * @returns The generated AuditReport
  */
-export const runFullAudit = async (forceRefresh: boolean = false, apiKey?: string | null, baseUrl?: string): Promise<AuditReport> => {
+export const runFullAudit = async (forceRefresh: boolean = false, apiKey?: string | null, baseUrl?: string, prefetchedHistory?: any[]): Promise<AuditReport> => {
     // 1. Check cache first? 
     // Usually Orchestrator is called when we WANT a refresh. 
     // But we can check if we have a very recent report (e.g. < 1 hour old) to save API calls.
     // For MVP, we will assume this is triggered explicitly or on app load if stale.
 
-    if (!forceRefresh) {
+    if (!forceRefresh && !prefetchedHistory) {
         // SSR SAFEGUARD: StorageService returns null on server, so this is safe.
         const cached = await StorageService.getLatestAuditorReport();
         if (cached) {
@@ -40,23 +40,30 @@ export const runFullAudit = async (forceRefresh: boolean = false, apiKey?: strin
         }
     }
 
-    console.log("Orchestrator: Fetching workout history...");
-    // 2. Fetch Data (Hevy limit is 10 per page)
-    const PAGE_SIZE = 10;
-    const pagesNeeded = Math.ceil(HISTORY_DEPTH / PAGE_SIZE);
-    let allWorkouts: any[] = [];
+    let history: any[] = [];
 
-    for (let p = 1; p <= pagesNeeded; p++) {
-        const result = await getHevyWorkouts(apiKey || '', p, PAGE_SIZE);
-        if (result.workouts) {
-            allWorkouts.push(...result.workouts);
+    if (prefetchedHistory && prefetchedHistory.length > 0) {
+        // Use injected history (e.g. from Demo Mode or already fetched)
+        console.log("Orchestrator: Using prefetched history...");
+        history = prefetchedHistory;
+    } else {
+        console.log("Orchestrator: Fetching workout history...");
+        // 2. Fetch Data (Hevy limit is 10 per page)
+        const PAGE_SIZE = 10;
+        const pagesNeeded = Math.ceil(HISTORY_DEPTH / PAGE_SIZE);
+        const allWorkouts: any[] = [];
+
+        for (let p = 1; p <= pagesNeeded; p++) {
+            const result = await getHevyWorkouts(apiKey || '', p, PAGE_SIZE);
+            if (result.workouts) {
+                allWorkouts.push(...result.workouts);
+            }
+            // If we got fewer than PAGE_SIZE, we've reached the end
+            if (result.workouts.length < PAGE_SIZE) break;
         }
-        // If we got fewer than PAGE_SIZE, we've reached the end
-        if (result.workouts.length < PAGE_SIZE) break;
+        // Trim to exactly HISTORY_DEPTH if needed
+        history = allWorkouts.slice(0, HISTORY_DEPTH);
     }
-
-    // Trim to exactly HISTORY_DEPTH if needed
-    const history = allWorkouts.slice(0, HISTORY_DEPTH);
 
     // 3. Transform Data
     console.log(`Orchestrator: Calculating volumes for ${history.length} workouts...`);
