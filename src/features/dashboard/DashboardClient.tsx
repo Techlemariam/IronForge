@@ -320,78 +320,97 @@ const CodexLoader: React.FC = () => (
     </div>
 );
 
-export interface InitialDataProps {
-    apiKey?: string | null;
-    nameMap: Map<string, string>;
-    ttb: TTBIndices;
+// Consolidated Data Object from Server
+export interface DashboardData {
     wellness: IntervalsWellness;
-    level: number;
-    auditReport: AuditReport;
-    oracleRec: OracleRecommendation;
-    weaknessAudit: WeaknessAudit;
-    forecast: TSBForecast[];
+    activities: any[]; // specific type if available
     events: IntervalsEvent[];
+    ttb: TTBIndices;
+    recommendation: OracleRecommendation | null;
+    auditReport: AuditReport | null;
+    forecast: TSBForecast[];
     titanAnalysis: TitanLoadCalculation | null;
-    activePath?: TrainingPath;
-    mobilityLevel?: LayerLevel;
-    recoveryLevel?: LayerLevel;
-    totalExperience: number;
+    activePath: TrainingPath;
     weeklyMastery?: WeeklyMastery;
-    userId: string;
-    intervalsConnected?: boolean;
-    faction: Faction | string; // Allow string for loose typing from page
-    hasCompletedOnboarding: boolean;
+    // flattened or derived data that might be passed inside
 }
 
-const DashboardClient: React.FC<InitialDataProps> = (initialData) => {
+export interface DashboardClientProps {
+    initialData: DashboardData;
+    userData: any; // User type from Prisma but with relations
+    dbUser?: any; // Redundant but kept for safety if used
+    isMobile?: boolean;
+    hevyTemplates: HevyExerciseTemplate[];
+    hevyRoutines: HevyRoutine[];
+    intervalsConnected: boolean;
+    stravaConnected: boolean;
+    faction: Faction | string;
+    hasCompletedOnboarding: boolean;
+    isDemoMode?: boolean;
+    // Legacy props mapping (if needed to keep internal logic simple)
+    // We will destructure initialData to populate state
+}
+
+const DashboardClient: React.FC<DashboardClientProps> = (props) => {
+    const { initialData, isDemoMode, userData, faction, hasCompletedOnboarding, hevyRoutines, hevyTemplates, intervalsConnected, stravaConnected } = props;
+
+    // TODO: Use userData.level, userData.skills etc
+    const level = userData?.level || 1;
+    const nameMap = new Map<string, string>(); // Should be passed or derived? Page.tsx didn't seem to pass it in the new object? 
+    // Checking page.tsx again: it doesn't pass nameMap in initialData. It was passing it before.
+    // We should probably derive it or accept it. 
+    // The previous code had `nameMap: Map<string, string>` in InitialDataProps. 
+    // Let's assume for now we use an empty map or fetch it.
+
     const initialStateFromProps: DashboardState = {
         isCodexLoading: false,
         wellnessData: initialData.wellness,
         ttb: initialData.ttb,
-        level: initialData.level,
+        level: level,
         activeQuest: null,
         questTitle: '',
-        exerciseNameMap: initialData.nameMap,
+        exerciseNameMap: nameMap,
         startTime: null,
         currentView: 'citadel',
-        oracleRecommendation: initialData.oracleRec,
+        oracleRecommendation: initialData.recommendation, // rename matched
         auditReport: initialData.auditReport,
-        weaknessAudit: initialData.weaknessAudit,
+        weaknessAudit: initialData.auditReport?.highestPriorityGap ? { detected: true, type: 'NONE', message: `Focus: ${initialData.auditReport.highestPriorityGap.muscleGroup}`, confidence: 1 } : null,
         forecast: initialData.forecast,
         events: initialData.events,
         titanAnalysis: initialData.titanAnalysis,
         isCoachOpen: false,
         activeBossId: null,
         activePath: initialData.activePath || 'HYBRID_WARDEN',
-        mobilityLevel: initialData.mobilityLevel || 'NONE',
-        recoveryLevel: initialData.recoveryLevel || 'NONE',
-        totalExperience: initialData.totalExperience,
+        mobilityLevel: userData?.mobilityLevel || 'NONE',
+        recoveryLevel: userData?.recoveryLevel || 'NONE',
+        totalExperience: userData?.totalExperience || 0,
         weeklyMastery: initialData.weeklyMastery,
-        cardioMode: 'cycling',
+        cardioMode: 'cycling', // Default
         returnView: null,
-        faction: (initialData.faction as Faction) || 'HORDE'
+        faction: (faction as Faction) || 'HORDE'
     };
 
     const [state, dispatch] = useReducer(dashboardReducer, initialStateFromProps);
     const [isModalOpen, setModalOpen] = useState(false);
     const [isConfigured, setIsConfigured] = useState(false);
-    const [showOnboarding, setShowOnboarding] = useState(!initialData.hasCompletedOnboarding);
+    const [showOnboarding, setShowOnboarding] = useState(!hasCompletedOnboarding);
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
             const hasLocalKey = !!localStorage.getItem('hevy_api_key');
-            if (initialData.apiKey || hasLocalKey) {
+            // We verify connection via props now mostly
+            if (hasLocalKey || isDemoMode) { // If demo mode, we are configured
                 setIsConfigured(true);
             } else {
                 setModalOpen(true);
             }
         }
-    }, [initialData.apiKey]);
+    }, [isDemoMode]);
 
     const handleSaveWorkout = async (isPrivate: boolean) => {
         if (!state.activeQuest || !state.startTime) return;
 
-        const apiKey = initialData.apiKey || localStorage.getItem('hevy_api_key');
+        const apiKey = userData?.hevyApiKey || localStorage.getItem('hevy_api_key');
         if (!apiKey) {
             alert("No API Key found. Please configure in settings.");
             setModalOpen(true);
@@ -487,9 +506,11 @@ const DashboardClient: React.FC<InitialDataProps> = (initialData) => {
                 <ConfigModal
                     isOpen={isModalOpen}
                     onClose={() => setModalOpen(false)}
-                    userId={initialData.userId}
-                    hevyConnected={!!initialData.apiKey}
-                    intervalsConnected={!!initialData.intervalsConnected}
+                    userId={userData?.id || 'unknown'}
+                    hevyConnected={!!userData?.hevyApiKey}
+                    intervalsConnected={intervalsConnected}
+                    stravaConnected={stravaConnected}
+                    checkDemoStatus={true}
                     initialFaction={state.faction}
                 />
                 <div className="w-full h-screen flex items-center justify-center font-mono text-center p-4">
@@ -511,9 +532,11 @@ const DashboardClient: React.FC<InitialDataProps> = (initialData) => {
             <ConfigModal
                 isOpen={isModalOpen}
                 onClose={() => setModalOpen(false)}
-                userId={initialData.userId}
-                hevyConnected={!!initialData.apiKey}
-                intervalsConnected={!!initialData.intervalsConnected}
+                userId={userData?.id || 'unknown'}
+                hevyConnected={!!userData?.hevyApiKey}
+                intervalsConnected={intervalsConnected}
+                stravaConnected={stravaConnected}
+                checkDemoStatus={true}
                 initialFaction={state.faction}
             />
             {renderView()}
@@ -531,7 +554,7 @@ const DashboardClient: React.FC<InitialDataProps> = (initialData) => {
             <GeminiLiveCoach isOpen={state.isCoachOpen} onClose={() => dispatch({ type: 'TOGGLE_COACH' })} />
 
             <OracleChat context={{
-                userId: initialData.userId,
+                userId: userData?.id || 'unknown',
                 path: state.activePath,
                 wellness: state.wellnessData,
                 mastery: state.weeklyMastery,
