@@ -1,11 +1,12 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { RaidBoss, ChatMessage } from '../../types';
-import { Skull, Swords, Shield, Users, Send, Info, WifiOff, Zap } from 'lucide-react';
+import { Skull, Swords, Shield, Users, Send, Info, WifiOff, Zap, DoorOpen } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { createClient } from '@/utils/supabase/client';
 import { RealtimeChannel } from '@supabase/supabase-js';
 import { sendChatAction, attackBossAction, getUserStatsAction } from '@/actions/guild';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface GuildHallProps {
     onClose: () => void;
@@ -236,10 +237,14 @@ export const GuildHall: React.FC<GuildHallProps> = ({ onClose }) => {
     };
 
     return (
-        <div className={cn(
-            "h-full bg-forge-900 overflow-hidden flex flex-col font-serif animate-fade-in transition-transform duration-75",
-            shake ? "translate-x-1 translate-y-1" : ""
-        )}>
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className={cn(
+                "h-full bg-forge-900 overflow-hidden flex flex-col font-serif transition-transform duration-75",
+                shake ? "translate-x-1 translate-y-1" : ""
+            )}>
             {/* Header */}
             <div className="bg-black/50 border-b border-forge-border p-6 flex justify-between items-center shrink-0">
                 <div className="flex items-center gap-4">
@@ -262,8 +267,9 @@ export const GuildHall: React.FC<GuildHallProps> = ({ onClose }) => {
                 </div>
                 <button
                     onClick={onClose}
-                    className="bg-forge-800 border-2 border-forge-border px-6 py-2 rounded font-bold uppercase text-xs hover:bg-forge-700 transition-all hover:scale-105"
+                    className="bg-red-900/20 border-2 border-red-500/50 hover:bg-red-900/50 text-red-500 px-6 py-2 rounded-lg font-bold uppercase text-xs transition-all hover:scale-105 active:scale-95 flex items-center gap-2 shadow-[0_0_15px_rgba(239,68,68,0.2)]"
                 >
+                    <DoorOpen className="w-4 h-4" />
                     Retreat
                 </button>
             </div>
@@ -297,9 +303,13 @@ export const GuildHall: React.FC<GuildHallProps> = ({ onClose }) => {
                         )}
                         onClick={handleAttack}
                     >
-                        <div className="text-[12rem] animate-pulse-slow drop-shadow-[0_0_50px_rgba(239,68,68,0.3)] filter grayscale-[0.2] transition-all group-hover:scale-110 group-active:filter-none">
+                        <motion.div
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.9, filter: "brightness(1.5)" }}
+                            className="text-[12rem] drop-shadow-[0_0_50px_rgba(239,68,68,0.3)] filter grayscale-[0.2] relative z-10"
+                        >
                             {boss.image}
-                        </div>
+                        </motion.div>
                         <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 whitespace-nowrap bg-black/80 border border-red-500/50 px-4 py-1 rounded-full pointer-events-none">
                             <span className="text-red-500 font-black tracking-[0.2em] uppercase text-sm">{boss.name}</span>
                         </div>
@@ -417,7 +427,7 @@ export const GuildHall: React.FC<GuildHallProps> = ({ onClose }) => {
                     </div>
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
 };
 

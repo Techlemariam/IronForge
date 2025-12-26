@@ -1,13 +1,15 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Monster } from '@/types';
+import { Monster, BossTier, MonsterElement } from '@/types';
 import { CombatState } from '@/services/game/CombatEngine';
 import { startBossFight, performCombatAction, fleeFromCombat } from '@/actions/combat';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Swords, Shield, Heart, Zap, Skull, Trophy, DoorOpen } from 'lucide-react';
-import { playSound } from '@/utils'; // Assuming sound utils exist or using previously defined ones
+import { Swords, Shield, Heart, Zap, Skull, Trophy, DoorOpen, Flame, Snowflake, Mountain, Ghost, Sun } from 'lucide-react';
+import { playSound } from '@/utils';
 import { LootReveal } from '@/components/game/LootReveal';
+import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
+
 // Local type matching LootReveal's expectations
 type LootItem = {
     id: string;
@@ -15,46 +17,107 @@ type LootItem = {
     rarity: string;
     image: string | null;
 };
-import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 
 interface CombatArenaProps {
     bossId: string;
     onClose: () => void;
 }
 
+const ELEMENT_CONFIG: Record<MonsterElement | 'Physical', {
+    icon: React.ElementType,
+    borderColor: string,
+    badgeBg: string,
+    textColor: string,
+    shadowColor: string
+}> = {
+    Physical: {
+        icon: Swords,
+        borderColor: 'border-zinc-500',
+        badgeBg: 'bg-zinc-800',
+        textColor: 'text-zinc-200',
+        shadowColor: 'shadow-zinc-500/20'
+    },
+    Fire: {
+        icon: Flame,
+        borderColor: 'border-orange-500',
+        badgeBg: 'bg-orange-950',
+        textColor: 'text-orange-400',
+        shadowColor: 'shadow-orange-500/40'
+    },
+    Ice: {
+        icon: Snowflake,
+        borderColor: 'border-cyan-500',
+        badgeBg: 'bg-cyan-950',
+        textColor: 'text-cyan-300',
+        shadowColor: 'shadow-cyan-500/40'
+    },
+    Lightning: {
+        icon: Zap,
+        borderColor: 'border-yellow-400',
+        badgeBg: 'bg-yellow-950',
+        textColor: 'text-yellow-300',
+        shadowColor: 'shadow-yellow-400/40'
+    },
+    Earth: {
+        icon: Mountain,
+        borderColor: 'border-emerald-600',
+        badgeBg: 'bg-emerald-950',
+        textColor: 'text-emerald-400',
+        shadowColor: 'shadow-emerald-600/40'
+    },
+    Shadow: {
+        icon: Ghost,
+        borderColor: 'border-purple-600',
+        badgeBg: 'bg-purple-950',
+        textColor: 'text-purple-400',
+        shadowColor: 'shadow-purple-600/40'
+    },
+    Holy: {
+        icon: Sun,
+        borderColor: 'border-amber-400',
+        badgeBg: 'bg-amber-950',
+        textColor: 'text-amber-200',
+        shadowColor: 'shadow-amber-400/40'
+    },
+};
+
 const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
     const [gameState, setGameState] = useState<CombatState | null>(null);
-    const [boss, setBoss] = useState<Monster | null>(null); // Use appropriate type
+    const [boss, setBoss] = useState<Monster | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isProcessingTurn, setIsProcessingTurn] = useState(false);
     const [droppedItem, setDroppedItem] = useState<LootItem | null>(null);
     const [rewards, setRewards] = useState<{ xp: number; gold: number } | null>(null);
+    const [isFleeing, setIsFleeing] = useState(false);
 
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
-    // Initial Load
-    useEffect(() => {
-        const init = async () => {
-            playSound('dungeon_ambient' as any); // Setup ambient sound if available
-            try {
-                const res = await startBossFight(bossId);
-                if (res.success && res.state && res.boss) {
-                    setGameState(res.state);
-                    setBoss(res.boss as any); // Type cast if needed depending on Prisma vs Frontend type
-                } else {
-                    console.error("Failed to start fight:", res.message);
-                    alert("Failed to enter arena: " + res.message);
-                    onClose();
-                }
-            } catch (error) {
-                console.error("Combat Init Error", error);
+    const [combatStarted, setCombatStarted] = useState(false);
+    const [selectedTier, setSelectedTier] = useState<BossTier>('HEROIC');
+
+    const handleStartFight = async (tier: BossTier) => {
+        setIsLoading(true);
+        setSelectedTier(tier);
+        playSound('dungeon_ambient' as any);
+
+        try {
+            const res = await startBossFight(bossId, tier);
+            if (res.success && res.state && res.boss) {
+                setGameState(res.state);
+                setBoss(res.boss as any);
+                setCombatStarted(true);
+            } else {
+                console.error("Failed to start fight:", res.message);
+                alert("Failed to enter arena: " + res.message);
                 onClose();
-            } finally {
-                setIsLoading(false);
             }
-        };
-        init();
-    }, [bossId, onClose]);
+        } catch (error) {
+            console.error("Combat Init Error", error);
+            onClose();
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     // Auto-scroll logs
     useEffect(() => {
@@ -66,7 +129,6 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
         setIsProcessingTurn(true);
 
         try {
-            // Optimistic UI updates could happen here, but for turn-based, waiting is fine
             const res = await performCombatAction({ type });
 
             if (res.success && res.newState) {
@@ -103,19 +165,107 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
             const res = await fleeFromCombat(50);
             if (res.success) {
                 playSound('flee' as any);
-                onClose();
+                setIsFleeing(true);
+                setTimeout(() => {
+                    onClose();
+                }, 1500);
             } else {
                 alert(res.message || 'Could not flee');
+                setIsProcessingTurn(false);
             }
         } catch (e) {
             console.error(e);
-        } finally {
             setIsProcessingTurn(false);
         }
     };
 
+    if (!combatStarted) {
+        // Tier Selection Screen
+        return (
+            <div className="fixed inset-0 z-50 bg-black/90 flex flex-col items-center justify-center p-4">
+                <div className="max-w-4xl w-full space-y-8 animate-fade-in text-center">
+                    <h1 className="text-4xl md:text-6xl font-black text-magma uppercase tracking-widest drop-shadow-[0_0_15px_rgba(255,87,34,0.5)]">
+                        Select Difficulty
+                    </h1>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+                        {/* STORY MODE */}
+                        <button
+                            onClick={() => handleStartFight('STORY')}
+                            disabled={isLoading}
+                            className="group relative p-8 rounded-xl border-2 border-emerald-500/30 hover:border-emerald-500 bg-zinc-900 overflow-hidden transition-all hover:scale-105"
+                        >
+                            <div className="absolute inset-0 bg-emerald-500/5 group-hover:bg-emerald-500/10 transition-colors" />
+                            <div className="relative z-10 flex flex-col items-center gap-4">
+                                <div className="p-4 rounded-full bg-zinc-950 border border-emerald-500/50 text-emerald-500 mb-2">
+                                    <Shield className="w-8 h-8" />
+                                </div>
+                                <h3 className="text-2xl font-bold text-emerald-400 uppercase tracking-widest">Story</h3>
+                                <div className="text-sm text-zinc-400 space-y-1">
+                                    <p>Reduced Boss Stats</p>
+                                    <p>50% Rewards</p>
+                                </div>
+                            </div>
+                        </button>
+
+                        {/* HEROIC (DEFAULT) */}
+                        <button
+                            onClick={() => handleStartFight('HEROIC')}
+                            disabled={isLoading}
+                            className="group relative p-8 rounded-xl border-2 border-magma/30 hover:border-magma bg-zinc-900 overflow-hidden transition-all hover:scale-105"
+                        >
+                            <div className="absolute inset-0 bg-magma/5 group-hover:bg-magma/10 transition-colors" />
+                            <div className="relative z-10 flex flex-col items-center gap-4">
+                                <div className="p-4 rounded-full bg-zinc-950 border border-magma/50 text-magma mb-2">
+                                    <Swords className="w-8 h-8" />
+                                </div>
+                                <h3 className="text-2xl font-bold text-magma uppercase tracking-widest">Heroic</h3>
+                                <div className="text-sm text-zinc-400 space-y-1">
+                                    <p>Standard Challenge</p>
+                                    <p>Normal Rewards</p>
+                                </div>
+                            </div>
+                        </button>
+
+                        {/* TITAN SLAYER */}
+                        <button
+                            onClick={() => handleStartFight('TITAN_SLAYER')}
+                            disabled={isLoading}
+                            className="group relative p-8 rounded-xl border-2 border-purple-500/30 hover:border-purple-500 bg-zinc-900 overflow-hidden transition-all hover:scale-105"
+                        >
+                            <div className="absolute inset-0 bg-purple-500/5 group-hover:bg-purple-500/10 transition-colors" />
+                            <div className="relative z-10 flex flex-col items-center gap-4">
+                                <div className="p-4 rounded-full bg-zinc-950 border border-purple-500/50 text-purple-500 mb-2">
+                                    <Skull className="w-8 h-8" />
+                                </div>
+                                <h3 className="text-2xl font-bold text-purple-400 uppercase tracking-widest">Titan Slayer</h3>
+                                <div className="text-sm text-zinc-400 space-y-1">
+                                    <p>+50% Boss HP</p>
+                                    <p className="text-yellow-400 font-bold">200% Rewards</p>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+
+                    <button
+                        disabled={isLoading}
+                        onClick={onClose}
+                        className="mt-8 text-zinc-500 hover:text-white underline decoration-dotted transition-colors"
+                    >
+                        Return to Map
+                    </button>
+                </div>
+            </div>
+        );
+    }
+
     if (isLoading) return <div className="flex items-center justify-center h-screen bg-black text-white"><LoadingSpinner /></div>;
     if (!gameState || !boss) return null;
+
+    // Resolve Element Config
+    const bossElement = (boss.element as MonsterElement) || 'Physical';
+    const elementConfig = ELEMENT_CONFIG[bossElement] || ELEMENT_CONFIG.Physical;
+    const ElementIcon = elementConfig.icon as any;
 
     return (
         <div className="relative w-full h-screen bg-zinc-900 text-white overflow-hidden flex flex-col">
@@ -135,11 +285,20 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
                 >
                     {/* Boss Avatar */}
                     <div className="relative">
-                        <div className="w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-red-900 bg-black overflow-hidden shadow-[0_0_30px_rgba(220,38,38,0.5)]">
+                        <div className={`w-24 h-24 md:w-32 md:h-32 rounded-full border-4 ${elementConfig.borderColor} bg-black overflow-hidden shadow-[0_0_30px_rgba(255,255,255,0.2)] ${elementConfig.shadowColor}`}>
                             {/* Placeholder or Image */}
                             <div className="flex items-center justify-center h-full text-4xl">{boss.image || '👹'}</div>
                         </div>
-                        <div className="absolute -bottom-2 -right-2 bg-red-900 text-xs px-2 py-1 rounded border border-red-500 font-bold">Lvl {boss.level}</div>
+                        <div className={`absolute -bottom-2 -right-2 ${elementConfig.badgeBg} ${elementConfig.borderColor} text-xs px-2 py-1 rounded border font-bold flex items-center gap-1 shadow-lg`}>
+                            <span className="text-zinc-300">Lvl {boss.level}</span>
+                            {bossElement !== 'Physical' && (
+                                <>
+                                    <span className="w-1 h-3 bg-zinc-700/50 rounded-full mx-1"></span>
+                                    <ElementIcon className={`w-3 h-3 ${elementConfig.textColor}`} />
+                                    <span className={`${elementConfig.textColor} uppercase`}>{bossElement}</span>
+                                </>
+                            )}
+                        </div>
                     </div>
 
                     {/* Boss Health Bar */}
@@ -288,6 +447,28 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
                 )}
             </AnimatePresence>
 
+            {/* Fleeing Overlay */}
+            <AnimatePresence>
+                {isFleeing && (
+                    <motion.div
+                        initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                        className="absolute inset-0 z-50 bg-black/60 backdrop-blur-sm flex flex-col items-center justify-center p-8"
+                    >
+                        <motion.div
+                            initial={{ scale: 0.8, x: -100, opacity: 0 }}
+                            animate={{ scale: 1, x: 0, opacity: 1 }}
+                            className="flex items-center gap-4 text-amber-500"
+                        >
+                            <DoorOpen className="w-16 h-16 animate-pulse" />
+                            <h1 className="text-4xl font-black uppercase tracking-widest italic leading-none">
+                                Retreating...
+                            </h1>
+                        </motion.div>
+                        <p className="text-amber-300/50 mt-4 font-mono text-sm">Escaping the arena (-50g)</p>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
         </div>
     );
 };
@@ -304,6 +485,7 @@ const ActionButton: React.FC<{ icon: React.ReactNode, label: string, color: stri
     >
         <div className="mb-2">{icon}</div>
         <span className="font-bold uppercase tracking-wide text-xs md:text-sm">{label}</span>
+        {label === 'Flee' && <span className="text-[10px] text-yellow-500 font-mono mt-1">-50g</span>}
     </button>
 );
 

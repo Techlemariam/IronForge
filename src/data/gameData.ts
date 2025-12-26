@@ -12,6 +12,7 @@ export const MONSTERS: Monster[] = [
         image: '🗿',
         hp: 1000,
         maxHp: 1000,
+        element: 'Earth',
         weakness: ['legs'],
         associatedExerciseIds: ['ex_belt_squat']
     },
@@ -24,6 +25,7 @@ export const MONSTERS: Monster[] = [
         image: '👻',
         hp: 500,
         maxHp: 500,
+        element: 'Shadow',
         weakness: ['pull'],
         associatedExerciseIds: ['ex_ghd_raise']
     },
@@ -36,6 +38,7 @@ export const MONSTERS: Monster[] = [
         image: '🛡️',
         hp: 2500,
         maxHp: 2500,
+        element: 'Ice',
         weakness: ['push'],
         associatedExerciseIds: ['ex_landmine_press']
     },
@@ -48,6 +51,7 @@ export const MONSTERS: Monster[] = [
         image: '🐲',
         hp: 5000,
         maxHp: 5000,
+        element: 'Lightning',
         weakness: ['endurance'],
         associatedExerciseIds: ['ex_bike_flush']
     },
@@ -60,6 +64,7 @@ export const MONSTERS: Monster[] = [
         image: '☄️',
         hp: 15000,
         maxHp: 15000,
+        element: 'Fire',
         weakness: ['push', 'legs'],
         associatedExerciseIds: ['ex_belt_squat', 'ex_landmine_press']
     }

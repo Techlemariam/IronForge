@@ -19,7 +19,8 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
             "ENGINE",
             "HYBRID_WARDEN"
         ],
-        "intervalsIcuString": "- 20m Z1"
+        "intervalsIcuString": "- 20m Z1",
+        "rewards": { "xp": 100, "gold": 5 }
     },
     {
         "id": "run_rre2",
@@ -199,7 +200,8 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
             "ENGINE",
             "HYBRID_WARDEN"
         ],
-        "intervalsIcuString": "- 5m Z1\n- 10m Z2\n- 5m Z1"
+        "intervalsIcuString": "- 5m Z1\n- 10m Z2\n- 5m Z1",
+        "rewards": { "xp": 150, "gold": 10 }
     },
     {
         "id": "run_rf2",
@@ -539,7 +541,8 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
             "ENGINE",
             "HYBRID_WARDEN"
         ],
-        "intervalsIcuString": "- 10m Z1\n3x\n  - 10m Z2\n  - 3m Z1\n- 10m Z1"
+        "intervalsIcuString": "- 10m Z1\n3x\n  - 10m Z2\n  - 3m Z1\n- 10m Z1",
+        "rewards": { "xp": 300, "gold": 25 }
     },
     {
         "id": "run_rae2",

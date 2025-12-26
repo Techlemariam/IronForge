@@ -104,7 +104,9 @@ export async function POST(request: NextRequest) {
         await ProgressionService.awardGold(user.id, 25);
         await ProgressionService.addExperience(user.id, logsCreated * 50);
 
-        console.log(`[Hevy Webhook] Automated rewards granted: 25g, ${logsCreated * 50}xp`);
+        const newWilks = await ProgressionService.updateWilksScore(user.id);
+
+        console.log(`[Hevy Webhook] Automated rewards granted: 25g, ${logsCreated * 50}xp. New Wilks: ${newWilks.toFixed(2)}`);
 
         return NextResponse.json({ success: true, message: 'Workout processed & Rewards granted', logs: logsCreated }, { status: 200 });
 
