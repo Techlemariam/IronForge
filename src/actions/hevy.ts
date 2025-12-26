@@ -1,6 +1,6 @@
 'use server'
 
-import { HevyExerciseTemplate } from '@/types/hevy';
+import { HevyExerciseTemplate, HevyRoutine, HevyWorkout } from '@/types/hevy';
 import axios from 'axios';
 import prisma from '@/lib/prisma';
 import { getHevyTemplates } from '@/lib/hevy';
@@ -23,6 +23,57 @@ export async function getHevyTemplatesAction(apiKey: string) {
     } catch (error: any) {
         console.error("Server Action Hevy Error:", error.message);
         throw new Error("Failed to fetch Hevy templates: " + error.message);
+    }
+}
+
+
+
+export async function getHevyRoutinesAction(apiKey: string, page: number = 1, pageSize: number = 10) {
+    if (!apiKey) {
+        throw new Error("Hevy API Key is required.");
+    }
+
+    try {
+        const response = await axios.get('https://api.hevyapp.com/v1/routines', {
+            headers: { 'api-key': apiKey },
+            params: { page, pageSize }
+        });
+        return response.data as { page: number; page_count: number; routines: HevyRoutine[] };
+    } catch (error: any) {
+        console.error("Server Action Hevy Routines Error:", error.message);
+        throw new Error("Failed to fetch Hevy routines: " + (error.response?.data?.error || error.message));
+    }
+}
+
+export async function getHevyWorkoutHistoryAction(apiKey: string, count: number = 30) {
+    if (!apiKey) {
+        throw new Error("Hevy API Key is required.");
+    }
+
+    const pageSize = 10;
+    const numPagesToFetch = Math.ceil(count / pageSize);
+    let allWorkouts: HevyWorkout[] = [];
+
+    try {
+        for (let page = 1; page <= numPagesToFetch; page++) {
+            const response = await axios.get('https://api.hevyapp.com/v1/workouts', {
+                headers: { 'api-key': apiKey },
+                params: { page, pageSize }
+            });
+
+            if (response.status === 200 && response.data.workouts) {
+                allWorkouts.push(...response.data.workouts);
+                if (response.data.workouts.length < pageSize) {
+                    break;
+                }
+            } else {
+                console.warn(`Warning: Could not fetch page ${page} of Hevy workout history. Status: ${response.status}`);
+            }
+        }
+        return { workouts: allWorkouts.slice(0, count) };
+    } catch (error: any) {
+        console.error("Server Action Hevy History Error:", error.message);
+        throw new Error("Failed to fetch Hevy history: " + (error.response?.data?.error || error.message));
     }
 }
 
@@ -78,3 +129,64 @@ export async function saveWorkoutAction(apiKey: string, payload: any) {
         throw new Error("Failed to save workout: " + (error.response?.data?.error || error.message));
     }
 }
+
+export async function importHevyHistoryAction(workouts: any[]) {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+        throw new Error("Unauthorized");
+    }
+
+    try {
+        let logsToCreate: any[] = [];
+        let importedCount = 0;
+
+        for (const workout of workouts) {
+            const date = new Date(workout.start_time);
+
+            for (const exercise of workout.exercises) {
+                // Calculate Best e1rm for this session
+                let bestE1rm = 0;
+
+                if (exercise.sets && Array.isArray(exercise.sets)) {
+                    for (const set of exercise.sets) {
+                        const weight = set.weight_kg || 0;
+                        const reps = set.reps || 0;
+                        if (weight > 0 && reps > 0) {
+                            const e1rm = weight * (1 + (reps / 30));
+                            if (e1rm > bestE1rm) bestE1rm = e1rm;
+                        }
+                    }
+                }
+
+                if (bestE1rm > 0) {
+                    logsToCreate.push({
+                        userId: user.id,
+                        date: date,
+                        exerciseId: exercise.exercise_template_id || exercise.title, // Fallback to title if ID missing
+                        e1rm: bestE1rm,
+                        rpe: (exercise as any).rpe || 8, // Default RPE
+                        isEpic: bestE1rm > 100 // Arbitrary threshold for now
+                    });
+                }
+            }
+            importedCount++;
+        }
+
+        // Batch insert
+        if (logsToCreate.length > 0) {
+            await prisma.exerciseLog.createMany({
+                data: logsToCreate,
+                skipDuplicates: true
+            });
+        }
+
+        return { success: true, count: importedCount, logs: logsToCreate.length };
+
+    } catch (error: any) {
+        console.error("Server Action Hevy Import Error:", error.message);
+        throw new Error("Failed to import history: " + error.message);
+    }
+}
+
