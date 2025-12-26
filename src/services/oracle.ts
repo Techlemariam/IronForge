@@ -89,9 +89,10 @@ export const OracleService = {
         });
 
         if (raceJustFinished) {
+            const safeEventName = raceJustFinished.name.replace(/[^a-zA-Z0-9\s-]/g, '').substring(0, 30);
             const rationale = await GeminiService.generateOracleAdvice({
                 priority: "RECOVERY",
-                trigger: `Race: ${raceJustFinished.name} finished recently`,
+                trigger: `Race: ${safeEventName} finished recently`,
                 wellness,
                 data: { daysSince: 2 } // Approximation
             });
@@ -99,7 +100,7 @@ export const OracleService = {
             return {
                 type: 'RECOVERY',
                 title: 'POST-RACE RESTORATION',
-                rationale: rationale || `Event "${raceJustFinished.name}" detected recently. System flush required. Structural integrity must be restored before resuming heavy load.`,
+                rationale: rationale || `Event "${safeEventName}" detected recently. System flush required. Structural integrity must be restored before resuming heavy load.`,
                 priorityScore: 110,
                 targetExercise: 'Mobility & Foam Roll'
             };
@@ -108,6 +109,9 @@ export const OracleService = {
         if (raceComingUp) {
             const eventDate = new Date(raceComingUp.start_date_local);
             const daysUntil = Math.ceil((eventDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+
+            // Security Sanitization
+            const safeEventName = raceComingUp.name.replace(/[^a-zA-Z0-9\s-]/g, '').substring(0, 30);
 
             if (daysUntil <= 2) {
                 const primeSession: Session = {
@@ -121,18 +125,19 @@ export const OracleService = {
                         { id: 'act', name: 'Activation', type: BlockType.STATION, exercises: [{ id: 'act1', name: 'Explosive Jumps', logic: ExerciseLogic.FIXED_REPS, sets: [{ id: 'j1', reps: 3, completed: false, rarity: 'rare' }, { id: 'j2', reps: 3, completed: false, rarity: 'rare' }] }] }
                     ]
                 };
+
                 return {
                     type: 'COMPETITION_PREP',
                     title: 'NEURAL PRIMING',
                     generatedSession: primeSession,
-                    rationale: `Target Acquired: "${raceComingUp.name}" in ${daysUntil} days. Volume dropped to zero. Intensity high but short to prime the CNS.`,
+                    rationale: `Target Acquired: "${safeEventName}" in ${daysUntil} days. Volume dropped to zero. Intensity high but short to prime the CNS.`,
                     priorityScore: 105
                 };
             } else {
                 return {
                     type: 'TAPER',
                     title: 'TAPER PROTOCOL ACTIVE',
-                    rationale: `Approaching "${raceComingUp.name}" (${daysUntil} days). Volume reduced by 50%. Focus on maintaining intensity without fatigue accumulation.`,
+                    rationale: `Approaching "${safeEventName}" (${daysUntil} days). Volume reduced by 50%. Focus on maintaining intensity without fatigue accumulation.`,
                     priorityScore: 105,
                     targetExercise: 'Low Volume / High Quality'
                 };
