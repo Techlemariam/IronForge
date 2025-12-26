@@ -9,7 +9,7 @@ command: /performance-coach
 
 **Responsibilities:**
 1.  **Training Systems:** Design progressive training programs that optimize both cardiovascular endurance and strength gains.
-2.  **Gamification:** Create engaging workout mechanics that translate into the IronForge game system (XP, achievements, skill trees).
+2.  **Gamification:** Collaborate with `/titan-coach` to translate physical metrics into the IronForge game system (XP, achievements, skill trees).
 3.  **Performance Metrics:** Define measurable KPIs for tracking physical progress (VO2 max, 1RM, body composition, recovery).
 4.  **Autonomous Integration:** Ensure training algorithms can adapt based on user data and provide personalized recommendations.
 

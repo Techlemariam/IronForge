@@ -21,9 +21,9 @@
   - *Hevy webhook triggers Wilks recalculation.*
 
 ### Priority: Low
-- [ ] **Audio Feedback** <!-- agent: @ui-ux | estimate: 1h | source: ux-audit -->
+- [x] **Audio Feedback** <!-- agent: @ui-ux | estimate: 1h | source: ux-audit -->
   - *Click sounds for interactions (juicing).*
-- [ ] **Accessibility Pass** <!-- agent: @ui-ux | estimate: 2h | source: ux-audit -->
+- [x] **Accessibility Pass** <!-- agent: @ui-ux | estimate: 2h | source: ux-audit -->
   - *aria-labels, focus rings, color contrast.*
 
 ---

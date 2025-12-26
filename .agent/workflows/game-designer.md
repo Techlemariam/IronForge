@@ -28,7 +28,7 @@ command: /game-designer
 - Boss battles, milestones, and achievement systems
 
 **Integration Points:**
-- Workout completion → XP/rewards
+- Workout completion → XP/rewards (Collaborate with `/titan-coach`)
 - Physical progress → skill tree unlocks
 - Consistent engagement → passive income triggers
 - Community sharing → viral growth mechanics

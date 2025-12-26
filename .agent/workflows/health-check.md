@@ -1,3 +1,7 @@
+---
+description: health-check
+---
+
 # Workflow: /health-check
 Trigger: Scheduled (Weekly) | Manual
 

@@ -27,7 +27,7 @@ description: The Strategic Federated Orchestrator (Manager Agent)
 **Reference:** [agent_handbook.md](.gemini/agent_handbook.md)
 
 **Quick Chains:**
-- **Feature:** `/analyst` -> `/architect` -> `/coder` -> `/qa`
+- **Feature:** `/analyst` -> `/architect` -> `/titan-coach` -> `/coder` -> `/qa`
 - **Bug:** `/qa` -> `/coder`
 - **Debt:** `/cleanup`
 

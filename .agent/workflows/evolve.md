@@ -106,6 +106,7 @@ Med flagga `--auto-apply`:
 | **Game Designer** | "What increases engagement?" | "Add boss variants for retention" |
 | **UI/UX** | "What causes friction?" | "Simplify Citadel navigation" |
 | **Performance Coach** | "What's missing for athletes?" | "Heart rate zone training mode" |
+| **Titan Coach** | "How does effort map to power?" | "Berserker buff for Zone 5 cardio" |
 | **Analyst** | "What's the highest ROI?" | "Strava integration → wider audience" |
 | **QA** | "What's undertested?" | "Social features lack coverage" |
 
@@ -140,5 +141,5 @@ THEN:
 # Self-Evaluation
 - **Analysis Depth (1-10)**: Hur grundlig var analysen?
 - **Actionability (1-10)**: Hur konkreta är förslagen?
-- **Role Coverage (1-10)**: Deltog alla relevanta perspektiv?
+- **Role Coverage (1-10)**: Deltog alla relevanta perspektiv (inkl. Titan Coach)?
 
