@@ -139,7 +139,9 @@ describe('Combat Server Actions', () => {
             const result = await performCombatAction({ type: 'ATTACK' } as any);
 
             expect(result.success).toBe(true);
-            expect(result.newState.bossHp).toBe(900);
+            if (result.success) {
+                expect(result.newState?.bossHp).toBe(900);
+            }
             expect(CombatEngine.processTurn).toHaveBeenCalled();
         });
 
