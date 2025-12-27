@@ -30,6 +30,15 @@ export interface StravaActivity {
     suffer_score?: number;
 }
 
+export interface StravaUploadResponse {
+    id: number;
+    id_str: string;
+    external_id: string;
+    error: string | null;
+    status: string;
+    activity_id: number | null;
+}
+
 /**
  * Maps a Strava activity to the IronForge CardioLog format.
  * Note: Does not create the record, just maps the data.

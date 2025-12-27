@@ -53,7 +53,8 @@ describe('OracleService', () => {
     describe('consult', () => {
         it('returns SURVIVAL MODE RECOVERY if survival mode is active', async () => {
             vi.mocked(TrainingMemoryManager.shouldEnterSurvivalMode).mockReturnValue(true);
-            vi.mocked(TrainingMemoryManager.calculateDebuffs).mockReturnValue([{ type: 'SLEEP', reason: 'Poor Sleep' }]);
+            // Fix: remove 'type' from mock object to match CapacityModifier
+            vi.mocked(TrainingMemoryManager.calculateDebuffs).mockReturnValue([{ reason: 'Poor Sleep', multiplier: 0.5, source: 'SLEEP' }]);
 
             const rec = await OracleService.consult(mockWellness, mockTTB);
 
