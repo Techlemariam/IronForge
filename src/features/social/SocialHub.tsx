@@ -6,6 +6,7 @@ import { getLeaderboard, getSocialFeed } from '@/actions/social';
 import { FeedCard } from '@/components/social/FeedCard';
 import { Users, Trophy, Swords, Crown, UserPlus, X } from 'lucide-react';
 import { toast } from 'sonner';
+import { LeaderboardEntry } from '@/features/leaderboard/types';
 
 interface SocialHubProps {
     onClose: () => void;
@@ -14,7 +15,7 @@ interface SocialHubProps {
 export const SocialHub: React.FC<SocialHubProps> = ({ onClose }) => {
     const [view, setView] = useState<'FEED' | 'LEADERBOARD' | 'ARENA'>('FEED');
     const [feed, setFeed] = useState<any[]>([]);
-    const [leaderboard, setLeaderboard] = useState<any[]>([]);
+    const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -26,6 +27,7 @@ export const SocialHub: React.FC<SocialHubProps> = ({ onClose }) => {
                     setFeed(data);
                 } else if (view === 'LEADERBOARD') {
                     const data = await getLeaderboard();
+                    // Action returns LeaderboardEntry[] now
                     setLeaderboard(data);
                 }
             } catch (e) {
@@ -106,19 +108,19 @@ export const SocialHub: React.FC<SocialHubProps> = ({ onClose }) => {
                         {view === 'LEADERBOARD' && (
                             <div className="bg-zinc-900 border border-zinc-800 rounded-lg overflow-hidden">
                                 {leaderboard.map((user, idx) => (
-                                    <div key={user.id} className="flex items-center p-4 border-b border-zinc-800 hover:bg-zinc-800/50">
+                                    <div key={user.userId} className="flex items-center p-4 border-b border-zinc-800 hover:bg-zinc-800/50">
                                         <div className="w-8 font-mono text-zinc-500">{idx + 1}</div>
                                         <div className="flex-1">
                                             <div className="flex items-center gap-2">
                                                 <span className="font-bold text-white">{user.heroName || "Anonymous"}</span>
-                                                {user.activeTitle && (
-                                                    <span className="text-[10px] px-1.5 rounded border border-yellow-800 text-yellow-600 bg-yellow-900/20">{user.activeTitle.name}</span>
+                                                {user.title && (
+                                                    <span className="text-[10px] px-1.5 rounded border border-yellow-800 text-yellow-600 bg-yellow-900/20">{user.title}</span>
                                                 )}
                                             </div>
                                             <div className="text-xs text-zinc-500">Level {user.level} Titan</div>
                                         </div>
                                         <div className="font-mono text-indigo-400 font-bold">
-                                            {user.totalExperience.toLocaleString()} XP
+                                            {user.totalExperience ? user.totalExperience.toLocaleString() : 0} XP
                                         </div>
                                     </div>
                                 ))}

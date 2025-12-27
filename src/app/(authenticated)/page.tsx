@@ -12,6 +12,7 @@ import { ProgressionService } from '@/services/progression';
 import { OracleService } from '@/services/oracle';
 import { RecoveryService } from '@/services/bio/RecoveryService';
 import DashboardClient from '@/features/dashboard/DashboardClient';
+import { getActiveChallengesAction } from '@/actions/challenges';
 
 // Types
 import { AuditReport } from '@/types/auditor';
@@ -222,6 +223,11 @@ export default async function Page() {
 
     const hasCompletedOnboarding = !!(dbUser as any)?.hasCompletedOnboarding;
 
+    const challenges = await getActiveChallengesAction().catch(e => {
+        console.error("Failed to fetch challenges", e);
+        return [];
+    });
+
     return (
         <DashboardClient
             initialData={initialData as any}
@@ -235,6 +241,7 @@ export default async function Page() {
             faction={(dbUser as any)?.faction || 'HORDE'}
             hasCompletedOnboarding={hasCompletedOnboarding}
             isDemoMode={isDemoMode}
+            challenges={challenges}
         />
     );
 }

@@ -5,7 +5,8 @@ import { Swords, Users } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
 
-import { getLeaderboard, LeaderboardScope } from '@/lib/leaderboard';
+import { getLeaderboard } from '@/lib/leaderboard';
+import { LeaderboardScope } from '@/features/leaderboard/types';
 
 export default async function ColosseumPage({ searchParams }: { searchParams: Promise<{ scope?: string, city?: string }> }) {
     const { scope: scopeParam, city: cityParam } = await searchParams;
@@ -21,16 +22,8 @@ export default async function ColosseumPage({ searchParams }: { searchParams: Pr
         limit: 50
     });
 
-    const formattedPlayers = leaderboardData.map(p => ({
-        userId: p.userId,
-        heroName: p.heroName,
-        rankScore: p.rankScore,
-        highestWilksScore: p.highestWilksScore,
-        wins: p.wins,
-        level: p.level,
-        title: p.title,
-        city: p.city
-    }));
+    // Unified leaderboard now returns LeaderboardEntry directly
+    const formattedPlayers = leaderboardData;
 
     return (
         <div className="min-h-screen bg-black text-white p-4 md:p-8 font-sans">

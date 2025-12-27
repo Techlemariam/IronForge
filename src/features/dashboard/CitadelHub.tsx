@@ -1,7 +1,7 @@
 import React from 'react';
 // import { NavAction, View } from '@/types/navigation'; // Removing unused import
 import { Sword, Map, Castle, Mic, Footprints, Bike, Dumbbell, Scroll, Skull, ShoppingBag, Shield, Users, Gavel } from 'lucide-react';
-import { DashboardAction } from '@/features/dashboard/DashboardClient';
+import { DashboardAction } from './types';
 import { playSound } from '@/utils';
 
 // Shared NavButton Style
@@ -66,6 +66,12 @@ export const CitadelHub: React.FC<CitadelHubProps> = ({ dispatch }) => (
             </NavButton>
             <NavButton variant="magma" icon={<Footprints className="w-4 h-4" />} onClick={() => dispatch({ type: 'SET_CARDIO_MODE', payload: 'running' })}>
                 Treadmill
+            </NavButton>
+            <NavButton variant="magma" icon={<Skull className="w-4 h-4" />} onClick={() => dispatch({ type: 'SET_CARDIO_MODE', payload: 'gauntlet' })}>
+                Titan&apos;s Gauntlet
+            </NavButton>
+            <NavButton variant="magma" icon={<Scroll className="w-4 h-4" />} onClick={() => dispatch({ type: 'SET_VIEW', payload: 'strava_upload' })}>
+                Messenger Tower
             </NavButton>
         </District>
 
