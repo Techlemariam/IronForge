@@ -1,0 +1,17 @@
+{
+    "$schema": "https://typedoc.org/schema.json",
+    "entryPoints": [
+        "src/actions/*.ts",
+        "src/services/*.ts",
+        "src/lib/*.ts"
+    ],
+    "out": "docs/api",
+    "plugin": [
+        "typedoc-plugin-markdown"
+    ],
+    "readme": "none",
+    "gitRevision": "main",
+    "exclude": [
+        "**/*.test.ts"
+    ]
+}

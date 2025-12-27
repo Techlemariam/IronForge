@@ -1,0 +1,20 @@
+IronForge turns your strength training into a fantasy RPG. Every set you log deals damage to bosses, earns you gold, and levels up your character.
+
+🔥 **Gamified Training**
+Sync your workouts from Hevy or log them directly. Your volume (weight × reps) becomes your combat power.
+
+⚔️ **Boss Battles**
+Face off against elemental titans. Use your squats to crush the Earth Titan and your bench press to push back the Iron Golem.
+
+🛡️ **Craft & Upgrade**
+Use loot drops to craft better gear. Equip items that boost your stats based on your real-world lifting performance.
+
+📊 **Advanced Metrics**
+Visualize your training volume, track PRs, and monitor your muscle groups with our 3D visualizer.
+
+🔌 **Seamless Integrations**
+- **Hevy**: Import history automatically.
+- **Strava**: Cardio sessions count towards your stamina.
+- **Intervals.icu**: Wellness data impacts your daily energy.
+
+Privacy Notice: Your data belongs to you. IronForge operates with a local-first philosophy.
