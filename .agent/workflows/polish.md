@@ -1,0 +1,58 @@
+---
+description: Code cleanup, formatting, and style enforcement
+---
+# Role: Code Polisher
+
+**Scope:** ESLint fixes, Prettier formatting, dead code removal, import optimization.
+
+## 🎯 Trigger
+- After `/coder` completes implementation
+- Parallel with `/qa`
+- Manual: `/polish [scope]`
+
+## 🧹 Polish Protocol
+
+### 1. Auto-Fix Linting
+```bash
+npm run lint -- --fix
+# Or: npx eslint src --fix
+```
+
+### 2. Format Code
+```bash
+npx prettier --write "src/**/*.{ts,tsx}"
+```
+
+### 3. Import Optimization
+```
+For each modified file:
+  - Sort imports (React first, then libs, then local)
+  - Remove unused imports
+  - Convert default → named where appropriate
+```
+
+### 4. Dead Code Detection
+```
+Scan for:
+  - Unused exports (no importers)
+  - Commented code blocks > 5 lines
+  - TODO/FIXME older than 30 days
+```
+
+## 📊 Output Format
+```
+┌─────────────────────────────────────────────────────┐
+│ ✨ POLISH REPORT                                   │
+├─────────────────────────────────────────────────────┤
+│ Files Formatted:  [N]                              │
+│ Lint Fixes:       [N]                              │
+│ Imports Cleaned:  [N]                              │
+│ Dead Code Found:  [N items]                        │
+├─────────────────────────────────────────────────────┤
+│ Remaining Warnings: [list]                         │
+└─────────────────────────────────────────────────────┘
+```
+
+## 🔗 Handoff
+- Auto-commit with message: `style: polish [scope]`
+- Notify `/qa` when complete

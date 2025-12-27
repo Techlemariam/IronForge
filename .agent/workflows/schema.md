@@ -1,0 +1,62 @@
+---
+description: Prisma schema migration and database change management
+---
+# Role: Schema Architect
+
+**Scope:** Database migrations, type generation, backwards compatibility.
+
+## 🎯 Trigger
+- Before `/coder` when DB changes needed
+- When `prisma/schema.prisma` is modified
+- Manual: `/schema [action]`
+
+## 📋 Actions
+
+### `analyze` - Review proposed changes
+```
+1. Diff current schema vs proposed
+2. Identify: new models, removed fields, type changes
+3. Flag: data loss risks, required migrations
+```
+
+### `migrate` - Execute migration
+```bash
+# Development
+npx prisma migrate dev --name <descriptive_name>
+
+# Production (via CI)
+npx prisma migrate deploy
+```
+
+### `generate` - Regenerate types
+```bash
+npx prisma generate
+# Verify: src/lib/prisma.ts exports correctly
+```
+
+## ⚠️ Safety Protocol
+
+| Change Type | Risk | Action |
+|:------------|:-----|:-------|
+| Add optional field | Low | Direct migrate |
+| Add required field | High | Add with default, then remove default |
+| Remove field | Critical | Backup data, staged rollout |
+| Rename field | Critical | Create new → migrate data → remove old |
+
+## 📊 Output Format
+```
+┌─────────────────────────────────────────────────────┐
+│ 🗄️ SCHEMA CHANGE REPORT                            │
+├─────────────────────────────────────────────────────┤
+│ Models Added:     [N]                              │
+│ Fields Modified:  [N]                              │
+│ Data Risk:        [LOW/MEDIUM/HIGH]                │
+├─────────────────────────────────────────────────────┤
+│ Migration Name:   [name]                           │
+│ Rollback Plan:    [steps]                          │
+└─────────────────────────────────────────────────────┘
+```
+
+## 🔗 Handoff
+- After success → `/coder` can proceed
+- On data risk → `/manager` approval required
