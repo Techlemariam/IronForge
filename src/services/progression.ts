@@ -148,30 +148,35 @@ export const ProgressionService = {
 
     /**
      * Helper to find max e1rm for a set of exercise names.
+     * Calculates e1rm from the sets JSON (Epley formula: weight * (1 + reps/30))
      */
     async findBestLift(userId: string, exerciseNames: string[]): Promise<number> {
-        // Query logs where exerciseId (name) is in list
-        // Prisma doesn't do "max" easily on a string match query without groupBy or raw
-        // But since exerciseId is a string, let's just fetch simplified.
-
-        // Actually, matching exact strings is brittle. 
-        // Hevy returns "Barbell Squat", "Bench Press (Barbell)", etc.
-        // For robustness, let's use 'contains' OR logic if possible, or just exact matches from known list.
-        // Using `in` operator.
-
-        const bestLog = await prisma.exerciseLog.findFirst({
+        // Fetch all logs for matching exercises
+        const logs = await prisma.exerciseLog.findMany({
             where: {
                 userId,
-                // Partial matching is hard with `in`, so we rely on exact matches or simple `contains` 
-                // Creating a simplified OR structure for partial matching:
                 OR: exerciseNames.map(name => ({
                     exerciseId: { contains: name, mode: 'insensitive' }
                 }))
             },
-            orderBy: { e1rm: 'desc' },
-            take: 1
+            select: { sets: true }
         });
 
-        return bestLog ? bestLog.e1rm : 0;
+        let maxE1rm = 0;
+
+        for (const log of logs) {
+            const sets = log.sets as Array<{ weight?: number; reps?: number }>;
+            if (!sets || !Array.isArray(sets)) continue;
+
+            for (const set of sets) {
+                if (set.weight && set.reps) {
+                    // Epley formula: e1rm = weight * (1 + reps/30)
+                    const e1rm = set.weight * (1 + set.reps / 30);
+                    if (e1rm > maxE1rm) maxE1rm = e1rm;
+                }
+            }
+        }
+
+        return maxE1rm;
     }
 };

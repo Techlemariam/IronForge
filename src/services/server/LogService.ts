@@ -3,15 +3,18 @@ import { ExerciseLog, MeditationLog } from '@/types';
 
 export const LogService = {
     async saveExerciseLog(userId: string, log: ExerciseLog) {
-        // Check if log already exists (optional, depends on ID strategy)
-        // For now, simple create
+        // Convert legacy ExerciseLog type to Prisma schema format
         return prisma.exerciseLog.create({
             data: {
                 userId,
                 exerciseId: log.exerciseId,
-                e1rm: log.e1rm,
-                rpe: log.rpe,
-                isEpic: log.isEpic || false,
+                sets: [{
+                    weight: log.e1rm || 0, // Use e1rm as weight approximation
+                    reps: 1,
+                    rpe: log.rpe,
+                    isWarmup: false
+                }],
+                isPersonalRecord: log.isEpic || false,
                 date: new Date(log.date),
             }
         });
