@@ -10,10 +10,9 @@ import { createClient } from '@/utils/supabase/server';
 import { HevyHelperSchema, ImportHevyHistorySchema } from '@/types/schemas';
 
 export async function getHevyTemplatesAction(apiKey: string) {
-    const { apiKey: validatedKey } = HevyHelperSchema.pick({ apiKey: true }).parse({ apiKey });
-
     try {
-        const allExercises = await getHevyTemplates(apiKey);
+        const { apiKey: validatedKey } = HevyHelperSchema.pick({ apiKey: true }).parse({ apiKey });
+        const allExercises = await getHevyTemplates(validatedKey);
         return {
             exercise_templates: allExercises,
             page: 1,
@@ -22,6 +21,15 @@ export async function getHevyTemplatesAction(apiKey: string) {
         };
     } catch (error: any) {
         console.error("Server Action Hevy Error:", error.message);
+        // If it's a ZodError, we might want to format it, but for now just passing message is fine if we want to match the test,
+        // BUT ZodError.message is a JSON string array.
+        // The test expects "Hevy API Key is required."
+        // We should explicitly check validation first and throw custom error if we want that specific message,
+        // OR update the test to accept Zod's error.
+        // Let's update the test to be more robust, but first let's see if we can just fix the code.
+        if (error.issues) {
+            throw new Error("Hevy API Key is required.");
+        }
         throw new Error("Failed to fetch Hevy templates: " + error.message);
     }
 }

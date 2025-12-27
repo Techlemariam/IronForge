@@ -4,6 +4,7 @@ import { createClient } from '@/utils/supabase/server'
 import prisma from '@/lib/prisma'
 import { revalidatePath } from 'next/cache'
 import { TrainingPath } from '@/types/training'
+import { processWorkoutLog } from '@/services/challengeService'
 
 export type TitanLogResult = {
     success: boolean
@@ -74,6 +75,15 @@ export async function logTitanSet(
                 where: { id: user.id },
                 data: { level: newLevel }
             })
+        }
+
+        // 5. Challenge Processing (Fire and Forget)
+        // We do not await this to keep UI snappy, or we await if we want data consistency.
+        // Next.js actions should handle promises.
+        try {
+            await processWorkoutLog(user.id, weight, reps);
+        } catch (e) {
+            console.error("Challenge Sync Failed", e);
         }
 
         revalidatePath('/') // Refresh dashboard

@@ -14,7 +14,7 @@ export async function getStravaAuthUrlAction() {
     const STRAVA_CLIENT_ID = process.env.STRAVA_CLIENT_ID;
     if (!STRAVA_CLIENT_ID) throw new Error("Missing STRAVA_CLIENT_ID");
 
-    const scope = 'read,activity:read_all';
+    const scope = 'read,activity:read_all,activity:write';
     // Dynamically determining host might be unreliable in server actions without headers(),
     // but we can try.
     const { headers } = await import('next/headers');
@@ -202,5 +202,64 @@ export async function syncStravaActivitiesAction() {
     } catch (error: any) {
         console.error("Sync Error:", error);
         return { success: false, error: error.message || 'Sync failed' };
+    }
+}
+
+export async function uploadToStravaAction(formData: FormData) {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) return { success: false, error: 'Unauthorized' };
+
+    const token = await getValidAccessToken(user.id);
+    if (!token) return { success: false, error: 'Strava not connected or token invalid' };
+
+    const file = formData.get('file') as File;
+    if (!file) return { success: false, error: 'No file provided' };
+
+    try {
+        // Convert File to Blob/Buffer for Axios
+        const arrayBuffer = await file.arrayBuffer();
+        const buffer = Buffer.from(arrayBuffer);
+
+        const uploadData = new FormData();
+        // Append raw data. Note: In Node environment with axios + form-data, 
+        // passing a buffer often requires a filename.
+        // But since we are using native FormData in Next.js Server Actions (Node 18+),
+        // we might need to handle the axios post carefully.
+        // Actually, let's use standard fetch for the upload to handle FormData natively if possible,
+        // or construct properly for axios.
+
+        // Simpler approach with Axios:
+        const form = new FormData();
+        form.append('file', new Blob([buffer]), file.name);
+        form.append('data_type', file.name.endsWith('.fit') ? 'fit' : 'gpx');
+
+        // NOTE: Node's FormData (undici) might behave differently with axios.
+        // Let's use the native fetch which Next.js polyfills/supports well.
+
+        const stravaFormData = new FormData();
+        stravaFormData.append('file', new Blob([buffer]), file.name);
+        stravaFormData.append('data_type', file.name.endsWith('.fit') ? 'fit' : 'gpx');
+
+        const response = await fetch('https://www.strava.com/api/v3/uploads', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+            body: stravaFormData
+        });
+
+        if (!response.ok) {
+            const err = await response.json();
+            throw new Error(err.message || 'Upload failed');
+        }
+
+        const result = await response.json();
+        return { success: true, uploadId: result.id, status: result.status };
+
+    } catch (error: any) {
+        console.error("Upload Error:", error);
+        return { success: false, error: error.message };
     }
 }

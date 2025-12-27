@@ -36,21 +36,19 @@ export async function unfollowUser(targetId: string) {
     return { success: true };
 }
 
+import { getLeaderboard as getUnifiedLeaderboard } from '@/lib/leaderboard';
+
+// ...
+
 export async function getLeaderboard(type: 'GLOBAL' | 'FRIENDS' = 'GLOBAL') {
     const sessionUser = await prisma.user.findFirst();
 
     // Global Leaderboard (By Level/XP)
     if (type === 'GLOBAL') {
-        const users = await prisma.user.findMany({
-            orderBy: { totalExperience: 'desc' },
-            take: 50,
-            select: {
-                id: true,
-                heroName: true,
-                level: true,
-                totalExperience: true,
-                activeTitle: { select: { name: true } }
-            }
+        const users = await getUnifiedLeaderboard({
+            scope: 'GLOBAL',
+            type: 'XP',
+            limit: 50
         });
         return users;
     }
@@ -59,14 +57,18 @@ export async function getLeaderboard(type: 'GLOBAL' | 'FRIENDS' = 'GLOBAL') {
     if (type === 'FRIENDS' && sessionUser) {
         const friends = await prisma.follow.findMany({
             where: { followerId: sessionUser.id },
-            include: { following: true }
+            select: { followingId: true }
         });
 
-        // Include self
-        const leaderboard = [
-            sessionUser,
-            ...friends.map(f => f.following)
-        ].sort((a, b) => b.totalExperience - a.totalExperience);
+        const friendIds = friends.map(f => f.followingId);
+        friendIds.push(sessionUser.id); // Include self
+
+        const leaderboard = await getUnifiedLeaderboard({
+            scope: 'FRIENDS',
+            type: 'XP',
+            userIds: friendIds,
+            limit: 50
+        });
 
         return leaderboard;
     }
