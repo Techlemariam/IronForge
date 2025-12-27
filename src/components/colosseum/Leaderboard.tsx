@@ -1,24 +1,14 @@
 import React from 'react';
 import { Crown, Swords, Skull, Globe, MapPin, Trophy, Shield } from 'lucide-react';
-import { getPvpRank, getRankTitle, type Faction } from '@/lib/pvpRanks';
+import { getPvpRank, getRankTitle } from '@/lib/pvpRanks';
 import Link from 'next/link';
 
-export interface PvPPlayer {
-    userId: string;
-    heroName: string;
-    rankScore: number;
-    highestWilksScore: number;
-    wins: number;
-    level: number;
-    title?: string | null;
-    city?: string | null;
-    faction?: Faction;
-}
+import { LeaderboardEntry, LeaderboardScope } from '@/features/leaderboard/types';
 
 interface LeaderboardProps {
-    players: PvPPlayer[];
+    players: LeaderboardEntry[];
     currentUserId?: string;
-    scope: 'GLOBAL' | 'CITY' | 'COUNTRY';
+    scope: LeaderboardScope;
     currentCity?: string;
 }
 
@@ -76,8 +66,8 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ players, currentUserId, scope
                                         <span className="bg-zinc-800 text-zinc-500 text-[10px] px-1 rounded border border-zinc-700">Lvl {player.level}</span>
                                         {/* PvP Rank Title */}
                                         <span className={`text-[10px] px-2 py-0.5 rounded border uppercase tracking-widest font-black flex items-center gap-1 ${player.faction === 'ALLIANCE'
-                                                ? 'bg-blue-900/30 text-blue-400 border-blue-900/50'
-                                                : 'bg-red-900/30 text-red-400 border-red-900/50'
+                                            ? 'bg-blue-900/30 text-blue-400 border-blue-900/50'
+                                            : 'bg-red-900/30 text-red-400 border-red-900/50'
                                             }`}>
                                             <Shield className="w-3 h-3" />
                                             <span className="text-zinc-500">R{pvpRank.rank}</span>

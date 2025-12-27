@@ -1,7 +1,7 @@
 import prisma from "@/lib/prisma";
+import { LeaderboardEntry, LeaderboardScope, LeaderboardType } from "@/features/leaderboard/types";
 
-export type LeaderboardScope = "GLOBAL" | "CITY" | "COUNTRY";
-export type LeaderboardType = "PVP_RANK" | "WINS" | "WILKS";
+export type { LeaderboardScope, LeaderboardType, LeaderboardEntry };
 
 interface GetLeaderboardOptions {
     scope: LeaderboardScope;
@@ -9,19 +9,7 @@ interface GetLeaderboardOptions {
     city?: string;
     country?: string;
     limit?: number;
-}
-
-export interface LeaderboardEntry {
-    userId: string;
-    heroName: string;
-    rankScore: number;
-    wins: number;
-    title: string | null;
-    city: string | null;
-    level: number;
-    highestWilksScore: number;
-    faction: string; // Using string to avoid compile errors if Prisma types aren't fully regen'd
-    avatar?: string; // Future Use
+    userIds?: string[]; // For Friend/Custom scopes
 }
 
 export async function getLeaderboard({
@@ -29,28 +17,35 @@ export async function getLeaderboard({
     type,
     city,
     country,
-    limit = 50
+    limit = 50,
+    userIds
 }: GetLeaderboardOptions): Promise<LeaderboardEntry[]> {
-    const where: any = {
-        pvpProfile: { isNot: null } // Only users with PvP profile
-    };
+    const where: any = {};
 
+    // 1. Scope Filtering
     if (scope === "CITY" && city) {
         where.city = { equals: city, mode: 'insensitive' };
-    }
-
-    if (scope === "COUNTRY" && country) {
+    } else if (scope === "COUNTRY" && country) {
         where.country = { equals: country, mode: 'insensitive' };
+    } else if (scope === "FRIENDS" && userIds) {
+        where.id = { in: userIds };
     }
 
-    // Order by logic
+    // 2. Type Filtering & Ordering
     let orderBy: any = {};
+
+    // Default ensure pvpProfile exists for PvP stats, but NOT for XP
     if (type === "PVP_RANK") {
+        where.pvpProfile = { isNot: null };
         orderBy = { pvpProfile: { rankScore: 'desc' } };
     } else if (type === "WINS") {
+        where.pvpProfile = { isNot: null };
         orderBy = { pvpProfile: { wins: 'desc' } };
     } else if (type === "WILKS") {
+        where.pvpProfile = { isNot: null };
         orderBy = { pvpProfile: { highestWilksScore: 'desc' } };
+    } else if (type === "XP") {
+        orderBy = { totalExperience: 'desc' };
     }
 
     const users = await prisma.user.findMany({
@@ -72,6 +67,7 @@ export async function getLeaderboard({
         city: u.city,
         level: u.level,
         highestWilksScore: u.pvpProfile?.highestWilksScore || 0,
-        faction: (u as any).faction || 'HORDE',
+        totalExperience: u.totalExperience,
+        faction: ((u as any).faction as 'HORDE' | 'ALLIANCE') || 'HORDE',
     }));
 }

@@ -330,8 +330,15 @@ const IntegrationsPanel: React.FC<IntegrationsPanelProps> = ({
                                         variant="magma"
                                         onClick={() => {
                                             startTransition(async () => {
-                                                // I will call `getStravaAuthUrlAction` - need to implement
-                                                // For now, I'll placeholders
+                                                try {
+                                                    const url = await getStravaAuthUrlAction();
+                                                    if (url) {
+                                                        window.location.href = url;
+                                                    }
+                                                } catch (e: any) {
+                                                    console.error("Strava Auth Error:", e);
+                                                    alert("Failed to initiate Strava login: " + e.message);
+                                                }
                                             });
                                         }}
                                         disabled={isPending}
