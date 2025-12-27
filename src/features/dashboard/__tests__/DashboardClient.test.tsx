@@ -101,7 +101,8 @@ describe('DashboardClient', () => {
         intervalsConnected: true,
         stravaConnected: false,
         faction: 'HORDE',
-        hasCompletedOnboarding: true
+        hasCompletedOnboarding: true,
+        challenges: []
     };
 
     beforeEach(() => {

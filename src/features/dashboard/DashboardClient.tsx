@@ -37,8 +37,12 @@ const SocialHub = dynamic(() => import('@/features/social/SocialHub').then(mod =
 const Marketplace = dynamic(() => import('@/components/game/Marketplace'), { ssr: false });
 const TheForge = dynamic(() => import('@/features/game/TheForge'), { ssr: false });
 const CardioStudio = dynamic(() => import('@/features/training/CardioStudio'), { ssr: false });
+import StravaUpload from '@/components/strava/StravaUpload';
 import { CitadelHub } from '@/features/dashboard/CitadelHub';
 import { FirstLoginQuest } from '@/features/onboarding/FirstLoginQuest';
+import { QuestBoard } from '@/components/gamification/QuestBoard';
+import { View, DashboardState, DashboardAction, DashboardData, DashboardClientProps } from './types';
+import { dashboardReducer } from './logic/dashboardReducer';
 
 
 // UI Components
@@ -51,149 +55,19 @@ const CoachToggle: React.FC<{ onClick: () => void }> = ({ onClick }) => (
     </button>
 );
 
-type View = 'citadel' | 'war_room' | 'iron_mines' | 'quest_completion' | 'armory' | 'bestiary' | 'world_map' | 'grimoire' | 'guild_hall' | 'arena' | 'marketplace' | 'combat_arena' | 'forge' | 'training_center' | 'cardio_studio' | 'social_hub' | 'item_shop';
 
-interface DashboardState {
-    isCodexLoading: boolean;
-    wellnessData: IntervalsWellness | null;
-    ttb: TTBIndices | null;
-    level: number;
-    activeQuest: Exercise[] | null;
-    questTitle: string;
-    exerciseNameMap: Map<string, string>;
-    startTime: Date | null;
-    currentView: View;
-    oracleRecommendation: OracleRecommendation | null;
-    auditReport: AuditReport | null;
-    weaknessAudit: WeaknessAudit | null;
-    forecast: TSBForecast[];
-    events: IntervalsEvent[];
-    titanAnalysis: TitanLoadCalculation | null;
-    isCoachOpen: boolean;
-    activeBossId: string | null;
-    activePath: TrainingPath;
-    mobilityLevel: LayerLevel;
-    recoveryLevel: LayerLevel;
-    totalExperience: number;
-    weeklyMastery?: WeeklyMastery;
-    cardioMode?: CardioMode;
-    activeWorkout?: WorkoutDefinition;
-    returnView: View | null;
-    faction: Faction;
-}
-
-export type DashboardAction =
-    | { type: 'INITIAL_DATA_LOAD_START' }
-    | { type: 'INITIAL_DATA_LOAD_SUCCESS'; payload: any }
-    | { type: 'INITIAL_DATA_LOAD_FAILURE' }
-    | { type: 'SELECT_ROUTINE'; payload: { routine: HevyRoutine, nameMap: Map<string, string> } }
-    | { type: 'COMPLETE_QUEST' }
-    | { type: 'SAVE_WORKOUT' }
-    | { type: 'ABORT_QUEST' }
-    | { type: 'SET_VIEW'; payload: View }
-    | { type: 'START_COMBAT'; payload: string }
-    | { type: 'START_GENERATED_QUEST'; payload: Session }
-    | { type: 'RECALCULATE_PROGRESSION'; payload: { level: number } }
-    | { type: 'TOGGLE_COACH' }
-    | { type: 'UPDATE_PATH'; payload: TrainingPath }
-    | { type: 'TOGGLE_COACH' }
-    | { type: 'UPDATE_PATH'; payload: TrainingPath }
-    | { type: 'SET_CARDIO_MODE'; payload: CardioMode }
-    | { type: 'START_CODEX_WORKOUT'; payload: { workout: WorkoutDefinition } }
-    | { type: 'RETURN_TO_PREVIOUS' };
-
-const dashboardReducer = (state: DashboardState, action: DashboardAction): DashboardState => {
-    switch (action.type) {
-        case 'INITIAL_DATA_LOAD_START': return { ...state, isCodexLoading: true };
-        case 'INITIAL_DATA_LOAD_SUCCESS': return {
-            ...state,
-            isCodexLoading: false,
-            exerciseNameMap: action.payload.nameMap,
-            ttb: action.payload.ttb,
-            wellnessData: action.payload.wellness,
-            level: action.payload.level,
-            auditReport: action.payload.auditReport,
-            oracleRecommendation: action.payload.oracleRec,
-            weaknessAudit: action.payload.weaknessAudit,
-            forecast: action.payload.forecast,
-            events: action.payload.events,
-            titanAnalysis: action.payload.titanAnalysis
-        };
-        case 'INITIAL_DATA_LOAD_FAILURE': return { ...state, isCodexLoading: false };
-        case 'SELECT_ROUTINE':
-            return {
-                ...state,
-                questTitle: action.payload.routine.title,
-                activeQuest: mapHevyToQuest(action.payload.routine, action.payload.nameMap),
-                startTime: new Date(),
-                currentView: 'iron_mines',
-            };
-        case 'COMPLETE_QUEST': return { ...state, currentView: 'quest_completion' };
-        case 'SAVE_WORKOUT':
-        case 'ABORT_QUEST':
-            return { ...state, activeQuest: null, questTitle: '', startTime: null, currentView: 'citadel' };
-        case 'SET_VIEW': return { ...state, currentView: action.payload };
-        case 'START_COMBAT': return { ...state, currentView: 'combat_arena', activeBossId: action.payload };
-
-        case 'START_GENERATED_QUEST':
-            return {
-                ...state,
-                questTitle: action.payload.name,
-                activeQuest: mapSessionToQuest(action.payload.blocks.flatMap(b => b.exercises || [])),
-                startTime: new Date(),
-                currentView: 'iron_mines',
-            };
-        case 'RECALCULATE_PROGRESSION':
-            return { ...state, level: action.payload.level };
-        case 'TOGGLE_COACH': return { ...state, isCoachOpen: !state.isCoachOpen };
-        case 'UPDATE_PATH': return { ...state, activePath: action.payload };
-        case 'SET_CARDIO_MODE': return { ...state, cardioMode: action.payload, currentView: 'cardio_studio', returnView: state.currentView };
-        case 'START_CODEX_WORKOUT':
-            const { workout } = action.payload;
-            if (workout.type === 'RUN' || workout.type === 'BIKE') {
-                return {
-                    ...state,
-                    activeWorkout: workout,
-                    cardioMode: workout.type === 'RUN' ? 'running' : 'cycling',
-                    currentView: 'cardio_studio',
-                    returnView: 'training_center', // explicit return to training center
-                };
-            } else {
-                // Strength or others -> IronMines (SessionRunner)
-                const session = mapDefinitionToSession(workout);
-                return {
-                    ...state,
-                    activeWorkout: workout,
-                    questTitle: workout.name,
-                    activeQuest: null, // SessionRunner uses 'session' prop
-                    startTime: new Date(),
-                    currentView: 'iron_mines', // Will use startGeneratedQuest logic via effect or prop?
-                    // SessionRunner prop needs to handle this.
-                    // Actually, START_GENERATED_QUEST logic is better reused here, but we need returnView.
-                    // Let's modify START_GENERATED_QUEST or just rely on the dispatch in handleStartCodexWorkout component side?
-                    // No, reducer should handle state.
-                    // We need to store the session somewhere if we use SessionRunner prop?
-                    // Existing 'activeQuest' is for IronMines (legacy). 
-                    // SessionRunner takes `session` prop. 
-                    // Let's assume we dispatch START_GENERATED_QUEST immediately after this in the UI handler?
-                    // Or we just handle it here:
-                };
-            }
-        case 'RETURN_TO_PREVIOUS':
-            return {
-                ...state,
-                currentView: state.returnView || 'citadel',
-                returnView: null,
-                activeWorkout: undefined
-            };
-        default: return state;
-    }
-};
 
 // NavButton moved to CitadelHub
 
 const Citadel: React.FC<{ state: DashboardState; dispatch: React.Dispatch<DashboardAction> }> = ({ state, dispatch }) => (
     <div className="w-full max-w-6xl mx-auto p-4 md:p-6 space-y-8 animate-fade-in">
+        <section id="quest-board">
+            <QuestBoard
+                challenges={state.challenges || []}
+                onClaimSuccess={() => { /* Handled by Server Action + Revalidate, but we could trigger nice anim */ }}
+            />
+        </section>
+
         <section id="quick-actions">
             <CitadelHub dispatch={dispatch} />
         </section>
@@ -322,38 +196,10 @@ const CodexLoader: React.FC = () => (
 );
 
 // Consolidated Data Object from Server
-export interface DashboardData {
-    wellness: IntervalsWellness;
-    activities: any[]; // specific type if available
-    events: IntervalsEvent[];
-    ttb: TTBIndices;
-    recommendation: OracleRecommendation | null;
-    auditReport: AuditReport | null;
-    forecast: TSBForecast[];
-    titanAnalysis: TitanLoadCalculation | null;
-    activePath: TrainingPath;
-    weeklyMastery?: WeeklyMastery;
-    // flattened or derived data that might be passed inside
-}
 
-export interface DashboardClientProps {
-    initialData: DashboardData;
-    userData: any; // User type from Prisma but with relations
-    dbUser?: any; // Redundant but kept for safety if used
-    isMobile?: boolean;
-    hevyTemplates: HevyExerciseTemplate[];
-    hevyRoutines: HevyRoutine[];
-    intervalsConnected: boolean;
-    stravaConnected: boolean;
-    faction: Faction | string;
-    hasCompletedOnboarding: boolean;
-    isDemoMode?: boolean;
-    // Legacy props mapping (if needed to keep internal logic simple)
-    // We will destructure initialData to populate state
-}
 
 const DashboardClient: React.FC<DashboardClientProps> = (props) => {
-    const { initialData, isDemoMode, userData, faction, hasCompletedOnboarding, hevyRoutines, hevyTemplates, intervalsConnected, stravaConnected } = props;
+    const { initialData, isDemoMode, userData, faction, hasCompletedOnboarding, hevyRoutines, hevyTemplates, intervalsConnected, stravaConnected, challenges } = props;
 
     // TODO: Use userData.level, userData.skills etc
     const level = userData?.level || 1;
@@ -385,16 +231,22 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
         mobilityLevel: userData?.mobilityLevel || 'NONE',
         recoveryLevel: userData?.recoveryLevel || 'NONE',
         totalExperience: userData?.totalExperience || 0,
+
         weeklyMastery: initialData.weeklyMastery,
         cardioMode: 'cycling', // Default
         returnView: null,
-        faction: (faction as Faction) || 'HORDE'
+        faction: (faction as Faction) || 'HORDE',
+        challenges: challenges || []
     };
 
     const [state, dispatch] = useReducer(dashboardReducer, initialStateFromProps);
     const [isModalOpen, setModalOpen] = useState(false);
     const [isConfigured, setIsConfigured] = useState(false);
     const [showOnboarding, setShowOnboarding] = useState(!hasCompletedOnboarding);
+
+    useEffect(() => {
+        dispatch({ type: 'UPDATE_CHALLENGES', payload: challenges || [] });
+    }, [challenges]);
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -492,8 +344,27 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
             case 'cardio_studio': return <CardioStudio
                 mode={state.cardioMode || 'cycling'}
                 activeWorkout={state.activeWorkout}
+                userProfile={{
+                    ftpCycle: userData?.ftpCycle || 200,
+                    ftpRun: userData?.ftpRun || 250,
+                    // We don't have thresholdSpeedKph in schema, using default in component or deriving?
+                    // Implementation plan didn't enforce schema change. 
+                    // CardioStudio defaults to 12 if missing.
+                }}
                 onClose={() => dispatch({ type: 'RETURN_TO_PREVIOUS' })}
             />;
+
+            case 'strava_upload': return (
+                <div className="flex flex-col items-center justify-center min-h-screen p-4">
+                    <StravaUpload />
+                    <button
+                        onClick={() => dispatch({ type: 'SET_VIEW', payload: 'citadel' })}
+                        className="mt-8 text-slate-400 hover:text-white transition-colors"
+                    >
+                        Return to Citadel
+                    </button>
+                </div>
+            );
 
             default: return <Citadel state={state} dispatch={dispatch} />;
         }
