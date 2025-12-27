@@ -90,6 +90,19 @@ IronForge uses a hybrid architecture with **Next.js Server Actions** for client-
 | `getBestiaryData()` | Fetches all monsters and user kill status. | Auth User |
 | `craftItem(recipeId)` | Crafts an item using resources/currency. | Auth User |
 
+### Weekly Challenges (`actions/challenges.ts`)
+| Function | Description | Access |
+|----------|-------------|--------|
+| `getActiveChallengesAction()` | Fetches currently active challenges. | Auth User |
+| `claimChallengeRewardAction(challengeId)` | Claims XP/Gold for completed challenge. | Auth User |
+
+### Strava Integration (`actions/strava.ts`)
+| Function | Description | Access |
+|----------|-------------|--------|
+| `getStravaAuthUrlAction()` | Limits scope and returns auth URL. | Auth User |
+| `exchangeStravaTokenAction(code)` | Exchanged Oauth code for access tokens. | Auth User |
+| `disconnectStravaAction()` | Revokes access and removes tokens. | Auth User |
+
 ### AI Programming (`actions/program.ts`, `actions/generatePlanAction.ts`)
 | Function | Description | Access |
 |----------|-------------|--------|
