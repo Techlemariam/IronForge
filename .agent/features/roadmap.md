@@ -5,23 +5,22 @@
 <!-- No active features -->
 
 ## 📋 Backlog (Ready for Analysis)
-### High Priority (ROI ≥ 3.0)
-- [ ] Mobile App Store Listing <!-- status: pending | priority: high | roi: 3.0 | effort: M | source: evolve/analyst -->
-
 ### Medium Priority (ROI 2.0-2.9)
-- [ ] Weekly Challenges <!-- status: pending | priority: medium | roi: 2.8 | effort: M | source: evolve/game-designer -->
-- [ ] DashboardClient Refactor <!-- status: pending | priority: medium | roi: 2.5 | source: evolve/architect -->
-- [ ] Zone-Based Buffs (Cardio Titan) <!-- status: pending | priority: medium | roi: 2.5 | effort: M | source: evolve/titan-coach -->
-- [ ] E2E Critical Path Test <!-- status: pending | priority: medium | roi: 2.3 | effort: S | source: evolve/qa -->
-- [ ] Consolidate Leaderboard Implementations <!-- status: pending | priority: medium | roi: 2.0 | effort: S | source: evolve/ui-ux -->
-- [ ] Power/Pace Zone Training <!-- status: pending | priority: medium | roi: 2.2 | effort: L | source: evolve/performance-coach -->
+- [ ] E2E Critical Path Test <!-- status: blocked | priority: medium | roi: 2.3 | effort: S | source: evolve/qa -->
 
 ### Low Priority (ROI < 2.0)
 <!-- No pending low priority items -->
 
 
 ## ✅ Shipped
+- [x] Direct Strava Integration <!-- status: shipped | priority: high | roi: 4.8 | effort: M | source: evolve/analyst -->
+- [x] Power/Pace Zone Training <!-- date: 2025-12-27 | source: evolve/performance-coach -->
 - [x] Agent Orchestration Level 1-4 <!-- date: 2025-12-24 -->
+- [x] Mobile App Store Listing <!-- date: 2025-12-26 | source: evolve/analyst -->
+- [x] Weekly Challenges <!-- date: 2025-12-26 | source: evolve/game-designer -->
+- [x] DashboardClient Refactor <!-- date: 2025-12-26 | source: evolve/architect -->
+- [x] Zone-Based Buffs (Cardio Titan) <!-- date: 2025-12-26 | source: evolve/titan-coach -->
+- [x] Leaderboard Consolidation <!-- date: 2025-12-26 | source: evolve/ui-ux -->
 - [x] Combat Retreat <!-- date: 2025-12-25 | source: ux-audit -->
 - [x] Citadel Redesign <!-- date: 2025-12-25 | source: ux-audit -->
 - [x] Onboarding Quest <!-- date: 2025-12-25 | source: ux-audit -->
