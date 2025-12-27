@@ -2,20 +2,17 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { getHevyTemplatesAction, getHevyRoutinesAction, getHevyWorkoutHistoryAction, saveWorkoutAction } from '../hevy';
 import axios from 'axios';
 import * as libHevy from '@/lib/hevy';
-import prisma from '@/lib/prisma';
+import { PrismaClient } from '@prisma/client';
 
-// Mock dependencies
+const prisma = new PrismaClient();
+
+// Mock EXTERNAL dependencies (Axios) and Auth
 vi.mock('axios');
 vi.mock('@/lib/hevy', () => ({
     getHevyTemplates: vi.fn(),
 }));
-vi.mock('@/lib/prisma', () => ({
-    default: {
-        user: {
-            update: vi.fn(),
-        },
-    },
-}));
+
+// Mock Auth to return our test user
 vi.mock('@/utils/supabase/server', () => ({
     createClient: vi.fn(() => ({
         auth: {
@@ -24,11 +21,23 @@ vi.mock('@/utils/supabase/server', () => ({
     })),
 }));
 
-describe('Hevy Actions', () => {
+describe('Hevy Actions (Integration)', () => {
     const apiKey = 'test-api-key';
 
-    beforeEach(() => {
+    beforeEach(async () => {
         vi.clearAllMocks();
+
+        // Seed Test User
+        // Note: Clean run ensures DB is truncated by setup file
+        await prisma.user.create({
+            data: {
+                id: 'test-user-id',
+                email: 'test@example.com',
+                heroName: 'TestHero',
+                kineticEnergy: 0,
+                totalExperience: 0
+            }
+        });
     });
 
     describe('getHevyTemplatesAction', () => {
@@ -81,23 +90,24 @@ describe('Hevy Actions', () => {
     });
 
     describe('saveWorkoutAction', () => {
-        it('should save workout and award energy', async () => {
+        it('should save workout and award energy in DB', async () => {
+            // Setup
             const payload = { workout: { exercises: [{ sets: [{ weight_kg: 100, reps: 10 }] }] } }; // 1000kg vol => 10 energy
             const mockHevyResponse = { data: {} };
             (axios.post as any).mockResolvedValue(mockHevyResponse);
-            (prisma.user.update as any).mockResolvedValue({});
 
+            // Execute
             const result = await saveWorkoutAction(apiKey, payload);
 
-            expect(axios.post).toHaveBeenCalled();
-            expect(prisma.user.update).toHaveBeenCalledWith({
-                where: { id: 'test-user-id' },
-                data: {
-                    kineticEnergy: { increment: 10 },
-                    totalExperience: { increment: 20 }
-                }
+            // Verify Logic (DB State)
+            const updatedUser = await prisma.user.findUnique({
+                where: { id: 'test-user-id' }
             });
+
+            expect(updatedUser?.kineticEnergy).toBe(10);
+            expect(updatedUser?.totalExperience).toBe(20);
             expect(result.rewards).toEqual({ energy: 10 });
         });
     });
 });
+

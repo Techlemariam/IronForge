@@ -93,9 +93,9 @@ describe('social actions', () => {
             const result = await getLeaderboard('FRIENDS');
 
             expect(result).toHaveLength(3);
-            expect(result[0].id).toBe('f1'); // 100 XP
-            expect(result[1].id).toBe('user-123'); // 50 XP
-            expect(result[2].id).toBe('f2'); // 10 XP
+            expect(result[0].userId).toBe('f1'); // 100 XP
+            expect(result[1].userId).toBe('user-123'); // 50 XP
+            expect(result[2].userId).toBe('f2'); // 10 XP
         });
     });
 

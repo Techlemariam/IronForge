@@ -8,11 +8,8 @@ describe('useSkillEffects Logic (Integration)', () => {
     // Helper to create mock wellness
     const mockWellness: IntervalsWellness = {
         id: '1',
-        date: '2025-01-01',
-        updated: '2025-01-01',
         restingHR: 60,
         hrv: 50,
-        readiness: 80,
         sleepScore: 80,
         bodyBattery: 80,
         vo2max: 50
