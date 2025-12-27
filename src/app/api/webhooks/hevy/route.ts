@@ -89,9 +89,13 @@ export async function POST(request: NextRequest) {
                     userId: user.id,
                     date: new Date(start_time),
                     exerciseId: exercise.title || "Unknown Exercise", // Fallback to title
-                    e1rm: Number(maxE1rm.toFixed(2)),
-                    rpe: Number(avgRpe.toFixed(1)),
-                    isEpic: maxE1rm > 100 // Arbitrary threshold or based on user stats
+                    sets: exercise.sets.map((set: { weight_kg?: number; reps?: number; rpe?: number }) => ({
+                        weight: set.weight_kg || 0,
+                        reps: set.reps || 0,
+                        rpe: set.rpe || null,
+                        isWarmup: false
+                    })),
+                    isPersonalRecord: maxE1rm > 100 // Arbitrary threshold or based on user stats
                 }
             });
             logsCreated++;

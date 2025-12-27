@@ -1,45 +1,50 @@
-# Sprint 11: Quality & Stabilization
+# Sprint 12: Launch Readiness
 **Period**: 2025-12-27 - 2026-01-03
-**Goal**: Push test coverage to 60% while shipping high-ROI engagement features.
+**Goal**: Prepare for Play Store launch with critical E2E tests and user engagement features.
 
 ## Backlog
 
 ### Priority: High
-- [x] **Social Feature Tests** <!-- agent: @qa | estimate: 3h | source: health-report -->
-  - *Add tests for `account.ts` and `social.ts` (auth + leaderboard surface).*
-- [x] **Heart Rate Zone Training Mode** <!-- agent: @performance-coach + @coder | estimate: 4h | source: evolve -->
-  - *Display cardio zones from Intervals.icu, gamify zone adherence.*
-- [x] **Environment Verification** <!-- agent: @infrastructure | estimate: 2h | source: roadmap -->
-  - *Verify Demo Mode + Strava work after env restoration.*
+- [x] **Mobile App Store Listing** <!-- agent: @infrastructure | estimate: 4h | source: roadmap -->
+  - *Complete Play Store listing: screenshots, descriptions, privacy policy.*
+- [ ] **E2E Critical Path Test** <!-- agent: @qa | estimate: 3h | source: roadmap -->
+  - *Playwright test: Login → Workout → Combat → Loot flow.*
+- [x] **Unit Tests: intervals.ts + guild.ts** <!-- agent: @qa | estimate: 3h | source: health-report -->
+  - *Close test gap on external API and social actions.*
 
 ### Priority: Medium
-- [x] **Boss Variants (Elemental Types)** <!-- agent: @game-designer + @coder | estimate: 3h | source: evolve -->
-  - *Fire/Ice/Lightning bosses with unique behaviors.*
-- [x] **Quick Stats Header** <!-- agent: @ui-ux | estimate: 2h | source: ux-audit -->
-  - *Persistent XP/Gold/Level in header.*
-- [x] **Auto-update Wilks Score** <!-- agent: @coder | estimate: 1h | source: idea -->
-  - *Hevy webhook triggers Wilks recalculation.*
+- [ ] **Weekly Challenges System** <!-- agent: @game-designer + @coder | estimate: 4h | source: roadmap -->
+  - *Time-limited goals with special rewards for retention.*
+- [ ] **Zone-Based Buffs (Cardio Titan)** <!-- agent: @titan-coach + @coder | estimate: 3h | source: roadmap -->
+  - *Passive buffs triggered by HR zone training.*
+- [ ] **Consolidate Leaderboard Implementations** <!-- agent: @ui-ux + @coder | estimate: 2h | source: ux-audit -->
+  - *Merge Colosseum and Social leaderboards.*
 
 ### Priority: Low
-- [x] **Audio Feedback** <!-- agent: @ui-ux | estimate: 1h | source: ux-audit -->
-  - *Click sounds for interactions (juicing).*
-- [x] **Accessibility Pass** <!-- agent: @ui-ux | estimate: 2h | source: ux-audit -->
-  - *aria-labels, focus rings, color contrast.*
+- [ ] **Settings Page Migration** <!-- agent: @ui-ux | estimate: 2h | source: ux-audit -->
+  - *Convert modal to dedicated /settings route (reduce cognitive load).*
+- [ ] **Loading Skeletons** <!-- agent: @ui-ux | estimate: 1h | source: ux-audit -->
+  - *Replace spinners with skeleton loaders for polish.*
 
 ---
 
 ## Sprint Stats
 - **Total Items**: 8
-- **Estimated Hours**: 18h
-- **Debt/Test Ratio**: 25% (Tests)
-- **Feature Ratio**: 50%
-- **Polish Ratio**: 25%
+- **Estimated Hours**: 22h
+- **Test Ratio**: 25% (2 items)
+- **Feature Ratio**: 50% (4 items)
+- **Polish Ratio**: 25% (2 items)
 
 ## Dependencies
-- Intervals.icu API access for HR Zone feature
-- Hevy webhooks configured for Wilks auto-update
+- Play Store developer account configured
+- Playwright browser testing environment
+- Intervals.icu API for cardio buffs
 
-## Rollover from Previous Sprint
-- [x] ~~Strava Integration~~ → Shipped (env-blocked resolved)
-- [x] ~~Boss Difficulty Tiers~~ → Shipped
-- [/] ~~Demo Mode~~ → Verify after env fix
+## Rollover from Sprint 11
+- None (Sprint 11 complete ✅)
+
+---
+
+## Self-Evaluation
+- **Scope Realism**: 8/10 (22h is slightly aggressive but achievable)
+- **Balance**: 9/10 (Good mix of launch prep, features, and polish)

@@ -1,50 +1,44 @@
-# Sprint 12: Launch Readiness
-**Period**: 2025-12-27 - 2026-01-03
-**Goal**: Prepare for Play Store launch with critical E2E tests and user engagement features.
+# Sprint 13: The Awakening
+**Period**: 2026-01-04 - 2026-01-11
+**Goal**: Activate "The Living Titan" ecosystem with server-side state and autonomous behaviors.
 
 ## Backlog
 
 ### Priority: High
-- [ ] **Mobile App Store Listing** <!-- agent: @infrastructure | estimate: 4h | source: roadmap -->
-  - *Complete Play Store listing: screenshots, descriptions, privacy policy.*
-- [ ] **E2E Critical Path Test** <!-- agent: @qa | estimate: 3h | source: roadmap -->
-  - *Playwright test: Login → Workout → Combat → Loot flow.*
-- [ ] **Unit Tests: intervals.ts + guild.ts** <!-- agent: @qa | estimate: 3h | source: health-report -->
-  - *Close test gap on external API and social actions.*
+- [ ] **Refactor: Server-Side Titan State** <!-- agent: @architect + @coder | estimate: 4h | source: strategy/manifesto -->
+  - *Migrate Titan state from localStorage to Postgres (Prisma) for persistence.*
+- [ ] **Feature: Guild Raids** <!-- agent: @game-designer + @coder | estimate: 4h | source: roadmap -->
+  - *Multi-user boss battles with shared HP pools.*
+- [ ] **Feature: Titan Heartbeat Cron** <!-- agent: @coder | estimate: 3h | source: strategy/manifesto -->
+  - *Server-side cron job for autonomous Titan events (recovery, decay).*
 
 ### Priority: Medium
-- [ ] **Weekly Challenges System** <!-- agent: @game-designer + @coder | estimate: 4h | source: roadmap -->
-  - *Time-limited goals with special rewards for retention.*
-- [ ] **Zone-Based Buffs (Cardio Titan)** <!-- agent: @titan-coach + @coder | estimate: 3h | source: roadmap -->
-  - *Passive buffs triggered by HR zone training.*
-- [ ] **Consolidate Leaderboard Implementations** <!-- agent: @ui-ux + @coder | estimate: 2h | source: ux-audit -->
-  - *Merge Colosseum and Social leaderboards.*
+- [ ] **Feature: Achievement System** <!-- agent: @game-designer + @coder | estimate: 2h | source: roadmap -->
+  - *Unlockable badges and titles based on aggregate stats.*
+- [ ] **Refactor: Settings Page Migration** <!-- agent: @ui-ux | estimate: 2h | source: ux-audit -->
+  - *Convert settings modal to dedicated /settings route.*
+- [ ] **Feature: Oracle Seed (Basic)** <!-- agent: @performance-coach | estimate: 2h | source: strategy/manifesto -->
+  - *Initial reasoning engine for "Rest Day" recommendations.*
 
 ### Priority: Low
-- [ ] **Settings Page Migration** <!-- agent: @ui-ux | estimate: 2h | source: ux-audit -->
-  - *Convert modal to dedicated /settings route (reduce cognitive load).*
-- [ ] **Loading Skeletons** <!-- agent: @ui-ux | estimate: 1h | source: ux-audit -->
-  - *Replace spinners with skeleton loaders for polish.*
+- [ ] **Polish: Quick Stats Persistence** <!-- agent: @ui-ux | estimate: 1h | source: ux-audit -->
+  - *Show XP/Gold in header across all views (Citadel/Combat).*
+- [ ] **Polish: Loading Skeletons** <!-- agent: @ui-ux | estimate: 1h | source: ux-audit -->
+  - *Replace spinners with skeleton loaders.*
 
 ---
 
 ## Sprint Stats
 - **Total Items**: 8
-- **Estimated Hours**: 22h
-- **Test Ratio**: 25% (2 items)
-- **Feature Ratio**: 50% (4 items)
-- **Polish Ratio**: 25% (2 items)
+- **Estimated Hours**: 19h
+- **Debt Ratio**: 25% (State Migration + Settings)
+- **Feature Ratio**: 50% (Raids, Heartbeat, Achievements, Oracle)
+- **Polish Ratio**: 25% (Stats, Skeletons)
 
 ## Dependencies
-- Play Store developer account configured
-- Playwright browser testing environment
-- Intervals.icu API for cardio buffs
+- **Titan State Migration** MUST be completed before **Titan Heartbeat**.
+- **Guild Raids** requires `guild.ts` service (verified exists).
 
-## Rollover from Sprint 11
-- None (Sprint 11 complete ✅)
-
----
-
-## Self-Evaluation
-- **Scope Realism**: 8/10 (22h is slightly aggressive but achievable)
-- **Balance**: 9/10 (Good mix of launch prep, features, and polish)
+## Rollover Candidates (from Sprint 12)
+- Settings Page Migration
+- Loading Skeletons

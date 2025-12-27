@@ -14,6 +14,7 @@ Detta dokument definierar de specialiserade agenter som utgör IronForge-teamet.
 | **Coder** | `/coder` | **Implementation.** Skriver koden. Fokus på syntax, prestanda och "getting it done". |
 | **QA** | `/qa` | **Quality Assurance.** E2E-tester, regressionstester, och verifiering av krav. Hackar systemet. |
 | **Infrastructure**| `/infrastructure` | **DevOps.** Docker, Nix, CI/CD, Database migrations. |
+| **Security** | `/security` | **Red Team.** Auth audits, Zod-validering, dependency scans, secret exposure. |
 
 ## 🎨 Product & Design
 | Agent | Command | Description |
@@ -29,3 +30,10 @@ Detta dokument definierar de specialiserade agenter som utgör IronForge-teamet.
 | **Librarian** | `/librarian` | **Knowledge Base.** Dokumentation, historik, kodbas-sökning. |
 | **Cleanup** | `/cleanup` | **Debt Resolution.** Autonomt fixar items i `DEBT.md`. |
 
+## ⚙️ Meta & Process
+| Agent | Command | Description |
+| :--- | :--- | :--- |
+| **Pre-Deploy** | `/pre-deploy` | **Final Check.** Build verify, env check, breaking changes före deploy. |
+| **Schema** | `/schema` | **DB Migrations.** Prisma migrate, type generation, backwards compat. |
+| **Polish** | `/polish` | **Code Cleanup.** ESLint fix, Prettier, import sorting, dead code. |
+| **Perf** | `/perf` | **Performance.** Bundle analysis, RSC optimization, Lighthouse. |

@@ -35,12 +35,13 @@ Du är en **Orchestration Engine** som koordinerar IronForges agentflotta. Din u
 4. Kör `npm run build` för att verifiera kompilering.
 5. Kör `npm run test` för att verifiera tester.
 
-## Phase 4: Polish (UX + OPTIMIZATION)
-1. Om UI-komponenter skapats, anropa `/polish` för UX-granskning.
-2. Anropa `/optimize-tokens` på nya `.workflow`-filer (om några).
+## Phase 4: Polish & Security
+1. Om UI-komponenter skapats, anropa `/polish` för cleanup och formatting.
+2. Anropa `/security` för auth audit och Zod-validering.
+3. Anropa `/perf` för bundle analysis och RSC-optimering.
 
 ## Phase 5: Delivery & Roadmap Update
-1. Anropa `/health-check` för slutgiltig validering.
+1. Anropa `/pre-deploy` för slutgiltig validering.
 2. Om PASS:
    - Presentera en sammanfattning.
    - Fråga om `/deploy` ska triggas.

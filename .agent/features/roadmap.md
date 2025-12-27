@@ -2,18 +2,28 @@
 **Status**: Active | **Strategy**: Value-Driven Implementation
 
 ## 🚀 Active Development
-<!-- No active features -->
+- [/] Guild Raids <!-- status: active | priority: high | roi: 4.6 | effort: M | sprint: 13 -->
+- [/] Achievement System <!-- status: active | priority: high | roi: 4.0 | effort: S | sprint: 13 -->
+- [/] Training Program Builder <!-- status: active | priority: high | roi: 4.3 | effort: L | sprint: 13 -->
+- [/] World-Class Strength Log <!-- status: active | priority: critical | roi: 5.0 | effort: L | sprint: 13 -->
 
 ## 📋 Backlog (Ready for Analysis)
-### Medium Priority (ROI 2.0-2.9)
-- [ ] E2E Critical Path Test <!-- status: blocked | priority: medium | roi: 2.3 | effort: S | source: evolve/qa -->
+### High Priority (Strategy: 2045 Summit)
+- [ ] **Unified Titan Soul (Server)** <!-- status: planned | priority: critical | roi: 5.0 | effort: XL | source: strategy -->
+- [ ] **The Living Titan (Behaviors)** <!-- status: planned | priority: high | roi: 4.8 | effort: L | source: strategy -->
+- [ ] **The Oracle Seed (Intelligence)** <!-- status: planned | priority: high | roi: 4.5 | effort: L | source: strategy -->
+
+### Medium Priority (ROI 3.0-3.9)
+- [ ] Apple Watch Integration <!-- status: proposed | priority: medium | roi: 3.9 | effort: L | source: analyst -->
+- [ ] Push Notifications <!-- status: proposed | priority: medium | roi: 3.5 | effort: M | source: analyst -->
 
 ### Low Priority (ROI < 2.0)
-<!-- No pending low priority items -->
+- [ ] Manual Stat Overrides <!-- status: proposed | priority: low | roi: 1.5 | effort: S | source: manager -->
 
 
 ## ✅ Shipped
 - [x] Direct Strava Integration <!-- status: shipped | priority: high | roi: 4.8 | effort: M | source: evolve/analyst -->
+- [x] E2E Critical Path Test <!-- date: 2025-12-27 | source: evolve/qa -->
 - [x] Power/Pace Zone Training <!-- date: 2025-12-27 | source: evolve/performance-coach -->
 - [x] Agent Orchestration Level 1-4 <!-- date: 2025-12-24 -->
 - [x] Mobile App Store Listing <!-- date: 2025-12-26 | source: evolve/analyst -->

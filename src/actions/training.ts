@@ -50,9 +50,13 @@ export async function logTitanSet(
             data: {
                 userId: user.id,
                 exerciseId,
-                e1rm,
-                rpe,
-                isEpic: rpe >= 9, // Epic effort
+                sets: [{
+                    reps,
+                    weight,
+                    rpe,
+                    isWarmup: false,
+                }],
+                isPersonalRecord: rpe >= 9, // Epic effort
                 date: new Date()
             }
         })

@@ -72,10 +72,16 @@ model User {
   // Social
   followedBy Follow[] @relation("UserFollowedBy")
   following  Follow[] @relation("UserFollowing")
+  guildId    String?
+  guild      Guild?   @relation(fields: [guildId], references: [id])
+  guildContributions GuildRaidContribution[]
 
   // Gamification
   userChallenges UserChallenge[]
   gauntletRuns   GauntletRun[]
+  workoutTemplates WorkoutTemplate[]
+  bodyMetrics      BodyMetric[]
+  createdPrograms  TrainingProgram[] @relation("ProgramCreator")
 }
 
 model Follow {
@@ -143,16 +149,48 @@ enum ChallengeType {
 }
 
 model ExerciseLog {
-  id         Int      @id @default(autoincrement())
-  userId     String
-  date       DateTime @default(now())
-  exerciseId String
-  e1rm       Float
-  rpe        Float
-  isEpic     Boolean  @default(false)
-  user       User     @relation(fields: [userId], references: [id])
+  id               String   @id @default(cuid())
+  userId           String
+  exerciseId       String
+  date             DateTime @default(now())
+  sets             Json     // [{reps, weight, rpe, restSec, isWarmup}]
+  notes            String?
+  isPersonalRecord Boolean  @default(false)
+  user             User     @relation(fields: [userId], references: [id])
+  exercise         Exercise @relation(fields: [exerciseId], references: [id])
 
   @@index([userId, date])
+}
+
+model Exercise {
+  id               String        @id @default(cuid())
+  name             String
+  muscleGroup      String
+  secondaryMuscles String[]
+  equipment        String
+  videoUrl         String?
+  instructions     String?
+  logs             ExerciseLog[]
+}
+
+model WorkoutTemplate {
+  id        String   @id @default(cuid())
+  userId    String
+  name      String
+  exercises Json // [{exerciseId, sets, targetReps}]
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model BodyMetric {
+  id           String   @id @default(cuid())
+  userId       String
+  date         DateTime @default(now())
+  weight       Float?
+  bodyFat      Float?
+  measurements Json? // {chest, waist, hips, bicep, thigh}
+  photoUrl     String?
+  user         User     @relation(fields: [userId], references: [id])
 }
 
 model MeditationLog {
@@ -206,6 +244,7 @@ model UserAchievement {
   achievementId String
   unlockedAt    DateTime @default(now())
   user          User     @relation(fields: [userId], references: [id])
+  achievement   Achievement @relation(fields: [achievementId], references: [id])
 
   @@id([userId, achievementId])
 }
@@ -375,4 +414,85 @@ model GauntletRun {
   user User @relation(fields: [userId], references: [id])
 
   @@index([userId, wavesCleared])
+}
+
+model Guild {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String?
+  level       Int      @default(1)
+  createdAt   DateTime @default(now())
+
+  members     User[]
+  raids       GuildRaid[]
+}
+
+model GuildRaid {
+  id          String   @id @default(cuid())
+  guildId     String
+  bossName    String
+  totalHp     Int
+  currentHp   Int
+  startDate   DateTime @default(now())
+  endDate     DateTime
+
+  guild       Guild    @relation(fields: [guildId], references: [id])
+  contributions GuildRaidContribution[]
+}
+
+model GuildRaidContribution {
+  id          String   @id @default(cuid())
+  raidId      String
+  userId      String
+  damage      Int
+  timestamp   DateTime @default(now())
+
+  raid        GuildRaid @relation(fields: [raidId], references: [id])
+  user        User      @relation(fields: [userId], references: [id])
+}
+
+model Achievement {
+  id          String   @id @default(cuid())
+  code        String   @unique // e.g. "FIRST_WORKOUT"
+  name        String
+  description String
+  icon        String
+  condition   Json     // { type: "count", metric: "workout", target: 1 }
+
+  users       UserAchievement[]
+}
+
+model TrainingProgram {
+  id          String   @id @default(cuid())
+  creatorId   String
+  name        String
+  description String?
+  weeks       Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  creator     User     @relation("ProgramCreator", fields: [creatorId], references: [id])
+  programWeeks ProgramWeek[]
+}
+
+model ProgramWeek {
+  id        String   @id @default(cuid())
+  programId String
+  weekNumber Int
+  focus     String
+  
+  program   TrainingProgram @relation(fields: [programId], references: [id])
+  workouts  ProgramWorkout[]
+}
+
+model ProgramWorkout {
+  id        String   @id @default(cuid())
+  weekId    String
+  day       Int      // 1-7
+  workoutDefinitionId String // References logic/workout-definitions but simplified here or JSON
+  // Since we don't have a WorkoutDefinition model (it's in code), we might store JSON or just ID string
+  // Let's store logic/JSON for flexibility
+  workoutData Json
+
+  week      ProgramWeek @relation(fields: [weekId], references: [id])
 }

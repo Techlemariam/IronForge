@@ -25,6 +25,12 @@ vi.mock('next/cache', () => ({
     revalidatePath: vi.fn(),
 }));
 
+// Mock lib/leaderboard for getLeaderboard tests
+vi.mock('@/lib/leaderboard', () => ({
+    getLeaderboard: vi.fn(),
+}));
+import * as libLeaderboard from '@/lib/leaderboard';
+
 describe('social actions', () => {
     const mockUser = { id: 'user-123', heroName: 'Hero' };
 
@@ -72,30 +78,38 @@ describe('social actions', () => {
 
     describe('getLeaderboard', () => {
         it('GLOBAL: should return sorted users', async () => {
-            const mockUsers = [{ id: 'u1', totalExperience: 100 }, { id: 'u2', totalExperience: 50 }];
-            (prisma.user.findMany as any).mockResolvedValue(mockUsers);
+            const mockLeaderboard = [
+                { userId: 'u1', heroName: 'Hero1', totalExperience: 100 },
+                { userId: 'u2', heroName: 'Hero2', totalExperience: 50 }
+            ];
+            vi.spyOn(libLeaderboard, 'getLeaderboard').mockResolvedValue(mockLeaderboard as any);
 
             const result = await getLeaderboard('GLOBAL');
-            expect(prisma.user.findMany).toHaveBeenCalledWith(expect.objectContaining({
-                orderBy: { totalExperience: 'desc' }
-            }));
-            expect(result).toEqual(mockUsers);
+            expect(libLeaderboard.getLeaderboard).toHaveBeenCalledWith({
+                scope: 'GLOBAL',
+                type: 'XP',
+                limit: 50
+            });
+            expect(result).toEqual(mockLeaderboard);
         });
 
         it('FRIENDS: should return friends + self sorted', async () => {
             (prisma.user.findFirst as any).mockResolvedValue({ ...mockUser, totalExperience: 50 });
-            const mockFriends = [
-                { following: { id: 'f1', totalExperience: 100 } },
-                { following: { id: 'f2', totalExperience: 10 } }
+            (prisma.follow.findMany as any).mockResolvedValue([{ followingId: 'f1' }, { followingId: 'f2' }]);
+
+            const mockFriendsLeaderboard = [
+                { userId: 'f1', heroName: 'Friend1', totalExperience: 100 },
+                { userId: 'user-123', heroName: 'Hero', totalExperience: 50 },
+                { userId: 'f2', heroName: 'Friend2', totalExperience: 10 }
             ];
-            (prisma.follow.findMany as any).mockResolvedValue(mockFriends);
+            vi.spyOn(libLeaderboard, 'getLeaderboard').mockResolvedValue(mockFriendsLeaderboard as any);
 
             const result = await getLeaderboard('FRIENDS');
 
             expect(result).toHaveLength(3);
-            expect(result[0].userId).toBe('f1'); // 100 XP
-            expect(result[1].userId).toBe('user-123'); // 50 XP
-            expect(result[2].userId).toBe('f2'); // 10 XP
+            expect(result[0].userId).toBe('f1');
+            expect(result[1].userId).toBe('user-123');
+            expect(result[2].userId).toBe('f2');
         });
     });
 

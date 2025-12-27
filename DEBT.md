@@ -8,8 +8,8 @@
 | 2025-12-25 | `src/services/hevy.ts` | Legacy Hevy adapter removed (Moved to Server Actions) | @cleanup | ✅ Resolved |
 | 2025-12-23 | `src/actions/combat.ts` | Prisma Monster type mismatch - fixed with PrismaMonster type | @coder | ✅ Resolved |
 | 2025-12-23 | `src/features/game/CombatArena.tsx` | `Equipment` type missing `rarity`/`image` props for `LootReveal` | @coder | ✅ Resolved (was false positive) |
-| 2025-12-27 | `src/actions/__tests__/hevy.test.ts` | Prisma mock failure (`findMany`) in challenge service integration | @qa | 🔴 Open |
-| 2025-12-27 | `docs/api-reference.md` | Missing docs for `challenges.ts` and `strava.ts` | @librarian | 🔴 Open |
+| 2025-12-27 | `src/actions/__tests__/hevy.test.ts` | Prisma mock failure (`findMany`) in challenge service integration | @qa | ✅ Resolved |
+| 2025-12-27 | `docs/api-reference.md` | Missing docs for `challenges.ts` and `strava.ts` | @librarian | ✅ Resolved |
 
 ---
 

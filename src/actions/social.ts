@@ -90,7 +90,7 @@ export async function getSocialFeed(page: number = 1) {
 
     // Fetch recent logs (Workouts)
     const workouts = await prisma.exerciseLog.findMany({
-        where: { userId: { in: followingIds }, isEpic: true },
+        where: { userId: { in: followingIds }, isPersonalRecord: true },
         take: 20,
         orderBy: { date: 'desc' },
         include: { user: { select: { heroName: true, activeTitle: true } } }

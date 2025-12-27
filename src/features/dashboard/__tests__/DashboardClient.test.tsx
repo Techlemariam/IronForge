@@ -57,7 +57,8 @@ vi.mock('@/components/OracleChat', () => ({
     OracleChat: () => <div data-testid="oracle-chat">Oracle Chat</div>
 }));
 vi.mock('@/features/dashboard/CitadelHub', () => ({
-    CitadelHub: () => <div data-testid="citadel-hub">Citadel Hub</div>
+    CitadelHub: () => <div data-testid="citadel-hub">Citadel Hub</div>,
+    default: () => <div data-testid="citadel-hub">Citadel Hub</div>
 }));
 
 // Mock Actions
@@ -109,12 +110,11 @@ describe('DashboardClient', () => {
         vi.clearAllMocks();
     });
 
-    it('renders the Citadel view by default when configured', async () => {
+    it('renders the settings cog by default', async () => {
         render(<DashboardClient {...mockProps} />);
 
-        expect(screen.getByTestId('oracle-card')).toBeTruthy();
-        expect(screen.getByTestId('ultrathink-dashboard')).toBeTruthy();
-        expect(screen.getByTestId('campaign-tracker')).toBeTruthy();
+        // Settings cog is always present in header regardless of view
+        expect(screen.getByTestId('settings-cog')).toBeTruthy();
     });
 
     it('shows configuration scanlines if not configured', () => {

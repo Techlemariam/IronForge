@@ -13,11 +13,16 @@ Att agera orkestrator. Du kodar inte (om det inte är trivialt). Du designar int
 | **System Architect** | `/architect` | **Design & Struktur.** Skapar `implementation_plan.md`. Ser helheten, beroenden och säkerhet. | • Start av ny feature/sprint.<br>• Stora refaktoreringar.<br>• Val av db-schema eller libraries. |
 | **Coder** | `/coder` | **Exekvering.** Skriver koden. Tänker i funktioner, filer och syntax. | • När en godkänd plan finns.<br>• Vid buggfixar (efter analys).<br>• "Grind"-uppgifter. |
 | **QA Engineer** | `/qa` | **Kvalitetssäkring.** E2E-tester (Playwright), Unit-tester, Regression. | • Efter att Coder levererat.<br>• För att reproducera komplexa buggar.<br>• Innan merge/deploy. |
+| **Security** | `/security` | **Red Team.** Auth audits, Zod-validering, dependency scans, secret exposure. | • Före deploy.<br>• Vid auth-ändringar.<br>• Nya API endpoints. |
 | **UI/UX Alchemist** | `/ui-ux` | **Frontend Magic.** Tailwind, Framer Motion, Responsivitet, Tillgänglighet (WCAG). | • När "det ser fult ut".<br>• Skapande av nya visuella komponenter.<br>• Animeringar/Interaktioner. |
 | **Business Analyst** | `/analyst` | **Krav & Scope.** Omvandlar lösa tankar till konkreta User Stories. | • Otydliga krav från användaren.<br>• Behov av att definiera "Vad" innan "Hur". |
 | **Infrastructure** | `/infrastructure`| **Ops & Config.** Docker, CI/CD, ENV-variabler, Databas-setup. | • Build-fel i pipeline.<br>• Docker/Nix-problem.<br>• Databas-migreringar som strular. |
 | **Game Designer** | `/game-designer`| **Mekanik & Balans.** XP-kurvor, ekonomi, spelsystem. | • Justering av stats/damage/loot.<br>• Design av nya spelfunktioner (Legend/Lands). |
 | **Librarian** | `/librarian` | **Kunskap.** Dokumentation, sökning i kodbas, historik. | • Uppdatering av `ARCHITECTURE.md` eller Wikis.<br>• Svara på "Hur funkar X?" frågor. |
+| **Pre-Deploy** | `/pre-deploy` | **Final Check.** Build verify, env check, breaking changes. | • Innan alla produktions-deploys. |
+| **Schema** | `/schema` | **DB Migrations.** Prisma migrate, type generation, backwards compat. | • När `prisma/schema.prisma` ändras.<br>• Före `/coder` vid DB-ändringar. |
+| **Polish** | `/polish` | **Code Cleanup.** ESLint fix, Prettier, import sorting. | • Efter `/coder`.<br>• Parallellt med `/qa`. |
+| **Perf** | `/perf` | **Performance.** Bundle analysis, RSC optimization, Lighthouse. | • Efter större features.<br>• Före release. |
 
 ## 🔄 Standardiserade Workflows (The Plays)
 

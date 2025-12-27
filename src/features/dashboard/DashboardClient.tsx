@@ -41,6 +41,10 @@ import StravaUpload from '@/components/strava/StravaUpload';
 import { CitadelHub } from '@/features/dashboard/CitadelHub';
 import { FirstLoginQuest } from '@/features/onboarding/FirstLoginQuest';
 import { QuestBoard } from '@/components/gamification/QuestBoard';
+import { StrengthContainer } from '@/features/strength/StrengthContainer';
+import { ProgramBuilder } from '@/features/training/ProgramBuilder';
+import { TrophyRoom } from '@/features/gamification/TrophyRoom';
+import { GuildHall } from '@/features/guild/GuildHall';
 import { View, DashboardState, DashboardAction, DashboardData, DashboardClientProps } from './types';
 import { dashboardReducer } from './logic/dashboardReducer';
 
@@ -174,12 +178,8 @@ const Grimoire: React.FC<{ onClose: () => void }> = ({ onClose }) => (
     </div>
 );
 
-const GuildHall: React.FC<{ onClose: () => void }> = ({ onClose }) => (
-    <div className="flex items-center justify-center min-h-screen bg-forge-900 text-white">
-        <h2 className="text-4xl font-bold text-magma">Guild Hall Under Construction...</h2>
-        <button onClick={onClose} className="absolute top-4 right-4 px-4 py-2 bg-gray-700 rounded">Close</button>
-    </div>
-);
+// GuildHall imported from feature
+
 
 const Arena: React.FC<{ onClose: () => void }> = ({ onClose }) => (
     <div className="flex items-center justify-center min-h-screen bg-forge-900 text-white">
@@ -336,7 +336,30 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
                 onEnterCombat={(bossId) => dispatch({ type: 'START_COMBAT', payload: bossId })}
             />;
             case 'grimoire': return <Grimoire onClose={() => dispatch({ type: 'SET_VIEW', payload: 'citadel' })} />;
-            case 'guild_hall': return <GuildHall onClose={() => dispatch({ type: 'SET_VIEW', payload: 'citadel' })} />;
+            case 'guild_hall': return (
+                <div className="p-4 relative min-h-screen">
+                    <button onClick={() => dispatch({ type: 'SET_VIEW', payload: 'citadel' })} className="absolute top-4 right-4 z-50 px-4 py-2 bg-white/10 hover:bg-white/20 rounded text-white text-sm font-bold">Close</button>
+                    <GuildHall userId={userData?.id} />
+                </div>
+            );
+            case 'strength_log': return (
+                <div className="p-4 relative min-h-screen">
+                    <button onClick={() => dispatch({ type: 'SET_VIEW', payload: 'citadel' })} className="absolute top-4 right-4 z-50 px-4 py-2 bg-white/10 hover:bg-white/20 rounded text-white text-sm font-bold">Close</button>
+                    <StrengthContainer userId={userData?.id} />
+                </div>
+            );
+            case 'program_builder': return (
+                <div className="p-4 relative min-h-screen">
+                    <button onClick={() => dispatch({ type: 'SET_VIEW', payload: 'citadel' })} className="absolute top-4 right-4 z-50 px-4 py-2 bg-white/10 hover:bg-white/20 rounded text-white text-sm font-bold">Close</button>
+                    <ProgramBuilder userId={userData?.id} />
+                </div>
+            );
+            case 'trophy_room': return (
+                <div className="p-4 relative min-h-screen">
+                    <button onClick={() => dispatch({ type: 'SET_VIEW', payload: 'citadel' })} className="absolute top-4 right-4 z-50 px-4 py-2 bg-white/10 hover:bg-white/20 rounded text-white text-sm font-bold">Close</button>
+                    <TrophyRoom userId={userData?.id} />
+                </div>
+            );
             case 'arena': return <Arena onClose={() => dispatch({ type: 'SET_VIEW', payload: 'citadel' })} />;
             case 'marketplace': return <Marketplace onClose={() => dispatch({ type: 'SET_VIEW', payload: 'citadel' })} />;
             case 'combat_arena': return state.activeBossId ? <CombatArena bossId={state.activeBossId} onClose={() => dispatch({ type: 'SET_VIEW', payload: 'world_map' })} /> : <Citadel state={state} dispatch={dispatch} />;

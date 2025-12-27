@@ -1,6 +1,6 @@
 import React from 'react';
 // import { NavAction, View } from '@/types/navigation'; // Removing unused import
-import { Sword, Map, Castle, Mic, Footprints, Bike, Dumbbell, Scroll, Skull, ShoppingBag, Shield, Users, Gavel } from 'lucide-react';
+import { Sword, Map, Castle, Mic, Footprints, Bike, Dumbbell, Scroll, Skull, ShoppingBag, Shield, Users, Gavel, Trophy } from 'lucide-react';
 import { DashboardAction } from './types';
 import { playSound } from '@/utils';
 
@@ -58,6 +58,9 @@ export const CitadelHub: React.FC<CitadelHubProps> = ({ dispatch }) => (
             <NavButton variant="magma" icon={<Scroll className="w-4 h-4" />} onClick={() => dispatch({ type: 'SET_VIEW', payload: 'war_room' })}>
                 New Quest
             </NavButton>
+            <NavButton variant="magma" icon={<Dumbbell className="w-4 h-4" />} onClick={() => dispatch({ type: 'SET_VIEW', payload: 'strength_log' })}>
+                Strength Log
+            </NavButton>
             <NavButton variant="magma" icon={<Map className="w-4 h-4" />} onClick={() => dispatch({ type: 'SET_VIEW', payload: 'training_center' })}>
                 Training Path
             </NavButton>
@@ -104,6 +107,12 @@ export const CitadelHub: React.FC<CitadelHubProps> = ({ dispatch }) => (
             </NavButton>
             <NavButton variant="iron" icon={<Users className="w-4 h-4" />} onClick={() => dispatch({ type: 'SET_VIEW', payload: 'guild_hall' })}>
                 Guild Hall
+            </NavButton>
+            <NavButton variant="iron" icon={<Trophy className="w-4 h-4" />} onClick={() => dispatch({ type: 'SET_VIEW', payload: 'trophy_room' })}>
+                Trophy Room
+            </NavButton>
+            <NavButton variant="iron" icon={<Scroll className="w-4 h-4" />} onClick={() => dispatch({ type: 'SET_VIEW', payload: 'program_builder' })}>
+                Program Builder
             </NavButton>
         </District>
 

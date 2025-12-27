@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Heart, Sword, Shield, Zap, Skull, Trophy, Timer } from 'lucide-react';
 import { playSound } from '@/utils';
@@ -39,6 +39,60 @@ export const GauntletArena: React.FC<GauntletArenaProps> = ({ userLevel, userFtp
     // Refs for intervals
     const attackInterval = useRef<NodeJS.Timeout | null>(null);
 
+    // Refs for stable callbacks
+    const waveRef = useRef(wave);
+    const damageDealtRef = useRef(damageDealt);
+    const currentHrRef = useRef(currentHr);
+
+    useEffect(() => { waveRef.current = wave; }, [wave]);
+    useEffect(() => { damageDealtRef.current = damageDealt; }, [damageDealt]);
+    useEffect(() => { currentHrRef.current = currentHr; }, [currentHr]);
+
+    // Define callbacks before useEffects that use them
+    const spawnEnemy = useCallback((waveNum: number) => {
+        const multiplier = 1 + (waveNum - 1) * 0.1;
+        setEnemy({
+            id: `wave-${waveNum}`,
+            name: `Titan Construct Mk.${waveNum}`,
+            maxHp: Math.floor(100 * multiplier),
+            hp: Math.floor(100 * multiplier),
+            damage: Math.floor(5 * (1 + (waveNum * 0.05)))
+        });
+    }, []);
+
+    const handleDefeat = useCallback(async () => {
+        setStatus('DEFEAT');
+        playSound('fail');
+        if (attackInterval.current) clearInterval(attackInterval.current);
+
+        const duration = Math.floor((Date.now() - startTimeRef.current) / 1000);
+        const result: GauntletResult = {
+            wavesCleared: waveRef.current - 1,
+            totalDamage: damageDealtRef.current,
+            duration: duration,
+            avgHr: currentHrRef.current > 0 ? currentHrRef.current : undefined
+        };
+
+        try {
+            const resp = await logGauntletRunAction(result);
+            if (resp.success && resp.rewards) {
+                setRewards(resp.rewards);
+            }
+        } catch (e) {
+            console.error("Failed to save run", e);
+        }
+    }, []);
+
+    const handleWaveClear = useCallback(() => {
+        playSound('achievement');
+        setWave(prev => {
+            const nextWave = prev + 1;
+            spawnEnemy(nextWave);
+            return nextWave;
+        });
+        setHp(prev => Math.min(100, prev + 20));
+    }, [spawnEnemy]);
+
     // Initial Spawn
     useEffect(() => {
         spawnEnemy(1);
@@ -49,27 +103,20 @@ export const GauntletArena: React.FC<GauntletArenaProps> = ({ userLevel, userFtp
         };
     }, [spawnEnemy]);
 
-    // Wave Progression
-
-
     // Auto-Attack Logic (Player attacks Enemy based on Watts)
     useEffect(() => {
         if (status !== 'ACTIVE' || !enemy) return;
 
         const interval = setInterval(() => {
-            // Damage Formula: (Watts / FTP) * 10 per tick (1s)
-            // If riding at FTP, deal 10 DPS.
             const intensity = currentWatts / (userFtp || 200);
             const damage = Math.max(1, Math.floor(intensity * 10));
 
-            // Deal Damage
             if (damage > 0) {
                 setEnemy(prev => {
                     if (!prev) return null;
                     const newHp = prev.hp - damage;
 
                     if (newHp <= 0) {
-                        // Enemy Defeated
                         handleWaveClear();
                         return null;
                     }
@@ -115,65 +162,6 @@ export const GauntletArena: React.FC<GauntletArenaProps> = ({ userLevel, userFtp
         };
 
     }, [enemy, status, handleDefeat]);
-
-    // Refs for stable callbacks
-    const waveRef = useRef(wave);
-    const damageDealtRef = useRef(damageDealt);
-    const currentHrRef = useRef(currentHr);
-
-    useEffect(() => { waveRef.current = wave; }, [wave]);
-    useEffect(() => { damageDealtRef.current = damageDealt; }, [damageDealt]);
-    useEffect(() => { currentHrRef.current = currentHr; }, [currentHr]);
-
-    const handleWaveClear = useCallback(() => {
-        playSound('achievement');
-        setWave(prev => {
-            const nextWave = prev + 1;
-            spawnEnemy(nextWave);
-            return nextWave;
-        });
-        setHp(prev => Math.min(100, prev + 20));
-    }, []); // spawnEnemy needs to be stable too, see below
-
-    // We need to stabilize spawnEnemy by avoiding dependency on wave state used in closure, 
-    // but spawnEnemy takes waveNum as arg.
-    // However, handleWaveClear calls it.
-    // Let's make spawnEnemy stable or just define it inside handleWaveClear or outside.
-    // It depends on nothing but setState.
-
-    const spawnEnemy = useCallback((waveNum: number) => {
-        const multiplier = 1 + (waveNum - 1) * 0.1;
-        setEnemy({
-            id: `wave-${waveNum}`,
-            name: `Titan Construct Mk.${waveNum}`,
-            maxHp: Math.floor(100 * multiplier),
-            hp: Math.floor(100 * multiplier),
-            damage: Math.floor(5 * (1 + (waveNum * 0.05)))
-        });
-    }, []);
-
-    const handleDefeat = useCallback(async () => {
-        setStatus('DEFEAT');
-        playSound('fail');
-        if (attackInterval.current) clearInterval(attackInterval.current);
-
-        const duration = Math.floor((Date.now() - startTimeRef.current) / 1000);
-        const result: GauntletResult = {
-            wavesCleared: waveRef.current - 1,
-            totalDamage: damageDealtRef.current,
-            duration: duration,
-            avgHr: currentHrRef.current > 0 ? currentHrRef.current : undefined
-        };
-
-        try {
-            const resp = await logGauntletRunAction(result);
-            if (resp.success && resp.rewards) {
-                setRewards(resp.rewards);
-            }
-        } catch (e) {
-            console.error("Failed to save run", e);
-        }
-    }, []);
 
     return (
         <div className="fixed inset-0 z-50 bg-black/90 flex flex-col items-center justify-center text-white">
