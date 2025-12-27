@@ -18,30 +18,38 @@ import {
     Activity,
     Clipboard,
     Check,
-    Monitor
+    Monitor,
+    Heart,
+    Zap,
+    Gauge
 } from 'lucide-react';
 import { WorkoutDefinition } from '@/types/training';
+import BuffHud from './components/BuffHud';
+import { getBuffForZone } from './logic/buffs';
+import { TrainingMetric, calculatePowerZone, calculatePaceZone } from './logic/zones';
+import { GauntletArena } from '../game/GauntletArena';
 
 // Dynamic import to avoid SSR issues with react-player
 const ReactPlayer = dynamic(() => import('react-player/lazy'), { ssr: false });
 
-export type CardioMode = 'cycling' | 'running';
+export type CardioMode = 'cycling' | 'running' | 'gauntlet';
 
 interface CardioStudioProps {
     mode: CardioMode;
     onClose: () => void;
     activeWorkout?: WorkoutDefinition;
+    userProfile?: {
+        ftpCycle?: number;
+        ftpRun?: number;
+        thresholdSpeedKph?: number;
+    };
 }
 
 /**
  * Layout modes for the Cardio Studio
- * - split: 50/50 side by side
- * - video-pip: Video fullscreen, Zwift in small PiP (bottom-left)
- * - zwift-pip: Zwift fullscreen, Video in small PiP (bottom-left)
  */
 type LayoutMode = 'split' | 'video-pip' | 'zwift-pip';
 
-// Moved outside component to avoid recreation
 const LAYOUT_OPTIONS: { mode: LayoutMode; label: string; shortcut: string }[] = [
     { mode: 'split', label: 'Split Screen', shortcut: '1' },
     { mode: 'video-pip', label: 'Video + Zwift PiP', shortcut: '2' },
@@ -54,8 +62,78 @@ const LAYOUT_ICONS: Record<LayoutMode, React.ReactNode> = {
     'zwift-pip': <PictureInPicture2 className="w-4 h-4 rotate-180" />,
 };
 
-export default function CardioStudio({ mode, onClose, activeWorkout }: CardioStudioProps) {
+// Main Component acting as a Switcher
+export default function CardioStudio(props: CardioStudioProps) {
+    const { mode, onClose, userProfile } = props;
+
+    // Shared state used by both modes (for BuffHud simulation or Gauntlet inputs)
+    const [simulatedValue, setSimulatedValue] = useState(0);
+    const [metric, setMetric] = useState<TrainingMetric>(mode === 'running' ? 'pace' : 'power');
+
+    // Default simulation values if 0
+    useEffect(() => {
+        if (simulatedValue === 0) {
+            if (metric === 'hr') setSimulatedValue(100);
+            if (metric === 'power') setSimulatedValue(150);
+            if (metric === 'pace') setSimulatedValue(10);
+        }
+    }, [metric, simulatedValue]);
+
+    if (mode === 'gauntlet') {
+        const currentWatts = metric === 'power' ? simulatedValue : 0;
+        const currentHr = metric === 'hr' ? simulatedValue : 0;
+
+        return (
+            <div className="relative w-full h-screen bg-black">
+                {/* Simulation Slider for Gauntlet */}
+                <div className="absolute bottom-4 left-4 z-[60] bg-black/80 p-2 rounded border border-white/10 w-64">
+                    <p className="text-xs text-zinc-400 mb-1">DATA SIMULATION</p>
+                    <input
+                        type="range"
+                        min="0"
+                        max="400"
+                        value={simulatedValue}
+                        onChange={(e) => setSimulatedValue(Number(e.target.value))}
+                        className="w-full accent-magma"
+                    />
+                    <div className="flex justify-between text-xs font-mono text-magma mt-1">
+                        <span>{simulatedValue} {metric === 'power' ? 'W' : 'BPM'}</span>
+                    </div>
+                </div>
+
+                <GauntletArena
+                    userLevel={1}
+                    userFtp={userProfile?.ftpCycle || 200}
+                    currentWatts={currentWatts}
+                    currentHr={currentHr}
+                    onClose={onClose}
+                />
+            </div>
+        );
+    }
+
+    return (
+        <CardioCockpit
+            {...props}
+            simulatedValue={simulatedValue}
+            setSimulatedValue={setSimulatedValue}
+            metric={metric}
+            setMetric={setMetric}
+        />
+    );
+}
+
+// Separate component for Standard Mode to isolate hooks
+interface CardioCockpitProps extends CardioStudioProps {
+    simulatedValue: number;
+    setSimulatedValue: (val: number) => void;
+    metric: TrainingMetric;
+    setMetric: (m: TrainingMetric) => void;
+}
+
+function CardioCockpit({ mode, onClose, activeWorkout, userProfile, simulatedValue, setSimulatedValue, metric, setMetric }: CardioCockpitProps) {
     const [layoutMode, setLayoutMode] = useState<LayoutMode>('split');
+
     const [videoUrl, setVideoUrl] = useState('');
     const [inputUrl, setInputUrl] = useState('');
     const [isPlaying, setIsPlaying] = useState(true);
@@ -63,6 +141,11 @@ export default function CardioStudio({ mode, onClose, activeWorkout }: CardioStu
     const [copied, setCopied] = useState(false);
     const [zwiftStream, setZwiftStream] = useState<MediaStream | null>(null);
     const zwiftVideoRef = useRef<HTMLVideoElement>(null);
+
+    // Buff Logic State
+    const [currentZone, setCurrentZone] = useState(2);
+    const [sessionDuration, setSessionDuration] = useState(0);
+    const [sessionRewards, setSessionRewards] = useState({ xp: 0, gold: 0, energy: 0 });
 
     // Storage keys are now mode-specific
     const STORAGE_KEYS = useMemo(() => ({
@@ -156,7 +239,7 @@ export default function CardioStudio({ mode, onClose, activeWorkout }: CardioStu
         try {
             const stream = await navigator.mediaDevices.getDisplayMedia({
                 video: {
-                    displaySurface: "window", // Hint to browser (supported in some)
+                    displaySurface: "window",
                     frameRate: { ideal: 60, max: 60 },
                     height: { ideal: 1080 }
                 },
@@ -165,14 +248,10 @@ export default function CardioStudio({ mode, onClose, activeWorkout }: CardioStu
 
             setZwiftStream(stream);
 
-            // Auto-switch to Theater Mode (Zwift Focused) if currently in split view
-            // Note: We use the ref value or functional update if possible, but layoutMode is a dependency here.
-            // Since we're inside useCallback, we need to include it.
             if (layoutMode === 'split') {
                 setLayoutMode('zwift-pip');
             }
 
-            // Handle stream stop (user clicks "Stop Sharing" in browser UI)
             stream.getVideoTracks()[0].onended = () => {
                 setZwiftStream(null);
             };
@@ -192,7 +271,6 @@ export default function CardioStudio({ mode, onClose, activeWorkout }: CardioStu
     // Keyboard shortcuts
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
-            // Don't trigger shortcuts when typing in input
             if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
                 return;
             }
@@ -230,18 +308,10 @@ export default function CardioStudio({ mode, onClose, activeWorkout }: CardioStu
     const handleLoadVideo = useCallback(() => {
         const trimmed = inputUrl.trim();
         if (!trimmed) return;
-
-        // Basic validation for YouTube URLs
-        const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+/;
-        if (youtubeRegex.test(trimmed) || trimmed.includes('.mp4') || trimmed.includes('.webm')) {
-            setVideoUrl(trimmed);
-        } else {
-            // Try anyway - react-player supports many sources
-            setVideoUrl(trimmed);
-        }
+        setVideoUrl(trimmed);
     }, [inputUrl]);
 
-    const handleKeyDown = (e: React.KeyboardEvent) => {
+    const handleInputKeyDown = (e: React.KeyboardEvent) => {
         if (e.key === 'Enter') {
             handleLoadVideo();
         }
@@ -296,6 +366,44 @@ export default function CardioStudio({ mode, onClose, activeWorkout }: CardioStu
         }
     }, [STORAGE_KEYS]);
 
+    // Buff Timer Logic
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setSessionDuration(prev => prev + 1);
+
+            let zone = 1;
+            if (metric === 'hr') {
+                if (simulatedValue <= 5) zone = Math.floor(simulatedValue);
+                else {
+                    const maxHr = 190;
+                    const pct = simulatedValue / maxHr;
+                    if (pct < 0.6) zone = 1;
+                    else if (pct < 0.7) zone = 2;
+                    else if (pct < 0.8) zone = 3;
+                    else if (pct < 0.9) zone = 4;
+                    else zone = 5;
+                }
+            } else if (metric === 'power') {
+                const ftp = userProfile?.ftpCycle || 200;
+                zone = calculatePowerZone(simulatedValue, ftp);
+            } else if (metric === 'pace') {
+                const threshold = userProfile?.thresholdSpeedKph || 12;
+                zone = calculatePaceZone(simulatedValue, threshold);
+            }
+
+            zone = Math.max(1, Math.min(5, zone));
+            setCurrentZone(zone);
+
+            const buff = getBuffForZone(zone);
+            setSessionRewards(prev => ({
+                xp: prev.xp + (1 * buff.effects.xpMultiplier),
+                gold: prev.gold + (0.05 * buff.effects.goldMultiplier),
+                energy: prev.energy + (0.2 * buff.effects.energyMultiplier)
+            }));
+        }, 1000);
+        return () => clearInterval(timer);
+    }, [metric, simulatedValue, userProfile]);
+
     return (
         <div className="flex flex-col min-h-screen bg-zinc-950 text-white">
             {/* Header */}
@@ -308,6 +416,27 @@ export default function CardioStudio({ mode, onClose, activeWorkout }: CardioStu
                         <h1 className="text-xl font-bold tracking-tight">{config.title}</h1>
                         <p className="text-xs text-zinc-400">{config.subtitle}</p>
                     </div>
+                </div>
+
+                <div className="flex items-center gap-2 bg-zinc-900 rounded-lg p-1 border border-zinc-800">
+                    <button
+                        onClick={() => setMetric('hr')}
+                        className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-bold transition-all ${metric === 'hr' ? 'bg-red-900/30 text-red-500 shadow-sm' : 'text-zinc-500 hover:text-zinc-300'}`}
+                    >
+                        <Heart className="w-3 h-3" /> HR
+                    </button>
+                    <button
+                        onClick={() => setMetric('power')}
+                        className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-bold transition-all ${metric === 'power' ? 'bg-cyan-900/30 text-cyan-500 shadow-sm' : 'text-zinc-500 hover:text-zinc-300'}`}
+                    >
+                        <Zap className="w-3 h-3" /> PWR
+                    </button>
+                    <button
+                        onClick={() => setMetric('pace')}
+                        className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-bold transition-all ${metric === 'pace' ? 'bg-green-900/30 text-green-500 shadow-sm' : 'text-zinc-500 hover:text-zinc-300'}`}
+                    >
+                        <Gauge className="w-3 h-3" /> PACE
+                    </button>
                 </div>
 
                 {/* Layout Switcher */}
@@ -343,7 +472,7 @@ export default function CardioStudio({ mode, onClose, activeWorkout }: CardioStu
                     type="text"
                     value={inputUrl}
                     onChange={(e) => setInputUrl(e.target.value)}
-                    onKeyDown={handleKeyDown}
+                    onKeyDown={handleInputKeyDown}
                     placeholder="Paste YouTube URL or video link..."
                     className="flex-1 bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500/50"
                 />
@@ -355,7 +484,6 @@ export default function CardioStudio({ mode, onClose, activeWorkout }: CardioStu
                     Load
                 </button>
 
-                {/* Playback Controls */}
                 {videoUrl && (
                     <div className="flex items-center gap-1 border-l border-zinc-700 pl-3">
                         <button
@@ -383,7 +511,7 @@ export default function CardioStudio({ mode, onClose, activeWorkout }: CardioStu
                 )}
             </div>
 
-            {/* Mission Briefing Panel - Only if activeWorkout exists */}
+            {/* Mission Briefing Panel */}
             {activeWorkout && (
                 <div className="bg-zinc-900/50 px-6 py-3 border-b border-zinc-800/50 flex items-start justify-between">
                     <div>
@@ -409,6 +537,15 @@ export default function CardioStudio({ mode, onClose, activeWorkout }: CardioStu
 
             {/* Main Content Area */}
             <div className="flex-1 relative flex overflow-hidden">
+                <BuffHud
+                    currentZone={currentZone}
+                    rewards={sessionRewards}
+                    durationSeconds={sessionDuration}
+                    metric={metric}
+                    currentValue={simulatedValue}
+                    onValueChange={setSimulatedValue}
+                />
+
                 {/* Video Panel */}
                 <div
                     className={videoClasses}
@@ -445,15 +582,12 @@ export default function CardioStudio({ mode, onClose, activeWorkout }: CardioStu
                 >
                     {zwiftStream ? (
                         <div className="relative w-full h-full group">
-                            {/* Stream Video */}
                             <video
                                 ref={zwiftVideoRef}
                                 autoPlay
                                 playsInline
                                 className="w-full h-full object-contain bg-black"
                             />
-
-                            {/* Overlay Controls */}
                             <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
                                 <button
                                     onClick={(e) => {
@@ -469,7 +603,6 @@ export default function CardioStudio({ mode, onClose, activeWorkout }: CardioStu
                         </div>
                     ) : (
                         <div className="flex flex-col items-center justify-center p-8 text-center">
-                            {/* Zwift Logo Placeholder */}
                             <div className="w-20 h-20 mb-6 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center shadow-lg shadow-orange-500/20">
                                 <span className="text-3xl font-black text-white">Z</span>
                             </div>
