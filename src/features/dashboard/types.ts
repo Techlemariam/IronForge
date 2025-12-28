@@ -7,6 +7,7 @@ import { TrainingPath, LayerLevel, WeeklyMastery, Faction, WorkoutDefinition } f
 import { CardioMode } from '@/features/training/CardioStudio';
 import { HevyExerciseTemplate, HevyRoutine } from '@/types/hevy';
 import { ChallengeWithStatus } from '@/components/gamification/QuestBoard';
+import { TitanState } from '@/actions/titan';
 
 export type View = 'citadel' | 'war_room' | 'iron_mines' | 'quest_completion' | 'armory' | 'bestiary' | 'world_map' | 'grimoire' | 'guild_hall' | 'arena' | 'marketplace' | 'combat_arena' | 'forge' | 'training_center' | 'cardio_studio' | 'social_hub' | 'item_shop' | 'strava_upload' | 'strength_log' | 'program_builder' | 'trophy_room';
 
@@ -36,6 +37,7 @@ export interface DashboardClientProps {
     hasCompletedOnboarding: boolean;
     isDemoMode?: boolean;
     challenges: ChallengeWithStatus[];
+    titanState?: TitanState | null;
 }
 
 export interface DashboardState {

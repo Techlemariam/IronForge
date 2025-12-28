@@ -1,6 +1,8 @@
 'use client';
 
 import React, { Suspense, useReducer, useEffect, useState } from 'react';
+import { toast } from '@/components/ui/GameToast';
+import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { Exercise } from '@/types/ironforge';
 import { IntervalsWellness, TTBIndices, WeaknessAudit, TSBForecast, IntervalsEvent, TitanLoadCalculation, Session, AppSettings } from '@/types';
@@ -17,7 +19,7 @@ import OracleCard from '@/components/OracleCard';
 import UltrathinkDashboard from '@/components/UltrathinkDashboard';
 import { getProgressionAction } from '@/actions/progression';
 import GeminiLiveCoach from '@/components/GeminiLiveCoach';
-import { Mic, Bike, Footprints } from 'lucide-react';
+import { Mic, Bike, Footprints, Settings } from 'lucide-react';
 import SettingsCog from '@/components/core/SettingsCog';
 import ConfigModal from '@/components/core/ConfigModal';
 import TrainingCenter from '@/features/training/TrainingCenter';
@@ -34,6 +36,7 @@ const IronMines = dynamic(() => import('@/features/training/IronMines'), { ssr: 
 const SessionRunner = dynamic(() => import('@/components/SessionRunner'), { ssr: false });
 const CombatArena = dynamic(() => import('@/features/game/CombatArena'), { ssr: false });
 const SocialHub = dynamic(() => import('@/features/social/SocialHub').then(mod => mod.SocialHub), { ssr: false });
+const FactionLeaderboard = dynamic(() => import('@/features/social/FactionLeaderboard').then(mod => mod.FactionLeaderboard), { ssr: false });
 const Marketplace = dynamic(() => import('@/components/game/Marketplace'), { ssr: false });
 const TheForge = dynamic(() => import('@/features/game/TheForge'), { ssr: false });
 const CardioStudio = dynamic(() => import('@/features/training/CardioStudio'), { ssr: false });
@@ -45,6 +48,9 @@ import { StrengthContainer } from '@/features/strength/StrengthContainer';
 import { ProgramBuilder } from '@/features/training/ProgramBuilder';
 import { TrophyRoom } from '@/features/gamification/TrophyRoom';
 import { GuildHall } from '@/features/guild/GuildHall';
+import { TitanAvatar } from '@/features/titan/TitanAvatar';
+import { PersistentHeader } from '@/components/core/PersistentHeader';
+import { ShimmerBadge } from '@/components/ui/ShimmerBadge';
 import { View, DashboardState, DashboardAction, DashboardData, DashboardClientProps } from './types';
 import { dashboardReducer } from './logic/dashboardReducer';
 
@@ -63,8 +69,14 @@ const CoachToggle: React.FC<{ onClick: () => void }> = ({ onClick }) => (
 
 // NavButton moved to CitadelHub
 
-const Citadel: React.FC<{ state: DashboardState; dispatch: React.Dispatch<DashboardAction> }> = ({ state, dispatch }) => (
+// NavButton moved to CitadelHub
+
+const Citadel: React.FC<{ state: DashboardState; dispatch: React.Dispatch<DashboardAction>; titanState?: any }> = ({ state, dispatch, titanState }) => (
     <div className="w-full max-w-6xl mx-auto p-4 md:p-6 space-y-8 animate-fade-in">
+        <section id="titan-avatar">
+            <TitanAvatar titan={titanState} />
+        </section>
+
         <section id="quest-board">
             <QuestBoard
                 challenges={state.challenges || []}
@@ -85,7 +97,7 @@ const Citadel: React.FC<{ state: DashboardState; dispatch: React.Dispatch<Dashbo
                         if (rec.generatedSession) {
                             dispatch({ type: 'START_GENERATED_QUEST', payload: rec.generatedSession });
                         } else if (rec.sessionId) {
-                            alert("Redirecting to Static Quest: " + rec.sessionId);
+                            toast.info("Traveling to Static Quest: " + rec.sessionId);
                         }
                     }}
                 />
@@ -148,22 +160,26 @@ const QuestCompletion: React.FC<{ onSave: (isPrivate: boolean) => void; onCancel
 );
 
 const EquipmentArmory: React.FC = () => (
-    <div className="flex items-center justify-center min-h-screen bg-forge-900 text-white">
-        <h2 className="text-4xl font-bold text-magma">Armory Under Construction...</h2>
+    <div className="flex items-center justify-center min-h-screen bg-forge-900 text-white flex-col gap-6">
+        <h2 className="text-4xl font-bold text-magma">Armory Sealed</h2>
+        <p className="text-forge-muted">The High Blacksmith is out gathering ore.</p>
+        <ShimmerBadge label="Coming Soon" unlockLevel={5} />
+        <button onClick={() => toast.info("The Blacksmith will return soon.")} className="px-4 py-2 bg-forge-800 rounded border border-forge-border hover:bg-forge-700 transition-colors">Notify Me</button>
     </div>
 );
 
 const Bestiary: React.FC<{ userLevel: number; onClose: () => void }> = ({ userLevel, onClose }) => (
-    <div className="flex items-center justify-center min-h-screen bg-forge-900 text-white">
-        <h2 className="text-4xl font-bold text-magma">Bestiary Under Construction...</h2>
+    <div className="flex items-center justify-center min-h-screen bg-forge-900 text-white flex-col gap-4">
+        <h2 className="text-4xl font-bold text-magma">Bestiary Uncharted</h2>
+        <p className="text-forge-muted">You have not encountered enough beasts yet.</p>
         <button onClick={onClose} className="absolute top-4 right-4 px-4 py-2 bg-gray-700 rounded">Close</button>
     </div>
 );
 
 const WorldMap: React.FC<{ userLevel: number; onClose: () => void; onEnterCombat: (bossId: string) => void }> = ({ userLevel, onClose, onEnterCombat }) => (
     <div className="flex flex-col items-center justify-center min-h-screen bg-forge-900 text-white p-4">
-        <h2 className="text-4xl font-bold text-magma mb-8">World Map Under Construction...</h2>
-        <p className="text-xl text-forge-300 mb-4">Your current level: {userLevel}</p>
+        <h2 className="text-4xl font-bold text-magma mb-8">The Known World</h2>
+        <p className="text-xl text-forge-300 mb-4">The fog of war covers these lands. Level: {userLevel}</p>
         <button onClick={() => onEnterCombat('goblin_king')} className="px-6 py-3 bg-red-600 hover:bg-red-700 rounded-lg text-lg font-semibold shadow-lg transition-colors">
             Enter Combat (Goblin King)
         </button>
@@ -172,8 +188,10 @@ const WorldMap: React.FC<{ userLevel: number; onClose: () => void; onEnterCombat
 );
 
 const Grimoire: React.FC<{ onClose: () => void }> = ({ onClose }) => (
-    <div className="flex items-center justify-center min-h-screen bg-forge-900 text-white">
-        <h2 className="text-4xl font-bold text-magma">Grimoire Under Construction...</h2>
+    <div className="flex items-center justify-center min-h-screen bg-forge-900 text-white flex-col gap-6">
+        <h2 className="text-4xl font-bold text-magma">Grimoire Sealed</h2>
+        <p className="text-forge-muted">The pages are blank...</p>
+        <ShimmerBadge label="Lore System" unlockLevel={10} />
         <button onClick={onClose} className="absolute top-4 right-4 px-4 py-2 bg-gray-700 rounded">Close</button>
     </div>
 );
@@ -182,8 +200,10 @@ const Grimoire: React.FC<{ onClose: () => void }> = ({ onClose }) => (
 
 
 const Arena: React.FC<{ onClose: () => void }> = ({ onClose }) => (
-    <div className="flex items-center justify-center min-h-screen bg-forge-900 text-white">
-        <h2 className="text-4xl font-bold text-magma">Arena Under Construction...</h2>
+    <div className="flex items-center justify-center min-h-screen bg-forge-900 text-white flex-col gap-6">
+        <h2 className="text-4xl font-bold text-magma">Arena Closed</h2>
+        <p className="text-forge-muted">Gladiators are resting.</p>
+        <ShimmerBadge label="PvP Mode" unlockLevel={15} />
         <button onClick={onClose} className="absolute top-4 right-4 px-4 py-2 bg-gray-700 rounded">Close</button>
     </div>
 );
@@ -199,11 +219,17 @@ const CodexLoader: React.FC = () => (
 
 
 const DashboardClient: React.FC<DashboardClientProps> = (props) => {
-    const { initialData, isDemoMode, userData, faction, hasCompletedOnboarding, hevyRoutines, hevyTemplates, intervalsConnected, stravaConnected, challenges } = props;
+    const { initialData, isDemoMode, userData, faction, hasCompletedOnboarding, hevyRoutines, hevyTemplates, intervalsConnected, stravaConnected, challenges, titanState } = props;
 
-    // TODO: Use userData.level, userData.skills etc
-    const level = userData?.level || 1;
-    const nameMap = new Map<string, string>(); // Should be passed or derived? Page.tsx didn't seem to pass it in the new object? 
+    // TODO: Fetch this from server component and pass as props
+    // For now we render with empty/mock for UI verification if data not present
+    const leaderboardData: any[] = [];
+    const factionStats = { alliance: { members: 0, totalXp: 0 }, horde: { members: 0, totalXp: 0 } };
+
+
+    // Use Titan State if available, fallback to User (Legacy)
+    const level = titanState?.level || userData?.level || 1;
+    const nameMap = new Map<string, string>();
     // Checking page.tsx again: it doesn't pass nameMap in initialData. It was passing it before.
     // We should probably derive it or accept it. 
     // The previous code had `nameMap: Map<string, string>` in InitialDataProps. 
@@ -230,7 +256,7 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
         activePath: initialData.activePath || 'HYBRID_WARDEN',
         mobilityLevel: userData?.mobilityLevel || 'NONE',
         recoveryLevel: userData?.recoveryLevel || 'NONE',
-        totalExperience: userData?.totalExperience || 0,
+        totalExperience: titanState?.xp || userData?.totalExperience || 0,
 
         weeklyMastery: initialData.weeklyMastery,
         cardioMode: 'cycling', // Default
@@ -250,11 +276,16 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
+            // P0: Demo Mode First - Default demo users as configured
+            if (isDemoMode) {
+                setIsConfigured(true);
+                return; // Skip API key check for demo users
+            }
             const hasLocalKey = !!localStorage.getItem('hevy_api_key');
-            // We verify connection via props now mostly
-            if (hasLocalKey || isDemoMode) { // If demo mode, we are configured
+            if (hasLocalKey) {
                 setIsConfigured(true);
             } else {
+                // Don't block - just open settings subtly
                 setModalOpen(true);
             }
         }
@@ -265,7 +296,7 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
 
         const apiKey = userData?.hevyApiKey || localStorage.getItem('hevy_api_key');
         if (!apiKey) {
-            alert("No API Key found. Please configure in settings.");
+            toast.error("Access Denied", { description: "You need a Hevy API Key to save quests." });
             setModalOpen(true);
             return;
         }
@@ -273,10 +304,10 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
         const payload = mapQuestToHevyPayload(state.activeQuest, state.questTitle, state.startTime, new Date(), isPrivate);
         try {
             await saveWorkoutAction(apiKey, payload);
-            alert("VICTORY! The Archive (Hevy) has been updated.");
+            toast.success("Quest Log Updated!", { description: "The Hevy Archive has explicitly recorded your victory." });
         } catch (error) {
             console.error("Uplink to Hevy failed:", error);
-            alert("WARNING: Loot secured locally, but Uplink to Hevy failed. Check console for details.");
+            toast.warning("Loot Secured Locally", { description: "Uplink to Hevy failed. Check console." });
         } finally {
             const newProgression = await getProgressionAction();
             if (newProgression) {
@@ -288,7 +319,7 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
 
     const renderView = () => {
         switch (state.currentView) {
-            case 'citadel': return <Citadel state={state} dispatch={dispatch} />;
+            case 'citadel': return <Citadel state={state} dispatch={dispatch} titanState={titanState} />;
             case 'training_center': return <TrainingCenter
                 activePath={state.activePath}
                 mobilityLevel={state.mobilityLevel}
@@ -325,7 +356,20 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
                 }}
             />;
             case 'item_shop': return <Marketplace onClose={() => dispatch({ type: 'SET_VIEW', payload: 'citadel' })} />;
-            case 'social_hub': return <SocialHub onClose={() => dispatch({ type: 'SET_VIEW', payload: 'citadel' })} />;
+            case 'social_hub': return (
+                <div className="relative min-h-screen p-4 max-w-4xl mx-auto">
+                    <button onClick={() => dispatch({ type: 'SET_VIEW', payload: 'citadel' })} className="absolute top-4 right-4 z-50 px-4 py-2 bg-white/10 hover:bg-white/20 rounded text-white text-sm font-bold">Close</button>
+                    {/* Ideally pass real data here via useEffect fetch or server props */}
+                    <FactionLeaderboard
+                        stats={{
+                            alliance: { members: 120, totalXp: 5000000 },
+                            horde: { members: 115, totalXp: 4800000 }
+                        }}
+                        leaderboard={[]}
+                        currentUserId={userData?.id}
+                    />
+                </div>
+            );
             case 'quest_completion': return <QuestCompletion onSave={handleSaveWorkout} onCancel={() => dispatch({ type: 'ABORT_QUEST' })} />;
             case 'forge': return <TheForge onClose={() => dispatch({ type: 'SET_VIEW', payload: 'citadel' })} />;
             case 'armory': return <EquipmentArmory />;
@@ -389,7 +433,7 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
                 </div>
             );
 
-            default: return <Citadel state={state} dispatch={dispatch} />;
+            default: return <Citadel state={state} dispatch={dispatch} titanState={titanState} />;
         }
     }
 
@@ -423,17 +467,19 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
     return (
         <div className="bg-forge-900 min-h-screen bg-noise">
             <div className="scanlines pointer-events-none fixed inset-0 z-50 opacity-5" />
-            <SettingsCog onClick={() => { playSound('ui_click'); setModalOpen(true); }} />
-            <ConfigModal
-                isOpen={isModalOpen}
-                onClose={() => setModalOpen(false)}
-                userId={userData?.id || 'unknown'}
-                hevyConnected={!!userData?.hevyApiKey}
-                intervalsConnected={intervalsConnected}
-                stravaConnected={stravaConnected}
-                checkDemoStatus={true}
-                initialFaction={state.faction}
+            {/* <SettingsCog onClick={() => { playSound('ui_click'); setModalOpen(true); }} /> */}
+            <Link href="/settings" className="fixed top-6 right-6 z-50 text-forge-muted hover:text-white transition-colors p-2 hover:rotate-90 duration-300">
+                <Settings size={24} />
+            </Link>
+            {/* ConfigModal removed in favor of /settings page */}
+
+            <PersistentHeader
+                level={state.level}
+                xp={state.totalExperience}
+                gold={userData?.gold || 0}
+                faction={state.faction}
             />
+
             {renderView()}
 
             {showOnboarding && (

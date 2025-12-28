@@ -12,6 +12,7 @@ const KC_ORB_SMALL: LootItem = {
     description: 'A faint glimmer of kinetic energy.',
     type: ItemType.CURRENCY,
     rarity: Rarity.COMMON,
+    image: null,
     value: 10,
     effects: [{ type: 'grant_kc', value: 10 }]
 };
@@ -22,6 +23,7 @@ const KC_ORB_MEDIUM: LootItem = {
     description: 'Pulsating with workout energy.',
     type: ItemType.CURRENCY,
     rarity: Rarity.UNCOMMON,
+    image: null,
     value: 50,
     effects: [{ type: 'grant_kc', value: 50 }]
 };
@@ -32,6 +34,7 @@ const KC_ORB_LARGE: LootItem = {
     description: 'A stable containment field of pure force.',
     type: ItemType.CURRENCY,
     rarity: Rarity.RARE,
+    image: null,
     value: 150,
     effects: [{ type: 'grant_kc', value: 150 }]
 };
@@ -43,6 +46,7 @@ const POTION_STAMINA: LootItem = {
     description: 'Restores a small amount of vigor.',
     type: ItemType.CONSUMABLE,
     rarity: Rarity.COMMON,
+    image: null,
     effects: [{ type: 'boost_stat', value: 5 }]
 };
 
@@ -52,6 +56,7 @@ const TUME_OF_KNOWLEDGE: LootItem = {
     description: 'Grants 100 XP to your character.',
     type: ItemType.CONSUMABLE,
     rarity: Rarity.UNCOMMON,
+    image: null,
     effects: [{ type: 'grant_xp', value: 100 }]
 };
 

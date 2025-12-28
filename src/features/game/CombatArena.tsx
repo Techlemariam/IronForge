@@ -5,23 +5,20 @@ import { Monster, BossTier, MonsterElement } from '@/types';
 import { CombatState } from '@/services/game/CombatEngine';
 import { startBossFight, performCombatAction, fleeFromCombat } from '@/actions/combat';
 import { motion, AnimatePresence } from 'framer-motion';
+import { toast } from '@/components/ui/GameToast';
 import { Swords, Shield, Heart, Zap, Skull, Trophy, DoorOpen, Flame, Snowflake, Mountain, Ghost, Sun } from 'lucide-react';
-import { playSound } from '@/utils';
+import { LootItem } from '@/types/loot';
+import { playSound, triggerHaptic } from '@/utils';
+import useCelebration from '@/hooks/useCelebration';
 import { LootReveal } from '@/components/game/LootReveal';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
-
-// Local type matching LootReveal's expectations
-type LootItem = {
-    id: string;
-    name: string;
-    rarity: string;
-    image: string | null;
-};
 
 interface CombatArenaProps {
     bossId: string;
     onClose: () => void;
 }
+
+
 
 const ELEMENT_CONFIG: Record<MonsterElement | 'Physical', {
     icon: React.ElementType,
@@ -95,6 +92,9 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
     const [combatStarted, setCombatStarted] = useState(false);
     const [selectedTier, setSelectedTier] = useState<BossTier>('HEROIC');
 
+    // Final Push: Micro-Celebrations
+    const { victorySequence, screenShake } = useCelebration();
+
     const handleStartFight = async (tier: BossTier) => {
         setIsLoading(true);
         setSelectedTier(tier);
@@ -108,7 +108,7 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
                 setCombatStarted(true);
             } else {
                 console.error("Failed to start fight:", res.message);
-                alert("Failed to enter arena: " + res.message);
+                toast.error("Arena Locked", { description: res.message });
                 onClose();
             }
         } catch (error) {
@@ -123,6 +123,23 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [gameState?.logs]);
+
+    // P1: Keyboard Navigation
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (!combatStarted || isProcessingTurn || !gameState) return;
+            if (gameState.isVictory || gameState.isDefeat) return;
+
+            switch (e.key) {
+                case '1': handleAction('ATTACK'); break;
+                case '2': handleAction('DEFEND'); break;
+                case '3': handleAction('HEAL'); break;
+                case 'Escape': handleFlee(); break;
+            }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [combatStarted, isProcessingTurn, gameState]);
 
     const handleAction = async (type: 'ATTACK' | 'DEFEND' | 'HEAL' | 'ULTIMATE') => {
         if (isProcessingTurn || !gameState) {
@@ -146,10 +163,15 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
                 // Check Victory
                 if (res.newState.isVictory) {
                     playSound('victory_fanfare' as any);
+                    victorySequence(); // Confetti + Shake
                     if (res.loot) setDroppedItem(res.loot);
                     if (res.reward) setRewards(res.reward);
                 } else if (res.newState.isDefeat) {
                     playSound('game_over' as any);
+                    triggerHaptic('error');
+                } else {
+                    // Regular hit - subtle shake
+                    if (type === 'ATTACK') screenShake('light');
                 }
 
             } else {
@@ -174,7 +196,7 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
                     onClose();
                 }, 1500);
             } else {
-                alert(res.message || 'Could not flee');
+                toast.error("Escape Failed", { description: res.message || 'The enemy blocks your path!' });
                 setIsProcessingTurn(false);
             }
         } catch (e) {

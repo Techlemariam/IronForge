@@ -13,6 +13,7 @@ import { OracleService } from '@/services/oracle';
 import { RecoveryService } from '@/services/bio/RecoveryService';
 import DashboardClient from '@/features/dashboard/DashboardClient';
 import { getActiveChallengesAction } from '@/actions/challenges';
+import { ensureTitanAction, syncTitanStateWithWellness } from '@/actions/titan';
 
 // Types
 import { AuditReport } from '@/types/auditor';
@@ -160,6 +161,13 @@ export default async function Page() {
     // Cast to any to bypass stale Prisma types in IDE
     const activePath = ((dbUser as any)?.activePath as import('@/types/training').TrainingPath) || 'HYBRID_WARDEN';
 
+    // 4b. Fetch Titan State (Moved up for Oracle Dependency)
+    if (wellness && user.id) {
+        await syncTitanStateWithWellness(user.id, wellness);
+    }
+    const titanRes = await ensureTitanAction(user.id);
+    const titanState = titanRes.success ? titanRes.data : null;
+
     const oracleRec = await OracleService.consult(
         wellness,
         fakeTTB,
@@ -167,9 +175,10 @@ export default async function Page() {
         report,
         titanAnalysis,
         recoveryAnalysis,
-        activePath
+        activePath,
+        undefined, // weeklyMastery
+        titanState
     );
-
     const todaysLoad = titanAnalysis ? titanAnalysis.titanLoad : 0;
     const realForecast = AnalyticsService.calculateTSBForecast(wellness, [todaysLoad]);
 
@@ -228,11 +237,16 @@ export default async function Page() {
         return [];
     });
 
+    // 5b. Fetch Titan State (Server-Side)
+    // Moved up
+    // const titanState = titanRes.success ? titanRes.data : null;
+
     return (
         <DashboardClient
             initialData={initialData as any}
             userData={dbUser as any} // Cast to UI User type
             dbUser={dbUser as any}
+            titanState={titanState} // Pass server-side state
             isMobile={false} // Would need UA check
             hevyTemplates={hevyTemplates}
             hevyRoutines={hevyRoutines}

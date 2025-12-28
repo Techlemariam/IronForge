@@ -8,6 +8,7 @@ import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { ITEMS, RECIPES } from '@/data/gameData';
 import { UserInventory, CraftingRecipe } from '@/types/game';
 import { craftItem } from '@/actions/forge';
+import { toast } from '@/components/ui/GameToast';
 import { Hammer, Anvil, Coins, ArrowRight } from 'lucide-react';
 
 interface TheForgeProps {
@@ -20,7 +21,6 @@ const TheForge: React.FC<TheForgeProps> = ({ onClose }) => {
     const [inventory, setInventory] = useState<UserInventory | null>(null);
     const [loading, setLoading] = useState(false);
     const [craftingId, setCraftingId] = useState<string | null>(null);
-    const [message, setMessage] = useState<{ text: string, type: 'success' | 'error' } | null>(null);
 
     // Initial Mock Load (Replace with server action fetch later if needed)
     useEffect(() => {
@@ -39,7 +39,6 @@ const TheForge: React.FC<TheForgeProps> = ({ onClose }) => {
     const handleCraft = async (recipe: CraftingRecipe) => {
         if (!inventory) return;
         setCraftingId(recipe.id);
-        setMessage(null);
 
         try {
             const result = await craftItem(recipe.id);
@@ -83,12 +82,12 @@ const TheForge: React.FC<TheForgeProps> = ({ onClose }) => {
                     items: newItems
                 });
 
-                setMessage({ text: result.message, type: 'success' });
+                toast.success(result.message, { description: 'Item added to inventory.' });
             } else {
-                setMessage({ text: result.message, type: 'error' });
+                toast.error(result.message);
             }
         } catch (error) {
-            setMessage({ text: 'The Hammer failed to strike.', type: 'error' });
+            toast.error('The Hammer failed to strike.');
         } finally {
             setCraftingId(null);
         }
@@ -131,15 +130,7 @@ const TheForge: React.FC<TheForgeProps> = ({ onClose }) => {
                 })}
             </ForgeCard>
 
-            {message && (
-                <motion.div
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className={`p-4 mb-6 rounded border ${message.type === 'success' ? 'bg-green-900/20 border-green-500/50 text-green-200' : 'bg-red-900/20 border-blood/50 text-blood'} font-mono text-center`}
-                >
-                    {message.text}
-                </motion.div>
-            )}
+
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {RECIPES.map((recipe) => {
@@ -205,7 +196,7 @@ const TheForge: React.FC<TheForgeProps> = ({ onClose }) => {
                     );
                 })}
             </div>
-        </div>
+        </div >
     );
 };
 
