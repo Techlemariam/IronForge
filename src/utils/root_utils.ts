@@ -467,6 +467,22 @@ export const playSound = (type: 'ding' | 'quest_accept' | 'fail' | 'loot_epic' |
     audioController.play(type);
 };
 
+/**
+ * P2: Haptic Feedback for mobile devices
+ * Uses navigator.vibrate() API when available
+ */
+export const triggerHaptic = (type: 'light' | 'medium' | 'heavy' | 'success' | 'error') => {
+    if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+        switch (type) {
+            case 'light': navigator.vibrate(10); break;
+            case 'medium': navigator.vibrate(25); break;
+            case 'heavy': navigator.vibrate([50, 30, 50]); break;
+            case 'success': navigator.vibrate([30, 20, 30, 20, 50]); break;
+            case 'error': navigator.vibrate([100, 50, 100]); break;
+        }
+    }
+};
+
 export const fireConfetti = () => {
     // Re-using existing confetti but maybe we call it "Loot Explosion" conceptually
     const colors = ['#a335ee', '#0070dd', '#1eff00', '#ff8000']; // Rarity colors

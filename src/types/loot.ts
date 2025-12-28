@@ -26,7 +26,9 @@ export interface LootItem {
     description: string;
     type: ItemType;
     rarity: Rarity;
-    icon?: string; // URL or Lucide icon name
+    power?: number;
+    image: string | null;
+    icon?: string; // Legacy/Lucide support
     value?: number; // Sale value or effect magnitude
     effects?: {
         type: 'restore_hp' | 'grant_xp' | 'boost_stat' | 'grant_kc';

@@ -51,10 +51,15 @@ export default {
             borderColor: 'rgba(255, 128, 0, 1)'
           },
         },
+        'shimmer': {
+          '0%': { backgroundPosition: '-200% 0' },
+          '100%': { backgroundPosition: '200% 0' },
+        },
       },
       animation: {
         'fade-in': 'fade-in 0.5s ease-in-out',
         'pulse-glow': 'pulse-glow 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'shimmer': 'shimmer 2s infinite linear',
       },
       boxShadow: {
         'legendary-glow': '0 0 20px rgba(255, 128, 0, 0.4)',

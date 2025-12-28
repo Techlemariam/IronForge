@@ -8,6 +8,7 @@ import { TrainingMemoryManager } from './trainingMemoryManager';
 import { WORKOUT_LIBRARY } from '../data/workouts';
 import { TrainingPath, WorkoutDefinition, WeeklyMastery } from '../types/training';
 import { BUILD_VOLUME_TARGETS, PATH_INFO } from '../data/builds';
+import { TitanState } from '@/actions/titan';
 
 // RecoveryService import removed to keep Oracle isomorphic (Client/Server safe)
 
@@ -26,7 +27,8 @@ export const OracleService = {
         titanAnalysis?: TitanLoadCalculation | null,
         recoveryAnalysis?: { state: string; reason: string } | null,
         activePath: TrainingPath = 'HYBRID_WARDEN',
-        weeklyMastery?: WeeklyMastery
+        weeklyMastery?: WeeklyMastery,
+        titanState?: TitanState | null
     ): Promise<OracleRecommendation> => {
 
         // Get path info for context
@@ -66,9 +68,20 @@ export const OracleService = {
             return {
                 type: 'RECOVERY',
                 title: 'BIO-ENGINE WARNING: RECOVERY',
-                rationale: `Bio-Engine metrics indicate Low Recovery (${recoveryAnalysis.reason}). Titan Protocol suspended. Active recovery authorized.`,
+                rationale: `Fenix 7x Bio-Engine metrics indicate Low Recovery (${recoveryAnalysis.reason}). Titan Protocol suspended. Active recovery authorized.`,
                 priorityScore: 120, // Higher than everything
                 targetExercise: 'Yoga / Meditation'
+            };
+        }
+
+        // --- PRIORITY 0.05: TITAN EMOTIONAL STATE (The Living Titan) ---
+        if (titanState && titanState.mood === 'WEAKENED') {
+            return {
+                type: 'RECOVERY',
+                title: 'TITAN SPIRIT BROKEN',
+                rationale: `Fenix 7x data indicates Body Battery/HRV Critical. Your Titan is WEAKENED. To restore the link, you must perform a low-stress ritual.`,
+                priorityScore: 115,
+                targetExercise: 'Connection Ritual (Light Walk/Yoga)'
             };
         }
 
