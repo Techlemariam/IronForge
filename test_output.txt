@@ -1,0 +1,69 @@
+
+[1m[46m RUN [49m[22m [36mv4.0.16 [39m[90mC:/Users/alexa/Workspaces/IronForge[39m
+
+ [31mÔØ»[39m src/features/training/__tests__/TvMode.test.tsx [2m([22m[2m4 tests[22m[2m | [22m[31m4 failed[39m[2m)[22m[32m 15[2mms[22m[39m
+[31m     [31m├ù[31m renders the connection/setup screen initially if disconnected[39m[32m 8[2mms[22m[39m
+[31m     [31m├ù[31m renders the main HUD when sensors are connected[39m[32m 1[2mms[22m[39m
+[31m     [31m├ù[31m displays Titan dialogue correctly[39m[32m 1[2mms[22m[39m
+[31m     [31m├ù[31m shows guild contribution stats[39m[32m 1[2mms[22m[39m
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ» Failed Tests 4 ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»
+
+ FAIL  src/features/training/__tests__/TvMode.test.tsx > TvMode Integration > renders the connection/setup screen initially if disconnected
+ReferenceError: document is not defined
+ ÔØ» Proxy.render node_modules/@testing-library/react/dist/pure.js:256:5
+ ÔØ» src/features/training/__tests__/TvMode.test.tsx:69:9
+     67|         (useBluetoothHeartRate as any).mockReturnValue({ ...mockHeartRÔÇª
+     68| 
+     69|         render(<TvMode onExit={vi.fn()} />);
+       |         ^
+     70| 
+     71|         // Should show HUD with disconnected icon (BluetoothOff) or deÔÇª
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[1/4]ÔÄ»
+
+ FAIL  src/features/training/__tests__/TvMode.test.tsx > TvMode Integration > renders the main HUD when sensors are connected
+ReferenceError: document is not defined
+ ÔØ» Proxy.render node_modules/@testing-library/react/dist/pure.js:256:5
+ ÔØ» src/features/training/__tests__/TvMode.test.tsx:82:9
+     80|         (useBluetoothPower as any).mockReturnValue({ ...mockPower, isCÔÇª
+     81| 
+     82|         render(<TvMode onExit={vi.fn()} />);
+       |         ^
+     83| 
+     84|         // Check for HUD elements
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[2/4]ÔÄ»
+
+ FAIL  src/features/training/__tests__/TvMode.test.tsx > TvMode Integration > displays Titan dialogue correctly
+ReferenceError: document is not defined
+ ÔØ» Proxy.render node_modules/@testing-library/react/dist/pure.js:256:5
+ ÔØ» src/features/training/__tests__/TvMode.test.tsx:90:9
+     88| 
+     89|     it('displays Titan dialogue correctly', () => {
+     90|         render(<TvMode onExit={vi.fn()} />);
+       |         ^
+     91|         expect(screen.getByText("Push harder, warrior!")).toBeDefined(ÔÇª
+     92|     });
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[3/4]ÔÄ»
+
+ FAIL  src/features/training/__tests__/TvMode.test.tsx > TvMode Integration > shows guild contribution stats
+ReferenceError: document is not defined
+ ÔØ» Proxy.render node_modules/@testing-library/react/dist/pure.js:256:5
+ ÔØ» src/features/training/__tests__/TvMode.test.tsx:106:9
+    104|         });
+    105| 
+    106|         render(<TvMode onExit={vi.fn()} />);
+       |         ^
+    107|         // use regex for flexible matching of formatted numbers
+    108|         expect(screen.getByText(/\+1,500/)).toBeDefined();
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[4/4]ÔÄ»
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m4 failed[39m[22m[90m (4)[39m
+[2m   Start at [22m 00:54:02
+[2m   Duration [22m 2.27s[2m (transform 308ms, setup 0ms, import 1.83s, tests 15ms, environment 0ms)[22m
+

@@ -1,0 +1,257 @@
+
+[1m[46m RUN [49m[22m [36mv4.0.16 [39m[90mC:/Users/alexa/Workspaces/IronForge[39m
+
+ [32mÔ£ô[39m src/app/api/chat/__tests__/route.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 63[2mms[22m[39m
+stderr | src/actions/__tests__/training.test.ts > Training Actions > logTitanSet > should log set and award rewards
+Challenge Processing Error: TypeError: Cannot read properties of undefined (reading 'findMany')
+    at processWorkoutLog (C:/Users/alexa/Workspaces/IronForge/src/services/challengeService.ts:8:47)
+    at Module.logTitanSet (C:/Users/alexa/Workspaces/IronForge/src/actions/training.ts:88:19)
+    at processTicksAndRejections (node:internal/process/task_queues:103:5)
+    at C:/Users/alexa/Workspaces/IronForge/src/actions/__tests__/training.test.ts:56:28
+    at file:///C:/Users/alexa/Workspaces/IronForge/node_modules/@vitest/runner/dist/index.js:915:20
+
+ [32mÔ£ô[39m src/actions/__tests__/social.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 24[2mms[22m[39m
+ [32mÔ£ô[39m src/actions/__tests__/training.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 22[2mms[22m[39m
+stderr | src/actions/__tests__/progression.test.ts > Progression Actions > getProgressionAction > should return null when unauthorized
+Progression Action Error: Error: Unauthorized
+    at Module.getProgressionAction (C:/Users/alexa/Workspaces/IronForge/src/actions/progression.ts:11:26)
+    at processTicksAndRejections (node:internal/process/task_queues:103:5)
+    at C:/Users/alexa/Workspaces/IronForge/src/actions/__tests__/progression.test.ts:41:28
+    at file:///C:/Users/alexa/Workspaces/IronForge/node_modules/@vitest/runner/dist/index.js:915:20
+
+stderr | src/actions/__tests__/progression.test.ts > Progression Actions > getProgressionAction > should handle service errors
+Progression Action Error: Error: Service Error
+    at C:/Users/alexa/Workspaces/IronForge/src/actions/__tests__/progression.test.ts:48:79
+    at file:///C:/Users/alexa/Workspaces/IronForge/node_modules/@vitest/runner/dist/index.js:145:11
+    at file:///C:/Users/alexa/Workspaces/IronForge/node_modules/@vitest/runner/dist/index.js:915:26
+    at file:///C:/Users/alexa/Workspaces/IronForge/node_modules/@vitest/runner/dist/index.js:1243:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:///C:/Users/alexa/Workspaces/IronForge/node_modules/@vitest/runner/dist/index.js:1209:10)
+    at file:///C:/Users/alexa/Workspaces/IronForge/node_modules/@vitest/runner/dist/index.js:1653:37
+    at Traces.$ (file:///C:/Users/alexa/Workspaces/IronForge/node_modules/vitest/dist/chunks/traces.U4xDYhzZ.js:115:27)
+    at trace (file:///C:/Users/alexa/Workspaces/IronForge/node_modules/vitest/dist/chunks/test.B8ej_ZHS.js:239:21)
+    at runTest (file:///C:/Users/alexa/Workspaces/IronForge/node_modules/@vitest/runner/dist/index.js:1653:12)
+
+stderr | src/actions/__tests__/progression.test.ts > Progression Actions > awardGoldAction > should return null for invalid input (Zod validation)
+Award Gold Action Error: Error: Validation Failed
+    at C:/Users/alexa/Workspaces/IronForge/src/actions/__tests__/progression.test.ts:79:69
+    at file:///C:/Users/alexa/Workspaces/IronForge/node_modules/@vitest/runner/dist/index.js:145:11
+    at file:///C:/Users/alexa/Workspaces/IronForge/node_modules/@vitest/runner/dist/index.js:915:26
+    at file:///C:/Users/alexa/Workspaces/IronForge/node_modules/@vitest/runner/dist/index.js:1243:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:///C:/Users/alexa/Workspaces/IronForge/node_modules/@vitest/runner/dist/index.js:1209:10)
+    at file:///C:/Users/alexa/Workspaces/IronForge/node_modules/@vitest/runner/dist/index.js:1653:37
+    at Traces.$ (file:///C:/Users/alexa/Workspaces/IronForge/node_modules/vitest/dist/chunks/traces.U4xDYhzZ.js:115:27)
+    at trace (file:///C:/Users/alexa/Workspaces/IronForge/node_modules/vitest/dist/chunks/test.B8ej_ZHS.js:239:21)
+    at runTest (file:///C:/Users/alexa/Workspaces/IronForge/node_modules/@vitest/runner/dist/index.js:1653:12)
+
+stderr | src/app/api/sync/__tests__/sync.test.ts > Sync API Route (Logs) > should handle server error
+Log API Error: Error: DB Error
+    at C:/Users/alexa/Workspaces/IronForge/src/app/api/sync/__tests__/sync.test.ts:80:63
+    at file:///C:/Users/alexa/Workspaces/IronForge/node_modules/@vitest/runner/dist/index.js:145:11
+    at file:///C:/Users/alexa/Workspaces/IronForge/node_modules/@vitest/runner/dist/index.js:915:26
+    at file:///C:/Users/alexa/Workspaces/IronForge/node_modules/@vitest/runner/dist/index.js:1243:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:///C:/Users/alexa/Workspaces/IronForge/node_modules/@vitest/runner/dist/index.js:1209:10)
+    at file:///C:/Users/alexa/Workspaces/IronForge/node_modules/@vitest/runner/dist/index.js:1653:37
+    at Traces.$ (file:///C:/Users/alexa/Workspaces/IronForge/node_modules/vitest/dist/chunks/traces.U4xDYhzZ.js:115:27)
+    at trace (file:///C:/Users/alexa/Workspaces/IronForge/node_modules/vitest/dist/chunks/test.B8ej_ZHS.js:239:21)
+    at runTest (file:///C:/Users/alexa/Workspaces/IronForge/node_modules/@vitest/runner/dist/index.js:1653:12)
+
+stderr | src/actions/__tests__/progression.test.ts > Progression Actions > awardGoldAction > should return null when unauthorized
+Award Gold Action Error: Error: Unauthorized
+    at Module.awardGoldAction (C:/Users/alexa/Workspaces/IronForge/src/actions/progression.ts:24:26)
+    at processTicksAndRejections (node:internal/process/task_queues:103:5)
+    at C:/Users/alexa/Workspaces/IronForge/src/actions/__tests__/progression.test.ts:86:28
+    at file:///C:/Users/alexa/Workspaces/IronForge/node_modules/@vitest/runner/dist/index.js:915:20
+
+ [32mÔ£ô[39m src/app/api/sync/__tests__/sync.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 32[2mms[22m[39m
+ [32mÔ£ô[39m src/actions/__tests__/progression.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 63[2mms[22m[39m
+ [31mÔØ»[39m src/services/__tests__/progression.test.ts [2m([22m[2m2 tests[22m[2m | [22m[31m2 failed[39m[2m)[22m[32m 15[2mms[22m[39m
+[31m       [31m├ù[31m should calculate and update Wilks score correctly[39m[32m 11[2mms[22m[39m
+[31m       [31m├ù[31m should handle zero lifts[39m[32m 1[2mms[22m[39m
+stderr | src/actions/__tests__/strava.test.ts > Strava Server Actions > exchangeStravaTokenAction > should handle axios error
+Strava Token Exchange Error: Strava Down
+
+ [32mÔ£ô[39m src/actions/__tests__/strava.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 30[2mms[22m[39m
+stderr | src/actions/__tests__/combat.test.ts > Combat Server Actions > performCombatAction > should process turn and return new state
+Error modifying health: Error: [vitest] No "prisma" export is defined on the "@/lib/prisma" mock. Did you forget to return it from "vi.mock"?
+If you need to partially mock a module, you can use "importOriginal" helper inside:
+
+    at VitestMocker.createError (file:///C:/Users/alexa/Workspaces/IronForge/node_modules/vitest/dist/chunks/startModuleRunner.DpqpB8k3.js:311:17)
+    at Object.get (file:///C:/Users/alexa/Workspaces/IronForge/node_modules/vitest/dist/chunks/startModuleRunner.DpqpB8k3.js:384:16)
+    at modifyTitanHealthAction (C:/Users/alexa/Workspaces/IronForge/src/actions/titan.ts:97:29)
+    at Module.performCombatAction (C:/Users/alexa/Workspaces/IronForge/src/actions/combat.ts:179:15)
+    at processTicksAndRejections (node:internal/process/task_queues:103:5)
+    at C:/Users/alexa/Workspaces/IronForge/src/actions/__tests__/combat.test.ts:147:28
+    at file:///C:/Users/alexa/Workspaces/IronForge/node_modules/@vitest/runner/dist/index.js:915:20 {
+  codeFrame: 'vi.mock(import("@/lib/prisma"), async (importOriginal) => {\n' +
+    '  const actual = await importOriginal()\n' +
+    '  return {\n' +
+    '    ...actual,\n' +
+    '    // your mocked methods\n' +
+    '  }\n' +
+    '})'
+}
+
+stderr | src/actions/__tests__/combat.test.ts > Combat Server Actions > performCombatAction > should handle victory and award loot
+Error awarding XP: Error: [vitest] No "prisma" export is defined on the "@/lib/prisma" mock. Did you forget to return it from "vi.mock"?
+If you need to partially mock a module, you can use "importOriginal" helper inside:
+
+    at VitestMocker.createError (file:///C:/Users/alexa/Workspaces/IronForge/node_modules/vitest/dist/chunks/startModuleRunner.DpqpB8k3.js:311:17)
+    at Object.get (file:///C:/Users/alexa/Workspaces/IronForge/node_modules/vitest/dist/chunks/startModuleRunner.DpqpB8k3.js:384:16)
+    at awardTitanXpAction (C:/Users/alexa/Workspaces/IronForge/src/actions/titan.ts:137:29)
+    at Module.performCombatAction (C:/Users/alexa/Workspaces/IronForge/src/actions/combat.ts:213:15)
+    at processTicksAndRejections (node:internal/process/task_queues:103:5)
+    at C:/Users/alexa/Workspaces/IronForge/src/actions/__tests__/combat.test.ts:181:28
+    at file:///C:/Users/alexa/Workspaces/IronForge/node_modules/@vitest/runner/dist/index.js:915:20 {
+  codeFrame: 'vi.mock(import("@/lib/prisma"), async (importOriginal) => {\n' +
+    '  const actual = await importOriginal()\n' +
+    '  return {\n' +
+    '    ...actual,\n' +
+    '    // your mocked methods\n' +
+    '  }\n' +
+    '})'
+}
+
+ [32mÔ£ô[39m src/actions/__tests__/combat.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 38[2mms[22m[39m
+ [32mÔ£ô[39m src/actions/__tests__/guild.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 24[2mms[22m[39m
+ [32mÔ£ô[39m src/actions/__tests__/titan.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 21[2mms[22m[39m
+stderr | src/actions/__tests__/account.test.ts > account actions > deleteAccountAction > should handle errors gracefully
+Failed to delete account: Error: DB Error
+    at C:/Users/alexa/Workspaces/IronForge/src/actions/__tests__/account.test.ts:66:59
+    at file:///C:/Users/alexa/Workspaces/IronForge/node_modules/@vitest/runner/dist/index.js:145:11
+    at file:///C:/Users/alexa/Workspaces/IronForge/node_modules/@vitest/runner/dist/index.js:915:26
+    at file:///C:/Users/alexa/Workspaces/IronForge/node_modules/@vitest/runner/dist/index.js:1243:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:///C:/Users/alexa/Workspaces/IronForge/node_modules/@vitest/runner/dist/index.js:1209:10)
+    at file:///C:/Users/alexa/Workspaces/IronForge/node_modules/@vitest/runner/dist/index.js:1653:37
+    at Traces.$ (file:///C:/Users/alexa/Workspaces/IronForge/node_modules/vitest/dist/chunks/traces.U4xDYhzZ.js:115:27)
+    at trace (file:///C:/Users/alexa/Workspaces/IronForge/node_modules/vitest/dist/chunks/test.B8ej_ZHS.js:239:21)
+    at runTest (file:///C:/Users/alexa/Workspaces/IronForge/node_modules/@vitest/runner/dist/index.js:1653:12)
+
+stderr | src/actions/__tests__/validation.test.ts > Security Validation (Zod) > Progression Actions > should reject negative gold amount
+Award Gold Action Error: ZodError: [
+  {
+    "origin": "number",
+    "code": "too_small",
+    "minimum": 0,
+    "inclusive": false,
+    "path": [
+      "amount"
+    ],
+    "message": "Too small: expected number to be >0"
+  }
+]
+    at Module.awardGoldAction (C:/Users/alexa/Workspaces/IronForge/src/actions/progression.ts:26:43)
+    at processTicksAndRejections (node:internal/process/task_queues:103:5)
+    at C:/Users/alexa/Workspaces/IronForge/src/actions/__tests__/validation.test.ts:37:28
+    at file:///C:/Users/alexa/Workspaces/IronForge/node_modules/@vitest/runner/dist/index.js:915:20
+
+stderr | src/actions/__tests__/validation.test.ts > Security Validation (Zod) > Progression Actions > should reject excessive gold amount (overflow protection)
+Award Gold Action Error: ZodError: [
+  {
+    "origin": "number",
+    "code": "too_big",
+    "maximum": 1000000,
+    "inclusive": true,
+    "path": [
+      "amount"
+    ],
+    "message": "Too big: expected number to be <=1000000"
+  }
+]
+    at Module.awardGoldAction (C:/Users/alexa/Workspaces/IronForge/src/actions/progression.ts:26:43)
+    at processTicksAndRejections (node:internal/process/task_queues:103:5)
+    at C:/Users/alexa/Workspaces/IronForge/src/actions/__tests__/validation.test.ts:42:28
+    at file:///C:/Users/alexa/Workspaces/IronForge/node_modules/@vitest/runner/dist/index.js:915:20
+
+ [32mÔ£ô[39m src/actions/__tests__/account.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 28[2mms[22m[39m
+stderr | src/actions/__tests__/validation.test.ts > Security Validation (Zod) > Forge Actions > should return failure for invalid recipeId format
+Crafting error: ZodError: [
+  {
+    "origin": "string",
+    "code": "invalid_format",
+    "format": "regex",
+    "pattern": "/^[a-zA-Z0-9_-]+$/",
+    "path": [
+      "recipeId"
+    ],
+    "message": "Invalid string: must match pattern /^[a-zA-Z0-9_-]+$/"
+  }
+]
+    at Module.craftItem (C:/Users/alexa/Workspaces/IronForge/src/actions/forge.ts:38:43)
+    at processTicksAndRejections (node:internal/process/task_queues:103:5)
+    at C:/Users/alexa/Workspaces/IronForge/src/actions/__tests__/validation.test.ts:62:28
+    at file:///C:/Users/alexa/Workspaces/IronForge/node_modules/@vitest/runner/dist/index.js:915:20
+
+ [32mÔ£ô[39m src/actions/__tests__/validation.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 29[2mms[22m[39m
+ [32mÔ£ô[39m src/actions/__tests__/world.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+stderr | src/actions/__tests__/intervals.test.ts > Intervals Actions > getWellnessAction > should return empty object on error
+Server Action Intervals Wellness Error: API Error
+
+stderr | src/actions/__tests__/intervals.test.ts > Intervals Actions > getWellnessAction > should return empty object if user not connected
+Server Action Intervals Wellness Error: Intervals.icu not connected
+
+stderr | src/actions/__tests__/intervals.test.ts > Intervals Actions > getAthleteSettingsAction > should return null on failure
+Server Action Intervals Settings Error: Fail
+
+ [32mÔ£ô[39m src/actions/__tests__/intervals.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 17[2mms[22m[39m
+ [32mÔ£ô[39m src/services/__tests__/trainingMemoryManager.test.ts [2m([22m[2m15 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+[90mstdout[2m | src/actions/__tests__/forge.test.ts[2m > [22m[2mForge Server Actions[2m > [22m[2mshould successfully craft an item if resources are sufficient
+[22m[39m[Forge] Crafted Iron Sword for test@example.com
+
+ [32mÔ£ô[39m src/actions/__tests__/forge.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+ [32mÔ£ô[39m src/actions/__tests__/integrations.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 17[2mms[22m[39m
+ [32mÔ£ô[39m src/services/__tests__/oracle.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+[90mstdout[2m | src/services/planner.test.ts[2m > [22m[2mPlannerService[2m > [22m[2mshould generate a plan for a valid user
+[22m[39mPlanner: Generating plan for user user1
+
+[90mstdout[2m | src/services/planner.test.ts[2m > [22m[2mPlannerService[2m > [22m[2mshould generate a plan for a valid user
+[22m[39mPlanner: Plan generated and saved for user user1
+
+ [32mÔ£ô[39m src/services/planner.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 10[2mms[22m[39m
+ [32mÔ£ô[39m src/utils/__tests__/volumeCalculator.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+ [32mÔ£ô[39m src/utils/__tests__/weaknessAuditor.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+ [32mÔ£ô[39m src/utils/__tests__/combatMechanics.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+ [32mÔ£ô[39m src/hooks/__tests__/useSkillEffects.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+ [2m[90mÔåô[39m[22m src/actions/__tests__/hevy.test.ts [2m([22m[2m6 tests[22m[2m | [22m[33m6 skipped[39m[2m)[22m
+ [32mÔ£ô[39m src/components/__tests__/SkillTree.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 76[2mms[22m[39m
+ [32mÔ£ô[39m src/features/dashboard/__tests__/DashboardClient.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 70[2mms[22m[39m
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ» Failed Tests 2 ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»
+
+ FAIL  src/services/__tests__/progression.test.ts > ProgressionService > updateWilksScore > should calculate and update Wilks score correctly
+TypeError: __vite_ssr_import_0__.default.exerciseLog.findMany is not a function
+ ÔØ» Object.findBestLift src/services/progression.ts:155:47
+    153|     async findBestLift(userId: string, exerciseNames: string[]): PromiÔÇª
+    154|         // Fetch all logs for matching exercises
+    155|         const logs = await prisma.exerciseLog.findMany({
+       |                                               ^
+    156|             where: {
+    157|                 userId,
+ ÔØ» Object.updateWilksScore src/services/progression.ts:116:38
+ ÔØ» src/services/__tests__/progression.test.ts:53:27
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[1/2]ÔÄ»
+
+ FAIL  src/services/__tests__/progression.test.ts > ProgressionService > updateWilksScore > should handle zero lifts
+TypeError: __vite_ssr_import_0__.default.exerciseLog.findMany is not a function
+ ÔØ» Object.findBestLift src/services/progression.ts:155:47
+    153|     async findBestLift(userId: string, exerciseNames: string[]): PromiÔÇª
+    154|         // Fetch all logs for matching exercises
+    155|         const logs = await prisma.exerciseLog.findMany({
+       |                                               ^
+    156|             where: {
+    157|                 userId,
+ ÔØ» Object.updateWilksScore src/services/progression.ts:116:38
+ ÔØ» src/services/__tests__/progression.test.ts:72:27
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[2/2]ÔÄ»
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m24 passed[39m[22m[2m | [22m[33m1 skipped[39m[90m (26)[39m
+[2m      Tests [22m [1m[31m2 failed[39m[22m[2m | [22m[1m[32m127 passed[39m[22m[2m | [22m[33m6 skipped[39m[90m (135)[39m
+[2m   Start at [22m 14:33:51
+[2m   Duration [22m 7.49s[2m (transform 8.19s, setup 0ms, import 18.97s, tests 666ms, environment 3.91s)[22m
+
