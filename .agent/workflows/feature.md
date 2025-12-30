@@ -35,7 +35,7 @@ Du är en **Orchestration Engine** som koordinerar IronForges agentflotta. Din u
 // turbo-all
 1. Efter godkännande, anropa `/coder`-persona.
 2. Implementera enligt `implementation_plan.md`.
-3. **Parallellt**: Anropa `/generate-tests` för att skapa testsvit.
+3. **Parallellt**: Anropa `/unit-tests` för att skapa testsvit.
 4. Kör `npm run build` för att verifiera kompilering.
 5. Kör `npm run test` för att verifiera tester.
 

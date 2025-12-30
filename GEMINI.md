@@ -39,4 +39,5 @@ Detta dokument definierar de specialiserade agenter som utgör IronForge-teamet.
 | **Polish** | `/polish` | **Code Cleanup.** ESLint fix, Prettier, import sorting, dead code. |
 | **Perf** | `/perf` | **Performance.** Bundle analysis, RSC optimization, Lighthouse. |
 | **Platform** | `/platform` | **Cross-Device.** Analyserar features för Desktop, Mobile, TV Mode, Companion. |
+| **Knowledge** | `/knowledge` | **Codebase Graph.** Semantic knowledge graph, dependency analysis, impact queries. |
 

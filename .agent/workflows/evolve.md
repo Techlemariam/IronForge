@@ -40,7 +40,7 @@ Analysera vilka workflow-instruktioner som:
 | Observation | Föreslagen Åtgärd |
 |-------------|-------------------|
 | Workflow X har >30% failure rate | Refaktorera instruktioner |
-| Prompt Y är >2000 tokens | Kör /optimize-tokens |
+| Prompt Y är >2000 tokens | Kör Token Optimization (se sektion 5) |
 | Command Z används <1x/månad | Föreslå deprecation |
 | Fel E återkommer 5+ gånger | Skapa ny regel i rules/ |
 

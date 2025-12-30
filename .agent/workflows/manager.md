@@ -38,8 +38,8 @@ description: The Strategic Federated Orchestrator (Manager Agent)
 - **Snapshot:** Log "Current State" for restart.
 
 ## 📂 Context Pin
-- `c:\Users\alexa\Workspaces\IronForge\.antigravityrules`
-- `c:\Users\alexa\Workspaces\IronForge\ARCHITECTURE.md`
+- `.antigravityrules`
+- `ARCHITECTURE.md`
 
 ## 🧠 Memory & Improvement
 **Start:** Review `errors.log` & `improvements.md`.

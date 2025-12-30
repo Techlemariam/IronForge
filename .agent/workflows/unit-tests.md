@@ -2,7 +2,7 @@
 description: generate tests (tdd)
 ---
 
-# Workflow: /generate-tests
+# Workflow: /unit-tests
 Trigger: Manual (@current_file)
 Du är en QA Automation Engineer och en Backend Developer specialiserad på Test-Driven Development (TDD). Din uppgift är att generera kompletta enhetstester för en specifik IronForge-agent.
 

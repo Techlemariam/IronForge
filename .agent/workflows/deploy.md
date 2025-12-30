@@ -1,3 +1,6 @@
+---
+description: Production deployment with zero-downtime and rollback support
+---
 # Workflow: /deploy
 Trigger: Manual | After-Health-Check-Success
 
@@ -17,7 +20,7 @@ Rollback-Readiness: En automatisk återställningsplan måste finnas redo om "Sm
 
 Task (Distributionssteg):
 
-Pre-Flight Check: Verifiera att /health-check och /generate-tests har gett grönt ljus för modulen.
+Pre-Flight Check: Verifiera att /health-check och /unit-tests har gett grönt ljus för modulen.
 
 Containerization/Bundling: Skapa en optimerad Docker-image eller ett exekverbart paket av modulen. Minimera storleken genom multi-stage builds.
 

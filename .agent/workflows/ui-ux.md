@@ -1,5 +1,5 @@
 ---
-description: The UI/UX Alchemist (Consolidated with /polish)
+description: Frontend design, UX audit, and game-feel optimization
 command: /ui-ux
 modes: [design, polish, audit]
 ---

@@ -37,7 +37,7 @@ Presentera en dashboard:
 Baserat på state, föreslå:
 - Fortsätt pågående arbete?
 - Kör `/cleanup` om debt > 5?
-- Kör `/optimize-tokens` om nya workflows skapats?
+- Kör `/evolve` för token-optimering om nya workflows skapats?
 
 # Self-Evaluation
 Betygsätt **Context Accuracy (1-10)**: Hur väl fångade du användarens intention från förra sessionen?

@@ -1,5 +1,5 @@
 ---
-description: stresstest
+description: Stress testing for logic, security, and entropy resilience
 ---
 
 # Workflow: /stresstest-all
