@@ -1,9 +1,14 @@
-import { describe, it, expect, vi } from "vitest";
-import { awardGoldAction } from "../progression";
-import { startBossFight, performCombatAction } from "../combat";
-import { craftItem } from "../forge";
+import { vi, describe, it, expect, beforeEach } from "vitest";
 
-// Mock Supabase and DB
+vi.mock("next/headers", () => ({
+  cookies: vi.fn().mockResolvedValue({
+    get: vi.fn(),
+    set: vi.fn(),
+    getAll: vi.fn(() => []),
+  }),
+}));
+
+// Mock Supabase and DB FIRST to ensure they are active for the actions
 vi.mock("@/utils/supabase/server", () => ({
   createClient: vi.fn().mockResolvedValue({
     auth: {
@@ -32,9 +37,18 @@ vi.mock("@/services/progression", () => ({
   },
 }));
 
+// Now import the actions
+import { awardGoldAction } from "../progression";
+import { startBossFight, performCombatAction } from "../combat";
+import { craftItem } from "../forge";
+
 describe("Security Validation (Zod)", () => {
+  beforeEach(() => {
+    vi.spyOn(console, "error").mockImplementation(() => { });
+  });
+
   // Skip Progression Actions tests due to mock complexity - needs refactoring
-  describe.skip("Progression Actions", () => {
+  describe("Progression Actions", () => {
     it("should reject negative gold amount", async () => {
       const result = await awardGoldAction(-100);
       expect(result).toBeNull();
@@ -61,7 +75,7 @@ describe("Security Validation (Zod)", () => {
   });
 
   // Skip Forge Actions tests due to mock complexity - needs refactoring
-  describe.skip("Forge Actions", () => {
+  describe("Forge Actions", () => {
     it("should return failure for invalid recipeId format", async () => {
       // craftItem catches validation error and returns success: false
       const result = await craftItem("INVALID @ ID");

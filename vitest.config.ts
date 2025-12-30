@@ -9,5 +9,10 @@ export default defineConfig({
             '@': path.resolve(__dirname, './src'),
         },
         exclude: ['**/node_modules/**', '**/tests/e2e/**'],
+        setupFiles: ['./vitest.setup.ts'],
+        coverage: {
+            provider: 'v8',
+            reporter: ['text', 'json-summary', 'html'],
+        },
     },
 });
