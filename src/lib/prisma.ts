@@ -13,9 +13,9 @@ if (typeof window === "undefined") {
 const prismaClientSingleton = () => {
   const connectionString = process.env.DATABASE_URL;
   if (!connectionString) {
-    if (process.env.NODE_ENV === "test") {
+    if (process.env.NODE_ENV === "test" || process.env.SKIP_ENV_VALIDATION === "true") {
       // Return a dummy client or allow it to be undefined/mocked in tests
-      // to prevent "DATABASE_URL is not defined" from blocking unit tests
+      // to prevent "DATABASE_URL is not defined" from blocking unit tests or CI builds
       return new PrismaClient();
     }
     throw new Error("DATABASE_URL is not defined");
