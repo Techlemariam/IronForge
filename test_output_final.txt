@@ -1,0 +1,917 @@
+
+[1m[46m RUN [49m[22m [36mv4.0.16 [39m[90mC:/Users/alexa/Workspaces/IronForge[39m
+
+ [31mÔØ»[39m src/features/training/__tests__/TvMode.test.tsx [2m([22m[2m4 tests[22m[2m | [22m[31m3 failed[39m[2m)[22m[33m 372[2mms[22m[39m
+[31m     [31m├ù[31m renders the connection/setup screen initially if disconnected[39m[32m 230[2mms[22m[39m
+     [32mÔ£ô[39m renders the main HUD when sensors are connected[32m 47[2mms[22m[39m
+[31m     [31m├ù[31m displays Titan dialogue correctly[39m[32m 42[2mms[22m[39m
+[31m     [31m├ù[31m shows guild contribution stats[39m[32m 48[2mms[22m[39m
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ» Failed Tests 3 ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»
+
+ FAIL  src/features/training/__tests__/TvMode.test.tsx > TvMode Integration > renders the connection/setup screen initially if disconnected
+TestingLibraryElementError: Unable to find an element with the text: 60. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <div
+      class="fixed inset-0 bg-black z-50 flex flex-col cursor-none transition-shadow duration-500 border-green-900 bg-green-950/30 border-8 shadow-[inset_0_0_60px_10px]"
+    >
+      <div
+        class="absolute top-0 left-0 w-full p-8 flex justify-between items-start z-10"
+        style="opacity: 0; transform: translateY(-20px);"
+      >
+        <div
+          class="flex flex-col gap-2"
+        >
+          <div
+            class="flex items-center gap-4"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-heart w-12 h-12 animate-pulse text-white"
+              fill="none"
+              height="24"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"
+              />
+            </svg>
+            <div>
+              <div
+                class="text-6xl font-black text-white tabular-nums tracking-tighter"
+              >
+                145
+                 
+                <span
+                  class="text-2xl text-zinc-400 font-bold"
+                >
+                  bpm
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            class="flex items-center gap-2 pl-2"
+          >
+            <div
+              class="px-3 py-1 rounded-full font-bold text-sm uppercase tracking-wider bg-black/50 backdrop-blur text-green-400"
+            >
+              Zone 
+              3
+            </div>
+            <div
+              class="text-zinc-500 text-sm font-mono"
+            >
+              0
+               XP
+            </div>
+          </div>
+        </div>
+        <div
+          class="absolute top-8 left-1/2 -translate-x-1/2 max-w-2xl text-center"
+        >
+          <div
+            class="bg-black/60 backdrop-blur px-6 py-3 rounded-2xl border border-white/10"
+            style="opacity: 0; transform: translateY(10px) scale(0.9);"
+          >
+            <p
+              class="text-xl font-medium text-white/90 italic"
+            >
+              "
+              Push harder, warrior!
+              "
+            </p>
+          </div>
+        </div>
+        <div
+          class="flex flex-col gap-2 items-end"
+        >
+          <div
+            class="flex items-center gap-4"
+          >
+            <div>
+              <div
+                class="text-6xl font-black text-white tabular-nums tracking-tighter"
+              >
+                200
+                 
+                <span
+                  class="text-2xl text-zinc-400 font-bold"
+                >
+                  W
+                </span>
+              </div>
+            </div>
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-zap w-12 h-12 text-zinc-700"
+              fill="none"
+              height="24"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"
+              />
+            </svg>
+          </div>
+          <div
+            class="flex items-center gap-4"
+          >
+            <div
+              class="text-3xl font-bold text-zinc-300 tabular-nums"
+            >
+              00:00
+            </div>
+            <div
+              class="flex gap-2"
+            >
+              <button
+                class="p-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg transition-colors"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="lucide lucide-bluetooth-off w-5 h-5 text-zinc-500"
+                  fill="none"
+                  height="24"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="m17 17-5 5V12l-5 5"
+                  />
+                  <path
+                    d="m2 2 20 20"
+                  />
+                  <path
+                    d="M14.5 9.5 17 7l-5-5v4.5"
+                  />
+                </svg>
+              </button>
+              <button
+                class="p-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg transition-colors"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="lucide lucide-x w-5 h-5 text-white"
+                  fill="none"
+                  height="24"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M18 6 6 18"
+                  />
+                  <path
+                    d="m6 6 12 12"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="absolute bottom-12 left-1/2 -translate-x-1/2 w-full max-w-4xl px-8"
+        style="opacity: 0; transform: translateY(20px);"
+      >
+        <div
+          class="bg-zinc-900/80 backdrop-blur border border-zinc-700 p-4 rounded-xl shadow-2xl relative overflow-hidden"
+        >
+          <div
+            class="absolute inset-0 z-0"
+          >
+            <div
+              class="h-full bg-red-900/30 transition-all duration-1000 ease-out"
+              style="width: 67%;"
+            />
+          </div>
+          <div
+            class="relative z-10 flex items-center justify-between"
+          >
+            <div
+              class="flex items-center gap-4"
+            >
+              <div
+                class="bg-red-600 p-2 rounded-lg"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="lucide lucide-trophy w-6 h-6 text-white"
+                  fill="none"
+                  height="24"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M10 14.66v1.626a2 2 0 0 1-.976 1.696A5 5 0 0 0 7 21.978"
+                  />
+                  <path
+                    d="M14 14.66v1.626a2 2 0 0 0 .976 1.696A5 5 0 0 1 17 21.978"
+                  />
+                  <path
+                    d="M18 9h1.5a1 1 0 0 0 0-5H18"
+                  />
+                  <path
+                    d="M4 22h16"
+                  />
+                  <path
+                    d="M6 9a6 6 0 0 0 12 0V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1z"
+                  />
+                  <path
+                    d="M6 9H4.5a1 1 0 0 1 0-5H6"
+                  />
+                </svg>
+              </div>
+              <div>
+                <div
+                  class="text-xs text-red-400 font-bold uppercase tracking-wider"
+                >
+                  Guild Raid Target
+                </div>
+                <div
+                  class="text-xl font-black text-white"
+                >
+                  Frost Giant
+                </div>
+                <div
+                  class="text-sm text-zinc-400"
+                >
+                  670┬á000
+                   / 
+                  1┬á000┬á000
+                   HP
+                </div>
+              </div>
+            </div>
+            <div
+              class="text-right"
+            >
+              <div
+                class="text-xs text-amber-400 font-bold uppercase tracking-wider"
+              >
+                Your Contribution
+              </div>
+              <div
+                class="text-2xl font-black text-white tabular-nums"
+              >
+                +
+                1┬á500
+              </div>
+              <div
+                class="text-xs text-zinc-500"
+              >
+                DMG
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+ ÔØ» Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ÔØ» node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ÔØ» node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ÔØ» node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ÔØ» src/features/training/__tests__/TvMode.test.tsx:76:23
+     74|         // Should show HUD with disconnected icon (BluetoothOff) or deÔÇª
+     75|         // Default HR is 60, Power 100
+     76|         expect(screen.getByText('60')).toBeDefined();
+       |                       ^
+     77|         expect(screen.getByText('100')).toBeDefined();
+     78|     });
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[1/3]ÔÄ»
+
+ FAIL  src/features/training/__tests__/TvMode.test.tsx > TvMode Integration > displays Titan dialogue correctly
+TestingLibraryElementError: Unable to find an element with the text: Push harder, warrior!. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <div
+      class="fixed inset-0 bg-black z-50 flex flex-col cursor-none transition-shadow duration-500 border-green-900 bg-green-950/30 border-8 shadow-[inset_0_0_60px_10px]"
+    >
+      <div
+        class="absolute top-0 left-0 w-full p-8 flex justify-between items-start z-10"
+        style="opacity: 0; transform: translateY(-20px);"
+      >
+        <div
+          class="flex flex-col gap-2"
+        >
+          <div
+            class="flex items-center gap-4"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-heart w-12 h-12 animate-pulse text-white"
+              fill="none"
+              height="24"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"
+              />
+            </svg>
+            <div>
+              <div
+                class="text-6xl font-black text-white tabular-nums tracking-tighter"
+              >
+                145
+                 
+                <span
+                  class="text-2xl text-zinc-400 font-bold"
+                >
+                  bpm
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            class="flex items-center gap-2 pl-2"
+          >
+            <div
+              class="px-3 py-1 rounded-full font-bold text-sm uppercase tracking-wider bg-black/50 backdrop-blur text-green-400"
+            >
+              Zone 
+              3
+            </div>
+            <div
+              class="text-zinc-500 text-sm font-mono"
+            >
+              0
+               XP
+            </div>
+          </div>
+        </div>
+        <div
+          class="absolute top-8 left-1/2 -translate-x-1/2 max-w-2xl text-center"
+        >
+          <div
+            class="bg-black/60 backdrop-blur px-6 py-3 rounded-2xl border border-white/10"
+            style="opacity: 0; transform: translateY(10px) scale(0.9);"
+          >
+            <p
+              class="text-xl font-medium text-white/90 italic"
+            >
+              "
+              Push harder, warrior!
+              "
+            </p>
+          </div>
+        </div>
+        <div
+          class="flex flex-col gap-2 items-end"
+        >
+          <div
+            class="flex items-center gap-4"
+          >
+            <div>
+              <div
+                class="text-6xl font-black text-white tabular-nums tracking-tighter"
+              >
+                200
+                 
+                <span
+                  class="text-2xl text-zinc-400 font-bold"
+                >
+                  W
+                </span>
+              </div>
+            </div>
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-zap w-12 h-12 text-yellow-400 fill-yellow-400"
+              fill="none"
+              height="24"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"
+              />
+            </svg>
+          </div>
+          <div
+            class="flex items-center gap-4"
+          >
+            <div
+              class="text-3xl font-bold text-zinc-300 tabular-nums"
+            >
+              00:00
+            </div>
+            <div
+              class="flex gap-2"
+            >
+              <button
+                class="p-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg transition-colors"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="lucide lucide-bluetooth w-5 h-5 text-blue-400"
+                  fill="none"
+                  height="24"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="m7 7 10 10-5 5V2l5 5L7 17"
+                  />
+                </svg>
+              </button>
+              <button
+                class="p-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg transition-colors"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="lucide lucide-x w-5 h-5 text-white"
+                  fill="none"
+                  height="24"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M18 6 6 18"
+                  />
+                  <path
+                    d="m6 6 12 12"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="absolute bottom-12 left-1/2 -translate-x-1/2 w-full max-w-4xl px-8"
+        style="opacity: 0; transform: translateY(20px);"
+      >
+        <div
+          class="bg-zinc-900/80 backdrop-blur border border-zinc-700 p-4 rounded-xl shadow-2xl relative overflow-hidden"
+        >
+          <div
+            class="absolute inset-0 z-0"
+          >
+            <div
+              class="h-full bg-red-900/30 transition-all duration-1000 ease-out"
+              style="width: 67%;"
+            />
+          </div>
+          <div
+            class="relative z-10 flex items-center justify-between"
+          >
+            <div
+              class="flex items-center gap-4"
+            >
+              <div
+                class="bg-red-600 p-2 rounded-lg"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="lucide lucide-trophy w-6 h-6 text-white"
+                  fill="none"
+                  height="24"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M10 14.66v1.626a2 2 0 0 1-.976 1.696A5 5 0 0 0 7 21.978"
+                  />
+                  <path
+                    d="M14 14.66v1.626a2 2 0 0 0 .976 1.696A5 5 0 0 1 17 21.978"
+                  />
+                  <path
+                    d="M18 9h1.5a1 1 0 0 0 0-5H18"
+                  />
+                  <path
+                    d="M4 22h16"
+                  />
+                  <path
+                    d="M6 9a6 6 0 0 0 12 0V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1z"
+                  />
+                  <path
+                    d="M6 9H4.5a1 1 0 0 1 0-5H6"
+                  />
+                </svg>
+              </div>
+              <div>
+                <div
+                  class="text-xs text-red-400 font-bold uppercase tracking-wider"
+                >
+                  Guild Raid Target
+                </div>
+                <div
+                  class="text-xl font-black text-white"
+                >
+                  Frost Giant
+                </div>
+                <div
+                  class="text-sm text-zinc-400"
+                >
+                  670┬á000
+                   / 
+                  1┬á000┬á000
+                   HP
+                </div>
+              </div>
+            </div>
+            <div
+              class="text-right"
+            >
+              <div
+                class="text-xs text-amber-400 font-bold uppercase tracking-wider"
+              >
+                Your Contribution
+              </div>
+              <div
+                class="text-2xl font-black text-white tabular-nums"
+              >
+                +
+                1┬á500
+              </div>
+              <div
+                class="text-xs text-zinc-500"
+              >
+                DMG
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+ ÔØ» Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ÔØ» node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ÔØ» node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ÔØ» node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ÔØ» src/features/training/__tests__/TvMode.test.tsx:94:23
+     92|     it('displays Titan dialogue correctly', () => {
+     93|         render(<TvMode onExit={vi.fn()} />);
+     94|         expect(screen.getByText("Push harder, warrior!")).toBeDefined(ÔÇª
+       |                       ^
+     95|     });
+     96| 
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[2/3]ÔÄ»
+
+ FAIL  src/features/training/__tests__/TvMode.test.tsx > TvMode Integration > shows guild contribution stats
+TestingLibraryElementError: Unable to find an element with the text: /\+1,500/. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <div
+      class="fixed inset-0 bg-black z-50 flex flex-col cursor-none transition-shadow duration-500 border-green-900 bg-green-950/30 border-8 shadow-[inset_0_0_60px_10px]"
+    >
+      <div
+        class="absolute top-0 left-0 w-full p-8 flex justify-between items-start z-10"
+        style="opacity: 0; transform: translateY(-20px);"
+      >
+        <div
+          class="flex flex-col gap-2"
+        >
+          <div
+            class="flex items-center gap-4"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-heart w-12 h-12 animate-pulse text-white"
+              fill="none"
+              height="24"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"
+              />
+            </svg>
+            <div>
+              <div
+                class="text-6xl font-black text-white tabular-nums tracking-tighter"
+              >
+                145
+                 
+                <span
+                  class="text-2xl text-zinc-400 font-bold"
+                >
+                  bpm
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            class="flex items-center gap-2 pl-2"
+          >
+            <div
+              class="px-3 py-1 rounded-full font-bold text-sm uppercase tracking-wider bg-black/50 backdrop-blur text-green-400"
+            >
+              Zone 
+              3
+            </div>
+            <div
+              class="text-zinc-500 text-sm font-mono"
+            >
+              0
+               XP
+            </div>
+          </div>
+        </div>
+        <div
+          class="absolute top-8 left-1/2 -translate-x-1/2 max-w-2xl text-center"
+        >
+          <div
+            class="bg-black/60 backdrop-blur px-6 py-3 rounded-2xl border border-white/10"
+            style="opacity: 0; transform: translateY(10px) scale(0.9);"
+          >
+            <p
+              class="text-xl font-medium text-white/90 italic"
+            >
+              "
+              Push harder, warrior!
+              "
+            </p>
+          </div>
+        </div>
+        <div
+          class="flex flex-col gap-2 items-end"
+        >
+          <div
+            class="flex items-center gap-4"
+          >
+            <div>
+              <div
+                class="text-6xl font-black text-white tabular-nums tracking-tighter"
+              >
+                200
+                 
+                <span
+                  class="text-2xl text-zinc-400 font-bold"
+                >
+                  W
+                </span>
+              </div>
+            </div>
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-zap w-12 h-12 text-yellow-400 fill-yellow-400"
+              fill="none"
+              height="24"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"
+              />
+            </svg>
+          </div>
+          <div
+            class="flex items-center gap-4"
+          >
+            <div
+              class="text-3xl font-bold text-zinc-300 tabular-nums"
+            >
+              00:00
+            </div>
+            <div
+              class="flex gap-2"
+            >
+              <button
+                class="p-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg transition-colors"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="lucide lucide-bluetooth w-5 h-5 text-blue-400"
+                  fill="none"
+                  height="24"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="m7 7 10 10-5 5V2l5 5L7 17"
+                  />
+                </svg>
+              </button>
+              <button
+                class="p-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg transition-colors"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="lucide lucide-x w-5 h-5 text-white"
+                  fill="none"
+                  height="24"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M18 6 6 18"
+                  />
+                  <path
+                    d="m6 6 12 12"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="absolute bottom-12 left-1/2 -translate-x-1/2 w-full max-w-4xl px-8"
+        style="opacity: 0; transform: translateY(20px);"
+      >
+        <div
+          class="bg-zinc-900/80 backdrop-blur border border-zinc-700 p-4 rounded-xl shadow-2xl relative overflow-hidden"
+        >
+          <div
+            class="absolute inset-0 z-0"
+          >
+            <div
+              class="h-full bg-red-900/30 transition-all duration-1000 ease-out"
+              style="width: 67%;"
+            />
+          </div>
+          <div
+            class="relative z-10 flex items-center justify-between"
+          >
+            <div
+              class="flex items-center gap-4"
+            >
+              <div
+                class="bg-red-600 p-2 rounded-lg"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="lucide lucide-trophy w-6 h-6 text-white"
+                  fill="none"
+                  height="24"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M10 14.66v1.626a2 2 0 0 1-.976 1.696A5 5 0 0 0 7 21.978"
+                  />
+                  <path
+                    d="M14 14.66v1.626a2 2 0 0 0 .976 1.696A5 5 0 0 1 17 21.978"
+                  />
+                  <path
+                    d="M18 9h1.5a1 1 0 0 0 0-5H18"
+                  />
+                  <path
+                    d="M4 22h16"
+                  />
+                  <path
+                    d="M6 9a6 6 0 0 0 12 0V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1z"
+                  />
+                  <path
+                    d="M6 9H4.5a1 1 0 0 1 0-5H6"
+                  />
+                </svg>
+              </div>
+              <div>
+                <div
+                  class="text-xs text-red-400 font-bold uppercase tracking-wider"
+                >
+                  Guild Raid Target
+                </div>
+                <div
+                  class="text-xl font-black text-white"
+                >
+                  Frost Giant
+                </div>
+                <div
+                  class="text-sm text-zinc-400"
+                >
+                  670┬á000
+                   / 
+                  1┬á000┬á000
+                   HP
+                </div>
+              </div>
+            </div>
+            <div
+              class="text-right"
+            >
+              <div
+                class="text-xs text-amber-400 font-bold uppercase tracking-wider"
+              >
+                Your Contribution
+              </div>
+              <div
+                class="text-2xl font-black text-white tabular-nums"
+              >
+                +
+                1┬á500
+              </div>
+              <div
+                class="text-xs text-zinc-500"
+              >
+                DMG
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+ ÔØ» Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ÔØ» node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ÔØ» node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ÔØ» node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ÔØ» src/features/training/__tests__/TvMode.test.tsx:111:23
+    109|         render(<TvMode onExit={vi.fn()} />);
+    110|         // use regex for flexible matching of formatted numbers
+    111|         expect(screen.getByText(/\+1,500/)).toBeDefined();
+       |                       ^
+    112|     });
+    113| 
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[3/3]ÔÄ»
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m3 failed[39m[22m[2m | [22m[1m[32m1 passed[39m[22m[90m (4)[39m
+[2m   Start at [22m 00:57:05
+[2m   Duration [22m 5.05s[2m (transform 306ms, setup 0ms, import 1.90s, tests 372ms, environment 2.23s)[22m
+

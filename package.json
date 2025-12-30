@@ -90,7 +90,6 @@
     "dotenv-cli": "^11.0.0",
     "eslint": "^8.56.0",
     "eslint-config-next": "^15.1.0",
-    "is-even": "^1.0.0",
     "jsdom": "^27.3.0",
     "postcss": "^8.4.27",
     "prisma": "^7.0.0",

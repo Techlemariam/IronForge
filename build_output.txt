@@ -1,0 +1,25 @@
+
+> ironforge-rpg@1.0.0 build
+> next build
+
+   Ôû▓ Next.js 15.1.0
+   - Environments: .env.local, .env
+
+   Creating an optimized production build ...
+ Ô£ô (serwist) Bundling the service worker script with the URL '/sw.js' and the scope '/'...
+ Ô£ô Compiled successfully
+   Linting and checking validity of types ...
+
+Failed to compile.
+
+./src/features/game/CombatArena.tsx
+142:8  Warning: React Hook useEffect has missing dependencies: 'handleAction' and 'handleFlee'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/features/titan/useTitanReaction.ts
+66:8  Warning: React Hook useEffect has a missing dependency: 'getCategory'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/features/training/TvMode.tsx
+210:37  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+210:53  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules

@@ -1,6 +1,6 @@
 [pkgs]
 javascript.enable = true
-nodejs.version = "18"
+nodejs.version = "20"
 terminal.enable = true
 
 [previews]

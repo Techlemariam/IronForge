@@ -24,24 +24,34 @@ export default defineConfig({
     /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
     use: {
         /* Base URL to use in actions like `await page.goto('/')`. */
-        baseURL: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3009',
+        baseURL: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
 
         /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
         trace: 'on-first-retry',
     },
 
+    // ... imports kept same
     /* Configure projects for major browsers */
     projects: [
         {
+            name: 'setup',
+            testMatch: /.*\.setup\.ts/,
+        },
+        {
             name: 'chromium',
-            use: { ...devices['Desktop Chrome'] },
+            use: {
+                ...devices['Desktop Chrome'],
+                // Use prepared auth state.
+                storageState: 'playwright/.auth/user.json',
+            },
+            dependencies: ['setup'],
         },
     ],
 
     /* Run your local dev server before starting the tests */
     webServer: {
-        command: 'npm run dev -- -p 3009',
-        url: 'http://localhost:3009',
+        command: 'npm run dev -- -p 3000',
+        url: 'http://localhost:3000',
         reuseExistingServer: !process.env.CI,
         timeout: 120 * 1000,
     },

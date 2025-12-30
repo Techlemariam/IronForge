@@ -1,0 +1,288 @@
+test	UNKNOWN STEP	﻿2025-12-30T10:38:31.1720421Z Current runner version: '2.330.0'
+test	UNKNOWN STEP	2025-12-30T10:38:31.1754355Z ##[group]Runner Image Provisioner
+test	UNKNOWN STEP	2025-12-30T10:38:31.1755862Z Hosted Compute Agent
+test	UNKNOWN STEP	2025-12-30T10:38:31.1756976Z Version: 20251211.462
+test	UNKNOWN STEP	2025-12-30T10:38:31.1757988Z Commit: 6cbad8c2bb55d58165063d031ccabf57e2d2db61
+test	UNKNOWN STEP	2025-12-30T10:38:31.1759144Z Build Date: 2025-12-11T16:28:49Z
+test	UNKNOWN STEP	2025-12-30T10:38:31.1760392Z Worker ID: {f07269d2-2785-47da-ab81-f803000543de}
+test	UNKNOWN STEP	2025-12-30T10:38:31.1761625Z ##[endgroup]
+test	UNKNOWN STEP	2025-12-30T10:38:31.1762503Z ##[group]Operating System
+test	UNKNOWN STEP	2025-12-30T10:38:31.1763623Z Ubuntu
+test	UNKNOWN STEP	2025-12-30T10:38:31.1764429Z 24.04.3
+test	UNKNOWN STEP	2025-12-30T10:38:31.1765432Z LTS
+test	UNKNOWN STEP	2025-12-30T10:38:31.1766365Z ##[endgroup]
+test	UNKNOWN STEP	2025-12-30T10:38:31.1767332Z ##[group]Runner Image
+test	UNKNOWN STEP	2025-12-30T10:38:31.1768308Z Image: ubuntu-24.04
+test	UNKNOWN STEP	2025-12-30T10:38:31.1769213Z Version: 20251215.174.1
+test	UNKNOWN STEP	2025-12-30T10:38:31.1771188Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20251215.174/images/ubuntu/Ubuntu2404-Readme.md
+test	UNKNOWN STEP	2025-12-30T10:38:31.1773933Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20251215.174
+test	UNKNOWN STEP	2025-12-30T10:38:31.1776109Z ##[endgroup]
+test	UNKNOWN STEP	2025-12-30T10:38:31.1777954Z ##[group]GITHUB_TOKEN Permissions
+test	UNKNOWN STEP	2025-12-30T10:38:31.1780615Z Contents: read
+test	UNKNOWN STEP	2025-12-30T10:38:31.1781534Z Metadata: read
+test	UNKNOWN STEP	2025-12-30T10:38:31.1782352Z Packages: read
+test	UNKNOWN STEP	2025-12-30T10:38:31.1783420Z ##[endgroup]
+test	UNKNOWN STEP	2025-12-30T10:38:31.1786654Z Secret source: Dependabot
+test	UNKNOWN STEP	2025-12-30T10:38:31.1787739Z Prepare workflow directory
+test	UNKNOWN STEP	2025-12-30T10:38:31.2709900Z Prepare all required actions
+test	UNKNOWN STEP	2025-12-30T10:38:31.2765493Z Getting action download info
+test	UNKNOWN STEP	2025-12-30T10:38:31.8340363Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+test	UNKNOWN STEP	2025-12-30T10:38:31.9513600Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+test	UNKNOWN STEP	2025-12-30T10:38:32.0508279Z Download action repository 'nick-fields/retry@v3' (SHA:ce71cc2ab81d554ebbe88c79ab5975992d79ba08)
+test	UNKNOWN STEP	2025-12-30T10:38:32.6378918Z Complete job name: test
+test	UNKNOWN STEP	2025-12-30T10:38:32.7006625Z ##[group]Run actions/checkout@v4
+test	UNKNOWN STEP	2025-12-30T10:38:32.7007525Z with:
+test	UNKNOWN STEP	2025-12-30T10:38:32.7007987Z   repository: Techlemariam/IronForge
+test	UNKNOWN STEP	2025-12-30T10:38:32.7008713Z   token: ***
+test	UNKNOWN STEP	2025-12-30T10:38:32.7009144Z   ssh-strict: true
+test	UNKNOWN STEP	2025-12-30T10:38:32.7009582Z   ssh-user: git
+test	UNKNOWN STEP	2025-12-30T10:38:32.7010025Z   persist-credentials: true
+test	UNKNOWN STEP	2025-12-30T10:38:32.7010525Z   clean: true
+test	UNKNOWN STEP	2025-12-30T10:38:32.7010961Z   sparse-checkout-cone-mode: true
+test	UNKNOWN STEP	2025-12-30T10:38:32.7011495Z   fetch-depth: 1
+test	UNKNOWN STEP	2025-12-30T10:38:32.7011923Z   fetch-tags: false
+test	UNKNOWN STEP	2025-12-30T10:38:32.7012367Z   show-progress: true
+test	UNKNOWN STEP	2025-12-30T10:38:32.7012801Z   lfs: false
+test	UNKNOWN STEP	2025-12-30T10:38:32.7013221Z   submodules: false
+test	UNKNOWN STEP	2025-12-30T10:38:32.7013674Z   set-safe-directory: true
+test	UNKNOWN STEP	2025-12-30T10:38:32.7014511Z env:
+test	UNKNOWN STEP	2025-12-30T10:38:32.7015105Z   DATABASE_URL: 
+test	UNKNOWN STEP	2025-12-30T10:38:32.7015538Z   DIRECT_URL: 
+test	UNKNOWN STEP	2025-12-30T10:38:32.7015980Z   NEXT_PUBLIC_SUPABASE_URL: 
+test	UNKNOWN STEP	2025-12-30T10:38:32.7016506Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: 
+test	UNKNOWN STEP	2025-12-30T10:38:32.7017088Z ##[endgroup]
+test	UNKNOWN STEP	2025-12-30T10:38:32.8179071Z Syncing repository: Techlemariam/IronForge
+test	UNKNOWN STEP	2025-12-30T10:38:32.8182409Z ##[group]Getting Git version info
+test	UNKNOWN STEP	2025-12-30T10:38:32.8185897Z Working directory is '/home/runner/work/IronForge/IronForge'
+test	UNKNOWN STEP	2025-12-30T10:38:32.8187933Z [command]/usr/bin/git version
+test	UNKNOWN STEP	2025-12-30T10:38:32.8277529Z git version 2.52.0
+test	UNKNOWN STEP	2025-12-30T10:38:32.8310316Z ##[endgroup]
+test	UNKNOWN STEP	2025-12-30T10:38:32.8335335Z Temporarily overriding HOME='/home/runner/work/_temp/470c1a4c-4767-4ff3-933b-cbeea610c4e3' before making global git config changes
+test	UNKNOWN STEP	2025-12-30T10:38:32.8338406Z Adding repository directory to the temporary git global config as a safe directory
+test	UNKNOWN STEP	2025-12-30T10:38:32.8343659Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/IronForge/IronForge
+test	UNKNOWN STEP	2025-12-30T10:38:32.8386568Z Deleting the contents of '/home/runner/work/IronForge/IronForge'
+test	UNKNOWN STEP	2025-12-30T10:38:32.8390988Z ##[group]Initializing the repository
+test	UNKNOWN STEP	2025-12-30T10:38:32.8396740Z [command]/usr/bin/git init /home/runner/work/IronForge/IronForge
+test	UNKNOWN STEP	2025-12-30T10:38:32.8528489Z hint: Using 'master' as the name for the initial branch. This default branch name
+test	UNKNOWN STEP	2025-12-30T10:38:32.8531214Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+test	UNKNOWN STEP	2025-12-30T10:38:32.8534293Z hint: to use in all of your new repositories, which will suppress this warning,
+test	UNKNOWN STEP	2025-12-30T10:38:32.8536671Z hint: call:
+test	UNKNOWN STEP	2025-12-30T10:38:32.8537485Z hint:
+test	UNKNOWN STEP	2025-12-30T10:38:32.8538457Z hint: 	git config --global init.defaultBranch <name>
+test	UNKNOWN STEP	2025-12-30T10:38:32.8539653Z hint:
+test	UNKNOWN STEP	2025-12-30T10:38:32.8540774Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+test	UNKNOWN STEP	2025-12-30T10:38:32.8542673Z hint: 'development'. The just-created branch can be renamed via this command:
+test	UNKNOWN STEP	2025-12-30T10:38:32.8544066Z hint:
+test	UNKNOWN STEP	2025-12-30T10:38:32.8545126Z hint: 	git branch -m <name>
+test	UNKNOWN STEP	2025-12-30T10:38:32.8546078Z hint:
+test	UNKNOWN STEP	2025-12-30T10:38:32.8547305Z hint: Disable this message with "git config set advice.defaultBranchName false"
+test	UNKNOWN STEP	2025-12-30T10:38:32.8549887Z Initialized empty Git repository in /home/runner/work/IronForge/IronForge/.git/
+test	UNKNOWN STEP	2025-12-30T10:38:32.8554365Z [command]/usr/bin/git remote add origin https://github.com/Techlemariam/IronForge
+test	UNKNOWN STEP	2025-12-30T10:38:32.8595977Z ##[endgroup]
+test	UNKNOWN STEP	2025-12-30T10:38:32.8597375Z ##[group]Disabling automatic garbage collection
+test	UNKNOWN STEP	2025-12-30T10:38:32.8598761Z [command]/usr/bin/git config --local gc.auto 0
+test	UNKNOWN STEP	2025-12-30T10:38:32.8632062Z ##[endgroup]
+test	UNKNOWN STEP	2025-12-30T10:38:32.8635732Z ##[group]Setting up auth
+test	UNKNOWN STEP	2025-12-30T10:38:32.8637807Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+test	UNKNOWN STEP	2025-12-30T10:38:32.8670890Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+test	UNKNOWN STEP	2025-12-30T10:38:32.9101226Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+test	UNKNOWN STEP	2025-12-30T10:38:32.9122062Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+test	UNKNOWN STEP	2025-12-30T10:38:32.9348420Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+test	UNKNOWN STEP	2025-12-30T10:38:32.9386997Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+test	UNKNOWN STEP	2025-12-30T10:38:32.9622409Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+test	UNKNOWN STEP	2025-12-30T10:38:32.9658478Z ##[endgroup]
+test	UNKNOWN STEP	2025-12-30T10:38:32.9661297Z ##[group]Fetching the repository
+test	UNKNOWN STEP	2025-12-30T10:38:32.9669789Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +ad2c57c96af44dd3725af03c93664ec873cfe38a:refs/remotes/pull/9/merge
+test	UNKNOWN STEP	2025-12-30T10:38:33.6240843Z From https://github.com/Techlemariam/IronForge
+test	UNKNOWN STEP	2025-12-30T10:38:33.6250454Z  * [new ref]         ad2c57c96af44dd3725af03c93664ec873cfe38a -> pull/9/merge
+test	UNKNOWN STEP	2025-12-30T10:38:33.6316058Z ##[endgroup]
+test	UNKNOWN STEP	2025-12-30T10:38:33.6317942Z ##[group]Determining the checkout info
+test	UNKNOWN STEP	2025-12-30T10:38:33.6320193Z ##[endgroup]
+test	UNKNOWN STEP	2025-12-30T10:38:33.6321546Z [command]/usr/bin/git sparse-checkout disable
+test	UNKNOWN STEP	2025-12-30T10:38:33.6360270Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+test	UNKNOWN STEP	2025-12-30T10:38:33.6394292Z ##[group]Checking out the ref
+test	UNKNOWN STEP	2025-12-30T10:38:33.6399979Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/9/merge
+test	UNKNOWN STEP	2025-12-30T10:38:33.7144237Z Note: switching to 'refs/remotes/pull/9/merge'.
+test	UNKNOWN STEP	2025-12-30T10:38:33.7149373Z 
+test	UNKNOWN STEP	2025-12-30T10:38:33.7154091Z You are in 'detached HEAD' state. You can look around, make experimental
+test	UNKNOWN STEP	2025-12-30T10:38:33.7157810Z changes and commit them, and you can discard any commits you make in this
+test	UNKNOWN STEP	2025-12-30T10:38:33.7166388Z state without impacting any branches by switching back to a branch.
+test	UNKNOWN STEP	2025-12-30T10:38:33.7169020Z 
+test	UNKNOWN STEP	2025-12-30T10:38:33.7170511Z If you want to create a new branch to retain commits you create, you may
+test	UNKNOWN STEP	2025-12-30T10:38:33.7173681Z do so (now or later) by using -c with the switch command. Example:
+test	UNKNOWN STEP	2025-12-30T10:38:33.7175764Z 
+test	UNKNOWN STEP	2025-12-30T10:38:33.7176462Z   git switch -c <new-branch-name>
+test	UNKNOWN STEP	2025-12-30T10:38:33.7177705Z 
+test	UNKNOWN STEP	2025-12-30T10:38:33.7178399Z Or undo this operation with:
+test	UNKNOWN STEP	2025-12-30T10:38:33.7179507Z 
+test	UNKNOWN STEP	2025-12-30T10:38:33.7180108Z   git switch -
+test	UNKNOWN STEP	2025-12-30T10:38:33.7181235Z 
+test	UNKNOWN STEP	2025-12-30T10:38:33.7182867Z Turn off this advice by setting config variable advice.detachedHead to false
+test	UNKNOWN STEP	2025-12-30T10:38:33.7185336Z 
+test	UNKNOWN STEP	2025-12-30T10:38:33.7187878Z HEAD is now at ad2c57c Merge b2a777f37126f4779fdf0238ca25b9f4d62efdc4 into dc97fa5d13a702a74b20a61093da1d0d39111d4d
+test	UNKNOWN STEP	2025-12-30T10:38:33.7195762Z ##[endgroup]
+test	UNKNOWN STEP	2025-12-30T10:38:33.7260322Z [command]/usr/bin/git log -1 --format=%H
+test	UNKNOWN STEP	2025-12-30T10:38:33.7296339Z ad2c57c96af44dd3725af03c93664ec873cfe38a
+test	UNKNOWN STEP	2025-12-30T10:38:33.7882292Z ##[group]Run actions/setup-node@v4
+test	UNKNOWN STEP	2025-12-30T10:38:33.7884252Z with:
+test	UNKNOWN STEP	2025-12-30T10:38:33.7886205Z   node-version: 20
+test	UNKNOWN STEP	2025-12-30T10:38:33.7887878Z   cache: npm
+test	UNKNOWN STEP	2025-12-30T10:38:33.7889441Z   always-auth: false
+test	UNKNOWN STEP	2025-12-30T10:38:33.7891289Z   check-latest: false
+test	UNKNOWN STEP	2025-12-30T10:38:33.7893549Z   token: ***
+test	UNKNOWN STEP	2025-12-30T10:38:33.7895638Z env:
+test	UNKNOWN STEP	2025-12-30T10:38:33.7897218Z   DATABASE_URL: 
+test	UNKNOWN STEP	2025-12-30T10:38:33.7898840Z   DIRECT_URL: 
+test	UNKNOWN STEP	2025-12-30T10:38:33.7900435Z   NEXT_PUBLIC_SUPABASE_URL: 
+test	UNKNOWN STEP	2025-12-30T10:38:33.7902561Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: 
+test	UNKNOWN STEP	2025-12-30T10:38:33.7904513Z ##[endgroup]
+test	UNKNOWN STEP	2025-12-30T10:38:33.9755796Z Found in cache @ /opt/hostedtoolcache/node/20.19.6/x64
+test	UNKNOWN STEP	2025-12-30T10:38:33.9762061Z ##[group]Environment details
+test	UNKNOWN STEP	2025-12-30T10:38:34.4617911Z node: v20.19.6
+test	UNKNOWN STEP	2025-12-30T10:38:34.4620041Z npm: 10.8.2
+test	UNKNOWN STEP	2025-12-30T10:38:34.4626131Z yarn: 1.22.22
+test	UNKNOWN STEP	2025-12-30T10:38:34.4627291Z ##[endgroup]
+test	UNKNOWN STEP	2025-12-30T10:38:34.4673714Z [command]/opt/hostedtoolcache/node/20.19.6/x64/bin/npm config get cache
+test	UNKNOWN STEP	2025-12-30T10:38:34.6745404Z /home/runner/.npm
+test	UNKNOWN STEP	2025-12-30T10:38:35.0265409Z npm cache is not found
+test	UNKNOWN STEP	2025-12-30T10:38:35.0476188Z ##[group]Run nick-fields/retry@v3
+test	UNKNOWN STEP	2025-12-30T10:38:35.0476443Z with:
+test	UNKNOWN STEP	2025-12-30T10:38:35.0476606Z   timeout_minutes: 10
+test	UNKNOWN STEP	2025-12-30T10:38:35.0476787Z   max_attempts: 3
+test	UNKNOWN STEP	2025-12-30T10:38:35.0476954Z   command: npm ci
+test	UNKNOWN STEP	2025-12-30T10:38:35.0477115Z   retry_wait_seconds: 10
+test	UNKNOWN STEP	2025-12-30T10:38:35.0477315Z   polling_interval_seconds: 1
+test	UNKNOWN STEP	2025-12-30T10:38:35.0477519Z   warning_on_retry: true
+test	UNKNOWN STEP	2025-12-30T10:38:35.0477709Z   continue_on_error: false
+test	UNKNOWN STEP	2025-12-30T10:38:35.0477894Z env:
+test	UNKNOWN STEP	2025-12-30T10:38:35.0478046Z   DATABASE_URL: 
+test	UNKNOWN STEP	2025-12-30T10:38:35.0478204Z   DIRECT_URL: 
+test	UNKNOWN STEP	2025-12-30T10:38:35.0478379Z   NEXT_PUBLIC_SUPABASE_URL: 
+test	UNKNOWN STEP	2025-12-30T10:38:35.0478589Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: 
+test	UNKNOWN STEP	2025-12-30T10:38:35.0478799Z ##[endgroup]
+test	UNKNOWN STEP	2025-12-30T10:38:35.1172122Z ##[group]Attempt 1
+test	UNKNOWN STEP	2025-12-30T10:38:36.6463079Z npm warn EBADENGINE Unsupported engine {
+test	UNKNOWN STEP	2025-12-30T10:38:36.6467942Z npm warn EBADENGINE   package: '@capacitor/cli@8.0.0',
+test	UNKNOWN STEP	2025-12-30T10:38:36.6468976Z npm warn EBADENGINE   required: { node: '>=22.0.0' },
+test	UNKNOWN STEP	2025-12-30T10:38:36.6471479Z npm warn EBADENGINE   current: { node: 'v20.19.6', npm: '10.8.2' }
+test	UNKNOWN STEP	2025-12-30T10:38:36.6472273Z npm warn EBADENGINE }
+test	UNKNOWN STEP	2025-12-30T10:38:36.6472952Z npm warn EBADENGINE Unsupported engine {
+test	UNKNOWN STEP	2025-12-30T10:38:36.6473735Z npm warn EBADENGINE   package: 'camera-controls@3.1.2',
+test	UNKNOWN STEP	2025-12-30T10:38:36.6475010Z npm warn EBADENGINE   required: { node: '>=22.0.0', npm: '>=10.5.1' },
+test	UNKNOWN STEP	2025-12-30T10:38:36.6476054Z npm warn EBADENGINE   current: { node: 'v20.19.6', npm: '10.8.2' }
+test	UNKNOWN STEP	2025-12-30T10:38:36.6476735Z npm warn EBADENGINE }
+test	UNKNOWN STEP	2025-12-30T10:38:36.6626303Z npm error code EUSAGE
+test	UNKNOWN STEP	2025-12-30T10:38:36.6632468Z npm error
+test	UNKNOWN STEP	2025-12-30T10:38:36.6638470Z npm error `npm ci` can only install packages when your package.json and package-lock.json or npm-shrinkwrap.json are in sync. Please update your lock file with `npm install` before continuing.
+test	UNKNOWN STEP	2025-12-30T10:38:36.6640221Z npm error
+test	UNKNOWN STEP	2025-12-30T10:38:36.6641208Z npm error Missing: magicast@0.3.5 from lock file
+test	UNKNOWN STEP	2025-12-30T10:38:36.6641888Z npm error
+test	UNKNOWN STEP	2025-12-30T10:38:36.6642493Z npm error Clean install a project
+test	UNKNOWN STEP	2025-12-30T10:38:36.6643442Z npm error
+test	UNKNOWN STEP	2025-12-30T10:38:36.6645236Z npm error Usage:
+test	UNKNOWN STEP	2025-12-30T10:38:36.6645556Z npm error npm ci
+test	UNKNOWN STEP	2025-12-30T10:38:36.6645855Z npm error
+test	UNKNOWN STEP	2025-12-30T10:38:36.6646173Z npm error Options:
+test	UNKNOWN STEP	2025-12-30T10:38:36.6646943Z npm error [--install-strategy <hoisted|nested|shallow|linked>] [--legacy-bundling]
+test	UNKNOWN STEP	2025-12-30T10:38:36.6648049Z npm error [--global-style] [--omit <dev|optional|peer> [--omit <dev|optional|peer> ...]]
+test	UNKNOWN STEP	2025-12-30T10:38:36.6649148Z npm error [--include <prod|dev|optional|peer> [--include <prod|dev|optional|peer> ...]]
+test	UNKNOWN STEP	2025-12-30T10:38:36.6650337Z npm error [--strict-peer-deps] [--foreground-scripts] [--ignore-scripts] [--no-audit]
+test	UNKNOWN STEP	2025-12-30T10:38:36.6651275Z npm error [--no-bin-links] [--no-fund] [--dry-run]
+test	UNKNOWN STEP	2025-12-30T10:38:36.6652138Z npm error [-w|--workspace <workspace-name> [-w|--workspace <workspace-name> ...]]
+test	UNKNOWN STEP	2025-12-30T10:38:36.6653130Z npm error [-ws|--workspaces] [--include-workspace-root] [--install-links]
+test	UNKNOWN STEP	2025-12-30T10:38:36.6653710Z npm error
+test	UNKNOWN STEP	2025-12-30T10:38:36.6654369Z npm error aliases: clean-install, ic, install-clean, isntall-clean
+test	UNKNOWN STEP	2025-12-30T10:38:36.6655265Z npm error
+test	UNKNOWN STEP	2025-12-30T10:38:36.6655700Z npm error Run "npm help ci" for more info
+test	UNKNOWN STEP	2025-12-30T10:38:36.6656816Z npm error A complete log of this run can be found in: /home/runner/.npm/_logs/2025-12-30T10_38_35_183Z-debug-0.log
+test	UNKNOWN STEP	2025-12-30T10:38:47.1316551Z ##[warning]Attempt 1 failed. Reason: Child_process exited with error code 1
+test	UNKNOWN STEP	2025-12-30T10:38:47.1330555Z ##[endgroup]
+test	UNKNOWN STEP	2025-12-30T10:38:47.1331075Z ##[group]Attempt 2
+test	UNKNOWN STEP	2025-12-30T10:38:48.0341440Z npm warn EBADENGINE Unsupported engine {
+test	UNKNOWN STEP	2025-12-30T10:38:48.0342231Z npm warn EBADENGINE   package: '@capacitor/cli@8.0.0',
+test	UNKNOWN STEP	2025-12-30T10:38:48.0405648Z npm warn EBADENGINE   required: { node: '>=22.0.0' },
+test	UNKNOWN STEP	2025-12-30T10:38:48.0406525Z npm warn EBADENGINE   current: { node: 'v20.19.6', npm: '10.8.2' }
+test	UNKNOWN STEP	2025-12-30T10:38:48.0408323Z npm warn EBADENGINE }
+test	UNKNOWN STEP	2025-12-30T10:38:48.0409206Z npm warn EBADENGINE Unsupported engine {
+test	UNKNOWN STEP	2025-12-30T10:38:48.0410045Z npm warn EBADENGINE   package: 'camera-controls@3.1.2',
+test	UNKNOWN STEP	2025-12-30T10:38:48.0410958Z npm warn EBADENGINE   required: { node: '>=22.0.0', npm: '>=10.5.1' },
+test	UNKNOWN STEP	2025-12-30T10:38:48.0411853Z npm warn EBADENGINE   current: { node: 'v20.19.6', npm: '10.8.2' }
+test	UNKNOWN STEP	2025-12-30T10:38:48.0412468Z npm warn EBADENGINE }
+test	UNKNOWN STEP	2025-12-30T10:38:48.0615857Z npm error code EUSAGE
+test	UNKNOWN STEP	2025-12-30T10:38:48.0623431Z npm error
+test	UNKNOWN STEP	2025-12-30T10:38:48.0629130Z npm error `npm ci` can only install packages when your package.json and package-lock.json or npm-shrinkwrap.json are in sync. Please update your lock file with `npm install` before continuing.
+test	UNKNOWN STEP	2025-12-30T10:38:48.0635924Z npm error
+test	UNKNOWN STEP	2025-12-30T10:38:48.0640623Z npm error Missing: magicast@0.3.5 from lock file
+test	UNKNOWN STEP	2025-12-30T10:38:48.0644138Z npm error
+test	UNKNOWN STEP	2025-12-30T10:38:48.0646612Z npm error Clean install a project
+test	UNKNOWN STEP	2025-12-30T10:38:48.0648805Z npm error
+test	UNKNOWN STEP	2025-12-30T10:38:48.0650169Z npm error Usage:
+test	UNKNOWN STEP	2025-12-30T10:38:48.0650678Z npm error npm ci
+test	UNKNOWN STEP	2025-12-30T10:38:48.0651750Z npm error
+test	UNKNOWN STEP	2025-12-30T10:38:48.0652176Z npm error Options:
+test	UNKNOWN STEP	2025-12-30T10:38:48.0652909Z npm error [--install-strategy <hoisted|nested|shallow|linked>] [--legacy-bundling]
+test	UNKNOWN STEP	2025-12-30T10:38:48.0654034Z npm error [--global-style] [--omit <dev|optional|peer> [--omit <dev|optional|peer> ...]]
+test	UNKNOWN STEP	2025-12-30T10:38:48.0655949Z npm error [--include <prod|dev|optional|peer> [--include <prod|dev|optional|peer> ...]]
+test	UNKNOWN STEP	2025-12-30T10:38:48.0656965Z npm error [--strict-peer-deps] [--foreground-scripts] [--ignore-scripts] [--no-audit]
+test	UNKNOWN STEP	2025-12-30T10:38:48.0657734Z npm error [--no-bin-links] [--no-fund] [--dry-run]
+test	UNKNOWN STEP	2025-12-30T10:38:48.0658524Z npm error [-w|--workspace <workspace-name> [-w|--workspace <workspace-name> ...]]
+test	UNKNOWN STEP	2025-12-30T10:38:48.0659413Z npm error [-ws|--workspaces] [--include-workspace-root] [--install-links]
+test	UNKNOWN STEP	2025-12-30T10:38:48.0665283Z npm error
+test	UNKNOWN STEP	2025-12-30T10:38:48.0665934Z npm error aliases: clean-install, ic, install-clean, isntall-clean
+test	UNKNOWN STEP	2025-12-30T10:38:48.0666508Z npm error
+test	UNKNOWN STEP	2025-12-30T10:38:48.0666951Z npm error Run "npm help ci" for more info
+test	UNKNOWN STEP	2025-12-30T10:38:48.0668350Z npm error A complete log of this run can be found in: /home/runner/.npm/_logs/2025-12-30T10_38_47_193Z-debug-0.log
+test	UNKNOWN STEP	2025-12-30T10:38:58.1452348Z ##[warning]Attempt 2 failed. Reason: Child_process exited with error code 1
+test	UNKNOWN STEP	2025-12-30T10:38:58.1454924Z ##[endgroup]
+test	UNKNOWN STEP	2025-12-30T10:38:58.1455475Z ##[group]Attempt 3
+test	UNKNOWN STEP	2025-12-30T10:38:59.0541055Z npm warn EBADENGINE Unsupported engine {
+test	UNKNOWN STEP	2025-12-30T10:38:59.0541868Z npm warn EBADENGINE   package: '@capacitor/cli@8.0.0',
+test	UNKNOWN STEP	2025-12-30T10:38:59.0542627Z npm warn EBADENGINE   required: { node: '>=22.0.0' },
+test	UNKNOWN STEP	2025-12-30T10:38:59.0543455Z npm warn EBADENGINE   current: { node: 'v20.19.6', npm: '10.8.2' }
+test	UNKNOWN STEP	2025-12-30T10:38:59.0544082Z npm warn EBADENGINE }
+test	UNKNOWN STEP	2025-12-30T10:38:59.0568734Z npm warn EBADENGINE Unsupported engine {
+test	UNKNOWN STEP	2025-12-30T10:38:59.0605525Z npm warn EBADENGINE   package: 'camera-controls@3.1.2',
+test	UNKNOWN STEP	2025-12-30T10:38:59.0606759Z npm warn EBADENGINE   required: { node: '>=22.0.0', npm: '>=10.5.1' },
+test	UNKNOWN STEP	2025-12-30T10:38:59.0607796Z npm warn EBADENGINE   current: { node: 'v20.19.6', npm: '10.8.2' }
+test	UNKNOWN STEP	2025-12-30T10:38:59.0608573Z npm warn EBADENGINE }
+test	UNKNOWN STEP	2025-12-30T10:38:59.0766147Z npm error code EUSAGE
+test	UNKNOWN STEP	2025-12-30T10:38:59.0769273Z npm error
+test	UNKNOWN STEP	2025-12-30T10:38:59.0772030Z npm error `npm ci` can only install packages when your package.json and package-lock.json or npm-shrinkwrap.json are in sync. Please update your lock file with `npm install` before continuing.
+test	UNKNOWN STEP	2025-12-30T10:38:59.0774709Z npm error
+test	UNKNOWN STEP	2025-12-30T10:38:59.0776474Z npm error Missing: magicast@0.3.5 from lock file
+test	UNKNOWN STEP	2025-12-30T10:38:59.0778208Z npm error
+test	UNKNOWN STEP	2025-12-30T10:38:59.0779799Z npm error Clean install a project
+test	UNKNOWN STEP	2025-12-30T10:38:59.0781458Z npm error
+test	UNKNOWN STEP	2025-12-30T10:38:59.0782998Z npm error Usage:
+test	UNKNOWN STEP	2025-12-30T10:38:59.0785565Z npm error npm ci
+test	UNKNOWN STEP	2025-12-30T10:38:59.0785908Z npm error
+test	UNKNOWN STEP	2025-12-30T10:38:59.0786233Z npm error Options:
+test	UNKNOWN STEP	2025-12-30T10:38:59.0787258Z npm error [--install-strategy <hoisted|nested|shallow|linked>] [--legacy-bundling]
+test	UNKNOWN STEP	2025-12-30T10:38:59.0789137Z npm error [--global-style] [--omit <dev|optional|peer> [--omit <dev|optional|peer> ...]]
+test	UNKNOWN STEP	2025-12-30T10:38:59.0790177Z npm error [--include <prod|dev|optional|peer> [--include <prod|dev|optional|peer> ...]]
+test	UNKNOWN STEP	2025-12-30T10:38:59.0791060Z npm error [--strict-peer-deps] [--foreground-scripts] [--ignore-scripts] [--no-audit]
+test	UNKNOWN STEP	2025-12-30T10:38:59.0791791Z npm error [--no-bin-links] [--no-fund] [--dry-run]
+test	UNKNOWN STEP	2025-12-30T10:38:59.0792553Z npm error [-w|--workspace <workspace-name> [-w|--workspace <workspace-name> ...]]
+test	UNKNOWN STEP	2025-12-30T10:38:59.0793350Z npm error [-ws|--workspaces] [--include-workspace-root] [--install-links]
+test	UNKNOWN STEP	2025-12-30T10:38:59.0794028Z npm error
+test	UNKNOWN STEP	2025-12-30T10:38:59.0794720Z npm error aliases: clean-install, ic, install-clean, isntall-clean
+test	UNKNOWN STEP	2025-12-30T10:38:59.0795219Z npm error
+test	UNKNOWN STEP	2025-12-30T10:38:59.0795576Z npm error Run "npm help ci" for more info
+test	UNKNOWN STEP	2025-12-30T10:38:59.0805734Z npm error A complete log of this run can be found in: /home/runner/.npm/_logs/2025-12-30T10_38_58_207Z-debug-0.log
+test	UNKNOWN STEP	2025-12-30T10:39:09.1575016Z ##[endgroup]
+test	UNKNOWN STEP	2025-12-30T10:39:09.1585261Z ##[error]Final attempt failed. Child_process exited with error code 1
+test	UNKNOWN STEP	2025-12-30T10:39:09.1698930Z Post job cleanup.
+test	UNKNOWN STEP	2025-12-30T10:39:09.2651059Z [command]/usr/bin/git version
+test	UNKNOWN STEP	2025-12-30T10:39:09.2692441Z git version 2.52.0
+test	UNKNOWN STEP	2025-12-30T10:39:09.2739393Z Temporarily overriding HOME='/home/runner/work/_temp/e241c937-7632-4db0-93e0-04974d43fd3e' before making global git config changes
+test	UNKNOWN STEP	2025-12-30T10:39:09.2742175Z Adding repository directory to the temporary git global config as a safe directory
+test	UNKNOWN STEP	2025-12-30T10:39:09.2746828Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/IronForge/IronForge
+test	UNKNOWN STEP	2025-12-30T10:39:09.2792063Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+test	UNKNOWN STEP	2025-12-30T10:39:09.2828661Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+test	UNKNOWN STEP	2025-12-30T10:39:09.3068612Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+test	UNKNOWN STEP	2025-12-30T10:39:09.3091618Z http.https://github.com/.extraheader
+test	UNKNOWN STEP	2025-12-30T10:39:09.3105939Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+test	UNKNOWN STEP	2025-12-30T10:39:09.3139340Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+test	UNKNOWN STEP	2025-12-30T10:39:09.3371040Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+test	UNKNOWN STEP	2025-12-30T10:39:09.3404144Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+test	UNKNOWN STEP	2025-12-30T10:39:09.3807641Z Cleaning up orphan processes

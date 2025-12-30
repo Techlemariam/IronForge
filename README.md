@@ -1,52 +1,60 @@
+# ⚔️ IronForge RPG: The Titan Engine
 
-# IronForge: The Titan Engine
+**IronForge RPG** is an AI-augmented strength training platform that transforms your fitness journey into a grand strategy RPG. Train, battle raid bosses, and ascend through the ranks.
 
-IronForge is a gamified fitness application that turns your home gym workouts into an RPG. It integrates with Intervals.icu for cardio metrics, uses computer vision for rep counting, and features an AI-driven coaching system.
+![Banner](/public/logo-rpg.png)
 
-## Features
+## 🚀 Key Features
 
-*   **Dynamic Quest Log:** Daily workouts synced from Intervals.icu.
-*   **Ultrathink Engine:** AI-driven recovery analysis (TTB - Total Training Balance).
-*   **Titan Vision:** Camera-based rep counting and depth detection.
-*   **RPG Progression:** Skill trees, equipment armory, and ranks.
-*   **Guild Hall:** Real-time multiplayer raid bosses.
+*   **🧠 The Oracle AI**: Adaptive training intelligence (Gemini 2.5 Flash) that analyzes recovery, sleep, and performance to generate tailored programs.
+*   **⚔️ Boss Battles & PvP**: Join factions, battle raid bosses, and compete in PvP seasons where physical effort deals real digital damage.
+*   **📊 Cross-Domain Integration**: Unified fitness data from **Hevy** (Strength) and **Intervals.icu** (Physiology/Cardio).
+*   **🏆 RPG Progression**: Deep skill trees, equipment armory, and ranks that reflect your real-world progress.
+*   **🌌 Titan Vision**: Computer vision-based rep counting and form detection (MediaPipe).
 
-## Tech Stack
+## 🛠️ Tech Stack
 
-*   **Frontend:** React, Vite, TypeScript, Tailwind CSS, Three.js (R3F)
-*   **Backend:** Node.js, Express (Proxy Server)
-*   **AI:** Google Gemini 2.5 Flash
-*   **Vision:** MediaPipe Tasks
-*   **Database:** IndexedDB (Local), Supabase (Cloud Sync)
+*   **Framework**: [Next.js 15 (App Router)](https://nextjs.org/)
+*   **Database**: PostgreSQL via [Prisma](https://www.prisma.io/) & [Supabase](https://supabase.com/)
+*   **AI**: Google Gemini 2.5 Flash
+*   **Styling**: Tailwind CSS & shadcn/ui
+*   **Verification**: Vitest (Unit/Integration) & Playwright (E2E)
+*   **Deployment**: Vercel & GitHub Actions
 
-## Setup
+## 💻 Local Setup
 
-1.  **Install Dependencies:**
+1.  **Clone & Install**:
     ```bash
     npm install
     ```
 
-2.  **Environment Variables:**
-    Create a `.env` file in the root directory:
+2.  **Environment Setup**:
+    Create a `.env` file based on [.env.example](.env.example):
     ```env
-    INTERVALS_API_KEY=your_key_here
-    INTERVALS_ATHLETE_ID=your_id_here
-    API_KEY=your_google_gemini_key_here
-    HEVY_API_KEY=your_hevy_api_token_here
+    DATABASE_URL="your-postgres-url"
+    DIRECT_URL="your-direct-url"
+    INTERVALS_API_KEY="your-key"
+    INTERVALS_ATHLETE_ID="your-id"
+    HEVY_API_KEY="your-token"
     ```
 
-3.  **Run Application:**
-    This command starts both the Backend Proxy (Port 3001) and Frontend (Port 5173).
+3.  **Database Migration**:
     ```bash
-    npm start
+    npx prisma migrate dev
     ```
 
-4.  **Access:**
-    Open [http://localhost:5173](http://localhost:5173) in your browser.
+4.  **Launch**:
+    ```bash
+    npm run dev
+    ```
 
-## Deployment
+## 🚢 Deployment
 
-Build the frontend for production:
-```bash
-npm run build
-```
+IronForge RPG is optimized for **Vercel**. Every push to `main` is automatically verified and deployed.
+
+- **Production**: [ironforge-rpg.vercel.app](https://ironforge-rpg.vercel.app)
+- **CI/CD**: Managed via GitHub Actions (`agent-verify.yml` and `deploy.yml`).
+
+## 📜 License
+
+Private Repo - &copy; 2025 IronForge RPG.

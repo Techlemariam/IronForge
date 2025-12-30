@@ -1,0 +1,35 @@
+
+[1m[46m RUN [49m[22m [36mv4.0.16 [39m[90mC:/Users/alexa/Workspaces/IronForge[39m
+
+ [31mÔØ»[39m src/features/training/__tests__/TvMode.test.tsx [2m([22m[2m4 tests[22m[2m | [22m[31m4 failed[39m[2m)[22m[32m 60[2mms[22m[39m
+[31m     [31m├ù[31m renders the connection/setup screen initially if disconnected[39m[32m 38[2mms[22m[39m
+[31m     [31m├ù[31m renders the main HUD when sensors are connected[39m[32m 4[2mms[22m[39m
+[31m     [31m├ù[31m displays Titan dialogue correctly[39m[32m 4[2mms[22m[39m
+[31m     [31m├ù[31m shows guild contribution stats[39m[32m 12[2mms[22m[39m
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ» Failed Tests 4 ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»
+
+ FAIL  src/features/training/__tests__/TvMode.test.tsx > TvMode Integration > renders the connection/setup screen initially if disconnected
+ FAIL  src/features/training/__tests__/TvMode.test.tsx > TvMode Integration > renders the main HUD when sensors are connected
+ FAIL  src/features/training/__tests__/TvMode.test.tsx > TvMode Integration > displays Titan dialogue correctly
+ FAIL  src/features/training/__tests__/TvMode.test.tsx > TvMode Integration > shows guild contribution stats
+Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+ ÔØ» createFiberFromTypeAndProps node_modules/react-dom/cjs/react-dom-client.development.js:5021:28
+ ÔØ» createFiberFromElement node_modules/react-dom/cjs/react-dom-client.development.js:5035:14
+ ÔØ» reconcileChildFibersImpl node_modules/react-dom/cjs/react-dom-client.development.js:6920:31
+ ÔØ» node_modules/react-dom/cjs/react-dom-client.development.js:7098:33
+ ÔØ» reconcileChildren node_modules/react-dom/cjs/react-dom-client.development.js:9702:13
+ ÔØ» beginWork node_modules/react-dom/cjs/react-dom-client.development.js:11899:15
+ ÔØ» runWithFiberInDEV node_modules/react-dom/cjs/react-dom-client.development.js:874:13
+ ÔØ» performUnitOfWork node_modules/react-dom/cjs/react-dom-client.development.js:17641:22
+ ÔØ» workLoopSync node_modules/react-dom/cjs/react-dom-client.development.js:17469:41
+ ÔØ» renderRootSync node_modules/react-dom/cjs/react-dom-client.development.js:17450:11
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[1/4]ÔÄ»
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m4 failed[39m[22m[90m (4)[39m
+[2m   Start at [22m 00:55:27
+[2m   Duration [22m 4.91s[2m (transform 428ms, setup 0ms, import 2.20s, tests 60ms, environment 2.15s)[22m
+

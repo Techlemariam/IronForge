@@ -1,8 +1,8 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.ironforge.app',
-  appName: 'IronForge',
+  appId: 'com.ironforge.rpg',
+  appName: 'IronForge RPG',
   webDir: 'public',
   server: {
     // START: Development configuration

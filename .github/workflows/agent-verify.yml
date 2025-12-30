@@ -27,7 +27,7 @@ jobs:
         with:
           timeout_minutes: 10
           max_attempts: 3
-          command: npm ci
+          command: npm install
       - run: npx prisma generate
       - run: npm run lint
 
@@ -44,7 +44,7 @@ jobs:
         with:
           timeout_minutes: 10
           max_attempts: 3
-          command: npm ci
+          command: npm install
       - run: npx prisma generate
       - run: npm run test:coverage
 
@@ -61,7 +61,7 @@ jobs:
         with:
           timeout_minutes: 10
           max_attempts: 3
-          command: npm ci
+          command: npm install
       - run: npm audit --audit-level=high
 
   build:
@@ -85,7 +85,7 @@ jobs:
         with:
           timeout_minutes: 10
           max_attempts: 3
-          command: npm ci
+          command: npm install
       - run: npx prisma generate
       - run: npm run build
 
@@ -102,7 +102,7 @@ jobs:
         with:
           timeout_minutes: 10
           max_attempts: 3
-          command: npm ci
+          command: npm install
       - run: npx prisma generate
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps

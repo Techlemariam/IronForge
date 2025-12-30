@@ -1,0 +1,31 @@
+
+> ironforge-rpg@1.0.0 build
+> next build
+
+   Ôû▓ Next.js 15.1.0
+   - Environments: .env.local, .env
+
+   Creating an optimized production build ...
+ Ô£ô (serwist) Bundling the service worker script with the URL '/sw.js' and the scope '/'...
+ Ô£ô Compiled successfully
+   Linting and checking validity of types ...
+
+./src/app/welcome/page.tsx
+16:29  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/features/guild/GuildHall.tsx
+20:8  Warning: React Hook useEffect has a missing dependency: 'loadGuild'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
+Failed to compile.
+
+./src/app/(authenticated)/page.tsx:174:9
+Type error: Block-scoped variable 'titanState' used before its declaration.
+
+  172 |         activePath,
+  173 |         undefined, // weeklyMastery (not calculated yet at this line in page.tsx, wait logic flow check)
+> 174 |         titanState
+      |         ^
+  175 |     );
+  176 |
+  177 |     const todaysLoad = titanAnalysis ? titanAnalysis.titanLoad : 0;
