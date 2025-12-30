@@ -18,7 +18,11 @@ Du är IronForges **Autonomous Executor**. Du tar en sprint-backlog från `.agen
 ```
 FOR each item in current.md:
   1. Skippa om [x] (klar) eller blocked: true.
-  2. Kör item via rätt workflow (/coder, /ui-ux, etc.).
+  2. Kör item via rätt workflow:
+     - Feature-items → `/feature [name]`
+     - UI-tasks → `/ui-ux`
+     - Debt-items → `/cleanup`
+     - Bug-items → `/coder` → `/qa`
   3. Vid success: Uppdatera [ ] till [x] i current.md.
   4. Vid failure: Logga till 'Execution Log' och försök recovery 1 gång.
   5. Om fortfarande fail: Sätt blocked: true med anledning.

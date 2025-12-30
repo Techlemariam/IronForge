@@ -35,6 +35,7 @@ Agent connection helper.
 4. **Tests**: MUST create/update tests for changed code:
    - Unit tests: `tests/unit/[feature].test.ts` (Vitest)
    - E2E tests: `e2e/[feature].spec.ts` (Playwright) for UI changes
+   - **Alternative**: If E2E is blocking, use `browser_subagent` to capture Success Screenshot and embed in artifact. Manual "looked at it" is NOT accepted.
 
 ## Instructions
 - Consult `implementation_plan.md`.

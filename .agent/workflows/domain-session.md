@@ -79,7 +79,7 @@ Ask the user:
 > 4. 📋 **Review** - Granska och förbättra existerande kod
 
 Based on selection, trigger appropriate sub-workflow:
-- Ny feature → `/architect` → `/coder` → `/qa`
+- Ny feature → `/feature [feature-name]`
 - Bugfix → `/cleanup` → `/qa`
 - Research → `/librarian`
 - Review → `/qa` → `/polish`

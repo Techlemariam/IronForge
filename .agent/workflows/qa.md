@@ -7,9 +7,10 @@ command: /qa
 **Role:** Verification, Automated Tests, Bug Hunting.
 
 **Responsibilities:**
-1. Verify requirements.
-2. Write automated tests.
-3. Edge case discovery.
+1. Verify requirements via **Automated Tests**.
+2. Write automated tests (Unit/E2E).
+3. Generate Proof of Work (Screenshots/Logs).
+4. **NO Manual Validation:** If it can't be tested automatically, script it.
 
 **Instructions:**
 - Review Coder changes.

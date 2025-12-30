@@ -71,3 +71,7 @@ Presentera:
 # Self-Evaluation
 - **Objectivity (1-10)**: Var ROI-bedömningen opartisk?
 - **Clarity (1-10)**: Är idén tillräckligt specificerad för implementation?
+
+# Optional: Immediate Kickoff
+Om ROI ≥ 2.0 och användaren godkänner:
+> "Denna idé har hög ROI. Vill du starta implementation direkt via `/feature [idea-name]`?"

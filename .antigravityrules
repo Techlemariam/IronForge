@@ -57,3 +57,12 @@ Innan kod genereras ska följande verifieras:
 3. **Schema:** Om datastrukturer ändras, verifiera mot `prisma/schema.prisma`.
 4. **Debt:** Logga eventuella workarounds i `DEBT.md` för framtida cleanup.
 
+# 🚫 Zero Manual Validation Protocol
+Inga ändringar får märkas som "Completed" utan automatiserat bevis.
+- **Backend/Logic:** Kräver gröna Unit Tests (Vitest).
+- **UI/Feature:** Kräver gröna E2E Tests (Playwright) ELLER Screenshot bevis från `browser_subagent`.
+- **Infrastructure:** Kräver verifierad build och successful health check.
+- **Deployment:** Kräver automatiserad smoke test.
+
+Manuell verifiering accepteras **INTE** som definition of done.
+
