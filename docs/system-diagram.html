@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="sv">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IronForge System Diagram</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', sans-serif;
+            color: #fff;
+        }
+
+        .header {
+            padding: 1rem 2rem;
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+        }
+
+        .controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .controls button {
+            padding: 0.5rem 1rem;
+            border: 1px solid #4a5568;
+            background: #2d3748;
+            color: #fff;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .controls button:hover {
+            background: #4a5568;
+        }
+
+        #diagram-container {
+            width: 100%;
+            height: calc(100vh - 60px);
+            overflow: hidden;
+        }
+
+        .mermaid {
+            width: 100%;
+            height: 100%;
+        }
+
+        .mermaid svg {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        .instructions {
+            position: fixed;
+            bottom: 1rem;
+            left: 1rem;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>🎮 IronForge System Interconnection</h1>
+        <div class="controls">
+            <button onclick="panZoom.zoomIn()">➕ Zoom In</button>
+            <button onclick="panZoom.zoomOut()">➖ Zoom Out</button>
+            <button onclick="panZoom.resetZoom(); panZoom.center();">🔄 Reset</button>
+            <button onclick="panZoom.fit()">📐 Fit</button>
+        </div>
+    </div>
+
+    <div id="diagram-container">
+        <div class="mermaid">
+            flowchart TD
+            subgraph External["🔗 External Sources"]
+            STRAVA[Strava]
+            HEVY[Hevy]
+            INTERVALS[Intervals.icu]
+            POLAR[Polar H10]
+            KICKR[Wahoo Kickr]
+            end
+
+            subgraph Internal["🏠 In-App Logging"]
+            MINES[Iron Mines]
+            CARDIO[Cardio Studio]
+            TVMODE[TV Mode]
+            MANUAL[Manual Entry]
+            DEMO[Demo Mode]
+            end
+
+            STRAVA --> W
+            HEVY --> W
+            INTERVALS --> WELLNESS[Wellness Data]
+            POLAR -->|BLE| TVMODE
+            KICKR -->|BLE| TVMODE
+            MINES --> W
+            CARDIO --> W
+            TVMODE --> W
+            MANUAL --> W
+            DEMO --> W
+
+            subgraph Core["🎯 Core Loop"]
+            W[Workout Logged] --> VOL[Enhanced Volume Calc]
+            VOL -->|RPE Weight| XP[XP Awarded]
+            VOL -->|SFR Tier| XP
+            W --> STREAK[Daily Streak]
+            STREAK --> MULT[XP Multiplier]
+            MULT --> XP
+            XP --> LVL[Level Up]
+            LVL --> SK[Skill Points]
+            W --> ACHIEVE[Achievements]
+            ACHIEVE --> XP
+            ACHIEVE --> TROPHY[Trophy Room]
+            W --> ANTITRAIN[Anti-Overtraining]
+            ANTITRAIN -->|XP Cap| XP
+            end
+
+            subgraph Oracle["🔮 Oracle System"]
+            WELLNESS --> DECREE[Daily Decree]
+            DECREE --> VERDICT[Oracle Verdict UI]
+            VERDICT -->|TRAIN/REST/LIGHT| TITAN[Titan State]
+            TITAN --> BUFFS[Buffs]
+            TITAN --"High Fatigue"--> DEBUFF[Fatigue Debuff]
+            TITAN --> DIALOGUE[Titan Dialogue]
+            TITAN --> AVATAR[Titan Avatar]
+            end
+
+            subgraph Training["🏋️ Training Hub"]
+            CENTER[Training Center]
+            PROGRAM[Training Programs]
+            AUTOPERIOD[Auto-Periodization]
+            CENTER --> PROGRAM
+            AUTOPERIOD --> PROGRAM
+            PROGRAM --> MINES
+            PROGRAM --> CARDIO
+            PROGRAM --> BERSERKER[Berserker Mode]
+            BERSERKER --> W
+            DECREE -.-|"Recovery Lock"| CENTER
+            DECREE --> PROGRAM
+            end
+
+            subgraph Game["⚔️ Game Systems"]
+            SK --> TREE[Skill Tree]
+            SK --> GRIMOIRE[Grimoire]
+            TREE --> COMBAT[Combat Bonuses]
+            BUFFS --> COMBAT
+            DEBUFF --> COMBAT
+            COMBAT --> BOSS[Boss Fights]
+            COMBAT --> GAUNTLET[Gauntlet Arena]
+            COMBAT --> DUNGEON[Dungeon System]
+            CARDIO -.-|"Zone 2 Unlock"| DUNGEON
+            TVMODE --> GAUNTLET[Gauntlet Arena]
+            TVMODE --> LIVECOMBAT[Live Combat]
+            LIVECOMBAT --> BOSS
+            BOSS --> LOOT[Loot Drops]
+            GAUNTLET --> LOOT
+            DUNGEON --> LOOT
+            LOOT --> GOLD[Gold]
+            GOLD --> FORGE[The Forge]
+            GOLD --> MARKET[Marketplace]
+            FORGE --> EQUIP[Equipment]
+            MARKET --> EQUIP
+            EQUIP --> COMBAT
+            end
+
+            subgraph Knowledge["📚 Reference"]
+            BESTIARY[Bestiary]
+            BOSS --> BESTIARY
+            end
+
+            subgraph World["🗺️ Navigation"]
+            CITADEL[Citadel Hub]
+            WORLDMAP[World Map]
+            PATHS[Training Paths]
+            CITADEL --> WORLDMAP
+            CITADEL --> CENTER
+            PATHS --> TREE
+            end
+
+            subgraph PvP["⚔️ PvP Systems"]
+            style PvP stroke:#f59e0b,stroke-width:2px
+            LEAGUES[Iron Leagues]
+            DUELS[Titan vs Titan]
+            PVPRANK[PvP Ranking]
+            SEGMENTS[Segment Leaderboards]
+            W --> LEAGUES
+            W --> SEGMENTS
+            LEAGUES --> PVPRANK
+            DUELS --> PVPRANK
+            PVPRANK --> TITLES[PvP Titles]
+            TITLES -->|High Warlord| TITAN
+            VOL -->|e1RM| SEGMENTS
+            end
+
+            subgraph Social["👥 Social"]
+            SOCIAL_HUB[Social Hub]
+            GOLD --> GUILD[Guild Donation]
+            GUILD_QUEST[Guild Quest] --> RAID
+            GUILD_QUEST --> SHARED[Shared Rewards]
+            BOSS --> RAID[Guild Raids]
+            TVMODE -->|Real-time| GUILDCONTRIB[Guild Contribution]
+            GUILDCONTRIB --> RAID
+            RAID --> FACTION[Faction Wars]
+            FACTION --> LEADERBOARD[Leaderboard]
+            SEGMENTS --> LEADERBOARD
+            SOCIAL_HUB --> LEADERBOARD
+            SOCIAL_HUB --> FACTION
+            SOCIAL_HUB --> REPLAY[Shareable Cards]
+            W --> REPLAY
+            end
+
+            CITADEL --> SOCIAL_HUB
+
+            subgraph Monetization["💸 Monetization"]
+            SHOP[Premium Shop]
+            COFFEE[Coach Subscription]
+            DNA[Training DNA Export]
+            end
+
+            GOLD -.- SHOP
+            W -.- COFFEE
+            DECREE -.- COFFEE
+            PROGRAM --> DNA
+            DNA --> MARKET
+        </div>
+    </div>
+
+    <div class="instructions">
+        🖱️ Scroll för zoom | Dra för pan | Knappar ovan för kontroll
+    </div>
+
+    <script>
+        let panZoom;
+
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'dark',
+            flowchart: {
+                useMaxWidth: false,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        // Wait for mermaid to render, then initialize pan-zoom
+        setTimeout(() => {
+            const svg = document.querySelector('.mermaid svg');
+            if (svg) {
+                svg.setAttribute('width', '100%');
+                svg.setAttribute('height', '100%');
+
+                panZoom = svgPanZoom(svg, {
+                    zoomEnabled: true,
+                    controlIconsEnabled: false,
+                    fit: true,
+                    center: true,
+                    minZoom: 0.5,
+                    maxZoom: 10,
+                    zoomScaleSensitivity: 0.3
+                });
+            }
+        }, 1000);
+    </script>
+</body>
+
+</html>

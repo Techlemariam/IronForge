@@ -16,8 +16,10 @@ setup('authenticate', async ({ page }) => {
 
     // Fill in credentials
     await page.getByPlaceholder('hunter@ironforge.com').fill('alexander.teklemariam@gmail.com');
-    const passwordInput = page.getByPlaceholder('••••••••');
-    await passwordInput.waitFor({ state: 'visible' });
+
+    // Use locator by type for robustness against placeholder rendering
+    const passwordInput = page.locator('input[type="password"]');
+    await passwordInput.waitFor({ state: 'visible', timeout: 5000 });
     await passwordInput.fill('IronForge2025!');
 
     // Click Login

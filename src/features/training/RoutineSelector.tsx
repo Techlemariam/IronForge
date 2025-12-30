@@ -1,19 +1,27 @@
-
-import React, { useEffect, useState } from 'react';
-import { getHevyRoutinesAction } from '../../actions/hevy';
-import { HevyRoutine } from '../../types/hevy';
-import { LoadingSpinner } from '../../components/ui/LoadingSpinner';
-import { motion, AnimatePresence } from 'framer-motion';
-import ForgeCard from '../../components/ui/ForgeCard'; // <-- INTEGRATED
-import ForgeButton from '../../components/ui/ForgeButton'; // <-- INTEGRATED
+import React, { useEffect, useState } from "react";
+import {
+  getHevyRoutinesAction,
+  importHevyRoutineToTemplateAction,
+} from "../../actions/hevy";
+import { HevyRoutine } from "../../types/hevy";
+import { LoadingSpinner } from "../../components/ui/LoadingSpinner";
+import { motion, AnimatePresence } from "framer-motion";
+import ForgeCard from "../../components/ui/ForgeCard"; // <-- INTEGRATED
+import ForgeButton from "../../components/ui/ForgeButton"; // <-- INTEGRATED
 
 // --- Mission Briefing Modal ---
-const MissionBriefing: React.FC<{ routine: HevyRoutine; exerciseNameMap: Map<string, string>; onInitiate: (routine: HevyRoutine) => void; onCancel: () => void; }> = ({ routine, exerciseNameMap, onInitiate, onCancel }) => {
+const MissionBriefing: React.FC<{
+  routine: HevyRoutine;
+  exerciseNameMap: Map<string, string>;
+  onInitiate: (routine: HevyRoutine) => void;
+  onCancel: () => void;
+  mode?: "start" | "import";
+}> = ({ routine, exerciseNameMap, onInitiate, onCancel, mode = "start" }) => {
   return (
     <motion.div
-      initial={{ opacity: 0, backdropFilter: 'blur(0px)' }}
-      animate={{ opacity: 1, backdropFilter: 'blur(8px)' }}
-      exit={{ opacity: 0, backdropFilter: 'blur(0px)' }}
+      initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
+      animate={{ opacity: 1, backdropFilter: "blur(8px)" }}
+      exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
       className="fixed inset-0 bg-black/50 z-40 flex items-center justify-center p-4"
       onClick={onCancel}
     >
@@ -25,17 +33,28 @@ const MissionBriefing: React.FC<{ routine: HevyRoutine; exerciseNameMap: Map<str
         onClick={(e: React.MouseEvent) => e.stopPropagation()}
       >
         <ForgeCard className="shadow-2xl border-magma/50">
-          <h2 className="font-heading text-2xl text-magma tracking-widest uppercase mb-2">Mission Briefing</h2>
-          <p className="font-mono text-lg text-white mb-6 border-b-2 border-forge-border pb-4">{routine.title}</p>
+          <h2 className="font-heading text-2xl text-magma tracking-widest uppercase mb-2">
+            Mission Briefing
+          </h2>
+          <p className="font-mono text-lg text-white mb-6 border-b-2 border-forge-border pb-4">
+            {routine.title}
+          </p>
 
           <div className="space-y-4">
             <div>
-              <h3 className="font-body text-sm uppercase tracking-wider text-forge-muted mb-2">Targeted Encounters</h3>
+              <h3 className="font-body text-sm uppercase tracking-wider text-forge-muted mb-2">
+                Targeted Encounters
+              </h3>
               <ul className="list-disc list-inside font-mono text-white">
                 {routine.exercises?.map((ex, index) => {
-                  const name = exerciseNameMap.get(ex.exercise_template_id) || ex.exercise_template?.title || 'Unknown Exercise';
+                  const name =
+                    exerciseNameMap.get(ex.exercise_template_id) ||
+                    ex.exercise_template?.title ||
+                    "Unknown Exercise";
                   return (
-                    <li key={`${ex.exercise_template_id || 'unknown'}-${index}`}>
+                    <li
+                      key={`${ex.exercise_template_id || "unknown"}-${index}`}
+                    >
                       {name}
                     </li>
                   );
@@ -44,8 +63,12 @@ const MissionBriefing: React.FC<{ routine: HevyRoutine; exerciseNameMap: Map<str
             </div>
             {routine.notes && (
               <div>
-                <h3 className="font-body text-sm uppercase tracking-wider text-forge-muted mb-2">Intel</h3>
-                <p className='font-mono text-sm text-white/80 italic'>&quot;{routine.notes}&quot;</p>
+                <h3 className="font-body text-sm uppercase tracking-wider text-forge-muted mb-2">
+                  Intel
+                </h3>
+                <p className="font-mono text-sm text-white/80 italic">
+                  &quot;{routine.notes}&quot;
+                </p>
               </div>
             )}
           </div>
@@ -54,33 +77,43 @@ const MissionBriefing: React.FC<{ routine: HevyRoutine; exerciseNameMap: Map<str
             <ForgeButton variant="default" onClick={onCancel}>
               Cancel
             </ForgeButton>
-            <ForgeButton variant="magma" onClick={() => onInitiate(routine)}>
-              Initiate Protocol
-            </ForgeButton>
+            {mode === "import" ? (
+              <ForgeButton variant="magma" onClick={() => onInitiate(routine)}>
+                Import Blueprint
+              </ForgeButton>
+            ) : (
+              <ForgeButton variant="magma" onClick={() => onInitiate(routine)}>
+                Initiate Protocol
+              </ForgeButton>
+            )}
           </div>
         </ForgeCard>
       </motion.div>
     </motion.div>
-  )
-}
+  );
+};
 
 // --- Main Component: The War Room ---
-const RoutineSelector: React.FC<{ exerciseNameMap: Map<string, string>; onSelectRoutine: (routine: HevyRoutine) => void; }> = ({ exerciseNameMap, onSelectRoutine }) => {
+const RoutineSelector: React.FC<{
+  exerciseNameMap: Map<string, string>;
+  onSelectRoutine: (routine: HevyRoutine) => void;
+  mode?: "start" | "import";
+}> = ({ exerciseNameMap, onSelectRoutine, mode = "start" }) => {
   const [routines, setRoutines] = useState<HevyRoutine[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [selected, setSelected] = useState<HevyRoutine | null>(null);
 
   useEffect(() => {
     const fetchRoutines = async () => {
       try {
-        const apiKey = localStorage.getItem('hevy_api_key');
-        if (!apiKey) throw new Error('API Key Missing');
+        const apiKey = localStorage.getItem("hevy_api_key");
+        if (!apiKey) throw new Error("API Key Missing");
         const data = await getHevyRoutinesAction(apiKey);
         setRoutines(data.routines || []);
       } catch (err) {
         console.error(err);
-        setError('Hevy Uplink Failed. Check API Key & Proxy.');
+        setError("Hevy Uplink Failed. Check API Key & Proxy.");
       } finally {
         setLoading(false);
       }
@@ -88,19 +121,47 @@ const RoutineSelector: React.FC<{ exerciseNameMap: Map<string, string>; onSelect
     fetchRoutines();
   }, []);
 
-  if (loading) return <div className="p-10 flex justify-center h-64 items-center"><LoadingSpinner /></div>;
-  if (error) return <ForgeCard className="text-blood text-center p-10 font-mono m-4 border-blood">{error}</ForgeCard>;
+  if (loading)
+    return (
+      <div className="p-10 flex justify-center h-64 items-center">
+        <LoadingSpinner />
+      </div>
+    );
+  if (error)
+    return (
+      <ForgeCard className="text-blood text-center p-10 font-mono m-4 border-blood">
+        {error}
+      </ForgeCard>
+    );
 
   return (
     <>
       <AnimatePresence>
-        {selected &&
+        {selected && (
           <MissionBriefing
             routine={selected}
             exerciseNameMap={exerciseNameMap}
             onCancel={() => setSelected(null)}
-            onInitiate={onSelectRoutine}
-          />}
+            onInitiate={async (r) => {
+              if (mode === "import") {
+                // Verify we want to do this here or let parent handle?
+                // The prompt said "flytta", implying the action happens.
+                // Let's assume parent passes a handler that DOES the action, OR we do it here.
+                // The current prop is `onSelectRoutine`.
+                // If I change the parent, I can pass a handler that calls the import action.
+                // BUT, `RoutineSelector` is likely used by parents.
+                // Let's simply invoke `onSelectRoutine(r)` and let the parent decide, or trigger the action here if no parent handler provided?
+                // No, `onSelectRoutine` is required.
+                // I should stick to: Parent handles the logic.
+                onSelectRoutine(r);
+                setSelected(null);
+              } else {
+                onSelectRoutine(r);
+              }
+            }}
+            mode={mode}
+          />
+        )}
       </AnimatePresence>
 
       <div className="p-4 md:p-8 animate-fade-in">
@@ -110,7 +171,8 @@ const RoutineSelector: React.FC<{ exerciseNameMap: Map<string, string>; onSelect
 
         <motion.div
           className="grid gap-4 md:grid-cols-2 lg:grid-cols-3"
-          initial="hidden" animate="visible"
+          initial="hidden"
+          animate="visible"
           variants={{
             visible: { transition: { staggerChildren: 0.05 } },
           }}
@@ -118,16 +180,17 @@ const RoutineSelector: React.FC<{ exerciseNameMap: Map<string, string>; onSelect
           {routines.map((routine) => (
             <motion.div
               key={routine.id}
-              variants={{ hidden: { y: 20, opacity: 0 }, visible: { y: 0, opacity: 1 } }}
+              variants={{
+                hidden: { y: 20, opacity: 0 },
+                visible: { y: 0, opacity: 1 },
+              }}
               className="w-full"
             >
               <button
                 className="w-full text-left"
                 onClick={() => setSelected(routine)}
               >
-                <ForgeCard
-                  className="group relative border-l-4 border-l-magma transition-all duration-300 hover:border-magma hover:shadow-glow-magma transform hover:-translate-y-1"
-                >
+                <ForgeCard className="group relative border-l-4 border-l-magma transition-all duration-300 hover:border-magma hover:shadow-glow-magma transform hover:-translate-y-1">
                   <div>
                     <h3 className="font-heading text-lg text-white group-hover:text-magma mb-2 transition-colors duration-300">
                       {routine.title}
@@ -144,8 +207,13 @@ const RoutineSelector: React.FC<{ exerciseNameMap: Map<string, string>; onSelect
 
         {routines.length === 0 && !loading && (
           <ForgeCard className="text-center p-10 font-mono text-forge-muted border-dashed mt-8">
-            <h3 className="text-lg font-heading text-white mb-2">No Missions Found</h3>
-            <p className="text-sm">The War Room is empty. Create routines in Hevy to plan your incursions.</p>
+            <h3 className="text-lg font-heading text-white mb-2">
+              No Missions Found
+            </h3>
+            <p className="text-sm">
+              The War Room is empty. Create routines in Hevy to plan your
+              incursions.
+            </p>
           </ForgeCard>
         )}
       </div>

@@ -9,8 +9,8 @@ const prisma = new PrismaClient()
 async function main() {
     console.log('Migrating Intervals keys from env to DB...')
 
-    const apiKey = process.env.VITE_INTERVALS_API_KEY || process.env.INTERVALS_API_KEY
-    const athleteId = process.env.VITE_INTERVALS_ATHLETE_ID || process.env.INTERVALS_USER_ID
+    const apiKey = process.env.INTERVALS_API_KEY || process.env.VITE_INTERVALS_API_KEY
+    const athleteId = process.env.INTERVALS_ATHLETE_ID || process.env.VITE_INTERVALS_ATHLETE_ID || process.env.INTERVALS_USER_ID
 
     if (!apiKey || !athleteId) {
         console.error('No keys found in environment variables.')

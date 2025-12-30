@@ -1,46 +1,116 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from "react";
+import { contributeGuildDamageAction } from "@/actions/guild";
 
-// Simplified for now, real implementation will connect to server actions
 interface UseGuildContributionProps {
-    power: number;
-    heartRate: number;
-    zone: number;
-    isEnabled: boolean;
+  userId?: string;
+  watts: number;
+  heartRate: number;
+  ftp: number;
+  maxHr: number;
+  isPaused: boolean;
 }
 
-interface RaidState {
-    active: boolean;
-    bossName: string;
-    totalHp: number;
-    currentHp: number;
-    mySessionDamage: number;
+export interface GuildSession {
+  totalDamage: number;
+  pendingDamage: number;
+  bossHp: number;
+  bossTotalHp: number;
+  bossName: string;
 }
 
-export const useGuildContribution = ({ power, heartRate, zone, isEnabled }: UseGuildContributionProps) => {
-    const [raidState, setRaidState] = useState<RaidState>({
-        active: true,
-        bossName: "Frost Giant",
-        totalHp: 1000000,
-        currentHp: 670000,
-        mySessionDamage: 0
-    });
+export const useGuildContribution = ({
+  userId,
+  watts,
+  heartRate,
+  ftp = 200,
+  maxHr = 190,
+  isPaused,
+}: UseGuildContributionProps) => {
+  const [stats, setStats] = useState<GuildSession>({
+    totalDamage: 0,
+    pendingDamage: 0,
+    bossHp: 0,
+    bossTotalHp: 0,
+    bossName: "Unknown",
+  });
 
-    useEffect(() => {
-        if (!isEnabled || !raidState.active) return;
+  const pendingDamageRef = useRef(0);
+  const lastSyncRef = useRef(Date.now());
 
-        const interval = setInterval(() => {
-            // Simulate damage calculation
-            const damage = Math.floor(power * 0.1) + (zone * 5);
+  // Damage Calculation Loop (1s Interval)
+  useEffect(() => {
+    if (isPaused || !userId) return;
 
-            setRaidState(prev => ({
-                ...prev,
-                currentHp: Math.max(0, prev.currentHp - damage),
-                mySessionDamage: prev.mySessionDamage + damage
+    const interval = setInterval(() => {
+      let dps = 0;
+
+      // 1. Base Damage (Active)
+      if (watts > 10 || heartRate > 90) {
+        dps += 1;
+      }
+
+      // 2. Power Bonus: +1 per 10W over 50% FTP
+      const powerThreshold = ftp * 0.5;
+      if (watts > powerThreshold) {
+        const surplus = watts - powerThreshold;
+        dps += Math.floor(surplus / 10);
+      }
+
+      // 3. Zone 5 Bonus (2x Multiplier)
+      const zone5Threshold = maxHr * 0.9;
+      if (heartRate >= zone5Threshold) {
+        dps *= 2;
+      }
+
+      if (dps > 0) {
+        pendingDamageRef.current += dps;
+        setStats((prev) => ({
+          ...prev,
+          totalDamage: prev.totalDamage + dps,
+          pendingDamage: pendingDamageRef.current,
+        }));
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [watts, heartRate, ftp, maxHr, isPaused, userId]);
+
+  // Sync Loop (30s Interval)
+  useEffect(() => {
+    if (!userId) return;
+
+    const syncInterval = setInterval(async () => {
+      const damageToSync = pendingDamageRef.current;
+
+      if (damageToSync > 0) {
+        try {
+          // Reset pending immediately to avoid double counting if request is slow
+          // (Optimistic update pattern could be better but this is safer for no-dupes)
+          // Actually, if it fails we want to retry.
+          // Let's keep it simple: sync, then subtract.
+
+          const result = await contributeGuildDamageAction(
+            userId,
+            damageToSync,
+          );
+
+          if (result.success) {
+            pendingDamageRef.current -= damageToSync;
+            setStats((prev) => ({
+              ...prev,
+              pendingDamage: pendingDamageRef.current,
+              bossHp: (result.bossHp as number) || prev.bossHp,
+              bossTotalHp: (result.bossTotalHp as number) || prev.bossTotalHp,
             }));
-        }, 1000);
+          }
+        } catch (e) {
+          console.error("Guild Sync Failed", e);
+        }
+      }
+    }, 30000);
 
-        return () => clearInterval(interval);
-    }, [power, zone, isEnabled, raidState.active]);
+    return () => clearInterval(syncInterval);
+  }, [userId]);
 
-    return { raidState };
+  return stats;
 };

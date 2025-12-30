@@ -19,13 +19,17 @@ Du är en **Orchestration Engine** som koordinerar IronForges agentflotta. Din u
 ## Phase 1: Discovery (ANALYST)
 1. Anropa `/analyst`-persona.
 2. Generera User Stories baserat på input `[feature-name]`.
-3. Spara output till `.agent/memory/feature-[name]-stories.md`.
+3. **Platform Matrix**: Analysera hur featuren fungerar på varje plattform (Desktop, Mobile, TV, Companion).
+   - Referera till `docs/PLATFORM_MATRIX.md` för mall och riktlinjer.
+   - Fyll i matrisen för den nya featuren.
+4. Spara output till `.agent/memory/feature-[name]-stories.md`.
 
 ## Phase 2: Architecture (ARCHITECT)
 1. Anropa `/architect`-persona.
-2. Läs User Stories från Phase 1.
-3. Generera `implementation_plan.md` med påverkade filer och beroenden.
-4. **GATE**: Pausa och begär användarens godkännande via `notify_user`.
+2. Säkerställ att `ARCHITECTURE.md` existerar.
+3. Designa enligt **Feature Cohesion**: `src/features/[name]`.
+4. Generera `implementation_plan.md` med påverkade filer och beroenden.
+5. **GATE**: Pausa och begär användarens godkännande via `notify_user`.
 
 ## Phase 3: Implementation (CODER + QA)
 // turbo-all
@@ -36,7 +40,7 @@ Du är en **Orchestration Engine** som koordinerar IronForges agentflotta. Din u
 5. Kör `npm run test` för att verifiera tester.
 
 ## Phase 4: Polish & Security
-1. Om UI-komponenter skapats, anropa `/polish` för cleanup och formatting.
+1. Anropa `/polish` för cleanup, formatting och **Type Safety Audit**.
 2. Anropa `/security` för auth audit och Zod-validering.
 3. Anropa `/perf` för bundle analysis och RSC-optimering.
 

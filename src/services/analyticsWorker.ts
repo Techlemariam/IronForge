@@ -1,5 +1,4 @@
-
-import { ExerciseLog, IntervalsWellness } from '../types';
+import { ExerciseLog, IntervalsWellness } from "../types";
 
 const workerCode = `
 self.onmessage = function(e) {
@@ -75,40 +74,43 @@ self.onmessage = function(e) {
 `;
 
 export const AnalyticsWorkerService = {
-    worker: null as Worker | null,
+  worker: null as Worker | null,
 
-    init() {
-        if (typeof window !== 'undefined' && !this.worker) {
-            const blob = new Blob([workerCode], { type: 'application/javascript' });
-            this.worker = new Worker(URL.createObjectURL(blob));
-        }
-    },
-
-    computeAdvancedStats(history: ExerciseLog[], wellness: IntervalsWellness): Promise<any> {
-        return new Promise((resolve, reject) => {
-            if (!this.worker) this.init();
-            
-            if (!this.worker) {
-                reject("Worker init failed");
-                return;
-            }
-
-            this.worker.onmessage = (e) => {
-                resolve(e.data);
-            };
-
-            this.worker.onerror = (e) => {
-                reject(e);
-            };
-
-            this.worker.postMessage({ history, wellness });
-        });
-    },
-
-    terminate() {
-        if (this.worker) {
-            this.worker.terminate();
-            this.worker = null;
-        }
+  init() {
+    if (typeof window !== "undefined" && !this.worker) {
+      const blob = new Blob([workerCode], { type: "application/javascript" });
+      this.worker = new Worker(URL.createObjectURL(blob));
     }
+  },
+
+  computeAdvancedStats(
+    history: ExerciseLog[],
+    wellness: IntervalsWellness,
+  ): Promise<any> {
+    return new Promise((resolve, reject) => {
+      if (!this.worker) this.init();
+
+      if (!this.worker) {
+        reject("Worker init failed");
+        return;
+      }
+
+      this.worker.onmessage = (e) => {
+        resolve(e.data);
+      };
+
+      this.worker.onerror = (e) => {
+        reject(e);
+      };
+
+      this.worker.postMessage({ history, wellness });
+    });
+  },
+
+  terminate() {
+    if (this.worker) {
+      this.worker.terminate();
+      this.worker = null;
+    }
+  },
 };

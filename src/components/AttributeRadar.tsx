@@ -1,6 +1,5 @@
-
-import React from 'react';
-import { TitanAttributes } from '../types';
+import React from "react";
+import { TitanAttributes } from "../types";
 
 interface AttributeRadarProps {
   attributes: TitanAttributes;
@@ -14,21 +13,21 @@ const AttributeRadar: React.FC<AttributeRadarProps> = ({ attributes }) => {
 
   // Order of attributes on the hexagon (Clockwise from top)
   const keys: (keyof TitanAttributes)[] = [
-    'strength',    // Top
-    'hypertrophy', // Top Right
-    'endurance',   // Bottom Right
-    'recovery',    // Bottom
-    'technique',   // Bottom Left
-    'mental'       // Top Left
+    "strength", // Top
+    "hypertrophy", // Top Right
+    "endurance", // Bottom Right
+    "recovery", // Bottom
+    "technique", // Bottom Left
+    "mental", // Top Left
   ];
 
   const labels = {
-    strength: 'Strength',
-    hypertrophy: 'Hypertrophy',
-    endurance: 'Endurance',
-    recovery: 'Recovery',
-    technique: 'Technique',
-    mental: 'Mental'
+    strength: "Strength",
+    hypertrophy: "Hypertrophy",
+    endurance: "Endurance",
+    recovery: "Recovery",
+    technique: "Technique",
+    mental: "Mental",
   };
 
   const getPoint = (value: number, index: number, max: number = maxStat) => {
@@ -40,20 +39,22 @@ const AttributeRadar: React.FC<AttributeRadarProps> = ({ attributes }) => {
   };
 
   // Create the path for the player's stats
-  const points = keys.map((key, i) => getPoint(attributes[key], i)).join(' ');
+  const points = keys.map((key, i) => getPoint(attributes[key], i)).join(" ");
 
   // Create grid lines (concentric hexagons)
   const gridLevels = [5, 10, 15, 20];
 
   return (
     <div className="relative w-full max-w-[300px] aspect-square mx-auto flex items-center justify-center">
-      <svg viewBox={`0 0 ${size} ${size}`} className="w-full h-full overflow-visible">
-        
+      <svg
+        viewBox={`0 0 ${size} ${size}`}
+        className="w-full h-full overflow-visible"
+      >
         {/* Background Grid */}
         {gridLevels.map((level) => (
           <polygon
             key={level}
-            points={keys.map((_, i) => getPoint(level, i, 20)).join(' ')}
+            points={keys.map((_, i) => getPoint(level, i, 20)).join(" ")}
             fill="none"
             stroke="#333"
             strokeWidth="1"
@@ -67,8 +68,8 @@ const AttributeRadar: React.FC<AttributeRadarProps> = ({ attributes }) => {
             key={i}
             x1={center}
             y1={center}
-            x2={getPoint(20, i, 20).split(',')[0]}
-            y2={getPoint(20, i, 20).split(',')[1]}
+            x2={getPoint(20, i, 20).split(",")[0]}
+            y2={getPoint(20, i, 20).split(",")[1]}
             stroke="#333"
             strokeWidth="1"
             className="opacity-30"
@@ -86,47 +87,47 @@ const AttributeRadar: React.FC<AttributeRadarProps> = ({ attributes }) => {
 
         {/* Dots at vertices */}
         {keys.map((key, i) => {
-            const [x, y] = getPoint(attributes[key], i).split(',');
-            return (
-                <circle 
-                    key={key} 
-                    cx={x} 
-                    cy={y} 
-                    r="3" 
-                    fill="#fff" 
-                    className="drop-shadow-md"
-                />
-            );
+          const [x, y] = getPoint(attributes[key], i).split(",");
+          return (
+            <circle
+              key={key}
+              cx={x}
+              cy={y}
+              r="3"
+              fill="#fff"
+              className="drop-shadow-md"
+            />
+          );
         })}
 
         {/* Labels */}
         {keys.map((key, i) => {
-             // Push labels out slightly further than radius
-             const angle = (Math.PI / 3) * i - Math.PI / 2;
-             const labelR = radius + 20;
-             const x = center + labelR * Math.cos(angle);
-             const y = center + labelR * Math.sin(angle);
-             
-             // Anchor adjustment based on position
-             let anchor: "start" | "middle" | "end" = 'middle';
-             if (i === 1 || i === 2) anchor = 'start';
-             if (i === 4 || i === 5) anchor = 'end';
+          // Push labels out slightly further than radius
+          const angle = (Math.PI / 3) * i - Math.PI / 2;
+          const labelR = radius + 20;
+          const x = center + labelR * Math.cos(angle);
+          const y = center + labelR * Math.sin(angle);
 
-             return (
-                 <text
-                    key={key}
-                    x={x}
-                    y={y}
-                    textAnchor={anchor}
-                    dominantBaseline="middle"
-                    fill="#9ca3af" // Zinc-400
-                    fontSize="8"
-                    fontWeight="bold"
-                    className="uppercase tracking-widest font-sans"
-                 >
-                     {labels[key]}
-                 </text>
-             );
+          // Anchor adjustment based on position
+          let anchor: "start" | "middle" | "end" = "middle";
+          if (i === 1 || i === 2) anchor = "start";
+          if (i === 4 || i === 5) anchor = "end";
+
+          return (
+            <text
+              key={key}
+              x={x}
+              y={y}
+              textAnchor={anchor}
+              dominantBaseline="middle"
+              fill="#9ca3af" // Zinc-400
+              fontSize="8"
+              fontWeight="bold"
+              className="uppercase tracking-widest font-sans"
+            >
+              {labels[key]}
+            </text>
+          );
         })}
       </svg>
     </div>

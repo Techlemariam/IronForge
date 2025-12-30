@@ -1,34 +1,40 @@
 // src/utils/hevyAdapter.ts
-import { HevyRoutine } from '../types/hevy';
-import { Exercise, WorkoutSet } from '../types/ironforge';
+import { HevyRoutine } from "../types/hevy";
+import { Exercise, WorkoutSet } from "../types/ironforge";
 
 /**
  * THE TRANSLATOR
  * Converts a Hevy Routine summary into a usable Quest, using a name map for titles.
  */
-export const mapHevyToQuest = (routine: HevyRoutine, exerciseNameMap: Map<string, string>): Exercise[] => {
+export const mapHevyToQuest = (
+  routine: HevyRoutine,
+  exerciseNameMap: Map<string, string>,
+): Exercise[] => {
   if (!routine.exercises || routine.exercises.length === 0) {
     return [];
   }
 
   return routine.exercises.map((hevyExerciseSummary, index) => {
+    const questSets: WorkoutSet[] = hevyExerciseSummary.sets.map(
+      (_, setIndex) => ({
+        id: `set-${index}-${setIndex}`,
+        targetReps: 10, // Default value
+        targetRPE: 8, // Default value
+        completed: false,
+      }),
+    );
 
-    const questSets: WorkoutSet[] = hevyExerciseSummary.sets.map((_, setIndex) => ({
-      id: `set-${index}-${setIndex}`,
-      targetReps: 10, // Default value
-      targetRPE: 8,   // Default value
-      completed: false,
-    }));
-
-    const exerciseName = exerciseNameMap.get(hevyExerciseSummary.exercise_template_id) || `ID: ${hevyExerciseSummary.exercise_template_id}`;
+    const exerciseName =
+      exerciseNameMap.get(hevyExerciseSummary.exercise_template_id) ||
+      `ID: ${hevyExerciseSummary.exercise_template_id}`;
 
     return {
       id: hevyExerciseSummary.exercise_template_id,
       hevyId: hevyExerciseSummary.exercise_template_id,
       name: exerciseName,
-      type: 'strength',
+      type: "strength",
       sets: questSets,
-      completed: false
+      completed: false,
     };
   });
 };
@@ -42,13 +48,18 @@ export const mapQuestToHevyPayload = (
   questTitle: string,
   startTime: Date,
   endTime: Date,
-  isPrivate: boolean
+  isPrivate: boolean,
 ) => {
   const hevyExercises = exercises
-    .map(ex => {
+    .map((ex) => {
       const completedSets = ex.sets
-        .filter(set => set.completed === true && set.weight !== undefined && set.completedReps !== undefined)
-        .map(set => ({
+        .filter(
+          (set) =>
+            set.completed === true &&
+            set.weight !== undefined &&
+            set.completedReps !== undefined,
+        )
+        .map((set) => ({
           type: "normal",
           weight_kg: set.weight,
           reps: set.completedReps,
@@ -76,7 +87,7 @@ export const mapQuestToHevyPayload = (
       start_time: startTime.toISOString(),
       end_time: endTime.toISOString(),
       is_private: isPrivate,
-      exercises: hevyExercises
-    }
+      exercises: hevyExercises,
+    },
   };
 };

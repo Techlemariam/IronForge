@@ -1,9 +1,14 @@
-
-export type Rarity = 'poor' | 'common' | 'uncommon' | 'rare' | 'epic' | 'legendary';
+export type Rarity =
+  | "poor"
+  | "common"
+  | "uncommon"
+  | "rare"
+  | "epic"
+  | "legendary";
 
 export enum ExerciseLogic {
-  FIXED_REPS = 'fixed_reps',
-  TM_PERCENT = '531_tm_percent',
+  FIXED_REPS = "fixed_reps",
+  TM_PERCENT = "531_tm_percent",
 }
 
 export interface WorkoutSet {
@@ -28,4 +33,3 @@ export interface Exercise {
   trainingMax?: number;
   notes?: string;
 }
-

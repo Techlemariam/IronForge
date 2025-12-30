@@ -1,401 +1,442 @@
-
 // Re-exports from sibling type files
-export type { AuditReport } from './auditor';
-export type { TrainingPath, WeeklyMastery } from './training';
+export type { AuditReport } from "./auditor";
+export type { TrainingPath, WeeklyMastery } from "./training";
 
 // Local imports for internal use
-import type { AuditReport } from './auditor';
-import type { TrainingPath, WeeklyMastery } from './training';
+import type { AuditReport } from "./auditor";
+import type { TrainingPath, WeeklyMastery } from "./training";
 
 export enum BlockType {
-    WARMUP = 'warmup',
-    STATION = 'station',
-    TRANSITION = 'transition',
-    COOLDOWN = 'cooldown',
+  WARMUP = "warmup",
+  STATION = "station",
+  TRANSITION = "transition",
+  COOLDOWN = "cooldown",
 }
 
 export enum ExerciseLogic {
-    FIXED_REPS = 'fixed_reps',
-    TM_PERCENT = '531_tm_percent',
+  FIXED_REPS = "fixed_reps",
+  TM_PERCENT = "531_tm_percent",
 }
 
-export type Rarity = 'poor' | 'common' | 'uncommon' | 'rare' | 'epic' | 'legendary';
+export type Rarity =
+  | "poor"
+  | "common"
+  | "uncommon"
+  | "rare"
+  | "epic"
+  | "legendary";
 
 export enum SubscriptionTier {
-    FREE = 'FREE',
-    PRO = 'PRO',
-    LIFETIME = 'LIFETIME'
+  FREE = "FREE",
+  PRO = "PRO",
+  LIFETIME = "LIFETIME",
 }
 
 export interface User {
-    id: string;
-    email: string;
-    subscriptionTier: SubscriptionTier;
-    subscriptionStatus?: string;
-    subscriptionExpiry?: Date;
-    // Add other fields as they become necessary for frontend
+  id: string;
+  email: string;
+  subscriptionTier: SubscriptionTier;
+  subscriptionStatus?: string;
+  subscriptionExpiry?: Date;
+  // Add other fields as they become necessary for frontend
 }
 
 export interface Set {
-    id: string;
-    reps: number | string; // Target: string for "AMRAP"
-    completedReps?: number; // Actual performed reps
-    weightPct?: number; // For TM logic
-    weight?: number; // Resolved weight
-    completed: boolean;
-    isPrZone?: boolean;
-    rarity?: Rarity; // Visual style
-    e1rm?: number; // Calculated estimated 1RM for this set performance
-    rpe?: number; // Rate of Perceived Exertion
-    type?: string;
+  id: string;
+  reps: number | string; // Target: string for "AMRAP"
+  completedReps?: number; // Actual performed reps
+  weightPct?: number; // For TM logic
+  weight?: number; // Resolved weight
+  completed: boolean;
+  isPrZone?: boolean;
+  isPr?: boolean; // Added for tracking PRs in session
+  rarity?: Rarity; // Visual style
+  e1rm?: number; // Calculated estimated 1RM for this set performance
+  rpe?: number; // Rate of Perceived Exertion
+  type?: string;
 }
 
 export interface Exercise {
-    id: string;
-    name: string;
-    hevyId?: string; // Integration ID
-    logic: ExerciseLogic;
-    trainingMax?: number; // Default TM for calc
-    sets: Set[];
-    notes?: string;
-    instructions?: string[];
-    demoUrl?: string;
-    lootTable?: string[]; // Flavor text for rewards
+  id: string;
+  name: string;
+  hevyId?: string; // Integration ID
+  logic: ExerciseLogic;
+  trainingMax?: number; // Default TM for calc
+  sets: Set[];
+  notes?: string;
+  instructions?: string[];
+  demoUrl?: string;
+  lootTable?: string[]; // Flavor text for rewards
 }
 
 export interface Block {
-    id: string;
-    name: string;
-    type: BlockType;
-    exercises?: Exercise[]; // For Station/Warmup
-    setupInstructions?: string[]; // For Transition
-    targetSetupName?: string; // For Transition
-    estimatedDurationSec?: number;
+  id: string;
+  name: string;
+  type: BlockType;
+  exercises?: Exercise[]; // For Station/Warmup
+  setupInstructions?: string[]; // For Transition
+  targetSetupName?: string; // For Transition
+  estimatedDurationSec?: number;
 }
 
-export type QuestDifficulty = 'Normal' | 'Heroic' | 'Mythic';
+export type QuestDifficulty = "Normal" | "Heroic" | "Mythic";
 
 export interface Session {
-    id: string;
-    name: string; // "Quest Name"
-    zoneName?: string; // e.g., "The Iron Mines"
-    difficulty?: QuestDifficulty;
-    levelReq?: number;
-    blocks: Block[];
-    isGenerated?: boolean; // Flag for dynamic quests
-    isCustom?: boolean; // Flag for user-created dungeons
+  id: string;
+  name: string; // "Quest Name"
+  zoneName?: string; // e.g., "The Iron Mines"
+  difficulty?: QuestDifficulty;
+  levelReq?: number;
+  blocks: Block[];
+  isGenerated?: boolean; // Flag for dynamic quests
+  isCustom?: boolean; // Flag for user-created dungeons
 }
 
 // --- EQUIPMENT / ARMORY ---
-export type EquipmentCategory = 'Barbell' | 'Weights' | 'Machine' | 'Cardio' | 'Accessory' | 'Rack';
+export type EquipmentCategory =
+  | "Barbell"
+  | "Weights"
+  | "Machine"
+  | "Cardio"
+  | "Accessory"
+  | "Rack";
 
 export interface Equipment {
-    id: string;
-    name: string;
-    category: EquipmentCategory;
-    isOwned: boolean;
+  id: string;
+  name: string;
+  category: EquipmentCategory;
+  isOwned: boolean;
 }
 
 // --- GUILDS & RAIDS ---
 export interface Guild {
-    id: string;
-    name: string;
-    memberCount: number;
-    activeRaid?: RaidBoss;
+  id: string;
+  name: string;
+  memberCount: number;
+  activeRaid?: RaidBoss;
 }
 
 export interface RaidBoss {
-    id: string;
-    name: string;
-    totalHp: number;
-    currentHp: number;
-    image: string;
-    description: string;
-    rewards: string[];
+  id: string;
+  name: string;
+  totalHp: number;
+  currentHp: number;
+  image: string;
+  description: string;
+  rewards: string[];
 }
 
 export interface ChatMessage {
-    id: string;
-    userName: string;
-    message: string;
-    timestamp: string;
-    type: 'CHAT' | 'LOG';
+  id: string;
+  userName: string;
+  message: string;
+  timestamp: string;
+  type: "CHAT" | "LOG";
 }
 
 // --- SKILLS & TALENTS ---
 export enum SkillStatus {
-    LOCKED = 'LOCKED',
-    UNLOCKED = 'UNLOCKED',
-    MASTERED = 'MASTERED'
+  LOCKED = "LOCKED",
+  UNLOCKED = "UNLOCKED",
+  MASTERED = "MASTERED",
 }
 
 export type SkillCategory =
-    // Legacy categories (deprecated, kept for backward compatibility)
-    | 'push'
-    | 'pull'
-    | 'legs'
-    | 'core'
-    // New Path-aligned categories
-    | 'strength'      // Juggernaut alignment (merged push + legs)
-    | 'hypertrophy'   // Titan alignment
-    | 'endurance'     // Engine alignment
-    | 'hybrid'        // Warden alignment
-    | 'utility';      // Renamed from 'core' (all paths)
+  // Legacy categories (deprecated, kept for backward compatibility)
+  | "push"
+  | "pull"
+  | "legs"
+  | "core"
+  // New Path-aligned categories
+  | "strength" // Juggernaut alignment (merged push + legs)
+  | "hypertrophy" // Titan alignment
+  | "endurance" // Engine alignment
+  | "hybrid" // Warden alignment
+  | "utility"; // Renamed from 'core' (all paths)
 
 export interface SkillRequirement {
-    type: 'achievement_count' | 'vo2max_value' | '1rm_weight' | 'rep_count';
-    exercise_id: string; // 'any' or specific ID
-    value: number;
-    comparison: 'gte' | 'lte';
+  type: "achievement_count" | "vo2max_value" | "1rm_weight" | "rep_count";
+  exercise_id: string; // 'any' or specific ID
+  value: number;
+  comparison: "gte" | "lte";
 }
 
 export interface SkillNode {
-    id: string;
-    title: string;
-    description: string;
-    category: SkillCategory;
-    parents: string[];
-    x: number;
-    y: number;
-    currency: 'talent_point' | 'kinetic_shard';
-    cost: number;
-    requirements: SkillRequirement[];
+  id: string;
+  title: string;
+  description: string;
+  category: SkillCategory;
+  parents: string[];
+  x: number;
+  y: number;
+  currency: "talent_point" | "kinetic_shard";
+  cost: number;
+  requirements: SkillRequirement[];
 }
 
 // --- ACHIEVEMENTS ---
-export type AchievementCategory = 'general' | 'dungeons' | 'professions' | 'cardio' | 'feats';
+export type AchievementCategory =
+  | "general"
+  | "dungeons"
+  | "professions"
+  | "cardio"
+  | "feats";
 
 export interface Achievement {
-    id: string;
-    title: string;
-    description: string;
-    category: AchievementCategory;
-    points: number;
+  id: string;
+  title: string;
+  description: string;
+  category: AchievementCategory;
+  points: number;
 }
 
 export interface TitanRank {
-    id: number;
-    name: string;
-    minTp: number;
-    minKs: number;
-    gateDescription?: string;
+  id: number;
+  name: string;
+  minTp: number;
+  minKs: number;
+  gateDescription?: string;
 }
 
 // --- ANALYTICS & LOGGING ---
 export interface ExerciseLog {
-    id?: number;
-    date: string; // ISO
-    exerciseId: string;
-    e1rm: number;
-    rpe: number;
-    isEpic?: boolean;
+  id?: number;
+  date: string; // ISO
+  exerciseId: string;
+  e1rm: number;
+  rpe: number;
+  isEpic?: boolean;
 }
 
 export interface MeditationLog {
-    id?: number;
-    date: string;
-    durationMinutes: number;
-    source: 'Headspace' | 'Calm' | 'Other';
+  id?: number;
+  date: string;
+  durationMinutes: number;
+  source: "Headspace" | "Calm" | "Other";
 }
 
 export interface IntervalsWellness {
-    id?: string;
-    bodyBattery?: number;
-    sleepScore?: number;
-    hrv?: number;
-    restingHR?: number;
-    vo2max?: number;
-    ctl?: number;
-    atl?: number;
-    tsb?: number;
-    sleepSecs?: number;
-    ramp_rate?: number;
+  id?: string;
+  bodyBattery?: number;
+  sleepScore?: number;
+  hrv?: number;
+  restingHR?: number;
+  vo2max?: number;
+  ctl?: number;
+  atl?: number;
+  tsb?: number;
+  sleepSecs?: number;
+  ramp_rate?: number;
 }
 
 export interface IntervalsActivity {
-    id?: string;
-    icu_intensity?: number;
-    moving_time: number;
-    zone_times?: number[]; // Time in seconds for each zone (Z1-Z7)
+  id?: string;
+  icu_intensity?: number;
+  moving_time: number;
+  zone_times?: number[]; // Time in seconds for each zone (Z1-Z7)
 }
 
 export interface AthleteSettings {
-    id: string;
-    name: string;
-    timezone: string;
-    resting_hr?: number;
-    max_hr?: number;
-    lthr?: number;
-    ftp?: number;
-    run_ftp?: number;
-    heart_rate_zones?: { min: number; max: number; name?: string }[];
-    power_zones?: any[];
+  id: string;
+  name: string;
+  timezone: string;
+  resting_hr?: number;
+  max_hr?: number;
+  lthr?: number;
+  ftp?: number;
+  run_ftp?: number;
+  heart_rate_zones?: { min: number; max: number; name?: string }[];
+  power_zones?: any[];
 }
 
 export interface IntervalsEvent {
-    id: number;
-    start_date_local: string;
-    name: string;
-    description?: string;
-    category: 'RACE' | 'WORKOUT' | 'NOTE';
-    type?: string; // e.g. "Run", "Ride"
+  id: number;
+  start_date_local: string;
+  name: string;
+  description?: string;
+  category: "RACE" | "WORKOUT" | "NOTE";
+  type?: string; // e.g. "Run", "Ride"
 }
 
 export interface AppSettings {
-    intervalsApiKey: string;
-    intervalsAthleteId: string;
-    hevyApiKey?: string;
-    supabaseUrl?: string;
-    supabaseKey?: string;
-    valhallaId?: string;
-    heroName?: string;
-    hueBridgeIp?: string;
-    hueUsername?: string;
-    prioritizeHyperPro?: boolean;
+  intervalsApiKey: string;
+  intervalsAthleteId: string;
+  hevyApiKey?: string;
+  supabaseUrl?: string;
+  supabaseKey?: string;
+  valhallaId?: string;
+  heroName?: string;
+  hueBridgeIp?: string;
+  hueUsername?: string;
+  prioritizeHyperPro?: boolean;
 }
 
 export interface TitanAttributes {
-    strength: number;
-    endurance: number;
-    technique: number;
-    recovery: number;
-    mental: number;
-    hypertrophy: number;
+  strength: number;
+  endurance: number;
+  technique: number;
+  recovery: number;
+  mental: number;
+  hypertrophy: number;
 }
 
 export interface WeaknessAudit {
-    detected: boolean;
-    type: 'NONE' | 'AEROBIC_INTERFERENCE' | 'RECOVERY_DEBT';
-    message: string;
-    confidence: number;
-    correlationData?: { metric: string, trend: 'UP' | 'DOWN' };
+  detected: boolean;
+  type: "NONE" | "AEROBIC_INTERFERENCE" | "RECOVERY_DEBT";
+  message: string;
+  confidence: number;
+  correlationData?: { metric: string; trend: "UP" | "DOWN" };
 }
 
 export interface TSBForecast {
-    dayOffset: number;
-    tsb: number;
-    label: string;
+  dayOffset: number;
+  tsb: number;
+  label: string;
 }
 
 export interface TTBIndices {
-    strength: number;
-    endurance: number;
-    wellness: number;
-    lowest: 'strength' | 'endurance' | 'wellness';
+  strength: number;
+  endurance: number;
+  wellness: number;
+  lowest: "strength" | "endurance" | "wellness";
 }
 
 export interface TitanLoadCalculation {
-    standardTss: number;
-    titanLoad: number;
-    discrepancy: number;
-    advice: string;
+  standardTss: number;
+  titanLoad: number;
+  discrepancy: number;
+  advice: string;
 }
 
 export interface OracleRecommendation {
-    type: 'RECOVERY' | 'PR_ATTEMPT' | 'CARDIO_VALIDATION' | 'GRIND' | 'TAPER' | 'COMPETITION_PREP';
-    title: string;
-    rationale: string;
-    priorityScore: number;
-    generatedSession?: Session;
-    sessionId?: string;
-    targetExercise?: string;
+  type:
+    | "RECOVERY"
+    | "PR_ATTEMPT"
+    | "CARDIO_VALIDATION"
+    | "GRIND"
+    | "TAPER"
+    | "COMPETITION_PREP";
+  title: string;
+  rationale: string;
+  priorityScore: number;
+  generatedSession?: Session;
+  sessionId?: string;
+  targetExercise?: string;
 }
 
 /**
  * Full weekly plan containing recommendations for each day
  */
 export interface WeeklyPlan {
-    id: string;
-    weekStart: string; // ISO date (Monday)
-    days: DayPlan[];
-    createdAt: string;
+  id: string;
+  weekStart: string; // ISO date (Monday)
+  days: DayPlan[];
+  createdAt: string;
 }
 
 export interface DayPlan {
-    dayOfWeek: number; // 0 = Monday, 6 = Sunday
-    date: string; // ISO date
-    recommendation: OracleRecommendation;
-    isRestDay: boolean;
+  dayOfWeek: number; // 0 = Monday, 6 = Sunday
+  date: string; // ISO date
+  recommendation: OracleRecommendation;
+  isRestDay: boolean;
 }
 
 /**
  * Context for generating a weekly plan
  */
 export interface PlanContext {
-    wellness: IntervalsWellness;
-    ttb: TTBIndices;
-    auditReport?: AuditReport | null;
-    activePath: TrainingPath;
-    weeklyMastery?: WeeklyMastery;
-    inAppLogs?: InAppWorkoutLog[];
+  wellness: IntervalsWellness;
+  ttb: TTBIndices;
+  auditReport?: AuditReport | null;
+  activePath: TrainingPath;
+  weeklyMastery?: WeeklyMastery;
+  inAppLogs?: InAppWorkoutLog[];
 }
 
 export interface InAppWorkoutLog {
-    id: string;
-    date: string;
-    type: 'STRENGTH' | 'CARDIO';
-    durationMin: number;
-    setsCompleted?: number;
-    tssEstimate?: number;
+  id: string;
+  date: string;
+  type: "STRENGTH" | "CARDIO";
+  durationMin: number;
+  setsCompleted?: number;
+  tssEstimate?: number;
 }
 
 export interface ValhallaPayload {
-    heroName: string;
-    level: number;
-    achievements: string[];
-    skills: string[];
-    historyCount: number;
-    lastSync: string;
+  heroName: string;
+  level: number;
+  achievements: string[];
+  skills: string[];
+  historyCount: number;
+  lastSync: string;
 }
 
 export interface ValhallaSyncResult {
-    success: boolean;
-    message: string;
-    timestamp: string;
+  success: boolean;
+  message: string;
+  timestamp: string;
 }
 
 // --- BESTIARY ---
-export type MonsterType = 'Giant' | 'Beast' | 'Undead' | 'Elemental' | 'Construct' | 'Dragon';
+export type MonsterType =
+  | "Giant"
+  | "Beast"
+  | "Undead"
+  | "Elemental"
+  | "Construct"
+  | "Dragon";
 
-export type MonsterElement = 'Physical' | 'Fire' | 'Ice' | 'Lightning' | 'Earth' | 'Shadow' | 'Holy';
+export type MonsterElement =
+  | "Physical"
+  | "Fire"
+  | "Ice"
+  | "Lightning"
+  | "Earth"
+  | "Shadow"
+  | "Holy";
 
-export type BossTier = 'STORY' | 'HEROIC' | 'TITAN_SLAYER';
+export type BossTier = "STORY" | "HEROIC" | "TITAN_SLAYER";
 
 export interface Monster {
-    id: string;
-    name: string;
-    type: MonsterType;
-    element?: MonsterElement; // Optional for backward compatibility
-    level: number;
-    description: string;
-    image: string; // URL or emoji/icon name
-    hp: number;
-    maxHp: number;
-    weakness: SkillCategory[];
-    associatedExerciseIds: string[];
+  id: string;
+  name: string;
+  type: MonsterType;
+  element?: MonsterElement; // Optional for backward compatibility
+  level: number;
+  description: string;
+  image: string; // URL or emoji/icon name
+  hp: number;
+  maxHp: number;
+  weakness: SkillCategory[];
+  associatedExerciseIds: string[];
 }
 
 // --- WORLD MAP ---
 export interface Zone {
-    id: string;
-    name: string;
-    description: string;
-    requiredLevel: number;
-    coordinates: { x: number, y: number }; // Percentage for placement on map
-    icon: string;
-    isDiscovered: boolean;
-    region: 'Foundry' | 'Wilderness' | 'Ethereal';
+  id: string;
+  name: string;
+  description: string;
+  requiredLevel: number;
+  coordinates: { x: number; y: number }; // Percentage for placement on map
+  icon: string;
+  isDiscovered: boolean;
+  region: "Foundry" | "Wilderness" | "Ethereal";
 }
 
 // --- GRIMOIRE ---
-export type GrimoireEntryType = 'ACHIEVEMENT' | 'PR' | 'LEVEL_UP' | 'BOSS_DEFEAT' | 'METRIC_MILESTONE';
+export type GrimoireEntryType =
+  | "ACHIEVEMENT"
+  | "PR"
+  | "LEVEL_UP"
+  | "BOSS_DEFEAT"
+  | "METRIC_MILESTONE";
 
 export interface GrimoireEntry {
-    id: string;
-    date: string;
-    type: GrimoireEntryType;
-    title: string;
-    description: string;
-    rarity: Rarity;
-    metadata?: Record<string, any>;
+  id: string;
+  date: string;
+  type: GrimoireEntryType;
+  title: string;
+  description: string;
+  rarity: Rarity;
+  metadata?: Record<string, any>;
 }

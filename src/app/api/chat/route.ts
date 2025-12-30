@@ -1,18 +1,18 @@
-import { createGoogleGenerativeAI } from '@ai-sdk/google';
-import { streamText } from 'ai';
+import { createGoogleGenerativeAI } from "@ai-sdk/google";
+import { streamText } from "ai";
 
 // Configure Google Provider with existing project API Key
 const google = createGoogleGenerativeAI({
-    apiKey: process.env.API_KEY,
+  apiKey: process.env.API_KEY,
 });
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
 
 export async function POST(req: Request) {
-    const { messages, context } = await req.json();
+  const { messages, context } = await req.json();
 
-    const systemPrompt = `
+  const systemPrompt = `
     You are **The Iron Oracle**, an ancient and wise AI construct within the **IronForge** ecosystem.
     Your purpose is to guide the "Titan" (User) towards physical mastery through the "Metric System" (Training).
     
@@ -35,11 +35,11 @@ export async function POST(req: Request) {
     Respond directly to the Titan's latest query.
   `;
 
-    const result = streamText({
-        model: google('gemini-2.5-flash') as any,
-        system: systemPrompt,
-        messages,
-    });
+  const result = streamText({
+    model: google("gemini-2.5-flash") as any,
+    system: systemPrompt,
+    messages,
+  });
 
-    return result.toTextStreamResponse();
+  return result.toTextStreamResponse();
 }

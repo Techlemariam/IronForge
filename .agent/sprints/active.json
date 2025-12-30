@@ -1,14 +1,20 @@
 {
-  "sprintId": "sprint-12",
-  "startTime": "2025-12-26T22:35:00Z",
+  "sprintId": "sprint-16",
+  "startTime": "2025-12-29T21:05:00Z",
   "status": "active",
   "currentItem": {
-    "title": "E2E Critical Path Test",
-    "agent": "qa",
-    "status": "blocked",
-    "reason": "Cypress verification failure"
+    "title": "Activating Sprint 16",
+    "agent": "manager",
+    "status": "in-progress"
   },
   "queue": [
-    "Weekly Challenges System"
+    "Build Performance Optimization",
+    "Health Check Endpoint",
+    "Structured Logging (Pino)",
+    "Refactor: useMiningSession hook",
+    "Fix Analytics Dashboard Logic",
+    "Type Safety Pass",
+    "Dedicated Settings Page",
+    "Loading Skeletons"
   ]
 }

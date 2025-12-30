@@ -31,7 +31,15 @@ For each modified file:
   - Convert default → named where appropriate
 ```
 
-### 4. Dead Code Detection
+### 4. Type Safety Audit
+```
+1. Scan for explicit `: any`:
+   grep -r ": any" src/
+2. Check for Zod schema usage in Server Actions.
+3. If critical `any` found -> Create DEBT.md item.
+```
+
+### 5. Dead Code Detection
 ```
 Scan for:
   - Unused exports (no importers)

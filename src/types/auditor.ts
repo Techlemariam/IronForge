@@ -11,17 +11,17 @@
 export interface MuscleGroupVolume {
   muscleGroup: string;
   weeklyVolume: number; // Total sets in rolling 7-day window
-  lastUpdated: string;  // ISO timestamp
+  lastUpdated: string; // ISO timestamp
 }
 
 /**
  * Mike Israetel Renaissance Periodization standards
  */
 export interface RPVolumeStandards {
-  MV: number;   // Maintenance Volume
-  MEV: number;  // Minimum Effective Volume
+  MV: number; // Maintenance Volume
+  MEV: number; // Minimum Effective Volume
   MAV: [number, number]; // Maximum Adaptive Volume (range)
-  MRV: number;  // Maximum Recoverable Volume
+  MRV: number; // Maximum Recoverable Volume
 }
 
 /**
@@ -31,7 +31,7 @@ export enum WeaknessLevel {
   NONE = "none",
   UNDERTRAINED = "undertrained",
   ATROPHY_RISK = "atrophy",
-  OVERREACHED = "overreached"
+  OVERREACHED = "overreached",
 }
 
 /**

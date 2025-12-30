@@ -4,8 +4,6 @@ generator client {
 
 datasource db {
   provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
 }
 
 model User {
@@ -38,6 +36,12 @@ model User {
   powerZonesRun      Json?
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
+  
+  // Login Streak & Notifications
+  lastLoginDate       DateTime?
+  loginStreak         Int      @default(0)
+  longestLoginStreak  Int      @default(0)
+  notificationPreferences Json?
 
   // Training Path System
   activePath        String? @default("HYBRID_WARDEN") // TrainingPath enum
@@ -74,6 +78,7 @@ model User {
   following  Follow[] @relation("UserFollowing")
   guildId    String?
   guild      Guild?   @relation(fields: [guildId], references: [id])
+  ledGuild   Guild?   @relation("GuildLeader")
   guildContributions GuildRaidContribution[]
 
   // Gamification
@@ -82,6 +87,83 @@ model User {
   workoutTemplates WorkoutTemplate[]
   bodyMetrics      BodyMetric[]
   createdPrograms  TrainingProgram[] @relation("ProgramCreator")
+
+  // The Living Titan
+  titan            Titan?
+  pushSubscriptions PushSubscription[]
+
+  // Duels
+  challengesSent     DuelChallenge[] @relation("DuelChallenger")
+  challengesReceived DuelChallenge[] @relation("DuelDefender")
+  duelsWon           DuelChallenge[] @relation("DuelWinner")
+  userBattlePasses   UserBattlePass[]
+  oracleMessages     OracleMessage[]
+  skillPresets       SkillPreset[]
+}
+
+model Titan {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  name        String   @default("Unnamed Titan")
+  
+  // Core Stats
+  level       Int      @default(1)
+  xp          Int      @default(0)
+  currentHp   Int      @default(100)
+  maxHp       Int      @default(100)
+  currentEnergy Int     @default(100)
+  maxEnergy     Int     @default(100)
+  
+  // Combat Stats (RPG)
+  strength    Int      @default(10)
+  vitality    Int      @default(10)
+  endurance   Int      @default(10)
+  agility     Int      @default(10)
+  willpower   Int      @default(10)
+  
+  // Living Attributes (2045 Manifesto)
+  mood        String   @default("NEUTRAL") // NEUTRAL, HAPPY, ANGRY, WEAKENED, FOCUSED
+  dailyDecree Json?                        // Stores today's OracleDecree
+  streak      Int      @default(0)
+  
+  // Bio-Buff System
+  currentBuff   Json?    // Stores active BioBuff object
+  buffExpiresAt DateTime?
+  hrvBaseline   Float?   // Rolling 7-day average
+  
+  // Status Effects
+  isInjured   Boolean  @default(false)
+  isResting   Boolean  @default(false)
+  
+  lastActive  DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user        User     @relation(fields: [userId], references: [id])
+  memories    TitanMemory[]
+  scars       TitanScar[]
+}
+
+model TitanMemory {
+  id          String   @id @default(cuid())
+  titanId     String
+  type        String   // VICTORY, DEFEAT, DISCOVERY
+  description String
+  importance  Int      @default(1) // 1-10 impact on personality
+  occurredAt  DateTime @default(now())
+  
+  titan       Titan    @relation(fields: [titanId], references: [id])
+}
+
+model TitanScar {
+  id          String   @id @default(cuid())
+  titanId     String
+  location    String   // e.g. "Left Shoulder"
+  source      String   // e.g. "Battle with Frost Giant"
+  isVisible   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  
+  titan       Titan    @relation(fields: [titanId], references: [id])
 }
 
 model Follow {
@@ -155,6 +237,8 @@ model ExerciseLog {
   date             DateTime @default(now())
   sets             Json     // [{reps, weight, rpe, restSec, isWarmup}]
   notes            String?
+  weight           Float?   // Legacy/Dashboard compatibility
+  reps             Int?     // Legacy/Dashboard compatibility
   isPersonalRecord Boolean  @default(false)
   user             User     @relation(fields: [userId], references: [id])
   exercise         Exercise @relation(fields: [exerciseId], references: [id])
@@ -233,7 +317,8 @@ model UnlockedMonster {
 model UserSkill {
   userId  String
   skillId String
-  status  String @default("UNLOCKED")
+  status     String  @default("LOCKED")
+  unlocked   Boolean @default(false)
   user    User   @relation(fields: [userId], references: [id])
 
   @@id([userId, skillId])
@@ -348,6 +433,13 @@ model PvpProfile {
   season            Int      @default(1)
   updatedAt         DateTime @updatedAt
   user              User     @relation(fields: [userId], references: [id])
+
+  // Duel Stats
+  duelElo           Int      @default(1200)
+  duelsWon          Int      @default(0)
+  duelsLost         Int      @default(0)
+  weeklyDuels       Int      @default(0)
+  lastDuelReset     DateTime @default(now())
 }
 
 model BattleLog {
@@ -419,7 +511,13 @@ model GauntletRun {
 model Guild {
   id          String   @id @default(cuid())
   name        String   @unique
+  tag         String   @unique
   description String?
+  leaderId    String   @unique // One leader per guild
+  leader      User     @relation("GuildLeader", fields: [leaderId], references: [id])
+  isPublic    Boolean  @default(true)
+  minLevel    Int      @default(1)
+  xp          Int      @default(0)
   level       Int      @default(1)
   createdAt   DateTime @default(now())
 
@@ -495,4 +593,130 @@ model ProgramWorkout {
   workoutData Json
 
   week      ProgramWeek @relation(fields: [weekId], references: [id])
+}
+
+model PushSubscription {
+  id        String   @id @default(cuid())
+  userId    String
+  endpoint  String   @unique
+  keys      Json     // { p256dh: string, auth: string }
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model DuelChallenge {
+  id              String   @id @default(cuid())
+  challengerId    String
+  defenderId      String
+  status          String   @default("PENDING") // PENDING, ACTIVE, COMPLETED, DECLINED, EXPIRED
+  startDate       DateTime?
+  endDate         DateTime?
+  challengerScore Int      @default(0)
+  defenderScore   Int      @default(0)
+  winnerId        String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  // Cardio Duel Fields
+  duelType        String?  @default("TITAN_VS_TITAN") // TITAN_VS_TITAN, DISTANCE_RACE, SPEED_DEMON, ELEVATION_GRIND
+  activityType    String?  // CYCLING, RUNNING
+  durationMinutes Int?     // 5, 10, 15, 30
+  targetDistance  Float?   // km (for speed demon)
+  wkgTier         Float?   // 2.0, 2.5, 3.0, 3.5
+  challengerDistance Float? @default(0)
+  defenderDistance   Float? @default(0)
+  
+  challenger      User     @relation("DuelChallenger", fields: [challengerId], references: [id])
+  defender        User     @relation("DuelDefender", fields: [defenderId], references: [id])
+  winner          User?    @relation("DuelWinner", fields: [winnerId], references: [id])
+
+  @@index([challengerId])
+  @@index([defenderId])
+  @@index([status])
+}
+
+model BattlePassSeason {
+  id          String   @id @default(cuid())
+  name        String   // e.g. "Season 1: Genesis"
+  code        String   @unique // "SEASON_1"
+  startDate   DateTime
+  endDate     DateTime
+  isActive    Boolean  @default(false)
+  
+  tiers       BattlePassTier[]
+  userProgress UserBattlePass[]
+}
+
+model BattlePassTier {
+  id          String   @id @default(cuid())
+  seasonId    String
+  tierLevel   Int      // 1 to 50
+  requiredXp  Int      // Total XP required to reach this tier from 0
+  
+  // Rewards
+  freeRewardId     String? // Reference to Item or Currency enum/json
+  premiumRewardId  String?
+  freeRewardData   Json?   // { type: "GOLD", amount: 500 } or { type: "ITEM", itemId: "..." }
+  premiumRewardData Json?
+  
+  season      BattlePassSeason @relation(fields: [seasonId], references: [id])
+  
+  @@unique([seasonId, tierLevel])
+}
+
+model UserBattlePass {
+  id          String   @id @default(cuid())
+  userId      String
+  seasonId    String
+  
+  hasPremium  Boolean  @default(false)
+  seasonXp    Int      @default(0)
+  currentTier Int      @default(0) // 0 means no tiers completed yet
+  
+  claims      UserBattlePassClaim[]
+  
+  user        User             @relation(fields: [userId], references: [id])
+  season      BattlePassSeason @relation(fields: [seasonId], references: [id])
+  
+  @@unique([userId, seasonId])
+}
+
+model UserBattlePassClaim {
+  id                String   @id @default(cuid())
+  userBattlePassId  String
+  tierLevel         Int
+  isPremium         Boolean  // True if claiming the premium reward
+  claimedAt         DateTime @default(now())
+  
+  battlePass        UserBattlePass @relation(fields: [userBattlePassId], references: [id])
+  
+  @@unique([userBattlePassId, tierLevel, isPremium])
+}
+
+model OracleMessage {
+  id        String   @id @default(cuid())
+  userId    String
+  role      String   // "user" or "agent"
+  content   String
+  timestamp DateTime @default(now())
+  
+  user      User     @relation(fields: [userId], references: [id])
+  
+  @@index([userId, timestamp])
+}
+
+model SkillPreset {
+  id          String   @id @default(cuid())
+  userId      String
+  name        String
+  description String?
+  skillIds    String[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user        User     @relation(fields: [userId], references: [id])
+
+  @@index([userId])
 }

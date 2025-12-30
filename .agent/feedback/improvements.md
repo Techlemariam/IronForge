@@ -1,6 +1,6 @@
 # 🧬 Evolution Report
-**Analysis Period**: 2025-12-23 to 2025-12-26
-**Generated**: 2025-12-26 22:17
+**Analysis Period**: 2025-12-26 to 2025-12-28
+**Generated**: 2025-12-28 15:26
 
 ---
 
@@ -8,11 +8,13 @@
 
 | Metric | Value | Trend |
 |:-------|:------|:------|
-| Total Agent Executions | ~80 | ↑ +5 |
-| Success Rate | ~96% | ↑ +1% |
-| First-Try Success | ~82% | ↑ +2% |
-| Tech Debt Items | 0 open | ✅ All resolved |
-| Test Coverage (Actions) | 55% | ↑ from 41% |
+| Total Agent Executions | ~100 | ↑ +20 |
+| Success Rate | ~97% | ↑ +1% |
+| First-Try Success | ~85% | ↑ +3% |
+| Tech Debt Items | 1 open | ⚠️ +1 new |
+| Test Coverage (Actions) | 47% | ↓ from 55% |
+| Shipped Features | 32 | ↑ +8 |
+| Workflow Count | 29 | ↑ +4 |
 
 ---
 
@@ -22,16 +24,16 @@
 
 | Error Type | Frequency | Root Cause | Workflow |
 |:-----------|:----------|:-----------|:---------|
-| Mock type mismatch | 2 | Incorrect Prisma return types | `/qa` |
-| Environment variable access | 2 | Server/Client boundary | `/coder` |
-| Async test timing | 1 | `getByText` vs `findByText` | `/qa` |
+| E2E auth timing | 3 | Parallel test isolation | `/qa` |
+| Prisma relation loading | 2 | Missing `include` | `/coder` |
+| Server action env access | 1 | Module-level access | `/coder` |
 
 ### Prompt Effectiveness
 
 | Workflow | Issue | Suggestion |
 |:---------|:------|:-----------|
-| `/qa` | Server actions need lazy env access | ✅ Fixed in strava.ts |
-| `/coder` | Should verify env access patterns | Add to workflow |
+| `/coder` | Prisma relations need explicit includes | Add to workflow checklist |
+| `/qa` | E2E tests need auth isolation | ✅ Fixed with setup file |
 
 ---
 
@@ -39,10 +41,10 @@
 
 | Observation | Proposed Action | Priority |
 |:------------|:----------------|:---------|
-| `evolve.md` is 4710 chars (~1200 tokens) | Consider splitting Strategic Council | Low |
-| `/performance-coach` unused | Monitor; domain expertise valuable | Keep |
-| Duplicate leaderboard implementations | Consolidate components | Medium |
-| 9 actions lack tests | Prioritize `intervals.ts`, `guild.ts` | High |
+| 16 actions lack tests | Batch test generation sprint | High |
+| `/evolve` is 6129 bytes | Consider splitting Strategic Council | Low |
+| New workflows added (+4) | Update agent handbook | Medium |
+| SessionRunner rename pending | Quick rename task | Low |
 
 ---
 
@@ -50,44 +52,62 @@
 
 | Workflow | Last Used | Recommendation |
 |:---------|:----------|:---------------|
-| `/refactor-tokens` | Merged | ✅ Already archived |
-| `/librarian` | Rarely | ✅ KEEP - Context value |
-| `/performance-coach` | Rarely | ✅ KEEP - Domain expertise |
+| `/librarian` | 2025-12-27 | ✅ KEEP - Docs value |
+| `/performance-coach` | Active | ✅ KEEP - Domain expert |
+| `/deploy` | Rarely | ✅ KEEP - Production needs |
 
 ---
 
 ## 🎯 Strategic Council Suggestions
 
 Multi-role analysis synthesized from:
-- `health-report.md` → Technical gaps
-- `ux-audit.md` → User friction
-- `DEBT.md` → Resolved (no workarounds)
-- `roadmap.md` → Current trajectory
+- `health-report.md` → 16 untested actions
+- `ux-audit.md` → Settings modal friction
+- `DEBT.md` → SessionRunner rename
+- `roadmap.md` → Bio→Combat high priority
 
-| Role | Suggestion | ROI |
-|:-----|:-----------|:----|
-| **@architect** | Refactor DashboardClient (monolithic, 50KB) | 2.5 |
-| **@ui-ux** | Consolidate Leaderboard implementations | 2.0 |
-| **@game-designer** | Add weekly challenges for retention | 2.8 |
-| **@performance-coach** | Expand zone training to running/cycling | 2.2 |
-| **@titan-coach** | Zone-based buffs (Cardio Titan passive) | 2.5 |
-| **@analyst** | Mobile PWA store listing (Play Store) | 3.0 |
-| **@qa** | E2E test for critical path (workout → combat) | 2.3 |
+| Role | Question | Suggestion | ROI |
+|:-----|:---------|:-----------|:---:|
+| **@architect** | What's fragile? | Consolidate Titan state management | 2.8 |
+| **@game-designer** | Engagement loop? | Bio→Combat Buff System (in backlog) | 5.5 |
+| **@ui-ux** | What causes friction? | Settings page is overloaded with tabs | 2.0 |
+| **@performance-coach** | Missing for athletes? | Recovery Lock Logic (in backlog) | 4.0 |
+| **@titan-coach** | Effort→power mapping? | Zone-based dungeon unlocks | 4.5 |
+| **@analyst** | Highest ROI? | Premium Currency monetization | 5.0 |
+| **@qa** | Undertested? | `challenges.ts`, `pvp.ts`, `guild-raids.ts` | 3.0 |
+| **@security** | Exposed/unvalidated? | Audit push notification tokens | 2.5 |
+| **@pre-deploy** | What could break prod? | Verify Strava OAuth refresh flow | 3.0 |
+| **@schema** | Data model aligned? | Add GuildBoss migration | 2.5 |
+| **@polish** | What needs cleanup? | SessionRunner → IronMines rename | 1.5 |
+| **@perf** | What's slow/bloated? | DashboardClient already refactored ✅ | - |
 
 ### Top 5 Strategic Suggestions
 ```
 ┌─────────────────────────────────────────────────────┐
 │ 🎯 STRATEGIC SUGGESTIONS                           │
 ├─────────────────────────────────────────────────────┤
-│ 1. Mobile App Store Listing (@analyst) - ROI: 3.0  │
-│ 2. Weekly Challenges (@game-designer) - ROI: 2.8   │
-│ 3. Zone-Based Buffs (@titan-coach) - ROI: 2.5      │
-│ 4. DashboardClient Refactor (@architect) - ROI: 2.5│
-│ 5. E2E Critical Path Test (@qa) - ROI: 2.3         │
+│ 1. Bio→Combat Buff System (@game-designer) ROI:5.5 │
+│ 2. Premium Currency (@analyst) - ROI: 5.0          │
+│ 3. Battle Pass Seasonal (@game-designer) ROI: 5.0  │
+│ 4. Dungeon Gating Zone 2 (@titan-coach) ROI: 4.5   │
+│ 5. Recovery Lock Logic (@performance-coach) ROI:4.0│
 ├─────────────────────────────────────────────────────┤
-│ Auto-applied to roadmap: YES (--auto-apply)        │
+│ Roadmap: Already contains all top suggestions ✅   │
 └─────────────────────────────────────────────────────┘
 ```
+
+---
+
+## 🔧 Token Optimization Analysis
+
+| Workflow | Token Est. | Status |
+|:---------|:-----------|:-------|
+| `evolve.md` | ~1500 | ⚠️ Consider split |
+| `security.md` | ~750 | OK |
+| `titan-coach.md` | ~700 | OK |
+| Others | <500 | ✅ Optimal |
+
+**Action**: No immediate optimization needed.
 
 ---
 
@@ -95,16 +115,16 @@ Multi-role analysis synthesized from:
 
 | Dimension | Score | Notes |
 |:----------|:-----:|:------|
-| **Analysis Depth** | 8/10 | Comprehensive cross-role analysis |
-| **Actionability** | 9/10 | Concrete, implementable suggestions |
-| **Role Coverage** | 10/10 | All roles including Titan Coach |
+| **Analysis Depth** | 9/10 | Complete module mapping |
+| **Actionability** | 9/10 | Roadmap already aligned |
+| **Role Coverage** | 10/10 | All 12 roles consulted |
 
 ---
 
-## ✅ Auto-Applied Actions (--auto-apply)
+## ✅ Session Summary
 
-1. ✅ Updated `health-report.md` with fresh metrics
-2. ✅ Updated `ux-audit.md` with shipped improvements
-3. ✅ Strategic suggestions added to roadmap
-4. ⏭️ Token optimization: Not needed (workflows under 2000 tokens)
-5. ⏭️ Archive: No candidates (all workflows active or valuable)
+1. ✅ Health dashboard updated with 2025-12-28 data
+2. ✅ Evolution report regenerated with new patterns
+3. ✅ Strategic suggestions validated against roadmap
+4. ⏭️ Token optimization: Not needed (under threshold)
+5. ⏭️ Archive: No candidates (all workflows active)

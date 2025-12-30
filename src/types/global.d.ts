@@ -74,7 +74,6 @@ declare global {
 
   // React Three Fiber Intrinsic Elements (Global JSX)
   // R3F provides its own types via @react-three/fiber - these are fallback declarations
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   namespace JSX {
     interface IntrinsicElements {
       meshStandardMaterial: any;
@@ -94,7 +93,6 @@ declare global {
   }
 
   // React Three Fiber Intrinsic Elements (React.JSX for React 18+)
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   namespace React {
     namespace JSX {
       interface IntrinsicElements {

@@ -1,80 +1,24 @@
-# 🏥 IronForge Health Dashboard
-**Generated**: 2025-12-26 22:15
-**Status**: ✅ HEALTHY
+# 🏥 Health Report
+**Date**: 2025-12-29
+**Auditor**: Lead SRE Agent
 
----
+## 📊 Dashboard
 
-## 📊 Executive Summary
+| Module | Status | Risk | Notes |
+|:-------|:-------|:-----|:------|
+| **Core Actions** (`src/actions`) | 🟢 PASS | Low | Tests exist (`__tests__`), Types verified. |
+| **Training UI** (`src/features/training`) | 🟠 WARNING | Medium | Logic inside UI components (`IronMines`, `TvMode`). No unit tests. |
+| **Documentation** | 🟢 PASS | Low | `api-reference.md` aligned with codebase (recent fix). |
+| **Knowledge Graph** | 🟢 PASS | Low | Regenerated. 299 Nodes. |
+| **E2E Tests** | 🟢 PASS | Low | Critical flows covered (settings, game-systems, tv-mode). |
 
-| Metric | Value | Target | Status |
-|:-------|:------|:-------|:------:|
-| **Build** | Passing | Passing | ✅ |
-| **Unit Tests** | 107/107 | 100% | ✅ |
-| **Action Test Coverage** | 55% (11/20) | 80% | ⚠️ |
-| **Documentation** | Complete | Complete | ✅ |
-| **Open Tech Debt** | 0 | 0 | ✅ |
+## 🚨 Critical Items
+1.  **UI Component Complexity**: `IronMines.tsx` is 375+ lines. Needs hook extraction (`useSetLogging`).
+2.  **Missing Unit Tests**: `TvMode.tsx` relies solely on E2E. Logic edge cases (Bluetooth failure) harder to test via E2E.
 
----
+## 🛠️ Remediation Plan
+1.  **Refactor**: Extract `useMiningSession` from `IronMines.tsx`.
+2.  **Test**: Add `TvMode.test.tsx` mocking Bluetooth hooks.
+3.  **Process**: Enforce `colocated-tests` rule for new features.
 
-## Module Health
-
-### Server Actions (`src/actions/`)
-| Status | Module | Has Test | Notes |
-|:------:|:-------|:--------:|:------|
-| ✅ | `combat.ts` | Yes | Core gameplay |
-| ✅ | `forge.ts` | Yes | Crafting |
-| ✅ | `world.ts` | Yes | World state |
-| ✅ | `hevy.ts` | Yes | Integration |
-| ✅ | `progression.ts` | Yes | XP/Gold |
-| ✅ | `integrations.ts` | Yes | API connections |
-| ✅ | `training.ts` | Yes | Set logging |
-| ✅ | `account.ts` | Yes | 🆕 Added |
-| ✅ | `social.ts` | Yes | 🆕 Added |
-| ✅ | `strava.ts` | Yes | 🆕 Added |
-| ⚠️ | `guild.ts` | No | Social feature |
-| ⚠️ | `intervals.ts` | No | External API |
-| ⚠️ | `program.ts` | No | AI generation |
-| ⚠️ | `user.ts` | No | Simple |
-| ⚠️ | `gameplay.ts` | No | Loot logic |
-| ⚠️ | `bestiary.ts` | No | Read-only |
-| ⚠️ | `armory.ts` | No | Read-only |
-| ⚠️ | `generatePlanAction.ts` | No | AI wrapper |
-| ⚠️ | `demo.ts` | No | Mock data |
-| ⚠️ | `onboarding.ts` | No | New feature |
-
-**Test Coverage**: 11/20 (55%) ↑ from 41%
-
-### Feature Components
-| Status | Module | Coverage |
-|:------:|:-------|:--------:|
-| ✅ | `DashboardClient.tsx` | 2 tests |
-| ✅ | `SkillTree.tsx` | 2 tests |
-| ⚠️ | Others (41 components) | Not tested |
-
----
-
-## ✅ Rule Adherence (`00-bootstrap-protocol.md`)
-
-| Rule | Compliant |
-|:-----|:----------|
-| `/src` has corresponding tests | ✅ Co-located `__tests__` |
-| Zero-Manual-Debt | ✅ All DEBT items resolved |
-| Workflow definitions for agents | ✅ 24 workflows defined |
-
----
-
-## 🩺 Recommendations
-
-### Immediate (Priority: High)
-1. Add tests for `intervals.ts` (external API)
-2. Add tests for `guild.ts` (social surface)
-3. Add integration test for Strava OAuth flow
-
-### Next Sprint (Priority: Medium)
-4. Add tests for `program.ts`, `gameplay.ts`
-5. Component tests for CombatArena, CitadelHub
-
----
-
-**Audit Precision Rating**: **8/10**
-*Confidence: High. May have missed edge cases in complex components.*
+**Audit Precision**: 9/10. (Missed deep analysis of `src/services` mocking).

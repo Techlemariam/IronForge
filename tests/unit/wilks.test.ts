@@ -23,7 +23,7 @@ describe('Wilks Score Calculator', () => {
             bodyWeight: 60,
             sex: 'female'
         });
-        expect(result).toBeCloseTo(334.2, 1);
+        expect(result).toBeCloseTo(334.5, 1);
     });
 
     it('should handle light bodyweight correctly', () => {

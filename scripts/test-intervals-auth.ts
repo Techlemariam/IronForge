@@ -2,8 +2,8 @@ import * as dotenv from 'dotenv';
 dotenv.config({ path: '.env.local' });
 dotenv.config({ path: '.env' });
 
-const API_KEY = process.env.VITE_INTERVALS_API_KEY || process.env.INTERVALS_API_KEY;
-const USER_ID = process.env.VITE_INTERVALS_ATHLETE_ID || process.env.INTERVALS_USER_ID;
+const API_KEY = process.env.INTERVALS_API_KEY || process.env.VITE_INTERVALS_API_KEY;
+const USER_ID = process.env.INTERVALS_ATHLETE_ID || process.env.VITE_INTERVALS_ATHLETE_ID || process.env.INTERVALS_USER_ID;
 
 const BASE_URL = 'https://intervals.icu/api/v1';
 

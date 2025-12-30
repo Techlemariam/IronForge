@@ -10,33 +10,29 @@ Du är IronForges **Knowledge Architect**. Du bygger och underhåller en semanti
 # Protocol
 
 ## 1. Graph Construction
-Scanna kodbasen och bygg relationer:
+// turbo
+Exekvera genereringsscriptet för att bygga om grafen:
+```bash
+npx tsx scripts/generate-knowledge-graph.ts
+```
 
-### Nodes (Entiteter)
-- **Modules**: /src/features/*, /src/components/*
-- **Services**: /src/services/*, /src/actions/*
-- **Types**: Interfaces, Types, Schemas
-- **Workflows**: .agent/workflows/*
-
-### Edges (Relationer)
-- `imports` → A importerar B
-- `calls` → A anropar funktion i B
-- `extends` → A utökar B
-- `validates` → A validerar data för B
-- `tests` → A testar B
+Detta script:
+1. Scannar `/src` efter `.ts` och `.tsx` filer.
+2. Analyserar `import` statements.
+3. Uppdaterar `.agent/memory/knowledge-graph.json`.
 
 ## 2. Output Format
-Spara till `.agent/memory/knowledge-graph.json`:
+Resultatet sparas i JSON-format:
 ```json
 {
   "nodes": [
-    { "id": "hevy-service", "type": "service", "path": "/src/services/hevy.ts" }
+    { "id": "src/services/hevy.ts", "type": "service", "path": "src/services/hevy.ts" }
   ],
   "edges": [
-    { "from": "hevy-action", "to": "hevy-service", "relation": "calls" }
+    { "from": "src/actions/hevy.ts", "to": "src/services/hevy.ts", "relation": "imports" }
   ],
   "metadata": {
-    "lastUpdated": "...",
+    "lastUpdated": "ISO_DATE",
     "nodeCount": N,
     "edgeCount": N
   }
@@ -45,30 +41,16 @@ Spara till `.agent/memory/knowledge-graph.json`:
 
 ## 3. Query Interface
 Stöd för frågor:
-- "Vad påverkas om jag ändrar X?" → Följ `imports` och `calls` edges
-- "Vilka tester täcker X?" → Följ `tests` edges
-- "Vilka moduler saknar tester?" → Nodes utan inkommande `tests` edge
+- "Vad påverkas om jag ändrar X?" → Följ `imports` edges baklänges (Who imports X?).
+- "Vilka tester täcker X?" → (Framtida implementering: analysera `spec.ts` filer).
 
 ## 4. Visualization
-Generera Mermaid-diagram för subgrafer:
+Generera Mermaid-diagram för subgrafer vid behov:
 ```mermaid
 graph TD
-  A[hevy-action] -->|calls| B[hevy-service]
-  B -->|validates| C[hevy-schema]
-  D[hevy.test] -->|tests| A
+  A[src/actions/hevy.ts] -->|imports| B[src/services/hevy.ts]
 ```
 
-## 5. Sync with Codebase
-Vid fil-ändringar:
-- Lägg till/ta bort nodes
-- Uppdatera edges
-- Flagga "stale" relationer
-
 # Use Cases
-- `/knowledge impact hevy.ts` → Visa beroenden
-- `/knowledge gaps` → Lista moduler utan tester
-- `/knowledge visualize training` → Mermaid för training-modulen
-
-# Metrics
-- **Graph Freshness**: Mål < 24h sedan senaste sync
-- **Coverage**: Mål > 90% av /src/ representerat
+- `/knowledge build` → Kör scriptet.
+- `/knowledge impact [file]` → Analysera dependencies.

@@ -1,44 +1,30 @@
-# Sprint 13: The Awakening
-**Period**: 2026-01-04 - 2026-01-11
-**Goal**: Activate "The Living Titan" ecosystem with server-side state and autonomous behaviors.
+# Next Sprint: Sprint 16 - Infrastructure Pilot & UX Polish
+**Period**: 2025-12-29 - 2026-01-05
+**Goal**: Strengthen the foundation with observability, type safety, and a premium settings experience.
 
 ## Backlog
 
 ### Priority: High
-- [ ] **Refactor: Server-Side Titan State** <!-- agent: @architect + @coder | estimate: 4h | source: strategy/manifesto -->
-  - *Migrate Titan state from localStorage to Postgres (Prisma) for persistence.*
-- [ ] **Feature: Guild Raids** <!-- agent: @game-designer + @coder | estimate: 4h | source: roadmap -->
-  - *Multi-user boss battles with shared HP pools.*
-- [ ] **Feature: Titan Heartbeat Cron** <!-- agent: @coder | estimate: 3h | source: strategy/manifesto -->
-  - *Server-side cron job for autonomous Titan events (recovery, decay).*
+- [ ] **Build Performance Optimization** <!-- agent: /infrastructure | estimate: 4h | source: roadmap:107 -->
+- [ ] **Health Check Endpoint** <!-- agent: /infrastructure | estimate: 1h | source: roadmap:112 -->
+- [ ] **Structured Logging (Pino)** <!-- agent: /infrastructure | estimate: 4h | source: roadmap:115 -->
+- [ ] **Refactor: useMiningSession hook** <!-- agent: /coder | estimate: 2h | source: health-report:20 -->
 
 ### Priority: Medium
-- [ ] **Feature: Achievement System** <!-- agent: @game-designer + @coder | estimate: 2h | source: roadmap -->
-  - *Unlockable badges and titles based on aggregate stats.*
-- [ ] **Refactor: Settings Page Migration** <!-- agent: @ui-ux | estimate: 2h | source: ux-audit -->
-  - *Convert settings modal to dedicated /settings route.*
-- [ ] **Feature: Oracle Seed (Basic)** <!-- agent: @performance-coach | estimate: 2h | source: strategy/manifesto -->
-  - *Initial reasoning engine for "Rest Day" recommendations.*
+- [ ] **Fix Analytics Dashboard Logic** <!-- agent: /coder | estimate: 3h | source: debt:42 -->
+- [ ] **Type Safety Pass (Supabase & Storage)** <!-- agent: /security | estimate: 2h | source: debt:40,41 -->
+- [ ] **Dedicated Settings Page** <!-- agent: /ui-ux | estimate: 4h | source: ux-audit:67 -->
 
 ### Priority: Low
-- [ ] **Polish: Quick Stats Persistence** <!-- agent: @ui-ux | estimate: 1h | source: ux-audit -->
-  - *Show XP/Gold in header across all views (Citadel/Combat).*
-- [ ] **Polish: Loading Skeletons** <!-- agent: @ui-ux | estimate: 1h | source: ux-audit -->
-  - *Replace spinners with skeleton loaders.*
+- [ ] **Loading Skeletons** <!-- agent: /ui-ux | estimate: 1h | source: ux-audit:73 -->
 
 ---
 
 ## Sprint Stats
 - **Total Items**: 8
-- **Estimated Hours**: 19h
-- **Debt Ratio**: 25% (State Migration + Settings)
-- **Feature Ratio**: 50% (Raids, Heartbeat, Achievements, Oracle)
-- **Polish Ratio**: 25% (Stats, Skeletons)
+- **Estimated Hours**: 21h
+- **Debt Ratio**: 37% (3/8)
 
 ## Dependencies
-- **Titan State Migration** MUST be completed before **Titan Heartbeat**.
-- **Guild Raids** requires `guild.ts` service (verified exists).
-
-## Rollover Candidates (from Sprint 12)
-- Settings Page Migration
-- Loading Skeletons
+- Requires `pino` and `pino-pretty` npm packages.
+- Verified `agent-verify.yml` exists and is parallelized.

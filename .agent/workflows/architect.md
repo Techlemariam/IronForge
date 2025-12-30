@@ -12,9 +12,14 @@ command: /architect
 3. **Feasibility**: Validate constraints.
 
 ## Protocol
-1. Read `task.md` & `ARCHITECTURE.md`.
-2. Validate Scope (Feature vs Refactor).
-3. Update `implementation_plan.md`.
+1. **Bootstrap Check**: If `ARCHITECTURE.md` is missing, STOP. Create it first defining:
+   - Tech Stack (Next.js 15, RSC).
+   - Folder Structure (Features vs Components).
+   - Data Flow (Server Actions + Zod).
+2. Read `task.md` & `ARCHITECTURE.md`.
+3. **Feature Cohesion**: Enforce `src/features/[name]` structure. Generic UI goes to `src/components`.
+4. Validate Scope (Feature vs Refactor).
+5. Update `implementation_plan.md`.
 
 ## CVP Compliance
 - Context Verification Protocol required.

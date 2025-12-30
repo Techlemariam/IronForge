@@ -45,9 +45,9 @@ describe('Volume Calculator', () => {
         const workout = createWorkout(oldDate, [{ title: 'Squat (Barbell)' }]);
 
         const volume = calculateWeeklyVolume([workout], now);
-        const legs = volume.find(v => v.muscleGroup === 'Legs');
-
-        expect(legs?.weeklyVolume).toBe(0);
+        const quads = volume.find(v => v.muscleGroup === 'Quads');
+        expect(quads).toBeDefined();
+        expect(quads?.weeklyVolume).toBe(0);
     });
 
     it('should handle zero workouts gracefully', () => {

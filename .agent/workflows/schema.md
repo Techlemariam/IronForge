@@ -16,7 +16,8 @@ description: Prisma schema migration and database change management
 ```
 1. Diff current schema vs proposed
 2. Identify: new models, removed fields, type changes
-3. Flag: data loss risks, required migrations
+3. **God Object Check**: If model > 30 fields (e.g. User), propose splitting (User + UserSettings + UserMetrics)
+4. Flag: data loss risks, required migrations
 ```
 
 ### `migrate` - Execute migration

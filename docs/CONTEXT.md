@@ -42,12 +42,36 @@
 
 ## ⚡ Server Actions
 
-| Action | File | Purpose |
-|:-------|:-----|:--------|
-| `startBossFight` | `actions/combat.ts` | Initialize combat session |
-| `performCombatAction` | `actions/combat.ts` | Process combat turn |
-| `craftItem` | `actions/inventory.ts` | Craft equipment |
-| `getInventory` | `actions/inventory.ts` | Fetch user items |
+| File | Key Functions | Purpose |
+|:-----|:--------------|:--------|
+| `account.ts` | `deleteAccountAction`, `signOutAction` | Account management |
+| `achievements.ts` | `checkAchievementsAction`, `claimAchievementAction` | Achievement system |
+| `armory.ts` | `getArmoryData` | Equipment catalog |
+| `bestiary.ts` | `getBestiaryData` | Monster catalog |
+| `challenges.ts` | `getActiveChallengesAction`, `claimChallengeRewardAction` | Weekly challenges |
+| `combat.ts` | `startBossFight`, `performCombatAction` | Turn-based combat |
+| `demo.ts` | `toggleDemoModeAction`, `getDemoModeStatus` | Demo mode |
+| `forge.ts` | `craftItem` | Crafting system |
+| `gameplay.ts` | `simulateLootDrop` | Loot generation |
+| `gauntlet.ts` | `logGauntletRunAction`, `getGauntletStatsAction` | Gauntlet arena |
+| `guild.ts` | `sendChatAction`, `getUserStatsAction` | Guild chat |
+| `guild-raids.ts` | `createGuildAction`, `contributeToRaidAction` | Guild raids |
+| `hevy.ts` | `connectHevy`, `getHevyWorkoutHistoryAction` | Hevy integration |
+| `integrations.ts` | `validateHevyApiKey` | API key validation |
+| `intervals.ts` | `connectIntervals`, `getWellnessAction` | Intervals.icu integration |
+| `notifications.ts` | `subscribeUserAction`, `sendNotificationAction` | Push notifications |
+| `onboarding.ts` | `completeOnboardingAction` | Onboarding flow |
+| `oracle.ts` | `generateDailyDecreeAction` | Oracle decrees |
+| `program.ts` | `generateProgramAction`, `saveProgramAction` | AI training plans |
+| `progression.ts` | `getProgressionAction`, `awardGoldAction` | XP/Gold/Level |
+| `pvp.ts` | `createSegmentBattleAction` | Segment battles |
+| `social.ts` | `followUser`, `getLeaderboard` | Social features |
+| `strava.ts` | `getStravaAuthUrlAction`, `disconnectStravaAction` | Strava integration |
+| `strength.ts` | `logSetAction`, `getExerciseHistoryAction` | Strength logging |
+| `titan.ts` | `getTitanAction`, `awardTitanXpAction` | Titan state |
+| `training.ts` | `logTitanSet`, `updateActivePathAction` | Training hub |
+| `user.ts` | `updateFactionAction` | User settings |
+| `world.ts` | `getWorldStateAction`, `getRegionBossAction` | World map |
 
 ---
 
@@ -59,6 +83,26 @@
 | `LootSystem` | Item drop calculations |
 | `ProgressionService` | XP/leveling calculations |
 | `OracleService` | AI coaching recommendations |
+| `GeminiService` | "Spirit Guide" RAG-based AI coach |
+| `ValhallaService` | Cloud persistence & save states |
+| `VisionService` | MediaPipe pose detection engine |
+| `NeuroService` | Binaural beat audio engine |
+| `BluetoothService` | FTMS/HRM hardware integration |
+| `AnalyticsService` | Telemetry & session tracking |
+
+---
+
+## 🪝 Client Hooks
+
+| Hook | Purpose |
+|:-----|:--------|
+| `useBluetoothPower` | Connects to Smart Trainers (FTMS) |
+| `useBluetoothHeartRate` | Connects to HR Monitors (BLE) |
+| `useTitanReaction` | Generates innovative Titan dialogue |
+| `useLiveCombat` | Manages real-time combat loop |
+| `useVoiceCommand` | Voice control (Speech Synthesis/Rec) |
+| `useAmbientSound` | Background audio & SFX manager |
+| `useSkillEffects` | Visual particle effects system |
 
 ---
 

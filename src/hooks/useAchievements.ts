@@ -1,9 +1,8 @@
-
-import { useState, useCallback, useEffect } from 'react';
-import { ACHIEVEMENTS } from '../data/static';
-import { Achievement } from '../types';
-import { playSound } from '../utils';
-import { StorageService } from '../services/storage';
+import { useState, useCallback, useEffect } from "react";
+import { ACHIEVEMENTS } from "../data/static";
+import { Achievement } from "../types";
+import { playSound } from "../utils";
+import { StorageService } from "../services/storage";
 
 export const useAchievements = () => {
   const [unlockedIds, setUnlockedIds] = useState<Set<string>>(new Set());
@@ -15,13 +14,14 @@ export const useAchievements = () => {
     const loadData = async () => {
       try {
         await StorageService.init();
-        const saved = await StorageService.getState<string[]>('achievements');
+        const saved = await StorageService.getState<string[]>("achievements");
         if (saved) {
           setUnlockedIds(new Set(saved));
         } else {
           // Fallback migration check
           await StorageService.migrateFromLocalStorage();
-          const migrated = await StorageService.getState<string[]>('achievements');
+          const migrated =
+            await StorageService.getState<string[]>("achievements");
           if (migrated) setUnlockedIds(new Set(migrated));
         }
       } catch (e) {
@@ -34,7 +34,7 @@ export const useAchievements = () => {
   }, []);
 
   const unlockAchievement = useCallback((id: string) => {
-    setUnlockedIds(prev => {
+    setUnlockedIds((prev) => {
       if (prev.has(id)) return prev; // Already unlocked
 
       const next = new Set(prev);
@@ -42,13 +42,13 @@ export const useAchievements = () => {
 
       // Persist Async
       const arrayData = Array.from(next);
-      StorageService.saveState('achievements', arrayData).catch(console.error);
+      StorageService.saveState("achievements", arrayData).catch(console.error);
 
       // Trigger Sound & Toast
-      const achievement = ACHIEVEMENTS.find(a => a.id === id);
+      const achievement = ACHIEVEMENTS.find((a) => a.id === id);
       if (achievement) {
-        playSound('achievement');
-        setToastQueue(q => [...q, achievement]);
+        playSound("achievement");
+        setToastQueue((q) => [...q, achievement]);
       }
 
       return next;
@@ -56,7 +56,7 @@ export const useAchievements = () => {
   }, []);
 
   const clearToast = useCallback(() => {
-    setToastQueue(q => q.slice(1));
+    setToastQueue((q) => q.slice(1));
   }, []);
 
   return {
@@ -64,6 +64,6 @@ export const useAchievements = () => {
     unlockAchievement,
     currentToast: toastQueue[0] || null,
     clearToast,
-    loading
+    loading,
   };
 };
