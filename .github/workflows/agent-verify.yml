@@ -91,9 +91,23 @@ jobs:
       - run: npx prisma generate
       - run: npm run build
 
-  e2e:
+  setup-e2e:
     runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch' || secrets.NEXT_PUBLIC_SUPABASE_URL != ''
+    outputs:
+      should_run: ${{ steps.check.outputs.should_run }}
+    steps:
+      - id: check
+        run: |
+          if [ -n "${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}" ] || [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "should_run=true" >> $GITHUB_OUTPUT
+          else
+            echo "should_run=false" >> $GITHUB_OUTPUT
+          fi
+
+  e2e:
+    needs: [build, setup-e2e]
+    if: needs.setup-e2e.outputs.should_run == 'true'
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
