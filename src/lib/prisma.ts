@@ -11,15 +11,13 @@ if (typeof window === "undefined") {
 }
 
 const prismaClientSingleton = () => {
-  const connectionString = process.env.DATABASE_URL;
+  let connectionString = process.env.DATABASE_URL;
+  if (!connectionString && (process.env.NODE_ENV === "test" || process.env.SKIP_ENV_VALIDATION === "true")) {
+    connectionString = "postgresql://postgres:postgres@localhost:5432/postgres";
+    process.env.DATABASE_URL = connectionString;
+  }
+
   if (!connectionString) {
-    if (process.env.NODE_ENV === "test" || process.env.SKIP_ENV_VALIDATION === "true") {
-      // Return a dummy client or allow it to be undefined/mocked in tests
-      // to prevent "DATABASE_URL is not defined" from blocking unit tests or CI builds
-      return new PrismaClient({
-        datasourceUrl: "postgresql://postgres:postgres@localhost:5432/postgres"
-      });
-    }
     throw new Error("DATABASE_URL is not defined");
   }
 
