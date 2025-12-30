@@ -110,6 +110,95 @@ IronForge uses a hybrid architecture with **Next.js Server Actions** for client-
 | `saveProgramAction(plan)` | Saves a generated program to user profile. | Auth User |
 | `generateWeeklyPlanAction()` | Generates a weekly schedule (Legacy?). | Auth User |
 
+### Titan State (`actions/titan.ts`)
+| Function | Description | Access |
+|----------|-------------|--------|
+| `getTitanAction(userId)` | Fetches the Titan state for a user. | Auth User |
+| `ensureTitanAction(userId)` | Creates Titan if not exists, returns existing otherwise. | Auth User |
+| `modifyTitanHealthAction(userId, delta, reason)` | Adjusts Titan HP with audit logging. | System |
+| `awardTitanXpAction(userId, amount, source)` | Awards XP with multipliers, handles level-ups. | System |
+| `consumeTitanEnergyAction(userId, amount)` | Deducts energy for combat/actions. | Auth User |
+
+### Achievements (`actions/achievements.ts`)
+| Function | Description | Access |
+|----------|-------------|--------|
+| `checkAchievementsAction(userId)` | Evaluates all achievement criteria and unlocks eligible ones. | System |
+| `getPlayerAchievementsAction(userId)` | Fetches all unlocked achievements for a user. | Auth User |
+
+### Training Programs (`actions/programs.ts`)
+| Function | Description | Access |
+|----------|-------------|--------|
+| `createProgramAction(userId, data)` | Creates a new training program skeleton with weeks. | Auth User |
+| `getProgramAction(programId)` | Fetches a specific program with all details. | Auth User |
+| `updateProgramWeekAction(weekId, focus)` | Updates week focus/description. | Auth User |
+| `addWorkoutToProgramAction(weekId, workout)` | Adds a workout template to a program week. | Auth User |
+
+### Training Templates (`actions/training.ts`)
+| Function | Description | Access |
+|----------|-------------|--------|
+| `createWorkoutTemplateAction(userId, data)` | Creates a reusable workout template from a list of exercises. | Auth User |
+| `getWorkoutTemplatesAction(userId)` | Returns all saved templates for the user. | Auth User |
+| `startWorkoutFromTemplateAction(templateId)` | Initiates a live workout session based on a template. | Auth User |
+| `deleteWorkoutTemplateAction(templateId)` | Permanently removes a template. | Auth User |
+| `duplicateTemplateAction(templateId)` | Creates a copy of an existing template. | Auth User |
+| `createWorkoutTagAction(label, color)` | Creates a custom tag for organizing templates/logs. | Auth User |
+| `searchWorkoutsByTagAction(tagId)` | Filters workout history or templates by specific tag. | Auth User |
+
+| `syncTitanStateWithWellness(userId, wellness)` | Syncs Titan mood/energy with Intervals.icu wellness. | System |
+| `checkAndIncrementStreakAction(userId, tz)` | Checks and increments daily workout streak. | Auth User |
+
+### Strength Logging (`actions/strength.ts`)
+| Function | Description | Access |
+|----------|-------------|--------|
+| `logSetAction(userId, exerciseId, set)` | Logs a set, appends to daily log, checks achievements. | Auth User |
+| `finishWorkoutAction(userId, logIds)` | Finalizes a workout session. | Auth User |
+| `getExerciseHistoryAction(userId, exerciseId)` | Returns historical data for charts. | Auth User |
+| `createExerciseAction(data)` | Creates a custom exercise definition. | Auth User |
+| `searchExercisesAction(query)` | Searches exercises by name/muscle group. | Auth User |
+
+### PvP / Segment Battles (`actions/pvp.ts`)
+| Function | Description | Access |
+|----------|-------------|--------|
+| `createSegmentBattleAction(segmentId, opponentId)` | Initiates a Strava segment challenge. | Auth User |
+| `resolveSegmentBattleAction(uploadId)` | Resolves a segment battle after activity upload. | Auth User |
+
+### Gauntlet Arena (`actions/gauntlet.ts`)
+| Function | Description | Access |
+|----------|-------------|--------|
+| `logGauntletRunAction(result)` | Logs a Gauntlet run, calculates XP/Gold/Kinetic rewards. | Auth User |
+| `getGauntletStatsAction()` | Returns best run stats and total run count. | Auth User |
+
+### Push Notifications (`actions/notifications.ts`)
+| Function | Description | Access |
+|----------|-------------|--------|
+| `subscribeUserAction(subscription)` | Saves a web push subscription for a user. | Auth User |
+| `sendNotificationAction(userId, title, body)` | Sends a push notification to all user devices. | System |
+
+### Guilds & Raids (`actions/guild-raids.ts`)
+| Function | Description | Access |
+|----------|-------------|--------|
+| `createGuildAction(data)` | Creates a guild and assigns creator as member. | Auth User |
+| `joinGuildAction(guildId)` | Joins an existing guild. | Auth User |
+| `getGuildAction()` | Returns guild details including active raid. | Auth User |
+| `startRaidAction(guildId, bossName, hp, days)` | Starts a new guild raid event. | Guild Admin |
+| `contributeToRaidAction(raidId, damage)` | Contributes damage to an active raid. | Auth User |
+
+### Demo Mode (`actions/demo.ts`)
+| Function | Description | Access |
+|----------|-------------|--------|
+| `toggleDemoModeAction(enabled)` | Enables/disables demo mode via cookie. | Public |
+| `getDemoModeStatus()` | Checks if demo mode is active. | Public |
+
+### Onboarding (`actions/onboarding.ts`)
+| Function | Description | Access |
+|----------|-------------|--------|
+| `completeOnboardingAction()` | Marks onboarding complete, awards achievement. | Auth User |
+
+### Oracle / Decree (`actions/oracle.ts`)
+| Function | Description | Access |
+|----------|-------------|--------|
+| `generateDailyDecreeAction()` | Generates and persists the Oracle's daily decree. | Auth User |
+
 ---
 
 ## 🛡️ Authentication
