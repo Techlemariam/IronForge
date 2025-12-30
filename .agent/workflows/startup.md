@@ -38,6 +38,7 @@ Baserat på state, föreslå:
 - Fortsätt pågående arbete?
 - Kör `/cleanup` om debt > 5?
 - Kör `/evolve` för token-optimering om nya workflows skapats?
+- **Allow List**: Om kommandon körs ofta, föreslå att lägga till i terminal allow list (se `.agent/config.json` → `safeCommands`)
 
 # Self-Evaluation
 Betygsätt **Context Accuracy (1-10)**: Hur väl fångade du användarens intention från förra sessionen?
