@@ -12,17 +12,22 @@ import { useGuildContribution } from "@/hooks/useGuildContribution";
 import { useCompanionRelay } from "@/features/companion/useCompanionRelay";
 import { useLiveCombat } from "@/hooks/useLiveCombat";
 
-vi.mock("framer-motion", () => ({
-  motion: {
-    div: React.forwardRef(({ children, ...props }: any, ref: any) => (
-      <div {...props} ref={ref}>
-        {children}
-      </div>
-    )),
-    p: ({ children, ...props }: any) => <p {...props}>{children}</p>,
-  },
-  AnimatePresence: ({ children }: any) => <>{children}</>,
-}));
+vi.mock("framer-motion", () => {
+  const MockDiv = React.forwardRef(({ children, ...props }: any, ref: any) => (
+    <div {...props} ref={ref}>
+      {children}
+    </div>
+  ));
+  MockDiv.displayName = "MotionDiv";
+
+  return {
+    motion: {
+      div: MockDiv,
+      p: ({ children, ...props }: any) => <p {...props}>{children}</p>,
+    },
+    AnimatePresence: ({ children }: any) => <>{children}</>,
+  };
+});
 
 vi.mock("next/navigation", () => ({
   useSearchParams: vi.fn(() => ({
