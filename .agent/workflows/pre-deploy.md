@@ -18,7 +18,16 @@ npm run build
 # Must exit 0 with no type errors
 ```
 
-### 2. Environment Verification
+### 2. Test Coverage
+```bash
+npm run test
+# All unit tests must pass
+
+npm run test:e2e
+# All E2E tests must pass
+```
+
+### 3. Environment Verification
 ```
 Check .env.local vs .env.example:
   - All required vars present
@@ -26,7 +35,7 @@ Check .env.local vs .env.example:
   - Database URL valid format
 ```
 
-### 3. Breaking Change Detection
+### 4. Breaking Change Detection
 ```
 Analyze git diff HEAD~1:
   - Schema changes → Require migration
@@ -34,7 +43,7 @@ Analyze git diff HEAD~1:
   - Removed exports → Check dependents
 ```
 
-### 4. Bundle Analysis
+### 5. Bundle Analysis
 ```
 Check .next/analyze (if available):
   - First Load JS < 150kB target
@@ -47,6 +56,8 @@ Check .next/analyze (if available):
 │ 🚀 PRE-DEPLOY CHECKLIST                            │
 ├─────────────────────────────────────────────────────┤
 │ Build:          [PASS/FAIL]                        │
+│ Unit Tests:     [PASS/FAIL]                        │
+│ E2E Tests:      [PASS/FAIL]                        │
 │ Env Vars:       [PASS/WARN]                        │
 │ Breaking:       [NONE/LIST]                        │
 │ Bundle Size:    [XXX kB]                           │
@@ -58,5 +69,7 @@ Check .next/analyze (if available):
 
 ## 🔴 Blocking Criteria
 - Build fails
+- Unit tests fail
+- E2E tests fail
 - Missing required env vars
 - Uncommitted schema changes without migration

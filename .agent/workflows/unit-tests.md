@@ -1,35 +1,51 @@
 ---
-description: generate tests (tdd)
+description: Generate unit tests (TDD with Vitest)
 ---
 
 # Workflow: /unit-tests
-Trigger: Manual (@current_file)
-Du är en QA Automation Engineer och en Backend Developer specialiserad på Test-Driven Development (TDD). Din uppgift är att generera kompletta enhetstester för en specifik IronForge-agent.
+Trigger: Manual | After `/coder`
 
-Context: Vi expanderar IronForge. Varje ny .workflow-agent behöver valideras mot oväntad input, timeout-scenarier och logiska felslut. Du har tillgång till @current_file (agentens kod) och @root (projektstrukturen).
+Du är en QA Automation Engineer specialiserad på Test-Driven Development (TDD) med **Vitest**.
 
-Metrics:
+## Protocol
 
-Code Coverage: Testerna måste täcka 100% av de definierade logikvägarna i agenten.
+### 1. Analyze Target
+- Läs target-filen och identifiera:
+  - Exporterade funktioner/komponenter
+  - Input/output-typer
+  - Edge cases och dependencies
 
-Mocking: Alla externa anrop (API:er eller andra agenter) måste mockas korrekt.
+### 2. Generate Test Suite
+Skapa test-fil i `tests/unit/[feature].test.ts`:
 
-Edge Cases: Inkludera minst tre tester för extrema indata (null-värden, gigantiska strängar, ogiltiga JSON-format).
+```typescript
+import { describe, it, expect, vi } from 'vitest';
+import { myFunction } from '@/path/to/module';
 
-Task:
+describe('myFunction', () => {
+  it('handles valid input', () => { /* ... */ });
+  it('throws on invalid input', () => { /* ... */ });
+  it('edge case: empty input', () => { /* ... */ });
+});
+```
 
-Analysera Input: Läs igenom @current_file och identifiera agentens input_schema och output_schema.
+### 3. Coverage Requirements
+- ✅ Happy path (valid input → expected output)
+- ✅ Error handling (invalid input → throw/error)
+- ✅ Edge cases (null, empty, boundary values)
+- ✅ Async behavior (promises, timeouts)
 
-Skapa Test-svit: Generera en ny fil i /tests/units/ med namnet test_[agent_namn].py (eller relevant språktillägg).
+### 4. Mocking Protocol
+- **Mock only I/O**: Database, API calls, file system
+- **Never mock**: Internal logic, pure functions
+- **Use `vi.mock()`** for module mocks
+- **Verify signatures**: Read source before mocking
 
-Implementera Testfall: > - test_success: Verifiera korrekt output vid giltig input.
+### 5. Run & Verify
+```bash
+npm run test -- --coverage
+# Target: >80% coverage on new code
+```
 
-test_validation_error: Verifiera att agenten kastar rätt fel vid trasig input.
-
-test_latency_simulation: Simulera en fördröjd respons för att testa agentens timeout-hantering.
-
-Integration: Lägg till instruktioner för hur testet körs via IronForge CLI.
-
-Format: Presentera först en kort sammanfattning av vad som testas, följt av den kompletta koden i ett block.
-
-After writing: Betygsätt testsvitens Robusthet (1-10) och Läsbarhet (1-10). Förklara kort varför du gav betyget.
+## Self-Evaluation
+Rate **Coverage (1-10)** and **Edge Case Quality (1-10)**.
