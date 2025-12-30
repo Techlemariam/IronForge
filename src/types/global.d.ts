@@ -1,4 +1,4 @@
-export {};
+export { };
 
 declare global {
   interface Window {
@@ -45,14 +45,18 @@ declare global {
     connected: boolean;
     connect(): Promise<BluetoothRemoteGATTServer>;
     disconnect(): void;
-    getPrimaryService(service: BluetoothServiceUUID): Promise<BluetoothRemoteGATTService>;
+    getPrimaryService(
+      service: BluetoothServiceUUID,
+    ): Promise<BluetoothRemoteGATTService>;
   }
 
   interface BluetoothRemoteGATTService {
     uuid: string;
     isPrimary: boolean;
     device: BluetoothDevice;
-    getCharacteristic(characteristic: BluetoothCharacteristicUUID): Promise<BluetoothRemoteGATTCharacteristic>;
+    getCharacteristic(
+      characteristic: BluetoothCharacteristicUUID,
+    ): Promise<BluetoothRemoteGATTCharacteristic>;
   }
 
   type BluetoothCharacteristicUUID = number | string;
@@ -69,6 +73,8 @@ declare global {
   }
 
   // React Three Fiber Intrinsic Elements (Global JSX)
+  // R3F provides its own types via @react-three/fiber - these are fallback declarations
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   namespace JSX {
     interface IntrinsicElements {
       meshStandardMaterial: any;
@@ -88,6 +94,7 @@ declare global {
   }
 
   // React Three Fiber Intrinsic Elements (React.JSX for React 18+)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   namespace React {
     namespace JSX {
       interface IntrinsicElements {
