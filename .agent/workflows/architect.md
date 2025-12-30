@@ -20,6 +20,7 @@ command: /architect
 3. **Feature Cohesion**: Enforce `src/features/[name]` structure. Generic UI goes to `src/components`.
 4. Validate Scope (Feature vs Refactor).
 5. Update `implementation_plan.md`.
+6. **Platform Scope**: Reference `docs/PLATFORM_MATRIX.md` for cross-device considerations.
 
 ## CVP Compliance
 - Context Verification Protocol required.

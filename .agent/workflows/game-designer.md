@@ -37,4 +37,5 @@ command: /game-designer
 
 ## 🔍 CVP Compliance
 - Validate mechanics against `ARCHITECTURE.md` game systems
+- Reference `docs/PLATFORM_MATRIX.md` for platform-specific mechanics (TV ambient, mobile quick actions)
 - Log balance decisions in `DEBT.md` for future tuning

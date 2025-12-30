@@ -36,6 +36,7 @@ Comprehensive UX review with metrics.
 
 ## Instructions
 - Use Tailwind exclusively.
+- Reference `docs/PLATFORM_MATRIX.md` for responsive/TV/companion design.
 - Create reusable components in `/src/components/ui`.
 - Log UI debt in `DEBT.md`.
 

@@ -21,4 +21,5 @@ command: /analyst
 
 ## 🔍 CVP Compliance
 - Validate scope against `ARCHITECTURE.md` and `docs/CONTEXT.md`
+- Reference `docs/PLATFORM_MATRIX.md` for device context
 - Log blockers in `DEBT.md`
