@@ -7,6 +7,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Swords, Trophy, Timer } from "lucide-react";
 import { motion } from "framer-motion";
+import { useState } from "react";
+import { DuelArena } from "../../features/game/DuelArena";
 
 // Types
 interface DuelParticipant {
@@ -42,6 +44,7 @@ interface DuelCardProps {
 }
 
 export function DuelCard({ duel, currentUserId, onTaunt }: DuelCardProps) {
+  const [showArena, setShowArena] = useState(false);
   const isChallenger = currentUserId === duel.challenger.id;
   const userScore = isChallenger ? duel.challengerScore : duel.defenderScore;
   const opponentScore = isChallenger
@@ -88,12 +91,12 @@ export function DuelCard({ duel, currentUserId, onTaunt }: DuelCardProps) {
 
   const daysLeft = duel.endDate
     ? Math.max(
-        0,
-        Math.ceil(
-          (new Date(duel.endDate).getTime() - Date.now()) /
-            (1000 * 60 * 60 * 24),
-        ),
-      )
+      0,
+      Math.ceil(
+        (new Date(duel.endDate).getTime() - Date.now()) /
+        (1000 * 60 * 60 * 24),
+      ),
+    )
     : 7;
 
   return (
@@ -219,6 +222,17 @@ export function DuelCard({ duel, currentUserId, onTaunt }: DuelCardProps) {
           >
             View Details
           </Button>
+
+          {duel.status === "ACTIVE" && (
+            <Button
+              className="flex-1 bg-amber-600 hover:bg-amber-500 text-white font-bold tracking-wider animate-pulse"
+              size="sm"
+              onClick={() => setShowArena(true)}
+            >
+              ENTER ARENA ⚔️
+            </Button>
+          )}
+
           <Button
             variant="ghost"
             className="flex-1 text-amber-500 hover:text-amber-400 hover:bg-amber-950/30"
@@ -233,6 +247,15 @@ export function DuelCard({ duel, currentUserId, onTaunt }: DuelCardProps) {
           </Button>
         </div>
       </CardContent>
+
+      {/* Arena Modal */}
+      {showArena && (
+        <DuelArena
+          duelId={duel.id}
+          currentUserId={currentUserId}
+          onClose={() => setShowArena(false)}
+        />
+      )}
     </Card>
   );
 }

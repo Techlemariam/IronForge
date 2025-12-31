@@ -1,32 +1,33 @@
-# Sprint 16: Infrastructure Observability & Resilience
-**Period**: 2025-12-29 - 2026-01-05
-**Goal**: Elevate system reliability with proper health checks, structured logging, and automated safeguards.
+# Next Sprint: Sprint 17 - Cardio PvP Completion
+**Period**: 2026-01-05 - 2026-01-12
+**Goal**: Finalize the Cardio PvP Duels feature and prepare for Season 2 expansion.
 
 ## Backlog
 
-### Priority: High (Infrastructure)
-- [x] **Build Performance Optimization** <!-- agent: /infrastructure | estimate: 4h | source: roadmap:107 -->
-- [x] **Health Check Endpoint** <!-- agent: /infrastructure | estimate: 1h | source: roadmap:112 -->
-- [x] **Structured Logging (Pino)** <!-- agent: /infrastructure | estimate: 4h | source: roadmap:115 -->
-- [x] **Database Migration CI Guard** <!-- agent: /infrastructure | estimate: 2h | source: roadmap:118 -->
-- [x] **Refactor: useMiningSession hook** <!-- agent: /coder | estimate: 2h | source: health-report:20 -->
+### Priority: High (Feature Completion)
+- [x] **Cardio PvP Duels Implementation** <!-- agent: /coder | estimate: 8h | source: roadmap:6 -->
+    - *Note*: Spec file `specs/cardio-duels.md` is missing. Needs restoration/creation first.
+    - Scope: Real-time duel updates, result processing, UI integration.
+- [ ] **Duel Leaderboards** <!-- agent: /coder | estimate: 4h | source: roadmap:6 -->
+    - Scope: Global and Friend leaderboards for duels.
 
-### Priority: Medium (Debt & Monitoring)
-- [x] **Logic Fix: Analytics Dashboard** <!-- agent: /coder | estimate: 3h | source: debt:42 -->
-- [x] **Type Safety Pass (Supabase & Storage)** <!-- agent: /security | estimate: 2h | source: debt:40,41 -->
-- [x] **Dedicated Settings Page** <!-- agent: /ui-ux | estimate: 3h | source: ux-audit:67 -->
-- [x] **Loading Skeletons** <!-- agent: /ui-ux | estimate: 2h | source: ux-audit:73 -->
-- [x] **Cron Job Monitoring** <!-- agent: /infrastructure | estimate: 2h | source: roadmap:121 -->
+### Priority: Medium (Preparation)
+- [x] **Power Rating System Analysis** <!-- agent: /architect | estimate: 3h | source: roadmap:68 -->
+    - Create spec: `specs/power-rating-system.md`.
+    - Algorithm design for calculating "Power" from strength + cardio metrics.
+- [x] **Oracle 3.0 Analysis** <!-- agent: /analyst | estimate: 2h | source: roadmap:64 -->
+    - Initial requirements gathering for OpenAI integration.
+
+### Priority: Low (Polish)
+- [ ] **Three.js Type Definitions** <!-- agent: /cleanup | estimate: 1h | source: debt:43 -->
+    - Fix missing types in `global.d.ts` (deferred item).
 
 ---
 
 ## Sprint Stats
-- **Total Items**: 10
-- **Estimated Hours**: ~23h
-- **Debt Ratio**: 30% (3/10)
+- **Total Items**: 5
+- **Estimated Hours**: 18h
+- **Debt Ratio**: 20%
 
-## Execution Log
-- 2025-12-29 20:47: Sprint Created.
-- 2025-12-29 21:15: Build, Health Check, Logging, DB Guard completed.
-- 2025-12-29 21:30: useMiningSession refactor completed.
-- 2025-12-29 21:45: Analytics fix, Type Safety, Settings Page, Skeletons completed.
+## Dependencies
+- `specs` directory seems missing. Needs recreation.

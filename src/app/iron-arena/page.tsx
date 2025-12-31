@@ -2,6 +2,7 @@ import { getDuelStatusAction } from "@/actions/duel";
 import { getLeagueInfoAction, getCurrentSeasonAction, getLeagueLeaderboardAction } from "@/actions/iron-leagues";
 import { getSession } from "@/lib/auth";
 import { ArenaClient } from "./ArenaClient";
+import { DuelLeaderboard } from "@/components/duel/DuelLeaderboard";
 
 export default async function IronArenaPage() {
   const session = await getSession();
@@ -39,6 +40,11 @@ export default async function IronArenaPage() {
         seasonInfo={seasonInfo}
         leaderboard={leaderboard}
       />
+
+      {/* Duel Leaderboard Section */}
+      <div className="mt-12">
+        <DuelLeaderboard currentUserId={session.user.id} />
+      </div>
     </div>
   );
 }

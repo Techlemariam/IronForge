@@ -269,3 +269,32 @@ export async function getPotentialOpponentsAction() {
     return { success: false, error: "Failed to fetch opponents" };
   }
 }
+
+export async function getDuelArenaStateAction(duelId: string) {
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) throw new Error("Unauthorized");
+
+    const duel = await prisma.duelChallenge.findUnique({
+      where: { id: duelId },
+      include: {
+        challenger: {
+          select: { id: true, heroName: true, level: true, faction: true },
+        },
+        defender: {
+          select: { id: true, heroName: true, level: true, faction: true },
+        },
+      },
+    });
+
+    if (!duel) return { success: false, error: "Duel not found" };
+
+    return { success: true, duel };
+  } catch (error) {
+    console.error("Error fetching arena state:", error);
+    return { success: false, error: "Failed to fetch arena state" };
+  }
+}

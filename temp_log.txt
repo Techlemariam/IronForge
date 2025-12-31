@@ -1,0 +1,302 @@
+verify	Set up job	﻿2025-12-31T06:57:08.9678730Z Current runner version: '2.330.0'
+verify	Set up job	2025-12-31T06:57:08.9716762Z ##[group]Runner Image Provisioner
+verify	Set up job	2025-12-31T06:57:08.9718188Z Hosted Compute Agent
+verify	Set up job	2025-12-31T06:57:08.9719234Z Version: 20251211.462
+verify	Set up job	2025-12-31T06:57:08.9720218Z Commit: 6cbad8c2bb55d58165063d031ccabf57e2d2db61
+verify	Set up job	2025-12-31T06:57:08.9721611Z Build Date: 2025-12-11T16:28:49Z
+verify	Set up job	2025-12-31T06:57:08.9722934Z Worker ID: {98c31f2d-607d-4452-8a5f-34e77aa6648a}
+verify	Set up job	2025-12-31T06:57:08.9724077Z ##[endgroup]
+verify	Set up job	2025-12-31T06:57:08.9725024Z ##[group]Operating System
+verify	Set up job	2025-12-31T06:57:08.9725903Z Ubuntu
+verify	Set up job	2025-12-31T06:57:08.9726630Z 24.04.3
+verify	Set up job	2025-12-31T06:57:08.9727429Z LTS
+verify	Set up job	2025-12-31T06:57:08.9728205Z ##[endgroup]
+verify	Set up job	2025-12-31T06:57:08.9728955Z ##[group]Runner Image
+verify	Set up job	2025-12-31T06:57:08.9729910Z Image: ubuntu-24.04
+verify	Set up job	2025-12-31T06:57:08.9730748Z Version: 20251215.174.1
+verify	Set up job	2025-12-31T06:57:08.9732588Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20251215.174/images/ubuntu/Ubuntu2404-Readme.md
+verify	Set up job	2025-12-31T06:57:08.9736570Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20251215.174
+verify	Set up job	2025-12-31T06:57:08.9738503Z ##[endgroup]
+verify	Set up job	2025-12-31T06:57:08.9740449Z ##[group]GITHUB_TOKEN Permissions
+verify	Set up job	2025-12-31T06:57:08.9755721Z Contents: read
+verify	Set up job	2025-12-31T06:57:08.9756604Z Metadata: read
+verify	Set up job	2025-12-31T06:57:08.9757601Z Packages: read
+verify	Set up job	2025-12-31T06:57:08.9758413Z ##[endgroup]
+verify	Set up job	2025-12-31T06:57:08.9761468Z Secret source: Actions
+verify	Set up job	2025-12-31T06:57:08.9773137Z Prepare workflow directory
+verify	Set up job	2025-12-31T06:57:09.0995468Z Prepare all required actions
+verify	Set up job	2025-12-31T06:57:09.1053165Z Getting action download info
+verify	Set up job	2025-12-31T06:57:09.4840959Z Download action repository 'actions/checkout@v6' (SHA:8e8c483db84b4bee98b60c0593521ed34d9990e8)
+verify	Set up job	2025-12-31T06:57:09.5885202Z Download action repository 'actions/setup-node@v6' (SHA:395ad3262231945c25e8478fd5baf05154b1d79f)
+verify	Set up job	2025-12-31T06:57:09.7830376Z Download action repository 'nick-fields/retry@v3' (SHA:ce71cc2ab81d554ebbe88c79ab5975992d79ba08)
+verify	Set up job	2025-12-31T06:57:10.5608944Z Complete job name: verify
+verify	Run actions/checkout@v6	﻿2025-12-31T06:57:10.6245021Z ##[group]Run actions/checkout@v6
+verify	Run actions/checkout@v6	2025-12-31T06:57:10.6245917Z with:
+verify	Run actions/checkout@v6	2025-12-31T06:57:10.6246365Z   repository: Techlemariam/IronForge
+verify	Run actions/checkout@v6	2025-12-31T06:57:10.6247082Z   token: ***
+verify	Run actions/checkout@v6	2025-12-31T06:57:10.6247496Z   ssh-strict: true
+verify	Run actions/checkout@v6	2025-12-31T06:57:10.6247930Z   ssh-user: git
+verify	Run actions/checkout@v6	2025-12-31T06:57:10.6248357Z   persist-credentials: true
+verify	Run actions/checkout@v6	2025-12-31T06:57:10.6248837Z   clean: true
+verify	Run actions/checkout@v6	2025-12-31T06:57:10.6249266Z   sparse-checkout-cone-mode: true
+verify	Run actions/checkout@v6	2025-12-31T06:57:10.6249773Z   fetch-depth: 1
+verify	Run actions/checkout@v6	2025-12-31T06:57:10.6250194Z   fetch-tags: false
+verify	Run actions/checkout@v6	2025-12-31T06:57:10.6250622Z   show-progress: true
+verify	Run actions/checkout@v6	2025-12-31T06:57:10.6251057Z   lfs: false
+verify	Run actions/checkout@v6	2025-12-31T06:57:10.6251447Z   submodules: false
+verify	Run actions/checkout@v6	2025-12-31T06:57:10.6251900Z   set-safe-directory: true
+verify	Run actions/checkout@v6	2025-12-31T06:57:10.6252569Z env:
+verify	Run actions/checkout@v6	2025-12-31T06:57:10.6253727Z   DATABASE_URL: ***localhost:5432/postgres
+verify	Run actions/checkout@v6	2025-12-31T06:57:10.6254541Z   DIRECT_URL: ***localhost:5432/postgres
+verify	Run actions/checkout@v6	2025-12-31T06:57:10.6255193Z   NEXT_PUBLIC_SUPABASE_URL: https://dummy.supabase.co
+verify	Run actions/checkout@v6	2025-12-31T06:57:10.6257032Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+verify	Run actions/checkout@v6	2025-12-31T06:57:10.6257645Z   SKIP_ENV_VALIDATION: true
+verify	Run actions/checkout@v6	2025-12-31T06:57:10.6258125Z ##[endgroup]
+verify	Run actions/checkout@v6	2025-12-31T06:57:10.7346953Z Syncing repository: Techlemariam/IronForge
+verify	Run actions/checkout@v6	2025-12-31T06:57:10.7348967Z ##[group]Getting Git version info
+verify	Run actions/checkout@v6	2025-12-31T06:57:10.7349718Z Working directory is '/home/runner/work/IronForge/IronForge'
+verify	Run actions/checkout@v6	2025-12-31T06:57:10.7352931Z [command]/usr/bin/git version
+verify	Run actions/checkout@v6	2025-12-31T06:57:10.7721690Z git version 2.52.0
+verify	Run actions/checkout@v6	2025-12-31T06:57:10.7746809Z ##[endgroup]
+verify	Run actions/checkout@v6	2025-12-31T06:57:10.7765970Z Temporarily overriding HOME='/home/runner/work/_temp/b4ce25d6-a1bd-4a4b-8078-a214ae7030c0' before making global git config changes
+verify	Run actions/checkout@v6	2025-12-31T06:57:10.7774720Z Adding repository directory to the temporary git global config as a safe directory
+verify	Run actions/checkout@v6	2025-12-31T06:57:10.7776863Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/IronForge/IronForge
+verify	Run actions/checkout@v6	2025-12-31T06:57:10.8243325Z Deleting the contents of '/home/runner/work/IronForge/IronForge'
+verify	Run actions/checkout@v6	2025-12-31T06:57:10.8250143Z ##[group]Initializing the repository
+verify	Run actions/checkout@v6	2025-12-31T06:57:10.8251732Z [command]/usr/bin/git init /home/runner/work/IronForge/IronForge
+verify	Run actions/checkout@v6	2025-12-31T06:57:11.2729282Z hint: Using 'master' as the name for the initial branch. This default branch name
+verify	Run actions/checkout@v6	2025-12-31T06:57:11.2732050Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+verify	Run actions/checkout@v6	2025-12-31T06:57:11.2734641Z hint: to use in all of your new repositories, which will suppress this warning,
+verify	Run actions/checkout@v6	2025-12-31T06:57:11.2737410Z hint: call:
+verify	Run actions/checkout@v6	2025-12-31T06:57:11.2738126Z hint:
+verify	Run actions/checkout@v6	2025-12-31T06:57:11.2738984Z hint: 	git config --global init.defaultBranch <name>
+verify	Run actions/checkout@v6	2025-12-31T06:57:11.2740047Z hint:
+verify	Run actions/checkout@v6	2025-12-31T06:57:11.2741049Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+verify	Run actions/checkout@v6	2025-12-31T06:57:11.2742907Z hint: 'development'. The just-created branch can be renamed via this command:
+verify	Run actions/checkout@v6	2025-12-31T06:57:11.2744226Z hint:
+verify	Run actions/checkout@v6	2025-12-31T06:57:11.2744944Z hint: 	git branch -m <name>
+verify	Run actions/checkout@v6	2025-12-31T06:57:11.2745773Z hint:
+verify	Run actions/checkout@v6	2025-12-31T06:57:11.2746857Z hint: Disable this message with "git config set advice.defaultBranchName false"
+verify	Run actions/checkout@v6	2025-12-31T06:57:11.3257521Z Initialized empty Git repository in /home/runner/work/IronForge/IronForge/.git/
+verify	Run actions/checkout@v6	2025-12-31T06:57:11.3260505Z [command]/usr/bin/git remote add origin https://github.com/Techlemariam/IronForge
+verify	Run actions/checkout@v6	2025-12-31T06:57:11.3698514Z ##[endgroup]
+verify	Run actions/checkout@v6	2025-12-31T06:57:11.3699785Z ##[group]Disabling automatic garbage collection
+verify	Run actions/checkout@v6	2025-12-31T06:57:11.3700857Z [command]/usr/bin/git config --local gc.auto 0
+verify	Run actions/checkout@v6	2025-12-31T06:57:11.3738078Z ##[endgroup]
+verify	Run actions/checkout@v6	2025-12-31T06:57:11.3739383Z ##[group]Setting up auth
+verify	Run actions/checkout@v6	2025-12-31T06:57:11.3740278Z Removing SSH command configuration
+verify	Run actions/checkout@v6	2025-12-31T06:57:11.3745765Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+verify	Run actions/checkout@v6	2025-12-31T06:57:11.3784401Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+verify	Run actions/checkout@v6	2025-12-31T06:57:11.8583618Z Removing HTTP extra header
+verify	Run actions/checkout@v6	2025-12-31T06:57:11.8593396Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+verify	Run actions/checkout@v6	2025-12-31T06:57:11.8629019Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+verify	Run actions/checkout@v6	2025-12-31T06:57:11.8873423Z Removing includeIf entries pointing to credentials config files
+verify	Run actions/checkout@v6	2025-12-31T06:57:11.8876180Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+verify	Run actions/checkout@v6	2025-12-31T06:57:11.8913913Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+verify	Run actions/checkout@v6	2025-12-31T06:57:11.9171769Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-04be8d80-c6ae-43cb-b9b3-89210f3cbd99.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+verify	Run actions/checkout@v6	2025-12-31T06:57:11.9223895Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/IronForge/IronForge/.git.path /home/runner/work/_temp/git-credentials-04be8d80-c6ae-43cb-b9b3-89210f3cbd99.config
+verify	Run actions/checkout@v6	2025-12-31T06:57:11.9263181Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/IronForge/IronForge/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-04be8d80-c6ae-43cb-b9b3-89210f3cbd99.config
+verify	Run actions/checkout@v6	2025-12-31T06:57:11.9301766Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-04be8d80-c6ae-43cb-b9b3-89210f3cbd99.config
+verify	Run actions/checkout@v6	2025-12-31T06:57:11.9340338Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-04be8d80-c6ae-43cb-b9b3-89210f3cbd99.config
+verify	Run actions/checkout@v6	2025-12-31T06:57:11.9374839Z ##[endgroup]
+verify	Run actions/checkout@v6	2025-12-31T06:57:11.9376886Z ##[group]Fetching the repository
+verify	Run actions/checkout@v6	2025-12-31T06:57:11.9387385Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +5c5e9970f536fc3b20fa61411bd5b17402fd4753:refs/remotes/origin/main
+verify	Run actions/checkout@v6	2025-12-31T06:57:12.7224885Z From https://github.com/Techlemariam/IronForge
+verify	Run actions/checkout@v6	2025-12-31T06:57:12.7236439Z  * [new ref]         5c5e9970f536fc3b20fa61411bd5b17402fd4753 -> origin/main
+verify	Run actions/checkout@v6	2025-12-31T06:57:12.7261096Z ##[endgroup]
+verify	Run actions/checkout@v6	2025-12-31T06:57:12.7261725Z ##[group]Determining the checkout info
+verify	Run actions/checkout@v6	2025-12-31T06:57:12.7263834Z ##[endgroup]
+verify	Run actions/checkout@v6	2025-12-31T06:57:12.7273703Z [command]/usr/bin/git sparse-checkout disable
+verify	Run actions/checkout@v6	2025-12-31T06:57:12.7316823Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+verify	Run actions/checkout@v6	2025-12-31T06:57:12.7349624Z ##[group]Checking out the ref
+verify	Run actions/checkout@v6	2025-12-31T06:57:12.7358982Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+verify	Run actions/checkout@v6	2025-12-31T06:57:12.8395574Z Switched to a new branch 'main'
+verify	Run actions/checkout@v6	2025-12-31T06:57:12.8399919Z branch 'main' set up to track 'origin/main'.
+verify	Run actions/checkout@v6	2025-12-31T06:57:12.8414624Z ##[endgroup]
+verify	Run actions/checkout@v6	2025-12-31T06:57:12.8465304Z [command]/usr/bin/git log -1 --format=%H
+verify	Run actions/checkout@v6	2025-12-31T06:57:12.8485329Z 5c5e9970f536fc3b20fa61411bd5b17402fd4753
+verify	Run actions/setup-node@v6	﻿2025-12-31T06:57:12.8719971Z ##[group]Run actions/setup-node@v6
+verify	Run actions/setup-node@v6	2025-12-31T06:57:12.8720304Z with:
+verify	Run actions/setup-node@v6	2025-12-31T06:57:12.8720492Z   node-version: 20
+verify	Run actions/setup-node@v6	2025-12-31T06:57:12.8720678Z   cache: npm
+verify	Run actions/setup-node@v6	2025-12-31T06:57:12.8720864Z   check-latest: false
+verify	Run actions/setup-node@v6	2025-12-31T06:57:12.8721212Z   token: ***
+verify	Run actions/setup-node@v6	2025-12-31T06:57:12.8721412Z   package-manager-cache: true
+verify	Run actions/setup-node@v6	2025-12-31T06:57:12.8721641Z env:
+verify	Run actions/setup-node@v6	2025-12-31T06:57:12.8721991Z   DATABASE_URL: ***localhost:5432/postgres
+verify	Run actions/setup-node@v6	2025-12-31T06:57:12.8722384Z   DIRECT_URL: ***localhost:5432/postgres
+verify	Run actions/setup-node@v6	2025-12-31T06:57:12.8723009Z   NEXT_PUBLIC_SUPABASE_URL: https://dummy.supabase.co
+verify	Run actions/setup-node@v6	2025-12-31T06:57:12.8724121Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+verify	Run actions/setup-node@v6	2025-12-31T06:57:12.8724386Z   SKIP_ENV_VALIDATION: true
+verify	Run actions/setup-node@v6	2025-12-31T06:57:12.8724597Z ##[endgroup]
+verify	Run actions/setup-node@v6	2025-12-31T06:57:13.0208285Z Found in cache @ /opt/hostedtoolcache/node/20.19.6/x64
+verify	Run actions/setup-node@v6	2025-12-31T06:57:13.0211986Z (node:1975) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+verify	Run actions/setup-node@v6	2025-12-31T06:57:13.0213588Z (Use `node --trace-deprecation ...` to show where the warning was created)
+verify	Run actions/setup-node@v6	2025-12-31T06:57:13.0216677Z ##[group]Environment details
+verify	Run actions/setup-node@v6	2025-12-31T06:57:13.5076962Z node: v20.19.6
+verify	Run actions/setup-node@v6	2025-12-31T06:57:13.5077417Z npm: 10.8.2
+verify	Run actions/setup-node@v6	2025-12-31T06:57:13.5077724Z yarn: 1.22.22
+verify	Run actions/setup-node@v6	2025-12-31T06:57:13.5086781Z ##[endgroup]
+verify	Run actions/setup-node@v6	2025-12-31T06:57:13.5120724Z [command]/opt/hostedtoolcache/node/20.19.6/x64/bin/npm config get cache
+verify	Run actions/setup-node@v6	2025-12-31T06:57:13.6886899Z /home/runner/.npm
+verify	Run actions/setup-node@v6	2025-12-31T06:57:13.8289339Z npm cache is not found
+verify	Install dependencies	﻿2025-12-31T06:57:13.8431155Z ##[group]Run nick-fields/retry@v3
+verify	Install dependencies	2025-12-31T06:57:13.8431436Z with:
+verify	Install dependencies	2025-12-31T06:57:13.8431613Z   timeout_minutes: 10
+verify	Install dependencies	2025-12-31T06:57:13.8431815Z   max_attempts: 3
+verify	Install dependencies	2025-12-31T06:57:13.8431987Z   command: npm ci
+verify	Install dependencies	2025-12-31T06:57:13.8432162Z   retry_wait_seconds: 10
+verify	Install dependencies	2025-12-31T06:57:13.8432364Z   polling_interval_seconds: 1
+verify	Install dependencies	2025-12-31T06:57:13.8432580Z   warning_on_retry: true
+verify	Install dependencies	2025-12-31T06:57:13.8433056Z   continue_on_error: false
+verify	Install dependencies	2025-12-31T06:57:13.8433283Z env:
+verify	Install dependencies	2025-12-31T06:57:13.8433755Z   DATABASE_URL: ***localhost:5432/postgres
+verify	Install dependencies	2025-12-31T06:57:13.8434137Z   DIRECT_URL: ***localhost:5432/postgres
+verify	Install dependencies	2025-12-31T06:57:13.8434434Z   NEXT_PUBLIC_SUPABASE_URL: https://dummy.supabase.co
+verify	Install dependencies	2025-12-31T06:57:13.8435788Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+verify	Install dependencies	2025-12-31T06:57:13.8436036Z   SKIP_ENV_VALIDATION: true
+verify	Install dependencies	2025-12-31T06:57:13.8501773Z ##[endgroup]
+verify	Install dependencies	2025-12-31T06:57:13.9218822Z ##[group]Attempt 1
+verify	Install dependencies	2025-12-31T06:57:15.3955940Z npm warn EBADENGINE Unsupported engine {
+verify	Install dependencies	2025-12-31T06:57:15.3957223Z npm warn EBADENGINE   package: '@capacitor/cli@8.0.0',
+verify	Install dependencies	2025-12-31T06:57:15.3958516Z npm warn EBADENGINE   required: { node: '>=22.0.0' },
+verify	Install dependencies	2025-12-31T06:57:15.3960170Z npm warn EBADENGINE   current: { node: 'v20.19.6', npm: '10.8.2' }
+verify	Install dependencies	2025-12-31T06:57:15.3961176Z npm warn EBADENGINE }
+verify	Install dependencies	2025-12-31T06:57:15.3962351Z npm warn EBADENGINE Unsupported engine {
+verify	Install dependencies	2025-12-31T06:57:15.3963569Z npm warn EBADENGINE   package: 'camera-controls@3.1.2',
+verify	Install dependencies	2025-12-31T06:57:15.3965011Z npm warn EBADENGINE   required: { node: '>=22.0.0', npm: '>=10.5.1' },
+verify	Install dependencies	2025-12-31T06:57:15.3966537Z npm warn EBADENGINE   current: { node: 'v20.19.6', npm: '10.8.2' }
+verify	Install dependencies	2025-12-31T06:57:15.3973235Z npm warn EBADENGINE }
+verify	Install dependencies	2025-12-31T06:57:15.4120062Z npm error code EUSAGE
+verify	Install dependencies	2025-12-31T06:57:15.4122597Z npm error
+verify	Install dependencies	2025-12-31T06:57:15.4126242Z npm error `npm ci` can only install packages when your package.json and package-lock.json or npm-shrinkwrap.json are in sync. Please update your lock file with `npm install` before continuing.
+verify	Install dependencies	2025-12-31T06:57:15.4129287Z npm error
+verify	Install dependencies	2025-12-31T06:57:15.4131668Z npm error Missing: magicast@0.3.5 from lock file
+verify	Install dependencies	2025-12-31T06:57:15.4134277Z npm error
+verify	Install dependencies	2025-12-31T06:57:15.4136598Z npm error Clean install a project
+verify	Install dependencies	2025-12-31T06:57:15.4138789Z npm error
+verify	Install dependencies	2025-12-31T06:57:15.4140759Z npm error Usage:
+verify	Install dependencies	2025-12-31T06:57:15.4143363Z npm error npm ci
+verify	Install dependencies	2025-12-31T06:57:15.4145198Z npm error
+verify	Install dependencies	2025-12-31T06:57:15.4146958Z npm error Options:
+verify	Install dependencies	2025-12-31T06:57:15.4149076Z npm error [--install-strategy <hoisted|nested|shallow|linked>] [--legacy-bundling]
+verify	Install dependencies	2025-12-31T06:57:15.4151805Z npm error [--global-style] [--omit <dev|optional|peer> [--omit <dev|optional|peer> ...]]
+verify	Install dependencies	2025-12-31T06:57:15.4154344Z npm error [--include <prod|dev|optional|peer> [--include <prod|dev|optional|peer> ...]]
+verify	Install dependencies	2025-12-31T06:57:15.4155447Z npm error [--strict-peer-deps] [--foreground-scripts] [--ignore-scripts] [--no-audit]
+verify	Install dependencies	2025-12-31T06:57:15.4156282Z npm error [--no-bin-links] [--no-fund] [--dry-run]
+verify	Install dependencies	2025-12-31T06:57:15.4157116Z npm error [-w|--workspace <workspace-name> [-w|--workspace <workspace-name> ...]]
+verify	Install dependencies	2025-12-31T06:57:15.4158077Z npm error [-ws|--workspaces] [--include-workspace-root] [--install-links]
+verify	Install dependencies	2025-12-31T06:57:15.4158641Z npm error
+verify	Install dependencies	2025-12-31T06:57:15.4159200Z npm error aliases: clean-install, ic, install-clean, isntall-clean
+verify	Install dependencies	2025-12-31T06:57:15.4159746Z npm error
+verify	Install dependencies	2025-12-31T06:57:15.4160140Z npm error Run "npm help ci" for more info
+verify	Install dependencies	2025-12-31T06:57:15.4161123Z npm error A complete log of this run can be found in: /home/runner/.npm/_logs/2025-12-31T06_57_13_989Z-debug-0.log
+verify	Install dependencies	2025-12-31T06:57:25.9381675Z ##[warning]Attempt 1 failed. Reason: Child_process exited with error code 1
+verify	Install dependencies	2025-12-31T06:57:25.9392296Z ##[endgroup]
+verify	Install dependencies	2025-12-31T06:57:25.9393181Z ##[group]Attempt 2
+verify	Install dependencies	2025-12-31T06:57:26.8924006Z npm warn EBADENGINE Unsupported engine {
+verify	Install dependencies	2025-12-31T06:57:26.8953882Z npm warn EBADENGINE   package: '@capacitor/cli@8.0.0',
+verify	Install dependencies	2025-12-31T06:57:26.8954701Z npm warn EBADENGINE   required: { node: '>=22.0.0' },
+verify	Install dependencies	2025-12-31T06:57:26.8955454Z npm warn EBADENGINE   current: { node: 'v20.19.6', npm: '10.8.2' }
+verify	Install dependencies	2025-12-31T06:57:26.8956545Z npm warn EBADENGINE }
+verify	Install dependencies	2025-12-31T06:57:26.8969935Z npm warn EBADENGINE Unsupported engine {
+verify	Install dependencies	2025-12-31T06:57:26.8970796Z npm warn EBADENGINE   package: 'camera-controls@3.1.2',
+verify	Install dependencies	2025-12-31T06:57:26.8971787Z npm warn EBADENGINE   required: { node: '>=22.0.0', npm: '>=10.5.1' },
+verify	Install dependencies	2025-12-31T06:57:26.8973934Z npm warn EBADENGINE   current: { node: 'v20.19.6', npm: '10.8.2' }
+verify	Install dependencies	2025-12-31T06:57:26.8974635Z npm warn EBADENGINE }
+verify	Install dependencies	2025-12-31T06:57:26.9184812Z npm error code EUSAGE
+verify	Install dependencies	2025-12-31T06:57:26.9197709Z npm error
+verify	Install dependencies	2025-12-31T06:57:26.9216250Z npm error `npm ci` can only install packages when your package.json and package-lock.json or npm-shrinkwrap.json are in sync. Please update your lock file with `npm install` before continuing.
+verify	Install dependencies	2025-12-31T06:57:26.9217889Z npm error
+verify	Install dependencies	2025-12-31T06:57:26.9218545Z npm error Missing: magicast@0.3.5 from lock file
+verify	Install dependencies	2025-12-31T06:57:26.9219023Z npm error
+verify	Install dependencies	2025-12-31T06:57:26.9219410Z npm error Clean install a project
+verify	Install dependencies	2025-12-31T06:57:26.9219819Z npm error
+verify	Install dependencies	2025-12-31T06:57:26.9220096Z npm error Usage:
+verify	Install dependencies	2025-12-31T06:57:26.9220412Z npm error npm ci
+verify	Install dependencies	2025-12-31T06:57:26.9220700Z npm error
+verify	Install dependencies	2025-12-31T06:57:26.9221000Z npm error Options:
+verify	Install dependencies	2025-12-31T06:57:26.9221713Z npm error [--install-strategy <hoisted|nested|shallow|linked>] [--legacy-bundling]
+verify	Install dependencies	2025-12-31T06:57:26.9223064Z npm error [--global-style] [--omit <dev|optional|peer> [--omit <dev|optional|peer> ...]]
+verify	Install dependencies	2025-12-31T06:57:26.9224534Z npm error [--include <prod|dev|optional|peer> [--include <prod|dev|optional|peer> ...]]
+verify	Install dependencies	2025-12-31T06:57:26.9225663Z npm error [--strict-peer-deps] [--foreground-scripts] [--ignore-scripts] [--no-audit]
+verify	Install dependencies	2025-12-31T06:57:26.9226528Z npm error [--no-bin-links] [--no-fund] [--dry-run]
+verify	Install dependencies	2025-12-31T06:57:26.9227404Z npm error [-w|--workspace <workspace-name> [-w|--workspace <workspace-name> ...]]
+verify	Install dependencies	2025-12-31T06:57:26.9228400Z npm error [-ws|--workspaces] [--include-workspace-root] [--install-links]
+verify	Install dependencies	2025-12-31T06:57:26.9229126Z npm error
+verify	Install dependencies	2025-12-31T06:57:26.9229752Z npm error aliases: clean-install, ic, install-clean, isntall-clean
+verify	Install dependencies	2025-12-31T06:57:26.9230341Z npm error
+verify	Install dependencies	2025-12-31T06:57:26.9230807Z npm error Run "npm help ci" for more info
+verify	Install dependencies	2025-12-31T06:57:26.9231875Z npm error A complete log of this run can be found in: /home/runner/.npm/_logs/2025-12-31T06_57_25_999Z-debug-0.log
+verify	Install dependencies	2025-12-31T06:57:36.9498941Z ##[warning]Attempt 2 failed. Reason: Child_process exited with error code 1
+verify	Install dependencies	2025-12-31T06:57:36.9501615Z ##[endgroup]
+verify	Install dependencies	2025-12-31T06:57:36.9502279Z ##[group]Attempt 3
+verify	Install dependencies	2025-12-31T06:57:37.9268357Z npm warn EBADENGINE Unsupported engine {
+verify	Install dependencies	2025-12-31T06:57:37.9270435Z npm warn EBADENGINE   package: '@capacitor/cli@8.0.0',
+verify	Install dependencies	2025-12-31T06:57:37.9272305Z npm warn EBADENGINE   required: { node: '>=22.0.0' },
+verify	Install dependencies	2025-12-31T06:57:37.9274544Z npm warn EBADENGINE   current: { node: 'v20.19.6', npm: '10.8.2' }
+verify	Install dependencies	2025-12-31T06:57:37.9276952Z npm warn EBADENGINE }
+verify	Install dependencies	2025-12-31T06:57:37.9353501Z npm warn EBADENGINE Unsupported engine {
+verify	Install dependencies	2025-12-31T06:57:37.9354616Z npm warn EBADENGINE   package: 'camera-controls@3.1.2',
+verify	Install dependencies	2025-12-31T06:57:37.9355879Z npm warn EBADENGINE   required: { node: '>=22.0.0', npm: '>=10.5.1' },
+verify	Install dependencies	2025-12-31T06:57:37.9376456Z npm warn EBADENGINE   current: { node: 'v20.19.6', npm: '10.8.2' }
+verify	Install dependencies	2025-12-31T06:57:37.9377416Z npm warn EBADENGINE }
+verify	Install dependencies	2025-12-31T06:57:37.9547616Z npm error code EUSAGE
+verify	Install dependencies	2025-12-31T06:57:37.9552476Z npm error
+verify	Install dependencies	2025-12-31T06:57:37.9554256Z npm error `npm ci` can only install packages when your package.json and package-lock.json or npm-shrinkwrap.json are in sync. Please update your lock file with `npm install` before continuing.
+verify	Install dependencies	2025-12-31T06:57:37.9555598Z npm error
+verify	Install dependencies	2025-12-31T06:57:37.9556093Z npm error Missing: magicast@0.3.5 from lock file
+verify	Install dependencies	2025-12-31T06:57:37.9556586Z npm error
+verify	Install dependencies	2025-12-31T06:57:37.9557005Z npm error Clean install a project
+verify	Install dependencies	2025-12-31T06:57:37.9557409Z npm error
+verify	Install dependencies	2025-12-31T06:57:37.9557708Z npm error Usage:
+verify	Install dependencies	2025-12-31T06:57:37.9558033Z npm error npm ci
+verify	Install dependencies	2025-12-31T06:57:37.9558361Z npm error
+verify	Install dependencies	2025-12-31T06:57:37.9558702Z npm error Options:
+verify	Install dependencies	2025-12-31T06:57:37.9559803Z npm error [--install-strategy <hoisted|nested|shallow|linked>] [--legacy-bundling]
+verify	Install dependencies	2025-12-31T06:57:37.9560934Z npm error [--global-style] [--omit <dev|optional|peer> [--omit <dev|optional|peer> ...]]
+verify	Install dependencies	2025-12-31T06:57:37.9562083Z npm error [--include <prod|dev|optional|peer> [--include <prod|dev|optional|peer> ...]]
+verify	Install dependencies	2025-12-31T06:57:37.9563462Z npm error [--strict-peer-deps] [--foreground-scripts] [--ignore-scripts] [--no-audit]
+verify	Install dependencies	2025-12-31T06:57:37.9564381Z npm error [--no-bin-links] [--no-fund] [--dry-run]
+verify	Install dependencies	2025-12-31T06:57:37.9565269Z npm error [-w|--workspace <workspace-name> [-w|--workspace <workspace-name> ...]]
+verify	Install dependencies	2025-12-31T06:57:37.9566282Z npm error [-ws|--workspaces] [--include-workspace-root] [--install-links]
+verify	Install dependencies	2025-12-31T06:57:37.9570353Z npm error
+verify	Install dependencies	2025-12-31T06:57:37.9571015Z npm error aliases: clean-install, ic, install-clean, isntall-clean
+verify	Install dependencies	2025-12-31T06:57:37.9571556Z npm error
+verify	Install dependencies	2025-12-31T06:57:37.9571961Z npm error Run "npm help ci" for more info
+verify	Install dependencies	2025-12-31T06:57:37.9573328Z npm error A complete log of this run can be found in: /home/runner/.npm/_logs/2025-12-31T06_57_37_014Z-debug-0.log
+verify	Install dependencies	2025-12-31T06:57:48.9640297Z ##[endgroup]
+verify	Install dependencies	2025-12-31T06:57:48.9651690Z ##[error]Final attempt failed. Child_process exited with error code 1
+verify	Post Run actions/checkout@v6	﻿2025-12-31T06:57:48.9765666Z Post job cleanup.
+verify	Post Run actions/checkout@v6	2025-12-31T06:57:49.0598812Z [command]/usr/bin/git version
+verify	Post Run actions/checkout@v6	2025-12-31T06:57:49.0642094Z git version 2.52.0
+verify	Post Run actions/checkout@v6	2025-12-31T06:57:49.0718265Z Temporarily overriding HOME='/home/runner/work/_temp/67fbe698-3880-4d14-a719-3f77bfc41316' before making global git config changes
+verify	Post Run actions/checkout@v6	2025-12-31T06:57:49.0722393Z Adding repository directory to the temporary git global config as a safe directory
+verify	Post Run actions/checkout@v6	2025-12-31T06:57:49.0725430Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/IronForge/IronForge
+verify	Post Run actions/checkout@v6	2025-12-31T06:57:49.0764887Z Removing SSH command configuration
+verify	Post Run actions/checkout@v6	2025-12-31T06:57:49.0772342Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+verify	Post Run actions/checkout@v6	2025-12-31T06:57:49.0815153Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+verify	Post Run actions/checkout@v6	2025-12-31T06:57:49.1069388Z Removing HTTP extra header
+verify	Post Run actions/checkout@v6	2025-12-31T06:57:49.1076512Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+verify	Post Run actions/checkout@v6	2025-12-31T06:57:49.1118430Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+verify	Post Run actions/checkout@v6	2025-12-31T06:57:49.1363566Z Removing includeIf entries pointing to credentials config files
+verify	Post Run actions/checkout@v6	2025-12-31T06:57:49.1369288Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+verify	Post Run actions/checkout@v6	2025-12-31T06:57:49.1397614Z includeif.gitdir:/home/runner/work/IronForge/IronForge/.git.path
+verify	Post Run actions/checkout@v6	2025-12-31T06:57:49.1400279Z includeif.gitdir:/home/runner/work/IronForge/IronForge/.git/worktrees/*.path
+verify	Post Run actions/checkout@v6	2025-12-31T06:57:49.1401237Z includeif.gitdir:/github/workspace/.git.path
+verify	Post Run actions/checkout@v6	2025-12-31T06:57:49.1401992Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+verify	Post Run actions/checkout@v6	2025-12-31T06:57:49.1411769Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/IronForge/IronForge/.git.path
+verify	Post Run actions/checkout@v6	2025-12-31T06:57:49.1435677Z /home/runner/work/_temp/git-credentials-04be8d80-c6ae-43cb-b9b3-89210f3cbd99.config
+verify	Post Run actions/checkout@v6	2025-12-31T06:57:49.1448473Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/IronForge/IronForge/.git.path /home/runner/work/_temp/git-credentials-04be8d80-c6ae-43cb-b9b3-89210f3cbd99.config
+verify	Post Run actions/checkout@v6	2025-12-31T06:57:49.1488322Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/IronForge/IronForge/.git/worktrees/*.path
+verify	Post Run actions/checkout@v6	2025-12-31T06:57:49.1513449Z /home/runner/work/_temp/git-credentials-04be8d80-c6ae-43cb-b9b3-89210f3cbd99.config
+verify	Post Run actions/checkout@v6	2025-12-31T06:57:49.1526185Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/IronForge/IronForge/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-04be8d80-c6ae-43cb-b9b3-89210f3cbd99.config
+verify	Post Run actions/checkout@v6	2025-12-31T06:57:49.1561494Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+verify	Post Run actions/checkout@v6	2025-12-31T06:57:49.1585595Z /github/runner_temp/git-credentials-04be8d80-c6ae-43cb-b9b3-89210f3cbd99.config
+verify	Post Run actions/checkout@v6	2025-12-31T06:57:49.1597521Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-04be8d80-c6ae-43cb-b9b3-89210f3cbd99.config
+verify	Post Run actions/checkout@v6	2025-12-31T06:57:49.1631385Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+verify	Post Run actions/checkout@v6	2025-12-31T06:57:49.1669333Z /github/runner_temp/git-credentials-04be8d80-c6ae-43cb-b9b3-89210f3cbd99.config
+verify	Post Run actions/checkout@v6	2025-12-31T06:57:49.1673692Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-04be8d80-c6ae-43cb-b9b3-89210f3cbd99.config
+verify	Post Run actions/checkout@v6	2025-12-31T06:57:49.1734698Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+verify	Post Run actions/checkout@v6	2025-12-31T06:57:49.2117314Z Removing credentials config '/home/runner/work/_temp/git-credentials-04be8d80-c6ae-43cb-b9b3-89210f3cbd99.config'
+verify	Complete job	﻿2025-12-31T06:57:49.2301627Z Cleaning up orphan processes
