@@ -133,7 +133,7 @@ export function TitanXPBar({
             className={`font-mono font-bold text-sm ${isElite ? "text-white" : isRested ? "text-blue-400" : "text-[#ffd700]"}`}
           >
             {animatedXP}
-            <span className="text-zinc-600 mx-1">/</span>
+            <span className="text-zinc-500 mx-1">/</span>
             {maxXP} XP
           </span>
         </div>

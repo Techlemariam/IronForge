@@ -83,6 +83,7 @@
   - Distance Race (running + cycling)
   - Speed Demon (running + cycling)
   - Elevation Grind (cycling)
+- [ ] **Territory Conquest** ([Spec](specs/territory-conquest.md)) <!-- status: planned | priority: medium | roi: 4.2 | effort: M | source: user/idea | date: 2025-12-31 -->
 - [ ] **Housing/Citadel Customization** ([Spec](specs/housing-citadel.md)) <!-- status: planned | priority: medium | roi: 4.2 | effort: M | source: brainstorm -->
 - [ ] **Premium Cosmetics Store** ([Spec](specs/premium-cosmetics.md)) <!-- status: planned | priority: medium | roi: 4.0 | effort: M | source: brainstorm -->
 

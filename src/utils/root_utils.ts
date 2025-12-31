@@ -416,7 +416,8 @@ class AudioController {
       | "mystery_alert"
       | "ui_click"
       | "ui_hover"
-      | "ui_error",
+      | "ui_error"
+      | "heartbeat",
   ) {
     const ctx = this.getContext();
     if (!ctx || !this.masterGain) return;
@@ -544,6 +545,17 @@ class AudioController {
         osc.start(now);
         osc.stop(now + 0.2);
         break;
+
+      case "heartbeat":
+        // Low drum-like thud
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(60, now);
+        osc.frequency.exponentialRampToValueAtTime(40, now + 0.1);
+        gain.gain.setValueAtTime(0.8, now); // Louder start
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+        osc.start(now);
+        osc.stop(now + 0.15);
+        break;
     }
   }
 }
@@ -561,7 +573,8 @@ export const playSound = (
     | "mystery_alert"
     | "ui_click"
     | "ui_hover"
-    | "ui_error",
+    | "ui_error"
+    | "heartbeat",
 ) => {
   audioController.play(type);
 };

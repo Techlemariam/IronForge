@@ -74,13 +74,13 @@ const SetLogForm: React.FC<SetLogFormProps> = ({
             <div className="flex gap-2">
               <button
                 onClick={() => adjustWeight(-10)}
-                className="text-[10px] text-zinc-600 font-mono px-2 border border-zinc-800 rounded hover:text-white"
+                className="text-[10px] text-zinc-500 font-mono px-2 border border-zinc-800 rounded hover:text-white"
               >
                 -10
               </button>
               <button
                 onClick={() => adjustWeight(10)}
-                className="text-[10px] text-zinc-600 font-mono px-2 border border-zinc-800 rounded hover:text-white"
+                className="text-[10px] text-zinc-500 font-mono px-2 border border-zinc-800 rounded hover:text-white"
               >
                 +10
               </button>
@@ -133,11 +133,10 @@ const SetLogForm: React.FC<SetLogFormProps> = ({
                 key={val}
                 onClick={() => setRpe(val)}
                 className={`h-12 rounded border-2 font-mono font-bold text-lg transition-all duration-200 
-                            ${
-                              rpe === val
-                                ? "bg-magma border-magma-glow text-white shadow-[0_0_15px_#ff4500] translate-y-[-2px]"
-                                : "bg-zinc-900 border-zinc-800 text-zinc-500 hover:border-zinc-600 hover:text-zinc-300"
-                            }`}
+                            ${rpe === val
+                    ? "bg-magma border-magma-glow text-white shadow-[0_0_15px_#ff4500] translate-y-[-2px]"
+                    : "bg-zinc-900 border-zinc-800 text-zinc-500 hover:border-zinc-600 hover:text-zinc-300"
+                  }`}
               >
                 {val}
               </button>
@@ -150,11 +149,10 @@ const SetLogForm: React.FC<SetLogFormProps> = ({
           onClick={handleLog}
           disabled={rpe === null}
           className={`w-full py-4 font-black text-xl uppercase tracking-[0.2em] rounded clip-path-polygon transition-all duration-300
-                ${
-                  rpe !== null
-                    ? "bg-gradient-to-r from-magma to-orange-600 text-white shadow-[0_0_20px_rgba(255,69,0,0.4)] hover:shadow-[0_0_30px_rgba(255,69,0,0.6)] hover:scale-[1.01]"
-                    : "bg-zinc-800 text-zinc-600 cursor-not-allowed"
-                }
+                ${rpe !== null
+              ? "bg-gradient-to-r from-magma to-orange-600 text-white shadow-[0_0_20px_rgba(255,69,0,0.4)] hover:shadow-[0_0_30px_rgba(255,69,0,0.6)] hover:scale-[1.01]"
+              : "bg-zinc-800 text-zinc-600 cursor-not-allowed"
+            }
             `}
           style={{
             clipPath:

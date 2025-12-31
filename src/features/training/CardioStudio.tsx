@@ -44,6 +44,7 @@ import { ChaseEngine } from "@/services/game/ChaseEngine";
 import { ChaseState, ChaseDifficulty } from "@/types/chase";
 import { updateCardioDuelProgressAction } from "@/actions/duel";
 import { toast } from "sonner";
+import { playSound } from "@/utils/root_utils";
 
 // Dynamic import to avoid SSR issues with react-player
 const ReactPlayer = dynamic(() => import("react-player/lazy"), { ssr: false });
@@ -139,6 +140,7 @@ export default function CardioStudio(props: CardioStudioProps) {
   // Handle chase caught - trigger combat
   const handleChaseCaught = useCallback(() => {
     // For now, just reset the chase. In future: trigger CombatArena
+    playSound("fail");
     toast.error("You were caught! Combat would trigger here.");
     const chaser = ChaseEngine.getRandomChaser();
     if (chaser) {
@@ -148,6 +150,7 @@ export default function CardioStudio(props: CardioStudioProps) {
 
   // Handle chase escaped - give rewards
   const handleChaseEscaped = useCallback(() => {
+    playSound("loot_epic");
     toast.success("You escaped! +50 XP, +25 Gold");
     const chaser = ChaseEngine.getRandomChaser();
     if (chaser) {
@@ -202,8 +205,8 @@ export default function CardioStudio(props: CardioStudioProps) {
                   }
                 }}
                 className={`flex-1 py-1 text-xs font-bold uppercase rounded transition-colors ${chaseDifficulty === d
-                    ? "bg-orange-600 text-white"
-                    : "bg-zinc-800 text-zinc-400 hover:bg-zinc-700"
+                  ? "bg-orange-600 text-white"
+                  : "bg-zinc-800 text-zinc-400 hover:bg-zinc-700"
                   }`}
               >
                 {d}
@@ -945,11 +948,11 @@ function CardioCockpit({
           <kbd className="px-1.5 py-0.5 bg-zinc-800 rounded text-zinc-400">
             Space
           </kbd>
-          <span className="text-zinc-600">Play/Pause</span>
+          <span className="text-zinc-500">Play/Pause</span>
           <kbd className="px-1.5 py-0.5 bg-zinc-800 rounded text-zinc-400 ml-2">
             M
           </kbd>
-          <span className="text-zinc-600">Mute</span>
+          <span className="text-zinc-500">Mute</span>
           <kbd className="px-1.5 py-0.5 bg-zinc-800 rounded text-zinc-400 ml-2">
             1-3
           </kbd>

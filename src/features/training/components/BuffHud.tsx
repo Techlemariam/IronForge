@@ -132,7 +132,7 @@ const BuffHud: React.FC<BuffHudProps> = ({
         />
 
         {metric === "hr" ? (
-          <div className="flex justify-between text-[10px] text-zinc-600 px-1 font-mono">
+          <div className="flex justify-between text-[10px] text-zinc-500 px-1 font-mono">
             <span>Z1</span>
             <span>Z2</span>
             <span>Z3</span>
@@ -140,7 +140,7 @@ const BuffHud: React.FC<BuffHudProps> = ({
             <span>Z5</span>
           </div>
         ) : (
-          <div className="flex justify-between text-[10px] text-zinc-600 px-1 font-mono">
+          <div className="flex justify-between text-[10px] text-zinc-500 px-1 font-mono">
             <span>Min</span>
             <span>Avg</span>
             <span>Max</span>

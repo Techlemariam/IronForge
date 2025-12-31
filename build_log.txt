@@ -8,15 +8,12 @@
      ┬À clientTraceMetadata
 
    Creating an optimized production build ...
- ÔÜá Found lockfile missing swc dependencies, run next locally to automatically patch
+ ÔÜá Found lockfile missing swc dependencies, patching...
  Ô£ô (serwist) Bundling the service worker script with the URL '/sw.js' and the scope '/'...
-
-warn - The class `ease-[cubic-bezier(0.22,1,0.36,1)]` is ambiguous and matches multiple utilities.
-warn - If this is content and not a class, replace it with `ease-&lsqb;cubic-bezier(0.22,1,0.36,1)&rsqb;` to silence this warning.
- Ô£ô Compiled successfully in 21.7s
+ Ô¿» Failed to patch lockfile, please try uninstalling and reinstalling next in this workspace
+[TypeError: Cannot read properties of undefined (reading 'os')]
+ Ô£ô Compiled successfully in 55s
    Linting and checking validity of types ...
-
-Failed to compile.
 
 ./src/components/gamification/OvertrainingBanner.tsx
 23:6  Warning: React Hook useEffect has a missing dependency: 'checkStatus'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
@@ -31,9 +28,20 @@ Failed to compile.
 78:21  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
 
 ./src/features/training/CardioStudio.tsx
-505:6  Warning: React Hook useEffect has missing dependencies: 'activeDuel' and 'sessionDuration'. Either include them or remove the dependency array. If 'setTotalDistanceKm' needs the current value of 'activeDuel', you can also switch to useReducer instead of useState and read 'activeDuel' in the reducer.  react-hooks/exhaustive-deps
-
-./src/hooks/useOfflineMode.ts
-59:1  Error: Parsing error: Declaration or statement expected.
+631:6  Warning: React Hook useEffect has a missing dependency: 'sessionDuration'. Either include it or remove the dependency array. You can also replace multiple useState variables with useReducer if 'setTotalDistanceKm' needs the current value of 'sessionDuration'.  react-hooks/exhaustive-deps
 
 info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
+Failed to compile.
+
+./src/app/iron-arena/ArenaClient.tsx:19:26
+Type error: Type '"id" | "heroName" | "level" | "image"' does not satisfy the constraint '"id" | "createdAt" | "heroName" | "email" | "gold" | "level" | "totalExperience" | "kineticEnergy" | "bodyWeight" | "intervalsApiKey" | "intervalsAthleteId" | "hevyApiKey" | ... 34 more ... | "homeLongitude"'.
+  Type '"image"' is not assignable to type '"id" | "createdAt" | "heroName" | "email" | "gold" | "level" | "totalExperience" | "kineticEnergy" | "bodyWeight" | "intervalsApiKey" | "intervalsAthleteId" | "hevyApiKey" | ... 34 more ... | "homeLongitude"'.
+
+  17 | // Extended type matches what we return from getDuelStatusAction
+  18 | export type ExtendedDuel = DuelChallenge & {
+> 19 |   challenger: Pick<User, "id" | "heroName" | "level" | "image">;
+     |                          ^
+  20 |   defender: Pick<User, "id" | "heroName" | "level" | "image">;
+  21 | };
+  22 |
+Next.js build worker exited with code: 1 and signal: null

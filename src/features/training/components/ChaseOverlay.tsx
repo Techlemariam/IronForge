@@ -6,6 +6,7 @@ import { AlertTriangle, Trophy, Skull, Footprints, Zap } from "lucide-react";
 import { ChaseState, ChaseDifficulty } from "@/types/chase";
 import { ChaseEngine } from "@/services/game/ChaseEngine";
 import { cn } from "@/lib/utils";
+import { playSound } from "@/utils/root_utils";
 
 interface ChaseOverlayProps {
     chaseState: ChaseState;
@@ -45,17 +46,29 @@ export function ChaseOverlay({
 
     const bgPulse = dangerLevel > 0.7 && !chaseState.isCaught && !chaseState.hasEscaped;
 
+    // Heartbeat Effect
+    React.useEffect(() => {
+        if (dangerLevel > 0.8 && !chaseState.isCaught && !chaseState.hasEscaped) {
+            const interval = setInterval(() => {
+                playSound("heartbeat");
+            }, 1000 * (1 - dangerLevel * 0.5)); // Faster heartbeat as danger increases
+            return () => clearInterval(interval);
+        }
+    }, [dangerLevel, chaseState.isCaught, chaseState.hasEscaped]);
+
     // Gap percentage for progress bar (0-100)
     const gapPercentage = Math.max(
         0,
         Math.min(100, (chaseState.distanceGapMeters / chaseState.escapeDistanceMeters) * 100)
     );
 
+    const paceDelta = currentPaceKph - requiredPace;
+
     return (
         <div
             className={cn(
-                "absolute inset-x-0 top-0 z-50 pointer-events-none",
-                bgPulse && "animate-pulse"
+                "absolute inset-x-0 top-0 z-50 pointer-events-none transition-all duration-500",
+                bgPulse && "animate-pulse bg-red-900/20"
             )}
         >
             {/* Main Chase HUD */}
@@ -77,7 +90,7 @@ export function ChaseOverlay({
 
                         {/* Required Pace Indicator */}
                         <div className="text-right">
-                            <p className="text-xs text-zinc-500 uppercase">Required Pace</p>
+                            <p className="text-xs text-zinc-400 uppercase">Required Pace</p>
                             <p className="font-mono text-lg font-bold text-cyan-400">
                                 {requiredPace.toFixed(1)} km/h
                             </p>
@@ -159,16 +172,19 @@ export function ChaseOverlay({
                             >
                                 {currentPaceKph.toFixed(1)} km/h
                             </p>
+                            <p className={cn("text-xs font-mono", paceDelta >= 0 ? "text-green-500" : "text-red-500")}>
+                                {paceDelta >= 0 ? "+" : ""}{paceDelta.toFixed(1)}
+                            </p>
                         </div>
-                        <div className="border-l border-zinc-800 pl-6">
-                            <p className="text-xs text-zinc-500">Time</p>
+                        <div className="border-l border-zinc-700 pl-6">
+                            <p className="text-xs text-zinc-400">Time</p>
                             <p className="font-mono text-xl font-bold text-white">
                                 {Math.floor(chaseState.elapsedSeconds / 60)}:
                                 {String(Math.floor(chaseState.elapsedSeconds % 60)).padStart(2, "0")}
                             </p>
                         </div>
-                        <div className="border-l border-zinc-800 pl-6">
-                            <p className="text-xs text-zinc-500">Distance</p>
+                        <div className="border-l border-zinc-700 pl-6">
+                            <p className="text-xs text-zinc-400">Distance</p>
                             <p className="font-mono text-xl font-bold text-cyan-400">
                                 {(chaseState.playerDistanceMeters / 1000).toFixed(2)} km
                             </p>

@@ -5,9 +5,10 @@ description: End-to-end feature pipeline from idea to tested code
 Trigger: Manual
 
 # Identity
-Du är en **Orchestration Engine** som koordinerar IronForges agentflotta. Din uppgift är att ta ett embryo till en idé och leda det genom hela produktionskedjan enligt `.agent/features/roadmap.md`.
+**Role**: Orchestration Engine.
+**Goal**: Lead feature lifecycle from idea to roadmap delivery (`.agent/features/roadmap.md`).
 
-# Protocol (Execution Chain)
+# Protocol
 
 ## Phase 0: Roadmap Sync
 1. Läs `.agent/features/roadmap.md`.

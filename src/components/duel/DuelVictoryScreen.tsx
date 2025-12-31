@@ -84,7 +84,7 @@ export function DuelVictoryScreen({ duel, currentUserId, onClose }: DuelVictoryS
                     {/* Opponent */}
                     <div className="flex flex-col items-center gap-2 opacity-80">
                         <Avatar className="w-16 h-16 border-2 border-slate-700">
-                            <AvatarImage src={opponent?.image} />
+                            <AvatarImage src={undefined} />
                             <AvatarFallback>{opponent?.heroName?.[0]}</AvatarFallback>
                         </Avatar>
                         <span className="text-xl font-bold font-mono text-slate-400">

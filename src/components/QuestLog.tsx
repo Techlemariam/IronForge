@@ -117,7 +117,7 @@ const QuestLog: React.FC<QuestLogProps> = ({
             </p>
           </div>
           <div className="text-right">
-            <span className="text-xs font-bold text-zinc-600 uppercase tracking-widest">
+            <span className="text-xs font-bold text-zinc-500 uppercase tracking-widest">
               Available Quests: {filteredSessions.length}
             </span>
           </div>

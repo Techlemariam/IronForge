@@ -106,7 +106,7 @@ export function DuelCard({ duel, currentUserId, onTaunt }: DuelCardProps) {
           <div className="flex flex-col items-center gap-2 text-center w-1/3">
             <div className="relative">
               <Avatar className="w-16 h-16 border-2 border-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.5)]">
-                <AvatarImage src={user.image || undefined} />
+                <AvatarImage src={undefined} />
                 <AvatarFallback className="bg-slate-800 text-blue-500">
                   {user.heroName?.[0] || "U"}
                 </AvatarFallback>
@@ -134,7 +134,7 @@ export function DuelCard({ duel, currentUserId, onTaunt }: DuelCardProps) {
           <div className="flex flex-col items-center gap-2 text-center w-1/3">
             <div className="relative">
               <Avatar className="w-16 h-16 border-2 border-red-500 shadow-[0_0_15px_rgba(239,68,68,0.5)]">
-                <AvatarImage src={opponent.image || undefined} />
+                <AvatarImage src={undefined} />
                 <AvatarFallback className="bg-slate-800 text-red-500">
                   {opponent.heroName?.[0] || "O"}
                 </AvatarFallback>

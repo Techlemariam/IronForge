@@ -119,10 +119,10 @@ export class OracleService {
   private static calculateCombinedHistory(
     start: Date,
     end: Date,
-    localCardio: any[],
-    localStrength: any[],
+    localCardio: unknown[],
+    localStrength: unknown[],
     remoteCardio: IntervalsActivity[],
-    remoteStrength: any[],
+    remoteStrength: unknown[],
   ): Map<string, DailyLoad> {
     const loads = new Map<string, DailyLoad>();
 
