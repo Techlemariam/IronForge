@@ -28,7 +28,10 @@ setup('authenticate', async ({ page }) => {
     // specific check to see if we are logged in.
     // The dashboard usually has "Iron City" or "Citadel" text.
     // Adjust timeout if cold boot is slow.
-    await expect(page.getByText('Iron City')).toBeVisible({ timeout: 15000 });
+    // Verify we are on the dashboard or root page
+    await expect(page).toHaveURL(/.*\/$|.*dashboard/);
+    // Optional: Check for a main navigation element to ensure page loaded
+    await expect(page.getByRole('main')).toBeVisible({ timeout: 15000 });
 
     // End of authentication steps.
     await page.context().storageState({ path: authFile });

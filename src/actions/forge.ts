@@ -15,6 +15,8 @@ const MOCK_INVENTORY_KEY = "mock_inventory_state";
 // Helper to get inventory (Replace with DB call later)
 async function getInventory(userId: string): Promise<UserInventory> {
   // TODO: Fetch from actual DB
+  // Current Block: Database schema 'UserEquipment' does not support stackable items (count).
+  // Requires schema update to support resources/materials.
   // For now, we simulate a basic inventory so the UI works
   return {
     userId,

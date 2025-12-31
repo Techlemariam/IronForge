@@ -14,8 +14,15 @@ interface HevyWebhookEvent {
 export async function POST(request: NextRequest) {
   try {
     // 1. Verify Secret (Authorization Header from Hevy)
+    // 1. Verify Secret (Authorization Header from Hevy)
     const authHeader = request.headers.get("Authorization");
-    // TODO: Validate against HEVY_WEBHOOK_SECRET if configured
+    const secret = process.env.HEVY_WEBHOOK_SECRET;
+
+    // Only validate if secret is configured (to avoid breaking dev if not set)
+    if (secret && authHeader !== secret) {
+      console.warn("[Hevy Webhook] Unauthorized attempt. Invalid Secret.");
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
     console.log("[Hevy Webhook] Received request. Auth:", authHeader);
 

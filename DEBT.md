@@ -45,6 +45,7 @@
 | 2025-12-29 | `src/components/ui/progress.tsx` | Missing shadcn component added | @cleanup | ✅ Resolved |
 | 2025-12-29 | `src/app/globals.css` | Fixed corrupted file/syntax error | @cleanup | ✅ Resolved |
 | 2025-12-29 | `tailwind.config.js` | Fixed quoting syntax error | @cleanup | ✅ Resolved |
+| 2025-12-31 | `src/actions/forge.ts` | Missing DB implementation for inventory (blocked by schema) | @architect | 🔴 Open |
 
 ---
 
