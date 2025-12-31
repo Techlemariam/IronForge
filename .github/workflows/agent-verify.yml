@@ -28,7 +28,7 @@ jobs:
         with:
           timeout_minutes: 10
           max_attempts: 3
-          command: npm ci
+          command: npm install
       - name: Generate Prisma Client
         run: npx prisma generate
       - name: Install Playwright Browsers
