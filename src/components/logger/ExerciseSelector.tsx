@@ -142,7 +142,7 @@ function CreateExerciseDialog({ initialName, onSuccess }: { initialName: string,
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
-                <ForgeButton size="sm" variant="outline" className="gap-2">
+                <ForgeButton size="sm" variant="default" className="gap-2">
                     <Plus className="h-4 w-4" />
                     Create &quot;{initialName}&quot;
                 </ForgeButton>

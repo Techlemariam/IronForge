@@ -49,7 +49,7 @@ export async function searchExercisesAction(query: string) {
     }
 }
 
-export async function createExerciseAction(data: z.infer<typeof CreateExerciseSchema>) {
+export async function createExerciseAction(data: z.input<typeof CreateExerciseSchema>) {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
 

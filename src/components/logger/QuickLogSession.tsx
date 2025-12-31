@@ -47,7 +47,7 @@ export default function QuickLogSession({ activeCombatSession, boss, capabilitie
                 message += `\n⚔️ Dealt ${stats.damageDealt} Damage!`;
                 if (stats.isVictory) message += ` 💀 BOSS DEFEATED!`;
 
-                setLocalHp(stats.bossHpRemaining);
+                setLocalHp(stats.remainingHp);
                 setLastDamage(stats.damageDealt);
                 setTimeout(() => setLastDamage(0), 3000);
             }

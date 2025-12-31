@@ -13,7 +13,7 @@
 <w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (188kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
 <w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (139kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
 <w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (130kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
- Ô£ô Compiled successfully in 30.1s
+ Ô£ô Compiled successfully in 79s
    Linting and checking validity of types ...
 
 ./src/components/gamification/OvertrainingBanner.tsx
@@ -34,15 +34,14 @@
 info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
 Failed to compile.
 
-./src/components/logger/ExerciseSelector.tsx:130:48
-Type error: Argument of type '{ name: string; muscleGroup: string; }' is not assignable to parameter of type '{ name: string; equipment: string; muscleGroup: string; }'.
-  Property 'equipment' is missing in type '{ name: string; muscleGroup: string; }' but required in type '{ name: string; equipment: string; muscleGroup: string; }'.
+./src/components/logger/QuickLogSession.tsx:50:34
+Type error: Property 'bossHpRemaining' does not exist on type '{ damageDealt: number; remainingHp: number; isVictory: boolean; bossMaxHp: number; }'.
 
-  128 |     async function handleCreate() {
-  129 |         setIsSubmitting(true);
-> 130 |         const res = await createExerciseAction({ name, muscleGroup: muscle });
-      |                                                ^
-  131 |         setIsSubmitting(false);
-  132 |
-  133 |         if (res.success && res.exercise) {
+  48 |                 if (stats.isVictory) message += ` ­ƒÆÇ BOSS DEFEATED!`;
+  49 |
+> 50 |                 setLocalHp(stats.bossHpRemaining);
+     |                                  ^
+  51 |                 setLastDamage(stats.damageDealt);
+  52 |                 setTimeout(() => setLastDamage(0), 3000);
+  53 |             }
 Next.js build worker exited with code: 1 and signal: null

@@ -1,0 +1,34 @@
+
+> ironforge-rpg@1.0.0 build
+> next build
+
+   Ôû▓ Next.js 15.5.9
+   - Environments: .env.local, .env
+   - Experiments (use with caution):
+     ┬À clientTraceMetadata
+
+   Creating an optimized production build ...
+ ÔÜá Found lockfile missing swc dependencies, run next locally to automatically patch
+ Ô£ô (serwist) Bundling the service worker script with the URL '/sw.js' and the scope '/'...
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (188kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (139kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (130kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+Failed to compile.
+
+./src/components/OracleChat.tsx:4:1
+Module not found: Package path ./react is not exported from package C:\Users\alexa\Workspaces\IronForge\node_modules\ai (see exports field in C:\Users\alexa\Workspaces\IronForge\node_modules\ai\package.json)
+  2 |
+  3 | import React, { useState, useEffect, useRef } from "react";
+> 4 | import { useChat } from "ai/react";
+    | ^
+  5 | import { motion, AnimatePresence } from "framer-motion";
+  6 | import {
+  7 |   Send,
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./src/features/dashboard/DashboardClient.tsx
+
+
+> Build failed because of webpack errors
