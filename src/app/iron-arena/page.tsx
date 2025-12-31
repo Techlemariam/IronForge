@@ -16,7 +16,7 @@ export default async function IronArenaPage() {
     getCurrentSeasonAction()
   ]);
 
-  const activeDuel = duelStatus.success ? duelStatus.duel : null;
+  const activeDuel = duelStatus.success ? (duelStatus.duel ?? null) : null;
 
   // Fetch leaderboard for the user's current league (or default to Bronze)
   const currentLeagueId = leagueInfo?.tier.id || "bronze";
@@ -34,7 +34,7 @@ export default async function IronArenaPage() {
       </header>
 
       <ArenaClient
-        activeDuel={activeDuel}
+        activeDuel={activeDuel ?? null}
         currentUserId={session.user.id}
         leagueInfo={leagueInfo}
         seasonInfo={seasonInfo}

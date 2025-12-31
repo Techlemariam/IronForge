@@ -158,10 +158,10 @@ export async function getDuelStatusAction() {
       },
       include: {
         challenger: {
-          select: { id: true, heroName: true, level: true, faction: true },
+          select: { id: true, heroName: true, level: true },
         },
         defender: {
-          select: { id: true, heroName: true, level: true, faction: true },
+          select: { id: true, heroName: true, level: true },
         },
       },
     });
@@ -308,8 +308,7 @@ export async function getPotentialOpponentsAction() {
       select: {
         id: true,
         heroName: true,
-        level: true,
-        faction: true
+        level: true
       }
     });
 
@@ -332,10 +331,10 @@ export async function getDuelArenaStateAction(duelId: string) {
       where: { id: duelId },
       include: {
         challenger: {
-          select: { id: true, heroName: true, level: true, faction: true },
+          select: { id: true, heroName: true, level: true },
         },
         defender: {
-          select: { id: true, heroName: true, level: true, faction: true },
+          select: { id: true, heroName: true, level: true },
         },
       },
     });

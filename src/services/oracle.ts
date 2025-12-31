@@ -2,6 +2,8 @@ import prisma from "@/lib/prisma";
 import { getWellness, getActivities } from "@/lib/intervals";
 import { getHevyWorkouts } from "@/lib/hevy";
 import { OracleDecree, OracleDecreeType } from "@/types/oracle";
+import { EquipmentService } from "@/services/game/EquipmentService";
+import { EquipmentType } from "@/data/equipmentDb";
 import {
   IntervalsWellness,
   IntervalsActivity,
@@ -84,36 +86,29 @@ export class OracleService {
     // Actually, the `hevy.ts` lib takes an apiKey. I'll use `user.hevyApiKey` (casted/assumed) or skip.
     // Based on previous contexts, keys might be in `prisma.user`.
 
+
+    // ...
     // 3. Fetch Local Data
-    const localCardio = await prisma.cardioLog.findMany({
-      where: {
-        userId,
-        date: { gte: historyStart },
-      },
-    });
+    // ... (rest of fetch)
 
-    const localStrength = await prisma.exerciseLog.findMany({
-      where: {
-        userId,
-        date: { gte: historyStart },
-      },
-    });
+    // 4. Fetch Equipment Capabilities (The Armory)
+    const capabilities = await EquipmentService.getUserCapabilities(userId);
 
-    // 4. Data Deduplication & Harmonization
+    // 5. Data Deduplication & Harmonization
     const dailyLoads = this.calculateCombinedHistory(
       historyStart,
       now,
       localCardio,
       localStrength,
       intervalsActivities,
-      hevyWorkouts, // passing empty for now if we don't have key, logic handles it
+      hevyWorkouts,
     );
 
-    // 5. Analysis
+    // 6. Analysis
     const analysis = this.analyzeLoads(dailyLoads);
 
-    // 6. Priority Waterfall Logic
-    return this.determineDecree(user.titan, wellness, analysis);
+    // 7. Priority Waterfall Logic
+    return this.determineDecree(user.titan, wellness, analysis, capabilities, user.activePath || "HYBRID_WARDEN");
   }
 
   private static calculateCombinedHistory(
@@ -261,6 +256,7 @@ export class OracleService {
     titan: any,
     wellness: IntervalsWellness,
     analysis: { cardioRatio: number; volumeRatio: number },
+    capabilities: EquipmentType[] = []
   ): OracleDecree {
     // 1. Safety Override
     if (titan.isInjured) {
@@ -287,7 +283,15 @@ export class OracleService {
       };
     }
 
-    // 3. Overreaching Warning (ACWR > 1.5)
+    // 3. Equipment Check (Armory Integration)
+    const hasHeavyGear = capabilities.includes(EquipmentType.BARBELL) ||
+      capabilities.includes(EquipmentType.MACHINE) ||
+      capabilities.includes(EquipmentType.HYPER_PRO);
+
+    // If user lacks heavy gear, they can't effectively "PR" in the traditional sense, maybe?
+    // Or we adapt the message. 
+
+    // 4. Overreaching Warning (ACWR > 1.5)
     if (analysis.cardioRatio > 1.5 || analysis.volumeRatio > 1.5) {
       return {
         type: "NEUTRAL",
@@ -297,25 +301,32 @@ export class OracleService {
       };
     }
 
-    // 4. Peak Performance
-    // Simple logic: Good sleep + decent readiness
+    // 5. Peak Performance
     if (
       wellness.sleepScore &&
       wellness.sleepScore > 85 &&
       wellness.hrv &&
       wellness.hrv > 50
     ) {
-      // 50 is arbitrary baseline, ideally dynamic
-      return {
-        type: "BUFF",
-        label: "Decree of Power",
-        description:
-          "The Stars align. Your body is primed for a Personal Record.",
-        effect: { xpMultiplier: 1.5, stat: "all" },
-      };
+      if (hasHeavyGear) {
+        return {
+          type: "BUFF",
+          label: "Decree of Power",
+          description: "The Stars align. Your body (and Gear) is primed for a Personal Record.",
+          effect: { xpMultiplier: 1.5, stat: "all" },
+        };
+      } else {
+        // High readiness but low gear
+        return {
+          type: "BUFF",
+          label: "Decree of Velocity",
+          description: "High readiness detected, but heavy gear is missing. Focus on explosive calisthenics or speed.",
+          effect: { xpMultiplier: 1.2, stat: "speed" },
+        };
+      }
     }
 
-    // 5. Baseline
+    // 6. Baseline
     return {
       type: "NEUTRAL",
       label: "Decree of Discipline",

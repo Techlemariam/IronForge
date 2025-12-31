@@ -81,7 +81,18 @@ export interface SystemMetrics {
   sleepScore: number; // Sleep quality (0-100)
   bodyBattery: number; // Garmin/System energy metric (0-100)
   strengthDelta: number; // Change in strength metrics
+  consecutiveStalls: number; // Number of weeks with <= 0 progress
+  weeksInPhase: number; // How long we've been in the current macro-cycle
+  nutritionMode: "DEFICIT" | "MAINTENANCE" | "SURPLUS";
+  sleepDebt: number; // Hours (positive = debt)
+  acwr: number; // Acute:Chronic Workload Ratio
+  junkMilePercent: number; // % of Cardio in Zone 3
+  neuralLoad: number; // Arbitrary CNS units
+  impactLoad: number; // Run TSS
+  interferenceEvents: number; // Count of <6h gap sessions
 }
+
+export type NutritionMode = "DEFICIT" | "MAINTENANCE" | "SURPLUS";
 
 // =============================================================================
 // VOLUME LANDMARKS (Renaissance Periodization)
@@ -188,6 +199,13 @@ export interface WorkoutDefinition {
   resourceCost: Partial<Record<RecoveryResource, number>>; // Estimated cost
   recommendedPaths?: TrainingPath[]; // Best fit paths
   rewards?: { xp: number; gold: number }; // Gamification rewards
+  exercises?: {
+    id: string; // Key from EXERCISE_DB
+    sets: number;
+    reps: string | number;
+    rpe?: number;
+    restMin?: number;
+  }[];
 }
 
 /**

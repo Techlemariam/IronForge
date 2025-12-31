@@ -57,8 +57,17 @@ export async function getWellness(
   date: string,
   apiKey: string,
   athleteId: string,
-): Promise<WellnessData | null> {
+  endDate?: string,
+): Promise<WellnessData | WellnessData[] | null> {
   try {
+    if (endDate) {
+      // Range Query
+      return await fetchIntervals(
+        `/athlete/${athleteId}/wellness?oldest=${date}&newest=${endDate}`,
+        apiKey
+      );
+    }
+    // Single Day
     return await fetchIntervals(
       `/athlete/${athleteId}/wellness/${date}`,
       apiKey,

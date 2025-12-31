@@ -34,7 +34,7 @@ export async function syncBiometrics(userId: string) {
         : undefined,
     };
 
-    if (wellness) {
+    if (wellness && !Array.isArray(wellness)) {
       dataToUpdate.hrv = wellness.hrv;
       dataToUpdate.restingHr = wellness.restingHR;
     }

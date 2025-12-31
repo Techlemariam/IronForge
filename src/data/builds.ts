@@ -197,12 +197,31 @@ export const MACRO_CYCLE_THRESHOLDS = {
 
 /**
  * Weekly mastery targets per path (System Matrix)
+ * SPLIT into Alpha (Cardio Focus) and Beta (Strength Focus)
  */
+export const BUILD_VOLUME_TARGETS_ALPHA: Record<TrainingPath, BuildVolumeTargets> = {
+  // Alpha: Focus VO2max/Endurance Peak
+  IRON_JUGGERNAUT: { strengthSets: 15, cardioTss: 150, mobilitySets: 4 }, // Maintenance Strength
+  TITAN: { strengthSets: 10, cardioTss: 250, mobilitySets: 6 }, // Maintenance Hypertrophy
+  ENGINE: { strengthSets: 4, cardioTss: 600, mobilitySets: 8 }, // PEAK CARDIO (MRV)
+  HYBRID_WARDEN: { strengthSets: 8, cardioTss: 450, mobilitySets: 10 }, // 80% Cardio / 20% Strength
+};
+
+export const BUILD_VOLUME_TARGETS_BETA: Record<TrainingPath, BuildVolumeTargets> = {
+  // Beta: Focus Strength/Hypertrophy Peak
+  IRON_JUGGERNAUT: { strengthSets: 25, cardioTss: 50, mobilitySets: 4 }, // PEAK STRENGTH (MRV)
+  TITAN: { strengthSets: 20, cardioTss: 100, mobilitySets: 6 }, // PEAK HYPERTROPHY
+  ENGINE: { strengthSets: 6, cardioTss: 350, mobilitySets: 8 }, // Maintenance Cardio
+  HYBRID_WARDEN: { strengthSets: 16, cardioTss: 250, mobilitySets: 10 }, // 60% Strength / 40% Cardio
+};
+
+// Default export for backward compatibility (defaults to Balanced/Hybrid view or Beta for Juggernaut?)
+// Current system uses this key. We sets it to BETA values for Strength paths and ALPHA for Engine to match "Identity".
 export const BUILD_VOLUME_TARGETS: Record<TrainingPath, BuildVolumeTargets> = {
-  IRON_JUGGERNAUT: { strengthSets: 20, cardioTss: 100, mobilitySets: 4 },
-  TITAN: { strengthSets: 15, cardioTss: 200, mobilitySets: 6 },
-  ENGINE: { strengthSets: 4, cardioTss: 500, mobilitySets: 8 },
-  HYBRID_WARDEN: { strengthSets: 12, cardioTss: 300, mobilitySets: 10 },
+  IRON_JUGGERNAUT: BUILD_VOLUME_TARGETS_BETA.IRON_JUGGERNAUT,
+  TITAN: BUILD_VOLUME_TARGETS_BETA.TITAN,
+  ENGINE: BUILD_VOLUME_TARGETS_ALPHA.ENGINE,
+  HYBRID_WARDEN: { strengthSets: 12, cardioTss: 350, mobilitySets: 10 }, // Balanced
 };
 
 /**
@@ -218,19 +237,27 @@ export const PATH_VOLUME_MODIFIERS: Record<
     HAMS: 0.7,
     GLUTES: 0.8,
     BACK: 0.9,
+    CALVES: 0.8, // Impact absorption
   },
   IRON_JUGGERNAUT: {
     QUADS: 1.1,
     HAMS: 1.1,
     GLUTES: 1.1,
     BACK: 1.0,
+    CHEST: 1.1, // Bench Press capacity
   },
   TITAN: {
     QUADS: 1.0,
     BACK: 1.1,
+    BICEPS: 1.1, // Arm Farm
+    TRICEPS: 1.1,
+    SHOULDERS: 1.1,
   },
   HYBRID_WARDEN: {
     QUADS: 0.9,
+    HAMS: 0.9,
+    GLUTES: 0.9,
+    CALVES: 0.9,
     BACK: 1.0,
   },
 };

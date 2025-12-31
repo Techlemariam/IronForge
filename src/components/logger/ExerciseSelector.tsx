@@ -3,23 +3,24 @@
 import { useState, useEffect } from "react";
 import { searchExercisesAction, createExerciseAction } from "@/actions/logger";
 import { Exercise } from "@prisma/client";
-import { Search, Plus, Dumbbell } from "lucide-react";
+import { Search, Plus, Dumbbell, Lock } from "lucide-react";
 import ForgeInput from "@/components/ui/ForgeInput";
 import ForgeButton from "@/components/ui/ForgeButton";
 import { toast } from "sonner";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { canPerformExercise, EquipmentType } from "@/data/equipmentDb";
 
 interface ExerciseSelectorProps {
     onSelect: (exercise: Exercise) => void;
+    capabilities?: EquipmentType[];
 }
 
-export default function ExerciseSelector({ onSelect }: ExerciseSelectorProps) {
+export default function ExerciseSelector({ onSelect, capabilities }: ExerciseSelectorProps) {
     const [query, setQuery] = useState("");
     const [results, setResults] = useState<Exercise[]>([]);
     const [isSearching, setIsSearching] = useState(false);
-    const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     // Debounced search
     useEffect(() => {
@@ -55,21 +56,49 @@ export default function ExerciseSelector({ onSelect }: ExerciseSelectorProps) {
 
                 {!isSearching && results.length > 0 && (
                     <div className="grid gap-2">
-                        {results.map((ex) => (
-                            <button
-                                key={ex.id}
-                                onClick={() => onSelect(ex)}
-                                className="flex items-center gap-3 p-3 bg-zinc-900 border border-zinc-800 rounded-lg hover:border-magma/50 transition-colors text-left"
-                            >
-                                <div className="h-8 w-8 rounded-full bg-forge-800 flex items-center justify-center shrink-0">
-                                    <Dumbbell className="h-4 w-4 text-zinc-400" />
-                                </div>
-                                <div>
-                                    <p className="font-bold text-sm text-zinc-200">{ex.name}</p>
-                                    <p className="text-xs text-zinc-500">{ex.muscleGroup}</p>
-                                </div>
-                            </button>
-                        ))}
+                        {results.map((ex) => {
+                            const isPerformable = capabilities
+                                ? canPerformExercise(ex.name, capabilities)
+                                : true;
+
+                            return (
+                                <button
+                                    key={ex.id}
+                                    onClick={() => {
+                                        if (isPerformable) onSelect(ex);
+                                        else toast.error("Missing required equipment!");
+                                    }}
+                                    className={`
+                                        flex items-center gap-3 p-3 rounded-lg border transition-all text-left group
+                                        ${isPerformable
+                                            ? "bg-zinc-900 border-zinc-800 hover:border-magma/50 cursor-pointer"
+                                            : "bg-zinc-950 border-zinc-900 opacity-60 cursor-not-allowed"}
+                                    `}
+                                >
+                                    <div className={`
+                                        h-8 w-8 rounded-full flex items-center justify-center shrink-0
+                                        ${isPerformable ? "bg-forge-800" : "bg-zinc-900"}
+                                    `}>
+                                        {isPerformable ? (
+                                            <Dumbbell className="h-4 w-4 text-zinc-400 group-hover:text-magma" />
+                                        ) : (
+                                            <Lock className="h-4 w-4 text-zinc-600" />
+                                        )}
+                                    </div>
+                                    <div className="flex-1">
+                                        <p className="font-bold text-sm text-zinc-200">{ex.name}</p>
+                                        <div className="flex justify-between items-center">
+                                            <p className="text-xs text-zinc-500">{ex.muscleGroup}</p>
+                                            {!isPerformable && (
+                                                <span className="text-[10px] text-red-900 bg-red-950/30 px-2 py-0.5 rounded font-mono uppercase tracking-wider">
+                                                    Missing Gear
+                                                </span>
+                                            )}
+                                        </div>
+                                    </div>
+                                </button>
+                            );
+                        })}
                     </div>
                 )}
 
@@ -115,7 +144,7 @@ function CreateExerciseDialog({ initialName, onSuccess }: { initialName: string,
             <DialogTrigger asChild>
                 <ForgeButton size="sm" variant="outline" className="gap-2">
                     <Plus className="h-4 w-4" />
-                    Create "{initialName}"
+                    Create &quot;{initialName}&quot;
                 </ForgeButton>
             </DialogTrigger>
             <DialogContent className="bg-zinc-950 border-zinc-800 text-zinc-200">

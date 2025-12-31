@@ -42,26 +42,55 @@ export async function getWellnessAction(
     const { apiKey, athleteId } = await getIntervalsCredentials();
     const data = await getWellness(date, apiKey, athleteId);
 
-    if (!data) return {} as IntervalsWellness;
+    if (!data || Array.isArray(data)) return {} as IntervalsWellness;
 
     // Map Lib type (WellnessData) to App type (IntervalsWellness)
     // lib/intervals.ts uses 'readiness' for bodyBattery, type uses 'bodyBattery'
     return {
-      id: data.id,
-      hrv: data.hrv,
-      restingHR: data.restingHR,
-      sleepScore: data.sleepScore,
-      sleepSecs: data.sleepSecs,
-      bodyBattery: data.readiness,
-      vo2max: data.vo2max,
-      ctl: data.ctl,
-      atl: data.atl,
-      tsb: data.tsb,
-      ramp_rate: data.rampRate,
+      id: data?.id,
+      hrv: data?.hrv,
+      restingHR: data?.restingHR,
+      sleepScore: data?.sleepScore,
+      sleepSecs: data?.sleepSecs,
+      bodyBattery: data?.readiness,
+      vo2max: data?.vo2max,
+      ctl: data?.ctl,
+      atl: data?.atl,
+      tsb: data?.tsb,
+      ramp_rate: data?.rampRate,
     } as IntervalsWellness;
   } catch (error: any) {
     console.warn("Server Action Intervals Wellness Error:", error.message);
     return {} as IntervalsWellness;
+  }
+}
+
+export async function getWellnessRangeAction(
+  startDate: string,
+  endDate: string,
+): Promise<IntervalsWellness[]> {
+  try {
+    const { apiKey, athleteId } = await getIntervalsCredentials();
+    const data = await getWellness(startDate, apiKey, athleteId, endDate);
+
+    if (!Array.isArray(data)) return [];
+
+    return data.map(d => ({
+      id: d.id,
+      hrv: d.hrv,
+      restingHR: d.restingHR,
+      sleepScore: d.sleepScore,
+      sleepSecs: d.sleepSecs,
+      bodyBattery: d.readiness,
+      vo2max: d.vo2max,
+      ctl: d.ctl,
+      atl: d.atl,
+      tsb: d.tsb,
+      ramp_rate: d.rampRate,
+    } as IntervalsWellness));
+  } catch (error: any) {
+    console.error("Server Action Intervals Wellness Range Error:", error.message);
+    return [];
   }
 }
 

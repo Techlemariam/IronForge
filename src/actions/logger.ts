@@ -4,6 +4,7 @@ import prisma from "@/lib/prisma";
 import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
+import { TrainingContextService } from "@/services/data/TrainingContextService";
 
 // --- Validation Schemas ---
 
@@ -102,6 +103,82 @@ export async function logExerciseSetsAction(data: z.infer<typeof LogSetSchema>) 
     try {
         const { exerciseId, sets, notes } = parsed.data;
 
+
+        // --- ORACLE INTEGRATION: CHECK FOR BUFFS ---
+        const userWithTitan = await prisma.user.findUnique({
+            where: { id: user.id },
+            include: { titan: true }
+        });
+
+        let multiplier = 1.0;
+        let diffMessage = "";
+
+        if (userWithTitan?.titan?.dailyDecree) {
+            // @ts-ignore - JSON mapping
+            const decree = userWithTitan.titan.dailyDecree as any;
+            if (decree.effect?.xpMultiplier) {
+                multiplier = decree.effect.xpMultiplier;
+                if (multiplier > 1.0) diffMessage = ` (x${multiplier} Oracle Buff)`;
+            }
+        }
+
+        // --- Kinetic Energy Reward ---
+        // Simple logic: 1 Energy per 100kg volume
+        const totalVolume = sets.reduce((acc, s) => acc + s.weight * s.reps, 0);
+        const baseEnergy = Math.max(5, Math.floor(totalVolume / 100));
+        const energyGain = Math.floor(baseEnergy * multiplier);
+
+        await prisma.user.update({
+            where: { id: user.id },
+            data: {
+                kineticEnergy: { increment: energyGain },
+                totalExperience: { increment: energyGain },
+            },
+        });
+
+        // --- COMBAT INTEGRATION: DEAL DAMAGE TO BOSS ---
+        let combatStats = null;
+        try {
+            const combatSession = await prisma.combatSession.findUnique({
+                where: { userId: user.id }
+            });
+
+            // Determine damage: Raw Volume for now.
+            const damage = totalVolume;
+
+            if (combatSession && !combatSession.isVictory && !combatSession.isDefeat) {
+                const newBossHp = Math.max(0, combatSession.bossHp - damage);
+
+                // Check for victory
+                const isVictory = newBossHp === 0;
+
+                await prisma.combatSession.update({
+                    where: { id: combatSession.id },
+                    data: {
+                        bossHp: newBossHp,
+                        isVictory: isVictory,
+                        logs: {
+                            // Append log (PostgreSQL JSONB array append via Prisma is tricky without raw/json, 
+                            // so we just read and push if we want perfect history, but for MVP optimization:
+                            // We might just skip history append or do it simply. 
+                            // Let's assume we can push to array if it's valid JSON.
+                            // Actually, simplest is just update the stats.
+                        }
+                    }
+                });
+
+                combatStats = {
+                    damageDealt: damage,
+                    remainingHp: newBossHp,
+                    isVictory: isVictory,
+                    bossMaxHp: combatSession.bossMaxHp
+                };
+            }
+        } catch (e) {
+            console.error("Combat Logic Error:", e);
+            // Don't fail the log if combat fails
+        }
+
         const logEntry = await prisma.exerciseLog.create({
             data: {
                 userId: user.id,
@@ -115,23 +192,22 @@ export async function logExerciseSetsAction(data: z.infer<typeof LogSetSchema>) 
             },
         });
 
-        // --- Kinetic Energy Reward ---
-        // Simple logic: 1 Energy per 100kg volume
-        const totalVolume = sets.reduce((acc, s) => acc + s.weight * s.reps, 0);
-        const energyGain = Math.max(5, Math.floor(totalVolume / 100));
-
-        await prisma.user.update({
-            where: { id: user.id },
-            data: {
-                kineticEnergy: { increment: energyGain },
-                totalExperience: { increment: energyGain }, // XP = Energy for now
-            },
-        });
-
         revalidatePath("/logger");
         revalidatePath("/dashboard");
 
-        return { success: true, logId: logEntry.id, energyGained: energyGain };
+        // --- FETCH UPDATED CONTEXT ---
+        // We fetch this AFTER logging so the new volume is included.
+        const context = await TrainingContextService.getTrainingContext(user.id);
+
+        // Return context for immediate UI feedback
+        return {
+            success: true,
+            logId: logEntry.id,
+            energyGained: energyGain,
+            combatStats,
+            context,
+            oracleBuff: diffMessage
+        };
     } catch (error: any) {
         console.error("Log Sets Error:", error);
         return { success: false, error: error.message };
