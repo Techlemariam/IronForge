@@ -17,6 +17,7 @@ import {
   StravaActivity,
   mapStravaActivityToCardioLog,
 } from "@/lib/strava";
+import { processUserCardioActivity } from "@/actions/duel";
 
 // Constants removed for lazy evaluation
 // const STRAVA_CLIENT_ID = process.env.STRAVA_CLIENT_ID;
@@ -235,6 +236,16 @@ export async function syncStravaActivitiesAction() {
         await prisma.cardioLog.create({
           data: logData,
         });
+
+        // Trigger Duel Updates
+        // distance is in meters in logData? mapStravaActivityToCardioLog likely returns it.
+        // Assuming logData structure matches CardioLog which doesn't have distance? 
+        // Wait, CardioLog schema doesn't have distance column (only type, duration, load).
+        // Let me check schema again. CardioLog has duration. Duel needs distance.
+        // I need to fetch distance from activity.
+        const distanceKm = activity.distance / 1000;
+        const durationMin = activity.moving_time / 60;
+        await processUserCardioActivity(user.id, activity.type, distanceKm, durationMin);
 
         // Award Rewards (Simple: 1 XP per minute, 1 Gold per minute)
         // This logic should ideally be centralized in a 'RewardService'

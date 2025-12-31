@@ -34,12 +34,12 @@ export function QuickStatsHeader({
           </div>
 
           {/* XP Bar */}
-          <div className="hidden sm:flex flex-col gap-1 min-w-[140px]">
+          <div className="flex flex-col gap-1 min-w-[100px] sm:min-w-[140px]">
             <div className="flex items-baseline gap-1.5">
-              <span className="text-xs font-bold text-zinc-400 uppercase tracking-wider">
-                Level {level}
+              <span className="text-[10px] sm:text-xs font-bold text-zinc-400 uppercase tracking-wider">
+                Lvl {level}
               </span>
-              <span className="text-xs text-zinc-600 font-mono">
+              <span className="text-[10px] sm:text-xs text-zinc-400 font-mono">
                 {currentXP}/{maxXP}
               </span>
             </div>

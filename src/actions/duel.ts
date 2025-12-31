@@ -185,9 +185,77 @@ export async function getDuelStatusAction() {
   }
 }
 
+// Internal helper (No Auth Context needed)
+export async function updateCardioDuelProgressInternalWithUser(duelId: string, userId: string, distanceKm: number, durationMinutes: number = 0) {
+  const duel = await prisma.duelChallenge.findUnique({
+    where: { id: duelId },
+  });
+  if (!duel || duel.status !== "ACTIVE")
+    return { success: false, error: "Duel not active" };
+
+  const isChallenger = duel.challengerId === userId;
+  const isDefender = duel.defenderId === userId;
+
+  if (!isChallenger && !isDefender)
+    return { success: false, error: "Not participant" };
+
+  const newDistance = (isChallenger ? duel.challengerDistance || 0 : duel.defenderDistance || 0) + distanceKm;
+
+  await prisma.duelChallenge.update({
+    where: { id: duelId },
+    data: isChallenger
+      ? { challengerDistance: newDistance }
+      : { defenderDistance: newDistance },
+  });
+
+  // Check Win Conditions
+  let winnerId: string | null = null;
+  let isFinished = false;
+
+  if (duel.duelType === "DISTANCE_RACE" || duel.duelType === "SPEED_DEMON") {
+    if (duel.targetDistance && newDistance >= duel.targetDistance) {
+      winnerId = userId;
+      isFinished = true;
+    }
+  }
+
+  if (isFinished && winnerId) {
+    await prisma.duelChallenge.update({
+      where: { id: duelId },
+      data: {
+        status: "COMPLETED",
+        winnerId: winnerId,
+        endDate: new Date()
+      }
+    });
+
+    // Award Loot
+    await prisma.user.update({
+      where: { id: winnerId },
+      data: {
+        totalExperience: { increment: 100 },
+        gold: { increment: 50 },
+        kineticEnergy: { increment: 25 }
+      }
+    });
+
+    const loserId = isChallenger ? duel.defenderId : duel.challengerId;
+    await prisma.user.update({
+      where: { id: loserId },
+      data: {
+        totalExperience: { increment: 25 },
+        gold: { increment: 10 }
+      }
+    });
+  }
+
+  return { success: true, isWin: !!winnerId };
+}
+
 export async function updateCardioDuelProgressAction(
   duelId: string,
   distanceKm: number,
+  durationMinutes: number = 0
 ) {
   try {
     const supabase = await createClient();
@@ -196,27 +264,9 @@ export async function updateCardioDuelProgressAction(
     } = await supabase.auth.getUser();
     if (!user) throw new Error("Unauthorized");
 
-    const duel = await prisma.duelChallenge.findUnique({
-      where: { id: duelId },
-    });
-    if (!duel || duel.status !== "ACTIVE")
-      return { success: false, error: "Duel not active" };
-
-    const isChallenger = duel.challengerId === user.id;
-    const isDefender = duel.defenderId === user.id;
-
-    if (!isChallenger && !isDefender)
-      return { success: false, error: "Not participant" };
-
-    await prisma.duelChallenge.update({
-      where: { id: duelId },
-      data: isChallenger
-        ? { challengerDistance: distanceKm }
-        : { defenderDistance: distanceKm },
-    });
-
+    const result = await updateCardioDuelProgressInternalWithUser(duelId, user.id, distanceKm, durationMinutes);
     revalidatePath("/iron-arena");
-    return { success: true };
+    return result;
   } catch (error) {
     console.error("Error updating cardio progress:", error);
     return { success: false, error: "Failed update" };
@@ -296,5 +346,37 @@ export async function getDuelArenaStateAction(duelId: string) {
   } catch (error) {
     console.error("Error fetching arena state:", error);
     return { success: false, error: "Failed to fetch arena state" };
+  }
+}
+
+export async function processUserCardioActivity(userId: string, activityType: string, distanceKm: number, durationMinutes: number) {
+  try {
+    console.log(`Processing cardio for user ${userId}: ${activityType} ${distanceKm}km`);
+
+    const activeDuels = await prisma.duelChallenge.findMany({
+      where: {
+        status: "ACTIVE",
+        OR: [
+          { challengerId: userId },
+          { defenderId: userId }
+        ],
+        duelType: { not: "TITAN_VS_TITAN" }
+      }
+    });
+
+    for (const duel of activeDuels) {
+      let match = false;
+      const type = activityType.toLowerCase();
+      // Loose matching for MVP
+      if (duel.activityType === "CYCLING" && (type.includes("ride") || type.includes("cycle"))) match = true;
+      if (duel.activityType === "RUNNING" && (type.includes("run") || type.includes("walk"))) match = true;
+
+      if (match) {
+        await updateCardioDuelProgressInternalWithUser(duel.id, userId, distanceKm, durationMinutes);
+      }
+    }
+
+  } catch (e) {
+    console.error("Failed to process cardio for duels", e);
   }
 }

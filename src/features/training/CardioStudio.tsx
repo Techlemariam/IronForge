@@ -39,13 +39,16 @@ import {
 } from "./logic/zones";
 import { GauntletArena } from "../game/GauntletArena";
 import { TvMode } from "./TvMode";
+import { ChaseOverlay } from "./components/ChaseOverlay";
+import { ChaseEngine } from "@/services/game/ChaseEngine";
+import { ChaseState, ChaseDifficulty } from "@/types/chase";
 import { updateCardioDuelProgressAction } from "@/actions/duel";
 import { toast } from "sonner";
 
 // Dynamic import to avoid SSR issues with react-player
 const ReactPlayer = dynamic(() => import("react-player/lazy"), { ssr: false });
 
-export type CardioMode = "cycling" | "running" | "gauntlet";
+export type CardioMode = "cycling" | "running" | "gauntlet" | "chase";
 
 interface CardioStudioProps {
   mode: CardioMode;
@@ -88,8 +91,13 @@ export default function CardioStudio(props: CardioStudioProps) {
   // Shared state used by both modes (for BuffHud simulation or Gauntlet inputs)
   const [simulatedValue, setSimulatedValue] = useState(0);
   const [metric, setMetric] = useState<TrainingMetric>(
-    mode === "running" ? "pace" : "power",
+    mode === "running" || mode === "chase" ? "pace" : "power",
   );
+
+  // Chase mode state
+  const [chaseState, setChaseState] = useState<ChaseState | null>(null);
+  const [chaseDifficulty, setChaseDifficulty] = useState<ChaseDifficulty>("normal");
+  const chaseIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   // Default simulation values if 0
   useEffect(() => {
@@ -99,6 +107,121 @@ export default function CardioStudio(props: CardioStudioProps) {
       if (metric === "pace") setSimulatedValue(10);
     }
   }, [metric, simulatedValue]);
+
+  // Initialize chase mode
+  useEffect(() => {
+    if (mode === "chase" && !chaseState) {
+      const chaser = ChaseEngine.getRandomChaser();
+      if (chaser) {
+        setChaseState(ChaseEngine.initializeChase(chaser, chaseDifficulty));
+      }
+    }
+  }, [mode, chaseState, chaseDifficulty]);
+
+  // Chase mode update loop
+  useEffect(() => {
+    if (mode === "chase" && chaseState && !chaseState.isCaught && !chaseState.hasEscaped) {
+      chaseIntervalRef.current = setInterval(() => {
+        setChaseState((prev) => {
+          if (!prev) return prev;
+          return ChaseEngine.updateChase(prev, simulatedValue, 1, chaseDifficulty);
+        });
+      }, 1000);
+
+      return () => {
+        if (chaseIntervalRef.current) {
+          clearInterval(chaseIntervalRef.current);
+        }
+      };
+    }
+  }, [mode, chaseState, simulatedValue, chaseDifficulty]);
+
+  // Handle chase caught - trigger combat
+  const handleChaseCaught = useCallback(() => {
+    // For now, just reset the chase. In future: trigger CombatArena
+    toast.error("You were caught! Combat would trigger here.");
+    const chaser = ChaseEngine.getRandomChaser();
+    if (chaser) {
+      setChaseState(ChaseEngine.initializeChase(chaser, chaseDifficulty));
+    }
+  }, [chaseDifficulty]);
+
+  // Handle chase escaped - give rewards
+  const handleChaseEscaped = useCallback(() => {
+    toast.success("You escaped! +50 XP, +25 Gold");
+    const chaser = ChaseEngine.getRandomChaser();
+    if (chaser) {
+      setChaseState(ChaseEngine.initializeChase(chaser, chaseDifficulty));
+    }
+  }, [chaseDifficulty]);
+
+  // === CHASE MODE RENDER ===
+  if (mode === "chase") {
+    return (
+      <div className="relative w-full h-screen bg-gradient-to-b from-zinc-900 to-black">
+        {/* ChaseOverlay HUD */}
+        {chaseState && (
+          <ChaseOverlay
+            chaseState={chaseState}
+            difficulty={chaseDifficulty}
+            currentPaceKph={simulatedValue}
+            onCaughtConfirm={handleChaseCaught}
+            onEscapedConfirm={handleChaseEscaped}
+          />
+        )}
+
+        {/* Simulation Slider for Chase */}
+        <div className="absolute bottom-4 left-4 z-[60] bg-black/80 p-4 rounded-lg border border-white/10 w-80">
+          <p className="text-xs text-zinc-400 mb-2 uppercase tracking-wider">Your Running Pace</p>
+          <input
+            type="range"
+            min="0"
+            max="20"
+            step="0.5"
+            value={simulatedValue}
+            onChange={(e) => setSimulatedValue(Number(e.target.value))}
+            className="w-full accent-orange-500"
+          />
+          <div className="flex justify-between text-sm font-mono text-orange-400 mt-2">
+            <span>{simulatedValue.toFixed(1)} km/h</span>
+            <span className="text-zinc-500">
+              {simulatedValue > 0 ? `${(60 / simulatedValue).toFixed(1)} min/km` : "--"}
+            </span>
+          </div>
+
+          {/* Difficulty Selector */}
+          <div className="mt-4 flex gap-2">
+            {(["easy", "normal", "hard", "nightmare"] as ChaseDifficulty[]).map((d) => (
+              <button
+                key={d}
+                onClick={() => {
+                  setChaseDifficulty(d);
+                  const chaser = ChaseEngine.getRandomChaser();
+                  if (chaser) {
+                    setChaseState(ChaseEngine.initializeChase(chaser, d));
+                  }
+                }}
+                className={`flex-1 py-1 text-xs font-bold uppercase rounded transition-colors ${chaseDifficulty === d
+                    ? "bg-orange-600 text-white"
+                    : "bg-zinc-800 text-zinc-400 hover:bg-zinc-700"
+                  }`}
+              >
+                {d}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Close Button */}
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 z-[60] p-2 bg-black/60 hover:bg-black/80 rounded-lg text-white transition-colors"
+        >
+          <X className="w-6 h-6" />
+        </button>
+      </div>
+    );
+  }
 
   if (mode === "gauntlet") {
     const currentWatts = metric === "power" ? simulatedValue : 0;
@@ -502,7 +625,7 @@ function CardioCockpit({
       });
     }, 1000);
     return () => clearInterval(timer);
-  }, [metric, simulatedValue, userProfile]);
+  }, [metric, simulatedValue, userProfile, activeDuel]);
 
   // === TV MODE RENDER ===
   if (layoutMode === "tv") {
@@ -707,7 +830,7 @@ function CardioCockpit({
               }}
             />
           ) : (
-            <div className="flex flex-col items-center justify-center text-zinc-600 p-8">
+            <div className="flex flex-col items-center justify-center text-zinc-400 p-8">
               <Activity className="w-16 h-16 mb-4 opacity-30" />
               <p className="text-lg font-medium mb-2">No Video Loaded</p>
               <p className="text-sm text-zinc-500 text-center max-w-xs">

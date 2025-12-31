@@ -6,8 +6,8 @@ import {
 } from "../titan";
 import { prisma } from "@/lib/prisma";
 
-vi.mock("@/lib/prisma", () => ({
-  prisma: {
+vi.mock("@/lib/prisma", () => {
+  const mockPrisma = {
     titan: {
       findUnique: vi.fn(),
       update: vi.fn(),
@@ -17,8 +17,12 @@ vi.mock("@/lib/prisma", () => ({
       findUnique: vi.fn(),
       update: vi.fn(),
     },
-  },
-}));
+  };
+  return {
+    default: mockPrisma,
+    prisma: mockPrisma,
+  }
+});
 
 // Mock revalidatePath
 vi.mock("next/cache", () => ({

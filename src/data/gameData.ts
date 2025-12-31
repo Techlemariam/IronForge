@@ -15,6 +15,7 @@ export const MONSTERS: Monster[] = [
     element: "Earth",
     weakness: ["legs"],
     associatedExerciseIds: ["ex_belt_squat"],
+    chaseSpeedKph: 6, // Slow lumbering pursuit
   },
   {
     id: "monster_iron_wraith",
@@ -29,6 +30,7 @@ export const MONSTERS: Monster[] = [
     element: "Shadow",
     weakness: ["pull"],
     associatedExerciseIds: ["ex_ghd_raise"],
+    chaseSpeedKph: 8, // Relentless shamble
   },
   {
     id: "monster_viking_warlord",
@@ -42,6 +44,7 @@ export const MONSTERS: Monster[] = [
     element: "Ice",
     weakness: ["push"],
     associatedExerciseIds: ["ex_landmine_press"],
+    chaseSpeedKph: 11, // Battle-hardened sprint
   },
   {
     id: "monster_storm_drake",
@@ -56,6 +59,7 @@ export const MONSTERS: Monster[] = [
     element: "Lightning",
     weakness: ["endurance"],
     associatedExerciseIds: ["ex_bike_flush"],
+    chaseSpeedKph: 14, // Flying hunter
   },
   {
     id: "monster_titan_core",
@@ -70,6 +74,7 @@ export const MONSTERS: Monster[] = [
     element: "Fire",
     weakness: ["push", "legs"],
     associatedExerciseIds: ["ex_belt_squat", "ex_landmine_press"],
+    chaseSpeedKph: 10, // Rolls after you
   },
 ];
 

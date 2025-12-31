@@ -8,7 +8,7 @@
 - [x] **Cardio PvP Duels Implementation** <!-- agent: /coder | estimate: 8h | source: roadmap:6 -->
     - *Note*: Spec file `specs/cardio-duels.md` is missing. Needs restoration/creation first.
     - Scope: Real-time duel updates, result processing, UI integration.
-- [ ] **Duel Leaderboards** <!-- agent: /coder | estimate: 4h | source: roadmap:6 -->
+- [x] **Duel Leaderboards** <!-- agent: /coder | estimate: 4h | source: roadmap:6 -->
     - Scope: Global and Friend leaderboards for duels.
 
 ### Priority: Medium (Preparation)

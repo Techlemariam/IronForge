@@ -6,8 +6,11 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 // Actually, let's avoid extra deps if possible. I'll implementation a simple width/height hook or just use CSS for confetti safely or skip confetti if it's too much bloat.
 // Let's stick to CSS animations and Framer Motion for "Wow" factor.
 
+import { ExtendedDuel } from "@/app/iron-arena/ArenaClient"; // Reusing type
+
+
 interface DuelVictoryScreenProps {
-    duel: any;
+    duel: ExtendedDuel;
     currentUserId: string;
     onClose: () => void;
 }
@@ -15,8 +18,10 @@ interface DuelVictoryScreenProps {
 export function DuelVictoryScreen({ duel, currentUserId, onClose }: DuelVictoryScreenProps) {
     const isWinner = duel.winnerId === currentUserId;
     const opponent = duel.challengerId === currentUserId ? duel.defender : duel.challenger;
-    const myStats = duel.challengerId === currentUserId ? duel.challengerScore : duel.defenderScore; // Assuming score/distance field
-    const opponentStats = duel.challengerId === currentUserId ? duel.defenderScore : duel.challengerScore;
+    // @ts-ignore - Assuming score/distance existence based on schema even if TS complains about dynamic access if not narrowed
+    const myStats = duel.challengerId === currentUserId ? (duel.challengerDistance || duel.challengerScore) : (duel.defenderDistance || duel.defenderScore);
+    // @ts-ignore
+    const opponentStats = duel.challengerId === currentUserId ? (duel.defenderDistance || duel.defenderScore) : (duel.challengerDistance || duel.challengerScore);
 
     // Determine stats based on duel type
     const metricLabel = duel.duelType === 'TITAN_VS_TITAN' ? 'Points' : 'Distance';

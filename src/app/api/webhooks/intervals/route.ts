@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { OracleService } from "@/services/oracle";
 import { ProgressionService } from "@/services/progression";
+import { processUserCardioActivity } from "@/actions/duel";
 
 // Defines the shape of an Intervals.icu Activity Event
 // Reference: https://intervals.icu/api/v1/athlete/{id}/activities
@@ -89,6 +90,26 @@ export async function POST(request: NextRequest) {
       console.log(
         `[Intervals Webhook] Persisted CardioLog: ${activity.type} | Load: ${activity.training_load}`,
       );
+
+      // Trigger Duel Updates
+      // Intervals payload doesn't seem to have distance directly in the typed interface I saw?
+      // "IntervalsActivityPayload" definition:
+      // interface IntervalsActivityPayload {
+      //   id: string; ... moving_time: number; ...
+      // }
+      // It might be missing in the interface but present in payload.
+      // But for now, let's assume we might need to fetch it or update interface?
+      // Let's check the partial interface.
+
+      // We'll update the interface to include distance if possible, or cast to any.
+      // Intervals API typically sends distance (meters).
+      const distanceMeters = (activity as any).distance || 0;
+      const distanceKm = distanceMeters / 1000;
+      const durationMin = activity.moving_time / 60;
+
+      if (distanceKm > 0) {
+        await processUserCardioActivity(user.id, activity.type, distanceKm, durationMin);
+      }
     } else {
       console.log(
         `[Intervals Webhook] Skipping non-cardio activity type: ${activity.type}`,

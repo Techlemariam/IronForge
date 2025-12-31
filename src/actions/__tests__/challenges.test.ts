@@ -21,8 +21,8 @@ vi.mock("@/utils/supabase/server", () => ({
   })),
 }));
 
-vi.mock("@/lib/prisma", () => ({
-  default: {
+vi.mock("@/lib/prisma", () => {
+  const mockPrismaClient = {
     user: {
       findUnique: vi.fn(),
       update: vi.fn(),
@@ -37,9 +37,29 @@ vi.mock("@/lib/prisma", () => ({
       findUnique: vi.fn(),
       update: vi.fn(),
     },
-    $transaction: vi.fn(),
-  },
-}));
+    $transaction: vi.fn((callback) => {
+      if (typeof callback === 'function') {
+        // @ts-ignore
+        return callback(mockPrismaClient);
+      }
+      return Promise.resolve(callback); // For array input
+    }),
+    // Battle Pass mocks needed for addBattlePassXpAction
+    battlePassSeason: { findFirst: vi.fn() },
+    userBattlePass: { findUnique: vi.fn(), create: vi.fn(), update: vi.fn() },
+    battlePassTier: { findMany: vi.fn() },
+  };
+
+  return {
+    default: mockPrismaClient,
+    prisma: mockPrismaClient,
+  };
+});
+
+// We need to access these mocks in tests, so we can re-import or expect on the module
+// But since we need to set return values in tests, we rely on the fact that 
+// importing '@/lib/prisma' returns the SAME mock object.
+
 
 import { createClient } from "@/utils/supabase/server";
 import prisma from "@/lib/prisma";

@@ -152,7 +152,7 @@ export function TitanXPBar({
 
         {/* FILL BAR */}
         <div
-          className={`h-full relative transition-all duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] ${barGradient}`}
+          className={`h-full relative transition-all duration-1000 ease-out ${barGradient}`}
           style={{ width: `${percentage}%` }}
         >
           {/* Flash Effect on Gain - Enhanced Visibility */}

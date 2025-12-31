@@ -10,38 +10,14 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { DuelArena } from "../../features/game/DuelArena";
 
-// Types
-interface DuelParticipant {
-  id: string;
-  heroName: string | null;
-  level: number;
-  image: string | null;
-  faction: string;
-}
-
-interface DuelData {
-  id: string;
-  startDate: Date | null;
-  endDate: Date | null;
-  challengerScore: number;
-  defenderScore: number;
-  challenger: DuelParticipant;
-  defender: DuelParticipant;
-  // Cardio Fields
-  duelType?: string;
-  activityType?: string;
-  durationMinutes?: number;
-  targetDistance?: number;
-  wkgTier?: number;
-  challengerDistance?: number;
-  defenderDistance?: number;
-}
+import { ExtendedDuel } from "@/app/iron-arena/ArenaClient";
 
 interface DuelCardProps {
-  duel: DuelData;
+  duel: ExtendedDuel;
   currentUserId: string;
   onTaunt?: () => void;
 }
+
 
 export function DuelCard({ duel, currentUserId, onTaunt }: DuelCardProps) {
   const [showArena, setShowArena] = useState(false);

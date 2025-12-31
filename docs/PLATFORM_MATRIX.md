@@ -94,6 +94,16 @@ Legend: ✅ Full support | ⚠️ Simplified | ❌ Not applicable
 | **Offline?** | No | Cached standings | No | N/A |
 | **Priority** | P0 | P0 | P2 | N/A |
 
+### Cardio PvP Duels
+
+| Aspect | Desktop | Mobile | TV Mode | Companion |
+|:-------|:--------|:-------|:--------|:----------|
+| **Primary?** | ⚠️ | ✅ | ⚠️ | ❌ |
+| **Layout** | Detailed Analysis | Matchmaking/Status | VS View (Spectator) | N/A |
+| **Input** | KB/Mouse | Touch | Passive | N/A |
+| **Offline?** | No | Cached Status | No | N/A |
+| **Priority** | P2 | P1 | P2 | N/A |
+
 ---
 
 ## Design Principles

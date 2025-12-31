@@ -310,12 +310,12 @@ export interface TitanLoadCalculation {
 
 export interface OracleRecommendation {
   type:
-    | "RECOVERY"
-    | "PR_ATTEMPT"
-    | "CARDIO_VALIDATION"
-    | "GRIND"
-    | "TAPER"
-    | "COMPETITION_PREP";
+  | "RECOVERY"
+  | "PR_ATTEMPT"
+  | "CARDIO_VALIDATION"
+  | "GRIND"
+  | "TAPER"
+  | "COMPETITION_PREP";
   title: string;
   rationale: string;
   priorityScore: number;
@@ -409,6 +409,8 @@ export interface Monster {
   maxHp: number;
   weakness: SkillCategory[];
   associatedExerciseIds: string[];
+  /** Speed in kph for chase mode (optional) */
+  chaseSpeedKph?: number;
 }
 
 // --- WORLD MAP ---

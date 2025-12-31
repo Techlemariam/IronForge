@@ -12,8 +12,16 @@ import { SeasonInfo } from "@/actions/iron-leagues";
 import { LeagueInfo } from "@/lib/game/tier-data";
 import { motion, AnimatePresence } from "framer-motion";
 
+import { DuelChallenge, User } from '@prisma/client';
+
+// Extended type matches what we return from getDuelStatusAction
+export type ExtendedDuel = DuelChallenge & {
+  challenger: Pick<User, "id" | "heroName" | "level" | "image" | "faction">;
+  defender: Pick<User, "id" | "heroName" | "level" | "image" | "faction">;
+};
+
 interface ArenaClientProps {
-  activeDuel: any;
+  activeDuel: ExtendedDuel | null;
   currentUserId: string;
   leagueInfo: LeagueInfo | null;
   seasonInfo: SeasonInfo;

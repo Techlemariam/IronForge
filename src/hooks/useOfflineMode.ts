@@ -52,13 +52,6 @@ export function useOfflineMode() {
     };
   }, []);
 
-  // Sync when coming online
-  useEffect(() => {
-    if (isOnline && pendingActions.length > 0) {
-      syncPendingActions();
-    }
-  }, [isOnline]);
-
   const queueAction = useCallback(
     (type: OfflineAction["type"], payload: unknown) => {
       const action: OfflineAction = {
@@ -120,6 +113,13 @@ export function useOfflineMode() {
     }),
     [isOnline, pendingActions.length, lastSyncTime],
   );
+
+  // Sync when coming online
+  useEffect(() => {
+    if (isOnline) {
+      syncPendingActions();
+    }
+  }, [isOnline, syncPendingActions]);
 
   return {
     isOnline,

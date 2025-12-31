@@ -5,6 +5,13 @@
 - [x] **Iron Command Center (TV Mode)** <!-- status: shipped | priority: critical | roi: 5.5 | effort: L | source: strategic-diff -->
 - [/] **Cardio PvP Duels** ([Spec](specs/cardio-duels.md)) <!-- status: in-progress | architect: /architect | priority: medium | effort: M | source: user/idea -->
 
+## 🚨 Business Trigger Watchlist (Scale-Up Indicators)
+> **Strategy:** Do not monetize until these conditions are met.
+- [ ] **Trigger 1: Traction** -> 100 recurring users (Retention > 20%).
+- [ ] **Trigger 2: Demand** -> User explicitly asks "Can I pay for X?".
+- [ ] **Trigger 3: Cost** -> API/Server costs exceed 500 SEK/month.
+*Action:* When triggered, execute `business_plan.md` -> Phase 2.
+
 
 ## 📋 Backlog (Ready for Analysis)
 ### Critical Priority (Consensus: Game Designer + Coaches)
@@ -72,7 +79,7 @@
 
 
 ### Medium Priority
-- [ ] **Cardio PvP Duels** ([Spec](specs/cardio-duels.md)) <!-- status: planned | priority: medium | roi: 2.5 | effort: M | impact: 5 | source: user/idea + team-discussion -->
+- [/] **Cardio PvP Duels** ([Spec](specs/cardio-duels.md)) <!-- status: in-progress | priority: medium | roi: 2.5 | effort: M | impact: 5 | source: user/idea + team-discussion -->
   - Distance Race (running + cycling)
   - Speed Demon (running + cycling)
   - Elevation Grind (cycling)

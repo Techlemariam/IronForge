@@ -374,7 +374,7 @@ const UltrathinkDashboard: React.FC<UltrathinkDashboardProps> = ({
                   key={day.dayOffset}
                   className="flex items-center gap-4 text-xs"
                 >
-                  <div className="w-8 font-mono text-zinc-600">
+                  <div className="w-8 font-mono text-zinc-400">
                     {day.dayOffset === 0 ? "TDY" : `+ ${day.dayOffset} d`}
                   </div>
                   <div className="flex-1 h-2 bg-zinc-800 rounded-full overflow-hidden relative">

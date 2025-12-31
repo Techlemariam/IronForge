@@ -1,0 +1,33 @@
+{
+    "sprintId": "17",
+    "goal": "Finalize the Cardio PvP Duels feature and prepare for Season 2 expansion.",
+    "status": "ACTIVE",
+    "tasks": [
+        {
+            "id": "cardio-pvp",
+            "title": "Cardio PvP Duels Implementation",
+            "status": "COMPLETED",
+            "agent": "coder"
+        },
+        {
+            "id": "duel-leaderboards",
+            "title": "Duel Leaderboards",
+            "status": "BLOCKED",
+            "blocker": "Environment issues (npm install ENOTEMPTY)",
+            "agent": "coder"
+        },
+        {
+            "id": "power-rating",
+            "title": "Power Rating System Analysis",
+            "status": "COMPLETED",
+            "agent": "architect"
+        },
+        {
+            "id": "oracle-3.0",
+            "title": "Oracle 3.0 Analysis",
+            "status": "COMPLETED",
+            "agent": "analyst"
+        }
+    ],
+    "lastUpdated": "2025-12-31T09:45:00+01:00"
+}
