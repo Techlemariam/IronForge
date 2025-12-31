@@ -39,7 +39,7 @@ export function ArenaClient({ activeDuel, currentUserId, leagueInfo, seasonInfo,
   }
 
   // League Display Data
-  const currentTier = leagueInfo?.tier || { name: "Unranked", color: "#666", icon: "🛡️" };
+  const currentTier = leagueInfo?.tier || { name: "Unranked", color: "#666", icon: "🛡️", minRating: 0 };
   const nextTier = leagueInfo?.nextTier;
   const points = leagueInfo?.seasonPoints || 0;
   const progressPercent = nextTier

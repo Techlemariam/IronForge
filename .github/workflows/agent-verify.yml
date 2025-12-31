@@ -13,10 +13,9 @@ env:
   NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL || 'https://dummy.supabase.co' }}
   NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR1bW15Iiwicm9sZSI6ImFub24iLCJpYXQiOjE1OTg4Njk5OTksImV4cCI6MTkwNDQ0NTk5OX0.dummy' }}
   SKIP_ENV_VALIDATION: true
-  # Add other necessary envs if needed
 
 jobs:
-  lint:
+  verify:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -29,99 +28,10 @@ jobs:
         with:
           timeout_minutes: 10
           max_attempts: 3
-          command: npm install
-      - run: npx prisma generate
-      - run: npm run lint
-
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
-        with:
-          node-version: '20'
-          cache: 'npm'
-      - name: Install dependencies
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 10
-          max_attempts: 3
-          command: npm install
-      - run: npx prisma generate
-      - run: npm run test:coverage
-
-  security:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
-        with:
-          node-version: '20'
-          cache: 'npm'
-      - name: Install dependencies
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 10
-          max_attempts: 3
-          command: npm install
-      - run: npm audit --audit-level=high
-
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
-        with:
-          node-version: '20'
-          cache: 'npm'
-      - name: Restore Next.js cache
-        uses: actions/cache@v5
-        with:
-          path: |
-            ${{ github.workspace }}/.next/cache
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
-          restore-keys: |
-            ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
-      - name: Install dependencies
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 10
-          max_attempts: 3
-          command: npm install
-      - run: npx prisma generate
-      - run: npm run build
-
-  setup-e2e:
-    runs-on: ubuntu-latest
-    outputs:
-      should_run: ${{ steps.check.outputs.should_run }}
-    steps:
-      - id: check
-        run: |
-          if [ -n "${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}" ] || [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
-            echo "should_run=true" >> $GITHUB_OUTPUT
-          else
-            echo "should_run=false" >> $GITHUB_OUTPUT
-          fi
-
-  e2e:
-    needs: [build, setup-e2e]
-    if: needs.setup-e2e.outputs.should_run == 'true'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
-        with:
-          node-version: '20'
-          cache: 'npm'
-      - name: Install dependencies
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 10
-          max_attempts: 3
-          command: npm install
-      - run: npx prisma generate
+          command: npm ci
+      - name: Generate Prisma Client
+        run: npx prisma generate
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
-      - name: Run Playwright tests
-        run: npx playwright test
+      - name: Run Verification Pipeline (Turbo)
+        run: npx turbo run lint test build security
