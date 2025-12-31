@@ -28,6 +28,13 @@ vi.mock("@/lib/prisma", () => {
       update: vi.fn(),
       create: vi.fn(),
     },
+    combatSession: {
+      findUnique: vi.fn(),
+      create: vi.fn(),
+      update: vi.fn(),
+      upsert: vi.fn(),
+      delete: vi.fn(),
+    },
   };
   return {
     default: mockPrisma,
@@ -163,6 +170,20 @@ describe("Combat Server Actions", () => {
         level: 5,
       });
 
+      (prisma.combatSession.findUnique as any).mockResolvedValue({
+        id: "session-1",
+        userId: "user-1",
+        bossId: "boss-1",
+        bossHp: 1000,
+        bossMaxHp: 1000,
+        playerHp: 100,
+        playerMaxHp: 100,
+        turnCount: 1,
+        logs: [],
+        isVictory: false,
+        isDefeat: false,
+      });
+
       // Call startBossFight to populate session
       await startBossFight("boss-1");
 
@@ -206,6 +227,20 @@ describe("Combat Server Actions", () => {
         level: 5,
       });
 
+      (prisma.combatSession.findUnique as any).mockResolvedValue({
+        id: "session-1",
+        userId: "user-1",
+        bossId: "boss-1",
+        bossHp: 1000,
+        bossMaxHp: 1000,
+        playerHp: 100,
+        playerMaxHp: 100,
+        turnCount: 1,
+        logs: [],
+        isVictory: false,
+        isDefeat: false,
+      });
+
       await startBossFight("boss-1");
 
       (CombatEngine.processTurn as any).mockReturnValue({
@@ -245,6 +280,20 @@ describe("Combat Server Actions", () => {
         name: "Boss",
         hp: 1000,
         level: 5,
+      });
+
+      (prisma.combatSession.findUnique as any).mockResolvedValue({
+        id: "session-1",
+        userId: "user-weak",
+        bossId: "boss-1",
+        bossHp: 1000,
+        bossMaxHp: 1000,
+        playerHp: 50,
+        playerMaxHp: 100,
+        turnCount: 1,
+        logs: [],
+        isVictory: false,
+        isDefeat: false,
       });
 
       // Initialize session
@@ -288,6 +337,20 @@ describe("Combat Server Actions", () => {
         name: "Boss",
         hp: 1000,
         level: 5,
+      });
+
+      (prisma.combatSession.findUnique as any).mockResolvedValue({
+        id: "session-1",
+        userId: "user-happy",
+        bossId: "boss-1",
+        bossHp: 1000,
+        bossMaxHp: 1000,
+        playerHp: 100,
+        playerMaxHp: 100,
+        turnCount: 1,
+        logs: [],
+        isVictory: false,
+        isDefeat: false,
       });
 
       // Mock titan for safety
