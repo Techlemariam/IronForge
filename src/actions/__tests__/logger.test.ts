@@ -15,6 +15,10 @@ vi.mock("@/lib/prisma", () => ({
         user: {
             update: vi.fn(),
         },
+        combatSession: {
+            findUnique: vi.fn(),
+            update: vi.fn(),
+        }
     },
 }));
 
@@ -69,6 +73,7 @@ describe("Logger Actions", () => {
 
     it("should log sets and award energy", async () => {
         (prisma.exerciseLog.create as any).mockResolvedValue({ id: "log_1" });
+        (prisma.combatSession.findUnique as any).mockResolvedValue(null); // No combat
 
         // 100kg * 5 reps = 500 volume -> 5 energy
         const result = await logExerciseSetsAction({
@@ -86,5 +91,37 @@ describe("Logger Actions", () => {
                 kineticEnergy: { increment: 5 }
             })
         });
+    });
+
+    it("should apply damage to active combat session", async () => {
+        (prisma.exerciseLog.create as any).mockResolvedValue({ id: "log_2" });
+        (prisma.combatSession.findUnique as any).mockResolvedValue({
+            id: "session_1",
+            userId: "user_123",
+            bossHp: 1000,
+            bossMaxHp: 1000,
+            isVictory: false,
+            isDefeat: false
+        });
+
+        // 100kg * 10 reps = 1000 damage
+        const result = await logExerciseSetsAction({
+            exerciseId: "ex_1",
+            sets: [{ weight: 100, reps: 10 }],
+            notes: "For the kill"
+        });
+
+        expect(result.success).toBe(true);
+        expect(prisma.combatSession.update).toHaveBeenCalledWith({
+            where: { id: "session_1" },
+            data: expect.objectContaining({
+                bossHp: 0,
+                isVictory: true
+            })
+        });
+        // @ts-ignore
+        expect(result.combatStats.isVictory).toBe(true);
+        // @ts-ignore
+        expect(result.combatStats.damageDealt).toBe(1000);
     });
 });

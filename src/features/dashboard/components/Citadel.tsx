@@ -9,6 +9,7 @@ import UltrathinkDashboard from "@/components/UltrathinkDashboard";
 import { CampaignTracker } from "@/components/CampaignTracker";
 import { toast } from "@/components/ui/GameToast";
 import { PocketCastsPlayer } from "@/features/podcast/components/PocketCastsPlayer";
+import BioStatusWidget from "@/components/dashboard/BioStatusWidget";
 
 interface CitadelProps {
     state: DashboardState;
@@ -22,6 +23,12 @@ export const Citadel: React.FC<CitadelProps> = ({ state, dispatch, titanState, p
         <section id="titan-avatar">
             <TitanAvatar titan={titanState} />
         </section>
+
+        {state.trainingContext && (
+            <section id="bio-status" className="animate-in fade-in slide-in-from-top-4 duration-700">
+                <BioStatusWidget context={state.trainingContext} />
+            </section>
+        )}
 
         <section id="quest-board">
             <QuestBoard

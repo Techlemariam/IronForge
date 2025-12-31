@@ -48,8 +48,11 @@ model User {
   // Training Path System
   activePath        String? @default("HYBRID_WARDEN") // TrainingPath enum
   currentMacroCycle String? @default("ALPHA") // MacroCycle enum
+  macroCycleStartDate DateTime @default(now())
+  consecutiveStalls Int     @default(0)
   mobilityLevel     String? @default("NONE") // LayerLevel enum
   recoveryLevel     String? @default("NONE") // LayerLevel enum
+  nutritionMode     String? @default("MAINTENANCE") // DEFICIT, MAINTENANCE, SURPLUS
 
   // Subscription
   subscriptionTier   SubscriptionTier @default(FREE)
@@ -374,17 +377,30 @@ model UserEquipment {
 }
 
 model Item {
-  id          String   @id @default(cuid())
-  name        String
-  description String
-  type        String // weapon, armor, accessory
-  rarity      String // common, rare, epic, legendary
-  power       Int      @default(0)
-  image       String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id            String         @id @default(cuid())
+  name          String
+  description   String
+  type          String // weapon, armor, accessory (Legacy/Display type)
+  equipmentType EquipmentType? // The functional type from equipmentDb.ts
+  rarity        String // common, rare, epic, legendary
+  power         Int            @default(0)
+  image         String?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
 
   users UserEquipment[]
+}
+
+enum EquipmentType {
+  BODYWEIGHT
+  BARBELL
+  DUMBBELL
+  CABLE
+  MACHINE
+  KETTLEBELL
+  BAND
+  HYPER_PRO
+  OTHER
 }
 
 model Monster {

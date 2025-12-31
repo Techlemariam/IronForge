@@ -21,6 +21,7 @@ import { CardioMode } from "@/features/training/CardioStudio";
 import { HevyExerciseTemplate, HevyRoutine } from "@/types/hevy";
 import { ChallengeWithStatus } from "@/components/gamification/QuestBoard";
 import { TitanState } from "@/actions/titan";
+import { TrainingContext } from "@/services/data/TrainingContextService";
 
 export type View =
   | "citadel"
@@ -58,6 +59,7 @@ export interface DashboardData {
   activePath: TrainingPath;
   weeklyMastery?: WeeklyMastery;
   activeDuel?: any;
+  trainingContext?: TrainingContext;
 }
 
 export interface DashboardClientProps {
@@ -107,6 +109,7 @@ export interface DashboardState {
   faction: Faction;
   challenges: ChallengeWithStatus[];
   activeDuel?: any;
+  trainingContext?: TrainingContext;
 }
 
 export type DashboardAction =

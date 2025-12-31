@@ -21,9 +21,11 @@ interface SetLoggerProps {
     exercise: Exercise;
     onFinish: () => void;
     onCancel: () => void;
+    onCombatUpdate?: (damage: number, remainingHp: number, isCritical: boolean) => void;
+    onSave: (sets: any[]) => Promise<void>;
 }
 
-export default function SetLogger({ exercise, onFinish, onCancel }: SetLoggerProps) {
+export default function SetLogger({ exercise, onFinish, onCancel, onCombatUpdate, onSave }: SetLoggerProps) {
     const [sets, setSets] = useState<SetData[]>([
         { id: crypto.randomUUID(), weight: 0, reps: 0, rpe: 8, completed: false },
     ]);
@@ -64,20 +66,9 @@ export default function SetLogger({ exercise, onFinish, onCancel }: SetLoggerPro
             return;
         }
 
-        setIsSaving(true);
-        const res = await logExerciseSetsAction({
-            exerciseId: exercise.id,
-            sets: validSets.map(s => ({ weight: s.weight, reps: s.reps, rpe: s.rpe })),
-            notes: ""
-        });
-        setIsSaving(false);
-
-        if (res.success) {
-            toast.success(`Logged ${validSets.length} sets! +${res.energyGained} Energy`);
-            onFinish();
-        } else {
-            toast.error(res.error || "Failed to save logs");
-        }
+        // Optimistic: Delegate to parent and close immediately
+        onSave(validSets);
+        onFinish();
     }
 
     return (
@@ -161,15 +152,20 @@ export default function SetLogger({ exercise, onFinish, onCancel }: SetLoggerPro
                 </ForgeButton>
             </div>
 
-            <div className="pt-4 border-t border-zinc-800 flex justify-end">
-                <ForgeButton
-                    variant="magma"
-                    onClick={handleSave}
-                    disabled={isSaving}
-                    className="w-full sm:w-auto gap-2"
-                >
-                    {isSaving ? "Saving..." : <><Save className="h-4 w-4" /> Finish Exercise</>}
-                </ForgeButton>
+            <div className="pt-4 border-t border-zinc-800 flex flex-col gap-4">
+                {/* Context Feedback UI will be rendered via Toast for now to minimize clutter, 
+                   but we could add a permanent stats block here later. 
+                   For MVP, the Toast is the primary feedback mechanism. */}
+                <div className="flex justify-end">
+                    <ForgeButton
+                        variant="magma"
+                        onClick={handleSave}
+                        disabled={isSaving}
+                        className="w-full sm:w-auto gap-2"
+                    >
+                        {isSaving ? "Saving..." : <><Save className="h-4 w-4" /> Finish Exercise</>}
+                    </ForgeButton>
+                </div>
             </div>
         </div>
     );

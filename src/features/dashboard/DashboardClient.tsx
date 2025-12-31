@@ -204,6 +204,7 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
     faction: (faction as Faction) || "HORDE",
     challenges: challenges || [],
     activeDuel: initialData.activeDuel || props.activeDuel,
+    trainingContext: initialData.trainingContext,
   };
 
   const [state, dispatch] = useReducer(dashboardReducer, initialStateFromProps);

@@ -228,6 +228,11 @@ export default async function Page() {
     undefined, // weeklyMastery
     titanState,
   );
+
+  // 4d. Fetch Bio-Logic Context (New Multi-Metric Payload)
+  // Ensure we import the service at top of file
+  const trainingContext = await import("@/services/data/TrainingContextService")
+    .then(mod => mod.TrainingContextService.getTrainingContext(user.id));
   const todaysLoad = titanAnalysis ? titanAnalysis.titanLoad : 0;
   const realForecast = AnalyticsService.calculateTSBForecast(wellness, [
     todaysLoad,
@@ -279,6 +284,7 @@ export default async function Page() {
     activePath,
     weeklyMastery,
     activeDuel,
+    trainingContext,
     // We can add history here if needed directly
   };
 

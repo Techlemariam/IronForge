@@ -2,30 +2,37 @@ import QuickLogSession from "@/components/logger/QuickLogSession";
 import { Metadata } from "next";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import { getActiveCombatSession } from "@/actions/combat";
 
 export const metadata: Metadata = {
     title: "Iron Logger | IronForge",
     description: "Quickly log your workouts.",
 };
 
+import prisma from "@/lib/prisma";
+import { EquipmentService } from "@/services/game/EquipmentService";
+
+// ...
+
 export default async function LoggerPage() {
+    // 1. Get User
+    const user = await prisma.user.findFirst(); // Replace with Auth
+    if (!user) return <div>Auth Error</div>;
+
+    // 2. Data Fetching
+    const { session, boss } = await getActiveCombatSession();
+    const capabilities = await EquipmentService.getUserCapabilities(user.id);
+
     return (
         <div className="min-h-screen bg-black/90 pb-20">
-            {/* Simple Header */}
-            <header className="sticky top-0 z-50 bg-black/80 backdrop-blur-md border-b border-white/5 px-4 h-14 flex items-center">
-                <Link
-                    href="/dashboard"
-                    className="p-2 -ml-2 text-zinc-400 hover:text-white transition-colors"
-                >
-                    <ArrowLeft className="h-5 w-5" />
-                </Link>
-                <span className="ml-2 font-bold text-sm text-zinc-500 uppercase tracking-widest">
-                    Training Operations
-                </span>
-            </header>
+            {/* ... Header ... */}
 
             <main className="container max-w-lg mx-auto p-4 pt-8">
-                <QuickLogSession />
+                <QuickLogSession
+                    activeCombatSession={session}
+                    boss={boss}
+                    capabilities={capabilities}
+                />
             </main>
         </div>
     );
