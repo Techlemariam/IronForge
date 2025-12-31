@@ -1,0 +1,343 @@
+build	UNKNOWN STEP	﻿2025-12-30T20:13:07.6912191Z Current runner version: '2.330.0'
+build	UNKNOWN STEP	2025-12-30T20:13:07.6946592Z ##[group]Runner Image Provisioner
+build	UNKNOWN STEP	2025-12-30T20:13:07.6948261Z Hosted Compute Agent
+build	UNKNOWN STEP	2025-12-30T20:13:07.6949082Z Version: 20251211.462
+build	UNKNOWN STEP	2025-12-30T20:13:07.6949965Z Commit: 6cbad8c2bb55d58165063d031ccabf57e2d2db61
+build	UNKNOWN STEP	2025-12-30T20:13:07.6951078Z Build Date: 2025-12-11T16:28:49Z
+build	UNKNOWN STEP	2025-12-30T20:13:07.6952052Z Worker ID: {746e4183-1e1d-4af2-892a-162102e1422d}
+build	UNKNOWN STEP	2025-12-30T20:13:07.6953110Z ##[endgroup]
+build	UNKNOWN STEP	2025-12-30T20:13:07.6954003Z ##[group]Operating System
+build	UNKNOWN STEP	2025-12-30T20:13:07.6954882Z Ubuntu
+build	UNKNOWN STEP	2025-12-30T20:13:07.6955547Z 24.04.3
+build	UNKNOWN STEP	2025-12-30T20:13:07.6956351Z LTS
+build	UNKNOWN STEP	2025-12-30T20:13:07.6957293Z ##[endgroup]
+build	UNKNOWN STEP	2025-12-30T20:13:07.6958125Z ##[group]Runner Image
+build	UNKNOWN STEP	2025-12-30T20:13:07.6959061Z Image: ubuntu-24.04
+build	UNKNOWN STEP	2025-12-30T20:13:07.6959894Z Version: 20251215.174.1
+build	UNKNOWN STEP	2025-12-30T20:13:07.6961548Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20251215.174/images/ubuntu/Ubuntu2404-Readme.md
+build	UNKNOWN STEP	2025-12-30T20:13:07.6964309Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20251215.174
+build	UNKNOWN STEP	2025-12-30T20:13:07.6965935Z ##[endgroup]
+build	UNKNOWN STEP	2025-12-30T20:13:07.6968052Z ##[group]GITHUB_TOKEN Permissions
+build	UNKNOWN STEP	2025-12-30T20:13:07.6970715Z Contents: read
+build	UNKNOWN STEP	2025-12-30T20:13:07.6971517Z Metadata: read
+build	UNKNOWN STEP	2025-12-30T20:13:07.6972520Z Packages: read
+build	UNKNOWN STEP	2025-12-30T20:13:07.6973389Z ##[endgroup]
+build	UNKNOWN STEP	2025-12-30T20:13:07.6976594Z Secret source: Actions
+build	UNKNOWN STEP	2025-12-30T20:13:07.6978309Z Prepare workflow directory
+build	UNKNOWN STEP	2025-12-30T20:13:07.7836152Z Prepare all required actions
+build	UNKNOWN STEP	2025-12-30T20:13:07.7882418Z Getting action download info
+build	UNKNOWN STEP	2025-12-30T20:13:08.1691768Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+build	UNKNOWN STEP	2025-12-30T20:13:08.3100997Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+build	UNKNOWN STEP	2025-12-30T20:13:08.4098536Z Download action repository 'actions/cache@v4' (SHA:0057852bfaa89a56745cba8c7296529d2fc39830)
+build	UNKNOWN STEP	2025-12-30T20:13:08.5421278Z Download action repository 'nick-fields/retry@v3' (SHA:ce71cc2ab81d554ebbe88c79ab5975992d79ba08)
+build	UNKNOWN STEP	2025-12-30T20:13:09.1202545Z Complete job name: build
+build	UNKNOWN STEP	2025-12-30T20:13:09.2892776Z ##[group]Run actions/checkout@v4
+build	UNKNOWN STEP	2025-12-30T20:13:09.2894101Z with:
+build	UNKNOWN STEP	2025-12-30T20:13:09.2894895Z   repository: Techlemariam/IronForge
+build	UNKNOWN STEP	2025-12-30T20:13:09.2896188Z   token: ***
+build	UNKNOWN STEP	2025-12-30T20:13:09.2897111Z   ssh-strict: true
+build	UNKNOWN STEP	2025-12-30T20:13:09.2897897Z   ssh-user: git
+build	UNKNOWN STEP	2025-12-30T20:13:09.2898694Z   persist-credentials: true
+build	UNKNOWN STEP	2025-12-30T20:13:09.2899595Z   clean: true
+build	UNKNOWN STEP	2025-12-30T20:13:09.2900392Z   sparse-checkout-cone-mode: true
+build	UNKNOWN STEP	2025-12-30T20:13:09.2901373Z   fetch-depth: 1
+build	UNKNOWN STEP	2025-12-30T20:13:09.2902163Z   fetch-tags: false
+build	UNKNOWN STEP	2025-12-30T20:13:09.2902975Z   show-progress: true
+build	UNKNOWN STEP	2025-12-30T20:13:09.2903811Z   lfs: false
+build	UNKNOWN STEP	2025-12-30T20:13:09.2904579Z   submodules: false
+build	UNKNOWN STEP	2025-12-30T20:13:09.2905421Z   set-safe-directory: true
+build	UNKNOWN STEP	2025-12-30T20:13:09.2906708Z env:
+build	UNKNOWN STEP	2025-12-30T20:13:09.2907797Z   DATABASE_URL: 
+build	UNKNOWN STEP	2025-12-30T20:13:09.2908580Z   DIRECT_URL: 
+build	UNKNOWN STEP	2025-12-30T20:13:09.2909364Z   NEXT_PUBLIC_SUPABASE_URL: 
+build	UNKNOWN STEP	2025-12-30T20:13:09.2910356Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: 
+build	UNKNOWN STEP	2025-12-30T20:13:09.2911383Z   SKIP_ENV_VALIDATION: true
+build	UNKNOWN STEP	2025-12-30T20:13:09.2912266Z ##[endgroup]
+build	UNKNOWN STEP	2025-12-30T20:13:09.4250807Z Syncing repository: Techlemariam/IronForge
+build	UNKNOWN STEP	2025-12-30T20:13:09.4253575Z ##[group]Getting Git version info
+build	UNKNOWN STEP	2025-12-30T20:13:09.4254950Z Working directory is '/home/runner/work/IronForge/IronForge'
+build	UNKNOWN STEP	2025-12-30T20:13:09.4258855Z [command]/usr/bin/git version
+build	UNKNOWN STEP	2025-12-30T20:13:10.0925202Z git version 2.52.0
+build	UNKNOWN STEP	2025-12-30T20:13:10.0975769Z ##[endgroup]
+build	UNKNOWN STEP	2025-12-30T20:13:10.0996490Z Temporarily overriding HOME='/home/runner/work/_temp/7c92f56b-2414-4229-b88e-a4657f85c5c3' before making global git config changes
+build	UNKNOWN STEP	2025-12-30T20:13:10.1008703Z Adding repository directory to the temporary git global config as a safe directory
+build	UNKNOWN STEP	2025-12-30T20:13:10.1012921Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/IronForge/IronForge
+build	UNKNOWN STEP	2025-12-30T20:13:10.1223972Z Deleting the contents of '/home/runner/work/IronForge/IronForge'
+build	UNKNOWN STEP	2025-12-30T20:13:10.1226126Z ##[group]Initializing the repository
+build	UNKNOWN STEP	2025-12-30T20:13:10.1232265Z [command]/usr/bin/git init /home/runner/work/IronForge/IronForge
+build	UNKNOWN STEP	2025-12-30T20:13:10.2200293Z hint: Using 'master' as the name for the initial branch. This default branch name
+build	UNKNOWN STEP	2025-12-30T20:13:10.2204732Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+build	UNKNOWN STEP	2025-12-30T20:13:10.2208517Z hint: to use in all of your new repositories, which will suppress this warning,
+build	UNKNOWN STEP	2025-12-30T20:13:10.2209587Z hint: call:
+build	UNKNOWN STEP	2025-12-30T20:13:10.2210237Z hint:
+build	UNKNOWN STEP	2025-12-30T20:13:10.2211046Z hint: 	git config --global init.defaultBranch <name>
+build	UNKNOWN STEP	2025-12-30T20:13:10.2211916Z hint:
+build	UNKNOWN STEP	2025-12-30T20:13:10.2212793Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+build	UNKNOWN STEP	2025-12-30T20:13:10.2214035Z hint: 'development'. The just-created branch can be renamed via this command:
+build	UNKNOWN STEP	2025-12-30T20:13:10.2215070Z hint:
+build	UNKNOWN STEP	2025-12-30T20:13:10.2215731Z hint: 	git branch -m <name>
+build	UNKNOWN STEP	2025-12-30T20:13:10.2216504Z hint:
+build	UNKNOWN STEP	2025-12-30T20:13:10.2217765Z hint: Disable this message with "git config set advice.defaultBranchName false"
+build	UNKNOWN STEP	2025-12-30T20:13:10.2218877Z Initialized empty Git repository in /home/runner/work/IronForge/IronForge/.git/
+build	UNKNOWN STEP	2025-12-30T20:13:10.2231740Z [command]/usr/bin/git remote add origin https://github.com/Techlemariam/IronForge
+build	UNKNOWN STEP	2025-12-30T20:13:10.2678107Z ##[endgroup]
+build	UNKNOWN STEP	2025-12-30T20:13:10.2679417Z ##[group]Disabling automatic garbage collection
+build	UNKNOWN STEP	2025-12-30T20:13:10.2680222Z [command]/usr/bin/git config --local gc.auto 0
+build	UNKNOWN STEP	2025-12-30T20:13:10.3124901Z ##[endgroup]
+build	UNKNOWN STEP	2025-12-30T20:13:10.3126063Z ##[group]Setting up auth
+build	UNKNOWN STEP	2025-12-30T20:13:10.3139924Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+build	UNKNOWN STEP	2025-12-30T20:13:10.3190572Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+build	UNKNOWN STEP	2025-12-30T20:13:11.1277250Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+build	UNKNOWN STEP	2025-12-30T20:13:11.1313807Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+build	UNKNOWN STEP	2025-12-30T20:13:11.1568447Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+build	UNKNOWN STEP	2025-12-30T20:13:11.1618345Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+build	UNKNOWN STEP	2025-12-30T20:13:11.1867212Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+build	UNKNOWN STEP	2025-12-30T20:13:11.1937720Z ##[endgroup]
+build	UNKNOWN STEP	2025-12-30T20:13:11.1946655Z ##[group]Fetching the repository
+build	UNKNOWN STEP	2025-12-30T20:13:11.1956568Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +4dc8c52070861a5b57b73e3664a308c67a423a8b:refs/remotes/origin/main
+build	UNKNOWN STEP	2025-12-30T20:13:11.6567216Z From https://github.com/Techlemariam/IronForge
+build	UNKNOWN STEP	2025-12-30T20:13:11.6568242Z  * [new ref]         4dc8c52070861a5b57b73e3664a308c67a423a8b -> origin/main
+build	UNKNOWN STEP	2025-12-30T20:13:11.6610015Z ##[endgroup]
+build	UNKNOWN STEP	2025-12-30T20:13:11.6611740Z ##[group]Determining the checkout info
+build	UNKNOWN STEP	2025-12-30T20:13:11.6613799Z ##[endgroup]
+build	UNKNOWN STEP	2025-12-30T20:13:11.6619077Z [command]/usr/bin/git sparse-checkout disable
+build	UNKNOWN STEP	2025-12-30T20:13:11.6680549Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+build	UNKNOWN STEP	2025-12-30T20:13:11.6730224Z ##[group]Checking out the ref
+build	UNKNOWN STEP	2025-12-30T20:13:11.6734958Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+build	UNKNOWN STEP	2025-12-30T20:13:11.7624971Z Switched to a new branch 'main'
+build	UNKNOWN STEP	2025-12-30T20:13:11.7627661Z branch 'main' set up to track 'origin/main'.
+build	UNKNOWN STEP	2025-12-30T20:13:11.7643021Z ##[endgroup]
+build	UNKNOWN STEP	2025-12-30T20:13:11.7687954Z [command]/usr/bin/git log -1 --format=%H
+build	UNKNOWN STEP	2025-12-30T20:13:11.7705561Z 4dc8c52070861a5b57b73e3664a308c67a423a8b
+build	UNKNOWN STEP	2025-12-30T20:13:11.7930555Z ##[group]Run actions/setup-node@v4
+build	UNKNOWN STEP	2025-12-30T20:13:11.7931002Z with:
+build	UNKNOWN STEP	2025-12-30T20:13:11.7931184Z   node-version: 20
+build	UNKNOWN STEP	2025-12-30T20:13:11.7931380Z   cache: npm
+build	UNKNOWN STEP	2025-12-30T20:13:11.7931554Z   always-auth: false
+build	UNKNOWN STEP	2025-12-30T20:13:11.7931753Z   check-latest: false
+build	UNKNOWN STEP	2025-12-30T20:13:11.7932171Z   token: ***
+build	UNKNOWN STEP	2025-12-30T20:13:11.7932373Z env:
+build	UNKNOWN STEP	2025-12-30T20:13:11.7932568Z   DATABASE_URL: 
+build	UNKNOWN STEP	2025-12-30T20:13:11.7932749Z   DIRECT_URL: 
+build	UNKNOWN STEP	2025-12-30T20:13:11.7932935Z   NEXT_PUBLIC_SUPABASE_URL: 
+build	UNKNOWN STEP	2025-12-30T20:13:11.7933175Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: 
+build	UNKNOWN STEP	2025-12-30T20:13:11.7933410Z   SKIP_ENV_VALIDATION: true
+build	UNKNOWN STEP	2025-12-30T20:13:11.7933624Z ##[endgroup]
+build	UNKNOWN STEP	2025-12-30T20:13:11.9788185Z Found in cache @ /opt/hostedtoolcache/node/20.19.6/x64
+build	UNKNOWN STEP	2025-12-30T20:13:11.9794816Z ##[group]Environment details
+build	UNKNOWN STEP	2025-12-30T20:13:12.4589125Z node: v20.19.6
+build	UNKNOWN STEP	2025-12-30T20:13:12.4591138Z npm: 10.8.2
+build	UNKNOWN STEP	2025-12-30T20:13:12.4593749Z yarn: 1.22.22
+build	UNKNOWN STEP	2025-12-30T20:13:12.4594570Z ##[endgroup]
+build	UNKNOWN STEP	2025-12-30T20:13:12.4617784Z [command]/opt/hostedtoolcache/node/20.19.6/x64/bin/npm config get cache
+build	UNKNOWN STEP	2025-12-30T20:13:12.5949876Z /home/runner/.npm
+build	UNKNOWN STEP	2025-12-30T20:13:12.8193371Z Cache hit for: node-cache-Linux-x64-npm-bc1105ec9d4992d0012669004f1e174eafd92857eab460dea0598c7aa16a4d10
+build	UNKNOWN STEP	2025-12-30T20:13:13.9692214Z Received 104857600 of 315367302 (33.2%), 99.9 MBs/sec
+build	UNKNOWN STEP	2025-12-30T20:13:14.9699607Z Received 268435456 of 315367302 (85.1%), 127.9 MBs/sec
+build	UNKNOWN STEP	2025-12-30T20:13:15.2577946Z Received 315367302 of 315367302 (100.0%), 131.4 MBs/sec
+build	UNKNOWN STEP	2025-12-30T20:13:15.2598635Z Cache Size: ~301 MB (315367302 B)
+build	UNKNOWN STEP	2025-12-30T20:13:15.2773830Z [command]/usr/bin/tar -xf /home/runner/work/_temp/99dca100-aae5-44ad-a0a9-c7f7ffb29fbb/cache.tzst -P -C /home/runner/work/IronForge/IronForge --use-compress-program unzstd
+build	UNKNOWN STEP	2025-12-30T20:13:16.2990917Z Cache restored successfully
+build	UNKNOWN STEP	2025-12-30T20:13:16.5807560Z Cache restored from key: node-cache-Linux-x64-npm-bc1105ec9d4992d0012669004f1e174eafd92857eab460dea0598c7aa16a4d10
+build	UNKNOWN STEP	2025-12-30T20:13:17.1495126Z ##[group]Run actions/cache@v4
+build	UNKNOWN STEP	2025-12-30T20:13:17.1495537Z with:
+build	UNKNOWN STEP	2025-12-30T20:13:17.1495965Z   path: /home/runner/work/IronForge/IronForge/.next/cache
+build	UNKNOWN STEP	
+build	UNKNOWN STEP	2025-12-30T20:13:17.1497631Z   key: Linux-nextjs-bc1105ec9d4992d0012669004f1e174eafd92857eab460dea0598c7aa16a4d10-d55b91273cc450836dd9a02e7636cee1b174c472ebc8e2b3281d79f672fd4558
+build	UNKNOWN STEP	2025-12-30T20:13:17.1499334Z   restore-keys: Linux-nextjs-bc1105ec9d4992d0012669004f1e174eafd92857eab460dea0598c7aa16a4d10-
+build	UNKNOWN STEP	
+build	UNKNOWN STEP	2025-12-30T20:13:17.1500188Z   enableCrossOsArchive: false
+build	UNKNOWN STEP	2025-12-30T20:13:17.1500605Z   fail-on-cache-miss: false
+build	UNKNOWN STEP	2025-12-30T20:13:17.1500985Z   lookup-only: false
+build	UNKNOWN STEP	2025-12-30T20:13:17.1501329Z   save-always: false
+build	UNKNOWN STEP	2025-12-30T20:13:17.1501655Z env:
+build	UNKNOWN STEP	2025-12-30T20:13:17.1501920Z   DATABASE_URL: 
+build	UNKNOWN STEP	2025-12-30T20:13:17.1502211Z   DIRECT_URL: 
+build	UNKNOWN STEP	2025-12-30T20:13:17.1502529Z   NEXT_PUBLIC_SUPABASE_URL: 
+build	UNKNOWN STEP	2025-12-30T20:13:17.1502922Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: 
+build	UNKNOWN STEP	2025-12-30T20:13:17.1503318Z   SKIP_ENV_VALIDATION: true
+build	UNKNOWN STEP	2025-12-30T20:13:17.1503702Z ##[endgroup]
+build	UNKNOWN STEP	2025-12-30T20:13:17.4291629Z Cache not found for input keys: Linux-nextjs-bc1105ec9d4992d0012669004f1e174eafd92857eab460dea0598c7aa16a4d10-d55b91273cc450836dd9a02e7636cee1b174c472ebc8e2b3281d79f672fd4558, Linux-nextjs-bc1105ec9d4992d0012669004f1e174eafd92857eab460dea0598c7aa16a4d10-
+build	UNKNOWN STEP	2025-12-30T20:13:17.4376075Z ##[group]Run nick-fields/retry@v3
+build	UNKNOWN STEP	2025-12-30T20:13:17.4376337Z with:
+build	UNKNOWN STEP	2025-12-30T20:13:17.4376521Z   timeout_minutes: 10
+build	UNKNOWN STEP	2025-12-30T20:13:17.4377115Z   max_attempts: 3
+build	UNKNOWN STEP	2025-12-30T20:13:17.4377337Z   command: npm install
+build	UNKNOWN STEP	2025-12-30T20:13:17.4377552Z   retry_wait_seconds: 10
+build	UNKNOWN STEP	2025-12-30T20:13:17.4377774Z   polling_interval_seconds: 1
+build	UNKNOWN STEP	2025-12-30T20:13:17.4377997Z   warning_on_retry: true
+build	UNKNOWN STEP	2025-12-30T20:13:17.4378219Z   continue_on_error: false
+build	UNKNOWN STEP	2025-12-30T20:13:17.4378429Z env:
+build	UNKNOWN STEP	2025-12-30T20:13:17.4378590Z   DATABASE_URL: 
+build	UNKNOWN STEP	2025-12-30T20:13:17.4378773Z   DIRECT_URL: 
+build	UNKNOWN STEP	2025-12-30T20:13:17.4378962Z   NEXT_PUBLIC_SUPABASE_URL: 
+build	UNKNOWN STEP	2025-12-30T20:13:17.4379193Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: 
+build	UNKNOWN STEP	2025-12-30T20:13:17.4379433Z   SKIP_ENV_VALIDATION: true
+build	UNKNOWN STEP	2025-12-30T20:13:17.4379646Z ##[endgroup]
+build	UNKNOWN STEP	2025-12-30T20:13:17.5111495Z ##[group]Attempt 1
+build	UNKNOWN STEP	2025-12-30T20:13:19.0577668Z npm warn EBADENGINE Unsupported engine {
+build	UNKNOWN STEP	2025-12-30T20:13:19.0578555Z npm warn EBADENGINE   package: '@capacitor/cli@8.0.0',
+build	UNKNOWN STEP	2025-12-30T20:13:19.0579409Z npm warn EBADENGINE   required: { node: '>=22.0.0' },
+build	UNKNOWN STEP	2025-12-30T20:13:19.0580200Z npm warn EBADENGINE   current: { node: 'v20.19.6', npm: '10.8.2' }
+build	UNKNOWN STEP	2025-12-30T20:13:19.0580852Z npm warn EBADENGINE }
+build	UNKNOWN STEP	2025-12-30T20:13:19.0607433Z npm warn EBADENGINE Unsupported engine {
+build	UNKNOWN STEP	2025-12-30T20:13:19.0627803Z npm warn EBADENGINE   package: 'camera-controls@3.1.2',
+build	UNKNOWN STEP	2025-12-30T20:13:19.0628715Z npm warn EBADENGINE   required: { node: '>=22.0.0', npm: '>=10.5.1' },
+build	UNKNOWN STEP	2025-12-30T20:13:19.0629599Z npm warn EBADENGINE   current: { node: 'v20.19.6', npm: '10.8.2' }
+build	UNKNOWN STEP	2025-12-30T20:13:19.0630115Z npm warn EBADENGINE }
+build	UNKNOWN STEP	2025-12-30T20:13:27.9613067Z npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+build	UNKNOWN STEP	2025-12-30T20:13:28.2996703Z npm warn deprecated @humanwhocodes/config-array@0.13.0: Use @eslint/config-array instead
+build	UNKNOWN STEP	2025-12-30T20:13:28.3858767Z npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+build	UNKNOWN STEP	2025-12-30T20:13:28.6198651Z npm warn deprecated @humanwhocodes/object-schema@2.0.3: Use @eslint/object-schema instead
+build	UNKNOWN STEP	2025-12-30T20:13:28.6270002Z npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+build	UNKNOWN STEP	2025-12-30T20:13:29.6171913Z npm warn deprecated source-map@0.8.0-beta.0: The work that was done in this beta branch won't be included in future versions
+build	UNKNOWN STEP	2025-12-30T20:13:29.7978613Z npm warn deprecated node-domexception@1.0.0: Use your platform's native DOMException instead
+build	UNKNOWN STEP	2025-12-30T20:13:34.0399988Z npm warn deprecated eslint@8.57.1: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+build	UNKNOWN STEP	2025-12-30T20:13:42.2547089Z 
+build	UNKNOWN STEP	2025-12-30T20:13:42.2548859Z > ironforge-rpg@1.0.0 postinstall
+build	UNKNOWN STEP	2025-12-30T20:13:42.2549831Z > prisma generate
+build	UNKNOWN STEP	2025-12-30T20:13:42.2550686Z 
+build	UNKNOWN STEP	2025-12-30T20:13:43.3552438Z Prisma schema loaded from prisma/schema.prisma.
+build	UNKNOWN STEP	2025-12-30T20:13:44.3309578Z 
+build	UNKNOWN STEP	2025-12-30T20:13:44.3310840Z ✔ Generated Prisma Client (v7.2.0) to ./node_modules/@prisma/client in 556ms
+build	UNKNOWN STEP	2025-12-30T20:13:44.3311393Z 
+build	UNKNOWN STEP	2025-12-30T20:13:44.3312022Z Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+build	UNKNOWN STEP	2025-12-30T20:13:44.3312587Z 
+build	UNKNOWN STEP	2025-12-30T20:13:44.3313468Z Tip: Need your database queries to be 1000x faster? Accelerate offers you that and more: https://pris.ly/tip-2-accelerate
+build	UNKNOWN STEP	2025-12-30T20:13:44.3314212Z 
+build	UNKNOWN STEP	2025-12-30T20:13:44.3829981Z 
+build	UNKNOWN STEP	2025-12-30T20:13:44.3830784Z added 1185 packages, and audited 1186 packages in 27s
+build	UNKNOWN STEP	2025-12-30T20:13:44.3849989Z 
+build	UNKNOWN STEP	2025-12-30T20:13:44.3852396Z 230 packages are looking for funding
+build	UNKNOWN STEP	2025-12-30T20:13:44.3854624Z   run `npm fund` for details
+build	UNKNOWN STEP	2025-12-30T20:13:44.4009190Z 
+build	UNKNOWN STEP	2025-12-30T20:13:44.4011976Z 2 moderate severity vulnerabilities
+build	UNKNOWN STEP	2025-12-30T20:13:44.4025702Z 
+build	UNKNOWN STEP	2025-12-30T20:13:44.4026151Z To address all issues (including breaking changes), run:
+build	UNKNOWN STEP	2025-12-30T20:13:44.4027169Z   npm audit fix --force
+build	UNKNOWN STEP	2025-12-30T20:13:44.4027833Z 
+build	UNKNOWN STEP	2025-12-30T20:13:44.4028065Z Run `npm audit` for details.
+build	UNKNOWN STEP	2025-12-30T20:13:44.5472007Z Command completed after 1 attempt(s).
+build	UNKNOWN STEP	2025-12-30T20:13:44.5474246Z ##[endgroup]
+build	UNKNOWN STEP	2025-12-30T20:13:44.5551354Z ##[group]Run npx prisma generate
+build	UNKNOWN STEP	2025-12-30T20:13:44.5551729Z [36;1mnpx prisma generate[0m
+build	UNKNOWN STEP	2025-12-30T20:13:44.5599052Z shell: /usr/bin/bash -e {0}
+build	UNKNOWN STEP	2025-12-30T20:13:44.5599299Z env:
+build	UNKNOWN STEP	2025-12-30T20:13:44.5599476Z   DATABASE_URL: 
+build	UNKNOWN STEP	2025-12-30T20:13:44.5599671Z   DIRECT_URL: 
+build	UNKNOWN STEP	2025-12-30T20:13:44.5599861Z   NEXT_PUBLIC_SUPABASE_URL: 
+build	UNKNOWN STEP	2025-12-30T20:13:44.5600097Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: 
+build	UNKNOWN STEP	2025-12-30T20:13:44.5600339Z   SKIP_ENV_VALIDATION: true
+build	UNKNOWN STEP	2025-12-30T20:13:44.5600559Z ##[endgroup]
+build	UNKNOWN STEP	2025-12-30T20:13:45.9929805Z Prisma schema loaded from prisma/schema.prisma.
+build	UNKNOWN STEP	2025-12-30T20:13:46.9291416Z 
+build	UNKNOWN STEP	2025-12-30T20:13:46.9292592Z ✔ Generated Prisma Client (v7.2.0) to ./node_modules/@prisma/client in 513ms
+build	UNKNOWN STEP	2025-12-30T20:13:46.9293150Z 
+build	UNKNOWN STEP	2025-12-30T20:13:46.9293722Z Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+build	UNKNOWN STEP	2025-12-30T20:13:46.9294240Z 
+build	UNKNOWN STEP	2025-12-30T20:13:46.9295122Z Tip: Interested in query caching in just a few lines of code? Try Accelerate today! https://pris.ly/tip-3-accelerate
+build	UNKNOWN STEP	2025-12-30T20:13:46.9295828Z 
+build	UNKNOWN STEP	2025-12-30T20:13:46.9650555Z ##[group]Run npm run build
+build	UNKNOWN STEP	2025-12-30T20:13:46.9650845Z [36;1mnpm run build[0m
+build	UNKNOWN STEP	2025-12-30T20:13:46.9683705Z shell: /usr/bin/bash -e {0}
+build	UNKNOWN STEP	2025-12-30T20:13:46.9683942Z env:
+build	UNKNOWN STEP	2025-12-30T20:13:46.9684117Z   DATABASE_URL: 
+build	UNKNOWN STEP	2025-12-30T20:13:46.9684308Z   DIRECT_URL: 
+build	UNKNOWN STEP	2025-12-30T20:13:46.9684499Z   NEXT_PUBLIC_SUPABASE_URL: 
+build	UNKNOWN STEP	2025-12-30T20:13:46.9684736Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: 
+build	UNKNOWN STEP	2025-12-30T20:13:46.9684982Z   SKIP_ENV_VALIDATION: true
+build	UNKNOWN STEP	2025-12-30T20:13:46.9685191Z ##[endgroup]
+build	UNKNOWN STEP	2025-12-30T20:13:47.0829993Z 
+build	UNKNOWN STEP	2025-12-30T20:13:47.0832559Z > ironforge-rpg@1.0.0 build
+build	UNKNOWN STEP	2025-12-30T20:13:47.0835241Z > next build
+build	UNKNOWN STEP	2025-12-30T20:13:47.0835463Z 
+build	UNKNOWN STEP	2025-12-30T20:13:48.0797333Z ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
+build	UNKNOWN STEP	2025-12-30T20:13:48.0951824Z Attention: Next.js now collects completely anonymous telemetry regarding usage.
+build	UNKNOWN STEP	2025-12-30T20:13:48.0953067Z This information is used to shape Next.js' roadmap and prioritize features.
+build	UNKNOWN STEP	2025-12-30T20:13:48.0954470Z You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+build	UNKNOWN STEP	2025-12-30T20:13:48.0955505Z https://nextjs.org/telemetry
+build	UNKNOWN STEP	2025-12-30T20:13:48.0955821Z 
+build	UNKNOWN STEP	2025-12-30T20:13:48.1828434Z    ▲ Next.js 15.5.9
+build	UNKNOWN STEP	2025-12-30T20:13:48.1830540Z    - Environments: .env.local
+build	UNKNOWN STEP	2025-12-30T20:13:48.1834152Z    - Experiments (use with caution):
+build	UNKNOWN STEP	2025-12-30T20:13:48.1835021Z      · clientTraceMetadata
+build	UNKNOWN STEP	2025-12-30T20:13:48.1842470Z 
+build	UNKNOWN STEP	2025-12-30T20:13:48.2552898Z    Creating an optimized production build ...
+build	UNKNOWN STEP	2025-12-30T20:13:48.7429021Z  [32m[1m✓[22m[39m (serwist) Bundling the service worker script with the URL '/sw.js' and the scope '/'...
+build	UNKNOWN STEP	2025-12-30T20:14:41.1509272Z <w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (188kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+build	UNKNOWN STEP	2025-12-30T20:14:41.1849431Z <w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (139kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+build	UNKNOWN STEP	2025-12-30T20:14:41.4239134Z <w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (130kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+build	UNKNOWN STEP	2025-12-30T20:14:44.5312140Z 
+build	UNKNOWN STEP	2025-12-30T20:14:44.5315389Z [1m[33mwarn[39m[22m - The class `ease-[cubic-bezier(0.22,1,0.36,1)]` is ambiguous and matches multiple utilities.
+build	UNKNOWN STEP	2025-12-30T20:14:44.5317840Z [1m[33mwarn[39m[22m - If this is content and not a class, replace it with `ease-&lsqb;cubic-bezier(0.22,1,0.36,1)&rsqb;` to silence this warning.
+build	UNKNOWN STEP	2025-12-30T20:15:05.6184012Z  ⚠ Compiled with warnings in 77s
+build	UNKNOWN STEP	2025-12-30T20:15:05.6188383Z 
+build	UNKNOWN STEP	2025-12-30T20:15:05.6192689Z ./node_modules/@supabase/realtime-js/dist/module/lib/websocket-factory.js
+build	UNKNOWN STEP	2025-12-30T20:15:05.6199861Z A Node.js API is used (process.versions at line: 39) which is not supported in the Edge Runtime.
+build	UNKNOWN STEP	2025-12-30T20:15:05.6237909Z    Linting and checking validity of types ...
+build	UNKNOWN STEP	2025-12-30T20:15:05.6271181Z Learn more: https://nextjs.org/docs/api-reference/edge-runtime
+build	UNKNOWN STEP	2025-12-30T20:15:05.6271809Z 
+build	UNKNOWN STEP	2025-12-30T20:15:05.6279033Z Import trace for requested module:
+build	UNKNOWN STEP	2025-12-30T20:15:05.6280070Z ./node_modules/@supabase/realtime-js/dist/module/lib/websocket-factory.js
+build	UNKNOWN STEP	2025-12-30T20:15:05.6280953Z ./node_modules/@supabase/realtime-js/dist/module/index.js
+build	UNKNOWN STEP	2025-12-30T20:15:05.6281686Z ./node_modules/@supabase/supabase-js/dist/index.mjs
+build	UNKNOWN STEP	2025-12-30T20:15:05.6282476Z ./node_modules/@supabase/ssr/dist/module/createBrowserClient.js
+build	UNKNOWN STEP	2025-12-30T20:15:05.6283540Z ./node_modules/@supabase/ssr/dist/module/index.js
+build	UNKNOWN STEP	2025-12-30T20:15:05.6284149Z ./src/utils/supabase/middleware.ts
+build	UNKNOWN STEP	2025-12-30T20:15:05.6284453Z 
+build	UNKNOWN STEP	2025-12-30T20:15:05.6284805Z ./node_modules/@supabase/supabase-js/dist/index.mjs
+build	UNKNOWN STEP	2025-12-30T20:15:05.6285797Z A Node.js API is used (process.version at line: 389) which is not supported in the Edge Runtime.
+build	UNKNOWN STEP	2025-12-30T20:15:05.6287269Z Learn more: https://nextjs.org/docs/api-reference/edge-runtime
+build	UNKNOWN STEP	2025-12-30T20:15:05.6287760Z 
+build	UNKNOWN STEP	2025-12-30T20:15:05.6288011Z Import trace for requested module:
+build	UNKNOWN STEP	2025-12-30T20:15:05.6288612Z ./node_modules/@supabase/supabase-js/dist/index.mjs
+build	UNKNOWN STEP	2025-12-30T20:15:05.6289349Z ./node_modules/@supabase/ssr/dist/module/createBrowserClient.js
+build	UNKNOWN STEP	2025-12-30T20:15:05.6289998Z ./node_modules/@supabase/ssr/dist/module/index.js
+build	UNKNOWN STEP	2025-12-30T20:15:05.6290504Z ./src/utils/supabase/middleware.ts
+build	UNKNOWN STEP	2025-12-30T20:15:05.6290759Z 
+build	UNKNOWN STEP	2025-12-30T20:15:22.2828761Z 
+build	UNKNOWN STEP	2025-12-30T20:15:22.2833977Z ./src/components/gamification/OvertrainingBanner.tsx
+build	UNKNOWN STEP	2025-12-30T20:15:22.2837370Z 23:6  Warning: React Hook useEffect has a missing dependency: 'checkStatus'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+build	UNKNOWN STEP	2025-12-30T20:15:22.2839471Z 
+build	UNKNOWN STEP	2025-12-30T20:15:22.2840902Z ./src/components/gamification/StreakBadge.tsx
+build	UNKNOWN STEP	2025-12-30T20:15:22.2843434Z 21:6  Warning: React Hook useEffect has a missing dependency: 'fetchStreak'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+build	UNKNOWN STEP	2025-12-30T20:15:22.2845072Z 
+build	UNKNOWN STEP	2025-12-30T20:15:22.2845654Z ./src/components/oracle/RecoveryOracleVerdict.tsx
+build	UNKNOWN STEP	2025-12-30T20:15:22.2847553Z 65:6  Warning: React Hook useEffect has a missing dependency: 'calculateVerdict'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+build	UNKNOWN STEP	2025-12-30T20:15:22.2851927Z 
+build	UNKNOWN STEP	2025-12-30T20:15:22.2852590Z ./src/features/training/CardioStudio.tsx
+build	UNKNOWN STEP	2025-12-30T20:15:22.2855438Z 502:6  Warning: React Hook useEffect has missing dependencies: 'activeDuel' and 'sessionDuration'. Either include them or remove the dependency array. If 'setTotalDistanceKm' needs the current value of 'activeDuel', you can also switch to useReducer instead of useState and read 'activeDuel' in the reducer.  react-hooks/exhaustive-deps
+build	UNKNOWN STEP	2025-12-30T20:15:22.2857793Z 
+build	UNKNOWN STEP	2025-12-30T20:15:22.2858276Z ./src/hooks/useOfflineMode.ts
+build	UNKNOWN STEP	2025-12-30T20:15:22.2860179Z 60:6  Warning: React Hook useEffect has missing dependencies: 'pendingActions.length' and 'syncPendingActions'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+build	UNKNOWN STEP	2025-12-30T20:15:22.2861606Z 
+build	UNKNOWN STEP	2025-12-30T20:15:22.2862717Z info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
+build	UNKNOWN STEP	2025-12-30T20:15:36.2157397Z Failed to compile.
+build	UNKNOWN STEP	2025-12-30T20:15:36.2161609Z 
+build	UNKNOWN STEP	2025-12-30T20:15:36.2169675Z ./src/lib/prisma.ts:20:9
+build	UNKNOWN STEP	2025-12-30T20:15:36.2171109Z Type error: Object literal may only specify known properties, and 'datasourceUrl' does not exist in type 'Subset<PrismaClientOptions, PrismaClientOptions>'.
+build	UNKNOWN STEP	2025-12-30T20:15:36.2172078Z 
+build	UNKNOWN STEP	2025-12-30T20:15:36.2173232Z [0m [90m 18 |[39m       [90m// to prevent "DATABASE_URL is not defined" from blocking unit tests or CI builds[39m
+build	UNKNOWN STEP	2025-12-30T20:15:36.2177506Z  [90m 19 |[39m       [36mreturn[39m [36mnew[39m [33mPrismaClient[39m({
+build	UNKNOWN STEP	2025-12-30T20:15:36.2198425Z [31m[1m>[22m[39m[90m 20 |[39m         datasourceUrl[33m:[39m [32m"***localhost:5432/postgres"[39m
+build	UNKNOWN STEP	2025-12-30T20:15:36.2199439Z  [90m    |[39m         [31m[1m^[22m[39m
+build	UNKNOWN STEP	2025-12-30T20:15:36.2200019Z  [90m 21 |[39m       })[33m;[39m
+build	UNKNOWN STEP	2025-12-30T20:15:36.2200477Z  [90m 22 |[39m     }
+build	UNKNOWN STEP	2025-12-30T20:15:36.2201418Z  [90m 23 |[39m     [36mthrow[39m [36mnew[39m [33mError[39m([32m"DATABASE_URL is not defined"[39m)[33m;[39m[0m
+build	UNKNOWN STEP	2025-12-30T20:15:36.3477212Z Next.js build worker exited with code: 1 and signal: null
+build	UNKNOWN STEP	2025-12-30T20:15:36.5199754Z ##[error]Process completed with exit code 1.
+build	UNKNOWN STEP	2025-12-30T20:15:36.5283651Z Post job cleanup.
+build	UNKNOWN STEP	2025-12-30T20:15:36.6364182Z [command]/usr/bin/git version
+build	UNKNOWN STEP	2025-12-30T20:15:36.6407758Z git version 2.52.0
+build	UNKNOWN STEP	2025-12-30T20:15:36.6461304Z Temporarily overriding HOME='/home/runner/work/_temp/68c58947-521f-4feb-85bd-aa8f4b1dd8ab' before making global git config changes
+build	UNKNOWN STEP	2025-12-30T20:15:36.6463190Z Adding repository directory to the temporary git global config as a safe directory
+build	UNKNOWN STEP	2025-12-30T20:15:36.6468431Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/IronForge/IronForge
+build	UNKNOWN STEP	2025-12-30T20:15:36.6514595Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+build	UNKNOWN STEP	2025-12-30T20:15:36.6554236Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+build	UNKNOWN STEP	2025-12-30T20:15:36.6841815Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+build	UNKNOWN STEP	2025-12-30T20:15:36.6867353Z http.https://github.com/.extraheader
+build	UNKNOWN STEP	2025-12-30T20:15:36.6883084Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+build	UNKNOWN STEP	2025-12-30T20:15:36.6919614Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+build	UNKNOWN STEP	2025-12-30T20:15:36.7158759Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+build	UNKNOWN STEP	2025-12-30T20:15:36.7243133Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+build	UNKNOWN STEP	2025-12-30T20:15:36.7561475Z Cleaning up orphan processes

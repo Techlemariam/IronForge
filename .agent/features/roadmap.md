@@ -4,6 +4,7 @@
 ## 🚀 Active Development
 - [x] **Iron Command Center (TV Mode)** <!-- status: shipped | priority: critical | roi: 5.5 | effort: L | source: strategic-diff -->
 - [/] **Cardio PvP Duels** ([Spec](specs/cardio-duels.md)) <!-- status: in-progress | architect: /architect | priority: medium | effort: M | source: user/idea -->
+- [/] **Podcast Integration (Pocket Casts)** ([Spec](specs/podcast-integration.md)) <!-- status: in-progress | architect: /architect | priority: medium | roi: 4.0 | effort: M | source: user/idea -->
 
 
 ## 📋 Backlog (Ready for Analysis)

@@ -58,6 +58,7 @@ interface CardioStudioProps {
   };
   userId?: string;
   activeDuel?: any; // Start precise, iterate to proper type
+  pocketCastsConnected?: boolean;
 }
 
 /**
@@ -153,6 +154,7 @@ interface CardioCockpitProps extends CardioStudioProps {
   setMetric: (m: TrainingMetric) => void;
   userId?: string;
   activeDuel?: any;
+  pocketCastsConnected?: boolean;
 }
 
 function CardioCockpit({
@@ -166,6 +168,7 @@ function CardioCockpit({
   setMetric,
   userId,
   activeDuel,
+  pocketCastsConnected,
 }: CardioCockpitProps) {
   const [layoutMode, setLayoutMode] = useState<LayoutMode>("split");
 
@@ -510,6 +513,7 @@ function CardioCockpit({
         initialPower={metric === "power" ? simulatedValue : 180}
         ftp={userProfile?.ftpCycle || 200}
         userId={userId}
+        pocketCastsConnected={pocketCastsConnected}
       />
     );
   }
@@ -559,11 +563,10 @@ function CardioCockpit({
             <button
               key={m}
               onClick={() => setLayoutMode(m)}
-              className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-all ${
-                layoutMode === m
-                  ? "bg-gradient-to-r from-zinc-700 to-zinc-600 text-white shadow-lg"
-                  : "text-zinc-400 hover:text-white hover:bg-zinc-800"
-              }`}
+              className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-all ${layoutMode === m
+                ? "bg-gradient-to-r from-zinc-700 to-zinc-600 text-white shadow-lg"
+                : "text-zinc-400 hover:text-white hover:bg-zinc-800"
+                }`}
               title={`${label} (${shortcut})`}
             >
               {LAYOUT_ICONS[m]}

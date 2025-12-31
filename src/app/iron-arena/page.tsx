@@ -1,7 +1,6 @@
 import { getDuelStatusAction } from "@/actions/duel";
-import { DuelCard } from "@/components/duel/DuelCard";
-import { ChallengeModal } from "@/components/duel/ChallengeModal";
-import { getSession } from "@/lib/auth"; // Ensure this path is correct
+import { getLeagueInfoAction, getCurrentSeasonAction, getLeagueLeaderboardAction } from "@/actions/iron-leagues";
+import { getSession } from "@/lib/auth";
 import { ArenaClient } from "./ArenaClient";
 
 export default async function IronArenaPage() {
@@ -10,9 +9,17 @@ export default async function IronArenaPage() {
     return <div>Please login to access the Iron Arena.</div>;
   }
 
-  const duelStatus = await getDuelStatusAction();
+  const [duelStatus, leagueInfo, seasonInfo] = await Promise.all([
+    getDuelStatusAction(),
+    getLeagueInfoAction(session.user.id),
+    getCurrentSeasonAction()
+  ]);
+
   const activeDuel = duelStatus.success ? duelStatus.duel : null;
-  // pending is available in duelStatus.pending if needed
+
+  // Fetch leaderboard for the user's current league (or default to Bronze)
+  const currentLeagueId = leagueInfo?.tier.id || "bronze";
+  const leaderboard = await getLeagueLeaderboardAction(currentLeagueId, 10);
 
   return (
     <div className="container mx-auto p-4 space-y-6">
@@ -21,11 +28,17 @@ export default async function IronArenaPage() {
           Iron Arena
         </h1>
         <p className="text-slate-400">
-          Prove your Titan&apos;s dominance in 7-day training duels.
+          Ranked Seasons are live! Prove your dominance.
         </p>
       </header>
 
-      <ArenaClient activeDuel={activeDuel} currentUserId={session.user.id} />
+      <ArenaClient
+        activeDuel={activeDuel}
+        currentUserId={session.user.id}
+        leagueInfo={leagueInfo}
+        seasonInfo={seasonInfo}
+        leaderboard={leaderboard}
+      />
     </div>
   );
 }

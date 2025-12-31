@@ -14,8 +14,10 @@ import {
   Shield,
   Swords,
   TestTube,
+  Podcast,
 } from "lucide-react";
 import { useSearchParams, useRouter } from "next/navigation";
+import Link from "next/link";
 import ForgeButton from "../ui/ForgeButton";
 import ForgeInput from "../ui/ForgeInput";
 import {
@@ -39,18 +41,20 @@ interface IntegrationsPanelProps {
   hevyConnected: boolean;
   intervalsConnected: boolean;
   stravaConnected: boolean;
+  pocketCastsConnected: boolean;
   initialFaction: Faction;
   onIntegrationChanged?: () => void;
   checkDemoStatus?: boolean;
 }
 
-type IntegrationType = "HEVY" | "INTERVALS" | "STRAVA" | "FACTION";
+type IntegrationType = "HEVY" | "INTERVALS" | "STRAVA" | "FACTION" | "POCKETCASTS";
 
 const IntegrationsPanel: React.FC<IntegrationsPanelProps> = ({
   userId,
   hevyConnected: initialHevy,
   intervalsConnected: initialIntervals,
   stravaConnected: initialStrava,
+  pocketCastsConnected: initialPocketCasts,
   initialFaction,
   onIntegrationChanged,
   checkDemoStatus,
@@ -59,6 +63,7 @@ const IntegrationsPanel: React.FC<IntegrationsPanelProps> = ({
   const [intervalsConnected, setIntervalsConnected] =
     useState(initialIntervals);
   const [stravaConnected, setStravaConnected] = useState(initialStrava);
+  const [pocketCastsConnected, setPocketCastsConnected] = useState(initialPocketCasts);
   const [currentFaction, setCurrentFaction] = useState<Faction>(
     initialFaction || "HORDE",
   );
@@ -208,6 +213,21 @@ const IntegrationsPanel: React.FC<IntegrationsPanelProps> = ({
     });
   };
 
+  const handleDisconnectPocketCasts = () => {
+    if (!confirm("Disconnect Pocket Casts?")) return;
+    startTransition(async () => {
+      try {
+        const res = await fetch("/api/podcast/login", { method: "DELETE" });
+        if (res.ok) {
+          setPocketCastsConnected(false);
+          onIntegrationChanged?.();
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    });
+  };
+
   const handleFactionChange = (faction: Faction) => {
     if (faction === currentFaction) return;
 
@@ -268,6 +288,7 @@ const IntegrationsPanel: React.FC<IntegrationsPanelProps> = ({
                 if (type === "HEVY") handleDisconnectHevy();
                 else if (type === "INTERVALS") handleDisconnectIntervals();
                 else if (type === "STRAVA") handleDisconnectStrava();
+                else if (type === "POCKETCASTS") handleDisconnectPocketCasts();
               }}
               className="text-zinc-500 hover:text-red-400 text-xs underline decoration-dotted transition-colors"
             >
@@ -397,6 +418,20 @@ const IntegrationsPanel: React.FC<IntegrationsPanelProps> = ({
                 </div>
               )}
 
+              {type === "POCKETCASTS" && (
+                <div className="text-center py-2">
+                  <p className="text-xs text-zinc-400 mb-3">
+                    Connect your Pocket Casts account to stream podcasts during workouts.
+                  </p>
+                  <Link href="/settings/podcast" className="block">
+                    <ForgeButton fullWidth variant="magma">
+                      <Podcast className="w-4 h-4 mr-2" />
+                      Go to Podcast Setup
+                    </ForgeButton>
+                  </Link>
+                </div>
+              )}
+
               {error && (
                 <div className="text-red-400 text-xs flex items-center gap-2 bg-red-900/20 p-2 rounded">
                   <AlertTriangle size={12} />
@@ -460,11 +495,10 @@ const IntegrationsPanel: React.FC<IntegrationsPanelProps> = ({
                 <button
                   onClick={() => handleFactionChange("ALLIANCE")}
                   disabled={isPending}
-                  className={`relative p - 4 rounded - lg border - 2 transition - all flex flex - col items - center gap - 2 group ${
-                    isAlliance
-                      ? "bg-blue-900/40 border-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.5)]"
-                      : "bg-zinc-900/50 border-zinc-700 hover:border-blue-500/50 hover:bg-blue-900/10"
-                  } `}
+                  className={`relative p - 4 rounded - lg border - 2 transition - all flex flex - col items - center gap - 2 group ${isAlliance
+                    ? "bg-blue-900/40 border-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.5)]"
+                    : "bg-zinc-900/50 border-zinc-700 hover:border-blue-500/50 hover:bg-blue-900/10"
+                    } `}
                 >
                   <Shield
                     className={`w - 8 h - 8 ${isAlliance ? "text-blue-400" : "text-zinc-500 group-hover:text-blue-400"} `}
@@ -489,11 +523,10 @@ const IntegrationsPanel: React.FC<IntegrationsPanelProps> = ({
                 <button
                   onClick={() => handleFactionChange("HORDE")}
                   disabled={isPending}
-                  className={`relative p - 4 rounded - lg border - 2 transition - all flex flex - col items - center gap - 2 group ${
-                    !isAlliance
-                      ? "bg-red-900/40 border-red-500 shadow-[0_0_15px_rgba(239,68,68,0.5)]"
-                      : "bg-zinc-900/50 border-zinc-700 hover:border-red-500/50 hover:bg-red-900/10"
-                  } `}
+                  className={`relative p - 4 rounded - lg border - 2 transition - all flex flex - col items - center gap - 2 group ${!isAlliance
+                    ? "bg-red-900/40 border-red-500 shadow-[0_0_15px_rgba(239,68,68,0.5)]"
+                    : "bg-zinc-900/50 border-zinc-700 hover:border-red-500/50 hover:bg-red-900/10"
+                    } `}
                 >
                   <Swords
                     className={`w - 8 h - 8 ${!isAlliance ? "text-red-400" : "text-zinc-500 group-hover:text-red-400"} `}
@@ -553,6 +586,13 @@ const IntegrationsPanel: React.FC<IntegrationsPanelProps> = ({
         "Strava",
         <Bike size={18} />,
         "Syncs runs/rides for Kinetic Energy",
+      )}
+      {renderCard(
+        "POCKETCASTS",
+        pocketCastsConnected,
+        "Pocket Casts",
+        <Podcast size={18} />,
+        "Stream your podcast queue during training",
       )}
 
       <div className="border-t border-white/5 my-4"></div>

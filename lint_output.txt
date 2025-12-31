@@ -2,99 +2,31 @@
 > ironforge-rpg@1.0.0 lint
 > next lint
 
+`next lint` is deprecated and will be removed in Next.js 16.
+For new projects, use create-next-app to choose your preferred linter.
+For existing projects, migrate to the ESLint CLI:
+npx @next/codemod@canary next-lint-to-eslint-cli .
 
-./src/components/ActionView.tsx
-289:8  Warning: React Hook useCallback has a missing dependency: 'handleRepsChange'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
-296:8  Warning: React Hook useCallback has missing dependencies: 'handleRepsChange' and 'handleToggleSet'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
-321:8  Warning: React Hook useEffect has a missing dependency: 'exercises'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
 
-./src/components/bestiary/MonsterList.tsx
-63:33  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
-63:55  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+./src/components/gamification/OvertrainingBanner.tsx
+23:6  Warning: React Hook useEffect has a missing dependency: 'checkStatus'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
 
-./src/components/CampaignTracker.tsx
-63:21  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
-63:148  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+./src/components/gamification/StreakBadge.tsx
+21:6  Warning: React Hook useEffect has a missing dependency: 'fetchStreak'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
 
-./src/components/game/Bestiary.tsx
-47:75  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
-47:143  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+./src/components/oracle/RecoveryOracleVerdict.tsx
+65:6  Warning: React Hook useEffect has a missing dependency: 'calculateVerdict'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
 
-./src/components/game/Grimoire.tsx
-97:74  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
-97:135  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
-150:37  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
-150:57  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+./src/components/settings/IntegrationsPanel.tsx
+425:20  Error: 'Link' is not defined.  react/jsx-no-undef
 
-./src/components/game/Marketplace.tsx
-101:84  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
-101:108  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+./src/features/podcast/components/PocketCastsPlayer.tsx
+78:21  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
 
-./src/components/game/SkillTreeLegacy.tsx
-96:8  Warning: React Hook useMemo has a missing dependency: 'checkRequirement'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
-287:77  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
-287:104  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+./src/features/training/CardioStudio.tsx
+502:6  Warning: React Hook useEffect has missing dependencies: 'activeDuel' and 'sessionDuration'. Either include them or remove the dependency array. If 'setTotalDistanceKm' needs the current value of 'activeDuel', you can also switch to useReducer instead of useState and read 'activeDuel' in the reducer.  react-hooks/exhaustive-deps
 
-./src/components/game/WorldMap.tsx
-34:75  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
-34:123  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
-104:102  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
-104:121  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
-
-./src/components/GeminiLiveCoach.tsx
-41:8  Warning: React Hook useEffect has a missing dependency: 'connectLive'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
-
-./src/components/MindfulnessModal.tsx
-67:17  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
-67:141  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
-
-./src/components/OracleCard.tsx
-91:15  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
-91:42  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
-
-./src/components/PreWorkoutCheck.tsx
-222:120  Error: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-222:129  Error: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-
-./src/components/SessionRunner.tsx
-50:8  Warning: React Hook useEffect has a missing dependency: 'completed'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
-146:8  Warning: React Hook useEffect has missing dependencies: 'achievementContext', 'activeSession.blocks', 'activeSession.id', and 'isSaving'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
-190:32  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
-190:65  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
-
-./src/components/settings/EquipmentArmory.tsx
-152:80  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
-
-./src/components/SkillTree.tsx
-183:8  Warning: React Hook useMemo has unnecessary dependencies: 'availableKineticShards' and 'availableTalentPoints'. Either exclude them or remove the dependency array.  react-hooks/exhaustive-deps
-318:77  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
-318:113  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
-
-./src/components/TransitionView.tsx
-103:15  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
-
-./src/components/VisionRepCounter.tsx
-36:8  Warning: React Hook useEffect has a missing dependency: 'startCamera'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
-
-./src/features/dashboard/DashboardClient.tsx
-157:95  Error: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-
-./src/features/game/GuildHall.tsx
-347:33  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
-347:52  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
-
-./src/features/training/components/OverchargePrompt.tsx
-34:25  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
-34:153  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
-
-./src/features/training/IronMines.tsx
-56:6  Warning: React Hook useEffect has a missing dependency: 'exercises'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
-
-./src/features/training/RoutineSelector.tsx
-48:71  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
-48:87  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
-
-./src/hooks/useVoiceCommand.ts
-57:6  Warning: React Hook useEffect has a missing dependency: 'processCommand'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+./src/hooks/useOfflineMode.ts
+60:6  Warning: React Hook useEffect has missing dependencies: 'pendingActions.length' and 'syncPendingActions'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
 
 info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules

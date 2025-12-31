@@ -20,6 +20,7 @@ export default async function SettingsRoute() {
       hevyApiKey: true,
       intervalsApiKey: true,
       stravaAccessToken: true,
+      pocketCastsEnabled: true,
       faction: true,
     },
   });
@@ -35,6 +36,7 @@ export default async function SettingsRoute() {
       hevyConnected={!!dbUser.hevyApiKey}
       intervalsConnected={!!dbUser.intervalsApiKey}
       stravaConnected={!!dbUser.stravaAccessToken}
+      pocketCastsConnected={dbUser.pocketCastsEnabled}
       initialFaction={dbUser.faction}
       isDemoMode={false}
     />

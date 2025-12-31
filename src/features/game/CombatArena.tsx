@@ -7,6 +7,7 @@ import {
   startBossFight,
   performCombatAction,
   fleeFromCombat,
+  getActiveCombatSession,
 } from "@/actions/combat";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "@/components/ui/GameToast";
@@ -23,6 +24,7 @@ import {
   Mountain,
   Ghost,
   Sun,
+  PlayCircle,
 } from "lucide-react";
 import { LootItem } from "@/types/loot";
 import { playSound, triggerHaptic } from "@/utils";
@@ -106,6 +108,7 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
     null,
   );
   const [isFleeing, setIsFleeing] = useState(false);
+  const [resumeData, setResumeData] = useState<{ hasSession: boolean; bossName?: string } | null>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -114,6 +117,28 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
 
   // Final Push: Micro-Celebrations
   const { victorySequence, screenShake } = useCelebration();
+
+  // Check for active session on mount
+  useEffect(() => {
+    let mounted = true;
+    const checkSession = async () => {
+      try {
+        const res = await getActiveCombatSession();
+        if (mounted && res.success && res.session) {
+          setResumeData({
+            hasSession: true,
+            bossName: (res.boss as any)?.name || "Unknown Boss"
+          });
+        }
+      } catch (e) {
+        console.error(e);
+      } finally {
+        if (mounted) setIsLoading(false);
+      }
+    };
+    checkSession();
+    return () => { mounted = false; };
+  }, []);
 
   const handleStartFight = async (tier: BossTier) => {
     setIsLoading(true);
@@ -126,6 +151,9 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
         setGameState(res.state);
         setBoss(res.boss as any);
         setCombatStarted(true);
+        if (res.message) {
+          toast.success("Combat Resumed", { description: res.message });
+        }
       } else {
         console.error("Failed to start fight:", res.message);
         toast.error("Arena Locked", { description: res.message });
@@ -243,73 +271,104 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
       <div className="fixed inset-0 z-50 bg-black/90 flex flex-col items-center justify-center p-4">
         <div className="max-w-4xl w-full space-y-8 animate-fade-in text-center">
           <h1 className="text-4xl md:text-6xl font-black text-magma uppercase tracking-widest drop-shadow-[0_0_15px_rgba(255,87,34,0.5)]">
-            Select Difficulty
+            {resumeData ? "Combat Active" : "Select Difficulty"}
           </h1>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
-            {/* STORY MODE */}
-            <button
-              onClick={() => handleStartFight("STORY")}
-              disabled={isLoading}
-              className="group relative p-8 rounded-xl border-2 border-emerald-500/30 hover:border-emerald-500 bg-zinc-900 overflow-hidden transition-all hover:scale-105"
-            >
-              <div className="absolute inset-0 bg-emerald-500/5 group-hover:bg-emerald-500/10 transition-colors" />
-              <div className="relative z-10 flex flex-col items-center gap-4">
-                <div className="p-4 rounded-full bg-zinc-950 border border-emerald-500/50 text-emerald-500 mb-2">
-                  <Shield className="w-8 h-8" />
+          {resumeData ? (
+            <div className="flex flex-col items-center gap-6 mt-12 animate-fade-in">
+              <button
+                onClick={() => handleStartFight(selectedTier)} // Tier doesn't matter for resume, backend ignores it or uses saved
+                disabled={isLoading}
+                className="group relative p-8 w-full max-w-md rounded-xl border-2 border-yellow-500/50 hover:border-yellow-400 bg-zinc-900 overflow-hidden transition-all hover:scale-105 shadow-[0_0_30px_rgba(234,179,8,0.2)]"
+              >
+                <div className="absolute inset-0 bg-yellow-500/10 group-hover:bg-yellow-500/20 transition-colors" />
+                <div className="relative z-10 flex flex-col items-center gap-4">
+                  <PlayCircle className="w-16 h-16 text-yellow-500 animate-pulse" />
+                  <h3 className="text-3xl font-bold text-yellow-400 uppercase tracking-widest">
+                    Resume vs {resumeData.bossName}
+                  </h3>
+                  <p className="text-zinc-400">Your battle awaits!</p>
                 </div>
-                <h3 className="text-2xl font-bold text-emerald-400 uppercase tracking-widest">
-                  Story
-                </h3>
-                <div className="text-sm text-zinc-400 space-y-1">
-                  <p>Reduced Boss Stats</p>
-                  <p>50% Rewards</p>
-                </div>
-              </div>
-            </button>
+              </button>
 
-            {/* HEROIC (DEFAULT) */}
-            <button
-              onClick={() => handleStartFight("HEROIC")}
-              disabled={isLoading}
-              className="group relative p-8 rounded-xl border-2 border-magma/30 hover:border-magma bg-zinc-900 overflow-hidden transition-all hover:scale-105"
-            >
-              <div className="absolute inset-0 bg-magma/5 group-hover:bg-magma/10 transition-colors" />
-              <div className="relative z-10 flex flex-col items-center gap-4">
-                <div className="p-4 rounded-full bg-zinc-950 border border-magma/50 text-magma mb-2">
-                  <Swords className="w-8 h-8" />
+              <button
+                disabled={isLoading}
+                onClick={async () => {
+                  await fleeFromCombat(0); // Free flee if abandoning via menu
+                  setResumeData(null);
+                  toast.success("Combat Abandoned");
+                }}
+                className="text-red-500 hover:text-red-400 underline decoration-dotted transition-colors hover:scale-105"
+              >
+                Abandon Fight (Reset)
+              </button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+              {/* STORY MODE */}
+              <button
+                onClick={() => handleStartFight("STORY")}
+                disabled={isLoading}
+                className="group relative p-8 rounded-xl border-2 border-emerald-500/30 hover:border-emerald-500 bg-zinc-900 overflow-hidden transition-all hover:scale-105"
+              >
+                <div className="absolute inset-0 bg-emerald-500/5 group-hover:bg-emerald-500/10 transition-colors" />
+                <div className="relative z-10 flex flex-col items-center gap-4">
+                  <div className="p-4 rounded-full bg-zinc-950 border border-emerald-500/50 text-emerald-500 mb-2">
+                    <Shield className="w-8 h-8" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-emerald-400 uppercase tracking-widest">
+                    Story
+                  </h3>
+                  <div className="text-sm text-zinc-400 space-y-1">
+                    <p>Reduced Boss Stats</p>
+                    <p>50% Rewards</p>
+                  </div>
                 </div>
-                <h3 className="text-2xl font-bold text-magma uppercase tracking-widest">
-                  Heroic
-                </h3>
-                <div className="text-sm text-zinc-400 space-y-1">
-                  <p>Standard Challenge</p>
-                  <p>Normal Rewards</p>
-                </div>
-              </div>
-            </button>
+              </button>
 
-            {/* TITAN SLAYER */}
-            <button
-              onClick={() => handleStartFight("TITAN_SLAYER")}
-              disabled={isLoading}
-              className="group relative p-8 rounded-xl border-2 border-purple-500/30 hover:border-purple-500 bg-zinc-900 overflow-hidden transition-all hover:scale-105"
-            >
-              <div className="absolute inset-0 bg-purple-500/5 group-hover:bg-purple-500/10 transition-colors" />
-              <div className="relative z-10 flex flex-col items-center gap-4">
-                <div className="p-4 rounded-full bg-zinc-950 border border-purple-500/50 text-purple-500 mb-2">
-                  <Skull className="w-8 h-8" />
+              {/* HEROIC (DEFAULT) */}
+              <button
+                onClick={() => handleStartFight("HEROIC")}
+                disabled={isLoading}
+                className="group relative p-8 rounded-xl border-2 border-magma/30 hover:border-magma bg-zinc-900 overflow-hidden transition-all hover:scale-105"
+              >
+                <div className="absolute inset-0 bg-magma/5 group-hover:bg-magma/10 transition-colors" />
+                <div className="relative z-10 flex flex-col items-center gap-4">
+                  <div className="p-4 rounded-full bg-zinc-950 border border-magma/50 text-magma mb-2">
+                    <Swords className="w-8 h-8" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-magma uppercase tracking-widest">
+                    Heroic
+                  </h3>
+                  <div className="text-sm text-zinc-400 space-y-1">
+                    <p>Standard Challenge</p>
+                    <p>Normal Rewards</p>
+                  </div>
                 </div>
-                <h3 className="text-2xl font-bold text-purple-400 uppercase tracking-widest">
-                  Titan Slayer
-                </h3>
-                <div className="text-sm text-zinc-400 space-y-1">
-                  <p>+50% Boss HP</p>
-                  <p className="text-yellow-400 font-bold">200% Rewards</p>
+              </button>
+
+              {/* TITAN SLAYER */}
+              <button
+                onClick={() => handleStartFight("TITAN_SLAYER")}
+                disabled={isLoading}
+                className="group relative p-8 rounded-xl border-2 border-purple-500/30 hover:border-purple-500 bg-zinc-900 overflow-hidden transition-all hover:scale-105"
+              >
+                <div className="absolute inset-0 bg-purple-500/5 group-hover:bg-purple-500/10 transition-colors" />
+                <div className="relative z-10 flex flex-col items-center gap-4">
+                  <div className="p-4 rounded-full bg-zinc-950 border border-purple-500/50 text-purple-500 mb-2">
+                    <Skull className="w-8 h-8" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-purple-400 uppercase tracking-widest">
+                    Titan Slayer
+                  </h3>
+                  <div className="text-sm text-zinc-400 space-y-1">
+                    <p>+50% Boss HP</p>
+                    <p className="text-yellow-400 font-bold">200% Rewards</p>
+                  </div>
                 </div>
-              </div>
-            </button>
-          </div>
+              </button>
+            </div>
+          )}
 
           <button
             disabled={isLoading}

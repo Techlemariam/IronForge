@@ -1,0 +1,357 @@
+build	Set up job	﻿2025-12-30T20:05:41.4533732Z Current runner version: '2.330.0'
+build	Set up job	2025-12-30T20:05:41.4608579Z ##[group]Runner Image Provisioner
+build	Set up job	2025-12-30T20:05:41.4609801Z Hosted Compute Agent
+build	Set up job	2025-12-30T20:05:41.4610886Z Version: 20251211.462
+build	Set up job	2025-12-30T20:05:41.4611901Z Commit: 6cbad8c2bb55d58165063d031ccabf57e2d2db61
+build	Set up job	2025-12-30T20:05:41.4613143Z Build Date: 2025-12-11T16:28:49Z
+build	Set up job	2025-12-30T20:05:41.4614408Z Worker ID: {563c911a-9f92-42e3-853a-b2240226e302}
+build	Set up job	2025-12-30T20:05:41.4615489Z ##[endgroup]
+build	Set up job	2025-12-30T20:05:41.4616323Z ##[group]Operating System
+build	Set up job	2025-12-30T20:05:41.4617307Z Ubuntu
+build	Set up job	2025-12-30T20:05:41.4618338Z 24.04.3
+build	Set up job	2025-12-30T20:05:41.4619038Z LTS
+build	Set up job	2025-12-30T20:05:41.4619865Z ##[endgroup]
+build	Set up job	2025-12-30T20:05:41.4620626Z ##[group]Runner Image
+build	Set up job	2025-12-30T20:05:41.4621487Z Image: ubuntu-24.04
+build	Set up job	2025-12-30T20:05:41.4622414Z Version: 20251215.174.1
+build	Set up job	2025-12-30T20:05:41.4624088Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20251215.174/images/ubuntu/Ubuntu2404-Readme.md
+build	Set up job	2025-12-30T20:05:41.4626516Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20251215.174
+build	Set up job	2025-12-30T20:05:41.4648937Z ##[endgroup]
+build	Set up job	2025-12-30T20:05:41.4651145Z ##[group]GITHUB_TOKEN Permissions
+build	Set up job	2025-12-30T20:05:41.4653725Z Contents: read
+build	Set up job	2025-12-30T20:05:41.4654620Z Metadata: read
+build	Set up job	2025-12-30T20:05:41.4655743Z Packages: read
+build	Set up job	2025-12-30T20:05:41.4656632Z ##[endgroup]
+build	Set up job	2025-12-30T20:05:41.4660076Z Secret source: Actions
+build	Set up job	2025-12-30T20:05:41.4661641Z Prepare workflow directory
+build	Set up job	2025-12-30T20:05:41.6164613Z Prepare all required actions
+build	Set up job	2025-12-30T20:05:41.6266665Z Getting action download info
+build	Set up job	2025-12-30T20:05:42.0076079Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+build	Set up job	2025-12-30T20:05:42.1296990Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+build	Set up job	2025-12-30T20:05:42.2259016Z Download action repository 'actions/cache@v4' (SHA:0057852bfaa89a56745cba8c7296529d2fc39830)
+build	Set up job	2025-12-30T20:05:42.3410534Z Download action repository 'nick-fields/retry@v3' (SHA:ce71cc2ab81d554ebbe88c79ab5975992d79ba08)
+build	Set up job	2025-12-30T20:05:42.6540633Z Complete job name: build
+build	Run actions/checkout@v4	﻿2025-12-30T20:05:42.7182533Z ##[group]Run actions/checkout@v4
+build	Run actions/checkout@v4	2025-12-30T20:05:42.7183454Z with:
+build	Run actions/checkout@v4	2025-12-30T20:05:42.7183906Z   repository: Techlemariam/IronForge
+build	Run actions/checkout@v4	2025-12-30T20:05:42.7184607Z   token: ***
+build	Run actions/checkout@v4	2025-12-30T20:05:42.7185026Z   ssh-strict: true
+build	Run actions/checkout@v4	2025-12-30T20:05:42.7185464Z   ssh-user: git
+build	Run actions/checkout@v4	2025-12-30T20:05:42.7185893Z   persist-credentials: true
+build	Run actions/checkout@v4	2025-12-30T20:05:42.7186383Z   clean: true
+build	Run actions/checkout@v4	2025-12-30T20:05:42.7186915Z   sparse-checkout-cone-mode: true
+build	Run actions/checkout@v4	2025-12-30T20:05:42.7187992Z   fetch-depth: 1
+build	Run actions/checkout@v4	2025-12-30T20:05:42.7188730Z   fetch-tags: false
+build	Run actions/checkout@v4	2025-12-30T20:05:42.7189193Z   show-progress: true
+build	Run actions/checkout@v4	2025-12-30T20:05:42.7189634Z   lfs: false
+build	Run actions/checkout@v4	2025-12-30T20:05:42.7190048Z   submodules: false
+build	Run actions/checkout@v4	2025-12-30T20:05:42.7190491Z   set-safe-directory: true
+build	Run actions/checkout@v4	2025-12-30T20:05:42.7191292Z env:
+build	Run actions/checkout@v4	2025-12-30T20:05:42.7191701Z   DATABASE_URL: 
+build	Run actions/checkout@v4	2025-12-30T20:05:42.7192115Z   DIRECT_URL: 
+build	Run actions/checkout@v4	2025-12-30T20:05:42.7192539Z   NEXT_PUBLIC_SUPABASE_URL: 
+build	Run actions/checkout@v4	2025-12-30T20:05:42.7193066Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: 
+build	Run actions/checkout@v4	2025-12-30T20:05:42.7193581Z   SKIP_ENV_VALIDATION: true
+build	Run actions/checkout@v4	2025-12-30T20:05:42.7194128Z ##[endgroup]
+build	Run actions/checkout@v4	2025-12-30T20:05:42.8349493Z Syncing repository: Techlemariam/IronForge
+build	Run actions/checkout@v4	2025-12-30T20:05:42.8352436Z ##[group]Getting Git version info
+build	Run actions/checkout@v4	2025-12-30T20:05:42.8353821Z Working directory is '/home/runner/work/IronForge/IronForge'
+build	Run actions/checkout@v4	2025-12-30T20:05:42.8357002Z [command]/usr/bin/git version
+build	Run actions/checkout@v4	2025-12-30T20:05:42.8436087Z git version 2.52.0
+build	Run actions/checkout@v4	2025-12-30T20:05:42.8469200Z ##[endgroup]
+build	Run actions/checkout@v4	2025-12-30T20:05:42.8482388Z Temporarily overriding HOME='/home/runner/work/_temp/960bec9c-013a-495c-925a-5ca792e6606c' before making global git config changes
+build	Run actions/checkout@v4	2025-12-30T20:05:42.8486728Z Adding repository directory to the temporary git global config as a safe directory
+build	Run actions/checkout@v4	2025-12-30T20:05:42.8499813Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/IronForge/IronForge
+build	Run actions/checkout@v4	2025-12-30T20:05:42.8544063Z Deleting the contents of '/home/runner/work/IronForge/IronForge'
+build	Run actions/checkout@v4	2025-12-30T20:05:42.8549605Z ##[group]Initializing the repository
+build	Run actions/checkout@v4	2025-12-30T20:05:42.8554649Z [command]/usr/bin/git init /home/runner/work/IronForge/IronForge
+build	Run actions/checkout@v4	2025-12-30T20:05:42.8682332Z hint: Using 'master' as the name for the initial branch. This default branch name
+build	Run actions/checkout@v4	2025-12-30T20:05:42.8684401Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+build	Run actions/checkout@v4	2025-12-30T20:05:42.8686474Z hint: to use in all of your new repositories, which will suppress this warning,
+build	Run actions/checkout@v4	2025-12-30T20:05:42.8689481Z hint: call:
+build	Run actions/checkout@v4	2025-12-30T20:05:42.8690210Z hint:
+build	Run actions/checkout@v4	2025-12-30T20:05:42.8692020Z hint: 	git config --global init.defaultBranch <name>
+build	Run actions/checkout@v4	2025-12-30T20:05:42.8693240Z hint:
+build	Run actions/checkout@v4	2025-12-30T20:05:42.8694400Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+build	Run actions/checkout@v4	2025-12-30T20:05:42.8696271Z hint: 'development'. The just-created branch can be renamed via this command:
+build	Run actions/checkout@v4	2025-12-30T20:05:42.8698050Z hint:
+build	Run actions/checkout@v4	2025-12-30T20:05:42.8698862Z hint: 	git branch -m <name>
+build	Run actions/checkout@v4	2025-12-30T20:05:42.8699720Z hint:
+build	Run actions/checkout@v4	2025-12-30T20:05:42.8700932Z hint: Disable this message with "git config set advice.defaultBranchName false"
+build	Run actions/checkout@v4	2025-12-30T20:05:42.8703593Z Initialized empty Git repository in /home/runner/work/IronForge/IronForge/.git/
+build	Run actions/checkout@v4	2025-12-30T20:05:42.8709222Z [command]/usr/bin/git remote add origin https://github.com/Techlemariam/IronForge
+build	Run actions/checkout@v4	2025-12-30T20:05:42.8747228Z ##[endgroup]
+build	Run actions/checkout@v4	2025-12-30T20:05:42.8748852Z ##[group]Disabling automatic garbage collection
+build	Run actions/checkout@v4	2025-12-30T20:05:42.8750006Z [command]/usr/bin/git config --local gc.auto 0
+build	Run actions/checkout@v4	2025-12-30T20:05:42.8780198Z ##[endgroup]
+build	Run actions/checkout@v4	2025-12-30T20:05:42.8781553Z ##[group]Setting up auth
+build	Run actions/checkout@v4	2025-12-30T20:05:42.8789588Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+build	Run actions/checkout@v4	2025-12-30T20:05:42.8820885Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+build	Run actions/checkout@v4	2025-12-30T20:05:42.9221561Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+build	Run actions/checkout@v4	2025-12-30T20:05:42.9255428Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+build	Run actions/checkout@v4	2025-12-30T20:05:42.9484894Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+build	Run actions/checkout@v4	2025-12-30T20:05:42.9517541Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+build	Run actions/checkout@v4	2025-12-30T20:05:42.9793692Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+build	Run actions/checkout@v4	2025-12-30T20:05:42.9808518Z ##[endgroup]
+build	Run actions/checkout@v4	2025-12-30T20:05:42.9811756Z ##[group]Fetching the repository
+build	Run actions/checkout@v4	2025-12-30T20:05:42.9819937Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +821eb1e523cf842ca486670c2d4f6c7c9211d0f4:refs/remotes/origin/main
+build	Run actions/checkout@v4	2025-12-30T20:05:43.4081318Z From https://github.com/Techlemariam/IronForge
+build	Run actions/checkout@v4	2025-12-30T20:05:43.4100798Z  * [new ref]         821eb1e523cf842ca486670c2d4f6c7c9211d0f4 -> origin/main
+build	Run actions/checkout@v4	2025-12-30T20:05:43.4131649Z ##[endgroup]
+build	Run actions/checkout@v4	2025-12-30T20:05:43.4138219Z ##[group]Determining the checkout info
+build	Run actions/checkout@v4	2025-12-30T20:05:43.4149589Z ##[endgroup]
+build	Run actions/checkout@v4	2025-12-30T20:05:43.4157029Z [command]/usr/bin/git sparse-checkout disable
+build	Run actions/checkout@v4	2025-12-30T20:05:43.4222863Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+build	Run actions/checkout@v4	2025-12-30T20:05:43.4259468Z ##[group]Checking out the ref
+build	Run actions/checkout@v4	2025-12-30T20:05:43.4261645Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+build	Run actions/checkout@v4	2025-12-30T20:05:43.5296352Z Switched to a new branch 'main'
+build	Run actions/checkout@v4	2025-12-30T20:05:43.5302218Z branch 'main' set up to track 'origin/main'.
+build	Run actions/checkout@v4	2025-12-30T20:05:43.5349452Z ##[endgroup]
+build	Run actions/checkout@v4	2025-12-30T20:05:43.5365357Z [command]/usr/bin/git log -1 --format=%H
+build	Run actions/checkout@v4	2025-12-30T20:05:43.5413813Z 821eb1e523cf842ca486670c2d4f6c7c9211d0f4
+build	Run actions/setup-node@v4	﻿2025-12-30T20:05:43.5790176Z ##[group]Run actions/setup-node@v4
+build	Run actions/setup-node@v4	2025-12-30T20:05:43.5791592Z with:
+build	Run actions/setup-node@v4	2025-12-30T20:05:43.5792396Z   node-version: 20
+build	Run actions/setup-node@v4	2025-12-30T20:05:43.5793272Z   cache: npm
+build	Run actions/setup-node@v4	2025-12-30T20:05:43.5794105Z   always-auth: false
+build	Run actions/setup-node@v4	2025-12-30T20:05:43.5795021Z   check-latest: false
+build	Run actions/setup-node@v4	2025-12-30T20:05:43.5796194Z   token: ***
+build	Run actions/setup-node@v4	2025-12-30T20:05:43.5796996Z env:
+build	Run actions/setup-node@v4	2025-12-30T20:05:43.5797985Z   DATABASE_URL: 
+build	Run actions/setup-node@v4	2025-12-30T20:05:43.5798859Z   DIRECT_URL: 
+build	Run actions/setup-node@v4	2025-12-30T20:05:43.5799729Z   NEXT_PUBLIC_SUPABASE_URL: 
+build	Run actions/setup-node@v4	2025-12-30T20:05:43.5800820Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: 
+build	Run actions/setup-node@v4	2025-12-30T20:05:43.5801929Z   SKIP_ENV_VALIDATION: true
+build	Run actions/setup-node@v4	2025-12-30T20:05:43.5802922Z ##[endgroup]
+build	Run actions/setup-node@v4	2025-12-30T20:05:43.7644145Z Found in cache @ /opt/hostedtoolcache/node/20.19.6/x64
+build	Run actions/setup-node@v4	2025-12-30T20:05:43.7650459Z ##[group]Environment details
+build	Run actions/setup-node@v4	2025-12-30T20:05:44.2551708Z node: v20.19.6
+build	Run actions/setup-node@v4	2025-12-30T20:05:44.2557880Z npm: 10.8.2
+build	Run actions/setup-node@v4	2025-12-30T20:05:44.2563451Z yarn: 1.22.22
+build	Run actions/setup-node@v4	2025-12-30T20:05:44.2572279Z ##[endgroup]
+build	Run actions/setup-node@v4	2025-12-30T20:05:44.2626472Z [command]/opt/hostedtoolcache/node/20.19.6/x64/bin/npm config get cache
+build	Run actions/setup-node@v4	2025-12-30T20:05:44.4603272Z /home/runner/.npm
+build	Run actions/setup-node@v4	2025-12-30T20:05:44.6020802Z Cache hit for: node-cache-Linux-x64-npm-bc1105ec9d4992d0012669004f1e174eafd92857eab460dea0598c7aa16a4d10
+build	Run actions/setup-node@v4	2025-12-30T20:05:45.6639186Z Received 176160768 of 315367302 (55.9%), 167.8 MBs/sec
+build	Run actions/setup-node@v4	2025-12-30T20:05:46.3065482Z Received 315367302 of 315367302 (100.0%), 182.2 MBs/sec
+build	Run actions/setup-node@v4	2025-12-30T20:05:46.3066834Z Cache Size: ~301 MB (315367302 B)
+build	Run actions/setup-node@v4	2025-12-30T20:05:46.3109701Z [command]/usr/bin/tar -xf /home/runner/work/_temp/ee90f680-ec68-48da-b22a-cca32474d2d7/cache.tzst -P -C /home/runner/work/IronForge/IronForge --use-compress-program unzstd
+build	Run actions/setup-node@v4	2025-12-30T20:05:47.2949946Z Cache restored successfully
+build	Run actions/setup-node@v4	2025-12-30T20:05:47.3549609Z Cache restored from key: node-cache-Linux-x64-npm-bc1105ec9d4992d0012669004f1e174eafd92857eab460dea0598c7aa16a4d10
+build	Restore Next.js cache	﻿2025-12-30T20:05:47.9050039Z ##[group]Run actions/cache@v4
+build	Restore Next.js cache	2025-12-30T20:05:47.9050490Z with:
+build	Restore Next.js cache	2025-12-30T20:05:47.9050927Z   path: /home/runner/work/IronForge/IronForge/.next/cache
+build	Restore Next.js cache	
+build	Restore Next.js cache	2025-12-30T20:05:47.9052273Z   key: Linux-nextjs-bc1105ec9d4992d0012669004f1e174eafd92857eab460dea0598c7aa16a4d10-d55b91273cc450836dd9a02e7636cee1b174c472ebc8e2b3281d79f672fd4558
+build	Restore Next.js cache	2025-12-30T20:05:47.9053798Z   restore-keys: Linux-nextjs-bc1105ec9d4992d0012669004f1e174eafd92857eab460dea0598c7aa16a4d10-
+build	Restore Next.js cache	
+build	Restore Next.js cache	2025-12-30T20:05:47.9054640Z   enableCrossOsArchive: false
+build	Restore Next.js cache	2025-12-30T20:05:47.9055056Z   fail-on-cache-miss: false
+build	Restore Next.js cache	2025-12-30T20:05:47.9055498Z   lookup-only: false
+build	Restore Next.js cache	2025-12-30T20:05:47.9055864Z   save-always: false
+build	Restore Next.js cache	2025-12-30T20:05:47.9056199Z env:
+build	Restore Next.js cache	2025-12-30T20:05:47.9056494Z   DATABASE_URL: 
+build	Restore Next.js cache	2025-12-30T20:05:47.9056842Z   DIRECT_URL: 
+build	Restore Next.js cache	2025-12-30T20:05:47.9057193Z   NEXT_PUBLIC_SUPABASE_URL: 
+build	Restore Next.js cache	2025-12-30T20:05:47.9057615Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: 
+build	Restore Next.js cache	2025-12-30T20:05:47.9059750Z   SKIP_ENV_VALIDATION: true
+build	Restore Next.js cache	2025-12-30T20:05:47.9060150Z ##[endgroup]
+build	Restore Next.js cache	2025-12-30T20:05:48.1461554Z Cache not found for input keys: Linux-nextjs-bc1105ec9d4992d0012669004f1e174eafd92857eab460dea0598c7aa16a4d10-d55b91273cc450836dd9a02e7636cee1b174c472ebc8e2b3281d79f672fd4558, Linux-nextjs-bc1105ec9d4992d0012669004f1e174eafd92857eab460dea0598c7aa16a4d10-
+build	Install dependencies	﻿2025-12-30T20:05:48.1553891Z ##[group]Run nick-fields/retry@v3
+build	Install dependencies	2025-12-30T20:05:48.1554175Z with:
+build	Install dependencies	2025-12-30T20:05:48.1554345Z   timeout_minutes: 10
+build	Install dependencies	2025-12-30T20:05:48.1554539Z   max_attempts: 3
+build	Install dependencies	2025-12-30T20:05:48.1554730Z   command: npm install
+build	Install dependencies	2025-12-30T20:05:48.1554943Z   retry_wait_seconds: 10
+build	Install dependencies	2025-12-30T20:05:48.1555195Z   polling_interval_seconds: 1
+build	Install dependencies	2025-12-30T20:05:48.1555418Z   warning_on_retry: true
+build	Install dependencies	2025-12-30T20:05:48.1555617Z   continue_on_error: false
+build	Install dependencies	2025-12-30T20:05:48.1555823Z env:
+build	Install dependencies	2025-12-30T20:05:48.1555988Z   DATABASE_URL: 
+build	Install dependencies	2025-12-30T20:05:48.1556169Z   DIRECT_URL: 
+build	Install dependencies	2025-12-30T20:05:48.1556362Z   NEXT_PUBLIC_SUPABASE_URL: 
+build	Install dependencies	2025-12-30T20:05:48.1556591Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: 
+build	Install dependencies	2025-12-30T20:05:48.1556822Z   SKIP_ENV_VALIDATION: true
+build	Install dependencies	2025-12-30T20:05:48.1557031Z ##[endgroup]
+build	Install dependencies	2025-12-30T20:05:48.2251300Z ##[group]Attempt 1
+build	Install dependencies	2025-12-30T20:05:49.7403143Z npm warn EBADENGINE Unsupported engine {
+build	Install dependencies	2025-12-30T20:05:49.7404727Z npm warn EBADENGINE   package: '@capacitor/cli@8.0.0',
+build	Install dependencies	2025-12-30T20:05:49.7405775Z npm warn EBADENGINE   required: { node: '>=22.0.0' },
+build	Install dependencies	2025-12-30T20:05:49.7407007Z npm warn EBADENGINE   current: { node: 'v20.19.6', npm: '10.8.2' }
+build	Install dependencies	2025-12-30T20:05:49.7410233Z npm warn EBADENGINE }
+build	Install dependencies	2025-12-30T20:05:49.7518895Z npm warn EBADENGINE Unsupported engine {
+build	Install dependencies	2025-12-30T20:05:49.7519894Z npm warn EBADENGINE   package: 'camera-controls@3.1.2',
+build	Install dependencies	2025-12-30T20:05:49.7520943Z npm warn EBADENGINE   required: { node: '>=22.0.0', npm: '>=10.5.1' },
+build	Install dependencies	2025-12-30T20:05:49.7522024Z npm warn EBADENGINE   current: { node: 'v20.19.6', npm: '10.8.2' }
+build	Install dependencies	2025-12-30T20:05:49.7522808Z npm warn EBADENGINE }
+build	Install dependencies	2025-12-30T20:05:57.7254282Z npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+build	Install dependencies	2025-12-30T20:05:58.0426857Z npm warn deprecated @humanwhocodes/config-array@0.13.0: Use @eslint/config-array instead
+build	Install dependencies	2025-12-30T20:05:58.1289624Z npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+build	Install dependencies	2025-12-30T20:05:58.3656494Z npm warn deprecated @humanwhocodes/object-schema@2.0.3: Use @eslint/object-schema instead
+build	Install dependencies	2025-12-30T20:05:58.3727464Z npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+build	Install dependencies	2025-12-30T20:05:59.3298746Z npm warn deprecated source-map@0.8.0-beta.0: The work that was done in this beta branch won't be included in future versions
+build	Install dependencies	2025-12-30T20:05:59.5197456Z npm warn deprecated node-domexception@1.0.0: Use your platform's native DOMException instead
+build	Install dependencies	2025-12-30T20:06:04.6968853Z npm warn deprecated eslint@8.57.1: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+build	Install dependencies	2025-12-30T20:06:12.8256363Z 
+build	Install dependencies	2025-12-30T20:06:12.8257151Z > ironforge-rpg@1.0.0 postinstall
+build	Install dependencies	2025-12-30T20:06:12.8257914Z > prisma generate
+build	Install dependencies	2025-12-30T20:06:12.8258138Z 
+build	Install dependencies	2025-12-30T20:06:13.8918916Z Prisma schema loaded from prisma/schema.prisma.
+build	Install dependencies	2025-12-30T20:06:14.8205105Z 
+build	Install dependencies	2025-12-30T20:06:14.8206398Z ✔ Generated Prisma Client (v7.2.0) to ./node_modules/@prisma/client in 507ms
+build	Install dependencies	2025-12-30T20:06:14.8206956Z 
+build	Install dependencies	2025-12-30T20:06:14.8207545Z Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+build	Install dependencies	2025-12-30T20:06:14.8208284Z 
+build	Install dependencies	2025-12-30T20:06:14.8208798Z Tip: Want to turn off tips and other hints? https://pris.ly/tip-4-nohints
+build	Install dependencies	2025-12-30T20:06:14.8209251Z 
+build	Install dependencies	2025-12-30T20:06:14.8688222Z 
+build	Install dependencies	2025-12-30T20:06:14.8689012Z added 1185 packages, and audited 1186 packages in 27s
+build	Install dependencies	2025-12-30T20:06:14.8689433Z 
+build	Install dependencies	2025-12-30T20:06:14.8690052Z 230 packages are looking for funding
+build	Install dependencies	2025-12-30T20:06:14.8690545Z   run `npm fund` for details
+build	Install dependencies	2025-12-30T20:06:14.8852065Z 
+build	Install dependencies	2025-12-30T20:06:14.8852739Z 2 moderate severity vulnerabilities
+build	Install dependencies	2025-12-30T20:06:14.8853301Z 
+build	Install dependencies	2025-12-30T20:06:14.8854041Z To address all issues (including breaking changes), run:
+build	Install dependencies	2025-12-30T20:06:14.8854959Z   npm audit fix --force
+build	Install dependencies	2025-12-30T20:06:14.8855372Z 
+build	Install dependencies	2025-12-30T20:06:14.8859958Z Run `npm audit` for details.
+build	Install dependencies	2025-12-30T20:06:15.2619748Z Command completed after 1 attempt(s).
+build	Install dependencies	2025-12-30T20:06:15.2624580Z ##[endgroup]
+build	Run npx prisma generate	﻿2025-12-30T20:06:15.2699662Z ##[group]Run npx prisma generate
+build	Run npx prisma generate	2025-12-30T20:06:15.2700007Z [36;1mnpx prisma generate[0m
+build	Run npx prisma generate	2025-12-30T20:06:15.2746114Z shell: /usr/bin/bash -e {0}
+build	Run npx prisma generate	2025-12-30T20:06:15.2746359Z env:
+build	Run npx prisma generate	2025-12-30T20:06:15.2746525Z   DATABASE_URL: 
+build	Run npx prisma generate	2025-12-30T20:06:15.2746702Z   DIRECT_URL: 
+build	Run npx prisma generate	2025-12-30T20:06:15.2746886Z   NEXT_PUBLIC_SUPABASE_URL: 
+build	Run npx prisma generate	2025-12-30T20:06:15.2747112Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: 
+build	Run npx prisma generate	2025-12-30T20:06:15.2747346Z   SKIP_ENV_VALIDATION: true
+build	Run npx prisma generate	2025-12-30T20:06:15.2747546Z ##[endgroup]
+build	Run npx prisma generate	2025-12-30T20:06:16.6439465Z Prisma schema loaded from prisma/schema.prisma.
+build	Run npx prisma generate	2025-12-30T20:06:17.5939965Z 
+build	Run npx prisma generate	2025-12-30T20:06:17.5941149Z ✔ Generated Prisma Client (v7.2.0) to ./node_modules/@prisma/client in 534ms
+build	Run npx prisma generate	2025-12-30T20:06:17.5942030Z 
+build	Run npx prisma generate	2025-12-30T20:06:17.5942608Z Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+build	Run npx prisma generate	2025-12-30T20:06:17.5943158Z 
+build	Run npx prisma generate	2025-12-30T20:06:17.5943982Z Tip: Need your database queries to be 1000x faster? Accelerate offers you that and more: https://pris.ly/tip-2-accelerate
+build	Run npx prisma generate	2025-12-30T20:06:17.5944760Z 
+build	Run npm run build	﻿2025-12-30T20:06:17.6300938Z ##[group]Run npm run build
+build	Run npm run build	2025-12-30T20:06:17.6301210Z [36;1mnpm run build[0m
+build	Run npm run build	2025-12-30T20:06:17.6333472Z shell: /usr/bin/bash -e {0}
+build	Run npm run build	2025-12-30T20:06:17.6333697Z env:
+build	Run npm run build	2025-12-30T20:06:17.6333861Z   DATABASE_URL: 
+build	Run npm run build	2025-12-30T20:06:17.6334043Z   DIRECT_URL: 
+build	Run npm run build	2025-12-30T20:06:17.6334225Z   NEXT_PUBLIC_SUPABASE_URL: 
+build	Run npm run build	2025-12-30T20:06:17.6334455Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: 
+build	Run npm run build	2025-12-30T20:06:17.6334691Z   SKIP_ENV_VALIDATION: true
+build	Run npm run build	2025-12-30T20:06:17.6334890Z ##[endgroup]
+build	Run npm run build	2025-12-30T20:06:17.7472548Z 
+build	Run npm run build	2025-12-30T20:06:17.7474812Z > ironforge-rpg@1.0.0 build
+build	Run npm run build	2025-12-30T20:06:17.7479044Z > next build
+build	Run npm run build	2025-12-30T20:06:17.7479270Z 
+build	Run npm run build	2025-12-30T20:06:18.7321591Z ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
+build	Run npm run build	2025-12-30T20:06:18.7455831Z Attention: Next.js now collects completely anonymous telemetry regarding usage.
+build	Run npm run build	2025-12-30T20:06:18.7459765Z This information is used to shape Next.js' roadmap and prioritize features.
+build	Run npm run build	2025-12-30T20:06:18.7468083Z You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+build	Run npm run build	2025-12-30T20:06:18.7469110Z https://nextjs.org/telemetry
+build	Run npm run build	2025-12-30T20:06:18.7469421Z 
+build	Run npm run build	2025-12-30T20:06:18.8314827Z    ▲ Next.js 15.5.9
+build	Run npm run build	2025-12-30T20:06:18.8315605Z    - Environments: .env.local
+build	Run npm run build	2025-12-30T20:06:18.8316159Z    - Experiments (use with caution):
+build	Run npm run build	2025-12-30T20:06:18.8316777Z      · clientTraceMetadata
+build	Run npm run build	2025-12-30T20:06:18.8317052Z 
+build	Run npm run build	2025-12-30T20:06:18.9021048Z    Creating an optimized production build ...
+build	Run npm run build	2025-12-30T20:06:19.3806658Z  [32m[1m✓[22m[39m (serwist) Bundling the service worker script with the URL '/sw.js' and the scope '/'...
+build	Run npm run build	2025-12-30T20:07:09.4720086Z <w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (188kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+build	Run npm run build	2025-12-30T20:07:09.5046164Z <w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (139kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+build	Run npm run build	2025-12-30T20:07:09.5324376Z <w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (130kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+build	Run npm run build	2025-12-30T20:07:13.2958367Z 
+build	Run npm run build	2025-12-30T20:07:13.2960344Z [1m[33mwarn[39m[22m - The class `ease-[cubic-bezier(0.22,1,0.36,1)]` is ambiguous and matches multiple utilities.
+build	Run npm run build	2025-12-30T20:07:13.2962646Z [1m[33mwarn[39m[22m - If this is content and not a class, replace it with `ease-&lsqb;cubic-bezier(0.22,1,0.36,1)&rsqb;` to silence this warning.
+build	Run npm run build	2025-12-30T20:07:32.8788822Z  ⚠ Compiled with warnings in 73s
+build	Run npm run build	2025-12-30T20:07:32.8789228Z 
+build	Run npm run build	2025-12-30T20:07:32.8792392Z ./node_modules/@supabase/realtime-js/dist/module/lib/websocket-factory.js
+build	Run npm run build	2025-12-30T20:07:32.8803411Z A Node.js API is used (process.versions at line: 39) which is not supported in the Edge Runtime.
+build	Run npm run build	2025-12-30T20:07:32.8804468Z Learn more: https://nextjs.org/docs/api-reference/edge-runtime
+build	Run npm run build	2025-12-30T20:07:32.8804947Z 
+build	Run npm run build	2025-12-30T20:07:32.8805233Z Import trace for requested module:
+build	Run npm run build	2025-12-30T20:07:32.8806018Z ./node_modules/@supabase/realtime-js/dist/module/lib/websocket-factory.js
+build	Run npm run build	2025-12-30T20:07:32.8806968Z ./node_modules/@supabase/realtime-js/dist/module/index.js
+build	Run npm run build	2025-12-30T20:07:32.8828521Z ./node_modules/@supabase/supabase-js/dist/index.mjs
+build	Run npm run build	2025-12-30T20:07:32.8829436Z ./node_modules/@supabase/ssr/dist/module/createBrowserClient.js
+build	Run npm run build	2025-12-30T20:07:32.8830213Z ./node_modules/@supabase/ssr/dist/module/index.js
+build	Run npm run build	2025-12-30T20:07:32.8830881Z ./src/utils/supabase/middleware.ts
+build	Run npm run build	2025-12-30T20:07:32.8831190Z 
+build	Run npm run build	2025-12-30T20:07:32.8831915Z ./node_modules/@supabase/supabase-js/dist/index.mjs
+build	Run npm run build	2025-12-30T20:07:32.8832904Z A Node.js API is used (process.version at line: 389) which is not supported in the Edge Runtime.
+build	Run npm run build	2025-12-30T20:07:32.8833922Z Learn more: https://nextjs.org/docs/api-reference/edge-runtime
+build	Run npm run build	2025-12-30T20:07:32.8834363Z 
+build	Run npm run build	2025-12-30T20:07:32.8834623Z Import trace for requested module:
+build	Run npm run build	2025-12-30T20:07:32.8835677Z ./node_modules/@supabase/supabase-js/dist/index.mjs
+build	Run npm run build	2025-12-30T20:07:32.8836484Z ./node_modules/@supabase/ssr/dist/module/createBrowserClient.js
+build	Run npm run build	2025-12-30T20:07:32.8837239Z ./node_modules/@supabase/ssr/dist/module/index.js
+build	Run npm run build	2025-12-30T20:07:32.8838474Z ./src/utils/supabase/middleware.ts
+build	Run npm run build	2025-12-30T20:07:32.8838790Z 
+build	Run npm run build	2025-12-30T20:07:32.9124136Z    Linting and checking validity of types ...
+build	Run npm run build	2025-12-30T20:07:48.7197300Z 
+build	Run npm run build	2025-12-30T20:07:48.7201773Z ./src/components/gamification/OvertrainingBanner.tsx
+build	Run npm run build	2025-12-30T20:07:48.7206777Z 23:6  Warning: React Hook useEffect has a missing dependency: 'checkStatus'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+build	Run npm run build	2025-12-30T20:07:48.7218245Z 
+build	Run npm run build	2025-12-30T20:07:48.7222324Z ./src/components/gamification/StreakBadge.tsx
+build	Run npm run build	2025-12-30T20:07:48.7227859Z 21:6  Warning: React Hook useEffect has a missing dependency: 'fetchStreak'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+build	Run npm run build	2025-12-30T20:07:48.7229344Z 
+build	Run npm run build	2025-12-30T20:07:48.7229919Z ./src/components/oracle/RecoveryOracleVerdict.tsx
+build	Run npm run build	2025-12-30T20:07:48.7231574Z 65:6  Warning: React Hook useEffect has a missing dependency: 'calculateVerdict'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+build	Run npm run build	2025-12-30T20:07:48.7232889Z 
+build	Run npm run build	2025-12-30T20:07:48.7233297Z ./src/features/training/CardioStudio.tsx
+build	Run npm run build	2025-12-30T20:07:48.7236160Z 502:6  Warning: React Hook useEffect has missing dependencies: 'activeDuel' and 'sessionDuration'. Either include them or remove the dependency array. If 'setTotalDistanceKm' needs the current value of 'activeDuel', you can also switch to useReducer instead of useState and read 'activeDuel' in the reducer.  react-hooks/exhaustive-deps
+build	Run npm run build	2025-12-30T20:07:48.7238553Z 
+build	Run npm run build	2025-12-30T20:07:48.7238902Z ./src/hooks/useOfflineMode.ts
+build	Run npm run build	2025-12-30T20:07:48.7240689Z 60:6  Warning: React Hook useEffect has missing dependencies: 'pendingActions.length' and 'syncPendingActions'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+build	Run npm run build	2025-12-30T20:07:48.7242046Z 
+build	Run npm run build	2025-12-30T20:07:48.7243038Z info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
+build	Run npm run build	2025-12-30T20:08:02.5779381Z    Collecting page data ...
+build	Run npm run build	2025-12-30T20:08:03.2929803Z Error [PrismaClientInitializationError]: `PrismaClient` needs to be constructed with a non-empty, valid `PrismaClientOptions`:
+build	Run npm run build	2025-12-30T20:08:03.2930697Z 
+build	Run npm run build	2025-12-30T20:08:03.2930838Z ```
+build	Run npm run build	2025-12-30T20:08:03.2931171Z new PrismaClient({
+build	Run npm run build	2025-12-30T20:08:03.2931488Z   ...
+build	Run npm run build	2025-12-30T20:08:03.2931755Z })
+build	Run npm run build	2025-12-30T20:08:03.2932055Z ```
+build	Run npm run build	2025-12-30T20:08:03.2932205Z 
+build	Run npm run build	2025-12-30T20:08:03.2932324Z or
+build	Run npm run build	2025-12-30T20:08:03.2932462Z 
+build	Run npm run build	2025-12-30T20:08:03.2932582Z ```
+build	Run npm run build	2025-12-30T20:08:03.2932853Z constructor() {
+build	Run npm run build	2025-12-30T20:08:03.2933181Z   super({ ... });
+build	Run npm run build	2025-12-30T20:08:03.2933484Z }
+build	Run npm run build	2025-12-30T20:08:03.2933758Z ```
+build	Run npm run build	2025-12-30T20:08:03.2934023Z           
+build	Run npm run build	2025-12-30T20:08:03.2934606Z     at <unknown> (.next/server/app/api/cron/duel-scoring/route.js:1:12233)
+build	Run npm run build	2025-12-30T20:08:03.2935460Z     at <unknown> (.next/server/app/api/cron/duel-scoring/route.js:1:12501) {
+build	Run npm run build	2025-12-30T20:08:03.2936052Z   clientVersion: '7.2.0',
+build	Run npm run build	2025-12-30T20:08:03.2936438Z   errorCode: undefined,
+build	Run npm run build	2025-12-30T20:08:03.2936799Z   retryable: undefined
+build	Run npm run build	2025-12-30T20:08:03.2937130Z }
+build	Run npm run build	2025-12-30T20:08:03.2978212Z 
+build	Run npm run build	2025-12-30T20:08:03.2978521Z > Build error occurred
+build	Run npm run build	2025-12-30T20:08:03.3015823Z [Error: Failed to collect page data for /api/cron/duel-scoring] {
+build	Run npm run build	2025-12-30T20:08:03.3016457Z   type: 'Error'
+build	Run npm run build	2025-12-30T20:08:03.3016786Z }
+build	Run npm run build	2025-12-30T20:08:03.4804566Z ##[error]Process completed with exit code 1.
+build	Post Run actions/checkout@v4	﻿2025-12-30T20:08:03.4890307Z Post job cleanup.
+build	Post Run actions/checkout@v4	2025-12-30T20:08:03.6121239Z [command]/usr/bin/git version
+build	Post Run actions/checkout@v4	2025-12-30T20:08:03.6166420Z git version 2.52.0
+build	Post Run actions/checkout@v4	2025-12-30T20:08:03.6220319Z Temporarily overriding HOME='/home/runner/work/_temp/600d189c-f399-4ab3-acfe-8271d09c8618' before making global git config changes
+build	Post Run actions/checkout@v4	2025-12-30T20:08:03.6222381Z Adding repository directory to the temporary git global config as a safe directory
+build	Post Run actions/checkout@v4	2025-12-30T20:08:03.6227443Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/IronForge/IronForge
+build	Post Run actions/checkout@v4	2025-12-30T20:08:03.6277108Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+build	Post Run actions/checkout@v4	2025-12-30T20:08:03.6316716Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+build	Post Run actions/checkout@v4	2025-12-30T20:08:03.6625950Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+build	Post Run actions/checkout@v4	2025-12-30T20:08:03.6652021Z http.https://github.com/.extraheader
+build	Post Run actions/checkout@v4	2025-12-30T20:08:03.6668879Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+build	Post Run actions/checkout@v4	2025-12-30T20:08:03.6704378Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+build	Post Run actions/checkout@v4	2025-12-30T20:08:03.6947354Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+build	Post Run actions/checkout@v4	2025-12-30T20:08:03.6985779Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+build	Complete job	﻿2025-12-30T20:08:03.7346474Z Cleaning up orphan processes

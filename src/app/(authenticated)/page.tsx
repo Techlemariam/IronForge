@@ -306,6 +306,7 @@ export default async function Page() {
         !!(dbUser?.intervalsApiKey && dbUser?.intervalsAthleteId)
       }
       stravaConnected={!!(dbUser as any)?.stravaAccessToken}
+      pocketCastsConnected={!!(dbUser as any)?.pocketCastsEnabled}
       faction={(dbUser as any)?.faction || "HORDE"}
       hasCompletedOnboarding={hasCompletedOnboarding}
       isDemoMode={isDemoMode}

@@ -2,87 +2,9 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { LEAGUE_TIERS, LeagueInfo } from "@/lib/game/tier-data";
 
-// Iron League tiers (WoW Arena-inspired)
-const LEAGUE_TIERS = [
-  {
-    id: "bronze",
-    name: "Bronze League",
-    minRating: 0,
-    maxRating: 1199,
-    color: "#cd7f32",
-    icon: "🥉",
-  },
-  {
-    id: "silver",
-    name: "Silver League",
-    minRating: 1200,
-    maxRating: 1399,
-    color: "#c0c0c0",
-    icon: "🥈",
-  },
-  {
-    id: "gold",
-    name: "Gold League",
-    minRating: 1400,
-    maxRating: 1599,
-    color: "#ffd700",
-    icon: "🥇",
-  },
-  {
-    id: "platinum",
-    name: "Platinum League",
-    minRating: 1600,
-    maxRating: 1799,
-    color: "#e5e4e2",
-    icon: "💎",
-  },
-  {
-    id: "diamond",
-    name: "Diamond League",
-    minRating: 1800,
-    maxRating: 1999,
-    color: "#b9f2ff",
-    icon: "💠",
-  },
-  {
-    id: "master",
-    name: "Master League",
-    minRating: 2000,
-    maxRating: 2199,
-    color: "#a335ee",
-    icon: "🏆",
-  },
-  {
-    id: "grandmaster",
-    name: "Grandmaster",
-    minRating: 2200,
-    maxRating: 2399,
-    color: "#ff8000",
-    icon: "👑",
-  },
-  {
-    id: "legend",
-    name: "Iron Legend",
-    minRating: 2400,
-    maxRating: Infinity,
-    color: "#e6cc80",
-    icon: "⚔️",
-  },
-];
-
-interface LeagueInfo {
-  tier: (typeof LEAGUE_TIERS)[0];
-  rank: number;
-  totalInLeague: number;
-  seasonPoints: number;
-  seasonWins: number;
-  seasonLosses: number;
-  nextTier?: (typeof LEAGUE_TIERS)[0];
-  pointsToNextTier?: number;
-}
-
-interface SeasonInfo {
+export interface SeasonInfo {
   id: string;
   name: string;
   startDate: Date;
@@ -222,9 +144,9 @@ export async function getLeagueLeaderboardAction(
         winRate:
           (p.duelsWon || 0) + (p.duelsLost || 0) > 0
             ? Math.round(
-                ((p.duelsWon || 0) / ((p.duelsWon || 0) + (p.duelsLost || 0))) *
-                  100,
-              )
+              ((p.duelsWon || 0) / ((p.duelsWon || 0) + (p.duelsLost || 0))) *
+              100,
+            )
             : 0,
       })),
       totalPlayers,
@@ -235,12 +157,6 @@ export async function getLeagueLeaderboardAction(
   }
 }
 
-/**
- * Get all league tier definitions.
- */
-export function getLeagueTiers() {
-  return LEAGUE_TIERS;
-}
 
 /**
  * Award season-end rewards (to be called by cron).

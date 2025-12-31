@@ -2,24 +2,49 @@
 > ironforge-rpg@1.0.0 build
 > next build
 
-   Ôû▓ Next.js 15.1.0
+   Ôû▓ Next.js 15.5.9
    - Environments: .env.local, .env
+   - Experiments (use with caution):
+     ┬À clientTraceMetadata
 
    Creating an optimized production build ...
  Ô£ô (serwist) Bundling the service worker script with the URL '/sw.js' and the scope '/'...
- Ô£ô Compiled successfully
+
+warn - The class `ease-[cubic-bezier(0.22,1,0.36,1)]` is ambiguous and matches multiple utilities.
+warn - If this is content and not a class, replace it with `ease-&lsqb;cubic-bezier(0.22,1,0.36,1)&rsqb;` to silence this warning.
+ Ô£ô Compiled successfully in 12.4s
    Linting and checking validity of types ...
 
-Failed to compile.
+./src/components/gamification/OvertrainingBanner.tsx
+23:6  Warning: React Hook useEffect has a missing dependency: 'checkStatus'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
 
-./src/features/game/CombatArena.tsx
-142:8  Warning: React Hook useEffect has missing dependencies: 'handleAction' and 'handleFlee'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+./src/components/gamification/StreakBadge.tsx
+21:6  Warning: React Hook useEffect has a missing dependency: 'fetchStreak'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
 
-./src/features/titan/useTitanReaction.ts
-66:8  Warning: React Hook useEffect has a missing dependency: 'getCategory'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+./src/components/oracle/RecoveryOracleVerdict.tsx
+65:6  Warning: React Hook useEffect has a missing dependency: 'calculateVerdict'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
 
-./src/features/training/TvMode.tsx
-210:37  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
-210:53  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+./src/features/podcast/components/PocketCastsPlayer.tsx
+78:21  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/features/training/CardioStudio.tsx
+502:6  Warning: React Hook useEffect has missing dependencies: 'activeDuel' and 'sessionDuration'. Either include them or remove the dependency array. If 'setTotalDistanceKm' needs the current value of 'activeDuel', you can also switch to useReducer instead of useState and read 'activeDuel' in the reducer.  react-hooks/exhaustive-deps
+
+./src/hooks/useOfflineMode.ts
+60:6  Warning: React Hook useEffect has missing dependencies: 'pendingActions.length' and 'syncPendingActions'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
 
 info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
+Failed to compile.
+
+./src/services/pocketcasts.ts:78:9
+Type error: Type 'string | undefined' is not assignable to type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+
+  76 |         this.token = data.token;
+  77 |         this.headers["Authorization"] = "Bearer " + this.token;
+> 78 |         return this.token;
+     |         ^
+  79 |     }
+  80 |
+  81 |     /**
+Next.js build worker exited with code: 1 and signal: null

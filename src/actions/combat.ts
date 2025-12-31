@@ -7,7 +7,6 @@ import {
   CombatEngine,
   CombatAction,
 } from "@/services/game/CombatEngine";
-// import { MONSTERS } from '@/data/bestiary'; // Removing static import as we use DB
 import { calculateTitanAttributes } from "@/utils";
 import { Monster } from "@/types";
 import { LootSystem } from "@/services/game/LootSystem";
@@ -19,7 +18,7 @@ import {
 import { modifyTitanHealthAction, awardTitanXpAction } from "@/actions/titan";
 import { BioBuff } from "@/features/bio/BioBuffService";
 
-// Type for Prisma Monster with hp/level (schema has these but client may be stale)
+// Type for Prisma Monster with hp/level (client might be stale vs schema)
 type PrismaMonster = {
   id: string;
   name: string;
@@ -34,13 +33,9 @@ type PrismaMonster = {
   image: string | null;
 };
 
-// Simple in-memory cache for MVP combat sessions (Not persist across server restarts)
-// In prod, use Redis or DB table `CombatSession`
-const ACTIVE_SESSIONS: Record<
-  string,
-  { state: CombatState; bossId: string; userId: string; tier: string }
-> = {};
-
+/**
+ * Starts a boss fight or resumes an existing one if valid.
+ */
 export async function startBossFight(
   bossId: string,
   tier: "STORY" | "HEROIC" | "TITAN_SLAYER" = "HEROIC",
@@ -54,20 +49,50 @@ export async function startBossFight(
 
   if (!user) return { success: false, message: "Unauthorized" };
 
-  // 1. Fetch User Stats & Titan
+  // 1. Check for existing active session
+  const existingSession = await prisma.combatSession.findUnique({
+    where: { userId: user.id },
+  });
+
+  if (existingSession && !existingSession.isVictory && !existingSession.isDefeat) {
+    // Resume existing session if it matches the boss (or force resume whatever is there)
+    // For now, let's auto-resume if it exists.
+    // If the user wanted to start a NEW fight with a DIFFERENT boss, they should have fled/finished the previous one.
+    // But we can implicitly restart if the bossId is different? 
+    // Let's stick to: "Finish what you started" or explicit Flee.
+
+    // However, if the session is expired (e.g. > 1 hour), we should nuke it.
+    if (existingSession.expiresAt < new Date()) {
+      await prisma.combatSession.delete({ where: { id: existingSession.id } });
+    } else {
+      // Fetch Boss details to return
+      const dbBoss = await prisma.monster.findUnique({ where: { id: existingSession.bossId } });
+      if (!dbBoss) return { success: false, message: "Boss data corrupted" };
+
+      const resumedState: CombatState = {
+        playerHp: existingSession.playerHp,
+        playerMaxHp: existingSession.playerMaxHp,
+        bossHp: existingSession.bossHp,
+        bossMaxHp: existingSession.bossMaxHp,
+        turnCount: existingSession.turnCount,
+        logs: (existingSession.logs as string[]) || [], // Cast JSON array to string array
+        isVictory: existingSession.isVictory,
+        isDefeat: existingSession.isDefeat
+      };
+
+      return { success: true, state: resumedState, boss: dbBoss, message: "Resuming active combat..." };
+    }
+  }
+
+  // 2. Fetch User Stats & Titan
   const dbUser = await prisma.user.findUnique({
     where: { id: user.id },
-    include: { achievements: true, skills: true, titan: true },
+    include: { titan: true },
   });
 
   if (!dbUser) return { success: false, message: "User not found" };
 
-  // Calculate Attributes to derive Max HP (if we want to update Max HP dynamically)
-  // Or trust Titan.maxHp if we have a mechanism to update it on level up/equip.
-  // For now, let's use the DB Titan's current HP as the source of truth for "Health entering combat".
-
   if (!dbUser.titan) {
-    // Should have ensured titan exists, but handle gracefully
     return {
       success: false,
       message: "Titan Soul not found. Visit Citadel first.",
@@ -93,23 +118,17 @@ export async function startBossFight(
     }
   }
 
-  // 2. Fetch Boss Stats
-  // Hardcoded lookup for MVP from static data or DB
-  // Assuming MONSTERS is available or we fetch from DB Monster table created in previous step
-  // Let's try to fetch from DB first
+  // 3. Fetch Boss Stats
   let boss = (await prisma.monster.findUnique({
     where: { id: validatedBossId },
   })) as PrismaMonster | null;
 
-  // Fallback to static if not in DB (or if we prefer static data for now)
   if (!boss) {
-    // Fallback or error
     return { success: false, message: "Boss not found" };
   }
 
   // Apply Tier Scaling
   let hpMultiplier = 1.0;
-
   if (validatedTier === "STORY") {
     hpMultiplier = 0.7;
   } else if (validatedTier === "TITAN_SLAYER") {
@@ -118,7 +137,7 @@ export async function startBossFight(
 
   const scaledBossHp = Math.floor(boss.hp * hpMultiplier);
 
-  // 3. Initialize State
+  // 4. Initialize State
   const initialState: CombatState = {
     playerHp: currentHp,
     playerMaxHp: maxHp,
@@ -130,13 +149,33 @@ export async function startBossFight(
     isDefeat: false,
   };
 
-  // Store Session
-  ACTIVE_SESSIONS[user.id] = {
-    state: initialState,
-    bossId: validatedBossId,
-    userId: user.id,
-    tier: validatedTier,
-  };
+  // 5. Persist Session to DB
+  await prisma.combatSession.upsert({
+    where: { userId: user.id },
+    create: {
+      userId: user.id,
+      bossId: validatedBossId,
+      bossHp: initialState.bossHp,
+      bossMaxHp: initialState.bossMaxHp,
+      playerHp: initialState.playerHp,
+      playerMaxHp: initialState.playerMaxHp,
+      turnCount: initialState.turnCount,
+      logs: initialState.logs,
+      expiresAt: new Date(Date.now() + 1000 * 60 * 60), // 1 Hour TTL
+    },
+    update: {
+      bossId: validatedBossId,
+      bossHp: initialState.bossHp,
+      bossMaxHp: initialState.bossMaxHp,
+      playerHp: initialState.playerHp,
+      playerMaxHp: initialState.playerMaxHp,
+      turnCount: initialState.turnCount,
+      logs: initialState.logs,
+      isVictory: false,
+      isDefeat: false,
+      expiresAt: new Date(Date.now() + 1000 * 60 * 60),
+    }
+  });
 
   return { success: true, state: initialState, boss };
 }
@@ -145,8 +184,7 @@ export async function performCombatAction(
   action: CombatAction,
   clientState?: CombatState,
 ) {
-  const { action: validatedAction, clientState: validatedClientState } =
-    PerformCombatActionInputSchema.parse({ action, clientState });
+  const { action: validatedAction } = PerformCombatActionInputSchema.parse({ action, clientState });
   const supabase = await createClient();
   const {
     data: { user },
@@ -154,14 +192,28 @@ export async function performCombatAction(
 
   if (!user) return { success: false, message: "Unauthorized" };
 
-  const session = ACTIVE_SESSIONS[user.id];
+  // 1. Load Session from DB
+  const session = await prisma.combatSession.findUnique({
+    where: { userId: user.id }
+  });
 
-  // Security Check: Ensure server session exists
   if (!session) {
     return { success: false, message: "Session expired or invalid" };
   }
 
-  // 1. Re-fetch context (Attributes)
+  // Reconstruct CombatState from DB
+  let currentState: CombatState = {
+    playerHp: session.playerHp,
+    playerMaxHp: session.playerMaxHp,
+    bossHp: session.bossHp,
+    bossMaxHp: session.bossMaxHp,
+    turnCount: session.turnCount,
+    logs: (session.logs as string[]) || [],
+    isVictory: session.isVictory,
+    isDefeat: session.isDefeat
+  };
+
+  // 2. Re-fetch context (Attributes)
   const dbUser = await prisma.user.findUnique({
     where: { id: user.id },
     include: { achievements: true, skills: true, titan: true },
@@ -196,52 +248,31 @@ export async function performCombatAction(
   // Bio-Combat Buff System
   if (dbUser.titan && dbUser.titan.currentBuff) {
     const buff = dbUser.titan.currentBuff as unknown as BioBuff;
-
-    // Check expiration (optional, if we strictly enforce time)
-    // const isExpired = dbUser.titan.buffExpiresAt && new Date(dbUser.titan.buffExpiresAt) < new Date();
-
     if (buff.effects) {
       const { attackMod = 1.0, defenseMod = 1.0 } = buff.effects;
-
-      // Apply Attack Modifiers (Strength/Technique/Mental)
       if (attackMod !== 1.0) {
         attributes.strength = Math.round(attributes.strength * attackMod);
         attributes.technique = Math.round(attributes.technique * attackMod);
         attributes.mental = Math.round(attributes.mental * attackMod);
       }
-
-      // Apply Defense Modifiers (Endurance/Recovery/Hypertrophy)
       if (defenseMod !== 1.0) {
         attributes.endurance = Math.round(attributes.endurance * defenseMod);
         attributes.recovery = Math.round(attributes.recovery * defenseMod);
-        attributes.hypertrophy = Math.round(
-          attributes.hypertrophy * defenseMod,
-        );
+        attributes.hypertrophy = Math.round(attributes.hypertrophy * defenseMod);
       }
 
-      // Log the effect
-      if (session.state.logs.length > 0) {
-        const lastLog = session.state.logs[session.state.logs.length - 1];
-        const buffLog = `✨ Active Buff: ${buff.name} (${buff.tier})`;
-        const debuffLog = `⚠️ Active Debuff: ${buff.name} (${buff.tier})`;
-        const logMsg = buff.tier === "DEBUFF" ? debuffLog : buffLog;
-
-        if (!lastLog.includes(buff.name)) {
-          session.state.logs.push(logMsg);
-        }
-      }
+      // Log the effect (only once per session technically, but for now every turn start check is fine or just rely on UI)
+      // To avoid spamming logs, we skip adding it here, UI handles badges.
     }
   }
 
-  // 2. Get Boss
-  // Since we stored bossId, fetch it again.
-  // We create a "Monster" object compatible with CombatEngine
+  // 3. Get Boss (Need details for damage calculation logic if it depends on stats)
   const dbBoss = (await prisma.monster.findUnique({
     where: { id: session.bossId },
   })) as PrismaMonster | null;
   if (!dbBoss) return { success: false, message: "Boss not found" };
-  // Map Prisma Monster to Type Monster if needed, mostly same fields
-  // Ensure all required fields are present for CombatEngine: name, level, maxHp
+
+  // Map to Monster
   const boss: Monster = {
     id: dbBoss.id,
     name: dbBoss.name,
@@ -249,46 +280,36 @@ export async function performCombatAction(
     level: dbBoss.level,
     description: dbBoss.description,
     image: dbBoss.image || "",
-    element: "Physical", // Default if DB doesn't have it yet, or map if added to Prisma
-    hp: dbBoss.hp,
-    maxHp: dbBoss.hp,
-    weakness: [], // dbBoss.weakness not in Prisma model? Check schema. Assumed empty for now.
+    element: "Physical",
+    hp: session.bossHp, // Use current HP from session
+    maxHp: session.bossMaxHp,
+    weakness: [],
     associatedExerciseIds: [],
   };
 
-  // Apply Tier Damage Scaling to Boss Logic?
-  // The CombatEngine needs to know about scaling damage.
-  // We can either pass a scaled boss object or modifying CombatEngine.
-  // Let's modify the boss object we pass to CombatEngine.
-
-  const tier = session.tier || "HEROIC";
-  let damageMultiplier = 1.0;
-  if (tier === "STORY") damageMultiplier = 0.7;
-  if (tier === "TITAN_SLAYER") damageMultiplier = 1.3;
+  // Logic to determine scaling based on implicit knowledge or saved field?
+  // We didn't save 'tier' in CombatSession. 
+  // We can infer it from (bossMaxHp / dbBoss.hp).
+  // Or just rely on raw stats.
+  const damageRatio = session.bossMaxHp / dbBoss.hp;
 
   // Temporary Boss Object for calculation
-  // We only need to adjust power if CombatEngine uses level or stats.
-  // CombatEngine uses: `boss.level * 15 + (boss.maxHp / 100)`
-  // We can simulate this by adjusting level relative to tier.
-
   const scaledBoss = {
     ...boss,
-    level: Math.floor(boss.level * damageMultiplier),
+    level: Math.floor(boss.level * damageRatio),
   };
 
-  // 3. Process Turn
+  // 4. Process Turn
   const result = CombatEngine.processTurn(
-    session.state,
+    currentState,
     validatedAction,
     attributes,
     scaledBoss as any,
   );
 
-  // Sync damage to Titan DB
-  const damageTaken = session.state.playerHp - result.newState.playerHp;
+  // Sync damage to Titan DB (Real-time health updates)
+  const damageTaken = currentState.playerHp - result.newState.playerHp;
   if (damageTaken > 0) {
-    // Await this to ensure state consistency, though it adds latency.
-    // For turn-based, latency is acceptable (200ms).
     await modifyTitanHealthAction(
       user.id,
       -damageTaken,
@@ -296,54 +317,58 @@ export async function performCombatAction(
     );
   }
 
-  // Update Session
-  session.state = result.newState;
+  // 5. Update Session in DB
+  // If victory/defeat, we might keep it for a moment to show result, OR handle it immediately.
+  // The UI needs to see the result. So we update it to 'isVictory' state.
+  // We will delete it ONLY after the user clicks "Leave" or we can auto-archive.
+  // Actually, better to keep it until next startBossFight overwrites it or explicit leave.
 
-  // 4. Handle End Game
+  await prisma.combatSession.update({
+    where: { id: session.id },
+    data: {
+      playerHp: result.newState.playerHp,
+      bossHp: result.newState.bossHp,
+      turnCount: result.newState.turnCount,
+      logs: result.newState.logs,
+      isVictory: result.newState.isVictory,
+      isDefeat: result.newState.isDefeat,
+      updatedAt: new Date()
+    }
+  });
+
+  // 6. Handle End Game Rewards
   let loot = null;
   let reward = null;
 
   if (result.newState.isVictory) {
-    // Drop Loot!
-    // We use the LootSystem from previous task
-    // We need 'activityData' from a real workout usually, here we mock it or base on Boss difficulty
-
-    // Bonus chance for boss kill?
-    // loot = await LootSystem.generateLoot(boss.id, user.id);
     const lootRoll = await LootSystem.rollForLoot(user.id);
     loot = lootRoll;
 
-    // Award XP/Gold
-    // Tier Scaling for Rewards
+    // XP/Gold
     let rewardMultiplier = 1.0;
-    if (tier === "STORY") rewardMultiplier = 0.5;
-    if (tier === "TITAN_SLAYER") rewardMultiplier = 2.0;
+    // rough inference
+    if (damageRatio < 0.8) rewardMultiplier = 0.5; // Story
+    if (damageRatio > 1.4) rewardMultiplier = 2.0; // Slayer
 
-    const xp = Math.floor(boss.level * 50 * rewardMultiplier);
-    const gold = Math.floor(boss.level * 25 * rewardMultiplier);
+    const xp = Math.floor(dbBoss.level * 50 * rewardMultiplier);
+    const gold = Math.floor(dbBoss.level * 25 * rewardMultiplier);
 
     reward = { xp, gold };
 
-    reward = { xp, gold };
-
-    // 1. Award XP to Titan (Authoritative Leveling)
-    await awardTitanXpAction(user.id, xp, `Boss Defeated: ${boss.name}`);
-
-    // 2. Award Gold (User Economy) & Kinetic Energy
-    // TODO: Move Gold/Energy to Titan or specialized Wallet model eventually
+    // Award
+    await awardTitanXpAction(user.id, xp, `Boss Defeated: ${dbBoss.name}`);
     await prisma.user.update({
       where: { id: user.id },
       data: {
-        // totalExperience: { increment: xp }, // Deprecated in favor of Titan XP
         gold: { increment: gold },
         kineticEnergy: { increment: 5 },
       },
     });
 
-    delete ACTIVE_SESSIONS[user.id]; // Clear session
-    revalidatePath("/armory"); // Update inventory
-  } else if (result.newState.isDefeat) {
-    delete ACTIVE_SESSIONS[user.id]; // Clear session
+    // We do NOT delete the session here. We let the UI display the victory screen.
+    // The session will be cleared/overwritten on next `startBossFight`.
+    // Optionally, `revalidatePath` to update UI immediately
+    revalidatePath("/armory");
   }
 
   return {
@@ -363,10 +388,9 @@ export async function fleeFromCombat(goldCost: number = 50) {
 
   if (!user) return { success: false, message: "Not authenticated" };
 
-  const session = ACTIVE_SESSIONS[user.id];
+  const session = await prisma.combatSession.findUnique({ where: { userId: user.id } });
   if (!session) return { success: false, message: "No active combat session" };
 
-  // Fetch user to check gold
   const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
   if (!dbUser) return { success: false, message: "User not found" };
 
@@ -383,8 +407,30 @@ export async function fleeFromCombat(goldCost: number = 50) {
     data: { gold: { decrement: goldCost } },
   });
 
-  // Clear combat session
-  delete ACTIVE_SESSIONS[user.id];
+  // Delete session
+  await prisma.combatSession.delete({
+    where: { id: session.id }
+  });
 
   return { success: true, goldSpent: goldCost };
+}
+
+export async function getActiveCombatSession() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) return { success: false, message: "Unauthorized" };
+
+  const session = await prisma.combatSession.findUnique({
+    where: { userId: user.id }
+  });
+
+  if (!session) return { success: false };
+
+  // Fetch boss details to render the resume card
+  const boss = await prisma.monster.findUnique({
+    where: { id: session.bossId }
+  });
+
+  return { success: true, session, boss };
 }

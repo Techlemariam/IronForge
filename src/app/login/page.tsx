@@ -180,7 +180,7 @@ export default function LoginPage() {
                 transition={{ duration: 0.2 }}
               >
                 <label className="block text-xs font-mono uppercase text-forge-muted mb-1 flex items-center gap-2">
-                  <Key className="w-3 h-3" /> Access Key
+                  <Key className="w-3 h-3" /> Password
                 </label>
                 <input
                   type="password"
@@ -215,15 +215,15 @@ export default function LoginPage() {
             </span>
           </button>
 
-          <div className="pt-2 text-center">
+          <div className="pt-4 text-center">
             <button
               type="button"
               onClick={() => setIsPasswordLogin(!isPasswordLogin)}
-              className="text-xs text-forge-muted hover:text-warrior transition-colors font-mono uppercase tracking-wide border-b border-transparent hover:border-warrior pb-0.5"
+              className="text-sm text-zinc-400 hover:text-white transition-colors font-mono uppercase tracking-wide border-b border-zinc-700 hover:border-white pb-0.5"
             >
               {isPasswordLogin
-                ? "Use Magic Link Signal"
-                : "Use Access Key Protocol"}
+                ? "← Use Magic Link"
+                : "Login with Password →"}
             </button>
           </div>
         </form>
@@ -234,11 +234,10 @@ export default function LoginPage() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              className={`mt-6 p-4 rounded text-sm flex items-center gap-3 border ${
-                message.type === "error"
+              className={`mt-6 p-4 rounded text-sm flex items-center gap-3 border ${message.type === "error"
                   ? "bg-red-950/40 text-red-200 border-red-900/50"
                   : "bg-green-950/40 text-green-200 border-green-900/50"
-              }`}
+                }`}
             >
               {message.type === "error" ? (
                 <ShieldAlert className="w-5 h-5 shrink-0" />

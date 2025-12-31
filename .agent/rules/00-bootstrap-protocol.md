@@ -23,7 +23,7 @@ Verktyg: Antigravity IDE CLI, @root, .agent/workflows.
 ### T - Task Execution (Steg)
 1. **Scaffolding:** Skapa /src. Tester kan placeras antingen i /tests/units eller samlokaliseras i __tests__ mappar inuti modulen (föredraget för nya moduler). Dokumentation i /docs.
 2. **Local Rules:** Generera .agent/rules/local-standards.md.
-3. **Workflow Link:** Koppla modulen till /generate-tests och /sync-docs.
+3. **Workflow Link:** Koppla modulen till /unit-tests och /qa.
 4. **Drafting:** Skapa den första versionen (v0.1) av huvud-agenten.
 
 ### H - Feedback Loop

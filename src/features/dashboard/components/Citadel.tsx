@@ -8,14 +8,16 @@ import OracleCard from "@/components/OracleCard";
 import UltrathinkDashboard from "@/components/UltrathinkDashboard";
 import { CampaignTracker } from "@/components/CampaignTracker";
 import { toast } from "@/components/ui/GameToast";
+import { PocketCastsPlayer } from "@/features/podcast/components/PocketCastsPlayer";
 
 interface CitadelProps {
     state: DashboardState;
     dispatch: React.Dispatch<DashboardAction>;
     titanState?: any;
+    pocketCastsConnected?: boolean;
 }
 
-export const Citadel: React.FC<CitadelProps> = ({ state, dispatch, titanState }) => (
+export const Citadel: React.FC<CitadelProps> = ({ state, dispatch, titanState, pocketCastsConnected }) => (
     <div className="w-full max-w-6xl mx-auto p-4 md:p-6 space-y-8 animate-fade-in">
         <section id="titan-avatar">
             <TitanAvatar titan={titanState} />
@@ -33,6 +35,12 @@ export const Citadel: React.FC<CitadelProps> = ({ state, dispatch, titanState })
         <section id="quick-actions">
             <CitadelHub dispatch={dispatch} />
         </section>
+
+        {pocketCastsConnected && (
+            <section id="podcast-player">
+                <PocketCastsPlayer />
+            </section>
+        )}
 
         <section
             id="oracle-recommendation"

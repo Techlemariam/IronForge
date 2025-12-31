@@ -69,6 +69,7 @@ export interface DashboardClientProps {
   hevyRoutines: HevyRoutine[];
   intervalsConnected: boolean;
   stravaConnected: boolean;
+  pocketCastsConnected: boolean;
   faction: Faction | string;
   hasCompletedOnboarding: boolean;
   isDemoMode?: boolean;
@@ -113,9 +114,9 @@ export type DashboardAction =
   | { type: "INITIAL_DATA_LOAD_SUCCESS"; payload: any }
   | { type: "INITIAL_DATA_LOAD_FAILURE" }
   | {
-      type: "SELECT_ROUTINE";
-      payload: { routine: HevyRoutine; nameMap: Map<string, string> };
-    }
+    type: "SELECT_ROUTINE";
+    payload: { routine: HevyRoutine; nameMap: Map<string, string> };
+  }
   | { type: "COMPLETE_QUEST" }
   | { type: "SAVE_WORKOUT" }
   | { type: "ABORT_QUEST" }

@@ -18,6 +18,8 @@ model User {
   intervalsApiKey    String?
   intervalsAthleteId String?
   hevyApiKey         String?
+  pocketCastsToken   String?
+  pocketCastsEnabled Boolean  @default(false)
 
   // Strava
   stravaAccessToken  String?
@@ -99,6 +101,25 @@ model User {
   userBattlePasses   UserBattlePass[]
   oracleMessages     OracleMessage[]
   skillPresets       SkillPreset[]
+  combatSession      CombatSession?
+}
+
+model CombatSession {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id])
+  bossId      String   // ID from static monster data
+  bossHp      Int
+  bossMaxHp   Int
+  playerHp    Int
+  playerMaxHp Int
+  turnCount   Int      @default(0)
+  isVictory   Boolean  @default(false)
+  isDefeat    Boolean  @default(false)
+  logs        Json[]   // Storing string[] as Json
+  updatedAt   DateTime @updatedAt
+  createdAt   DateTime @default(now())
+  expiresAt   DateTime // Auto-cleanup target
 }
 
 model Titan {

@@ -13,6 +13,7 @@ interface SettingsPageProps {
   hevyConnected: boolean;
   intervalsConnected: boolean;
   stravaConnected: boolean;
+  pocketCastsConnected: boolean;
   initialFaction: Faction;
   isDemoMode: boolean;
 }
@@ -22,6 +23,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
   hevyConnected,
   intervalsConnected,
   stravaConnected,
+  pocketCastsConnected,
   initialFaction,
   isDemoMode,
 }) => {
@@ -62,6 +64,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
               hevyConnected={hevyConnected}
               intervalsConnected={intervalsConnected}
               stravaConnected={stravaConnected}
+              pocketCastsConnected={pocketCastsConnected}
               initialFaction={initialFaction}
               checkDemoStatus={true}
               onIntegrationChanged={() => window.location.reload()}

@@ -150,6 +150,7 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
     hevyTemplates,
     intervalsConnected,
     stravaConnected,
+    pocketCastsConnected,
     challenges,
     titanState,
   } = props;
@@ -212,7 +213,7 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
 
   useEffect(() => {
     dispatch({ type: "UPDATE_CHALLENGES", payload: challenges || [] });
-  }, [challenges]);
+  }, [challenges, dispatch]);
 
   // God Tier 2: Soundscapes
   useAmbientSound(getAmbientZone(state.currentView));
@@ -488,7 +489,11 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
             onClose={() => dispatch({ type: "SET_VIEW", payload: "world_map" })}
           />
         ) : (
-          <Citadel state={state} dispatch={dispatch} />
+          <Citadel
+            state={state}
+            dispatch={dispatch}
+            pocketCastsConnected={pocketCastsConnected}
+          />
         );
 
       case "cardio_studio":
@@ -503,6 +508,7 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
             onClose={() => dispatch({ type: "RETURN_TO_PREVIOUS" })}
             userId={userData?.id}
             activeDuel={state.activeDuel}
+            pocketCastsConnected={pocketCastsConnected}
           />
         );
 

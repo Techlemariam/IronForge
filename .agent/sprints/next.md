@@ -1,30 +1,33 @@
-# Next Sprint: Sprint 16 - Infrastructure Pilot & UX Polish
-**Period**: 2025-12-29 - 2026-01-05
-**Goal**: Strengthen the foundation with observability, type safety, and a premium settings experience.
+# Next Sprint: Sprint 17 - Cardio PvP Completion
+**Period**: 2026-01-05 - 2026-01-12
+**Goal**: Finalize the Cardio PvP Duels feature and prepare for Season 2 expansion.
 
 ## Backlog
 
-### Priority: High
-- [ ] **Build Performance Optimization** <!-- agent: /infrastructure | estimate: 4h | source: roadmap:107 -->
-- [ ] **Health Check Endpoint** <!-- agent: /infrastructure | estimate: 1h | source: roadmap:112 -->
-- [ ] **Structured Logging (Pino)** <!-- agent: /infrastructure | estimate: 4h | source: roadmap:115 -->
-- [ ] **Refactor: useMiningSession hook** <!-- agent: /coder | estimate: 2h | source: health-report:20 -->
+### Priority: High (Feature Completion)
+- [ ] **Cardio PvP Duels Implementation** <!-- agent: /coder | estimate: 8h | source: roadmap:6 -->
+    - *Note*: Spec file `specs/cardio-duels.md` is missing. Needs restoration/creation first.
+    - Scope: Real-time duel updates, result processing, UI integration.
+- [ ] **Duel Leaderboards** <!-- agent: /coder | estimate: 4h | source: roadmap:6 -->
+    - Scope: Global and Friend leaderboards for duels.
 
-### Priority: Medium
-- [ ] **Fix Analytics Dashboard Logic** <!-- agent: /coder | estimate: 3h | source: debt:42 -->
-- [ ] **Type Safety Pass (Supabase & Storage)** <!-- agent: /security | estimate: 2h | source: debt:40,41 -->
-- [ ] **Dedicated Settings Page** <!-- agent: /ui-ux | estimate: 4h | source: ux-audit:67 -->
+### Priority: Medium (Preparation)
+- [ ] **Power Rating System Analysis** <!-- agent: /architect | estimate: 3h | source: roadmap:68 -->
+    - Create spec: `specs/power-rating-system.md`.
+    - Algorithm design for calculating "Power" from strength + cardio metrics.
+- [ ] **Oracle 3.0 Analysis** <!-- agent: /analyst | estimate: 2h | source: roadmap:64 -->
+    - Initial requirements gathering for OpenAI integration.
 
-### Priority: Low
-- [ ] **Loading Skeletons** <!-- agent: /ui-ux | estimate: 1h | source: ux-audit:73 -->
+### Priority: Low (Polish)
+- [ ] **Three.js Type Definitions** <!-- agent: /cleanup | estimate: 1h | source: debt:43 -->
+    - Fix missing types in `global.d.ts` (deferred item).
 
 ---
 
 ## Sprint Stats
-- **Total Items**: 8
-- **Estimated Hours**: 21h
-- **Debt Ratio**: 37% (3/8)
+- **Total Items**: 5
+- **Estimated Hours**: 18h
+- **Debt Ratio**: 20%
 
 ## Dependencies
-- Requires `pino` and `pino-pretty` npm packages.
-- Verified `agent-verify.yml` exists and is parallelized.
+- `specs` directory seems missing. Needs recreation.

@@ -1,0 +1,266 @@
+lint	Set up job	﻿2025-12-30T19:52:43.1638320Z Current runner version: '2.330.0'
+lint	Set up job	2025-12-30T19:52:43.1714490Z ##[group]Runner Image Provisioner
+lint	Set up job	2025-12-30T19:52:43.1715865Z Hosted Compute Agent
+lint	Set up job	2025-12-30T19:52:43.1716720Z Version: 20251211.462
+lint	Set up job	2025-12-30T19:52:43.1717826Z Commit: 6cbad8c2bb55d58165063d031ccabf57e2d2db61
+lint	Set up job	2025-12-30T19:52:43.1719037Z Build Date: 2025-12-11T16:28:49Z
+lint	Set up job	2025-12-30T19:52:43.1720221Z Worker ID: {cd9baa23-740f-49c5-a357-746333204d60}
+lint	Set up job	2025-12-30T19:52:43.1721461Z ##[endgroup]
+lint	Set up job	2025-12-30T19:52:43.1742858Z ##[group]Operating System
+lint	Set up job	2025-12-30T19:52:43.1744043Z Ubuntu
+lint	Set up job	2025-12-30T19:52:43.1744847Z 24.04.3
+lint	Set up job	2025-12-30T19:52:43.1745657Z LTS
+lint	Set up job	2025-12-30T19:52:43.1746505Z ##[endgroup]
+lint	Set up job	2025-12-30T19:52:43.1747424Z ##[group]Runner Image
+lint	Set up job	2025-12-30T19:52:43.1748374Z Image: ubuntu-24.04
+lint	Set up job	2025-12-30T19:52:43.1749391Z Version: 20251215.174.1
+lint	Set up job	2025-12-30T19:52:43.1751186Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20251215.174/images/ubuntu/Ubuntu2404-Readme.md
+lint	Set up job	2025-12-30T19:52:43.1774252Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20251215.174
+lint	Set up job	2025-12-30T19:52:43.1776437Z ##[endgroup]
+lint	Set up job	2025-12-30T19:52:43.1778356Z ##[group]GITHUB_TOKEN Permissions
+lint	Set up job	2025-12-30T19:52:43.1780828Z Contents: read
+lint	Set up job	2025-12-30T19:52:43.1782060Z Metadata: read
+lint	Set up job	2025-12-30T19:52:43.1783143Z Packages: read
+lint	Set up job	2025-12-30T19:52:43.1784035Z ##[endgroup]
+lint	Set up job	2025-12-30T19:52:43.1787163Z Secret source: Actions
+lint	Set up job	2025-12-30T19:52:43.1788754Z Prepare workflow directory
+lint	Set up job	2025-12-30T19:52:43.3151455Z Prepare all required actions
+lint	Set up job	2025-12-30T19:52:43.3208320Z Getting action download info
+lint	Set up job	2025-12-30T19:52:43.6517985Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+lint	Set up job	2025-12-30T19:52:43.7486913Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+lint	Set up job	2025-12-30T19:52:43.8449925Z Download action repository 'nick-fields/retry@v3' (SHA:ce71cc2ab81d554ebbe88c79ab5975992d79ba08)
+lint	Set up job	2025-12-30T19:52:44.0965046Z Complete job name: lint
+lint	Run actions/checkout@v4	﻿2025-12-30T19:52:44.1571489Z ##[group]Run actions/checkout@v4
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.1572737Z with:
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.1573209Z   repository: Techlemariam/IronForge
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.1573908Z   token: ***
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.1574359Z   ssh-strict: true
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.1574828Z   ssh-user: git
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.1575291Z   persist-credentials: true
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.1575960Z   clean: true
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.1576656Z   sparse-checkout-cone-mode: true
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.1577454Z   fetch-depth: 1
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.1578110Z   fetch-tags: false
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.1578836Z   show-progress: true
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.1579560Z   lfs: false
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.1580215Z   submodules: false
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.1580885Z   set-safe-directory: true
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.1582316Z env:
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.1582959Z   DATABASE_URL: 
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.1583607Z   DIRECT_URL: 
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.1584154Z   NEXT_PUBLIC_SUPABASE_URL: 
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.1584682Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: 
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.1585197Z ##[endgroup]
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.2703910Z Syncing repository: Techlemariam/IronForge
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.2706560Z ##[group]Getting Git version info
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.2707780Z Working directory is '/home/runner/work/IronForge/IronForge'
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.2708883Z [command]/usr/bin/git version
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.2812718Z git version 2.52.0
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.2838807Z ##[endgroup]
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.2853937Z Temporarily overriding HOME='/home/runner/work/_temp/0413eb48-c67c-4859-9c56-04e95fd5b25b' before making global git config changes
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.2857367Z Adding repository directory to the temporary git global config as a safe directory
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.2869999Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/IronForge/IronForge
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.2915782Z Deleting the contents of '/home/runner/work/IronForge/IronForge'
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.2918984Z ##[group]Initializing the repository
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.2924614Z [command]/usr/bin/git init /home/runner/work/IronForge/IronForge
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.3049782Z hint: Using 'master' as the name for the initial branch. This default branch name
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.3051888Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.3053534Z hint: to use in all of your new repositories, which will suppress this warning,
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.3054768Z hint: call:
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.3055425Z hint:
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.3056178Z hint: 	git config --global init.defaultBranch <name>
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.3057123Z hint:
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.3058097Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.3059758Z hint: 'development'. The just-created branch can be renamed via this command:
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.3061094Z hint:
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.3062039Z hint: 	git branch -m <name>
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.3062898Z hint:
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.3064444Z hint: Disable this message with "git config set advice.defaultBranchName false"
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.3068312Z Initialized empty Git repository in /home/runner/work/IronForge/IronForge/.git/
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.3072598Z [command]/usr/bin/git remote add origin https://github.com/Techlemariam/IronForge
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.3111287Z ##[endgroup]
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.3112825Z ##[group]Disabling automatic garbage collection
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.3115755Z [command]/usr/bin/git config --local gc.auto 0
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.3147806Z ##[endgroup]
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.3149104Z ##[group]Setting up auth
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.3154992Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.3188390Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.3559646Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.3592789Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.3820852Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.3852724Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.4094450Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.4130559Z ##[endgroup]
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.4133725Z ##[group]Fetching the repository
+lint	Run actions/checkout@v4	2025-12-30T19:52:44.4140506Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +f3639e946556de6f46c9204503500c184b317be8:refs/remotes/origin/main
+lint	Run actions/checkout@v4	2025-12-30T19:52:45.7225985Z From https://github.com/Techlemariam/IronForge
+lint	Run actions/checkout@v4	2025-12-30T19:52:45.7228585Z  * [new ref]         f3639e946556de6f46c9204503500c184b317be8 -> origin/main
+lint	Run actions/checkout@v4	2025-12-30T19:52:45.7304597Z ##[endgroup]
+lint	Run actions/checkout@v4	2025-12-30T19:52:45.7306507Z ##[group]Determining the checkout info
+lint	Run actions/checkout@v4	2025-12-30T19:52:45.7309033Z ##[endgroup]
+lint	Run actions/checkout@v4	2025-12-30T19:52:45.7318536Z [command]/usr/bin/git sparse-checkout disable
+lint	Run actions/checkout@v4	2025-12-30T19:52:46.0315583Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+lint	Run actions/checkout@v4	2025-12-30T19:52:46.0762537Z ##[group]Checking out the ref
+lint	Run actions/checkout@v4	2025-12-30T19:52:46.0775342Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+lint	Run actions/checkout@v4	2025-12-30T19:52:46.2212847Z Switched to a new branch 'main'
+lint	Run actions/checkout@v4	2025-12-30T19:52:46.2220766Z branch 'main' set up to track 'origin/main'.
+lint	Run actions/checkout@v4	2025-12-30T19:52:46.2242621Z ##[endgroup]
+lint	Run actions/checkout@v4	2025-12-30T19:52:46.2283351Z [command]/usr/bin/git log -1 --format=%H
+lint	Run actions/checkout@v4	2025-12-30T19:52:46.2308318Z f3639e946556de6f46c9204503500c184b317be8
+lint	Run actions/setup-node@v4	﻿2025-12-30T19:52:46.2556475Z ##[group]Run actions/setup-node@v4
+lint	Run actions/setup-node@v4	2025-12-30T19:52:46.2557001Z with:
+lint	Run actions/setup-node@v4	2025-12-30T19:52:46.2557366Z   node-version: 20
+lint	Run actions/setup-node@v4	2025-12-30T19:52:46.2557845Z   cache: npm
+lint	Run actions/setup-node@v4	2025-12-30T19:52:46.2558435Z   always-auth: false
+lint	Run actions/setup-node@v4	2025-12-30T19:52:46.2558827Z   check-latest: false
+lint	Run actions/setup-node@v4	2025-12-30T19:52:46.2559371Z   token: ***
+lint	Run actions/setup-node@v4	2025-12-30T19:52:46.2559720Z env:
+lint	Run actions/setup-node@v4	2025-12-30T19:52:46.2560056Z   DATABASE_URL: 
+lint	Run actions/setup-node@v4	2025-12-30T19:52:46.2560435Z   DIRECT_URL: 
+lint	Run actions/setup-node@v4	2025-12-30T19:52:46.2560803Z   NEXT_PUBLIC_SUPABASE_URL: 
+lint	Run actions/setup-node@v4	2025-12-30T19:52:46.2561229Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: 
+lint	Run actions/setup-node@v4	2025-12-30T19:52:46.2561969Z ##[endgroup]
+lint	Run actions/setup-node@v4	2025-12-30T19:52:46.6730501Z Found in cache @ /opt/hostedtoolcache/node/20.19.6/x64
+lint	Run actions/setup-node@v4	2025-12-30T19:52:46.6735503Z ##[group]Environment details
+lint	Run actions/setup-node@v4	2025-12-30T19:52:47.2156134Z node: v20.19.6
+lint	Run actions/setup-node@v4	2025-12-30T19:52:47.2159688Z npm: 10.8.2
+lint	Run actions/setup-node@v4	2025-12-30T19:52:47.2160155Z yarn: 1.22.22
+lint	Run actions/setup-node@v4	2025-12-30T19:52:47.2161478Z ##[endgroup]
+lint	Run actions/setup-node@v4	2025-12-30T19:52:47.2212460Z [command]/opt/hostedtoolcache/node/20.19.6/x64/bin/npm config get cache
+lint	Run actions/setup-node@v4	2025-12-30T19:52:47.3498513Z /home/runner/.npm
+lint	Run actions/setup-node@v4	2025-12-30T19:52:47.4436930Z Cache hit for: node-cache-Linux-x64-npm-bc1105ec9d4992d0012669004f1e174eafd92857eab460dea0598c7aa16a4d10
+lint	Run actions/setup-node@v4	2025-12-30T19:52:48.5107661Z Received 201326592 of 315367302 (63.8%), 190.9 MBs/sec
+lint	Run actions/setup-node@v4	2025-12-30T19:52:48.9740004Z Received 315367302 of 315367302 (100.0%), 204.7 MBs/sec
+lint	Run actions/setup-node@v4	2025-12-30T19:52:48.9742807Z Cache Size: ~301 MB (315367302 B)
+lint	Run actions/setup-node@v4	2025-12-30T19:52:48.9800998Z [command]/usr/bin/tar -xf /home/runner/work/_temp/36841b1a-95b7-43ad-8a74-6ad74d4bcd88/cache.tzst -P -C /home/runner/work/IronForge/IronForge --use-compress-program unzstd
+lint	Run actions/setup-node@v4	2025-12-30T19:52:50.1891267Z Cache restored successfully
+lint	Run actions/setup-node@v4	2025-12-30T19:52:50.2489805Z Cache restored from key: node-cache-Linux-x64-npm-bc1105ec9d4992d0012669004f1e174eafd92857eab460dea0598c7aa16a4d10
+lint	Install dependencies	﻿2025-12-30T19:52:50.2710409Z ##[group]Run nick-fields/retry@v3
+lint	Install dependencies	2025-12-30T19:52:50.2710706Z with:
+lint	Install dependencies	2025-12-30T19:52:50.2710905Z   timeout_minutes: 10
+lint	Install dependencies	2025-12-30T19:52:50.2711110Z   max_attempts: 3
+lint	Install dependencies	2025-12-30T19:52:50.2711303Z   command: npm install
+lint	Install dependencies	2025-12-30T19:52:50.2711511Z   retry_wait_seconds: 10
+lint	Install dependencies	2025-12-30T19:52:50.2711969Z   polling_interval_seconds: 1
+lint	Install dependencies	2025-12-30T19:52:50.2712200Z   warning_on_retry: true
+lint	Install dependencies	2025-12-30T19:52:50.2712437Z   continue_on_error: false
+lint	Install dependencies	2025-12-30T19:52:50.2712650Z env:
+lint	Install dependencies	2025-12-30T19:52:50.2712824Z   DATABASE_URL: 
+lint	Install dependencies	2025-12-30T19:52:50.2713008Z   DIRECT_URL: 
+lint	Install dependencies	2025-12-30T19:52:50.2713202Z   NEXT_PUBLIC_SUPABASE_URL: 
+lint	Install dependencies	2025-12-30T19:52:50.2713435Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: 
+lint	Install dependencies	2025-12-30T19:52:50.2713670Z ##[endgroup]
+lint	Install dependencies	2025-12-30T19:52:50.3469107Z ##[group]Attempt 1
+lint	Install dependencies	2025-12-30T19:52:51.8351260Z npm warn EBADENGINE Unsupported engine {
+lint	Install dependencies	2025-12-30T19:52:51.8354925Z npm warn EBADENGINE   package: '@capacitor/cli@8.0.0',
+lint	Install dependencies	2025-12-30T19:52:51.8357458Z npm warn EBADENGINE   required: { node: '>=22.0.0' },
+lint	Install dependencies	2025-12-30T19:52:51.8359857Z npm warn EBADENGINE   current: { node: 'v20.19.6', npm: '10.8.2' }
+lint	Install dependencies	2025-12-30T19:52:51.8362162Z npm warn EBADENGINE }
+lint	Install dependencies	2025-12-30T19:52:51.8371960Z npm warn EBADENGINE Unsupported engine {
+lint	Install dependencies	2025-12-30T19:52:51.8374137Z npm warn EBADENGINE   package: 'camera-controls@3.1.2',
+lint	Install dependencies	2025-12-30T19:52:51.8377147Z npm warn EBADENGINE   required: { node: '>=22.0.0', npm: '>=10.5.1' },
+lint	Install dependencies	2025-12-30T19:52:51.8379546Z npm warn EBADENGINE   current: { node: 'v20.19.6', npm: '10.8.2' }
+lint	Install dependencies	2025-12-30T19:52:51.8381773Z npm warn EBADENGINE }
+lint	Install dependencies	2025-12-30T19:52:59.7943302Z npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+lint	Install dependencies	2025-12-30T19:53:00.0236848Z npm warn deprecated @humanwhocodes/config-array@0.13.0: Use @eslint/config-array instead
+lint	Install dependencies	2025-12-30T19:53:00.0823089Z npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+lint	Install dependencies	2025-12-30T19:53:00.2267414Z npm warn deprecated @humanwhocodes/object-schema@2.0.3: Use @eslint/object-schema instead
+lint	Install dependencies	2025-12-30T19:53:00.2337017Z npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+lint	Install dependencies	2025-12-30T19:53:00.9453612Z npm warn deprecated source-map@0.8.0-beta.0: The work that was done in this beta branch won't be included in future versions
+lint	Install dependencies	2025-12-30T19:53:01.1329625Z npm warn deprecated node-domexception@1.0.0: Use your platform's native DOMException instead
+lint	Install dependencies	2025-12-30T19:53:06.1423283Z npm warn deprecated eslint@8.57.1: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+lint	Install dependencies	2025-12-30T19:53:13.5018741Z 
+lint	Install dependencies	2025-12-30T19:53:13.5019455Z > ironforge-rpg@1.0.0 postinstall
+lint	Install dependencies	2025-12-30T19:53:13.5020006Z > prisma generate
+lint	Install dependencies	2025-12-30T19:53:13.5020229Z 
+lint	Install dependencies	2025-12-30T19:53:14.5394878Z Prisma schema loaded from prisma/schema.prisma.
+lint	Install dependencies	2025-12-30T19:53:15.4892926Z 
+lint	Install dependencies	2025-12-30T19:53:15.4897914Z ✔ Generated Prisma Client (v7.2.0) to ./node_modules/@prisma/client in 534ms
+lint	Install dependencies	2025-12-30T19:53:15.4923235Z 
+lint	Install dependencies	2025-12-30T19:53:15.4924223Z Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+lint	Install dependencies	2025-12-30T19:53:15.4943108Z 
+lint	Install dependencies	2025-12-30T19:53:15.4944224Z Tip: Want to turn off tips and other hints? https://pris.ly/tip-4-nohints
+lint	Install dependencies	2025-12-30T19:53:15.4944888Z 
+lint	Install dependencies	2025-12-30T19:53:15.5543301Z 
+lint	Install dependencies	2025-12-30T19:53:15.5551897Z added 1185 packages, and audited 1186 packages in 25s
+lint	Install dependencies	2025-12-30T19:53:15.5556664Z 
+lint	Install dependencies	2025-12-30T19:53:15.5557087Z 230 packages are looking for funding
+lint	Install dependencies	2025-12-30T19:53:15.5557657Z   run `npm fund` for details
+lint	Install dependencies	2025-12-30T19:53:15.5723274Z 
+lint	Install dependencies	2025-12-30T19:53:15.5723864Z 2 moderate severity vulnerabilities
+lint	Install dependencies	2025-12-30T19:53:15.5725900Z 
+lint	Install dependencies	2025-12-30T19:53:15.5726681Z To address all issues (including breaking changes), run:
+lint	Install dependencies	2025-12-30T19:53:15.5729536Z   npm audit fix --force
+lint	Install dependencies	2025-12-30T19:53:15.5729895Z 
+lint	Install dependencies	2025-12-30T19:53:15.5732554Z Run `npm audit` for details.
+lint	Install dependencies	2025-12-30T19:53:16.3859640Z Command completed after 1 attempt(s).
+lint	Install dependencies	2025-12-30T19:53:16.3862284Z ##[endgroup]
+lint	Run npx prisma generate	﻿2025-12-30T19:53:16.3941100Z ##[group]Run npx prisma generate
+lint	Run npx prisma generate	2025-12-30T19:53:16.3941438Z [36;1mnpx prisma generate[0m
+lint	Run npx prisma generate	2025-12-30T19:53:16.3986411Z shell: /usr/bin/bash -e {0}
+lint	Run npx prisma generate	2025-12-30T19:53:16.3986659Z env:
+lint	Run npx prisma generate	2025-12-30T19:53:16.3986832Z   DATABASE_URL: 
+lint	Run npx prisma generate	2025-12-30T19:53:16.3987017Z   DIRECT_URL: 
+lint	Run npx prisma generate	2025-12-30T19:53:16.3987216Z   NEXT_PUBLIC_SUPABASE_URL: 
+lint	Run npx prisma generate	2025-12-30T19:53:16.3987452Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: 
+lint	Run npx prisma generate	2025-12-30T19:53:16.3987690Z ##[endgroup]
+lint	Run npx prisma generate	2025-12-30T19:53:17.8076961Z Prisma schema loaded from prisma/schema.prisma.
+lint	Run npx prisma generate	2025-12-30T19:53:18.7220960Z 
+lint	Run npx prisma generate	2025-12-30T19:53:18.7224023Z ✔ Generated Prisma Client (v7.2.0) to ./node_modules/@prisma/client in 499ms
+lint	Run npx prisma generate	2025-12-30T19:53:18.7227511Z 
+lint	Run npx prisma generate	2025-12-30T19:53:18.7228129Z Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+lint	Run npx prisma generate	2025-12-30T19:53:18.7228742Z 
+lint	Run npx prisma generate	2025-12-30T19:53:18.7229567Z Tip: Interested in query caching in just a few lines of code? Try Accelerate today! https://pris.ly/tip-3-accelerate
+lint	Run npx prisma generate	2025-12-30T19:53:18.7230280Z 
+lint	Run npm run lint	﻿2025-12-30T19:53:18.7597800Z ##[group]Run npm run lint
+lint	Run npm run lint	2025-12-30T19:53:18.7598079Z [36;1mnpm run lint[0m
+lint	Run npm run lint	2025-12-30T19:53:18.7631220Z shell: /usr/bin/bash -e {0}
+lint	Run npm run lint	2025-12-30T19:53:18.7631450Z env:
+lint	Run npm run lint	2025-12-30T19:53:18.7631890Z   DATABASE_URL: 
+lint	Run npm run lint	2025-12-30T19:53:18.7632089Z   DIRECT_URL: 
+lint	Run npm run lint	2025-12-30T19:53:18.7632275Z   NEXT_PUBLIC_SUPABASE_URL: 
+lint	Run npm run lint	2025-12-30T19:53:18.7632524Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: 
+lint	Run npm run lint	2025-12-30T19:53:18.7632754Z ##[endgroup]
+lint	Run npm run lint	2025-12-30T19:53:18.8759236Z 
+lint	Run npm run lint	2025-12-30T19:53:18.8761089Z > ironforge-rpg@1.0.0 lint
+lint	Run npm run lint	2025-12-30T19:53:18.8762169Z > next lint
+lint	Run npm run lint	2025-12-30T19:53:18.8764701Z 
+lint	Run npm run lint	2025-12-30T19:53:19.0738357Z `next lint` is deprecated and will be removed in Next.js 16.
+lint	Run npm run lint	2025-12-30T19:53:19.0747218Z For new projects, use create-next-app to choose your preferred linter.
+lint	Run npm run lint	2025-12-30T19:53:19.0748109Z For existing projects, migrate to the ESLint CLI:
+lint	Run npm run lint	2025-12-30T19:53:19.0748856Z npx @next/codemod@canary next-lint-to-eslint-cli .
+lint	Run npm run lint	2025-12-30T19:53:19.0749267Z 
+lint	Run npm run lint	2025-12-30T19:53:19.6065536Z ❌ Invalid environment variables: {
+lint	Run npm run lint	2025-12-30T19:53:19.6067384Z   DATABASE_URL: [ 'Invalid url' ],
+lint	Run npm run lint	2025-12-30T19:53:19.6067940Z   DIRECT_URL: [ 'Invalid url' ],
+lint	Run npm run lint	2025-12-30T19:53:19.6068522Z   NEXT_PUBLIC_SUPABASE_URL: [ 'Invalid url' ],
+lint	Run npm run lint	2025-12-30T19:53:19.6069376Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: [ 'String must contain at least 1 character(s)' ]
+lint	Run npm run lint	2025-12-30T19:53:19.6070452Z }
+lint	Run npm run lint	2025-12-30T19:53:19.6078101Z file:///home/runner/work/IronForge/IronForge/src/env.mjs:46
+lint	Run npm run lint	2025-12-30T19:53:19.6079119Z         throw new Error("Invalid environment variables");
+lint	Run npm run lint	2025-12-30T19:53:19.6080504Z               ^
+lint	Run npm run lint	2025-12-30T19:53:19.6080735Z 
+lint	Run npm run lint	2025-12-30T19:53:19.6080997Z Error: Invalid environment variables
+lint	Run npm run lint	2025-12-30T19:53:19.6081960Z     at file:///home/runner/work/IronForge/IronForge/src/env.mjs:46:15
+lint	Run npm run lint	2025-12-30T19:53:19.6082717Z     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+lint	Run npm run lint	2025-12-30T19:53:19.6083472Z     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+lint	Run npm run lint	2025-12-30T19:53:19.6084543Z     at async loadConfig (/home/runner/work/IronForge/IronForge/node_modules/next/dist/server/config.js:1094:36)
+lint	Run npm run lint	2025-12-30T19:53:19.6086009Z     at async Module.nextLint (/home/runner/work/IronForge/IronForge/node_modules/next/dist/cli/next-lint.js:56:24)
+lint	Run npm run lint	2025-12-30T19:53:19.6086653Z 
+lint	Run npm run lint	2025-12-30T19:53:19.6086788Z Node.js v20.19.6
+lint	Run npm run lint	2025-12-30T19:53:19.6267847Z ##[error]Process completed with exit code 1.
+lint	Post Run actions/checkout@v4	﻿2025-12-30T19:53:19.6347986Z Post job cleanup.
+lint	Post Run actions/checkout@v4	2025-12-30T19:53:19.7304682Z [command]/usr/bin/git version
+lint	Post Run actions/checkout@v4	2025-12-30T19:53:19.7355383Z git version 2.52.0
+lint	Post Run actions/checkout@v4	2025-12-30T19:53:19.7393162Z Temporarily overriding HOME='/home/runner/work/_temp/3798c4c8-deef-47fb-9c30-fbb5238662bc' before making global git config changes
+lint	Post Run actions/checkout@v4	2025-12-30T19:53:19.7394827Z Adding repository directory to the temporary git global config as a safe directory
+lint	Post Run actions/checkout@v4	2025-12-30T19:53:19.7399794Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/IronForge/IronForge
+lint	Post Run actions/checkout@v4	2025-12-30T19:53:19.7441392Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+lint	Post Run actions/checkout@v4	2025-12-30T19:53:19.7475608Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+lint	Post Run actions/checkout@v4	2025-12-30T19:53:19.7717812Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+lint	Post Run actions/checkout@v4	2025-12-30T19:53:19.7741265Z http.https://github.com/.extraheader
+lint	Post Run actions/checkout@v4	2025-12-30T19:53:19.7756692Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+lint	Post Run actions/checkout@v4	2025-12-30T19:53:19.7789884Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+lint	Post Run actions/checkout@v4	2025-12-30T19:53:19.8022743Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+lint	Post Run actions/checkout@v4	2025-12-30T19:53:19.8056019Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+lint	Complete job	﻿2025-12-30T19:53:19.8430119Z Cleaning up orphan processes

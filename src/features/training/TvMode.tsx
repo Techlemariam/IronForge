@@ -27,7 +27,8 @@ import { useGuildContribution } from "@/hooks/useGuildContribution";
 import { useLiveCombat } from "@/hooks/useLiveCombat";
 import { useSearchParams } from "next/navigation";
 import { QRCodeSVG } from "qrcode.react";
-import { Scan } from "lucide-react";
+import { Scan, Podcast } from "lucide-react";
+import { PocketCastsPlayer } from "../podcast/components/PocketCastsPlayer";
 
 interface TvModeProps {
   onExit: () => void;
@@ -35,6 +36,7 @@ interface TvModeProps {
   initialPower?: number;
   ftp?: number;
   userId?: string;
+  pocketCastsConnected?: boolean;
 }
 
 interface SessionStats {
@@ -78,6 +80,7 @@ export const TvMode: React.FC<TvModeProps> = ({
   initialPower = 100,
   ftp = 200,
   userId,
+  pocketCastsConnected,
 }) => {
   // Hooks
   const {
@@ -102,6 +105,7 @@ export const TvMode: React.FC<TvModeProps> = ({
   const [hudVisible, setHudVisible] = useState(true);
   const [panelExpanded, setPanelExpanded] = useState(false);
   const [sensorsMenuOpen, setSensorsMenuOpen] = useState(false);
+  const [podcastOpen, setPodcastOpen] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [sessionStats, setSessionStats] = useState<SessionStats>({
     elapsedSeconds: 0,
@@ -215,6 +219,7 @@ export const TvMode: React.FC<TvModeProps> = ({
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") onExit();
       if (e.key === " ") setHudVisible((v) => !v);
+      if (e.key === "p" || e.key === "P") setPodcastOpen((v) => !v);
       if (e.key === "ArrowUp") setPanelExpanded(true);
       if (e.key === "ArrowDown") setPanelExpanded(false);
     };
@@ -452,6 +457,25 @@ export const TvMode: React.FC<TvModeProps> = ({
                         <BluetoothOff className="w-5 h-5 text-zinc-500" />
                       )}
                     </button>
+
+                    {/* Podcast Toggle Button */}
+                    {pocketCastsConnected && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setPodcastOpen((prev) => !prev);
+                        }}
+                        className={cn(
+                          "p-2 rounded-lg transition-colors",
+                          podcastOpen
+                            ? "bg-magma text-white"
+                            : "bg-zinc-800 hover:bg-zinc-700 text-zinc-400"
+                        )}
+                      >
+                        <Podcast className={cn("w-5 h-5", podcastOpen ? "text-white" : "text-zinc-400")} />
+                      </button>
+                    )}
+
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
@@ -464,6 +488,31 @@ export const TvMode: React.FC<TvModeProps> = ({
                   </div>
                 </div>
               </div>
+
+              {/* Pocket Casts Player Integration (Floating) */}
+              <AnimatePresence>
+                {podcastOpen && pocketCastsConnected && (
+                  <motion.div
+                    initial={{ opacity: 0, x: 50 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 50 }}
+                    className="absolute top-32 right-0 w-96 z-50 mr-8"
+                  >
+                    <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden shadow-2xl">
+                      <div className="flex justify-between items-center bg-zinc-800 px-3 py-2 border-b border-zinc-700">
+                        <div className="flex items-center gap-2 text-zinc-300 text-xs font-bold uppercase tracking-wider">
+                          <Podcast className="w-3 h-3" />
+                          Pocket Casts
+                        </div>
+                        <button onClick={() => setPodcastOpen(false)}>
+                          <X className="w-3 h-3 text-zinc-400 hover:text-white" />
+                        </button>
+                      </div>
+                      <PocketCastsPlayer />
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </motion.div>
           )}
         </AnimatePresence>
