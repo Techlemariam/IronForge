@@ -16,8 +16,8 @@ import { DuelChallenge, User } from '@prisma/client';
 
 // Extended type matches what we return from getDuelStatusAction
 export type ExtendedDuel = DuelChallenge & {
-  challenger: Pick<User, "id" | "heroName" | "level">;
-  defender: Pick<User, "id" | "heroName" | "level">;
+  challenger: Pick<User, "id" | "heroName" | "level" | "faction">;
+  defender: Pick<User, "id" | "heroName" | "level" | "faction">;
 };
 
 interface ArenaClientProps {

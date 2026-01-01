@@ -106,7 +106,7 @@ DO NOT create standard API Routes (`/pages/api` or `route.ts`) unless strictly n
 IronForge is deployed to **Vercel** with full automation via **GitHub Actions**.
 
 ### 7.1 Pipeline Overview
-1. **Agent Verify (`agent-verify.yml`)**: Triggered on all Pull Requests and pushes to `main`. Runs Lint, Vitest (Unit/Integration), and Playwright (E2E).
+1. **Agent Verify (`agent-verify.yml`)**: Triggered on all Pull Requests and pushes to `main`. Runs Lint, Vitest (Unit/Integration), and Playwright (E2E). Uses Turborepo Caching to skip redundant tasks.
 2. **Production Deploy (`deploy.yml`)**: Triggered on successful build of the `main` branch. This workflow ensures that only code passing all verification steps is deployed to production.
 
 ### 7.2 Custom Domains

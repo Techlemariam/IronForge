@@ -1,0 +1,33 @@
+
+[1m[46m RUN [49m[22m [36mv4.0.16 [39m[90mC:/Users/alexa/Workspaces/IronForge[39m
+
+[90mstdout[2m | src/services/data/__tests__/TrainingContextService.test.ts
+[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ÔÜÖ´©Å  write to custom object with { processEnv: myObject }
+
+[90mstdout[2m | src/services/data/__tests__/TrainingContextService.test.ts[2m > [22m[2mTrainingContextService[2m > [22m[2mgetTrainingContext[2m > [22m[2mshould return context with readiness and volume
+[22m[39mAutoSpec: Evaluating transition from ALPHA {
+  ctl: [33m0[39m,
+  atl: [33m0[39m,
+  tsb: [33m0[39m,
+  hrv: [33m80[39m,
+  sleepScore: [33m100[39m,
+  bodyBattery: [33m90[39m,
+  strengthDelta: [33m0[39m,
+  consecutiveStalls: [33m0[39m,
+  weeksInPhase: [33m0[39m,
+  nutritionMode: [32m'MAINTENANCE'[39m,
+  sleepDebt: [33m0[39m,
+  acwr: [33m1[39m,
+  junkMilePercent: [33m0[39m,
+  neuralLoad: [33m0[39m,
+  impactLoad: [33m0[39m,
+  interferenceEvents: [33m0[39m
+}
+
+ [32mÔ£ô[39m src/services/data/__tests__/TrainingContextService.test.ts [2m([22m[2m9 tests[22m[2m | [22m[33m8 skipped[39m[2m)[22m[32m 7[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m1 passed[39m[22m[2m | [22m[33m8 skipped[39m[90m (9)[39m
+[2m   Start at [22m 10:11:55
+[2m   Duration [22m 731ms[2m (transform 272ms, setup 63ms, import 368ms, tests 7ms, environment 0ms)[22m
+

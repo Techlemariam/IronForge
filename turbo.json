@@ -21,9 +21,26 @@
                 "test/**/*.ts"
             ]
         },
-        "lint": {},
-        "check-types": {},
-        "security": {},
+        "lint": {
+            "inputs": [
+                "src/**/*.tsx",
+                "src/**/*.ts",
+                ".eslintrc.json"
+            ]
+        },
+        "check-types": {
+            "inputs": [
+                "src/**/*.tsx",
+                "src/**/*.ts",
+                "tsconfig.json"
+            ]
+        },
+        "security": {
+            "inputs": [
+                "package.json",
+                "pnpm-lock.yaml"
+            ]
+        },
         "dev": {
             "cache": false,
             "persistent": true

@@ -55,6 +55,18 @@ export const UserService = {
     }
   },
 
+  async getUser(userId: string) {
+    return prisma.user.findUnique({
+      where: { id: userId },
+      include: {
+        equipment: true,
+        skills: true,
+        achievements: true,
+        unlockedMonsters: true,
+      },
+    });
+  },
+
   async updateSettings(userId: string, settings: Partial<AppSettings>) {
     return prisma.user.update({
       where: { id: userId },

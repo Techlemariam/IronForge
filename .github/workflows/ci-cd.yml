@@ -41,6 +41,13 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Generate Prisma Client
         run: npx prisma generate
+      - name: Cache Turbo
+        uses: actions/cache@v3
+        with:
+          path: .turbo
+          key: turbo-${{ runner.os }}-${{ github.sha }}
+          restore-keys: |
+            turbo-${{ runner.os }}-
       - name: Turbo Verify
         run: npx turbo run lint check-types test build security --concurrency=100%
 

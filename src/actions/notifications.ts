@@ -1,89 +1,49 @@
 "use server";
 
-import webpush from "web-push";
-import prisma from "@/lib/prisma";
+import { NotificationService } from "@/services/notifications";
 import { createClient } from "@/utils/supabase/server";
 
-// Initialize VAPID
-const publicVapidKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
-const privateVapidKey = process.env.VAPID_PRIVATE_KEY;
-
-if (publicVapidKey && privateVapidKey) {
-  webpush.setVapidDetails(
-    "mailto:admin@ironforge.gg",
-    publicVapidKey,
-    privateVapidKey,
-  );
-} else {
-  console.warn("⚠️ VAPID Keys missing. Push notifications disabled.");
-}
-
-export async function subscribeUserAction(subscription: any) {
+export async function getUnreadNotificationsAction() {
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const { data: { user } } = await supabase.auth.getUser();
 
-  if (!user) return { success: false, error: "Unauthorized" };
+  if (!user) return { success: false, notifications: [] };
 
   try {
-    await prisma.pushSubscription.create({
-      data: {
-        userId: user.id,
-        endpoint: subscription.endpoint,
-        keys: subscription.keys, // JSON
-      },
-    });
-    return { success: true };
+    const notifications = await NotificationService.getUnread(user.id);
+    return { success: true, notifications };
   } catch (error) {
-    console.error("Failed to save subscription:", error);
-    return { success: false, error: "Database error" };
+    console.error("Failed to fetch notifications:", error);
+    return { success: false, notifications: [] };
   }
 }
 
-export async function sendNotificationAction(
-  userId: string,
-  title: string,
-  body: string,
-) {
-  // 1. Get subscriptions
-  const subscriptions = await prisma.pushSubscription.findMany({
-    where: { userId },
-  });
+export async function markNotificationReadAction(notificationId: string) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
 
-  if (subscriptions.length === 0)
-    return { success: false, error: "No subscriptions found" };
+  if (!user) return { success: false };
 
-  if (!publicVapidKey || !privateVapidKey) {
-    console.log(`[MOCK PUSH] To ${userId}: ${title} - ${body}`);
-    return { success: true, mock: true };
+  try {
+    await NotificationService.markAsRead(notificationId);
+    return { success: true };
+  } catch (error) {
+    console.error("Failed to mark notification as read:", error);
+    return { success: false };
   }
+}
 
-  const payload = JSON.stringify({
-    title,
-    body,
-    icon: "/icons/icon-192x192.png",
-  });
+export async function markAllNotificationsReadAction() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
 
-  let successCount = 0;
-  for (const sub of subscriptions) {
-    try {
-      await webpush.sendNotification(
-        {
-          endpoint: sub.endpoint,
-          keys: sub.keys as any,
-        },
-        payload,
-      );
-      successCount++;
-    } catch (error: any) {
-      console.error("Push failed:", error);
-      if (error.statusCode === 410) {
-        // Expired, delete
-        await prisma.pushSubscription.delete({ where: { id: sub.id } });
-      }
-    }
+  if (!user) return { success: false };
+
+  try {
+    await NotificationService.markAllAsRead(user.id);
+    return { success: true };
+  } catch (error) {
+    console.error("Failed to mark all notifications as read:", error);
+    return { success: false };
   }
-
-  return { success: true, count: successCount };
 }

@@ -124,7 +124,12 @@ describe("TrainingContextService", () => {
 
             // Mock Long Run
             (getActivitiesAction as any).mockResolvedValue([
-                { moving_time: 4000, icu_intensity: 300 } // > 250 TSS for HIGH stress
+                {
+                    moving_time: 4000,
+                    icu_intensity: 300,
+                    start_date_local: new Date().toISOString(),
+                    type: "Run"
+                }
             ]);
 
             const context = await TrainingContextService.getTrainingContext(userId);

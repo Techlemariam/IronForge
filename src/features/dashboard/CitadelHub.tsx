@@ -150,6 +150,15 @@ export const CitadelHub: React.FC<CitadelHubProps> = ({ dispatch }) => (
         Titan&apos;s Gauntlet
       </NavButton>
       <NavButton
+        variant="nature"
+        icon={<Footprints className="w-4 h-4" />}
+        onClick={() =>
+          dispatch({ type: "SET_CARDIO_MODE", payload: "chase" })
+        }
+      >
+        🧟 Zombie Chase
+      </NavButton>
+      <NavButton
         variant="magma"
         icon={<Scroll className="w-4 h-4" />}
         onClick={() => dispatch({ type: "SET_VIEW", payload: "strava_upload" })}

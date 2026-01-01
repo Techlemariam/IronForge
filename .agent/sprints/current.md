@@ -19,8 +19,8 @@
     - Initial requirements gathering for OpenAI integration.
 
 ### Priority: Low (Polish)
-- [ ] **Three.js Type Definitions** <!-- agent: /cleanup | estimate: 1h | source: debt:43 -->
-    - Fix missing types in `global.d.ts` (deferred item).
+- [x] **Three.js Type Definitions** <!-- agent: /cleanup | estimate: 1h | source: debt:43 -->
+    - Fix missing types in `global.d.ts` (Types already exist).
 
 ---
 

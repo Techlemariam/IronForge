@@ -5,15 +5,22 @@
  */
 
 import React from "react";
-import { getTerritoryAppData } from "@/actions/territory";
+import { getTerritoryAppData, getTerritoryLeaderboard, getGuildLeaderboard } from "@/actions/territory";
 import { TerritoryMap } from "@/features/territory/components/TerritoryMap";
 import { TerritoryStats } from "@/features/territory/components/TerritoryStats";
+import { TerritoryLeaderboard } from "@/features/territory/components/TerritoryLeaderboard";
 import { Shield, Map as MapIcon, Trophy } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default async function TerritoryPage() {
     // Fetch data server-side
-    const { stats, tiles } = await getTerritoryAppData();
+    const [appData, leaderboards, guildLeaderboards] = await Promise.all([
+        getTerritoryAppData(),
+        getTerritoryLeaderboard(),
+        getGuildLeaderboard()
+    ]);
+
+    const { stats, tiles } = appData;
 
     return (
         <div className="container mx-auto py-8 space-y-8 animate-in fade-in duration-700">
@@ -57,14 +64,10 @@ export default async function TerritoryPage() {
                 </TabsContent>
 
                 <TabsContent value="leaderboard">
-                    <div className="bg-black/40 rounded-xl p-8 border border-emerald-500/20 text-center">
-                        <Trophy className="w-12 h-12 text-amber-500 mx-auto mb-4" />
-                        <h3 className="text-xl font-bold text-white mb-2">Lead the Conquest</h3>
-                        <p className="text-gray-400 mb-6">Leaderboards are updated every Sunday after tile settlement.</p>
-                        <div className="max-w-md mx-auto aspect-video flex items-center justify-center border border-dashed border-gray-700 rounded-lg">
-                            <span className="text-gray-600 italic">Leaderboard visualization coming soon...</span>
-                        </div>
-                    </div>
+                    <TerritoryLeaderboard
+                        users={leaderboards}
+                        guilds={guildLeaderboards}
+                    />
                 </TabsContent>
             </Tabs>
         </div>

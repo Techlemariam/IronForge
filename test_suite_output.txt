@@ -1,0 +1,457 @@
+
+> ironforge-rpg@1.0.0 agent:test
+> turbo run test
+
+ÔÇó Running test
+ÔÇó Remote caching disabled
+test: cache miss, executing 564a14b62be4112b
+test: 
+test: > ironforge-rpg@1.0.0 test C:\Users\alexa\Workspaces\IronForge
+test: > vitest run
+test: 
+test: 
+test: [1m[46m RUN [49m[22m [36mv4.0.16 [39m[90mC:/Users/alexa/Workspaces/IronForge[39m
+test: 
+test: [90mstdout[2m | src/services/data/__tests__/TrainingContextService.test.ts
+test: [22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒöä add secrets lifecycle management: https://dotenvx.com/ops
+test: 
+test: [90mstdout[2m | src/services/__tests__/oracle.test.ts
+test: [22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ÔÜÖ´©Å  enable debug logging with { debug: true }
+test: 
+test: [90mstdout[2m | src/actions/__tests__/guild-raids.test.ts
+test: [22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒöÉ encrypt with Dotenvx: https://dotenvx.com
+test: 
+test: [90mstdout[2m | src/actions/__tests__/titan.test.ts
+test: [22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒöÉ prevent building .env in docker: https://dotenvx.com/prebuild
+test: 
+test: [90mstdout[2m | src/actions/__tests__/challenges.test.ts
+test: [22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: Ô£à audit secrets and track compliance: https://dotenvx.com/ops
+test: 
+test: [90mstdout[2m | src/app/api/sync/__tests__/sync.test.ts
+test: [22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ÔÜÖ´©Å  load multiple .env files with { path: ['.env.local', '.env'] }
+test: 
+test: [90mstdout[2m | src/app/api/chat/__tests__/route.test.ts
+test: [22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒöÉ encrypt with Dotenvx: https://dotenvx.com
+test: 
+test: [90mstdout[2m | src/actions/__tests__/strava.test.ts
+test: [22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒøá´©Å  run anywhere with `dotenvx run -- yourcommand`
+test: 
+test: [90mstderr[2m | src/actions/__tests__/guild-raids.test.ts[2m > [22m[2mGuild Raids Server Actions[2m > [22m[2mjoinGuildAction[2m > [22m[2mshould handle join failure
+test: [22m[39mError: DB Error
+test:     at C:/Users/alexa/Workspaces/IronForge/src/actions/__tests__/guild-raids.test.ts:113:53
+test:     at [90mfile:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.16/node_modules/[4m@vitest/runner[24m/dist/index.js:145:11
+test:     at [90mfile:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.16/node_modules/[4m@vitest/runner[24m/dist/index.js:915:26
+test:     at [90mfile:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.16/node_modules/[4m@vitest/runner[24m/dist/index.js:1243:20
+test:     at new Promise (<anonymous>)
+test:     at runWithTimeout [90m(file:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.16/node_modules/[4m@vitest/runner[24m/dist/index.js:1209:10[90m)[39m
+test:     at [90mfile:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.16/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:37
+test:     at Traces.$ [90m(file:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/vitest@4.0.16_@edge-runtime+vm@3.2.0_@opentelemetry+api@1.9.0_@types+node@16.18.11_jiti@1.21._zrck6fktfeaqfggjwbr3xpaxgu/node_modules/[4mvitest[24m/dist/chunks/traces.U4xDYhzZ.js:115:27[90m)[39m
+test:     at trace [90m(file:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/vitest@4.0.16_@edge-runtime+vm@3.2.0_@opentelemetry+api@1.9.0_@types+node@16.18.11_jiti@1.21._zrck6fktfeaqfggjwbr3xpaxgu/node_modules/[4mvitest[24m/dist/chunks/test.B8ej_ZHS.js:239:21[90m)[39m
+test:     at runTest [90m(file:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.16/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:12[90m)[39m
+test: 
+test:  [32mÔ£ô[39m src/app/api/chat/__tests__/route.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 63[2mms[22m[39m
+test:  [32mÔ£ô[39m src/actions/__tests__/challenges.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 27[2mms[22m[39m
+test:  [32mÔ£ô[39m src/actions/__tests__/guild-raids.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 188[2mms[22m[39m
+test: [90mstderr[2m | src/app/api/sync/__tests__/sync.test.ts[2m > [22m[2mSync API Route (Logs)[2m > [22m[2mshould handle server error
+test: [22m[39mLog API Error: Error: DB Error
+test:     at C:/Users/alexa/Workspaces/IronForge/src/app/api/sync/__tests__/sync.test.ts:86:7
+test:     at [90mfile:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.16/node_modules/[4m@vitest/runner[24m/dist/index.js:145:11
+test:     at [90mfile:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.16/node_modules/[4m@vitest/runner[24m/dist/index.js:915:26
+test:     at [90mfile:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.16/node_modules/[4m@vitest/runner[24m/dist/index.js:1243:20
+test:     at new Promise (<anonymous>)
+test:     at runWithTimeout [90m(file:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.16/node_modules/[4m@vitest/runner[24m/dist/index.js:1209:10[90m)[39m
+test:     at [90mfile:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.16/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:37
+test:     at Traces.$ [90m(file:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/vitest@4.0.16_@edge-runtime+vm@3.2.0_@opentelemetry+api@1.9.0_@types+node@16.18.11_jiti@1.21._zrck6fktfeaqfggjwbr3xpaxgu/node_modules/[4mvitest[24m/dist/chunks/traces.U4xDYhzZ.js:115:27[90m)[39m
+test:     at trace [90m(file:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/vitest@4.0.16_@edge-runtime+vm@3.2.0_@opentelemetry+api@1.9.0_@types+node@16.18.11_jiti@1.21._zrck6fktfeaqfggjwbr3xpaxgu/node_modules/[4mvitest[24m/dist/chunks/test.B8ej_ZHS.js:239:21[90m)[39m
+test:     at runTest [90m(file:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.16/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:12[90m)[39m
+test: 
+test:  [32mÔ£ô[39m src/app/api/sync/__tests__/sync.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 38[2mms[22m[39m
+test:  [31mÔØ»[39m src/services/__tests__/oracle.test.ts [2m([22m[2m3 tests[22m[2m | [22m[31m3 failed[39m[2m)[22m[32m 20[2mms[22m[39m
+test: [31m     [31m├ù[31m should return Decree of Preservation if injured[39m[32m 14[2mms[22m[39m
+test: [31m     [31m├ù[31m should return Decree of Rest if Body Battery is low[39m[32m 2[2mms[22m[39m
+test: [31m     [31m├ù[31m should return Decree of Power if conditions are perfect[39m[32m 1[2mms[22m[39m
+test:  [31mÔØ»[39m src/services/data/__tests__/TrainingContextService.test.ts [2m([22m[2m9 tests[22m[2m | [22m[31m3 failed[39m[2m)[22m[32m 29[2mms[22m[39m
+test:        [32mÔ£ô[39m should aggregate volume correctly by muscle group[32m 7[2mms[22m[39m
+test:        [32mÔ£ô[39m should handle mapped muscle groups if explicit group is missing[32m 1[2mms[22m[39m
+test: [31m       [31m├ù[31m should return context with readiness and volume[39m[32m 10[2mms[22m[39m
+test: [31m       [31m├ù[31m should trigger warnings for low recovery[39m[32m 4[2mms[22m[39m
+test: [31m       [31m├ù[31m should detect high cardio fatigue[39m[32m 2[2mms[22m[39m
+test:        [32mÔ£ô[39m should return HIGH for Heavy Deadlifts[32m 1[2mms[22m[39m
+test:        [32mÔ£ô[39m should return LOW for Light Curls[32m 0[2mms[22m[39m
+test:        [32mÔ£ô[39m should return MEDIUM for Moderate Bench[32m 0[2mms[22m[39m
+test:        [32mÔ£ô[39m should return HIGH for RPE 10 Squats[32m 0[2mms[22m[39m
+test:  [32mÔ£ô[39m src/actions/__tests__/titan.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 95[2mms[22m[39m
+test: [90mstderr[2m | src/actions/__tests__/strava.test.ts[2m > [22m[2mStrava Server Actions[2m > [22m[2mexchangeStravaTokenAction[2m > [22m[2mshould handle axios error
+test: [22m[39mStrava Token Exchange Error: Strava Down
+test: 
+test: [90mstderr[2m | src/actions/__tests__/strava.test.ts[2m > [22m[2mStrava Server Actions[2m > [22m[2msyncStravaActivitiesAction[2m > [22m[2mshould sync new activities
+test: [22m[39mFailed to process cardio for duels Error: [vitest] No "prisma" export is defined on the "@/lib/prisma" mock. Did you forget to return it from "vi.mock"?
+test: [90mstdout[2m | src/actions/__tests__/strava.test.ts[2m > [22m[2mStrava Server Actions[2m > [22m[2msyncStravaActivitiesAction[2m > [22m[2mshould sync new activities
+test: If you need to partially mock a module, you can use "importOriginal" helper inside:
+test: [22m[39mProcessing cardio for user test-user-id: Run 5km
+test: 
+test:     at VitestMocker.createError [90m(file:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/vitest@4.0.16_@edge-runtime+vm@3.2.0_@opentelemetry+api@1.9.0_@types+node@16.18.11_jiti@1.21._zrck6fktfeaqfggjwbr3xpaxgu/node_modules/[4mvitest[24m/dist/chunks/startModuleRunner.DpqpB8k3.js:311:17[90m)[39m
+test:     at Object.get [90m(file:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/vitest@4.0.16_@edge-runtime+vm@3.2.0_@opentelemetry+api@1.9.0_@types+node@16.18.11_jiti@1.21._zrck6fktfeaqfggjwbr3xpaxgu/node_modules/[4mvitest[24m/dist/chunks/startModuleRunner.DpqpB8k3.js:384:16[90m)[39m
+test:     at processUserCardioActivity (C:/Users/alexa/Workspaces/IronForge/src/actions/duel.ts:355:31)
+test: 
+test:     at Module.syncStravaActivitiesAction (C:/Users/alexa/Workspaces/IronForge/src/actions/strava.ts:248:15)
+test: [90m    at processTicksAndRejections (node:internal/process/task_queues:103:5)[39m
+test:     at C:/Users/alexa/Workspaces/IronForge/src/actions/__tests__/strava.test.ts:148:22
+test:     at [90mfile:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.16/node_modules/[4m@vitest/runner[24m/dist/index.js:915:20 {
+test:   codeFrame: [32m'vi.mock(import("@/lib/prisma"), async (importOriginal) => {\n'[39m +
+test:     [32m'  const actual = await importOriginal()\n'[39m +
+test:     [32m'  return {\n'[39m +
+test:     [32m'    ...actual,\n'[39m +
+test:     [32m'    // your mocked methods\n'[39m +
+test:     [32m'  }\n'[39m +
+test:     [32m'})'[39m
+test: }
+test: 
+test:  [32mÔ£ô[39m src/actions/__tests__/strava.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 43[2mms[22m[39m
+test: [90mstdout[2m | src/lib/territory/__tests__/tileUtils.test.ts
+test: [22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ÔÜÖ´©Å  override existing env vars with { override: true }
+test: 
+test: [90mstdout[2m | src/actions/__tests__/guild.test.ts
+test: [22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒöä add secrets lifecycle management: https://dotenvx.com/ops
+test: 
+test: [90mstdout[2m | src/actions/__tests__/progression.test.ts
+test: [22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒæÑ sync secrets across teammates & machines: https://dotenvx.com/ops
+test: 
+test: [90mstdout[2m | src/actions/__tests__/duel.test.ts
+test: [22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: Ô£à audit secrets and track compliance: https://dotenvx.com/ops
+test: 
+test: [90mstdout[2m | src/actions/__tests__/social.test.ts
+test: [22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒôí add observability to secrets: https://dotenvx.com/ops
+test: 
+test: [90mstdout[2m | src/actions/__tests__/logger.test.ts
+test: [22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒöÉ encrypt with Dotenvx: https://dotenvx.com
+test: 
+test:  [32mÔ£ô[39m src/actions/__tests__/duel.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 21[2mms[22m[39m
+test: [90mstdout[2m | src/actions/__tests__/training.test.ts
+test: [22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒöä add secrets lifecycle management: https://dotenvx.com/ops
+test: 
+test: [90mstdout[2m | src/actions/__tests__/combat.test.ts
+test: [22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒôí add observability to secrets: https://dotenvx.com/ops
+test: 
+test:  [32mÔ£ô[39m src/actions/__tests__/logger.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 24[2mms[22m[39m
+test:  [32mÔ£ô[39m src/lib/territory/__tests__/tileUtils.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 39[2mms[22m[39m
+test:  [32mÔ£ô[39m src/actions/__tests__/social.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 26[2mms[22m[39m
+test: [90mstderr[2m | src/actions/__tests__/progression.test.ts[2m > [22m[2mProgression Actions[2m > [22m[2mgetProgressionAction[2m > [22m[2mshould return null when unauthorized
+test: [22m[39mProgression Action Error: Error: Unauthorized
+test:     at Module.getProgressionAction (C:/Users/alexa/Workspaces/IronForge/src/actions/progression.ts:13:22)
+test: [90m    at processTicksAndRejections (node:internal/process/task_queues:103:5)[39m
+test:     at C:/Users/alexa/Workspaces/IronForge/src/actions/__tests__/progression.test.ts:45:22
+test:     at [90mfile:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.16/node_modules/[4m@vitest/runner[24m/dist/index.js:915:20
+test: 
+test: [90mstderr[2m | src/actions/__tests__/progression.test.ts[2m > [22m[2mProgression Actions[2m > [22m[2mgetProgressionAction[2m > [22m[2mshould handle service errors
+test: [22m[39mProgression Action Error: Error: Service Error
+test:     at C:/Users/alexa/Workspaces/IronForge/src/actions/__tests__/progression.test.ts:53:9
+test:     at [90mfile:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.16/node_modules/[4m@vitest/runner[24m/dist/index.js:145:11
+test:     at [90mfile:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.16/node_modules/[4m@vitest/runner[24m/dist/index.js:915:26
+test:     at [90mfile:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.16/node_modules/[4m@vitest/runner[24m/dist/index.js:1243:20
+test:     at new Promise (<anonymous>)
+test:     at runWithTimeout [90m(file:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.16/node_modules/[4m@vitest/runner[24m/dist/index.js:1209:10[90m)[39m
+test:     at [90mfile:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.16/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:37
+test:     at Traces.$ [90m(file:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/vitest@4.0.16_@edge-runtime+vm@3.2.0_@opentelemetry+api@1.9.0_@types+node@16.18.11_jiti@1.21._zrck6fktfeaqfggjwbr3xpaxgu/node_modules/[4mvitest[24m/dist/chunks/traces.U4xDYhzZ.js:115:27[90m)[39m
+test:     at trace [90m(file:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/vitest@4.0.16_@edge-runtime+vm@3.2.0_@opentelemetry+api@1.9.0_@types+node@16.18.11_jiti@1.21._zrck6fktfeaqfggjwbr3xpaxgu/node_modules/[4mvitest[24m/dist/chunks/test.B8ej_ZHS.js:239:21[90m)[39m
+test:     at runTest [90m(file:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.16/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:12[90m)[39m
+test: 
+test: [90mstderr[2m | src/actions/__tests__/progression.test.ts[2m > [22m[2mProgression Actions[2m > [22m[2mawardGoldAction[2m > [22m[2mshould return null for invalid input (Zod validation)
+test: [22m[39mAward Gold Action Error: Error: Validation Failed
+test:     at C:/Users/alexa/Workspaces/IronForge/src/actions/__tests__/progression.test.ts:89:9
+test:     at [90mfile:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.16/node_modules/[4m@vitest/runner[24m/dist/index.js:145:11
+test:     at [90mfile:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.16/node_modules/[4m@vitest/runner[24m/dist/index.js:915:26
+test:     at [90mfile:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.16/node_modules/[4m@vitest/runner[24m/dist/index.js:1243:20
+test:     at new Promise (<anonymous>)
+test:     at runWithTimeout [90m(file:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.16/node_modules/[4m@vitest/runner[24m/dist/index.js:1209:10[90m)[39m
+test:     at [90mfile:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.16/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:37
+test:     at Traces.$ [90m(file:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/vitest@4.0.16_@edge-runtime+vm@3.2.0_@opentelemetry+api@1.9.0_@types+node@16.18.11_jiti@1.21._zrck6fktfeaqfggjwbr3xpaxgu/node_modules/[4mvitest[24m/dist/chunks/traces.U4xDYhzZ.js:115:27[90m)[39m
+test:     at trace [90m(file:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/vitest@4.0.16_@edge-runtime+vm@3.2.0_@opentelemetry+api@1.9.0_@types+node@16.18.11_jiti@1.21._zrck6fktfeaqfggjwbr3xpaxgu/node_modules/[4mvitest[24m/dist/chunks/test.B8ej_ZHS.js:239:21[90m)[39m
+test:     at runTest [90m(file:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.16/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:12[90m)[39m
+test: 
+test: [90mstderr[2m | src/actions/__tests__/progression.test.ts[2m > [22m[2mProgression Actions[2m > [22m[2mawardGoldAction[2m > [22m[2mshould return null when unauthorized
+test: [22m[39mAward Gold Action Error: Error: Unauthorized
+test:     at Module.awardGoldAction (C:/Users/alexa/Workspaces/IronForge/src/actions/progression.ts:28:22)
+test: [90m    at processTicksAndRejections (node:internal/process/task_queues:103:5)[39m
+test:     at C:/Users/alexa/Workspaces/IronForge/src/actions/__tests__/progression.test.ts:97:22
+test:     at [90mfile:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.16/node_modules/[4m@vitest/runner[24m/dist/index.js:915:20
+test: 
+test:  [32mÔ£ô[39m src/actions/__tests__/progression.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 26[2mms[22m[39m
+test: [90mstderr[2m | src/actions/__tests__/training.test.ts[2m > [22m[2mTraining Actions[2m > [22m[2mlogTitanSet[2m > [22m[2mshould log set and award rewards
+test: [22m[39mChallenge Processing Error: TypeError: Cannot read properties of undefined (reading 'findMany')
+test:     at processWorkoutLog (C:/Users/alexa/Workspaces/IronForge/src/services/challengeService.ts:11:43)
+test:     at Module.logTitanSet (C:/Users/alexa/Workspaces/IronForge/src/actions/training.ts:94:13)
+test: [90m    at processTicksAndRejections (node:internal/process/task_queues:103:5)[39m
+test:     at C:/Users/alexa/Workspaces/IronForge/src/actions/__tests__/training.test.ts:56:22
+test:     at [90mfile:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.16/node_modules/[4m@vitest/runner[24m/dist/index.js:915:20
+test: 
+test:  [32mÔ£ô[39m src/actions/__tests__/training.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 23[2mms[22m[39m
+test:  [32mÔ£ô[39m src/actions/__tests__/combat.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 21[2mms[22m[39m
+test:  [32mÔ£ô[39m src/actions/__tests__/guild.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 78[2mms[22m[39m
+test: [90mstdout[2m | src/actions/__tests__/integrations.test.ts
+test: [22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒùé´©Å backup and recover secrets: https://dotenvx.com/ops
+test: 
+test: [90mstdout[2m | src/components/__tests__/SkillTree.test.tsx
+test: [22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: Ô£à audit secrets and track compliance: https://dotenvx.com/ops
+test: 
+test: [90mstdout[2m | src/features/training/__tests__/TvMode.test.tsx
+test: [22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒøá´©Å  run anywhere with `dotenvx run -- yourcommand`
+test: 
+test:  [32mÔ£ô[39m src/actions/__tests__/integrations.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+test: [90mstdout[2m | src/features/dashboard/__tests__/DashboardClient.test.tsx
+test: [22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ÔÜÖ´©Å  write to custom object with { processEnv: myObject }
+test: 
+test: [90mstdout[2m | src/actions/__tests__/account.test.ts
+test: [22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ÔÜÖ´©Å  suppress all logs with { quiet: true }
+test: 
+test: [90mstdout[2m | src/actions/__tests__/intervals.test.ts
+test: [22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: Ô£à audit secrets and track compliance: https://dotenvx.com/ops
+test: 
+test: [90mstdout[2m | src/actions/__tests__/validation.test.ts
+test: [22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒùé´©Å backup and recover secrets: https://dotenvx.com/ops
+test: 
+test: [90mstdout[2m | src/actions/__tests__/onboarding.test.ts
+test: [22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒöæ add access controls to secrets: https://dotenvx.com/ops
+test: 
+test: [90mstdout[2m | tests/unit/leaderboard.test.ts
+test: [22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ÔÜÖ´©Å  load multiple .env files with { path: ['.env.local', '.env'] }
+test: 
+test: [90mstderr[2m | src/actions/__tests__/account.test.ts[2m > [22m[2maccount actions[2m > [22m[2mdeleteAccountAction[2m > [22m[2mshould handle errors gracefully
+test: [22m[39mFailed to delete account: Error: DB Error
+test:     at C:/Users/alexa/Workspaces/IronForge/src/actions/__tests__/account.test.ts:67:53
+test:     at [90mfile:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.16/node_modules/[4m@vitest/runner[24m/dist/index.js:145:11
+test:     at [90mfile:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.16/node_modules/[4m@vitest/runner[24m/dist/index.js:915:26
+test:     at [90mfile:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.16/node_modules/[4m@vitest/runner[24m/dist/index.js:1243:20
+test:     at new Promise (<anonymous>)
+test:     at runWithTimeout [90m(file:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.16/node_modules/[4m@vitest/runner[24m/dist/index.js:1209:10[90m)[39m
+test:     at [90mfile:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.16/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:37
+test:     at Traces.$ [90m(file:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/vitest@4.0.16_@edge-runtime+vm@3.2.0_@opentelemetry+api@1.9.0_@types+node@16.18.11_jiti@1.21._zrck6fktfeaqfggjwbr3xpaxgu/node_modules/[4mvitest[24m/dist/chunks/traces.U4xDYhzZ.js:115:27[90m)[39m
+test:     at trace [90m(file:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/vitest@4.0.16_@edge-runtime+vm@3.2.0_@opentelemetry+api@1.9.0_@types+node@16.18.11_jiti@1.21._zrck6fktfeaqfggjwbr3xpaxgu/node_modules/[4mvitest[24m/dist/chunks/test.B8ej_ZHS.js:239:21[90m)[39m
+test:     at runTest [90m(file:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.16/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:12[90m)[39m
+test: 
+test:  [32mÔ£ô[39m src/actions/__tests__/account.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 26[2mms[22m[39m
+test: [90mstderr[2m | src/actions/__tests__/intervals.test.ts[2m > [22m[2mIntervals Actions[2m > [22m[2mgetWellnessAction[2m > [22m[2mshould return empty object on error
+test: [22m[39mServer Action Intervals Wellness Error: API Error
+test: 
+test: [90mstderr[2m | src/actions/__tests__/intervals.test.ts[2m > [22m[2mIntervals Actions[2m > [22m[2mgetWellnessAction[2m > [22m[2mshould return empty object if user not connected
+test: [22m[39mServer Action Intervals Wellness Error: Intervals.icu not connected
+test: 
+test: [90mstderr[2m | src/actions/__tests__/intervals.test.ts[2m > [22m[2mIntervals Actions[2m > [22m[2mgetAthleteSettingsAction[2m > [22m[2mshould return null on failure
+test: [22m[39mServer Action Intervals Settings Error: Fail
+test: 
+test:  [32mÔ£ô[39m tests/unit/leaderboard.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 21[2mms[22m[39m
+test: [90mstdout[2m | src/actions/__tests__/hevy_import.test.ts
+test: [22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒöÉ encrypt with Dotenvx: https://dotenvx.com
+test: 
+test:  [32mÔ£ô[39m src/actions/__tests__/intervals.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 17[2mms[22m[39m
+test: [90mstderr[2m | src/actions/__tests__/onboarding.test.ts[2m > [22m[2mOnboarding Server Actions[2m > [22m[2mcompleteOnboardingAction[2m > [22m[2mshould handle progression service errors gracefully
+test: [22m[39mFailed to complete onboarding: Error: DB Error
+test:     at C:/Users/alexa/Workspaces/IronForge/src/actions/__tests__/onboarding.test.ts:80:9
+test:     at [90mfile:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.16/node_modules/[4m@vitest/runner[24m/dist/index.js:145:11
+test:     at [90mfile:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.16/node_modules/[4m@vitest/runner[24m/dist/index.js:915:26
+test:     at [90mfile:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.16/node_modules/[4m@vitest/runner[24m/dist/index.js:1243:20
+test:     at new Promise (<anonymous>)
+test:     at runWithTimeout [90m(file:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.16/node_modules/[4m@vitest/runner[24m/dist/index.js:1209:10[90m)[39m
+test:     at [90mfile:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.16/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:37
+test:     at Traces.$ [90m(file:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/vitest@4.0.16_@edge-runtime+vm@3.2.0_@opentelemetry+api@1.9.0_@types+node@16.18.11_jiti@1.21._zrck6fktfeaqfggjwbr3xpaxgu/node_modules/[4mvitest[24m/dist/chunks/traces.U4xDYhzZ.js:115:27[90m)[39m
+test:     at trace [90m(file:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/vitest@4.0.16_@edge-runtime+vm@3.2.0_@opentelemetry+api@1.9.0_@types+node@16.18.11_jiti@1.21._zrck6fktfeaqfggjwbr3xpaxgu/node_modules/[4mvitest[24m/dist/chunks/test.B8ej_ZHS.js:239:21[90m)[39m
+test:     at runTest [90m(file:///C:/Users/alexa/Workspaces/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.16/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:12[90m)[39m
+test: 
+test:  [32mÔ£ô[39m src/actions/__tests__/onboarding.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 20[2mms[22m[39m
+test: [90mstdout[2m | src/actions/__tests__/gauntlet.test.ts
+test: [22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ÔÜÖ´©Å  override existing env vars with { override: true }
+test: 
+test:  [32mÔ£ô[39m src/actions/__tests__/gauntlet.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 17[2mms[22m[39m
+test: [90mstdout[2m | src/actions/__tests__/achievements.test.ts
+test: [22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ÔÜÖ´©Å  specify custom .env file path with { path: '/custom/path/.env' }
+test: 
+test: [90mstdout[2m | src/actions/__tests__/forge.test.ts
+test: [22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒôí add observability to secrets: https://dotenvx.com/ops
+test: 
+test: [90mstdout[2m | src/actions/__tests__/world.test.ts
+test: [22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: Ô£à audit secrets and track compliance: https://dotenvx.com/ops
+test: 
+test: [90mstdout[2m | src/services/__tests__/trainingMemoryManager.test.ts
+test: [22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒöÉ prevent committing .env to code: https://dotenvx.com/precommit
+test: 
+test: [90mstdout[2m | tests/unit/combatMechanics.test.ts
+test: [22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ÔÜÖ´©Å  write to custom object with { processEnv: myObject }
+test: 
+test: [90mstdout[2m | src/actions/__tests__/pvp.test.ts
+test: [22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ÔÜÖ´©Å  override existing env vars with { override: true }
+test: 
+test:  [32mÔ£ô[39m src/actions/__tests__/hevy_import.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+test:  [32mÔ£ô[39m src/actions/__tests__/achievements.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 17[2mms[22m[39m
+test:  [32mÔ£ô[39m src/actions/__tests__/validation.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 20[2mms[22m[39m
+test: [90mstdout[2m | src/actions/__tests__/forge.test.ts[2m > [22m[2mForge Server Actions[2m > [22m[2mshould successfully craft an item if resources are sufficient
+test: [22m[39m[Forge] Crafted Iron Sword for test@example.com
+test: 
+test:  [32mÔ£ô[39m src/actions/__tests__/forge.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+test:  [32mÔ£ô[39m tests/unit/combatMechanics.test.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+test:  [32mÔ£ô[39m src/actions/__tests__/world.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+test: [90mstdout[2m | src/actions/__tests__/pvp.test.ts[2m > [22m[2mPvP Server Actions[2m > [22m[2mcreateSegmentBattleAction[2m > [22m[2mshould create a segment battle challenge
+test: [22m[39mUser user-1 challenged opponent-456 on segment segment-123
+test: 
+test:  [32mÔ£ô[39m src/actions/__tests__/pvp.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+test:  [32mÔ£ô[39m src/services/__tests__/trainingMemoryManager.test.ts [2m([22m[2m15 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+test: [90mstdout[2m | tests/unit/buffs.test.ts
+test: [22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒöæ add access controls to secrets: https://dotenvx.com/ops
+test: 
+test: [90mstdout[2m | tests/unit/apre.test.ts
+test: [22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ÔÜÖ´©Å  suppress all logs with { quiet: true }
+test: 
+test: [90mstdout[2m | src/utils/__tests__/combatMechanics.test.ts
+test: [22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒöä add secrets lifecycle management: https://dotenvx.com/ops
+test: 
+test: [90mstdout[2m | src/services/__tests__/progression.test.ts
+test: [22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒöÉ prevent committing .env to code: https://dotenvx.com/precommit
+test: 
+test: [90mstdout[2m | tests/unit/zones.test.ts
+test: [22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ÔÜÖ´©Å  enable debug logging with { debug: true }
+test: 
+test:  [32mÔ£ô[39m src/utils/__tests__/combatMechanics.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+test:  [32mÔ£ô[39m tests/unit/apre.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+test: [90mstdout[2m | src/utils/__tests__/weaknessAuditor.test.ts
+test: [22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒøá´©Å  run anywhere with `dotenvx run -- yourcommand`
+test: 
+test:  [32mÔ£ô[39m tests/unit/buffs.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+test:  [32mÔ£ô[39m src/services/__tests__/progression.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+test: [90mstdout[2m | tests/unit/volume.test.ts
+test: [22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒôí add observability to secrets: https://dotenvx.com/ops
+test: 
+test:  [32mÔ£ô[39m tests/unit/zones.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+test: [90mstdout[2m | src/hooks/__tests__/useSkillEffects.test.ts
+test: [22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒöÉ prevent committing .env to code: https://dotenvx.com/precommit
+test: 
+test:  [32mÔ£ô[39m src/utils/__tests__/weaknessAuditor.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+test:  [32mÔ£ô[39m tests/unit/volume.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+test:  [32mÔ£ô[39m src/hooks/__tests__/useSkillEffects.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+test:  [32mÔ£ô[39m src/components/__tests__/SkillTree.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 128[2mms[22m[39m
+test: [90mstdout[2m | src/services/planner.test.ts
+test: [22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒùé´©Å backup and recover secrets: https://dotenvx.com/ops
+test: 
+test: [90mstdout[2m | tests/unit/wilks.test.ts
+test: [22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒöä add secrets lifecycle management: https://dotenvx.com/ops
+test: 
+test: [90mstdout[2m | src/services/game/__tests__/EffortCalculator.test.ts
+test: [22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒöä add secrets lifecycle management: https://dotenvx.com/ops
+test: 
+test:  [32mÔ£ô[39m tests/unit/wilks.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+test:  [32mÔ£ô[39m src/services/game/__tests__/EffortCalculator.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+test: [90mstdout[2m | src/actions/__tests__/hevy.test.ts
+test: [22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: Ô£à audit secrets and track compliance: https://dotenvx.com/ops
+test: 
+test: [90mstdout[2m | src/utils/__tests__/volumeCalculator.test.ts
+test: [22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒùé´©Å backup and recover secrets: https://dotenvx.com/ops
+test: 
+test: [90mstdout[2m | src/services/planner.test.ts[2m > [22m[2mPlannerService[2m > [22m[2mshould generate a plan for a valid user
+test: [22m[39mPlanner: Generating plan for user user1
+test: 
+test: [90mstdout[2m | src/services/planner.test.ts[2m > [22m[2mPlannerService[2m > [22m[2mshould generate a plan for a valid user
+test: [22m[39mPlanner: Plan generated and saved for user user1
+test: 
+test:  [32mÔ£ô[39m src/services/planner.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 9[2mms[22m[39m
+test:  [32mÔ£ô[39m src/utils/__tests__/volumeCalculator.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+test:  [2m[90mÔåô[39m[22m src/actions/__tests__/hevy.test.ts [2m([22m[2m6 tests[22m[2m | [22m[33m6 skipped[39m[2m)[22m
+test:  [32mÔ£ô[39m src/features/training/__tests__/TvMode.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[32m 297[2mms[22m[39m
+test:  [32mÔ£ô[39m src/features/dashboard/__tests__/DashboardClient.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 51[2mms[22m[39m
+test: 
+test: [31mÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[39m[1m[41m Failed Tests 6 [49m[22m[31mÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[39m
+test: 
+test: [41m[1m FAIL [22m[49m src/services/__tests__/oracle.test.ts[2m > [22mOracleService[2m > [22mshould return Decree of Preservation if injured
+test: [31m[1mTypeError[22m: Cannot read properties of undefined (reading 'findMany')[39m
+test: [36m [2mÔØ»[22m EquipmentService.getUserCapabilities src/services/game/EquipmentService.ts:[2m27:58[22m[39m
+test:     [90m 25| [39m     */[39m
+test:     [90m 26| [39m    static async getUserCapabilities(userId: string): Promise<CodeEqTyÔÇª
+test:     [90m 27| [39m        [35mconst[39m equippedItems [33m=[39m [35mawait[39m prisma[33m.[39muserEquipment[33m.[39m[34mfindMany[39m({
+test:     [90m   | [39m                                                         [31m^[39m
+test:     [90m 28| [39m            where[33m:[39m {
+test:     [90m 29| [39m                userId[33m,[39m
+test: [90m [2mÔØ»[22m OracleService.generateDailyDecree src/services/oracle.ts:[2m107:49[22m[39m
+test: [90m [2mÔØ»[22m src/services/__tests__/oracle.test.ts:[2m46:20[22m[39m
+test: 
+test: [31m[2mÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[1/6]ÔÄ»[22m[39m
+test: 
+test: [41m[1m FAIL [22m[49m src/services/__tests__/oracle.test.ts[2m > [22mOracleService[2m > [22mshould return Decree of Rest if Body Battery is low
+test: [31m[1mTypeError[22m: Cannot read properties of undefined (reading 'findMany')[39m
+test: [36m [2mÔØ»[22m EquipmentService.getUserCapabilities src/services/game/EquipmentService.ts:[2m27:58[22m[39m
+test:     [90m 25| [39m     */[39m
+test:     [90m 26| [39m    static async getUserCapabilities(userId: string): Promise<CodeEqTyÔÇª
+test:     [90m 27| [39m        [35mconst[39m equippedItems [33m=[39m [35mawait[39m prisma[33m.[39muserEquipment[33m.[39m[34mfindMany[39m({
+test:     [90m   | [39m                                                         [31m^[39m
+test:     [90m 28| [39m            where[33m:[39m {
+test:     [90m 29| [39m                userId[33m,[39m
+test: [90m [2mÔØ»[22m OracleService.generateDailyDecree src/services/oracle.ts:[2m107:49[22m[39m
+test: [90m [2mÔØ»[22m src/services/__tests__/oracle.test.ts:[2m59:20[22m[39m
+test: 
+test: [31m[2mÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[2/6]ÔÄ»[22m[39m
+test: 
+test: [41m[1m FAIL [22m[49m src/services/__tests__/oracle.test.ts[2m > [22mOracleService[2m > [22mshould return Decree of Power if conditions are perfect
+test: [31m[1mTypeError[22m: Cannot read properties of undefined (reading 'findMany')[39m
+test: [36m [2mÔØ»[22m EquipmentService.getUserCapabilities src/services/game/EquipmentService.ts:[2m27:58[22m[39m
+test:     [90m 25| [39m     */[39m
+test:     [90m 26| [39m    static async getUserCapabilities(userId: string): Promise<CodeEqTyÔÇª
+test:     [90m 27| [39m        [35mconst[39m equippedItems [33m=[39m [35mawait[39m prisma[33m.[39muserEquipment[33m.[39m[34mfindMany[39m({
+test:     [90m   | [39m                                                         [31m^[39m
+test:     [90m 28| [39m            where[33m:[39m {
+test:     [90m 29| [39m                userId[33m,[39m
+test: [90m [2mÔØ»[22m OracleService.generateDailyDecree src/services/oracle.ts:[2m107:49[22m[39m
+test: [90m [2mÔØ»[22m src/services/__tests__/oracle.test.ts:[2m80:20[22m[39m
+test: 
+test: [31m[2mÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[3/6]ÔÄ»[22m[39m
+test: 
+test: [41m[1m FAIL [22m[49m src/services/data/__tests__/TrainingContextService.test.ts[2m > [22mTrainingContextService[2m > [22mgetTrainingContext[2m > [22mshould return context with readiness and volume
+test: [31m[1mTypeError[22m: Cannot read properties of undefined (reading 'findUnique')[39m
+test: [36m [2mÔØ»[22m TrainingContextService.getTrainingContext src/services/data/TrainingContextService.ts:[2m126:40[22m[39m
+test:     [90m124| [39m
+test:     [90m125| [39m        [90m// 0. Fetch Extended User Context[39m
+test:     [90m126| [39m        [35mconst[39m user [33m=[39m [35mawait[39m prisma[33m.[39muser[33m.[39m[34mfindUnique[39m({
+test:     [90m   | [39m                                       [31m^[39m
+test:     [90m127| [39m            where[33m:[39m { id[33m:[39m userId }[33m,[39m
+test:     [90m128| [39m            select[33m:[39m {
+test: [90m [2mÔØ»[22m src/services/data/__tests__/TrainingContextService.test.ts:[2m79:58[22m[39m
+test: 
+test: [31m[2mÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[4/6]ÔÄ»[22m[39m
+test: 
+test: [41m[1m FAIL [22m[49m src/services/data/__tests__/TrainingContextService.test.ts[2m > [22mTrainingContextService[2m > [22mgetTrainingContext[2m > [22mshould trigger warnings for low recovery
+test: [31m[1mTypeError[22m: Cannot read properties of undefined (reading 'findUnique')[39m
+test: [36m [2mÔØ»[22m TrainingContextService.getTrainingContext src/services/data/TrainingContextService.ts:[2m126:40[22m[39m
+test:     [90m124| [39m
+test:     [90m125| [39m        [90m// 0. Fetch Extended User Context[39m
+test:     [90m126| [39m        [35mconst[39m user [33m=[39m [35mawait[39m prisma[33m.[39muser[33m.[39m[34mfindUnique[39m({
+test:     [90m   | [39m                                       [31m^[39m
+test:     [90m127| [39m            where[33m:[39m { id[33m:[39m userId }[33m,[39m
+test:     [90m128| [39m            select[33m:[39m {
+test: [90m [2mÔØ»[22m src/services/data/__tests__/TrainingContextService.test.ts:[2m94:58[22m[39m
+test: 
+test: [31m[2mÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[5/6]ÔÄ»[22m[39m
+test: 
+test: [41m[1m FAIL [22m[49m src/services/data/__tests__/TrainingContextService.test.ts[2m > [22mTrainingContextService[2m > [22mgetTrainingContext[2m > [22mshould detect high cardio fatigue
+test: [31m[1mTypeError[22m: Cannot read properties of undefined (reading 'findUnique')[39m
+test: [36m [2mÔØ»[22m TrainingContextService.getTrainingContext src/services/data/TrainingContextService.ts:[2m126:40[22m[39m
+test:     [90m124| [39m
+test:     [90m125| [39m        [90m// 0. Fetch Extended User Context[39m
+test:     [90m126| [39m        [35mconst[39m user [33m=[39m [35mawait[39m prisma[33m.[39muser[33m.[39m[34mfindUnique[39m({
+test:     [90m   | [39m                                       [31m^[39m
+test:     [90m127| [39m            where[33m:[39m { id[33m:[39m userId }[33m,[39m
+test:     [90m128| [39m            select[33m:[39m {
+test: [90m [2mÔØ»[22m src/services/data/__tests__/TrainingContextService.test.ts:[2m112:58[22m[39m
+test: 
+test: [31m[2mÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[6/6]ÔÄ»[22m[39m
+test: 
+test: 
+test: [2m Test Files [22m [1m[31m2 failed[39m[22m[2m | [22m[1m[32m43 passed[39m[22m[2m | [22m[33m1 skipped[39m[90m (46)[39m
+test: [2m      Tests [22m [1m[31m6 failed[39m[22m[2m | [22m[1m[32m259 passed[39m[22m[2m | [22m[33m6 skipped[39m[90m (271)[39m
+test: [2m   Start at [22m 10:08:15
+test: [2m   Duration [22m 10.28s[2m (transform 15.30s, setup 2.08s, import 32.75s, tests 1.60s, environment 8.77s)[22m
+test: 
+test: ÔÇëELIFECYCLEÔÇë Test failed. See above for more details.
+test: ERROR: command finished with error: command (C:\Users\alexa\Workspaces\IronForge\) D:\Scoop\apps\nodejs-lts\current\bin\pnpm.cmd run test exited (1)
+test: command (C:\Users\alexa\Workspaces\IronForge\) D:\Scoop\apps\nodejs-lts\current\bin\pnpm.cmd run test exited (1)
+
+ Tasks:    0 successful, 1 total
+Cached:    0 cached, 1 total
+  Time:    13.848s 
+Failed:    //#test
+
+ ERROR  run failed: command  exited (1)

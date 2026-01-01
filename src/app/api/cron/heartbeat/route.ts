@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { updateTitanAction } from "@/actions/titan";
-import { sendNotificationAction } from "@/actions/notifications";
+import { NotificationService } from "@/services/notifications";
 import { prisma } from "@/lib/prisma";
 import * as Sentry from "@sentry/nextjs";
 
@@ -48,11 +48,12 @@ export async function GET(request: Request) {
         const now = new Date();
         const hoursSinceActive =
           (now.getTime() - titan.lastActive.getTime()) / (1000 * 60 * 60);
-        await sendNotificationAction(
-          titan.userId,
-          "Titan Alert: Pulse Weakening",
-          `${titan.name} feels the cold void. It has been ${hoursSinceActive.toFixed(1)} hours since your last link. Return to the Forge.`,
-        );
+
+        await NotificationService.create({
+          userId: titan.userId,
+          type: "SYSTEM",
+          message: `Titan Alert: Pulse Weakening - ${titan.name} feels the cold void. It has been ${hoursSinceActive.toFixed(1)} hours since your last link. Return to the Forge.`,
+        });
       }
 
       // 3. Regeneration Logic: Recover Energy for resting Titans

@@ -158,10 +158,10 @@ export async function getDuelStatusAction() {
       },
       include: {
         challenger: {
-          select: { id: true, heroName: true, level: true },
+          select: { id: true, heroName: true, level: true, faction: true },
         },
         defender: {
-          select: { id: true, heroName: true, level: true },
+          select: { id: true, heroName: true, level: true, faction: true },
         },
       },
     });
@@ -174,7 +174,7 @@ export async function getDuelStatusAction() {
         status: "PENDING",
       },
       include: {
-        challenger: { select: { id: true, heroName: true, level: true } },
+        challenger: { select: { id: true, heroName: true, level: true, faction: true } },
       },
     });
 
@@ -331,10 +331,10 @@ export async function getDuelArenaStateAction(duelId: string) {
       where: { id: duelId },
       include: {
         challenger: {
-          select: { id: true, heroName: true, level: true },
+          select: { id: true, heroName: true, level: true, faction: true },
         },
         defender: {
-          select: { id: true, heroName: true, level: true },
+          select: { id: true, heroName: true, level: true, faction: true },
         },
       },
     });

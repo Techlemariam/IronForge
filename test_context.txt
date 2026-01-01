@@ -1,0 +1,67 @@
+
+[1m[46m RUN [49m[22m [36mv4.0.16 [39m[90mC:/Users/alexa/Workspaces/IronForge[39m
+
+[90mstdout[2m | src/services/data/__tests__/TrainingContextService.test.ts
+[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒöä add secrets lifecycle management: https://dotenvx.com/ops
+
+[90mstdout[2m | src/services/data/__tests__/TrainingContextService.test.ts[2m > [22m[2mTrainingContextService[2m > [22m[2mgetTrainingContext[2m > [22m[2mshould return context with readiness and volume
+[22m[39mAutoSpec: Evaluating transition from ALPHA {
+  ctl: [33m0[39m,
+  atl: [33m0[39m,
+  tsb: [33m0[39m,
+  hrv: [33m0[39m,
+  sleepScore: [33m0[39m,
+  bodyBattery: [33m90[39m,
+  strengthDelta: [33m0[39m,
+  consecutiveStalls: [33m0[39m,
+  weeksInPhase: [33m0[39m,
+  nutritionMode: [32m'MAINTENANCE'[39m,
+  sleepDebt: [33m0[39m,
+  acwr: [33m1[39m,
+  junkMilePercent: [33m0[39m,
+  neuralLoad: [33m0[39m,
+  impactLoad: [33m0[39m,
+  interferenceEvents: [33m0[39m
+}
+
+stderr | src/services/data/__tests__/TrainingContextService.test.ts > TrainingContextService > getTrainingContext > should return context with readiness and volume
+AutoSpec: CRITICAL STRESS. FORCE DELOAD.
+
+ [31mÔØ»[39m src/services/data/__tests__/TrainingContextService.test.ts [2m([22m[2m9 tests[22m[2m | [22m[31m1 failed[39m[2m | [22m[33m8 skipped[39m[2m)[22m[32m 15[2mms[22m[39m
+       [2m[90mÔåô[39m[22m should aggregate volume correctly by muscle group
+       [2m[90mÔåô[39m[22m should handle mapped muscle groups if explicit group is missing
+[31m       [31m├ù[31m should return context with readiness and volume[39m[32m 13[2mms[22m[39m
+       [2m[90mÔåô[39m[22m should trigger warnings for low recovery
+       [2m[90mÔåô[39m[22m should detect high cardio fatigue
+       [2m[90mÔåô[39m[22m should return HIGH for Heavy Deadlifts
+       [2m[90mÔåô[39m[22m should return LOW for Light Curls
+       [2m[90mÔåô[39m[22m should return MEDIUM for Moderate Bench
+       [2m[90mÔåô[39m[22m should return HIGH for RPE 10 Squats
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ» Failed Tests 1 ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»
+
+ FAIL  src/services/data/__tests__/TrainingContextService.test.ts > TrainingContextService > getTrainingContext > should return context with readiness and volume
+AssertionError: expected [ Array(1) ] to have a length of +0 but got 1
+
+- Expected
++ Received
+
+- 0
++ 1
+
+ ÔØ» src/services/data/__tests__/TrainingContextService.test.ts:87:38
+     85|             expect(context.readiness).toBe("HIGH");
+     86|             expect(context.cnsFatigue).toBe("LOW");
+     87|             expect(context.warnings).toHaveLength(0);
+       |                                      ^
+     88|         });
+     89| 
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[1/1]ÔÄ»
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[33m8 skipped[39m[90m (9)[39m
+[2m   Start at [22m 10:09:54
+[2m   Duration [22m 1.27s[2m (transform 261ms, setup 62ms, import 362ms, tests 15ms, environment 0ms)[22m
+

@@ -1,0 +1,100 @@
+
+[1m[46m RUN [49m[22m [36mv4.0.16 [39m[90mC:/Users/alexa/Workspaces/IronForge[39m
+
+[90mstdout[2m | src/services/data/__tests__/TrainingContextService.test.ts
+[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ÔÜÖ´©Å  suppress all logs with { quiet: true }
+
+[90mstdout[2m | src/services/data/__tests__/TrainingContextService.test.ts[2m > [22m[2mTrainingContextService[2m > [22m[2mgetTrainingContext[2m > [22m[2mshould return context with readiness and volume
+[22m[39mAutoSpec: Evaluating transition from ALPHA {
+  ctl: [33m0[39m,
+  atl: [33m0[39m,
+  tsb: [33m0[39m,
+  hrv: [33m80[39m,
+  sleepScore: [33m100[39m,
+  bodyBattery: [33m90[39m,
+  strengthDelta: [33m0[39m,
+  consecutiveStalls: [33m0[39m,
+  weeksInPhase: [33m0[39m,
+  nutritionMode: [32m'MAINTENANCE'[39m,
+  sleepDebt: [33m0[39m,
+  acwr: [33m1[39m,
+  junkMilePercent: [33m0[39m,
+  neuralLoad: [33m0[39m,
+  impactLoad: [33m0[39m,
+  interferenceEvents: [33m0[39m
+}
+
+[90mstdout[2m | src/services/data/__tests__/TrainingContextService.test.ts[2m > [22m[2mTrainingContextService[2m > [22m[2mgetTrainingContext[2m > [22m[2mshould trigger warnings for low recovery
+[22m[39mAutoSpec: Evaluating transition from ALPHA {
+  ctl: [33m0[39m,
+  atl: [33m0[39m,
+  tsb: [33m0[39m,
+  hrv: [33m50[39m,
+  sleepScore: [33m50[39m,
+  bodyBattery: [33m20[39m,
+  strengthDelta: [33m0[39m,
+  consecutiveStalls: [33m0[39m,
+  weeksInPhase: [33m0[39m,
+  nutritionMode: [32m'MAINTENANCE'[39m,
+  sleepDebt: [33m0[39m,
+  acwr: [33m1[39m,
+  junkMilePercent: [33m0[39m,
+  neuralLoad: [33m0[39m,
+  impactLoad: [33m0[39m,
+  interferenceEvents: [33m0[39m
+}
+
+[90mstdout[2m | src/services/data/__tests__/TrainingContextService.test.ts[2m > [22m[2mTrainingContextService[2m > [22m[2mgetTrainingContext[2m > [22m[2mshould detect high cardio fatigue
+[22m[39mAutoSpec: Evaluating transition from ALPHA {
+  ctl: [33m0[39m,
+  atl: [33m0[39m,
+  tsb: [33m0[39m,
+  hrv: [33m0[39m,
+  sleepScore: [33m100[39m,
+  bodyBattery: [33m80[39m,
+  strengthDelta: [33m0[39m,
+  consecutiveStalls: [33m0[39m,
+  weeksInPhase: [33m0[39m,
+  nutritionMode: [32m'MAINTENANCE'[39m,
+  sleepDebt: [33m0[39m,
+  acwr: [33m1[39m,
+  junkMilePercent: [33m0[39m,
+  neuralLoad: [33m0[39m,
+  impactLoad: [33m0[39m,
+  interferenceEvents: [33m0[39m
+}
+
+stderr | src/services/data/__tests__/TrainingContextService.test.ts > TrainingContextService > getTrainingContext > should detect high cardio fatigue
+AutoSpec: CRITICAL STRESS. FORCE DELOAD.
+
+ [31mÔØ»[39m src/services/data/__tests__/TrainingContextService.test.ts [2m([22m[2m9 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[32m 18[2mms[22m[39m
+       [32mÔ£ô[39m should aggregate volume correctly by muscle group[32m 4[2mms[22m[39m
+       [32mÔ£ô[39m should handle mapped muscle groups if explicit group is missing[32m 0[2mms[22m[39m
+       [32mÔ£ô[39m should return context with readiness and volume[32m 3[2mms[22m[39m
+       [32mÔ£ô[39m should trigger warnings for low recovery[32m 1[2mms[22m[39m
+[31m       [31m├ù[31m should detect high cardio fatigue[39m[32m 7[2mms[22m[39m
+       [32mÔ£ô[39m should return HIGH for Heavy Deadlifts[32m 0[2mms[22m[39m
+       [32mÔ£ô[39m should return LOW for Light Curls[32m 0[2mms[22m[39m
+       [32mÔ£ô[39m should return MEDIUM for Moderate Bench[32m 0[2mms[22m[39m
+       [32mÔ£ô[39m should return HIGH for RPE 10 Squats[32m 0[2mms[22m[39m
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ» Failed Tests 1 ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»
+
+ FAIL  src/services/data/__tests__/TrainingContextService.test.ts > TrainingContextService > getTrainingContext > should detect high cardio fatigue
+AssertionError: expected [ Array(1) ] to include 'High cardio fatigue detected (Long seÔÇª'
+ ÔØ» src/services/data/__tests__/TrainingContextService.test.ts:138:38
+    136| 
+    137|             expect(context.cardioStress).toBe("HIGH");
+    138|             expect(context.warnings).toContain("High cardio fatigue deÔÇª
+       |                                      ^
+    139|         });
+    140|     });
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[1/1]ÔÄ»
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m8 passed[39m[22m[90m (9)[39m
+[2m   Start at [22m 10:15:15
+[2m   Duration [22m 936ms[2m (transform 365ms, setup 77ms, import 477ms, tests 18ms, environment 0ms)[22m
+

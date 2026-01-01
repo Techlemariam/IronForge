@@ -112,9 +112,10 @@
 - [x] **Environment Variable Validation** <!-- status: shipped | priority: high | roi: 4.0 | effort: S | source: infrastructure-audit | date: 2025-12-29 -->
   - Rationale: No `.env.example` found. New developers don't know required vars.
   - Scope: Create `.env.example`, add Zod schema for runtime validation at startup.
-- [ ] **Build Performance Optimization** <!-- status: planned | priority: high | roi: 4.0 | effort: M | source: infrastructure-audit -->
+- [x] **Build Performance Optimization** <!-- status: shipped | priority: high | roi: 4.0 | effort: M | source: infrastructure-audit -->
   - Rationale: No Turborepo/parallel jobs. CI runs lint→test→build sequentially but could parallelize.
   - Scope: Configure matrix jobs, explore Nx/Turborepo for caching.
+
 
 ### Medium Priority (Observability & Resilience)
 - [ ] **Health Check Endpoint** <!-- status: planned | priority: medium | roi: 3.8 | effort: S | source: infrastructure-audit -->

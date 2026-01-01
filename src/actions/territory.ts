@@ -70,14 +70,29 @@ export async function getTerritoryAppData() {
  * Get global or city leaderboards
  */
 export async function getTerritoryLeaderboard(cityId?: string) {
-    // Aggregated query for leaderboard
     const users = await prisma.user.findMany({
-        where: cityId ? { city: cityId } : {},
+        where: {
+            AND: [
+                cityId ? { city: cityId } : {},
+                {
+                    ownedTiles: {
+                        some: {} // Only fetch users who own tiles
+                    }
+                }
+            ]
+        },
         select: {
             id: true,
             heroName: true,
+            city: true,
             _count: {
                 select: { ownedTiles: true }
+            },
+            guild: {
+                select: {
+                    name: true,
+                    tag: true
+                }
             }
         },
         orderBy: {
@@ -85,12 +100,63 @@ export async function getTerritoryLeaderboard(cityId?: string) {
                 _count: "desc"
             }
         },
-        take: 20
+        take: 50
     });
 
-    return users.map(u => ({
+    return users.map((u, index) => ({
+        rank: index + 1,
         userId: u.id,
         name: u.heroName || "Unknown Titan",
-        ownedTiles: u._count.ownedTiles
+        city: u.city,
+        ownedTiles: u._count.ownedTiles,
+        guildTag: u.guild?.tag
     }));
+}
+
+/**
+ * Get Guild Leaderboard by aggregated territory
+ */
+export async function getGuildLeaderboard() {
+    // Group by Guild is bit tricky with Prisma alone if we want deep relations
+    // But we can fetch guilds and count their members' tiles
+
+    // Efficient approach: Fetch guilds with sum of ownedTiles
+    // Note: Prisma doesn't support deep aggregation easily in one go without raw query or grouping
+    // We'll use a raw query for performance or a simplified relation fetch
+
+    const guilds = await prisma.guild.findMany({
+        select: {
+            id: true,
+            name: true,
+            tag: true,
+            members: {
+                select: {
+                    _count: {
+                        select: { ownedTiles: true }
+                    }
+                }
+            }
+        }
+    });
+
+    // Aggregate in application layer (works fine for < 1000 guilds)
+    const guildStats = guilds.map(g => {
+        const totalTiles = g.members.reduce((sum, m) => sum + m._count.ownedTiles, 0);
+        return {
+            id: g.id,
+            name: g.name,
+            tag: g.tag,
+            totalTiles
+        };
+    });
+
+    // Sort and take top 20
+    return guildStats
+        .filter(g => g.totalTiles > 0)
+        .sort((a, b) => b.totalTiles - a.totalTiles)
+        .slice(0, 20)
+        .map((g, index) => ({
+            rank: index + 1,
+            ...g
+        }));
 }

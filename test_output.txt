@@ -1,0 +1,56 @@
+
+[1m[46m RUN [49m[22m [36mv4.0.16 [39m[90mC:/Users/alexa/Workspaces/IronForge[39m
+
+[90mstdout[2m | src/actions/__tests__/logger.test.ts
+[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒöÉ prevent committing .env to code: https://dotenvx.com/precommit
+
+ [31mÔØ»[39m src/actions/__tests__/logger.test.ts [2m([22m[2m4 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[32m 20[2mms[22m[39m
+     [32mÔ£ô[39m should search exercises[32m 3[2mms[22m[39m
+     [32mÔ£ô[39m should create a new exercise[32m 5[2mms[22m[39m
+     [32mÔ£ô[39m should log sets and award energy[32m 2[2mms[22m[39m
+[31m     [31m├ù[31m should apply damage to active combat session[39m[32m 8[2mms[22m[39m
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ» Failed Tests 1 ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»
+
+ FAIL  src/actions/__tests__/logger.test.ts > Logger Actions > should apply damage to active combat session
+AssertionError: expected "vi.fn()" to be called with arguments: [ Array(1) ]
+
+Received: 
+
+  1st vi.fn() call:
+
+@@ -1,10 +1,11 @@
+  [
+    {
+-     "data": ObjectContaining {
+-       "bossHp": 0,
+-       "isVictory": true,
++     "data": {
++       "bossHp": 325,
++       "isVictory": false,
++       "logs": {},
+      },
+      "where": {
+        "id": "session_1",
+      },
+    },
+
+
+Number of calls: 1
+
+ ÔØ» src/actions/__tests__/logger.test.ts:128:45
+    126| 
+    127|         expect(result.success).toBe(true);
+    128|         expect(prisma.combatSession.update).toHaveBeenCalledWith({
+       |                                             ^
+    129|             where: { id: "session_1" },
+    130|             data: expect.objectContaining({
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[1/1]ÔÄ»
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m3 passed[39m[22m[90m (4)[39m
+[2m   Start at [22m 10:06:30
+[2m   Duration [22m 632ms[2m (transform 158ms, setup 68ms, import 229ms, tests 20ms, environment 0ms)[22m
+
