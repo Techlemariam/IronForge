@@ -39,11 +39,23 @@ vi.mock("next/cache", () => ({
     revalidatePath: vi.fn(),
 }));
 
+// Mock Training Context Service
+vi.mock("@/services/data/TrainingContextService", () => ({
+    TrainingContextService: {
+        getTrainingContext: vi.fn(),
+    },
+}));
+
 import prisma from "@/lib/prisma";
+
+import { TrainingContextService } from "@/services/data/TrainingContextService";
 
 describe("Logger Actions", () => {
     beforeEach(() => {
         vi.clearAllMocks();
+        (TrainingContextService.getTrainingContext as any).mockResolvedValue({
+            recovery: { status: "FRESH" }
+        });
     });
 
     it("should search exercises", async () => {
@@ -105,10 +117,10 @@ describe("Logger Actions", () => {
             isDefeat: false
         });
 
-        // 100kg * 10 reps = 1000 damage
+        // 200kg * 5 reps = 1000 damage
         const result = await logExerciseSetsAction({
             exerciseId: "ex_1",
-            sets: [{ weight: 135, reps: 5, rpe: 9 }],
+            sets: [{ weight: 200, reps: 5, rpe: 9 }],
             notes: "For the kill"
         });
 
