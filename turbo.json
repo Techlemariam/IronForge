@@ -22,8 +22,8 @@
             ]
         },
         "lint": {},
-        "security": {},
         "check-types": {},
+        "security": {},
         "dev": {
             "cache": false,
             "persistent": true

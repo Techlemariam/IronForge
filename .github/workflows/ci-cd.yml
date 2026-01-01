@@ -23,8 +23,12 @@ jobs:
   # 🛡️ QUALITY GATE
   # Fast feedback on code standards, unit tests, and security.
   # ------------------------------------------------------------------
-  quality:
-    name: 🛡️ Quality Gate
+  # ------------------------------------------------------------------
+  # ⚡ VERIFY (Lint, Test, Build, Security)
+  # Runs all checks in parallel using Turborepo.
+  # ------------------------------------------------------------------
+  verify:
+    name: ⚡ Verify
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -37,35 +41,8 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Generate Prisma Client
         run: npx prisma generate
-      - name: Lint
-        run: pnpm run lint
-      - name: Unit Tests
-        run: pnpm run test
-      - name: Visual Tests
-        run: pnpm run test:visual
-      - name: Security Audit
-        run: pnpm audit
-
-  # ------------------------------------------------------------------
-  # 🏗️ BUILD VERIFICATION
-  # Ensures the application compiles without errors.
-  # ------------------------------------------------------------------
-  build-check:
-    name: 🏗️ Build Verification
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-          cache: 'pnpm'
-      - name: Install Dependencies
-        run: pnpm install --frozen-lockfile
-      - name: Generate Prisma Client
-        run: npx prisma generate
-      - name: Next.js Build
-        run: pnpm run build
+      - name: Turbo Verify
+        run: npx turbo run lint test build security --concurrency=100%
 
   # ------------------------------------------------------------------
   # 🎭 E2E VERIFICATION
@@ -143,7 +120,7 @@ jobs:
   # ------------------------------------------------------------------
   deploy-preview:
     name: 🚀 Deploy Preview
-    needs: [quality] # Fast deploy after quality check, logic verified by PR flow
+    needs: [verify] # Fast deploy after verification
     if: github.event_name == 'pull_request' && github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
     steps:
@@ -172,7 +149,7 @@ jobs:
   # ------------------------------------------------------------------
   deploy-staging:
     name: 🚧 Deploy Staging
-    needs: [quality, build-check, e2e, db-guard]
+    needs: [verify, e2e, db-guard]
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
@@ -206,7 +183,7 @@ jobs:
   # ------------------------------------------------------------------
   deploy-production:
     name: 🚀 Deploy Production
-    needs: [quality, build-check, e2e, db-guard]
+    needs: [verify, e2e, db-guard]
     if: github.ref == 'refs/heads/release' && github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
