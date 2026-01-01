@@ -45,6 +45,8 @@ import { ChaseState, ChaseDifficulty } from "@/types/chase";
 import { updateCardioDuelProgressAction } from "@/actions/duel";
 import { toast } from "sonner";
 import { playSound } from "@/utils/root_utils";
+import { useBluetoothSpeed } from "@/hooks/useBluetoothSpeed";
+import { Bluetooth } from "lucide-react";
 
 // Dynamic import to avoid SSR issues with react-player
 const ReactPlayer = dynamic(() => import("react-player/lazy"), { ssr: false });
@@ -99,6 +101,23 @@ export default function CardioStudio(props: CardioStudioProps) {
   const [chaseState, setChaseState] = useState<ChaseState | null>(null);
   const [chaseDifficulty, setChaseDifficulty] = useState<ChaseDifficulty>("normal");
   const chaseIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const [dataSource, setDataSource] = useState<"simulation" | "bluetooth">("simulation");
+
+  // Bluetooth Hooks
+  const {
+    connect: connectBluetooth,
+    disconnect: disconnectBluetooth,
+    isConnected: isBluetoothConnected,
+    data: bluetoothData,
+    deviceName: bluetoothDeviceName
+  } = useBluetoothSpeed();
+
+  // Effect: Sync Bluetooth speed to simulatedValue when active (so UI updates uniformly)
+  useEffect(() => {
+    if (dataSource === "bluetooth" && isBluetoothConnected) {
+      setSimulatedValue(bluetoothData.speedKph);
+    }
+  }, [dataSource, isBluetoothConnected, bluetoothData.speedKph]);
 
   // Default simulation values if 0
   useEffect(() => {
@@ -173,24 +192,82 @@ export default function CardioStudio(props: CardioStudioProps) {
           />
         )}
 
-        {/* Simulation Slider for Chase */}
+        {/* Simulation Slider / Bluetooth Controls for Chase */}
         <div className="absolute bottom-4 left-4 z-[60] bg-black/80 p-4 rounded-lg border border-white/10 w-80">
-          <p className="text-xs text-zinc-400 mb-2 uppercase tracking-wider">Your Running Pace</p>
-          <input
-            type="range"
-            min="0"
-            max="20"
-            step="0.5"
-            value={simulatedValue}
-            onChange={(e) => setSimulatedValue(Number(e.target.value))}
-            className="w-full accent-orange-500"
-          />
-          <div className="flex justify-between text-sm font-mono text-orange-400 mt-2">
-            <span>{simulatedValue.toFixed(1)} km/h</span>
-            <span className="text-zinc-500">
-              {simulatedValue > 0 ? `${(60 / simulatedValue).toFixed(1)} min/km` : "--"}
-            </span>
+          <div className="flex items-center justify-between mb-2">
+            <p className="text-xs text-zinc-400 uppercase tracking-wider">Pace Source</p>
+            <div className="flex gap-1 bg-zinc-900 p-0.5 rounded">
+              <button
+                onClick={() => setDataSource("simulation")}
+                className={`px-2 py-0.5 text-[10px] uppercase rounded ${dataSource === "simulation" ? "bg-zinc-700 text-white" : "text-zinc-500 hover:text-zinc-300"}`}
+              >
+                Sim
+              </button>
+              <button
+                onClick={() => setDataSource("bluetooth")}
+                className={`px-2 py-0.5 text-[10px] uppercase rounded flex items-center gap-1 ${dataSource === "bluetooth" ? "bg-blue-900/50 text-blue-400" : "text-zinc-500 hover:text-zinc-300"}`}
+              >
+                <Bluetooth className="w-3 h-3" /> BLE
+              </button>
+            </div>
           </div>
+
+          {dataSource === "simulation" ? (
+            <>
+              <input
+                type="range"
+                min="0"
+                max="20"
+                step="0.5"
+                value={simulatedValue}
+                onChange={(e) => setSimulatedValue(Number(e.target.value))}
+                className="w-full accent-orange-500"
+              />
+              <div className="flex justify-between text-sm font-mono text-orange-400 mt-2">
+                <span>{simulatedValue.toFixed(1)} km/h</span>
+                <span className="text-zinc-500">
+                  {simulatedValue > 0 ? `${(60 / simulatedValue).toFixed(1)} min/km` : "--"}
+                </span>
+              </div>
+            </>
+          ) : (
+            <div className="space-y-2">
+              {!isBluetoothConnected ? (
+                <button
+                  onClick={connectBluetooth}
+                  className="w-full py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold uppercase rounded flex items-center justify-center gap-2 transition-colors"
+                >
+                  <Bluetooth className="w-4 h-4" />
+                  Connect Device
+                </button>
+              ) : (
+                <div className="bg-blue-900/20 border border-blue-900/50 rounded p-2">
+                  <div className="flex items-center justify-between text-xs mb-1">
+                    <span className="text-blue-200 font-bold flex items-center gap-1">
+                      <Bluetooth className="w-3 h-3" /> Connected
+                    </span>
+                    <button onClick={disconnectBluetooth} className="text-zinc-500 hover:text-white">
+                      <RotateCcw className="w-3 h-3" />
+                    </button>
+                  </div>
+                  <p className="text-[10px] text-zinc-400 truncate mb-2">{bluetoothDeviceName || "Unknown Device"}</p>
+
+                  <div className="flex justify-between items-end">
+                    <div>
+                      <p className="text-[10px] text-zinc-500 uppercase">Speed</p>
+                      <p className="text-xl font-mono font-bold text-blue-400 leading-none">
+                        {bluetoothData.speedKph.toFixed(1)} <span className="text-sm">km/h</span>
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-[10px] text-zinc-500 uppercase">Cadence</p>
+                      <p className="text-sm font-mono text-zinc-300">{bluetoothData.cadence || "--"} rpm</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
 
           {/* Difficulty Selector */}
           <div className="mt-4 flex gap-2">

@@ -147,6 +147,7 @@ export const IntegrationService = {
     };
 
     // Simulated API Call (Since Hevy API access is restricted)
+    // NOTE: This is a mock implementation. Hevy Writes are not fully supported due to API limits.
     console.log("HEVY PAYLOAD PREPARED:", payload);
 
     // In a real scenario with a valid key:

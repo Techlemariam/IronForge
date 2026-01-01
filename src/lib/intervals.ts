@@ -1,57 +1,118 @@
+import { z } from "zod";
+
 const BASE_URL = "https://intervals.icu/api/v1";
 
-async function fetchIntervals(endpoint: string, apiKey: string) {
+// --- ZOD SCHEMAS ---
+
+const WellnessDataSchema = z.object({
+  id: z.string().optional(),
+  date: z.string(),
+  hrv: z.number().optional().nullable(),
+  restingHR: z.number().optional().nullable(),
+  readiness: z.number().optional().nullable(), // Body Battery
+  sleepScore: z.number().optional().nullable(),
+  sleepSecs: z.number().optional().nullable(), // Note: API might return sleep_secs
+  ctl: z.number().optional().nullable(),
+  atl: z.number().optional().nullable(),
+  tsb: z.number().optional().nullable(),
+  rampRate: z.number().optional().nullable(),
+  vo2max: z.number().optional().nullable(),
+}).transform((data: any) => ({
+  // Handle snake_case to camelCase mapping if API usage varies
+  id: data.id,
+  date: data.date,
+  hrv: data.hrv,
+  restingHR: data.restingHR || data.resting_hr,
+  readiness: data.readiness,
+  sleepScore: data.sleepScore || data.sleep_score,
+  sleepSecs: data.sleepSecs || data.sleep_secs,
+  ctl: data.ctl,
+  atl: data.atl,
+  tsb: data.tsb,
+  rampRate: data.rampRate || data.ramp_rate,
+  vo2max: data.vo2max,
+}));
+
+export type WellnessData = z.infer<typeof WellnessDataSchema>;
+
+const AthleteSettingsSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  timezone: z.string(),
+  resting_hr: z.number().optional().nullable(),
+  max_hr: z.number().optional().nullable(),
+  lthr: z.number().optional().nullable(),
+  ftp: z.number().optional().nullable(),
+  run_ftp: z.number().optional().nullable(),
+  heart_rate_zones: z.array(z.any()).optional().nullable(),
+  power_zones: z.array(z.any()).optional().nullable(),
+});
+
+export type AthleteSettings = z.infer<typeof AthleteSettingsSchema>;
+
+// --- API CLIENT ---
+
+/**
+ * Standard fetch wrapper for Intervals.icu
+ * Throws standard Error objects on failure.
+ * Returns null ONLY on 404 (Not Found).
+ */
+async function fetchIntervals<T>(
+  endpoint: string,
+  apiKey: string,
+  schema?: z.ZodType<T>
+): Promise<T | null> {
   if (!apiKey) {
-    console.error("Intervals API Key missing");
-    return null;
+    throw new Error("Intervals API Key is missing");
   }
 
-  // Intervals.icu uses Basic Auth with "API_KEY" as username and the actual key as password
   const authHeader = `Basic ${btoa("API_KEY:" + apiKey)}`;
 
-  const response = await fetch(`${BASE_URL}${endpoint}`, {
-    headers: {
-      Authorization: authHeader,
-    },
-  });
+  try {
+    const response = await fetch(`${BASE_URL}${endpoint}`, {
+      headers: {
+        Authorization: authHeader,
+      },
+    });
 
-  if (!response.ok) {
-    if (response.status === 404) return null;
-    throw new Error(
-      `Intervals API Error: ${response.status} ${response.statusText}`,
-    );
+    if (!response.ok) {
+      if (response.status === 404) return null;
+      throw new Error(
+        `Intervals API Error: ${response.status} ${response.statusText}`
+      );
+    }
+
+    const data = await response.json();
+
+    if (schema) {
+      // Validate array responses if schema is array
+      if (Array.isArray(data) && schema instanceof z.ZodArray) {
+        const parsed = schema.safeParse(data);
+        if (!parsed.success) {
+          console.warn("Intervals Parsing Warning (Array):", parsed.error);
+          // We might choose to return partial data or throw. For now, throw to detect drifts.
+          throw new Error(`Intervals Data Validation Failed: ${parsed.error.message}`);
+        }
+        return parsed.data;
+      }
+
+      // Single object validation
+      const parsed = schema.safeParse(data);
+      if (!parsed.success) {
+        console.warn("Intervals Parsing Warning:", parsed.error);
+        throw new Error(`Intervals Data Validation Failed: ${parsed.error.message}`);
+      }
+      return parsed.data;
+    }
+
+    return data as T;
+  } catch (error: any) {
+    // Enhance error message with endpoint context
+    throw new Error(`FetchIntervals Failed [${endpoint}]: ${error.message}`);
   }
-
-  return response.json();
 }
 
-export interface WellnessData {
-  id: string;
-  date: string;
-  hrv?: number;
-  restingHR?: number;
-  readiness?: number; // Body Battery
-  sleepScore?: number;
-  sleepSecs?: number;
-  ctl?: number;
-  atl?: number;
-  tsb?: number;
-  rampRate?: number;
-  vo2max?: number;
-}
-
-export interface AthleteSettings {
-  id: string;
-  name: string;
-  timezone: string;
-  resting_hr?: number;
-  max_hr?: number;
-  lthr?: number;
-  ftp?: number; // Cycling FTP
-  run_ftp?: number; // Running FTP/Threshold
-  heart_rate_zones?: any[];
-  power_zones?: any[];
-}
+// --- EXPORTED METHODS ---
 
 export async function getWellness(
   date: string,
@@ -59,35 +120,31 @@ export async function getWellness(
   athleteId: string,
   endDate?: string,
 ): Promise<WellnessData | WellnessData[] | null> {
-  try {
-    if (endDate) {
-      // Range Query
-      return await fetchIntervals(
-        `/athlete/${athleteId}/wellness?oldest=${date}&newest=${endDate}`,
-        apiKey
-      );
-    }
-    // Single Day
+  if (endDate) {
+    // Range Query - returns array
     return await fetchIntervals(
-      `/athlete/${athleteId}/wellness/${date}`,
+      `/athlete/${athleteId}/wellness?oldest=${date}&newest=${endDate}`,
       apiKey,
+      z.array(WellnessDataSchema)
     );
-  } catch (error: any) {
-    console.error("Failed to fetch wellness:", error.message);
-    return null;
   }
+  // Single Day
+  return await fetchIntervals(
+    `/athlete/${athleteId}/wellness/${date}`,
+    apiKey,
+    WellnessDataSchema
+  );
 }
 
 export async function getAthleteSettings(
   apiKey: string,
   athleteId: string,
 ): Promise<AthleteSettings | null> {
-  try {
-    return await fetchIntervals(`/athlete/${athleteId}`, apiKey);
-  } catch (error: any) {
-    console.error("Failed to fetch athlete settings:", error.message);
-    return null;
-  }
+  return await fetchIntervals(
+    `/athlete/${athleteId}`,
+    apiKey,
+    AthleteSettingsSchema
+  );
 }
 
 export async function getActivities(
@@ -96,16 +153,11 @@ export async function getActivities(
   apiKey: string,
   athleteId: string,
 ) {
-  try {
-    const data = await fetchIntervals(
-      `/athlete/${athleteId}/activities?oldest=${startDate}&newest=${endDate}`,
-      apiKey,
-    );
-    return data || [];
-  } catch (error: any) {
-    console.error("Failed to fetch activities:", error.message);
-    return [];
-  }
+  // TODO: Add strict activity schema
+  return (await fetchIntervals(
+    `/athlete/${athleteId}/activities?oldest=${startDate}&newest=${endDate}`,
+    apiKey,
+  )) || [];
 }
 
 export async function getEvents(
@@ -114,47 +166,34 @@ export async function getEvents(
   apiKey: string,
   athleteId: string,
 ) {
-  try {
-    const data = await fetchIntervals(
-      `/athlete/${athleteId}/events?oldest=${startDate}&newest=${endDate}`,
-      apiKey,
-    );
-    return data || [];
-  } catch (error: any) {
-    console.error("Failed to fetch events:", error.message);
-    return [];
-  }
+  // TODO: Add strict event schema
+  return (await fetchIntervals(
+    `/athlete/${athleteId}/events?oldest=${startDate}&newest=${endDate}`,
+    apiKey,
+  )) || [];
 }
 
 /**
  * Fetch GPS stream for an activity
- * Note: Intervals.icu uses /activity/{id}/streams endpoint for time-series data
  */
 export async function getActivityStream(
   activityId: string,
   apiKey: string
 ): Promise<Array<{ lat: number; lng: number }> | null> {
-  try {
-    // We request 'latlng' stream. The response is an array of [lat, lng] pairs
-    // or an object containing the streams.
-    const data = await fetchIntervals(
-      `/activity/${activityId}/streams?types=latlng`,
-      apiKey
-    );
+  // We don't use strict schema here yet due to complex stream structure
+  const data = await fetchIntervals<any[]>(
+    `/activity/${activityId}/streams?types=latlng`,
+    apiKey
+  );
 
-    if (!data) return null;
+  if (!data) return null;
 
-    // Intervals.icu returns an array of streams. We find the one with type 'latlng'
-    const latlngStream = data.find((s: any) => s.type === "latlng");
-    if (!latlngStream || !latlngStream.data) return null;
+  const latlngStream = data.find((s: any) => s.type === "latlng");
+  if (!latlngStream || !latlngStream.data) return null;
 
-    // Convert [lat, lng] arrays to objects
-    return latlngStream.data.map((point: [number, number]) => ({
-      lat: point[0],
-      lng: point[1],
-    }));
-  } catch (error: any) {
-    console.error(`Failed to fetch activity stream for ${activityId}:`, error.message);
-    return null;
-  }
+  return latlngStream.data.map((point: [number, number]) => ({
+    lat: point[0],
+    lng: point[1],
+  }));
 }
+

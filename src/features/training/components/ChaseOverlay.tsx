@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { AlertTriangle, Trophy, Skull, Footprints, Zap } from "lucide-react";
+import { motion, AnimatePresence, useAnimation } from "framer-motion";
+import { AlertTriangle, Trophy, Skull, Footprints, Zap, HeartPulse } from "lucide-react";
 import { ChaseState, ChaseDifficulty } from "@/types/chase";
 import { ChaseEngine } from "@/services/game/ChaseEngine";
 import { cn } from "@/lib/utils";
@@ -64,134 +64,219 @@ export function ChaseOverlay({
 
     const paceDelta = currentPaceKph - requiredPace;
 
+    // Screen Shake Animation Control
+    const shakeControls = useAnimation();
+
+    React.useEffect(() => {
+        if (dangerLevel > 0.8) {
+            shakeControls.start({
+                x: [0, -5, 5, -5, 5, 0],
+                transition: { duration: 0.5, repeat: Infinity, repeatDelay: 1 }
+            });
+        } else {
+            shakeControls.stop();
+            shakeControls.set({ x: 0 });
+        }
+    }, [dangerLevel, shakeControls]);
+
     return (
-        <div
-            className={cn(
-                "absolute inset-x-0 top-0 z-50 pointer-events-none transition-all duration-500",
-                bgPulse && "animate-pulse bg-red-900/20"
-            )}
-        >
-            {/* Main Chase HUD */}
-            <div className="pointer-events-auto mx-auto mt-4 max-w-2xl px-4">
-                <div className="bg-black/80 backdrop-blur-sm border border-white/10 rounded-xl p-4 shadow-2xl">
-                    {/* Header: Monster Info */}
-                    <div className="flex items-center justify-between mb-3">
-                        <div className="flex items-center gap-3">
-                            <span className="text-3xl">{chaseState.chaser.image}</span>
-                            <div>
-                                <h3 className="font-bold text-white text-lg">
-                                    {chaseState.chaser.name}
-                                </h3>
-                                <p className="text-xs text-zinc-400 uppercase tracking-wider">
-                                    {chaseState.chaser.type} • Lvl {chaseState.chaser.level}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden z-50">
+
+            {/* 1. Dynamic Vignette (Red/Black gradient on edges) */}
+            <div
+                className="absolute inset-0 transition-opacity duration-1000"
+                style={{
+                    background: `radial-gradient(circle, transparent 50%, rgba(0,0,0,${dangerLevel * 0.8}) 90%, rgba(${dangerLevel > 0.8 ? '100,0,0' : '0,0,0'}, ${dangerLevel * 0.6}) 100%)`,
+                    opacity: 0.8 + (dangerLevel * 0.2)
+                }}
+            />
+
+            {/* 2. Looming Monster Background Presence */}
+            <motion.div
+                animate={{
+                    scale: 1 + (dangerLevel * 0.5),
+                    opacity: 0.1 + (dangerLevel * 0.2),
+                    y: (1 - dangerLevel) * 100
+                }}
+                className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden"
+            >
+                <div className="text-[40vh] filter blur-sm transform transition-all duration-1000 select-none opacity-20">
+                    {chaseState.chaser.image}
+                </div>
+            </motion.div>
+
+            {/* 3. Main HUD Layer (with Screen Shake) */}
+            <motion.div
+                animate={shakeControls}
+                className={cn(
+                    "relative w-full h-full flex flex-col pt-4",
+                    bgPulse && "animate-pulse" // Keep pulse on container if critically low
+                )}
+            >
+                <div className="pointer-events-auto mx-auto max-w-2xl px-4 w-full">
+                    <div className="bg-black/80 backdrop-blur-sm border border-white/10 rounded-xl p-4 shadow-2xl">
+                        {/* Header: Monster Info */}
+                        <div className="flex items-center justify-between mb-3">
+                            <div className="flex items-center gap-3">
+                                <span className="text-3xl">{chaseState.chaser.image}</span>
+                                <div>
+                                    <h3 className="font-bold text-white text-lg">
+                                        {chaseState.chaser.name}
+                                    </h3>
+                                    <p className="text-xs text-zinc-400 uppercase tracking-wider">
+                                        {chaseState.chaser.type} • Lvl {chaseState.chaser.level}
+                                    </p>
+                                </div>
+                            </div>
+
+                            {/* Required Pace Indicator */}
+                            <div className="text-right">
+                                <p className="text-xs text-zinc-400 uppercase">Required Pace</p>
+                                <p className="font-mono text-lg font-bold text-cyan-400">
+                                    {requiredPace.toFixed(1)} km/h
                                 </p>
                             </div>
                         </div>
 
-                        {/* Required Pace Indicator */}
-                        <div className="text-right">
-                            <p className="text-xs text-zinc-400 uppercase">Required Pace</p>
-                            <p className="font-mono text-lg font-bold text-cyan-400">
-                                {requiredPace.toFixed(1)} km/h
-                            </p>
+                        {/* Status Message */}
+                        <motion.div
+                            key={statusMessage}
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className={cn(
+                                "text-center py-2 mb-3 rounded-lg font-bold uppercase tracking-wider text-sm",
+                                dangerLevel > 0.85
+                                    ? "bg-red-900/50 text-red-300"
+                                    : dangerLevel > 0.6
+                                        ? "bg-orange-900/50 text-orange-300"
+                                        : "bg-zinc-800/50 text-zinc-300"
+                            )}
+                        >
+                            {statusMessage}
+                        </motion.div>
+
+                        {/* Distance Gap Progress */}
+                        <div className="space-y-2">
+                            <div className="flex justify-between text-xs text-zinc-400">
+                                <span className="flex items-center gap-1">
+                                    <Skull className="w-3 h-3" />
+                                    CAUGHT
+                                </span>
+                                <span className="font-mono text-white">
+                                    {Math.round(chaseState.distanceGapMeters)}m gap
+                                </span>
+                                <span className="flex items-center gap-1">
+                                    ESCAPE
+                                    <Trophy className="w-3 h-3" />
+                                </span>
+                            </div>
+
+                            {/* Styled Progress Track */}
+                            <div className="h-6 bg-zinc-950/80 rounded-full overflow-hidden border border-zinc-800 relative shadow-inner">
+                                {/* Danger zone indicator (Gradient) */}
+                                <div className="absolute inset-y-0 left-0 w-[20%] bg-gradient-to-r from-red-900/60 to-transparent" />
+
+                                {/* Track Ticks */}
+                                <div className="absolute inset-0 flex justify-between px-2 items-center opacity-20">
+                                    {[...Array(10)].map((_, i) => (
+                                        <div key={i} className="w-px h-2 bg-white" />
+                                    ))}
+                                </div>
+
+                                {/* Monster Position (Left Side / 0%) */}
+                                <motion.div
+                                    className="absolute left-1 top-1/2 -translate-y-1/2 text-lg z-10 filter drop-shadow-md"
+                                    animate={{
+                                        scale: dangerLevel > 0.8 ? [1, 1.2, 1] : 1,
+                                        rotate: dangerLevel > 0.8 ? [0, -10, 10, 0] : 0
+                                    }}
+                                    transition={{ repeat: Infinity, duration: 2 }} // Breathing effect
+                                >
+                                    {chaseState.chaser.image}
+                                </motion.div>
+
+                                {/* Player Position Indicator - Moves Right -> Left as gap shrinks */}
+                                {/* Wait, gap percentage: 100% = Safe, 0% = Caught. 
+                                Visual logic: 
+                                - Monster is at LEFT (0%). 
+                                - Player is at RIGHT (100%) if safe?
+                                - Usually: Distance Gap. 
+                                Let's visualize: 
+                                |[M]---------[P]-------| 
+                                If gap shrinks, P moves closer to M.
+                                Gap % = (CurrentGap / EscapeGap) * 100.
+                                100% gap = Max distance (Start).
+                                0% gap = Caught.
+                                
+                                So: 
+                                Player should be at `GapPercentage` from Left? 
+                                If Gap=100%, Player at 100% (Right).
+                                If Gap=0%, Player at 0% (Left/Caught).
+                            */}
+
+                                <motion.div
+                                    className="absolute top-0 bottom-0 bg-white/10"
+                                    style={{
+                                        left: 0,
+                                        right: `${100 - gapPercentage}%`
+                                        // This fills the space BETWEEN Monster (0) and Player (gap%)
+                                        // Giving visual context to the "Gap"
+                                    }}
+                                />
+
+                                {/* Player Icon */}
+                                <motion.div
+                                    className="absolute top-1/2 -translate-y-1/2 z-20 flex flex-col items-center"
+                                    style={{ left: `${Math.min(96, Math.max(4, gapPercentage))}%` }}
+                                    animate={{ left: `${Math.min(96, Math.max(4, gapPercentage))}%` }}
+                                >
+                                    <div className="relative">
+                                        <Footprints className="w-5 h-5 text-cyan-400 drop-shadow-[0_0_8px_rgba(34,211,238,0.8)]" />
+                                        <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-8 h-1 bg-cyan-500/50 blur-sm rounded-full" />
+                                    </div>
+                                </motion.div>
+                            </div>
                         </div>
-                    </div>
 
-                    {/* Status Message */}
-                    <motion.div
-                        key={statusMessage}
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className={cn(
-                            "text-center py-2 mb-3 rounded-lg font-bold uppercase tracking-wider text-sm",
-                            dangerLevel > 0.85
-                                ? "bg-red-900/50 text-red-300"
-                                : dangerLevel > 0.6
-                                    ? "bg-orange-900/50 text-orange-300"
-                                    : "bg-zinc-800/50 text-zinc-300"
-                        )}
-                    >
-                        {statusMessage}
-                    </motion.div>
-
-                    {/* Distance Gap Progress */}
-                    <div className="space-y-2">
-                        <div className="flex justify-between text-xs text-zinc-400">
-                            <span className="flex items-center gap-1">
-                                <Skull className="w-3 h-3" />
-                                CAUGHT
-                            </span>
-                            <span className="font-mono text-white">
-                                {Math.round(chaseState.distanceGapMeters)}m gap
-                            </span>
-                            <span className="flex items-center gap-1">
-                                ESCAPE
-                                <Trophy className="w-3 h-3" />
-                            </span>
-                        </div>
-
-                        {/* Progress Bar */}
-                        <div className="h-4 bg-zinc-900 rounded-full overflow-hidden border border-zinc-800 relative">
-                            {/* Danger zone indicator */}
-                            <div className="absolute inset-y-0 left-0 w-[15%] bg-red-900/30" />
-
-                            {/* Safe zone indicator */}
-                            <div className="absolute inset-y-0 right-0 w-[15%] bg-green-900/30" />
-
-                            {/* Player position indicator */}
-                            <motion.div
-                                className={cn(
-                                    "h-full bg-gradient-to-r transition-all duration-300",
-                                    dangerColor
-                                )}
-                                style={{ width: `${gapPercentage}%` }}
-                                animate={{ width: `${gapPercentage}%` }}
-                                transition={{ type: "spring", stiffness: 100 }}
-                            />
-
-                            {/* Player icon */}
-                            <motion.div
-                                className="absolute top-1/2 -translate-y-1/2 text-lg"
-                                style={{ left: `${Math.min(95, Math.max(2, gapPercentage))}%` }}
-                                animate={{ left: `${Math.min(95, Math.max(2, gapPercentage))}%` }}
-                            >
-                                <Footprints className="w-4 h-4 text-white drop-shadow-lg" />
-                            </motion.div>
-                        </div>
-                    </div>
-
-                    {/* Current Pace Display */}
-                    <div className="mt-3 flex justify-center gap-6 text-center">
-                        <div>
-                            <p className="text-xs text-zinc-500">Your Pace</p>
-                            <p
-                                className={cn(
-                                    "font-mono text-xl font-bold",
-                                    currentPaceKph >= requiredPace ? "text-green-400" : "text-red-400"
-                                )}
-                            >
-                                {currentPaceKph.toFixed(1)} km/h
-                            </p>
-                            <p className={cn("text-xs font-mono", paceDelta >= 0 ? "text-green-500" : "text-red-500")}>
-                                {paceDelta >= 0 ? "+" : ""}{paceDelta.toFixed(1)}
-                            </p>
-                        </div>
-                        <div className="border-l border-zinc-700 pl-6">
-                            <p className="text-xs text-zinc-400">Time</p>
-                            <p className="font-mono text-xl font-bold text-white">
-                                {Math.floor(chaseState.elapsedSeconds / 60)}:
-                                {String(Math.floor(chaseState.elapsedSeconds % 60)).padStart(2, "0")}
-                            </p>
-                        </div>
-                        <div className="border-l border-zinc-700 pl-6">
-                            <p className="text-xs text-zinc-400">Distance</p>
-                            <p className="font-mono text-xl font-bold text-cyan-400">
-                                {(chaseState.playerDistanceMeters / 1000).toFixed(2)} km
-                            </p>
+                        {/* Current Pace Display */}
+                        <div className="mt-3 flex justify-center gap-6 text-center">
+                            <div>
+                                <p className="text-xs text-zinc-500">Your Pace</p>
+                                <p
+                                    className={cn(
+                                        "font-mono text-xl font-bold",
+                                        currentPaceKph >= requiredPace ? "text-green-400" : "text-red-400"
+                                    )}
+                                >
+                                    {currentPaceKph.toFixed(1)} km/h
+                                </p>
+                                <p className={cn("text-xs font-mono", paceDelta >= 0 ? "text-green-500" : "text-red-500")}>
+                                    {paceDelta >= 0 ? "+" : ""}{paceDelta.toFixed(1)}
+                                </p>
+                            </div>
+                            <div className="border-l border-zinc-700 pl-6">
+                                <p className="text-xs text-zinc-400">Time</p>
+                                <p className="font-mono text-xl font-bold text-white">
+                                    {Math.floor(chaseState.elapsedSeconds / 60)}:
+                                    {String(Math.floor(chaseState.elapsedSeconds % 60)).padStart(2, "0")}
+                                </p>
+                            </div>
+                            <div className="border-l border-zinc-700 pl-6">
+                                <p className="text-xs text-zinc-400">Distance</p>
+                                <p className="font-mono text-xl font-bold text-cyan-400">
+                                    {(chaseState.playerDistanceMeters / 1000).toFixed(2)} km
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </motion.div>
+
+            {/* Danger Overlay Flash (When damaged/caught imminent) */}
+            <div className={cn(
+                "absolute inset-0 z-40 bg-red-500/0 transition-all duration-300 pointer-events-none mix-blend-overlay",
+                dangerLevel > 0.9 && "animate-pulse bg-red-500/20"
+            )} />
 
             {/* Victory/Defeat Overlays */}
             <AnimatePresence>
