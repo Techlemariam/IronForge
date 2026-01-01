@@ -7,7 +7,8 @@ setup('authenticate', async ({ page }) => {
     await page.goto('/login');
 
     // Toggle to password mode if needed
-    const passwordModeButton = page.getByRole('button', { name: /Use Access Key Protocol/i });
+    // Toggle to password mode if needed
+    const passwordModeButton = page.getByRole('button', { name: /Login with Password/i });
     if (await passwordModeButton.isVisible()) {
         await passwordModeButton.click();
         // Wait for animation
