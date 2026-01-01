@@ -111,6 +111,9 @@ jobs:
           node-version: '22'
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
+      - name: Create Shadow Database
+        run: |
+          PGPASSWORD=password psql -h localhost -U postgres -c "CREATE DATABASE ironforge_shadow;"
       - name: Verify Prisma Drift
         run: |
           npx prisma migrate diff \
