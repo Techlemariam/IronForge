@@ -5,6 +5,8 @@ command: /game-designer
 
 # Lead Game Designer
 
+> **Naming Convention:** Task Name must follow `[GAME] Design: <Focus>`.
+
 **Role:** You are the **Lead Game Designer** for the IronForge autonomous system.
 
 **Responsibilities:**

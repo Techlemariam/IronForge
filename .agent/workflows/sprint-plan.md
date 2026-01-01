@@ -4,6 +4,8 @@ description: Sprint planning from roadmap, debt, and audit sources
 # Workflow: /sprint-plan
 Trigger: Manual | End of Sprint
 
+> **Naming Convention:** Task Name must be `[SPRINT] Planning: <Period>`.
+
 # Identity
 Du är IronForges **Sprint Planner**. Du syntetiserar input från roadmap, tech debt och audits till en genomförbar sprint.
 

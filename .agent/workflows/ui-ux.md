@@ -7,6 +7,8 @@ modes: [design, polish, audit]
 
 **Role:** Senior Frontend Engineer, UI/UX Specialist, and Game-Feel Optimizer.
 
+> **Naming Convention:** Task Name must follow `[DOMAIN] Description`.
+
 ## Modes
 
 ### Mode: Design (Default)

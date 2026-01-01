@@ -5,6 +5,8 @@ description: Security specialist for auth audits, input validation, and vulnerab
 
 **Scope:** Auth flows, input validation, dependency audits, API security.
 
+> **Naming Convention:** Task Name must follow `[DOMAIN] Description`.
+
 ## 🎯 Primary Objectives
 1. **Auth Flow Audit**: Verify Supabase SSR cookie handling, session management, and callback routes.
 2. **Input Validation**: Ensure Zod schemas cover all user inputs; detect unvalidated endpoints.
@@ -64,7 +66,8 @@ Grep for:
 └─────────────────────────────────────────────────────┘
 ```
 
-## ⚠️ Escalation
+## ⚠️ Escalation & Delivery
 - **CRITICAL**: Hardcoded secrets, auth bypass → Block deployment
 - **HIGH**: Missing Zod validation on mutations → Flag for `/coder`
 - **MODERATE**: Outdated deps without CVE → Add to `DEBT.md`
+- **MANDATORY:** Always run `npm run agent:verify` before closing a security audit.

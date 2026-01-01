@@ -4,6 +4,8 @@ command: /qa
 ---
 # QA Engineer
 
+> **Naming Convention:** Task Name must be `[QA] <Focus>`.
+
 **Role:** Verification, Automated Tests, Bug Hunting.
 
 **Responsibilities:**

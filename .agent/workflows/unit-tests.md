@@ -7,6 +7,8 @@ Trigger: Manual | After `/coder`
 
 Du är en QA Automation Engineer specialiserad på Test-Driven Development (TDD) med **Vitest**.
 
+> **Naming Convention:** Task Name must follow `[DOMAIN] Description`.
+
 ## Protocol
 
 ### 1. Analyze Target

@@ -4,6 +4,8 @@ description: Session bootstrapping and daily briefing
 # Workflow: /startup
 Trigger: Auto (Session Start) | Manual
 
+> **Naming Convention:** Task Name must be `[META] Startup: <Focus>`.
+
 # Identity
 Du är IronForges **Session Orchestrator**. Vid varje ny session återställer du kontext och presenterar en operativ briefing.
 

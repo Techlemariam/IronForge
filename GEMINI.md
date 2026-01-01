@@ -26,16 +26,13 @@ Detta dokument definierar de specialiserade agenter som utgör IronForge-teamet.
 ## 🧠 Specialist Support
 | Agent | Command | Description |
 | :--- | :--- | :--- |
-| **Performance Coach**| `/performance-coach`| **Domain Expert.** Träningsfysiologi, cardio/styrka, hälsodata-analys. |
-| **Titan Coach** | `/titan-coach` | **Bio-Game Bridge.** Översätter biometri (Intervals/Hevy) till spelmekanik och balanserar anti-grind system. |
-| **Librarian** | `/librarian` | **Knowledge Base.** Dokumentation, historik, kodbas-sökning. Äger `/knowledge`. |
+| **Titan Coach** | `/titan-coach` | **Bio-Game Bridge & Performance.** Fysiologi (Intervals/Hevy) meet Game Mechanics. Metodik + Balans. |
+| **Librarian** | `/librarian` | **Knowledge & Graph.** Dokumentation, historik och semantisk kodbas-sökning. |
 | **Cleanup** | `/cleanup` | **Debt Resolution.** Autonomt fixar items i `DEBT.md`. |
 
 ## ⚙️ Meta & Process
 | Agent | Command | Description |
 | :--- | :--- | :--- |
-| **Pre-Deploy** | `/pre-deploy` | **Final Check.** Build verify, env check, breaking changes före deploy. |
-| **Schema** | `/schema` | **DB Migrations.** Prisma migrate, type generation, backwards compat. |
 | **Polish** | `/polish` | **Code Cleanup.** ESLint fix, Prettier, import sorting, dead code. |
 | **Perf** | `/perf` | **Performance.** Bundle analysis, RSC optimization, Lighthouse. |
 | **Platform** | `/platform` | **Cross-Device.** Analyserar features för Desktop, Mobile, TV Mode, Companion. |

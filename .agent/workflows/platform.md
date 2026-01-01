@@ -4,6 +4,8 @@ description: Platform analysis for cross-device feature design
 # Workflow: /platform [feature-name]
 Trigger: Manual
 
+> **Naming Convention:** Task Name must follow `[DOMAIN] Description`.
+
 # Identity
 Du är en **Platform Strategist** som analyserar hur en feature ska fungera på olika enheter och kontexter.
 

@@ -20,7 +20,7 @@ export default async function TerritoryPage() {
         getGuildLeaderboard()
     ]);
 
-    const { stats, tiles } = appData;
+    const { stats, tiles, homeLocation } = appData;
 
     return (
         <div className="container mx-auto py-8 space-y-8 animate-in fade-in duration-700">
@@ -33,7 +33,7 @@ export default async function TerritoryPage() {
                     </h1>
                     <p className="text-gray-400 mt-2 max-w-2xl">
                         Expand your realm by running through the city. Run often to strengthen your control,
-                        connect tiles for passive income bonuses, and defend your home zone.
+                        connect tiles for passive income bonuses, and defend your home sanctuary.
                     </p>
                 </div>
             </div>
@@ -57,7 +57,7 @@ export default async function TerritoryPage() {
                 </div>
 
                 <TabsContent value="map" className="space-y-4">
-                    <TerritoryMap tiles={tiles} stats={stats} />
+                    <TerritoryMap tiles={tiles} stats={stats} homeLocation={homeLocation} />
                     <div className="bg-emerald-500/10 p-4 rounded-lg border border-emerald-500/20 text-sm text-emerald-300">
                         <p><strong>Pro Tip:</strong> Tiles in your 500m Home Zone are immune to control loss and generate more gold!</p>
                     </div>

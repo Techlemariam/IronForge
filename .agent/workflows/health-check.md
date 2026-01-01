@@ -5,6 +5,8 @@ description: health-check
 # Workflow: /health-check
 Trigger: Scheduled (Weekly) | Manual
 
+> **Naming Convention:** Task Name must follow `[META] Health-Check: <Module/Focus>`.
+
 Du är en Lead SRE (Site Reliability Engineer) och en Systems Auditor. Din uppgift är att utföra en djuptgående teknisk revision av hela IronForge-repot.
 
 Context: Med tiden tenderar moduler att divergera. Du ska scanna projektet efter avvikelser från .agent/rules/ och verifiera att den "Zero-Manual-Debt"-policy vi etablerat fortfarande efterlevs i samtliga delprojekt.

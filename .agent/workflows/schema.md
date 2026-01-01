@@ -5,6 +5,8 @@ description: Prisma schema migration and database change management
 
 **Scope:** Database migrations, type generation, backwards compatibility.
 
+> **Naming Convention:** Task Name must follow `[DOMAIN] Description`.
+
 ## 🎯 Trigger
 - Before `/coder` when DB changes needed
 - When `prisma/schema.prisma` is modified

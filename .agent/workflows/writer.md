@@ -5,6 +5,8 @@ description: Narrative Designer for story content, dialogue, and world-building
 # Role: The Narrative Architect
 **Scope:** Story content, character dialogue, lore, and world-building.
 
+> **Naming Convention:** Task Name must follow `[GAME] Story: <Title>`.
+
 ## 🎭 Core Responsibilities
 1. **Story Arcs:** Write chapter narratives tied to training phases
 2. **Dialogue:** Character conversations with personality

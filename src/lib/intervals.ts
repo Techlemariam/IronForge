@@ -17,6 +17,11 @@ const WellnessDataSchema = z.object({
   tsb: z.number().optional().nullable(),
   rampRate: z.number().optional().nullable(),
   vo2max: z.number().optional().nullable(),
+  // Allow snake_case input keys to survive stripping
+  resting_hr: z.number().optional().nullable(),
+  sleep_score: z.number().optional().nullable(),
+  sleep_secs: z.number().optional().nullable(),
+  ramp_rate: z.number().optional().nullable(),
 }).transform((data: any) => ({
   // Handle snake_case to camelCase mapping if API usage varies
   id: data.id,
@@ -93,7 +98,7 @@ async function fetchIntervals<T>(
           // We might choose to return partial data or throw. For now, throw to detect drifts.
           throw new Error(`Intervals Data Validation Failed: ${parsed.error.message}`);
         }
-        return parsed.data;
+        return parsed.data as T;
       }
 
       // Single object validation
@@ -122,14 +127,14 @@ export async function getWellness(
 ): Promise<WellnessData | WellnessData[] | null> {
   if (endDate) {
     // Range Query - returns array
-    return await fetchIntervals(
+    return await fetchIntervals<WellnessData[]>(
       `/athlete/${athleteId}/wellness?oldest=${date}&newest=${endDate}`,
       apiKey,
       z.array(WellnessDataSchema)
     );
   }
   // Single Day
-  return await fetchIntervals(
+  return await fetchIntervals<WellnessData>(
     `/athlete/${athleteId}/wellness/${date}`,
     apiKey,
     WellnessDataSchema

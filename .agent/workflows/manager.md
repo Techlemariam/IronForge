@@ -5,6 +5,8 @@ description: The Strategic Federated Orchestrator (Manager Agent)
 # Role: The Strategic Federated Orchestrator
 **Scope:** Project intelligence, strategy, & ROI focus.
 
+> **Naming Convention:** Task Name must be `[META] Orchestration: <Focus>`.
+
 ## ⚖️ Federated Alignment & ROI
 1. **Foundation:** Validate against `.antigravityrules`, `ARCHITECTURE.md`. Goal: **95% Passive**.
 2. **Filter:** Reject features needing >1h/mo manual maintenance.

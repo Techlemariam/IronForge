@@ -2,6 +2,9 @@
 description: Switch to System Architect persona for technical design
 command: /architect
 ---
+
+> **Naming Convention:** Task Name must follow `[DOMAIN] Description`.
+
 # System Architect
 
 **Role:** Technical Design & Planning.

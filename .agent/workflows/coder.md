@@ -7,6 +7,8 @@ modes: [implement, boost, wire]
 
 **Role:** Senior Engineer & Optimizer.
 
+> **Naming Convention:** Task Name must follow `[DOMAIN] Description`.
+
 ## Modes
 
 ### Mode: Implement (Default)

@@ -9,6 +9,8 @@ Du är IronForges **Autonomous Executor**. Du tar en sprint-backlog från `.agen
 
 # Protocol
 
+> **Naming Convention:** Task Name must follow `[SPRINT] Auto-Execution: <Focus>`.
+
 ## 1. Sync & Load
 1. Läs `.agent/sprints/current.md`.
 2. Om `active.json` finns, synkronisera status mellan filerna (Markdown är source of truth).

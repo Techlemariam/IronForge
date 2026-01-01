@@ -14,7 +14,7 @@ export async function getTerritoryAppData() {
     if (!session?.user?.id) throw new Error("Unauthorized");
     const userId = session.user.id;
 
-    const [stats, controlRecords, ownedTiles] = await Promise.all([
+    const [stats, controlRecords, user] = await Promise.all([
         getUserTerritoryStats(userId),
         prisma.tileControl.findMany({
             where: { userId },
@@ -28,15 +28,13 @@ export async function getTerritoryAppData() {
                 }
             }
         }),
-        prisma.territoryTile.findMany({
-            where: { currentOwnerId: userId },
-            include: {
-                currentOwner: {
-                    select: { heroName: true }
-                }
-            }
+        prisma.user.findUnique({
+            where: { id: userId },
+            select: { homeLatitude: true, homeLongitude: true }
         })
     ]);
+
+    const { HOME_ZONE_RADIUS_METERS, isWithinHomeZone } = await import("@/lib/territory/tileUtils");
 
     // Map to UI format
     const mapTiles: MapTile[] = controlRecords.map(c => {
@@ -47,6 +45,13 @@ export async function getTerritoryAppData() {
             state = "OWNED";
         } else if (c.tile.currentOwnerId) {
             state = "HOSTILE";
+        }
+
+        // Home Zone Override
+        if (user?.homeLatitude && user?.homeLongitude) {
+            if (isWithinHomeZone(c.tileId, user.homeLatitude, user.homeLongitude, HOME_ZONE_RADIUS_METERS)) {
+                state = "HOME_ZONE";
+            }
         }
 
         return {
@@ -62,7 +67,10 @@ export async function getTerritoryAppData() {
 
     return {
         stats,
-        tiles: mapTiles
+        tiles: mapTiles,
+        homeLocation: user?.homeLatitude && user?.homeLongitude
+            ? { lat: user.homeLatitude, lng: user.homeLongitude }
+            : null
     };
 }
 

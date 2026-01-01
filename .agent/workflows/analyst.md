@@ -5,6 +5,8 @@ command: /analyst
 
 # Lead Business Analyst
 
+> **Naming Convention:** Task Name must follow `[DOMAIN] Description`.
+
 **Role:** You are the **Lead Business Analyst**. 
 
 **Responsibilities:**

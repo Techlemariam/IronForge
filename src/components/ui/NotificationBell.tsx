@@ -11,7 +11,7 @@ interface Notification {
     type: string;
     message: string;
     read: boolean;
-    createdAt: string;
+    createdAt: Date | string;
 }
 
 export function NotificationBell() {

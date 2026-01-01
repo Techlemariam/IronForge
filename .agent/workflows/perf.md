@@ -5,6 +5,8 @@ description: Performance profiling, bundle analysis, and RSC optimization
 
 **Scope:** Lighthouse audits, bundle size analysis, RSC boundaries, runtime performance.
 
+> **Naming Convention:** Task Name must follow `[DOMAIN] Description`.
+
 ## 🎯 Trigger
 - After major feature implementation
 - Before production release
@@ -80,3 +82,4 @@ Check for:
 ## 🔗 Handoff
 - Critical findings → `/coder` for fixes
 - Architecture issues → `/architect` for redesign
+- **MANDATORY:** Always run `npm run agent:verify` to ensure optimizations didn't break functionality.

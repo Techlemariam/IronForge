@@ -5,6 +5,8 @@ description: Code cleanup, formatting, and style enforcement
 
 **Scope:** ESLint fixes, Prettier formatting, dead code removal, import optimization.
 
+> **Naming Convention:** Task Name must follow `[DOMAIN] Description`.
+
 ## 🎯 Trigger
 - After `/coder` completes implementation
 - Parallel with `/qa`
