@@ -98,7 +98,12 @@ describe("TrainingContextService", () => {
             (prisma.exerciseLog.findMany as any).mockResolvedValue([]);
 
             // Mock Low Recovery
-            (getWellnessAction as any).mockResolvedValue({ bodyBattery: 20, hrv: 50 });
+            (getWellnessAction as any).mockResolvedValue({
+                bodyBattery: 20,
+                hrv: 50,
+                sleepScore: 0,
+                sleepSecs: 14400 // 4h
+            });
             (getActivitiesAction as any).mockResolvedValue([]);
 
             const context = await TrainingContextService.getTrainingContext(userId);
@@ -112,11 +117,14 @@ describe("TrainingContextService", () => {
             (prisma.exerciseLog.findMany as any).mockResolvedValue([]);
 
             // Mock Normal Recovery
-            (getWellnessAction as any).mockResolvedValue({ bodyBattery: 80 });
+            (getWellnessAction as any).mockResolvedValue({
+                bodyBattery: 80,
+                sleepSecs: 28800
+            });
 
             // Mock Long Run
             (getActivitiesAction as any).mockResolvedValue([
-                { moving_time: 4000, icu_intensity: 50 } // > 3600s
+                { moving_time: 4000, icu_intensity: 300 } // > 250 TSS for HIGH stress
             ]);
 
             const context = await TrainingContextService.getTrainingContext(userId);
