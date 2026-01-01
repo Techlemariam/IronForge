@@ -1,0 +1,72 @@
+/**
+ * Territory Conquest Main Page
+ * 
+ * Shows the interactive map, player territory stats, and leaderboards.
+ */
+
+import React from "react";
+import { getTerritoryAppData } from "@/actions/territory";
+import { TerritoryMap } from "@/features/territory/components/TerritoryMap";
+import { TerritoryStats } from "@/features/territory/components/TerritoryStats";
+import { Shield, Map as MapIcon, Trophy } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
+export default async function TerritoryPage() {
+    // Fetch data server-side
+    const { stats, tiles } = await getTerritoryAppData();
+
+    return (
+        <div className="container mx-auto py-8 space-y-8 animate-in fade-in duration-700">
+            {/* Header Section */}
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-emerald-500/20 pb-6">
+                <div>
+                    <h1 className="text-4xl font-black bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent flex items-center gap-3">
+                        <Shield className="w-10 h-10 text-emerald-500" />
+                        TERRITORY CONQUEST
+                    </h1>
+                    <p className="text-gray-400 mt-2 max-w-2xl">
+                        Expand your realm by running through the city. Run often to strengthen your control,
+                        connect tiles for passive income bonuses, and defend your home zone.
+                    </p>
+                </div>
+            </div>
+
+            {/* Stats Overview */}
+            <TerritoryStats stats={stats} />
+
+            {/* Main Interactive Section */}
+            <Tabs defaultValue="map" className="w-full">
+                <div className="flex justify-between items-center mb-4">
+                    <TabsList className="bg-black/40 border border-emerald-500/20">
+                        <TabsTrigger value="map" className="flex items-center gap-2">
+                            <MapIcon className="w-4 h-4" />
+                            World Map
+                        </TabsTrigger>
+                        <TabsTrigger value="leaderboard" className="flex items-center gap-2">
+                            <Trophy className="w-4 h-4" />
+                            Leaderboards
+                        </TabsTrigger>
+                    </TabsList>
+                </div>
+
+                <TabsContent value="map" className="space-y-4">
+                    <TerritoryMap tiles={tiles} stats={stats} />
+                    <div className="bg-emerald-500/10 p-4 rounded-lg border border-emerald-500/20 text-sm text-emerald-300">
+                        <p><strong>Pro Tip:</strong> Tiles in your 500m Home Zone are immune to control loss and generate more gold!</p>
+                    </div>
+                </TabsContent>
+
+                <TabsContent value="leaderboard">
+                    <div className="bg-black/40 rounded-xl p-8 border border-emerald-500/20 text-center">
+                        <Trophy className="w-12 h-12 text-amber-500 mx-auto mb-4" />
+                        <h3 className="text-xl font-bold text-white mb-2">Lead the Conquest</h3>
+                        <p className="text-gray-400 mb-6">Leaderboards are updated every Sunday after tile settlement.</p>
+                        <div className="max-w-md mx-auto aspect-video flex items-center justify-center border border-dashed border-gray-700 rounded-lg">
+                            <span className="text-gray-600 italic">Leaderboard visualization coming soon...</span>
+                        </div>
+                    </div>
+                </TabsContent>
+            </Tabs>
+        </div>
+    );
+}

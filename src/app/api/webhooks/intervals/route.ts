@@ -3,6 +3,8 @@ import prisma from "@/lib/prisma";
 import { OracleService } from "@/services/oracle";
 import { ProgressionService } from "@/services/progression";
 import { processUserCardioActivity } from "@/actions/duel";
+import { getActivityStream } from "@/lib/intervals";
+import { conquestFromActivity } from "@/services/game/TerritoryService";
 
 // Defines the shape of an Intervals.icu Activity Event
 // Reference: https://intervals.icu/api/v1/athlete/{id}/activities
@@ -13,6 +15,9 @@ interface IntervalsActivityPayload {
   moving_time: number; // seconds
   training_load?: number; // TSS
   average_heartrate?: number;
+  max_heartrate?: number;
+  average_watts?: number;
+  distance?: number; // Meters
   icu_athlete_id: string; // Crucial for matching user
 }
 
@@ -109,6 +114,29 @@ export async function POST(request: NextRequest) {
 
       if (distanceKm > 0) {
         await processUserCardioActivity(user.id, activity.type, distanceKm, durationMin);
+      }
+
+      // --- Territory Conquest Integration ---
+      const isConquestSport = ["Run", "Walk", "Hike", "VirtualRun"].includes(activity.type);
+
+      if (isConquestSport && distanceKm > 0.1 && user.intervalsApiKey) {
+        console.log(`[Intervals Webhook] Fetching GPS stream for Territory Conquest...`);
+        const gpsTrack = await getActivityStream(activity.id, user.intervalsApiKey);
+
+        if (gpsTrack && gpsTrack.length > 0) {
+          const conquest = await conquestFromActivity(user.id, gpsTrack, {
+            avgHr: activity.average_heartrate,
+            maxHr: activity.max_heartrate,
+            avgPower: activity.average_watts,
+            ftp: user.ftpRun ?? 250,
+          });
+
+          console.log(
+            `[Intervals Webhook] Territory Updated: ${conquest.tilesConquered} new, ${conquest.tilesReinforced} reinforced.`
+          );
+        } else {
+          console.warn(`[Intervals Webhook] No GPS track found for activity ${activity.id}`);
+        }
       }
     } else {
       console.log(

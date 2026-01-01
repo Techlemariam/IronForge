@@ -11,6 +11,7 @@ import {
     gridDisk,
     greatCircleDistance,
     UNITS,
+    cellToBoundary,
 } from "h3-js";
 
 /** H3 resolution for territory tiles (~200m hexagons) */
@@ -154,4 +155,40 @@ export function countConnectedTiles(
     }
 
     return visited.size;
+}
+
+/**
+ * Convert a tile ID to a GeoJSON Feature
+ */
+export function tileToGeoJson(tileId: string, properties: any = {}): any {
+    const boundary = cellToBoundary(tileId);
+    // H3 returns [lat, lng], GeoJSON needs [lng, lat]
+    const coordinates = boundary.map(([lat, lng]) => [lng, lat]);
+    // Close the polygon
+    coordinates.push(coordinates[0]);
+
+    return {
+        type: "Feature",
+        id: tileId,
+        properties: {
+            ...properties,
+            tileId,
+        },
+        geometry: {
+            type: "Polygon",
+            coordinates: [coordinates],
+        },
+    };
+}
+
+/**
+ * Convert multiple tiles to a GeoJSON FeatureCollection
+ */
+export function tilesToGeoJsonFeatureCollection(
+    tiles: Array<{ id: string; properties?: any }>
+): any {
+    return {
+        type: "FeatureCollection",
+        features: tiles.map((t) => tileToGeoJson(t.id, t.properties)),
+    };
 }

@@ -8,12 +8,14 @@
      ┬À clientTraceMetadata
 
    Creating an optimized production build ...
- ÔÜá Found lockfile missing swc dependencies, run next locally to automatically patch
+ ÔÜá Found lockfile missing swc dependencies, patching...
  Ô£ô (serwist) Bundling the service worker script with the URL '/sw.js' and the scope '/'...
+ Ô¿» Failed to patch lockfile, please try uninstalling and reinstalling next in this workspace
+[TypeError: Cannot read properties of undefined (reading 'os')]
 <w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (188kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
 <w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (139kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
 <w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (130kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
- ÔÜá Compiled with warnings in 4.4min
+ ÔÜá Compiled with warnings in 4.5min
 
 ./node_modules/@supabase/realtime-js/dist/module/lib/websocket-factory.js
 A Node.js API is used (process.versions at line: 39) which is not supported in the Edge Runtime.

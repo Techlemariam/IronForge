@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { useChat } from "@ai-sdk/react";
+import { useChat } from "ai/react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Send,
@@ -112,8 +112,8 @@ export const OracleChat: React.FC<OracleChatProps> = ({ context }) => {
                   >
                     <div
                       className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${m.role === "user"
-                          ? "bg-indigo-600"
-                          : "bg-zinc-800 border border-white/10"
+                        ? "bg-indigo-600"
+                        : "bg-zinc-800 border border-white/10"
                         }`}
                     >
                       {m.role === "user" ? (
@@ -124,8 +124,8 @@ export const OracleChat: React.FC<OracleChatProps> = ({ context }) => {
                     </div>
                     <div
                       className={`p-3 rounded-2xl text-sm leading-relaxed ${m.role === "user"
-                          ? "bg-indigo-600 text-white rounded-tr-none"
-                          : "bg-white/5 text-zinc-100 border border-white/5 rounded-tl-none font-medium"
+                        ? "bg-indigo-600 text-white rounded-tr-none"
+                        : "bg-white/5 text-zinc-100 border border-white/5 rounded-tl-none font-medium"
                         }`}
                     >
                       {m.content}

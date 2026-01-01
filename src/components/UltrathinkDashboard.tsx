@@ -119,8 +119,17 @@ const UltrathinkDashboard: React.FC<UltrathinkDashboardProps> = ({
         tsb: wellness.tsb || 0,
         hrv: wellness.hrv || 50,
         sleepScore: wellness.sleepScore || 100,
-        bodyBattery: wellness.bodyBattery || 100, // Added bodyBattery
+        bodyBattery: wellness.bodyBattery || 100,
         strengthDelta: 0,
+        consecutiveStalls: 0,
+        weeksInPhase: 0,
+        nutritionMode: "MAINTENANCE",
+        sleepDebt: 0,
+        acwr: 1.0,
+        junkMilePercent: 0,
+        neuralLoad: 0,
+        impactLoad: 0,
+        interferenceEvents: 0,
       },
       activePath,
     )

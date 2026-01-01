@@ -55,12 +55,12 @@ export class OracleService {
           user.intervalsApiKey,
           user.intervalsAthleteId,
         );
-        if (wData) {
+        if (wData && !Array.isArray(wData)) {
           wellness = {
-            bodyBattery: wData.readiness,
-            sleepScore: wData.sleepScore,
-            hrv: wData.hrv,
-            restingHR: wData.restingHR,
+            bodyBattery: (wData as any).readiness,
+            sleepScore: (wData as any).sleepScore,
+            hrv: (wData as any).hrv,
+            restingHR: (wData as any).restingHR,
           };
         }
 
@@ -78,18 +78,30 @@ export class OracleService {
     }
 
     // Fetch Hevy History (via Hevy Lib)
-    // Note: Hevy lib might need an API Key if configured in settings/env, assuming in user settings for now
-    // Logic assumption: user has hevy credentials.
-    // For prototype, we check if hevyApiKey exists on user (it's in AppSettings interface in types, probably on User model too)
-    // Checking schema... User model doesn't explicitly show keys in the snippet I saw, but AppSettings implies they exist.
-    // I will assume they are on the User object or fetched via a helper.
-    // Actually, the `hevy.ts` lib takes an apiKey. I'll use `user.hevyApiKey` (casted/assumed) or skip.
-    // Based on previous contexts, keys might be in `prisma.user`.
+    if (user.hevyApiKey) {
+      try {
+        const result = await getHevyWorkouts(user.hevyApiKey, 1, 10);
+        hevyWorkouts = result.workouts || [];
+      } catch (e) {
+        console.error("Oracle: Failed to fetch Hevy data", e);
+      }
+    }
 
-
-    // ...
     // 3. Fetch Local Data
-    // ... (rest of fetch)
+    const localCardio = await prisma.cardioLog.findMany({
+      where: {
+        userId,
+        date: { gte: historyStart },
+      },
+    });
+
+    const localStrength = await prisma.exerciseLog.findMany({
+      where: {
+        userId,
+        date: { gte: historyStart },
+      },
+      include: { exercise: true },
+    });
 
     // 4. Fetch Equipment Capabilities (The Armory)
     const capabilities = await EquipmentService.getUserCapabilities(userId);
@@ -114,10 +126,10 @@ export class OracleService {
   private static calculateCombinedHistory(
     start: Date,
     end: Date,
-    localCardio: unknown[],
-    localStrength: unknown[],
+    localCardio: any[],
+    localStrength: any[],
     remoteCardio: IntervalsActivity[],
-    remoteStrength: unknown[],
+    remoteStrength: any[],
   ): Map<string, DailyLoad> {
     const loads = new Map<string, DailyLoad>();
 
@@ -164,7 +176,7 @@ export class OracleService {
         (activity as any)["start_date_local"] || new Date(),
       ); // Assuming start_date_local exists on real object
       const isDupe = localCardio.some(
-        (l) =>
+        (l: any) =>
           Math.abs(new Date(l.date).getTime() - actDate.getTime()) <
           DUPE_WINDOW_MS,
       );
@@ -204,7 +216,33 @@ export class OracleService {
     });
 
     // Process Remote Strength (Hevy) - Dedup
-    // similar logic...
+    remoteStrength.forEach((workout) => {
+      const startTime = new Date(workout.start_time);
+      const isDupe = localStrength.some(
+        (l: any) =>
+          Math.abs(new Date(l.date).getTime() - startTime.getTime()) <
+          DUPE_WINDOW_MS,
+      );
+
+      if (!isDupe) {
+        const key = getKey(startTime);
+        const entry = loads.get(key) || {
+          date: startTime,
+          cardioLoad: 0,
+          strengthVolume: 0,
+        };
+
+        let vol = 0;
+        workout.exercises?.forEach((ex: any) => {
+          ex.sets?.forEach((s: any) => {
+            vol += (s.reps || 0) * (s.weight_kg || 0);
+          });
+        });
+
+        entry.strengthVolume += vol;
+        loads.set(key, entry);
+      }
+    });
 
     return loads;
   }
@@ -256,7 +294,8 @@ export class OracleService {
     titan: any,
     wellness: IntervalsWellness,
     analysis: { cardioRatio: number; volumeRatio: number },
-    capabilities: EquipmentType[] = []
+    capabilities: EquipmentType[] = [],
+    activePath: string = "HYBRID_WARDEN"
   ): OracleDecree {
     // 1. Safety Override
     if (titan.isInjured) {

@@ -232,6 +232,9 @@ export interface IntervalsWellness {
 export interface IntervalsActivity {
   id?: string;
   icu_intensity?: number;
+  icu_training_load?: number;
+  type?: string;
+  start_date_local: string;
   moving_time: number;
   zone_times?: number[]; // Time in seconds for each zone (Z1-Z7)
 }

@@ -125,3 +125,36 @@ export async function getEvents(
     return [];
   }
 }
+
+/**
+ * Fetch GPS stream for an activity
+ * Note: Intervals.icu uses /activity/{id}/streams endpoint for time-series data
+ */
+export async function getActivityStream(
+  activityId: string,
+  apiKey: string
+): Promise<Array<{ lat: number; lng: number }> | null> {
+  try {
+    // We request 'latlng' stream. The response is an array of [lat, lng] pairs
+    // or an object containing the streams.
+    const data = await fetchIntervals(
+      `/activity/${activityId}/streams?types=latlng`,
+      apiKey
+    );
+
+    if (!data) return null;
+
+    // Intervals.icu returns an array of streams. We find the one with type 'latlng'
+    const latlngStream = data.find((s: any) => s.type === "latlng");
+    if (!latlngStream || !latlngStream.data) return null;
+
+    // Convert [lat, lng] arrays to objects
+    return latlngStream.data.map((point: [number, number]) => ({
+      lat: point[0],
+      lng: point[1],
+    }));
+  } catch (error: any) {
+    console.error(`Failed to fetch activity stream for ${activityId}:`, error.message);
+    return null;
+  }
+}

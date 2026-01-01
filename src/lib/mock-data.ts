@@ -23,11 +23,11 @@ export const MOCK_WELLNESS: IntervalsWellness = {
 };
 
 export const MOCK_ACTIVITIES: IntervalsActivity[] = [
-  { id: "mock-run-1", icu_intensity: 85, moving_time: 1800 }, // 30m Run
-  { id: "mock-ride-1", icu_intensity: 60, moving_time: 3600 }, // 60m Ride
-  { id: "mock-run-2", icu_intensity: 75, moving_time: 2400 }, // 40m Run
-  { id: "mock-ride-2", icu_intensity: 65, moving_time: 3600 }, // 60m Ride
-  { id: "mock-run-3", icu_intensity: 90, moving_time: 1200 }, // 20m Hiit
+  { id: "mock-run-1", icu_intensity: 85, moving_time: 1800, type: "Run", start_date_local: new Date().toISOString() }, // 30m Run
+  { id: "mock-ride-1", icu_intensity: 60, moving_time: 3600, type: "Ride", start_date_local: new Date().toISOString() }, // 60m Ride
+  { id: "mock-run-2", icu_intensity: 75, moving_time: 2400, type: "Run", start_date_local: new Date().toISOString() }, // 40m Run
+  { id: "mock-ride-2", icu_intensity: 65, moving_time: 3600, type: "Ride", start_date_local: new Date().toISOString() }, // 60m Ride
+  { id: "mock-run-3", icu_intensity: 90, moving_time: 1200, type: "Run", start_date_local: new Date().toISOString() }, // 20m Hiit
 ];
 
 export const MOCK_EVENTS: IntervalsEvent[] = [

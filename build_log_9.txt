@@ -2,18 +2,17 @@
 > ironforge-rpg@1.0.0 build
 > next build
 
-   Ôû▓ Next.js 15.5.9
+   Ôû▓ Next.js 15.1.4
    - Environments: .env.local, .env
    - Experiments (use with caution):
      ┬À clientTraceMetadata
 
    Creating an optimized production build ...
- ÔÜá Found lockfile missing swc dependencies, run next locally to automatically patch
  Ô£ô (serwist) Bundling the service worker script with the URL '/sw.js' and the scope '/'...
 <w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (188kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
 <w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (139kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
 <w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (130kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
- ÔÜá Compiled with warnings in 4.4min
+ ÔÜá Compiled with warnings
 
 ./node_modules/@supabase/realtime-js/dist/module/lib/websocket-factory.js
 A Node.js API is used (process.versions at line: 39) which is not supported in the Edge Runtime.
@@ -51,6 +50,9 @@ Import trace for requested module:
 ./src/features/podcast/components/PocketCastsPlayer.tsx
 78:21  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
 
+./src/features/territory/components/TerritoryMap.tsx
+111:8  Warning: React Hook useEffect has missing dependencies: 'initialCenter' and 'tiles'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
 ./src/features/training/CardioStudio.tsx
 631:6  Warning: React Hook useEffect has a missing dependency: 'sessionDuration'. Either include it or remove the dependency array. You can also replace multiple useState variables with useReducer if 'setTotalDistanceKm' needs the current value of 'sessionDuration'.  react-hooks/exhaustive-deps
 
@@ -68,4 +70,4 @@ Type error: Argument of type '{ ctl: number; atl: number; tsb: number; hrv: numb
   117 |         ctl: wellness.ctl || 0,
   118 |         atl: wellness.atl || 0,
   119 |         tsb: wellness.tsb || 0,
-Next.js build worker exited with code: 1 and signal: null
+Static worker exited with code: 1 and signal: null

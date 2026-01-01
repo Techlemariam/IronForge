@@ -130,7 +130,8 @@ export class TrainingContextService {
                 currentMacroCycle: true,
                 macroCycleStartDate: true,
                 consecutiveStalls: true,
-                totalExperience: true // proxy for fitness level if needed
+                totalExperience: true,
+                nutritionMode: true
             }
         });
 
@@ -158,11 +159,18 @@ export class TrainingContextService {
             atl: 0, // TODO: Fetch from Intervals (icu_atl)
             tsb: 0, // TODO: Fetch from Intervals (icu_form)
             hrv: wellness?.hrv || 0,
-            sleepScore: wellness?.sleepSec ? (wellness.sleepSec / 3600 / 8) * 100 : 0, // Estimate score from 8h baseline
+            sleepScore: wellness?.sleepSecs ? (wellness.sleepSecs / 3600 / 8) * 100 : 0, // Estimate score from 8h baseline
             bodyBattery: wellness?.bodyBattery || 0,
             strengthDelta: 0, // TODO: Calculate from recent PRs
             consecutiveStalls: user?.consecutiveStalls || 0,
-            weeksInPhase: weeksInPhase
+            weeksInPhase: weeksInPhase,
+            nutritionMode: "MAINTENANCE",
+            sleepDebt: 0,
+            acwr: 1.0,
+            junkMilePercent: 0,
+            neuralLoad: 0,
+            impactLoad: 0,
+            interferenceEvents: 0
         };
 
         const recommendedPhase = AutoSpecEngine.evaluateTransition(currentPhase, metrics);
@@ -177,7 +185,8 @@ export class TrainingContextService {
             activePath,
             currentPhase,
             weeksInPhase,
-            totalTss
+            totalTss,
+            metrics
         );
 
         // 6. Fetch Volume (Pass dynamic MRV scale factor)
@@ -222,6 +231,8 @@ export class TrainingContextService {
 
         // 8. Calculate Cardio Stress (TSS)
         let cardioStress: TrainingContext["cardioStress"] = "LOW";
+        if (totalTss > 250) cardioStress = "HIGH";
+        else if (totalTss > 100) cardioStress = "MODERATE";
         // 4b. Path-Specific Metrics Calculation
         // Neural Load (Juggernaut)
         // Need to fetch logs if not already filtered. getWeeklyVolume fetches them internally.
@@ -239,8 +250,8 @@ export class TrainingContextService {
             // @ts-ignore
             if (Array.isArray(log.sets)) {
                 // @ts-ignore
-                log.sets.forEach(set => {
-                    if (set.reps > 0) {
+                (log.sets as any[]).forEach(set => {
+                    if (set && set.reps > 0) {
                         const cost = TrainingContextService.estimateCnsCost(log.exercise.name, set.rpe || 7, set.reps);
                         neuralLoad += (cost === "HIGH" ? 3 : cost === "MEDIUM" ? 2 : 1);
                     }
@@ -288,9 +299,11 @@ export class TrainingContextService {
                 // @ts-ignore
                 if (Array.isArray(log.sets)) {
                     // @ts-ignore
-                    log.sets.forEach(set => {
-                        totalSets++;
-                        if ((set.rpe || 0) < 7) junkSets++;
+                    (log.sets as any[]).forEach(set => {
+                        if (set) {
+                            totalSets++;
+                            if ((set.rpe || 0) < 7) junkSets++;
+                        }
                     });
                 }
             });
@@ -318,8 +331,8 @@ export class TrainingContextService {
                 // @ts-ignore
                 if (Array.isArray(log.sets)) {
                     // @ts-ignore
-                    log.sets.forEach(set => {
-                        if (set.reps < 5) lowRepSets++;
+                    (log.sets as any[]).forEach(set => {
+                        if (set && set.reps < 5) lowRepSets++;
                     });
                 }
             });

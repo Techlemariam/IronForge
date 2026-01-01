@@ -1,0 +1,173 @@
+
+> ironforge-rpg@1.0.0 build
+> next build
+
+   Ôû▓ Next.js 15.1.4
+   - Environments: .env.local, .env
+   - Experiments (use with caution):
+     ┬À clientTraceMetadata
+
+   Creating an optimized production build ...
+ Ô£ô (serwist) Bundling the service worker script with the URL '/sw.js' and the scope '/'...
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, lstat 'C:\Users\alexa\Workspaces\IronForge\node_modules\require-in-the-middle\index.js'
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving 'require-in-the-middle/index' in C:\Users\alexa\Workspaces\IronForge\node_modules\@opentelemetry\instrumentation\build\src\platform\node for build dependencies doesn't lead to expected result 'C:\Users\alexa\Workspaces\IronForge\node_modules\require-in-the-middle\index.js', but to 'Error: Can't resolve 'require-in-the-middle/index' in 'C:\Users\alexa\Workspaces\IronForge\node_modules\@opentelemetry\instrumentation\build\src\platform\node'' instead. Resolving dependencies are ignored for this path.
+<w>  at unknown 4 require-in-the-middle/index
+<w>  at file dependencies C:\Users\alexa\Workspaces\IronForge\node_modules\@opentelemetry\instrumentation\build\src\platform\node\instrumentation.js
+<w>  at file C:\Users\alexa\Workspaces\IronForge\node_modules\@opentelemetry\instrumentation\build\src\platform\node\instrumentation.js
+<w>  at file dependencies C:\Users\alexa\Workspaces\IronForge\node_modules\@opentelemetry\instrumentation\build\src\platform\node\index.js
+<w>  at file C:\Users\alexa\Workspaces\IronForge\node_modules\@opentelemetry\instrumentation\build\src\platform\node\index.js
+<w>  at file dependencies C:\Users\alexa\Workspaces\IronForge\node_modules\@opentelemetry\instrumentation\build\src\platform\index.js
+<w>  at file C:\Users\alexa\Workspaces\IronForge\node_modules\@opentelemetry\instrumentation\build\src\platform\index.js
+<w>  at file dependencies C:\Users\alexa\Workspaces\IronForge\node_modules\@opentelemetry\instrumentation\build\src\index.js
+<w>  at file C:\Users\alexa\Workspaces\IronForge\node_modules\@opentelemetry\instrumentation\build\src\index.js
+<w>  at file dependencies C:\Users\alexa\Workspaces\IronForge\node_modules\@opentelemetry\instrumentation-http\build\src\http.js
+<w>  at file C:\Users\alexa\Workspaces\IronForge\node_modules\@opentelemetry\instrumentation-http\build\src\http.js
+<w>  at file dependencies C:\Users\alexa\Workspaces\IronForge\node_modules\@opentelemetry\instrumentation-http\build\src\index.js
+<w>  at file C:\Users\alexa\Workspaces\IronForge\node_modules\@opentelemetry\instrumentation-http\build\src\index.js
+<w>  at file dependencies C:\Users\alexa\Workspaces\IronForge\node_modules\@sentry\node\build\cjs\integrations\http.js
+<w>  at file C:\Users\alexa\Workspaces\IronForge\node_modules\@sentry\node\build\cjs\integrations\http.js
+<w>  at file dependencies C:\Users\alexa\Workspaces\IronForge\node_modules\@sentry\node\build\cjs\sdk\index.js
+<w>  at file C:\Users\alexa\Workspaces\IronForge\node_modules\@sentry\node\build\cjs\sdk\index.js
+<w>  at file dependencies C:\Users\alexa\Workspaces\IronForge\node_modules\@sentry\node\build\cjs\index.js
+<w>  at file C:\Users\alexa\Workspaces\IronForge\node_modules\@sentry\node\build\cjs\index.js
+<w>  at file dependencies C:\Users\alexa\Workspaces\IronForge\node_modules\@sentry\nextjs\build\cjs\index.server.js
+<w>  at file C:\Users\alexa\Workspaces\IronForge\node_modules\@sentry\nextjs\build\cjs\index.server.js
+<w>  at resolve esm file @sentry/nextjs
+<w>  at file dependencies C:\Users\alexa\Workspaces\IronForge\next.config.mjs
+<w>  at file C:\Users\alexa\Workspaces\IronForge\next.config.mjs
+<w>  at resolve commonjs C:\Users\alexa\Workspaces\IronForge\next.config.mjs
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving 'import-in-the-middle/index' in C:\Users\alexa\Workspaces\IronForge\node_modules\@opentelemetry\instrumentation\build\src\platform\node for build dependencies doesn't lead to expected result 'C:\Users\alexa\Workspaces\IronForge\node_modules\import-in-the-middle\index.js', but to 'Error: Can't resolve 'import-in-the-middle/index' in 'C:\Users\alexa\Workspaces\IronForge\node_modules\@opentelemetry\instrumentation\build\src\platform\node'' instead. Resolving dependencies are ignored for this path.
+<w>  at unknown 4 import-in-the-middle/index
+<w>  at file dependencies C:\Users\alexa\Workspaces\IronForge\node_modules\@opentelemetry\instrumentation\build\src\platform\node\instrumentation.js
+<w>  at file C:\Users\alexa\Workspaces\IronForge\node_modules\@opentelemetry\instrumentation\build\src\platform\node\instrumentation.js
+<w>  at file dependencies C:\Users\alexa\Workspaces\IronForge\node_modules\@opentelemetry\instrumentation\build\src\platform\node\index.js
+<w>  at file C:\Users\alexa\Workspaces\IronForge\node_modules\@opentelemetry\instrumentation\build\src\platform\node\index.js
+<w>  at file dependencies C:\Users\alexa\Workspaces\IronForge\node_modules\@opentelemetry\instrumentation\build\src\platform\index.js
+<w>  at file C:\Users\alexa\Workspaces\IronForge\node_modules\@opentelemetry\instrumentation\build\src\platform\index.js
+<w>  at file dependencies C:\Users\alexa\Workspaces\IronForge\node_modules\@opentelemetry\instrumentation\build\src\index.js
+<w>  at file C:\Users\alexa\Workspaces\IronForge\node_modules\@opentelemetry\instrumentation\build\src\index.js
+<w>  at file dependencies C:\Users\alexa\Workspaces\IronForge\node_modules\@opentelemetry\instrumentation-http\build\src\http.js
+<w>  at file C:\Users\alexa\Workspaces\IronForge\node_modules\@opentelemetry\instrumentation-http\build\src\http.js
+<w>  at file dependencies C:\Users\alexa\Workspaces\IronForge\node_modules\@opentelemetry\instrumentation-http\build\src\index.js
+<w>  at file C:\Users\alexa\Workspaces\IronForge\node_modules\@opentelemetry\instrumentation-http\build\src\index.js
+<w>  at file dependencies C:\Users\alexa\Workspaces\IronForge\node_modules\@sentry\node\build\cjs\integrations\http.js
+<w>  at file C:\Users\alexa\Workspaces\IronForge\node_modules\@sentry\node\build\cjs\integrations\http.js
+<w>  at file dependencies C:\Users\alexa\Workspaces\IronForge\node_modules\@sentry\node\build\cjs\sdk\index.js
+<w>  at file C:\Users\alexa\Workspaces\IronForge\node_modules\@sentry\node\build\cjs\sdk\index.js
+<w>  at file dependencies C:\Users\alexa\Workspaces\IronForge\node_modules\@sentry\node\build\cjs\index.js
+<w>  at file C:\Users\alexa\Workspaces\IronForge\node_modules\@sentry\node\build\cjs\index.js
+<w>  at file dependencies C:\Users\alexa\Workspaces\IronForge\node_modules\@sentry\nextjs\build\cjs\index.server.js
+<w>  at file C:\Users\alexa\Workspaces\IronForge\node_modules\@sentry\nextjs\build\cjs\index.server.js
+<w>  at resolve esm file @sentry/nextjs
+<w>  at file dependencies C:\Users\alexa\Workspaces\IronForge\next.config.mjs
+<w>  at file C:\Users\alexa\Workspaces\IronForge\next.config.mjs
+<w>  at resolve commonjs C:\Users\alexa\Workspaces\IronForge\next.config.mjs
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, lstat 'C:\Users\alexa\Workspaces\IronForge\node_modules\require-in-the-middle\index.js'
+Failed to compile.
+
+./node_modules/@opentelemetry/instrumentation/build/esm/platform/node/RequireInTheMiddleSingleton.js:16:1
+Module not found: Can't resolve 'require-in-the-middle'
+  14 |  * limitations under the License.
+  15 |  */
+> 16 | import { Hook } from 'require-in-the-middle';
+     | ^
+  17 | import * as path from 'path';
+  18 | import { ModuleNameTrie, ModuleNameSeparator } from './ModuleNameTrie';
+  19 | /**
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+./node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+./node_modules/@sentry/node/build/cjs/index.js
+./node_modules/@sentry/nextjs/build/cjs/index.server.js
+./src/app/global-error.tsx
+
+./node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js:22:1
+Module not found: Can't resolve 'import-in-the-middle'
+  20 | import { InstrumentationAbstract } from '../../instrumentation';
+  21 | import { RequireInTheMiddleSingleton, } from './RequireInTheMiddleSingleton';
+> 22 | import { Hook as HookImport } from 'import-in-the-middle';
+     | ^
+  23 | import { diag } from '@opentelemetry/api';
+  24 | import { Hook as HookRequire } from 'require-in-the-middle';
+  25 | import { readFileSync } from 'fs';
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+./node_modules/@sentry/node/build/cjs/index.js
+./node_modules/@sentry/nextjs/build/cjs/index.server.js
+./src/app/global-error.tsx
+
+./node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js:24:1
+Module not found: Can't resolve 'require-in-the-middle'
+  22 | import { Hook as HookImport } from 'import-in-the-middle';
+  23 | import { diag } from '@opentelemetry/api';
+> 24 | import { Hook as HookRequire } from 'require-in-the-middle';
+     | ^
+  25 | import { readFileSync } from 'fs';
+  26 | import { isWrapped } from '../../utils';
+  27 | /**
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+./node_modules/@sentry/node/build/cjs/index.js
+./node_modules/@sentry/nextjs/build/cjs/index.server.js
+./src/app/global-error.tsx
+
+./node_modules/@sentry/node-core/build/cjs/sdk/esmLoader.js:4:1
+Module not found: Can't resolve 'import-in-the-middle'
+  2 |
+  3 | const core = require('@sentry/core');
+> 4 | const importInTheMiddle = require('import-in-the-middle');
+    | ^
+  5 | const moduleModule = require('module');
+  6 | const detection = require('../utils/detection.js');
+  7 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@sentry/node-core/build/cjs/index.js
+./node_modules/@sentry/node/build/cjs/index.js
+./node_modules/@sentry/nextjs/build/cjs/index.server.js
+./src/app/global-error.tsx
+
+./node_modules/@opentelemetry/instrumentation/build/esm/platform/node/RequireInTheMiddleSingleton.js:16:1
+Module not found: Can't resolve 'require-in-the-middle'
+  14 |  * limitations under the License.
+  15 |  */
+> 16 | import { Hook } from 'require-in-the-middle';
+     | ^
+  17 | import * as path from 'path';
+  18 | import { ModuleNameTrie, ModuleNameSeparator } from './ModuleNameTrie';
+  19 | /**
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+./node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+./node_modules/@sentry/node/build/cjs/index.js
+./node_modules/@sentry/nextjs/build/cjs/index.server.js
+./src/instrumentation.ts
+
+
+> Build failed because of webpack errors

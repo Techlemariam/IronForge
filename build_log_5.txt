@@ -13,30 +13,7 @@
 <w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (188kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
 <w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (139kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
 <w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (130kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
- ÔÜá Compiled with warnings in 4.4min
-
-./node_modules/@supabase/realtime-js/dist/module/lib/websocket-factory.js
-A Node.js API is used (process.versions at line: 39) which is not supported in the Edge Runtime.
-Learn more: https://nextjs.org/docs/api-reference/edge-runtime
-
-Import trace for requested module:
-./node_modules/@supabase/realtime-js/dist/module/lib/websocket-factory.js
-./node_modules/@supabase/realtime-js/dist/module/index.js
-./node_modules/@supabase/supabase-js/dist/index.mjs
-./node_modules/@supabase/ssr/dist/module/createBrowserClient.js
-./node_modules/@supabase/ssr/dist/module/index.js
-./src/utils/supabase/middleware.ts
-
-./node_modules/@supabase/supabase-js/dist/index.mjs
-A Node.js API is used (process.version at line: 389) which is not supported in the Edge Runtime.
-Learn more: https://nextjs.org/docs/api-reference/edge-runtime
-
-Import trace for requested module:
-./node_modules/@supabase/supabase-js/dist/index.mjs
-./node_modules/@supabase/ssr/dist/module/createBrowserClient.js
-./node_modules/@supabase/ssr/dist/module/index.js
-./src/utils/supabase/middleware.ts
-
+ Ô£ô Compiled successfully in 38.2s
    Linting and checking validity of types ...
 
 ./src/components/gamification/OvertrainingBanner.tsx
@@ -57,15 +34,14 @@ Import trace for requested module:
 info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
 Failed to compile.
 
-./src/components/UltrathinkDashboard.tsx:116:7
-Type error: Argument of type '{ ctl: number; atl: number; tsb: number; hrv: number; sleepScore: number; bodyBattery: number; strengthDelta: number; }' is not assignable to parameter of type 'SystemMetrics'.
-  Type '{ ctl: number; atl: number; tsb: number; hrv: number; sleepScore: number; bodyBattery: number; strengthDelta: number; }' is missing the following properties from type 'SystemMetrics': consecutiveStalls, weeksInPhase, nutritionMode, sleepDebt, and 5 more.
+./src/components/OracleChat.tsx:26:21
+Type error: Property 'input' does not exist on type 'UseChatHelpers<UIMessage<unknown, UIDataTypes, UITools>>'.
 
-  114 |   const isSurvivalMode = wellness
-  115 |     ? TrainingMemoryManager.shouldEnterSurvivalMode(
-> 116 |       {
-      |       ^
-  117 |         ctl: wellness.ctl || 0,
-  118 |         atl: wellness.atl || 0,
-  119 |         tsb: wellness.tsb || 0,
+  24 |   const scrollRef = useRef<HTMLDivElement>(null);
+  25 |
+> 26 |   const { messages, input, handleInputChange, handleSubmit, isLoading } =
+     |                     ^
+  27 |     useChat({
+  28 |       api: "/api/chat",
+  29 |       body: {
 Next.js build worker exited with code: 1 and signal: null
