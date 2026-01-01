@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { getTerritoryAppData } from '../../../actions/territory';
 
 // Mock dependencies
-const prismaMock = {
+const prismaMock = vi.hoisted(() => ({
     tileControl: {
         findMany: vi.fn(),
     },
@@ -11,12 +11,15 @@ const prismaMock = {
     },
     userTerritoryStats: {
         findUnique: vi.fn(),
+    },
+    territoryTile: {
+        findMany: vi.fn().mockResolvedValue([]),
     }
-};
+}));
 
-const notificationServiceMock = {
+const notificationServiceMock = vi.hoisted(() => ({
     create: vi.fn(),
-};
+}));
 
 // Mock modules
 vi.mock('@/lib/prisma', () => ({
@@ -46,19 +49,20 @@ vi.mock('@/utils/supabase/server', () => ({
     }),
 }));
 
+vi.mock('@/lib/auth', () => ({
+    getSession: vi.fn().mockResolvedValue({
+        user: { id: 'user-123', email: 'test@example.com' },
+    }),
+}));
+
 describe('territory actions', () => {
     beforeEach(() => {
         vi.clearAllMocks();
     });
 
     describe('getTerritoryAppData', () => {
-        it('should return empty data if user not found', async () => {
-            // Override auth mock for this specific test if needed, 
-            // but here we can mock prisma.user.findUnique to return null? 
-            // Logic in getTerritoryAppData fetches user. 
-            // Wait, getTerritoryAppData might rely on createClient first.
-
-            // Let's test the happy path first where user exists.
+        it('should return territory data when user is found', async () => {
+            // Mock happy path where user exists
             prismaMock.user.findUnique.mockResolvedValue({
                 id: 'user-123',
                 homeLatitude: 59.32,
@@ -72,10 +76,30 @@ describe('territory actions', () => {
                 controlPoints: 500,
             });
 
-            // Mock Control Records
+            // Mock Control Records with nested tile relation
             prismaMock.tileControl.findMany.mockResolvedValue([
-                { tileId: 'tile-1', controllerId: 'user-123', controlPoints: 100, status: 'OWNED' },
-                { tileId: 'home_zone_tile', controllerId: 'user-123', controlPoints: 100, status: 'OWNED' } // This should be marked HOME_ZONE
+                {
+                    tileId: 'tile-1',
+                    controllerId: 'user-123',
+                    controlPoints: 100,
+                    status: 'OWNED',
+                    tile: {
+                        id: 'tile-1',
+                        currentOwnerId: 'user-123',
+                        currentOwner: { heroName: 'Hero' }
+                    }
+                },
+                {
+                    tileId: 'home_zone_tile',
+                    controllerId: 'user-123',
+                    controlPoints: 100,
+                    status: 'OWNED',
+                    tile: {
+                        id: 'home_zone_tile',
+                        currentOwnerId: 'user-123',
+                        currentOwner: { heroName: 'Hero' }
+                    }
+                }
             ]);
 
             const result = await getTerritoryAppData();

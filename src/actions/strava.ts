@@ -268,9 +268,10 @@ export async function syncStravaActivitiesAction() {
 
     revalidatePath("/");
     return { success: true, count: syncedCount };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Sync Error:", error);
-    return { success: false, error: error.message || "Sync failed" };
+    const message = error instanceof Error ? error.message : "Sync failed";
+    return { success: false, error: message };
   }
 }
 

@@ -10,8 +10,8 @@ import axios from "axios";
 import { createClient } from "@/utils/supabase/server";
 
 // Mock Dependencies
-vi.mock("@/lib/prisma", () => ({
-  default: {
+vi.mock("@/lib/prisma", () => {
+  const mockPrisma = {
     user: {
       update: vi.fn(),
       findUnique: vi.fn(),
@@ -20,8 +20,16 @@ vi.mock("@/lib/prisma", () => ({
       findUnique: vi.fn(),
       create: vi.fn(),
     },
-  },
-}));
+    duelChallenge: {
+      findMany: vi.fn().mockResolvedValue([]),
+      update: vi.fn(),
+    },
+  };
+  return {
+    default: mockPrisma,
+    prisma: mockPrisma,
+  };
+});
 
 vi.mock("@/utils/supabase/server", () => ({
   createClient: vi.fn(),

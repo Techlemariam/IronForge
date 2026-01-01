@@ -299,18 +299,19 @@ Because the Dark Forgemaster is coming."
 
 ## 🎨 Dialogue Guidelines
 
-### Tone Rules
-1. **Epic but grounded** - Fantasy language, real training concepts
-2. **Under 100 words per bubble** - Mobile-first
-3. **Training metaphors** - Every scene connects to fitness
-4. **No preaching** - Characters inspire, never lecture
+### Tone Rules ("Your Highness" Style)
+1.  **Pseudo-Archaic & Absurd:** Use words like "betwixt", "yonder", and "quest" mixed with modern insults or fitness slang.
+2.  **Grandiose vs Mundane:** Describe simple exercises as earth-shattering magical rituals.
+3.  **Comedic Vulgarity:** (Keep it PG-13/Soft R) "Kick the beast in its netherlands!" rather than dry tactical commands.
+4.  **Incompetence/Reluctance:** The "Hero" (User) is the chosen one, but everyone is surprised by this.
 
 ### Character Voice Quick Reference
-| Character | Speaks Like | Never Says |
-|-----------|-------------|------------|
-| Marcus | Drill sergeant | Excuses |
-| Elara | Ancient oracle | Anything rushed |
-| Kain | Confident warrior | "Good job" |
+| Character | Speaks Like | Example |
+|-----------|-------------|---------|
+| **Marcus** | Grumpy Medieval Sergeant | "Stop engaging in dalliances with the gravity! LIFT IT!" |
+| **Elara** | Stoned Oracle | "The prophecy... it speaks of... wait, did you bring snacks?" |
+| **Kain** | Narcissistic Prince | "Gaze upon my calves! They are like marble sculpted by the gods themselves!" |
+| **The Beast**| Insulting Monster | "Your form is as flaccid as a goblin's loincloth!" |
 
 ---
 

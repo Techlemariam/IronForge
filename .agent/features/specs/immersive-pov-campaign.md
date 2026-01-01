@@ -121,25 +121,46 @@ Dynamic Audio System using Web Audio API.
 
 ---
 
-## 5. Progression & Skill Tree Integration
+## 5. UI/UX & Game Feel (Agent: /ui-ux)
 
-The Campaign is the "Practical Exam" for the Skill Tree.
+### Diegetic HUD Design
+The UI should act as a physical overlay inside the Titan's helmet/visor, not a flat web interface.
 
-1.  **Unlock Requirement:**
-    -   To play "Siege Breaker Mission 1", you must unlock "Cycle Mastery I" node in Skill Tree.
-2.  **Mission Reward:**
-    -   Completion unlocks "Mutator Nodes" (e.g., "Siege Breaker's Legs: +5% Wattage in intervals").
-3.  **Unique Loot:**
-    -   Digital cosmetic armor pieces visible in the POV HUD for future missions.
+-   **Curved Horizon:** CSS transforms to mimic helmet curvature.
+-   **Vignette Effects:**
+    -   *High HR:* Red pulsating edges, tunnel vision blur (CSS `backdrop-filter`).
+    -   *Low Energy:* Desaturated colors, "glitch" artifacts.
+-   **Metric Integration:** Floating holographic numbers anchored to 3D space (simulated).
+
+### Mobile vs Desktop
+-   **Desktop/TV:** Full cinematic POV experience.
+-   **Mobile:** Simplified "Tactical Data Link" mode to save battery/bandwidth while running.
 
 ---
 
-## 6. Tech Stack Requirements
+## 6. Technical Architecture (Agent: /architect)
 
--   **Bluetooth:** `navigator.bluetooth` for Polar H10 direct connection.
--   **Video:** `<video>` tag with `z-index: -1` + Canvas overlay.
--   **Audio:** `Howler.js` or generic Web Audio API for stem mixing.
--   **State:** Redux/Zustand store for `BiometricsState` (HR, HRV, Zone).
+### Data Persistence Strategy
+**Problem:** Sampling HR at 1Hz = 3600 writes/hour/user. Too heavy for main DB.
+**Solution:**
+1.  **Ephemeral:** Real-time data lives in Client State (Zustand) + LocalStorage.
+2.  **Session Summary:** Only persist the *result* to Postgres:
+    -   `CampaignSession` (id, duration, avgHr, maxHr, storyEventsTriggered[]).
+3.  **Validation:** Client signs the session blob; Server validates physics (no 500kg deadlifts in 2 seconds).
+
+### Component Structure
+Follows `src/features/campaign` isolation:
+```
+src/features/campaign/
+├── components/
+│   ├── hud/ (Diegetic UI)
+│   ├── video/ (Player wrapper)
+│   └── bluetooth/ (Connect logic)
+├── hooks/
+│   └── useBioTriggers.ts (Business logic)
+├── store/
+│   └── campaignStore.ts (Zustand)
+```
 
 ## 7. Next Steps (MVP)
 1.  **Prototype H10 Connection:** Build a simple page that reads HR and changes background color (Red=Z5, Blue=Z1).
