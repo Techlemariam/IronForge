@@ -100,6 +100,7 @@
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.0.0",
     "@types/three": "^0.182.0",
+    "@types/web-bluetooth": "^0.0.21",
     "@vitest/coverage-v8": "^4.0.16",
     "autoprefixer": "^10.4.14",
     "dotenv": "^17.2.3",

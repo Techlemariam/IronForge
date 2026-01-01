@@ -8,7 +8,7 @@ import {
   CombatAction,
 } from "@/services/game/CombatEngine";
 import { calculateTitanAttributes } from "@/utils";
-import { Monster } from "@/types";
+import { Monster, MonsterType } from "@/types";
 import { LootSystem } from "@/services/game/LootSystem";
 import { revalidatePath } from "next/cache";
 import {
