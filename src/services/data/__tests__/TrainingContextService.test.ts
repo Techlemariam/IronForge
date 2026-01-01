@@ -9,6 +9,9 @@ vi.mock("@/lib/prisma", () => {
         exerciseLog: {
             findMany: vi.fn(),
         },
+        user: {
+            findUnique: vi.fn(),
+        },
     };
     return {
         default: mockClient,
@@ -26,6 +29,7 @@ describe("TrainingContextService", () => {
 
     beforeEach(() => {
         vi.clearAllMocks();
+        (prisma.user.findUnique as any).mockResolvedValue({ id: "user_123" });
     });
 
     describe("getWeeklyVolume", () => {
@@ -73,7 +77,13 @@ describe("TrainingContextService", () => {
             (prisma.exerciseLog.findMany as any).mockResolvedValue([]);
 
             // Mock Intervals
-            (getWellnessAction as any).mockResolvedValue({ bodyBattery: 90 });
+            (getWellnessAction as any).mockResolvedValue({
+                bodyBattery: 90,
+                hrv: 80,
+                sleepScore: 85,
+                sleepSecs: 28800, // 8 hours
+                restingHR: 50
+            });
             (getActivitiesAction as any).mockResolvedValue([]);
 
             const context = await TrainingContextService.getTrainingContext(userId);

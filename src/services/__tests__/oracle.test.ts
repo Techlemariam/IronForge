@@ -9,6 +9,7 @@ vi.mock("@/lib/prisma", () => ({
     user: { findUnique: vi.fn() },
     cardioLog: { findMany: vi.fn() },
     exerciseLog: { findMany: vi.fn() },
+    userEquipment: { findMany: vi.fn().mockResolvedValue([{ item: { equipmentType: "BARBELL" } }]) },
   },
 }));
 
