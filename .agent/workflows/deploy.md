@@ -8,6 +8,9 @@ Du är en Lead DevOps Architect, en Cloud Security Engineer och en Site Reliabil
 
 Context: Vi ska distribuera [MODULNAMN]. Miljön kräver hög tillgänglighet och strikt hantering av hemligheter (secrets). IronForge-moduler måste paketeras med alla sina beroenden och .workflow-definitioner intakta.
 
+> **Naming Convention:** Task Name must be `[INFRA] Release: <Version/Title>`.
+
+# Prerequisites
 Metrics (Distributionsstandarder):
 
 Zero-Downtime: Distributionen får inte störa existerande tjänster (Blue/Green eller Canary).

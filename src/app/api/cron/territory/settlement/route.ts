@@ -2,33 +2,28 @@ import { NextRequest, NextResponse } from "next/server";
 import { runWeeklySettlement } from "@/services/game/TerritoryService";
 
 export const dynamic = "force-dynamic";
-export const maxDuration = 300; // Allow up to 5min for settlement (heavy operation)
 
 /**
- * Weekly Settlement Cron Job
- * Runs Sundays at 23:59 to determine tile ownership.
+ * Weekly Territory Settlement Cron Job
+ * Runs Sundays at 23:59 UTC.
+ * Schedule: "59 23 * * 0" (configured in vercel.json)
  */
 export async function GET(request: NextRequest) {
-    // Authorization Check
     const authHeader = request.headers.get("authorization");
     if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
         return new NextResponse("Unauthorized", { status: 401 });
     }
 
     try {
-        console.log("[Territory Cron] Starting Weekly Settlement...");
+        console.log("[Cron: Territory Settlement] Starting weekly settlement...");
         const result = await runWeeklySettlement();
-
         return NextResponse.json({
             success: true,
-            ...result,
-            timestamp: new Date().toISOString(),
+            message: "Weekly settlement complete",
+            stats: result
         });
     } catch (error) {
-        console.error("[Territory Cron] Settlement Error:", error);
-        return NextResponse.json(
-            { success: false, error: "Internal server error" },
-            { status: 500 }
-        );
+        console.error("[Cron: Territory Settlement] Error:", error);
+        return NextResponse.json({ success: false, error: String(error) }, { status: 500 });
     }
 }

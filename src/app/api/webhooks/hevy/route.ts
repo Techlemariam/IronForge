@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import { logger } from "@/lib/logger";
 import axios from "axios";
 import { ProgressionService } from "@/services/progression";
 
@@ -20,11 +21,11 @@ export async function POST(request: NextRequest) {
 
     // Only validate if secret is configured (to avoid breaking dev if not set)
     if (secret && authHeader !== secret) {
-      console.warn("[Hevy Webhook] Unauthorized attempt. Invalid Secret.");
+      logger.warn("[Hevy Webhook] Unauthorized attempt. Invalid Secret.");
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    console.log("[Hevy Webhook] Received request. Auth:", authHeader);
+    logger.info(`[Hevy Webhook] Received request. Auth: ${authHeader}`);
 
     // 2. Parse Body to get Workout ID
     const body = await request.json();
@@ -38,7 +39,7 @@ export async function POST(request: NextRequest) {
     }
 
     const workoutId = event.payload.workoutId;
-    console.log(
+    logger.info(
       `[Hevy Webhook] Notification received for Workout ID: ${workoutId}`,
     );
 
@@ -46,7 +47,7 @@ export async function POST(request: NextRequest) {
     // We need the full details (exercises, sets, weight) to update our DB.
     const hevyApiKey = process.env.HEVY_API_KEY;
     if (!hevyApiKey) {
-      console.error("HEVY_API_KEY not configured on server.");
+      logger.error("HEVY_API_KEY not configured on server.");
       return NextResponse.json(
         { error: "Server Configuration Error" },
         { status: 500 },
@@ -66,7 +67,7 @@ export async function POST(request: NextRequest) {
       throw new Error("Hevy API returned no workout data.");
     }
 
-    console.log(
+    logger.info(
       `[Hevy Webhook] Fetched full workout: ${workoutData.title} (${workoutData.exercises?.length} exercises)`,
     );
 
@@ -74,7 +75,7 @@ export async function POST(request: NextRequest) {
     // A. Identify User (Single Tenant Assumption for now, or use Auth Header to match User)
     const user = await prisma.user.findFirst();
     if (!user) {
-      console.error("No user found in database to attach workout to.");
+      logger.error("No user found in database to attach workout to.");
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
@@ -123,7 +124,7 @@ export async function POST(request: NextRequest) {
       logsCreated++;
     }
 
-    console.log(
+    logger.info(
       `[Hevy Webhook] Successfully logged ${logsCreated} exercises for User ${user.heroName || user.id}`,
     );
 
@@ -134,7 +135,7 @@ export async function POST(request: NextRequest) {
 
     const newWilks = await ProgressionService.updateWilksScore(user.id);
 
-    console.log(
+    logger.info(
       `[Hevy Webhook] Automated rewards granted: 25g, ${logsCreated * 50}xp. New Wilks: ${newWilks.toFixed(2)}`,
     );
 
@@ -147,9 +148,9 @@ export async function POST(request: NextRequest) {
       { status: 200 },
     );
   } catch (error: any) {
-    console.error(
-      "[Hevy Webhook] Error:",
-      error.response?.data || error.message,
+    logger.error(
+      { err: error.response?.data || error },
+      "[Hevy Webhook] Error",
     );
     return NextResponse.json(
       { error: "Internal Server Error" },

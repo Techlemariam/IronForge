@@ -16,8 +16,10 @@ When invoked:
 3. **Execute:** Fix the issue following `.antigravityrules` and CVP.
 4. **Verify:** Run `npm run agent:verify`.
 5. **Update:** Mark item as `Resolved` in `DEBT.md`.
-
-## ⚙️ Workflow Steps
+6: 
+7: > **Naming Convention:** Task Name must be `[META] Cleanup: <Focus>` or `[DOMAIN] Debt: <Focus>`.
+8: 
+9: # Workflow Steps
 ```
 1. [Read] DEBT.md → Pick oldest Open item
 2. [Analyze] Check affected files

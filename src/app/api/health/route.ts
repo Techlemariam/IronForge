@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma'; // Assumed path based on architecture.md
+import { logger } from '@/lib/logger';
 
 export const dynamic = 'force-dynamic';
 
@@ -19,7 +20,7 @@ export async function GET() {
             { status: 200 }
         );
     } catch (error) {
-        console.error('Health Check Failed:', error);
+        logger.error({ err: error }, 'Health Check Failed');
         return NextResponse.json(
             {
                 status: 'error',

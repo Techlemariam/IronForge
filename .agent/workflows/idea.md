@@ -1,6 +1,9 @@
 ---
 description: Idea intake and ROI-based roadmap placement
 ---
+
+> **Naming Convention:** Task Name must be `[SPRINT] Idea: <Title>` or `[BUSINESS] Idea: <Title>`.
+
 # Workflow: /idea
 Trigger: Manual
 

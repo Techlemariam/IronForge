@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import { logger } from "@/lib/logger";
 import { OracleService } from "@/services/oracle";
 import { ProgressionService } from "@/services/progression";
 import { processUserCardioActivity } from "@/actions/duel";
@@ -27,7 +28,7 @@ export async function POST(request: NextRequest) {
     // Intervals.icu sends identifying header or you can check Authorization
     const signature = request.headers.get("Authorization");
 
-    console.log(
+    logger.info(
       "[Intervals Webhook] Incoming Activity. Auth Signature detected.",
     );
 
@@ -41,7 +42,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log(
+    logger.info(
       `[Intervals Webhook] Processing ${activity.type} for Athlete: ${activity.icu_athlete_id}`,
     );
 
@@ -51,7 +52,7 @@ export async function POST(request: NextRequest) {
     });
 
     if (!user) {
-      console.warn(
+      logger.warn(
         `[Intervals Webhook] No user found with intervalsAthleteId: ${activity.icu_athlete_id}`,
       );
       return NextResponse.json({ error: "User not found" }, { status: 404 });
@@ -92,7 +93,7 @@ export async function POST(request: NextRequest) {
           date: new Date(activity.start_date_local),
         },
       });
-      console.log(
+      logger.info(
         `[Intervals Webhook] Persisted CardioLog: ${activity.type} | Load: ${activity.training_load}`,
       );
 
@@ -120,7 +121,7 @@ export async function POST(request: NextRequest) {
       const isConquestSport = ["Run", "Walk", "Hike", "VirtualRun"].includes(activity.type);
 
       if (isConquestSport && distanceKm > 0.1 && user.intervalsApiKey) {
-        console.log(`[Intervals Webhook] Fetching GPS stream for Territory Conquest...`);
+        logger.info(`[Intervals Webhook] Fetching GPS stream for Territory Conquest...`);
         const gpsTrack = await getActivityStream(activity.id, user.intervalsApiKey);
 
         if (gpsTrack && gpsTrack.length > 0) {
@@ -131,28 +132,28 @@ export async function POST(request: NextRequest) {
             ftp: user.ftpRun ?? 250,
           });
 
-          console.log(
+          logger.info(
             `[Intervals Webhook] Territory Updated: ${conquest.tilesConquered} new, ${conquest.tilesReinforced} reinforced.`
           );
         } else {
-          console.warn(`[Intervals Webhook] No GPS track found for activity ${activity.id}`);
+          logger.warn(`[Intervals Webhook] No GPS track found for activity ${activity.id}`);
         }
       }
     } else {
-      console.log(
+      logger.info(
         `[Intervals Webhook] Skipping non-cardio activity type: ${activity.type}`,
       );
     }
 
     // 4. Trigger Oracle Recalculation
-    console.log("[Intervals Webhook] Triggering Oracle recalculation...");
+    logger.info("[Intervals Webhook] Triggering Oracle recalculation...");
     // OracleService.recalculate(user.id); // Assuming OracleService has a recalculate method
 
     // 5. Award Rewards
     if (user) {
       await ProgressionService.awardGold(user.id, 15);
       await ProgressionService.addExperience(user.id, 100);
-      console.log(
+      logger.info(
         `[Intervals Webhook] Rewards awarded to ${user.id}: 15g, 100xp`,
       );
     }
@@ -163,7 +164,7 @@ export async function POST(request: NextRequest) {
       { status: 200 },
     );
   } catch (error: any) {
-    console.error("[Intervals Webhook] Error:", error.message);
+    logger.error({ err: error }, `[Intervals Webhook] Error: ${error.message}`);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 },

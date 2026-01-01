@@ -6,6 +6,7 @@
 - [/] **Cardio PvP Duels** ([Spec](specs/cardio-duels.md)) <!-- status: in-progress | architect: /architect | priority: medium | effort: M | source: user/idea -->
 
 
+
 ## 🚨 Business Trigger Watchlist (Scale-Up Indicators)
 > **Strategy:** Do not monetize until these conditions are met.
 - [ ] **Trigger 1: Traction** -> 100 recurring users (Retention > 20%).
@@ -120,9 +121,7 @@
 
 ### Medium Priority (Observability & Resilience)
 
-- [ ] **Structured Logging** <!-- status: planned | priority: medium | roi: 3.5 | effort: M | source: infrastructure-audit -->
-  - Rationale: Using `console.error` everywhere. No log levels, no correlation IDs, no observability.
-  - Scope: Add Pino/Winston logger, standardize log format, integrate with Vercel Logs.
+
 - [ ] **Database Migration CI Guard Enhancement** <!-- status: planned | priority: medium | roi: 3.3 | effort: S | source: infrastructure-audit -->
   - Rationale: `database-guard.yml` exists but drift check logic is fragile (depends on directory listing).
   - Scope: Use `prisma migrate diff` instead of file checks.
@@ -147,6 +146,8 @@
 
 ### Infra Session (2026-01-01)
 - [x] **Health Check Endpoint** (`/api/health`) <!-- status: shipped | source: infrastructure-audit -->
+- [x] **Structured Logging** (`pino`) <!-- status: shipped | source: infrastructure-audit -->
+
 
 
 

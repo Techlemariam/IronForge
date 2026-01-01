@@ -17,6 +17,7 @@ import {
     tileIdToCoords,
 } from "@/lib/territory/tileUtils";
 import { calculateEffortScore, EffortInput } from "./EffortCalculator";
+import { NotificationService } from "@/services/notifications";
 
 // ============================================
 // TYPES
@@ -361,6 +362,12 @@ export async function distributeDailyIncome(): Promise<void> {
                     gold: { increment: income.gold },
                     totalExperience: { increment: income.xp },
                 },
+            });
+
+            await NotificationService.create({
+                userId: user.id,
+                type: "SYSTEM",
+                message: `💰 Territory Income: +${income.gold} Gold, +${income.xp} XP`,
             });
         }
     }
