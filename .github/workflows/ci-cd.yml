@@ -1,9 +1,9 @@
-name: Agent Verify
+name: IronForge CI/CD
 
 on:
-  pull_request:
-    branches: [main]
   push:
+    branches: [main]
+  pull_request:
     branches: [main]
   workflow_dispatch:
 
@@ -15,75 +15,142 @@ env:
   DATABASE_URL: ${{ secrets.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5432/postgres' }}
   DIRECT_URL: ${{ secrets.DIRECT_URL || 'postgresql://postgres:postgres@localhost:5432/postgres' }}
   NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL || 'https://dummy.supabase.co' }}
-  NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR1bW15Iiwicm9sZSI6ImFub24iLCJpYXQiOjE1OTg4Njk5OTksImV4cCI6MTkwNDQ0NTk5OX0.dummy' }}
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'dummy' }}
   SKIP_ENV_VALIDATION: true
 
 jobs:
-  verify:
+  # ------------------------------------------------------------------
+  # 🛡️ QUALITY GATE
+  # Fast feedback on code standards, unit tests, and security.
+  # ------------------------------------------------------------------
+  quality:
+    name: 🛡️ Quality Gate
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      
-      - uses: actions/setup-node@v6
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '22'
           cache: 'npm'
+      - name: Install Dependencies
+        run: npm ci
+      - name: Generate Prisma Client
+        run: npx prisma generate
+      - name: Lint
+        run: npm run lint
+      - name: Unit Tests
+        run: npm run test
+      - name: Security Audit
+        run: npm run security
 
-      - name: Cache Turbo
-        uses: actions/cache@v3
+  # ------------------------------------------------------------------
+  # 🏗️ BUILD VERIFICATION
+  # Ensures the application compiles without errors.
+  # ------------------------------------------------------------------
+  build-check:
+    name: 🏗️ Build Verification
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          path: .turbo
-          key: turbo-${{ runner.os }}-${{ github.sha }}
-          restore-keys: |
-            turbo-${{ runner.os }}-
+          node-version: '22'
+          cache: 'npm'
+      - name: Install Dependencies
+        run: npm ci
+      - name: Generate Prisma Client
+        run: npx prisma generate
+      - name: Next.js Build
+        run: npm run build
 
+  # ------------------------------------------------------------------
+  # 🎭 E2E VERIFICATION
+  # Simulates critical user flows.
+  # ------------------------------------------------------------------
+  e2e:
+    name: 🎭 E2E Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - name: Install Dependencies
+        run: npm ci
+      - name: Generate Prisma Client
+        run: npx prisma generate
       - name: Cache Playwright Browsers
         uses: actions/cache@v3
         id: playwright-cache
         with:
           path: ~/.cache/ms-playwright
           key: ${{ runner.os }}-playwright-${{ hashFiles('**/package-lock.json') }}
-
-      - name: Install dependencies
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 10
-          max_attempts: 3
-          command: npm ci
-
-      - name: Generate Prisma Client
-        run: npx prisma generate
-
       - name: Install Playwright Browsers
         if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: npx playwright install --with-deps
+      - name: Run Playwright Tests
+        run: npx playwright test
+        env:
+          CI: true
 
-      - name: Run Verification Pipeline (Turbo)
-        run: npx turbo run lint test build security
-
-  deploy:
-    needs: verify
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+  # ------------------------------------------------------------------
+  # 🚀 DEPLOY PREVIEW (Pull Requests)
+  # Deploys a preview environment for manual review.
+  # ------------------------------------------------------------------
+  deploy-preview:
+    name: 🚀 Deploy Preview
+    needs: [quality] # Fast deploy after quality check, logic verified by PR flow
+    if: github.event_name == 'pull_request' && github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '22'
           cache: 'npm'
-      - run: npm ci
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
       - name: Pull Vercel Environment Information
-        run: npx vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      - name: Build and Deploy (Preview)
+        run: vercel deploy --preview --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+  # ------------------------------------------------------------------
+  # 🚀 DEPLOY PRODUCTION (Main Branch)
+  # Deploys to production ONLY if all checks pass.
+  # ------------------------------------------------------------------
+  deploy-production:
+    name: 🚀 Deploy Production
+    needs: [quality, build-check, e2e] # Strict Gatekeeping
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+      - name: Pull Vercel Environment Information
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
       - name: Build Project Artifacts
-        run: npx vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
       - name: Deploy Project Artifacts to Vercel
-        run: npx vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
