@@ -62,7 +62,7 @@ export async function getHevyRoutinesAction(
     console.error("Server Action Hevy Routines Error:", error.message);
     throw new Error(
       "Failed to fetch Hevy routines: " +
-        (error.response?.data?.error || error.message),
+      (error.response?.data?.error || error.message),
     );
   }
 }
@@ -103,7 +103,7 @@ export async function getHevyWorkoutHistoryAction(
     console.error("Server Action Hevy History Error:", error.message);
     throw new Error(
       "Failed to fetch Hevy history: " +
-        (error.response?.data?.error || error.message),
+      (error.response?.data?.error || error.message),
     );
   }
 }
@@ -155,6 +155,10 @@ export async function saveWorkoutAction(apiKey: string, payload: any) {
         },
       });
 
+      // --- POWER RATING UPDATE ---
+      const { recalculatePowerRatingAction } = await import("./power-rating");
+      await recalculatePowerRatingAction(user.id);
+
       // We could notify user here but let's stick to API response augmentation
       response.data.rewards = { energy: energyGain };
     }
@@ -164,7 +168,7 @@ export async function saveWorkoutAction(apiKey: string, payload: any) {
     console.error("Server Action Hevy Save Error:", error.message);
     throw new Error(
       "Failed to save workout: " +
-        (error.response?.data?.error || error.message),
+      (error.response?.data?.error || error.message),
     );
   }
 }

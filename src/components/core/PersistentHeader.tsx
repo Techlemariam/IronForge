@@ -1,12 +1,14 @@
 import React from "react";
 import { Coins, Star, Trophy } from "lucide-react";
 import { Faction } from "@/types/training";
+import { PowerRatingBadge } from "../PowerRatingBadge";
 
 interface PersistentHeaderProps {
   level: number;
   xp: number;
   gold: number;
   faction: Faction;
+  powerRating: number;
   className?: string;
 }
 
@@ -15,6 +17,7 @@ export const PersistentHeader: React.FC<PersistentHeaderProps> = ({
   xp,
   gold,
   faction,
+  powerRating,
   className = "",
 }) => {
   return (
@@ -58,6 +61,12 @@ export const PersistentHeader: React.FC<PersistentHeaderProps> = ({
         >
           {faction}
         </div>
+
+        {/* Vertical Divider */}
+        <div className="w-px h-8 bg-white/10"></div>
+
+        {/* Power Rating */}
+        <PowerRatingBadge rating={powerRating} className="scale-75 origin-left" />
       </div>
     </div>
   );

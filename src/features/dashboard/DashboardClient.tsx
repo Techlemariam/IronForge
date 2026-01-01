@@ -599,6 +599,7 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
         xp={state.totalExperience}
         gold={userData?.gold || 0}
         faction={state.faction}
+        powerRating={titanState?.powerRating || 0}
       />
 
       <AnimatePresence mode="wait">

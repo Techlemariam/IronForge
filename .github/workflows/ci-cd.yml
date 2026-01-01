@@ -115,7 +115,7 @@ jobs:
         run: |
           npx prisma migrate diff \
             --from-migrations prisma/migrations \
-            --to-config-datasource \
+            --to-schema prisma/schema.prisma \
             --shadow-database-url "postgresql://postgres:password@localhost:5432/ironforge_shadow?schema=public" \
             --exit-code
         env:

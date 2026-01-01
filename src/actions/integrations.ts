@@ -40,6 +40,10 @@ export async function connectHevy(userId: string, apiKey: string) {
       data: { hevyApiKey: apiKey },
     });
 
+    // Update Power Rating with new data source
+    const { recalculatePowerRatingAction } = await import("./power-rating");
+    await recalculatePowerRatingAction(userId);
+
     revalidatePath("/");
     return { success: true };
   } catch (error: any) {
@@ -96,6 +100,10 @@ export async function connectIntervals(
         intervalsAthleteId: athleteId,
       },
     });
+
+    // Update Power Rating with new data source
+    const { recalculatePowerRatingAction } = await import("./power-rating");
+    await recalculatePowerRatingAction(userId);
 
     revalidatePath("/");
     return { success: true };

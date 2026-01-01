@@ -167,6 +167,13 @@ model Titan {
   dailyDecree Json? // Stores today's OracleDecree
   streak      Int    @default(0)
 
+  // Power Rating System
+  powerRating     Float     @default(0)   // 0-1000 composite score
+  strengthIndex   Float     @default(0)   // Normalized Wilks
+  cardioIndex     Float     @default(0)   // Normalized FTP/VO2
+  mrvAdherence    Float     @default(1.0) // Multiplier (1.0 - 1.15)
+  lastPowerCalcAt DateTime?
+
   // Bio-Buff System
   currentBuff   Json? // Stores active BioBuff object
   buffExpiresAt DateTime?

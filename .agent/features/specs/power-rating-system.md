@@ -13,7 +13,105 @@ Separate permanent Titan Level from dynamic Power Rating to reflect current fitn
 | **Titan Level** | Permanent, never decreases | Historical achievement |
 | **Power Rating** | 70-100%, based on activity | Current fitness state |
 
-## Power Rating Mechanics
+## Hybrid Power Formula (NEW)
+
+The Power Rating is a composite score combining **Strength** and **Cardio** metrics to create a single number reflecting overall athletic capability.
+
+### Base Components
+
+| Component | Source | Normalization | Weight |
+|-----------|--------|---------------|--------|
+| **Strength Index** | Wilks Score | 0-600 → 0-1000 | 50% (default) |
+| **Cardio Index** | FTP (Cycling) OR vVO2max (Running) | W/kg → 0-1000 | 50% (default) |
+
+> **Note:** User's `activePath` modifies weights (Strength main = 70/30, Cardio main = 30/70).
+
+### Normalization Functions
+
+```typescript
+// Strength: Wilks Score normalization (300 = average, 500+ = elite)
+const normalizeStrength = (wilks: number): number => {
+  const floor = 200;
+  const ceiling = 600;
+  return Math.min(1000, Math.max(0, ((wilks - floor) / (ceiling - floor)) * 1000));
+};
+
+// Cardio: FTP W/kg normalization (2.5 = average, 5.0+ = elite)
+const normalizeCardio = (wkg: number): number => {
+  const floor = 1.5;
+  const ceiling = 5.0;
+  return Math.min(1000, Math.max(0, ((wkg - floor) / (ceiling - floor)) * 1000));
+};
+
+// Combined Power Rating
+const calculatePowerRating = (
+  strengthIndex: number,
+  cardioIndex: number,
+  path: 'STRENGTH_MAIN' | 'CARDIO_MAIN' | 'HYBRID_WARDEN'
+): number => {
+  const weights = {
+    STRENGTH_MAIN: { str: 0.7, cardio: 0.3 },
+    CARDIO_MAIN: { str: 0.3, cardio: 0.7 },
+    HYBRID_WARDEN: { str: 0.5, cardio: 0.5 },
+  };
+  const w = weights[path];
+  return Math.round(strengthIndex * w.str + cardioIndex * w.cardio);
+};
+```
+
+### Example Ratings
+
+| Profile | Wilks | FTP (W/kg) | Path | Power Rating |
+|---------|-------|------------|------|--------------|
+| Powerlifter | 450 | 2.0 | STRENGTH_MAIN | **729** |
+| Cyclist | 250 | 4.5 | CARDIO_MAIN | **728** |
+| Hybrid Athlete | 350 | 3.5 | HYBRID_WARDEN | **661** |
+
+## Training Path & MRV Integration (NEW)
+
+The Power Rating dynamically adjusts based on User's chosen **Training Path** and their adherence to **MRV (Maximum Recoverable Volume)** guidelines.
+
+### Path-Specific Requirements
+
+| Path | Strength Weight | Cardio Weight | Weekly MRV Requirement |
+|------|-----------------|---------------|------------------------|
+| **STRENGTH_MAIN** | 70% | 30% | ≥80% of optimal volume for 3+ muscle groups |
+| **CARDIO_MAIN** | 30% | 70% | ≥3 cardio sessions (Zone 2-4) per week |
+| **HYBRID_WARDEN** | 50% | 50% | ≥60% strength MRV + 2 cardio sessions |
+
+### MRV Adherence Bonus
+
+Players who consistently hit their MRV targets for their chosen path receive a **Power Multiplier**:
+
+```typescript
+const getMrvAdherenceBonus = (
+  mrvAdherence: number, // 0.0 - 1.0 (% of optimal volume hit)
+  cardioAdherence: number, // 0.0 - 1.0 (% of target sessions)
+  path: TrainingPath
+): number => {
+  const weights = {
+    STRENGTH_MAIN: { str: 0.8, cardio: 0.2 },
+    CARDIO_MAIN: { str: 0.2, cardio: 0.8 },
+    HYBRID_WARDEN: { str: 0.5, cardio: 0.5 },
+  };
+  const w = weights[path];
+  const adherenceScore = mrvAdherence * w.str + cardioAdherence * w.cardio;
+  
+  // Bonus: 1.0 (no bonus) to 1.15 (+15% at perfect adherence)
+  return 1.0 + (adherenceScore * 0.15);
+};
+
+// Final Power Rating with adherence
+const finalPowerRating = basePowerRating * getMrvAdherenceBonus(...);
+```
+
+### Example with Adherence
+
+| Player | Base Rating | MRV Adherence | Cardio Sessions | Bonus | **Final Rating** |
+|--------|-------------|---------------|-----------------|-------|------------------|
+| Consistent Lifter | 650 | 90% | 1/wk | 1.08 | **702** |
+| Cardio + Lifts | 600 | 50% | 4/wk | 1.10 | **660** |
+| Hybrid Master | 700 | 85% | 3/wk | 1.13 | **791** |
 
 ### Decay Curve (Exercise Science Based)
 ```typescript

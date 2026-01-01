@@ -298,17 +298,36 @@ export async function getPotentialOpponentsAction() {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) throw new Error("Unauthorized");
 
-    // Fetch users excluding self
-    // In a real app, we'd filter by friends or matchmaking rating
+    // Fetch own Power Rating
+    const currentUser = await prisma.user.findUnique({
+      where: { id: user.id },
+      include: { titan: true },
+    });
+    const myRating = currentUser?.titan?.powerRating || 0;
+
+    // Filter by Power Rating (Skill-Biased Matchmaking)
+    // Range: +/- 100 for now, can tighten later
     const opponents = await prisma.user.findMany({
       where: {
-        id: { not: user.id }
+        id: { not: user.id },
+        titan: {
+          powerRating: {
+            gte: Math.max(0, myRating - 100),
+            lte: myRating + 100
+          }
+        }
       },
       take: 20,
+      orderBy: {
+        titan: { powerRating: 'desc' }
+      },
       select: {
         id: true,
         heroName: true,
-        level: true
+        level: true,
+        titan: {
+          select: { powerRating: true }
+        }
       }
     });
 
