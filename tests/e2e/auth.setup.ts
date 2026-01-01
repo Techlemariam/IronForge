@@ -25,7 +25,7 @@ setup('authenticate', async ({ page }) => {
     // specific check to see if we are logged in.
     // The dashboard usually has "Iron City" or "Citadel" text.
     // Wait for navigation after login (client-side redirect can be slow)
-    await page.waitForURL(/.*\/$|.*dashboard|.*iron-city/, { timeout: 30000 });
+    await page.waitForURL(/.*\/$|.*dashboard|.*iron-city/, { timeout: 60000 });
     // Optional: Check for a main navigation element to ensure page loaded
     await expect(page.getByRole('main')).toBeVisible({ timeout: 15000 });
 

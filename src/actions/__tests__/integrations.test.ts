@@ -33,6 +33,10 @@ vi.mock("next/cache", () => ({
   revalidatePath: vi.fn(),
 }));
 
+vi.mock("../power-rating", () => ({
+  recalculatePowerRatingAction: vi.fn().mockResolvedValue({ success: true }),
+}));
+
 describe("Integration Actions", () => {
   const userId = "user-123";
   const apiKey = "test-api-key";
