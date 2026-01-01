@@ -29,11 +29,11 @@ const ORIGINS: SkillNodeV2[] = [
     requirements: [],
   },
   {
-    id: "origin_engine",
-    title: "Engine Origin",
+    id: "origin_pathfinder",
+    title: "Pathfinder Origin",
     description: "The Path of Wind. Endurance is eternal.",
     tier: "notable",
-    path: "engine",
+    path: "pathfinder",
     category: "endurance",
     parents: [],
     unlockLogic: "AND",
@@ -186,18 +186,18 @@ const JUGGERNAUT_NOTABLES: SkillNodeV2[] = [
 ];
 
 // ============================================================================
-// ENGINE PATH: NOTABLES
+// PATHFINDER PATH: NOTABLES
 // ============================================================================
 
-const ENGINE_NOTABLES: SkillNodeV2[] = [
+const PATHFINDER_NOTABLES: SkillNodeV2[] = [
   {
     id: "notable_fatigue_shroud",
     title: "Fatigue Shroud",
     description: "Reduces ATL penalty from cardio sessions by 10%.",
     tier: "notable",
-    path: "engine",
+    path: "pathfinder",
     category: "endurance",
-    parents: ["origin_engine"],
+    parents: ["origin_pathfinder"],
     unlockLogic: "AND",
     position: { x: -400, y: -150 },
     effects: {
@@ -219,7 +219,7 @@ const ENGINE_NOTABLES: SkillNodeV2[] = [
     title: "Aero Tech",
     description: "Unlocks Brick Workout transitions (Bike → Run).",
     tier: "notable",
-    path: "engine",
+    path: "pathfinder",
     category: "endurance",
     parents: ["notable_fatigue_shroud"],
     unlockLogic: "AND",
@@ -244,7 +244,7 @@ const ENGINE_NOTABLES: SkillNodeV2[] = [
     title: "Void Runner",
     description: "Zone 2 training fills Body Battery 2x faster.",
     tier: "notable",
-    path: "engine",
+    path: "pathfinder",
     category: "endurance",
     parents: ["notable_aero_tech"],
     unlockLogic: "AND",
@@ -262,11 +262,11 @@ const ENGINE_NOTABLES: SkillNodeV2[] = [
     ],
   },
   {
-    id: "notable_elite_engine",
-    title: "Elite Engine",
+    id: "notable_elite_pathfinder",
+    title: "Elite Pathfinder",
     description: 'Reach sub-70 VO2 Max range. Unlocks "The 70+ Club" regalia.',
     tier: "notable",
-    path: "engine",
+    path: "pathfinder",
     category: "endurance",
     parents: ["notable_void_runner"],
     unlockLogic: "AND",
@@ -577,9 +577,9 @@ const KEYSTONES: SkillNodeV2[] = [
     title: "Void Runner's Covenant",
     description: "The patient aerobic base builder. Long, slow, steady.",
     tier: "keystone",
-    path: "engine",
+    path: "pathfinder",
     category: "endurance",
-    parents: ["notable_elite_engine"],
+    parents: ["notable_elite_pathfinder"],
     unlockLogic: "AND",
     position: { x: -400, y: -750 },
     effects: {
@@ -724,15 +724,15 @@ const MINOR_NODES: SkillNodeV2[] = [
     cost: 1,
     requirements: [],
   },
-  // Engine Path Minors
+  // Pathfinder Path Minors
   {
-    id: "minor_engine_1",
+    id: "minor_pathfinder_1",
     title: "+50 Kinetic Shards",
     description: "Build your aerobic currency.",
     tier: "minor",
-    path: "engine",
+    path: "pathfinder",
     category: "endurance",
-    parents: ["origin_engine"],
+    parents: ["origin_pathfinder"],
     unlockLogic: "AND",
     position: { x: -450, y: -75 },
     effects: { flatKsBonus: 50 },
@@ -741,11 +741,11 @@ const MINOR_NODES: SkillNodeV2[] = [
     requirements: [],
   },
   {
-    id: "minor_engine_2",
+    id: "minor_pathfinder_2",
     title: "+75 Kinetic Shards",
     description: "The long road pays dividends.",
     tier: "minor",
-    path: "engine",
+    path: "pathfinder",
     category: "endurance",
     parents: ["notable_fatigue_shroud"],
     unlockLogic: "AND",
@@ -765,7 +765,7 @@ const MINOR_NODES: SkillNodeV2[] = [
 export const SKILL_TREE_V2: SkillNodeV2[] = [
   ...ORIGINS,
   ...JUGGERNAUT_NOTABLES,
-  ...ENGINE_NOTABLES,
+  ...PATHFINDER_NOTABLES,
   ...WARDEN_NOTABLES,
   ...TITAN_NOTABLES,
   ...SAGE_NOTABLES,

@@ -19,6 +19,7 @@ export type TitanState = {
   isInjured: boolean;
   isResting: boolean;
   name: string;
+  powerRating?: number;
 };
 
 // --- Legacy Schema (Deprecated) ---

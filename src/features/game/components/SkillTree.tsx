@@ -141,7 +141,7 @@ const CustomSkillNode = ({ data, selected }: NodeProps<CustomNodeData>) => {
         {tier === "minor" && (
           <>
             {node.path === "juggernaut" && <Shield size={iconSize} />}
-            {node.path === "engine" && <Wind size={iconSize} />}
+            {node.path === "pathfinder" && <Wind size={iconSize} />}
             {node.path === "warden" && <Zap size={iconSize} />}
             {node.path === "titan" && <TrendingUp size={iconSize} />}
             {node.path === "sage" && <Sparkles size={iconSize} />}

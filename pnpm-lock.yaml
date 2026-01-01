@@ -204,6 +204,9 @@ importers:
       '@types/node':
         specifier: ^25.0.3
         version: 25.0.3
+      '@types/pg':
+        specifier: ^8.16.0
+        version: 8.16.0
       '@types/react':
         specifier: ^19.2.7
         version: 19.2.7
@@ -216,6 +219,9 @@ importers:
       '@types/web-bluetooth':
         specifier: ^0.0.21
         version: 0.0.21
+      '@types/ws':
+        specifier: ^8.18.1
+        version: 8.18.1
       '@vitest/coverage-v8':
         specifier: ^4.0.16
         version: 4.0.16(vitest@4.0.16(@edge-runtime/vm@3.2.0)(@opentelemetry/api@1.9.0)(@types/node@25.0.3)(jiti@1.21.7)(jsdom@27.4.0)(terser@5.44.1)(tsx@4.19.2)(yaml@2.8.2))
@@ -10686,7 +10692,7 @@ snapshots:
 
   '@types/pg-pool@2.0.6':
     dependencies:
-      '@types/pg': 8.15.6
+      '@types/pg': 8.16.0
 
   '@types/pg@8.15.6':
     dependencies:

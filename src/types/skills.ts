@@ -11,7 +11,7 @@
 export type NodeTier = "minor" | "notable" | "keystone";
 
 /** Training paths aligned with athlete archetypes */
-export type SkillPath = "juggernaut" | "engine" | "warden" | "titan" | "sage";
+export type SkillPath = "juggernaut" | "pathfinder" | "warden" | "titan" | "sage";
 
 /** Node status in the player's progression */
 export enum SkillStatus {
