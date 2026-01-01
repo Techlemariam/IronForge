@@ -83,9 +83,9 @@ describe("Achievements Server Actions", () => {
 
       const result = await checkAchievementsAction("user-1");
 
-      expect(result).toHaveProperty("newUnlocks");
-      expect(result.newUnlocks).toHaveLength(1);
-      expect(result.newUnlocks[0].code).toBe("FIRST_WORKOUT");
+      expect((result as any).newUnlocks).toBeDefined();
+      expect((result as any).newUnlocks).toHaveLength(1);
+      expect((result as any).newUnlocks[0].code).toBe("FIRST_WORKOUT");
     });
 
     it("should unlock guild achievement when in guild", async () => {
@@ -106,9 +106,8 @@ describe("Achievements Server Actions", () => {
 
       const result = await checkAchievementsAction("user-1");
 
-      expect(result).toHaveProperty("newUnlocks");
-      expect(
-        result.newUnlocks.some((a: any) => a.code === "GUILD_MEMBER"),
+      expect((result as any).newUnlocks).toBeDefined();
+      expect((result as any).newUnlocks.some((a: any) => a.code === "GUILD_MEMBER"),
       ).toBe(true);
     });
 
@@ -125,8 +124,8 @@ describe("Achievements Server Actions", () => {
 
       const result = await checkAchievementsAction("user-1");
 
-      expect(result).toHaveProperty("newUnlocks");
-      expect(result.newUnlocks).toHaveLength(0);
+      expect((result as any).newUnlocks).toBeDefined();
+      expect((result as any).newUnlocks).toHaveLength(0);
     });
 
     it("should not unlock if conditions not met", async () => {
@@ -141,9 +140,9 @@ describe("Achievements Server Actions", () => {
       const result = await checkAchievementsAction("user-1");
 
       // Cardio needs 10, user has 5 - shouldn't unlock
-      expect(result).toHaveProperty("newUnlocks");
+      expect((result as any).newUnlocks).toBeDefined();
       expect(
-        result.newUnlocks.every((a: any) => a.code !== "CARDIO_KING"),
+        (result as any).newUnlocks.every((a: any) => a.code !== "CARDIO_KING"),
       ).toBe(true);
     });
   });

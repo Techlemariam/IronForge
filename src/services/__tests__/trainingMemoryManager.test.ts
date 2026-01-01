@@ -42,6 +42,18 @@ describe("TrainingMemoryManager", () => {
       sleepScore: 80,
       bodyBattery: 80,
       strengthDelta: 5, // Positive strength gain
+      sleepDebt: 0,
+      consecutiveStalls: 0,
+      weeksInPhase: 1,
+      nutritionMode: "MAINTENANCE",
+      acwr: 1.0,
+      junkMilePercent: 0,
+      neuralLoad: 0,
+      impactLoad: 0,
+      interferenceEvents: 0,
+
+
+
     };
 
     it("should trigger GAMMA transition on critically low TSB", () => {
@@ -90,6 +102,18 @@ describe("TrainingMemoryManager", () => {
       sleepScore: 80,
       bodyBattery: 80,
       strengthDelta: 0,
+      sleepDebt: 0,
+      consecutiveStalls: 0,
+      weeksInPhase: 1,
+      nutritionMode: "MAINTENANCE",
+      acwr: 1.0,
+      junkMilePercent: 0,
+      neuralLoad: 0,
+      impactLoad: 0,
+      interferenceEvents: 0,
+
+
+
     };
 
     it("should return false for healthy metrics", () => {

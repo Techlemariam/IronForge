@@ -7,9 +7,7 @@ const createWorkout = (date: Date, exercises: any[]): HevyWorkout => ({
     id: 'w1',
     title: 'Test Workout',
     start_time: date.toISOString(),
-    end_time: date.toISOString(),
-    updated_at: date.toISOString(),
-    created_at: date.toISOString(),
+    duration_seconds: 3600,
     exercises: exercises.map((ex, i) => ({
         index: i,
         title: ex.title,

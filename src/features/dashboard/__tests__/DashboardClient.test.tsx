@@ -128,6 +128,7 @@ describe("DashboardClient", () => {
     faction: "HORDE",
     hasCompletedOnboarding: true,
     challenges: [],
+    pocketCastsConnected: false,
   };
 
   beforeEach(() => {

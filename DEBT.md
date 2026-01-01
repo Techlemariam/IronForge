@@ -46,6 +46,7 @@
 | 2025-12-29 | `src/app/globals.css` | Fixed corrupted file/syntax error | @cleanup | ✅ Resolved |
 | 2025-12-29 | `tailwind.config.js` | Fixed quoting syntax error | @cleanup | ✅ Resolved |
 | 2025-12-31 | `src/actions/forge.ts` | Uses mock inventory (DB schema blocker: no stackable items support) | @architect | ⚠️ Deferred |
+| 2026-01-01 | `src/**/*` | Fix `check-types` failures to enable strict CI gate | @cleanup | ✅ Resolved |
 
 ---
 

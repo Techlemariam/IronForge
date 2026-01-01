@@ -4,7 +4,9 @@ import {
   updateCardioDuelProgressAction,
 } from "../duel";
 import { prisma } from "@/lib/prisma";
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { createClient } from "@/utils/supabase/server";
+
 
 // Mocks
 vi.mock("@/lib/prisma", () => ({

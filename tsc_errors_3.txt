@@ -1,0 +1,5 @@
+src/actions/__tests__/achievements.test.ts(87,21): error TS2339: Property 'newUnlocks' does not exist on type 'never[] | { newUnlocks: ({ code: string; name: string; description: string; icon: string; condition: { type: string; metric: string; target: number; }; } | { code: string; name: string; description: string; icon: string; condition: { ...; }; })[]; }'.
+  Property 'newUnlocks' does not exist on type 'never[]'.
+src/services/__tests__/trainingMemoryManager.test.ts(50,7): error TS2353: Object literal may only specify known properties, and 'soreness' does not exist in type 'SystemMetrics'.
+src/services/__tests__/trainingMemoryManager.test.ts(106,7): error TS2353: Object literal may only specify known properties, and 'soreness' does not exist in type 'SystemMetrics'.
+tests/unit/volume.test.ts(12,5): error TS2353: Object literal may only specify known properties, and 'created_at' does not exist in type 'HevyWorkout'.

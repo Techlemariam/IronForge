@@ -1,0 +1,13 @@
+src/actions/__tests__/achievements.test.ts(87,21): error TS2339: Property 'newUnlocks' does not exist on type 'never[] | { newUnlocks: ({ code: string; name: string; description: string; icon: string; condition: { type: string; metric: string; target: number; }; } | { code: string; name: string; description: string; icon: string; condition: { ...; }; })[]; }'.
+  Property 'newUnlocks' does not exist on type 'never[]'.
+src/actions/__tests__/achievements.test.ts(111,16): error TS2339: Property 'newUnlocks' does not exist on type 'never[] | { newUnlocks: ({ code: string; name: string; description: string; icon: string; condition: { type: string; metric: string; target: number; }; } | { code: string; name: string; description: string; icon: string; condition: { ...; }; })[]; }'.
+  Property 'newUnlocks' does not exist on type 'never[]'.
+src/actions/__tests__/achievements.test.ts(129,21): error TS2339: Property 'newUnlocks' does not exist on type 'never[] | { newUnlocks: ({ code: string; name: string; description: string; icon: string; condition: { type: string; metric: string; target: number; }; } | { code: string; name: string; description: string; icon: string; condition: { ...; }; })[]; }'.
+  Property 'newUnlocks' does not exist on type 'never[]'.
+src/actions/__tests__/achievements.test.ts(146,16): error TS2339: Property 'newUnlocks' does not exist on type 'never[] | { newUnlocks: ({ code: string; name: string; description: string; icon: string; condition: { type: string; metric: string; target: number; }; } | { code: string; name: string; description: string; icon: string; condition: { ...; }; })[]; }'.
+  Property 'newUnlocks' does not exist on type 'never[]'.
+src/actions/__tests__/duel.test.ts(9,10): error TS2305: Module '"../duel"' has no exported member 'startDuel'.
+src/actions/__tests__/duel.test.ts(9,21): error TS2305: Module '"../duel"' has no exported member 'getDuel'.
+src/services/__tests__/trainingMemoryManager.test.ts(49,7): error TS2353: Object literal may only specify known properties, and 'sessionsSkipped' does not exist in type 'SystemMetrics'.
+src/services/__tests__/trainingMemoryManager.test.ts(105,7): error TS2353: Object literal may only specify known properties, and 'sessionsSkipped' does not exist in type 'SystemMetrics'.
+tests/unit/volume.test.ts(11,5): error TS2353: Object literal may only specify known properties, and 'updated_at' does not exist in type 'HevyWorkout'.

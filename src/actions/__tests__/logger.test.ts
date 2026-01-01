@@ -78,7 +78,7 @@ describe("Logger Actions", () => {
         // 100kg * 5 reps = 500 volume -> 5 energy
         const result = await logExerciseSetsAction({
             exerciseId: "ex_1",
-            sets: [{ weight: 100, reps: 5 }],
+            sets: [{ weight: 100, reps: 5, rpe: 8 }],
             notes: "Easy"
         });
 
@@ -107,7 +107,7 @@ describe("Logger Actions", () => {
         // 100kg * 10 reps = 1000 damage
         const result = await logExerciseSetsAction({
             exerciseId: "ex_1",
-            sets: [{ weight: 100, reps: 10 }],
+            sets: [{ weight: 135, reps: 5, rpe: 9 }],
             notes: "For the kill"
         });
 

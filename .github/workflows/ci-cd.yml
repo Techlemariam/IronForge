@@ -42,7 +42,7 @@ jobs:
       - name: Generate Prisma Client
         run: npx prisma generate
       - name: Turbo Verify
-        run: npx turbo run lint test build security --concurrency=100%
+        run: npx turbo run lint check-types test build security --concurrency=100%
 
   # ------------------------------------------------------------------
   # 🎭 E2E VERIFICATION

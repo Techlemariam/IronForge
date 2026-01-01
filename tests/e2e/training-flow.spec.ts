@@ -16,7 +16,7 @@ test.describe('Training & Cardio Flow', () => {
         // We'll wait for a known element.
         await expect(page.getByText('Cardio Mode')).toBeVisible({ timeout: 10000 });
         // Or check for "RPM" / "Speed" which likely appear in CardioStudio
-        await expect(page.getByText(/RPM|Speed|Cadence/i)).first().toBeVisible();
+        await expect(page.getByText(/RPM|Speed|Cadence/i).first()).toBeVisible();
     });
 
     test('should navigate to Treadmill (Running)', async ({ page }) => {
