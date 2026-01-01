@@ -48,6 +48,7 @@
 | 2025-12-31 | `src/actions/forge.ts` | Uses mock inventory (DB schema blocker: no stackable items support) | @architect | ⚠️ Deferred |
 | 2026-01-01 | `src/**/*` | Fix `check-types` failures to enable strict CI gate | @cleanup | ✅ Resolved |
 | 2026-01-01 | `src/app/api/sync/user/route.ts` | Missing authentication in Sync API (`// TODO: proper auth`) | @security | ✅ Resolved |
+| 2026-01-01 | `src/app/api/cron/daily-oracle/route.ts` | Missing Sentry Monitoring | @infrastructure | ✅ Resolved |
 
 ---
 

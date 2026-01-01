@@ -1,5 +1,5 @@
 import React from "react";
-import { OracleRecommendation } from "../types";
+import { OracleRecommendation } from "@/types";
 import {
   AlertTriangle,
   TrendingUp,

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { OracleService } from "@/services/oracle";
 import { revalidatePath } from "next/cache";
+import { withCronMonitor } from "@/lib/sentry-cron";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60; // Allow up to 60s for processing multiple users
@@ -11,7 +12,8 @@ export const maxDuration = 60; // Allow up to 60s for processing multiple users
  * Runs at 06:00 UTC to generate proactive decrees for all active Titans.
  * Schedule: "0 6 * * *" (configured in vercel.json)
  */
-export async function GET(request: NextRequest) {
+
+const handler = async (request: NextRequest) => {
     // 1. Authorization Check
     const authHeader = request.headers.get("authorization");
     if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
@@ -95,3 +97,9 @@ export async function GET(request: NextRequest) {
         );
     }
 }
+
+export const GET = withCronMonitor(handler as any, {
+    slug: "daily-oracle",
+    schedule: "0 6 * * *",
+});
+

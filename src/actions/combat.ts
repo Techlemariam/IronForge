@@ -247,8 +247,9 @@ export async function performCombatAction(
 
   // Bio-Combat Buff System
   if (dbUser.titan && dbUser.titan.currentBuff) {
+    // Safe cast since we know the structure from the service, but ideally we validate
     const buff = dbUser.titan.currentBuff as unknown as BioBuff;
-    if (buff.effects) {
+    if (buff && buff.effects) {
       const { attackMod = 1.0, defenseMod = 1.0 } = buff.effects;
       if (attackMod !== 1.0) {
         attributes.strength = Math.round(attributes.strength * attackMod);
@@ -276,7 +277,7 @@ export async function performCombatAction(
   const boss: Monster = {
     id: dbBoss.id,
     name: dbBoss.name,
-    type: dbBoss.type as any,
+    type: dbBoss.type as MonsterType,
     level: dbBoss.level,
     description: dbBoss.description,
     image: dbBoss.image || "",

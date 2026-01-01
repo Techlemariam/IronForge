@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useMemo, useState, useCallback, useEffect } from "react";
+import React, { useEffect, useState, useRef, useCallback, useMemo } from "react";
+import { SkillCategory } from "@/types";
 import ReactFlow, {
   Background,
   Controls,
@@ -14,9 +15,9 @@ import ReactFlow, {
 } from "reactflow";
 import "reactflow/dist/style.css"; // Ensure base styles are imported
 
-import { SKILL_TREE_V2, getNodeById } from "../data/skill-tree-v2";
-import { SkillNodeV2, SkillStatus, NodeTier } from "../types/skills";
-import { IntervalsWellness } from "../types";
+import { SKILL_TREE_V2, getNodeById } from "../../../data/skill-tree-v2";
+import { SkillNodeV2, SkillStatus, NodeTier } from "../../../types/skills";
+import { IntervalsWellness } from "@/types";
 import {
   Lock,
   Zap,
@@ -34,8 +35,8 @@ import {
   Crown,
   Star,
 } from "lucide-react";
-import { useSkills } from "../context/SkillContext";
-import { calculateAdaptiveCost } from "../utils";
+import { useSkills } from "../../../context/SkillContext";
+import { calculateAdaptiveCost } from "../../../utils/root_utils";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface SkillTreeProps {
@@ -44,7 +45,7 @@ interface SkillTreeProps {
 }
 
 // --- TIER VISUAL CONSTANTS ---
-const TIER_SIZE = {
+const TIER_SIZE: Record<NodeTier, number> = {
   minor: 50,
   notable: 70,
   keystone: 100,
@@ -193,7 +194,7 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onExit, wellness }) => {
   // --- DATA PREPARATION ---
   const { nodes, edges } = useMemo(() => {
     // 1. Map to React Flow Nodes
-    const flowNodes: Node[] = SKILL_TREE_V2.map((node) => {
+    const flowNodes: Node[] = SKILL_TREE_V2.map((node: SkillNodeV2) => {
       const status = getNodeStatus(node.id);
       const affordable = status === SkillStatus.UNLOCKED && canAfford(node.id);
 
@@ -215,9 +216,9 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onExit, wellness }) => {
 
     // 2. Map to React Flow Edges
     const flowEdges: Edge[] = [];
-    SKILL_TREE_V2.forEach((node) => {
-      node.parents.forEach((parentId) => {
-        const parentNode = SKILL_TREE_V2.find((n) => n.id === parentId);
+    SKILL_TREE_V2.forEach((node: SkillNodeV2) => {
+      node.parents.forEach((parentId: string) => {
+        const parentNode = SKILL_TREE_V2.find((n: SkillNodeV2) => n.id === parentId);
         const parentStatus = getNodeStatus(parentId);
         const nodeStatus = getNodeStatus(node.id);
 
@@ -264,13 +265,13 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onExit, wellness }) => {
     setEdges(edges);
   }, [nodes, edges, setNodes, setEdges]);
 
-  const onNodeClick = useCallback((event: any, node: any) => {
+  const onNodeClick = useCallback((event: React.MouseEvent, node: Node) => {
     setSelectedNodeId(node.id);
   }, []);
 
   const selectedNodeData = useMemo(() => {
     if (!selectedNodeId) return null;
-    const n = SKILL_TREE_V2.find((n) => n.id === selectedNodeId);
+    const n = SKILL_TREE_V2.find((n: SkillNodeV2) => n.id === selectedNodeId);
     if (!n) return null;
     const status = getNodeStatus(n.id);
     const affordable = canAfford(n.id);
@@ -484,11 +485,10 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onExit, wellness }) => {
                       onClick={handleUnlock}
                       disabled={!selectedNodeData.affordable}
                       className={`w-full py-4 font-bold uppercase tracking-widest rounded transition-all flex items-center justify-center gap-2
-                                                ${
-                                                  selectedNodeData.affordable
-                                                    ? "bg-green-600 hover:bg-green-500 text-black shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:scale-105"
-                                                    : "bg-zinc-800 text-zinc-500 cursor-not-allowed"
-                                                }
+                                                ${selectedNodeData.affordable
+                          ? "bg-green-600 hover:bg-green-500 text-black shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:scale-105"
+                          : "bg-zinc-800 text-zinc-500 cursor-not-allowed"
+                        }
                                             `}
                     >
                       {selectedNodeData.affordable

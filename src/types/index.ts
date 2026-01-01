@@ -445,3 +445,11 @@ export interface GrimoireEntry {
   rarity: Rarity;
   metadata?: Record<string, any>;
 }
+
+// --- MONITORING ---
+export interface SentryMonitorOptions {
+  slug: string;
+  schedule?: string;
+  checkInMargin?: number;
+  maxRuntime?: number;
+}

@@ -125,7 +125,7 @@
 - [ ] **Database Migration CI Guard Enhancement** <!-- status: planned | priority: medium | roi: 3.3 | effort: S | source: infrastructure-audit -->
   - Rationale: `database-guard.yml` exists but drift check logic is fragile (depends on directory listing).
   - Scope: Use `prisma migrate diff` instead of file checks.
-- [ ] **Cron Job Monitoring** <!-- status: planned | priority: medium | roi: 3.2 | effort: S | source: infrastructure-audit -->
+- [x] **Cron Job Monitoring** <!-- status: shipped | priority: medium | roi: 3.2 | effort: S | source: infrastructure-audit -->
   - Rationale: `vercel.json` has cron job but no alerting if it fails.
   - Scope: Add uptime monitoring (Checkly, Cronitor) or Sentry cron monitoring.
 
@@ -147,6 +147,7 @@
 ### Infra Session (2026-01-01)
 - [x] **Health Check Endpoint** (`/api/health`) <!-- status: shipped | source: infrastructure-audit -->
 - [x] **Structured Logging** (`pino`) <!-- status: shipped | source: infrastructure-audit -->
+- [x] **Sentry Cron Monitoring** (`src/lib/sentry-cron.ts`) <!-- status: shipped | source: infrastructure-audit -->
 
 
 

@@ -100,11 +100,12 @@ export async function exchangeStravaTokenAction(code: string) {
 
     revalidatePath("/settings");
     return { success: true };
-  } catch (error: any) {
-    console.error(
-      "Strava Token Exchange Error:",
-      error.response?.data || error.message,
-    );
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) {
+      console.error("Strava Token Exchange Error:", error.response?.data || error.message);
+    } else {
+      console.error("Strava Token Exchange Error:", error);
+    }
     return { success: false, error: "Failed to exchange token with Strava" };
   }
 }

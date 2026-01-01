@@ -5,8 +5,8 @@ import React from "react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import SkillTree from "../SkillTree";
-import { useSkills } from "../../context/SkillContext";
-import { SkillStatus } from "../../types/skills";
+import { useSkills } from "../../../../context/SkillContext";
+import { SkillStatus } from "../../../../types/skills";
 
 // Mock React Flow
 vi.mock("reactflow", () => ({
@@ -20,12 +20,12 @@ vi.mock("reactflow", () => ({
 }));
 
 // Mock Context
-vi.mock("../../context/SkillContext", () => ({
+vi.mock("../../../../context/SkillContext", () => ({
   useSkills: vi.fn(),
 }));
 
 // Mock Data
-vi.mock("../../data/skill-tree-v2", () => ({
+vi.mock("../../../../data/skill-tree-v2", () => ({
   SKILL_TREE_V2: [
     {
       id: "node-1",

@@ -38,6 +38,7 @@ src/
 ├── components/           # 🧱 GENERIC UI (Atoms/Molecules)
 │   ├── ui/               # shadcn/ui primitives (Button, Input)
 │   └── shared/           # Reusable non-domain components (Layouts, Loaders)
+│   ├── [!IMPORTANT]      # NO DOMAIN COMPONENTS HERE. Use features/[feature]/components.
 │
 ├── actions/              # ⚡ SERVER ACTIONS (The API)
 │   ├── [domain].ts       # e.g. "combat.ts", "auth.ts"

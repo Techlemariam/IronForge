@@ -26,7 +26,7 @@ import { HevyExerciseTemplate, HevyRoutine } from "@/types/hevy";
 import { mapHevyToQuest, mapQuestToHevyPayload } from "@/utils/hevyAdapter";
 import { mapSessionToQuest, mapQuestToSession } from "@/utils/typeMappers";
 import { OracleRecommendation } from "@/types";
-import OracleCard from "@/components/OracleCard";
+import OracleCard from "../oracle/components/OracleCard";
 import UltrathinkDashboard from "@/components/UltrathinkDashboard";
 import { getProgressionAction } from "@/actions/progression";
 import OracleVerdict from "@/components/OracleVerdict";

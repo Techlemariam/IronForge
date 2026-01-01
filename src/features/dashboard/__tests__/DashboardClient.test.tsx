@@ -58,7 +58,7 @@ vi.mock("lucide-react", () => {
 
 // Mock Child Components to simplify testing
 
-vi.mock("@/components/OracleCard", () => ({
+vi.mock("@/features/oracle/components/OracleCard", () => ({
   default: () => <div data-testid="oracle-card">Oracle Card</div>,
 }));
 vi.mock("@/components/UltrathinkDashboard", () => ({

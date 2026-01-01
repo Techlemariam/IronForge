@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { ACHIEVEMENTS, SESSIONS } from "../data/static";
+import { ACHIEVEMENTS, SESSIONS } from "../../../data/static";
 import {
   AchievementCategory,
   TitanAttributes,
   ExerciseLog,
   MeditationLog,
-} from "../types";
+} from "../../../types";
 import {
   X,
   Shield,
@@ -27,12 +27,12 @@ import {
   ScrollText,
   History,
 } from "lucide-react";
-import { TitanXPBar } from "./TitanXPBar";
-import { calculateTitanRank, calculateTitanAttributes } from "../utils";
-import { useSkills } from "../context/SkillContext";
-import { StorageService } from "../services/storage";
-import { IntervalsWellness } from "../types";
-import AttributeRadar from "./AttributeRadar";
+import { TitanXPBar } from "../../../components/TitanXPBar";
+import { calculateTitanRank, calculateTitanAttributes } from "../../../utils";
+import { useSkills } from "../../../context/SkillContext";
+import { StorageService } from "../../../services/storage";
+import { IntervalsWellness } from "../../../types";
+import AttributeRadar from "../../../components/AttributeRadar";
 
 interface CharacterSheetProps {
   unlockedIds: Set<string>;
@@ -74,7 +74,7 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({
     if (activeTab === "history") {
       setIsLoadingHistory(true);
       StorageService.getHistory()
-        .then((logs) => setHistoryLogs(logs))
+        .then((logs: ExerciseLog[]) => setHistoryLogs(logs))
         .finally(() => setIsLoadingHistory(false));
     }
   }, [activeTab]);
@@ -97,7 +97,7 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({
     // Simple lookup, could be optimized with a map
     for (const s of SESSIONS) {
       for (const b of s.blocks) {
-        const ex = b.exercises?.find((e) => e.id === id);
+        const ex = b.exercises?.find((e: any) => e.id === id);
         if (ex) return ex.name;
       }
     }
@@ -516,15 +516,14 @@ const GearSlot: React.FC<{
       {/* Tooltip */}
       <div className="absolute left-12 top-0 hidden group-hover:block z-50 w-48 bg-[#050505] border border-zinc-600 rounded p-2 pointer-events-none shadow-xl">
         <div
-          className={`font-bold text-sm ${
-            rarity === "epic"
-              ? "text-[#a335ee]"
-              : rarity === "rare"
-                ? "text-[#0070dd]"
-                : rarity === "uncommon"
-                  ? "text-[#1eff00]"
-                  : "text-white"
-          }`}
+          className={`font-bold text-sm ${rarity === "epic"
+            ? "text-[#a335ee]"
+            : rarity === "rare"
+              ? "text-[#0070dd]"
+              : rarity === "uncommon"
+                ? "text-[#1eff00]"
+                : "text-white"
+            }`}
         >
           {label} Slot
         </div>
@@ -587,11 +586,10 @@ const TabButton: React.FC<{
     <button
       onClick={onClick}
       className={`px-4 py-1 rounded-t-lg text-xs font-bold transition-all
-            ${
-              active
-                ? "bg-[#1a1a1a] text-white border-x border-t border-[#444] -mb-1 pb-2"
-                : "bg-[#0f0f11] text-zinc-500 hover:text-zinc-300 hover:bg-[#151515]"
-            }
+            ${active
+          ? "bg-[#1a1a1a] text-white border-x border-t border-[#444] -mb-1 pb-2"
+          : "bg-[#0f0f11] text-zinc-500 hover:text-zinc-300 hover:bg-[#151515]"
+        }
         `}
     >
       {label}

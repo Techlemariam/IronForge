@@ -4,7 +4,7 @@ import { TitanAvatar } from "@/features/titan/TitanAvatar";
 import { QuestBoard } from "@/components/gamification/QuestBoard";
 import { CitadelHub } from "@/features/dashboard/CitadelHub";
 import OracleVerdict from "@/components/OracleVerdict";
-import OracleCard from "@/components/OracleCard";
+import OracleCard from "@/features/oracle/components/OracleCard";
 import UltrathinkDashboard from "@/components/UltrathinkDashboard";
 import { CampaignTracker } from "@/components/CampaignTracker";
 import { toast } from "@/components/ui/GameToast";

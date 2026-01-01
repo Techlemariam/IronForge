@@ -65,7 +65,7 @@ export type AthleteSettings = z.infer<typeof AthleteSettingsSchema>;
 async function fetchIntervals<T>(
   endpoint: string,
   apiKey: string,
-  schema?: z.ZodType<T>
+  schema?: z.ZodType<any>
 ): Promise<T | null> {
   if (!apiKey) {
     throw new Error("Intervals API Key is missing");
