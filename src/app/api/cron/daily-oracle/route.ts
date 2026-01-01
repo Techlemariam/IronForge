@@ -56,7 +56,14 @@ export async function GET(request: NextRequest) {
                         },
                     });
 
-
+                    // Create in-app notification
+                    await prisma.notification.create({
+                        data: {
+                            userId: titan.userId,
+                            type: "ORACLE_DECREE",
+                            message: `🔮 ${decree.label}`,
+                        },
+                    });
 
                     decreesIssued++;
                 }

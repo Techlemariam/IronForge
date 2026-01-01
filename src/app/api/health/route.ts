@@ -1,45 +1,33 @@
-import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { NextResponse } from 'next/server';
+import { prisma } from '@/lib/prisma'; // Assumed path based on architecture.md
 
-/**
- * Health Check Endpoint
- * Used for monitoring system health and database connectivity.
- */
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
-    const startTime = Date.now();
-
     try {
         // 1. Check Database Connectivity
-        // We use a simple query to verify the connection
         await prisma.$queryRaw`SELECT 1`;
-
-        const duration = Date.now() - startTime;
 
         return NextResponse.json(
             {
-                status: "ok",
+                status: 'ok',
                 timestamp: new Date().toISOString(),
-                database: "connected",
-                latency: `${duration} ms`,
-                environment: process.env.NODE_ENV,
+                env: process.env.NODE_ENV,
+                gitSha: process.env.VERCEL_GIT_COMMIT_SHA || 'dev',
+                database: 'connected',
             },
             { status: 200 }
         );
     } catch (error) {
-        const duration = Date.now() - startTime;
-        console.error("Health check error:", error);
-
+        console.error('Health Check Failed:', error);
         return NextResponse.json(
             {
-                status: "error",
+                status: 'error',
                 timestamp: new Date().toISOString(),
-                database: "disconnected",
-                error: error instanceof Error ? error.message : "Unknown error",
-                latency: `${duration} ms`,
+                database: 'disconnected',
+                error: error instanceof Error ? error.message : 'Unknown error',
             },
-            { status: 503 }
+            { status: 500 }
         );
-    } finally {
-        await prisma.$disconnect();
     }
 }

@@ -57,6 +57,11 @@ Innan kod genereras ska följande verifieras:
 3. **Schema:** Om datastrukturer ändras, verifiera mot `prisma/schema.prisma`.
 4. **Debt:** Logga eventuella workarounds i `DEBT.md` för framtida cleanup.
 
+# 🏷️ Naming Conventions
+* **Task Names:** Måste strikt följa formatet `[DOMAIN] <Short Description>`.
+* **Domains:** `[INFRA]`, `[GAME]`, `[SPRINT]`, `[QA]`, `[BIO]`, `[BUSINESS]`, `[API]`, `[META]`.
+* **Sidebar Hygiene:** Syftet är att hålla "Workspaces"-listan skanningsbar.
+
 # 🚫 Zero Manual Validation Protocol
 Inga ändringar får märkas som "Completed" utan automatiserat bevis.
 - **Backend/Logic:** Kräver gröna Unit Tests (Vitest).

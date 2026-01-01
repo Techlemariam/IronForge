@@ -5,6 +5,7 @@
 - [x] **Iron Command Center (TV Mode)** <!-- status: shipped | priority: critical | roi: 5.5 | effort: L | source: strategic-diff -->
 - [/] **Cardio PvP Duels** ([Spec](specs/cardio-duels.md)) <!-- status: in-progress | architect: /architect | priority: medium | effort: M | source: user/idea -->
 
+
 ## 🚨 Business Trigger Watchlist (Scale-Up Indicators)
 > **Strategy:** Do not monetize until these conditions are met.
 - [ ] **Trigger 1: Traction** -> 100 recurring users (Retention > 20%).
@@ -118,9 +119,7 @@
 
 
 ### Medium Priority (Observability & Resilience)
-- [ ] **Health Check Endpoint** <!-- status: planned | priority: medium | roi: 3.8 | effort: S | source: infrastructure-audit -->
-  - Rationale: No `/api/health` for load balancer checks. Vercel handles this but custom endpoint enables DB health monitoring.
-  - Scope: Create `/app/api/health/route.ts` with DB ping.
+
 - [ ] **Structured Logging** <!-- status: planned | priority: medium | roi: 3.5 | effort: M | source: infrastructure-audit -->
   - Rationale: Using `console.error` everywhere. No log levels, no correlation IDs, no observability.
   - Scope: Add Pino/Winston logger, standardize log format, integrate with Vercel Logs.
@@ -145,6 +144,11 @@
 ---
 
 ## ✅ Shipped
+
+### Infra Session (2026-01-01)
+- [x] **Health Check Endpoint** (`/api/health`) <!-- status: shipped | source: infrastructure-audit -->
+
+
 
 
 ### Sprint 12: Economy & Progression (2025-12-29)

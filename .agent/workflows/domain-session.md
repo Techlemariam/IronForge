@@ -78,8 +78,10 @@ Ask the user:
 > 3. 🔍 **Research** - Utforska och förstå domänen bättre
 > 4. 📋 **Review** - Granska och förbättra existerande kod
 
-Based on selection, trigger appropriate sub-workflow:
-- Ny feature → `/feature [feature-name]`
+Based on selection, trigger appropriate sub-workflow.
+**CRITICAL:** When starting the new workflow/task, the Task Name MUST be: `[DOMAIN] <Description>`
+
+- Ny feature → `/feature [feature-name]` (Ensure `[feature-name]` implies domain or is prefixed)
 - Bugfix → `/cleanup` → `/qa`
 - Research → `/librarian`
 - Review → `/qa` → `/polish`

@@ -10,6 +10,8 @@ Trigger: Manual
 
 # Protocol
 
+> **Naming Convention:** All Task Names must start with a domain prefix, e.g., `[GAME] Feature Name`.
+
 ## Phase 0: Roadmap Sync
 1. Läs `.agent/features/roadmap.md`.
 2. Sök efter `[feature-name]`.
