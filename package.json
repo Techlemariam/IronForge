@@ -21,9 +21,10 @@
     "agent:lint": "turbo run lint",
     "security": "npm audit --audit-level=high",
     "postinstall": "prisma generate",
-    "test:docker:up": "docker-compose -f docker-compose.test.yml up -d --wait",
     "test:docker:down": "docker-compose -f docker-compose.test.yml down",
     "test:integration": "npm run test:docker:up && dotenv -e .env.test -- npx prisma db push --accept-data-loss && dotenv -e .env.test -- vitest run --config vitest.integration.config.ts",
+    "test:visual": "npx playwright test visual.spec.ts",
+    "lhci": "lhci autorun",
     "docs:generate": "typedoc",
     "clean:logs": "npx tsx scripts/clean-logs.ts",
     "prebuild": "npm run clean:logs"
