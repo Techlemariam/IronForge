@@ -231,8 +231,12 @@ export class TrainingContextService {
 
         // 8. Calculate Cardio Stress (TSS)
         let cardioStress: TrainingContext["cardioStress"] = "LOW";
-        if (totalTss > 250) cardioStress = "HIGH";
-        else if (totalTss > 100) cardioStress = "MODERATE";
+        if (totalTss > 250) {
+            cardioStress = "HIGH";
+            warnings.push("High cardio fatigue detected (Long session detected).");
+        } else if (totalTss > 100) {
+            cardioStress = "MODERATE";
+        }
         // 4b. Path-Specific Metrics Calculation
         // Neural Load (Juggernaut)
         // Need to fetch logs if not already filtered. getWeeklyVolume fetches them internally.
