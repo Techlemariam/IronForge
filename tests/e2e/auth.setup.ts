@@ -16,8 +16,8 @@ setup('authenticate', async ({ page }) => {
     await passwordInput.waitFor({ state: 'visible', timeout: 10000 });
 
     // Fill in credentials
-    await page.getByPlaceholder('hunter@ironforge.com').fill('alexander.teklemariam@gmail.com');
-    await passwordInput.fill('IronForge2025!');
+    await page.getByPlaceholder('hunter@ironforge.com').fill(process.env.TEST_USER_EMAIL || 'alexander.teklemariam@gmail.com');
+    await passwordInput.fill(process.env.TEST_USER_PASSWORD || 'IronForge2025!');
 
     // Click the login button (should now be "Initialize Uplink" in password mode)
     await page.getByRole('button', { name: /Initialize Uplink/i }).click();
