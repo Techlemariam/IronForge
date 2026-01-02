@@ -226,14 +226,30 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
         setIsConfigured(true);
         return; // Skip API key check for demo users
       }
-      const hasLocalKey = !!localStorage.getItem("hevy_api_key");
-      const hasServerKey = !!userData?.hevyApiKey;
 
-      if (hasLocalKey || hasServerKey) {
-        setIsConfigured(true);
-      } else {
-        // Don't block - just open settings subtly
-      }
+      // Check both localStorage and server key
+      const checkConfiguration = () => {
+        const hasLocalKey = !!localStorage.getItem("hevy_api_key");
+        const hasServerKey = !!userData?.hevyApiKey;
+        setIsConfigured(hasLocalKey || hasServerKey);
+      };
+
+      // Initial check
+      checkConfiguration();
+
+      // Re-check on storage events (for cross-tab sync)
+      window.addEventListener('storage', checkConfiguration);
+
+      // Also poll every second for the first 5 seconds after mount
+      // This helps catch localStorage changes in the same tab (e.g., from test setup)
+      const pollInterval = setInterval(checkConfiguration, 1000);
+      const stopPolling = setTimeout(() => clearInterval(pollInterval), 5000);
+
+      return () => {
+        window.removeEventListener('storage', checkConfiguration);
+        clearInterval(pollInterval);
+        clearTimeout(stopPolling);
+      };
     }
   }, [isDemoMode, userData]);
 
