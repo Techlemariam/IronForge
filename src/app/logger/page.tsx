@@ -9,6 +9,8 @@ export const metadata: Metadata = {
     description: "Quickly log your workouts.",
 };
 
+export const dynamic = "force-dynamic";
+
 import prisma from "@/lib/prisma";
 import { EquipmentService } from "@/services/game/EquipmentService";
 
