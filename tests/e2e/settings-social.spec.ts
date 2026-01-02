@@ -22,13 +22,13 @@ test.describe('Settings and Social Hub', () => {
         // If redirected to login, this test might fail. 
         // But let's assume the environment is set up. 
         // Check for Header
-        await expect(page.getByText('System Configuration')).toBeVisible();
+        await expect(page.getByRole('heading', { name: 'Settings' })).toBeVisible();
 
         // Check for "Integrations" section
         await expect(page.getByRole('heading', { name: 'Integrations' })).toBeVisible();
 
-        // Check for "Data Migration" section
-        await expect(page.getByRole('heading', { name: 'Data Migration' })).toBeVisible();
+        // Check for "Data Management" section
+        await expect(page.getByRole('heading', { name: 'Data Management' })).toBeVisible();
 
         // Check for Back link
         const backLink = page.locator('a[href="/citadel"]');
@@ -37,7 +37,7 @@ test.describe('Settings and Social Hub', () => {
 
     test('should navigate to Social Hub from Dashboard', async ({ page }) => {
         // 1. Visit Dashboard
-        await page.goto('/dashboard');
+        await page.goto('/');
 
         // Wait for Citadel Hub to load
         await expect(page.getByText('Iron City')).toBeVisible();

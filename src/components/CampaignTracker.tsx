@@ -156,19 +156,19 @@ export const CampaignTracker: React.FC<CampaignTrackerProps> = ({
           <MasteryProgressBar
             label="Strength Sets"
             current={weeklyMastery?.strengthSets || 0}
-            target={BUILD_VOLUME_TARGETS[activePath].strengthSets}
+            target={(BUILD_VOLUME_TARGETS[activePath] || BUILD_VOLUME_TARGETS.WARDEN).strengthSets}
             color="bg-red-500"
           />
           <MasteryProgressBar
             label="Cardio TSS"
             current={weeklyMastery?.cardioTss || 0}
-            target={BUILD_VOLUME_TARGETS[activePath].cardioTss}
+            target={(BUILD_VOLUME_TARGETS[activePath] || BUILD_VOLUME_TARGETS.WARDEN).cardioTss}
             color="bg-cyan-500"
           />
           <MasteryProgressBar
             label="Mobility Sessions"
             current={weeklyMastery?.mobilitySets || 0}
-            target={BUILD_VOLUME_TARGETS[activePath].mobilitySets}
+            target={(BUILD_VOLUME_TARGETS[activePath] || BUILD_VOLUME_TARGETS.WARDEN).mobilitySets}
             color="bg-amber-500"
           />
         </div>

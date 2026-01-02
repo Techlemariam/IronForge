@@ -65,10 +65,10 @@ export class AutoSpecEngine {
         currentCardioTss: number,
         metrics: SystemMetrics
     ): BuildVolumeTargets {
-        // 1. Get Base Targets from Matrix
-        const baseTargets = phase === "ALPHA"
-            ? BUILD_VOLUME_TARGETS_ALPHA[activePath]
-            : BUILD_VOLUME_TARGETS_BETA[activePath];
+        // 1. Get Base Targets from Matrix (with fallback to WARDEN)
+        const alphaTargets = BUILD_VOLUME_TARGETS_ALPHA[activePath] ?? BUILD_VOLUME_TARGETS_ALPHA.WARDEN;
+        const betaTargets = BUILD_VOLUME_TARGETS_BETA[activePath] ?? BUILD_VOLUME_TARGETS_BETA.WARDEN;
+        const baseTargets = phase === "ALPHA" ? alphaTargets : betaTargets;
 
         // If Gamma, everything is minimal (50%)
         if (phase === "GAMMA") {

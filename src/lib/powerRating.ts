@@ -84,3 +84,25 @@ export const calculatePowerRating = (
         powerRating: Math.min(1000, finalRating), // Cap at 1000
     };
 };
+
+/**
+ * Apply decay to power rating based on inactivity
+ * Decay: 5% per 7 days of inactivity
+ * @param currentRating Current power rating (0-1000)
+ * @param daysSinceActivity Days since last recorded activity
+ * @returns Decayed power rating
+ */
+export const applyDecay = (
+    currentRating: number,
+    daysSinceActivity: number
+): number => {
+    if (daysSinceActivity < 7) return currentRating;
+
+    const weeksInactive = Math.floor(daysSinceActivity / 7);
+    const decayMultiplier = Math.pow(0.95, weeksInactive);
+
+    return Math.round(currentRating * decayMultiplier);
+};
+
+// Re-export TrainingPath for convenience
+export type { TrainingPath };

@@ -18,20 +18,7 @@ import {
 import { modifyTitanHealthAction, awardTitanXpAction } from "@/actions/titan";
 import { BioBuff } from "@/features/bio/BioBuffService";
 
-// Type for Prisma Monster with hp/level (client might be stale vs schema)
-type PrismaMonster = {
-  id: string;
-  name: string;
-  title: string;
-  description: string;
-  type: string;
-  difficulty: string;
-  level: number;
-  hp: number;
-  weakness: string | null;
-  stats: unknown;
-  image: string | null;
-};
+import { Monster as PrismaMonster } from "@prisma/client";
 
 /**
  * Starts a boss fight or resumes an existing one if valid.

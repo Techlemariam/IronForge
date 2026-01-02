@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Visual Regression', () => {
     test('landing page visual check', async ({ page }) => {
-        await page.goto('/');
+        await page.goto('/welcome');
 
         // Wait for critical elements to load
         await expect(page.locator('h1')).toBeVisible();

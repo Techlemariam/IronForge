@@ -45,6 +45,9 @@ model User {
   longestLoginStreak      Int       @default(0)
   notificationPreferences Json?
 
+  // Onboarding State
+  hasCompletedOnboarding Boolean @default(false)
+
   // Training Path System
   activePath        String? @default("WARDEN") // TrainingPath enum
   archetype         Archetype @default(WARDEN) @map("archetype")

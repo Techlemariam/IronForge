@@ -569,7 +569,7 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
 
   if (!isConfigured) {
     return (
-      <main id="main-content" className="bg-void min-h-screen text-white flex items-center justify-center p-4">
+      <main id="config-screen" className="bg-void min-h-screen text-white flex items-center justify-center p-4">
         <div className="scanlines" />
         <Link
           href="/settings"
@@ -595,10 +595,10 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
     );
   }
 
-  if (state.isCodexLoading) return <main id="main-content"><CodexLoader /></main>;
+  if (state.isCodexLoading) return <main id="codex-loader"><CodexLoader /></main>;
 
   return (
-    <div className="bg-forge-900 min-h-screen bg-noise">
+    <div id="main-content" className="bg-forge-900 min-h-screen bg-noise">
       <div className="scanlines pointer-events-none fixed inset-0 z-50 opacity-5" />
 
       <Link
@@ -607,7 +607,6 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
       >
         <Settings size={24} />
       </Link>
-      {/* ConfigModal removed in favor of /settings page */}
 
       <PersistentHeader
         level={state.level}
@@ -619,7 +618,7 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
 
       <AnimatePresence mode="wait">
         <AnimatedViewWrapper viewKey={state.currentView}>
-          <main id="main-content">
+          <main id="view-container">
             {renderView()}
           </main>
         </AnimatedViewWrapper>

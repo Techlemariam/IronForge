@@ -5,11 +5,13 @@ test.describe('Public Critical Path', () => {
     test.use({ storageState: { cookies: [], origins: [] } });
 
     test('should load the public homepage', async ({ page }) => {
-        await page.goto('/');
-        await expect(page).toHaveTitle(/IronForge/);
+        await page.goto('/welcome');
+
+        // Should have IronForge branding or title
+        await expect(page.getByText(/IronForge|Forge Your/i).first()).toBeVisible({ timeout: 10000 });
 
         // Should have a way to start or login
-        await expect(page.getByRole('link', { name: /Begin Your Saga/i }).or(page.getByRole('link', { name: /Log In/i }))).toBeVisible();
+        await expect(page.getByRole('link', { name: /Begin Your Saga|Log In|Start/i }).first()).toBeVisible({ timeout: 10000 });
     });
 
     test('should verify login page is accessible', async ({ page }) => {

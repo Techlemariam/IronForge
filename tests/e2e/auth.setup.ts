@@ -6,6 +6,15 @@ setup('authenticate', async ({ page }) => {
     // Perform authentication steps. Replace these actions with your own.
     await page.goto('/login');
 
+    // Debug: Listen for browser errors
+    page.on('console', msg => {
+        if (msg.type() === 'error') console.log(`BROWSER ERROR: ${msg.text()}`);
+        else console.log(`BROWSER LOG: ${msg.text()}`);
+    });
+    page.on('pageerror', err => {
+        console.log(`BROWSER EXCEPTION: ${err.message}`);
+    });
+
     // Toggle to password mode
     const passwordModeButton = page.getByRole('button', { name: /Login with Password/i });
     await passwordModeButton.waitFor({ state: 'visible', timeout: 10000 });
@@ -19,42 +28,73 @@ setup('authenticate', async ({ page }) => {
     await page.getByPlaceholder('hunter@ironforge.com').fill(process.env.TEST_USER_EMAIL || 'alexander.teklemariam@gmail.com');
     await passwordInput.fill(process.env.TEST_USER_PASSWORD || 'IronForge2025!');
 
-    // Click the login button (should now be "Initialize Uplink" in password mode)
-    await page.getByRole('button', { name: /Initialize Uplink/i }).click();
-
-    // Wait for the dashboard to load (client-side redirect can be slow)
-    // We wait for the main content container we added in DashboardClient.tsx
-    await page.waitForSelector('#main-content', { timeout: 90000 });
-
-    // Optional: Check if we are actually on a dashboard-like URL
-    expect(page.url()).toMatch(/.*\/$|.*dashboard|.*iron-city/);
-
-    // Bypass "Configuration Required" screen if it appears
+    // Pre-inject API key BEFORE login to avoid "Configuration Required" screen entirely
     await page.evaluate(() => {
         localStorage.setItem('hevy_api_key', 'e2e-dummy-key');
     });
 
-    // Reload to ensure the DashboardClient picks up the local storage key
-    await page.reload({ waitUntil: 'networkidle' });
+    // Click the login button and wait for navigation
+    await Promise.all([
+        page.waitForLoadState('networkidle', { timeout: 60000 }),
+        page.getByRole('button', { name: /Initialize Uplink/i }).click()
+    ]);
 
-    // Wait for main content with retry logic and better error handling
+    // Give React time to hydrate after navigation
+    await page.waitForTimeout(2000);
+
+    // Now wait for either main-content OR config-screen
+    try {
+        await Promise.race([
+            page.waitForSelector('#main-content', { timeout: 60000, state: 'visible' }),
+            page.waitForSelector('#config-screen', { timeout: 60000, state: 'visible' })
+        ]);
+    } catch (e) {
+        console.log("Initial wait timed out, checking state...");
+    }
+
+    // If config screen somehow still appears, reload
+    if (await page.locator('#config-screen').isVisible()) {
+        console.log("Config screen detected despite pre-injection. Reloading...");
+        await page.reload({ waitUntil: 'networkidle' });
+    }
+
+    // Final wait for main content
     try {
         await page.waitForSelector('#main-content', {
-            timeout: 90000,
+            timeout: 60000,
             state: 'visible'
         });
     } catch (error) {
-        // Debug: Take screenshot and log page content on failure
-        await page.screenshot({ path: 'test-results/auth-failure.png' });
-        const bodyText = await page.textContent('body');
-        console.error('Auth setup failed. Page content:', bodyText?.substring(0, 500));
-        throw new Error(`Failed to find #main-content after reload. Page might be stuck or crashed.`);
+        // Debug: Log page content on failure FIRST
+        try {
+            const bodyText = await page.textContent('body');
+            console.error('Auth setup failed. Page content:', bodyText?.substring(0, 500));
+            console.error('Inner HTML:', await page.innerHTML('body'));
+        } catch (e) {
+            console.error('Failed to capture page content:', e);
+        }
+
+        try {
+            await page.screenshot({ path: 'test-results/auth-failure.png' });
+        } catch (e) {
+            console.error('Failed to take screenshot:', e);
+        }
+
+        throw new Error(`Failed to find #main-content after reload. Page might be stuck.`);
     }
 
     // Verify we're not stuck on config screen
-    const configText = await page.textContent('body');
-    if (configText?.includes('Configuration Required')) {
-        throw new Error('Still showing Configuration Required screen after setting localStorage');
+    if (await page.locator('#config-screen').isVisible()) {
+        throw new Error('Still showing #config-screen after setting localStorage');
+    }
+
+    // Dismiss onboarding overlay if it appears (fallback for db-level fix)
+    const onboardingButton = page.locator('button:has-text("Continue"), button:has-text("I Swear It")');
+    let attempts = 0;
+    while (await onboardingButton.count() > 0 && attempts < 5) {
+        await onboardingButton.first().click();
+        await page.waitForTimeout(500);
+        attempts++;
     }
 
     // End of authentication steps.

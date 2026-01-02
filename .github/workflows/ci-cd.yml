@@ -259,7 +259,38 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/release' && github.event_name == 'push'
     steps:
-      - uses: google-github-actions/release-please-action@v4
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
         with:
-          release-type: node
+          tag_name: v0.0.${{ github.run_number }}
+          name: Release v0.0.${{ github.run_number }}
+          generate_release_notes: true
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Append Custom Release Notes
+        if: ${{ steps.create_release.outputs.url }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG_NAME: v0.0.${{ github.run_number }}
+        run: |
+          if [ -f "RELEASE_NOTES.md" ]; then
+            echo "📄 Found RELEASE_NOTES.md, appending to release..."
+            # Fetch current body
+            gh release view "$TAG_NAME" --json body -q .body > current_body.txt
+            
+            # Append custom notes
+            echo -e "\n\n### 📝 Developer Notes\n" >> current_body.txt
+            cat RELEASE_NOTES.md >> current_body.txt
+            
+            # Update release
+            gh release edit "$TAG_NAME" --notes-file current_body.txt
+          else
+            echo "ℹ️ No RELEASE_NOTES.md found."
+          fi
+
+
 

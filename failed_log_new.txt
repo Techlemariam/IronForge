@@ -1,0 +1,119 @@
+🎭 E2E Tests	Run Playwright Tests	﻿2026-01-02T16:35:47.9521333Z ##[group]Run npx playwright test
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:35:47.9521663Z [36;1mnpx playwright test[0m
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:35:47.9555531Z shell: /usr/bin/bash -e {0}
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:35:47.9555785Z env:
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:35:47.9556473Z   DATABASE_URL: ***
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:35:47.9557045Z   DIRECT_URL: ***
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:35:47.9557399Z   NEXT_PUBLIC_SUPABASE_URL: ***
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:35:47.9558705Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:35:47.9558967Z   SKIP_ENV_VALIDATION: true
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:35:47.9559237Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:35:47.9559522Z   CI: true
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:35:47.9559748Z   TEST_USER_EMAIL: ***
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:35:47.9559971Z   TEST_USER_PASSWORD: ***
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:35:47.9560220Z   NEXT_PUBLIC_APP_URL: http://localhost:3000
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:35:47.9560489Z ##[endgroup]
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:35:49.2310946Z [dotenv@17.2.3] injecting env (0) from .env -- tip: 🔄 add secrets lifecycle management: https://dotenvx.com/ops
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:35:52.0207991Z [WebServer] [@sentry/nextjs] Could not find a Next.js instrumentation file. This indicates an incomplete configuration of the Sentry SDK. An instrumentation file is required for the Sentry SDK to be initialized on the server: https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/#create-initialization-config-files (you can suppress this warning by setting SENTRY_SUPPRESS_INSTRUMENTATION_FILE_WARNING=1 as environment variable)
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:36:18.2696106Z 
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:36:18.2696764Z Running 43 tests using 1 worker
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:36:19.0895111Z [WebServer] <w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (188kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:36:19.1615903Z [WebServer] <w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (139kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:36:19.1756228Z [WebServer] <w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (130kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:36:19.9114952Z [dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:36:52.7559089Z [WebServer] Server Action Intervals Wellness Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:36:52.8922540Z [WebServer] Server Action Intervals Activities Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:36:52.8944238Z [WebServer] AutoSpec: CRITICAL STRESS. FORCE DELOAD.
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:36:53.6752944Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:36:58.3840480Z [WebServer]  [33m[1m⚠[22m[39m Fast Refresh had to perform a full reload due to a runtime error.
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:36:58.6066762Z [WebServer] Server Action Intervals Wellness Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:36:58.7466377Z [WebServer] Server Action Intervals Activities Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:36:58.7469355Z [WebServer] AutoSpec: CRITICAL STRESS. FORCE DELOAD.
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:36:59.9441513Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:37:03.7247193Z [WebServer] Server Action Intervals Wellness Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:37:03.8605835Z [WebServer] Server Action Intervals Activities Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:37:03.8612314Z [WebServer] AutoSpec: CRITICAL STRESS. FORCE DELOAD.
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:37:04.6276037Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:37:22.8916314Z ×[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:37:29.7843924Z [WebServer] Server Action Intervals Wellness Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:37:29.9275045Z [WebServer] Server Action Intervals Activities Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:37:29.9285677Z [WebServer] AutoSpec: CRITICAL STRESS. FORCE DELOAD.
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:37:30.7086249Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:37:34.2616940Z [WebServer] Server Action Intervals Wellness Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:37:34.3993891Z [WebServer] Server Action Intervals Activities Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:37:34.4000229Z [WebServer] AutoSpec: CRITICAL STRESS. FORCE DELOAD.
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:37:35.1673205Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:38:24.0652946Z ×[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  enable debug logging with { debug: true }
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:38:29.8963907Z [WebServer] Server Action Intervals Wellness Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:38:30.0315701Z [WebServer] Server Action Intervals Activities Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:38:30.0328689Z [WebServer] AutoSpec: CRITICAL STRESS. FORCE DELOAD.
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:38:30.7981652Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:38:33.8561483Z [WebServer] Server Action Intervals Wellness Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:38:33.9923264Z [WebServer] Server Action Intervals Activities Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:38:33.9927450Z [WebServer] AutoSpec: CRITICAL STRESS. FORCE DELOAD.
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:38:34.7561511Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5606357Z T
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5613368Z 
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5628519Z   1) [setup] › tests/e2e/auth.setup.ts:5:1 › authenticate ──────────────────────────────────────────
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5633455Z 
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5634157Z     [31mTest timeout of 60000ms exceeded.[39m
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5634500Z 
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5634910Z     Error: page.screenshot: Target page, context or browser has been closed
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5635368Z 
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5635551Z       46 |     } catch (error) {
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5639744Z       47 |         // Debug: Take screenshot and log page content on failure
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5640937Z     > 48 |         await page.screenshot({ path: 'test-results/auth-failure.png' });
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5641574Z          |                    ^
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5642237Z       49 |         const bodyText = await page.textContent('body');
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5643108Z       50 |         console.error('Auth setup failed. Page content:', bodyText?.substring(0, 500));
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5644451Z       51 |         throw new Error(`Failed to find #main-content after reload. Page might be stuck or crashed.`);
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5645487Z         at /home/runner/work/IronForge/IronForge/tests/e2e/auth.setup.ts:48:20
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5646018Z 
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5646500Z     Error Context: test-results/auth.setup.ts-authenticate-setup/error-context.md
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5647053Z 
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5647761Z     Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5648226Z 
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5648566Z     [31mTest timeout of 60000ms exceeded.[39m
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5648913Z 
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5649336Z     Error: page.screenshot: Target page, context or browser has been closed
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5649854Z 
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5650071Z       46 |     } catch (error) {
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5650692Z       47 |         // Debug: Take screenshot and log page content on failure
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5651546Z     > 48 |         await page.screenshot({ path: 'test-results/auth-failure.png' });
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5652214Z          |                    ^
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5652735Z       49 |         const bodyText = await page.textContent('body');
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5653511Z       50 |         console.error('Auth setup failed. Page content:', bodyText?.substring(0, 500));
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5657150Z       51 |         throw new Error(`Failed to find #main-content after reload. Page might be stuck or crashed.`);
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5658282Z         at /home/runner/work/IronForge/IronForge/tests/e2e/auth.setup.ts:48:20
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5658854Z 
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5659722Z     Error Context: test-results/auth.setup.ts-authenticate-setup-retry1/error-context.md
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5660346Z 
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5661415Z     attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5662412Z     test-results/auth.setup.ts-authenticate-setup-retry1/trace.zip
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5663052Z     Usage:
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5663251Z 
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5664042Z         npx playwright show-trace test-results/auth.setup.ts-authenticate-setup-retry1/trace.zip
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5664677Z 
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5665315Z     ────────────────────────────────────────────────────────────────────────────────────────────────
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5665735Z 
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5666348Z     Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5666825Z 
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5667197Z     [31mTest timeout of 60000ms exceeded.[39m
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5667547Z 
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5667989Z     Error: page.screenshot: Target page, context or browser has been closed
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5668493Z 
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5668691Z       46 |     } catch (error) {
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5669292Z       47 |         // Debug: Take screenshot and log page content on failure
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5670143Z     > 48 |         await page.screenshot({ path: 'test-results/auth-failure.png' });
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5670825Z          |                    ^
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5671379Z       49 |         const bodyText = await page.textContent('body');
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5672223Z       50 |         console.error('Auth setup failed. Page content:', bodyText?.substring(0, 500));
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5673492Z       51 |         throw new Error(`Failed to find #main-content after reload. Page might be stuck or crashed.`);
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5675368Z         at /home/runner/work/IronForge/IronForge/tests/e2e/auth.setup.ts:48:20
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5676150Z 
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5676982Z     Error Context: test-results/auth.setup.ts-authenticate-setup-retry2/error-context.md
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5677851Z 
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5678016Z   1 failed
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5678971Z     [setup] › tests/e2e/auth.setup.ts:5:1 › authenticate ───────────────────────────────────────────
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.5679696Z   42 did not run
+🎭 E2E Tests	Run Playwright Tests	2026-01-02T16:39:24.6263336Z ##[error]Process completed with exit code 1.
