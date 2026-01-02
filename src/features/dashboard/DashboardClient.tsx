@@ -604,7 +604,9 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
 
       <AnimatePresence mode="wait">
         <AnimatedViewWrapper viewKey={state.currentView}>
-          {renderView()}
+          <main id="main-content">
+            {renderView()}
+          </main>
         </AnimatedViewWrapper>
       </AnimatePresence>
 

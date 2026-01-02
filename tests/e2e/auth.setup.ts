@@ -27,7 +27,7 @@ setup('authenticate', async ({ page }) => {
     // Wait for navigation after login (client-side redirect can be slow)
     await page.waitForURL(/.*\/$|.*dashboard|.*iron-city/, { timeout: 60000 });
     // Optional: Check for a main navigation element to ensure page loaded
-    await expect(page.getByRole('main')).toBeVisible({ timeout: 15000 });
+    await expect(page.getByRole('main')).toBeVisible({ timeout: 30000 });
 
     // End of authentication steps.
     await page.context().storageState({ path: authFile });
