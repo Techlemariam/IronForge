@@ -1,6 +1,5 @@
-// src/data/muscleMap.ts
-
 import { RPVolumeStandards } from "../types/auditor";
+import { VOLUME_LANDMARKS } from "./builds";
 
 /**
  * Universal Muscle & Exercise Taxonomy
@@ -12,22 +11,22 @@ import { RPVolumeStandards } from "../types/auditor";
  * - Value: An object containing:
  *   - `exercises`: Exercise names that target this muscle (aligned with Hevy titles)
  *   - `category`: Broader movement pattern
- *   - `rpStandards`: Mike Israetel volume landmarks (MEV/MAV/MRV)
+ *   - `rpStandards`: Synced with src/data/builds.ts VOLUME_LANDMARKS
  */
 
 export interface MuscleGroup {
   exercises: string[];
   category:
-    | "Horizontal Push"
-    | "Horizontal Pull"
-    | "Vertical Push"
-    | "Vertical Pull"
-    | "Leg Push"
-    | "Leg Hinge"
-    | "Leg Accessory"
-    | "Arms"
-    | "Core"
-    | "Cardio";
+  | "Horizontal Push"
+  | "Horizontal Pull"
+  | "Vertical Push"
+  | "Vertical Pull"
+  | "Leg Push"
+  | "Leg Hinge"
+  | "Leg Accessory"
+  | "Arms"
+  | "Core"
+  | "Cardio";
   rpStandards: RPVolumeStandards;
 }
 
@@ -50,7 +49,12 @@ export const muscleMap = new Map<string, MuscleGroup>([
         "Decline Bench Press",
       ],
       category: "Horizontal Push",
-      rpStandards: { MV: 0, MEV: 10, MAV: [12, 20], MRV: 22 },
+      rpStandards: {
+        MV: VOLUME_LANDMARKS.CHEST.mv,
+        MEV: VOLUME_LANDMARKS.CHEST.mev,
+        MAV: [VOLUME_LANDMARKS.CHEST.mav, VOLUME_LANDMARKS.CHEST.mrv],
+        MRV: VOLUME_LANDMARKS.CHEST.mrv,
+      },
     },
   ],
   [
@@ -67,7 +71,12 @@ export const muscleMap = new Map<string, MuscleGroup>([
         "Straight Arm Pulldown",
       ],
       category: "Vertical Pull",
-      rpStandards: { MV: 0, MEV: 10, MAV: [12, 22], MRV: 25 },
+      rpStandards: {
+        MV: VOLUME_LANDMARKS.BACK.mv,
+        MEV: VOLUME_LANDMARKS.BACK.mev,
+        MAV: [VOLUME_LANDMARKS.BACK.mav, VOLUME_LANDMARKS.BACK.mrv],
+        MRV: VOLUME_LANDMARKS.BACK.mrv,
+      },
     },
   ],
   [
@@ -90,7 +99,12 @@ export const muscleMap = new Map<string, MuscleGroup>([
         "Rack Pull",
       ],
       category: "Horizontal Pull",
-      rpStandards: { MV: 8, MEV: 8, MAV: [10, 18], MRV: 20 },
+      rpStandards: {
+        MV: VOLUME_LANDMARKS.BACK.mv,
+        MEV: VOLUME_LANDMARKS.BACK.mev,
+        MAV: [VOLUME_LANDMARKS.BACK.mav, VOLUME_LANDMARKS.BACK.mrv],
+        MRV: VOLUME_LANDMARKS.BACK.mrv,
+      },
     },
   ],
   [
@@ -107,7 +121,12 @@ export const muscleMap = new Map<string, MuscleGroup>([
         "Machine Shoulder Press",
       ],
       category: "Vertical Push",
-      rpStandards: { MV: 0, MEV: 0, MAV: [0, 0], MRV: 6 }, // Indirect work from pressing is usually sufficient
+      rpStandards: {
+        MV: VOLUME_LANDMARKS.SHOULDERS.mv,
+        MEV: VOLUME_LANDMARKS.SHOULDERS.mev,
+        MAV: [VOLUME_LANDMARKS.SHOULDERS.mav, VOLUME_LANDMARKS.SHOULDERS.mrv],
+        MRV: VOLUME_LANDMARKS.SHOULDERS.mrv,
+      },
     },
   ],
   [
@@ -122,7 +141,12 @@ export const muscleMap = new Map<string, MuscleGroup>([
         "Lu Raises",
       ],
       category: "Vertical Push",
-      rpStandards: { MV: 0, MEV: 8, MAV: [12, 20], MRV: 26 },
+      rpStandards: {
+        MV: VOLUME_LANDMARKS.SHOULDERS.mv,
+        MEV: VOLUME_LANDMARKS.SHOULDERS.mev,
+        MAV: [VOLUME_LANDMARKS.SHOULDERS.mav, VOLUME_LANDMARKS.SHOULDERS.mrv],
+        MRV: VOLUME_LANDMARKS.SHOULDERS.mrv,
+      },
     },
   ],
   [
@@ -138,7 +162,12 @@ export const muscleMap = new Map<string, MuscleGroup>([
         "External Rotator",
       ],
       category: "Horizontal Pull",
-      rpStandards: { MV: 0, MEV: 8, MAV: [12, 22], MRV: 26 },
+      rpStandards: {
+        MV: VOLUME_LANDMARKS.SHOULDERS.mv,
+        MEV: VOLUME_LANDMARKS.SHOULDERS.mev,
+        MAV: [VOLUME_LANDMARKS.SHOULDERS.mav, VOLUME_LANDMARKS.SHOULDERS.mrv],
+        MRV: VOLUME_LANDMARKS.SHOULDERS.mrv,
+      },
     },
   ],
   [
@@ -157,7 +186,12 @@ export const muscleMap = new Map<string, MuscleGroup>([
         "Bicep Curl (Upper Body Kit)",
       ],
       category: "Arms",
-      rpStandards: { MV: 0, MEV: 8, MAV: [14, 20], MRV: 26 },
+      rpStandards: {
+        MV: VOLUME_LANDMARKS.BICEPS.mv,
+        MEV: VOLUME_LANDMARKS.BICEPS.mev,
+        MAV: [VOLUME_LANDMARKS.BICEPS.mav, VOLUME_LANDMARKS.BICEPS.mrv],
+        MRV: VOLUME_LANDMARKS.BICEPS.mrv,
+      },
     },
   ],
   [
@@ -174,7 +208,12 @@ export const muscleMap = new Map<string, MuscleGroup>([
         "JM Press",
       ],
       category: "Arms",
-      rpStandards: { MV: 0, MEV: 6, MAV: [10, 14], MRV: 18 },
+      rpStandards: {
+        MV: VOLUME_LANDMARKS.TRICEPS.mv,
+        MEV: VOLUME_LANDMARKS.TRICEPS.mev,
+        MAV: [VOLUME_LANDMARKS.TRICEPS.mav, VOLUME_LANDMARKS.TRICEPS.mrv],
+        MRV: VOLUME_LANDMARKS.TRICEPS.mrv,
+      },
     },
   ],
   [
@@ -195,7 +234,12 @@ export const muscleMap = new Map<string, MuscleGroup>([
         "Step Up",
       ],
       category: "Leg Push",
-      rpStandards: { MV: 0, MEV: 8, MAV: [12, 18], MRV: 20 },
+      rpStandards: {
+        MV: VOLUME_LANDMARKS.QUADS.mv,
+        MEV: VOLUME_LANDMARKS.QUADS.mev,
+        MAV: [VOLUME_LANDMARKS.QUADS.mav, VOLUME_LANDMARKS.QUADS.mrv],
+        MRV: VOLUME_LANDMARKS.QUADS.mrv,
+      },
     },
   ],
   [
@@ -214,7 +258,12 @@ export const muscleMap = new Map<string, MuscleGroup>([
         "Sumo Deadlift",
       ],
       category: "Leg Hinge",
-      rpStandards: { MV: 0, MEV: 6, MAV: [10, 16], MRV: 20 },
+      rpStandards: {
+        MV: VOLUME_LANDMARKS.HAMS.mv,
+        MEV: VOLUME_LANDMARKS.HAMS.mev,
+        MAV: [VOLUME_LANDMARKS.HAMS.mav, VOLUME_LANDMARKS.HAMS.mrv],
+        MRV: VOLUME_LANDMARKS.HAMS.mrv,
+      },
     },
   ],
   [
@@ -230,7 +279,12 @@ export const muscleMap = new Map<string, MuscleGroup>([
         "Incline Pigeon",
       ],
       category: "Leg Hinge",
-      rpStandards: { MV: 0, MEV: 0, MAV: [4, 12], MRV: 16 },
+      rpStandards: {
+        MV: VOLUME_LANDMARKS.GLUTES.mv,
+        MEV: VOLUME_LANDMARKS.GLUTES.mev,
+        MAV: [VOLUME_LANDMARKS.GLUTES.mav, VOLUME_LANDMARKS.GLUTES.mrv],
+        MRV: VOLUME_LANDMARKS.GLUTES.mrv,
+      },
     },
   ],
   [
@@ -245,7 +299,12 @@ export const muscleMap = new Map<string, MuscleGroup>([
         "Calf Raise (Belt Squat)",
       ],
       category: "Leg Accessory",
-      rpStandards: { MV: 0, MEV: 8, MAV: [12, 16], MRV: 20 },
+      rpStandards: {
+        MV: VOLUME_LANDMARKS.CALVES.mv,
+        MEV: VOLUME_LANDMARKS.CALVES.mev,
+        MAV: [VOLUME_LANDMARKS.CALVES.mav, VOLUME_LANDMARKS.CALVES.mrv],
+        MRV: VOLUME_LANDMARKS.CALVES.mrv,
+      },
     },
   ],
   [
@@ -265,7 +324,12 @@ export const muscleMap = new Map<string, MuscleGroup>([
         "Dragon Flag",
       ],
       category: "Core",
-      rpStandards: { MV: 0, MEV: 0, MAV: [12, 20], MRV: 25 },
+      rpStandards: {
+        MV: VOLUME_LANDMARKS.ABS.mv,
+        MEV: VOLUME_LANDMARKS.ABS.mev,
+        MAV: [VOLUME_LANDMARKS.ABS.mav, VOLUME_LANDMARKS.ABS.mrv],
+        MRV: VOLUME_LANDMARKS.ABS.mrv,
+      },
     },
   ],
 ]);

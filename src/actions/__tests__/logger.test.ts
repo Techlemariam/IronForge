@@ -46,9 +46,19 @@ vi.mock("@/services/data/TrainingContextService", () => ({
     },
 }));
 
+// Mock Game Context Service
+vi.mock("@/services/game/GameContextService", () => ({
+    GameContextService: {
+        getPlayerContext: vi.fn(),
+        calculateXpReward: vi.fn(),
+        calculateDamage: vi.fn(),
+    },
+}));
+
 import prisma from "@/lib/prisma";
 
 import { TrainingContextService } from "@/services/data/TrainingContextService";
+import { GameContextService } from "@/services/game/GameContextService";
 
 describe("Logger Actions", () => {
     beforeEach(() => {
@@ -56,6 +66,17 @@ describe("Logger Actions", () => {
         (TrainingContextService.getTrainingContext as any).mockResolvedValue({
             recovery: { status: "FRESH" }
         });
+        (GameContextService.getPlayerContext as any).mockResolvedValue({
+            identity: { archetype: "WARDEN" },
+            modifiers: { xpGain: 1, strengthXp: 1, cardioXp: 1, critChance: 0 },
+            combat: { damagePerVolume: 1, critMultiplier: 1.5 },
+            activeBuffs: []
+        });
+        (GameContextService.calculateXpReward as any).mockImplementation((base: number) => ({
+            finalXp: base,
+            appliedMultiplier: 1.0,
+            appliedBuffs: []
+        }));
     });
 
     it("should search exercises", async () => {

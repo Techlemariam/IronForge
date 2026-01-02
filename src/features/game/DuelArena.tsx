@@ -8,7 +8,8 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Card } from "@/components/ui/card";
 import { getDuelArenaStateAction } from "@/actions/duel";
-import { Swords, Trophy, Timer, Bike, Footprints, AlertTriangle } from "lucide-react";
+import { executeTitanCombatTurnAction } from "@/actions/titan-combat";
+import { Swords, Trophy, Timer, Bike, Footprints, AlertTriangle, Zap } from "lucide-react";
 import { toast } from "sonner";
 
 interface DuelArenaProps {
@@ -20,7 +21,8 @@ interface DuelArenaProps {
 export function DuelArena({ duelId, currentUserId, onClose }: DuelArenaProps) {
     const [duelState, setDuelState] = useState<any>(null);
     const [loading, setLoading] = useState(true);
-    const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
+    const [combatLog, setCombatLog] = useState<string[]>([]);
+    const [isAttacking, setIsAttacking] = useState(false);
 
     // Polling logic
     useEffect(() => {
@@ -30,7 +32,6 @@ export function DuelArena({ duelId, currentUserId, onClose }: DuelArenaProps) {
             const result = await getDuelArenaStateAction(duelId);
             if (result.success) {
                 setDuelState(result.duel);
-                setLastUpdated(new Date());
             } else {
                 toast.error("Lost connection to arena...");
             }
@@ -40,11 +41,35 @@ export function DuelArena({ duelId, currentUserId, onClose }: DuelArenaProps) {
         // Initial fetch
         fetchState();
 
-        // Poll every 2 seconds
-        intervalId = setInterval(fetchState, 2000);
+        // Poll every 3 seconds
+        intervalId = setInterval(fetchState, 3000);
 
         return () => clearInterval(intervalId);
     }, [duelId]);
+
+    const handleAttack = async () => {
+        setIsAttacking(true);
+        try {
+            const result = await executeTitanCombatTurnAction(duelId);
+            if (result.success && result.combatLog) {
+                // Add combat messages to log
+                setCombatLog(prev => [...result.combatLog, ...prev].slice(0, 10)); // Keep last 10
+                toast.success(`You dealt ${result.damageDealt?.challenger || result.damageDealt?.defender} damage!`);
+
+                // Refresh state
+                const stateResult = await getDuelArenaStateAction(duelId);
+                if (stateResult.success) {
+                    setDuelState(stateResult.duel);
+                }
+            } else {
+                toast.error(result.error || "Attack failed");
+            }
+        } catch (error) {
+            toast.error("Combat error");
+        } finally {
+            setIsAttacking(false);
+        }
+    };
 
     if (loading) {
         return (
@@ -61,24 +86,13 @@ export function DuelArena({ duelId, currentUserId, onClose }: DuelArenaProps) {
     const user = isChallenger ? duelState.challenger : duelState.defender;
     const opponent = isChallenger ? duelState.defender : duelState.challenger;
 
-    const userDistance = isChallenger ? duelState.challengerDistance : duelState.defenderDistance;
-    const opponentDistance = isChallenger ? duelState.defenderDistance : duelState.challengerDistance;
+    const userScore = isChallenger ? duelState.challengerScore : duelState.defenderScore;
+    const opponentScore = isChallenger ? duelState.defenderScore : duelState.challengerScore;
 
-    // Calculate progress
-    let maxMetric = 100;
-    if (duelState.duelType === "DISTANCE_RACE" || duelState.activityType === "SPEED_DEMON") {
-        maxMetric = duelState.targetDistance || (duelState.duelType === "DISTANCE_RACE" ? Math.max(userDistance, opponentDistance, 5) : 10);
-    } else if (duelState.durationMinutes) {
-        // Time based?
-        // Actually for distance race, target is duration? No.
-        // Let's assume duration races use time as the limiter and distance as the score.
-        // Ideally we want relative progress.
-        maxMetric = Math.max(userDistance, opponentDistance, 1);
-    }
-
-    // Cap at 100%
-    const userProgress = Math.min((userDistance / maxMetric) * 100, 100);
-    const opponentProgress = Math.min((opponentDistance / maxMetric) * 100, 100);
+    // For Titan vs Titan, scores represent damage dealt
+    const maxScore = Math.max(userScore, opponentScore, 1000);
+    const userProgress = Math.min((userScore / maxScore) * 100, 100);
+    const opponentProgress = Math.min((opponentScore / maxScore) * 100, 100);
 
     return (
         <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4">
@@ -98,26 +112,24 @@ export function DuelArena({ duelId, currentUserId, onClose }: DuelArenaProps) {
                 <div className="relative z-0 p-8 space-y-8">
                     {/* Header */}
                     <div className="text-center space-y-2">
-                        <Badge variant="outline" className="bg-amber-500/10 text-amber-500 border-amber-500/50 px-4 py-1 text-sm tracking-widest uppercase">
-                            Live Duel
+                        <Badge variant="outline" className="bg-red-500/10 text-red-500 border-red-500/50 px-4 py-1 text-sm tracking-widest uppercase">
+                            <Swords className="w-4 h-4 inline mr-2" />
+                            Titan vs Titan
                         </Badge>
-                        <h2 className="text-3xl font-black italic">{duelState.duelType.replace(/_/g, " ")}</h2>
+                        <h2 className="text-3xl font-black italic">COMBAT ARENA</h2>
                         <div className="flex items-center justify-center gap-2 text-slate-400">
                             <Timer className="w-4 h-4" />
-                            <span>Duration: {duelState.durationMinutes}m</span>
-                            <span>•</span>
-                            {duelState.activityType === "CYCLING" ? <Bike className="w-4 h-4" /> : <Footprints className="w-4 h-4" />}
-                            <span>{duelState.activityType}</span>
+                            <span>Status: {duelState.status}</span>
                         </div>
                     </div>
 
-                    {/* The Race Track */}
+                    {/* Score Bars */}
                     <div className="space-y-8 py-8 bg-black/40 rounded-xl p-6 border border-white/5">
-                        {/* User Lane */}
+                        {/* User Score */}
                         <div className="relative">
                             <div className="flex justify-between items-end mb-2 text-blue-400 font-bold uppercase tracking-wider text-sm">
                                 <span>{user.heroName || "You"}</span>
-                                <span>{userDistance.toFixed(2)} km</span>
+                                <span>{userScore} DMG</span>
                             </div>
                             <div className="h-12 bg-slate-800 rounded-full relative overflow-hidden ring-2 ring-blue-500/20">
                                 <motion.div
@@ -126,25 +138,14 @@ export function DuelArena({ duelId, currentUserId, onClose }: DuelArenaProps) {
                                     animate={{ width: `${userProgress}%` }}
                                     transition={{ type: "spring", stiffness: 50 }}
                                 />
-                                {/* Avatar on the track */}
-                                <motion.div
-                                    className="absolute top-1 bottom-1 aspect-square rounded-full border-2 border-white shadow-lg bg-slate-900 z-10"
-                                    initial={{ left: 0 }}
-                                    animate={{ left: `calc(${userProgress}% - 40px)` }}
-                                >
-                                    <Avatar className="w-full h-full">
-                                        <AvatarImage src={user.image} />
-                                        <AvatarFallback className="text-blue-500 text-xs">YOU</AvatarFallback>
-                                    </Avatar>
-                                </motion.div>
                             </div>
                         </div>
 
-                        {/* Opponent Lane */}
+                        {/* Opponent Score */}
                         <div className="relative">
                             <div className="flex justify-between items-end mb-2 text-red-400 font-bold uppercase tracking-wider text-sm">
                                 <span>{opponent.heroName || "Opponent"}</span>
-                                <span>{opponentDistance.toFixed(2)} km</span>
+                                <span>{opponentScore} DMG</span>
                             </div>
                             <div className="h-12 bg-slate-800 rounded-full relative overflow-hidden ring-2 ring-red-500/20">
                                 <motion.div
@@ -153,36 +154,43 @@ export function DuelArena({ duelId, currentUserId, onClose }: DuelArenaProps) {
                                     animate={{ width: `${opponentProgress}%` }}
                                     transition={{ type: "spring", stiffness: 50 }}
                                 />
-                                {/* Avatar on the track */}
-                                <motion.div
-                                    className="absolute top-1 bottom-1 aspect-square rounded-full border-2 border-white shadow-lg bg-slate-900 z-10"
-                                    initial={{ left: 0 }}
-                                    animate={{ left: `calc(${opponentProgress}% - 40px)` }}
-                                >
-                                    <Avatar className="w-full h-full">
-                                        <AvatarImage src={opponent.image} />
-                                        <AvatarFallback className="text-red-500 text-xs">OPP</AvatarFallback>
-                                    </Avatar>
-                                </motion.div>
                             </div>
                         </div>
                     </div>
 
-                    {/* Stats Grid */}
-                    <div className="grid grid-cols-2 gap-4">
-                        <Card className="bg-blue-500/5 border-blue-500/20 p-4 text-center">
-                            <div className="text-sm text-slate-400 uppercase">You are</div>
-                            <div className="text-2xl font-bold text-blue-400">
-                                {userDistance > opponentDistance ? "Ahead" : "Behind"}
-                            </div>
-                            <div className="text-xs text-slate-500">by {Math.abs(userDistance - opponentDistance).toFixed(2)} km</div>
-                        </Card>
-                        <Card className="bg-slate-800/50 border-white/5 p-4 text-center">
-                            <div className="text-sm text-slate-400 uppercase">Status</div>
-                            <div className="text-2xl font-bold text-white">LIVE</div>
-                            <div className="text-xs text-green-400 animate-pulse">● Updating</div>
-                        </Card>
+                    {/* Combat Log */}
+                    <div className="bg-slate-950/50 rounded-lg p-4 h-32 overflow-y-auto border border-slate-800">
+                        <div className="text-xs font-mono text-slate-400 space-y-1">
+                            {combatLog.length === 0 ? (
+                                <p className="text-center italic">No combat yet. Strike first!</p>
+                            ) : (
+                                combatLog.map((msg, i) => (
+                                    <p key={i} className="animate-in fade-in slide-in-from-bottom-2">
+                                        {msg}
+                                    </p>
+                                ))
+                            )}
+                        </div>
                     </div>
+
+                    {/* Attack Button */}
+                    <Button
+                        onClick={handleAttack}
+                        disabled={isAttacking || duelState.status !== "ACTIVE"}
+                        className="w-full bg-gradient-to-r from-red-600 to-amber-600 hover:from-red-500 hover:to-amber-500 text-white font-black text-lg py-6 rounded-lg shadow-lg shadow-red-900/50 disabled:opacity-50"
+                    >
+                        {isAttacking ? (
+                            <>
+                                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2" />
+                                Attacking...
+                            </>
+                        ) : (
+                            <>
+                                <Zap className="w-5 h-5 mr-2" />
+                                ATTACK
+                            </>
+                        )}
+                    </Button>
                 </div>
             </div>
         </div>

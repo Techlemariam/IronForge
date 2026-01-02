@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { AlertTriangle, Battery, Clock, X } from "lucide-react";
 import { checkOvertrainingStatusAction } from "@/actions/overtraining";
@@ -18,15 +18,15 @@ export function OvertrainingBanner({
   const [xpMultiplier, setXpMultiplier] = useState(1.0);
   const [dismissed, setDismissed] = useState(false);
 
-  useEffect(() => {
-    checkStatus();
-  }, [userId]);
-
-  const checkStatus = async () => {
+  const checkStatus = useCallback(async () => {
     const status = await checkOvertrainingStatusAction(userId);
     setWarnings(status.warnings);
     setXpMultiplier(status.xpMultiplier);
-  };
+  }, [userId]);
+
+  useEffect(() => {
+    checkStatus();
+  }, [checkStatus]);
 
   const handleDismiss = () => {
     setDismissed(true);

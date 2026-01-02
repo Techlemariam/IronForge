@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Flame, AlertTriangle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -16,18 +16,18 @@ export function StreakBadge({ userId, compact = false }: StreakBadgeProps) {
   const [isAtRisk, setIsAtRisk] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchStreak();
-  }, [userId]);
-
-  const fetchStreak = async () => {
+  const fetchStreak = useCallback(async () => {
     const result = await getStreakStatusAction(userId);
     if (result.success) {
       setStreak(result.currentStreak);
       setIsAtRisk(result.isAtRisk);
     }
     setLoading(false);
-  };
+  }, [userId]);
+
+  useEffect(() => {
+    fetchStreak();
+  }, [fetchStreak]);
 
   if (loading || streak === 0) return null;
 

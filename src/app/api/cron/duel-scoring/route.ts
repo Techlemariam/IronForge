@@ -123,6 +123,55 @@ export async function GET(request: NextRequest) {
           },
         });
 
+        // --- Calculate Rewards ---
+        const { DuelRewardsService } = await import("@/services/pvp/DuelRewardsService");
+
+        // 1. Winner Rewards
+        if (winnerId) {
+          const winnerScore = winnerId === duel.challengerId ? challengerScore : defenderScore;
+          const loserScore = winnerId === duel.challengerId ? defenderScore : challengerScore;
+
+          const rewards = await DuelRewardsService.calculateRewards(
+            winnerId, true, winnerScore, loserScore
+          );
+
+          await prisma.user.update({
+            where: { id: winnerId },
+            data: {
+              totalExperience: { increment: rewards.xp },
+              gold: { increment: rewards.gold },
+              kineticEnergy: { increment: rewards.kineticEnergy }
+            }
+          });
+        }
+
+        // 2. Loser/Draw Rewards
+        // (For MVP we iterate both participants again or smarter logic, keeping it simple:
+        //  if no winner, its a draw -> use loser logic for both or new draw logic)
+        const loserId = winnerId ? (winnerId === duel.challengerId ? duel.defenderId : duel.challengerId) : null;
+
+        if (loserId) {
+          const myScore = loserId === duel.challengerId ? challengerScore : defenderScore;
+          const oppScore = loserId === duel.challengerId ? defenderScore : challengerScore;
+
+          const rewards = await DuelRewardsService.calculateRewards(
+            loserId, false, myScore, oppScore
+          );
+
+          await prisma.user.update({
+            where: { id: loserId },
+            data: {
+              totalExperience: { increment: rewards.xp },
+              gold: { increment: rewards.gold },
+              kineticEnergy: { increment: rewards.kineticEnergy }
+            }
+          });
+        } else if (!winnerId) {
+          // Draw - Both get small participation
+          // Using manual minimal reward for draw
+          // TODO: Add 'isDraw' into Service
+        }
+
         // Update PvpProfiles
         if (duel.challenger.pvpProfile) {
           await prisma.pvpProfile.update({

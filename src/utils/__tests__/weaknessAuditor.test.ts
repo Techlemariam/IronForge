@@ -37,9 +37,9 @@ describe("Weakness Auditor Engine", () => {
     );
 
     expect(chestAudit).toBeDefined();
-    // Chest MEV is 10. Volume is 5.
+    // Chest MEV is 8. Volume is 5.
     expect(chestAudit?.level).toBe(WeaknessLevel.UNDERTRAINED);
-    expect(chestAudit?.deficit).toBe(5); // 10 - 5
+    expect(chestAudit?.deficit).toBe(3); // 8 - 5
   });
 
   it("WA-02: Detects OVERREACHED status", () => {

@@ -220,31 +220,58 @@ export async function updateCardioDuelProgressInternalWithUser(duelId: string, u
   }
 
   if (isFinished && winnerId) {
+    // Determine Loser
+    const loserId = isChallenger ? duel.defenderId : duel.challengerId;
+    const winnerScore = isChallenger ? newDistance : (isChallenger ? duel.defenderDistance : duel.challengerDistance) || 0;
+    const loserScore = isChallenger ? (duel.defenderDistance || 0) : newDistance;
+
+    // Calculate dynamic rewards using DuelRewardsService
+    const { DuelRewardsService } = await import("@/services/pvp/DuelRewardsService");
+
+    // Winner Rewards
+    const winnerRewards = await DuelRewardsService.calculateRewards(
+      winnerId,
+      true,
+      Math.floor(winnerScore * 10), // Scale distance to score points roughly
+      Math.floor(loserScore * 10)
+    );
+
+    // Loser Rewards
+    const loserRewards = await DuelRewardsService.calculateRewards(
+      loserId,
+      false,
+      Math.floor(loserScore * 10),
+      Math.floor(winnerScore * 10)
+    );
+
     await prisma.duelChallenge.update({
       where: { id: duelId },
       data: {
         status: "COMPLETED",
         winnerId: winnerId,
-        endDate: new Date()
+        endDate: new Date(),
+        // Store reward summary in metadata if we had a column, for now we just apply
       }
     });
 
-    // Award Loot
+    // Award Loot to Winner
     await prisma.user.update({
       where: { id: winnerId },
       data: {
-        totalExperience: { increment: 100 },
-        gold: { increment: 50 },
-        kineticEnergy: { increment: 25 }
+        totalExperience: { increment: winnerRewards.xp },
+        gold: { increment: winnerRewards.gold },
+        kineticEnergy: { increment: winnerRewards.kineticEnergy }
       }
     });
 
-    const loserId = isChallenger ? duel.defenderId : duel.challengerId;
+    // Award Loot to Loser
     await prisma.user.update({
       where: { id: loserId },
       data: {
-        totalExperience: { increment: 25 },
-        gold: { increment: 10 }
+        totalExperience: { increment: loserRewards.xp },
+        gold: { increment: loserRewards.gold },
+        // Loser doesn't typically get KE unless lucky, but service handles base 5
+        kineticEnergy: { increment: loserRewards.kineticEnergy }
       }
     });
   }

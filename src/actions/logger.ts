@@ -5,6 +5,7 @@ import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { TrainingContextService } from "@/services/data/TrainingContextService";
+import { GameContextService } from "@/services/game/GameContextService";
 
 // --- Validation Schemas ---
 
@@ -104,29 +105,20 @@ export async function logExerciseSetsAction(data: z.infer<typeof LogSetSchema>) 
         const { exerciseId, sets, notes } = parsed.data;
 
 
-        // --- ORACLE INTEGRATION: CHECK FOR BUFFS ---
-        const userWithTitan = await prisma.user.findUnique({
-            where: { id: user.id },
-            include: { titan: true }
-        });
-
-        let multiplier = 1.0;
-        let diffMessage = "";
-
-        if (userWithTitan?.titan?.dailyDecree) {
-            // @ts-ignore - JSON mapping
-            const decree = userWithTitan.titan.dailyDecree as any;
-            if (decree.effect?.xpMultiplier) {
-                multiplier = decree.effect.xpMultiplier;
-                if (multiplier > 1.0) diffMessage = ` (x${multiplier} Oracle Buff)`;
-            }
-        }
+        // --- UNIFIED GAME CONTEXT: Get all modifiers from skills, archetype, oracle ---
+        const gameContext = await GameContextService.getPlayerContext(user.id);
 
         // --- Kinetic Energy Reward ---
         // Simple logic: 1 Energy per 100kg volume
         const totalVolume = sets.reduce((acc, s) => acc + s.weight * s.reps, 0);
         const baseEnergy = Math.max(5, Math.floor(totalVolume / 100));
-        const energyGain = Math.floor(baseEnergy * multiplier);
+
+        // Apply unified XP modifiers from GameContext
+        const xpResult = GameContextService.calculateXpReward(baseEnergy, gameContext, "strength");
+        const energyGain = xpResult.finalXp;
+        const diffMessage = xpResult.appliedMultiplier > 1.0
+            ? ` (x${xpResult.appliedMultiplier.toFixed(2)} from: ${xpResult.appliedBuffs.join(", ") || "buffs"})`
+            : "";
 
         await prisma.user.update({
             where: { id: user.id },
@@ -189,6 +181,7 @@ export async function logExerciseSetsAction(data: z.infer<typeof LogSetSchema>) 
                 // Calculate total stats for legacy fields or dashboard summary
                 reps: sets.reduce((acc, s) => acc + s.reps, 0),
                 weight: Math.max(...sets.map((s) => s.weight)), // Max weight used
+                archetype: gameContext.identity.archetype,
             },
         });
 

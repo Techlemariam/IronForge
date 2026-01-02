@@ -1,7 +1,8 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { calculatePowerRating, TrainingPath } from "@/lib/powerRating";
+import { calculatePowerRating } from "@/lib/powerRating";
+import { TrainingPath } from "@/types/training";
 import { revalidatePath } from "next/cache";
 
 export async function recalculatePowerRatingAction(userId: string) {
@@ -35,7 +36,7 @@ export async function recalculatePowerRatingAction(userId: string) {
 
         // 3. Determine Path
         // Cast string to TrainingPath or default
-        const path = (user.activePath as TrainingPath) || 'HYBRID_WARDEN';
+        const path = (user.activePath as TrainingPath) || 'WARDEN';
 
         // 4. Calculate Adherence (Placeholder for now - assumes decent adherence)
         // TODO: Connect this to actual WeeklyPlan adherence from volumeCalculator

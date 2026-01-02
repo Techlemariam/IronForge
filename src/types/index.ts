@@ -13,6 +13,12 @@ export enum BlockType {
   COOLDOWN = "cooldown",
 }
 
+export enum Archetype {
+  JUGGERNAUT = "JUGGERNAUT",
+  PATHFINDER = "PATHFINDER",
+  WARDEN = "WARDEN",
+}
+
 export enum ExerciseLogic {
   FIXED_REPS = "fixed_reps",
   TM_PERCENT = "531_tm_percent",
@@ -38,6 +44,7 @@ export interface User {
   subscriptionTier: SubscriptionTier;
   subscriptionStatus?: string;
   subscriptionExpiry?: Date;
+  archetype?: Archetype;
   // Add other fields as they become necessary for frontend
 }
 
@@ -309,6 +316,7 @@ export interface TitanLoadCalculation {
   titanLoad: number;
   discrepancy: number;
   advice: string;
+  appliedMultiplier?: number;
 }
 
 export interface OracleRecommendation {

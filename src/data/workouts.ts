@@ -15,7 +15,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 20,
       METABOLIC: 13,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 20m Z1",
     rewards: { xp: 100, gold: 5 },
   },
@@ -33,7 +33,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 23,
       METABOLIC: 17,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 25m Z1",
   },
   {
@@ -50,7 +50,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 25,
       METABOLIC: 20,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 30m Z1",
   },
   {
@@ -67,7 +67,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 28,
       METABOLIC: 23,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 35m Z1",
   },
   {
@@ -84,7 +84,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 30,
       METABOLIC: 27,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 40m Z1",
   },
   {
@@ -101,7 +101,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 33,
       METABOLIC: 30,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 45m Z1",
   },
   {
@@ -118,7 +118,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 35,
       METABOLIC: 33,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 50m Z1",
   },
   {
@@ -135,7 +135,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 38,
       METABOLIC: 37,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 55m Z1",
   },
   {
@@ -152,7 +152,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 40,
       METABOLIC: 40,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 60m Z1",
   },
   {
@@ -169,7 +169,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 20,
       METABOLIC: 13,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 10m Z2\n- 5m Z1",
     rewards: { xp: 150, gold: 10 },
   },
@@ -187,7 +187,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 23,
       METABOLIC: 17,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 15m Z2\n- 5m Z1",
   },
   {
@@ -204,7 +204,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 25,
       METABOLIC: 20,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 20m Z2\n- 5m Z1",
   },
   {
@@ -221,7 +221,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 28,
       METABOLIC: 23,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 25m Z2\n- 5m Z1",
   },
   {
@@ -238,7 +238,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 30,
       METABOLIC: 27,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 30m Z2\n- 5m Z1",
   },
   {
@@ -255,7 +255,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 33,
       METABOLIC: 30,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 35m Z2\n- 5m Z1",
   },
   {
@@ -272,7 +272,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 35,
       METABOLIC: 33,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 40m Z2\n- 5m Z1",
   },
   {
@@ -289,7 +289,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 38,
       METABOLIC: 37,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 45m Z2\n- 5m Z1",
   },
   {
@@ -306,7 +306,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 40,
       METABOLIC: 40,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 50m Z2\n- 5m Z1",
   },
   {
@@ -323,7 +323,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 45,
       METABOLIC: 47,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 60m Z2\n- 5m Z1",
   },
   {
@@ -340,7 +340,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 50,
       METABOLIC: 53,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 70m Z2\n- 5m Z1",
   },
   {
@@ -357,7 +357,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 55,
       METABOLIC: 60,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 80m Z2\n- 5m Z1",
   },
   {
@@ -374,7 +374,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 45,
       METABOLIC: 47,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 60m Z2\n- 5m Z1",
   },
   {
@@ -391,7 +391,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 60,
       METABOLIC: 67,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 90m Z2\n- 5m Z1",
   },
   {
@@ -408,7 +408,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 65,
       METABOLIC: 73,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 100m Z2\n- 5m Z1",
   },
   {
@@ -425,7 +425,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 63,
       METABOLIC: 70,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 95m Z2\n- 5m Z1",
   },
   {
@@ -442,7 +442,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 70,
       METABOLIC: 80,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 110m Z2\n- 5m Z1",
   },
   {
@@ -460,7 +460,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 70,
       METABOLIC: 80,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 10m Z1\n3x\n  - 10m Z2\n  - 3m Z1\n- 10m Z1",
     rewards: { xp: 300, gold: 25 },
   },
@@ -479,7 +479,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 15m Z1\n3x\n  - 10m Z2\n  - 3m Z1\n- 35m Z1",
   },
   {
@@ -497,7 +497,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 85,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 12m Z1\n4x\n  - 10m Z2\n  - 3m Z1\n- 12m Z1",
   },
   {
@@ -515,7 +515,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 15m Z1\n3x\n  - 15m Z2\n  - 5m Z1\n- 15m Z1",
   },
   {
@@ -532,7 +532,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 10m Z1\n4x\n  - 15m Z2\n  - 5m Z1",
   },
   {
@@ -550,7 +550,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 10m Z1\n4x\n  - 15m Z2\n  - 5m Z1\n- 15m Z1",
   },
   {
@@ -568,7 +568,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 10m Z1\n4x\n  - 15m Z2\n  - 5m Z1\n- 30m Z1",
   },
   {
@@ -586,7 +586,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 10m Z1\n4x\n  - 15m Z2\n  - 5m Z1\n- 45m Z1",
   },
   {
@@ -604,7 +604,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 10m Z1\n4x\n  - 15m Z2\n  - 5m Z1\n- 60m Z1",
   },
   {
@@ -622,7 +622,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 10m Z1\n3x\n  - 15m Z2\n  - 5m Z1\n- 35m Z1",
   },
   {
@@ -640,7 +640,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 10m Z1\n3x\n  - 15m Z2\n  - 5m Z1\n- 50m Z1",
   },
   {
@@ -658,7 +658,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 10m Z1\n3x\n  - 15m Z2\n  - 5m Z1\n- 65m Z1",
   },
   {
@@ -676,7 +676,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 10m Z1\n3x\n  - 15m Z2\n  - 5m Z1\n- 80m Z1",
   },
   {
@@ -694,7 +694,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 10m Z1\n3x\n  - 4m Z2\n  - 1m Z1\n- 95m Z2",
   },
   {
@@ -712,7 +712,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 10m Z1\n3x\n  - 5m Z2\n  - 1m Z1\n- 102m Z2",
   },
   {
@@ -730,7 +730,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 10m Z1\n3x\n  - 6m Z2\n  - 1m Z1\n- 109m Z2",
   },
   {
@@ -748,7 +748,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 10m Z1\n3x\n  - 7m Z2\n  - 1m Z1\n- 116m Z2",
   },
   {
@@ -766,7 +766,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 10m Z1\n3x\n  - 8m Z2\n  - 1m Z1\n- 123m Z2",
   },
   {
@@ -784,7 +784,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 10m Z1\n3x\n  - 9m Z2\n  - 1m Z1\n- 130m Z2",
   },
   {
@@ -802,7 +802,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 10m Z1\n3x\n  - 10m Z2\n  - 1m Z1\n- 137m Z2",
   },
   {
@@ -820,7 +820,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 10m Z1\n4x\n  - 15m Z2\n  - 1m Z1\n- 90m Z2",
   },
   {
@@ -837,7 +837,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 56,
       METABOLIC: 61,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 10m Z1\n3x\n  - 10m Z2\n  - 2m Z1",
   },
   {
@@ -854,7 +854,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 70,
       METABOLIC: 80,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 1m Z1\n- 4m Z2\n- 0m Z1",
   },
   {
@@ -871,7 +871,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 80,
       METABOLIC: 93,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 1m Z1\n- 5m Z2\n- 0m Z1",
   },
   {
@@ -888,7 +888,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 90,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 1m Z1\n- 6m Z2\n- 0m Z1",
   },
   {
@@ -905,7 +905,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 1m Z1\n- 7m Z2\n- 0m Z1",
   },
   {
@@ -922,7 +922,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 1m Z1\n- 8m Z2\n- 0m Z1",
   },
   {
@@ -939,7 +939,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 1m Z1\n- 9m Z2\n- 0m Z1",
   },
   {
@@ -956,7 +956,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 1m Z1\n- 10m Z2\n- 0m Z1",
   },
   {
@@ -973,7 +973,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 1m Z1\n- 11m Z2\n- 0m Z1",
   },
   {
@@ -990,7 +990,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 1m Z1\n- 12m Z2\n- 0m Z1",
   },
   {
@@ -1007,7 +1007,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 1m Z1\n- 13m Z2\n- 0m Z1",
   },
   {
@@ -1024,7 +1024,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 1m Z1\n- 14m Z2\n- 0m Z1",
   },
   {
@@ -1041,7 +1041,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 1m Z1\n- 15m Z2\n- 0m Z1",
   },
   {
@@ -1058,7 +1058,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 1m Z1\n- 16m Z2\n- 0m Z1",
   },
   {
@@ -1075,7 +1075,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 1m Z1\n- 17m Z2\n- 0m Z1",
   },
   {
@@ -1092,7 +1092,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 1m Z1\n- 18m Z2\n- 0m Z1",
   },
   {
@@ -1110,7 +1110,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 60,
       METABOLIC: 60,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 5m Z1\n- 21m Z2\n3x\n  - 5m Z3\n  - 3m Z1\n- 5m Z2\n- 5m Z1",
   },
@@ -1129,7 +1129,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 53,
       METABOLIC: 52,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 5m Z1\n- 5m Z2\n4x\n  - 5m Z3\n  - 3m Z1\n- 5m Z2\n- 5m Z1",
   },
@@ -1148,7 +1148,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 63,
       METABOLIC: 64,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 5m Z1\n- 5m Z2\n4x\n  - 8m Z3\n  - 3m Z1\n- 5m Z2\n- 5m Z1",
   },
@@ -1167,7 +1167,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 70,
       METABOLIC: 72,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 5m Z1\n- 5m Z2\n4x\n  - 10m Z3\n  - 3m Z1\n- 5m Z2\n- 5m Z1",
   },
@@ -1186,7 +1186,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 77,
       METABOLIC: 80,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 5m Z1\n- 5m Z2\n4x\n  - 12m Z3\n  - 3m Z1\n- 5m Z2\n- 5m Z1",
   },
@@ -1205,7 +1205,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 87,
       METABOLIC: 92,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 5m Z1\n- 5m Z2\n4x\n  - 15m Z3\n  - 3m Z1\n- 5m Z2\n- 5m Z1",
   },
@@ -1224,7 +1224,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 68,
       METABOLIC: 70,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 15m Z1\n- 11m Z2\n2x\n  - 10m Z3\n  - 4m Z1\n- 11m Z2\n- 5m Z1",
   },
@@ -1243,7 +1243,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 68,
       METABOLIC: 70,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 5m Z1\n- 10m Z2\n4x\n  - 6m Z3\n  - 3m Z1\n- 14m Z2\n- 5m Z1",
   },
@@ -1262,7 +1262,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 72,
       METABOLIC: 74,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 5m Z1\n- 10m Z2\n4x\n  - 7m Z3\n  - 3m Z1\n- 14m Z2\n- 5m Z1",
   },
@@ -1281,7 +1281,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 48,
       METABOLIC: 45,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 5m Z1\n- 6m Z2\n3x\n  - 6m Z3\n  - 2m Z1\n- 5m Z2\n- 5m Z1",
   },
@@ -1300,7 +1300,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 54,
       METABOLIC: 53,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 5m Z1\n- 6m Z2\n4x\n  - 6m Z3\n  - 2m Z1\n- 5m Z2\n- 5m Z1",
   },
@@ -1319,7 +1319,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 61,
       METABOLIC: 61,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 5m Z1\n- 10m Z2\n4x\n  - 7m Z3\n  - 2m Z1\n- 5m Z2\n- 5m Z1",
   },
@@ -1338,7 +1338,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 35,
       METABOLIC: 30,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 10m Z1\n3x\n  - 3m Z3\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -1356,7 +1356,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 69,
       METABOLIC: 71,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 10m Z2\n4x\n  - 10m Z3\n  - 4m Z1",
   },
   {
@@ -1374,7 +1374,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 42,
       METABOLIC: 38,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 15m Z1\n3x\n  - 4m Z3\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -1392,7 +1392,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 39,
       METABOLIC: 35,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n- 15m Z3\n- 5m Z2\n- 5m Z1",
   },
   {
@@ -1410,7 +1410,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 42,
       METABOLIC: 38,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n- 18m Z3\n- 5m Z2\n- 5m Z1",
   },
   {
@@ -1428,7 +1428,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 43,
       METABOLIC: 40,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n- 20m Z3\n- 5m Z2\n- 5m Z1",
   },
   {
@@ -1446,7 +1446,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 47,
       METABOLIC: 44,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n- 24m Z3\n- 5m Z2\n- 5m Z1",
   },
   {
@@ -1464,7 +1464,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 50,
       METABOLIC: 48,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n- 28m Z3\n- 5m Z2\n- 5m Z1",
   },
   {
@@ -1482,7 +1482,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 52,
       METABOLIC: 50,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n- 30m Z3\n- 5m Z2\n- 5m Z1",
   },
   {
@@ -1500,7 +1500,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 53,
       METABOLIC: 52,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n- 32m Z3\n- 5m Z2\n- 5m Z1",
   },
   {
@@ -1518,7 +1518,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 57,
       METABOLIC: 56,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n- 36m Z3\n- 5m Z2\n- 5m Z1",
   },
   {
@@ -1536,7 +1536,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 60,
       METABOLIC: 60,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n- 40m Z3\n- 5m Z2\n- 5m Z1",
   },
   {
@@ -1554,7 +1554,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 64,
       METABOLIC: 65,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n- 45m Z3\n- 5m Z2\n- 5m Z1",
   },
   {
@@ -1572,7 +1572,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 52,
       METABOLIC: 50,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 15m Z2\n- 10m Z3\n- 15m Z2\n- 5m Z1",
   },
   {
@@ -1590,7 +1590,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 56,
       METABOLIC: 55,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 15m Z2\n- 10m Z3\n- 20m Z2\n- 5m Z1",
   },
   {
@@ -1608,7 +1608,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 52,
       METABOLIC: 50,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 10m Z2\n- 20m Z3\n- 10m Z2\n- 5m Z1",
   },
   {
@@ -1626,7 +1626,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 55,
       METABOLIC: 54,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 10m Z2\n- 24m Z3\n- 10m Z2\n- 5m Z1",
   },
   {
@@ -1644,7 +1644,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 62,
       METABOLIC: 62,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 10m Z2\n- 32m Z3\n- 10m Z2\n- 5m Z1",
   },
   {
@@ -1662,7 +1662,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 60,
       METABOLIC: 60,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 10m Z1\n- 10m Z2\n- 20m Z3\n- 10m Z2\n- 10m Z1",
   },
   {
@@ -1680,7 +1680,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 73,
       METABOLIC: 76,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 10m Z1\n- 10m Z2\n- 36m Z3\n- 10m Z2\n- 10m Z1",
   },
   {
@@ -1698,7 +1698,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 68,
       METABOLIC: 70,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 10m Z2\n- 40m Z3\n- 10m Z2\n- 5m Z1",
   },
   {
@@ -1716,7 +1716,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 85,
       METABOLIC: 90,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 10m Z2\n- 20m Z3\n- 50m Z2\n- 5m Z1",
   },
   {
@@ -1734,7 +1734,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 85,
       METABOLIC: 90,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 10m Z2\n- 25m Z3\n- 50m Z1",
   },
   {
@@ -1751,7 +1751,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 35,
       METABOLIC: 33,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 15m Z2\n- 5m Z3",
   },
   {
@@ -1768,7 +1768,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 40,
       METABOLIC: 40,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 20m Z2\n- 5m Z3",
   },
   {
@@ -1785,7 +1785,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 40,
       METABOLIC: 40,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 15m Z2\n- 10m Z3",
   },
   {
@@ -1802,7 +1802,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 50,
       METABOLIC: 53,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 25m Z2\n- 10m Z3",
   },
   {
@@ -1819,7 +1819,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 52,
       METABOLIC: 56,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 25m Z2\n- 12m Z3",
   },
   {
@@ -1836,7 +1836,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 57,
       METABOLIC: 63,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 30m Z2\n- 12m Z3",
   },
   {
@@ -1853,7 +1853,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 62,
       METABOLIC: 69,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 35m Z2\n- 12m Z3",
   },
   {
@@ -1870,7 +1870,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 65,
       METABOLIC: 73,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 35m Z2\n- 15m Z3",
   },
   {
@@ -1887,7 +1887,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 70,
       METABOLIC: 80,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 40m Z2\n- 15m Z3",
   },
   {
@@ -1904,7 +1904,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 75,
       METABOLIC: 87,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 45m Z2\n- 15m Z3",
   },
   {
@@ -1921,7 +1921,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 70,
       METABOLIC: 80,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 45m Z2\n- 10m Z3",
   },
   {
@@ -1938,7 +1938,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 0m Z1\n- 8m Z2\n- 1m Z3",
   },
   {
@@ -1955,7 +1955,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 0m Z1\n- 10m Z2\n- 1m Z3",
   },
   {
@@ -1972,7 +1972,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 0m Z1\n- 12m Z2\n- 1m Z3",
   },
   {
@@ -1989,7 +1989,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 0m Z1\n- 14m Z2\n- 1m Z3",
   },
   {
@@ -2006,7 +2006,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 0m Z1\n- 15m Z2\n- 2m Z3",
   },
   {
@@ -2023,7 +2023,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 0m Z1\n- 17m Z2\n- 2m Z3",
   },
   {
@@ -2041,7 +2041,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 55,
       METABOLIC: 60,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 32m Z2\n4x\n  - 30s Z5\n  - 90s Z1",
   },
   {
@@ -2059,7 +2059,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 37,
       METABOLIC: 36,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n6x\n  - 30s Z5\n  - 90s Z1\n- 5m Z1",
   },
   {
@@ -2077,7 +2077,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 41,
       METABOLIC: 41,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n8x\n  - 30s Z5\n  - 90s Z1\n- 5m Z1",
   },
   {
@@ -2095,7 +2095,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 43,
       METABOLIC: 44,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n6x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -2113,7 +2113,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 45,
       METABOLIC: 47,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 5m Z1\n- 5m Z2\n10x\n  - 30s Z5\n  - 90s Z1\n- 5m Z1",
   },
@@ -2132,7 +2132,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 49,
       METABOLIC: 52,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 5m Z1\n- 5m Z2\n12x\n  - 30s Z5\n  - 90s Z1\n- 5m Z1",
   },
@@ -2151,7 +2151,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 49,
       METABOLIC: 52,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n8x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -2169,7 +2169,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 49,
       METABOLIC: 52,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n6x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -2187,7 +2187,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 55,
       METABOLIC: 60,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n10x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -2205,7 +2205,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 57,
       METABOLIC: 63,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n8x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -2223,7 +2223,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 61,
       METABOLIC: 68,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n12x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -2241,7 +2241,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 65,
       METABOLIC: 73,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n10x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -2259,7 +2259,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 73,
       METABOLIC: 84,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n12x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -2277,7 +2277,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 60,
       METABOLIC: 67,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 5m Z1\n- 20m Z2\n10x\n  - 30s Z5\n  - 90s Z1\n- 5m Z1",
   },
@@ -2296,7 +2296,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 46,
       METABOLIC: 48,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 5m Z1\n- 5m Z2\n- 1m Z5\n- 2m Z1\n- 3m Z4\n- 2m Z1\n- 5m Z3\n- 2m Z1\n- 3m Z4\n- 2m Z1\n- 1m Z5\n- 5m Z1",
   },
@@ -2315,7 +2315,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 56,
       METABOLIC: 61,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 5m Z1\n- 5m Z2\n- 1m Z5\n- 2m Z1\n- 5m Z4\n- 2m Z1\n- 10m Z3\n- 2m Z1\n- 5m Z4\n- 2m Z1\n- 1m Z5\n- 5m Z1",
   },
@@ -2334,7 +2334,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 69,
       METABOLIC: 79,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 5m Z1\n- 5m Z2\n2x\n  - 1m Z5\n  - 2m Z1\n2x\n  - 3m Z4\n  - 2m Z1\n- 10m Z3\n- 2m Z1\n2x\n  - 3m Z4\n  - 2m Z1\n2x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1",
   },
@@ -2353,7 +2353,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 81,
       METABOLIC: 95,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 5m Z1\n- 5m Z2\n2x\n  - 1m Z5\n  - 2m Z1\n2x\n  - 5m Z4\n  - 2m Z1\n- 10m Z3\n- 2m Z1\n2x\n  - 1m Z5\n  - 2m Z1\n2x\n  - 5m Z4\n  - 2m Z1\n- 5m Z1",
   },
@@ -2372,7 +2372,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 70,
       METABOLIC: 80,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 15m Z1\n4x\n  - 2m Z4\n  - 5m Z1\n- 15m Z1",
   },
   {
@@ -2390,7 +2390,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 70,
       METABOLIC: 80,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 15m Z1\n5x\n  - 2m Z4\n  - 5m Z1\n- 7m Z1",
   },
   {
@@ -2407,7 +2407,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 70,
       METABOLIC: 80,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 15m Z1\n6x\n  - 2m Z4\n  - 5m Z1",
   },
   {
@@ -2424,7 +2424,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 55,
       METABOLIC: 60,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 15m Z1\n4x\n  - 2m Z4\n  - 5m Z1",
   },
   {
@@ -2442,7 +2442,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 55,
       METABOLIC: 60,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 15m Z1\n3x\n  - 2m Z4\n  - 5m Z1\n- 7m Z1",
   },
   {
@@ -2460,7 +2460,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 43,
       METABOLIC: 44,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n6x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -2478,7 +2478,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 49,
       METABOLIC: 52,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n8x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -2496,7 +2496,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 49,
       METABOLIC: 52,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n6x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -2514,7 +2514,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 55,
       METABOLIC: 60,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n10x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -2532,7 +2532,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 57,
       METABOLIC: 63,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n8x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -2550,7 +2550,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 61,
       METABOLIC: 68,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n12x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -2568,7 +2568,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 65,
       METABOLIC: 73,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n10x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -2586,7 +2586,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 73,
       METABOLIC: 84,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n12x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -2604,7 +2604,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 70,
       METABOLIC: 80,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 26m Z2\n8x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -2622,7 +2622,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 54,
       METABOLIC: 59,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n8x\n  - 1m Z5\n  - 2m Z1\n- 10m Z1",
   },
   {
@@ -2640,7 +2640,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 70,
       METABOLIC: 80,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 5m Z1\n- 15m Z2\n10x\n  - 1m Z5\n  - 2m Z1\n- 10m Z1",
   },
@@ -2659,7 +2659,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 40,
       METABOLIC: 40,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n3x\n  - 3m Z4\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -2677,7 +2677,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 45,
       METABOLIC: 47,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n4x\n  - 3m Z4\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -2695,7 +2695,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 49,
       METABOLIC: 52,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n3x\n  - 5m Z4\n  - 3m Z1\n- 5m Z1",
   },
   {
@@ -2713,7 +2713,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 50,
       METABOLIC: 53,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n5x\n  - 3m Z4\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -2731,7 +2731,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 55,
       METABOLIC: 60,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n6x\n  - 3m Z4\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -2749,7 +2749,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 57,
       METABOLIC: 63,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n4x\n  - 5m Z4\n  - 3m Z1\n- 5m Z1",
   },
   {
@@ -2767,7 +2767,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 65,
       METABOLIC: 73,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n5x\n  - 5m Z4\n  - 3m Z1\n- 5m Z1",
   },
   {
@@ -2785,7 +2785,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 73,
       METABOLIC: 84,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n6x\n  - 5m Z4\n  - 3m Z1\n- 5m Z1",
   },
   {
@@ -2803,7 +2803,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 81,
       METABOLIC: 95,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n7x\n  - 5m Z4\n  - 3m Z1\n- 5m Z1",
   },
   {
@@ -2821,7 +2821,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 89,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n8x\n  - 5m Z4\n  - 3m Z1\n- 5m Z1",
   },
   {
@@ -2839,7 +2839,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 60,
       METABOLIC: 67,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 5m Z1\n- 5m Z2\n5x\n  - 4m Z4\n  - 2m Z1\n- 5m Z2\n- 5m Z1",
   },
@@ -2858,7 +2858,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 54,
       METABOLIC: 59,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 5m Z1\n- 5m Z2\n4x\n  - 4m Z4\n  - 2m Z1\n- 5m Z2\n- 5m Z1",
   },
@@ -2877,7 +2877,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 55,
       METABOLIC: 60,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 28m Z2\n4x\n  - 1m Z4\n  - 2m Z1",
   },
   {
@@ -2895,7 +2895,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 40,
       METABOLIC: 40,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n3x\n  - 2m Z4\n  - 2m Z1\n- 8m Z1",
   },
   {
@@ -2913,7 +2913,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 40,
       METABOLIC: 40,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n5x\n  - 1m Z4\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -2931,7 +2931,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 41,
       METABOLIC: 41,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n4x\n  - 2m Z4\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -2949,7 +2949,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 43,
       METABOLIC: 44,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n6x\n  - 1m Z4\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -2967,7 +2967,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 45,
       METABOLIC: 47,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n5x\n  - 2m Z4\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -2985,7 +2985,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 46,
       METABOLIC: 48,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n7x\n  - 1m Z4\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -3003,7 +3003,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 49,
       METABOLIC: 52,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n6x\n  - 2m Z4\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -3021,7 +3021,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 49,
       METABOLIC: 52,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n8x\n  - 1m Z4\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -3039,7 +3039,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 52,
       METABOLIC: 56,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n9x\n  - 1m Z4\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -3057,7 +3057,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 53,
       METABOLIC: 57,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n7x\n  - 2m Z4\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -3075,7 +3075,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 55,
       METABOLIC: 60,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n10x\n  - 1m Z4\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -3093,7 +3093,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 57,
       METABOLIC: 63,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n8x\n  - 2m Z4\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -3111,7 +3111,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 61,
       METABOLIC: 68,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n9x\n  - 2m Z4\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -3129,7 +3129,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 61,
       METABOLIC: 68,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n12x\n  - 1m Z4\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -3147,7 +3147,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 61,
       METABOLIC: 68,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 20m Z2\n7x\n  - 1m Z4\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -3165,7 +3165,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 70,
       METABOLIC: 80,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 20m Z2\n10x\n  - 1m Z4\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -3183,7 +3183,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 58,
       METABOLIC: 64,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 5m Z1\n- 5m Z2\n7x\n  - 2m Z4\n  - 2m Z1\n- 5m Z2\n- 5m Z1",
   },
@@ -3202,7 +3202,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 60,
       METABOLIC: 67,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 15m Z2\n8x\n  - 1m Z4\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -3220,7 +3220,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 65,
       METABOLIC: 73,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 5m Z1\n- 15m Z2\n5x\n  - 2m Z4\n  - 2m Z1\n- 10m Z2\n- 5m Z1",
   },
@@ -3239,7 +3239,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 60,
       METABOLIC: 67,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 5m Z1\n- 10m Z2\n5x\n  - 2m Z4\n  - 2m Z1\n- 10m Z2\n- 5m Z1",
   },
@@ -3258,7 +3258,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 0m Z1\n- 1m Z2\n8x\n  - 0m Z3\n  - 0m Z2\n- 0m Z1",
   },
   {
@@ -3276,7 +3276,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 0m Z1\n- 1m Z2\n10x\n  - 0m Z3\n  - 0m Z2\n- 0m Z1",
   },
   {
@@ -3294,7 +3294,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 0m Z1\n- 1m Z2\n12x\n  - 0m Z3\n  - 0m Z2\n- 0m Z1",
   },
   {
@@ -3312,7 +3312,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 0m Z1\n- 1m Z2\n14x\n  - 0m Z3\n  - 0m Z2\n- 0m Z1",
   },
   {
@@ -3330,7 +3330,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 0m Z1\n- 1m Z2\n16x\n  - 0m Z3\n  - 0m Z2\n- 0m Z1",
   },
   {
@@ -3348,7 +3348,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 0m Z1\n- 1m Z2\n18x\n  - 0m Z3\n  - 0m Z2\n- 0m Z1",
   },
   {
@@ -3366,7 +3366,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 1m Z1\n- 1m Z2\n- 1m Z1",
   },
   {
@@ -3383,7 +3383,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 20,
       METABOLIC: 13,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n6x\n  - 20s Z4\n  - 40s Z1",
   },
   {
@@ -3400,7 +3400,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 10,
       METABOLIC: 13,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 20m Z1",
   },
   {
@@ -3417,7 +3417,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 13,
       METABOLIC: 17,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 25m Z1",
   },
   {
@@ -3434,7 +3434,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 15,
       METABOLIC: 20,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 30m Z1",
   },
   {
@@ -3451,7 +3451,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 18,
       METABOLIC: 23,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 35m Z1",
   },
   {
@@ -3468,7 +3468,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 20,
       METABOLIC: 27,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 40m Z1",
   },
   {
@@ -3485,7 +3485,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 23,
       METABOLIC: 30,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 45m Z1",
   },
   {
@@ -3502,7 +3502,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 25,
       METABOLIC: 33,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 50m Z1",
   },
   {
@@ -3519,7 +3519,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 28,
       METABOLIC: 37,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 55m Z1",
   },
   {
@@ -3536,7 +3536,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 30,
       METABOLIC: 40,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 60m Z1",
   },
   {
@@ -3553,7 +3553,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 38,
       METABOLIC: 50,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 75m Z1",
   },
   {
@@ -3570,7 +3570,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 45,
       METABOLIC: 60,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 90m Z1",
   },
   {
@@ -3587,7 +3587,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 53,
       METABOLIC: 70,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 105m Z1",
   },
   {
@@ -3604,7 +3604,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 60,
       METABOLIC: 80,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 120m Z1",
   },
   {
@@ -3621,7 +3621,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 75,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 150m Z1",
   },
   {
@@ -3638,7 +3638,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 10,
       METABOLIC: 13,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 15m Z2",
   },
   {
@@ -3655,7 +3655,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 13,
       METABOLIC: 17,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 15m Z2\n- 5m Z1",
   },
   {
@@ -3672,7 +3672,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 15,
       METABOLIC: 20,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 20m Z2\n- 5m Z1",
   },
   {
@@ -3689,7 +3689,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 18,
       METABOLIC: 23,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 25m Z2\n- 5m Z1",
   },
   {
@@ -3706,7 +3706,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 20,
       METABOLIC: 27,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 30m Z2\n- 5m Z1",
   },
   {
@@ -3723,7 +3723,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 23,
       METABOLIC: 30,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 35m Z2\n- 5m Z1",
   },
   {
@@ -3740,7 +3740,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 25,
       METABOLIC: 33,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 40m Z2\n- 5m Z1",
   },
   {
@@ -3757,7 +3757,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 28,
       METABOLIC: 37,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 45m Z2\n- 5m Z1",
   },
   {
@@ -3774,7 +3774,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 30,
       METABOLIC: 40,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 50m Z2\n- 5m Z1",
   },
   {
@@ -3791,7 +3791,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 30,
       METABOLIC: 40,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 15m Z1\n- 35m Z2\n- 10m Z1",
   },
   {
@@ -3808,7 +3808,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 45,
       METABOLIC: 60,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 30m Z1\n- 50m Z2\n- 10m Z1",
   },
   {
@@ -3825,7 +3825,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 53,
       METABOLIC: 70,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 40m Z1\n- 55m Z2\n- 10m Z1",
   },
   {
@@ -3842,7 +3842,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 60,
       METABOLIC: 80,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 50m Z1\n- 60m Z2\n- 10m Z1",
   },
   {
@@ -3859,7 +3859,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 68,
       METABOLIC: 90,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 60m Z1\n- 65m Z2\n- 10m Z1",
   },
   {
@@ -3876,7 +3876,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 75,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 70m Z1\n- 70m Z2\n- 10m Z1",
   },
   {
@@ -3893,7 +3893,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 83,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 80m Z1\n- 75m Z2\n- 10m Z1",
   },
   {
@@ -3910,7 +3910,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 90,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 90m Z1\n- 80m Z2\n- 10m Z1",
   },
   {
@@ -3927,7 +3927,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 98,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 100m Z1\n- 85m Z2\n- 10m Z1",
   },
   {
@@ -3944,7 +3944,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 110m Z1\n- 90m Z2\n- 10m Z1",
   },
   {
@@ -3961,7 +3961,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 120m Z1\n- 95m Z2\n- 10m Z1",
   },
   {
@@ -3978,7 +3978,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 130m Z1\n- 100m Z2\n- 10m Z1",
   },
   {
@@ -3995,7 +3995,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 140m Z1\n- 120m Z2\n- 10m Z1",
   },
   {
@@ -4012,7 +4012,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 150m Z1\n- 140m Z2\n- 10m Z1",
   },
   {
@@ -4029,7 +4029,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 160m Z1\n- 160m Z2\n- 10m Z1",
   },
   {
@@ -4046,7 +4046,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 170m Z1\n- 180m Z2\n- 10m Z1",
   },
   {
@@ -4063,7 +4063,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 38,
       METABOLIC: 50,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 65m Z2\n- 5m Z1",
   },
   {
@@ -4081,7 +4081,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 70,
       METABOLIC: 93,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 10m Z1\n2x\n  - 20m Z2\n  - 5m Z1\n- 10m Z1",
   },
   {
@@ -4099,7 +4099,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 90,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 15m Z1\n3x\n  - 15m Z2\n  - 5m Z1\n- 15m Z1",
   },
   {
@@ -4117,7 +4117,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 15m Z1\n4x\n  - 15m Z2\n  - 5m Z1\n- 15m Z1",
   },
   {
@@ -4135,7 +4135,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 20m Z1\n3x\n  - 20m Z2\n  - 7m Z1\n- 20m Z1",
   },
   {
@@ -4153,7 +4153,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 10m Z1\n5x\n  - 15m Z2\n  - 5m Z1\n- 10m Z1",
   },
   {
@@ -4171,7 +4171,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 10m Z1\n4x\n  - 20m Z2\n  - 7m Z1\n- 10m Z1",
   },
   {
@@ -4189,7 +4189,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 12m Z1\n4x\n  - 25m Z2\n  - 7m Z1\n- 10m Z1",
   },
   {
@@ -4207,7 +4207,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 10m Z1\n4x\n  - 30m Z2\n  - 10m Z1\n- 10m Z1",
   },
   {
@@ -4225,7 +4225,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 10m Z1\n5x\n  - 25m Z2\n  - 7m Z1\n- 10m Z1",
   },
   {
@@ -4243,7 +4243,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n5x\n  - 30m Z2\n  - 10m Z1\n- 5m Z1",
   },
   {
@@ -4261,7 +4261,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n6x\n  - 30m Z2\n  - 10m Z1\n- 5m Z1",
   },
   {
@@ -4279,7 +4279,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 10m Z1\n6x\n  - 30m Z2\n  - 10m Z1\n- 20m Z1",
   },
   {
@@ -4297,7 +4297,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 10m Z1\n6x\n  - 30m Z2\n  - 10m Z1\n- 35m Z1",
   },
   {
@@ -4315,7 +4315,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 10m Z1\n6x\n  - 30m Z2\n  - 10m Z1\n- 50m Z1",
   },
   {
@@ -4333,7 +4333,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 10m Z1\n6x\n  - 30m Z2\n  - 10m Z1\n- 65m Z1",
   },
   {
@@ -4351,7 +4351,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 10m Z1\n6x\n  - 30m Z2\n  - 10m Z1\n- 80m Z1",
   },
   {
@@ -4369,7 +4369,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 10m Z1\n6x\n  - 30m Z2\n  - 10m Z1\n- 95m Z1",
   },
   {
@@ -4387,7 +4387,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 10m Z1\n6x\n  - 30m Z2\n  - 10m Z1\n- 110m Z1",
   },
   {
@@ -4405,7 +4405,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 10m Z1\n4x\n  - 30m Z2\n  - 10m Z1\n- 40m Z1",
   },
   {
@@ -4423,7 +4423,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 10m Z1\n4x\n  - 30m Z2\n  - 10m Z1\n- 70m Z1",
   },
   {
@@ -4441,7 +4441,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 10m Z1\n4x\n  - 30m Z2\n  - 10m Z1\n- 100m Z1",
   },
   {
@@ -4459,7 +4459,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 10m Z1\n4x\n  - 30m Z2\n  - 10m Z1\n- 130m Z1",
   },
   {
@@ -4477,7 +4477,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 10m Z1\n4x\n  - 30m Z2\n  - 10m Z1\n- 160m Z1",
   },
   {
@@ -4495,7 +4495,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 10m Z1\n4x\n  - 30m Z2\n  - 10m Z1\n- 190m Z1",
   },
   {
@@ -4513,7 +4513,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 10m Z1\n4x\n  - 30m Z2\n  - 10m Z1\n- 220m Z1",
   },
   {
@@ -4531,7 +4531,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 10m Z1\n4x\n  - 30m Z2\n  - 10m Z1\n- 250m Z1",
   },
   {
@@ -4549,7 +4549,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 10m Z1\n- 10m Z2\n3x\n  - 4m Z2\n  - 1m Z1\n- 205m Z2",
   },
@@ -4568,7 +4568,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 10m Z1\n- 10m Z2\n3x\n  - 5m Z2\n  - 1m Z1\n- 222m Z2",
   },
@@ -4587,7 +4587,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 10m Z1\n- 10m Z2\n3x\n  - 6m Z2\n  - 1m Z1\n- 239m Z2",
   },
@@ -4606,7 +4606,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 10m Z1\n- 10m Z2\n3x\n  - 7m Z2\n  - 1m Z1\n- 256m Z2",
   },
@@ -4625,7 +4625,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 10m Z1\n- 10m Z2\n3x\n  - 8m Z2\n  - 1m Z1\n- 273m Z2",
   },
@@ -4644,7 +4644,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 10m Z1\n- 10m Z2\n3x\n  - 9m Z2\n  - 1m Z1\n- 290m Z2",
   },
@@ -4663,7 +4663,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 10m Z1\n- 10m Z2\n3x\n  - 10m Z2\n  - 1m Z1\n- 307m Z2",
   },
@@ -4682,7 +4682,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 10m Z1\n5x\n  - 30m Z2\n  - 10m Z1\n- 120m Z1",
   },
   {
@@ -4700,7 +4700,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 10m Z1\n4x\n  - 30m Z2\n  - 10m Z1\n- 40m Z1",
   },
   {
@@ -4717,7 +4717,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 30m Z1\n4x\n  - 20m Z2\n  - 10m Z1",
   },
   {
@@ -4735,7 +4735,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 30m Z1\n4x\n  - 20m Z2\n  - 10m Z1\n- 15m Z1",
   },
   {
@@ -4753,7 +4753,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 50,
       METABOLIC: 60,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 5m Z1\n- 20m Z2\n3x\n  - 5m Z3\n  - 3m Z1\n- 5m Z2\n- 6m Z1",
   },
@@ -4772,7 +4772,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 50,
       METABOLIC: 60,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 5m Z1\n- 5m Z2\n4x\n  - 5m Z3\n  - 3m Z1\n- 13m Z2\n- 5m Z1",
   },
@@ -4791,7 +4791,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 51,
       METABOLIC: 61,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 5m Z1\n- 10m Z2\n4x\n  - 6m Z3\n  - 3m Z1\n- 5m Z2\n- 5m Z1",
   },
@@ -4810,7 +4810,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 54,
       METABOLIC: 65,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 5m Z1\n- 10m Z2\n4x\n  - 7m Z3\n  - 3m Z1\n- 5m Z2\n- 5m Z1",
   },
@@ -4829,7 +4829,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 53,
       METABOLIC: 64,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 5m Z1\n- 5m Z2\n4x\n  - 8m Z3\n  - 3m Z1\n- 5m Z2\n- 5m Z1",
   },
@@ -4848,7 +4848,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 60,
       METABOLIC: 72,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 5m Z1\n- 5m Z2\n4x\n  - 10m Z3\n  - 3m Z1\n- 5m Z2\n- 5m Z1",
   },
@@ -4867,7 +4867,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 67,
       METABOLIC: 80,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 5m Z1\n- 5m Z2\n4x\n  - 12m Z3\n  - 3m Z1\n- 5m Z2\n- 5m Z1",
   },
@@ -4886,7 +4886,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 77,
       METABOLIC: 92,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 5m Z1\n- 5m Z2\n4x\n  - 15m Z3\n  - 3m Z1\n- 5m Z2\n- 5m Z1",
   },
@@ -4905,7 +4905,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 79,
       METABOLIC: 95,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 5m Z1\n- 5m Z2\n5x\n  - 12m Z3\n  - 3m Z1\n- 5m Z2\n- 5m Z1",
   },
@@ -4924,7 +4924,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 99,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 10m Z1\n- 15m Z2\n4x\n  - 8m Z3\n  - 3m Z1\n- 40m Z2\n- 10m Z1",
   },
@@ -4943,7 +4943,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 10m Z1\n- 15m Z2\n4x\n  - 8m Z3\n  - 3m Z1\n- 71m Z2\n- 10m Z1",
   },
@@ -4962,7 +4962,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 50,
       METABOLIC: 60,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 10m Z1\n- 10m Z2\n2x\n  - 10m Z3\n  - 4m Z1\n- 12m Z1",
   },
@@ -4981,7 +4981,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 75,
       METABOLIC: 90,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 10m Z1\n- 10m Z2\n4x\n  - 6m Z3\n  - 3m Z1\n- 29m Z2\n- 5m Z1",
   },
@@ -5000,7 +5000,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 75,
       METABOLIC: 90,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 10m Z1\n- 10m Z2\n4x\n  - 7m Z3\n  - 3m Z1\n- 25m Z2\n- 5m Z1",
   },
@@ -5019,7 +5019,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 75,
       METABOLIC: 90,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 10m Z1\n- 10m Z2\n4x\n  - 8m Z3\n  - 3m Z1\n- 21m Z2\n- 5m Z1",
   },
@@ -5038,7 +5038,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 75,
       METABOLIC: 90,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 10m Z1\n- 10m Z2\n4x\n  - 9m Z3\n  - 3m Z1\n- 17m Z2\n- 5m Z1",
   },
@@ -5057,7 +5057,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 25,
       METABOLIC: 30,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 10m Z1\n3x\n  - 3m Z3\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -5075,7 +5075,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 88,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 10m Z1\n- 10m Z2\n4x\n  - 6m Z3\n  - 3m Z1\n- 44m Z2\n- 5m Z1",
   },
@@ -5094,7 +5094,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 20m Z1\n- 10m Z2\n4x\n  - 6m Z3\n  - 3m Z1\n- 49m Z2\n- 5m Z1",
   },
@@ -5113,7 +5113,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 75,
       METABOLIC: 90,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 5m Z1\n- 5m Z2\n4x\n  - 5m Z3\n  - 3m Z1\n- 43m Z2\n- 5m Z1",
   },
@@ -5132,7 +5132,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 75,
       METABOLIC: 90,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 10m Z1\n- 10m Z2\n2x\n  - 10m Z3\n  - 4m Z1\n- 10m Z2\n- 32m Z1",
   },
@@ -5151,7 +5151,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 75,
       METABOLIC: 90,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 10m Z1\n- 20m Z2\n3x\n  - 3m Z3\n  - 2m Z1\n- 30m Z2\n- 15m Z1",
   },
@@ -5170,7 +5170,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 76,
       METABOLIC: 91,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 10m Z1\n- 20m Z2\n3x\n  - 5m Z3\n  - 2m Z1\n- 30m Z2\n- 10m Z1",
   },
@@ -5189,7 +5189,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 10m Z1\n- 20m Z2\n3x\n  - 5m Z3\n  - 2m Z1\n- 60m Z2\n- 10m Z1",
   },
@@ -5207,7 +5207,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 50,
       METABOLIC: 60,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 15m Z1\n- 5m Z3\n- 40m Z2",
   },
   {
@@ -5225,7 +5225,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 29,
       METABOLIC: 35,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n- 15m Z3\n- 5m Z2\n- 5m Z1",
   },
   {
@@ -5243,7 +5243,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 32,
       METABOLIC: 38,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n- 18m Z3\n- 5m Z2\n- 5m Z1",
   },
   {
@@ -5261,7 +5261,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 33,
       METABOLIC: 40,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n- 20m Z3\n- 5m Z2\n- 5m Z1",
   },
   {
@@ -5279,7 +5279,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 37,
       METABOLIC: 44,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n- 24m Z3\n- 5m Z2\n- 5m Z1",
   },
   {
@@ -5297,7 +5297,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 40,
       METABOLIC: 48,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n- 28m Z3\n- 5m Z2\n- 5m Z1",
   },
   {
@@ -5315,7 +5315,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 42,
       METABOLIC: 50,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n- 30m Z3\n- 5m Z2\n- 5m Z1",
   },
   {
@@ -5333,7 +5333,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 50,
       METABOLIC: 60,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 10m Z2\n- 30m Z3\n- 10m Z2\n- 5m Z1",
   },
   {
@@ -5351,7 +5351,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 63,
       METABOLIC: 75,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 10m Z2\n- 20m Z3\n- 35m Z2\n- 5m Z1",
   },
   {
@@ -5369,7 +5369,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 75,
       METABOLIC: 90,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 10m Z2\n- 30m Z3\n- 40m Z2\n- 5m Z1",
   },
   {
@@ -5387,7 +5387,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 88,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 10m Z2\n- 20m Z3\n- 65m Z2\n- 5m Z1",
   },
   {
@@ -5405,7 +5405,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 10m Z2\n- 30m Z3\n- 70m Z2\n- 5m Z1",
   },
   {
@@ -5423,7 +5423,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 10m Z2\n- 20m Z3\n- 95m Z2\n- 5m Z1",
   },
   {
@@ -5441,7 +5441,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 10m Z2\n- 30m Z3\n- 100m Z2\n- 5m Z1",
   },
   {
@@ -5459,7 +5459,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 10m Z2\n- 20m Z3\n- 125m Z2\n- 5m Z1",
   },
   {
@@ -5477,7 +5477,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 10m Z2\n- 30m Z3\n- 130m Z2\n- 5m Z1",
   },
   {
@@ -5495,7 +5495,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 10m Z2\n- 20m Z3\n- 155m Z2\n- 5m Z1",
   },
   {
@@ -5513,7 +5513,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 10m Z2\n- 30m Z3\n- 160m Z2\n- 5m Z1",
   },
   {
@@ -5531,7 +5531,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 10m Z2\n- 20m Z3\n- 185m Z2\n- 5m Z1",
   },
   {
@@ -5549,7 +5549,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 10m Z2\n- 30m Z3\n- 190m Z2\n- 5m Z1",
   },
   {
@@ -5567,7 +5567,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 10m Z2\n- 20m Z3\n- 215m Z2\n- 5m Z1",
   },
   {
@@ -5585,7 +5585,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 10m Z2\n- 30m Z3\n- 220m Z2\n- 5m Z1",
   },
   {
@@ -5603,7 +5603,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 10m Z2\n- 20m Z3\n- 245m Z2\n- 5m Z1",
   },
   {
@@ -5621,7 +5621,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 10m Z2\n- 30m Z3\n- 250m Z2\n- 5m Z1",
   },
   {
@@ -5639,7 +5639,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 43,
       METABOLIC: 52,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n- 32m Z3\n- 5m Z2\n- 5m Z1",
   },
   {
@@ -5657,7 +5657,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 47,
       METABOLIC: 56,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n- 36m Z3\n- 5m Z2\n- 5m Z1",
   },
   {
@@ -5675,7 +5675,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 50,
       METABOLIC: 60,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n- 40m Z3\n- 5m Z2\n- 5m Z1",
   },
   {
@@ -5693,7 +5693,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 54,
       METABOLIC: 65,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n- 45m Z3\n- 5m Z2\n- 5m Z1",
   },
   {
@@ -5711,7 +5711,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 46,
       METABOLIC: 55,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 15m Z2\n- 15m Z3\n- 15m Z2\n- 5m Z1",
   },
   {
@@ -5729,7 +5729,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 50,
       METABOLIC: 60,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 15m Z2\n- 20m Z3\n- 15m Z2\n- 5m Z1",
   },
   {
@@ -5747,7 +5747,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 50,
       METABOLIC: 60,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 15m Z2\n- 24m Z3\n- 11m Z2\n- 5m Z1",
   },
   {
@@ -5765,7 +5765,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 60,
       METABOLIC: 72,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 15m Z2\n- 32m Z3\n- 15m Z2\n- 5m Z1",
   },
   {
@@ -5783,7 +5783,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 58,
       METABOLIC: 70,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 10m Z2\n- 40m Z3\n- 10m Z2\n- 5m Z1",
   },
   {
@@ -5800,7 +5800,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 25,
       METABOLIC: 33,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 15m Z2\n- 5m Z3",
   },
   {
@@ -5817,7 +5817,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 30,
       METABOLIC: 40,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 20m Z2\n- 5m Z3",
   },
   {
@@ -5834,7 +5834,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 30,
       METABOLIC: 40,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 15m Z2\n- 10m Z3",
   },
   {
@@ -5851,7 +5851,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 40,
       METABOLIC: 53,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 25m Z2\n- 10m Z3",
   },
   {
@@ -5868,7 +5868,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 42,
       METABOLIC: 56,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 25m Z2\n- 12m Z3",
   },
   {
@@ -5885,7 +5885,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 47,
       METABOLIC: 63,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 30m Z2\n- 12m Z3",
   },
   {
@@ -5902,7 +5902,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 52,
       METABOLIC: 69,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 35m Z2\n- 12m Z3",
   },
   {
@@ -5919,7 +5919,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 55,
       METABOLIC: 73,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 35m Z2\n- 15m Z3",
   },
   {
@@ -5936,7 +5936,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 60,
       METABOLIC: 80,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 40m Z2\n- 15m Z3",
   },
   {
@@ -5953,7 +5953,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 65,
       METABOLIC: 87,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 45m Z2\n- 15m Z3",
   },
   {
@@ -5970,7 +5970,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 75,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 55m Z2\n- 15m Z3",
   },
   {
@@ -5987,7 +5987,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 90,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 70m Z2\n- 15m Z3",
   },
   {
@@ -6004,7 +6004,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 85m Z2\n- 15m Z3",
   },
   {
@@ -6021,7 +6021,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 100m Z2\n- 15m Z3",
   },
   {
@@ -6038,7 +6038,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 115m Z2\n- 15m Z3",
   },
   {
@@ -6055,7 +6055,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 130m Z2\n- 15m Z3",
   },
   {
@@ -6072,7 +6072,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 145m Z2\n- 15m Z3",
   },
   {
@@ -6089,7 +6089,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 160m Z2\n- 15m Z3",
   },
   {
@@ -6106,7 +6106,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 175m Z2\n- 15m Z3",
   },
   {
@@ -6123,7 +6123,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 190m Z2\n- 15m Z3",
   },
   {
@@ -6140,7 +6140,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 205m Z2\n- 15m Z3",
   },
   {
@@ -6157,7 +6157,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 220m Z2\n- 15m Z3",
   },
   {
@@ -6174,7 +6174,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 250m Z2\n- 15m Z3",
   },
   {
@@ -6191,7 +6191,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 280m Z2\n- 15m Z3",
   },
   {
@@ -6208,7 +6208,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 310m Z2\n- 15m Z3",
   },
   {
@@ -6225,7 +6225,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 340m Z2\n- 15m Z3",
   },
   {
@@ -6242,7 +6242,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 60,
       METABOLIC: 80,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 45m Z2\n- 10m Z3",
   },
   {
@@ -6260,7 +6260,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 27,
       METABOLIC: 36,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n6x\n  - 30s Z5\n  - 90s Z1\n- 5m Z1",
   },
   {
@@ -6278,7 +6278,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 31,
       METABOLIC: 41,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n8x\n  - 30s Z5\n  - 90s Z1\n- 5m Z1",
   },
   {
@@ -6296,7 +6296,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 33,
       METABOLIC: 44,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n6x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -6314,7 +6314,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 35,
       METABOLIC: 47,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 5m Z1\n- 5m Z2\n10x\n  - 30s Z5\n  - 90s Z1\n- 5m Z1",
   },
@@ -6333,7 +6333,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 39,
       METABOLIC: 52,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 5m Z1\n- 5m Z2\n12x\n  - 30s Z5\n  - 90s Z1\n- 5m Z1",
   },
@@ -6352,7 +6352,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 39,
       METABOLIC: 52,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n8x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -6370,7 +6370,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 39,
       METABOLIC: 52,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n6x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -6388,7 +6388,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 45,
       METABOLIC: 60,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n10x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -6406,7 +6406,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 47,
       METABOLIC: 63,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n8x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -6424,7 +6424,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 51,
       METABOLIC: 68,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n12x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -6442,7 +6442,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 55,
       METABOLIC: 73,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n10x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -6460,7 +6460,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 63,
       METABOLIC: 84,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n12x\n  - 1m Z5\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -6478,7 +6478,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 70,
       METABOLIC: 93,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 5m Z1\n- 10m Z2\n10x\n  - 1m Z5\n  - 2m Z1\n- 10m Z2\n- 5m Z1",
   },
@@ -6497,7 +6497,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 15m Z1\n- 15m Z2\n10x\n  - 1m Z5\n  - 2m Z1\n- 70m Z2\n- 5m Z1",
   },
@@ -6516,7 +6516,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 15m Z1\n- 15m Z2\n10x\n  - 1m Z5\n  - 2m Z1\n- 85m Z2\n- 5m Z1",
   },
@@ -6535,7 +6535,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 15m Z1\n- 15m Z2\n10x\n  - 1m Z5\n  - 2m Z1\n- 115m Z2\n- 5m Z1",
   },
@@ -6554,7 +6554,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 74,
       METABOLIC: 99,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 5m Z1\n- 5m Z2\n12x\n  - 30s Z5\n  - 90s Z1\n- 35m Z2\n- 5m Z1",
   },
@@ -6573,7 +6573,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 78,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 5m Z1\n- 10m Z2\n6x\n  - 1m Z5\n  - 2m Z1\n- 40m Z2\n- 5m Z1",
   },
@@ -6592,7 +6592,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 90,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 15m Z2\n8x\n  - 1m Z5\n  - 2m Z1\n- 46m Z2",
   },
   {
@@ -6610,7 +6610,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 10m Z1\n- 15m Z2\n10x\n  - 1m Z5\n  - 2m Z1\n- 105m Z2\n- 5m Z1",
   },
@@ -6629,7 +6629,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 15m Z1\n- 15m Z2\n10x\n  - 1m Z5\n  - 2m Z1\n- 55m Z2\n- 5m Z1",
   },
@@ -6648,7 +6648,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 60,
       METABOLIC: 80,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 10m Z1\n- 10m Z2\n8x\n  - 30s Z5\n  - 60s Z1\n- 28m Z1",
   },
@@ -6667,7 +6667,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 15m Z1\n- 15m Z2\n10x\n  - 1m Z5\n  - 2m Z1\n- 40m Z2\n- 5m Z1",
   },
@@ -6686,7 +6686,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 90,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 15m Z1\n- 15m Z2\n5x\n  - 1m Z5\n  - 2m Z1\n- 25m Z2\n- 20m Z1",
   },
@@ -6705,7 +6705,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 20m Z1\n2x\n  - 20m Z3\n  - 15m Z1\n10x\n  - 1m Z4\n  - 2m Z1",
   },
@@ -6724,7 +6724,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 20m Z1\n2x\n  - 20m Z3\n  - 15m Z1\n10x\n  - 1m Z4\n  - 2m Z1\n- 30m Z1",
   },
@@ -6743,7 +6743,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 20m Z1\n2x\n  - 20m Z3\n  - 15m Z1\n10x\n  - 1m Z4\n  - 2m Z1\n- 45m Z1",
   },
@@ -6762,7 +6762,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 20m Z1\n2x\n  - 20m Z3\n  - 15m Z1\n10x\n  - 1m Z4\n  - 2m Z1\n- 60m Z1",
   },
@@ -6781,7 +6781,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 20m Z1\n2x\n  - 20m Z3\n  - 15m Z1\n10x\n  - 1m Z4\n  - 2m Z1\n- 90m Z1",
   },
@@ -6800,7 +6800,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 20m Z1\n2x\n  - 20m Z3\n  - 15m Z1\n5x\n  - 1m Z4\n  - 2m Z1\n- 15m Z1",
   },
@@ -6819,7 +6819,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 60,
       METABOLIC: 80,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 15m Z1\n4x\n  - 2m Z4\n  - 5m Z1\n- 15m Z1",
   },
   {
@@ -6837,7 +6837,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 63,
       METABOLIC: 83,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 15m Z1\n5x\n  - 2m Z4\n  - 5m Z1\n- 10m Z1",
   },
   {
@@ -6855,7 +6855,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 60,
       METABOLIC: 80,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 10m Z1\n6x\n  - 2m Z4\n  - 5m Z1\n- 5m Z1",
   },
   {
@@ -6873,7 +6873,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 90,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 10m Z1\n6x\n  - 2m Z4\n  - 5m Z1\n- 30m Z2\n- 5m Z1",
   },
   {
@@ -6891,7 +6891,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 10m Z1\n6x\n  - 2m Z4\n  - 5m Z1\n- 60m Z2\n- 5m Z1",
   },
   {
@@ -6909,7 +6909,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 10m Z1\n- 10m Z2\n6x\n  - 2m Z4\n  - 5m Z1\n- 80m Z2\n- 5m Z1",
   },
@@ -6928,7 +6928,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 92,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 10m Z1\n- 10m Z2\n3x\n  - 2m Z4\n  - 5m Z1\n- 45m Z2\n- 5m Z1",
   },
@@ -6947,7 +6947,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 100,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 10m Z1\n- 10m Z2\n4x\n  - 2m Z4\n  - 5m Z1\n- 95m Z2\n- 5m Z1",
   },
@@ -6966,7 +6966,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 60,
       METABOLIC: 80,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 10m Z1\n- 10m Z2\n3x\n  - 2m Z4\n  - 5m Z1\n- 17m Z1",
   },
@@ -6985,7 +6985,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 27,
       METABOLIC: 36,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n3x\n  - 2m Z4\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -7003,7 +7003,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 60,
       METABOLIC: 80,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 5m Z1\n- 5m Z2\n5x\n  - 1m Z4\n  - 2m Z1\n- 30m Z2\n- 5m Z1",
   },
@@ -7022,7 +7022,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 31,
       METABOLIC: 41,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n4x\n  - 2m Z4\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -7040,7 +7040,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 60,
       METABOLIC: 80,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 5m Z1\n- 5m Z2\n6x\n  - 1m Z4\n  - 2m Z1\n- 27m Z2\n- 5m Z1",
   },
@@ -7059,7 +7059,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 35,
       METABOLIC: 47,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n5x\n  - 2m Z4\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -7077,7 +7077,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 66,
       METABOLIC: 88,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 5m Z1\n- 5m Z2\n7x\n  - 1m Z4\n  - 2m Z1\n- 30m Z2\n- 5m Z1",
   },
@@ -7096,7 +7096,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 39,
       METABOLIC: 52,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n6x\n  - 2m Z4\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -7114,7 +7114,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 60,
       METABOLIC: 80,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n8x\n  - 1m Z4\n  - 2m Z1\n- 26m Z2",
   },
   {
@@ -7132,7 +7132,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 42,
       METABOLIC: 56,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n9x\n  - 1m Z4\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -7150,7 +7150,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 60,
       METABOLIC: 80,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 5m Z1\n- 5m Z2\n7x\n  - 2m Z4\n  - 2m Z1\n- 17m Z2\n- 5m Z1",
   },
@@ -7169,7 +7169,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 45,
       METABOLIC: 60,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n10x\n  - 1m Z4\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -7187,7 +7187,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 60,
       METABOLIC: 80,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 5m Z1\n- 5m Z2\n8x\n  - 2m Z4\n  - 2m Z1\n- 13m Z2\n- 5m Z1",
   },
@@ -7206,7 +7206,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 51,
       METABOLIC: 68,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 5m Z1\n- 5m Z2\n9x\n  - 2m Z4\n  - 2m Z1\n- 5m Z1",
   },
   {
@@ -7224,7 +7224,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 61,
       METABOLIC: 81,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 5m Z1\n- 5m Z2\n12x\n  - 1m Z4\n  - 2m Z1\n- 10m Z2\n- 5m Z1",
   },
@@ -7243,7 +7243,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 79,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 10m Z1\n- 15m Z2\n6x\n  - 2m Z4\n  - 2m Z1\n- 15m Z2\n- 15m Z1",
   },
@@ -7262,7 +7262,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 87,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 10m Z1\n- 15m Z2\n8x\n  - 2m Z4\n  - 2m Z1\n- 15m Z2\n- 15m Z1",
   },
@@ -7281,7 +7281,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 79,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 10m Z1\n- 15m Z2\n8x\n  - 1m Z4\n  - 2m Z1\n- 15m Z2\n- 15m Z1",
   },
@@ -7300,7 +7300,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 90,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 21m Z1\n- 15m Z2\n8x\n  - 1m Z4\n  - 2m Z1\n- 15m Z2\n- 15m Z1",
   },
@@ -7318,7 +7318,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 20,
       METABOLIC: 20,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 1500m Z1",
   },
   {
@@ -7335,7 +7335,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 21,
       METABOLIC: 21,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 1600m Z1",
   },
   {
@@ -7352,7 +7352,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 23,
       METABOLIC: 23,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 1750m Z1",
   },
   {
@@ -7369,7 +7369,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 25,
       METABOLIC: 27,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 2000m Z1",
   },
   {
@@ -7386,7 +7386,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 28,
       METABOLIC: 30,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 2250m Z1",
   },
   {
@@ -7403,7 +7403,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 30,
       METABOLIC: 33,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 2500m Z1",
   },
   {
@@ -7420,7 +7420,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 33,
       METABOLIC: 37,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 2750m Z1",
   },
   {
@@ -7437,7 +7437,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 35,
       METABOLIC: 40,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 3000m Z1",
   },
   {
@@ -7454,7 +7454,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 15,
       METABOLIC: 13,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 1000m Z1",
   },
   {
@@ -7471,7 +7471,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 20,
       METABOLIC: 20,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 300m Z1\n- 900m Z2\n- 300m Z1",
   },
   {
@@ -7488,7 +7488,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 21,
       METABOLIC: 21,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 300m Z1\n- 1000m Z2\n- 300m Z1",
   },
   {
@@ -7505,7 +7505,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 23,
       METABOLIC: 23,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 300m Z1\n- 1150m Z2\n- 300m Z1",
   },
   {
@@ -7522,7 +7522,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 25,
       METABOLIC: 27,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 300m Z1\n- 1400m Z2\n- 300m Z1",
   },
   {
@@ -7539,7 +7539,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 28,
       METABOLIC: 30,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 300m Z1\n- 1650m Z2\n- 300m Z1",
   },
   {
@@ -7556,7 +7556,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 30,
       METABOLIC: 33,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 300m Z1\n- 1900m Z2\n- 300m Z1",
   },
   {
@@ -7573,7 +7573,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 33,
       METABOLIC: 37,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 250m Z1\n- 2250m Z2\n- 250m Z1",
   },
   {
@@ -7590,7 +7590,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 35,
       METABOLIC: 40,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 250m Z1\n- 2500m Z2\n- 250m Z1",
   },
   {
@@ -7607,7 +7607,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 40,
       METABOLIC: 47,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 250m Z1\n- 3000m Z2\n- 250m Z1",
   },
   {
@@ -7624,7 +7624,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 45,
       METABOLIC: 53,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 250m Z1\n- 3500m Z2\n- 250m Z1",
   },
   {
@@ -7641,7 +7641,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 55,
       METABOLIC: 67,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 250m Z1\n4x\n  - 60s Z1\n- 250m Z1",
   },
   {
@@ -7658,7 +7658,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 65,
       METABOLIC: 80,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 250m Z1\n5x\n  - 60s Z1\n- 250m Z1",
   },
   {
@@ -7675,7 +7675,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 75,
       METABOLIC: 93,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 250m Z1\n6x\n  - 60s Z1\n- 250m Z1",
   },
   {
@@ -7692,7 +7692,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 75,
       METABOLIC: 93,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 250m Z1\n3x\n  - 60s Z1\n- 250m Z1",
   },
   {
@@ -7709,7 +7709,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 81,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 150m Z1\n7x\n  - 60s Z1\n- 150m Z1",
   },
   {
@@ -7726,7 +7726,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 95,
       METABOLIC: 100,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 250m Z1\n4x\n  - 60s Z1\n- 250m Z1",
   },
   {
@@ -7743,7 +7743,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 45,
       METABOLIC: 53,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 250m Z1\n3x\n  - 60s Z1\n- 250m Z1",
   },
   {
@@ -7760,7 +7760,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 30,
       METABOLIC: 30,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 500m Z1\n5x\n  - 100m Z3\n  - 15s Z1\n- 500m Z1",
   },
   {
@@ -7777,7 +7777,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 38,
       METABOLIC: 40,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 500m Z1\n5x\n  - 100m Z3\n  - 15s Z1\n- 500m Z2\n- 500m Z1",
   },
@@ -7796,7 +7796,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 47,
       METABOLIC: 50,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 500m Z1\n- 500m Z2\n5x\n  - 100m Z3\n  - 15s Z1\n- 500m Z2\n- 500m Z1",
   },
@@ -7814,7 +7814,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 30,
       METABOLIC: 30,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 250m Z1\n10x\n  - 100m Z3\n  - 15s Z1\n- 250m Z1",
   },
   {
@@ -7832,7 +7832,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 38,
       METABOLIC: 40,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 250m Z1\n10x\n  - 100m Z3\n  - 15s Z1\n- 500m Z2\n- 250m Z1",
   },
@@ -7851,7 +7851,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 47,
       METABOLIC: 50,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 250m Z1\n- 500m Z2\n10x\n  - 100m Z3\n  - 15s Z1\n- 500m Z2\n- 250m Z1",
   },
@@ -7870,7 +7870,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 55,
       METABOLIC: 60,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 250m Z1\n- 500m Z2\n15x\n  - 100m Z3\n  - 15s Z1\n- 500m Z2\n- 250m Z1",
   },
@@ -7888,7 +7888,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 38,
       METABOLIC: 40,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 500m Z1\n5x\n  - 200m Z3\n  - 15s Z1\n- 500m Z1",
   },
   {
@@ -7905,7 +7905,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 45,
       METABOLIC: 48,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 500m Z1\n7x\n  - 200m Z3\n  - 15s Z1\n- 500m Z1",
   },
   {
@@ -7922,7 +7922,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 55,
       METABOLIC: 60,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 500m Z1\n10x\n  - 200m Z3\n  - 15s Z1\n- 500m Z1",
   },
   {
@@ -7939,7 +7939,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 37,
       METABOLIC: 38,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 500m Z1\n3x\n  - 300m Z3\n  - 15s Z1\n- 500m Z1",
   },
   {
@@ -7956,7 +7956,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 47,
       METABOLIC: 50,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 500m Z1\n5x\n  - 300m Z3\n  - 15s Z1\n- 500m Z1",
   },
   {
@@ -7974,7 +7974,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 63,
       METABOLIC: 70,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 500m Z1\n- 500m Z2\n5x\n  - 300m Z3\n  - 15s Z1\n- 500m Z2\n- 500m Z1",
   },
@@ -7992,7 +7992,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 25,
       METABOLIC: 24,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 300m Z1\n3x\n  - 200m Z3\n  - 15s Z1\n- 300m Z1",
   },
   {
@@ -8009,7 +8009,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 30,
       METABOLIC: 30,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 300m Z1\n3x\n  - 300m Z3\n  - 15s Z1\n- 300m Z1",
   },
   {
@@ -8026,7 +8026,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 34,
       METABOLIC: 35,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 500m Z1\n5x\n  - 200m Z3\n  - 15s Z1\n- 250m Z1",
   },
   {
@@ -8043,7 +8043,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 30,
       METABOLIC: 30,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 150m Z1\n6x\n  - 200m Z3\n  - 15s Z1\n- 150m Z1",
   },
   {
@@ -8060,7 +8060,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 30,
       METABOLIC: 30,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 250m Z1\n- 500m Z3\n- 500m Z2\n- 250m Z1",
   },
   {
@@ -8077,7 +8077,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 34,
       METABOLIC: 35,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 250m Z1\n- 500m Z3\n- 750m Z2\n- 250m Z1",
   },
   {
@@ -8094,7 +8094,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 38,
       METABOLIC: 40,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 250m Z1\n- 500m Z3\n- 1000m Z2\n- 250m Z1",
   },
   {
@@ -8111,7 +8111,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 43,
       METABOLIC: 45,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 250m Z1\n- 750m Z3\n- 1000m Z2\n- 250m Z1",
   },
   {
@@ -8128,7 +8128,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 47,
       METABOLIC: 50,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 250m Z1\n- 1000m Z3\n- 1000m Z2\n- 250m Z1",
   },
   {
@@ -8145,7 +8145,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 55,
       METABOLIC: 60,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 500m Z1\n- 1000m Z3\n- 1000m Z2\n- 500m Z1",
   },
   {
@@ -8162,7 +8162,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 38,
       METABOLIC: 40,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 500m Z1\n- 1000m Z3\n- 500m Z1",
   },
   {
@@ -8179,7 +8179,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 34,
       METABOLIC: 35,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 500m Z1\n- 1000m Z3\n- 250m Z1",
   },
   {
@@ -8197,7 +8197,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 40,
       METABOLIC: 47,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 500m Z1\n5x\n  - 100m Z3\n  - 15s Z1\n- 250m Z1\n5x\n  - 50m Z4\n  - 20s Z1\n- 250m Z1",
   },
@@ -8216,7 +8216,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 40,
       METABOLIC: 47,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 500m Z1\n5x\n  - 100m Z3\n  - 15s Z1\n- 250m Z1\n10x\n  - 25m Z5\n  - 10s Z1\n- 250m Z1",
   },
@@ -8235,7 +8235,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 52,
       METABOLIC: 63,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 250m Z1\n10x\n  - 100m Z3\n  - 15s Z1\n- 500m Z1\n7x\n  - 50m Z4\n  - 20s Z1\n- 250m Z1",
   },
@@ -8254,7 +8254,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 65,
       METABOLIC: 80,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 250m Z1\n- 500m Z2\n10x\n  - 100m Z3\n  - 15s Z1\n- 150m Z1\n7x\n  - 50m Z4\n  - 20s Z1\n- 500m Z2\n- 250m Z1",
   },
@@ -8273,7 +8273,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 53,
       METABOLIC: 64,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 300m Z1\n10x\n  - 100m Z3\n  - 15s Z1\n- 300m Z1\n10x\n  - 50m Z4\n  - 20s Z1\n- 300m Z1",
   },
@@ -8292,7 +8292,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 55,
       METABOLIC: 67,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 500m Z1\n5x\n  - 200m Z3\n  - 15s Z1\n- 250m Z1\n10x\n  - 25m Z5\n  - 10s Z1\n- 500m Z1",
   },
@@ -8311,7 +8311,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 65,
       METABOLIC: 80,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 500m Z1\n5x\n  - 200m Z3\n  - 15s Z1\n- 250m Z1\n10x\n  - 25m Z5\n  - 10s Z1\n- 500m Z2\n- 500m Z1",
   },
@@ -8330,7 +8330,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 43,
       METABOLIC: 51,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 500m Z2\n3x\n  - 100m Z3\n  - 15s Z1\n- 500m Z1\n6x\n  - 50m Z4\n  - 20s Z1\n- 300m Z1",
   },
@@ -8349,7 +8349,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 40,
       METABOLIC: 47,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 250m Z1\n- 500m Z2\n10x\n  - 25m Z5\n  - 10s Z1\n- 500m Z2\n- 250m Z1",
   },
@@ -8368,7 +8368,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 51,
       METABOLIC: 61,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 250m Z1\n- 500m Z2\n12x\n  - 25m Z5\n  - 10s Z1\n- 1000m Z2\n- 250m Z1",
   },
@@ -8387,7 +8387,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 40,
       METABOLIC: 47,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 250m Z1\n- 500m Z2\n5x\n  - 50m Z4\n  - 20s Z1\n- 500m Z2\n- 250m Z1",
   },
@@ -8406,7 +8406,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 47,
       METABOLIC: 56,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 250m Z1\n- 500m Z2\n7x\n  - 50m Z4\n  - 20s Z1\n- 500m Z2\n- 500m Z1",
   },
@@ -8425,7 +8425,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 55,
       METABOLIC: 67,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 500m Z1\n- 500m Z2\n10x\n  - 50m Z4\n  - 20s Z1\n- 500m Z2\n- 500m Z1",
   },
@@ -8444,7 +8444,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 67,
       METABOLIC: 83,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 500m Z1\n- 500m Z2\n12x\n  - 50m Z4\n  - 20s Z1\n- 1000m Z2\n- 500m Z1",
   },
@@ -8462,7 +8462,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 35,
       METABOLIC: 40,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 250m Z1\n- 500m Z2\n10x\n  - 50m Z4\n  - 20s Z1\n- 250m Z1",
   },
@@ -8480,7 +8480,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 40,
       METABOLIC: 47,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 250m Z1\n- 500m Z2\n15x\n  - 50m Z4\n  - 20s Z1\n- 250m Z1",
   },
@@ -8498,7 +8498,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 29,
       METABOLIC: 32,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 250m Z1\n- 200m Z2\n10x\n  - 50m Z4\n  - 20s Z1\n- 250m Z1",
   },
@@ -8516,7 +8516,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 25,
       METABOLIC: 27,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString: "- 400m Z1\n4x\n  - 50m Z4\n  - 30s Z1\n- 400m Z1",
   },
   {
@@ -8534,7 +8534,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 42,
       METABOLIC: 49,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 250m Z1\n- 400m Z3\n- 120s Z1\n- 200m Z3\n- 120s Z1\n- 1000m Z1",
   },
@@ -8553,7 +8553,7 @@ export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
       MUSCULAR: 25,
       METABOLIC: 27,
     },
-    recommendedPaths: ["ENGINE", "HYBRID_WARDEN"],
+    recommendedPaths: ["PATHFINDER", "WARDEN"],
     intervalsIcuString:
       "- 200m Z1\n- 400m Z3\n- 120s Z1\n- 200m Z3\n- 120s Z1\n- 200m Z1",
   },

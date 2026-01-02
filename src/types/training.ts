@@ -15,10 +15,9 @@
  * The 4 available training paths, each with unique focus and modifiers.
  */
 export type TrainingPath =
-  | "IRON_JUGGERNAUT" // Max styrka (Powerlifting focus)
-  | "TITAN" // Hypertrofi/Volym (RP methodology)
-  | "ENGINE" // VO2max/Uthållighet (80/20 cardio)
-  | "HYBRID_WARDEN"; // Balanserad (Viada-style hybrid)
+  | "JUGGERNAUT" // Max styrka (Powerlifting focus)
+  | "PATHFINDER" // VO2max/Uthållighet (Engine)
+  | "WARDEN"; // Balanserad (Hybrid)
 
 export type Faction = "ALLIANCE" | "HORDE";
 

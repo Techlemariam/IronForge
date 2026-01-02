@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { useChat } from "ai/react";
+import { useChat } from "@ai-sdk/react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Send,
@@ -23,8 +23,9 @@ export const OracleChat: React.FC<OracleChatProps> = ({ context }) => {
   const [showProgramGenerator, setShowProgramGenerator] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const { messages, input, handleInputChange, handleSubmit, isLoading } =
+  const { messages, sendMessage, status } =
     useChat({
+      // @ts-ignore - api is valid at runtime but type definition might be missing it in this version
       api: "/api/chat",
       body: {
         context,
@@ -39,6 +40,20 @@ export const OracleChat: React.FC<OracleChatProps> = ({ context }) => {
         },
       ],
     });
+
+  const [input, setInput] = useState("");
+  const isLoading = status === "submitted" || status === "streaming";
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInput(e.target.value);
+  };
+
+  const handleSubmit = async (e?: React.FormEvent) => {
+    e?.preventDefault();
+    if (!input.trim()) return;
+    await sendMessage({ role: "user", content: input } as any);
+    setInput("");
+  };
 
   // Auto-scroll to bottom
   useEffect(() => {

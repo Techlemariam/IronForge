@@ -23,7 +23,7 @@ import {
   SkillRequirement,
 } from "../types/skills";
 import { calculateTitanRank, playSound, getMaxTM } from "../utils";
-import { IntervalsWellness } from "../types";
+import { IntervalsWellness, Archetype } from "../types";
 import { StorageService } from "../services/storage";
 import {
   useSkillEffects,
@@ -36,33 +36,50 @@ import {
 // Logic Helpers
 // ============================================================================
 
-const checkRequirement = (
+/**
+ * Validates a skill requirement against user data.
+ */
+function checkRequirement(
   req: SkillRequirement,
   unlockedAchievementIds: Set<string>,
   wellness: IntervalsWellness | null,
-): boolean => {
-  if (req.type === "achievement_count") {
-    // If exerciseId is 'any', count total achievements.
-    // Otherwise check specific exercise achievements? (Current implementation usually counts total unlocked)
-    // For V2, let's assume 'value' is the count of achievements needed.
-    return unlockedAchievementIds.size >= req.value;
-  }
+): boolean {
+  const { type, value, comparison, exerciseId } = req;
 
-  if (req.type === "vo2max_value") {
-    if (!wellness || !wellness.vo2max) return false;
-    return req.comparison === "gte"
-      ? wellness.vo2max >= req.value
-      : wellness.vo2max <= req.value;
-  }
+  const compare = (val: number) => {
+    if (comparison === "gte") return val >= value;
+    if (comparison === "lte") return val <= value;
+    if (comparison === "eq") return val === value;
+    return false;
+  };
 
-  if (req.type === "1rm_weight") {
-    const maxTM = getMaxTM(req.exerciseId || "any"); // Handle missing ID gracefully
-    return req.comparison === "gte" ? maxTM >= req.value : maxTM <= req.value;
-  }
+  switch (type) {
+    case "achievement_count":
+      return unlockedAchievementIds.size >= value;
 
-  // Fallback for types not yet implemented or 'any' exercise check
-  return true;
-};
+    case "vo2max_value":
+      return wellness?.vo2max ? compare(wellness.vo2max) : false;
+
+    case "1rm_weight": {
+      const maxTM = getMaxTM(exerciseId);
+      return compare(maxTM);
+    }
+
+    // These require more complex data sources not yet fully integrated in V2 context
+    case "rep_count":
+    case "session_count":
+    case "rest_day_count":
+    case "sleep_score_streak":
+    case "brick_workout_count":
+      // For now, these default to true to avoid hard-locking the tree 
+      // until the relevant tracking services are wired up to the Provider.
+      console.warn(`Requirement type ${type} is not yet implemented, defaulting to true.`);
+      return true;
+
+    default:
+      return false;
+  }
+}
 
 // ============================================================================
 // Context Types
@@ -72,6 +89,7 @@ interface SkillContextType {
   // State
   purchasedSkillIds: Set<string>;
   isLoading: boolean;
+  userArchetype: Archetype; // Added
 
   // Resources
   availableTalentPoints: number;
@@ -91,10 +109,6 @@ interface SkillContextType {
 
 const SkillContext = createContext<SkillContextType | null>(null);
 
-// ============================================================================
-// Hook
-// ============================================================================
-
 export const useSkills = () => {
   const context = useContext(SkillContext);
   if (!context) {
@@ -112,6 +126,7 @@ interface SkillProviderProps {
   unlockedAchievementIds: Set<string>;
   wellness: IntervalsWellness | null;
   sessionMetadata?: SessionMetadata;
+  userArchetype?: Archetype; // Added
 }
 
 export const SkillProvider: React.FC<SkillProviderProps> = ({
@@ -119,6 +134,7 @@ export const SkillProvider: React.FC<SkillProviderProps> = ({
   unlockedAchievementIds,
   wellness,
   sessionMetadata = {},
+  userArchetype = Archetype.WARDEN,
 }) => {
   const [purchasedSkillIds, setPurchasedSkillIds] = useState<Set<string>>(
     new Set(),
@@ -205,6 +221,27 @@ export const SkillProvider: React.FC<SkillProviderProps> = ({
       const node = getNodeById(nodeId);
       if (!node) return SkillStatus.LOCKED;
 
+      // Check Archetype Gating
+      const allowedPaths: Record<Archetype, string[]> = {
+        [Archetype.JUGGERNAUT]: ["juggernaut", "titan", "sage"],
+        [Archetype.PATHFINDER]: ["pathfinder", "sage"],
+        [Archetype.WARDEN]: [
+          "juggernaut",
+          "pathfinder",
+          "warden",
+          "titan",
+          "sage",
+        ],
+      };
+
+      // Default to Warden if undefined (safe fallback)
+      const currentArchetype = userArchetype || Archetype.WARDEN;
+      const accessiblePaths = allowedPaths[currentArchetype];
+
+      if (!accessiblePaths.includes(node.path)) {
+        return SkillStatus.LOCKED;
+      }
+
       // Check parent requirements
       const parentsUnlocked =
         node.parents.length === 0 ||
@@ -228,7 +265,7 @@ export const SkillProvider: React.FC<SkillProviderProps> = ({
 
       return SkillStatus.UNLOCKED;
     },
-    [purchasedSkillIds, unlockedAchievementIds, wellness],
+    [purchasedSkillIds, unlockedAchievementIds, wellness, userArchetype],
   );
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -356,6 +393,7 @@ export const SkillProvider: React.FC<SkillProviderProps> = ({
     () => ({
       purchasedSkillIds,
       isLoading,
+      userArchetype,
       availableTalentPoints,
       availableKineticShards,
       unlockSkill,
@@ -369,6 +407,7 @@ export const SkillProvider: React.FC<SkillProviderProps> = ({
     [
       purchasedSkillIds,
       isLoading,
+      userArchetype,
       availableTalentPoints,
       availableKineticShards,
       unlockSkill,

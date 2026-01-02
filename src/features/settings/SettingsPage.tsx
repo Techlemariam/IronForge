@@ -7,6 +7,8 @@ import { Faction } from "@prisma/client";
 import { Sparkles, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { HevyImportWizard } from "../onboarding/HevyImportWizard";
+import { ArchetypeSelector } from "@/components/settings/ArchetypeSelector";
+import { Archetype } from "@/types/index";
 
 interface SettingsPageProps {
   userId: string;
@@ -15,6 +17,7 @@ interface SettingsPageProps {
   stravaConnected: boolean;
   pocketCastsConnected: boolean;
   initialFaction: Faction;
+  initialArchetype: Archetype;
   isDemoMode: boolean;
 }
 
@@ -25,6 +28,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
   stravaConnected,
   pocketCastsConnected,
   initialFaction,
+  initialArchetype,
   isDemoMode,
 }) => {
   return (
@@ -69,6 +73,16 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
               checkDemoStatus={true}
               onIntegrationChanged={() => window.location.reload()}
             />
+          </div>
+        </section>
+
+        {/* Archetype & Faction */}
+        <section>
+          <h2 className="text-lg font-bold text-zinc-500 mb-4 uppercase tracking-wider">
+            Titan Identity
+          </h2>
+          <div className="bg-zinc-900/50 border border-white/5 rounded-xl p-6 shadow-xl space-y-8">
+            <ArchetypeSelector initialArchetype={initialArchetype} />
           </div>
         </section>
 

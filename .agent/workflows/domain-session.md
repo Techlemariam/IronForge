@@ -26,7 +26,7 @@ Based on the domain argument, load relevant context:
 | `game` | 🎮 | `src/services/progression*`, `src/actions/titan.ts`, `src/lib/game/*` | `/game-designer`, `/architect`, `/coder`, `/writer` |
 | `sprint` | 📋 | `.agent/sprints/current.md`, `roadmap.md`, `DEBT.md` | `/manager`, `/startup`, `/sprint-auto`, `/idea`, `/feature` |
 | `qa` | 🧪 | `tests/*`, `e2e/*`, `playwright.config.ts` | `/qa`, `/unit-tests`, `/stresstests` |
-| `bio` | 🧬 | `src/services/intervals*`, `src/services/hevy*`, `src/lib/bio-buffs*` | `/titan-coach`, `/performance-coach` |
+| `bio` | 🧬 | `src/services/intervals*`, `src/services/hevy*`, `src/lib/bio-buffs*` | `/titan-coach` |
 | `business` | 💰 | `src/app/api/stripe/*`, `src/services/subscription*`, pricing configs | `/analyst`, `/architect`, `/security`, `/idea`, `/strategist` |
 | `api` | 🔌 | `src/app/api/*`, `src/services/*`, external integrations | `/architect`, `/coder`, `/security`, `/platform` |
 | `meta` | 🧠 | `.agent/workflows/*`, `GEMINI.md`, `.antigravityrules` | `/evolve`, `/librarian`, `/health-check` |

@@ -30,21 +30,19 @@ function getPhase1Gates(
   // Dynamic thresholds based on path
   const ctlThreshold =
     {
-      IRON_JUGGERNAUT: 10, // Lower cardio requirement
-      TITAN: 15,
-      ENGINE: 40, // Higher for cardio focus
-      HYBRID_WARDEN: 20,
+      JUGGERNAUT: 10, // Lower cardio requirement
+      PATHFINDER: 40, // Higher for cardio focus
+      WARDEN: 20,
     }[activePath] || 20;
 
-  const strengthGate =
-    activePath === "IRON_JUGGERNAUT" || activePath === "TITAN";
+  const strengthGate = activePath === "JUGGERNAUT";
 
   const gates = [
     {
       label: `Establish Base Resilience (CTL > ${ctlThreshold})`,
       completed: ctl >= ctlThreshold,
       current: `${Math.round(ctl)} / ${ctlThreshold}`,
-      pathRelevant: activePath === "ENGINE" || activePath === "HYBRID_WARDEN",
+      pathRelevant: activePath === "PATHFINDER" || activePath === "WARDEN",
     },
     {
       label: "Stabilize Recovery (Wellness > 80)",
@@ -76,7 +74,7 @@ export const CampaignTracker: React.FC<CampaignTrackerProps> = ({
   wellness,
   ttb,
   level,
-  activePath = "HYBRID_WARDEN",
+  activePath = "WARDEN",
   strengthProgress = 0,
   totalExperience = 0,
   weeklyMastery,

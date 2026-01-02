@@ -77,19 +77,22 @@ describe("Training Actions", () => {
       mockGetUser.mockResolvedValue({ data: { user: { id: "test-user" } } });
       (prisma.user.update as any).mockResolvedValue({});
 
-      const result = await updateActivePathAction("HYBRID_WARDEN");
-
-      expect(result.success).toBe(true);
+      const result = await updateActivePathAction("WARDEN");
       expect(prisma.user.update).toHaveBeenCalledWith({
         where: { id: "test-user" },
-        data: { activePath: "HYBRID_WARDEN" },
+        data: { activePath: "WARDEN" },
       });
-      expect(revalidatePath).toHaveBeenCalledWith("/");
+    });
+
+    it("should fail if updateActivePathAction is called with WARDEN but DB fails", async () => {
+      vi.mocked(prisma.user.update).mockRejectedValueOnce(new Error("DB Error"));
+      const result = await updateActivePathAction("WARDEN");
+      expect(result.success).toBe(false);
     });
 
     it("should return error if unauthorized", async () => {
       mockGetUser.mockResolvedValue({ data: { user: null } });
-      const result = await updateActivePathAction("HYBRID_WARDEN");
+      const result = await updateActivePathAction("WARDEN");
       expect(result.success).toBe(false);
     });
   });

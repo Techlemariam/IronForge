@@ -22,6 +22,7 @@ import { RecoveryService } from "@/services/bio/RecoveryService";
 import DashboardClient from "@/features/dashboard/DashboardClient";
 import { getActiveChallengesAction } from "@/actions/challenges";
 import { ensureTitanAction, syncTitanStateWithWellness } from "@/actions/titan";
+import { calculateSkillEffects } from "@/hooks/useSkillEffects";
 
 // Types
 import { AuditReport } from "@/types/auditor";
@@ -50,7 +51,7 @@ export default async function Page() {
   // 0b. Fetch DB User & Config
   const dbUser = await prisma.user.findUnique({
     where: { id: user.id },
-    include: { achievements: true },
+    include: { achievements: true, skills: true },
   });
 
   const headersList = await headers();
@@ -184,10 +185,17 @@ export default async function Page() {
     const durMins = latest.moving_time ? latest.moving_time / 60 : 60;
     const intensity = latest.icu_intensity ? latest.icu_intensity / 100 : 0.5;
     const estimatedVol = durMins * 100;
+
+    // Calculate Skill Multipliers
+    const skillIds = new Set(dbUser?.skills.map((s) => s.skillId) || []);
+    const effects = calculateSkillEffects(skillIds, wellness);
+    const titanLoadMultiplier = effects.titanLoadMultiplier;
+
     titanAnalysis = AnalyticsService.calculateTitanLoad(
       estimatedVol,
       intensity,
       durMins,
+      titanLoadMultiplier,
     );
   }
 
@@ -203,7 +211,7 @@ export default async function Page() {
   // Cast to any to bypass stale Prisma types in IDE
   const activePath =
     ((dbUser as any)?.activePath as import("@/types/training").TrainingPath) ||
-    "HYBRID_WARDEN";
+    "WARDEN";
 
   // 4b. Fetch Titan State (Moved up for Oracle Dependency)
   if (wellness && user.id) {

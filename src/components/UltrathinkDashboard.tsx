@@ -48,7 +48,7 @@ const UltrathinkDashboard: React.FC<UltrathinkDashboardProps> = ({
   ttb,
   events = [],
   titanAnalysis,
-  activePath = "HYBRID_WARDEN",
+  activePath = "WARDEN",
 }) => {
   const [acwrData, setAcwrData] = useState<{
     acwr: number;
@@ -74,8 +74,6 @@ const UltrathinkDashboard: React.FC<UltrathinkDashboardProps> = ({
     };
     runHeavyMath();
   }, [wellness]);
-
-  if (!wellness) return null;
 
   // Use passed prop or default to a "No Activity" state (or keep static for demo? Let's use 0s if missing to encourage real data)
   const displayTitan: TitanLoadCalculation = titanAnalysis || {
@@ -137,7 +135,8 @@ const UltrathinkDashboard: React.FC<UltrathinkDashboardProps> = ({
 
   // ... useEffect ...
 
-  // ... if (!wellness) return null ...
+  // Removed early return to allow Titan Load (Strength) to be visible even without Cardio Wellness
+  // if (!wellness) return null;
 
   return (
     <div className="space-y-6 animate-fade-in">
@@ -309,7 +308,7 @@ const UltrathinkDashboard: React.FC<UltrathinkDashboardProps> = ({
               </h3>
               <div className="flex items-baseline gap-2 mt-1">
                 <span className="text-2xl font-black text-cyan-400">
-                  {wellness.vo2max || "--"}
+                  {wellness?.vo2max || "--"}
                 </span>
                 <span className="text-xs text-zinc-500 font-mono">
                   ml/kg/min
@@ -325,7 +324,7 @@ const UltrathinkDashboard: React.FC<UltrathinkDashboardProps> = ({
               <div
                 className="h-full bg-cyan-500 shadow-[0_0_10px_#22d3ee]"
                 style={{
-                  width: `${Math.min(((wellness.vo2max || 50) / 70) * 100, 100)}% `,
+                  width: `${Math.min((((wellness?.vo2max || 0) / 70) * 100), 100)}% `,
                 }}
               />
             </div>
@@ -356,6 +355,12 @@ const UltrathinkDashboard: React.FC<UltrathinkDashboardProps> = ({
                   <span className="text-xl font-mono font-bold text-orange-500">
                     {displayTitan.titanLoad} TL
                   </span>
+                  {displayTitan.appliedMultiplier &&
+                    displayTitan.appliedMultiplier > 1.0 && (
+                      <span className="text-[10px] text-orange-400 animate-pulse">
+                        Buff Active: {displayTitan.appliedMultiplier}x
+                      </span>
+                    )}
                 </div>
               </div>
               {titanAnalysis && (

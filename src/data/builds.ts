@@ -24,8 +24,8 @@ import {
  * Display information for each training path
  */
 export const PATH_INFO: Record<TrainingPath, PathInfo> = {
-  IRON_JUGGERNAUT: {
-    id: "IRON_JUGGERNAUT",
+  JUGGERNAUT: {
+    id: "JUGGERNAUT",
     name: "The Iron Juggernaut",
     description: "Maximal strength and power. Inspired by 5/3/1 and Sheiko.",
     icon: "⚔️",
@@ -33,32 +33,22 @@ export const PATH_INFO: Record<TrainingPath, PathInfo> = {
     strengthLevel: "MRV",
     cardioLevel: "MV",
   },
-  TITAN: {
-    id: "TITAN",
-    name: "The Titan",
-    description:
-      "Hypertrophy and muscle volume. Renaissance Periodization methodology.",
-    icon: "🏆",
-    color: "text-amber-500",
-    strengthLevel: "MAV",
-    cardioLevel: "MEV",
-  },
-  ENGINE: {
-    id: "ENGINE",
-    name: "The Engine",
+  PATHFINDER: {
+    id: "PATHFINDER",
+    name: "The Pathfinder",
     description: "Elite VO2max and endurance. Polarized 80/20 training.",
     icon: "💨",
     color: "text-cyan-500",
     strengthLevel: "MV",
     cardioLevel: "MRV",
   },
-  HYBRID_WARDEN: {
-    id: "HYBRID_WARDEN",
+  WARDEN: {
+    id: "WARDEN",
     name: "The Hybrid Warden",
     description: "Balanced strength and cardio. Alex Viada methodology.",
     icon: "⚖️",
     color: "text-purple-500",
-    strengthLevel: "MEV",
+    strengthLevel: "MAV",
     cardioLevel: "MAV",
   },
 };
@@ -72,22 +62,17 @@ export const PATH_INFO: Record<TrainingPath, PathInfo> = {
  * Values are multipliers: 1.0 = no change, 1.2 = +20%, 0.9 = -10%
  */
 export const PATH_MODIFIERS: Record<TrainingPath, PathModifiers> = {
-  IRON_JUGGERNAUT: {
+  JUGGERNAUT: {
     attackPower: 1.2, // +20% damage
     stamina: 0.9, // -10% stamina
     dodge: 1.0, // No change
   },
-  TITAN: {
-    attackPower: 1.15, // +15% damage
-    stamina: 1.1, // +10% stamina
-    dodge: 1.0, // No change
-  },
-  ENGINE: {
+  PATHFINDER: {
     attackPower: 0.9, // -10% damage
     stamina: 1.3, // +30% stamina
-    dodge: 1.1, // +10% dodge
+    dodge: 1.2, // +20% dodge
   },
-  HYBRID_WARDEN: {
+  WARDEN: {
     attackPower: 1.1, // +10% damage
     stamina: 1.1, // +10% stamina
     dodge: 1.05, // +5% dodge
@@ -201,27 +186,24 @@ export const MACRO_CYCLE_THRESHOLDS = {
  */
 export const BUILD_VOLUME_TARGETS_ALPHA: Record<TrainingPath, BuildVolumeTargets> = {
   // Alpha: Focus VO2max/Endurance Peak
-  IRON_JUGGERNAUT: { strengthSets: 15, cardioTss: 150, mobilitySets: 4 }, // Maintenance Strength
-  TITAN: { strengthSets: 10, cardioTss: 250, mobilitySets: 6 }, // Maintenance Hypertrophy
-  ENGINE: { strengthSets: 4, cardioTss: 600, mobilitySets: 8 }, // PEAK CARDIO (MRV)
-  HYBRID_WARDEN: { strengthSets: 8, cardioTss: 450, mobilitySets: 10 }, // 80% Cardio / 20% Strength
+  JUGGERNAUT: { strengthSets: 15, cardioTss: 150, mobilitySets: 4 }, // Maintenance Strength
+  PATHFINDER: { strengthSets: 4, cardioTss: 600, mobilitySets: 8 }, // PEAK CARDIO (MRV)
+  WARDEN: { strengthSets: 8, cardioTss: 450, mobilitySets: 10 }, // 80% Cardio / 20% Strength
 };
 
 export const BUILD_VOLUME_TARGETS_BETA: Record<TrainingPath, BuildVolumeTargets> = {
   // Beta: Focus Strength/Hypertrophy Peak
-  IRON_JUGGERNAUT: { strengthSets: 25, cardioTss: 50, mobilitySets: 4 }, // PEAK STRENGTH (MRV)
-  TITAN: { strengthSets: 20, cardioTss: 100, mobilitySets: 6 }, // PEAK HYPERTROPHY
-  ENGINE: { strengthSets: 6, cardioTss: 350, mobilitySets: 8 }, // Maintenance Cardio
-  HYBRID_WARDEN: { strengthSets: 16, cardioTss: 250, mobilitySets: 10 }, // 60% Strength / 40% Cardio
+  JUGGERNAUT: { strengthSets: 25, cardioTss: 50, mobilitySets: 4 }, // PEAK STRENGTH (MRV)
+  PATHFINDER: { strengthSets: 6, cardioTss: 350, mobilitySets: 8 }, // Maintenance Cardio
+  WARDEN: { strengthSets: 16, cardioTss: 250, mobilitySets: 10 }, // 60% Strength / 40% Cardio
 };
 
 // Default export for backward compatibility (defaults to Balanced/Hybrid view or Beta for Juggernaut?)
 // Current system uses this key. We sets it to BETA values for Strength paths and ALPHA for Engine to match "Identity".
 export const BUILD_VOLUME_TARGETS: Record<TrainingPath, BuildVolumeTargets> = {
-  IRON_JUGGERNAUT: BUILD_VOLUME_TARGETS_BETA.IRON_JUGGERNAUT,
-  TITAN: BUILD_VOLUME_TARGETS_BETA.TITAN,
-  ENGINE: BUILD_VOLUME_TARGETS_ALPHA.ENGINE,
-  HYBRID_WARDEN: { strengthSets: 12, cardioTss: 350, mobilitySets: 10 }, // Balanced
+  JUGGERNAUT: BUILD_VOLUME_TARGETS_BETA.JUGGERNAUT,
+  PATHFINDER: BUILD_VOLUME_TARGETS_ALPHA.PATHFINDER,
+  WARDEN: { strengthSets: 12, cardioTss: 350, mobilitySets: 10 }, // Balanced
 };
 
 /**
@@ -232,28 +214,21 @@ export const PATH_VOLUME_MODIFIERS: Record<
   TrainingPath,
   Partial<Record<MuscleGroup, number>>
 > = {
-  ENGINE: {
+  PATHFINDER: {
     QUADS: 0.7,
     HAMS: 0.7,
     GLUTES: 0.8,
     BACK: 0.9,
     CALVES: 0.8, // Impact absorption
   },
-  IRON_JUGGERNAUT: {
+  JUGGERNAUT: {
     QUADS: 1.1,
     HAMS: 1.1,
     GLUTES: 1.1,
     BACK: 1.0,
     CHEST: 1.1, // Bench Press capacity
   },
-  TITAN: {
-    QUADS: 1.0,
-    BACK: 1.1,
-    BICEPS: 1.1, // Arm Farm
-    TRICEPS: 1.1,
-    SHOULDERS: 1.1,
-  },
-  HYBRID_WARDEN: {
+  WARDEN: {
     QUADS: 0.9,
     HAMS: 0.9,
     GLUTES: 0.9,

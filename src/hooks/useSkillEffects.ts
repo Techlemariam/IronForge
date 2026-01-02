@@ -372,7 +372,7 @@ export function canPurchaseKeystone(
 export function getPathProgress(
   purchasedSkillIds: Set<string>,
 ): Record<string, number> {
-  const paths = ["juggernaut", "engine", "warden", "titan", "sage"] as const;
+  const paths = ["juggernaut", "pathfinder", "warden", "titan", "sage"] as const;
   const progress: Record<string, number> = {};
 
   paths.forEach((path) => {

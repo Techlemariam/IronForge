@@ -10,6 +10,7 @@ import {
   TTBIndices,
   IntervalsEvent,
 } from "@/types";
+import { TrainingPath } from "@/types/training";
 
 // Constants
 const HISTORY_WINDOW_DAYS = 42;
@@ -120,7 +121,7 @@ export class OracleService {
     const analysis = this.analyzeLoads(dailyLoads);
 
     // 7. Priority Waterfall Logic
-    return this.determineDecree(user.titan, wellness, analysis, capabilities, user.activePath || "HYBRID_WARDEN");
+    return this.determineDecree(user.titan, wellness, analysis, capabilities, (user.activePath as TrainingPath) || "WARDEN");
   }
 
   private static calculateCombinedHistory(
@@ -295,7 +296,7 @@ export class OracleService {
     wellness: IntervalsWellness,
     analysis: { cardioRatio: number; volumeRatio: number },
     capabilities: EquipmentType[] = [],
-    activePath: string = "HYBRID_WARDEN"
+    activePath: string = "WARDEN"
   ): OracleDecree {
     // 1. Safety Override
     if (titan.isInjured) {
@@ -384,7 +385,7 @@ export class OracleService {
     auditReport?: any, // AuditReport
     titanAnalysis?: any, // TitanLoadCalculation
     recoveryAnalysis?: { state: string; reason: string } | null,
-    activePath: string = "HYBRID_WARDEN", // TrainingPath
+    activePath: string = "WARDEN", // TrainingPath
     weeklyMastery?: any, // WeeklyMastery
     titanState?: any, // TitanState
   ): Promise<any> {
@@ -407,11 +408,11 @@ export class OracleService {
     const recovery = wellness.bodyBattery || 0;
 
     // Path Logic
-    if (activePath === "ENGINE") {
+    if (activePath === "PATHFINDER") {
       recommendation.title = "Engine Builder";
       recommendation.rationale = "Focus on cardiovascular efficiency.";
       // TODO: Return actual Session object
-    } else if (activePath === "STRENGTH_MASTER") {
+    } else if (activePath === "JUGGERNAUT") {
       recommendation.title = "Iron Temple";
       recommendation.rationale = "Focus on heavy compound lifts.";
     }

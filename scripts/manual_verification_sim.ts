@@ -14,7 +14,7 @@ import { PATH_MODIFIERS } from '../src/data/builds';
 import { TrainingPath } from '../src/types/training';
 
 // Mock DB/State
-let currentUserPath: TrainingPath = 'HYBRID_WARDEN';
+let currentUserPath: TrainingPath = 'WARDEN';
 
 async function runSimulation() {
     console.log("🚀 Starting Manual Verification Simulation...\n");
@@ -23,9 +23,9 @@ async function runSimulation() {
     console.log("--- 1. Testing Path Switching ---");
     console.log(`Current Path: ${currentUserPath}`);
 
-    // Switch to ENGINE
-    console.log("User action: Switch to 'ENGINE'");
-    currentUserPath = 'ENGINE';
+    // Switch to PATHFINDER
+    console.log("User action: Switch to 'PATHFINDER'");
+    currentUserPath = 'PATHFINDER';
 
     // Verify Modifiers
     const modifiers = TrainingMemoryManager.getCombatModifiers(currentUserPath);
@@ -71,7 +71,7 @@ async function runSimulation() {
     }
 
     // Verify Path Alignment
-    if (recommendation.rationale.includes('Engine Path') || recommendation.generatedSession?.name?.toLowerCase().includes('run') || recommendation.title.includes('ENGINE')) {
+    if (recommendation.rationale.includes('Pathfinder Path') || recommendation.generatedSession?.name?.toLowerCase().includes('run') || recommendation.title.includes('PATHFINDER')) {
         console.log("✅ Oracle acknowledged Active Path Context");
     } else {
         console.error("❌ Oracle ignored Active Path (or fallback triggered)!");

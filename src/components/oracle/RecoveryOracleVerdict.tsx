@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { Flame, Moon, Zap, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -60,11 +60,7 @@ export function RecoveryOracleVerdict({
   const [loading, setLoading] = useState(true);
   const [xpBonus, setXpBonus] = useState(0);
 
-  useEffect(() => {
-    calculateVerdict();
-  }, [userId, wellnesScore, sleepScore]);
-
-  const calculateVerdict = async () => {
+  const calculateVerdict = useCallback(async () => {
     setLoading(true);
 
     try {
@@ -107,7 +103,11 @@ export function RecoveryOracleVerdict({
     } finally {
       setLoading(false);
     }
-  };
+  }, [userId, wellnesScore, sleepScore]);
+
+  useEffect(() => {
+    calculateVerdict();
+  }, [calculateVerdict]);
 
   if (loading) {
     return (

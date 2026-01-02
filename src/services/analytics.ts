@@ -140,6 +140,7 @@ export const AnalyticsService = {
     volumeLoad: number,
     avgIntensityPct: number,
     durationMinutes: number,
+    multiplier: number = 1.0,
   ): TitanLoadCalculation => {
     // 1. Estimate HR-based TSS (Standard)
     // Assumption: Strength training averages Zone 2 HR (IF 0.6)
@@ -155,7 +156,8 @@ export const AnalyticsService = {
 
     // Simplified scale for demo:
     // Hard session: 5000kg volume * 0.8 intensity -> Titan Load ~75
-    const titanLoad = (volumeLoad / 100) * avgIntensityPct * neuroFactor;
+    const titanLoad =
+      (volumeLoad / 100) * avgIntensityPct * neuroFactor * multiplier;
 
     const discrepancy = ((titanLoad - standardTss) / standardTss) * 100;
 
@@ -167,6 +169,7 @@ export const AnalyticsService = {
         discrepancy > 30
           ? "HR underestimates this session. Rely on Titan Load for recovery planning."
           : "HR and Strength Load align. Standard recovery applies.",
+      appliedMultiplier: multiplier,
     };
   },
 

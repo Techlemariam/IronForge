@@ -40,7 +40,7 @@ export const TrainingMemoryManager = {
    */
   getSystemLoad(
     activities: TrainingActivity[],
-    activePath: TrainingPath = "HYBRID_WARDEN",
+    activePath: TrainingPath = "WARDEN",
   ): number {
     return activities.reduce((acc, activity) => {
       // Get muscle group from activity (if available) or assume generic
@@ -265,12 +265,12 @@ export const TrainingMemoryManager = {
    */
   shouldEnterSurvivalMode(
     metrics: SystemMetrics,
-    path: TrainingPath = "HYBRID_WARDEN",
+    path: TrainingPath = "WARDEN",
   ): boolean {
     const debuffs = this.calculateDebuffs(metrics.sleepScore, metrics.hrv);
 
     const tsbFloor =
-      path === "ENGINE" ? -25 : MACRO_CYCLE_THRESHOLDS.GAMMA_TSB_THRESHOLD;
+      path === "PATHFINDER" ? -25 : MACRO_CYCLE_THRESHOLDS.GAMMA_TSB_THRESHOLD;
 
     // If multiple debuffs active or TSB is very low, enter survival mode
     return debuffs.length >= 2 || metrics.tsb < tsbFloor;

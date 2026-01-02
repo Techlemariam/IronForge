@@ -22,6 +22,7 @@ export default async function SettingsRoute() {
       stravaAccessToken: true,
       pocketCastsEnabled: true,
       faction: true,
+      archetype: true,
     },
   });
 
@@ -38,6 +39,7 @@ export default async function SettingsRoute() {
       stravaConnected={!!dbUser.stravaAccessToken}
       pocketCastsConnected={dbUser.pocketCastsEnabled}
       initialFaction={dbUser.faction}
+      initialArchetype={dbUser.archetype as any} // Cast to avoid import circularity issues if types mismatch
       isDemoMode={false}
     />
   );

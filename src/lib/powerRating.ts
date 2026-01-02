@@ -1,4 +1,4 @@
-export type TrainingPath = 'STRENGTH_MAIN' | 'CARDIO_MAIN' | 'HYBRID_WARDEN';
+import { TrainingPath } from "@/types/training";
 
 interface PowerRatingComponents {
     strengthIndex: number;
@@ -39,12 +39,12 @@ export const getMrvAdherenceBonus = (
     path: TrainingPath
 ): number => {
     const weights: Record<TrainingPath, { str: number; cardio: number }> = {
-        STRENGTH_MAIN: { str: 0.8, cardio: 0.2 },
-        CARDIO_MAIN: { str: 0.2, cardio: 0.8 },
-        HYBRID_WARDEN: { str: 0.5, cardio: 0.5 },
+        JUGGERNAUT: { str: 0.8, cardio: 0.2 },
+        PATHFINDER: { str: 0.2, cardio: 0.8 },
+        WARDEN: { str: 0.5, cardio: 0.5 },
     };
 
-    const w = weights[path] || weights.HYBRID_WARDEN;
+    const w = weights[path] || weights.WARDEN;
     const adherenceScore = mrvAdherence * w.str + cardioAdherence * w.cardio;
 
     // Bonus: 1.0 to 1.15
@@ -65,13 +65,13 @@ export const calculatePowerRating = (
     const cardioIndex = normalizeCardio(ftpWkg);
 
     const weights: Record<TrainingPath, { str: number; cardio: number }> = {
-        STRENGTH_MAIN: { str: 0.7, cardio: 0.3 },
-        CARDIO_MAIN: { str: 0.3, cardio: 0.7 },
-        HYBRID_WARDEN: { str: 0.5, cardio: 0.5 },
+        JUGGERNAUT: { str: 0.7, cardio: 0.3 },
+        PATHFINDER: { str: 0.3, cardio: 0.7 },
+        WARDEN: { str: 0.5, cardio: 0.5 },
     };
 
-    // Default to HYBRID if path is invalid
-    const w = weights[path] || weights.HYBRID_WARDEN;
+    // Default to WARDEN if path is invalid
+    const w = weights[path] || weights.WARDEN;
 
     const baseRating = (strengthIndex * w.str) + (cardioIndex * w.cardio);
     const adherenceBonus = getMrvAdherenceBonus(mrvAdherence, cardioAdherence, path);

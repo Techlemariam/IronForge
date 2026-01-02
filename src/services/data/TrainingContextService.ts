@@ -180,7 +180,9 @@ export class TrainingContextService {
         }
 
         // 5. Calculate Dynamic Targets (Ramp-up & Interference)
-        const activePath = (user?.activePath as TrainingPath) || "HYBRID_WARDEN";
+        const rawPath = user?.activePath || "WARDEN";
+        // Map legacy HYBRID_WARDEN to WARDEN if present in DB
+        const activePath = (rawPath === "HYBRID_WARDEN" ? "WARDEN" : rawPath) as TrainingPath;
         const targets = AutoSpecEngine.calculateVolumeTargets(
             activePath,
             currentPhase,

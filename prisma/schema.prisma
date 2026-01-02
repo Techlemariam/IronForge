@@ -46,7 +46,9 @@ model User {
   notificationPreferences Json?
 
   // Training Path System
-  activePath        String? @default("HYBRID_WARDEN") // TrainingPath enum
+  activePath        String? @default("WARDEN") // TrainingPath enum
+  archetype         Archetype @default(WARDEN) @map("archetype")
+  archetypeSetAt    DateTime?
   currentMacroCycle String? @default("ALPHA") // MacroCycle enum
   macroCycleStartDate DateTime @default(now())
   consecutiveStalls Int     @default(0)
@@ -278,6 +280,12 @@ enum ChallengeType {
   SEASONAL
 }
 
+enum Archetype {
+  JUGGERNAUT
+  PATHFINDER
+  WARDEN
+}
+
 model ExerciseLog {
   id               String   @id @default(cuid())
   userId           String
@@ -287,8 +295,9 @@ model ExerciseLog {
   notes            String?
   weight           Float? // Legacy/Dashboard compatibility
   reps             Int? // Legacy/Dashboard compatibility
-  isPersonalRecord Boolean  @default(false)
-  user             User     @relation(fields: [userId], references: [id])
+  isPersonalRecord Boolean   @default(false)
+  archetype        Archetype @default(WARDEN) // Snapshot of user archetype at log time
+  user             User      @relation(fields: [userId], references: [id])
   exercise         Exercise @relation(fields: [exerciseId], references: [id])
 
   @@index([userId, date])

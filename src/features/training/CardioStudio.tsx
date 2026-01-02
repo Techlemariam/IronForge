@@ -47,6 +47,8 @@ import { toast } from "sonner";
 import { playSound } from "@/utils/root_utils";
 import { useBluetoothSpeed } from "@/hooks/useBluetoothSpeed";
 import { Bluetooth } from "lucide-react";
+import { checkOvertrainingStatusAction } from "@/actions/overtraining";
+import { getStreakStatusAction } from "@/actions/streak";
 
 // Dynamic import to avoid SSR issues with react-player
 const ReactPlayer = dynamic(() => import("react-player/lazy"), { ssr: false });
@@ -396,6 +398,20 @@ function CardioCockpit({
   const [totalDistanceKm, setTotalDistanceKm] = useState(0);
   const lastReportedDistance = useRef(0);
 
+  // Stats Refs to avoid interval resets causing time dilation
+  const metricRef = useRef(metric);
+  const simulatedValueRef = useRef(simulatedValue);
+  const userProfileRef = useRef(userProfile);
+  const activeDuelRef = useRef(activeDuel);
+  const durationRef = useRef(0);
+
+  useEffect(() => {
+    metricRef.current = metric;
+    simulatedValueRef.current = simulatedValue;
+    userProfileRef.current = userProfile;
+    activeDuelRef.current = activeDuel;
+  }, [metric, simulatedValue, userProfile, activeDuel]);
+
   // Storage keys are now mode-specific
   const STORAGE_KEYS = useMemo(
     () => ({
@@ -640,25 +656,32 @@ function CardioCockpit({
   useEffect(() => {
     const timer = setInterval(() => {
       setSessionDuration((prev) => prev + 1);
+      durationRef.current += 1;
+      const currentDuration = durationRef.current;
+
+      const currentMetric = metricRef.current;
+      const val = simulatedValueRef.current;
+      const profile = userProfileRef.current;
+      const duel = activeDuelRef.current;
 
       let zone = 1;
-      if (metric === "hr") {
-        if (simulatedValue <= 5) zone = Math.floor(simulatedValue);
+      if (currentMetric === "hr") {
+        if (val <= 5) zone = Math.floor(val);
         else {
           const maxHr = 190;
-          const pct = simulatedValue / maxHr;
+          const pct = val / maxHr;
           if (pct < 0.6) zone = 1;
           else if (pct < 0.7) zone = 2;
           else if (pct < 0.8) zone = 3;
           else if (pct < 0.9) zone = 4;
           else zone = 5;
         }
-      } else if (metric === "power") {
-        const ftp = userProfile?.ftpCycle || 200;
-        zone = calculatePowerZone(simulatedValue, ftp);
-      } else if (metric === "pace") {
-        const threshold = userProfile?.thresholdSpeedKph || 12;
-        zone = calculatePaceZone(simulatedValue, threshold);
+      } else if (currentMetric === "power") {
+        const ftp = profile?.ftpCycle || 200;
+        zone = calculatePowerZone(val, ftp);
+      } else if (currentMetric === "pace") {
+        const threshold = profile?.thresholdSpeedKph || 12;
+        zone = calculatePaceZone(val, threshold);
       }
 
       zone = Math.max(1, Math.min(5, zone));
@@ -673,15 +696,10 @@ function CardioCockpit({
 
       // DUEL LOGIC: Calculate Distance & Report
       let currentSpeedKph = 0;
-      if (metric === "pace") {
-        currentSpeedKph = simulatedValue; // Assuming inputs are kph
-      } else if (metric === "power") {
-        // Approximate speed from power (flat road, 75kg rider)
-        // Speed = 1.6 * sqrt(watts) roughly? Or assume linear for simplicity in duel
-        // Better formula: P = 0.5 * rho * CdA * v^3 + Crr * m * g * v
-        // Simple approx: v = 0.3 * watts^0.5 * 3.6 (m/s to kph)
-        // Let's use linear approx for stability: 200W -> 30kph
-        currentSpeedKph = Math.sqrt(Math.max(0, simulatedValue)) * 2.2;
+      if (currentMetric === "pace") {
+        currentSpeedKph = val;
+      } else if (currentMetric === "power") {
+        currentSpeedKph = Math.sqrt(Math.max(0, val)) * 2.2;
       }
 
       const distIncrement = currentSpeedKph / 3600; // km per second
@@ -691,12 +709,12 @@ function CardioCockpit({
 
         // Report to server every 10s or 0.1km
         if (
-          activeDuel &&
+          duel &&
           (newDist - lastReportedDistance.current > 0.1 ||
-            sessionDuration % 10 === 0)
+            currentDuration % 10 === 0)
         ) {
-          updateCardioDuelProgressAction(activeDuel.id, newDist).catch((err) =>
-            console.error("Duel update failed", err),
+          updateCardioDuelProgressAction(duel.id, newDist).catch((err) =>
+            console.error("Duel update failed", err)
           );
           lastReportedDistance.current = newDist;
         }
@@ -705,7 +723,7 @@ function CardioCockpit({
       });
     }, 1000);
     return () => clearInterval(timer);
-  }, [metric, simulatedValue, userProfile, activeDuel]);
+  }, [setTotalDistanceKm]);
 
   // === TV MODE RENDER ===
   if (layoutMode === "tv") {

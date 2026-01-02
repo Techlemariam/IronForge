@@ -35,9 +35,8 @@ vi.mock("next/navigation", () => ({
 }));
 
 // Mock Lucide React
-// Mock Lucide React
 vi.mock("lucide-react", () => {
-  const MockIcon = () => <div data-testid="mock-icon" />;
+  const MockIcon = (props: any) => <div data-testid="mock-icon" {...props} />;
   return {
     Mic: MockIcon,
     Bike: MockIcon,
@@ -53,6 +52,18 @@ vi.mock("lucide-react", () => {
     Users: MockIcon,
     Gavel: MockIcon,
     Settings: MockIcon,
+    Coins: MockIcon,
+    Flame: MockIcon,
+    Zap: MockIcon,
+    Moon: MockIcon,
+    Check: MockIcon,
+    X: MockIcon,
+    Info: MockIcon,
+    AlertTriangle: MockIcon,
+    ArrowLeft: MockIcon,
+    ArrowRight: MockIcon,
+    ChevronDown: MockIcon,
+    ChevronUp: MockIcon,
   };
 });
 
@@ -114,7 +125,7 @@ describe("DashboardClient", () => {
     auditReport: {} as any,
     forecast: [],
     titanAnalysis: null,
-    activePath: "HYBRID_WARDEN",
+    activePath: "WARDEN",
     weeklyMastery: {} as any,
   };
 

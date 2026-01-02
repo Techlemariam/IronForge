@@ -81,7 +81,7 @@ const processFile = (filename, type) => {
             durationLabel: label,
             intensity: intensity,
             resourceCost: cost,
-            recommendedPaths: ['ENGINE', 'HYBRID_WARDEN'] // Defaults
+            recommendedPaths: ['PATHFINDER', 'WARDEN'] // Defaults
         };
     });
 };

@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import { usePodcastPlayer } from "@/hooks/usePodcastPlayer";
 import { PocketCastsEpisode, PocketCastsPodcast } from "@/services/pocketcasts";
 import { Play, Pause, SkipForward, SkipBack, ListMusic, LogOut, Loader2 } from "lucide-react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Card, CardContent } from "@/components/ui/card";
@@ -75,10 +76,13 @@ export function PocketCastsPlayer() {
         <Card className="bg-zinc-900 border-zinc-800 overflow-hidden">
             <CardContent className="p-0">
                 <div className="flex items-center p-4 gap-4">
-                    <img
-                        src={currentTrack?.thumbnail_url || currentTrack?.folder_url}
-                        alt={currentTrack?.title}
-                        className="w-16 h-16 rounded shadow-lg object-cover"
+                    <Image
+                        src={currentTrack?.thumbnail_url || currentTrack?.folder_url || "/images/podcast-placeholder.png"}
+                        alt={currentTrack?.title || "Podcast Episode"}
+                        width={64}
+                        height={64}
+                        unoptimized
+                        className="rounded shadow-lg object-cover"
                     />
                     <div className="flex-1 min-w-0">
                         <h3 className="text-sm font-medium text-white truncate">{currentTrack?.title}</h3>

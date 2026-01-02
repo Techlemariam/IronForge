@@ -34,7 +34,7 @@ async function runStressTest() {
       null,
       null,
       null,
-      "HYBRID_WARDEN",
+      "WARDEN",
       undefined,
     );
     console.log(" Result:", result.type, "| Priority:", result.priorityScore);
@@ -71,7 +71,7 @@ async function runStressTest() {
       null,
       null,
       null,
-      "HYBRID_WARDEN",
+      "WARDEN",
       undefined,
     );
 
@@ -117,7 +117,7 @@ async function runStressTest() {
         null,
         null,
         null,
-        "HYBRID_WARDEN",
+        "WARDEN",
         undefined,
       );
     } catch (e) {
