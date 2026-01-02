@@ -554,7 +554,7 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
 
   if (!isConfigured) {
     return (
-      <div className="bg-void min-h-screen text-white flex items-center justify-center p-4">
+      <main className="bg-void min-h-screen text-white flex items-center justify-center p-4">
         <div className="scanlines" />
         <Link
           href="/settings"
@@ -576,11 +576,11 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
             </p>
           </div>
         </div>
-      </div>
+      </main>
     );
   }
 
-  if (state.isCodexLoading) return <CodexLoader />;
+  if (state.isCodexLoading) return <main><CodexLoader /></main>;
 
   return (
     <div className="bg-forge-900 min-h-screen bg-noise">
