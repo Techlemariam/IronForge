@@ -2,20 +2,26 @@ import prisma from "@/lib/prisma";
 
 export class LootSystem {
   /**
-   * Calculates the drop chance percent (0-100) based on workout intensity/duration.
-   * For now, we return a fixed high chance for testing.
+   * Calculates drop chance (0-100) based on workout metrics and player lootLuck modifier.
+   *
+   * Formula: min(95, (20 + intensity*30 + min(duration,60)*0.5) * lootLuck)
+   *
+   * @param intensity - Workout intensity 0.0-1.0
+   * @param durationMinutes - Workout duration in minutes
+   * @param lootLuck - Player's lootLuck modifier from PlayerContext (default 1.0)
    */
   static calculateDropChance(
     intensity: number = 0.5,
     durationMinutes: number = 30,
+    lootLuck: number = 1.0,
   ): number {
-    // Base chance logic (placeholder)
-    const baseChance = 20; // 20% base
-    const intensityBonus = intensity * 30; // Up to 30% from intensity
-    const durationBonus = Math.min(durationMinutes, 60) * 0.5; // Up to 30% from duration (max 60m)
+    const baseChance = 20;
+    const intensityBonus = intensity * 30;
+    const durationBonus = Math.min(durationMinutes, 60) * 0.5;
 
-    // For testing, let's make it very easy to get loot
-    return Math.min(95, baseChance + intensityBonus + durationBonus);
+    // Apply lootLuck modifier from PlayerContext
+    const modifiedChance = (baseChance + intensityBonus + durationBonus) * lootLuck;
+    return Math.min(95, modifiedChance);
   }
 
   /**
@@ -26,8 +32,13 @@ export class LootSystem {
    * 4. Unlocks it in DB.
    * @returns The unlocked Item or null.
    */
-  static async rollForLoot(userId: string): Promise<any | null> {
-    const dropChance = this.calculateDropChance(1.0, 60); // Max stats for demo
+  static async rollForLoot(
+    userId: string,
+    intensity: number = 0.5,
+    durationMinutes: number = 30,
+    lootLuck: number = 1.0,
+  ): Promise<any | null> {
+    const dropChance = this.calculateDropChance(intensity, durationMinutes, lootLuck);
     const roll = Math.random() * 100;
 
     console.log(`🎲 Loot Roll: ${roll.toFixed(1)} / ${dropChance.toFixed(1)}`);
