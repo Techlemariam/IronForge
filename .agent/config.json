@@ -68,8 +68,23 @@
       "vercel",
       "gh run list",
       "gh run view",
+      "gh run watch",
+      "gh run rerun",
       "gh pr",
-      "gh issue"
+      "gh issue",
+      "findstr",
+      "rm",
+      "del",
+      "echo",
+      "type",
+      "pnpm install",
+      "pnpm audit",
+      "npx prisma migrate status",
+      "npx prisma migrate resolve",
+      "npx prisma migrate deploy",
+      "npx prisma migrate diff",
+      "npx prisma studio",
+      "npx prisma db push"
     ]
   }
 }
