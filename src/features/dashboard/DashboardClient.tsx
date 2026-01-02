@@ -193,7 +193,7 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
     titanAnalysis: initialData.titanAnalysis,
     isCoachOpen: false,
     activeBossId: null,
-    activePath: initialData.activePath || "HYBRID_WARDEN",
+    activePath: initialData.activePath || "WARDEN",
     mobilityLevel: userData?.mobilityLevel || "NONE",
     recoveryLevel: userData?.recoveryLevel || "NONE",
     totalExperience: titanState?.xp || userData?.totalExperience || 0,
@@ -227,16 +227,15 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
         return; // Skip API key check for demo users
       }
       const hasLocalKey = !!localStorage.getItem("hevy_api_key");
-      if (hasLocalKey) {
+      const hasServerKey = !!userData?.hevyApiKey;
+
+      if (hasLocalKey || hasServerKey) {
         setIsConfigured(true);
       } else {
         // Don't block - just open settings subtly
-        // router.push('/settings'); // Actually let's just let IsConfigured handle it?
-        // If we push, we redirect. If we setIsConfigured(false), we show the "Configuration Required" screen.
-        // The Configuration Required screen IS the prompt. So we don't need to do anything if isConfigured is false.
       }
     }
-  }, [isDemoMode]);
+  }, [isDemoMode, userData]);
 
   const handleSaveWorkout = async (isPrivate: boolean) => {
     if (!state.activeQuest || !state.startTime) return;

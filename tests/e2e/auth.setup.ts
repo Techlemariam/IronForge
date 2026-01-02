@@ -29,6 +29,14 @@ setup('authenticate', async ({ page }) => {
     // Optional: Check if we are actually on a dashboard-like URL
     expect(page.url()).toMatch(/.*\/$|.*dashboard|.*iron-city/);
 
+    // Bypass "Configuration Required" screen if it appears
+    await page.evaluate(() => {
+        localStorage.setItem('hevy_api_key', 'e2e-dummy-key');
+    });
+    // Reload to ensure the DashboardClient picks up the local storage key
+    await page.reload();
+    await page.waitForSelector('#main-content', { timeout: 60000 });
+
     // End of authentication steps.
     await page.context().storageState({ path: authFile });
 });
