@@ -22,12 +22,12 @@ setup('authenticate', async ({ page }) => {
     // Click the login button (should now be "Initialize Uplink" in password mode)
     await page.getByRole('button', { name: /Initialize Uplink/i }).click();
 
-    // specific check to see if we are logged in.
-    // The dashboard usually has "Iron City" or "Citadel" text.
-    // Wait for navigation after login (client-side redirect can be slow)
-    await page.waitForURL(/.*\/$|.*dashboard|.*iron-city/, { timeout: 60000 });
-    // Optional: Check for a main navigation element to ensure page loaded
-    await expect(page.getByRole('main')).toBeVisible({ timeout: 30000 });
+    // Wait for the dashboard to load (client-side redirect can be slow)
+    // We wait for the main content container we added in DashboardClient.tsx
+    await page.waitForSelector('#main-content', { timeout: 60000 });
+
+    // Optional: Check if we are actually on a dashboard-like URL
+    expect(page.url()).toMatch(/.*\/$|.*dashboard|.*iron-city/);
 
     // End of authentication steps.
     await page.context().storageState({ path: authFile });
