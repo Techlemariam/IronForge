@@ -5,7 +5,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { PvpCombatService } from "../PvpCombatService";
 import { GameContextService } from "../../game/GameContextService";
-import { PlayerContext } from "@/types/game";
+import { PlayerContext, DEFAULT_MODIFIERS } from "@/types/game";
 
 // Mock GameContextService
 vi.mock("../../game/GameContextService", () => ({
@@ -30,7 +30,7 @@ describe("PvpCombatService", () => {
                     damagePerVolume: 1,
                     critMultiplier: 2.0
                 },
-                modifiers: { critChance: 0 } // No crit for stable test
+                modifiers: { ...DEFAULT_MODIFIERS, critChance: 0 } // No crit for stable test
             };
 
             const mockDefender: Partial<PlayerContext> = {
@@ -41,7 +41,7 @@ describe("PvpCombatService", () => {
                     damagePerVolume: 1,
                     critMultiplier: 1.5
                 },
-                modifiers: { critChance: 0 }
+                modifiers: { ...DEFAULT_MODIFIERS, critChance: 0 }
             };
 
             vi.mocked(GameContextService.getPlayerContext)
@@ -66,13 +66,13 @@ describe("PvpCombatService", () => {
             const mockAttacker: Partial<PlayerContext> = {
                 identity: { userId: "p1", titanName: "CritMaster", archetype: "PATHFINDER", level: 10, archetypeName: "Pathfinder" },
                 combat: { effectiveAttack: 100, effectiveDefense: 0, damagePerVolume: 1, critMultiplier: 2.0 },
-                modifiers: { critChance: 1.0 } // 100% Crit Chance
+                modifiers: { ...DEFAULT_MODIFIERS, critChance: 1.0 } // 100% Crit Chance
             };
 
             const mockDefender: Partial<PlayerContext> = {
                 identity: { userId: "p2", titanName: "Dummy", archetype: "WARDEN", level: 1, archetypeName: "Warden" },
                 combat: { effectiveAttack: 0, effectiveDefense: 0, damagePerVolume: 0, critMultiplier: 0 },
-                modifiers: { critChance: 0 }
+                modifiers: { ...DEFAULT_MODIFIERS, critChance: 0 }
             };
 
             vi.mocked(GameContextService.getPlayerContext)

@@ -147,16 +147,16 @@ describe("TrainingMemoryManager", () => {
   describe("getRewardMultiplier", () => {
     it("should return bonus for matching path", () => {
       const mult = TrainingMemoryManager.getRewardMultiplier(
-        "IRON_JUGGERNAUT",
-        "IRON_JUGGERNAUT",
+        "JUGGERNAUT",
+        "JUGGERNAUT",
       );
       expect(mult).toBeGreaterThan(1.0);
     });
 
     it("should return 1.0 for mismatched path", () => {
       const mult = TrainingMemoryManager.getRewardMultiplier(
-        "ENGINE",
-        "IRON_JUGGERNAUT",
+        "PATHFINDER",
+        "JUGGERNAUT",
       );
       expect(mult).toBe(1.0);
     });
@@ -164,7 +164,7 @@ describe("TrainingMemoryManager", () => {
     it("should return 1.0 for null quest path", () => {
       const mult = TrainingMemoryManager.getRewardMultiplier(
         null,
-        "IRON_JUGGERNAUT",
+        "JUGGERNAUT",
       );
       expect(mult).toBe(1.0);
     });
