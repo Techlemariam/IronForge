@@ -5,7 +5,7 @@
   # 1. Verktygslådan: Optimerad för snabbhet och AI-autonomi
   packages = [
     # Runtime & Package Managers
-    pkgs.nodejs_20
+    pkgs.nodejs_22
     pkgs.pnpm            # Snabbare än npm, sparar diskutrymme
     pkgs.bun             # För blixtsnabb exekvering av scripts
     
