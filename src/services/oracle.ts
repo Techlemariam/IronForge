@@ -38,6 +38,14 @@ export class OracleService {
       throw new Error("User or Titan not found");
     }
 
+    // NEW: Fetch PvP Context
+    const activeDuel = await prisma.duelChallenge.findFirst({
+      where: {
+        OR: [{ challengerId: userId }, { defenderId: userId }],
+        status: "ACTIVE",
+      },
+    });
+
     const now = new Date();
     const historyStart = new Date();
     historyStart.setDate(now.getDate() - HISTORY_WINDOW_DAYS);
@@ -49,7 +57,6 @@ export class OracleService {
 
     if (user.intervalsApiKey && user.intervalsAthleteId) {
       try {
-        // Fetch today's wellness
         const todayStr = now.toISOString().split("T")[0];
         const wData = await getWellness(
           todayStr,
@@ -64,8 +71,6 @@ export class OracleService {
             restingHR: (wData as any).restingHR,
           };
         }
-
-        // Fetch history
         const startStr = historyStart.toISOString().split("T")[0];
         intervalsActivities = (await getActivities(
           startStr,
@@ -78,7 +83,6 @@ export class OracleService {
       }
     }
 
-    // Fetch Hevy History (via Hevy Lib)
     if (user.hevyApiKey) {
       try {
         const result = await getHevyWorkouts(user.hevyApiKey, 1, 10);
@@ -90,24 +94,18 @@ export class OracleService {
 
     // 3. Fetch Local Data
     const localCardio = await prisma.cardioLog.findMany({
-      where: {
-        userId,
-        date: { gte: historyStart },
-      },
+      where: { userId, date: { gte: historyStart } },
     });
 
     const localStrength = await prisma.exerciseLog.findMany({
-      where: {
-        userId,
-        date: { gte: historyStart },
-      },
+      where: { userId, date: { gte: historyStart } },
       include: { exercise: true },
     });
 
-    // 4. Fetch Equipment Capabilities (The Armory)
+    // 4. Fetch Capabilities
     const capabilities = await EquipmentService.getUserCapabilities(userId);
 
-    // 5. Data Deduplication & Harmonization
+    // 5. Harmonize Data
     const dailyLoads = this.calculateCombinedHistory(
       historyStart,
       now,
@@ -120,8 +118,15 @@ export class OracleService {
     // 6. Analysis
     const analysis = this.analyzeLoads(dailyLoads);
 
-    // 7. Priority Waterfall Logic
-    return this.determineDecree(user.titan, wellness, analysis, capabilities, (user.activePath as TrainingPath) || "WARDEN");
+    // 7. Determine Decree (V3)
+    return this.determineDecree(
+      user.titan,
+      wellness,
+      analysis,
+      capabilities,
+      (user.activePath as TrainingPath) || "WARDEN",
+      activeDuel
+    );
   }
 
   private static calculateCombinedHistory(
@@ -296,15 +301,21 @@ export class OracleService {
     wellness: IntervalsWellness,
     analysis: { cardioRatio: number; volumeRatio: number },
     capabilities: EquipmentType[] = [],
-    activePath: string = "WARDEN"
+    activePath: string = "WARDEN",
+    activeDuel: any = null
   ): OracleDecree {
-    // 1. Safety Override
+    // 1. Safety Override (Injury)
     if (titan.isInjured) {
       return {
         type: "DEBUFF",
+        code: "INJURY_PRESERVATION",
         label: "Decree of Preservation",
-        description:
-          "The Titan is damaged. Rest is mandatory to prevent permanent scarring.",
+        description: "The Titan is damaged. Rest to prevent permanent scarring.",
+        actions: {
+          lockFeatures: ["HEAVY_LIFT", "PVP"],
+          notifyUser: true,
+          urgency: "HIGH"
+        },
         effect: { modifier: 0.0, stat: "all" },
       };
     }
@@ -316,27 +327,46 @@ export class OracleService {
     ) {
       return {
         type: "DEBUFF",
+        code: "REST_FORCED",
         label: "Decree of Rest",
-        description:
-          "Your bio-metrics indicate severe depletion. Strength training is forbidden today.",
+        description: "Bio-metrics indicate severe depletion. Strength training forbidden.",
+        actions: {
+          lockFeatures: ["HEAVY_LIFT"], // Soft lock via logic, not hard DB lock
+          notifyUser: true,
+          urgency: "HIGH"
+        },
         effect: { modifier: 0.5, stat: "strength" },
       };
     }
 
-    // 3. Equipment Check (Armory Integration)
-    const hasHeavyGear = capabilities.includes(EquipmentType.BARBELL) ||
-      capabilities.includes(EquipmentType.MACHINE) ||
-      capabilities.includes(EquipmentType.HYPER_PRO);
+    // 3. PvP Crisis (New V3 Logic)
+    if (activeDuel) {
+      // Simple logic: If duel is ending soon (< 2 days), surge
+      const daysLeft = activeDuel.endDate ? (new Date(activeDuel.endDate).getTime() - Date.now()) / (1000 * 3600 * 24) : 7;
+      if (daysLeft < 2) {
+        return {
+          type: "BUFF",
+          code: "PVP_RALLY",
+          label: "Decree of War",
+          description: "Duel ending soon. The Oracle grants a surge of vigor.",
+          actions: {
+            unlockBuffs: ["PVP_BONUS"],
+            notifyUser: true,
+            urgency: "MEDIUM"
+          },
+          effect: { xpMultiplier: 1.25, stat: "all" }
+        };
+      }
+    }
 
-    // If user lacks heavy gear, they can't effectively "PR" in the traditional sense, maybe?
-    // Or we adapt the message. 
-
-    // 4. Overreaching Warning (ACWR > 1.5)
+    // 4. Overreaching Warning
     if (analysis.cardioRatio > 1.5 || analysis.volumeRatio > 1.5) {
       return {
         type: "NEUTRAL",
+        code: "VOLUME_WARNING",
         label: "Decree of Patience",
-        description: `Acute load is ${Math.max(analysis.cardioRatio, analysis.volumeRatio).toFixed(1)}x baseline. Reduce intensity to avoid injury.`,
+        description: `Acute load is ${Math.max(analysis.cardioRatio, analysis.volumeRatio).toFixed(1)}x baseline. Reduce intensity.`,
+        actions: { notifyUser: false, urgency: "LOW" },
         effect: { modifier: 0.8, stat: "intensity" },
       };
     }
@@ -348,19 +378,26 @@ export class OracleService {
       wellness.hrv &&
       wellness.hrv > 50
     ) {
+      const hasHeavyGear = capabilities.includes(EquipmentType.BARBELL) ||
+        capabilities.includes(EquipmentType.MACHINE) ||
+        capabilities.includes(EquipmentType.HYPER_PRO);
+
       if (hasHeavyGear) {
         return {
           type: "BUFF",
+          code: "PR_PRIMED",
           label: "Decree of Power",
-          description: "The Stars align. Your body (and Gear) is primed for a Personal Record.",
+          description: "Stars align. Your body is primed for a Personal Record.",
+          actions: { notifyUser: true, urgency: "MEDIUM" },
           effect: { xpMultiplier: 1.5, stat: "all" },
         };
       } else {
-        // High readiness but low gear
         return {
           type: "BUFF",
+          code: "VELOCITY_PRIMED",
           label: "Decree of Velocity",
-          description: "High readiness detected, but heavy gear is missing. Focus on explosive calisthenics or speed.",
+          description: "High readiness. Focus on explosive speed.",
+          actions: { notifyUser: true, urgency: "MEDIUM" },
           effect: { xpMultiplier: 1.2, stat: "speed" },
         };
       }
@@ -369,8 +406,10 @@ export class OracleService {
     // 6. Baseline
     return {
       type: "NEUTRAL",
+      code: "BASELINE_GRIND",
       label: "Decree of Discipline",
-      description: "Conditions are stable. Maintain the grind.",
+      description: "Conditions stable. Maintain the grind.",
+      actions: { notifyUser: false, urgency: "LOW" },
       effect: { xpMultiplier: 1.0 },
     };
   }

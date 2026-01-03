@@ -4,12 +4,19 @@ export type OracleDecreeType = "BUFF" | "DEBUFF" | "NEUTRAL";
 
 export interface OracleDecree {
   type: OracleDecreeType;
-  label: string; // e.g. "Decree of Rest"
-  description: string; // e.g. "The Titan demands rest to heal."
+  code: string; // e.g. "REST_FORCED", "PR_PRIMED"
+  label: string;
+  description: string;
+  actions: {
+    lockFeatures?: string[]; // ["HEAVY_LIFT", "PVP"]
+    unlockBuffs?: string[];  // ["XP_BOOST"]
+    notifyUser: boolean;
+    urgency: "LOW" | "MEDIUM" | "HIGH";
+  };
   effect?: {
-    stat?: string; // e.g. "strength"
-    modifier?: number; // e.g. 0.8
-    xpMultiplier?: number; // e.g. 1.2
+    stat?: string;
+    modifier?: number;
+    xpMultiplier?: number;
   };
 }
 

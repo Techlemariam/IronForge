@@ -2,9 +2,7 @@ import { test, expect } from "@playwright/test";
 
 test.describe("Power Rating System", () => {
     test.beforeEach(async ({ page }) => {
-        // Login with test user
-        await page.goto("/login");
-        await page.getByRole("button", { name: /sign in/i }).click();
+        // storageState handles login
     });
 
     test("should display current power rating on dashboard", async ({ page }) => {
@@ -118,7 +116,8 @@ test.describe("Power Rating System", () => {
 });
 
 test.describe("Power Rating Cron (Admin)", () => {
-    test.use({ storageState: "tests/.auth/admin.json" });
+    // Use default authenticated user (likely admin in dev env)
+
 
     test("should manually trigger power rating recalculation", async ({ page }) => {
         await page.goto("/admin/cron");

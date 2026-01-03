@@ -26,7 +26,10 @@ export async function GET(request: NextRequest) {
     // 1. Daily Oracle
     try {
         const titans = await prisma.titan.findMany({
-            where: { isInjured: false },
+            where: {
+                isInjured: false,
+                user: { subscriptionTier: { not: "FREE" } }
+            },
             select: { userId: true, name: true },
         });
 
@@ -34,7 +37,13 @@ export async function GET(request: NextRequest) {
         for (const titan of titans) {
             try {
                 const decree = await OracleService.generateDailyDecree(titan.userId);
-                if (decree.type !== "NEUTRAL") {
+
+                // Always update (even NEUTRAL) if we want to show "Conditions Stable"
+                // But legacy logic skipped neutral. V3 has specific codes.
+                // Let's stick to update if it has significant actions or effect.
+                // Or simply update currentBuff with the V3 object.
+
+                if (decree.type !== "NEUTRAL" || decree.actions.notifyUser) {
                     await prisma.titan.update({
                         where: { userId: titan.userId },
                         data: {
@@ -43,6 +52,16 @@ export async function GET(request: NextRequest) {
                         },
                     });
                     decreesIssued++;
+
+                    // Proactive Notification
+                    if (decree.actions.notifyUser) {
+                        const { NotificationService } = await import("@/services/notifications");
+                        await NotificationService.create({
+                            userId: titan.userId,
+                            type: "ORACLE_DECREE",
+                            message: `${decree.label}: ${decree.description}`
+                        });
+                    }
                 }
             } catch (e) {
                 console.error(`Oracle failed for ${titan.userId}`, e);
