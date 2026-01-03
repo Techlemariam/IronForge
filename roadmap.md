@@ -131,9 +131,8 @@
 ### Low Priority (Nice to Have)
 - [x] **Preview Deployments for PRs** <!-- status: shipped | priority: low | roi: 3.0 | effort: S | source: infrastructure-audit | date: 2026-01-03 -->
   - ✅ Implemented: PR comments with preview URL via `actions/github-script`.
-- [ ] **Dockerfile for Local Development** <!-- status: planned | priority: low | roi: 2.5 | effort: M | source: infrastructure-audit -->
-  - Rationale: Only `docker-compose.test.yml` exists. No unified dev container.
-  - Scope: Create `Dockerfile` + `docker-compose.yml` for full local stack.
+- [x] **Dockerfile for Local Development** <!-- status: shipped | priority: low | roi: 2.5 | effort: M | source: infrastructure-audit | date: 2026-01-03 -->
+  - ✅ Implemented: Multi-stage Dockerfile, docker-compose with app + db services, hot reload.
 - [ ] **Nix Flake Modernization** <!-- status: planned | priority: low | roi: 2.0 | effort: M | source: infrastructure-audit -->
   - Rationale: `dev.nix` uses old Devbox format. Modern Nix Flakes more portable.
   - Scope: Migrate to `flake.nix` with direnv integration.
