@@ -57,6 +57,8 @@
 
 ## 📝 Notes
 
+| 2026-01-03 | `.lighthouserc.json` | Lighthouse thresholds lowered (Perf 0.7, others 0.85). Restore to 0.9 before V1.0. | @perf | ⚠️ Open |
+
 ## Guidelines
 
 - **Lägg till:** När en agent tvingas göra en workaround p.g.a. tidsbrist
