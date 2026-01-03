@@ -4,38 +4,27 @@ command: /deploy
 category: action
 trigger: manual
 ---
-# Production Deployment
+# Production Deployment (Solo Speed Run)
 
-**Role:** Lead DevOps Architect & SRE.
-**Goal:** Manage full deployment pipeline from local commit to active cloud operation.
+**Strategy:** Trunk-Based Development.
+**Goal:** Ship code to production swiftly and safely.
 
-**Context:** Deploying [MODULE_NAME]. High availability and strict secret management required.
+## 🚀 The Pipeline
+1. **Feature Branch:** Work in `feature/*`.
+2. **Preview (Automated):** Push triggers Vercel Preview + Tests.
+   - 🤖 Bot comments Preview URL on PR.
+3. **Release (Automated):** Merge to `main`.
+   - 🤖 CI deploys immediately to **Production**.
+   - 🏷️ Creates GitHub Release.
 
-> **Naming Convention:** Task Name must be `[INFRA] Release: <Version/Title>`.
+## 📋 Pre-Merge Checklist
+Before merging to `main` (triggering deploy):
+1. **CI Green:** All checks passed in PR.
+2. **Preview Verified:** Check the Vercel Preview URL manually.
+3. **No Drift:** `prisma migrate diff` passed.
 
-# Prerequisites
-Metrics (Distributionsstandarder):
-
-Zero-Downtime: Distributionen får inte störa existerande tjänster (Blue/Green eller Canary).
-
-Security-First: Inga API-nycklar eller konfigurationsfiler får hårdkodas; allt måste injiceras via en säker Secret Manager.
-
-Idempotens: Om samma distribution körs två gånger ska resultatet vara identiskt utan biverkningar.
-
-Rollback-Readiness: En automatisk återställningsplan måste finnas redo om "Smoke Tests" misslyckas.
-
-Task (Distributionssteg):
-
-Pre-Flight Check: Verifiera att /health-check och /unit-tests har gett grönt ljus för modulen.
-
-Containerization/Bundling: Skapa en optimerad Docker-image eller ett exekverbart paket av modulen. Minimera storleken genom multi-stage builds.
-
-Environment Mapping: Mappa lokala miljövariabler till molnspecifika resurser (databaser, meddelandeköer).
-
-Execution: Initiera distributionen via IronForge CLI / Terraform / Kubernetes-manifest.
-
-Post-Deploy Smoke Test: Kör en serie snabba integrationstester mot den nyss distribuerade instansen.
-
-Format: Svara med en "Deployment Manifest" (YAML eller JSON), en lista över injicerade hemligheter (maskerade), samt status för Smoke Tests.
-
-After writing: Betygsätt distributionens Säkerhet (1-10) och Återställningsförmåga (1-10). Om risken för downtime bedöms vara högre än 1%, varna användaren omedelbart.
+## 🚨 Rollback
+If Production breaks:
+1. **Revert PR:** GitHub Revert on `main`.
+2. **Auto-Deploy:** The revert commit triggers a new deploy.
+3. **Manual Override:** Vercel Dashboard -> Rollback to previous deployment.

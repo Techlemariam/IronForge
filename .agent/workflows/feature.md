@@ -56,7 +56,7 @@ trigger: manual
    - 📸 Före/Efter screenshots eller video (för UI)
 3. Om PASS & BEVIS FINNS:
    - Presentera en sammanfattning.
-   - Fråga om `/deploy` ska triggas.
+   - **ACTION:** Be användaren merga PR till `main` för att starta Auto-Deploy.
    - Uppdatera roadmap: markera feature som `[x]` och flytta till 'Shipped'.
 4. Om FAIL eller BEVIS SAKNAS: Återgå till Phase 3.
 

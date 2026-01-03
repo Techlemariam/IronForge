@@ -35,7 +35,7 @@ trigger: manual
 - **Feature:** `/feature [name]`
 - **Bug:** `/qa` -> `/coder` -> `/qa`
 - **Debt:** `/cleanup`
-- **Release:** `/qa` -> `/security` -> `/perf` -> `/pre-deploy`
+- **Release:** `/qa` → `/security` → `/perf` → `/pre-deploy` → **Merge to `main`**
 
 ## ⏱️ Efficiency (High Stakes)
 - **Zero Fluff.** Logic only.

@@ -16,7 +16,7 @@ Quick reference for choosing the right workflow based on your situation.
 | **New Feature** | `/domain-session` → `/feature` → `/qa` | Full feature pipeline |
 | **Quick Fix** | `/coder` → `/qa` | Small, isolated changes |
 | **Debt Attack** | `/cleanup` → `/qa` → `/polish` | Scheduled maintenance |
-| **Pre-Release** | `/pre-deploy` → `/security` → `/perf` | Full verification |
+| **Pre-Release** | `/pre-deploy` → `/security` → `/perf` → Merge | Merge to `main` = Auto-Deploy |
 | **Emergency Fix** | `/debug` → `/coder` → `/pre-deploy` | Hotfix path |
 | **New Idea** | `/idea` → `/analyst` → `/architect` | Intake to design |
 | **Sprint Planning** | `/sprint-plan` → `/manager` | Backlog grooming |
