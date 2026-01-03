@@ -1,0 +1,51 @@
+# Dependencies
+node_modules
+.pnpm-store
+
+# Build outputs
+.next
+out
+dist
+.turbo
+
+# Git
+.git
+.gitignore
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Environment (keep .env.example)
+.env
+.env.local
+.env.development
+.env.production
+!.env.example
+
+# Test artifacts
+coverage
+playwright-report
+test-results
+.playwright
+
+# Docker
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# Misc
+README.md
+ARCHITECTURE.md
+DEBT.md
+roadmap.md
+.agent
+docs
+e2e

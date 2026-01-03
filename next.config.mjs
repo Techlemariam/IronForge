@@ -10,6 +10,7 @@ const withSerwist = withSerwistInit({
 
 const nextConfig = {
     reactStrictMode: true,
+    output: 'standalone', // Required for Docker production builds
     transpilePackages: ['@supabase/ssr', '@supabase/supabase-js'],
     images: {
         remotePatterns: [
