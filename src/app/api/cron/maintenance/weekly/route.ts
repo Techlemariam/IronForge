@@ -35,49 +35,40 @@ export async function GET(request: NextRequest) {
         report.tasks.settlement = { success: false, error: String(e) };
     }
 
-    // 2. Power Rating
+    // 2. Power Rating (Recalculate & Decay)
     try {
+        const { PowerRatingService } = await import("@/services/game/PowerRatingService");
+        const { applyDecay } = await import("@/lib/powerRating");
+
+        // Fetch titans active in last 60 days
         const titans = await prisma.titan.findMany({
             where: { isInjured: false, lastActive: { gte: sixtyDaysAgo } },
-            include: { user: { select: { id: true, activePath: true, bodyWeight: true, ftpCycle: true, ftpRun: true, pvpProfile: { select: { highestWilksScore: true } } } } }
+            select: { userId: true, lastActive: true, powerRating: true }
         });
 
         let recalculated = 0;
         for (const titan of titans) {
             try {
-                const [strengthSessions, cardioSessions] = await Promise.all([
-                    prisma.exerciseLog.count({ where: { userId: titan.userId, date: { gte: sevenDaysAgo } } }),
-                    prisma.cardioLog.count({ where: { userId: titan.userId, date: { gte: sevenDaysAgo } } })
-                ]);
+                // 1. Recalculate based on recent performance
+                // This updates the titan with the new 'performance' rating
+                const result = await PowerRatingService.syncPowerRating(titan.userId);
+                let newRating = result.powerRating;
 
-                const mrvAdherence = Math.min(1.0, strengthSessions / 4);
-                const cardioAdherence = Math.min(1.0, cardioSessions / 3);
+                // 2. Apply Inactivity Decay
+                // If user hasn't opened app/logged workout in > 7 days, apply additional decay penalty
                 const daysSinceActive = Math.floor((now.getTime() - titan.lastActive.getTime()) / (24 * 60 * 60 * 1000));
 
-                const wilks = titan.user.pvpProfile?.highestWilksScore || 0;
-                let wkg = 0;
-                const bodyWeight = titan.user.bodyWeight || 75;
-                if (titan.user.ftpCycle && bodyWeight > 0) wkg = titan.user.ftpCycle / bodyWeight;
-                else if (titan.user.ftpRun && bodyWeight > 0) wkg = titan.user.ftpRun / bodyWeight;
-
-                const path = (titan.user.activePath as TrainingPath) || "WARDEN";
-                const result = calculatePowerRating(wilks, wkg, path, mrvAdherence, cardioAdherence);
-
-                let finalPowerRating = result.powerRating;
                 if (daysSinceActive >= 7) {
-                    finalPowerRating = applyDecay(result.powerRating, daysSinceActive);
-                }
+                    newRating = applyDecay(newRating, daysSinceActive);
 
-                await prisma.titan.update({
-                    where: { userId: titan.userId },
-                    data: {
-                        powerRating: finalPowerRating,
-                        strengthIndex: result.strengthIndex,
-                        cardioIndex: result.cardioIndex,
-                        mrvAdherence: 1.0 + (mrvAdherence * 0.15),
-                        lastPowerCalcAt: now,
+                    // Update if decay changed it (syncPowerRating already saved the non-decayed value)
+                    if (newRating !== result.powerRating) {
+                        await prisma.titan.update({
+                            where: { userId: titan.userId },
+                            data: { powerRating: newRating }
+                        });
                     }
-                });
+                }
                 recalculated++;
             } catch (e) {
                 console.error(`Power rating failed for ${titan.userId}`, e);
