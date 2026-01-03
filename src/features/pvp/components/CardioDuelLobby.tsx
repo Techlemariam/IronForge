@@ -31,7 +31,14 @@ export function CardioDuelLobby() {
     const loadOpponents = async () => {
         const res = await getPotentialOpponentsAction();
         if (res.success && res.opponents) {
-            setOpponents(res.opponents);
+            // Fix: Map to ensure heroName is string (fallback for null)
+            const sanitized: Opponent[] = res.opponents.map((opp: any) => ({
+                id: opp.id,
+                heroName: opp.heroName || "Unknown Titan",
+                level: opp.level, // Assuming level is always present/valid based on schema, otherwise provide default
+                titan: opp.titan ? { powerRating: opp.titan.powerRating } : undefined
+            }));
+            setOpponents(sanitized);
         }
     };
 
@@ -109,8 +116,8 @@ export function CardioDuelLobby() {
                                     key={opp.id}
                                     onClick={() => setSelectedOpponent(opp.id)}
                                     className={`p-3 rounded-lg border cursor-pointer transition-all flex items-center justify-between ${selectedOpponent === opp.id
-                                            ? "border-emerald-500 bg-emerald-900/20"
-                                            : "border-slate-700 hover:bg-slate-800"
+                                        ? "border-emerald-500 bg-emerald-900/20"
+                                        : "border-slate-700 hover:bg-slate-800"
                                         }`}
                                 >
                                     <div className="flex items-center gap-3">

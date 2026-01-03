@@ -66,4 +66,75 @@ describe("ProgressionService", () => {
       expect(wilks).toBe(0);
     });
   });
+
+  describe("calculateMultiplier", () => {
+    it("should return base multiplier for high level user", () => {
+      const mult = ProgressionService.calculateMultiplier(
+        0,
+        "NEUTRAL",
+        "FREE",
+        "NEUTRAL",
+        50
+      );
+      expect(mult).toBe(1.0);
+    });
+
+    it("should apply apprentice boost for levels <= 10", () => {
+      // Level 1
+      const mult1 = ProgressionService.calculateMultiplier(
+        0,
+        "NEUTRAL",
+        "FREE",
+        "NEUTRAL",
+        1
+      );
+      expect(mult1).toBe(1.5);
+
+      // Level 10
+      const mult10 = ProgressionService.calculateMultiplier(
+        0,
+        "NEUTRAL",
+        "FREE",
+        "NEUTRAL",
+        10
+      );
+      expect(mult10).toBe(1.5);
+
+      // Level 11
+      const mult11 = ProgressionService.calculateMultiplier(
+        0,
+        "NEUTRAL",
+        "FREE",
+        "NEUTRAL",
+        11
+      );
+      expect(mult11).toBe(1.0);
+    });
+
+    it("should stack streaks and subscriptions", () => {
+      // Level 1 (+0.5) + Streak 10 (+0.1) + PRO (+0.2) = 1.8
+      // Note: Config values are now: Base 1.0 + Appr 0.5 + Streak 0.1 + Sub 0.2 = 1.8
+      // If we had a max streak (30) it would be: 1.0 + 0.5 + 0.3 + 0.2 = 2.0
+      const mult = ProgressionService.calculateMultiplier(
+        10,
+        "NEUTRAL",
+        "PRO",
+        "NEUTRAL",
+        1
+      );
+      expect(mult).toBe(1.8);
+    });
+
+    it("should respect new streak cap and decree values", () => {
+      // Base (1.0) + Streak 35 (Cap 0.3) + Decree (0.3) = 1.6
+      const mult = ProgressionService.calculateMultiplier(
+        35,
+        "NEUTRAL",
+        "FREE",
+        "BUFF",
+        20 // No apprentice boost
+      );
+      expect(mult).toBe(1.6);
+    });
+  });
 });

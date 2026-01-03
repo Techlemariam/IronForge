@@ -84,7 +84,21 @@
       "npx prisma migrate deploy",
       "npx prisma migrate diff",
       "npx prisma studio",
-      "npx prisma db push"
+      "npx prisma db push",
+      "pnpm exec turbo",
+      "pnpm exec turbo check-types",
+      "pnpm exec turbo lint",
+      "pnpm exec turbo test",
+      "pnpm run check-types",
+      "pnpm run lint",
+      "pnpm run test",
+      "gh api",
+      "gh run list --limit",
+      "gh run view --log",
+      "Out-File",
+      "ForEach-Object",
+      "Select-Object",
+      "Start-Sleep"
     ]
   }
 }

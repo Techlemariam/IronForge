@@ -774,4 +774,32 @@ export const ACHIEVEMENTS: Achievement[] = [
     category: "feats",
     points: 10,
   },
+  {
+    id: "club_200",
+    title: "The 200kg Club",
+    description: "Deadlift 200kg (440lbs). A true milestone of strength.",
+    category: "feats",
+    points: 20,
+  },
+  {
+    id: "bench_monolith",
+    title: "The Monolith",
+    description: "Bench Press 140kg (315lbs). Three plates of power.",
+    category: "feats",
+    points: 20,
+  },
+  {
+    id: "skies_shattered",
+    title: "The Skies Shattered",
+    description: "Strict Press your own Bodyweight overhead.",
+    category: "feats",
+    points: 25,
+  },
+  {
+    id: "atlas_reborn",
+    title: "Atlas Reborn",
+    description: "Total over 600kg (1320lbs) in the Big Three (S/B/D).",
+    category: "feats",
+    points: 50,
+  },
 ];

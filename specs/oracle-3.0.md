@@ -41,6 +41,14 @@ New scheduled job (via Vercel Cron or GitHub Actions) running daily:
 3.  **Enhanced Prompt**: `src/lib/prompts/oracle-system.ts` (Dynamic generation).
 
 ## Roadmap
-- [ ] **Phase 1**: Backend Assessment (Can we run cron?).
-- [ ] **Phase 2**: Prompt Engineering (Include new PvP/Power stats).
-- [ ] **Phase 3**: "Push" Notification Prototype (In-app toast on login).
+- [x] **Phase 1**: Backend Implementation (Cron + Logic).
+  - ✅ Volume Spike Detection
+  - ✅ PvP Context Integration
+  - ✅ Power Rating Context
+- [x] **Phase 2**: Push Notification System.
+  - ✅ Service Worker & VAPID Setup
+  - ✅ Daily Oracle Push Integration
+  - ✅ UI Toggle
+- [ ] **Phase 3**: Advanced LLM & External Channels.
+  - Dynamic System Prompt Generation
+  - Telegram/Discord Bot Integration

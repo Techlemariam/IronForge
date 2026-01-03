@@ -98,7 +98,9 @@ describe("Titan Server Actions", () => {
   describe("awardTitanXpAction", () => {
     it("should award XP without leveling up", async () => {
       (prisma.titan.findUnique as any).mockResolvedValue(mockTitan);
-      (prisma.titan.update as any).mockResolvedValue({ ...mockTitan, xp: 500 });
+      // Apprentice Boost applies (Level 1) -> 1.5x Multiplier
+      // 500 * 1.5 = 750 (Floor)
+      (prisma.titan.update as any).mockResolvedValue({ ...mockTitan, xp: 750 });
 
       const result = await awardTitanXpAction("u1", 500, "Quest");
 
@@ -106,7 +108,7 @@ describe("Titan Server Actions", () => {
       expect(result.leveledUp).toBe(false);
       expect(prisma.titan.update).toHaveBeenCalledWith({
         where: { userId: "u1" },
-        data: expect.objectContaining({ xp: 500, level: 1 }),
+        data: expect.objectContaining({ xp: 750, level: 1 }),
       });
     });
 
@@ -122,18 +124,22 @@ describe("Titan Server Actions", () => {
       });
       (prisma.titan.update as any).mockResolvedValue({
         ...mockTitan,
-        xp: 100,
+        xp: 200,
         level: 2,
       });
 
-      const result = await awardTitanXpAction("u1", 200, "Big Quest"); // 900 + 200 = 1100 -> Lvl 2 + 100 XP
+      // Apprentice Boost (1.5x) applies.
+      // 200 * 1.5 = 300 XP.
+      // 900 + 300 = 1200.
+      // 1200 - 1000 (Level 1 req) = 200 XP carried over. Level 2.
+      const result = await awardTitanXpAction("u1", 200, "Big Quest");
 
       expect(result.success).toBe(true);
       expect(result.leveledUp).toBe(true);
       expect(prisma.titan.update).toHaveBeenCalledWith({
         where: { userId: "u1" },
         data: expect.objectContaining({
-          xp: 100,
+          xp: 200,
           level: 2,
           currentHp: 120, // 100 + (2*10)
           maxHp: 120,
@@ -148,8 +154,9 @@ describe("Titan Server Actions", () => {
         subscriptionTier: "PRO",
       });
 
-      // Mock Titan with Streak=10 (+10%), Mood=FOCUSED (+10%), Decree=BUFF (+50%)
-      // Base 1.0 + 0.1 + 0.1 + 0.2 + 0.5 = 1.9x
+      // Mock Titan with Streak=10 (+10%), Mood=FOCUSED (+10%), Decree=BUFF (+30%)
+      // Level 1 (Apprentice Boost) (+50%)
+      // Base 1.0 + 0.1 + 0.1 + 0.2 + 0.3 + 0.5 = 2.2x
       const richTitan = {
         ...mockTitan,
         streak: 10,
@@ -157,14 +164,14 @@ describe("Titan Server Actions", () => {
         dailyDecree: { type: "BUFF" },
       };
       (prisma.titan.findUnique as any).mockResolvedValue(richTitan);
-      (prisma.titan.update as any).mockResolvedValue({ ...richTitan, xp: 190 });
+      (prisma.titan.update as any).mockResolvedValue({ ...richTitan, xp: 220 });
 
       const result = await awardTitanXpAction("u1", 100, "Test");
 
       expect(result.success).toBe(true);
       expect(prisma.titan.update).toHaveBeenCalledWith({
         where: { userId: "u1" },
-        data: expect.objectContaining({ xp: 190 }), // 0 + 100 * 1.9 = 190
+        data: expect.objectContaining({ xp: 220 }), // 0 + 100 * 2.2 = 220
       });
     });
   });

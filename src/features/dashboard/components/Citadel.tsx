@@ -10,6 +10,7 @@ import { CampaignTracker } from "@/components/CampaignTracker";
 import { toast } from "@/components/ui/GameToast";
 import { PocketCastsPlayer } from "@/features/podcast/components/PocketCastsPlayer";
 import BioStatusWidget from "@/components/dashboard/BioStatusWidget";
+import { PushSubscriptionToggle } from "@/features/oracle/components/PushSubscriptionToggle";
 
 interface CitadelProps {
     state: DashboardState;
@@ -57,8 +58,9 @@ export const Citadel: React.FC<CitadelProps> = ({ state, dispatch, titanState, p
                 Oracle&apos;s Wisdom
             </h2>
             {titanState?.dailyDecree && (
-                <div className="mb-6">
+                <div className="mb-6 space-y-4">
                     <OracleVerdict decree={titanState.dailyDecree} />
+                    <PushSubscriptionToggle />
                 </div>
             )}
             {state.oracleRecommendation ? (

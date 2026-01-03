@@ -28,21 +28,45 @@ export class OracleService {
    * Main entry point: Generates specific guidance for the Titan based on bio-data.
    */
   static async generateDailyDecree(userId: string): Promise<OracleDecree> {
-    // 1. Fetch Context
+    // 1. Fetch Context (Enhanced with Power Rating)
     const user = await prisma.user.findUnique({
       where: { id: userId },
-      include: { titan: true },
+      include: {
+        titan: {
+          select: {
+            isInjured: true,
+            xp: true,
+            powerRating: true,
+            strengthIndex: true,
+            cardioIndex: true,
+          },
+        },
+        pvpProfile: {
+          select: {
+            rankScore: true,
+          },
+        },
+      },
     });
 
     if (!user || !user.titan) {
       throw new Error("User or Titan not found");
     }
 
-    // NEW: Fetch PvP Context
+    // Fetch Active Duel Context (Match challenger or defender)
     const activeDuel = await prisma.duelChallenge.findFirst({
       where: {
         OR: [{ challengerId: userId }, { defenderId: userId }],
         status: "ACTIVE",
+        endDate: { gte: new Date() },
+      },
+      select: {
+        challengerId: true,
+        targetDistance: true,
+        challengerDistance: true,
+        defenderDistance: true,
+        endDate: true,
+        duelType: true,
       },
     });
 
@@ -118,8 +142,9 @@ export class OracleService {
     // 6. Analysis
     const analysis = this.analyzeLoads(dailyLoads);
 
-    // 7. Determine Decree (V3)
+    // 7. Determine Decree (V3 with Power Rating context)
     return this.determineDecree(
+      userId,
       user.titan,
       wellness,
       analysis,
@@ -286,20 +311,26 @@ export class OracleService {
     const acuteCardioAvg = acuteCardioSum / ACUTE_WINDOW_DAYS;
     const chronicCardioAvg = chronicCardioSum / HISTORY_WINDOW_DAYS;
 
-    // Volume isn't usually averaged for ACWR the same way due to discrete nature, but we can try.
     const acuteVolAvg = acuteVolSum / ACUTE_WINDOW_DAYS;
     const chronicVolAvg = chronicVolSum / HISTORY_WINDOW_DAYS;
 
+    // Detect Sharp Spikes (>30% jump over baseline)
+    const cardioRatio = chronicCardioAvg > 0 ? acuteCardioAvg / chronicCardioAvg : 0;
+    const volumeRatio = chronicVolAvg > 0 ? acuteVolAvg / chronicVolAvg : 0;
+    const isVolumeSpike = cardioRatio > 1.3 || volumeRatio > 1.3;
+
     return {
-      cardioRatio: chronicCardioAvg > 0 ? acuteCardioAvg / chronicCardioAvg : 0,
-      volumeRatio: chronicVolAvg > 0 ? acuteVolAvg / chronicVolAvg : 0,
+      cardioRatio,
+      volumeRatio,
+      isVolumeSpike,
     };
   }
 
   private static determineDecree(
+    userId: string,
     titan: any,
     wellness: IntervalsWellness,
-    analysis: { cardioRatio: number; volumeRatio: number },
+    analysis: { cardioRatio: number; volumeRatio: number; isVolumeSpike: boolean },
     capabilities: EquipmentType[] = [],
     activePath: string = "WARDEN",
     activeDuel: any = null
@@ -310,11 +341,12 @@ export class OracleService {
         type: "DEBUFF",
         code: "INJURY_PRESERVATION",
         label: "Decree of Preservation",
-        description: "The Titan is damaged. Rest to prevent permanent scarring.",
+        description: "The Titan is damaged. Rest to prevent scarring.",
         actions: {
           lockFeatures: ["HEAVY_LIFT", "PVP"],
+          lockTraining: true,
           notifyUser: true,
-          urgency: "HIGH"
+          urgency: "HIGH",
         },
         effect: { modifier: 0.0, stat: "all" },
       };
@@ -329,21 +361,46 @@ export class OracleService {
         type: "DEBUFF",
         code: "REST_FORCED",
         label: "Decree of Rest",
-        description: "Bio-metrics indicate severe depletion. Strength training forbidden.",
+        description: "Bio-metrics indicate severe depletion. Rest required.",
         actions: {
-          lockFeatures: ["HEAVY_LIFT"], // Soft lock via logic, not hard DB lock
+          lockFeatures: ["HEAVY_LIFT"],
+          lockTraining: true,
           notifyUser: true,
-          urgency: "HIGH"
+          urgency: "HIGH",
         },
         effect: { modifier: 0.5, stat: "strength" },
       };
     }
 
-    // 3. PvP Crisis (New V3 Logic)
+    // 3. PvP Crisis (Enhanced V3 Logic with Cardio Duel Context)
     if (activeDuel) {
-      // Simple logic: If duel is ending soon (< 2 days), surge
-      const daysLeft = activeDuel.endDate ? (new Date(activeDuel.endDate).getTime() - Date.now()) / (1000 * 3600 * 24) : 7;
-      if (daysLeft < 2) {
+      const daysLeft = activeDuel.endDate
+        ? (new Date(activeDuel.endDate).getTime() - Date.now()) / (1000 * 3600 * 24)
+        : 7;
+
+      const isChallenger = activeDuel.challengerId === userId;
+      const userDist = isChallenger ? activeDuel.challengerDistance : activeDuel.defenderDistance;
+      const oppDist = isChallenger ? activeDuel.defenderDistance : activeDuel.challengerDistance;
+      const targetDist = activeDuel.targetDistance || 0;
+
+      const distanceToTarget = Math.max(0, targetDist - (userDist || 0));
+      const trailingOpponent = oppDist > userDist;
+      const distGap = trailingOpponent ? oppDist - userDist : 0;
+
+      if (daysLeft < 2 && (distanceToTarget > 5 || distGap > 2)) {
+        return {
+          type: "BUFF",
+          code: "PVP_CRISIS",
+          label: "🔥 Final Push",
+          description: `Duel ends in ${Math.ceil(daysLeft)} days. ${distGap > 0 ? `Trailing by ${distGap.toFixed(1)}km.` : `Target: ${distanceToTarget.toFixed(1)}km left.`} Go hard!`,
+          actions: {
+            unlockBuffs: ["PVP_BONUS"],
+            notifyUser: true,
+            urgency: "HIGH",
+          },
+          effect: { xpMultiplier: 1.3, stat: "cardio" },
+        };
+      } else if (daysLeft < 2) {
         return {
           type: "BUFF",
           code: "PVP_RALLY",
@@ -352,32 +409,39 @@ export class OracleService {
           actions: {
             unlockBuffs: ["PVP_BONUS"],
             notifyUser: true,
-            urgency: "MEDIUM"
+            urgency: "MEDIUM",
           },
-          effect: { xpMultiplier: 1.25, stat: "all" }
+          effect: { xpMultiplier: 1.25, stat: "all" },
         };
       }
     }
 
-    // 4. Overreaching Warning
-    if (analysis.cardioRatio > 1.5 || analysis.volumeRatio > 1.5) {
+    // 4. Overreaching / Volume Spike (New Logic)
+    if (analysis.isVolumeSpike || analysis.cardioRatio > 1.5 || analysis.volumeRatio > 1.5) {
       return {
-        type: "NEUTRAL",
-        code: "VOLUME_WARNING",
-        label: "Decree of Patience",
-        description: `Acute load is ${Math.max(analysis.cardioRatio, analysis.volumeRatio).toFixed(1)}x baseline. Reduce intensity.`,
-        actions: { notifyUser: false, urgency: "LOW" },
+        type: "DEBUFF",
+        code: "VOLUME_SPIKE",
+        label: "Decree of Caution",
+        description: `Sudden load spike detected (${Math.max(analysis.cardioRatio, analysis.volumeRatio).toFixed(1)}x baseline). Slow down.`,
+        actions: {
+          notifyUser: true,
+          urgency: "MEDIUM",
+          lockFeatures: ["PR_ATTEMPT"],
+        },
         effect: { modifier: 0.8, stat: "intensity" },
       };
     }
 
-    // 5. Peak Performance
+    // 5. Peak Performance (with Tier Awareness)
     if (
       wellness.sleepScore &&
       wellness.sleepScore > 85 &&
       wellness.hrv &&
       wellness.hrv > 50
     ) {
+      const isElite = (titan.powerRating || 0) > 700;
+      const tierDesc = isElite ? "Your Elite status demands a new plateau." : "Prime condition detected.";
+
       const hasHeavyGear = capabilities.includes(EquipmentType.BARBELL) ||
         capabilities.includes(EquipmentType.MACHINE) ||
         capabilities.includes(EquipmentType.HYPER_PRO);
@@ -387,7 +451,7 @@ export class OracleService {
           type: "BUFF",
           code: "PR_PRIMED",
           label: "Decree of Power",
-          description: "Stars align. Your body is primed for a Personal Record.",
+          description: `${tierDesc} Stars align for a Personal Record.`,
           actions: { notifyUser: true, urgency: "MEDIUM" },
           effect: { xpMultiplier: 1.5, stat: "all" },
         };
@@ -396,14 +460,26 @@ export class OracleService {
           type: "BUFF",
           code: "VELOCITY_PRIMED",
           label: "Decree of Velocity",
-          description: "High readiness. Focus on explosive speed.",
+          description: `${tierDesc} Focus on explosive speed today.`,
           actions: { notifyUser: true, urgency: "MEDIUM" },
           effect: { xpMultiplier: 1.2, stat: "speed" },
         };
       }
     }
 
-    // 6. Baseline
+    // 6. Novice Encouragement (New Logic)
+    if ((titan.powerRating || 0) < 300 && (wellness.bodyBattery || 0) > 60) {
+      return {
+        type: "BUFF",
+        code: "NOVICE_SURGE",
+        label: "Decree of Growth",
+        description: "Your Titan is hungry for experience. Momentum is your greatest ally.",
+        actions: { notifyUser: true, urgency: "LOW" },
+        effect: { xpMultiplier: 1.2, stat: "all" },
+      };
+    }
+
+    // 7. Baseline
     return {
       type: "NEUTRAL",
       code: "BASELINE_GRIND",

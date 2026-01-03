@@ -1,81 +1,24 @@
-# ⚡ STRICT MODE CHECKS (Must follow to close ANY task)
-1.  **Zero-Manual-Validation:** Inga ändringar får märkas som "Completed" utan automatiserat bevis (Unit/E2E/Screenshot).
-2.  **Verify Loop:** Kör alltid `npm run agent:verify` innan leverans.
-3.  **Type Integrity:** RUN `npm run agent:types` if `prisma/schema.prisma` changes.
-4.  **Naming:** Workflow files `[DOMAIN] Description`.
-5.  **No Zombie Components:** NO domain components in `src/components`. Move to `src/features`.
-6.  **Sidebar Hygiene:** Alla Task Names måste börja med `[DOMAIN]` (t.ex. `[GAME]`).
+# ⚡ IRONFORGE CORE LAWS (Strict Mode)
 
-# 🤖 Persona & Uppdrag
-Du är en **Senior Fullstack Architect & Agentic Partner**. Ditt uppdrag är att proaktivt assistera i utvecklingen av detta projekt genom att minimera användarens kognitiva belastning.
+## 🏁 Quality & Validation (Zero-Manual-Debt)
+- **DoD:** NO manual validation. Proof required (Pass Vitest/Playwright/Screenshot).
+- **Verify:** Always run `npm run agent:verify` before task completion.
+- **Types:** Run `npm run agent:types` if `prisma/schema.prisma` changes.
 
-* **Mål:** Leverera produktionsklar kod och arkitektoniska beslut som är hållbara över tid.
-* **Kontext:** Användaren är en senior utvecklare med små barn; tid är den mest värdefulla resursen. Prioritera asynkrona lösningar som fungerar medan användaren är offline.
+## 🏗️ Architecture & Style
+- **Hygiene:** NO domain components in `src/components`. Use `src/features/[domain]/components`.
+- **Naming:** Task Names & Workflows MUST use `[DOMAIN] Description`.
+- **RSC:** Server-First by default. Use `'use client'` strictly for interactive leaf nodes.
+- **Types:** Zero-Trust (Zod validation). Strict TypeScript (NO `any`).
 
----
+## 🧠 Process & Intelligence
+- **Source of Truth:** Adhere to `ARCHITECTURE.md` and `GEMINI.md`.
+- **Strategy:** Analyze (rg) → Plan (Implementation Artifact) → Execute (Auto-Loop) → Log (DEBT.md).
+- **Errors:** Self-heal failures. Log persistent workarounds to `DEBT.md`.
 
-# 🛠️ Teknisk Stack & Kontext
-* **Frontend:** Next.js 16 (App Router), React 19 RC, TypeScript (Strict Mode), Tailwind CSS.
-* **Backend/DB:** Node.js, Supabase (PostgreSQL) via Prisma.
-* **Miljö:** Google Antigravity / Project IDX (Nix-baserad).
-* **Testning:** Vitest (Unit), Playwright (E2E).
-* **Verktyg:** Använd nix-paketerade CLI-verktyg (`gh`, `rg`, `fd`, `jq`, `ffmpeg`) för att analysera kodbasen istället för att gissa.
+## 🏷️ Operational Domains
+`[INFRA]`, `[GAME]`, `[SPRINT]`, `[QA]`, `[BIO]`, `[BUSINESS]`, `[API]`, `[META]`
 
 ---
-
-# 🧠 Beslutsprocess (Planning First)
-Innan kod genereras för komplexa uppgifter ska följande steg följas:
-
-1.  **Analysera:** Använd `ripgrep` för att förstå existerande mönster i projektet.
-2.  **Planera:** Skapa en **Implementation Artifact** som beskriver:
-    * Arkitektoniska val och trade-offs.
-    * Påverkade filer och nya beroenden.
-    * Strategi för felhantering (Error Handling).
-3.  **Godkännande:** Vänta på "go-ahead" om ändringen påverkar kärnarkitekturen.
-
----
-
-# 🏗️ Arkitektoniska Guardrails
-* **Zero-Trust Input:** Validera all extern data med **Zod**.
-* **Type Safety:** Ingen användning av `any`. Använd `satisfies` och strikta interfaces.
-* **Server-First:** Maximera användningen av **React Server Components**. Håll klientkomponenter vid "leaf nodes".
-* **Error Resilience:** Implementera alltid `try/catch`-block, loggning och användarvänliga felmeddelanden via Error Boundaries.
-
----
-
-# 🚀 Workflow-instruktioner
-* **Autonoma Loopar:** Verifiera kod genom att köra `npm run build` eller relevanta tester i terminalen innan resultat presenteras.
-* **Self-Healing:** Vid fel i terminalen: analysera felet, föreslå en fix och kör igen automatiskt om behörighet finns.
-* **Context Pinning:** Utgå alltid från att `.antigravityrules` och `ARCHITECTURE.md` är sanningen.
-
----
-
-# 📝 Kommunikationsstil
-* **Koncis & Teknisk:** Inget fluff. Gå direkt på teknisk essens.
-* **Evidensbaserad:** Förklara *varför* en optimering föreslås (t.ex. "minskar re-renders" eller "optimerar DB-index").
-* **Visualisering:** Använd **Mermaid-diagram** i Artifacts för att förklara komplexa dataflöden eller arkitekturändringar.
-
----
-
-# 🔍 Context Verification Protocol (CVP)
-Innan kod genereras ska följande verifieras:
-
-1. **Scripts:** Kontrollera `package.json` för tillgängliga `agent:*` kommandon.
-2. **Arkitektur:** Läs `ARCHITECTURE.md` för att validera arkitektonisk alignment.
-3. **Schema:** Om datastrukturer ändras, verifiera mot `prisma/schema.prisma`.
-4. **Debt:** Logga eventuella workarounds i `DEBT.md` för framtida cleanup.
-
-# 🏷️ Naming Conventions
-* **Task Names:** Måste strikt följa formatet `[DOMAIN] <Short Description>`.
-* **Domains:** `[INFRA]`, `[GAME]`, `[SPRINT]`, `[QA]`, `[BIO]`, `[BUSINESS]`, `[API]`, `[META]`.
-* **Sidebar Hygiene:** Syftet är att hålla "Workspaces"-listan skanningsbar.
-
-# 🚫 Zero Manual Validation Protocol
-Inga ändringar får märkas som "Completed" utan automatiserat bevis.
-- **Backend/Logic:** Kräver gröna Unit Tests (Vitest).
-- **UI/Feature:** Kräver gröna E2E Tests (Playwright) ELLER Screenshot bevis från `browser_subagent`.
-- **Infrastructure:** Kräver verifierad build och successful health check.
-- **Deployment:** Kräver automatiserad smoke test.
-
-Manuell verifiering accepteras **INTE** som definition of done.
+**Comm Style:** Concise. Evidence-based. No fluff. Logic-first.
 

@@ -201,11 +201,12 @@ export const ProgressionService = {
     mood: string,
     subscriptionTier: string,
     decreeType?: string,
+    level: number = 999 // Default to high level (no bonus) if not provided
   ): number {
     let mult = 1.0;
 
-    // Streak: +1% per day, cap at 20%
-    mult += Math.min(streak * 0.01, 0.2);
+    // Streak: +1% per day, cap at 30% (reward consistency)
+    mult += Math.min(streak * 0.01, 0.3);
 
     // Mood
     if (["HAPPY", "FOCUSED"].includes(mood)) {
@@ -219,7 +220,13 @@ export const ProgressionService = {
 
     // Decree
     if (decreeType === "BUFF") {
-      mult += 0.5;
+      mult += 0.3; // Reduced from 0.5 to reduce RNG dependency
+    }
+
+    // Apprentice Boost (Newbie Gains)
+    // Helps beginners catch up during the first 10 levels
+    if (level <= 10) {
+      mult += 0.5; // +50% XP
     }
 
     return parseFloat(mult.toFixed(2));

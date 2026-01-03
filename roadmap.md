@@ -70,11 +70,15 @@
 - [x] **Battle Pass** ([Spec](specs/battle-pass.md)) <!-- status: shipped | priority: critical | roi: 5.0 | effort: M | source: brainstorm | date: 2025-12-29 -->
 
 ### High Priority (New Features)
-- [ ] **Oracle 3.0** ([Spec](specs/ai-training-coach.md)) <!-- status: planned | priority: high | roi: 4.8 | effort: M | source: enhancement -->
 - [ ] **Guild Territories** ([Spec](specs/guild-territories.md)) <!-- status: planned | priority: high | roi: 4.6 | effort: L | source: brainstorm -->
+- [ ] **Oracle 3.0 (Phase 2)** - Advanced Audio Coaching <!-- status: planned | priority: high | roi: 4.8 | effort: M | source: enhancement -->
 
-### High Priority (Enhancements to Existing)
-- [ ] **Power Rating System** ([Spec](specs/power-rating-system.md)) <!-- status: planned | priority: high | roi: 4.5 | effort: M | source: team-discussion -->
+### High Priority (Enhancements to_Existing)
+- [/] **Oracle 3.0 (Phase 1)** <!-- status: shipped | priority: high | roi: 4.8 | effort: M | source: enhancement -->
+  - [x] Volume Spike Detection
+  - [x] PvP Context Awareness
+  - [x] Push Notification Service
+  - [x] Power Rating Tier Messaging
 - [ ] **Arena PvP Seasons** ([Spec](specs/arena-pvp-seasons.md)) <!-- status: planned | priority: high | roi: 4.7 | effort: M | source: gap-analysis -->
 - [ ] **World Events Enhancement** ([Spec](specs/world-events-enhancement.md)) <!-- status: planned | priority: high | roi: 4.5 | effort: S | source: gap-analysis -->
 - [ ] **Campaign Mode Enhancement** ([Spec](specs/campaign-mode-enhancement.md)) <!-- status: planned | priority: high | roi: 4.3 | effort: L | source: gap-analysis -->

@@ -155,6 +155,7 @@ export async function awardTitanXpAction(
       titan.mood,
       user?.subscriptionTier || "FREE",
       decree?.type,
+      titan.level,
     );
 
     const adjustedAmount = Math.floor(amount * multiplier);

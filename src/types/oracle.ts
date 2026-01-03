@@ -9,8 +9,10 @@ export interface OracleDecree {
   description: string;
   actions: {
     lockFeatures?: string[]; // ["HEAVY_LIFT", "PVP"]
+    lockTraining?: boolean;  // Full lock of training generation
     unlockBuffs?: string[];  // ["XP_BOOST"]
     notifyUser: boolean;
+    triggerNotification?: string; // Specific push template
     urgency: "LOW" | "MEDIUM" | "HIGH";
   };
   effect?: {

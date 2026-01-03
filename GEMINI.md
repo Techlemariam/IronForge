@@ -28,8 +28,10 @@ Detta dokument definierar de specialiserade agenter som utgör IronForge-teamet.
 | Agent | Command | Description |
 | :--- | :--- | :--- |
 | **Titan Coach** | `/titan-coach` | **Bio-Game Bridge & Performance.** Fysiologi (Intervals/Hevy) meet Game Mechanics. Metodik + Balans. |
-| **Librarian** | `/librarian` | **Knowledge & Graph.** Dokumentation, historik och semantisk kodbas-sökning. |
+| **Librarian** | `/librarian` | **Knowledge & Graph.** Dokumentation, historik, semantisk kodbas-sökning och codebase-graf (owns knowledge). |
 | **Cleanup** | `/cleanup` | **Debt Resolution.** Autonomt fixar items i `DEBT.md`. |
+| **Strategist** | `/strategist` | **Business Strategy.** Prisättning, marknadsanalys och tillväxtstrategi. |
+| **Writer** | `/writer` | **Narrative Design.** Story, dialog och världsbygge. |
 
 ## ⚙️ Meta & Process
 | Agent | Command | Description |
@@ -37,5 +39,4 @@ Detta dokument definierar de specialiserade agenter som utgör IronForge-teamet.
 | **Polish** | `/polish` | **Code Cleanup.** ESLint fix, Prettier, import sorting, dead code. |
 | **Perf** | `/perf` | **Performance.** Bundle analysis, RSC optimization, Lighthouse. |
 | **Platform** | `/platform` | **Cross-Device.** Analyserar features för Desktop, Mobile, TV Mode, Companion. |
-| **Knowledge** | `/knowledge` | **Codebase Graph.** Semantic knowledge graph, dependency analysis, impact queries. |
 

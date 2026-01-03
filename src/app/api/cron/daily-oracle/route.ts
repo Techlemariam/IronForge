@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { OracleService } from "@/services/oracle";
+import { PushNotificationService } from "@/services/PushNotificationService";
 import { revalidatePath } from "next/cache";
 import { withCronMonitor } from "@/lib/sentry-cron";
 
@@ -66,6 +67,17 @@ const handler = async (request: NextRequest) => {
                             message: `🔮 ${decree.label}`,
                         },
                     });
+
+                    // NEW: Send Push Notification (Oracle 3.0)
+                    try {
+                        await PushNotificationService.sendToUser(titan.userId, {
+                            title: `Oracle Decree: ${decree.label}`,
+                            body: decree.description,
+                            url: "/citadel", // Link to Oracle/Citadel page
+                        });
+                    } catch (pushErr) {
+                        console.error(`[Oracle Cron] Push failed for ${titan.userId}:`, pushErr);
+                    }
 
                     decreesIssued++;
                 }
