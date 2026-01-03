@@ -1,6 +1,8 @@
 ---
 description: Automated cleanup agent for resolving technical debt
 command: /cleanup
+category: action
+trigger: manual
 ---
 
 # The Cleanup Agent

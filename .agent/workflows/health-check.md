@@ -1,5 +1,8 @@
 ---
 description: health-check
+command: /health-check
+category: meta
+trigger: manual
 ---
 
 # Workflow: /health-check

@@ -1,5 +1,8 @@
 ---
 description: Platform analysis for cross-device feature design
+command: /platform
+category: meta
+trigger: manual
 ---
 # Workflow: /platform [feature-name]
 Trigger: Manual

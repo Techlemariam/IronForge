@@ -1,5 +1,8 @@
 ---
 description: Initialize a focused domain session for a specific app area
+command: /domain-session
+category: meta
+trigger: manual
 ---
 
 # Domain Session Workflow
@@ -72,11 +75,11 @@ Based on priority and dependencies, suggest what to work on.
 
 Ask the user:
 
-> **Vad vill du fokusera på i denna session?**
-> 1. 🆕 **Ny feature** - Planera och implementera något nytt
-> 2. 🐛 **Bugfix/Debt** - Fixa existerande problem
-> 3. 🔍 **Research** - Utforska och förstå domänen bättre
-> 4. 📋 **Review** - Granska och förbättra existerande kod
+> **What do you want to focus on in this session?**
+> 1. 🆕 **New Feature** - Plan and implement something new
+> 2. 🐛 **Bugfix/Debt** - Fix existing issues
+> 3. 🔍 **Research** - Explore and understand the domain better
+> 4. 📋 **Review** - Review and improve existing code
 
 Based on selection, trigger appropriate sub-workflow.
 **CRITICAL:** When starting the new workflow/task, the Task Name MUST be: `[DOMAIN] <Description>`

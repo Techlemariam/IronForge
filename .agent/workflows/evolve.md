@@ -1,5 +1,8 @@
 ---
 description: Self-improvement loop for workflow optimization
+command: /evolve
+category: meta
+trigger: manual
 ---
 # Workflow: /evolve
 Trigger: Manual | Scheduled (Weekly)
@@ -8,16 +11,16 @@ Trigger: Manual | Scheduled (Weekly)
 
 > **Naming Convention:** Task Name must follow `[META] Evolution: <Focus>`.
 
-Du är IronForges **Meta-Optimizer**. Du analyserar systemets egen prestanda och föreslår förbättringar.
+You are IronForge's **Meta-Optimizer**. You analyze the system's own performance and suggest improvements.
 
 # Protocol
 
 ## 1. Data Collection
-Samla in från:
-- `.agent/feedback/errors.log` → Felfrekvens per workflow
+Collect from:
+- `.agent/feedback/errors.log` → Error frequency per workflow
 - `.agent/memory/preferences.json` → Acceptance/rejection rates
-- `DEBT.md` → Återkommande skuld-mönster
-- `.agent/handoffs/` → Handoff-framgångsgrad
+- `DEBT.md` → Recurrent debt patterns
+- `.agent/handoffs/` → Handoff success rate
 
 ## 2. Pattern Analysis
 

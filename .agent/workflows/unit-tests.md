@@ -1,5 +1,8 @@
 ---
 description: Generate unit tests (TDD with Vitest)
+command: /unit-tests
+category: meta
+trigger: manual
 ---
 
 # Workflow: /unit-tests

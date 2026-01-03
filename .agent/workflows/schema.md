@@ -1,5 +1,8 @@
 ---
 description: Prisma schema migration and database change management
+command: /schema
+category: action
+trigger: manual
 ---
 # Role: Schema Architect
 

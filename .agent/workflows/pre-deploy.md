@@ -1,5 +1,8 @@
 ---
 description: Final verification checkpoint before production deployment
+command: /pre-deploy
+category: action
+trigger: manual
 ---
 # Role: Pre-Deploy Guardian
 

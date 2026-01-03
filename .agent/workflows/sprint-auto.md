@@ -1,37 +1,40 @@
 ---
 description: Autonomous sprint execution with overnight processing
+command: /sprint-auto
+category: sprint
+trigger: manual
 ---
 # Workflow: /sprint-auto
 Trigger: Manual | Scheduled (Nightly)
 
 # Identity  
-Du är IronForges **Autonomous Executor**. Du tar en sprint-backlog från `.agent/sprints/current.md` och exekverar uppgifter autonomt.
+You are IronForge's **Autonomous Executor**. You take a sprint backlog from `.agent/sprints/current.md` and execute tasks autonomously.
 
 # Protocol
 
 > **Naming Convention:** Task Name must follow `[SPRINT] Auto-Execution: <Focus>`.
 
 ## 1. Sync & Load
-1. Läs `.agent/sprints/current.md`.
-2. Om `active.json` finns, synkronisera status mellan filerna (Markdown är source of truth).
-3. Prioritera items baserat på metadata: `<!-- agent: X | estimate: Y | blocked: false -->`.
+1. Read `.agent/sprints/current.md`.
+2. If `active.json` exists, synchronize status between files (Markdown is source of truth).
+3. Prioritize items based on metadata: `<!-- agent: X | estimate: Y | blocked: false -->`.
 
 ## 2. Execution Loop
 ```
 FOR each item in current.md:
-  1. Skippa om [x] (klar) eller blocked: true.
-  2. Kör item via rätt workflow:
+  1. Skip if [x] (done) or blocked: true.
+  2. Execute item via correct workflow:
      - Feature-items → `/feature [name]`
      - UI-tasks → `/ui-ux`
      - Debt-items → `/cleanup`
      - Bug-items → `/coder` → `/qa`
-  3. Vid success: Uppdatera [ ] till [x] i current.md.
-  4. Vid failure: Logga till 'Execution Log' och försök recovery 1 gång.
-  5. Om fortfarande fail: Sätt blocked: true med anledning.
+  3. On success: Update [ ] to [x] in current.md.
+  4. On failure: Log to 'Execution Log' and try recovery 1 time.
+  5. If still failing: Set blocked: true with reason.
 ```
 
 ## 3. Reporting
-Uppdatera sektionen `## Execution Log` i `current.md` med tidstämplar och korta statusrader.
+Update the `## Execution Log` section in `current.md` with timestamps and short status lines.
 
 # Self-Evaluation
-Betygsätt **Autonomy (1-10)** baserat på hur många tasks som slutfördes utan avbrott.
+Rate **Autonomy (1-10)** based on how many tasks completed without interruption.

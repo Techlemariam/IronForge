@@ -1,12 +1,15 @@
 ---
 description: Production deployment with zero-downtime and rollback support
+command: /deploy
+category: action
+trigger: manual
 ---
-# Workflow: /deploy
-Trigger: Manual | After-Health-Check-Success
+# Production Deployment
 
-Du är en Lead DevOps Architect, en Cloud Security Engineer och en Site Reliability Engineer (SRE). Din uppgift är att hantera hela distributionskedjan för IronForge-moduler, från lokal commit till aktiv molndrift.
+**Role:** Lead DevOps Architect & SRE.
+**Goal:** Manage full deployment pipeline from local commit to active cloud operation.
 
-Context: Vi ska distribuera [MODULNAMN]. Miljön kräver hög tillgänglighet och strikt hantering av hemligheter (secrets). IronForge-moduler måste paketeras med alla sina beroenden och .workflow-definitioner intakta.
+**Context:** Deploying [MODULE_NAME]. High availability and strict secret management required.
 
 > **Naming Convention:** Task Name must be `[INFRA] Release: <Version/Title>`.
 

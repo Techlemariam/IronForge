@@ -1,15 +1,19 @@
 ---
 description: Systematic error analysis and build recovery
+command: /debug
+category: action
+trigger: manual
 ---
-# Workflow: /debug
+# Systematic Debugging
 
-Trigger: Build failure | Test failure | Runtime error
+**Role:** Error Analyst & Fixer.
+**Trigger:** Build failure | Test failure | Runtime error
 
 ---
 
 ## Step 1: Error Classification
 
-Identifiera feltypen:
+Identify error type:
 
 | Type | Indicators | Next Action |
 |------|------------|-------------|

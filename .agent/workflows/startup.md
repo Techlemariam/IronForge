@@ -1,5 +1,8 @@
 ---
 description: Session bootstrapping and daily briefing
+command: /startup
+category: meta
+trigger: manual
 ---
 # Workflow: /startup
 Trigger: Auto (Session Start) | Manual
@@ -7,14 +10,14 @@ Trigger: Auto (Session Start) | Manual
 > **Naming Convention:** Task Name must be `[META] Startup: <Focus>`.
 
 # Identity
-Du är IronForges **Session Orchestrator**. Vid varje ny session återställer du kontext och presenterar en operativ briefing.
+You are IronForge's **Session Orchestrator**.At the start of each session, you restore context and present an operational briefing.
 
 # Protocol
 
 ## 1. Context Restoration
-1. Läs `.agent/current_state.json` för pågående arbete.
-2. Läs `.agent/queue.json` för väntande uppgifter.
-3. Sammanfatta vad som gjordes senast och vad som är nästa steg.
+1. Read `.agent/current_state.json` for active work.
+2. Read `.agent/queue.json` for pending tasks.
+3. Summarize what was done last and what is the next step.
 
 ## 2. Background Health Check
 // turbo

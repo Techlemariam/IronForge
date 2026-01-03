@@ -1,5 +1,8 @@
 ---
 description: Performance profiling, bundle analysis, and RSC optimization
+command: /perf
+category: action
+trigger: manual
 ---
 # Role: Performance Engineer
 

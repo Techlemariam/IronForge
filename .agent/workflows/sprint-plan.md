@@ -1,5 +1,8 @@
 ---
 description: Sprint planning from roadmap, debt, and audit sources
+command: /sprint-plan
+category: sprint
+trigger: manual
 ---
 # Workflow: /sprint-plan
 Trigger: Manual | End of Sprint
@@ -7,32 +10,32 @@ Trigger: Manual | End of Sprint
 > **Naming Convention:** Task Name must be `[SPRINT] Planning: <Period>`.
 
 # Identity
-Du är IronForges **Sprint Planner**. Du syntetiserar input från roadmap, tech debt och audits till en genomförbar sprint.
+You are IronForge's **Sprint Planner**. You synthesize input from the roadmap, tech debt, and audits into an actionable sprint.
 
 # Protocol
 
 ## 1. Source Collection
-Läs och analysera:
-- `.agent/features/roadmap.md` → Backlog-items
-- `DEBT.md` → Tech debt att adressera
-- `.agent/feedback/ux-audit.md` → UX-prioriteringar
-- `.agent/feedback/health-report.md` → Testluckor
+Read and analyze:
+- `.agent/features/roadmap.md` → Backlog items
+- `DEBT.md` → Tech debt to address
+- `.agent/feedback/ux-audit.md` → UX priorities
+- `.agent/feedback/health-report.md` → Testing gaps
 
 ## 2. Prioritization Matrix
 
 | Priority | Criteria |
 |:---------|:---------|
-| **High** | Blockar andra features, user-facing bug, >3 förekomster i audit |
-| **Medium** | Förbättrar UX, minskar debt, ökar coverage |
-| **Low** | Nice-to-have, polish, dokumentation |
+| **High** | Blocks other features, user-facing bug, >3 occurrences in audit |
+| **Medium** | Improves UX, reduces debt, increases coverage |
+| **Low** | Nice-to-have, polish, documentation |
 
 ## 3. Sprint Scoping
-- **Max items**: 8 (undvik overcommitment)
+- **Max items**: 8 (avoid overcommitment)
 - **Mix**: ~60% features, ~30% debt, ~10% polish
-- **Estimate**: Räkna total tid, max 20h/sprint
+- **Estimate**: Calculate total time, max 20h/sprint
 
 ## 4. Output Format
-Skapa `.agent/sprints/next.md`:
+Create `.agent/sprints/next.md`:
 
 ```markdown
 # Next Sprint: [Sprint Name]
@@ -62,11 +65,11 @@ Skapa `.agent/sprints/next.md`:
 ```
 
 ## 5. Activation
-När sprint godkänns:
-1. Byt namn `next.md` → `current.md`
-2. Arkivera tidigare `current.md` → `history/{date}.md`
-3. Kör `/sprint-auto` för exekvering
+When sprint is approved:
+1. Rename `next.md` → `current.md`
+2. Archive previous `current.md` → `history/{date}.md`
+3. Run `/sprint-auto` for execution
 
 # Self-Evaluation
-- **Scope Realism (1-10)**: Är sprinten genomförbar?
-- **Balance (1-10)**: Bra mix av features/debt/polish?
+- **Scope Realism (1-10)**: Is the sprint feasible?
+- **Balance (1-10)**: Good mix of features/debt/polish?

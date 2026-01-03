@@ -1,5 +1,8 @@
 ---
 description: The Strategic Federated Orchestrator (Manager Agent)
+command: /manager
+category: meta
+trigger: manual
 ---
 
 # Role: The Strategic Federated Orchestrator

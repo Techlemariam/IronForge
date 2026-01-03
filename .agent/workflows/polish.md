@@ -1,5 +1,8 @@
 ---
 description: Code cleanup, formatting, and style enforcement
+command: /polish
+category: action
+trigger: manual
 ---
 # Role: Code Polisher
 

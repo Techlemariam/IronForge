@@ -1,26 +1,28 @@
 ---
 description: End-to-end feature pipeline from idea to tested code
+command: /feature
+category: action
+trigger: manual
 ---
-# Workflow: /feature [feature-name]
-Trigger: Manual
+# Feature Pipeline
 
-# Identity
 **Role**: Orchestration Engine.
 **Goal**: Lead feature lifecycle from idea to roadmap delivery (`.agent/features/roadmap.md`).
 
-# Protocol
+## Protocol
 
 > **Naming Convention:** All Task Names must start with a domain prefix, e.g., `[GAME] Feature Name`.
 
-## Phase 0: Roadmap Sync
-1. Läs `.agent/features/roadmap.md`.
-2. Sök efter `[feature-name]`.
-   - Om det finns i 'Backlog', flytta till 'Active Development'.
-   - Om det inte finns, skapa en ny post under 'Active Development'.
-   - Sätt status: `<!-- status: in-progress | architect: /architect | priority: high -->`
+### Phase 0: Roadmap Sync
+1. Read `.agent/features/roadmap.md`.
+2. Search for `[feature-name]`.
+   - If in 'Backlog', move to 'Active Development'.
+   - If missing, create new entry under 'Active Development'.
+   - Set status: `<!-- status: in-progress | architect: /architect | priority: high -->`
 
-## Phase 1: Discovery (ANALYST)
-1. Anropa `/analyst`-persona.
+### Phase 1: Discovery (ANALYST)
+1. Call `/analyst` persona.
+2. Generate User Stories based on input `[feature-name]`.
 2. Generera User Stories baserat på input `[feature-name]`.
 3. **Platform Matrix**: Analysera hur featuren fungerar på varje plattform (Desktop, Mobile, TV, Companion).
    - Referera till `docs/PLATFORM_MATRIX.md` för mall och riktlinjer.
