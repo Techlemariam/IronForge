@@ -51,7 +51,7 @@
 | 2026-01-01 | `src/app/api/cron/daily-oracle/route.ts` | Missing Sentry Monitoring | @infrastructure | ✅ Resolved |
 | 2026-01-03 | `src/services/game/PowerRatingService.ts` | Hardcoded adherence (MVP). Link to WeeklyPlan required for V2. | @architect | ✅ Resolved |
 | 2026-01-03 | `src/actions/training.ts` | Hardcoded 5 XP for Battle Pass. Needs dynamic calculation. | @game-designer | ✅ Resolved |
-| 2026-01-03 | `src/app/api/webhooks/strava/route.ts` | Missing comprehensive test coverage for webhook logic. | @qa | ⚠️ Open |
+| 2026-01-03 | `src/app/api/webhooks/strava/route.ts` | Missing comprehensive test coverage for webhook logic. | @qa | ✅ Resolved |
 
 ---
 
