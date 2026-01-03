@@ -1,43 +1,62 @@
-# Feature Spec: Cardio PvP Duels
+# 🏃‍♂️ Cardio PvP Duels Specification
 
-## 🎯 Goal
-Enable players to challenge friends or strangers to real-time (or async) cardio battles where physical effort translates to game dominance.
+**Status:** In-Progress
+**Domain:** Game / PvP
+**Integration:** Strava / Intervals.icu (via Webhooks)
 
-## 🎮 Game Modes
-1. **Distance Race** (Running/Cycling): First to X km wins.
-2. **Speed Demon** (Running/Cycling): Highest average pace over X minutes.
-3. **Elevation Grind** (Cycling): Most elevation gained in X minutes.
+## 1. Concept
+Real-time or asynchronous cardio competitions between users. Unlike Titan Duels (which are auto-battles based on stats), Cardio Duels are settled by actual physical activity.
 
-## 🏗️ Architecture
-- **Data Source**: Strava/Garmin via `src/services/integration`.
-- **State Management**: RethinkDB/Supabase Realtime for "Live" feel.
-- **Validation**: Server-side verification of workout timestamps vs Duel window.
+## 2. Duel Modes
 
-## 📱 UI Components
-- `DuelLobby`: Create/Join interface.
-- `DuelArena`: Live view of progress bars (You vs Opponent).
-- `DuelResult`: Winner declartion + XP/Gold rewards.
+### A. Distance Race (Asynchronous / Real-time)
+*   **Goal:** Be the first to cover X km.
+*   **Target:** 5km, 10km, 21km, 42km.
+*   **Logic:**
+    *   Both players start at 0 distance.
+    *   Webhooks update `challengerDistance` and `defenderDistance`.
+    *   First to reach `targetDistance` wins.
+*   **Edge Case:** If both upload activities completing the distance at slightly different times, the one who finished *earlier in wall-clock time* wins (using activity start_time + duration).
 
-## 💾 Database Schema
-```prisma
-model Duel {
-  id        String   @id @default(cuid())
-  type      DuelType // DISTANCE, SPEED, ELEVATION
-  status    DuelStatus // PENDING, ACTIVE, FINISHED
-  target    Float    // e.g. 5.0 (km) or 30 (min)
-  
-  challengerId String
-  opponentId   String?
-  
-  createdAt DateTime @default(now())
-  winnerId  String?
-}
-```
+### B. Speed Demon (Asynchronous)
+*   **Goal:** Fastest time to complete X distance.
+*   **Target:** 1km, 5km.
+*   **Logic:**
+    *   Challenger sets a time (e.g., 5km in 25:00).
+    *   Defender has 24h to beat it.
+    *   Logic compares `moving_time` for the matching distance segment.
 
-## ⚠️ Edge Cases
-- **Sync Delay**: Strava might delay webhook. UI must handle "Waiting for data...".
-- **Cheating**: Import limits? (Future scope).
+### C. Elevation Grind (Cycling Only)
+*   **Goal:** Climb X meters of vertical gain.
+*   **Target:** 500m, 1000m, 2000m.
 
-## 📅 Phases
-1. **Phase 1**: Async Duels (Finish workout -> Sync -> Check Winner).
-2. **Phase 2**: "Clash" Mode (Live data polling).
+## 3. Matchmaking
+*   **Primary Factor:** Power Rating (Titan Score).
+*   **Secondary Factor:** W/kg Tier (e.g. 3.0-3.5 W/kg).
+*   **Logic:**
+    *   User looks for opponent.
+    *   System queries `User.titan.powerRating` +/- 100.
+    *   Displays 3 potential rivals.
+
+## 4. UI/UX
+*   **Duel Card:** Shows progress bars for both players.
+*   **Updates:** "Live" updates if multiple short activities are synced, or one big update.
+*   **Taunt System:** "Send Taunt" button sends push notification.
+
+## 5. Rewards (via `DuelRewardsService`)
+*   **Winner:**
+    *   High XP (function of distance/effort).
+    *   Gold.
+    *   Chance for Kinetic Shards.
+*   **Loser:**
+    *   Participation XP (30% of winner).
+    *   Small Gold.
+
+## 6. Technical Flow
+1.  **Challenge Created:** `DuelChallenge` record created with `duelType="DISTANCE_RACE"`.
+2.  **Activity Synced:** Strava Webhook -> `processCardioLog` -> `updateCardioDuelProgress`.
+3.  **Progress Check:** Update `challengerDistance` += activity.distance.
+4.  **Win Check:** If `newDistance >= targetDistance`:
+    *   Mark `winnerId`.
+    *   Calculate Rewards.
+    *   Notify users.

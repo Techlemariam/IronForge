@@ -5,6 +5,7 @@ import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { TrainingPath } from "@/types/training";
 import { processWorkoutLog } from "@/services/challengeService";
+import { addBattlePassXpAction } from "@/actions/battle-pass";
 
 export type TitanLogResult = {
   success: boolean;
@@ -93,8 +94,8 @@ export async function logTitanSet(
     try {
       await processWorkoutLog(user.id, weight, reps);
       // Award Battle Pass XP (5 XP per set)
-      // TODO: Implement addBattlePassXpAction
-      // await addBattlePassXpAction(user.id, 5);
+      // Award Battle Pass XP (5 XP per set)
+      await addBattlePassXpAction(user.id, 5);
     } catch (e) {
       console.error("Challenge Sync Failed", e);
     }
