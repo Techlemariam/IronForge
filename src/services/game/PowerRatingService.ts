@@ -12,12 +12,46 @@ import { TrainingContextService } from "@/services/data/TrainingContextService";
 export class PowerRatingService {
 
     /**
+     * Helper to get target sessions from WeeklyPlan or Fallback defaults.
+     */
+    private static async getTargetSessions(userId: string, type: 'STRENGTH' | 'CARDIO'): Promise<number> {
+        // Find the most recent WeeklyPlan
+        const plan = await prisma.weeklyPlan.findFirst({
+            where: { userId },
+            orderBy: { weekStart: 'desc' }
+        });
+
+        if (plan && plan.plan) {
+            // Parse the JSON plan
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const dayPlans = plan.plan as any[];
+
+            // Count scheduled non-rest days
+            // Note: This assumes the Oracle schedules mixed strength/cardio. A simplistic check for !isRestDay is a good proxy for "Activity Days".
+            // A more advanced check would parse the recommendation title/type.
+            const plannedDays = dayPlans.filter(d => !d.isRestDay).length;
+
+            // For now, assume total activity is split 60/40 Strength/Cardio roughly, 
+            // or just use total volume as adherence target if we don't distinguish types in the Plan JSON yet.
+            // Since OracleRecommendation types are coarse (RECOVERY vs GRIND), let's estimate:
+
+            if (plannedDays > 0) {
+                // Fallback Logic based on type since Plan doesn't strictly tag "Cardio Day" vs "Leg Day" in types yet
+                if (type === 'STRENGTH') return Math.max(2, Math.ceil(plannedDays * 0.6));
+                if (type === 'CARDIO') return Math.max(1, Math.ceil(plannedDays * 0.4));
+            }
+        }
+
+        // Default Fallback (MVP)
+        return type === 'STRENGTH' ? 3 : 2;
+    }
+
+    /**
      * Calculate MRV Adherence based on recent exercise logs vs planned counts.
-     * Returns 0.0 - 1.0
+     * Returns 0.0 - 1.0 (capped)
      */
     static async calculateStrengthAdherence(userId: string): Promise<number> {
-        // For MVP: Look at last 14 days of logs vs a baseline expectation (e.g. 3 sessions/week)
-        // TODO: In V2, link to actual WeeklyPlan MRV targets
+        // Look at last 14 days
         const twoWeeksAgo = new Date();
         twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
 
@@ -29,22 +63,23 @@ export class PowerRatingService {
             select: { date: true }
         });
 
-        // Group by day to count sessions
+        // Group by day to count unique sessions
         const sessionDates = new Set(logs.map(l => l.date.toISOString().split('T')[0]));
-        const sessionCount = sessionDates.size;
+        const actualSessions = sessionDates.size;
 
-        // Target: 3 sessions/week * 2 weeks = 6 sessions
-        const targetSessions = 6;
+        // Target: 2 weeks of volume
+        const weeklyTarget = await this.getTargetSessions(userId, 'STRENGTH');
+        const totalTarget = weeklyTarget * 2;
 
-        return Math.min(1.0, sessionCount / targetSessions);
+        return Math.min(1.1, actualSessions / totalTarget); // Allow small over-adherence buffer (110%)
     }
 
     /**
      * Calculate Cardio Adherence based on recent cardio logs.
-     * Returns 0.0 - 1.0
+     * Returns 0.0 - 1.0 (capped)
      */
     static async calculateCardioAdherence(userId: string): Promise<number> {
-        // For MVP: Look at last 14 days. Target 2 sessions/week.
+        // Look at last 14 days
         const twoWeeksAgo = new Date();
         twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
 
@@ -56,11 +91,13 @@ export class PowerRatingService {
             select: { date: true }
         });
 
-        const sessionCount = logs.length;
-        // Target: 2 sessions/week * 2 weeks = 4 sessions
-        const targetSessions = 4;
+        const actualSessions = logs.length;
 
-        return Math.min(1.0, sessionCount / targetSessions);
+        // Target: 2 weeks of volume
+        const weeklyTarget = await this.getTargetSessions(userId, 'CARDIO');
+        const totalTarget = weeklyTarget * 2;
+
+        return Math.min(1.1, actualSessions / totalTarget);
     }
 
     /**
