@@ -23,7 +23,6 @@ export class PowerRatingService {
 
         if (plan && plan.plan) {
             // Parse the JSON plan
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const dayPlans = plan.plan as any[];
 
             // Count scheduled non-rest days
