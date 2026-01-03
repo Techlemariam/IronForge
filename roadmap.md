@@ -122,17 +122,15 @@
 ### Medium Priority (Observability & Resilience)
 
 
-- [ ] **Database Migration CI Guard Enhancement** <!-- status: planned | priority: medium | roi: 3.3 | effort: S | source: infrastructure-audit -->
-  - Rationale: `database-guard.yml` exists but drift check logic is fragile (depends on directory listing).
-  - Scope: Use `prisma migrate diff` instead of file checks.
+- [x] **Database Migration CI Guard Enhancement** <!-- status: shipped | priority: medium | roi: 3.3 | effort: S | source: infrastructure-audit | date: 2026-01-03 -->
+  - ✅ Implemented: Uses `prisma migrate diff --exit-code` with shadow database in CI.
 - [x] **Cron Job Monitoring** <!-- status: shipped | priority: medium | roi: 3.2 | effort: S | source: infrastructure-audit -->
   - Rationale: `vercel.json` has cron job but no alerting if it fails.
   - Scope: Add uptime monitoring (Checkly, Cronitor) or Sentry cron monitoring.
 
 ### Low Priority (Nice to Have)
-- [ ] **Preview Deployments for PRs** <!-- status: planned | priority: low | roi: 3.0 | effort: S | source: infrastructure-audit -->
-  - Rationale: No preview URLs commented on PRs. Vercel does this but needs GitHub integration verification.
-  - Scope: Verify Vercel GitHub integration, add PR comment bot if missing.
+- [x] **Preview Deployments for PRs** <!-- status: shipped | priority: low | roi: 3.0 | effort: S | source: infrastructure-audit | date: 2026-01-03 -->
+  - ✅ Implemented: PR comments with preview URL via `actions/github-script`.
 - [ ] **Dockerfile for Local Development** <!-- status: planned | priority: low | roi: 2.5 | effort: M | source: infrastructure-audit -->
   - Rationale: Only `docker-compose.test.yml` exists. No unified dev container.
   - Scope: Create `Dockerfile` + `docker-compose.yml` for full local stack.

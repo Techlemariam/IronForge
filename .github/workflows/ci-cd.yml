@@ -9,7 +9,7 @@ on:
 
 permissions:
   contents: write
-  pull-requests: read
+  pull-requests: write
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -142,9 +142,10 @@ jobs:
   deploy-preview:
     name: 🚀 Deploy Preview
     needs: [verify] # Fast deploy after verification
-    if: github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' && github.base_ref != 'main'
+    if: github.event_name == 'pull_request' && github.actor != 'dependabot[bot]'
     environment:
       name: Preview
+      url: ${{ steps.deploy.outputs.url }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -161,10 +162,50 @@ jobs:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
       - name: Build and Deploy (Preview)
-        run: vercel deploy --token=${{ secrets.VERCEL_TOKEN }}
+        id: deploy
+        run: |
+          DEPLOY_URL=$(vercel deploy --token=${{ secrets.VERCEL_TOKEN }} 2>&1 | tail -1)
+          echo "url=$DEPLOY_URL" >> $GITHUB_OUTPUT
+          echo "Deployed to: $DEPLOY_URL"
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      - name: Comment Preview URL on PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const url = '${{ steps.deploy.outputs.url }}';
+            const sha = context.sha.substring(0, 7);
+            const body = `## 🚀 Preview Deployment Ready!\n\n` +
+              `| Environment | URL |\n` +
+              `|-------------|-----|\n` +
+              `| **Preview** | [${url}](${url}) |\n\n` +
+              `*Deployed from commit \`${sha}\`*`;
+            
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            const botComment = comments.find(c => 
+              c.user.type === 'Bot' && c.body.includes('Preview Deployment Ready')
+            );
+            
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body
+              });
+            }
 
   # ------------------------------------------------------------------
   # 🚧 DEPLOY STAGING (Main Branch)
