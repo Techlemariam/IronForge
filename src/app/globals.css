@@ -1,6 +1,66 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+    --color-forge-700: #1f2225;
+    --color-forge-800: #151719;
+    --color-forge-900: #0b0c0d;
+    --color-forge-950: #050505;
+    --color-forge-border: #2c2f33;
+
+    --color-magma: #ff3300;
+    --color-magma-light: #ef4444;
+
+    --color-warrior: #c79c6e;
+    --color-warrior-light: #ffd700;
+
+    --color-rarity-common: #a8a29e;
+    --color-rarity-rare: #0070dd;
+    --color-rarity-epic: #a335ee;
+    --color-rarity-legendary: #ff8000;
+
+    --font-family-serif: Cinzel, serif;
+    --font-family-sans: Lato, sans-serif;
+    --font-family-mono: "JetBrains Mono", monospace;
+
+    /* Keyframes */
+    @keyframes fade-in {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes pulse-glow {
+
+        0%,
+        100% {
+            box-shadow: 0 0 20px rgba(255, 128, 0, 0.4);
+            border-color: rgba(255, 128, 0, 0.7);
+        }
+
+        50% {
+            box-shadow: 0 0 30px rgba(255, 128, 0, 0.8);
+            border-color: rgba(255, 128, 0, 1);
+        }
+    }
+
+    @keyframes shimmer {
+        from {
+            background-position: -200% 0;
+        }
+
+        to {
+            background-position: 200% 0;
+        }
+    }
+
+    --animate-fade-in: fade-in 0.5s ease-in-out;
+    --animate-pulse-glow: pulse-glow 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    --animate-shimmer: shimmer 2s infinite linear;
+}
 
 @layer base {
     body {

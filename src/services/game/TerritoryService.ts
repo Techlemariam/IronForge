@@ -57,8 +57,8 @@ export interface Income {
 const BASE_CONTROL_FIRST_VISIT = 10;
 
 /** Control points for subsequent visits (diminishing) */
-const CONTROL_SECOND_VISIT = 5;
-const CONTROL_THIRD_PLUS_VISIT = 2;
+const CONTROL_SECOND_VISIT = 7;
+const CONTROL_THIRD_PLUS_VISIT = 4;
 
 /** Maximum control points a tile can have */
 const MAX_CONTROL_POINTS = 100;
@@ -70,7 +70,7 @@ const OWNERSHIP_THRESHOLD = 50;
 const HOME_ZONE_BONUS = 1.5;
 
 /** Control lost when rival visits your tile */
-const RIVAL_ATTACK_LOSS = 10;
+const RIVAL_ATTACK_LOSS = 7;
 
 /** Daily control loss cap per tile */
 const DAILY_LOSS_CAP = 50;
