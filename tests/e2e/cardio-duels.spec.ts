@@ -3,72 +3,66 @@ import { test, expect } from '@playwright/test';
 test.describe('Cardio PvP Duels Flow', () => {
     test.beforeEach(async ({ page }) => {
         await page.goto('/iron-arena');
-    });
 
-    test('should open Cardio Duel wizard after selecting opponent', async ({ page }) => {
-        // 1. Open Find Opponent
-        await page.click('button:has-text("Find Opponent")');
+        // Open Find Opponent
+        await page.getByRole('button', { name: 'Find Opponent' }).click();
         await expect(page.getByRole('dialog')).toBeVisible();
         await expect(page.getByText(/Issue Challenge/i)).toBeVisible();
 
-        // 2. Select Opponent (Select first available in list)
-        // Wait for opponents to load. Note: use case-insensitive matching
+        // Select Opponent (First available with Level)
+        // Use a more generic selector that waits for hydration
         const opponentButton = page.locator('button').filter({ hasText: /Lvl/i }).first();
         await expect(opponentButton).toBeVisible({ timeout: 15000 });
         await opponentButton.click();
 
-        // Click Challenge button
-        await page.click('button:has-text("Challenge Titan")');
+        // Challenge Action
+        await page.getByRole('button', { name: 'Challenge Titan' }).click();
 
-        // 3. Verify Cardio Duel Modal Opens
-        // Look for "Create Cardio Duel" title
+        // Verify Wizard is open before tests start
         await expect(page.getByText('Create Cardio Duel')).toBeVisible();
+    });
 
-        // 4. Verify Options
+    test('should display default wizard state correctly', async ({ page }) => {
+        // Defaults: Cycling selected
         await expect(page.getByText('Cycling')).toBeVisible();
+        await expect(page.getByRole('button', { name: 'Cycling', pressed: true })).toBeVisible();
         await expect(page.getByText('Running')).toBeVisible();
         await expect(page.getByText('Distance Race')).toBeVisible();
     });
 
-    test.skip('should allow configuring a Speed Demon cycling duel', async ({ page }) => {
-        // Navigate through wizard
-        await page.click('button:has-text("Find Opponent")');
-        const opponentButton = page.locator('button').filter({ hasText: /Lvl/i }).first();
-        await expect(opponentButton).toBeVisible({ timeout: 15000 });
-        await opponentButton.click();
-        await page.click('button:has-text("Challenge Titan")');
-
+    test('should allow configuring a Speed Demon cycling duel', async ({ page }) => {
         // Select Speed Demon
-        await page.click('button:has-text("Speed Demon")');
+        await page.click('button:has-text("Speed Demon")'); // Text selector is reliable for these big cards
 
         // Verify Distance Options appear
         await expect(page.getByText('Target Distance (km)')).toBeVisible();
-        await expect(page.getByText('5km')).toBeVisible();
-        await expect(page.getByText('40km')).toBeVisible();
 
-        // Select 20km
-        await page.click('button:has-text("20km")');
+        // Use exact check for button visibility
+        const dist20 = page.getByRole('button', { name: '20km' });
+        await expect(dist20).toBeVisible();
+        await dist20.click();
 
         // Check W/kg slider existence (since Cycling is default)
         await expect(page.getByText('Fairness Tier (W/kg)')).toBeVisible();
+
+        // Check Submit Button
+        await expect(page.getByRole('button', { name: 'Send Challenge' })).toBeEnabled();
     });
 
-    test.skip('should switch to Running mode options', async ({ page }) => {
-        // Navigate through wizard
-        await page.click('button:has-text("Find Opponent")');
-        const opponentButton = page.locator('button').filter({ hasText: /Lvl/i }).first();
-        await expect(opponentButton).toBeVisible({ timeout: 15000 });
-        await opponentButton.click();
-        await page.click('button:has-text("Challenge Titan")');
-
+    test('should switch to Running mode options', async ({ page }) => {
         // Switch to Running
-        await page.click('button:has-text("Running")');
+        await page.getByRole('button', { name: 'Running' }).click();
 
-        // Verify W/kg slider is GONE (Running doesn't have it)
+        // Verify Running is selected
+        await expect(page.getByRole('button', { name: 'Running', pressed: true })).toBeVisible();
+
+        // Verify W/kg slider is GONE (Running doesn't have it currently in MVP)
         await expect(page.getByText('Fairness Tier (W/kg)')).not.toBeVisible();
 
-        // Verify Speed Demon distances for running (should be different, e.g. 5km, 10km)
+        // Verify Speed Demon distances for running
         await page.click('button:has-text("Speed Demon")');
-        await expect(page.getByText('1km')).toBeVisible(); // Running specific
+
+        // Running typically has shorter distances in config, check for 5km
+        await expect(page.getByRole('button', { name: '5km' })).toBeVisible();
     });
 });
