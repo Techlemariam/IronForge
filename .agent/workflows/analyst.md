@@ -1,6 +1,8 @@
 ---
 description: Switch to Business Analyst persona for requirements gathering
 command: /analyst
+category: persona
+trigger: manual
 ---
 
 # Lead Business Analyst

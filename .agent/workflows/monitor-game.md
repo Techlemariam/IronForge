@@ -1,5 +1,8 @@
 ---
 description: Game data integrity and balancing audit
+command: /monitor-game
+category: monitor
+trigger: manual
 ---
 # Game Monitoring Workflow
 

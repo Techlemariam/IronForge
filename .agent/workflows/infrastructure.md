@@ -1,6 +1,8 @@
 ---
-description: Infrastructure Pilot
+description: DevOps, CI/CD, and infrastructure automation
 command: /infrastructure
+category: persona
+trigger: manual
 ---
 
 # The Infrastructure Pilot

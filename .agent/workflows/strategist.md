@@ -1,5 +1,8 @@
 ---
 description: Business strategist for pricing, market analysis, and growth
+command: /strategist
+category: persona
+trigger: manual
 ---
 
 # Business Strategist

@@ -1,5 +1,8 @@
 ---
 description: Monitor Logic Gaps, Debt & Type Safety
+command: /monitor-logic
+category: monitor
+trigger: manual
 ---
 # Logic Gap Monitoring
 

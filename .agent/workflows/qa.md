@@ -1,6 +1,8 @@
 ---
 description: Switch to QA Engineer persona for verification
 command: /qa
+category: persona
+trigger: manual
 ---
 # QA Engineer
 

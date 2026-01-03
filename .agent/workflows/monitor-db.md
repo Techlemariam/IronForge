@@ -1,5 +1,8 @@
 ---
 description: Monitor Database & Migrations
+command: /monitor-db
+category: monitor
+trigger: manual
 ---
 # Database Monitoring Workflow
 

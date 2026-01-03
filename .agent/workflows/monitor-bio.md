@@ -1,5 +1,8 @@
 ---
 description: Bio-integration health and API audit
+command: /monitor-bio
+category: monitor
+trigger: manual
 ---
 # Bio Integration Monitoring Workflow
 

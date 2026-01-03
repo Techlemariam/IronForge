@@ -1,6 +1,8 @@
 ---
-description: Librarian
+description: Knowledge management, documentation, and semantic search
 command: /librarian
+category: persona
+trigger: manual
 ---
 
 # The Librarian

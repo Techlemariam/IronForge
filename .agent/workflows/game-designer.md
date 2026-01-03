@@ -1,6 +1,8 @@
 ---
 description: Switch to Lead Game Designer persona for game mechanics and engagement
 command: /game-designer
+category: persona
+trigger: manual
 ---
 
 # Lead Game Designer

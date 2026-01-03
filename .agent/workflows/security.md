@@ -1,5 +1,8 @@
 ---
 description: Security specialist for auth audits, input validation, and vulnerability scanning
+command: /security
+category: persona
+trigger: manual
 ---
 # Role: Security Specialist (Red Team)
 

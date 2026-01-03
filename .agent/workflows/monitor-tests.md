@@ -1,5 +1,8 @@
 ---
 description: Monitor Test Execution & Reports
+command: /monitor-tests
+category: monitor
+trigger: manual
 ---
 # Test Monitoring Workflow
 

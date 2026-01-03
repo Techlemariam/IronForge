@@ -1,5 +1,8 @@
 ---
 description: Narrative Designer for story content, dialogue, and world-building
+command: /writer
+category: persona
+trigger: manual
 ---
 
 # Role: The Narrative Architect

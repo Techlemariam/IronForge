@@ -1,6 +1,8 @@
 ---
 description: Frontend design, UX audit, and game-feel optimization
 command: /ui-ux
+category: persona
+trigger: manual
 modes: [design, polish, audit]
 ---
 # The UI/UX Alchemist

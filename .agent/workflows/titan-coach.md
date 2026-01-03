@@ -1,5 +1,8 @@
 ---
 description: Bridge between exercise science and game mechanics (Titan Coach)
+command: /titan-coach
+category: persona
+trigger: manual
 ---
 # Workflow: /titan-coach
 Trigger: Manual | Post-Workout Analysis

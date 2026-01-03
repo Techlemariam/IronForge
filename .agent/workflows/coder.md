@@ -1,6 +1,8 @@
 ---
 description: Switch to Software Engineer persona for implementation
 command: /coder
+category: persona
+trigger: manual
 modes: [implement, boost, wire]
 ---
 # Senior Software Engineer

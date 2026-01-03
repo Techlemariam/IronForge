@@ -1,5 +1,8 @@
 ---
 description: Monitor Vercel Deployments
+command: /monitor-deploy
+category: monitor
+trigger: manual
 ---
 # Deployment Monitoring Workflow
 

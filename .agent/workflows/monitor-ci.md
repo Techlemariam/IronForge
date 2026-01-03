@@ -1,5 +1,8 @@
 ---
 description: Monitor CI/CD Workflows
+command: /monitor-ci
+category: monitor
+trigger: manual
 ---
 # CI/CD Monitoring Workflow
 

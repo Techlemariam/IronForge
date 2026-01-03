@@ -1,6 +1,8 @@
 ---
 description: Switch to System Architect persona for technical design
 command: /architect
+category: persona
+trigger: manual
 ---
 
 > **Naming Convention:** Task Name must follow `[DOMAIN] Description`.
