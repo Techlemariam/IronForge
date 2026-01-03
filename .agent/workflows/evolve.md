@@ -116,7 +116,7 @@ Med flagga `--auto-apply`:
 | **Analyst** | "What's the highest ROI?" | "Strava integration → wider audience" |
 | **QA** | "What's undertested?" | "Social features lack coverage" |
 | **Security** | "What's exposed or unvalidated?" | "Missing Zod on guild mutations" |
-| **Pre-Deploy** | "What could break prod?" | "Missing env var for staging" |
+| **Pre-Deploy** | "What could break prod?" | "Missing env var for preview" |
 | **Schema** | "Is data model aligned?" | "Need migration for GuildBoss" |
 | **Polish** | "What needs cleanup?" | "Dead code in legacy services" |
 | **Perf** | "What's slow or bloated?" | "Bundle too large on /map route" |

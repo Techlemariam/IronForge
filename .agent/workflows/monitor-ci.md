@@ -115,10 +115,10 @@ permissions:
 #### Analyze Dependabot PR Checks
 ```bash
 # View PR checks status
-gh pr checks \u003cPR_NUMBER\u003e
+gh pr checks <PR_NUMBER>
 
 # View specific run for Dependabot PR
-gh run view \u003cRUN_ID\u003e --log-failed
+gh run view <RUN_ID> --log-failed
 ```
 
 **Common Issues:**
@@ -129,7 +129,8 @@ gh run view \u003cRUN_ID\u003e --log-failed
 #### Rebase Dependabot PR
 ```bash
 # Comment on PR to trigger rebase
-gh pr comment \u003cPR_NUMBER\u003e --body "@dependabot rebase"
+# Comment on PR to trigger rebase
+gh pr comment <PR_NUMBER> --body "@dependabot rebase"
 ```
 
 ### Build Failures

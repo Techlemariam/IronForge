@@ -12,7 +12,7 @@ trigger: manual
 
 ## 🎯 Trigger
 - After major feature implementation
-- Before production release
+- Before merging to `main` (Production)
 - Manual: `/perf [scope]`
 
 ## 📊 Audit Protocol
