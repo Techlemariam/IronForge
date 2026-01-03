@@ -142,7 +142,7 @@ jobs:
   deploy-preview:
     name: 🚀 Deploy Preview
     needs: [verify] # Fast deploy after verification
-    if: github.event_name == 'pull_request' && github.actor != 'dependabot[bot]'
+    if: github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' && github.base_ref != 'main'
     environment:
       name: Preview
       url: ${{ steps.deploy.outputs.url }}
