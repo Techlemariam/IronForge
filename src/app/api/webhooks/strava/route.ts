@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { processUserCardioActivity } from "@/actions/duel";
+import { processUserCardioActivity } from "@/actions/pvp/duel";
 import { mapStravaActivityToCardioLog } from "@/lib/strava";
 import axios from "axios";
 

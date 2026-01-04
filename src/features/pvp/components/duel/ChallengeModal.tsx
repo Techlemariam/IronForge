@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Swords, User as UserIcon, Loader2 } from 'lucide-react';
-import { createDuelChallengeAction, getPotentialOpponentsAction } from '@/actions/duel';
+import { createDuelChallengeAction, getPotentialOpponentsAction } from '@/actions/pvp/duel';
 import { toast } from 'sonner';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ScrollArea } from '@/components/ui/scroll-area';

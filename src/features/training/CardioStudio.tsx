@@ -44,7 +44,7 @@ import { TvMode } from "./TvMode";
 import { ChaseOverlay } from "./components/ChaseOverlay";
 import { ChaseEngine } from "@/services/game/ChaseEngine";
 import { ChaseState, ChaseDifficulty } from "@/types/chase";
-import { updateCardioDuelProgressAction } from "@/actions/duel";
+import { updateCardioDuelProgressAction } from "@/actions/pvp/duel";
 import { toast } from "sonner";
 import { playSound } from "@/utils/root_utils";
 import { useBluetoothSpeed } from "@/features/bio/hooks/useBluetoothSpeed";

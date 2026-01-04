@@ -17,7 +17,7 @@ import {
   StravaActivity,
   mapStravaActivityToCardioLog,
 } from "@/lib/strava";
-import { processUserCardioActivity } from "@/actions/duel";
+import { processUserCardioActivity } from "@/actions/pvp/duel";
 
 // Constants removed for lazy evaluation
 // const STRAVA_CLIENT_ID = process.env.STRAVA_CLIENT_ID;

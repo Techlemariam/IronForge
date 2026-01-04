@@ -3,7 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/auth";
 import { getPvpRank } from "@/lib/pvpRanks";
-import { getCurrentSeasonAction } from "./pvp-ranked";
+import { getCurrentSeasonAction } from "./pvp/ranked";
 
 export type LeaderboardType = "PVP" | "DUEL" | "STRENGTH" | "GUILD";
 

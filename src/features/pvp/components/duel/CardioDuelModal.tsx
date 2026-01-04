@@ -11,7 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { createDuelChallengeAction } from "@/actions/duel";
+import { createDuelChallengeAction } from "@/actions/pvp/duel";
 import { toast } from "sonner";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"; // Assuming Tabs might exist, if not I'll handle fallback
 import { Bike, Footprints, Timer, Trophy, TrendingUp } from "lucide-react";
@@ -87,8 +87,8 @@ export function CardioDuelModal({
               aria-pressed={activityType === "CYCLING"}
               onClick={() => setActivityType("CYCLING")}
               className={`p-4 rounded-xl border-2 flex flex-col items-center gap-2 transition-all ${activityType === "CYCLING"
-                  ? "border-blue-500 bg-blue-500/10 text-blue-400"
-                  : "border-slate-700 hover:border-slate-600 text-slate-400"
+                ? "border-blue-500 bg-blue-500/10 text-blue-400"
+                : "border-slate-700 hover:border-slate-600 text-slate-400"
                 }`}
             >
               <Bike className="w-8 h-8" />
@@ -99,8 +99,8 @@ export function CardioDuelModal({
               aria-pressed={activityType === "RUNNING"}
               onClick={() => setActivityType("RUNNING")}
               className={`p-4 rounded-xl border-2 flex flex-col items-center gap-2 transition-all ${activityType === "RUNNING"
-                  ? "border-emerald-500 bg-emerald-500/10 text-emerald-400"
-                  : "border-slate-700 hover:border-slate-600 text-slate-400"
+                ? "border-emerald-500 bg-emerald-500/10 text-emerald-400"
+                : "border-slate-700 hover:border-slate-600 text-slate-400"
                 }`}
             >
               <Footprints className="w-8 h-8" />
@@ -117,8 +117,8 @@ export function CardioDuelModal({
                 aria-pressed={duelType === "DISTANCE_RACE"}
                 onClick={() => setDuelType("DISTANCE_RACE")}
                 className={`px-3 py-2 rounded-lg text-sm border transition-all ${duelType === "DISTANCE_RACE"
-                    ? "bg-slate-800 border-indigo-500 text-white"
-                    : "border-transparent text-slate-400 hover:bg-slate-800"
+                  ? "bg-slate-800 border-indigo-500 text-white"
+                  : "border-transparent text-slate-400 hover:bg-slate-800"
                   }`}
               >
                 Distance Race
@@ -128,8 +128,8 @@ export function CardioDuelModal({
                 aria-pressed={duelType === "SPEED_DEMON"}
                 onClick={() => setDuelType("SPEED_DEMON")}
                 className={`px-3 py-2 rounded-lg text-sm border transition-all ${duelType === "SPEED_DEMON"
-                    ? "bg-slate-800 border-indigo-500 text-white"
-                    : "border-transparent text-slate-400 hover:bg-slate-800"
+                  ? "bg-slate-800 border-indigo-500 text-white"
+                  : "border-transparent text-slate-400 hover:bg-slate-800"
                   }`}
               >
                 Speed Demon
@@ -140,8 +140,8 @@ export function CardioDuelModal({
                   aria-pressed={duelType === "ELEVATION_GRIND"}
                   onClick={() => setDuelType("ELEVATION_GRIND")}
                   className={`px-3 py-2 rounded-lg text-sm border transition-all ${duelType === "ELEVATION_GRIND"
-                      ? "bg-slate-800 border-indigo-500 text-white"
-                      : "border-transparent text-slate-400 hover:bg-slate-800"
+                    ? "bg-slate-800 border-indigo-500 text-white"
+                    : "border-transparent text-slate-400 hover:bg-slate-800"
                     }`}
                 >
                   Elevation
@@ -171,8 +171,8 @@ export function CardioDuelModal({
                           key={m}
                           onClick={() => setDuration(m)}
                           className={`flex-1 py-2 rounded-md border text-sm font-medium ${duration === m
-                              ? "bg-indigo-600 border-indigo-600 text-white"
-                              : "bg-slate-900 border-slate-700 text-slate-400 hover:border-slate-500"
+                            ? "bg-indigo-600 border-indigo-600 text-white"
+                            : "bg-slate-900 border-slate-700 text-slate-400 hover:border-slate-500"
                             }`}
                         >
                           {m}m
@@ -197,8 +197,8 @@ export function CardioDuelModal({
                         key={d}
                         onClick={() => setDistance(d)}
                         className={`flex-1 py-2 rounded-md border text-sm font-medium ${distance === d
-                            ? "bg-indigo-600 border-indigo-600 text-white"
-                            : "bg-slate-900 border-slate-700 text-slate-400 hover:border-slate-500"
+                          ? "bg-indigo-600 border-indigo-600 text-white"
+                          : "bg-slate-900 border-slate-700 text-slate-400 hover:border-slate-500"
                           }`}
                       >
                         {d}km

@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Card } from "@/components/ui/card";
-import { getDuelArenaStateAction } from "@/actions/duel";
+import { getDuelArenaStateAction } from "@/actions/pvp/duel";
 import { executeTitanCombatTurnAction } from "@/actions/titan-combat";
 import { Swords, Trophy, Timer, Bike, Footprints, AlertTriangle, Zap, MessageSquare } from "lucide-react";
 import { toast } from "sonner";

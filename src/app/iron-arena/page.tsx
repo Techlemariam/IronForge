@@ -1,4 +1,4 @@
-import { getDuelStatusAction } from "@/actions/duel";
+import { getDuelStatusAction } from "@/actions/pvp/duel";
 import { getLeagueInfoAction, getCurrentSeasonAction, getLeagueLeaderboardAction } from "@/actions/iron-leagues";
 import { getSession } from "@/lib/auth";
 import { ArenaClient } from "./ArenaClient";

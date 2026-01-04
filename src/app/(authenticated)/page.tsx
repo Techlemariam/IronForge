@@ -221,7 +221,7 @@ export default async function Page() {
   const titanState = titanRes.success ? titanRes.data : null;
 
   // 4c. Fetch Active Duel Status
-  const { getDuelStatusAction } = await import("@/actions/duel");
+  const { getDuelStatusAction } = await import("@/actions/pvp/duel");
   const duelRes = await getDuelStatusAction();
   const activeDuel = duelRes.success ? duelRes.duel : null;
 

@@ -151,7 +151,7 @@ export function ArenaClient({ activeDuel, currentUserId, leagueInfo, seasonInfo,
                 currentUserId={currentUserId}
                 onTaunt={async () => {
                   try {
-                    const { sendTauntAction } = await import('@/actions/duel');
+                    const { sendTauntAction } = await import('@/actions/pvp/duel');
                     const res = await sendTauntAction(activeDuel.id);
                     if (res.success) toast.success("Taunt sent!");
                     else toast.error("Taunt failed.");

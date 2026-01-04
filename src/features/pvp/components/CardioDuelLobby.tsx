@@ -5,7 +5,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { createDuelChallengeAction, getPotentialOpponentsAction } from "@/actions/duel";
+import { createDuelChallengeAction, getPotentialOpponentsAction } from "@/actions/pvp/duel";
 import { toast } from "sonner";
 import { Bike, Footprints, Trophy } from "lucide-react";
 

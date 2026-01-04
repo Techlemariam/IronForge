@@ -3,7 +3,7 @@ import prisma from "@/lib/prisma";
 import { logger } from "@/lib/logger";
 import { OracleService } from "@/services/oracle";
 import { ProgressionService } from "@/services/progression";
-import { processUserCardioActivity } from "@/actions/duel";
+import { processUserCardioActivity } from "@/actions/pvp/duel";
 import { getActivityStream } from "@/lib/intervals";
 import { conquestFromActivity } from "@/services/game/TerritoryService";
 

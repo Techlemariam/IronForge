@@ -156,11 +156,30 @@ IronForge uses a hybrid architecture with **Next.js Server Actions** for client-
 | `createExerciseAction(data)` | Creates a custom exercise definition. | Auth User |
 | `searchExercisesAction(query)` | Searches exercises by name/muscle group. | Auth User |
 
-### PvP / Segment Battles (`actions/pvp.ts`)
+### PvP Arena (`actions/pvp/ranked.ts`, `actions/pvp/duel.ts`)
+| Function | Description | Access |
+|----------|-------------|--------|
+| `getCurrentSeasonAction()` | Fetches active ranked season details. | Public |
+| `getPlayerRatingAction(userId)` | Returns user's ELO rating and seasonal stats. | Auth User |
+| `findRankedOpponentAction()` | Matchmaking: Finds opponent near user's rating. | Auth User |
+| `submitMatchResultAction(result)` | Submits ranked match outcome, updates ELO. | Auth User |
+| `createDuelChallengeAction(targetId, options)` | Sends a custom Cardio Duel challenge. | Auth User |
+| `acceptDuelChallengeAction(challengeId)` | Accepts a pending duel challenge. | Auth User |
+| `updateCardioDuelProgressAction(duelId, km)` | Updates progress in an active race/duel. | Auth User |
+
+### Segment Battles (`actions/pvp/segment.ts`)
 | Function | Description | Access |
 |----------|-------------|--------|
 | `createSegmentBattleAction(segmentId, opponentId)` | Initiates a Strava segment challenge. | Auth User |
 | `resolveSegmentBattleAction(uploadId)` | Resolves a segment battle after activity upload. | Auth User |
+
+### Coach Subscription (`actions/coach-subscription.ts`)
+| Function | Description | Access |
+|----------|-------------|--------|
+| `getSubscriptionAction(userId)` | Returns current tier and active status. | Auth User |
+| `upgradeSubscriptionAction(tier, period)` | Initiates upgrade checkout flow. | Auth User |
+| `hasFeatureAccessAction(userId, feature)` | Checks if user can access specific Pro feature. | Auth User |
+| `cancelSubscriptionAction(userId)` | Cancels active subscription at period end. | Auth User |
 
 ### Gauntlet Arena (`actions/gauntlet.ts`)
 | Function | Description | Access |
@@ -232,6 +251,15 @@ IronForge uses a hybrid architecture with **Next.js Server Actions** for client-
 | `recalculatePowerRatingAction(userId)` | Triggers full recalculation of user's Power Rating. | Auth User |
 
 ---
+
+### Game Mechanics & Balance (`actions/xp-multiplier.ts`, `actions/recovery-lock.ts`, `actions/anti-grind.ts`)
+| Function | Description | Access |
+|----------|-------------|--------|
+| `calculateXpMultiplierAction(userId)` | Returns current XP multiplier (Streak/Bio/Fatigue). | System |
+| `awardXpWithMultiplierAction(userId, xp, src)` | Awards XP with full logic applied. | System |
+| `checkRecoveryLockAction(userId)` | Checks if user is "locked" from training (Overtraining). | Auth User |
+| `overrideRecoveryLockAction(userId, reason)` | Allows user to bypass lock (with audit log). | Auth User |
+| `calculateDiminishingReturnsAction(userId)` | Checks daily workout count for "anti-grind" penalty. | Auth User |
 
 ## 🛡️ Authentication
 All Server Actions and sensitive API routes require:
