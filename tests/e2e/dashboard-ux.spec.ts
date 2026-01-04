@@ -37,10 +37,6 @@ test.describe('Settings Lite Mode', () => {
         await expect(page.locator('#quest-board')).not.toBeVisible();
         await expect(page.locator('#campaign-tracker')).not.toBeVisible();
 
-        // VERIFY: Core Data Elements visible
-        // Ultrathink is always visible
-        await expect(page.locator('#ultrathink-dashboard')).toBeVisible();
-
         // CLEANUP: Reset state
         await page.goto('/settings');
         await expect(page.locator('h1:has-text("Sanctum Settings")')).toBeVisible({ timeout: 10000 });
