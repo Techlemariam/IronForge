@@ -52,7 +52,7 @@
 | 2026-01-03 | `src/services/game/PowerRatingService.ts` | Hardcoded adherence (MVP). Link to WeeklyPlan required for V2. | @architect | ✅ Resolved |
 | 2026-01-03 | `src/actions/training.ts` | Hardcoded 5 XP for Battle Pass. Needs dynamic calculation. | @game-designer | ✅ Resolved |
 | 2026-01-03 | `src/app/api/webhooks/strava/route.ts` | Missing comprehensive test coverage for webhook logic. | @qa | ✅ Resolved |
-| 2026-01-04 | `src/actions/training.ts` | `logTitanSet` has high complexity (Level, BP, Challenge, Log). Extract to services. | @architect | ⚠️ Open |
+| 2026-01-04 | `src/actions/training.ts` | `logTitanSet` has high complexity (Level, BP, Challenge, Log). Extract to services. | @architect | ✅ Resolved |
 
 ---
 

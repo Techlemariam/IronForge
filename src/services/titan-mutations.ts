@@ -42,6 +42,7 @@ const ModifyEconomySchema = z.object({
   changes: z.object({
     gold: z.number().int().optional(),
     gems: z.number().int().optional(),
+    kineticEnergy: z.number().int().optional(),
   }),
   source: z.string(),
 });
@@ -215,6 +216,12 @@ export async function mutateTitanEconomy(
       const newGold = user.gold + changes.gold;
       if (newGold < 0) return { success: false, message: "Insufficient gold" };
       updates.gold = newGold;
+    }
+    if (changes.kineticEnergy !== undefined) {
+      const newEnergy = user.kineticEnergy + changes.kineticEnergy;
+      if (newEnergy < 0)
+        return { success: false, message: "Insufficient kinetic energy" };
+      updates.kineticEnergy = newEnergy;
     }
 
     await prisma.user.update({
