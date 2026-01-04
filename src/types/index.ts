@@ -236,15 +236,8 @@ export interface IntervalsWellness {
   ramp_rate?: number;
 }
 
-export interface IntervalsActivity {
-  id?: string;
-  icu_intensity?: number;
-  icu_training_load?: number;
-  type?: string;
-  start_date_local: string;
-  moving_time: number;
-  zone_times?: number[]; // Time in seconds for each zone (Z1-Z7)
-}
+// --- INTERVALS.ICU ---
+export type { IntervalsActivity, IntervalsEvent } from "@/lib/intervals";
 
 export interface AthleteSettings {
   id: string;
@@ -257,15 +250,6 @@ export interface AthleteSettings {
   run_ftp?: number;
   heart_rate_zones?: { min: number; max: number; name?: string }[];
   power_zones?: any[];
-}
-
-export interface IntervalsEvent {
-  id: number;
-  start_date_local: string;
-  name: string;
-  description?: string;
-  category: "RACE" | "WORKOUT" | "NOTE";
-  type?: string; // e.g. "Run", "Ride"
 }
 
 export interface AppSettings {

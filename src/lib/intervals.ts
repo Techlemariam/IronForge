@@ -152,16 +152,42 @@ export async function getAthleteSettings(
   );
 }
 
+const IntervalsActivitySchema = z.object({
+  id: z.string().optional(),
+  icu_intensity: z.number().optional().nullable(),
+  icu_training_load: z.number().optional().nullable(),
+  type: z.string().optional(),
+  start_date_local: z.string(),
+  moving_time: z.number(),
+  distance: z.number().optional(), // Often useful
+  zone_times: z.array(z.number()).optional(),
+  average_heartrate: z.number().optional().nullable(),
+  average_watts: z.number().optional().nullable(),
+});
+
+export type IntervalsActivity = z.infer<typeof IntervalsActivitySchema>;
+
+const IntervalsEventSchema = z.object({
+  id: z.number(), // API returns number for events
+  start_date_local: z.string(),
+  name: z.string(),
+  description: z.string().optional().nullable(),
+  category: z.enum(["RACE", "WORKOUT", "NOTE"]).or(z.string()), // Flexible enum
+  type: z.string().optional().nullable(),
+});
+
+export type IntervalsEvent = z.infer<typeof IntervalsEventSchema>;
+
 export async function getActivities(
   startDate: string,
   endDate: string,
   apiKey: string,
   athleteId: string,
-) {
-  // TODO: Add strict activity schema
+): Promise<IntervalsActivity[]> {
   return (await fetchIntervals(
     `/athlete/${athleteId}/activities?oldest=${startDate}&newest=${endDate}`,
     apiKey,
+    z.array(IntervalsActivitySchema)
   )) || [];
 }
 
@@ -170,11 +196,11 @@ export async function getEvents(
   endDate: string,
   apiKey: string,
   athleteId: string,
-) {
-  // TODO: Add strict event schema
+): Promise<IntervalsEvent[]> {
   return (await fetchIntervals(
     `/athlete/${athleteId}/events?oldest=${startDate}&newest=${endDate}`,
     apiKey,
+    z.array(IntervalsEventSchema)
   )) || [];
 }
 
