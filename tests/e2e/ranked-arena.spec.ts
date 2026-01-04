@@ -65,6 +65,6 @@ test.describe('Ranked Arena PvP', () => {
 
         // Verify reward tiers are shown
         // The SeasonRewards component should show rank-based rewards
-        await expect(page.getByRole('tabpanel').getByText(/reward/i).first()).toBeVisible();
+        await expect(page.getByRole('tabpanel').getByText(/gems/i).first()).toBeVisible();
     });
 });

@@ -67,7 +67,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
             </Link>
             <div>
               <h1 className="text-2xl font-bold text-white tracking-widest uppercase flex items-center gap-2">
-                Settings <Sparkles className="w-5 h-5 text-forge-muted" />
+                Sanctum Settings <Sparkles className="w-5 h-5 text-forge-muted" />
               </h1>
               <p className="text-sm text-forge-muted">
                 Configure your neural link to the IronForge.

@@ -54,6 +54,7 @@ type IntegrationType = "HEVY" | "INTERVALS" | "STRAVA" | "GARMIN" | "FACTION" | 
 const IntegrationsPanel: React.FC<IntegrationsPanelProps> = ({
   userId,
   hevyConnected: initialHevy,
+  intervalsConnected: initialIntervals,
   stravaConnected: initialStrava,
   garminConnected: initialGarmin,
   pocketCastsConnected: initialPocketCasts,

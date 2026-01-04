@@ -46,7 +46,7 @@ test.describe('Cardio PvP Duels Flow', () => {
         await expect(page.getByText('Fairness Tier (W/kg)')).toBeVisible();
 
         // Check Submit Button
-        await expect(page.getByRole('button', { name: 'Send Challenge' })).toBeEnabled();
+        await expect(page.getByRole('button', { name: 'Challenge Titan' })).toBeEnabled();
     });
 
     test('should switch to Running mode options', async ({ page }) => {

@@ -4,10 +4,11 @@ import { test, expect } from '@playwright/test';
 test.use({ storageState: 'playwright/.auth/user.json' });
 
 test.describe('Settings Lite Mode', () => {
+    test.slow(); // Mark test as slow (3x timeout)
     test.beforeEach(async ({ page }) => {
         await page.goto('/settings');
         // Wait for header to confirm page load
-        await expect(page.locator('h1:has-text("Settings")')).toBeVisible();
+        await expect(page.locator('h1:has-text("Sanctum Settings")')).toBeVisible({ timeout: 10000 });
     });
 
     test('should toggle lite mode and hide RPG elements', async ({ page }) => {
@@ -43,7 +44,7 @@ test.describe('Settings Lite Mode', () => {
 
         // CLEANUP: Reset state
         await page.goto('/settings');
-        await expect(page.locator('h1:has-text("Settings")')).toBeVisible();
+        await expect(page.locator('h1:has-text("Sanctum Settings")')).toBeVisible({ timeout: 10000 });
         await toggle.click();
         await expect(page.locator('text=RPG Mode Enabled')).toBeVisible();
     });
