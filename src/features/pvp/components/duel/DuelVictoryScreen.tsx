@@ -18,9 +18,7 @@ interface DuelVictoryScreenProps {
 export function DuelVictoryScreen({ duel, currentUserId, onClose }: DuelVictoryScreenProps) {
     const isWinner = duel.winnerId === currentUserId;
     const opponent = duel.challengerId === currentUserId ? duel.defender : duel.challenger;
-    // @ts-ignore - Assuming score/distance existence based on schema even if TS complains about dynamic access if not narrowed
     const myStats = duel.challengerId === currentUserId ? (duel.challengerDistance || duel.challengerScore) : (duel.defenderDistance || duel.defenderScore);
-    // @ts-ignore
     const opponentStats = duel.challengerId === currentUserId ? (duel.defenderDistance || duel.defenderScore) : (duel.challengerDistance || duel.challengerScore);
 
     // Determine stats based on duel type

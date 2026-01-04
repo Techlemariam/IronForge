@@ -30,8 +30,7 @@ export default function Grimoire({ onClose }: GrimoireProps) {
     const fetchGrimoire = async () => {
       try {
         const { monsters } = await getBestiaryAction();
-        // @ts-ignore -- Dealing with partial type mismatch from action if any
-        setEntries(monsters);
+        setEntries(monsters as BestiaryEntry[]);
       } catch (error) {
         console.error("Failed to open Grimoire", error);
       } finally {
@@ -97,11 +96,10 @@ export default function Grimoire({ onClose }: GrimoireProps) {
                     animate={{ opacity: 1, scale: 1 }}
                     className={`
                                             relative h-64 border rounded-xl overflow-hidden group
-                                            ${
-                                              monster.isDiscovered
-                                                ? "bg-zinc-900 border-zinc-800 hover:border-purple-500/50 transition-colors"
-                                                : "bg-black border-zinc-900"
-                                            }
+                                            ${monster.isDiscovered
+                        ? "bg-zinc-900 border-zinc-800 hover:border-purple-500/50 transition-colors"
+                        : "bg-black border-zinc-900"
+                      }
                                         `}
                   >
                     {/* Image / Silhouette */}
