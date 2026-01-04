@@ -1,9 +1,10 @@
 import prisma from "@/lib/prisma";
-import { getWellnessAction, getActivitiesAction, getWellnessRangeAction } from "@/actions/integrations/intervals";
-import { MuscleGroup, VolumeLandmarks, MacroCycle, TrainingPath, SystemMetrics } from "@/types/training";
+import { getWellnessAction, getActivitiesAction } from "@/actions/integrations/intervals";
+import { TrainingPath, SystemMetrics, MacroCycle } from "@/types/training";
 import { EXERCISE_DB } from "@/data/exerciseDb";
 import { PATH_VOLUME_MODIFIERS } from "@/data/builds";
 import { AutoSpecEngine } from "@/services/game/AutoSpecEngine";
+import { Prisma } from "@prisma/client";
 
 // --- Types ---
 export interface VolumeStatus {
@@ -20,6 +21,25 @@ export interface TrainingContext {
     cardioStress: "LOW" | "MODERATE" | "HIGH";
     volume: Record<string, VolumeStatus>;
     warnings: string[];
+}
+
+interface WorkoutSet {
+    reps: number;
+    weight?: number;
+    rpe?: number;
+    isWarmup?: boolean;
+}
+
+// Helper to safely parse sets from Prisma JSON
+function parseSets(json: Prisma.JsonValue): WorkoutSet[] {
+    if (!Array.isArray(json)) return [];
+    // Basic validation / casting
+    return json.map((item: any) => ({
+        reps: Number(item?.reps || 0),
+        weight: Number(item?.weight || 0),
+        rpe: typeof item?.rpe === 'number' ? item.rpe : undefined,
+        isWarmup: Boolean(item?.isWarmup)
+    }));
 }
 
 // --- Configuration ---
@@ -42,11 +62,6 @@ export class TrainingContextService {
 
     /**
      * Aggregates weekly volume from DB and calculates status.
-     */
-    /**
-     * Aggregates weekly volume from DB and calculates status.
-     * @param mrvScaleFactor Modifier for volume ramps (e.g. 0.7 for first week of block)
-     */
     /**
      * Aggregates weekly volume from DB and calculates status.
      * @param mrvScaleFactor Modifier for volume ramps (e.g. 0.7 for first week of block)
@@ -175,7 +190,7 @@ export class TrainingContextService {
 
         const recommendedPhase = AutoSpecEngine.evaluateTransition(currentPhase, metrics);
         if (recommendedPhase !== currentPhase) {
-            warnings.push(`AutoSpec Recommends Phase Change: ${currentPhase} -> ${recommendedPhase}`);
+            warnings.push(`AutoSpec Recommends Phase Change: ${currentPhase} -> ${recommendedPhase} `);
             // Logic to auto-update DB could go here or be a separate action
         }
 
@@ -291,7 +306,7 @@ export class TrainingContextService {
                     const diffHours = Math.abs(cTime.getTime() - strengthTime.getTime()) / 3600000;
                     if (diffHours < 6) {
                         interferenceEvents++;
-                        warnings.push(`Interference Detected: Strength & Cardio within ${diffHours.toFixed(1)}h on ${dateStr}`);
+                        warnings.push(`Interference Detected: Strength & Cardio within ${diffHours.toFixed(1)}h on ${dateStr} `);
                     }
                 }
             }
@@ -314,7 +329,7 @@ export class TrainingContextService {
                 }
             });
             if (totalSets > 0 && (junkSets / totalSets) > 0.3) {
-                warnings.push(`Titan Alert: ${junkSets} sets were 'Junk Volume' (RPE < 7). Intensity needed!`);
+                warnings.push(`Titan Alert: ${junkSets} sets were 'Junk Volume'(RPE < 7).Intensity needed!`);
             }
 
             // 5. Frequency Violation
@@ -325,7 +340,7 @@ export class TrainingContextService {
                     const last = muscleLastSeen.get(muscle)!;
                     const diffHours = (log.date.getTime() - last.getTime()) / 3600000;
                     if (diffHours < 40) { // < 40h allows some wiggle room for "48h" if logging times vary
-                        warnings.push(`Frequency Violation: ${muscle} trained twice within ${Math.round(diffHours)}h. Hypertrophy requires rest.`);
+                        warnings.push(`Frequency Violation: ${muscle} trained twice within ${Math.round(diffHours)} h.Hypertrophy requires rest.`);
                     }
                 }
                 muscleLastSeen.set(muscle, log.date);
@@ -343,7 +358,7 @@ export class TrainingContextService {
                 }
             });
             if (totalSets > 0 && (lowRepSets / totalSets) > 0.5) {
-                warnings.push(`Titan Mismatch: >50% of volume is <5 reps. Leave the powerlifting to Juggernaut.`);
+                warnings.push(`Titan Mismatch: > 50 % of volume is < 5 reps.Leave the powerlifting to Juggernaut.`);
             }
         }
 

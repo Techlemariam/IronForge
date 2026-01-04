@@ -260,6 +260,12 @@ jobs:
           node-version: '22'
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
+      - name: Generate Prisma Client
+        run: npx prisma generate
+      - name: Build Application
+        run: pnpm build
+        env:
+          SKIP_ENV_VALIDATION: true
       - name: Run Lighthouse CI
         run: pnpm run lhci
         env:
