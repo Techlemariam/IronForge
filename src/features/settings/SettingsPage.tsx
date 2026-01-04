@@ -1,13 +1,13 @@
 "use client";
 
 import React from "react";
-import IntegrationsPanel from "@/components/settings/IntegrationsPanel";
-import MigrationTool from "@/components/settings/MigrationTool";
+import IntegrationsPanel from "@/features/settings/components/IntegrationsPanel";
+import MigrationTool from "@/features/settings/components/MigrationTool";
 import { Faction } from "@prisma/client";
-import { Sparkles, ArrowLeft } from "lucide-react";
+import { Sparkles, ArrowLeft, Upload } from "lucide-react";
 import Link from "next/link";
-import { HevyImportWizard } from "../onboarding/HevyImportWizard";
-import { ArchetypeSelector } from "@/components/settings/ArchetypeSelector";
+import { HevyImportWizard } from "@/features/training/components/HevyImportWizard";
+import { ArchetypeSelector } from "@/features/settings/components/ArchetypeSelector";
 import { Archetype } from "@/types/index";
 
 interface SettingsPageProps {
@@ -31,6 +31,8 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
   initialArchetype,
   isDemoMode,
 }) => {
+  const [isHevyImportOpen, setIsHevyImportOpen] = React.useState(false);
+
   return (
     <div className="min-h-screen bg-forge-900 bg-noise pb-20">
       {/* Header */}
@@ -97,7 +99,16 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
               <h3 className="text-sm font-bold text-zinc-400 mb-4">
                 Import History
               </h3>
-              <HevyImportWizard />
+              <button
+                onClick={() => setIsHevyImportOpen(true)}
+                className="w-full py-3 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-lg text-sm font-bold flex items-center justify-center gap-2 border border-white/5 transition-colors"
+              >
+                <Upload size={16} /> Open Import Wizard
+              </button>
+              <HevyImportWizard
+                isOpen={isHevyImportOpen}
+                onClose={() => setIsHevyImportOpen(false)}
+              />
             </div>
 
             <div className="mt-8 pt-8 border-t border-white/5">

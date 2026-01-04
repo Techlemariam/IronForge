@@ -1,4 +1,4 @@
-import BluetoothDebug from "@/components/campaign/BluetoothDebug";
+import BluetoothDebug from "@/features/game/components/campaign/BluetoothDebug";
 
 export default function BluetoothDebugPage() {
     return (

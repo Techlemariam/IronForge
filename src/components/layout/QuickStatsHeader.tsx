@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Coins, Zap, Crown } from "lucide-react";
+import { Coins, Zap, Crown, Swords } from "lucide-react";
 import Link from "next/link";
 
 interface QuickStatsHeaderProps {
@@ -59,6 +59,15 @@ export function QuickStatsHeader({
         >
           <Crown className="w-4 h-4 text-amber-500" />
           <span className="text-xs font-bold text-amber-500 uppercase hidden sm:inline">Battle Pass</span>
+        </Link>
+
+        <Link
+          href="/ranked-arena"
+          className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-red-900/20 to-orange-900/20 border border-red-800/50 rounded-lg hover:border-red-500/50 transition-all group mr-auto sm:mr-4"
+          aria-label="Ranked Arena"
+        >
+          <Swords className="w-4 h-4 text-red-500" />
+          <span className="text-xs font-bold text-red-500 uppercase hidden sm:inline">Arena</span>
         </Link>
 
         {/* Right: Gold */}

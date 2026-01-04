@@ -79,7 +79,7 @@
   - [x] PvP Context Awareness
   - [x] Push Notification Service
   - [x] Power Rating Tier Messaging
-- [ ] **Arena PvP Seasons** ([Spec](specs/arena-pvp-seasons.md)) <!-- status: planned | priority: high | roi: 4.7 | effort: M | source: gap-analysis -->
+- [/] **Arena PvP Seasons** ([Spec](specs/arena-pvp-seasons.md)) <!-- status: in-progress | architect: /architect | priority: high | effort: M | source: gap-analysis -->
 - [ ] **World Events Enhancement** ([Spec](specs/world-events-enhancement.md)) <!-- status: planned | priority: high | roi: 4.5 | effort: S | source: gap-analysis -->
 - [ ] **Campaign Mode Enhancement** ([Spec](specs/campaign-mode-enhancement.md)) <!-- status: planned | priority: high | roi: 4.3 | effort: L | source: gap-analysis -->
 

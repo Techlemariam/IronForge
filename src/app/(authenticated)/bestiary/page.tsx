@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { MonsterList } from "@/components/bestiary/MonsterList";
+import { MonsterList } from "@/features/game/components/bestiary/MonsterList";
 import { Skull, Scroll, Swords } from "lucide-react";
 import { getBestiaryData } from "@/actions/bestiary";
 

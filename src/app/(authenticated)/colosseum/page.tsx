@@ -1,6 +1,6 @@
 import React from "react";
 import prisma from "@/lib/prisma";
-import Leaderboard from "@/components/colosseum/Leaderboard";
+import Leaderboard from "@/features/pvp/components/colosseum/Leaderboard";
 import { Swords, Users } from "lucide-react";
 
 export const dynamic = "force-dynamic";

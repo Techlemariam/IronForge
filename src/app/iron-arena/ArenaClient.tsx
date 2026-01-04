@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { DuelCard } from "@/components/duel/DuelCard";
-import { DuelVictoryScreen } from '@/components/duel/DuelVictoryScreen';
-import { ChallengeModal } from "@/components/duel/ChallengeModal";
-import { CardioDuelModal } from "@/components/duel/CardioDuelModal";
+import { DuelCard } from "@/features/pvp/components/duel/DuelCard";
+import { DuelVictoryScreen } from '@/features/pvp/components/duel/DuelVictoryScreen';
+import { ChallengeModal } from "@/features/pvp/components/duel/ChallengeModal";
+import { CardioDuelModal } from "@/features/pvp/components/duel/CardioDuelModal";
 import { Button } from "@/components/ui/button";
 import { Swords, Trophy, Crown, TrendingUp, Calendar, ChevronRight } from "lucide-react";
 import { toast } from "sonner";

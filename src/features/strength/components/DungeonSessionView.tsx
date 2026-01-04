@@ -10,7 +10,7 @@ import ForgeButton from "@/components/ui/ForgeButton";
 import { AnimatePresence } from "framer-motion";
 import BerserkerMode from "@/features/training/components/BerserkerMode";
 import BerserkerChoice from "@/features/training/components/BerserkerChoice";
-import VisionRepCounter from "@/components/VisionRepCounter";
+import VisionRepCounter from "@/features/training/components/VisionRepCounter";
 import { Eye, EyeOff } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { logTitanSet } from "@/actions/training";

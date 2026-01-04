@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { usePushNotifications } from "@/hooks/usePushNotifications";
+import { usePushNotifications } from "@/features/oracle/hooks/usePushNotifications";
 import { Button } from "@/components/ui/button";
 import { Bell, BellOff, Loader2 } from "lucide-react";
 import { toast } from "@/components/ui/GameToast";

@@ -5,12 +5,12 @@ import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { TvMode } from "../TvMode";
-import { useBluetoothPower } from "@/hooks/useBluetoothPower";
-import { useBluetoothHeartRate } from "@/hooks/useBluetoothHeartRate";
+import { useBluetoothHeartRate } from "@/features/bio/hooks/useBluetoothHeartRate";
+import { useBluetoothPower } from "@/features/bio/hooks/useBluetoothPower";
 import { useTitanReaction } from "@/features/titan/useTitanReaction";
-import { useGuildContribution } from "@/hooks/useGuildContribution";
+import { useGuildContribution } from "@/features/guild/hooks/useGuildContribution";
 import { useCompanionRelay } from "@/features/companion/useCompanionRelay";
-import { useLiveCombat } from "@/hooks/useLiveCombat";
+import { useLiveCombat } from "@/features/combat/hooks/useLiveCombat";
 
 vi.mock("framer-motion", () => {
   const MockDiv = React.forwardRef(({ children, ...props }: any, ref: any) => (
@@ -51,12 +51,12 @@ if (typeof crypto === "undefined") {
   (global as any).crypto = { randomUUID: () => "test-uuid" };
 }
 
-vi.mock("@/hooks/useBluetoothPower");
-vi.mock("@/hooks/useBluetoothHeartRate");
+vi.mock("@/features/bio/hooks/useBluetoothPower");
+vi.mock("@/features/bio/hooks/useBluetoothHeartRate");
 vi.mock("@/features/titan/useTitanReaction");
-vi.mock("@/hooks/useGuildContribution");
+vi.mock("@/features/guild/hooks/useGuildContribution");
 vi.mock("@/features/companion/useCompanionRelay");
-vi.mock("@/hooks/useLiveCombat", () => ({
+vi.mock("@/features/combat/hooks/useLiveCombat", () => ({
   useLiveCombat: vi.fn(() => ({
     boss: { name: "Test Boss", currentHp: 500, maxHp: 1000 },
     lastDamage: 50,

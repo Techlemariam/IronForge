@@ -27,12 +27,12 @@ import {
   ScrollText,
   History,
 } from "lucide-react";
-import { TitanXPBar } from "../../../components/TitanXPBar";
+import { TitanXPBar } from "@/features/titan/components/TitanXPBar";
 import { calculateTitanRank, calculateTitanAttributes } from "../../../utils";
 import { useSkills } from "../../../context/SkillContext";
 import { StorageService } from "../../../services/storage";
 import { IntervalsWellness } from "../../../types";
-import AttributeRadar from "../../../components/AttributeRadar";
+import AttributeRadar from "@/features/titan/components/AttributeRadar";
 
 interface CharacterSheetProps {
   unlockedIds: Set<string>;

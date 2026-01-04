@@ -22,7 +22,7 @@ import { RecoveryService } from "@/services/bio/RecoveryService";
 import DashboardClient from "@/features/dashboard/DashboardClient";
 import { getActiveChallengesAction } from "@/actions/challenges";
 import { ensureTitanAction, syncTitanStateWithWellness } from "@/actions/titan";
-import { calculateSkillEffects } from "@/hooks/useSkillEffects";
+import { calculateSkillEffects } from "@/features/game/hooks/useSkillEffects";
 
 // Types
 import { AuditReport } from "@/types/auditor";

@@ -1,9 +1,12 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { logTitanSet, updateActivePathAction } from "../training";
-import prisma from "@/lib/prisma";
-import { revalidatePath } from "next/cache";
-
 // Mock dependencies
+vi.mock("@/actions/battle-pass", () => ({
+  addBattlePassXpAction: vi.fn().mockResolvedValue({ success: true }),
+}));
+
+vi.mock("@/services/challengeService", () => ({
+  processWorkoutLog: vi.fn(),
+}));
+
 const mockGetUser = vi.fn();
 vi.mock("@/utils/supabase/server", () => ({
   createClient: vi.fn(() => ({
@@ -13,20 +16,41 @@ vi.mock("@/utils/supabase/server", () => ({
   })),
 }));
 
-vi.mock("@/lib/prisma", () => ({
-  default: {
+vi.mock("@/lib/prisma", () => {
+  const mockPrisma = {
     exerciseLog: {
       create: vi.fn(),
     },
     user: {
       update: vi.fn(),
+      findUnique: vi.fn().mockResolvedValue({ id: "test-user-id", gold: 100 }), // Basic user mock
     },
-  },
-}));
+    season: {
+      findFirst: vi.fn(),
+    },
+    userBattlePass: {
+      findUnique: vi.fn(),
+      update: vi.fn(),
+      create: vi.fn(),
+    },
+    battlePassTier: {
+      findMany: vi.fn(),
+    },
+  };
+  return {
+    default: mockPrisma,
+    prisma: mockPrisma,
+  };
+});
 
 vi.mock("next/cache", () => ({
   revalidatePath: vi.fn(),
 }));
+
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { logTitanSet, updateActivePathAction } from "../training";
+import prisma from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
 
 describe("Training Actions", () => {
   beforeEach(() => {

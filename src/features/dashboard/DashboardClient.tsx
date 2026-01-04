@@ -20,17 +20,17 @@ import { User } from "@prisma/client";
 import { AuditReport } from "@/types/auditor";
 import { saveWorkoutAction } from "@/actions/hevy";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
-import { CampaignTracker } from "@/components/CampaignTracker";
+import { CampaignTracker } from "@/features/game/components/campaign/CampaignTracker";
 import { AnimatePresence, motion } from "framer-motion";
 import { HevyExerciseTemplate, HevyRoutine } from "@/types/hevy";
 import { mapHevyToQuest, mapQuestToHevyPayload } from "@/utils/hevyAdapter";
 import { mapSessionToQuest, mapQuestToSession } from "@/utils/typeMappers";
 import { OracleRecommendation } from "@/types";
 import OracleCard from "../oracle/components/OracleCard";
-import UltrathinkDashboard from "@/components/UltrathinkDashboard";
+import UltrathinkDashboard from "@/features/dashboard/components/UltrathinkDashboard";
 import { getProgressionAction } from "@/actions/progression";
-import OracleVerdict from "@/components/OracleVerdict";
-import GeminiLiveCoach from "@/components/GeminiLiveCoach";
+import OracleVerdict from "@/features/oracle/components/OracleVerdict";
+import GeminiLiveCoach from "@/features/training/components/GeminiLiveCoach";
 import { Mic, Bike, Footprints, Settings, ArrowLeft } from "lucide-react";
 
 import TrainingCenter from "@/features/training/TrainingCenter";
@@ -41,7 +41,7 @@ import {
   Faction,
 } from "@/types/training";
 import { CardioMode } from "@/features/training/CardioStudio";
-import { OracleChat } from "@/components/OracleChat";
+import { OracleChat } from "@/features/oracle/components/OracleChat";
 import { WorkoutDefinition } from "@/types/training";
 import { mapDefinitionToSession } from "@/utils/workoutMapper";
 import { playSound } from "@/utils";
@@ -71,7 +71,7 @@ const TheForge = dynamic(() => import("@/features/game/TheForge"), {
 const CardioStudio = dynamic(() => import("@/features/training/CardioStudio"), {
   ssr: false,
 });
-import StravaUpload from "@/components/strava/StravaUpload";
+import StravaUpload from "@/features/training/components/strava/StravaUpload";
 import { CitadelHub } from "@/features/dashboard/CitadelHub";
 import { FirstLoginQuest } from "@/features/onboarding/FirstLoginQuest";
 import { QuestBoard } from "@/components/gamification/QuestBoard";

@@ -15,8 +15,8 @@ import ReactFlow, {
 } from "reactflow";
 import "reactflow/dist/style.css"; // Ensure base styles are imported
 
-import { SKILL_TREE_V2, getNodeById } from "../../../data/skill-tree-v2";
-import { SkillNodeV2, SkillStatus, NodeTier } from "../../../types/skills";
+import { SKILL_TREE_V2, getNodeById } from "@/data/skill-tree-v2";
+import { SkillNodeV2, SkillStatus, NodeTier } from "@/types/skills";
 import { IntervalsWellness } from "@/types";
 import {
   Lock,
@@ -35,8 +35,8 @@ import {
   Crown,
   Star,
 } from "lucide-react";
-import { useSkills } from "../../../context/SkillContext";
-import { calculateAdaptiveCost } from "../../../utils/root_utils";
+import { useSkills } from "@/context/SkillContext";
+import { calculateAdaptiveCost } from "@/utils/root_utils";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface SkillTreeProps {

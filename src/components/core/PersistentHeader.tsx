@@ -66,7 +66,9 @@ export const PersistentHeader: React.FC<PersistentHeaderProps> = ({
         <div className="w-px h-8 bg-white/10"></div>
 
         {/* Power Rating */}
-        <PowerRatingBadge rating={powerRating} className="scale-75 origin-left" />
+        <div data-testid="power-rating">
+          <PowerRatingBadge rating={powerRating} className="scale-75 origin-left" />
+        </div>
       </div>
     </div>
   );

@@ -30,7 +30,7 @@ import {
   canPurchaseKeystone,
   getPathProgress,
   SessionMetadata,
-} from "../hooks/useSkillEffects";
+} from "@/features/game/hooks/useSkillEffects";
 
 // ============================================================================
 // Logic Helpers

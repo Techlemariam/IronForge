@@ -5,7 +5,7 @@ import {
     AppSettings,
     IntervalsWellness,
 } from "@/types";
-import { useBluetoothHeartRate } from "@/hooks/useBluetoothHeartRate";
+import { useBluetoothHeartRate } from "@/features/bio/hooks/useBluetoothHeartRate";
 import { AchievementContext } from "@/context/AchievementContext";
 import { useSkills } from "@/context/SkillContext";
 import { StorageService, ActiveSessionState } from "@/services/storage";

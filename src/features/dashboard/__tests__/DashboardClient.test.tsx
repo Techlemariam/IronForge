@@ -38,6 +38,7 @@ vi.mock("next/navigation", () => ({
 vi.mock("lucide-react", () => {
   const MockIcon = (props: any) => <div data-testid="mock-icon" {...props} />;
   return {
+    // Existing icons
     Mic: MockIcon,
     Bike: MockIcon,
     Footprints: MockIcon,
@@ -64,6 +65,19 @@ vi.mock("lucide-react", () => {
     ArrowRight: MockIcon,
     ChevronDown: MockIcon,
     ChevronUp: MockIcon,
+    // Newly added icons for UltrathinkDashboard
+    Brain: MockIcon,
+    TrendingUp: MockIcon,
+    Calendar: MockIcon,
+    Battery: MockIcon,
+    Activity: MockIcon,
+    Wind: MockIcon,
+    Trophy: MockIcon,
+    Gauge: MockIcon,
+    ShieldAlert: MockIcon,
+    ZapOff: MockIcon,
+    CheckCircle2: MockIcon,
+    MessageSquare: MockIcon,
   };
 });
 
@@ -72,21 +86,22 @@ vi.mock("lucide-react", () => {
 vi.mock("@/features/oracle/components/OracleCard", () => ({
   default: () => <div data-testid="oracle-card">Oracle Card</div>,
 }));
-vi.mock("@/components/UltrathinkDashboard", () => ({
+vi.mock("@/features/dashboard/components/UltrathinkDashboard", () => ({
   default: () => (
     <div data-testid="ultrathink-dashboard">Ultrathink Dashboard</div>
   ),
 }));
-vi.mock("@/components/CampaignTracker", () => ({
+vi.mock("@/features/game/components/campaign/CampaignTracker", () => ({
   CampaignTracker: () => (
     <div data-testid="campaign-tracker">Campaign Tracker</div>
   ),
 }));
-vi.mock("@/components/GeminiLiveCoach", () => ({
+vi.mock("@/features/training/components/GeminiLiveCoach", () => ({
   default: () => <div data-testid="gemini-live-coach">Gemini Live Coach</div>,
 }));
-vi.mock("@/components/OracleChat", () => ({
+vi.mock("@/features/oracle/components/OracleChat", () => ({
   OracleChat: () => <div data-testid="oracle-chat">Oracle Chat</div>,
+  default: () => <div data-testid="oracle-chat">Oracle Chat</div>,
 }));
 vi.mock("@/features/dashboard/CitadelHub", () => ({
   CitadelHub: () => <div data-testid="citadel-hub">Citadel Hub</div>,

@@ -2,7 +2,7 @@ import { getDuelStatusAction } from "@/actions/duel";
 import { getLeagueInfoAction, getCurrentSeasonAction, getLeagueLeaderboardAction } from "@/actions/iron-leagues";
 import { getSession } from "@/lib/auth";
 import { ArenaClient } from "./ArenaClient";
-import { DuelLeaderboard } from "@/components/duel/DuelLeaderboard";
+import { DuelLeaderboard } from "@/features/pvp/components/duel/DuelLeaderboard";
 
 export default async function IronArenaPage() {
   const session = await getSession();

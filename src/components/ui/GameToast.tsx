@@ -65,7 +65,7 @@ export const GameToaster = () => {
     <SonnerToaster
       position="top-right"
       toastOptions={{
-        className: "border-2 shadow-lg",
+        className: "toast border-2 shadow-lg",
         style: {
           borderRadius: "0px", // Square corners for RPG feel
         },

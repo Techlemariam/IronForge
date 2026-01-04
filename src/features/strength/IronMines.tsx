@@ -8,9 +8,9 @@ import {
   AppSettings,
   IntervalsWellness,
 } from "@/types";
-import QuestLog from "@/components/QuestLog";
-import TransitionView from "@/components/TransitionView";
-import PreWorkoutCheck from "@/components/PreWorkoutCheck";
+import QuestLog from "@/features/game/components/QuestLog";
+import TransitionView from "@/features/game/components/TransitionView";
+import PreWorkoutCheck from "@/features/training/components/PreWorkoutCheck";
 import {
   CheckCircle2,
   Crown,

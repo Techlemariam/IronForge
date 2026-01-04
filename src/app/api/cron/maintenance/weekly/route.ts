@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { runWeeklySettlement } from "@/services/game/TerritoryService";
 import { calculatePowerRating, applyDecay, TrainingPath } from "@/lib/powerRating";
-// import { runSeasonTransition } from "@/services/game/SeasonService"; // If exists
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 300; // 5 minutes for weekly heavy tasks
@@ -14,7 +13,8 @@ export const maxDuration = 300; // 5 minutes for weekly heavy tasks
  */
 export async function GET(request: NextRequest) {
     const authHeader = request.headers.get("authorization");
-    if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+    const secret = process.env.CRON_SECRET || "dev_secret";
+    if (authHeader !== `Bearer ${secret}`) {
         return new NextResponse("Unauthorized", { status: 401 });
     }
 
@@ -27,7 +27,7 @@ export async function GET(request: NextRequest) {
     const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
     const sixtyDaysAgo = new Date(now.getTime() - 60 * 24 * 60 * 60 * 1000);
 
-    // 1. Territory Settlement
+    // 1. Territory Settlement (Individual User Tiles)
     try {
         const result = await runWeeklySettlement();
         report.tasks.settlement = { success: true, ...result };
@@ -35,7 +35,20 @@ export async function GET(request: NextRequest) {
         report.tasks.settlement = { success: false, error: String(e) };
     }
 
-    // 2. Power Rating (Recalculate & Decay)
+    // 2. Guild Territory Claims (Guild Competition)
+    try {
+        const { processWeeklyTerritoryClaimsAction } = await import("@/actions/territories");
+        const guildClaimResults = await processWeeklyTerritoryClaimsAction();
+        report.tasks.guildTerritories = {
+            success: true,
+            territoriesProcessed: guildClaimResults.length,
+            ownershipChanges: guildClaimResults.filter(r => r.previousOwner !== r.newOwner).length,
+        };
+    } catch (e) {
+        report.tasks.guildTerritories = { success: false, error: String(e) };
+    }
+
+    // 3. Power Rating (Recalculate & Decay)
     try {
         const { PowerRatingService } = await import("@/services/game/PowerRatingService");
         const { applyDecay } = await import("@/lib/powerRating");
@@ -77,6 +90,15 @@ export async function GET(request: NextRequest) {
         report.tasks.powerRating = { success: true, processed: titans.length, recalculated };
     } catch (e) {
         report.tasks.powerRating = { success: false, error: String(e) };
+    }
+
+    // 4. PvP Season Transition
+    try {
+        const { SeasonService } = await import("@/services/game/SeasonService");
+        const result = await SeasonService.checkSeasonTransition();
+        report.tasks.seasonTransition = { success: true, ...result };
+    } catch (e) {
+        report.tasks.seasonTransition = { success: false, error: String(e) };
     }
 
     return NextResponse.json(report);

@@ -22,7 +22,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { WORKOUT_LIBRARY } from "@/data/workouts";
 import { cn } from "@/lib/utils";
-import { HeartRateZoneChart } from "@/components/HeartRateZoneChart";
+import { HeartRateZoneChart } from "@/features/bio/components/HeartRateZoneChart";
 
 interface TrainingCenterProps {
   activePath: TrainingPath;

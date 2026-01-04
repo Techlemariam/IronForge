@@ -19,12 +19,12 @@ import {
   Loader2,
 } from "lucide-react";
 import { useTitanReaction } from "@/features/titan/useTitanReaction";
-import { useBluetoothPower } from "@/hooks/useBluetoothPower";
-import { useBluetoothHeartRate } from "@/hooks/useBluetoothHeartRate";
+import { useBluetoothPower } from "@/features/bio/hooks/useBluetoothPower";
+import { useBluetoothHeartRate } from "@/features/bio/hooks/useBluetoothHeartRate";
 import { SensorManager } from "./components/SensorManager";
 import { useCompanionRelay } from "@/features/companion/useCompanionRelay";
-import { useGuildContribution } from "@/hooks/useGuildContribution";
-import { useLiveCombat } from "@/hooks/useLiveCombat";
+import { useGuildContribution } from "@/features/guild/hooks/useGuildContribution";
+import { useLiveCombat } from "@/features/combat/hooks/useLiveCombat";
 import { useSearchParams } from "next/navigation";
 import { QRCodeSVG } from "qrcode.react";
 import { Scan, Podcast } from "lucide-react";

@@ -98,7 +98,8 @@
       "Out-File",
       "ForEach-Object",
       "Select-Object",
-      "Start-Sleep"
+      "Start-Sleep",
+      "Test-Path"
     ]
   }
 }

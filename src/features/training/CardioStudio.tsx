@@ -45,7 +45,7 @@ import { ChaseState, ChaseDifficulty } from "@/types/chase";
 import { updateCardioDuelProgressAction } from "@/actions/duel";
 import { toast } from "sonner";
 import { playSound } from "@/utils/root_utils";
-import { useBluetoothSpeed } from "@/hooks/useBluetoothSpeed";
+import { useBluetoothSpeed } from "@/features/bio/hooks/useBluetoothSpeed";
 import { Bluetooth } from "lucide-react";
 import { checkOvertrainingStatusAction } from "@/actions/overtraining";
 import { getStreakStatusAction } from "@/actions/streak";

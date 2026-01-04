@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { usePodcastPlayer } from "@/hooks/usePodcastPlayer";
+import { usePodcastPlayer } from "@/features/podcast/hooks/usePodcastPlayer";
 import { PocketCastsEpisode, PocketCastsPodcast } from "@/services/pocketcasts";
 import { Play, Pause, SkipForward, SkipBack, ListMusic, LogOut, Loader2 } from "lucide-react";
 import Image from "next/image";

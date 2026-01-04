@@ -1,50 +1,62 @@
-# Next Sprint: Sprint 17 - Cardio PvP Completion
-**Period**: 2026-01-05 - 2026-01-12
-**Goal**: Finalize the Cardio PvP Duels feature and prepare for Season 2 expansion.
+# Next Sprint: Sprint 18 - Season 2 Foundations
+**Period**: 2026-01-05 - 2026-01-12  
+**Goal**: Solidify Season 2 core systems (Guild Territories, Arena PvP Seasons) and address critical polish/debt.
 
 ## Backlog
 
-### Priority: High (Feature Completion)
-- [x] **Cardio PvP Duels Implementation** <!-- agent: /coder | estimate: 8h | source: roadmap:6 -->
-    - *Note*: Spec file `specs/cardio-duels.md` is missing. Needs restoration/creation first.
-    - Scope: Real-time duel updates, result processing, UI integration.
-- [x] **Duel Leaderboards** <!-- agent: /coder | estimate: 4h | source: roadmap:6 -->
-    - Scope: Global and Friend leaderboards for duels.
+### Priority: High
 
-### Priority: Medium (Preparation)
-- [x] **Power Rating System Analysis** <!-- agent: /architect | estimate: 3h | source: roadmap:68 -->
-    - Create spec: `specs/power-rating-system.md`.
-    - Algorithm design for calculating "Power" from strength + cardio metrics.
-- [x] **Oracle 3.0 Analysis** <!-- agent: /analyst | estimate: 2h | source: roadmap:64 -->
-    - Initial requirements gathering for OpenAI integration.
+- [x] **Guild Territories** <!-- agent: /architect + /coder | estimate: 6h | source: roadmap:66 -->
+    - Create spec: `specs/guild-territories.md`
+    - Schema: `Territory`, `GuildTerritoryControl` models
+    - Actions: Capture, defend, resource generation
+    - UI: World map with territory overlay
 
-### Priority: Low (Polish)
-- [x] **Three.js Type Definitions** <!-- agent: /cleanup | estimate: 1h | source: debt:43 -->
-    - Fix missing types in `global.d.ts` (Types already exist).
+- [ ] **Arena PvP Seasons** <!-- agent: /game-designer + /coder | estimate: 4h | source: roadmap:70 -->
+    - [x] Create spec: `specs/arena-pvp-seasons.md`
+    - [x] Schema: `PvpSeason`, `PvpRating`, `PvpMatch`
+    - [x] Actions: Season management, ELO, Match logic
+    - [x] UI: `RankBadge`, `SeasonRewards` components
+    - [x] UI: `RankedLobby` / `Arena.tsx` Integration
+    - [ ] Cron: Weekly reset logic
+
+- [ ] **Podcast Integration Completion** <!-- agent: /coder | estimate: 3h | source: roadmap:7 -->
+    - Finalize Pocket Casts OAuth flow
+    - Add episode browsing UI
+    - Integrate playback controls with workout session
+
+### Priority: Medium
+
+- [ ] **Settings Page Migration** <!-- agent: /ui-ux | estimate: 2h | source: ux-audit:67 -->
+    - Convert settings modal → dedicated `/settings` route
+    - Reduce cognitive load (currently 6 tabs in modal)
+
+- [ ] **IronMines Hook Extraction** <!-- agent: /cleanup | estimate: 2h | source: health-report:16 -->
+    - Extract `useMiningSession` hook from 375-line component
+    - Improve testability and reduce complexity
+
+- [ ] **Lighthouse Threshold Restoration** <!-- agent: /perf | estimate: 1h | source: debt:60 -->
+    - Audit current Lighthouse scores
+    - Incrementally restore thresholds toward 0.9 goal
+
+### Priority: Low
+
+- [ ] **TvMode Unit Tests** <!-- agent: /qa | estimate: 2h | source: health-report:17 -->
+    - Mock Bluetooth hooks for edge case coverage
+    - Reduce E2E-only test dependency
 
 ---
 
 ## Sprint Stats
-- **Total Items**: 5
-- **Estimated Hours**: 18h
-- **Debt Ratio**: 20%
+- **Total Items**: 7
+- **Estimated Hours**: 20h
+- **Feature/Debt/Polish Ratio**: 60% / 20% / 20%
 
 ## Dependencies
-- `specs` directory seems missing. Needs recreation.
+- Guild Territories requires existing `Guild` schema (✅ verified)
+- Arena PvP Seasons depends on existing duel infrastructure (✅ verified after Sprint 17)
 
-## Execution Log
-- **2026-01-03 18:59**: Auto-Executor started.
-- **2026-01-03 19:00**: [x] **Cardio PvP Duels Implementation**: Completed. 
-    - Spec created: specs/cardio-duels.md
-    - Webhook added: src/app/api/webhooks/strava
-    - Logic verified: 	ests/unit/CardioDuel.test.ts
-- **2026-01-03 19:00**: [x] **Power Rating System**: Implemented & Verified.
-    - Service created: PowerRatingService.ts
-    - Cron integrated: weekly/route.ts
-    - Tests passed: 	ests/unit/powerRating.test.ts
-- **2026-01-03 19:00**: [x] **Battle Pass XP**: Enabled in 	raining.ts.
-
-## Self-Evaluation
-**Autonomy**: 10/10. Executed Feature Trio implementation (Power Rating, PvP Duels, Battle Pass) autonomously without errors.
-- **2026-01-03 20:56**: [x] **Oracle 3.0 Implementation**: Proactive Logic Completed. OracleDecreeV3 (JSON), PvP Context, Premium Notification Trigger implemented & verified.
-- **2026-01-04 00:30**: [x] **Oracle Push System**: Full stack implementation. Service Worker, VAPID, UI Toggle & Daily Cron integration.
+## Notes
+- Sprint 17 completed all items (Cardio PvP, Power Rating, Oracle 3.0 Push).
+- Stripe Monetization remains deferred (blocked on comprehensive testing strategy).
+- Oracle 3.0 spec already exists; implementation mostly complete.
