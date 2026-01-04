@@ -25,6 +25,7 @@ import {
   disconnectHevy,
   connectIntervals,
   disconnectIntervals,
+  disconnectGarmin,
 } from "@/actions/integrations";
 import {
   disconnectStravaAction,
@@ -41,19 +42,20 @@ interface IntegrationsPanelProps {
   hevyConnected: boolean;
   intervalsConnected: boolean;
   stravaConnected: boolean;
+  garminConnected: boolean;
   pocketCastsConnected: boolean;
   initialFaction: Faction;
   onIntegrationChanged?: () => void;
   checkDemoStatus?: boolean;
 }
 
-type IntegrationType = "HEVY" | "INTERVALS" | "STRAVA" | "FACTION" | "POCKETCASTS";
+type IntegrationType = "HEVY" | "INTERVALS" | "STRAVA" | "GARMIN" | "FACTION" | "POCKETCASTS";
 
 const IntegrationsPanel: React.FC<IntegrationsPanelProps> = ({
   userId,
   hevyConnected: initialHevy,
-  intervalsConnected: initialIntervals,
   stravaConnected: initialStrava,
+  garminConnected: initialGarmin,
   pocketCastsConnected: initialPocketCasts,
   initialFaction,
   onIntegrationChanged,
@@ -63,6 +65,7 @@ const IntegrationsPanel: React.FC<IntegrationsPanelProps> = ({
   const [intervalsConnected, setIntervalsConnected] =
     useState(initialIntervals);
   const [stravaConnected, setStravaConnected] = useState(initialStrava);
+  const [garminConnected, setGarminConnected] = useState(initialGarmin);
   const [pocketCastsConnected, setPocketCastsConnected] = useState(initialPocketCasts);
   const [currentFaction, setCurrentFaction] = useState<Faction>(
     initialFaction || "HORDE",
@@ -228,6 +231,17 @@ const IntegrationsPanel: React.FC<IntegrationsPanelProps> = ({
     });
   };
 
+  const handleDisconnectGarmin = () => {
+    if (!confirm("Disconnect Garmin?")) return;
+    startTransition(async () => {
+      const result = await disconnectGarmin(userId);
+      if (result.success) {
+        setGarminConnected(false);
+        onIntegrationChanged?.();
+      }
+    });
+  };
+
   const handleFactionChange = (faction: Faction) => {
     if (faction === currentFaction) return;
 
@@ -288,6 +302,7 @@ const IntegrationsPanel: React.FC<IntegrationsPanelProps> = ({
                 if (type === "HEVY") handleDisconnectHevy();
                 else if (type === "INTERVALS") handleDisconnectIntervals();
                 else if (type === "STRAVA") handleDisconnectStrava();
+                else if (type === "GARMIN") handleDisconnectGarmin();
                 else if (type === "POCKETCASTS") handleDisconnectPocketCasts();
               }}
               className="text-zinc-500 hover:text-red-400 text-xs underline decoration-dotted transition-colors"
@@ -429,6 +444,25 @@ const IntegrationsPanel: React.FC<IntegrationsPanelProps> = ({
                       Go to Podcast Setup
                     </ForgeButton>
                   </Link>
+                </div>
+              )}
+
+              {type === "GARMIN" && (
+                <div className="text-center py-2">
+                  <p className="text-xs text-zinc-400 mb-3">
+                    Connect your Garmin Fenix 7X via OAuth to sync wellness and recovery data.
+                  </p>
+                  <ForgeButton
+                    fullWidth
+                    variant="magma"
+                    onClick={() => {
+                      alert("Garmin OAuth Client pending approval. Please use Intervals.icu aggregator as primary source for now.");
+                    }}
+                    disabled={isPending}
+                  >
+                    <Activity className="w-4 h-4 mr-2" />
+                    Launch Garmin Login
+                  </ForgeButton>
                 </div>
               )}
 
@@ -586,6 +620,13 @@ const IntegrationsPanel: React.FC<IntegrationsPanelProps> = ({
         "Strava",
         <Bike size={18} />,
         "Syncs runs/rides for Kinetic Energy",
+      )}
+      {renderCard(
+        "GARMIN",
+        garminConnected,
+        "Garmin Health",
+        <Activity size={18} />,
+        "Direct bio-sync for wellness and recovery",
       )}
       {renderCard(
         "POCKETCASTS",

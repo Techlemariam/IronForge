@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { getLeaderboard } from '../../src/lib/leaderboard';
+import { getLeaderboard } from '@/lib/leaderboard';
 
 // Mock Prisma
 const mockFindMany = vi.fn();

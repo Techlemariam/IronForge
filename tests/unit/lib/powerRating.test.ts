@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { calculatePowerRating, normalizeStrength, normalizeCardio, applyDecay, TrainingPath } from '../../src/lib/powerRating';
+import { calculatePowerRating, normalizeStrength, normalizeCardio, applyDecay, TrainingPath } from '@/lib/powerRating';
 
 describe('Power Rating Logic', () => {
 

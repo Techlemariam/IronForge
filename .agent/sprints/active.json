@@ -1,20 +1,16 @@
 {
-  "sprintId": "sprint-16",
-  "startTime": "2025-12-29T21:05:00Z",
+  "sprintId": "sprint-19",
+  "startTime": "2026-01-04T12:10:00Z",
   "status": "active",
   "currentItem": {
-    "title": "Activating Sprint 16",
-    "agent": "manager",
+    "title": "Garmin Integration (MVP)",
+    "agent": "infrastructure",
     "status": "in-progress"
   },
   "queue": [
-    "Build Performance Optimization",
-    "Health Check Endpoint",
-    "Structured Logging (Pino)",
-    "Refactor: useMiningSession hook",
-    "Fix Analytics Dashboard Logic",
-    "Type Safety Pass",
-    "Dedicated Settings Page",
-    "Loading Skeletons"
+    "Garmin Integration (MVP)",
+    "Unified Leaderboard Refactor",
+    "Three.js Type Safety",
+    "Final Lighthouse Restoration"
   ]
 }

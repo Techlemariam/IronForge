@@ -199,6 +199,38 @@ IronForge uses a hybrid architecture with **Next.js Server Actions** for client-
 |----------|-------------|--------|
 | `generateDailyDecreeAction()` | Generates and persists the Oracle's daily decree. | Auth User |
 
+### Shop System (`actions/shop-system.ts`)
+| Function | Description | Access |
+|----------|-------------|--------|
+| `getShopInventoryAction(userId)` | Returns available shop items (consumables, gear). | Auth User |
+| `buyItemAction(userId, itemId)` | Purchases an item with Gold/Gems. | Auth User |
+| `sellItemAction(userId, itemId)` | Sells an owned item for Gold. | Auth User |
+| `getGoldBalanceAction(userId)` | Returns user's current gold balance. | Auth User |
+
+### Battle Pass (`actions/battle-pass.ts`)
+| Function | Description | Access |
+|----------|-------------|--------|
+| `getActiveSeasonAction()` | Fetches current Battle Pass season. | Public |
+| `getUserBattlePassProgressAction(userId)` | Returns BP level, XP, and tier status. | Auth User |
+| `addBattlePassXpAction(userId, amount)` | Grants Season XP (typically via system triggers). | System |
+| `claimBattlePassRewardAction(userId, tier)` | Claims free/premium reward for a tier. | Auth User |
+| `upgradeToPremiumAction(userId)` | Upgrades user to Premium Pass (Mock Payment). | Auth User |
+
+### Guild Territories (`actions/territories.ts`, `actions/guild-rewards.ts`)
+| Function | Description | Access |
+|----------|-------------|--------|
+| `getWorldMapAction()` | Returns all territories and ownership status. | Auth User |
+| `getTerritoryDetailsAction(id)` | Fetches history and contest stats for a territory. | Auth User |
+| `recordTerritoryActivityAction(data)` | Logs guild contribution to territory contest. | System |
+| `processWeeklyTerritoryClaimsAction()` | Cron: Decides weekly territory winners. | System |
+| `calculateGuildBonusAction(userId)` | Calculates active guild bonuses for a user. | Auth User |
+| `awardGuildSharedRewardAction(guildId)` | Distributes raid/event rewards to members. | System |
+
+### Power Rating (`actions/power-rating.ts`)
+| Function | Description | Access |
+|----------|-------------|--------|
+| `recalculatePowerRatingAction(userId)` | Triggers full recalculation of user's Power Rating. | Auth User |
+
 ---
 
 ## 🛡️ Authentication

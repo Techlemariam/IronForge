@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog";
 import { Loader2, Swords, User as UserIcon } from "lucide-react";
 import { findRankedOpponentAction, RankedOpponent } from "@/actions/pvp-ranked";
-import { RankTierBadge } from "./RankTierBadge";
+import { RankBadge } from "@/components/game/pvp/RankBadge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
@@ -106,7 +106,7 @@ export function MatchmakingModal({ isOpen, onClose, currentRating }: Matchmaking
                                     </AvatarFallback>
                                 </Avatar>
                                 <h3 className="text-2xl font-bold text-white mt-2">{opponent.name || "Unknown Warrior"}</h3>
-                                <RankTierBadge rating={opponent.rating} rank={opponent.rank} />
+                                <RankBadge rating={opponent.rating} faction="HORDE" />
                             </div>
 
                             <div className="bg-zinc-900/50 p-4 rounded-lg border border-zinc-800 text-center">

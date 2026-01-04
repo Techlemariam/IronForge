@@ -26,6 +26,14 @@ model User {
   stravaRefreshToken String?
   stravaExpiresAt    Int? // Unix timestamp
   stravaAthleteId    String?
+
+  // Garmin
+  garminAccessToken  String?
+  garminRefreshToken String?
+  garminUserToken    String?
+  garminUserSecret   String?
+  garminConnected    Boolean @default(false)
+
   prioritizeHyperPro Boolean  @default(false)
   ftpCycle           Int?     @default(200)
   ftpRun             Int?     @default(250)
@@ -44,6 +52,7 @@ model User {
   loginStreak             Int       @default(0)
   longestLoginStreak      Int       @default(0)
   notificationPreferences Json?
+  preferences             Json? // UI preferences like liteMode, theme, etc.
 
   // Onboarding State
   hasCompletedOnboarding Boolean @default(false)
@@ -570,6 +579,7 @@ model PvpMatch {
   createdAt     DateTime @default(now())
 
   season PvpSeason @relation(fields: [seasonId], references: [id])
+  emoteLogs PvpEmoteLog[]
   
   @@index([seasonId])
   @@index([player1Id])
@@ -643,6 +653,7 @@ model Guild {
   minLevel    Int      @default(1)
   xp          Int      @default(0)
   level       Int      @default(1)
+  powerRating Float    @default(0) // Composite score of all members
   createdAt   DateTime @default(now())
 
   members     User[]
@@ -951,4 +962,37 @@ model TileControl {
   @@unique([tileId, userId])
   @@index([userId])
   @@index([tileId])
+}
+
+// ============================================
+// BATTLE EMOTES (PvP GIF Taunts)
+// ============================================
+
+model BattleEmote {
+  id          String  @id @default(cuid())
+  name        String  // "Flex", "Mock", "GG"
+  category    String  // "taunt", "flex", "gg", "premium", "seasonal"
+  gifPath     String  // Local path: "/assets/emotes/taunts/come-at-me.gif"
+  unlockLevel Int     @default(1)
+  isPremium   Boolean @default(false)
+  seasonCode  String? // For seasonal emotes, links to BattlePassSeason.code
+
+  logs PvpEmoteLog[]
+
+  @@index([category])
+  @@index([isPremium])
+}
+
+model PvpEmoteLog {
+  id        String   @id @default(cuid())
+  matchId   String
+  senderId  String
+  emoteId   String
+  createdAt DateTime @default(now())
+
+  match PvpMatch    @relation(fields: [matchId], references: [id])
+  emote BattleEmote @relation(fields: [emoteId], references: [id])
+
+  @@index([matchId])
+  @@index([senderId])
 }

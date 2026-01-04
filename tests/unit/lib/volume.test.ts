@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { calculateWeeklyVolume } from '../../src/utils/volumeCalculator';
-import { HevyWorkout } from '../../src/types/hevy';
+import { calculateWeeklyVolume } from '@/utils/volumeCalculator';
+import { HevyWorkout } from '@/types/hevy';
 
 // Minimal mock data generator
 const createWorkout = (date: Date, exercises: any[]): HevyWorkout => ({

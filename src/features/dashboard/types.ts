@@ -78,6 +78,7 @@ export interface DashboardClientProps {
   challenges: ChallengeWithStatus[];
   titanState?: TitanState | null;
   activeDuel?: any;
+  liteMode?: boolean;
 }
 
 export interface DashboardState {

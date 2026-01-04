@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { calculatePowerZone, calculatePaceZone } from '../../src/features/training/logic/zones';
+import { calculatePowerZone, calculatePaceZone } from '@/features/training/logic/zones';
 
 describe('Cardio Zones Logic', () => {
     describe('calculatePowerZone', () => {

@@ -4,18 +4,19 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Trophy, TrendingUp, Swords } from "lucide-react";
-import { getDuelLeaderboardAction } from "@/actions/duel-leaderboard";
+import { getLeaderboardAction } from "@/actions/leaderboards";
 
 interface LeaderboardEntry {
   rank: number;
   userId: string;
-  heroName: string;
+  name: string;
   faction: string;
   level: number;
-  duelElo: number;
-  wins: number;
-  losses: number;
-  winRate: number;
+  score: number;
+  metadata?: {
+    wins: number;
+    losses: number;
+  };
 }
 
 export function DuelLeaderboard({ currentUserId }: { currentUserId: string }) {
@@ -29,10 +30,10 @@ export function DuelLeaderboard({ currentUserId }: { currentUserId: string }) {
 
   const fetchLeaderboard = async () => {
     setLoading(true);
-    const result = await getDuelLeaderboardAction(50);
-    if (result.success) {
-      setLeaderboard(result.leaderboard as LeaderboardEntry[]);
-      setUserRank(result.userRank ?? null);
+    const result = await getLeaderboardAction("DUEL", { limit: 50, userId: currentUserId });
+    if (result.leaderboard) {
+      setLeaderboard(result.leaderboard as any);
+      setUserRank(result.userRank);
     }
     setLoading(false);
   };
@@ -99,7 +100,7 @@ export function DuelLeaderboard({ currentUserId }: { currentUserId: string }) {
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex flex-col">
-                      <span className="font-semibold">{entry.heroName}</span>
+                      <span className="font-semibold">{entry.name}</span>
                       <div className="flex items-center gap-2 text-xs text-slate-400">
                         <Badge
                           variant="outline"
@@ -120,21 +121,25 @@ export function DuelLeaderboard({ currentUserId }: { currentUserId: string }) {
                     </div>
                   </td>
                   <td className="px-4 py-3 text-center">
-                    <span className="font-bold text-lg">{entry.duelElo}</span>
+                    <span className="font-bold text-lg">{entry.score}</span>
                   </td>
                   <td className="px-4 py-3 text-center">
                     <span className="text-green-400 font-semibold">
-                      {entry.wins}
+                      {entry.metadata?.wins || 0}
                     </span>
                     <span className="text-slate-500 mx-1">/</span>
                     <span className="text-red-400 font-semibold">
-                      {entry.losses}
+                      {entry.metadata?.losses || 0}
                     </span>
                   </td>
                   <td className="px-4 py-3 text-center">
                     <div className="flex items-center justify-center gap-1">
                       <TrendingUp className="w-4 h-4 text-green-500" />
-                      <span className="font-semibold">{entry.winRate}%</span>
+                      <span className="font-semibold">
+                        {entry.metadata?.wins && entry.metadata?.losses && entry.metadata.wins + entry.metadata.losses > 0
+                          ? Math.round((entry.metadata.wins / (entry.metadata.wins + entry.metadata.losses)) * 100)
+                          : 0}%
+                      </span>
                     </div>
                   </td>
                 </tr>

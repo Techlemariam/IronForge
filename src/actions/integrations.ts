@@ -127,3 +127,24 @@ export async function disconnectIntervals(userId: string) {
     return { success: false, error: error.message };
   }
 }
+
+// --- GARMIN ---
+
+export async function disconnectGarmin(userId: string) {
+  try {
+    await prisma.user.update({
+      where: { id: userId },
+      data: {
+        garminConnected: false,
+        garminAccessToken: null,
+        garminRefreshToken: null,
+      },
+    });
+    revalidatePath("/");
+    return { success: true };
+  } catch (error: any) {
+    return { success: false, error: error.message };
+  }
+}
+
+

@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/auth";
 import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
+import { getPvpRank } from "@/lib/pvpRanks";
 
 const SEASON_DURATION_DAYS = 28;
 
@@ -220,35 +221,11 @@ export async function submitMatchResultAction(input: {
     });
 }
 
-export async function getLeaderboardAction() {
-    const season = await getCurrentSeasonAction();
-    if (!season) return [];
 
-    const ratings = await prisma.pvpRating.findMany({
-        where: { seasonId: season.id },
-        orderBy: { rating: 'desc' },
-        take: 20,
-        include: {
-            user: { select: { heroName: true, faction: true, activeTitle: true } }
-        }
-    });
 
-    return ratings.map(r => ({
-        ...r,
-        user: {
-            ...r.user,
-            name: r.user.heroName,
-            image: null
-        }
-    }));
-}
-
+// Use getPvpRank from @/lib/pvpRanks for rank calculation
+// Returns rank number as string for DB storage
 function getRankForRating(rating: number): string {
-    if (rating >= 2800) return "HIGH_WARLORD";
-    if (rating >= 2400) return "CHAMPION";
-    if (rating >= 2100) return "DIAMOND";
-    if (rating >= 1800) return "PLATINUM";
-    if (rating >= 1500) return "GOLD";
-    if (rating >= 1200) return "SILVER";
-    return "BRONZE";
+    const pvpRank = getPvpRank(rating);
+    return String(pvpRank.rank);
 }

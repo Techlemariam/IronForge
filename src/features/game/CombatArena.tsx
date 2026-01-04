@@ -31,6 +31,7 @@ import { playSound, triggerHaptic } from "@/utils";
 import useCelebration from "@/hooks/useCelebration";
 import { LootReveal } from "@/components/game/LootReveal";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import Image from "next/image";
 
 interface CombatArenaProps {
   bossId: string;
@@ -413,12 +414,20 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
           {/* Boss Avatar */}
           <div className="relative">
             <div
-              className={`w-24 h-24 md:w-32 md:h-32 rounded-full border-4 ${elementConfig.borderColor} bg-black overflow-hidden shadow-[0_0_30px_rgba(255,255,255,0.2)] ${elementConfig.shadowColor}`}
+              className={`w-24 h-24 md:w-32 md:h-32 rounded-full border-4 ${elementConfig.borderColor} bg-black overflow-hidden shadow-[0_0_30px_rgba(255,255,255,0.2)] ${elementConfig.shadowColor} relative`}
             >
-              {/* Placeholder or Image */}
-              <div className="flex items-center justify-center h-full text-4xl">
-                {boss.image || "👹"}
-              </div>
+              {boss.image && boss.image.startsWith("/") ? (
+                <Image
+                  src={boss.image}
+                  alt={boss.name}
+                  fill
+                  className="object-cover"
+                />
+              ) : (
+                <div className="flex items-center justify-center h-full text-4xl">
+                  {boss.image || "👹"}
+                </div>
+              )}
             </div>
             <div
               className={`absolute -bottom-2 -right-2 ${elementConfig.badgeBg} ${elementConfig.borderColor} text-xs px-2 py-1 rounded border font-bold flex items-center gap-1 shadow-lg`}
@@ -461,9 +470,64 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
       </div>
 
       {/* --- MAIN CONTENT: BATTLEFIELD & LOGS --- */}
-      <div className="relative z-10 flex-1 flex flex-col items-center justify-center p-4 gap-8">
-        {/* Combat Text / FX Area (Could be expanded) */}
-        <div className="h-32 w-full max-w-lg bg-black/50 backdrop-blur-sm border border-white/10 rounded-lg p-4 overflow-y-auto font-mono text-sm space-y-1 custom-scrollbar shadow-inner">
+      <div className="relative z-10 flex-1 flex flex-col md:flex-row items-center justify-center p-4 gap-8">
+        {/* Battle Scene Display */}
+        <div className="flex-1 w-full max-w-4xl relative h-[40vh] md:h-[50vh] flex items-center justify-between px-4 md:px-12 bg-black/40 rounded-3xl border border-white/5 shadow-inner">
+          {/* Player Side */}
+          <motion.div
+            initial={{ x: -100, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            className="relative w-40 h-40 md:w-64 md:h-64"
+          >
+            <div className="absolute inset-0 bg-blue-500/10 blur-3xl rounded-full" />
+            <Image
+              src="/assets/game/titans/warden/base.png" // Fallback or dynamic
+              alt="Player Titan"
+              fill
+              className="object-contain drop-shadow-[0_0_20px_rgba(59,130,246,0.3)]"
+              priority
+              unoptimized
+            />
+          </motion.div>
+
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+            <Swords className="w-12 h-12 text-zinc-700 opacity-20" />
+          </div>
+
+          {/* Boss Side */}
+          <motion.div
+            initial={{ x: 100, opacity: 0 }}
+            animate={{
+              x: 0,
+              opacity: 1,
+              y: isProcessingTurn ? [0, -10, 0] : 0
+            }}
+            transition={{
+              duration: 0.5,
+              repeat: isProcessingTurn ? 1 : 0
+            }}
+            className="relative w-40 h-40 md:w-64 md:h-64 scale-x-[-1]"
+          >
+            <div className="absolute inset-0 bg-red-500/10 blur-3xl rounded-full" />
+            {boss.image && boss.image.startsWith("/") ? (
+              <Image
+                src={boss.image}
+                alt={boss.name}
+                fill
+                className="object-contain drop-shadow-[0_0_20px_rgba(239,68,68,0.3)]"
+                priority
+                unoptimized
+              />
+            ) : (
+              <div className="flex items-center justify-center h-full text-8xl scale-x-[-1]">
+                {boss.image || "👹"}
+              </div>
+            )}
+          </motion.div>
+        </div>
+
+        {/* Combat Log */}
+        <div className="h-48 md:h-full w-full md:w-80 bg-black/50 backdrop-blur-sm border border-white/10 rounded-lg p-4 overflow-y-auto font-mono text-sm space-y-1 custom-scrollbar shadow-inner">
           {gameState.logs.map((log, i) => (
             <div
               key={i}

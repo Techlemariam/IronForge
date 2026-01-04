@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { getBuffForZone, ZONE_BUFFS } from '../../src/features/training/logic/buffs';
+import { getBuffForZone, ZONE_BUFFS } from '@/features/training/logic/buffs';
 
 describe('Cardio Buffs Logic', () => {
     describe('getBuffForZone', () => {

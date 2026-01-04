@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import Image from 'next/image';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -9,8 +10,10 @@ import { Progress } from "@/components/ui/progress";
 import { Card } from "@/components/ui/card";
 import { getDuelArenaStateAction } from "@/actions/duel";
 import { executeTitanCombatTurnAction } from "@/actions/titan-combat";
-import { Swords, Trophy, Timer, Bike, Footprints, AlertTriangle, Zap } from "lucide-react";
+import { Swords, Trophy, Timer, Bike, Footprints, AlertTriangle, Zap, MessageSquare } from "lucide-react";
 import { toast } from "sonner";
+import { EmotePicker } from "@/features/pvp/components/EmotePicker";
+import { EmoteOverlay, useBroadcastEmote } from "@/features/pvp/components/EmoteOverlay";
 
 interface DuelArenaProps {
     duelId: string;
@@ -23,6 +26,9 @@ export function DuelArena({ duelId, currentUserId, onClose }: DuelArenaProps) {
     const [loading, setLoading] = useState(true);
     const [combatLog, setCombatLog] = useState<string[]>([]);
     const [isAttacking, setIsAttacking] = useState(false);
+    const [isMuted, setIsMuted] = useState(false);
+
+    const { broadcastEmote } = useBroadcastEmote(duelId, duelState?.challenger?.id === currentUserId ? duelState?.challenger?.heroName : duelState?.defender?.heroName);
 
     // Polling logic
     useEffect(() => {
@@ -97,19 +103,100 @@ export function DuelArena({ duelId, currentUserId, onClose }: DuelArenaProps) {
     return (
         <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4">
             <div className="w-full max-w-4xl bg-slate-900 border border-slate-700 rounded-2xl overflow-hidden shadow-2xl relative">
-                <Button
-                    variant="ghost"
-                    className="absolute top-4 right-4 z-10 text-slate-400 hover:text-white"
-                    onClick={onClose}
-                >
-                    Exit Arena
-                </Button>
+                <div className="absolute top-4 right-4 z-10 flex gap-2">
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        className={isMuted ? "text-red-500" : "text-slate-400"}
+                        onClick={() => setIsMuted(!isMuted)}
+                        title={isMuted ? "Unmute Emotes" : "Mute Emotes"}
+                    >
+                        <MessageSquare className="w-5 h-5" />
+                    </Button>
+                    <Button
+                        variant="ghost"
+                        className="text-slate-400 hover:text-white"
+                        onClick={onClose}
+                    >
+                        Exit Arena
+                    </Button>
+                </div>
 
                 {/* Dynamic Background */}
                 <div className="absolute inset-0 bg-gradient-to-b from-slate-900 to-slate-950 opacity-90" />
                 <div className={`absolute inset-0 bg-[url('/assets/arena_bg.jpg')] bg-cover bg-center opacity-20`} />
 
                 <div className="relative z-0 p-8 space-y-8">
+                    {/* Emote Display */}
+                    <EmoteOverlay
+                        matchId={duelId}
+                        currentUserId={currentUserId}
+                        isMuted={isMuted}
+                    />
+
+                    {/* Battle Scene */}
+                    <div className="relative h-80 bg-slate-950/80 rounded-2xl border border-amber-500/20 shadow-[inset_0_0_50px_rgba(0,0,0,1)] overflow-hidden">
+                        {/* Background Scene */}
+                        <div className="absolute inset-0 bg-[url('/assets/arena_bg.jpg')] bg-cover bg-center opacity-30 mix-blend-overlay" />
+
+                        <div className="flex justify-between items-center h-full px-12 relative">
+                            {/* Left Titan (User) */}
+                            <motion.div
+                                initial={{ x: -200, opacity: 0 }}
+                                animate={{ x: 0, opacity: 1 }}
+                                transition={{ type: "spring", stiffness: 50, damping: 15 }}
+                                className="relative w-64 h-64"
+                            >
+                                <div className="absolute inset-0 bg-blue-500/10 blur-3xl rounded-full" />
+                                <Image
+                                    src={`/assets/game/titans/${(user?.activePath || 'WARDEN').toLowerCase()}/base.png`}
+                                    alt="User Titan"
+                                    fill
+                                    className="object-contain drop-shadow-[0_0_20px_rgba(59,130,246,0.3)]"
+                                    priority
+                                    unoptimized
+                                />
+                                <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-blue-500/20 border border-blue-500/50 px-3 py-1 rounded text-[10px] font-black uppercase tracking-widest text-blue-400 backdrop-blur-sm">
+                                    {user.heroName || 'YOU'}
+                                </div>
+                            </motion.div>
+
+                            {/* VS Effect */}
+                            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
+                                <motion.div
+                                    animate={{
+                                        scale: [1, 1.1, 1],
+                                        opacity: [0.1, 0.2, 0.1]
+                                    }}
+                                    transition={{ duration: 2, repeat: Infinity }}
+                                    className="text-8xl font-black italic text-amber-500/20"
+                                >
+                                    VS
+                                </motion.div>
+                            </div>
+
+                            {/* Right Titan (Opponent) */}
+                            <motion.div
+                                initial={{ x: 200, opacity: 0 }}
+                                animate={{ x: 0, opacity: 1 }}
+                                transition={{ type: "spring", stiffness: 50, damping: 15 }}
+                                className="relative w-64 h-64 scale-x-[-1]"
+                            >
+                                <div className="absolute inset-0 bg-red-500/10 blur-3xl rounded-full" />
+                                <Image
+                                    src={`/assets/game/titans/${(opponent?.activePath || 'WARDEN').toLowerCase()}/base.png`}
+                                    alt="Opponent Titan"
+                                    fill
+                                    className="object-contain drop-shadow-[0_0_20px_rgba(239,68,68,0.3)]"
+                                    priority
+                                    unoptimized
+                                />
+                                <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-red-500/20 border border-red-500/50 px-3 py-1 rounded text-[10px] font-black uppercase tracking-widest text-red-400 backdrop-blur-sm scale-x-[-1]">
+                                    {opponent.heroName || 'OPPONENT'}
+                                </div>
+                            </motion.div>
+                        </div>
+                    </div>
                     {/* Header */}
                     <div className="text-center space-y-2">
                         <Badge variant="outline" className="bg-red-500/10 text-red-500 border-red-500/50 px-4 py-1 text-sm tracking-widest uppercase">
@@ -173,24 +260,32 @@ export function DuelArena({ duelId, currentUserId, onClose }: DuelArenaProps) {
                         </div>
                     </div>
 
-                    {/* Attack Button */}
-                    <Button
-                        onClick={handleAttack}
-                        disabled={isAttacking || duelState.status !== "ACTIVE"}
-                        className="w-full bg-gradient-to-r from-red-600 to-amber-600 hover:from-red-500 hover:to-amber-500 text-white font-black text-lg py-6 rounded-lg shadow-lg shadow-red-900/50 disabled:opacity-50"
-                    >
-                        {isAttacking ? (
-                            <>
-                                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2" />
-                                Attacking...
-                            </>
-                        ) : (
-                            <>
-                                <Zap className="w-5 h-5 mr-2" />
-                                ATTACK
-                            </>
-                        )}
-                    </Button>
+                    {/* Attack & Emotes */}
+                    <div className="flex gap-4">
+                        <Button
+                            onClick={handleAttack}
+                            disabled={isAttacking || duelState.status !== "ACTIVE"}
+                            className="flex-1 bg-gradient-to-r from-red-600 to-amber-600 hover:from-red-500 hover:to-amber-500 text-white font-black text-lg py-6 rounded-lg shadow-lg shadow-red-900/50 disabled:opacity-50"
+                        >
+                            {isAttacking ? (
+                                <>
+                                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2" />
+                                    Attacking...
+                                </>
+                            ) : (
+                                <>
+                                    <Zap className="w-5 h-5 mr-2" />
+                                    ATTACK
+                                </>
+                            )}
+                        </Button>
+
+                        <EmotePicker
+                            matchId={duelId}
+                            disabled={duelState.status !== "ACTIVE"}
+                            onSend={(emote) => broadcastEmote(emote, currentUserId)}
+                        />
+                    </div>
                 </div>
             </div>
         </div>

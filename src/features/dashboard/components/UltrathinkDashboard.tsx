@@ -30,6 +30,7 @@ import TTBCompass from "@/components/TTBCompass";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/Alert";
 import { TrainingMemoryManager } from "@/services/trainingMemoryManager";
 import { Skeleton } from "@/components/ui/Skeleton";
+import { JargonTooltip } from "@/components/ui/JargonTooltip";
 
 interface UltrathinkDashboardProps {
   wellness: IntervalsWellness | null;
@@ -235,7 +236,7 @@ const UltrathinkDashboard: React.FC<UltrathinkDashboardProps> = ({
               </div>
               <div>
                 <h3 className="text-sm font-bold text-white uppercase tracking-wider">
-                  ACWR Score
+                  <JargonTooltip term="ACWR">ACWR Score</JargonTooltip>
                 </h3>
                 <div className="flex items-baseline gap-2 mt-1">
                   <span className={`text-2xl font-black ${acwrColor}`}>
@@ -304,7 +305,7 @@ const UltrathinkDashboard: React.FC<UltrathinkDashboardProps> = ({
             </div>
             <div>
               <h3 className="text-sm font-bold text-white uppercase tracking-wider">
-                Elite Engine
+                <JargonTooltip term="VO2Max">Elite Engine</JargonTooltip>
               </h3>
               <div className="flex items-baseline gap-2 mt-1">
                 <span className="text-2xl font-black text-cyan-400">
@@ -340,7 +341,7 @@ const UltrathinkDashboard: React.FC<UltrathinkDashboardProps> = ({
             <div className="flex items-center justify-between">
               <div className="flex flex-col">
                 <span className="text-[10px] uppercase font-bold text-zinc-500">
-                  Standard HR Load
+                  <JargonTooltip term="TSS">Standard HR Load</JargonTooltip>
                 </span>
                 <div className="w-8 font-mono text-zinc-500">
                   <span className="text-xl font-mono font-bold text-zinc-400">
@@ -350,7 +351,7 @@ const UltrathinkDashboard: React.FC<UltrathinkDashboardProps> = ({
                 <div className="text-zinc-700 text-xs">vs</div>
                 <div className="flex flex-col text-right">
                   <span className="text-[10px] uppercase font-bold text-orange-600">
-                    Titan Load (CNS)
+                    <JargonTooltip term="Titan Load">Titan Load (CNS)</JargonTooltip>
                   </span>
                   <span className="text-xl font-mono font-bold text-orange-500">
                     {displayTitan.titanLoad} TL
@@ -406,7 +407,7 @@ const UltrathinkDashboard: React.FC<UltrathinkDashboardProps> = ({
                   <div
                     className={`w-24 text-right font-bold ${isOptimal ? "text-green-400" : isRisk ? "text-red-400" : "text-zinc-500"}`}
                   >
-                    {day.tsb > 0 ? `+ ${day.tsb} ` : day.tsb} TSB
+                    {day.tsb > 0 ? `+ ${day.tsb} ` : day.tsb} <JargonTooltip term="TSB">TSB</JargonTooltip>
                   </div>
                 </div>
               );

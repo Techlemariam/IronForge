@@ -1,10 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { updateCardioDuelProgressInternalWithUser } from '../../src/actions/duel';
-import prisma from '../../src/lib/prisma';
-import { DuelRewardsService } from '../../src/services/pvp/DuelRewardsService';
+import { updateCardioDuelProgressInternalWithUser } from '@/actions/duel';
+import prisma from '@/lib/prisma';
+import { DuelRewardsService } from '@/services/pvp/DuelRewardsService';
 
 // Mock Prisma (Handle both default and named imports)
-vi.mock('../../src/lib/prisma', () => {
+vi.mock('@/lib/prisma', () => {
     const mockPrisma = {
         duelChallenge: {
             findUnique: vi.fn(),
@@ -21,7 +21,7 @@ vi.mock('../../src/lib/prisma', () => {
 });
 
 // Mock Rewards Service
-vi.mock('../../src/services/pvp/DuelRewardsService', () => ({
+vi.mock('@/services/pvp/DuelRewardsService', () => ({
     DuelRewardsService: {
         calculateRewards: vi.fn().mockResolvedValue({ xp: 100, gold: 50, kineticEnergy: 10 })
     }

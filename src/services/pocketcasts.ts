@@ -103,6 +103,17 @@ export class PocketCastsClient {
     }
 
     /**
+     * Fetches episodes for a specific podcast
+     */
+    async getEpisodes(podcastUuid: string, page: number = 1): Promise<PocketCastsEpisode[]> {
+        const data = await this._request("/podcast/episodes", "POST", {
+            uuid: podcastUuid,
+            page
+        });
+        return data.episodes || [];
+    }
+
+    /**
      * Updates the playback progress for a specific episode
      * @param episodeId The UUID of the episode
      * @param podcastId The UUID of the podcast

@@ -73,42 +73,45 @@ declare global {
   }
 
   // React Three Fiber Intrinsic Elements (Global JSX)
-  // R3F provides its own types via @react-three/fiber - these are fallback declarations
+  // We use ThreeElement from @react-three/fiber to provide actual type safety
+  // instead of 'any', reducing technical debt in 3D components.
   namespace JSX {
+    import { ThreeElement } from "@react-three/fiber";
     interface IntrinsicElements {
-      meshStandardMaterial: any;
-      group: any;
-      mesh: any;
-      boxGeometry: any;
-      sphereGeometry: any;
-      capsuleGeometry: any;
-      cylinderGeometry: any;
-      ambientLight: any;
-      spotLight: any;
-      pointLight: any;
-      gridHelper: any;
-      circleGeometry: any;
-      primitive: any;
+      meshStandardMaterial: ThreeElement<typeof import("three").MeshStandardMaterial>;
+      group: ThreeElement<typeof import("three").Group>;
+      mesh: ThreeElement<typeof import("three").Mesh>;
+      boxGeometry: ThreeElement<typeof import("three").BoxGeometry>;
+      sphereGeometry: ThreeElement<typeof import("three").SphereGeometry>;
+      capsuleGeometry: ThreeElement<typeof import("three").CapsuleGeometry>;
+      cylinderGeometry: ThreeElement<typeof import("three").CylinderGeometry>;
+      ambientLight: ThreeElement<typeof import("three").AmbientLight>;
+      spotLight: ThreeElement<typeof import("three").SpotLight>;
+      pointLight: ThreeElement<typeof import("three").PointLight>;
+      gridHelper: ThreeElement<typeof import("three").GridHelper>;
+      circleGeometry: ThreeElement<typeof import("three").CircleGeometry>;
+      primitive: ThreeElement<any>; // Primitives can be anything
     }
   }
 
   // React Three Fiber Intrinsic Elements (React.JSX for React 18+)
   namespace React {
     namespace JSX {
+      import { ThreeElement } from "@react-three/fiber";
       interface IntrinsicElements {
-        meshStandardMaterial: any;
-        group: any;
-        mesh: any;
-        boxGeometry: any;
-        sphereGeometry: any;
-        capsuleGeometry: any;
-        cylinderGeometry: any;
-        ambientLight: any;
-        spotLight: any;
-        pointLight: any;
-        gridHelper: any;
-        circleGeometry: any;
-        primitive: any;
+        meshStandardMaterial: ThreeElement<typeof import("three").MeshStandardMaterial>;
+        group: ThreeElement<typeof import("three").Group>;
+        mesh: ThreeElement<typeof import("three").Mesh>;
+        boxGeometry: ThreeElement<typeof import("three").BoxGeometry>;
+        sphereGeometry: ThreeElement<typeof import("three").SphereGeometry>;
+        capsuleGeometry: ThreeElement<typeof import("three").CapsuleGeometry>;
+        cylinderGeometry: ThreeElement<typeof import("three").CylinderGeometry>;
+        ambientLight: ThreeElement<typeof import("three").AmbientLight>;
+        spotLight: ThreeElement<typeof import("three").SpotLight>;
+        pointLight: ThreeElement<typeof import("three").PointLight>;
+        gridHelper: ThreeElement<typeof import("three").GridHelper>;
+        circleGeometry: ThreeElement<typeof import("three").CircleGeometry>;
+        primitive: ThreeElement<any>;
       }
     }
   }

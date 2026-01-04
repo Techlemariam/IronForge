@@ -34,6 +34,7 @@ export const TerritoryCard = ({ territory, userGuildId, onClick }: TerritoryCard
             whileHover={{ scale: 1.05, zIndex: 10 }}
             transition={{ duration: 0.2 }}
             onClick={onClick}
+            data-testid="territory-card"
         >
             <Card className={cn(
                 "w-[260px] bg-zinc-950/90 border backdrop-blur-md overflow-hidden relative group cursor-pointer transition-colors shadow-2xl",

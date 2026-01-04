@@ -3,31 +3,25 @@
 import { useState } from "react";
 import { PvpSeason } from "@prisma/client";
 import { PlayerRating, RankedOpponent } from "@/actions/pvp-ranked";
-import { RankTierBadge } from "./RankTierBadge";
+import { RankBadge } from "@/components/game/pvp/RankBadge";
 import { MatchmakingModal } from "./MatchmakingModal";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Crown, Swords, Trophy, Users, Calendar, Info, Medal } from "lucide-react";
 import { motion } from "framer-motion";
-
-interface LeaderboardEntry extends PlayerRating {
-    userId: string;
-    user: {
-        heroName: string | null;
-        faction: string | null;
-        activeTitle: { name: string } | null;
-    };
-}
+import { Faction } from "@/lib/pvpRanks";
+import { UnifiedLeaderboardEntry } from "@/actions/leaderboards";
 
 interface RankedArenaClientProps {
     season: PvpSeason | null;
     playerRating: PlayerRating;
-    leaderboard: LeaderboardEntry[];
+    leaderboard: UnifiedLeaderboardEntry[];
     userId: string;
+    faction: Faction;
 }
 
-export function RankedArenaClient({ season, playerRating, leaderboard, userId }: RankedArenaClientProps) {
+export function RankedArenaClient({ season, playerRating, leaderboard, userId, faction }: RankedArenaClientProps) {
     const [isMatchmakingOpen, setIsMatchmakingOpen] = useState(false);
 
     if (!season) {
@@ -76,7 +70,7 @@ export function RankedArenaClient({ season, playerRating, leaderboard, userId }:
                         </CardHeader>
                         <CardContent className="space-y-6">
                             <div className="flex items-center justify-between">
-                                <RankTierBadge rating={playerRating.rating} rank={playerRating.rank} size="lg" />
+                                <RankBadge rating={playerRating.rating} faction={faction} size="lg" />
                                 <div className="text-right">
                                     <div className="text-2xl font-black text-white">{playerRating.rating}</div>
                                     <div className="text-xs font-bold text-zinc-500">Current Rating</div>
@@ -142,15 +136,15 @@ export function RankedArenaClient({ season, playerRating, leaderboard, userId }:
                                                 )}
                                             </td>
                                             <td className="px-6 py-4">
-                                                <div className="font-bold text-zinc-200">{entry.user.heroName}</div>
-                                                <div className="text-xs text-zinc-500">{entry.user.activeTitle?.name || "Novice"}</div>
+                                                <div className="font-bold text-zinc-200">{entry.name}</div>
+                                                <div className="text-xs text-zinc-500">{entry.metadata?.title || "Novice"}</div>
                                             </td>
                                             <td className="px-6 py-4">
-                                                <RankTierBadge rating={entry.rating} rank={entry.rank} size="sm" />
+                                                <RankBadge rating={entry.score} faction={(entry.faction as Faction) || "HORDE"} size="sm" />
                                             </td>
                                             <td className="px-6 py-4 text-right font-mono text-zinc-400">
-                                                {entry.wins + entry.losses > 0
-                                                    ? Math.round((entry.wins / (entry.wins + entry.losses)) * 100)
+                                                {entry.metadata?.wins + entry.metadata?.losses > 0
+                                                    ? Math.round((entry.metadata?.wins / (entry.metadata?.wins + entry.metadata?.losses)) * 100)
                                                     : 0}%
                                             </td>
                                         </tr>

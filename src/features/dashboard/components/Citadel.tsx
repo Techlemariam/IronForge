@@ -17,13 +17,16 @@ interface CitadelProps {
     dispatch: React.Dispatch<DashboardAction>;
     titanState?: any;
     pocketCastsConnected?: boolean;
+    liteMode?: boolean;
 }
 
-export const Citadel: React.FC<CitadelProps> = ({ state, dispatch, titanState, pocketCastsConnected }) => (
+export const Citadel: React.FC<CitadelProps> = ({ state, dispatch, titanState, pocketCastsConnected, liteMode }) => (
     <div className="w-full max-w-6xl mx-auto p-4 md:p-6 space-y-8 animate-fade-in">
-        <section id="titan-avatar">
-            <TitanAvatar titan={titanState} />
-        </section>
+        {!liteMode && (
+            <section id="titan-avatar">
+                <TitanAvatar titan={titanState} />
+            </section>
+        )}
 
         {state.trainingContext && (
             <section id="bio-status" className="animate-in fade-in slide-in-from-top-4 duration-700">
@@ -31,14 +34,16 @@ export const Citadel: React.FC<CitadelProps> = ({ state, dispatch, titanState, p
             </section>
         )}
 
-        <section id="quest-board">
-            <QuestBoard
-                challenges={state.challenges || []}
-                onClaimSuccess={() => {
-                    /* Handled by Server Action + Revalidate, but we could trigger nice anim */
-                }}
-            />
-        </section>
+        {!liteMode && (
+            <section id="quest-board">
+                <QuestBoard
+                    challenges={state.challenges || []}
+                    onClaimSuccess={() => {
+                        /* Handled by Server Action + Revalidate */
+                    }}
+                />
+            </section>
+        )}
 
         <section id="quick-actions">
             <CitadelHub dispatch={dispatch} />
@@ -109,21 +114,23 @@ export const Citadel: React.FC<CitadelProps> = ({ state, dispatch, titanState, p
             />
         </section>
 
-        <section
-            id="campaign-tracker"
-            className="bg-forge-800 p-6 rounded-lg shadow-xl border border-forge-700"
-        >
-            <h2 className="text-2xl font-bold text-magma mb-4 uppercase tracking-wider">
-                Campaign Tracker
-            </h2>
-            <CampaignTracker
-                wellness={state.wellnessData}
-                ttb={state.ttb}
-                level={state.level}
-                activePath={state.activePath}
-                totalExperience={state.totalExperience}
-                weeklyMastery={state.weeklyMastery}
-            />
-        </section>
+        {!liteMode && (
+            <section
+                id="campaign-tracker"
+                className="bg-forge-800 p-6 rounded-lg shadow-xl border border-forge-700"
+            >
+                <h2 className="text-2xl font-bold text-magma mb-4 uppercase tracking-wider">
+                    Campaign Tracker
+                </h2>
+                <CampaignTracker
+                    wellness={state.wellnessData}
+                    ttb={state.ttb}
+                    level={state.level}
+                    activePath={state.activePath}
+                    totalExperience={state.totalExperience}
+                    weeklyMastery={state.weeklyMastery}
+                />
+            </section>
+        )}
     </div>
 );

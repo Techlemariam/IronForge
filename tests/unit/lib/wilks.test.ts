@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { calculateWilks } from '../../src/utils/wilks';
+import { calculateWilks } from '@/utils/wilks';
 
 describe('Wilks Score Calculator', () => {
     // Verified against online calculators for accuracy check

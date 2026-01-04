@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { PowerRatingService } from '../../src/services/game/PowerRatingService';
-import prisma from '../../src/lib/prisma';
+import { PowerRatingService } from '@/services/game/PowerRatingService';
+import prisma from '@/lib/prisma';
 
-vi.mock('../../src/lib/prisma', () => ({
+vi.mock('@/lib/prisma', () => ({
     default: {
         exerciseLog: { findMany: vi.fn() },
         cardioLog: { findMany: vi.fn() },

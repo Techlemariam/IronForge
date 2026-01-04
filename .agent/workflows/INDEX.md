@@ -95,6 +95,19 @@ Security Audit:
 
 ---
 
+## 🔍 Monitoring & Audits
+
+| Focus | Workflow | Description |
+|-------|----------|-------------|
+| **Strategy & Market** | `/monitor-strategy` | Alignment with personas & market gaps |
+| **Game Balance** | `/monitor-game` | Loot rates, XP, combat constants |
+| **Logic & Debt** | `/monitor-logic` | Type safety, TODOs, debt scan |
+| **CI/CD Health** | `/monitor-ci` | Workflow runs, build status |
+| **Infrastructure** | `/monitor-db`, `/monitor-deploy` | Database & Deployment health |
+| **Performance** | `/perf` | Lighthouse & bundle analysis |
+
+---
+
 ## 📋 Decision Tree
 
 ```

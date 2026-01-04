@@ -28,7 +28,9 @@ import {
   Heart,
   Zap,
   Gauge,
+  Podcast,
 } from "lucide-react";
+import { PocketCastsPlayer } from "@/features/podcast/components/PocketCastsPlayer";
 import { WorkoutDefinition } from "@/types/training";
 import BuffHud from "./components/BuffHud";
 import { getBuffForZone } from "./logic/buffs";
@@ -384,6 +386,7 @@ function CardioCockpit({
   const [copied, setCopied] = useState(false);
   const [zwiftStream, setZwiftStream] = useState<MediaStream | null>(null);
   const zwiftVideoRef = useRef<HTMLVideoElement>(null);
+  const [showPodcast, setShowPodcast] = useState(false);
 
   // Buff Logic State
   const [currentZone, setCurrentZone] = useState(2);
@@ -796,6 +799,18 @@ function CardioCockpit({
           ))}
         </div>
 
+        {/* Podcast Toggle */}
+        {pocketCastsConnected && (
+          <button
+            onClick={() => setShowPodcast(!showPodcast)}
+            className={`p-2 ml-2 rounded-lg transition-colors ${showPodcast ? "bg-red-600 text-white" : "bg-zinc-800 text-zinc-400 hover:text-white"
+              }`}
+            title="Toggle Podcast Player"
+          >
+            <Podcast className="w-5 h-5" />
+          </button>
+        )}
+
         <button
           onClick={onClose}
           className="p-2 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-lg transition-colors"
@@ -902,6 +917,19 @@ function CardioCockpit({
           currentValue={simulatedValue}
           onValueChange={setSimulatedValue}
         />
+
+        {/* Podcast Player Overlay */}
+        {showPodcast && (
+          <div className="absolute top-20 right-6 z-50 w-96 shadow-2xl animate-in slide-in-from-right-10 fade-in duration-300">
+            <button
+              onClick={() => setShowPodcast(false)}
+              className="absolute -top-2 -right-2 z-[60] p-1 bg-red-600 hover:bg-red-500 text-white rounded-full shadow-lg border-2 border-zinc-900 transition-colors"
+            >
+              <X className="w-4 h-4" />
+            </button>
+            <PocketCastsPlayer />
+          </div>
+        )}
 
         {/* Video Panel */}
         <div

@@ -9,6 +9,9 @@ import Link from "next/link";
 import { HevyImportWizard } from "@/features/training/components/HevyImportWizard";
 import { ArchetypeSelector } from "@/features/settings/components/ArchetypeSelector";
 import { Archetype } from "@/types/index";
+import { Toggle } from "@/components/ui/Toggle";
+import { updateUserPreferencesAction } from "@/actions/settings";
+import { toast } from "@/components/ui/GameToast";
 
 interface SettingsPageProps {
   userId: string;
@@ -16,10 +19,13 @@ interface SettingsPageProps {
   intervalsConnected: boolean;
   stravaConnected: boolean;
   pocketCastsConnected: boolean;
+  garminConnected: boolean;
   initialFaction: Faction;
   initialArchetype: Archetype;
   isDemoMode: boolean;
+  initialLiteMode: boolean;
 }
+
 
 export const SettingsPage: React.FC<SettingsPageProps> = ({
   userId,
@@ -27,11 +33,25 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
   intervalsConnected,
   stravaConnected,
   pocketCastsConnected,
+  garminConnected,
   initialFaction,
   initialArchetype,
   isDemoMode,
+  initialLiteMode,
 }) => {
   const [isHevyImportOpen, setIsHevyImportOpen] = React.useState(false);
+  const [liteMode, setLiteMode] = React.useState(initialLiteMode);
+
+  const handleLiteModeToggle = async (checked: boolean) => {
+    setLiteMode(checked);
+    const result = await updateUserPreferencesAction(userId, { liteMode: checked });
+    if (result.success) {
+      toast.success(checked ? "Lite Mode Enabled" : "RPG Mode Enabled");
+    } else {
+      setLiteMode(!checked); // Revert
+      toast.error("Failed to update preference");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-forge-900 bg-noise pb-20">
@@ -71,10 +91,29 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
               intervalsConnected={intervalsConnected}
               stravaConnected={stravaConnected}
               pocketCastsConnected={pocketCastsConnected}
+              garminConnected={garminConnected}
               initialFaction={initialFaction}
               checkDemoStatus={true}
               onIntegrationChanged={() => window.location.reload()}
             />
+          </div>
+        </section>
+
+        {/* Preferences Section */}
+        <section>
+          <h2 className="text-lg font-bold text-magma mb-4 uppercase tracking-wider">
+            Preferences
+          </h2>
+          <div className="bg-zinc-900/50 border border-white/5 rounded-xl p-6 shadow-xl">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-white font-bold">Lite Mode</h3>
+                <p className="text-sm text-zinc-400">
+                  Hide RPG visuals and focus on training data.
+                </p>
+              </div>
+              <Toggle checked={liteMode} onCheckedChange={handleLiteModeToggle} />
+            </div>
           </div>
         </section>
 

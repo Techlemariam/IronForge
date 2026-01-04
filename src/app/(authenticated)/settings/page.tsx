@@ -3,6 +3,9 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { SettingsPage } from "@/features/settings/SettingsPage";
 
+import { getDemoModeStatus } from "@/actions/demo";
+import { getUserPreferencesAction } from "@/actions/settings";
+
 export default async function SettingsRoute() {
   const supabase = await createClient();
   const {
@@ -20,7 +23,9 @@ export default async function SettingsRoute() {
       hevyApiKey: true,
       intervalsApiKey: true,
       stravaAccessToken: true,
+      pocketCastsToken: true,
       pocketCastsEnabled: true,
+      garminConnected: true,
       faction: true,
       archetype: true,
     },
@@ -31,16 +36,21 @@ export default async function SettingsRoute() {
     return <div>User not found</div>;
   }
 
+  const isDemoMode = await getDemoModeStatus();
+  const preferences = await getUserPreferencesAction(dbUser.id);
+
   return (
     <SettingsPage
       userId={dbUser.id}
       hevyConnected={!!dbUser.hevyApiKey}
       intervalsConnected={!!dbUser.intervalsApiKey}
       stravaConnected={!!dbUser.stravaAccessToken}
-      pocketCastsConnected={dbUser.pocketCastsEnabled}
+      pocketCastsConnected={!!dbUser.pocketCastsToken}
+      garminConnected={dbUser.garminConnected}
       initialFaction={dbUser.faction}
-      initialArchetype={dbUser.archetype as any} // Cast to avoid import circularity issues if types mismatch
-      isDemoMode={false}
+      initialArchetype={dbUser.archetype as any}
+      isDemoMode={isDemoMode}
+      initialLiteMode={preferences.liteMode ?? false}
     />
   );
 }

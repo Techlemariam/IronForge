@@ -153,6 +153,7 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
     pocketCastsConnected,
     challenges,
     titanState,
+    liteMode,
   } = props;
 
   // TODO: Fetch this from server component and pass as props
@@ -298,7 +299,13 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
     switch (state.currentView) {
       case "citadel":
         return (
-          <Citadel state={state} dispatch={dispatch} titanState={titanState} />
+          <Citadel
+            state={state}
+            dispatch={dispatch}
+            titanState={titanState}
+            pocketCastsConnected={pocketCastsConnected}
+            liteMode={liteMode}
+          />
         );
       case "training_center":
         return (
@@ -509,6 +516,8 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
             state={state}
             dispatch={dispatch}
             pocketCastsConnected={pocketCastsConnected}
+            titanState={titanState}
+            liteMode={liteMode}
           />
         );
 

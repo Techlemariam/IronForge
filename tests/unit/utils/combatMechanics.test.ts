@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { calculateDamage, detectSpecialMove, detectJokerOpportunity } from '../../src/utils/combatMechanics';
+import { calculateDamage, detectSpecialMove, detectJokerOpportunity } from '@/utils/combatMechanics';
 
 describe('Combat Mechanics', () => {
     describe('calculateDamage', () => {

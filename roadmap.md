@@ -14,6 +14,72 @@
 - [ ] **Trigger 3: Cost** -> API/Server costs exceed 500 SEK/month.
 *Action:* When triggered, execute `business_plan.md` -> Phase 2.
 
+## 🚨 Market & UX Gaps (Source: [Market Analysis](../.gemini/antigravity/brain/4afcae0e-1f7b-4e63-a972-c5fb8b73c895/market_analysis.md))
+
+> **Strategy:** Address these gaps to improve user acquisition and retention across all personas. Monitor via `/monitor-strategy`.
+
+### Product Gaps
+| # | Gap | Impact | Effort | Status |
+|---|-----|--------|--------|--------|
+| 1 | **No visual game art** (characters, bosses, equipment) | Users feel "where's the game?" | XL | 🟡 25% (Titans + 1 Boss done) |
+| 2 | **No lite/serious mode** toggle | Alienates non-gamers | M | 🔴 Not Started |
+| 3 | **Overwhelming onboarding** | First-session churn | M | 🟡 Partial (FirstLoginQuest exists) |
+| 4 | **No female-inclusive branding** | Excludes 50% of market | L (copy) / XL (identity) | 🔴 Not Started |
+| 5 | **No social proof / community** | "Is anyone using this?" | M | 🔴 Not Started |
+| 6 | **No jargon explainers** (RPE, 1RM, MRV) | Beginners confused | S | 🔴 Not Started |
+
+### Marketing Gaps
+| # | Gap | Impact | Effort | Status |
+|---|-----|--------|--------|--------|
+| 1 | **Unclear value proposition** | "What is this app, exactly?" | S | 🔴 Not Started |
+| 2 | **No landing page / marketing site** | Can't acquire users | M | 🔴 Not Started |
+| 3 | **No testimonials / case studies** | No trust signals | M | 🔴 Not Started |
+| 4 | **Heavy jargon in README** | Insider-only messaging | S | 🔴 Not Started |
+
+### Monetization Gaps
+> **Strategy:** Deferred until Business Triggers are met (see above). Focus on traction before payment integration.
+
+| # | Gap | Impact | Effort | Status |
+|---|-----|--------|--------|--------|
+| 1 | **Payment provider decision pending** | Can't charge anyone | M | ⏸️ Deferred (awaiting 100 users / demand / cost trigger) |
+| 2 | **No visible pricing page** | Users don't know there's a premium tier | S | ⏸️ Deferred |
+| 3 | **Free tier limits unclear** | No urgency to upgrade | S | 🔴 Not Started (can ship before payments) |
+
+
+## 🎮 Game Balance Gaps (Monitor: `/monitor-game`)
+
+> **Strategy:** Audit game balancing constants, loot tables, and XP curves. Avoid pay-to-win and ensure fair progression.
+
+| # | Area | Issue | Severity | Status |
+|---|------|-------|----------|--------|
+| 1 | **Loot Tables** | Drop rates not audited for fairness | Medium | 🟡 Needs Review |
+| 2 | **XP Multipliers** | Multiple XP sources (streaks, buffs, bio) may stack excessively | Medium | 🟡 Needs Review |
+| 3 | **Combat Balance** | Boss HP scaling vs player DPS not formally tested | Medium | 🟡 Needs Review |
+| 4 | **Chase Mode** | Pace thresholds may be too strict for casual runners | Low | 🔴 Not Audited |
+
+## 🔧 Logic & Type Safety Gaps (Monitor: `/monitor-logic`)
+
+> **Strategy:** Reduce `any` usage, resolve TODOs, and improve test coverage for critical paths.
+
+| # | Category | Count | Top Files | Status |
+|---|----------|-------|-----------|--------|
+| 1 | **`as any` / `: any` usage** | 50+ | `prisma.ts`, `intervals.ts`, `hevy.ts`, services | 🟡 Ongoing |
+| 2 | **TODOs in codebase** | ~17 | `oracle.ts`, `TvMode.tsx`, `GarminService.ts` | 🟡 Ongoing |
+| 3 | **Silent catch blocks** | Unknown | Needs audit | 🔴 Not Audited |
+| 4 | **Test coverage** | ~60% | Missing coverage in `/actions`, `/services/bio` | 🟡 Improving |
+
+## 🧬 Bio Integration Gaps (Monitor: `/monitor-bio`)
+
+> **Strategy:** Ensure external APIs (Hevy, Intervals, Garmin) are stable, validated, and secure.
+
+| # | Integration | Issue | Severity | Status |
+|---|-------------|-------|----------|--------|
+| 1 | **Garmin Service** | OAuth flow has TODOs, not fully implemented | High | 🟡 In Progress |
+| 2 | **Zod Validation** | Not all API responses are schema-validated | Medium | 🟡 Partial |
+| 3 | **Error Handling** | Some catch blocks may swallow errors | Medium | 🔴 Not Audited |
+| 4 | **API Key Security** | Keys read from env, no rotation strategy | Low | 🟢 Acceptable |
+
+---
 
 ## 📋 Backlog (Ready for Analysis)
 ### Critical Priority (Consensus: Game Designer + Coaches)

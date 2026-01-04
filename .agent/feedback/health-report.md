@@ -1,24 +1,25 @@
 # 🏥 Health Report
-**Date**: 2025-12-29
+**Date**: 2026-01-04
 **Auditor**: Lead SRE Agent
 
 ## 📊 Dashboard
 
 | Module | Status | Risk | Notes |
 |:-------|:-------|:-----|:------|
-| **Core Actions** (`src/actions`) | 🟢 PASS | Low | Tests exist (`__tests__`), Types verified. |
-| **Training UI** (`src/features/training`) | 🟠 WARNING | Medium | Logic inside UI components (`IronMines`, `TvMode`). No unit tests. |
-| **Documentation** | 🟢 PASS | Low | `api-reference.md` aligned with codebase (recent fix). |
-| **Knowledge Graph** | 🟢 PASS | Low | Regenerated. 299 Nodes. |
-| **E2E Tests** | 🟢 PASS | Low | Critical flows covered (settings, game-systems, tv-mode). |
+| **Core Actions** (`src/actions`) | 🟢 PASS | Low | Rich feature set (96 actions). Types verified. |
+| **Documentation** | 🔴 FAIL | High | **Major Drift**. Only ~20% of actions are documented in `api-reference.md`. Missing: `battle-pass`, `power-rating`, `territory`, `shop-system`, etc. |
+| **Test Structure** (`tests/unit`) | 🔴 FAIL | High | `tests/unit` appears empty of directories. Does not mirror `src/` structure. Violates "Structure Compliance". |
+| **Test Health** | 🟠 WARNING | Medium | Recent errors in `test-results`. Unit test coverage likely very low given the folder structure. |
+| **Knowledge Graph** | 🟢 PASS | Low | Comprehensive (299 Nodes). |
 
 ## 🚨 Critical Items
-1.  **UI Component Complexity**: `IronMines.tsx` is 375+ lines. Needs hook extraction (`useSetLogging`).
-2.  **Missing Unit Tests**: `TvMode.tsx` relies solely on E2E. Logic edge cases (Bluetooth failure) harder to test via E2E.
+1.  **Documentation Gap**: `src/actions` has grown to 96 files, but `api-reference.md` only covers a fraction. This makes it hard for new agents to know what capabilities exist.
+2.  **Missing Unit Test Scaffolding**: No `tests/unit/actions` or `tests/unit/services` directories found. Tests may be missing or misplaced.
+3.  **Action Bloat**: 96 files in `src/actions`. Consider grouping into folders (e.g. `src/actions/features/`).
 
 ## 🛠️ Remediation Plan
-1.  **Refactor**: Extract `useMiningSession` from `IronMines.tsx`.
-2.  **Test**: Add `TvMode.test.tsx` mocking Bluetooth hooks.
-3.  **Process**: Enforce `colocated-tests` rule for new features.
+1.  **Docs**: Run `/librarian` to batch-update `api-reference.md` with the 70+ missing actions.
+2.  **Scaffold**: Create `tests/unit/actions`, `tests/unit/services`, `tests/unit/utils` and move/create tests.
+3.  **Refactor**: Group `src/actions` into subdomains (Combat, Social, Training) to reduce root clutter.
 
-**Audit Precision**: 9/10. (Missed deep analysis of `src/services` mocking).
+**Audit Precision**: 8/10. (Confirmed file counts and structure, inferred test coverage from directory state).
