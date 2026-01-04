@@ -2,6 +2,7 @@
 
 import React, { Suspense, useReducer, useEffect, useState } from "react";
 import { toast } from "@/components/ui/GameToast";
+import { PwaInstallBanner } from "@/components/ui/PwaInstallBanner";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
@@ -609,6 +610,8 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
   return (
     <div id="main-content" className="bg-forge-900 min-h-screen bg-noise">
       <div className="scanlines pointer-events-none fixed inset-0 z-50 opacity-5" />
+
+      <PwaInstallBanner />
 
       <Link
         href="/settings"
