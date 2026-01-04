@@ -1,8 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
-import { awardSeasonRewardsAction } from "@/actions/pvp/leagues";
+import { SeasonService } from "@/services/pvp/SeasonService";
 
-export const dynamic = 'force-dynamic'; // static by default, unless reading the request
+export const dynamic = 'force-dynamic';
 
+/**
+ * PvP Season Transition Cron
+ * Runs weekly to check if season has ended and transition to next season.
+ * Distributes rewards to top 100 players.
+ */
 export async function GET(request: NextRequest) {
     // 1. Authorization
     const authHeader = request.headers.get("authorization");
@@ -10,21 +15,30 @@ export async function GET(request: NextRequest) {
         return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    // 2. Logic: Award Rewards
-    const result = await awardSeasonRewardsAction();
+    try {
+        // 2. Attempt season transition
+        const result = await SeasonService.transitionSeason();
 
-    if (!result.success) {
-        return NextResponse.json({ success: false, message: "Failed to award rewards" }, { status: 500 });
+        if (!result.success) {
+            // Not an error - season just hasn't ended yet
+            return NextResponse.json({
+                success: true,
+                message: result.message
+            });
+        }
+
+        return NextResponse.json({
+            success: true,
+            endedSeason: result.endedSeason,
+            newSeason: result.newSeason,
+            rewardsDistributed: result.rewardsDistributed,
+            message: "Season transitioned successfully"
+        });
+    } catch (error) {
+        console.error("Season transition error:", error);
+        return NextResponse.json(
+            { success: false, message: "Season transition failed" },
+            { status: 500 }
+        );
     }
-
-    // 3. Logic: Transition Season (Future)
-    // For now, season is calculated by date in getter, so it auto-transitions.
-    // We just needed to trigger the rewards for the *previous* season?
-    // Actually, this cron should run on the 1st of every quarter.
-
-    return NextResponse.json({
-        success: true,
-        rewardedCount: result.rewarded,
-        message: "Season rewards processed successfully"
-    });
 }
