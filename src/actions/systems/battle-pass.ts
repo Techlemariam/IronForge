@@ -237,7 +237,6 @@ export async function claimBattlePassRewardAction(
     // Process Reward Logic
     const rewardData = isPremium ? tier.premiumRewardData : tier.freeRewardData;
     if (rewardData) {
-      // @ts-ignore - Assuming JSON structure
       const data = rewardData as {
         type: string;
         amount?: number;

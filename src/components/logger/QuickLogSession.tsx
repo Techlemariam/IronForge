@@ -36,45 +36,38 @@ export default function QuickLogSession({ activeCombatSession, boss, capabilitie
             notes: ""
         });
 
-        if (res.success) {
-            // @ts-ignore
-            let message = `Logged ${sets.length} sets! +${res.energyGained} Energy${res.oracleBuff || ""}`;
-
-            // @ts-ignore
-            if (res.combatStats) {
-                // @ts-ignore
-                const stats = res.combatStats;
-                message += `\n⚔️ Dealt ${stats.damageDealt} Damage!`;
-                if (stats.isVictory) message += ` 💀 BOSS DEFEATED!`;
-
-                setLocalHp(stats.remainingHp);
-                setLastDamage(stats.damageDealt);
-                setTimeout(() => setLastDamage(0), 3000);
-            }
-
-            // @ts-ignore
-            if (res.context) {
-                // @ts-ignore
-                const ctx = res.context;
-                const muscle = exercise.muscleGroup?.toUpperCase() || "UNKNOWN";
-                // @ts-ignore
-                const vol = ctx.volume[muscle] || Object.values(ctx.volume).find(v => v.muscleGroup === muscle);
-
-                if (vol) {
-                    message += `\n📊 ${vol.muscleGroup}: ${vol.weeklySets}/${vol.mrv} Sets (${vol.status})`;
-                }
-
-                // @ts-ignore
-                if (ctx.warnings && ctx.warnings.length > 0) {
-                    // @ts-ignore
-                    message += `\n⚠️ ${ctx.warnings[0]}`;
-                }
-            }
-
-            toast.success(message, { duration: 5000 });
-        } else {
+        if (!res.success) {
             toast.error(res.error || "Failed to save logs");
+            return;
         }
+
+        // Destructure success response
+        const { energyGained, combatStats, context, oracleBuff } = res;
+        let message = `Logged ${sets.length} sets! +${energyGained} Energy${oracleBuff || ""}`;
+
+        if (combatStats) {
+            message += `\n⚔️ Dealt ${combatStats.damageDealt} Damage!`;
+            if (combatStats.isVictory) message += ` 💀 BOSS DEFEATED!`;
+
+            setLocalHp(combatStats.remainingHp);
+            setLastDamage(combatStats.damageDealt);
+            setTimeout(() => setLastDamage(0), 3000);
+        }
+
+        if (context) {
+            const muscle = exercise.muscleGroup?.toUpperCase() || "UNKNOWN";
+            const vol = context.volume[muscle] || Object.values(context.volume).find((v: any) => v.muscleGroup === muscle);
+
+            if (vol) {
+                message += `\n📊 ${vol.muscleGroup}: ${vol.weeklySets}/${vol.mrv} Sets (${vol.status})`;
+            }
+
+            if (context.warnings && context.warnings.length > 0) {
+                message += `\n⚠️ ${context.warnings[0]}`;
+            }
+        }
+
+        toast.success(message, { duration: 5000 });
     }
 
     return (
