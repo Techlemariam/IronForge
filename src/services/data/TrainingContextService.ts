@@ -86,14 +86,14 @@ export class TrainingContextService {
             let muscle = log.exercise.muscleGroup?.toUpperCase() || "UNKNOWN";
 
             // 2. Fallback to Map if needed, or normalize
-            if (workoutToMuscleMap(log.exercise.name)) {
-                // @ts-ignore
-                muscle = workoutToMuscleMap(log.exercise.name);
+            const mappedMuscle = workoutToMuscleMap(log.exercise.name);
+            if (mappedMuscle) {
+                muscle = mappedMuscle;
             }
 
             // Count valid sets (sets > 0 reps)
-            // @ts-ignore
-            const validSets = Array.isArray(log.sets) ? log.sets.filter(s => s.reps > 0).length : 0;
+            const sets = parseSets(log.sets);
+            const validSets = sets.filter(s => s.reps > 0).length;
             volumeMap[muscle] = (volumeMap[muscle] || 0) + validSets;
         });
 
@@ -104,9 +104,9 @@ export class TrainingContextService {
 
             // Apply Path-Specific Modifiers
             if (activePath && PATH_VOLUME_MODIFIERS[activePath]) {
-                // @ts-ignore
-                const modifier = PATH_VOLUME_MODIFIERS[activePath][muscle];
-                if (modifier) {
+                const modifiers = PATH_VOLUME_MODIFIERS[activePath] as Record<string, number>;
+                const modifier = modifiers[muscle];
+                if (modifier !== undefined) {
                     baseMrv = Math.round(baseMrv * modifier);
                 }
             }
@@ -267,17 +267,13 @@ export class TrainingContextService {
 
         let neuralLoad = 0;
         recentLogs.forEach(log => {
-            // Parse sets from JSON
-            // @ts-ignore
-            if (Array.isArray(log.sets)) {
-                // @ts-ignore
-                (log.sets as any[]).forEach(set => {
-                    if (set && set.reps > 0) {
-                        const cost = TrainingContextService.estimateCnsCost(log.exercise.name, set.rpe || 7, set.reps);
-                        neuralLoad += (cost === "HIGH" ? 3 : cost === "MEDIUM" ? 2 : 1);
-                    }
-                });
-            }
+            const sets = parseSets(log.sets);
+            sets.forEach(set => {
+                if (set.reps > 0) {
+                    const cost = TrainingContextService.estimateCnsCost(log.exercise.name, set.rpe || 7, set.reps);
+                    neuralLoad += (cost === "HIGH" ? 3 : cost === "MEDIUM" ? 2 : 1);
+                }
+            });
         });
 
         // Impact Load (Engine) - Run TSS
@@ -317,16 +313,11 @@ export class TrainingContextService {
             let junkSets = 0;
             let totalSets = 0;
             recentLogs.forEach(log => {
-                // @ts-ignore
-                if (Array.isArray(log.sets)) {
-                    // @ts-ignore
-                    (log.sets as any[]).forEach(set => {
-                        if (set) {
-                            totalSets++;
-                            if ((set.rpe || 0) < 7) junkSets++;
-                        }
-                    });
-                }
+                const sets = parseSets(log.sets);
+                sets.forEach(set => {
+                    totalSets++;
+                    if ((set.rpe || 0) < 7) junkSets++;
+                });
             });
             if (totalSets > 0 && (junkSets / totalSets) > 0.3) {
                 warnings.push(`Titan Alert: ${junkSets} sets were 'Junk Volume'(RPE < 7).Intensity needed!`);
@@ -349,13 +340,10 @@ export class TrainingContextService {
             // 6. Rep Range Mismatch
             let lowRepSets = 0;
             recentLogs.forEach(log => {
-                // @ts-ignore
-                if (Array.isArray(log.sets)) {
-                    // @ts-ignore
-                    (log.sets as any[]).forEach(set => {
-                        if (set && set.reps < 5) lowRepSets++;
-                    });
-                }
+                const sets = parseSets(log.sets);
+                sets.forEach(set => {
+                    if (set.reps < 5) lowRepSets++;
+                });
             });
             if (totalSets > 0 && (lowRepSets / totalSets) > 0.5) {
                 warnings.push(`Titan Mismatch: > 50 % of volume is < 5 reps.Leave the powerlifting to Juggernaut.`);
