@@ -46,6 +46,13 @@ Run via browser or CLI:
   - Accessibility: > 95
   - Best Practices: > 90
   - SEO: > 90
+
+### 5. Real User Monitoring (RUM)
+- Check Vercel Speed Insights dashboard for:
+  - LCP (Largest Contentful Paint)
+  - CLS (Cumulative Layout Shift)
+  - INP (Interaction to Next Paint)
+- Ensure `<SpeedInsights />` is present in root layout.
 ```
 
 ### 4. Runtime Hotspots

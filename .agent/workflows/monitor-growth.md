@@ -27,6 +27,7 @@ Ensure the platform is discoverable and accessible.
 cat public/robots.txt
 cat public/sitemap.xml
 rg "<meta name=\"description\"" src/app/layout.tsx
+rg "SpeedInsights" src/app/layout.tsx # Check performance monitoring status
 
 # Check Landing Page existence
 ls src/app/page.tsx src/components/marketing/
