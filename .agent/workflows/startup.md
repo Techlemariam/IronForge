@@ -1,8 +1,5 @@
 ---
 description: Session bootstrapping and daily briefing
-command: /startup
-category: meta
-trigger: manual
 ---
 # Workflow: /startup
 Trigger: Auto (Session Start) | Manual
@@ -42,6 +39,7 @@ Presentera en dashboard:
 Baserat på state, föreslå:
 - Fortsätt pågående arbete?
 - Kör `/cleanup` om debt > 5?
+- Kör `/triage` för att prioritera identifierade gaps och uppdatera roadmap?
 - Kör `/evolve` för token-optimering om nya workflows skapats?
 - **Allow List**: Om kommandon körs ofta, föreslå att lägga till i terminal allow list (se `.agent/config.json` → `safeCommands`)
 

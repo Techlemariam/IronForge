@@ -1,11 +1,57 @@
 import { test, expect } from '@playwright/test';
+import { Client } from 'pg';
 
 test.describe('Cardio PvP Duels Flow', () => {
+    test.beforeAll(async () => {
+        // Use direct PG connection to avoid Prisma instantiation issues in test env
+        const client = new Client({
+            connectionString: process.env.DATABASE_URL
+        });
+
+        try {
+            await client.connect();
+            const email = process.env.TEST_USER_EMAIL || 'alexander.teklemariam@gmail.com';
+            console.log(`[Setup] Cleaning up duels for user: ${email} `);
+
+            const userRes = await client.query('SELECT id, "heroName" FROM "User" WHERE email = $1', [email]);
+            if (userRes.rows.length === 0) {
+                throw new Error(`Test user not found: ${email} `);
+            }
+            const user = userRes.rows[0];
+
+            // Clean up DuelChallenge
+            const result = await client.query(
+                'DELETE FROM "DuelChallenge" WHERE "challengerId" = $1 OR "defenderId" = $1',
+                [user.id]
+            );
+            console.log(`[Setup] Deleted ${result.rowCount} active duels for ${user.heroName || user.id}`);
+
+        } catch (e) {
+            console.error("[Setup] Cleanup failed:", e);
+            throw e;
+        } finally {
+            await client.end();
+        }
+    });
+
     test.beforeEach(async ({ page }) => {
         await page.goto('/iron-arena');
+        // Wait for hydration
+        await page.waitForTimeout(1000);
+
+        const findOpponentBtn = page.getByRole('button', { name: 'Find Opponent' });
+        if (!await findOpponentBtn.isVisible()) {
+            console.log("Find Opponent button not visible. Page content dump:");
+            console.log(await page.textContent('body'));
+
+            // Try to recover if we are in Victory screen?
+            if (await page.getByText(/Victory/i).isVisible()) {
+                console.log("Stuck on victory screen?");
+            }
+        }
 
         // Open Find Opponent
-        await page.getByRole('button', { name: 'Find Opponent' }).click();
+        await findOpponentBtn.click();
         await expect(page.getByRole('dialog')).toBeVisible();
         await expect(page.getByText(/Issue Challenge/i)).toBeVisible();
 
@@ -53,11 +99,17 @@ test.describe('Cardio PvP Duels Flow', () => {
         // Switch to Running
         await page.getByRole('button', { name: 'Running' }).click();
 
-        // Verify Running is selected
-        await expect(page.getByRole('button', { name: 'Running', pressed: true })).toBeVisible();
+        // Small wait for state update
+        await page.waitForTimeout(500);
+
+        // Verify Running is selected - Use a more robust check if aria-pressed is slow
+        const runningBtn = page.getByRole('button', { name: 'Running' });
+        await expect(runningBtn).toHaveAttribute('aria-pressed', 'true');
+        await expect(runningBtn).toBeVisible();
 
         // Verify W/kg slider is GONE (Running doesn't have it currently in MVP)
         await expect(page.getByText('Fairness Tier (W/kg)')).not.toBeVisible();
+
 
         // Verify Speed Demon distances for running
         await page.click('button:has-text("Speed Demon")');

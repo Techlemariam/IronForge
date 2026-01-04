@@ -2,7 +2,7 @@ import {
   createDuelChallengeAction,
   acceptDuelChallengeAction,
   updateCardioDuelProgressAction,
-} from "../duel";
+} from "../pvp/duel";
 import { prisma } from "@/lib/prisma";
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { createClient } from "@/utils/supabase/server";

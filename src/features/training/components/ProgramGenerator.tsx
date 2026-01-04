@@ -13,7 +13,7 @@ import {
   ChevronRight,
   X,
 } from "lucide-react";
-import { generateProgramAction, saveProgramAction } from "@/actions/program";
+import { generateProgramAction, saveProgramAction } from "@/actions/training/program";
 import { toast } from "sonner";
 
 interface ProgramGeneratorProps {

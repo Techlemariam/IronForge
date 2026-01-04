@@ -9,7 +9,7 @@ import {
     getAvailableEmotesAction,
     sendBattleEmoteAction,
     type BattleEmoteWithUnlock,
-} from '@/actions/battle-emotes';
+} from '@/actions/combat/emotes';
 import { Button } from '@/components/ui/button';
 import {
     Popover,

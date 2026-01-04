@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { getWorldMapAction, WorldMapData } from "@/actions/territories";
+import { getWorldMapAction, WorldMapData } from "@/actions/systems/territories";
 import { TerritoryCard } from "./territory/TerritoryCard";
 import { Map as MapIcon, Loader2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";

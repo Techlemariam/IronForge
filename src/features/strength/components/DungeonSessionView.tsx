@@ -13,7 +13,7 @@ import BerserkerChoice from "@/features/training/components/BerserkerChoice";
 import VisionRepCounter from "@/features/training/components/VisionRepCounter";
 import { Eye, EyeOff } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { logTitanSet } from "@/actions/training";
+import { logTitanSet } from "@/actions/training/core";
 import { toast } from "sonner";
 import { useJokerSets } from "@/features/strength/hooks/useJokerSets";
 import { useSetLogging } from "@/features/strength/hooks/useSetLogging";

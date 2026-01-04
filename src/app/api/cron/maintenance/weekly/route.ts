@@ -37,7 +37,7 @@ export async function GET(request: NextRequest) {
 
     // 2. Guild Territory Claims (Guild Competition)
     try {
-        const { processWeeklyTerritoryClaimsAction } = await import("@/actions/territories");
+        const { processWeeklyTerritoryClaimsAction } = await import("@/actions/systems/territories");
         const guildClaimResults = await processWeeklyTerritoryClaimsAction();
         report.tasks.guildTerritories = {
             success: true,

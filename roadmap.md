@@ -12,11 +12,11 @@
 - [ ] **Trigger 1: Traction** -> 100 recurring users (Retention > 20%).
 - [ ] **Trigger 2: Demand** -> User explicitly asks "Can I pay for X?".
 - [ ] **Trigger 3: Cost** -> API/Server costs exceed 500 SEK/month.
-*Action:* When triggered, execute `business_plan.md` -> Phase 2.
+*Action:* Monitor via `/monitor-growth`. When triggered, execute `business_plan.md` -> Phase 2.
 
 ## 🚨 Market & UX Gaps (Source: [Market Analysis](../.gemini/antigravity/brain/4afcae0e-1f7b-4e63-a972-c5fb8b73c895/market_analysis.md))
 
-> **Strategy:** Address these gaps to improve user acquisition and retention across all personas. Monitor via `/monitor-strategy`.
+> **Strategy:** Address these gaps to improve user acquisition and retention across all personas. Monitor via `/monitor-strategy` (product) and `/monitor-growth` (metrics).
 
 ### Product Gaps
 | # | Gap | Impact | Effort | Status |

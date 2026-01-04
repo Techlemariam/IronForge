@@ -10,7 +10,7 @@ import { AchievementContext } from "@/context/AchievementContext";
 import { useSkills } from "@/context/SkillContext";
 import { StorageService, ActiveSessionState } from "@/services/storage";
 import { IntegrationService } from "@/services/integration";
-import { getWellnessAction } from "@/actions/intervals";
+import { getWellnessAction } from "@/actions/integrations/intervals";
 import { logger } from "@/utils/logger";
 
 interface UseMiningSessionProps {

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { updateTitanAction } from "@/actions/titan";
+import { updateTitanAction } from "@/actions/titan/core";
 import { NotificationService } from "@/services/notifications";
 import { prisma } from "@/lib/prisma";
 import * as Sentry from "@sentry/nextjs";

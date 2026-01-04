@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Heart, Sword, Shield, Zap, Skull, Trophy, Timer } from "lucide-react";
 import { playSound } from "@/utils";
-import { logGauntletRunAction, GauntletResult } from "@/actions/gauntlet";
+import { logGauntletRunAction, GauntletResult } from "@/actions/training/gauntlet";
 
 interface GauntletArenaProps {
   userLevel: number;

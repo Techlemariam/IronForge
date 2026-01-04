@@ -109,10 +109,10 @@ vi.mock("@/features/dashboard/CitadelHub", () => ({
 }));
 
 // Mock Actions
-vi.mock("@/actions/hevy", () => ({
+vi.mock("@/actions/integrations/hevy", () => ({
   saveWorkoutAction: vi.fn(),
 }));
-vi.mock("@/actions/progression", () => ({
+vi.mock("@/actions/progression/core", () => ({
   getProgressionAction: vi.fn(),
 }));
 vi.mock("@/hooks/useAmbientSound", () => ({

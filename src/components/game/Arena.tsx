@@ -3,7 +3,7 @@ import { Swords, Trophy, Skull, Shield, Zap, User } from "lucide-react";
 import {
   getProgressionAction,
   awardGoldAction,
-} from "../../actions/progression";
+} from "@/actions/progression/core";
 import { StorageService } from "../../services/storage";
 import { playSound } from "../../utils";
 

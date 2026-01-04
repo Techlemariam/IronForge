@@ -3,7 +3,7 @@ import { ShoppingBag, X, Zap, Shield, Heart, Skull } from "lucide-react";
 import {
   getProgressionAction,
   awardGoldAction,
-} from "../../actions/progression";
+} from "@/actions/progression/core";
 import { StorageService } from "../../services/storage";
 import { playSound } from "../../utils";
 

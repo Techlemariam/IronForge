@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { uploadToStravaAction } from "@/actions/strava";
+import { uploadToStravaAction } from "@/actions/integrations/strava";
 import ForgeButton from "@/components/ui/ForgeButton";
 import ForgeCard from "@/components/ui/ForgeCard";
 import ForgeInput from "@/components/ui/ForgeInput";

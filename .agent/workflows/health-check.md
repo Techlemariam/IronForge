@@ -1,8 +1,5 @@
 ---
 description: health-check
-command: /health-check
-category: meta
-trigger: manual
 ---
 
 # Workflow: /health-check
@@ -26,13 +23,15 @@ Test-Health: Är de senaste testresultaten gröna, eller finns det föråldrade 
 
 Task (Auditing Steg):
 
-Recursive Scan: Gå igenom alla mappar under /src och mappa dem mot existerande test- och dokumentationsfiler.
+1. **Recursive Scan**: Gå igenom alla mappar under /src och mappa dem mot existerande test- och dokumentationsfiler.
 
-Integrity Check: Verifiera att varje .workflow-fil har korrekta input/output-scheman som matchar implementationen.
+2. **Integrity Check**: Verifiera att varje .workflow-fil har korrekta input/output-scheman som matchar implementationen.
 
-Gap Analysis: Identifiera moduler som saknar dokumentation eller har låg testtäckning.
+3. **Gap Analysis & Triage**:
+   - Identifiera moduler som saknar dokumentation eller har låg testtäckning.
+   - **Kör `/triage`** för att systematiskt värdera och prioritera dessa gaps mot existerande roadmap.
 
-Remediation Plan: Generera en lista över "Technical Debt"-punkter som måste åtgärdas omedelbart.
+4. **Remediation Plan**: Generera en lista över "Technical Debt"-punkter som måste åtgärdas omedelbart, mappat till P0/P1 i triage-skalan.
 
 Format: Presentera resultatet som en "Health Dashboard" med status (PASS/FAIL/WARNING) för varje modul, följt av en prioriterad åtgärdslista.
 

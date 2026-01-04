@@ -56,7 +56,7 @@ export const TrainingCenter: React.FC<TrainingCenterProps> = ({
         // or assume actions are passed as props.
         // For now, let's assume we can call the actions if they are 'use server' imported at top (which works in Nextjs 14+)
         // But wait, "TrainingCenter" is 'use client'. We can import server actions.
-        import("@/actions/intervals").then((mod) =>
+        import("@/actions/integrations/intervals").then((mod) =>
           mod.getActivitiesAction(
             new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
               .toISOString()
@@ -64,7 +64,7 @@ export const TrainingCenter: React.FC<TrainingCenterProps> = ({
             new Date().toISOString().split("T")[0],
           ),
         ),
-        import("@/actions/intervals").then((mod) =>
+        import("@/actions/integrations/intervals").then((mod) =>
           mod.getAthleteSettingsAction(),
         ),
       ]);

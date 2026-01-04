@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { updateCardioDuelProgressInternalWithUser } from '@/actions/duel';
+import { updateCardioDuelProgressInternalWithUser } from '@/actions/pvp/duel';
 import prisma from '@/lib/prisma';
 import { DuelRewardsService } from '@/services/pvp/DuelRewardsService';
 

@@ -6,7 +6,7 @@ import {
   getLeaderboard,
   getSocialFeed,
   getFactionStatsAction,
-} from "@/actions/social";
+} from "@/actions/social/core";
 import { FeedCard } from "@/features/social/components/FeedCard";
 import { Users, Swords, X } from "lucide-react";
 import { toast } from "sonner";

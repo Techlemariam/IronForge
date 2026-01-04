@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { createProgramAction } from "@/actions/programs";
+import { createProgramAction } from "@/actions/training/programs";
 import { Plus, Calendar, Save } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 

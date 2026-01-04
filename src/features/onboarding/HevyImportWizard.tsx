@@ -3,7 +3,7 @@
 import React, { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { toast } from "sonner";
-import { importHevyHistoryAction } from "@/actions/hevy";
+import { importHevyHistoryAction } from "@/actions/integrations/hevy";
 import {
   Upload,
   FileJson,
@@ -127,11 +127,10 @@ export const HevyImportWizard = () => {
       {!file ? (
         <div
           {...getRootProps()}
-          className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-colors ${
-            isDragActive
+          className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-colors ${isDragActive
               ? "border-magma bg-magma/5"
               : "border-zinc-700 hover:border-zinc-500 bg-zinc-900/50"
-          }`}
+            }`}
         >
           <input {...getInputProps()} />
           <Upload className="w-10 h-10 text-zinc-500 mx-auto mb-4" />

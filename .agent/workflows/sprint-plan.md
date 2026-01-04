@@ -1,8 +1,5 @@
 ---
 description: Sprint planning from roadmap, debt, and audit sources
-command: /sprint-plan
-category: sprint
-trigger: manual
 ---
 # Workflow: /sprint-plan
 Trigger: Manual | End of Sprint
@@ -20,6 +17,7 @@ Read and analyze:
 - `DEBT.md` → Tech debt to address
 - `.agent/feedback/ux-audit.md` → UX priorities
 - `.agent/feedback/health-report.md` → Testing gaps
+- **Run `/triage`** to synthesize and score all gaps from the above sources.
 
 ## 2. Prioritization Matrix
 

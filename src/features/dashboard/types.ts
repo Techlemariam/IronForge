@@ -20,7 +20,7 @@ import {
 import { CardioMode } from "@/features/training/CardioStudio";
 import { HevyExerciseTemplate, HevyRoutine } from "@/types/hevy";
 import { ChallengeWithStatus } from "@/components/gamification/QuestBoard";
-import { TitanState } from "@/actions/titan";
+import { TitanState } from "@/actions/titan/core";
 import { TrainingContext } from "@/services/data/TrainingContextService";
 
 export type View =

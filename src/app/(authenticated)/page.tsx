@@ -8,20 +8,21 @@ import {
   getHevyTemplatesAction,
   getHevyRoutinesAction,
   getHevyWorkoutHistoryAction,
-} from "@/actions/hevy";
+} from "@/actions/integrations/hevy";
 import { runFullAudit } from "@/services/auditorOrchestrator";
 import {
-  getWellnessAction,
   getActivitiesAction,
+  getWellnessAction,
+  getAthleteSettingsAction,
   getEventsAction,
-} from "@/actions/intervals";
+} from "@/actions/integrations/intervals";
 import { AnalyticsService } from "@/services/analytics";
 import { ProgressionService } from "@/services/progression";
 import { OracleService } from "@/services/oracle";
 import { RecoveryService } from "@/services/bio/RecoveryService";
 import DashboardClient from "@/features/dashboard/DashboardClient";
-import { getActiveChallengesAction } from "@/actions/challenges";
-import { ensureTitanAction, syncTitanStateWithWellness } from "@/actions/titan";
+import { getActiveChallengesAction } from "@/actions/systems/challenges";
+import { ensureTitanAction, syncTitanStateWithWellness } from "@/actions/titan/core";
 import { calculateSkillEffects } from "@/features/game/hooks/useSkillEffects";
 
 // Types

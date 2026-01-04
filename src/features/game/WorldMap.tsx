@@ -7,7 +7,7 @@ import {
   getWorldStateAction,
   getRegionBossAction,
   WorldRegion,
-} from "@/actions/world";
+} from "@/actions/systems/world";
 
 interface WorldMapProps {
   userLevel?: number; // Optional if we fetch from server, but kept for interface compatibility

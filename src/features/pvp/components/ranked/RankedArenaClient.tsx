@@ -11,7 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Crown, Swords, Trophy, Users, Calendar, Info, Medal } from "lucide-react";
 import { motion } from "framer-motion";
 import { Faction } from "@/lib/pvpRanks";
-import { UnifiedLeaderboardEntry } from "@/actions/leaderboards";
+import { UnifiedLeaderboardEntry } from "@/actions/pvp/leaderboards";
 
 interface RankedArenaClientProps {
     season: PvpSeason | null;

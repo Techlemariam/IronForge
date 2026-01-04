@@ -1,5 +1,5 @@
 import prisma from "@/lib/prisma";
-import { ChallengeCriteria } from "@/actions/challenges";
+import { ChallengeCriteria } from "@/actions/systems/challenges";
 
 export async function processWorkoutLog(
   userId: string,

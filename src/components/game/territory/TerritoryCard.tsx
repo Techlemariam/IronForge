@@ -1,6 +1,6 @@
 "use client";
 
-import { TerritoryWithControl } from "@/actions/territories";
+import { TerritoryWithControl } from "@/actions/systems/territories";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";

@@ -19,7 +19,8 @@ Quick reference for choosing the right workflow based on your situation.
 | **Pre-Release** | `/pre-deploy` → `/security` → `/perf` → Merge | Merge to `main` = Auto-Deploy |
 | **Emergency Fix** | `/debug` → `/coder` → `/pre-deploy` | Hotfix path |
 | **New Idea** | `/idea` → `/analyst` → `/architect` | Intake to design |
-| **Sprint Planning** | `/sprint-plan` → `/manager` | Backlog grooming |
+| **Sprint Planning** | `/sprint-plan` → `/triage` → `/manager` | Backlog grooming & prioritization |
+| **Gaps Found** | `/triage` → `ROADMAP.md` → `/feature` | Gap resolution pipeline |
 | **Overnight Work** | `/sprint-auto` | Autonomous execution |
 
 ---
@@ -59,6 +60,7 @@ Quick reference for choosing the right workflow based on your situation.
 | `/perf` | Performance | Bundle, Lighthouse |
 | `/cleanup` | Debt resolution | DEBT.md items |
 | `/evolve` | Workflow improvement | Meta-optimization |
+| `/triage` | Gap prioritization | Resolving gaps from monitors |
 
 ---
 
@@ -66,14 +68,14 @@ Quick reference for choosing the right workflow based on your situation.
 
 | Domain | Entry Point | Primary Workflows |
 |--------|-------------|-------------------|
-| `infra` | `/domain-session infra` | `/infrastructure`, `/pre-deploy` |
-| `game` | `/domain-session game` | `/game-designer`, `/architect` |
-| `sprint` | `/domain-session sprint` | `/manager`, `/sprint-plan` |
-| `qa` | `/domain-session qa` | `/qa`, `/unit-tests` |
-| `bio` | `/domain-session bio` | `/titan-coach` |
-| `business` | `/domain-session business` | `/analyst`, `/strategist` |
-| `api` | `/domain-session api` | `/architect`, `/security` |
-| `meta` | `/domain-session meta` | `/evolve`, `/librarian` |
+| `infra` | `/domain-session infra` | `/infrastructure`, `/pre-deploy`, `/triage` |
+| `game` | `/domain-session game` | `/game-designer`, `/architect`, `/triage` |
+| `sprint` | `/domain-session sprint` | `/manager`, `/sprint-plan`, `/triage` |
+| `qa` | `/domain-session qa` | `/qa`, `/unit-tests`, `/triage` |
+| `bio` | `/domain-session bio` | `/titan-coach`, `/triage` |
+| `business` | `/domain-session business` | `/analyst`, `/strategist`, `/triage` |
+| `api` | `/domain-session api` | `/architect`, `/security`, `/triage` |
+| `meta` | `/domain-session meta` | `/evolve`, `/librarian`, `/triage` |
 
 ---
 
@@ -91,6 +93,9 @@ Performance Issue:
 
 Security Audit:
 /security → /coder → /qa → /security
+
+Gap Resolution:
+/monitor-x → /triage → ROADMAP.md → /feature or /cleanup
 ```
 
 ---
@@ -105,6 +110,7 @@ Security Audit:
 | **CI/CD Health** | `/monitor-ci` | Workflow runs, build status |
 | **Infrastructure** | `/monitor-db`, `/monitor-deploy` | Database & Deployment health |
 | **Performance** | `/perf` | Lighthouse & bundle analysis |
+| **Gap Triage** | `/triage` | Prioritize all found gaps into ROADMAP.md |
 
 ---
 
@@ -120,6 +126,8 @@ Start
   ├─ Know what to build? ──────→ /domain-session → /feature
   │
   ├─ Have an idea? ────────────→ /idea
+  │
+  ├─ Audit/Gap found? ─────────→ /triage
   │
   ├─ Routine maintenance? ─────→ /cleanup or /polish
   │

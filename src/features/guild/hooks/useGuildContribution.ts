@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { contributeGuildDamageAction } from "@/actions/guild";
+import { contributeGuildDamageAction } from "@/actions/guild/core";
 
 interface UseGuildContributionProps {
   userId?: string;

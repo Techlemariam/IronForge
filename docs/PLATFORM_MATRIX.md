@@ -4,13 +4,13 @@
 
 ## Plattformar
 
-| Platform | Device | Context | Primary Use |
-|:---------|:-------|:--------|:------------|
-| **Desktop Web** | Laptop/PC | Vid skrivbord | Planering, analys, djupdykning |
-| **Mobile Web (PWA)** | Telefon | Gym, on-the-go | Logging, quick actions |
-| **Native App** (future) | iOS/Android | Gym | Push, offline, widgets |
-| **TV Mode** | TV via HDMI/Cast | Cardio, hemmagym | Ambient HUD, glanceable |
-| **Companion** | Mobil + TV | Cardio | Mobil = remote, TV = display |
+| Platform | Device | Context | Primary Use | Growth Role |
+|:---------|:-------|:--------|:------------|:------------|
+| **Desktop Web** | Laptop/PC | Vid skrivbord | Planering, analys, djupdykning | **Acquisition** (SEO, marketing, heavy onboarding) |
+| **Mobile Web (PWA)** | Telefon | Gym, on-the-go | Logging, quick actions | **Retention** (Daily usage, push notifications) |
+| **Native App** (future) | iOS/Android | Gym | Push, offline, widgets | **Retention** (Deep system integration) |
+| **TV Mode** | TV via HDMI/Cast | Cardio, hemmagym | Ambient HUD, glanceable | **Differentiation** (Unique "WOW" factor) |
+| **Companion** | Mobil + TV | Cardio | Mobil = remote, TV = display | **Virality** (Social/Multiplayer usage) |
 
 ---
 

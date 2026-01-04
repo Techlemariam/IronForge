@@ -14,11 +14,33 @@ This workflow helps you:
 
 ---
 
-## Step 1: Collect Monitor Findings
-Run relevant monitor workflows to gather current state:
+## Step 1: Trigger All Monitors
+// turbo
+Run all monitor workflows to gather the current state of the system into a single triage context:
+/triage [optional-domain]
+```
+
+## Step 1: Trigger Monitors
+// turbo
+Run relevant monitor workflows based on the provided domain (or all if no domain is specified).
+
+### Domain Mapping
+| Domain | Monitors to Run |
+|--------|-----------------|
+| `infra` | `/monitor-db`, `/monitor-deploy`, `/monitor-ci` |
+| `game` | `/monitor-game`, `/monitor-logic`, `/monitor-tests` |
+| `sprint`| `/monitor-strategy` |
+| `qa` | `/monitor-tests`, `/monitor-logic` |
+| `bio` | `/monitor-bio` |
+| `business`| `/monitor-strategy`, `/monitor-growth` |
+| `api` | `/monitor-logic`, `/security` |
+| `meta` | `/health-check`, `/monitor-tests`, `/monitor-growth` |
+
+**Instruction:** 
+- If a `[domain]` is provided, run **ONLY** the monitors listed above for that domain.
+- If NO domain is provided (or domain is unknown), run **ALL** monitors below:
 
 ```bash
-# Run all monitors or select specific ones
 /monitor-logic    # Logic gaps, debt, type safety
 /monitor-game     # Game balance, data integrity
 /monitor-bio      # Bio-integration health
@@ -26,10 +48,12 @@ Run relevant monitor workflows to gather current state:
 /monitor-ci       # CI/CD pipeline health
 /monitor-db       # Database and migrations
 /monitor-deploy   # Vercel deployment status
+/monitor-deploy   # Vercel deployment status
 /monitor-strategy # Market alignment and personas
+/monitor-growth   # Passive income triggers and acquisition
 ```
 
-**Output:** Create a temporary triage document with all findings.
+**Instruction:** The agent MUST run all the above commands and aggregate the findings before proceeding to the next step.
 
 ---
 

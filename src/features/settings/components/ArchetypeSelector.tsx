@@ -2,7 +2,7 @@
 
 import React, { useState, useTransition } from "react";
 import { Archetype } from "@/types/index";
-import { updateArchetypeAction } from "@/actions/user";
+import { updateArchetypeAction } from "@/actions/user/core";
 import { CheckCircle, Swords, Wind, Scale } from "lucide-react";
 import { motion } from "framer-motion";
 

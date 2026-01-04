@@ -7,7 +7,7 @@ import ForgeButton from "@/components/ui/ForgeButton";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { ITEMS, RECIPES } from "@/data/gameData";
 import { UserInventory, CraftingRecipe } from "@/types/game";
-import { craftItem } from "@/actions/forge";
+import { craftItem } from "@/actions/economy/forge";
 import { toast } from "@/components/ui/GameToast";
 import { Hammer, Anvil, Coins, ArrowRight } from "lucide-react";
 

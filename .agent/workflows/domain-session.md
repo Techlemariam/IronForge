@@ -25,14 +25,14 @@ Based on the domain argument, load relevant context:
 
 | Domain | Emoji | Primary Files | Workflows |
 |--------|-------|--------------|-----------|
-| `infra` | 🔧 | `.github/workflows/*`, `docker-compose.yml`, `next.config.ts`, `prisma/` | `/infrastructure`, `/pre-deploy`, `/deploy`, `/monitor-db` |
-| `game` | 🎮 | `src/services/progression*`, `src/actions/titan.ts`, `src/lib/game/*` | `/game-designer`, `/architect`, `/coder`, `/writer`, `/monitor-game` |
-| `sprint` | 📋 | `.agent/sprints/current.md`, `roadmap.md`, `DEBT.md` | `/manager`, `/startup`, `/sprint-auto`, `/idea`, `/feature` |
-| `qa` | 🧪 | `tests/*`, `e2e/*`, `playwright.config.ts` | `/qa`, `/unit-tests`, `/stresstests`, `/monitor-tests`, `/monitor-logic` |
-| `bio` | 🧬 | `src/services/intervals*`, `src/services/hevy*`, `src/lib/bio-buffs*` | `/titan-coach`, `/monitor-bio` |
-| `business` | 💰 | `src/app/api/stripe/*`, `src/services/subscription*`, pricing configs | `/analyst`, `/architect`, `/security`, `/idea`, `/strategist` |
-| `api` | 🔌 | `src/app/api/*`, `src/services/*`, external integrations | `/architect`, `/coder`, `/security`, `/platform` |
-| `meta` | 🧠 | `.agent/workflows/*`, `GEMINI.md`, `.antigravityrules` | `/evolve`, `/librarian`, `/health-check` |
+| `infra` | 🔧 | `.github/workflows/*`, `docker-compose.yml`, `next.config.ts`, `prisma/` | `/infrastructure`, `/pre-deploy`, `/deploy`, `/monitor-db`, `/triage` |
+| `game` | 🎮 | `src/services/progression*`, `src/actions/titan.ts`, `src/lib/game/*` | `/game-designer`, `/architect`, `/coder`, `/writer`, `/monitor-game`, `/triage` |
+| `sprint` | 📋 | `.agent/sprints/current.md`, `roadmap.md`, `DEBT.md` | `/manager`, `/startup`, `/sprint-auto`, `/idea`, `/feature`, `/triage` |
+| `qa` | 🧪 | `tests/*`, `e2e/*`, `playwright.config.ts` | `/qa`, `/unit-tests`, `/stresstests`, `/monitor-tests`, `/monitor-logic`, `/triage` |
+| `bio` | 🧬 | `src/services/intervals*`, `src/services/hevy*`, `src/lib/bio-buffs*` | `/titan-coach`, `/monitor-bio`, `/triage` |
+| `business` | 💰 | `src/app/api/stripe/*`, `src/services/subscription*`, pricing configs | `/analyst`, `/architect`, `/security`, `/idea`, `/strategist`, `/triage` |
+| `api` | 🔌 | `src/app/api/*`, `src/services/*`, external integrations | `/architect`, `/coder`, `/security`, `/platform`, `/triage` |
+| `meta` | 🧠 | `.agent/workflows/*`, `GEMINI.md`, `.antigravityrules` | `/evolve`, `/librarian`, `/health-check`, `/triage` |
 
 // turbo
 Run: `rg -l "" src/ --max-depth 2` to get a file overview if needed.
@@ -62,6 +62,10 @@ Present a brief summary:
 ### Related Debt
 - [ ] Debt item if any
 
+### Unresolved Gaps (Domain Health)
+- [ ] List any high-priority gaps found in recent monitor runs for this domain.
+- **Tip:** Run `/triage [domain]` to check health for this domain specifically.
+
 ### Recent Changes
 - Last 3 commits touching this domain
 
@@ -78,14 +82,16 @@ Ask the user:
 > **What do you want to focus on in this session?**
 > 1. 🆕 **New Feature** - Plan and implement something new
 > 2. 🐛 **Bugfix/Debt** - Fix existing issues
-> 3. 🔍 **Research** - Explore and understand the domain better
-> 4. 📋 **Review** - Review and improve existing code
+> 3. 🎯 **Triage & Roadmap** - Audit gaps and update domain roadmap
+> 4. 🔍 **Research** - Explore and understand the domain better
+> 5. 📋 **Review** - Review and improve existing code
 
 Based on selection, trigger appropriate sub-workflow.
 **CRITICAL:** When starting the new workflow/task, the Task Name MUST be: `[DOMAIN] <Description>`
 
-- Ny feature → `/feature [feature-name]` (Ensure `[feature-name]` implies domain or is prefixed)
+- Ny feature → `/feature [feature-name]`
 - Bugfix → `/cleanup` → `/qa`
+- Triage → `/triage` (filtered for this domain)
 - Research → `/librarian`
 - Review → `/qa` → `/polish`
 

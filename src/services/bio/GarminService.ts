@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { getWellnessAction } from "@/actions/intervals";
+import { getWellnessAction } from "@/actions/integrations/intervals";
 
 export interface GarminWellnessData {
     bodyBattery: number;

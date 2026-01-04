@@ -5,7 +5,7 @@
  */
 
 import React from "react";
-import { getTerritoryAppData, getTerritoryLeaderboard, getGuildLeaderboard } from "@/actions/territory";
+import { getTerritoryAppData, getTerritoryLeaderboard, getGuildLeaderboard } from "@/actions/systems/territory";
 import { TerritoryMap } from "@/features/territory/components/TerritoryMap";
 import { TerritoryStats } from "@/features/territory/components/TerritoryStats";
 import { TerritoryLeaderboard } from "@/features/territory/components/TerritoryLeaderboard";

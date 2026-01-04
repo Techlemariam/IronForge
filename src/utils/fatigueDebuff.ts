@@ -1,4 +1,4 @@
-import { checkOvertrainingStatusAction } from "@/actions/overtraining";
+import { checkOvertrainingStatusAction } from "@/actions/training/overtraining";
 
 export interface FatigueDebuff {
   isActive: boolean;

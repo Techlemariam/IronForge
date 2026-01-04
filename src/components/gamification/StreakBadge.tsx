@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import { Flame, AlertTriangle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { getStreakStatusAction } from "@/actions/streak";
+import { getStreakStatusAction } from "@/actions/user/streak";
 
 interface StreakBadgeProps {
   userId: string;

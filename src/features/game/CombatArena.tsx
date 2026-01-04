@@ -8,7 +8,7 @@ import {
   performCombatAction,
   fleeFromCombat,
   getActiveCombatSession,
-} from "@/actions/combat";
+} from "@/actions/combat/core";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "@/components/ui/GameToast";
 import {

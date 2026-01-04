@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { ItemGrid } from "@/features/strength/components/armory/ItemGrid";
 import { LootReveal } from "@/components/game/LootReveal";
-import { simulateLootDrop, type LootResult } from "@/actions/gameplay";
+import { simulateLootDrop, type LootResult } from "@/actions/systems/gameplay";
 import { Play } from "lucide-react";
-import type { ArmoryItem } from "@/actions/armory";
+import type { ArmoryItem } from "@/actions/economy/armory";
 
 export default function ArmoryClient({
   initialItems,

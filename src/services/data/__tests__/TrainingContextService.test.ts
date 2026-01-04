@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { TrainingContextService } from "../TrainingContextService";
 import prisma from "@/lib/prisma";
-import { getWellnessAction, getActivitiesAction } from "@/actions/intervals";
+import { getWellnessAction, getActivitiesAction } from "@/actions/integrations/intervals";
 
 // Mock dependencies
 vi.mock("@/lib/prisma", () => {
@@ -19,7 +19,7 @@ vi.mock("@/lib/prisma", () => {
     };
 });
 
-vi.mock("@/actions/intervals", () => ({
+vi.mock("@/actions/integrations/intervals", () => ({
     getWellnessAction: vi.fn(),
     getActivitiesAction: vi.fn(),
 }));

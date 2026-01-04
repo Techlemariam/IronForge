@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { getArmoryData } from "@/actions/armory";
+import { getArmoryData } from "@/actions/economy/armory";
 import ArmoryClient from "@/features/strength/components/armory/ArmoryClient";
 
 export default async function ArmoryPage() {

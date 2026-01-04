@@ -8,7 +8,7 @@ import { CardioDuelModal } from "@/features/pvp/components/duel/CardioDuelModal"
 import { Button } from "@/components/ui/button";
 import { Swords, Trophy, Crown, TrendingUp, Calendar, ChevronRight } from "lucide-react";
 import { toast } from "sonner";
-import { SeasonInfo } from "@/actions/iron-leagues";
+import { SeasonInfo } from "@/actions/pvp/leagues";
 import { LeagueInfo } from "@/lib/game/tier-data";
 import { motion, AnimatePresence } from "framer-motion";
 

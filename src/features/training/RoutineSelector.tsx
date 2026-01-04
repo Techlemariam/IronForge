@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
   getHevyRoutinesAction,
   importHevyRoutineToTemplateAction,
-} from "../../actions/hevy";
+} from "@/actions/integrations/hevy";
 import { HevyRoutine } from "../../types/hevy";
 import { LoadingSpinner } from "../../components/ui/LoadingSpinner";
 import { motion, AnimatePresence } from "framer-motion";

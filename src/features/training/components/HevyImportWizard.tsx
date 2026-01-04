@@ -13,7 +13,7 @@ import {
   Loader2,
 } from "lucide-react";
 import { toast } from "sonner";
-import { importHevyHistoryAction } from "@/actions/hevy";
+import { importHevyHistoryAction } from "@/actions/integrations/hevy";
 
 interface HevyImportWizardProps {
   isOpen: boolean;

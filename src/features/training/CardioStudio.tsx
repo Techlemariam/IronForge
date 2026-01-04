@@ -49,8 +49,8 @@ import { toast } from "sonner";
 import { playSound } from "@/utils/root_utils";
 import { useBluetoothSpeed } from "@/features/bio/hooks/useBluetoothSpeed";
 import { Bluetooth } from "lucide-react";
-import { checkOvertrainingStatusAction } from "@/actions/overtraining";
-import { getStreakStatusAction } from "@/actions/streak";
+import { checkOvertrainingStatusAction } from "@/actions/training/overtraining";
+import { getStreakStatusAction } from "@/actions/user/streak";
 
 // Dynamic import to avoid SSR issues with react-player
 const ReactPlayer = dynamic(() => import("react-player/lazy"), { ssr: false });

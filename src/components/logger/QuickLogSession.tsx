@@ -8,7 +8,7 @@ import { Dumbbell } from "lucide-react";
 import ForgeCard from "@/components/ui/ForgeCard";
 import DungeonInterface from "@/components/game/dungeon/DungeonInterface";
 import { EquipmentType } from "@/data/equipmentDb";
-import { logExerciseSetsAction } from "@/actions/logger";
+import { logExerciseSetsAction } from "@/actions/user/logger";
 import { toast } from "sonner";
 
 interface QuickLogSessionProps {

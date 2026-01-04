@@ -26,15 +26,15 @@ import {
   connectIntervals,
   disconnectIntervals,
   disconnectGarmin,
-} from "@/actions/integrations";
+} from "@/actions/integrations/core";
 import {
   disconnectStravaAction,
   exchangeStravaTokenAction,
-  syncStravaActivitiesAction,
   getStravaAuthUrlAction,
-} from "@/actions/strava";
-import { updateFactionAction } from "@/actions/user";
-import { toggleDemoModeAction, getDemoModeStatus } from "@/actions/demo";
+  syncStravaActivitiesAction,
+} from "@/actions/integrations/strava";
+import { updateFactionAction } from "@/actions/user/core";
+import { toggleDemoModeAction, getDemoModeStatus } from "@/actions/user/demo";
 import { Faction } from "@prisma/client";
 
 interface IntegrationsPanelProps {

@@ -10,7 +10,7 @@ import { HevyImportWizard } from "@/features/training/components/HevyImportWizar
 import { ArchetypeSelector } from "@/features/settings/components/ArchetypeSelector";
 import { Archetype } from "@/types/index";
 import { Toggle } from "@/components/ui/Toggle";
-import { updateUserPreferencesAction } from "@/actions/settings";
+import { updateUserPreferencesAction } from "@/actions/user/settings";
 import { toast } from "@/components/ui/GameToast";
 
 interface SettingsPageProps {

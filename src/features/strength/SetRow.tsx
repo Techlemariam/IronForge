@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { SetData } from "@/actions/strength";
+import { SetData } from "@/actions/training/strength";
 import { Trash2, CheckCircle, Circle } from "lucide-react";
 
 interface SetRowProps {

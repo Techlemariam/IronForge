@@ -4,7 +4,7 @@ import { calculateE1RM } from "@/utils/math";
 import { determineRarity } from "@/utils/loot";
 import { playSound, fireConfetti } from "@/utils";
 import { calculateDamage } from "@/utils/combatMechanics";
-import { logTitanSet } from "@/actions/training";
+import { logTitanSet } from "@/actions/training/core";
 import { toast } from "sonner";
 
 interface LoggingCallbacks {

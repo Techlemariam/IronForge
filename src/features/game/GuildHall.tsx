@@ -18,7 +18,7 @@ import {
   sendChatAction,
   attackBossAction,
   getUserStatsAction,
-} from "@/actions/guild";
+} from "@/actions/guild/core";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface GuildHallProps {

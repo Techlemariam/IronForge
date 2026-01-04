@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Progress } from "@/components/ui/progress";
 import { RewardNode } from "./RewardNode";
-import { claimBattlePassRewardAction, upgradeToPremiumAction } from "@/actions/battle-pass";
+import { claimBattlePassRewardAction, upgradeToPremiumAction } from "@/actions/systems/battle-pass";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 

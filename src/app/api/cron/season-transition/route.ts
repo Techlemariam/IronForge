@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { awardSeasonRewardsAction } from "@/actions/iron-leagues";
+import { awardSeasonRewardsAction } from "@/actions/pvp/leagues";
 
 export const dynamic = 'force-dynamic'; // static by default, unless reading the request
 

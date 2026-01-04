@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Search, Loader2, Dumbbell } from "lucide-react";
-import { searchExercisesAction } from "@/actions/strength";
+import { searchExercisesAction } from "@/actions/training/strength";
 
 // Inline debounce hook if not exists to be safe
 function useDebounceValue<T>(value: T, delay: number): T {

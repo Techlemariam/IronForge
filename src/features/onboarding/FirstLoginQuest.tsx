@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, Map, Shield, Dumbbell, ChevronRight } from "lucide-react";
-import { completeOnboardingAction } from "@/actions/onboarding";
+import { completeOnboardingAction } from "@/actions/user/onboarding";
 
 interface FirstLoginQuestProps {
   onComplete: (newState: any) => void;

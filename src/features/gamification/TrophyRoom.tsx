@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { getUnlockedAchievementsAction } from "@/actions/achievements";
+import { getUnlockedAchievementsAction } from "@/actions/progression/achievements";
 import { Trophy, Lock } from "lucide-react";
 import { ACHIEVEMENTS_DATA } from "@/data/achievements";
 

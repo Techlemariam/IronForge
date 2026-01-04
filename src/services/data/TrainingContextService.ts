@@ -1,5 +1,5 @@
 import prisma from "@/lib/prisma";
-import { getWellnessAction, getActivitiesAction, getWellnessRangeAction } from "@/actions/intervals";
+import { getWellnessAction, getActivitiesAction, getWellnessRangeAction } from "@/actions/integrations/intervals";
 import { MuscleGroup, VolumeLandmarks, MacroCycle, TrainingPath, SystemMetrics } from "@/types/training";
 import { EXERCISE_DB } from "@/data/exerciseDb";
 import { PATH_VOLUME_MODIFIERS } from "@/data/builds";

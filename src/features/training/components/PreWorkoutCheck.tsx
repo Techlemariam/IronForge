@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import { Session, AppSettings } from "@/types";
 import { autoRegulateSession, playSound } from "@/utils";
-import { getWellnessAction } from "@/actions/intervals";
+import { getWellnessAction } from "@/actions/integrations/intervals";
 import { useSkills } from "@/context/SkillContext";
 import { StorageService } from "@/services/storage";
 

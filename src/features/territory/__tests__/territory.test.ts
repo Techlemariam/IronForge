@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { getTerritoryAppData } from '../../../actions/territory';
+import { getTerritoryAppData } from '@/actions/systems/territory';
 
 // Mock dependencies
 const prismaMock = vi.hoisted(() => ({

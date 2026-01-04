@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Zap, Moon, HeartCrack, Flame } from "lucide-react";
-import { TitanState } from "@/actions/titan";
+import { TitanState } from "@/actions/titan/core";
 
 interface TitanAvatarProps {
   titan: TitanState | null | undefined;

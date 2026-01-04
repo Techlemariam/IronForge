@@ -1,5 +1,5 @@
 import { getDuelStatusAction } from "@/actions/pvp/duel";
-import { getLeagueInfoAction, getCurrentSeasonAction, getLeagueLeaderboardAction } from "@/actions/iron-leagues";
+import { getLeagueInfoAction, getCurrentSeasonAction, getLeagueLeaderboardAction } from "@/actions/pvp/leagues";
 import { getSession } from "@/lib/auth";
 import { ArenaClient } from "./ArenaClient";
 import { DuelLeaderboard } from "@/features/pvp/components/duel/DuelLeaderboard";

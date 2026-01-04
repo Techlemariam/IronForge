@@ -3,8 +3,8 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { SettingsPage } from "@/features/settings/SettingsPage";
 
-import { getDemoModeStatus } from "@/actions/demo";
-import { getUserPreferencesAction } from "@/actions/settings";
+import { getDemoModeStatus } from "@/actions/user/demo";
+import { getUserPreferencesAction } from "@/actions/user/settings";
 
 export default async function SettingsRoute() {
   const supabase = await createClient();

@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { SetRow } from "./SetRow";
-import { logSetAction, SetData } from "@/actions/strength";
+import { logSetAction, SetData } from "@/actions/training/strength";
 import { Plus, Save, Dumbbell } from "lucide-react";
 import { useToast } from "@/hooks/use-toast"; // Assuming hook exists
 

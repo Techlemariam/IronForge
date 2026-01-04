@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { NextRequest } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import axios from 'axios';
-import { processUserCardioActivity } from '@/actions/duel';
+import { processUserCardioActivity } from '@/actions/pvp/duel';
 
 // Mock Dependencies
 vi.mock('@/lib/prisma', () => ({
@@ -17,7 +17,7 @@ vi.mock('@/lib/prisma', () => ({
 }));
 
 vi.mock('axios');
-vi.mock('@/actions/duel', () => ({
+vi.mock('@/actions/pvp/duel', () => ({
     processUserCardioActivity: vi.fn()
 }));
 

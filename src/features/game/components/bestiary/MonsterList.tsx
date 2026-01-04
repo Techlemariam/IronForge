@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, Info, Shield, Sword } from "lucide-react";
-import type { BestiaryMonster } from "@/actions/bestiary";
+import type { BestiaryMonster } from "@/actions/systems/bestiary";
 
 const DIFFICULTY_COLORS: Record<string, string> = {
   Easy: "text-green-400 border-green-900/50 bg-green-950/20",

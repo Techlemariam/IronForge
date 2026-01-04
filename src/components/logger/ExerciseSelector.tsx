@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { searchExercisesAction, createExerciseAction } from "@/actions/logger";
+import { searchExercisesAction, createExerciseAction } from "@/actions/user/logger";
 import { Exercise } from "@prisma/client";
 import { Search, Plus, Dumbbell, Lock } from "lucide-react";
 import ForgeInput from "@/components/ui/ForgeInput";

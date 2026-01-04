@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, Filter, Lock } from "lucide-react";
-import type { ArmoryItem } from "@/actions/armory";
+import type { ArmoryItem } from "@/actions/economy/armory";
 
 const RARITY_COLORS: Record<string, string> = {
   common: "border-gray-600 text-gray-300 shadow-gray-900",

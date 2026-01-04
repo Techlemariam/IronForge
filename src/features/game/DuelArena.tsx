@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Card } from "@/components/ui/card";
 import { getDuelArenaStateAction } from "@/actions/pvp/duel";
-import { executeTitanCombatTurnAction } from "@/actions/titan-combat";
+import { executeTitanCombatTurnAction } from "@/actions/pvp/titan";
 import { Swords, Trophy, Timer, Bike, Footprints, AlertTriangle, Zap, MessageSquare } from "lucide-react";
 import { toast } from "sonner";
 import { EmotePicker } from "@/features/pvp/components/EmotePicker";

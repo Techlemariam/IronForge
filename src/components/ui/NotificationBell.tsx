@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { Bell } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { getUnreadNotificationsAction, markAllNotificationsReadAction } from "@/actions/notifications";
+import { getUnreadNotificationsAction, markAllNotificationsReadAction } from "@/actions/notifications/core";
 import { toast } from "sonner";
 
 interface Notification {

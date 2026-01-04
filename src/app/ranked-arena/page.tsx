@@ -1,7 +1,7 @@
 import { getSession } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { getCurrentSeasonAction, getPlayerRatingAction } from "@/actions/pvp/ranked";
-import { getLeaderboardAction } from "@/actions/leaderboards";
+import { getLeaderboardAction } from "@/actions/pvp/leaderboards";
 import { RankedArenaClient } from "@/features/pvp/components/ranked/RankedArenaClient";
 import { prisma } from "@/lib/prisma";
 import { Faction } from "@/lib/pvpRanks";

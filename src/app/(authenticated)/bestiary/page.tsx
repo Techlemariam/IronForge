@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { MonsterList } from "@/features/game/components/bestiary/MonsterList";
 import { Skull, Scroll, Swords } from "lucide-react";
-import { getBestiaryData } from "@/actions/bestiary";
+import { getBestiaryData } from "@/actions/systems/bestiary";
 
 export default async function BestiaryPage() {
   // Fetch Real Data

@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { TrainingPath, PathInfo } from "@/types/training";
 import { PATH_INFO, PATH_MODIFIERS } from "@/data/builds";
-import { updateActivePathAction } from "@/actions/training";
+import { updateActivePathAction } from "@/actions/training/core";
 import { toast } from "sonner";
 import { Sword, Heart, Wind, Shield, CheckCircle2 } from "lucide-react";
 import { cn } from "@/lib/utils";

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Exercise } from "@prisma/client";
-import { logExerciseSetsAction } from "@/actions/logger";
+import { logExerciseSetsAction } from "@/actions/user/logger";
 import ForgeInput from "@/components/ui/ForgeInput";
 import ForgeButton from "@/components/ui/ForgeButton";
 import { Trash2, Plus, CheckCircle, Save } from "lucide-react";

@@ -18,7 +18,7 @@ import {
 } from "@/types";
 import { User } from "@prisma/client";
 import { AuditReport } from "@/types/auditor";
-import { saveWorkoutAction } from "@/actions/hevy";
+import { saveWorkoutAction } from "@/actions/integrations/hevy";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { CampaignTracker } from "@/features/game/components/campaign/CampaignTracker";
 import { AnimatePresence, motion } from "framer-motion";
@@ -28,7 +28,7 @@ import { mapSessionToQuest, mapQuestToSession } from "@/utils/typeMappers";
 import { OracleRecommendation } from "@/types";
 import OracleCard from "../oracle/components/OracleCard";
 import UltrathinkDashboard from "@/features/dashboard/components/UltrathinkDashboard";
-import { getProgressionAction } from "@/actions/progression";
+import { getProgressionAction } from "@/actions/progression/core";
 import OracleVerdict from "@/features/oracle/components/OracleVerdict";
 import GeminiLiveCoach from "@/features/training/components/GeminiLiveCoach";
 import { Mic, Bike, Footprints, Settings, ArrowLeft } from "lucide-react";
@@ -349,7 +349,7 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
                 try {
                   // Call server action
                   const { importHevyRoutineToTemplateAction } =
-                    await import("@/actions/hevy");
+                    await import("@/actions/integrations/hevy");
                   await importHevyRoutineToTemplateAction(routine);
                   toast.success("Routine Imported", {
                     description: `${routine.title} is now a Workout Template.`,

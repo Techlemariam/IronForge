@@ -1,6 +1,6 @@
 
 import { PrismaClient } from '@prisma/client';
-import { logTitanSet } from '../src/actions/training';
+import { logTitanSet } from '../src/actions/training/core';
 import dotenv from 'dotenv';
 import path from 'path';
 
@@ -32,7 +32,7 @@ async function main() {
     }
     const startXP = user.totalExperience;
     const startLevel = user.level;
-    console.log(`User: ${user.heroName || 'Hero'} | Level: ${startLevel} | XP: ${startXP}`);
+    console.log(`User: ${user.heroName || 'Hero'} | Level: ${startLevel} | XP: ${startXP} `);
 
     // Simulate Set
     const reps = 10;
@@ -40,7 +40,7 @@ async function main() {
     const xpGained = 10 + reps; // 20 XP
     const energyGained = reps * 2; // 20 Energy
 
-    console.log(`Simulating Set: ${reps} reps @ ${weight}kg -> +${xpGained} XP`);
+    console.log(`Simulating Set: ${reps} reps @${weight} kg -> +${xpGained} XP`);
 
     // Update DB
     const updatedUser = await prisma.user.update({
@@ -57,10 +57,10 @@ async function main() {
             where: { id: user.id },
             data: { level: newLevel }
         });
-        console.log(`🎉 LEVEL UP! ${updatedUser.level} -> ${newLevel}`);
+        console.log(`🎉 LEVEL UP! ${updatedUser.level} -> ${newLevel} `);
     }
 
-    console.log(`New Stats: Level ${newLevel} | XP ${updatedUser.totalExperience}`);
+    console.log(`New Stats: Level ${newLevel} | XP ${updatedUser.totalExperience} `);
     console.log('✅ Logic verified against DB schema.');
 }
 

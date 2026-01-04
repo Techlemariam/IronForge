@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { subscribeToPushNotificationsAction } from "@/actions/push-notifications";
+import { subscribeToPushNotificationsAction } from "@/actions/notifications/push";
 
 const VAPID_PUBLIC_KEY = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
 

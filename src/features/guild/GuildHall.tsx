@@ -5,11 +5,11 @@ import {
   contributeToRaidAction,
   getGuildAction,
   startRaidAction,
-} from "@/actions/guild-raids";
+} from "@/actions/guild/raids";
 import {
   createGuildAction,
   joinGuildAction,
-} from "@/actions/guild-creation";
+} from "@/actions/guild/creation";
 import { Shield, Sword, Users, Scroll } from "lucide-react";
 
 interface GuildHallProps {

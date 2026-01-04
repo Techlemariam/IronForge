@@ -4,8 +4,8 @@ import { useEffect, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { Flame, Moon, Zap, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { checkOvertrainingStatusAction } from "@/actions/overtraining";
-import { getStreakStatusAction } from "@/actions/streak";
+import { checkOvertrainingStatusAction } from "@/actions/training/overtraining";
+import { getStreakStatusAction } from "@/actions/user/streak";
 
 type Verdict = "TRAIN" | "REST" | "LIGHT";
 
