@@ -1,7 +1,7 @@
 "use server";
 
 import { RECIPES, ITEMS } from "@/data/gameData";
-import { type UserInventory, type CraftingRecipe, type InventorySlot } from "@/types/game";
+import { type UserInventory } from "@/types/game";
 import { createClient } from "@/utils/supabase/server";
 import { CraftItemSchema } from "@/types/schemas";
 import { revalidatePath } from "next/cache";

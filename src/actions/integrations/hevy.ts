@@ -1,6 +1,6 @@
 "use server";
 
-import { HevyExerciseTemplate, HevyRoutine, HevyWorkout } from "@/types/hevy";
+import { HevyWorkout } from "@/types/hevy";
 import axios from "axios";
 import prisma from "@/lib/prisma";
 import { getHevyTemplates } from "@/lib/hevy";
@@ -10,10 +10,10 @@ import { HevyHelperSchema, ImportHevyHistorySchema } from "@/types/schemas";
 
 export async function getHevyTemplatesAction(apiKey: string) {
   try {
-    const { apiKey: validatedKey } = HevyHelperSchema.pick({
+    const { apiKey: _validatedKey } = HevyHelperSchema.pick({
       apiKey: true,
     }).parse({ apiKey });
-    const allExercises = await getHevyTemplates(validatedKey);
+    const allExercises = await getHevyTemplates(_validatedKey);
     return {
       exercise_templates: allExercises,
       page: 1,
@@ -41,9 +41,9 @@ export async function getHevyRoutinesAction(
   pageSize: number = 10,
 ) {
   const {
-    apiKey: key,
-    page: p,
-    pageSize: ps,
+    apiKey: _key,
+    page: _p,
+    pageSize: _ps,
   } = HevyHelperSchema.pick({ apiKey: true, page: true, pageSize: true }).parse(
     { apiKey, page, pageSize },
   );
@@ -71,7 +71,7 @@ export async function getHevyWorkoutHistoryAction(
   apiKey: string,
   count: number = 30,
 ) {
-  const { apiKey: key, count: c } = HevyHelperSchema.pick({
+  const { apiKey: _key, count: _c } = HevyHelperSchema.pick({
     apiKey: true,
     count: true,
   }).parse({ apiKey, count });

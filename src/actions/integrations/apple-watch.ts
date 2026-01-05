@@ -84,7 +84,7 @@ export async function syncWatchDataAction(
  * Get data for Watch complication display.
  */
 export async function getComplicationDataAction(
-  userId: string,
+  _userId: string,
 ): Promise<ComplicationData> {
   try {
     // In production, fetch real data
