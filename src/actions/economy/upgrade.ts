@@ -1,6 +1,5 @@
 "use server";
 
-import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
 type UpgradeRarity = "COMMON" | "UNCOMMON" | "RARE" | "EPIC" | "LEGENDARY";
@@ -163,7 +162,7 @@ export function calculateUpgradedStats(
  * Get user's upgradeable equipment.
  */
 export async function getUpgradeableEquipmentAction(
-  userId: string,
+  _userId: string,
 ): Promise<EquipmentItem[]> {
   // MVP: Return sample equipment
   return [

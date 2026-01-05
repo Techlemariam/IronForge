@@ -139,7 +139,7 @@ export async function getUserStatsAction() {
 export async function contributeGuildDamageAction(
   userId: string,
   damage: number,
-  sessionId?: string,
+  _sessionId?: string,
 ) {
   if (!userId) return { success: false, error: "User ID required" };
   if (damage <= 0) return { success: true, damageDealt: 0 };

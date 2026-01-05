@@ -127,7 +127,7 @@ const SHOP_INVENTORY: ShopSection[] = [
  * Get shop inventory.
  */
 export async function getShopInventoryAction(
-  userId: string,
+  _userId: string,
 ): Promise<ShopSection[]> {
   return SHOP_INVENTORY;
 }
@@ -179,7 +179,7 @@ export async function sellItemAction(
 /**
  * Get user's gold balance.
  */
-export async function getGoldBalanceAction(userId: string): Promise<number> {
+export async function getGoldBalanceAction(_userId: string): Promise<number> {
   return 2500;
 }
 

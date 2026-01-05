@@ -145,7 +145,7 @@ export async function getGuildQuestsAction(
  */
 export async function claimQuestRewardsAction(
   guildId: string,
-  questId: string,
+  _questId: string,
 ): Promise<{ success: boolean; message: string }> {
   try {
     // Get all guild members

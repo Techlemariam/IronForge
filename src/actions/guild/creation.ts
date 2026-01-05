@@ -11,6 +11,7 @@ const GuildCreateSchema = z.object({
   isPublic: z.boolean().default(true),
 });
 
+/*
 const GuildSettingsSchema = z.object({
   name: z.string().min(3).max(30).optional(),
   description: z.string().max(500).optional(),
@@ -18,6 +19,7 @@ const GuildSettingsSchema = z.object({
   isPublic: z.boolean().optional(),
   motd: z.string().max(200).optional(), // Message of the day
 });
+*/
 
 interface GuildInfo {
   id: string;

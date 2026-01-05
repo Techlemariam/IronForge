@@ -30,7 +30,7 @@ interface PassiveIncome {
  * Get passive income status.
  */
 export async function getPassiveIncomeAction(
-  userId: string,
+  _userId: string,
 ): Promise<PassiveIncome> {
   const now = new Date();
 

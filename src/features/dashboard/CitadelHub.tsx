@@ -233,13 +233,6 @@ export const CitadelHub: React.FC<CitadelHubProps> = ({ dispatch }) => (
       <NavButton
         variant="iron"
         icon={<Users className="w-4 h-4" />}
-        onClick={() => dispatch({ type: "SET_VIEW", payload: "guild_hall" })}
-      >
-        Guild Hall
-      </NavButton>
-      <NavButton
-        variant="iron"
-        icon={<Users className="w-4 h-4" />}
         onClick={() => dispatch({ type: "SET_VIEW", payload: "social_hub" })}
       >
         Social Hub

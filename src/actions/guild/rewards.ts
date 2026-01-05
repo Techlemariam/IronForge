@@ -100,7 +100,7 @@ export async function awardGuildSharedRewardAction(
   guildId: string,
   baseXp: number,
   baseGold: number,
-  source: string,
+  _source: string,
 ): Promise<{ success: boolean; membersRewarded: number }> {
   try {
     const members = await prisma.user.findMany({
@@ -113,7 +113,7 @@ export async function awardGuildSharedRewardAction(
     for (const member of members) {
       const bonus = await calculateGuildBonusAction(member.id);
       const xpShare = Math.round(baseXp * 0.1 * bonus.bonusMultiplier); // 10% share
-      const goldShare = Math.round(baseGold * 0.1);
+      const _goldShare = Math.round(baseGold * 0.1);
 
       if (xpShare > 0) {
         await prisma.titan.updateMany({
