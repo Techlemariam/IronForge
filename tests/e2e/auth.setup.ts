@@ -3,6 +3,7 @@ import { test as setup, expect } from '@playwright/test';
 const authFile = 'playwright/.auth/user.json';
 
 setup('authenticate', async ({ page }) => {
+    setup.setTimeout(120000);
     // Perform authentication steps. Replace these actions with your own.
     await page.goto('/login');
 

@@ -87,7 +87,7 @@ export default function MarketingPage() {
                             A New Era of <span className="text-magma">Performance</span>
                         </h2>
                         <p className="text-slate-400 text-xl max-w-2xl mx-auto">
-                            We've bridged the gap between your fitness data and high-stakes RPG mechanics.
+                            We&apos;ve bridged the gap between your fitness data and high-stakes RPG mechanics.
                         </p>
                     </div>
 
