@@ -64,31 +64,37 @@ setup('authenticate', async ({ page }) => {
     console.log("Waiting for dashboard selectors...");
     try {
         await Promise.race([
-            page.waitForSelector('#main-content', { timeout: 60000, state: 'visible' }),
-            page.waitForSelector('#config-screen', { timeout: 60000, state: 'visible' })
+            page.waitForSelector('#main-content', { timeout: 90000, state: 'visible' }),
+            page.waitForSelector('#config-screen', { timeout: 90000, state: 'visible' }),
+            page.waitForURL(url => url.pathname === '/' || url.pathname === '/welcome', { timeout: 90000 })
         ]);
         console.log("Dashboard or configuration screen detected.");
     } catch (e: any) {
-        console.log("Dashboard selectors timed out. Capturing body transcript...");
-        const content = await page.textContent('body').catch(() => 'TRANSCRIPT FAILED');
-        console.log("Full page body snippet:", content?.substring(0, 1000));
+        console.log(`Landing page wait timed out or failed. Current URL: ${page.url()}`);
 
-        // Final attempt - check for onboarding overlay
-        if (await page.locator('button:has-text("Continue")').isVisible()) {
-            console.log("Onboarding overlay found, continuing...");
+        // Final attempt - check for REAL onboarding overlay (only if NOT on login page)
+        const isNotOnLogin = !page.url().includes('/login');
+        const onboardingVisible = await page.locator('h2:has-text("Awaken, Titan"), button:has-text("I Swear It")').isVisible();
+
+        if (isNotOnLogin && onboardingVisible) {
+            console.log("Real onboarding overlay found, continuing...");
         } else {
-            const message = `Auth setup failed to land on dashboard. URL: ${page.url()}. Body: ${content?.substring(0, 200)}. Original error: ${e.message}`;
+            const content = await page.content().catch(() => "Could not capture content");
+            const message = `Auth setup failed to land on dashboard. URL: ${page.url()}. Body snippet: ${content?.substring(0, 500)}. Error: ${e.message}`;
             console.error(message);
             throw new Error(message);
         }
     }
 
-    // Dismiss onboarding overlay if it appears
-    const onboardingButton = page.locator('button:has-text("Continue"), button:has-text("I Swear It")');
+    // Handle onboarding if still visible
     let attempts = 0;
-    while (await onboardingButton.count() > 0 && attempts < 5) {
+    while (attempts < 5) {
+        const onboardingVisible = await page.locator('h2:has-text("Awaken, Titan"), button:has-text("I Swear It")').isVisible();
+        if (!onboardingVisible) break;
+
         console.log(`Dismissing onboarding (attempt ${attempts + 1})...`);
-        await onboardingButton.first().click();
+        const nextButton = page.locator('button:has-text("Continue"), button:has-text("I Swear It")').first();
+        await nextButton.click();
         await page.waitForTimeout(1000);
         attempts++;
     }

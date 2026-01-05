@@ -23,6 +23,7 @@ import { RecoveryService } from "@/services/bio/RecoveryService";
 import DashboardClient from "@/features/dashboard/DashboardClient";
 import { getActiveChallengesAction } from "@/actions/systems/challenges";
 import { ensureTitanAction, syncTitanStateWithWellness } from "@/actions/titan/core";
+import { ensureUserAction } from "@/actions/user/core";
 import { calculateSkillEffects } from "@/features/game/hooks/useSkillEffects";
 
 // Types
@@ -53,6 +54,7 @@ export default async function Page() {
   }
 
   // 0b. Fetch DB User & Config
+  await ensureUserAction(user.id, user.email);
   const dbUser = await prisma.user.findUnique({
     where: { id: user.id },
     include: { achievements: true, skills: true },

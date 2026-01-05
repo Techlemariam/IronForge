@@ -56,3 +56,27 @@ export async function updateArchetypeAction(
     return { success: false, error: "Failed to update archetype" };
   }
 }
+
+export async function ensureUserAction(id: string, email?: string): Promise<{ success: boolean; data?: any; error?: string }> {
+  try {
+    const existing = await prisma.user.findUnique({ where: { id } });
+    if (existing) return { success: true, data: existing };
+
+    const newUser = await prisma.user.create({
+      data: {
+        id,
+        email,
+        gold: 0,
+        level: 1,
+        totalExperience: 0,
+        faction: "HORDE", // Default
+      },
+    });
+
+    revalidatePath("/", "layout");
+    return { success: true, data: newUser };
+  } catch (error) {
+    console.error("Failed to ensure user:", error);
+    return { success: false, error: "Failed to ensure user" };
+  }
+}
