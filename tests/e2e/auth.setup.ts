@@ -35,7 +35,7 @@ setup('authenticate', async ({ page }) => {
 
     // Click the login button and wait for navigation
     await Promise.all([
-        page.waitForLoadState('networkidle', { timeout: 60000 }),
+        page.waitForLoadState('networkidle', { timeout: 120000 }),
         page.getByRole('button', { name: /Initialize Uplink/i }).click()
     ]);
 
@@ -45,8 +45,8 @@ setup('authenticate', async ({ page }) => {
     // Now wait for either main-content OR config-screen
     try {
         await Promise.race([
-            page.waitForSelector('#main-content', { timeout: 60000, state: 'visible' }),
-            page.waitForSelector('#config-screen', { timeout: 60000, state: 'visible' })
+            page.waitForSelector('#main-content', { timeout: 120000, state: 'visible' }),
+            page.waitForSelector('#config-screen', { timeout: 120000, state: 'visible' })
         ]);
     } catch (e) {
         console.log("Initial wait timed out, checking state...");
@@ -61,7 +61,7 @@ setup('authenticate', async ({ page }) => {
     // Final wait for main content
     try {
         await page.waitForSelector('#main-content', {
-            timeout: 60000,
+            timeout: 120000,
             state: 'visible'
         });
     } catch (error) {

@@ -10,6 +10,24 @@ if (!process.env.DATABASE_URL) {
     process.env.DATABASE_URL = "postgresql://postgres:postgres@localhost:5432/ironforge_test";
 }
 
+// Mock window.matchMedia if it doesn't exist (e.g. in JSDOM)
+if (typeof window !== 'undefined' && !window.matchMedia) {
+    Object.defineProperty(window, 'matchMedia', {
+        writable: true,
+        value: (query: string) => ({
+            matches: false,
+            media: query,
+            onchange: null,
+            addListener: () => { }, // deprecated
+            removeListener: () => { }, // deprecated
+            addEventListener: () => { },
+            removeEventListener: () => { },
+            dispatchEvent: () => false,
+        }),
+    });
+}
+
+
 // Global setup for Vitest
 export default async () => {
     // any async setup if needed
