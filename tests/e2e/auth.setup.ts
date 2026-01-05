@@ -21,11 +21,7 @@ setup('authenticate', async ({ page }) => {
     await passwordModeButton.waitFor({ state: 'visible', timeout: 30000 });
     await passwordModeButton.click();
 
-    // Wait for password input to appear (confirms toggle worked)
-    const passwordInput = page.locator('input[type="password"]');
-    await passwordInput.waitFor({ state: 'visible', timeout: 30000 });
-
-    // Fill in credentials
+    // Wait for email input to appear (confirms toggle worked)
     console.log("Filling credentials...");
     const emailInput = page.getByPlaceholder('hunter@ironforge.com');
     await emailInput.waitFor({ state: 'visible', timeout: 30000 });
