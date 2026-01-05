@@ -3,6 +3,7 @@
 import { createClient } from "@/utils/supabase/server";
 import { ProgressionService } from "@/services/progression";
 import { revalidatePath } from "next/cache";
+import prisma from "@/lib/prisma";
 
 export async function completeOnboardingAction() {
   const supabase = await createClient();
