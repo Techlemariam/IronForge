@@ -174,7 +174,7 @@ const RECIPES: CraftingRecipe[] = [
  * Get user's materials.
  */
 export async function getMaterialsAction(
-  userId: string,
+  _userId: string,
 ): Promise<CraftingMaterial[]> {
   return MATERIALS;
 }
@@ -183,7 +183,7 @@ export async function getMaterialsAction(
  * Get available recipes.
  */
 export async function getRecipesAction(
-  userId: string,
+  _userId: string,
 ): Promise<CraftingRecipe[]> {
   return RECIPES;
 }

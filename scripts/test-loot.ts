@@ -1,6 +1,5 @@
 
 import { PrismaClient } from '@prisma/client';
-import { LootSystem } from '../src/services/game/LootSystem';
 import dotenv from 'dotenv';
 import path from 'path';
 

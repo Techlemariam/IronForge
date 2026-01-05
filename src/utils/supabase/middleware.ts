@@ -3,9 +3,9 @@ import { NextResponse, type NextRequest } from "next/server";
 import type { ResponseCookie } from "next/dist/compiled/@edge-runtime/cookies";
 
 // Polyfill for Supabase dependency in Edge Runtime
-const globalAny = globalThis as unknown as { process: { env: Record<string, string>; versions: { node: string } } };
+const globalAny = globalThis as unknown as { process: any };
 if (typeof globalAny.process === "undefined") {
-  globalAny.process = { env: {}, versions: { node: "18.0.0" } };
+  globalAny.process = { env: process.env, version: "v18.0.0", versions: { node: "18.0.0" } };
 } else if (!globalAny.process.versions) {
   globalAny.process.versions = { node: "18.0.0" };
 }

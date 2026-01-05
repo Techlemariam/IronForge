@@ -40,7 +40,7 @@ setup('authenticate', async ({ page }) => {
     // Click the login button and wait for navigation
     console.log("Clicking Initialize Uplink and waiting for URL...");
     await Promise.all([
-        page.waitForURL(url => url.pathname === '/' || url.pathname === '/welcome', { timeout: 60000 }).catch(e => console.log("Navigation check:", e.message)),
+        page.waitForURL(url => url.pathname === '/' || url.pathname === '/welcome', { timeout: 60000 }).catch((e: any) => console.log("Navigation check:", e.message)),
         page.getByRole('button', { name: /Initialize Uplink/i }).click()
     ]);
 
@@ -56,7 +56,7 @@ setup('authenticate', async ({ page }) => {
     // Capture state immediately after attempt
     try {
         await page.screenshot({ path: 'test-results/post-login-state.png' });
-    } catch (e) {
+    } catch (e: any) {
         console.log("Failed to take post-login screenshot:", e.message);
     }
 
@@ -79,6 +79,9 @@ setup('authenticate', async ({ page }) => {
         } else {
             throw new Error(`Auth setup failed to land on dashboard. URL: ${page.url()}. Body: ${content?.substring(0, 200)}`);
         }
+    } catch (err: any) {
+        console.log("Error during dashboard wait:", err.message);
+        throw err;
     }
 
     // Dismiss onboarding overlay if it appears

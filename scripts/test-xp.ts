@@ -1,6 +1,5 @@
 
 import { PrismaClient } from '@prisma/client';
-import { logTitanSet } from '../src/actions/training/core';
 import dotenv from 'dotenv';
 import path from 'path';
 
