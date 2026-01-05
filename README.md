@@ -48,6 +48,18 @@
     npm run dev
     ```
 
+## 🛡️ Best Practices
+
+### Branch Protection (Recommended)
+This repo is configured to enforce quality via Pull Requests.
+1. Go to **Settings > Branches**.
+2. Add rule for `main`:
+   - [x] **Require a pull request before merging**
+   - [x] **Require status checks to pass before merging**
+     - Search and select: `verify` (Lint/Test/Build)
+     - Search and select: `e2e` (optional but recommended)
+   - [x] **Do not allow bypassing the above settings**
+
 ## 🚢 Deployment
 
 IronForge RPG is optimized for **Vercel**. Every push to `main` is automatically verified and deployed.

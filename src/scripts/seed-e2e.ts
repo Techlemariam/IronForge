@@ -60,14 +60,55 @@ async function main() {
         })
     }
 
+    // Seed Active Battle Pass Season
+    const activeSeason = await prisma.battlePassSeason.upsert({
+        where: { code: 'SEASON_1_E2E' },
+        update: { isActive: true },
+        create: {
+            code: 'SEASON_1_E2E',
+            name: 'Season 1: Awakening',
+            startDate: new Date(),
+            endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
+            isActive: true,
+            tiers: {
+                create: Array.from({ length: 10 }).map((_, i) => ({
+                    tierLevel: i + 1,
+                    requiredXp: (i + 1) * 1000,
+                    freeRewardData: i % 2 === 0 ? { type: 'GOLD', amount: 100 } : undefined,
+                    premiumRewardData: { type: 'GOLD', amount: 500 }
+                }))
+            }
+        }
+    });
+    console.log(`✅ Seeded Battle Pass Season: ${activeSeason.name}`);
+
     // Update the main E2E test user to have completed onboarding
     // This prevents the FirstLoginQuest overlay from blocking tests
     const testUserEmail = process.env.TEST_USER_EMAIL || 'alexander.teklemariam@gmail.com';
-    await prisma.user.updateMany({
+    const testUser = await prisma.user.findFirst({
         where: { email: testUserEmail },
-        data: { hasCompletedOnboarding: true }
     });
-    console.log(`✅ Updated ${testUserEmail} with hasCompletedOnboarding: true`)
+
+    if (testUser) {
+        await prisma.user.update({
+            where: { id: testUser.id },
+            data: { hasCompletedOnboarding: true }
+        });
+
+        // Ensure test user has a Titan with a valid power rating for matchmaking
+        await prisma.titan.upsert({
+            where: { userId: testUser.id },
+            update: { powerRating: 60 },
+            create: {
+                userId: testUser.id,
+                name: testUser.heroName || 'Test Titan',
+                powerRating: 60, // Within range of seeded opponents (50, 80)
+            }
+        });
+        console.log(`✅ Updated ${testUserEmail} with hasCompletedOnboarding: true and Titan powerRating: 60`);
+    } else {
+        console.log(`⚠️ Test user ${testUserEmail} not found - skipping onboarding update`);
+    }
 
     console.log('✅ E2E Seeding Complete!')
 }

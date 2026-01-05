@@ -20,8 +20,17 @@ vi.mock("@/services/progression", () => ({
   },
 }));
 
+vi.mock("@/lib/prisma", () => ({
+  default: {
+    user: {
+      update: vi.fn(),
+    },
+  },
+}));
+
 import { createClient } from "@/utils/supabase/server";
 import { ProgressionService } from "@/services/progression";
+import prisma from "@/lib/prisma";
 
 describe("Onboarding Server Actions", () => {
   const mockSupabase = {
@@ -33,6 +42,7 @@ describe("Onboarding Server Actions", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     (createClient as any).mockResolvedValue(mockSupabase);
+    (prisma.user.update as any).mockResolvedValue({});
   });
 
   describe("completeOnboardingAction", () => {
@@ -57,6 +67,9 @@ describe("Onboarding Server Actions", () => {
         gold: 50,
       });
 
+      // Ensure prisma mock returns a promise
+      (prisma.user.update as any).mockResolvedValue({});
+
       const result = await completeOnboardingAction();
 
       expect(result.success).toBe(true);
@@ -64,6 +77,10 @@ describe("Onboarding Server Actions", () => {
         "user-1",
         "ONBOARDING_COMPLETED",
       );
+      expect(prisma.user.update).toHaveBeenCalledWith({
+        where: { id: "user-1" },
+        data: { hasCompletedOnboarding: true },
+      });
       expect(result.newState).toEqual({
         level: 2,
         xp: 150,

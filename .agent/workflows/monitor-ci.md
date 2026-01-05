@@ -15,17 +15,13 @@ View the status of the most recent pipeline runs.
 gh run list --limit 5
 ```
 
-## 2. Monitor a Specific Run
-Watch the progress of a currently running workflow.
+## 2. Check Sentry (MCP)
+// turbo
+If `SENTRY_AUTH_TOKEN` is configured, use the agent's tools to fetch the latest issue details.
+- Query: "Get latest issue for project ironforge-rpg"
 
-```bash
-# Get the Run ID from the list command above
-gh run watch <RUN_ID>
-```
-
-To exit watch mode, press `Ctrl+C`.
-
-## 3. View Run Details
+## 3. Analyze Failure Logs
+If a job fails, extract relevant logs to diagnose the issue.
 Get a summary of jobs and steps for a specific run.
 
 ```bash
