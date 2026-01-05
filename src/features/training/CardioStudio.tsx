@@ -69,6 +69,8 @@ interface CardioStudioProps {
   userId?: string;
   activeDuel?: any; // Start precise, iterate to proper type
   pocketCastsConnected?: boolean;
+  streak?: number;
+  maxHr?: number;
 }
 
 /**
@@ -362,6 +364,8 @@ interface CardioCockpitProps extends CardioStudioProps {
   userId?: string;
   activeDuel?: any;
   pocketCastsConnected?: boolean;
+  streak?: number;
+  maxHr?: number;
 }
 
 function CardioCockpit({
@@ -738,6 +742,8 @@ function CardioCockpit({
         ftp={userProfile?.ftpCycle || 200}
         userId={userId}
         pocketCastsConnected={pocketCastsConnected}
+        streak={props.streak}
+        maxHr={props.maxHr}
       />
     );
   }

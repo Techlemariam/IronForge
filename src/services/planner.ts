@@ -4,7 +4,8 @@ import { OracleService } from "./oracle";
 import { getWellness } from "../lib/intervals";
 import { TrainingMemoryManager } from "./trainingMemoryManager";
 import { AnalyticsService } from "./analytics";
-import { TrainingPath, WeeklyMastery, InAppWorkoutLog } from "../types";
+import { TrainingPath, WeeklyMastery, InAppWorkoutLog, IntervalsActivity } from "../types";
+import { WellnessData } from "../lib/intervals";
 import { getHevyWorkouts } from "../lib/hevy";
 
 // Re-implement or import dependencies if they are client-safe.
@@ -52,7 +53,20 @@ export const PlannerService = {
     const auditReport = await runFullAudit(true, user.hevyApiKey);
 
     // 3. Fetch Intervals Wellness
-    let wellness = { id: "unknown", ctl: 0, atl: 0, tsb: 0 };
+    let wellness: WellnessData = {
+      date: new Date().toISOString(),
+      ctl: 0,
+      atl: 0,
+      tsb: 0,
+      id: "unknown",
+      hrv: null,
+      restingHR: null,
+      readiness: null,
+      sleepScore: null,
+      sleepSecs: null,
+      rampRate: null,
+      vo2max: null
+    };
     if (user.intervalsApiKey && user.intervalsAthleteId) {
       const today = new Date().toISOString().split("T")[0];
       const w = await getWellness(
@@ -60,18 +74,18 @@ export const PlannerService = {
         user.intervalsApiKey,
         user.intervalsAthleteId,
       );
-      if (w) wellness = w as any;
+      if (w && !Array.isArray(w)) wellness = w;
     }
 
     // 4. Map Data for Analytics (TTB Calculation)
     // Map Prisma CardioLogs to IntervalsActivity format expected by Analytics
-    const activities: any[] = user.cardioLogs.map((l: any) => ({
-      id: l.intervalsId,
+    const activities: IntervalsActivity[] = user.cardioLogs.map((l) => ({
+      id: l.intervalsId || undefined,
       start_date_local: l.date.toISOString(),
-      name: l.type,
+      type: l.type || undefined,
       moving_time: l.duration,
       icu_intensity: (l.averageHr || 140) > 160 ? 90 : 60, // Rough estimate if load not available
-      type: l.type,
+      icu_training_load: l.load || 0,
     }));
 
     // Use AnalyticsService for TTB
@@ -79,9 +93,9 @@ export const PlannerService = {
     // Analytics expects: { isEpic: boolean, date: Date/string }
     // Prisma: { isEpic: Boolean, date: Date }
     const ttb = AnalyticsService.calculateTTB(
-      user.exerciseLogs as any[],
+      user.exerciseLogs as any[], // Keep as any[] for now as Prisma type might have extra fields, but it works for Analytics
       activities,
-      wellness as any,
+      wellness as any, // IntervalsWellness matches WellnessData loosely
     );
 
     // If auditor says we are neglecting something, that becomes lowest TTB
@@ -138,7 +152,7 @@ export const PlannerService = {
       data: {
         userId: user.id,
         weekStart: new Date(plan.weekStart),
-        plan: plan.days as any, // JSON
+        plan: plan.days as unknown as any, // JSON field requirement
       },
     });
 

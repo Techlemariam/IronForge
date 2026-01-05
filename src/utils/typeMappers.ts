@@ -2,7 +2,7 @@ import {
   Exercise as LegacyExercise,
   WorkoutSet as LegacySet,
 } from "@/types/ironforge";
-import { Exercise as DomainExercise, Set as DomainSet } from "@/types";
+import { Exercise as DomainExercise, Set as DomainSet, ExerciseLogic, BlockType } from "@/types";
 
 // Converts Domain Set (new) to Legacy Set (old)
 export const mapDomainSetToLegacy = (set: DomainSet): LegacySet => {
@@ -74,7 +74,7 @@ export const mapLegacyExerciseToDomain = (
     id: ex.id,
     name: ex.name,
     hevyId: ex.hevyId,
-    logic: "fixed_reps" as any, // Default to fixed reps enum
+    logic: ExerciseLogic.FIXED_REPS,
     trainingMax: ex.trainingMax,
     sets: ex.sets.map(mapLegacySetToDomain),
     notes: ex.notes,
@@ -92,7 +92,7 @@ export const mapQuestToSession = (
       {
         id: "block_1",
         name: "Main Block",
-        type: "station" as any,
+        type: BlockType.STATION,
         exercises: exercises.map(mapLegacyExerciseToDomain),
       },
     ],

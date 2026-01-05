@@ -28,14 +28,15 @@ const prismaClientSingleton = () => {
   if (process.env.NEXT_RUNTIME === "edge") {
     // Neon adapter for Edge
     const pool = new NeonPool({ connectionString });
+    // Cast pool to any due to version mismatch in library types for PrismaNeon
     const adapter = new PrismaNeon(pool as any);
-    return new PrismaClient({ adapter: adapter as any });
+    return new PrismaClient({ adapter: adapter });
   } else {
     // Standard PG adapter for Node.js/Local
     // Using adapter-pg ensures compatibility with Supabase connection pooling and Prisma 7
     const pool = new PgPool({ connectionString });
     const adapter = new PrismaPg(pool);
-    return new PrismaClient({ adapter: adapter as any });
+    return new PrismaClient({ adapter: adapter });
   }
 };
 

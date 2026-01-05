@@ -30,6 +30,7 @@ interface IronMinesProps {
   session: Session;
   onExit: () => void;
   onComplete?: (results?: any) => void;
+  hrvBaseline?: number;
 }
 
 const IronMines: React.FC<IronMinesProps> = ({
@@ -213,6 +214,7 @@ const IronMines: React.FC<IronMinesProps> = ({
         onComplete={() => setCompleted(true)}
         onAbort={handleAbortRequest}
         wellness={wellnessData}
+        hrvBaseline={hrvBaseline}
       />
     </>
   );

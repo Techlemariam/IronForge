@@ -11,6 +11,11 @@ if (VAPID_PUBLIC_KEY && VAPID_PRIVATE_KEY) {
     webpush.setVapidDetails(VAPID_SUBJECT, VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY);
 }
 
+interface PushSubscriptionKeys {
+    p256dh: string;
+    auth: string;
+}
+
 export class PushNotificationService {
     /**
      * Sends a push notification to all subscriptions of a specific user.
@@ -45,7 +50,7 @@ export class PushNotificationService {
                 try {
                     const pushSubscription = {
                         endpoint: sub.endpoint,
-                        keys: sub.keys as any, // { p256dh, auth }
+                        keys: (sub.keys as unknown) as PushSubscriptionKeys,
                     };
 
                     await webpush.sendNotification(pushSubscription, notificationPayload);

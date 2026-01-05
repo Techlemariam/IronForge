@@ -95,6 +95,8 @@ model User {
   // Social
   followedBy         Follow[]                @relation("UserFollowedBy")
   following          Follow[]                @relation("UserFollowing")
+  friendshipsA       Friendship[]            @relation("FriendshipA")
+  friendshipsB       Friendship[]            @relation("FriendshipB")
   guildId            String?
   guild              Guild?                  @relation(fields: [guildId], references: [id])
   ledGuild           Guild?                  @relation("GuildLeader")
@@ -238,6 +240,26 @@ model Follow {
   following User @relation("UserFollowedBy", fields: [followingId], references: [id])
 
   @@id([followerId, followingId])
+}
+
+model Friendship {
+  id        String           @id @default(cuid())
+  userAId   String
+  userBId   String
+  status    FriendshipStatus @default(PENDING)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  userA User @relation("FriendshipA", fields: [userAId], references: [id])
+  userB User @relation("FriendshipB", fields: [userBId], references: [id])
+
+  @@unique([userAId, userBId])
+}
+
+enum FriendshipStatus {
+  PENDING
+  ACCEPTED
+  BLOCKED
 }
 
 model CardioLog {

@@ -37,6 +37,8 @@ interface TvModeProps {
   ftp?: number;
   userId?: string;
   pocketCastsConnected?: boolean;
+  streak?: number;
+  maxHr?: number;
 }
 
 interface SessionStats {
@@ -65,12 +67,12 @@ const ZONE_COLORS: Record<
   5: { bg: "bg-red-950/30", border: "border-red-900", text: "text-red-500" },
 };
 
-const getZoneFromHr = (hr: number) => {
-  // Simplified zone calc
-  if (hr < 110) return 1;
-  if (hr < 130) return 2;
-  if (hr < 150) return 3;
-  if (hr < 170) return 4;
+const getZoneFromHr = (hr: number, maxHr: number = 190) => {
+  const pct = (hr / maxHr) * 100;
+  if (pct < 60) return 1;
+  if (pct < 70) return 2;
+  if (pct < 80) return 3;
+  if (pct < 90) return 4;
   return 5;
 };
 
@@ -81,6 +83,8 @@ export const TvMode: React.FC<TvModeProps> = ({
   ftp = 200,
   userId,
   pocketCastsConnected,
+  streak: initialStreak = 0,
+  maxHr = 190,
 }) => {
   // Hooks
   const {
@@ -101,7 +105,7 @@ export const TvMode: React.FC<TvModeProps> = ({
   const [hr, setHr] = useState(initialHr); // Fallback/Simulated
   const [power, setPower] = useState(initialPower); // Fallback/Simulated
   const [zone, setZone] = useState(1);
-  const [streak, setStreak] = useState(7); // TODO: Fetch from user
+  const [streak, setStreak] = useState(initialStreak);
   const [hudVisible, setHudVisible] = useState(true);
   const [panelExpanded, setPanelExpanded] = useState(false);
   const [sensorsMenuOpen, setSensorsMenuOpen] = useState(false);
@@ -168,7 +172,7 @@ export const TvMode: React.FC<TvModeProps> = ({
     watts: currentPower,
     heartRate: currentHr,
     ftp,
-    maxHr: 190, // TODO: Pass real maxHr
+    maxHr,
     isPaused: sensorsMenuOpen,
   });
 
@@ -177,7 +181,7 @@ export const TvMode: React.FC<TvModeProps> = ({
     watts: currentPower,
     heartRate: currentHr,
     ftp,
-    maxHr: 190,
+    maxHr,
     isPaused: sensorsMenuOpen,
   });
 
@@ -197,8 +201,8 @@ export const TvMode: React.FC<TvModeProps> = ({
 
   // Update zone when HR changes
   useEffect(() => {
-    setZone(getZoneFromHr(currentHr));
-  }, [currentHr]);
+    setZone(getZoneFromHr(currentHr, maxHr));
+  }, [currentHr, maxHr]);
 
   // Session timer
   useEffect(() => {

@@ -3,6 +3,8 @@
 import prisma from '@/lib/prisma';
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
+import { TrainingContextService } from '@/services/data/TrainingContextService';
+import { GeminiService } from '@/services/gemini';
 
 /**
  * Sends a message to the Oracle (Gemini) and persists the interaction.
@@ -22,26 +24,40 @@ export async function chatWithOracleAction(message: string) {
             }
         });
 
-        // 2. Fetch Context (TODO: Use oracle-seed context builder)
-        // const context = await buildOracleContext(user.id);
+        // 2. Fetch Context
+        const context = await TrainingContextService.getTrainingContext(user.id);
+        const bioString = `
+            Readiness: ${context.readiness}
+            CNS Fatigue: ${context.cnsFatigue}
+            Cardio Stress: ${context.cardioStress}
+            Warnings: ${context.warnings.join(", ") || "None"}
+        `;
 
-        // 3. Call Generative AI (TODO: Use gemini service)
-        // const responseData = await generateOracleResponse(context, history);
+        // 3. Get History
+        const messages = await prisma.oracleMessage.findMany({
+            where: { userId: user.id },
+            orderBy: { timestamp: 'desc' },
+            take: 6
+        });
+        const history = messages.reverse().map(m => ({
+            role: m.role,
+            content: m.content
+        }));
 
-        // Mock Response for Skeleton
-        const mockResponse = `The spirits align. You asked: "${message}". My wisdom is currently loading...`;
+        // 4. Call Generative AI
+        const oracleResponse = await GeminiService.chat(message, history, bioString);
 
-        // 4. Persist Oracle Response
+        // 5. Persist Oracle Response
         await prisma.oracleMessage.create({
             data: {
                 userId: user.id,
                 role: 'oracle',
-                content: mockResponse
+                content: oracleResponse
             }
         });
 
         revalidatePath('/oracle');
-        return { success: true, message: mockResponse };
+        return { success: true, message: oracleResponse };
 
     } catch (error) {
         console.error("Oracle Chat Error:", error);

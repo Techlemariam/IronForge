@@ -1,5 +1,5 @@
 import prisma from "@/lib/prisma";
-import { getWellness, getActivities } from "@/lib/intervals";
+import { getWellness, getActivities, WellnessData } from "@/lib/intervals";
 import { getHevyWorkouts } from "@/lib/hevy";
 import { OracleDecree, OracleDecreeType } from "@/types/oracle";
 import { EquipmentService } from "@/services/game/EquipmentService";
@@ -9,8 +9,22 @@ import {
   IntervalsActivity,
   TTBIndices,
   IntervalsEvent,
+  Session,
 } from "@/types";
 import { TrainingPath } from "@/types/training";
+import { CardioLog, ExerciseLog, Exercise, Titan, DuelChallenge } from "@prisma/client";
+import { HevyWorkout } from "@/types/hevy";
+import { WORKOUT_LIBRARY } from "@/data/workouts";
+import { mapDefinitionToSession } from "@/utils/workoutMapper";
+
+// Types
+type ExerciseLogWithExercise = ExerciseLog & { exercise: Exercise };
+type PartialTitan = Pick<Titan, "isInjured" | "xp" | "powerRating" | "strengthIndex" | "cardioIndex">;
+
+interface PrismaSet {
+  reps?: number;
+  weight?: number;
+}
 
 // Constants
 const HISTORY_WINDOW_DAYS = 42;
@@ -77,7 +91,7 @@ export class OracleService {
     // 2. Fetch External Data
     let wellness: IntervalsWellness = {};
     let intervalsActivities: IntervalsActivity[] = [];
-    let hevyWorkouts: any[] = [];
+    let hevyWorkouts: HevyWorkout[] = [];
 
     if (user.intervalsApiKey && user.intervalsAthleteId) {
       try {
@@ -88,11 +102,12 @@ export class OracleService {
           user.intervalsAthleteId,
         );
         if (wData && !Array.isArray(wData)) {
+          const wellnessData = wData as WellnessData;
           wellness = {
-            bodyBattery: (wData as any).readiness,
-            sleepScore: (wData as any).sleepScore,
-            hrv: (wData as any).hrv,
-            restingHR: (wData as any).restingHR,
+            bodyBattery: wellnessData.readiness ?? undefined,
+            sleepScore: wellnessData.sleepScore ?? undefined,
+            hrv: wellnessData.hrv ?? undefined,
+            restingHR: wellnessData.restingHR ?? undefined,
           };
         }
         const startStr = historyStart.toISOString().split("T")[0];
@@ -157,10 +172,10 @@ export class OracleService {
   private static calculateCombinedHistory(
     start: Date,
     end: Date,
-    localCardio: any[],
-    localStrength: any[],
+    localCardio: CardioLog[],
+    localStrength: ExerciseLogWithExercise[],
     remoteCardio: IntervalsActivity[],
-    remoteStrength: any[],
+    remoteStrength: HevyWorkout[],
   ): Map<string, DailyLoad> {
     const loads = new Map<string, DailyLoad>();
 
@@ -204,10 +219,10 @@ export class OracleService {
       // Since Local `CardioLog` has `date`, let's compare.
 
       const actDate = new Date(
-        (activity as any)["start_date_local"] || new Date(),
+        activity.start_date_local || new Date(),
       ); // Assuming start_date_local exists on real object
       const isDupe = localCardio.some(
-        (l: any) =>
+        (l: CardioLog) =>
           Math.abs(new Date(l.date).getTime() - actDate.getTime()) <
           DUPE_WINDOW_MS,
       );
@@ -222,7 +237,7 @@ export class OracleService {
         // Load/TSS from intervals? Type says `icu_intensity`? Usually `load` or `icu_training_load`.
         // Let's assume `icu_intensity` is a proxy or 0 if missing.
         // Really we need `load`. Types might be incomplete. using 0 safe fallback.
-        entry.cardioLoad += (activity as any)["icu_training_load"] || 0;
+        entry.cardioLoad += activity.icu_training_load || 0;
         loads.set(key, entry);
       }
     });
@@ -237,7 +252,7 @@ export class OracleService {
       };
       // Calculate volume (sets * reps * weight)
       // sets is Json, need to cast
-      const sets = log.sets as any[];
+      const sets = (log.sets as unknown) as PrismaSet[];
       const vol = sets.reduce(
         (acc, s) => acc + (s.reps || 0) * (s.weight || 0),
         0,
@@ -247,10 +262,10 @@ export class OracleService {
     });
 
     // Process Remote Strength (Hevy) - Dedup
-    remoteStrength.forEach((workout) => {
+    remoteStrength.forEach((workout: HevyWorkout) => {
       const startTime = new Date(workout.start_time);
       const isDupe = localStrength.some(
-        (l: any) =>
+        (l: ExerciseLogWithExercise) =>
           Math.abs(new Date(l.date).getTime() - startTime.getTime()) <
           DUPE_WINDOW_MS,
       );
@@ -264,8 +279,8 @@ export class OracleService {
         };
 
         let vol = 0;
-        workout.exercises?.forEach((ex: any) => {
-          ex.sets?.forEach((s: any) => {
+        workout.exercises?.forEach((ex) => {
+          ex.sets?.forEach((s) => {
             vol += (s.reps || 0) * (s.weight_kg || 0);
           });
         });
@@ -328,12 +343,12 @@ export class OracleService {
 
   private static determineDecree(
     userId: string,
-    titan: any,
+    titan: PartialTitan,
     wellness: IntervalsWellness,
     analysis: { cardioRatio: number; volumeRatio: number; isVolumeSpike: boolean },
     capabilities: EquipmentType[] = [],
     activePath: string = "WARDEN",
-    activeDuel: any = null
+    activeDuel: Partial<DuelChallenge> | null = null
   ): OracleDecree {
     // 1. Safety Override (Injury)
     if (titan.isInjured) {
@@ -379,8 +394,8 @@ export class OracleService {
         : 7;
 
       const isChallenger = activeDuel.challengerId === userId;
-      const userDist = isChallenger ? activeDuel.challengerDistance : activeDuel.defenderDistance;
-      const oppDist = isChallenger ? activeDuel.defenderDistance : activeDuel.challengerDistance;
+      const userDist = (isChallenger ? activeDuel.challengerDistance : activeDuel.defenderDistance) ?? 0;
+      const oppDist = (isChallenger ? activeDuel.defenderDistance : activeDuel.challengerDistance) ?? 0;
       const targetDist = activeDuel.targetDistance || 0;
 
       const distanceToTarget = Math.max(0, targetDist - (userDist || 0));
@@ -516,7 +531,7 @@ export class OracleService {
       title: "Daily Training",
       rationale: "Based on your current status...",
       playlist: [], // type placeholders
-      generatedSession: null as any,
+      generatedSession: null as unknown as Session,
     };
 
     const sleep = wellness.sleepScore || 0;
@@ -526,10 +541,17 @@ export class OracleService {
     if (activePath === "PATHFINDER") {
       recommendation.title = "Engine Builder";
       recommendation.rationale = "Focus on cardiovascular efficiency.";
-      // TODO: Return actual Session object
+      const runWorkouts = WORKOUT_LIBRARY.filter(w => w.type === "RUN");
+      if (runWorkouts.length > 0) {
+        recommendation.generatedSession = mapDefinitionToSession(runWorkouts[0]);
+      }
     } else if (activePath === "JUGGERNAUT") {
       recommendation.title = "Iron Temple";
       recommendation.rationale = "Focus on heavy compound lifts.";
+      const strengthWorkouts = WORKOUT_LIBRARY.filter(w => w.type === "STRENGTH");
+      if (strengthWorkouts.length > 0) {
+        recommendation.generatedSession = mapDefinitionToSession(strengthWorkouts[0]);
+      }
     }
 
     // Recovery Override
@@ -540,6 +562,10 @@ export class OracleService {
       recommendation.title = "Active Recovery";
       recommendation.rationale =
         "System fatigue detected. Prioritize mobility and light movement.";
+      const recoveryWorkouts = WORKOUT_LIBRARY.filter(w => w.intensity === "LOW");
+      if (recoveryWorkouts.length > 0) {
+        recommendation.generatedSession = mapDefinitionToSession(recoveryWorkouts[0]);
+      }
     }
 
     // Titan Override

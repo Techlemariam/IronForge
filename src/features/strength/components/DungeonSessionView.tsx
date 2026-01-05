@@ -35,6 +35,7 @@ interface IronMinesProps {
   onComplete: () => void;
   onAbort: () => void;
   wellness?: IntervalsWellness | null;
+  hrvBaseline?: number;
 }
 
 const DungeonSessionView: React.FC<IronMinesProps> = ({
@@ -43,6 +44,7 @@ const DungeonSessionView: React.FC<IronMinesProps> = ({
   onComplete,
   onAbort,
   wellness,
+  hrvBaseline = 50,
 }) => {
   const [exercises, setExercises] = useState<Exercise[]>(initialData);
   const [activeExIndex, setActiveExIndex] = useState(0);
@@ -50,8 +52,6 @@ const DungeonSessionView: React.FC<IronMinesProps> = ({
 
   // Calculate Bio-Buffs
   useEffect(() => {
-    // TODO: Fetch real baseline HRV from user profile
-    const hrvBaseline = 50;
     const sleep = wellness?.sleepScore || 0;
     const hrv = wellness?.hrv || 0;
 
@@ -62,7 +62,7 @@ const DungeonSessionView: React.FC<IronMinesProps> = ({
 
     const buff = BioBuffService.calculateBuff(sleep, hrv, hrvBaseline);
     setActiveBuffs([buff]);
-  }, [wellness]);
+  }, [wellness, hrvBaseline]);
 
   // --- MODALS & TRIGGERS ---
   const [showBerserkerChoice, setShowBerserkerChoice] = useState(false);

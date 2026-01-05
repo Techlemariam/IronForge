@@ -171,6 +171,7 @@ export interface TrainingActivity {
   currentVolume: number;
   targets: VolumeLandmarks;
   resourceCost: Record<RecoveryResource, number>;
+  muscleGroup?: MuscleGroup;
 }
 
 /**

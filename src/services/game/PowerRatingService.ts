@@ -4,6 +4,7 @@ import {
     TrainingPath
 } from "@/lib/powerRating";
 import { TrainingContextService } from "@/services/data/TrainingContextService";
+import { DayPlan } from "@/types";
 
 /**
  * Service for calculating and managing Titan Power Ratings.
@@ -23,7 +24,7 @@ export class PowerRatingService {
 
         if (plan && plan.plan) {
             // Parse the JSON plan
-            const dayPlans = plan.plan as any[];
+            const dayPlans = (plan.plan as unknown) as DayPlan[];
 
             // Count scheduled non-rest days
             // Note: This assumes the Oracle schedules mixed strength/cardio. A simplistic check for !isRestDay is a good proxy for "Activity Days".

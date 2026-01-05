@@ -25,6 +25,7 @@ import { PATH_MODIFIERS, PATH_INFO } from "@/data/builds";
 import { SKILL_TREE_V2, getNodeById } from "@/data/skill-tree-v2";
 import { SkillNodeV2 } from "@/types/skills";
 import { TrainingPath } from "@/types/training";
+import { OracleDecree } from "@/types/oracle";
 
 // ============================================================================
 // Archetype → TrainingPath Mapping
@@ -164,7 +165,7 @@ export class GameContextService {
         // 6. Apply Oracle Decree
         let oracleDecreeType: "BUFF" | "DEBUFF" | "NEUTRAL" | undefined;
         if (titan?.dailyDecree) {
-            const decree = titan.dailyDecree as any;
+            const decree = titan.dailyDecree as unknown as OracleDecree;
             oracleDecreeType = decree.type;
 
             if (decree.effect?.xpMultiplier) {
@@ -174,7 +175,7 @@ export class GameContextService {
                     id: "oracle_decree",
                     source: "ORACLE",
                     name: decree.label || "Oracle Decree",
-                    description: decree.message || "The Oracle has spoken.",
+                    description: decree.description || "The Oracle has spoken.",
                     modifiers: {
                         xpGain: decree.effect.xpMultiplier,
                     },

@@ -33,8 +33,7 @@ interface WorkoutSet {
 // Helper to safely parse sets from Prisma JSON
 function parseSets(json: Prisma.JsonValue): WorkoutSet[] {
     if (!Array.isArray(json)) return [];
-    // Basic validation / casting
-    return json.map((item: any) => ({
+    return (json as unknown as any[]).map((item) => ({
         reps: Number(item?.reps || 0),
         weight: Number(item?.weight || 0),
         rpe: typeof item?.rpe === 'number' ? item.rpe : undefined,
@@ -169,19 +168,30 @@ export class TrainingContextService {
 
         // 4. Auto-Spec Evaluation
         const currentPhase = (user?.currentMacroCycle as MacroCycle) || "ALPHA";
+        const nutritionMode = (user?.nutritionMode as NutritionMode) || "MAINTENANCE";
+
+        // Calculate sleep debt: 7h is baseline. Wellness returns secs.
+        const sleepHours = wellness?.sleepSecs ? wellness.sleepSecs / 3600 : 7;
+        const sleepDebt = Math.max(0, 7.5 - sleepHours); // Assume 7.5h goal
+
+        // ACWR: ATL / CTL
+        const ctl = wellness?.ctl || 40;
+        const atl = wellness?.atl || wellness?.tsb ? (ctl - (wellness.tsb || 0)) : 40;
+        const acwr = ctl > 0 ? atl / ctl : 1.0;
+
         const metrics: SystemMetrics = {
-            ctl: 0, // TODO: Fetch from Intervals (icu_ctl)
-            atl: 0, // TODO: Fetch from Intervals (icu_atl)
-            tsb: 0, // TODO: Fetch from Intervals (icu_form)
+            ctl: wellness?.ctl || 0,
+            atl: wellness?.atl || 0,
+            tsb: wellness?.tsb || 0,
             hrv: wellness?.hrv || 0,
-            sleepScore: wellness?.sleepSecs ? (wellness.sleepSecs / 3600 / 8) * 100 : 0, // Estimate score from 8h baseline
-            bodyBattery: wellness?.bodyBattery || 0,
-            strengthDelta: 0, // TODO: Calculate from recent PRs
+            sleepScore: wellness?.sleepScore || (wellness?.sleepSecs ? (wellness.sleepSecs / 3600 / 8) * 100 : 0),
+            bodyBattery: wellness?.readiness || 0, // In IronForge wellness, readiness is bodyBattery
+            strengthDelta: 0,
             consecutiveStalls: user?.consecutiveStalls || 0,
             weeksInPhase: weeksInPhase,
-            nutritionMode: "MAINTENANCE",
-            sleepDebt: 0,
-            acwr: 1.0,
+            nutritionMode: nutritionMode,
+            sleepDebt,
+            acwr,
             junkMilePercent: 0,
             neuralLoad: 0,
             impactLoad: 0,
@@ -210,12 +220,9 @@ export class TrainingContextService {
         // We use strengthSets target as a proxy for "Global MRV Scale" or calculate explicitly.
         // INTEGRAL FIX: MRV must scale with Bio-State, not just Ramp-up.
 
-        // TODO: These variables need to be fetched/calculated - using defaults for now
-        const sleepDebt = 0; // Calculate from wellness history
-        const acwr = 1.0; // Calculate from ATL/CTL
         const junkMilePercent = 0; // Calculate from cardio analysis
 
-        const nutritionMod = AutoSpecEngine.getNutritionModifier((user?.nutritionMode as any) || "MAINTENANCE");
+        const nutritionMod = AutoSpecEngine.getNutritionModifier(nutritionMode);
         const sleepMod = AutoSpecEngine.getSleepDebtModifier(sleepDebt);
         let acwrMod = 1.0;
         if (acwr > 1.5) acwrMod = 0.6;

@@ -103,6 +103,8 @@ import {
 } from "./types";
 import { dashboardReducer } from "./logic/dashboardReducer";
 import { useAmbientSound } from "@/hooks/useAmbientSound";
+import { usePlatformContext } from "@/hooks/usePlatformContext";
+import { TvHud } from "@/components/ui/TvHud";
 
 const getAmbientZone = (
   view: View,
@@ -213,6 +215,7 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
   const [isConfigured, setIsConfigured] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(!hasCompletedOnboarding);
   const router = useRouter();
+  const platform = usePlatformContext();
 
   useEffect(() => {
     dispatch({ type: "UPDATE_CHALLENGES", payload: challenges || [] });
@@ -393,6 +396,7 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
               // Let's just go to Citadel for now for Strength, or handle return logic if I add it.
               dispatch({ type: "ABORT_QUEST" });
             }}
+            hrvBaseline={titanState?.hrvBaseline || userData?.hrv || 60}
           />
         );
       case "item_shop":
@@ -535,6 +539,8 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
             userId={userData?.id}
             activeDuel={state.activeDuel}
             pocketCastsConnected={pocketCastsConnected}
+            streak={titanState?.streak || userData?.loginStreak || 0}
+            maxHr={userData?.maxHr || 190}
           />
         );
 
@@ -612,6 +618,14 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
       <div className="scanlines pointer-events-none fixed inset-0 z-50 opacity-5" />
 
       <PwaInstallBanner />
+
+      {platform === "tv" && (
+        <TvHud
+          questTitle={state.questTitle}
+          heartRate={state.wellnessData?.hrv} // Using HRV as a proxy for HR if HR not direct
+          bossName={state.activeBossId || undefined}
+        />
+      )}
 
       <Link
         href="/settings"

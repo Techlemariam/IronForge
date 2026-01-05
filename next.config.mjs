@@ -39,5 +39,5 @@ const sentryConfig = {
     // tunnelRoute: "/monitoring",
 };
 
-// Compose plugins: Serwist (PWA) → Sentry → Next.js
-export default withSentryConfig(withSerwist(nextConfig), sentryConfig);
+// Compose plugins: Serwist (PWA) -> Next.js
+export default withSerwist(nextConfig);

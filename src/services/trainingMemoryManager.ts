@@ -51,11 +51,8 @@ export const TrainingMemoryManager = {
       let mrv = activity.targets.mrv;
 
       // Note: In a real scenario, we'd identify the MuscleGroup here.
-      // For this implementation, we'll use a hack or ensure TrainingActivity has MuscleGroup.
-      // Let's assume TrainingActivity might have an optional muscleGroup field.
-      const muscleGroup = (activity as any).muscleGroup as
-        | MuscleGroup
-        | undefined;
+      // For this implementation, we'll use the muscleGroup field on TrainingActivity if present.
+      const muscleGroup = activity.muscleGroup;
 
       if (muscleGroup) {
         const adjustedLandmarks = this.getAdjustedLandmarks(
