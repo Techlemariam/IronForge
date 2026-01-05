@@ -60,6 +60,27 @@ async function main() {
         })
     }
 
+    // Seed Active Battle Pass Season
+    const activeSeason = await prisma.battlePassSeason.upsert({
+        where: { name: 'Season 1: Awakening' }, // Using name as unique-ish for seed
+        update: { isActive: true },
+        create: {
+            name: 'Season 1: Awakening',
+            startDate: new Date(),
+            endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
+            isActive: true,
+            tiers: {
+                create: Array.from({ length: 10 }).map((_, i) => ({
+                    tierLevel: i + 1,
+                    requiredXp: (i + 1) * 1000,
+                    freeRewardData: i % 2 === 0 ? { type: 'GOLD', amount: 100 } : undefined,
+                    premiumRewardData: { type: 'GOLD', amount: 500 }
+                }))
+            }
+        }
+    });
+    console.log(`✅ Seeded Battle Pass Season: ${activeSeason.name}`);
+
     // Update the main E2E test user to have completed onboarding
     // This prevents the FirstLoginQuest overlay from blocking tests
     const testUserEmail = process.env.TEST_USER_EMAIL || 'alexander.teklemariam@gmail.com';
