@@ -62,9 +62,10 @@ async function main() {
 
     // Seed Active Battle Pass Season
     const activeSeason = await prisma.battlePassSeason.upsert({
-        where: { name: 'Season 1: Awakening' }, // Using name as unique-ish for seed
+        where: { code: 'SEASON_1_E2E' },
         update: { isActive: true },
         create: {
+            code: 'SEASON_1_E2E',
             name: 'Season 1: Awakening',
             startDate: new Date(),
             endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
