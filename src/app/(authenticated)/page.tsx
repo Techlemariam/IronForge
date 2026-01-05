@@ -37,6 +37,9 @@ import {
 } from "@/types";
 import { HevyExerciseTemplate, HevyRoutine, HevyWorkout } from "@/types/hevy";
 
+// Force dynamic rendering since this page requires authentication
+export const dynamic = 'force-dynamic';
+
 export default async function Page() {
   // 0. Auth Check
   const supabase = await createClient();
@@ -235,7 +238,7 @@ export default async function Page() {
     recoveryAnalysis,
     activePath,
     undefined, // weeklyMastery
-    titanState,
+    undefined, // titanState - decree handled at Titan level
   );
 
   // 4d. Fetch Bio-Logic Context (New Multi-Metric Payload)

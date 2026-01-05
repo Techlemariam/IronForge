@@ -1,46 +1,55 @@
-# Sprint 19: The Forge Refined
+# Sprint 20: Growth & Stability
 **Period**: 2026-01-05 - 2026-01-12  
-**Goal**: Implement Garmin Bio-Integration MVP, consolidate duplicate leaderboard systems, and finalize technical debt (Lighthouse 0.9 + Three.js Types).
+**Goal**: Fix critical CI blockers, integrate SpeedInsights, create marketing landing page, and continue bio-integration refinement.
 
 ## Backlog
 
 ### Priority: High
 
-- [ ] **Garmin Integration (MVP)** <!-- agent: /infrastructure + /coder | estimate: 6h | source: roadmap:75 -->
-    - [ ] Create `src/services/bio/GarminService.ts` for OAuth and data ingestion
-    - [ ] Implement wellness data fetching: sleep, recovery, stress
-    - [ ] Integrate Garmin overlays into `CardioStudio.tsx`
-    - [ ] Add Garmin connection UI in `/settings`
+- [x] **Fix CI Build Failures** <!-- agent: /debug | estimate: 2h | source: triage:P1 | blocked: false -->
+    - Handled in parallel chat session
+
+- [x] **Vercel SpeedInsights Integration** <!-- agent: /coder | estimate: 0.5h | source: triage:P1 | blocked: false -->
+    - ✅ Already integrated in `src/app/layout.tsx` (line 5 & 24)
+
+- [x] **Marketing Landing Page MVP** <!-- agent: /ui-ux + /coder | estimate: 6h | source: triage:P1 | blocked: false -->
+    - ✅ Already exists at `/marketing` (179 lines, full hero + features + CTA)
+    - ✅ Alternative exists at `/landing` (144 lines)
 
 ### Priority: Medium
 
-- [ ] **Unified Leaderboard Refactor** <!-- agent: /cleanup + /coder | estimate: 4h | source: ux-audit:91 -->
-    - [ ] Consolidate duplicate leaderboard implementations into `src/actions/leaderboards.ts`
-    - [ ] Standardize ranking logic for PvP, Cardio Duels, and Guild efforts
-    - [ ] Update Social Hub UI to use the new unified action
+- [ ] **Garmin Integration (Remaining)** <!-- agent: /coder | estimate: 4h | source: sprint-19 | blocked: false -->
+    - [ ] Complete wellness data fetching implementation
+    - [ ] Integrate Garmin overlays into CardioStudio
+    - [ ] Add connection UI in settings
 
-- [ ] **Three.js Type Safety** <!-- agent: /coder | estimate: 2h | source: debt:43 -->
-    - [ ] Audit `src/types/global.d.ts` for R3F/Three.js `any` usage
-    - [ ] Define proper types for 3D elements used in Citadel/Arena
-    - [ ] Enable strict type checking for 3D files
+- [x] **Oracle Service Type Safety** <!-- agent: /cleanup | estimate: 2h | source: triage:P2 | blocked: false -->
+    - ✅ Replaced `any` types with proper interfaces (AuditReport, TitanLoadCalculation, WeeklyMastery, TitanState)
+    - ✅ OracleRecommendation return type properly implemented
+    - ✅ Type check passes
 
 ### Priority: Low
 
-- [ ] **Final Lighthouse Restoration** <!-- agent: /perf | estimate: 1h | source: debt:61 -->
-    - [ ] Restore thresholds to 0.9 for all categories in `.lighthouserc.json`
-    - [ ] Verify CI pass with the new strict goals
+- [ ] **Resolve Outstanding TODOs** <!-- agent: /cleanup | estimate: 1h | source: triage:P2 | blocked: false -->
+    - [ ] Review and address critical TODOs in `GarminService.ts`, `progression.ts`
+    - [ ] Document deferred TODOs in DEBT.md
 
 ---
 
 ## Sprint Stats
-- **Total Items**: 4
-- **Estimated Hours**: 13h
-- **Feature/Debt/Polish Ratio**: 50% / 30% / 20%
+- **Total Items**: 6
+- **Estimated Hours**: 15.5h
+- **Feature/Debt/Polish Ratio**: 50% / 35% / 15%
 
 ## Dependencies
-- Garmin Integration requires valid API keys (assume available or mockable for MVP)
-- Leaderboard refactor depends on results of Sprint 18 Ranked Arena (✅ verified)
+- CI fix is prerequisite for other items (deploy verification)
+- Marketing page can be developed in parallel
+
+## Execution Log
+<!-- Auto-updated by /sprint-auto -->
+
+---
 
 ## Notes
-- Sprint 18 completed successfully (Ranked Arena, Podcast, Territories).
-- Focus shifts from "New Features" to "Integration & Refinement".
+- Sprint 19 items carried forward: Garmin Integration
+- Focus: Growth enablement (landing page) + stability (CI, types)

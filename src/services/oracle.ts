@@ -10,16 +10,22 @@ import {
   TTBIndices,
   IntervalsEvent,
   Session,
+  TitanLoadCalculation,
+  AuditReport,
+  OracleRecommendation,
 } from "@/types";
-import { TrainingPath } from "@/types/training";
+import { TrainingPath, WeeklyMastery } from "@/types/training";
 import { CardioLog, ExerciseLog, Exercise, Titan, DuelChallenge } from "@prisma/client";
 import { HevyWorkout } from "@/types/hevy";
 import { WORKOUT_LIBRARY } from "@/data/workouts";
 import { mapDefinitionToSession } from "@/utils/workoutMapper";
 
+
 // Types
 type ExerciseLogWithExercise = ExerciseLog & { exercise: Exercise };
 type PartialTitan = Pick<Titan, "isInjured" | "xp" | "powerRating" | "strengthIndex" | "cardioIndex">;
+
+
 
 interface PrismaSet {
   reps?: number;
@@ -512,26 +518,24 @@ export class OracleService {
     wellness: IntervalsWellness,
     ttb: TTBIndices,
     events: IntervalsEvent[] = [],
-    auditReport?: any, // AuditReport
-    titanAnalysis?: any, // TitanLoadCalculation
+    auditReport?: AuditReport | null,
+    titanAnalysis?: TitanLoadCalculation | null,
     recoveryAnalysis?: { state: string; reason: string } | null,
-    activePath: string = "WARDEN", // TrainingPath
-    weeklyMastery?: any, // WeeklyMastery
-    titanState?: any, // TitanState
-  ): Promise<any> {
-    // OracleRecommendation
+    activePath: TrainingPath = "WARDEN",
+    weeklyMastery?: WeeklyMastery,
+    titanState?: { dailyDecree?: OracleDecree | null } | null,
+  ): Promise<OracleRecommendation> {
 
-    // 1. Get the Decree (or usage cached one from titanState if available, but let's calc fresh for safety or use lightweight logic)
+    // 1. Get the Decree (or use cached one from titanState if available)
     // For efficiency, we assume generateDailyDecree is heavy (fetches DB).
     // We'll trust the inputs or do a lightweight check.
-    // Simplified Logic for "Consult":
 
-    let recommendation = {
-      id: "rec_" + Date.now(),
+    let recommendation: OracleRecommendation = {
+      type: "GRIND", // Default type
       title: "Daily Training",
       rationale: "Based on your current status...",
-      playlist: [], // type placeholders
-      generatedSession: null as unknown as Session,
+      priorityScore: 50, // Default priority
+      generatedSession: undefined,
     };
 
     const sleep = wellness.sleepScore || 0;
@@ -539,15 +543,19 @@ export class OracleService {
 
     // Path Logic
     if (activePath === "PATHFINDER") {
+      recommendation.type = "CARDIO_VALIDATION";
       recommendation.title = "Engine Builder";
       recommendation.rationale = "Focus on cardiovascular efficiency.";
+      recommendation.priorityScore = 70;
       const runWorkouts = WORKOUT_LIBRARY.filter(w => w.type === "RUN");
       if (runWorkouts.length > 0) {
         recommendation.generatedSession = mapDefinitionToSession(runWorkouts[0]);
       }
     } else if (activePath === "JUGGERNAUT") {
+      recommendation.type = "PR_ATTEMPT";
       recommendation.title = "Iron Temple";
       recommendation.rationale = "Focus on heavy compound lifts.";
+      recommendation.priorityScore = 80;
       const strengthWorkouts = WORKOUT_LIBRARY.filter(w => w.type === "STRENGTH");
       if (strengthWorkouts.length > 0) {
         recommendation.generatedSession = mapDefinitionToSession(strengthWorkouts[0]);
@@ -559,19 +567,23 @@ export class OracleService {
       recovery < 30 ||
       (recoveryAnalysis && recoveryAnalysis.state === "RECOVERY")
     ) {
+      recommendation.type = "RECOVERY";
       recommendation.title = "Active Recovery";
       recommendation.rationale =
         "System fatigue detected. Prioritize mobility and light movement.";
+      recommendation.priorityScore = 90; // High priority for recovery
       const recoveryWorkouts = WORKOUT_LIBRARY.filter(w => w.intensity === "LOW");
       if (recoveryWorkouts.length > 0) {
         recommendation.generatedSession = mapDefinitionToSession(recoveryWorkouts[0]);
       }
     }
 
-    // Titan Override
+    // Titan Decree Override
     if (titanState?.dailyDecree?.type === "DEBUFF") {
+      recommendation.type = "TAPER";
       recommendation.title = "Tactical Retreat";
       recommendation.rationale = `Titan Decree (${titanState.dailyDecree.label}) dictates caution.`;
+      recommendation.priorityScore = 95;
     }
 
     return recommendation;

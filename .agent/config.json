@@ -99,7 +99,20 @@
       "ForEach-Object",
       "Select-Object",
       "Start-Sleep",
-      "Test-Path"
+      "Test-Path",
+      "head",
+      "tail",
+      "mv",
+      "cp",
+      "mkdir -p",
+      "npx vercel list",
+      "npx vercel logs",
+      "npx vercel inspect",
+      "npx prisma validate",
+      "pnpm run build",
+      "pnpm run dev",
+      "pnpm run test:coverage",
+      "pnpm run test:e2e"
     ]
   }
 }

@@ -313,14 +313,20 @@ export const GeminiService = {
     if (!process.env.API_KEY) return "The Spirits are silent (No API Key).";
 
     const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-    const model = ai.models.get("gemini-1.5-flash"); // Using 1.5 for chat speed
 
-    const chatSession = model.startChat({
-      history: history.map(h => ({
-        role: h.role === 'user' ? 'user' : 'model',
-        parts: [{ text: h.content }]
-      })),
-      systemInstruction: `You are The Oracle, a mystical but scientifically grounded AI coach for IronForge.
+    // Construct conversation history with correctly typed roles
+    const contents = history.map(h => ({
+      role: h.role === 'user' ? 'user' : 'model',
+      parts: [{ text: h.content }]
+    }));
+
+    // Add current user message
+    contents.push({
+      role: "user",
+      parts: [{ text: message }]
+    });
+
+    const systemInstruction = `You are The Oracle, a mystical but scientifically grounded AI coach for IronForge.
       Context on the Titan (User):
       ${bioContext}
       
@@ -328,12 +334,17 @@ export const GeminiService = {
       1. Stay in character: mystical, stern, scientific.
       2. Keep responses punchy and focused on training.
       3. Use RPG terminology (Experience, Stamina, Quests) where appropriate.
-      4. Reference their bio-context if it explains why you recommend something.`
-    });
+      4. Reference their bio-context if it explains why you recommend something.`;
 
     try {
-      const result = await chatSession.sendMessage(message);
-      return result.response.text() || "The Oracle remains silent.";
+      const result = await ai.models.generateContent({
+        model: "gemini-1.5-flash",
+        contents: contents,
+        config: {
+          systemInstruction: systemInstruction,
+        }
+      });
+      return result.text || "The Oracle remains silent.";
     } catch (e) {
       console.error("Oracle Chat Error:", e);
       return "The connection to the Oracle is unstable.";

@@ -40,4 +40,6 @@ const sentryConfig = {
 };
 
 // Compose plugins: Serwist (PWA) -> Next.js
-export default withSerwist(nextConfig);
+// Temporarily disabled due to Next.js 16 compatibility issues
+// export default withSerwist(nextConfig);
+export default nextConfig;

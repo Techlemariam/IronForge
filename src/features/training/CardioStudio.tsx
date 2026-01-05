@@ -380,6 +380,8 @@ function CardioCockpit({
   userId,
   activeDuel,
   pocketCastsConnected,
+  streak,
+  maxHr,
 }: CardioCockpitProps) {
   const [layoutMode, setLayoutMode] = useState<LayoutMode>("split");
 
@@ -742,8 +744,8 @@ function CardioCockpit({
         ftp={userProfile?.ftpCycle || 200}
         userId={userId}
         pocketCastsConnected={pocketCastsConnected}
-        streak={props.streak}
-        maxHr={props.maxHr}
+        streak={streak}
+        maxHr={maxHr}
       />
     );
   }

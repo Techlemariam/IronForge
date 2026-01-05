@@ -20,6 +20,8 @@ export type TitanState = {
   isResting: boolean;
   name: string;
   powerRating?: number;
+  hrvBaseline?: number | null;
+  streak: number;
 };
 
 // --- Legacy Schema (Deprecated) ---

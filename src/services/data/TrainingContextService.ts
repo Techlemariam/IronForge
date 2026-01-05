@@ -1,6 +1,6 @@
 import prisma from "@/lib/prisma";
 import { getWellnessAction, getActivitiesAction } from "@/actions/integrations/intervals";
-import { TrainingPath, SystemMetrics, MacroCycle } from "@/types/training";
+import { TrainingPath, SystemMetrics, MacroCycle, NutritionMode } from "@/types/training";
 import { EXERCISE_DB } from "@/data/exerciseDb";
 import { PATH_VOLUME_MODIFIERS } from "@/data/builds";
 import { AutoSpecEngine } from "@/services/game/AutoSpecEngine";
@@ -185,7 +185,7 @@ export class TrainingContextService {
             tsb: wellness?.tsb || 0,
             hrv: wellness?.hrv || 0,
             sleepScore: wellness?.sleepScore || (wellness?.sleepSecs ? (wellness.sleepSecs / 3600 / 8) * 100 : 0),
-            bodyBattery: wellness?.readiness || 0, // In IronForge wellness, readiness is bodyBattery
+            bodyBattery: wellness?.bodyBattery || 0, // In IronForge wellness, readiness is bodyBattery
             strengthDelta: 0,
             consecutiveStalls: user?.consecutiveStalls || 0,
             weeksInPhase: weeksInPhase,

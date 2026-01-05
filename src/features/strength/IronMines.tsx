@@ -37,6 +37,7 @@ const IronMines: React.FC<IronMinesProps> = ({
   session,
   onExit,
   onComplete,
+  hrvBaseline,
 }) => {
   const {
     activeSession,
