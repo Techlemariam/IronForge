@@ -68,7 +68,7 @@ setup('authenticate', async ({ page }) => {
             page.waitForSelector('#config-screen', { timeout: 60000, state: 'visible' })
         ]);
         console.log("Dashboard or configuration screen detected.");
-    } catch (e) {
+    } catch (e: any) {
         console.log("Dashboard selectors timed out. Capturing body transcript...");
         const content = await page.textContent('body').catch(() => 'TRANSCRIPT FAILED');
         console.log("Full page body snippet:", content?.substring(0, 1000));
@@ -77,11 +77,10 @@ setup('authenticate', async ({ page }) => {
         if (await page.locator('button:has-text("Continue")').isVisible()) {
             console.log("Onboarding overlay found, continuing...");
         } else {
-            throw new Error(`Auth setup failed to land on dashboard. URL: ${page.url()}. Body: ${content?.substring(0, 200)}`);
+            const message = `Auth setup failed to land on dashboard. URL: ${page.url()}. Body: ${content?.substring(0, 200)}. Original error: ${e.message}`;
+            console.error(message);
+            throw new Error(message);
         }
-    } catch (err: any) {
-        console.log("Error during dashboard wait:", err.message);
-        throw err;
     }
 
     // Dismiss onboarding overlay if it appears
