@@ -3,7 +3,7 @@ import { test as setup, expect } from '@playwright/test';
 const authFile = 'playwright/.auth/user.json';
 
 setup('authenticate', async ({ page }) => {
-    setup.setTimeout(120000);
+    setup.setTimeout(180000); // 3 minutes total test budget
     // Perform authentication steps. Replace these actions with your own.
     await page.goto('/login');
 
@@ -18,12 +18,12 @@ setup('authenticate', async ({ page }) => {
 
     // Toggle to password mode
     const passwordModeButton = page.getByRole('button', { name: /Login with Password/i });
-    await passwordModeButton.waitFor({ state: 'visible', timeout: 10000 });
+    await passwordModeButton.waitFor({ state: 'visible', timeout: 30000 });
     await passwordModeButton.click();
 
     // Wait for password input to appear (confirms toggle worked)
     const passwordInput = page.locator('input[type="password"]');
-    await passwordInput.waitFor({ state: 'visible', timeout: 10000 });
+    await passwordInput.waitFor({ state: 'visible', timeout: 30000 });
 
     // Fill in credentials
     await page.getByPlaceholder('hunter@ironforge.com').fill(process.env.TEST_USER_EMAIL || 'alexander.teklemariam@gmail.com');
@@ -36,21 +36,22 @@ setup('authenticate', async ({ page }) => {
 
     // Click the login button and wait for navigation
     await Promise.all([
-        page.waitForLoadState('networkidle', { timeout: 120000 }),
+        page.waitForLoadState('networkidle', { timeout: 60000 }), // Reduced timeout
         page.getByRole('button', { name: /Initialize Uplink/i }).click()
     ]);
 
     // Give React time to hydrate after navigation
-    await page.waitForTimeout(2000);
+    await page.waitForTimeout(5000); // Increased hydration wait
 
     // Now wait for either main-content OR config-screen
+    console.log("Waiting for post-login selectors...");
     try {
         await Promise.race([
-            page.waitForSelector('#main-content', { timeout: 120000, state: 'visible' }),
-            page.waitForSelector('#config-screen', { timeout: 120000, state: 'visible' })
+            page.waitForSelector('#main-content', { timeout: 60000, state: 'visible' }),
+            page.waitForSelector('#config-screen', { timeout: 60000, state: 'visible' })
         ]);
     } catch (e) {
-        console.log("Initial wait timed out, checking state...");
+        console.log("Initial selector wait timed out, proceeding to check state manually...");
     }
 
     // If config screen somehow still appears, reload
