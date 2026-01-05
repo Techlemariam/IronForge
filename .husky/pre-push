@@ -1,0 +1,8 @@
+#!/bin/sh
+branch="$(git rev-parse --abbrev-ref HEAD)"
+
+if [ "$branch" = "main" ]; then
+  echo "⛔ INVALID PUSH: Direct push to 'main' is not allowed."
+  echo "   Please create a new branch and open a Pull Request."
+  exit 1
+fi
