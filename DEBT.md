@@ -54,6 +54,8 @@
 | 2026-01-03 | `src/app/api/webhooks/strava/route.ts` | Missing comprehensive test coverage for webhook logic. | @qa | ✅ Resolved |
 | 2026-01-04 | `src/**/*` | Resolved 50+ `any` usages in `OracleService`, `PlannerService`, `GameContextService`, `PowerRatingService`, and `Prisma` client. Improved overall project type safety. | @cleanup | ✅ Resolved |
 | 2026-01-04 | `src/actions/training.ts` | `logTitanSet` has high complexity (Level, BP, Challenge, Log). Extract to services. | @architect | ✅ Resolved |
+| 2026-01-05 | `tests/e2e/cardio-duels.spec.ts` | SKIPPED: 3 tests require seeded mock opponents. Add E2E DB seeding step to CI. | @infrastructure | ⚠️ Open |
+| 2026-01-05 | `tests/e2e/battle-pass.spec.ts` | SKIPPED: Premium upgrade test requires seeded BattlePassSeason in CI. | @infrastructure | ⚠️ Open |
 
 ---
 
