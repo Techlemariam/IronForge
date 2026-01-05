@@ -18,10 +18,12 @@
 
 ### Priority: Medium
 
-- [ ] **Garmin Integration (Remaining)** <!-- agent: /coder | estimate: 4h | source: sprint-19 | blocked: false -->
-    - [ ] Complete wellness data fetching implementation
-    - [ ] Integrate Garmin overlays into CardioStudio
-    - [ ] Add connection UI in settings
+- [/] **Garmin Integration (Remaining)** <!-- agent: /coder | estimate: 4h | source: sprint-19 | blocked: external -->
+    - ✅ Service exists: `GarminService.ts` with wellness fetch + OAuth flow
+    - ✅ Widget exists: `GarminWidget.tsx` (compact + full variants)
+    - ✅ Settings UI: IntegrationsPanel has Garmin connect/disconnect
+    - ⏸️ OAuth pending external Garmin API approval (line 460)
+    - [ ] Wire GarminWidget into CardioStudio/TvMode overlays
 
 - [x] **Oracle Service Type Safety** <!-- agent: /cleanup | estimate: 2h | source: triage:P2 | blocked: false -->
     - ✅ Replaced `any` types with proper interfaces (AuditReport, TitanLoadCalculation, WeeklyMastery, TitanState)
@@ -30,9 +32,9 @@
 
 ### Priority: Low
 
-- [ ] **Resolve Outstanding TODOs** <!-- agent: /cleanup | estimate: 1h | source: triage:P2 | blocked: false -->
-    - [ ] Review and address critical TODOs in `GarminService.ts`, `progression.ts`
-    - [ ] Document deferred TODOs in DEBT.md
+- [x] **Resolve Outstanding TODOs** <!-- agent: /cleanup | estimate: 1h | source: triage:P2 | blocked: false -->
+    - ✅ Reviewed critical TODOs - most are legitimate Phase 2/external blockers
+    - ✅ Documented in DEBT.md with proper owners and status
 
 ---
 
@@ -47,6 +49,13 @@
 
 ## Execution Log
 <!-- Auto-updated by /sprint-auto -->
+- **2026-01-05 01:28** - Sprint 20 created from triage findings
+- **2026-01-05 01:29** - SpeedInsights verified ✅ (already integrated)
+- **2026-01-05 01:29** - Marketing page verified ✅ (already exists at /marketing)
+- **2026-01-05 01:35** - Oracle type safety completed ✅ (replaced 4 `any` with proper types)
+- **2026-01-05 01:36** - Pushed commit `e035a2f` to main
+- **2026-01-05 01:38** - TODO review complete, documented 3 deferred items in DEBT.md
+- **2026-01-05 01:42** - Garmin integration audited: Service, Widget, Settings all exist. Only overlay wiring remains.
 
 ---
 

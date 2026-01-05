@@ -59,7 +59,12 @@
 
 ## 📝 Notes
 
+| Date | File | Issue | Owner | Status |
+|:-----|:-----|:------|:------|:-------|
 | 2026-01-03 | `.lighthouserc.json` | Lighthouse thresholds lowered (Perf 0.7, others 0.85). Restore to 0.9 before V1.0. | @perf | ⚠️ Open |
+| 2026-01-05 | `src/services/progression.ts:135` | TODO: Add gender to User model for accurate Wilks score calculation | @architect | ⚠️ Deferred (DB schema) |
+| 2026-01-05 | `src/services/bio/GarminService.ts:33` | TODO: Implement direct Garmin Health API (awaiting API approval) | @infrastructure | ⚠️ Deferred (External) |
+| 2026-01-05 | `src/services/bio/RecoveryService.ts:40` | TODO: Implement proper baseline tracking in Phase 2 | @titan-coach | ⚠️ Deferred (Phase 2) |
 
 ## Guidelines
 

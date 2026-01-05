@@ -206,6 +206,11 @@
 - [x] **Nix Flake Modernization** <!-- status: shipped | priority: low | roi: 2.0 | effort: M | source: infrastructure-audit | date: 2026-01-03 -->
   - ✅ Implemented: Modern `flake.nix` with Node 22, PostgreSQL 16, and `direnv` integration. Updated IDX environment to match.
 
+### Research & Analysis
+- [x] **MCP Integration Plan** ([Analysis](docs/analysis/mcp_integration_plan.md)) <!-- status: shipped | priority: medium | roi: 4.0 | effort: S | source: research-session | date: 2026-01-05 -->
+- [ ] **Fix CI/CD Failures** <!-- status: planned | priority: critical | roi: 5.0 | effort: S | source: monitor-ci | date: 2026-01-05 -->
+  - Investigate `pnpm test` failures in `react-dom` passive effects.
+
 ---
 
 ## ✅ Shipped
