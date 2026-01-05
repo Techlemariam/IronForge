@@ -516,13 +516,13 @@ export class OracleService {
    */
   static async consult(
     wellness: IntervalsWellness,
-    ttb: TTBIndices,
-    events: IntervalsEvent[] = [],
-    auditReport?: AuditReport | null,
-    titanAnalysis?: TitanLoadCalculation | null,
+    _ttb: TTBIndices,
+    _events: IntervalsEvent[] = [],
+    _auditReport?: AuditReport | null,
+    _titanAnalysis?: TitanLoadCalculation | null,
     recoveryAnalysis?: { state: string; reason: string } | null,
     activePath: TrainingPath = "WARDEN",
-    weeklyMastery?: WeeklyMastery,
+    _weeklyMastery?: WeeklyMastery,
     titanState?: { dailyDecree?: OracleDecree | null } | null,
   ): Promise<OracleRecommendation> {
 
@@ -538,7 +538,6 @@ export class OracleService {
       generatedSession: undefined,
     };
 
-    const sleep = wellness.sleepScore || 0;
     const recovery = wellness.bodyBattery || 0;
 
     // Path Logic

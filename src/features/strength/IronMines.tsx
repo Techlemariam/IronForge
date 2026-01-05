@@ -1,26 +1,13 @@
-import React, { useState, useContext, useEffect } from "react";
-import {
-  Session,
-  BlockType,
-  Block,
-  Exercise,
-  ExerciseLog,
-  AppSettings,
-  IntervalsWellness,
-} from "@/types";
-import QuestLog from "@/features/game/components/QuestLog";
-import TransitionView from "@/features/game/components/TransitionView";
+import React from "react";
+import { Session } from "@/types";
 import PreWorkoutCheck from "@/features/training/components/PreWorkoutCheck";
 import {
   CheckCircle2,
-  Crown,
   Save,
   Upload,
   Loader2,
   Zap,
   AlertTriangle,
-  PlayCircle,
-  Trash2,
 } from "lucide-react";
 import { useMiningSession } from "./hooks/useMiningSession";
 import { IntegrationService } from "@/services/integration";
