@@ -119,7 +119,7 @@ async function main() {
     const users = await prisma.user.findMany();
     const allItems = await prisma.item.findMany();
     const commonItems = allItems.filter(i => ['Iron Dumbbell', 'Nano-Fiber Shirt', 'Heart Rate Monitor'].includes(i.name)); // Treat these as starter/unlocked
-    const otherItems = allItems.filter(i => !['Iron Dumbbell', 'Nano-Fiber Shirt', 'Heart Rate Monitor'].includes(i.name));
+    // const _otherItems = allItems.filter(i => !['Iron Dumbbell', 'Nano-Fiber Shirt', 'Heart Rate Monitor'].includes(i.name));
 
     const allMonsters = await prisma.monster.findMany();
     const defeatedMonsters = allMonsters.filter(m => ['Iron Golem', 'The Plate Hoarder'].includes(m.name));

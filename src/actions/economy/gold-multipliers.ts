@@ -47,7 +47,7 @@ export function calculateStreakBonus(streakDays: number): number {
  * Get gold multiplier status.
  */
 export async function getGoldMultiplierStatusAction(
-  userId: string,
+  _userId: string,
 ): Promise<GoldMultiplierStatus> {
   const streakDays = 15;
   const prestigeLevel = 2;

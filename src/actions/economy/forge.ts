@@ -1,7 +1,7 @@
 "use server";
 
 import { RECIPES, ITEMS } from "@/data/gameData";
-import { CraftingRecipe, UserInventory, InventorySlot } from "@/types/game";
+import { type UserInventory, type _CraftingRecipe, type _InventorySlot } from "@/types/game";
 import { createClient } from "@/utils/supabase/server";
 import { CraftItemSchema } from "@/types/schemas";
 import { revalidatePath } from "next/cache";
@@ -10,7 +10,7 @@ import { revalidatePath } from "next/cache";
  * Mock Inventory for MVP (until DB schema is finalized)
  * In production, this would fetch from 'inventory' table.
  */
-const MOCK_INVENTORY_KEY = "mock_inventory_state";
+// const MOCK_INVENTORY_KEY = "mock_inventory_state";
 
 // Helper to get inventory (Replace with DB call later)
 async function getInventory(userId: string): Promise<UserInventory> {

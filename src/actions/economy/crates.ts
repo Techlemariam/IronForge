@@ -1,6 +1,6 @@
 "use server";
 
-import { prisma } from "@/lib/prisma";
+import { prisma as _prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
 type CrateRarity = "COMMON" | "UNCOMMON" | "RARE" | "EPIC" | "LEGENDARY";
@@ -210,7 +210,7 @@ const REWARD_POOLS: Record<CrateRarity, CrateReward[]> = {
  * Get user's unopened crates.
  */
 export async function getUserCratesAction(
-  userId: string,
+  _userId: string,
 ): Promise<RewardCrate[]> {
   try {
     // MVP: Return sample crates

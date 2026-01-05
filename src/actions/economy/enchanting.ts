@@ -132,7 +132,7 @@ const ENCHANTMENTS: Enchantment[] = [
  * Get available enchantments.
  */
 export async function getAvailableEnchantmentsAction(
-  itemId: string,
+  _itemId: string,
 ): Promise<Enchantment[]> {
   return ENCHANTMENTS;
 }

@@ -29,6 +29,8 @@ if (typeof window !== 'undefined' && !window.matchMedia) {
 
 
 // Global setup for Vitest
-export default async () => {
+const setup = async () => {
     // any async setup if needed
 };
+
+export default setup;
