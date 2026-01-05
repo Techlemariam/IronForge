@@ -156,7 +156,7 @@ export function calculateMasteryXp(
  */
 export async function getMasteryLeaderboardAction(
   exerciseId: string,
-  limit: number = 10,
+  _limit: number = 10,
 ): Promise<Array<{ rank: number; heroName: string; level: number }>> {
   return [
     { rank: 1, heroName: "BenchKing", level: 50 },

@@ -1,6 +1,6 @@
 "use server";
 
-import { HevyWorkout } from "@/types/hevy";
+import { HevyWorkout, HevyRoutine } from "@/types/hevy";
 import axios from "axios";
 import prisma from "@/lib/prisma";
 import { getHevyTemplates } from "@/lib/hevy";
@@ -109,7 +109,7 @@ export async function getHevyWorkoutHistoryAction(
 }
 
 export async function saveWorkoutAction(apiKey: string, payload: any) {
-  const { apiKey: validatedKey } = HevyHelperSchema.pick({
+  const { apiKey: _validatedKey } = HevyHelperSchema.pick({
     apiKey: true,
   }).parse({ apiKey });
   // Note: payload validation is tricky as strict Hevy schema might reject valid calls if our types are incomplete.

@@ -188,7 +188,7 @@ const MILESTONES: Milestone[] = [
  * Get user's milestones.
  */
 export async function getMilestonesAction(
-  userId: string,
+  _userId: string,
 ): Promise<Milestone[]> {
   return MILESTONES;
 }
@@ -197,7 +197,7 @@ export async function getMilestonesAction(
  * Get unclaimed milestones.
  */
 export async function getUnclaimedMilestonesAction(
-  userId: string,
+  _userId: string,
 ): Promise<Milestone[]> {
   return MILESTONES.filter((m) => m.isCompleted && !m.isClaimed);
 }
@@ -223,7 +223,7 @@ export async function claimMilestoneAction(
  * Check for newly completed milestones.
  */
 export async function checkMilestoneCompletionAction(
-  userId: string,
+  _userId: string,
   stats: { level: number; workouts: number; prs: number; streak: number },
 ): Promise<Milestone[]> {
   const newlyCompleted: Milestone[] = [];

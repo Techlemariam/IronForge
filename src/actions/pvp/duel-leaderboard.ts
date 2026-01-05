@@ -2,7 +2,6 @@
 
 import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/auth";
-import { createClient } from "@/utils/supabase/server";
 
 export async function getDuelLeaderboardAction(limit: number = 50) {
   try {
@@ -51,8 +50,8 @@ export async function getDuelLeaderboardAction(limit: number = 50) {
         winRate:
           entry.duelsWon + entry.duelsLost > 0
             ? Math.round(
-                (entry.duelsWon / (entry.duelsWon + entry.duelsLost)) * 100,
-              )
+              (entry.duelsWon / (entry.duelsWon + entry.duelsLost)) * 100,
+            )
             : 0,
       })),
       userRank,

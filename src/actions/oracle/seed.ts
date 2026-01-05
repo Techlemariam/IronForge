@@ -3,10 +3,6 @@
 import { prisma } from "@/lib/prisma";
 import { checkOvertrainingStatusAction } from "@/actions/training/overtraining";
 import { getStreakStatusAction } from "@/actions/user/streak";
-import {
-  generatePeriodizationPlanAction,
-  adaptPlanToWellnessAction,
-} from "@/actions/training/periodization";
 
 /**
  * The Oracle Seed - Central AI Intelligence Layer

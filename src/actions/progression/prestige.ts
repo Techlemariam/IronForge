@@ -93,7 +93,7 @@ const PRESTIGE_LEVELS: PrestigeLevel[] = [
  * Get prestige status.
  */
 export async function getPrestigeStatusAction(
-  userId: string,
+  _userId: string,
 ): Promise<PrestigeStatus> {
   const currentPrestige = 1;
   const currentLevel = 35;
@@ -152,7 +152,7 @@ export async function performPrestigeAction(userId: string): Promise<{
  * Get prestige leaderboard.
  */
 export async function getPrestigeLeaderboardAction(
-  limit: number = 10,
+  _limit: number = 10,
 ): Promise<Array<{ rank: number; heroName: string; prestigeLevel: number }>> {
   return [
     { rank: 1, heroName: "AncientOne", prestigeLevel: 10 },

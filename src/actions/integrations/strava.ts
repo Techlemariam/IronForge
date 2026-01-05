@@ -295,7 +295,6 @@ export async function uploadToStravaAction(formData: FormData) {
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
-    const uploadData = new FormData();
     // Append raw data. Note: In Node environment with axios + form-data,
     // passing a buffer often requires a filename.
     // But since we are using native FormData in Next.js Server Actions (Node 18+),
