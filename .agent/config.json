@@ -154,7 +154,9 @@
       "Compare-Object",
       "Write-Host",
       "Write-Output",
-      "i"
+      "gh run view --job",
+      "npx playwright test --ui",
+      "npx playwright test --debug"
     ]
   }
 }

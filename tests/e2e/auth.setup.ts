@@ -89,14 +89,24 @@ setup('authenticate', async ({ page }) => {
     // Handle onboarding if still visible
     let attempts = 0;
     while (attempts < 5) {
-        const onboardingVisible = await page.locator('h2:has-text("Awaken, Titan"), button:has-text("I Swear It")').isVisible();
-        if (!onboardingVisible) break;
+        const onboardingLocator = page.locator('h2:has-text("Awaken, Titan"), button:has-text("I Swear It")').first();
+        if (!(await onboardingLocator.isVisible())) break;
 
         console.log(`Dismissing onboarding (attempt ${attempts + 1})...`);
         const nextButton = page.locator('button:has-text("Continue"), button:has-text("I Swear It")').first();
-        await nextButton.click();
-        await page.waitForTimeout(1000);
+        if (await nextButton.isVisible()) {
+            await nextButton.click();
+            // Wait for animation/DB update
+            await page.waitForTimeout(2000);
+        }
         attempts++;
+    }
+
+    // Explicitly wait for the overlay to be GONE regarding of how we got here
+    const overlay = page.locator('.fixed.inset-0.z-\\[100\\]');
+    if (await overlay.isVisible()) {
+        console.log("Waiting for overlay to disappear...");
+        await overlay.waitFor({ state: 'hidden', timeout: 10000 }).catch(() => console.log("Overlay did not disappear in time!"));
     }
 
     // End of authentication steps.

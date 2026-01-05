@@ -23,7 +23,10 @@ Get detailed information about a specific deployment, including build configurat
 npx vercel inspect <DEPLOYMENT_URL_OR_ID>
 ```
 
-## 3. View Live Logs
+## 3. Analyze Logs (MCP)
+// turbo
+If `VERCEL_TOKEN` is configured, use the agent's tools to fetch build logs directly.
+- Query: "Get build logs for latest deployment"
 Stream runtime logs from a specific deployment (or the latest production one).
 
 ```bash

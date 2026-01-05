@@ -15,7 +15,12 @@ Verify if your database schema is in sync with your Prisma schema (useful for ca
 npx prisma migrate status
 ```
 
-## 2. Visually Inspect Data (Studio)
+## 2. Verify Schema Drift (MCP)
+// turbo
+If `SUPABASE_SERVICE_KEY` is configured, use the agent's tools to compare the actual DB schema with your local Prisma file.
+- Query: "List all tables and check if they match prisma.schema"
+
+## 3. Visually Inspect Data (Studio)
 Launch the Prisma Studio GUI to browse and edit database records manually.
 
 ```bash
