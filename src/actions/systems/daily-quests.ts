@@ -1,6 +1,6 @@
 "use server";
 
-import { prisma } from "@/lib/prisma";
+// import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
 type QuestType =
@@ -32,115 +32,115 @@ interface DailyQuest {
 const QUEST_TEMPLATES: Array<
   Omit<DailyQuest, "id" | "current" | "expiresAt" | "isCompleted" | "isClaimed">
 > = [
-  // Easy
-  {
-    type: "WORKOUT",
-    difficulty: "EASY",
-    title: "First Steps",
-    description: "Complete any workout",
-    target: 1,
-    xpReward: 100,
-    goldReward: 50,
-  },
-  {
-    type: "VOLUME",
-    difficulty: "EASY",
-    title: "Warm Up",
-    description: "Log 10 sets",
-    target: 10,
-    xpReward: 100,
-    goldReward: 50,
-  },
-  {
-    type: "CARDIO",
-    difficulty: "EASY",
-    title: "Heart Starter",
-    description: "Complete 15 min cardio",
-    target: 15,
-    xpReward: 100,
-    goldReward: 50,
-  },
+    // Easy
+    {
+      type: "WORKOUT",
+      difficulty: "EASY",
+      title: "First Steps",
+      description: "Complete any workout",
+      target: 1,
+      xpReward: 100,
+      goldReward: 50,
+    },
+    {
+      type: "VOLUME",
+      difficulty: "EASY",
+      title: "Warm Up",
+      description: "Log 10 sets",
+      target: 10,
+      xpReward: 100,
+      goldReward: 50,
+    },
+    {
+      type: "CARDIO",
+      difficulty: "EASY",
+      title: "Heart Starter",
+      description: "Complete 15 min cardio",
+      target: 15,
+      xpReward: 100,
+      goldReward: 50,
+    },
 
-  // Medium
-  {
-    type: "WORKOUT",
-    difficulty: "MEDIUM",
-    title: "Dedicated",
-    description: "Complete 2 workouts",
-    target: 2,
-    xpReward: 250,
-    goldReward: 100,
-  },
-  {
-    type: "VOLUME",
-    difficulty: "MEDIUM",
-    title: "Volume Builder",
-    description: "Log 5000kg total volume",
-    target: 5000,
-    xpReward: 250,
-    goldReward: 100,
-  },
-  {
-    type: "STREAK",
-    difficulty: "MEDIUM",
-    title: "Consistent",
-    description: "Maintain your streak",
-    target: 1,
-    xpReward: 200,
-    goldReward: 80,
-  },
-  {
-    type: "COMBO",
-    difficulty: "MEDIUM",
-    title: "Combo Master",
-    description: "Execute 3 combat combos",
-    target: 3,
-    xpReward: 300,
-    goldReward: 120,
-  },
+    // Medium
+    {
+      type: "WORKOUT",
+      difficulty: "MEDIUM",
+      title: "Dedicated",
+      description: "Complete 2 workouts",
+      target: 2,
+      xpReward: 250,
+      goldReward: 100,
+    },
+    {
+      type: "VOLUME",
+      difficulty: "MEDIUM",
+      title: "Volume Builder",
+      description: "Log 5000kg total volume",
+      target: 5000,
+      xpReward: 250,
+      goldReward: 100,
+    },
+    {
+      type: "STREAK",
+      difficulty: "MEDIUM",
+      title: "Consistent",
+      description: "Maintain your streak",
+      target: 1,
+      xpReward: 200,
+      goldReward: 80,
+    },
+    {
+      type: "COMBO",
+      difficulty: "MEDIUM",
+      title: "Combo Master",
+      description: "Execute 3 combat combos",
+      target: 3,
+      xpReward: 300,
+      goldReward: 120,
+    },
 
-  // Hard
-  {
-    type: "PR",
-    difficulty: "HARD",
-    title: "Record Breaker",
-    description: "Set a new PR",
-    target: 1,
-    xpReward: 500,
-    goldReward: 200,
-    bonusReward: "Rare Crate",
-  },
-  {
-    type: "VOLUME",
-    difficulty: "HARD",
-    title: "Beast Mode",
-    description: "Log 15000kg total volume",
-    target: 15000,
-    xpReward: 500,
-    goldReward: 200,
-  },
-  {
-    type: "SOCIAL",
-    difficulty: "HARD",
-    title: "Team Player",
-    description: "Complete guild quest contribution",
-    target: 1,
-    xpReward: 400,
-    goldReward: 150,
-  },
+    // Hard
+    {
+      type: "PR",
+      difficulty: "HARD",
+      title: "Record Breaker",
+      description: "Set a new PR",
+      target: 1,
+      xpReward: 500,
+      goldReward: 200,
+      bonusReward: "Rare Crate",
+    },
+    {
+      type: "VOLUME",
+      difficulty: "HARD",
+      title: "Beast Mode",
+      description: "Log 15000kg total volume",
+      target: 15000,
+      xpReward: 500,
+      goldReward: 200,
+    },
+    {
+      type: "SOCIAL",
+      difficulty: "HARD",
+      title: "Team Player",
+      description: "Complete guild quest contribution",
+      target: 1,
+      xpReward: 400,
+      goldReward: 150,
+    },
 
-  // Legendary
-  {
-    type: "WORKOUT",
-    difficulty: "LEGENDARY",
-    title: "Iron Will",
-    description: "Complete 3 workouts today",
-    target: 3,
-    xpReward: 1000,
-    goldReward: 500,
-    bonusReward: "Legendary Crate",
-  },
-];
+    // Legendary
+    {
+      type: "WORKOUT",
+      difficulty: "LEGENDARY",
+      title: "Iron Will",
+      description: "Complete 3 workouts today",
+      target: 3,
+      xpReward: 1000,
+      goldReward: 500,
+      bonusReward: "Legendary Crate",
+    },
+  ];
 
 const DIFFICULTY_MULTIPLIERS: Record<QuestDifficulty, number> = {
   EASY: 1,
