@@ -31,7 +31,8 @@ const NavButton: React.FC<{
   icon?: React.ReactNode;
   variant?: "magma" | "nature" | "iron" | "void";
   isActive?: boolean;
-}> = ({ onClick, children, icon, variant = "magma", isActive }) => {
+  description?: string;
+}> = ({ onClick, children, icon, variant = "magma", isActive, description }) => {
   const variants = {
     magma:
       "border-red-900/50 bg-gradient-to-br from-red-950/80 to-orange-950/80 hover:border-red-500 text-red-200 focus-visible:ring-2 focus-visible:ring-red-500",
@@ -48,6 +49,8 @@ const NavButton: React.FC<{
         onClick();
       }}
       onMouseEnter={() => playSound("ui_hover")}
+      title={description}
+      aria-label={description || (typeof children === 'string' ? children : undefined)}
       className={`
                 relative flex items-center p-3 border rounded-lg shadow-md transition-all duration-200 group w-full text-left focus:outline-none
                 ${variants[variant]}
@@ -59,9 +62,11 @@ const NavButton: React.FC<{
           {icon}
         </span>
       )}
-      <span className="font-bold uppercase tracking-wide text-xs md:text-sm relative z-10">
-        {children}
-      </span>
+      <div className="flex flex-col">
+        <span className="font-bold uppercase tracking-wide text-xs md:text-sm relative z-10">
+          {children}
+        </span>
+      </div>
     </button>
   );
 };
@@ -127,6 +132,7 @@ export const CitadelHub: React.FC<CitadelHubProps> = ({ dispatch }) => (
         variant="magma"
         icon={<Scroll className="w-4 h-4" />}
         onClick={() => dispatch({ type: "SET_VIEW", payload: "war_room" })}
+        description="Daily generated workout quests based on your level"
       >
         New Quest
       </NavButton>
@@ -134,6 +140,7 @@ export const CitadelHub: React.FC<CitadelHubProps> = ({ dispatch }) => (
         variant="magma"
         icon={<Dumbbell className="w-4 h-4" />}
         onClick={() => dispatch({ type: "SET_VIEW", payload: "strength_log" })}
+        description="Log sets, reps, and RPE for your workout"
       >
         Strength Log
       </NavButton>
@@ -141,6 +148,7 @@ export const CitadelHub: React.FC<CitadelHubProps> = ({ dispatch }) => (
         variant="magma"
         icon={<Activity className="w-4 h-4" />}
         onClick={() => dispatch({ type: "SET_CARDIO_MODE", payload: "cycling" })} // Defaulting to cycling until selection view is ready
+        description="Indoor cycling and running modes with virtual elevation"
       >
         Cardio Suite
       </NavButton>
@@ -166,6 +174,7 @@ export const CitadelHub: React.FC<CitadelHubProps> = ({ dispatch }) => (
         onClick={() =>
           dispatch({ type: "SET_VIEW", payload: "training_center" })
         }
+        description="Upgrade your stats and abilities"
       >
         Training Path
       </NavButton>
@@ -182,6 +191,7 @@ export const CitadelHub: React.FC<CitadelHubProps> = ({ dispatch }) => (
         variant="iron"
         icon={<Gavel className="w-4 h-4" />}
         onClick={() => dispatch({ type: "SET_VIEW", payload: "forge" })}
+        description="Craft and upgrade your equipment"
       >
         The Forge
       </NavButton>
@@ -189,6 +199,7 @@ export const CitadelHub: React.FC<CitadelHubProps> = ({ dispatch }) => (
         variant="iron"
         icon={<ShoppingBag className="w-4 h-4" />}
         onClick={() => dispatch({ type: "SET_VIEW", payload: "marketplace" })}
+        description="Buy potions, loot boxes, and gear"
       >
         Marketplace
       </NavButton>
@@ -196,6 +207,7 @@ export const CitadelHub: React.FC<CitadelHubProps> = ({ dispatch }) => (
         variant="iron"
         icon={<Shield className="w-4 h-4" />}
         onClick={() => dispatch({ type: "SET_VIEW", payload: "armory" })}
+        description="Equip your Titan with gear"
       >
         Armory
       </NavButton>
@@ -205,6 +217,7 @@ export const CitadelHub: React.FC<CitadelHubProps> = ({ dispatch }) => (
         onClick={() =>
           dispatch({ type: "SET_VIEW", payload: "program_builder" })
         }
+        description="Create custom workout routines"
       >
         Program Builder
       </NavButton>
@@ -221,6 +234,7 @@ export const CitadelHub: React.FC<CitadelHubProps> = ({ dispatch }) => (
         variant="void"
         icon={<Sword className="w-4 h-4" />}
         onClick={() => dispatch({ type: "SET_VIEW", payload: "arena" })}
+        description="Battle other players in PvP"
       >
         PvP Arena
       </NavButton>
@@ -228,6 +242,7 @@ export const CitadelHub: React.FC<CitadelHubProps> = ({ dispatch }) => (
         variant="void"
         icon={<Users className="w-4 h-4" />}
         onClick={() => dispatch({ type: "SET_VIEW", payload: "guild_hall" })}
+        description="Manage your faction and guild quests"
       >
         Guild Hall
       </NavButton>
@@ -235,6 +250,7 @@ export const CitadelHub: React.FC<CitadelHubProps> = ({ dispatch }) => (
         variant="void"
         icon={<Users className="w-4 h-4" />}
         onClick={() => dispatch({ type: "SET_VIEW", payload: "social_hub" })}
+        description="Connect with friends and rivals"
       >
         Social Hub
       </NavButton>
@@ -242,6 +258,7 @@ export const CitadelHub: React.FC<CitadelHubProps> = ({ dispatch }) => (
         variant="void"
         icon={<Trophy className="w-4 h-4" />}
         onClick={() => dispatch({ type: "SET_VIEW", payload: "trophy_room" })}
+        description="View your achievements and milestones"
       >
         Trophy Room
       </NavButton>
@@ -258,6 +275,7 @@ export const CitadelHub: React.FC<CitadelHubProps> = ({ dispatch }) => (
         variant="nature"
         icon={<Map className="w-4 h-4" />}
         onClick={() => dispatch({ type: "SET_VIEW", payload: "world_map" })}
+        description="Explore the IronForge world"
       >
         World Map
       </NavButton>
@@ -265,6 +283,7 @@ export const CitadelHub: React.FC<CitadelHubProps> = ({ dispatch }) => (
         variant="nature"
         icon={<Skull className="w-4 h-4" />}
         onClick={() => dispatch({ type: "SET_VIEW", payload: "bestiary" })}
+        description="View monsters you have defeated"
       >
         Bestiary
       </NavButton>
@@ -272,6 +291,7 @@ export const CitadelHub: React.FC<CitadelHubProps> = ({ dispatch }) => (
         variant="nature"
         icon={<Scroll className="w-4 h-4" />}
         onClick={() => dispatch({ type: "SET_VIEW", payload: "grimoire" })}
+        description="View your unlocked abilities"
       >
         Grimoire
       </NavButton>
