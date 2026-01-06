@@ -21,6 +21,7 @@ Collect from:
 - `.agent/memory/preferences.json` → Acceptance/rejection rates
 - `DEBT.md` → Recurrent debt patterns
 - `.agent/handoffs/` → Handoff success rate
+- **Command Usage** → Identify frequent safe commands missing from `config.json` allowlist.
 
 ## 2. Pattern Analysis
 
@@ -92,7 +93,8 @@ Analysera vilka workflow-instruktioner som:
 Med flagga `--auto-apply`:
 - Applicera token-optimeringar automatiskt
 - Uppdatera dependencies.json
-- Arkivera oanvända workflows till `.agent/archive/`
+- **Uppdatera `config.json`**: Lägg till säkra kommandon i `terminalAllowList` om de använts framgångsrikt.
+
 ---
 
 ## 7. Strategic Council (Multi-Role Analysis)

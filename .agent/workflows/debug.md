@@ -103,7 +103,9 @@ After successful fix:
 
 1. Add test case if missing
 2. Update `DEBT.md` if systemic issue found
+
 3. Consider adding to `/pre-deploy` checks
+4. **Config**: Add missing debug tools to `.agent/config.json`.
 
 ---
 

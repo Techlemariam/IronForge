@@ -115,22 +115,42 @@ export async function startRaidAction(
   hp: number,
   durationDays: number = 7,
 ) {
-  // TODO: Verify user is admin of guildId?
-  const endDate = new Date();
-  endDate.setDate(endDate.getDate() + durationDays);
+  try {
+    const user = await getAuthenticatedUser();
 
-  const raid = await prisma.guildRaid.create({
-    data: {
-      guildId,
-      bossName,
-      totalHp: hp,
-      currentHp: hp,
-      endDate,
-    },
-  });
+    // Verify user is leader of the guild
+    const guild = await prisma.guild.findUnique({
+      where: { id: guildId },
+      select: { leaderId: true },
+    });
 
-  revalidatePath("/dashboard");
-  return raid;
+    if (!guild) {
+      return { success: false, error: "Guild not found" };
+    }
+
+    if (guild.leaderId !== user.id) {
+      return { success: false, error: "Unauthorized: Only guild leader can start raids" };
+    }
+
+    const endDate = new Date();
+    endDate.setDate(endDate.getDate() + durationDays);
+
+    const raid = await prisma.guildRaid.create({
+      data: {
+        guildId,
+        bossName,
+        totalHp: hp,
+        currentHp: hp,
+        endDate,
+      },
+    });
+
+    revalidatePath("/dashboard");
+    return { success: true, raid };
+  } catch (error) {
+    console.error("Failed to start raid:", error);
+    return { success: false, error: "Failed to start raid" };
+  }
 }
 
 /**

@@ -23,7 +23,6 @@ trigger: manual
 ### Phase 1: Discovery (ANALYST)
 1. Call `/analyst` persona.
 2. Generate User Stories based on input `[feature-name]`.
-2. Generera User Stories baserat på input `[feature-name]`.
 3. **Platform Matrix**: Analysera hur featuren fungerar på varje plattform (Desktop, Mobile, TV, Companion).
    - Referera till `docs/PLATFORM_MATRIX.md` för mall och riktlinjer.
    - Fyll i matrisen för den nya featuren.
@@ -43,11 +42,13 @@ trigger: manual
 3. **Parallellt**: Anropa `/unit-tests` för att skapa testsvit.
 4. Kör `npm run build` för att verifiera kompilering.
 5. Kör `npm run test` för att verifiera tester.
+6. **Config**: Uppdatera `config.json` om nya kommandon krävs.
 
 ## Phase 4: Polish & Security
 1. Anropa `/polish` för cleanup, formatting och **Type Safety Audit**.
 2. Anropa `/security` för auth audit och Zod-validering.
 3. Anropa `/perf` för bundle analysis och RSC-optimering.
+4. **MUST RUN:** Anropa `/gatekeeper` för final pre-push validation.
 
 ## Phase 5: Delivery & Roadmap Update
 1. Anropa `/pre-deploy` för slutgiltig validering.
