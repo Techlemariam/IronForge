@@ -68,7 +68,7 @@ describe('StatsHeader', () => {
     it('renders BioStatusWidget when trainingContext is present', () => {
         render(<StatsHeader state={mockState} />);
         expect(screen.getByTestId('bio-status')).toBeDefined();
-        expect(screen.getByText('High')).toBeDefined();
+        expect(screen.getByText('HIGH')).toBeDefined();
     });
 
     it('does NOT render BioStatusWidget when trainingContext is missing', () => {
