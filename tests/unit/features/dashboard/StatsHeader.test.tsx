@@ -14,22 +14,43 @@ vi.mock('@/components/dashboard/BioStatusWidget', () => ({
 
 describe('StatsHeader', () => {
     const mockState: DashboardState = {
-        activePath: 'SOLDIER',
+        activePath: 'WARDEN',
         level: 1,
         totalExperience: 0,
-        weeklyMastery: { weekId: '1', completed: 0, required: 5 },
+        weeklyMastery: { strengthSets: 5, cardioTss: 100, mobilitySets: 2 },
         wellnessData: {
-            heartRate: 60,
-            steps: 1000,
-            sleepScore: 80,
-            lastSync: new Date()
+            restingHR: 60,
+            sleepScore: 80
         },
         challenges: [],
-        forecast: {
-            today: { condition: 'CLEAR', temperature: 20 },
-        },
+        forecast: [
+            { dayOffset: 0, tsb: 5, label: 'Today' }
+        ],
         events: [],
-        trainingContext: { readiness: 'High', strain: 'Low' }
+        oracleRecommendation: null,
+        titanAnalysis: null,
+        trainingContext: {
+            readiness: 'HIGH',
+            cnsFatigue: 'LOW',
+            cardioStress: 'LOW',
+            volume: {},
+            warnings: []
+        },
+        isCodexLoading: false,
+        ttb: null,
+        activeQuest: null,
+        questTitle: '',
+        exerciseNameMap: new Map(),
+        startTime: null,
+        currentView: 'citadel',
+        auditReport: null,
+        weaknessAudit: null,
+        isCoachOpen: false,
+        activeBossId: null,
+        mobilityLevel: 'NONE',
+        recoveryLevel: 'NONE',
+        returnView: null,
+        faction: 'ALLIANCE'
     };
 
     it('renders TitanAvatar when not in liteMode', () => {

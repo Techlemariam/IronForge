@@ -32,22 +32,43 @@ import { toast } from '@/components/ui/GameToast';
 describe('FeedPanel', () => {
     const mockDispatch = vi.fn();
     const mockState: DashboardState = {
-        activePath: 'SOLDIER',
+        activePath: 'WARDEN',
         level: 1,
         totalExperience: 0,
-        weeklyMastery: { weekId: '1', completed: 0, required: 5 },
+        weeklyMastery: { strengthSets: 5, cardioTss: 100, mobilitySets: 2 },
         wellnessData: {
-            heartRate: 60,
-            steps: 1000,
-            sleepScore: 80,
-            lastSync: new Date()
+            restingHR: 60,
+            sleepScore: 80
         },
         challenges: [],
-        forecast: {
-            today: { condition: 'CLEAR', temperature: 20 },
-        },
+        forecast: [
+            { dayOffset: 0, tsb: 5, label: 'Today' }
+        ],
         events: [],
         oracleRecommendation: null,
+        titanAnalysis: null,
+        ttb: null,
+        trainingContext: {
+            readiness: 'HIGH',
+            cnsFatigue: 'LOW',
+            cardioStress: 'LOW',
+            volume: {},
+            warnings: []
+        },
+        isCodexLoading: false,
+        activeQuest: null,
+        questTitle: '',
+        exerciseNameMap: new Map(),
+        startTime: null,
+        currentView: 'citadel',
+        auditReport: null,
+        weaknessAudit: null,
+        isCoachOpen: false,
+        activeBossId: null,
+        mobilityLevel: 'NONE',
+        recoveryLevel: 'NONE',
+        returnView: null,
+        faction: 'ALLIANCE'
     };
 
     it('renders "Oracle is contemplating" when no recommendation or decree', () => {
@@ -63,14 +84,34 @@ describe('FeedPanel', () => {
     });
 
     it('renders OracleCard when state has oracleRecommendation', () => {
-        const stateWithRec = { ...mockState, oracleRecommendation: { mode: 'Quest', generatedSession: { id: '123' } } };
+        const stateWithRec = {
+            ...mockState,
+            oracleRecommendation: {
+                mode: 'Quest',
+                type: 'GRIND',
+                title: 'Daily Grind',
+                rationale: 'Keep pushing',
+                priorityScore: 80,
+                generatedSession: { id: '123' }
+            } as any
+        };
         render(<FeedPanel state={stateWithRec} dispatch={mockDispatch} />);
         expect(screen.getByTestId('oracle-card')).toBeDefined();
     });
 
     it('dispatches START_GENERATED_QUEST when quest is accepted with generatedSession', () => {
         const session = { id: '123' };
-        const stateWithRec = { ...mockState, oracleRecommendation: { mode: 'Quest', generatedSession: session } };
+        const stateWithRec = {
+            ...mockState,
+            oracleRecommendation: {
+                mode: 'Quest',
+                type: 'GRIND',
+                title: 'Daily Grind',
+                rationale: 'Keep pushing',
+                priorityScore: 80,
+                generatedSession: session
+            } as any
+        };
         render(<FeedPanel state={stateWithRec} dispatch={mockDispatch} />);
 
         fireEvent.click(screen.getByText('Accept'));
@@ -81,7 +122,17 @@ describe('FeedPanel', () => {
     });
 
     it('shows toast when quest is accepted with sessionId only', () => {
-        const stateWithRec = { ...mockState, oracleRecommendation: { mode: 'Quest', sessionId: 'fixed-quest-1' } };
+        const stateWithRec = {
+            ...mockState,
+            oracleRecommendation: {
+                mode: 'Quest',
+                type: 'GRIND',
+                title: 'Daily Grind',
+                rationale: 'Keep pushing',
+                priorityScore: 80,
+                sessionId: 'fixed-quest-1'
+            } as any
+        };
         render(<FeedPanel state={stateWithRec} dispatch={mockDispatch} />);
 
         fireEvent.click(screen.getByText('Accept'));
