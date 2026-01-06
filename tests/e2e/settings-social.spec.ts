@@ -39,8 +39,13 @@ test.describe('Settings and Social Hub', () => {
         // 1. Visit Dashboard
         await page.goto('/');
 
+        // CRITICAL: Inject API key to bypass "Configuration Required" screen
+        await page.evaluate(() => {
+            localStorage.setItem('hevy_api_key', 'e2e-dummy-key');
+        });
+
         // Wait for page to stabilize
-        await page.waitForTimeout(1000);
+        await page.waitForTimeout(1500);
 
         // Wait for Citadel Hub to load
         await expect(page.locator('#main-content').or(page.getByText('Training'))).toBeVisible({ timeout: 15000 });

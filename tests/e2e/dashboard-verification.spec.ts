@@ -8,7 +8,13 @@ test.describe('Dashboard Verification', () => {
 
     test.beforeEach(async ({ page }) => {
         await page.goto('/');
-        await page.waitForTimeout(1000);
+
+        // CRITICAL: Inject API key to bypass "Configuration Required" screen
+        await page.evaluate(() => {
+            localStorage.setItem('hevy_api_key', 'e2e-dummy-key');
+        });
+
+        await page.waitForTimeout(1500);
         // Wait for main content to load
         await expect(page.locator('#main-content').or(page.getByText('Training'))).toBeVisible({ timeout: 15000 });
     });

@@ -5,8 +5,13 @@ test.describe('Training & Cardio Flow', () => {
     test.beforeEach(async ({ page }) => {
         await page.goto('/');
 
-        // Wait for page to stabilize
-        await page.waitForTimeout(1000);
+        // CRITICAL: Inject API key to bypass "Configuration Required" screen
+        await page.evaluate(() => {
+            localStorage.setItem('hevy_api_key', 'e2e-dummy-key');
+        });
+
+        // Wait for page to stabilize and re-render with API key
+        await page.waitForTimeout(1500);
 
         // If locked in Cardio Studio, exit
         const exitButton = page.getByTitle("Close (Esc)");
