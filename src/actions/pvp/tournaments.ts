@@ -1,6 +1,6 @@
 "use server";
 
-import { prisma } from "@/lib/prisma";
+// import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
 type LiftType = "SQUAT" | "BENCH" | "DEADLIFT";
@@ -84,8 +84,8 @@ export async function createTournamentAction(
   daysToRun: number = 14,
 ): Promise<{ success: boolean; tournamentId?: string }> {
   try {
-    const now = new Date();
-    const endDate = new Date(now.getTime() + daysToRun * 24 * 60 * 60 * 1000);
+    const _now = new Date();
+    // const endDate = new Date(now.getTime() + daysToRun * 24 * 60 * 60 * 1000);
 
     // For MVP, return generated ID
     const tournamentId = `tournament-${liftType.toLowerCase()}-${Date.now()}`;

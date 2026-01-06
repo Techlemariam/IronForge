@@ -1,10 +1,10 @@
 "use server";
 
-import { prisma } from "@/lib/prisma";
-import { getSession } from "@/lib/auth";
+// import { prisma } from "@/lib/prisma";
+// import { getSession } from "@/lib/auth";
 import { Prisma } from "@prisma/client";
-import { revalidatePath } from "next/cache";
-import { getPvpRank } from "@/lib/pvpRanks";
+// import { revalidatePath } from "next/cache";
+// import { getPvpRank } from "@/lib/pvpRanks";
 
 const SEASON_DURATION_DAYS = 28;
 
