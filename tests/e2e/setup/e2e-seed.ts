@@ -1,7 +1,13 @@
 
 import { PrismaClient, Faction, Archetype } from '@prisma/client';
+import { Pool as PgPool } from 'pg';
+import { PrismaPg } from '@prisma/adapter-pg';
 
-const prisma = new PrismaClient();
+// Prisma 7 requires explicit adapter configuration
+const connectionString = process.env.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5432/postgres';
+const pool = new PgPool({ connectionString });
+const adapter = new PrismaPg(pool);
+const prisma = new PrismaClient({ adapter });
 
 async function main() {
     console.log('🌱 Starting E2E Database Seeding...');
