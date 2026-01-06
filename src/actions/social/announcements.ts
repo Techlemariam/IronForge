@@ -80,7 +80,7 @@ export async function markAnnouncementReadAction(
   _userId: string,
   announcementId: string,
 ): Promise<{ success: boolean }> {
-  console.log(`Marked announcement ${announcementId} as read for ${userId}`);
+  console.log(`Marked announcement ${announcementId} as read for ${_userId}`);
   return { success: true };
 }
 
@@ -91,7 +91,7 @@ export async function dismissAnnouncementAction(
   _userId: string,
   announcementId: string,
 ): Promise<{ success: boolean }> {
-  console.log(`Dismissed announcement ${announcementId} for ${userId}`);
+  console.log(`Dismissed announcement ${announcementId} for ${_userId}`);
   return { success: true };
 }
 
@@ -101,7 +101,7 @@ export async function dismissAnnouncementAction(
 export async function getUnreadAnnouncementCountAction(
   _userId: string,
 ): Promise<number> {
-  const announcements = await getGlobalAnnouncementsAction(userId);
+  const announcements = await getGlobalAnnouncementsAction(_userId);
   return announcements.filter((a) => !a.isRead).length;
 }
 
@@ -111,7 +111,7 @@ export async function getUnreadAnnouncementCountAction(
 export async function getUrgentAnnouncementsAction(
   _userId: string,
 ): Promise<GlobalAnnouncement[]> {
-  const all = await getGlobalAnnouncementsAction(userId);
+  const all = await getGlobalAnnouncementsAction(_userId);
   return all.filter(
     (a) =>
       a.priority === "URGENT" ||
