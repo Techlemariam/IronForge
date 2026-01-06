@@ -81,7 +81,7 @@ export async function createTournamentAction(
   liftType: LiftType,
   weightClass: string,
   bracketSize: BracketSize,
-  daysToRun: number = 14,
+  _daysToRun: number = 14,
 ): Promise<{ success: boolean; tournamentId?: string }> {
   try {
     const _now = new Date();
