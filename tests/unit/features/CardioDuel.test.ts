@@ -61,7 +61,11 @@ describe('Cardio Duel Logic', () => {
 
         expect(prisma.duelChallenge.update).toHaveBeenCalledWith({
             where: { id: 'duel1' },
-            data: { challengerDistance: 3.5 }
+            data: {
+                challengerDistance: 3.5,
+                challengerDuration: 10,
+                challengerElevation: 0
+            }
         });
     });
 
