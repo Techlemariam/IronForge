@@ -138,7 +138,7 @@ describe("Titan Duel Actions", () => {
 
       expect(prisma.duelChallenge.update).toHaveBeenCalledWith({
         where: { id: "duel-active" },
-        data: { challengerDistance: 5.5 },
+        data: { challengerDistance: 5.5, challengerDuration: 0, challengerElevation: 0 },
       });
       expect(result.success).toBe(true);
     });
@@ -155,7 +155,7 @@ describe("Titan Duel Actions", () => {
 
       expect(prisma.duelChallenge.update).toHaveBeenCalledWith({
         where: { id: "duel-active" },
-        data: { defenderDistance: 3.2 },
+        data: { defenderDistance: 3.2, defenderDuration: 0, defenderElevation: 0 },
       });
       expect(result.success).toBe(true);
     });
