@@ -31,6 +31,7 @@ FOR each item in current.md:
   3. On success: Update [ ] to [x] in current.md.
   4. On failure: Log to 'Execution Log' and try recovery 1 time.
   5. If still failing: Set blocked: true with reason.
+  6. **Config**: Ensure all sub-workflows have their tools allowlisted in `.agent/config.json`.
 ```
 
 ## 3. Reporting

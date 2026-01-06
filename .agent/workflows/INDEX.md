@@ -15,10 +15,12 @@ Quick reference for choosing the right workflow based on your situation.
 | **Build Broken** | `/debug` → `/coder` → `/qa` | Systematic error recovery |
 | **New Feature** | `/domain-session` → `/feature` → `/qa` | Full feature pipeline |
 | **Quick Fix** | `/coder` → `/qa` | Small, isolated changes |
-| **Debt Attack** | `/cleanup` → `/qa` → `/polish` | Scheduled maintenance |
-| **Pre-Release** | `/pre-deploy` → `/security` → `/perf` → Merge | Merge to `main` = Auto-Deploy |
+| **Debt Attack** | `/debt-attack` | Scheduled maintenance |
+| **Pre-Release** | `PR Checks (CI)` → `Merge` | Merge into `main` after CI passes |
 | **Emergency Fix** | `/debug` → `/coder` → `/pre-deploy` | Hotfix path |
 | **New Idea** | `/idea` → `/analyst` → `/architect` | Intake to design |
+| **Gatekeeper** | `/gatekeeper` | Run before push |
+| **Night Shift** | `/night-shift` | Overnight maintenance |
 | **Sprint Planning** | `/sprint-plan` → `/triage` → `/manager` | Backlog grooming & prioritization |
 | **Gaps Found** | `/triage` → `ROADMAP.md` → `/feature` | Gap resolution pipeline |
 | **Overnight Work** | `/sprint-auto` | Autonomous execution |
@@ -58,9 +60,13 @@ Quick reference for choosing the right workflow based on your situation.
 |-------|-------|-------------|
 | `/polish` | Code cleanup | Formatting, dead code |
 | `/perf` | Performance | Bundle, Lighthouse |
-| `/cleanup` | Debt resolution | DEBT.md items |
-| `/evolve` | Workflow improvement | Meta-optimization |
+
+
 | `/triage` | Gap prioritization | Resolving gaps from monitors |
+| `/gatekeeper` | Qualification | Strict pre-push checks |
+| `/night-shift` | Async Maintenance | Overnight optimizations |
+| `/monitor-debt` | Debt Scanning | Finding technical debt |
+| `/debt-attack` | Debt Execution | Autonomous cleanup loop |
 
 ---
 
@@ -108,9 +114,11 @@ Gap Resolution:
 | **Game Balance** | `/monitor-game` | Loot rates, XP, combat constants |
 | **Logic & Debt** | `/monitor-logic` | Type safety, TODOs, debt scan |
 | **CI/CD Health** | `/monitor-ci` | Workflow runs, build status |
-| **Infrastructure** | `/monitor-db`, `/monitor-deploy` | Database & Deployment health |
-| **Performance** | `/perf` | Lighthouse & bundle analysis |
+
+
 | **Gap Triage** | `/triage` | Prioritize all found gaps into ROADMAP.md |
+| **Debt Scanner** | `/monitor-debt` | Scan codebase for debt markers |
+| **Quality Gate** | `/gatekeeper` | Pre-push integrity checks |
 
 ---
 

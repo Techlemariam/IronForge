@@ -79,6 +79,7 @@ export interface DashboardClientProps {
   titanState?: TitanState | null;
   activeDuel?: any;
   liteMode?: boolean;
+  leaderboardData?: { rank: number; userId: string; name: string; score: number; faction?: string }[];
 }
 
 export interface DashboardState {

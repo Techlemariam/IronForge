@@ -60,7 +60,7 @@ export default function LoginPage() {
         });
         if (error) throw error;
         // Redirect is handled automatically by middleware or client state change
-        window.location.href = "/";
+        window.location.href = "/dashboard";
       } else {
         const { error } = await supabase.auth.signInWithOtp({
           email,
@@ -235,8 +235,8 @@ export default function LoginPage() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               className={`mt-6 p-4 rounded text-sm flex items-center gap-3 border ${message.type === "error"
-                  ? "bg-red-950/40 text-red-200 border-red-900/50"
-                  : "bg-green-950/40 text-green-200 border-green-900/50"
+                ? "bg-red-950/40 text-red-200 border-red-900/50"
+                : "bg-green-950/40 text-green-200 border-green-900/50"
                 }`}
             >
               {message.type === "error" ? (

@@ -18,6 +18,7 @@ rg ": any|as any" src/
 # Find TypeScript suppressions
 rg "@ts-ignore|@ts-expect-error" src/
 ```
+- **Config**: Add `rg` (ripgrep) to `.agent/config.json` if missing.
 
 ## 2. Implementation Gaps (Todos)
 Find explicit markers of unfinished logic or pending fixes.

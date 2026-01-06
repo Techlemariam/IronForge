@@ -5,6 +5,7 @@ import ForgeCard from "@/components/ui/ForgeCard";
 import { TrainingContext } from "@/services/data/TrainingContextService";
 import { Activity, Battery, Brain, AlertTriangle, ShieldAlert } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { JargonTooltip } from "@/components/ui/JargonTooltip";
 
 interface BioStatusWidgetProps {
     context: TrainingContext;
@@ -51,7 +52,7 @@ export default function BioStatusWidget({ context }: BioStatusWidgetProps) {
             {/* Neural Load Index (The Heat Gauge) */}
             <div className="space-y-1">
                 <div className="flex justify-between text-xs text-zinc-400">
-                    <span className="flex items-center gap-1"><Brain className="h-3 w-3" /> Neural Load</span>
+                    <span className="flex items-center gap-1"><Brain className="h-3 w-3" /><JargonTooltip term="CNS">Neural Load</JargonTooltip></span>
                     <span>{cnsFatigue}</span>
                 </div>
                 <div className="h-2 w-full bg-zinc-800 rounded-full overflow-hidden">
@@ -65,7 +66,7 @@ export default function BioStatusWidget({ context }: BioStatusWidgetProps) {
             {/* MRV Capacity (The Silent Killer Visualizer) */}
             <div className="space-y-1">
                 <div className="flex justify-between text-xs text-zinc-400">
-                    <span className="flex items-center gap-1"><Battery className="h-3 w-3" /> System Capacity</span>
+                    <span className="flex items-center gap-1"><Battery className="h-3 w-3" /><JargonTooltip term="MRV">System Capacity</JargonTooltip></span>
                     <span>{globalLoad} / {globalMrv} Sets</span>
                 </div>
                 <div className="relative h-4 w-full bg-zinc-900 rounded-full border border-zinc-800 overflow-hidden">

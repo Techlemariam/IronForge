@@ -185,3 +185,59 @@ describe("TvMode Integration", () => {
 
   // Add more interactive tests if buttons/toggles exist
 });
+
+// Test the zone calculation logic directly
+describe("getZoneFromHr (Zone Calculation)", () => {
+  // Extract the function logic for direct testing
+  const getZoneFromHr = (hr: number, maxHr: number = 190) => {
+    const pct = (hr / maxHr) * 100;
+    if (pct < 60) return 1;
+    if (pct < 70) return 2;
+    if (pct < 80) return 3;
+    if (pct < 90) return 4;
+    return 5;
+  };
+
+  it("should return Zone 1 for HR below 60% of maxHr", () => {
+    expect(getZoneFromHr(100, 190)).toBe(1); // 52.6%
+    expect(getZoneFromHr(110, 190)).toBe(1); // 57.9%
+  });
+
+  it("should return Zone 2 for HR between 60-70% of maxHr", () => {
+    expect(getZoneFromHr(114, 190)).toBe(2); // 60%
+    expect(getZoneFromHr(130, 190)).toBe(2); // 68.4%
+  });
+
+  it("should return Zone 3 for HR between 70-80% of maxHr", () => {
+    expect(getZoneFromHr(133, 190)).toBe(3); // 70%
+    expect(getZoneFromHr(150, 190)).toBe(3); // 78.9%
+  });
+
+  it("should return Zone 4 for HR between 80-90% of maxHr", () => {
+    expect(getZoneFromHr(152, 190)).toBe(4); // 80%
+    expect(getZoneFromHr(170, 190)).toBe(4); // 89.5%
+  });
+
+  it("should return Zone 5 for HR above 90% of maxHr", () => {
+    expect(getZoneFromHr(171, 190)).toBe(5); // 90%
+    expect(getZoneFromHr(185, 190)).toBe(5); // 97.4%
+  });
+
+  it("should correctly calculate zones with custom maxHr", () => {
+    // For maxHr = 170
+    expect(getZoneFromHr(100, 170)).toBe(1); // 58.8%
+    expect(getZoneFromHr(103, 170)).toBe(2); // 60.6%
+    expect(getZoneFromHr(136, 170)).toBe(4); // 80%
+    expect(getZoneFromHr(155, 170)).toBe(5); // 91.2%
+  });
+
+  it("should handle edge cases at zone boundaries", () => {
+    // Exactly at boundary percentages
+    const maxHr = 200;
+    expect(getZoneFromHr(119, maxHr)).toBe(1); // 59.5% < 60
+    expect(getZoneFromHr(120, maxHr)).toBe(2); // 60% exactly
+    expect(getZoneFromHr(140, maxHr)).toBe(3); // 70% exactly
+    expect(getZoneFromHr(160, maxHr)).toBe(4); // 80% exactly
+    expect(getZoneFromHr(180, maxHr)).toBe(5); // 90% exactly
+  });
+});

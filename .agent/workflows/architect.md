@@ -22,7 +22,8 @@ trigger: manual
    - Folder Structure (Features vs Components).
    - Data Flow (Server Actions + Zod).
 2. Read `task.md` & `ARCHITECTURE.md`.
-3. **Feature Cohesion**: Enforce `src/features/[name]` structure. Generic UI goes to `src/components`.
+3. **Config**: Suggest adding new safe CLI tools to `terminalAllowList` in `.agent/config.json`.
+4. **Feature Cohesion**: Enforce `src/features/[name]` structure. Generic UI goes to `src/components`.
 4. Validate Scope (Feature vs Refactor).
 5. Update `implementation_plan.md`.
 6. **Platform Scope**: Reference `docs/PLATFORM_MATRIX.md` for cross-device considerations.

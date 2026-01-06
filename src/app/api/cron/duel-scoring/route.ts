@@ -167,9 +167,31 @@ export async function GET(request: NextRequest) {
             }
           });
         } else if (!winnerId) {
-          // Draw - Both get small participation
-          // Using manual minimal reward for draw
-          // TODO: Add 'isDraw' into Service
+          // Draw - Both participants get participation rewards
+          const challengerDrawRewards = await DuelRewardsService.calculateDrawRewards(
+            duel.challengerId, challengerScore
+          );
+          const defenderDrawRewards = await DuelRewardsService.calculateDrawRewards(
+            duel.defenderId, defenderScore
+          );
+
+          await prisma.user.update({
+            where: { id: duel.challengerId },
+            data: {
+              totalExperience: { increment: challengerDrawRewards.xp },
+              gold: { increment: challengerDrawRewards.gold },
+              kineticEnergy: { increment: challengerDrawRewards.kineticEnergy }
+            }
+          });
+
+          await prisma.user.update({
+            where: { id: duel.defenderId },
+            data: {
+              totalExperience: { increment: defenderDrawRewards.xp },
+              gold: { increment: defenderDrawRewards.gold },
+              kineticEnergy: { increment: defenderDrawRewards.kineticEnergy }
+            }
+          });
         }
 
         // Update PvpProfiles

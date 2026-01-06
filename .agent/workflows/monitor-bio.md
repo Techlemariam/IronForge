@@ -60,3 +60,4 @@ Verify API keys are handled securely.
 # Find API key references (ensure no hardcoded keys)
 rg "apiKey|api_key|API_KEY" src/lib/hevy.ts src/lib/intervals.ts
 ```
+- **Config**: Add `rg` (ripgrep) to `.agent/config.json`.

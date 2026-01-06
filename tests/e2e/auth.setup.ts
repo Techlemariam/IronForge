@@ -109,6 +109,16 @@ setup('authenticate', async ({ page }) => {
         await overlay.waitFor({ state: 'hidden', timeout: 10000 }).catch(() => console.log("Overlay did not disappear in time!"));
     }
 
+    // CRITICAL: Re-inject API key AFTER all navigations to ensure it persists
+    // This handles cases where the key might get cleared during redirects
+    console.log("Re-injecting Hevy API key after navigation...");
+    await page.evaluate(() => {
+        localStorage.setItem('hevy_api_key', 'e2e-dummy-key');
+    });
+
+    // Small wait to ensure localStorage is set before saving state
+    await page.waitForTimeout(500);
+
     // End of authentication steps.
     await page.context().storageState({ path: authFile });
     console.log("Auth setup saved to context.");

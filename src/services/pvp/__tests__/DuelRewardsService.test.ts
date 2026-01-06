@@ -114,4 +114,59 @@ describe("DuelRewardsService", () => {
 
         randomSpy.mockRestore();
     });
+
+    describe("calculateDrawRewards", () => {
+        it("should calculate base draw rewards", async () => {
+            // Arrange
+            vi.mocked(GameContextService.getPlayerContext).mockResolvedValue(mockBaseContext as PlayerContext);
+
+            // Act
+            const result = await DuelRewardsService.calculateDrawRewards("user-1", 100);
+
+            // Assert
+            // Base Draw: 50 XP, 25 Gold, 10 KE
+            // Score Bonus: 3 * (100/100) = 3 XP
+            expect(result.xp).toBe(53);
+            expect(result.gold).toBe(25);
+            expect(result.kineticEnergy).toBe(10);
+            expect(result.bonuses).toContain("Draw - Mutual Respect");
+        });
+
+        it("should apply score bonus for high-scoring draws", async () => {
+            // Arrange  
+            vi.mocked(GameContextService.getPlayerContext).mockResolvedValue(mockBaseContext as PlayerContext);
+
+            // Act
+            const result = await DuelRewardsService.calculateDrawRewards("user-1", 500);
+
+            // Assert
+            // Base Draw: 50 XP
+            // Score Bonus: 3 * 5 = 15 XP
+            expect(result.xp).toBe(65);
+            expect(result.bonuses).toContain("Effort Bonus +15 XP");
+        });
+
+        it("should apply context modifiers to draw rewards", async () => {
+            // Arrange
+            const boostedContext = {
+                ...mockBaseContext,
+                modifiers: {
+                    ...mockBaseContext.modifiers,
+                    xpGain: 2.0,
+                    goldGain: 1.5,
+                }
+            };
+            vi.mocked(GameContextService.getPlayerContext).mockResolvedValue(boostedContext as any);
+
+            // Act
+            const result = await DuelRewardsService.calculateDrawRewards("user-1", 200);
+
+            // Assert
+            // Base: 50 XP + 6 score bonus = 56 XP
+            // With 2x multiplier: 112 XP
+            expect(result.xp).toBe(112);
+            // Base: 25 Gold * 1.5 = 37.5 -> 38
+            expect(result.gold).toBe(38);
+        });
+    });
 });
