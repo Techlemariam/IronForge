@@ -1,7 +1,7 @@
 "use server";
 
-// import { prisma } from "@/lib/prisma";
-// import { getSession } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
+import { getSession } from "@/lib/auth";
 import { Prisma } from "@prisma/client";
 // import { revalidatePath } from "next/cache";
 // import { getPvpRank } from "@/lib/pvpRanks";
@@ -183,7 +183,7 @@ export async function submitMatchResultAction(input: {
                 peakRating: Math.max(p1.peakRating, p1NewRating),
                 wins: input.result === "WIN" ? { increment: 1 } : p1.wins,
                 losses: input.result === "LOSS" ? { increment: 1 } : p1.losses,
-                rank: getRankForRating(p1NewRating),
+                // rank: getRankForRating(p1NewRating),
             }
         });
 
@@ -196,7 +196,7 @@ export async function submitMatchResultAction(input: {
                 peakRating: Math.max(p2.peakRating, p2NewRating),
                 wins: input.result === "LOSS" ? { increment: 1 } : p2.wins,
                 losses: input.result === "WIN" ? { increment: 1 } : p2.losses,
-                rank: getRankForRating(p2NewRating),
+                // rank: getRankForRating(p2NewRating),
             }
         });
 
@@ -225,7 +225,7 @@ export async function submitMatchResultAction(input: {
 
 // Use getPvpRank from @/lib/pvpRanks for rank calculation
 // Returns rank number as string for DB storage
-function getRankForRating(rating: number): string {
-    const pvpRank = getPvpRank(rating);
-    return String(pvpRank.rank);
-}
+// function getRankForRating(rating: number): string {
+//     const pvpRank = getPvpRank(rating);
+//     return String(pvpRank.rank);
+// }
