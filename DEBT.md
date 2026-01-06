@@ -56,6 +56,12 @@
 | 2026-01-04 | `src/actions/training.ts` | `logTitanSet` has high complexity (Level, BP, Challenge, Log). Extract to services. | @architect | ✅ Resolved |
 | 2026-01-05 | `tests/e2e/cardio-duels.spec.ts` | SKIPPED: 3 tests require seeded mock opponents. Add E2E DB seeding step to CI. | @infrastructure | ⚠️ Open |
 | 2026-01-05 | `tests/e2e/battle-pass.spec.ts` | SKIPPED: Premium upgrade test requires seeded BattlePassSeason in CI. | @infrastructure | ⚠️ Open |
+| 2026-01-05 | `src/features/dashboard/CitadelHub.tsx` | 17 nav items (5.6×) exceed cognitive load target (<3 decisions/view). Needs progressive disclosure. | @ui-ux | ⚠️ Open |
+| 2026-01-05 | `src/components/ui/LoadingSpinner.tsx` | Missing `role="status"` and `aria-live` for screen reader accessibility. | @ui-ux | ⚠️ Open |
+| 2026-01-05 | `src/features/dashboard/DashboardClient.tsx` | 685 lines - consider splitting into smaller components for maintainability. | @cleanup | ⚠️ Open |
+| 2026-01-05 | `src/components/ui/TvHud.tsx` | 7532 bytes may exceed TV Mode data density guidelines (max 3 data points). | @ui-ux | ⚠️ Open |
+| 2026-01-05 | `src/**/*` | Only 3 files use `aria-label`. Add accessibility labels to all interactive elements. | @ui-ux | ⚠️ Open |
+
 
 ---
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Minus, Plus, Zap, Shield, Target } from "lucide-react";
 import { playSound } from "../../utils";
+import { JargonTooltip } from "./JargonTooltip";
 
 interface SetLogFormProps {
   targetWeight: number;
@@ -119,7 +120,7 @@ const SetLogForm: React.FC<SetLogFormProps> = ({
         <div>
           <div className="flex justify-between items-end mb-2">
             <span className="text-[10px] font-bold uppercase text-zinc-500 tracking-widest">
-              Rate Perceived Exertion
+              <JargonTooltip term="RPE">Rate Perceived Exertion</JargonTooltip>
             </span>
             {rpe && (
               <span className="text-xs font-mono font-bold text-magma">

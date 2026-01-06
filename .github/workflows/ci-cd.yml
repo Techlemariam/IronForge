@@ -58,6 +58,7 @@ jobs:
   # ------------------------------------------------------------------
   e2e:
     name: 🎭 E2E Tests
+    if: github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -79,6 +80,10 @@ jobs:
       - name: Install Playwright Browsers
         if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: npx playwright install --with-deps
+      - name: Seed E2E Database
+        run: npx tsx tests/e2e/setup/e2e-seed.ts
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
       - name: Run Playwright Tests
         run: npx playwright test
         env:

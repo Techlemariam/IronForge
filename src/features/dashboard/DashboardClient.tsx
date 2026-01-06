@@ -159,10 +159,8 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
     liteMode,
   } = props;
 
-  // TODO: Fetch this from server component and pass as props
-  // For now we render with empty/mock for UI verification if data not present
-  const leaderboardData: any[] = [];
-  // const factionStats = { alliance: { members: 0, totalXp: 0 }, horde: { members: 0, totalXp: 0 } };
+  // Leaderboard data passed from server component (or empty for backward-compat)
+  const leaderboardData = props.leaderboardData || [];
 
   // Use Titan State if available, fallback to User (Legacy)
   const level = titanState?.level || userData?.level || 1;
