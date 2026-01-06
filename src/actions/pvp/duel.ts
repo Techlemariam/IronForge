@@ -212,8 +212,28 @@ export async function updateCardioDuelProgressInternalWithUser(duelId: string, u
   let winnerId: string | null = null;
   let isFinished = false;
 
-  if (duel.duelType === "DISTANCE_RACE" || duel.duelType === "SPEED_DEMON") {
+  if (duel.duelType === "DISTANCE_RACE") {
+    // Distance Race: First to reach target distance wins immediately
     if (duel.targetDistance && newDistance >= duel.targetDistance) {
+      winnerId = userId;
+      isFinished = true;
+    }
+  } else if (duel.duelType === "SPEED_DEMON") {
+    // Speed Demon: Both must complete target distance, fastest time wins
+    // For MVP: First to complete wins (time tracking requires schema update)
+    if (duel.targetDistance && newDistance >= duel.targetDistance) {
+      winnerId = userId;
+      isFinished = true;
+      // TODO: With challengerDuration/defenderDuration fields, compare times
+      // when both have completed for proper Speed Demon logic
+    }
+  } else if (duel.duelType === "ELEVATION_GRIND") {
+    // Elevation Grind: First to gain target elevation wins
+    // NOTE: Requires challengerElevation/defenderElevation schema fields
+    // For now, using distance as a proxy (1km = ~50m elevation estimate)
+    const estimatedElevation = newDistance * 50; // rough cycling climb estimate
+    const targetElevation = (duel.targetDistance || 1000); // Target in meters
+    if (estimatedElevation >= targetElevation) {
       winnerId = userId;
       isFinished = true;
     }
