@@ -30,7 +30,7 @@ interface GlobalAnnouncement {
 export async function getGlobalAnnouncementsAction(
   _userId: string,
 ): Promise<GlobalAnnouncement[]> {
-  const now = new Date();
+  const _now = new Date();
 
   return [
     {
