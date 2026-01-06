@@ -12,7 +12,7 @@ test.describe('Dashboard Interactions', () => {
         // Wait for page to stabilize
         await page.waitForTimeout(1500);
         // Ensure main content is visible
-        await expect(page.locator('#main-content').or(page.getByText('Training'))).toBeVisible({ timeout: 15000 });
+        await expect(page.locator('#main-content')).toBeVisible({ timeout: 15000 });
     });
 
     test('should navigate to Program Builder', async ({ page }) => {

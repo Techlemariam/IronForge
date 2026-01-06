@@ -27,6 +27,15 @@ test.describe('Cardio PvP Duels Flow', () => {
             );
             console.log(`[Setup] Deleted ${result.rowCount} active duels for ${user.heroName || user.id}`);
 
+            // Ensure Titan exists and matches opponent power range (500)
+            await client.query(`
+                INSERT INTO "Titan" ("id", "userId", "name", "level", "powerRating", "strength", "endurance", "agility", "spirit")
+                VALUES (gen_random_uuid(), $1, 'Test Titan', 5, 500, 10, 10, 10, 10)
+                ON CONFLICT ("userId") 
+                DO UPDATE SET "powerRating" = 500, "level" = 5;
+            `, [user.id]);
+            console.log(`[Setup] Updated Titan power rating to 500 for matchmaking`);
+
         } catch (e) {
             console.error("[Setup] Cleanup failed:", e);
             throw e;
