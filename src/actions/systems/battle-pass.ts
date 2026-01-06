@@ -8,7 +8,7 @@ import { z } from "zod";
 // BATTLE PASS ACTIONS
 // ============================================
 
-const ClaimRewardSchema = z.object({
+const _ClaimRewardSchema = z.object({
   seasonId: z.string(),
   tierLevel: z.number().int().min(1),
   isPremium: z.boolean(),

@@ -198,7 +198,7 @@ export function getChallengeTemplates(): ChallengeTemplate[] {
  * Complete and finalize a challenge.
  */
 export async function finalizeChallengeAction(
-  challengeId: string,
+  _challengeId: string,
 ): Promise<{ winnerId: string; rewards: { xp: number; gold: number } }> {
   // In production, calculate winner and distribute rewards
   return {
