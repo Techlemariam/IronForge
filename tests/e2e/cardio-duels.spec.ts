@@ -37,8 +37,14 @@ test.describe('Cardio PvP Duels Flow', () => {
 
     test.beforeEach(async ({ page }) => {
         await page.goto('/iron-arena');
+
+        // CRITICAL: Inject API key to bypass "Configuration Required" screen
+        await page.evaluate(() => {
+            localStorage.setItem('hevy_api_key', 'e2e-dummy-key');
+        });
+
         // Wait for hydration
-        await page.waitForTimeout(1000);
+        await page.waitForTimeout(1500);
 
         const findOpponentBtn = page.getByRole('button', { name: 'Find Opponent' });
         if (!await findOpponentBtn.isVisible()) {
