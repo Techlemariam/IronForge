@@ -106,7 +106,8 @@ async function main() {
                     strength: 20,
                     endurance: 20,
                     agility: 20,
-                    spirit: 20
+                    vitality: 20,
+                    willpower: 20
                 }
             }
         }
