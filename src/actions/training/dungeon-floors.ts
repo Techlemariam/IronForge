@@ -60,11 +60,13 @@ export async function getDungeonProgressAction(
   _userId: string,
 ): Promise<ActionState<any>> {
   return {
-    currentFloor: 15,
-    highestFloor: 23,
-    totalClears: 145,
-    currentRunFloors: 5,
-    runActive: true,
+    data: {
+      currentFloor: 15,
+      highestFloor: 23,
+      totalClears: 145,
+      currentRunFloors: 5,
+      runActive: true,
+    }
   };
 }
 
