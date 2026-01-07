@@ -26,7 +26,7 @@ test.describe('Dashboard Interactions', () => {
         }
 
         // Open Program Builder
-        await page.getByRole('button', { name: 'Program Builder' }).click();
+        await page.getByRole('button', { name: /Program Builder/i }).click();
 
         // Verify content - look for header or close button
         await expect(page.locator('text=Program Builder').or(page.getByRole('button', { name: 'Close' }))).toBeVisible({ timeout: 10000 });
@@ -39,7 +39,7 @@ test.describe('Dashboard Interactions', () => {
         await page.waitForTimeout(300);
 
         // Open Guild Hall
-        await page.getByRole('button', { name: 'Guild Hall' }).click();
+        await page.getByRole('button', { name: /Guild Hall/i }).click();
 
         // Verify content - look for Close button or Guild text
         await expect(page.getByRole('button', { name: 'Close' }).or(page.getByText(/Guild/i).first())).toBeVisible({ timeout: 10000 });
@@ -51,7 +51,7 @@ test.describe('Dashboard Interactions', () => {
         await colosseumCategory.click();
         await page.waitForTimeout(300);
 
-        await page.getByRole('button', { name: 'Trophy Room' }).click({ force: true });
+        await page.getByRole('button', { name: /Trophy Room/i }).click({ force: true });
         await expect(page.getByText(/Trophy Room|Achievements|Hall of Fame/i).first()).toBeVisible({ timeout: 15000 });
     });
 });

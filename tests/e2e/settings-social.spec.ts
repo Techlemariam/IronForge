@@ -56,7 +56,7 @@ test.describe('Settings and Social Hub', () => {
         await page.waitForTimeout(300);
 
         // 3. Click "Social Hub" button
-        await page.getByRole('button', { name: 'Social Hub' }).click();
+        await page.getByRole('button', { name: /Social Hub/i }).click();
 
         // 4. Verify Social Hub opens - use flexible selectors
         await expect(page.getByText(/CONNECTED|IRON NETWORK|Social/i).first()).toBeVisible({ timeout: 10000 });
