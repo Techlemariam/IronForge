@@ -27,6 +27,7 @@ export default function WelcomePage() {
                 width={40}
                 height={40}
                 className="object-cover"
+                priority
               />
             </div>
             <span className="font-serif text-xl tracking-widest uppercase font-bold text-shadow-glow">

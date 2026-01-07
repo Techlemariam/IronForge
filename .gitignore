@@ -132,3 +132,5 @@ test-results/
 # Turborepo
 .turbo
 .agent/artifacts/
+.lighthouseci/
+localhost_*.json
