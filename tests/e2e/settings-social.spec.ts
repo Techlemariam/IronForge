@@ -37,7 +37,7 @@ test.describe('Settings and Social Hub', () => {
 
     test('should navigate to Social Hub from Dashboard', async ({ page }) => {
         // 1. Visit Dashboard
-        await page.goto('/');
+        await page.goto('/dashboard');
 
         // CRITICAL: Inject API key to bypass "Configuration Required" screen
         await page.evaluate(() => {
@@ -47,8 +47,8 @@ test.describe('Settings and Social Hub', () => {
         // Wait for page to stabilize
         await page.waitForTimeout(1500);
 
-        // Wait for Citadel Hub to load
-        await expect(page.locator('#main-content').or(page.getByText('Training'))).toBeVisible({ timeout: 15000 });
+        // Wait for Citadel Hub to load - ensure we are on the dashboard
+        await expect(page.locator('#main-content')).toBeVisible({ timeout: 15000 });
 
         // 2. Expand Colosseum category (collapsed by default)
         const colosseumCategory = page.getByRole('button', { name: /Colosseum/i });

@@ -6,7 +6,7 @@ test.describe("Power Rating System", () => {
     });
 
     test("should display current power rating on dashboard", async ({ page }) => {
-        await page.goto("/");
+        await page.goto("/dashboard");
 
         // CRITICAL: Inject API key to bypass "Configuration Required" screen
         await page.evaluate(() => {

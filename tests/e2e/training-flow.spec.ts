@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test.describe('Training & Cardio Flow', () => {
 
     test.beforeEach(async ({ page }) => {
-        await page.goto('/');
+        await page.goto('/dashboard');
 
         // CRITICAL: Inject API key to bypass "Configuration Required" screen
         await page.evaluate(() => {

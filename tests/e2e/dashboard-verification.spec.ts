@@ -7,7 +7,8 @@ test.describe('Dashboard Verification', () => {
     // Assuming auth.setup.ts logs in and saves storage state.
 
     test.beforeEach(async ({ page }) => {
-        await page.goto('/');
+        // Explicitly go to dashboard (authenticated route)
+        await page.goto('/dashboard');
 
         // CRITICAL: Inject API key to bypass "Configuration Required" screen
         await page.evaluate(() => {
@@ -15,9 +16,8 @@ test.describe('Dashboard Verification', () => {
         });
 
         await page.waitForTimeout(1500);
-        // Wait for main content to load
-        // Wait for main content to load - being specific to avoid strict mode violations
-        // We look for the main-content ID OR a specific unique text on the dashboard to ensure we are logged in.
+
+        // Wait for main content to verify we are securely on the dashboard
         await expect(page.locator('#main-content')).toBeVisible({ timeout: 15000 });
     });
 
