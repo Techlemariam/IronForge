@@ -1,7 +1,7 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { createClient } from "@/utils/supabase/server";
+
 
 // Constants for overtraining detection
 const DAILY_XP_CAP = 2000;
@@ -58,7 +58,7 @@ export async function checkOvertrainingStatusAction(
     const lastWorkout = recentWorkouts[0];
     const lastWorkoutHoursAgo = lastWorkout
       ? (now.getTime() - new Date(lastWorkout.date).getTime()) /
-        (1000 * 60 * 60)
+      (1000 * 60 * 60)
       : 24;
 
     // Check conditions
@@ -125,7 +125,7 @@ export async function checkOvertrainingStatusAction(
 export async function applyGuardedXpAction(
   userId: string,
   baseXp: number,
-  source: string,
+  _source: string,
 ): Promise<{ finalXp: number; cappedAmount: number; warnings: string[] }> {
   const status = await checkOvertrainingStatusAction(userId);
 

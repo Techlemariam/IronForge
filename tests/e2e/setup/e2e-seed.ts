@@ -96,7 +96,7 @@ async function main() {
             level: 10,
             gold: 5000,
             faction: Faction.HORDE,
-            archetype: Archetype.RANGER,
+            archetype: Archetype.PATHFINDER,
             hasCompletedOnboarding: true,
             titan: {
                 create: {

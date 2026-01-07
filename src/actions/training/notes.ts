@@ -1,6 +1,6 @@
 "use server";
 
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib/prisma"; // Keeping for production ref
 import { revalidatePath } from "next/cache";
 
 interface WorkoutTag {
@@ -38,7 +38,7 @@ export async function addWorkoutNoteAction(
   workoutDate: string,
   note: string,
   tags: string[] = [],
-  mood?: WorkoutNote["mood"],
+  _mood?: WorkoutNote["mood"],
 ): Promise<{ success: boolean; noteId?: string }> {
   try {
     const noteId = `note-${userId}-${Date.now()}`;
@@ -60,7 +60,7 @@ export async function addWorkoutNoteAction(
  * Get user's custom tags.
  */
 export async function getWorkoutTagsAction(
-  userId: string,
+  _userId: string,
 ): Promise<WorkoutTag[]> {
   // In production, fetch user's custom tags and merge with defaults
   return DEFAULT_TAGS.map((tag) => ({
@@ -94,7 +94,7 @@ export async function createWorkoutTagAction(
 export async function searchWorkoutsByTagAction(
   userId: string,
   tags: string[],
-  limit: number = 20,
+  _limit: number = 20,
 ): Promise<Array<{ date: string; note?: string; tags: string[] }>> {
   try {
     // MVP: Return sample results
@@ -146,7 +146,7 @@ export async function getWorkoutNotesAction(
 export async function updateWorkoutNoteAction(
   userId: string,
   noteId: string,
-  updates: Partial<Pick<WorkoutNote, "content" | "tags" | "mood">>,
+  _updates: Partial<Pick<WorkoutNote, "content" | "tags" | "mood">>,
 ): Promise<{ success: boolean }> {
   try {
     console.log(`Updated note ${noteId}`);
