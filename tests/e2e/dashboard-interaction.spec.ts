@@ -2,17 +2,19 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Dashboard Interactions', () => {
     test.beforeEach(async ({ page }) => {
-        await page.goto('/');
+        // Explicitly go to dashboard (authenticated route)
+        await page.goto('/dashboard');
 
         // CRITICAL: Inject API key to bypass "Configuration Required" screen
         await page.evaluate(() => {
             localStorage.setItem('hevy_api_key', 'e2e-dummy-key');
         });
 
-        // Wait for page to stabilize
-        await page.waitForTimeout(1500);
-        // Ensure main content is visible (fallback to 'Training' text if ID is slow)
-        await expect(page.locator('#main-content').or(page.getByText('Training'))).toBeVisible({ timeout: 15000 });
+        // Wait for page to stabilize and configuration polling to finish
+        await page.waitForTimeout(2000);
+
+        // Ensure main content is visible
+        await expect(page.locator('#main-content')).toBeVisible({ timeout: 15000 });
     });
 
     test('should navigate to Program Builder', async ({ page }) => {

@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test.describe('Core Gameplay', () => {
 
     test('should allow navigating to Iron Mines (Strength)', async ({ page }) => {
-        await page.goto('/');
+        await page.goto('/dashboard');
 
         // Navigate to Strength page
         await page.goto('/strength');
@@ -15,7 +15,7 @@ test.describe('Core Gameplay', () => {
     });
 
     test('should allow viewing the Grimoire (Skills)', async ({ page }) => {
-        await page.goto('/');
+        await page.goto('/dashboard');
         // Navigate to Grimoire
         await page.goto('/grimoire');
         await expect(page.getByText(/Grimoire/i).first()).toBeVisible();
@@ -23,7 +23,7 @@ test.describe('Core Gameplay', () => {
     });
 
     test.skip('should visit the Marketplace', async ({ page }) => {
-        await page.goto('/');
+        await page.goto('/dashboard');
 
         // Wait for page to stabilize
         await page.waitForTimeout(1000);

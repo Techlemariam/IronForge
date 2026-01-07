@@ -313,6 +313,8 @@ export default async function Page() {
   // Moved up
   // const titanState = titanRes.success ? titanRes.data : null;
 
+  const liteMode = !!(dbUser?.preferences as any)?.liteMode;
+
   return (
     <DashboardClient
       initialData={initialData as any}
@@ -332,6 +334,7 @@ export default async function Page() {
       isDemoMode={isDemoMode}
       challenges={challenges}
       activeDuel={activeDuel}
+      liteMode={liteMode}
     />
   );
 }

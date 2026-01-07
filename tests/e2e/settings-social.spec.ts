@@ -50,7 +50,7 @@ test.describe('Settings and Social Hub', () => {
         // Wait for Citadel Hub to load - ensure we are on the dashboard
         await expect(page.locator('#main-content')).toBeVisible({ timeout: 15000 });
 
-        // 2. Expand Colosseum category (collapsed by default)
+        // Colosseum category is collapsed by default - need to expand it
         const colosseumCategory = page.getByRole('button', { name: /Colosseum/i });
         await colosseumCategory.click();
         await page.waitForTimeout(300);

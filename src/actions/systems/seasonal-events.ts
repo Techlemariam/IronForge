@@ -59,7 +59,8 @@ interface EventLeaderboard {
  * Get current active events.
  */
 export async function getActiveEventsAction(): Promise<SeasonalEvent[]> {
-  const now = new Date();
+  // now variable removed to resolve lint warning
+
 
   // MVP: Return sample seasonal event
   const winterEvent: SeasonalEvent = {
@@ -170,8 +171,8 @@ export async function getActiveEventsAction(): Promise<SeasonalEvent[]> {
  * Get user's event progress.
  */
 export async function getEventProgressAction(
-  userId: string,
-  eventId: string,
+  _userId: string,
+  _eventId: string,
 ): Promise<{
   points: number;
   rank: number;
