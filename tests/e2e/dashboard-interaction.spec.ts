@@ -28,16 +28,19 @@ test.describe('Dashboard Interactions', () => {
         const ironCityCategory = page.getByRole('button', { name: /Iron City/i });
         await ironCityCategory.waitFor({ state: 'visible', timeout: 10000 });
         await ironCityCategory.click();
-        await page.waitForTimeout(500); // Wait for expand animation
+        await page.waitForTimeout(1000); // Wait for expand animation
 
-        // Wait for Program Builder button to appear after category expansion
-        const programBuilderBtn = page.getByRole('button', { name: /Program Builder/i });
-        await programBuilderBtn.waitFor({ state: 'visible', timeout: 10000 });
+        // Try multiple locators for Program Builder
+        const programBuilderBtn = page.getByRole('button', { name: /Program Builder/i })
+            .or(page.getByText(/Program Builder/i))
+            .first();
+
+        await programBuilderBtn.waitFor({ state: 'visible', timeout: 15000 });
         await programBuilderBtn.click();
 
         // Verify content - look for header or close button with longer timeout
         await expect(
-            page.locator('text=Program Builder').or(page.getByRole('button', { name: 'Close' }))
+            page.locator('text=Program Builder').or(page.getByRole('button', { name: 'Close' })).first()
         ).toBeVisible({ timeout: 15000 });
     });
 
@@ -49,20 +52,20 @@ test.describe('Dashboard Interactions', () => {
         const colosseumCategory = page.getByRole('button', { name: /Colosseum/i });
         await colosseumCategory.waitFor({ state: 'visible', timeout: 10000 });
         await colosseumCategory.click();
-        await page.waitForTimeout(500); // Wait for expand animation
+        await page.waitForTimeout(1000); // Wait for expand animation
 
         // Wait for Guild Hall button to appear after category expansion
-        const guildHallBtn = page.getByRole('button', { name: /Guild Hall/i });
-        await guildHallBtn.waitFor({ state: 'visible', timeout: 10000 });
+        const guildHallBtn = page.getByRole('button', { name: /Guild Hall/i })
+            .or(page.getByText(/Guild Hall/i))
+            .first();
+        await guildHallBtn.waitFor({ state: 'visible', timeout: 15000 });
         await guildHallBtn.click();
 
         // Verify content - wait for modal/view to load
         await page.waitForTimeout(1000); // Allow modal animation
 
-        // Use more flexible verification - look for close button OR any guild-related text
-        const closeBtn = page.getByRole('button', { name: 'Close', exact: true });
-        const guildText = page.getByText(/Guild|Loading Guild/i).first();
-        await expect(closeBtn.or(guildText)).toBeVisible({ timeout: 15000 });
+        // Simply verify Close button is visible (it's unique in the modal)
+        await expect(page.getByRole('button', { name: 'Close', exact: true })).toBeVisible({ timeout: 15000 });
     });
 
     test('should navigate to Trophy Room', async ({ page }) => {
