@@ -21,7 +21,7 @@ export default function RootLayout({
       <body className={`${inter.className} bg-background text-foreground antialiased`}>
         {children}
         <GameToaster />
-        <SpeedInsights />
+        {process.env.NODE_ENV === "production" && <SpeedInsights />}
       </body>
     </html>
   );

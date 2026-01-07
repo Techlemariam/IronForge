@@ -86,10 +86,7 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-forge-950 flex items-center justify-center p-4 bg-noise">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
+      <div
         className="w-full max-w-md bg-forge-900 border border-forge-border p-8 rounded-lg shadow-[0_0_50px_rgba(0,0,0,0.5)] relative overflow-hidden"
       >
         {/* Decorative Elements */}
@@ -248,7 +245,7 @@ export default function LoginPage() {
             </motion.div>
           )}
         </AnimatePresence>
-      </motion.div>
+      </div>
     </div>
   );
 }

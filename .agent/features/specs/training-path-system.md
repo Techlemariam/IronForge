@@ -130,7 +130,119 @@ getCombatModifiers(path: TrainingPath): PathModifiers {
 
 ---
 
-## 6. Volume Target System
+## 6. Passive Layer System
+
+Passive Layers are **parallel progression tracks** that run alongside the main Training Path. They represent long-term investment in injury prevention and recovery optimization.
+
+### Layer Types
+
+| Layer | Focus | Primary Benefit |
+|-------|-------|-----------------|
+| **🧘 Mobility** | Stretching, ATG, Flexibility | Injury Risk Reduction + ROM |
+| **💤 Recovery** | Sleep, Rest, Active Recovery | Recovery Speed Boost |
+
+### Progression Tiers
+
+```typescript
+// src/types/training.ts
+export type LayerLevel = "NONE" | "BRONZE" | "SILVER" | "GOLD";
+export type PassiveLayerType = "MOBILITY" | "RECOVERY";
+
+export interface LayerBonuses {
+  injuryRisk: number;    // Negative = reduction (e.g., -0.15 = -15%)
+  romBonus: number;      // Range of motion bonus for lifts
+  recoveryBoost: number; // TSB recovery acceleration
+}
+```
+
+### Tier Requirements
+
+| Tier | Sessions Required | Description |
+|------|-------------------|-------------|
+| **NONE** | 0 | No progress yet |
+| **BRONZE** | 10 | 10 ATG/Recovery sessions |
+| **SILVER** | 30 | 30 ATG/Recovery sessions |
+| **GOLD** | 60 | 60 ATG/Recovery sessions |
+
+### Mobility Layer Bonuses
+
+```typescript
+// src/data/builds.ts
+export const MOBILITY_LAYER_BONUSES: Record<LayerLevel, LayerBonuses> = {
+  NONE:   { injuryRisk: 0,     romBonus: 0,    recoveryBoost: 0 },
+  BRONZE: { injuryRisk: -0.05, romBonus: 0,    recoveryBoost: 0 },
+  SILVER: { injuryRisk: -0.10, romBonus: 0.05, recoveryBoost: 0 },
+  GOLD:   { injuryRisk: -0.15, romBonus: 0.10, recoveryBoost: 0.05 },
+};
+```
+
+| Tier | Injury Risk | ROM Bonus | Recovery |
+|------|-------------|-----------|----------|
+| BRONZE | -5% | — | — |
+| SILVER | -10% | +5% | — |
+| GOLD | -15% | +10% | +5% |
+
+### Recovery Layer Bonuses
+
+```typescript
+export const RECOVERY_LAYER_BONUSES: Record<LayerLevel, LayerBonuses> = {
+  NONE:   { injuryRisk: 0,     romBonus: 0, recoveryBoost: 0 },
+  BRONZE: { injuryRisk: 0,     romBonus: 0, recoveryBoost: 0.05 },
+  SILVER: { injuryRisk: -0.05, romBonus: 0, recoveryBoost: 0.10 },
+  GOLD:   { injuryRisk: -0.10, romBonus: 0, recoveryBoost: 0.15 },
+};
+```
+
+| Tier | Injury Risk | ROM Bonus | Recovery |
+|------|-------------|-----------|----------|
+| BRONZE | — | — | +5% |
+| SILVER | -5% | — | +10% |
+| GOLD | -10% | — | +15% |
+
+### Combined Bonuses at GOLD/GOLD
+
+A player who reaches GOLD in both layers receives:
+
+| Bonus | Mobility | Recovery | **Combined** |
+|-------|----------|----------|--------------|
+| Injury Risk | -15% | -10% | **-25%** |
+| ROM Bonus | +10% | — | **+10%** |
+| Recovery Boost | +5% | +15% | **+20%** |
+
+### UI Representation
+
+The `PassiveLayerProgress` component displays both layers:
+
+```
+┌─────────────────────────────────────────┐
+│  🧘 MOBILITY LAYER                      │
+│  ████████░░░░░░░░ SILVER (23/30)        │
+│  -10% Injury Risk, +5% ROM              │
+├─────────────────────────────────────────┤
+│  💤 RECOVERY LAYER                      │
+│  ██████████████░░ GOLD (58/60)          │
+│  -10% Injury, +15% Recovery             │
+└─────────────────────────────────────────┘
+```
+
+### Session Tracking
+
+Sessions that count toward layer progression:
+
+| Layer | Qualifying Activities |
+|-------|----------------------|
+| **Mobility** | ATG stretching, Yoga, Mobility flows, ROM work |
+| **Recovery** | Sleep score > 80, Rest days, Light walks, Sauna |
+
+### Design Philosophy
+
+> **"The base that takes the longest to build is the one that lasts forever."**
+
+Passive Layers reward consistency over intensity. They cannot be "grinded" quickly but provide permanent, compounding benefits that reduce injury risk and accelerate recovery over time.
+
+---
+
+## 7. Volume Target System
 
 Each path has different volume landmarks:
 
@@ -157,7 +269,7 @@ calculateBuildTargets(
 
 ---
 
-## 7. Reward System (Soft-Lock)
+## 8. Reward System (Soft-Lock)
 
 Players receive bonuses for training within their path:
 
@@ -181,7 +293,7 @@ export interface RewardConfig {
 
 ---
 
-## 8. Path Selection Flow
+## 9. Path Selection Flow
 
 ### Onboarding
 1. User completes initial assessment
@@ -199,7 +311,7 @@ export interface RewardConfig {
 
 ---
 
-## 9. Integration Points
+## 10. Integration Points
 
 | Service | Usage |
 |---------|-------|
@@ -213,7 +325,7 @@ export interface RewardConfig {
 
 ---
 
-## 10. UI Representation
+## 11. UI Representation
 
 ### Dashboard Header
 ```
@@ -232,7 +344,7 @@ export interface RewardConfig {
 
 ---
 
-## 11. Enhancement Backlog
+## 12. Enhancement Backlog
 
 ### Planned Improvements
 - [ ] **Curious Warden Sub-Type** - Rotation bonus for variety training
@@ -250,7 +362,7 @@ export interface RewardConfig {
 
 ---
 
-## 12. Success Metrics
+## 13. Success Metrics
 
 | Metric | Target |
 |--------|--------|
@@ -261,7 +373,7 @@ export interface RewardConfig {
 
 ---
 
-## 13. Related Specs
+## 14. Related Specs
 
 - [Archetype System](./archetype-system.md)
 - [Power Rating System](./power-rating-system.md)

@@ -142,7 +142,7 @@ const QUEST_TEMPLATES: Array<
     },
   ];
 
-const DIFFICULTY_MULTIPLIERS: Record<QuestDifficulty, number> = {
+const _DIFFICULTY_MULTIPLIERS: Record<QuestDifficulty, number> = {
   EASY: 1,
   MEDIUM: 2,
   HARD: 3,
@@ -203,7 +203,7 @@ export async function getDailyQuestsAction(
  * Update quest progress.
  */
 export async function updateQuestProgressAction(
-  userId: string,
+  _userId: string,
   questType: QuestType,
   amount: number,
 ): Promise<{ questsUpdated: number; questsCompleted: string[] }> {
@@ -225,7 +225,7 @@ export async function updateQuestProgressAction(
  * Claim completed quest rewards.
  */
 export async function claimQuestRewardAction(
-  userId: string,
+  _userId: string,
   questId: string,
 ): Promise<{ success: boolean; xp: number; gold: number; bonus?: string }> {
   try {

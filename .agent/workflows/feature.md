@@ -40,8 +40,7 @@ trigger: manual
 1. Efter godkännande, anropa `/coder`-persona.
 2. Implementera enligt `implementation_plan.md`.
 3. **Parallellt**: Anropa `/unit-tests` för att skapa testsvit.
-4. Kör `npm run build` för att verifiera kompilering.
-5. Kör `npm run test` för att verifiera tester.
+4. **Local Loop**: Kör kontinuerligt `/gatekeeper` (Step 0) för att verifiera `types`, `lint`, `build` och `test`.
 6. **Config**: Uppdatera `config.json` om nya kommandon krävs.
 
 ## Phase 4: Polish & Security

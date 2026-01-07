@@ -14,7 +14,25 @@ trigger: manual
 
 Run this **before** every `git push`. If it fails, **DO NOT PUSH**.
 
-### 1. Logic Scan (The Basic Gate)
+### 0. The Local Loop (Iteration)
+The core of the Gatekeeper is the **Local Loop**. You must loop through these steps until **all** are green.
+
+```bash
+# 1. Type Safety (Fastest Check)
+npm run check-types
+
+# 2. Linting & Static Analysis
+npm run lint
+
+# 3. Build Verification
+npm run build
+
+# 4. Unit Tests
+npm run test
+```
+**RULE:** If any step fails, fix it and **restart the loop from step 1**. Do not proceed to the next step until the previous one passes.
+
+### 1. Logic Scan (The Deep Gate)
 ```bash
 /monitor-logic
 ```
