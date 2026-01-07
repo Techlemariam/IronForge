@@ -29,10 +29,10 @@ test.describe('Cardio PvP Duels Flow', () => {
 
             // Ensure Titan exists and matches opponent power range (500)
             await client.query(`
-                INSERT INTO "Titan" ("id", "userId", "name", "level", "powerRating", "strength", "endurance", "agility", "vitality", "willpower")
-                VALUES (gen_random_uuid(), $1, 'Test Titan', 5, 500, 10, 10, 10, 10, 10)
+                INSERT INTO "Titan" ("id", "userId", "name", "level", "powerRating", "strength", "endurance", "agility", "vitality", "willpower", "createdAt", "updatedAt", "lastActive")
+                VALUES (gen_random_uuid(), $1, 'Test Titan', 5, 500, 10, 10, 10, 10, 10, NOW(), NOW(), NOW())
                 ON CONFLICT ("userId") 
-                DO UPDATE SET "powerRating" = 500, "level" = 5;
+                DO UPDATE SET "powerRating" = 500, "level" = 5, "updatedAt" = NOW();
             `, [user.id]);
             console.log(`[Setup] Updated Titan power rating to 500 for matchmaking`);
 
