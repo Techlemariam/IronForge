@@ -16,7 +16,9 @@ test.describe('Dashboard Verification', () => {
 
         await page.waitForTimeout(1500);
         // Wait for main content to load
-        await expect(page.locator('#main-content').or(page.getByText('Training'))).toBeVisible({ timeout: 15000 });
+        // Wait for main content to load - being specific to avoid strict mode violations
+        // We look for the main-content ID OR a specific unique text on the dashboard to ensure we are logged in.
+        await expect(page.locator('#main-content')).toBeVisible({ timeout: 15000 });
     });
 
     test('should load CitadelHub with correct categories', async ({ page }) => {

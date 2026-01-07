@@ -83,3 +83,21 @@ When these keys are present, the agent automatically gains "tools" such as:
 - `supabase_execute_sql`
 
 This enables workflows like `/debug` and `/monitor-deploy` to be fully autonomous.
+
+## 🛠️ Troubleshooting: Docker Error
+
+If you see an error like `open //./pipe/dockerDesktopLinuxEngine: The system cannot find the file specified`, it means the MCP UI is trying to use Docker but cannot connect to it.
+
+### Option A: Start Docker Desktop
+
+1. Ensure **Docker Desktop** is running.
+2. Ensure it is set to **Linux Containers** mode (default).
+
+### Option B: Use "Command" Mode (Recommended for Windows)
+
+Instead of using the Docker-based setup in the UI, you can use the native command mode:
+
+- **Command:** `npx`
+- **Arguments:** `-y`, `@modelcontextprotocol/server-github`
+- **Environment Variables:**
+  - `GITHUB_PERSONAL_ACCESS_TOKEN`: (Ditt PAT)
