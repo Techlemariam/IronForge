@@ -44,7 +44,7 @@ export async function logTitanSet(
 
     // 3. Update User Stats (State Layer)
     // Parallel mutations for performance
-    const [xpResult, economyResult] = await Promise.all([
+    const [xpResult, _economyResult] = await Promise.all([
       mutateTitanXp({
         userId: user.id,
         amount: xpGained,

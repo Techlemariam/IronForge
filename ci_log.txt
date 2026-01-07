@@ -1,0 +1,481 @@
+🎭 E2E Tests	Set up job	﻿2026-01-07T20:40:05.2569869Z Current runner version: '2.330.0'
+🎭 E2E Tests	Set up job	2026-01-07T20:40:05.2599305Z ##[group]Runner Image Provisioner
+🎭 E2E Tests	Set up job	2026-01-07T20:40:05.2600194Z Hosted Compute Agent
+🎭 E2E Tests	Set up job	2026-01-07T20:40:05.2600937Z Version: 20251211.462
+🎭 E2E Tests	Set up job	2026-01-07T20:40:05.2601565Z Commit: 6cbad8c2bb55d58165063d031ccabf57e2d2db61
+🎭 E2E Tests	Set up job	2026-01-07T20:40:05.2602265Z Build Date: 2025-12-11T16:28:49Z
+🎭 E2E Tests	Set up job	2026-01-07T20:40:05.2603086Z Worker ID: {7551f844-3070-41dd-bbd6-13fbe1f40394}
+🎭 E2E Tests	Set up job	2026-01-07T20:40:05.2603786Z ##[endgroup]
+🎭 E2E Tests	Set up job	2026-01-07T20:40:05.2604408Z ##[group]Operating System
+🎭 E2E Tests	Set up job	2026-01-07T20:40:05.2605075Z Ubuntu
+🎭 E2E Tests	Set up job	2026-01-07T20:40:05.2605579Z 24.04.3
+🎭 E2E Tests	Set up job	2026-01-07T20:40:05.2606356Z LTS
+🎭 E2E Tests	Set up job	2026-01-07T20:40:05.2606874Z ##[endgroup]
+🎭 E2E Tests	Set up job	2026-01-07T20:40:05.2607392Z ##[group]Runner Image
+🎭 E2E Tests	Set up job	2026-01-07T20:40:05.2608168Z Image: ubuntu-24.04
+🎭 E2E Tests	Set up job	2026-01-07T20:40:05.2608731Z Version: 20251215.174.1
+🎭 E2E Tests	Set up job	2026-01-07T20:40:05.2609867Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20251215.174/images/ubuntu/Ubuntu2404-Readme.md
+🎭 E2E Tests	Set up job	2026-01-07T20:40:05.2611376Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20251215.174
+🎭 E2E Tests	Set up job	2026-01-07T20:40:05.2612822Z ##[endgroup]
+🎭 E2E Tests	Set up job	2026-01-07T20:40:05.2613981Z ##[group]GITHUB_TOKEN Permissions
+🎭 E2E Tests	Set up job	2026-01-07T20:40:05.2616515Z Contents: read
+🎭 E2E Tests	Set up job	2026-01-07T20:40:05.2617140Z Metadata: read
+🎭 E2E Tests	Set up job	2026-01-07T20:40:05.2617802Z Packages: read
+🎭 E2E Tests	Set up job	2026-01-07T20:40:05.2618364Z ##[endgroup]
+🎭 E2E Tests	Set up job	2026-01-07T20:40:05.2620446Z Secret source: Actions
+🎭 E2E Tests	Set up job	2026-01-07T20:40:05.2621628Z Prepare workflow directory
+🎭 E2E Tests	Set up job	2026-01-07T20:40:05.3168218Z Prepare all required actions
+🎭 E2E Tests	Set up job	2026-01-07T20:40:05.3206327Z Getting action download info
+🎭 E2E Tests	Set up job	2026-01-07T20:40:05.7426939Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+🎭 E2E Tests	Set up job	2026-01-07T20:40:05.8430488Z Download action repository 'pnpm/action-setup@v4' (SHA:41ff72655975bd51cab0327fa583b6e92b6d3061)
+🎭 E2E Tests	Set up job	2026-01-07T20:40:06.3692109Z Download action repository 'actions/setup-node@v6' (SHA:395ad3262231945c25e8478fd5baf05154b1d79f)
+🎭 E2E Tests	Set up job	2026-01-07T20:40:06.4717886Z Download action repository 'actions/cache@v5' (SHA:9255dc7a253b0ccc959486e2bca901246202afeb)
+🎭 E2E Tests	Set up job	2026-01-07T20:40:07.2823688Z Complete job name: 🎭 E2E Tests
+🎭 E2E Tests	Run actions/checkout@v4	﻿2026-01-07T20:40:07.3649387Z ##[group]Run actions/checkout@v4
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.3651011Z with:
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.3652007Z   repository: Techlemariam/IronForge
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.3653501Z   token: ***
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.3654523Z   ssh-strict: true
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.3655524Z   ssh-user: git
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.3656729Z   persist-credentials: true
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.3657830Z   clean: true
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.3658816Z   sparse-checkout-cone-mode: true
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.3660013Z   fetch-depth: 1
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.3661024Z   fetch-tags: false
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.3661990Z   show-progress: true
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.3663044Z   lfs: false
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.3663960Z   submodules: false
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.3664978Z   set-safe-directory: true
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.3666690Z env:
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.3669177Z   DATABASE_URL: ***
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.3671544Z   DIRECT_URL: ***
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.3672925Z   NEXT_PUBLIC_SUPABASE_URL: ***
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.3678216Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.3679485Z   SKIP_ENV_VALIDATION: true
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.3680673Z ##[endgroup]
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.4800735Z Syncing repository: Techlemariam/IronForge
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.4803825Z ##[group]Getting Git version info
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.4805364Z Working directory is '/home/runner/work/IronForge/IronForge'
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.4808550Z [command]/usr/bin/git version
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.4889959Z git version 2.52.0
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.4916977Z ##[endgroup]
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.4932262Z Temporarily overriding HOME='/home/runner/work/_temp/a194dea1-48ea-44bc-9a69-1047b732451a' before making global git config changes
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.4935412Z Adding repository directory to the temporary git global config as a safe directory
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.4938644Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/IronForge/IronForge
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.4980877Z Deleting the contents of '/home/runner/work/IronForge/IronForge'
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.4984489Z ##[group]Initializing the repository
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.4989068Z [command]/usr/bin/git init /home/runner/work/IronForge/IronForge
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.5121300Z hint: Using 'master' as the name for the initial branch. This default branch name
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.5124829Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.5128095Z hint: to use in all of your new repositories, which will suppress this warning,
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.5129736Z hint: call:
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.5130682Z hint:
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.5132134Z hint: 	git config --global init.defaultBranch <name>
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.5133680Z hint:
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.5135077Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.5137745Z hint: 'development'. The just-created branch can be renamed via this command:
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.5139653Z hint:
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.5140679Z hint: 	git branch -m <name>
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.5141840Z hint:
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.5143237Z hint: Disable this message with "git config set advice.defaultBranchName false"
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.5145447Z Initialized empty Git repository in /home/runner/work/IronForge/IronForge/.git/
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.5149369Z [command]/usr/bin/git remote add origin https://github.com/Techlemariam/IronForge
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.5178147Z ##[endgroup]
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.5179824Z ##[group]Disabling automatic garbage collection
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.5181894Z [command]/usr/bin/git config --local gc.auto 0
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.5215626Z ##[endgroup]
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.5218632Z ##[group]Setting up auth
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.5223719Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.5257472Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.5612299Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.5648703Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.5876377Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.5921441Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.6157292Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.6193505Z ##[endgroup]
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.6196815Z ##[group]Fetching the repository
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:07.6206189Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +eb8b279a64edcaadd4956f8fdc7d95cf2692fc7f:refs/remotes/pull/34/merge
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:08.4116331Z From https://github.com/Techlemariam/IronForge
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:08.4117610Z  * [new ref]         eb8b279a64edcaadd4956f8fdc7d95cf2692fc7f -> pull/34/merge
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:08.4158624Z ##[endgroup]
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:08.4161268Z ##[group]Determining the checkout info
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:08.4162115Z ##[endgroup]
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:08.4166320Z [command]/usr/bin/git sparse-checkout disable
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:08.4208760Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:08.4234964Z ##[group]Checking out the ref
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:08.4238877Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/34/merge
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:08.5382592Z Note: switching to 'refs/remotes/pull/34/merge'.
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:08.5383237Z 
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:08.5383721Z You are in 'detached HEAD' state. You can look around, make experimental
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:08.5384590Z changes and commit them, and you can discard any commits you make in this
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:08.5385658Z state without impacting any branches by switching back to a branch.
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:08.5386418Z 
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:08.5386771Z If you want to create a new branch to retain commits you create, you may
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:08.5387482Z do so (now or later) by using -c with the switch command. Example:
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:08.5387815Z 
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:08.5387983Z   git switch -c <new-branch-name>
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:08.5388196Z 
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:08.5388311Z Or undo this operation with:
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:08.5388501Z 
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:08.5388598Z   git switch -
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:08.5388752Z 
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:08.5388987Z Turn off this advice by setting config variable advice.detachedHead to false
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:08.5389334Z 
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:08.5389721Z HEAD is now at eb8b279 Merge 1cb04245867d38d111e70a85990cf57e7039a453 into b789994c9141a6c4ac9b5c7c3c90186cac73a7e6
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:08.5395427Z ##[endgroup]
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:08.5433780Z [command]/usr/bin/git log -1 --format=%H
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T20:40:08.5456950Z eb8b279a64edcaadd4956f8fdc7d95cf2692fc7f
+🎭 E2E Tests	Run pnpm/action-setup@v4	﻿2026-01-07T20:40:08.5650103Z ##[group]Run pnpm/action-setup@v4
+🎭 E2E Tests	Run pnpm/action-setup@v4	2026-01-07T20:40:08.5650452Z with:
+🎭 E2E Tests	Run pnpm/action-setup@v4	2026-01-07T20:40:08.5650653Z   dest: ~/setup-pnpm
+🎭 E2E Tests	Run pnpm/action-setup@v4	2026-01-07T20:40:08.5650875Z   run_install: null
+🎭 E2E Tests	Run pnpm/action-setup@v4	2026-01-07T20:40:08.5651101Z   package_json_file: package.json
+🎭 E2E Tests	Run pnpm/action-setup@v4	2026-01-07T20:40:08.5651359Z   standalone: false
+🎭 E2E Tests	Run pnpm/action-setup@v4	2026-01-07T20:40:08.5651555Z env:
+🎭 E2E Tests	Run pnpm/action-setup@v4	2026-01-07T20:40:08.5652385Z   DATABASE_URL: ***
+🎭 E2E Tests	Run pnpm/action-setup@v4	2026-01-07T20:40:08.5653067Z   DIRECT_URL: ***
+🎭 E2E Tests	Run pnpm/action-setup@v4	2026-01-07T20:40:08.5653433Z   NEXT_PUBLIC_SUPABASE_URL: ***
+🎭 E2E Tests	Run pnpm/action-setup@v4	2026-01-07T20:40:08.5654816Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+🎭 E2E Tests	Run pnpm/action-setup@v4	2026-01-07T20:40:08.5655104Z   SKIP_ENV_VALIDATION: true
+🎭 E2E Tests	Run pnpm/action-setup@v4	2026-01-07T20:40:08.5655338Z ##[endgroup]
+🎭 E2E Tests	Run pnpm/action-setup@v4	2026-01-07T20:40:08.6198186Z ##[group]Running self-installer...
+🎭 E2E Tests	Run pnpm/action-setup@v4	2026-01-07T20:40:09.3043231Z Progress: resolved 1, reused 0, downloaded 0, added 0
+🎭 E2E Tests	Run pnpm/action-setup@v4	2026-01-07T20:40:09.3169327Z Packages: +1
+🎭 E2E Tests	Run pnpm/action-setup@v4	2026-01-07T20:40:09.3170031Z +
+🎭 E2E Tests	Run pnpm/action-setup@v4	2026-01-07T20:40:09.9707724Z Progress: resolved 1, reused 0, downloaded 1, added 1, done
+🎭 E2E Tests	Run pnpm/action-setup@v4	2026-01-07T20:40:09.9973528Z 
+🎭 E2E Tests	Run pnpm/action-setup@v4	2026-01-07T20:40:09.9974096Z dependencies:
+🎭 E2E Tests	Run pnpm/action-setup@v4	2026-01-07T20:40:09.9974697Z + pnpm 9.15.0 (10.27.0 is available)
+🎭 E2E Tests	Run pnpm/action-setup@v4	2026-01-07T20:40:09.9975060Z 
+🎭 E2E Tests	Run pnpm/action-setup@v4	2026-01-07T20:40:10.0016587Z Done in 1.2s
+🎭 E2E Tests	Run pnpm/action-setup@v4	2026-01-07T20:40:10.0199481Z ##[endgroup]
+🎭 E2E Tests	Run pnpm/action-setup@v4	2026-01-07T20:40:10.0202943Z Installation Completed!
+🎭 E2E Tests	Run actions/setup-node@v6	﻿2026-01-07T20:40:10.0338298Z ##[group]Run actions/setup-node@v6
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T20:40:10.0338620Z with:
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T20:40:10.0338833Z   node-version: 22
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T20:40:10.0339035Z   cache: pnpm
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T20:40:10.0339257Z   check-latest: false
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T20:40:10.0339607Z   token: ***
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T20:40:10.0339824Z   package-manager-cache: true
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T20:40:10.0340071Z env:
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T20:40:10.0340728Z   DATABASE_URL: ***
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T20:40:10.0341330Z   DIRECT_URL: ***
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T20:40:10.0341670Z   NEXT_PUBLIC_SUPABASE_URL: ***
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T20:40:10.0343027Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T20:40:10.0343306Z   SKIP_ENV_VALIDATION: true
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T20:40:10.0343616Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T20:40:10.0343941Z ##[endgroup]
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T20:40:10.1791274Z Found in cache @ /opt/hostedtoolcache/node/22.21.1/x64
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T20:40:10.1796898Z (node:2223) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T20:40:10.1798176Z (Use `node --trace-deprecation ...` to show where the warning was created)
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T20:40:10.1800341Z ##[group]Environment details
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T20:40:11.7782402Z node: v22.21.1
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T20:40:11.7782875Z npm: 10.9.4
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T20:40:11.7783253Z yarn: 1.22.22
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T20:40:11.7784774Z ##[endgroup]
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T20:40:11.7810791Z [command]/home/runner/setup-pnpm/node_modules/.bin/pnpm store path --silent
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T20:40:12.2998942Z /home/runner/setup-pnpm/node_modules/.bin/store/v3
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T20:40:12.4358181Z Cache hit for: node-cache-Linux-x64-pnpm-87c008dc9358694f3b5b0ccd1343d2730c2250451e2d227da281c5b1338a0c60
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T20:40:12.4462295Z (node:2223) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T20:40:13.5980472Z Received 117440512 of 432780340 (27.1%), 112.0 MBs/sec
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T20:40:14.5984302Z Received 268435456 of 432780340 (62.0%), 127.9 MBs/sec
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T20:40:15.5185862Z Received 432780340 of 432780340 (100.0%), 141.3 MBs/sec
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T20:40:15.5188143Z Cache Size: ~413 MB (432780340 B)
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T20:40:15.5304760Z [command]/usr/bin/tar -xf /home/runner/work/_temp/d6c2e008-a415-426d-84c2-ce77265f65ef/cache.tzst -P -C /home/runner/work/IronForge/IronForge --use-compress-program unzstd
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T20:40:20.2648163Z Cache restored successfully
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T20:40:20.3473662Z Cache restored from key: node-cache-Linux-x64-pnpm-87c008dc9358694f3b5b0ccd1343d2730c2250451e2d227da281c5b1338a0c60
+🎭 E2E Tests	Install Dependencies	﻿2026-01-07T20:40:20.3670804Z ##[group]Run pnpm install --frozen-lockfile
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:20.3671222Z [36;1mpnpm install --frozen-lockfile[0m
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:20.3712738Z shell: /usr/bin/bash -e {0}
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:20.3713012Z env:
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:20.3713766Z   DATABASE_URL: ***
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:20.3714375Z   DIRECT_URL: ***
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:20.3714721Z   NEXT_PUBLIC_SUPABASE_URL: ***
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:20.3716362Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:20.3716645Z   SKIP_ENV_VALIDATION: true
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:20.3716934Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:20.3717231Z ##[endgroup]
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:20.8417834Z Lockfile is up to date, resolution step is skipped
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:20.9538047Z Progress: resolved 1, reused 0, downloaded 0, added 0
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:21.1616477Z Packages: +1498
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:21.1617910Z ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:21.9539436Z Progress: resolved 1498, reused 1072, downloaded 0, added 0
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:22.9550641Z Progress: resolved 1498, reused 1498, downloaded 0, added 731
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:23.6881196Z Progress: resolved 1498, reused 1498, downloaded 0, added 1498, done
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7614240Z 
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7614823Z dependencies:
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7615282Z + @ai-sdk/google 3.0.2
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7615719Z + @ai-sdk/react 3.0.6
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7616455Z + @capacitor/android 8.0.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7616888Z + @capacitor/cli 8.0.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7617320Z + @capacitor/core 8.0.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7617752Z + @google/genai 1.34.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7618220Z + @mediapipe/tasks-vision 0.10.9
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7618713Z + @neondatabase/serverless 1.0.2
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7619284Z + @prisma/adapter-neon 7.2.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7619793Z + @prisma/adapter-pg 7.2.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7620295Z + @prisma/client 7.2.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7620780Z + @radix-ui/react-avatar 1.1.11
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7621348Z + @radix-ui/react-dialog 1.1.15
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7621860Z + @radix-ui/react-label 2.1.8
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7622500Z + @radix-ui/react-popover 1.1.15
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7623098Z + @radix-ui/react-progress 1.1.8
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7623745Z + @radix-ui/react-scroll-area 1.2.10
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7624336Z + @radix-ui/react-select 2.2.6
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7624944Z + @radix-ui/react-slider 1.3.6
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7625474Z + @radix-ui/react-slot 1.2.4
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7626177Z + @radix-ui/react-tabs 1.1.13
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7626718Z + @react-three/drei 10.7.7
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7627199Z + @react-three/fiber 9.5.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7627676Z + @sentry/nextjs 10.32.1
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7628129Z + @serwist/next 9.4.2
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7628621Z + @supabase/ssr 0.5.2
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7629087Z + @supabase/supabase-js 2.89.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7629606Z + @types/canvas-confetti 1.9.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7630077Z + @types/howler 2.2.12
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7630527Z + @types/web-push 3.6.4
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7631016Z + @vercel/speed-insights 1.3.1
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7631447Z + ai 6.0.6
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7631771Z + axios 1.13.2
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7632160Z + canvas-confetti 1.9.4
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7633019Z + class-variance-authority 0.7.1
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7633477Z + clsx 2.1.1
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7633889Z + framer-motion 11.18.2
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7634283Z + h3-js 4.4.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7634649Z + howler 2.2.4
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7635054Z + import-in-the-middle 2.0.1
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7635516Z + lucide-react 0.562.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7636160Z + maplibre-gl 5.15.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7636573Z + next 16.1.1
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7636912Z + pg 8.16.3
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7637249Z + pino 10.1.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7637619Z + pino-pretty 13.1.3
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7638050Z + qrcode.react 4.2.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7638448Z + react 19.2.3
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7638845Z + react-dom 19.2.3
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7639282Z + react-dropzone 14.3.8
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7639741Z + react-player 2.16.1
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7640182Z + reactflow 11.11.4
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7640573Z + recharts 3.6.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7641405Z + require-in-the-middle 8.0.1
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7641881Z + serwist 9.4.2
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7642273Z + sonner 2.0.7
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7642679Z + tailwind-merge 3.4.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7643145Z + tailwindcss-animate 1.0.7
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7643602Z + three 0.182.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7643995Z + web-push 3.6.7
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7644371Z + zod 3.25.76
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7644731Z + zustand 5.0.9
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7644961Z 
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7645135Z devDependencies:
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7645542Z + @lhci/cli 0.15.1
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7646260Z + @playwright/test 1.57.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7646791Z + @tailwindcss/postcss 4.1.18
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7647285Z + @testing-library/dom 10.4.1
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7647831Z + @testing-library/react 16.3.1
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7648293Z + @types/node 25.0.3
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7648686Z + @types/pg 8.16.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7649080Z + @types/react 19.2.7
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7649503Z + @types/react-dom 19.2.3
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7649970Z + @types/three 0.182.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7650402Z + @types/web-bluetooth 0.0.21
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7650868Z + @types/ws 8.18.1
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7651367Z + @typescript-eslint/eslint-plugin 7.18.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7651998Z + @typescript-eslint/parser 7.18.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7652524Z + @vitest/coverage-v8 4.0.16
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7653025Z + autoprefixer 10.4.23
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7653452Z + dotenv 17.2.3
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7653874Z + dotenv-cli 11.0.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7654261Z + eslint 8.57.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7654677Z + eslint-config-next 14.2.5
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7655126Z + husky 9.1.7
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7655502Z + jsdom 27.4.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7655888Z + magicast 0.3.5
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7656511Z + postcss 8.5.6
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7656895Z + prisma 7.2.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7657309Z + tailwindcss 4.1.18
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7657711Z + tsx 4.21.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7658077Z + turbo 2.7.2
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7658454Z + typedoc 0.28.15
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7658922Z + typedoc-plugin-markdown 4.9.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7659432Z + typescript 5.9.3
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7659813Z + vercel 50.1.3
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7660188Z + vitest 4.0.16
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7660534Z + ws 8.18.3
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7660739Z 
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7919445Z 
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7920307Z > ironforge-rpg@1.0.0 postinstall /home/runner/work/IronForge/IronForge
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7920798Z > prisma generate
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:24.7920946Z 
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:25.8599289Z Loaded Prisma config from prisma.config.ts.
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:25.8599807Z 
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:25.9179389Z Prisma schema loaded from prisma/schema.prisma.
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:25.9250530Z warn Preview feature "driverAdapters" is deprecated. The functionality can be used without specifying it as a preview feature.
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:26.5790182Z 
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:26.5792203Z ✔ Generated Prisma Client (v7.2.0) to ./node_modules/.pnpm/@prisma+client@7.2.0_prisma@7.2.0_@types+react@19.2.7_magicast@0.3.5_react-dom@19.2.3_react@1_q4f4ihbqwb6kirxwuk5vzzv5eu/node_modules/@prisma/client in 358ms
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:26.5793217Z 
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:26.5793622Z Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:26.5794280Z 
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:26.5794890Z Tip: Need your database queries to be 1000x faster? Accelerate offers you that and more: https://pris.ly/tip-2-accelerate
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:26.5795450Z 
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:26.6014043Z 
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:26.6014937Z > ironforge-rpg@1.0.0 prepare /home/runner/work/IronForge/IronForge
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:26.6015621Z > husky
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:26.6015823Z 
+🎭 E2E Tests	Install Dependencies	2026-01-07T20:40:26.6471005Z Done in 6.2s
+🎭 E2E Tests	Generate Prisma Client	﻿2026-01-07T20:40:26.7023541Z ##[group]Run npx prisma generate
+🎭 E2E Tests	Generate Prisma Client	2026-01-07T20:40:26.7023916Z [36;1mnpx prisma generate[0m
+🎭 E2E Tests	Generate Prisma Client	2026-01-07T20:40:26.7055809Z shell: /usr/bin/bash -e {0}
+🎭 E2E Tests	Generate Prisma Client	2026-01-07T20:40:26.7056165Z env:
+🎭 E2E Tests	Generate Prisma Client	2026-01-07T20:40:26.7056875Z   DATABASE_URL: ***
+🎭 E2E Tests	Generate Prisma Client	2026-01-07T20:40:26.7057467Z   DIRECT_URL: ***
+🎭 E2E Tests	Generate Prisma Client	2026-01-07T20:40:26.7057818Z   NEXT_PUBLIC_SUPABASE_URL: ***
+🎭 E2E Tests	Generate Prisma Client	2026-01-07T20:40:26.7059180Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+🎭 E2E Tests	Generate Prisma Client	2026-01-07T20:40:26.7059466Z   SKIP_ENV_VALIDATION: true
+🎭 E2E Tests	Generate Prisma Client	2026-01-07T20:40:26.7059769Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+🎭 E2E Tests	Generate Prisma Client	2026-01-07T20:40:26.7060098Z ##[endgroup]
+🎭 E2E Tests	Generate Prisma Client	2026-01-07T20:40:28.9607129Z Loaded Prisma config from prisma.config.ts.
+🎭 E2E Tests	Generate Prisma Client	2026-01-07T20:40:28.9608942Z 
+🎭 E2E Tests	Generate Prisma Client	2026-01-07T20:40:28.9963595Z Prisma schema loaded from prisma/schema.prisma.
+🎭 E2E Tests	Generate Prisma Client	2026-01-07T20:40:29.0014486Z warn Preview feature "driverAdapters" is deprecated. The functionality can be used without specifying it as a preview feature.
+🎭 E2E Tests	Generate Prisma Client	2026-01-07T20:40:29.7295587Z 
+🎭 E2E Tests	Generate Prisma Client	2026-01-07T20:40:29.7298318Z ✔ Generated Prisma Client (v7.2.0) to ./node_modules/.pnpm/@prisma+client@7.2.0_prisma@7.2.0_@types+react@19.2.7_magicast@0.3.5_react-dom@19.2.3_react@1_q4f4ihbqwb6kirxwuk5vzzv5eu/node_modules/@prisma/client in 443ms
+🎭 E2E Tests	Generate Prisma Client	2026-01-07T20:40:29.7299894Z 
+🎭 E2E Tests	Generate Prisma Client	2026-01-07T20:40:29.7300490Z Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+🎭 E2E Tests	Generate Prisma Client	2026-01-07T20:40:29.7301099Z 
+🎭 E2E Tests	Generate Prisma Client	2026-01-07T20:40:29.7301973Z Tip: Need your database queries to be 1000x faster? Accelerate offers you that and more: https://pris.ly/tip-2-accelerate
+🎭 E2E Tests	Generate Prisma Client	2026-01-07T20:40:29.7302810Z 
+🎭 E2E Tests	Cache Playwright Browsers	﻿2026-01-07T20:40:36.2354627Z ##[group]Run actions/cache@v5
+🎭 E2E Tests	Cache Playwright Browsers	2026-01-07T20:40:36.2354919Z with:
+🎭 E2E Tests	Cache Playwright Browsers	2026-01-07T20:40:36.2355132Z   path: ~/.cache/ms-playwright
+🎭 E2E Tests	Cache Playwright Browsers	2026-01-07T20:40:36.2355596Z   key: Linux-playwright-87c008dc9358694f3b5b0ccd1343d2730c2250451e2d227da281c5b1338a0c60
+🎭 E2E Tests	Cache Playwright Browsers	2026-01-07T20:40:36.2356475Z   enableCrossOsArchive: false
+🎭 E2E Tests	Cache Playwright Browsers	2026-01-07T20:40:36.2356866Z   fail-on-cache-miss: false
+🎭 E2E Tests	Cache Playwright Browsers	2026-01-07T20:40:36.2357153Z   lookup-only: false
+🎭 E2E Tests	Cache Playwright Browsers	2026-01-07T20:40:36.2357369Z   save-always: false
+🎭 E2E Tests	Cache Playwright Browsers	2026-01-07T20:40:36.2357567Z env:
+🎭 E2E Tests	Cache Playwright Browsers	2026-01-07T20:40:36.2358289Z   DATABASE_URL: ***
+🎭 E2E Tests	Cache Playwright Browsers	2026-01-07T20:40:36.2358877Z   DIRECT_URL: ***
+🎭 E2E Tests	Cache Playwright Browsers	2026-01-07T20:40:36.2359217Z   NEXT_PUBLIC_SUPABASE_URL: ***
+🎭 E2E Tests	Cache Playwright Browsers	2026-01-07T20:40:36.2360589Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+🎭 E2E Tests	Cache Playwright Browsers	2026-01-07T20:40:36.2360869Z   SKIP_ENV_VALIDATION: true
+🎭 E2E Tests	Cache Playwright Browsers	2026-01-07T20:40:36.2361167Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+🎭 E2E Tests	Cache Playwright Browsers	2026-01-07T20:40:36.2361474Z ##[endgroup]
+🎭 E2E Tests	Cache Playwright Browsers	2026-01-07T20:40:36.4731982Z Cache hit for: Linux-playwright-87c008dc9358694f3b5b0ccd1343d2730c2250451e2d227da281c5b1338a0c60
+🎭 E2E Tests	Cache Playwright Browsers	2026-01-07T20:40:37.6173406Z Received 100663296 of 450309770 (22.4%), 96.1 MBs/sec
+🎭 E2E Tests	Cache Playwright Browsers	2026-01-07T20:40:38.6176238Z Received 268435456 of 450309770 (59.6%), 128.0 MBs/sec
+🎭 E2E Tests	Cache Playwright Browsers	2026-01-07T20:40:39.6184496Z Received 432013312 of 450309770 (95.9%), 137.3 MBs/sec
+🎭 E2E Tests	Cache Playwright Browsers	2026-01-07T20:40:39.7168505Z Received 450309770 of 450309770 (100.0%), 138.6 MBs/sec
+🎭 E2E Tests	Cache Playwright Browsers	2026-01-07T20:40:39.7171532Z Cache Size: ~429 MB (450309770 B)
+🎭 E2E Tests	Cache Playwright Browsers	2026-01-07T20:40:39.7237412Z [command]/usr/bin/tar -xf /home/runner/work/_temp/07353cc1-0ee9-42d6-92de-b4d7e02dc52f/cache.tzst -P -C /home/runner/work/IronForge/IronForge --use-compress-program unzstd
+🎭 E2E Tests	Cache Playwright Browsers	2026-01-07T20:40:41.6817101Z Cache restored successfully
+🎭 E2E Tests	Cache Playwright Browsers	2026-01-07T20:40:41.7805535Z Cache restored from key: Linux-playwright-87c008dc9358694f3b5b0ccd1343d2730c2250451e2d227da281c5b1338a0c60
+🎭 E2E Tests	Seed E2E Database	﻿2026-01-07T20:40:41.7981090Z ##[group]Run npx tsx tests/e2e/setup/e2e-seed.ts
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:41.7981518Z [36;1mnpx tsx tests/e2e/setup/e2e-seed.ts[0m
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:41.8013798Z shell: /usr/bin/bash -e {0}
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:41.8014073Z env:
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:41.8014782Z   DATABASE_URL: ***
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:41.8015407Z   DIRECT_URL: ***
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:41.8015762Z   NEXT_PUBLIC_SUPABASE_URL: ***
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:41.8017331Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:41.8017624Z   SKIP_ENV_VALIDATION: true
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:41.8017931Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:41.8018242Z ##[endgroup]
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:42.3940791Z 🌱 Starting E2E Database Seeding...
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:42.3941638Z Checking Battle Pass Season: SEASON_1
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:43.5537167Z ✅ Battle Pass Season ensured: cmk2pl6so0000ua1kn8wpiqa4
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:44.3231195Z ✅ Ensured opponent: Iron Breaker (Lvl 5) - ID: cmk2pl7el001fua1kepdt7vrw
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.0567916Z ✅ Ensured opponent: Steel Viper (Lvl 10) - ID: cmk2pl7zt001hua1kw1anz3cc
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.7913908Z ✅ Ensured opponent: Shadow Walker (Lvl 15) - ID: cmk2pl8kc001jua1kiee6o4kg
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8207066Z ❌ Seeding failed: PrismaClientValidationError: 
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8207928Z Invalid `prisma.user.upsert()` invocation in
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8208860Z /home/runner/work/IronForge/IronForge/tests/e2e/setup/e2e-seed.ts:85:40
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8209441Z 
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8209612Z   82 
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8210199Z   83 // 3. Seed Main Test User (Hunter) to prevent Onboarding Overlay in E2E
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8211371Z   84 const testEmail = process.env.TEST_USER_EMAIL || '***';
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8212274Z → 85 const testUser = await prisma.user.upsert({
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8212815Z        where: {
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8213317Z          email: "***"
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8213679Z        },
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8214012Z        update: {
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8214467Z          hasCompletedOnboarding: true,
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8214947Z          level: 10,
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8215336Z          gold: 5000
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8215670Z        },
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8216181Z        create: {
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8216736Z          email: "***",
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8217161Z          heroName: "E2E Hunter",
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8217599Z          level: 10,
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8217951Z          gold: 5000,
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8218332Z          faction: "HORDE",
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8218783Z          archetype: undefined,
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8219286Z          hasCompletedOnboarding: true,
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8219808Z          titan: {
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8220158Z            create: {
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8220562Z              name: "E2E Titan",
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8220982Z              level: 10,
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8221406Z              powerRating: 800,
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8221872Z              strength: 20,
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8222272Z              endurance: 20,
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8222680Z              agility: 20,
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8223067Z              spirit: 20,
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8223441Z              ~~~~~~
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8223784Z      ?       id?: String,
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8224086Z      ?       xp?: Int,
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8224341Z      ?       currentHp?: Int,
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8224591Z      ?       maxHp?: Int,
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8224863Z      ?       currentEnergy?: Int,
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8225131Z      ?       maxEnergy?: Int,
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8225378Z      ?       vitality?: Int,
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8225620Z      ?       willpower?: Int,
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8225872Z      ?       mood?: String,
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8226492Z      ?       dailyDecree?: NullableJsonNullValueInput | Json,
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8226849Z      ?       streak?: Int,
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8227123Z      ?       strengthIndex?: Float,
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8227419Z      ?       cardioIndex?: Float,
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8227719Z      ?       mrvAdherence?: Float,
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8228037Z      ?       lastPowerCalcAt?: DateTime | Null,
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8228448Z      ?       currentBuff?: NullableJsonNullValueInput | Json,
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8229229Z      ?       buffExpiresAt?: DateTime | Null,
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8229719Z      ?       hrvBaseline?: Float | Null,
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8230021Z      ?       isInjured?: Boolean,
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8230307Z      ?       isResting?: Boolean,
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8230588Z      ?       lastActive?: DateTime,
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8230885Z      ?       createdAt?: DateTime,
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8231168Z      ?       updatedAt?: DateTime,
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8231696Z      ?       memories?: TitanMemoryCreateNestedManyWithoutTitanInput,
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8232357Z      ?       scars?: TitanScarCreateNestedManyWithoutTitanInput
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8232950Z            }
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8233279Z          }
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8233614Z        }
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8234174Z      })
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8234343Z 
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8234610Z Unknown argument `spirit`. Available options are marked with ?.
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8236298Z     at throwValidationException (/home/runner/work/IronForge/IronForge/node_modules/.pnpm/@prisma+client@7.2.0_prisma@7.2.0_@types+react@19.2.7_magicast@0.3.5_react-dom@19.2.3_react@1_q4f4ihbqwb6kirxwuk5vzzv5eu/node_modules/@prisma/client/src/runtime/core/errorRendering/throwValidationException.ts:46:9)
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8238480Z     at qr.handleRequestError (/home/runner/work/IronForge/IronForge/node_modules/.pnpm/@prisma+client@7.2.0_prisma@7.2.0_@types+react@19.2.7_magicast@0.3.5_react-dom@19.2.3_react@1_q4f4ihbqwb6kirxwuk5vzzv5eu/node_modules/@prisma/client/src/runtime/RequestHandler.ts:202:7)
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8240470Z     at qr.handleAndLogRequestError (/home/runner/work/IronForge/IronForge/node_modules/.pnpm/@prisma+client@7.2.0_prisma@7.2.0_@types+react@19.2.7_magicast@0.3.5_react-dom@19.2.3_react@1_q4f4ihbqwb6kirxwuk5vzzv5eu/node_modules/@prisma/client/src/runtime/RequestHandler.ts:174:12)
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8242426Z     at qr.request (/home/runner/work/IronForge/IronForge/node_modules/.pnpm/@prisma+client@7.2.0_prisma@7.2.0_@types+react@19.2.7_magicast@0.3.5_react-dom@19.2.3_react@1_q4f4ihbqwb6kirxwuk5vzzv5eu/node_modules/@prisma/client/src/runtime/RequestHandler.ts:143:12)
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8243636Z     at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8245480Z     at async a (/home/runner/work/IronForge/IronForge/node_modules/.pnpm/@prisma+client@7.2.0_prisma@7.2.0_@types+react@19.2.7_magicast@0.3.5_react-dom@19.2.3_react@1_q4f4ihbqwb6kirxwuk5vzzv5eu/node_modules/@prisma/client/src/runtime/getPrismaClient.ts:805:24)
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8247066Z     at async main (/home/runner/work/IronForge/IronForge/tests/e2e/setup/e2e-seed.ts:85:22) {
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8247539Z   clientVersion: '7.2.0'
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8247775Z }
+🎭 E2E Tests	Seed E2E Database	2026-01-07T20:40:45.8497954Z ##[error]Process completed with exit code 1.
+🎭 E2E Tests	Post Run pnpm/action-setup@v4	﻿2026-01-07T20:40:45.8568792Z Post job cleanup.
+🎭 E2E Tests	Post Run pnpm/action-setup@v4	2026-01-07T20:40:45.9139217Z Pruning is unnecessary.
+🎭 E2E Tests	Post Run actions/checkout@v4	﻿2026-01-07T20:40:45.9242958Z Post job cleanup.
+🎭 E2E Tests	Post Run actions/checkout@v4	2026-01-07T20:40:46.0234966Z [command]/usr/bin/git version
+🎭 E2E Tests	Post Run actions/checkout@v4	2026-01-07T20:40:46.0272023Z git version 2.52.0
+🎭 E2E Tests	Post Run actions/checkout@v4	2026-01-07T20:40:46.0324853Z Temporarily overriding HOME='/home/runner/work/_temp/105d9366-d7c4-4fd3-9022-54e569db6c94' before making global git config changes
+🎭 E2E Tests	Post Run actions/checkout@v4	2026-01-07T20:40:46.0326999Z Adding repository directory to the temporary git global config as a safe directory
+🎭 E2E Tests	Post Run actions/checkout@v4	2026-01-07T20:40:46.0330803Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/IronForge/IronForge
+🎭 E2E Tests	Post Run actions/checkout@v4	2026-01-07T20:40:46.0372652Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+🎭 E2E Tests	Post Run actions/checkout@v4	2026-01-07T20:40:46.0415023Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+🎭 E2E Tests	Post Run actions/checkout@v4	2026-01-07T20:40:46.0647627Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+🎭 E2E Tests	Post Run actions/checkout@v4	2026-01-07T20:40:46.0679286Z http.https://github.com/.extraheader
+🎭 E2E Tests	Post Run actions/checkout@v4	2026-01-07T20:40:46.0692955Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+🎭 E2E Tests	Post Run actions/checkout@v4	2026-01-07T20:40:46.0727064Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+🎭 E2E Tests	Post Run actions/checkout@v4	2026-01-07T20:40:46.0963252Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+🎭 E2E Tests	Post Run actions/checkout@v4	2026-01-07T20:40:46.1001353Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+🎭 E2E Tests	Complete job	﻿2026-01-07T20:40:46.1373565Z Cleaning up orphan processes
