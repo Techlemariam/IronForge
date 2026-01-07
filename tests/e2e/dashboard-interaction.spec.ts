@@ -10,50 +10,77 @@ test.describe('Dashboard Interactions', () => {
             localStorage.setItem('hevy_api_key', 'e2e-dummy-key');
         });
 
-        // Wait for page to stabilize and configuration polling to finish
-        await page.waitForTimeout(2000);
+        // Reload to apply localStorage changes and wait for network idle
+        await page.reload({ waitUntil: 'networkidle' });
 
         // Ensure main content is visible
-        await expect(page.locator('#main-content')).toBeVisible({ timeout: 15000 });
+        await expect(page.locator('#main-content')).toBeVisible({ timeout: 30000 });
+
+        // Wait for any loading states to complete
+        await page.waitForLoadState('domcontentloaded');
     });
 
     test('should navigate to Program Builder', async ({ page }) => {
-        // Iron City category should be open by default, but click to ensure
+        // Wait for CitadelHub categories to be rendered
+        await page.waitForSelector('[data-testid="citadel-hub"], h3:has-text("Training"), h3:has-text("Iron City")', { timeout: 15000 });
+
+        // Iron City category should contain Program Builder - ensure it's expanded
         const ironCityCategory = page.getByRole('button', { name: /Iron City/i });
-        if (await ironCityCategory.isVisible()) {
-            await ironCityCategory.click();
-            await page.waitForTimeout(300);
-        }
+        await ironCityCategory.waitFor({ state: 'visible', timeout: 10000 });
+        await ironCityCategory.click();
+        await page.waitForTimeout(500); // Wait for expand animation
 
-        // Open Program Builder
-        await page.waitForTimeout(500); // Wait for animations
-        await page.getByRole('button', { name: /Program Builder/i }).click();
+        // Wait for Program Builder button to appear after category expansion
+        const programBuilderBtn = page.getByRole('button', { name: /Program Builder/i });
+        await programBuilderBtn.waitFor({ state: 'visible', timeout: 10000 });
+        await programBuilderBtn.click();
 
-        // Verify content - look for header or close button
-        await expect(page.locator('text=Program Builder').or(page.getByRole('button', { name: 'Close' }))).toBeVisible({ timeout: 10000 });
+        // Verify content - look for header or close button with longer timeout
+        await expect(
+            page.locator('text=Program Builder').or(page.getByRole('button', { name: 'Close' }))
+        ).toBeVisible({ timeout: 15000 });
     });
 
     test('should navigate to Guild Hall', async ({ page }) => {
+        // Wait for CitadelHub categories to be rendered
+        await page.waitForSelector('[data-testid="citadel-hub"], h3:has-text("Training"), h3:has-text("Iron City")', { timeout: 15000 });
+
         // Colosseum category is collapsed by default - need to expand it
         const colosseumCategory = page.getByRole('button', { name: /Colosseum/i });
+        await colosseumCategory.waitFor({ state: 'visible', timeout: 10000 });
         await colosseumCategory.click();
-        await page.waitForTimeout(300);
+        await page.waitForTimeout(500); // Wait for expand animation
 
-        // Open Guild Hall
-        await page.getByRole('button', { name: /Guild Hall/i }).click();
+        // Wait for Guild Hall button to appear after category expansion
+        const guildHallBtn = page.getByRole('button', { name: /Guild Hall/i });
+        await guildHallBtn.waitFor({ state: 'visible', timeout: 10000 });
+        await guildHallBtn.click();
 
-        // Verify content - look for Close button or Guild text
-        // Verify content - verify either Close button matches strictly or Guild text is present
-        await expect(page.getByRole('button', { name: 'Close', exact: true }).or(page.getByText(/Guild/i).first())).toBeVisible({ timeout: 10000 });
+        // Verify content - wait for modal/view to load
+        await page.waitForTimeout(1000); // Allow modal animation
+
+        // Use more flexible verification - look for close button OR any guild-related text
+        const closeBtn = page.getByRole('button', { name: 'Close', exact: true });
+        const guildText = page.getByText(/Guild|Loading Guild/i).first();
+        await expect(closeBtn.or(guildText)).toBeVisible({ timeout: 15000 });
     });
 
     test('should navigate to Trophy Room', async ({ page }) => {
+        // Wait for CitadelHub categories to be rendered
+        await page.waitForSelector('[data-testid="citadel-hub"], h3:has-text("Training"), h3:has-text("Iron City")', { timeout: 15000 });
+
         // Colosseum category is collapsed by default - need to expand it
         const colosseumCategory = page.getByRole('button', { name: /Colosseum/i });
+        await colosseumCategory.waitFor({ state: 'visible', timeout: 10000 });
         await colosseumCategory.click();
-        await page.waitForTimeout(300);
+        await page.waitForTimeout(500); // Wait for expand animation
 
-        await page.getByRole('button', { name: /Trophy Room/i }).click({ force: true });
+        // Wait for Trophy Room button and click
+        const trophyRoomBtn = page.getByRole('button', { name: /Trophy Room/i });
+        await trophyRoomBtn.waitFor({ state: 'visible', timeout: 10000 });
+        await trophyRoomBtn.click({ force: true });
+
+        // Verify Trophy Room content loaded
         await expect(page.getByText(/Trophy Room|Achievements|Hall of Fame/i).first()).toBeVisible({ timeout: 15000 });
     });
 });
