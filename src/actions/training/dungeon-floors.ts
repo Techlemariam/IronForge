@@ -1,4 +1,3 @@
-```typescript
 "use server";
 
 import { revalidatePath } from "next/cache";
@@ -92,12 +91,12 @@ export async function getFloorDetailsAction(
           : "ABYSS";
 
   return {
-    id: `floor - ${ floorNumber } `,
+    id: `floor - ${floorNumber} `,
     number: floorNumber,
     type,
     theme,
-    name: `${ theme } Floor ${ floorNumber } `,
-    description: `Venture into ${ theme.toLowerCase() } level ${ floorNumber } `,
+    name: `${theme} Floor ${floorNumber} `,
+    description: `Venture into ${theme.toLowerCase()} level ${floorNumber} `,
     difficulty: Math.min(10, Math.ceil(floorNumber / 5)),
     enemies: [
       {
@@ -134,7 +133,7 @@ export async function getFloorDetailsAction(
 export async function startDungeonRunAction(
   userId: string,
 ): Promise<{ success: boolean; startingFloor: number }> {
-  console.log(`Starting dungeon run for ${ userId }`);
+  console.log(`Starting dungeon run for ${userId}`);
   revalidatePath("/dungeon");
   return { success: true, startingFloor: 1 };
 }
@@ -157,7 +156,7 @@ export async function clearFloorAction(
     },
   ];
 
-  console.log(`Cleared floor ${ floorNumber } in ${ clearTimeMs } ms`);
+  console.log(`Cleared floor ${floorNumber} in ${clearTimeMs} ms`);
   revalidatePath("/dungeon");
   return { success: true, rewards, nextFloor: floorNumber + 1 };
 }
@@ -168,7 +167,7 @@ export async function clearFloorAction(
 export async function endDungeonRunAction(
   userId: string,
 ): Promise<{ floorsCleared: number; totalRewards: FloorReward[] }> {
-  console.log(`Ending dungeon run for ${ userId }`);
+  console.log(`Ending dungeon run for ${userId}`);
   revalidatePath("/dungeon");
   return {
     floorsCleared: 5,
