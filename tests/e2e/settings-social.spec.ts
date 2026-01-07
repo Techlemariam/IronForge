@@ -68,6 +68,6 @@ test.describe('Settings and Social Hub', () => {
         }
 
         // 6. Verify back to Citadel
-        await expect(page.getByText('Training').or(page.getByText('Iron City'))).toBeVisible({ timeout: 5000 });
+        await expect(page.getByRole('heading', { name: 'Training' }).or(page.getByRole('heading', { name: 'Iron City' })).first()).toBeVisible({ timeout: 10000 });
     });
 });

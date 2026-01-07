@@ -29,8 +29,8 @@ test.describe('Cardio PvP Duels Flow', () => {
 
             // Ensure Titan exists and matches opponent power range (500)
             await client.query(`
-                INSERT INTO "Titan" ("id", "userId", "name", "level", "powerRating", "strength", "endurance", "agility", "spirit")
-                VALUES (gen_random_uuid(), $1, 'Test Titan', 5, 500, 10, 10, 10, 10)
+                INSERT INTO "Titan" ("id", "userId", "name", "level", "powerRating", "strength", "endurance", "agility", "vitality", "willpower")
+                VALUES (gen_random_uuid(), $1, 'Test Titan', 5, 500, 10, 10, 10, 10, 10)
                 ON CONFLICT ("userId") 
                 DO UPDATE SET "powerRating" = 500, "level" = 5;
             `, [user.id]);

@@ -24,7 +24,7 @@ test.describe('Dashboard Verification', () => {
     test('should load CitadelHub with correct categories', async ({ page }) => {
         // Check for primary categories (Progressive Disclosure)
         // Ensure they are visible (they are h3 headings inside the category buttons)
-        await expect(page.getByRole('heading', { name: 'Training' })).toBeVisible();
+        await expect(page.getByRole('heading', { name: 'Training', exact: true })).toBeVisible();
         await expect(page.getByRole('heading', { name: 'Iron City' })).toBeVisible();
 
         // Use a more flexible locator for Cardio Suite that matches the text content or label

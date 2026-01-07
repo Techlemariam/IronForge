@@ -26,6 +26,7 @@ test.describe('Dashboard Interactions', () => {
         }
 
         // Open Program Builder
+        await page.waitForTimeout(500); // Wait for animations
         await page.getByRole('button', { name: /Program Builder/i }).click();
 
         // Verify content - look for header or close button
@@ -42,7 +43,8 @@ test.describe('Dashboard Interactions', () => {
         await page.getByRole('button', { name: /Guild Hall/i }).click();
 
         // Verify content - look for Close button or Guild text
-        await expect(page.getByRole('button', { name: 'Close' }).or(page.getByText(/Guild/i).first())).toBeVisible({ timeout: 10000 });
+        // Verify content - verify either Close button matches strictly or Guild text is present
+        await expect(page.getByRole('button', { name: 'Close', exact: true }).or(page.getByText(/Guild/i).first())).toBeVisible({ timeout: 10000 });
     });
 
     test('should navigate to Trophy Room', async ({ page }) => {
