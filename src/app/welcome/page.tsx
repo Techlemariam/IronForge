@@ -58,11 +58,7 @@ export default function WelcomePage() {
         </div>
 
         <div className="container mx-auto text-center relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
+          <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-mono uppercase tracking-widest text-warrior mb-6">
               <Zap className="w-3 h-3" /> System Operational v1.3
             </div>
@@ -93,7 +89,7 @@ export default function WelcomePage() {
                 View Demo
               </Link>
             </div>
-          </motion.div>
+          </div>
         </div>
       </header>
 
