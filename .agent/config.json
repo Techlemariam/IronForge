@@ -113,6 +113,7 @@
       "pnpm run dev",
       "pnpm run test:coverage",
       "pnpm run test:e2e",
+      "npm run test:coverage",
       "rm -rf",
       "Remove-Item",
       "New-Item",

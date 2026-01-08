@@ -51,6 +51,7 @@ describe('myFunction', () => {
 npm run test -- --coverage
 # Target: >80% coverage on new code
 ```
+- **Config**: Ensure `npm run test` is allowed in `.agent/config.json`.
 
 ## Self-Evaluation
 Rate **Coverage (1-10)** and **Edge Case Quality (1-10)**.

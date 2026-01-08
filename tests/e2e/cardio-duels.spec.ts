@@ -1,9 +1,8 @@
 import { test, expect } from '@playwright/test';
 import { Client } from 'pg';
 
-// SKIP: These tests require seeded mock opponents which are not available in CI.
-// TODO: Add proper E2E database seeding step in CI workflow.
-test.describe.skip('Cardio PvP Duels Flow', () => {
+// Seeded mock opponents are now available via e2e-seed.ts in CI.
+test.describe('Cardio PvP Duels Flow', () => {
     test.beforeAll(async () => {
         // Use direct PG connection to avoid Prisma instantiation issues in test env
         const client = new Client({
@@ -28,6 +27,15 @@ test.describe.skip('Cardio PvP Duels Flow', () => {
             );
             console.log(`[Setup] Deleted ${result.rowCount} active duels for ${user.heroName || user.id}`);
 
+            // Ensure Titan exists and matches opponent power range (500)
+            await client.query(`
+                INSERT INTO "Titan" ("id", "userId", "name", "level", "powerRating", "strength", "endurance", "agility", "vitality", "willpower", "createdAt", "updatedAt", "lastActive")
+                VALUES (gen_random_uuid(), $1, 'Test Titan', 5, 500, 10, 10, 10, 10, 10, NOW(), NOW(), NOW())
+                ON CONFLICT ("userId") 
+                DO UPDATE SET "powerRating" = 500, "level" = 5, "updatedAt" = NOW();
+            `, [user.id]);
+            console.log(`[Setup] Updated Titan power rating to 500 for matchmaking`);
+
         } catch (e) {
             console.error("[Setup] Cleanup failed:", e);
             throw e;
@@ -38,8 +46,14 @@ test.describe.skip('Cardio PvP Duels Flow', () => {
 
     test.beforeEach(async ({ page }) => {
         await page.goto('/iron-arena');
+
+        // CRITICAL: Inject API key to bypass "Configuration Required" screen
+        await page.evaluate(() => {
+            localStorage.setItem('hevy_api_key', 'e2e-dummy-key');
+        });
+
         // Wait for hydration
-        await page.waitForTimeout(1000);
+        await page.waitForTimeout(1500);
 
         const findOpponentBtn = page.getByRole('button', { name: 'Find Opponent' });
         if (!await findOpponentBtn.isVisible()) {

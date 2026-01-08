@@ -14,6 +14,7 @@ Verify if your database schema is in sync with your Prisma schema (useful for ca
 ```bash
 npx prisma migrate status
 ```
+- **Config**: Add `npx prisma` commands to `.agent/config.json`.
 
 ## 2. Verify Schema Drift (MCP)
 // turbo

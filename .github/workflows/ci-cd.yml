@@ -32,7 +32,7 @@ jobs:
     name: ⚡ Verify
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v6
         with:
@@ -58,9 +58,10 @@ jobs:
   # ------------------------------------------------------------------
   e2e:
     name: 🎭 E2E Tests
+    if: github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v6
         with:
@@ -79,6 +80,10 @@ jobs:
       - name: Install Playwright Browsers
         if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: npx playwright install --with-deps
+      - name: Seed E2E Database
+        run: npx tsx tests/e2e/setup/e2e-seed.ts
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
       - name: Run Playwright Tests
         run: npx playwright test
         env:
@@ -112,7 +117,7 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v6
         with:
@@ -138,14 +143,16 @@ jobs:
   # ------------------------------------------------------------------
   deploy-preview:
     name: 🚀 Deploy Preview
+    permissions:
+      pull-requests: write
     needs: [verify] # Fast deploy after verification
-    if: github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' && github.base_ref != 'main'
+    if: github.event_name == 'pull_request' && github.actor != 'dependabot[bot]'
     environment:
       name: Preview
       url: ${{ steps.deploy.outputs.url }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v6
         with:
@@ -216,7 +223,7 @@ jobs:
       name: Production
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v6
         with:
@@ -250,7 +257,7 @@ jobs:
     name: ⚡ Performance Audit
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v6
         with:
@@ -275,6 +282,8 @@ jobs:
   # ------------------------------------------------------------------
   create-release:
     name: 📝 Create Release
+    permissions:
+      contents: write
     needs: [deploy-production]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'

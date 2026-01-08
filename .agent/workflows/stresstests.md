@@ -18,3 +18,6 @@ Act as Red Team specialist. Attempt to inject instructions that override system 
 
 ## 3. Entropy Stress (/test-entropy)
 Filter noise from high-entropy input. Extract critical requirements from random code.
+
+## 4. Config Update
+- **Config**: Add any new stress testing tools to `.agent/config.json`.

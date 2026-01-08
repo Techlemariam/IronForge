@@ -89,4 +89,38 @@ export class DuelRewardsService {
             bonuses
         };
     }
+
+    /**
+     * Calculates rewards for a draw scenario - both participants get small participation rewards
+     */
+    static async calculateDrawRewards(
+        userId: string,
+        totalScore: number
+    ): Promise<DuelRewardResult> {
+        const context = await GameContextService.getPlayerContext(userId);
+        const bonuses: string[] = ["Draw - Mutual Respect"];
+
+        // Base draw rewards (between win and loss)
+        let baseXp = 50;
+        let baseGold = 25;
+        let baseKe = 10;
+
+        // Score bonus still applies
+        const scoreBonus = Math.floor(totalScore / 100) * 3;
+        if (scoreBonus > 0) {
+            baseXp += scoreBonus;
+            bonuses.push(`Effort Bonus +${scoreBonus} XP`);
+        }
+
+        // Apply context modifiers
+        const finalXp = Math.round(baseXp * context.modifiers.xpGain);
+        const finalGold = Math.round(baseGold * context.modifiers.goldGain);
+
+        return {
+            xp: finalXp,
+            gold: finalGold,
+            kineticEnergy: baseKe,
+            bonuses
+        };
+    }
 }

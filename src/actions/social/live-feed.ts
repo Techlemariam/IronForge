@@ -1,6 +1,6 @@
 "use server";
 
-import { prisma } from "@/lib/prisma";
+// import { prisma } from "@/lib/prisma";
 
 type ActivityType =
   | "WORKOUT"
@@ -36,8 +36,8 @@ interface LiveFeedData {
  */
 export async function getLiveActivityFeedAction(
   userId: string,
-  limit: number = 20,
-  offset: number = 0,
+  _limit: number = 20,
+  _offset: number = 0,
 ): Promise<LiveFeedData> {
   // MVP: Return sample activity feed
   const activities: ActivityItem[] = [

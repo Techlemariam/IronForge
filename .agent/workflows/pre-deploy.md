@@ -1,78 +1,44 @@
 ---
-description: Final verification checkpoint before production deployment
+description: Verification checkpoint using Pull Request CI checks
 command: /pre-deploy
 category: action
 trigger: manual
 ---
-# Role: Pre-Deploy Guardian
+# Role: Pre-Release Verifier
 
-**Scope:** Build verification, environment checks, breaking change detection.
+**Scope:** Verifying that the automated CI/CD pipeline has passed for the release Pull Request.
 
 ## 🎯 Trigger
-- After `/qa` passes
-- Before any production deployment
-- Manual: `/pre-deploy`
+- You have created a Pull Request to `main`.
+- You want to ensure it is safe to merge.
 
 ## ✅ Verification Checklist
 
-### 1. Build Integrity
-```bash
-npm run build
-# Must exit 0 with no type errors
-```
+### 1. Check CI Status (GitHub)
+Instead of running tests locally, check the status of the checks at the bottom of the Pull Request page.
+- **Verify**: `✅ Lint` passes
+- **Verify**: `✅ Type Check` passes
+- **Verify**: `✅ Unit Tests` pass
+- **Verify**: `✅ E2E Tests` pass
+- **Verify**: `✅ Build` passes
 
-### 2. Test Coverage
-```bash
-npm run test
-# All unit tests must pass
+### 2. Deployment Preview
+- **Check**: Vercel bot comment with the **Preview URL**.
+- **Action**: Click the link and verify the critical paths manually if needed.
+  - Login/Auth flow
+  - Payment flow (if touched)
+  - Critical new features
 
-npm run test:e2e
-# All E2E tests must pass
-```
-
-### 3. Environment Verification
-```
-Check .env.local vs .env.example:
-  - All required vars present
-  - No NEXT_PUBLIC_ exposing secrets
-  - Database URL valid format
-```
-
-### 4. Breaking Change Detection
-```
-Analyze git diff HEAD~1:
-  - Schema changes → Require migration
-  - Public API changes → Document in CHANGELOG
-  - Removed exports → Check dependents
-```
-
-### 5. Bundle Analysis
-```
-Check .next/analyze (if available):
-  - First Load JS < 150kB target
-  - No unexpected large chunks
-```
-
-## 📊 Output Format
-```
-┌─────────────────────────────────────────────────────┐
-│ 🚀 PRE-DEPLOY CHECKLIST                            │
-├─────────────────────────────────────────────────────┤
-│ Build:          [PASS/FAIL]                        │
-│ Unit Tests:     [PASS/FAIL]                        │
-│ E2E Tests:      [PASS/FAIL]                        │
-│ Env Vars:       [PASS/WARN]                        │
-│ Breaking:       [NONE/LIST]                        │
-│ Bundle Size:    [XXX kB]                           │
-├─────────────────────────────────────────────────────┤
-│ DEPLOY READY:   [YES/NO]                           │
-│ Blockers:       [list if any]                      │
-└─────────────────────────────────────────────────────┘
-```
+### 3. Breaking Changes
+- **Review**: Did you modify the database schema?
+  - [ ] If yes, ensure a migration is included in the PR.
+- **Review**: Did you change public API contracts?
+  - [ ] Update documentation/changelog if necessary.
 
 ## 🔴 Blocking Criteria
-- Build fails
-- Unit tests fail
-- E2E tests fail
-- Missing required env vars
-- Uncommitted schema changes without migration
+- ❌ Any red/failing check in the PR.
+- ❌ Missing Vercel Preview deployment.
+- ❌ Merge conflicts.
+
+> [!TIP]
+> Do not merge if tests are failing. Fix the code and push again; CI will run automatically.

@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test.describe('Titan Duels Flow', () => {
     test.beforeEach(async ({ page }) => {
         // Navigate to the application
-        await page.goto('/');
+        await page.goto('/dashboard');
 
         // Assume user is already authenticated via auth.setup.ts
         // If not, add login steps here

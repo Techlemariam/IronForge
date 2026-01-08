@@ -6,9 +6,15 @@ test.describe("Power Rating System", () => {
     });
 
     test("should display current power rating on dashboard", async ({ page }) => {
-        await page.goto("/");
+        await page.goto("/dashboard");
+
+        // CRITICAL: Inject API key to bypass "Configuration Required" screen
+        await page.evaluate(() => {
+            localStorage.setItem('hevy_api_key', 'e2e-dummy-key');
+        });
 
         // Wait for page to load
+        await page.waitForTimeout(1500);
         await page.waitForLoadState("networkidle");
 
         // Wait for power rating to be visible (in PersistentHeader)
@@ -125,6 +131,13 @@ test.describe("Power Rating System", () => {
         // This test would need a user that's been inactive for 7+ days
         // For now, we'll just check the UI structure exists
         await page.goto("/");
+
+        // CRITICAL: Inject API key to bypass "Configuration Required" screen
+        await page.evaluate(() => {
+            localStorage.setItem('hevy_api_key', 'e2e-dummy-key');
+        });
+
+        await page.waitForTimeout(1500);
         await page.waitForLoadState("networkidle");
 
         // Check if warning element exists (may not be visible for active users)

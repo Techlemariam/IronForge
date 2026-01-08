@@ -86,6 +86,7 @@ import { ShimmerBadge } from "@/components/ui/ShimmerBadge";
 import { Citadel } from "./components/Citadel";
 import { QuestCompletion } from "./components/QuestCompletion";
 import { CoachToggle } from "./components/CoachToggle";
+import { ViewRouter } from "./components/ViewRouter";
 import {
   EquipmentArmory,
   Bestiary,
@@ -159,10 +160,8 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
     liteMode,
   } = props;
 
-  // TODO: Fetch this from server component and pass as props
-  // For now we render with empty/mock for UI verification if data not present
-  const leaderboardData: any[] = [];
-  // const factionStats = { alliance: { members: 0, totalXp: 0 }, horde: { members: 0, totalXp: 0 } };
+  // Leaderboard data passed from server component (or empty for backward-compat)
+  const leaderboardData = props.leaderboardData || [];
 
   // Use Titan State if available, fallback to User (Legacy)
   const level = titanState?.level || userData?.level || 1;
@@ -299,269 +298,15 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
     }
   };
 
-  const renderView = () => {
-    switch (state.currentView) {
-      case "citadel":
-        return (
-          <Citadel
-            state={state}
-            dispatch={dispatch}
-            titanState={titanState}
-            pocketCastsConnected={pocketCastsConnected}
-            liteMode={liteMode}
-          />
-        );
-      case "training_center":
-        return (
-          <TrainingCenter
-            activePath={state.activePath}
-            mobilityLevel={state.mobilityLevel}
-            recoveryLevel={state.recoveryLevel}
-            onClose={() => dispatch({ type: "SET_VIEW", payload: "citadel" })}
-            onSelectWorkout={(workout) => {
-              if (workout.type === "STRENGTH" || workout.type === "MOBILITY") {
-                // For strength/mobility, convert to session and launch
-                const session = mapDefinitionToSession(workout);
-                dispatch({ type: "START_GENERATED_QUEST", payload: session });
-                // Hack to set return view since START_GENERATED_QUEST doesn't support it directly in reducer easily without changing signature
-                // We'll rely on global "Close" in IronMines returning to citadel by default,
-                // unless we change IronMines to accept onExit?
-                // Actions: IronMines has onExit.
-              } else {
-                dispatch({ type: "START_CODEX_WORKOUT", payload: { workout } });
-              }
-            }}
-            onImportRoutines={() =>
-              dispatch({ type: "SET_VIEW", payload: "import_routines" })
-            }
-          />
-        );
-      case "import_routines":
-        return (
-          <div className="p-4 md:p-8 animate-fade-in relative min-h-screen">
-            <button
-              onClick={() =>
-                dispatch({ type: "SET_VIEW", payload: "training_center" })
-              }
-              className="absolute top-4 right-4 z-50 px-4 py-2 bg-white/10 hover:bg-white/20 rounded text-white text-sm font-bold flex items-center gap-2"
-            >
-              <ArrowLeft className="w-4 h-4" /> Back to Training Center
-            </button>
-            <RoutineSelector
-              exerciseNameMap={state.exerciseNameMap}
-              onSelectRoutine={async (routine) => {
-                try {
-                  // Call server action
-                  const { importHevyRoutineToTemplateAction } =
-                    await import("@/actions/integrations/hevy");
-                  await importHevyRoutineToTemplateAction(routine);
-                  toast.success("Routine Imported", {
-                    description: `${routine.title} is now a Workout Template.`,
-                  });
-                  dispatch({ type: "SET_VIEW", payload: "training_center" });
-                } catch (err: any) {
-                  console.error(err);
-                  toast.error("Import Failed", { description: err.message });
-                }
-              }}
-              mode="import"
-            />
-          </div>
-        );
-      case "war_room":
-        return (
-          <RoutineSelector
-            exerciseNameMap={state.exerciseNameMap}
-            onSelectRoutine={(routine) =>
-              dispatch({
-                type: "SELECT_ROUTINE",
-                payload: { routine, nameMap: state.exerciseNameMap },
-              })
-            }
-          />
-        );
-      // Using IronMines for workout logging
-      case "iron_mines":
-        return (
-          <IronMines
-            session={mapQuestToSession(state.activeQuest!, state.questTitle)}
-            onComplete={(results) => {
-              // Need to map results back if we want to save properly with legacy handleSaveWorkout
-              // For now, let's just trigger complete.
-              dispatch({ type: "COMPLETE_QUEST" });
-            }}
-            onExit={() => {
-              // If we have a return view (e.g. came from Training Center), go back there.
-              // But START_GENERATED_QUEST didn't set returnView in my reducer logic above (I commented it out).
-              // Let's just go to Citadel for now for Strength, or handle return logic if I add it.
-              dispatch({ type: "ABORT_QUEST" });
-            }}
-            hrvBaseline={titanState?.hrvBaseline || userData?.hrv || 60}
-          />
-        );
-      case "item_shop":
-        return (
-          <Marketplace
-            onClose={() => dispatch({ type: "SET_VIEW", payload: "citadel" })}
-          />
-        );
-      case "social_hub":
-        return (
-          <SocialHub
-            onClose={() => dispatch({ type: "SET_VIEW", payload: "citadel" })}
-            currentUserId={userData?.id}
-          />
-        );
-      case "quest_completion":
-        return (
-          <QuestCompletion
-            onSave={handleSaveWorkout}
-            onCancel={() => dispatch({ type: "ABORT_QUEST" })}
-          />
-        );
-      case "forge":
-        return (
-          <TheForge
-            onClose={() => dispatch({ type: "SET_VIEW", payload: "citadel" })}
-          />
-        );
-      case "armory":
-        return <EquipmentArmory />;
-      case "bestiary":
-        return (
-          <Bestiary
-            userLevel={state.level}
-            onClose={() => dispatch({ type: "SET_VIEW", payload: "citadel" })}
-          />
-        );
-      case "world_map":
-        return (
-          <WorldMap
-            userLevel={state.level}
-            onClose={() => dispatch({ type: "SET_VIEW", payload: "citadel" })}
-            onEnterCombat={(bossId) =>
-              dispatch({ type: "START_COMBAT", payload: bossId })
-            }
-          />
-        );
-      case "grimoire":
-        return (
-          <Grimoire
-            onClose={() => dispatch({ type: "SET_VIEW", payload: "citadel" })}
-          />
-        );
-      case "guild_hall":
-        return (
-          <div className="p-4 relative min-h-screen">
-            <button
-              onClick={() => dispatch({ type: "SET_VIEW", payload: "citadel" })}
-              className="absolute top-4 right-4 z-50 px-4 py-2 bg-white/10 hover:bg-white/20 rounded text-white text-sm font-bold"
-            >
-              Close
-            </button>
-            <GuildHall userId={userData?.id} />
-          </div>
-        );
-      case "strength_log":
-        return (
-          <div className="p-4 relative min-h-screen">
-            <button
-              onClick={() => dispatch({ type: "SET_VIEW", payload: "citadel" })}
-              className="absolute top-4 right-4 z-50 px-4 py-2 bg-white/10 hover:bg-white/20 rounded text-white text-sm font-bold"
-            >
-              Close
-            </button>
-            <StrengthContainer userId={userData?.id} />
-          </div>
-        );
-      case "program_builder":
-        return (
-          <div className="p-4 relative min-h-screen">
-            <button
-              onClick={() => dispatch({ type: "SET_VIEW", payload: "citadel" })}
-              className="absolute top-4 right-4 z-50 px-4 py-2 bg-white/10 hover:bg-white/20 rounded text-white text-sm font-bold"
-            >
-              Close
-            </button>
-            <ProgramBuilder userId={userData?.id} />
-          </div>
-        );
-      case "trophy_room":
-        return (
-          <div className="p-4 relative min-h-screen">
-            <button
-              onClick={() => dispatch({ type: "SET_VIEW", payload: "citadel" })}
-              className="absolute top-4 right-4 z-50 px-4 py-2 bg-white/10 hover:bg-white/20 rounded text-white text-sm font-bold"
-            >
-              Close
-            </button>
-            <TrophyRoom userId={userData?.id} />
-          </div>
-        );
-      case "arena":
-        return (
-          <Arena
-            onClose={() => dispatch({ type: "SET_VIEW", payload: "citadel" })}
-          />
-        );
-      case "marketplace":
-        return (
-          <Marketplace
-            onClose={() => dispatch({ type: "SET_VIEW", payload: "citadel" })}
-          />
-        );
-      case "combat_arena":
-        return state.activeBossId ? (
-          <CombatArena
-            bossId={state.activeBossId}
-            onClose={() => dispatch({ type: "SET_VIEW", payload: "world_map" })}
-          />
-        ) : (
-          <Citadel
-            state={state}
-            dispatch={dispatch}
-            pocketCastsConnected={pocketCastsConnected}
-            titanState={titanState}
-            liteMode={liteMode}
-          />
-        );
-
-      case "cardio_studio":
-        return (
-          <CardioStudio
-            mode={state.cardioMode || "cycling"}
-            activeWorkout={state.activeWorkout}
-            userProfile={{
-              ftpCycle: userData?.ftpCycle || 200,
-              ftpRun: userData?.ftpRun || 250,
-            }}
-            onClose={() => dispatch({ type: "RETURN_TO_PREVIOUS" })}
-            userId={userData?.id}
-            activeDuel={state.activeDuel}
-            pocketCastsConnected={pocketCastsConnected}
-            streak={titanState?.streak || userData?.loginStreak || 0}
-            maxHr={userData?.maxHr || 190}
-          />
-        );
-
-      case "strava_upload":
-        return (
-          <div className="flex flex-col items-center justify-center min-h-screen p-4">
-            <StravaUpload />
-            <button
-              onClick={() => dispatch({ type: "SET_VIEW", payload: "citadel" })}
-              className="mt-8 text-slate-400 hover:text-white transition-colors"
-            >
-              Return to Citadel
-            </button>
-          </div>
-        );
-
-      default:
-        return (
-          <Citadel state={state} dispatch={dispatch} titanState={titanState} />
-        );
-    }
+  // View rendering delegated to ViewRouter component
+  const viewRouterProps = {
+    state,
+    dispatch,
+    userData,
+    titanState,
+    pocketCastsConnected,
+    liteMode,
+    onSaveWorkout: handleSaveWorkout,
   };
 
   const AnimatedViewWrapper = ({
@@ -630,6 +375,7 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
       <Link
         href="/settings"
         className="fixed top-6 right-6 z-50 text-forge-muted hover:text-white transition-colors p-2 hover:rotate-90 duration-300"
+        aria-label="Settings"
       >
         <Settings size={24} />
       </Link>
@@ -645,7 +391,7 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
       <AnimatePresence mode="wait">
         <AnimatedViewWrapper viewKey={state.currentView}>
           <main id="view-container">
-            {renderView()}
+            <ViewRouter {...viewRouterProps} />
           </main>
         </AnimatedViewWrapper>
       </AnimatePresence>

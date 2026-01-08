@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test.describe('Navigation Smoke Tests', () => {
 
     test('should verify Dashboard elements', async ({ page }) => {
-        await page.goto('/');
+        await page.goto('/dashboard');
 
         // Wait for page to stabilize
         await page.waitForTimeout(1000);

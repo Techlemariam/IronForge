@@ -82,8 +82,9 @@
 | `CombatEngine` | Turn-based combat logic |
 | `LootSystem` | Item drop calculations |
 | `ProgressionService` | XP/leveling calculations |
-| `OracleService` | AI coaching recommendations |
-| `GeminiService` | "Spirit Guide" RAG-based AI coach |
+| `OracleService` | Daily focus and decree generation |
+| `GoalPriorityEngine`| Deterministic periodization & goals |
+| `GeminiService` | Conversational FAQ/Narrative flavor |
 | `ValhallaService` | Cloud persistence & save states |
 | `VisionService` | MediaPipe pose detection engine |
 | `NeuroService` | Binaural beat audio engine |

@@ -6,25 +6,26 @@ trigger: manual
 ---
 # Production Deployment (Solo Speed Run)
 
-**Strategy:** Trunk-Based Development.
-**Goal:** Ship code to production swiftly and safely.
+**Strategy:** Trunk-Based Development (Direct to `main` via PR).
+**Goal:** Ship code to production swiftly and safely with automated gates.
 
 ## 🚀 The Pipeline
-1. **Feature Branch:** Work in `feature/*`.
-2. **Preview (Automated):** Push triggers Vercel Preview + Tests.
-   - 🤖 Bot comments Preview URL on PR.
-3. **Release (Automated):** Merge to `main`.
-   - 🤖 CI deploys immediately to **Production**.
-   - 🏷️ Creates GitHub Release.
+1.  **Feature/Fix:** Work in `feature/*` or `fix/*`.
+2.  **Local Quality Gate:** Run `/gatekeeper` before pushing.
+    - 🛑 **STOP** if score < 100.
+    - ✅ **PUSH** to GitHub and open PR.
+3.  **Cloud Verification:** GitHub Actions runs `Verify`, `E2E`, `DB Guard`, and `Perf Audit`.
+4.  **Preview (Automated):** PR triggers **Vercel Preview**.
+    - 🤖 Bot comments Preview URL on PR.
+5.  **Release (Automated):** Merge PR to `main`.
+    - 🤖 CI deploys immediately to **Production**.
+    - 🏷️ Creates GitHub Release + Release Notes.
 
 ## 📋 Pre-Merge Checklist
-Before merging to `main` (triggering deploy):
-1. **CI Green:** All checks passed in PR.
-2. **Preview Verified:** Check the Vercel Preview URL manually.
-3. **No Drift:** `prisma migrate diff` passed.
+1.  **CI Green:** All checks (⚡ Verify, 🎭 E2E, 🗄️ DB Guard) must be green.
+2.  **Preview Verified:** Check the Vercel Preview URL for UI/UX regressions.
+3.  **Lighthouse:** Ensure performance scores are within budget.
 
 ## 🚨 Rollback
-If Production breaks:
-1. **Revert PR:** GitHub Revert on `main`.
-2. **Auto-Deploy:** The revert commit triggers a new deploy.
-3. **Manual Override:** Vercel Dashboard -> Rollback to previous deployment.
+1.  **Revert PR:** GitHub Revert on `main` triggers an auto-deploy of the previous state.
+2.  **Manual Override:** Vercel Dashboard -> Rollback to previous deployment for instant recovery.

@@ -1,6 +1,6 @@
 "use server";
 
-import { prisma } from "@/lib/prisma";
+// import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
 type CompanionType = "WOLF" | "PHOENIX" | "GOLEM" | "DRAGON" | "SPIRIT";
@@ -143,7 +143,7 @@ const COMPANION_TEMPLATES: Record<
  * Get user's active companion.
  */
 export async function getActiveCompanionAction(
-  userId: string,
+  _userId: string,
 ): Promise<Companion | null> {
   // MVP: Return sample companion
   const template = COMPANION_TEMPLATES.WOLF;
@@ -223,7 +223,7 @@ export async function setActiveCompanionAction(
  * Summon new companion (gacha-style).
  */
 export async function summonCompanionAction(
-  userId: string,
+  _userId: string,
 ): Promise<{ success: boolean; companion?: Companion }> {
   const types: CompanionType[] = [
     "WOLF",

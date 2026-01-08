@@ -59,7 +59,7 @@ export async function getTitanCustomizationAction(
   userId: string,
 ): Promise<TitanCustomization> {
   try {
-    const titan = await prisma.titan.findFirst({
+    const _titan = await prisma.titan.findFirst({
       where: { userId },
     });
 

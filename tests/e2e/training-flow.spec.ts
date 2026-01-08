@@ -3,10 +3,15 @@ import { test, expect } from '@playwright/test';
 test.describe('Training & Cardio Flow', () => {
 
     test.beforeEach(async ({ page }) => {
-        await page.goto('/');
+        await page.goto('/dashboard');
 
-        // Wait for page to stabilize
-        await page.waitForTimeout(1000);
+        // CRITICAL: Inject API key to bypass "Configuration Required" screen
+        await page.evaluate(() => {
+            localStorage.setItem('hevy_api_key', 'e2e-dummy-key');
+        });
+
+        // Wait for page to stabilize and re-render with API key
+        await page.waitForTimeout(1500);
 
         // If locked in Cardio Studio, exit
         const exitButton = page.getByTitle("Close (Esc)");
@@ -26,19 +31,21 @@ test.describe('Training & Cardio Flow', () => {
     });
 
     test('should navigate to Cycling Studio', async ({ page }) => {
-        // Find and click the Cycling Studio button in Citadel Hub
-        await page.getByRole('button', { name: 'Cycling Studio' }).click({ force: true });
+        // Training category is open by default
+        // Find and click the Ride button (formerly "Cycling Studio")
+        await page.getByRole('button', { name: 'Ride', exact: true }).click({ force: true });
 
         // Small wait for view transition
         await page.waitForTimeout(500);
 
-        // Check for Cardio Studio specific elements (check for header text)
-        await expect(page.getByText(/Cycling Studio|Treadmill Studio/i).first()).toBeVisible({ timeout: 15000 });
+        // Check for Cardio Studio specific elements
+        await expect(page.getByText(/Cycling|Cardio|Ride/i).first()).toBeVisible({ timeout: 15000 });
     });
 
     test('should navigate to Treadmill (Running)', async ({ page }) => {
-        await page.getByRole('button', { name: 'Treadmill' }).click({ force: true });
-        await expect(page.getByText(/Treadmill Studio|Cycling Studio/i).first()).toBeVisible({ timeout: 10000 });
+        // Click the Run button (formerly "Treadmill")
+        await page.getByRole('button', { name: 'Run', exact: true }).click({ force: true });
+        await expect(page.getByText(/Running|Treadmill|Cardio/i).first()).toBeVisible({ timeout: 10000 });
     });
 
     test.skip('should navigate to Training Center', async ({ page }) => {

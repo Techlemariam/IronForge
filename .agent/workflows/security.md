@@ -74,3 +74,4 @@ Grep for:
 - **HIGH**: Missing Zod validation on mutations → Flag for `/coder`
 - **MODERATE**: Outdated deps without CVE → Add to `DEBT.md`
 - **MANDATORY:** Always run `npm run agent:verify` before closing a security audit.
+- **Config**: Ensure `npm audit` and search tools are allowed in `.agent/config.json`.

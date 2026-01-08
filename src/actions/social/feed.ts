@@ -1,6 +1,6 @@
 "use server";
 
-import { prisma } from "@/lib/prisma";
+// import { prisma } from "@/lib/prisma";
 
 interface FeedItem {
   id: string;
@@ -27,8 +27,8 @@ interface FeedItem {
  */
 export async function getSocialFeedAction(
   userId: string,
-  limit: number = 20,
-  offset: number = 0,
+  _limit: number = 20,
+  _offset: number = 0,
 ): Promise<FeedItem[]> {
   try {
     // MVP: Return sample feed
@@ -165,7 +165,7 @@ export async function shareWorkoutToFeedAction(
   message?: string,
 ): Promise<{ success: boolean; feedItemId?: string }> {
   try {
-    console.log(`User ${userId} shared workout ${workoutId}`);
+    console.log(`User ${userId} shared workout ${workoutId} with message: ${message}`);
     return { success: true, feedItemId: `feed-${Date.now()}` };
   } catch (error) {
     console.error("Error sharing workout:", error);

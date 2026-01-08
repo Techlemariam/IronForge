@@ -31,7 +31,10 @@ Task (Auditing Steg):
    - Identifiera moduler som saknar dokumentation eller har låg testtäckning.
    - **Kör `/triage`** för att systematiskt värdera och prioritera dessa gaps mot existerande roadmap.
 
-4. **Remediation Plan**: Generera en lista över "Technical Debt"-punkter som måste åtgärdas omedelbart, mappat till P0/P1 i triage-skalan.
+4. **Config Audit**:
+   - Verifiera att alla nödvändiga CLI-verktyg finns i `.agent/config.json`.
+
+5. **Remediation Plan**: Generera en lista över "Technical Debt"-punkter som måste åtgärdas omedelbart, mappat till P0/P1 i triage-skalan.
 
 Format: Presentera resultatet som en "Health Dashboard" med status (PASS/FAIL/WARNING) för varje modul, följt av en prioriterad åtgärdslista.
 
