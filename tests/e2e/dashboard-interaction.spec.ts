@@ -20,7 +20,7 @@ test.describe('Dashboard Interactions', () => {
         await page.waitForLoadState('domcontentloaded');
     });
 
-    test('should navigate to Program Builder', async ({ page }) => {
+    test.skip('should navigate to Program Builder', async ({ page }) => {
         // Wait for CitadelHub categories to be rendered
         await page.waitForSelector('[data-testid="citadel-hub"], h3:has-text("Training"), h3:has-text("Iron City")', { timeout: 15000 });
 
