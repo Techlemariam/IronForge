@@ -71,18 +71,27 @@ const District: React.FC<DistrictProps> = ({
   color,
   children,
 }) => {
+  const [isOpen, setIsOpen] = useState(true); // Added state for toggling
+
   // Shared Layout ID base for potential future expansion
   return (
     <div
       className={`p-4 rounded-xl border border-${color}-800/30 bg-black/40 backdrop-blur-sm flex flex-col space-y-4`}
     >
-      <div
-        className={`flex items-center space-x-2 text-${color}-400 border-b border-${color}-900/50 pb-2`}
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        aria-label={`${isOpen ? "Collapse" : "Expand"} ${title} section`}
+        aria-expanded={isOpen}
+        className={`w-full flex items-center justify-between p-4 text-${color}-400 hover:bg-${color}-950/30 transition-colors rounded-lg -m-4 mb-0`}
       >
-        {icon}
-        <h3 className="text-lg font-bold uppercase tracking-widest">{title}</h3>
-      </div>
-      <div className="space-y-2">{children}</div>
+        <div className="flex items-center space-x-2">
+          {icon}
+          <h3 className="text-lg font-bold uppercase tracking-widest">{title}</h3>
+        </div>
+        {/* Optional: Add an indicator for expanded/collapsed state */}
+        <span className="text-xl">{isOpen ? "▲" : "▼"}</span>
+      </button>
+      {isOpen && <div className="space-y-2 pt-4">{children}</div>}
     </div>
   );
 };

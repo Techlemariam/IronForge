@@ -29,26 +29,28 @@ export const TvHud: React.FC<TvHudProps> = ({
 }) => {
     return (
         <div className="fixed inset-0 z-[100] pointer-events-none bg-gradient-to-b from-black/40 via-transparent to-black/60 font-mono">
-            {/* Top Left: Player Stats */}
-            <div className="absolute top-12 left-12 flex flex-col gap-6">
-                <div className="flex items-center gap-4 bg-black/60 backdrop-blur-xl border-2 border-white/10 p-6 rounded-2xl shadow-2xl">
-                    <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center border-4 border-blue-400/50">
-                        <Shield className="w-8 h-8 text-white" />
-                    </div>
-                    <div>
-                        <div className="text-white/60 text-xl uppercase tracking-widest">Titan</div>
-                        <div className="text-4xl font-black text-white">{playerName}</div>
-                        <div className="w-64 h-4 bg-white/10 rounded-full mt-2 overflow-hidden border border-white/5">
-                            <motion.div
-                                initial={{ width: 0 }}
-                                animate={{ width: `${(playerHp / playerMaxHp) * 100}%` }}
-                                className="h-full bg-gradient-to-r from-blue-600 to-cyan-400"
-                            />
-                        </div>
+            {/* Top Left: Player Stats (Compacted) */}
+            <div
+                role="status"
+                aria-label="Player Status"
+                className="absolute top-12 left-12 flex items-center gap-4 bg-black/60 backdrop-blur-xl border-2 border-white/10 p-4 rounded-2xl shadow-2xl"
+            >
+                <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center border-4 border-blue-400/50">
+                    <Shield className="w-8 h-8 text-white" />
+                </div>
+                <div>
+                    <div className="text-white/60 text-xl uppercase tracking-widest">Titan</div>
+                    <div className="text-4xl font-black text-white">{playerName}</div>
+                    <div className="w-64 h-4 bg-white/10 rounded-full mt-2 overflow-hidden border border-white/5">
+                        <motion.div
+                            initial={{ width: 0 }}
+                            animate={{ width: `${(playerHp / playerMaxHp) * 100}%` }}
+                            className="h-full bg-gradient-to-r from-blue-600 to-cyan-400"
+                        />
                     </div>
                 </div>
 
-                <div className="flex items-center gap-6 bg-black/60 backdrop-blur-xl border-2 border-white/10 p-6 rounded-2xl">
+                <div className="flex items-center gap-6 ml-8">
                     <motion.div
                         animate={{ scale: [1, 1.1, 1] }}
                         transition={{ repeat: Infinity, duration: 0.6 }}
@@ -71,9 +73,11 @@ export const TvHud: React.FC<TvHudProps> = ({
                         initial={{ opacity: 0, x: 50 }}
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: 50 }}
+                        role="status"
+                        aria-label="Quest Progress"
                         className="absolute top-12 right-12 text-right"
                     >
-                        <div className="bg-black/60 backdrop-blur-xl border-2 border-warrior/20 p-6 rounded-2xl shadow-2xl">
+                        <div className="bg-black/60 backdrop-blur-xl border-2 border-warrior/20 p-4 rounded-2xl shadow-2xl">
                             <div className="flex items-center justify-end gap-3 mb-2">
                                 <span className="text-warrior text-xl uppercase tracking-tighter font-bold">Active Quest</span>
                                 <Swords className="w-6 h-6 text-warrior" />
@@ -101,6 +105,8 @@ export const TvHud: React.FC<TvHudProps> = ({
                         initial={{ opacity: 0, y: 100 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: 100 }}
+                        role="status"
+                        aria-label="Boss Status"
                         className="absolute bottom-12 left-1/2 -translate-x-1/2 w-full max-w-5xl px-12"
                     >
                         <div className="bg-black/80 backdrop-blur-xl border-2 border-red-500/30 p-8 rounded-3xl shadow-[0_-20px_50px_rgba(255,0,0,0.1)]">
