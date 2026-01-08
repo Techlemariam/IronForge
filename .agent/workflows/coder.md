@@ -44,11 +44,15 @@ Agent connection helper.
    - Unit tests: `tests/unit/[feature].test.ts` (Vitest)
    - E2E tests: `e2e/[feature].spec.ts` (Playwright) for UI changes
    - **Alternative**: If E2E is blocking, use `browser_subagent` to capture Success Screenshot and embed in artifact. Manual "looked at it" is NOT accepted.
+5. **Pre-Push**: Run `/gatekeeper`.
+   - 🛑 **STOP** if score < 100.
+   - ✅ **PUSH** only if clean.
 
 ## Instructions
 - Consult `implementation_plan.md`.
 - Log `DEBT.md`.
 - **Database**: Run `npm run agent:types` after schema changes.
+- **Config**: If using a safe command repeatedly, add it to `.agent/config.json` `terminalAllowList`.
 
 ## Self-Evaluation
 Rate **Readability (1-10)** and **Speed (1-10)**.

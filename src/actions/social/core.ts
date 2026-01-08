@@ -76,7 +76,7 @@ export async function getLeaderboard(type: "GLOBAL" | "FRIENDS" = "GLOBAL") {
   return [];
 }
 
-export async function getSocialFeed(page: number = 1) {
+export async function getSocialFeed(_page: number = 1) {
   const sessionUser = await prisma.user.findFirst();
   if (!sessionUser) return [];
 

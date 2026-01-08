@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test.describe('Training & Cardio Flow', () => {
 
     test.beforeEach(async ({ page }) => {
-        await page.goto('/');
+        await page.goto('/dashboard');
 
         // CRITICAL: Inject API key to bypass "Configuration Required" screen
         await page.evaluate(() => {
@@ -33,18 +33,18 @@ test.describe('Training & Cardio Flow', () => {
     test('should navigate to Cycling Studio', async ({ page }) => {
         // Training category is open by default
         // Find and click the Ride button (formerly "Cycling Studio")
-        await page.getByRole('button', { name: 'Ride' }).click({ force: true });
+        await page.getByRole('button', { name: 'Ride', exact: true }).click({ force: true });
 
         // Small wait for view transition
         await page.waitForTimeout(500);
 
         // Check for Cardio Studio specific elements
-        await expect(page.getByText(/Cycling|Cardio|Studio/i).first()).toBeVisible({ timeout: 15000 });
+        await expect(page.getByText(/Cycling|Cardio|Ride/i).first()).toBeVisible({ timeout: 15000 });
     });
 
     test('should navigate to Treadmill (Running)', async ({ page }) => {
         // Click the Run button (formerly "Treadmill")
-        await page.getByRole('button', { name: 'Run' }).click({ force: true });
+        await page.getByRole('button', { name: 'Run', exact: true }).click({ force: true });
         await expect(page.getByText(/Running|Treadmill|Cardio/i).first()).toBeVisible({ timeout: 10000 });
     });
 

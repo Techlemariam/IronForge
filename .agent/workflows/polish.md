@@ -14,6 +14,7 @@ trigger: manual
 - After `/coder` completes implementation
 - Parallel with `/qa`
 - Manual: `/polish [scope]`
+- **Config**: Ensure lint/prettier commands are in `.agent/config.json`.
 
 ## 🧹 Polish Protocol
 

@@ -32,7 +32,7 @@ jobs:
     name: ⚡ Verify
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v6
         with:
@@ -61,7 +61,7 @@ jobs:
     if: github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v6
         with:
@@ -117,7 +117,7 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v6
         with:
@@ -143,14 +143,16 @@ jobs:
   # ------------------------------------------------------------------
   deploy-preview:
     name: 🚀 Deploy Preview
+    permissions:
+      pull-requests: write
     needs: [verify] # Fast deploy after verification
-    if: github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' && github.base_ref != 'main'
+    if: github.event_name == 'pull_request' && github.actor != 'dependabot[bot]'
     environment:
       name: Preview
       url: ${{ steps.deploy.outputs.url }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v6
         with:
@@ -221,7 +223,7 @@ jobs:
       name: Production
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v6
         with:
@@ -255,7 +257,7 @@ jobs:
     name: ⚡ Performance Audit
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v6
         with:
@@ -280,6 +282,8 @@ jobs:
   # ------------------------------------------------------------------
   create-release:
     name: 📝 Create Release
+    permissions:
+      contents: write
     needs: [deploy-production]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'

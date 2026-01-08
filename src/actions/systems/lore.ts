@@ -86,18 +86,18 @@ const LORE_DATABASE: LoreEntry[] = [
  * Get user's lore collection.
  */
 export async function getLoreCollectionAction(
-  userId: string,
+  _userId: string,
 ): Promise<LoreCollection> {
   const unlocked = LORE_DATABASE.filter((l) => l.isUnlocked).length;
 
   const byCategory: Record<LoreCategory, { total: number; unlocked: number }> =
-    {
-      WORLD: { total: 0, unlocked: 0 },
-      CHARACTER: { total: 0, unlocked: 0 },
-      HISTORY: { total: 0, unlocked: 0 },
-      BESTIARY: { total: 0, unlocked: 0 },
-      ARTIFACT: { total: 0, unlocked: 0 },
-    };
+  {
+    WORLD: { total: 0, unlocked: 0 },
+    CHARACTER: { total: 0, unlocked: 0 },
+    HISTORY: { total: 0, unlocked: 0 },
+    BESTIARY: { total: 0, unlocked: 0 },
+    ARTIFACT: { total: 0, unlocked: 0 },
+  };
 
   for (const entry of LORE_DATABASE) {
     byCategory[entry.category].total++;
@@ -116,7 +116,7 @@ export async function getLoreCollectionAction(
  * Get lore entries by category.
  */
 export async function getLoreEntriesAction(
-  userId: string,
+  _userId: string,
   category?: LoreCategory,
 ): Promise<LoreEntry[]> {
   if (category) {
@@ -129,7 +129,7 @@ export async function getLoreEntriesAction(
  * Get single lore entry.
  */
 export async function getLoreEntryAction(
-  userId: string,
+  _userId: string,
   loreId: string,
 ): Promise<LoreEntry | null> {
   return LORE_DATABASE.find((l) => l.id === loreId) || null;
@@ -139,7 +139,7 @@ export async function getLoreEntryAction(
  * Unlock a lore entry.
  */
 export async function unlockLoreEntryAction(
-  userId: string,
+  _userId: string,
   loreId: string,
 ): Promise<{ success: boolean; entry?: LoreEntry }> {
   const entry = LORE_DATABASE.find((l) => l.id === loreId);
@@ -156,8 +156,8 @@ export async function unlockLoreEntryAction(
  * Check for lore unlocks based on user actions.
  */
 export async function checkLoreUnlocksAction(
-  userId: string,
-  trigger: { type: string; value: number },
+  _userId: string,
+  _trigger: { type: string; value: number },
 ): Promise<LoreEntry[]> {
   const newUnlocks: LoreEntry[] = [];
   // In production, check conditions against user stats

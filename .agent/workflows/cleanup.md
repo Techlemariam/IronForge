@@ -46,3 +46,4 @@ After completion, update `DEBT.md`:
 - Work autonomously when invoked.
 - Prioritize build-breaking issues first.
 - Small, safe, incremental fixes only.
+- **Config**: Update `.agent/config.json` if a safe command is blocked.

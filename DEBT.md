@@ -62,8 +62,16 @@
 | 2026-01-05 | `src/components/ui/TvHud.tsx` | 7532 bytes may exceed TV Mode data density guidelines (max 3 data points). | @ui-ux | ⚠️ Open |
 | 2026-01-05 | `src/**/*` | Only 3 files use `aria-label`. Add accessibility labels to all interactive elements. | @ui-ux | ⚠️ Open |
 | 2026-01-06 | `src/features/oracle/OracleChat.tsx` | Improved `context` prop from `any` to `Record<string, unknown>`. @ts-ignore and `as any` casts remain due to @ai-sdk/react type limitations. | @cleanup | ⚠️ Deferred (Lib) |
-| 2026-01-06 | package.json | PR #31 (Dependencies) deferred (Zod 4, ESLint 9) | @infrastructure | ⚠️ Deferred |
-
+| 2026-01-06 | `package.json` | PR #31 (Dependencies) deferred (Zod 4, ESLint 9) | @infrastructure | ⚠️ Deferred |
+| 2026-01-06 | `src/services/analytics/GrowthMetricsService.ts` | `getSocialEngagement` is a placeholder. Requires 'Friendship' model implementation. | @architect | ⚠️ Open |
+| 2026-01-06 | `src/features/game/TheForge.tsx` | Mock inventory state and 'optimistic update' logic needs proper hook/server-sync. | @coder | ⚠️ Open |
+| 2026-01-06 | `src/actions/economy/forge.ts` | `getInventory` uses mock data. DB schema update needed for stackable resources. | @architect | ⚠️ Deferred (Schema) |
+| 2026-01-06 | `src/features/game/hooks/useSkillEffects.ts` | Keystone selection logic only supports first keystone. Needs multi-keystone/switching support. | @game-designer | ⚠️ Open |
+| 2026-01-06 | `src/actions/guild/raids.ts` | `startRaidAction` missing admin permission check (`// TODO: Verify user is admin`). | @security | ✅ Resolved |
+| 2026-01-06 | `src/actions/combat/emotes.ts` | `sendBattleEmoteAction` missing Supabase Realtime broadcast to opponent. | @infrastructure | ⚠️ Open |
+| 2026-01-06 | `src/services/oracle.ts` | Deprecate LLM-based logic in favor of deterministic `GoalPriorityEngine`. **Spec complete.** | @architect | 🔄 In Progress |
+| 2026-01-07 | `src/data/workouts.ts` | Only contains cardio (RUN/BIKE/SWIM). Strength workouts need dynamic generation from `exerciseDb.ts`. | @game-designer | ⚠️ Open |
+| 2026-01-07 | `src/lib/intervals.ts` | `rampRate`, `zone_times`, `icu_training_load` unused. See GPE spec Enhancement Roadmap. | @titan-coach | ⚠️ Open |
 
 ---
 

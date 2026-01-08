@@ -1,8 +1,8 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { getSession } from "@/lib/auth";
-import { getPvpRank } from "@/lib/pvpRanks";
+// import { getSession } from "@/lib/auth";
+// import { getPvpRank } from "@/lib/pvpRanks";
 import { getCurrentSeasonAction } from "./ranked";
 
 export type LeaderboardType = "PVP" | "DUEL" | "STRENGTH" | "GUILD";
@@ -119,7 +119,7 @@ async function getDuelLeaderboard(limit: number = 20) {
     }));
 }
 
-async function getStrengthLeaderboard(exerciseId: string, limit: number = 20, scope: "GLOBAL" | "COUNTRY" | "CITY" = "GLOBAL") {
+async function getStrengthLeaderboard(exerciseId: string, limit: number = 20, _scope: "GLOBAL" | "COUNTRY" | "CITY" = "GLOBAL") {
     // Note: Reusing logic from segment-leaderboard for now but normalized
     const logs = await prisma.exerciseLog.findMany({
         where: { exerciseId, weight: { gt: 0 } },
@@ -192,7 +192,7 @@ export async function getUserRankingsAction(userId: string): Promise<{
         let gold = 0, silver = 0, bronze = 0;
 
         for (const exerciseId of exerciseIds) {
-            const { leaderboard, userRank } = await getLeaderboardAction("STRENGTH", {
+            const { userRank } = await getLeaderboardAction("STRENGTH", {
                 exerciseId,
                 scope: "GLOBAL",
                 userId

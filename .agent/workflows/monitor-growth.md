@@ -32,6 +32,7 @@ rg "SpeedInsights" src/app/layout.tsx # Check performance monitoring status
 # Check Landing Page existence
 ls src/app/page.tsx src/components/marketing/
 ```
+- **Config**: Add `rg` and `ls` to `.agent/config.json`.
 
 ## 3. Platform Reach Audit (Retention Drivers)
 Verify widespread availability to maximize user retention, per `docs/PLATFORM_MATRIX.md`.

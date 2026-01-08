@@ -19,6 +19,7 @@ vi.mock("@/lib/prisma", () => {
     },
     guild: {
       create: vi.fn(),
+      findUnique: vi.fn(),
     },
     guildRaid: {
       create: vi.fn(),
@@ -153,7 +154,22 @@ describe("Guild Raids Server Actions", () => {
   });
 
   describe("startRaidAction", () => {
-    it("should create a new raid", async () => {
+    it("should reject unauthorized user", async () => {
+      // Mock guild where leaderId != user-1
+      (prisma.guild.findUnique as any).mockResolvedValue({ leaderId: "other-user" });
+
+      const result = await startRaidAction(
+        "guild-1",
+        "Ancient Dragon",
+        10000,
+        7
+      );
+
+      expect(result.success).toBe(false);
+      expect(result.error).toContain("Unauthorized");
+    });
+
+    it("should create a new raid for guild leader", async () => {
       const mockRaid = {
         id: "raid-1",
         guildId: "guild-1",
@@ -162,6 +178,8 @@ describe("Guild Raids Server Actions", () => {
         currentHp: 10000,
       };
 
+      // Mock guild where leaderId == user-1
+      (prisma.guild.findUnique as any).mockResolvedValue({ leaderId: "user-1" });
       (prisma.guildRaid.create as any).mockResolvedValue(mockRaid);
 
       const result = await startRaidAction(
@@ -171,8 +189,13 @@ describe("Guild Raids Server Actions", () => {
         7,
       );
 
-      expect(result.bossName).toBe("Ancient Dragon");
-      expect(result.totalHp).toBe(10000);
+      if (!result.success || !result.raid) {
+        throw new Error(`Expected success with raid data, got error: ${result.error}`);
+      }
+
+      expect(result.success).toBe(true);
+      expect(result.raid.bossName).toBe("Ancient Dragon");
+      expect(result.raid.totalHp).toBe(10000);
       expect(prisma.guildRaid.create).toHaveBeenCalled();
     });
   });

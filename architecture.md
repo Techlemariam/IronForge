@@ -102,13 +102,34 @@ DO NOT create standard API Routes (`/pages/api` or `route.ts`) unless strictly n
 
 ---
 
+## 6. 🎮 Game Mechanics & Progression
+
+IronForge treats physical training as the primary game engine. Progression is deterministic and tied to real-world performance.
+
+### 6.1 Training Paths (The Pillars)
+*   **Purpose:** Defines the athlete's specialization (Juggernaut, Pathfinder, Warden).
+*   **Logic:** Modifies combat stats, volume targets, and reward weights.
+*   **Parallel Tracks:** "Passive Layers" (Mobility & Recovery) provide long-term risk reduction.
+
+### 6.2 Neural Lattice (Passive Mastery)
+*   **Structure:** A PoE-inspired non-linear skill tree.
+*   **Currencies:** Talent Points (TP) from action, Kinetic Shards (KS) from recovery.
+*   **Gatekeeping:** Highly impactful "Keystones" define playstyles but come with significant trade-offs and physical prerequisites (e.g., 1RM targets).
+
+### 6.3 Goal-Priority Engine (The Brain)
+*   **Strategy:** Replaces high-overhead AI with deterministic periodization focus.
+*   **Mechanic:** Users declare and prioritize goals (VO2max, Wilks, FTP). The engine automatically rotates Macro-Phases (Alpha/Beta/Gamma) to resolve goal interference.
+*   **Bio-Safeguards:** Hard-coded triggers (ACWR, HRV, Sleep) enforce deloads regardless of user ambition.
+
+---
+
 ## 7. 🚀 Deployment & CI/CD
 
 IronForge is deployed to **Vercel** with full automation via **GitHub Actions**.
 
 ### 7.1 Pipeline Overview
-1. **Agent Verify (`agent-verify.yml`)**: Triggered on all Pull Requests and pushes to `main`. Runs Lint, Vitest (Unit/Integration), and Playwright (E2E). Uses Turborepo Caching to skip redundant tasks.
-2. **Production Deploy (`deploy.yml`)**: Triggered on successful build of the `main` branch. This workflow ensures that only code passing all verification steps is deployed to production.
+1. **Verify & Quality Gate (`ci-cd.yml`)**: Triggered on all Pull Requests and pushes to `main`. Runs Lint, Vitest (Unit/Integration), Playwright (E2E), and DB Drift checks. Uses Turborepo Caching.
+2. **Production Deploy (`ci-cd.yml`)**: Automated deployment to Vercel triggered on successful build/merge to the `main` branch.
 
 ### 7.2 Custom Domains
 - **Production**: [ironforge.app](https://ironforge.app)

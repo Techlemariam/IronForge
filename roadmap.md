@@ -22,11 +22,11 @@
 | # | Gap | Impact | Effort | Status |
 |---|-----|--------|--------|--------|
 | 1 | **No visual game art** (characters, bosses, equipment) | Users feel "where's the game?" | XL | 🟡 25% (Titans + 1 Boss done) |
-| 2 | **No lite/serious mode** toggle | Alienates non-gamers | M | 🔴 Not Started |
+| 2 | **No lite/serious mode** toggle | Alienates non-gamers | M | ✅ Shipped (Settings + Dashboard integration) |
 | 3 | **Overwhelming onboarding** | First-session churn | M | 🟡 Partial (FirstLoginQuest exists) |
 | 4 | **No female-inclusive branding** | Excludes 50% of market | L (copy) / XL (identity) | 🔴 Not Started |
 | 5 | **No social proof / community** | "Is anyone using this?" | M | 🔴 Not Started |
-| 6 | **No jargon explainers** (RPE, 1RM, MRV) | Beginners confused | S | 🔴 Not Started |
+| 6 | **No jargon explainers** (RPE, 1RM, MRV) | Beginners confused | S | ✅ Shipped (JargonTooltip with 18+ terms) |
 
 ### Marketing Gaps
 | # | Gap | Impact | Effort | Status |

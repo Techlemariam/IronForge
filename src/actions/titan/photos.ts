@@ -1,6 +1,5 @@
 "use server";
 
-import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
 interface ProgressPhoto {
@@ -37,7 +36,7 @@ interface ProgressComparison {
  */
 export async function uploadProgressPhotoAction(
   userId: string,
-  data: {
+  _data: {
     photoUrl: string;
     weight?: number;
     bodyFat?: number;
@@ -65,7 +64,7 @@ export async function uploadProgressPhotoAction(
  */
 export async function getProgressTimelineAction(
   userId: string,
-  limit: number = 20,
+  _limit: number = 20,
 ): Promise<ProgressPhoto[]> {
   try {
     // MVP: Return sample data

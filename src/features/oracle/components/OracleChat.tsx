@@ -15,7 +15,7 @@ import {
 import { ProgramGenerator } from "@/features/training/components/ProgramGenerator";
 
 interface OracleChatProps {
-  context?: any;
+  context?: Record<string, unknown> & { userId?: string };
 }
 
 export const OracleChat: React.FC<OracleChatProps> = ({ context }) => {
@@ -25,7 +25,7 @@ export const OracleChat: React.FC<OracleChatProps> = ({ context }) => {
 
   const { messages, sendMessage, status } =
     useChat({
-      // @ts-ignore - api is valid at runtime but type definition might be missing it in this version
+      // @ts-ignore - api is valid at runtime but not in UseChatOptions type definition
       api: "/api/chat",
       body: {
         context,

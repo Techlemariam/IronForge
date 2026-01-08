@@ -18,6 +18,7 @@
 ### High Priority (Strategy: 2045 Summit)
 - [x] **Segment Leaderboards** (Strava-style e1RM ranking: City/Country/World) <!-- status: shipped | priority: high | roi: 4.8 | effort: M | source: strategic-diff -->
 - [x] **PvP Ranking Ladder** (Private → High Warlord titles) <!-- status: shipped | priority: high | roi: 4.7 | effort: M | source: strategic-diff -->
+- [ ] **Tutorial Tooltips for Beginners** <!-- status: planned | priority: high | roi: 4.5 | effort: S | source: monitor-strategy | date: 2026-01-06 -->
 - [x] **Auto-Periodization Engine** (AI training plan generation) <!-- status: shipped | priority: high | roi: 4.6 | effort: H | source: strategic-diff -->
   - [x] Enhanced Volume Calculator (RPE-weighted, SFR) ([Analysis](../../docs/analysis/adaptive_volume_landmarks.md)) <!-- status: shipped | priority: high | roi: 4.5 | effort: M | source: strategic-diff -->
     - [x] Level 1: Naiv Skalning (single coefficient) <!-- version: v1.5 | effort: S -->
@@ -54,6 +55,11 @@
 ### Low Priority (ROI < 2.0)
 - [x] **Guild Creation** <!-- status: shipped | priority: low | roi: 2.5 | effort: L | source: game-designer -->
 - [x] Manual Stat Overrides <!-- status: shipped | priority: low | roi: 1.5 | effort: S | source: manager -->
+
+## 🔧 Logic & Type Safety Gaps
+- [ ] **Accessibility Audit: Missing ARIA labels** <!-- status: planned | priority: medium | roi: 3.5 | effort: M | source: monitor-debt | date: 2026-01-06 -->
+- [x] **Prisma Type Stabilization** <!-- status: shipped | priority: critical | roi: 5.5 | effort: L | source: strategic-diff -->
+
 ## 🆕 Season 2 Backlog (Revised after Gap Analysis 2025-12-29)
 
 > **Note:** 6 features from original brainstorm already exist: Raid Boss, Talent Trees, Seasonal Events, Challenges, Marketplace, Fitness Challenges

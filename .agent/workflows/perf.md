@@ -25,6 +25,7 @@ ANALYZE=true npm run build
 # Check output
 ls -la .next/static/chunks | head -20
 ```
+- **Config**: Add `ls` or build tools to `.agent/config.json`.
 
 **Targets:**
 - First Load JS: < 150kB

@@ -1,6 +1,6 @@
 "use server";
 
-import { prisma } from "@/lib/prisma";
+// import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
 type ChallengeType = "VOLUME" | "REPS" | "WEIGHT" | "STREAK" | "XP" | "CUSTOM";
@@ -79,11 +79,11 @@ export async function createFriendChallengeAction(
   type: ChallengeType,
   target: number,
   durationDays: number,
-  wager?: { xp: number; gold: number },
+  _wager?: { xp: number; gold: number },
 ): Promise<{ success: boolean; challengeId?: string }> {
   try {
     const challengeId = `challenge-${Date.now()}`;
-    const deadline = new Date(Date.now() + durationDays * 24 * 60 * 60 * 1000);
+    const _deadline = new Date(Date.now() + durationDays * 24 * 60 * 60 * 1000);
 
     console.log(
       `Created challenge ${type} from ${challengerId} to ${challengedId}`,
@@ -198,7 +198,7 @@ export function getChallengeTemplates(): ChallengeTemplate[] {
  * Complete and finalize a challenge.
  */
 export async function finalizeChallengeAction(
-  challengeId: string,
+  _challengeId: string,
 ): Promise<{ winnerId: string; rewards: { xp: number; gold: number } }> {
   // In production, calculate winner and distribute rewards
   return {

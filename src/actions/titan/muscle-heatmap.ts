@@ -48,7 +48,7 @@ export async function getMuscleHeatMapAction(
   try {
     const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
 
-    const logs = await prisma.exerciseLog.findMany({
+    const _logs = await prisma.exerciseLog.findMany({
       where: {
         userId,
         date: { gte: weekAgo.toISOString() },
