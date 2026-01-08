@@ -1,7 +1,7 @@
 {
-    "version": "1.3",
-    "lastUpdated": "2025-12-24T12:20:00+01:00",
-    "currentSprint": "Sprint 14: Polish & Launch",
+    "version": "1.4",
+    "lastUpdated": "2026-01-07T10:33:32+01:00",
+    "currentSprint": "Sprint 21: Refactor and Verify",
     "activeTask": null,
     "memory": {
         "sessionsDir": ".agent/memory/sessions/",
@@ -10,17 +10,17 @@
     },
     "context": {
         "recentFiles": [
-            "src/lib/pvpRanks.ts",
-            "src/components/colosseum/Leaderboard.tsx",
-            "prisma/schema.prisma",
-            "package.json"
+            "c:/Users/alexa/Workspaces/IronForge/localhost_2026-01-07_10-14-20.json",
+            "src/features/dashboard/DashboardClient.tsx",
+            "src/features/dashboard/ViewRouter.tsx",
+            "DEBT.md"
         ],
         "pendingActions": [],
         "blockers": []
     },
     "agentHandoff": {
         "lastAgent": "manager",
-        "nextRecommendedAgent": null,
-        "handoffNotes": "Faction system implemented. React versions synced to latest. Build is GREEN."
+        "nextRecommendedAgent": "infrastructure",
+        "handoffNotes": "Lighthouse debugging handled externally. Ready for next task."
     }
 }

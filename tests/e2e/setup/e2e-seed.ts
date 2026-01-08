@@ -80,6 +80,40 @@ async function main() {
         console.log(`✅ Ensured opponent: ${opp.name} (Lvl ${opp.level}) - ID: ${user.id}`);
     }
 
+    // 3. Seed Main Test User (Hunter) to prevent Onboarding Overlay in E2E
+    const testEmail = process.env.TEST_USER_EMAIL || 'alexander.teklemariam@gmail.com';
+    const testUser = await prisma.user.upsert({
+        where: { email: testEmail },
+        update: {
+            hasCompletedOnboarding: true, // CRITICAL: Bypass FirstLoginQuest
+            level: 10,
+            gold: 5000,
+            // Ensure proper default state
+        },
+        create: {
+            email: testEmail,
+            heroName: 'E2E Hunter',
+            level: 10,
+            gold: 5000,
+            faction: Faction.HORDE,
+            archetype: Archetype.PATHFINDER,
+            hasCompletedOnboarding: true,
+            titan: {
+                create: {
+                    name: 'E2E Titan',
+                    level: 10,
+                    powerRating: 800,
+                    strength: 20,
+                    endurance: 20,
+                    agility: 20,
+                    vitality: 20,
+                    willpower: 20
+                }
+            }
+        }
+    });
+    console.log(`✅ Ensured Test User: ${testUser.heroName} (Onboarding Completed)`);
+
     console.log('🌱 Seeding completed successfully.');
 }
 

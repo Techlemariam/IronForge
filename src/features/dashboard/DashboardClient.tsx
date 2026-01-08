@@ -375,6 +375,7 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
       <Link
         href="/settings"
         className="fixed top-6 right-6 z-50 text-forge-muted hover:text-white transition-colors p-2 hover:rotate-90 duration-300"
+        aria-label="Settings"
       >
         <Settings size={24} />
       </Link>

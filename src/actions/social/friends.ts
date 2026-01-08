@@ -108,7 +108,7 @@ export async function removeFriendAction(
 /**
  * Get user's friends list.
  */
-export async function getFriendsListAction(userId: string): Promise<Friend[]> {
+export async function getFriendsListAction(_userId: string): Promise<Friend[]> {
   // MVP: Return sample friends
   return [
     {

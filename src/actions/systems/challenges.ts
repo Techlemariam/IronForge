@@ -10,7 +10,7 @@
  */
 import { addBattlePassXpAction } from "@/actions/systems/battle-pass";
 import { createClient } from "@/utils/supabase/server";
-import { cookies } from "next/headers";
+// import { cookies } from "next/headers";
 import prisma from "@/lib/prisma";
 import { ChallengeType } from "@prisma/client";
 import { revalidatePath } from "next/cache";

@@ -24,6 +24,7 @@ Quick reference for choosing the right workflow based on your situation.
 | **Sprint Planning** | `/sprint-plan` → `/triage` → `/manager` | Backlog grooming & prioritization |
 | **Gaps Found** | `/triage` → `ROADMAP.md` → `/feature` | Gap resolution pipeline |
 | **Overnight Work** | `/sprint-auto` | Autonomous execution |
+| **Multi-Chat Coordination** | `/claim-task` → `/domain-session` | Prevent parallel conflicts |
 
 ---
 
@@ -64,6 +65,7 @@ Quick reference for choosing the right workflow based on your situation.
 
 | `/triage` | Gap prioritization | Resolving gaps from monitors |
 | `/gatekeeper` | Qualification | Strict pre-push checks |
+| `/claim-task` | Task coordination | Multi-chat conflict prevention |
 | `/night-shift` | Async Maintenance | Overnight optimizations |
 | `/monitor-debt` | Debt Scanning | Finding technical debt |
 | `/debt-attack` | Debt Execution | Autonomous cleanup loop |
@@ -119,6 +121,68 @@ Gap Resolution:
 | **Gap Triage** | `/triage` | Prioritize all found gaps into ROADMAP.md |
 | **Debt Scanner** | `/monitor-debt` | Scan codebase for debt markers |
 | **Quality Gate** | `/gatekeeper` | Pre-push integrity checks |
+
+---
+
+## 🔀 Multi-Chat Coordination
+
+> [!IMPORTANT]
+> When running multiple parallel chat sessions, follow this pattern to prevent race conditions and duplicate work.
+
+### Chat Roles
+
+| Role | Count | Responsibility | Workflows |
+|------|-------|----------------|-----------|
+| **Manager** | 1 (long-lived) | Planning, sprint mgmt, roadmap | `/startup`, `/sprint-plan`, `/triage` |
+| **Worker** | N (short-lived) | Execute ONE task, close when done | `/claim-task`, `/domain-session`, `/feature` |
+
+### Golden Rules
+
+1. **One task per chat** — Never claim multiple tasks in a single chat session
+2. **Branch = Claim** — Creating a feature branch claims the task; other chats see this
+3. **Short-lived workers** — Complete and close worker chats within 1-2 sessions
+4. **Manager owns state** — Only manager chat updates `roadmap.md`, `DEBT.md`, `sprint/`
+
+### Workflow Pattern
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  MANAGER CHAT (long-lived)                                       │
+│  /startup → /sprint-plan → monitors claims via /claim-task status│
+└──────────────────────────────┬──────────────────────────────────┘
+                               │ delegates tasks
+        ┌──────────────────────┼──────────────────────┐
+        ▼                      ▼                      ▼
+┌───────────────┐    ┌───────────────┐    ┌───────────────┐
+│ WORKER CHAT A │    │ WORKER CHAT B │    │ WORKER CHAT C │
+│ /claim-task   │    │ /claim-task   │    │ /claim-task   │
+│ R-03          │    │ D-12          │    │ S-01          │
+│ feat/R-03-... │    │ chore/D-12-...│    │ fix/S-01-...  │
+│ /gatekeeper   │    │ /gatekeeper   │    │ /gatekeeper   │
+│ → PR → close  │    │ → PR → close  │    │ → PR → close  │
+└───────────────┘    └───────────────┘    └───────────────┘
+```
+
+### Conflict Prevention
+
+Before starting work in any chat:
+
+```bash
+# See what others are working on
+git branch -r --list 'origin/feat/*' 'origin/fix/*'
+
+# See open PRs and their files
+gh pr list --state open
+```
+
+### Quick Commands
+
+| Need | Command |
+|------|---------|
+| See claimable tasks | `/claim-task list` |
+| Claim a task | `/claim-task [task-id]` |
+| See active claims | `/claim-task status` |
+| Finish and verify | `/gatekeeper` |
 
 ---
 

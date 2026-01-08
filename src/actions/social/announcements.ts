@@ -28,9 +28,9 @@ interface GlobalAnnouncement {
  * Get active global announcements.
  */
 export async function getGlobalAnnouncementsAction(
-  userId: string,
+  _userId: string,
 ): Promise<GlobalAnnouncement[]> {
-  const now = new Date();
+  const _now = new Date();
 
   return [
     {
@@ -77,10 +77,10 @@ export async function getGlobalAnnouncementsAction(
  * Mark announcement as read.
  */
 export async function markAnnouncementReadAction(
-  userId: string,
+  _userId: string,
   announcementId: string,
 ): Promise<{ success: boolean }> {
-  console.log(`Marked announcement ${announcementId} as read for ${userId}`);
+  console.log(`Marked announcement ${announcementId} as read for ${_userId}`);
   return { success: true };
 }
 
@@ -88,10 +88,10 @@ export async function markAnnouncementReadAction(
  * Dismiss announcement.
  */
 export async function dismissAnnouncementAction(
-  userId: string,
+  _userId: string,
   announcementId: string,
 ): Promise<{ success: boolean }> {
-  console.log(`Dismissed announcement ${announcementId} for ${userId}`);
+  console.log(`Dismissed announcement ${announcementId} for ${_userId}`);
   return { success: true };
 }
 
@@ -99,9 +99,9 @@ export async function dismissAnnouncementAction(
  * Get unread announcement count.
  */
 export async function getUnreadAnnouncementCountAction(
-  userId: string,
+  _userId: string,
 ): Promise<number> {
-  const announcements = await getGlobalAnnouncementsAction(userId);
+  const announcements = await getGlobalAnnouncementsAction(_userId);
   return announcements.filter((a) => !a.isRead).length;
 }
 
@@ -109,9 +109,9 @@ export async function getUnreadAnnouncementCountAction(
  * Check for urgent announcements (maintenance, emergency).
  */
 export async function getUrgentAnnouncementsAction(
-  userId: string,
+  _userId: string,
 ): Promise<GlobalAnnouncement[]> {
-  const all = await getGlobalAnnouncementsAction(userId);
+  const all = await getGlobalAnnouncementsAction(_userId);
   return all.filter(
     (a) =>
       a.priority === "URGENT" ||

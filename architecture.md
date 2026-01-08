@@ -102,6 +102,27 @@ DO NOT create standard API Routes (`/pages/api` or `route.ts`) unless strictly n
 
 ---
 
+## 6. 🎮 Game Mechanics & Progression
+
+IronForge treats physical training as the primary game engine. Progression is deterministic and tied to real-world performance.
+
+### 6.1 Training Paths (The Pillars)
+*   **Purpose:** Defines the athlete's specialization (Juggernaut, Pathfinder, Warden).
+*   **Logic:** Modifies combat stats, volume targets, and reward weights.
+*   **Parallel Tracks:** "Passive Layers" (Mobility & Recovery) provide long-term risk reduction.
+
+### 6.2 Neural Lattice (Passive Mastery)
+*   **Structure:** A PoE-inspired non-linear skill tree.
+*   **Currencies:** Talent Points (TP) from action, Kinetic Shards (KS) from recovery.
+*   **Gatekeeping:** Highly impactful "Keystones" define playstyles but come with significant trade-offs and physical prerequisites (e.g., 1RM targets).
+
+### 6.3 Goal-Priority Engine (The Brain)
+*   **Strategy:** Replaces high-overhead AI with deterministic periodization focus.
+*   **Mechanic:** Users declare and prioritize goals (VO2max, Wilks, FTP). The engine automatically rotates Macro-Phases (Alpha/Beta/Gamma) to resolve goal interference.
+*   **Bio-Safeguards:** Hard-coded triggers (ACWR, HRV, Sleep) enforce deloads regardless of user ambition.
+
+---
+
 ## 7. 🚀 Deployment & CI/CD
 
 IronForge is deployed to **Vercel** with full automation via **GitHub Actions**.

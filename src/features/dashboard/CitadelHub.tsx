@@ -50,7 +50,13 @@ const NavButton: React.FC<{
       }}
       onMouseEnter={() => playSound("ui_hover")}
       title={description}
-      aria-label={description || (typeof children === 'string' ? children : undefined)}
+      aria-label={
+        description
+          ? `${typeof children === "string" ? children : "Action"}: ${description}`
+          : typeof children === "string"
+            ? children
+            : undefined
+      }
       className={`
                 relative flex items-center p-3 border rounded-lg shadow-md transition-all duration-200 group w-full text-left focus:outline-none
                 ${variants[variant]}
