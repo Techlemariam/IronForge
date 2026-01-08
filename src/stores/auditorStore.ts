@@ -8,7 +8,7 @@ interface AuditorState {
   error: string | null;
 
   // Actions
-  fetchReport: (forceRefresh?: boolean) => Promise<void>;
+  fetchReport: (userId?: string, forceRefresh?: boolean) => Promise<void>;
   reset: () => void;
 }
 
@@ -17,10 +17,10 @@ export const useAuditorStore = create<AuditorState>((set) => ({
   loading: false,
   error: null,
 
-  fetchReport: async (forceRefresh = false) => {
+  fetchReport: async (userId, forceRefresh = false) => {
     set({ loading: true, error: null });
     try {
-      const report = await runFullAudit(forceRefresh);
+      const report = await runFullAudit(forceRefresh, userId);
       set({ report, loading: false });
     } catch (error) {
       console.error("Auditor Store Error:", error);

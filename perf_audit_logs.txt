@@ -1,0 +1,564 @@
+⚡ Performance Audit	Set up job	﻿2026-01-08T19:00:43.3697555Z Current runner version: '2.330.0'
+⚡ Performance Audit	Set up job	2026-01-08T19:00:43.3738695Z ##[group]Runner Image Provisioner
+⚡ Performance Audit	Set up job	2026-01-08T19:00:43.3740038Z Hosted Compute Agent
+⚡ Performance Audit	Set up job	2026-01-08T19:00:43.3740953Z Version: 20251211.462
+⚡ Performance Audit	Set up job	2026-01-08T19:00:43.3741927Z Commit: 6cbad8c2bb55d58165063d031ccabf57e2d2db61
+⚡ Performance Audit	Set up job	2026-01-08T19:00:43.3743213Z Build Date: 2025-12-11T16:28:49Z
+⚡ Performance Audit	Set up job	2026-01-08T19:00:43.3744389Z Worker ID: {218db205-72ee-495e-800a-e25a2131fc8c}
+⚡ Performance Audit	Set up job	2026-01-08T19:00:43.3745627Z ##[endgroup]
+⚡ Performance Audit	Set up job	2026-01-08T19:00:43.3746527Z ##[group]Operating System
+⚡ Performance Audit	Set up job	2026-01-08T19:00:43.3747740Z Ubuntu
+⚡ Performance Audit	Set up job	2026-01-08T19:00:43.3748648Z 24.04.3
+⚡ Performance Audit	Set up job	2026-01-08T19:00:43.3749511Z LTS
+⚡ Performance Audit	Set up job	2026-01-08T19:00:43.3750316Z ##[endgroup]
+⚡ Performance Audit	Set up job	2026-01-08T19:00:43.3751336Z ##[group]Runner Image
+⚡ Performance Audit	Set up job	2026-01-08T19:00:43.3752338Z Image: ubuntu-24.04
+⚡ Performance Audit	Set up job	2026-01-08T19:00:43.3753235Z Version: 20251215.174.1
+⚡ Performance Audit	Set up job	2026-01-08T19:00:43.3755174Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20251215.174/images/ubuntu/Ubuntu2404-Readme.md
+⚡ Performance Audit	Set up job	2026-01-08T19:00:43.3758018Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20251215.174
+⚡ Performance Audit	Set up job	2026-01-08T19:00:43.3760328Z ##[endgroup]
+⚡ Performance Audit	Set up job	2026-01-08T19:00:43.3762379Z ##[group]GITHUB_TOKEN Permissions
+⚡ Performance Audit	Set up job	2026-01-08T19:00:43.3765455Z Contents: read
+⚡ Performance Audit	Set up job	2026-01-08T19:00:43.3766433Z Metadata: read
+⚡ Performance Audit	Set up job	2026-01-08T19:00:43.3767797Z Packages: read
+⚡ Performance Audit	Set up job	2026-01-08T19:00:43.3768738Z ##[endgroup]
+⚡ Performance Audit	Set up job	2026-01-08T19:00:43.3771673Z Secret source: Actions
+⚡ Performance Audit	Set up job	2026-01-08T19:00:43.3773340Z Prepare workflow directory
+⚡ Performance Audit	Set up job	2026-01-08T19:00:43.4505151Z Prepare all required actions
+⚡ Performance Audit	Set up job	2026-01-08T19:00:43.4563018Z Getting action download info
+⚡ Performance Audit	Set up job	2026-01-08T19:00:43.8051551Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+⚡ Performance Audit	Set up job	2026-01-08T19:00:43.9179808Z Download action repository 'pnpm/action-setup@v4' (SHA:41ff72655975bd51cab0327fa583b6e92b6d3061)
+⚡ Performance Audit	Set up job	2026-01-08T19:00:44.4781662Z Download action repository 'actions/setup-node@v6' (SHA:395ad3262231945c25e8478fd5baf05154b1d79f)
+⚡ Performance Audit	Set up job	2026-01-08T19:00:44.7250151Z Complete job name: ⚡ Performance Audit
+⚡ Performance Audit	Run actions/checkout@v4	﻿2026-01-08T19:00:44.8042010Z ##[group]Run actions/checkout@v4
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.8043419Z with:
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.8044255Z   repository: Techlemariam/IronForge
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.8045593Z   token: ***
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.8046372Z   ssh-strict: true
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.8047401Z   ssh-user: git
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.8048254Z   persist-credentials: true
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.8049200Z   clean: true
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.8050057Z   sparse-checkout-cone-mode: true
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.8051084Z   fetch-depth: 1
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.8051897Z   fetch-tags: false
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.8052762Z   show-progress: true
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.8053609Z   lfs: false
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.8054385Z   submodules: false
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.8055253Z   set-safe-directory: true
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.8056429Z env:
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.8059295Z   DATABASE_URL: ***
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.8061403Z   DIRECT_URL: ***
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.8062635Z   NEXT_PUBLIC_SUPABASE_URL: ***
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.8067674Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.8068987Z   SKIP_ENV_VALIDATION: true
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.8070073Z ##[endgroup]
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.9168894Z Syncing repository: Techlemariam/IronForge
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.9171563Z ##[group]Getting Git version info
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.9172952Z Working directory is '/home/runner/work/IronForge/IronForge'
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.9176211Z [command]/usr/bin/git version
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.9265346Z git version 2.52.0
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.9291893Z ##[endgroup]
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.9306390Z Temporarily overriding HOME='/home/runner/work/_temp/d5ae7f59-164b-4175-8124-5494e5fa02ba' before making global git config changes
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.9309899Z Adding repository directory to the temporary git global config as a safe directory
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.9313388Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/IronForge/IronForge
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.9352627Z Deleting the contents of '/home/runner/work/IronForge/IronForge'
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.9356432Z ##[group]Initializing the repository
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.9361211Z [command]/usr/bin/git init /home/runner/work/IronForge/IronForge
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.9473117Z hint: Using 'master' as the name for the initial branch. This default branch name
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.9476786Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.9479431Z hint: to use in all of your new repositories, which will suppress this warning,
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.9480926Z hint: call:
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.9481682Z hint:
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.9483142Z hint: 	git config --global init.defaultBranch <name>
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.9485113Z hint:
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.9487230Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.9490422Z hint: 'development'. The just-created branch can be renamed via this command:
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.9492960Z hint:
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.9494251Z hint: 	git branch -m <name>
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.9495806Z hint:
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.9497880Z hint: Disable this message with "git config set advice.defaultBranchName false"
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.9501270Z Initialized empty Git repository in /home/runner/work/IronForge/IronForge/.git/
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.9506847Z [command]/usr/bin/git remote add origin https://github.com/Techlemariam/IronForge
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.9530729Z ##[endgroup]
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.9532373Z ##[group]Disabling automatic garbage collection
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.9534229Z [command]/usr/bin/git config --local gc.auto 0
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.9563587Z ##[endgroup]
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.9565076Z ##[group]Setting up auth
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.9569317Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.9598776Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.9942251Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:44.9974614Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:45.0210573Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:45.0252074Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:45.0493685Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:45.0530137Z ##[endgroup]
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:45.0531598Z ##[group]Fetching the repository
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:45.0539603Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +6c5a2d3270b0ef5a3adce3050bbc34949791fe9e:refs/remotes/pull/34/merge
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:45.8379355Z From https://github.com/Techlemariam/IronForge
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:45.8381511Z  * [new ref]         6c5a2d3270b0ef5a3adce3050bbc34949791fe9e -> pull/34/merge
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:45.8424977Z ##[endgroup]
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:45.8427166Z ##[group]Determining the checkout info
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:45.8428871Z ##[endgroup]
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:45.8431533Z [command]/usr/bin/git sparse-checkout disable
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:45.8480930Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:45.8513322Z ##[group]Checking out the ref
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:45.8517448Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/34/merge
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:45.9737971Z Note: switching to 'refs/remotes/pull/34/merge'.
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:45.9740129Z 
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:45.9741598Z You are in 'detached HEAD' state. You can look around, make experimental
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:45.9746191Z changes and commit them, and you can discard any commits you make in this
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:45.9749672Z state without impacting any branches by switching back to a branch.
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:45.9751515Z 
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:45.9753176Z If you want to create a new branch to retain commits you create, you may
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:45.9756171Z do so (now or later) by using -c with the switch command. Example:
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:45.9758387Z 
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:45.9759124Z   git switch -c <new-branch-name>
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:45.9760294Z 
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:45.9760970Z Or undo this operation with:
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:45.9762053Z 
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:45.9762642Z   git switch -
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:45.9763488Z 
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:45.9764847Z Turn off this advice by setting config variable advice.detachedHead to false
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:45.9767267Z 
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:45.9769562Z HEAD is now at 6c5a2d3 Merge 89ee1ce2406e22156d69729453169634ec324e9c into b789994c9141a6c4ac9b5c7c3c90186cac73a7e6
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:45.9776267Z ##[endgroup]
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:45.9800965Z [command]/usr/bin/git log -1 --format=%H
+⚡ Performance Audit	Run actions/checkout@v4	2026-01-08T19:00:45.9828757Z 6c5a2d3270b0ef5a3adce3050bbc34949791fe9e
+⚡ Performance Audit	Run pnpm/action-setup@v4	﻿2026-01-08T19:00:46.0157780Z ##[group]Run pnpm/action-setup@v4
+⚡ Performance Audit	Run pnpm/action-setup@v4	2026-01-08T19:00:46.0158836Z with:
+⚡ Performance Audit	Run pnpm/action-setup@v4	2026-01-08T19:00:46.0159572Z   dest: ~/setup-pnpm
+⚡ Performance Audit	Run pnpm/action-setup@v4	2026-01-08T19:00:46.0160401Z   run_install: null
+⚡ Performance Audit	Run pnpm/action-setup@v4	2026-01-08T19:00:46.0161237Z   package_json_file: package.json
+⚡ Performance Audit	Run pnpm/action-setup@v4	2026-01-08T19:00:46.0162210Z   standalone: false
+⚡ Performance Audit	Run pnpm/action-setup@v4	2026-01-08T19:00:46.0162983Z env:
+⚡ Performance Audit	Run pnpm/action-setup@v4	2026-01-08T19:00:46.0165280Z   DATABASE_URL: ***
+⚡ Performance Audit	Run pnpm/action-setup@v4	2026-01-08T19:00:46.0167468Z   DIRECT_URL: ***
+⚡ Performance Audit	Run pnpm/action-setup@v4	2026-01-08T19:00:46.0168706Z   NEXT_PUBLIC_SUPABASE_URL: ***
+⚡ Performance Audit	Run pnpm/action-setup@v4	2026-01-08T19:00:46.0173398Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+⚡ Performance Audit	Run pnpm/action-setup@v4	2026-01-08T19:00:46.0174423Z   SKIP_ENV_VALIDATION: true
+⚡ Performance Audit	Run pnpm/action-setup@v4	2026-01-08T19:00:46.0175307Z ##[endgroup]
+⚡ Performance Audit	Run pnpm/action-setup@v4	2026-01-08T19:00:46.0741718Z ##[group]Running self-installer...
+⚡ Performance Audit	Run pnpm/action-setup@v4	2026-01-08T19:00:46.6740078Z Progress: resolved 1, reused 0, downloaded 0, added 0
+⚡ Performance Audit	Run pnpm/action-setup@v4	2026-01-08T19:00:46.6833720Z Packages: +1
+⚡ Performance Audit	Run pnpm/action-setup@v4	2026-01-08T19:00:46.6834346Z +
+⚡ Performance Audit	Run pnpm/action-setup@v4	2026-01-08T19:00:47.2632160Z Progress: resolved 1, reused 0, downloaded 1, added 1, done
+⚡ Performance Audit	Run pnpm/action-setup@v4	2026-01-08T19:00:47.2918120Z 
+⚡ Performance Audit	Run pnpm/action-setup@v4	2026-01-08T19:00:47.2918649Z dependencies:
+⚡ Performance Audit	Run pnpm/action-setup@v4	2026-01-08T19:00:47.2919378Z + pnpm 9.15.0 (10.27.0 is available)
+⚡ Performance Audit	Run pnpm/action-setup@v4	2026-01-08T19:00:47.2919873Z 
+⚡ Performance Audit	Run pnpm/action-setup@v4	2026-01-08T19:00:47.2955776Z Done in 1s
+⚡ Performance Audit	Run pnpm/action-setup@v4	2026-01-08T19:00:47.3160489Z ##[endgroup]
+⚡ Performance Audit	Run pnpm/action-setup@v4	2026-01-08T19:00:47.3163752Z Installation Completed!
+⚡ Performance Audit	Run actions/setup-node@v6	﻿2026-01-08T19:00:47.3316743Z ##[group]Run actions/setup-node@v6
+⚡ Performance Audit	Run actions/setup-node@v6	2026-01-08T19:00:47.3317130Z with:
+⚡ Performance Audit	Run actions/setup-node@v6	2026-01-08T19:00:47.3317369Z   node-version: 22
+⚡ Performance Audit	Run actions/setup-node@v6	2026-01-08T19:00:47.3317621Z   cache: pnpm
+⚡ Performance Audit	Run actions/setup-node@v6	2026-01-08T19:00:47.3317863Z   check-latest: false
+⚡ Performance Audit	Run actions/setup-node@v6	2026-01-08T19:00:47.3318260Z   token: ***
+⚡ Performance Audit	Run actions/setup-node@v6	2026-01-08T19:00:47.3318529Z   package-manager-cache: true
+⚡ Performance Audit	Run actions/setup-node@v6	2026-01-08T19:00:47.3318848Z env:
+⚡ Performance Audit	Run actions/setup-node@v6	2026-01-08T19:00:47.3319594Z   DATABASE_URL: ***
+⚡ Performance Audit	Run actions/setup-node@v6	2026-01-08T19:00:47.3320254Z   DIRECT_URL: ***
+⚡ Performance Audit	Run actions/setup-node@v6	2026-01-08T19:00:47.3320637Z   NEXT_PUBLIC_SUPABASE_URL: ***
+⚡ Performance Audit	Run actions/setup-node@v6	2026-01-08T19:00:47.3322025Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+⚡ Performance Audit	Run actions/setup-node@v6	2026-01-08T19:00:47.3322340Z   SKIP_ENV_VALIDATION: true
+⚡ Performance Audit	Run actions/setup-node@v6	2026-01-08T19:00:47.3322691Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+⚡ Performance Audit	Run actions/setup-node@v6	2026-01-08T19:00:47.3323044Z ##[endgroup]
+⚡ Performance Audit	Run actions/setup-node@v6	2026-01-08T19:00:47.4752222Z Found in cache @ /opt/hostedtoolcache/node/22.21.1/x64
+⚡ Performance Audit	Run actions/setup-node@v6	2026-01-08T19:00:47.4757076Z (node:2129) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+⚡ Performance Audit	Run actions/setup-node@v6	2026-01-08T19:00:47.4758109Z (Use `node --trace-deprecation ...` to show where the warning was created)
+⚡ Performance Audit	Run actions/setup-node@v6	2026-01-08T19:00:47.4760315Z ##[group]Environment details
+⚡ Performance Audit	Run actions/setup-node@v6	2026-01-08T19:00:47.8404659Z node: v22.21.1
+⚡ Performance Audit	Run actions/setup-node@v6	2026-01-08T19:00:47.8405156Z npm: 10.9.4
+⚡ Performance Audit	Run actions/setup-node@v6	2026-01-08T19:00:47.8433346Z yarn: 1.22.22
+⚡ Performance Audit	Run actions/setup-node@v6	2026-01-08T19:00:47.8434187Z ##[endgroup]
+⚡ Performance Audit	Run actions/setup-node@v6	2026-01-08T19:00:47.8434557Z [command]/home/runner/setup-pnpm/node_modules/.bin/pnpm store path --silent
+⚡ Performance Audit	Run actions/setup-node@v6	2026-01-08T19:00:48.2486216Z /home/runner/setup-pnpm/node_modules/.bin/store/v3
+⚡ Performance Audit	Run actions/setup-node@v6	2026-01-08T19:00:48.4139843Z Cache hit for: node-cache-Linux-x64-pnpm-87c008dc9358694f3b5b0ccd1343d2730c2250451e2d227da281c5b1338a0c60
+⚡ Performance Audit	Run actions/setup-node@v6	2026-01-08T19:00:48.4244606Z (node:2129) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+⚡ Performance Audit	Run actions/setup-node@v6	2026-01-08T19:00:49.5516196Z Received 117440512 of 432780340 (27.1%), 111.9 MBs/sec
+⚡ Performance Audit	Run actions/setup-node@v6	2026-01-08T19:00:50.5519943Z Received 268435456 of 432780340 (62.0%), 127.9 MBs/sec
+⚡ Performance Audit	Run actions/setup-node@v6	2026-01-08T19:00:51.3490944Z Received 432780340 of 432780340 (100.0%), 147.5 MBs/sec
+⚡ Performance Audit	Run actions/setup-node@v6	2026-01-08T19:00:51.3492186Z Cache Size: ~413 MB (432780340 B)
+⚡ Performance Audit	Run actions/setup-node@v6	2026-01-08T19:00:51.3639887Z [command]/usr/bin/tar -xf /home/runner/work/_temp/b87dd9d9-352d-4a67-886b-e9a5ead47699/cache.tzst -P -C /home/runner/work/IronForge/IronForge --use-compress-program unzstd
+⚡ Performance Audit	Run actions/setup-node@v6	2026-01-08T19:00:56.7379860Z Cache restored successfully
+⚡ Performance Audit	Run actions/setup-node@v6	2026-01-08T19:00:56.8163902Z Cache restored from key: node-cache-Linux-x64-pnpm-87c008dc9358694f3b5b0ccd1343d2730c2250451e2d227da281c5b1338a0c60
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	﻿2026-01-08T19:00:56.8345297Z ##[group]Run pnpm install --frozen-lockfile
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:00:56.8345827Z [36;1mpnpm install --frozen-lockfile[0m
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:00:56.8392926Z shell: /usr/bin/bash -e {0}
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:00:56.8393208Z env:
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:00:56.8394159Z   DATABASE_URL: ***
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:00:56.8394759Z   DIRECT_URL: ***
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:00:56.8395101Z   NEXT_PUBLIC_SUPABASE_URL: ***
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:00:56.8396425Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:00:56.8396973Z   SKIP_ENV_VALIDATION: true
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:00:56.8397273Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:00:56.8397575Z ##[endgroup]
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:00:57.3103055Z Lockfile is up to date, resolution step is skipped
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:00:57.4194453Z Progress: resolved 1, reused 0, downloaded 0, added 0
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:00:57.6333424Z Packages: +1498
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:00:57.6334192Z ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:00:58.4491799Z Progress: resolved 1498, reused 1108, downloaded 0, added 0
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:00:59.4501453Z Progress: resolved 1498, reused 1498, downloaded 0, added 549
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:00.4503541Z Progress: resolved 1498, reused 1498, downloaded 0, added 1349
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:00.5437146Z Progress: resolved 1498, reused 1498, downloaded 0, added 1498, done
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6397779Z 
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6398492Z dependencies:
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6398948Z + @ai-sdk/google 3.0.2
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6399404Z + @ai-sdk/react 3.0.6
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6399845Z + @capacitor/android 8.0.0
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6400324Z + @capacitor/cli 8.0.0
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6400824Z + @capacitor/core 8.0.0
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6401321Z + @google/genai 1.34.0
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6401894Z + @mediapipe/tasks-vision 0.10.9
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6402566Z + @neondatabase/serverless 1.0.2
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6403271Z + @prisma/adapter-neon 7.2.0
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6403957Z + @prisma/adapter-pg 7.2.0
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6404528Z + @prisma/client 7.2.0
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6405194Z + @radix-ui/react-avatar 1.1.11
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6406015Z + @radix-ui/react-dialog 1.1.15
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6407086Z + @radix-ui/react-label 2.1.8
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6407921Z + @radix-ui/react-popover 1.1.15
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6408788Z + @radix-ui/react-progress 1.1.8
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6409724Z + @radix-ui/react-scroll-area 1.2.10
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6410648Z + @radix-ui/react-select 2.2.6
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6411543Z + @radix-ui/react-slider 1.3.6
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6412286Z + @radix-ui/react-slot 1.2.4
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6413067Z + @radix-ui/react-tabs 1.1.13
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6413858Z + @react-three/drei 10.7.7
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6414661Z + @react-three/fiber 9.5.0
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6415386Z + @sentry/nextjs 10.32.1
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6416097Z + @serwist/next 9.4.2
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6416986Z + @supabase/ssr 0.5.2
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6417606Z + @supabase/supabase-js 2.89.0
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6418155Z + @types/canvas-confetti 1.9.0
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6418627Z + @types/howler 2.2.12
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6419065Z + @types/web-push 3.6.4
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6419588Z + @vercel/speed-insights 1.3.1
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6420015Z + ai 6.0.6
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6420385Z + axios 1.13.2
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6420787Z + canvas-confetti 1.9.4
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6421311Z + class-variance-authority 0.7.1
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6422127Z + clsx 2.1.1
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6422548Z + framer-motion 11.18.2
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6422960Z + h3-js 4.4.0
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6423332Z + howler 2.2.4
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6423720Z + import-in-the-middle 2.0.1
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6424175Z + lucide-react 0.562.0
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6424602Z + maplibre-gl 5.15.0
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6424972Z + next 16.1.1
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6425314Z + pg 8.16.3
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6425659Z + pino 10.1.0
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6426037Z + pino-pretty 13.1.3
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6426457Z + qrcode.react 4.2.0
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6427095Z + react 19.2.3
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6427490Z + react-dom 19.2.3
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6427890Z + react-dropzone 14.3.8
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6428330Z + react-player 2.16.1
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6429182Z + reactflow 11.11.4
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6429586Z + recharts 3.6.0
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6430027Z + require-in-the-middle 8.0.1
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6430490Z + serwist 9.4.2
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6430860Z + sonner 2.0.7
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6431255Z + tailwind-merge 3.4.0
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6431710Z + tailwindcss-animate 1.0.7
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6432135Z + three 0.182.0
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6432494Z + web-push 3.6.7
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6432848Z + zod 3.25.76
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6433208Z + zustand 5.0.9
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6433417Z 
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6433581Z devDependencies:
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6433972Z + @lhci/cli 0.15.1
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6434445Z + @playwright/test 1.57.0
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6434931Z + @tailwindcss/postcss 4.1.18
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6435424Z + @testing-library/dom 10.4.1
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6435939Z + @testing-library/react 16.3.1
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6436393Z + @types/node 25.0.3
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6437011Z + @types/pg 8.16.0
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6437421Z + @types/react 19.2.7
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6437882Z + @types/react-dom 19.2.3
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6438326Z + @types/three 0.182.0
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6438762Z + @types/web-bluetooth 0.0.21
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6439207Z + @types/ws 8.18.1
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6439733Z + @typescript-eslint/eslint-plugin 7.18.0
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6440349Z + @typescript-eslint/parser 7.18.0
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6440861Z + @vitest/coverage-v8 4.0.16
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6441333Z + autoprefixer 10.4.23
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6441772Z + dotenv 17.2.3
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6442197Z + dotenv-cli 11.0.0
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6442585Z + eslint 8.57.0
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6443017Z + eslint-config-next 14.2.5
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6443481Z + husky 9.1.7
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6443850Z + jsdom 27.4.0
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6444219Z + magicast 0.3.5
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6444606Z + postcss 8.5.6
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6444991Z + prisma 7.2.0
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6445396Z + tailwindcss 4.1.18
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6445800Z + tsx 4.21.0
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6446152Z + turbo 2.7.2
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6446760Z + typedoc 0.28.15
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6447257Z + typedoc-plugin-markdown 4.9.0
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6447764Z + typescript 5.9.3
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6448158Z + vercel 50.1.3
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6448549Z + vitest 4.0.16
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6448919Z + ws 8.18.3
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6449127Z 
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6703758Z 
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6704717Z > ironforge-rpg@1.0.0 postinstall /home/runner/work/IronForge/IronForge
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6705418Z > prisma generate
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:01.6705593Z 
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:02.6147621Z Loaded Prisma config from prisma.config.ts.
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:02.6148168Z 
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:02.6624059Z Prisma schema loaded from prisma/schema.prisma.
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:02.6698509Z warn Preview feature "driverAdapters" is deprecated. The functionality can be used without specifying it as a preview feature.
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:03.3319932Z 
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:03.3321906Z ✔ Generated Prisma Client (v7.2.0) to ./node_modules/.pnpm/@prisma+client@7.2.0_prisma@7.2.0_@types+react@19.2.7_magicast@0.3.5_react-dom@19.2.3_react@1_q4f4ihbqwb6kirxwuk5vzzv5eu/node_modules/@prisma/client in 345ms
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:03.3322914Z 
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:03.3323324Z Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:03.3323995Z 
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:03.3324349Z Tip: Want to turn off tips and other hints? https://pris.ly/tip-4-nohints
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:03.3324708Z 
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:03.3535810Z 
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:03.3536910Z > ironforge-rpg@1.0.0 prepare /home/runner/work/IronForge/IronForge
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:03.3537510Z > husky
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:03.3537680Z 
+⚡ Performance Audit	Run pnpm install --frozen-lockfile	2026-01-08T19:01:03.3991912Z Done in 6.5s
+⚡ Performance Audit	Generate Prisma Client	﻿2026-01-08T19:01:03.4522483Z ##[group]Run npx prisma generate
+⚡ Performance Audit	Generate Prisma Client	2026-01-08T19:01:03.4522828Z [36;1mnpx prisma generate[0m
+⚡ Performance Audit	Generate Prisma Client	2026-01-08T19:01:03.4555935Z shell: /usr/bin/bash -e {0}
+⚡ Performance Audit	Generate Prisma Client	2026-01-08T19:01:03.4556212Z env:
+⚡ Performance Audit	Generate Prisma Client	2026-01-08T19:01:03.4557072Z   DATABASE_URL: ***
+⚡ Performance Audit	Generate Prisma Client	2026-01-08T19:01:03.4557684Z   DIRECT_URL: ***
+⚡ Performance Audit	Generate Prisma Client	2026-01-08T19:01:03.4558032Z   NEXT_PUBLIC_SUPABASE_URL: ***
+⚡ Performance Audit	Generate Prisma Client	2026-01-08T19:01:03.4559390Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+⚡ Performance Audit	Generate Prisma Client	2026-01-08T19:01:03.4559674Z   SKIP_ENV_VALIDATION: true
+⚡ Performance Audit	Generate Prisma Client	2026-01-08T19:01:03.4559982Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+⚡ Performance Audit	Generate Prisma Client	2026-01-08T19:01:03.4560308Z ##[endgroup]
+⚡ Performance Audit	Generate Prisma Client	2026-01-08T19:01:04.8552582Z Loaded Prisma config from prisma.config.ts.
+⚡ Performance Audit	Generate Prisma Client	2026-01-08T19:01:04.8553156Z 
+⚡ Performance Audit	Generate Prisma Client	2026-01-08T19:01:04.8977784Z Prisma schema loaded from prisma/schema.prisma.
+⚡ Performance Audit	Generate Prisma Client	2026-01-08T19:01:04.9029824Z warn Preview feature "driverAdapters" is deprecated. The functionality can be used without specifying it as a preview feature.
+⚡ Performance Audit	Generate Prisma Client	2026-01-08T19:01:05.5678343Z 
+⚡ Performance Audit	Generate Prisma Client	2026-01-08T19:01:05.5680243Z ✔ Generated Prisma Client (v7.2.0) to ./node_modules/.pnpm/@prisma+client@7.2.0_prisma@7.2.0_@types+react@19.2.7_magicast@0.3.5_react-dom@19.2.3_react@1_q4f4ihbqwb6kirxwuk5vzzv5eu/node_modules/@prisma/client in 382ms
+⚡ Performance Audit	Generate Prisma Client	2026-01-08T19:01:05.5681113Z 
+⚡ Performance Audit	Generate Prisma Client	2026-01-08T19:01:05.5681463Z Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+⚡ Performance Audit	Generate Prisma Client	2026-01-08T19:01:05.5681802Z 
+⚡ Performance Audit	Generate Prisma Client	2026-01-08T19:01:05.5682272Z Tip: Interested in query caching in just a few lines of code? Try Accelerate today! https://pris.ly/tip-3-accelerate
+⚡ Performance Audit	Generate Prisma Client	2026-01-08T19:01:05.5682698Z 
+⚡ Performance Audit	Build Application	﻿2026-01-08T19:01:05.6356139Z ##[group]Run pnpm build
+⚡ Performance Audit	Build Application	2026-01-08T19:01:05.6356469Z [36;1mpnpm build[0m
+⚡ Performance Audit	Build Application	2026-01-08T19:01:05.6388922Z shell: /usr/bin/bash -e {0}
+⚡ Performance Audit	Build Application	2026-01-08T19:01:05.6389183Z env:
+⚡ Performance Audit	Build Application	2026-01-08T19:01:05.6389886Z   DATABASE_URL: ***
+⚡ Performance Audit	Build Application	2026-01-08T19:01:05.6390468Z   DIRECT_URL: ***
+⚡ Performance Audit	Build Application	2026-01-08T19:01:05.6390805Z   NEXT_PUBLIC_SUPABASE_URL: ***
+⚡ Performance Audit	Build Application	2026-01-08T19:01:05.6392146Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+⚡ Performance Audit	Build Application	2026-01-08T19:01:05.6392419Z   SKIP_ENV_VALIDATION: true
+⚡ Performance Audit	Build Application	2026-01-08T19:01:05.6392710Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+⚡ Performance Audit	Build Application	2026-01-08T19:01:05.6393010Z ##[endgroup]
+⚡ Performance Audit	Build Application	2026-01-08T19:01:06.0340634Z 
+⚡ Performance Audit	Build Application	2026-01-08T19:01:06.0341693Z > ironforge-rpg@1.0.0 prebuild /home/runner/work/IronForge/IronForge
+⚡ Performance Audit	Build Application	2026-01-08T19:01:06.0342687Z > npm run clean:logs
+⚡ Performance Audit	Build Application	2026-01-08T19:01:06.0342985Z 
+⚡ Performance Audit	Build Application	2026-01-08T19:01:06.1306138Z 
+⚡ Performance Audit	Build Application	2026-01-08T19:01:06.1307008Z > ironforge-rpg@1.0.0 clean:logs
+⚡ Performance Audit	Build Application	2026-01-08T19:01:06.1307555Z > npx tsx scripts/clean-logs.ts
+⚡ Performance Audit	Build Application	2026-01-08T19:01:06.1307780Z 
+⚡ Performance Audit	Build Application	2026-01-08T19:01:06.6494612Z No log directory found at /home/runner/work/IronForge/IronForge/src/logs
+⚡ Performance Audit	Build Application	2026-01-08T19:01:06.6757792Z 
+⚡ Performance Audit	Build Application	2026-01-08T19:01:06.6758493Z > ironforge-rpg@1.0.0 build /home/runner/work/IronForge/IronForge
+⚡ Performance Audit	Build Application	2026-01-08T19:01:06.6758941Z > next build --webpack
+⚡ Performance Audit	Build Application	2026-01-08T19:01:06.6759094Z 
+⚡ Performance Audit	Build Application	2026-01-08T19:01:07.7515262Z ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
+⚡ Performance Audit	Build Application	2026-01-08T19:01:07.7958537Z Attention: Next.js now collects completely anonymous telemetry regarding usage.
+⚡ Performance Audit	Build Application	2026-01-08T19:01:07.7964630Z This information is used to shape Next.js' roadmap and prioritize features.
+⚡ Performance Audit	Build Application	2026-01-08T19:01:07.7966794Z You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+⚡ Performance Audit	Build Application	2026-01-08T19:01:07.7968139Z https://nextjs.org/telemetry
+⚡ Performance Audit	Build Application	2026-01-08T19:01:07.7968533Z 
+⚡ Performance Audit	Build Application	2026-01-08T19:01:07.8097114Z ▲ Next.js 16.1.1 (webpack)
+⚡ Performance Audit	Build Application	2026-01-08T19:01:07.8097766Z - Environments: .env.local
+⚡ Performance Audit	Build Application	2026-01-08T19:01:07.8098089Z 
+⚡ Performance Audit	Build Application	2026-01-08T19:01:07.8788328Z ⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+⚡ Performance Audit	Build Application	2026-01-08T19:01:07.9053041Z   Creating an optimized production build ...
+⚡ Performance Audit	Build Application	2026-01-08T19:01:35.0019116Z ⚠ Compiled with warnings in 25.9s
+⚡ Performance Audit	Build Application	2026-01-08T19:01:35.0019516Z 
+⚡ Performance Audit	Build Application	2026-01-08T19:01:35.0022949Z ./node_modules/.pnpm/@opentelemetry+instrumentation@0.208.0_@opentelemetry+api@1.9.0/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+⚡ Performance Audit	Build Application	2026-01-08T19:01:35.0024048Z Critical dependency: the request of a dependency is an expression
+⚡ Performance Audit	Build Application	2026-01-08T19:01:35.0024368Z 
+⚡ Performance Audit	Build Application	2026-01-08T19:01:35.0024544Z Import trace for requested module:
+⚡ Performance Audit	Build Application	2026-01-08T19:01:35.0025583Z ./node_modules/.pnpm/@opentelemetry+instrumentation@0.208.0_@opentelemetry+api@1.9.0/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+⚡ Performance Audit	Build Application	2026-01-08T19:01:35.0027319Z ./node_modules/.pnpm/@opentelemetry+instrumentation@0.208.0_@opentelemetry+api@1.9.0/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+⚡ Performance Audit	Build Application	2026-01-08T19:01:35.0028630Z ./node_modules/.pnpm/@opentelemetry+instrumentation@0.208.0_@opentelemetry+api@1.9.0/node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+⚡ Performance Audit	Build Application	2026-01-08T19:01:35.0029797Z ./node_modules/.pnpm/@opentelemetry+instrumentation@0.208.0_@opentelemetry+api@1.9.0/node_modules/@opentelemetry/instrumentation/build/esm/index.js
+⚡ Performance Audit	Build Application	2026-01-08T19:01:35.0030779Z ./node_modules/.pnpm/@sentry+node@10.32.1/node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+⚡ Performance Audit	Build Application	2026-01-08T19:01:35.0031493Z ./node_modules/.pnpm/@sentry+node@10.32.1/node_modules/@sentry/node/build/cjs/index.js
+⚡ Performance Audit	Build Application	2026-01-08T19:01:35.0032613Z ./node_modules/.pnpm/@sentry+nextjs@10.32.1_@opentelemetry+context-async-hooks@2.2.0_@opentelemetry+api@1.9.0__@op_b3lqjbo3wsq5kr6w2tdabxyfj4/node_modules/@sentry/nextjs/build/cjs/index.server.js
+⚡ Performance Audit	Build Application	2026-01-08T19:01:35.0033465Z ./src/app/api/cron/heartbeat/route.ts
+⚡ Performance Audit	Build Application	2026-01-08T19:01:35.0034004Z 
+⚡ Performance Audit	Build Application	2026-01-08T19:01:38.0891037Z <w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (130kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+⚡ Performance Audit	Build Application	2026-01-08T19:01:38.2327360Z ⚠ Compiled with warnings in 1880.3ms
+⚡ Performance Audit	Build Application	2026-01-08T19:01:38.2328991Z 
+⚡ Performance Audit	Build Application	2026-01-08T19:01:38.2329957Z ./node_modules/.pnpm/@supabase+realtime-js@2.89.0/node_modules/@supabase/realtime-js/dist/module/lib/websocket-factory.js
+⚡ Performance Audit	Build Application	2026-01-08T19:01:38.2331363Z A Node.js API is used (process.versions at line: 39) which is not supported in the Edge Runtime.
+⚡ Performance Audit	Build Application	2026-01-08T19:01:38.2332005Z Learn more: https://nextjs.org/docs/api-reference/edge-runtime
+⚡ Performance Audit	Build Application	2026-01-08T19:01:38.2332280Z 
+⚡ Performance Audit	Build Application	2026-01-08T19:01:38.2332478Z Import trace for requested module:
+⚡ Performance Audit	Build Application	2026-01-08T19:01:38.2333173Z ./node_modules/.pnpm/@supabase+realtime-js@2.89.0/node_modules/@supabase/realtime-js/dist/module/lib/websocket-factory.js
+⚡ Performance Audit	Build Application	2026-01-08T19:01:38.2334072Z ./node_modules/.pnpm/@supabase+realtime-js@2.89.0/node_modules/@supabase/realtime-js/dist/module/index.js
+⚡ Performance Audit	Build Application	2026-01-08T19:01:38.2334893Z ./node_modules/.pnpm/@supabase+supabase-js@2.89.0/node_modules/@supabase/supabase-js/dist/index.mjs
+⚡ Performance Audit	Build Application	2026-01-08T19:01:38.2335763Z ./node_modules/.pnpm/@supabase+ssr@0.5.2_@supabase+supabase-js@2.89.0/node_modules/@supabase/ssr/dist/module/createBrowserClient.js
+⚡ Performance Audit	Build Application	2026-01-08T19:01:38.2336957Z ./node_modules/.pnpm/@supabase+ssr@0.5.2_@supabase+supabase-js@2.89.0/node_modules/@supabase/ssr/dist/module/index.js
+⚡ Performance Audit	Build Application	2026-01-08T19:01:38.2337561Z ./src/utils/supabase/middleware.ts
+⚡ Performance Audit	Build Application	2026-01-08T19:01:38.2337745Z 
+⚡ Performance Audit	Build Application	2026-01-08T19:01:53.7875990Z ./node_modules/.pnpm/@supabase+supabase-js@2.89.0/node_modules/@supabase/supabase-js/dist/index.mjs
+⚡ Performance Audit	Build Application	2026-01-08T19:01:53.7877603Z A Node.js API is used (process.version at line: 389) which is not supported in the Edge Runtime.
+⚡ Performance Audit	Build Application	2026-01-08T19:01:53.7878657Z Learn more: https://nextjs.org/docs/api-reference/edge-runtime
+⚡ Performance Audit	Build Application	2026-01-08T19:01:53.7879114Z 
+⚡ Performance Audit	Build Application	2026-01-08T19:01:53.7879365Z Import trace for requested module:
+⚡ Performance Audit	Build Application	2026-01-08T19:01:53.7880350Z ./node_modules/.pnpm/@supabase+supabase-js@2.89.0/node_modules/@supabase/supabase-js/dist/index.mjs
+⚡ Performance Audit	Build Application	2026-01-08T19:01:53.7882355Z ./node_modules/.pnpm/@supabase+ssr@0.5.2_@supabase+supabase-js@2.89.0/node_modules/@supabase/ssr/dist/module/createBrowserClient.js
+⚡ Performance Audit	Build Application	2026-01-08T19:01:53.7883927Z ./node_modules/.pnpm/@supabase+ssr@0.5.2_@supabase+supabase-js@2.89.0/node_modules/@supabase/ssr/dist/module/index.js
+⚡ Performance Audit	Build Application	2026-01-08T19:01:53.7884890Z ./src/utils/supabase/middleware.ts
+⚡ Performance Audit	Build Application	2026-01-08T19:01:53.7885202Z 
+⚡ Performance Audit	Build Application	2026-01-08T19:01:53.7885741Z ✓ Compiled successfully in 42s
+⚡ Performance Audit	Build Application	2026-01-08T19:01:53.7918361Z   Running TypeScript ...
+⚡ Performance Audit	Build Application	2026-01-08T19:02:13.7725846Z   Collecting page data using 3 workers ...
+⚡ Performance Audit	Build Application	2026-01-08T19:02:20.4712729Z   Generating static pages using 3 workers (0/36) ...
+⚡ Performance Audit	Build Application	2026-01-08T19:02:20.6328269Z   Generating static pages using 3 workers (9/36) 
+⚡ Performance Audit	Build Application	2026-01-08T19:02:21.0462646Z   Generating static pages using 3 workers (18/36) 
+⚡ Performance Audit	Build Application	2026-01-08T19:02:21.0920209Z   Generating static pages using 3 workers (27/36) 
+⚡ Performance Audit	Build Application	2026-01-08T19:02:21.1669339Z ✓ Generating static pages using 3 workers (36/36) in 695.5ms
+⚡ Performance Audit	Build Application	2026-01-08T19:02:22.0072409Z   Finalizing page optimization ...
+⚡ Performance Audit	Build Application	2026-01-08T19:02:22.0073008Z   Collecting build traces ...
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2177352Z 
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2202036Z Route (app)
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2203928Z ┌ ○ /
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2204389Z ├ ○ /_not-found
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2204800Z ├ ○ /admin/cron
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2205179Z ├ ƒ /admin/growth
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2205427Z ├ ƒ /api/chat
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2205698Z ├ ƒ /api/cron/daily-oracle
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2206015Z ├ ƒ /api/cron/duel-scoring
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2206313Z ├ ƒ /api/cron/generate-plans
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2206899Z ├ ƒ /api/cron/heartbeat
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2207245Z ├ ƒ /api/cron/maintenance/daily
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2207601Z ├ ƒ /api/cron/maintenance/weekly
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2207921Z ├ ƒ /api/cron/power-rating
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2208250Z ├ ƒ /api/cron/season-transition
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2208568Z ├ ƒ /api/cron/territory/income
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2209234Z ├ ƒ /api/cron/territory/settlement
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2209538Z ├ ƒ /api/health
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2209826Z ├ ƒ /api/hevy/exercise-templates
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2210113Z ├ ƒ /api/hevy/routines
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2210373Z ├ ƒ /api/hevy/workouts
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2210632Z ├ ƒ /api/intervals/events
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2210907Z ├ ƒ /api/intervals/history
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2211322Z ├ ƒ /api/intervals/wellness
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2211671Z ├ ƒ /api/podcast
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2211918Z ├ ƒ /api/podcast/login
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2212165Z ├ ƒ /api/sync/logs
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2212403Z ├ ƒ /api/sync/user
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2212654Z ├ ƒ /api/webhooks/hevy
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2212911Z ├ ƒ /api/webhooks/intervals
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2213182Z ├ ƒ /api/webhooks/strava
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2213422Z ├ ƒ /armory
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2213641Z ├ ƒ /auth/callback
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2213870Z ├ ƒ /battle-pass
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2214090Z ├ ƒ /bestiary
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2214316Z ├ ○ /campaign/debug
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2214564Z ├ ƒ /colosseum
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2214788Z ├ ƒ /dashboard
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2214994Z ├ ○ /grimoire
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2215200Z ├ ƒ /iron-arena
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2215411Z ├ ƒ /logger
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2215612Z ├ ○ /login
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2215818Z ├ ƒ /map
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2216018Z ├ ○ /privacy
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2216243Z ├ ƒ /ranked-arena
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2216467Z ├ ƒ /settings
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2216956Z ├ ƒ /settings/podcast
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2217204Z ├ ƒ /strength
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2217407Z ├ ƒ /territory
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2217613Z └ ○ /welcome
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2217718Z 
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2217732Z 
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2217858Z ƒ Proxy (Middleware)
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2217999Z 
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2218192Z ○  (Static)   prerendered as static content
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2218569Z ƒ  (Dynamic)  server-rendered on demand
+⚡ Performance Audit	Build Application	2026-01-08T19:02:50.2218758Z 
+⚡ Performance Audit	Run Lighthouse CI	﻿2026-01-08T19:02:50.3198602Z ##[group]Run pnpm run lhci
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:02:50.3199130Z [36;1mpnpm run lhci[0m
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:02:50.3246304Z shell: /usr/bin/bash -e {0}
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:02:50.3247015Z env:
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:02:50.3248206Z   DATABASE_URL: ***
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:02:50.3249299Z   DIRECT_URL: ***
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:02:50.3249931Z   NEXT_PUBLIC_SUPABASE_URL: ***
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:02:50.3252519Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:02:50.3253031Z   SKIP_ENV_VALIDATION: true
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:02:50.3253567Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:02:50.3254306Z   LHCI_GITHUB_APP_TOKEN: ***
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:02:50.3254725Z ##[endgroup]
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:02:50.7309166Z 
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:02:50.7310011Z > ironforge-rpg@1.0.0 lhci /home/runner/work/IronForge/IronForge
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:02:50.7310544Z > lhci autorun
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:02:50.7310699Z 
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:02:51.3329776Z ✅  .lighthouseci/ directory writable
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:02:51.3334115Z ✅  Configuration file found
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:02:51.3558126Z ✅  Chrome installation found
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:02:51.3559757Z ✅  GitHub token set
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:02:51.3560506Z Healthcheck passed!
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:02:51.3618230Z 
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:02:52.7491767Z Started a web server with "pnpm run start"...
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:02:52.7495189Z Running Lighthouse 3 time(s) on http://localhost:3000/
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:03:15.8013420Z Run #1...done.
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:03:28.1688118Z Run #2...done.
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:03:40.4804452Z Run #3...done.
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:03:40.4805229Z Running Lighthouse 3 time(s) on http://localhost:3000/login
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:03:52.4791284Z Run #1...done.
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:04:04.3515162Z Run #2...done.
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:04:16.2528657Z Run #3...done.
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:04:16.2892911Z Done running Lighthouse!
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:04:16.3005655Z 
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:04:16.6068214Z Checking assertions against 2 URL(s), 6 total run(s)
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:04:16.6068750Z 
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:04:16.6069935Z 1 result(s) for [1mhttp://localhost:3000/welcome[0m :
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:04:16.6070379Z 
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:04:16.6071305Z   [31m✘[0m  [1mcategories[0m.performance failure for [1mminScore[0m assertion
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:04:16.6072022Z         expected: >=[32m0.9[0m
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:04:16.6072589Z            found: [31m0.88[0m
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:04:16.6073126Z       [2mall values: 0.57, 0.87, 0.88[0m
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:04:16.6073443Z 
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:04:16.6073698Z Assertion failed. Exiting with status code 1.
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:04:16.6136446Z 
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:04:18.1486222Z Uploading median LHR of http://localhost:3000/welcome...success!
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:04:18.1488663Z Open the report at https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1767899057882-28955.report.html
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:04:18.3761703Z Uploading median LHR of http://localhost:3000/login...success!
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:04:18.3763272Z Open the report at https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1767899058224-22088.report.html
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:04:18.3822240Z GitHub token found, attempting to set status...
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:04:19.2007884Z GitHub accepted "failure" status for "lhci/url/welcome".
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:04:19.2138038Z 
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:04:19.2138783Z assert command failed. Exiting with status code 1.
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:04:19.2204815Z  ELIFECYCLE  Command failed with exit code 1.
+⚡ Performance Audit	Run Lighthouse CI	2026-01-08T19:04:19.2391941Z ##[error]Process completed with exit code 1.
+⚡ Performance Audit	Post Run actions/setup-node@v6	﻿2026-01-08T19:04:19.2461048Z Post job cleanup.
+⚡ Performance Audit	Post Run actions/setup-node@v6	2026-01-08T19:04:19.3671922Z (node:3542) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+⚡ Performance Audit	Post Run actions/setup-node@v6	2026-01-08T19:04:19.3672909Z (Use `node --trace-deprecation ...` to show where the warning was created)
+⚡ Performance Audit	Post Run actions/setup-node@v6	2026-01-08T19:04:19.3676182Z Cache hit occurred on the primary key node-cache-Linux-x64-pnpm-87c008dc9358694f3b5b0ccd1343d2730c2250451e2d227da281c5b1338a0c60, not saving cache.
+⚡ Performance Audit	Post Run pnpm/action-setup@v4	﻿2026-01-08T19:04:19.3765346Z Post job cleanup.
+⚡ Performance Audit	Post Run pnpm/action-setup@v4	2026-01-08T19:04:19.4320545Z Pruning is unnecessary.
+⚡ Performance Audit	Post Run actions/checkout@v4	﻿2026-01-08T19:04:19.4421583Z Post job cleanup.
+⚡ Performance Audit	Post Run actions/checkout@v4	2026-01-08T19:04:19.5364072Z [command]/usr/bin/git version
+⚡ Performance Audit	Post Run actions/checkout@v4	2026-01-08T19:04:19.5400296Z git version 2.52.0
+⚡ Performance Audit	Post Run actions/checkout@v4	2026-01-08T19:04:19.5455433Z Temporarily overriding HOME='/home/runner/work/_temp/17f8e1c4-8c1a-4e77-a874-1b7f15660801' before making global git config changes
+⚡ Performance Audit	Post Run actions/checkout@v4	2026-01-08T19:04:19.5457717Z Adding repository directory to the temporary git global config as a safe directory
+⚡ Performance Audit	Post Run actions/checkout@v4	2026-01-08T19:04:19.5460766Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/IronForge/IronForge
+⚡ Performance Audit	Post Run actions/checkout@v4	2026-01-08T19:04:19.5494074Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+⚡ Performance Audit	Post Run actions/checkout@v4	2026-01-08T19:04:19.5526087Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+⚡ Performance Audit	Post Run actions/checkout@v4	2026-01-08T19:04:19.5757801Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+⚡ Performance Audit	Post Run actions/checkout@v4	2026-01-08T19:04:19.5778484Z http.https://github.com/.extraheader
+⚡ Performance Audit	Post Run actions/checkout@v4	2026-01-08T19:04:19.5792450Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+⚡ Performance Audit	Post Run actions/checkout@v4	2026-01-08T19:04:19.5823056Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+⚡ Performance Audit	Post Run actions/checkout@v4	2026-01-08T19:04:19.6046305Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+⚡ Performance Audit	Post Run actions/checkout@v4	2026-01-08T19:04:19.6076864Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+⚡ Performance Audit	Complete job	﻿2026-01-08T19:04:19.6418329Z Cleaning up orphan processes

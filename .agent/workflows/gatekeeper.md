@@ -19,7 +19,24 @@ Never skip validation for "micro-fixes", "lint tweaks", or "typo corrections". T
 
 Run this **before** every `git push`. If it fails, **DO NOT PUSH**.
 
-### 0. The Local Loop (Iteration)
+### 0.0 Branch Validation
+
+// turbo
+
+```bash
+# Verify branch
+current_branch=$(git rev-parse --abbrev-ref HEAD)
+
+if [ "$current_branch" = "main" ]; then
+  echo "⛔ INVALID BRANCH: You are on 'main'"
+  echo "   Create a feature branch first via /claim-task"
+  exit 1
+fi
+
+echo "🔍 Gatekeeper running on branch: $current_branch"
+```
+
+### 0.1 The Local Loop (Iteration)
 
 The core of the Gatekeeper is the **Local Loop**. You must loop through these steps until **all** are green.
 

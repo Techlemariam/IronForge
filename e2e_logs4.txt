@@ -1,0 +1,652 @@
+🎭 E2E Tests	Set up job	﻿2026-01-07T23:38:50.4078260Z Current runner version: '2.330.0'
+🎭 E2E Tests	Set up job	2026-01-07T23:38:50.4113791Z ##[group]Runner Image Provisioner
+🎭 E2E Tests	Set up job	2026-01-07T23:38:50.4115199Z Hosted Compute Agent
+🎭 E2E Tests	Set up job	2026-01-07T23:38:50.4116189Z Version: 20251211.462
+🎭 E2E Tests	Set up job	2026-01-07T23:38:50.4117354Z Commit: 6cbad8c2bb55d58165063d031ccabf57e2d2db61
+🎭 E2E Tests	Set up job	2026-01-07T23:38:50.4118574Z Build Date: 2025-12-11T16:28:49Z
+🎭 E2E Tests	Set up job	2026-01-07T23:38:50.4119726Z Worker ID: {f0d8c0ae-e4e7-493f-8ed7-36c417c1c7fc}
+🎭 E2E Tests	Set up job	2026-01-07T23:38:50.4120907Z ##[endgroup]
+🎭 E2E Tests	Set up job	2026-01-07T23:38:50.4122027Z ##[group]Operating System
+🎭 E2E Tests	Set up job	2026-01-07T23:38:50.4123139Z Ubuntu
+🎭 E2E Tests	Set up job	2026-01-07T23:38:50.4123981Z 24.04.3
+🎭 E2E Tests	Set up job	2026-01-07T23:38:50.4124949Z LTS
+🎭 E2E Tests	Set up job	2026-01-07T23:38:50.4125984Z ##[endgroup]
+🎭 E2E Tests	Set up job	2026-01-07T23:38:50.4126977Z ##[group]Runner Image
+🎭 E2E Tests	Set up job	2026-01-07T23:38:50.4128188Z Image: ubuntu-24.04
+🎭 E2E Tests	Set up job	2026-01-07T23:38:50.4129210Z Version: 20260105.202.1
+🎭 E2E Tests	Set up job	2026-01-07T23:38:50.4131393Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260105.202/images/ubuntu/Ubuntu2404-Readme.md
+🎭 E2E Tests	Set up job	2026-01-07T23:38:50.4134298Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260105.202
+🎭 E2E Tests	Set up job	2026-01-07T23:38:50.4136496Z ##[endgroup]
+🎭 E2E Tests	Set up job	2026-01-07T23:38:50.4138634Z ##[group]GITHUB_TOKEN Permissions
+🎭 E2E Tests	Set up job	2026-01-07T23:38:50.4141514Z Contents: read
+🎭 E2E Tests	Set up job	2026-01-07T23:38:50.4142464Z Metadata: read
+🎭 E2E Tests	Set up job	2026-01-07T23:38:50.4143527Z Packages: read
+🎭 E2E Tests	Set up job	2026-01-07T23:38:50.4144422Z ##[endgroup]
+🎭 E2E Tests	Set up job	2026-01-07T23:38:50.4147424Z Secret source: Actions
+🎭 E2E Tests	Set up job	2026-01-07T23:38:50.4148668Z Prepare workflow directory
+🎭 E2E Tests	Set up job	2026-01-07T23:38:50.4921226Z Prepare all required actions
+🎭 E2E Tests	Set up job	2026-01-07T23:38:50.4978804Z Getting action download info
+🎭 E2E Tests	Set up job	2026-01-07T23:38:50.8095879Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+🎭 E2E Tests	Set up job	2026-01-07T23:38:50.9307681Z Download action repository 'pnpm/action-setup@v4' (SHA:41ff72655975bd51cab0327fa583b6e92b6d3061)
+🎭 E2E Tests	Set up job	2026-01-07T23:38:51.2338195Z Download action repository 'actions/setup-node@v6' (SHA:395ad3262231945c25e8478fd5baf05154b1d79f)
+🎭 E2E Tests	Set up job	2026-01-07T23:38:51.3951788Z Download action repository 'actions/cache@v5' (SHA:9255dc7a253b0ccc959486e2bca901246202afeb)
+🎭 E2E Tests	Set up job	2026-01-07T23:38:51.6536510Z Complete job name: 🎭 E2E Tests
+🎭 E2E Tests	Run actions/checkout@v4	﻿2026-01-07T23:38:51.7204512Z ##[group]Run actions/checkout@v4
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.7205457Z with:
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.7205946Z   repository: Techlemariam/IronForge
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.7206688Z   token: ***
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.7207142Z   ssh-strict: true
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.7207588Z   ssh-user: git
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.7208359Z   persist-credentials: true
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.7208984Z   clean: true
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.7209586Z   sparse-checkout-cone-mode: true
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.7210247Z   fetch-depth: 1
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.7210846Z   fetch-tags: false
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.7211724Z   show-progress: true
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.7212314Z   lfs: false
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.7212823Z   submodules: false
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.7213471Z   set-safe-directory: true
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.7214421Z env:
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.7215849Z   DATABASE_URL: ***
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.7217140Z   DIRECT_URL: ***
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.7217918Z   NEXT_PUBLIC_SUPABASE_URL: ***
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.7220409Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.7221271Z   SKIP_ENV_VALIDATION: true
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.7222076Z ##[endgroup]
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.8289589Z Syncing repository: Techlemariam/IronForge
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.8292099Z ##[group]Getting Git version info
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.8293071Z Working directory is '/home/runner/work/IronForge/IronForge'
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.8294490Z [command]/usr/bin/git version
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.8359944Z git version 2.52.0
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.8385703Z ##[endgroup]
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.8399107Z Temporarily overriding HOME='/home/runner/work/_temp/01831b21-4a4a-4acd-8162-d6a07997931d' before making global git config changes
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.8400815Z Adding repository directory to the temporary git global config as a safe directory
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.8404794Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/IronForge/IronForge
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.8441863Z Deleting the contents of '/home/runner/work/IronForge/IronForge'
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.8445145Z ##[group]Initializing the repository
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.8449408Z [command]/usr/bin/git init /home/runner/work/IronForge/IronForge
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.8554875Z hint: Using 'master' as the name for the initial branch. This default branch name
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.8556387Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.8558359Z hint: to use in all of your new repositories, which will suppress this warning,
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.8559708Z hint: call:
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.8560869Z hint:
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.8562554Z hint: 	git config --global init.defaultBranch <name>
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.8564032Z hint:
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.8565624Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.8567705Z hint: 'development'. The just-created branch can be renamed via this command:
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.8569340Z hint:
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.8570598Z hint: 	git branch -m <name>
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.8572079Z hint:
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.8573659Z hint: Disable this message with "git config set advice.defaultBranchName false"
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.8575937Z Initialized empty Git repository in /home/runner/work/IronForge/IronForge/.git/
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.8579261Z [command]/usr/bin/git remote add origin https://github.com/Techlemariam/IronForge
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.8607370Z ##[endgroup]
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.8609137Z ##[group]Disabling automatic garbage collection
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.8611825Z [command]/usr/bin/git config --local gc.auto 0
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.8640751Z ##[endgroup]
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.8642862Z ##[group]Setting up auth
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.8648695Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.8679827Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.9022748Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.9053463Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.9268736Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.9306634Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.9528564Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.9563694Z ##[endgroup]
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.9564840Z ##[group]Fetching the repository
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:51.9572090Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +cd9592cac3ed8324bb71a5cc4f61ae92ff42c09c:refs/remotes/pull/34/merge
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:52.5002518Z From https://github.com/Techlemariam/IronForge
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:52.5006512Z  * [new ref]         cd9592cac3ed8324bb71a5cc4f61ae92ff42c09c -> pull/34/merge
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:52.5038448Z ##[endgroup]
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:52.5040804Z ##[group]Determining the checkout info
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:52.5043663Z ##[endgroup]
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:52.5046021Z [command]/usr/bin/git sparse-checkout disable
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:52.5088052Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:52.5114462Z ##[group]Checking out the ref
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:52.5178506Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/34/merge
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:52.6219232Z Note: switching to 'refs/remotes/pull/34/merge'.
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:52.6220456Z 
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:52.6221440Z You are in 'detached HEAD' state. You can look around, make experimental
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:52.6223501Z changes and commit them, and you can discard any commits you make in this
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:52.6226022Z state without impacting any branches by switching back to a branch.
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:52.6227419Z 
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:52.6228355Z If you want to create a new branch to retain commits you create, you may
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:52.6231153Z do so (now or later) by using -c with the switch command. Example:
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:52.6232478Z 
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:52.6233041Z   git switch -c <new-branch-name>
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:52.6234067Z 
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:52.6234736Z Or undo this operation with:
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:52.6235835Z 
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:52.6236464Z   git switch -
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:52.6237297Z 
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:52.6238955Z Turn off this advice by setting config variable advice.detachedHead to false
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:52.6241406Z 
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:52.6243264Z HEAD is now at cd9592c Merge 8f7ee8da32893788786684e34fa307d9f40b50e7 into b789994c9141a6c4ac9b5c7c3c90186cac73a7e6
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:52.6248269Z ##[endgroup]
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:52.6270088Z [command]/usr/bin/git log -1 --format=%H
+🎭 E2E Tests	Run actions/checkout@v4	2026-01-07T23:38:52.6292106Z cd9592cac3ed8324bb71a5cc4f61ae92ff42c09c
+🎭 E2E Tests	Run pnpm/action-setup@v4	﻿2026-01-07T23:38:52.6558381Z ##[group]Run pnpm/action-setup@v4
+🎭 E2E Tests	Run pnpm/action-setup@v4	2026-01-07T23:38:52.6559543Z with:
+🎭 E2E Tests	Run pnpm/action-setup@v4	2026-01-07T23:38:52.6560363Z   dest: ~/setup-pnpm
+🎭 E2E Tests	Run pnpm/action-setup@v4	2026-01-07T23:38:52.6561432Z   run_install: null
+🎭 E2E Tests	Run pnpm/action-setup@v4	2026-01-07T23:38:52.6562394Z   package_json_file: package.json
+🎭 E2E Tests	Run pnpm/action-setup@v4	2026-01-07T23:38:52.6563514Z   standalone: false
+🎭 E2E Tests	Run pnpm/action-setup@v4	2026-01-07T23:38:52.6564398Z env:
+🎭 E2E Tests	Run pnpm/action-setup@v4	2026-01-07T23:38:52.6567151Z   DATABASE_URL: ***
+🎭 E2E Tests	Run pnpm/action-setup@v4	2026-01-07T23:38:52.6569582Z   DIRECT_URL: ***
+🎭 E2E Tests	Run pnpm/action-setup@v4	2026-01-07T23:38:52.6570946Z   NEXT_PUBLIC_SUPABASE_URL: ***
+🎭 E2E Tests	Run pnpm/action-setup@v4	2026-01-07T23:38:52.6576667Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+🎭 E2E Tests	Run pnpm/action-setup@v4	2026-01-07T23:38:52.6577837Z   SKIP_ENV_VALIDATION: true
+🎭 E2E Tests	Run pnpm/action-setup@v4	2026-01-07T23:38:52.6578835Z ##[endgroup]
+🎭 E2E Tests	Run pnpm/action-setup@v4	2026-01-07T23:38:52.7120127Z ##[group]Running self-installer...
+🎭 E2E Tests	Run pnpm/action-setup@v4	2026-01-07T23:38:53.3063001Z Progress: resolved 1, reused 0, downloaded 0, added 0
+🎭 E2E Tests	Run pnpm/action-setup@v4	2026-01-07T23:38:53.3146004Z Packages: +1
+🎭 E2E Tests	Run pnpm/action-setup@v4	2026-01-07T23:38:53.3147452Z +
+🎭 E2E Tests	Run pnpm/action-setup@v4	2026-01-07T23:38:54.0509812Z Progress: resolved 1, reused 0, downloaded 1, added 1, done
+🎭 E2E Tests	Run pnpm/action-setup@v4	2026-01-07T23:38:54.0760577Z 
+🎭 E2E Tests	Run pnpm/action-setup@v4	2026-01-07T23:38:54.0760989Z dependencies:
+🎭 E2E Tests	Run pnpm/action-setup@v4	2026-01-07T23:38:54.0761858Z + pnpm 9.15.0 (10.27.0 is available)
+🎭 E2E Tests	Run pnpm/action-setup@v4	2026-01-07T23:38:54.0762161Z 
+🎭 E2E Tests	Run pnpm/action-setup@v4	2026-01-07T23:38:54.0794882Z Done in 1.2s
+🎭 E2E Tests	Run pnpm/action-setup@v4	2026-01-07T23:38:54.0963283Z ##[endgroup]
+🎭 E2E Tests	Run pnpm/action-setup@v4	2026-01-07T23:38:54.0966603Z Installation Completed!
+🎭 E2E Tests	Run actions/setup-node@v6	﻿2026-01-07T23:38:54.1117026Z ##[group]Run actions/setup-node@v6
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T23:38:54.1117427Z with:
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T23:38:54.1117694Z   node-version: 22
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T23:38:54.1117973Z   cache: pnpm
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T23:38:54.1118249Z   check-latest: false
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T23:38:54.1118707Z   token: ***
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T23:38:54.1119006Z   package-manager-cache: true
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T23:38:54.1119354Z env:
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T23:38:54.1120154Z   DATABASE_URL: ***
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T23:38:54.1120895Z   DIRECT_URL: ***
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T23:38:54.1121568Z   NEXT_PUBLIC_SUPABASE_URL: ***
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T23:38:54.1123060Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T23:38:54.1123414Z   SKIP_ENV_VALIDATION: true
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T23:38:54.1123796Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T23:38:54.1124211Z ##[endgroup]
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T23:38:54.2502796Z Found in cache @ /opt/hostedtoolcache/node/22.21.1/x64
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T23:38:54.2507728Z (node:2157) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T23:38:54.2508675Z (Use `node --trace-deprecation ...` to show where the warning was created)
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T23:38:54.2510438Z ##[group]Environment details
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T23:38:57.3327393Z node: v22.21.1
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T23:38:57.3327977Z npm: 10.9.4
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T23:38:57.3328331Z yarn: 1.22.22
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T23:38:57.3329177Z ##[endgroup]
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T23:38:57.3356039Z [command]/home/runner/setup-pnpm/node_modules/.bin/pnpm store path --silent
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T23:38:57.9026148Z /home/runner/setup-pnpm/node_modules/.bin/store/v3
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T23:38:57.9952385Z Cache hit for: node-cache-Linux-x64-pnpm-87c008dc9358694f3b5b0ccd1343d2730c2250451e2d227da281c5b1338a0c60
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T23:38:58.0055190Z (node:2157) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T23:38:59.0309249Z Received 226492416 of 432780340 (52.3%), 214.5 MBs/sec
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T23:38:59.9025647Z Received 432780340 of 432780340 (100.0%), 219.7 MBs/sec
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T23:38:59.9081740Z Cache Size: ~413 MB (432780340 B)
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T23:38:59.9138019Z [command]/usr/bin/tar -xf /home/runner/work/_temp/68bc8948-c448-4cd6-820f-b9699d08a99a/cache.tzst -P -C /home/runner/work/IronForge/IronForge --use-compress-program unzstd
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T23:39:04.7900569Z Cache restored successfully
+🎭 E2E Tests	Run actions/setup-node@v6	2026-01-07T23:39:04.8762264Z Cache restored from key: node-cache-Linux-x64-pnpm-87c008dc9358694f3b5b0ccd1343d2730c2250451e2d227da281c5b1338a0c60
+🎭 E2E Tests	Install Dependencies	﻿2026-01-07T23:39:04.8968476Z ##[group]Run pnpm install --frozen-lockfile
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:04.8968911Z [36;1mpnpm install --frozen-lockfile[0m
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:04.9113461Z shell: /usr/bin/bash -e {0}
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:04.9113768Z env:
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:04.9114922Z   DATABASE_URL: ***
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:04.9115551Z   DIRECT_URL: ***
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:04.9115902Z   NEXT_PUBLIC_SUPABASE_URL: ***
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:04.9117219Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:04.9117554Z   SKIP_ENV_VALIDATION: true
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:04.9117855Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:04.9118167Z ##[endgroup]
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:05.5004852Z Lockfile is up to date, resolution step is skipped
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:05.6403000Z Progress: resolved 1, reused 0, downloaded 0, added 0
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:05.8550083Z Packages: +1498
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:05.8551445Z ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:06.6417557Z Progress: resolved 1498, reused 1065, downloaded 0, added 0
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:07.6421946Z Progress: resolved 1498, reused 1498, downloaded 0, added 675
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:08.4928301Z Progress: resolved 1498, reused 1498, downloaded 0, added 1498, done
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6796793Z 
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6797504Z dependencies:
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6798067Z + @ai-sdk/google 3.0.2
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6798528Z + @ai-sdk/react 3.0.6
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6799034Z + @capacitor/android 8.0.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6799545Z + @capacitor/cli 8.0.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6800024Z + @capacitor/core 8.0.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6800506Z + @google/genai 1.34.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6801469Z + @mediapipe/tasks-vision 0.10.9
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6802122Z + @neondatabase/serverless 1.0.2
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6802692Z + @prisma/adapter-neon 7.2.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6803174Z + @prisma/adapter-pg 7.2.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6803449Z + @prisma/client 7.2.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6803869Z + @radix-ui/react-avatar 1.1.11
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6804422Z + @radix-ui/react-dialog 1.1.15
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6804956Z + @radix-ui/react-label 2.1.8
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6805581Z + @radix-ui/react-popover 1.1.15
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6806161Z + @radix-ui/react-progress 1.1.8
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6806780Z + @radix-ui/react-scroll-area 1.2.10
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6807413Z + @radix-ui/react-select 2.2.6
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6808062Z + @radix-ui/react-slider 1.3.6
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6808566Z + @radix-ui/react-slot 1.2.4
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6809058Z + @radix-ui/react-tabs 1.1.13
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6809563Z + @react-three/drei 10.7.7
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6810027Z + @react-three/fiber 9.5.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6810574Z + @sentry/nextjs 10.32.1
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6811204Z + @serwist/next 9.4.2
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6811651Z + @supabase/ssr 0.5.2
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6812128Z + @supabase/supabase-js 2.89.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6812649Z + @types/canvas-confetti 1.9.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6813111Z + @types/howler 2.2.12
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6813541Z + @types/web-push 3.6.4
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6814019Z + @vercel/speed-insights 1.3.1
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6814458Z + ai 6.0.6
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6814801Z + axios 1.13.2
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6815234Z + canvas-confetti 1.9.4
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6815784Z + class-variance-authority 0.7.1
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6816707Z + clsx 2.1.1
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6817142Z + framer-motion 11.18.2
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6817576Z + h3-js 4.4.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6817959Z + howler 2.2.4
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6818400Z + import-in-the-middle 2.0.1
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6818912Z + lucide-react 0.562.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6819373Z + maplibre-gl 5.15.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6819774Z + next 16.1.1
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6820139Z + pg 8.16.3
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6820492Z + pino 10.1.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6820891Z + pino-pretty 13.1.3
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6821504Z + qrcode.react 4.2.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6821899Z + react 19.2.3
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6822263Z + react-dom 19.2.3
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6822663Z + react-dropzone 14.3.8
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6823119Z + react-player 2.16.1
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6823571Z + reactflow 11.11.4
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6823969Z + recharts 3.6.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6824799Z + require-in-the-middle 8.0.1
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6825260Z + serwist 9.4.2
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6825651Z + sonner 2.0.7
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6826067Z + tailwind-merge 3.4.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6826550Z + tailwindcss-animate 1.0.7
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6826987Z + three 0.182.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6827362Z + web-push 3.6.7
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6827674Z + zod 3.25.76
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6828023Z + zustand 5.0.9
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6828248Z 
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6828424Z devDependencies:
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6828838Z + @lhci/cli 0.15.1
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6829358Z + @playwright/test 1.57.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6829910Z + @tailwindcss/postcss 4.1.18
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6830416Z + @testing-library/dom 10.4.1
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6830942Z + @testing-library/react 16.3.1
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6831630Z + @types/node 25.0.3
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6832071Z + @types/pg 8.16.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6832498Z + @types/react 19.2.7
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6832959Z + @types/react-dom 19.2.3
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6833434Z + @types/three 0.182.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6833878Z + @types/web-bluetooth 0.0.21
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6834338Z + @types/ws 8.18.1
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6834889Z + @typescript-eslint/eslint-plugin 7.18.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6835536Z + @typescript-eslint/parser 7.18.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6836093Z + @vitest/coverage-v8 4.0.16
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6836575Z + autoprefixer 10.4.23
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6837005Z + dotenv 17.2.3
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6837426Z + dotenv-cli 11.0.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6837819Z + eslint 8.57.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6838243Z + eslint-config-next 14.2.5
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6838682Z + husky 9.1.7
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6839036Z + jsdom 27.4.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6839410Z + magicast 0.3.5
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6839785Z + postcss 8.5.6
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6840150Z + prisma 7.2.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6840542Z + tailwindcss 4.1.18
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6840926Z + tsx 4.21.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6841451Z + turbo 2.7.2
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6841850Z + typedoc 0.28.15
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6842385Z + typedoc-plugin-markdown 4.9.0
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6842927Z + typescript 5.9.3
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6843319Z + vercel 50.1.3
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6843698Z + vitest 4.0.16
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6844069Z + ws 8.18.3
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.6844286Z 
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.7101745Z 
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.7102532Z > ironforge-rpg@1.0.0 postinstall /home/runner/work/IronForge/IronForge
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.7103284Z > prisma generate
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:09.7103547Z 
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:10.8198284Z Loaded Prisma config from prisma.config.ts.
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:10.8199095Z 
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:10.8750056Z Prisma schema loaded from prisma/schema.prisma.
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:10.8856679Z warn Preview feature "driverAdapters" is deprecated. The functionality can be used without specifying it as a preview feature.
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:11.6239014Z 
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:11.6242451Z ✔ Generated Prisma Client (v7.2.0) to ./node_modules/.pnpm/@prisma+client@7.2.0_prisma@7.2.0_@types+react@19.2.7_magicast@0.3.5_react-dom@19.2.3_react@1_q4f4ihbqwb6kirxwuk5vzzv5eu/node_modules/@prisma/client in 383ms
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:11.6243957Z 
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:11.6244568Z Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:11.6245161Z 
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:11.6246358Z Tip: Need your database queries to be 1000x faster? Accelerate offers you that and more: https://pris.ly/tip-2-accelerate
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:11.6246857Z 
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:11.6485623Z 
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:11.6486452Z > ironforge-rpg@1.0.0 prepare /home/runner/work/IronForge/IronForge
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:11.6486907Z > husky
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:11.6487025Z 
+🎭 E2E Tests	Install Dependencies	2026-01-07T23:39:11.6944265Z Done in 6.7s
+🎭 E2E Tests	Generate Prisma Client	﻿2026-01-07T23:39:11.7455564Z ##[group]Run npx prisma generate
+🎭 E2E Tests	Generate Prisma Client	2026-01-07T23:39:11.7455936Z [36;1mnpx prisma generate[0m
+🎭 E2E Tests	Generate Prisma Client	2026-01-07T23:39:11.7488966Z shell: /usr/bin/bash -e {0}
+🎭 E2E Tests	Generate Prisma Client	2026-01-07T23:39:11.7489230Z env:
+🎭 E2E Tests	Generate Prisma Client	2026-01-07T23:39:11.7489956Z   DATABASE_URL: ***
+🎭 E2E Tests	Generate Prisma Client	2026-01-07T23:39:11.7490550Z   DIRECT_URL: ***
+🎭 E2E Tests	Generate Prisma Client	2026-01-07T23:39:11.7490908Z   NEXT_PUBLIC_SUPABASE_URL: ***
+🎭 E2E Tests	Generate Prisma Client	2026-01-07T23:39:11.7492423Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+🎭 E2E Tests	Generate Prisma Client	2026-01-07T23:39:11.7492717Z   SKIP_ENV_VALIDATION: true
+🎭 E2E Tests	Generate Prisma Client	2026-01-07T23:39:11.7493014Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+🎭 E2E Tests	Generate Prisma Client	2026-01-07T23:39:11.7493324Z ##[endgroup]
+🎭 E2E Tests	Generate Prisma Client	2026-01-07T23:39:14.3151399Z Loaded Prisma config from prisma.config.ts.
+🎭 E2E Tests	Generate Prisma Client	2026-01-07T23:39:14.3151959Z 
+🎭 E2E Tests	Generate Prisma Client	2026-01-07T23:39:14.3520805Z Prisma schema loaded from prisma/schema.prisma.
+🎭 E2E Tests	Generate Prisma Client	2026-01-07T23:39:14.3567743Z warn Preview feature "driverAdapters" is deprecated. The functionality can be used without specifying it as a preview feature.
+🎭 E2E Tests	Generate Prisma Client	2026-01-07T23:39:15.0080993Z 
+🎭 E2E Tests	Generate Prisma Client	2026-01-07T23:39:15.0083132Z ✔ Generated Prisma Client (v7.2.0) to ./node_modules/.pnpm/@prisma+client@7.2.0_prisma@7.2.0_@types+react@19.2.7_magicast@0.3.5_react-dom@19.2.3_react@1_q4f4ihbqwb6kirxwuk5vzzv5eu/node_modules/@prisma/client in 367ms
+🎭 E2E Tests	Generate Prisma Client	2026-01-07T23:39:15.0084041Z 
+🎭 E2E Tests	Generate Prisma Client	2026-01-07T23:39:15.0084405Z Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+🎭 E2E Tests	Generate Prisma Client	2026-01-07T23:39:15.0084762Z 
+🎭 E2E Tests	Generate Prisma Client	2026-01-07T23:39:15.0085242Z Tip: Interested in query caching in just a few lines of code? Try Accelerate today! https://pris.ly/tip-3-accelerate
+🎭 E2E Tests	Generate Prisma Client	2026-01-07T23:39:15.0085690Z 
+🎭 E2E Tests	Cache Playwright Browsers	﻿2026-01-07T23:39:21.3178843Z ##[group]Run actions/cache@v5
+🎭 E2E Tests	Cache Playwright Browsers	2026-01-07T23:39:21.3179163Z with:
+🎭 E2E Tests	Cache Playwright Browsers	2026-01-07T23:39:21.3179381Z   path: ~/.cache/ms-playwright
+🎭 E2E Tests	Cache Playwright Browsers	2026-01-07T23:39:21.3179847Z   key: Linux-playwright-87c008dc9358694f3b5b0ccd1343d2730c2250451e2d227da281c5b1338a0c60
+🎭 E2E Tests	Cache Playwright Browsers	2026-01-07T23:39:21.3180336Z   enableCrossOsArchive: false
+🎭 E2E Tests	Cache Playwright Browsers	2026-01-07T23:39:21.3180596Z   fail-on-cache-miss: false
+🎭 E2E Tests	Cache Playwright Browsers	2026-01-07T23:39:21.3180838Z   lookup-only: false
+🎭 E2E Tests	Cache Playwright Browsers	2026-01-07T23:39:21.3181303Z   save-always: false
+🎭 E2E Tests	Cache Playwright Browsers	2026-01-07T23:39:21.3181525Z env:
+🎭 E2E Tests	Cache Playwright Browsers	2026-01-07T23:39:21.3182246Z   DATABASE_URL: ***
+🎭 E2E Tests	Cache Playwright Browsers	2026-01-07T23:39:21.3182847Z   DIRECT_URL: ***
+🎭 E2E Tests	Cache Playwright Browsers	2026-01-07T23:39:21.3183195Z   NEXT_PUBLIC_SUPABASE_URL: ***
+🎭 E2E Tests	Cache Playwright Browsers	2026-01-07T23:39:21.3184501Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+🎭 E2E Tests	Cache Playwright Browsers	2026-01-07T23:39:21.3184787Z   SKIP_ENV_VALIDATION: true
+🎭 E2E Tests	Cache Playwright Browsers	2026-01-07T23:39:21.3185083Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+🎭 E2E Tests	Cache Playwright Browsers	2026-01-07T23:39:21.3185396Z ##[endgroup]
+🎭 E2E Tests	Cache Playwright Browsers	2026-01-07T23:39:21.4992176Z Cache hit for: Linux-playwright-87c008dc9358694f3b5b0ccd1343d2730c2250451e2d227da281c5b1338a0c60
+🎭 E2E Tests	Cache Playwright Browsers	2026-01-07T23:39:22.5360736Z Received 243269632 of 450309770 (54.0%), 232.0 MBs/sec
+🎭 E2E Tests	Cache Playwright Browsers	2026-01-07T23:39:23.4102892Z Received 450309770 of 450309770 (100.0%), 229.4 MBs/sec
+🎭 E2E Tests	Cache Playwright Browsers	2026-01-07T23:39:23.4103950Z Cache Size: ~429 MB (450309770 B)
+🎭 E2E Tests	Cache Playwright Browsers	2026-01-07T23:39:23.4178941Z [command]/usr/bin/tar -xf /home/runner/work/_temp/119f4115-5f83-4424-a299-c40c2a47f726/cache.tzst -P -C /home/runner/work/IronForge/IronForge --use-compress-program unzstd
+🎭 E2E Tests	Cache Playwright Browsers	2026-01-07T23:39:25.4992369Z Cache restored successfully
+🎭 E2E Tests	Cache Playwright Browsers	2026-01-07T23:39:25.9240036Z Cache restored from key: Linux-playwright-87c008dc9358694f3b5b0ccd1343d2730c2250451e2d227da281c5b1338a0c60
+🎭 E2E Tests	Seed E2E Database	﻿2026-01-07T23:39:25.9484857Z ##[group]Run npx tsx tests/e2e/setup/e2e-seed.ts
+🎭 E2E Tests	Seed E2E Database	2026-01-07T23:39:25.9485526Z [36;1mnpx tsx tests/e2e/setup/e2e-seed.ts[0m
+🎭 E2E Tests	Seed E2E Database	2026-01-07T23:39:25.9527174Z shell: /usr/bin/bash -e {0}
+🎭 E2E Tests	Seed E2E Database	2026-01-07T23:39:25.9527599Z env:
+🎭 E2E Tests	Seed E2E Database	2026-01-07T23:39:25.9528767Z   DATABASE_URL: ***
+🎭 E2E Tests	Seed E2E Database	2026-01-07T23:39:25.9529794Z   DIRECT_URL: ***
+🎭 E2E Tests	Seed E2E Database	2026-01-07T23:39:25.9530376Z   NEXT_PUBLIC_SUPABASE_URL: ***
+🎭 E2E Tests	Seed E2E Database	2026-01-07T23:39:25.9533187Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+🎭 E2E Tests	Seed E2E Database	2026-01-07T23:39:25.9533684Z   SKIP_ENV_VALIDATION: true
+🎭 E2E Tests	Seed E2E Database	2026-01-07T23:39:25.9534196Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+🎭 E2E Tests	Seed E2E Database	2026-01-07T23:39:25.9534733Z ##[endgroup]
+🎭 E2E Tests	Seed E2E Database	2026-01-07T23:39:26.5929785Z 🌱 Starting E2E Database Seeding...
+🎭 E2E Tests	Seed E2E Database	2026-01-07T23:39:26.5930326Z Checking Battle Pass Season: SEASON_1
+🎭 E2E Tests	Seed E2E Database	2026-01-07T23:39:27.5631846Z ✅ Battle Pass Season ensured: cmk2pl6so0000ua1kn8wpiqa4
+🎭 E2E Tests	Seed E2E Database	2026-01-07T23:39:28.1029370Z ✅ Ensured opponent: Iron Breaker (Lvl 5) - ID: cmk2pl7el001fua1kepdt7vrw
+🎭 E2E Tests	Seed E2E Database	2026-01-07T23:39:28.6180795Z ✅ Ensured opponent: Steel Viper (Lvl 10) - ID: cmk2pl7zt001hua1kw1anz3cc
+🎭 E2E Tests	Seed E2E Database	2026-01-07T23:39:29.1326621Z ✅ Ensured opponent: Shadow Walker (Lvl 15) - ID: cmk2pl8kc001jua1kiee6o4kg
+🎭 E2E Tests	Seed E2E Database	2026-01-07T23:39:29.5038332Z ✅ Ensured Test User: null (Onboarding Completed)
+🎭 E2E Tests	Seed E2E Database	2026-01-07T23:39:29.5039539Z 🌱 Seeding completed successfully.
+🎭 E2E Tests	Run Playwright Tests	﻿2026-01-07T23:39:39.6045896Z ##[group]Run npx playwright test
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:39:39.6046246Z [36;1mnpx playwright test[0m
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:39:39.6080138Z shell: /usr/bin/bash -e {0}
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:39:39.6080415Z env:
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:39:39.6081255Z   DATABASE_URL: ***
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:39:39.6081871Z   DIRECT_URL: ***
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:39:39.6082252Z   NEXT_PUBLIC_SUPABASE_URL: ***
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:39:39.6083561Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:39:39.6083856Z   SKIP_ENV_VALIDATION: true
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:39:39.6084162Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:39:39.6084480Z   CI: true
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:39:39.6084732Z   TEST_USER_EMAIL: ***
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:39:39.6084989Z   TEST_USER_PASSWORD: ***
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:39:39.6085267Z   NEXT_PUBLIC_APP_URL: http://localhost:3000
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:39:39.6085557Z ##[endgroup]
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:39:40.8144633Z [dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:39:43.2836416Z [WebServer] [33m[1m⚠[22m[39m The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:39:50.5827044Z 
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:39:50.5827723Z Running 82 tests using 2 workers
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:39:51.1972493Z [dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:39:55.6367020Z BROWSER LOG: [Fast Refresh] rebuilding
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:39:55.7185333Z Filling credentials...
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:39:55.7965459Z Pre-injecting Hevy API key...
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:39:55.8000852Z Clicking Initialize Uplink and waiting for URL...
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:39:55.8224776Z BROWSER LOG: [Fast Refresh] done in 288ms
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:39:57.3957663Z BROWSER LOG: [Fast Refresh] rebuilding
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:40:04.9557220Z BROWSER LOG: [Fast Refresh] done in 7662ms
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:40:07.1608157Z [WebServer] Server Action Intervals Wellness Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:40:07.2470087Z [WebServer] Server Action Intervals Activities Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:40:07.2546443Z [WebServer] AutoSpec: CRITICAL STRESS. FORCE DELOAD.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:40:07.7644884Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:40:09.6179695Z BROWSER LOG: [Client Instrumentation Hook] Slow execution detected: 21ms (Note: Code download overhead is not included in this measurement)
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:40:09.6190478Z BROWSER LOG: %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:40:09.7109590Z BROWSER LOG: %c%s%c Server Action Intervals Wellness Error: background: #e6e6e6;background: light-dark(rgba(0,0,0,0.1), rgba(255,255,255,0.25));color: #000000;color: light-dark(#000000, #ffffff);border-radius: 2px  Server   Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:40:09.7127178Z BROWSER ERROR: %c%s%c Server Action Intervals Activities Error: background: #e6e6e6;background: light-dark(rgba(0,0,0,0.1), rgba(255,255,255,0.25));color: #000000;color: light-dark(#000000, #ffffff);border-radius: 2px  Server   Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:40:09.7143650Z BROWSER LOG: %c%s%c AutoSpec: Evaluating transition from ALPHA background: #e6e6e6;background: light-dark(rgba(0,0,0,0.1), rgba(255,255,255,0.25));color: #000000;color: light-dark(#000000, #ffffff);border-radius: 2px  Server   {ctl: 0, atl: 0, tsb: 0, hrv: 0, sleepScore: 0}
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:40:09.7147071Z BROWSER LOG: %c%s%c AutoSpec: CRITICAL STRESS. FORCE DELOAD. background: #e6e6e6;background: light-dark(rgba(0,0,0,0.1), rgba(255,255,255,0.25));color: #000000;color: light-dark(#000000, #ffffff);border-radius: 2px  Server  
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:40:09.7160560Z BROWSER LOG: %c%s%c Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server. background: #e6e6e6;background: light-dark(rgba(0,0,0,0.1), rgba(255,255,255,0.25));color: #000000;color: light-dark(#000000, #ffffff);border-radius: 2px  Server  
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:40:09.7702920Z BROWSER LOG: [HMR] connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:40:10.0853929Z BROWSER LOG: [Fast Refresh] rebuilding
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:40:11.1086919Z BROWSER LOG: [Fast Refresh] done in 1174ms
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:40:11.1804092Z BROWSER ERROR: Failed to load resource: the server responded with a status of 404 (Not Found)
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:40:11.1893268Z BROWSER ERROR: Failed to load resource: the server responded with a status of 404 (Not Found)
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:40:11.2108449Z BROWSER LOG: [Fast Refresh] rebuilding
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:40:11.2622390Z BROWSER LOG: [Fast Refresh] done in 151ms
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:40:55.8069507Z Navigation check: page.waitForURL: Timeout 60000ms exceeded.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:40:55.8070508Z =========================== logs ===========================
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:40:55.8071585Z waiting for navigation until "load"
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:40:55.8072237Z   navigated to "http://localhost:3000/dashboard"
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:40:55.8072950Z   navigated to "http://localhost:3000/dashboard"
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:40:55.8073555Z ============================================================
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:40:55.8074225Z Current URL after login attempt: http://localhost:3000/dashboard
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:40:55.9356437Z Waiting for dashboard selectors...
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:40:55.9492108Z Dashboard or configuration screen detected.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:40:55.9670384Z Re-injecting Hevy API key after navigation...
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:40:56.4766629Z Auth setup saved to context.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:40:57.3445347Z ·°°[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔑 add access controls to secrets: https://dotenvx.com/ops
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:40:57.3525601Z [dotenv@17.2.3] injecting env (0) from .env -- tip: 📡 add observability to secrets: https://dotenvx.com/ops
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:02.4089146Z ···[Setup] Cleaning up duels for user: *** 
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:02.5543255Z [Setup] Deleted 0 active duels for d73e110f-67b5-4320-9fe8-e82b24c776f8
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:02.6293796Z [Setup] Updated Titan power rating to 500 for matchmaking
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:02.6812613Z [Setup] Cleaning up duels for user: *** 
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:02.8261422Z [Setup] Deleted 0 active duels for d73e110f-67b5-4320-9fe8-e82b24c776f8
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:02.8992147Z [Setup] Updated Titan power rating to 500 for matchmaking
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:04.3266712Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:04.3453843Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:09.1435673Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:11.0200061Z [WebServer] Server Action Intervals Wellness Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:11.1049895Z [WebServer] Server Action Intervals Activities Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:11.1055223Z [WebServer] AutoSpec: CRITICAL STRESS. FORCE DELOAD.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:11.5626899Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:15.5344304Z [WebServer] Server Action Intervals Wellness Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:15.6295206Z [WebServer] Server Action Intervals Activities Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:15.6296376Z [WebServer] AutoSpec: CRITICAL STRESS. FORCE DELOAD.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:16.0860121Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:17.1605341Z [WebServer] Server Action Intervals Wellness Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:17.2603493Z [WebServer] Server Action Intervals Activities Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:17.2604693Z [WebServer] AutoSpec: CRITICAL STRESS. FORCE DELOAD.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:17.7321682Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:20.2928179Z [WebServer] Server Action Intervals Wellness Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:20.3781473Z [WebServer] Server Action Intervals Activities Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:20.3790975Z [WebServer] AutoSpec: CRITICAL STRESS. FORCE DELOAD.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:20.6526783Z [WebServer] Server Action Intervals Wellness Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:20.7379641Z [WebServer] Server Action Intervals Activities Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:20.7386053Z [WebServer] AutoSpec: CRITICAL STRESS. FORCE DELOAD.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:20.8336566Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:21.1974526Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:23.9123070Z [WebServer] Server Action Intervals Wellness Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:24.0093603Z [WebServer] Server Action Intervals Activities Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:24.0095280Z [WebServer] AutoSpec: CRITICAL STRESS. FORCE DELOAD.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:24.4917561Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:29.9493677Z [WebServer] Server Action Intervals Wellness Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:30.0336830Z [WebServer] Server Action Intervals Activities Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:30.0341350Z [WebServer] AutoSpec: CRITICAL STRESS. FORCE DELOAD.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:30.4897914Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:32.7136339Z [WebServer] Server Action Intervals Wellness Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:32.7971594Z [WebServer] Server Action Intervals Activities Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:32.7978561Z [WebServer] AutoSpec: CRITICAL STRESS. FORCE DELOAD.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:33.2516263Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:40.3778454Z [WebServer] Server Action Intervals Wellness Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:40.4682733Z [WebServer] Server Action Intervals Activities Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:40.4687509Z [WebServer] AutoSpec: CRITICAL STRESS. FORCE DELOAD.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:40.7413849Z ····°°·····×[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  override existing env vars with { override: true }
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:40.9357219Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:42.7331687Z [WebServer] Server Action Intervals Wellness Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:42.8264595Z [WebServer] Server Action Intervals Activities Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:42.8278151Z [WebServer] AutoSpec: CRITICAL STRESS. FORCE DELOAD.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:43.3466675Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:47.1002302Z [WebServer] Server Action Intervals Wellness Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:47.1108859Z [WebServer] Server Action Intervals Wellness Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:47.1834433Z [WebServer] Server Action Intervals Activities Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:47.1839523Z [WebServer] AutoSpec: CRITICAL STRESS. FORCE DELOAD.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:47.1943478Z [WebServer] Server Action Intervals Activities Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:47.1947957Z [WebServer] AutoSpec: CRITICAL STRESS. FORCE DELOAD.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:47.6354643Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:47.6458695Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:52.1999133Z [WebServer] Server Action Intervals Wellness Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:52.2839507Z [WebServer] Server Action Intervals Activities Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:52.2843348Z [WebServer] AutoSpec: CRITICAL STRESS. FORCE DELOAD.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:52.7391835Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:57.5270954Z [WebServer] Server Action Intervals Wellness Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:57.6105701Z [WebServer] Server Action Intervals Activities Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:57.6109541Z [WebServer] AutoSpec: CRITICAL STRESS. FORCE DELOAD.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:41:58.0770667Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:07.6829489Z ·······F·[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:10.4684715Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:18.0370782Z [WebServer] Server Action Intervals Wellness Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:18.1290347Z [WebServer] Server Action Intervals Activities Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:18.1295132Z [WebServer] AutoSpec: CRITICAL STRESS. FORCE DELOAD.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:18.5864438Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:23.7862379Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:24.6876619Z [WebServer] Server Action Intervals Wellness Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:24.7839473Z [WebServer] Server Action Intervals Activities Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:24.7848872Z [WebServer] AutoSpec: CRITICAL STRESS. FORCE DELOAD.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:25.2429384Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:29.1027427Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:29.5955875Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:30.7910779Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:30.8408347Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:32.3530412Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:33.4669692Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:33.9564778Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:34.6283553Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:35.0017249Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:35.8136281Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:37.3832099Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:38.4144701Z [WebServer] Server Action Intervals Wellness Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:38.5244146Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:38.5374391Z [WebServer] Server Action Intervals Activities Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:38.5377539Z [WebServer] AutoSpec: CRITICAL STRESS. FORCE DELOAD.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:38.9974392Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:40.8623214Z [WebServer] Server Action Intervals Wellness Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:40.9481831Z [WebServer] Server Action Intervals Activities Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:40.9483687Z [WebServer] AutoSpec: CRITICAL STRESS. FORCE DELOAD.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:41.3089185Z [WebServer] Server Action Intervals Wellness Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:41.3929698Z [WebServer] Server Action Intervals Activities Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:41.3932608Z [WebServer] AutoSpec: CRITICAL STRESS. FORCE DELOAD.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:41.4017188Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:41.8615019Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:42.4806497Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:47.6765393Z [WebServer] Server Action Intervals Wellness Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:47.7597103Z [WebServer] Server Action Intervals Activities Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:47.7600554Z [WebServer] AutoSpec: CRITICAL STRESS. FORCE DELOAD.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:47.8797017Z [WebServer] Server Action Intervals Wellness Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:47.9624151Z [WebServer] Server Action Intervals Activities Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:47.9627781Z [WebServer] AutoSpec: CRITICAL STRESS. FORCE DELOAD.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:48.2119984Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:48.4120830Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:49.4646659Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:51.3514230Z [WebServer] Server Action Intervals Wellness Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:51.4729953Z [WebServer] Server Action Intervals Activities Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:51.4733145Z [WebServer] AutoSpec: CRITICAL STRESS. FORCE DELOAD.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:51.9299187Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:52.7187933Z [WebServer] Server Action Intervals Wellness Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:52.8082810Z [WebServer] Server Action Intervals Activities Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:52.8089868Z [WebServer] AutoSpec: CRITICAL STRESS. FORCE DELOAD.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:53.2731822Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:54.2446992Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:55.1672527Z [WebServer] Server Action Intervals Wellness Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:55.2548399Z [WebServer] Server Action Intervals Activities Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:55.2552510Z [WebServer] AutoSpec: CRITICAL STRESS. FORCE DELOAD.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:55.7102829Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:58.2401289Z [WebServer] Server Action Intervals Wellness Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:58.3224356Z [WebServer] Server Action Intervals Activities Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:58.3228472Z [WebServer] AutoSpec: CRITICAL STRESS. FORCE DELOAD.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:58.6118404Z [WebServer] Server Action Intervals Wellness Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:58.6966814Z [WebServer] Server Action Intervals Activities Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:58.6970459Z [WebServer] AutoSpec: CRITICAL STRESS. FORCE DELOAD.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:58.7787395Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:59.1560855Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:42:59.8497316Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:02.3795077Z ··°········°°°·°°·°°°·°°·°·····°···········°·°···°°°°
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:02.7514023Z [WebServer] Server Action Intervals Wellness Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:02.8352690Z [WebServer] Server Action Intervals Activities Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:02.8355699Z [WebServer] AutoSpec: CRITICAL STRESS. FORCE DELOAD.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:03.2941522Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:06.3192243Z °°·
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:06.3200332Z 
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:06.3213067Z   1) [chromium] › tests/e2e/dashboard-interaction.spec.ts:23:5 › Dashboard Interactions › should navigate to Program Builder 
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:06.3214099Z 
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:06.3214518Z     TimeoutError: locator.waitFor: Timeout 15000ms exceeded.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:06.3215157Z     Call log:
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:06.3216316Z     [2m  - waiting for getByRole('button', { name: /Program Builder/i }).or(getByText(/Program Builder/i)).first() to be visible[22m
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:06.3217180Z 
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:06.3217191Z 
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:06.3217423Z       36 |             .first();
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:06.3217828Z       37 |
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:06.3218464Z     > 38 |         await programBuilderBtn.waitFor({ state: 'visible', timeout: 15000 });
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:06.3219260Z          |                                 ^
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:06.3219844Z       39 |         await programBuilderBtn.click();
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:06.3220376Z       40 |
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:06.3221262Z       41 |         // Verify content - look for header or close button with longer timeout
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:06.3222384Z         at /home/runner/work/IronForge/IronForge/tests/e2e/dashboard-interaction.spec.ts:38:33
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:06.3223089Z 
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:06.3223727Z     Error Context: test-results/dashboard-interaction-Dash-5c92a-navigate-to-Program-Builder-chromium/error-context.md
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:06.3224255Z 
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:06.3224700Z     Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:06.3225192Z 
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:06.3225434Z     TimeoutError: locator.waitFor: Timeout 15000ms exceeded.
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:06.3226115Z     Call log:
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:06.3226817Z     [2m  - waiting for getByRole('button', { name: /Program Builder/i }).or(getByText(/Program Builder/i)).first() to be visible[22m
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:06.3227301Z 
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:06.3227307Z 
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:06.3227429Z       36 |             .first();
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:06.3227680Z       37 |
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:06.3228071Z     > 38 |         await programBuilderBtn.waitFor({ state: 'visible', timeout: 15000 });
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:06.3228546Z          |                                 ^
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:06.3228896Z       39 |         await programBuilderBtn.click();
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:06.3229194Z       40 |
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:06.3229568Z       41 |         // Verify content - look for header or close button with longer timeout
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:06.3230269Z         at /home/runner/work/IronForge/IronForge/tests/e2e/dashboard-interaction.spec.ts:38:33
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:06.3268927Z 
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:06.3269937Z     Error Context: test-results/dashboard-interaction-Dash-5c92a-navigate-to-Program-Builder-chromium-retry1/error-context.md
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:06.3270982Z 
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:06.3272031Z     attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:06.3273560Z     test-results/dashboard-interaction-Dash-5c92a-navigate-to-Program-Builder-chromium-retry1/trace.zip
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:06.3274608Z     Usage:
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:06.3274820Z 
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:06.3275834Z         npx playwright show-trace test-results/dashboard-interaction-Dash-5c92a-navigate-to-Program-Builder-chromium-retry1/trace.zip
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:06.3276941Z 
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:06.3277673Z     ────────────────────────────────────────────────────────────────────────────────────────────────
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:06.3278224Z 
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:06.3278381Z   1 failed
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:06.3279630Z     [chromium] › tests/e2e/dashboard-interaction.spec.ts:23:5 › Dashboard Interactions › should navigate to Program Builder 
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:06.3280713Z   25 skipped
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:06.3281328Z   56 passed (3.4m)
+🎭 E2E Tests	Run Playwright Tests	2026-01-07T23:43:06.4102788Z ##[error]Process completed with exit code 1.
+🎭 E2E Tests	Post Run pnpm/action-setup@v4	﻿2026-01-07T23:43:06.4175455Z Post job cleanup.
+🎭 E2E Tests	Post Run pnpm/action-setup@v4	2026-01-07T23:43:06.4721289Z Pruning is unnecessary.
+🎭 E2E Tests	Post Run actions/checkout@v4	﻿2026-01-07T23:43:06.4819402Z Post job cleanup.
+🎭 E2E Tests	Post Run actions/checkout@v4	2026-01-07T23:43:06.5778663Z [command]/usr/bin/git version
+🎭 E2E Tests	Post Run actions/checkout@v4	2026-01-07T23:43:06.5816875Z git version 2.52.0
+🎭 E2E Tests	Post Run actions/checkout@v4	2026-01-07T23:43:06.5860513Z Temporarily overriding HOME='/home/runner/work/_temp/14cac15c-5170-4f7b-b077-07d1188bd910' before making global git config changes
+🎭 E2E Tests	Post Run actions/checkout@v4	2026-01-07T23:43:06.5862414Z Adding repository directory to the temporary git global config as a safe directory
+🎭 E2E Tests	Post Run actions/checkout@v4	2026-01-07T23:43:06.5874401Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/IronForge/IronForge
+🎭 E2E Tests	Post Run actions/checkout@v4	2026-01-07T23:43:06.5909285Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+🎭 E2E Tests	Post Run actions/checkout@v4	2026-01-07T23:43:06.5942407Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+🎭 E2E Tests	Post Run actions/checkout@v4	2026-01-07T23:43:06.6178984Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+🎭 E2E Tests	Post Run actions/checkout@v4	2026-01-07T23:43:06.6202509Z http.https://github.com/.extraheader
+🎭 E2E Tests	Post Run actions/checkout@v4	2026-01-07T23:43:06.6215073Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+🎭 E2E Tests	Post Run actions/checkout@v4	2026-01-07T23:43:06.6246865Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+🎭 E2E Tests	Post Run actions/checkout@v4	2026-01-07T23:43:06.6485632Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+🎭 E2E Tests	Post Run actions/checkout@v4	2026-01-07T23:43:06.6518337Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+🎭 E2E Tests	Complete job	﻿2026-01-07T23:43:06.6861008Z Cleaning up orphan processes

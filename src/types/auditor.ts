@@ -69,6 +69,14 @@ export interface AuditReport {
   ratios: BalanceRatio[];
   overallScore: number; // 0-100 (100 = perfect balance)
   highestPriorityGap: MuscleAudit | null;
+  mobility?: {
+    totalWeeklyMinutes: number;
+    passiveLayerLevel: 'NONE' | 'BRONZE' | 'SILVER' | 'GOLD';
+    regionCoverage: Record<string, number>;
+    neglectedRegions: string[];
+    recommendedExercises: { region: string; exerciseId: string; exerciseName: string }[];
+    insight: string;
+  };
 }
 
 /**

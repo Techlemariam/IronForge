@@ -540,6 +540,20 @@ export class OracleService {
 
     const recovery = wellness.bodyBattery || 0;
 
+    // Mobility Audit Check
+    if (_auditReport?.mobility && _auditReport.mobility.neglectedRegions.length > 0) {
+      const topNeglected = _auditReport.mobility.neglectedRegions[0];
+      const recommended = _auditReport.mobility.recommendedExercises[0];
+
+      if (recommended) {
+        recommendation.type = "RECOVERY";
+        recommendation.title = "Mobility Focus";
+        recommendation.rationale = `Your ${topNeglected} mobility is lagging. Try ${recommended.exerciseName}. ${_auditReport.mobility.insight}`;
+        recommendation.priorityScore = 60; // Moderate priority integration
+        // Ideally we would map this to a Session object, but for now rationale is enough to guide the user
+      }
+    }
+
     // Path Logic
     if (activePath === "PATHFINDER") {
       recommendation.type = "CARDIO_VALIDATION";
