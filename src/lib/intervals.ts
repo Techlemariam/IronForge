@@ -7,23 +7,62 @@ const BASE_URL = "https://intervals.icu/api/v1";
 const WellnessDataSchema = z.object({
   id: z.string().optional(),
   date: z.string(),
+  // Core
   hrv: z.number().optional().nullable(),
   restingHR: z.number().optional().nullable(),
   readiness: z.number().optional().nullable(), // Body Battery
   sleepScore: z.number().optional().nullable(),
-  sleepSecs: z.number().optional().nullable(), // Note: API might return sleep_secs
+  sleepSecs: z.number().optional().nullable(),
   ctl: z.number().optional().nullable(),
   atl: z.number().optional().nullable(),
   tsb: z.number().optional().nullable(),
   rampRate: z.number().optional().nullable(),
   vo2max: z.number().optional().nullable(),
-  // Allow snake_case input keys to survive stripping
+
+  // Phase 2: Maximum Data Utilization
+  // Recovery
+  avgSleepingHR: z.number().optional().nullable(),
+  sleepQuality: z.number().optional().nullable(), // 0-100
+  hydration: z.number().optional().nullable(),    // 0-100
+
+  // Stress & Mood
+  hrvSDNN: z.number().optional().nullable(),
+  baevskySI: z.number().optional().nullable(),    // Stress index
+  stress: z.number().optional().nullable(),       // Subjective life stress 1-10
+  mood: z.number().optional().nullable(),         // -5 to +5
+  fatigue: z.number().optional().nullable(),      // 0-100
+
+  // Cycle Sync
+  menstrualPhase: z.string().optional().nullable(), // FOLLICULAR, LUTEAL, etc.
+  menstrualPhasePredicted: z.boolean().optional().nullable(),
+
+  // Health
+  weight: z.number().optional().nullable(),       // kg
+  spO2: z.number().optional().nullable(),         // % (pulse ox)
+  respiration: z.number().optional().nullable(),  // breaths/min
+  bloodGlucose: z.number().optional().nullable(), // mg/dL
+
+  // Safety (Hard locks)
+  injury: z.string().optional().nullable(),       // Free text injury note
+  soreness: z.number().optional().nullable(),     // 1-10 subjective
+
+  // Steps (active recovery indicator)
+  steps: z.number().optional().nullable(),
+
+  // Allow snake_case input keys
   resting_hr: z.number().optional().nullable(),
   sleep_score: z.number().optional().nullable(),
   sleep_secs: z.number().optional().nullable(),
   ramp_rate: z.number().optional().nullable(),
+  avg_sleeping_hr: z.number().optional().nullable(),
+  sleep_quality: z.number().optional().nullable(),
+  hrv_sdnn: z.number().optional().nullable(),
+  baevsky_si: z.number().optional().nullable(),
+  menstrual_phase: z.string().optional().nullable(),
+  menstrual_phase_predicted: z.boolean().optional().nullable(),
+  blood_glucose: z.number().optional().nullable(),
+  sp_o2: z.number().optional().nullable(),
 }).transform((data: any) => ({
-  // Handle snake_case to camelCase mapping if API usage varies
   id: data.id,
   date: data.date,
   hrv: data.hrv,
@@ -36,6 +75,24 @@ const WellnessDataSchema = z.object({
   tsb: data.tsb,
   rampRate: data.rampRate || data.ramp_rate,
   vo2max: data.vo2max,
+  // Phase 2 fields
+  avgSleepingHR: data.avgSleepingHR || data.avg_sleeping_hr,
+  sleepQuality: data.sleepQuality || data.sleep_quality,
+  hydration: data.hydration,
+  hrvSDNN: data.hrvSDNN || data.hrv_sdnn,
+  baevskySI: data.baevskySI || data.baevsky_si,
+  stress: data.stress,
+  mood: data.mood,
+  fatigue: data.fatigue,
+  menstrualPhase: data.menstrualPhase || data.menstrual_phase,
+  menstrualPhasePredicted: data.menstrualPhasePredicted || data.menstrual_phase_predicted,
+  weight: data.weight,
+  spO2: data.spO2 || data.sp_o2,
+  respiration: data.respiration,
+  bloodGlucose: data.bloodGlucose || data.blood_glucose,
+  injury: data.injury,
+  soreness: data.soreness,
+  steps: data.steps,
 }));
 
 export type WellnessData = z.infer<typeof WellnessDataSchema>;

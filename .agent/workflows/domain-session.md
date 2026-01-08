@@ -80,6 +80,7 @@ Based on priority and dependencies, suggest what to work on.
 Ask the user:
 
 > **What do you want to focus on in this session?**
+>
 > 1. 🆕 **New Feature** - Plan and implement something new
 > 2. 🐛 **Bugfix/Debt** - Fix existing issues
 > 3. 🎯 **Triage & Roadmap** - Audit gaps and update domain roadmap
@@ -101,11 +102,48 @@ Based on selection, trigger appropriate sub-workflow.
 
 Before ending the session:
 
+### 5.0 Branch Validation
+
+// turbo
+
+```bash
+# Check current branch
+current_branch=$(git rev-parse --abbrev-ref HEAD)
+
+if [ "$current_branch" = "main" ]; then
+  echo "⛔ ERROR: You are on the 'main' branch"
+  echo "   The main branch is protected. You must create a feature branch."
+  echo ""
+  echo "   Run: /claim-task [task-description]"
+  echo "   Or manually: git checkout -b [prefix]/[description]"
+  exit 1
+fi
+
+echo "✅ Branch: $current_branch"
+```
+
+> [!WARNING]
+> **Direct pushes to `main` are blocked by pre-push hook.**
+> If you haven't claimed this task via `/claim-task`, do so now to ensure proper coordination.
+
+### 5.1 Update Documentation
+
 1. Update `knowledge/` with any new insights
 2. Update `DEBT.md` if new debt was discovered
 3. Update `roadmap.md` if priorities changed
-4. Commit changes with domain-prefixed message: `[domain] description`
+
+### 5.2 Commit Changes
+
+Commit changes with domain-prefixed message: `[domain] description`
+
+### 5.3 Run Gatekeeper
+
+Before pushing, run quality verification:
+
+```
+/gatekeeper
+```
+
+Only proceed if gatekeeper passes all checks.
 
 ---
-
-

@@ -25,6 +25,7 @@ Prevents race conditions between parallel chat sessions by providing explicit ta
 Run: `git branch -r --list 'origin/feat/*' 'origin/fix/*' 'origin/chore/*'`
 
 Parse branch names to identify currently claimed tasks:
+
 - Format: `[type]/[task-id]-[description]` (e.g., `feat/R-03-cardio-duels`)
 - Cross-reference with `roadmap.md` to find matching items
 
@@ -71,18 +72,34 @@ When claiming a specific task:
 2. Verify no existing branch matches this task
 3. Check for file overlap with other active branches:
    // turbo
+
    ```bash
    gh pr list --state open --json headRefName,files --jq '.[] | {branch: .headRefName, files: [.files[].path]}'
    ```
 
 ### 3.2 Create Claim Branch
 
+**Validate Current State:**
+// turbo
+
+```bash
+# Ensure we're starting from main
+current_branch=$(git rev-parse --abbrev-ref HEAD)
+if [ "$current_branch" != "main" ]; then
+  echo "⚠️ WARNING: Not on main branch (currently on: $current_branch)"
+  echo "   Switch to main first: git checkout main && git pull"
+  exit 1
+fi
+```
+
 Determine branch prefix:
+
 - Feature → `feat/`
 - Bug fix → `fix/`
 - Debt/Cleanup → `chore/`
 
 // turbo
+
 ```bash
 git checkout -b [prefix]/[task-id]-[short-description]
 git push -u origin HEAD
@@ -98,6 +115,7 @@ Update `roadmap.md` or source file:
 ```
 
 Commit the claim marker:
+
 ```bash
 git add roadmap.md
 git commit -m "claim: [task-id] [description]"
@@ -134,6 +152,7 @@ If `status` argument provided:
 Before starting work, always check for potential conflicts:
 
 // turbo
+
 ```bash
 git fetch origin
 git log --oneline origin/main..HEAD
@@ -144,9 +163,11 @@ If other branches touch the same files you plan to modify:
 > [!WARNING]
 > **Potential Conflict Detected**
 > Branch `feat/R-05-notifications` also modifies:
+>
 > - `src/services/NotificationService.ts`
-> 
+>
 > Consider:
+>
 > 1. Coordinate with that task first
 > 2. Rebase frequently: `git fetch && git rebase origin/main`
 > 3. Choose a different task

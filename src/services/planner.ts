@@ -6,15 +6,18 @@ import { TrainingMemoryManager } from "./trainingMemoryManager";
 import { AnalyticsService } from "./analytics";
 import { TrainingPath, WeeklyMastery, InAppWorkoutLog, IntervalsActivity } from "../types";
 import { WellnessData } from "../lib/intervals";
-import { getHevyWorkouts } from "../lib/hevy";
 
-// Re-implement or import dependencies if they are client-safe.
-// auditorOrchestrator should be client-safe, but it calls getHevyWorkouts using fetch which is isomorphic.
-// However, calculateTTB probably needs the full merged history.
+// Note: Hevy integration removed per data-source-reconciliation.md
+// Strength data now comes from IronForge internal logs only.
 
 /**
  * Server-Side Planner Service
- * Orchestrates data from DB, Hevy, and Intervals to generate weekly plans.
+ * Orchestrates data from DB and Intervals to generate weekly plans.
+ * 
+ * DATA SOURCES:
+ * - Strength: IronForge PostgreSQL (internal logs from IronMines)
+ * - Cardio: Garmin -> Intervals.icu
+ * - Wellness: Garmin -> Intervals.icu
  */
 export const PlannerService = {
   /**
@@ -47,10 +50,9 @@ export const PlannerService = {
 
     if (!user) throw new Error("User not found");
 
-    // 2. Fetch Hevy Data
-    // We use the runFullAudit function to get hevy data + analysis
-    // Note: runFullAudit calls getHevyWorkouts.
-    const auditReport = await runFullAudit(true, user.hevyApiKey);
+    // 2. Fetch Strength Data (IronForge internal logs)
+    // runFullAudit now uses userId to fetch from IronForge DB
+    const auditReport = await runFullAudit(true, userId);
 
     // 3. Fetch Intervals Wellness
     let wellness: WellnessData = {
@@ -65,7 +67,25 @@ export const PlannerService = {
       sleepScore: null,
       sleepSecs: null,
       rampRate: null,
-      vo2max: null
+      vo2max: null,
+      // Phase 2 fields
+      avgSleepingHR: null,
+      sleepQuality: null,
+      hydration: null,
+      hrvSDNN: null,
+      baevskySI: null,
+      stress: null,
+      mood: null,
+      fatigue: null,
+      menstrualPhase: null,
+      menstrualPhasePredicted: null,
+      weight: null,
+      spO2: null,
+      respiration: null,
+      bloodGlucose: null,
+      injury: null,
+      soreness: null,
+      steps: null,
     };
     if (user.intervalsApiKey && user.intervalsAthleteId) {
       const today = new Date().toISOString().split("T")[0];
