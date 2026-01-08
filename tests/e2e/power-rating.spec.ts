@@ -13,6 +13,11 @@ test.describe("Power Rating System", () => {
             localStorage.setItem('hevy_api_key', 'e2e-dummy-key');
         });
 
+        // CRITICAL: Inject API key to bypass "Configuration Required" screen
+        await page.evaluate(() => {
+            localStorage.setItem('hevy_api_key', 'e2e-dummy-key');
+        });
+
         // Wait for page to load
         await page.waitForTimeout(1500);
         await page.waitForLoadState("networkidle");
