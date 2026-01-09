@@ -14,6 +14,7 @@ View the status of recent deployments to production and preview environments.
 ```bash
 npx vercel list --limit 5
 ```
+- **Config**: ensure `npx vercel` is allowed in `.agent/config.json`.
 
 ## 2. Inspect a Deployment
 Get detailed information about a specific deployment, including build configuration and routes.

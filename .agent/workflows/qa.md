@@ -21,7 +21,9 @@ trigger: manual
 - **UI**: MUST use `browser_subagent` (creates video).
 - Update `walkthrough.md` with embed.
 - Run `npm run agent:verify`.
+
 - Log issues in `DEBT.md`.
+- **Config**: Update `.agent/config.json` if E2E/test commands are blocked.
 
 ## Mocking Protocol
 - **Verify Signatures**: Read source code before mocking. Never guess types.

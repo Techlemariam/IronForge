@@ -22,6 +22,7 @@ trigger: manual
 - Ensure all infrastructure changes are documented in `ARCHITECTURE.md`.
 - Focus on security (secret management) and build speed (npm caching).
 - **MANDATORY:** Always run `npm run agent:verify` before completing a task.
+- **Config**: Ensure `.agent/config.json` `terminalAllowList` contains all necessary tooling commands.
 
 ---
 

@@ -186,7 +186,14 @@ export async function getDuelStatusAction() {
 }
 
 // Internal helper (No Auth Context needed)
-export async function updateCardioDuelProgressInternalWithUser(duelId: string, userId: string, distanceKm: number, durationMinutes: number = 0) {
+// elevationMeters is optional for elevation grind mode
+export async function updateCardioDuelProgressInternalWithUser(
+  duelId: string,
+  userId: string,
+  distanceKm: number,
+  durationMinutes: number = 0,
+  elevationMeters: number = 0
+) {
   const duel = await prisma.duelChallenge.findUnique({
     where: { id: duelId },
   });
@@ -199,21 +206,53 @@ export async function updateCardioDuelProgressInternalWithUser(duelId: string, u
   if (!isChallenger && !isDefender)
     return { success: false, error: "Not participant" };
 
+  // Accumulate distance, duration, and elevation
   const newDistance = (isChallenger ? duel.challengerDistance || 0 : duel.defenderDistance || 0) + distanceKm;
+  const newDuration = (isChallenger ? duel.challengerDuration || 0 : duel.defenderDuration || 0) + durationMinutes;
+  const newElevation = (isChallenger ? duel.challengerElevation || 0 : duel.defenderElevation || 0) + elevationMeters;
 
+  // Update progress with all metrics
   await prisma.duelChallenge.update({
     where: { id: duelId },
     data: isChallenger
-      ? { challengerDistance: newDistance }
-      : { defenderDistance: newDistance },
+      ? { challengerDistance: newDistance, challengerDuration: newDuration, challengerElevation: newElevation }
+      : { defenderDistance: newDistance, defenderDuration: newDuration, defenderElevation: newElevation },
   });
 
   // Check Win Conditions
   let winnerId: string | null = null;
   let isFinished = false;
 
-  if (duel.duelType === "DISTANCE_RACE" || duel.duelType === "SPEED_DEMON") {
+  if (duel.duelType === "DISTANCE_RACE") {
+    // Distance Race: First to reach target distance wins immediately
     if (duel.targetDistance && newDistance >= duel.targetDistance) {
+      winnerId = userId;
+      isFinished = true;
+    }
+  } else if (duel.duelType === "SPEED_DEMON") {
+    // Speed Demon: Both must complete target distance, fastest time wins
+    if (duel.targetDistance && newDistance >= duel.targetDistance) {
+      // Check if opponent has already finished
+      const opponentDistance = isChallenger ? duel.defenderDistance || 0 : duel.challengerDistance || 0;
+      const opponentDuration = isChallenger ? duel.defenderDuration || 0 : duel.challengerDuration || 0;
+
+      if (opponentDistance >= duel.targetDistance) {
+        // Both have finished - compare times
+        if (newDuration < opponentDuration) {
+          winnerId = userId;
+        } else {
+          winnerId = isChallenger ? duel.defenderId : duel.challengerId;
+        }
+        isFinished = true;
+      } else {
+        // First to finish - store completion, wait for opponent
+        // Winner determined when opponent finishes or time expires
+      }
+    }
+  } else if (duel.duelType === "ELEVATION_GRIND") {
+    // Elevation Grind: First to gain target elevation wins
+    const targetElevation = (duel.targetDistance || 1000); // Target in meters (reusing targetDistance field)
+    if (newElevation >= targetElevation) {
       winnerId = userId;
       isFinished = true;
     }
@@ -394,9 +433,15 @@ export async function getDuelArenaStateAction(duelId: string) {
   }
 }
 
-export async function processUserCardioActivity(userId: string, activityType: string, distanceKm: number, durationMinutes: number) {
+export async function processUserCardioActivity(
+  userId: string,
+  activityType: string,
+  distanceKm: number,
+  durationMinutes: number,
+  elevationMeters: number = 0
+) {
   try {
-    console.log(`Processing cardio for user ${userId}: ${activityType} ${distanceKm}km`);
+    console.log(`Processing cardio for user ${userId}: ${activityType} ${distanceKm}km ${elevationMeters}m elevation`);
 
     const activeDuels = await prisma.duelChallenge.findMany({
       where: {
@@ -417,7 +462,7 @@ export async function processUserCardioActivity(userId: string, activityType: st
       if (duel.activityType === "RUNNING" && (type.includes("run") || type.includes("walk"))) match = true;
 
       if (match) {
-        await updateCardioDuelProgressInternalWithUser(duel.id, userId, distanceKm, durationMinutes);
+        await updateCardioDuelProgressInternalWithUser(duel.id, userId, distanceKm, durationMinutes, elevationMeters);
       }
     }
 

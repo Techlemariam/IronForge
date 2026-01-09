@@ -14,6 +14,18 @@ export const JARGON_DEFINITIONS: Record<string, string> = {
     TSB: "Training Stress Balance (Form - Fatigue). Positive means you are fresh, negative means you are fatigued.",
     CNS: "Central Nervous System. Heavy lifting taxes this more than your muscles.",
     TSS: "Training Stress Score. A measure of workout intensity and duration.",
+    // New terms
+    RIR: "Reps In Reserve. How many reps you had left before failure.",
+    SFR: "Stimulus to Fatigue Ratio. Muscle growth per unit of recovery cost.",
+    CTL: "Chronic Training Load (Fitness). Your long-term training average.",
+    ATL: "Acute Training Load (Fatigue). Your short-term training stress.",
+    HRV: "Heart Rate Variability. Higher values indicate better recovery state.",
+    "Body Battery": "Garmin's recovery metric (0-100). Higher = more energy available.",
+    Wilks: "A formula to compare powerlifting strength across weight classes.",
+    e1RM: "Estimated One Rep Max. Calculated from submaximal lifts using formulas.",
+    Zone: "Heart rate training zone (Z1-Z5). Based on %HRmax or %FTP.",
+    FTP: "Functional Threshold Power. The power you can sustain for 1 hour.",
+    Deload: "A planned week of reduced training intensity for recovery.",
 };
 
 interface JargonTooltipProps {

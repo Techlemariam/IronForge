@@ -1,6 +1,5 @@
 "use server";
 
-import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
 type WeeklyChallengeType = "COMMUNITY" | "GUILD" | "GLOBAL";
@@ -39,7 +38,7 @@ interface WeeklyChallengeReward {
  * Get current weekly challenges.
  */
 export async function getWeeklyChallengesAction(
-  userId: string,
+  _userId: string,
 ): Promise<WeeklyChallenge[]> {
   const now = new Date();
   const weekEnd = new Date(now);
@@ -159,8 +158,8 @@ export async function claimWeeklyChallengeRewardsAction(
  * Get weekly challenge leaderboard.
  */
 export async function getWeeklyChallengeLeaderboardAction(
-  challengeId: string,
-  limit: number = 10,
+  _challengeId: string,
+  _limit: number = 10,
 ): Promise<Array<{ rank: number; heroName: string; contribution: number }>> {
   return [
     { rank: 1, heroName: "VolumeKing", contribution: 125000 },

@@ -168,14 +168,18 @@ export default async function Page() {
   // 2. Audit
   let report: AuditReport | null = null;
   try {
-    // Ensure history is passed. If demo mode, history is mock data.
+    // Note: history from Hevy is now deprecated. Using prefetched for demo/legacy only.
+    // For production, runFullAudit will use userId to fetch from IronForge DB.
     if (history.length > 0) {
+      // Legacy: pass prefetched history for demo mode
       report = await runFullAudit(
         false,
-        hevyApiKey || "demo",
-        baseUrl,
+        user.id,
         history,
       );
+    } else {
+      // Production: use userId to fetch internal logs
+      report = await runFullAudit(false, user.id);
     }
   } catch (e) {
     console.error("Warning: Failed to run auditor", e);
@@ -313,6 +317,8 @@ export default async function Page() {
   // Moved up
   // const titanState = titanRes.success ? titanRes.data : null;
 
+  const liteMode = !!(dbUser?.preferences as any)?.liteMode;
+
   return (
     <DashboardClient
       initialData={initialData as any}
@@ -332,6 +338,7 @@ export default async function Page() {
       isDemoMode={isDemoMode}
       challenges={challenges}
       activeDuel={activeDuel}
+      liteMode={liteMode}
     />
   );
 }

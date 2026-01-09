@@ -39,3 +39,4 @@ Generate and view code coverage statistics.
 # Run coverage analysis
 npm run test:coverage
 ```
+- **Config**: Add missing test tools to `.agent/config.json`.

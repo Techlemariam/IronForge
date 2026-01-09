@@ -7,6 +7,8 @@ import React, {
   useMemo,
   useRef,
 } from "react";
+import { GarminWidget } from "@/features/bio/components/GarminWidget";
+
 import dynamic from "next/dynamic";
 import {
   X,
@@ -302,6 +304,7 @@ export default function CardioStudio(props: CardioStudioProps) {
         {/* Close Button */}
         <button
           onClick={onClose}
+          aria-label="Close"
           className="absolute top-4 right-4 z-[60] p-2 bg-black/60 hover:bg-black/80 rounded-lg text-white transition-colors"
         >
           <X className="w-6 h-6" />
@@ -788,6 +791,18 @@ function CardioCockpit({
           >
             <Gauge className="w-3 h-3" /> PACE
           </button>
+        </div>
+
+        {/* Garmin Widget (Placeholder/Mock) */}
+        <div className="hidden lg:block ml-4">
+          <GarminWidget data={{
+            bodyBattery: 85,
+            stressLevel: 24,
+            restingHeartRate: 55,
+            sleepScore: 88,
+            lastSyncAt: new Date(),
+            source: "DIRECT"
+          }} variant="compact" />
         </div>
 
         {/* Layout Switcher */}

@@ -1,6 +1,6 @@
 "use server";
 
-import { prisma } from "@/lib/prisma";
+// import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
 interface Rival {
@@ -38,7 +38,7 @@ interface RivalSuggestion {
 /**
  * Get user's current rivals.
  */
-export async function getRivalsAction(userId: string): Promise<Rival[]> {
+export async function getRivalsAction(_userId: string): Promise<Rival[]> {
   return [
     {
       id: "rival1",
@@ -77,7 +77,7 @@ export async function getRivalsAction(userId: string): Promise<Rival[]> {
  * Get suggested rivals based on stats.
  */
 export async function getSuggestedRivalsAction(
-  userId: string,
+  _userId: string,
 ): Promise<RivalSuggestion[]> {
   return [
     {
@@ -154,7 +154,7 @@ export async function toggleFavoriteRivalAction(
  */
 export async function getRivalryLeaderboardAction(
   userId: string,
-  rivalId: string,
+  _rivalId: string,
 ): Promise<{
   weeklyWinner: string | null;
   monthlyWinner: string | null;

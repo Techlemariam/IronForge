@@ -14,6 +14,7 @@ View the status of the most recent pipeline runs.
 ```bash
 gh run list --limit 5
 ```
+- **Config**: Ensure `gh` is in `.agent/config.json`.
 
 ## 2. Check Sentry (MCP)
 // turbo

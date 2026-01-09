@@ -83,12 +83,19 @@ IronForge uses a hybrid architecture with **Next.js Server Actions** for client-
 | `attackBossAction(bossId)` | Performs guild raid attack (Legacy?). | Auth User |
 | `getUserStatsAction()` | Fetches guild-related user stats. | Auth User |
 
-### Game Data (`actions/armory.ts`, `actions/bestiary.ts`, `actions/forge.ts`)
+### Game Data (`actions/economy/armory.ts`, `actions/combat/bestiary.ts`)
 | Function | Description | Access |
 |----------|-------------|--------|
 | `getArmoryData()` | Fetches all items and user ownership status. | Auth User |
 | `getBestiaryData()` | Fetches all monsters and user kill status. | Auth User |
-| `craftItem(recipeId)` | Crafts an item using resources/currency. | Auth User |
+
+### Crafting & Enchanting (`actions/economy/crafting.ts`, `actions/economy/enchanting.ts`)
+| Function | Description | Access |
+|----------|-------------|--------|
+| `getRecipesAction(userId)` | Fetches available crafting recipes. | Auth User |
+| `craftItemAction(userId, recipeId)` | Crafts an item using materials. | Auth User |
+| `getAvailableEnchantmentsAction(itemId)` | Returns possible enchantments. | Auth User |
+| `enchantItemAction(userId, itemId, enchantId)` | Applies an enchantment to an item. | Auth User |
 
 ### Weekly Challenges (`actions/challenges.ts`)
 | Function | Description | Access |
@@ -193,7 +200,7 @@ IronForge uses a hybrid architecture with **Next.js Server Actions** for client-
 | `subscribeUserAction(subscription)` | Saves a web push subscription for a user. | Auth User |
 | `sendNotificationAction(userId, title, body)` | Sends a push notification to all user devices. | System |
 
-### Guilds & Raids (`actions/guild-raids.ts`)
+### Guilds & Raids (`actions/guild/core.ts`, `actions/guild/raids.ts`)
 | Function | Description | Access |
 |----------|-------------|--------|
 | `createGuildAction(data)` | Creates a guild and assigns creator as member. | Auth User |
@@ -226,7 +233,7 @@ IronForge uses a hybrid architecture with **Next.js Server Actions** for client-
 | `sellItemAction(userId, itemId)` | Sells an owned item for Gold. | Auth User |
 | `getGoldBalanceAction(userId)` | Returns user's current gold balance. | Auth User |
 
-### Battle Pass (`actions/battle-pass.ts`)
+### Battle Pass (`actions/systems/battle-pass.ts`)
 | Function | Description | Access |
 |----------|-------------|--------|
 | `getActiveSeasonAction()` | Fetches current Battle Pass season. | Public |

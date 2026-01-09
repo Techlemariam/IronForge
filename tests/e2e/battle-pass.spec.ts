@@ -21,9 +21,8 @@ test.describe('Battle Pass', () => {
         await expect(page.getByText(/Season|Battle Pass|Current Tier|Premium/i).first()).toBeVisible({ timeout: 15000 });
     });
 
-    // SKIP: Requires seeded BattlePassSeason which is not available in CI.
-    // TODO: Add proper E2E database seeding step in CI workflow.
-    test.skip('should allow upgrading to premium', async ({ page }) => {
+    // Seeded BattlePassSeason is now available via e2e-seed.ts.
+    test('should allow upgrading to premium', async ({ page }) => {
         await page.goto('/battle-pass');
 
         // Check if "Unlock Premium" button exists (or "Premium" badge if already upgraded)

@@ -38,6 +38,7 @@ npx prisma migrate deploy
 ```bash
 npx prisma generate
 # Verify: src/lib/prisma.ts exports correctly
+# Config: Add `npx prisma generate` to `.agent/config.json`.
 ```
 
 ## ⚠️ Safety Protocol

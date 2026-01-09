@@ -3,7 +3,7 @@
 import { createClient } from "@/utils/supabase/server";
 import prisma from "@/lib/prisma";
 import axios from "axios";
-import { revalidatePath } from "next/cache";
+// import { revalidatePath } from "next/cache";
 
 // Placeholder for now as we don't have Segment DB
 // We assume we want to battle on a specific Strava Segment ID

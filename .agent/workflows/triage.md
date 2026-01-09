@@ -30,11 +30,11 @@ Run relevant monitor workflows based on the provided domain (or all if no domain
 | `infra` | `/monitor-db`, `/monitor-deploy`, `/monitor-ci` |
 | `game` | `/monitor-game`, `/monitor-logic`, `/monitor-tests` |
 | `sprint`| `/monitor-strategy` |
-| `qa` | `/monitor-tests`, `/monitor-logic` |
+| `qa` | `/monitor-tests`, `/monitor-logic`, `/monitor-debt` |
 | `bio` | `/monitor-bio` |
 | `business`| `/monitor-strategy`, `/monitor-growth` |
 | `api` | `/monitor-logic`, `/security` |
-| `meta` | `/health-check`, `/monitor-tests`, `/monitor-growth` |
+| `meta` | `/health-check`, `/monitor-tests`, `/monitor-growth`, `/monitor-debt` |
 
 **Instruction:** 
 - If a `[domain]` is provided, run **ONLY** the monitors listed above for that domain.
@@ -42,12 +42,12 @@ Run relevant monitor workflows based on the provided domain (or all if no domain
 
 ```bash
 /monitor-logic    # Logic gaps, debt, type safety
+/monitor-debt     # Technical debt markers (TODO, any)
 /monitor-game     # Game balance, data integrity
 /monitor-bio      # Bio-integration health
 /monitor-tests    # Test coverage and failures
 /monitor-ci       # CI/CD pipeline health
 /monitor-db       # Database and migrations
-/monitor-deploy   # Vercel deployment status
 /monitor-deploy   # Vercel deployment status
 /monitor-strategy # Market alignment and personas
 /monitor-growth   # Passive income triggers and acquisition
@@ -264,6 +264,7 @@ For **P0 blockers**:
 ❌ **Don't:**
 - Try to fix everything at once
 - Ignore P0 items in favor of "interesting" P3 work
+- Block safe commands (update `.agent/config.json` instead)
 - Let technical debt accumulate without tracking
 - Skip verification after fixes
 - Forget to update DEBT.md or roadmap

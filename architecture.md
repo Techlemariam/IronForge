@@ -3,6 +3,7 @@
 > **The North Star** for engineering decisions at IronForge. All agents and developers must adhere to these guidelines.
 
 ## 1. 🛠️ Tech Stack & Core Dependencies
+
 | Layer | Technology | Version | Justification |
 | :--- | :--- | :--- | :--- |
 | **Framework** | Next.js (App Router) | 15.1+ | RSC standards, Streaming, Server Actions. |
@@ -59,41 +60,49 @@ src/
 ## 3. 🌊 Data Flow & Patterns
 
 ### 3.1 Server Actions (The Default "API")
+
 DO NOT create standard API Routes (`/pages/api` or `route.ts`) unless strictly necessary (e.g. external webhooks).
-1.  **Input:** Component calls Server Action.
-2.  **Validation:** Action **MUST** validate input via Zod.
-3.  **Logic:** Action calls `prisma` or `services/`.
-4.  **Output:** Action returns `{ success: boolean, data?: T, error?: string }`.
+
+1. **Input:** Component calls Server Action.
+2. **Validation:** Action **MUST** validate input via Zod.
+3. **Logic:** Action calls `prisma` or `services/`.
+4. **Output:** Action returns `{ success: boolean, data?: T, error?: string }`.
 
 ### 3.2 React Server Components (RSC)
-*   **Default:** All components are Server Components by default.
-*   **Fetch:** Fetch data directly in the RSC using Prisma or Service.
-*   **Client Boundary:** Use `'use client'` ONLY for interactivity (Inputs, Buttons, Hooks). Push Client Components down the tree ("Leaf Nodes").
+
+* **Default:** All components are Server Components by default.
+* **Fetch:** Fetch data directly in the RSC using Prisma or Service.
+* **Client Boundary:** Use `'use client'` ONLY for interactivity (Inputs, Buttons, Hooks). Push Client Components down the tree ("Leaf Nodes").
 
 ### 3.3 State Management
-*   **Server State:** URL Search Params + Server Actions (revalidatePath).
-*   **Global Client State:** Zustand (Use sparingly).
-*   **Form State:** `useActionState` (React 19) or standard controlled inputs.
+
+* **Server State:** URL Search Params + Server Actions (revalidatePath).
+* **Global Client State:** Zustand (Use sparingly).
+* **Form State:** `useActionState` (React 19) or standard controlled inputs.
 
 ---
 
 ## 4. 🛡️ Security & Reliability
 
 ### 4.1 Zero-Trust Input
-*   **Never trust the client.**
-*   Every Server Action must start with `props = schema.parse(input)`.
+
+* **Never trust the client.**
+* Every Server Action must start with `props = schema.parse(input)`.
 
 ### 4.2 Error Handling
-*   **User Facing:** UI must handle errors gracefully (Toast notifications).
-*   **System:** Log critical errors to Sentry (via `lib/logger` or direct import).
+
+* **User Facing:** UI must handle errors gracefully (Toast notifications).
+* **System:** Log critical errors to Sentry (via `lib/logger` or direct import).
 
 ### 4.3 Database Guardrails
-*   **No "God Objects":** Avoid adding fields to `User` unless absolutely generic. Use specific tables (`UserMetrics`, `UserSettings`) linked by ID.
-*   **Indexes:** Ensure foreign keys and frequently queried fields are indexed.
+
+* **No "God Objects":** Avoid adding fields to `User` unless absolutely generic. Use specific tables (`UserMetrics`, `UserSettings`) linked by ID.
+* **Indexes:** Ensure foreign keys and frequently queried fields are indexed.
 
 ---
 
 ## 5. 🧪 Testing Strategy
+
 | Type | Tool | Scope | Command |
 | :--- | :--- | :--- | :--- |
 | **Unit** | Vitest | Utils, Services, Hooks, complex Logic. | `npm test` |
@@ -102,24 +111,53 @@ DO NOT create standard API Routes (`/pages/api` or `route.ts`) unless strictly n
 
 ---
 
+## 6. 🎮 Game Mechanics & Progression
+
+IronForge treats physical training as the primary game engine. Progression is deterministic and tied to real-world performance.
+
+### 6.1 Training Paths (The Pillars)
+
+* **Purpose:** Defines the athlete's specialization (Juggernaut, Pathfinder, Warden).
+* **Logic:** Modifies combat stats, volume targets, and reward weights.
+* **Parallel Tracks:** "Passive Layers" (Mobility & Recovery) provide long-term risk reduction.
+
+### 6.2 Neural Lattice (Passive Mastery)
+
+* **Structure:** A PoE-inspired non-linear skill tree.
+* **Currencies:** Talent Points (TP) from action, Kinetic Shards (KS) from recovery.
+* **Gatekeeping:** Highly impactful "Keystones" define playstyles but come with significant trade-offs and physical prerequisites (e.g., 1RM targets).
+
+### 6.3 Goal-Priority Engine (The Brain)
+
+* **Strategy:** Replaces high-overhead AI with deterministic periodization focus.
+* **Mechanic:** Users declare & prioritize goals. Engine rotates Macro-Phases (Build/Peak/Deload) to resolve interference.
+* **Tactical Layer:** `TrainingCalendar` generates week plans based on `DailyReadiness` and `ResourceBudget` (CNS/Metabolic/Muscular).
+* **Motivation:** Integrated "Motivation Engine" (Streaks, PvP, Progression Transparency) ensures adherence via psychological hooks.
+* **Bio-Safeguards:** Hard-coded triggers (ACWR, HRV, Sleep) enforce deloads regardless of user ambition.
+
+---
+
 ## 7. 🚀 Deployment & CI/CD
 
 IronForge is deployed to **Vercel** with full automation via **GitHub Actions**.
 
 ### 7.1 Pipeline Overview
-1. **Agent Verify (`agent-verify.yml`)**: Triggered on all Pull Requests and pushes to `main`. Runs Lint, Vitest (Unit/Integration), and Playwright (E2E). Uses Turborepo Caching to skip redundant tasks.
-2. **Production Deploy (`deploy.yml`)**: Triggered on successful build of the `main` branch. This workflow ensures that only code passing all verification steps is deployed to production.
+
+1. **Verify & Quality Gate (`ci-cd.yml`)**: Triggered on all Pull Requests and pushes to `main`. Runs Lint, Vitest (Unit/Integration), Playwright (E2E), and DB Drift checks. Uses Turborepo Caching.
+2. **Production Deploy (`ci-cd.yml`)**: Automated deployment to Vercel triggered on successful build/merge to the `main` branch.
 
 ### 7.2 Custom Domains
+
 - **Production**: [ironforge.app](https://ironforge.app)
-- **Staging/Preview**: Automatic Vercel Preview URLs for all PRs.
+* **Staging/Preview**: Automatic Vercel Preview URLs for all PRs.
 
 ### 7.3 Essential Secrets (GitHub & Vercel)
+
 The following secrets must be synchronized between GitHub Actions and Vercel:
-- `DATABASE_URL`: Production PostgreSQL connection string.
-- `NEXT_PUBLIC_SUPABASE_URL` / `ANON_KEY`: Auth and Storage.
-- `SENTRY_DSN`: Error tracking (Production).
-- `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`: Required for CLI-based deployment triggers if standard GitHub hooks are disabled.
+* `DATABASE_URL`: Production PostgreSQL connection string.
+* `NEXT_PUBLIC_SUPABASE_URL` / `ANON_KEY`: Auth and Storage.
+* `SENTRY_DSN`: Error tracking (Production).
+* `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`: Required for CLI-based deployment triggers if standard GitHub hooks are disabled.
 
 > [!IMPORTANT]
 > Always verify that `npm run agent:verify` passes locally before pushing to `main`.

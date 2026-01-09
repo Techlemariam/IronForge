@@ -104,7 +104,7 @@ export async function updateTitanAction(
 export async function modifyTitanHealthAction(
   userId: string,
   delta: number,
-  reason: string,
+  _reason: string,
 ) {
   try {
     const titan = await prisma.titan.findUnique({ where: { userId } });
@@ -143,7 +143,7 @@ export async function modifyTitanHealthAction(
 export async function awardTitanXpAction(
   userId: string,
   amount: number,
-  source: string,
+  _source: string,
 ) {
   try {
     const titan = await prisma.titan.findUnique({ where: { userId } });

@@ -59,10 +59,14 @@ describe('Cardio Duel Logic', () => {
 
         await updateCardioDuelProgressInternalWithUser('duel1', 'user1', 1.5, 10);
 
-        expect(prisma.duelChallenge.update).toHaveBeenCalledWith({
+        expect(prisma.duelChallenge.update).toHaveBeenCalledWith(expect.objectContaining({
             where: { id: 'duel1' },
-            data: { challengerDistance: 3.5 }
-        });
+            data: {
+                challengerDistance: 3.5,
+                challengerDuration: 10,
+                challengerElevation: 0
+            }
+        }));
     });
 
     it('detects win condition and awards rewards', async () => {

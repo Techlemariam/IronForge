@@ -41,7 +41,12 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
   };
 
   return (
-    <div className="flex flex-col items-center gap-4">
+    <div
+      className="flex flex-col items-center gap-4"
+      role="status"
+      aria-live="polite"
+      aria-busy="true"
+    >
       <div
         className={cn(
           "rounded-full animate-spin border-solid border-t-transparent",

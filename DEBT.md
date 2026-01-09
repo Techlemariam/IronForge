@@ -54,6 +54,24 @@
 | 2026-01-03 | `src/app/api/webhooks/strava/route.ts` | Missing comprehensive test coverage for webhook logic. | @qa | ✅ Resolved |
 | 2026-01-04 | `src/**/*` | Resolved 50+ `any` usages in `OracleService`, `PlannerService`, `GameContextService`, `PowerRatingService`, and `Prisma` client. Improved overall project type safety. | @cleanup | ✅ Resolved |
 | 2026-01-04 | `src/actions/training.ts` | `logTitanSet` has high complexity (Level, BP, Challenge, Log). Extract to services. | @architect | ✅ Resolved |
+| 2026-01-05 | `tests/e2e/cardio-duels.spec.ts` | SKIPPED: 3 tests require seeded mock opponents. Add E2E DB seeding step to CI. | @infrastructure | ⚠️ Open |
+| 2026-01-05 | `tests/e2e/battle-pass.spec.ts` | SKIPPED: Premium upgrade test requires seeded BattlePassSeason in CI. | @infrastructure | ⚠️ Open |
+| 2026-01-05 | `src/features/dashboard/CitadelHub.tsx` | 17 nav items (5.6×) exceed cognitive load target (<3 decisions/view). Needs progressive disclosure. | @ui-ux | ⚠️ Open |
+| 2026-01-05 | `src/components/ui/LoadingSpinner.tsx` | Already has `role="status"`, `aria-live="polite"`, `aria-busy="true"`. | @ui-ux | ✅ Resolved |
+| 2026-01-05 | `src/features/dashboard/DashboardClient.tsx` | 685 lines → 432 lines. Extracted `ViewRouter.tsx` component. | @cleanup | ✅ Resolved |
+| 2026-01-05 | `src/components/ui/TvHud.tsx` | 7532 bytes may exceed TV Mode data density guidelines (max 3 data points). | @ui-ux | ⚠️ Open |
+| 2026-01-05 | `src/**/*` | Only 3 files use `aria-label`. Add accessibility labels to all interactive elements. | @ui-ux | ⚠️ Open |
+| 2026-01-06 | `src/features/oracle/OracleChat.tsx` | Improved `context` prop from `any` to `Record<string, unknown>`. @ts-ignore and `as any` casts remain due to @ai-sdk/react type limitations. | @cleanup | ⚠️ Deferred (Lib) |
+| 2026-01-06 | `package.json` | PR #31 (Dependencies) deferred (Zod 4, ESLint 9) | @infrastructure | ⚠️ Deferred |
+| 2026-01-06 | `src/services/analytics/GrowthMetricsService.ts` | `getSocialEngagement` is a placeholder. Requires 'Friendship' model implementation. | @architect | ⚠️ Open |
+| 2026-01-06 | `src/features/game/TheForge.tsx` | Mock inventory state and 'optimistic update' logic needs proper hook/server-sync. | @coder | ⚠️ Open |
+| 2026-01-06 | `src/actions/economy/forge.ts` | `getInventory` uses mock data. DB schema update needed for stackable resources. | @architect | ⚠️ Deferred (Schema) |
+| 2026-01-06 | `src/features/game/hooks/useSkillEffects.ts` | Keystone selection logic only supports first keystone. Needs multi-keystone/switching support. | @game-designer | ⚠️ Open |
+| 2026-01-06 | `src/actions/guild/raids.ts` | `startRaidAction` missing admin permission check (`// TODO: Verify user is admin`). | @security | ✅ Resolved |
+| 2026-01-06 | `src/actions/combat/emotes.ts` | `sendBattleEmoteAction` missing Supabase Realtime broadcast to opponent. | @infrastructure | ⚠️ Open |
+| 2026-01-06 | `src/services/oracle.ts` | Deprecate LLM-based logic in favor of deterministic `GoalPriorityEngine`. **Spec complete.** | @architect | 🔄 In Progress |
+| 2026-01-07 | `src/data/workouts.ts` | Only contains cardio (RUN/BIKE/SWIM). Strength workouts need dynamic generation from `exerciseDb.ts`. | @game-designer | ⚠️ Open |
+| 2026-01-07 | `src/lib/intervals.ts` | `rampRate`, `zone_times`, `icu_training_load` unused. See GPE spec Enhancement Roadmap. | @titan-coach | ⚠️ Open |
 
 ---
 
@@ -61,7 +79,7 @@
 
 | Date | File | Issue | Owner | Status |
 |:-----|:-----|:------|:------|:-------|
-| 2026-01-03 | `.lighthouserc.json` | Lighthouse thresholds lowered (Perf 0.7, others 0.85). Restore to 0.9 before V1.0. | @perf | ⚠️ Open |
+| 2026-01-03 | `.lighthouserc.json` | Lighthouse thresholds already at 0.9 for all categories. | @perf | ✅ Resolved |
 | 2026-01-05 | `src/services/progression.ts:135` | TODO: Add gender to User model for accurate Wilks score calculation | @architect | ⚠️ Deferred (DB schema) |
 | 2026-01-05 | `src/services/bio/GarminService.ts:33` | TODO: Implement direct Garmin Health API (awaiting API approval) | @infrastructure | ⚠️ Deferred (External) |
 | 2026-01-05 | `src/services/bio/RecoveryService.ts:40` | TODO: Implement proper baseline tracking in Phase 2 | @titan-coach | ⚠️ Deferred (Phase 2) |

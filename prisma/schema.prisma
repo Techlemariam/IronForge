@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
 }
 
 datasource db {
@@ -77,6 +78,7 @@ model User {
   cardioLogs       CardioLog[]
   grimoireEntries  GrimoireEntry[]
   meditationLogs   MeditationLog[]
+  mobilityLogs     MobilityLog[]
   pvpProfile       PvpProfile?
   unlockedMonsters UnlockedMonster[]
   achievements     UserAchievement[]
@@ -97,6 +99,9 @@ model User {
   following          Follow[]                @relation("UserFollowing")
   friendshipsA       Friendship[]            @relation("FriendshipA")
   friendshipsB       Friendship[]            @relation("FriendshipB")
+  
+  // GPE
+  wardensManifest    WardensManifest?
   guildId            String?
   guild              Guild?                  @relation(fields: [guildId], references: [id])
   ledGuild           Guild?                  @relation("GuildLeader")
@@ -851,6 +856,14 @@ model DuelChallenge {
   wkgTier            Float? // 2.0, 2.5, 3.0, 3.5
   challengerDistance Float?  @default(0)
   defenderDistance   Float?  @default(0)
+  
+  // Speed Demon: Track completion time
+  challengerDuration Float?  @default(0) // minutes to complete target distance
+  defenderDuration   Float?  @default(0)
+  
+  // Elevation Grind: Track vertical gain
+  challengerElevation Float?  @default(0) // meters climbed
+  defenderElevation   Float?  @default(0)
 
   challenger User  @relation("DuelChallenger", fields: [challengerId], references: [id])
   defender   User  @relation("DuelDefender", fields: [defenderId], references: [id])
@@ -1018,3 +1031,83 @@ model PvpEmoteLog {
   @@index([matchId])
   @@index([senderId])
 }
+
+// ============================================
+// MOBILITY STUDIO (ATG Integration)
+// ============================================
+
+model MobilityExercise {
+  id           String @id @default(cuid())
+  name         String // "Patrick Step", "Couch Stretch"
+  source       String @default("ATG") // ATG, GOWOD, CUSTOM
+  difficulty   String @default("BEGINNER") // BEGINNER, INTERMEDIATE, ADVANCED
+  durationSecs Int    @default(60)
+  videoUrl     String?
+  instructions String?
+  
+  // Resource Cost (per minute)
+  costCns      Float @default(0.2)
+  costMuscular Float @default(0.15)
+  costMetabolic Float @default(0.05)
+  
+  // Target Regions (stored as JSON array)
+  targetRegions Json // ["ankle", "hip_flexor", "knee"]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  logs MobilityLog[]
+  
+  @@index([source])
+  @@index([difficulty])
+}
+
+model MobilityLog {
+  id         String   @id @default(cuid())
+  userId     String
+  exerciseId String
+  date       DateTime @default(now())
+  durationSecs Int    // Actual duration performed
+  notes      String?
+  
+  // XP earned for this session
+  xpEarned   Int @default(0)
+  
+  // Passive Layer tracking
+  passiveLayerLevel String? // BRONZE, SILVER, GOLD
+  
+  user     User             @relation(fields: [userId], references: [id])
+  exercise MobilityExercise @relation(fields: [exerciseId], references: [id])
+  
+  @@index([userId, date])
+  @@index([exerciseId])
+}
+
+// ============================================
+// GPE PERSISTENCE (Wardens Manifest)
+// ============================================
+
+model WardensManifest {
+  id             String   @id @default(cuid())
+  userId         String   @unique
+  user           User     @relation(fields: [userId], references: [id])
+  
+  phase          String   // MacroPhase enum
+  phaseStartDate DateTime @default(now())
+  phaseWeek      Int      @default(1)
+  
+  autoRotate     Boolean  @default(true)
+  
+  // Privacy Consents
+  privacyHealth  Boolean  @default(true)
+  privacyPublic  Boolean  @default(true)
+  
+  // Goals stored as JSON array of GoalPriority objects
+  // [{ goal: "VO2MAX", weight: 0.6 }, { goal: "STRENGTH", weight: 0.4 }]
+  goals          Json
+  
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+

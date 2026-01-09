@@ -57,3 +57,4 @@ List unfinished game logic implementation.
 ```bash
 rg "TODO|FIXME|HACK" src/services/game/ src/lib/game/
 ```
+- **Config**: Add `rg` (ripgrep) to `.agent/config.json`.

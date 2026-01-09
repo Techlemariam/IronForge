@@ -1,8 +1,15 @@
-"use client";
 
-import React from "react";
+import { GarminWellnessData } from "@/services/bio/GarminService";
+
+interface GarminStartData { // Simplified interface to avoid circular dependency if needed, or import
+    bodyBattery: number;
+    stressLevel: number;
+    restingHeartRate?: number;
+}
+
 import { motion, AnimatePresence } from "framer-motion";
 import { Heart, Shield, Swords, Zap, Activity } from "lucide-react";
+import { GarminWidget } from "@/features/bio/components/GarminWidget";
 
 interface TvHudProps {
     heartRate?: number;
@@ -14,6 +21,7 @@ interface TvHudProps {
     playerName?: string;
     playerHp?: number;
     playerMaxHp?: number;
+    garminData?: GarminWellnessData;
 }
 
 export const TvHud: React.FC<TvHudProps> = ({
@@ -26,6 +34,7 @@ export const TvHud: React.FC<TvHudProps> = ({
     playerName = "Titan",
     playerHp = 100,
     playerMaxHp = 100,
+    garminData,
 }) => {
     return (
         <div className="fixed inset-0 z-[100] pointer-events-none bg-gradient-to-b from-black/40 via-transparent to-black/60 font-mono">
@@ -35,13 +44,20 @@ export const TvHud: React.FC<TvHudProps> = ({
                 aria-label="Player Status"
                 className="absolute top-12 left-12 flex items-center gap-4 bg-black/60 backdrop-blur-xl border-2 border-white/10 p-4 rounded-2xl shadow-2xl"
             >
-                <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center border-4 border-blue-400/50">
-                    <Shield className="w-8 h-8 text-white" />
+                <div className="w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center border-2 border-blue-400/50 shadow-[0_0_15px_rgba(59,130,246,0.5)]">
+                    <Shield className="w-7 h-7 text-white" />
                 </div>
+
                 <div>
-                    <div className="text-white/60 text-xl uppercase tracking-widest">Titan</div>
-                    <div className="text-4xl font-black text-white">{playerName}</div>
-                    <div className="w-64 h-4 bg-white/10 rounded-full mt-2 overflow-hidden border border-white/5">
+                    <div className="flex items-center gap-3">
+                        <div className="text-3xl font-black text-white lowercase tracking-tight">{playerName}</div>
+                        <div className="flex items-center gap-1.5 bg-black/40 px-2 py-0.5 rounded-lg border border-white/5">
+                            <Heart className="w-4 h-4 text-red-500 fill-current animate-pulse" />
+                            <span className="text-lg font-mono font-bold text-white tabular-nums leading-none">{heartRate > 0 ? heartRate : "--"}</span>
+                        </div>
+                    </div>
+
+                    <div className="w-48 h-2 bg-white/10 rounded-full mt-2 overflow-hidden border border-white/5">
                         <motion.div
                             initial={{ width: 0 }}
                             animate={{ width: `${(playerHp / playerMaxHp) * 100}%` }}
@@ -49,24 +65,9 @@ export const TvHud: React.FC<TvHudProps> = ({
                         />
                     </div>
                 </div>
-
-                <div className="flex items-center gap-6 ml-8">
-                    <motion.div
-                        animate={{ scale: [1, 1.1, 1] }}
-                        transition={{ repeat: Infinity, duration: 0.6 }}
-                    >
-                        <Heart className="w-12 h-12 text-red-500 fill-current" />
-                    </motion.div>
-                    <div>
-                        <div className="text-6xl font-black text-white leading-none">
-                            {heartRate > 0 ? heartRate : "--"}
-                        </div>
-                        <div className="text-white/40 text-sm uppercase tracking-widest mt-1">BPM / V-Sync</div>
-                    </div>
-                </div>
             </div>
 
-            {/* Top Right: Quest Progress */}
+            {/* Top Right: Quest Progress (Compacted) */}
             <AnimatePresence>
                 {questTitle && (
                     <motion.div
@@ -78,25 +79,28 @@ export const TvHud: React.FC<TvHudProps> = ({
                         className="absolute top-12 right-12 text-right"
                     >
                         <div className="bg-black/60 backdrop-blur-xl border-2 border-warrior/20 p-4 rounded-2xl shadow-2xl">
-                            <div className="flex items-center justify-end gap-3 mb-2">
-                                <span className="text-warrior text-xl uppercase tracking-tighter font-bold">Active Quest</span>
-                                <Swords className="w-6 h-6 text-warrior" />
-                            </div>
-                            <div className="text-4xl font-black text-white mb-4 uppercase">{questTitle}</div>
-                            <div className="flex items-center gap-4">
-                                <div className="flex-1 w-80 h-3 bg-white/5 rounded-full overflow-hidden">
+                            <div className="text-2xl font-black text-white mb-2 uppercase tracking-wide text-right">{questTitle}</div>
+                            <div className="flex items-center justify-end gap-3">
+                                <div className="w-48 h-2 bg-white/5 rounded-full overflow-hidden">
                                     <motion.div
                                         initial={{ width: 0 }}
                                         animate={{ width: `${questProgress}%` }}
-                                        className="h-full bg-warrior shadow-[0_0_15px_rgba(255,215,0,0.5)]"
+                                        className="h-full bg-warrior shadow-[0_0_10px_rgba(255,215,0,0.5)]"
                                     />
                                 </div>
-                                <div className="text-2xl font-bold text-warrior">{Math.round(questProgress)}%</div>
+                                <div className="text-xl font-bold text-warrior tabular-nums">{Math.round(questProgress)}%</div>
                             </div>
                         </div>
                     </motion.div>
                 )}
             </AnimatePresence>
+
+            {/* Top Center: Garmin Data */}
+            {garminData && (
+                <div className="absolute top-12 left-1/2 -translate-x-1/2">
+                    <GarminWidget data={garminData} variant="compact" />
+                </div>
+            )}
 
             {/* Bottom Center: Boss HP (Visible only during combat) */}
             <AnimatePresence>
