@@ -49,12 +49,10 @@ export const TvHud: React.FC<TvHudProps> = ({
                 </div>
 
                 <div>
-                    <div className="flex items-center gap-3">
-                        <div className="text-3xl font-black text-white lowercase tracking-tight">{playerName}</div>
-                        <div className="flex items-center gap-1.5 bg-black/40 px-2 py-0.5 rounded-lg border border-white/5">
-                            <Heart className="w-4 h-4 text-red-500 fill-current animate-pulse" />
-                            <span className="text-lg font-mono font-bold text-white tabular-nums leading-none">{heartRate > 0 ? heartRate : "--"}</span>
-                        </div>
+                    <div className="flex items-center gap-1.5 bg-black/40 px-3 py-1.5 rounded-lg border border-white/5">
+                        <Heart className="w-5 h-5 text-red-500 fill-current animate-pulse" />
+                        <span className="text-2xl font-mono font-bold text-white tabular-nums leading-none">{heartRate > 0 ? heartRate : "--"}</span>
+                        <span className="text-xs text-white/50 uppercase">bpm</span>
                     </div>
 
                     <div className="w-48 h-2 bg-white/10 rounded-full mt-2 overflow-hidden border border-white/5">
@@ -116,9 +114,6 @@ export const TvHud: React.FC<TvHudProps> = ({
                         <div className="bg-black/80 backdrop-blur-xl border-2 border-red-500/30 p-8 rounded-3xl shadow-[0_-20px_50px_rgba(255,0,0,0.1)]">
                             <div className="flex justify-between items-end mb-4">
                                 <div>
-                                    <div className="text-red-500 text-xl uppercase tracking-widest font-black mb-1 flex items-center gap-2">
-                                        <Activity className="w-5 h-5" /> Threat Level: Critical
-                                    </div>
                                     <div className="text-5xl font-black text-white tracking-tight uppercase italic">{bossName}</div>
                                 </div>
                                 <div className="text-right">
