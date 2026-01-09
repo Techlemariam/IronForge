@@ -15,6 +15,8 @@ import {
   ChevronDown,
   ChevronUp,
   Activity,
+  Bike,
+  Footprints,
 } from "lucide-react";
 import { DashboardAction } from "./types";
 import { playSound } from "@/utils";
@@ -148,11 +150,19 @@ export const CitadelHub: React.FC<CitadelHubProps> = ({ dispatch }) => (
       </NavButton>
       <NavButton
         variant="magma"
-        icon={<Activity className="w-4 h-4" />}
+        icon={<Bike className="w-4 h-4" />}
         onClick={() => dispatch({ type: "SET_CARDIO_MODE", payload: "cycling" })}
-        description="Indoor cycling and running modes with virtual elevation"
+        description="Epic indoor cycling quests"
       >
-        Cardio Suite
+        Ride
+      </NavButton>
+      <NavButton
+        variant="magma"
+        icon={<Footprints className="w-4 h-4" />}
+        onClick={() => dispatch({ type: "SET_CARDIO_MODE", payload: "running" })}
+        description="High-intensity treadmill missions"
+      >
+        Run
       </NavButton>
       <NavButton
         variant="magma"

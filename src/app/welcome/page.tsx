@@ -197,11 +197,11 @@ export default function WelcomePage() {
       {/* Footer */}
       <footer className="py-12 border-t border-white/5 text-center text-forge-muted text-sm">
         <p>&copy; {new Date().getFullYear()} IronForge RPG. All rights reserved.</p>
-        <div className="flex justify-center gap-6 mt-4">
-          <Link href="#" className="hover:text-white transition-colors">
+        <div className="flex justify-center gap-8 mt-4">
+          <Link href="/privacy" className="p-2 hover:text-white transition-colors">
             Privacy Protocol
           </Link>
-          <Link href="#" className="hover:text-white transition-colors">
+          <Link href="/login" className="p-2 hover:text-white transition-colors">
             Terms of Service
           </Link>
         </div>

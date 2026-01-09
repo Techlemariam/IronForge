@@ -33,7 +33,7 @@ test.describe('Training & Cardio Flow', () => {
     test('should navigate to Cycling Studio', async ({ page }) => {
         // Training category is open by default
         // Find and click the Ride button (formerly "Cycling Studio")
-        await page.getByRole('button', { name: 'Ride', exact: true }).click({ force: true });
+        await page.getByRole('button', { name: 'Ride' }).click({ force: true });
 
         // Small wait for view transition
         await page.waitForTimeout(500);
@@ -44,7 +44,7 @@ test.describe('Training & Cardio Flow', () => {
 
     test('should navigate to Treadmill (Running)', async ({ page }) => {
         // Click the Run button (formerly "Treadmill")
-        await page.getByRole('button', { name: 'Run', exact: true }).click({ force: true });
+        await page.getByRole('button', { name: 'Run' }).click({ force: true });
         await expect(page.getByText(/Running|Treadmill|Cardio/i).first()).toBeVisible({ timeout: 10000 });
     });
 
