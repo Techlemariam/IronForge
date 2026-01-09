@@ -33,7 +33,7 @@ vi.mock("next/cache", () => ({
   revalidatePath: vi.fn(),
 }));
 
-vi.mock("../power-rating", () => ({
+vi.mock("@/actions/titan/power-rating", () => ({
   recalculatePowerRatingAction: vi.fn().mockResolvedValue({ success: true }),
 }));
 
