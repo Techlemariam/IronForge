@@ -137,20 +137,49 @@ echo "✅ Branch: $current_branch"
 
 ### 5.2 Commit Changes
 
+**Pre-Commit Check:**
+
+1. Verify you are NOT on `main`.
+2. Verify you are on the branch you claimed.
+
+```bash
+current_branch=$(git rev-parse --abbrev-ref HEAD)
+if [ "$current_branch" = "main" ]; then
+    echo "⛔ ERROR: You are on main. Switch to your feature branch!"
+    exit 1
+fi
+```
+
 Commit changes with domain-prefixed message: `[domain] description`
 
-### 5.3 Run Gatekeeper
+### 5.3 Run Gatekeeper (Local Verification)
 
-Before pushing, run quality verification:
+Before pushing, you **MUST** run the gatekeeper locally to ensure quality and prevent CI failures.
 
-```
+```bash
 /gatekeeper
 ```
 
-Only proceed if gatekeeper passes all checks.
+> [!IMPORTANT]
+> If gatekeeper fails, **DO NOT PUSH**. Fix the errors locally first.
+
+### 5.4 Push & Create Pull Request
+
+Once gatekeeper passes:
+
+1. **Push** your branch: `git push origin [branch-name]`
+2. **Create PR**:
+
+    ```bash
+    gh pr create --web
+    ```
+
+3. **Monitor CI**: Ensure all checks pass on GitHub because **only CI-verified code can be merged**.
+
+> [!TIP]
+> Do NOT merge locally. Let the GitHub Pull Request process handle the merge to `main`.
 
 ---
-
 
 ## Version History
 

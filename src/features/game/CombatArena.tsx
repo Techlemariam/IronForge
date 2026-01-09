@@ -730,6 +730,7 @@ const ActionButton: React.FC<{
     onClick={onClick}
     onMouseEnter={() => !disabled && playSound("ui_hover")}
     disabled={disabled}
+    aria-label={label === "Flee" ? `${label} - costs 50 gold` : label}
     className={`
             relative group flex flex-col items-center justify-center p-4 rounded-xl transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black
             ${disabled ? "bg-zinc-900 opacity-50 cursor-not-allowed grayscale" : `${color} shadow-lg hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:-translate-y-1 active:scale-95`}
