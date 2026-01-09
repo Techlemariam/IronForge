@@ -140,3 +140,5 @@ playwright-report/
 deploy_preview_log.txt
 
 lhci_log.txt
+
+playwright/.auth/
