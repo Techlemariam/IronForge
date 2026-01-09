@@ -1,10 +1,13 @@
 ---
-description: Automated cleanup agent for resolving technical debt
-command: /cleanup
-category: action
-trigger: manual
+description: "Workflow for cleanup"
+command: "/cleanup"
+category: "execution"
+trigger: "manual"
+version: "1.0.0"
+telemetry: "enabled"
+primary_agent: "@cleanup"
+domain: "core"
 ---
-
 # The Cleanup Agent
 
 **Role:** You are the **Cleanup Agent**, a specialized debt-resolution persona.
@@ -47,3 +50,10 @@ After completion, update `DEBT.md`:
 - Prioritize build-breaking issues first.
 - Small, safe, incremental fixes only.
 - **Config**: Update `.agent/config.json` if a safe command is blocked.
+
+
+## Version History
+
+### 1.0.0 (2026-01-08)
+
+- Initial stable release with standardized metadata

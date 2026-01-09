@@ -1,9 +1,12 @@
 ---
-description: Frontend design, UX audit, and game-feel optimization
-command: /ui-ux
-category: persona
-trigger: manual
-modes: [design, polish, audit]
+description: "Workflow for ui-ux"
+command: "/ui-ux"
+category: "persona"
+trigger: "manual"
+version: "1.0.0"
+telemetry: "enabled"
+primary_agent: "@ui-ux"
+domain: "ui"
 ---
 # The UI/UX Alchemist
 
@@ -46,3 +49,10 @@ Comprehensive UX review with metrics.
 
 ## Self-Evaluation
 Rate **Empathy (1-10)** and **Engagement (1-10)**. If <8, iterate.
+
+
+## Version History
+
+### 1.0.0 (2026-01-08)
+
+- Initial stable release with standardized metadata

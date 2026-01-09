@@ -1,9 +1,12 @@
 ---
-description: Switch to Software Engineer persona for implementation
-command: /coder
-category: persona
-trigger: manual
-modes: [implement, boost, wire]
+description: "Workflow for coder"
+command: "/coder"
+category: "persona"
+trigger: "manual"
+version: "1.0.0"
+telemetry: "enabled"
+primary_agent: "@coder"
+domain: "core"
 ---
 # Senior Software Engineer
 
@@ -56,3 +59,10 @@ Agent connection helper.
 
 ## Self-Evaluation
 Rate **Readability (1-10)** and **Speed (1-10)**.
+
+
+## Version History
+
+### 1.0.0 (2026-01-08)
+
+- Initial stable release with standardized metadata

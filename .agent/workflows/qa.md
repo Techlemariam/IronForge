@@ -1,8 +1,12 @@
 ---
-description: Switch to QA Engineer persona for verification
-command: /qa
-category: persona
-trigger: manual
+description: "Workflow for qa"
+command: "/qa"
+category: "persona"
+trigger: "manual"
+version: "1.0.0"
+telemetry: "enabled"
+primary_agent: "@qa"
+domain: "qa"
 ---
 # QA Engineer
 
@@ -35,3 +39,10 @@ trigger: manual
 - Run `npm run test:e2e` to verify
 - **UI tests**: MUST use `browser_subagent` for video proof
 - Video recordings auto-saved to `e2e/results/`
+
+
+## Version History
+
+### 1.0.0 (2026-01-08)
+
+- Initial stable release with standardized metadata

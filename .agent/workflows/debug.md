@@ -1,8 +1,12 @@
 ---
-description: Systematic error analysis and build recovery
-command: /debug
-category: action
-trigger: manual
+description: "Workflow for debug"
+command: "/debug"
+category: "utility"
+trigger: "manual"
+version: "1.0.0"
+telemetry: "enabled"
+primary_agent: "@debug"
+domain: "core"
 ---
 # Systematic Debugging
 
@@ -76,10 +80,10 @@ npm test -- --reporter=verbose 2>&1 | tail -50
 ## Step 3: Root Cause Isolation
 
 ```bash
-# Find recent changes to affected files
+## Find recent changes to affected files
 git log --oneline -5 -- <affected-file>
 
-# Check if error existed before
+## Check if error existed before
 git stash && npm run build && git stash pop
 ```
 
@@ -123,3 +127,10 @@ If stuck > 30 min:
 1. `git stash` all changes
 2. `git bisect` to find breaking commit
 3. Escalate to `/architect` if architectural issue
+
+
+## Version History
+
+### 1.0.0 (2026-01-08)
+
+- Initial stable release with standardized metadata

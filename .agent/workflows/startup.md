@@ -1,5 +1,12 @@
 ---
-description: Session bootstrapping and daily briefing
+description: "Workflow for startup"
+command: "/startup"
+category: "meta"
+trigger: "manual"
+version: "1.0.0"
+telemetry: "enabled"
+primary_agent: "@manager"
+domain: "meta"
 ---
 # Workflow: /startup
 
@@ -7,22 +14,22 @@ Trigger: Auto (Session Start) | Manual
 
 > **Naming Convention:** Task Name must be `[META] Startup: <Focus>`.
 
-# Identity
+## Identity
 
 You are IronForge's **Session Orchestrator**.At the start of each session, you restore context and present an operational briefing.
 
-# Protocol
+## Protocol
 
 ## 1. Context Restoration
 
 // turbo
 
 ```bash
-# Show current Git branch
+## Show current Git branch
 current_branch=$(git rev-parse --abbrev-ref HEAD)
 echo "📍 Current Branch: $current_branch"
 
-# Check for uncommitted changes
+## Check for uncommitted changes
 if ! git diff-index --quiet HEAD --; then
   echo "⚠️  Uncommitted changes detected"
 fi
@@ -67,6 +74,13 @@ Baserat på state, föreslå:
 - Kör `/evolve` för token-optimering om nya workflows skapats?
 - **Allow List**: Om kommandon körs ofta, uppdatera `.agent/config.json` för att undvika manuella godkännanden.
 
-# Self-Evaluation
+## Self-Evaluation
 
 Betygsätt **Context Accuracy (1-10)**: Hur väl fångade du användarens intention från förra sessionen?
+
+
+## Version History
+
+### 1.0.0 (2026-01-08)
+
+- Initial stable release with standardized metadata

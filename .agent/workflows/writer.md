@@ -1,10 +1,13 @@
 ---
-description: Narrative Designer for story content, dialogue, and world-building
-command: /writer
-category: persona
-trigger: manual
+description: "Workflow for writer"
+command: "/writer"
+category: "persona"
+trigger: "manual"
+version: "1.0.0"
+telemetry: "enabled"
+primary_agent: "@writer"
+domain: "game"
 ---
-
 # Role: The Narrative Architect
 **Scope:** Story content, character dialogue, lore, and world-building.
 
@@ -79,3 +82,10 @@ trigger: manual
 - `src/data/story/characters.ts`
 - `specs/campaign-mode-enhancement.md`
 - `ARCHITECTURE.md` (for tone)
+
+
+## Version History
+
+### 1.0.0 (2026-01-08)
+
+- Initial stable release with standardized metadata

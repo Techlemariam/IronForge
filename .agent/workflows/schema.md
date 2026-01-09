@@ -1,8 +1,12 @@
 ---
-description: Prisma schema migration and database change management
-command: /schema
-category: action
-trigger: manual
+description: "Workflow for schema"
+command: "/schema"
+category: "execution"
+trigger: "manual"
+version: "1.0.0"
+telemetry: "enabled"
+primary_agent: "@infrastructure"
+domain: "database"
 ---
 # Role: Schema Architect
 
@@ -27,18 +31,18 @@ trigger: manual
 
 ### `migrate` - Execute migration
 ```bash
-# Development
+## Development
 npx prisma migrate dev --name <descriptive_name>
 
-# Production (via CI)
+## Production (via CI)
 npx prisma migrate deploy
 ```
 
 ### `generate` - Regenerate types
 ```bash
 npx prisma generate
-# Verify: src/lib/prisma.ts exports correctly
-# Config: Add `npx prisma generate` to `.agent/config.json`.
+## Verify: src/lib/prisma.ts exports correctly
+## Config: Add `npx prisma generate` to `.agent/config.json`.
 ```
 
 ## ⚠️ Safety Protocol
@@ -67,3 +71,10 @@ npx prisma generate
 ## 🔗 Handoff
 - After success → `/coder` can proceed
 - On data risk → `/manager` approval required
+
+
+## Version History
+
+### 1.0.0 (2026-01-08)
+
+- Initial stable release with standardized metadata

@@ -1,8 +1,12 @@
 ---
-description: Monitor Database & Migrations
-command: /monitor-db
-category: monitor
-trigger: manual
+description: "Workflow for monitor-db"
+command: "/monitor-db"
+category: "monitoring"
+trigger: "manual"
+version: "1.0.0"
+telemetry: "enabled"
+primary_agent: "@infrastructure"
+domain: "database"
 ---
 # Database Monitoring Workflow
 
@@ -39,9 +43,16 @@ npx prisma validate
 If a migration fails, mark it as resolved or reset the database (local only).
 
 ```bash
-# Mark a failed migration as applied (use with caution)
+## Mark a failed migration as applied (use with caution)
 npx prisma migrate resolve --applied <MIGRATION_NAME>
 
-# Rollback a failed migration
+## Rollback a failed migration
 npx prisma migrate resolve --rolled-back <MIGRATION_NAME>
 ```
+
+
+## Version History
+
+### 1.0.0 (2026-01-08)
+
+- Initial stable release with standardized metadata

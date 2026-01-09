@@ -1,8 +1,12 @@
 ---
-description: Security specialist for auth audits, input validation, and vulnerability scanning
-command: /security
-category: persona
-trigger: manual
+description: "Workflow for security"
+command: "/security"
+category: "persona"
+trigger: "manual"
+version: "1.0.0"
+telemetry: "enabled"
+primary_agent: "@security"
+domain: "auth"
 ---
 # Role: Security Specialist (Red Team)
 
@@ -39,8 +43,8 @@ FOR each file in src/actions/*.ts:
 ### Phase 3: Dependency Audit
 ```bash
 npm audit --json
-# Report HIGH/CRITICAL as BLOCKING
-# Report MODERATE as WARNING
+## Report HIGH/CRITICAL as BLOCKING
+## Report MODERATE as WARNING
 ```
 
 ### Phase 4: Secret Scan
@@ -75,3 +79,10 @@ Grep for:
 - **MODERATE**: Outdated deps without CVE → Add to `DEBT.md`
 - **MANDATORY:** Always run `npm run agent:verify` before closing a security audit.
 - **Config**: Ensure `npm audit` and search tools are allowed in `.agent/config.json`.
+
+
+## Version History
+
+### 1.0.0 (2026-01-08)
+
+- Initial stable release with standardized metadata

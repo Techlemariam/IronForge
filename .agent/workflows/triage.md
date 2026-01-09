@@ -1,7 +1,13 @@
 ---
-description: Prioritize and triage gaps found by monitor workflows
+description: "Workflow for triage"
+command: "/triage"
+category: "utility"
+trigger: "manual"
+version: "1.0.0"
+telemetry: "enabled"
+primary_agent: "@manager"
+domain: "meta"
 ---
-
 # 🎯 Triage Workflow
 **Purpose:** Systematically prioritize gaps, issues, and technical debt discovered by `/monitor-x` workflows.
 
@@ -288,3 +294,10 @@ After triage, you should have:
 3. ✅ Updated DEBT.md, ROADMAP.md, or sprint plan
 4. ✅ Top 3 items identified for immediate action
 5. ✅ Clear next steps for each priority tier
+
+
+## Version History
+
+### 1.0.0 (2026-01-08)
+
+- Initial stable release with standardized metadata

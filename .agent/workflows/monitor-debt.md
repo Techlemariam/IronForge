@@ -1,10 +1,13 @@
 ---
-description: Scans codebase for debt markers (TODO, any, @ts-ignore) and logs to DEBT.md
-command: /monitor-debt
-category: monitor
-trigger: manual
+description: "Workflow for monitor-debt"
+command: "/monitor-debt"
+category: "monitoring"
+trigger: "manual"
+version: "1.0.0"
+telemetry: "enabled"
+primary_agent: "@manager"
+domain: "core"
 ---
-
 # 🕵️ Debt Monitor
 
 **Role:** Codebase Scanner.
@@ -16,13 +19,13 @@ trigger: manual
 Search key areas for common debt indicators.
 
 ```bash
-# 1. Type Safety Bypasses
+## 1. Type Safety Bypasses
 rg ": any|as any" src/ --line-number
 
-# 2. Suppression Comments
+## 2. Suppression Comments
 rg "@ts-ignore|@ts-expect-error|eslint-disable" src/ --line-number
 
-# 3. Explicit Intent Markers
+## 3. Explicit Intent Markers
 rg "TODO|FIXME|HACK|REF" src/ --line-number
 ```
 - **Config**: Add `rg` (ripgrep) to `.agent/config.json` if missing.
@@ -54,3 +57,10 @@ If found items are **NOT** tracked:
 │ New:   [M] Added to DEBT.md           │
 └───────────────────────────────────────┘
 ```
+
+
+## Version History
+
+### 1.0.0 (2026-01-08)
+
+- Initial stable release with standardized metadata

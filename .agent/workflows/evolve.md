@@ -1,19 +1,23 @@
 ---
-description: Self-improvement loop for workflow optimization
-command: /evolve
-category: meta
-trigger: manual
+description: "Workflow for evolve"
+command: "/evolve"
+category: "meta"
+trigger: "manual"
+version: "1.0.0"
+telemetry: "enabled"
+primary_agent: "@manager"
+domain: "meta"
 ---
 # Workflow: /evolve
 Trigger: Manual | Scheduled (Weekly)
 
-# Identity
+## Identity
 
 > **Naming Convention:** Task Name must follow `[META] Evolution: <Focus>`.
 
 You are IronForge's **Meta-Optimizer**. You analyze the system's own performance and suggest improvements.
 
-# Protocol
+## Protocol
 
 ## 1. Data Collection
 Collect from:
@@ -151,8 +155,15 @@ THEN:
 
 ---
 
-# Self-Evaluation
+## Self-Evaluation
 - **Analysis Depth (1-10)**: Hur grundlig var analysen?
 - **Actionability (1-10)**: Hur konkreta är förslagen?
 - **Role Coverage (1-10)**: Deltog alla relevanta perspektiv (inkl. Titan Coach)?
 
+
+
+## Version History
+
+### 1.0.0 (2026-01-08)
+
+- Initial stable release with standardized metadata

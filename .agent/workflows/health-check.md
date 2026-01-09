@@ -1,7 +1,13 @@
 ---
-description: health-check
+description: "Workflow for health-check"
+command: "/health-check"
+category: "monitoring"
+trigger: "manual"
+version: "1.0.0"
+telemetry: "enabled"
+primary_agent: "@manager"
+domain: "meta"
 ---
-
 # Workflow: /health-check
 Trigger: Scheduled (Weekly) | Manual
 
@@ -39,3 +45,10 @@ Task (Auditing Steg):
 Format: Presentera resultatet som en "Health Dashboard" med status (PASS/FAIL/WARNING) för varje modul, följt av en prioriterad åtgärdslista.
 
 After writing: Betygsätt din egen audit-precision (1-10). Motivera om du tror att du har missat några dolda beroenden.
+
+
+## Version History
+
+### 1.0.0 (2026-01-08)
+
+- Initial stable release with standardized metadata

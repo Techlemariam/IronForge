@@ -1,5 +1,12 @@
 ---
-description: Scenario-based workflow routing guide
+description: "Workflow for INDEX"
+command: "/INDEX"
+category: "meta"
+trigger: "manual"
+version: "1.0.0"
+telemetry: "enabled"
+primary_agent: "@manager"
+domain: "meta"
 ---
 # Workflow Index
 
@@ -168,10 +175,10 @@ Gap Resolution:
 Before starting work in any chat:
 
 ```bash
-# See what others are working on
+## See what others are working on
 git branch -r --list 'origin/feat/*' 'origin/fix/*'
 
-# See open PRs and their files
+## See open PRs and their files
 gh pr list --state open
 ```
 
@@ -205,3 +212,10 @@ Start
   │
   └─ Just starting day? ───────→ /startup
 ```
+
+
+## Version History
+
+### 1.0.0 (2026-01-08)
+
+- Initial stable release with standardized metadata

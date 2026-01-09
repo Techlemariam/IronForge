@@ -1,8 +1,12 @@
 ---
-description: End-to-end feature pipeline from idea to tested code
-command: /feature
-category: action
-trigger: manual
+description: "Workflow for feature"
+command: "/feature"
+category: "planning"
+trigger: "manual"
+version: "1.0.0"
+telemetry: "enabled"
+primary_agent: "@manager"
+domain: "meta"
 ---
 # Feature Pipeline
 
@@ -60,7 +64,7 @@ trigger: manual
    - Uppdatera roadmap: markera feature som `[x]` och flytta till 'Shipped'.
 4. Om FAIL eller BEVIS SAKNAS: Återgå till Phase 3.
 
-# Output Format
+## Output Format
 Presentera en **Pipeline Dashboard** efter varje fas:
 ```
 ┌─────────────────────────────────────────────┐
@@ -73,7 +77,14 @@ Presentera en **Pipeline Dashboard** efter varje fas:
 └──────────────┴──────────────────────────────┘
 ```
 
-# Self-Evaluation
+## Self-Evaluation
 Efter avslutad pipeline, betygsätt:
 - **Automation Score (1-10)**: Hur mycket manuellt arbete krävdes?
 - **Roadmap Compliance**: Uppdaterades roadmap korrekt?
+
+
+## Version History
+
+### 1.0.0 (2026-01-08)
+
+- Initial stable release with standardized metadata

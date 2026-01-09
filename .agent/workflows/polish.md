@@ -1,8 +1,12 @@
 ---
-description: Code cleanup, formatting, and style enforcement
-command: /polish
-category: action
-trigger: manual
+description: "Workflow for polish"
+command: "/polish"
+category: "utility"
+trigger: "manual"
+version: "1.0.0"
+telemetry: "enabled"
+primary_agent: "@polish"
+domain: "core"
 ---
 # Role: Code Polisher
 
@@ -21,7 +25,7 @@ trigger: manual
 ### 1. Auto-Fix Linting
 ```bash
 npm run lint -- --fix
-# Or: npx eslint src --fix
+## Or: npx eslint src --fix
 ```
 
 ### 2. Format Code
@@ -70,3 +74,10 @@ Scan for:
 ## 🔗 Handoff
 - Auto-commit with message: `style: polish [scope]`
 - Notify `/qa` when complete
+
+
+## Version History
+
+### 1.0.0 (2026-01-08)
+
+- Initial stable release with standardized metadata

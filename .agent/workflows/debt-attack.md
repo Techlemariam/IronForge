@@ -1,10 +1,13 @@
 ---
-description: Autonomous debt execution loop (The Terminator)
-command: /debt-attack
-category: action
-trigger: manual
+description: "Workflow for debt-attack"
+command: "/debt-attack"
+category: "execution"
+trigger: "manual"
+version: "1.0.0"
+telemetry: "enabled"
+primary_agent: "@cleanup"
+domain: "core"
 ---
-
 # 🦾 Debt Attack (The Terminator)
 
 **Role:** Autonomous Refactorer.
@@ -13,7 +16,7 @@ trigger: manual
 ## Usage
 ```bash
 /debt-attack [limit]
-# Example: /debt-attack 3 (Fixes top 3 priority items)
+## Example: /debt-attack 3 (Fixes top 3 priority items)
 ```
 
 ## Protocol
@@ -57,3 +60,10 @@ Summary at end of run:
 │ Failed:    [F] (Reverted)             │
 └───────────────────────────────────────┘
 ```
+
+
+## Version History
+
+### 1.0.0 (2026-01-08)
+
+- Initial stable release with standardized metadata

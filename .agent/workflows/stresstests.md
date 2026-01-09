@@ -1,10 +1,13 @@
 ---
-description: Stress testing for logic, security, and entropy resilience
-command: /stresstests
-category: meta
-trigger: manual
+description: "Workflow for stresstests"
+command: "/stresstests"
+category: "verification"
+trigger: "manual"
+version: "1.0.0"
+telemetry: "enabled"
+primary_agent: "@qa"
+domain: "core"
 ---
-
 # Workflow: /stresstest-all
 Trigger: Manual
 
@@ -21,3 +24,10 @@ Filter noise from high-entropy input. Extract critical requirements from random 
 
 ## 4. Config Update
 - **Config**: Add any new stress testing tools to `.agent/config.json`.
+
+
+## Version History
+
+### 1.0.0 (2026-01-08)
+
+- Initial stable release with standardized metadata

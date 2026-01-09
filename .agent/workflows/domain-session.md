@@ -1,10 +1,13 @@
 ---
-description: Initialize a focused domain session for a specific app area
-command: /domain-session
-category: meta
-trigger: manual
+description: "Workflow for domain-session"
+command: "/domain-session"
+category: "meta"
+trigger: "manual"
+version: "1.0.0"
+telemetry: "enabled"
+primary_agent: "@manager"
+domain: "meta"
 ---
-
 # Domain Session Workflow
 
 Start a focused development session for a specific domain of IronForge.
@@ -107,7 +110,7 @@ Before ending the session:
 // turbo
 
 ```bash
-# Check current branch
+## Check current branch
 current_branch=$(git rev-parse --abbrev-ref HEAD)
 
 if [ "$current_branch" = "main" ]; then
@@ -147,3 +150,10 @@ Before pushing, run quality verification:
 Only proceed if gatekeeper passes all checks.
 
 ---
+
+
+## Version History
+
+### 1.0.0 (2026-01-08)
+
+- Initial stable release with standardized metadata

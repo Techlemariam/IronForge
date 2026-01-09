@@ -1,10 +1,13 @@
 ---
-description: Claim and coordinate tasks across multiple parallel chat sessions
-command: /claim-task
-category: meta
-trigger: manual
+description: "Workflow for claim-task"
+command: "/claim-task"
+category: "utility"
+trigger: "manual"
+version: "1.0.0"
+telemetry: "enabled"
+primary_agent: "@manager"
+domain: "meta"
 ---
-
 # Claim Task Workflow
 
 Prevents race conditions between parallel chat sessions by providing explicit task coordination.
@@ -83,7 +86,7 @@ When claiming a specific task:
 // turbo
 
 ```bash
-# Ensure we're starting from main
+## Ensure we're starting from main
 current_branch=$(git rev-parse --abbrev-ref HEAD)
 if [ "$current_branch" != "main" ]; then
   echo "⚠️ WARNING: Not on main branch (currently on: $current_branch)"
@@ -205,3 +208,10 @@ When task is complete or abandoned:
 | Bug fix | `/debug` → `/coder` → `/qa` |
 | Debt item | `/cleanup` → `/polish` |
 | Complete | `/gatekeeper` → PR → Merge |
+
+
+## Version History
+
+### 1.0.0 (2026-01-08)
+
+- Initial stable release with standardized metadata
