@@ -66,6 +66,7 @@ export const OracleChat: React.FC<OracleChatProps> = ({ context }) => {
     <>
       {/* Floating Action Button */}
       <motion.button
+        data-testid="oracle-chat-trigger"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(true)}
@@ -81,6 +82,7 @@ export const OracleChat: React.FC<OracleChatProps> = ({ context }) => {
       <AnimatePresence>
         {isOpen && (
           <motion.div
+            data-testid="oracle-chat-panel"
             initial={{ opacity: 0, y: 100, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 100, scale: 0.9 }}
@@ -138,6 +140,7 @@ export const OracleChat: React.FC<OracleChatProps> = ({ context }) => {
                       )}
                     </div>
                     <div
+                      data-testid="oracle-message"
                       className={`p-3 rounded-2xl text-sm leading-relaxed ${m.role === "user"
                         ? "bg-indigo-600 text-white rounded-tr-none"
                         : "bg-white/5 text-zinc-100 border border-white/5 rounded-tl-none font-medium"

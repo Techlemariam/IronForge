@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { ProgressionService } from "../progression";
+import { ProgressionService } from '@/services/progression';
 import prisma from "@/lib/prisma";
 import { calculateWilks } from "@/utils/wilks";
 

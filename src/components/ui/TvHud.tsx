@@ -67,9 +67,9 @@ export const TvHud: React.FC<TvHudProps> = ({
                 </div>
             </div>
 
-            {/* Top Right: Quest Progress (Compacted) */}
+            {/* Top Right: Quest Progress (Compacted) - Hidden during Boss Fights */}
             <AnimatePresence>
-                {questTitle && (
+                {questTitle && bossHp === undefined && (
                     <motion.div
                         initial={{ opacity: 0, x: 50 }}
                         animate={{ opacity: 1, x: 0 }}

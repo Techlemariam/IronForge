@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
-import { TrainingMemoryManager } from "../trainingMemoryManager";
-import { TrainingActivity, SystemMetrics } from "../../types/training";
-import { MACRO_CYCLE_THRESHOLDS } from "../../data/builds";
+import { TrainingMemoryManager } from '@/services/trainingMemoryManager';
+import { TrainingActivity, SystemMetrics } from '@/types/training';
+import { MACRO_CYCLE_THRESHOLDS } from '@/data/builds';
 
 describe("TrainingMemoryManager", () => {
   describe("getSystemLoad", () => {

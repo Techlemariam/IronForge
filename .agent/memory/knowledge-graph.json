@@ -131,6 +131,11 @@
       "path": "src/actions/integrations/strava.ts"
     },
     {
+      "id": "src/actions/mobility/logMobilityAction.ts",
+      "type": "service",
+      "path": "src/actions/mobility/logMobilityAction.ts"
+    },
+    {
       "id": "src/actions/notifications/core.ts",
       "type": "service",
       "path": "src/actions/notifications/core.ts"
@@ -421,6 +426,11 @@
       "path": "src/actions/training/gauntlet.ts"
     },
     {
+      "id": "src/actions/training/getIronForgeStrengthLogs.ts",
+      "type": "service",
+      "path": "src/actions/training/getIronForgeStrengthLogs.ts"
+    },
+    {
       "id": "src/actions/training/notes.ts",
       "type": "service",
       "path": "src/actions/training/notes.ts"
@@ -654,6 +664,11 @@
       "id": "src/app/api/cron/maintenance/weekly/route.ts",
       "type": "module",
       "path": "src/app/api/cron/maintenance/weekly/route.ts"
+    },
+    {
+      "id": "src/app/api/cron/phase-rotation/route.ts",
+      "type": "module",
+      "path": "src/app/api/cron/phase-rotation/route.ts"
     },
     {
       "id": "src/app/api/cron/power-rating/route.ts",
@@ -1021,6 +1036,11 @@
       "path": "src/components/MindfulnessModal.tsx"
     },
     {
+      "id": "src/components/mobility/MobilityStudio.tsx",
+      "type": "component",
+      "path": "src/components/mobility/MobilityStudio.tsx"
+    },
+    {
       "id": "src/components/PassiveLayerProgress.tsx",
       "type": "component",
       "path": "src/components/PassiveLayerProgress.tsx"
@@ -1254,6 +1274,11 @@
       "id": "src/data/lootTables.ts",
       "type": "module",
       "path": "src/data/lootTables.ts"
+    },
+    {
+      "id": "src/data/mobilityExercises.ts",
+      "type": "module",
+      "path": "src/data/mobilityExercises.ts"
     },
     {
       "id": "src/data/muscleMap.ts",
@@ -2236,6 +2261,16 @@
       "path": "src/services/BluetoothService.ts"
     },
     {
+      "id": "src/services/BudgetCalculator.test.ts",
+      "type": "service",
+      "path": "src/services/BudgetCalculator.test.ts"
+    },
+    {
+      "id": "src/services/BudgetCalculator.ts",
+      "type": "service",
+      "path": "src/services/BudgetCalculator.ts"
+    },
+    {
       "id": "src/services/challengeService.ts",
       "type": "service",
       "path": "src/services/challengeService.ts"
@@ -2321,6 +2356,21 @@
       "path": "src/services/gemini.ts"
     },
     {
+      "id": "src/services/GoalPriorityEngine.test.ts",
+      "type": "service",
+      "path": "src/services/GoalPriorityEngine.test.ts"
+    },
+    {
+      "id": "src/services/GoalPriorityEngine.ts",
+      "type": "service",
+      "path": "src/services/GoalPriorityEngine.ts"
+    },
+    {
+      "id": "src/services/integration/GPE_Fallback.test.ts",
+      "type": "service",
+      "path": "src/services/integration/GPE_Fallback.test.ts"
+    },
+    {
       "id": "src/services/integration.ts",
       "type": "service",
       "path": "src/services/integration.ts"
@@ -2329,6 +2379,16 @@
       "id": "src/services/iot.ts",
       "type": "service",
       "path": "src/services/iot.ts"
+    },
+    {
+      "id": "src/services/MobilityAuditor.test.ts",
+      "type": "service",
+      "path": "src/services/MobilityAuditor.test.ts"
+    },
+    {
+      "id": "src/services/MobilityAuditor.ts",
+      "type": "service",
+      "path": "src/services/MobilityAuditor.ts"
     },
     {
       "id": "src/services/neuro.ts",
@@ -2466,6 +2526,11 @@
       "path": "src/services/vision.ts"
     },
     {
+      "id": "src/services/WardensService.ts",
+      "type": "service",
+      "path": "src/services/WardensService.ts"
+    },
+    {
       "id": "src/services/__tests__/GeminiService.test.ts",
       "type": "service",
       "path": "src/services/__tests__/GeminiService.test.ts"
@@ -2509,6 +2574,11 @@
       "id": "src/types/global.d.ts",
       "type": "type",
       "path": "src/types/global.d.ts"
+    },
+    {
+      "id": "src/types/goals.ts",
+      "type": "type",
+      "path": "src/types/goals.ts"
     },
     {
       "id": "src/types/hevy.ts",
@@ -2920,6 +2990,21 @@
     {
       "from": "src/actions/integrations/strava.ts",
       "to": "src/actions/pvp/duel.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/actions/mobility/logMobilityAction.ts",
+      "to": "src/lib/prisma.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/actions/mobility/logMobilityAction.ts",
+      "to": "src/utils/supabase/server.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/actions/mobility/logMobilityAction.ts",
+      "to": "src/data/mobilityExercises.ts",
       "relation": "imports"
     },
     {
@@ -3389,6 +3474,11 @@
     },
     {
       "from": "src/actions/training/gauntlet.ts",
+      "to": "src/lib/prisma.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/actions/training/getIronForgeStrengthLogs.ts",
       "to": "src/lib/prisma.ts",
       "relation": "imports"
     },
@@ -3960,6 +4050,21 @@
     {
       "from": "src/app/api/cron/maintenance/weekly/route.ts",
       "to": "src/lib/powerRating.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/app/api/cron/phase-rotation/route.ts",
+      "to": "src/lib/prisma.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/app/api/cron/phase-rotation/route.ts",
+      "to": "src/services/WardensService.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/app/api/cron/phase-rotation/route.ts",
+      "to": "src/services/GoalPriorityEngine.ts",
       "relation": "imports"
     },
     {
@@ -4730,6 +4835,41 @@
     {
       "from": "src/components/MindfulnessModal.tsx",
       "to": "src/utils/index.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/components/mobility/MobilityStudio.tsx",
+      "to": "src/data/mobilityExercises.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/components/mobility/MobilityStudio.tsx",
+      "to": "src/actions/mobility/logMobilityAction.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/components/mobility/MobilityStudio.tsx",
+      "to": "src/components/ui/ForgeCard.tsx",
+      "relation": "imports"
+    },
+    {
+      "from": "src/components/mobility/MobilityStudio.tsx",
+      "to": "src/components/ui/ForgeButton.tsx",
+      "relation": "imports"
+    },
+    {
+      "from": "src/components/mobility/MobilityStudio.tsx",
+      "to": "src/components/ui/badge.tsx",
+      "relation": "imports"
+    },
+    {
+      "from": "src/components/mobility/MobilityStudio.tsx",
+      "to": "src/components/ui/scroll-area.tsx",
+      "relation": "imports"
+    },
+    {
+      "from": "src/components/mobility/MobilityStudio.tsx",
+      "to": "src/components/ui/tabs.tsx",
       "relation": "imports"
     },
     {
@@ -7648,6 +7788,16 @@
       "relation": "imports"
     },
     {
+      "from": "src/services/auditorOrchestrator.ts",
+      "to": "src/actions/mobility/logMobilityAction.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/services/auditorOrchestrator.ts",
+      "to": "src/services/MobilityAuditor.ts",
+      "relation": "imports"
+    },
+    {
       "from": "src/services/bio/GarminService.ts",
       "to": "src/lib/prisma.ts",
       "relation": "imports"
@@ -7660,6 +7810,26 @@
     {
       "from": "src/services/bio/RecoveryService.ts",
       "to": "src/lib/prisma.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/services/BudgetCalculator.test.ts",
+      "to": "src/services/BudgetCalculator.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/services/BudgetCalculator.test.ts",
+      "to": "src/lib/intervals.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/services/BudgetCalculator.ts",
+      "to": "src/types/goals.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/services/BudgetCalculator.ts",
+      "to": "src/lib/intervals.ts",
       "relation": "imports"
     },
     {
@@ -7878,6 +8048,51 @@
       "relation": "imports"
     },
     {
+      "from": "src/services/GoalPriorityEngine.test.ts",
+      "to": "src/services/GoalPriorityEngine.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/services/GoalPriorityEngine.test.ts",
+      "to": "src/types/goals.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/services/GoalPriorityEngine.test.ts",
+      "to": "src/types/training.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/services/GoalPriorityEngine.ts",
+      "to": "src/types/goals.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/services/GoalPriorityEngine.ts",
+      "to": "src/data/workouts.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/services/GoalPriorityEngine.ts",
+      "to": "src/types/training.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/services/GoalPriorityEngine.ts",
+      "to": "src/data/hevyExercises.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/services/integration/GPE_Fallback.test.ts",
+      "to": "src/services/GoalPriorityEngine.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/services/integration/GPE_Fallback.test.ts",
+      "to": "src/types/goals.ts",
+      "relation": "imports"
+    },
+    {
       "from": "src/services/integration.ts",
       "to": "src/types/index.ts",
       "relation": "imports"
@@ -7890,6 +8105,21 @@
     {
       "from": "src/services/iot.ts",
       "to": "src/services/storage.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/services/MobilityAuditor.test.ts",
+      "to": "src/services/MobilityAuditor.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/services/MobilityAuditor.test.ts",
+      "to": "src/data/mobilityExercises.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/services/MobilityAuditor.ts",
+      "to": "src/data/mobilityExercises.ts",
       "relation": "imports"
     },
     {
@@ -8168,6 +8398,16 @@
       "relation": "imports"
     },
     {
+      "from": "src/services/WardensService.ts",
+      "to": "src/lib/prisma.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/services/WardensService.ts",
+      "to": "src/types/goals.ts",
+      "relation": "imports"
+    },
+    {
       "from": "src/services/__tests__/GeminiService.test.ts",
       "to": "src/services/gemini.ts",
       "relation": "imports"
@@ -8235,6 +8475,11 @@
     {
       "from": "src/types/chase.ts",
       "to": "src/types/index.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/types/goals.ts",
+      "to": "src/types/training.ts",
       "relation": "imports"
     },
     {
@@ -8369,8 +8614,8 @@
     }
   ],
   "metadata": {
-    "lastUpdated": "2026-01-08T19:04:19.015Z",
-    "nodeCount": 539,
-    "edgeCount": 1134
+    "lastUpdated": "2026-01-09T09:19:20.185Z",
+    "nodeCount": 553,
+    "edgeCount": 1169
   }
 }
