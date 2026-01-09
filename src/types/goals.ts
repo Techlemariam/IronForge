@@ -4,6 +4,8 @@
  * Central definitions for the GPE data model.
  */
 
+import { MuscleGroup, VolumeLevel } from '@/types/training';
+
 export type TrainingGoal =
     | "VO2MAX"        // Max aerobic capacity
     | "FTP_BIKE"      // Functional Threshold Power (cycling)
@@ -75,3 +77,16 @@ export interface WeeklyTargets {
     primaryFocus: TrainingGoal;
     phaseDescription: string;
 }
+
+export interface ResourceCost {
+    CNS: number;
+    MUSCULAR: number;
+    METABOLIC: number;
+}
+
+export type MuscleHeatmap = Partial<Record<MuscleGroup, {
+    status: VolumeLevel;
+    currentVolume: number;
+    targetVolume: number;
+}>>;
+
