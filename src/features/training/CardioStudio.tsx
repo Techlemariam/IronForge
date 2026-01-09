@@ -56,7 +56,7 @@ import { getStreakStatusAction } from "@/actions/user/streak";
 
 // Dynamic import to avoid SSR issues with react-player
 // @ts-ignore - React 19 type mismatch
-const ReactPlayer = dynamic(() => import("react-player/lazy"), { ssr: false }) as any;
+const ReactPlayer = dynamic(() => import("react-player"), { ssr: false }) as any;
 
 export type CardioMode = "cycling" | "running" | "gauntlet" | "chase";
 
@@ -965,20 +965,20 @@ function CardioCockpit({
           }
         >
           {videoUrl ? (
-              <ReactPlayer
-                url={videoUrl}
-                playing={isPlaying}
-                muted={isMuted}
-                controls
-                width="100%"
-                height="100%"
-                style={{ position: "absolute", top: 0, left: 0 }}
-                config={{
-                  youtube: {
-                    playerVars: { modestbranding: 1 },
-                  },
-                }}
-              />
+            <ReactPlayer
+              url={videoUrl}
+              playing={isPlaying}
+              muted={isMuted}
+              controls
+              width="100%"
+              height="100%"
+              style={{ position: "absolute", top: 0, left: 0 }}
+              config={{
+                youtube: {
+                  playerVars: { modestbranding: 1 },
+                },
+              }}
+            />
           ) : (
             <div className="flex flex-col items-center justify-center text-zinc-400 p-8">
               <Activity className="w-16 h-16 mb-4 opacity-30" />
