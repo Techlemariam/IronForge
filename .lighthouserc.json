@@ -3,7 +3,7 @@
         "collect": {
             "startServerCommand": "pnpm run start",
             "url": [
-                "http://localhost:3000/",
+                "http://localhost:3000/welcome",
                 "http://localhost:3000/login"
             ],
             "numberOfRuns": 3,

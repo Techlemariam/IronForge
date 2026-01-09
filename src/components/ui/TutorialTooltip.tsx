@@ -79,12 +79,12 @@ export const TutorialTooltip: React.FC<TutorialTooltipProps> = ({
                     {/* Arrow */}
                     <div
                         className={`absolute w-3 h-3 bg-zinc-900 border-blue-500/30 rotate-45 ${position === "top"
-                                ? "bottom-[-6px] left-1/2 -translate-x-1/2 border-b border-r"
-                                : position === "bottom"
-                                    ? "top-[-6px] left-1/2 -translate-x-1/2 border-t border-l"
-                                    : position === "left"
-                                        ? "right-[-6px] top-1/2 -translate-y-1/2 border-r border-t"
-                                        : "left-[-6px] top-1/2 -translate-y-1/2 border-l border-b"
+                            ? "bottom-[-6px] left-1/2 -translate-x-1/2 border-b border-r"
+                            : position === "bottom"
+                                ? "top-[-6px] left-1/2 -translate-x-1/2 border-t border-l"
+                                : position === "left"
+                                    ? "right-[-6px] top-1/2 -translate-y-1/2 border-r border-t"
+                                    : "left-[-6px] top-1/2 -translate-y-1/2 border-l border-b"
                             }`}
                     />
 
@@ -112,7 +112,7 @@ export const TutorialTooltip: React.FC<TutorialTooltipProps> = ({
                             onClick={handleDismiss}
                             className="w-full py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded transition-colors"
                         >
-                            Got it, don't show again
+                            Got it, don&apos;t show again
                         </button>
                     </div>
                 </div>
