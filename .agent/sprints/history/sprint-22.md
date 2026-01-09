@@ -1,70 +1,70 @@
-# Sprint 21: Polish & Depth
-**Period**: 2026-01-06 - 2026-01-13  
-**Goal**: Resolve open debt items, improve accessibility, complete Garmin wiring, and advance Season 2 features.
+# Sprint 22: Season 2 Kickoff
+
+**Period**: 2026-01-14 - 2026-01-21
+**Goal**: Launch core Season 2 features (Oracle 3.0, Guild Territories) and resolve critical test infrastructure gaps.
 
 ## Backlog
 
 ### Priority: High
 
-- [ ] **E2E Test Database Seeding** <!-- agent: /infrastructure | estimate: 3h | source: DEBT.md | blocked: false -->
-    - Create CI-compatible E2E seeding script for `cardio-duels.spec.ts` and `battle-pass.spec.ts`
-    - Enable currently skipped tests (3 cardio duel + 1 battle pass tests)
-    - Add seeding step to `ci-cd.yml` E2E job
+- [x] **Oracle 3.0 (AI Training Coach)** <!-- agent: /architect | estimate: 5h | source: roadmap | blocked: false -->
+  - **Wiring**: Integrate existing `GoalPriorityEngine` into `OracleService` (currently orphaned)
+  - Replace legacy `consult()` logic with GPE's `selectPhase` & `selectWorkout`
+  - Create `OracleCoach` service for real-time workout adjustments
 
-- [ ] **API Documentation Gap** <!-- agent: /librarian | estimate: 2h | source: health-report | blocked: false -->
-    - Run batch update on `api-reference.md` (currently ~20% coverage)
-    - Document 70+ missing actions from `src/actions/**/*`
-    - Ensure new subdomain structure (economy, social, titan, etc.) is reflected
+- [x] **Guild Territories** <!-- agent: /game-designer | estimate: 5h | source: roadmap | blocked: false -->
+  - Initialize `Territory` DB schema and region definitions
+  - Implement control mechanics (Influence/Conquest points)
+  - Create basic `TerritoryMap` UI in Citadel
 
-- [ ] **CitadelHub Cognitive Load Reduction** <!-- agent: /ui-ux | estimate: 2h | source: DEBT.md | blocked: false -->
-    - 17 nav items exceeds 3×target (5.6× cognitive load)
-    - Implement progressive disclosure pattern
-    - Group into max 3-4 primary categories with expandable submenus
+- [x] **Unit Test Scaffolding** <!-- agent: /qa | estimate: 2h | source: health-report | blocked: false -->
+  - Create missing directories: `tests/unit/actions`, `tests/unit/services`
+  - Move misplaced tests to correct hierarchy
+  - Establish strict file-structure mapping pattern
 
 ### Priority: Medium
 
-- [ ] **Complete Garmin Widget Wiring** <!-- agent: /coder | estimate: 1h | source: sprint-20 | blocked: external (OAuth) -->
-    - Wire `GarminWidget.tsx` into `CardioStudio` overlay
-    - Wire into `TvMode` HUD
-    - (OAuth approval still pending externally)
+- [x] **Settings Page Migration** <!-- agent: /ui-ux | estimate: 2h | source: ux-audit | blocked: false -->
+  - Deprecate potentially overwhelming `SettingsModal`
+  - Create proper `/settings` dashboard layout
+  - Add smooth transition/routing from profile
 
-- [ ] **Accessibility Enhancement Pass** <!-- agent: /ui-ux | estimate: 2h | source: DEBT.md | blocked: false -->
-    - Add `role="status"` and `aria-live` to `LoadingSpinner.tsx`
-    - Expand `aria-label` coverage (currently only 3 files)
-    - Add `focus-visible` rings consistently
+- [x] **Leaderboard Consolidation** <!-- agent: /ui-ux | estimate: 2h | source: ux-audit | blocked: false -->
+  - Merge `Colosseum` and `Social` leaderboards into `LeaderboardHub`
+  - Implement unified filters (Friends vs Global vs League)
+  - Remove redundant code
 
-- [ ] **DashboardClient Refactor** <!-- agent: /cleanup | estimate: 2h | source: DEBT.md | blocked: false -->
-    - 685 lines - extract into smaller feature components
-    - Consider: StatsHeader, QuickActions, FeedPanel
+- [ ] **GrowthMetrics Implementation** <!-- agent: /coder | estimate: 2h | source: DEBT.md | blocked: false -->
+  - Implement actual `Friendship` model logic in `GrowthMetricsService`
+  - Replace `getSocialEngagement` placeholder
+  - Add proper tracking for invites/referrals
 
 ### Priority: Low
 
-- [ ] **TvHud Data Density Review** <!-- agent: /ui-ux | estimate: 1h | source: DEBT.md | blocked: false -->
-    - 7532 bytes may exceed TV Mode guidelines (max 3 data points)
-    - Audit and simplify if needed
-
-- [ ] **Lighthouse Threshold Restoration** <!-- agent: /perf | estimate: 0.5h | source: DEBT.md | blocked: false -->
-    - Restore `.lighthouserc.json` thresholds to 0.9 (currently lowered to 0.7/0.85)
-    - Verify current scores meet targets
+- [ ] **Tutorial Tooltips** <!-- agent: /ui-ux | estimate: 1h | source: roadmap | blocked: false -->
+  - Add "First Time" tooltips for complex mechanics (Dual-Coefficient, Buffs)
+  - Implement "Dismiss Forever" logic
+  - Integrate with `OnboardingQuest` status
 
 ---
 
 ## Sprint Stats
-- **Total Items**: 8
-- **Estimated Hours**: 13.5h
-- **Feature/Debt/Polish Ratio**: 20% / 50% / 30%
+
+- **Total Items**: 7
+- **Estimated Hours**: 19h
+- **Debt Ratio**: 28% (2/7 items) + 14% Polish (1/7 items)
+- **Feature Ratio**: 57%
 
 ## Dependencies
-- E2E seeding is prerequisite for un-skipping tests
-- Garmin wiring blocked on external OAuth approval (can wire, just can't fully test)
+
+- Oracle 3.0 relies on previous `GoalPriorityEngine` work (Sprint 21 or prior).
+- Guild Territories needs DB schema migration.
 
 ## Execution Log
 <!-- Auto-updated by /sprint-auto -->
-- **2026-01-06 00:00** - Sprint 21 created from triage findings
-
----
-
-## Notes
-- Sprint 20 carryover: Garmin Widget Wiring
-- Focus: Debt resolution and quality improvements
-- Season 2 features deferred to Sprint 22+ (Oracle 3.0, Guild Territories ready in backlog)
+- **2026-01-09 10:55** - Sprint 22 promoted to Active.
+- **2026-01-09 11:00** - Completed Oracle 3.0 (OracleService + GPE integration).
+- **2026-01-09 11:05** - Completed Guild Territories (DB seeding, TerritoryControlService).
+- **2026-01-09 11:12** - Completed Unit Test Scaffolding (moved 7 tests, created 3 stubs, docs).
+- **2026-01-09 11:14** - Verified Settings Page (pre-existing).
+- **2026-01-09 11:18** - Completed Leaderboard Consolidation (LeaderboardHub + shared components).

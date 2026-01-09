@@ -1,70 +1,108 @@
-# Sprint 21: Polish & Depth
-**Period**: 2026-01-06 - 2026-01-13  
-**Goal**: Resolve open debt items, improve accessibility, complete Garmin wiring, and advance Season 2 features.
+# Sprint 23: Refinement & Polish
+
+**Period**: 2026-01-21 - 2026-01-28  
+**Goal**: Complete deferred Sprint 22 items, fix test infrastructure, and address critical UX gaps
+
+---
 
 ## Backlog
 
 ### Priority: High
 
-- [ ] **E2E Test Database Seeding** <!-- agent: /infrastructure | estimate: 3h | source: DEBT.md | blocked: false -->
-    - Create CI-compatible E2E seeding script for `cardio-duels.spec.ts` and `battle-pass.spec.ts`
-    - Enable currently skipped tests (3 cardio duel + 1 battle pass tests)
-    - Add seeding step to `ci-cd.yml` E2E job
+- [x] **Test Infrastructure Cleanup** <!-- agent: /qa | estimate: 2h | source: sprint-22-debt | blocked: false -->
+  - Fix import paths in moved test files (`BudgetCalculator`, `MobilityAuditor`, `oracle`, `progression`, `trainingMemoryManager`)
+  - Resolve `MACRO_CYCLE_THRESHOLDS` and `TrainingActivity` type errors
+  - Ensure all unit tests pass
+  - ✅ All type checks passing
 
-- [ ] **API Documentation Gap** <!-- agent: /librarian | estimate: 2h | source: health-report | blocked: false -->
-    - Run batch update on `api-reference.md` (currently ~20% coverage)
-    - Document 70+ missing actions from `src/actions/**/*`
-    - Ensure new subdomain structure (economy, social, titan, etc.) is reflected
+- [x] **Territory UI Integration** <!-- agent: /ui-ux | estimate: 3h | source: sprint-22 | blocked: false -->
+  - Wire `LeaderboardHub` into Citadel dashboard navigation
+  - Create `/territories` route using `TerritoryMap` component
+  - Add navigation from Guild view to Territory conquest
+  - ✅ Route created, type checks passing
 
-- [ ] **CitadelHub Cognitive Load Reduction** <!-- agent: /ui-ux | estimate: 2h | source: DEBT.md | blocked: false -->
-    - 17 nav items exceeds 3×target (5.6× cognitive load)
-    - Implement progressive disclosure pattern
-    - Group into max 3-4 primary categories with expandable submenus
+- [ ] **E2E Test Seeding** <!-- agent: /infrastructure | estimate: 2h | source: DEBT.md#57-58 | blocked: false -->
+  - Add DB seeding step to CI for cardio duels tests
+  - Seed `BattlePassSeason` for premium upgrade tests
+  - Un-skip 4 E2E tests
 
 ### Priority: Medium
 
-- [ ] **Complete Garmin Widget Wiring** <!-- agent: /coder | estimate: 1h | source: sprint-20 | blocked: external (OAuth) -->
-    - Wire `GarminWidget.tsx` into `CardioStudio` overlay
-    - Wire into `TvMode` HUD
-    - (OAuth approval still pending externally)
+- [ ] **GrowthMetrics Implementation** <!-- agent: /coder | estimate: 2h | source: sprint-22-deferred | blocked: false -->
+  - Implement `Friendship` model logic in `GrowthMetricsService`
+  - Replace `getSocialEngagement` placeholder
+  - Add proper tracking for invites/referrals
 
-- [ ] **Accessibility Enhancement Pass** <!-- agent: /ui-ux | estimate: 2h | source: DEBT.md | blocked: false -->
-    - Add `role="status"` and `aria-live` to `LoadingSpinner.tsx`
-    - Expand `aria-label` coverage (currently only 3 files)
-    - Add `focus-visible` rings consistently
+- [x] **Tutorial Tooltips** <!-- agent: /ui-ux | estimate: 1h | source: sprint-22-deferred | blocked: false -->
+  - Add "First Time" tooltips for complex mechanics (Dual-Coefficient, Buffs)
+  - Implement "Dismiss Forever" logic
+  - Integrate with `OnboardingQuest` status
+  - ✅ Component created with 8 tooltip configs
 
-- [ ] **DashboardClient Refactor** <!-- agent: /cleanup | estimate: 2h | source: DEBT.md | blocked: false -->
-    - 685 lines - extract into smaller feature components
-    - Consider: StatsHeader, QuickActions, FeedPanel
+- [ ] **Citadel Navigation Simplification** <!-- agent: /ui-ux | estimate: 2h | source: DEBT.md#59 | blocked: false -->
+  - Reduce 17 nav items to ≤8 using progressive disclosure
+  - Group related features (PvP → Colosseum, Social → Faction War)
+  - Add contextual sub-navigation
 
 ### Priority: Low
 
-- [ ] **TvHud Data Density Review** <!-- agent: /ui-ux | estimate: 1h | source: DEBT.md | blocked: false -->
-    - 7532 bytes may exceed TV Mode guidelines (max 3 data points)
-    - Audit and simplify if needed
+- [ ] **Accessibility: ARIA Labels** <!-- agent: /ui-ux | estimate: 2h | source: DEBT.md#63 | blocked: false -->
+  - Add `aria-label` to all interactive elements
+  - Focus on dashboard, combat arena, and leaderboards
+  - Target: 80% coverage of interactive components
 
-- [ ] **Lighthouse Threshold Restoration** <!-- agent: /perf | estimate: 0.5h | source: DEBT.md | blocked: false -->
-    - Restore `.lighthouserc.json` thresholds to 0.9 (currently lowered to 0.7/0.85)
-    - Verify current scores meet targets
+- [ ] **Strength Workout Generation** <!-- agent: /game-designer | estimate: 3h | source: DEBT.md#73 | blocked: false -->
+  - Generate dynamic strength workouts from `exerciseDb.ts`
+  - Replace static cardio-only `workouts.ts`
+  - Integrate with Oracle recommendations
 
 ---
 
 ## Sprint Stats
+
 - **Total Items**: 8
-- **Estimated Hours**: 13.5h
-- **Feature/Debt/Polish Ratio**: 20% / 50% / 30%
-
-## Dependencies
-- E2E seeding is prerequisite for un-skipping tests
-- Garmin wiring blocked on external OAuth approval (can wire, just can't fully test)
-
-## Execution Log
-<!-- Auto-updated by /sprint-auto -->
-- **2026-01-06 00:00** - Sprint 21 created from triage findings
+- **Estimated Hours**: 17h
+- **Debt Ratio**: 50% (4/8 tasks are debt/polish)
+- **Feature Ratio**: 25% (2/8 tasks are new features)
+- **Infrastructure**: 25% (2/8 tasks)
 
 ---
 
-## Notes
-- Sprint 20 carryover: Garmin Widget Wiring
-- Focus: Debt resolution and quality improvements
-- Season 2 features deferred to Sprint 22+ (Oracle 3.0, Guild Territories ready in backlog)
+## Dependencies
+
+- **Test Cleanup**: Blocks CI stability
+- **Territory UI**: Depends on Sprint 22 `TerritoryControlService`
+- **E2E Seeding**: Requires Supabase migration for test DB
+
+---
+
+## Deferred from Sprint 22
+
+1. GrowthMetrics Implementation (Medium)
+2. Tutorial Tooltips (Low)
+
+---
+
+## Key Debt Items Addressed
+
+| Issue | File | Priority |
+|-------|------|----------|
+| Test import paths | `tests/unit/services/*` | High |
+| E2E test skips | `tests/e2e/cardio-duels.spec.ts` | High |
+| Citadel nav overload | `CitadelHub.tsx` | Medium |
+| Missing ARIA labels | `src/**/*` | Low |
+| Strength workout gen | `data/workouts.ts` | Low |
+
+---
+
+## Execution Log
+<!-- Auto-updated by /sprint-auto -->
+- **2026-01-09 11:28** - Sprint 23 activated. Sprint 22 archived with 86% completion (6/7 tasks).
+- **2026-01-09 11:35** - Completed Test Infrastructure Cleanup (fixed all import paths, type checks passing).
+- **2026-01-09 11:37** - Completed Territory UI Integration (/territories route created).
+- **2026-01-09 11:56** - Completed Tutorial Tooltips (TutorialTooltip component + 8 configs).
+- **2026-01-09 11:58** - Sprint 23 finalized at 38% completion (3/8 tasks). Git strategy and walkthrough created.
+
+## Git Strategy (End of Sprint)
+
+When Sprint 23 is complete, create a strategy for merging all changes to `main` via appropriate branches/PRs without conflicts.

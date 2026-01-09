@@ -42,36 +42,15 @@
 
 ## ⚡ Server Actions
 
-| File | Key Functions | Purpose |
-|:-----|:--------------|:--------|
-| `account.ts` | `deleteAccountAction`, `signOutAction` | Account management |
-| `achievements.ts` | `checkAchievementsAction`, `claimAchievementAction` | Achievement system |
-| `armory.ts` | `getArmoryData` | Equipment catalog |
-| `bestiary.ts` | `getBestiaryData` | Monster catalog |
-| `challenges.ts` | `getActiveChallengesAction`, `claimChallengeRewardAction` | Weekly challenges |
-| `combat.ts` | `startBossFight`, `performCombatAction` | Turn-based combat |
-| `demo.ts` | `toggleDemoModeAction`, `getDemoModeStatus` | Demo mode |
-| `forge.ts` | `craftItem` | Crafting system |
-| `gameplay.ts` | `simulateLootDrop` | Loot generation |
-| `gauntlet.ts` | `logGauntletRunAction`, `getGauntletStatsAction` | Gauntlet arena |
-| `guild.ts` | `sendChatAction`, `getUserStatsAction` | Guild chat |
-| `guild-raids.ts` | `createGuildAction`, `contributeToRaidAction` | Guild raids |
-| `hevy.ts` | `connectHevy`, `getHevyWorkoutHistoryAction` | Hevy integration |
-| `integrations.ts` | `validateHevyApiKey` | API key validation |
-| `intervals.ts` | `connectIntervals`, `getWellnessAction` | Intervals.icu integration |
-| `notifications.ts` | `subscribeUserAction`, `sendNotificationAction` | Push notifications |
-| `onboarding.ts` | `completeOnboardingAction` | Onboarding flow |
-| `oracle.ts` | `generateDailyDecreeAction` | Oracle decrees |
-| `program.ts` | `generateProgramAction`, `saveProgramAction` | AI training plans |
-| `progression.ts` | `getProgressionAction`, `awardGoldAction` | XP/Gold/Level |
-| `pvp.ts` | `createSegmentBattleAction` | Segment battles |
-| `social.ts` | `followUser`, `getLeaderboard` | Social features |
-| `strava.ts` | `getStravaAuthUrlAction`, `disconnectStravaAction` | Strava integration |
-| `strength.ts` | `logSetAction`, `getExerciseHistoryAction` | Strength logging |
-| `titan.ts` | `getTitanAction`, `awardTitanXpAction` | Titan state |
-| `training.ts` | `logTitanSet`, `updateActivePathAction` | Training hub |
-| `user.ts` | `updateFactionAction` | User settings |
-| `world.ts` | `getWorldStateAction`, `getRegionBossAction` | World map |
+| Path | Key Files | Purpose |
+|:-----|:----------|:--------|
+| `src/actions/combat/` | `core.ts`, `boss.ts` | Turn-based combat & boss logic |
+| `src/actions/economy/` | `forge.ts`, `shop.ts`, `crafting.ts` | Crafting, trading, and inventory |
+| `src/actions/training/`| `strength.ts`, `program.ts` | Training logging and AI Planning |
+| `src/actions/guild/` | `core.ts`, `raids.ts` | Guild management and raiding |
+| `src/actions/user/` | `account.ts`, `profile.ts` | User settings and data |
+| `src/actions/social/` | `friends.ts`, `leaderboard.ts` | Social features |
+| `src/actions/pvp/` | `duels.ts`, `matchmaking.ts` | PvP logic |
 
 ---
 
@@ -79,12 +58,12 @@
 
 | Service | Purpose |
 |:--------|:--------|
+| `GoalPriorityEngine`| **Core Brain.** Deterministic periodization & goals |
 | `CombatEngine` | Turn-based combat logic |
 | `LootSystem` | Item drop calculations |
 | `ProgressionService` | XP/leveling calculations |
-| `OracleService` | Daily focus and decree generation |
-| `GoalPriorityEngine`| Deterministic periodization & goals |
-| `GeminiService` | Conversational FAQ/Narrative flavor |
+| `OracleService` | Daily decrees & bio-feedback interpretation |
+| `WardensService` | Gap resolution & corrective exercises |
 | `ValhallaService` | Cloud persistence & save states |
 | `VisionService` | MediaPipe pose detection engine |
 | `NeuroService` | Binaural beat audio engine |
