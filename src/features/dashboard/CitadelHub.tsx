@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Link from "next/link";
 import {
   Sword,
   Map,
@@ -12,15 +11,12 @@ import {
   Users,
   Gavel,
   Trophy,
-  ChevronDown,
-  ChevronUp,
-  Activity,
+  ChevronLeft,
   Bike,
   Footprints,
 } from "lucide-react";
 import { DashboardAction } from "./types";
 import { playSound } from "@/utils";
-import { cn } from "@/lib/utils";
 
 // Shared NavButton Style
 const NavButton: React.FC<{
@@ -75,46 +71,59 @@ const NavButton: React.FC<{
   );
 };
 
-interface CategoryProps {
+interface CategoryCardProps {
   title: string;
   icon: React.ReactNode;
   color: string;
-  children: React.ReactNode;
-  defaultOpen?: boolean;
+  description: string;
+  itemCount: number;
+  onClick: () => void;
 }
 
-const Category: React.FC<CategoryProps> = ({
+const CategoryCard: React.FC<CategoryCardProps> = ({
   title,
   icon,
   color,
-  children,
-  defaultOpen = false,
+  description,
+  itemCount,
+  onClick,
 }) => {
-  const [isOpen, setIsOpen] = useState(defaultOpen);
-
   return (
-    <div
-      className={`rounded-xl border border-${color}-800/30 bg-black/40 backdrop-blur-sm overflow-hidden transition-all duration-300 ${isOpen ? "ring-1 ring-" + color + "-500/30" : ""}`}
+    <button
+      onClick={() => {
+        playSound("ui_click");
+        onClick();
+      }}
+      onMouseEnter={() => playSound("ui_hover")}
+      className={`
+        relative group flex flex-col items-center justify-center p-6 h-48
+        rounded-xl border border-${color}-800/30 bg-black/40 backdrop-blur-sm
+        hover:bg-${color}-950/30 hover:border-${color}-500/50 hover:scale-[1.02]
+        transition-all duration-300
+      `}
     >
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        aria-label={`${isOpen ? "Collapse" : "Expand"} ${title} section`}
-        aria-expanded={isOpen}
-        className={`w-full flex items-center justify-between p-4 text-${color}-400 hover:bg-${color}-950/30 transition-colors`}
-      >
-        <div className="flex items-center space-x-3">
-          {icon}
-          <h3 className="text-lg font-bold uppercase tracking-widest">{title}</h3>
-        </div>
-        {isOpen ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
-      </button>
+      <div className={`
+        p-4 rounded-full bg-${color}-950/50 text-${color}-400 mb-4
+        group-hover:text-${color}-200 group-hover:scale-110 transition-all
+      `}>
+        {React.cloneElement(icon as React.ReactElement<{ className?: string }>, { className: "w-8 h-8" })}
+      </div>
 
-      {isOpen && (
-        <div className="p-4 pt-0 space-y-2 border-t border-${color}-900/30 animate-in slide-in-from-top-2 duration-200">
-          {children}
-        </div>
-      )}
-    </div>
+      <h3 className={`text-xl font-bold uppercase tracking-widest text-${color}-100 mb-2`}>
+        {title}
+      </h3>
+
+      <p className="text-xs text-gray-400 text-center max-w-[80%] mb-4">
+        {description}
+      </p>
+
+      <div className={`
+        px-3 py-1 rounded-full text-[10px] font-mono tracking-wider
+        bg-${color}-900/20 text-${color}-400 border border-${color}-900/30
+      `}>
+        {itemCount} ACTIONS
+      </div>
+    </button>
   );
 };
 
@@ -122,175 +131,231 @@ interface CitadelHubProps {
   dispatch: React.Dispatch<DashboardAction>;
 }
 
-export const CitadelHub: React.FC<CitadelHubProps> = ({ dispatch }) => (
-  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 animate-fade-in text-white">
+type CategoryType = "TRAINING" | "CITY" | "COLOSSEUM" | "EXPLORATION" | null;
 
-    {/* 1. TRAINING OPERATIONS */}
-    <Category
-      title="Training"
-      icon={<Dumbbell className="w-6 h-6" />}
-      color="red"
-      defaultOpen={true}
-    >
-      <NavButton
-        variant="magma"
-        icon={<Scroll className="w-4 h-4" />}
-        onClick={() => dispatch({ type: "SET_VIEW", payload: "war_room" })}
-        description="Daily generated workout quests based on your level"
-      >
-        New Quest
-      </NavButton>
-      <NavButton
-        variant="magma"
-        icon={<Dumbbell className="w-4 h-4" />}
-        onClick={() => dispatch({ type: "SET_VIEW", payload: "strength_log" })}
-        description="Log sets, reps, and RPE for your workout"
-      >
-        Strength Log
-      </NavButton>
-      <NavButton
-        variant="magma"
-        icon={<Bike className="w-4 h-4" />}
-        onClick={() => dispatch({ type: "SET_CARDIO_MODE", payload: "cycling" })}
-        description="Epic indoor cycling quests"
-      >
-        Ride
-      </NavButton>
-      <NavButton
-        variant="magma"
-        icon={<Footprints className="w-4 h-4" />}
-        onClick={() => dispatch({ type: "SET_CARDIO_MODE", payload: "running" })}
-        description="High-intensity treadmill missions"
-      >
-        Run
-      </NavButton>
-      <NavButton
-        variant="magma"
-        icon={<Scroll className="w-4 h-4" />}
-        onClick={() =>
-          dispatch({ type: "SET_VIEW", payload: "program_builder" })
-        }
-        description="Create custom workout routines"
-      >
-        Program Builder
-      </NavButton>
-      <NavButton
-        variant="magma"
-        icon={<Map className="w-4 h-4" />}
-        onClick={() =>
-          dispatch({ type: "SET_VIEW", payload: "training_center" })
-        }
-        description="Upgrade your stats and abilities"
-      >
-        Training Path
-      </NavButton>
-    </Category>
+export const CitadelHub: React.FC<CitadelHubProps> = ({ dispatch }) => {
+  const [selectedCategory, setSelectedCategory] = useState<CategoryType>(null);
 
-    {/* 2. IRON CITY (Economy) */}
-    <Category
-      title="Iron City"
-      icon={<Castle className="w-6 h-6" />}
-      color="blue"
-      defaultOpen={true}
-    >
-      <NavButton
-        variant="iron"
-        icon={<Gavel className="w-4 h-4" />}
-        onClick={() => dispatch({ type: "SET_VIEW", payload: "forge" })}
-        description="Craft and upgrade your equipment"
-      >
-        The Forge
-      </NavButton>
-      <NavButton
-        variant="iron"
-        icon={<ShoppingBag className="w-4 h-4" />}
-        onClick={() => dispatch({ type: "SET_VIEW", payload: "marketplace" })}
-        description="Buy potions, loot boxes, and gear"
-      >
-        Marketplace
-      </NavButton>
-      <NavButton
-        variant="iron"
-        icon={<Shield className="w-4 h-4" />}
-        onClick={() => dispatch({ type: "SET_VIEW", payload: "armory" })}
-        description="Equip your Titan with gear"
-      >
-        Armory
-      </NavButton>
-    </Category>
+  const renderContent = () => {
+    switch (selectedCategory) {
+      case "TRAINING":
+        return (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 animate-in slide-in-from-right-4 duration-300">
+            <NavButton
+              variant="magma"
+              icon={<Scroll className="w-4 h-4" />}
+              onClick={() => dispatch({ type: "SET_VIEW", payload: "war_room" })}
+              description="Daily generated workout quests based on your level"
+            >
+              New Quest
+            </NavButton>
+            <NavButton
+              variant="magma"
+              icon={<Dumbbell className="w-4 h-4" />}
+              onClick={() => dispatch({ type: "SET_VIEW", payload: "strength_log" })}
+              description="Log sets, reps, and RPE for your workout"
+            >
+              Strength Log
+            </NavButton>
+            <NavButton
+              variant="magma"
+              icon={<Bike className="w-4 h-4" />}
+              onClick={() => dispatch({ type: "SET_CARDIO_MODE", payload: "cycling" })}
+              description="Epic indoor cycling quests"
+            >
+              Ride
+            </NavButton>
+            <NavButton
+              variant="magma"
+              icon={<Footprints className="w-4 h-4" />}
+              onClick={() => dispatch({ type: "SET_CARDIO_MODE", payload: "running" })}
+              description="High-intensity treadmill missions"
+            >
+              Run
+            </NavButton>
+            <NavButton
+              variant="magma"
+              icon={<Scroll className="w-4 h-4" />}
+              onClick={() =>
+                dispatch({ type: "SET_VIEW", payload: "program_builder" })
+              }
+              description="Create custom workout routines"
+            >
+              Program Builder
+            </NavButton>
+            <NavButton
+              variant="magma"
+              icon={<Map className="w-4 h-4" />}
+              onClick={() =>
+                dispatch({ type: "SET_VIEW", payload: "training_center" })
+              }
+              description="Upgrade your stats and abilities"
+            >
+              Training Path
+            </NavButton>
+          </div>
+        );
 
-    {/* 3. SOCIAL & PVP */}
-    <Category
-      title="Colosseum"
-      icon={<Sword className="w-6 h-6" />}
-      color="purple"
-      defaultOpen={false}
-    >
-      <NavButton
-        variant="void"
-        icon={<Sword className="w-4 h-4" />}
-        onClick={() => dispatch({ type: "SET_VIEW", payload: "arena" })}
-        description="Battle other players in PvP"
-      >
-        PvP Arena
-      </NavButton>
-      <NavButton
-        variant="void"
-        icon={<Users className="w-4 h-4" />}
-        onClick={() => dispatch({ type: "SET_VIEW", payload: "guild_hall" })}
-        description="Manage your faction and guild quests"
-      >
-        Guild Hall
-      </NavButton>
-      <NavButton
-        variant="void"
-        icon={<Users className="w-4 h-4" />}
-        onClick={() => dispatch({ type: "SET_VIEW", payload: "social_hub" })}
-        description="Connect with friends and rivals"
-      >
-        Social Hub
-      </NavButton>
-      <NavButton
-        variant="void"
-        icon={<Trophy className="w-4 h-4" />}
-        onClick={() => dispatch({ type: "SET_VIEW", payload: "trophy_room" })}
-        description="View your achievements and milestones"
-      >
-        Trophy Room
-      </NavButton>
-    </Category>
+      case "CITY":
+        return (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 animate-in slide-in-from-right-4 duration-300">
+            <NavButton
+              variant="iron"
+              icon={<Gavel className="w-4 h-4" />}
+              onClick={() => dispatch({ type: "SET_VIEW", payload: "forge" })}
+              description="Craft and upgrade your equipment"
+            >
+              The Forge
+            </NavButton>
+            <NavButton
+              variant="iron"
+              icon={<ShoppingBag className="w-4 h-4" />}
+              onClick={() => dispatch({ type: "SET_VIEW", payload: "marketplace" })}
+              description="Buy potions, loot boxes, and gear"
+            >
+              Marketplace
+            </NavButton>
+            <NavButton
+              variant="iron"
+              icon={<Shield className="w-4 h-4" />}
+              onClick={() => dispatch({ type: "SET_VIEW", payload: "armory" })}
+              description="Equip your Titan with gear"
+            >
+              Armory
+            </NavButton>
+          </div>
+        );
 
-    {/* 4. EXPLORATION */}
-    <Category
-      title="Exploration"
-      icon={<Map className="w-6 h-6" />}
-      color="green"
-      defaultOpen={false}
-    >
-      <NavButton
-        variant="nature"
-        icon={<Map className="w-4 h-4" />}
-        onClick={() => dispatch({ type: "SET_VIEW", payload: "world_map" })}
-        description="Explore the IronForge world"
-      >
-        World Map
-      </NavButton>
-      <NavButton
-        variant="nature"
-        icon={<Skull className="w-4 h-4" />}
-        onClick={() => dispatch({ type: "SET_VIEW", payload: "bestiary" })}
-        description="View monsters you have defeated"
-      >
-        Bestiary
-      </NavButton>
-      <NavButton
-        variant="nature"
-        icon={<Scroll className="w-4 h-4" />}
-        onClick={() => dispatch({ type: "SET_VIEW", payload: "grimoire" })}
-        description="View your unlocked abilities"
-      >
-        Grimoire
-      </NavButton>
-    </Category>
-  </div>
-);
+      case "COLOSSEUM":
+        return (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 animate-in slide-in-from-right-4 duration-300">
+            <NavButton
+              variant="void"
+              icon={<Sword className="w-4 h-4" />}
+              onClick={() => dispatch({ type: "SET_VIEW", payload: "arena" })}
+              description="Battle other players in PvP"
+            >
+              PvP Arena
+            </NavButton>
+            <NavButton
+              variant="void"
+              icon={<Users className="w-4 h-4" />}
+              onClick={() => dispatch({ type: "SET_VIEW", payload: "guild_hall" })}
+              description="Manage your faction and guild quests"
+            >
+              Guild Hall
+            </NavButton>
+            <NavButton
+              variant="void"
+              icon={<Users className="w-4 h-4" />}
+              onClick={() => dispatch({ type: "SET_VIEW", payload: "social_hub" })}
+              description="Connect with friends and rivals"
+            >
+              Social Hub
+            </NavButton>
+            <NavButton
+              variant="void"
+              icon={<Trophy className="w-4 h-4" />}
+              onClick={() => dispatch({ type: "SET_VIEW", payload: "trophy_room" })}
+              description="View your achievements and milestones"
+            >
+              Trophy Room
+            </NavButton>
+          </div>
+        );
+
+      case "EXPLORATION":
+        return (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 animate-in slide-in-from-right-4 duration-300">
+            <NavButton
+              variant="nature"
+              icon={<Map className="w-4 h-4" />}
+              onClick={() => dispatch({ type: "SET_VIEW", payload: "world_map" })}
+              description="Explore the IronForge world"
+            >
+              World Map
+            </NavButton>
+            <NavButton
+              variant="nature"
+              icon={<Skull className="w-4 h-4" />}
+              onClick={() => dispatch({ type: "SET_VIEW", payload: "bestiary" })}
+              description="View monsters you have defeated"
+            >
+              Bestiary
+            </NavButton>
+            <NavButton
+              variant="nature"
+              icon={<Scroll className="w-4 h-4" />}
+              onClick={() => dispatch({ type: "SET_VIEW", payload: "grimoire" })}
+              description="View your unlocked abilities"
+            >
+              Grimoire
+            </NavButton>
+          </div>
+        );
+
+      default:
+        return (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-fade-in">
+            <CategoryCard
+              title="Training Operations"
+              icon={<Dumbbell />}
+              color="red"
+              description="Workout quests, logging, and program builder"
+              itemCount={6}
+              onClick={() => setSelectedCategory("TRAINING")}
+            />
+            <CategoryCard
+              title="Iron City"
+              icon={<Castle />}
+              color="blue"
+              description="Economy, Marketplace, and The Forge"
+              itemCount={3}
+              onClick={() => setSelectedCategory("CITY")}
+            />
+            <CategoryCard
+              title="Colosseum"
+              icon={<Sword />}
+              color="purple"
+              description="PvP Arena, Guilds, and Social Hub"
+              itemCount={4}
+              onClick={() => setSelectedCategory("COLOSSEUM")}
+            />
+            <CategoryCard
+              title="Exploration"
+              icon={<Map />}
+              color="green"
+              description="World Map, Bestiary, and Lore"
+              itemCount={3}
+              onClick={() => setSelectedCategory("EXPLORATION")}
+            />
+          </div>
+        );
+    }
+  };
+
+  return (
+    <div className="flex flex-col space-y-4">
+      {selectedCategory && (
+        <div className="flex items-center space-x-2 animate-in slide-in-from-left-4 duration-300">
+          <button
+            onClick={() => {
+              playSound("ui_click");
+              setSelectedCategory(null);
+            }}
+            className="p-2 rounded-full hover:bg-white/10 text-gray-400 hover:text-white transition-colors"
+            title="Back to Categories"
+          >
+            <ChevronLeft className="w-6 h-6" />
+          </button>
+          <h2 className="text-xl font-bold uppercase tracking-widest text-white/80">
+            {selectedCategory === "CITY" ? "Iron City" : selectedCategory}
+          </h2>
+        </div>
+      )}
+
+      {renderContent()}
+    </div>
+  );
+};
+
