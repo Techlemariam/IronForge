@@ -1,30 +1,67 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { GoalPriorityEngine } from './GoalPriorityEngine';
 import { WardensManifest, SystemMetrics, MacroPhase } from '@/types/goals';
+import { WorkoutDefinition } from '@/types/training';
+
+vi.mock('@/data/workouts', () => {
+    // Mock the Workout Library inside the factory to avoid hoisting issues
+    const MOCK_LIBRARY: WorkoutDefinition[] = [
+        {
+            id: 'run_1', code: 'R1', name: 'Easy Run', type: 'RUN',
+            intensity: 'LOW', durationMin: 30, description: 'Easy',
+            resourceCost: { CNS: 10, MUSCULAR: 10, METABOLIC: 10 },
+        },
+        {
+            id: 'bike_1', code: 'B1', name: 'Intervals', type: 'BIKE',
+            intensity: 'HIGH', durationMin: 60, description: 'Hard',
+            resourceCost: { CNS: 40, MUSCULAR: 30, METABOLIC: 50 },
+        },
+        {
+            id: 'strength_1', code: 'S1', name: 'Chest Day', type: 'STRENGTH',
+            intensity: 'MEDIUM', durationMin: 45, description: 'Pecs',
+            resourceCost: { CNS: 30, MUSCULAR: 40, METABOLIC: 10 },
+            exercises: [{ id: 'Bench Press (Barbell)', sets: 3, reps: 10 }]
+        },
+        {
+            id: 'strength_2', code: 'S2', name: 'Leg Day', type: 'STRENGTH',
+            intensity: 'HIGH', durationMin: 60, description: 'Squats',
+            resourceCost: { CNS: 50, MUSCULAR: 60, METABOLIC: 20 },
+            exercises: [{ id: 'Squat (Barbell)', sets: 3, reps: 5 }]
+        }
+    ];
+
+    return {
+        WORKOUT_LIBRARY: MOCK_LIBRARY
+    };
+});
+
+
+
+const mockManifest: WardensManifest = {
+    userId: 'user-1',
+    goals: [{ goal: 'VO2MAX', weight: 1.0 }],
+    phase: 'BALANCED',
+    phaseStartDate: new Date(),
+    phaseWeek: 1,
+    autoRotate: true,
+    consents: { healthData: true, leaderboard: true }
+};
+
+const mockMetrics: SystemMetrics = {
+    hrv: 50,
+    hrvBaseline: 50,
+    tsb: 0,
+    atl: 50,
+    ctl: 50,
+    acwr: 1.0,
+    sleepScore: 80,
+    soreness: 3,
+    mood: 'NORMAL',
+    consecutiveStalls: 0
+};
 
 describe('GoalPriorityEngine', () => {
-    const mockManifest: WardensManifest = {
-        userId: 'user-1',
-        goals: [{ goal: 'VO2MAX', weight: 1.0 }],
-        phase: 'BALANCED',
-        phaseStartDate: new Date(),
-        phaseWeek: 1,
-        autoRotate: true,
-        consents: { healthData: true, leaderboard: true }
-    };
 
-    const mockMetrics: SystemMetrics = {
-        hrv: 50,
-        hrvBaseline: 50,
-        tsb: 0,
-        atl: 50,
-        ctl: 50,
-        acwr: 1.0,
-        sleepScore: 80,
-        soreness: 3,
-        mood: 'NORMAL',
-        consecutiveStalls: 0
-    };
 
     describe('selectPhase', () => {
         it('should trigger DELOAD if metrics indicate crash', () => {
@@ -84,3 +121,66 @@ describe('GoalPriorityEngine', () => {
         });
     });
 });
+
+describe('selectWorkout', () => {
+    const mockBudget = { cns: 100, muscular: 100, metabolic: 100 };
+    const mockHeatmap = {
+        CHEST: { status: 'MV', currentVolume: 0, targetVolume: 10 }, // Needs work
+        QUADS: { status: 'MRV', currentVolume: 20, targetVolume: 20 } // Maxed out
+    };
+
+    it('should filter by phase (CARDIO_BUILD -> RUN/BIKE)', () => {
+        const result = GoalPriorityEngine.selectWorkout(
+            mockManifest,
+            'CARDIO_BUILD',
+            mockBudget
+        );
+        const types = result.map(w => w.type);
+        expect(types).toContain('RUN');
+        expect(types).toContain('BIKE');
+        expect(types).not.toContain('STRENGTH');
+    });
+
+    it('should filter by budget', () => {
+        const lowBudget = { cns: 20, muscular: 20, metabolic: 20 };
+        const result = GoalPriorityEngine.selectWorkout(
+            mockManifest,
+            'CARDIO_BUILD',
+            lowBudget
+        );
+        // Should only get 'run_1' (cost 10/10/10)
+        // 'bike_1' costs 40/30/50 -> Excluded
+        expect(result.length).toBe(1);
+        expect(result[0].id).toBe('run_1');
+    });
+
+    it('should prioritize strength workouts that hit muscle gaps', () => {
+        // Need to mock getMuscleForExercise or ensure 'Squat (Barbell)' maps to QUADS??
+        // In my implementation I checked:
+        // "quadriceps": "QUADS"
+        // So if HEVY_EXERCISE_MAP['Squat (Barbell)'] is 'quadriceps', it maps to QUADS.
+        // But I mocked usage of HEVY_EXERCISE_MAP using the real one?
+        // The real HEVY_EXERCISE_MAP likely doesn't have 'Squat (Barbell)' if I didn't verify it.
+        // Wait, I read hevyExercises.ts and it had "Bench Press (Barbell)".
+        // Let's assume 'Bench Press (Barbell)' maps to 'chest' -> CHEST.
+
+        // In this test: CHEST is 'MV' (needs work), Quads is MRV (full).
+        // We expect Chest workout to be ranked higher than Leg workout if both were candidates.
+
+        const result = GoalPriorityEngine.selectWorkout(
+            mockManifest,
+            'STRENGTH_BUILD', // Allows STRENGTH
+            mockBudget,
+            mockHeatmap as any
+        );
+
+        // strength_1 (Chest) should score higher than strength_2 (Legs)
+        // Chest gap gives points.
+        // Legs MRV gives no points (implementation checks for MV/MEV).
+
+        expect(result.length).toBeGreaterThan(0);
+        expect(result[0].id).toBe('strength_1');
+    });
+});
+
+

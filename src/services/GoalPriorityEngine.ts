@@ -3,8 +3,14 @@ import {
     SystemMetrics,
     MacroPhase,
     TrainingGoal,
-    WeeklyTargets
+    WeeklyTargets,
+    DailyResourceBudget,
+    MuscleHeatmap
 } from '@/types/goals';
+import { WORKOUT_LIBRARY } from '@/data/workouts';
+import { WorkoutDefinition, MuscleGroup } from '@/types/training';
+import { HEVY_EXERCISE_MAP } from '@/data/hevyExercises';
+
 
 // Phase Allocation Matrix
 const PHASE_ALLOCATION: Record<MacroPhase, { strength: number; cardio: number; mobility: number; description: string }> = {
@@ -194,5 +200,142 @@ export class GoalPriorityEngine {
         if (metrics.tsb > 10 && metrics.sleepScore > 85) return 1.1;
 
         return 1.0;
+    }
+
+    /**
+     * Selects the optimal workout from the library based on phase, budget, and muscle gaps.
+     */
+    static selectWorkout(
+        manifest: WardensManifest,
+        phase: MacroPhase,
+        budget: DailyResourceBudget,
+        heatmap?: MuscleHeatmap, // Optional, primarily for STRENGTH workouts
+        preferences?: {
+            maxDuration?: number;
+            preferredTypes?: string[];
+            availableEquipment?: string[]; // Todo: Integrate with The Armory
+        },
+        allowBudgetOverride?: boolean
+    ): WorkoutDefinition[] {
+
+        // 1. Filter by phase priority
+        let candidates = WORKOUT_LIBRARY.filter(w =>
+            this.matchesPhase(w, phase)
+        );
+
+        // 2. Filter by preferences
+        if (preferences) {
+            if (preferences.maxDuration) {
+                candidates = candidates.filter(w => w.durationMin <= preferences.maxDuration!);
+            }
+            if (preferences.preferredTypes && preferences.preferredTypes.length > 0) {
+                candidates = candidates.filter(w => preferences.preferredTypes!.includes(w.type));
+            }
+        }
+
+        // 3. Filter by budget (strict unless override)
+        if (!allowBudgetOverride) {
+            candidates = candidates.filter(w =>
+                (w.resourceCost.CNS ?? 0) <= budget.cns &&
+                (w.resourceCost.MUSCULAR ?? 0) <= budget.muscular &&
+                (w.resourceCost.METABOLIC ?? 0) <= budget.metabolic
+            );
+        }
+
+        // 4. Sort by "fit score" (higher = better match)
+        candidates.sort((a, b) =>
+            this.calculateFitScore(b, phase, heatmap, manifest) -
+            this.calculateFitScore(a, phase, heatmap, manifest)
+        );
+
+        // Return top 3 recommendations
+        return candidates.slice(0, 3);
+    }
+
+    private static matchesPhase(w: WorkoutDefinition, phase: MacroPhase): boolean {
+        if (phase === 'CARDIO_BUILD') {
+            return ['RUN', 'BIKE', 'SWIM'].includes(w.type);
+        }
+        if (phase === 'STRENGTH_BUILD') {
+            return w.type === 'STRENGTH';
+        }
+        if (phase === 'DELOAD') {
+            return w.intensity === 'LOW' || w.type === 'MOBILITY';
+        }
+        if (phase === 'PEAK') {
+            // Peak logic: High intensity, lower volume? 
+            // For now, allow everything but prioritize intensity in scoring
+            return true;
+        }
+        return true; // BALANCED: all types allowed
+    }
+
+    private static calculateFitScore(
+        w: WorkoutDefinition,
+        phase: MacroPhase,
+        heatmap: MuscleHeatmap | undefined,
+        manifest: WardensManifest
+    ): number {
+        let score = 100;
+
+        // Bonus for matching recommended path
+        // Assuming current path is derived from phase or manifest goals? 
+        // For now, let's just check if any recommended path matches a known user path preference if we had one.
+        // Actually, manifest doesn't explicitly store "Path", but goals implicate it.
+        // Let's rely on simple Phase matching for now.
+
+        // Phase specific bonuses
+        if (phase === 'PEAK' && w.intensity === 'HIGH') score += 20;
+        if (phase === 'DELOAD' && w.intensity === 'LOW') score += 20;
+
+        // Bonus for filling heatmap gaps (strength workouts only)
+        if (w.type === 'STRENGTH' && w.exercises && heatmap) {
+            const targetedMuscles = w.exercises.map(e => this.getMuscleForExercise(e.id));
+
+            // Find unique muscles targeted that are in MV (Maintenance) or MEV (Min Effective)
+            // We want to push them to MAV (Max Adaptive).
+            const uniqueMuscles = Array.from(new Set(targetedMuscles)).filter(Boolean) as MuscleGroup[];
+
+            let gapFillScore = 0;
+            uniqueMuscles.forEach(m => {
+                const status = heatmap[m]?.status;
+                if (status === 'MV' || status === 'MEV') {
+                    gapFillScore += 10;
+                }
+            });
+            score += gapFillScore;
+        }
+
+        return score;
+    }
+
+    private static getMuscleForExercise(exerciseIdOrName: string): MuscleGroup | null {
+        // Try direct map
+        let muscle = HEVY_EXERCISE_MAP[exerciseIdOrName];
+
+        // If not found, try generic matches (naive implementation)
+        if (!muscle) {
+            // Fallbacks for known IDs in workouts.ts if they differ from Hevy names
+            return null;
+        }
+
+        // Map Hevy lowercase to MuscleGroup uppercase
+        const mapping: Record<string, MuscleGroup> = {
+            "quadriceps": "QUADS",
+            "hamstrings": "HAMS",
+            "glutes": "GLUTES",
+            "chest": "CHEST",
+            "upper_back": "BACK",
+            "lats": "BACK", // or separate
+            "lower_back": "BACK",
+            "shoulders": "SHOULDERS",
+            "biceps": "BICEPS",
+            "triceps": "TRICEPS",
+            "abdominals": "ABS",
+            "calves": "CALVES",
+            "forearms": "BICEPS" // Rough approx
+        };
+
+        return mapping[muscle] || null;
     }
 }
