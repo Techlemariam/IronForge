@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { GoalPriorityEngine } from './GoalPriorityEngine';
+import { GoalPriorityEngine } from '@/services/GoalPriorityEngine';
 import { WardensManifest, SystemMetrics, MacroPhase } from '@/types/goals';
 import { WorkoutDefinition } from '@/types/training';
 

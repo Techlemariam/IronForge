@@ -3,7 +3,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { GeminiService } from "../gemini";
+import { GeminiService } from '@/services/gemini';
 
 // Mock @google/genai
 vi.mock("@google/genai", () => {

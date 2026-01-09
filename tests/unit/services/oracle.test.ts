@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { OracleService } from "../oracle";
+import { OracleService } from '@/services/oracle';
 import prisma from "@/lib/prisma";
 import { getWellness, getActivities } from "@/lib/intervals";
 import { EquipmentService } from "@/services/game/EquipmentService";

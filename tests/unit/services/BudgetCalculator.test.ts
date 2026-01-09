@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { calculateDailyBudget, wellnessToSystemMetrics } from './BudgetCalculator';
+import { calculateDailyBudget, wellnessToSystemMetrics } from '@/services/BudgetCalculator';
 import { WellnessData } from '@/lib/intervals';
 
 describe('BudgetCalculator', () => {
