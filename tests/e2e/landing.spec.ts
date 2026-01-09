@@ -6,7 +6,7 @@ test.describe('Landing Page', () => {
         await page.goto('/welcome');
 
         // Check title
-        await expect(page).toHaveTitle(/IronForge RPG | Train Like a Titan/i);
+        await expect(page).toHaveTitle(/Welcome to IronForge | Begin Your Saga/i);
 
         // Check Hero visibility
         await expect(page.getByText('Forge Your Legacy')).toBeVisible();
