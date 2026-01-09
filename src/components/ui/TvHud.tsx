@@ -39,7 +39,11 @@ export const TvHud: React.FC<TvHudProps> = ({
     return (
         <div className="fixed inset-0 z-[100] pointer-events-none bg-gradient-to-b from-black/40 via-transparent to-black/60 font-mono">
             {/* Top Left: Player Stats (Compacted) */}
-            <div className="absolute top-12 left-12 flex items-center gap-4 bg-black/60 backdrop-blur-xl border-2 border-white/10 p-4 rounded-2xl shadow-2xl">
+            <div
+                role="status"
+                aria-label="Player Status"
+                className="absolute top-12 left-12 flex items-center gap-4 bg-black/60 backdrop-blur-xl border-2 border-white/10 p-4 rounded-2xl shadow-2xl"
+            >
                 <div className="w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center border-2 border-blue-400/50 shadow-[0_0_15px_rgba(59,130,246,0.5)]">
                     <Shield className="w-7 h-7 text-white" />
                 </div>
@@ -70,6 +74,8 @@ export const TvHud: React.FC<TvHudProps> = ({
                         initial={{ opacity: 0, x: 50 }}
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: 50 }}
+                        role="status"
+                        aria-label="Quest Progress"
                         className="absolute top-12 right-12 text-right"
                     >
                         <div className="bg-black/60 backdrop-blur-xl border-2 border-warrior/20 p-4 rounded-2xl shadow-2xl">
@@ -103,6 +109,8 @@ export const TvHud: React.FC<TvHudProps> = ({
                         initial={{ opacity: 0, y: 100 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: 100 }}
+                        role="status"
+                        aria-label="Boss Status"
                         className="absolute bottom-12 left-1/2 -translate-x-1/2 w-full max-w-5xl px-12"
                     >
                         <div className="bg-black/80 backdrop-blur-xl border-2 border-red-500/30 p-8 rounded-3xl shadow-[0_-20px_50px_rgba(255,0,0,0.1)]">

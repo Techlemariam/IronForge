@@ -69,7 +69,7 @@ export async function createWorkoutTemplateAction(
     return { success: true, templateId };
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return { success: false, error: error.errors[0].message };
+      return { success: false, error: error.issues[0].message };
     }
     console.error("Error creating template:", error);
     return { success: false, error: "Failed to create template" };

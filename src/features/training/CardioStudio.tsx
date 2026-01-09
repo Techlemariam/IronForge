@@ -55,7 +55,8 @@ import { checkOvertrainingStatusAction } from "@/actions/training/overtraining";
 import { getStreakStatusAction } from "@/actions/user/streak";
 
 // Dynamic import to avoid SSR issues with react-player
-const ReactPlayer = dynamic(() => import("react-player/lazy"), { ssr: false });
+// @ts-ignore - React 19 type mismatch
+const ReactPlayer = dynamic(() => import("react-player"), { ssr: false }) as any;
 
 export type CardioMode = "cycling" | "running" | "gauntlet" | "chase";
 

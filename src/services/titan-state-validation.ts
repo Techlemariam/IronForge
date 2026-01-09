@@ -160,8 +160,8 @@ export const SyncRequestSchema = z.object({
   userId: UserIdSchema,
   deviceId: z.string(),
   clientVersion: PositiveIntSchema,
-  lastSyncedAt: z.date().or(z.string().datetime()),
-  changes: z.record(z.unknown()).optional(),
+  lastSyncedAt: z.union([z.date(), z.string().datetime({})]),
+  changes: z.record(z.string(), z.unknown()).optional(),
 });
 
 // ===== Validation Helpers =====
@@ -178,7 +178,7 @@ export function validateMutation<T>(
 
   return {
     valid: false,
-    errors: result.error.errors.map((e) => `${e.path.join(".")}: ${e.message}`),
+    errors: result.error.issues.map((e) => `${e.path.join(".")}: ${e.message}`),
   };
 }
 

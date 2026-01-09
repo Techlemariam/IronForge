@@ -100,13 +100,13 @@ const Category: React.FC<CategoryProps> = ({
     >
       <button
         onClick={() => setIsOpen(!isOpen)}
+        aria-label={`${isOpen ? "Collapse" : "Expand"} ${title} section`}
+        aria-expanded={isOpen}
         className={`w-full flex items-center justify-between p-4 text-${color}-400 hover:bg-${color}-950/30 transition-colors`}
       >
         <div className="flex items-center space-x-3">
           {icon}
-          <h3 className="text-lg font-bold uppercase tracking-widest">
-            {title}
-          </h3>
+          <h3 className="text-lg font-bold uppercase tracking-widest">{title}</h3>
         </div>
         {isOpen ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
       </button>
