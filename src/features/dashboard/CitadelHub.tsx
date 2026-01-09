@@ -4,9 +4,6 @@ import {
   Sword,
   Map,
   Castle,
-  Mic,
-  Footprints,
-  Bike,
   Dumbbell,
   Scroll,
   Skull,
@@ -18,7 +15,6 @@ import {
   ChevronDown,
   ChevronUp,
   Activity,
-  Zap,
 } from "lucide-react";
 import { DashboardAction } from "./types";
 import { playSound } from "@/utils";
@@ -153,27 +149,21 @@ export const CitadelHub: React.FC<CitadelHubProps> = ({ dispatch }) => (
       <NavButton
         variant="magma"
         icon={<Activity className="w-4 h-4" />}
-        onClick={() => dispatch({ type: "SET_CARDIO_MODE", payload: "cycling" })} // Defaulting to cycling until selection view is ready
+        onClick={() => dispatch({ type: "SET_CARDIO_MODE", payload: "cycling" })}
         description="Indoor cycling and running modes with virtual elevation"
       >
         Cardio Suite
       </NavButton>
-      <div className="grid grid-cols-2 gap-2 mt-2">
-        <NavButton
-          variant="magma"
-          icon={<Bike className="w-3 h-3" />}
-          onClick={() => dispatch({ type: "SET_CARDIO_MODE", payload: "cycling" })}
-        >
-          Ride
-        </NavButton>
-        <NavButton
-          variant="magma"
-          icon={<Footprints className="w-3 h-3" />}
-          onClick={() => dispatch({ type: "SET_CARDIO_MODE", payload: "running" })}
-        >
-          Run
-        </NavButton>
-      </div>
+      <NavButton
+        variant="magma"
+        icon={<Scroll className="w-4 h-4" />}
+        onClick={() =>
+          dispatch({ type: "SET_VIEW", payload: "program_builder" })
+        }
+        description="Create custom workout routines"
+      >
+        Program Builder
+      </NavButton>
       <NavButton
         variant="magma"
         icon={<Map className="w-4 h-4" />}
@@ -217,23 +207,13 @@ export const CitadelHub: React.FC<CitadelHubProps> = ({ dispatch }) => (
       >
         Armory
       </NavButton>
-      <NavButton
-        variant="iron"
-        icon={<Scroll className="w-4 h-4" />}
-        onClick={() =>
-          dispatch({ type: "SET_VIEW", payload: "program_builder" })
-        }
-        description="Create custom workout routines"
-      >
-        Program Builder
-      </NavButton>
     </Category>
 
     {/* 3. SOCIAL & PVP */}
     <Category
       title="Colosseum"
       icon={<Sword className="w-6 h-6" />}
-      color="purple" // Changed to distinguish
+      color="purple"
       defaultOpen={false}
     >
       <NavButton
@@ -301,17 +281,6 @@ export const CitadelHub: React.FC<CitadelHubProps> = ({ dispatch }) => (
       >
         Grimoire
       </NavButton>
-      <div className="pt-2 border-t border-green-800/30">
-        <Link href="/settings" className="w-full">
-          <NavButton
-            variant="nature"
-            icon={<Shield className="w-4 h-4" />}
-            onClick={() => { }}
-          >
-            Settings
-          </NavButton>
-        </Link>
-      </div>
     </Category>
   </div>
 );
