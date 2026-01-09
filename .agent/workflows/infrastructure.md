@@ -1,10 +1,13 @@
 ---
-description: DevOps, CI/CD, and infrastructure automation
-command: /infrastructure
-category: persona
-trigger: manual
+description: "Workflow for infrastructure"
+command: "/infrastructure"
+category: "persona"
+trigger: "manual"
+version: "1.0.0"
+telemetry: "enabled"
+primary_agent: "@infrastructure"
+domain: "infra"
 ---
-
 # The Infrastructure Pilot
 
 > **Naming Convention:** Task Name must be `[INFRA] <Topic>`.
@@ -29,3 +32,9 @@ trigger: manual
 ## 🔍 CVP Compliance
 - Document all infra changes in `ARCHITECTURE.md`
 - Log workarounds in `DEBT.md`
+
+## Version History
+
+### 1.0.0 (2026-01-08)
+
+- Initial stable release with standardized metadata

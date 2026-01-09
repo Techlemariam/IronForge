@@ -1,10 +1,13 @@
 ---
-description: Strict quality gate preventing bad pushes
-command: /gatekeeper
-category: meta
-trigger: manual
+description: "Workflow for gatekeeper"
+command: "/gatekeeper"
+category: "verification"
+trigger: "manual"
+version: "1.0.0"
+telemetry: "enabled"
+primary_agent: "@qa"
+domain: "core"
 ---
-
 # 🛡️ The Gatekeeper
 
 **Role:** Quality Enforcer.
@@ -24,7 +27,7 @@ Run this **before** every `git push`. If it fails, **DO NOT PUSH**.
 // turbo
 
 ```bash
-# Verify branch
+## Verify branch
 current_branch=$(git rev-parse --abbrev-ref HEAD)
 
 if [ "$current_branch" = "main" ]; then
@@ -41,16 +44,16 @@ echo "🔍 Gatekeeper running on branch: $current_branch"
 The core of the Gatekeeper is the **Local Loop**. You must loop through these steps until **all** are green.
 
 ```bash
-# 1. Type Safety (Fastest Check)
+## 1. Type Safety (Fastest Check)
 npm run check-types
 
-# 2. Linting & Static Analysis
+## 2. Linting & Static Analysis
 npm run lint
 
-# 3. Build Verification
+## 3. Build Verification
 npm run build
 
-# 4. Unit Tests
+## 4. Unit Tests
 npm run test
 ```
 
@@ -109,3 +112,10 @@ Score calculation:
 
 - [100] ✅ **APPROVED:** You may push.
 - [<100] ❌ **REJECTED:** Fix FATAL issues first.
+
+
+## Version History
+
+### 1.0.0 (2026-01-08)
+
+- Initial stable release with standardized metadata

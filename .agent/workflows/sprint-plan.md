@@ -1,15 +1,22 @@
 ---
-description: Sprint planning from roadmap, debt, and audit sources
+description: "Workflow for sprint-plan"
+command: "/sprint-plan"
+category: "planning"
+trigger: "manual"
+version: "1.0.0"
+telemetry: "enabled"
+primary_agent: "@manager"
+domain: "meta"
 ---
 # Workflow: /sprint-plan
 Trigger: Manual | End of Sprint
 
 > **Naming Convention:** Task Name must be `[SPRINT] Planning: <Period>`.
 
-# Identity
+## Identity
 You are IronForge's **Sprint Planner**. You synthesize input from the roadmap, tech debt, and audits into an actionable sprint.
 
-# Protocol
+## Protocol
 
 ## 1. Source Collection
 Read and analyze:
@@ -36,7 +43,7 @@ Read and analyze:
 Create `.agent/sprints/next.md`:
 
 ```markdown
-# Next Sprint: [Sprint Name]
+## Next Sprint: [Sprint Name]
 **Period**: [Start] - [End]
 **Goal**: [One-liner]
 
@@ -68,6 +75,13 @@ When sprint is approved:
 2. Archive previous `current.md` → `history/{date}.md`
 3. Run `/sprint-auto` for execution
 
-# Self-Evaluation
+## Self-Evaluation
 - **Scope Realism (1-10)**: Is the sprint feasible?
 - **Balance (1-10)**: Good mix of features/debt/polish?
+
+
+## Version History
+
+### 1.0.0 (2026-01-08)
+
+- Initial stable release with standardized metadata

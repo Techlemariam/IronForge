@@ -1,8 +1,12 @@
 ---
-description: Monitor Vercel Deployments
-command: /monitor-deploy
-category: monitor
-trigger: manual
+description: "Workflow for monitor-deploy"
+command: "/monitor-deploy"
+category: "monitoring"
+trigger: "manual"
+version: "1.0.0"
+telemetry: "enabled"
+primary_agent: "@infrastructure"
+domain: "infra"
 ---
 # Deployment Monitoring Workflow
 
@@ -20,7 +24,7 @@ npx vercel list --limit 5
 Get detailed information about a specific deployment, including build configuration and routes.
 
 ```bash
-# Inspect by URL or ID
+## Inspect by URL or ID
 npx vercel inspect <DEPLOYMENT_URL_OR_ID>
 ```
 
@@ -31,10 +35,10 @@ If `VERCEL_TOKEN` is configured, use the agent's tools to fetch build logs direc
 Stream runtime logs from a specific deployment (or the latest production one).
 
 ```bash
-# Stream production logs
+## Stream production logs
 npx vercel logs production
 
-# Stream logs from a specific deployment
+## Stream logs from a specific deployment
 npx vercel logs <DEPLOYMENT_URL>
 ```
 
@@ -42,6 +46,13 @@ npx vercel logs <DEPLOYMENT_URL>
 If a deployment fails in GitHub Actions but isn't clear why, check the Vercel build logs directly.
 
 ```bash
-# View build logs for the latest deployment
+## View build logs for the latest deployment
 npx vercel logs --build
 ```
+
+
+## Version History
+
+### 1.0.0 (2026-01-08)
+
+- Initial stable release with standardized metadata

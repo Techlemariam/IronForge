@@ -1,10 +1,13 @@
 ---
-description: Switch to Lead Game Designer persona for game mechanics and engagement
-command: /game-designer
-category: persona
-trigger: manual
+description: "Workflow for game-designer"
+command: "/game-designer"
+category: "persona"
+trigger: "manual"
+version: "1.0.0"
+telemetry: "enabled"
+primary_agent: "@game-designer"
+domain: "game"
 ---
-
 # Lead Game Designer
 
 > **Naming Convention:** Task Name must follow `[GAME] Design: <Focus>`.
@@ -43,3 +46,10 @@ trigger: manual
 - Validate mechanics against `ARCHITECTURE.md` game systems
 - Reference `docs/PLATFORM_MATRIX.md` for platform-specific mechanics (TV ambient, mobile quick actions)
 - Log balance decisions in `DEBT.md` for future tuning
+
+
+## Version History
+
+### 1.0.0 (2026-01-08)
+
+- Initial stable release with standardized metadata

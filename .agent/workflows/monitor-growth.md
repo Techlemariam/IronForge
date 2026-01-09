@@ -1,10 +1,13 @@
 ---
-description: Monitor growth metrics and progress towards passive income triggers
-command: /monitor-growth
-category: monitor
-trigger: manual
+description: "Workflow for monitor-growth"
+command: "/monitor-growth"
+category: "monitoring"
+trigger: "manual"
+version: "1.0.0"
+telemetry: "enabled"
+primary_agent: "@strategist"
+domain: "business"
 ---
-
 # 📈 Growth & Revenue Engine Monitor
 
 **Purpose:** Track progress towards the "Passive Income" Business Triggers defined in `ROADMAP.md`. Bridge the gap between *building* features and *acquiring* users.
@@ -23,13 +26,13 @@ Check the core metrics required to activate monetization (Phase 2).
 Ensure the platform is discoverable and accessible.
 
 ```bash
-# Check SEO basics
+## Check SEO basics
 cat public/robots.txt
 cat public/sitemap.xml
 rg "<meta name=\"description\"" src/app/layout.tsx
 rg "SpeedInsights" src/app/layout.tsx # Check performance monitoring status
 
-# Check Landing Page existence
+## Check Landing Page existence
 ls src/app/page.tsx src/components/marketing/
 ```
 - **Config**: Add `rg` and `ls` to `.agent/config.json`.
@@ -72,3 +75,10 @@ Generate a **Growth Health Report**:
 - [ ] [Action 1]
 - [ ] [Action 2]
 ```
+
+
+## Version History
+
+### 1.0.0 (2026-01-08)
+
+- Initial stable release with standardized metadata

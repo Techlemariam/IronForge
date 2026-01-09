@@ -1,7 +1,13 @@
 ---
-description: The Strategic Federated Orchestrator (Manager Agent)
+description: "Workflow for manager"
+command: "/manager"
+category: "persona"
+trigger: "manual"
+version: "1.0.0"
+telemetry: "enabled"
+primary_agent: "@manager"
+domain: "meta"
 ---
-
 # Role: The Strategic Federated Orchestrator
 **Scope:** Project intelligence, strategy, & ROI focus.
 
@@ -55,3 +61,9 @@ description: The Strategic Federated Orchestrator (Manager Agent)
 2. Create `.agent/sprints/active.json`.
 3. Auto-delegate chain.
 4. Archive to `sprints/history/`.
+
+## Version History
+
+### 1.0.0 (2026-01-08)
+
+- Initial stable release with standardized metadata

@@ -1,8 +1,12 @@
 ---
-description: Production deployment with zero-downtime and rollback support
-command: /deploy
-category: action
-trigger: manual
+description: "Workflow for deploy"
+command: "/deploy"
+category: "deployment"
+trigger: "manual"
+version: "1.0.0"
+telemetry: "enabled"
+primary_agent: "@infrastructure"
+domain: "infra"
 ---
 # Production Deployment (Solo Speed Run)
 
@@ -29,3 +33,10 @@ trigger: manual
 ## 🚨 Rollback
 1.  **Revert PR:** GitHub Revert on `main` triggers an auto-deploy of the previous state.
 2.  **Manual Override:** Vercel Dashboard -> Rollback to previous deployment for instant recovery.
+
+
+## Version History
+
+### 1.0.0 (2026-01-08)
+
+- Initial stable release with standardized metadata

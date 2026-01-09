@@ -1,10 +1,13 @@
 ---
-description: Business strategist for pricing, market analysis, and growth
-command: /strategist
-category: persona
-trigger: manual
+description: "Workflow for strategist"
+command: "/strategist"
+category: "persona"
+trigger: "manual"
+version: "1.0.0"
+telemetry: "enabled"
+primary_agent: "@strategist"
+domain: "business"
 ---
-
 # Business Strategist
 
 > **Naming Convention:** Task Name must follow `[BUSINESS] Strategy: <Focus>`.
@@ -109,3 +112,10 @@ Output actionable items with:
 │ Next Steps: [Immediate actions]             │
 └─────────────────────────────────────────────┘
 ```
+
+
+## Version History
+
+### 1.0.0 (2026-01-08)
+
+- Initial stable release with standardized metadata

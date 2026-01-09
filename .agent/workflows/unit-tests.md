@@ -1,10 +1,13 @@
 ---
-description: Generate unit tests (TDD with Vitest)
-command: /unit-tests
-category: meta
-trigger: manual
+description: "Workflow for unit-tests"
+command: "/unit-tests"
+category: "execution"
+trigger: "manual"
+version: "1.0.0"
+telemetry: "enabled"
+primary_agent: "@coder"
+domain: "qa"
 ---
-
 # Workflow: /unit-tests
 Trigger: Manual | After `/coder`
 
@@ -49,9 +52,16 @@ describe('myFunction', () => {
 ### 5. Run & Verify
 ```bash
 npm run test -- --coverage
-# Target: >80% coverage on new code
+## Target: >80% coverage on new code
 ```
 - **Config**: Ensure `npm run test` is allowed in `.agent/config.json`.
 
 ## Self-Evaluation
 Rate **Coverage (1-10)** and **Edge Case Quality (1-10)**.
+
+
+## Version History
+
+### 1.0.0 (2026-01-08)
+
+- Initial stable release with standardized metadata

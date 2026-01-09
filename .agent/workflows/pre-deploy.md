@@ -1,8 +1,12 @@
 ---
-description: Verification checkpoint using Pull Request CI checks
-command: /pre-deploy
-category: action
-trigger: manual
+description: "Workflow for pre-deploy"
+command: "/pre-deploy"
+category: "verification"
+trigger: "manual"
+version: "1.0.0"
+telemetry: "enabled"
+primary_agent: "@qa"
+domain: "infra"
 ---
 # Role: Pre-Release Verifier
 
@@ -42,3 +46,10 @@ Instead of running tests locally, check the status of the checks at the bottom o
 
 > [!TIP]
 > Do not merge if tests are failing. Fix the code and push again; CI will run automatically.
+
+
+## Version History
+
+### 1.0.0 (2026-01-08)
+
+- Initial stable release with standardized metadata

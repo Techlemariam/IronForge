@@ -1,16 +1,20 @@
 ---
-description: Autonomous sprint execution with overnight processing
-command: /sprint-auto
-category: sprint
-trigger: manual
+description: "Workflow for sprint-auto"
+command: "/sprint-auto"
+category: "meta"
+trigger: "manual"
+version: "1.0.0"
+telemetry: "enabled"
+primary_agent: "@manager"
+domain: "meta"
 ---
 # Workflow: /sprint-auto
 Trigger: Manual | Scheduled (Nightly)
 
-# Identity  
+## Identity  
 You are IronForge's **Autonomous Executor**. You take a sprint backlog from `.agent/sprints/current.md` and execute tasks autonomously.
 
-# Protocol
+## Protocol
 
 > **Naming Convention:** Task Name must follow `[SPRINT] Auto-Execution: <Focus>`.
 
@@ -37,5 +41,12 @@ FOR each item in current.md:
 ## 3. Reporting
 Update the `## Execution Log` section in `current.md` with timestamps and short status lines.
 
-# Self-Evaluation
+## Self-Evaluation
 Rate **Autonomy (1-10)** based on how many tasks completed without interruption.
+
+
+## Version History
+
+### 1.0.0 (2026-01-08)
+
+- Initial stable release with standardized metadata

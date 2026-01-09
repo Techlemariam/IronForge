@@ -1,10 +1,13 @@
 ---
-description: Async maintenance workflow for nightly execution
-command: /night-shift
-category: meta
-trigger: scheduled
+description: "Workflow for night-shift"
+command: "/night-shift"
+category: "meta"
+trigger: "manual"
+version: "1.0.0"
+telemetry: "enabled"
+primary_agent: "@manager"
+domain: "meta"
 ---
-
 # 🌙 The Night Shift
 
 **Role:** The Nightly Janitor.
@@ -42,7 +45,7 @@ trigger: scheduled
 ### 5. Morning Briefing
 Generate `DAILY_BRIEF.md`:
 ```markdown
-# ☀️ Morning Briefing for [Date]
+## ☀️ Morning Briefing for [Date]
 
 ## Nightly Actions
 - 🧹 Debt Fixed: [Item] (or "None")
@@ -52,3 +55,10 @@ Generate `DAILY_BRIEF.md`:
 ## Suggested Focus Today
 [Top 3 Items from Roadmap]
 ```
+
+
+## Version History
+
+### 1.0.0 (2026-01-08)
+
+- Initial stable release with standardized metadata

@@ -1,8 +1,12 @@
 ---
-description: Monitor project alignment with market strategy and user personas
-command: /monitor-strategy
-category: monitor
-trigger: manual
+description: "Workflow for monitor-strategy"
+command: "/monitor-strategy"
+category: "monitoring"
+trigger: "manual"
+version: "1.0.0"
+telemetry: "enabled"
+primary_agent: "@strategist"
+domain: "business"
 ---
 # Strategy & Market Monitoring Workflow
 
@@ -30,16 +34,16 @@ Check the status of the "Critical Gaps" identified in the analysis.
 Run these commands to find progress or regressions in strategic areas.
 
 ```bash
-# Check for "Lite Mode" or "Simple Mode" progress
+## Check for "Lite Mode" or "Simple Mode" progress
 rg -i "liteMode|simpleMode|seriousMode" src/
 
-# Check for gender/inclusive options
+## Check for gender/inclusive options
 rg -i "gender|avatar|female|theme" src/features/settings/ src/features/titan/
 
-# Check for newcomer-friendly tooltips/explainers
+## Check for newcomer-friendly tooltips/explainers
 rg -i "tooltip|tutorial|explainer|help" src/features/dashboard/
 
-# Check for monetization readiness
+## Check for monetization readiness
 ls src/app/api/checkout/ src/actions/monetization.ts
 ```
 
@@ -69,3 +73,10 @@ Provide a **Strategic Health Report**:
 ### ⚠️ Risks & Drift
 - [List any features that feel like "bloat" or drift from the target audience]
 ```
+
+
+## Version History
+
+### 1.0.0 (2026-01-08)
+
+- Initial stable release with standardized metadata

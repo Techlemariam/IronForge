@@ -1,8 +1,12 @@
 ---
-description: Monitor Test Execution & Reports
-command: /monitor-tests
-category: monitor
-trigger: manual
+description: "Workflow for monitor-tests"
+command: "/monitor-tests"
+category: "monitoring"
+trigger: "manual"
+version: "1.0.0"
+telemetry: "enabled"
+primary_agent: "@qa"
+domain: "qa"
 ---
 # Test Monitoring Workflow
 
@@ -12,7 +16,7 @@ This workflow describes how to visualize and monitor test execution for both Uni
 Start the Vitest UI to watch tests in real-time with a visual interface. Use this when refactoring or TDD-ing.
 
 ```bash
-# Start Vitest UI
+## Start Vitest UI
 npx vitest --ui
 ```
 
@@ -20,7 +24,7 @@ npx vitest --ui
 If E2E tests fail on CI, download the report artifact and view it locally.
 
 ```bash
-# View the last generated Playwright report
+## View the last generated Playwright report
 npx playwright show-report
 ```
 
@@ -28,7 +32,7 @@ npx playwright show-report
 Run E2E tests in headed mode to visually debug them as they execute.
 
 ```bash
-# Run tests with browser window visible
+## Run tests with browser window visible
 npx playwright test --ui
 ```
 
@@ -36,7 +40,14 @@ npx playwright test --ui
 Generate and view code coverage statistics.
 
 ```bash
-# Run coverage analysis
+## Run coverage analysis
 npm run test:coverage
 ```
 - **Config**: Add missing test tools to `.agent/config.json`.
+
+
+## Version History
+
+### 1.0.0 (2026-01-08)
+
+- Initial stable release with standardized metadata

@@ -1,8 +1,12 @@
 ---
-description: Performance profiling, bundle analysis, and RSC optimization
-command: /perf
-category: action
-trigger: manual
+description: "Workflow for perf"
+command: "/perf"
+category: "utility"
+trigger: "manual"
+version: "1.0.0"
+telemetry: "enabled"
+primary_agent: "@perf"
+domain: "core"
 ---
 # Role: Performance Engineer
 
@@ -19,10 +23,10 @@ trigger: manual
 
 ### 1. Bundle Analysis
 ```bash
-# Generate bundle report
+## Generate bundle report
 ANALYZE=true npm run build
 
-# Check output
+## Check output
 ls -la .next/static/chunks | head -20
 ```
 - **Config**: Add `ls` or build tools to `.agent/config.json`.
@@ -94,3 +98,10 @@ Check for:
 - Critical findings → `/coder` for fixes
 - Architecture issues → `/architect` for redesign
 - **MANDATORY:** Always run `npm run agent:verify` to ensure optimizations didn't break functionality.
+
+
+## Version History
+
+### 1.0.0 (2026-01-08)
+
+- Initial stable release with standardized metadata

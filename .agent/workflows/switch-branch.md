@@ -1,10 +1,13 @@
 ---
-description: Switch between feature branches in the same chat session
-command: /switch-branch
-category: meta
-trigger: manual
+description: "Workflow for switch-branch"
+command: "/switch-branch"
+category: "utility"
+trigger: "manual"
+version: "1.0.0"
+telemetry: "enabled"
+primary_agent: "@manager"
+domain: "meta"
 ---
-
 # Switch Branch Workflow
 
 Safely switch between branches in the same chat session while preserving work and maintaining awareness.
@@ -26,7 +29,7 @@ Safely switch between branches in the same chat session while preserving work an
 // turbo
 
 ```bash
-# Check for uncommitted work
+## Check for uncommitted work
 if ! git diff-index --quiet HEAD --; then
   echo "⚠️ WARNING: You have uncommitted changes"
   git status --short
@@ -44,10 +47,10 @@ fi
 // turbo
 
 ```bash
-# Fetch latest changes
+## Fetch latest changes
 git fetch origin
 
-# Check if current branch is behind
+## Check if current branch is behind
 current_branch=$(git rev-parse --abbrev-ref HEAD)
 behind=$(git rev-list --count HEAD..origin/$current_branch 2>/dev/null || echo "0")
 
@@ -69,7 +72,7 @@ fi
 ```bash
 target_branch="[branch-name]"
 
-# Check if branch exists locally
+## Check if branch exists locally
 if git show-ref --verify --quiet refs/heads/$target_branch; then
   echo "✅ Branch exists locally: $target_branch"
 elif git show-ref --verify --quiet refs/remotes/origin/$target_branch; then
@@ -111,11 +114,11 @@ echo "📍 Now on branch: $new_branch"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo ""
 
-# Show recent commits on this branch
+## Show recent commits on this branch
 echo "Recent commits:"
 git log --oneline -3
 
-# Show uncommitted changes (if any)
+## Show uncommitted changes (if any)
 if ! git diff-index --quiet HEAD --; then
   echo ""
   echo "Uncommitted changes:"
@@ -198,3 +201,10 @@ fi
 | `feat/*` | `/coder` → `/qa` → `/gatekeeper` |
 | `fix/*` | `/debug` → `/qa` → `/gatekeeper` |
 | `chore/*` | `/cleanup` → `/polish` → `/gatekeeper` |
+
+
+## Version History
+
+### 1.0.0 (2026-01-08)
+
+- Initial stable release with standardized metadata

@@ -1,8 +1,12 @@
 ---
-description: Monitor CI/CD Workflows
-command: /monitor-ci
-category: monitor
-trigger: manual
+description: "Workflow for monitor-ci"
+command: "/monitor-ci"
+category: "monitoring"
+trigger: "manual"
+version: "1.0.0"
+telemetry: "enabled"
+primary_agent: "@infrastructure"
+domain: "infra"
 ---
 # CI/CD Monitoring Workflow
 
@@ -33,10 +37,10 @@ gh run view <RUN_ID>
 If a job fails, extract relevant logs to diagnose the issue.
 
 ```bash
-# View failed jobs only
+## View failed jobs only
 gh run view <RUN_ID> --log-failed
 
-# Search for specific errors in the log (PowerShell)
+## Search for specific errors in the log (PowerShell)
 gh run view <RUN_ID> --log-failed | findstr /C:"Error" /C:"fail"
 ```
 
@@ -51,10 +55,10 @@ gh run rerun <RUN_ID> --failed
 If `DB Guard` fails, it often indicates a schema drift.
 
 ```bash
-# Check status of migrations against a live DB
+## Check status of migrations against a live DB
 npx prisma migrate status
 
-# Resolve a failed migration (mark as applied)
+## Resolve a failed migration (mark as applied)
 npx prisma migrate resolve --applied <MIGRATION_NAME>
 ```
 
@@ -74,10 +78,10 @@ npx prisma migrate resolve --applied <MIGRATION_NAME>
 
 **Solution:**
 ```yaml
-# Old (failing)
+## Old (failing)
 vercel deploy --preview --token=${{ secrets.VERCEL_TOKEN }}
 
-# New (correct)
+## New (correct)
 vercel deploy --token=${{ secrets.VERCEL_TOKEN }}
 ```
 
@@ -111,10 +115,10 @@ permissions:
 
 #### Analyze Dependabot PR Checks
 ```bash
-# View PR checks status
+## View PR checks status
 gh pr checks <PR_NUMBER>
 
-# View specific run for Dependabot PR
+## View specific run for Dependabot PR
 gh run view <RUN_ID> --log-failed
 ```
 
@@ -125,8 +129,8 @@ gh run view <RUN_ID> --log-failed
 
 #### Rebase Dependabot PR
 ```bash
-# Comment on PR to trigger rebase
-# Comment on PR to trigger rebase
+## Comment on PR to trigger rebase
+## Comment on PR to trigger rebase
 gh pr comment <PR_NUMBER> --body "@dependabot rebase"
 ```
 
@@ -151,3 +155,10 @@ gh pr comment <PR_NUMBER> --body "@dependabot rebase"
 2. Verify build succeeds locally: `pnpm run build`
 3. Check Playwright config for proper env setup
 
+
+
+## Version History
+
+### 1.0.0 (2026-01-08)
+
+- Initial stable release with standardized metadata

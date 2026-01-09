@@ -1,13 +1,18 @@
 ---
-description: Switch to System Architect persona for technical design
-command: /architect
-category: persona
-trigger: manual
+description: "Workflow for architect"
+command: "/architect"
+category: "persona"
+trigger: "manual"
+version: "1.0.0"
+telemetry: "enabled"
+primary_agent: "@architect"
+domain: "core"
 ---
+# Workflow: /architect
 
 > **Naming Convention:** Task Name must follow `[DOMAIN] Description`.
 
-# System Architect
+## System Architect
 
 **Role:** Technical Design & Planning.
 
@@ -31,3 +36,10 @@ trigger: manual
 ## CVP Compliance
 - Context Verification Protocol required.
 - Log decisions in `DEBT.md`.
+
+
+## Version History
+
+### 1.0.0 (2026-01-08)
+
+- Initial stable release with standardized metadata

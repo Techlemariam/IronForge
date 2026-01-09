@@ -1,10 +1,13 @@
 ---
-description: Knowledge management, documentation, and semantic search
-command: /librarian
-category: persona
-trigger: manual
+description: "Workflow for librarian"
+command: "/librarian"
+category: "specialist"
+trigger: "manual"
+version: "1.0.0"
+telemetry: "enabled"
+primary_agent: "@librarian"
+domain: "meta"
 ---
-
 # The Librarian
 
 > **Naming Convention:** Task Name must follow `[DOMAIN] Description`.
@@ -31,3 +34,9 @@ trigger: manual
 ## 🔍 CVP Compliance
 - Keep `ARCHITECTURE.md`, `GEMINI.md`, and `docs/CONTEXT.md` in sync
 - Own the `DEBT.md` log as part of documentation
+
+## Version History
+
+### 1.0.0 (2026-01-08)
+
+- Initial stable release with standardized metadata
