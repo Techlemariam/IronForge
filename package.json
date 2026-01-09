@@ -96,6 +96,7 @@
     "zustand": "^5.0.9"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.3.3",
     "@lhci/cli": "^0.15.1",
     "@playwright/test": "^1.57.0",
     "@tailwindcss/postcss": "^4.1.18",
@@ -114,8 +115,8 @@
     "autoprefixer": "^10.4.14",
     "dotenv": "^17.2.3",
     "dotenv-cli": "^11.0.0",
-    "eslint": "^9.39.2",
-    "eslint-config-next": "^16.1.1",
+    "eslint": "^8.57.1",
+    "eslint-config-next": "^15.5.9",
     "husky": "^9.1.7",
     "jsdom": "^27.3.0",
     "magicast": "^0.5.1",
