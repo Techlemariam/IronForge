@@ -1,48 +1,9 @@
 import { test, expect } from '@playwright/test';
-import { Client } from 'pg';
 
 // Seeded mock opponents are now available via e2e-seed.ts in CI.
 test.describe('Cardio PvP Duels Flow', () => {
-    test.beforeAll(async () => {
-        // Use direct PG connection to avoid Prisma instantiation issues in test env
-        const client = new Client({
-            connectionString: process.env.DATABASE_URL
-        });
-
-        try {
-            await client.connect();
-            const email = process.env.TEST_USER_EMAIL || 'alexander.teklemariam@gmail.com';
-            console.log(`[Setup] Cleaning up duels for user: ${email} `);
-
-            const userRes = await client.query('SELECT id, "heroName" FROM "User" WHERE email = $1', [email]);
-            if (userRes.rows.length === 0) {
-                throw new Error(`Test user not found: ${email} `);
-            }
-            const user = userRes.rows[0];
-
-            // Clean up DuelChallenge
-            const result = await client.query(
-                'DELETE FROM "DuelChallenge" WHERE "challengerId" = $1 OR "defenderId" = $1',
-                [user.id]
-            );
-            console.log(`[Setup] Deleted ${result.rowCount} active duels for ${user.heroName || user.id}`);
-
-            // Ensure Titan exists and matches opponent power range (500)
-            await client.query(`
-                INSERT INTO "Titan" ("id", "userId", "name", "level", "powerRating", "strength", "endurance", "agility", "vitality", "willpower", "createdAt", "updatedAt", "lastActive")
-                VALUES (gen_random_uuid(), $1, 'Test Titan', 5, 500, 10, 10, 10, 10, 10, NOW(), NOW(), NOW())
-                ON CONFLICT ("userId") 
-                DO UPDATE SET "powerRating" = 500, "level" = 5, "updatedAt" = NOW();
-            `, [user.id]);
-            console.log(`[Setup] Updated Titan power rating to 500 for matchmaking`);
-
-        } catch (e) {
-            console.error("[Setup] Cleanup failed:", e);
-            throw e;
-        } finally {
-            await client.end();
-        }
-    });
+    // Seeded mock opponents are available via e2e-seed.ts (Global Setup)
+    // No local cleanup/seed needed as global setup handles it.
 
     test.beforeEach(async ({ page }) => {
         await page.goto('/iron-arena');
