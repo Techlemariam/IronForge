@@ -132,15 +132,79 @@ interface CitadelHubProps {
 }
 
 type CategoryType = "TRAINING" | "CITY" | "COLOSSEUM" | "EXPLORATION" | null;
+type TrainingSubType = "STRENGTH" | "CARDIO" | null;
 
 export const CitadelHub: React.FC<CitadelHubProps> = ({ dispatch }) => {
   const [selectedCategory, setSelectedCategory] = useState<CategoryType>(null);
+  const [trainingSubCategory, setTrainingSubCategory] = useState<TrainingSubType>(null);
 
   const renderContent = () => {
+    console.log('[CitadelHub] Rendering content. SelectedCategory:', selectedCategory, 'TrainingSub:', trainingSubCategory);
     switch (selectedCategory) {
       case "TRAINING":
-        return (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 animate-in slide-in-from-right-4 duration-300">
+        // Sub-category selection for Training
+        if (!trainingSubCategory) {
+          return (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-in slide-in-from-right-4 duration-300">
+              <button
+                onClick={() => {
+                  playSound("ui_click");
+                  setTrainingSubCategory("STRENGTH");
+                }}
+                onMouseEnter={() => playSound("ui_hover")}
+                className="relative group flex flex-col items-center justify-center p-6 h-40
+                  rounded-xl border border-red-800/30 bg-black/40 backdrop-blur-sm
+                  hover:bg-red-950/30 hover:border-red-500/50 hover:scale-[1.02]
+                  transition-all duration-300"
+              >
+                <div className="p-4 rounded-full bg-red-950/50 text-red-400 mb-3
+                  group-hover:text-red-200 group-hover:scale-110 transition-all">
+                  <Dumbbell className="w-8 h-8" />
+                </div>
+                <h3 className="text-lg font-bold uppercase tracking-widest text-red-100 mb-1">
+                  Strength Focus
+                </h3>
+                <p className="text-xs text-gray-400 text-center">
+                  Log sets, build programs, level up
+                </p>
+                <div className="mt-3 px-3 py-1 rounded-full text-[10px] font-mono tracking-wider
+                  bg-red-900/20 text-red-400 border border-red-900/30">
+                  3 ACTIONS
+                </div>
+              </button>
+              <button
+                onClick={() => {
+                  playSound("ui_click");
+                  setTrainingSubCategory("CARDIO");
+                }}
+                onMouseEnter={() => playSound("ui_hover")}
+                className="relative group flex flex-col items-center justify-center p-6 h-40
+                  rounded-xl border border-orange-800/30 bg-black/40 backdrop-blur-sm
+                  hover:bg-orange-950/30 hover:border-orange-500/50 hover:scale-[1.02]
+                  transition-all duration-300"
+              >
+                <div className="p-4 rounded-full bg-orange-950/50 text-orange-400 mb-3
+                  group-hover:text-orange-200 group-hover:scale-110 transition-all">
+                  <Bike className="w-8 h-8" />
+                </div>
+                <h3 className="text-lg font-bold uppercase tracking-widest text-orange-100 mb-1">
+                  Cardio Focus
+                </h3>
+                <p className="text-xs text-gray-400 text-center">
+                  Cycling, running, and cardio quests
+                </p>
+                <div className="mt-3 px-3 py-1 rounded-full text-[10px] font-mono tracking-wider
+                  bg-orange-900/20 text-orange-400 border border-orange-900/30">
+                  3 ACTIONS
+                </div>
+              </button>
+            </div>
+          );
+        }
+
+        // Render sub-category items
+        return trainingSubCategory === "STRENGTH" ? (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 animate-in slide-in-from-right-4 duration-300">
             <NavButton
               variant="magma"
               icon={<Scroll className="w-4 h-4" />}
@@ -159,6 +223,17 @@ export const CitadelHub: React.FC<CitadelHubProps> = ({ dispatch }) => {
             </NavButton>
             <NavButton
               variant="magma"
+              icon={<Scroll className="w-4 h-4" />}
+              onClick={() => dispatch({ type: "SET_VIEW", payload: "program_builder" })}
+              description="Create custom workout routines"
+            >
+              Program Builder
+            </NavButton>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 animate-in slide-in-from-right-4 duration-300">
+            <NavButton
+              variant="magma"
               icon={<Bike className="w-4 h-4" />}
               onClick={() => dispatch({ type: "SET_CARDIO_MODE", payload: "cycling" })}
               description="Epic indoor cycling quests"
@@ -175,20 +250,8 @@ export const CitadelHub: React.FC<CitadelHubProps> = ({ dispatch }) => {
             </NavButton>
             <NavButton
               variant="magma"
-              icon={<Scroll className="w-4 h-4" />}
-              onClick={() =>
-                dispatch({ type: "SET_VIEW", payload: "program_builder" })
-              }
-              description="Create custom workout routines"
-            >
-              Program Builder
-            </NavButton>
-            <NavButton
-              variant="magma"
               icon={<Map className="w-4 h-4" />}
-              onClick={() =>
-                dispatch({ type: "SET_VIEW", payload: "training_center" })
-              }
+              onClick={() => dispatch({ type: "SET_VIEW", payload: "training_center" })}
               description="Upgrade your stats and abilities"
             >
               Training Path
@@ -303,7 +366,11 @@ export const CitadelHub: React.FC<CitadelHubProps> = ({ dispatch }) => {
               color="red"
               description="Workout quests, logging, and program builder"
               itemCount={6}
-              onClick={() => setSelectedCategory("TRAINING")}
+              itemCount={3}
+              onClick={() => {
+                console.log('[CitadelHub] Clicked TRAINING');
+                setSelectedCategory("TRAINING");
+              }}
             />
             <CategoryCard
               title="Iron City"
@@ -336,20 +403,31 @@ export const CitadelHub: React.FC<CitadelHubProps> = ({ dispatch }) => {
 
   return (
     <div className="flex flex-col space-y-4">
-      {selectedCategory && (
+      {(selectedCategory || trainingSubCategory) && (
         <div className="flex items-center space-x-2 animate-in slide-in-from-left-4 duration-300">
           <button
             onClick={() => {
               playSound("ui_click");
-              setSelectedCategory(null);
+              // Handle nested navigation for Training
+              if (selectedCategory === "TRAINING" && trainingSubCategory) {
+                setTrainingSubCategory(null);
+              } else {
+                setSelectedCategory(null);
+                setTrainingSubCategory(null);
+              }
             }}
             className="p-2 rounded-full hover:bg-white/10 text-gray-400 hover:text-white transition-colors"
-            title="Back to Categories"
+            title="Back"
+            aria-label="Go back"
           >
             <ChevronLeft className="w-6 h-6" />
           </button>
           <h2 className="text-xl font-bold uppercase tracking-widest text-white/80">
-            {selectedCategory === "CITY" ? "Iron City" : selectedCategory}
+            {selectedCategory === "TRAINING" && trainingSubCategory
+              ? `Training / ${trainingSubCategory === "STRENGTH" ? "Strength" : "Cardio"}`
+              : selectedCategory === "CITY"
+                ? "Iron City"
+                : selectedCategory}
           </h2>
         </div>
       )}
