@@ -1,150 +1,90 @@
+// src/hooks/useRestTimer.ts
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
-
-interface RestTimerConfig {
-  defaultSeconds: number;
-  autoStart: boolean;
-  alertAt: number[]; // seconds remaining to alert (e.g., [10, 5, 0])
-  vibrate: boolean;
-  sound: boolean;
-  soundUrl?: string;
-}
+import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
+import { playSound } from "@/utils"; // Assuming sound util exists or I'll standardise it
 
 interface RestTimerState {
-  seconds: number;
-  isRunning: boolean;
-  isComplete: boolean;
+  isActive: boolean;
+  endTime: number | null; // Unix timestamp
+  initialSeconds: number;
+  totalSeconds: number; // For progress bar calculation
+  start: (seconds: number) => void;
+  stop: () => void;
+  addTime: (seconds: number) => void;
+  reset: () => void;
+  check: () => void; // call in component loop
+  timeLeft: number;
+  hasFinished: boolean;
 }
 
-const DEFAULT_CONFIG: RestTimerConfig = {
-  defaultSeconds: 90,
-  autoStart: false,
-  alertAt: [10, 5, 0],
-  vibrate: true,
-  sound: true,
-};
+export const useRestTimer = create<RestTimerState>()(
+  persist(
+    (set, get) => ({
+      isActive: false,
+      endTime: null,
+      initialSeconds: 90,
+      totalSeconds: 90,
+      timeLeft: 90,
+      hasFinished: false,
 
-export function useRestTimer(config: Partial<RestTimerConfig> = {}) {
-  const mergedConfig = { ...DEFAULT_CONFIG, ...config };
-
-  const [state, setState] = useState<RestTimerState>({
-    seconds: mergedConfig.defaultSeconds,
-    isRunning: false,
-    isComplete: false,
-  });
-
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
-
-  useEffect(() => {
-    // Initialize audio
-    if (typeof window !== "undefined" && mergedConfig.sound) {
-      audioRef.current = new Audio(
-        mergedConfig.soundUrl || "/sounds/timer-beep.mp3",
-      );
-    }
-
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    };
-  }, [mergedConfig.sound, mergedConfig.soundUrl]);
-
-  const playAlert = useCallback(() => {
-    if (mergedConfig.vibrate && "vibrate" in navigator) {
-      navigator.vibrate([100, 50, 100]);
-    }
-    if (mergedConfig.sound && audioRef.current) {
-      audioRef.current.play().catch(() => {});
-    }
-  }, [mergedConfig.vibrate, mergedConfig.sound]);
-
-  const start = useCallback(
-    (seconds?: number) => {
-      const duration = seconds ?? mergedConfig.defaultSeconds;
-      setState({ seconds: duration, isRunning: true, isComplete: false });
-
-      intervalRef.current = setInterval(() => {
-        setState((prev) => {
-          const newSeconds = prev.seconds - 1;
-
-          // Check for alerts
-          if (mergedConfig.alertAt.includes(newSeconds)) {
-            playAlert();
-          }
-
-          if (newSeconds <= 0) {
-            if (intervalRef.current) clearInterval(intervalRef.current);
-            return { seconds: 0, isRunning: false, isComplete: true };
-          }
-
-          return { ...prev, seconds: newSeconds };
+      start: (seconds: number) => {
+        const now = Date.now();
+        set({
+          isActive: true,
+          initialSeconds: seconds,
+          totalSeconds: seconds,
+          endTime: now + seconds * 1000,
+          timeLeft: seconds,
+          hasFinished: false,
         });
-      }, 1000);
-    },
-    [mergedConfig.defaultSeconds, mergedConfig.alertAt, playAlert],
-  );
+      },
 
-  const pause = useCallback(() => {
-    if (intervalRef.current) clearInterval(intervalRef.current);
-    setState((prev) => ({ ...prev, isRunning: false }));
-  }, []);
+      stop: () => {
+        set({ isActive: false, endTime: null, hasFinished: false });
+      },
 
-  const resume = useCallback(() => {
-    if (state.seconds > 0 && !state.isRunning) {
-      setState((prev) => ({ ...prev, isRunning: true }));
-      intervalRef.current = setInterval(() => {
-        setState((prev) => {
-          const newSeconds = prev.seconds - 1;
-          if (mergedConfig.alertAt.includes(newSeconds)) playAlert();
-          if (newSeconds <= 0) {
-            if (intervalRef.current) clearInterval(intervalRef.current);
-            return { seconds: 0, isRunning: false, isComplete: true };
+      addTime: (seconds: number) => {
+        const { endTime, isActive } = get();
+        if (!isActive || !endTime) return;
+        const newEndTime = endTime + seconds * 1000;
+        set({ endTime: newEndTime });
+        // Update immediately
+        const now = Date.now();
+        const diff = Math.ceil((newEndTime - now) / 1000);
+        set({ timeLeft: Math.max(0, diff) });
+      },
+
+      reset: () => {
+        set({ isActive: false, endTime: null, timeLeft: 90, hasFinished: false });
+      },
+
+      check: () => {
+        const { endTime, isActive, hasFinished } = get();
+        if (isActive && endTime) {
+          const now = Date.now();
+          const diff = Math.ceil((endTime - now) / 1000);
+
+          if (diff <= 0) {
+            set({ isActive: false, endTime: null, timeLeft: 0, hasFinished: true });
+          } else {
+            set({ timeLeft: diff });
           }
-          return { ...prev, seconds: newSeconds };
-        });
-      }, 1000);
+        }
+      }
+    }),
+    {
+      name: "ironforge-rest-timer",
+      storage: createJSONStorage(() => localStorage),
+      // Only persist essential state to restore
+      partialize: (state) => ({
+        isActive: state.isActive,
+        endTime: state.endTime,
+        initialSeconds: state.initialSeconds,
+        totalSeconds: state.totalSeconds,
+        hasFinished: state.hasFinished
+      }),
     }
-  }, [state.seconds, state.isRunning, mergedConfig.alertAt, playAlert]);
-
-  const reset = useCallback(
-    (seconds?: number) => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-      setState({
-        seconds: seconds ?? mergedConfig.defaultSeconds,
-        isRunning: false,
-        isComplete: false,
-      });
-    },
-    [mergedConfig.defaultSeconds],
-  );
-
-  const addTime = useCallback((seconds: number) => {
-    setState((prev) => ({ ...prev, seconds: prev.seconds + seconds }));
-  }, []);
-
-  const formatTime = useCallback((secs: number) => {
-    const mins = Math.floor(secs / 60);
-    const remainSecs = secs % 60;
-    return `${mins}:${remainSecs.toString().padStart(2, "0")}`;
-  }, []);
-
-  return {
-    ...state,
-    formatted: formatTime(state.seconds),
-    start,
-    pause,
-    resume,
-    reset,
-    addTime,
-  };
-}
-
-// Quick presets for common rest periods
-export const REST_PRESETS = {
-  short: 60,
-  medium: 90,
-  long: 120,
-  strength: 180,
-  powerlifting: 300,
-};
+  )
+);

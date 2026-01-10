@@ -104,28 +104,112 @@ Legend: ✅ Full support | ⚠️ Simplified | ❌ Not applicable
 | **Offline?** | No | Cached Status | No | N/A |
 | **Priority** | P2 | P1 | P2 | N/A |
 
+### Battle Pass
+
+| Aspect | Desktop | Mobile | TV Mode | Companion |
+|:-------|:--------|:-------|:--------|:----------|
+| **Primary?** | ✅ | ✅ | ⚠️ | ❌ |
+| **Layout** | Full track + rewards | Scrollable track | Progress bar only | N/A |
+| **Input** | Click to claim | Tap to claim | View only | N/A |
+| **Offline?** | No | Cached progress | No | N/A |
+| **Priority** | P0 | P0 | P1 | N/A |
+
+### Guild System (Quests, Raids, Territories)
+
+| Aspect | Desktop | Mobile | TV Mode | Companion |
+|:-------|:--------|:-------|:--------|:----------|
+| **Primary?** | ✅ | ✅ | ⚠️ | ⚠️ |
+| **Layout** | Full dashboard | Tab navigation | Guild status widget | Quick actions |
+| **Input** | Click | Touch/Swipe | View only | Raid join button |
+| **Offline?** | No | Cached roster | No | Relay |
+| **Priority** | P0 | P0 | P2 | P2 |
+
+### Daily Quests & Streaks
+
+| Aspect | Desktop | Mobile | TV Mode | Companion |
+|:-------|:--------|:-------|:--------|:----------|
+| **Primary?** | ✅ | ✅ | ⚠️ | ❌ |
+| **Layout** | Quest list + streak | Cards + streak badge | Streak counter only | N/A |
+| **Input** | Click | Tap | Auto-display | N/A |
+| **Offline?** | No | Cached quests | No | N/A |
+| **Priority** | P0 | P0 | P1 | N/A |
+
+### Achievements
+
+| Aspect | Desktop | Mobile | TV Mode | Companion |
+|:-------|:--------|:-------|:--------|:----------|
+| **Primary?** | ✅ | ✅ | ⚠️ | ❌ |
+| **Layout** | Grid + categories | List + filters | Recent unlock toast | N/A |
+| **Input** | Click to view | Tap to view | Auto-dismiss | N/A |
+| **Offline?** | No | Cached unlocks | No | N/A |
+| **Priority** | P0 | P0 | P2 | N/A |
+
+### Arena PvP Seasons
+
+| Aspect | Desktop | Mobile | TV Mode | Companion |
+|:-------|:--------|:-------|:--------|:----------|
+| **Primary?** | ✅ | ✅ | ⚠️ | ❌ |
+| **Layout** | Bracket + standings | List + rank badge | Current rank display | N/A |
+| **Input** | Click to challenge | Tap to queue | View only | N/A |
+| **Offline?** | No | Cached rank | No | N/A |
+| **Priority** | P0 | P0 | P2 | N/A |
+
+### Shop & Economy
+
+| Aspect | Desktop | Mobile | TV Mode | Companion |
+|:-------|:--------|:-------|:--------|:----------|
+| **Primary?** | ✅ | ✅ | ❌ | ⚠️ |
+| **Layout** | Full catalog | Scrollable list | N/A | Quick buy |
+| **Input** | Click to buy | Tap to buy | N/A | Confirm on phone |
+| **Offline?** | No | Cached catalog | N/A | Relay |
+| **Priority** | P0 | P0 | N/A | P2 |
+
+### Companion System (Pet)
+
+| Aspect | Desktop | Mobile | TV Mode | Companion |
+|:-------|:--------|:-------|:--------|:----------|
+| **Primary?** | ✅ | ✅ | ⚠️ | ❌ |
+| **Layout** | Pet + stats panel | Pet avatar + level | Idle pet animation | N/A |
+| **Input** | Click to interact | Tap to feed/pet | Ambient display | N/A |
+| **Offline?** | No | Cached state | No | N/A |
+| **Priority** | P1 | P0 | P1 | N/A |
+
+### Analytics Dashboard
+
+| Aspect | Desktop | Mobile | TV Mode | Companion |
+|:-------|:--------|:-------|:--------|:----------|
+| **Primary?** | ✅ | ⚠️ | ❌ | ❌ |
+| **Layout** | Full charts + tables | Summary cards | N/A | N/A |
+| **Input** | Click + hover | Tap + scroll | N/A | N/A |
+| **Offline?** | No | Cached summaries | N/A | N/A |
+| **Priority** | P0 | P1 | N/A | N/A |
+
 ---
 
 ## Design Principles
 
 ### 1. Mobile-First, Desktop-Enhanced
+
 - Design for touch first
 - Add mouse/keyboard shortcuts for power users
 - Increase information density on desktop
 
 ### 2. TV = Glanceable Only
+
 - Max 3 data points visible at once
 - Zone-based color coding
 - Auto-hide non-essential UI
 - Large text (readable from 3m)
 
 ### 3. Companion = Relay + Control
+
 - Mobil skickar commands via WebSocket
 - TV tar emot och visar
 - Samma session-ID för pairing
 - Mobil = input device, TV = output device
 
 ### 4. Offline-First for Gym
+
 - All logging features cache locally
 - Sync on reconnect
 - Show "Syncing..." status
@@ -136,6 +220,7 @@ Legend: ✅ Full support | ⚠️ Simplified | ❌ Not applicable
 ## Technical Implementation
 
 ### Responsive Breakpoints
+
 ```typescript
 const BREAKPOINTS = {
   mobile: '(max-width: 768px)',
@@ -146,6 +231,7 @@ const BREAKPOINTS = {
 ```
 
 ### Context Detection
+
 ```typescript
 const usePlatformContext = () => {
   const isTouchDevice = 'ontouchstart' in window;
@@ -160,6 +246,7 @@ const usePlatformContext = () => {
 ```
 
 ### Companion Pairing
+
 ```typescript
 // Mobil: Generate session code
 const sessionCode = nanoid(6).toUpperCase(); // "ABC123"

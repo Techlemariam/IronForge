@@ -1,5 +1,7 @@
 import React from "react";
 import { DashboardState, DashboardAction } from "../types";
+import { StrengthLeaderboardPanel } from "../widgets/StrengthLeaderboardPanel";
+import { LeaderboardEntry } from "@/actions/social/leaderboards";
 import { QuestBoard } from "@/components/gamification/QuestBoard";
 import UltrathinkDashboard from "@/features/dashboard/components/UltrathinkDashboard";
 import { CampaignTracker } from "@/features/game/components/campaign/CampaignTracker";
@@ -8,15 +10,17 @@ import { FeedPanel } from "./FeedPanel";
 import { StatsHeader } from "./StatsHeader";
 import { QuickActions } from "./QuickActions";
 
+
 interface CitadelProps {
     state: DashboardState;
     dispatch: React.Dispatch<DashboardAction>;
     titanState?: any;
     pocketCastsConnected?: boolean;
     liteMode?: boolean;
+    leaderboardEntries?: LeaderboardEntry[];
 }
 
-export const Citadel: React.FC<CitadelProps> = ({ state, dispatch, titanState, pocketCastsConnected, liteMode }) => (
+export const Citadel: React.FC<CitadelProps> = ({ state, dispatch, titanState, pocketCastsConnected, liteMode, leaderboardEntries = [] }) => (
     <div className="w-full max-w-6xl mx-auto p-4 md:p-6 space-y-8 animate-fade-in">
         <StatsHeader state={state} titanState={titanState} liteMode={liteMode} />
 
@@ -28,6 +32,12 @@ export const Citadel: React.FC<CitadelProps> = ({ state, dispatch, titanState, p
                         /* Handled by Server Action + Revalidate */
                     }}
                 />
+            </section>
+        )}
+
+        {!liteMode && leaderboardEntries.length > 0 && (
+            <section id="leaderboard-preview">
+                <StrengthLeaderboardPanel entries={leaderboardEntries} />
             </section>
         )}
 

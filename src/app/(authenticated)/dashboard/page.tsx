@@ -25,6 +25,7 @@ import { getActiveChallengesAction } from "@/actions/systems/challenges";
 import { ensureTitanAction, syncTitanStateWithWellness } from "@/actions/titan/core";
 import { ensureUserAction } from "@/actions/user/core";
 import { calculateSkillEffects } from "@/features/game/hooks/useSkillEffects";
+import { getStrengthLeaderboardAction } from "@/actions/social/leaderboards";
 
 // Types
 import { AuditReport } from "@/types/auditor";
@@ -319,6 +320,9 @@ export default async function Page() {
 
   const liteMode = !!(dbUser?.preferences as any)?.liteMode;
 
+  // New: Fetch Leaderboard Statically (ISG-ish)
+  const strengthLeaderboard = await getStrengthLeaderboardAction(5).catch(() => []);
+
   return (
     <DashboardClient
       initialData={initialData as any}
@@ -339,6 +343,7 @@ export default async function Page() {
       challenges={challenges}
       activeDuel={activeDuel}
       liteMode={liteMode}
+      leaderboardData={strengthLeaderboard}
     />
   );
 }

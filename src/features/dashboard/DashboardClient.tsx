@@ -41,6 +41,7 @@ import {
   WeeklyMastery,
   Faction,
 } from "@/types/training";
+import { LeaderboardEntry } from "@/actions/social/leaderboards";
 import { CardioMode } from "@/features/training/CardioStudio";
 import { OracleChat } from "@/features/oracle/components/OracleChat";
 import { WorkoutDefinition } from "@/types/training";
@@ -307,6 +308,7 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
     pocketCastsConnected,
     liteMode,
     onSaveWorkout: handleSaveWorkout,
+    leaderboardEntries: leaderboardData, // Pass it down
   };
 
   const AnimatedViewWrapper = ({

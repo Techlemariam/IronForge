@@ -53,6 +53,8 @@ const CardioStudio = dynamic(() => import("@/features/training/CardioStudio"), {
     ssr: false,
 });
 
+import { LeaderboardEntry } from "@/actions/social/leaderboards";
+
 export interface ViewRouterProps {
     state: DashboardState;
     dispatch: React.Dispatch<DashboardAction>;
@@ -61,6 +63,7 @@ export interface ViewRouterProps {
     pocketCastsConnected?: boolean;
     liteMode?: boolean;
     onSaveWorkout: (isPrivate: boolean) => void;
+    leaderboardEntries?: LeaderboardEntry[];
 }
 
 /**
@@ -75,6 +78,7 @@ export const ViewRouter: React.FC<ViewRouterProps> = ({
     pocketCastsConnected,
     liteMode,
     onSaveWorkout,
+    leaderboardEntries,
 }) => {
     switch (state.currentView) {
         case "citadel":
@@ -85,6 +89,7 @@ export const ViewRouter: React.FC<ViewRouterProps> = ({
                     titanState={titanState}
                     pocketCastsConnected={pocketCastsConnected}
                     liteMode={liteMode}
+                    leaderboardEntries={leaderboardEntries}
                 />
             );
 
@@ -162,6 +167,7 @@ export const ViewRouter: React.FC<ViewRouterProps> = ({
                     onComplete={() => dispatch({ type: "COMPLETE_QUEST" })}
                     onExit={() => dispatch({ type: "ABORT_QUEST" })}
                     hrvBaseline={titanState?.hrvBaseline || userData?.hrv || 60}
+                    userId={userData?.id}
                 />
             );
 
