@@ -15,6 +15,7 @@ domain: "core"
 > **Naming Convention:** Task Name must follow `[DOMAIN] Description`.
 
 ## 🎯 Trigger
+
 - After `/coder` completes implementation
 - Parallel with `/qa`
 - Manual: `/polish [scope]`
@@ -23,17 +24,20 @@ domain: "core"
 ## 🧹 Polish Protocol
 
 ### 1. Auto-Fix Linting
+
 ```bash
 npm run lint -- --fix
 ## Or: npx eslint src --fix
 ```
 
 ### 2. Format Code
+
 ```bash
 npx prettier --write "src/**/*.{ts,tsx}"
 ```
 
 ### 3. Import Optimization
+
 ```
 For each modified file:
   - Sort imports (React first, then libs, then local)
@@ -42,6 +46,7 @@ For each modified file:
 ```
 
 ### 4. Type Safety Audit
+
 ```
 1. Scan for explicit `: any`:
    grep -r ": any" src/
@@ -50,6 +55,7 @@ For each modified file:
 ```
 
 ### 5. Dead Code Detection
+
 ```
 Scan for:
   - Unused exports (no importers)
@@ -58,6 +64,7 @@ Scan for:
 ```
 
 ## 📊 Output Format
+
 ```
 ┌─────────────────────────────────────────────────────┐
 │ ✨ POLISH REPORT                                   │
@@ -72,9 +79,10 @@ Scan for:
 ```
 
 ## 🔗 Handoff
+
+- **Verify Branch:** Ensure you are NOT on `main` before committing.
 - Auto-commit with message: `style: polish [scope]`
 - Notify `/qa` when complete
-
 
 ## Version History
 

@@ -110,9 +110,8 @@ Score calculation:
 ╚══════════════════════════════╝
 ```
 
-- [100] ✅ **APPROVED:** You may push.
-- [<100] ❌ **REJECTED:** Fix FATAL issues first.
-
+- [100] ✅ **APPROVED:** Safe to **Push to Feature Branch** and **Create PR**.
+- [<100] ❌ **REJECTED:** Fix FATAL issues locally. **DO NOT PUSH**.
 
 ## Version History
 

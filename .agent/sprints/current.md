@@ -1,7 +1,7 @@
-# Sprint 23: Refinement & Polish
+# Sprint 24: Quality & Documentation
 
-**Period**: 2026-01-21 - 2026-01-28  
-**Goal**: Complete deferred Sprint 22 items, fix test infrastructure, and address critical UX gaps
+**Period**: 2026-01-10 - 2026-01-17  
+**Goal**: Close Sprint 23 carryover, address documentation gap, and improve test infrastructure
 
 ---
 
@@ -9,16 +9,15 @@
 
 ### Priority: High
 
-- [x] **Test Infrastructure Cleanup** <!-- agent: /qa | estimate: 2h | source: sprint-22-debt | blocked: false -->
-  - Fix import paths in moved test files (`BudgetCalculator`, `MobilityAuditor`, `oracle`, `progression`, `trainingMemoryManager`)
-  - Resolve `MACRO_CYCLE_THRESHOLDS` and `TrainingActivity` type errors
-  - Ensure all unit tests pass
-  - ✅ All type checks passing
-
 - [/] **Complete Sprint 23 Carryover** <!-- agent: /manager | estimate: 0h | source: sprint-23 | blocked: false -->
   - E2E Test Seeding (2h) → `/infrastructure`
   - GrowthMetrics Implementation (2h) → `/coder`
   - ✅ Citadel Navigation Simplification (2h) → `/ui-ux` - Completed 2026-01-10
+
+- [ ] **Documentation Batch Update** <!-- agent: /librarian | estimate: 3h | source: health-report | blocked: false -->
+  - Update `api-reference.md` with 70+ missing actions
+  - Cover: `battle-pass`, `power-rating`, `territory`, `shop-system`
+  - Target: 80% action documentation coverage
 
 - [x] **Territory UI Integration** <!-- agent: /ui-ux | estimate: 3h | source: sprint-22 | blocked: false -->
   - Wire `LeaderboardHub` into Citadel dashboard navigation
@@ -26,88 +25,71 @@
   - Add navigation from Guild view to Territory conquest
   - ✅ Route created, type checks passing
 
-- [ ] **E2E Test Seeding** <!-- agent: /infrastructure | estimate: 2h | source: DEBT.md#57-58 | blocked: false -->
-  - Add DB seeding step to CI for cardio duels tests
-  - Seed `BattlePassSeason` for premium upgrade tests
-  - Un-skip 4 E2E tests
+- [ ] **Test Structure Scaffolding** <!-- agent: /infrastructure | estimate: 2h | source: health-report | blocked: false -->
+  - Create `tests/unit/actions`, `tests/unit/services`, `tests/unit/utils`
+  - Move misplaced tests to correct locations
+  - Verify test discovery after restructure
 
 ### Priority: Medium
 
-- [ ] **GrowthMetrics Implementation** <!-- agent: /coder | estimate: 2h | source: sprint-22-deferred | blocked: false -->
-  - Implement `Friendship` model logic in `GrowthMetricsService`
-  - Replace `getSocialEngagement` placeholder
-  - Add proper tracking for invites/referrals
-
-- [x] **Tutorial Tooltips** <!-- agent: /ui-ux | estimate: 1h | source: sprint-22-deferred | blocked: false -->
-  - Add "First Time" tooltips for complex mechanics (Dual-Coefficient, Buffs)
-  - Implement "Dismiss Forever" logic
-  - Integrate with `OnboardingQuest` status
-  - ✅ Component created with 8 tooltip configs
-
-- [ ] **Citadel Navigation Simplification** <!-- agent: /ui-ux | estimate: 2h | source: DEBT.md#59 | blocked: false -->
-  - Reduce 17 nav items to ≤8 using progressive disclosure
-  - Group related features (PvP → Colosseum, Social → Faction War)
-  - Add contextual sub-navigation
-
-### Priority: Low
-
 - [ ] **Accessibility: ARIA Labels** <!-- agent: /ui-ux | estimate: 2h | source: DEBT.md#63 | blocked: false -->
   - Add `aria-label` to all interactive elements
-  - Focus on dashboard, combat arena, and leaderboards
-  - Target: 80% coverage of interactive components
+  - Focus: dashboard, combat arena, leaderboards
+  - Target: 80% coverage
 
 - [ ] **Strength Workout Generation** <!-- agent: /game-designer | estimate: 3h | source: DEBT.md#73 | blocked: false -->
   - Generate dynamic strength workouts from `exerciseDb.ts`
   - Replace static cardio-only `workouts.ts`
   - Integrate with Oracle recommendations
 
+- [ ] **TheForge Server Sync** <!-- agent: /coder | estimate: 2h | source: DEBT.md#67 | blocked: false -->
+  - Replace mock inventory state with proper server sync
+  - Implement optimistic update hook pattern
+  - Connect to forge actions
+
+### Priority: Low
+
+- [ ] **Battle Emote Broadcast** <!-- agent: /infrastructure | estimate: 1h | source: DEBT.md#71 | blocked: false -->
+  - Add Supabase Realtime broadcast to `sendBattleEmoteAction`
+  - Test opponent receiving emotes in PvP
+
+- [ ] **useSkillEffects Multi-Keystone** <!-- agent: /game-designer | estimate: 2h | source: DEBT.md#69 | blocked: false -->
+  - Support multi-keystone selection and switching
+  - Add UI for keystone comparison
+
 ---
 
 ## Sprint Stats
 
-- **Total Items**: 8
-- **Estimated Hours**: 17h
-- **Debt Ratio**: 50% (4/8 tasks are debt/polish)
-- **Feature Ratio**: 25% (2/8 tasks are new features)
+- **Total Items**: 8 (3 carryover items bundled as 1)
+- **Estimated Hours**: 19h
+- **Debt Ratio**: 62% (5/8 tasks address tech debt)
+- **Feature Ratio**: 12% (1/8 new feature work)
 - **Infrastructure**: 25% (2/8 tasks)
 
 ---
 
 ## Dependencies
 
-- **Test Cleanup**: Blocks CI stability
-- **Territory UI**: Depends on Sprint 22 `TerritoryControlService`
-- **E2E Seeding**: Requires Supabase migration for test DB
+- **Carryover**: Sprint 23 incomplete items must be prioritized
+- **Documentation**: Depends on stable action files (no major refactors this sprint)
+- **Test Scaffolding**: Blocks future test-driven development
 
 ---
 
-## Deferred from Sprint 22
+## Self-Evaluation
 
-1. GrowthMetrics Implementation (Medium)
-2. Tutorial Tooltips (Low)
+- **Scope Realism (1-10)**: 7 - Achievable with focused execution, carryover adds risk
+- **Balance (1-10)**: 8 - Good mix addressing debt, docs, and polish; light on new features intentionally
 
 ---
 
-## Key Debt Items Addressed
+## Version History
 
-| Issue | File | Priority |
-|-------|------|----------|
-| Test import paths | `tests/unit/services/*` | High |
-| E2E test skips | `tests/e2e/cardio-duels.spec.ts` | High |
-| Citadel nav overload | `CitadelHub.tsx` | Medium |
-| Missing ARIA labels | `src/**/*` | Low |
-| Strength workout gen | `data/workouts.ts` | Low |
+- **2026-01-09** - Sprint 24 planned by `/sprint-plan` workflow
 
 ---
 
 ## Execution Log
 <!-- Auto-updated by /sprint-auto -->
-- **2026-01-09 11:28** - Sprint 23 activated. Sprint 22 archived with 86% completion (6/7 tasks).
-- **2026-01-09 11:35** - Completed Test Infrastructure Cleanup (fixed all import paths, type checks passing).
-- **2026-01-09 11:37** - Completed Territory UI Integration (/territories route created).
-- **2026-01-09 11:56** - Completed Tutorial Tooltips (TutorialTooltip component + 8 configs).
-- **2026-01-09 11:58** - Sprint 23 finalized at 38% completion (3/8 tasks). Git strategy and walkthrough created.
-
-## Git Strategy (End of Sprint)
-
-When Sprint 23 is complete, create a strategy for merging all changes to `main` via appropriate branches/PRs without conflicts.
+- **TBD** - Sprint 24 activation pending Sprint 23 completion

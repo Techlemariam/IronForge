@@ -123,6 +123,8 @@ Commit the claim marker:
 git add roadmap.md
 git commit -m "claim: [task-id] [description]"
 git push
+# Optional: Create a draft PR for visibility
+# gh pr create --draft --title "WIP: [task-id] [description]" --body "Tracking PR"
 ```
 
 ---
@@ -207,8 +209,7 @@ When task is complete or abandoned:
 | New feature | `/domain-session [domain]` → `/feature` |
 | Bug fix | `/debug` → `/coder` → `/qa` |
 | Debt item | `/cleanup` → `/polish` |
-| Complete | `/gatekeeper` → PR → Merge |
-
+| Verify & Push | `/gatekeeper` → **Create PR** (Wait for CI) |
 
 ## Version History
 

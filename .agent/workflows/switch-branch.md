@@ -190,6 +190,7 @@ fi
 3. **One branch per chat session** is ideal, but switching is safe when needed
 4. **Check branch status** after switching to understand context
 5. **Run `/gatekeeper`** before pushing from any branch
+6. **Return to Base**: If you switch to `main` to check something, switch back to your feature branch immediately after.
 
 ---
 
@@ -201,7 +202,6 @@ fi
 | `feat/*` | `/coder` → `/qa` → `/gatekeeper` |
 | `fix/*` | `/debug` → `/qa` → `/gatekeeper` |
 | `chore/*` | `/cleanup` → `/polish` → `/gatekeeper` |
-
 
 ## Version History
 

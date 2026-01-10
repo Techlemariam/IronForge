@@ -131,17 +131,29 @@ export class GrowthMetricsService {
     }
 
     /**
-     * Get social engagement - placeholder until Friendship model exists.
-     * TODO: Implement when social features are added.
+     * Get social engagement metrics based on accepted friendships.
+     * Measures % of users who have at least one accepted friend.
      */
     static async getSocialEngagement(): Promise<{ usersWithFriends: number; totalUsers: number; rate: number }> {
         const totalUsers = await prisma.user.count();
+        if (totalUsers === 0) {
+            return { usersWithFriends: 0, totalUsers: 0, rate: 0 };
+        }
 
-        // Placeholder - no Friendship model exists yet
+        // Count users with at least one accepted friendship (as either userA or userB)
+        const usersWithFriends = await prisma.user.count({
+            where: {
+                OR: [
+                    { friendshipsA: { some: { status: 'ACCEPTED' } } },
+                    { friendshipsB: { some: { status: 'ACCEPTED' } } }
+                ]
+            }
+        });
+
         return {
-            usersWithFriends: 0,
+            usersWithFriends,
             totalUsers,
-            rate: 0
+            rate: Math.round((usersWithFriends / totalUsers) * 100)
         };
     }
 
