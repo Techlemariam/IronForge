@@ -366,7 +366,6 @@ export const CitadelHub: React.FC<CitadelHubProps> = ({ dispatch }) => {
               color="red"
               description="Workout quests, logging, and program builder"
               itemCount={6}
-              itemCount={3}
               onClick={() => {
                 console.log('[CitadelHub] Clicked TRAINING');
                 setSelectedCategory("TRAINING");
