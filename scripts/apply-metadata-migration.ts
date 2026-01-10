@@ -96,11 +96,9 @@ function processFile(filePath: string) {
 
     // 1. Extract existing description if present in old frontmatter
     let description = '';
-    let fmStart = -1;
     let fmEnd = -1;
 
     if (lines[0]?.trim() === '---') {
-        fmStart = 0;
         for (let i = 1; i < lines.length; i++) {
             if (lines[i].trim() === '---') {
                 fmEnd = i;
@@ -135,23 +133,19 @@ function processFile(filePath: string) {
 
     // 3. Fix Heading Hierarchy (MD041 / MD025)
     // Ensure first meaningful line is H1
-    let hasH1 = false;
     for (let i = 0; i < bodyLines.length; i++) {
         const line = bodyLines[i].trim();
         if (line === '') continue;
 
         if (line.startsWith('# ')) {
-            hasH1 = true;
             break; // Good
         } else if (line.startsWith('## ')) {
             bodyLines[i] = line.substring(1); // Promote to H1
-            hasH1 = true;
             break;
         } else {
             // Content before heading? Insert H1
             const name = path.basename(filePath, '.md');
             bodyLines.splice(i, 0, `# Workflow: /${name}`, '');
-            hasH1 = true;
             break;
         }
     }
