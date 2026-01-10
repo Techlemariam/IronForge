@@ -117,11 +117,21 @@ async function main() {
     console.log('🌱 Seeding completed successfully.');
 }
 
-main()
-    .catch((e) => {
+// Export as default for Playwright globalSetup
+export default async function globalSetup() {
+    try {
+        await main();
+    } catch (e) {
         console.error('❌ Seeding failed:', e);
         process.exit(1);
-    })
-    .finally(async () => {
+    } finally {
         await prisma.$disconnect();
-    });
+    }
+}
+
+// Allow standalone execution if running directly (e.g. npx tsx e2e-seed.ts)
+// Check if file is being executed directly
+// properties of require.main are not available in ESM, we can check process.argv
+if (process.argv[1].includes('e2e-seed.ts')) {
+    globalSetup();
+}

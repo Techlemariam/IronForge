@@ -1,14 +1,22 @@
 # IronForge Feature Roadmap
+
 **Status**: Active | **Strategy**: Value-Driven Implementation
 
 ## 🚀 Active Development
+
 - [x] **Iron Command Center (TV Mode)** <!-- status: shipped | priority: critical | roi: 5.5 | effort: L | source: strategic-diff -->
 - [/] **Cardio PvP Duels** ([Spec](specs/cardio-duels.md)) <!-- status: in-progress | architect: /architect | priority: medium | effort: M | source: user/idea -->
 - [/] **Podcast Integration (Pocket Casts)** ([Spec](specs/podcast-integration.md)) <!-- status: in-progress | architect: /architect | priority: medium | roi: 4.0 | effort: M | source: user/idea -->
-
+- [/] **Iron Mines 10/10 Enhancement** <!-- status: in-progress | architect: /architect | priority: high | roi: 2.5 | effort: XL | source: monitor-strategy | date: 2026-01-10 -->
+  - Phase A: Max Reps Tracker + Set Type Selector
+  - Phase B: Exercise Demo Videos + Auto Rest Timer
+  - Phase C: Superset/Circuit Support
+  - Phase D: HR Strength Features (Recovery Timer, Zone Display, Cardiac Drift)
 
 ## 📋 Backlog (Ready for Analysis)
+
 ### Critical Priority (Consensus: Game Designer + Coaches)
+
 - [x] **Iron Leagues** ([Analysis](../../docs/analysis/iron_leagues.md)) <!-- status: shipped | priority: critical | roi: 5.5 | effort: H | source: strategic-diff -->
 - [x] **Titan vs Titan Duels** ([Analysis](../../docs/analysis/titan_duels.md)) <!-- status: shipped | priority: critical | roi: 5.3 | effort: H | source: strategic-diff -->
 - [x] **Bio→Combat Buff System** ([Analysis](../../docs/analysis/bio_combat_buffs.md)) <!-- status: shipped | priority: critical | roi: 5.5 | effort: M | source: titan-coach/game-designer -->
@@ -16,6 +24,7 @@
 - [ ] **Stripe Monetization System** ([Plan](../../docs/analysis/monetization_plan.md)) <!-- status: deferred | priority: critical | roi: 5.0 | effort: XL | source: analyst | blocked: testing -->
 
 ### High Priority (Strategy: 2045 Summit)
+
 - [x] **Segment Leaderboards** (Strava-style e1RM ranking: City/Country/World) <!-- status: shipped | priority: high | roi: 4.8 | effort: M | source: strategic-diff -->
 - [x] **PvP Ranking Ladder** (Private → High Warlord titles) <!-- status: shipped | priority: high | roi: 4.7 | effort: M | source: strategic-diff -->
 - [ ] **Tutorial Tooltips for Beginners** <!-- status: planned | priority: high | roi: 4.5 | effort: S | source: monitor-strategy | date: 2026-01-06 -->
@@ -37,6 +46,7 @@
 - [x] **Powerlifting Tournament Brackets** (Bracket-style lift competitions with seeding) <!-- status: shipped | priority: high | roi: 3.7 | effort: M-L | source: user/idea -->
 
 ### Medium Priority (ROI 3.0-3.9)
+
 - [x] **Shareable Replay Cards** (Auto-generated workout summaries for social) <!-- status: shipped | priority: medium | roi: 3.9 | effort: S | source: strategic-diff -->
 - [x] **Training DNA Export** (Exportable methodologies for marketplace) <!-- status: shipped | priority: medium | roi: 3.5 | effort: H | source: strategic-diff -->
 - [x] **Combat Combo System** <!-- status: shipped | priority: medium | roi: 3.8 | effort: M | source: game-designer -->
@@ -48,15 +58,18 @@
 - [x] Apple Watch Integration <!-- status: shipped | priority: medium | roi: 3.9 | effort: L | source: analyst -->
 
 ### Optional Polish (UX Finesse)
+
 - [x] **Gesture Navigation (Mobile)** <!-- status: shipped | priority: low | roi: 2.5 | effort: S | source: ui-ux-audit -->
 - [x] **Reduced Motion Mode** <!-- status: shipped | priority: low | roi: 2.0 | effort: S | source: ui-ux-audit -->
 - [x] **First-Time Hints** <!-- status: shipped | priority: low | roi: 2.5 | effort: S | source: ui-ux-audit -->
 
 ### Low Priority (ROI < 2.0)
+
 - [x] **Guild Creation** <!-- status: shipped | priority: low | roi: 2.5 | effort: L | source: game-designer -->
 - [x] Manual Stat Overrides <!-- status: shipped | priority: low | roi: 1.5 | effort: S | source: manager -->
 
 ## 🔧 Logic & Type Safety Gaps
+
 - [ ] **Accessibility Audit: Missing ARIA labels** <!-- status: planned | priority: medium | roi: 3.5 | effort: M | source: monitor-debt | date: 2026-01-06 -->
 - [x] **Prisma Type Stabilization** <!-- status: shipped | priority: critical | roi: 5.5 | effort: L | source: strategic-diff -->
 
@@ -65,20 +78,23 @@
 > **Note:** 6 features from original brainstorm already exist: Raid Boss, Talent Trees, Seasonal Events, Challenges, Marketplace, Fitness Challenges
 
 ### Critical Priority
+
 - [x] **Battle Pass** ([Spec](specs/battle-pass.md)) <!-- status: shipped | priority: critical | roi: 5.0 | effort: M | source: brainstorm | date: 2025-12-29 -->
 
 ### High Priority (New Features)
+
 - [ ] **Oracle 3.0** ([Spec](specs/ai-training-coach.md)) <!-- status: planned | priority: high | roi: 4.8 | effort: M | source: enhancement -->
 - [ ] **Guild Territories** ([Spec](specs/guild-territories.md)) <!-- status: planned | priority: high | roi: 4.6 | effort: L | source: brainstorm -->
 
 ### High Priority (Enhancements to Existing)
+
 - [ ] **Power Rating System** ([Spec](specs/power-rating-system.md)) <!-- status: planned | priority: high | roi: 4.5 | effort: M | source: team-discussion -->
 - [ ] **Arena PvP Seasons** ([Spec](specs/arena-pvp-seasons.md)) <!-- status: planned | priority: high | roi: 4.7 | effort: M | source: gap-analysis -->
 - [ ] **World Events Enhancement** ([Spec](specs/world-events-enhancement.md)) <!-- status: planned | priority: high | roi: 4.5 | effort: S | source: gap-analysis -->
 - [ ] **Campaign Mode Enhancement** ([Spec](specs/campaign-mode-enhancement.md)) <!-- status: planned | priority: high | roi: 4.3 | effort: L | source: gap-analysis -->
 
-
 ### Medium Priority
+
 - [ ] **Cardio PvP Duels** ([Spec](specs/cardio-duels.md)) <!-- status: planned | priority: medium | roi: 2.5 | effort: M | impact: 5 | source: user/idea + team-discussion -->
   - Distance Race (running + cycling)
   - Speed Demon (running + cycling)
@@ -91,6 +107,7 @@
 ## 🔧 Infrastructure Backlog (Infrastructure Pilot Analysis 2025-12-29)
 
 ### Critical Priority (Production Readiness)
+
 - [x] **Sentry Error Tracking Integration** <!-- status: shipped | priority: critical | roi: 5.0 | effort: M | source: infrastructure-audit | date: 2025-12-29 -->
   - Installed `@sentry/nextjs`, created client/server/edge configs, wrapped `next.config.mjs`, added `global-error.tsx`.
 - [x] **E2E Tests with Dev Server** <!-- status: shipped | priority: critical | roi: 4.8 | effort: S | source: infrastructure-audit | date: 2025-12-29 -->
@@ -99,6 +116,7 @@
   - Updated `dev.nix` from Node 18 to Node 20 to match CI.
 
 ### High Priority (Developer Experience)
+
 - [x] **Test Coverage Reports** <!-- status: shipped | priority: high | roi: 4.5 | effort: S | source: infrastructure-audit | date: 2025-12-29 -->
   - Rationale: No visibility into coverage. 35 test files but unknown % covered.
   - Scope: Add Vitest coverage, upload to Codecov/Coveralls, add PR badge.
@@ -116,6 +134,7 @@
   - Scope: Configure matrix jobs, explore Nx/Turborepo for caching.
 
 ### Medium Priority (Observability & Resilience)
+
 - [ ] **Health Check Endpoint** <!-- status: planned | priority: medium | roi: 3.8 | effort: S | source: infrastructure-audit -->
   - Rationale: No `/api/health` for load balancer checks. Vercel handles this but custom endpoint enables DB health monitoring.
   - Scope: Create `/app/api/health/route.ts` with DB ping.
@@ -130,6 +149,7 @@
   - Scope: Add uptime monitoring (Checkly, Cronitor) or Sentry cron monitoring.
 
 ### Low Priority (Nice to Have)
+
 - [ ] **Preview Deployments for PRs** <!-- status: planned | priority: low | roi: 3.0 | effort: S | source: infrastructure-audit -->
   - Rationale: No preview URLs commented on PRs. Vercel does this but needs GitHub integration verification.
   - Scope: Verify Vercel GitHub integration, add PR comment bot if missing.
@@ -144,8 +164,8 @@
 
 ## ✅ Shipped
 
-
 ### Sprint 12: Economy & Progression (2025-12-29)
+
 - [x] **Shop System** (Buy/sell items with gold) <!-- date: 2025-12-29 | source: sprint-12 -->
 - [x] **Prestige System** (Reset for permanent bonuses) <!-- date: 2025-12-29 | source: sprint-12 -->
 - [x] **Milestone Rewards** (Level-based unlocks) <!-- date: 2025-12-29 | source: sprint-12 -->
@@ -155,6 +175,7 @@
 - [x] **Statistics Dashboard** (Comprehensive stats page) <!-- date: 2025-12-29 | source: sprint-12 -->
 
 ### Sprint 11: Depth & Immersion (2025-12-29)
+
 - [x] **Dungeon Floor System** (Progressive dungeon levels) <!-- date: 2025-12-29 | source: sprint-11 -->
 - [x] **Boss Mechanics** (Unique attack patterns and phases) <!-- date: 2025-12-29 | source: sprint-11 -->
 - [x] **Lore System** (Story fragments and world-building) <!-- date: 2025-12-29 | source: sprint-11 -->
@@ -164,6 +185,7 @@
 - [x] **Weather Effects** (Dynamic weather affecting gameplay) <!-- date: 2025-12-29 | source: sprint-11 -->
 
 ### Sprint 10: Mobile & QoL (2025-12-29)
+
 - [x] **Offline Mode** (PWA offline workout support) <!-- date: 2025-12-29 | source: sprint-10 -->
 - [x] **Quick Log Widget** (Fast set logging component) <!-- date: 2025-12-29 | source: sprint-10 -->
 - [x] **Haptic Feedback** (Vibration for key actions) <!-- date: 2025-12-29 | source: sprint-10 -->
@@ -173,6 +195,7 @@
 - [x] **Onboarding Tour** (Interactive first-time guide) <!-- date: 2025-12-29 | source: sprint-10 -->
 
 ### Sprint 9: Social & Competitive (2025-12-29)
+
 - [x] **Friend System** (Add/remove friends, friend list) <!-- date: 2025-12-29 | source: sprint-9 -->
 - [x] **Challenge Friends** (Direct 1v1 challenges) <!-- date: 2025-12-29 | source: sprint-9 -->
 - [x] **Live Activity Feed** (Real-time friend updates) <!-- date: 2025-12-29 | source: sprint-9 -->
@@ -182,6 +205,7 @@
 - [x] **Global Announcements** (Server-wide notifications) <!-- date: 2025-12-29 | source: sprint-9 -->
 
 ### Sprint 8: Gamification & Retention (2025-12-29)
+
 - [x] **Daily Quest System** (Rotating challenges for bonus XP) <!-- date: 2025-12-29 | source: sprint-8 -->
 - [x] **Loot Box / Reward Crates** (Random rewards after milestones) <!-- date: 2025-12-29 | source: sprint-8 -->
 - [x] **Titan Customization** (Appearance, equipment display) <!-- date: 2025-12-29 | source: sprint-8 -->
@@ -191,6 +215,7 @@
 - [x] **Seasonal Events** (Limited-time themed content) <!-- date: 2025-12-29 | source: sprint-8 -->
 
 ### Sprint 7: Analytics & Engagement (2025-12-29)
+
 - [x] **Analytics Dashboard** (Training trends, PR history, volume graphs) <!-- date: 2025-12-29 | source: sprint-7 -->
 - [x] **Workout Calendar View** (Monthly workout history) <!-- date: 2025-12-29 | source: sprint-7 -->
 - [x] **Muscle Heat Map** (Training balance visualization) <!-- date: 2025-12-29 | source: sprint-7 -->
@@ -200,6 +225,7 @@
 - [x] **Workout Notes & Tags** (Annotate workouts) <!-- date: 2025-12-29 | source: sprint-7 -->
 
 ### Previous Sprints
+
 - [x] **Hevy Routines to Training Programs** <!-- date: 2025-12-28 | source: feature/user-request -->
 - [x] **The Living Titan (Behaviors)** <!-- date: 2025-12-28 | source: sprint 14 -->
 - [x] **Push Notifications** <!-- date: 2025-12-28 | source: sprint 14 -->
@@ -232,9 +258,11 @@
 - [x] Environment Verification <!-- date: 2025-12-26 -->
 - [x] Audio Feedback <!-- date: 2025-12-26 -->
 - [x] Accessibility Pass <!-- date: 2025-12-26 -->
+
 ---
 
 ## Feature Lifecycle Protocol
+
 1. **Idea**: Add to Backlog here.
 2. **Analysis**: Run `/feature [name]` to generate stories.
 3. **Execution**: Link to `current.md` for `/sprint-auto`.

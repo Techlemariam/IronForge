@@ -1,6 +1,6 @@
 "use server";
 
-// import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
 type QuestType =
@@ -29,164 +29,175 @@ interface DailyQuest {
   isClaimed: boolean;
 }
 
-const QUEST_TEMPLATES: Array<
-  Omit<DailyQuest, "id" | "current" | "expiresAt" | "isCompleted" | "isClaimed">
-> = [
-    // Easy
-    {
-      type: "WORKOUT",
-      difficulty: "EASY",
-      title: "First Steps",
-      description: "Complete any workout",
-      target: 1,
-      xpReward: 100,
-      goldReward: 50,
-    },
-    {
-      type: "VOLUME",
-      difficulty: "EASY",
-      title: "Warm Up",
-      description: "Log 10 sets",
-      target: 10,
-      xpReward: 100,
-      goldReward: 50,
-    },
-    {
-      type: "CARDIO",
-      difficulty: "EASY",
-      title: "Heart Starter",
-      description: "Complete 15 min cardio",
-      target: 15,
-      xpReward: 100,
-      goldReward: 50,
-    },
-
-    // Medium
-    {
-      type: "WORKOUT",
-      difficulty: "MEDIUM",
-      title: "Dedicated",
-      description: "Complete 2 workouts",
-      target: 2,
-      xpReward: 250,
-      goldReward: 100,
-    },
-    {
-      type: "VOLUME",
-      difficulty: "MEDIUM",
-      title: "Volume Builder",
-      description: "Log 5000kg total volume",
-      target: 5000,
-      xpReward: 250,
-      goldReward: 100,
-    },
-    {
-      type: "STREAK",
-      difficulty: "MEDIUM",
-      title: "Consistent",
-      description: "Maintain your streak",
-      target: 1,
-      xpReward: 200,
-      goldReward: 80,
-    },
-    {
-      type: "COMBO",
-      difficulty: "MEDIUM",
-      title: "Combo Master",
-      description: "Execute 3 combat combos",
-      target: 3,
-      xpReward: 300,
-      goldReward: 120,
-    },
-
-    // Hard
-    {
-      type: "PR",
-      difficulty: "HARD",
-      title: "Record Breaker",
-      description: "Set a new PR",
-      target: 1,
-      xpReward: 500,
-      goldReward: 200,
-      bonusReward: "Rare Crate",
-    },
-    {
-      type: "VOLUME",
-      difficulty: "HARD",
-      title: "Beast Mode",
-      description: "Log 15000kg total volume",
-      target: 15000,
-      xpReward: 500,
-      goldReward: 200,
-    },
-    {
-      type: "SOCIAL",
-      difficulty: "HARD",
-      title: "Team Player",
-      description: "Complete guild quest contribution",
-      target: 1,
-      xpReward: 400,
-      goldReward: 150,
-    },
-
-    // Legendary
-    {
-      type: "WORKOUT",
-      difficulty: "LEGENDARY",
-      title: "Iron Will",
-      description: "Complete 3 workouts today",
-      target: 3,
-      xpReward: 1000,
-      goldReward: 500,
-      bonusReward: "Legendary Crate",
-    },
-  ];
-
-const _DIFFICULTY_MULTIPLIERS: Record<QuestDifficulty, number> = {
-  EASY: 1,
-  MEDIUM: 2,
-  HARD: 3,
-  LEGENDARY: 5,
-};
+const DAILY_QUEST_TEMPLATES = [
+  {
+    code: "DAILY_WORKOUT_1",
+    title: "First Steps",
+    description: "Complete any workout",
+    type: "DAILY",
+    criteria: { metric: "workouts", target: 1 },
+    rewards: { xp: 100, gold: 50 },
+    difficulty: "EASY"
+  },
+  {
+    code: "DAILY_VOL_1",
+    title: "Volume Builder",
+    description: "Log 5000kg total volume",
+    type: "DAILY",
+    criteria: { metric: "volume_kg", target: 5000 },
+    rewards: { xp: 150, gold: 75 },
+    difficulty: "MEDIUM"
+  },
+  {
+    code: "DAILY_CARDIO_1",
+    title: "Heart Starter",
+    description: "Complete 15 min cardio",
+    type: "DAILY",
+    criteria: { metric: "duration_min", target: 15 },
+    rewards: { xp: 100, gold: 50 },
+    difficulty: "EASY"
+  }
+];
 
 /**
- * Generate daily quests for a user.
+ * Generate (or fetch) daily quests for a user.
+ * Now backed by DB.
  */
 export async function generateDailyQuestsAction(
   userId: string,
 ): Promise<DailyQuest[]> {
   try {
-    const now = new Date();
-    const endOfDay = new Date(now);
-    endOfDay.setHours(23, 59, 59, 999);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
 
-    // Select 3 quests: 1 easy, 1 medium, 1 hard/legendary
-    const easyQuests = QUEST_TEMPLATES.filter((q) => q.difficulty === "EASY");
-    const mediumQuests = QUEST_TEMPLATES.filter(
-      (q) => q.difficulty === "MEDIUM",
-    );
-    const hardQuests = QUEST_TEMPLATES.filter(
-      (q) => q.difficulty === "HARD" || q.difficulty === "LEGENDARY",
-    );
+    // 1. Check existing active daily quests
+    const existing = await prisma.userChallenge.findMany({
+      where: {
+        userId,
+        challenge: {
+          type: "DAILY",
+          endDate: { gt: new Date() } // Not expired
+        }
+      },
+      include: { challenge: true }
+    });
 
-    const selectedQuests = [
-      easyQuests[Math.floor(Math.random() * easyQuests.length)],
-      mediumQuests[Math.floor(Math.random() * mediumQuests.length)],
-      hardQuests[Math.floor(Math.random() * hardQuests.length)],
-    ];
+    if (existing.length > 0) {
+      return existing.map(mapUserChallengeToDailyQuest);
+    }
 
-    return selectedQuests.map((template, i) => ({
-      ...template,
-      id: `quest-${userId}-${now.toISOString().split("T")[0]}-${i}`,
-      current: 0,
-      expiresAt: endOfDay,
-      isCompleted: false,
-      isClaimed: false,
-    }));
+    // 2. Generate new ones if none exist
+
+    // GPE Integration: Check for DELOAD
+    let templateList = [...DAILY_QUEST_TEMPLATES];
+    try {
+      const user = await prisma.user.findUnique({
+        where: { id: userId },
+        include: { wardensManifest: true }
+      });
+
+      if (user && user.wardensManifest) {
+        const phase = user.wardensManifest.phase || "BALANCED";
+
+        if (phase === "DELOAD") {
+          // Filter out Volume/High-Intensity
+          templateList = templateList.filter(t => t.code !== 'DAILY_VOL_1' && t.code !== 'DAILY_WORKOUT_1');
+
+          // Add Recovery Quest
+          templateList.push({
+            code: "DAILY_RECOVERY_1",
+            title: "Active Recovery",
+            description: "Log 15 min mobility or yoga",
+            type: "DAILY",
+            criteria: { metric: "duration_min", target: 15 },
+            rewards: { xp: 200, gold: 0 },
+            difficulty: "EASY"
+          });
+        }
+      }
+    } catch (e) {
+      console.warn("GPE Quest Check failed", e);
+    }
+
+    // Create/Find Templates
+    const dbChallenges = [];
+    for (const tpl of templateList) {
+      // Daily challenges need unique dates if we track history? 
+      // Or we re-use the same "Challenge" def and just create new "UserChallenge" rows?
+      // Schema: UserChallenge has ID (userId, challengeId). 
+      // If we reuse challengeId, we can't track history.
+      // We likely need a "Active Daily Challenge" system.
+      // Let's create specific Challenge rows for TODAY.
+      const code = `${tpl.code}_${today.toISOString().split('T')[0]}`;
+
+      const challenge = await prisma.challenge.upsert({
+        where: { code },
+        create: {
+          code,
+          title: tpl.title,
+          description: tpl.description,
+          type: "DAILY",
+          startDate: today,
+          endDate: tomorrow,
+          criteria: tpl.criteria,
+          rewards: tpl.rewards
+        },
+        update: {}
+      });
+      dbChallenges.push(challenge);
+    }
+
+    // 3. Assign to User
+    const newQuests = [];
+    for (const c of dbChallenges) {
+      const userQuest = await prisma.userChallenge.create({
+        data: {
+          userId,
+          challengeId: c.id,
+          progress: 0,
+          completed: false
+        },
+        include: { challenge: true }
+      });
+      newQuests.push(mapUserChallengeToDailyQuest(userQuest));
+    }
+
+    return newQuests;
+
   } catch (error) {
     console.error("Error generating daily quests:", error);
     return [];
   }
+}
+
+function mapUserChallengeToDailyQuest(uc: any): DailyQuest {
+  const c = uc.challenge;
+  const criteria = c.criteria as any;
+  const rewards = c.rewards as any;
+  return {
+    id: c.id, // Use Challenge ID for tracking
+    type: mapMetricToType(criteria.metric),
+    difficulty: "MEDIUM", // Hardcoded for simplified mapping
+    title: c.title,
+    description: c.description,
+    target: criteria.target,
+    current: uc.progress,
+    xpReward: rewards.xp || 0,
+    goldReward: rewards.gold || 0,
+    expiresAt: c.endDate,
+    isCompleted: uc.completed,
+    isClaimed: uc.claimed
+  };
+}
+
+function mapMetricToType(metric: string): QuestType {
+  if (metric === 'volume_kg') return 'VOLUME';
+  if (metric === 'workouts') return 'WORKOUT';
+  if (metric === 'duration_min') return 'CARDIO';
+  if (metric === 'distance_km') return 'CARDIO';
+  return 'WORKOUT';
 }
 
 /**
@@ -195,51 +206,59 @@ export async function generateDailyQuestsAction(
 export async function getDailyQuestsAction(
   userId: string,
 ): Promise<DailyQuest[]> {
-  // In production, check if quests exist for today, else generate new ones
   return generateDailyQuestsAction(userId);
 }
 
 /**
- * Update quest progress.
+ * Update quest progress - DEPRECATED via wrapper.
+ * Actual logic is in challengeService.ts processWorkoutLog
  */
 export async function updateQuestProgressAction(
   _userId: string,
   questType: QuestType,
   amount: number,
 ): Promise<{ questsUpdated: number; questsCompleted: string[] }> {
-  try {
-    // In production, update quest progress in database
-    console.log(`Quest progress: ${questType} +${amount}`);
-
-    return {
-      questsUpdated: 1,
-      questsCompleted: [],
-    };
-  } catch (error) {
-    console.error("Error updating quest progress:", error);
-    return { questsUpdated: 0, questsCompleted: [] };
-  }
+  // No-op, logic moved to challengeService
+  return { questsUpdated: 0, questsCompleted: [] };
 }
 
 /**
  * Claim completed quest rewards.
  */
 export async function claimQuestRewardAction(
-  _userId: string,
-  questId: string,
+  userId: string,
+  questId: string, // actually challengeId
 ): Promise<{ success: boolean; xp: number; gold: number; bonus?: string }> {
   try {
-    // In production, validate quest is complete and not claimed
-    const quest = QUEST_TEMPLATES[0]; // Placeholder
+    const uc = await prisma.userChallenge.findUnique({
+      where: { userId_challengeId: { userId, challengeId: questId } },
+      include: { challenge: true }
+    });
 
-    console.log(`Claimed quest: ${questId}`);
+    if (!uc || !uc.completed || uc.claimed) {
+      return { success: false, xp: 0, gold: 0 };
+    }
+
+    const rewards = uc.challenge.rewards as any;
+    const xp = rewards.xp || 0;
+    const gold = rewards.gold || 0;
+
+    // 1. Award
+    const { ProgressionService } = await import("@/services/progression");
+    if (xp > 0) await ProgressionService.addExperience(userId, xp);
+    if (gold > 0) await ProgressionService.awardGold(userId, gold);
+
+    // 2. Mark Claimed
+    await prisma.userChallenge.update({
+      where: { userId_challengeId: { userId, challengeId: questId } },
+      data: { claimed: true }
+    });
+
     revalidatePath("/daily-quests");
-
     return {
       success: true,
-      xp: quest.xpReward,
-      gold: quest.goldReward,
-      bonus: quest.bonusReward,
+      xp,
+      gold,
     };
   } catch (error) {
     console.error("Error claiming quest:", error);

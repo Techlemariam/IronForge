@@ -5,6 +5,8 @@ export async function processWorkoutLog(
   userId: string,
   weight: number,
   reps: number,
+  distanceKm: number = 0,
+  durationMin: number = 0
 ) {
   try {
     const now = new Date();
@@ -23,18 +25,14 @@ export async function processWorkoutLog(
 
       if (criteria.metric === "volume_kg") {
         increment = weight * reps;
+      } else if (criteria.metric === "distance_km") {
+        increment = distanceKm;
+      } else if (criteria.metric === "duration_min") {
+        increment = durationMin;
       } else if (criteria.metric === "workouts") {
         // Only increment if this is the FIRST log of the day
         const todayStart = new Date();
         todayStart.setHours(0, 0, 0, 0);
-
-        // We assume this runs AFTER the log is created, so count should be >= 1
-        // If count is exactly 1, it means this was the first log.
-        // However, Prisma might be slow to index.
-        // Safer check: Checks logs from today. If count <= 1, grant credit.
-        // Actually, if we use a boolean flag on User or UserChallenge?
-        // Or just check if 'lastUpdated' was today?
-        // UserChallenge 'updatedAt' is useful.
 
         const uc = await prisma.userChallenge.findUnique({
           where: { userId_challengeId: { userId, challengeId: c.id } },
@@ -42,10 +40,6 @@ export async function processWorkoutLog(
 
         if (uc) {
           const lastUpdate = new Date(uc.updatedAt);
-          // If not updated today, allow increment
-          // BUT volume updates also update 'updatedAt'.
-          // So we can't rely solely on updatedAt if mixed metrics exist (unlikely for one challenge).
-          // For a "Workouts" challenge, progress only increments by 1 per day.
           const isToday =
             lastUpdate.getDate() === now.getDate() &&
             lastUpdate.getMonth() === now.getMonth() &&
@@ -61,9 +55,6 @@ export async function processWorkoutLog(
 
       if (increment > 0) {
         // Upsert logic
-        // If new, create.
-        // If exists, increment.
-        // We handle creation explicitly to avoid complex update where clauses logic
         const existing = await prisma.userChallenge.findUnique({
           where: { userId_challengeId: { userId, challengeId: c.id } },
         });
@@ -75,11 +66,12 @@ export async function processWorkoutLog(
             where: { userId_challengeId: { userId, challengeId: c.id } },
             data: {
               progress: { increment: increment },
-              // We will check completion in next step or use atomic if possible
-              // But 'completed' is boolean.
             },
           });
         } else {
+          // Note: If no existing record, we start at 0 + increment.
+          // Wait, existing check handles update.
+          // Create below.
           await prisma.userChallenge.create({
             data: {
               userId,
@@ -90,13 +82,11 @@ export async function processWorkoutLog(
           });
         }
 
-        // Check Completion
-        // Re-fetch to be sure (or calc locally)
-        // Local calc is safer for performance
-        if (newProgress >= criteria.target) {
+        // Check Completion (Simple)
+        if (existing && newProgress >= criteria.target && !existing.completed) {
           await prisma.userChallenge.update({
             where: { userId_challengeId: { userId, challengeId: c.id } },
-            data: { completed: true },
+            data: { completed: true }
           });
         }
       }

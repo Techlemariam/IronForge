@@ -52,15 +52,15 @@ export function WelcomeClient() {
             {/* Hero Section */}
             <header className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 px-6">
                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-warrior/5 rounded-full blur-[120px]" />
-                    <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[100px]" />
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-warrior/5 rounded-full blur-[80px]" />
+                    <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-blue-500/5 rounded-full blur-[60px]" />
                 </div>
 
                 <div className="container mx-auto text-center relative z-10">
                     <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6 }}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.4 }}
                     >
                         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-mono uppercase tracking-widest text-warrior mb-6">
                             <Zap className="w-3 h-3" /> System Operational v1.3
@@ -102,10 +102,9 @@ export function WelcomeClient() {
                     <div className="grid md:grid-cols-3 gap-8">
                         {/* Feature 1 */}
                         <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
+                            initial={{ opacity: 0 }}
+                            whileInView={{ opacity: 1 }}
                             viewport={{ once: true }}
-                            transition={{ delay: 0.1 }}
                             className="bg-forge-900/50 border border-white/5 p-8 rounded-2xl hover:border-warrior/30 transition-colors group"
                         >
                             <div className="w-12 h-12 bg-purple-900/20 rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
@@ -122,10 +121,9 @@ export function WelcomeClient() {
 
                         {/* Feature 2 */}
                         <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
+                            initial={{ opacity: 0 }}
+                            whileInView={{ opacity: 1 }}
                             viewport={{ once: true }}
-                            transition={{ delay: 0.2 }}
                             className="bg-forge-900/50 border border-white/5 p-8 rounded-2xl hover:border-warrior/30 transition-colors group"
                         >
                             <div className="w-12 h-12 bg-red-900/20 rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
@@ -142,10 +140,9 @@ export function WelcomeClient() {
 
                         {/* Feature 3 */}
                         <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
+                            initial={{ opacity: 0 }}
+                            whileInView={{ opacity: 1 }}
                             viewport={{ once: true }}
-                            transition={{ delay: 0.3 }}
                             className="bg-forge-900/50 border border-white/5 p-8 rounded-2xl hover:border-warrior/30 transition-colors group"
                         >
                             <div className="w-12 h-12 bg-emerald-900/20 rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">

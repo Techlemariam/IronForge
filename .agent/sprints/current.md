@@ -10,8 +10,8 @@
 ### Priority: High
 
 - [/] **Complete Sprint 23 Carryover** <!-- agent: /manager | estimate: 0h | source: sprint-23 | blocked: false -->
-  - E2E Test Seeding (2h) → `/infrastructure`
-  - GrowthMetrics Implementation (2h) → `/coder`
+  - ✅ E2E Test Seeding (2h) → `/infrastructure` - Completed 2026-01-10
+  - ✅ GrowthMetrics Implementation (2h) → `/coder` - Completed 2026-01-10
   - ✅ Citadel Navigation Simplification (2h) → `/ui-ux` - Completed 2026-01-10
 
 - [ ] **Documentation Batch Update** <!-- agent: /librarian | estimate: 3h | source: health-report | blocked: false -->

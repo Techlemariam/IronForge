@@ -15,6 +15,23 @@ import { useJokerSets } from "@/features/strength/hooks/useJokerSets";
 import { useSetLogging } from "@/features/strength/hooks/useSetLogging";
 import { useVolumeTracking } from "@/features/strength/hooks/useVolumeTracking";
 
+import { useRestTimer } from "@/hooks/useRestTimer";
+import { RestTimer } from "../RestTimer";
+import SupersetGroup from "@/features/training/components/SupersetView";
+import { HRRecoveryDisplay } from "@/features/strength/components/HRRecoveryDisplay";
+import { HRZoneBadge } from "@/features/strength/components/HRZoneBadge";
+import { useHRRecoveryTimer } from "@/features/strength/hooks/useHRRecoveryTimer";
+import { BiometricsHUD } from "@/features/strength/components/BiometricsHUD";
+import { CardiacDriftWarning } from "@/features/strength/components/CardiacDriftWarning";
+import { PRCelebration } from "@/components/ui/PRCelebration";
+
+// Local wrapper to conditonally render
+const RestTimerWrapper = () => {
+  const { isActive } = useRestTimer();
+  if (!isActive) return null;
+  return <RestTimer className="scale-75 origin-top-right" />;
+};
+
 // --- DUNGEON MODE IMPORTS ---
 import DungeonInterface from "@/components/game/dungeon/DungeonInterface";
 import ScreenShake from "@/components/game/dungeon/ScreenShake";
@@ -24,6 +41,11 @@ import {
   calculateDamage,
   detectJokerOpportunity,
 } from "@/utils/combatMechanics";
+import { LiveSessionHUD } from "@/features/coop/LiveSessionHUD";
+import { useUser } from "@/hooks/useUser";
+import { contributeGuildDamageAction } from "@/actions/guild/core";
+import { GhostOverlay } from "@/features/coop/GhostOverlay";
+import { CoOpService, GhostEvent } from "@/services/coop/CoOpService";
 
 interface IronMinesProps {
   initialData: Exercise[];
@@ -42,8 +64,45 @@ const DungeonSessionView: React.FC<IronMinesProps> = ({
   wellness,
   hrvBaseline = 50,
 }) => {
-  const [exercises, setExercises] = useState<Exercise[]>(initialData);
-  const [activeExIndex, setActiveExIndex] = useState(0);
+  const { user } = useUser(); // Hook for Guild Damage
+  const [exercises, setExercises] = useState<Exercise[]>(() => {
+    // Try to load from local storage first
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('iron_mines_session');
+      if (saved) {
+        try {
+          return JSON.parse(saved);
+        } catch (e) {
+          console.error("Failed to parse saved session", e);
+        }
+      }
+    }
+    return initialData;
+  });
+
+  const [activeExIndex, setActiveExIndex] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('iron_mines_index');
+      return saved ? parseInt(saved, 10) : 0;
+    }
+    return 0;
+  });
+
+  // Persist Changes
+  useEffect(() => {
+    localStorage.setItem('iron_mines_session', JSON.stringify(exercises));
+  }, [exercises]);
+
+  useEffect(() => {
+    localStorage.setItem('iron_mines_index', activeExIndex.toString());
+  }, [activeExIndex]);
+
+  // Clear on complete/abort
+  const clearSession = () => {
+    localStorage.removeItem('iron_mines_session');
+    localStorage.removeItem('iron_mines_index');
+  };
+
   const [activeBuffs, setActiveBuffs] = useState<BioBuff[]>([]);
 
   // Calculate Bio-Buffs
@@ -58,7 +117,22 @@ const DungeonSessionView: React.FC<IronMinesProps> = ({
 
     const buff = BioBuffService.calculateBuff(sleep, hrv, hrvBaseline);
     setActiveBuffs([buff]);
+
+    // Initialize HR Zones - will be handled in HR hook
   }, [wellness, hrvBaseline]);
+
+  // Simulate HR Data (Demo Mode)
+  const { updateHR, metrics } = useHRRecoveryTimer();
+  useEffect(() => {
+    const interval = setInterval(() => {
+      // Simple sine wave simulation for demo
+      const time = Date.now() / 3000;
+      const base = 110;
+      const fluctuation = Math.sin(time) * 20;
+      updateHR(Math.floor(base + fluctuation));
+    }, 2000);
+    return () => clearInterval(interval);
+  }, []);
 
   // --- MODALS & TRIGGERS ---
   const [showBerserkerChoice, setShowBerserkerChoice] = useState(false);
@@ -73,6 +147,27 @@ const DungeonSessionView: React.FC<IronMinesProps> = ({
   const [damageDealt, setDamageDealt] = useState(0);
   const [lastDamage, setLastDamage] = useState(0);
   const [shakeTrigger, setShakeTrigger] = useState(0);
+
+  // --- GHOST MODE STATE ---
+  const [ghostEvents, setGhostEvents] = useState<GhostEvent[]>([]);
+  const [activeSessionId, setActiveSessionId] = useState<string | null>(null);
+
+  // Subscribe to Ghost Events (if in session)
+  useEffect(() => {
+    if (!activeSessionId) return;
+
+    const channel = CoOpService.subscribeToGhostEvents(activeSessionId, (event) => {
+      setGhostEvents(prev => [event, ...prev].slice(0, 10)); // Keep last 10
+      // Auto-clear after 5 seconds
+      setTimeout(() => {
+        setGhostEvents(prev => prev.filter(e => e.timestamp !== event.timestamp));
+      }, 5000);
+    });
+
+    return () => {
+      channel.unsubscribe();
+    };
+  }, [activeSessionId]);
 
   // Initialize Boss HP
   useEffect(() => {
@@ -102,6 +197,9 @@ const DungeonSessionView: React.FC<IronMinesProps> = ({
     handleJokerDecline,
   } = useJokerSets(exercises, setExercises, activeExIndex);
 
+  const [showPRCelebration, setShowPRCelebration] = useState(false);
+  const [prData, setPrData] = useState<{ newReps: number; oldMax: number | null }>({ newReps: 0, oldMax: 0 });
+
   const { handleSetLog } = useSetLogging(
     exercises,
     setExercises,
@@ -111,10 +209,30 @@ const DungeonSessionView: React.FC<IronMinesProps> = ({
         setDamageDealt((prev) => prev + damage);
         setLastDamage(damage);
         setShakeTrigger((prev) => prev + 1);
+
+        // --- GUILD ACTION ---
+        if (user?.id) {
+          contributeGuildDamageAction(user.id, damage).catch(e => console.error("Guild Action Failed", e));
+
+          // --- GHOST BROADCAST ---
+          if (activeSessionId) {
+            CoOpService.broadcastGhostEvent(activeSessionId, {
+              type: 'SET_COMPLETE',
+              userId: user.id,
+              heroName: user.heroName || 'Hero',
+              damage,
+              timestamp: Date.now()
+            });
+          }
+        }
       },
       onJokerCheck: checkJokerOpportunity,
       onExerciseComplete: () => setActiveExIndex((prev) => prev + 1),
       onWorkoutComplete: () => setShowBerserkerChoice(true),
+      onRepPR: (newReps, oldMax) => {
+        setPrData({ newReps, oldMax });
+        setShowPRCelebration(true);
+      },
     },
   );
 
@@ -138,6 +256,26 @@ const DungeonSessionView: React.FC<IronMinesProps> = ({
         playSound("ding");
       }
       return newExercises;
+    });
+  };
+
+  const handleNotesChange = (notes: string, exerciseIndex: number) => {
+    setExercises(current => {
+      const newEx = [...current];
+      newEx[exerciseIndex] = { ...newEx[exerciseIndex], notes };
+      return newEx;
+    });
+  };
+
+  const handleSetUpdate = (exerciseIndex: number, setIndex: number, updates: Partial<WorkoutSet>) => {
+    setExercises(current => {
+      const newEx = [...current];
+      const targetEx = { ...newEx[exerciseIndex] };
+      const targetSets = [...targetEx.sets];
+      targetSets[setIndex] = { ...targetSets[setIndex], ...updates };
+      targetEx.sets = targetSets;
+      newEx[exerciseIndex] = targetEx;
+      return newEx;
     });
   };
 
@@ -210,6 +348,7 @@ const DungeonSessionView: React.FC<IronMinesProps> = ({
   }, [exercises, questOver]);
 
   const handleButtonClick = () => {
+    clearSession();
     if (isQuestFullyCompleted) {
       onComplete();
     } else {
@@ -220,7 +359,7 @@ const DungeonSessionView: React.FC<IronMinesProps> = ({
   return (
     <div className="flex flex-col h-full w-full p-4 md:p-8 animate-fade-in gap-4 bg-[#0a0a0a]">
       {/* 1. HUD */}
-      <div className="flex-shrink-0">
+      <div className="flex-shrink-0 relative">
         <DungeonInterface
           bossName={title || "The Iron Keeper"}
           totalHp={totalHp}
@@ -263,6 +402,9 @@ const DungeonSessionView: React.FC<IronMinesProps> = ({
             </div>
           </div>
         )}
+
+        {/* Rest Timer Overlay - Only when active */}
+        <BiometricsHUD />
 
         <div className="flex justify-between items-center mt-4">
           <div className="flex gap-2">
@@ -310,24 +452,59 @@ const DungeonSessionView: React.FC<IronMinesProps> = ({
           </AnimatePresence>
 
           <AnimatePresence>
-            {exercises.map((ex, index) => (
-              <div key={ex.id} ref={index === activeExIndex ? activeRef : null}>
-                <ExerciseView
-                  exercise={ex}
-                  isActive={index === activeExIndex}
-                  isCompleted={
-                    index < activeExIndex || ex.sets.every((s) => s.completed)
-                  }
-                  onSetLog={handleSetLog}
-                />
-              </div>
-            ))}
+            {exercises.map((ex, index) => {
+              // Superset Logic:
+              // If this exercise has a supersetId....
+              if (ex.supersetId) {
+                const supersetGroup = exercises.filter(e => e.supersetId === ex.supersetId);
+                const firstInGroup = supersetGroup[0];
+
+                // Only render if this IS the first one in the group (to avoid duplicates)
+                if (ex.id === firstInGroup.id) {
+                  return (
+                    <div key={`superset-${ex.supersetId}`} ref={index === activeExIndex || exercises[activeExIndex]?.supersetId === ex.supersetId ? activeRef : null}>
+                      <SupersetGroup
+                        exercises={supersetGroup}
+                        activeIndex={activeExIndex}
+                        globalStartIndex={index} // Assumes they are contiguous. 
+                        onSetLog={(idx, w, r, rpe) => handleSetLog(w, r, rpe, idx)}
+                        onNotesChange={(idx, notes) => handleNotesChange(notes, idx)}
+                        onSetUpdate={(exIdx, setIdx, updates) => handleSetUpdate(exIdx, setIdx, updates)}
+                      />
+                    </div>
+                  );
+                } else {
+                  // Skip rendering, it was handled by the first one
+                  return null;
+                }
+              }
+
+              return (
+                <div key={ex.id} ref={index === activeExIndex ? activeRef : null}>
+                  <ExerciseView
+                    exercise={ex}
+                    isActive={index === activeExIndex}
+                    isCompleted={
+                      index < activeExIndex || ex.sets.every((s) => s.completed)
+                    }
+                    onSetLog={handleSetLog}
+                    onNotesChange={(notes) => handleNotesChange(notes, index)}
+                    onSetUpdate={(setIndex, updates) => handleSetUpdate(index, setIndex, updates)}
+                  />
+                </div>
+              )
+            })}
           </AnimatePresence>
         </main>
       </ScreenShake>
 
       {/* 3. MODALS & OVERLAYS */}
+      <div className="fixed bottom-24 left-4 z-40 max-w-sm">
+        <CardiacDriftWarning driftPercentage={metrics.drift} />
+      </div>
       <BerserkerOverlay isActive={isBerserkerMode} />
+      <LiveSessionHUD onSessionJoin={(id) => setActiveSessionId(id)} />
+      <GhostOverlay events={ghostEvents} currentUserId={user?.id} />
 
       <AnimatePresence>
         {jokerPrompt.show && (
@@ -339,20 +516,32 @@ const DungeonSessionView: React.FC<IronMinesProps> = ({
         )}
       </AnimatePresence>
 
-      {showBerserkerChoice && (
-        <BerserkerChoice
-          onAccept={handleBerserkerAccept}
-          onDecline={handleBerserkerDecline}
-        />
-      )}
+      {
+        showBerserkerChoice && (
+          <BerserkerChoice
+            onAccept={handleBerserkerAccept}
+            onDecline={handleBerserkerDecline}
+          />
+        )
+      }
 
-      {isBerserkerMode && (
-        <BerserkerMode
-          lastExerciseName={exercises[activeExIndex].name}
-          onComplete={handleBerserkerComplete}
-        />
-      )}
-    </div>
+      {
+        isBerserkerMode && (
+          <BerserkerMode
+            lastExerciseName={exercises[activeExIndex].name}
+            onComplete={handleBerserkerComplete}
+          />
+        )
+      }
+
+      <PRCelebration
+        isVisible={showPRCelebration}
+        newReps={prData.newReps}
+        previousReps={prData.oldMax}
+        exerciseName={exercises[activeExIndex]?.name}
+        onClose={() => setShowPRCelebration(false)}
+      />
+    </div >
   );
 };
 

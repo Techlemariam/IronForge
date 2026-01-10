@@ -5,6 +5,7 @@ import { determineRarity } from "@/utils/loot";
 import { playSound, fireConfetti } from "@/utils";
 import { calculateDamage } from "@/utils/combatMechanics";
 import { logTitanSet } from "@/actions/training/core";
+import { checkPRAction } from "@/actions/training/max-reps";
 import { toast } from "sonner";
 
 interface LoggingCallbacks {
@@ -12,6 +13,7 @@ interface LoggingCallbacks {
   onJokerCheck: (rpe: number, weight: number) => void;
   onExerciseComplete: () => void;
   onWorkoutComplete: () => void;
+  onRepPR?: (newReps: number, oldMax: number | null) => void;
 }
 
 export const useSetLogging = (
@@ -20,7 +22,12 @@ export const useSetLogging = (
   activeExIndex: number,
   callbacks: LoggingCallbacks,
 ) => {
-  const handleSetLog = (weight: number, reps: number, rpe: number) => {
+  const handleSetLog = async (
+    weight: number,
+    reps: number,
+    rpe: number,
+    overrideIndex?: number,
+  ) => {
     // 1. Calculate Damage
     const combatStats = calculateDamage(weight, reps, rpe, false);
     callbacks.onDamage(combatStats.damage);
@@ -28,13 +35,29 @@ export const useSetLogging = (
     // 2. Propose Joker Set
     callbacks.onJokerCheck(rpe, weight);
 
-    // 3. Update State
+    // 3. Check for Rep PR (Async)
+    const currentWeight = weight;
+    const currentReps = reps;
+    const targetIndex = overrideIndex ?? activeExIndex;
+    const currentExId = exercises[targetIndex]?.id;
+
+    if (currentExId) {
+      checkPRAction(currentExId, currentReps, currentWeight).then((res) => {
+        if (res.success && res.isPR) {
+          callbacks.onRepPR?.(currentReps, res.previousMax ?? null);
+          playSound("loot_epic"); // Distinct sound for Rep PR
+        }
+      });
+    }
+
+    // 4. Update State
     setExercises((currentExercises) => {
       const newExercises = currentExercises.map((ex) => ({
         ...ex,
         sets: ex.sets.map((s) => ({ ...s })),
       }));
-      const currentEx = newExercises[activeExIndex];
+
+      const currentEx = newExercises[targetIndex];
       const setIndex = currentEx.sets.findIndex((s) => !s.completed);
 
       if (setIndex === -1) return currentExercises;
@@ -49,11 +72,12 @@ export const useSetLogging = (
       const rarity = determineRarity(currentE1RM, sessionPr, isPr);
 
       targetSet.completed = true;
+      targetSet.completedAt = new Date().toISOString();
       targetSet.weight = weight;
       targetSet.completedReps = reps;
       targetSet.rarity = rarity;
       targetSet.e1rm = currentE1RM;
-      targetSet.isPr = isPr;
+      targetSet.isPr = isPr; // This is E1RM PR, different from Rep PR
 
       if (isPr || rarity === "legendary") {
         playSound("loot_epic");

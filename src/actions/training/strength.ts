@@ -14,6 +14,7 @@ const SetSchema = z.object({
   restSec: z.number().optional(),
   isWarmup: z.boolean().default(false),
   completedAt: z.string().optional(), // ISO date
+  setType: z.enum(["normal", "failure", "dropset", "warmup", "myoreps"]).optional(),
 });
 
 export type SetData = z.infer<typeof SetSchema>;
@@ -101,11 +102,9 @@ export async function logSetAction(
     // In a real app, we'd compare against history.
 
     // 5. Check for Achievements
-    // Fire and forget or await? Await to return notification
     let newAchievements: any[] = [];
     try {
-      const { checkAchievementsAction } =
-        await import("@/actions/progression/achievements");
+      const { checkAchievementsAction } = await import("@/actions/progression/achievements");
       const result = await checkAchievementsAction(userId);
       if (result && "newUnlocks" in result) {
         newAchievements = result.newUnlocks;
@@ -114,8 +113,35 @@ export async function logSetAction(
       console.error("Achievement check failed:", e);
     }
 
-    revalidatePath("/dashboard/strength");
-    return { success: true, logId, sets: currentSets, newAchievements };
+    // 6. Guild Raid Integration (Boss Eraser)
+    let raidDamageDealt = 0;
+    if (validatedSet.rpe && validatedSet.rpe >= 9 && !validatedSet.isWarmup) {
+      try {
+        const { contributeGuildDamageAction } = await import("@/actions/guild/core");
+        // Damage = Weight * Reps (Kinetic Force)
+        const damage = Math.floor(validatedSet.weight * validatedSet.reps);
+        if (damage > 0) {
+          const raidResult = await contributeGuildDamageAction(userId, damage);
+          if (raidResult.success && raidResult.damageDealt) {
+            raidDamageDealt = raidResult.damageDealt;
+          }
+        }
+      } catch (e) {
+        console.error("Guild Raid contribution failed:", e);
+      }
+    }
+
+    // 7. Challenge & Quest Updates
+    try {
+      const { processWorkoutLog } = await import("@/services/challengeService");
+      // We log volume (Weight * Reps) and Reps.
+      // processWorkoutLog handles "Volume" and "Workout" quest counts via logic updates
+      await processWorkoutLog(userId, validatedSet.weight, validatedSet.reps);
+    } catch (e) {
+      console.error("Challenge update failed:", e);
+    }
+
+    return { success: true, logId, sets: currentSets, newAchievements, raidDamageDealt };
   } catch (error) {
     console.error("Error logging set:", error);
     return { success: false, error: "Failed to log set" };
@@ -126,11 +152,83 @@ export async function logSetAction(
  * Finish a workout session, calculate total volume, and check for PRs.
  */
 export async function finishWorkoutAction(userId: string, logIds: string[]) {
-  // Logic to finalize logs, maybe lock them?
-  // For now, simpler: user logs sets real-time.
-  // We can just revalidate or update "completed" status if we added that.
-  revalidatePath("/dashboard");
-  return { success: true };
+  try {
+    // 1. Calculate Total Volume for recent logs (simple approach)
+    // Ideally we'd sum volume for the specific logIds passed
+    const logs = await prisma.exerciseLog.findMany({
+      where: {
+        userId,
+        id: { in: logIds }
+      }
+    });
+
+    // 2. Award XP Modified by Intensity (Resource Cost Proxy)
+    // 100kg Deadlift > 100kg Calf Raise.
+    // We fetch the exercises to determine the multiplier.
+    const exerciseIds = Array.from(new Set(logs.map(l => l.exerciseId)));
+    const exercises = await prisma.exercise.findMany({
+      where: { id: { in: exerciseIds } },
+      select: { id: true, muscleGroup: true }
+    });
+
+    const muscleMap = new Map(exercises.map(e => [e.id, e.muscleGroup]));
+
+    // Multipliers based on CNS demand
+    const TIER_1_MUSCLES = ['QUADS', 'BACK', 'CHEST', 'HAMSTRINGS', 'GLUTES']; // Large Compounds (1.2x)
+    const TIER_2_MUSCLES = ['SHOULDERS', 'TRICEPS', 'BICEPS']; // Medium (1.0x)
+    const TIER_3_MUSCLES = ['CALVES', 'ABS', 'FOREARMS']; // Small (0.8x)
+
+    let weightedVolume = 0;
+
+    logs.forEach(log => {
+      const sets = (log.sets as unknown as SetData[]) || [];
+      const muscle = muscleMap.get(log.exerciseId)?.toUpperCase() || 'OTHER';
+
+      let multiplier = 1.0;
+      if (TIER_1_MUSCLES.includes(muscle)) multiplier = 1.2;
+      else if (TIER_2_MUSCLES.includes(muscle)) multiplier = 1.0;
+      else if (TIER_3_MUSCLES.includes(muscle)) multiplier = 0.8;
+
+      sets.forEach(set => {
+        weightedVolume += (set.weight * set.reps) * multiplier;
+      });
+    });
+
+    const xpAward = Math.floor(weightedVolume * 0.01);
+
+    // 3. Execute Progression Updates
+    const { ProgressionService } = await import("@/services/progression");
+
+    if (xpAward > 0) {
+      await ProgressionService.addExperience(userId, xpAward);
+
+      // 3b. Award Battle Pass XP (50% of Base XP)
+      try {
+        const { addBattlePassXpAction } = await import("@/actions/systems/battle-pass");
+        const bpXp = Math.floor(xpAward * 0.5);
+        if (bpXp > 0) {
+          await addBattlePassXpAction(userId, bpXp);
+        }
+      } catch (e) {
+        console.error("Battle Pass update failed:", e);
+      }
+    }
+
+    // 4. Award Completion Gold (Fixed 100g)
+    await ProgressionService.awardGold(userId, 100);
+
+    // 5. Refill Kinetic Energy (Guild Battery) - Part of Phase 2 but convenient here
+    await prisma.user.update({
+      where: { id: userId },
+      data: { kineticEnergy: { increment: 10 } }
+    });
+
+    revalidatePath("/dashboard");
+    return { success: true, xpEarned: xpAward, goldEarned: 100 };
+  } catch (error) {
+    console.error("Finish Workout Error:", error);
+    return { success: false, error: "Failed to finish workout" };
+  }
 }
 
 /**
