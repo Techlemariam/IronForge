@@ -31,7 +31,10 @@ test.describe('Training & Cardio Flow', () => {
     });
 
     test('should navigate to Cycling Studio', async ({ page }) => {
-        // Training category is open by default
+        // Navigate through Progressive Disclosure Menu
+        await page.getByRole('button', { name: /Training Operations/i }).click();
+        await page.getByRole('button', { name: /Cardio Focus/i }).click();
+
         // Find and click the Ride button (formerly "Cycling Studio")
         await page.getByRole('button', { name: 'Ride' }).click({ force: true });
 
@@ -43,6 +46,10 @@ test.describe('Training & Cardio Flow', () => {
     });
 
     test('should navigate to Treadmill (Running)', async ({ page }) => {
+        // Navigate to Run via Menu
+        await page.getByRole('button', { name: /Training Operations/i }).click();
+        await page.getByRole('button', { name: /Cardio Focus/i }).click();
+
         // Click the Run button (formerly "Treadmill")
         await page.getByRole('button', { name: 'Run' }).click({ force: true });
         await expect(page.getByText(/Running|Treadmill|Cardio/i).first()).toBeVisible({ timeout: 10000 });
@@ -50,6 +57,9 @@ test.describe('Training & Cardio Flow', () => {
 
     test.skip('should navigate to Training Center', async ({ page }) => {
         // Try different possible button names for Training Path
+        await page.getByRole('button', { name: /Training Operations/i }).click();
+        await page.getByRole('button', { name: /Cardio Focus/i }).click();
+
         const trainingBtn = page.getByRole('button', { name: /Training Path|Training Center|Path/i }).first();
         await trainingBtn.click({ force: true });
 
