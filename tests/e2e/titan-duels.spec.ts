@@ -34,7 +34,7 @@ test.describe('Titan Duels Flow', () => {
         await expect(page.getByText(/Issue Challenge/i)).toBeVisible();
     });
 
-    test.skip('should validate opponent selection', async ({ page }) => {
+    test('should validate opponent selection', async ({ page }) => {
         await page.goto('/iron-arena');
 
         // Open challenge modal
