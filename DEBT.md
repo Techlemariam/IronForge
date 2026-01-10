@@ -68,7 +68,7 @@
 | 2026-01-06 | `src/actions/economy/forge.ts` | `getInventory` uses mock data. DB schema update needed for stackable resources. | @architect | ⚠️ Deferred (Schema) |
 | 2026-01-06 | `src/features/game/hooks/useSkillEffects.ts` | Keystone selection logic only supports first keystone. Needs multi-keystone/switching support. | @game-designer | ⚠️ Open |
 | 2026-01-06 | `src/actions/guild/raids.ts` | `startRaidAction` missing admin permission check (`// TODO: Verify user is admin`). | @security | ✅ Resolved |
-| 2026-01-06 | `src/actions/combat/emotes.ts` | `sendBattleEmoteAction` missing Supabase Realtime broadcast to opponent. | @infrastructure | ⚠️ Open |
+| 2026-01-06 | `src/actions/combat/emotes.ts` | `sendBattleEmoteAction` missing Supabase Realtime broadcast to opponent. | @infrastructure | ✅ Resolved |
 | 2026-01-06 | `src/services/oracle.ts` | Deprecate LLM-based logic in favor of deterministic `GoalPriorityEngine`. | @architect | ✅ Resolved |
 | 2026-01-07 | `src/data/workouts.ts` | Only contains cardio (RUN/BIKE/SWIM). Strength workouts need dynamic generation from `exerciseDb.ts`. | @game-designer | ⚠️ Open |
 | 2026-01-07 | `src/lib/intervals.ts` | `rampRate`, `zone_times`, `icu_training_load` unused. See GPE spec Enhancement Roadmap. | @titan-coach | ⚠️ Open |

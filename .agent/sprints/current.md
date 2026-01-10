@@ -9,15 +9,21 @@
 
 ### Priority: High
 
-- [ ] **Complete Sprint 23 Carryover** <!-- agent: /manager | estimate: 0h | source: sprint-23 | blocked: false -->
+- [/] **Complete Sprint 23 Carryover** <!-- agent: /manager | estimate: 0h | source: sprint-23 | blocked: false -->
   - E2E Test Seeding (2h) → `/infrastructure`
   - GrowthMetrics Implementation (2h) → `/coder`
-  - Citadel Navigation Simplification (2h) → `/ui-ux`
+  - ✅ Citadel Navigation Simplification (2h) → `/ui-ux` - Completed 2026-01-10
 
 - [ ] **Documentation Batch Update** <!-- agent: /librarian | estimate: 3h | source: health-report | blocked: false -->
   - Update `api-reference.md` with 70+ missing actions
   - Cover: `battle-pass`, `power-rating`, `territory`, `shop-system`
   - Target: 80% action documentation coverage
+
+- [x] **Territory UI Integration** <!-- agent: /ui-ux | estimate: 3h | source: sprint-22 | blocked: false -->
+  - Wire `LeaderboardHub` into Citadel dashboard navigation
+  - Create `/territories` route using `TerritoryMap` component
+  - Add navigation from Guild view to Territory conquest
+  - ✅ Route created, type checks passing
 
 - [ ] **Test Structure Scaffolding** <!-- agent: /infrastructure | estimate: 2h | source: health-report | blocked: false -->
   - Create `tests/unit/actions`, `tests/unit/services`, `tests/unit/utils`
