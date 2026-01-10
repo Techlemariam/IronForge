@@ -32,9 +32,14 @@ test.describe('Training & Cardio Flow', () => {
 
     test('should navigate to Cycling Studio', async ({ page }) => {
         // Navigate through Progressive Disclosure Menu
-        await page.getByRole('button', { name: /Training Operations/i }).click({ force: true });
-        await page.waitForTimeout(500); // Wait for animation
-        await page.getByRole('button', { name: /Cardio Focus/i }).click({ force: true });
+        const trainingOpBtn = page.getByRole('button', { name: /Training Operations/i });
+        await expect(trainingOpBtn).toBeVisible();
+        await expect(trainingOpBtn).toBeEnabled();
+        await trainingOpBtn.click();
+
+        const cardioFocusBtn = page.getByRole('button', { name: /Cardio Focus/i });
+        await expect(cardioFocusBtn).toBeVisible();
+        await cardioFocusBtn.click();
 
         // Find and click the Ride button (formerly "Cycling Studio")
         await page.getByRole('button', { name: 'Ride' }).click({ force: true });
@@ -48,9 +53,13 @@ test.describe('Training & Cardio Flow', () => {
 
     test('should navigate to Treadmill (Running)', async ({ page }) => {
         // Navigate to Run via Menu
-        await page.getByRole('button', { name: /Training Operations/i }).click({ force: true });
-        await page.waitForTimeout(500);
-        await page.getByRole('button', { name: /Cardio Focus/i }).click({ force: true });
+        const trainingOpBtn = page.getByRole('button', { name: /Training Operations/i });
+        await expect(trainingOpBtn).toBeVisible();
+        await trainingOpBtn.click();
+
+        const cardioFocusBtn = page.getByRole('button', { name: /Cardio Focus/i });
+        await expect(cardioFocusBtn).toBeVisible();
+        await cardioFocusBtn.click();
 
         // Click the Run button (formerly "Treadmill")
         await page.getByRole('button', { name: 'Run' }).click({ force: true });
@@ -59,9 +68,10 @@ test.describe('Training & Cardio Flow', () => {
 
     test.skip('should navigate to Training Center', async ({ page }) => {
         // Try different possible button names for Training Path
-        await page.getByRole('button', { name: /Training Operations/i }).click({ force: true });
-        await page.waitForTimeout(500);
-        await page.getByRole('button', { name: /Cardio Focus/i }).click({ force: true });
+        await page.getByRole('button', { name: /Training Operations/i }).click();
+        const cardioBtn = page.getByRole('button', { name: /Cardio Focus/i });
+        await expect(cardioBtn).toBeVisible();
+        await cardioBtn.click();
 
         const trainingBtn = page.getByRole('button', { name: /Training Path|Training Center|Path/i }).first();
         await trainingBtn.click({ force: true });
