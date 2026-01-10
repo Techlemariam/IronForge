@@ -54,21 +54,27 @@ export const LeaderboardHub: React.FC<LeaderboardHubProps> = ({
                 </div>
 
                 {/* Tabs */}
-                <div className="flex gap-2 mb-4">
+                <div className="flex gap-2 mb-4" role="tablist" aria-label="Leaderboard categories">
                     <button
                         onClick={() => setActiveTab("PVP")}
+                        role="tab"
+                        aria-selected={activeTab === "PVP"}
+                        aria-label="View PvP leaderboard"
                         className={`flex-1 px-4 py-2 rounded font-bold text-sm uppercase tracking-wider transition-colors flex items-center justify-center gap-2 ${activeTab === "PVP"
-                                ? "bg-[#ffd700] text-black"
-                                : "bg-zinc-900 text-zinc-500 hover:text-white border border-zinc-700"
+                            ? "bg-[#ffd700] text-black"
+                            : "bg-zinc-900 text-zinc-500 hover:text-white border border-zinc-700"
                             }`}
                     >
                         <Swords className="w-4 h-4" /> PvP
                     </button>
                     <button
                         onClick={() => setActiveTab("FACTION")}
+                        role="tab"
+                        aria-selected={activeTab === "FACTION"}
+                        aria-label="View Faction leaderboard"
                         className={`flex-1 px-4 py-2 rounded font-bold text-sm uppercase tracking-wider transition-colors flex items-center justify-center gap-2 ${activeTab === "FACTION"
-                                ? "bg-[#ffd700] text-black"
-                                : "bg-zinc-900 text-zinc-500 hover:text-white border border-zinc-700"
+                            ? "bg-[#ffd700] text-black"
+                            : "bg-zinc-900 text-zinc-500 hover:text-white border border-zinc-700"
                             }`}
                     >
                         <Users className="w-4 h-4" /> Faction
@@ -76,6 +82,9 @@ export const LeaderboardHub: React.FC<LeaderboardHubProps> = ({
                     <button
                         onClick={() => setActiveTab("FRIENDS")}
                         disabled
+                        role="tab"
+                        aria-selected={activeTab === "FRIENDS"}
+                        aria-label="View Friends leaderboard - Coming soon"
                         className="flex-1 px-4 py-2 rounded font-bold text-sm uppercase tracking-wider bg-zinc-900 text-zinc-700 border border-zinc-800 cursor-not-allowed flex items-center justify-center gap-2"
                     >
                         <Trophy className="w-4 h-4" /> Friends
@@ -85,12 +94,14 @@ export const LeaderboardHub: React.FC<LeaderboardHubProps> = ({
 
                 {/* Filters (only for PVP) */}
                 {activeTab === "PVP" && (
-                    <div className="flex gap-2 text-xs font-bold uppercase tracking-wider">
+                    <div className="flex gap-2 text-xs font-bold uppercase tracking-wider" role="group" aria-label="Leaderboard scope filter">
                         <button
                             onClick={() => setScope("GLOBAL")}
+                            aria-pressed={scope === "GLOBAL"}
+                            aria-label="Filter by global rankings"
                             className={`px-3 py-1 rounded border transition-colors flex items-center gap-1 ${scope === "GLOBAL"
-                                    ? "bg-[#ffd700] text-black border-[#ffd700]"
-                                    : "bg-zinc-900 text-zinc-500 border-zinc-700 hover:border-zinc-500"
+                                ? "bg-[#ffd700] text-black border-[#ffd700]"
+                                : "bg-zinc-900 text-zinc-500 border-zinc-700 hover:border-zinc-500"
                                 }`}
                         >
                             <Globe className="w-3 h-3" /> Global
@@ -98,9 +109,11 @@ export const LeaderboardHub: React.FC<LeaderboardHubProps> = ({
                         {currentCity && (
                             <button
                                 onClick={() => setScope("CITY")}
+                                aria-pressed={scope === "CITY"}
+                                aria-label={`Filter by ${currentCity} rankings`}
                                 className={`px-3 py-1 rounded border transition-colors flex items-center gap-1 ${scope === "CITY"
-                                        ? "bg-[#ffd700] text-black border-[#ffd700]"
-                                        : "bg-zinc-900 text-zinc-500 border-zinc-700 hover:border-zinc-500"
+                                    ? "bg-[#ffd700] text-black border-[#ffd700]"
+                                    : "bg-zinc-900 text-zinc-500 border-zinc-700 hover:border-zinc-500"
                                     }`}
                             >
                                 <MapPin className="w-3 h-3" /> {currentCity}

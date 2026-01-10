@@ -134,3 +134,11 @@ test-results/
 .agent/artifacts/
 .lighthouseci/
 localhost_*.json
+
+playwright-report/
+
+deploy_preview_log.txt
+
+lhci_log.txt
+
+playwright/.auth/
