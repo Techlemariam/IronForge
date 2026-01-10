@@ -15,6 +15,11 @@
   - Ensure all unit tests pass
   - ✅ All type checks passing
 
+- [/] **Complete Sprint 23 Carryover** <!-- agent: /manager | estimate: 0h | source: sprint-23 | blocked: false -->
+  - E2E Test Seeding (2h) → `/infrastructure`
+  - GrowthMetrics Implementation (2h) → `/coder`
+  - ✅ Citadel Navigation Simplification (2h) → `/ui-ux` - Completed 2026-01-10
+
 - [x] **Territory UI Integration** <!-- agent: /ui-ux | estimate: 3h | source: sprint-22 | blocked: false -->
   - Wire `LeaderboardHub` into Citadel dashboard navigation
   - Create `/territories` route using `TerritoryMap` component

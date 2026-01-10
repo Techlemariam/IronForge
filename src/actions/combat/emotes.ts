@@ -143,8 +143,28 @@ export async function sendBattleEmoteAction(
             },
         });
 
-        // TODO: Broadcast to opponent via Supabase Realtime
-        // This would be handled by a separate real-time subscription
+        // Broadcast to opponent via Supabase Realtime
+        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+        const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+        if (supabaseUrl && supabaseServiceKey) {
+            const { createClient } = await import('@supabase/supabase-js');
+            const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
+
+            await supabaseAdmin.channel(`match:${matchId}`).send({
+                type: 'broadcast',
+                event: 'emote',
+                payload: {
+                    senderId: session.user.id,
+                    emoteId,
+                    gifPath: emote.gifPath,
+                    name: emote.name,
+                    timestamp: new Date().toISOString(),
+                },
+            });
+        } else {
+            console.warn('Missing Supabase credentials for realtime broadcast');
+        }
 
         return { success: true };
     } catch (error) {
