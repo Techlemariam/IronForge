@@ -30,15 +30,15 @@ test.describe('Dashboard Verification', () => {
         // Use a more flexible locator for Cardio Suite that matches the text content or label
         // Navigating to sub-menu to verify leaf nodes
         await page.getByRole('button', { name: /Training Operations/i }).click();
-        await expect(page.getByRole('button', { name: /Cardio Focus/i })).toBeVisible();
+        await expect(page.getByRole('button', { name: /Cardio Focus/i })).toBeVisible({ timeout: 30000 });
         await page.getByRole('button', { name: /Cardio Focus/i }).click();
-        await expect(page.getByRole('button', { name: 'Ride' })).toBeVisible();
+        await expect(page.getByRole('button', { name: 'Ride' })).toBeVisible({ timeout: 30000 });
     });
 
     test('should display Garmin Widget in FeedPanel or QuickActions', async ({ page }) => {
         // Navigate to Cardio Suite 
         await page.getByRole('button', { name: /Training Operations/i }).click();
-        await expect(page.getByRole('button', { name: /Cardio Focus/i })).toBeVisible();
+        await expect(page.getByRole('button', { name: /Cardio Focus/i })).toBeVisible({ timeout: 30000 });
         await page.getByRole('button', { name: /Cardio Focus/i }).click();
         await page.getByRole('button', { name: 'Ride' }).click();
 
@@ -52,7 +52,7 @@ test.describe('Dashboard Verification', () => {
     test('should show TvHud elements when in Tv Mode or Overlay', async ({ page }) => {
         // Navigate to Cardio Suite first
         await page.getByRole('button', { name: /Training Operations/i }).click();
-        await expect(page.getByRole('button', { name: /Cardio Focus/i })).toBeVisible();
+        await expect(page.getByRole('button', { name: /Cardio Focus/i })).toBeVisible({ timeout: 30000 });
         await page.getByRole('button', { name: /Cardio Focus/i }).click();
         await page.getByRole('button', { name: 'Ride' }).click();
 

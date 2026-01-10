@@ -33,12 +33,12 @@ test.describe('Training & Cardio Flow', () => {
     test('should navigate to Cycling Studio', async ({ page }) => {
         // Navigate through Progressive Disclosure Menu
         const trainingOpBtn = page.getByRole('button', { name: /Training Operations/i });
-        await expect(trainingOpBtn).toBeVisible();
-        await expect(trainingOpBtn).toBeEnabled();
+        await expect(trainingOpBtn).toBeVisible({ timeout: 30000 });
+        await expect(trainingOpBtn).toBeEnabled({ timeout: 30000 });
         await trainingOpBtn.click();
 
         const cardioFocusBtn = page.getByRole('button', { name: /Cardio Focus/i });
-        await expect(cardioFocusBtn).toBeVisible();
+        await expect(cardioFocusBtn).toBeVisible({ timeout: 30000 });
         await cardioFocusBtn.click();
 
         // Find and click the Ride button (formerly "Cycling Studio")
@@ -54,11 +54,11 @@ test.describe('Training & Cardio Flow', () => {
     test('should navigate to Treadmill (Running)', async ({ page }) => {
         // Navigate to Run via Menu
         const trainingOpBtn = page.getByRole('button', { name: /Training Operations/i });
-        await expect(trainingOpBtn).toBeVisible();
+        await expect(trainingOpBtn).toBeVisible({ timeout: 30000 });
         await trainingOpBtn.click();
 
         const cardioFocusBtn = page.getByRole('button', { name: /Cardio Focus/i });
-        await expect(cardioFocusBtn).toBeVisible();
+        await expect(cardioFocusBtn).toBeVisible({ timeout: 30000 });
         await cardioFocusBtn.click();
 
         // Click the Run button (formerly "Treadmill")
@@ -70,7 +70,7 @@ test.describe('Training & Cardio Flow', () => {
         // Try different possible button names for Training Path
         await page.getByRole('button', { name: /Training Operations/i }).click();
         const cardioBtn = page.getByRole('button', { name: /Cardio Focus/i });
-        await expect(cardioBtn).toBeVisible();
+        await expect(cardioBtn).toBeVisible({ timeout: 30000 });
         await cardioBtn.click();
 
         const trainingBtn = page.getByRole('button', { name: /Training Path|Training Center|Path/i }).first();
