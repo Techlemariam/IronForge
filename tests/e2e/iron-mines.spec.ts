@@ -164,7 +164,8 @@ test.describe('Iron Mines - Co-Op Sessions', () => {
         await page.goto('/dashboard');
 
         // Inject API key
-        await page.evaluate(() => {
+        // Inject API key and Mock User via init script to persist across navigations
+        await page.addInitScript(() => {
             localStorage.setItem('hevy_api_key', 'e2e-dummy-key');
             (window as any).__mockUser = { id: 'test-user', heroName: 'Tester' };
         });
@@ -236,8 +237,10 @@ test.describe('Iron Mines - Ghost Mode', () => {
     test.beforeEach(async ({ page }) => {
         await page.goto('/dashboard');
 
-        await page.evaluate(() => {
+        // Inject API key and Mock User via init script to persist across navigations
+        await page.addInitScript(() => {
             localStorage.setItem('hevy_api_key', 'e2e-dummy-key');
+            (window as any).__mockUser = { id: 'test-user', heroName: 'Tester' };
         });
 
         await page.waitForTimeout(1500);
@@ -340,7 +343,8 @@ test.describe('Iron Mines - LiveSessionHUD Interactions', () => {
     test.beforeEach(async ({ page }) => {
         await page.goto('/dashboard');
 
-        await page.evaluate(() => {
+        // Inject API key and Mock User via init script to persist across navigations
+        await page.addInitScript(() => {
             localStorage.setItem('hevy_api_key', 'e2e-dummy-key');
             (window as any).__mockUser = { id: 'test-user', heroName: 'Tester' };
         });
