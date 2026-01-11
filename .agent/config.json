@@ -157,7 +157,8 @@
       "Write-Output",
       "gh run view --job",
       "npx playwright test --ui",
-      "npx playwright test --debug"
+      "npx playwright test --debug",
+      "*"
     ]
   }
 }

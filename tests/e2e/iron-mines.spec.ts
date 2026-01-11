@@ -31,18 +31,53 @@ test.describe('Iron Mines - Strength Training', () => {
     });
 
     test('should navigate to Iron Mines (Strength Training)', async ({ page }) => {
-        // Navigate through Progressive Disclosure Menu
+        // 1. Navigate to Training Operations (War Room)
         const trainingOpBtn = page.getByRole('button', { name: /Training Operations/i });
         await expect(trainingOpBtn).toBeVisible({ timeout: 30000 });
         await trainingOpBtn.click();
 
-        // Click Strength Focus
-        const strengthBtn = page.getByRole('button', { name: /Strength Focus|Iron Mines|Strength/i });
-        await expect(strengthBtn).toBeVisible({ timeout: 30000 });
-        await strengthBtn.click();
+        // 2. Open Training Center (Codex)
+        // Check if we are already in Training Center or need to click 'Training Center' or similar
+        // Based on ViewRouter, 'training_center' is a view. Easiest path might be via persistent header or menu if available.
+        // BUT, looking at Dashboard, there is usually a button to go to Training Center.
+        // Let's assume 'Training Center' button exists in War Room or Citadel.
+        // Actually, previous test clicked "Strength Focus". Let's see what that does.
+        // If "Strength Focus" leads to Iron Mines directly, it might fail if no active quest.
+        // We need to Find "E2E Strength Test" in the Codex.
 
+        // Let's try to find the "Training Center" button from the main dashboard if possible, or "Strength Focus" if that opens Training Center.
+        // Assuming "Strength Focus" might open Training Center with 'STRENGTH' tab?
+        // Let's look for a button that opens the Codex/Training Center.
+
+        // Fallback: If "Strength Focus" was supposed to go to Iron Mines directly, it implies an active session.
+        // Since we have none, we must go to Training Center.
+
+        // Search for "Training Center" text or button
+        const trainingCenterBtn = page.getByText(/Training Center|Codex/i).first();
+        if (await trainingCenterBtn.isVisible()) {
+            await trainingCenterBtn.click();
+        } else {
+            // Try clicking "Strength Focus" again, maybe it routes to Training Center activePath?
+            const strengthBtn = page.getByRole('button', { name: /Strength Focus|Iron Mines|Strength/i });
+            await strengthBtn.click();
+        }
+
+        // 3. In Training Center, Select "Strength" Tab
+        const strengthTab = page.getByRole('button', { name: /Strength/i }).first();
+        await expect(strengthTab).toBeVisible({ timeout: 10000 });
+        await strengthTab.click();
+
+        // 4. Find and Select "E2E Strength Test"
+        const testWorkoutCard = page.getByText('E2E Strength Test').first();
+        await expect(testWorkoutCard).toBeVisible({ timeout: 10000 });
+        await testWorkoutCard.click();
+
+        // 5. This triggers 'START_GENERATED_QUEST' -> 'iron_mines' view
         // Should see Iron Mines or Workout related elements
-        await expect(page.getByText(/Iron Mines|Dungeon|Workout|Quest/i).first()).toBeVisible({ timeout: 15000 });
+        await expect(page.getByText(/Quest Complete|E2E Strength Test/i).first()).toBeVisible({ timeout: 15000 });
+
+        // Also verify LiveSessionHUD is present (which was the original failure)
+        await expect(page.getByTestId('coop-toggle-button')).toBeVisible({ timeout: 10000 });
     });
 
     test('should display workout HUD elements', async ({ page }) => {
@@ -51,10 +86,21 @@ test.describe('Iron Mines - Strength Training', () => {
         await expect(trainingOpBtn).toBeVisible({ timeout: 30000 });
         await trainingOpBtn.click();
 
-        const strengthBtn = page.getByRole('button', { name: /Strength Focus|Iron Mines/i });
-        if (await strengthBtn.isVisible({ timeout: 5000 })) {
+        const trainingCenterBtn = page.getByText(/Training Center|Codex/i).first();
+        if (await trainingCenterBtn.isVisible()) {
+            await trainingCenterBtn.click();
+        } else {
+            const strengthBtn = page.getByRole('button', { name: /Strength Focus|Iron Mines|Strength/i });
             await strengthBtn.click();
         }
+
+        const strengthTab = page.getByRole('button', { name: /Strength/i }).first();
+        await expect(strengthTab).toBeVisible({ timeout: 10000 });
+        await strengthTab.click();
+
+        const testWorkoutCard = page.getByText('E2E Strength Test').first();
+        await expect(testWorkoutCard).toBeVisible({ timeout: 10000 });
+        await testWorkoutCard.click();
 
         // Wait for HUD elements (if in workout view)
         // These may not be present until a workout is started
@@ -367,12 +413,30 @@ test.describe('Iron Mines - LiveSessionHUD Interactions', () => {
         await page.waitForTimeout(1500);
 
         // Navigate via UI to reach Iron Mines (SPA)
+        // 1. Navigate to Training Operations (War Room)
         const trainingOpBtn = page.getByRole('button', { name: /Training Operations/i });
         await expect(trainingOpBtn).toBeVisible({ timeout: 30000 });
         await trainingOpBtn.click();
-        const strengthBtn = page.getByRole('button', { name: /Strength Focus|Iron Mines|Strength/i });
-        await expect(strengthBtn).toBeVisible({ timeout: 30000 });
-        await strengthBtn.click();
+
+        // 2. Open Training Center (Codex)
+        const trainingCenterBtn = page.getByText(/Training Center|Codex/i).first();
+        if (await trainingCenterBtn.isVisible()) {
+            await trainingCenterBtn.click();
+        } else {
+            const strengthBtn = page.getByRole('button', { name: /Strength Focus|Iron Mines|Strength/i });
+            await strengthBtn.click();
+        }
+
+        // 3. In Training Center, Select "Strength" Tab
+        const strengthTab = page.getByRole('button', { name: /Strength/i }).first();
+        await expect(strengthTab).toBeVisible({ timeout: 10000 });
+        await strengthTab.click();
+
+        // 4. Find and Select "E2E Strength Test"
+        const testWorkoutCard = page.getByText('E2E Strength Test').first();
+        await expect(testWorkoutCard).toBeVisible({ timeout: 10000 });
+        await testWorkoutCard.click();
+
         await page.waitForLoadState('networkidle');
     });
 
