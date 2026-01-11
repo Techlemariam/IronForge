@@ -10,7 +10,7 @@ test.describe('Iron Mines - Strength Training', () => {
             localStorage.setItem('hevy_api_key', 'e2e-dummy-key');
         });
 
-        await page.waitForTimeout(1500);
+        await page.waitForLoadState('networkidle');
 
         // Exit any active views
         const exitButton = page.getByTitle("Close (Esc)");
@@ -24,8 +24,9 @@ test.describe('Iron Mines - Strength Training', () => {
         let attempts = 0;
         while (await onboardingButtons.count() > 0 && attempts < 5) {
             await onboardingButtons.first().click();
-            await page.waitForTimeout(500);
             attempts++;
+            // Check if dismissed
+            if (await onboardingButtons.count() === 0) break;
         }
     });
 
@@ -71,7 +72,8 @@ test.describe('Iron Mines - Strength Training', () => {
         // May need to start a workout first
 
         await page.goto('/dashboard');
-        await page.waitForTimeout(1000);
+        await page.goto('/dashboard');
+        await page.waitForLoadState('networkidle');
 
         // Look for Add Exercise or Plus button (common in workout UIs)
         const addExerciseBtn = page.locator('button:has-text("Add Exercise"), button:has([class*="Plus"]), [aria-label*="add"]').first();
@@ -80,7 +82,8 @@ test.describe('Iron Mines - Strength Training', () => {
             await addExerciseBtn.click();
 
             // Verify Exercise Library modal appears
-            await expect(page.getByText(/Exercise Library|Search exercises/i).first()).toBeVisible({ timeout: 10000 });
+            const modalTitle = page.getByText(/Exercise Library|Search exercises/i).first();
+            await expect(modalTitle).toBeVisible({ timeout: 10000 });
 
             // Search input should be present
             await expect(page.locator('input[placeholder*="Search"]')).toBeVisible();
@@ -101,7 +104,8 @@ test.describe('Iron Mines - Strength Training', () => {
         });
 
         await page.reload();
-        await page.waitForTimeout(1000);
+        await page.reload();
+        await page.waitForLoadState('domcontentloaded');
 
         // Verify state was restored from localStorage
         const savedSession = await page.evaluate(() => localStorage.getItem('iron_mines_session'));
@@ -118,7 +122,8 @@ test.describe('Iron Mines - Strength Training', () => {
             const strengthBtn = page.getByRole('button', { name: /Strength Focus|Iron Mines/i });
             if (await strengthBtn.isVisible({ timeout: 5000 })) {
                 await strengthBtn.click();
-                await page.waitForTimeout(1000);
+                await strengthBtn.click();
+                await page.waitForLoadState('networkidle');
             }
         }
 
@@ -137,7 +142,8 @@ test.describe('Iron Mines - Strength Training', () => {
             const strengthBtn = page.getByRole('button', { name: /Strength Focus|Iron Mines/i });
             if (await strengthBtn.isVisible({ timeout: 5000 })) {
                 await strengthBtn.click();
-                await page.waitForTimeout(1000);
+                await strengthBtn.click();
+                await page.waitForLoadState('networkidle');
             }
         }
 
@@ -147,7 +153,8 @@ test.describe('Iron Mines - Strength Training', () => {
         if (await chartToggle.isVisible({ timeout: 5000 })) {
             // Click to toggle chart
             await chartToggle.click();
-            await page.waitForTimeout(500);
+            // Click to toggle chart
+            await chartToggle.click();
 
             // Chart container should appear
             await expect(page.locator('.recharts-wrapper, [class*="AreaChart"]').first()).toBeVisible({ timeout: 5000 });
@@ -175,36 +182,23 @@ test.describe('Iron Mines - Co-Op Sessions', () => {
         await page.waitForLoadState('networkidle');
 
         // Look for Co-Op/multiplayer UI elements
-        // LiveSessionHUD typically shows a Users icon or "Co-Op" button
-        const coopButton = page.locator('button:has([class*="Users"]), button:has-text("Co-Op"), [data-testid="coop-button"]').first();
+        const coopButton = page.getByTestId('coop-toggle-button');
 
-        // Check if Co-Op UI is present (may not be visible in all states)
-        const isVisible = await coopButton.isVisible({ timeout: 5000 }).catch(() => false);
-
-        if (isVisible) {
-            await expect(coopButton).toBeVisible();
-        } else {
-            // Co-Op button might only appear in active workout - check page content
-            const content = await page.content();
-            console.log('Co-Op UI check:', content.includes('Users') || content.includes('session'));
-        }
+        // Check availability
+        await expect(coopButton).toBeVisible({ timeout: 10000 });
     });
 
     test('should show available sessions list when toggled', async ({ page }) => {
         await page.goto('/strength');
         await page.waitForLoadState('networkidle');
 
-        // Try to find and click the session browser toggle
-        const sessionToggle = page.locator('button:has([class*="Users"]), [aria-label*="session"]').first();
+        // Find and click the session browser toggle
+        const sessionToggle = page.getByTestId('coop-toggle-button');
+        await sessionToggle.click();
 
-        if (await sessionToggle.isVisible({ timeout: 5000 })) {
-            await sessionToggle.click();
-            await page.waitForTimeout(500);
-
-            // Check for session list UI
-            const sessionList = page.locator('[class*="session"], [data-testid="session-list"]');
-            await expect(sessionList.first()).toBeVisible({ timeout: 5000 });
-        }
+        // Check for session list UI
+        const sessionList = page.getByTestId('session-list');
+        await expect(sessionList).toBeVisible({ timeout: 5000 });
     });
 
     test('should display session participants UI', async ({ page }) => {
@@ -221,14 +215,8 @@ test.describe('Iron Mines - Co-Op Sessions', () => {
         });
 
         await page.goto('/strength');
-        await page.waitForTimeout(1000);
-
-        // Check for participant display elements
-        const participantUI = page.locator('[class*="participant"], [data-testid="participant"]');
-
-        // Verify UI can render participants (even if mocked)
-        const content = await page.content();
-        expect(content.length).toBeGreaterThan(0);
+        // Wait for participants to render
+        await expect(page.getByTestId('participant-row')).toHaveCount(2, { timeout: 10000 });
     });
 
     test('should show invite code when session created', async ({ page }) => {
@@ -237,15 +225,12 @@ test.describe('Iron Mines - Co-Op Sessions', () => {
             (window as any).__mockInviteCode = 'ABC123';
         });
 
+        // Note: invite-code data-testid might need to rely on text matching if not explicitly added yet
+        // But we added create-session-button which we can assert
         await page.goto('/strength');
-        await page.waitForTimeout(1000);
 
-        // Look for invite code display
-        const inviteCodeDisplay = page.locator('text=/[A-Z0-9]{6}/, [data-testid="invite-code"]');
-
-        // Check if invite code pattern exists in page
-        const content = await page.content();
-        console.log('Invite code check:', /[A-Z0-9]{6}/.test(content));
+        // Just verify navigation for now as invite code UI changes might be pending
+        await expect(page.getByTestId('coop-toggle-button')).toBeVisible();
     });
 
 });
@@ -347,15 +332,9 @@ test.describe('Iron Mines - Ghost Mode', () => {
         });
 
         await page.goto('/strength');
-        await page.waitForTimeout(1000);
 
-        // Count visible ghost event elements
-        const ghostEvents = page.locator('[class*="ghost"], [data-testid="ghost-event"]');
-        const eventCount = await ghostEvents.count();
-
-        // Should be capped at MAX_VISIBLE_EVENTS (5)
-        console.log('Ghost events displayed:', eventCount, '(max: 5)');
-        expect(eventCount).toBeLessThanOrEqual(10); // Loose check for E2E
+        // Wait for ghost events to render
+        await expect(page.getByTestId('ghost-event-item')).toHaveCount(5, { timeout: 10000 });
     });
 
 });
@@ -377,19 +356,20 @@ test.describe('Iron Mines - LiveSessionHUD Interactions', () => {
         await page.waitForLoadState('networkidle');
 
         // Find session toggle button (Users icon)
-        const toggleButton = page.locator('button:has([class*="Users"]), button[aria-label*="session"]').first();
+        const toggleButton = page.getByTestId('coop-toggle-button');
+        await expect(toggleButton).toBeVisible();
 
-        if (await toggleButton.isVisible({ timeout: 5000 })) {
-            // Click to open
-            await toggleButton.click();
-            await page.waitForTimeout(500);
+        // Click to open
+        await toggleButton.click();
 
-            // Click again to close
-            await toggleButton.click();
-            await page.waitForTimeout(500);
+        // Verify session list appears
+        await expect(page.getByTestId('session-list')).toBeVisible();
 
-            console.log('Session browser toggle test completed');
-        }
+        // Click again to close
+        await toggleButton.click();
+
+        // Verify session list disappears
+        await expect(page.getByTestId('session-list')).toBeHidden();
     });
 
     test('should display session status badges', async ({ page }) => {
@@ -436,21 +416,17 @@ test.describe('Iron Mines - LiveSessionHUD Interactions', () => {
 
     test('should handle session leave action', async ({ page }) => {
         await page.evaluate(() => {
-            (window as any).__mockActiveSession = { id: 'test-session' };
+            (window as any).__mockActiveSession = { id: 'test-session', participants: [{ id: 'me', userId: 'me' }] };
         });
 
         await page.goto('/strength');
-        await page.waitForTimeout(1000);
+
+        // Open toggle first
+        await page.getByTestId('coop-toggle-button').click();
 
         // Look for leave/exit button
-        const leaveButton = page.locator('button:has-text("Leave"), button:has-text("Exit"), button[aria-label*="leave"]').first();
-
-        if (await leaveButton.isVisible({ timeout: 5000 })) {
-            await leaveButton.click();
-            await page.waitForTimeout(500);
-
-            console.log('Session leave action test completed');
-        }
+        const leaveButton = page.getByTestId('leave-session-button');
+        await expect(leaveButton).toBeVisible();
     });
 
 });
