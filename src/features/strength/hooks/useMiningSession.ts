@@ -25,7 +25,17 @@ export const useMiningSession = ({
     onExit,
 }: UseMiningSessionProps) => {
     const [activeSession, setActiveSession] = useState<Session>(initialSession);
-    const [hasCheckedIn, setHasCheckedIn] = useState(false);
+
+    // Lazy init to synchronous check for E2E mocks
+    const [hasCheckedIn, setHasCheckedIn] = useState(() => {
+        if (typeof window !== 'undefined') {
+            const hasMock = (window as any).__mockAutoCheckIn;
+            console.log("[useMiningSession] Checking mock auto-checkin:", { hasMock });
+            if (hasMock) return true;
+        }
+        return false;
+    });
+
     const [completed, setCompleted] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
     const [showAbandonConfirm, setShowAbandonConfirm] = useState(false);

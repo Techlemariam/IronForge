@@ -10,15 +10,35 @@ export interface IronUser {
 }
 
 export function useUser() {
-    const [user, setUser] = useState<IronUser | null>(null);
-    const [loading, setLoading] = useState(true);
+    // Lazy init to synchronously pick up E2E mocks
+    const [user, setUser] = useState<IronUser | null>(() => {
+        if (typeof window !== 'undefined') {
+            const mock = (window as any).__mockUser;
+            console.log("[useUser] Checking mock user:", { mock });
+            if (mock) return mock;
+        }
+        return null;
+    });
+
+    const [loading, setLoading] = useState(() => {
+        if (typeof window !== 'undefined' && (window as any).__mockUser) {
+            return false;
+        }
+        return true;
+    });
 
     useEffect(() => {
         let mounted = true;
 
         async function load() {
             try {
+                // E2E Mock Override - Return early if already handled by lazy init
+                if (typeof window !== 'undefined' && (window as any).__mockUser) {
+                    return;
+                }
+
                 const supabase = createClient();
+
                 const { data: { user: authUser } } = await supabase.auth.getUser();
 
                 if (authUser && mounted) {
