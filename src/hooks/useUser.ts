@@ -18,14 +18,14 @@ export function useUser() {
 
         async function load() {
             try {
-                const supabase = createClient();
-
-                // E2E Mock Override
+                // E2E Mock Override - Check BEFORE createClient to avoid init errors in CI
                 if (typeof window !== 'undefined' && (window as any).__mockUser) {
                     setUser((window as any).__mockUser);
                     setLoading(false);
                     return;
                 }
+
+                const supabase = createClient();
 
                 const { data: { user: authUser } } = await supabase.auth.getUser();
 
