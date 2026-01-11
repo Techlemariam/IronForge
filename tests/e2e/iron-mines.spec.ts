@@ -148,7 +148,6 @@ test.describe('Iron Mines - Strength Training', () => {
 
         if (await chartToggle.isVisible({ timeout: 5000 })) {
             // Click to toggle chart
-            // Click to toggle chart
             await chartToggle.click();
 
             // Chart container should appear
@@ -163,7 +162,6 @@ test.describe('Iron Mines - Co-Op Sessions', () => {
     test.beforeEach(async ({ page }) => {
         await page.goto('/dashboard');
 
-        // Inject API key
         // Inject API key and Mock User via init script to persist across navigations
         await page.addInitScript(() => {
             localStorage.setItem('hevy_api_key', 'e2e-dummy-key');
@@ -172,24 +170,24 @@ test.describe('Iron Mines - Co-Op Sessions', () => {
         });
 
         await page.waitForTimeout(1500);
+
+        // Navigate via UI to reach Iron Mines (SPA)
+        const trainingOpBtn = page.getByRole('button', { name: /Training Operations/i });
+        await expect(trainingOpBtn).toBeVisible({ timeout: 30000 });
+        await trainingOpBtn.click();
+        const strengthBtn = page.getByRole('button', { name: /Strength Focus|Iron Mines|Strength/i });
+        await expect(strengthBtn).toBeVisible({ timeout: 30000 });
+        await strengthBtn.click();
+        await page.waitForLoadState('networkidle');
     });
 
     test('should display Co-Op session creation button', async ({ page }) => {
-        // Navigate to strength/workout view where LiveSessionHUD should be
-        await page.goto('/strength');
-        await page.waitForLoadState('networkidle');
-
         // Look for Co-Op/multiplayer UI elements
         const coopButton = page.getByTestId('coop-toggle-button');
-
-        // Check availability
         await expect(coopButton).toBeVisible({ timeout: 10000 });
     });
 
     test('should show available sessions list when toggled', async ({ page }) => {
-        await page.goto('/strength');
-        await page.waitForLoadState('networkidle');
-
         // Find and click the session browser toggle
         const sessionToggle = page.getByTestId('coop-toggle-button');
         await sessionToggle.click();
@@ -212,7 +210,6 @@ test.describe('Iron Mines - Co-Op Sessions', () => {
             };
         });
 
-        await page.goto('/strength');
         // Wait for participants to render
         await expect(page.getByTestId('participant-row')).toHaveCount(2, { timeout: 10000 });
     });
@@ -222,10 +219,6 @@ test.describe('Iron Mines - Co-Op Sessions', () => {
         await page.evaluate(() => {
             (window as any).__mockInviteCode = 'ABC123';
         });
-
-        // Note: invite-code data-testid might need to rely on text matching if not explicitly added yet
-        // But we added create-session-button which we can assert
-        await page.goto('/strength');
 
         // Just verify navigation for now as invite code UI changes might be pending
         await expect(page.getByTestId('coop-toggle-button')).toBeVisible();
@@ -246,6 +239,15 @@ test.describe('Iron Mines - Ghost Mode', () => {
         });
 
         await page.waitForTimeout(1500);
+
+        // Navigate via UI to reach Iron Mines (SPA)
+        const trainingOpBtn = page.getByRole('button', { name: /Training Operations/i });
+        await expect(trainingOpBtn).toBeVisible({ timeout: 30000 });
+        await trainingOpBtn.click();
+        const strengthBtn = page.getByRole('button', { name: /Strength Focus|Iron Mines|Strength/i });
+        await expect(strengthBtn).toBeVisible({ timeout: 30000 });
+        await strengthBtn.click();
+        await page.waitForLoadState('networkidle');
     });
 
     test('should display GhostOverlay component with mock events', async ({ page }) => {
@@ -270,7 +272,6 @@ test.describe('Iron Mines - Ghost Mode', () => {
             ];
         });
 
-        await page.goto('/strength');
         await page.waitForTimeout(1000);
 
         // Check for GhostOverlay container (typically fixed bottom-right)
@@ -290,7 +291,6 @@ test.describe('Iron Mines - Ghost Mode', () => {
             ];
         });
 
-        await page.goto('/strength');
         await page.waitForTimeout(1000);
 
         // Check for event type icons (Dumbbell, FlameKindling, Ghost)
@@ -311,7 +311,6 @@ test.describe('Iron Mines - Ghost Mode', () => {
             ];
         }, currentUserId);
 
-        await page.goto('/strength');
         await page.waitForTimeout(1000);
 
         // Verify filtering logic (own events should not appear)
@@ -332,8 +331,6 @@ test.describe('Iron Mines - Ghost Mode', () => {
             }));
         });
 
-        await page.goto('/strength');
-
         // Wait for ghost events to render
         await expect(page.getByTestId('ghost-event-item')).toHaveCount(5, { timeout: 10000 });
     });
@@ -353,12 +350,18 @@ test.describe('Iron Mines - LiveSessionHUD Interactions', () => {
         });
 
         await page.waitForTimeout(1500);
+
+        // Navigate via UI to reach Iron Mines (SPA)
+        const trainingOpBtn = page.getByRole('button', { name: /Training Operations/i });
+        await expect(trainingOpBtn).toBeVisible({ timeout: 30000 });
+        await trainingOpBtn.click();
+        const strengthBtn = page.getByRole('button', { name: /Strength Focus|Iron Mines|Strength/i });
+        await expect(strengthBtn).toBeVisible({ timeout: 30000 });
+        await strengthBtn.click();
+        await page.waitForLoadState('networkidle');
     });
 
     test('should toggle session browser visibility', async ({ page }) => {
-        await page.goto('/strength');
-        await page.waitForLoadState('networkidle');
-
         // Find session toggle button (Users icon)
         const toggleButton = page.getByTestId('coop-toggle-button');
         await expect(toggleButton).toBeVisible();
@@ -384,7 +387,6 @@ test.describe('Iron Mines - LiveSessionHUD Interactions', () => {
             ];
         });
 
-        await page.goto('/strength');
         await page.waitForTimeout(1000);
 
         // Look for status indicators
@@ -406,7 +408,6 @@ test.describe('Iron Mines - LiveSessionHUD Interactions', () => {
             };
         });
 
-        await page.goto('/strength');
         await page.waitForTimeout(1000);
 
         // Look for participant count (e.g., "2/4")
@@ -422,8 +423,6 @@ test.describe('Iron Mines - LiveSessionHUD Interactions', () => {
         await page.evaluate(() => {
             (window as any).__mockActiveSession = { id: 'test-session', participants: [{ id: 'me', userId: 'me' }] };
         });
-
-        await page.goto('/strength');
 
         // Open toggle first
         await page.getByTestId('coop-toggle-button').click();
