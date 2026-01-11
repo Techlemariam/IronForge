@@ -19,6 +19,14 @@ export function useUser() {
         async function load() {
             try {
                 const supabase = createClient();
+
+                // E2E Mock Override
+                if (typeof window !== 'undefined' && (window as any).__mockUser) {
+                    setUser((window as any).__mockUser);
+                    setLoading(false);
+                    return;
+                }
+
                 const { data: { user: authUser } } = await supabase.auth.getUser();
 
                 if (authUser && mounted) {

@@ -166,6 +166,7 @@ test.describe('Iron Mines - Co-Op Sessions', () => {
         // Inject API key
         await page.evaluate(() => {
             localStorage.setItem('hevy_api_key', 'e2e-dummy-key');
+            (window as any).__mockUser = { id: 'test-user', heroName: 'Tester' };
         });
 
         await page.waitForTimeout(1500);
@@ -341,6 +342,7 @@ test.describe('Iron Mines - LiveSessionHUD Interactions', () => {
 
         await page.evaluate(() => {
             localStorage.setItem('hevy_api_key', 'e2e-dummy-key');
+            (window as any).__mockUser = { id: 'test-user', heroName: 'Tester' };
         });
 
         await page.waitForTimeout(1500);
