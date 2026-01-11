@@ -12,8 +12,10 @@ export interface IronUser {
 export function useUser() {
     // Lazy init to synchronously pick up E2E mocks
     const [user, setUser] = useState<IronUser | null>(() => {
-        if (typeof window !== 'undefined' && (window as any).__mockUser) {
-            return (window as any).__mockUser;
+        if (typeof window !== 'undefined') {
+            const mock = (window as any).__mockUser;
+            console.log("[useUser] Checking mock user:", { mock });
+            if (mock) return mock;
         }
         return null;
     });

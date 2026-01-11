@@ -28,8 +28,10 @@ export const useMiningSession = ({
 
     // Lazy init to synchronous check for E2E mocks
     const [hasCheckedIn, setHasCheckedIn] = useState(() => {
-        if (typeof window !== 'undefined' && (window as any).__mockAutoCheckIn) {
-            return true;
+        if (typeof window !== 'undefined') {
+            const hasMock = (window as any).__mockAutoCheckIn;
+            console.log("[useMiningSession] Checking mock auto-checkin:", { hasMock });
+            if (hasMock) return true;
         }
         return false;
     });

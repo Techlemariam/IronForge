@@ -70,7 +70,14 @@ export const LiveSessionHUD: React.FC<LiveSessionHUDProps> = ({ onSessionJoin })
         setActiveSession(null);
     };
 
-    if (!user) return null;
+    if (!user) {
+        if (typeof window !== 'undefined') {
+            console.log("[LiveSessionHUD] Render aborted: No user.", { mockUser: (window as any).__mockUser });
+        }
+        return null;
+    }
+
+    console.log("[LiveSessionHUD] Rendering", { user: user.id });
 
     return (
         <div className="fixed top-4 right-4 z-50 flex flex-col items-end pointer-events-auto">
