@@ -72,7 +72,6 @@ test.describe('Iron Mines - Strength Training', () => {
         // May need to start a workout first
 
         await page.goto('/dashboard');
-        await page.goto('/dashboard');
         await page.waitForLoadState('networkidle');
 
         // Look for Add Exercise or Plus button (common in workout UIs)
@@ -104,7 +103,6 @@ test.describe('Iron Mines - Strength Training', () => {
         });
 
         await page.reload();
-        await page.reload();
         await page.waitForLoadState('domcontentloaded');
 
         // Verify state was restored from localStorage
@@ -121,7 +119,6 @@ test.describe('Iron Mines - Strength Training', () => {
 
             const strengthBtn = page.getByRole('button', { name: /Strength Focus|Iron Mines/i });
             if (await strengthBtn.isVisible({ timeout: 5000 })) {
-                await strengthBtn.click();
                 await strengthBtn.click();
                 await page.waitForLoadState('networkidle');
             }
@@ -142,7 +139,6 @@ test.describe('Iron Mines - Strength Training', () => {
             const strengthBtn = page.getByRole('button', { name: /Strength Focus|Iron Mines/i });
             if (await strengthBtn.isVisible({ timeout: 5000 })) {
                 await strengthBtn.click();
-                await strengthBtn.click();
                 await page.waitForLoadState('networkidle');
             }
         }
@@ -152,7 +148,6 @@ test.describe('Iron Mines - Strength Training', () => {
 
         if (await chartToggle.isVisible({ timeout: 5000 })) {
             // Click to toggle chart
-            await chartToggle.click();
             // Click to toggle chart
             await chartToggle.click();
 
