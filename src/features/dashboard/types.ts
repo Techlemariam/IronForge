@@ -22,6 +22,7 @@ import { HevyExerciseTemplate, HevyRoutine } from "@/types/hevy";
 import { ChallengeWithStatus } from "@/components/gamification/QuestBoard";
 import { TitanState } from "@/actions/titan/core";
 import { TrainingContext } from "@/services/data/TrainingContextService";
+import { LeaderboardEntry } from "@/actions/social/leaderboards";
 
 export type View =
   | "citadel"
@@ -79,7 +80,8 @@ export interface DashboardClientProps {
   titanState?: TitanState | null;
   activeDuel?: any;
   liteMode?: boolean;
-  leaderboardData?: { rank: number; userId: string; name: string; score: number; faction?: string }[];
+
+  leaderboardData?: LeaderboardEntry[];
 }
 
 export interface DashboardState {

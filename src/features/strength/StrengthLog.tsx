@@ -4,13 +4,17 @@ import React, { useState } from "react";
 import { SetRow } from "./SetRow";
 import { logSetAction, SetData } from "@/actions/training/strength";
 import { Plus, Save, Dumbbell } from "lucide-react";
-import { useToast } from "@/hooks/use-toast"; // Assuming hook exists
+import { useToast } from "@/hooks/use-toast";
+import { useMaxReps } from "@/hooks/useMaxReps";
+import { PRBadge } from "@/components/ui/PRBadge";
+import { PRCelebration } from "@/components/ui/PRCelebration";
 
 interface ExerciseLogProps {
   userId: string;
   exerciseId: string;
   exerciseName: string;
   initialSets?: SetData[];
+  currentWeight?: number;
 }
 
 export const StrengthLog: React.FC<ExerciseLogProps> = ({
@@ -18,9 +22,16 @@ export const StrengthLog: React.FC<ExerciseLogProps> = ({
   exerciseId,
   exerciseName,
   initialSets = [],
+  currentWeight,
 }) => {
   const [sets, setSets] = useState<SetData[]>(initialSets);
   const { toast } = useToast();
+
+  // Max Reps PR tracking
+  const { maxReps, isLoading, checkPR } = useMaxReps(exerciseId, currentWeight);
+  const [showCelebration, setShowCelebration] = useState(false);
+  const [newPRReps, setNewPRReps] = useState(0);
+  const [previousMax, setPreviousMax] = useState<number | null>(null);
 
   const addSet = () => {
     // Copy previous set values for convenience
@@ -50,6 +61,16 @@ export const StrengthLog: React.FC<ExerciseLogProps> = ({
     // Optimistic update
     handleSetChange(index, { completedAt: new Date().toISOString() });
 
+    // Check for rep PR
+    if (set.reps && set.setType === "failure") {
+      const isPR = await checkPR(set.reps);
+      if (isPR) {
+        setPreviousMax(maxReps);
+        setNewPRReps(set.reps);
+        setShowCelebration(true);
+      }
+    }
+
     // Server Action
     const result = await logSetAction(userId, exerciseId, set);
     if (!result.success) {
@@ -58,9 +79,6 @@ export const StrengthLog: React.FC<ExerciseLogProps> = ({
         description: "Failed to log set",
         variant: "destructive",
       });
-      // Revert optimistic?
-    } else {
-      // Maybe play sound
     }
   };
 
@@ -75,6 +93,14 @@ export const StrengthLog: React.FC<ExerciseLogProps> = ({
           History
         </button>
       </div>
+
+      {/* PR Badge */}
+      <PRBadge
+        maxReps={maxReps}
+        weight={currentWeight}
+        isLoading={isLoading}
+        className="mb-4"
+      />
 
       <div className="space-y-1">
         <div className="grid grid-cols-12 gap-2 text-xs text-zinc-500 uppercase font-bold px-2 mb-2">
@@ -106,6 +132,15 @@ export const StrengthLog: React.FC<ExerciseLogProps> = ({
         <Plus className="w-4 h-4" />
         Add Set
       </button>
+
+      {/* PR Celebration Modal */}
+      <PRCelebration
+        isVisible={showCelebration}
+        newReps={newPRReps}
+        previousReps={previousMax}
+        exerciseName={exerciseName}
+        onClose={() => setShowCelebration(false)}
+      />
     </div>
   );
 };

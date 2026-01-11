@@ -1,38 +1,41 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { Timer, Play, Pause, RotateCcw } from "lucide-react";
-import { cn } from "@/lib/utils"; // Assuming cn exists, else standard string concat
+import React, { useEffect } from "react";
+import { Timer, Play, Pause, RotateCcw, Plus, Minus } from "lucide-react";
+import { useRestTimer } from "@/hooks/useRestTimer";
+import { cn } from "@/lib/utils";
+import { playSound } from "@/utils"; // Ensure this exists or mock it
 
 interface RestTimerProps {
-  initialSeconds?: number;
-  autoStart?: boolean;
-  onComplete?: () => void;
+  className?: string;
 }
 
-export const RestTimer: React.FC<RestTimerProps> = ({
-  initialSeconds = 90,
-  autoStart = false,
-  onComplete,
-}) => {
-  const [timeLeft, setTimeLeft] = useState(initialSeconds);
-  const [isActive, setIsActive] = useState(autoStart);
+export const RestTimer: React.FC<RestTimerProps> = ({ className }) => {
+  const { isActive, timeLeft, start, stop, addTime, reset, check, initialSeconds, hasFinished } = useRestTimer();
+  const [hasPlayedSound, setHasPlayedSound] = React.useState(false);
 
+  // Tick effect
   useEffect(() => {
-    let interval: NodeJS.Timeout | null = null;
-    if (isActive && timeLeft > 0) {
+    let interval: NodeJS.Timeout;
+    if (isActive) {
       interval = setInterval(() => {
-        setTimeLeft((prev) => prev - 1);
+        check();
       }, 1000);
-    } else if (timeLeft === 0 && isActive) {
-      setIsActive(false);
-      onComplete?.();
-      // Play sound?
     }
-    return () => {
-      if (interval) clearInterval(interval);
-    };
-  }, [isActive, timeLeft, onComplete]);
+    return () => clearInterval(interval);
+  }, [isActive, check]);
+
+  // Sound effect on completion
+  useEffect(() => {
+    if (hasFinished && !hasPlayedSound) {
+      playSound("ding");
+      setHasPlayedSound(true);
+    }
+    // Reset flag when timer restarts
+    if (!hasFinished && hasPlayedSound) {
+      setHasPlayedSound(false);
+    }
+  }, [hasFinished, hasPlayedSound]);
 
   const formatTime = (seconds: number) => {
     const m = Math.floor(seconds / 60);
@@ -40,51 +43,60 @@ export const RestTimer: React.FC<RestTimerProps> = ({
     return `${m}:${s < 10 ? "0" : ""}${s}`;
   };
 
-  const addTime = (sec: number) => setTimeLeft((prev) => prev + sec);
+  if (!isActive && timeLeft === 90) {
+    // Minimal state? Or always show?
+  }
 
   return (
-    <div className="bg-black/30 backdrop-blur-md rounded-xl p-4 border border-white/5 flex flex-col items-center gap-4">
+    <div className={cn("bg-zinc-900 border border-white/5 rounded-xl p-4 flex flex-col items-center gap-4 shadow-lg", className)}>
       <div className="relative">
-        <div className="text-6xl font-black text-white font-mono tracking-tighter tabular-nums">
+        <div className={cn(
+          "text-6xl font-black font-mono tracking-tighter tabular-nums transition-colors",
+          isActive ? "text-magma" : "text-zinc-600"
+        )}>
           {formatTime(timeLeft)}
         </div>
-        <Timer className="absolute -top-2 -right-6 w-6 h-6 text-zinc-600" />
+        <Timer className={cn(
+          "absolute -top-2 -right-6 w-6 h-6",
+          isActive ? "text-magma animate-pulse" : "text-zinc-700"
+        )} />
       </div>
 
-      <div className="flex items-center gap-2 w-full justify-center">
+      <div className="flex items-center gap-3 w-full justify-center">
         <button
-          onClick={() => setIsActive(!isActive)}
-          className="p-3 bg-magma text-black rounded-full hover:bg-magma/80 transition-colors"
+          onClick={() => isActive ? stop() : start(timeLeft > 0 ? timeLeft : 90)}
+          className={cn(
+            "p-4 rounded-full transition-all shadow-lg active:scale-95",
+            isActive ? "bg-zinc-800 text-zinc-400 hover:text-white" : "bg-magma text-black hover:bg-magma/90"
+          )}
         >
           {isActive ? (
-            <Pause className="w-5 h-5 fill-current" />
+            <Pause className="w-6 h-6 fill-current" />
           ) : (
-            <Play className="w-5 h-5 fill-current ml-0.5" />
+            <Play className="w-6 h-6 fill-current ml-1" />
           )}
         </button>
+
         <button
-          onClick={() => {
-            setIsActive(false);
-            setTimeLeft(initialSeconds);
-          }}
-          className="p-3 bg-white/5 text-zinc-400 rounded-full hover:text-white transition-colors"
+          onClick={() => reset()}
+          className="p-4 bg-zinc-800 text-zinc-500 rounded-full hover:bg-zinc-700 hover:text-white transition-colors"
         >
-          <RotateCcw className="w-5 h-5" />
+          <RotateCcw className="w-6 h-6" />
         </button>
       </div>
 
       <div className="flex gap-2">
         <button
-          onClick={() => addTime(30)}
-          className="px-3 py-1 bg-white/5 rounded-md text-xs font-bold text-zinc-400 hover:text-white"
+          onClick={() => addTime(-10)}
+          className="px-3 py-1.5 bg-zinc-800 rounded-lg text-xs font-bold text-zinc-500 hover:text-white flex items-center gap-1 transition-colors"
         >
-          +30s
+          <Minus className="w-3 h-3" /> 10s
         </button>
         <button
-          onClick={() => addTime(-30)}
-          className="px-3 py-1 bg-white/5 rounded-md text-xs font-bold text-zinc-400 hover:text-white"
+          onClick={() => addTime(30)}
+          className="px-3 py-1.5 bg-zinc-800 rounded-lg text-xs font-bold text-zinc-500 hover:text-white flex items-center gap-1 transition-colors"
         >
-          -30s
+          <Plus className="w-3 h-3" /> 30s
         </button>
       </div>
     </div>

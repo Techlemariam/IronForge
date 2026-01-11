@@ -16,7 +16,7 @@ import { ChallengeType } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
 export interface ChallengeCriteria {
-  metric: "volume_kg" | "workouts" | "distance_km";
+  metric: "volume_kg" | "workouts" | "distance_km" | "duration_min";
   target: number;
   unit?: string;
 }

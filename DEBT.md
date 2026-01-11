@@ -51,7 +51,7 @@
 | 2026-01-01 | `src/app/api/cron/daily-oracle/route.ts` | Missing Sentry Monitoring | @infrastructure | ✅ Resolved |
 | 2026-01-03 | `src/services/game/PowerRatingService.ts` | Hardcoded adherence (MVP). Link to WeeklyPlan required for V2. | @architect | ✅ Resolved |
 | 2026-01-03 | `src/actions/training.ts` | Hardcoded 5 XP for Battle Pass. Needs dynamic calculation. | @game-designer | ✅ Resolved |
-| 2026-01-03 | `src/app/api/webhooks/strava/route.ts` | Missing comprehensive test coverage for webhook logic. | @qa | ✅ Resolved |
+| 2026-01-04 | `src/app/api/webhooks/strava/route.ts` | Missing comprehensive test coverage for webhook logic. | @qa | ✅ Resolved |
 | 2026-01-04 | `src/**/*` | Resolved 50+ `any` usages in `OracleService`, `PlannerService`, `GameContextService`, `PowerRatingService`, and `Prisma` client. Improved overall project type safety. | @cleanup | ✅ Resolved |
 | 2026-01-04 | `src/actions/training.ts` | `logTitanSet` has high complexity (Level, BP, Challenge, Log). Extract to services. | @architect | ✅ Resolved |
 | 2026-01-05 | `tests/e2e/cardio-duels.spec.ts` | SKIPPED: 3 tests require seeded mock opponents. Add E2E DB seeding step to CI. | @infrastructure | ⚠️ Open |
@@ -63,7 +63,7 @@
 | 2026-01-05 | `src/**/*` | Only 3 files use `aria-label`. Add accessibility labels to all interactive elements. | @ui-ux | ⚠️ Open |
 | 2026-01-06 | `src/features/oracle/OracleChat.tsx` | Improved `context` prop from `any` to `Record<string, unknown>`. @ts-ignore and `as any` casts remain due to @ai-sdk/react type limitations. | @cleanup | ⚠️ Deferred (Lib) |
 | 2026-01-06 | `package.json` | PR #31 (Dependencies) deferred (Zod 4, ESLint 9) | @infrastructure | ⚠️ Deferred |
-| 2026-01-06 | `src/services/analytics/GrowthMetricsService.ts` | `getSocialEngagement` is a placeholder. Requires 'Friendship' model implementation. | @architect | ⚠️ Open |
+| 2026-01-06 | `src/services/analytics/GrowthMetricsService.ts` | `getSocialEngagement` is a placeholder. Requires 'Friendship' model implementation. | @architect | ✅ Resolved (Verified, added tests) |
 | 2026-01-06 | `src/features/game/TheForge.tsx` | Mock inventory state and 'optimistic update' logic needs proper hook/server-sync. | @coder | ⚠️ Open |
 | 2026-01-06 | `src/actions/economy/forge.ts` | `getInventory` uses mock data. DB schema update needed for stackable resources. | @architect | ⚠️ Deferred (Schema) |
 | 2026-01-06 | `src/features/game/hooks/useSkillEffects.ts` | Keystone selection logic only supports first keystone. Needs multi-keystone/switching support. | @game-designer | ⚠️ Open |
@@ -72,6 +72,7 @@
 | 2026-01-06 | `src/services/oracle.ts` | Deprecate LLM-based logic in favor of deterministic `GoalPriorityEngine`. | @architect | ✅ Resolved |
 | 2026-01-07 | `src/data/workouts.ts` | Only contains cardio (RUN/BIKE/SWIM). Strength workouts need dynamic generation from `exerciseDb.ts`. | @game-designer | ⚠️ Open |
 | 2026-01-07 | `src/lib/intervals.ts` | `rampRate`, `zone_times`, `icu_training_load` unused. See GPE spec Enhancement Roadmap. | @titan-coach | ⚠️ Open |
+| 2026-01-10 | `src/actions/training/cardio.ts` | Mock HR values (140/170) hardcoded in `CardioStudio` save logic. Needs real tracking array. | @titan-coach | ⚠️ Open |
 
 ---
 

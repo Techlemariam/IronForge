@@ -665,6 +665,38 @@ function CardioCockpit({
     }
   }, [STORAGE_KEYS]);
 
+  // Handle Exit with Save
+  const handleExit = async () => {
+    if (!userId) {
+      onClose();
+      return;
+    }
+
+    // Only save if meaningful duration (> 1 min)
+    if (sessionDuration > 60) {
+      toast.info("Saving Cardio Session...");
+      try {
+        const { saveCardioSessionAction } = await import("@/actions/training/cardio");
+        // Determine type
+        const type = mode === "cycling" ? "CYCLE" : "RUN";
+
+        await saveCardioSessionAction(userId, {
+          type,
+          durationSec: sessionDuration,
+          distanceKm: totalDistanceKm,
+          avgHr: 140, // Mock for now, need tracking array
+          maxHr: 170,  // Mock    
+        });
+        toast.success("Cardio Session Saved!");
+      } catch (e) {
+        console.error("Failed to save cardio", e);
+        toast.error("Failed to save session");
+      }
+    }
+
+    onClose();
+  };
+
   // Buff Timer Logic
   useEffect(() => {
     const timer = setInterval(() => {
@@ -793,55 +825,45 @@ function CardioCockpit({
           </button>
         </div>
 
-        {/* Garmin Widget (Placeholder/Mock) */}
-        <div className="hidden lg:block ml-4">
-          <GarminWidget data={{
-            bodyBattery: 85,
-            stressLevel: 24,
-            restingHeartRate: 55,
-            sleepScore: 88,
-            lastSyncAt: new Date(),
-            source: "DIRECT"
-          }} variant="compact" />
-        </div>
+        <div className="flex items-center gap-2">
+          {/* Layout Switcher */}
+          <div className="flex items-center gap-2 bg-zinc-900 rounded-lg p-1 hidden lg:flex">
+            {LAYOUT_OPTIONS.map(({ mode: m, label, shortcut }) => (
+              <button
+                key={m}
+                onClick={() => setLayoutMode(m)}
+                className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-all ${layoutMode === m
+                  ? "bg-gradient-to-r from-zinc-700 to-zinc-600 text-white shadow-lg"
+                  : "text-zinc-400 hover:text-white hover:bg-zinc-800"
+                  }`}
+                title={`${label} (${shortcut})`}
+              >
+                {LAYOUT_ICONS[m]}
+                <span className="hidden md:inline">{label}</span>
+              </button>
+            ))}
+          </div>
 
-        {/* Layout Switcher */}
-        <div className="flex items-center gap-2 bg-zinc-900 rounded-lg p-1">
-          {LAYOUT_OPTIONS.map(({ mode: m, label, shortcut }) => (
+          {/* Podcast Toggle */}
+          {pocketCastsConnected && (
             <button
-              key={m}
-              onClick={() => setLayoutMode(m)}
-              className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-all ${layoutMode === m
-                ? "bg-gradient-to-r from-zinc-700 to-zinc-600 text-white shadow-lg"
-                : "text-zinc-400 hover:text-white hover:bg-zinc-800"
+              onClick={() => setShowPodcast(!showPodcast)}
+              className={`p-2 ml-2 rounded-lg transition-colors ${showPodcast ? "bg-red-600 text-white" : "bg-zinc-800 text-zinc-400 hover:text-white"
                 }`}
-              title={`${label} (${shortcut})`}
+              title="Toggle Podcast Player"
             >
-              {LAYOUT_ICONS[m]}
-              <span className="hidden md:inline">{label}</span>
+              <Podcast className="w-5 h-5" />
             </button>
-          ))}
-        </div>
+          )
+          }
 
-        {/* Podcast Toggle */}
-        {pocketCastsConnected && (
           <button
-            onClick={() => setShowPodcast(!showPodcast)}
-            className={`p-2 ml-2 rounded-lg transition-colors ${showPodcast ? "bg-red-600 text-white" : "bg-zinc-800 text-zinc-400 hover:text-white"
-              }`}
-            title="Toggle Podcast Player"
+            onClick={handleExit}
+            className="bg-red-900/40 hover:bg-red-900/60 p-2 rounded-lg text-red-200 transition-colors"
           >
-            <Podcast className="w-5 h-5" />
+            <X className="w-5 h-5" />
           </button>
-        )}
-
-        <button
-          onClick={onClose}
-          className="p-2 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-lg transition-colors"
-          title="Close (Esc)"
-        >
-          <X className="w-6 h-6" />
-        </button>
+        </div>
       </header>
 
       {/* Video URL Input Bar */}
@@ -862,74 +884,78 @@ function CardioCockpit({
           Load
         </button>
 
-        {videoUrl && (
-          <div className="flex items-center gap-1 border-l border-zinc-700 pl-3">
-            <button
-              onClick={() => setIsPlaying(!isPlaying)}
-              className="p-2 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-lg transition-colors"
-              title={`${isPlaying ? "Pause" : "Play"} (Space)`}
-            >
-              {isPlaying ? (
-                <Pause className="w-4 h-4" />
-              ) : (
-                <Play className="w-4 h-4" />
-              )}
-            </button>
-            <button
-              onClick={() => setIsMuted(!isMuted)}
-              className="p-2 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-lg transition-colors"
-              title={`${isMuted ? "Unmute" : "Mute"} (M)`}
-            >
-              {isMuted ? (
-                <VolumeX className="w-4 h-4" />
-              ) : (
-                <Volume2 className="w-4 h-4" />
-              )}
-            </button>
-            <button
-              onClick={handleClearVideo}
-              className="p-2 text-zinc-400 hover:text-red-400 hover:bg-zinc-800 rounded-lg transition-colors"
-              title="Clear Video"
-            >
-              <RotateCcw className="w-4 h-4" />
-            </button>
-          </div>
-        )}
-      </div>
+        {
+          videoUrl && (
+            <div className="flex items-center gap-1 border-l border-zinc-700 pl-3">
+              <button
+                onClick={() => setIsPlaying(!isPlaying)}
+                className="p-2 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-lg transition-colors"
+                title={`${isPlaying ? "Pause" : "Play"} (Space)`}
+              >
+                {isPlaying ? (
+                  <Pause className="w-4 h-4" />
+                ) : (
+                  <Play className="w-4 h-4" />
+                )}
+              </button>
+              <button
+                onClick={() => setIsMuted(!isMuted)}
+                className="p-2 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-lg transition-colors"
+                title={`${isMuted ? "Unmute" : "Mute"} (M)`}
+              >
+                {isMuted ? (
+                  <VolumeX className="w-4 h-4" />
+                ) : (
+                  <Volume2 className="w-4 h-4" />
+                )}
+              </button>
+              <button
+                onClick={handleClearVideo}
+                className="p-2 text-zinc-400 hover:text-red-400 hover:bg-zinc-800 rounded-lg transition-colors"
+                title="Clear Video"
+              >
+                <RotateCcw className="w-4 h-4" />
+              </button>
+            </div>
+          )
+        }
+      </div >
 
       {/* Mission Briefing Panel */}
-      {activeWorkout && (
-        <div className="bg-zinc-900/50 px-6 py-3 border-b border-zinc-800/50 flex items-start justify-between">
-          <div>
-            <div className="flex items-center gap-2 mb-1">
-              <h3 className="text-sm font-bold text-white uppercase tracking-wider">
-                {activeWorkout.name}
-              </h3>
-              <span className="text-[10px] bg-zinc-800 text-zinc-400 px-1.5 py-0.5 rounded border border-zinc-700 font-mono">
-                {activeWorkout.durationLabel}
-              </span>
+      {
+        activeWorkout && (
+          <div className="bg-zinc-900/50 px-6 py-3 border-b border-zinc-800/50 flex items-start justify-between">
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <h3 className="text-sm font-bold text-white uppercase tracking-wider">
+                  {activeWorkout.name}
+                </h3>
+                <span className="text-[10px] bg-zinc-800 text-zinc-400 px-1.5 py-0.5 rounded border border-zinc-700 font-mono">
+                  {activeWorkout.durationLabel}
+                </span>
+              </div>
+              <p className="text-xs text-zinc-400 max-w-2xl">
+                {activeWorkout.description}
+              </p>
             </div>
-            <p className="text-xs text-zinc-400 max-w-2xl">
-              {activeWorkout.description}
-            </p>
-          </div>
 
-          {activeWorkout.intervalsIcuString && (
-            <button
-              onClick={handleCopyIntervals}
-              className="flex items-center gap-2 px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 rounded text-xs text-zinc-300 transition-colors"
-              title="Copy string for Intervals.icu builder"
-            >
-              {copied ? (
-                <Check className="w-3 h-3 text-green-400" />
-              ) : (
-                <Clipboard className="w-3 h-3" />
-              )}
-              {copied ? "Copied!" : "Copy Intervals String"}
-            </button>
-          )}
-        </div>
-      )}
+            {activeWorkout.intervalsIcuString && (
+              <button
+                onClick={handleCopyIntervals}
+                className="flex items-center gap-2 px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 rounded text-xs text-zinc-300 transition-colors"
+                title="Copy string for Intervals.icu builder"
+              >
+                {copied ? (
+                  <Check className="w-3 h-3 text-green-400" />
+                ) : (
+                  <Clipboard className="w-3 h-3" />
+                )}
+                {copied ? "Copied!" : "Copy Intervals String"}
+              </button>
+            )}
+          </div>
+        )
+      }
 
       {/* Main Content Area */}
       <div className="flex-1 relative flex overflow-hidden">
@@ -1106,6 +1132,6 @@ function CardioCockpit({
           <span className="text-zinc-600">Layout</span>
         </div>
       </footer>
-    </div>
+    </div >
   );
 }

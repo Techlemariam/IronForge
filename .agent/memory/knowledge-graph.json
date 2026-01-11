@@ -21,6 +21,11 @@
       "path": "src/actions/combat/emotes.ts"
     },
     {
+      "id": "src/actions/dashboard/titans-choice.ts",
+      "type": "service",
+      "path": "src/actions/dashboard/titans-choice.ts"
+    },
+    {
       "id": "src/actions/economy/armory.ts",
       "type": "service",
       "path": "src/actions/economy/armory.ts"
@@ -266,6 +271,11 @@
       "path": "src/actions/social/friends.ts"
     },
     {
+      "id": "src/actions/social/leaderboards.ts",
+      "type": "service",
+      "path": "src/actions/social/leaderboards.ts"
+    },
+    {
       "id": "src/actions/social/live-feed.ts",
       "type": "service",
       "path": "src/actions/social/live-feed.ts"
@@ -336,6 +346,11 @@
       "path": "src/actions/systems/world.ts"
     },
     {
+      "id": "src/actions/territory.ts",
+      "type": "service",
+      "path": "src/actions/territory.ts"
+    },
+    {
       "id": "src/actions/titan/body-metrics.ts",
       "type": "service",
       "path": "src/actions/titan/body-metrics.ts"
@@ -396,6 +411,11 @@
       "path": "src/actions/training/calendar.ts"
     },
     {
+      "id": "src/actions/training/cardio.ts",
+      "type": "service",
+      "path": "src/actions/training/cardio.ts"
+    },
+    {
       "id": "src/actions/training/core.ts",
       "type": "service",
       "path": "src/actions/training/core.ts"
@@ -429,6 +449,11 @@
       "id": "src/actions/training/getIronForgeStrengthLogs.ts",
       "type": "service",
       "path": "src/actions/training/getIronForgeStrengthLogs.ts"
+    },
+    {
+      "id": "src/actions/training/max-reps.ts",
+      "type": "service",
+      "path": "src/actions/training/max-reps.ts"
     },
     {
       "id": "src/actions/training/notes.ts",
@@ -594,6 +619,11 @@
       "id": "src/app/(authenticated)/strength/page.tsx",
       "type": "module",
       "path": "src/app/(authenticated)/strength/page.tsx"
+    },
+    {
+      "id": "src/app/(authenticated)/territories/page.tsx",
+      "type": "module",
+      "path": "src/app/(authenticated)/territories/page.tsx"
     },
     {
       "id": "src/app/(main)/territory/page.tsx",
@@ -861,9 +891,19 @@
       "path": "src/app/welcome/page.tsx"
     },
     {
+      "id": "src/app/welcome/WelcomeClient.tsx",
+      "type": "module",
+      "path": "src/app/welcome/WelcomeClient.tsx"
+    },
+    {
       "id": "src/components/AchievementToast.tsx",
       "type": "component",
       "path": "src/components/AchievementToast.tsx"
+    },
+    {
+      "id": "src/components/charts/ExerciseProgressChart.tsx",
+      "type": "component",
+      "path": "src/components/charts/ExerciseProgressChart.tsx"
     },
     {
       "id": "src/components/core/PersistentHeader.tsx",
@@ -1101,6 +1141,11 @@
       "path": "src/components/ui/card.tsx"
     },
     {
+      "id": "src/components/ui/DemoVideoModal.tsx",
+      "type": "component",
+      "path": "src/components/ui/DemoVideoModal.tsx"
+    },
+    {
       "id": "src/components/ui/dialog.tsx",
       "type": "component",
       "path": "src/components/ui/dialog.tsx"
@@ -1166,6 +1211,16 @@
       "path": "src/components/ui/popover.tsx"
     },
     {
+      "id": "src/components/ui/PRBadge.tsx",
+      "type": "component",
+      "path": "src/components/ui/PRBadge.tsx"
+    },
+    {
+      "id": "src/components/ui/PRCelebration.tsx",
+      "type": "component",
+      "path": "src/components/ui/PRCelebration.tsx"
+    },
+    {
       "id": "src/components/ui/progress.tsx",
       "type": "component",
       "path": "src/components/ui/progress.tsx"
@@ -1216,6 +1271,11 @@
       "path": "src/components/ui/Toggle.tsx"
     },
     {
+      "id": "src/components/ui/TutorialTooltip.tsx",
+      "type": "component",
+      "path": "src/components/ui/TutorialTooltip.tsx"
+    },
+    {
       "id": "src/components/ui/TvHud.tsx",
       "type": "component",
       "path": "src/components/ui/TvHud.tsx"
@@ -1224,6 +1284,11 @@
       "id": "src/components/workout/QuickLogWidget.tsx",
       "type": "component",
       "path": "src/components/workout/QuickLogWidget.tsx"
+    },
+    {
+      "id": "src/config/tutorialTooltips.ts",
+      "type": "module",
+      "path": "src/config/tutorialTooltips.ts"
     },
     {
       "id": "src/context/AchievementContext.tsx",
@@ -1421,9 +1486,19 @@
       "path": "src/features/dashboard/logic/dashboardReducer.ts"
     },
     {
+      "id": "src/features/dashboard/TitansChoice.tsx",
+      "type": "module",
+      "path": "src/features/dashboard/TitansChoice.tsx"
+    },
+    {
       "id": "src/features/dashboard/types.ts",
       "type": "type",
       "path": "src/features/dashboard/types.ts"
+    },
+    {
+      "id": "src/features/dashboard/widgets/StrengthLeaderboardPanel.tsx",
+      "type": "module",
+      "path": "src/features/dashboard/widgets/StrengthLeaderboardPanel.tsx"
     },
     {
       "id": "src/features/dashboard/__tests__/DashboardClient.test.tsx",
@@ -1549,6 +1624,16 @@
       "id": "src/features/guild/hooks/useGuildContribution.ts",
       "type": "module",
       "path": "src/features/guild/hooks/useGuildContribution.ts"
+    },
+    {
+      "id": "src/features/leaderboard/components/LeaderboardHub.tsx",
+      "type": "component",
+      "path": "src/features/leaderboard/components/LeaderboardHub.tsx"
+    },
+    {
+      "id": "src/features/leaderboard/components/LeaderboardPlayerCard.tsx",
+      "type": "component",
+      "path": "src/features/leaderboard/components/LeaderboardPlayerCard.tsx"
     },
     {
       "id": "src/features/leaderboard/types.ts",
@@ -1736,6 +1821,16 @@
       "path": "src/features/social/SocialHub.tsx"
     },
     {
+      "id": "src/features/strength/actions/custom-exercises.ts",
+      "type": "service",
+      "path": "src/features/strength/actions/custom-exercises.ts"
+    },
+    {
+      "id": "src/features/strength/actions/history.ts",
+      "type": "service",
+      "path": "src/features/strength/actions/history.ts"
+    },
+    {
       "id": "src/features/strength/components/armory/ArmoryClient.tsx",
       "type": "component",
       "path": "src/features/strength/components/armory/ArmoryClient.tsx"
@@ -1744,6 +1839,16 @@
       "id": "src/features/strength/components/armory/ItemGrid.tsx",
       "type": "component",
       "path": "src/features/strength/components/armory/ItemGrid.tsx"
+    },
+    {
+      "id": "src/features/strength/components/BiometricsHUD.tsx",
+      "type": "component",
+      "path": "src/features/strength/components/BiometricsHUD.tsx"
+    },
+    {
+      "id": "src/features/strength/components/CardiacDriftWarning.tsx",
+      "type": "component",
+      "path": "src/features/strength/components/CardiacDriftWarning.tsx"
     },
     {
       "id": "src/features/strength/components/DungeonSessionView.tsx",
@@ -1761,6 +1866,16 @@
       "path": "src/features/strength/components/ExerciseLibrary.tsx"
     },
     {
+      "id": "src/features/strength/components/HRRecoveryDisplay.tsx",
+      "type": "component",
+      "path": "src/features/strength/components/HRRecoveryDisplay.tsx"
+    },
+    {
+      "id": "src/features/strength/components/HRZoneBadge.tsx",
+      "type": "component",
+      "path": "src/features/strength/components/HRZoneBadge.tsx"
+    },
+    {
       "id": "src/features/strength/components/PlateVisualizer.tsx",
       "type": "component",
       "path": "src/features/strength/components/PlateVisualizer.tsx"
@@ -1776,6 +1891,11 @@
       "path": "src/features/strength/ExerciseSearch.tsx"
     },
     {
+      "id": "src/features/strength/hooks/useHRRecoveryTimer.ts",
+      "type": "module",
+      "path": "src/features/strength/hooks/useHRRecoveryTimer.ts"
+    },
+    {
       "id": "src/features/strength/hooks/useJokerSets.ts",
       "type": "module",
       "path": "src/features/strength/hooks/useJokerSets.ts"
@@ -1784,6 +1904,11 @@
       "id": "src/features/strength/hooks/useMiningSession.ts",
       "type": "module",
       "path": "src/features/strength/hooks/useMiningSession.ts"
+    },
+    {
+      "id": "src/features/strength/hooks/useSetHistory.ts",
+      "type": "module",
+      "path": "src/features/strength/hooks/useSetHistory.ts"
     },
     {
       "id": "src/features/strength/hooks/useSetLogging.ts",
@@ -1804,6 +1929,11 @@
       "id": "src/features/strength/RestTimer.tsx",
       "type": "module",
       "path": "src/features/strength/RestTimer.tsx"
+    },
+    {
+      "id": "src/features/strength/services/HRStrengthService.ts",
+      "type": "service",
+      "path": "src/features/strength/services/HRStrengthService.ts"
     },
     {
       "id": "src/features/strength/SetRow.tsx",
@@ -1956,6 +2086,11 @@
       "path": "src/features/training/components/strava/StravaUpload.tsx"
     },
     {
+      "id": "src/features/training/components/SupersetView.tsx",
+      "type": "component",
+      "path": "src/features/training/components/SupersetView.tsx"
+    },
+    {
       "id": "src/features/training/components/VisionRepCounter.tsx",
       "type": "component",
       "path": "src/features/training/components/VisionRepCounter.tsx"
@@ -2024,6 +2159,11 @@
       "id": "src/hooks/useKeyboardShortcuts.ts",
       "type": "module",
       "path": "src/hooks/useKeyboardShortcuts.ts"
+    },
+    {
+      "id": "src/hooks/useMaxReps.ts",
+      "type": "module",
+      "path": "src/hooks/useMaxReps.ts"
     },
     {
       "id": "src/hooks/useNetworkStatus.ts",
@@ -2216,6 +2356,11 @@
       "path": "src/scripts/stresstest_oracle.ts"
     },
     {
+      "id": "src/services/analytics/GrowthMetricsService.test.ts",
+      "type": "service",
+      "path": "src/services/analytics/GrowthMetricsService.test.ts"
+    },
+    {
       "id": "src/services/analytics/GrowthMetricsService.ts",
       "type": "service",
       "path": "src/services/analytics/GrowthMetricsService.ts"
@@ -2259,11 +2404,6 @@
       "id": "src/services/BluetoothService.ts",
       "type": "service",
       "path": "src/services/BluetoothService.ts"
-    },
-    {
-      "id": "src/services/BudgetCalculator.test.ts",
-      "type": "service",
-      "path": "src/services/BudgetCalculator.test.ts"
     },
     {
       "id": "src/services/BudgetCalculator.ts",
@@ -2321,6 +2461,11 @@
       "path": "src/services/game/LootSystem.ts"
     },
     {
+      "id": "src/services/game/MaxRepsService.ts",
+      "type": "service",
+      "path": "src/services/game/MaxRepsService.ts"
+    },
+    {
       "id": "src/services/game/PowerRatingService.ts",
       "type": "service",
       "path": "src/services/game/PowerRatingService.ts"
@@ -2356,11 +2501,6 @@
       "path": "src/services/gemini.ts"
     },
     {
-      "id": "src/services/GoalPriorityEngine.test.ts",
-      "type": "service",
-      "path": "src/services/GoalPriorityEngine.test.ts"
-    },
-    {
       "id": "src/services/GoalPriorityEngine.ts",
       "type": "service",
       "path": "src/services/GoalPriorityEngine.ts"
@@ -2381,11 +2521,6 @@
       "path": "src/services/iot.ts"
     },
     {
-      "id": "src/services/MobilityAuditor.test.ts",
-      "type": "service",
-      "path": "src/services/MobilityAuditor.test.ts"
-    },
-    {
       "id": "src/services/MobilityAuditor.ts",
       "type": "service",
       "path": "src/services/MobilityAuditor.ts"
@@ -2404,6 +2539,11 @@
       "id": "src/services/oracle.ts",
       "type": "service",
       "path": "src/services/oracle.ts"
+    },
+    {
+      "id": "src/services/OracleService.ts",
+      "type": "service",
+      "path": "src/services/OracleService.ts"
     },
     {
       "id": "src/services/planner.test.ts",
@@ -2476,6 +2616,11 @@
       "path": "src/services/storage.ts"
     },
     {
+      "id": "src/services/TerritoryControlService.ts",
+      "type": "service",
+      "path": "src/services/TerritoryControlService.ts"
+    },
+    {
       "id": "src/services/titan-conflict-resolution.ts",
       "type": "service",
       "path": "src/services/titan-conflict-resolution.ts"
@@ -2529,26 +2674,6 @@
       "id": "src/services/WardensService.ts",
       "type": "service",
       "path": "src/services/WardensService.ts"
-    },
-    {
-      "id": "src/services/__tests__/GeminiService.test.ts",
-      "type": "service",
-      "path": "src/services/__tests__/GeminiService.test.ts"
-    },
-    {
-      "id": "src/services/__tests__/oracle.test.ts",
-      "type": "service",
-      "path": "src/services/__tests__/oracle.test.ts"
-    },
-    {
-      "id": "src/services/__tests__/progression.test.ts",
-      "type": "service",
-      "path": "src/services/__tests__/progression.test.ts"
-    },
-    {
-      "id": "src/services/__tests__/trainingMemoryManager.test.ts",
-      "type": "service",
-      "path": "src/services/__tests__/trainingMemoryManager.test.ts"
     },
     {
       "id": "src/stores/auditorStore.ts",
@@ -2614,6 +2739,11 @@
       "id": "src/types/oracle.ts",
       "type": "type",
       "path": "src/types/oracle.ts"
+    },
+    {
+      "id": "src/types/react-player.d.ts",
+      "type": "type",
+      "path": "src/types/react-player.d.ts"
     },
     {
       "id": "src/types/schemas.ts",
@@ -2825,6 +2955,26 @@
     {
       "from": "src/actions/combat/emotes.ts",
       "to": "src/lib/auth.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/actions/dashboard/titans-choice.ts",
+      "to": "src/utils/supabase/server.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/actions/dashboard/titans-choice.ts",
+      "to": "src/lib/prisma.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/actions/dashboard/titans-choice.ts",
+      "to": "src/services/GoalPriorityEngine.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/actions/dashboard/titans-choice.ts",
+      "to": "src/types/goals.ts",
       "relation": "imports"
     },
     {
@@ -3238,6 +3388,11 @@
       "relation": "imports"
     },
     {
+      "from": "src/actions/social/leaderboards.ts",
+      "to": "src/lib/prisma.ts",
+      "relation": "imports"
+    },
+    {
       "from": "src/actions/social/live-feed.ts",
       "to": "src/lib/prisma.ts",
       "relation": "imports"
@@ -3348,6 +3503,11 @@
       "relation": "imports"
     },
     {
+      "from": "src/actions/territory.ts",
+      "to": "src/services/TerritoryControlService.ts",
+      "relation": "imports"
+    },
+    {
       "from": "src/actions/titan/comparison.ts",
       "to": "src/lib/prisma.ts",
       "relation": "imports"
@@ -3409,6 +3569,11 @@
     },
     {
       "from": "src/actions/training/calendar.ts",
+      "to": "src/lib/prisma.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/actions/training/cardio.ts",
       "to": "src/lib/prisma.ts",
       "relation": "imports"
     },
@@ -3480,6 +3645,16 @@
     {
       "from": "src/actions/training/getIronForgeStrengthLogs.ts",
       "to": "src/lib/prisma.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/actions/training/max-reps.ts",
+      "to": "src/services/game/MaxRepsService.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/actions/training/max-reps.ts",
+      "to": "src/lib/auth.ts",
       "relation": "imports"
     },
     {
@@ -3814,6 +3989,11 @@
     },
     {
       "from": "src/app/(authenticated)/dashboard/page.tsx",
+      "to": "src/actions/social/leaderboards.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/app/(authenticated)/dashboard/page.tsx",
       "to": "src/types/auditor.ts",
       "relation": "imports"
     },
@@ -3885,6 +4065,26 @@
     {
       "from": "src/app/(authenticated)/strength/page.tsx",
       "to": "src/features/strength/StrengthContainer.tsx",
+      "relation": "imports"
+    },
+    {
+      "from": "src/app/(authenticated)/territories/page.tsx",
+      "to": "src/utils/supabase/server.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/app/(authenticated)/territories/page.tsx",
+      "to": "src/lib/prisma.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/app/(authenticated)/territories/page.tsx",
+      "to": "src/features/territory/components/TerritoryMap.tsx",
+      "relation": "imports"
+    },
+    {
+      "from": "src/app/(authenticated)/territories/page.tsx",
+      "to": "src/actions/territory.ts",
       "relation": "imports"
     },
     {
@@ -3965,6 +4165,16 @@
     {
       "from": "src/app/admin/growth/page.tsx",
       "to": "src/services/analytics/GrowthMetricsService.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/app/api/chat/route.ts",
+      "to": "src/services/OracleService.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/app/api/chat/route.ts",
+      "to": "src/types/goals.ts",
       "relation": "imports"
     },
     {
@@ -4493,6 +4703,11 @@
       "relation": "imports"
     },
     {
+      "from": "src/app/welcome/page.tsx",
+      "to": "src/app/welcome/WelcomeClient.tsx",
+      "relation": "imports"
+    },
+    {
       "from": "src/components/AchievementToast.tsx",
       "to": "src/types/index.ts",
       "relation": "imports"
@@ -4948,6 +5163,11 @@
       "relation": "imports"
     },
     {
+      "from": "src/components/ui/DemoVideoModal.tsx",
+      "to": "src/components/ui/dialog.tsx",
+      "relation": "imports"
+    },
+    {
       "from": "src/components/ui/dialog.tsx",
       "to": "src/lib/utils.ts",
       "relation": "imports"
@@ -4990,6 +5210,16 @@
     {
       "from": "src/components/ui/popover.tsx",
       "to": "src/lib/utils.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/components/ui/PRBadge.tsx",
+      "to": "src/lib/utils.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/components/ui/PRCelebration.tsx",
+      "to": "src/utils/index.ts",
       "relation": "imports"
     },
     {
@@ -5173,13 +5403,18 @@
       "relation": "imports"
     },
     {
-      "from": "src/features/dashboard/CitadelHub.tsx",
-      "to": "src/lib/utils.ts",
+      "from": "src/features/dashboard/components/Citadel.tsx",
+      "to": "src/features/dashboard/types.ts",
       "relation": "imports"
     },
     {
       "from": "src/features/dashboard/components/Citadel.tsx",
-      "to": "src/features/dashboard/types.ts",
+      "to": "src/features/dashboard/widgets/StrengthLeaderboardPanel.tsx",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/dashboard/components/Citadel.tsx",
+      "to": "src/actions/social/leaderboards.ts",
       "relation": "imports"
     },
     {
@@ -5413,6 +5648,11 @@
       "relation": "imports"
     },
     {
+      "from": "src/features/dashboard/components/ViewRouter.tsx",
+      "to": "src/actions/social/leaderboards.ts",
+      "relation": "imports"
+    },
+    {
       "from": "src/features/dashboard/DashboardClient.tsx",
       "to": "src/components/ui/GameToast.tsx",
       "relation": "imports"
@@ -5505,6 +5745,11 @@
     {
       "from": "src/features/dashboard/DashboardClient.tsx",
       "to": "src/types/training.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/dashboard/DashboardClient.tsx",
+      "to": "src/actions/social/leaderboards.ts",
       "relation": "imports"
     },
     {
@@ -5658,6 +5903,31 @@
       "relation": "imports"
     },
     {
+      "from": "src/features/dashboard/TitansChoice.tsx",
+      "to": "src/components/ui/card.tsx",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/dashboard/TitansChoice.tsx",
+      "to": "src/components/ui/button.tsx",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/dashboard/TitansChoice.tsx",
+      "to": "src/lib/utils.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/dashboard/TitansChoice.tsx",
+      "to": "src/types/training.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/dashboard/TitansChoice.tsx",
+      "to": "src/actions/dashboard/titans-choice.ts",
+      "relation": "imports"
+    },
+    {
       "from": "src/features/dashboard/types.ts",
       "to": "src/types/ironforge.ts",
       "relation": "imports"
@@ -5705,6 +5975,16 @@
     {
       "from": "src/features/dashboard/types.ts",
       "to": "src/services/data/TrainingContextService.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/dashboard/types.ts",
+      "to": "src/actions/social/leaderboards.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/dashboard/widgets/StrengthLeaderboardPanel.tsx",
+      "to": "src/actions/social/leaderboards.ts",
       "relation": "imports"
     },
     {
@@ -6180,6 +6460,26 @@
     {
       "from": "src/features/guild/hooks/useGuildContribution.ts",
       "to": "src/actions/guild/core.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/leaderboard/components/LeaderboardHub.tsx",
+      "to": "src/features/leaderboard/types.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/leaderboard/components/LeaderboardHub.tsx",
+      "to": "src/features/leaderboard/components/LeaderboardPlayerCard.tsx",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/leaderboard/components/LeaderboardPlayerCard.tsx",
+      "to": "src/features/leaderboard/types.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/leaderboard/components/LeaderboardPlayerCard.tsx",
+      "to": "src/lib/pvpRanks.ts",
       "relation": "imports"
     },
     {
@@ -6783,6 +7083,26 @@
       "relation": "imports"
     },
     {
+      "from": "src/features/strength/actions/custom-exercises.ts",
+      "to": "src/utils/supabase/server.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/strength/actions/custom-exercises.ts",
+      "to": "src/lib/prisma.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/strength/actions/history.ts",
+      "to": "src/utils/supabase/server.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/strength/actions/history.ts",
+      "to": "src/lib/prisma.ts",
+      "relation": "imports"
+    },
+    {
       "from": "src/features/strength/components/armory/ArmoryClient.tsx",
       "to": "src/features/strength/components/armory/ItemGrid.tsx",
       "relation": "imports"
@@ -6805,6 +7125,26 @@
     {
       "from": "src/features/strength/components/armory/ItemGrid.tsx",
       "to": "src/actions/economy/armory.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/strength/components/BiometricsHUD.tsx",
+      "to": "src/lib/utils.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/strength/components/BiometricsHUD.tsx",
+      "to": "src/hooks/useRestTimer.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/strength/components/BiometricsHUD.tsx",
+      "to": "src/features/strength/hooks/useHRRecoveryTimer.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/strength/components/CardiacDriftWarning.tsx",
+      "to": "src/lib/utils.ts",
       "relation": "imports"
     },
     {
@@ -6874,6 +7214,46 @@
     },
     {
       "from": "src/features/strength/components/DungeonSessionView.tsx",
+      "to": "src/hooks/useRestTimer.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/strength/components/DungeonSessionView.tsx",
+      "to": "src/features/strength/RestTimer.tsx",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/strength/components/DungeonSessionView.tsx",
+      "to": "src/features/training/components/SupersetView.tsx",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/strength/components/DungeonSessionView.tsx",
+      "to": "src/features/strength/components/HRRecoveryDisplay.tsx",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/strength/components/DungeonSessionView.tsx",
+      "to": "src/features/strength/components/HRZoneBadge.tsx",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/strength/components/DungeonSessionView.tsx",
+      "to": "src/features/strength/hooks/useHRRecoveryTimer.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/strength/components/DungeonSessionView.tsx",
+      "to": "src/features/strength/components/BiometricsHUD.tsx",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/strength/components/DungeonSessionView.tsx",
+      "to": "src/features/strength/components/CardiacDriftWarning.tsx",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/strength/components/DungeonSessionView.tsx",
       "to": "src/components/game/dungeon/DungeonInterface.tsx",
       "relation": "imports"
     },
@@ -6915,6 +7295,31 @@
     {
       "from": "src/features/strength/components/ExerciseLibrary.tsx",
       "to": "src/types/index.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/strength/components/ExerciseLibrary.tsx",
+      "to": "src/features/strength/actions/custom-exercises.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/strength/components/HRRecoveryDisplay.tsx",
+      "to": "src/features/strength/hooks/useHRRecoveryTimer.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/strength/components/HRZoneBadge.tsx",
+      "to": "src/features/strength/hooks/useHRRecoveryTimer.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/strength/components/HRZoneBadge.tsx",
+      "to": "src/features/strength/services/HRStrengthService.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/strength/components/HRZoneBadge.tsx",
+      "to": "src/lib/utils.ts",
       "relation": "imports"
     },
     {
@@ -6993,6 +7398,11 @@
       "relation": "imports"
     },
     {
+      "from": "src/features/strength/hooks/useSetHistory.ts",
+      "to": "src/features/strength/actions/history.ts",
+      "relation": "imports"
+    },
+    {
       "from": "src/features/strength/hooks/useSetLogging.ts",
       "to": "src/types/index.ts",
       "relation": "imports"
@@ -7029,6 +7439,11 @@
     },
     {
       "from": "src/features/strength/IronMines.tsx",
+      "to": "src/features/dashboard/TitansChoice.tsx",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/strength/IronMines.tsx",
       "to": "src/types/index.ts",
       "relation": "imports"
     },
@@ -7054,12 +7469,27 @@
     },
     {
       "from": "src/features/strength/RestTimer.tsx",
+      "to": "src/hooks/useRestTimer.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/strength/RestTimer.tsx",
       "to": "src/lib/utils.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/strength/RestTimer.tsx",
+      "to": "src/utils/index.ts",
       "relation": "imports"
     },
     {
       "from": "src/features/strength/SetRow.tsx",
       "to": "src/actions/training/strength.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/strength/SetRow.tsx",
+      "to": "src/lib/utils.ts",
       "relation": "imports"
     },
     {
@@ -7090,6 +7520,21 @@
     {
       "from": "src/features/strength/StrengthLog.tsx",
       "to": "src/hooks/use-toast.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/strength/StrengthLog.tsx",
+      "to": "src/hooks/useMaxReps.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/strength/StrengthLog.tsx",
+      "to": "src/components/ui/PRBadge.tsx",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/strength/StrengthLog.tsx",
+      "to": "src/components/ui/PRCelebration.tsx",
       "relation": "imports"
     },
     {
@@ -7344,6 +7789,11 @@
     },
     {
       "from": "src/features/training/components/ExerciseView.tsx",
+      "to": "src/lib/utils.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/training/components/ExerciseView.tsx",
       "to": "src/features/training/components/SetRow.tsx",
       "relation": "imports"
     },
@@ -7355,6 +7805,31 @@
     {
       "from": "src/features/training/components/ExerciseView.tsx",
       "to": "src/components/ui/ForgeCard.tsx",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/training/components/ExerciseView.tsx",
+      "to": "src/components/ui/DemoVideoModal.tsx",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/training/components/ExerciseView.tsx",
+      "to": "src/hooks/useRestTimer.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/training/components/ExerciseView.tsx",
+      "to": "src/features/strength/hooks/useSetHistory.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/training/components/ExerciseView.tsx",
+      "to": "src/components/charts/ExerciseProgressChart.tsx",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/training/components/ExerciseView.tsx",
+      "to": "src/features/strength/actions/history.ts",
       "relation": "imports"
     },
     {
@@ -7475,6 +7950,26 @@
     {
       "from": "src/features/training/components/strava/StravaUpload.tsx",
       "to": "src/components/ui/ForgeInput.tsx",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/training/components/SupersetView.tsx",
+      "to": "src/types/index.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/training/components/SupersetView.tsx",
+      "to": "src/lib/utils.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/training/components/SupersetView.tsx",
+      "to": "src/components/ui/ForgeCard.tsx",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/training/components/SupersetView.tsx",
+      "to": "src/features/training/components/ExerciseView.tsx",
       "relation": "imports"
     },
     {
@@ -7638,6 +8133,16 @@
       "relation": "imports"
     },
     {
+      "from": "src/hooks/useMaxReps.ts",
+      "to": "src/actions/training/max-reps.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/hooks/useRestTimer.ts",
+      "to": "src/utils/index.ts",
+      "relation": "imports"
+    },
+    {
       "from": "src/hooks/__tests__/useSkillEffects.test.ts",
       "to": "src/features/game/hooks/useSkillEffects.ts",
       "relation": "imports"
@@ -7753,6 +8258,16 @@
       "relation": "imports"
     },
     {
+      "from": "src/services/analytics/GrowthMetricsService.test.ts",
+      "to": "src/services/analytics/GrowthMetricsService.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/services/analytics/GrowthMetricsService.test.ts",
+      "to": "src/lib/prisma.ts",
+      "relation": "imports"
+    },
+    {
       "from": "src/services/analytics/GrowthMetricsService.ts",
       "to": "src/lib/prisma.ts",
       "relation": "imports"
@@ -7810,16 +8325,6 @@
     {
       "from": "src/services/bio/RecoveryService.ts",
       "to": "src/lib/prisma.ts",
-      "relation": "imports"
-    },
-    {
-      "from": "src/services/BudgetCalculator.test.ts",
-      "to": "src/services/BudgetCalculator.ts",
-      "relation": "imports"
-    },
-    {
-      "from": "src/services/BudgetCalculator.test.ts",
-      "to": "src/lib/intervals.ts",
       "relation": "imports"
     },
     {
@@ -7968,6 +8473,11 @@
       "relation": "imports"
     },
     {
+      "from": "src/services/game/MaxRepsService.ts",
+      "to": "src/lib/prisma.ts",
+      "relation": "imports"
+    },
+    {
       "from": "src/services/game/PowerRatingService.ts",
       "to": "src/lib/prisma.ts",
       "relation": "imports"
@@ -8048,21 +8558,6 @@
       "relation": "imports"
     },
     {
-      "from": "src/services/GoalPriorityEngine.test.ts",
-      "to": "src/services/GoalPriorityEngine.ts",
-      "relation": "imports"
-    },
-    {
-      "from": "src/services/GoalPriorityEngine.test.ts",
-      "to": "src/types/goals.ts",
-      "relation": "imports"
-    },
-    {
-      "from": "src/services/GoalPriorityEngine.test.ts",
-      "to": "src/types/training.ts",
-      "relation": "imports"
-    },
-    {
       "from": "src/services/GoalPriorityEngine.ts",
       "to": "src/types/goals.ts",
       "relation": "imports"
@@ -8105,16 +8600,6 @@
     {
       "from": "src/services/iot.ts",
       "to": "src/services/storage.ts",
-      "relation": "imports"
-    },
-    {
-      "from": "src/services/MobilityAuditor.test.ts",
-      "to": "src/services/MobilityAuditor.ts",
-      "relation": "imports"
-    },
-    {
-      "from": "src/services/MobilityAuditor.test.ts",
-      "to": "src/data/mobilityExercises.ts",
       "relation": "imports"
     },
     {
@@ -8180,6 +8665,21 @@
     {
       "from": "src/services/oracle.ts",
       "to": "src/utils/workoutMapper.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/services/OracleService.ts",
+      "to": "src/services/GoalPriorityEngine.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/services/OracleService.ts",
+      "to": "src/types/goals.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/services/OracleService.ts",
+      "to": "src/types/training.ts",
       "relation": "imports"
     },
     {
@@ -8333,6 +8833,11 @@
       "relation": "imports"
     },
     {
+      "from": "src/services/TerritoryControlService.ts",
+      "to": "src/lib/prisma.ts",
+      "relation": "imports"
+    },
+    {
       "from": "src/services/titan-conflict-resolution.ts",
       "to": "src/services/titan-state-schema.ts",
       "relation": "imports"
@@ -8405,61 +8910,6 @@
     {
       "from": "src/services/WardensService.ts",
       "to": "src/types/goals.ts",
-      "relation": "imports"
-    },
-    {
-      "from": "src/services/__tests__/GeminiService.test.ts",
-      "to": "src/services/gemini.ts",
-      "relation": "imports"
-    },
-    {
-      "from": "src/services/__tests__/oracle.test.ts",
-      "to": "src/services/oracle.ts",
-      "relation": "imports"
-    },
-    {
-      "from": "src/services/__tests__/oracle.test.ts",
-      "to": "src/lib/prisma.ts",
-      "relation": "imports"
-    },
-    {
-      "from": "src/services/__tests__/oracle.test.ts",
-      "to": "src/lib/intervals.ts",
-      "relation": "imports"
-    },
-    {
-      "from": "src/services/__tests__/oracle.test.ts",
-      "to": "src/services/game/EquipmentService.ts",
-      "relation": "imports"
-    },
-    {
-      "from": "src/services/__tests__/progression.test.ts",
-      "to": "src/services/progression.ts",
-      "relation": "imports"
-    },
-    {
-      "from": "src/services/__tests__/progression.test.ts",
-      "to": "src/lib/prisma.ts",
-      "relation": "imports"
-    },
-    {
-      "from": "src/services/__tests__/progression.test.ts",
-      "to": "src/utils/wilks.ts",
-      "relation": "imports"
-    },
-    {
-      "from": "src/services/__tests__/trainingMemoryManager.test.ts",
-      "to": "src/services/trainingMemoryManager.ts",
-      "relation": "imports"
-    },
-    {
-      "from": "src/services/__tests__/trainingMemoryManager.test.ts",
-      "to": "src/types/training.ts",
-      "relation": "imports"
-    },
-    {
-      "from": "src/services/__tests__/trainingMemoryManager.test.ts",
-      "to": "src/data/builds.ts",
       "relation": "imports"
     },
     {
@@ -8614,8 +9064,8 @@
     }
   ],
   "metadata": {
-    "lastUpdated": "2026-01-09T09:19:20.185Z",
-    "nodeCount": 553,
-    "edgeCount": 1169
+    "lastUpdated": "2026-01-10T20:10:07.709Z",
+    "nodeCount": 579,
+    "edgeCount": 1233
   }
 }

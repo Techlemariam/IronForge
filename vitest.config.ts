@@ -7,6 +7,7 @@ export default defineConfig({
         globals: true,
         alias: {
             '@': path.resolve(__dirname, './src'),
+            '@clerk/nextjs/server': path.resolve(__dirname, './tests/mocks/clerk.ts'),
         },
         exclude: ['**/node_modules/**', '**/tests/e2e/**'],
         setupFiles: ['./vitest.setup.ts'],

@@ -61,6 +61,9 @@ export interface Set {
   e1rm?: number; // Calculated estimated 1RM for this set performance
   rpe?: number; // Rate of Perceived Exertion
   type?: string;
+  setType?: "normal" | "failure" | "dropset" | "warmup" | "myoreps";
+  isWarmup?: boolean;
+  completedAt?: string;
 }
 
 export interface Exercise {
@@ -74,6 +77,8 @@ export interface Exercise {
   instructions?: string[];
   demoUrl?: string;
   lootTable?: string[]; // Flavor text for rewards
+  supersetId?: string; // Links multiple exercises together
+  supersetOrder?: number; // 1 (A1), 2 (A2), etc.
 }
 
 export interface Block {
