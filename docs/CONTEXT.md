@@ -46,10 +46,10 @@
 |:-----|:----------|:--------|
 | `src/actions/combat/` | `core.ts`, `boss.ts` | Turn-based combat & boss logic |
 | `src/actions/economy/` | `forge.ts`, `shop.ts`, `crafting.ts` | Crafting, trading, and inventory |
-| `src/actions/training/`| `strength.ts`, `program.ts` | Training logging and AI Planning |
+| `src/actions/training/`| `strength.ts`, `cardio.ts`, `program.ts` | Training logging and AI Planning |
 | `src/actions/guild/` | `core.ts`, `raids.ts` | Guild management and raiding |
 | `src/actions/user/` | `account.ts`, `profile.ts` | User settings and data |
-| `src/actions/social/` | `friends.ts`, `leaderboard.ts` | Social features |
+| `src/actions/social/` | `friends.ts`, `leaderboards.ts` | Social features (Friends, Leaderboards) |
 | `src/actions/pvp/` | `duels.ts`, `matchmaking.ts` | PvP logic |
 
 ---

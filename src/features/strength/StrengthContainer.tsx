@@ -30,7 +30,7 @@ export const StrengthContainer: React.FC<StrengthContainerProps> = ({
           </p>
         </div>
         <div className="hidden md:block">
-          <RestTimer autoStart={false} />
+          <RestTimer />
         </div>
       </header>
 

@@ -134,6 +134,10 @@ model User {
   ownedTiles    TerritoryTile[] @relation("TileOwner")
   tileControls  TileControl[]
   notifications Notification[]
+
+  // Co-Op
+  hostedSessions    ActiveSession[] @relation("ActiveSessionHost")
+  joinedSessions    SessionParticipant[] @relation("SessionParticipantUser")
 }
 
 model Notification {
@@ -1108,6 +1112,38 @@ model WardensManifest {
   
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
+}
+
+// --- IRON MINES 15/10: CO-OP LAYER ---
+
+model ActiveSession {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  hostId          String
+  host            User     @relation("ActiveSessionHost", fields: [hostId], references: [id], onDelete: Cascade)
+  createdAt       DateTime @default(now()) @db.Timestamptz
+  status          String   @default("waiting") // waiting, active, finished
+  workoutName     String?
+  maxParticipants Int      @default(4)
+  inviteCode      String?  @unique
+  
+  participants    SessionParticipant[]
+
+  @@map("active_sessions")
+}
+
+model SessionParticipant {
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  sessionId     String   @db.Uuid
+  session       ActiveSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  userId        String
+  user          User     @relation("SessionParticipantUser", fields: [userId], references: [id], onDelete: Cascade)
+  heroName      String?
+  joinedAt      DateTime @default(now()) @db.Timestamptz
+  lastHeartbeat DateTime @default(now()) @db.Timestamptz
+  status        String   @default("active") // active, disconnected, finished
+
+  @@unique([sessionId, userId])
+  @@map("session_participants")
 }
 
 
