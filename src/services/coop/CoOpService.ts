@@ -157,7 +157,7 @@ export const CoOpService = {
         if (typeof window !== 'undefined' && (window as any).__mockGhostEvents) {
             // Dispatch events on a slight delay to simulate realtime
             setTimeout(() => {
-                (window as any).__mockGhostEvents.forEach(e => onEvent(e));
+                (window as any).__mockGhostEvents.forEach((e: GhostEvent) => onEvent(e));
             }, 500);
             return { unsubscribe: () => { } };
         }
