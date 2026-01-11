@@ -54,8 +54,8 @@
 | 2026-01-04 | `src/app/api/webhooks/strava/route.ts` | Missing comprehensive test coverage for webhook logic. | @qa | ✅ Resolved |
 | 2026-01-04 | `src/**/*` | Resolved 50+ `any` usages in `OracleService`, `PlannerService`, `GameContextService`, `PowerRatingService`, and `Prisma` client. Improved overall project type safety. | @cleanup | ✅ Resolved |
 | 2026-01-04 | `src/actions/training.ts` | `logTitanSet` has high complexity (Level, BP, Challenge, Log). Extract to services. | @architect | ✅ Resolved |
-| 2026-01-05 | `tests/e2e/cardio-duels.spec.ts` | SKIPPED: 3 tests require seeded mock opponents. Add E2E DB seeding step to CI. | @infrastructure | ⚠️ Open |
-| 2026-01-05 | `tests/e2e/battle-pass.spec.ts` | SKIPPED: Premium upgrade test requires seeded BattlePassSeason in CI. | @infrastructure | ⚠️ Open |
+| 2026-01-05 | `tests/e2e/cardio-duels.spec.ts` | SKIPPED: 3 tests require seeded mock opponents. Add E2E DB seeding step to CI. | @infrastructure | ✅ Resolved (e2e-seed.ts) |
+| 2026-01-05 | `tests/e2e/battle-pass.spec.ts` | SKIPPED: Premium upgrade test requires seeded BattlePassSeason in CI. | @infrastructure | ✅ Resolved (e2e-seed.ts) |
 | 2026-01-05 | `src/features/dashboard/CitadelHub.tsx` | 17 nav items (5.6×) exceed cognitive load target (<3 decisions/view). Needs progressive disclosure. | @ui-ux | ✅ Resolved |
 | 2026-01-05 | `src/components/ui/LoadingSpinner.tsx` | Already has `role="status"`, `aria-live="polite"`, `aria-busy="true"`. | @ui-ux | ✅ Resolved |
 | 2026-01-05 | `src/features/dashboard/DashboardClient.tsx` | 685 lines → 432 lines. Extracted `ViewRouter.tsx` component. | @cleanup | ✅ Resolved |

@@ -22,7 +22,7 @@ test.describe('Core Gameplay', () => {
         await expect(page.getByText('Bestiary')).toBeVisible();
     });
 
-    test.skip('should visit the Marketplace', async ({ page }) => {
+    test('should visit the Marketplace', async ({ page }) => {
         await page.goto('/dashboard');
 
         // Wait for page to stabilize
