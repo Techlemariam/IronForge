@@ -162,7 +162,7 @@ export const ViewRouter: React.FC<ViewRouterProps> = ({
             );
 
         case "iron_mines":
-            console.log("[ViewRouter] Mounting IronMines. ActiveQuest:", state.activeQuest?.id);
+            console.log("[ViewRouter] Mounting IronMines. ActiveQuest Exercises:", state.activeQuest?.length);
             return (
                 <IronMines
                     session={mapQuestToSession(state.activeQuest!, state.questTitle)}
