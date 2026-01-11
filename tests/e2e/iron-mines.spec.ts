@@ -160,6 +160,9 @@ test.describe('Iron Mines - Strength Training', () => {
 test.describe('Iron Mines - Co-Op Sessions', () => {
 
     test.beforeEach(async ({ page }) => {
+        // Forward browser console logs to node stdout
+        page.on('console', msg => console.log(`[Browser]: ${msg.text()}`));
+
         // Inject API key and Mock User via init script to persist across navigations
         await page.addInitScript(() => {
             localStorage.setItem('hevy_api_key', 'e2e-dummy-key');
@@ -171,6 +174,12 @@ test.describe('Iron Mines - Co-Op Sessions', () => {
 
         await page.waitForTimeout(1500);
 
+        // Debug: Check mocks on Dashboard
+        await page.evaluate(() => console.log('[Test Debug] Dashboard Mocks:',
+            'User:', !!(window as any).__mockUser,
+            'CheckIn:', !!(window as any).__mockAutoCheckIn
+        ));
+
         // Navigate via UI to reach Iron Mines (SPA)
         const trainingOpBtn = page.getByRole('button', { name: /Training Operations/i });
         await expect(trainingOpBtn).toBeVisible({ timeout: 30000 });
@@ -179,6 +188,12 @@ test.describe('Iron Mines - Co-Op Sessions', () => {
         await expect(strengthBtn).toBeVisible({ timeout: 30000 });
         await strengthBtn.click();
         await page.waitForLoadState('networkidle');
+
+        // Debug: Check mocks after navigation (Iron Mines)
+        await page.evaluate(() => console.log('[Test Debug] Iron Mines Mocks:',
+            'User:', !!(window as any).__mockUser,
+            'CheckIn:', !!(window as any).__mockAutoCheckIn
+        ));
     });
 
     test('should display Co-Op session creation button', async ({ page }) => {
