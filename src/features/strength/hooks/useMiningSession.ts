@@ -25,27 +25,16 @@ export const useMiningSession = ({
     onExit,
 }: UseMiningSessionProps) => {
     const [activeSession, setActiveSession] = useState<Session>(initialSession);
-    const [hasCheckedIn, setHasCheckedIn] = useState(false);
-    const [completed, setCompleted] = useState(false);
-    const [isSaving, setIsSaving] = useState(false);
-    const [showAbandonConfirm, setShowAbandonConfirm] = useState(false);
 
-    const [wellnessData, setWellnessData] = useState<IntervalsWellness | null>(null);
-    const [historyLogs, setHistoryLogs] = useState<ExerciseLog[]>([]);
-    const [exportStatus, setExportStatus] = useState<"IDLE" | "UPLOADING" | "SUCCESS" | "ERROR">("IDLE");
-    const [foundRecovery, setFoundRecovery] = useState<ActiveSessionState | null>(null);
-    const [checkingRecovery, setCheckingRecovery] = useState(true);
-
-    const achievementContext = useContext(AchievementContext);
-    const { purchasedSkillIds } = useSkills();
-    const { bpm } = useBluetoothHeartRate();
-
-    // E2E Auto Check-in
-    useEffect(() => {
+    // Lazy init to synchronous check for E2E mocks
+    const [hasCheckedIn, setHasCheckedIn] = useState(() => {
         if (typeof window !== 'undefined' && (window as any).__mockAutoCheckIn) {
-            setHasCheckedIn(true);
+            return true;
         }
-    }, []);
+        return false;
+    });
+
+    const [completed, setCompleted] = useState(false);
 
     // --- CHECK FOR CRASH RECOVERY ---
     useEffect(() => {

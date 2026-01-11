@@ -10,18 +10,28 @@ export interface IronUser {
 }
 
 export function useUser() {
-    const [user, setUser] = useState<IronUser | null>(null);
-    const [loading, setLoading] = useState(true);
+    // Lazy init to synchronously pick up E2E mocks
+    const [user, setUser] = useState<IronUser | null>(() => {
+        if (typeof window !== 'undefined' && (window as any).__mockUser) {
+            return (window as any).__mockUser;
+        }
+        return null;
+    });
+
+    const [loading, setLoading] = useState(() => {
+        if (typeof window !== 'undefined' && (window as any).__mockUser) {
+            return false;
+        }
+        return true;
+    });
 
     useEffect(() => {
         let mounted = true;
 
         async function load() {
             try {
-                // E2E Mock Override - Check BEFORE createClient to avoid init errors in CI
+                // E2E Mock Override - Return early if already handled by lazy init
                 if (typeof window !== 'undefined' && (window as any).__mockUser) {
-                    setUser((window as any).__mockUser);
-                    setLoading(false);
                     return;
                 }
 
