@@ -168,6 +168,7 @@ test.describe('Iron Mines - Co-Op Sessions', () => {
         await page.addInitScript(() => {
             localStorage.setItem('hevy_api_key', 'e2e-dummy-key');
             (window as any).__mockUser = { id: 'test-user', heroName: 'Tester' };
+            (window as any).__mockAutoCheckIn = true;
         });
 
         await page.waitForTimeout(1500);
@@ -241,6 +242,7 @@ test.describe('Iron Mines - Ghost Mode', () => {
         await page.addInitScript(() => {
             localStorage.setItem('hevy_api_key', 'e2e-dummy-key');
             (window as any).__mockUser = { id: 'test-user', heroName: 'Tester' };
+            (window as any).__mockAutoCheckIn = true;
         });
 
         await page.waitForTimeout(1500);
@@ -347,6 +349,7 @@ test.describe('Iron Mines - LiveSessionHUD Interactions', () => {
         await page.addInitScript(() => {
             localStorage.setItem('hevy_api_key', 'e2e-dummy-key');
             (window as any).__mockUser = { id: 'test-user', heroName: 'Tester' };
+            (window as any).__mockAutoCheckIn = true;
         });
 
         await page.waitForTimeout(1500);

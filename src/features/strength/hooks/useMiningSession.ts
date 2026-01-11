@@ -40,6 +40,13 @@ export const useMiningSession = ({
     const { purchasedSkillIds } = useSkills();
     const { bpm } = useBluetoothHeartRate();
 
+    // E2E Auto Check-in
+    useEffect(() => {
+        if (typeof window !== 'undefined' && (window as any).__mockAutoCheckIn) {
+            setHasCheckedIn(true);
+        }
+    }, []);
+
     // --- CHECK FOR CRASH RECOVERY ---
     useEffect(() => {
         const checkRecovery = async () => {
