@@ -80,6 +80,7 @@ export const ViewRouter: React.FC<ViewRouterProps> = ({
     onSaveWorkout,
     leaderboardEntries,
 }) => {
+    console.log("[ViewRouter] Rendering view:", state.currentView, "ActiveQuest:", !!state.activeQuest);
     switch (state.currentView) {
         case "citadel":
             return (
@@ -161,6 +162,7 @@ export const ViewRouter: React.FC<ViewRouterProps> = ({
             );
 
         case "iron_mines":
+            console.log("[ViewRouter] Mounting IronMines. ActiveQuest:", state.activeQuest?.id);
             return (
                 <IronMines
                     session={mapQuestToSession(state.activeQuest!, state.questTitle)}
