@@ -35,6 +35,18 @@ export const useMiningSession = ({
     });
 
     const [completed, setCompleted] = useState(false);
+    const [isSaving, setIsSaving] = useState(false);
+    const [showAbandonConfirm, setShowAbandonConfirm] = useState(false);
+
+    const [wellnessData, setWellnessData] = useState<IntervalsWellness | null>(null);
+    const [historyLogs, setHistoryLogs] = useState<ExerciseLog[]>([]);
+    const [exportStatus, setExportStatus] = useState<"IDLE" | "UPLOADING" | "SUCCESS" | "ERROR">("IDLE");
+    const [foundRecovery, setFoundRecovery] = useState<ActiveSessionState | null>(null);
+    const [checkingRecovery, setCheckingRecovery] = useState(true);
+
+    const achievementContext = useContext(AchievementContext);
+    const { purchasedSkillIds } = useSkills();
+    const { bpm } = useBluetoothHeartRate();
 
     // --- CHECK FOR CRASH RECOVERY ---
     useEffect(() => {
