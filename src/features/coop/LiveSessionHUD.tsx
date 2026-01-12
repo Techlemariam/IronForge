@@ -15,10 +15,20 @@ export const LiveSessionHUD: React.FC<LiveSessionHUDProps> = ({ onSessionJoin })
     const [isExpanded, setIsExpanded] = useState(false);
 
     // Initial load & Restoration & Refresh on Open
+    // Initial load & Restoration & Refresh on Open
     useEffect(() => {
         refreshSessions();
+        console.log('[E2E-DEBUG] LiveSessionHUD Effect Triggered. User:', user?.id, 'Expanded:', isExpanded, 'ActiveSession:', activeSession?.id);
+
+        // Debug Mock Visibility
+        if (typeof window !== 'undefined') {
+            console.log('[E2E-DEBUG] Window Mock Session:', (window as any).__mockCoOpSession);
+        }
+
         if (user && (isExpanded || !activeSession)) {
+            console.log('[E2E-DEBUG] Calling getActiveSession...');
             CoOpService.getActiveSession(user.id).then(session => {
+                console.log('[E2E-DEBUG] getActiveSession Result:', session);
                 if (session) setActiveSession(session);
             });
         }

@@ -28,6 +28,13 @@ test.describe('Iron Mines - Strength Training', () => {
             // Check if dismissed
             if (await onboardingButtons.count() === 0) break;
         }
+
+        // Enable debug log forwarding
+        page.on('console', msg => {
+            if (msg.text().includes('[E2E-DEBUG]')) {
+                console.log(msg.text());
+            }
+        });
     });
 
     test('should navigate to Iron Mines (Strength Training)', async ({ page }) => {
