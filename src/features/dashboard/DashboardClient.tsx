@@ -352,6 +352,19 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
               </Link>
               .
             </p>
+            <div className="mt-8">
+              <button
+                onClick={() => {
+                  localStorage.setItem("hevy_api_key", "guest_mode");
+                  // Trigger storage event for immediate update
+                  window.dispatchEvent(new Event("storage"));
+                  setIsConfigured(true);
+                }}
+                className="px-6 py-2 bg-white/10 hover:bg-white/20 border border-white/10 hover:border-white/30 rounded text-sm font-bold tracking-wider transition-all uppercase"
+              >
+                Continue as Guest
+              </button>
+            </div>
           </div>
         </div>
       </main>
