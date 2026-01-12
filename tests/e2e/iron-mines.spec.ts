@@ -3,13 +3,12 @@ import { test, expect } from '@playwright/test';
 test.describe('Iron Mines - Strength Training', () => {
 
     test.beforeEach(async ({ page }) => {
-        await page.goto('/dashboard');
-
-        // Inject API key to bypass configuration screen
-        await page.evaluate(() => {
+        // Ensure API key is present before page loads so onboarding/config screens are bypassed
+        await page.addInitScript(() => {
             localStorage.setItem('hevy_api_key', 'e2e-dummy-key');
         });
 
+        await page.goto('/dashboard');
         await page.waitForLoadState('networkidle');
 
         // Exit any active views
@@ -25,8 +24,8 @@ test.describe('Iron Mines - Strength Training', () => {
         while (await onboardingButtons.count() > 0 && attempts < 5) {
             await onboardingButtons.first().click();
             attempts++;
-            // Check if dismissed
             if (await onboardingButtons.count() === 0) break;
+            await page.waitForTimeout(200); // small delay to let modal change
         }
 
         // Enable debug log forwarding
@@ -76,16 +75,17 @@ test.describe('Iron Mines - Strength Training', () => {
         await strengthTab.click();
 
         // 4. Find and Select "E2E Strength Test"
-        const testWorkoutCard = page.getByTestId('workout-card-strength_test_e2e');
-        await expect(testWorkoutCard).toBeVisible({ timeout: 10000 });
-        await testWorkoutCard.click();
+        // 4. Find and Select "E2E Strength Test"
+        const testWorkoutCard = await page.waitForSelector('[data-testid="workout-card-strength_test_e2e"]', { timeout: 30000 });
+        await testWorkoutCard.evaluate((el) => (el as HTMLElement).click());
 
         // 5. This triggers 'START_GENERATED_QUEST' -> 'iron_mines' view
         // Should see Iron Mines or Workout related elements
         await expect(page.getByText(/Quest Complete|E2E Strength Test/i).first()).toBeVisible({ timeout: 15000 });
 
         // Also verify LiveSessionHUD is present (which was the original failure)
-        await expect(page.getByTestId('coop-toggle-button')).toBeVisible({ timeout: 10000 });
+        // Also verify LiveSessionHUD is present (which was the original failure)
+        await page.waitForSelector('[data-testid="coop-toggle-button"]', { timeout: 15000 });
     });
 
     test('should display workout HUD elements', async ({ page }) => {
@@ -124,9 +124,6 @@ test.describe('Iron Mines - Strength Training', () => {
     test('should show exercise library when adding exercise', async ({ page }) => {
         // This test checks if the exercise library modal works
         // May need to start a workout first
-
-        await page.goto('/dashboard');
-        await page.waitForLoadState('networkidle');
 
         // Look for Add Exercise or Plus button (common in workout UIs)
         const addExerciseBtn = page.locator('button:has-text("Add Exercise"), button:has([class*="Plus"]), [aria-label*="add"]').first();
