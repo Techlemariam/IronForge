@@ -345,7 +345,10 @@ const HeroWorkoutCard: React.FC<{
     <motion.div
       layout
       variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }}
-      onClick={onClick}
+      onClick={() => {
+        console.log("[HeroWorkoutCard] Clicked!", workout.name);
+        onClick();
+      }}
       data-testid={testId}
       whileHover={{ scale: 1.02, y: -4 }}
       whileTap={{ scale: 0.98 }}

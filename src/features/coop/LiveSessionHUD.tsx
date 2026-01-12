@@ -14,12 +14,17 @@ export const LiveSessionHUD: React.FC<LiveSessionHUDProps> = ({ onSessionJoin })
     const [availableSessions, setAvailableSessions] = useState<CoOpSession[]>([]);
     const [isExpanded, setIsExpanded] = useState(false);
 
-    // Initial load
+    // Initial load & Restoration
     useEffect(() => {
         refreshSessions();
+        if (user) {
+            CoOpService.getActiveSession(user.id).then(session => {
+                if (session) setActiveSession(session);
+            });
+        }
         const interval = setInterval(refreshSessions, 10000); // Polling for now for list
         return () => clearInterval(interval);
-    }, []);
+    }, [user?.id]);
 
     // Subscribe to active session updates
     useEffect(() => {

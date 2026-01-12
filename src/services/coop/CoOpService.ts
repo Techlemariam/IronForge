@@ -12,6 +12,47 @@ export interface CoOpSession extends ActiveSession {
 
 export const CoOpService = {
     /**
+     * Get active session for user (restoration)
+     */
+    async getActiveSession(userId: string): Promise<CoOpSession | null> {
+         // E2E Mock
+         if (typeof window !== 'undefined' && (window as any).__mockCoOpSession) {
+            return (window as any).__mockCoOpSession;
+        }
+
+        const { data, error } = await supabase
+            .from("active_sessions")
+            .select(`
+                *,
+                participants:session_participants(*)
+            `)
+            .eq("participants.user_id", userId) 
+            // Note: This query is a bit simplified; typically we query session_participants first
+            .maybeSingle(); // Use maybeSingle to avoid 406 on multiple matches (though strict relation should prevent)
+        
+        // Better approach for Supabase: Query participants table then join
+        if (!data) {
+             const { data: partData } = await supabase
+                .from("session_participants")
+                .select("session_id")
+                .eq("user_id", userId)
+                .maybeSingle();
+            
+            if (partData) {
+                const { data: sessionData } = await supabase
+                    .from("active_sessions")
+                    .select(`*, participants:session_participants(*)`)
+                    .eq("id", partData.session_id)
+                    .single();
+                 return sessionData as any as CoOpSession;
+            }
+            return null;
+        }
+
+        return data as any as CoOpSession;
+    },
+
+    /**
      * Create a new Co-Op session
      */
     async createSession(hostId: string, workoutName?: string): Promise<string | null> {

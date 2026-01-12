@@ -48,31 +48,7 @@ import { WorkoutDefinition } from "@/types/training";
 import { mapDefinitionToSession } from "@/utils/workoutMapper";
 import { playSound } from "@/utils";
 
-// Dynamic Imports with disabling SSR for client-heavy features
-const RoutineSelector = dynamic(
-  () => import("@/features/training/RoutineSelector"),
-  { ssr: false },
-);
-const IronMines = dynamic(() => import("@/features/strength/IronMines"), {
-  ssr: false,
-});
-const CombatArena = dynamic(() => import("@/features/game/CombatArena"), {
-  ssr: false,
-});
-const SocialHub = dynamic(
-  () => import("@/features/social/SocialHub").then((mod) => mod.SocialHub),
-  { ssr: false },
-);
-
-const Marketplace = dynamic(() => import("@/components/game/Marketplace"), {
-  ssr: false,
-});
-const TheForge = dynamic(() => import("@/features/game/TheForge"), {
-  ssr: false,
-});
-const CardioStudio = dynamic(() => import("@/features/training/CardioStudio"), {
-  ssr: false,
-});
+// Dynamic Imports moved to ViewRouter
 import StravaUpload from "@/features/training/components/strava/StravaUpload";
 import { CitadelHub } from "@/features/dashboard/CitadelHub";
 import { FirstLoginQuest } from "@/features/onboarding/FirstLoginQuest";
@@ -212,11 +188,10 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
   };
 
   const [state, dispatch] = useReducer(dashboardReducer, initialStateFromProps);
-  const [isConfigured, setIsConfigured] = useState(false);
+  // const [isConfigured, setIsConfigured] = useState(false); // Removed gate logic
   const [showOnboarding, setShowOnboarding] = useState(!hasCompletedOnboarding);
   const router = useRouter();
   const platform = usePlatformContext();
-
   useEffect(() => {
     dispatch({ type: "UPDATE_CHALLENGES", payload: challenges || [] });
   }, [challenges, dispatch]);
@@ -224,39 +199,7 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
   // God Tier 2: Soundscapes
   useAmbientSound(getAmbientZone(state.currentView));
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      // P0: Demo Mode First - Default demo users as configured
-      if (isDemoMode) {
-        setIsConfigured(true);
-        return; // Skip API key check for demo users
-      }
-
-      // Check both localStorage and server key
-      const checkConfiguration = () => {
-        const hasLocalKey = !!localStorage.getItem("hevy_api_key");
-        const hasServerKey = !!userData?.hevyApiKey;
-        setIsConfigured(hasLocalKey || hasServerKey);
-      };
-
-      // Initial check
-      checkConfiguration();
-
-      // Re-check on storage events (for cross-tab sync)
-      window.addEventListener('storage', checkConfiguration);
-
-      // Also poll every second for the first 5 seconds after mount
-      // This helps catch localStorage changes in the same tab (e.g., from test setup)
-      const pollInterval = setInterval(checkConfiguration, 1000);
-      const stopPolling = setTimeout(() => clearInterval(pollInterval), 5000);
-
-      return () => {
-        window.removeEventListener('storage', checkConfiguration);
-        clearInterval(pollInterval);
-        clearTimeout(stopPolling);
-      };
-    }
-  }, [isDemoMode, userData]);
+  /* Hevy API Configuration Gate Removed per user request */
 
   const handleSaveWorkout = async (isPrivate: boolean) => {
     if (!state.activeQuest || !state.startTime) return;
@@ -330,46 +273,7 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
     </motion.div>
   );
 
-  if (!isConfigured) {
-    return (
-      <main id="config-screen" className="bg-void min-h-screen text-white flex items-center justify-center p-4">
-        <div className="scanlines" />
-        <Link
-          href="/settings"
-          className="absolute top-6 right-6 z-50 text-forge-muted hover:text-white transition-colors p-2 hover:rotate-90 duration-300"
-        >
-          <Settings size={24} />
-        </Link>
-        <div className="w-full h-screen flex items-center justify-center font-mono text-center p-4">
-          <div>
-            <h2 className="text-xl text-magma uppercase tracking-widest">
-              Configuration Required
-            </h2>
-            <p className="text-forge-muted">
-              Please configure your settings in the{" "}
-              <Link href="/settings" className="text-magma underline">
-                Settings Page
-              </Link>
-              .
-            </p>
-            <div className="mt-8">
-              <button
-                onClick={() => {
-                  localStorage.setItem("hevy_api_key", "guest_mode");
-                  // Trigger storage event for immediate update
-                  window.dispatchEvent(new Event("storage"));
-                  setIsConfigured(true);
-                }}
-                className="px-6 py-2 bg-white/10 hover:bg-white/20 border border-white/10 hover:border-white/30 rounded text-sm font-bold tracking-wider transition-all uppercase"
-              >
-                Continue as Guest
-              </button>
-            </div>
-          </div>
-        </div>
-      </main>
-    );
-  }
+  /* Configuration Screen Removed */
 
   if (state.isCodexLoading) return <main id="codex-loader"><CodexLoader /></main>;
 
