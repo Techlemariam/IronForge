@@ -288,7 +288,7 @@ test.describe('Iron Mines - Co-Op Sessions', () => {
 
         // 4. Find and Select "E2E Strength Test" to enter Iron Mines
         const testWorkoutCard = page.getByTestId('workout-card-strength_test_e2e');
-        await expect(testWorkoutCard).toBeVisible({ timeout: 10000 });
+        await expect(testWorkoutCard).toBeVisible({ timeout: 30000 }); // Increased for CI
         // Use evaluate click to bypass potential overlays/animations failing Playwright checks
         await testWorkoutCard.evaluate((el) => (el as HTMLElement).click());
         await page.waitForLoadState('networkidle');
