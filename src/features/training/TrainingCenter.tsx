@@ -51,25 +51,29 @@ export const TrainingCenter: React.FC<TrainingCenterProps> = ({
   React.useEffect(() => {
     // dynamic import or fetch from server actions
     const loadData = async () => {
-      const [acts, settings] = await Promise.all([
-        // Import these dynamically to avoid server component issues in client component if using actions directly here
-        // or assume actions are passed as props.
-        // For now, let's assume we can call the actions if they are 'use server' imported at top (which works in Nextjs 14+)
-        // But wait, "TrainingCenter" is 'use client'. We can import server actions.
-        import("@/actions/integrations/intervals").then((mod) =>
-          mod.getActivitiesAction(
-            new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
-              .toISOString()
-              .split("T")[0], // Last 7 days
-            new Date().toISOString().split("T")[0],
+      try {
+        const [acts, settings] = await Promise.all([
+          // Import these dynamically to avoid server component issues in client component if using actions directly here
+          // or assume actions are passed as props.
+          // For now, let's assume we can call the actions if they are 'use server' imported at top (which works in Nextjs 14+)
+          // But wait, "TrainingCenter" is 'use client'. We can import server actions.
+          import("@/actions/integrations/intervals").then((mod) =>
+            mod.getActivitiesAction(
+              new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+                .toISOString()
+                .split("T")[0], // Last 7 days
+              new Date().toISOString().split("T")[0],
+            ),
           ),
-        ),
-        import("@/actions/integrations/intervals").then((mod) =>
-          mod.getAthleteSettingsAction(),
-        ),
-      ]);
-      setZoneActivities(acts);
-      setAthleteSettings(settings);
+          import("@/actions/integrations/intervals").then((mod) =>
+            mod.getAthleteSettingsAction(),
+          ),
+        ]);
+        setZoneActivities(acts);
+        setAthleteSettings(settings);
+      } catch (error) {
+        console.error("Failed to load intervals data", error);
+      }
     };
     loadData();
   }, []);
@@ -242,24 +246,28 @@ const CodexTabs: React.FC<{
             onClick={() => setActiveTab("FOR_YOU")}
             icon={<Zap className="w-3 h-3" />}
             label="For You"
+            testId="tab-for-you"
           />
           <TabButton
             active={activeTab === "STRENGTH"}
             onClick={() => setActiveTab("STRENGTH")}
             icon={<Dumbbell className="w-3 h-3" />}
             label="Strength"
+            testId="tab-strength"
           />
           <TabButton
             active={activeTab === "CARDIO"}
             onClick={() => setActiveTab("CARDIO")}
             icon={<Heart className="w-3 h-3" />}
             label="Cardio"
+            testId="tab-cardio"
           />
           <TabButton
             active={activeTab === "RECOVERY"}
             onClick={() => setActiveTab("RECOVERY")}
             icon={<Activity className="w-3 h-3" />}
             label="Recovery"
+            testId="tab-recovery"
           />
         </div>
       </div>
@@ -278,12 +286,14 @@ const CodexTabs: React.FC<{
                 key={workout.id}
                 workout={workout}
                 onClick={() => onSelectWorkout(workout)}
+                testId={`workout-card-${workout.id}`}
               />
             ) : (
               <CompactWorkoutCard
                 key={workout.id}
                 workout={workout}
                 onClick={() => onSelectWorkout(workout)}
+                testId={`workout-card-${workout.id}`}
               />
             ),
           )}
@@ -303,9 +313,11 @@ const TabButton: React.FC<{
   onClick: () => void;
   icon: React.ReactNode;
   label: string;
-}> = ({ active, onClick, icon, label }) => (
+  testId?: string;
+}> = ({ active, onClick, icon, label, testId }) => (
   <button
     onClick={onClick}
+    data-testid={testId}
     className={cn(
       "flex items-center gap-2 px-4 py-2 rounded-md text-xs font-bold uppercase transition-all",
       active
@@ -321,7 +333,8 @@ const TabButton: React.FC<{
 const HeroWorkoutCard: React.FC<{
   workout: WorkoutDefinition;
   onClick: () => void;
-}> = ({ workout, onClick }) => {
+  testId?: string;
+}> = ({ workout, onClick, testId }) => {
   const intensityColor = {
     LOW: "text-blue-400",
     MEDIUM: "text-yellow-400",
@@ -333,6 +346,7 @@ const HeroWorkoutCard: React.FC<{
       layout
       variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }}
       onClick={onClick}
+      data-testid={testId}
       whileHover={{ scale: 1.02, y: -4 }}
       whileTap={{ scale: 0.98 }}
       className="col-span-1 md:col-span-2 lg:col-span-1 bg-zinc-900/40 backdrop-blur-xl border border-magma/30 rounded-2xl p-6 relative overflow-hidden group cursor-pointer hover:shadow-2xl hover:shadow-magma/10 transition-all"
@@ -384,7 +398,8 @@ const HeroWorkoutCard: React.FC<{
 const CompactWorkoutCard: React.FC<{
   workout: WorkoutDefinition;
   onClick: () => void;
-}> = ({ workout, onClick }) => {
+  testId?: string;
+}> = ({ workout, onClick, testId }) => {
   return (
     <motion.div
       layout
@@ -393,6 +408,7 @@ const CompactWorkoutCard: React.FC<{
         show: { opacity: 1, scale: 1 },
       }}
       onClick={onClick}
+      data-testid={testId}
       whileHover={{ scale: 1.01, x: 4 }}
       className="bg-black/20 border border-white/5 rounded-lg p-4 cursor-pointer hover:bg-white/5 hover:border-white/10 transition-colors group flex items-center justify-between"
     >

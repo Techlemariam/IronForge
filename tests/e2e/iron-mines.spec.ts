@@ -63,12 +63,12 @@ test.describe('Iron Mines - Strength Training', () => {
         }
 
         // 3. In Training Center, Select "Strength" Tab
-        const strengthTab = page.getByRole('button', { name: /Strength/i }).first();
+        const strengthTab = page.getByTestId('tab-strength');
         await expect(strengthTab).toBeVisible({ timeout: 10000 });
         await strengthTab.click();
 
         // 4. Find and Select "E2E Strength Test"
-        const testWorkoutCard = page.getByText('E2E Strength Test').first();
+        const testWorkoutCard = page.getByTestId('workout-card-strength_test_e2e');
         await expect(testWorkoutCard).toBeVisible({ timeout: 10000 });
         await testWorkoutCard.click();
 
@@ -94,11 +94,11 @@ test.describe('Iron Mines - Strength Training', () => {
             await strengthBtn.click();
         }
 
-        const strengthTab = page.getByRole('button', { name: /Strength/i }).first();
+        const strengthTab = page.getByTestId('tab-strength');
         await expect(strengthTab).toBeVisible({ timeout: 10000 });
         await strengthTab.click();
 
-        const testWorkoutCard = page.getByText('E2E Strength Test').first();
+        const testWorkoutCard = page.getByTestId('workout-card-strength_test_e2e');
         await expect(testWorkoutCard).toBeVisible({ timeout: 10000 });
         await testWorkoutCard.click();
 
@@ -305,9 +305,26 @@ test.describe('Iron Mines - Ghost Mode', () => {
         const trainingOpBtn = page.getByRole('button', { name: /Training Operations/i });
         await expect(trainingOpBtn).toBeVisible({ timeout: 30000 });
         await trainingOpBtn.click();
-        const strengthBtn = page.getByRole('button', { name: /Strength Focus|Iron Mines|Strength/i });
-        await expect(strengthBtn).toBeVisible({ timeout: 30000 });
-        await strengthBtn.click();
+
+        // 2. Open Training Center (Codex)
+        const trainingCenterBtn = page.getByText(/Training Center|Codex/i).first();
+        if (await trainingCenterBtn.isVisible()) {
+            await trainingCenterBtn.click();
+        } else {
+            const strengthBtn = page.getByRole('button', { name: /Strength Focus|Iron Mines|Strength/i });
+            await strengthBtn.click();
+        }
+
+        // 3. In Training Center, Select "Strength" Tab
+        const strengthTab = page.getByTestId('tab-strength');
+        await expect(strengthTab).toBeVisible({ timeout: 10000 });
+        await strengthTab.click();
+
+        // 4. Find and Select "E2E Strength Test"
+        const testWorkoutCard = page.getByTestId('workout-card-strength_test_e2e');
+        await expect(testWorkoutCard).toBeVisible({ timeout: 10000 });
+        await testWorkoutCard.click();
+
         await page.waitForLoadState('networkidle');
     });
 
@@ -428,12 +445,12 @@ test.describe('Iron Mines - LiveSessionHUD Interactions', () => {
         }
 
         // 3. In Training Center, Select "Strength" Tab
-        const strengthTab = page.getByRole('button', { name: /Strength/i }).first();
+        const strengthTab = page.getByTestId('tab-strength');
         await expect(strengthTab).toBeVisible({ timeout: 10000 });
         await strengthTab.click();
 
         // 4. Find and Select "E2E Strength Test"
-        const testWorkoutCard = page.getByText('E2E Strength Test').first();
+        const testWorkoutCard = page.getByTestId('workout-card-strength_test_e2e');
         await expect(testWorkoutCard).toBeVisible({ timeout: 10000 });
         await testWorkoutCard.click();
 
