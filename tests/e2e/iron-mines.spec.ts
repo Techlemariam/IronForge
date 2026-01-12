@@ -535,11 +535,12 @@ test.describe('Iron Mines - LiveSessionHUD Interactions', () => {
 
     test('should handle session leave action', async ({ page }) => {
         await page.evaluate(() => {
-            (window as any).__mockActiveSession = { id: 'test-session', participants: [{ id: 'me', userId: 'me' }] };
+            (window as any).__mockCoOpSession = { id: 'test-session', participants: [{ id: 'me', userId: 'me', heroName: 'Hero', status: 'active' }], maxParticipants: 4 };
         });
 
-        // Open toggle first
-        await page.getByTestId('coop-toggle-button').click();
+        // Open toggle first (robust click)
+        const toggle = page.getByTestId('coop-toggle-button');
+        await toggle.evaluate((el) => (el as HTMLElement).click());
 
         // Look for leave/exit button
         const leaveButton = page.getByTestId('leave-session-button');

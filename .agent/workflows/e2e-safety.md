@@ -26,6 +26,10 @@ Don't trust the dev server alone. CI builds a production bundle.
 # 1. Clean verify (Typecheck & Lint)
 npm run check-types && npm run lint
 
+# 2. Unit Logic Check (Vitest)
+# Essential for catching regression errors (e.g., deleted components)
+npm test
+
 # 2. Production Build Check
 # Triggers errors that only happen in 'next build' (e.g. static generation)
 npm run build
