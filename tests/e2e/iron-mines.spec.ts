@@ -536,6 +536,7 @@ test.describe('Iron Mines - LiveSessionHUD Interactions', () => {
     test('should handle session leave action', async ({ page }) => {
         await page.evaluate(() => {
             (window as any).__mockCoOpSession = { id: 'test-session', participants: [{ id: 'me', userId: 'me', heroName: 'Hero', status: 'active' }], maxParticipants: 4 };
+            (window as any).__mockSessions = []; // Prevent real network call
         });
 
         // Open toggle first (robust click)

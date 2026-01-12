@@ -158,6 +158,13 @@
       "gh run view --job",
       "npx playwright test --ui",
       "npx playwright test --debug",
+      "gh",
+      "gh run view",
+      "gh run list",
+      "gh run watch",
+      "git",
+      "npm",
+      "taskkill",
       "*"
     ]
   }
