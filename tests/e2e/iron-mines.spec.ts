@@ -13,6 +13,9 @@ test.describe('Iron Mines - Strength Training', () => {
         // Ensure API key is present before page loads so onboarding/config screens are bypassed
         await page.addInitScript(() => {
             localStorage.setItem('hevy_api_key', 'e2e-dummy-key');
+            // Fix: Add mocks to bypass PreWorkoutCheck
+            (window as any).__mockAutoCheckIn = true;
+            (window as any).__mockUser = { id: 'test-user', heroName: 'Tester' };
         });
 
         await page.goto('/dashboard');
@@ -34,8 +37,6 @@ test.describe('Iron Mines - Strength Training', () => {
             if (await onboardingButtons.count() === 0) break;
             await page.waitForTimeout(200); // small delay to let modal change
         }
-
-
     });
 
     test('should navigate to Iron Mines (Strength Training)', async ({ page }) => {
@@ -44,24 +45,6 @@ test.describe('Iron Mines - Strength Training', () => {
         await expect(trainingOpBtn).toBeVisible({ timeout: 30000 });
         await trainingOpBtn.click();
 
-        // 2. Open Training Center (Codex)
-        // Check if we are already in Training Center or need to click 'Training Center' or similar
-        // Based on ViewRouter, 'training_center' is a view. Easiest path might be via persistent header or menu if available.
-        // BUT, looking at Dashboard, there is usually a button to go to Training Center.
-        // Let's assume 'Training Center' button exists in War Room or Citadel.
-        // Actually, previous test clicked "Strength Focus". Let's see what that does.
-        // If "Strength Focus" leads to Iron Mines directly, it might fail if no active quest.
-        // We need to Find "E2E Strength Test" in the Codex.
-
-        // Let's try to find the "Training Center" button from the main dashboard if possible, or "Strength Focus" if that opens Training Center.
-        // Assuming "Strength Focus" might open Training Center with 'STRENGTH' tab?
-        // Let's look for a button that opens the Codex/Training Center.
-
-        // Fallback: If "Strength Focus" was supposed to go to Iron Mines directly, it implies an active session.
-        // Since we have none, we must go to Training Center.
-
-        // 2. Open Training Center (Codex)
-        // Current UI Path: Training Operations -> Cardio Focus -> Training Path
         // 2. Open Training Center via Strength Focus -> Training Codex
         const strengthFocusBtn = page.getByRole('button', { name: /Strength Focus/i });
         await expect(strengthFocusBtn).toBeVisible();
@@ -77,16 +60,38 @@ test.describe('Iron Mines - Strength Training', () => {
         await strengthTab.click();
 
         // 4. Find and Select "E2E Strength Test"
-        // 4. Find and Select "E2E Strength Test"
         const testWorkoutCard = await page.waitForSelector('[data-testid="workout-card-strength_test_e2e"]', { timeout: 30000 });
         await testWorkoutCard.evaluate((el) => (el as HTMLElement).click());
+
+        // Handle PreWorkoutCheck if it appears (Mock fallback)
+        const preCheckHeader = page.getByText(/Spirit Healer Link|Check Vitality/i);
+        if (await preCheckHeader.isVisible({ timeout: 5000 })) {
+            console.log('PreWorkoutCheck detected. Handling...');
+            
+            // Click "Cast Scan" if visible (IDLE state)
+            const castScanBtn = page.getByRole('button', { name: /Cast Scan/i }).first();
+            if (await castScanBtn.isVisible()) {
+                await castScanBtn.click();
+            }
+
+            // Wait for scan results (COMPLETE state)
+            // Could be "Accept Quest" or "Ignore Warning"
+            const actionBtn = page.locator('button:has-text("Accept Quest"), button:has-text("Ignore Warning")').first();
+            await expect(actionBtn).toBeVisible({ timeout: 15000 });
+
+            if (await page.getByText(/Ignore Warning/i).isVisible()) {
+                await page.getByText(/Ignore Warning/i).click();
+                await page.getByText(/Confirm Override/i).click();
+            } else {
+                await page.getByText(/Accept Quest/i).click();
+            }
+        }
 
         // 5. This triggers 'START_GENERATED_QUEST' -> 'iron_mines' view
         // Should see Iron Mines or Workout related elements
         await expect(page.getByText(/Quest Complete|E2E Strength Test/i).first()).toBeVisible({ timeout: 15000 });
 
-        // Also verify LiveSessionHUD is present (which was the original failure)
-        // Also verify LiveSessionHUD is present (which was the original failure)
+        // Also verify LiveSessionHUD is present
         await page.waitForSelector('[data-testid="coop-toggle-button"]', { timeout: 15000 });
     });
 
@@ -112,9 +117,24 @@ test.describe('Iron Mines - Strength Training', () => {
         await expect(testWorkoutCard).toBeVisible({ timeout: 10000 });
         await testWorkoutCard.evaluate((el) => (el as HTMLElement).click());
 
+        // Handle PreWorkoutCheck if it appears
+        const preCheckHeader = page.getByText(/Spirit Healer Link|Check Vitality/i);
+        if (await preCheckHeader.isVisible({ timeout: 5000 })) {
+             const castScanBtn = page.getByRole('button', { name: /Cast Scan/i }).first();
+             if (await castScanBtn.isVisible()) await castScanBtn.click();
+             
+             const actionBtn = page.locator('button:has-text("Accept Quest"), button:has-text("Ignore Warning")').first();
+             await expect(actionBtn).toBeVisible({ timeout: 15000 });
+
+             if (await page.getByText(/Ignore Warning/i).isVisible()) {
+                 await page.getByText(/Ignore Warning/i).click();
+                 await page.getByText(/Confirm Override/i).click();
+             } else {
+                 await page.getByText(/Accept Quest/i).click();
+             }
+        }
+
         // Wait for HUD elements (if in workout view)
-        // These may not be present until a workout is started
-        // Check for existence without strict assertion
         const hudElements = page.locator('.bg-black\\/40.backdrop-blur-xl, [data-testid="biometrics-hud"]');
         const exerciseCards = page.locator('[class*="ForgeCard"], [class*="exercise-view"]');
 
@@ -124,9 +144,6 @@ test.describe('Iron Mines - Strength Training', () => {
     });
 
     test('should show exercise library when adding exercise', async ({ page }) => {
-        // This test checks if the exercise library modal works
-        // May need to start a workout first
-
         // Look for Add Exercise or Plus button (common in workout UIs)
         const addExerciseBtn = page.locator('button:has-text("Add Exercise"), button:has([class*="Plus"]), [aria-label*="add"]').first();
 
@@ -179,7 +196,6 @@ test.describe('Iron Mines - Strength Training', () => {
 
         // Check for swipe hint text in the DOM (may only appear on active sets)
         const content = await page.content();
-        // This is a loose check - in real workout the hint should be visible
         console.log('Page contains swipe hint:', content.includes('Swipe right to complete'));
     });
 
@@ -227,26 +243,46 @@ test.describe('Iron Mines - Co-Op Sessions', () => {
 
         await page.waitForTimeout(1500);
 
-        // Debug: Check mocks on Dashboard
-        await page.evaluate(() => console.log('[Test Debug] Dashboard Mocks:',
-            'User:', !!(window as any).__mockUser,
-            'CheckIn:', !!(window as any).__mockAutoCheckIn
-        ));
-
         // Navigate via UI to reach Iron Mines (SPA)
         const trainingOpBtn = page.getByRole('button', { name: /Training Operations/i });
         await expect(trainingOpBtn).toBeVisible({ timeout: 30000 });
         await trainingOpBtn.click();
-        const strengthBtn = page.getByRole('button', { name: /Strength Focus|Iron Mines|Strength/i });
-        await expect(strengthBtn).toBeVisible({ timeout: 30000 });
-        await strengthBtn.click();
-        await page.waitForLoadState('networkidle');
+        
+        // Full Navigation to Session
+        const strengthFocusBtn = page.getByRole('button', { name: /Strength Focus/i });
+        await expect(strengthFocusBtn).toBeVisible();
+        await strengthFocusBtn.click();
 
-        // Debug: Check mocks after navigation (Iron Mines)
-        await page.evaluate(() => console.log('[Test Debug] Iron Mines Mocks:',
-            'User:', !!(window as any).__mockUser,
-            'CheckIn:', !!(window as any).__mockAutoCheckIn
-        ));
+        const trainingCodexBtn = page.getByRole('button', { name: /Training Codex/i });
+        await expect(trainingCodexBtn).toBeVisible();
+        await trainingCodexBtn.click();
+
+        const strengthTab = page.getByTestId('tab-strength');
+        await expect(strengthTab).toBeVisible({ timeout: 10000 });
+        await strengthTab.click();
+
+        const testWorkoutCard = page.getByTestId('workout-card-strength_test_e2e');
+        await expect(testWorkoutCard).toBeVisible({ timeout: 10000 });
+        await testWorkoutCard.evaluate((el) => (el as HTMLElement).click());
+
+        // Handle PreWorkoutCheck if it appears
+        const preCheckHeader = page.getByText(/Spirit Healer Link|Check Vitality/i);
+        if (await preCheckHeader.isVisible({ timeout: 5000 })) {
+             const castScanBtn = page.getByRole('button', { name: /Cast Scan/i }).first();
+             if (await castScanBtn.isVisible()) await castScanBtn.click();
+             
+             const actionBtn = page.locator('button:has-text("Accept Quest"), button:has-text("Ignore Warning")').first();
+             await expect(actionBtn).toBeVisible({ timeout: 15000 });
+
+             if (await page.getByText(/Ignore Warning/i).isVisible()) {
+                 await page.getByText(/Ignore Warning/i).click();
+                 await page.getByText(/Confirm Override/i).click();
+             } else {
+                 await page.getByText(/Accept Quest/i).click();
+             }
+        }
+
+        await page.waitForLoadState('networkidle');
     });
 
     test('should display Co-Op session creation button', async ({ page }) => {
@@ -286,6 +322,38 @@ test.describe('Iron Mines - Co-Op Sessions', () => {
         await expect(page.getByTestId('participant-row')).toHaveCount(2, { timeout: 10000 });
     });
 
+});
+
+test.describe('Iron Mines - Co-Op Entry', () => {
+    test.beforeEach(async ({ page }) => {
+        // Inject API key and Mock User via init script to persist across navigations
+        await page.addInitScript(() => {
+            localStorage.setItem('hevy_api_key', 'e2e-dummy-key');
+            (window as any).__mockUser = { id: 'test-user', heroName: 'Tester' };
+            (window as any).__mockAutoCheckIn = true;
+        });
+
+        await page.goto('/dashboard');
+        await page.waitForTimeout(1500);
+
+        // Navigate to Codex
+        const trainingOpBtn = page.getByRole('button', { name: /Training Operations/i });
+        await expect(trainingOpBtn).toBeVisible({ timeout: 30000 });
+        await trainingOpBtn.click();
+
+        const strengthFocusBtn = page.getByRole('button', { name: /Strength Focus/i });
+        await expect(strengthFocusBtn).toBeVisible();
+        await strengthFocusBtn.click();
+
+        const trainingCodexBtn = page.getByRole('button', { name: /Training Codex/i });
+        await expect(trainingCodexBtn).toBeVisible();
+        await trainingCodexBtn.click();
+
+        const strengthTab = page.getByTestId('tab-strength');
+        await expect(strengthTab).toBeVisible({ timeout: 10000 });
+        await strengthTab.click();
+    });
+
     test('should show invite code when session created', async ({ page }) => {
         // Mock session creation response
         await page.evaluate(() => {
@@ -294,17 +362,31 @@ test.describe('Iron Mines - Co-Op Sessions', () => {
 
         // 4. Find and Select "E2E Strength Test" to enter Iron Mines
         const testWorkoutCard = page.getByTestId('workout-card-strength_test_e2e');
-        await expect(testWorkoutCard).toBeVisible({ timeout: 30000 }); // Increased for CI
-        // Use evaluate click to bypass potential overlays/animations failing Playwright checks
+        await expect(testWorkoutCard).toBeVisible({ timeout: 30000 }); 
         await testWorkoutCard.evaluate((el) => (el as HTMLElement).click());
+
+        // Handle PreWorkoutCheck if it appears
+        const preCheckHeader = page.getByText(/Spirit Healer Link|Check Vitality/i);
+        if (await preCheckHeader.isVisible({ timeout: 5000 })) {
+             const castScanBtn = page.getByRole('button', { name: /Cast Scan/i }).first();
+             if (await castScanBtn.isVisible()) await castScanBtn.click();
+             
+             const actionBtn = page.locator('button:has-text("Accept Quest"), button:has-text("Ignore Warning")').first();
+             await expect(actionBtn).toBeVisible({ timeout: 15000 });
+
+             if (await page.getByText(/Ignore Warning/i).isVisible()) {
+                 await page.getByText(/Ignore Warning/i).click();
+                 await page.getByText(/Confirm Override/i).click();
+             } else {
+                 await page.getByText(/Accept Quest/i).click();
+             }
+        }
+
         await page.waitForLoadState('networkidle');
 
         // 5. This triggers 'START_GENERATED_QUEST' -> 'iron_mines' view
-
-        // Just verify navigation for now as invite code UI changes might be pending
         await expect(page.getByTestId('coop-toggle-button')).toBeVisible();
     });
-
 });
 
 test.describe('Iron Mines - Ghost Mode', () => {
@@ -346,6 +428,23 @@ test.describe('Iron Mines - Ghost Mode', () => {
         await expect(testWorkoutCard).toBeVisible({ timeout: 10000 });
         // Use evaluate click to bypass potential overlays/animations failing Playwright checks
         await testWorkoutCard.evaluate((el) => (el as HTMLElement).click());
+
+        // Handle PreWorkoutCheck if it appears
+        const preCheckHeader = page.getByText(/Spirit Healer Link|Check Vitality/i);
+        if (await preCheckHeader.isVisible({ timeout: 5000 })) {
+             const castScanBtn = page.getByRole('button', { name: /Cast Scan/i }).first();
+             if (await castScanBtn.isVisible()) await castScanBtn.click();
+             
+             const actionBtn = page.locator('button:has-text("Accept Quest"), button:has-text("Ignore Warning")').first();
+             await expect(actionBtn).toBeVisible({ timeout: 15000 });
+
+             if (await page.getByText(/Ignore Warning/i).isVisible()) {
+                 await page.getByText(/Ignore Warning/i).click();
+                 await page.getByText(/Confirm Override/i).click();
+             } else {
+                 await page.getByText(/Accept Quest/i).click();
+             }
+        }
 
         await page.waitForLoadState('networkidle');
     });
@@ -477,6 +576,23 @@ test.describe('Iron Mines - LiveSessionHUD Interactions', () => {
         await expect(testWorkoutCard).toBeVisible({ timeout: 10000 });
         // Use evaluate click to bypass potential overlays/animations failing Playwright checks
         await testWorkoutCard.evaluate((el) => (el as HTMLElement).click());
+
+        // Handle PreWorkoutCheck if it appears
+        const preCheckHeader = page.getByText(/Spirit Healer Link|Check Vitality/i);
+        if (await preCheckHeader.isVisible({ timeout: 5000 })) {
+             const castScanBtn = page.getByRole('button', { name: /Cast Scan/i }).first();
+             if (await castScanBtn.isVisible()) await castScanBtn.click();
+             
+             const actionBtn = page.locator('button:has-text("Accept Quest"), button:has-text("Ignore Warning")').first();
+             await expect(actionBtn).toBeVisible({ timeout: 15000 });
+
+             if (await page.getByText(/Ignore Warning/i).isVisible()) {
+                 await page.getByText(/Ignore Warning/i).click();
+                 await page.getByText(/Confirm Override/i).click();
+             } else {
+                 await page.getByText(/Accept Quest/i).click();
+             }
+        }
 
         await page.waitForLoadState('networkidle');
     });

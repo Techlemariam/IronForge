@@ -30,7 +30,7 @@ export const useMiningSession = ({
     const [hasCheckedIn, setHasCheckedIn] = useState(() => {
         if (typeof window !== 'undefined') {
             const hasMock = (window as any).__mockAutoCheckIn;
-            console.log("[useMiningSession] Checking mock auto-checkin:", { hasMock });
+            console.log("[E2E-DEBUG] [useMiningSession] Checking mock auto-checkin:", { hasMock });
             if (hasMock) return true;
         }
         return false;
