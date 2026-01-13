@@ -32,7 +32,20 @@ else
 fi
 ```
 
-### 0.1 Branch Validation
+### 0.1 Dependency Check
+
+// turbo
+
+```bash
+echo "🔍 Checking dependency integrity..."
+if ! git diff --quiet package-lock.json; then
+  echo "⛔ ERROR: package-lock.json is dirty. running 'npm ci' required."
+  exit 1
+fi
+echo "✅ Dependencies: Clean"
+```
+
+### 0.2 Branch Validation
 
 // turbo
 
@@ -47,7 +60,7 @@ fi
 echo "✅ Branch: $current_branch"
 ```
 
-### 0.2 The Triple Gate
+### 0.3 The Triple Gate
 
 // turbo
 
@@ -64,7 +77,7 @@ npm test || exit 1
 echo "✅ All gates passed"
 ```
 
-### 0.3 Mock Validation
+### 0.4 Mock Validation
 
 // turbo
 
@@ -73,7 +86,7 @@ echo "🔍 Validating mock registry..."
 npx ts-node scripts/validate-mocks.ts
 ```
 
-### 0.4 E2E Stress Test (CI Simulation)
+### 0.5 E2E Stress Test (CI Simulation)
 
 ```bash
 # Option A: Native (faster but less accurate)
@@ -86,7 +99,7 @@ docker run --rm -v $(pwd):/work -w /work \
 ```
 
 > [!IMPORTANT]
-> If Phase 0.4 fails, **DO NOT PUSH**. Proceed to Phase 1.
+> If Phase 0.5 fails, **DO NOT PUSH**. Proceed to Phase 1.
 
 ---
 
@@ -111,6 +124,7 @@ npx ts-node scripts/ci-classifier.ts ./ci-failure.log
 | `net::ERR_` / `fetch failed` | NETWORK_HANG | → 1D |
 | Tests pass locally, fail in CI | RACE_CONDITION | → 1E |
 | `SyntaxError` / `Unexpected token` | SYNTAX_ERROR | → 1F |
+| 0 passed, 0 failed (Skipped) | SILENT_FAILURE | → Check Deps / Timeout |
 
 ---
 
@@ -259,19 +273,18 @@ while [ $ITERATION -lt $MAX_ITERATIONS ]; do
   # STRATEGY SELECTION
   if [ $ITERATION -ge 1 ]; then
     echo "⚠️ Iteration 2+ detected: Switching to DOCKER simulation"
-    # Use Docker to match CI environment exactly (prevents "works on my machine")
+    # Use Docker to match CI environment exactly
     docker run --rm -v $(pwd):/work -w /work mcr.microsoft.com/playwright:v1.40.0-jammy \
       npx playwright test tests/e2e/<target>.spec.ts --workers=1
   else
     # First attempt: Native local test
-    # RECOMMENDATION: Run the full suite for the file, not just filtered tests,
-    # to catch "cascading failures" (tests that were skipped/blocked before).
+    # REQUIREMENT: Run the FULL FILE to detect cascading failures in skipped tests
+    echo "🧪 Running FULL file verification (No -g filter)..."
     npx playwright test tests/e2e/<target>.spec.ts --workers=1 --retries=0
   fi
   
   if [ $? -eq 0 ]; then
     echo "✅ Tests pass. Safe to push."
-    echo "💡 TIP: Ensure no tests were skipped that might fail in CI."
     break
   fi
   
@@ -323,9 +336,14 @@ if [ $? -ne 0 ]; then
   # Download artifacts
   gh run download $RUN_ID -D ./ci-artifacts 2>/dev/null
   
-  # Get failure logs
+  # Get failure logs (try specific failure first, then all logs if empty)
   LOGFILE="ci-failure-$(date +%Y%m%d-%H%M).log"
   gh run view $RUN_ID --log-failed > $LOGFILE
+  
+  if [ ! -s "$LOGFILE" ]; then
+    echo "⚠️ Failure logs empty (possible silent failure). Fetching full logs..."
+    gh run view $RUN_ID --log > $LOGFILE
+  fi
   
   echo "📁 Artifacts: ./ci-artifacts"
   echo "📄 Logs: $LOGFILE"
