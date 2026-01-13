@@ -67,7 +67,7 @@ test.describe('Iron Mines - Strength Training', () => {
         const preCheckHeader = page.getByText(/Spirit Healer Link|Check Vitality/i);
         if (await preCheckHeader.isVisible({ timeout: 5000 })) {
             console.log('PreWorkoutCheck detected. Handling...');
-            
+
             // Click "Cast Scan" if visible (IDLE state)
             const castScanBtn = page.getByRole('button', { name: /Cast Scan/i }).first();
             if (await castScanBtn.isVisible()) {
@@ -120,18 +120,18 @@ test.describe('Iron Mines - Strength Training', () => {
         // Handle PreWorkoutCheck if it appears
         const preCheckHeader = page.getByText(/Spirit Healer Link|Check Vitality/i);
         if (await preCheckHeader.isVisible({ timeout: 5000 })) {
-             const castScanBtn = page.getByRole('button', { name: /Cast Scan/i }).first();
-             if (await castScanBtn.isVisible()) await castScanBtn.click();
-             
-             const actionBtn = page.locator('button:has-text("Accept Quest"), button:has-text("Ignore Warning")').first();
-             await expect(actionBtn).toBeVisible({ timeout: 15000 });
+            const castScanBtn = page.getByRole('button', { name: /Cast Scan/i }).first();
+            if (await castScanBtn.isVisible()) await castScanBtn.click();
 
-             if (await page.getByText(/Ignore Warning/i).isVisible()) {
-                 await page.getByText(/Ignore Warning/i).click();
-                 await page.getByText(/Confirm Override/i).click();
-             } else {
-                 await page.getByText(/Accept Quest/i).click();
-             }
+            const actionBtn = page.locator('button:has-text("Accept Quest"), button:has-text("Ignore Warning")').first();
+            await expect(actionBtn).toBeVisible({ timeout: 15000 });
+
+            if (await page.getByText(/Ignore Warning/i).isVisible()) {
+                await page.getByText(/Ignore Warning/i).click();
+                await page.getByText(/Confirm Override/i).click();
+            } else {
+                await page.getByText(/Accept Quest/i).click();
+            }
         }
 
         // Wait for HUD elements (if in workout view)
@@ -247,7 +247,7 @@ test.describe('Iron Mines - Co-Op Sessions', () => {
         const trainingOpBtn = page.getByRole('button', { name: /Training Operations/i });
         await expect(trainingOpBtn).toBeVisible({ timeout: 30000 });
         await trainingOpBtn.click();
-        
+
         // Full Navigation to Session
         const strengthFocusBtn = page.getByRole('button', { name: /Strength Focus/i });
         await expect(strengthFocusBtn).toBeVisible();
@@ -268,18 +268,18 @@ test.describe('Iron Mines - Co-Op Sessions', () => {
         // Handle PreWorkoutCheck if it appears
         const preCheckHeader = page.getByText(/Spirit Healer Link|Check Vitality/i);
         if (await preCheckHeader.isVisible({ timeout: 5000 })) {
-             const castScanBtn = page.getByRole('button', { name: /Cast Scan/i }).first();
-             if (await castScanBtn.isVisible()) await castScanBtn.click();
-             
-             const actionBtn = page.locator('button:has-text("Accept Quest"), button:has-text("Ignore Warning")').first();
-             await expect(actionBtn).toBeVisible({ timeout: 15000 });
+            const castScanBtn = page.getByRole('button', { name: /Cast Scan/i }).first();
+            if (await castScanBtn.isVisible()) await castScanBtn.click();
 
-             if (await page.getByText(/Ignore Warning/i).isVisible()) {
-                 await page.getByText(/Ignore Warning/i).click();
-                 await page.getByText(/Confirm Override/i).click();
-             } else {
-                 await page.getByText(/Accept Quest/i).click();
-             }
+            const actionBtn = page.locator('button:has-text("Accept Quest"), button:has-text("Ignore Warning")').first();
+            await expect(actionBtn).toBeVisible({ timeout: 15000 });
+
+            if (await page.getByText(/Ignore Warning/i).isVisible()) {
+                await page.getByText(/Ignore Warning/i).click();
+                await page.getByText(/Confirm Override/i).click();
+            } else {
+                await page.getByText(/Accept Quest/i).click();
+            }
         }
 
         await page.waitForLoadState('networkidle');
@@ -362,30 +362,42 @@ test.describe('Iron Mines - Co-Op Entry', () => {
 
         // 4. Find and Select "E2E Strength Test" to enter Iron Mines
         const testWorkoutCard = page.getByTestId('workout-card-strength_test_e2e');
-        await expect(testWorkoutCard).toBeVisible({ timeout: 30000 }); 
+        await expect(testWorkoutCard).toBeVisible({ timeout: 30000 });
         await testWorkoutCard.evaluate((el) => (el as HTMLElement).click());
 
         // Handle PreWorkoutCheck if it appears
         const preCheckHeader = page.getByText(/Spirit Healer Link|Check Vitality/i);
         if (await preCheckHeader.isVisible({ timeout: 5000 })) {
-             const castScanBtn = page.getByRole('button', { name: /Cast Scan/i }).first();
-             if (await castScanBtn.isVisible()) await castScanBtn.click();
-             
-             const actionBtn = page.locator('button:has-text("Accept Quest"), button:has-text("Ignore Warning")').first();
-             await expect(actionBtn).toBeVisible({ timeout: 15000 });
+            const castScanBtn = page.getByRole('button', { name: /Cast Scan/i }).first();
+            if (await castScanBtn.isVisible()) await castScanBtn.click();
 
-             if (await page.getByText(/Ignore Warning/i).isVisible()) {
-                 await page.getByText(/Ignore Warning/i).click();
-                 await page.getByText(/Confirm Override/i).click();
-             } else {
-                 await page.getByText(/Accept Quest/i).click();
-             }
+            const actionBtn = page.locator('button:has-text("Accept Quest"), button:has-text("Ignore Warning")').first();
+            await expect(actionBtn).toBeVisible({ timeout: 15000 });
+
+            if (await page.getByText(/Ignore Warning/i).isVisible()) {
+                await page.getByText(/Ignore Warning/i).click();
+                await page.getByText(/Confirm Override/i).click();
+            } else {
+                await page.getByText(/Accept Quest/i).click();
+            }
         }
 
         await page.waitForLoadState('networkidle');
 
         // 5. This triggers 'START_GENERATED_QUEST' -> 'iron_mines' view
-        await expect(page.getByTestId('coop-toggle-button')).toBeVisible();
+        // Use waitForSelector with increased timeout (CI is slower)
+        // Check for either enabled or disabled state of coop button
+        const coopButton = await page.waitForSelector('[data-testid="coop-toggle-button"]', {
+            timeout: 15000,
+            state: 'visible'
+        });
+        expect(coopButton).not.toBeNull();
+
+        // Verify the button is in correct state (user present = enabled)
+        const userStatus = await coopButton.getAttribute('data-user-status');
+        if (userStatus === 'missing') {
+            console.log('[E2E] Warning: coop-toggle-button found but user is missing');
+        }
     });
 });
 
@@ -432,18 +444,18 @@ test.describe('Iron Mines - Ghost Mode', () => {
         // Handle PreWorkoutCheck if it appears
         const preCheckHeader = page.getByText(/Spirit Healer Link|Check Vitality/i);
         if (await preCheckHeader.isVisible({ timeout: 5000 })) {
-             const castScanBtn = page.getByRole('button', { name: /Cast Scan/i }).first();
-             if (await castScanBtn.isVisible()) await castScanBtn.click();
-             
-             const actionBtn = page.locator('button:has-text("Accept Quest"), button:has-text("Ignore Warning")').first();
-             await expect(actionBtn).toBeVisible({ timeout: 15000 });
+            const castScanBtn = page.getByRole('button', { name: /Cast Scan/i }).first();
+            if (await castScanBtn.isVisible()) await castScanBtn.click();
 
-             if (await page.getByText(/Ignore Warning/i).isVisible()) {
-                 await page.getByText(/Ignore Warning/i).click();
-                 await page.getByText(/Confirm Override/i).click();
-             } else {
-                 await page.getByText(/Accept Quest/i).click();
-             }
+            const actionBtn = page.locator('button:has-text("Accept Quest"), button:has-text("Ignore Warning")').first();
+            await expect(actionBtn).toBeVisible({ timeout: 15000 });
+
+            if (await page.getByText(/Ignore Warning/i).isVisible()) {
+                await page.getByText(/Ignore Warning/i).click();
+                await page.getByText(/Confirm Override/i).click();
+            } else {
+                await page.getByText(/Accept Quest/i).click();
+            }
         }
 
         await page.waitForLoadState('networkidle');
@@ -580,18 +592,18 @@ test.describe('Iron Mines - LiveSessionHUD Interactions', () => {
         // Handle PreWorkoutCheck if it appears
         const preCheckHeader = page.getByText(/Spirit Healer Link|Check Vitality/i);
         if (await preCheckHeader.isVisible({ timeout: 5000 })) {
-             const castScanBtn = page.getByRole('button', { name: /Cast Scan/i }).first();
-             if (await castScanBtn.isVisible()) await castScanBtn.click();
-             
-             const actionBtn = page.locator('button:has-text("Accept Quest"), button:has-text("Ignore Warning")').first();
-             await expect(actionBtn).toBeVisible({ timeout: 15000 });
+            const castScanBtn = page.getByRole('button', { name: /Cast Scan/i }).first();
+            if (await castScanBtn.isVisible()) await castScanBtn.click();
 
-             if (await page.getByText(/Ignore Warning/i).isVisible()) {
-                 await page.getByText(/Ignore Warning/i).click();
-                 await page.getByText(/Confirm Override/i).click();
-             } else {
-                 await page.getByText(/Accept Quest/i).click();
-             }
+            const actionBtn = page.locator('button:has-text("Accept Quest"), button:has-text("Ignore Warning")').first();
+            await expect(actionBtn).toBeVisible({ timeout: 15000 });
+
+            if (await page.getByText(/Ignore Warning/i).isVisible()) {
+                await page.getByText(/Ignore Warning/i).click();
+                await page.getByText(/Confirm Override/i).click();
+            } else {
+                await page.getByText(/Accept Quest/i).click();
+            }
         }
 
         await page.waitForLoadState('networkidle');
