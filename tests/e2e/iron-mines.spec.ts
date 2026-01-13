@@ -569,7 +569,15 @@ test.describe('Iron Mines - Ghost Mode', () => {
         });
 
         // Wait for ghost events to render
-        await expect(page.getByTestId('ghost-event-item')).toHaveCount(5, { timeout: 10000 });
+        // Wait for ghost events to render using waitForSelector for CI stability
+        const firstEvent = await page.waitForSelector('[data-testid="ghost-event-item"]', {
+            timeout: 15000,
+            state: 'visible'
+        });
+        expect(firstEvent).not.toBeNull();
+
+        // Verify count matches limit (MAX_VISIBLE_EVENTS = 5)
+        await expect(page.locator('[data-testid="ghost-event-item"]')).toHaveCount(5, { timeout: 10000 });
     });
 
 });
