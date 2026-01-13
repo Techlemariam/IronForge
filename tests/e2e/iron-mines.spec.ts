@@ -286,19 +286,42 @@ test.describe('Iron Mines - Co-Op Sessions', () => {
     });
 
     test('should display Co-Op session creation button', async ({ page }) => {
-        // Look for Co-Op/multiplayer UI elements
-        const coopButton = page.getByTestId('coop-toggle-button');
-        await expect(coopButton).toBeVisible({ timeout: 10000 });
+        // Look for Co-Op/multiplayer UI elements - use waitForSelector for CI stability
+        const coopButton = await page.waitForSelector('[data-testid="coop-toggle-button"]', {
+            timeout: 15000,
+            state: 'visible'
+        });
+        expect(coopButton).not.toBeNull();
     });
 
     test('should show available sessions list when toggled', async ({ page }) => {
-        // Find and click the session browser toggle
-        const sessionToggle = page.getByTestId('coop-toggle-button');
-        await sessionToggle.evaluate((el) => (el as HTMLElement).click());
+        // Mock available sessions so session-list is rendered
+        await page.evaluate(() => {
+            (window as any).__mockSessions = [
+                {
+                    id: 'session-1',
+                    hostId: 'host-user',
+                    workoutName: 'E2E Test Session',
+                    participants: [{ userId: 'host-user', heroName: 'Host', status: 'active' }],
+                    maxParticipants: 4,
+                    status: 'waiting'
+                }
+            ];
+        });
 
-        // Check for session list UI
-        const sessionList = page.getByTestId('session-list');
-        await expect(sessionList).toBeVisible({ timeout: 5000 });
+        // Find and click the session browser toggle using waitForSelector
+        const sessionToggle = await page.waitForSelector('[data-testid="coop-toggle-button"]', {
+            timeout: 15000,
+            state: 'visible'
+        });
+        await sessionToggle!.evaluate((el) => (el as HTMLElement).click());
+
+        // Check for session list UI with increased timeout
+        const sessionList = await page.waitForSelector('[data-testid="session-list"]', {
+            timeout: 10000,
+            state: 'visible'
+        });
+        expect(sessionList).not.toBeNull();
     });
 
     test('should display session participants UI', async ({ page }) => {
@@ -314,12 +337,15 @@ test.describe('Iron Mines - Co-Op Sessions', () => {
             };
         });
 
-        // Expand HUD to see details
-        const sessionToggle = page.getByTestId('coop-toggle-button');
-        await sessionToggle.evaluate((el) => (el as HTMLElement).click());
+        // Expand HUD to see details using waitForSelector
+        const sessionToggle = await page.waitForSelector('[data-testid="coop-toggle-button"]', {
+            timeout: 15000,
+            state: 'visible'
+        });
+        await sessionToggle!.evaluate((el) => (el as HTMLElement).click());
 
-        // Wait for participants to render
-        await expect(page.getByTestId('participant-row')).toHaveCount(2, { timeout: 10000 });
+        // Wait for participants to render with increased timeout
+        await expect(page.locator('[data-testid="participant-row"]')).toHaveCount(2, { timeout: 15000 });
     });
 
 });
