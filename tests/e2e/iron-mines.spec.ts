@@ -644,6 +644,13 @@ test.describe('Iron Mines - LiveSessionHUD Interactions', () => {
     });
 
     test('should toggle session browser visibility', async ({ page }) => {
+        // Inject mock sessions to ensure list renders
+        await page.evaluate(() => {
+            (window as any).__mockSessions = [
+                { id: '1', hostId: 'host-1', status: 'waiting', participants: [], maxParticipants: 4 }
+            ];
+        });
+
         // Find session toggle button (Users icon)
         const toggleButton = page.getByTestId('coop-toggle-button');
         await expect(toggleButton).toBeVisible();
