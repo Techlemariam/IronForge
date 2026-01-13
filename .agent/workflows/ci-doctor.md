@@ -130,17 +130,20 @@ npx ts-node scripts/ci-classifier.ts ./ci-failure.log
 
 ### 1A: Selector Timeout (12% of failures)
 
-**Root Cause:** Element not found or behind overlay.
+**Root Cause:** Element not found, behind overlay, or **missing data** (conditional rendering).
 
 **Fix Pattern:**
 
 ```typescript
-// ❌ BAD: Text-based selector
-await page.getByText('My Button').click();
-
-// ✅ GOOD: data-testid + evaluate click (bypasses overlays)
+// Pattern 1: Robust Selectors & Overlays
 const element = await page.waitForSelector('[data-testid="my-button"]', { timeout: 15000 });
 await element.evaluate(el => (el as HTMLElement).click());
+
+// Pattern 2: Data Injection (Conditional Rendering)
+// If element depends on data (e.g. list items), inject mock data FIRST
+await page.evaluate(() => {
+  (window as any).__mockItems = [{ id: '1', name: 'Test Item' }];
+});
 ```
 
 **Checklist:**
@@ -148,6 +151,7 @@ await element.evaluate(el => (el as HTMLElement).click());
 - [ ] Add `data-testid` to target component
 - [ ] Use `waitForSelector` instead of `getByText`
 - [ ] Use `evaluate.click()` to bypass overlays
+- [ ] **Data Check**: Does element require specific state/data? (Inject Mocks)
 - [ ] Increase timeout to 15000ms for slow CI
 
 ---
@@ -398,6 +402,11 @@ After successful CI run:
 ---
 
 ## Version History
+
+### 1.0.1 (2026-01-13)
+
+- **Self-Healing**: Added "Data Injection" pattern to Phase 1A (Selector Timeout) after Run 31 analysis.
+- **Refinement**: Clarified "Silent Failure" checks in Phase 1.1.
 
 ### 1.0.0 (2026-01-13)
 
