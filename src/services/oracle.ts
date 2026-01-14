@@ -1,7 +1,7 @@
 import prisma from "@/lib/prisma";
 import { getWellness, getActivities, WellnessData } from "@/lib/intervals";
 import { getHevyWorkouts } from "@/lib/hevy";
-import { OracleDecree, OracleDecreeType } from "@/types/oracle";
+import { OracleDecree } from "@/types/oracle";
 import { EquipmentService } from "@/services/game/EquipmentService";
 import { EquipmentType } from "@/data/equipmentDb";
 import {
@@ -9,7 +9,6 @@ import {
   IntervalsActivity,
   TTBIndices,
   IntervalsEvent,
-  Session,
   TitanLoadCalculation,
   AuditReport,
   OracleRecommendation,
@@ -18,8 +17,10 @@ import { TrainingPath, WeeklyMastery } from "@/types/training";
 import { CardioLog, ExerciseLog, Exercise, Titan, DuelChallenge } from "@prisma/client";
 import { HevyWorkout } from "@/types/hevy";
 import { WORKOUT_LIBRARY } from "@/data/workouts";
+import { GoalPriorityEngine } from "@/services/GoalPriorityEngine";
+import { WardensManifest, SystemMetrics } from '@/types/goals';
 import { mapDefinitionToSession } from "@/utils/workoutMapper";
-
+import { logger } from "@/lib/logger";
 
 // Types
 type ExerciseLogWithExercise = ExerciseLog & { exercise: Exercise };
@@ -124,7 +125,7 @@ export class OracleService {
           user.intervalsAthleteId,
         )) as IntervalsActivity[];
       } catch (e) {
-        console.error("Oracle: Failed to fetch Intervals data", e);
+        logger.error({ err: e }, "Oracle: Failed to fetch Intervals data");
       }
     }
 
@@ -133,7 +134,7 @@ export class OracleService {
         const result = await getHevyWorkouts(user.hevyApiKey, 1, 10);
         hevyWorkouts = result.workouts || [];
       } catch (e) {
-        console.error("Oracle: Failed to fetch Hevy data", e);
+        logger.error({ err: e }, "Oracle: Failed to fetch Hevy data");
       }
     }
 
@@ -171,7 +172,9 @@ export class OracleService {
       analysis,
       capabilities,
       (user.activePath as TrainingPath) || "WARDEN",
-      activeDuel
+      activeDuel,
+      // Pass required GPE data if available, defaulting to mock/neutral for now to avoid breaking signature
+      user.wardensManifest ? (user.wardensManifest as unknown as WardensManifest) : undefined
     );
   }
 
@@ -353,9 +356,41 @@ export class OracleService {
     wellness: IntervalsWellness,
     analysis: { cardioRatio: number; volumeRatio: number; isVolumeSpike: boolean },
     capabilities: EquipmentType[] = [],
-    activePath: string = "WARDEN",
-    activeDuel: Partial<DuelChallenge> | null = null
+    _activePath: string = "WARDEN",
+    activeDuel: Partial<DuelChallenge> | null = null,
+    manifest?: WardensManifest
   ): OracleDecree {
+    // 0. GPE Override (Oracle 3.0)
+    if (manifest) {
+      // Create minimal metrics from available data
+      const metrics: SystemMetrics = {
+        ctl: (titan.cardioIndex || 0) + (titan.strengthIndex || 0), // Rough proxy
+        atl: 0, // Need accurate TSB calc
+        tsb: 0,
+        soreness: 5, // Default
+        sleepScore: wellness.sleepScore || 70,
+        hrv: wellness.hrv || 50,
+        stress: 5,
+        mood: titan.mood as any || "NEUTRAL",
+        consecutiveStalls: 0,
+        acwr: Math.max(analysis.cardioRatio, analysis.volumeRatio)
+      };
+
+      const phase = GoalPriorityEngine.selectPhase(manifest, metrics);
+
+      // If GPE dictates DELOAD, override everything
+      if (phase === "DELOAD") {
+        return {
+          type: "DEBUFF",
+          code: "GPE_DELOAD",
+          label: "Phase: Deload",
+          description: "The Engine dictates a week of recovery. Reduce volume.",
+          actions: { lockFeatures: ["HEAVY_LIFT", "PR_ATTEMPT"], notifyUser: true, urgency: "HIGH" },
+          effect: { modifier: 0.6, stat: "all" }
+        };
+      }
+    }
+
     // 1. Safety Override (Injury)
     if (titan.isInjured) {
       return {

@@ -1,6 +1,6 @@
 "use server";
 
-import { prisma } from "@/lib/prisma";
+
 import { revalidatePath } from "next/cache";
 
 interface ReferralCode {
@@ -159,7 +159,7 @@ export async function applyReferralCodeAction(
  * Get referral leaderboard.
  */
 export async function getReferralLeaderboardAction(
-  limit: number = 10,
+  _limit: number = 10,
 ): Promise<Array<{ rank: number; heroName: string; referralCount: number }>> {
   // MVP: Return sample leaderboard
   return [
