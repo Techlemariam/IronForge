@@ -59,6 +59,7 @@ IronForge uses a hybrid architecture with **Next.js Server Actions** for client-
 | `getSubscriptionAction()` | Returns Coach subscription status. | Auth User |
 | `upgradeSubscriptionAction(tier)` | Upgrades subscription tier. | Auth User |
 | `generateReferralCodeAction()` | Creates a unique referral code. | Auth User |
+| `recalculatePowerRatingAction()` | Recalculates Titan Power Rating. | Auth User |
 
 ### 🏋️ Training & Progression (`actions/training/`)
 
@@ -105,6 +106,13 @@ IronForge uses a hybrid architecture with **Next.js Server Actions** for client-
 | `getWeeklyChallengesAction()` | Fetches weekly challenges. | Auth User |
 | `getWorldStateAction()` | Returns global world state variables. | Auth User |
 | `getBestiaryAction()` | Returns monster catalog. | Auth User |
+| `getUserBattlePassProgressAction()` | Helper: Get full BP progress. | Auth User |
+| `addBattlePassXpAction(amount)` | Adds XP to current BP season. | System/Auth |
+| `upgradeToPremiumAction()` | Upgrades current BP to Premium. | Auth User |
+| `getTerritoryAppData()` | Fetches user stats and local tiles. | Auth User |
+| `getTerritoryLeaderboard(city)` | territory leaderboards (Global/City). | Auth User |
+| `getGuildLeaderboard()` | Guild territory control leaderboard. | Auth User |
+| `contestTerritoryAction(id, guild)` | Contests a territory tile. | Auth User |
 
 ### 💰 Economy (`actions/economy/`)
 
@@ -123,6 +131,8 @@ IronForge uses a hybrid architecture with **Next.js Server Actions** for client-
 | `upgradeGeneratorAction(type)` | Upgrades resource generator level. | Auth User |
 | `getGoldMultiplierStatusAction()` | Returns active gold multipliers. | Auth User |
 | `upgradeEquipmentAction(itemId)` | Upgrades item tier/stats. | Auth User |
+| `getGoldBalanceAction()` | Returns current gold balance. | Auth User |
+| `canAffordItemAction(id, qty)` | Checks if user can afford item. | Auth User |
 
 ### ⚔️ Combat & PvP (`actions/combat/`, `actions/pvp/`)
 

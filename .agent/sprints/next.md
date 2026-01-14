@@ -1,37 +1,57 @@
-## Next Sprint: Sprint 26 "Social Consolidation & Foundation"
+## Next Sprint: Sprint 25: Expansion & Intelligence
 
-**Period**: 2026-01-11 - 2026-01-25
-**Goal**: Complete the Social Layer (Async Challenges), introduce Lite Mode for accessibility, and stabilize the codebase with proper Test Scaffolding.
+**Period**: 2026-01-17 - 2026-01-24
+**Goal**: Launch Oracle 3.0 foundations and activate Guild Territory mechanics.
 
 ## Backlog
 
-### Priority: High (Critical Value/Health)
+### Priority: High (Features)
 
-- [ ] **Asynchronous Challenges** ("Beat My Bench") <!-- agent: game-designer | estimate: 8h | source: task.md (Iron Mines) -->
-- [ ] **Unit Test Scaffolding** (Create `tests/unit/{actions,services}`, scaffold missing tests) <!-- agent: qa | estimate: 6h | source: health-report.md -->
-- [ ] **Lite Mode** (Performance & Reduced Motion toggle) <!-- agent: ui-ux | estimate: 5h | source: user-request -->
+- [ ] **Oracle 3.0 (Phase 1)** <!-- agent: /architect | estimate: 4h | source: roadmap | specs: specs/ai-training-coach.md -->
+  - Implement `GoalPriorityEngine` (deterministic logic)
+  - Replace legacy LLM calls with GPE
+  - Basic "Training Check-In" flow
 
-### Priority: Medium (Debt & UX)
+- [ ] **Guild Territories (Mechanics)** <!-- agent: /game-designer | estimate: 4h | source: roadmap | specs: specs/guild-territories.md -->
+  - Implement `TerritoryControlService` (backend)
+  - Define capture logic and reward distribution
+  - Connect to existing UI from Sprint 24
 
-- [ ] **Settings Page Migration** (Modal → `/settings` Route) <!-- agent: ui-ux | estimate: 6h | source: ux-audit.md -->
-- [ ] **Program Editor** (Workout Templates CRUD) <!-- agent: coder | estimate: 8h | source: future_planning.md -->
-- [ ] **Refactor `src/actions`** (Group into subfolders: `combat/`, `social/`, `training/`) <!-- agent: cleanup | estimate: 4h | source: health-report.md -->
+- [ ] **Power Rating System** <!-- agent: /coder | estimate: 3h | source: roadmap | specs: specs/power-rating-system.md -->
+  - Implement `PowerRating` calculation (Strength + Cardio + Consistency)
+  - Add display to Profile and Leaderboards
+
+### Priority: Medium (Infrastructure)
+
+- [ ] **Structured Logging** <!-- agent: /infrastructure | estimate: 2h | source: roadmap | blocked: false -->
+  - Replace `console.log` with Pino/Winston
+  - Standardize log format (level, correlation ID)
+
+- [ ] **Health Check Endpoint** <!-- agent: /infrastructure | estimate: 1h | source: roadmap | blocked: false -->
+  - Create `/api/health` with DB connectivity check
+  - Add simple uptime monitoring
 
 ### Priority: Low (Polish)
 
-- [ ] **Quick Stats Header** (Persistent XP/Gold across views) <!-- agent: ui-ux | estimate: 3h | source: ux-audit.md -->
-- [ ] **Guild Territories Spec** (Technical Design only) <!-- agent: architect | estimate: 3h | source: roadmap.md -->
+- [ ] **Program Comparison View** <!-- agent: /ui-ux | estimate: 2h | source: ux-audit #4 | blocked: false -->
+  - Side-by-side diff of current vs. new program
+  - Visual highlighters for changes
+
+- [ ] **Loading Skeletons** <!-- agent: /ui-ux | estimate: 1h | source: ux-audit #5 | blocked: false -->
+  - Replace spinners in Dashboard and Leaderboards
+  - Create reusable `Skeleton` components
 
 ---
 
 ## Sprint Stats
 
-- **Total Items**: 8
-- **Estimated Hours**: ~43h (High load, may need splitting)
-- **Debt Ratio**: ~25% (2/8 items) + Infra (~25% test scaffold) = ~50% Health focus
-- **Feature Ratio**: ~50%
+- **Total Items**: 7
+- **Estimated Hours**: 17h
+- **Debt Ratio**: ~15% (Infra items)
+- **Feature Ratio**: ~65%
+- **Polish Ratio**: ~20%
 
 ## Dependencies
 
-- **Lite Mode** requires `User.preferences` schema update (JSON).
-- **Program Editor** requires `Program` model in Prisma.
+- Oracle 3.0 requires deprecating some existing `src/services/oracle.ts` logic.
+- Guild Territories relies on `LeaderboardHub` being stable (Sprint 24).

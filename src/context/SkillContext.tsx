@@ -105,6 +105,7 @@ interface SkillContextType {
   pathProgress: Record<string, number>;
   getNodeStatus: (nodeId: string) => SkillStatus;
   activeKeystoneId: string | null;
+  setActiveKeystone: (keystoneId: string | null) => void;
 }
 
 const SkillContext = createContext<SkillContextType | null>(null);
@@ -139,6 +140,7 @@ export const SkillProvider: React.FC<SkillProviderProps> = ({
   const [purchasedSkillIds, setPurchasedSkillIds] = useState<Set<string>>(
     new Set(),
   );
+  const [activeKeystoneId, setActiveKeystoneState] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -161,6 +163,12 @@ export const SkillProvider: React.FC<SkillProviderProps> = ({
             // Save to V2 key
             await StorageService.saveState("skills_v2", validV2Ids);
           }
+        }
+
+        // Load active keystone
+        const savedKeystone = await StorageService.getState<string>("active_keystone");
+        if (savedKeystone) {
+          setActiveKeystoneState(savedKeystone);
         }
       } catch (e) {
         console.error("Skill load failed", e);
@@ -201,7 +209,7 @@ export const SkillProvider: React.FC<SkillProviderProps> = ({
   const calculatedEffects = useSkillEffects(
     purchasedSkillIds,
     wellness,
-    sessionMetadata,
+    { ...sessionMetadata, activeKeystoneId },
   );
   const pathProgress = useMemo(
     () => getPathProgress(purchasedSkillIds),
@@ -386,6 +394,12 @@ export const SkillProvider: React.FC<SkillProviderProps> = ({
     [purchasedSkillIds],
   );
 
+  const setActiveKeystone = useCallback((keystoneId: string | null) => {
+    setActiveKeystoneState(keystoneId);
+    StorageService.saveState("active_keystone", keystoneId).catch(console.error);
+    if (keystoneId) playSound("ui_select");
+  }, []);
+
   // ─────────────────────────────────────────────────────────────────────────
   // Provider Value
   // ─────────────────────────────────────────────────────────────────────────
@@ -417,6 +431,7 @@ export const SkillProvider: React.FC<SkillProviderProps> = ({
       pathProgress,
       getNodeStatus,
       activeKeystoneId,
+      setActiveKeystone,
     ],
   );
 

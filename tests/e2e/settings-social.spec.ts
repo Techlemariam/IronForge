@@ -9,8 +9,11 @@ test.describe('Settings and Social Hub', () => {
         // Check for Header with longer timeout
         await expect(page.getByRole('heading', { name: 'Settings' })).toBeVisible({ timeout: 15000 });
 
-        // Check for "Integrations" section
+        // Check for "Integrations" section (Default tab)
         await expect(page.getByRole('heading', { name: 'Integrations' })).toBeVisible({ timeout: 10000 });
+
+        // Click "Data" tab to view Data Management
+        await page.getByRole('tab', { name: 'Data' }).click();
 
         // Check for "Data Management" section
         await expect(page.getByRole('heading', { name: 'Data Management' })).toBeVisible({ timeout: 10000 });

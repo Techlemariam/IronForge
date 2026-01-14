@@ -11,7 +11,7 @@ import { FeedCard } from "@/features/social/components/FeedCard";
 import { Users, Swords, X } from "lucide-react";
 import { toast } from "sonner";
 import { LeaderboardEntry } from "@/features/leaderboard/types";
-import { FactionLeaderboard } from "./FactionLeaderboard";
+import { LeaderboardHub } from "@/features/leaderboard/components/LeaderboardHub";
 
 interface SocialHubProps {
   onClose: () => void;
@@ -136,11 +136,11 @@ export const SocialHub: React.FC<SocialHubProps> = ({
           )}
 
           {view === "LEADERBOARD" && (
-            <FactionLeaderboard
-              stats={factionStats}
-              leaderboard={leaderboard}
+            <LeaderboardHub
+              pvpPlayers={leaderboard}
+              factionPlayers={leaderboard} // Assuming same for now, or filter by XP
+              factionStats={factionStats}
               currentUserId={currentUserId}
-              isLoading={loading}
             />
           )}
 

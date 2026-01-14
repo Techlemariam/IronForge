@@ -82,4 +82,31 @@ describe("useSkillEffects Logic (Integration)", () => {
     const effectsBad = calculateSkillEffects(purchased, badWellness);
     expect(effectsBad.passiveKsPerDay).toBe(0);
   });
+
+  it("should respect activeKeystoneId if provided and owned", () => {
+    // Unlock two keystones
+    const purchased = new Set(["keystone_iron_discipline", "keystone_sages_rest"]);
+
+    // Select Iron Discipline
+    const sessionIron: SessionMetadata = { activeKeystoneId: "keystone_iron_discipline" };
+    const effectsIron = calculateSkillEffects(purchased, mockWellness, sessionIron);
+    expect(effectsIron.activeKeystoneId).toBe("keystone_iron_discipline");
+
+    // Select Sage's Rest
+    const sessionSage: SessionMetadata = { activeKeystoneId: "keystone_sages_rest" };
+    const effectsSage = calculateSkillEffects(purchased, mockWellness, sessionSage);
+    expect(effectsSage.activeKeystoneId).toBe("keystone_sages_rest");
+  });
+
+  it("should revert to default if activeKeystoneId is not owned or invalid", () => {
+    // Unlock only Iron Discipline
+    const purchased = new Set(["keystone_iron_discipline"]);
+
+    // Try to select Sage's Rest (not owned)
+    const sessionInvalid: SessionMetadata = { activeKeystoneId: "keystone_sages_rest" };
+    const effects = calculateSkillEffects(purchased, mockWellness, sessionInvalid);
+
+    // Should fallback to the owned one
+    expect(effects.activeKeystoneId).toBe("keystone_iron_discipline");
+  });
 });

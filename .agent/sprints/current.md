@@ -14,7 +14,7 @@
   - ✅ GrowthMetrics Implementation (2h) → /coder - Completed 2026-01-10
   - ✅ Citadel Navigation Simplification (2h) → `/ui-ux` - Completed 2026-01-10
 
-- [ ] **Documentation Batch Update** <!-- agent: /librarian | estimate: 3h | source: health-report | blocked: false -->
+- [x] **Documentation Batch Update** <!-- agent: /librarian | estimate: 3h | source: health-report | blocked: false -->
   - Update `api-reference.md` with 70+ missing actions
   - Cover: `battle-pass`, `power-rating`, `territory`, `shop-system`
   - Target: 80% action documentation coverage
@@ -92,4 +92,5 @@
 
 ## Execution Log
 <!-- Auto-updated by /sprint-auto -->
+- **2026-01-14 16:35** - Executed `Documentation Batch Update` via `/librarian`. Added missing actions to `api-reference.md`.
 - **TBD** - Sprint 24 activation pending Sprint 23 completion
