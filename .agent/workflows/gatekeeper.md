@@ -3,11 +3,12 @@ description: "Workflow for gatekeeper"
 command: "/gatekeeper"
 category: "verification"
 trigger: "manual"
-version: "1.0.0"
+version: "2.0.0"
 telemetry: "enabled"
 primary_agent: "@qa"
 domain: "core"
 ---
+
 # 🛡️ The Gatekeeper
 
 **Role:** Quality Enforcer.
@@ -39,7 +40,28 @@ fi
 echo "🔍 Gatekeeper running on branch: $current_branch"
 ```
 
-### 0.1 The Local Loop (Iteration)
+### 0.1 Temporal Drift Check
+
+// turbo
+
+```bash
+## Check how far behind origin/main we are
+git fetch origin main > /dev/null 2>&1
+behind_count=$(git rev-list --count HEAD..origin/main 2>/dev/null || echo "0")
+
+if [ "$behind_count" -gt 10 ]; then
+  echo "⛔ CRITICAL: $behind_count commits behind main. Rebase required."
+  echo "   Run: git rebase origin/main"
+  exit 1
+elif [ "$behind_count" -gt 5 ]; then
+  echo "⚠️ WARNING: $behind_count commits behind main."
+  echo "   Recommended: git rebase origin/main"
+else
+  echo "✅ Temporal sync: Optimal ($behind_count behind)"
+fi
+```
+
+### 0.2 The Local Loop (Iteration)
 
 The core of the Gatekeeper is the **Local Loop**. You must loop through these steps until **all** are green.
 
@@ -116,7 +138,33 @@ Score calculation:
 > [!TIP]
 > **E2E Failures?** If E2E tests fail repeatedly, escalate to `/ci-doctor` for systematic debugging.
 
+---
+
+## 🐳 Docker E2E Verification (Optional Deep Gate)
+
+If you've had repeated CI E2E failures, run this **before** pushing to simulate the CI environment:
+
+```bash
+## Requires Docker installed locally
+docker run --rm -v $(pwd):/work -w /work mcr.microsoft.com/playwright:v1.40.0-jammy \
+  npx playwright test --workers=1 --retries=0
+```
+
+- **Pass locally + Pass Docker** = Safe to push
+- **Pass locally + Fail Docker** = Environment mismatch (fix before push)
+
+> [!NOTE]
+> This step is optional but **highly recommended** if you've experienced E2E flakiness.
+
+---
+
 ## Version History
+
+### 2.0.0 (2026-01-14)
+
+- Added temporal drift check (0.1)
+- Added Docker E2E verification section
+- Renumbered sections
 
 ### 1.0.0 (2026-01-08)
 

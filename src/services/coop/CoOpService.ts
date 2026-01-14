@@ -15,8 +15,8 @@ export const CoOpService = {
      * Get active session for user (restoration)
      */
     async getActiveSession(userId: string): Promise<CoOpSession | null> {
-         // E2E Mock
-         if (typeof window !== 'undefined' && (window as any).__mockCoOpSession) {
+        // E2E Mock
+        if (typeof window !== 'undefined' && (window as any).__mockCoOpSession) {
             return (window as any).__mockCoOpSession;
         }
 
@@ -26,30 +26,45 @@ export const CoOpService = {
                 *,
                 participants:session_participants(*)
             `)
-            .eq("participants.user_id", userId) 
+            .eq("participants.user_id", userId)
             // Note: This query is a bit simplified; typically we query session_participants first
             .maybeSingle(); // Use maybeSingle to avoid 406 on multiple matches (though strict relation should prevent)
-        
+
         // Better approach for Supabase: Query participants table then join
         if (!data) {
-             const { data: partData } = await supabase
+            const { data: partData } = await supabase
                 .from("session_participants")
                 .select("session_id")
                 .eq("user_id", userId)
                 .maybeSingle();
-            
+
             if (partData) {
                 const { data: sessionData } = await supabase
                     .from("active_sessions")
                     .select(`*, participants:session_participants(*)`)
                     .eq("id", partData.session_id)
                     .single();
-                 return sessionData as any as CoOpSession;
+                return sessionData as any as CoOpSession;
             }
             return null;
         }
 
-        return data as any as CoOpSession;
+        const sessionData = data as any;
+        return {
+            ...sessionData,
+            hostId: sessionData.host_id,
+            workoutName: sessionData.workout_name,
+            maxParticipants: sessionData.max_participants,
+            inviteCode: sessionData.invite_code,
+            participants: (sessionData.participants || []).map((p: any) => ({
+                ...p,
+                userId: p.user_id,
+                heroName: p.hero_name,
+                sessionId: p.session_id,
+                lastHeartbeat: p.last_heartbeat,
+                joinedAt: p.joined_at
+            }))
+        } as CoOpSession;
     },
 
     /**
@@ -135,7 +150,22 @@ export const CoOpService = {
         }
 
         // Type casting needed because Prisma types vs Supabase JSON result
-        return data as any as CoOpSession[];
+        const raw = data as any[];
+        return raw.map(s => ({
+            ...s,
+            hostId: s.host_id,
+            workoutName: s.workout_name,
+            maxParticipants: s.max_participants,
+            inviteCode: s.invite_code,
+            participants: (s.participants || []).map((p: any) => ({
+                ...p,
+                userId: p.user_id,
+                heroName: p.hero_name,
+                sessionId: p.session_id,
+                lastHeartbeat: p.last_heartbeat,
+                joinedAt: p.joined_at
+            }))
+        })) as CoOpSession[];
     },
 
     /**

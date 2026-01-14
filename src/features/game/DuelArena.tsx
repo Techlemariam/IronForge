@@ -1,16 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import Image from 'next/image';
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
-import { Card } from "@/components/ui/card";
 import { getDuelArenaStateAction } from "@/actions/pvp/duel";
 import { executeTitanCombatTurnAction } from "@/actions/pvp/titan";
-import { Swords, Trophy, Timer, Bike, Footprints, AlertTriangle, Zap, MessageSquare } from "lucide-react";
+import { Swords, Timer, Zap, MessageSquare } from "lucide-react";
 import { toast } from "sonner";
 import { EmotePicker } from "@/features/pvp/components/EmotePicker";
 import { EmoteOverlay, useBroadcastEmote } from "@/features/pvp/components/EmoteOverlay";
@@ -70,7 +68,7 @@ export function DuelArena({ duelId, currentUserId, onClose }: DuelArenaProps) {
             } else {
                 toast.error(result.error || "Attack failed");
             }
-        } catch (error) {
+        } catch (_error) {
             toast.error("Combat error");
         } finally {
             setIsAttacking(false);

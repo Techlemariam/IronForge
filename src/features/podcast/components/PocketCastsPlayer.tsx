@@ -2,8 +2,8 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { usePodcastPlayer } from "@/features/podcast/hooks/usePodcastPlayer";
-import { PocketCastsEpisode, PocketCastsPodcast } from "@/services/pocketcasts";
-import { Play, Pause, SkipForward, SkipBack, ListMusic, LogOut, Loader2 } from "lucide-react";
+import { PocketCastsEpisode } from "@/services/pocketcasts";
+import { Play, Pause, SkipForward, SkipBack, Loader2 } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
@@ -25,8 +25,8 @@ export function PocketCastsPlayer() {
         play,
         pause,
         skip,
-        nextTrack,
-        prevTrack,
+        nextTrack: _nextTrack,
+        prevTrack: _prevTrack,
         seek,
         setCurrentTrackIndex
     } = usePodcastPlayer(queue);

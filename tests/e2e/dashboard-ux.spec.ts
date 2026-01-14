@@ -12,18 +12,21 @@ test.describe('Settings Lite Mode', () => {
     });
 
     test('should toggle lite mode and hide RPG elements', async ({ page }) => {
+        // Navigate to Interface tab
+        await page.getByRole('tab', { name: 'Interface' }).click();
+
         // More robust selector strategy: 
-        // 1. Find the container for logic grouping
-        const preferencesSection = page.locator('section:has-text("Preferences")');
-        // 2. Find the toggle within that section
-        // The toggle is a div with rounded-full and cursor-pointer classes
-        const toggle = preferencesSection.locator('.rounded-full.cursor-pointer');
+        // Find the row containing "Lite Mode" text
+        const preferenceRow = page.locator('div.flex.items-center.justify-between').filter({ hasText: 'Lite Mode' });
+
+        // Find the toggle within that row
+        const toggle = preferenceRow.locator('.rounded-full.cursor-pointer');
 
         await expect(toggle).toBeVisible();
         await toggle.click();
 
-        // Wait for the network request to complete (updateUserPreferencesAction)
-        await page.waitForTimeout(1000);
+        // Wait for potential network latency (it communicates with server action)
+        await page.waitForTimeout(3000);
 
         // Navigate back to Dashboard
         await page.goto('/dashboard');
@@ -40,6 +43,7 @@ test.describe('Settings Lite Mode', () => {
         // CLEANUP: Reset state
         await page.goto('/settings');
         await expect(page.locator('h1:has-text("Sanctum Settings")')).toBeVisible({ timeout: 10000 });
+        await page.getByRole('tab', { name: 'Interface' }).click();
         await toggle.click();
         await page.waitForTimeout(1000);
     });

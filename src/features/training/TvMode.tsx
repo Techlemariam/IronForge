@@ -6,17 +6,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Heart,
   Zap,
-  Timer,
   Flame,
   Trophy,
-  ChevronUp,
-  ChevronDown,
   Bluetooth,
   BluetoothOff,
-  Maximize,
-  Minimize,
   X,
-  Loader2,
 } from "lucide-react";
 import { useTitanReaction } from "@/features/titan/useTitanReaction";
 import { useBluetoothPower } from "@/features/bio/hooks/useBluetoothPower";
@@ -102,15 +96,12 @@ export const TvMode: React.FC<TvModeProps> = ({
   } = useBluetoothPower();
 
   // State
-  const [hr, setHr] = useState(initialHr); // Fallback/Simulated
-  const [power, setPower] = useState(initialPower); // Fallback/Simulated
   const [zone, setZone] = useState(1);
-  const [streak, setStreak] = useState(initialStreak);
   const [hudVisible, setHudVisible] = useState(true);
-  const [panelExpanded, setPanelExpanded] = useState(false);
   const [sensorsMenuOpen, setSensorsMenuOpen] = useState(false);
   const [podcastOpen, setPodcastOpen] = useState(false);
-  const [isFullscreen, setIsFullscreen] = useState(false);
+
+
   const [sessionStats, setSessionStats] = useState<SessionStats>({
     elapsedSeconds: 0,
     xpEarned: 0,
@@ -127,13 +118,12 @@ export const TvMode: React.FC<TvModeProps> = ({
   const [qrVisible, setQrVisible] = useState(false);
 
   // Companion Relay
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 768; // Rough check for role
+
   const relayRole = searchParams.get("session") ? "CONTROLLER" : "RECEIVER"; // If session param exists, we joined
 
   const {
     lastEvent,
-    broadcast,
-    isConnected: isRelayConnected,
+    isConnected: _isRelayConnected,
   } = useCompanionRelay(relayRole, sessionId);
 
   // Handle Companion Events (Receiver Handling)
@@ -151,13 +141,13 @@ export const TvMode: React.FC<TvModeProps> = ({
   }, [lastEvent, relayRole]);
 
   // Derived State
-  const currentHr = bpm || hr;
-  const currentPower = powerData?.watts || power;
+  const currentHr = bpm || initialHr;
+  const currentPower = powerData?.watts || initialPower;
   const currentCadence = powerData?.cadence || 0;
   const sensorsConnected = isPowerConnected || isHrConnected;
 
   // Titan Dialogue Hook
-  const { thought: titanDialogue, mood } = useTitanReaction({
+  const { thought: titanDialogue } = useTitanReaction({
     heartRate: currentHr,
     power: currentPower,
     cadence: currentCadence,
@@ -224,8 +214,6 @@ export const TvMode: React.FC<TvModeProps> = ({
       if (e.key === "Escape") onExit();
       if (e.key === " ") setHudVisible((v) => !v);
       if (e.key === "p" || e.key === "P") setPodcastOpen((v) => !v);
-      if (e.key === "ArrowUp") setPanelExpanded(true);
-      if (e.key === "ArrowDown") setPanelExpanded(false);
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);

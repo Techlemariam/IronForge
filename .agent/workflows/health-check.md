@@ -8,7 +8,9 @@ telemetry: "enabled"
 primary_agent: "@manager"
 domain: "meta"
 ---
+
 # Workflow: /health-check
+
 Trigger: Scheduled (Weekly) | Manual
 
 > **Naming Convention:** Task Name must follow `[META] Health-Check: <Module/Focus>`.
@@ -45,7 +47,6 @@ Task (Auditing Steg):
 Format: Presentera resultatet som en "Health Dashboard" med status (PASS/FAIL/WARNING) för varje modul, följt av en prioriterad åtgärdslista.
 
 After writing: Betygsätt din egen audit-precision (1-10). Motivera om du tror att du har missat några dolda beroenden.
-
 
 ## Version History
 

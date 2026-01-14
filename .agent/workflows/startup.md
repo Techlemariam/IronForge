@@ -8,6 +8,7 @@ telemetry: "enabled"
 primary_agent: "@manager"
 domain: "meta"
 ---
+
 # Workflow: /startup
 
 Trigger: Auto (Session Start) | Manual
@@ -77,7 +78,6 @@ Baserat på state, föreslå:
 ## Self-Evaluation
 
 Betygsätt **Context Accuracy (1-10)**: Hur väl fångade du användarens intention från förra sessionen?
-
 
 ## Version History
 

@@ -3,7 +3,7 @@
 > Workarounds och shortcuts som behöver refaktoreras. Cleanup Agent kan använda denna fil för asynkron refactoring.
 
 | Date | File | Issue | Owner | Status |
-|:-----|:-----|:------|:------|:-------|
+| :--- | :--- | :--- | :--- | :--- |
 | 2025-12-23 | `src/services/*` | Legacy adapters → Server Actions migration complete (Hevy, Intervals) | @cleanup | ✅ Resolved |
 | 2025-12-25 | `src/services/hevy.ts` | Legacy Hevy adapter removed (Moved to Server Actions) | @cleanup | ✅ Resolved |
 | 2025-12-23 | `src/actions/combat.ts` | Prisma Monster type mismatch - fixed with PrismaMonster type | @coder | ✅ Resolved |
@@ -66,7 +66,7 @@
 | 2026-01-06 | `src/services/analytics/GrowthMetricsService.ts` | `getSocialEngagement` is a placeholder. Requires 'Friendship' model implementation. | @architect | ✅ Resolved (Verified, added tests) |
 | 2026-01-06 | `src/features/game/TheForge.tsx` | Mock inventory state and 'optimistic update' logic needs proper hook/server-sync. | @coder | ⚠️ Open |
 | 2026-01-06 | `src/actions/economy/forge.ts` | `getInventory` uses mock data. DB schema update needed for stackable resources. | @architect | ⚠️ Deferred (Schema) |
-| 2026-01-06 | `src/features/game/hooks/useSkillEffects.ts` | Keystone selection logic only supports first keystone. Needs multi-keystone/switching support. | @game-designer | ⚠️ Open |
+| 2026-01-06 | `src/features/game/hooks/useSkillEffects.ts` | Keystone selection logic only supports first keystone. Needs multi-keystone/switching support. | @game-designer | ✅ Resolved |
 | 2026-01-06 | `src/actions/guild/raids.ts` | `startRaidAction` missing admin permission check (`// TODO: Verify user is admin`). | @security | ✅ Resolved |
 | 2026-01-06 | `src/actions/combat/emotes.ts` | `sendBattleEmoteAction` missing Supabase Realtime broadcast to opponent. | @infrastructure | ✅ Resolved |
 | 2026-01-06 | `src/services/oracle.ts` | Deprecate LLM-based logic in favor of deterministic `GoalPriorityEngine`. | @architect | ✅ Resolved |
@@ -75,13 +75,14 @@
 | 2026-01-10 | `src/actions/training/cardio.ts` | Mock HR values (140/170) hardcoded in `CardioStudio` save logic. Needs real tracking array. | @titan-coach | ⚠️ Open |
 | 2026-01-11 | `tests/e2e/iron-mines.spec.ts` | Co-Op E2E tests use mocked Realtime events. Full multi-user testing requires integration tests with Supabase. | @qa | ⚠️ Deferred (Integration) |
 | 2026-01-12 | `src/features/dashboard/CitadelHub.tsx` | "Cardio Paradox": Training Center (tabs) only accessible via Cardio -> Training Path. "Strength Focus" is a dead end. | @ui-ux | ✅ Resolved |
+| 2026-01-14 | `src/services/coop/CoOpService.ts` | Fixed type-unsafe casting by implementing manual snake_case to camelCase mapping for DB results. | @infrastructure | ✅ Resolved |
 
 ---
 
 ## 📝 Notes
 
 | Date | File | Issue | Owner | Status |
-|:-----|:-----|:------|:------|:-------|
+| :--- | :--- | :--- | :--- | :--- |
 | 2026-01-03 | `.lighthouserc.json` | Lighthouse thresholds already at 0.9 for all categories. | @perf | ✅ Resolved |
 | 2026-01-05 | `src/services/progression.ts:135` | TODO: Add gender to User model for accurate Wilks score calculation | @architect | ⚠️ Deferred (DB schema) |
 | 2026-01-05 | `src/services/bio/GarminService.ts:33` | TODO: Implement direct Garmin Health API (awaiting API approval) | @infrastructure | ⚠️ Deferred (External) |

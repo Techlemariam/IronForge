@@ -208,7 +208,7 @@ export class TrainingContextService {
         const rawPath = user?.activePath || "WARDEN";
         // Map legacy HYBRID_WARDEN to WARDEN if present in DB
         const activePath = (rawPath === "HYBRID_WARDEN" ? "WARDEN" : rawPath) as TrainingPath;
-        const targets = AutoSpecEngine.calculateVolumeTargets(
+        const _targets = AutoSpecEngine.calculateVolumeTargets(
             activePath,
             currentPhase,
             weeksInPhase,
@@ -220,7 +220,7 @@ export class TrainingContextService {
         // We use strengthSets target as a proxy for "Global MRV Scale" or calculate explicitly.
         // INTEGRAL FIX: MRV must scale with Bio-State, not just Ramp-up.
 
-        const junkMilePercent = 0; // Calculate from cardio analysis
+        const _junkMilePercent = 0; // Calculate from cardio analysis
 
         const nutritionMod = AutoSpecEngine.getNutritionModifier(nutritionMode);
         const sleepMod = AutoSpecEngine.getSleepDebtModifier(sleepDebt);
@@ -272,24 +272,24 @@ export class TrainingContextService {
             include: { exercise: true }
         });
 
-        let neuralLoad = 0;
+        let _neuralLoad = 0;
         recentLogs.forEach(log => {
             const sets = parseSets(log.sets);
             sets.forEach(set => {
                 if (set.reps > 0) {
                     const cost = TrainingContextService.estimateCnsCost(log.exercise.name, set.rpe || 7, set.reps);
-                    neuralLoad += (cost === "HIGH" ? 3 : cost === "MEDIUM" ? 2 : 1);
+                    _neuralLoad += (cost === "HIGH" ? 3 : cost === "MEDIUM" ? 2 : 1);
                 }
             });
         });
 
         // Impact Load (Engine) - Run TSS
-        const impactLoad = recentActivities
+        const _impactLoad = recentActivities
             .filter(a => a.type === "Run")
             .reduce((acc, a) => acc + (a.icu_intensity || 0), 0);
 
         // Interference (Warden)
-        let interferenceEvents = 0;
+        let _interferenceEvents = 0;
         // Group by date
         const cardiosByDate = new Map<string, Date[]>();
         recentActivities.forEach(a => {
@@ -308,7 +308,7 @@ export class TrainingContextService {
                 for (const cTime of cardioTimes) {
                     const diffHours = Math.abs(cTime.getTime() - strengthTime.getTime()) / 3600000;
                     if (diffHours < 6) {
-                        interferenceEvents++;
+                        _interferenceEvents++;
                         warnings.push(`Interference Detected: Strength & Cardio within ${diffHours.toFixed(1)}h on ${dateStr} `);
                     }
                 }
@@ -379,7 +379,7 @@ export class TrainingContextService {
     /**
      * Estimates CNS cost of a planned session or set.
      */
-    static estimateCnsCost(exerciseName: string, rpe: number, reps: number): "LOW" | "MEDIUM" | "HIGH" {
+    static estimateCnsCost(exerciseName: string, rpe: number, _reps: number): "LOW" | "MEDIUM" | "HIGH" {
         // 1. Explicit Lookup
         let baseCost = 3;
         const entry = EXERCISE_DB[exerciseName] || EXERCISE_DB[exerciseName.replace(/\s\(.*?\)/, "")] || null;

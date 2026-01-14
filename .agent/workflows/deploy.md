@@ -3,11 +3,12 @@ description: "Workflow for deploy"
 command: "/deploy"
 category: "deployment"
 trigger: "manual"
-version: "1.0.0"
+version: "1.1.0"
 telemetry: "enabled"
 primary_agent: "@infrastructure"
 domain: "infra"
 ---
+
 # Production Deployment (Solo Speed Run)
 
 **Strategy:** Trunk-Based Development (Direct to `main` via PR).
@@ -16,15 +17,15 @@ domain: "infra"
 ## 🚀 The Pipeline
 
 1. **Feature/Fix:** Work in `feature/*` or `fix/*`.
-2. **Local Quality Gate:** Run `/gatekeeper` before pushing.
-    - 🛑 **STOP** if score < 100.
-    - ✅ **PUSH** to *feature branch* and **Create PR**.
+2. **Local Quality Gate:** Run `/pre-pr` when ready to push.
+   - 🛑 **STOP** if gatekeeper score < 100.
+   - ✅ **Auto-pushes** to feature branch and **creates PR**.
 3. **Cloud Verification:** GitHub Actions runs `Verify`, `E2E`, `DB Guard`, and `Perf Audit`.
 4. **Preview (Automated):** PR triggers **Vercel Preview**.
-    - 🤖 Bot comments Preview URL on PR.
+   - 🤖 Bot comments Preview URL on PR.
 5. **Release (Automated):** Merge PR to `main`.
-    - 🤖 CI deploys immediately to **Production**.
-    - 🏷️ Creates GitHub Release + Release Notes.
+   - 🤖 CI deploys immediately to **Production**.
+   - 🏷️ Creates GitHub Release + Release Notes.
 
 ## 📋 Pre-Merge Checklist
 
@@ -38,6 +39,10 @@ domain: "infra"
 2. **Manual Override:** Vercel Dashboard -> Rollback to previous deployment for instant recovery.
 
 ## Version History
+
+### 1.1.0 (2026-01-14)
+
+- Updated to use `/pre-pr` workflow
 
 ### 1.0.0 (2026-01-08)
 

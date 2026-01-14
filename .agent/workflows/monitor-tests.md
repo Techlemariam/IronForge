@@ -8,11 +8,13 @@ telemetry: "enabled"
 primary_agent: "@qa"
 domain: "qa"
 ---
+
 # Test Monitoring Workflow
 
 This workflow describes how to visualize and monitor test execution for both Unit (Vitest) and E2E (Playwright) suites.
 
 ## 1. Monitor Unit Tests (Vitest UI)
+
 Start the Vitest UI to watch tests in real-time with a visual interface. Use this when refactoring or TDD-ing.
 
 ```bash
@@ -21,6 +23,7 @@ npx vitest --ui
 ```
 
 ## 2. View E2E Test Reports
+
 If E2E tests fail on CI, download the report artifact and view it locally.
 
 ```bash
@@ -29,6 +32,7 @@ npx playwright show-report
 ```
 
 ## 3. Watch E2E Tests (Headed Mode)
+
 Run E2E tests in headed mode to visually debug them as they execute.
 
 ```bash
@@ -37,14 +41,15 @@ npx playwright test --ui
 ```
 
 ## 4. Check Coverage Report
+
 Generate and view code coverage statistics.
 
 ```bash
 ## Run coverage analysis
 npm run test:coverage
 ```
-- **Config**: Add missing test tools to `.agent/config.json`.
 
+- **Config**: Add missing test tools to `.agent/config.json`.
 
 ## Version History
 

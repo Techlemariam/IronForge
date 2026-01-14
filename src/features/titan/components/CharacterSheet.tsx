@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { ACHIEVEMENTS, SESSIONS } from "../../../data/static";
+import { SESSIONS } from "../../../data/static";
 import {
-  AchievementCategory,
-  TitanAttributes,
   ExerciseLog,
   MeditationLog,
 } from "../../../types";
@@ -16,12 +14,7 @@ import {
   User,
   TrendingUp,
   Heart,
-  Crown,
-  ChevronDown,
-  Anchor,
   Target,
-  Scale,
-  Zap as ZapIcon,
   Calendar,
   Skull,
   ScrollText,
@@ -48,7 +41,7 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({
   meditationLogs = [],
 }) => {
   const [activeTab, setActiveTab] = useState<TabType>("attributes");
-  const [wellness, setWellness] = useState<IntervalsWellness | null>(null);
+  const [wellness] = useState<IntervalsWellness | null>(null);
   const [historyLogs, setHistoryLogs] = useState<ExerciseLog[]>([]);
   const [isLoadingHistory, setIsLoadingHistory] = useState(false);
 
@@ -113,7 +106,7 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({
         month: "short",
         day: "numeric",
       });
-    } catch (e) {
+    } catch (_e) {
       return dateString;
     }
   };

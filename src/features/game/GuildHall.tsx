@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { RaidBoss, ChatMessage } from "../../types";
 import {
-  Skull,
+  // Skull removed
   Swords,
   Shield,
   Users,
@@ -19,7 +19,7 @@ import {
   attackBossAction,
   getUserStatsAction,
 } from "@/actions/guild/core";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 interface GuildHallProps {
   onClose: () => void;
@@ -55,7 +55,7 @@ export const GuildHall: React.FC<GuildHallProps> = ({ onClose }) => {
 
   // Performance Coach State
   const [kineticEnergy, setKineticEnergy] = useState<number>(0);
-  const [heroName, setHeroName] = useState<string>("Titan");
+  const [_heroName, setHeroName] = useState<string>("Titan");
 
   // Visual Juice State
   const [floatingTexts, setFloatingTexts] = useState<FloatingText[]>([]);
@@ -224,8 +224,8 @@ export const GuildHall: React.FC<GuildHallProps> = ({ onClose }) => {
 
     try {
       await sendChatAction(msgToSend);
-    } catch (e) {
-      console.error("Failed to send message", e);
+    } catch (_e) {
+      console.error("Failed to send message", _e);
     }
   };
 

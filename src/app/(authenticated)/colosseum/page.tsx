@@ -1,6 +1,4 @@
-import React from "react";
-import prisma from "@/lib/prisma";
-import Leaderboard from "@/features/pvp/components/colosseum/Leaderboard";
+import { LeaderboardHub } from "@/features/leaderboard/components/LeaderboardHub";
 import { Swords, Users } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -15,9 +13,7 @@ export default async function ColosseumPage({
 }) {
   const { scope: scopeParam, city: cityParam } = await searchParams;
   const scope = (scopeParam as LeaderboardScope) || "GLOBAL";
-  const city = cityParam || "Gothenburg"; // Default to Gothenburg for demo if city not passed
-  // NOTE: In real app, we should fetch current user's city to use as default.
-  // For now we assume a default or pass it via props/headers if available.
+  const city = cityParam || "Gothenburg";
 
   const leaderboardData = await getLeaderboard({
     scope,
@@ -26,8 +22,14 @@ export default async function ColosseumPage({
     limit: 50,
   });
 
-  // Unified leaderboard now returns LeaderboardEntry directly
   const formattedPlayers = leaderboardData;
+
+  // For Faction stats, we would ideally fetch them here. 
+  // For now, providing a placeholder that won't show the banner if empty/null.
+  const factionStats = {
+    alliance: { members: 0, totalXp: 0 },
+    horde: { members: 0, totalXp: 0 }
+  };
 
   return (
     <div className="min-h-screen bg-black text-white p-4 md:p-8 font-sans">
@@ -91,10 +93,12 @@ export default async function ColosseumPage({
 
         {/* RIGHT COLUMN: LEADERBOARD */}
         <div className="lg:col-span-2">
-          <Leaderboard
-            players={formattedPlayers}
-            scope={scope}
+          <LeaderboardHub
+            pvpPlayers={formattedPlayers}
+            factionPlayers={formattedPlayers}
+            factionStats={factionStats}
             currentCity={city}
+            initialScope={scope}
           />
         </div>
       </div>

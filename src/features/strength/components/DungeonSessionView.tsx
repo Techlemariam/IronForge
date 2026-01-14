@@ -15,32 +15,21 @@ import { useJokerSets } from "@/features/strength/hooks/useJokerSets";
 import { useSetLogging } from "@/features/strength/hooks/useSetLogging";
 import { useVolumeTracking } from "@/features/strength/hooks/useVolumeTracking";
 
-import { useRestTimer } from "@/hooks/useRestTimer";
-import { RestTimer } from "../RestTimer";
+
 import SupersetGroup from "@/features/training/components/SupersetView";
-import { HRRecoveryDisplay } from "@/features/strength/components/HRRecoveryDisplay";
-import { HRZoneBadge } from "@/features/strength/components/HRZoneBadge";
 import { useHRRecoveryTimer } from "@/features/strength/hooks/useHRRecoveryTimer";
 import { BiometricsHUD } from "@/features/strength/components/BiometricsHUD";
 import { CardiacDriftWarning } from "@/features/strength/components/CardiacDriftWarning";
 import { PRCelebration } from "@/components/ui/PRCelebration";
 
-// Local wrapper to conditonally render
-const RestTimerWrapper = () => {
-  const { isActive } = useRestTimer();
-  if (!isActive) return null;
-  return <RestTimer className="scale-75 origin-top-right" />;
-};
+
 
 // --- DUNGEON MODE IMPORTS ---
 import DungeonInterface from "@/components/game/dungeon/DungeonInterface";
 import ScreenShake from "@/components/game/dungeon/ScreenShake";
 import BerserkerOverlay from "@/components/game/dungeon/BerserkerOverlay";
 import OverchargePrompt from "@/features/training/components/OverchargePrompt";
-import {
-  calculateDamage,
-  detectJokerOpportunity,
-} from "@/utils/combatMechanics";
+
 import { LiveSessionHUD } from "@/features/coop/LiveSessionHUD";
 import { useUser } from "@/hooks/useUser";
 import { contributeGuildDamageAction } from "@/actions/guild/core";
@@ -132,7 +121,7 @@ const DungeonSessionView: React.FC<IronMinesProps> = ({
       updateHR(Math.floor(base + fluctuation));
     }, 2000);
     return () => clearInterval(interval);
-  }, []);
+  }, [updateHR]);
 
   // --- MODALS & TRIGGERS ---
   const [showBerserkerChoice, setShowBerserkerChoice] = useState(false);

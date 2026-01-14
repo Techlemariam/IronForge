@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Heart, Sword, Shield, Zap, Skull, Trophy, Timer } from "lucide-react";
+import { motion } from "framer-motion";
+import { Heart, Zap, Skull, Trophy, Timer } from "lucide-react";
 import { playSound } from "@/utils";
 import { logGauntletRunAction, GauntletResult } from "@/actions/training/gauntlet";
 
@@ -24,7 +24,7 @@ interface Enemy {
 }
 
 export const GauntletArena: React.FC<GauntletArenaProps> = ({
-  userLevel,
+  userLevel: _userLevel,
   userFtp,
   onClose,
   currentWatts,
@@ -32,7 +32,7 @@ export const GauntletArena: React.FC<GauntletArenaProps> = ({
 }) => {
   // State
   const [wave, setWave] = useState(1);
-  const [score, setScore] = useState(0);
+  const [_score, setScore] = useState(0);
   const [hp, setHp] = useState(100);
   const [status, setStatus] = useState<"ACTIVE" | "VICTORY" | "DEFEAT">(
     "ACTIVE",

@@ -8,6 +8,7 @@ telemetry: "enabled"
 primary_agent: "@manager"
 domain: "meta"
 ---
+
 # Switch Branch Workflow
 
 Safely switch between branches in the same chat session while preserving work and maintaining awareness.
@@ -149,12 +150,12 @@ if [ "$current_branch" != "main" ]; then
   # Count commits diverged from main
   diverged=$(git rev-list --count main..$current_branch)
   behind_main=$(git rev-list --count $current_branch..main)
-  
+
   echo ""
   echo "📊 Branch Status:"
   echo "   Ahead of main: $diverged commits"
   echo "   Behind main:   $behind_main commits"
-  
+
   if [ "$behind_main" -gt 5 ]; then
     echo ""
     echo "⚠️ RECOMMENDATION: Rebase onto main"
@@ -196,12 +197,12 @@ fi
 
 ## Integration with Other Workflows
 
-| Current Branch | Recommended Next Workflow |
-|----------------|---------------------------|
-| `main` | `/claim-task` → `/domain-session` |
-| `feat/*` | `/coder` → `/qa` → `/gatekeeper` |
-| `fix/*` | `/debug` → `/qa` → `/gatekeeper` |
-| `chore/*` | `/cleanup` → `/polish` → `/gatekeeper` |
+| Current Branch | Recommended Next Workflow              |
+| -------------- | -------------------------------------- |
+| `main`         | `/claim-task` → `/domain-session`      |
+| `feat/*`       | `/coder` → `/qa` → `/gatekeeper`       |
+| `fix/*`        | `/debug` → `/qa` → `/gatekeeper`       |
+| `chore/*`      | `/cleanup` → `/polish` → `/gatekeeper` |
 
 ## Version History
 

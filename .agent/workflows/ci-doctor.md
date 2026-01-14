@@ -112,32 +112,32 @@ fi
 
 ### 1.1 Classification Matrix
 
-| Symptom | Protocol |
-|:--------|:---------|
-| `Timeout waiting for selector` | **SELECTOR_TIMEOUT** (Check `data-testid`) |
-| `Expected X, received Y` | **ASSERTION_MISMATCH** (Check `tests/mocks`) |
-| `net::ERR_` | **NETWORK_HANG** (Mock missing) |
-| `Pass Locally / Fail Remote` | **RACE_CONDITION** (Move mock to `addInitScript`) |
-| `Qodana: Hardcoded password` | **SECURITY_BREACH** (See Phase 1.2) |
-| `Qodana: Duplicated code` | **DRY_VIOLATION** (See Phase 1.2) |
+| Symptom                        | Protocol                                          |
+| :----------------------------- | :------------------------------------------------ |
+| `Timeout waiting for selector` | **SELECTOR_TIMEOUT** (Check `data-testid`)        |
+| `Expected X, received Y`       | **ASSERTION_MISMATCH** (Check `tests/mocks`)      |
+| `net::ERR_`                    | **NETWORK_HANG** (Mock missing)                   |
+| `Pass Locally / Fail Remote`   | **RACE_CONDITION** (Move mock to `addInitScript`) |
+| `Qodana: Hardcoded password`   | **SECURITY_BREACH** (See Phase 1.2)               |
+| `Qodana: Duplicated code`      | **DRY_VIOLATION** (See Phase 1.2)                 |
 
 ### 1.2 The Qodana Ward (Static Analysis)
 
 **Protocol: SECURITY_BREACH**
 
-* **Detection:** `grep -r "password" .github/workflows` or check `cypress.env.json`.
-* **Fix:** Replace hardcoded strings with `${{ secrets.MY_KEY }}` or environment variables.
-* **Verify:** `git grep "my-secret-value"` should return nothing.
+- **Detection:** `grep -r "password" .github/workflows` or check `cypress.env.json`.
+- **Fix:** Replace hardcoded strings with `${{ secrets.MY_KEY }}` or environment variables.
+- **Verify:** `git grep "my-secret-value"` should return nothing.
 
 **Protocol: DRY_VIOLATION (Duplication)**
 
-* **Threshold:** Qodana flags >10 duplicate lines.
-* **Fix:** Extract logic to `src/lib/utils.ts` or a shared component.
-* **Exemption:** If intentional (e.g. seed scripts), add `// noinspection DuplicatedCode` to the file header.
+- **Threshold:** Qodana flags >10 duplicate lines.
+- **Fix:** Extract logic to `src/lib/utils.ts` or a shared component.
+- **Exemption:** If intentional (e.g. seed scripts), add `// noinspection DuplicatedCode` to the file header.
 
 **Protocol: REGEX_REDUNDANCY**
 
-* **Fix:** Simplify Regex patterns (e.g., remove unnecessary groups).
+- **Fix:** Simplify Regex patterns (e.g., remove unnecessary groups).
 
 ---
 
@@ -154,17 +154,17 @@ TARGET="tests/e2e/example.spec.ts" # <-- REPLACE THIS
 
  while [ $ITERATION -lt $MAX_ITERATIONS ]; do
    echo "🔧 Iteration $((ITERATION + 1))"
-   
+
    # STRATEGY A: Native Surgical Strike
    npx playwright test $TARGET --workers=1 --retries=0
-   
+
    if [ $? -eq 0 ]; then
      echo "✅ Tests pass locally. Verifying in Docker..."
-     
+
      # STRATEGY B: Docker Simulation (The Truth)
      docker run --rm -v $(pwd):/work -w /work mcr.microsoft.com/playwright:v1.40.0-jammy \
        npx playwright test $TARGET --workers=1
-       
+
      if [ $? -eq 0 ]; then
         echo "✅ Docker verification passed. Push authorized."
         break
@@ -172,7 +172,7 @@ TARGET="tests/e2e/example.spec.ts" # <-- REPLACE THIS
         echo "⚠️ Failed in Docker. Environment mismatch detected."
      fi
    fi
-   
+
    ITERATION=$((ITERATION + 1))
  done
 ```

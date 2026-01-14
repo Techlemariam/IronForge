@@ -40,6 +40,8 @@ export interface SessionMetadata {
   hasFailedSets?: boolean;
   /** Is this a rest day? */
   isRestDay?: boolean;
+  /** Explicitly selected active keystone ID */
+  activeKeystoneId?: string | null;
 }
 
 // ============================================================================
@@ -202,12 +204,22 @@ export function calculateSkillEffects(
   const result: CalculatedEffects = { ...DEFAULT_EFFECTS };
 
   // Find active keystone (if any)
+  // Find active keystone (if any)
   const keystones = SKILL_TREE_V2.filter(
     (node) => node.tier === "keystone" && purchasedSkillIds.has(node.id),
   );
+
   if (keystones.length > 0) {
-    // For now, take the first keystone (TODO: handle multiple/switching)
-    result.activeKeystoneId = keystones[0].id;
+    // If a specific keystone is requested and owned, use it
+    if (
+      session.activeKeystoneId &&
+      purchasedSkillIds.has(session.activeKeystoneId)
+    ) {
+      result.activeKeystoneId = session.activeKeystoneId;
+    } else {
+      // Default to first unlocked keystone (legacy behavior)
+      result.activeKeystoneId = keystones[0].id;
+    }
   }
 
   // Iterate through all unlocked nodes

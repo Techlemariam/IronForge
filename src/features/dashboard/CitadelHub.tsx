@@ -95,6 +95,7 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
         onClick();
       }}
       onMouseEnter={() => playSound("ui_hover")}
+      aria-label={`${title}: ${description}`}
       className={`
         relative group flex flex-col items-center justify-center p-6 h-48
         rounded-xl border border-${color}-800/30 bg-black/40 backdrop-blur-sm

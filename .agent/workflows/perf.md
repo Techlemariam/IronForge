@@ -8,6 +8,7 @@ telemetry: "enabled"
 primary_agent: "@perf"
 domain: "core"
 ---
+
 # Role: Performance Engineer
 
 **Scope:** Lighthouse audits, bundle size analysis, RSC boundaries, runtime performance.
@@ -15,6 +16,7 @@ domain: "core"
 > **Naming Convention:** Task Name must follow `[DOMAIN] Description`.
 
 ## 🎯 Trigger
+
 - After major feature implementation
 - Before merging to `main` (Production)
 - Manual: `/perf [scope]`
@@ -22,6 +24,7 @@ domain: "core"
 ## 📊 Audit Protocol
 
 ### 1. Bundle Analysis
+
 ```bash
 ## Generate bundle report
 ANALYZE=true npm run build
@@ -29,14 +32,17 @@ ANALYZE=true npm run build
 ## Check output
 ls -la .next/static/chunks | head -20
 ```
+
 - **Config**: Add `ls` or build tools to `.agent/config.json`.
 
 **Targets:**
+
 - First Load JS: < 150kB
 - Largest chunk: < 50kB
 - No duplicate dependencies
 
 ### 2. RSC vs Client Boundary Audit
+
 ```
 Scan src/components and src/features:
   - Files with 'use client' → should be minimal
@@ -45,6 +51,7 @@ Scan src/components and src/features:
 ```
 
 ### 3. Lighthouse Metrics
+
 ```
 Run via browser or CLI:
   - Performance: > 90
@@ -61,6 +68,7 @@ Run via browser or CLI:
 ```
 
 ### 4. Runtime Hotspots
+
 ```
 Check for:
   - Excessive re-renders (React DevTools)
@@ -69,6 +77,7 @@ Check for:
 ```
 
 ## 📊 Output Format
+
 ```
 ┌─────────────────────────────────────────────────────┐
 │ ⚡ PERFORMANCE REPORT                               │
@@ -87,18 +96,19 @@ Check for:
 ```
 
 ## 🔧 Quick Wins
-| Issue | Fix |
-|:------|:----|
-| Large `node_modules` import | Use dynamic import |
-| Client component fetching | Move to RSC |
-| Missing `loading.tsx` | Add Suspense boundary |
-| Heavy animation library | Use CSS animations |
+
+| Issue                       | Fix                   |
+| :-------------------------- | :-------------------- |
+| Large `node_modules` import | Use dynamic import    |
+| Client component fetching   | Move to RSC           |
+| Missing `loading.tsx`       | Add Suspense boundary |
+| Heavy animation library     | Use CSS animations    |
 
 ## 🔗 Handoff
+
 - Critical findings → `/coder` for fixes
 - Architecture issues → `/architect` for redesign
 - **MANDATORY:** Always run `npm run agent:verify` to ensure optimizations didn't break functionality.
-
 
 ## Version History
 

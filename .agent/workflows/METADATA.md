@@ -1,6 +1,7 @@
 ---
 description: Schema definition for workflow metadata
 ---
+
 # Workflow Metadata Schema
 
 > **Standard 1.0.0**
@@ -24,16 +25,16 @@ domain: "core|game|bio|auth|meta|monitoring|database|infrastructure|qa"
 
 ## Field Reference
 
-| Field | Required | Description | Allowed Values |
-| :--- | :--- | :--- | :--- |
-| `description` | Yes | 1-line summary used in help menus. | String (quoted) |
-| `command` | Yes | The slash command to invoke. | `/name` |
-| `category` | Yes | Classification for reporting. | `persona`, `execution`, `monitoring`, `meta`, `utility`, `planning`, `verification`, `deployment` |
-| `trigger` | Yes | How it starts. | `manual`, `auto`, `scheduled` |
-| `version` | Yes | Semantic versioning. | `x.y.z` |
-| `telemetry` | Yes | Whether metrics are logged. | `enabled`, `disabled` |
-| `primary_agent` | Yes | The owning agent/role. | `@agent`, `@manager`, etc. |
-| `domain` | Yes | Functional area. | `core`, `game`, `bio`, `auth`, `meta`, `monitoring`, `database`, `infra`, `qa` |
+| Field           | Required | Description                        | Allowed Values                                                                                    |
+| :-------------- | :------- | :--------------------------------- | :------------------------------------------------------------------------------------------------ |
+| `description`   | Yes      | 1-line summary used in help menus. | String (quoted)                                                                                   |
+| `command`       | Yes      | The slash command to invoke.       | `/name`                                                                                           |
+| `category`      | Yes      | Classification for reporting.      | `persona`, `execution`, `monitoring`, `meta`, `utility`, `planning`, `verification`, `deployment` |
+| `trigger`       | Yes      | How it starts.                     | `manual`, `auto`, `scheduled`                                                                     |
+| `version`       | Yes      | Semantic versioning.               | `x.y.z`                                                                                           |
+| `telemetry`     | Yes      | Whether metrics are logged.        | `enabled`, `disabled`                                                                             |
+| `primary_agent` | Yes      | The owning agent/role.             | `@agent`, `@manager`, etc.                                                                        |
+| `domain`        | Yes      | Functional area.                   | `core`, `game`, `bio`, `auth`, `meta`, `monitoring`, `database`, `infra`, `qa`                    |
 
 ## Migration Rules
 
