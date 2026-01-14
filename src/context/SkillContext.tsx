@@ -140,7 +140,7 @@ export const SkillProvider: React.FC<SkillProviderProps> = ({
   const [purchasedSkillIds, setPurchasedSkillIds] = useState<Set<string>>(
     new Set(),
   );
-  const [activeKeystoneId, setActiveKeystoneState] = useState<string | null>(null);
+  const [selectedKeystoneId, setSelectedKeystoneId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -168,7 +168,7 @@ export const SkillProvider: React.FC<SkillProviderProps> = ({
         // Load active keystone
         const savedKeystone = await StorageService.getState<string>("active_keystone");
         if (savedKeystone) {
-          setActiveKeystoneState(savedKeystone);
+          setSelectedKeystoneId(savedKeystone);
         }
       } catch (e) {
         console.error("Skill load failed", e);
@@ -209,7 +209,7 @@ export const SkillProvider: React.FC<SkillProviderProps> = ({
   const calculatedEffects = useSkillEffects(
     purchasedSkillIds,
     wellness,
-    { ...sessionMetadata, activeKeystoneId },
+    { ...sessionMetadata, activeKeystoneId: selectedKeystoneId },
   );
   const pathProgress = useMemo(
     () => getPathProgress(purchasedSkillIds),
@@ -395,7 +395,7 @@ export const SkillProvider: React.FC<SkillProviderProps> = ({
   );
 
   const setActiveKeystone = useCallback((keystoneId: string | null) => {
-    setActiveKeystoneState(keystoneId);
+    setSelectedKeystoneId(keystoneId);
     StorageService.saveState("active_keystone", keystoneId).catch(console.error);
     if (keystoneId) playSound("ui_select");
   }, []);
@@ -417,6 +417,7 @@ export const SkillProvider: React.FC<SkillProviderProps> = ({
       pathProgress,
       getNodeStatus,
       activeKeystoneId,
+      setActiveKeystone,
     }),
     [
       purchasedSkillIds,
