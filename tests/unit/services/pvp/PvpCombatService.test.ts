@@ -8,15 +8,13 @@ import { GameContextService } from "@/services/game/GameContextService";
 import { PlayerContext, DEFAULT_MODIFIERS } from "@/types/game";
 
 // Mock GameContextService
-vi.mock("../../game/GameContextService", () => ({
-    GameContextService: {
-        getPlayerContext: vi.fn(),
-    },
-}));
+// Mock GameContextService via spyOn
+// No module mock needed for static class methods
 
 describe("PvpCombatService", () => {
     beforeEach(() => {
-        vi.clearAllMocks();
+        vi.restoreAllMocks();
+        vi.spyOn(GameContextService, "getPlayerContext");
     });
 
     describe("calculateAttack", () => {

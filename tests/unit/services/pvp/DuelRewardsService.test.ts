@@ -7,16 +7,10 @@ import { DuelRewardsService } from "@/services/pvp/DuelRewardsService";
 import { GameContextService } from "@/services/game/GameContextService";
 import { PlayerContext } from "@/types/game";
 
-// Mock GameContextService
-vi.mock("../../game/GameContextService", () => ({
-    GameContextService: {
-        getPlayerContext: vi.fn(),
-    },
-}));
-
 describe("DuelRewardsService", () => {
     beforeEach(() => {
-        vi.clearAllMocks();
+        vi.restoreAllMocks();
+        vi.spyOn(GameContextService, "getPlayerContext");
     });
 
     const mockBaseContext: Partial<PlayerContext> = {

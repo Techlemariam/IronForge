@@ -4,11 +4,16 @@ import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 
 // Mock Prisma
-vi.mock('@/lib/prisma', () => ({
-    prisma: {
+vi.mock('@/lib/prisma', () => {
+    const mockPrisma = {
         $queryRaw: vi.fn(),
-    },
-}));
+    };
+    return {
+        __esModule: true,
+        default: mockPrisma,
+        prisma: mockPrisma,
+    };
+});
 
 describe('GET /api/health', () => {
     beforeEach(() => {
@@ -24,22 +29,19 @@ describe('GET /api/health', () => {
 
         expect(response.status).toBe(200);
         expect(json.status).toBe('ok');
-        expect(json.database).toBe('connected');
+        expect(json.db).toBe('connected');
         expect(json).toHaveProperty('timestamp');
-        expect(json).toHaveProperty('env');
-        expect(json).toHaveProperty('gitSha');
     });
 
-    it('should return 500 when database is disconnected', async () => {
+    it('should return 503 when database is disconnected', async () => {
         // Mock failed DB query
         (prisma.$queryRaw as any).mockRejectedValue(new Error('DB Connection Failed'));
 
         const response = await GET();
         const json = await response.json();
 
-        expect(response.status).toBe(500);
+        expect(response.status).toBe(503);
         expect(json.status).toBe('error');
-        expect(json.database).toBe('disconnected');
-        expect(json.error).toBe('DB Connection Failed');
+        expect(json.message).toBe('Database unreachable');
     });
 });

@@ -3,23 +3,28 @@ import { PlannerService } from "@/services/planner";
 import prisma from "@/lib/prisma";
 
 // Mock dependencies
-vi.mock("../lib/prisma", () => ({
-  default: {
+vi.mock("@/lib/prisma", () => {
+  const mockPrisma = {
     user: {
       findUnique: vi.fn(),
     },
     weeklyPlan: {
       create: vi.fn(),
     },
-  },
-}));
-vi.mock("./auditorOrchestrator", () => ({
+  };
+  return {
+    __esModule: true,
+    default: mockPrisma,
+    prisma: mockPrisma,
+  };
+});
+vi.mock("@/services/auditorOrchestrator", () => ({
   runFullAudit: vi.fn().mockResolvedValue({ highestPriorityGap: null }),
 }));
-vi.mock("../lib/intervals", () => ({
+vi.mock("@/lib/intervals", () => ({
   getWellness: vi.fn().mockResolvedValue({ tsb: 0, ctl: 50, atl: 50 }),
 }));
-vi.mock("./analytics", () => ({
+vi.mock("@/services/analytics", () => ({
   AnalyticsService: {
     calculateTTB: vi
       .fn()
@@ -31,7 +36,7 @@ vi.mock("./analytics", () => ({
       }),
   },
 }));
-vi.mock("./oracle", () => ({
+vi.mock("@/services/oracle", () => ({
   OracleService: {
     consult: vi.fn().mockResolvedValue({
       id: "mock-rec",
