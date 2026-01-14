@@ -397,7 +397,7 @@ export const SkillProvider: React.FC<SkillProviderProps> = ({
   const setActiveKeystone = useCallback((keystoneId: string | null) => {
     setSelectedKeystoneId(keystoneId);
     StorageService.saveState("active_keystone", keystoneId).catch(console.error);
-    if (keystoneId) playSound("ui_select");
+    if (keystoneId) playSound("ui_click");
   }, []);
 
   // ─────────────────────────────────────────────────────────────────────────
