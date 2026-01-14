@@ -1426,6 +1426,16 @@
       "path": "src/features/companion/useCompanionRelay.ts"
     },
     {
+      "id": "src/features/coop/GhostOverlay.tsx",
+      "type": "module",
+      "path": "src/features/coop/GhostOverlay.tsx"
+    },
+    {
+      "id": "src/features/coop/LiveSessionHUD.tsx",
+      "type": "module",
+      "path": "src/features/coop/LiveSessionHUD.tsx"
+    },
+    {
       "id": "src/features/dashboard/CitadelHub.tsx",
       "type": "module",
       "path": "src/features/dashboard/CitadelHub.tsx"
@@ -2201,6 +2211,11 @@
       "path": "src/hooks/useTheme.tsx"
     },
     {
+      "id": "src/hooks/useUser.ts",
+      "type": "module",
+      "path": "src/hooks/useUser.ts"
+    },
+    {
       "id": "src/hooks/useVoiceCommand.ts",
       "type": "module",
       "path": "src/hooks/useVoiceCommand.ts"
@@ -2414,6 +2429,11 @@
       "id": "src/services/challengeService.ts",
       "type": "service",
       "path": "src/services/challengeService.ts"
+    },
+    {
+      "id": "src/services/coop/CoOpService.ts",
+      "type": "service",
+      "path": "src/services/coop/CoOpService.ts"
     },
     {
       "id": "src/services/data/TrainingContextService.ts",
@@ -5393,6 +5413,26 @@
       "relation": "imports"
     },
     {
+      "from": "src/features/coop/GhostOverlay.tsx",
+      "to": "src/services/coop/CoOpService.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/coop/GhostOverlay.tsx",
+      "to": "src/lib/utils.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/coop/LiveSessionHUD.tsx",
+      "to": "src/services/coop/CoOpService.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/coop/LiveSessionHUD.tsx",
+      "to": "src/hooks/useUser.ts",
+      "relation": "imports"
+    },
+    {
       "from": "src/features/dashboard/CitadelHub.tsx",
       "to": "src/features/dashboard/types.ts",
       "relation": "imports"
@@ -7254,6 +7294,11 @@
     },
     {
       "from": "src/features/strength/components/DungeonSessionView.tsx",
+      "to": "src/components/ui/PRCelebration.tsx",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/strength/components/DungeonSessionView.tsx",
       "to": "src/components/game/dungeon/DungeonInterface.tsx",
       "relation": "imports"
     },
@@ -7275,6 +7320,31 @@
     {
       "from": "src/features/strength/components/DungeonSessionView.tsx",
       "to": "src/utils/combatMechanics.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/strength/components/DungeonSessionView.tsx",
+      "to": "src/features/coop/LiveSessionHUD.tsx",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/strength/components/DungeonSessionView.tsx",
+      "to": "src/hooks/useUser.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/strength/components/DungeonSessionView.tsx",
+      "to": "src/actions/guild/core.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/strength/components/DungeonSessionView.tsx",
+      "to": "src/features/coop/GhostOverlay.tsx",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/strength/components/DungeonSessionView.tsx",
+      "to": "src/services/coop/CoOpService.ts",
       "relation": "imports"
     },
     {
@@ -7374,11 +7444,6 @@
     },
     {
       "from": "src/features/strength/hooks/useMiningSession.ts",
-      "to": "src/context/SkillContext.tsx",
-      "relation": "imports"
-    },
-    {
-      "from": "src/features/strength/hooks/useMiningSession.ts",
       "to": "src/services/storage.ts",
       "relation": "imports"
     },
@@ -7430,6 +7495,11 @@
     {
       "from": "src/features/strength/hooks/useSetLogging.ts",
       "to": "src/actions/training/core.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/strength/hooks/useSetLogging.ts",
+      "to": "src/actions/training/max-reps.ts",
       "relation": "imports"
     },
     {
@@ -7794,7 +7864,7 @@
     },
     {
       "from": "src/features/training/components/ExerciseView.tsx",
-      "to": "src/features/training/components/SetRow.tsx",
+      "to": "src/features/strength/SetRow.tsx",
       "relation": "imports"
     },
     {
@@ -7830,6 +7900,21 @@
     {
       "from": "src/features/training/components/ExerciseView.tsx",
       "to": "src/features/strength/actions/history.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/training/components/ExerciseView.tsx",
+      "to": "src/components/ui/PRBadge.tsx",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/training/components/ExerciseView.tsx",
+      "to": "src/hooks/useMaxReps.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/training/components/ExerciseView.tsx",
+      "to": "src/actions/training/strength.ts",
       "relation": "imports"
     },
     {
@@ -7970,6 +8055,11 @@
     {
       "from": "src/features/training/components/SupersetView.tsx",
       "to": "src/features/training/components/ExerciseView.tsx",
+      "relation": "imports"
+    },
+    {
+      "from": "src/features/training/components/SupersetView.tsx",
+      "to": "src/actions/training/strength.ts",
       "relation": "imports"
     },
     {
@@ -8140,6 +8230,16 @@
     {
       "from": "src/hooks/useRestTimer.ts",
       "to": "src/utils/index.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/hooks/useUser.ts",
+      "to": "src/utils/supabase/client.ts",
+      "relation": "imports"
+    },
+    {
+      "from": "src/hooks/useUser.ts",
+      "to": "src/actions/guild/core.ts",
       "relation": "imports"
     },
     {
@@ -9064,8 +9164,8 @@
     }
   ],
   "metadata": {
-    "lastUpdated": "2026-01-10T20:10:07.709Z",
-    "nodeCount": 579,
-    "edgeCount": 1233
+    "lastUpdated": "2026-01-14T08:55:31.450Z",
+    "nodeCount": 583,
+    "edgeCount": 1249
   }
 }
