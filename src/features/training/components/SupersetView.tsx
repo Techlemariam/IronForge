@@ -3,7 +3,6 @@
 
 import React from "react";
 import { Exercise } from "@/types";
-import { Exercise } from "@/types";
 import ExerciseView from "./ExerciseView";
 import { Link2 } from "lucide-react";
 
@@ -17,9 +16,9 @@ interface SupersetViewProps {
 
 const _SupersetView: React.FC<SupersetViewProps> = ({
     exercises,
-    _activeExIndex,
-    _onSetLog,
-    _onNotesChange,
+    activeExIndex: _activeExIndex,
+    onSetLog: _onSetLog,
+    onNotesChange: _onNotesChange,
 }) => {
     // Determine if any exercise in this superset is currently active
     // The parent passes individual exercises, but we need to identify *which* one corresponds to activeExIndex

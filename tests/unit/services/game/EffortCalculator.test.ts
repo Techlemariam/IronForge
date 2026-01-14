@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { calculateEffortScore } from "../EffortCalculator";
+import { calculateEffortScore } from "@/services/game/EffortCalculator";
 
 describe("EffortCalculator", () => {
     it("should prioritize power over HR and pace", () => {

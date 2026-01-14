@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { getWellness, getAthleteSettings } from "../intervals";
-import { getHevyWorkouts, getHevyTemplates } from "../hevy";
+import { getWellness, getAthleteSettings } from "@/lib/intervals";
+import { getHevyWorkouts, getHevyTemplates } from "@/lib/hevy";
 
 const fetchMock = vi.fn();
 vi.stubGlobal("fetch", fetchMock);

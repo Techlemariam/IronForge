@@ -3,7 +3,7 @@ import {
   calculateDamage,
   detectSpecialMove,
   detectJokerOpportunity,
-} from "../combatMechanics";
+} from "@/utils/combatMechanics";
 
 describe("Combat Mechanics", () => {
   describe("calculateDamage", () => {

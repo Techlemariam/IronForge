@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { POST } from "../logs/route";
+import { POST } from "@/app/api/sync/logs/route";
 import { NextResponse } from "next/server";
 
 // Mocks

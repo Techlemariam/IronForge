@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { calculateSkillEffects } from "@/features/game/hooks/useSkillEffects";
 import { SessionMetadata } from "@/features/game/hooks/useSkillEffects";
-import { IntervalsWellness } from "../../types";
+import { IntervalsWellness } from "@/types";
 
 describe("useSkillEffects Logic (Integration)", () => {
   // Helper to create mock wellness

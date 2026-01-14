@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { POST } from "../route";
+import { POST } from "@/app/api/chat/route";
 
 // Mock AI SDK
 const mockToTextStreamResponse = vi.fn(() => new Response("Streamed response"));

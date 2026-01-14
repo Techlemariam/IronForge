@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { POST } from "../route";
+import { POST } from "@/app/api/sync/user/route";
 import { UserService } from "@/services/server/UserService";
 import * as AuthLib from "@/lib/auth";
 

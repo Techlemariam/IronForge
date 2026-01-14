@@ -190,7 +190,8 @@ export const StorageService = {
       | "equipment"
       | "gold"
       | "inventory"
-      | "unlocked_monsters",
+      | "unlocked_monsters"
+      | "active_keystone",
     data: unknown,
   ): Promise<void> {
     await this.ensureInit();
@@ -220,7 +221,8 @@ export const StorageService = {
       | "equipment"
       | "gold"
       | "inventory"
-      | "unlocked_monsters",
+      | "unlocked_monsters"
+      | "active_keystone",
   ): Promise<T | null> {
     await this.ensureInit();
     if (!this.db) return null;

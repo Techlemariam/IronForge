@@ -24,7 +24,7 @@ interface Enemy {
 }
 
 export const GauntletArena: React.FC<GauntletArenaProps> = ({
-  _userLevel,
+  userLevel: _userLevel,
   userFtp,
   onClose,
   currentWatts,

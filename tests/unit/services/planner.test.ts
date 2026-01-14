@@ -1,6 +1,6 @@
 import { vi, describe, it, expect } from "vitest";
-import { PlannerService } from "./planner";
-import prisma from "../lib/prisma";
+import { PlannerService } from "@/services/planner";
+import prisma from "@/lib/prisma";
 
 // Mock dependencies
 vi.mock("../lib/prisma", () => ({

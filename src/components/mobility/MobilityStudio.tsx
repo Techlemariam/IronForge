@@ -28,30 +28,6 @@ export function MobilityStudio() {
     const [timeLeft, setTimeLeft] = useState(0);
     const [isLogging, setIsLogging] = useState(false);
 
-    // Timer Logic
-    useEffect(() => {
-        let interval: NodeJS.Timeout;
-        if (timerActive && timeLeft > 0) {
-            interval = setInterval(() => {
-                setTimeLeft((prev) => prev - 1);
-            }, 1000);
-        } else if (timeLeft === 0 && timerActive) {
-            setTimerActive(false);
-            handleComplete();
-        }
-        return () => clearInterval(interval);
-    }, [timerActive, timeLeft, handleComplete]);
-
-    const handleStartExercise = (exercise: MobilityExercise) => {
-        setActiveExercise(exercise);
-        setTimeLeft(exercise.durationSecs);
-        setTimerActive(false); // User must click "Start Timer"
-    };
-
-    const toggleTimer = () => {
-        setTimerActive(!timerActive);
-    };
-
     const handleComplete = async () => {
         if (!activeExercise) return;
 
@@ -69,6 +45,32 @@ export function MobilityStudio() {
             toast.error("Failed to log session");
         }
     };
+
+    // Timer Logic
+    useEffect(() => {
+        let interval: NodeJS.Timeout;
+        if (timerActive && timeLeft > 0) {
+            interval = setInterval(() => {
+                setTimeLeft((prev) => prev - 1);
+            }, 1000);
+        } else if (timeLeft === 0 && timerActive) {
+            setTimerActive(false);
+            handleComplete();
+        }
+        return () => clearInterval(interval);
+    }, [timerActive, timeLeft]); // handleComplete is stable now
+
+    const handleStartExercise = (exercise: MobilityExercise) => {
+        setActiveExercise(exercise);
+        setTimeLeft(exercise.durationSecs);
+        setTimerActive(false); // User must click "Start Timer"
+    };
+
+    const toggleTimer = () => {
+        setTimerActive(!timerActive);
+    };
+
+
 
     const filteredExercises = MOBILITY_EXERCISES.filter(e =>
         selectedRegion === 'ALL' || e.targetRegions.includes(selectedRegion)

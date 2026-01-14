@@ -174,7 +174,7 @@ export class OracleService {
       (user.activePath as TrainingPath) || "WARDEN",
       activeDuel,
       // Pass required GPE data if available, defaulting to mock/neutral for now to avoid breaking signature
-      user.wardensManifest ? (user.wardensManifest as unknown as WardensManifest) : undefined
+      (user as any).wardensManifest ? ((user as any).wardensManifest as unknown as WardensManifest) : undefined
     );
   }
 
@@ -367,11 +367,12 @@ export class OracleService {
         ctl: (titan.cardioIndex || 0) + (titan.strengthIndex || 0), // Rough proxy
         atl: 0, // Need accurate TSB calc
         tsb: 0,
+        hrvBaseline: 60, // Default baseline
         soreness: 5, // Default
         sleepScore: wellness.sleepScore || 70,
         hrv: wellness.hrv || 50,
-        stress: 5,
-        mood: titan.mood as any || "NEUTRAL",
+
+        mood: (titan as any).mood || "NEUTRAL",
         consecutiveStalls: 0,
         acwr: Math.max(analysis.cardioRatio, analysis.volumeRatio)
       };

@@ -3,8 +3,8 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { PvpCombatService } from "../PvpCombatService";
-import { GameContextService } from "../../game/GameContextService";
+import { PvpCombatService } from "@/services/pvp/PvpCombatService";
+import { GameContextService } from "@/services/game/GameContextService";
 import { PlayerContext, DEFAULT_MODIFIERS } from "@/types/game";
 
 // Mock GameContextService

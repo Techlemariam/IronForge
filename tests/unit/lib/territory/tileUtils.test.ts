@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { isWithinHomeZone, coordsToTileId, HOME_ZONE_RADIUS_METERS } from '../tileUtils';
+import { isWithinHomeZone, coordsToTileId, HOME_ZONE_RADIUS_METERS } from '@/lib/territory/tileUtils';
 
 describe('tileUtils', () => {
     describe('isWithinHomeZone', () => {

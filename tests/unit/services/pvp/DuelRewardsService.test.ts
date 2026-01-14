@@ -3,8 +3,8 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { DuelRewardsService } from "../DuelRewardsService";
-import { GameContextService } from "../../game/GameContextService";
+import { DuelRewardsService } from "@/services/pvp/DuelRewardsService";
+import { GameContextService } from "@/services/game/GameContextService";
 import { PlayerContext } from "@/types/game";
 
 // Mock GameContextService

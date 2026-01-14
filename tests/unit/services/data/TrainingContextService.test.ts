@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { TrainingContextService } from "../TrainingContextService";
+import { TrainingContextService } from "@/services/data/TrainingContextService";
 import prisma from "@/lib/prisma";
 import { getWellnessAction, getActivitiesAction } from "@/actions/integrations/intervals";
 

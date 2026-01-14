@@ -5,7 +5,7 @@ import {
     getMrvAdherenceBonus,
     calculatePowerRating,
     applyDecay,
-} from "../powerRating";
+} from "@/lib/powerRating";
 
 describe("powerRating", () => {
     describe("normalizeStrength", () => {

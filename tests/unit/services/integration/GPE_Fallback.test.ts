@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { GoalPriorityEngine } from '../GoalPriorityEngine';
+import { GoalPriorityEngine } from '@/services/GoalPriorityEngine';
 import { SystemMetrics, WardensManifest } from '@/types/goals';
 
 // Realistic payload from Intervals.icu (anonymized)
