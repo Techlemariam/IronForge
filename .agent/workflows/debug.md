@@ -23,6 +23,7 @@ Identify error type:
 |------|------------|-------------|
 | **Build** | `npm run build` fails, type errors | Step 2A |
 | **Test** | `npm test` or `playwright` fails | Step 2B |
+| **E2E** | Playwright timeout, CI-only failures | `/ci-doctor` |
 | **Runtime** | Console errors, API 500s | Step 2C |
 | **Lint** | ESLint/TypeScript warnings | `/polish` |
 
@@ -31,6 +32,7 @@ Identify error type:
 ## Step 2A: Build Error Analysis
 
 // turbo
+
 ```bash
 npm run build 2>&1 | head -100
 ```
@@ -40,6 +42,7 @@ npm run build 2>&1 | head -100
 3. Check recent git changes: `git diff HEAD~3 --name-only`
 
 **Resolution Chain:**
+
 - Type error → Fix types, run `npm run check-types`
 - Import error → Check barrel exports, circular deps
 - Config error → Review `next.config.ts`, `tsconfig.json`
@@ -49,6 +52,7 @@ npm run build 2>&1 | head -100
 ## Step 2B: Test Failure Analysis
 
 // turbo
+
 ```bash
 npm test -- --reporter=verbose 2>&1 | tail -50
 ```
@@ -58,6 +62,7 @@ npm test -- --reporter=verbose 2>&1 | tail -50
 3. Compare expected vs actual
 
 **Resolution Chain:**
+
 - Assertion fail → Fix logic or update test
 - Timeout → Increase timeout or fix async issue
 - Setup fail → Check test fixtures and mocks
@@ -71,6 +76,7 @@ npm test -- --reporter=verbose 2>&1 | tail -50
 3. Check API responses with `curl` or browser network tab
 
 **Common Patterns:**
+
 - `undefined is not a function` → Missing null check
 - `Failed to fetch` → API route error or CORS
 - `Hydration mismatch` → Server/client content differs
@@ -94,9 +100,11 @@ git stash && npm run build && git stash pop
 1. Apply minimal fix
 2. Verify locally:
    // turbo
+
    ```bash
    npm run build && npm test
    ```
+
 3. If fix touches core logic → `/qa` for regression test
 
 ---
@@ -124,10 +132,10 @@ After successful fix:
 ## Emergency Mode
 
 If stuck > 30 min:
+
 1. `git stash` all changes
 2. `git bisect` to find breaking commit
 3. Escalate to `/architect` if architectural issue
-
 
 ## Version History
 

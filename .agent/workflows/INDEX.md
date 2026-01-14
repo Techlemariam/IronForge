@@ -20,6 +20,7 @@ Quick reference for choosing the right workflow based on your situation.
 |-----------|----------------|-------|
 | **Morning Start** | `/startup` → `/domain-session` | Daily briefing + focus area |
 | **Build Broken** | `/debug` → `/coder` → `/qa` | Systematic error recovery |
+| **CI/CD Failing** | `/ci-doctor` | Comprehensive CI failure resolution |
 | **New Feature** | `/domain-session` → `/feature` → `/qa` | Full feature pipeline |
 | **Quick Fix** | `/coder` → `/qa` | Small, isolated changes |
 | **Debt Attack** | `/debt-attack` | Scheduled maintenance |
@@ -38,6 +39,7 @@ Quick reference for choosing the right workflow based on your situation.
 ## 🎭 Agent Personas
 
 ### Engineering
+
 | Agent | Focus | When to Use |
 |-------|-------|-------------|
 | `/architect` | System design, patterns | Major changes, new systems |
@@ -48,6 +50,7 @@ Quick reference for choosing the right workflow based on your situation.
 | `/debug` | Error analysis | When things break |
 
 ### Product & Design
+
 | Agent | Focus | When to Use |
 |-------|-------|-------------|
 | `/analyst` | Requirements | New features, user stories |
@@ -57,6 +60,7 @@ Quick reference for choosing the right workflow based on your situation.
 | `/strategist` | Business | Pricing, growth |
 
 ### Specialist
+
 | Agent | Focus | When to Use |
 |-------|-------|-------------|
 | `/titan-coach` | Bio ↔ Game bridge | Training metrics, buffs |
@@ -64,11 +68,11 @@ Quick reference for choosing the right workflow based on your situation.
 | `/platform` | Cross-device | Mobile, TV, Desktop |
 
 ### Meta & Maintenance
+
 | Agent | Focus | When to Use |
 |-------|-------|-------------|
 | `/polish` | Code cleanup | Formatting, dead code |
 | `/perf` | Performance | Bundle, Lighthouse |
-
 
 | `/triage` | Gap prioritization | Resolving gaps from monitors |
 | `/gatekeeper` | Qualification | Strict pre-push checks |
@@ -124,10 +128,10 @@ Gap Resolution:
 | **Logic & Debt** | `/monitor-logic` | Type safety, TODOs, debt scan |
 | **CI/CD Health** | `/monitor-ci` | Workflow runs, build status |
 
-
 | **Gap Triage** | `/triage` | Prioritize all found gaps into ROADMAP.md |
 | **Debt Scanner** | `/monitor-debt` | Scan codebase for debt markers |
 | **Quality Gate** | `/gatekeeper` | Pre-push integrity checks |
+| **CI Doctor** | `/ci-doctor` | Comprehensive CI failure prevention/resolution |
 
 ---
 
@@ -200,6 +204,8 @@ Start
   │
   ├─ Something broken? ────────→ /debug
   │
+  ├─ CI failing repeatedly? ──→ /ci-doctor
+  │
   ├─ Need to ship? ────────────→ /pre-deploy
   │
   ├─ Know what to build? ──────→ /domain-session → /feature
@@ -212,7 +218,6 @@ Start
   │
   └─ Just starting day? ───────→ /startup
 ```
-
 
 ## Version History
 
