@@ -18,17 +18,14 @@ export const LiveSessionHUD: React.FC<LiveSessionHUDProps> = ({ onSessionJoin })
     // Initial load & Restoration & Refresh on Open
     useEffect(() => {
         refreshSessions();
-        console.log('[E2E-DEBUG] LiveSessionHUD Effect Triggered. User:', user?.id, 'Expanded:', isExpanded, 'ActiveSession:', activeSession?.id);
 
         // Debug Mock Visibility
         if (typeof window !== 'undefined') {
-            console.log('[E2E-DEBUG] Window Mock Session:', (window as any).__mockCoOpSession);
+            // Checked for mock
         }
 
         if (user && (isExpanded || !activeSession)) {
-            console.log('[E2E-DEBUG] Calling getActiveSession...');
             CoOpService.getActiveSession(user.id).then(session => {
-                console.log('[E2E-DEBUG] getActiveSession Result:', session);
                 if (session) setActiveSession(session);
             });
         }
@@ -87,7 +84,7 @@ export const LiveSessionHUD: React.FC<LiveSessionHUDProps> = ({ onSessionJoin })
 
     if (!user) {
         if (typeof window !== 'undefined') {
-            console.log("[LiveSessionHUD] Render aborted: No user.", { mockUser: (window as any).__mockUser });
+            // Log aborted if needed? No, silent.
         }
         // Fallback for E2E/Loading: Render disabled button to prevent timeout and show state
         return (
@@ -105,7 +102,7 @@ export const LiveSessionHUD: React.FC<LiveSessionHUDProps> = ({ onSessionJoin })
         );
     }
 
-    console.log("[LiveSessionHUD] Rendering", { user: user.id });
+
 
     return (
         <div className="fixed top-4 right-4 z-50 flex flex-col items-end pointer-events-auto">

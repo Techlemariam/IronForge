@@ -75,6 +75,7 @@
 | 2026-01-10 | `src/actions/training/cardio.ts` | Mock HR values (140/170) hardcoded in `CardioStudio` save logic. Needs real tracking array. | @titan-coach | ⚠️ Open |
 | 2026-01-11 | `tests/e2e/iron-mines.spec.ts` | Co-Op E2E tests use mocked Realtime events. Full multi-user testing requires integration tests with Supabase. | @qa | ⚠️ Deferred (Integration) |
 | 2026-01-12 | `src/features/dashboard/CitadelHub.tsx` | "Cardio Paradox": Training Center (tabs) only accessible via Cardio -> Training Path. "Strength Focus" is a dead end. | @ui-ux | ✅ Resolved |
+| 2026-01-14 | `src/services/coop/CoOpService.ts` | Fixed type-unsafe casting by implementing manual snake_case to camelCase mapping for DB results. | @infrastructure | ✅ Resolved |
 
 ---
 
