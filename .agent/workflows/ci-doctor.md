@@ -375,6 +375,7 @@ After successful CI run:
 3. **Track**: Update `tests/flaky-tests.json` if test was flaky
 4. **Prevent**: Add regression test for the failure mode
 5. **Squash**: Clean commit history before merge
+6. **Heal**: Update this workflow (`.agent/workflows/ci-doctor.md`) with new findings
 
 ---
 
@@ -402,6 +403,11 @@ After successful CI run:
 ---
 
 ## Version History
+
+### 1.1.0 (2026-01-13)
+
+- **Process**: Added mandatory "Heal" step to Post-Mortem (Phase 4).
+- **Protocol**: Workflows must now be updated with every new learning.
 
 ### 1.0.1 (2026-01-13)
 
