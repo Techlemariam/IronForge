@@ -204,7 +204,7 @@ export const CitadelHub: React.FC<CitadelHubProps> = ({ dispatch }) => {
 
         // Render sub-category items
         return trainingSubCategory === "STRENGTH" ? (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 animate-in slide-in-from-right-4 duration-300">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 animate-in slide-in-from-right-4 duration-300">
             <NavButton
               variant="magma"
               icon={<Scroll className="w-4 h-4" />}
@@ -228,6 +228,14 @@ export const CitadelHub: React.FC<CitadelHubProps> = ({ dispatch }) => {
               description="Create custom workout routines"
             >
               Program Builder
+            </NavButton>
+            <NavButton
+              variant="magma"
+              icon={<Map className="w-4 h-4" />}
+              onClick={() => dispatch({ type: "SET_VIEW", payload: "training_center" })}
+              description="View workout library and stats"
+            >
+              Training Codex
             </NavButton>
           </div>
         ) : (

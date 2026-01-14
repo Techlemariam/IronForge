@@ -172,7 +172,7 @@ describe("DashboardClient", () => {
     expect(settingsLink).toBeTruthy();
   });
 
-  it("shows configuration scanlines if not configured", () => {
+  it("renders dashboard content even if not configured (gate removed)", () => {
     const unconfiguredProps = {
       ...mockProps,
       userData: { id: "test-user", hevyApiKey: null },
@@ -182,10 +182,9 @@ describe("DashboardClient", () => {
 
     render(<DashboardClient {...unconfiguredProps} />);
 
-    expect(screen.getByText("Configuration Required")).toBeTruthy();
-    const links = screen.getAllByTestId("next-link");
-    expect(links.some((l) => l.getAttribute("href") === "/settings")).toBe(
-      true,
-    );
+    // Should NOT show configuration required
+    expect(screen.queryByText("Configuration Required")).toBeNull();
+    // Should render CitadelHub (mocked)
+    expect(screen.getByTestId("citadel-hub")).toBeTruthy();
   });
 });

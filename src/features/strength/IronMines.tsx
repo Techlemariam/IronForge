@@ -1,3 +1,4 @@
+"use client";
 
 import React from "react";
 import { TitansChoice } from "@/features/dashboard/TitansChoice";
@@ -133,17 +134,6 @@ const IronMines: React.FC<IronMinesProps> = ({
           <div className="w-full max-w-sm space-y-4">
             {/* Completion Widget */}
             <TitansChoice userId={userId || "user_id_placeholder"} className="mb-6 w-full" />
-            {/* Note: session from IronMinesProps might not have userId if it's the raw session object. 
-                 Typically userId is on the User object, not Session. 
-                 However, checking type Session in types/index.ts, it doesn't have userId. 
-                 We might need to fetch it or pass it down. 
-                 For now, attempting to use session.userId if it exists, or handling it. 
-                 Actually, TitansChoice expects userId. 
-                 If Session doesn't have it, we might need a context. 
-                 But wait, useMiningSession might have it? 
-                 Let's stick to what was there or leave a placeholder if unknown.
-                 Step 1088 tried to use session.userId. I'll stick with that for now, assuming Session type might be extended or loose.
-             */}
 
             <button
               onClick={handleExport}

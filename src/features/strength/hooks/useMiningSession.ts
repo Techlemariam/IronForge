@@ -7,7 +7,6 @@ import {
 } from "@/types";
 import { useBluetoothHeartRate } from "@/features/bio/hooks/useBluetoothHeartRate";
 import { AchievementContext } from "@/context/AchievementContext";
-import { useSkills } from "@/context/SkillContext";
 import { StorageService, ActiveSessionState } from "@/services/storage";
 import { IntegrationService } from "@/services/integration";
 import { getWellnessAction } from "@/actions/integrations/intervals";
@@ -25,25 +24,39 @@ export const useMiningSession = ({
     onExit,
 }: UseMiningSessionProps) => {
     const [activeSession, setActiveSession] = useState<Session>(initialSession);
-    const [hasCheckedIn, setHasCheckedIn] = useState(false);
+
+    // Lazy init to synchronous check for E2E mocks
+    const [hasCheckedIn, setHasCheckedIn] = useState(() => {
+        if (typeof window !== 'undefined') {
+            const hasMock = (window as any).__mockAutoCheckIn;
+            console.log("[E2E-DEBUG] [useMiningSession] Checking mock auto-checkin:", { hasMock });
+            if (hasMock) return true;
+        }
+        return false;
+    });
+
     const [completed, setCompleted] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
     const [showAbandonConfirm, setShowAbandonConfirm] = useState(false);
 
     const [wellnessData, setWellnessData] = useState<IntervalsWellness | null>(null);
-    const [historyLogs, setHistoryLogs] = useState<ExerciseLog[]>([]);
     const [exportStatus, setExportStatus] = useState<"IDLE" | "UPLOADING" | "SUCCESS" | "ERROR">("IDLE");
     const [foundRecovery, setFoundRecovery] = useState<ActiveSessionState | null>(null);
     const [checkingRecovery, setCheckingRecovery] = useState(true);
 
     const achievementContext = useContext(AchievementContext);
-    const { purchasedSkillIds } = useSkills();
     const { bpm } = useBluetoothHeartRate();
 
     // --- CHECK FOR CRASH RECOVERY ---
     useEffect(() => {
         const checkRecovery = async () => {
             try {
+                // E2E Bypass: Skip recovery check if mock is present
+                if (typeof window !== 'undefined' && (window as any).__mockAutoCheckIn) {
+                    setCheckingRecovery(false);
+                    return;
+                }
+
                 const recovered = await StorageService.getActiveSession();
                 if (recovered && !completed) {
                     setFoundRecovery(recovered);
@@ -63,9 +76,6 @@ export const useMiningSession = ({
             if (foundRecovery || checkingRecovery) return;
 
             try {
-                const history = await StorageService.getHistory();
-                setHistoryLogs(history);
-
                 const settings = await StorageService.getState<AppSettings>("settings");
                 if (settings && settings.intervalsApiKey) {
                     const today = new Date().toISOString().split("T")[0];
@@ -106,7 +116,11 @@ export const useMiningSession = ({
         setExportStatus("UPLOADING");
         try {
             const settings = await StorageService.getState<AppSettings>("settings");
-            if (!settings) throw new Error("No settings found");
+            if (!settings) {
+                logger.error(new Error("No settings found"), "Export failed");
+                setExportStatus("ERROR");
+                return;
+            }
 
             const type = IntegrationService.detectSessionType(activeSession);
             const success = type === "CARDIO"
