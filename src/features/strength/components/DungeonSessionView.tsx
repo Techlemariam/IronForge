@@ -154,6 +154,14 @@ const DungeonSessionView: React.FC<IronMinesProps> = ({
 
   // Subscribe to Ghost Events (if in session)
   useEffect(() => {
+    // E2E Test Support: Load mock ghost events
+    if (typeof window !== 'undefined' && (window as any).__mockGhostEvents) {
+      console.log("[DungeonSessionView] Loading mock ghost events");
+      setGhostEvents((window as any).__mockGhostEvents);
+      // Simulate real-time updates for mocks? Not strictly needed if we just set initial state
+      return;
+    }
+
     if (!activeSessionId) return;
 
     const channel = CoOpService.subscribeToGhostEvents(activeSessionId, (event) => {

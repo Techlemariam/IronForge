@@ -2,6 +2,24 @@ import { WorkoutDefinition } from "../types/training";
 
 export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
   {
+    id: "strength_test_e2e",
+    code: "STR_E2E",
+    name: "E2E Strength Test",
+    description: "A simple strength session for E2E testing purposes.",
+    type: "STRENGTH",
+    durationMin: 30,
+    durationLabel: "30 min",
+    intensity: "MEDIUM",
+    resourceCost: {
+      CNS: 20,
+      MUSCULAR: 30,
+      METABOLIC: 20,
+    },
+    recommendedPaths: ["WARDEN"],
+    intervalsIcuString: "- Warmup\n- Main Set\n- Cooldown",
+    rewards: { xp: 50, gold: 10 },
+  },
+  {
     id: "run_rre1",
     code: "RRe1",
     name: "Running Recovery 1",

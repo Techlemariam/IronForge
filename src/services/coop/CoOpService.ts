@@ -1,9 +1,9 @@
 import { createClient } from "@supabase/supabase-js";
 import { type ActiveSession, type SessionParticipant } from "@prisma/client";
 
-// Initialize client (Assuming environment variables are available)
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+// Initialize client safely (handle missing env vars in CI/Test)
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder.supabase.co";
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "placeholder";
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 export interface CoOpSession extends ActiveSession {
@@ -12,9 +12,55 @@ export interface CoOpSession extends ActiveSession {
 
 export const CoOpService = {
     /**
+     * Get active session for user (restoration)
+     */
+    async getActiveSession(userId: string): Promise<CoOpSession | null> {
+         // E2E Mock
+         if (typeof window !== 'undefined' && (window as any).__mockCoOpSession) {
+            return (window as any).__mockCoOpSession;
+        }
+
+        const { data, error } = await supabase
+            .from("active_sessions")
+            .select(`
+                *,
+                participants:session_participants(*)
+            `)
+            .eq("participants.user_id", userId) 
+            // Note: This query is a bit simplified; typically we query session_participants first
+            .maybeSingle(); // Use maybeSingle to avoid 406 on multiple matches (though strict relation should prevent)
+        
+        // Better approach for Supabase: Query participants table then join
+        if (!data) {
+             const { data: partData } = await supabase
+                .from("session_participants")
+                .select("session_id")
+                .eq("user_id", userId)
+                .maybeSingle();
+            
+            if (partData) {
+                const { data: sessionData } = await supabase
+                    .from("active_sessions")
+                    .select(`*, participants:session_participants(*)`)
+                    .eq("id", partData.session_id)
+                    .single();
+                 return sessionData as any as CoOpSession;
+            }
+            return null;
+        }
+
+        return data as any as CoOpSession;
+    },
+
+    /**
      * Create a new Co-Op session
      */
     async createSession(hostId: string, workoutName?: string): Promise<string | null> {
+        // E2E Mock
+        if (typeof window !== 'undefined' && (window as any).__mockInviteCode) {
+            return "test-session-id";
+        }
+
         // 1. Generate unique 6-char code
         const inviteCode = Math.random().toString(36).substring(2, 8).toUpperCase();
 
@@ -45,6 +91,11 @@ export const CoOpService = {
      * Join an existing session
      */
     async joinSession(sessionId: string, userId: string, heroName?: string) {
+        // E2E Mock
+        if (typeof window !== 'undefined' && (window as any).__mockCoOpSession) {
+            return;
+        }
+
         const { error } = await supabase
             .from("session_participants")
             .insert({
@@ -64,6 +115,11 @@ export const CoOpService = {
      * List available waiting sessions
      */
     async listSessions(): Promise<CoOpSession[]> {
+        // E2E Mock
+        if (typeof window !== 'undefined' && (window as any).__mockSessions) {
+            return (window as any).__mockSessions;
+        }
+
         const { data, error } = await supabase
             .from("active_sessions")
             .select(`
@@ -86,6 +142,11 @@ export const CoOpService = {
      * Leave a session
      */
     async leaveSession(sessionId: string, userId: string) {
+        // E2E Mock
+        if (typeof window !== 'undefined' && (window as any).__mockCoOpSession) {
+            return;
+        }
+
         await supabase
             .from("session_participants")
             .delete()
@@ -99,6 +160,11 @@ export const CoOpService = {
      * Get realtime subscription channel
      */
     subscribeToSession(sessionId: string, onUpdate: (payload: any) => void) {
+        // E2E Mock
+        if (typeof window !== 'undefined' && (window as any).__mockCoOpSession) {
+            return { unsubscribe: () => { } };
+        }
+
         return supabase
             .channel(`session:${sessionId}`)
             .on(
@@ -115,6 +181,8 @@ export const CoOpService = {
      * Broadcast a "Ghost Event" (Set Completion, Rep, etc.) to squad
      */
     broadcastGhostEvent(sessionId: string, event: GhostEvent) {
+        if (typeof window !== 'undefined' && (window as any).__mockGhostEvents) return Promise.resolve();
+
         return supabase.channel(`ghost:${sessionId}`).send({
             type: 'broadcast',
             event: 'ghost_event',
@@ -126,6 +194,15 @@ export const CoOpService = {
      * Subscribe to Ghost Events in a Session
      */
     subscribeToGhostEvents(sessionId: string, onEvent: (event: GhostEvent) => void) {
+        // E2E Mock - Dispatch mock events if present
+        if (typeof window !== 'undefined' && (window as any).__mockGhostEvents) {
+            // Dispatch events on a slight delay to simulate realtime
+            setTimeout(() => {
+                (window as any).__mockGhostEvents.forEach((e: GhostEvent) => onEvent(e));
+            }, 500);
+            return { unsubscribe: () => { } };
+        }
+
         return supabase
             .channel(`ghost:${sessionId}`)
             .on('broadcast', { event: 'ghost_event' }, (payload) => {
