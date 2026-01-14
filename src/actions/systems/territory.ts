@@ -5,6 +5,7 @@ import { getSession } from "@/lib/auth";
 import { getUserTerritoryStats } from "@/services/game/TerritoryService";
 import { MapTile } from "@/features/territory/types";
 import { tileIdToCoords } from "@/lib/territory/tileUtils";
+import { GuildTerritoryService } from "@/services/game/GuildTerritoryService";
 
 /**
  * Get all tiles and stats for the current user's territory view
@@ -168,3 +169,53 @@ export async function getGuildLeaderboard() {
             ...g
         }));
 }
+
+/**
+ * Get World Map (Zones/Territories)
+ * Returns all predefined territories (Zones) like "Iron Peaks"
+ */
+export async function getTerritoryMapAction() {
+    try {
+        const territories = await prisma.territory.findMany({
+            include: {
+                controlledBy: {
+                    select: { name: true, tag: true }
+                }
+            }
+        });
+        return { success: true, data: territories };
+    } catch (error: any) {
+        return { success: false, error: error.message };
+    }
+}
+
+/**
+ * Contest a Territory (Zone)
+ */
+export async function contestTerritoryAction(territoryId: string, guildId: string) {
+    try {
+        const session = await getSession();
+        if (!session?.user?.id) throw new Error("Unauthorized");
+
+        // Use the service which charges the user
+        const result = await GuildTerritoryService.contestTerritory(guildId, territoryId, session.user.id);
+
+        revalidatePath("/territory");
+        return { success: true, data: result };
+    } catch (error: any) {
+        return { success: false, error: error.message };
+    }
+}
+
+/**
+ * Get Contest Leaderboard for a Territory
+ */
+export async function getContestLeaderboardAction(territoryId: string) {
+    try {
+        const leaderboard = await GuildTerritoryService.getContestLeaderboard(territoryId);
+        return { success: true, data: leaderboard };
+    } catch (error: any) {
+        return { success: false, error: error.message };
+    }
+}
+

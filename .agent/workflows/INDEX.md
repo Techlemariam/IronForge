@@ -3,11 +3,12 @@ description: "Workflow for INDEX"
 command: "/INDEX"
 category: "meta"
 trigger: "manual"
-version: "1.0.0"
+version: "1.1.0"
 telemetry: "enabled"
 primary_agent: "@manager"
 domain: "meta"
 ---
+
 # Workflow Index
 
 Quick reference for choosing the right workflow based on your situation.
@@ -16,23 +17,24 @@ Quick reference for choosing the right workflow based on your situation.
 
 ## 🚀 Scenario Router
 
-| Situation | Workflow Chain | Notes |
-|-----------|----------------|-------|
-| **Morning Start** | `/startup` → `/domain-session` | Daily briefing + focus area |
-| **Build Broken** | `/debug` → `/coder` → `/qa` | Systematic error recovery |
-| **CI/CD Failing** | `/ci-doctor` | Comprehensive CI failure resolution |
-| **New Feature** | `/domain-session` → `/feature` → `/qa` | Full feature pipeline |
-| **Quick Fix** | `/coder` → `/qa` | Small, isolated changes |
-| **Debt Attack** | `/debt-attack` | Scheduled maintenance |
-| **Pre-Release** | `PR Checks (CI)` → `Merge` | Merge into `main` after CI passes |
-| **Emergency Fix** | `/debug` → `/coder` → `/pre-deploy` | Hotfix path |
-| **New Idea** | `/idea` → `/analyst` → `/architect` | Intake to design |
-| **Gatekeeper** | `/gatekeeper` | Run before push |
-| **Night Shift** | `/night-shift` | Overnight maintenance |
-| **Sprint Planning** | `/sprint-plan` → `/triage` → `/manager` | Backlog grooming & prioritization |
-| **Gaps Found** | `/triage` → `ROADMAP.md` → `/feature` | Gap resolution pipeline |
-| **Overnight Work** | `/sprint-auto` | Autonomous execution |
-| **Multi-Chat Coordination** | `/claim-task` → `/domain-session` | Prevent parallel conflicts |
+| Situation                   | Workflow Chain                          | Notes                               |
+| --------------------------- | --------------------------------------- | ----------------------------------- |
+| **Morning Start**           | `/startup` → `/domain-session`          | Daily briefing + focus area         |
+| **Build Broken**            | `/debug` → `/coder` → `/qa`             | Systematic error recovery           |
+| **CI/CD Failing**           | `/ci-doctor`                            | Comprehensive CI failure resolution |
+| **New Feature**             | `/domain-session` → `/feature` → `/qa`  | Full feature pipeline               |
+| **Quick Fix**               | `/coder` → `/qa`                        | Small, isolated changes             |
+| **Debt Attack**             | `/debt-attack`                          | Scheduled maintenance               |
+| **Ready to PR**             | `/pre-pr`                               | Verify + push + create PR           |
+| **Pre-Release**             | `PR Checks (CI)` → `Merge`              | Merge into `main` after CI passes   |
+| **Emergency Fix**           | `/debug` → `/coder` → `/pre-pr`         | Hotfix path                         |
+| **New Idea**                | `/idea` → `/analyst` → `/architect`     | Intake to design                    |
+| **Gatekeeper**              | `/gatekeeper`                           | Run before push (or use `/pre-pr`)  |
+| **Night Shift**             | `/night-shift`                          | Overnight maintenance               |
+| **Sprint Planning**         | `/sprint-plan` → `/triage` → `/manager` | Backlog grooming & prioritization   |
+| **Gaps Found**              | `/triage` → `ROADMAP.md` → `/feature`   | Gap resolution pipeline             |
+| **Overnight Work**          | `/sprint-auto`                          | Autonomous execution                |
+| **Multi-Chat Coordination** | `/claim-task` → `/domain-session`       | Prevent parallel conflicts          |
 
 ---
 
@@ -40,39 +42,39 @@ Quick reference for choosing the right workflow based on your situation.
 
 ### Engineering
 
-| Agent | Focus | When to Use |
-|-------|-------|-------------|
-| `/architect` | System design, patterns | Major changes, new systems |
-| `/coder` | Implementation | Writing code |
-| `/qa` | Testing, verification | After any change |
-| `/infrastructure` | DevOps, CI/CD | Deployment, infra |
-| `/security` | Auth, validation | Before release, audits |
-| `/debug` | Error analysis | When things break |
+| Agent             | Focus                   | When to Use                |
+| ----------------- | ----------------------- | -------------------------- |
+| `/architect`      | System design, patterns | Major changes, new systems |
+| `/coder`          | Implementation          | Writing code               |
+| `/qa`             | Testing, verification   | After any change           |
+| `/infrastructure` | DevOps, CI/CD           | Deployment, infra          |
+| `/security`       | Auth, validation        | Before release, audits     |
+| `/debug`          | Error analysis          | When things break          |
 
 ### Product & Design
 
-| Agent | Focus | When to Use |
-|-------|-------|-------------|
-| `/analyst` | Requirements | New features, user stories |
-| `/ui-ux` | Frontend design | UI work, animations |
-| `/game-designer` | Game mechanics | Progression, balance |
-| `/writer` | Narrative | Story, dialogue |
-| `/strategist` | Business | Pricing, growth |
+| Agent            | Focus           | When to Use                |
+| ---------------- | --------------- | -------------------------- |
+| `/analyst`       | Requirements    | New features, user stories |
+| `/ui-ux`         | Frontend design | UI work, animations        |
+| `/game-designer` | Game mechanics  | Progression, balance       |
+| `/writer`        | Narrative       | Story, dialogue            |
+| `/strategist`    | Business        | Pricing, growth            |
 
 ### Specialist
 
-| Agent | Focus | When to Use |
-|-------|-------|-------------|
+| Agent          | Focus             | When to Use             |
+| -------------- | ----------------- | ----------------------- |
 | `/titan-coach` | Bio ↔ Game bridge | Training metrics, buffs |
-| `/librarian` | Documentation | Research, history |
-| `/platform` | Cross-device | Mobile, TV, Desktop |
+| `/librarian`   | Documentation     | Research, history       |
+| `/platform`    | Cross-device      | Mobile, TV, Desktop     |
 
 ### Meta & Maintenance
 
-| Agent | Focus | When to Use |
-|-------|-------|-------------|
+| Agent     | Focus        | When to Use           |
+| --------- | ------------ | --------------------- |
 | `/polish` | Code cleanup | Formatting, dead code |
-| `/perf` | Performance | Bundle, Lighthouse |
+| `/perf`   | Performance  | Bundle, Lighthouse    |
 
 | `/triage` | Gap prioritization | Resolving gaps from monitors |
 | `/gatekeeper` | Qualification | Strict pre-push checks |
@@ -85,16 +87,16 @@ Quick reference for choosing the right workflow based on your situation.
 
 ## 🗺️ Domain Quick Reference
 
-| Domain | Entry Point | Primary Workflows |
-|--------|-------------|-------------------|
-| `infra` | `/domain-session infra` | `/infrastructure`, `/pre-deploy`, `/triage` |
-| `game` | `/domain-session game` | `/game-designer`, `/architect`, `/triage` |
-| `sprint` | `/domain-session sprint` | `/manager`, `/sprint-plan`, `/triage` |
-| `qa` | `/domain-session qa` | `/qa`, `/unit-tests`, `/triage` |
-| `bio` | `/domain-session bio` | `/titan-coach`, `/triage` |
-| `business` | `/domain-session business` | `/analyst`, `/strategist`, `/triage` |
-| `api` | `/domain-session api` | `/architect`, `/security`, `/triage` |
-| `meta` | `/domain-session meta` | `/evolve`, `/librarian`, `/triage` |
+| Domain     | Entry Point                | Primary Workflows                           |
+| ---------- | -------------------------- | ------------------------------------------- |
+| `infra`    | `/domain-session infra`    | `/infrastructure`, `/pre-deploy`, `/triage` |
+| `game`     | `/domain-session game`     | `/game-designer`, `/architect`, `/triage`   |
+| `sprint`   | `/domain-session sprint`   | `/manager`, `/sprint-plan`, `/triage`       |
+| `qa`       | `/domain-session qa`       | `/qa`, `/unit-tests`, `/triage`             |
+| `bio`      | `/domain-session bio`      | `/titan-coach`, `/triage`                   |
+| `business` | `/domain-session business` | `/analyst`, `/strategist`, `/triage`        |
+| `api`      | `/domain-session api`      | `/architect`, `/security`, `/triage`        |
+| `meta`     | `/domain-session meta`     | `/evolve`, `/librarian`, `/triage`          |
 
 ---
 
@@ -102,31 +104,31 @@ Quick reference for choosing the right workflow based on your situation.
 
 ```
 Feature Development (Full):
-/idea → /analyst → /architect → /coder → /qa → /polish → /pre-deploy
+/idea → /analyst → /architect → /coder → /qa → /polish → /pre-pr
 
 Bug Fix (Standard):
-/debug → /coder → /qa
+/debug → /coder → /qa → /pre-pr
 
 Performance Issue:
-/perf → /architect → /coder → /perf
+/perf → /architect → /coder → /perf → /pre-pr
 
 Security Audit:
-/security → /coder → /qa → /security
+/security → /coder → /qa → /security → /pre-pr
 
 Gap Resolution:
-/monitor-x → /triage → ROADMAP.md → /feature or /cleanup
+/monitor-x → /triage → ROADMAP.md → /feature or /cleanup → /pre-pr
 ```
 
 ---
 
 ## 🔍 Monitoring & Audits
 
-| Focus | Workflow | Description |
-|-------|----------|-------------|
+| Focus                 | Workflow            | Description                           |
+| --------------------- | ------------------- | ------------------------------------- |
 | **Strategy & Market** | `/monitor-strategy` | Alignment with personas & market gaps |
-| **Game Balance** | `/monitor-game` | Loot rates, XP, combat constants |
-| **Logic & Debt** | `/monitor-logic` | Type safety, TODOs, debt scan |
-| **CI/CD Health** | `/monitor-ci` | Workflow runs, build status |
+| **Game Balance**      | `/monitor-game`     | Loot rates, XP, combat constants      |
+| **Logic & Debt**      | `/monitor-logic`    | Type safety, TODOs, debt scan         |
+| **CI/CD Health**      | `/monitor-ci`       | Workflow runs, build status           |
 
 | **Gap Triage** | `/triage` | Prioritize all found gaps into ROADMAP.md |
 | **Debt Scanner** | `/monitor-debt` | Scan codebase for debt markers |
@@ -142,10 +144,10 @@ Gap Resolution:
 
 ### Chat Roles
 
-| Role | Count | Responsibility | Workflows |
-|------|-------|----------------|-----------|
-| **Manager** | 1 (long-lived) | Planning, sprint mgmt, roadmap | `/startup`, `/sprint-plan`, `/triage` |
-| **Worker** | N (short-lived) | Execute ONE task, close when done | `/claim-task`, `/domain-session`, `/feature` |
+| Role        | Count           | Responsibility                    | Workflows                                    |
+| ----------- | --------------- | --------------------------------- | -------------------------------------------- |
+| **Manager** | 1 (long-lived)  | Planning, sprint mgmt, roadmap    | `/startup`, `/sprint-plan`, `/triage`        |
+| **Worker**  | N (short-lived) | Execute ONE task, close when done | `/claim-task`, `/domain-session`, `/feature` |
 
 ### Golden Rules
 
@@ -188,12 +190,12 @@ gh pr list --state open
 
 ### Quick Commands
 
-| Need | Command |
-|------|---------|
-| See claimable tasks | `/claim-task list` |
-| Claim a task | `/claim-task [task-id]` |
-| See active claims | `/claim-task status` |
-| Finish and verify | `/gatekeeper` |
+| Need                | Command                 |
+| ------------------- | ----------------------- |
+| See claimable tasks | `/claim-task list`      |
+| Claim a task        | `/claim-task [task-id]` |
+| See active claims   | `/claim-task status`    |
+| Finish and verify   | `/gatekeeper`           |
 
 ---
 
@@ -220,6 +222,11 @@ Start
 ```
 
 ## Version History
+
+### 1.1.0 (2026-01-14)
+
+- Added `/pre-pr` to scenario router and common chains
+- Updated emergency fix path
 
 ### 1.0.0 (2026-01-08)
 

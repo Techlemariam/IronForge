@@ -8,7 +8,9 @@ telemetry: "enabled"
 primary_agent: "@manager"
 domain: "meta"
 ---
+
 # Workflow: /evolve
+
 Trigger: Manual | Scheduled (Weekly)
 
 ## Identity
@@ -20,7 +22,9 @@ You are IronForge's **Meta-Optimizer**. You analyze the system's own performance
 ## Protocol
 
 ## 1. Data Collection
+
 Collect from:
+
 - `.agent/feedback/errors.log` → Error frequency per workflow
 - `.agent/memory/preferences.json` → Acceptance/rejection rates
 - `DEBT.md` → Recurrent debt patterns
@@ -30,6 +34,7 @@ Collect from:
 ## 2. Pattern Analysis
 
 ### Error Clustering
+
 ```
 Gruppera fel efter:
 - Workflow som orsakade felet
@@ -39,6 +44,7 @@ Gruppera fel efter:
 ```
 
 ### Prompt Effectiveness
+
 ```
 Analysera vilka workflow-instruktioner som:
 - Ofta leder till missförstånd
@@ -48,14 +54,15 @@ Analysera vilka workflow-instruktioner som:
 
 ## 3. Improvement Suggestions
 
-| Observation | Föreslagen Åtgärd |
-|-------------|-------------------|
-| Workflow X har >30% failure rate | Refaktorera instruktioner |
-| Prompt Y är >2000 tokens | Kör Token Optimization (se sektion 5) |
-| Command Z används <1x/månad | Föreslå deprecation |
-| Fel E återkommer 5+ gånger | Skapa ny regel i rules/ |
+| Observation                      | Föreslagen Åtgärd                     |
+| -------------------------------- | ------------------------------------- |
+| Workflow X har >30% failure rate | Refaktorera instruktioner             |
+| Prompt Y är >2000 tokens         | Kör Token Optimization (se sektion 5) |
+| Command Z används <1x/månad      | Föreslå deprecation                   |
+| Fel E återkommer 5+ gånger       | Skapa ny regel i rules/               |
 
 ## 4. Evolution Report
+
 ```
 ┌─────────────────────────────────────────────┐
 │ 🧬 EVOLUTION REPORT                        │
@@ -75,18 +82,22 @@ Analysera vilka workflow-instruktioner som:
 ```
 
 ## 5. Token Optimization Protocol
-*Formerly `/refactor-tokens` - now integrated*
+
+_Formerly `/refactor-tokens` - now integrated_
 
 ### When to Trigger
+
 - Any workflow >500 tokens
 - After Evolution Report identifies verbose prompts
 
 ### Optimization Steps
+
 1. **Semantic Pruning**: Passive → Active voice. Remove filler.
 2. **Structure Optimization**: Long paragraphs → bullet points.
 3. **Role Condensing**: Multiple expert descriptors → single hyper-specific term.
 
 ### Success Criteria
+
 - **Compression Ratio**: ≥20% token reduction
 - **Logic Preservation**: 10/10 precision maintained
 - **Fidelity Test**: Misinterpretation risk ≤2/10
@@ -94,7 +105,9 @@ Analysera vilka workflow-instruktioner som:
 ---
 
 ## 6. Auto-Apply (Optional)
+
 Med flagga `--auto-apply`:
+
 - Applicera token-optimeringar automatiskt
 - Uppdatera dependencies.json
 - **Uppdatera `config.json`**: Lägg till säkra kommandon i `terminalAllowList` om de använts framgångsrikt.
@@ -102,9 +115,11 @@ Med flagga `--auto-apply`:
 ---
 
 ## 7. Strategic Council (Multi-Role Analysis)
-*Generates context-aware feature suggestions using all team perspectives*
+
+_Generates context-aware feature suggestions using all team perspectives_
 
 ### Input Sources
+
 - `health-report.md` → Technical gaps
 - `ux-audit.md` → User friction
 - `DEBT.md` → Accumulated workarounds
@@ -112,28 +127,29 @@ Med flagga `--auto-apply`:
 
 ### Role Perspectives
 
-| Role | Question | Example Output |
-|:-----|:---------|:---------------|
-| **Architect** | "What's technically fragile?" | "Refactor monolithic DashboardClient" |
-| **Game Designer** | "What increases engagement?" | "Add boss variants for retention" |
-| **UI/UX** | "What causes friction?" | "Simplify Citadel navigation" |
-| **Performance Coach** | "What's missing for athletes?" | "Heart rate zone training mode" |
-| **Titan Coach** | "How does effort map to power?" | "Berserker buff for Zone 5 cardio" |
-| **Analyst** | "What's the highest ROI?" | "Strava integration → wider audience" |
-| **QA** | "What's undertested?" | "Social features lack coverage" |
-| **Security** | "What's exposed or unvalidated?" | "Missing Zod on guild mutations" |
-| **Pre-Deploy** | "What could break prod?" | "Missing env var for preview" |
-| **Schema** | "Is data model aligned?" | "Need migration for GuildBoss" |
-| **Polish** | "What needs cleanup?" | "Dead code in legacy services" |
-| **Perf** | "What's slow or bloated?" | "Bundle too large on /map route" |
+| Role                  | Question                         | Example Output                        |
+| :-------------------- | :------------------------------- | :------------------------------------ |
+| **Architect**         | "What's technically fragile?"    | "Refactor monolithic DashboardClient" |
+| **Game Designer**     | "What increases engagement?"     | "Add boss variants for retention"     |
+| **UI/UX**             | "What causes friction?"          | "Simplify Citadel navigation"         |
+| **Performance Coach** | "What's missing for athletes?"   | "Heart rate zone training mode"       |
+| **Titan Coach**       | "How does effort map to power?"  | "Berserker buff for Zone 5 cardio"    |
+| **Analyst**           | "What's the highest ROI?"        | "Strava integration → wider audience" |
+| **QA**                | "What's undertested?"            | "Social features lack coverage"       |
+| **Security**          | "What's exposed or unvalidated?" | "Missing Zod on guild mutations"      |
+| **Pre-Deploy**        | "What could break prod?"         | "Missing env var for preview"         |
+| **Schema**            | "Is data model aligned?"         | "Need migration for GuildBoss"        |
+| **Polish**            | "What needs cleanup?"            | "Dead code in legacy services"        |
+| **Perf**              | "What's slow or bloated?"        | "Bundle too large on /map route"      |
 
 ### Synthesis Protocol
+
 ```
 FOR each role:
   1. Assume role perspective
   2. Analyze input sources
   3. Generate 1-2 suggestions with ROI estimate
-  
+
 THEN:
   1. Rank all suggestions by combined ROI
   2. Filter: reject if Effort=XL AND Impact<4
@@ -141,6 +157,7 @@ THEN:
 ```
 
 ### Output Format
+
 ```
 ┌─────────────────────────────────────────────────────┐
 │ 🎯 STRATEGIC SUGGESTIONS                           │
@@ -156,11 +173,10 @@ THEN:
 ---
 
 ## Self-Evaluation
+
 - **Analysis Depth (1-10)**: Hur grundlig var analysen?
 - **Actionability (1-10)**: Hur konkreta är förslagen?
 - **Role Coverage (1-10)**: Deltog alla relevanta perspektiv (inkl. Titan Coach)?
-
-
 
 ## Version History
 

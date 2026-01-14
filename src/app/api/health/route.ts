@@ -1,34 +1,21 @@
-import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma'; // Assumed path based on architecture.md
-import { logger } from '@/lib/logger';
-
-export const dynamic = 'force-dynamic';
+import { NextResponse } from "next/server";
+import prisma from "@/lib/prisma";
+import { logger } from "@/lib/logger";
 
 export async function GET() {
     try {
-        // 1. Check Database Connectivity
+        // Check DB Connectivity
         await prisma.$queryRaw`SELECT 1`;
 
         return NextResponse.json(
-            {
-                status: 'ok',
-                timestamp: new Date().toISOString(),
-                env: process.env.NODE_ENV,
-                gitSha: process.env.VERCEL_GIT_COMMIT_SHA || 'dev',
-                database: 'connected',
-            },
+            { status: "ok", timestamp: new Date().toISOString(), db: "connected" },
             { status: 200 }
         );
     } catch (error) {
-        logger.error({ err: error }, 'Health Check Failed');
+        logger.error({ err: error }, "Health check failed");
         return NextResponse.json(
-            {
-                status: 'error',
-                timestamp: new Date().toISOString(),
-                database: 'disconnected',
-                error: error instanceof Error ? error.message : 'Unknown error',
-            },
-            { status: 500 }
+            { status: "error", message: "Database unreachable" },
+            { status: 503 }
         );
     }
 }

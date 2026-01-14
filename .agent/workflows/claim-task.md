@@ -3,11 +3,12 @@ description: "Workflow for claim-task"
 command: "/claim-task"
 category: "utility"
 trigger: "manual"
-version: "1.0.0"
+version: "1.1.0"
 telemetry: "enabled"
 primary_agent: "@manager"
 domain: "meta"
 ---
+
 # Claim Task Workflow
 
 Prevents race conditions between parallel chat sessions by providing explicit task coordination.
@@ -48,15 +49,18 @@ If `list` argument provided:
 ## 🎯 Claimable Tasks
 
 ### From Roadmap (Priority Order)
+
 1. [R-03] Cardio PvP Duels - Duration tracking
 2. [R-05] Push Notification System
 3. [R-08] Mobile Companion App
 
 ### From Sprint
+
 4. [S-01] Fix StatsHeader test flakiness
 5. [S-02] Dashboard tooltip accessibility
 
 ### From Debt
+
 6. [D-12] Remove deprecated HeveService methods
 7. [D-15] Type coverage in titan actions
 
@@ -140,13 +144,14 @@ If `status` argument provided:
 ```markdown
 ## 📊 Active Claims
 
-| Branch | Age | Files | PR Status |
-|--------|-----|-------|-----------|
-| `feat/R-03-cardio-duels` | 2d | 5 files | Draft PR #42 |
-| `fix/S-01-statsheader` | 1d | 2 files | Ready #45 |
-| `chore/D-12-hevy-cleanup` | 5d ⚠️ | 8 files | No PR |
+| Branch                    | Age   | Files   | PR Status    |
+| ------------------------- | ----- | ------- | ------------ |
+| `feat/R-03-cardio-duels`  | 2d    | 5 files | Draft PR #42 |
+| `fix/S-01-statsheader`    | 1d    | 2 files | Ready #45    |
+| `chore/D-12-hevy-cleanup` | 5d ⚠️ | 8 files | No PR        |
 
 ### ⚠️ Stale Claims (No activity > 3 days)
+
 - `chore/D-12-hevy-cleanup` — Consider abandoning via `/release-task D-12`
 ```
 
@@ -204,14 +209,21 @@ When task is complete or abandoned:
 
 ## Integration with Other Workflows
 
-| After Claiming | Next Workflow |
-|----------------|---------------|
-| New feature | `/domain-session [domain]` → `/feature` |
-| Bug fix | `/debug` → `/coder` → `/qa` |
-| Debt item | `/cleanup` → `/polish` |
-| Verify & Push | `/gatekeeper` → **Create PR** (Wait for CI) |
+| After Claiming | Next Workflow                            |
+| -------------- | ---------------------------------------- |
+| New feature    | `/domain-session [domain]` → `/feature`  |
+| Bug fix        | `/debug` → `/coder` → `/qa`              |
+| Debt item      | `/cleanup` → `/polish`                   |
+| Verify & PR    | `/pre-pr` (runs gatekeeper + creates PR) |
+
+> [!TIP]
+> Use `/pre-pr` when ready to push. It runs full verification and creates PR automatically.
 
 ## Version History
+
+### 1.1.0 (2026-01-14)
+
+- Updated integration table to use `/pre-pr` workflow
 
 ### 1.0.0 (2026-01-08)
 

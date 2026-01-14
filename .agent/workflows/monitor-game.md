@@ -8,11 +8,13 @@ telemetry: "enabled"
 primary_agent: "@game-designer"
 domain: "game"
 ---
+
 # Game Monitoring Workflow
 
 This workflow audits game mechanics data integrity, balancing constants, and logic gaps.
 
 ## 1. Loot Table Audit
+
 Check drop rates and probability distributions in the loot system.
 
 ```bash
@@ -21,6 +23,7 @@ rg "probability|dropRate|weight|chance" src/services/game/LootSystem.ts
 ```
 
 ## 2. XP & Combat Balance
+
 Identify XP multipliers and damage constants that affect progression.
 
 ```bash
@@ -32,6 +35,7 @@ rg "threshold|intensity|zone" src/services/game/EffortCalculator.ts
 ```
 
 ## 3. Equipment Validation
+
 Ensure equipment stats are within valid ranges.
 
 ```bash
@@ -40,6 +44,7 @@ rg "stat|bonus|modifier|power" src/services/game/EquipmentService.ts
 ```
 
 ## 4. Chase Mode Thresholds
+
 Audit pace and speed thresholds that control chase mode difficulty.
 
 ```bash
@@ -48,6 +53,7 @@ rg "PACE|SPEED|DISTANCE|THRESHOLD" src/services/game/ChaseEngine.ts
 ```
 
 ## 5. Magic Number Scan
+
 Find hardcoded numeric values that might indicate balancing parameters.
 
 ```bash
@@ -56,13 +62,14 @@ rg "\b\d{2,}\b" src/services/game/ --type ts
 ```
 
 ## 6. Game Logic TODOs
+
 List unfinished game logic implementation.
 
 ```bash
 rg "TODO|FIXME|HACK" src/services/game/ src/lib/game/
 ```
-- **Config**: Add `rg` (ripgrep) to `.agent/config.json`.
 
+- **Config**: Add `rg` (ripgrep) to `.agent/config.json`.
 
 ## Version History
 

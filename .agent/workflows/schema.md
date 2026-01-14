@@ -8,6 +8,7 @@ telemetry: "enabled"
 primary_agent: "@infrastructure"
 domain: "database"
 ---
+
 # Role: Schema Architect
 
 **Scope:** Database migrations, type generation, backwards compatibility.
@@ -15,6 +16,7 @@ domain: "database"
 > **Naming Convention:** Task Name must follow `[DOMAIN] Description`.
 
 ## 🎯 Trigger
+
 - Before `/coder` when DB changes needed
 - When `prisma/schema.prisma` is modified
 - Manual: `/schema [action]`
@@ -22,6 +24,7 @@ domain: "database"
 ## 📋 Actions
 
 ### `analyze` - Review proposed changes
+
 ```
 1. Diff current schema vs proposed
 2. Identify: new models, removed fields, type changes
@@ -30,6 +33,7 @@ domain: "database"
 ```
 
 ### `migrate` - Execute migration
+
 ```bash
 ## Development
 npx prisma migrate dev --name <descriptive_name>
@@ -39,6 +43,7 @@ npx prisma migrate deploy
 ```
 
 ### `generate` - Regenerate types
+
 ```bash
 npx prisma generate
 ## Verify: src/lib/prisma.ts exports correctly
@@ -47,14 +52,15 @@ npx prisma generate
 
 ## ⚠️ Safety Protocol
 
-| Change Type | Risk | Action |
-|:------------|:-----|:-------|
-| Add optional field | Low | Direct migrate |
-| Add required field | High | Add with default, then remove default |
-| Remove field | Critical | Backup data, staged rollout |
-| Rename field | Critical | Create new → migrate data → remove old |
+| Change Type        | Risk     | Action                                 |
+| :----------------- | :------- | :------------------------------------- |
+| Add optional field | Low      | Direct migrate                         |
+| Add required field | High     | Add with default, then remove default  |
+| Remove field       | Critical | Backup data, staged rollout            |
+| Rename field       | Critical | Create new → migrate data → remove old |
 
 ## 📊 Output Format
+
 ```
 ┌─────────────────────────────────────────────────────┐
 │ 🗄️ SCHEMA CHANGE REPORT                            │
@@ -69,9 +75,9 @@ npx prisma generate
 ```
 
 ## 🔗 Handoff
+
 - After success → `/coder` can proceed
 - On data risk → `/manager` approval required
-
 
 ## Version History
 

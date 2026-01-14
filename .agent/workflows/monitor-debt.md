@@ -8,6 +8,7 @@ telemetry: "enabled"
 primary_agent: "@manager"
 domain: "core"
 ---
+
 # 🕵️ Debt Monitor
 
 **Role:** Codebase Scanner.
@@ -16,6 +17,7 @@ domain: "core"
 ## Protocol
 
 ### 1. Scan for Markers
+
 Search key areas for common debt indicators.
 
 ```bash
@@ -28,20 +30,25 @@ rg "@ts-ignore|@ts-expect-error|eslint-disable" src/ --line-number
 ## 3. Explicit Intent Markers
 rg "TODO|FIXME|HACK|REF" src/ --line-number
 ```
+
 - **Config**: Add `rg` (ripgrep) to `.agent/config.json` if missing.
 
 ### 2. Verify Against DEBT.md
+
 1. **Read** `DEBT.md`.
 2. **Compare**: For each finding, check if a corresponding entry exists.
-   - *Note:* Be smart. If `DEBT.md` has "Fix all 'any' types in src/utils", consider individual hits in `src/utils/*.ts` as tracked.
+   - _Note:_ Be smart. If `DEBT.md` has "Fix all 'any' types in src/utils", consider individual hits in `src/utils/*.ts` as tracked.
 
 ### 3. Log New Debt
+
 If found items are **NOT** tracked:
 
 1. **Format Entry**:
+
    ```markdown
    | YYYY-MM-DD | `src/path/to/file` | [Type] Description of debt | @cleanup | 🔴 Open |
    ```
+
    **Types:**
    - `[Safety]`: `any`, `ts-ignore` usage.
    - `[Logic]`: `TODO`, `FIXME` indicating missing logic.
@@ -50,6 +57,7 @@ If found items are **NOT** tracked:
 2. **Append** to `DEBT.md` (preserve table formatting).
 
 ### 4. Output Summary
+
 ```
 ┌───────────────────────────────────────┐
 │ 🕵️ DEBT MONITOR REPORT                │
@@ -57,7 +65,6 @@ If found items are **NOT** tracked:
 │ New:   [M] Added to DEBT.md           │
 └───────────────────────────────────────┘
 ```
-
 
 ## Version History
 

@@ -1,96 +1,65 @@
-# Sprint 24: Quality & Documentation
+# Sprint 25: Expansion & Intelligence
 
-**Period**: 2026-01-10 - 2026-01-17  
-**Goal**: Close Sprint 23 carryover, address documentation gap, and improve test infrastructure
-
----
+**Period**: 2026-01-17 - 2026-01-24
+**Goal**: Launch Oracle 3.0 foundations and activate Guild Territory mechanics.
 
 ## Backlog
 
-### Priority: High
+### Priority: High (Features)
 
-- [/] **Complete Sprint 23 Carryover** <!-- agent: /manager | estimate: 0h | source: sprint-23 | blocked: false -->
-  - ✅ E2E Test Seeding (2h) → `/infrastructure` - Completed 2026-01-10
-  - ✅ GrowthMetrics Implementation (2h) → /coder - Completed 2026-01-10
-  - ✅ Citadel Navigation Simplification (2h) → `/ui-ux` - Completed 2026-01-10
+- [ ] **Oracle 3.0 (Phase 1)** <!-- agent: /architect | estimate: 4h | source: roadmap | specs: specs/ai-training-coach.md -->
+  - Implement `GoalPriorityEngine` (deterministic logic)
+  - Replace legacy LLM calls with GPE
+  - Basic "Training Check-In" flow
 
-- [x] **Documentation Batch Update** <!-- agent: /librarian | estimate: 3h | source: health-report | blocked: false -->
-  - Update `api-reference.md` with 70+ missing actions
-  - Cover: `battle-pass`, `power-rating`, `territory`, `shop-system`
-  - Target: 80% action documentation coverage
+- [ ] **Guild Territories (Mechanics)** <!-- agent: /game-designer | estimate: 4h | source: roadmap | specs: specs/guild-territories.md -->
+  - Implement `TerritoryControlService` (backend)
+  - Define capture logic and reward distribution
+  - Connect to existing UI from Sprint 24
 
-- [x] **Territory UI Integration** <!-- agent: /ui-ux | estimate: 3h | source: sprint-22 | blocked: false -->
-  - Wire `LeaderboardHub` into Citadel dashboard navigation
-  - Create `/territories` route using `TerritoryMap` component
-  - Add navigation from Guild view to Territory conquest
-  - ✅ Route created, type checks passing
+- [ ] **Power Rating System** <!-- agent: /coder | estimate: 3h | source: roadmap | specs: specs/power-rating-system.md -->
+  - Implement `PowerRating` calculation (Strength + Cardio + Consistency)
+  - Add display to Profile and Leaderboards
 
-- [ ] **Test Structure Scaffolding** <!-- agent: /infrastructure | estimate: 2h | source: health-report | blocked: false -->
-  - Create `tests/unit/actions`, `tests/unit/services`, `tests/unit/utils`
-  - Move misplaced tests to correct locations
-  - Verify test discovery after restructure
+### Priority: Medium (Infrastructure)
 
-### Priority: Medium
+- [ ] **Structured Logging** <!-- agent: /infrastructure | estimate: 2h | source: roadmap | blocked: false -->
+  - Replace `console.log` with Pino/Winston
+  - Standardize log format (level, correlation ID)
 
-- [ ] **Accessibility: ARIA Labels** <!-- agent: /ui-ux | estimate: 2h | source: DEBT.md#63 | blocked: false -->
-  - Add `aria-label` to all interactive elements
-  - Focus: dashboard, combat arena, leaderboards
-  - Target: 80% coverage
+- [ ] **Health Check Endpoint** <!-- agent: /infrastructure | estimate: 1h | source: roadmap | blocked: false -->
+  - Create `/api/health` with DB connectivity check
+  - Add simple uptime monitoring
 
-- [ ] **Strength Workout Generation** <!-- agent: /game-designer | estimate: 3h | source: DEBT.md#73 | blocked: false -->
-  - Generate dynamic strength workouts from `exerciseDb.ts`
-  - Replace static cardio-only `workouts.ts`
-  - Integrate with Oracle recommendations
+### Priority: Low (Polish)
 
-- [ ] **TheForge Server Sync** <!-- agent: /coder | estimate: 2h | source: DEBT.md#67 | blocked: false -->
-  - Replace mock inventory state with proper server sync
-  - Implement optimistic update hook pattern
-  - Connect to forge actions
+- [ ] **Program Comparison View** <!-- agent: /ui-ux | estimate: 2h | source: ux-audit #4 | blocked: false -->
+  - Side-by-side diff of current vs. new program
+  - Visual highlighters for changes
 
-### Priority: Low
-
-- [ ] **Battle Emote Broadcast** <!-- agent: /infrastructure | estimate: 1h | source: DEBT.md#71 | blocked: false -->
-  - Add Supabase Realtime broadcast to `sendBattleEmoteAction`
-  - Test opponent receiving emotes in PvP
-
-- [ ] **useSkillEffects Multi-Keystone** <!-- agent: /game-designer | estimate: 2h | source: DEBT.md#69 | blocked: false -->
-  - Support multi-keystone selection and switching
-  - Add UI for keystone comparison
+- [ ] **Loading Skeletons** <!-- agent: /ui-ux | estimate: 1h | source: ux-audit #5 | blocked: false -->
+  - Replace spinners in Dashboard and Leaderboards
+  - Create reusable `Skeleton` components
 
 ---
 
 ## Sprint Stats
 
-- **Total Items**: 8 (3 carryover items bundled as 1)
-- **Estimated Hours**: 19h
-- **Debt Ratio**: 62% (5/8 tasks address tech debt)
-- **Feature Ratio**: 12% (1/8 new feature work)
-- **Infrastructure**: 25% (2/8 tasks)
-
----
+- **Total Items**: 7
+- **Estimated Hours**: 17h
+- **Debt Ratio**: ~15% (Infra items)
+- **Feature Ratio**: ~65%
+- **Polish Ratio**: ~20%
 
 ## Dependencies
 
-- **Carryover**: Sprint 23 incomplete items must be prioritized
-- **Documentation**: Depends on stable action files (no major refactors this sprint)
-- **Test Scaffolding**: Blocks future test-driven development
-
----
-
-## Self-Evaluation
-
-- **Scope Realism (1-10)**: 7 - Achievable with focused execution, carryover adds risk
-- **Balance (1-10)**: 8 - Good mix addressing debt, docs, and polish; light on new features intentionally
-
----
-
-## Version History
-
-- **2026-01-09** - Sprint 24 planned by `/sprint-plan` workflow
+- Oracle 3.0 requires deprecating some existing `src/services/oracle.ts` logic.
+- Guild Territories relies on `LeaderboardHub` being stable (Sprint 24).
 
 ---
 
 ## Execution Log
+
 <!-- Auto-updated by /sprint-auto -->
-- **2026-01-14 16:35** - Executed `Documentation Batch Update` via `/librarian`. Added missing actions to `api-reference.md`.
-- **TBD** - Sprint 24 activation pending Sprint 23 completion
+
+- **2026-01-14 16:50** - Sprint 25 Activated. Previous sprint archived to `history/2026-01-14-sprint-24.md`.

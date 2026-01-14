@@ -1,10 +1,10 @@
 import { describe, it, expect } from "vitest";
-import { auditWeaknesses } from "../weaknessAuditor";
+import { auditWeaknesses } from "@/utils/weaknessAuditor";
 import {
   MuscleGroupVolume,
   WeaknessLevel,
   RPVolumeStandards,
-} from "../../types/auditor";
+} from "@/types/auditor";
 
 // Mock Data
 const mockChestUndertrained: MuscleGroupVolume = {
@@ -33,7 +33,7 @@ describe("Weakness Auditor Engine", () => {
   it("WA-01: Detects UNDERTRAINED status", () => {
     const report = auditWeaknesses([mockChestUndertrained]);
     const chestAudit = report.muscleAudits.find(
-      (a) => a.muscleGroup === "Chest",
+      (a: any) => a.muscleGroup === "Chest",
     );
 
     expect(chestAudit).toBeDefined();
@@ -45,7 +45,7 @@ describe("Weakness Auditor Engine", () => {
   it("WA-02: Detects OVERREACHED status", () => {
     const report = auditWeaknesses([mockSideDeltsOverreached]);
     const deltAudit = report.muscleAudits.find(
-      (a) => a.muscleGroup === "Shoulders (Side)",
+      (a: any) => a.muscleGroup === "Shoulders (Side)",
     );
 
     // Side Delt MRV is 26. Volume is 30.

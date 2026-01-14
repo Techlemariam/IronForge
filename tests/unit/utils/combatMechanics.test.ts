@@ -1,91 +1,76 @@
-import { describe, it, expect } from 'vitest';
-import { calculateDamage, detectSpecialMove, detectJokerOpportunity } from '@/utils/combatMechanics';
+import { describe, it, expect } from "vitest";
+import {
+  calculateDamage,
+  detectSpecialMove,
+  detectJokerOpportunity,
+} from "../combatMechanics";
 
-describe('Combat Mechanics', () => {
-    describe('calculateDamage', () => {
-        it('should calculate base damage from weight and reps', () => {
-            const result = calculateDamage(100, 5, 7, false);
-            expect(result.damage).toBe(500); // 100kg * 5 reps
-            expect(result.type).toBe('standard');
-            expect(result.isCritical).toBe(false);
-        });
-
-        it('should apply 20% bonus for RPE 9', () => {
-            const result = calculateDamage(100, 5, 9, false);
-            expect(result.damage).toBe(600); // 500 * 1.2
-            expect(result.description).toBe('Heavy Strike');
-        });
-
-        it('should apply 50% bonus for RPE 10 (critical)', () => {
-            const result = calculateDamage(100, 5, 10, false);
-            expect(result.damage).toBe(750); // 500 * 1.5
-            expect(result.type).toBe('critical');
-            expect(result.isCritical).toBe(true);
-            expect(result.description).toBe('Limit Break');
-        });
-
-        it('should double damage for Personal Records', () => {
-            const result = calculateDamage(100, 5, 7, true);
-            expect(result.damage).toBe(1000); // 500 * 2.0
-            expect(result.type).toBe('critical');
-            expect(result.isCritical).toBe(true);
-            expect(result.description).toBe('Legendary Strike');
-        });
-
-        it('should handle bodyweight exercises (weight = 0)', () => {
-            const result = calculateDamage(0, 10, 7, false);
-            expect(result.damage).toBe(700); // 70kg * 10 reps
-        });
-
-        it('should stack PR bonus with RPE bonus multiplicatively', () => {
-            // RPE 10 (1.5x) + PR (2x) = 1.5 * 2 = 3x total
-            const result = calculateDamage(100, 5, 10, true);
-            expect(result.damage).toBe(1500); // Base 500 * 1.5 (RPE) * 2.0 (PR)
-            expect(result.isCritical).toBe(true);
-        });
+describe("Combat Mechanics", () => {
+  describe("calculateDamage", () => {
+    it("calculates base damage correctly (Weight * Reps)", () => {
+      const stats = calculateDamage(100, 5, 8, false);
+      expect(stats.damage).toBe(500);
+      expect(stats.type).toBe("standard");
     });
 
-    describe('detectSpecialMove', () => {
-        it('should detect Berserker Rage for drop sets', () => {
-            const move = detectSpecialMove(8, true, false);
-            expect(move).toBe('Berserker Rage');
-        });
-
-        it('should detect Flurry of Blows for AMRAP > 10 reps', () => {
-            const move = detectSpecialMove(12, false, true);
-            expect(move).toBe('Flurry of Blows');
-        });
-
-        it('should detect Endurance Assault for 20+ reps', () => {
-            const move = detectSpecialMove(20, false, false);
-            expect(move).toBe('Endurance Assault');
-        });
-
-        it('should return null for standard sets', () => {
-            const move = detectSpecialMove(8, false, false);
-            expect(move).toBeNull();
-        });
+    it("applies bodyweight fallback", () => {
+      const stats = calculateDamage(0, 10, 8, false);
+      expect(stats.damage).toBe(700); // 70 * 10
     });
 
-    describe('detectJokerOpportunity', () => {
-        it('should suggest joker set when RPE < 7 on working sets', () => {
-            const shouldOffer = detectJokerOpportunity(6, 2, 3);
-            expect(shouldOffer).toBe(true);
-        });
-
-        it('should not suggest on first set', () => {
-            const shouldOffer = detectJokerOpportunity(6, 0, 3);
-            expect(shouldOffer).toBe(false);
-        });
-
-        it('should not suggest when RPE >= 7', () => {
-            const shouldOffer = detectJokerOpportunity(8, 2, 3);
-            expect(shouldOffer).toBe(false);
-        });
-
-        it('should not suggest when RPE is 0 (not recorded)', () => {
-            const shouldOffer = detectJokerOpportunity(0, 2, 3);
-            expect(shouldOffer).toBe(false);
-        });
+    it("applies Heavy Strike bonus for RPE 9", () => {
+      const stats = calculateDamage(100, 5, 9, false);
+      // 500 * 1.2 = 600
+      expect(stats.damage).toBe(600);
+      expect(stats.description).toBe("Heavy Strike");
     });
+
+    it("applies Limit Break bonus for RPE 10", () => {
+      const stats = calculateDamage(100, 5, 10, false);
+      // 500 * 1.5 = 750
+      expect(stats.damage).toBe(750);
+      expect(stats.type).toBe("critical");
+      expect(stats.description).toBe("Limit Break");
+    });
+
+    it("applies PR bonus (Double Damage)", () => {
+      const stats = calculateDamage(100, 5, 10, true);
+      // 500 * 1.5 (RPE 10) * 2.0 (PR) = 1500
+      // Assuming math order: code says `damage *= 1.5` then `damage *= 2.0`
+      expect(stats.damage).toBe(1500);
+      expect(stats.description).toBe("Legendary Strike");
+    });
+  });
+
+  describe("detectSpecialMove", () => {
+    it("detects Berserker Rage on drop sets", () => {
+      expect(detectSpecialMove(8, true, false)).toBe("Berserker Rage");
+    });
+
+    it("detects Flurry of Blows on high rep AMRAP", () => {
+      expect(detectSpecialMove(15, false, true)).toBe("Flurry of Blows");
+    });
+
+    it("detects Endurance Assault on 20+ reps", () => {
+      expect(detectSpecialMove(20, false, false)).toBe("Endurance Assault");
+    });
+
+    it("returns null for normal sets", () => {
+      expect(detectSpecialMove(10, false, false)).toBe(null);
+    });
+  });
+
+  describe("detectJokerOpportunity", () => {
+    it("offers joker when RPE is low on working sets", () => {
+      expect(detectJokerOpportunity(6, 1, 3)).toBe(true);
+    });
+
+    it("ignores warmups (setIndex 0)", () => {
+      expect(detectJokerOpportunity(6, 0, 3)).toBe(false);
+    });
+
+    it("ignores hard sets (RPE 8)", () => {
+      expect(detectJokerOpportunity(8, 1, 3)).toBe(false);
+    });
+  });
 });

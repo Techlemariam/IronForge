@@ -3,11 +3,12 @@ description: "Workflow for debug"
 command: "/debug"
 category: "utility"
 trigger: "manual"
-version: "1.0.0"
+version: "1.1.0"
 telemetry: "enabled"
 primary_agent: "@debug"
 domain: "core"
 ---
+
 # Systematic Debugging
 
 **Role:** Error Analyst & Fixer.
@@ -19,13 +20,13 @@ domain: "core"
 
 Identify error type:
 
-| Type | Indicators | Next Action |
-|------|------------|-------------|
-| **Build** | `npm run build` fails, type errors | Step 2A |
-| **Test** | `npm test` or `playwright` fails | Step 2B |
-| **E2E** | Playwright timeout, CI-only failures | `/ci-doctor` |
-| **Runtime** | Console errors, API 500s | Step 2C |
-| **Lint** | ESLint/TypeScript warnings | `/polish` |
+| Type        | Indicators                           | Next Action  |
+| ----------- | ------------------------------------ | ------------ |
+| **Build**   | `npm run build` fails, type errors   | Step 2A      |
+| **Test**    | `npm test` or `playwright` fails     | Step 2B      |
+| **E2E**     | Playwright timeout, CI-only failures | `/ci-doctor` |
+| **Runtime** | Console errors, API 500s             | Step 2C      |
+| **Lint**    | ESLint/TypeScript warnings           | `/polish`    |
 
 ---
 
@@ -115,9 +116,9 @@ After successful fix:
 
 1. Add test case if missing
 2. Update `DEBT.md` if systemic issue found
-
-3. Consider adding to `/pre-deploy` checks
-4. **Config**: Add missing debug tools to `.agent/config.json`.
+3. Run `/pre-pr` to push and create PR
+4. Consider adding to `/pre-deploy` checks
+5. **Config**: Add missing debug tools to `.agent/config.json`.
 
 ---
 
@@ -138,6 +139,10 @@ If stuck > 30 min:
 3. Escalate to `/architect` if architectural issue
 
 ## Version History
+
+### 1.1.0 (2026-01-14)
+
+- Added `/pre-pr` to prevention steps
 
 ### 1.0.0 (2026-01-08)
 

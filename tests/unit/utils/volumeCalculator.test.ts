@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { calculateWeeklyVolume } from "../volumeCalculator";
-import { HevyWorkout } from "../../types/hevy";
+import { calculateWeeklyVolume } from "@/utils/volumeCalculator";
+import { HevyWorkout } from "@/types/hevy";
 
 // Mock Data
 const mockWorkoutToday: HevyWorkout = {
@@ -50,21 +50,21 @@ describe("Volume Calculator", () => {
     const volumes = calculateWeeklyVolume([mockWorkoutToday]);
 
     // Bench (3) + Pushups (3 normal sets - 1 warmup) = 6 sets for Chest
-    const chestVol = volumes.find((v) => v.muscleGroup === "Chest");
+    const chestVol = volumes.find((v: any) => v.muscleGroup === "Chest");
     expect(chestVol?.weeklyVolume).toBe(6);
   });
 
   it("VC-02: Filters out workouts older than 7 days", () => {
     const volumes = calculateWeeklyVolume([mockWorkoutToday, mockWorkoutOld]);
     // Should ignore 'mockWorkoutOld' (8 days ago)
-    const chestVol = volumes.find((v) => v.muscleGroup === "Chest");
+    const chestVol = volumes.find((v: any) => v.muscleGroup === "Chest");
     expect(chestVol?.weeklyVolume).toBe(6); // Still 6, not 7
   });
 
   it("VC-03: Excludes warmup sets", () => {
     // Verified in VC-01 logic
     const volumes = calculateWeeklyVolume([mockWorkoutToday]);
-    const chestVol = volumes.find((v) => v.muscleGroup === "Chest");
+    const chestVol = volumes.find((v: any) => v.muscleGroup === "Chest");
     expect(chestVol?.weeklyVolume).toBe(6);
   });
 
@@ -84,7 +84,7 @@ describe("Volume Calculator", () => {
     };
     const volumes = calculateWeeklyVolume([weirdWorkout]);
     // Should not crash, volumes should be 0 per muscle group (or not incremented)
-    const chestVol = volumes.find((v) => v.muscleGroup === "Chest");
+    const chestVol = volumes.find((v: any) => v.muscleGroup === "Chest");
     expect(chestVol?.weeklyVolume).toBe(0);
   });
 });

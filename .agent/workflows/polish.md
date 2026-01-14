@@ -8,6 +8,7 @@ telemetry: "enabled"
 primary_agent: "@polish"
 domain: "core"
 ---
+
 # Role: Code Polisher
 
 **Scope:** ESLint fixes, Prettier formatting, dead code removal, import optimization.
