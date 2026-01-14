@@ -1,32 +1,75 @@
 import React from "react";
 import { twMerge } from "tailwind-merge";
+import { useSoundProtocol } from "@/hooks/useSoundProtocol";
+import { useHaptic } from "@/hooks/useHaptic";
 
 interface ForgeButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
-  variant?: "magma" | "rune" | "default" | "ghost";
+  variant?:
+  | "plasma"  // Primary Action (Orange)
+  | "magma"   // LEGACY -> plasma
+  | "pulse"   // Intelligence (Blue)
+  | "rune"    // LEGACY -> pulse
+  | "gold"    // Legendary (Yellow)
+  | "cyan"    // Pathfinder (Cyan)
+  | "venom"   // Success (Green)
+  | "beast"   // Brute Force (Red)
+  | "ghost"
+  | "default"; // LEGACY -> Armor
   size?: "sm" | "md" | "lg";
   fullWidth?: boolean;
+  soundType?: "clink" | "thud" | "chirp" | "deploy";
 }
 
 const ForgeButton: React.FC<ForgeButtonProps> = ({
   children,
   className,
-  variant = "default",
+  variant = "plasma",
   size = "md",
   fullWidth = false,
+  soundType,
+  onClick,
   ...props
 }) => {
-  const baseClasses =
-    "font-heading tracking-widest uppercase rounded-sm transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed transform hover:-translate-y-0.5 inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:ring-blue-400";
+  const { play } = useSoundProtocol();
+  const { trigger } = useHaptic();
 
-  const variantClasses = {
-    magma:
-      "bg-gradient-to-r from-orange-600 to-red-600 text-white border border-red-400/20 shadow-glow-magma hover:shadow-[0_0_20px_rgba(239,68,68,0.6)] hover:brightness-110",
-    rune: "bg-gradient-to-r from-blue-600 to-indigo-600 text-white border border-blue-400/20 shadow-glow-rune hover:shadow-[0_0_20px_rgba(59,130,246,0.6)] hover:brightness-110",
-    default:
-      "bg-forge-800 border border-forge-border text-gray-300 hover:text-white hover:border-gray-500 hover:bg-forge-700",
-    ghost:
-      "bg-transparent border border-transparent text-forge-muted hover:text-white hover:bg-white/5",
+  // Map variant to default sound if not specified
+  const effectiveSound = soundType || (
+    variant === "plasma" || variant === "magma" || variant === "gold" ? "clink" :
+      variant === "ghost" ? "chirp" : "thud"
+  );
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    play(effectiveSound);
+    trigger(variant === "gold" ? "heavy" : "light");
+    if (onClick) onClick(e);
+  };
+
+  const baseClasses =
+    "font-heading tracking-widest uppercase rounded-sm transition-all duration-150 ease-bolt-action disabled:opacity-50 disabled:cursor-not-allowed transform active:scale-98 inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:ring-blue-400";
+
+  const plasmaStyle = "bg-gradient-to-r from-orange-600 to-orange-500 text-white border border-orange-400/20 hover:shadow-[0_0_20px_rgba(249,115,22,0.4)] hover:brightness-110";
+  const pulseStyle = "bg-gradient-to-r from-sky-600 to-sky-500 text-white border border-sky-400/20 hover:shadow-[0_0_20px_rgba(14,165,233,0.4)] hover:brightness-110";
+
+  const variantClasses: Record<string, string> = {
+    // Primary / Legendary
+    plasma: plasmaStyle,
+    magma: plasmaStyle, // Legacy Mapping
+    gold: "bg-gradient-to-r from-yellow-600 to-yellow-500 text-white border border-yellow-400/20 hover:shadow-[0_0_20px_rgba(234,179,8,0.4)] hover:brightness-110",
+
+    // Intelligence / Speed
+    pulse: pulseStyle,
+    rune: pulseStyle, // Legacy Mapping
+    cyan: "bg-gradient-to-r from-cyan-600 to-cyan-500 text-white border border-cyan-400/20 hover:shadow-[0_0_20px_rgba(6,182,212,0.4)] hover:brightness-110",
+
+    // Utility / Status
+    venom: "bg-gradient-to-r from-green-600 to-green-500 text-white border border-green-400/20 hover:shadow-[0_0_20px_rgba(34,197,94,0.4)] hover:brightness-110",
+    beast: "bg-gradient-to-r from-red-900 to-red-800 text-white border border-red-500/20 hover:shadow-[0_0_20px_rgba(239,68,68,0.2)] hover:border-red-500/50",
+
+    // Neutral
+    ghost: "bg-transparent border border-transparent text-gray-400 hover:text-white hover:bg-white/5",
+    default: "bg-gray-800 border border-gray-700 text-gray-300 hover:text-white hover:bg-gray-700",
   };
 
   const sizeClasses = {
@@ -37,14 +80,14 @@ const ForgeButton: React.FC<ForgeButtonProps> = ({
 
   const mergedClasses = twMerge(
     baseClasses,
-    variantClasses[variant],
+    variantClasses[variant] || variantClasses.plasma,
     sizeClasses[size],
     fullWidth ? "w-full" : "",
     className,
   );
 
   return (
-    <button className={mergedClasses} {...props}>
+    <button className={mergedClasses} onClick={handleClick} {...props}>
       {children}
     </button>
   );
