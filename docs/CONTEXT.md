@@ -15,12 +15,13 @@
 ## 📁 Key Directories
 
 | Path | Purpose |
-|:-----|:--------|
+| :--- | :--- |
 | `src/app/` | Next.js App Router (pages, layouts, API routes) |
 | `src/app/api/` | REST endpoints (Hevy, Intervals, AI Chat) |
 | `src/actions/` | Server Actions (combat, inventory, progression) |
 | `src/components/` | Reusable UI components |
 | `src/features/game/` | Game-specific components (CombatArena, TheForge) |
+| `src/features/coop/` | Co-op multiplayer sessions |
 | `src/services/game/` | Game logic (CombatEngine, LootSystem) |
 | `src/lib/` | Shared utilities (Prisma client, Supabase client) |
 | `src/types/` | TypeScript interfaces |
@@ -57,8 +58,8 @@
 ## 🎮 Game Services
 
 | Service | Purpose |
-|:--------|:--------|
-| `GoalPriorityEngine`| **Core Brain.** Deterministic periodization & goals |
+| :--- | :--- |
+| `GoalPriorityEngine` | **Core Brain.** Deterministic periodization & goals |
 | `CombatEngine` | Turn-based combat logic |
 | `LootSystem` | Item drop calculations |
 | `ProgressionService` | XP/leveling calculations |
@@ -69,6 +70,7 @@
 | `NeuroService` | Binaural beat audio engine |
 | `BluetoothService` | FTMS/HRM hardware integration |
 | `AnalyticsService` | Telemetry & session tracking |
+| `CoOpService` | Real-time multiplayer session management |
 
 ---
 
@@ -99,12 +101,13 @@
 ## 📊 Key Database Tables
 
 | Table | Purpose |
-|:------|:--------|
+| :--- | :--- |
 | `User` | Core user data, stats, settings |
 | `Monster` | Boss/enemy definitions |
 | `Item` | Equipment definitions |
 | `UserEquipment` | User's inventory |
 | `PvpProfile` | Competitive rankings |
+| `active_sessions` | Co-op multiplayer lobbies |
 
 ---
 
