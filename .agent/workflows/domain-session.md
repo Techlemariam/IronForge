@@ -8,6 +8,7 @@ telemetry: "enabled"
 primary_agent: "@manager"
 domain: "meta"
 ---
+
 # Domain Session Workflow
 
 Start a focused development session for a specific domain of IronForge.
@@ -26,16 +27,16 @@ Start a focused development session for a specific domain of IronForge.
 
 Based on the domain argument, load relevant context:
 
-| Domain | Emoji | Primary Files | Workflows |
-|--------|-------|--------------|-----------|
-| `infra` | 🔧 | `.github/workflows/*`, `docker-compose.yml`, `next.config.ts`, `prisma/` | `/infrastructure`, `/pre-deploy`, `/deploy`, `/monitor-db`, `/triage` |
-| `game` | 🎮 | `src/services/progression*`, `src/actions/titan.ts`, `src/lib/game/*` | `/game-designer`, `/architect`, `/coder`, `/writer`, `/monitor-game`, `/triage` |
-| `sprint` | 📋 | `.agent/sprints/current.md`, `roadmap.md`, `DEBT.md` | `/manager`, `/startup`, `/sprint-auto`, `/idea`, `/feature`, `/triage` |
-| `qa` | 🧪 | `tests/*`, `e2e/*`, `playwright.config.ts` | `/qa`, `/unit-tests`, `/stresstests`, `/ci-doctor`, `/monitor-tests`, `/monitor-logic`, `/triage` |
-| `bio` | 🧬 | `src/services/intervals*`, `src/services/hevy*`, `src/lib/bio-buffs*` | `/titan-coach`, `/monitor-bio`, `/triage` |
-| `business` | 💰 | `src/app/api/stripe/*`, `src/services/subscription*`, pricing configs | `/analyst`, `/architect`, `/security`, `/idea`, `/strategist`, `/triage` |
-| `api` | 🔌 | `src/app/api/*`, `src/services/*`, external integrations | `/architect`, `/coder`, `/security`, `/platform`, `/triage` |
-| `meta` | 🧠 | `.agent/workflows/*`, `GEMINI.md`, `.antigravityrules` | `/evolve`, `/librarian`, `/health-check`, `/triage` |
+| Domain     | Emoji | Primary Files                                                            | Workflows                                                                                         |
+| ---------- | ----- | ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------- |
+| `infra`    | 🔧    | `.github/workflows/*`, `docker-compose.yml`, `next.config.ts`, `prisma/` | `/infrastructure`, `/pre-deploy`, `/deploy`, `/monitor-db`, `/triage`                             |
+| `game`     | 🎮    | `src/services/progression*`, `src/actions/titan.ts`, `src/lib/game/*`    | `/game-designer`, `/architect`, `/coder`, `/writer`, `/monitor-game`, `/triage`                   |
+| `sprint`   | 📋    | `.agent/sprints/current.md`, `roadmap.md`, `DEBT.md`                     | `/manager`, `/startup`, `/sprint-auto`, `/idea`, `/feature`, `/triage`                            |
+| `qa`       | 🧪    | `tests/*`, `e2e/*`, `playwright.config.ts`                               | `/qa`, `/unit-tests`, `/stresstests`, `/ci-doctor`, `/monitor-tests`, `/monitor-logic`, `/triage` |
+| `bio`      | 🧬    | `src/services/intervals*`, `src/services/hevy*`, `src/lib/bio-buffs*`    | `/titan-coach`, `/monitor-bio`, `/triage`                                                         |
+| `business` | 💰    | `src/app/api/stripe/*`, `src/services/subscription*`, pricing configs    | `/analyst`, `/architect`, `/security`, `/idea`, `/strategist`, `/triage`                          |
+| `api`      | 🔌    | `src/app/api/*`, `src/services/*`, external integrations                 | `/architect`, `/coder`, `/security`, `/platform`, `/triage`                                       |
+| `meta`     | 🧠    | `.agent/workflows/*`, `GEMINI.md`, `.antigravityrules`                   | `/evolve`, `/librarian`, `/health-check`, `/triage`                                               |
 
 // turbo
 Run: `rg -l "" src/ --max-depth 2` to get a file overview if needed.
@@ -59,20 +60,25 @@ Present a brief summary:
 ## [EMOJI] Domain Session: [DOMAIN_NAME]
 
 ### Active Roadmap Items
+
 - [ ] Item 1
 - [ ] Item 2
 
 ### Related Debt
+
 - [ ] Debt item if any
 
 ### Unresolved Gaps (Domain Health)
+
 - [ ] List any high-priority gaps found in recent monitor runs for this domain.
 - **Tip:** Run `/triage [domain]` to check health for this domain specifically.
 
 ### Recent Changes
+
 - Last 3 commits touching this domain
 
 ### Recommended Focus
+
 Based on priority and dependencies, suggest what to work on.
 ```
 
@@ -170,9 +176,9 @@ Once gatekeeper passes:
 1. **Push** your branch: `git push origin [branch-name]`
 2. **Create PR**:
 
-    ```bash
-    gh pr create --web
-    ```
+   ```bash
+   gh pr create --web
+   ```
 
 3. **Monitor CI**: Ensure all checks pass on GitHub because **only CI-verified code can be merged**.
 

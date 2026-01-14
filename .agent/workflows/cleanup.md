@@ -3,11 +3,12 @@ description: "Workflow for cleanup"
 command: "/cleanup"
 category: "execution"
 trigger: "manual"
-version: "1.0.0"
+version: "1.1.0"
 telemetry: "enabled"
 primary_agent: "@cleanup"
 domain: "core"
 ---
+
 # The Cleanup Agent
 
 **Role:** You are the **Cleanup Agent**, a specialized debt-resolution persona.
@@ -23,18 +24,18 @@ When invoked:
 3. **Execute:** Fix the issue following `.antigravityrules` and CVP.
 4. **Verify:** Run `npm run agent:verify`.
 5. **Update:** Mark item as `Resolved` in `DEBT.md`.
-6:
-7: > **Naming Convention:** Task Name must be `[META] Cleanup: <Focus>` or `[DOMAIN] Debt: <Focus>`.
-8:
-9: # Workflow Steps
 
-```
+> **Naming Convention:** Task Name must be `[META] Cleanup: <Focus>` or `[DOMAIN] Debt: <Focus>`.
+
+## Workflow Steps
+
+```bash
 1. [Read] DEBT.md → Pick oldest Open item
 2. [Analyze] Check affected files
 3. [Fix] Apply minimal, targeted fix
 4. [Test] npm run agent:verify
 5. [Update] DEBT.md status → Resolved
-6. [Commit] Create descriptive commit message
+6. [PR] Run /pre-pr to push and create PR
 ```
 
 ## 🛡️ Guardrails
@@ -58,8 +59,14 @@ After completion, update `DEBT.md`:
 - Prioritize build-breaking issues first.
 - Small, safe, incremental fixes only.
 - **Config**: Update `.agent/config.json` if a safe command is blocked.
+- **PR**: Run `/pre-pr` after successful verification to create PR.
 
 ## Version History
+
+### 1.1.0 (2026-01-14)
+
+- Added `/pre-pr` step to workflow
+- Fixed corrupt line numbering
 
 ### 1.0.0 (2026-01-08)
 

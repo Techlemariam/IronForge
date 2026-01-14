@@ -1,82 +1,37 @@
 "use client";
 
-import React, { Suspense, useReducer, useEffect, useState } from "react";
+import React, { useReducer, useEffect, useState } from "react";
 import { toast } from "@/components/ui/GameToast";
 import { PwaInstallBanner } from "@/components/ui/PwaInstallBanner";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import dynamic from "next/dynamic";
-import { Exercise } from "@/types/ironforge";
-import {
-  IntervalsWellness,
-  TTBIndices,
-  WeaknessAudit,
-  TSBForecast,
-  IntervalsEvent,
-  TitanLoadCalculation,
-  Session,
-  AppSettings,
-} from "@/types";
-import { User } from "@prisma/client";
-import { AuditReport } from "@/types/auditor";
-import { saveWorkoutAction } from "@/actions/integrations/hevy";
-import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
-import { CampaignTracker } from "@/features/game/components/campaign/CampaignTracker";
-import { AnimatePresence, motion } from "framer-motion";
-import { HevyExerciseTemplate, HevyRoutine } from "@/types/hevy";
-import { mapHevyToQuest, mapQuestToHevyPayload } from "@/utils/hevyAdapter";
-import { mapSessionToQuest, mapQuestToSession } from "@/utils/typeMappers";
-import { OracleRecommendation } from "@/types";
-import OracleCard from "../oracle/components/OracleCard";
-import UltrathinkDashboard from "@/features/dashboard/components/UltrathinkDashboard";
-import { getProgressionAction } from "@/actions/progression/core";
-import OracleVerdict from "@/features/oracle/components/OracleVerdict";
-import GeminiLiveCoach from "@/features/training/components/GeminiLiveCoach";
-import { Mic, Bike, Footprints, Settings, ArrowLeft } from "lucide-react";
 
-import TrainingCenter from "@/features/training/TrainingCenter";
-import {
-  TrainingPath,
-  LayerLevel,
-  WeeklyMastery,
-  Faction,
-} from "@/types/training";
-import { LeaderboardEntry } from "@/actions/social/leaderboards";
-import { CardioMode } from "@/features/training/CardioStudio";
+import { Exercise } from "@/types/ironforge";
+
+
+import { saveWorkoutAction } from "@/actions/integrations/hevy";
+
+import { AnimatePresence, motion } from "framer-motion";
+import { mapQuestToHevyPayload } from "@/utils/hevyAdapter";
+
+
+import { getProgressionAction } from "@/actions/progression/core";
+import GeminiLiveCoach from "@/features/training/components/GeminiLiveCoach";
+import { Settings } from "lucide-react";
+
+
+import { Faction } from "@/types/training";
 import { OracleChat } from "@/features/oracle/components/OracleChat";
-import { WorkoutDefinition } from "@/types/training";
-import { mapDefinitionToSession } from "@/utils/workoutMapper";
-import { playSound } from "@/utils";
 
 // Dynamic Imports moved to ViewRouter
-import StravaUpload from "@/features/training/components/strava/StravaUpload";
-import { CitadelHub } from "@/features/dashboard/CitadelHub";
 import { FirstLoginQuest } from "@/features/onboarding/FirstLoginQuest";
-import { QuestBoard } from "@/components/gamification/QuestBoard";
-import { StrengthContainer } from "@/features/strength/StrengthContainer";
-import { ProgramBuilder } from "@/features/training/ProgramBuilder";
-import { TrophyRoom } from "@/features/gamification/TrophyRoom";
-import { GuildHall } from "@/features/guild/GuildHall";
-import { TitanAvatar } from "@/features/titan/TitanAvatar";
 import { PersistentHeader } from "@/components/core/PersistentHeader";
-import { ShimmerBadge } from "@/components/ui/ShimmerBadge";
-import { Citadel } from "./components/Citadel";
-import { QuestCompletion } from "./components/QuestCompletion";
 import { CoachToggle } from "./components/CoachToggle";
 import { ViewRouter } from "./components/ViewRouter";
-import {
-  EquipmentArmory,
-  Bestiary,
-  WorldMap,
-  Grimoire,
-  Arena,
-  CodexLoader,
-} from "./components/SecondaryViews";
+import { CodexLoader } from "./components/SecondaryViews";
 import {
   View,
   DashboardState,
-  DashboardAction,
-  DashboardData,
   DashboardClientProps,
 } from "./types";
 import { dashboardReducer } from "./logic/dashboardReducer";
@@ -123,14 +78,9 @@ const getAmbientZone = (
 const DashboardClient: React.FC<DashboardClientProps> = (props) => {
   const {
     initialData,
-    isDemoMode,
     userData,
     faction,
     hasCompletedOnboarding,
-    hevyRoutines,
-    hevyTemplates,
-    intervalsConnected,
-    stravaConnected,
     pocketCastsConnected,
     challenges,
     titanState,

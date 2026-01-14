@@ -8,10 +8,11 @@ telemetry: "enabled"
 primary_agent: "@qa"
 domain: "core"
 ---
+
 # 🛡️ E2E Safety Protocol
 
 **Role:** Pre-Push Guardian.
-**Goal:** Prevent CI failures by simulating CI constraints locally *before* pushing code.
+**Goal:** Prevent CI failures by simulating CI constraints locally _before_ pushing code.
 **Trigger:** After significant UI changes or "Evening Sessions".
 
 ---
@@ -46,7 +47,7 @@ Common Failure: Mocks falling out of sync with Schema.
 git diff HEAD~5 -- prisma/schema.prisma src/types
 ```
 
-*If types changed:* Manually verify `window.__mockUser` in `tests/e2e/*.spec.ts` matches new types.
+_If types changed:_ Manually verify `window.__mockUser` in `tests/e2e/*.spec.ts` matches new types.
 
 ---
 

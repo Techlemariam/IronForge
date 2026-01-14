@@ -11,42 +11,42 @@ graph TD
     context --> |New Work| idea[/idea]
     context --> |Continue Task| resume[Resume from Roadmap]
     context --> |Maintenance| maintenance[Maintenance Workflows]
-    
+
     %% New Feature Path
     idea --> analyst[/analyst]
     analyst --> architect[/architect]
     architect --> feature[/feature]
     feature --> coder[/coder]
-    
+
     %% Bugfix Path
     context --> |Bug Found| debug[/debug]
     debug --> coder
-    
+
     %% Debt Path
     context --> |Debt Work| cleanup[/cleanup]
     cleanup --> coder
-    
+
     %% Implementation to Verification
     coder --> build{Build Success?}
     build --> |No| debug
     build --> |Yes| qa[/qa]
-    
+
     qa --> tests{Tests Pass?}
     tests --> |No| debug
     tests --> |Yes| gatekeeper[/gatekeeper]
-    
+
     %% Quality Gate
     gatekeeper --> gate{All Checks Pass?}
     gate --> |No| polish[/polish]
     polish --> coder
     gate --> |Yes| predeploy[/pre-deploy]
-    
+
     %% Deployment
     predeploy --> cipass{CI Pass?}
     cipass --> |No| debug
     cipass --> |Yes| deploy[/deploy]
     deploy --> shipped([✅ Shipped])
-    
+
     %% Maintenance Workflows
     maintenance --> monitor{Monitor Type}
     monitor --> |CI| monitorci[/monitor-ci]
@@ -55,20 +55,20 @@ graph TD
     monitor --> |Bio| monitorbio[/monitor-bio]
     monitor --> |Logic| monitorlogic[/monitor-logic]
     monitor --> |Game| monitorgame[/monitor-game]
-    
+
     monitorci --> triage[/triage]
     monitortests --> triage
     monitordb --> triage
     monitorbio --> triage
     monitorlogic --> triage
     monitorgame --> triage
-    
+
     triage --> roadmap([Update Roadmap])
-    
+
     %% Self-Improvement
     context --> |Workflow Issues| evolve[/evolve]
     evolve --> improved([Improved Workflows])
-    
+
     %% Domain Sessions
     context --> |Domain Focus| domainsession[/domain-session]
     domainsession --> domainwork{Work Type}
@@ -76,7 +76,7 @@ graph TD
     domainwork --> |Bugfix| debug
     domainwork --> |Triage| triage
     domainwork --> |Research| librarian[/librarian]
-    
+
     %% Styling
     classDef entryPoint fill:#4CAF50,stroke:#2E7D32,color:#fff
     classDef planning fill:#2196F3,stroke:#1565C0,color:#fff
@@ -84,7 +84,7 @@ graph TD
     classDef verification fill:#9C27B0,stroke:#6A1B9A,color:#fff
     classDef deployment fill:#F44336,stroke:#C62828,color:#fff
     classDef maintenance fill:#607D8B,stroke:#37474F,color:#fff
-    
+
     class startup,context,resume entryPoint
     class idea,analyst,architect,feature,domainsession planning
     class coder,cleanup,polish execution
@@ -103,63 +103,63 @@ graph TD
 
 ### 📋 Planning & Analysis
 
-| Workflow | Purpose | Next Steps |
-|----------|---------|------------|
-| `/idea` | Idea intake and ROI analysis | → `/analyst` |
-| `/analyst` | Requirements gathering | → `/architect` |
-| `/architect` | System design | → `/feature` or `/coder` |
-| `/feature` | End-to-end feature pipeline | → `/coder` |
+| Workflow     | Purpose                      | Next Steps               |
+| ------------ | ---------------------------- | ------------------------ |
+| `/idea`      | Idea intake and ROI analysis | → `/analyst`             |
+| `/analyst`   | Requirements gathering       | → `/architect`           |
+| `/architect` | System design                | → `/feature` or `/coder` |
+| `/feature`   | End-to-end feature pipeline  | → `/coder`               |
 
 ### 🔨 Execution
 
-| Workflow | Purpose | Next Steps |
-|----------|---------|------------|
-| `/coder` | Implementation | → `/qa` |
-| `/cleanup` | Debt resolution | → `/coder` → `/qa` |
-| `/infrastructure` | DevOps work | → `/qa` |
-| `/ui-ux` | Frontend design | → `/coder` |
+| Workflow          | Purpose         | Next Steps         |
+| ----------------- | --------------- | ------------------ |
+| `/coder`          | Implementation  | → `/qa`            |
+| `/cleanup`        | Debt resolution | → `/coder` → `/qa` |
+| `/infrastructure` | DevOps work     | → `/qa`            |
+| `/ui-ux`          | Frontend design | → `/coder`         |
 
 ### ✅ Verification
 
-| Workflow | Purpose | Next Steps |
-|----------|---------|------------|
-| `/qa` | Quality assurance | → `/gatekeeper` |
-| `/unit-tests` | Generate unit tests | → `/qa` |
-| `/gatekeeper` | Quality gate | → `/pre-deploy` |
-| `/pre-deploy` | Pre-deployment checks | → `/deploy` |
+| Workflow      | Purpose               | Next Steps      |
+| ------------- | --------------------- | --------------- |
+| `/qa`         | Quality assurance     | → `/gatekeeper` |
+| `/unit-tests` | Generate unit tests   | → `/qa`         |
+| `/gatekeeper` | Quality gate          | → `/pre-deploy` |
+| `/pre-deploy` | Pre-deployment checks | → `/deploy`     |
 
 ### 🚢 Deployment
 
-| Workflow | Purpose | Next Steps |
-|----------|---------|------------|
-| `/deploy` | Production deployment | → Shipped |
-| `/schema` | Database migrations | → `/deploy` |
+| Workflow  | Purpose               | Next Steps  |
+| --------- | --------------------- | ----------- |
+| `/deploy` | Production deployment | → Shipped   |
+| `/schema` | Database migrations   | → `/deploy` |
 
 ### 🔍 Monitoring
 
-| Workflow | Purpose | Triggers |
-|----------|---------|----------|
-| `/monitor-ci` | CI/CD health | → `/triage` |
-| `/monitor-tests` | Test execution | → `/triage` |
-| `/monitor-db` | Database health | → `/triage` |
-| `/monitor-bio` | Bio integration | → `/triage` |
-| `/monitor-logic` | Type safety & debt | → `/triage` |
-| `/monitor-game` | Game balance | → `/triage` |
-| `/monitor-deploy` | Vercel deployments | → `/triage` |
-| `/monitor-growth` | Growth metrics | → `/strategist` |
+| Workflow          | Purpose            | Triggers        |
+| ----------------- | ------------------ | --------------- |
+| `/monitor-ci`     | CI/CD health       | → `/triage`     |
+| `/monitor-tests`  | Test execution     | → `/triage`     |
+| `/monitor-db`     | Database health    | → `/triage`     |
+| `/monitor-bio`    | Bio integration    | → `/triage`     |
+| `/monitor-logic`  | Type safety & debt | → `/triage`     |
+| `/monitor-game`   | Game balance       | → `/triage`     |
+| `/monitor-deploy` | Vercel deployments | → `/triage`     |
+| `/monitor-growth` | Growth metrics     | → `/strategist` |
 
 ### 🛠️ Utilities
 
-| Workflow | Purpose | When to Use |
-|----------|---------|-------------|
-| `/debug` | Error analysis | Build/test failures |
-| `/polish` | Code cleanup | Lint/format issues |
-| `/perf` | Performance | Bundle/lighthouse |
-| `/security` | Security audit | Before deploy |
-| `/triage` | Prioritization | After monitors |
-| `/evolve` | Self-improvement | Workflow optimization |
-| `/claim-task` | Task coordination | Parallel work |
-| `/switch-branch` | Branch switching | Multi-task sessions |
+| Workflow         | Purpose           | When to Use           |
+| ---------------- | ----------------- | --------------------- |
+| `/debug`         | Error analysis    | Build/test failures   |
+| `/polish`        | Code cleanup      | Lint/format issues    |
+| `/perf`          | Performance       | Bundle/lighthouse     |
+| `/security`      | Security audit    | Before deploy         |
+| `/triage`        | Prioritization    | After monitors        |
+| `/evolve`        | Self-improvement  | Workflow optimization |
+| `/claim-task`    | Task coordination | Parallel work         |
+| `/switch-branch` | Branch switching  | Multi-task sessions   |
 
 ## Workflow Dependencies
 

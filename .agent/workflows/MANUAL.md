@@ -22,11 +22,11 @@ Every workflow is invoked via a slash command (e.g., `/coder`, `/qa`). Commands 
 
 ### 2. Personas vs Actions
 
-| Type | Purpose | Examples |
-| :--- | :--- | :--- |
-| **Persona** | Adopt a specialized role | `/coder`, `/architect`, `/qa` |
-| **Action** | Execute a specific task | `/cleanup`, `/polish`, `/deploy` |
-| **Meta** | Manage the system itself | `/startup`, `/evolve`, `/health-check` |
+| Type        | Purpose                  | Examples                               |
+| :---------- | :----------------------- | :------------------------------------- |
+| **Persona** | Adopt a specialized role | `/coder`, `/architect`, `/qa`          |
+| **Action**  | Execute a specific task  | `/cleanup`, `/polish`, `/deploy`       |
+| **Meta**    | Manage the system itself | `/startup`, `/evolve`, `/health-check` |
 
 ### 3. Domain Sessions
 
@@ -44,40 +44,40 @@ Available domains: `auth`, `game`, `bio`, `core`, `ui`, `api`, `database`.
 
 ### 🧑‍💻 Engineering Personas
 
-| Command | Role | When to Use |
-| :--- | :--- | :--- |
+| Command      | Role            | When to Use                            |
+| :----------- | :-------------- | :------------------------------------- |
 | `/architect` | System Designer | Before major features, for design docs |
-| `/coder` | Senior Engineer | Implementation work |
-| `/qa` | QA Engineer | Testing and verification |
-| `/debug` | Error Analyst | Build failures, runtime errors |
+| `/coder`     | Senior Engineer | Implementation work                    |
+| `/qa`        | QA Engineer     | Testing and verification               |
+| `/debug`     | Error Analyst   | Build failures, runtime errors         |
 
 ### 🎨 Product & Design
 
-| Command | Role | When to Use |
-| :--- | :--- | :--- |
-| `/analyst` | Business Analyst | Requirements gathering |
-| `/ui-ux` | Frontend Specialist | UI polish, accessibility |
-| `/game-designer` | Game Mechanics | Balancing, progression |
-| `/titan-coach` | Bio-Game Bridge | Exercise ↔ game mechanics |
+| Command          | Role                | When to Use               |
+| :--------------- | :------------------ | :------------------------ |
+| `/analyst`       | Business Analyst    | Requirements gathering    |
+| `/ui-ux`         | Frontend Specialist | UI polish, accessibility  |
+| `/game-designer` | Game Mechanics      | Balancing, progression    |
+| `/titan-coach`   | Bio-Game Bridge     | Exercise ↔ game mechanics |
 
 ### 🔧 Infrastructure & Quality
 
-| Command | Role | When to Use |
-| :--- | :--- | :--- |
-| `/infrastructure` | DevOps | Docker, CI/CD, migrations |
-| `/security` | Red Team | Auth audits, vulnerability scans |
-| `/schema` | Database Architect | Prisma migrations |
-| `/gatekeeper` | Quality Gate | Pre-push verification |
+| Command           | Role               | When to Use                      |
+| :---------------- | :----------------- | :------------------------------- |
+| `/infrastructure` | DevOps             | Docker, CI/CD, migrations        |
+| `/security`       | Red Team           | Auth audits, vulnerability scans |
+| `/schema`         | Database Architect | Prisma migrations                |
+| `/gatekeeper`     | Quality Gate       | Pre-push verification            |
 
 ### 📊 Monitoring & Maintenance
 
-| Command | Purpose |
-| :--- | :--- |
-| `/monitor-ci` | Check GitHub Actions status |
-| `/monitor-db` | Database health and migrations |
-| `/monitor-debt` | Scan for TODO/FIXME markers |
-| `/health-check` | Full system audit |
-| `/triage` | Prioritize discovered gaps |
+| Command         | Purpose                        |
+| :-------------- | :----------------------------- |
+| `/monitor-ci`   | Check GitHub Actions status    |
+| `/monitor-db`   | Database health and migrations |
+| `/monitor-debt` | Scan for TODO/FIXME markers    |
+| `/health-check` | Full system audit              |
+| `/triage`       | Prioritize discovered gaps     |
 
 ---
 
@@ -171,11 +171,11 @@ Verifies PR is ready for production deployment.
 
 ### Scheduled Workflows
 
-| Workflow | Trigger | Purpose |
-| :--- | :--- | :--- |
-| `/night-shift` | Nightly | Maintenance tasks |
-| `/health-check` | Weekly | System audit |
-| `/evolve` | Weekly | Self-optimization |
+| Workflow        | Trigger | Purpose           |
+| :-------------- | :------ | :---------------- |
+| `/night-shift`  | Nightly | Maintenance tasks |
+| `/health-check` | Weekly  | System audit      |
+| `/evolve`       | Weekly  | Self-optimization |
 
 ### Sprint Management
 
@@ -227,12 +227,12 @@ See [METADATA.md](./METADATA.md) for full schema reference.
 
 ## Troubleshooting
 
-| Symptom | Solution |
-| :--- | :--- |
-| Command not recognized | Check `.agent/workflows/` for the file |
-| Build fails after changes | Run `/debug` then `/gatekeeper` |
-| Tests timeout | Check `/monitor-ci` for CI status |
-| Merge conflicts | Run `/switch-branch main` then rebase |
+| Symptom                   | Solution                               |
+| :------------------------ | :------------------------------------- |
+| Command not recognized    | Check `.agent/workflows/` for the file |
+| Build fails after changes | Run `/debug` then `/gatekeeper`        |
+| Tests timeout             | Check `/monitor-ci` for CI status      |
+| Merge conflicts           | Run `/switch-branch main` then rebase  |
 
 ---
 
@@ -244,4 +244,4 @@ See [METADATA.md](./METADATA.md) for full schema reference.
 
 ---
 
-*Last updated: 2026-01-08*
+_Last updated: 2026-01-08_

@@ -260,15 +260,15 @@ const UltrathinkDashboard: React.FC<UltrathinkDashboardProps> = ({
         ) : (
           <>
             <div className="flex items-center gap-4">
-              <Skeleton variant="circular" width={48} height={48} />
+              <Skeleton className="h-12 w-12 rounded-full" />
               <div className="space-y-2">
-                <Skeleton variant="text" width={100} />
-                <Skeleton variant="text" width={150} />
+                <Skeleton className="h-4 w-[100px]" />
+                <Skeleton className="h-4 w-[150px]" />
               </div>
             </div>
             <div className="space-y-1">
-              <Skeleton variant="text" width={60} />
-              <Skeleton variant="text" width={60} />
+              <Skeleton className="h-4 w-[60px]" />
+              <Skeleton className="h-4 w-[60px]" />
             </div>
           </>
         )}

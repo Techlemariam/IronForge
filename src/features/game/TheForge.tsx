@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import ForgeCard from "@/components/ui/ForgeCard";
 import ForgeButton from "@/components/ui/ForgeButton";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
@@ -9,7 +8,7 @@ import { ITEMS, RECIPES } from "@/data/gameData";
 import { UserInventory, CraftingRecipe } from "@/types/game";
 import { craftItem } from "@/actions/economy/forge";
 import { toast } from "@/components/ui/GameToast";
-import { Hammer, Anvil, Coins, ArrowRight } from "lucide-react";
+import { Hammer, Anvil, Coins } from "lucide-react";
 
 interface TheForgeProps {
   onClose: () => void;
@@ -19,7 +18,7 @@ const TheForge: React.FC<TheForgeProps> = ({ onClose }) => {
   // TODO: In a real app, inventory would be passed in or fetched via hook
   // For MVP, we mock the initial state or fetch it on mount
   const [inventory, setInventory] = useState<UserInventory | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [_loading, _setLoading] = useState(false);
   const [craftingId, setCraftingId] = useState<string | null>(null);
 
   // Initial Mock Load (Replace with server action fetch later if needed)
@@ -99,7 +98,7 @@ const TheForge: React.FC<TheForgeProps> = ({ onClose }) => {
       } else {
         toast.error(result.message);
       }
-    } catch (error) {
+    } catch (_error) {
       toast.error("The Hammer failed to strike.");
     } finally {
       setCraftingId(null);

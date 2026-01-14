@@ -10,10 +10,9 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import { createDuelChallengeAction } from "@/actions/pvp/duel";
 import { toast } from "sonner";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"; // Assuming Tabs might exist, if not I'll handle fallback
+
 import { Bike, Footprints, Timer, Trophy, TrendingUp } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -62,7 +61,7 @@ export function CardioDuelModal({
       } else {
         toast.error(result.error || "Failed to send challenge");
       }
-    } catch (error) {
+    } catch (_error) {
       toast.error("Something went wrong");
     } finally {
       setIsSubmitting(false);

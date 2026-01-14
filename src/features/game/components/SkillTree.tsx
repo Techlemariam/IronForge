@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useEffect, useState, useRef, useCallback, useMemo } from "react";
-import { SkillCategory } from "@/types";
+import React, { useEffect, useState, useCallback, useMemo } from "react";
+
 import ReactFlow, {
   Background,
   Controls,
@@ -15,7 +15,7 @@ import ReactFlow, {
 } from "reactflow";
 import "reactflow/dist/style.css"; // Ensure base styles are imported
 
-import { SKILL_TREE_V2, getNodeById } from "@/data/skill-tree-v2";
+import { SKILL_TREE_V2 } from "@/data/skill-tree-v2";
 import { SkillNodeV2, SkillStatus, NodeTier } from "@/types/skills";
 import { IntervalsWellness } from "@/types";
 import {
@@ -24,19 +24,16 @@ import {
   ArrowLeft,
   X,
   TrendingUp,
-  Scroll,
   Wind,
   Sparkles,
-  TrendingDown,
   Shield,
   Check,
   ArrowUpCircle,
-  Octagon,
   Crown,
   Star,
 } from "lucide-react";
 import { useSkills } from "@/context/SkillContext";
-import { calculateAdaptiveCost } from "@/utils/root_utils";
+
 import { motion, AnimatePresence } from "framer-motion";
 
 interface SkillTreeProps {
@@ -177,9 +174,8 @@ const nodeTypes = {
   skillNode: CustomSkillNode,
 };
 
-const SkillTree: React.FC<SkillTreeProps> = ({ onExit, wellness }) => {
+const SkillTree: React.FC<SkillTreeProps> = ({ onExit, wellness: _wellness }) => {
   const {
-    purchasedSkillIds,
     unlockSkill,
     canAfford,
     availableTalentPoints,
@@ -218,7 +214,7 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onExit, wellness }) => {
     const flowEdges: Edge[] = [];
     SKILL_TREE_V2.forEach((node: SkillNodeV2) => {
       node.parents.forEach((parentId: string) => {
-        const parentNode = SKILL_TREE_V2.find((n: SkillNodeV2) => n.id === parentId);
+        const _parentNode = SKILL_TREE_V2.find((n: SkillNodeV2) => n.id === parentId);
         const parentStatus = getNodeStatus(parentId);
         const nodeStatus = getNodeStatus(node.id);
 

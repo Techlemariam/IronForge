@@ -1,14 +1,10 @@
 
 import { GarminWellnessData } from "@/services/bio/GarminService";
 
-interface GarminStartData { // Simplified interface to avoid circular dependency if needed, or import
-    bodyBattery: number;
-    stressLevel: number;
-    restingHeartRate?: number;
-}
+
 
 import { motion, AnimatePresence } from "framer-motion";
-import { Heart, Shield, Swords, Zap, Activity } from "lucide-react";
+import { Heart, Shield } from "lucide-react";
 import { GarminWidget } from "@/features/bio/components/GarminWidget";
 
 interface TvHudProps {
@@ -31,7 +27,7 @@ export const TvHud: React.FC<TvHudProps> = ({
     bossHp,
     bossMaxHp = 100,
     bossName = "Colossal Boss",
-    playerName = "Titan",
+    playerName: _playerName = "Titan",
     playerHp = 100,
     playerMaxHp = 100,
     garminData,

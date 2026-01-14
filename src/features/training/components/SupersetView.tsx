@@ -3,8 +3,6 @@
 
 import React from "react";
 import { Exercise } from "@/types";
-import { cn } from "@/lib/utils";
-import ForgeCard from "../../../components/ui/ForgeCard";
 import ExerciseView from "./ExerciseView";
 import { Link2 } from "lucide-react";
 
@@ -16,11 +14,11 @@ interface SupersetViewProps {
     onNotesChange?: (exerciseId: string, notes: string) => void;
 }
 
-const SupersetView: React.FC<SupersetViewProps> = ({
+const _SupersetView: React.FC<SupersetViewProps> = ({
     exercises,
-    activeExIndex,
-    onSetLog,
-    onNotesChange,
+    activeExIndex: _activeExIndex,
+    onSetLog: _onSetLog,
+    onNotesChange: _onNotesChange,
 }) => {
     // Determine if any exercise in this superset is currently active
     // The parent passes individual exercises, but we need to identify *which* one corresponds to activeExIndex
@@ -45,7 +43,7 @@ const SupersetView: React.FC<SupersetViewProps> = ({
                 </div>
             </div>
 
-            {exercises.map((ex, idx) => {
+            {exercises.map((ex, _idx) => {
                 // We need to know if *this specific exercise* is the active one in the broader session list
                 // Since we don't have the global index map here easily without prop drilling, 
                 // we can infer "isActive" if it has incomplete sets and is the first one, or previous ones are done.

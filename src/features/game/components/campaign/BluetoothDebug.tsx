@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { bluetoothService, BioData } from "@/services/BluetoothService";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Heart, Activity, Battery, Zap } from "lucide-react";
+import { Heart, Activity } from "lucide-react";
 
 const BluetoothDebug = () => {
     const [data, setData] = useState<BioData | null>(null);
@@ -33,7 +33,7 @@ const BluetoothDebug = () => {
     };
 
     // RR Interval calculation to HRV (RMSSD approximation for visual check)
-    const rrDisplay = data?.rrIntervals ? data.rrIntervals.join(", ") : "None";
+    const _rrDisplay = data?.rrIntervals ? data.rrIntervals.join(", ") : "None";
 
     return (
         <Card className="w-full max-w-md mx-auto mt-10 border-2 border-zinc-800 bg-zinc-950 text-zinc-100">

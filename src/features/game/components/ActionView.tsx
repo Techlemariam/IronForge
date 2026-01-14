@@ -16,22 +16,16 @@ import {
 } from "@/types";
 import {
   Check,
-  Trophy,
-  Ban,
   Info,
-  ExternalLink,
   X,
   Lock,
   Zap,
-  MousePointer2,
   Sword,
   Shield,
   Crown,
-  FlaskConical,
   LogOut,
   Flame,
   Battery,
-  HeartPulse,
   Mic,
   Camera,
   Waves,
@@ -40,6 +34,7 @@ import {
   Timer,
   Plus,
   Copy,
+  Ban,
 } from "lucide-react";
 import {
   roundToPlates,

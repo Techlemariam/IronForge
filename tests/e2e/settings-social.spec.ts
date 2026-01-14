@@ -7,7 +7,7 @@ test.describe('Settings and Social Hub', () => {
         await page.waitForLoadState('domcontentloaded');
 
         // Check for Header with longer timeout
-        await expect(page.getByRole('heading', { name: 'Settings' })).toBeVisible({ timeout: 15000 });
+        await expect(page.locator('h1:has-text("Sanctum Settings")')).toBeVisible({ timeout: 15000 });
 
         // Check for "Integrations" section (Default tab)
         await expect(page.getByRole('heading', { name: 'Integrations' })).toBeVisible({ timeout: 10000 });
@@ -15,8 +15,8 @@ test.describe('Settings and Social Hub', () => {
         // Click "Data" tab to view Data Management
         await page.getByRole('tab', { name: 'Data' }).click();
 
-        // Check for "Data Management" section
-        await expect(page.getByRole('heading', { name: 'Data Management' })).toBeVisible({ timeout: 10000 });
+        // Check for "System Archives" section (renamed used to be Data Management)
+        await expect(page.getByRole('heading', { name: 'System Archives' })).toBeVisible({ timeout: 15000 });
 
         // Check for Back link
         const backLink = page.locator('a[href="/citadel"]');

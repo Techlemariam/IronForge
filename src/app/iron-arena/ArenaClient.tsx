@@ -6,11 +6,11 @@ import { DuelVictoryScreen } from '@/features/pvp/components/duel/DuelVictoryScr
 import { ChallengeModal } from "@/features/pvp/components/duel/ChallengeModal";
 import { CardioDuelModal } from "@/features/pvp/components/duel/CardioDuelModal";
 import { Button } from "@/components/ui/button";
-import { Swords, Trophy, Crown, TrendingUp, Calendar, ChevronRight } from "lucide-react";
+import { Swords, Crown, TrendingUp, Calendar } from "lucide-react";
 import { toast } from "sonner";
 import { SeasonInfo } from "@/actions/pvp/leagues";
 import { LeagueInfo } from "@/lib/game/tier-data";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 import { DuelChallenge, User } from '@prisma/client';
 
@@ -155,7 +155,7 @@ export function ArenaClient({ activeDuel, currentUserId, leagueInfo, seasonInfo,
                     const res = await sendTauntAction(activeDuel.id);
                     if (res.success) toast.success("Taunt sent!");
                     else toast.error("Taunt failed.");
-                  } catch (e) { toast.error("Error sending taunt"); }
+                  } catch (_e) { toast.error("Error sending taunt"); }
                 }}
               />
             ) : (

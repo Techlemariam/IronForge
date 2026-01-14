@@ -10,12 +10,16 @@ export const logger = pino({
             options: {
                 colorize: true,
                 ignore: 'pid,hostname',
-                translateTime: 'HH:MM:ss',
+                translateTime: 'SYS:standard',
             },
         }
         : undefined,
     base: {
         env: process.env.NODE_ENV,
     },
-    redact: ['password', 'token', 'secret', 'authorization', 'cookie'],
+    redact: ['req.headers.authorization', 'password', 'token'],
 });
+
+export const logError = (msg: string, error: any, context?: Record<string, any>) => {
+    logger.error({ err: error, ...context }, msg);
+};
