@@ -105,13 +105,16 @@ Score calculation:
 **Output:**
 
 ```
-╔══════════════════════════════╗
+╔══════════════════════════════════════════════════════╗
 ║ 🛡️ GATEKEEPER VERDICT: [XXX] ║
-╚══════════════════════════════╝
+╚══════════════════════════════════════════════════════╝
 ```
 
 - [100] ✅ **APPROVED:** Safe to **Push to Feature Branch** and **Create PR**.
 - [<100] ❌ **REJECTED:** Fix FATAL issues locally. **DO NOT PUSH**.
+
+> [!TIP]
+> **E2E Failures?** If E2E tests fail repeatedly, escalate to `/ci-doctor` for systematic debugging.
 
 ## Version History
 

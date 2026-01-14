@@ -1,0 +1,41 @@
+{
+    "$schema": "./flaky-tests.schema.json",
+    "_comment": "Track historically flaky tests to prioritize fixes and enable quarantine",
+    "tests": {
+        "tests/e2e/iron-mines.spec.ts": {
+            "should handle session leave action": {
+                "failureCount": 8,
+                "lastFailure": "2026-01-12",
+                "category": "RACE_CONDITION",
+                "knownIssue": "Mock injected after LiveSessionHUD mounts",
+                "fixApplied": "addInitScript before goto + lazy state init",
+                "priority": "HIGH",
+                "quarantine": false
+            },
+            "should display Co-Op session creation button": {
+                "failureCount": 5,
+                "lastFailure": "2026-01-12",
+                "category": "SELECTOR_TIMEOUT",
+                "knownIssue": "coop-toggle-button not rendered when user is null",
+                "fixApplied": "Render disabled state when user missing",
+                "priority": "MEDIUM",
+                "quarantine": false
+            },
+            "should navigate to Iron Mines (Strength Training)": {
+                "failureCount": 3,
+                "lastFailure": "2026-01-11",
+                "category": "SELECTOR_TIMEOUT",
+                "knownIssue": "Workout card not found with text selector",
+                "fixApplied": "Use data-testid selector + evaluate.click()",
+                "priority": "LOW",
+                "quarantine": false
+            }
+        }
+    },
+    "summary": {
+        "totalTracked": 3,
+        "highPriority": 1,
+        "quarantined": 0,
+        "lastUpdated": "2026-01-13"
+    }
+}

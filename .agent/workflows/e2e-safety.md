@@ -66,7 +66,7 @@ npx playwright test -g "Co-Op" --workers=1 --headed
 
 - ✅ **Pass**: Safe to push.
 - ❌ **Fail/Timeout**: The race condition is real.
-  - **Action**: Use `/debug` workflow. Do NOT push.
+  - **Action**: Use `/ci-doctor` workflow. Do NOT push.
 
 ---
 
