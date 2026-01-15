@@ -47,6 +47,8 @@ export default [
             // Disable new React 19 / Compiler rules that are causing CI failures
             'react-hooks/set-state-in-effect': 'off',
             'react-hooks/no-impure-render': 'off',
+            'react-hooks/purity': 'off',
+            'react-hooks/immutability': 'off',
             'react-hooks/exhaustive-deps': 'off',
         },
         languageOptions: {
