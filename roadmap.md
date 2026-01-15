@@ -177,6 +177,8 @@
 
 ### Critical Priority (Production Readiness)
 
+- [ ] **DB Drift: active_sessions table** <!-- status: planned | priority: critical | roi: 5.0 | effort: S | source: debt-audit | date: 2026-01-14 -->
+  - **Issue**: `active_sessions` table exists in DB but not in migration history. Requires reset.
 - [x] **Sentry Error Tracking Integration** <!-- status: shipped | priority: critical | roi: 5.0 | effort: M | source: infrastructure-audit | date: 2025-12-29 -->
   - Installed `@sentry/nextjs`, created client/server/edge configs, wrapped `next.config.mjs`, added `global-error.tsx`.
 - [x] **E2E Tests with Dev Server** <!-- status: shipped | priority: critical | roi: 4.8 | effort: S | source: infrastructure-audit | date: 2025-12-29 -->
@@ -224,6 +226,8 @@
 - [x] **MCP Integration Plan** ([Analysis](docs/analysis/mcp_integration_plan.md)) <!-- status: shipped | priority: medium | roi: 4.0 | effort: S | source: research-session | date: 2026-01-05 -->
 - [ ] **Fix CI/CD Failures** <!-- status: planned | priority: critical | roi: 5.0 | effort: S | source: monitor-ci | date: 2026-01-05 -->
   - Investigate `pnpm test` failures in `react-dom` passive effects.
+- [ ] **Fix Iron Mines E2E Flakiness** <!-- status: planned | priority: high | roi: 4.5 | effort: S | source: monitor-ci | date: 2026-01-14 -->
+  - **Issue**: `iron-mines.spec.ts` failing on session list visibility check.
 
 ---
 
