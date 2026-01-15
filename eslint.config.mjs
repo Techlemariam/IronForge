@@ -1,15 +1,9 @@
-import { FlatCompat } from '@eslint/eslintrc';
+import nextPlugin from '@next/eslint-plugin-next';
+import reactPlugin from 'eslint-plugin-react';
+import hooksPlugin from 'eslint-plugin-react-hooks';
 import tseslint from '@typescript-eslint/eslint-plugin';
 import tsparser from '@typescript-eslint/parser';
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const compat = new FlatCompat({
-    baseDirectory: __dirname,
-});
+import { fixupPluginRules } from '@eslint/compat';
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
@@ -28,8 +22,38 @@ export default [
             'test-results/',
         ],
     },
-    // Extend Next.js config using FlatCompat
-    ...compat.extends('next/core-web-vitals'),
+    // Manual Next.js Configuration
+    {
+        files: ['**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx'],
+        plugins: {
+            '@next/next': fixupPluginRules(nextPlugin),
+            'react': fixupPluginRules(reactPlugin),
+            'react-hooks': fixupPluginRules(hooksPlugin),
+        },
+        settings: {
+            react: {
+                version: 'detect',
+            },
+        },
+        rules: {
+            ...nextPlugin.configs.recommended.rules,
+            ...nextPlugin.configs['core-web-vitals'].rules,
+            ...reactPlugin.configs.recommended.rules,
+            ...hooksPlugin.configs.recommended.rules,
+            'react/react-in-jsx-scope': 'off',
+            'react/jsx-uses-react': 'off',
+            'react/prop-types': 'off',
+            'react/no-unknown-property': 'off', // Mostly for Three.js (R3F) compatibility
+            'react-hooks/exhaustive-deps': 'warn',
+        },
+        languageOptions: {
+            parserOptions: {
+                ecmaFeatures: {
+                    jsx: true,
+                },
+            },
+        },
+    },
     // TypeScript-specific configuration
     {
         files: ['**/*.ts', '**/*.tsx'],
@@ -41,7 +65,7 @@ export default [
             },
         },
         plugins: {
-            '@typescript-eslint': tseslint,
+            '@typescript-eslint': fixupPluginRules(tseslint),
         },
         rules: {
             '@typescript-eslint/no-explicit-any': 'off',
