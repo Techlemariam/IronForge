@@ -10,6 +10,8 @@ on:
 jobs:
   qodana:
     runs-on: ubuntu-latest
+    # Skip for dependabot PRs - they can't access QODANA_TOKEN secret
+    if: github.actor != 'dependabot[bot]'
     permissions:
       contents: write
       pull-requests: write
