@@ -221,6 +221,48 @@
 - [x] **Nix Flake Modernization** <!-- status: shipped | priority: low | roi: 2.0 | effort: M | source: infrastructure-audit | date: 2026-01-03 -->
   - ✅ Implemented: Modern `flake.nix` with Node 22, PostgreSQL 16, and `direnv` integration. Updated IDX environment to match.
 
+### Tech Stack Optimization (Source: [Analysis](../.gemini/antigravity/brain/e720ec41-4fc2-4178-b577-044e4c6d7be1/tech_stack_analysis.md))
+
+> **Strategy:** Current stack is top 5%. Focus on strategic additions, not rewrites.
+
+#### 📊 Current Rating: **8.5 / 10**
+
+| Category | Score | Gap to 10/10 |
+|:---------|:------|:-------------|
+| Framework (Next.js 16 + React 19) | 10/10 | ✅ Perfect |
+| Type Safety (TS + Prisma + Zod) | 9/10 | Eliminate ~50 `any` usages |
+| Database (Prisma + Supabase) | 9/10 | Add edge caching layer |
+| Real-Time (Supabase Realtime) | 7/10 | Partykit for low-latency multiplayer |
+| Mobile (Capacitor) | 7/10 | React Native when scale demands |
+| Testing (Vitest + Playwright) | 8/10 | Reach 90%+ coverage |
+
+> **10/10 kräver:** Upstash Redis (+0.3), Partykit (+0.4), React Native (+0.4), 90% coverage (+0.2), no `any` (+0.2). **Men 8.5 är exceptionellt för pre-PMF.**
+
+#### High Priority (Scale Enablers)
+
+- [ ] **Upstash Redis for Edge Caching** <!-- status: planned | priority: high | roi: 4.5 | effort: S | source: tech-stack-analysis | date: 2026-01-15 -->
+  - Rationale: <10ms global reads for leaderboards, PvP matchmaking queues, session caching.
+  - Scope: Add `@upstash/redis`, cache Iron Leagues, Oracle decrees, active sessions.
+- [ ] **Partykit for Real-Time Multiplayer** <!-- status: planned | priority: high | roi: 4.8 | effort: M | source: tech-stack-analysis | date: 2026-01-15 -->
+  - Rationale: Replace manual WebSocket for Co-op sessions. Runs on Cloudflare Workers.
+  - Scope: Migrate `CoOpService` to Partykit rooms. Ultra-low latency globally.
+
+#### Medium Priority (Edge Computing)
+
+- [ ] **Vercel Edge Functions Optimization** <!-- status: planned | priority: medium | roi: 4.0 | effort: S | source: tech-stack-analysis | date: 2026-01-15 -->
+  - Rationale: Leverage Next.js edge runtime for API latency reduction.
+  - Scope: Move Oracle verdict, leaderboard APIs to edge.
+- [ ] **Cloudflare R2 for Asset Storage** <!-- status: planned | priority: medium | roi: 3.5 | effort: S | source: tech-stack-analysis | date: 2026-01-15 -->
+  - Rationale: Cheaper than S3 for Titan avatars, loot icons, game assets.
+
+#### Future Consideration (When Scale Demands)
+
+- [ ] **React Native + Expo Migration** <!-- status: deferred | priority: low | roi: 4.0 | effort: XL | source: tech-stack-analysis | date: 2026-01-15 -->
+  - **Trigger**: 1000+ daily users OR Apple Watch WatchKit integration required.
+  - Current Capacitor is sufficient for PWA-wrapped mobile.
+- [ ] **Turso (libSQL) for Edge SQLite** <!-- status: deferred | priority: low | roi: 3.5 | effort: L | source: tech-stack-analysis | date: 2026-01-15 -->
+  - **Trigger**: Offline reliability becomes #1 user complaint.
+
 ### Research & Analysis
 
 - [x] **MCP Integration Plan** ([Analysis](docs/analysis/mcp_integration_plan.md)) <!-- status: shipped | priority: medium | roi: 4.0 | effort: S | source: research-session | date: 2026-01-05 -->
