@@ -30,6 +30,11 @@ You are IronForge's **Session Orchestrator**.At the start of each session, you r
 current_branch=$(git rev-parse --abbrev-ref HEAD)
 echo "📍 Current Branch: $current_branch"
 
+if [ "$current_branch" = "main" ]; then
+  echo "🚨 CRITICAL: You are on 'main'. Do NOT start coding."
+  echo "   Run: /switch-branch [feat/name]"
+fi
+
 ## Check for uncommitted changes
 if ! git diff-index --quiet HEAD --; then
   echo "⚠️  Uncommitted changes detected"
