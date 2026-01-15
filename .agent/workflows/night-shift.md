@@ -25,24 +25,14 @@ flags:
 ## 🔧 Pre-Flight Checks
 
 ```bash
-# Initialize log with timestamp
-LOG="night-shift-$(date +%Y%m%d-%H%M%S).log"
-echo "🌙 Night Shift started at $(date)" > "$LOG"
-
-# Validate required files
-for file in ROADMAP.md DEBT.md; do
-  [ -f "$file" ] || { echo "⚠️ $file missing" >> "$LOG"; }
-done
-
-# Check git status - abort if dirty
-if [ -n "$(git status --porcelain)" ]; then
-  echo "❌ Working directory not clean, aborting" >> "$LOG"
-  exit 1
+if [ -f ROADMAP.md ]; then
+  if ! /triage; then
+    echo "Triaging failed" >> night-shift.log
+    exit 1
+  fi
+else
+  echo "ROADMAP.md missing, skipping triage" >> night-shift.log
 fi
-
-# Create checkpoint for rollback
-git stash push -m "night-shift-checkpoint-$(date +%s)"
-echo "✅ Checkpoint created" >> "$LOG"
 ```
 
 ---
@@ -54,6 +44,7 @@ echo "✅ Checkpoint created" >> "$LOG"
 Run these concurrently to maximize throughput:
 
 ```bash
+timeout 45m /perf || { echo "Performance scan failed" >> night-shift.log; exit 1; }
 # Spawn parallel jobs
 /triage --analyze-only > triage_report.md 2>&1 &
 PID_TRIAGE=$!
@@ -110,6 +101,12 @@ fi
 ### Phase 3: Performance Metrics Extraction
 
 ```bash
+/evolve --dry-run > evolve_plan.md
+if grep -q "BREAKING CHANGE" evolve_plan.md; then
+  echo "Evolution has breaking changes, aborting" >> night-shift.log
+  exit 1
+else
+  /evolve --auto-apply
 # Extract Lighthouse scores from JSON
 if [ -f perf_report.json ]; then
   PERF_SCORE=$(jq -r '.categories.performance.score // "N/A"' perf_report.json)
@@ -194,9 +191,7 @@ echo "🌙 Night Shift completed successfully at $(date)" >> ".agent/logs/$LOG"
 
 - Initial stable release with standardized metadata
 
----
-
 ## References
 
 - [Night‑Shift Permissions](night-shift-permissions.md)
-- [Logs Directory](.agent/logs/)
+- [Night‑Shift Log](night-shift.log)
