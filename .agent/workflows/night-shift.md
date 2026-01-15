@@ -19,7 +19,14 @@ domain: "meta"
 ### 1. Roadmap Triage
 
 ```bash
-/triage
+if [ -f ROADMAP.md ]; then
+  if ! /triage; then
+    echo "Triaging failed" >> night-shift.log
+    exit 1
+  fi
+else
+  echo "ROADMAP.md missing, skipping triage" >> night-shift.log
+fi
 ```
 
 - **Goal:** Ensure `ROADMAP.md` reflects the latest reality from all monitors.
@@ -28,7 +35,7 @@ domain: "meta"
 ### 2. Deep Performance Scan
 
 ```bash
-/perf
+timeout 45m /perf || { echo "Performance scan failed" >> night-shift.log; exit 1; }
 ```
 
 - **Goal:** Analyze bundle sizes and run Lighthouse checks that take too long for day-time dev.
@@ -36,7 +43,13 @@ domain: "meta"
 ### 3. Evolution Check
 
 ```bash
-/evolve --auto-apply
+/evolve --dry-run > evolve_plan.md
+if grep -q "BREAKING CHANGE" evolve_plan.md; then
+  echo "Evolution has breaking changes, aborting" >> night-shift.log
+  exit 1
+else
+  /evolve --auto-apply
+fi
 ```
 
 - **Goal:** Optimize tokens and archive unused workflows automatically.
@@ -74,3 +87,8 @@ Generate `DAILY_BRIEF.md`:
 ### 1.0.0 (2026-01-08)
 
 - Initial stable release with standardized metadata
+
+## References
+
+- [Night‑Shift Permissions](night-shift-permissions.md)
+- [Night‑Shift Log](night-shift.log)
