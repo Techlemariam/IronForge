@@ -47,11 +47,12 @@ domain: "meta"
 
 // turbo-all
 
-1. Efter godkännande, anropa `/coder`-persona.
-2. Implementera enligt `implementation_plan.md`.
-3. **Parallellt**: Anropa `/unit-tests` för att skapa testsvit.
-4. **Local Loop**: Kör kontinuerligt `/gatekeeper` (Step 0) för att verifiera `types`, `lint`, `build` och `test`.
-5. **Config**: Uppdatera `config.json` om nya kommandon krävs.
+1. **Branch Check**: Verifiera att du är på korrekt branch (`feat/[name]`). **Jobba ALDRIG på `main`.**
+2. Efter godkännande, anropa `/coder`-persona.
+3. Implementera enligt `implementation_plan.md`.
+4. **Parallellt**: Anropa `/unit-tests` för att skapa testsvit.
+5. **Local Loop**: Kör kontinuerligt `/gatekeeper` (Step 0) för att verifiera `types`, `lint`, `build` och `test`.
+6. **Config**: Uppdatera `config.json` om nya kommandon krävs.
 
 ## Phase 4: Polish & Security
 
