@@ -1,5 +1,5 @@
 
-> ironforge-rpg@1.0.0 lint
+> ironforge-rpg@1.0.0 lint C:\Users\alexa\Workspaces\IronForge
 > eslint .
 
 
