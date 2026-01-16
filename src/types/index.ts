@@ -212,7 +212,7 @@ export interface TitanRank {
 
 // --- ANALYTICS & LOGGING ---
 export interface ExerciseLog {
-  id?: number;
+  id?: number | string;
   date: string; // ISO
   exerciseId: string;
   e1rm: number;

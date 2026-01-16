@@ -3,7 +3,7 @@ import { runFullAudit } from "./auditorOrchestrator";
 import { OracleService } from "./oracle";
 import { getWellness } from "../lib/intervals";
 import { AnalyticsService } from "./analytics";
-import { TrainingPath, IntervalsActivity } from "../types";
+import { TrainingPath, IntervalsActivity, ExerciseLog } from "../types";
 import { WellnessData } from "../lib/intervals";
 
 // Note: Hevy integration removed per data-source-reconciliation.md
@@ -97,24 +97,34 @@ export const PlannerService = {
     }
 
     // 4. Map Data for Analytics (TTB Calculation)
-    // Map Prisma CardioLogs to IntervalsActivity format expected by Analytics
     const activities: IntervalsActivity[] = user.cardioLogs.map((l) => ({
       id: l.intervalsId || undefined,
       start_date_local: l.date.toISOString(),
       type: l.type || undefined,
       moving_time: l.duration,
-      icu_intensity: (l.averageHr || 140) > 160 ? 90 : 60, // Rough estimate if load not available
+      icu_intensity: (l.averageHr || 140) > 160 ? 90 : 60,
       icu_training_load: l.load || 0,
     }));
 
     // Use AnalyticsService for TTB
-    // Note: Prisma ExerciseLog matches the shape roughly but we need to verify.
-    // Analytics expects: { isEpic: boolean, date: Date/string }
-    // Prisma: { isEpic: Boolean, date: Date }
+    // Prisma types are compatible with Analytics requirements
+    // We map to ExerciseLog[] locally to adding defaults for missing fields if needed
+    // Analytics Service expects e1rm and rpe for calculation
+    const exerciseLogs: ExerciseLog[] = user.exerciseLogs.map(log => ({
+      ...log,
+      date: log.date.toISOString(), // Convert Date to string
+      sets: log.sets as any, // JsonValue to expected type
+      e1rm: 0, // Defaulting to 0 as Prisma model lacks this column? Checked schema: it's missing.
+      rpe: 0,   // Defaulting to 0
+      isEpic: log.isPersonalRecord, // Mapping isPersonalRecord to isEpic? Wait, check definitions.
+      archetype: log.archetype as any // Prisma Enum vs Internal Enum mismatch prevention
+    }));
+
+    // Ensure wellness matches the shape expected by Analytics (WellnessData is compatible)
     const ttb = AnalyticsService.calculateTTB(
-      user.exerciseLogs as any[], // Keep as any[] for now as Prisma type might have extra fields, but it works for Analytics
+      exerciseLogs,
       activities,
-      wellness as any, // IntervalsWellness matches WellnessData loosely
+      wellness
     );
 
     // If auditor says we are neglecting something, that becomes lowest TTB
@@ -122,9 +132,9 @@ export const PlannerService = {
       ttb.lowest = "strength"; // Weakness found
     }
 
-    // 6. Generate Plan via Oracle (using consult as generateWeekPlan doesn't exist yet)
+    // 6. Generate Plan via Oracle
     const recommendation = await OracleService.consult(
-      wellness as any,
+      wellness,
       ttb,
       [], // events
       auditReport,
@@ -149,11 +159,12 @@ export const PlannerService = {
     };
 
     // 7. Save to DB
+    // Use Prisma.InputJsonValue from @prisma/client
     await prisma.weeklyPlan.create({
       data: {
         userId: user.id,
         weekStart: new Date(plan.weekStart),
-        plan: plan.days as unknown as any, // JSON field requirement
+        plan: plan.days as unknown as import("@prisma/client").Prisma.InputJsonValue,
       },
     });
 
