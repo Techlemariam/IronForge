@@ -78,6 +78,8 @@
 | 2026-01-14 | `src/services/coop/CoOpService.ts` | Fixed type-unsafe casting by implementing manual snake_case to camelCase mapping for DB results. | @infrastructure | ✅ Resolved |
 | 2026-01-14 | `prisma/schema.prisma` | DB Drift: `active_sessions` table exists in DB but not in migration history. Requires reset. | @infrastructure | ✅ Resolved |
 | 2026-01-16 | `src/services/TerritoryControlService.ts` | P2 Implemented batch calculation logic for influence points in getMapState. | @game-designer | ✅ Resolved |
+| 2026-01-16 | `src/services/planner.ts` | P4 Type Safety: `any` casts removed. Mapped Prisma types to internal `ExerciseLog`. | @coder | ✅ Resolved |
+| 2026-01-16 | `src/lib/territory/tileUtils.ts` | P4 Type Safety: `any` usage replaced with strict GeoJSON types. | @coder | ✅ Resolved |
 
 ---
 
