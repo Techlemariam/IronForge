@@ -216,6 +216,7 @@ declare global {
         __mockUser?: MockUser;
         __mockAutoCheckIn?: boolean;
         __mockCoOpSession?: MockCoOpSession;
+        __mockInviteCode?: string;
         __mockSessions?: MockCoOpSession[];
         __mockGhostEvents?: MockGhostEvent[];
     }
