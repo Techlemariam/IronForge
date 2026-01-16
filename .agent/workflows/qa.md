@@ -22,6 +22,23 @@ domain: "qa"
 3. Generate Proof of Work (Screenshots/Logs).
 4. **NO Manual Validation:** If it can't be tested automatically, script it.
 
+## Phase 0: Branch Guard
+
+> **Guard:** `.agent/workflows/_guards/branch-guard.md`
+
+// turbo
+
+```bash
+current_branch=$(git rev-parse --abbrev-ref HEAD)
+if [ "$current_branch" = "main" ]; then
+  echo "⛔ ERROR: /qa requires a feature branch. Run /claim-task first."
+  exit 1
+fi
+echo "✅ Branch: $current_branch"
+```
+
+---
+
 **Instructions:**
 
 - Review Coder changes.
