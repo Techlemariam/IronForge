@@ -3,7 +3,7 @@ description: "Workflow for cleanup"
 command: "/cleanup"
 category: "execution"
 trigger: "manual"
-version: "1.1.0"
+version: "1.2.0"
 telemetry: "enabled"
 primary_agent: "@cleanup"
 domain: "core"
@@ -16,6 +16,55 @@ domain: "core"
 **Purpose:** Systematically resolve items logged in `DEBT.md` without human intervention.
 
 ## 📥 Input Protocol
+
+### Phase 0: Pre-Execution Safety Checks
+
+**CRITICAL:** Verify no conflicts before starting work.
+
+1. **Check Open PRs:**
+
+   ```bash
+   # List all open PRs with their titles and file changes
+   gh pr list --state open --json number,title,files
+   ```
+
+   - **Extract** file paths from PR changes.
+   - **Compare** against files referenced in selected debt item.
+   - **IF MATCH**: Skip that debt item and log `⏭️ Skipped (PR #N in progress)`.
+
+2. **Check Feature Branches:**
+
+   ```bash
+   # List all branches except main and current branch
+   git branch -r | grep -v 'main\|HEAD'
+   ```
+
+   For each branch:
+
+   ```bash
+   # Get recent commits and file changes on each branch
+   git log origin/<branch> --since="7 days ago" --name-only --pretty=format:"%s"
+   ```
+
+   - **Search** commit messages for debt item keywords (e.g., file path, description).
+   - **IF MATCH**: Skip that debt item and log `⏭️ Skipped (work in progress on branch <branch>)`.
+
+3. **Fallback Check (GitHub Search):**
+
+   ```bash
+   # Search for related issues/PRs mentioning the debt item
+   gh search issues "[debt item description or file path]" --state open
+   ```
+
+   - **IF FOUND**: Review manually and decide to skip or proceed.
+
+4. **Validation:**
+   - **IF** debt item is in progress elsewhere: Exit workflow with message "Selected debt item already in progress".
+   - **ELSE**: Proceed with cleanup.
+
+---
+
+### Cleanup Execution
 
 When invoked:
 
@@ -70,6 +119,14 @@ gh issue close #N --reason completed --comment "Resolved by cleanup agent"
 - **PR**: Run `/pre-pr` after successful verification to create PR.
 
 ## Version History
+
+### 1.2.0 (2026-01-16)
+
+- Added **Pre-Execution Safety Checks** to prevent conflicts:
+  - Validates no open PRs are working on selected debt item
+  - Checks feature branches for ongoing work on same files
+  - Fallback GitHub search for related issues/PRs
+  - Skips conflicting items automatically
 
 ### 1.1.0 (2026-01-14)
 
