@@ -3,7 +3,7 @@ import { runFullAudit } from "./auditorOrchestrator";
 import { OracleService } from "./oracle";
 import { getWellness } from "../lib/intervals";
 import { AnalyticsService } from "./analytics";
-import { TrainingPath, IntervalsActivity } from "../types";
+import { TrainingPath, IntervalsActivity, ExerciseLog } from "../types";
 import { WellnessData } from "../lib/intervals";
 
 // Note: Hevy integration removed per data-source-reconciliation.md
@@ -112,10 +112,12 @@ export const PlannerService = {
     // Analytics Service expects e1rm and rpe for calculation
     const exerciseLogs: ExerciseLog[] = user.exerciseLogs.map(log => ({
       ...log,
+      date: log.date.toISOString(), // Convert Date to string
       sets: log.sets as any, // JsonValue to expected type
       e1rm: 0, // Defaulting to 0 as Prisma model lacks this column? Checked schema: it's missing.
       rpe: 0,   // Defaulting to 0
-      isEpic: log.isPersonalRecord // Mapping isPersonalRecord to isEpic? Wait, check definitions.
+      isEpic: log.isPersonalRecord, // Mapping isPersonalRecord to isEpic? Wait, check definitions.
+      archetype: log.archetype as any // Prisma Enum vs Internal Enum mismatch prevention
     }));
 
     // Ensure wellness matches the shape expected by Analytics (WellnessData is compatible)
