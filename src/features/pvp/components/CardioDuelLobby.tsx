@@ -20,7 +20,7 @@ export function CardioDuelLobby() {
     const [opponents, setOpponents] = useState<Opponent[]>([]);
     const [selectedOpponent, setSelectedOpponent] = useState<string | null>(null);
     const [duelType, _setDuelType] = useState("DISTANCE_RACE");
-    const [activityType, _setActivityType] = useState("RUNNING");
+    const [activityType, setActivityType] = useState("RUNNING");
     const [distance, setDistance] = useState("5");
     const [loading, setLoading] = useState(false);
 

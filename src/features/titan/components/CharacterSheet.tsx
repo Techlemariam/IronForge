@@ -537,7 +537,7 @@ const StatRow: React.FC<{
   color?: string;
   tooltip?: string;
   subtext?: string;
-}> = ({ label, value, _color = "text-white", tooltip, subtext }) => {
+}> = ({ label, value, color: _color = "text-white", tooltip, subtext }) => {
   const numericValue = typeof value === "number" ? value : 0;
 
   // FM Coloring: 16-20 Gold, 11-15 Green, 6-10 White, 1-5 Grey

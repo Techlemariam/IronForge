@@ -41,7 +41,7 @@ export function NotificationBell() {
             } catch (e) {
                 console.error(e);
             } finally {
-                setIsLoading(false);
+                // setIsLoading(false);
             }
         };
         fetchNotifications();

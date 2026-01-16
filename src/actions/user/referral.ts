@@ -3,6 +3,23 @@
 
 import { revalidatePath } from "next/cache";
 
+interface ReferralReward {
+  type: "REFERRER" | "REFERRED";
+  xp: number;
+  gold: number;
+  crateRarity?: string;
+  milestone?: string;
+}
+
+const REFERRER_REWARDS = {
+  base: { xp: 500, gold: 250 },
+};
+
+const REFERRED_REWARDS = {
+  xp: 250,
+  gold: 100,
+};
+
 export async function getReferralStatsAction(_userId: string): Promise<{
   code: string;
   referralCount: number;
