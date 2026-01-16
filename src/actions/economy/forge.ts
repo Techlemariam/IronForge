@@ -28,6 +28,29 @@ async function getInventory(userId: string): Promise<UserInventory> {
   };
 }
 
+export async function getInventoryAction(): Promise<{
+  success: boolean;
+  data?: UserInventory;
+  message?: string;
+}> {
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      return { success: false, message: "Unauthorized" };
+    }
+
+    const inventory = await getInventory(user.id);
+    return { success: true, data: inventory };
+  } catch (error) {
+    console.error("Failed to fetch inventory:", error);
+    return { success: false, message: "Failed to load inventory" };
+  }
+}
+
 export async function craftItem(
   recipeId: string,
 ): Promise<{ success: boolean; message: string; inventory?: UserInventory }> {
