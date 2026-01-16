@@ -6,6 +6,34 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "placeholder";
 const supabase = createClient(supabaseUrl, supabaseKey);
 
+// --- STRICT TYPES ---
+
+// 1. Local Window Interface removed to use global definition from tests/mocks/registry.ts
+
+// 2. DB Raw Types (snake_case from Supabase)
+interface DBSessionParticipant {
+    id: string;
+    session_id: string;
+    user_id: string;
+    hero_name: string;
+    status: string;
+    last_heartbeat: Date;
+    joined_at: Date;
+    // ... potentially other fields
+}
+
+interface DBActiveSession {
+    id: string;
+    host_id: string;
+    status: string;
+    workout_name?: string;
+    max_participants: number;
+    invite_code: string;
+    created_at: Date;
+    // updatedAt NOT in schema
+    participants?: DBSessionParticipant[]; // Joined via select
+}
+
 export interface CoOpSession extends ActiveSession {
     participants: SessionParticipant[];
 }
@@ -16,8 +44,8 @@ export const CoOpService = {
      */
     async getActiveSession(userId: string): Promise<CoOpSession | null> {
         // E2E Mock
-        if (typeof window !== 'undefined' && (window as any).__mockCoOpSession) {
-            return (window as any).__mockCoOpSession;
+        if (typeof window !== 'undefined' && window.__mockCoOpSession) {
+            return window.__mockCoOpSession as unknown as CoOpSession;
         }
 
         const { data } = await supabase
@@ -44,27 +72,39 @@ export const CoOpService = {
                     .select(`*, participants:session_participants(*)`)
                     .eq("id", partData.session_id)
                     .single();
-                return sessionData as any as CoOpSession;
+
+                return this._mapDBSession(sessionData as unknown as DBActiveSession);
             }
             return null;
         }
 
-        const sessionData = data as any;
+        // Cast via unknown to compatible DB type because Supabase types are generic
+        return this._mapDBSession(data as unknown as DBActiveSession);
+    },
+
+    /**
+     * Helper to map DB snake_case -> App camelCase
+     */
+    _mapDBSession(dbSession: DBActiveSession): CoOpSession {
         return {
-            ...sessionData,
-            hostId: sessionData.host_id,
-            workoutName: sessionData.workout_name,
-            maxParticipants: sessionData.max_participants,
-            inviteCode: sessionData.invite_code,
-            participants: (sessionData.participants || []).map((p: any) => ({
-                ...p,
-                userId: p.user_id,
-                heroName: p.hero_name,
+            id: dbSession.id,
+            hostId: dbSession.host_id,
+            status: dbSession.status,
+            workoutName: dbSession.workout_name || null,
+            maxParticipants: dbSession.max_participants,
+            inviteCode: dbSession.invite_code,
+            createdAt: new Date(dbSession.created_at),
+            // No updatedAt in ActiveSession schema
+            participants: (dbSession.participants || []).map((p) => ({
+                id: p.id,
                 sessionId: p.session_id,
-                lastHeartbeat: p.last_heartbeat,
-                joinedAt: p.joined_at
+                userId: p.user_id,
+                heroName: p.hero_name || null,
+                status: p.status,
+                lastHeartbeat: new Date(p.last_heartbeat),
+                joinedAt: new Date(p.joined_at)
             }))
-        } as CoOpSession;
+        };
     },
 
     /**
@@ -72,7 +112,7 @@ export const CoOpService = {
      */
     async createSession(hostId: string, workoutName?: string): Promise<string | null> {
         // E2E Mock
-        if (typeof window !== 'undefined' && (window as any).__mockInviteCode) {
+        if (typeof window !== 'undefined' && window.__mockInviteCode) {
             return "test-session-id";
         }
 
@@ -107,7 +147,7 @@ export const CoOpService = {
      */
     async joinSession(sessionId: string, userId: string, heroName?: string) {
         // E2E Mock
-        if (typeof window !== 'undefined' && (window as any).__mockCoOpSession) {
+        if (typeof window !== 'undefined' && window.__mockCoOpSession) {
             return;
         }
 
@@ -131,8 +171,8 @@ export const CoOpService = {
      */
     async listSessions(): Promise<CoOpSession[]> {
         // E2E Mock
-        if (typeof window !== 'undefined' && (window as any).__mockSessions) {
-            return (window as any).__mockSessions;
+        if (typeof window !== 'undefined' && window.__mockSessions) {
+            return window.__mockSessions as unknown as CoOpSession[];
         }
 
         const { data, error } = await supabase
@@ -149,23 +189,9 @@ export const CoOpService = {
             return [];
         }
 
-        // Type casting needed because Prisma types vs Supabase JSON result
-        const raw = data as any[];
-        return raw.map(s => ({
-            ...s,
-            hostId: s.host_id,
-            workoutName: s.workout_name,
-            maxParticipants: s.max_participants,
-            inviteCode: s.invite_code,
-            participants: (s.participants || []).map((p: any) => ({
-                ...p,
-                userId: p.user_id,
-                heroName: p.hero_name,
-                sessionId: p.session_id,
-                lastHeartbeat: p.last_heartbeat,
-                joinedAt: p.joined_at
-            }))
-        })) as CoOpSession[];
+        // Cast via unknown to compatible DB type
+        const raw = data as unknown as DBActiveSession[];
+        return raw.map(s => this._mapDBSession(s));
     },
 
     /**
@@ -173,7 +199,7 @@ export const CoOpService = {
      */
     async leaveSession(sessionId: string, userId: string) {
         // E2E Mock
-        if (typeof window !== 'undefined' && (window as any).__mockCoOpSession) {
+        if (typeof window !== 'undefined' && window.__mockCoOpSession) {
             return;
         }
 
@@ -191,7 +217,7 @@ export const CoOpService = {
      */
     subscribeToSession(sessionId: string, onUpdate: (payload: any) => void) {
         // E2E Mock
-        if (typeof window !== 'undefined' && (window as any).__mockCoOpSession) {
+        if (typeof window !== 'undefined' && window.__mockCoOpSession) {
             return { unsubscribe: () => { } };
         }
 
@@ -211,7 +237,9 @@ export const CoOpService = {
      * Broadcast a "Ghost Event" (Set Completion, Rep, etc.) to squad
      */
     broadcastGhostEvent(sessionId: string, event: GhostEvent) {
-        if (typeof window !== 'undefined' && (window as any).__mockGhostEvents) return Promise.resolve();
+        if (typeof window !== 'undefined' && window.__mockGhostEvents) {
+            return Promise.resolve();
+        }
 
         return supabase.channel(`ghost:${sessionId}`).send({
             type: 'broadcast',
@@ -225,10 +253,10 @@ export const CoOpService = {
      */
     subscribeToGhostEvents(sessionId: string, onEvent: (event: GhostEvent) => void) {
         // E2E Mock - Dispatch mock events if present
-        if (typeof window !== 'undefined' && (window as any).__mockGhostEvents) {
+        if (typeof window !== 'undefined' && window.__mockGhostEvents) {
             // Dispatch events on a slight delay to simulate realtime
             setTimeout(() => {
-                (window as any).__mockGhostEvents.forEach((e: GhostEvent) => onEvent(e));
+                window.__mockGhostEvents?.forEach((e) => onEvent(e as unknown as GhostEvent));
             }, 500);
             return { unsubscribe: () => { } };
         }
