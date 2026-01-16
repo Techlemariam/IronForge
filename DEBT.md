@@ -60,7 +60,7 @@
 | 2026-01-05 | `src/components/ui/LoadingSpinner.tsx` | Already has `role="status"`, `aria-live="polite"`, `aria-busy="true"`. | @ui-ux | ✅ Resolved |
 | 2026-01-05 | `src/features/dashboard/DashboardClient.tsx` | 685 lines → 432 lines. Extracted `ViewRouter.tsx` component. | @cleanup | ✅ Resolved |
 | 2026-01-05 | `src/components/ui/TvHud.tsx` | 7532 bytes may exceed TV Mode data density guidelines (max 3 data points). | @ui-ux | ✅ Resolved |
-| 2026-01-05 | `src/**/*` | Only 3 files use `aria-label`. Add accessibility labels to all interactive elements. | @ui-ux | ⚠️ Open |
+| 2026-01-05 | `src/features/training/{TvMode,TrainingCenter}.tsx` | Added `aria-label` and `role="button"` to interactive elements (Phase 1). | @ui-ux | ✅ Resolved |
 | 2026-01-06 | `src/features/oracle/OracleChat.tsx` | Improved `context` prop from `any` to `Record<string, unknown>`. @ts-ignore and `as any` casts remain due to @ai-sdk/react type limitations. | @cleanup | ⚠️ Deferred (Lib) |
 | 2026-01-06 | `package.json` | PR #31 (Dependencies) deferred (Zod 4, ESLint 9) | @infrastructure | ⚠️ Deferred |
 | 2026-01-06 | `src/services/analytics/GrowthMetricsService.ts` | `getSocialEngagement` is a placeholder. Requires 'Friendship' model implementation. | @architect | ✅ Resolved (Verified, added tests) |
