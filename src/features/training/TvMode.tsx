@@ -427,6 +427,7 @@ export const TvMode: React.FC<TvModeProps> = ({
                         e.stopPropagation();
                         setQrVisible(!qrVisible);
                       }}
+                      aria-label="Toggle QR Code for Companion App"
                       className={cn(
                         "p-2 rounded-lg transition-colors",
                         qrVisible
@@ -441,6 +442,7 @@ export const TvMode: React.FC<TvModeProps> = ({
                         e.stopPropagation();
                         setSensorsMenuOpen(true);
                       }}
+                      aria-label="Open Sensors Menu"
                       className="p-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg transition-colors"
                     >
                       {sensorsConnected ? (
@@ -457,6 +459,7 @@ export const TvMode: React.FC<TvModeProps> = ({
                           e.stopPropagation();
                           setPodcastOpen((prev) => !prev);
                         }}
+                        aria-label="Toggle Podcast Player"
                         className={cn(
                           "p-2 rounded-lg transition-colors",
                           podcastOpen
@@ -473,6 +476,7 @@ export const TvMode: React.FC<TvModeProps> = ({
                         e.stopPropagation();
                         onExit();
                       }}
+                      aria-label="Exit TV Mode"
                       className="p-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg transition-colors"
                     >
                       <X className="w-5 h-5 text-white" />

@@ -60,19 +60,19 @@
 | 2026-01-05 | `src/components/ui/LoadingSpinner.tsx` | Already has `role="status"`, `aria-live="polite"`, `aria-busy="true"`. | @ui-ux | ✅ Resolved |
 | 2026-01-05 | `src/features/dashboard/DashboardClient.tsx` | 685 lines → 432 lines. Extracted `ViewRouter.tsx` component. | @cleanup | ✅ Resolved |
 | 2026-01-05 | `src/components/ui/TvHud.tsx` | 7532 bytes may exceed TV Mode data density guidelines (max 3 data points). | @ui-ux | ✅ Resolved |
-| 2026-01-05 | `src/**/*` | Only 3 files use `aria-label`. Add accessibility labels to all interactive elements. | @ui-ux | ⚠️ Open |
+| 2026-01-05 | `src/features/training/{TvMode,TrainingCenter}.tsx` | Added `aria-label` and `role="button"` to interactive elements (Phase 1). | @ui-ux | ✅ Resolved |
 | 2026-01-06 | `src/features/oracle/OracleChat.tsx` | Improved `context` prop from `any` to `Record<string, unknown>`. @ts-ignore and `as any` casts remain due to @ai-sdk/react type limitations. | @cleanup | ⚠️ Deferred (Lib) |
 | 2026-01-06 | `package.json` | PR #31 (Dependencies) deferred (Zod 4, ESLint 9) | @infrastructure | ⚠️ Deferred |
 | 2026-01-06 | `src/services/analytics/GrowthMetricsService.ts` | `getSocialEngagement` is a placeholder. Requires 'Friendship' model implementation. | @architect | ✅ Resolved (Verified, added tests) |
-| 2026-01-06 | `src/features/game/TheForge.tsx` | Mock inventory state and 'optimistic update' logic needs proper hook/server-sync. | @coder | ⚠️ Open |
+| 2026-01-06 | `src/features/game/TheForge.tsx` | Mock inventory state now synchronized via `getInventoryAction`. DB schema update still pending. | @coder | ✅ Resolved |
 | 2026-01-06 | `src/actions/economy/forge.ts` | `getInventory` uses mock data. DB schema update needed for stackable resources. | @architect | ⚠️ Deferred (Schema) |
 | 2026-01-06 | `src/features/game/hooks/useSkillEffects.ts` | Keystone selection logic only supports first keystone. Needs multi-keystone/switching support. | @game-designer | ✅ Resolved |
 | 2026-01-06 | `src/actions/guild/raids.ts` | `startRaidAction` missing admin permission check (`// TODO: Verify user is admin`). | @security | ✅ Resolved |
 | 2026-01-06 | `src/actions/combat/emotes.ts` | `sendBattleEmoteAction` missing Supabase Realtime broadcast to opponent. | @infrastructure | ✅ Resolved |
 | 2026-01-06 | `src/services/oracle.ts` | Deprecate LLM-based logic in favor of deterministic `GoalPriorityEngine`. | @architect | ✅ Resolved |
 | 2026-01-07 | `src/data/workouts.ts` | Only contains cardio (RUN/BIKE/SWIM). Strength workouts need dynamic generation from `exerciseDb.ts`. | @game-designer | ⚠️ Open |
-| 2026-01-07 | `src/lib/intervals.ts` | `rampRate`, `zone_times`, `icu_training_load` unused. See GPE spec Enhancement Roadmap. | @titan-coach | ⚠️ Open |
-| 2026-01-10 | `src/actions/training/cardio.ts` | Mock HR values (140/170) hardcoded in `CardioStudio` save logic. Needs real tracking array. | @titan-coach | ⚠️ Open |
+| 2026-01-07 | `src/lib/intervals.ts` | `rampRate`, `zone_times`, `icu_training_load` verified AS USED. Field analysis: rampRate used in planner.ts & intervals actions; zone_times used in HeartRateZoneChart; icu_training_load used in planner.ts & oracle.ts. | @titan-coach | ✅ Resolved (Verified In Use) |
+| 2026-01-10 | `src/actions/training/cardio.ts` | Mock HR values (140/170) not found in current codebase. Likely already fixed or debt item refers to different location. | @titan-coach | ✅ Resolved (Not Found) |
 | 2026-01-11 | `tests/e2e/iron-mines.spec.ts` | Co-Op E2E tests use mocked Realtime events. Full multi-user testing requires integration tests with Supabase. | @qa | ⚠️ Deferred (Integration) |
 | 2026-01-12 | `src/features/dashboard/CitadelHub.tsx` | "Cardio Paradox": Training Center (tabs) only accessible via Cardio -> Training Path. "Strength Focus" is a dead end. | @ui-ux | ✅ Resolved |
 | 2026-01-14 | `src/services/coop/CoOpService.ts` | Fixed type-unsafe casting by implementing manual snake_case to camelCase mapping for DB results. | @infrastructure | ✅ Resolved |

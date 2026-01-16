@@ -93,6 +93,7 @@ export const TrainingCenter: React.FC<TrainingCenterProps> = ({
         <div className="relative z-10">
           <button
             onClick={onClose}
+            aria-label="Go back to Citadel"
             className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors mb-6 group"
           >
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
@@ -348,10 +349,19 @@ const HeroWorkoutCard: React.FC<{
         console.log("[HeroWorkoutCard] Clicked!", workout.name);
         onClick();
       }}
+      role="button"
+      tabIndex={0}
+      aria-label={`Start ${workout.name} workout`}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onClick();
+        }
+      }}
       data-testid={testId}
       whileHover={{ scale: 1.02, y: -4 }}
       whileTap={{ scale: 0.98 }}
-      className="col-span-1 md:col-span-2 lg:col-span-1 bg-zinc-900/40 backdrop-blur-xl border border-magma/30 rounded-2xl p-6 relative overflow-hidden group cursor-pointer hover:shadow-2xl hover:shadow-magma/10 transition-all"
+      className="col-span-1 md:col-span-2 lg:col-span-1 bg-zinc-900/40 backdrop-blur-xl border border-magma/30 rounded-2xl p-6 relative overflow-hidden group cursor-pointer hover:shadow-2xl hover:shadow-magma/10 transition-all focus:outline-none focus:ring-2 focus:ring-magma"
     >
       <div className="absolute inset-0 bg-gradient-to-br from-magma/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
 
@@ -410,9 +420,18 @@ const CompactWorkoutCard: React.FC<{
         show: { opacity: 1, scale: 1 },
       }}
       onClick={onClick}
+      role="button"
+      tabIndex={0}
+      aria-label={`Start ${workout.name} workout`}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onClick();
+        }
+      }}
       data-testid={testId}
       whileHover={{ scale: 1.01, x: 4 }}
-      className="bg-black/20 border border-white/5 rounded-lg p-4 cursor-pointer hover:bg-white/5 hover:border-white/10 transition-colors group flex items-center justify-between"
+      className="bg-black/20 border border-white/5 rounded-lg p-4 cursor-pointer hover:bg-white/5 hover:border-white/10 transition-colors group flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-magma"
     >
       <div className="flex flex-col">
         <h4 className="font-bold text-zinc-200 text-sm group-hover:text-magma transition-colors">
