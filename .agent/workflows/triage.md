@@ -243,16 +243,26 @@ For **P0 blockers**:
 - **Create GitHub Issue immediately:**
 
   ```bash
-  gh issue create --title "[CRITICAL] [Issue Name]" \
+  issue_num=$(gh issue create --title "[CRITICAL] [Issue Name]" \
     --template bug_report.yml \
     --label "priority:critical,bug" \
-    --milestone "v1.1 - Stability Patch" # Critical items always go to current patch
+    --milestone "Season 2 - Competitive" \
+    --json number -q .number)
   
-  # Add to Project #4 and set fields
-  gh project item-add 4 --owner Techlemariam --url <issue-url>
+  # Link to Project with metadata
+  if [ -n "$issue_num" ]; then
+    powershell -ExecutionPolicy Bypass -File .agent/scripts/link-issue-to-project.ps1 \
+      -IssueNumber $issue_num \
+      -Priority "critical" \
+      -Domain "infra" \
+      -Status "backlog"
+    
+    echo "✅ Issue #$issue_num created and linked to Project"
+    
+    # Assign issue
+    gh issue edit $issue_num --add-assignee @me
+  fi
   ```
-
-- Assign issue: `gh issue edit #N --add-assignee @me`
 
 ---
 

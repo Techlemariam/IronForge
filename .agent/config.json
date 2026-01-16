@@ -6,6 +6,9 @@
       "description": "Initialiserar en ny IronForge-modul med full scaffolding."
     }
   ],
+  "github": {
+    "project_config": ".agent/config/github-project.json"
+  },
   "terminalAllowList": {
     "description": "Commands agent can suggest adding to Antigravity allow list",
     "suggestion": "Agent ska föreslå att lägga till kommando här om det körs ofta",

@@ -1,0 +1,48 @@
+{
+    "projectId": "PVT_kwHOAe3KCM4BMt-p",
+    "projectNumber": 4,
+    "owner": "Techlemariam",
+    "fields": {
+        "status": {
+            "id": "PVTSSF_lAHOAe3KCM4BMt-pzg76_fI",
+            "options": {
+                "backlog": "f75ad846",
+                "in_progress": "47fc9ee4",
+                "in_review": "881f842c",
+                "merged_staging": "3ac5a295",
+                "done": "98236657"
+            }
+        },
+        "priority": {
+            "id": "PVTSSF_lAHOAe3KCM4BMt-pzg77AGY",
+            "options": {
+                "critical": "c5fbed17",
+                "high": "fd1199fc",
+                "medium": "6dcde45d",
+                "low": "3e471d1e"
+            }
+        },
+        "effort": {
+            "id": "PVTSSF_lAHOAe3KCM4BMt-pzg77APU",
+            "options": {
+                "S": "8ebb9e75",
+                "M": "a9c74091",
+                "L": "d84ead2c",
+                "XL": "c375a38a"
+            }
+        },
+        "domain": {
+            "id": "PVTSSF_lAHOAe3KCM4BMt-pzg77Bqw",
+            "options": {
+                "game": "9afec929",
+                "infra": "8ac6d178",
+                "bio": "49759843",
+                "social": "3677609a",
+                "commerce": "ebbda65c"
+            }
+        },
+        "roi": {
+            "id": "PVTF_lAHOAe3KCM4BMt-pzg77AMw"
+        }
+    }
+}

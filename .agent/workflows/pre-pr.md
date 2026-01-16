@@ -131,18 +131,15 @@ echo "✅ Pushed to origin/$current_branch"
 
 ### 4.1 Create Pull Request
 
-```bash
-gh pr create --web
-```
-
-Or with auto-fill and **issue linking**:
+// turbo
 
 ```bash
-# Find related issue from branch name (e.g., feat/R-03-cardio-duels → #80)
-issue_num=$(gh issue list --search "$(git branch --show-current | sed 's/.*\///')" --json number -q '.[0].number')
+# Auto-create PR with metadata
+current_branch=$(git rev-parse --abbrev-ref HEAD)
+issue_num=$(gh issue list --search "$(echo $current_branch | sed 's/.*\///')" --json number -q '.[0].number')
 
-gh pr create \
-  --title "[$(git rev-parse --abbrev-ref HEAD | cut -d'/' -f1)] $(git log -1 --pretty=%s)" \
+pr_url=$(gh pr create \
+  --title "[$(echo $current_branch | cut -d'/' -f1)] $(git log -1 --pretty=%s)" \
   --body "## Summary
 
 $(git log origin/main..HEAD --oneline)
@@ -151,11 +148,31 @@ $(git log origin/main..HEAD --oneline)
 ${issue_num:+Closes #$issue_num}
 
 ## Verification
-- [ ] Gatekeeper passed locally
+- [x] Gatekeeper passed locally
 - [ ] CI checks pending
 " \
-  --draft
+  --draft --json url -q .url)
+
+if [ $? -ne 0 ]; then
+  echo "⛔ PR creation failed"
+  exit 1
+fi
+
+echo "✅ PR created: $pr_url"
+
+# Link PR to Project and set Status = In Review
+echo "⏳ Linking PR to GitHub Project..."
+powershell -ExecutionPolicy Bypass -File .agent/scripts/link-pr-to-project.ps1
+
+if [ $? -eq 0 ]; then
+  echo "✅ PR linked to Project Board (Status: In Review)"
+else
+  echo "⚠️  PR created but Project linking failed (link manually or retry)"
+fi
 ```
+
+> [!TIP]
+> The PR is automatically linked to Project #4 with Status = "In Review".
 
 ---
 

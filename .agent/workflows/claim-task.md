@@ -123,10 +123,9 @@ gh issue list --search "[task-description]" --json number,title
 # Assign to self and move to In Progress
 gh issue edit #N --add-assignee @me
 
-# Move to "In Progress" in Project #4
-gh project item-edit --project-id PVT_kwHOAe3KCM4BMt-p --id <ITEM_ID> \
-  --field-id PVTSSF_lAHOAe3KCM4BMt-pzg76_fI \
-  --single-select-option-id 47fc9ee4
+# Link to Project and set Status = In Progress
+powershell -ExecutionPolicy Bypass -File .agent/scripts/link-issue-to-project.ps1 \
+  -IssueNumber $N -Status "in_progress"
 ```
 
 **Also update roadmap.md for visibility:**
