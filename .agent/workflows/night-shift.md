@@ -4,7 +4,7 @@ description: "Autonomous nightly maintenance workflow"
 command: "/night-shift"
 category: "meta"
 trigger: "manual"
-version: "2.3.0"
+version: "2.4.0"
 telemetry: "enabled"
 primary_agent: "@manager"
 domain: "meta"
@@ -123,15 +123,26 @@ fi
 # 2.3 Conservative debt attack with retry
 DEBT_RESULT="None"
 if [ "$SKIP_DEBT" != "true" ]; then
-  for attempt in 1 2 3; do
-    if /debt-attack 1 --strict 2>&1 | tee -a "$LOG"; then
-      DEBT_RESULT="$(grep -oP 'Fixed: \K.*' "$LOG" | tail -1)"
-      break
-    else
-      echo "⚠️ Debt attack attempt $attempt failed, retrying..." >> "$LOG"
-      sleep 5
-    fi
-  done
+  # CRITICAL: Check for conflicting PRs/branches before debt attack
+  echo "🔍 Checking for conflicting work on debt items..." >> "$LOG"
+  
+  DEBT_CONFLICTS=$(gh pr list --state open --json number,files --jq '[.[] | select(.files[] | .path | contains("DEBT.md") or contains("src/"))] | length')
+  
+  if [ "$DEBT_CONFLICTS" -gt 0 ]; then
+    echo "⏭️ Skipping debt attack - active work detected ($DEBT_CONFLICTS open PRs)" >> "$LOG"
+    DEBT_RESULT="Skipped (conflicts detected)"
+  else
+    # Safe to proceed - run debt attack with retry logic
+    for attempt in 1 2 3; do
+      if /debt-attack 1 --strict 2>&1 | tee -a "$LOG"; then
+        DEBT_RESULT="$(grep -oP 'Fixed: \K.*' "$LOG" | tail -1)"
+        break
+      else
+        echo "⚠️ Debt attack attempt $attempt failed, retrying..." >> "$LOG"
+        sleep 5
+      fi
+    done
+  fi
 fi
 ```
 
@@ -292,6 +303,14 @@ echo "🌙 Night Shift v2.3 cycle complete."
 ---
 
 ## Version History
+
+### 2.4.0 (2026-01-16)
+
+- **Enhanced Debt Attack Safety**: Adds PR/branch conflict detection before running `/debt-attack`.
+  - Checks for open PRs modifying `DEBT.md` or `src/` files
+  - Skips debt attack if conflicts detected (conservative approach)
+  - Logs conflict details for morning review
+- **Conservative by Design**: Night-shift now prefers safety over completion.
 
 ### 2.3.0 (2026-01-15)
 
