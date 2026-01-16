@@ -44,6 +44,11 @@ domain: "meta"
    gh project item-edit ... --field-id STATUS --single-select-option-id "In Progress"
    ```
 
+4. **Spec Check**:
+   - Check if `specs/[feature-name].md` exists
+   - If missing, run `/spec [feature-name]` to generate it
+   - Link spec in roadmap and GitHub Issue if not already linked
+
 ### Phase 1: Discovery (ANALYST)
 
 1. Call `/analyst` persona.

@@ -88,8 +88,13 @@ gh project item-add 4 --owner Techlemariam --url <issue-url>
 ```markdown
 ## 📋 Backlog (Ready for Analysis)
 
-- [ ] [Idea Title] ([#N](url)) <!-- status: pending | priority: X | effort: Y | impact: Z | source: user -->
+- [ ] [Idea Title] ([#N](https://github.com/Techlemariam/IronForge/issues/N)) <!-- status: pending | priority: X | effort: Y | impact: Z | source: user -->
 ```
+
+**For High ROI (≥ 2.0) ideas, generate spec:**
+
+- Run `/spec [idea-name]` to create initial specification
+- Link spec in roadmap and GitHub Issue
 
 ## 4. Output
 
