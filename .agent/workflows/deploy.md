@@ -38,6 +38,31 @@ domain: "infra"
 1. **Revert PR:** GitHub Revert on `main` triggers an auto-deploy of the previous state.
 2. **Manual Override:** Vercel Dashboard -> Rollback to previous deployment for instant recovery.
 
+---
+
+## 📊 Post-Deploy: Update Project Status
+
+After successful production deployment, update linked issues to "Done":
+
+```bash
+# Find merged PR number from the deploy
+MERGED_PR=$(gh pr list --state merged --base main --limit 1 --json number -q '.[0].number')
+
+if [ -n "$MERGED_PR" ]; then
+  # Get linked issue from PR body
+  LINKED_ISSUE=$(gh pr view $MERGED_PR --json body -q '.body' | \
+    grep -oP '(?:Closes|Fixes|Resolves)\s+#\K\d+' | head -1)
+  
+  if [ -n "$LINKED_ISSUE" ]; then
+    echo "✅ Updating issue #$LINKED_ISSUE to Done"
+    powershell -ExecutionPolicy Bypass -File .agent/scripts/link-issue-to-project.ps1 \
+      -IssueNumber $LINKED_ISSUE -Status "done"
+  fi
+fi
+```
+
+> **Note:** This is also handled automatically by the `project-automation.yml` GitHub Action on PR merge.
+
 ## Version History
 
 ### 1.1.0 (2026-01-14)

@@ -1,1 +1,0 @@
-{ user(login: "Techlemariam") { projectV2(number: 4) { id items(first: 20) { nodes { id content { ... on Issue { number } } } } } } }
