@@ -74,6 +74,13 @@ elif [ "$behind" -gt 0 ]; then
 else
   echo "✅ Already up-to-date with main."
 fi
+
+# Phantom commit check (References /git-hygiene)
+merge_count=$(git log --oneline -10 2>/dev/null | grep -cE "Merge branch '(main|master)'" || echo "0")
+if [ "$merge_count" -gt 3 ]; then
+  echo "⚠️ WARNING: Merge-loop detected ($merge_count merge commits)"
+  echo "   Consider: /git-hygiene for cleanup before PR"
+fi
 ```
 
 ---

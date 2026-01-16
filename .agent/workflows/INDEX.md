@@ -57,16 +57,17 @@ graph TD
 
 Tools for keeping the codebase healthy and clean.
 
-| Script | Purpose | When to use |
-| :--- | :--- | :--- |
-| `/polish` | **Code Cleanup** | After writing code, before PR. Fixes lint/formatting. |
-| `/perf` | **Performance** | When optimizing bundle size or vitals. |
-| `/monitor-debt` | **Debt Scanner** | To identify areas needing refactoring in `DEBT.md`. |
-| `/debt-attack` | **Debt Destroyer** | Autonomous loop to fix one targeted debt item. |
-| `/cleanup` | **Housekeeping** | General project hygiene (logs, tmp files). |
-| `/night-shift` | **Nightly Job** | **(Auto)** Runs /triage, /perf, /evolve, /audit while you sleep. |
-| `/evolve` | **System Evolve** | Optimizes tokens and archives unused workflows. |
-| `/switch-branch` | **Context Switch** | Safely switch branches without losing context. |
+| Script          | Purpose              | When to use                                            |
+| :-------------- | :------------------- | :----------------------------------------------------- |
+| `/git-hygiene`  | **Git Doctor**       | Diagnose merge-loops, stale branches, phantom commits. |
+| `/polish`       | **Code Cleanup**     | After writing code, before PR. Fixes lint/formatting.  |
+| `/perf`         | **Performance**      | When optimizing bundle size or vitals.                 |
+| `/monitor-debt` | **Debt Scanner**     | To identify areas needing refactoring in `DEBT.md`.    |
+| `/debt-attack`  | **Debt Destroyer**   | Autonomous loop to fix one targeted debt item.         |
+| `/cleanup`      | **Housekeeping**     | General project hygiene (logs, tmp files).             |
+| `/night-shift`  | **Nightly Job**      | **(Auto)** Runs /triage, /perf, /evolve while asleep.  |
+| `/evolve`       | **System Evolve**    | Optimizes tokens and archives unused workflows.        |
+| `/switch-branch`| **Context Switch**   | Safely switch branches without losing context.         |
 
 ---
 

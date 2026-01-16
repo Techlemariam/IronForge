@@ -263,17 +263,23 @@ fi
 echo "🔙 Returning to $CURRENT_BRANCH" >> "$LOG"
 git checkout "$CURRENT_BRANCH"
 
-# Git Hygiene: Prune merged branches (except main, current, and night-shift)
+# Git Hygiene: Full cleanup (References /git-hygiene workflow)
 echo "🧹 Running Git Hygiene..." >> "$LOG"
-git fetch -p
-# Note: xargs -r is GNU specific, using standard if check
-MERGED_BRANCHES=$(git branch --merged main | grep -vE "^\*|main|night-shift")
-if [ -n "$MERGED_BRANCHES" ]; then
-  echo "$MERGED_BRANCHES" | xargs git branch -d
-  echo "Deleted merged branches:" >> "$LOG"
-  echo "$MERGED_BRANCHES" >> "$LOG"
-else
-  echo "No merged branches to clean." >> "$LOG"
+git fetch origin --prune
+
+# Merge-loop check
+merge_count=$(git log --oneline -10 2>/dev/null | grep -cE "Merge branch '(main|master)'" || echo "0")
+if [ "$merge_count" -gt 3 ]; then
+  echo "⚠️ Merge-loop detected ($merge_count commits)" >> "$LOG"
+fi
+
+# Stale branch cleanup (aggressive for night-shift)
+STALE_BRANCHES=$(git branch | grep -vE "^\*|main|night-shift" | tr -d ' ')
+if [ -n "$STALE_BRANCHES" ]; then
+  echo "🗑️ Cleaning stale branches:" >> "$LOG"
+  for branch in $STALE_BRANCHES; do
+    git branch -D "$branch" 2>/dev/null && echo "   Deleted: $branch" >> "$LOG"
+  done
 fi
 
 # Archive logs
