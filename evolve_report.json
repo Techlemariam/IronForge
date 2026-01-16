@@ -1,0 +1,30 @@
+{
+  "@google/genai": {
+    "current": "1.36.0",
+    "wanted": "1.37.0",
+    "latest": "1.37.0",
+    "dependent": "IronForge",
+    "location": "C:\\Users\\alexa\\Workspaces\\IronForge\\node_modules\\@google\\genai"
+  },
+  "@mediapipe/tasks-vision": {
+    "current": "0.10.21",
+    "wanted": "0.10.21",
+    "latest": "0.10.22-rc.20250304",
+    "dependent": "IronForge",
+    "location": "C:\\Users\\alexa\\Workspaces\\IronForge\\node_modules\\@mediapipe\\tasks-vision"
+  },
+  "@types/node": {
+    "current": "25.0.8",
+    "wanted": "25.0.9",
+    "latest": "25.0.9",
+    "dependent": "IronForge",
+    "location": "C:\\Users\\alexa\\Workspaces\\IronForge\\node_modules\\@types\\node"
+  },
+  "vercel": {
+    "current": "50.4.0",
+    "wanted": "50.4.4",
+    "latest": "50.4.4",
+    "dependent": "IronForge",
+    "location": "C:\\Users\\alexa\\Workspaces\\IronForge\\node_modules\\vercel"
+  }
+}
