@@ -1,0 +1,109 @@
+name: 🐛 Bug Report
+description: Report a bug (agent-optimized for debugging)
+title: "[BUG] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Bug Report
+        Provide enough context for agents to reproduce and fix.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 🐛 Bug Description
+      description: Clear description of what's broken
+      placeholder: |
+        The Iron Mines co-op session crashes when...
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: 📝 Steps to Reproduce
+      description: Exact steps to trigger the bug
+      placeholder: |
+        1. Go to Iron Mines
+        2. Start co-op session
+        3. Click on partner's avatar
+        4. Observe crash
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: ✅ Expected Behavior
+      description: What should happen instead
+      placeholder: |
+        Partner profile modal should open
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: ❌ Actual Behavior
+      description: What actually happens
+      placeholder: |
+        App crashes with "TypeError: Cannot read property 'id' of undefined"
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 📋 Error Logs
+      description: Console errors, stack traces, Sentry links
+      render: shell
+      placeholder: |
+        TypeError: Cannot read property 'id' of undefined
+          at PartnerProfile (src/components/coop/PartnerProfile.tsx:42)
+          at renderWithHooks (react-dom.development.js:1234)
+
+  - type: textarea
+    id: context
+    attributes:
+      label: 🔍 Debug Context
+      description: Browser, device, user state, feature flags
+      placeholder: |
+        - Browser: Chrome 120
+        - Device: Desktop
+        - User: Logged in, has active co-op session
+        - Feature flags: COOP_V2=true
+
+  - type: textarea
+    id: files
+    attributes:
+      label: 📁 Suspected Files
+      description: Where you think the bug is (helps agents start)
+      placeholder: |
+        - `src/components/coop/PartnerProfile.tsx` (line 42)
+        - `src/hooks/useCoopSession.ts`
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options:
+        - critical (production down)
+        - high (major feature broken)
+        - medium (workaround exists)
+        - low (cosmetic)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: domain
+    attributes:
+      label: Domain
+      options:
+        - Game
+        - Infra
+        - Bio
+        - Social
+        - Commerce
+    validations:
+      required: true
