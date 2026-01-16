@@ -70,13 +70,16 @@
 | 2026-01-06 | `src/actions/guild/raids.ts` | `startRaidAction` missing admin permission check (`// TODO: Verify user is admin`). | @security | ✅ Resolved |
 | 2026-01-06 | `src/actions/combat/emotes.ts` | `sendBattleEmoteAction` missing Supabase Realtime broadcast to opponent. | @infrastructure | ✅ Resolved |
 | 2026-01-06 | `src/services/oracle.ts` | Deprecate LLM-based logic in favor of deterministic `GoalPriorityEngine`. | @architect | ✅ Resolved |
-| 2026-01-07 | `src/data/workouts.ts` | Only contains cardio (RUN/BIKE/SWIM). Strength workouts need dynamic generation from `exerciseDb.ts`. | @game-designer | ⚠️ Open |
+| 2026-01-07 | `src/data/workouts.ts` | Dynamic strength workout generation implemented via template generator and `exerciseDb`. | @game-designer | ✅ Resolved |
 | 2026-01-07 | `src/lib/intervals.ts` | `rampRate`, `zone_times`, `icu_training_load` verified AS USED. Field analysis: rampRate used in planner.ts & intervals actions; zone_times used in HeartRateZoneChart; icu_training_load used in planner.ts & oracle.ts. | @titan-coach | ✅ Resolved (Verified In Use) |
 | 2026-01-10 | `src/actions/training/cardio.ts` | Mock HR values (140/170) not found in current codebase. Likely already fixed or debt item refers to different location. | @titan-coach | ✅ Resolved (Not Found) |
 | 2026-01-11 | `tests/e2e/iron-mines.spec.ts` | Co-Op E2E tests use mocked Realtime events. Full multi-user testing requires integration tests with Supabase. | @qa | ⚠️ Deferred (Integration) |
 | 2026-01-12 | `src/features/dashboard/CitadelHub.tsx` | "Cardio Paradox": Training Center (tabs) only accessible via Cardio -> Training Path. "Strength Focus" is a dead end. | @ui-ux | ✅ Resolved |
 | 2026-01-14 | `src/services/coop/CoOpService.ts` | Fixed type-unsafe casting by implementing manual snake_case to camelCase mapping for DB results. | @infrastructure | ✅ Resolved |
 | 2026-01-14 | `prisma/schema.prisma` | DB Drift: `active_sessions` table exists in DB but not in migration history. Requires reset. | @infrastructure | ✅ Resolved |
+| 2026-01-16 | `src/services/TerritoryControlService.ts` | P2 Implemented batch calculation logic for influence points in getMapState. | @game-designer | ✅ Resolved |
+| 2026-01-16 | `src/services/planner.ts` | P4 Type Safety: `any` casts removed. Mapped Prisma types to internal `ExerciseLog`. | @coder | ✅ Resolved |
+| 2026-01-16 | `src/lib/territory/tileUtils.ts` | P4 Type Safety: `any` usage replaced with strict GeoJSON types. | @coder | ✅ Resolved |
 
 ---
 

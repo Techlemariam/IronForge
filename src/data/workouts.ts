@@ -1,6 +1,8 @@
 import { WorkoutDefinition } from "../types/training";
+import { generateStrengthWorkouts } from "./workouts/generator";
 
 export const WORKOUT_LIBRARY: WorkoutDefinition[] = [
+  ...generateStrengthWorkouts(),
   {
     id: "strength_test_e2e",
     code: "STR_E2E",

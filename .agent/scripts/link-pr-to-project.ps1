@@ -110,34 +110,25 @@ try {
 
     Write-Host "✓ PR URL: $prUrl" -ForegroundColor Green
 
-    # Add PR to Project
-    Write-Host "`n⏳ Adding PR to Project..." -ForegroundColor Yellow
-    $addResult = gh project item-add $config.projectNumber --owner $config.owner --url $prUrl 2>&1
+    # Get PR Node ID (global ID)
+    $prNodeId = gh pr view $pr --json id -q .id
+    if (-not $prNodeId) {
+        throw "Failed to get Global ID for PR #$pr"
+    }
+
+    # Add PR to Project using GraphQL (bypass owner resolution issues)
+    Write-Host "`n⏳ Adding PR to Project (GraphQL)..." -ForegroundColor Yellow
+    
+    $query = 'mutation($project:ID!, $item:ID!) { addProjectV2ItemById(input: {projectId: $project, contentId: $item}) { item { id } } }'
+    $addResultJson = gh api graphql -f query=$query -f project=$($config.projectId) -f item=$prNodeId 2>&1
     
     if ($LASTEXITCODE -ne 0) {
-        # Check if already added
-        if ($addResult -match "already exists") {
-            Write-Host "⚠️  PR already in Project (skipping add)" -ForegroundColor Yellow
-        }
-        else {
-            throw "Failed to add PR to Project: $addResult"
-        }
+        throw "Failed to add PR to Project via GraphQL: $addResultJson"
     }
-    else {
-        Write-Host "✓ PR added to Project" -ForegroundColor Green
-    }
+    
+    $itemId = ($addResultJson | ConvertFrom-Json).data.addProjectV2ItemById.item.id
+    Write-Host "✓ PR added to Project. Item ID: $itemId" -ForegroundColor Green
 
-    # Get item ID
-    Write-Host "`n⏳ Fetching Project item ID..." -ForegroundColor Yellow
-    $itemsJson = gh project item-list $config.projectNumber --owner $config.owner --format json --limit 100 | ConvertFrom-Json
-    $item = $itemsJson.items | Where-Object { $_.content.number -eq $pr } | Select-Object -First 1
-
-    if (-not $item) {
-        throw "Could not find PR #$pr in Project items"
-    }
-
-    $itemId = $item.id
-    Write-Host "✓ Item ID: $itemId" -ForegroundColor Green
 
     # Set Status
     $statusField = $config.fields.status

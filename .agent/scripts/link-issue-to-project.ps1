@@ -162,33 +162,25 @@ try {
 
     Write-Host "✓ Issue URL: $issueUrl" -ForegroundColor Green
 
-    # Add Issue to Project
-    Write-Host "`n⏳ Adding Issue to Project..." -ForegroundColor Yellow
-    $addResult = gh project item-add $config.projectNumber --owner $config.owner --url $issueUrl 2>&1
+    # Get Issue Node ID (global ID)
+    $issueNodeId = gh issue view $IssueNumber --json id -q .id
+    if (-not $issueNodeId) {
+        throw "Failed to get Global ID for issue #$IssueNumber"
+    }
+
+    # Add Issue to Project using GraphQL (bypass owner resolution issues)
+    Write-Host "`n⏳ Adding Issue to Project (GraphQL)..." -ForegroundColor Yellow
+    
+    $query = 'mutation($project:ID!, $item:ID!) { addProjectV2ItemById(input: {projectId: $project, contentId: $item}) { item { id } } }'
+    $addResultJson = gh api graphql -f query=$query -f project=$($config.projectId) -f item=$issueNodeId 2>&1
     
     if ($LASTEXITCODE -ne 0) {
-        if ($addResult -match "already exists") {
-            Write-Host "⚠️  Issue already in Project (skipping add)" -ForegroundColor Yellow
-        }
-        else {
-            throw "Failed to add issue to Project: $addResult"
-        }
+        throw "Failed to add issue to Project via GraphQL: $addResultJson"
     }
-    else {
-        Write-Host "✓ Issue added to Project" -ForegroundColor Green
-    }
+    
+    $itemId = ($addResultJson | ConvertFrom-Json).data.addProjectV2ItemById.item.id
+    Write-Host "✓ Issue added to Project. Item ID: $itemId" -ForegroundColor Green
 
-    # Get item ID
-    Write-Host "`n⏳ Fetching Project item ID..." -ForegroundColor Yellow
-    $itemsJson = gh project item-list $config.projectNumber --owner $config.owner --format json --limit 100 | ConvertFrom-Json
-    $item = $itemsJson.items | Where-Object { $_.content.number -eq $IssueNumber } | Select-Object -First 1
-
-    if (-not $item) {
-        throw "Could not find issue #$IssueNumber in Project items"
-    }
-
-    $itemId = $item.id
-    Write-Host "✓ Item ID: $itemId" -ForegroundColor Green
 
     # Update fields
     $updates = @()
