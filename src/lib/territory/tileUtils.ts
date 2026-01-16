@@ -13,6 +13,7 @@ import {
     UNITS,
     cellToBoundary,
 } from "h3-js";
+import { Feature, FeatureCollection, Polygon, GeoJsonProperties } from "geojson";
 
 /** H3 resolution for territory tiles (~200m hexagons) */
 export const H3_RESOLUTION = 8;
@@ -160,7 +161,10 @@ export function countConnectedTiles(
 /**
  * Convert a tile ID to a GeoJSON Feature
  */
-export function tileToGeoJson(tileId: string, properties: any = {}): any {
+export function tileToGeoJson<P extends GeoJsonProperties = GeoJsonProperties>(
+    tileId: string,
+    properties: P = {} as P
+): Feature<Polygon, P> {
     const boundary = cellToBoundary(tileId);
     // H3 returns [lat, lng], GeoJSON needs [lng, lat]
     const coordinates = boundary.map(([lat, lng]) => [lng, lat]);
@@ -184,9 +188,9 @@ export function tileToGeoJson(tileId: string, properties: any = {}): any {
 /**
  * Convert multiple tiles to a GeoJSON FeatureCollection
  */
-export function tilesToGeoJsonFeatureCollection(
-    tiles: Array<{ id: string; properties?: any }>
-): any {
+export function tilesToGeoJsonFeatureCollection<P extends GeoJsonProperties = GeoJsonProperties>(
+    tiles: Array<{ id: string; properties?: P }>
+): FeatureCollection<Polygon, P> {
     return {
         type: "FeatureCollection",
         features: tiles.map((t) => tileToGeoJson(t.id, t.properties)),
