@@ -30,7 +30,7 @@ export default function StravaUpload() {
         setUploadStatus("error");
         toast.error(result.error || "Upload failed");
       }
-    } catch (error) {
+    } catch {
       setUploadStatus("error");
       toast.error("An unexpected error occurred");
     } finally {

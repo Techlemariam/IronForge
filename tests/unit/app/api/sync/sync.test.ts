@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { POST } from "@/app/api/sync/logs/route";
-import { NextResponse } from "next/server";
+
 
 // Mocks
 vi.mock("@/services/server/UserService", () => ({

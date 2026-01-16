@@ -11,7 +11,7 @@ import { useRestTimer } from "@/hooks/useRestTimer";
 import { useSetHistory } from "@/features/strength/hooks/useSetHistory";
 import { ExerciseProgressChart } from "@/components/charts/ExerciseProgressChart";
 import { getExerciseHistory } from "@/features/strength/actions/history";
-import { LineChart, BarChart2 } from "lucide-react";
+import { BarChart2 } from "lucide-react";
 import PRBadge from "@/components/ui/PRBadge";
 import { useMaxReps } from "@/hooks/useMaxReps";
 
@@ -52,7 +52,7 @@ const ExerciseView: React.FC<ExerciseViewProps> = ({
   );
 
   // Pre-fill history
-  const { history } = useSetHistory(exercise.id, exercise.name);
+  const { history: _history } = useSetHistory(exercise.id, exercise.name);
   const [showHistory, setShowHistory] = useState(false);
   const [chartData, setChartData] = useState<any[]>([]);
   const [isChartLoading, setIsChartLoading] = useState(false);
@@ -68,7 +68,7 @@ const ExerciseView: React.FC<ExerciseViewProps> = ({
 
   // Gestures
   const x = useMotionValue(0);
-  const opacity = useTransform(x, [0, 100], [1, 0]);
+  // const opacity = useTransform(x, [0, 100], [1, 0]);
   const bg = useTransform(x, [0, 100], ["rgba(0,0,0,0)", "rgba(34, 197, 94, 0.2)"]); // Green tint on swipe right
 
   const handleDragEnd = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {

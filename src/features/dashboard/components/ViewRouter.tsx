@@ -4,14 +4,13 @@ import React from "react";
 import dynamic from "next/dynamic";
 import { ArrowLeft } from "lucide-react";
 import { toast } from "@/components/ui/GameToast";
-import { DashboardState, DashboardAction, View } from "../types";
+import { DashboardState, DashboardAction } from "../types";
 import { TitanState } from "@/actions/titan/core";
 import { User } from "@prisma/client";
 import { mapQuestToSession } from "@/utils/typeMappers";
 import { mapDefinitionToSession } from "@/utils/workoutMapper";
 
 // Static imports for lightweight components
-import { CitadelHub } from "@/features/dashboard/CitadelHub";
 import StravaUpload from "@/features/training/components/strava/StravaUpload";
 import { StrengthContainer } from "@/features/strength/StrengthContainer";
 import { ProgramBuilder } from "@/features/training/ProgramBuilder";

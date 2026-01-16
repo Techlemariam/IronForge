@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Challenge, UserChallenge, ChallengeType } from "@prisma/client";
+import { Challenge, UserChallenge } from "@prisma/client";
 import { ChallengeRewards, claimChallengeAction } from "@/actions/systems/challenges";
 import { Scroll, Trophy, Zap, Coins, CheckCircle, Lock } from "lucide-react";
 import { playSound } from "@/utils";

@@ -215,8 +215,8 @@ export async function getDailyQuestsAction(
  */
 export async function updateQuestProgressAction(
   _userId: string,
-  questType: QuestType,
-  amount: number,
+  _questType: QuestType,
+  _amount: number,
 ): Promise<{ questsUpdated: number; questsCompleted: string[] }> {
   // No-op, logic moved to challengeService
   return { questsUpdated: 0, questsCompleted: [] };

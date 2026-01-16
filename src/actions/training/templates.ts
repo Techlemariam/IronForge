@@ -1,6 +1,5 @@
 "use server";
 
-import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
@@ -225,7 +224,7 @@ export async function deleteWorkoutTemplateAction(
 export async function duplicateTemplateAction(
   userId: string,
   templateId: string,
-  newName: string,
+  _newName: string,
 ): Promise<{ success: boolean; newTemplateId?: string }> {
   try {
     const newTemplateId = `template-${userId}-${Date.now()}`;

@@ -5,7 +5,6 @@ import {
   BlockType,
   Exercise,
   ExerciseLogic,
-  Set,
 } from "@/types";
 import {
   Plus,
@@ -16,7 +15,6 @@ import {
   ChevronUp,
   ChevronDown,
 } from "lucide-react";
-import { StorageService } from "@/services/storage";
 
 interface DungeonBuilderProps {
   onSave: (session: Session) => void;

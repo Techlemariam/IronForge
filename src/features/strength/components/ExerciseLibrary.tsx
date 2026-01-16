@@ -1,6 +1,5 @@
 import React, { useState, useMemo } from "react";
-import { Search, Filter, Plus, Dumbbell, ChevronRight } from "lucide-react";
-import { Exercise } from "@/types";
+import { Search, Plus, Dumbbell, ChevronRight } from "lucide-react";
 
 interface ExerciseLibraryProps {
   onSelect: (exerciseId: string) => void;

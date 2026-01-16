@@ -1,7 +1,6 @@
 import QuickLogSession from "@/components/logger/QuickLogSession";
 import { Metadata } from "next";
-import { ArrowLeft } from "lucide-react";
-import Link from "next/link";
+
 import { getActiveCombatSession } from "@/actions/combat/core";
 
 export const metadata: Metadata = {

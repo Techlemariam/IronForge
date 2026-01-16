@@ -80,7 +80,7 @@ export const detectSpecialMove = (
 export const detectJokerOpportunity = (
   rpe: number,
   setIndex: number,
-  totalSets: number,
+  _totalSets: number,
 ): boolean => {
   // Only offer on final sets or heavy sets that felt too light
   // Currently simple logic: if it felt easy (RPE < 7) on a working set

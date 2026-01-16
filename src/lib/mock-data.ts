@@ -2,9 +2,6 @@ import {
   IntervalsWellness,
   IntervalsActivity,
   IntervalsEvent,
-  Block,
-  BlockType,
-  ExerciseLogic,
 } from "@/types";
 import { HevyWorkout } from "@/types/hevy";
 

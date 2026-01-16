@@ -171,7 +171,7 @@ export function validateBackupFile(content: string): {
       return { valid: false, error: "Invalid workoutHistory" };
 
     return { valid: true };
-  } catch (e) {
+  } catch {
     return { valid: false, error: "Invalid JSON format" };
   }
 }

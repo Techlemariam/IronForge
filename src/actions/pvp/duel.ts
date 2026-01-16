@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { createClient } from "@/utils/supabase/server";
 
-const DuelChallengeSchema = z.object({
+const _DuelChallengeSchema = z.object({
   targetUserId: z.string(),
   duelType: z.string().optional().default("TITAN_VS_TITAN"),
   activityType: z.string().optional(),

@@ -7,7 +7,6 @@ import {
   TrendingUp,
   Shield,
   Lock,
-  CheckCircle2,
   Info,
 } from "lucide-react";
 import { cn } from "../../lib/utils";

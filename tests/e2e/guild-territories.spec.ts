@@ -59,7 +59,7 @@ test.describe('Guild Territories Feature', () => {
             await page.waitForTimeout(1000);
 
             // Check for any territory/bonus indicators
-            const territoryInfo = page.getByText(/territory|bonus|control/i);
+            const _territoryInfo = page.getByText(/territory|bonus|control/i);
             // This is informational - may not always be present
         }
     });

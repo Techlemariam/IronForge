@@ -77,7 +77,7 @@ export const TvMode: React.FC<TvModeProps> = ({
   ftp = 200,
   userId,
   pocketCastsConnected,
-  streak: initialStreak = 0,
+  streak: _initialStreak = 0,
   maxHr = 190,
 }) => {
   // Hooks

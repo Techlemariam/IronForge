@@ -1,5 +1,4 @@
 import prisma from "@/lib/prisma";
-import { TerritoryType } from "@prisma/client";
 
 export const CONTEST_COST_GOLD = 1000;
 

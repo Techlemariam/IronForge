@@ -3,9 +3,9 @@ import { prisma } from "@/lib/prisma";
 
 // Scoring formula based on titan_duels.md analysis
 function calculateDuelScore(
-  userId: string,
-  startDate: Date,
-  endDate: Date,
+  _userId: string,
+  _startDate: Date,
+  _endDate: Date,
 ): Promise<number> {
   // This would aggregate:
   // - workoutCount * 50

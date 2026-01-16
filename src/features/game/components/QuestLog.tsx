@@ -8,7 +8,6 @@ import {
   Star,
   Sparkles,
   Hammer,
-  CheckCircle2,
   ChevronRight,
 } from "lucide-react";
 
@@ -23,7 +22,7 @@ type ActFilter = "ACT_I" | "ACT_II" | "ACT_III";
 
 const QuestLog: React.FC<QuestLogProps> = ({
   sessions,
-  history,
+  // history,
   onSelectSession,
   level,
 }) => {

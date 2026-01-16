@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { auditMobility, MobilityAuditReport } from '@/services/MobilityAuditor';
+import { auditMobility } from '@/services/MobilityAuditor';
 import { MOBILITY_EXERCISES } from '@/data/mobilityExercises';
 
 describe('MobilityAuditor', () => {

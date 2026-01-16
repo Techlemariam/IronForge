@@ -1,6 +1,5 @@
 "use server";
 
-import { prisma } from "@/lib/prisma";
 import { checkOvertrainingStatusAction } from "@/actions/training/overtraining";
 
 /**

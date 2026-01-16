@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Activity,
   Battery,
   ShieldAlert,
-  CheckCircle2,
   Moon,
-  Lock,
   RefreshCw,
   Zap,
   Wifi,
@@ -54,7 +52,7 @@ const PreWorkoutCheck: React.FC<PreWorkoutCheckProps> = ({
 
     try {
       // Use StorageService to get settings (Async)
-      const settings = await StorageService.getState<AppSettings>("settings");
+      await StorageService.getState<AppSettings>("settings");
 
       if (navigator.onLine) {
         const today = new Date().toISOString().split("T")[0];

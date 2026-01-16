@@ -2,8 +2,6 @@ import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Bluetooth, Heart, Zap, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useBluetoothHeartRate } from "@/features/bio/hooks/useBluetoothHeartRate";
-import { useBluetoothPower } from "@/features/bio/hooks/useBluetoothPower";
 
 interface SensorManagerProps {
   isOpen: boolean;

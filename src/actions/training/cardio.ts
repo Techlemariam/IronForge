@@ -53,7 +53,7 @@ export async function saveCardioSessionAction(userId: string, data: CardioSessio
         const goldEarned = Math.floor(totalXp * 0.2); // 20% of XP as Gold
 
         // 3. Save Log
-        const log = await prisma.exerciseLog.create({
+        const _log = await prisma.exerciseLog.create({
             data: {
                 userId,
                 exerciseId: exercise.id,

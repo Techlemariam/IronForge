@@ -12,12 +12,9 @@ import React, {
   useCallback,
 } from "react";
 import {
-  SKILL_TREE_V2,
   getNodeById,
-  countUnlockedNotables,
 } from "../data/skill-tree-v2";
 import {
-  SkillNodeV2,
   CalculatedEffects,
   SkillStatus,
   SkillRequirement,

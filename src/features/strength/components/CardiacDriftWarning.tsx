@@ -1,5 +1,5 @@
 import React from "react";
-import { AlertTriangle, Zap } from "lucide-react";
+import { Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface CardiacDriftProps {

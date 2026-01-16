@@ -22,8 +22,7 @@ import {
     PlayerIdentity
 } from "@/types/game";
 import { PATH_MODIFIERS, PATH_INFO } from "@/data/builds";
-import { SKILL_TREE_V2, getNodeById } from "@/data/skill-tree-v2";
-import { SkillNodeV2 } from "@/types/skills";
+import { getNodeById } from "@/data/skill-tree-v2";
 import { TrainingPath } from "@/types/training";
 import { OracleDecree } from "@/types/oracle";
 

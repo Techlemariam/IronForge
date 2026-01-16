@@ -3,7 +3,6 @@ import { auditWeaknesses } from "@/utils/weaknessAuditor";
 import {
   MuscleGroupVolume,
   WeaknessLevel,
-  RPVolumeStandards,
 } from "@/types/auditor";
 
 // Mock Data
@@ -19,7 +18,7 @@ const mockSideDeltsOverreached: MuscleGroupVolume = {
   lastUpdated: new Date().toISOString(),
 };
 
-const mockBackAtrophy: MuscleGroupVolume = {
+const _mockBackAtrophy: MuscleGroupVolume = {
   muscleGroup: "Back (Width)",
   weeklyVolume: 0, // Assume MV is 0, so risk if strictly < MV? Or logic handles 0?
   // Current logic: < MV (0) -> Atrophy. 0 is not < 0. So 0 is "Undertrained" (< MEV)

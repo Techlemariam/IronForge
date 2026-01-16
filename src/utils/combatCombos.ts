@@ -1,4 +1,4 @@
-import { CombatAction } from "@/types/schemas";
+
 
 interface ComboStep {
   actionType: "ATTACK" | "DEFEND" | "HEAL" | "ULTIMATE";

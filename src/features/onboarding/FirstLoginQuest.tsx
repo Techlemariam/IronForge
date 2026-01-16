@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, Map, Shield, Dumbbell, ChevronRight } from "lucide-react";
+import { motion } from "framer-motion";
+import { Sparkles, Map, Shield, ChevronRight } from "lucide-react";
 import { completeOnboardingAction } from "@/actions/user/onboarding";
 
 interface FirstLoginQuestProps {

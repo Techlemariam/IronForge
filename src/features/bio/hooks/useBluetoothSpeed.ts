@@ -164,7 +164,7 @@ export const useBluetoothSpeed = () => {
                 setIsConnected(true);
                 console.log("Connected via RSC (Running Speed)");
                 return;
-            } catch (e) {
+            } catch {
                 throw new Error("Device does not support Running Speed (RSC) or Treadmill (FTMS)");
             }
 

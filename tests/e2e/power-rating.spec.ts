@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 
 test.describe("Power Rating System", () => {
-    test.beforeEach(async ({ page }) => {
+    test.beforeEach(async ({ page: _page }) => {
         // storageState handles login
     });
 

@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Swords, Milestone, Timer, Send } from "lucide-react";
+import { Swords, Send } from "lucide-react";
 import { sendTauntAction } from "@/actions/pvp/duel";
 import { toast } from "sonner";
 import { useState } from "react";

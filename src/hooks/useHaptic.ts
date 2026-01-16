@@ -16,7 +16,7 @@ export const useHaptic = () => {
         if (typeof window !== "undefined" && window.navigator && window.navigator.vibrate) {
             try {
                 window.navigator.vibrate(HAPTIC_PATTERNS[level]);
-            } catch (e) {
+            } catch {
                 // Devices that don't support vibration will just ignore
             }
         }

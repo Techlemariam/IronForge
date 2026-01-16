@@ -28,7 +28,6 @@ async function checkApi() {
         console.log("--- Fields Present ---");
 
         // Check specific fields requested
-        const keys = Object.keys(data); // Assuming normalized or raw
         // getWellness returns a normalized object if we look at lib/intervals.ts
         // Wait, getWellness calls API and returns... let's check lib/intervals via imports?
         // The script imports from src/lib/intervals.

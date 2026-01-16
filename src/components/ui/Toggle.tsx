@@ -1,19 +1,9 @@
 import React from "react";
 
 // Simplified toggle from standard UI lib
-interface ToggleProps {
-  className?: string;
-  // other props... we might not need them for now if we use a different structure in armory
-  // Wait, the Armory usage is: just import.
-  // Actually, looking at Armory code, I didn't use the Toggle component in the render!
-  // I built a custom toggle div in lines 71-76:
-  // <div onClick={toggleHyperProMode} ...
-
-  // So the import "import { Toggle } from '../../components/ui/Toggle';" is likely unused or I planned to use it.
-  // I should remove the unused import OR implement it if I want to refactor.
-  // Given I implemented a custom one inline, I should probably just remove the import to fix the build error.
-  // However, for consistency, creating a reusable Toggle is better. Let's create it.
-}
+// interface ToggleProps {
+//   className?: string;
+// }
 
 interface SwitchProps {
   checked: boolean;

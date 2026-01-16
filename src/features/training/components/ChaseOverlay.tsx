@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React from "react";
 import { motion, AnimatePresence, useAnimation } from "framer-motion";
-import { AlertTriangle, Trophy, Skull, Footprints, Zap, HeartPulse } from "lucide-react";
+import { Trophy, Skull, Footprints, Zap } from "lucide-react";
 import { ChaseState, ChaseDifficulty } from "@/types/chase";
 import { ChaseEngine } from "@/services/game/ChaseEngine";
 import { cn } from "@/lib/utils";
@@ -37,12 +37,8 @@ export function ChaseOverlay({
     const requiredPace = ChaseEngine.getRequiredPace(chaseState, difficulty);
 
     // Color based on danger level
-    const dangerColor = useMemo(() => {
-        if (dangerLevel < 0.3) return "from-green-500 to-green-600";
-        if (dangerLevel < 0.6) return "from-yellow-500 to-orange-500";
-        if (dangerLevel < 0.85) return "from-orange-500 to-red-500";
-        return "from-red-600 to-red-800";
-    }, [dangerLevel]);
+    // Color based on danger level
+    // const dangerColor = useMemo(() => { ... });
 
     const bgPulse = dangerLevel > 0.7 && !chaseState.isCaught && !chaseState.hasEscaped;
 

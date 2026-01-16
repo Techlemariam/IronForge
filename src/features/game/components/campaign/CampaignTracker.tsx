@@ -1,7 +1,7 @@
 import React from "react";
 import { IntervalsWellness, TTBIndices } from "@/types";
 import { TrainingPath, WeeklyMastery } from "@/types/training";
-import { PATH_INFO, BUILD_VOLUME_TARGETS } from "@/data/builds";
+import { BUILD_VOLUME_TARGETS } from "@/data/builds";
 import { Lock, CheckCircle2, Scroll } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/Alert";
 import { cn } from "@/lib/utils";

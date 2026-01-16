@@ -101,7 +101,7 @@ describe("Training Actions", () => {
       mockGetUser.mockResolvedValue({ data: { user: { id: "test-user" } } });
       (prisma.user.update as any).mockResolvedValue({});
 
-      const result = await updateActivePathAction("WARDEN");
+      const _result = await updateActivePathAction("WARDEN");
       expect(prisma.user.update).toHaveBeenCalledWith({
         where: { id: "test-user" },
         data: { activePath: "WARDEN" },

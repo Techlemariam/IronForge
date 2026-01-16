@@ -9,7 +9,7 @@ import {
 } from "@/data/builds";
 import { Zap, Moon, Info } from "lucide-react";
 import { motion } from "framer-motion";
-import { Alert, AlertDescription, AlertTitle } from "./ui/Alert";
+
 
 interface PassiveLayerProgressProps {
   mobilityLevel: LayerLevel;

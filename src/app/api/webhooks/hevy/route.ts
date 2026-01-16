@@ -101,7 +101,7 @@ export async function POST(request: NextRequest) {
         }
       }
 
-      const avgRpe = rpeCount > 0 ? totalRpe / rpeCount : 0;
+      const _avgRpe = rpeCount > 0 ? totalRpe / rpeCount : 0;
 
       // Create ExerciseLog
       // Use Template ID or Title as identifier

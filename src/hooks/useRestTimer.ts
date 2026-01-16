@@ -3,7 +3,6 @@
 
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import { playSound } from "@/utils"; // Assuming sound util exists or I'll standardise it
 
 interface RestTimerState {
   isActive: boolean;
@@ -61,7 +60,7 @@ export const useRestTimer = create<RestTimerState>()(
       },
 
       check: () => {
-        const { endTime, isActive, hasFinished } = get();
+        const { endTime, isActive } = get();
         if (isActive && endTime) {
           const now = Date.now();
           const diff = Math.ceil((endTime - now) / 1000);

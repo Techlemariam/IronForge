@@ -8,7 +8,6 @@ import {
 } from "@/actions/guild/raids";
 import {
   createGuildAction,
-  joinGuildAction,
 } from "@/actions/guild/creation";
 import { Shield, Sword, Users, Scroll } from "lucide-react";
 

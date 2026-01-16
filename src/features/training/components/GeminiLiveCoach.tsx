@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Mic, MicOff, Brain, Volume2, X } from "lucide-react";
+import { Mic, MicOff, Brain, X } from "lucide-react";
 import { GoogleGenAI, LiveServerMessage, Modality } from "@google/genai";
 
 interface GeminiLiveCoachProps {
@@ -40,7 +40,7 @@ const GeminiLiveCoach: React.FC<GeminiLiveCoachProps> = ({
       mountedRef.current = false;
       disconnectLive();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, [isOpen]);
 
   const connectLive = async () => {
@@ -136,8 +136,8 @@ const GeminiLiveCoach: React.FC<GeminiLiveCoachProps> = ({
       sessionPromiseRef.current.then((session) => {
         try {
           session.close();
-        } catch (e) {
-          console.warn("Session close error", e);
+        } catch (_e) {
+          console.warn("Session close error", _e);
         }
       });
       sessionPromiseRef.current = null;
@@ -156,14 +156,14 @@ const GeminiLiveCoach: React.FC<GeminiLiveCoachProps> = ({
       if (inputSourceRef.current) {
         try {
           inputSourceRef.current.disconnect();
-        } catch (e) {}
+        } catch { }
         inputSourceRef.current = null;
       }
       if (processorRef.current) {
         try {
           processorRef.current.disconnect();
           processorRef.current.onaudioprocess = null;
-        } catch (e) {}
+        } catch { }
         processorRef.current = null;
       }
 
@@ -177,7 +177,7 @@ const GeminiLiveCoach: React.FC<GeminiLiveCoachProps> = ({
     outputSources.current.forEach((s) => {
       try {
         s.stop();
-      } catch (e) {}
+      } catch { }
     });
     outputSources.current.clear();
 
@@ -243,8 +243,8 @@ const GeminiLiveCoach: React.FC<GeminiLiveCoachProps> = ({
 
       outputSources.current.add(source);
       source.onended = () => outputSources.current.delete(source);
-    } catch (e) {
-      console.error("Audio Decode Error", e);
+    } catch (_e) {
+      console.error("Audio Decode Error", _e);
     }
   };
 

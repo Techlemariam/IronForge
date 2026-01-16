@@ -6,7 +6,6 @@ import { TitanState, getAuthoritativeTitanState } from "./titan-state-schema";
 import {
   recordTitanEvent,
   replayTitanEvents,
-  getTitanEventHistory,
 } from "./titan-event-sourcing";
 
 // ============================================
@@ -240,7 +239,7 @@ export async function recoverFromCorruption(
       revalidatePath("/dashboard");
 
       return { success: true, message: "Reset to default state" };
-    } catch (error) {
+    } catch {
       return { success: false, message: "Recovery failed" };
     }
   }

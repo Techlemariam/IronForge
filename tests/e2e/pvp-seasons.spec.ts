@@ -14,7 +14,7 @@ test.describe('PvP Season System', () => {
         }
 
         // Check for season end date or timer
-        const endDateText = page.getByText(/ends|days left|remaining/i);
+        const _endDateText = page.getByText(/ends|days left|remaining/i);
         // May not always be visible depending on UI
     });
 
@@ -61,7 +61,7 @@ test.describe('PvP Season System', () => {
         // At minimum, we should see some rank-related text
         // If no specific rank visible, check for a generic indicator
         if (!foundRank) {
-            const rankBadge = page.locator('[class*="rank"]').or(page.locator('[class*="badge"]'));
+            const _rankBadge = page.locator('[class*="rank"]').or(page.locator('[class*="badge"]'));
             // Just log - don't fail test if user has no rating yet
         }
     });
@@ -106,7 +106,7 @@ test.describe('PvP Season System', () => {
 
 test.describe('Season Transition (Cron)', () => {
     // These tests verify the cron job behavior indirectly
-    test.skip('should handle season end gracefully', async ({ page }) => {
+    test.skip('should handle season end gracefully', async ({ page: _page }) => {
         // This would require mocking date/time or waiting for actual season end
         // Skipped for now - manual verification recommended
     });

@@ -70,7 +70,7 @@ export const useBluetoothPower = () => {
     // Flag definitions vary. Assuming typical layout:
 
     // Let's implement robust parsing based on bitmasks
-    const hasSpeed = !(flags & 0x01); // Usually speed is always present, sometimes gated
+    // const hasSpeed = !(flags & 0x01); // Usually speed is always present, sometimes gated
     // Wait, standard is:
     // Bit 0: More Data (0 = instant speed present? No.)
 

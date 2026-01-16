@@ -1,7 +1,7 @@
 import React from "react";
 // Force Rebuild
 import { createClient } from "@/utils/supabase/server";
-import { cookies, headers } from "next/headers";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
 import {
@@ -13,7 +13,6 @@ import { runFullAudit } from "@/services/auditorOrchestrator";
 import {
   getActivitiesAction,
   getWellnessAction,
-  getAthleteSettingsAction,
   getEventsAction,
 } from "@/actions/integrations/intervals";
 import { AnalyticsService } from "@/services/analytics";
@@ -30,7 +29,6 @@ import { getStrengthLeaderboardAction } from "@/actions/social/leaderboards";
 // Types
 import { AuditReport } from "@/types/auditor";
 import {
-  WeaknessAudit,
   IntervalsWellness,
   TTBIndices,
   TitanLoadCalculation,
@@ -61,10 +59,7 @@ export default async function Page() {
     include: { achievements: true, skills: true },
   });
 
-  const headersList = await headers();
-  const host = headersList.get("host") || "localhost:3000";
-  const protocol = host.includes("localhost") ? "http" : "https";
-  const baseUrl = `${protocol}://${host}`;
+
 
   // --- DEMO MODE CHECK ---
   const cookieStore = await cookies();

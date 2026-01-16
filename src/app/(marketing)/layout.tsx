@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React from "react";
 import "../globals.css";
-import { ArrowRight } from "lucide-react";
+
 
 export const metadata = {
     title: "IronForge RPG | Train Like a Titan",

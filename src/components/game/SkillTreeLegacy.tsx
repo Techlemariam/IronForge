@@ -1,4 +1,4 @@
-/* eslint-disable react/no-unescaped-entities */
+ 
 import React, { useMemo, useState, useRef, useEffect } from "react";
 import { SKILL_TREE, SESSIONS } from "../../data/static";
 import {
@@ -395,7 +395,7 @@ const SkillTree: React.FC<SkillTreeProps> = ({
                 </div>
               </div>
             );
-            /* eslint-disable-next-line react/no-unescaped-entities */
+             
           })()}
         </div>
       )}

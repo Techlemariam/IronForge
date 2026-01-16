@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Trophy, Users, User, Medal } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";

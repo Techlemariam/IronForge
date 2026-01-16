@@ -289,7 +289,7 @@ export async function checkAndIncrementStreakAction(
     try {
       todayStr = now.toLocaleDateString("en-CA", options);
       lastActiveStr = lastActive.toLocaleDateString("en-CA", options);
-    } catch (e) {
+    } catch {
       console.warn(
         "Invalid timezone for streak check, defaulting to UTC:",
         timezone,
@@ -309,7 +309,7 @@ export async function checkAndIncrementStreakAction(
     let yesterdayStr: string;
     try {
       yesterdayStr = yesterdayTs.toLocaleDateString("en-CA", options);
-    } catch (e) {
+    } catch {
       yesterdayStr = yesterdayTs.toLocaleDateString("en-CA", {
         timeZone: "UTC",
       });

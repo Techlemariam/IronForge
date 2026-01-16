@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-import { Camera, X, Activity, ArrowDown } from "lucide-react";
+import { X, ArrowDown } from "lucide-react";
 import { VisionService } from "@/services/vision";
 import { DrawingUtils, PoseLandmarker } from "@mediapipe/tasks-vision";
 
@@ -40,7 +40,7 @@ const VisionRepCounter: React.FC<VisionRepCounterProps> = ({
     return () => {
       stopCamera();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, [isActive]);
 
   const startCamera = async () => {
@@ -103,7 +103,7 @@ const VisionRepCounter: React.FC<VisionRepCounterProps> = ({
         },
       );
 
-      setMetrics((prev) => ({
+      setMetrics((_prev) => ({
         velocity: result.metrics.velocity,
         isBelowParallel: result.metrics.isBelowParallel,
         state: result.metrics.state,

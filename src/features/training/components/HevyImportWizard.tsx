@@ -4,9 +4,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Upload,
-  FileJson,
   CheckCircle,
-  AlertTriangle,
   X,
   ArrowRight,
   Dumbbell,
@@ -27,7 +25,7 @@ export const HevyImportWizard: React.FC<HevyImportWizardProps> = ({
   onClose,
 }) => {
   const [step, setStep] = useState<Step>("INTRO");
-  const [file, setFile] = useState<File | null>(null);
+  const [, setFile] = useState<File | null>(null);
   const [stats, setStats] = useState<any>(null);
   const [workoutsToImport, setWorkoutsToImport] = useState<any[]>([]);
 
@@ -71,8 +69,8 @@ export const HevyImportWizard: React.FC<HevyImportWizardProps> = ({
           });
           setWorkoutsToImport(workouts);
           setStep("CONFIRM");
-        } catch (err) {
-          console.error("Parse error", err);
+        } catch (_err) {
+          console.error("Parse error", _err);
           toast.error("Invalid JSON file.");
           setStep("UPLOAD");
         }
@@ -92,8 +90,8 @@ export const HevyImportWizard: React.FC<HevyImportWizardProps> = ({
         toast.error("Import failed.");
         setStep("CONFIRM");
       }
-    } catch (error: any) {
-      toast.error(error.message);
+    } catch {
+      toast.error("An unexpected error occurred during import.");
       setStep("CONFIRM");
     }
   };

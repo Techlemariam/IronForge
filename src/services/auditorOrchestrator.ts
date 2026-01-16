@@ -13,7 +13,7 @@ import { auditMobility } from "./MobilityAuditor";
  * NOTE: Hevy integration has been removed per data-source-reconciliation.md
  */
 
-const HISTORY_DEPTH = 30; // Fetch last 30 workouts to ensure full week coverage
+// const HISTORY_DEPTH = 30; // Fetch last 30 workouts to ensure full week coverage
 
 /**
  * Runs a full audit cycle:

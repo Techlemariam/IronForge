@@ -1,6 +1,5 @@
 "use server";
 
-import { prisma as _prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
 type CrateRarity = "COMMON" | "UNCOMMON" | "RARE" | "EPIC" | "LEGENDARY";

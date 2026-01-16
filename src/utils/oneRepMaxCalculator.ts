@@ -12,10 +12,7 @@ type Formula =
   | "OCONNER"
   | "WATHAN";
 
-interface E1rmResult {
-  e1rm: number;
-  formula: Formula;
-}
+
 
 interface MultiFormulaResult {
   average: number;
