@@ -22,6 +22,23 @@ domain: "core"
 - Manual: `/polish [scope]`
 - **Config**: Ensure lint/prettier commands are in `.agent/config.json`.
 
+## Phase 0: Branch Guard
+
+> **Guard:** `.agent/workflows/_guards/branch-guard.md`
+
+// turbo
+
+```bash
+current_branch=$(git rev-parse --abbrev-ref HEAD)
+if [ "$current_branch" = "main" ]; then
+  echo "⛔ ERROR: /polish requires a feature branch. Run /claim-task first."
+  exit 1
+fi
+echo "✅ Branch: $current_branch"
+```
+
+---
+
 ## 🧹 Polish Protocol
 
 ### 1. Auto-Fix Linting
