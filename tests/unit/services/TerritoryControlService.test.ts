@@ -41,11 +41,22 @@ describe('TerritoryControlService', () => {
 
             vi.mocked(prisma.territory.findMany).mockResolvedValue(mockTerritories as any);
 
+            // Mock contest entries for the influence calculation
+            vi.mocked(prisma.territoryContestEntry.findMany).mockResolvedValue([
+                {
+                    territoryId: 'territory-1',
+                    guildId: 'guild-1',
+                    totalVolume: 5000,
+                    xpEarned: 100
+                }
+            ] as any);
+
             const result = await TerritoryControlService.getMapState();
 
             expect(result.territories).toHaveLength(1);
             expect(result.territories[0].name).toBe('Mount Olympus');
             expect(result.territories[0].controlledByName).toBe('Iron Legion');
+            expect(result.territories[0].influencePoints).toBe(5100); // 5000 + 100
         });
     });
 
