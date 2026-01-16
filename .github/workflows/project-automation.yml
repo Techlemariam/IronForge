@@ -1,0 +1,48 @@
+name: Project Automation
+
+on:
+  issues:
+    types: [closed, reopened]
+  pull_request:
+    types: [opened, closed]
+
+jobs:
+  update_project:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+      repository-projects: write # For Classic Projects (not V2?)
+      # V2 require PAT usually
+    
+    steps:
+      - name: Authenticate gh cli
+        run: |
+          echo "${{ secrets.PROJECT_TOKEN }}" > .github_token
+          gh auth login --with-token < .github_token
+        env:
+          # Note: User must add PROJECT_TOKEN secret with 'project' scope
+          # Fallback to GITHUB_TOKEN if project is linked to repo (might fail for User projects)
+          GITHUB_TOKEN: ${{ secrets.PROJECT_TOKEN || secrets.GITHUB_TOKEN }} 
+          
+      - name: Move Closed Issue to Done
+        if: github.event_name == 'issues' && github.event.action == 'closed'
+        run: |
+          ISSUE_URL="${{ github.event.issue.html_url }}"
+          gh project item-edit --project-id PVT_kwHOAe3KCM4BMt-p --field-id PVTSSF_lAHOAe3KCM4BMt-pzg76_fI --single-select-option-id 98236657 --url "$ISSUE_URL"
+          
+      - name: Move Reopened Issue to In Progress
+        if: github.event_name == 'issues' && github.event.action == 'reopened'
+        run: |
+          ISSUE_URL="${{ github.event.issue.html_url }}"
+          gh project item-edit --project-id PVT_kwHOAe3KCM4BMt-p --field-id PVTSSF_lAHOAe3KCM4BMt-pzg76_fI --single-select-option-id 47fc9ee4 --url "$ISSUE_URL"
+
+      - name: Move Issue to In Progress on PR Open
+        if: github.event_name == 'pull_request' && github.event.action == 'opened'
+        run: |
+          # Find linked issue? Hard via simple shell.
+          # Approximation: If PR body contains "Closes #X", find X.
+          # For now, we skip complex parsing and just log.
+          echo "Automation for PR -> Issue update requires more complex logic to find linked issue."
+          
+      # Note: This is an implementation start.

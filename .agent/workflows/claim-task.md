@@ -133,7 +133,7 @@ gh project item-edit --project-id PVT_kwHOAe3KCM4BMt-p --id <ITEM_ID> \
 
 ```diff
 - [ ] [R-03] Cardio PvP Duels
-+ [/] [R-03] Cardio PvP Duels ([#80](url)) 📌 `feat/R-03-cardio-duels`
++ [/] [R-03] Cardio PvP Duels ([#80](https://github.com/Techlemariam/IronForge/issues/80)) 📌 `feat/R-03-cardio-duels`
 ```
 
 Commit the claim marker:
