@@ -53,6 +53,14 @@ After completion, update `DEBT.md`:
 | 2025-12-23 | `src/file.ts` | Fixed issue description | @cleanup | ✅ Resolved |
 ```
 
+**Also update GitHub Issue (if linked):**
+
+```bash
+# Find and close related issue
+gh issue list --search "debt [file.ts]" --limit 1
+gh issue close #N --reason completed --comment "Resolved by cleanup agent"
+```
+
 **Instructions:**
 
 - Work autonomously when invoked.
