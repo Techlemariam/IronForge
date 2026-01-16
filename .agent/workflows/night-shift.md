@@ -70,6 +70,10 @@ done
 ```powershell
 # Security Audit (High severity only) - Atomic command
 pnpm audit --audit-level=high --json | Out-File -FilePath security_report.json -Encoding utf8
+```bash
+# Spawn parallel jobs
+/triage --analyze-only > triage_report.md 2>&1 &
+PID_TRIAGE=$!
 
 # Dependency Evolution Check - Atomic command
 npm outdated --json | Out-File -FilePath evolve_report.json -Encoding utf8
@@ -84,6 +88,16 @@ echo '{"status":"pending","note":"Lighthouse requires dev server"}' | Out-File -
 
 # Note: All commands run sequentially to avoid permission prompts
 # Parallel execution sacrificed for reliability in autonomous mode
+# Security Audit (High severity only)
+npm audit --audit-level=high --json > security_report.json 2>&1 &
+PID_SEC=$!
+
+# Wait for all with timeout (30 min max)
+timeout 1800 bash -c "wait $PID_TRIAGE $PID_PERF $PID_EVOLVE $PID_SEC" || {
+  echo "⏱️ Analysis phase timed out" >> "$LOG"
+  kill $PID_TRIAGE $PID_PERF $PID_EVOLVE $PID_SEC 2>/dev/null
+}
+echo "✅ Phase 1 complete" >> "$LOG"
 ```
 
 ### Phase 2: Sequential Mutations (with rollback)
@@ -149,6 +163,23 @@ if (Test-Path evolve_report.json) {
 } else {
   $EVOLVE_RESULT = "No updates"
 }
+```bash
+# Extract Lighthouse scores
+if [ -f perf_report.json ]; then
+  PERF_SCORE=$(jq -r '.categories.performance.score // "N/A"' perf_report.json)
+  BUNDLE_SIZE=$(jq -r '.bundleSize // "N/A"' perf_report.json)
+  PERF_RESULT="Score: ${PERF_SCORE}, Bundle: ${BUNDLE_SIZE}"
+else
+  PERF_RESULT="Report not generated"
+fi
+
+# Extract Security Stats
+if [ -f security_report.json ]; then
+  VULN_COUNT=$(jq -r '.metadata.vulnerabilities.high + .metadata.vulnerabilities.critical // 0' security_report.json)
+  SEC_RESULT="${VULN_COUNT} Critical/High Issues"
+else
+  SEC_RESULT="Audit Failed"
+fi
 ```
 
 ---
