@@ -14,6 +14,21 @@ domain: "core"
 **Role:** Error Analyst & Fixer.
 **Trigger:** Build failure | Test failure | Runtime error
 
+## Phase 0: Branch Guard
+
+> **Guard:** `.agent/workflows/_guards/branch-guard.md`
+
+// turbo
+
+```bash
+current_branch=$(git rev-parse --abbrev-ref HEAD)
+if [ "$current_branch" = "main" ]; then
+  echo "⛔ ERROR: /debug requires a feature branch. Run /claim-task first."
+  exit 1
+fi
+echo "✅ Branch: $current_branch"
+```
+
 ---
 
 ## Step 1: Error Classification

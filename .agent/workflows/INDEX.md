@@ -119,6 +119,18 @@ Tools for keeping the codebase healthy and clean.
 
 ---
 
+## 🛡️ Shared Guards
+
+Reusable validation modules for workflow protection. Located in `.agent/workflows/_guards/`.
+
+| Guard             | Purpose                                            |
+| :---------------- | :------------------------------------------------- |
+| `branch-guard.md` | Ensures workflow runs on a feature branch, not `main` |
+
+**Usage:** Workflows include guards at Phase 0 for automatic validation.
+
+---
+
 ## Version History
 
 ### 1.2.0 (2026-01-15)

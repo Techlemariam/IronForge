@@ -42,21 +42,37 @@ Agent connection helper.
 - Generate JSON mappings.
 - Fix integration mismatches.
 
+## Phase 0: Branch Guard
+
+> **Guard:** `.agent/workflows/_guards/branch-guard.md`
+
+// turbo
+
+```bash
+current_branch=$(git rev-parse --abbrev-ref HEAD)
+if [ "$current_branch" = "main" ]; then
+  echo "⛔ ERROR: /coder requires a feature branch. Run /claim-task first."
+  exit 1
+fi
+echo "✅ Branch: $current_branch"
+```
+
+---
+
 ## Protocol
 
-1. **Branch Check**: 🛑 **STOP** if on `main`. Switch to a feature branch (`feat/...`, `fix/...`) before starting.
-2. **Scope**: What to build?
-3. **Structure (Vertical Slicing)**:
+1. **Scope**: What to build?
+2. **Structure (Vertical Slicing)**:
    - **NO** generic components (`src/components/...`) for feature logic.
    - **ALWAYS** use `src/features/[domain]/...`.
    - **Check**: Does `src/features/[domain]` exist? If not, create it.
-4. **Constraints**: Read `ARCHITECTURE.md`.
-5. **Verify**: MUST run `npm run agent:verify`. If build fails, fix it. DO NOT "hope it works".
-6. **Tests**: MUST create/update tests for changed code:
+3. **Constraints**: Read `ARCHITECTURE.md`.
+4. **Verify**: MUST run `npm run agent:verify`. If build fails, fix it. DO NOT "hope it works".
+5. **Tests**: MUST create/update tests for changed code:
    - Unit tests: `tests/unit/[feature].test.ts` (Vitest)
    - E2E tests: `e2e/[feature].spec.ts` (Playwright) for UI changes
    - **Alternative**: If E2E is blocking, use `browser_subagent` to capture Success Screenshot and embed in artifact. Manual "looked at it" is NOT accepted.
-7. **Pre-Push**: Run `/gatekeeper`.
+6. **Pre-Push**: Run `/gatekeeper`.
    - 🛑 **STOP** if score < 100.
    - ✅ **PUSH** only if clean.
 
