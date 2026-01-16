@@ -4,7 +4,7 @@ on:
   issues:
     types: [closed, reopened]
   pull_request:
-    types: [opened, closed]
+    types: [opened, closed, synchronize]
 
 jobs:
   update_project:
