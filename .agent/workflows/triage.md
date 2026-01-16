@@ -240,7 +240,18 @@ For **P0/P1 items** that are technical debt:
 For **P0 blockers**:
 
 - Add to current sprint plan or `current.md` if using sprint automation
-- Create GitHub issue if external dependency or requires team coordination
+- **Create GitHub Issue immediately:**
+
+  ```bash
+  gh issue create --title "[CRITICAL] [Issue Name]" \
+    --template bug_report.yml \
+    --label "priority:critical,bug"
+  
+  # Add to Project #4 and set fields
+  gh project item-add 4 --owner Techlemariam --url <issue-url>
+  ```
+
+- Assign issue: `gh issue edit #N --add-assignee @me`
 
 ---
 

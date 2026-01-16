@@ -61,14 +61,42 @@ Low Priority:    ROI < 1.0
 Reject:          Impact=1 AND Effort>=L
 ```
 
-## 3. Roadmap Placement
+## 3. GitHub Issue & Roadmap Placement
 
-Lägg till i `.agent/features/roadmap.md`:
+**Create GitHub Issue with metadata:**
+
+```bash
+gh issue create \
+  --title "[FEATURE] [Idea Title]" \
+  --body "## Overview
+From /idea workflow
+
+## Context
+[What/Why/Who from intake]
+
+## Metadata
+- Priority: [H/M/L]
+- ROI: [X.X]
+- Effort: [XS-XL]
+- Source: user
+
+## Acceptance Criteria
+- [ ] TBD (to be refined by /analyst)" \
+  --label "feature,priority:[level]"
+```
+
+**Add to GitHub Project #4:**
+
+```bash
+gh project item-add 4 --owner Techlemariam --url <issue-url>
+```
+
+**Update roadmap.md with link:**
 
 ```markdown
 ## 📋 Backlog (Ready for Analysis)
 
-- [ ] [Idea Title] <!-- status: pending | priority: X | effort: Y | impact: Z | source: user -->
+- [ ] [Idea Title] ([#N](url)) <!-- status: pending | priority: X | effort: Y | impact: Z | source: user -->
 ```
 
 ## 4. Output

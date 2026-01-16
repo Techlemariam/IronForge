@@ -18,13 +18,31 @@ domain: "meta"
 
 > **Naming Convention:** All Task Names must start with a domain prefix, e.g., `[GAME] Feature Name`.
 
-### Phase 0: Roadmap Sync
+### Phase 0: Roadmap Sync & Issue Setup
 
-1. Read `.agent/features/roadmap.md`.
-2. Search for `[feature-name]`.
+1. Read `roadmap.md` and search for `[feature-name]`.
    - If in 'Backlog', move to 'Active Development'.
    - If missing, create new entry under 'Active Development'.
    - Set status: `<!-- status: in-progress | architect: /architect | priority: high -->`
+
+2. **GitHub Issue Check**:
+   - Search for existing issue: `gh issue list --search "[feature-name]"`
+   - If no issue exists:
+
+     ```bash
+     gh issue create --title "[FEATURE] [feature-name]" \
+       --template feature_request.yml \
+       --label "feature,priority:high"
+     ```
+
+   - Add issue link to roadmap entry: `([#N](url))`
+
+3. **Claim Issue**:
+
+   ```bash
+   gh issue edit #N --add-assignee @me
+   gh project item-edit ... --field-id STATUS --single-select-option-id "In Progress"
+   ```
 
 ### Phase 1: Discovery (ANALYST)
 
