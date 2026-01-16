@@ -41,6 +41,34 @@ if ! git diff-index --quiet HEAD --; then
 fi
 ```
 
+### 1.1 Git Hygiene Quick Scan
+
+> **Reference:** `.agent/workflows/git-hygiene.md`
+
+// turbo
+
+```bash
+# Merge-loop detection
+merge_count=$(git log --oneline -10 2>/dev/null | grep -cE "Merge branch '(main|master)'" || echo "0")
+if [ "$merge_count" -gt 3 ]; then
+  echo "⚠️  MERGE-LOOP: $merge_count merge commits detected"
+  echo "   Run: /git-hygiene for diagnosis"
+fi
+
+# Orphaned upstream detection
+if git status 2>/dev/null | grep -q "upstream is gone"; then
+  echo "⚠️  ORPHANED: Remote branch deleted"
+  echo "   Run: git checkout main"
+fi
+
+# Stale branch count
+branch_count=$(git branch | wc -l)
+if [ "$branch_count" -gt 5 ]; then
+  echo "⚠️  STALE: $branch_count local branches"
+  echo "   Run: /git-hygiene for cleanup"
+fi
+```
+
 1. Read `.agent/current_state.json` for active work.
 2. Read `.agent/queue.json` for pending tasks.
 3. Summarize what was done last and what is the next step.
