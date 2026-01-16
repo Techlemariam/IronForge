@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { Activity, Dumbbell, Swords, ArrowRight } from "lucide-react";
+import { Activity, Dumbbell, Swords } from "lucide-react";
 
 const steps = [
     {

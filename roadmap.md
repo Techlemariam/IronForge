@@ -5,7 +5,7 @@
 ## 🚀 Active Development
 
 - [x] **Iron Command Center (TV Mode)** <!-- status: shipped | priority: critical | roi: 5.5 | effort: L | source: strategic-diff -->
-- [/] **Cardio PvP Duels** ([Spec](specs/cardio-duels.md)) <!-- status: in-progress | architect: /architect | priority: medium | effort: M | source: user/idea -->
+- [/] **Cardio PvP Duels** ([Spec](specs/cardio-duels.md)) ([#80](https://github.com/Techlemariam/IronForge/issues/80)) <!-- status: in-progress | architect: /architect | priority: medium | effort: M | source: user/idea -->
 
 ## 🚨 Business Trigger Watchlist (Scale-Up Indicators)
 >
@@ -149,8 +149,8 @@
 
 ### High Priority (New Features)
 
-- [ ] **Guild Territories** ([Spec](specs/guild-territories.md)) <!-- status: planned | priority: high | roi: 4.6 | effort: L | source: brainstorm -->
-- [ ] **Oracle 3.0 (Phase 2)** - Advanced Audio Coaching <!-- status: planned | priority: high | roi: 4.8 | effort: M | source: enhancement -->
+- [ ] **Guild Territories** ([Spec](specs/guild-territories.md)) ([#75](https://github.com/Techlemariam/IronForge/issues/75)) <!-- status: planned | priority: high | roi: 4.6 | effort: L | source: brainstorm -->
+- [ ] **Oracle 3.0 (Phase 2)** - Advanced Audio Coaching ([#76](https://github.com/Techlemariam/IronForge/issues/76)) <!-- status: planned | priority: high | roi: 4.8 | effort: M | source: enhancement -->
 
 ### High Priority (Enhancements to_Existing)
 
@@ -159,17 +159,17 @@
   - [x] PvP Context Awareness
   - [x] Push Notification Service
   - [x] Power Rating Tier Messaging
-- [/] **Arena PvP Seasons** ([Spec](specs/arena-pvp-seasons.md)) <!-- status: in-progress | architect: /architect | priority: high | effort: M | source: gap-analysis -->
-- [ ] **World Events Enhancement** ([Spec](specs/world-events-enhancement.md)) <!-- status: planned | priority: high | roi: 4.5 | effort: S | source: gap-analysis -->
-- [ ] **Campaign Mode Enhancement** ([Spec](specs/campaign-mode-enhancement.md)) <!-- status: planned | priority: high | roi: 4.3 | effort: L | source: gap-analysis -->
+- [/] **Arena PvP Seasons** ([Spec](specs/arena-pvp-seasons.md)) ([#77](https://github.com/Techlemariam/IronForge/issues/77)) <!-- status: in-progress | architect: /architect | priority: high | effort: M | source: gap-analysis -->
+- [ ] **World Events Enhancement** ([Spec](specs/world-events-enhancement.md)) ([#78](https://github.com/Techlemariam/IronForge/issues/78)) <!-- status: planned | priority: high | roi: 4.5 | effort: S | source: gap-analysis -->
+- [ ] **Campaign Mode Enhancement** ([Spec](specs/campaign-mode-enhancement.md)) ([#79](https://github.com/Techlemariam/IronForge/issues/79)) <!-- status: planned | priority: high | roi: 4.3 | effort: L | source: gap-analysis -->
 
 ### Medium Priority
 >
 > **Note:** Cardio PvP Duels is tracked under Active Development (see top of roadmap)
 
-- [ ] **Territory Conquest** ([Spec](specs/territory-conquest.md)) <!-- status: planned | priority: medium | roi: 4.2 | effort: M | source: user/idea | date: 2025-12-31 -->
-- [ ] **Housing/Citadel Customization** ([Spec](specs/housing-citadel.md)) <!-- status: planned | priority: medium | roi: 4.2 | effort: M | source: brainstorm -->
-- [ ] **Premium Cosmetics Store** ([Spec](specs/premium-cosmetics.md)) <!-- status: planned | priority: medium | roi: 4.0 | effort: M | source: brainstorm -->
+- [ ] **Territory Conquest** ([Spec](specs/territory-conquest.md)) ([#81](https://github.com/Techlemariam/IronForge/issues/81)) <!-- status: planned | priority: medium | roi: 4.2 | effort: M | source: user/idea | date: 2025-12-31 -->
+- [ ] **Housing/Citadel Customization** ([Spec](specs/housing-citadel.md)) ([#82](https://github.com/Techlemariam/IronForge/issues/82)) <!-- status: planned | priority: medium | roi: 4.2 | effort: M | source: brainstorm -->
+- [ ] **Premium Cosmetics Store** ([Spec](specs/premium-cosmetics.md)) ([#83](https://github.com/Techlemariam/IronForge/issues/83)) <!-- status: planned | priority: medium | roi: 4.0 | effort: M | source: brainstorm -->
 
 ---
 
@@ -177,7 +177,7 @@
 
 ### Critical Priority (Production Readiness)
 
-- [ ] **DB Drift: active_sessions table** <!-- status: planned | priority: critical | roi: 5.0 | effort: S | source: debt-audit | date: 2026-01-14 -->
+- [ ] **DB Drift: active_sessions table** ([#73](https://github.com/Techlemariam/IronForge/issues/73)) <!-- status: planned | priority: critical | roi: 5.0 | effort: S | source: debt-audit | date: 2026-01-14 -->
   - **Issue**: `active_sessions` table exists in DB but not in migration history. Requires reset.
 - [x] **Sentry Error Tracking Integration** <!-- status: shipped | priority: critical | roi: 5.0 | effort: M | source: infrastructure-audit | date: 2025-12-29 -->
   - Installed `@sentry/nextjs`, created client/server/edge configs, wrapped `next.config.mjs`, added `global-error.tsx`.
@@ -240,19 +240,19 @@
 
 #### High Priority (Scale Enablers)
 
-- [ ] **Upstash Redis for Edge Caching** <!-- status: planned | priority: high | roi: 4.5 | effort: S | source: tech-stack-analysis | date: 2026-01-15 -->
+- [ ] **Upstash Redis for Edge Caching** ([#84](https://github.com/Techlemariam/IronForge/issues/84)) <!-- status: planned | priority: high | roi: 4.5 | effort: S | source: tech-stack-analysis | date: 2026-01-15 -->
   - Rationale: <10ms global reads for leaderboards, PvP matchmaking queues, session caching.
   - Scope: Add `@upstash/redis`, cache Iron Leagues, Oracle decrees, active sessions.
-- [ ] **Partykit for Real-Time Multiplayer** <!-- status: planned | priority: high | roi: 4.8 | effort: M | source: tech-stack-analysis | date: 2026-01-15 -->
+- [ ] **Partykit for Real-Time Multiplayer** ([#85](https://github.com/Techlemariam/IronForge/issues/85)) <!-- status: planned | priority: high | roi: 4.8 | effort: M | source: tech-stack-analysis | date: 2026-01-15 -->
   - Rationale: Replace manual WebSocket for Co-op sessions. Runs on Cloudflare Workers.
   - Scope: Migrate `CoOpService` to Partykit rooms. Ultra-low latency globally.
 
 #### Medium Priority (Edge Computing)
 
-- [ ] **Vercel Edge Functions Optimization** <!-- status: planned | priority: medium | roi: 4.0 | effort: S | source: tech-stack-analysis | date: 2026-01-15 -->
+- [ ] **Vercel Edge Functions Optimization** ([#86](https://github.com/Techlemariam/IronForge/issues/86)) <!-- status: planned | priority: medium | roi: 4.0 | effort: S | source: tech-stack-analysis | date: 2026-01-15 -->
   - Rationale: Leverage Next.js edge runtime for API latency reduction.
   - Scope: Move Oracle verdict, leaderboard APIs to edge.
-- [ ] **Cloudflare R2 for Asset Storage** <!-- status: planned | priority: medium | roi: 3.5 | effort: S | source: tech-stack-analysis | date: 2026-01-15 -->
+- [ ] **Cloudflare R2 for Asset Storage** ([#87](https://github.com/Techlemariam/IronForge/issues/87)) <!-- status: planned | priority: medium | roi: 3.5 | effort: S | source: tech-stack-analysis | date: 2026-01-15 -->
   - Rationale: Cheaper than S3 for Titan avatars, loot icons, game assets.
 
 #### Future Consideration (When Scale Demands)
@@ -266,9 +266,9 @@
 ### Research & Analysis
 
 - [x] **MCP Integration Plan** ([Analysis](docs/analysis/mcp_integration_plan.md)) <!-- status: shipped | priority: medium | roi: 4.0 | effort: S | source: research-session | date: 2026-01-05 -->
-- [ ] **Fix CI/CD Failures** <!-- status: planned | priority: critical | roi: 5.0 | effort: S | source: monitor-ci | date: 2026-01-05 -->
+- [ ] **Fix CI/CD Failures** ([#74](https://github.com/Techlemariam/IronForge/issues/74)) <!-- status: planned | priority: critical | roi: 5.0 | effort: S | source: monitor-ci | date: 2026-01-05 -->
   - Investigate `pnpm test` failures in `react-dom` passive effects.
-- [ ] **Fix Iron Mines E2E Flakiness** <!-- status: planned | priority: high | roi: 4.5 | effort: S | source: monitor-ci | date: 2026-01-14 -->
+- [ ] **Fix Iron Mines E2E Flakiness** ([#88](https://github.com/Techlemariam/IronForge/issues/88)) <!-- status: planned | priority: high | roi: 4.5 | effort: S | source: monitor-ci | date: 2026-01-14 -->
   - **Issue**: `iron-mines.spec.ts` failing on session list visibility check.
 
 ---

@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { UserService } from "@/services/server/UserService";
 import { getSession } from "@/lib/auth";
 import { SyncRequestBodySchema } from "./schemas";
-import { ZodError } from "zod";
+
 
 export async function POST(request: Request) {
   try {

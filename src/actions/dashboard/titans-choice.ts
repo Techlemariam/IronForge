@@ -1,7 +1,6 @@
 "use server";
 
 import { createClient } from "@/utils/supabase/server";
-import { prisma } from "@/lib/prisma";
 import { GoalPriorityEngine } from "@/services/GoalPriorityEngine";
 import { WardensManifest } from "@/types/goals"; // Ensure you have this type or equivalent
 

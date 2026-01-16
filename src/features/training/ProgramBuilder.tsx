@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { createProgramAction } from "@/actions/training/programs";
-import { Plus, Calendar, Save } from "lucide-react";
+import { Calendar, Save } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface ProgramBuilderProps {
@@ -22,7 +22,7 @@ export const ProgramBuilder: React.FC<ProgramBuilderProps> = ({ userId }) => {
       toast({ title: "Success", description: "Program created!" });
       // Redirect or show builder view (simplified for now)
       setName("");
-    } catch (e) {
+    } catch {
       toast({ title: "Error", variant: "destructive" });
     } finally {
       setIsCreating(false);

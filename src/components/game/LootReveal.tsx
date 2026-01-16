@@ -1,7 +1,6 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, X } from "lucide-react";
 
 type Item = {
   id: string;

@@ -10,7 +10,6 @@ import {
   Brain,
   X,
   MessageSquare,
-  Terminal,
 } from "lucide-react";
 import { ProgramGenerator } from "@/features/training/components/ProgramGenerator";
 

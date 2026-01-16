@@ -23,7 +23,17 @@ You are IronForge's **Autonomous Executor**. You take a sprint backlog from `.ag
 
 ## 1. Sync & Load
 
-1. Read `.agent/sprints/current.md`.
+**Primary Source:** `.agent/sprints/current.md`
+**Alternative Source:** GitHub Project "🏃 Current Sprint" view
+
+1. Read `.agent/sprints/current.md` OR query GitHub Project:
+
+   ```bash
+   # Get tasks from Current Sprint view in Project #4
+   gh project item-list 4 --owner Techlemariam --format json | \
+     jq '.items[] | select(.sprint == "@current") | {title, priority, status}'
+   ```
+
 2. If `active.json` exists, synchronize status between files (Markdown is source of truth).
 3. Prioritize items based on metadata: `<!-- agent: X | estimate: Y | blocked: false -->`.
 

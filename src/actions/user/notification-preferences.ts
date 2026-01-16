@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
-const NotificationPreferencesSchema = z.object({
+const _NotificationPreferencesSchema = z.object({
   // Workout reminders
   dailyReminder: z.boolean(),
   dailyReminderTime: z.string().optional(), // HH:MM format
@@ -28,7 +28,7 @@ const NotificationPreferencesSchema = z.object({
   promotions: z.boolean(),
 });
 
-type NotificationPreferences = z.infer<typeof NotificationPreferencesSchema>;
+type NotificationPreferences = z.infer<typeof _NotificationPreferencesSchema>;
 
 const DEFAULT_PREFERENCES: NotificationPreferences = {
   dailyReminder: true,

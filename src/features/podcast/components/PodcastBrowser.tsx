@@ -2,10 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { PocketCastsPodcast, PocketCastsEpisode } from "@/services/pocketcasts";
-import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Loader2, Play, ArrowLeft, Podcast } from "lucide-react";
+import { Loader2, Play, ArrowLeft } from "lucide-react";
 import Image from "next/image";
 
 interface PodcastBrowserProps {

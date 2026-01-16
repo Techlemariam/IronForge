@@ -1,7 +1,6 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 
 interface StreakResult {

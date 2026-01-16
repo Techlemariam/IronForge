@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { AlertTriangle, Battery, Clock, X } from "lucide-react";
+import { AlertTriangle, X } from "lucide-react";
 import { checkOvertrainingStatusAction } from "@/actions/training/overtraining";
 
 interface OvertrainingBannerProps {

@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
     }
 }
 
-export async function DELETE(req: NextRequest) {
+export async function DELETE(_req: NextRequest) {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) {
@@ -56,7 +56,7 @@ export async function DELETE(req: NextRequest) {
         });
 
         return NextResponse.json({ success: true });
-    } catch (error: any) {
+    } catch {
         return NextResponse.json({ error: "Failed to disconnect" }, { status: 500 });
     }
 }

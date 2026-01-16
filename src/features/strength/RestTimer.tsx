@@ -11,7 +11,7 @@ interface RestTimerProps {
 }
 
 export const RestTimer: React.FC<RestTimerProps> = ({ className }) => {
-  const { isActive, timeLeft, start, stop, addTime, reset, check, initialSeconds, hasFinished } = useRestTimer();
+  const { isActive, timeLeft, start, stop, addTime, reset, check, hasFinished } = useRestTimer();
   const [hasPlayedSound, setHasPlayedSound] = React.useState(false);
 
   // Tick effect

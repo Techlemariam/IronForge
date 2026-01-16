@@ -4,7 +4,7 @@ import { getWellness } from "@/lib/intervals";
 import prisma from "@/lib/prisma";
 import { GeminiService } from "@/services/gemini";
 import { AnalyticsService } from "@/services/analytics";
-import { TTBIndices } from "@/types";
+
 import { getSession } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
 import { EquipmentService } from "@/services/game/EquipmentService";

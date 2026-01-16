@@ -81,7 +81,7 @@ export async function getOracleHistoryAction(limit = 20) {
         });
 
         return messages.reverse();
-    } catch (error) {
+    } catch {
         return [];
     }
 }

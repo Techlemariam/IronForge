@@ -55,7 +55,7 @@ export const useHRStore = create<HRStore>((set, get) => ({
         let newStatus = recoveryStatus;
         if (recoveryStatus === "recovering" && recoveryStartHR && recoveryStartTime) {
             const drop = recoveryStartHR - hr;
-            const duration = (Date.now() - recoveryStartTime) / 1000;
+            // const duration = (Date.now() - recoveryStartTime) / 1000;
 
             // Simple Logic: If HR drops by 20bpm or falls below 100bpm, considered recovered
             if (drop >= 20 || hr < 100) {

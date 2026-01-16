@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog";
-import { Loader2, Swords, User as UserIcon } from "lucide-react";
+import { Loader2, Swords } from "lucide-react";
 import { findRankedOpponentAction, RankedOpponent } from "@/actions/pvp/ranked";
 import { RankBadge } from "@/components/game/pvp/RankBadge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";

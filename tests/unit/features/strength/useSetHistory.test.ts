@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { renderHook, waitFor } from '@testing-library/react';
 
 // Mock the server action at module level
-vi.mock('@/features/strength/actions/history', async (importOriginal) => {
+vi.mock('@/features/strength/actions/history', async (_importOriginal) => {
     return {
         getLastSetForExercise: vi.fn()
     };

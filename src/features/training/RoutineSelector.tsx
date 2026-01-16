@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
   getHevyRoutinesAction,
-  importHevyRoutineToTemplateAction,
 } from "@/actions/integrations/hevy";
 import { HevyRoutine } from "../../types/hevy";
 import { LoadingSpinner } from "../../components/ui/LoadingSpinner";

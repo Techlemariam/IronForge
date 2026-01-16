@@ -36,13 +36,7 @@ interface FloorReward {
   dropChance: number;
 }
 
-interface DungeonProgress {
-  currentFloor: number;
-  highestFloor: number;
-  totalClears: number;
-  currentRunFloors: number;
-  runActive: boolean;
-}
+
 
 // Floor generation templates
 const _FLOOR_TEMPLATES: Record<FloorType, Partial<DungeonFloor>> = {

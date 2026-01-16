@@ -1,6 +1,6 @@
 "use server";
 
-import { TitanState, getAuthoritativeTitanState } from "./titan-state-schema";
+import { TitanState } from "./titan-state-schema";
 
 // ============================================
 // UNIFIED TITAN SOUL - CONFLICT RESOLUTION

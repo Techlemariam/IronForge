@@ -21,7 +21,7 @@ export const EquipmentArmory: React.FC = () => (
 );
 
 export const Bestiary: React.FC<{ userLevel: number; onClose: () => void }> = ({
-    userLevel,
+    userLevel: _userLevel,
     onClose,
 }) => (
     <div className="flex flex-col items-center justify-center min-h-screen bg-forge-900 text-white relative overflow-hidden">

@@ -7,7 +7,6 @@ import React, {
   useMemo,
   useRef,
 } from "react";
-import { GarminWidget } from "@/features/bio/components/GarminWidget";
 
 import dynamic from "next/dynamic";
 import {
@@ -51,8 +50,6 @@ import { toast } from "sonner";
 import { playSound } from "@/utils/root_utils";
 import { useBluetoothSpeed } from "@/features/bio/hooks/useBluetoothSpeed";
 import { Bluetooth } from "lucide-react";
-import { checkOvertrainingStatusAction } from "@/actions/training/overtraining";
-import { getStreakStatusAction } from "@/actions/user/streak";
 
 // Dynamic import to avoid SSR issues with react-player
 // @ts-ignore - React 19 type mismatch

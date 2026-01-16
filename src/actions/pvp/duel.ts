@@ -5,16 +5,17 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { createClient } from "@/utils/supabase/server";
 
-const DuelChallengeSchema = z.object({
-  targetUserId: z.string(),
-  duelType: z.string().optional().default("TITAN_VS_TITAN"),
-  activityType: z.string().optional(),
+// Schema for duel creation
+const _DuelChallengeSchema = z.object({
+  duelType: z.string(), // Reverted to string to support all frontend types
+  activityType: z.string(), // Reverted to string
+  targetDistance: z.number().optional(),
   durationMinutes: z.number().optional(),
   wkgTier: z.number().optional(),
-  targetDistance: z.number().optional(),
+  wager: z.number().optional(),
 });
 
-type DuelChallengeInput = z.infer<typeof DuelChallengeSchema>;
+type DuelChallengeInput = z.infer<typeof _DuelChallengeSchema>;
 
 export async function createDuelChallengeAction(
   targetUserId: string,

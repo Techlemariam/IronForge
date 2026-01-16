@@ -2,7 +2,6 @@ import { Monster } from "@/types";
 import {
     ChaseState,
     ChaseDifficulty,
-    ChaseConfig,
     CHASE_DIFFICULTY_PRESETS,
 } from "@/types/chase";
 import { MONSTERS } from "@/data/gameData";

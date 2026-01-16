@@ -38,8 +38,9 @@ interface TitanStats {
   streak: number;
 }
 
-export default function IronCommandCenter({ userId }: TvModeProps) {
-  const [isFullscreen, setIsFullscreen] = useState(false);
+export default function IronCommandCenter({ userId: _userId }: TvModeProps) {
+  // isFullscreen unused, setIsFullscreen used in toggleFullscreen
+  const [_isFullscreen, setIsFullscreen] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date());

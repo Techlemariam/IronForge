@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { BioBuff } from "@/features/bio/BioBuffService";
 import { BioBuffBadge } from "@/features/bio/components/BioBuffBadge";
 import { motion, AnimatePresence } from "framer-motion";
-import { Shield, Zap, Skull, Sword, Scroll } from "lucide-react";
+import { Skull, Sword } from "lucide-react";
 
 interface DungeonInterfaceProps {
   bossName: string;

@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { Client } from 'pg';
+
 
 test.describe('Dashboard Verification', () => {
     // Need seeded user for this test, but auth is handled by auth.setup.ts typically?

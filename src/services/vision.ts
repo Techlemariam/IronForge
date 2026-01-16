@@ -1,7 +1,6 @@
 import {
   PoseLandmarker,
   FilesetResolver,
-  DrawingUtils,
 } from "@mediapipe/tasks-vision";
 
 /**
@@ -23,7 +22,7 @@ export class VisionService {
   // Singleton instance
   private static instance: VisionService;
 
-  private constructor() {}
+  private constructor() { }
 
   public static getInstance(): VisionService {
     if (!VisionService.instance) {

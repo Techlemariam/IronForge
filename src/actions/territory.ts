@@ -12,7 +12,7 @@ export async function getTerritoryMapAction() {
     }
 }
 
-export async function contestTerritoryAction(territoryId: string, guildId: string) {
+export async function contestTerritoryAction(_territoryId: string, _guildId: string) {
     try {
         // This would be called when a guild member completes a workout
         // For now, just a placeholder

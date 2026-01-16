@@ -42,7 +42,7 @@ export async function GET(request: Request) {
       dbUser.intervalsAthleteId,
     );
     return NextResponse.json(data);
-  } catch (error: any) {
+  } catch {
     return NextResponse.json(
       { error: "Could not retrieve historical cardio data." },
       { status: 500 },

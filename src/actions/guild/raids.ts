@@ -51,7 +51,7 @@ export async function createGuildAction(data: { name: string; description?: stri
 
     revalidatePath("/dashboard");
     return { success: true, guild };
-  } catch (error) {
+  } catch {
     return { success: false, error: "Failed to create guild" };
   }
 }
@@ -147,8 +147,8 @@ export async function startRaidAction(
 
     revalidatePath("/dashboard");
     return { success: true, raid };
-  } catch (error) {
-    console.error("Failed to start raid:", error);
+  } catch (_error) {
+    console.error("Failed to start raid:", _error);
     return { success: false, error: "Failed to start raid" };
   }
 }

@@ -136,7 +136,7 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({
   exercise,
   isActive,
   isCompleted,
-  isFuture,
+  // isFuture,
   index,
   onSetLog,
   activeRef,

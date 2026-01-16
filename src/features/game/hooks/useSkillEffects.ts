@@ -5,10 +5,7 @@
  */
 import { useMemo } from "react";
 import {
-  SkillNodeV2,
   CalculatedEffects,
-  SkillEffect,
-  SkillDrawback,
   EffectCondition,
   DrawbackCondition,
 } from "@/types/skills";

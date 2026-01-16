@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { createDuelChallengeAction, getPotentialOpponentsAction } from "@/actions/pvp/duel";
 import { toast } from "sonner";
 import { Bike, Footprints, Trophy } from "lucide-react";
@@ -19,7 +19,7 @@ interface Opponent {
 export function CardioDuelLobby() {
     const [opponents, setOpponents] = useState<Opponent[]>([]);
     const [selectedOpponent, setSelectedOpponent] = useState<string | null>(null);
-    const [duelType, setDuelType] = useState("DISTANCE_RACE");
+    const [duelType, _setDuelType] = useState("DISTANCE_RACE");
     const [activityType, setActivityType] = useState("RUNNING");
     const [distance, setDistance] = useState("5");
     const [loading, setLoading] = useState(false);

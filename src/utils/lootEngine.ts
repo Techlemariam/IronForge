@@ -1,4 +1,4 @@
-import { LootTable, LootTableEntry, LootDrop, LootItem } from "../types/loot";
+import { LootTable, LootTableEntry, LootDrop } from "../types/loot";
 
 /**
  * LOOT ENGINE

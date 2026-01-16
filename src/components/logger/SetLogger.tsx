@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { Exercise } from "@prisma/client";
-import { logExerciseSetsAction } from "@/actions/user/logger";
 import ForgeInput from "@/components/ui/ForgeInput";
 import ForgeButton from "@/components/ui/ForgeButton";
 import { Trash2, Plus, CheckCircle, Save } from "lucide-react";
@@ -25,11 +24,11 @@ interface SetLoggerProps {
     onSave: (sets: any[]) => Promise<void>;
 }
 
-export default function SetLogger({ exercise, onFinish, onCancel, onCombatUpdate, onSave }: SetLoggerProps) {
+export default function SetLogger({ exercise, onFinish, onCancel, onSave }: SetLoggerProps) {
     const [sets, setSets] = useState<SetData[]>([
         { id: crypto.randomUUID(), weight: 0, reps: 0, rpe: 8, completed: false },
     ]);
-    const [isSaving, setIsSaving] = useState(false);
+    const [isSaving, _setIsSaving] = useState(false);
 
     function addSet() {
         const lastSet = sets[sets.length - 1];

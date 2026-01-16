@@ -3,9 +3,8 @@
 import { useEffect, useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Swords, User as UserIcon, Loader2 } from 'lucide-react';
+import { Swords, Loader2 } from 'lucide-react';
 import { createDuelChallengeAction, getPotentialOpponentsAction } from '@/actions/pvp/duel';
 import { toast } from 'sonner';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -56,7 +55,7 @@ export function ChallengeModal(props: ChallengeModalProps) {
       } else {
         toast.error(result.error || 'Failed to send challenge');
       }
-    } catch (err) {
+    } catch {
       toast.error('An unexpected error occurred');
     } finally {
       setLoading(false);

@@ -4,9 +4,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Brain,
-  Calendar,
   Save,
-  Dumbbell,
   Sparkles,
   AlertTriangle,
   CheckCircle,
@@ -31,7 +29,7 @@ export const ProgramGenerator: React.FC<ProgramGeneratorProps> = ({
   const [intent, setIntent] = useState<string>("Hypertrophy");
   const [days, setDays] = useState<number>(4);
   const [generatedPlan, setGeneratedPlan] = useState<any>(null);
-  const [isGenerating, setIsGenerating] = useState(false);
+  const [, setIsGenerating] = useState(false);
 
   const intents = [
     {
@@ -68,8 +66,8 @@ export const ProgramGenerator: React.FC<ProgramGeneratorProps> = ({
         toast.error("The Oracle failed to divine a plan. Try again.");
         setStep("INTENT");
       }
-    } catch (e) {
-      console.error(e);
+    } catch (_e) {
+      console.error(_e);
       toast.error("Connection to the Spirit Realm failed.");
       setStep("INTENT");
     } finally {
@@ -83,7 +81,7 @@ export const ProgramGenerator: React.FC<ProgramGeneratorProps> = ({
       await saveProgramAction(generatedPlan);
       toast.success("Program inscribed into your calendar.");
       onClose();
-    } catch (e) {
+    } catch {
       toast.error("Failed to save program.");
     }
   };
@@ -139,11 +137,10 @@ export const ProgramGenerator: React.FC<ProgramGeneratorProps> = ({
                     <button
                       key={i.id}
                       onClick={() => setIntent(i.id)}
-                      className={`text-left p-6 rounded-xl border-2 transition-all ${
-                        intent === i.id
+                      className={`text-left p-6 rounded-xl border-2 transition-all ${intent === i.id
                           ? "border-indigo-500 bg-indigo-500/10 shadow-[0_0_20px_rgba(99,102,241,0.2)]"
                           : "border-zinc-800 bg-zinc-900 hover:border-zinc-600"
-                      }`}
+                        }`}
                     >
                       <div className="flex justify-between items-start mb-2">
                         <span
@@ -187,11 +184,10 @@ export const ProgramGenerator: React.FC<ProgramGeneratorProps> = ({
                       <button
                         key={d}
                         onClick={() => setDays(d)}
-                        className={`w-16 h-16 rounded-xl font-bold text-xl flex items-center justify-center border-2 transition-all ${
-                          days === d
+                        className={`w-16 h-16 rounded-xl font-bold text-xl flex items-center justify-center border-2 transition-all ${days === d
                             ? "border-indigo-500 bg-indigo-500/20 text-indigo-400"
                             : "border-zinc-800 bg-zinc-900 text-zinc-500 hover:border-zinc-600"
-                        }`}
+                          }`}
                       >
                         {d}
                       </button>
@@ -276,11 +272,10 @@ export const ProgramGenerator: React.FC<ProgramGeneratorProps> = ({
                     {generatedPlan.days.map((day: any) => (
                       <div
                         key={day.dayOfWeek}
-                        className={`p-4 rounded-lg border flex items-center gap-4 ${
-                          day.isRestDay
+                        className={`p-4 rounded-lg border flex items-center gap-4 ${day.isRestDay
                             ? "bg-zinc-900/50 border-zinc-800 opacity-60"
                             : "bg-zinc-900 border-zinc-700"
-                        }`}
+                          }`}
                       >
                         <div
                           className={`w-12 h-12 rounded-lg flex flex-col items-center justify-center ${day.isRestDay ? "bg-zinc-800" : "bg-zinc-800 text-white font-bold"}`}
@@ -288,7 +283,7 @@ export const ProgramGenerator: React.FC<ProgramGeneratorProps> = ({
                           <span className="text-[10px] uppercase text-zinc-500">
                             {
                               ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][
-                                day.dayOfWeek
+                              day.dayOfWeek
                               ]
                             }
                           </span>
@@ -304,13 +299,12 @@ export const ProgramGenerator: React.FC<ProgramGeneratorProps> = ({
                               <h4 className="text-white font-bold flex items-center gap-2">
                                 {day.session?.name || "Workout"}
                                 <span
-                                  className={`text-[10px] px-2 py-0.5 rounded border ${
-                                    day.session?.difficulty === "Mythic"
+                                  className={`text-[10px] px-2 py-0.5 rounded border ${day.session?.difficulty === "Mythic"
                                       ? "border-red-500 text-red-500"
                                       : day.session?.difficulty === "Heroic"
                                         ? "border-orange-500 text-orange-500"
                                         : "border-blue-500 text-blue-500"
-                                  }`}
+                                    }`}
                                 >
                                   {day.session?.difficulty}
                                 </span>

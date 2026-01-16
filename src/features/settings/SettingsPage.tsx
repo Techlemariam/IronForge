@@ -17,9 +17,7 @@ import {
   Dumbbell,
   User as UserIcon,
   Monitor,
-  Database,
-  Sword,
-  Shield
+  Database
 } from "lucide-react";
 
 interface SettingsPageProps {

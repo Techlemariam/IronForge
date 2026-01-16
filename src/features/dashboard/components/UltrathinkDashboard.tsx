@@ -6,7 +6,6 @@ import {
   TitanLoadCalculation,
   TTBIndices,
   IntervalsEvent,
-  ExerciseLog,
 } from "@/types";
 import { TrainingPath } from "@/types/training";
 import {
@@ -14,7 +13,6 @@ import {
   TrendingUp,
   AlertTriangle,
   Calendar,
-  Battery,
   Activity,
   Flame,
   Wind,
@@ -23,7 +21,6 @@ import {
   ShieldAlert,
   ZapOff,
 } from "lucide-react";
-import { AnalyticsService } from "@/services/analytics";
 import { AnalyticsWorkerService } from "@/services/analyticsWorker";
 import { StorageService } from "@/services/storage";
 import TTBCompass from "@/components/TTBCompass";

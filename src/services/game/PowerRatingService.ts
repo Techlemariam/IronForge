@@ -3,7 +3,6 @@ import {
     calculatePowerRating,
     TrainingPath
 } from "@/lib/powerRating";
-import { TrainingContextService } from "@/services/data/TrainingContextService";
 import { DayPlan } from "@/types";
 
 /**

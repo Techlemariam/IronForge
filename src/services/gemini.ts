@@ -3,8 +3,6 @@ import {
   IntervalsWellness,
   TTBIndices,
   Session,
-  BlockType,
-  ExerciseLogic,
 } from "../types";
 import { StorageService } from "./storage";
 
@@ -14,7 +12,7 @@ export const GeminiService = {
   async consultSpiritGuide(
     wellness: IntervalsWellness,
     ttb: TTBIndices,
-    recentPrs: string[],
+    _recentPrs: string[],
   ): Promise<Session | null> {
     if (!process.env.API_KEY) {
       console.warn("Gemini API Key missing. Spirit Guide dormant.");

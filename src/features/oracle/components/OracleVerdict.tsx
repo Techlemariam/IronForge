@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { OracleDecree, OracleDecreeType } from "@/types/oracle";
+import { OracleDecree } from "@/types/oracle";
 import { Flame, Moon, Zap, AlertTriangle, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";

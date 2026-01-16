@@ -15,17 +15,17 @@ interface BossState {
   isDefeated: boolean;
 }
 
-interface CombatFeedback {
-  boss: BossState;
-  lastDamage: number;
-  combo: number; // Consecutive seconds of damage
-}
+// interface CombatFeedback {
+//   boss: BossState;
+//   lastDamage: number;
+//   combo: number; // Consecutive seconds of damage
+// }
 
 export const useLiveCombat = ({
   watts,
-  heartRate,
+  // heartRate,
   ftp,
-  maxHr,
+  // maxHr,
   isPaused,
 }: LiveCombatProps) => {
   // Ephemeral Boss for the session

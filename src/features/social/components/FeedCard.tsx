@@ -1,5 +1,5 @@
 import React from "react";
-import { Trophy, Dumbbell, Crown } from "lucide-react";
+import { Trophy, Dumbbell } from "lucide-react";
 
 interface FeedItemProps {
   item: {

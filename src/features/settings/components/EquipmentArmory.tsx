@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ForgeCard from "@/components/ui/ForgeCard";
-import ForgeButton from "@/components/ui/ForgeButton";
 import { StorageService } from "@/services/storage";
 import { EquipmentType } from "@/data/equipmentDb";
-import { EquipmentCategory } from "@/types";
 import { Toggle } from "@/components/ui/Toggle"; // Assuming we have or will create a Toggle component, otherwise use checkbox
 
 const ALL_EQUIPMENT = [
@@ -88,11 +86,7 @@ const EquipmentArmory: React.FC = () => {
     await StorageService.saveOwnedEquipment(newOwned as any);
   };
 
-  const toggleHyperProMode = async () => {
-    const newVal = !hyperProMode;
-    setHyperProMode(newVal);
-    await StorageService.saveHyperProPriority(newVal);
-  };
+  // const toggleHyperProMode = async () => { ... }
 
   if (loading)
     return (

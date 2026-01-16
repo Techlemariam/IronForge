@@ -8,7 +8,7 @@ import {
   Server,
   Wifi,
 } from "lucide-react";
-import { ValhallaPayload, ValhallaSyncResult } from "@/types";
+import { ValhallaPayload } from "@/types";
 import { ValhallaService } from "@/services/valhalla";
 import { playSound } from "@/utils";
 import { useSkills } from "@/context/SkillContext";

@@ -128,14 +128,20 @@ echo "✅ Pushed to origin/$current_branch"
 gh pr create --web
 ```
 
-Or with auto-fill:
+Or with auto-fill and **issue linking**:
 
 ```bash
+# Find related issue from branch name (e.g., feat/R-03-cardio-duels → #80)
+issue_num=$(gh issue list --search "$(git branch --show-current | sed 's/.*\///')" --json number -q '.[0].number')
+
 gh pr create \
   --title "[$(git rev-parse --abbrev-ref HEAD | cut -d'/' -f1)] $(git log -1 --pretty=%s)" \
   --body "## Summary
 
 $(git log origin/main..HEAD --oneline)
+
+## Related Issue
+${issue_num:+Closes #$issue_num}
 
 ## Verification
 - [ ] Gatekeeper passed locally

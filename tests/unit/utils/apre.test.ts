@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { calculateApre, ApreSuggestion } from '@/utils/apre';
+import { calculateApre } from '@/utils/apre';
 
 describe('APRE (Auto-Regulated Progressive Resistance)', () => {
     describe('calculateApre', () => {

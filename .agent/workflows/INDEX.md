@@ -77,7 +77,7 @@ Tools for keeping the codebase healthy and clean.
 | Agent | Focus | Key Workflows |
 | :--- | :--- | :--- |
 | **`/coder`** | Implementation | `/feature`, `/refactor` |
-| **`/architect`** | System Design | `/domain-session`, `/schema` |
+| **`/architect`** | System Design | `/domain-session`, `/schema`, `/spec` |
 | **`/qa`** | Verification | `/test`, `/e2e`, `/gatekeeper` |
 | **`/ui-ux`** | Frontend/Design | `/design-system`, `/polish` |
 | **`/analyst`** | Requirements | `/user-story`, `/roadmap` |

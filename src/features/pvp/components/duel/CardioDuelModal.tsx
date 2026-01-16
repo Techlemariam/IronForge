@@ -61,7 +61,7 @@ export function CardioDuelModal({
       } else {
         toast.error(result.error || "Failed to send challenge");
       }
-    } catch (_error) {
+    } catch {
       toast.error("Something went wrong");
     } finally {
       setIsSubmitting(false);

@@ -155,7 +155,7 @@ export function ArenaClient({ activeDuel, currentUserId, leagueInfo, seasonInfo,
                     const res = await sendTauntAction(activeDuel.id);
                     if (res.success) toast.success("Taunt sent!");
                     else toast.error("Taunt failed.");
-                  } catch (_e) { toast.error("Error sending taunt"); }
+                  } catch { toast.error("Error sending taunt"); }
                 }}
               />
             ) : (

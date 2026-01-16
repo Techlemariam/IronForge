@@ -6,10 +6,8 @@ import {
   Dumbbell,
   Activity,
   CheckCircle,
-  XCircle,
   AlertTriangle,
   Loader2,
-  Link as LinkIcon,
   Bike,
   Shield,
   Swords,
@@ -95,7 +93,7 @@ const IntegrationsPanel: React.FC<IntegrationsPanelProps> = ({
   // Detect Strava Code
   useEffect(() => {
     const code = searchParams.get("code");
-    const scope = searchParams.get("scope");
+    // scope variable removed
 
     if (code && !stravaConnected) {
       startTransition(async () => {
@@ -177,10 +175,7 @@ const IntegrationsPanel: React.FC<IntegrationsPanelProps> = ({
     });
   };
 
-  const handleConnectStrava = async () => {
-    const authUrl = await getStravaAuthUrlAction();
-    window.location.href = authUrl;
-  };
+  // handleConnectStrava replaced by direct login flow
 
   const handleDisconnectStrava = () => {
     if (!confirm("Disconnect Strava?")) return;

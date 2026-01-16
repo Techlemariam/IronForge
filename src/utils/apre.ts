@@ -20,9 +20,9 @@ export const calculateApre = (
   // Epley Formula: w * (1 + r/30)
   // We adjust the RPE factor: Real Reps + Reps In Reserve (RIR)
   // RIR ~= 10 - RPE
-  const rir = 10 - rpe;
-  const projectedMaxReps = repsPerformed + rir;
-  const e1rm = currentWeight * (1 + projectedMaxReps / 30);
+  // RIR ~= 10 - RPE
+  // const rir = 10 - rpe;
+  // const projectedMaxReps = repsPerformed + rir;
 
   // 2. Logic: Compare RPE divergence
   // If RPE was > 1 point off target, suggest fix.

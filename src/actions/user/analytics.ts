@@ -6,11 +6,7 @@
 
 import { prisma } from "@/lib/prisma";
 
-interface AnalyticsPeriod {
-  startDate: Date;
-  endDate: Date;
-  label: string;
-}
+
 
 interface ExerciseSet {
   weight: number;

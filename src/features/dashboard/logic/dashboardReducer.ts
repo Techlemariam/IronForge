@@ -1,7 +1,6 @@
 import { DashboardState, DashboardAction } from "../types";
 import { mapHevyToQuest } from "@/utils/hevyAdapter";
 import { mapSessionToQuest } from "@/utils/typeMappers";
-import { mapDefinitionToSession } from "@/utils/workoutMapper";
 
 export const dashboardReducer = (
   state: DashboardState,

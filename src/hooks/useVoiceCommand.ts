@@ -62,7 +62,7 @@ export const useVoiceCommand = (
         recognitionRef.current = recognition;
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, [isListening]);
 
   const processCommand = (text: string) => {

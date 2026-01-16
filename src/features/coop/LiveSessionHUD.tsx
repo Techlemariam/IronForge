@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { CoOpService, CoOpSession } from "@/services/coop/CoOpService";
 import { useUser } from "@/hooks/useUser";
-import { Users, Wifi, UserPlus, Play } from "lucide-react";
+import { Users, Wifi, UserPlus } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface LiveSessionHUDProps {
@@ -37,7 +37,7 @@ export const LiveSessionHUD: React.FC<LiveSessionHUDProps> = ({ onSessionJoin })
     useEffect(() => {
         if (!activeSession) return;
 
-        const channel = CoOpService.subscribeToSession(activeSession.id, (payload) => {
+        const channel = CoOpService.subscribeToSession(activeSession.id, (_payload) => {
             // Refetch full session state on changes for simplicity
             // In a pro version, we'd patch state via payload
             refreshActiveSession(activeSession.id);

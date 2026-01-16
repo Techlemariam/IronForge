@@ -11,7 +11,7 @@ import {
   Cell,
 } from "recharts";
 import { IntervalsActivity, AthleteSettings } from "@/types";
-import { Activity, Zap } from "lucide-react";
+import { Activity } from "lucide-react";
 
 interface HeartRateZoneChartProps {
   activities: IntervalsActivity[];
@@ -65,7 +65,7 @@ const ZONE_GAMIFICATION = [
 
 export const HeartRateZoneChart: React.FC<HeartRateZoneChartProps> = ({
   activities,
-  settings,
+  // settings,
 }) => {
   // Aggregation Logic
   const zoneData = useMemo(() => {

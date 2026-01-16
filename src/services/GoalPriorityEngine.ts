@@ -273,8 +273,8 @@ export class GoalPriorityEngine {
     private static calculateFitScore(
         w: WorkoutDefinition,
         phase: MacroPhase,
-        heatmap: MuscleHeatmap | undefined,
-        manifest: WardensManifest
+        heatmap: MuscleHeatmap | undefined, // Added missing parameter
+        _manifest: WardensManifest
     ): number {
         let score = 100;
 

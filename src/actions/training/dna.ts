@@ -116,7 +116,7 @@ export async function extractTrainingDnaAction(
 export async function exportTrainingDnaAction(
   userId: string,
   name: string,
-  description: string,
+  _description: string,
 ): Promise<{ success: boolean; dnaId?: string; shareUrl?: string }> {
   try {
     const methodology = await extractTrainingDnaAction(userId);
@@ -167,7 +167,7 @@ export async function importTrainingDnaAction(
  * Get popular training DNAs from marketplace.
  */
 export async function getPopularDnasAction(
-  limit: number = 20,
+  _limit: number = 20,
 ): Promise<TrainingDNA[]> {
   // MVP: Return sample DNAs
   return [

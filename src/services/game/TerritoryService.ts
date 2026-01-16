@@ -10,11 +10,9 @@
 
 import prisma from "@/lib/prisma";
 import {
-    coordsToTileId,
     getTilesFromGpsTrack,
     isWithinHomeZone,
     countConnectedTiles,
-    tileIdToCoords,
 } from "@/lib/territory/tileUtils";
 import { calculateEffortScore, EffortInput } from "./EffortCalculator";
 import { NotificationService } from "@/services/notifications";
@@ -72,8 +70,7 @@ const HOME_ZONE_BONUS = 1.5;
 /** Control lost when rival visits your tile */
 const RIVAL_ATTACK_LOSS = 7;
 
-/** Daily control loss cap per tile */
-const DAILY_LOSS_CAP = 50;
+
 
 /** Passive income per owned tile */
 const GOLD_PER_TILE = 0.5;

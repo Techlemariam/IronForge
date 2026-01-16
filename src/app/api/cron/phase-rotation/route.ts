@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { WardensService } from '@/services/WardensService';
-import { GoalPriorityEngine } from '@/services/GoalPriorityEngine';
+
 
 export const dynamic = 'force-dynamic'; // static by default, unless reading the request
 

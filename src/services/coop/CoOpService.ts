@@ -20,7 +20,7 @@ export const CoOpService = {
             return (window as any).__mockCoOpSession;
         }
 
-        const { data, error } = await supabase
+        const { data } = await supabase
             .from("active_sessions")
             .select(`
                 *,

@@ -1,9 +1,9 @@
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { getPvpRank, getRankTitle, Faction, PVP_RANKS } from "@/lib/pvpRanks";
+import { getPvpRank, getRankTitle, Faction } from "@/lib/pvpRanks";
 import {
     Crown, Medal, Shield, Swords, Star, Flame, Skull,
-    Target, Axe, Trophy, User, Crosshair, Sword, Users
+    Target, Axe, Trophy, User, Crosshair, Sword
 } from "lucide-react";
 
 interface RankBadgeProps {

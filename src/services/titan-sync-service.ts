@@ -98,7 +98,7 @@ export async function pullTitanState(
 export async function pushTitanState(
   request: SyncRequest,
 ): Promise<SyncResult> {
-  const { userId, deviceId, clientVersion, clientState, lastSyncedAt } =
+  const { userId, deviceId, clientVersion, clientState } =
     request;
 
   try {

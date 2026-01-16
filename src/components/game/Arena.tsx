@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Swords, Trophy, Skull, Shield, Zap, User } from "lucide-react";
+import { Swords, Trophy, Skull, User } from "lucide-react";
 import {
   getProgressionAction,
   awardGoldAction,
@@ -158,7 +158,7 @@ const Arena: React.FC<ArenaProps> = ({ onClose }) => {
 
   const handleVictory = async () => {
     const rewardGold = 25;
-    const rewardXp = 50; // We might want to add XP too?
+    // const rewardXp = 50; // We might want to add XP too?
     await awardGoldAction(rewardGold);
     setLogs((prev) => [...prev, `Victory! Earned ${rewardGold} Gold.`]);
   };
