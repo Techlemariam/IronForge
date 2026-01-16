@@ -68,20 +68,12 @@ Reject:          Impact=1 AND Effort>=L
 ```bash
 gh issue create \
   --title "[FEATURE] [Idea Title]" \
-  --body "## Overview
+   --body "## Overview
 From /idea workflow
 
-## Context
-[What/Why/Who from intake]
-
-## Metadata
-- Priority: [H/M/L]
-- ROI: [X.X]
-- Effort: [XS-XL]
-- Source: user
-
-## Acceptance Criteria
-- [ ] TBD (to be refined by /analyst)" \
+## 📋 Context
+**Roadmap:** [roadmap.md](https://github.com/Techlemariam/IronForge/blob/main/roadmap.md)
+[What/Why/Who from intake]" \
   --label "feature,priority:[level]"
 ```
 

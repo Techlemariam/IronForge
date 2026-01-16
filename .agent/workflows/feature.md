@@ -35,7 +35,7 @@ domain: "meta"
        --label "feature,priority:high"
      ```
 
-   - Add issue link to roadmap entry: `([#N](url))`
+   - Add issue link to roadmap entry: `([#N](https://github.com/Techlemariam/IronForge/issues/N))`
 
 3. **Claim Issue**:
 
