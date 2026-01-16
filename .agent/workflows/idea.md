@@ -66,7 +66,7 @@ Reject:          Impact=1 AND Effort>=L
 **Create GitHub Issue with metadata:**
 
 ```bash
-gh issue create \
+issue_num=$(gh issue create \
   --title "[FEATURE] [Idea Title]" \
    --body "## Overview
 From /idea workflow
@@ -75,13 +75,24 @@ From /idea workflow
 **Roadmap:** [roadmap.md](https://github.com/Techlemariam/IronForge/blob/main/roadmap.md)
 [What/Why/Who from intake]" \
   --label "feature,priority:[level]" \
-  --milestone "Season 2 - Content" # Default, change if Competitive
+  --milestone "Season 2 - Content" \
+  --json number -q .number)
 ```
 
-**Add to GitHub Project #4:**
+**Link to Project with calculated metadata:**
 
 ```bash
-gh project item-add 4 --owner Techlemariam --url <issue-url>
+if [ -n "$issue_num" ]; then
+  powershell -ExecutionPolicy Bypass -File .agent/scripts/link-issue-to-project.ps1 \
+    -IssueNumber $issue_num \
+    -Priority "[calculated-priority]" \
+    -ROI [calculated-roi] \
+    -Effort "[calculated-effort]" \
+    -Domain "game" \
+    -Status "backlog"
+  
+  echo "✅ Issue #$issue_num linked to Project with ROI=$ROI"
+fi
 ```
 
 **Update roadmap.md with link:**
@@ -89,7 +100,7 @@ gh project item-add 4 --owner Techlemariam --url <issue-url>
 ```markdown
 ## 📋 Backlog (Ready for Analysis)
 
-- [ ] [Idea Title] ([#N](https://github.com/Techlemariam/IronForge/issues/N)) <!-- status: pending | priority: X | effort: Y | impact: Z | source: user -->
+- [ ] [Idea Title] ([#$issue_num](https://github.com/Techlemariam/IronForge/issues/$issue_num)) <!-- status: pending | priority: X | effort: Y | impact: Z | source: user -->
 ```
 
 **For High ROI (≥ 2.0) ideas, generate spec:**

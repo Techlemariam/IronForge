@@ -176,11 +176,42 @@ Once gatekeeper passes:
 1. **Push** your branch: `git push origin [branch-name]`
 2. **Create PR**:
 
+   // turbo
+
    ```bash
-   gh pr create --web
+   # Create PR
+   pr_url=$(gh pr create --json url -q .url --draft \
+     --title "[DOMAIN] $(git log -1 --pretty=%s)" \
+     --body "## Summary
+
+$(git log origin/main..HEAD --oneline)
+
+## Domain
+
+$(git rev-parse --abbrev-ref HEAD | cut -d'/' -f1)
+
+## Verification
+
+- [x] Gatekeeper passed locally
+- [ ] CI checks pending
+")
+
+   echo "✅ PR created: $pr_url"
+
+  # Link to Project
+
+   echo "⏳ Linking PR to GitHub Project..."
+   powershell -ExecutionPolicy Bypass -File .agent/scripts/link-pr-to-project.ps1
+
+   if [ $? -eq 0 ]; then
+     echo "✅ PR linked to Project Board (Status: In Review)"
+   else
+     echo "⚠️  PR created but Project linking failed"
+   fi
+
    ```
 
-3. **Monitor CI**: Ensure all checks pass on GitHub because **only CI-verified code can be merged**.
+1. **Monitor CI**: Ensure all checks pass on GitHub because **only CI-verified code can be merged**.
 
 > [!TIP]
 > Do NOT merge locally. Let the GitHub Pull Request process handle the merge to `main`.

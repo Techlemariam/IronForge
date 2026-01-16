@@ -135,17 +135,33 @@ After successful fix:
 
    ```bash
    # If this bug type recurred 2+ times, create tracking issue
-   gh issue create --title "[BUG] Recurring: [Error Type]" \
+   issue_num=$(gh issue create --title "[BUG] Recurring: [Error Type]" \
      --template bug_report.yml \
      --label "bug,priority:high" \
-     --milestone "Bug Fixes" \
+     --milestone "Season 2 - Competitive" \
      --body "## Recurring Bug Pattern
 
    This bug has occurred multiple times. Root cause analysis needed.
 
    ## Occurrences
    - $(date): Fixed in [commit]
-   "
+   " \
+     --json number -q .number)
+   
+   # Link to Project with metadata
+   if [ -n "$issue_num" ]; then
+     echo "✅ Created issue #$issue_num"
+     
+     powershell -ExecutionPolicy Bypass -File .agent/scripts/link-issue-to-project.ps1 \
+       -IssueNumber $issue_num \
+       -Priority "high" \
+       -Domain "infra" \
+       -Status "backlog"
+     
+     if [ $? -eq 0 ]; then
+       echo "✅ Issue linked to Project Board"
+     fi
+   fi
    ```
 
 4. Run `/pre-pr` to push and create PR

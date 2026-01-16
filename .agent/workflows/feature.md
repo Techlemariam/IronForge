@@ -42,7 +42,10 @@ domain: "meta"
 
    ```bash
    gh issue edit #N --add-assignee @me
-   gh project item-edit ... --field-id STATUS --single-select-option-id "In Progress"
+   
+   # Link to Project and set Status = In Progress
+   powershell -ExecutionPolicy Bypass -File .agent/scripts/link-issue-to-project.ps1 \
+     -IssueNumber $N -Status "in_progress"
    ```
 
 4. **Spec Check**:

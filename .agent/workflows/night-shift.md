@@ -256,9 +256,20 @@ if ! git diff --cached --quiet; then
     --body-file "$BRIEF_FILE" \
     --label "night-shift" \
     --label "automated" \
-    --reviewer "@manager" 2>/dev/null)
+    --reviewer "@manager" \
+    --json url -q .url 2>/dev/null)
     
   echo "🔗 PR Created: $PR_URL" >> "$LOG"
+
+  # Link PR to Project
+  echo "⏳ Linking PR to GitHub Project..." >> "$LOG"
+  powershell -ExecutionPolicy Bypass -File .agent/scripts/link-pr-to-project.ps1 >> "$LOG" 2>&1
+  
+  if [ $? -eq 0 ]; then
+    echo "✅ PR linked to Project Board (Status: In Review)" >> "$LOG"
+  else
+    echo "⚠️  PR created but Project linking failed" >> "$LOG"
+  fi
 
 else
   echo "💤 No changes to commit. Skipping PR." >> "$LOG"
