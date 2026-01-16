@@ -93,41 +93,27 @@ If user requests `--sync-status`:
      - Update roadmap: `[ ]` → `[x]`, move to Shipped section
      - Update status comment: `status: shipped`
 
-### Step 5: Add to GitHub Project (Optional)
+### Step 5: Add to GitHub Project
 
-If `--project` flag is set or project is configured:
+**Default Behavior:** All new items are automatically linked to Project #4 using the helper script.
 
-1. Get project number:
+For each newly created issue:
 
-   ```bash
-   gh project list --owner Techlemariam
-   # Note project number (e.g., 1)
-   ```
+```bash
+# Link to Project with roadmap metadata auto-parsing
+powershell -ExecutionPolicy Bypass -File .agent/scripts/link-issue-to-project.ps1 \
+  -IssueNumber <N> \
+  -Auto \
+  -Status "backlog"
 
-2. For each newly created issue:
+if [ $? -eq 0 ]; then
+  echo "✅ Issue #<N> linked to Project Board"
+else
+  echo "⚠️ Failed to link issue #<N>"
+fi
+```
 
-   ```bash
-   gh project item-add <PROJECT_NUMBER> --owner Techlemariam \
-     --url https://github.com/Techlemariam/IronForge/issues/<N>
-   ```
-
-3. **Set custom fields** (if configured in `.agent/config.json`):
-
-   ```bash
-   # Get item ID
-   gh project item-list <PROJECT_NUMBER> --owner Techlemariam --format json | \
-     jq '.items[] | select(.content.number == <N>) | .id'
-   
-   # Update fields (requires field IDs from project setup)
-   gh project item-edit --project-id <PROJECT_ID> --id <ITEM_ID> \
-     --field-id <PRIORITY_FIELD_ID> --single-select-option-id <OPTION_ID>
-   ```
-
-> **Setup Required:** Create custom fields in GitHub UI first:
->
-> - `Priority` (Single Select): critical, high, medium, low
-> - `ROI` (Number)
-> - `Effort` (Single Select): S, M, L, XL
+> **Note:** The `link-issue-to-project.ps1` script automatically reads `priority`, `domain`, `roi`, and `effort` from the roadmap item's HTML comments.
 
 ### Step 6: Report
 

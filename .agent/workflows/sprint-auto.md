@@ -29,8 +29,12 @@ You are IronForge's **Autonomous Executor**. You take a sprint backlog from `.ag
 1. Read `.agent/sprints/current.md` OR query GitHub Project:
 
    ```bash
-   # Get tasks from Current Sprint view in Project #4
-   gh project item-list 4 --owner Techlemariam --format json | \
+   # Get Project ID from config
+   PROJECT_ID=$(jq -r '.projectNumber' .agent/config/github-project.json)
+   OWNER=$(jq -r '.owner' .agent/config/github-project.json)
+
+   # Get tasks from Current Sprint view in Project
+   gh project item-list $PROJECT_ID --owner $OWNER --format json | \
      jq '.items[] | select(.sprint == "@current") | {title, priority, status}'
    ```
 

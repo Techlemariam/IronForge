@@ -32,11 +32,15 @@ Read and analyze from **both** `roadmap.md` AND GitHub Project:
 - `.agent/feedback/ux-audit.md` → UX priorities
 - `.agent/feedback/health-report.md` → Testing gaps
 
-**GitHub Project (#4):**
+**GitHub Project (Project #4):**
 
 ```bash
-# Get prioritized backlog from GitHub Project
-gh project item-list 4 --owner Techlemariam --format json | \
+# Get Project ID and Owner from config
+PROJECT_ID=$(jq -r '.projectNumber' .agent/config/github-project.json)
+OWNER=$(jq -r '.owner' .agent/config/github-project.json)
+
+# Get prioritized backlog
+gh project item-list $PROJECT_ID --owner $OWNER --format json | \
   jq '.items[] | select(.status == "Backlog") | {title, priority, roi, effort}'
 ```
 

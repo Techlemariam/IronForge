@@ -72,6 +72,13 @@ param(
 
 $ErrorActionPreference = "Stop"
 
+# Import common module for retry logic and logging
+$CommonModule = Join-Path $PSScriptRoot "lib\Common.psm1"
+if (Test-Path $CommonModule) {
+    Import-Module $CommonModule -Force
+    Initialize-ProjectLogger -LogName "link-issue"
+}
+
 # Helper: Load config
 function Get-ProjectConfig {
     $configPath = Join-Path $PSScriptRoot "..\config\github-project.json"

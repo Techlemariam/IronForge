@@ -4,7 +4,19 @@ on:
   issues:
     types: [closed, reopened]
   pull_request:
-    types: [opened, closed, synchronize]
+    types: [opened, closed]
+
+# GitHub Project V2 Configuration
+# IDs are stored in .agent/config/github-project.json
+# These env vars provide a fallback for GitHub Actions context
+env:
+  PROJECT_ID: PVT_kwHOAe3KCM4BMt-p
+  STATUS_FIELD_ID: PVTSSF_lAHOAe3KCM4BMt-pzg76_fI
+  STATUS_BACKLOG: f75ad846
+  STATUS_IN_PROGRESS: 47fc9ee4
+  STATUS_IN_REVIEW: 881f842c
+  STATUS_MERGED_STAGING: 3ac5a295
+  STATUS_DONE: 98236657
 
 jobs:
   update_project:
@@ -12,32 +24,65 @@ jobs:
     permissions:
       issues: write
       pull-requests: write
-      repository-projects: write # For Classic Projects (not V2?)
-      # V2 require PAT usually
+      repository-projects: write
     
     env:
       GITHUB_TOKEN: ${{ secrets.PROJECT_TOKEN || secrets.GITHUB_TOKEN }}
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
+      # ===== ISSUE EVENTS =====
+      
       - name: Move Closed Issue to Done
         if: github.event_name == 'issues' && github.event.action == 'closed'
+        shell: pwsh
         run: |
-          ISSUE_URL="${{ github.event.issue.html_url }}"
-          gh project item-edit --project-id PVT_kwHOAe3KCM4BMt-p --field-id PVTSSF_lAHOAe3KCM4BMt-pzg76_fI --single-select-option-id 98236657 --url "$ISSUE_URL"
-          
+          .agent/scripts/link-issue-to-project.ps1 `
+            -IssueNumber ${{ github.event.issue.number }} `
+            -Status "done" `
+            -Verbose
+
       - name: Move Reopened Issue to In Progress
         if: github.event_name == 'issues' && github.event.action == 'reopened'
+        shell: pwsh
         run: |
-          ISSUE_URL="${{ github.event.issue.html_url }}"
-          gh project item-edit --project-id PVT_kwHOAe3KCM4BMt-p --field-id PVTSSF_lAHOAe3KCM4BMt-pzg76_fI --single-select-option-id 47fc9ee4 --url "$ISSUE_URL"
+          .agent/scripts/link-issue-to-project.ps1 `
+            -IssueNumber ${{ github.event.issue.number }} `
+            -Status "in_progress" `
+            -Verbose
 
-      - name: Move Issue to In Progress on PR Open
+      # ===== PULL REQUEST EVENTS =====
+      
+      - name: Link PR to Project on Open
         if: github.event_name == 'pull_request' && github.event.action == 'opened'
+        shell: pwsh
         run: |
-          # Find linked issue? Hard via simple shell.
-          # Approximation: If PR body contains "Closes #X", find X.
-          # For now, we skip complex parsing and just log.
-          echo "Automation for PR -> Issue update requires more complex logic to find linked issue."
+          .agent/scripts/link-pr-to-project.ps1 `
+            -PRNumber ${{ github.event.pull_request.number }} `
+            -Status "in_review" `
+            -Verbose
+
+      - name: Move Merged PR to Merged/Staging
+        if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
+        shell: pwsh
+        run: |
+          .agent/scripts/link-pr-to-project.ps1 `
+            -PRNumber ${{ github.event.pull_request.number }} `
+            -Status "merged_staging" `
+            -Verbose
           
-      # Note: This is an implementation start.
+          # Also update linked issues if found in body (handled by script?)
+          # The script currently doesn't auto-parse linked issues from PR body for status updates.
+          # TODO: Add that capability to the script for 100% parity, 
+          # but for now the PR status update is the critical part.
+
+      - name: Move Closed PR (not merged) to Backlog
+        if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == false
+        shell: pwsh
+        run: |
+          .agent/scripts/link-pr-to-project.ps1 `
+            -PRNumber ${{ github.event.pull_request.number }} `
+            -Status "backlog" `
+            -Verbose
