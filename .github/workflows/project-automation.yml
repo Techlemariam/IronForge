@@ -4,7 +4,7 @@ on:
   issues:
     types: [closed, reopened]
   pull_request:
-    types: [opened, closed]
+    types: [opened, closed, synchronize]
 
 jobs:
   update_project:
@@ -15,16 +15,11 @@ jobs:
       repository-projects: write # For Classic Projects (not V2?)
       # V2 require PAT usually
     
+    env:
+      GITHUB_TOKEN: ${{ secrets.PROJECT_TOKEN || secrets.GITHUB_TOKEN }}
+
     steps:
-      - name: Authenticate gh cli
-        run: |
-          echo "${{ secrets.PROJECT_TOKEN }}" > .github_token
-          gh auth login --with-token < .github_token
-        env:
-          # Note: User must add PROJECT_TOKEN secret with 'project' scope
-          # Fallback to GITHUB_TOKEN if project is linked to repo (might fail for User projects)
-          GITHUB_TOKEN: ${{ secrets.PROJECT_TOKEN || secrets.GITHUB_TOKEN }} 
-          
+
       - name: Move Closed Issue to Done
         if: github.event_name == 'issues' && github.event.action == 'closed'
         run: |
