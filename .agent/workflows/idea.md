@@ -61,15 +61,41 @@ Low Priority:    ROI < 1.0
 Reject:          Impact=1 AND Effort>=L
 ```
 
-## 3. Roadmap Placement
+## 3. GitHub Issue & Roadmap Placement
 
-Lägg till i `.agent/features/roadmap.md`:
+**Create GitHub Issue with metadata:**
+
+```bash
+gh issue create \
+  --title "[FEATURE] [Idea Title]" \
+   --body "## Overview
+From /idea workflow
+
+## 📋 Context
+**Roadmap:** [roadmap.md](https://github.com/Techlemariam/IronForge/blob/main/roadmap.md)
+[What/Why/Who from intake]" \
+  --label "feature,priority:[level]" \
+  --milestone "Season 2 - Content" # Default, change if Competitive
+```
+
+**Add to GitHub Project #4:**
+
+```bash
+gh project item-add 4 --owner Techlemariam --url <issue-url>
+```
+
+**Update roadmap.md with link:**
 
 ```markdown
 ## 📋 Backlog (Ready for Analysis)
 
-- [ ] [Idea Title] <!-- status: pending | priority: X | effort: Y | impact: Z | source: user -->
+- [ ] [Idea Title] ([#N](https://github.com/Techlemariam/IronForge/issues/N)) <!-- status: pending | priority: X | effort: Y | impact: Z | source: user -->
 ```
+
+**For High ROI (≥ 2.0) ideas, generate spec:**
+
+- Run `/spec [idea-name]` to create initial specification
+- Link spec in roadmap and GitHub Issue
 
 ## 4. Output
 

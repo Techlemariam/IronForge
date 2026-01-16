@@ -2,7 +2,7 @@
 
 import React from "react";
 import { GarminWellnessData } from "@/services/bio/GarminService";
-import { Battery, Activity, Zap, TrendingDown } from "lucide-react";
+import { Battery, Activity } from "lucide-react";
 import { motion } from "framer-motion";
 
 interface GarminWidgetProps {

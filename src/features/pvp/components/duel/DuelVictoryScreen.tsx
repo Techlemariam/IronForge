@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Trophy, Swords, Share2, ArrowRight } from 'lucide-react';
+import { Trophy, Swords, Share2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 // Imports removed to avoid unused dependencies
@@ -22,7 +22,7 @@ export function DuelVictoryScreen({ duel, currentUserId, onClose }: DuelVictoryS
     const opponentStats = duel.challengerId === currentUserId ? (duel.defenderDistance || duel.defenderScore) : (duel.challengerDistance || duel.challengerScore);
 
     // Determine stats based on duel type
-    const metricLabel = duel.duelType === 'TITAN_VS_TITAN' ? 'Points' : 'Distance';
+    // const metricLabel = duel.duelType === 'TITAN_VS_TITAN' ? 'Points' : 'Distance';
     const metricUnit = duel.duelType === 'TITAN_VS_TITAN' ? 'pts' : 'km';
 
     // Helper to format value

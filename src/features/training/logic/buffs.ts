@@ -1,4 +1,4 @@
-import { Zap, Shield, Heart, Flame, Coins, Clock } from "lucide-react";
+import { Shield, Heart, Flame, Coins, Clock } from "lucide-react";
 import React from "react";
 
 export interface CardioBuff {

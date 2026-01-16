@@ -1,6 +1,5 @@
 "use server";
 
-import { prisma } from "@/lib/prisma"; // Keeping for production ref
 import { revalidatePath } from "next/cache";
 
 interface WorkoutTag {

@@ -13,8 +13,8 @@ export class TrainingService {
         rpe: number
     ) {
         // Calculate E1RM for the log
-        const rir = 10 - rpe;
-        const e1rm = weight * (1 + (reps + rir) / 30);
+        // const rir = 10 - rpe;
+        // const e1rm = weight * (1 + (reps + rir) / 30);
 
         return await prisma.exerciseLog.create({
             data: {

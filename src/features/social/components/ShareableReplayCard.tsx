@@ -6,7 +6,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Share2,
-  Download,
   Copy,
   Check,
   Trophy,
@@ -58,7 +57,7 @@ export function ShareableReplayCard({
       setCopied(true);
       toast.success("Link copied to clipboard!");
       setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
+    } catch {
       toast.error("Failed to copy link");
     }
   };
@@ -72,7 +71,7 @@ export function ShareableReplayCard({
           url: `${window.location.origin}/replay/${workout.date}`,
         });
         onShare?.();
-      } catch (err) {
+      } catch {
         // User cancelled or share failed
       }
     } else {

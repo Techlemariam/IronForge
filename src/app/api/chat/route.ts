@@ -1,7 +1,7 @@
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { streamText } from "ai";
 import { OracleService } from "@/services/OracleService";
-import { WardensManifest, SystemMetrics, MacroPhase } from "@/types/goals";
+import { WardensManifest, SystemMetrics } from "@/types/goals";
 
 // Configure Google Provider with existing project API Key
 const google = createGoogleGenerativeAI({

@@ -11,7 +11,6 @@ import { PathSelector } from "@/components/PathSelector";
 import { PassiveLayerProgress } from "@/components/PassiveLayerProgress";
 import {
   ArrowLeft,
-  Clock,
   Activity,
   Zap,
   Book,

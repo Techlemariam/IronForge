@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Brain, X, Check, Cloud, Sparkles } from "lucide-react";
+import { Brain, X, Cloud, Sparkles } from "lucide-react";
 import { StorageService } from "../services/storage";
 import { MeditationLog } from "../types";
 import { playSound } from "../utils";

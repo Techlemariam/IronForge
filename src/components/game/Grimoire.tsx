@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { GrimoireEntry, GrimoireEntryType, Rarity } from "../../types";
+import { GrimoireEntry, GrimoireEntryType } from "../../types";
 import { StorageService } from "../../services/storage";
 import { ACHIEVEMENTS } from "../../data/static";
 import {
@@ -9,9 +9,7 @@ import {
   TrendingUp,
   Sparkles,
   ChevronRight,
-  Clock,
 } from "lucide-react";
-import { cn } from "../../lib/utils";
 import { LoadingSpinner } from "../ui/LoadingSpinner";
 
 interface GrimoireProps {

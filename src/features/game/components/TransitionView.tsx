@@ -3,7 +3,6 @@ import Image from "next/image";
 import { Block } from "@/types";
 import {
   Wrench,
-  CheckCircle2,
   ArrowRight,
   Clock,
   SkipForward,

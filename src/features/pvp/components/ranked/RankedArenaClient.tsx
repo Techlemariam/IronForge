@@ -2,14 +2,13 @@
 
 import { useState } from "react";
 import { PvpSeason } from "@prisma/client";
-import { PlayerRating, RankedOpponent } from "@/actions/pvp/ranked";
+import { PlayerRating } from "@/actions/pvp/ranked";
 import { RankBadge } from "@/components/game/pvp/RankBadge";
 import { MatchmakingModal } from "./MatchmakingModal";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Crown, Swords, Trophy, Users, Calendar, Info, Medal } from "lucide-react";
-import { motion } from "framer-motion";
+import { Crown, Swords, Trophy, Calendar, Info, Medal } from "lucide-react";
 import { Faction } from "@/lib/pvpRanks";
 import { UnifiedLeaderboardEntry } from "@/actions/pvp/leaderboards";
 

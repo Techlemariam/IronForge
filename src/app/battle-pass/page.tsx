@@ -1,5 +1,4 @@
 import {
-  getActiveSeasonAction,
   getUserBattlePassProgressAction,
 } from "@/actions/systems/battle-pass";
 import { BattlePassView } from "@/features/gamification/components/battle-pass/BattlePassView";

@@ -3,7 +3,7 @@ import { createClient } from "@/utils/supabase/client";
 import { RealtimeChannel } from "@supabase/supabase-js";
 
 // Channel Name (Deprecated for direct session usage, but keeping if needed for default)
-const COMPANION_CHANNEL = "iron_forge_companion_v1";
+// const COMPANION_CHANNEL = "iron_forge_companion_v1";
 
 // Event Types
 export type CompanionEvent =

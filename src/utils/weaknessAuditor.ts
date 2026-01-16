@@ -7,7 +7,7 @@ import {
   RPVolumeStandards,
 } from "../types/auditor";
 import { getStandardsForMuscle } from "./volumeCalculator";
-import { muscleMap } from "../data/muscleMap";
+
 
 /**
  * Weakness Auditor Engine

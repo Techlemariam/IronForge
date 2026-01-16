@@ -1,6 +1,6 @@
 "use server";
 
-import { prisma } from "@/lib/prisma";
+
 
 interface StatCategory {
   name: string;
@@ -41,7 +41,7 @@ interface StatComparison {
  * Get comprehensive statistics.
  */
 export async function getComprehensiveStatsAction(
-  userId: string,
+  _userId: string,
 ): Promise<ComprehensiveStats> {
   const categories: StatCategory[] = [
     {

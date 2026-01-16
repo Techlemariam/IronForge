@@ -135,8 +135,8 @@ test.describe('Iron Mines - Strength Training', () => {
         }
 
         // Wait for HUD elements (if in workout view)
-        const hudElements = page.locator('.bg-black\\/40.backdrop-blur-xl, [data-testid="biometrics-hud"]');
-        const exerciseCards = page.locator('[class*="ForgeCard"], [class*="exercise-view"]');
+        const _hudElements = page.locator('.bg-black\\/40.backdrop-blur-xl, [data-testid="biometrics-hud"]');
+        const _exerciseCards = page.locator('[class*="ForgeCard"], [class*="exercise-view"]');
 
         // At minimum, verify we reached some strength-related view
         const content = await page.content();
@@ -551,7 +551,7 @@ test.describe('Iron Mines - Ghost Mode', () => {
         await page.waitForTimeout(1000);
 
         // Verify filtering logic (own events should not appear)
-        const content = await page.content();
+        const _content = await page.content();
 
         // Check that ghost overlay exists but doesn't show own events
         console.log('Ghost event filtering check completed');
@@ -700,7 +700,7 @@ test.describe('Iron Mines - LiveSessionHUD Interactions', () => {
         await page.waitForTimeout(1000);
 
         // Look for participant count (e.g., "2/4")
-        const participantCount = page.locator('text=/\\d+\\/\\d+/');
+        const _participantCount = page.locator('text=/\\d+\\/\\d+/');
 
         // Check for count pattern in page
         const content = await page.content();

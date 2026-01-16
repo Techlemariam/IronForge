@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Minus, Plus, Zap, Shield, Target } from "lucide-react";
 import { playSound } from "../../utils";
 import { JargonTooltip } from "./JargonTooltip";
@@ -14,7 +14,7 @@ interface SetLogFormProps {
 const SetLogForm: React.FC<SetLogFormProps> = ({
   targetWeight,
   targetReps,
-  targetRPE,
+  // targetRPE,
   previousWeight,
   onLog,
 }) => {

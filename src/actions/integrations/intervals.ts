@@ -116,7 +116,7 @@ export async function getEventsAction(
     const { apiKey, athleteId } = await getIntervalsCredentials();
     const data = await getEvents(startDate, endDate, apiKey, athleteId);
     return data as unknown as IntervalsEvent[];
-  } catch (error: any) {
+  } catch {
     return [];
   }
 }

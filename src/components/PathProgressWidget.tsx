@@ -8,7 +8,6 @@ import {
   TrendingUp,
   Zap,
   Sparkles,
-  Lock,
   Check,
 } from "lucide-react";
 import { motion } from "framer-motion";
@@ -30,7 +29,7 @@ const PATH_COLORS: Record<string, string> = {
 };
 
 export const PathProgressWidget: React.FC = () => {
-  const { pathProgress, activeKeystoneId, calculatedEffects } = useSkills();
+  const { pathProgress, activeKeystoneId } = useSkills();
 
   // Sort paths by progress (highest first)
   const sortedPaths = Object.entries(pathProgress)

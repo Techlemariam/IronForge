@@ -6,7 +6,6 @@ import { PwaInstallBanner } from "@/components/ui/PwaInstallBanner";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import { Exercise } from "@/types/ironforge";
 
 
 import { saveWorkoutAction } from "@/actions/integrations/hevy";

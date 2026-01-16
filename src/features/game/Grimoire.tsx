@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Book, Skull, Scroll, Search, Sword, LogOut } from "lucide-react";
+import { Book, Skull, Scroll, Sword, LogOut } from "lucide-react";
 import { getBestiaryAction } from "@/actions/systems/world";
 
 type Tab = "bestiary" | "legends";

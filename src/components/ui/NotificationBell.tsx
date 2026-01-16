@@ -17,7 +17,7 @@ interface Notification {
 export function NotificationBell() {
     const [notifications, setNotifications] = useState<Notification[]>([]);
     const [isOpen, setIsOpen] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
+    // const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const fetchNotifications = async () => {
@@ -41,7 +41,7 @@ export function NotificationBell() {
             } catch (e) {
                 console.error(e);
             } finally {
-                setIsLoading(false);
+                // setIsLoading(false);
             }
         };
         fetchNotifications();

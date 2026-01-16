@@ -2,9 +2,8 @@ import prisma from "../lib/prisma";
 import { runFullAudit } from "./auditorOrchestrator";
 import { OracleService } from "./oracle";
 import { getWellness } from "../lib/intervals";
-import { TrainingMemoryManager } from "./trainingMemoryManager";
 import { AnalyticsService } from "./analytics";
-import { TrainingPath, WeeklyMastery, InAppWorkoutLog, IntervalsActivity } from "../types";
+import { TrainingPath, IntervalsActivity } from "../types";
 import { WellnessData } from "../lib/intervals";
 
 // Note: Hevy integration removed per data-source-reconciliation.md
@@ -122,24 +121,6 @@ export const PlannerService = {
     if (auditReport.highestPriorityGap) {
       ttb.lowest = "strength"; // Weakness found
     }
-
-    // 5. Aggregate Logs for Oracle Context
-    const inAppLogs: InAppWorkoutLog[] = [
-      ...user.exerciseLogs.map((l: any) => ({
-        id: l.id.toString(),
-        date: l.date.toISOString(),
-        type: "STRENGTH" as const,
-        durationMin: 45, // Estimate
-        setsCompleted: 1,
-      })),
-      ...user.cardioLogs.map((l: any) => ({
-        id: l.id.toString(),
-        date: l.date.toISOString(),
-        type: "CARDIO" as const,
-        durationMin: l.duration / 60,
-        tssEstimate: l.load,
-      })),
-    ];
 
     // 6. Generate Plan via Oracle (using consult as generateWeekPlan doesn't exist yet)
     const recommendation = await OracleService.consult(

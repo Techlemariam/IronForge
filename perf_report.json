@@ -1,0 +1,14 @@
+
+> ironforge-rpg@1.0.0 lhci
+> lhci autorun --collect.url=http://localhost:3000
+
+Ô£à  .lighthouseci/ directory writable
+Ô£à  Configuration file found
+Ô£à  Chrome installation found
+ÔÜá´©Å   GitHub token not set
+Healthcheck passed!
+
+Started a web server with "pnpm run start"...
+Running Lighthouse 3 time(s) on http://localhost:3000
+Run #1...failed!
+

@@ -3,14 +3,6 @@
 
 import { revalidatePath } from "next/cache";
 
-interface ReferralCode {
-  code: string;
-  userId: string;
-  createdAt: Date;
-  usedCount: number;
-  totalEarnings: { xp: number; gold: number };
-}
-
 interface ReferralReward {
   type: "REFERRER" | "REFERRED";
   xp: number;
@@ -19,65 +11,16 @@ interface ReferralReward {
   milestone?: string;
 }
 
-// Rewards for referrer (per successful referral)
 const REFERRER_REWARDS = {
   base: { xp: 500, gold: 250 },
-  milestones: {
-    3: {
-      xp: 1000,
-      gold: 500,
-      crateRarity: "RARE",
-      milestone: "Social Butterfly",
-    },
-    5: { xp: 2000, gold: 1000, crateRarity: "EPIC", milestone: "Recruiter" },
-    10: {
-      xp: 5000,
-      gold: 2500,
-      crateRarity: "LEGENDARY",
-      milestone: "Army Builder",
-    },
-    25: {
-      xp: 10000,
-      gold: 5000,
-      crateRarity: "LEGENDARY",
-      milestone: "Guild Master",
-    },
-  },
 };
 
-// Rewards for referred user
 const REFERRED_REWARDS = {
-  xp: 1000,
-  gold: 500,
-  crateRarity: "UNCOMMON",
+  xp: 250,
+  gold: 100,
 };
 
-/**
- * Generate unique referral code for user.
- */
-export async function generateReferralCodeAction(
-  userId: string,
-): Promise<{ code: string }> {
-  try {
-    // Generate 8-character alphanumeric code
-    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-    let code = "";
-    for (let i = 0; i < 8; i++) {
-      code += chars[Math.floor(Math.random() * chars.length)];
-    }
-
-    console.log(`Generated referral code for ${userId}: ${code}`);
-    return { code };
-  } catch (error) {
-    console.error("Error generating referral code:", error);
-    return { code: "" };
-  }
-}
-
-/**
- * Get user's referral stats.
- */
-export async function getReferralStatsAction(userId: string): Promise<{
+export async function getReferralStatsAction(_userId: string): Promise<{
   code: string;
   referralCount: number;
   pendingRewards: number;

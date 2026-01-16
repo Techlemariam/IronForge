@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, Filter, Lock } from "lucide-react";
+import { Search, Lock } from "lucide-react";
 import type { ArmoryItem } from "@/actions/economy/armory";
 
 const RARITY_COLORS: Record<string, string> = {

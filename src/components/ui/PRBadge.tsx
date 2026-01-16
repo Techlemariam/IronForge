@@ -20,7 +20,7 @@ interface PRBadgeProps {
  */
 export const PRBadge: React.FC<PRBadgeProps> = ({
     maxReps,
-    exerciseName,
+    // exerciseName,
     weight,
     size = "md",
     isLoading = false,

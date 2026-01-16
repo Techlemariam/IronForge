@@ -35,7 +35,7 @@ export const useGuildContribution = ({
   });
 
   const pendingDamageRef = useRef(0);
-  const lastSyncRef = useRef(Date.now());
+  // const lastSyncRef = useRef(Date.now());
 
   // Damage Calculation Loop (1s Interval)
   useEffect(() => {

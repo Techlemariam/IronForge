@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { GhostEvent } from "@/services/coop/CoOpService";
 import { Ghost, Dumbbell, Zap, FlameKindling } from "lucide-react";

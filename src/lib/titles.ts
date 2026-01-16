@@ -47,7 +47,7 @@ export async function checkAndGrantTitles(userId: string) {
 
   // Ensure titles exist in DB first (Idempotent seed)
   // In production, this should be a seed script, but lazy-init is fine for dev
-  for (const def of DEFINED_TITLES) {
+  for (const _def of DEFINED_TITLES) {
     // We use 'upsert' or just check existence to avoid hammering DB,
     // but for now let's assume they might not exist.
     // Actually, let's just query if we qualify.

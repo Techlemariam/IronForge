@@ -19,12 +19,7 @@ const SetSchema = z.object({
 
 export type SetData = z.infer<typeof SetSchema>;
 
-const LogExerciseSchema = z.object({
-  exerciseId: z.string(),
-  sets: z.array(SetSchema),
-  notes: z.string().optional(),
-  date: z.string().optional(), // ISO date override
-});
+
 
 // --- Actions ---
 
@@ -75,7 +70,7 @@ export async function logSetAction(
     }
 
     // 3. Calculate E1RM for this set (Epley Formula: w * (1 + r/30))
-    const e1rm = validatedSet.weight * (1 + validatedSet.reps / 30);
+    const _e1rm = validatedSet.weight * (1 + validatedSet.reps / 30);
 
     // 4. Save to DB
     if (existingLog) {

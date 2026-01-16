@@ -56,7 +56,20 @@ For each selected item:
 4. **Update Ledger**:
    - Mark item as `✅ Resolved` in `DEBT.md`.
 
-5. **Create PR** (after batch complete):
+5. **Link to GitHub Issue** (if exists):
+
+   ```bash
+   # Search for related issue
+   gh issue list --search "[debt item description]" --limit 1
+   
+   # Add fix reference to issue
+   gh issue comment #N --body "Fixed in commit $(git rev-parse --short HEAD)"
+   
+   # Close issue if this was the only fix needed
+   gh issue close #N --reason completed
+   ```
+
+6. **Create PR** (after batch complete):
    - Run `/pre-pr` to push and create PR.
    - Wait for CI before continuing.
 

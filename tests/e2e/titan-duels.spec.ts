@@ -72,7 +72,7 @@ test.describe('Titan Duels Flow', () => {
         expect(hasArenaContent).toBeTruthy();
     });
 
-    test('should display duel stats correctly in DuelCard', async ({ page }) => {
+    test('should display duel stats correctly in DuelCard', async ({ page: _page }) => {
         // This would require seeded test data with an active duel
         // Placeholder for future implementation when test data is available
         test.skip();

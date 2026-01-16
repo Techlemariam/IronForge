@@ -57,7 +57,7 @@ export async function getCustomExercises() {
             }
         });
         return custom.map(ex => ({ ...ex, isCustom: true }));
-    } catch (e) {
+    } catch {
         return [];
     }
 }

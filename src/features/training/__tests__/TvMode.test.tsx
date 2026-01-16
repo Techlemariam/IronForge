@@ -2,7 +2,7 @@
  * @vitest-environment jsdom
  */
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { TvMode } from "../TvMode";
 import { useBluetoothHeartRate } from "@/features/bio/hooks/useBluetoothHeartRate";
@@ -10,7 +10,6 @@ import { useBluetoothPower } from "@/features/bio/hooks/useBluetoothPower";
 import { useTitanReaction } from "@/features/titan/useTitanReaction";
 import { useGuildContribution } from "@/features/guild/hooks/useGuildContribution";
 import { useCompanionRelay } from "@/features/companion/useCompanionRelay";
-import { useLiveCombat } from "@/features/combat/hooks/useLiveCombat";
 
 vi.mock("framer-motion", () => {
   const MockDiv = React.forwardRef(({ children, ...props }: any, ref: any) => (

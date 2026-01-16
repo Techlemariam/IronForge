@@ -1,7 +1,6 @@
 import {
   ExerciseLog,
   AppSettings,
-  Achievement,
   MeditationLog,
   Equipment,
   Session,
@@ -11,13 +10,7 @@ import {
 const DB_NAME = "ironforge_db";
 const DB_VERSION = 4; // Incremented for Grimoire/Bestiary
 
-interface UserState {
-  achievements: string[];
-  skills: string[];
-  settings: AppSettings;
-  equipment: Equipment[];
-  gold: number;
-}
+
 
 export interface ActiveSessionState {
   sessionId: string;

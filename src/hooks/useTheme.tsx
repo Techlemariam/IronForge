@@ -97,7 +97,7 @@ export function useTheme() {
 import { Moon, Sun, Monitor } from "lucide-react";
 
 export function ThemeToggle() {
-  const { theme, setTheme, resolvedTheme, toggleTheme } = useTheme();
+  const { resolvedTheme, toggleTheme } = useTheme();
 
   return (
     <button
@@ -134,11 +134,10 @@ export function ThemeSelector() {
           <button
             key={option.value}
             onClick={() => setTheme(option.value)}
-            className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-colors ${
-              isActive
+            className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-colors ${isActive
                 ? "bg-amber-500 text-white"
                 : "bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700"
-            }`}
+              }`}
           >
             <Icon className="w-4 h-4" />
             <span>{option.label}</span>

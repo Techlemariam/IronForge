@@ -120,7 +120,7 @@ export const IntegrationService = {
     for (const block of session.blocks) {
       if (block.exercises) {
         for (const ex of block.exercises) {
-          const sets = ex.sets.map((s, idx) => ({
+          const sets = ex.sets.map((s, _idx) => ({
             type: "normal",
             weight_kg: s.weight || 0,
             reps: typeof s.reps === "number" ? s.reps : s.completedReps || 0,

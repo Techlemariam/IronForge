@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { SetData } from "@/actions/training/strength";
-import { CheckCircle, Circle, Flame, ChevronDown } from "lucide-react";
+import { CheckCircle, Circle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 // Set types for different training techniques
@@ -31,7 +31,7 @@ export const SetRow: React.FC<SetRowProps> = ({
   setNumber,
   set,
   onChange,
-  onDelete,
+  onDelete: _onDelete,
   onComplete,
   lastPerformance,
 }) => {

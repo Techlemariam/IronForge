@@ -47,7 +47,7 @@ export function BattlePassView({ initialData, userId }: BattlePassViewProps) {
 
   // Calculate overall progress logic
   // Unlocked tiers / total tiers
-  const totalTiers = data.tiers.length;
+  // const totalTiers = data.tiers.length;
   // Current tier is 0-indexed concept effectively in currentTier from DB (it returns the last COMPLETED tier usually or current level)
   // Here data.level is usually the current level achieved.
 

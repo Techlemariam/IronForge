@@ -18,13 +18,37 @@ domain: "meta"
 
 > **Naming Convention:** All Task Names must start with a domain prefix, e.g., `[GAME] Feature Name`.
 
-### Phase 0: Roadmap Sync
+### Phase 0: Roadmap Sync & Issue Setup
 
-1. Read `.agent/features/roadmap.md`.
-2. Search for `[feature-name]`.
+1. Read `roadmap.md` and search for `[feature-name]`.
    - If in 'Backlog', move to 'Active Development'.
    - If missing, create new entry under 'Active Development'.
    - Set status: `<!-- status: in-progress | architect: /architect | priority: high -->`
+
+2. **GitHub Issue Check**:
+   - Search for existing issue: `gh issue list --search "[feature-name]"`
+   - If no issue exists:
+
+     ```bash
+     gh issue create --title "[FEATURE] [feature-name]" \
+       --template feature_request.yml \
+       --label "feature,priority:high" \
+       --milestone "Season 2 - Competitive"  # or "Season 2 - Content" based on feature type
+     ```
+
+   - Add issue link to roadmap entry: `([#N](https://github.com/Techlemariam/IronForge/issues/N))`
+
+3. **Claim Issue**:
+
+   ```bash
+   gh issue edit #N --add-assignee @me
+   gh project item-edit ... --field-id STATUS --single-select-option-id "In Progress"
+   ```
+
+4. **Spec Check**:
+   - Check if `specs/[feature-name].md` exists
+   - If missing, run `/spec [feature-name]` to generate it
+   - Link spec in roadmap and GitHub Issue if not already linked
 
 ### Phase 1: Discovery (ANALYST)
 
@@ -47,11 +71,12 @@ domain: "meta"
 
 // turbo-all
 
-1. Efter godkännande, anropa `/coder`-persona.
-2. Implementera enligt `implementation_plan.md`.
-3. **Parallellt**: Anropa `/unit-tests` för att skapa testsvit.
-4. **Local Loop**: Kör kontinuerligt `/gatekeeper` (Step 0) för att verifiera `types`, `lint`, `build` och `test`.
-5. **Config**: Uppdatera `config.json` om nya kommandon krävs.
+1. **Branch Check**: Verifiera att du är på korrekt branch (`feat/[name]`). **Jobba ALDRIG på `main`.**
+2. Efter godkännande, anropa `/coder`-persona.
+3. Implementera enligt `implementation_plan.md`.
+4. **Parallellt**: Anropa `/unit-tests` för att skapa testsvit.
+5. **Local Loop**: Kör kontinuerligt `/gatekeeper` (Step 0) för att verifiera `types`, `lint`, `build` och `test`.
+6. **Config**: Uppdatera `config.json` om nya kommandon krävs.
 
 ## Phase 4: Polish & Security
 

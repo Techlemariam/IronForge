@@ -116,9 +116,26 @@ After successful fix:
 
 1. Add test case if missing
 2. Update `DEBT.md` if systemic issue found
-3. Run `/pre-pr` to push and create PR
-4. Consider adding to `/pre-deploy` checks
-5. **Config**: Add missing debug tools to `.agent/config.json`.
+3. **Create GitHub Issue for recurring bugs:**
+
+   ```bash
+   # If this bug type recurred 2+ times, create tracking issue
+   gh issue create --title "[BUG] Recurring: [Error Type]" \
+     --template bug_report.yml \
+     --label "bug,priority:high" \
+     --milestone "Bug Fixes" \
+     --body "## Recurring Bug Pattern
+
+   This bug has occurred multiple times. Root cause analysis needed.
+
+   ## Occurrences
+   - $(date): Fixed in [commit]
+   "
+   ```
+
+4. Run `/pre-pr` to push and create PR
+5. Consider adding to `/pre-deploy` checks
+6. **Config**: Add missing debug tools to `.agent/config.json`.
 
 ---
 

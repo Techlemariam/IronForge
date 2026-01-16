@@ -1,0 +1,12 @@
+mutation {
+  updateProjectV2ItemFieldValue(
+    input: {
+      projectId: "PVT_kwHOAe3KCM4BMt-p"
+      itemId: "PVTI_lAHOAe3KCM4BMt-pzgjvtbI"
+      fieldId: "PVTSSF_lAHOAe3KCM4BMt-pzg76_fI"
+      value: { singleSelectOptionId: "47fc9ee4" }
+    }
+  ) {
+    projectV2Item { id }
+  }
+}

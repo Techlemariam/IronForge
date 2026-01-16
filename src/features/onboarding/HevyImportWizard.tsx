@@ -11,7 +11,7 @@ import {
   AlertCircle,
   Loader2,
 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 export const HevyImportWizard = () => {
   const [file, setFile] = useState<File | null>(null);

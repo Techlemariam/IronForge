@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { runWeeklySettlement } from "@/services/game/TerritoryService";
-import { calculatePowerRating, applyDecay, TrainingPath } from "@/lib/powerRating";
+
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 300; // 5 minutes for weekly heavy tasks
@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
     };
 
     const now = new Date();
-    const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+
     const sixtyDaysAgo = new Date(now.getTime() - 60 * 24 * 60 * 60 * 1000);
 
     // 1. Territory Settlement (Individual User Tiles)

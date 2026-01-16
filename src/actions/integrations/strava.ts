@@ -127,7 +127,7 @@ export async function disconnectStravaAction() {
         await axios.post("https://www.strava.com/oauth/deauthorize", {
           access_token: dbUser.stravaAccessToken,
         });
-      } catch (e) {
+      } catch {
         // Ignore deauth failure
       }
     }

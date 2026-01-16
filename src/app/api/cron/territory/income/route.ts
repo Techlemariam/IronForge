@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { runWeeklySettlement, distributeDailyIncome } from "@/services/game/TerritoryService";
+import { distributeDailyIncome } from "@/services/game/TerritoryService";
 
 export const dynamic = "force-dynamic";
 

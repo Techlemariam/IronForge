@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Search, Info, Shield, Sword } from "lucide-react";
+import { motion } from "framer-motion";
+import { Search, Shield, Sword } from "lucide-react";
 import type { BestiaryMonster } from "@/actions/systems/bestiary";
 
 const DIFFICULTY_COLORS: Record<string, string> = {

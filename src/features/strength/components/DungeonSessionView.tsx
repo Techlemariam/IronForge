@@ -177,7 +177,7 @@ const DungeonSessionView: React.FC<IronMinesProps> = ({
       return acc + weight * reps;
     }, 0);
     setTotalHp(Math.max(calculatedHp, 1000));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, []);
 
   useEffect(() => {

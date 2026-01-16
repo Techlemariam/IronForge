@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { GET } from '@/app/api/health/route';
 import { prisma } from '@/lib/prisma';
-import { NextResponse } from 'next/server';
+
 
 // Mock Prisma
 vi.mock('@/lib/prisma', () => {

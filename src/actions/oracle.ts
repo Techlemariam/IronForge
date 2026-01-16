@@ -1,16 +1,12 @@
 "use server";
 
-import { z } from "zod";
 import prisma from "@/lib/prisma";
 import { GeminiService } from "@/services/gemini";
 import { revalidatePath } from "next/cache";
 
 // --- Types ---
 
-const ChatMessageSchema = z.object({
-    role: z.enum(["user", "agent"]),
-    content: z.string().min(1).max(1000),
-});
+
 
 // --- Actions ---
 

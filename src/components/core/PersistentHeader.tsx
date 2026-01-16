@@ -1,5 +1,5 @@
 import React from "react";
-import { Coins, Star, Trophy } from "lucide-react";
+import { Coins } from "lucide-react";
 import { Faction } from "@/types/training";
 import { PowerRatingBadge } from "../PowerRatingBadge";
 

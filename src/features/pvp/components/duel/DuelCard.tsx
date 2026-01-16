@@ -1,11 +1,10 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Swords, Trophy, Timer } from "lucide-react";
+import { Swords, Timer } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { DuelArena } from "@/features/game/DuelArena";
@@ -61,9 +60,7 @@ export function DuelCard({ duel, currentUserId, onTaunt }: DuelCardProps) {
     ? (userDistance / maxMetric) * 100
     : (userScore / maxMetric) * 100;
 
-  const opponentProgress = isCardio
-    ? (opponentDistance / maxMetric) * 100
-    : (opponentScore / maxMetric) * 100;
+
 
   const daysLeft = duel.endDate
     ? Math.max(

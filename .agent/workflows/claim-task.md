@@ -112,13 +112,28 @@ git checkout -b [prefix]/[task-id]-[short-description]
 git push -u origin HEAD
 ```
 
-### 3.3 Mark as Claimed
+### 3.3 Mark as Claimed (GitHub Issue)
 
-Update `roadmap.md` or source file:
+**Assign the GitHub Issue:**
+
+```bash
+# Find matching issue
+gh issue list --search "[task-description]" --json number,title
+
+# Assign to self and move to In Progress
+gh issue edit #N --add-assignee @me
+
+# Move to "In Progress" in Project #4
+gh project item-edit --project-id PVT_kwHOAe3KCM4BMt-p --id <ITEM_ID> \
+  --field-id PVTSSF_lAHOAe3KCM4BMt-pzg76_fI \
+  --single-select-option-id 47fc9ee4
+```
+
+**Also update roadmap.md for visibility:**
 
 ```diff
 - [ ] [R-03] Cardio PvP Duels
-+ [/] [R-03] Cardio PvP Duels 📌 `feat/R-03-cardio-duels`
++ [/] [R-03] Cardio PvP Duels ([#80](https://github.com/Techlemariam/IronForge/issues/80)) 📌 `feat/R-03-cardio-duels`
 ```
 
 Commit the claim marker:
@@ -127,8 +142,6 @@ Commit the claim marker:
 git add roadmap.md
 git commit -m "claim: [task-id] [description]"
 git push
-# Optional: Create a draft PR for visibility
-# gh pr create --draft --title "WIP: [task-id] [description]" --body "Tracking PR"
 ```
 
 ---

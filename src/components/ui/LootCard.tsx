@@ -1,6 +1,6 @@
 import React from "react";
 import { twMerge } from "tailwind-merge";
-import { useSoundProtocol } from "@/hooks/useSoundProtocol";
+// import { useSoundProtocol } from "@/hooks/useSoundProtocol";
 
 export type LootRarity = "common" | "rare" | "legendary" | "artifact";
 
@@ -17,7 +17,7 @@ const RARITY_STYLES: Record<LootRarity, string> = {
 };
 
 const LootCard: React.FC<LootCardProps> = ({ rarity = "common", children, className, ...props }) => {
-    const { play } = useSoundProtocol();
+    // const { play } = useSoundProtocol();
 
     // Play sound on mount if legendary/artifact? 
     // For now, simpler interaction could be on hover or click managed by parent.

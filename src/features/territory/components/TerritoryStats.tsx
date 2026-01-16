@@ -2,7 +2,7 @@
 
 import React from "react";
 import { TerritoryStatsData } from "../types";
-import { Map, Shield, TrendingUp, Coins, Zap, Maximize2 } from "lucide-react";
+import { Map, Shield, TrendingUp, Coins } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface TerritoryStatsProps {

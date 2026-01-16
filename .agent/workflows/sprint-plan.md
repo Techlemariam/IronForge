@@ -23,12 +23,23 @@ You are IronForge's **Sprint Planner**. You synthesize input from the roadmap, t
 
 ## 1. Source Collection
 
-Read and analyze:
+Read and analyze from **both** `roadmap.md` AND GitHub Project:
 
-- `.agent/features/roadmap.md` → Backlog items
+**Local Sources:**
+
+- `roadmap.md` → Backlog items with ROI metadata
 - `DEBT.md` → Tech debt to address
 - `.agent/feedback/ux-audit.md` → UX priorities
 - `.agent/feedback/health-report.md` → Testing gaps
+
+**GitHub Project (#4):**
+
+```bash
+# Get prioritized backlog from GitHub Project
+gh project item-list 4 --owner Techlemariam --format json | \
+  jq '.items[] | select(.status == "Backlog") | {title, priority, roi, effort}'
+```
+
 - **Run `/triage`** to synthesize and score all gaps from the above sources.
 
 ## 2. Prioritization Matrix

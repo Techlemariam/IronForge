@@ -55,7 +55,7 @@ export const GuildHall: React.FC<GuildHallProps> = ({ onClose }) => {
 
   // Performance Coach State
   const [kineticEnergy, setKineticEnergy] = useState<number>(0);
-  const [_heroName, setHeroName] = useState<string>("Titan");
+  // const [_heroName, setHeroName] = useState<string>("Titan");
 
   // Visual Juice State
   const [floatingTexts, setFloatingTexts] = useState<FloatingText[]>([]);
@@ -78,7 +78,7 @@ export const GuildHall: React.FC<GuildHallProps> = ({ onClose }) => {
       const userStats = await getUserStatsAction();
       if (userStats && mounted) {
         setKineticEnergy(userStats.kineticEnergy);
-        setHeroName(userStats.heroName || "Titan");
+        // setHeroName(userStats.heroName || "Titan");
       }
 
       // 1. Fetch Initial Boss State
@@ -224,12 +224,12 @@ export const GuildHall: React.FC<GuildHallProps> = ({ onClose }) => {
 
     try {
       await sendChatAction(msgToSend);
-    } catch (_e) {
-      console.error("Failed to send message", _e);
+    } catch {
+      // console.error("Failed to send message", _e);
     }
   };
 
-  const handleAttack = async (e: React.MouseEvent) => {
+  const handleAttack = async (_e: React.MouseEvent) => {
     if (!boss.id) return;
 
     // 1. Check Energy (Optimistic Check)

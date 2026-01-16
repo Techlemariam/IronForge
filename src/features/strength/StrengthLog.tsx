@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { SetRow } from "./SetRow";
 import { logSetAction, SetData } from "@/actions/training/strength";
-import { Plus, Save, Dumbbell } from "lucide-react";
+import { Plus, Dumbbell } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useMaxReps } from "@/hooks/useMaxReps";
 import { PRBadge } from "@/components/ui/PRBadge";

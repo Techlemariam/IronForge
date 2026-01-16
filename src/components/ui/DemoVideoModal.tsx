@@ -26,7 +26,7 @@ export const DemoVideoModal: React.FC<DemoVideoModalProps> = ({
     videoUrl,
     exerciseName,
 }) => {
-    const [isPlaying, setIsPlaying] = useState(true);
+    const [isPlaying, _setIsPlaying] = useState(true);
 
     // Fallback if no URL
     const displayUrl = videoUrl || "https://www.youtube.com/watch?v=dQw4w9WgXcQ"; // Default Rick Roll for demo ;) or placeholder

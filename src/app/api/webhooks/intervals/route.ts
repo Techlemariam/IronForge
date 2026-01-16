@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { logger } from "@/lib/logger";
-import { OracleService } from "@/services/oracle";
+
 import { ProgressionService } from "@/services/progression";
 import { processUserCardioActivity } from "@/actions/pvp/duel";
 import { getActivityStream } from "@/lib/intervals";
@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
   try {
     // 1. Verify Secret
     // Intervals.icu sends identifying header or you can check Authorization
-    const signature = request.headers.get("Authorization");
+    const _signature = request.headers.get("Authorization");
 
     logger.info(
       "[Intervals Webhook] Incoming Activity. Auth Signature detected.",

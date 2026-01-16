@@ -68,7 +68,7 @@ export function DuelArena({ duelId, currentUserId, onClose }: DuelArenaProps) {
             } else {
                 toast.error(result.error || "Attack failed");
             }
-        } catch (_error) {
+        } catch {
             toast.error("Combat error");
         } finally {
             setIsAttacking(false);

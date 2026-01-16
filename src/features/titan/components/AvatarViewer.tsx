@@ -1,4 +1,4 @@
-import React, { useRef, useMemo } from "react";
+import React, { useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import {
   OrbitControls,
@@ -68,7 +68,7 @@ const TitanMesh: React.FC<{
   const chestScale = 1 + attributes.strength / 40;
   const legScale = 1 + attributes.strength / 40;
 
-  useFrame((state) => {
+  useFrame((_state) => {
     if (meshRef.current) {
       meshRef.current.rotation.y += 0.005;
     }

@@ -24,7 +24,7 @@ const HeartRateMonitor: React.FC<HeartRateMonitorProps> = ({
   isConnected,
   onConnect,
   onSimulate,
-  error,
+  // error,
   hasAura = false,
 }) => {
   const [ftmsConnected, setFtmsConnected] = useState(false);
