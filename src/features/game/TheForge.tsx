@@ -6,7 +6,7 @@ import ForgeButton from "@/components/ui/ForgeButton";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { ITEMS, RECIPES } from "@/data/gameData";
 import { UserInventory, CraftingRecipe } from "@/types/game";
-import { craftItem } from "@/actions/economy/forge";
+import { craftItem, getInventoryAction } from "@/actions/economy/forge";
 import { toast } from "@/components/ui/GameToast";
 import { Hammer, Anvil, Coins } from "lucide-react";
 
@@ -21,18 +21,17 @@ const TheForge: React.FC<TheForgeProps> = ({ onClose }) => {
   // const [_loading, _setLoading] = useState(false);
   const [craftingId, setCraftingId] = useState<string | null>(null);
 
-  // Initial Mock Load (Replace with server action fetch later if needed)
+  // Initial Load
   useEffect(() => {
-    // Simulating data fetch
-    const mockInventory: UserInventory = {
-      userId: "current-user",
-      gold: 500,
-      items: [
-        { itemId: "item_iron_ore", count: 10 },
-        { itemId: "item_flux", count: 5 },
-      ],
-    };
-    setInventory(mockInventory);
+    async function load() {
+      const result = await getInventoryAction();
+      if (result.success && result.data) {
+        setInventory(result.data);
+      } else {
+        toast.error(result.message || "Failed to access the Armory");
+      }
+    }
+    load();
   }, []);
 
   const handleCraft = async (recipe: CraftingRecipe) => {
