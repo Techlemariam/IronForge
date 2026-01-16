@@ -74,7 +74,8 @@ From /idea workflow
 ## 📋 Context
 **Roadmap:** [roadmap.md](https://github.com/Techlemariam/IronForge/blob/main/roadmap.md)
 [What/Why/Who from intake]" \
-  --label "feature,priority:[level]"
+  --label "feature,priority:[level]" \
+  --milestone "Season 2 - Content" # Default, change if Competitive
 ```
 
 **Add to GitHub Project #4:**

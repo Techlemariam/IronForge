@@ -57,21 +57,23 @@ domain: "meta"
 For each missing item, prompt user:
 
 ```
-Create GitHub Issue for "Guild Territories"?
-  Priority: high | ROI: 4.6 | Effort: L
-  [y/n/skip-all]:
-```
+     Create GitHub Issue for "Guild Territories"?
+       Priority: high | ROI: 4.6 | Effort: L
+       Milestone: [v1.1/v1.2/Season 2/None]
+       [y/n/skip-all]:
+     ```
 
-If `y`:
+   If `y`:
 
-1. Run `gh issue create`:
+   1. Run `gh issue create`:
 
-   ```bash
-   gh issue create \
-     --title "[FEATURE] Guild Territories" \
-     --body "## Overview\n\nFrom roadmap.md\n\n## Metadata\n- Priority: high\n- ROI: 4.6\n- Effort: L\n- Spec: [guild-territories.md](specs/guild-territories.md)\n\n## Acceptance Criteria\n\n- [ ] TBD (see spec)" \
-     --label "feature,priority:high"
-   ```
+      ```bash
+      gh issue create \
+        --title "[FEATURE] Guild Territories" \
+        --body "## Overview\n\nFrom roadmap.md\n\n## Metadata\n- Priority: high\n- ROI: 4.6\n- Effort: L\n- Spec: [guild-territories.md](specs/guild-territories.md)\n\n## Acceptance Criteria\n\n- [ ] TBD (see spec)" \
+        --label "feature,priority:high" \
+        --milestone "Season 2 - Competitive" # Based on user selection
+      ```
 
 2. Capture issue number from output.
 3. Update `roadmap.md` inline:

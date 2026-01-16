@@ -123,6 +123,7 @@ After successful fix:
    gh issue create --title "[BUG] Recurring: [Error Type]" \
      --template bug_report.yml \
      --label "bug,priority:high" \
+     --milestone "Bug Fixes" \
      --body "## Recurring Bug Pattern
 
    This bug has occurred multiple times. Root cause analysis needed.

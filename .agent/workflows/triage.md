@@ -245,7 +245,8 @@ For **P0 blockers**:
   ```bash
   gh issue create --title "[CRITICAL] [Issue Name]" \
     --template bug_report.yml \
-    --label "priority:critical,bug"
+    --label "priority:critical,bug" \
+    --milestone "v1.1 - Stability Patch" # Critical items always go to current patch
   
   # Add to Project #4 and set fields
   gh project item-add 4 --owner Techlemariam --url <issue-url>

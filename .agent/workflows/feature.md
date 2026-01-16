@@ -32,7 +32,8 @@ domain: "meta"
      ```bash
      gh issue create --title "[FEATURE] [feature-name]" \
        --template feature_request.yml \
-       --label "feature,priority:high"
+       --label "feature,priority:high" \
+       --milestone "Season 2 - Competitive"  # or "Season 2 - Content" based on feature type
      ```
 
    - Add issue link to roadmap entry: `([#N](https://github.com/Techlemariam/IronForge/issues/N))`
