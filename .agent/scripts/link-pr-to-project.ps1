@@ -138,12 +138,13 @@ try {
         throw "Invalid status: $Status"
     }
 
-    Write-Host "`n⏳ Setting Status = '$Status'..." -ForegroundColor Yellow
-    gh project item-edit --project-id $config.projectId --id $itemId `
-        --field-id $statusField.id --single-select-option-id $statusOptionId | Out-Null
+    Write-Host "`n⏳ Setting Status = '$Status' (GraphQL)..." -ForegroundColor Yellow
+    
+    $mutation = 'mutation($project:ID!, $item:ID!, $field:ID!, $value:String!) { updateProjectV2ItemFieldValue(input: {projectId: $project, itemId: $item, fieldId: $field, value: { singleSelectOptionId: $value }}) { projectV2Item { id } } }'
+    $updateResult = gh api graphql -f query=$mutation -f project=$($config.projectId) -f item=$itemId -f field=$($statusField.id) -f value=$statusOptionId 2>&1
 
     if ($LASTEXITCODE -ne 0) {
-        throw "Failed to set status"
+        throw "Failed to set status via GraphQL: $updateResult"
     }
 
     Write-Host "✓ Status updated" -ForegroundColor Green
