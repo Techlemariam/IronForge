@@ -83,13 +83,17 @@ describe("OracleService V3", () => {
     // Mock Active Duel ending tomorrow
     (prisma.duelChallenge.findFirst as any).mockResolvedValue({
       id: "d1",
-      endDate: new Date(Date.now() + 24 * 60 * 60 * 1000) // 1 day left
+      endDate: new Date(Date.now() + 24 * 60 * 60 * 1000), // 1 day left
+      targetDistance: 50,
+      challengerDistance: 40, // 10km gap from target
+      defenderDistance: 40,
+      challengerId: "u1"
     });
 
     const decree = await OracleService.generateDailyDecree("u1");
 
-    expect(decree.code).toBe("PVP_RALLY");
-    expect(decree.actions.urgency).toBe("MEDIUM");
+    expect(decree.code).toBe("PVP_CRISIS");
+    expect(decree.actions.urgency).toBe("HIGH");
     expect(decree.actions.notifyUser).toBe(true);
   });
 });

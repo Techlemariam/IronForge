@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { OracleService } from '@/services/OracleService';
+import { OracleService } from '@/services/oracle';
 import { WardensManifest, SystemMetrics } from '@/types/goals';
 
 describe('OracleService', () => {
