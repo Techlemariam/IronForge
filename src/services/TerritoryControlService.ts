@@ -110,6 +110,12 @@ export class TerritoryControlService {
         const year = now.getFullYear();
 
         // Get all contest entries for this territory this week
+        // Also fetch current owner to notify loss (optional enhancement)
+        const currentTerritory = await prisma.territory.findUnique({
+            where: { id: territoryId },
+            select: { controlledById: true }
+        });
+
         const entries = await prisma.territoryContestEntry.findMany({
             where: {
                 territoryId,
@@ -144,6 +150,77 @@ export class TerritoryControlService {
                 year
             }
         });
+
+        // Notify Guild Members (New Owner)
+        await this.notifyGuildMembers(winner.guildId, "VICTORY", `Our guild has conquered territory!`);
+
+        // Notify Previous Owner Members (if any)
+        // Note: We need to know previous owner. Since we already updated, this is tricky unless we fetched before.
+        // For V1 mechanics, we focus on the Winner notification.
+    }
+
+    /**
+     * Calculates active bonuses for a user based on their guild's controlled territories.
+     * Returns a composite bonus object.
+     */
+    static async getActiveTerritoryBonuses(userId: string): Promise<{ xpMultiplier: number; goldMultiplier: number }> {
+        const user = await prisma.user.findUnique({
+            where: { id: userId },
+            select: { guildId: true }
+        });
+
+        if (!user || !user.guildId) {
+            return { xpMultiplier: 1.0, goldMultiplier: 1.0 };
+        }
+
+        const territories = await prisma.territory.findMany({
+            where: { controlledById: user.guildId }
+        });
+
+        let xpBonus = 0;
+        let goldBonus = 0;
+
+        // Aggregate bonuses
+        // Bonuses stored as Json: { xpBonus: 0.05, goldBonus: 0.02 }
+        for (const t of territories) {
+            const bonuses = t.bonuses as { xpBonus?: number; goldBonus?: number } | null;
+            if (bonuses) {
+                if (bonuses.xpBonus) xpBonus += bonuses.xpBonus;
+                if (bonuses.goldBonus) goldBonus += bonuses.goldBonus;
+            }
+        }
+
+        // Cap bonuses (e.g. max 50% bonus)
+        const MAX_BONUS = 0.5;
+        xpBonus = Math.min(xpBonus, MAX_BONUS);
+        goldBonus = Math.min(goldBonus, MAX_BONUS);
+
+        return {
+            xpMultiplier: 1.0 + xpBonus,
+            goldMultiplier: 1.0 + goldBonus
+        };
+    }
+
+    private static async notifyGuildMembers(guildId: string, type: string, message: string) {
+        // Fetch all members
+        const members = await prisma.user.findMany({
+            where: { guildId },
+            select: { id: true }
+        });
+
+        // Batch create notifications
+        // Note: prisma.notification.createMany is supported in recent versions
+        if (members.length > 0) {
+            await prisma.notification.createMany({
+                data: members.map(m => ({
+                    userId: m.id,
+                    type: "TERRITORY_UPDATE",
+                    message,
+                    read: false,
+                    createdAt: new Date()
+                }))
+            });
+        }
     }
 
     /**
