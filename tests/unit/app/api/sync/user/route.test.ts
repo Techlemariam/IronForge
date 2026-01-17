@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { POST } from "@/app/api/sync/user/route";
-import { UserService } from "@/services/server/UserService";
+
+import { getUserAction, updateSettingsAction, updateGoldAction, updateEquipmentAction } from "@/actions/user-actions";
 import * as AuthLib from "@/lib/auth";
 
 // Mock dependencies
@@ -8,13 +9,11 @@ vi.mock("@/lib/auth", () => ({
     getSession: vi.fn(),
 }));
 
-vi.mock("@/services/server/UserService", () => ({
-    UserService: {
-        getUser: vi.fn(),
-        updateSettings: vi.fn(),
-        updateGold: vi.fn(),
-        updateEquipment: vi.fn(),
-    },
+vi.mock("@/actions/user-actions", () => ({
+    getUserAction: vi.fn(),
+    updateSettingsAction: vi.fn(),
+    updateGoldAction: vi.fn(),
+    updateEquipmentAction: vi.fn(),
 }));
 
 describe("Sync API Route (POST)", () => {
@@ -70,7 +69,7 @@ describe("Sync API Route (POST)", () => {
         vi.spyOn(AuthLib, "getSession").mockResolvedValue({
             user: { id: "test-user" },
         } as any);
-        (UserService.getUser as any).mockResolvedValue(null);
+        (getUserAction as any).mockResolvedValue(null);
 
         const req = createRequest({
             action: "UPDATE_GOLD",
@@ -85,8 +84,8 @@ describe("Sync API Route (POST)", () => {
         vi.spyOn(AuthLib, "getSession").mockResolvedValue({
             user: { id: "test-user" },
         } as any);
-        (UserService.getUser as any).mockResolvedValue({ id: "test-user" });
-        (UserService.updateGold as any).mockResolvedValue(undefined);
+        (getUserAction as any).mockResolvedValue({ id: "test-user" });
+        (updateGoldAction as any).mockResolvedValue(undefined);
 
         const req = createRequest({
             action: "UPDATE_GOLD",
@@ -95,14 +94,14 @@ describe("Sync API Route (POST)", () => {
         const res = await POST(req);
 
         expect(res.status).toBe(200);
-        expect(UserService.updateGold).toHaveBeenCalledWith("test-user", 100);
+        expect(updateGoldAction).toHaveBeenCalledWith("test-user", 100);
     });
 
     it("should handle UPDATE_EQUIPMENT successfully", async () => {
         vi.spyOn(AuthLib, "getSession").mockResolvedValue({
             user: { id: "test-user" },
         } as any);
-        (UserService.getUser as any).mockResolvedValue({ id: "test-user" });
+        (getUserAction as any).mockResolvedValue({ id: "test-user" });
 
         const equipment = [
             { id: "eq-1", name: "Barbell", category: "Barbell", isOwned: true },
@@ -114,7 +113,7 @@ describe("Sync API Route (POST)", () => {
         const res = await POST(req);
 
         expect(res.status).toBe(200);
-        expect(UserService.updateEquipment).toHaveBeenCalledWith(
+        expect(updateEquipmentAction).toHaveBeenCalledWith(
             "test-user",
             equipment
         );
@@ -124,7 +123,7 @@ describe("Sync API Route (POST)", () => {
         vi.spyOn(AuthLib, "getSession").mockResolvedValue({
             user: { id: "test-user" },
         } as any);
-        (UserService.getUser as any).mockResolvedValue({ id: "test-user" });
+        (getUserAction as any).mockResolvedValue({ id: "test-user" });
 
         const invalidEquipment = [
             { id: "eq-1", name: "Barbell", category: "INVALID_CATEGORY", isOwned: true },

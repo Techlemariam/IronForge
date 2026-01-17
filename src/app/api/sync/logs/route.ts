@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { LogService } from "@/services/server/LogService";
-import { UserService } from "@/services/server/UserService";
+import { getOrCreateUserAction } from "@/actions/user-actions";
 
 export async function POST(request: Request) {
   try {
@@ -8,7 +8,7 @@ export async function POST(request: Request) {
     const { action, userId, payload } = body;
 
     // For demo/migration, ensure user exists
-    const user = await UserService.getOrCreateUser(
+    const user = await getOrCreateUserAction(
       userId ? undefined : "default",
     );
 
