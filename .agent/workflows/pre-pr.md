@@ -3,16 +3,20 @@ description: "Complete pre-PR validation and automatic PR creation"
 command: "/pre-pr"
 category: "verification"
 trigger: "manual"
-version: "1.0.0"
+version: "2.0.0"
 telemetry: "enabled"
 primary_agent: "@qa"
 domain: "core"
 ---
 
-# 🚀 Pre-PR Pipeline
+# 🚀 Pre-PR Pipeline (v2.0)
 
 **Role:** PR Launch Specialist.
 **Goal:** Run all verifications and create a clean PR in one command.
+
+> [!WARNING]
+> **"There is no such thing as a small fix."**
+> Never skip validation for "micro-fixes", "lint tweaks", or "typo corrections". These often break CI due to missing types or strict checks.
 
 ---
 
@@ -41,8 +45,10 @@ echo "🚀 Pre-PR Pipeline for branch: $current_branch"
 ```bash
 if [ -n "$(git status --porcelain)" ]; then
   echo "⚠️ WARNING: Uncommitted changes detected."
-  echo "   Stage and commit before proceeding."
-  git status --short
+  echo "   Staging and committing with snapshot message..."
+  git add .
+  git commit -m "chore: snapshot before pre-pr"
+  echo "✅ Changes committed."
 fi
 ```
 
@@ -85,15 +91,63 @@ fi
 
 ---
 
-## Phase 2: Full Gatekeeper
+## Phase 2: Triple Gate (Embedded Gatekeeper)
 
-Run the complete gatekeeper validation:
+> [!IMPORTANT]
+> This phase **replaces** the delegation to `/gatekeeper` with an inline, fail-fast loop.
+> Each step **MUST** pass before proceeding. If any step fails, fix and **restart from Step 1**.
+
+### 2.0 Gate 1: Type Safety
+
+// turbo
 
 ```bash
-/gatekeeper
+echo "🔍 Gate 1: Type Safety (check-types)"
+npm run check-types
+if [ $? -ne 0 ]; then
+  echo "⛔ FATAL: Type check failed. Fix errors and restart /pre-pr."
+  exit 1
+fi
+echo "✅ Gate 1 Passed"
 ```
 
-**STOP HERE** if gatekeeper score < 100.
+### 2.1 Gate 2: Linting
+
+// turbo
+
+```bash
+echo "🔍 Gate 2: Linting"
+npm run lint -- --fix
+if [ $? -ne 0 ]; then
+  echo "⛔ FATAL: Lint failed. Fix errors and restart /pre-pr."
+  exit 1
+fi
+echo "✅ Gate 2 Passed"
+```
+
+### 2.2 Gate 3: Unit Tests
+
+// turbo
+
+```bash
+echo "🔍 Gate 3: Unit Tests"
+npm test
+if [ $? -ne 0 ]; then
+  echo "⛔ FATAL: Unit tests failed. Fix errors and restart /pre-pr."
+  exit 1
+fi
+echo "✅ Gate 3 Passed"
+```
+
+### 2.3 Triple Gate Verdict
+
+```
+╔══════════════════════════════════════════════════════╗
+║ 🛡️ TRIPLE GATE VERDICT: [100] ✅ APPROVED            ║
+╚══════════════════════════════════════════════════════╝
+```
+
+**STOP HERE** if any gate failed.
 
 ---
 
@@ -148,7 +202,7 @@ $(git log origin/main..HEAD --oneline)
 ${issue_num:+Closes #$issue_num}
 
 ## Verification
-- [x] Gatekeeper passed locally
+- [x] Triple Gate passed locally (Types, Lint, Tests)
 - [ ] CI checks pending
 " \
   --draft --json url -q .url)
@@ -159,10 +213,16 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "✅ PR created: $pr_url"
+```
 
-# Link PR to Project and set Status = In Review
+### 4.2 Link PR to Project
+
+// turbo
+
+```bash
+# Use pwsh for PowerShell 7+ compatibility
 echo "⏳ Linking PR to GitHub Project..."
-powershell -ExecutionPolicy Bypass -File .agent/scripts/link-pr-to-project.ps1
+pwsh -ExecutionPolicy Bypass -File .agent/scripts/link-pr-to-project.ps1
 
 if [ $? -eq 0 ]; then
   echo "✅ PR linked to Project Board (Status: In Review)"
@@ -180,12 +240,14 @@ fi
 
 After PR creation:
 
-1. **Watch CI status**: `gh pr checks`
+1. **Watch CI status**: `gh pr checks --watch`
 2. **If CI fails**: Run `/ci-doctor` for diagnosis
 3. **If CI passes**: Request review or merge
 
+// turbo
+
 ```bash
-## Quick CI status check
+## Quick CI status check (waits for completion)
 gh pr checks --watch
 ```
 
@@ -202,7 +264,32 @@ gh pr checks --watch
 
 ---
 
+## Post-Mortem Protocol (If CI Fails After PR)
+
+If the remote CI fails after a successful local `/pre-pr`:
+
+1. **Identify Target**: `gh run view --log-failed`
+2. **Classify Failure**: Use the matrix in `/ci-doctor` (Phase 1.1)
+3. **Fix Locally**: Apply fix and **restart the Triple Gate from Gate 1**.
+4. **Push Fix**: `git push`
+5. **Re-verify**: `gh pr checks --watch`
+
+> [!CAUTION]
+> **Never push a "fix" without rerunning the full Triple Gate.** A lint fix can break types. A test fix can introduce new lint errors.
+
+---
+
 ## Version History
+
+### 2.0.0 (2026-01-17)
+
+- **BREAKING**: Embedded Triple Gate inline (no longer delegates to /gatekeeper)
+- Added fail-fast `exit 1` after each gate
+- Changed `powershell` to `pwsh` for PS7+ compatibility
+- Added auto-commit for uncommitted changes in Phase 0
+- Added Post-Mortem Protocol section
+- Added `--watch` to final CI check for blocking verification
+- Updated PR body to reflect "Triple Gate" terminology
 
 ### 1.0.0 (2026-01-14)
 
