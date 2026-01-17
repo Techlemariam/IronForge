@@ -189,8 +189,9 @@ try {
     $statusField = $config.fields.status
     $statusOptionId = $statusField.options.$Status
     if ($statusOptionId) {
-        gh project item-edit --project-id $config.projectId --id $itemId `
-            --field-id $statusField.id --single-select-option-id $statusOptionId | Out-Null
+        $mutation = 'mutation($project:ID!, $item:ID!, $field:ID!, $value:String!) { updateProjectV2ItemFieldValue(input: {projectId: $project, itemId: $item, fieldId: $field, value: { singleSelectOptionId: $value }}) { projectV2Item { id } } }'
+        $res = gh api graphql -f query=$mutation -f project=$($config.projectId) -f item=$itemId -f field=$($statusField.id) -f value=$statusOptionId 2>&1
+        if ($LASTEXITCODE -ne 0) { throw "Failed to set Status: $res" }
         $updates += "Status=$Status"
     }
 
@@ -199,8 +200,9 @@ try {
         $priorityField = $config.fields.priority
         $priorityOptionId = $priorityField.options.$Priority
         if ($priorityOptionId) {
-            gh project item-edit --project-id $config.projectId --id $itemId `
-                --field-id $priorityField.id --single-select-option-id $priorityOptionId | Out-Null
+            $mutation = 'mutation($project:ID!, $item:ID!, $field:ID!, $value:String!) { updateProjectV2ItemFieldValue(input: {projectId: $project, itemId: $item, fieldId: $field, value: { singleSelectOptionId: $value }}) { projectV2Item { id } } }'
+            $res = gh api graphql -f query=$mutation -f project=$($config.projectId) -f item=$itemId -f field=$($priorityField.id) -f value=$priorityOptionId 2>&1
+            if ($LASTEXITCODE -ne 0) { throw "Failed to set Priority: $res" }
             $updates += "Priority=$Priority"
         }
     }
@@ -210,8 +212,9 @@ try {
         $domainField = $config.fields.domain
         $domainOptionId = $domainField.options.$Domain
         if ($domainOptionId) {
-            gh project item-edit --project-id $config.projectId --id $itemId `
-                --field-id $domainField.id --single-select-option-id $domainOptionId | Out-Null
+            $mutation = 'mutation($project:ID!, $item:ID!, $field:ID!, $value:String!) { updateProjectV2ItemFieldValue(input: {projectId: $project, itemId: $item, fieldId: $field, value: { singleSelectOptionId: $value }}) { projectV2Item { id } } }'
+            $res = gh api graphql -f query=$mutation -f project=$($config.projectId) -f item=$itemId -f field=$($domainField.id) -f value=$domainOptionId 2>&1
+            if ($LASTEXITCODE -ne 0) { throw "Failed to set Domain: $res" }
             $updates += "Domain=$Domain"
         }
     }
@@ -221,8 +224,9 @@ try {
         $effortField = $config.fields.effort
         $effortOptionId = $effortField.options.$Effort
         if ($effortOptionId) {
-            gh project item-edit --project-id $config.projectId --id $itemId `
-                --field-id $effortField.id --single-select-option-id $effortOptionId | Out-Null
+            $mutation = 'mutation($project:ID!, $item:ID!, $field:ID!, $value:String!) { updateProjectV2ItemFieldValue(input: {projectId: $project, itemId: $item, fieldId: $field, value: { singleSelectOptionId: $value }}) { projectV2Item { id } } }'
+            $res = gh api graphql -f query=$mutation -f project=$($config.projectId) -f item=$itemId -f field=$($effortField.id) -f value=$effortOptionId 2>&1
+            if ($LASTEXITCODE -ne 0) { throw "Failed to set Effort: $res" }
             $updates += "Effort=$Effort"
         }
     }
@@ -230,8 +234,9 @@ try {
     # ROI
     if ($ROI) {
         $roiField = $config.fields.roi
-        gh project item-edit --project-id $config.projectId --id $itemId `
-            --field-id $roiField.id --number $ROI | Out-Null
+        $mutation = 'mutation($project:ID!, $item:ID!, $field:ID!, $value:Float!) { updateProjectV2ItemFieldValue(input: {projectId: $project, itemId: $item, fieldId: $field, value: { number: $value }}) { projectV2Item { id } } }'
+        $res = gh api graphql -f query=$mutation -f project=$($config.projectId) -f item=$itemId -f field=$($roiField.id) -F value=$ROI 2>&1
+        if ($LASTEXITCODE -ne 0) { throw "Failed to set ROI: $res" }
         $updates += "ROI=$ROI"
     }
 
