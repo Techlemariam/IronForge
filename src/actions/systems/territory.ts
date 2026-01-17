@@ -6,7 +6,7 @@ import { getSession } from "@/lib/auth";
 import { getUserTerritoryStats } from "@/services/game/TerritoryService";
 import { MapTile } from "@/features/territory/types";
 import { tileIdToCoords } from "@/lib/territory/tileUtils";
-import { GuildTerritoryService } from "@/services/game/GuildTerritoryService";
+import { contestTerritoryAction as contestTerritoryInternal, getContestLeaderboardAction as getContestLeaderboardInternal } from "@/actions/guild-actions";
 
 /**
  * Get all tiles and stats for the current user's territory view
@@ -199,7 +199,7 @@ export async function contestTerritoryAction(territoryId: string, guildId: strin
         if (!session?.user?.id) throw new Error("Unauthorized");
 
         // Use the service which charges the user
-        const result = await GuildTerritoryService.contestTerritory(guildId, territoryId, session.user.id);
+        const result = await contestTerritoryInternal(guildId, territoryId, session.user.id);
 
         revalidatePath("/territory");
         return { success: true, data: result };
@@ -213,7 +213,7 @@ export async function contestTerritoryAction(territoryId: string, guildId: strin
  */
 export async function getContestLeaderboardAction(territoryId: string) {
     try {
-        const leaderboard = await GuildTerritoryService.getContestLeaderboard(territoryId);
+        const leaderboard = await getContestLeaderboardInternal(territoryId);
         return { success: true, data: leaderboard };
     } catch (error: any) {
         return { success: false, error: error.message };

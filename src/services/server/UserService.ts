@@ -1,6 +1,9 @@
 import prisma from "@/lib/prisma";
 import { AppSettings, Equipment } from "@/types";
 
+/**
+ * @deprecated Use @/actions/user-actions instead
+ */
 export const UserService = {
   /**
    * Get or create a user by email (or just get the first user for single-player migration)

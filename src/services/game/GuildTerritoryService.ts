@@ -2,6 +2,9 @@ import prisma from "@/lib/prisma";
 
 export const CONTEST_COST_GOLD = 1000;
 
+/**
+ * @deprecated Use @/actions/guild-actions instead
+ */
 export class GuildTerritoryService {
     /**
      * Allows a guild to enter a contest for a territory.
