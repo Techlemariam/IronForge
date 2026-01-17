@@ -1,12 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { POST } from "@/app/api/sync/logs/route";
-
+import { getOrCreateUserAction } from "@/actions/user-actions";
 
 // Mocks
-vi.mock("@/services/server/UserService", () => ({
-  UserService: {
-    getOrCreateUser: vi.fn(),
-  },
+vi.mock("@/actions/user-actions", () => ({
+  getOrCreateUserAction: vi.fn(),
 }));
 
 vi.mock("@/services/server/LogService", () => ({
@@ -17,13 +15,12 @@ vi.mock("@/services/server/LogService", () => ({
   },
 }));
 
-import { UserService } from "@/services/server/UserService";
 import { LogService } from "@/services/server/LogService";
 
 describe("Sync API Route (Logs)", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    (UserService.getOrCreateUser as any).mockResolvedValue({ id: "user-1" });
+    (getOrCreateUserAction as any).mockResolvedValue({ id: "user-1" });
   });
 
   it("should save exercise log correctly", async () => {
