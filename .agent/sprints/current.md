@@ -7,7 +7,7 @@
 
 ### Priority: High (Features)
 
-- [ ] **Oracle 3.0 (Phase 1)** <!-- agent: /architect | estimate: 4h | source: roadmap | specs: specs/ai-training-coach.md -->
+- [x] **Oracle 3.0 (Phase 1)** <!-- agent: /architect | estimate: 4h | source: roadmap | specs: specs/ai-training-coach.md -->
   - Implement `GoalPriorityEngine` (deterministic logic)
   - Replace legacy LLM calls with GPE
   - Basic "Training Check-In" flow
@@ -17,7 +17,7 @@
   - Cover: `battle-pass`, `power-rating`, `territory`, `shop-system`
   - Target: 80% action documentation coverage
 
-- [ ] **Guild Territories (Mechanics)** <!-- agent: /game-designer | estimate: 4h | source: roadmap | specs: specs/guild-territories.md -->
+- [x] **Guild Territories (Mechanics)** <!-- agent: /game-designer | estimate: 4h | source: roadmap | specs: specs/guild-territories.md -->
   - Implement `TerritoryControlService` (backend)
   - Define capture logic and reward distribution
   - Connect to existing UI from Sprint 24
@@ -68,3 +68,5 @@
 <!-- Auto-updated by /sprint-auto -->
 - **2026-01-14 16:50** - Sprint 25 Activated. Previous sprint archived to `history/2026-01-14-sprint-24.md`.
 - **2026-01-14 16:35** - Executed `Documentation Batch Update` via `/librarian`. Added missing actions to `api-reference.md`.
+- **2026-01-17 23:30** - Executed `Oracle 3.0 (Phase 1)` via `/architect`. Unified `OracleService`, implemented `GoalPriorityEngine` logic for decrees, and updated Chat API.
+- **2026-01-17 23:45** - Executed `Guild Territories (Mechanics)` via `/game-designer`. Implemented `getActiveTerritoryBonuses` and conquest notifications in `TerritoryControlService`.

@@ -7,7 +7,8 @@ vi.mock('@/lib/prisma', () => ({
     prisma: {
         territory: {
             findMany: vi.fn(),
-            update: vi.fn()
+            update: vi.fn(),
+            findUnique: vi.fn(),
         },
         territoryContestEntry: {
             findUnique: vi.fn(),
@@ -15,6 +16,13 @@ vi.mock('@/lib/prisma', () => ({
         },
         territoryHistory: {
             create: vi.fn()
+        },
+        user: {
+            findUnique: vi.fn(),
+            findMany: vi.fn()
+        },
+        notification: {
+            createMany: vi.fn()
         }
     }
 }));
@@ -93,6 +101,9 @@ describe('TerritoryControlService', () => {
             vi.mocked(prisma.territoryContestEntry.findMany).mockResolvedValue(mockEntries as any);
             vi.mocked(prisma.territory.update).mockResolvedValue({} as any);
             vi.mocked(prisma.territoryHistory.create).mockResolvedValue({} as any);
+            vi.mocked(prisma.territory.findUnique).mockResolvedValue({ controlledById: 'old-owner' } as any);
+            vi.mocked(prisma.user.findMany).mockResolvedValue([{ id: 'member-1' }] as any);
+            vi.mocked(prisma.notification.createMany).mockResolvedValue({ count: 1 } as any);
 
             await TerritoryControlService.processConquest('territory-1');
 
