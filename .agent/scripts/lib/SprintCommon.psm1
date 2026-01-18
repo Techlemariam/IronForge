@@ -12,9 +12,9 @@
 # CONFIGURATION
 # ============================================================================
 
-$script:LogDirectory = Join-Path $PSScriptRoot "../logs"
-$script:LockDirectory = Join-Path $PSScriptRoot "../locks"
-$script:MetricsDirectory = Join-Path $PSScriptRoot "../metrics"
+$script:LogDirectory = Join-Path $PSScriptRoot "../../logs"
+$script:LockDirectory = Join-Path $PSScriptRoot "../../locks"
+$script:MetricsDirectory = Join-Path $PSScriptRoot "../../metrics"
 
 # Ensure directories exist
 @($script:LogDirectory, $script:LockDirectory, $script:MetricsDirectory) | ForEach-Object {
@@ -323,7 +323,7 @@ function Get-SprintConfig {
     .SYNOPSIS
         Loads github-project.json with validation
     #>
-    $configPath = Join-Path $PSScriptRoot "..\config\github-project.json"
+    $configPath = Join-Path $PSScriptRoot "../../config/github-project.json"
     
     if (-not (Test-Path $configPath)) {
         throw "Config file not found: $configPath"
@@ -349,7 +349,7 @@ function Save-SprintConfig {
         [object]$Config
     )
     
-    $configPath = Join-Path $PSScriptRoot "..\config\github-project.json"
+    $configPath = Join-Path $PSScriptRoot "../../config/github-project.json"
     
     # Create backup
     $backupPath = Join-Path $script:LogDirectory "github-project-$(Get-Date -Format 'yyyyMMdd-HHmmss').json.bak"
