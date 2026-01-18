@@ -1,0 +1,110 @@
+name: Sprint Sync
+
+on:
+  schedule:
+    # Every 2 hours during business hours (08:00-16:00 UTC), Monday-Friday
+    # Reduced from hourly to avoid GitHub Actions cron limitations
+    - cron: '0 8,10,12,14,16 * * 1-5'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (preview changes without applying)'
+        required: false
+        type: boolean
+        default: false
+
+env:
+  GITHUB_TOKEN: ${{ secrets.PROJECT_TOKEN || secrets.GITHUB_TOKEN }}
+
+jobs:
+  sync_sprint:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+      - name: Check if Sprint is Active
+        id: check_sprint
+        shell: pwsh
+        run: |
+          if (Test-Path .agent/sprints/current.md) {
+            Write-Host "✓ Active sprint found" -ForegroundColor Green
+            echo "has_sprint=true" >> $env:GITHUB_OUTPUT
+          } else {
+            Write-Host "ℹ️  No active sprint, skipping sync" -ForegroundColor Yellow
+            echo "has_sprint=false" >> $env:GITHUB_OUTPUT
+          }
+          
+      - name: Sync Project → Markdown
+        if: steps.check_sprint.outputs.has_sprint == 'true'
+        shell: pwsh
+        run: |
+          $params = @{
+            SprintFile = ".agent/sprints/current.md"
+          }
+          
+          if ("${{ github.event.inputs.dry_run }}" -eq "true") {
+            $params.DryRun = $true
+          }
+          
+          .agent/scripts/sync-project-to-sprint.ps1 @params
+          
+      - name: Commit if Changed
+        if: steps.check_sprint.outputs.has_sprint == 'true' && github.event.inputs.dry_run != 'true'
+        id: commit
+        run: |
+          git add .agent/sprints/current.md
+          
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            git commit -m "chore(sprint): Sync from GitHub Project"
+            git push
+            echo "✓ Changes committed and pushed"
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+          
+      - name: Summary (No Sprint)
+        if: steps.check_sprint.outputs.has_sprint == 'false'
+        run: |
+          echo "## ℹ️ No Active Sprint" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "No \`.agent/sprints/current.md\` found." >> $GITHUB_STEP_SUMMARY
+          echo "Create a sprint plan via the Sprint Planning workflow." >> $GITHUB_STEP_SUMMARY
+          
+      - name: Summary (Dry Run)
+        if: steps.check_sprint.outputs.has_sprint == 'true' && github.event.inputs.dry_run == 'true'
+        run: |
+          echo "## 🔍 Dry Run Complete" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Check workflow logs for preview of changes." >> $GITHUB_STEP_SUMMARY
+          echo "Run without dry_run to apply changes." >> $GITHUB_STEP_SUMMARY
+          
+      - name: Summary (Synced)
+        if: steps.check_sprint.outputs.has_sprint == 'true' && github.event.inputs.dry_run != 'true' && steps.commit.outputs.has_changes == 'true'
+        run: |
+          echo "## ✅ Sprint Synced" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**File**: \`.agent/sprints/current.md\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Source**: GitHub Project #4" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Sprint file updated with latest status from Project." >> $GITHUB_STEP_SUMMARY
+          
+      - name: Summary (No Changes)
+        if: steps.check_sprint.outputs.has_sprint == 'true' && github.event.inputs.dry_run != 'true' && steps.commit.outputs.has_changes == 'false'
+        run: |
+          echo "## ✅ Already in Sync" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Sprint file is already in sync with GitHub Project." >> $GITHUB_STEP_SUMMARY
+          echo "No updates needed." >> $GITHUB_STEP_SUMMARY

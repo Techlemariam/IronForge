@@ -1,0 +1,121 @@
+name: Sprint Activation
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+    paths:
+      - '.agent/sprints/next.md'
+
+env:
+  GITHUB_TOKEN: ${{ secrets.PROJECT_TOKEN || secrets.GITHUB_TOKEN }}
+
+jobs:
+  activate_sprint:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+          
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+      - name: Archive Previous Sprint
+        shell: pwsh
+        run: |
+          if (Test-Path .agent/sprints/current.md) {
+            $date = Get-Date -Format "yyyy-MM-dd"
+            $historyDir = ".agent/sprints/history"
+            
+            if (-not (Test-Path $historyDir)) {
+              New-Item -ItemType Directory -Path $historyDir -Force | Out-Null
+            }
+            
+            Move-Item .agent/sprints/current.md "$historyDir/$date.md" -Force
+            Write-Host "✓ Archived previous sprint to history/$date.md" -ForegroundColor Green
+          } else {
+            Write-Host "ℹ️  No previous sprint to archive" -ForegroundColor Yellow
+          }
+          
+      - name: Rotate Sprint Field
+        shell: pwsh
+        run: |
+          .agent/scripts/rotate-sprint-field.ps1
+          
+      - name: Activate Sprint
+        shell: pwsh
+        run: |
+          if (Test-Path .agent/sprints/next.md) {
+            Move-Item .agent/sprints/next.md .agent/sprints/current.md -Force
+            Write-Host "✓ Activated sprint: next.md → current.md" -ForegroundColor Green
+          } else {
+            Write-Host "❌ Error: next.md not found" -ForegroundColor Red
+            exit 1
+          }
+          
+      - name: Create Sprint Issues
+        id: create_issues
+        shell: pwsh
+        run: |
+          .agent/scripts/create-sprint-issues.ps1 -Status "in_progress"
+          
+      - name: Commit Changes
+        run: |
+          git add .agent/sprints/
+          
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore(sprint): Activate sprint from PR #${{ github.event.pull_request.number }}"
+            git push
+            echo "✓ Changes committed and pushed"
+          fi
+          
+      - name: Comment on PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const comment = `## ✅ Sprint Activated
+            
+            **Actions Completed:**
+            - ✓ Previous sprint archived to \`history/\`
+            - ✓ \`next.md\` → \`current.md\`
+            - ✓ GitHub Issues created for all tasks
+            - ✓ Issues linked to Project #4 with status "In Progress"
+            
+            **Next Steps:**
+            
+            1. Agents can now claim tasks via \`/claim-task\`
+            2. Sprint progress will be tracked in \`.agent/sprints/current.md\`
+            3. Hourly sync keeps Project and Markdown in sync
+            
+            ---
+            
+            *Sprint activation completed by workflow run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}*`;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+            
+      - name: Summary
+        run: |
+          echo "## ✅ Sprint Activated" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**PR**: #${{ github.event.pull_request.number }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Sprint File**: \`.agent/sprints/current.md\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Sprint is now active. Agents can claim tasks." >> $GITHUB_STEP_SUMMARY

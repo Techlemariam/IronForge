@@ -1,0 +1,114 @@
+name: Sprint Planning Automation
+
+on:
+  schedule:
+    # Every Monday at 09:00 UTC (10:00 CET)
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+    inputs:
+      sprint_name:
+        description: 'Sprint Name (optional, auto-generated if not provided)'
+        required: false
+        type: string
+      max_items:
+        description: 'Maximum number of items to include'
+        required: false
+        type: number
+        default: 8
+      max_hours:
+        description: 'Maximum estimated hours'
+        required: false
+        type: number
+        default: 20
+
+env:
+  GITHUB_TOKEN: ${{ secrets.PROJECT_TOKEN || secrets.GITHUB_TOKEN }}
+
+jobs:
+  generate_sprint_plan:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: read
+      
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Setup PowerShell
+        shell: pwsh
+        run: |
+          Write-Host "✓ PowerShell $($PSVersionTable.PSVersion) ready" -ForegroundColor Green
+        
+      - name: Generate Sprint Plan
+        shell: pwsh
+        run: |
+          $params = @{
+            OutputFile = ".agent/sprints/next.md"
+          }
+          
+          if ("${{ github.event.inputs.sprint_name }}") {
+            $params.SprintName = "${{ github.event.inputs.sprint_name }}"
+          }
+          
+          if ("${{ github.event.inputs.max_items }}") {
+            $params.MaxItems = [int]"${{ github.event.inputs.max_items }}"
+          }
+          
+          if ("${{ github.event.inputs.max_hours }}") {
+            $params.MaxHours = [int]"${{ github.event.inputs.max_hours }}"
+          }
+          
+          .agent/scripts/generate-sprint-plan.ps1 @params
+          
+      - name: Create Pull Request
+        id: create_pr
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore(sprint): Generate sprint plan for ${{ github.event.inputs.sprint_name || 'next sprint' }}"
+          branch: sprint/plan-${{ github.run_number }}
+          delete-branch: true
+          title: "📋 Sprint Plan: ${{ github.event.inputs.sprint_name || 'Auto-generated' }}"
+          body: |
+            ## 🤖 Auto-generated Sprint Plan
+            
+            **Source**: GitHub Project #4 Backlog
+            **Generated**: ${{ github.event.repository.updated_at }}
+            **Workflow Run**: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            
+            ### Review Checklist
+            
+            - [ ] Verify sprint scope (max ${{ github.event.inputs.max_items || 8 }} items)
+            - [ ] Check balance (60% features, 30% debt, 10% polish)
+            - [ ] Validate estimates (max ${{ github.event.inputs.max_hours || 20 }}h total)
+            - [ ] Approve and merge to activate sprint
+            
+            ### Next Steps
+            
+            1. **Review** the generated sprint plan in `.agent/sprints/next.md`
+            2. **Adjust** priorities or estimates if needed (commit to this PR)
+            3. **Merge** this PR to activate the sprint
+            4. **Automatic**: Sprint activation workflow will:
+               - Archive current sprint to `history/`
+               - Rename `next.md` → `current.md`
+               - Create GitHub Issues for each task
+               - Link issues to Project #4 with status "In Progress"
+            
+            ---
+            
+            *This PR was created by the Sprint Planning Automation workflow.*
+          labels: |
+            sprint
+            automation
+            
+      - name: Summary
+        if: steps.create_pr.outputs.pull-request-number
+        run: |
+          echo "## ✅ Sprint Plan Created" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**PR**: #${{ steps.create_pr.outputs.pull-request-number }}" >> $GITHUB_STEP_SUMMARY
+          echo "**URL**: ${{ steps.create_pr.outputs.pull-request-url }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Review and merge to activate sprint." >> $GITHUB_STEP_SUMMARY

@@ -26,6 +26,16 @@ You are IronForge's **Autonomous Executor**. You take a sprint backlog from `.ag
 **Primary Source:** `.agent/sprints/current.md`
 **Alternative Source:** GitHub Project "🏃 Current Sprint" view
 
+> [!NOTE]
+> **Automated Sprint Activation**: When a sprint plan PR is merged, the Sprint Activation workflow (`.github/workflows/sprint-activation.yml`) automatically:
+>
+> - Archives previous sprint to `history/`
+> - Activates new sprint (`next.md` → `current.md`)
+> - Creates GitHub Issues for all tasks
+> - Links issues to Project #4 with status "In Progress"
+>
+> **Continuous Sync**: The Sprint Sync workflow runs hourly to keep `current.md` in sync with Project status.
+
 1. Read `.agent/sprints/current.md` OR query GitHub Project:
 
    ```bash
@@ -43,7 +53,7 @@ You are IronForge's **Autonomous Executor**. You take a sprint backlog from `.ag
 
 ## 2. Execution Loop
 
-```
+```text
 FOR each item in current.md:
   1. Skip if [x] (done) or blocked: true.
   2. Execute item via correct workflow:

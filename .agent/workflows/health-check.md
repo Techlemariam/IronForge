@@ -42,13 +42,22 @@ Task (Auditing Steg):
 4. **Config Audit**:
    - Verifiera att alla nödvändiga CLI-verktyg finns i `.agent/config.json`.
 
-5. **Remediation Plan**: Generera en lista över "Technical Debt"-punkter som måste åtgärdas omedelbart, mappat till P0/P1 i triage-skalan.
+5. **UI Health Audit**:
+   - Kör `/monitor-ui` för att scanna komponenter, a11y, och design-consistency.
+   - Granska resultaten för kritiska accessibility-violations.
+   - Verifiera att alla UI-komponenter följer designsystemet.
+
+6. **Remediation Plan**: Generera en lista över "Technical Debt"-punkter som måste åtgärdas omedelbart, mappat till P0/P1 i triage-skalan.
 
 Format: Presentera resultatet som en "Health Dashboard" med status (PASS/FAIL/WARNING) för varje modul, följt av en prioriterad åtgärdslista.
 
 After writing: Betygsätt din egen audit-precision (1-10). Motivera om du tror att du har missat några dolda beroenden.
 
 ## Version History
+
+### 1.1.0 (2026-01-18)
+
+- Added UI Health Audit step with `/monitor-ui` integration
 
 ### 1.0.0 (2026-01-08)
 

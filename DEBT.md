@@ -81,6 +81,11 @@
 | 2026-01-16 | `src/services/TerritoryControlService.ts` | P2 Implemented batch calculation logic for influence points in getMapState. | @game-designer | ✅ Resolved |
 | 2026-01-16 | `src/services/planner.ts` | P4 Type Safety: `any` casts removed. Mapped Prisma types to internal `ExerciseLog`. | @coder | ✅ Resolved |
 | 2026-01-16 | `src/lib/territory/tileUtils.ts` | P4 Type Safety: `any` usage replaced with strict GeoJSON types. | @coder | ✅ Resolved |
+| 2026-01-18 | `src/components/**/*` | [A11y] 55 interactive elements missing `aria-label` or `aria-labelledby` | @ui-ux | 🔴 Open |
+| 2026-01-18 | `src/components/**/*` | [Consistency] 61 instances of hardcoded hex colors instead of design tokens | @ui-ux | 🔴 Open |
+| 2026-01-18 | `src/components/**/*` | [Consistency] 75 instances of arbitrary Tailwind values (e.g., `w-[375px]`) | @ui-ux | 🔴 Open |
+| 2026-01-18 | `src/components/**/*` | [Consistency] Low dark mode coverage (only 2 components using `dark:` prefix) | @ui-ux | 🔴 Open |
+| 2026-01-18 | `src/components/ui/` | [Responsive] Only 8/35 (23%) UI components have mobile breakpoints | @ui-ux | 🔴 Open |
 
 ---
 

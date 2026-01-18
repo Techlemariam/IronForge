@@ -86,6 +86,10 @@ npm outdated --json | Out-File -FilePath evolve_report.json -Encoding utf8
 # Currently generates minimal report
 echo '{"status":"pending","note":"Lighthouse requires dev server"}' | Out-File -FilePath perf_report.json -Encoding utf8
 
+# UI Health Check - A11y, consistency, component audit
+# Agent will run /monitor-ui and store results
+echo '{"status":"pending","note":"Run /monitor-ui for full report"}' | Out-File -FilePath ui_report.json -Encoding utf8
+
 # Note: All commands run sequentially to avoid permission prompts
 # Parallel execution sacrificed for reliability in autonomous mode
 # Security Audit (High severity only)
@@ -217,6 +221,7 @@ cat > "$BRIEF_FILE" << EOF
 | 🚀 Performance | $PERF_RESULT |
 | 🧬 Evolution | $EVOLVE_RESULT |
 | 🧹 Debt Fixed | $DEBT_RESULT |
+| 🎨 UI Health | $(jq -r '.status // "pending"' ui_report.json 2>/dev/null || echo 'N/A') |
 
 ## 📊 Detailed Reports
 
@@ -224,6 +229,7 @@ cat > "$BRIEF_FILE" << EOF
 - [Security Report](security_report.json)
 - [Performance Report](perf_report.json)
 - [Evolution Plan](evolve_plan.md)
+- [UI Health Report](ui_report.json)
 - [Full Log]($LOG)
 
 ## 🎯 Suggested Focus Today
@@ -314,6 +320,12 @@ echo "🌙 Night Shift v2.3 cycle complete."
 ---
 
 ## Version History
+
+### 2.5.0 (2026-01-18)
+
+- **UI Health Monitoring**: Adds `/monitor-ui` check to Phase 1 parallel analysis.
+  - Tracks a11y issues, design consistency, and component health
+  - Results included in `DAILY_BRIEF.md` and linked to `ui_report.json`
 
 ### 2.4.0 (2026-01-16)
 
