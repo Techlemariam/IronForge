@@ -43,6 +43,36 @@
         },
         "roi": {
             "id": "PVTF_lAHOAe3KCM4BMt-pzg77AMw"
+        },
+        "sprint": {
+            "id": "PVTIF_lAHOAe3KCM4BMt-pzg77Bsw",
+            "type": "iteration",
+            "iterations": [
+                {
+                    "id": "59f1312f",
+                    "title": "Sprint 1",
+                    "startDate": "2026-01-18",
+                    "duration": 14
+                },
+                {
+                    "id": "ad4316aa",
+                    "title": "Sprint 2",
+                    "startDate": "2026-02-01",
+                    "duration": 14
+                },
+                {
+                    "id": "e702eaf2",
+                    "title": "Sprint 3",
+                    "startDate": "2026-02-15",
+                    "duration": 14
+                }
+            ],
+            "current": {
+                "id": "59f1312f",
+                "title": "Sprint 1",
+                "startDate": "2026-01-18",
+                "duration": 14
+            }
         }
     }
 }

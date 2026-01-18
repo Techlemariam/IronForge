@@ -64,13 +64,13 @@ jobs:
             -Status "in_review" `
             -Verbose
 
-      - name: Move Merged PR to Merged/Staging
+      - name: Move Merged PR to Done
         if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
         shell: pwsh
         run: |
           .agent/scripts/link-pr-to-project.ps1 `
             -PRNumber ${{ github.event.pull_request.number }} `
-            -Status "merged_staging" `
+            -Status "done" `
             -Verbose
           
           # Also update linked issues if found in body (handled by script?)

@@ -63,6 +63,7 @@ Tools for keeping the codebase healthy and clean.
 | `/polish`       | **Code Cleanup**     | After writing code, before PR. Fixes lint/formatting.  |
 | `/perf`         | **Performance**      | When optimizing bundle size or vitals.                 |
 | `/monitor-debt` | **Debt Scanner**     | To identify areas needing refactoring in `DEBT.md`.    |
+| `/monitor-ui`   | **UI Health Scout**  | A11y audit, design consistency, component quality.     |
 | `/debt-attack`  | **Debt Destroyer**   | Autonomous loop to fix one targeted debt item.         |
 | `/cleanup`      | **Housekeeping**     | General project hygiene (logs, tmp files).             |
 | `/night-shift`  | **Nightly Job**      | **(Auto)** Runs /triage, /perf, /evolve while asleep.  |
@@ -133,6 +134,10 @@ Reusable validation modules for workflow protection. Located in `.agent/workflow
 ---
 
 ## Version History
+
+### 1.3.0 (2026-01-18)
+
+- Added `/monitor-ui` to Maintenance Toolbelt.
 
 ### 1.2.0 (2026-01-15)
 

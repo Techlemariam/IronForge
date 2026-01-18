@@ -46,7 +46,8 @@ Run relevant monitor workflows based on the provided domain (or all if no domain
 | `bio` | `/monitor-bio` |
 | `business`| `/monitor-strategy`, `/monitor-growth` |
 | `api` | `/monitor-logic`, `/security` |
-| `meta` | `/health-check`, `/monitor-tests`, `/monitor-growth`, `/monitor-debt` |
+| `ui` | `/monitor-ui` |
+| `meta` | `/health-check`, `/monitor-tests`, `/monitor-growth`, `/monitor-debt`, `/monitor-ui` |
 
 **Instruction:**
 - If a `[domain]` is provided, run **ONLY** the monitors listed above for that domain.
@@ -61,6 +62,7 @@ Run relevant monitor workflows based on the provided domain (or all if no domain
 /monitor-ci       # CI/CD pipeline health
 /monitor-db       # Database and migrations
 /monitor-deploy   # Vercel deployment status
+/monitor-ui       # UI components, a11y, consistency
 /monitor-strategy # Market alignment and personas
 /monitor-growth   # Passive income triggers and acquisition
 ````
@@ -343,6 +345,11 @@ After triage, you should have:
 5. ✅ Clear next steps for each priority tier
 
 ## Version History
+
+### 1.1.0 (2026-01-18)
+
+- Added `/monitor-ui` to domain mapping and global monitor list.
+- Introduced `ui` domain for dedicated frontend triage.
 
 ### 1.0.0 (2026-01-08)
 

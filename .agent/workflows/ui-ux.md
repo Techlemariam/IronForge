@@ -39,6 +39,8 @@ Post-development UX audit and game-feel optimization.
 
 Comprehensive UX review with metrics.
 
+> **Tip:** Run `/monitor-ui` first for automated component, a11y, and consistency scans before manual audit.
+
 - Time-to-Delight analysis
 - Cognitive Load scoring (target: <3 decisions per view)
 - User Agency evaluation
