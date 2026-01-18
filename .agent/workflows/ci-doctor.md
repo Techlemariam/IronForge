@@ -60,6 +60,20 @@ else
 fi
 ```
 
+### 0.2a Platform Compatibility Check
+
+// turbo
+
+```bash
+echo "🔍 Checking for platform-unsafe paths..."
+if grep -r "\\" .agent/scripts --include="*.ps1" | grep -v "Test-Path"; then
+  echo "⚠️ WARNING: Backslashes detected in PowerShell scripts. Ensure they are safe for Linux."
+  echo "👉 Use forward slashes ('/') for paths."
+else
+  echo "✅ Path Compatibility: Optimal"
+fi
+```
+
 ### 0.3 The Triple Gate
 
 // turbo
