@@ -66,7 +66,7 @@ jobs:
         id: create_pr
         uses: peter-evans/create-pull-request@v6
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PROJECT_TOKEN || secrets.GITHUB_TOKEN }}
           commit-message: "chore(sprint): Generate sprint plan for ${{ github.event.inputs.sprint_name || 'next sprint' }}"
           branch: sprint/plan-${{ github.run_number }}
           delete-branch: true
