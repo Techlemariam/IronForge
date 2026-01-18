@@ -33,7 +33,7 @@ param(
 $ErrorActionPreference = "Stop"
 
 # Import shared module
-$SprintModule = Join-Path $PSScriptRoot "lib\SprintCommon.psm1"
+$SprintModule = Join-Path $PSScriptRoot "lib/SprintCommon.psm1"
 if (Test-Path $SprintModule) {
     Import-Module $SprintModule -Force
 }

@@ -12,9 +12,9 @@
 # CONFIGURATION
 # ============================================================================
 
-$script:LogDirectory = Join-Path $PSScriptRoot "..\logs"
-$script:LockDirectory = Join-Path $PSScriptRoot "..\locks"
-$script:MetricsDirectory = Join-Path $PSScriptRoot "..\metrics"
+$script:LogDirectory = Join-Path $PSScriptRoot "../logs"
+$script:LockDirectory = Join-Path $PSScriptRoot "../locks"
+$script:MetricsDirectory = Join-Path $PSScriptRoot "../metrics"
 
 # Ensure directories exist
 @($script:LogDirectory, $script:LockDirectory, $script:MetricsDirectory) | ForEach-Object {
