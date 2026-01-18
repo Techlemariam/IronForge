@@ -3,7 +3,7 @@ description: "Comprehensive CI failure prevention and resolution (v2.0)"
 command: "/ci-doctor"
 category: "maintenance"
 trigger: "manual"
-version: "2.1.0"
+version: "2.2.0"
 telemetry: "enabled"
 primary_agent: "@infrastructure"
 domain: "ci"
@@ -85,6 +85,22 @@ echo "✅ Triple Gate Passed"
 npx ts-node scripts/validate-mocks.ts
 ```
 
+### 0.5 UI Health Audit
+
+// turbo
+
+```bash
+echo "🔍 Checking UI Health..."
+/monitor-ui
+# Note: Monitor-UI logs critical issues to DEBT.md
+# Fail if critical accessibility issues are found that block release
+if [ -f .agent/reports/ui/latest.json ] && grep -q '"status": "CRITICAL"' .agent/reports/ui/latest.json; then
+  echo "⛔ UI HEALTH CRITICAL: Release blocked by A11y/Consistency violations."
+  exit 1
+fi
+echo "✅ UI Health: Verified"
+```
+
 ---
 
 ## Phase 1: Surgical Strike (Failure Isolation)
@@ -120,6 +136,8 @@ fi
 | `Pass Locally / Fail Remote`   | **RACE_CONDITION** (Move mock to `addInitScript`) |
 | `Qodana: Hardcoded password`   | **SECURITY_BREACH** (See Phase 1.2)               |
 | `Qodana: Duplicated code`      | **DRY_VIOLATION** (See Phase 1.2)                 |
+| `Axe: violations`              | **A11Y_FAIL** (Run `/monitor-ui` & fix markup)    |
+| `Join-Path` / `\` paths       | **PLATFORM_COMPATIBILITY** (Use `/` separators)   |
 
 ### 1.2 The Qodana Ward (Static Analysis)
 
@@ -138,6 +156,13 @@ fi
 **Protocol: REGEX_REDUNDANCY**
 
 - **Fix:** Simplify Regex patterns (e.g., remove unnecessary groups).
+
+**Protocol: PLATFORM_COMPATIBILITY (Linux/Windows)**
+
+- **Context:** PowerShell scripts running on GitHub Actions (`ubuntu-latest`).
+- **Detection:** `Join-Path` errors or "File not found" due to backslashes (`\`).
+- **Fix:** Always use forward slashes (`/`) in relative paths. PowerShell handles `/` on Windows fine, but Linux fails on `\`.
+- **Rule:** `Join-Path "folder/file.ext"` >>> `Join-Path "folder\file.ext"`.
 
 ---
 
