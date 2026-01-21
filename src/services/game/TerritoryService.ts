@@ -16,6 +16,7 @@ import {
 } from "@/lib/territory/tileUtils";
 import { calculateEffortScore, EffortInput } from "./EffortCalculator";
 import { NotificationService } from "@/services/notifications";
+import { logger } from "@/lib/logger";
 
 // ============================================
 // TYPES
@@ -287,8 +288,9 @@ export async function runWeeklySettlement(): Promise<SettlementResult> {
         tilesSettled++;
     }
 
-    console.log(
-        `[Territory Settlement] Settled ${tilesSettled} tiles, ${ownershipChanges} ownership changes`
+    logger.info(
+        { tilesSettled, ownershipChanges },
+        "[Territory Settlement] Weekly settlement complete"
     );
 
     return { tilesSettled, ownershipChanges };
@@ -369,8 +371,9 @@ export async function distributeDailyIncome(): Promise<void> {
         }
     }
 
-    console.log(
-        `[Territory Income] Distributed income to ${usersWithTerritory.length} users`
+    logger.info(
+        { userCount: usersWithTerritory.length },
+        "[Territory Income] Distributed daily income"
     );
 }
 
