@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { GET } from "@/app/api/cron/power-rating/route";
 import { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { PowerRatingService } from "@/services/game/PowerRatingService";
 
 // Mock dependencies
 vi.mock("@/lib/prisma", () => ({
@@ -10,17 +11,26 @@ vi.mock("@/lib/prisma", () => ({
             findMany: vi.fn(),
             update: vi.fn(),
         },
-        exerciseLog: {
-            count: vi.fn(),
-        },
-        cardioLog: {
-            count: vi.fn(),
-        },
+    },
+}));
+
+vi.mock("@/services/game/PowerRatingService", () => ({
+    PowerRatingService: {
+        syncPowerRating: vi.fn(),
     },
 }));
 
 vi.mock("@/lib/sentry-cron", () => ({
     withCronMonitor: (handler: any) => handler,
+}));
+
+// Mock Logger
+vi.mock("@/lib/logger", () => ({
+    logger: {
+        info: vi.fn(),
+        warn: vi.fn(),
+        error: vi.fn(),
+    },
 }));
 
 describe("Power Rating Cron", () => {
@@ -60,9 +70,7 @@ describe("Power Rating Cron", () => {
 
         it("should accept requests with valid auth header", async () => {
             const request = mockRequest("Bearer test-secret");
-
             vi.mocked(prisma.titan.findMany).mockResolvedValue([]);
-
             const response = await GET(request);
             expect(response.status).toBe(200);
         });
@@ -74,22 +82,11 @@ describe("Power Rating Cron", () => {
             const mockTitan = {
                 userId: "user-1",
                 lastActive: new Date(now.getTime() - 3 * 24 * 60 * 60 * 1000), // 3 days ago
-                user: {
-                    id: "user-1",
-                    activePath: "WARDEN",
-                    bodyWeight: 80,
-                    ftpCycle: 240,
-                    ftpRun: null,
-                    pvpProfile: {
-                        highestWilksScore: 350,
-                    },
-                },
+                powerRating: 500,
             };
 
             vi.mocked(prisma.titan.findMany).mockResolvedValue([mockTitan] as any);
-            vi.mocked(prisma.exerciseLog.count).mockResolvedValue(3); // 3 strength sessions
-            vi.mocked(prisma.cardioLog.count).mockResolvedValue(2); // 2 cardio sessions
-            vi.mocked(prisma.titan.update).mockResolvedValue({} as any);
+            vi.mocked(PowerRatingService.syncPowerRating).mockResolvedValue({} as any);
 
             const request = mockRequest("Bearer test-secret");
             const response = await GET(request);
@@ -100,16 +97,7 @@ describe("Power Rating Cron", () => {
             expect(json.success).toBe(true);
             expect(json.processed).toBe(1);
             expect(json.recalculated).toBe(1);
-            expect(prisma.titan.update).toHaveBeenCalledWith({
-                where: { userId: "user-1" },
-                data: expect.objectContaining({
-                    powerRating: expect.any(Number),
-                    strengthIndex: expect.any(Number),
-                    cardioIndex: expect.any(Number),
-                    mrvAdherence: expect.any(Number),
-                    lastPowerCalcAt: expect.any(Date),
-                }),
-            });
+            expect(PowerRatingService.syncPowerRating).toHaveBeenCalledWith("user-1");
         });
 
         it("should apply decay for inactive users", async () => {
@@ -117,21 +105,10 @@ describe("Power Rating Cron", () => {
             const mockTitan = {
                 userId: "user-2",
                 lastActive: new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000), // 14 days ago
-                user: {
-                    id: "user-2",
-                    activePath: "WARDEN",
-                    bodyWeight: 75,
-                    ftpCycle: 200,
-                    ftpRun: null,
-                    pvpProfile: {
-                        highestWilksScore: 300,
-                    },
-                },
+                powerRating: 1000,
             };
 
             vi.mocked(prisma.titan.findMany).mockResolvedValue([mockTitan] as any);
-            vi.mocked(prisma.exerciseLog.count).mockResolvedValue(0);
-            vi.mocked(prisma.cardioLog.count).mockResolvedValue(0);
             vi.mocked(prisma.titan.update).mockResolvedValue({} as any);
 
             const request = mockRequest("Bearer test-secret");
@@ -141,118 +118,79 @@ describe("Power Rating Cron", () => {
             const json = await response.json();
 
             expect(json.decayed).toBe(1);
+            // Decay 14 days: 1000 * 0.95^2 ~ 903
+            expect(prisma.titan.update).toHaveBeenCalledWith({
+                where: { userId: "user-2" },
+                data: {
+                    powerRating: 903,
+                    lastPowerCalcAt: expect.any(Date),
+                },
+            });
         });
 
         it("should handle users without FTP data", async () => {
             const mockTitan = {
                 userId: "user-3",
                 lastActive: new Date(),
-                user: {
-                    id: "user-3",
-                    activePath: "JUGGERNAUT",
-                    bodyWeight: 85,
-                    ftpCycle: null,
-                    ftpRun: null,
-                    pvpProfile: {
-                        highestWilksScore: 400,
-                    },
-                },
+                powerRating: 500,
             };
 
             vi.mocked(prisma.titan.findMany).mockResolvedValue([mockTitan] as any);
-            vi.mocked(prisma.exerciseLog.count).mockResolvedValue(4);
-            vi.mocked(prisma.cardioLog.count).mockResolvedValue(0);
-            vi.mocked(prisma.titan.update).mockResolvedValue({} as any);
+            vi.mocked(PowerRatingService.syncPowerRating).mockResolvedValue({} as any);
 
             const request = mockRequest("Bearer test-secret");
             const response = await GET(request);
 
             expect(response.status).toBe(200);
-            expect(prisma.titan.update).toHaveBeenCalled();
+            expect(PowerRatingService.syncPowerRating).toHaveBeenCalledWith("user-3");
         });
 
         it("should handle users without PvP profile", async () => {
             const mockTitan = {
                 userId: "user-4",
                 lastActive: new Date(),
-                user: {
-                    id: "user-4",
-                    activePath: "PATHFINDER",
-                    bodyWeight: 70,
-                    ftpCycle: 220,
-                    ftpRun: 250,
-                    pvpProfile: null,
-                },
+                powerRating: 500,
             };
 
             vi.mocked(prisma.titan.findMany).mockResolvedValue([mockTitan] as any);
-            vi.mocked(prisma.exerciseLog.count).mockResolvedValue(2);
-            vi.mocked(prisma.cardioLog.count).mockResolvedValue(3);
-            vi.mocked(prisma.titan.update).mockResolvedValue({} as any);
+            vi.mocked(PowerRatingService.syncPowerRating).mockResolvedValue({} as any);
 
             const request = mockRequest("Bearer test-secret");
             const response = await GET(request);
 
             expect(response.status).toBe(200);
-            expect(prisma.titan.update).toHaveBeenCalled();
-        });
-    });
-
-    describe("Adherence Calculation", () => {
-        it("should calculate 100% adherence with 4 strength and 3 cardio sessions", async () => {
-            const mockTitan = {
-                userId: "user-5",
-                lastActive: new Date(),
-                user: {
-                    id: "user-5",
-                    activePath: "WARDEN",
-                    bodyWeight: 75,
-                    ftpCycle: 200,
-                    ftpRun: null,
-                    pvpProfile: { highestWilksScore: 300 },
-                },
-            };
-
-            vi.mocked(prisma.titan.findMany).mockResolvedValue([mockTitan] as any);
-            vi.mocked(prisma.exerciseLog.count).mockResolvedValue(4);
-            vi.mocked(prisma.cardioLog.count).mockResolvedValue(3);
-            vi.mocked(prisma.titan.update).mockResolvedValue({} as any);
-
-            const request = mockRequest("Bearer test-secret");
-            await GET(request);
-
-            const updateCall = vi.mocked(prisma.titan.update).mock.calls[0][0];
-            expect(updateCall.data.mrvAdherence).toBe(1.15); // 1.0 + (1.0 * 0.15)
-        });
-
-        it("should cap adherence at 100%", async () => {
-            const mockTitan = {
-                userId: "user-6",
-                lastActive: new Date(),
-                user: {
-                    id: "user-6",
-                    activePath: "WARDEN",
-                    bodyWeight: 75,
-                    ftpCycle: 200,
-                    ftpRun: null,
-                    pvpProfile: { highestWilksScore: 300 },
-                },
-            };
-
-            vi.mocked(prisma.titan.findMany).mockResolvedValue([mockTitan] as any);
-            vi.mocked(prisma.exerciseLog.count).mockResolvedValue(10); // More than needed
-            vi.mocked(prisma.cardioLog.count).mockResolvedValue(10);
-            vi.mocked(prisma.titan.update).mockResolvedValue({} as any);
-
-            const request = mockRequest("Bearer test-secret");
-            await GET(request);
-
-            const updateCall = vi.mocked(prisma.titan.update).mock.calls[0][0];
-            expect(updateCall.data.mrvAdherence).toBe(1.15); // Capped
+            expect(PowerRatingService.syncPowerRating).toHaveBeenCalledWith("user-4");
         });
     });
 
     describe("Error Handling", () => {
+        it("should handle service errors gracefully", async () => {
+            const mockTitans = [
+                { userId: "user-good", lastActive: new Date(), powerRating: 500 },
+                { userId: "user-bad", lastActive: new Date(), powerRating: 500 },
+            ];
+
+            vi.mocked(prisma.titan.findMany).mockResolvedValue(mockTitans as any);
+
+            // Mock implementation to throw for specific user
+            vi.mocked(PowerRatingService.syncPowerRating).mockImplementation(async (userId) => {
+                if (userId === "user-bad") {
+                    throw new Error("Service failed");
+                }
+                return {} as any;
+            });
+
+            const request = mockRequest("Bearer test-secret");
+            const response = await GET(request);
+
+            expect(response.status).toBe(200);
+            const json = await response.json();
+
+            expect(json.processed).toBe(1); // One succeeded
+            expect(json.errors.length).toBe(1);
+            expect(json.errors[0]).toContain("Service failed");
+        });
+
         it("should handle database errors gracefully", async () => {
             vi.mocked(prisma.titan.findMany).mockRejectedValue(new Error("Database error"));
 
@@ -262,42 +200,6 @@ describe("Power Rating Cron", () => {
             expect(response.status).toBe(500);
             const json = await response.json();
             expect(json.success).toBe(false);
-        });
-
-        it("should continue processing on individual titan errors", async () => {
-            const mockTitans = [
-                {
-                    userId: "user-good",
-                    lastActive: new Date(),
-                    user: {
-                        id: "user-good",
-                        activePath: "WARDEN",
-                        bodyWeight: 75,
-                        ftpCycle: 200,
-                        ftpRun: null,
-                        pvpProfile: { highestWilksScore: 300 },
-                    },
-                },
-                {
-                    userId: "user-bad",
-                    lastActive: new Date(),
-                    user: null, // Will cause error
-                },
-            ];
-
-            vi.mocked(prisma.titan.findMany).mockResolvedValue(mockTitans as any);
-            vi.mocked(prisma.exerciseLog.count).mockResolvedValue(3);
-            vi.mocked(prisma.cardioLog.count).mockResolvedValue(2);
-            vi.mocked(prisma.titan.update).mockResolvedValue({} as any);
-
-            const request = mockRequest("Bearer test-secret");
-            const response = await GET(request);
-
-            expect(response.status).toBe(200);
-            const json = await response.json();
-            expect(json.errors).toBeDefined();
-            expect(json.errors.length).toBeGreaterThan(0);
-            expect(json.processed).toBe(1); // Only the good one
         });
     });
 });

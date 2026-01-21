@@ -1,119 +1,83 @@
 import { describe, it, expect } from "vitest";
 import {
-    normalizeStrength,
-    normalizeCardio,
-    getMrvAdherenceBonus,
+    calculateStrengthRating,
+    calculateCardioRating,
+    getConsistencyBonusMultiplier,
     calculatePowerRating,
     applyDecay,
 } from "@/lib/powerRating";
 
-describe("powerRating", () => {
-    describe("normalizeStrength", () => {
-        it("should return 0 for Wilks at floor (200)", () => {
-            expect(normalizeStrength(200)).toBe(0);
+describe("powerRating (Oracle 3.0)", () => {
+
+    describe("calculateStrengthRating", () => {
+        it("should calculate based on Wilks and Volume", () => {
+            // Wilks * 10 + Volume / 1000
+            // 300 * 10 + 5000 / 1000 = 3000 + 5 = 3005 -> Cap 2000
+            expect(calculateStrengthRating(300, 5000)).toBe(2000);
         });
 
-        it("should return 1000 for Wilks at ceiling (600)", () => {
-            expect(normalizeStrength(600)).toBe(1000);
+        it("should handle low values without going below 0", () => {
+            // 10 * 10 + 0 = 100
+            expect(calculateStrengthRating(10, 0)).toBe(100);
         });
 
-        it("should return 500 for Wilks at midpoint (400)", () => {
-            expect(normalizeStrength(400)).toBe(500);
+        it("should cap strictly at 2000", () => {
+            expect(calculateStrengthRating(500, 100000)).toBe(2000);
         });
 
-        it("should clamp below floor to 0", () => {
-            expect(normalizeStrength(100)).toBe(0);
-        });
-
-        it("should clamp above ceiling to 1000", () => {
-            expect(normalizeStrength(700)).toBe(1000);
-        });
-    });
-
-    describe("normalizeCardio", () => {
-        it("should return 0 for W/kg at floor (1.5)", () => {
-            expect(normalizeCardio(1.5)).toBe(0);
-        });
-
-        it("should return 1000 for W/kg at ceiling (5.0)", () => {
-            expect(normalizeCardio(5.0)).toBe(1000);
-        });
-
-        it("should return ~428 for W/kg at 3.0", () => {
-            // (3.0 - 1.5) / (5.0 - 1.5) * 1000 = 1.5 / 3.5 * 1000 ≈ 428.57
-            const result = normalizeCardio(3.0);
-            expect(result).toBeGreaterThanOrEqual(428);
-            expect(result).toBeLessThanOrEqual(429);
-        });
-
-        it("should clamp below floor to 0", () => {
-            expect(normalizeCardio(1.0)).toBe(0);
-        });
-
-        it("should clamp above ceiling to 1000", () => {
-            expect(normalizeCardio(6.0)).toBe(1000);
+        it("should calculate a mid-range scenario accurately", () => {
+            // Wilks 150 -> 1500
+            // Vol 20000 -> 20
+            // Total 1520
+            expect(calculateStrengthRating(150, 20000)).toBe(1520);
         });
     });
 
-    describe("getMrvAdherenceBonus", () => {
-        it("should return 1.0 for zero adherence", () => {
-            expect(getMrvAdherenceBonus(0, 0, "WARDEN")).toBe(1.0);
+    describe("calculateCardioRating", () => {
+        it("should calculate based on FTP and Duration", () => {
+            // FTP * 4 + Hours * 50
+            // 200 * 4 + 4 * 50 = 800 + 200 = 1000
+            expect(calculateCardioRating(200, 4)).toBe(1000);
         });
 
-        it("should return 1.15 for perfect adherence", () => {
-            expect(getMrvAdherenceBonus(1.0, 1.0, "WARDEN")).toBe(1.15);
+        it("should cap strictly at 2000", () => {
+            // 400 * 4 = 1600. Duration 20h * 50 = 1000. Total 2600. Cap 2000.
+            expect(calculateCardioRating(400, 20)).toBe(2000);
         });
 
-        it("should weight strength more for JUGGERNAUT", () => {
-            // JUGGERNAUT: str=0.8, cardio=0.2
-            const result = getMrvAdherenceBonus(1.0, 0, "JUGGERNAUT");
-            // adherenceScore = 1.0 * 0.8 + 0 * 0.2 = 0.8
-            // bonus = 1.0 + 0.8 * 0.15 = 1.12
-            expect(result).toBe(1.12);
+        it("should handle zero activity", () => {
+            // 200 * 4 + 0 = 800
+            expect(calculateCardioRating(200, 0)).toBe(800);
+        });
+    });
+
+    describe("getConsistencyBonusMultiplier", () => {
+        it("should return 1.0 for 0 streak", () => {
+            expect(getConsistencyBonusMultiplier(0)).toBe(1.0);
         });
 
-        it("should weight cardio more for PATHFINDER", () => {
-            // PATHFINDER: str=0.2, cardio=0.8
-            const result = getMrvAdherenceBonus(0, 1.0, "PATHFINDER");
-            // adherenceScore = 0 * 0.2 + 1.0 * 0.8 = 0.8
-            // bonus = 1.0 + 0.8 * 0.15 = 1.12
-            expect(result).toBe(1.12);
+        it("should return 1.05 for 5 weeks streak", () => {
+            expect(getConsistencyBonusMultiplier(5)).toBe(1.05);
+        });
+
+        it("should cap at 1.10 for >10 weeks streak", () => {
+            expect(getConsistencyBonusMultiplier(12)).toBe(1.10);
         });
     });
 
     describe("calculatePowerRating", () => {
-        it("should return balanced rating for WARDEN path", () => {
-            // Wilks 400 → strengthIndex 500
-            // W/kg 3.25 → cardioIndex 500
-            // WARDEN weights: 0.5/0.5
-            // baseRating = 500 * 0.5 + 500 * 0.5 = 500
-            const result = calculatePowerRating(400, 3.25, "WARDEN");
-            expect(result.strengthIndex).toBe(500);
-            expect(result.cardioIndex).toBe(500);
-            expect(result.powerRating).toBe(500);
-        });
+        it("should combine Strength and Cardio with Bonus", () => {
+            // Strength: 1520 (Wilks 150, Vol 20k)
+            // Cardio: 1000 (FTP 200, Dur 4h)
+            // Bonus: 5 weeks (1.05)
+            // Base = (1520 * 0.5) + (1000 * 0.5) = 760 + 500 = 1260
+            // Final = 1260 * 1.05 = 1323
 
-        it("should weight strength for JUGGERNAUT path", () => {
-            // JUGGERNAUT weights: 0.7/0.3
-            // baseRating = 500 * 0.7 + 500 * 0.3 = 500
-            const result = calculatePowerRating(400, 3.25, "JUGGERNAUT");
-            expect(result.powerRating).toBe(500);
-        });
+            const result = calculatePowerRating(150, 20000, 200, 4, 5);
 
-        it("should cap at 1000", () => {
-            // Max everything with perfect adherence
-            const result = calculatePowerRating(600, 5.0, "WARDEN", 1.0, 1.0);
-            // baseRating = 1000, adherence = 1.15, capped at 1000
-            expect(result.powerRating).toBe(1000);
-        });
-
-        it("should apply adherence bonus", () => {
-            const withoutAdherence = calculatePowerRating(400, 3.25, "WARDEN", 0, 0);
-            const withAdherence = calculatePowerRating(400, 3.25, "WARDEN", 1.0, 1.0);
-
-            // With adherence should be 15% higher
-            expect(withAdherence.powerRating).toBeGreaterThan(withoutAdherence.powerRating);
-            expect(withAdherence.powerRating).toBe(575); // 500 * 1.15 = 575
+            expect(result.strengthIndex).toBe(1520);
+            expect(result.cardioIndex).toBe(1000);
+            expect(result.powerRating).toBe(1323);
         });
     });
 
