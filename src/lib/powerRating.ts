@@ -7,90 +7,79 @@ interface PowerRatingComponents {
 }
 
 /**
- * Normalize Wilks Score (0-600) to Index (0-1000)
- * Floor: 200 (Beginner)
- * Ceiling: 600 (Elite)
+ * Limit value between min and max
  */
-export const normalizeStrength = (wilks: number): number => {
-    const floor = 200;
-    const ceiling = 600;
-    // Ensure we don't go below 0 or above 1000
-    return Math.min(1000, Math.max(0, ((wilks - floor) / (ceiling - floor)) * 1000));
-};
+const clamp = (val: number, min: number, max: number) => Math.min(max, Math.max(min, val));
 
 /**
- * Normalize FTP W/kg (1.5-5.0) to Index (0-1000)
- * Floor: 1.5 W/kg (Untrained)
- * Ceiling: 5.0 W/kg (Elite)
+ * Calculate Strength Rating via Hevy Data
+ * Formula: (Wilks Score * 10) + (Weekly Volume / 1000)
+ * Cap: 2000
  */
-export const normalizeCardio = (wkg: number): number => {
-    const floor = 1.5;
-    const ceiling = 5.0;
-    return Math.min(1000, Math.max(0, ((wkg - floor) / (ceiling - floor)) * 1000));
-};
-
-/**
- * Calculate Adherence Bonus based on path
- * Bonus range: 1.0 (no bonus) to 1.15 (+15%)
- */
-export const getMrvAdherenceBonus = (
-    mrvAdherence: number, // 0.0 - 1.0 (% of optimal volume hit)
-    cardioAdherence: number, // 0.0 - 1.0 (% of target sessions)
-    path: TrainingPath
+export const calculateStrengthRating = (
+    wilksScore: number,
+    weeklyVolumeKg: number
 ): number => {
-    const weights: Record<TrainingPath, { str: number; cardio: number }> = {
-        JUGGERNAUT: { str: 0.8, cardio: 0.2 },
-        PATHFINDER: { str: 0.2, cardio: 0.8 },
-        WARDEN: { str: 0.5, cardio: 0.5 },
-    };
+    const wilksComponent = wilksScore * 10;
+    const volumeComponent = weeklyVolumeKg / 1000;
 
-    const w = weights[path] || weights.WARDEN;
-    const adherenceScore = mrvAdherence * w.str + cardioAdherence * w.cardio;
+    return clamp(wilksComponent + volumeComponent, 0, 2000);
+};
 
-    // Bonus: 1.0 to 1.15
-    return 1.0 + (adherenceScore * 0.15);
+/**
+ * Calculate Cardio Rating via Intervals.icu Data
+ * Formula: (FTP * 4) + (Weekly Duration Hours * 50)
+ * Cap: 2000
+ */
+export const calculateCardioRating = (
+    ftp: number,
+    weeklyDurationHours: number
+): number => {
+    const ftpComponent = ftp * 4;
+    const durationComponent = weeklyDurationHours * 50;
+
+    return clamp(ftpComponent + durationComponent, 0, 2000);
+};
+
+/**
+ * Calculate Consistency Bonus
+ * Spec: +1% to Total PS for every consecutive week (max +10%)
+ */
+export const getConsistencyBonusMultiplier = (consecutiveWeeks: number): number => {
+    // Cap at 10 weeks -> 1.10x
+    const weeks = clamp(consecutiveWeeks, 0, 10);
+    return 1.0 + (weeks * 0.01);
 };
 
 /**
  * Main Calculation Function
+ * PS = (SR * 0.5) + (CR * 0.5) + Consistency Bonus
  */
 export const calculatePowerRating = (
     wilks: number,
-    ftpWkg: number,
-    path: TrainingPath,
-    mrvAdherence: number = 0,
-    cardioAdherence: number = 0
+    weeklyVolumeKg: number,
+    ftp: number,
+    weeklyDurationHours: number,
+    consecutiveWeeksTraining: number = 0
 ): PowerRatingComponents => {
-    const strengthIndex = normalizeStrength(wilks);
-    const cardioIndex = normalizeCardio(ftpWkg);
+    const strengthIndex = calculateStrengthRating(wilks, weeklyVolumeKg);
+    const cardioIndex = calculateCardioRating(ftp, weeklyDurationHours);
 
-    const weights: Record<TrainingPath, { str: number; cardio: number }> = {
-        JUGGERNAUT: { str: 0.7, cardio: 0.3 },
-        PATHFINDER: { str: 0.3, cardio: 0.7 },
-        WARDEN: { str: 0.5, cardio: 0.5 },
-    };
+    const baseScore = (strengthIndex * 0.5) + (cardioIndex * 0.5);
+    const bonusMultiplier = getConsistencyBonusMultiplier(consecutiveWeeksTraining);
 
-    // Default to WARDEN if path is invalid
-    const w = weights[path] || weights.WARDEN;
-
-    const baseRating = (strengthIndex * w.str) + (cardioIndex * w.cardio);
-    const adherenceBonus = getMrvAdherenceBonus(mrvAdherence, cardioAdherence, path);
-
-    const finalRating = Math.round(baseRating * adherenceBonus);
+    const finalRating = Math.round(baseScore * bonusMultiplier);
 
     return {
         strengthIndex: Math.round(strengthIndex),
         cardioIndex: Math.round(cardioIndex),
-        powerRating: Math.min(1000, finalRating), // Cap at 1000
+        powerRating: Math.round(finalRating),
     };
 };
 
 /**
  * Apply decay to power rating based on inactivity
- * Decay: 5% per 7 days of inactivity
- * @param currentRating Current power rating (0-1000)
- * @param daysSinceActivity Days since last recorded activity
- * @returns Decayed power rating
+ * Decay: 5% per 7 days of inactivity (if > 7 days)
  */
 export const applyDecay = (
     currentRating: number,
@@ -99,6 +88,7 @@ export const applyDecay = (
     if (daysSinceActivity < 7) return currentRating;
 
     const weeksInactive = Math.floor(daysSinceActivity / 7);
+    // 5% decay per week
     const decayMultiplier = Math.pow(0.95, weeksInactive);
 
     return Math.round(currentRating * decayMultiplier);

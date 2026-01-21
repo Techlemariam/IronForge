@@ -14,4 +14,5 @@ export interface LeaderboardEntry {
   faction: "HORDE" | "ALLIANCE";
   avatar?: string;
   guildName?: string | null;
+  powerRating?: number;
 }

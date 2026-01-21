@@ -1,102 +1,83 @@
 import prisma from "@/lib/prisma";
 import {
-    calculatePowerRating,
-    TrainingPath
+    calculatePowerRating
 } from "@/lib/powerRating";
-import { DayPlan } from "@/types";
 
 /**
  * Service for calculating and managing Titan Power Ratings.
- * Combines Strength (Wilks), Cardio (Watts/kg), and Adherence (MRV/Consistency).
+ * Implements Oracle 3.0 Power Score logic.
  */
 export class PowerRatingService {
 
     /**
-     * Helper to get target sessions from WeeklyPlan or Fallback defaults.
+     * Get Weekly Volume (kg) for the last 7 days.
      */
-    private static async getTargetSessions(userId: string, type: 'STRENGTH' | 'CARDIO'): Promise<number> {
-        // Find the most recent WeeklyPlan
-        const plan = await prisma.weeklyPlan.findFirst({
-            where: { userId },
-            orderBy: { weekStart: 'desc' }
-        });
-
-        if (plan && plan.plan) {
-            // Parse the JSON plan
-            const dayPlans = (plan.plan as unknown) as DayPlan[];
-
-            // Count scheduled non-rest days
-            // Note: This assumes the Oracle schedules mixed strength/cardio. A simplistic check for !isRestDay is a good proxy for "Activity Days".
-            // A more advanced check would parse the recommendation title/type.
-            const plannedDays = dayPlans.filter(d => !d.isRestDay).length;
-
-            // For now, assume total activity is split 60/40 Strength/Cardio roughly, 
-            // or just use total volume as adherence target if we don't distinguish types in the Plan JSON yet.
-            // Since OracleRecommendation types are coarse (RECOVERY vs GRIND), let's estimate:
-
-            if (plannedDays > 0) {
-                // Fallback Logic based on type since Plan doesn't strictly tag "Cardio Day" vs "Leg Day" in types yet
-                if (type === 'STRENGTH') return Math.max(2, Math.ceil(plannedDays * 0.6));
-                if (type === 'CARDIO') return Math.max(1, Math.ceil(plannedDays * 0.4));
-            }
-        }
-
-        // Default Fallback (MVP)
-        return type === 'STRENGTH' ? 3 : 2;
-    }
-
-    /**
-     * Calculate MRV Adherence based on recent exercise logs vs planned counts.
-     * Returns 0.0 - 1.0 (capped)
-     */
-    static async calculateStrengthAdherence(userId: string): Promise<number> {
-        // Look at last 14 days
-        const twoWeeksAgo = new Date();
-        twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
+    static async getWeeklyVolume(userId: string): Promise<number> {
+        const sevenDaysAgo = new Date();
+        sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
         const logs = await prisma.exerciseLog.findMany({
             where: {
                 userId,
-                date: { gte: twoWeeksAgo }
+                date: { gte: sevenDaysAgo }
             },
-            select: { date: true }
+            select: { sets: true } // sets is JSON: [{reps, weight, ...}]
         });
 
-        // Group by day to count unique sessions
-        const sessionDates = new Set(logs.map(l => l.date.toISOString().split('T')[0]));
-        const actualSessions = sessionDates.size;
+        let totalVolume = 0;
 
-        // Target: 2 weeks of volume
-        const weeklyTarget = await this.getTargetSessions(userId, 'STRENGTH');
-        const totalTarget = weeklyTarget * 2;
+        for (const log of logs) {
+            const sets = log.sets as any[];
+            if (Array.isArray(sets)) {
+                for (const set of sets) {
+                    const weight = Number(set.weight || 0);
+                    const reps = Number(set.reps || 0);
+                    if (weight > 0 && reps > 0) {
+                        totalVolume += weight * reps;
+                    }
+                }
+            }
+        }
 
-        return Math.min(1.1, actualSessions / totalTarget); // Allow small over-adherence buffer (110%)
+        return Math.round(totalVolume);
     }
 
     /**
-     * Calculate Cardio Adherence based on recent cardio logs.
-     * Returns 0.0 - 1.0 (capped)
+     * Get Weekly Cardio Duration (hours) for the last 7 days.
      */
-    static async calculateCardioAdherence(userId: string): Promise<number> {
-        // Look at last 14 days
-        const twoWeeksAgo = new Date();
-        twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
+    static async getWeeklyCardioDuration(userId: string): Promise<number> {
+        const sevenDaysAgo = new Date();
+        sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
         const logs = await prisma.cardioLog.findMany({
             where: {
                 userId,
-                date: { gte: twoWeeksAgo }
+                date: { gte: sevenDaysAgo }
             },
-            select: { date: true }
+            select: { duration: true } // duration in seconds
         });
 
-        const actualSessions = logs.length;
+        const totalSeconds = logs.reduce((sum, log) => sum + (log.duration || 0), 0);
+        return parseFloat((totalSeconds / 3600).toFixed(2));
+    }
 
-        // Target: 2 weeks of volume
-        const weeklyTarget = await this.getTargetSessions(userId, 'CARDIO');
-        const totalTarget = weeklyTarget * 2;
+    /**
+     * Get Consecutive Weeks Streak.
+     * Uses user.loginStreak or titan.streak as a proxy for now, 
+     * or counts active weeks from logs.
+     * MVP: Use Titan Streak / 7 if available, otherwise 0.
+     * 
+     * Actually, let's calculate it accurately from logs if possible, 
+     * or fallback to `titan.streak` (which tracks daily logins) / 7.
+     */
+    static async getConsecutiveWeeks(userId: string): Promise<number> {
+        const user = await prisma.user.findUnique({
+            where: { id: userId },
+            select: { loginStreak: true } // Daily login streak
+        });
 
-        return Math.min(1.1, actualSessions / totalTarget);
+        // MVP Proxy: Streak Days / 7
+        return user ? Math.floor(user.loginStreak / 7) : 0;
     }
 
     /**
@@ -116,49 +97,43 @@ export class PowerRatingService {
             throw new Error("User or Titan not found");
         }
 
-        // 2. Extract Metrics
+        // 2. Extract Base Metrics
         const wilks = user.pvpProfile?.highestWilksScore || 0;
+        const ftp = user.ftpCycle || user.ftpRun || 200; // Default 200 if missing
 
-        // Determine Cardio Metric (Watts/kg)
-        let wkg = 0;
-        if (user.ftpCycle && user.bodyWeight > 0) {
-            wkg = user.ftpCycle / user.bodyWeight;
-        } else if (user.ftpRun && user.bodyWeight > 0) {
-            wkg = user.ftpRun / user.bodyWeight;
-        }
+        // 3. Fetch Activity Data (Last 7 Days)
+        const weeklyVolume = await this.getWeeklyVolume(userId);
+        const weeklyDuration = await this.getWeeklyCardioDuration(userId);
+        const streakWeeks = await this.getConsecutiveWeeks(userId);
 
-        // 3. Determine Path
-        const path = (user.activePath as TrainingPath) || 'WARDEN';
-
-        // 4. Calculate Real Adherence
-        const mrvAdherence = await this.calculateStrengthAdherence(userId);
-        const cardioAdherence = await this.calculateCardioAdherence(userId);
-
-        // 5. Calculate Power Rating
+        // 4. Calculate Power Rating (Oracle 3.0)
         const result = calculatePowerRating(
             wilks,
-            wkg,
-            path,
-            mrvAdherence,
-            cardioAdherence
+            weeklyVolume,
+            ftp,
+            weeklyDuration,
+            streakWeeks
         );
 
-        // 6. Update Titan
+        // 5. Update Titan
         const updatedTitan = await prisma.titan.update({
             where: { userId },
             data: {
                 powerRating: result.powerRating,
                 strengthIndex: result.strengthIndex,
                 cardioIndex: result.cardioIndex,
-                mrvAdherence: 1.0 + (mrvAdherence * 0.15), // Storing the multiplier for UI display logic matching lib
+                // mrvAdherence is deprecated in 3.0 logic but kept for DB compat? 
+                // We can set it to 1.0 or repurpose it as 'Activity Index' later.
+                // For now, let's leave it as 1.0.
+                mrvAdherence: 1.0,
                 lastPowerCalcAt: new Date(),
             },
         });
 
         return {
             ...result,
-            mrvAdherence,
-            cardioAdherence,
+            weeklyVolume,
+            weeklyDuration,
             titan: updatedTitan
         };
     }

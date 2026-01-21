@@ -1,7 +1,5 @@
-"use client";
-
 import React from "react";
-import { Shield, Trophy, Swords, Skull, MapPin } from "lucide-react";
+import { Shield, Trophy, Swords, Skull, MapPin, Zap } from "lucide-react";
 import { LeaderboardEntry } from "@/features/leaderboard/types";
 import { getPvpRank, getRankTitle } from "@/lib/pvpRanks";
 
@@ -11,6 +9,7 @@ interface LeaderboardPlayerCardProps {
     currentUserId?: string;
     showPvpStats?: boolean;
     showFactionStats?: boolean;
+    showPowerRating?: boolean;
 }
 
 export const LeaderboardPlayerCard: React.FC<LeaderboardPlayerCardProps> = ({
@@ -19,6 +18,7 @@ export const LeaderboardPlayerCard: React.FC<LeaderboardPlayerCardProps> = ({
     currentUserId,
     showPvpStats = false,
     showFactionStats = false,
+    showPowerRating = false,
 }) => {
     const isMe = player.userId === currentUserId;
     const rankColor =
@@ -54,11 +54,18 @@ export const LeaderboardPlayerCard: React.FC<LeaderboardPlayerCardProps> = ({
                             Lvl {player.level}
                         </span>
 
+                        {/* Power Rating Badge (New) */}
+                        {(showPowerRating || player.powerRating !== undefined) && (
+                            <span className="bg-purple-900/30 text-purple-400 text-[10px] px-2 py-0.5 rounded border border-purple-900/50 uppercase tracking-widest font-black flex items-center gap-1">
+                                <Zap className="w-3 h-3" /> {player.powerRating || 0}
+                            </span>
+                        )}
+
                         {/* Faction Badge */}
                         <span
                             className={`text-[10px] px-2 py-0.5 rounded border uppercase tracking-widest font-black ${player.faction === "ALLIANCE"
-                                    ? "bg-blue-900/30 text-blue-400 border-blue-900/50"
-                                    : "bg-red-900/30 text-red-400 border-red-900/50"
+                                ? "bg-blue-900/30 text-blue-400 border-blue-900/50"
+                                : "bg-red-900/30 text-red-400 border-red-900/50"
                                 }`}
                         >
                             {player.faction}
@@ -68,8 +75,8 @@ export const LeaderboardPlayerCard: React.FC<LeaderboardPlayerCardProps> = ({
                         {showPvpStats && pvpRank && rankTitle && (
                             <span
                                 className={`text-[10px] px-2 py-0.5 rounded border uppercase tracking-widest font-black flex items-center gap-1 ${player.faction === "ALLIANCE"
-                                        ? "bg-blue-900/30 text-blue-400 border-blue-900/50"
-                                        : "bg-red-900/30 text-red-400 border-red-900/50"
+                                    ? "bg-blue-900/30 text-blue-400 border-blue-900/50"
+                                    : "bg-red-900/30 text-red-400 border-red-900/50"
                                     }`}
                             >
                                 <Shield className="w-3 h-3" />
@@ -132,6 +139,11 @@ export const LeaderboardPlayerCard: React.FC<LeaderboardPlayerCardProps> = ({
                 {showFactionStats && (
                     <div className="text-lg font-bold text-white">
                         {player.totalExperience?.toLocaleString() || 0}
+                    </div>
+                )}
+                {showPowerRating && (
+                    <div className="text-lg font-bold text-purple-400">
+                        {player.powerRating || 0}
                     </div>
                 )}
             </div>
