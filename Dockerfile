@@ -40,6 +40,8 @@ RUN npx prisma generate && pnpm build
 # Production runner (minimal image)
 # --------------------------------
 FROM node:22-alpine AS runner
+# Install curl for scheduled tasks
+RUN apk add --no-cache curl
 WORKDIR /app
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
