@@ -1,29 +1,32 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { scroll-area } from './scroll-area';
+import { ScrollArea } from './scroll-area';
 
-const meta: Meta<typeof scroll-area> = {
-  title: 'Components/scroll-area',
-  component: scroll-area,
+const meta: Meta<typeof ScrollArea> = {
+  title: 'Components/UI/ScrollArea',
+  component: ScrollArea,
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
   },
-  argTypes: {
-    // Add your argTypes here
+  args: {
+    className: 'h-[200px] w-[350px] rounded-md border p-4',
   },
 };
 
 export default meta;
-type Story = StoryObj<typeof scroll-area>;
+type Story = StoryObj<typeof ScrollArea>;
 
 export const Default: Story = {
-  args: {
-    // Add default props here
-  },
-};
-
-export const Variant: Story = {
-  args: {
-    // Add variant props here
-  },
+  render: (args) => (
+    <ScrollArea {...args}>
+      <div className="p-4">
+        <h4 className="mb-4 text-sm font-medium leading-none">Tags</h4>
+        {Array.from({ length: 50 }).map((_, i, a) => (
+          <div key={i} className="text-sm">
+            Tag {a.length - i}
+          </div>
+        ))}
+      </div>
+    </ScrollArea>
+  ),
 };

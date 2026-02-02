@@ -26,6 +26,9 @@ const config: StorybookConfig = {
   "framework": getAbsolutePath('@storybook/nextjs-vite'),
   "staticDirs": [
     "../public"
-  ]
+  ],
+  "typescript": {
+    "reactDocgen": false
+  }
 };
 export default config;

@@ -1,29 +1,26 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { slider } from './slider';
+import { Slider } from './slider';
 
-const meta: Meta<typeof slider> = {
-  title: 'Components/slider',
-  component: slider,
+const meta: Meta<typeof Slider> = {
+  title: 'Components/UI/Slider',
+  component: Slider,
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
   },
-  argTypes: {
-    // Add your argTypes here
-  },
 };
 
 export default meta;
-type Story = StoryObj<typeof slider>;
+type Story = StoryObj<typeof Slider>;
 
 export const Default: Story = {
-  args: {
-    // Add default props here
-  },
-};
-
-export const Variant: Story = {
-  args: {
-    // Add variant props here
-  },
+  render: (args) => (
+    <Slider
+      defaultValue={[50]}
+      max={100}
+      step={1}
+      className="w-[60%]"
+      {...args}
+    />
+  ),
 };

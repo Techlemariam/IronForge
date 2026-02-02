@@ -1,29 +1,26 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { label } from './label';
+import { Label } from './label';
+import { Checkbox } from './checkbox';
 
-const meta: Meta<typeof label> = {
-  title: 'Components/label',
-  component: label,
+const meta: Meta<typeof Label> = {
+  title: 'Components/UI/Label',
+  component: Label,
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
   },
-  argTypes: {
-    // Add your argTypes here
-  },
 };
 
 export default meta;
-type Story = StoryObj<typeof label>;
+type Story = StoryObj<typeof Label>;
 
 export const Default: Story = {
-  args: {
-    // Add default props here
-  },
-};
-
-export const Variant: Story = {
-  args: {
-    // Add variant props here
-  },
+  render: (args) => (
+    <div>
+      <div className="flex items-center space-x-2">
+        <Checkbox id="terms" />
+        <Label htmlFor="terms" {...args}>Accept terms and conditions</Label>
+      </div>
+    </div>
+  ),
 };

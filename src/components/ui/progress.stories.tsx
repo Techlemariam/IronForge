@@ -1,29 +1,30 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { progress } from './progress';
+import { Progress } from './progress';
+import { useEffect, useState } from 'react';
 
-const meta: Meta<typeof progress> = {
-  title: 'Components/progress',
-  component: progress,
+const meta: Meta<typeof Progress> = {
+  title: 'Components/UI/Progress',
+  component: Progress,
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
   },
-  argTypes: {
-    // Add your argTypes here
-  },
 };
 
 export default meta;
-type Story = StoryObj<typeof progress>;
+type Story = StoryObj<typeof Progress>;
 
 export const Default: Story = {
-  args: {
-    // Add default props here
-  },
-};
+  render: (args) => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [progress, setProgress] = useState(13)
 
-export const Variant: Story = {
-  args: {
-    // Add variant props here
-  },
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useEffect(() => {
+      const timer = setTimeout(() => setProgress(66), 500)
+      return () => clearTimeout(timer)
+    }, [])
+
+    return <Progress value={progress} className="w-[60%]" />
+  }
 };

@@ -1,29 +1,41 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { badge } from './badge';
+import { Badge } from './badge';
 
-const meta: Meta<typeof badge> = {
-  title: 'Components/badge',
-  component: badge,
+const meta: Meta<typeof Badge> = {
+  title: 'Components/UI/Badge',
+  component: Badge,
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
   },
-  argTypes: {
-    // Add your argTypes here
-  },
 };
 
 export default meta;
-type Story = StoryObj<typeof badge>;
+type Story = StoryObj<typeof Badge>;
 
 export const Default: Story = {
   args: {
-    // Add default props here
+    children: 'Badge',
   },
 };
 
-export const Variant: Story = {
+export const Secondary: Story = {
   args: {
-    // Add variant props here
+    variant: 'secondary',
+    children: 'Secondary',
+  },
+};
+
+export const Destructive: Story = {
+  args: {
+    variant: 'destructive',
+    children: 'Destructive',
+  },
+};
+
+export const Outline: Story = {
+  args: {
+    variant: 'outline',
+    children: 'Outline',
   },
 };

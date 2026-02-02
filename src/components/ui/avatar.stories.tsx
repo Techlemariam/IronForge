@@ -1,29 +1,23 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { avatar } from './avatar';
+import { Avatar, AvatarImage, AvatarFallback } from './avatar';
 
-const meta: Meta<typeof avatar> = {
-  title: 'Components/avatar',
-  component: avatar,
+const meta: Meta<typeof Avatar> = {
+  title: 'Components/UI/Avatar',
+  component: Avatar,
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
   },
-  argTypes: {
-    // Add your argTypes here
-  },
 };
 
 export default meta;
-type Story = StoryObj<typeof avatar>;
+type Story = StoryObj<typeof Avatar>;
 
 export const Default: Story = {
-  args: {
-    // Add default props here
-  },
-};
-
-export const Variant: Story = {
-  args: {
-    // Add variant props here
-  },
+  render: (args) => (
+    <Avatar {...args}>
+      <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+      <AvatarFallback>CN</AvatarFallback>
+    </Avatar>
+  ),
 };
