@@ -1,0 +1,33 @@
+#!/bin/bash
+# Pre-push hook - runs git-guard and full gatekeeper
+# Install: cp .agent/hooks/pre-push .git/hooks/pre-push && chmod +x .git/hooks/pre-push
+
+echo "🛡️ Running Git Guard..."
+
+# Check branch protection
+if command -v pwsh &> /dev/null; then
+    pwsh .agent/skills/git-guard/scripts/verify-branch.ps1
+else
+    bash .agent/skills/git-guard/scripts/verify-branch.sh
+fi
+
+if [ $? -ne 0 ]; then
+    echo "❌ Push blocked - cannot push to protected branch"
+    exit 1
+fi
+
+echo "🚦 Running Gatekeeper (Full)..."
+
+# Run full check
+if command -v pwsh &> /dev/null; then
+    pwsh .agent/skills/gatekeeper/scripts/verify.ps1
+else
+    bash .agent/skills/gatekeeper/scripts/verify.sh
+fi
+
+if [ $? -ne 0 ]; then
+    echo "❌ Push blocked by Gatekeeper"
+    exit 1
+fi
+
+echo "✅ Pre-push passed"

@@ -4,10 +4,11 @@ description: "Autonomous nightly maintenance workflow"
 command: "/night-shift"
 category: "meta"
 trigger: "manual"
-version: "2.4.0"
+version: "2.5.0"
 telemetry: "enabled"
 primary_agent: "@manager"
 domain: "meta"
+skills: ["debt-scanner", "dependabot-manager", "bundle-analyzer", "env-validator", "a11y-auditor"]
 flags:
 
 - "--no-telemetry"

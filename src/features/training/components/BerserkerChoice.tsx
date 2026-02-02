@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
-import ForgeButton from "../../../components/ui/ForgeButton";
-import ForgeCard from "../../../components/ui/ForgeCard";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 
 interface BerserkerChoiceProps {
   onAccept: () => void;
@@ -18,7 +18,7 @@ const BerserkerChoice: React.FC<BerserkerChoiceProps> = ({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
-      <ForgeCard className="w-full max-w-lg text-center border-yellow-500 shadow-glow-yellow/50">
+      <Card variant="glass" className="w-full max-w-lg text-center border-yellow-500 shadow-glow-yellow/50">
         <h2 className="font-heading text-3xl text-yellow-400 tracking-wider">
           A New Challenge Appears
         </h2>
@@ -32,20 +32,22 @@ const BerserkerChoice: React.FC<BerserkerChoiceProps> = ({
         </p>
 
         <div className="flex justify-center space-x-4">
-          <ForgeButton onClick={onDecline} variant="default">
+          <Button onClick={onDecline} variant="default">
             End Protocol
-          </ForgeButton>
-          <ForgeButton
+          </Button>
+          <Button
             onClick={onAccept}
             variant="magma"
             className="animate-pulse"
           >
             Unleash Fury
-          </ForgeButton>
+          </Button>
         </div>
-      </ForgeCard>
+      </Card>
     </motion.div>
   );
 };
 
 export default BerserkerChoice;
+
+

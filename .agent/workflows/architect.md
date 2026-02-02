@@ -7,6 +7,7 @@ version: "1.0.0"
 telemetry: "enabled"
 primary_agent: "@architect"
 domain: "core"
+skills: ["nextjs-route-visualizer"]
 ---
 
 # Workflow: /architect
@@ -43,8 +44,10 @@ echo "✅ Branch: $current_branch"
 ## Protocol
 
 1. **Bootstrap Check**: If `ARCHITECTURE.md` is missing, STOP. Create it first defining:
-   - Tech Stack (Next.js 15, RSC).
-   - Folder Structure (Features vs Components).
+   - Tech Stack (Next3. **System Design & Context**
+   - Review `src/app` structure
+   - Run `nextjs-route-visualizer` to map current architecture
+   - Create component diagram
    - Data Flow (Server Actions + Zod).
 2. Read `task.md` & `ARCHITECTURE.md`.
 3. **Config**: Suggest adding new safe CLI tools to `terminalAllowList` in `.agent/config.json`.

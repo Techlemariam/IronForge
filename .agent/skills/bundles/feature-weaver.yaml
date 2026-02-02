@@ -1,0 +1,38 @@
+# Feature Weaver Bundle
+# Fullstack Development Agent Preset
+
+name: feature-weaver
+description: Generates complete vertical slices from DB to UI
+agent: "@coder"
+
+skills:
+  - sprint-manager
+  - sync-project
+  - titan-slice-generator
+  - prisma-migrator
+
+activation:
+  - on_task_claim
+  - on_feature_request
+  - manual
+
+context:
+  architecture: /docs/ARCHITECTURE.md
+  schema: /prisma/schema.prisma
+  patterns:
+    - /src/actions/
+    - /src/features/
+    - /src/components/ui/
+
+rules:
+  - "Use Server Actions for all mutations"
+  - "Implement Optimistic Updates via useOptimistic"
+  - "Follow existing component patterns in /src/features/"
+  - "Zod validation for all inputs"
+  - "Result pattern with ActionResponse for error handling"
+
+workflow:
+  1_analyze: "Read schema and identify entities"
+  2_scaffold: "Generate types and interfaces"
+  3_implement: "Create action, hook, and UI"
+  4_verify: "Run type check and tests"

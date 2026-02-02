@@ -6,7 +6,8 @@ trigger: "manual"
 version: "1.0.0"
 telemetry: "enabled"
 primary_agent: "@writer"
-domain: "game"
+domain: "core"
+skills: ["narrative-progression"]
 ---
 
 # Role: The Narrative Architect

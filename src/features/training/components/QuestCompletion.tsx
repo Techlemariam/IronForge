@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
-import ForgeButton from "../../../components/ui/ForgeButton";
-import ForgeCard from "../../../components/ui/ForgeCard";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import LootDropNotification from "../../../components/game/LootDrop";
 import { rollLootTable } from "../../../utils/lootEngine";
 import { LT_STANDARD_QUEST } from "../../../data/lootTables";
@@ -29,7 +29,7 @@ const QuestCompletion: React.FC<QuestCompletionProps> = ({
 
   return (
     <div className="w-full h-full flex flex-col items-center justify-center p-4 md:p-8 animate-fade-in">
-      <ForgeCard className="text-center p-8 w-full max-w-2xl">
+      <Card variant="glass" className="text-center p-8 w-full max-w-2xl">
         <h1 className="font-heading text-3xl md:text-4xl text-white tracking-widest">
           PROTOCOL COMPLETE
         </h1>
@@ -47,25 +47,27 @@ const QuestCompletion: React.FC<QuestCompletionProps> = ({
             Lås portarna? (Gör loggen privat på Hevy)
           </p>
           <div className="flex justify-center space-x-4">
-            <ForgeButton onClick={() => onSave(true)} className="px-8">
+            <Button onClick={() => onSave(true)} className="px-8">
               Ja (Privat)
-            </ForgeButton>
-            <ForgeButton
+            </Button>
+            <Button
               variant="default"
               onClick={() => onSave(false)}
               className="px-8"
             >
               Nej (Offentlig)
-            </ForgeButton>
+            </Button>
           </div>
         </div>
 
-        <ForgeButton variant="default" onClick={onCancel} className="mt-4">
+        <Button variant="default" onClick={onCancel} className="mt-4">
           Avbryt
-        </ForgeButton>
-      </ForgeCard>
+        </Button>
+      </Card>
     </div>
   );
 };
 
 export default QuestCompletion;
+
+

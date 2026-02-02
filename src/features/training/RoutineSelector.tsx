@@ -5,8 +5,8 @@ import {
 import { HevyRoutine } from "../../types/hevy";
 import { LoadingSpinner } from "../../components/ui/LoadingSpinner";
 import { motion, AnimatePresence } from "framer-motion";
-import ForgeCard from "../../components/ui/ForgeCard"; // <-- INTEGRATED
-import ForgeButton from "../../components/ui/ForgeButton"; // <-- INTEGRATED
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 // --- Mission Briefing Modal ---
 const MissionBriefing: React.FC<{
@@ -31,7 +31,7 @@ const MissionBriefing: React.FC<{
         className="w-full max-w-lg"
         onClick={(e: React.MouseEvent) => e.stopPropagation()}
       >
-        <ForgeCard className="shadow-2xl border-magma/50">
+        <Card variant="glass" className="shadow-2xl border-magma/50">
           <h2 className="font-heading text-2xl text-magma tracking-widest uppercase mb-2">
             Mission Briefing
           </h2>
@@ -73,20 +73,20 @@ const MissionBriefing: React.FC<{
           </div>
 
           <div className="mt-8 flex justify-end space-x-4">
-            <ForgeButton variant="default" onClick={onCancel}>
+            <Button variant="default" onClick={onCancel}>
               Cancel
-            </ForgeButton>
+            </Button>
             {mode === "import" ? (
-              <ForgeButton variant="magma" onClick={() => onInitiate(routine)}>
+              <Button variant="magma" onClick={() => onInitiate(routine)}>
                 Import Blueprint
-              </ForgeButton>
+              </Button>
             ) : (
-              <ForgeButton variant="magma" onClick={() => onInitiate(routine)}>
+              <Button variant="magma" onClick={() => onInitiate(routine)}>
                 Initiate Protocol
-              </ForgeButton>
+              </Button>
             )}
           </div>
-        </ForgeCard>
+        </Card>
       </motion.div>
     </motion.div>
   );
@@ -128,9 +128,9 @@ const RoutineSelector: React.FC<{
     );
   if (error)
     return (
-      <ForgeCard className="text-blood text-center p-10 font-mono m-4 border-blood">
+      <Card variant="glass" className="text-blood text-center p-10 font-mono m-4 border-blood">
         {error}
-      </ForgeCard>
+      </Card>
     );
 
   return (
@@ -189,7 +189,7 @@ const RoutineSelector: React.FC<{
                 className="w-full text-left"
                 onClick={() => setSelected(routine)}
               >
-                <ForgeCard className="group relative border-l-4 border-l-magma transition-all duration-300 hover:border-magma hover:shadow-glow-magma transform hover:-translate-y-1">
+                <Card variant="glass" className="group relative border-l-4 border-l-magma transition-all duration-300 hover:border-magma hover:shadow-glow-magma transform hover:-translate-y-1">
                   <div>
                     <h3 className="font-heading text-lg text-white group-hover:text-magma mb-2 transition-colors duration-300">
                       {routine.title}
@@ -198,14 +198,14 @@ const RoutineSelector: React.FC<{
                       {routine.exercises?.length || 0} Encounters
                     </div>
                   </div>
-                </ForgeCard>
+                </Card>
               </button>
             </motion.div>
           ))}
         </motion.div>
 
         {routines.length === 0 && !loading && (
-          <ForgeCard className="text-center p-10 font-mono text-forge-muted border-dashed mt-8">
+          <Card variant="glass" className="text-center p-10 font-mono text-forge-muted border-dashed mt-8">
             <h3 className="text-lg font-heading text-white mb-2">
               No Missions Found
             </h3>
@@ -213,7 +213,7 @@ const RoutineSelector: React.FC<{
               The War Room is empty. Create routines in Hevy to plan your
               incursions.
             </p>
-          </ForgeCard>
+          </Card>
         )}
       </div>
     </>
@@ -221,3 +221,5 @@ const RoutineSelector: React.FC<{
 };
 
 export default RoutineSelector;
+
+

@@ -7,6 +7,7 @@ version: "1.0.0"
 telemetry: "enabled"
 primary_agent: "@qa"
 domain: "core"
+skills: ["api-mocker"]
 ---
 
 # Workflow: /stresstest-all

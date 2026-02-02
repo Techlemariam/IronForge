@@ -52,6 +52,29 @@ Run: `rg -l "" src/ --max-depth 2` to get a file overview if needed.
 
 ---
 
+## Step 2.5: Load Domain Skills Bundle
+
+Based on the domain, automatically load the relevant skills bundle:
+
+| Domain | Bundle | Skills Activated |
+|:-------|:-------|:-----------------|
+| `infra` | [infrastructure](../skills/bundles/infrastructure.yaml) | coolify-deploy, prisma-migrator, env-validator, schema-guard |
+| `game` | [titan-coach](../skills/bundles/titan-coach.yaml) | xp-calculator, balance-checker, combat-balancer |
+| `sprint` | [feature-weaver](../skills/bundles/feature-weaver.yaml) | sprint-manager, sync-project, titan-slice-generator |
+| `qa` | [quality-assurer](../skills/bundles/quality-assurer.yaml) | coverage-check, a11y-auditor, debt-scanner, gatekeeper |
+| `bio` | [titan-coach](../skills/bundles/titan-coach.yaml) | bio-validator, titan-health |
+| `business` | [guardian](../skills/bundles/guardian.yaml) | git-guard, gatekeeper, schema-guard, env-validator |
+| `api` | [feature-weaver](../skills/bundles/feature-weaver.yaml) | titan-slice-generator, prisma-migrator |
+| `meta` | [guardian](../skills/bundles/guardian.yaml) | git-guard, gatekeeper |
+
+> **Skills are now active for this session.** Use them via:
+>
+> ```markdown
+> > Execute Skill: [skill-name](.agent/skills/skill-name/SKILL.md)
+> ```
+
+---
+
 ## Step 3: Domain Status Brief
 
 Present a brief summary:
@@ -113,22 +136,10 @@ Before ending the session:
 
 ### 5.0 Branch Validation
 
-// turbo
+> **Execute Skill:** [git-guard](.agent/skills/git-guard/SKILL.md)
 
 ```bash
-## Check current branch
-current_branch=$(git rev-parse --abbrev-ref HEAD)
-
-if [ "$current_branch" = "main" ]; then
-  echo "⛔ ERROR: You are on the 'main' branch"
-  echo "   The main branch is protected. You must create a feature branch."
-  echo ""
-  echo "   Run: /claim-task [task-description]"
-  echo "   Or manually: git checkout -b [prefix]/[description]"
-  exit 1
-fi
-
-echo "✅ Branch: $current_branch"
+bash .agent/skills/git-guard/scripts/verify-branch.sh
 ```
 
 > [!WARNING]
@@ -198,20 +209,15 @@ $(git rev-parse --abbrev-ref HEAD | cut -d'/' -f1)
 
    echo "✅ PR created: $pr_url"
 
-  # Link to Project
-
-   echo "⏳ Linking PR to GitHub Project..."
-   powershell -ExecutionPolicy Bypass -File .agent/scripts/link-pr-to-project.ps1
-
-   if [ $? -eq 0 ]; then
-     echo "✅ PR linked to Project Board (Status: In Review)"
-   else
-     echo "⚠️  PR created but Project linking failed"
-   fi
-
    ```
 
-1. **Monitor CI**: Ensure all checks pass on GitHub because **only CI-verified code can be merged**.
+1. **Link to Project** (Execute Skill: [project-linker](.agent/skills/project-linker/SKILL.md)):
+
+   ```powershell
+   pwsh .agent/skills/project-linker/scripts/link-pr.ps1
+   ```
+
+2. **Monitor CI**: Ensure all checks pass on GitHub because **only CI-verified code can be merged**.
 
 > [!TIP]
 > Do NOT merge locally. Let the GitHub Pull Request process handle the merge to `main`.

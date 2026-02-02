@@ -7,6 +7,7 @@ version: "2.2.0"
 telemetry: "enabled"
 primary_agent: "@infrastructure"
 domain: "ci"
+skills: ["error-analyzer", "gatekeeper"]
 ---
 
 # 🩺 CI Doctor (Protocol v2.0)

@@ -3,10 +3,11 @@ description: "Workflow for health-check"
 command: "/health-check"
 category: "monitoring"
 trigger: "manual"
-version: "1.0.0"
+version: "1.2.0"
 telemetry: "enabled"
 primary_agent: "@manager"
 domain: "meta"
+skills: ["coverage-check", "debt-scanner", "env-validator", "schema-guard", "a11y-auditor"]
 ---
 
 # Workflow: /health-check
