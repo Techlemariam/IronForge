@@ -1,5 +1,12 @@
 {
     "$schema": "https://turbo.build/schema.json",
+    "globalEnv": [
+        "SKIP_ENV_VALIDATION",
+        "DATABASE_URL",
+        "DIRECT_URL",
+        "NEXT_PUBLIC_SUPABASE_URL",
+        "NEXT_PUBLIC_SUPABASE_ANON_KEY"
+    ],
     "tasks": {
         "build": {
             "outputs": [
@@ -8,6 +15,11 @@
             ],
             "dependsOn": [
                 "^build"
+            ],
+            "env": [
+                "DATABASE_URL",
+                "DIRECT_URL",
+                "SKIP_ENV_VALIDATION"
             ]
         },
         "test": {
@@ -19,6 +31,10 @@
                 "src/**/*.tsx",
                 "src/**/*.ts",
                 "test/**/*.ts"
+            ],
+            "env": [
+                "DATABASE_URL",
+                "DIRECT_URL"
             ]
         },
         "lint": {

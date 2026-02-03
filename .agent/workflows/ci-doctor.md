@@ -7,7 +7,7 @@ version: "2.2.0"
 telemetry: "enabled"
 primary_agent: "@infrastructure"
 domain: "ci"
-skills: ["error-analyzer", "gatekeeper", "dependabot-manager", "env-validator", "linter-fixer", "schema-guard", "qodana-linter", "performance-profiler"]
+skills: ["error-analyzer", "gatekeeper", "dependabot-manager", "env-validator", "linter-fixer", "schema-guard", "qodana-linter", "performance-profiler", "zod-schema-validator", "api-mocker", "bio-validator", "prisma-migrator", "a11y-auditor"]
 ---
 
 # 🩺 CI Doctor (Protocol v2.0)
@@ -160,6 +160,11 @@ fi
 | `Prisma: Migration failed`    | **DB_MIGRATION_FAIL** (Use `/schema-guard`)       |
 | `Lighthouse: Performance`     | **PERF_DEGRADATION** (Use `/perf-profiler`)       |
 | `Qodana: Critical issues`     | **STATIC_ANALYSIS_FAIL** (Use `/qodana-linter`)   |
+| `Zod: Validation error`       | **SCHEMA_MISMATCH** (Use `/zod-schema-validator`) |
+| `Mock: Data outdated`         | **STALE_MOCK** (Use `/api-mocker`)                |
+| `Bio: Data sync fail`         | **BIO_SYNC_FAIL** (Use `/bio-validator`)          |
+| `Database: Schema out of sync` | **DB_OUT_OF_SYNC** (Use `/prisma-migrator`)       |
+| `A11y: Contrast/ARIA`         | **ACCESSIBILITY_FAIL** (Use `/a11y-auditor`)      |
 
 ### 1.2 The Qodana Ward (Static Analysis)
 
