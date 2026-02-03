@@ -15,11 +15,11 @@ export default meta;
 type Story = StoryObj<typeof Progress>;
 
 export const Default: Story = {
-  render: (args) => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
+  render: (_args) => {
+
     const [progress, setProgress] = useState(13)
 
-    // eslint-disable-next-line react-hooks/rules-of-hooks
+
     useEffect(() => {
       const timer = setTimeout(() => setProgress(66), 500)
       return () => clearTimeout(timer)

@@ -1,0 +1,16 @@
+{
+    "extends": "./tsconfig.json",
+    "exclude": [
+        "node_modules",
+        "**/*.stories.tsx",
+        "**/*.stories.ts",
+        "**/*.test.ts",
+        "**/*.test.tsx",
+        "**/*.spec.ts",
+        "**/*.spec.tsx",
+        "cypress",
+        "cypress.config.ts",
+        ".storybook",
+        "storybook-static"
+    ]
+}

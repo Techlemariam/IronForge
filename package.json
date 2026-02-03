@@ -13,7 +13,7 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "lint": "eslint .",
-    "check-types": "tsc --noEmit",
+    "check-types": "tsc --project tsconfig.build.json --noEmit",
     "agent:verify": "turbo run lint test build security",
     "agent:format": "npx prettier --write .",
     "agent:types": "npx prisma generate",
