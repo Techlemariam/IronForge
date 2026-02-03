@@ -51,6 +51,8 @@ jobs:
             turbo-${{ runner.os }}-
       - name: Turbo Verify
         run: npx turbo run lint check-types test build security --concurrency=100%
+        env:
+          SKIP_ENV_VALIDATION: true
 
   # ------------------------------------------------------------------
   # 🎭 E2E VERIFICATION
