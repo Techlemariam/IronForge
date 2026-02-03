@@ -165,15 +165,46 @@ jobs:
         continue-on-error: true # Don't block deploy initially while tuning
 
   # ------------------------------------------------------------------
-  # 📝 CREATE RELEASE (After Validation)
+  # 🏥 VERIFY DEPLOYMENT (Coolify Health Check)
+  # Waits for Coolify auto-deployment and verifies health endpoint.
+  # ------------------------------------------------------------------
+  verify-deployment:
+    name: 🏥 Verify Deployment
+    needs: [verify, e2e, db-guard]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for Coolify Deployment
+        run: |
+          echo "⏳ Waiting for Coolify to deploy..."
+          sleep 90  # Give Coolify time to pull, build, and deploy
+      
+      - name: Check Health Endpoint
+        env:
+          DEPLOY_URL: ${{ secrets.PRODUCTION_URL || 'https://your-app.com' }}
+        run: |
+          echo "🔍 Checking deployment health at $DEPLOY_URL/api/health"
+          for i in {1..5}; do
+            if curl -f -s "$DEPLOY_URL/api/health" > /dev/null 2>&1; then
+              echo "✅ Deployment healthy!"
+              exit 0
+            fi
+            echo "Attempt $i/5 failed, retrying in 10s..."
+            sleep 10
+          done
+          echo "❌ Deployment health check failed after 5 attempts"
+          exit 1
+
+  # ------------------------------------------------------------------
+  # 📝 CREATE RELEASE (After Deployment Verification)
   # Generates a GitHub Release using Semantic Conventions.
-  # Note: Deployment now handled by Coolify independently.
+  # Note: Deployment handled by Coolify, verified by verify-deployment job.
   # ------------------------------------------------------------------
   create-release:
     name: 📝 Create Release
     permissions:
       contents: write
-    needs: [verify, e2e, db-guard]
+    needs: [verify-deployment]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     steps:
