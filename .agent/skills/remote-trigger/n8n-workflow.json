@@ -1,0 +1,163 @@
+{
+    "name": "IronForge Remote Trigger",
+    "nodes": [
+        {
+            "parameters": {
+                "httpMethod": "POST",
+                "path": "ironforge-trigger",
+                "options": {}
+            },
+            "id": "webhook-node",
+            "name": "Webhook",
+            "type": "n8n-nodes-base.webhook",
+            "typeVersion": 1,
+            "position": [
+                250,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "conditions": {
+                    "string": [
+                        {
+                            "value1": "={{ $json.token }}",
+                            "operation": "equals",
+                            "value2": "={{ $env.REMOTE_TRIGGER_SECRET }}"
+                        }
+                    ]
+                }
+            },
+            "id": "validate-token",
+            "name": "Validate Token",
+            "type": "n8n-nodes-base.if",
+            "typeVersion": 1,
+            "position": [
+                450,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "url": "=https://api.github.com/repos/{{ $env.GITHUB_OWNER }}/{{ $env.GITHUB_REPO }}/dispatches",
+                "authentication": "genericCredentialType",
+                "genericAuthType": "httpHeaderAuth",
+                "sendHeaders": true,
+                "headerParameters": {
+                    "parameters": [
+                        {
+                            "name": "Accept",
+                            "value": "application/vnd.github.v3+json"
+                        }
+                    ]
+                },
+                "sendBody": true,
+                "bodyParameters": {
+                    "parameters": [
+                        {
+                            "name": "event_type",
+                            "value": "remote-trigger"
+                        },
+                        {
+                            "name": "client_payload",
+                            "value": "={{ JSON.stringify({ workflow: $json.workflow || '/health-check', branch: $json.branch || 'main', token: $env.REMOTE_TRIGGER_SECRET }) }}"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "id": "github-dispatch",
+            "name": "Trigger GitHub Action",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 3,
+            "position": [
+                650,
+                200
+            ],
+            "credentials": {
+                "httpHeaderAuth": {
+                    "id": "github-pat",
+                    "name": "GitHub PAT"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "respondWith": "json",
+                "responseBody": "={{ { success: false, error: 'Invalid token' } }}"
+            },
+            "id": "reject-response",
+            "name": "Reject",
+            "type": "n8n-nodes-base.respondToWebhook",
+            "typeVersion": 1,
+            "position": [
+                650,
+                400
+            ]
+        },
+        {
+            "parameters": {
+                "respondWith": "json",
+                "responseBody": "={{ { success: true, workflow: $json.workflow, message: 'Workflow triggered successfully' } }}"
+            },
+            "id": "success-response",
+            "name": "Success Response",
+            "type": "n8n-nodes-base.respondToWebhook",
+            "typeVersion": 1,
+            "position": [
+                850,
+                200
+            ]
+        }
+    ],
+    "connections": {
+        "Webhook": {
+            "main": [
+                [
+                    {
+                        "node": "Validate Token",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Validate Token": {
+            "main": [
+                [
+                    {
+                        "node": "Trigger GitHub Action",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "Reject",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Trigger GitHub Action": {
+            "main": [
+                [
+                    {
+                        "node": "Success Response",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    },
+    "settings": {
+        "executionOrder": "v1"
+    },
+    "staticData": null,
+    "tags": [
+        "ironforge",
+        "automation"
+    ]
+}

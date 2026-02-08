@@ -25,6 +25,14 @@ pwsh .agent/skills/coolify-deploy/scripts/deploy.ps1
 3. Push to Coolify
 4. Verify health endpoint
 
+## Rollback
+
+To rollback to the previous deployment:
+
+```powershell
+pwsh .agent/skills/coolify-deploy/scripts/rollback.ps1
+```
+
 ## Prerequisites
 
 - Coolify API token configured
