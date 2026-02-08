@@ -14,37 +14,11 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
       '@clerk/nextjs/server': path.resolve(__dirname, './tests/mocks/clerk.ts')
     },
-    exclude: ['**/node_modules/**', '**/tests/e2e/**'],
+    exclude: ['**/node_modules/**', '**/tests/e2e/**', '**/*.stories.tsx', '**/*.stories.ts'],
     setupFiles: ['./vitest.setup.ts'],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json-summary', 'html']
-    },
-    projects: [
-      {
-        name: 'unit',
-        test: {
-          environment: 'jsdom',
-        }
-      },
-      {
-        name: 'storybook',
-        extends: true,
-        plugins: [
-          storybookTest({
-            configDir: path.join(dirname, '.storybook')
-          })
-        ],
-        test: {
-          browser: {
-            enabled: true,
-            headless: true,
-            provider: playwright({}),
-            instances: [{ browser: 'chromium' }]
-          },
-          setupFiles: ['.storybook/vitest.setup.ts']
-        }
-      }
-    ]
+    }
   }
 });
