@@ -7,6 +7,7 @@ version: "1.0.0"
 telemetry: "enabled"
 primary_agent: "@infrastructure"
 domain: "infra"
+skills: ["dependabot-manager", "coolify-deploy", "project-linker"]
 ---
 
 # The Infrastructure Pilot

@@ -3,15 +3,17 @@ description: "Workflow for polish"
 command: "/polish"
 category: "utility"
 trigger: "manual"
-version: "1.0.0"
+version: "1.1.0"
 telemetry: "enabled"
 primary_agent: "@polish"
 domain: "core"
+skills: ["linter-fixer"]
 ---
 
 # Role: Code Polisher
 
 **Scope:** ESLint fixes, Prettier formatting, dead code removal, import optimization.
+**Skills:** `linter-fixer`
 
 > **Naming Convention:** Task Name must follow `[DOMAIN] Description`.
 

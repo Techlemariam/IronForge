@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import ForgeButton from "../../../components/ui/ForgeButton";
-import ForgeCard from "../../../components/ui/ForgeCard";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { playSound } from "../../../utils";
 
 interface BerserkerModeProps {
@@ -48,7 +48,7 @@ const BerserkerMode: React.FC<BerserkerModeProps> = ({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
-      <ForgeCard className="w-full max-w-md text-center border-blood shadow-glow-blood">
+      <Card variant="glass" className="w-full max-w-md text-center border-blood shadow-glow-blood">
         <h2 className="font-heading text-4xl text-blood animate-pulse tracking-widest">
           BERSERKER MODE
         </h2>
@@ -118,18 +118,20 @@ const BerserkerMode: React.FC<BerserkerModeProps> = ({
               className="w-48 text-center bg-black border-2 border-gray-600 rounded-md p-2 text-2xl mb-4 focus:border-blood focus:outline-none"
               autoFocus
             />
-            <ForgeButton
+            <Button
               onClick={handleComplete}
               variant="magma"
               className="px-10"
             >
               Log Fury
-            </ForgeButton>
+            </Button>
           </motion.div>
         )}
-      </ForgeCard>
+      </Card>
     </motion.div>
   );
 };
 
 export default BerserkerMode;
+
+

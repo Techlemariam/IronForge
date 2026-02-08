@@ -7,6 +7,7 @@ version: "1.0.0"
 telemetry: "enabled"
 primary_agent: "@titan-coach"
 domain: "bio"
+skills: ["bio-validator", "titan-health"]
 ---
 
 # Bio Integration Monitoring Workflow

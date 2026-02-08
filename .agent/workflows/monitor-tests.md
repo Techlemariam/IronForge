@@ -5,8 +5,9 @@ category: "monitoring"
 trigger: "manual"
 version: "1.0.0"
 telemetry: "enabled"
-primary_agent: "@qa"
-domain: "qa"
+primary_agent: "@manager"
+domain: "core"
+skills: ["coverage-check"]
 ---
 
 # Test Monitoring Workflow

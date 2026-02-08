@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import ForgeInput from "../../../components/ui/ForgeInput";
-import ForgeButton from "../../../components/ui/ForgeButton";
+import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 
 interface SetInputProps {
@@ -61,11 +61,12 @@ const SetInput: React.FC<SetInputProps> = ({
           onChange={(e) => setRpe(e.target.value)}
         />
       </div>
-      <ForgeButton type="submit" variant="magma" className="w-full mt-4">
+      <Button type="submit" variant="magma" className="w-full mt-4">
         Log Set
-      </ForgeButton>
+      </Button>
     </motion.form>
   );
 };
 
 export default SetInput;
+

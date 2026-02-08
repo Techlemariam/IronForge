@@ -3,10 +3,11 @@ description: "Complete pre-PR validation and automatic PR creation"
 command: "/pre-pr"
 category: "verification"
 trigger: "manual"
-version: "2.0.0"
+version: "2.1.0"
 telemetry: "enabled"
 primary_agent: "@qa"
 domain: "core"
+skills: ["git-guard", "gatekeeper", "coverage-check", "linter-fixer"]
 ---
 
 # 🚀 Pre-PR Pipeline (v2.0)
@@ -24,18 +25,12 @@ domain: "core"
 
 ### 0.0 Branch Validation
 
+> **Execute Skill:** [git-guard](../skills/git-guard/SKILL.md)
+
 // turbo
 
 ```bash
-current_branch=$(git rev-parse --abbrev-ref HEAD)
-
-if [ "$current_branch" = "main" ]; then
-  echo "⛔ ERROR: You are on 'main'. Create a feature branch first."
-  echo "   Run: /claim-task [description]"
-  exit 1
-fi
-
-echo "🚀 Pre-PR Pipeline for branch: $current_branch"
+bash .agent/skills/git-guard/scripts/verify-branch.sh
 ```
 
 ### 0.1 Working Tree Check
@@ -91,10 +86,12 @@ fi
 
 ---
 
-## Phase 2: Triple Gate (Embedded Gatekeeper)
+## Phase 2: Triple Gate (Gatekeeper Skill)
+
+> **Execute Skill:** [gatekeeper](../skills/gatekeeper/SKILL.md)
 
 > [!IMPORTANT]
-> This phase **replaces** the delegation to `/gatekeeper` with an inline, fail-fast loop.
+> This phase runs the embedded gatekeeper with fail-fast behavior.
 > Each step **MUST** pass before proceeding. If any step fails, fix and **restart from Step 1**.
 
 ### 2.0 Gate 1: Type Safety
@@ -217,18 +214,12 @@ echo "✅ PR created: $pr_url"
 
 ### 4.2 Link PR to Project
 
+> **Execute Skill:** [project-linker](../skills/project-linker/SKILL.md)
+
 // turbo
 
-```bash
-# Use pwsh for PowerShell 7+ compatibility
-echo "⏳ Linking PR to GitHub Project..."
-pwsh -ExecutionPolicy Bypass -File .agent/scripts/link-pr-to-project.ps1
-
-if [ $? -eq 0 ]; then
-  echo "✅ PR linked to Project Board (Status: In Review)"
-else
-  echo "⚠️  PR created but Project linking failed (link manually or retry)"
-fi
+```powershell
+pwsh .agent/skills/project-linker/scripts/link-pr.ps1
 ```
 
 > [!TIP]

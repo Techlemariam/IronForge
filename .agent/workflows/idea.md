@@ -6,7 +6,8 @@ trigger: "manual"
 version: "1.0.0"
 telemetry: "enabled"
 primary_agent: "@analyst"
-domain: "meta"
+domain: "core"
+skills: ["requirements-extractor"]
 ---
 
 # Workflow: /idea

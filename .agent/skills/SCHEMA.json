@@ -1,0 +1,121 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "SKILL.md Frontmatter Schema (Antigravity Enhanced)",
+    "description": "Validates the YAML frontmatter in SKILL.md files with Context Mapping and Rules",
+    "type": "object",
+    "required": [
+        "name",
+        "description",
+        "version"
+    ],
+    "properties": {
+        "name": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]*$",
+            "description": "Skill identifier (lowercase, hyphens allowed)"
+        },
+        "description": {
+            "type": "string",
+            "maxLength": 100,
+            "description": "Short description of what the skill does"
+        },
+        "version": {
+            "type": "string",
+            "pattern": "^\\d+\\.\\d+\\.\\d+$",
+            "description": "Semantic version (e.g., 1.0.0)"
+        },
+        "requires": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "description": "List of skill dependencies"
+        },
+        "platforms": {
+            "type": "array",
+            "items": {
+                "enum": [
+                    "windows",
+                    "linux",
+                    "macos"
+                ]
+            },
+            "description": "Supported platforms"
+        },
+        "category": {
+            "type": "string",
+            "enum": [
+                "guard",
+                "automation",
+                "analysis",
+                "utility",
+                "domain",
+                "behavioral-psychology",
+                "debugging",
+                "code-quality",
+                "testing",
+                "strategy",
+                "documentation",
+                "deployment",
+                "infrastructure",
+                "performance",
+                "marketing",
+                "project-management"
+            ],
+            "description": "Skill category"
+        },
+        "owner": {
+            "type": "string",
+            "pattern": "^@[a-z-]+$",
+            "description": "Responsible agent (e.g., @infrastructure)"
+        },
+        "context": {
+            "type": "object",
+            "description": "Context Mapping - defines what files/folders the agent should read",
+            "properties": {
+                "primarySources": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Primary files to analyze (e.g., /src/lib/schema.ts)"
+                },
+                "references": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Reference documentation (e.g., /docs/architecture.md)"
+                },
+                "patterns": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Existing code patterns to follow (e.g., /src/components/ui/)"
+                },
+                "exclude": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Paths to exclude (e.g., /node_modules)"
+                }
+            }
+        },
+        "rules": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "description": "Strict coding rules the agent must follow"
+        },
+        "edgeCases": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "description": "Edge cases to be aware of (silent failures, race conditions)"
+        }
+    }
+}

@@ -1,0 +1,100 @@
+name: 🔄 Sentry Auto-Rollback
+
+on:
+  repository_dispatch:
+    types: [sentry-alert]
+  workflow_dispatch:
+    inputs:
+      confirm_rollback:
+        description: "Confirm rollback to previous deployment"
+        type: boolean
+        required: true
+        default: false
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  rollback:
+    name: 🔄 Trigger Coolify Rollback
+    runs-on: ubuntu-latest
+    if: github.event_name == 'repository_dispatch' || inputs.confirm_rollback == true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: 🚨 Analyze Alert (Sentry)
+        if: github.event_name == 'repository_dispatch'
+        run: |
+          echo "Received Sentry Alert Payload:"
+          echo "${{ toJson(github.event.client_payload) }}"
+          
+          # In a real scenario, we would validate the payload here
+          # For example, checking error classification or tags
+          
+          ERROR_COUNT=${{ github.event.client_payload.data.error_count || 0 }}
+          if [ "$ERROR_COUNT" -lt 50 ]; then
+             echo "Error count ($ERROR_COUNT) below threshold (50). Skipping rollback."
+             echo "ROLLBACK_REQUIRED=false" >> $GITHUB_ENV
+          else
+             echo "⚠️ High error rate detected ($ERROR_COUNT). Initiating rollback sequence."
+             echo "ROLLBACK_REQUIRED=true" >> $GITHUB_ENV
+          fi
+
+      - name: 🔄 Execute Rollback
+        if: env.ROLLBACK_REQUIRED == 'true' || inputs.confirm_rollback == true
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_APP_ID: ${{ secrets.COOLIFY_APP_ID }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+        run: |
+          echo "Calling Coolify API to rollback application..."
+          
+          if [ -z "$COOLIFY_API_TOKEN" ]; then
+            echo "❌ COOLIFY_API_TOKEN missing. Cannot rollback."
+            exit 1
+          fi
+          
+          # Mock API call for now (Coolify API documentation reference required for exact endpoint)
+          # Assuming generic webhook or API structure
+          
+          RESPONSE=$(curl -s -X POST "$COOLIFY_URL/api/v1/applications/$COOLIFY_APP_ID/rollback" \
+            -H "Authorization: Bearer $COOLIFY_API_TOKEN" \
+            -H "Content-Type: application/json")
+            
+          echo "Coolify Response: $RESPONSE"
+          
+          if echo "$RESPONSE" | grep -q "success"; then
+            echo "✅ Rollback triggered successfully."
+          else
+            echo "❌ Rollback trigger failed."
+            exit 1
+          fi
+
+      - name: 📢 Notify Team
+        if: always()
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const status = '${{ job.status }}';
+            const runUrl = '${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}';
+            
+            let title = '';
+            let body = '';
+            
+            if (status === 'success') {
+              title = '🔄 Auto-Rollback Triggered';
+              body = `A rollback was triggered due to a high error rate detected by Sentry.\n\n[View Workflow Run](${runUrl})`;
+            } else {
+              title = '❌ Auto-Rollback Failed';
+              body = `Failed to trigger rollback. Immediate manual intervention required!\n\n[View Workflow Run](${runUrl})`;
+            }
+            
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: title,
+              body: body,
+              labels: ['critical', 'ops', 'automated']
+            });

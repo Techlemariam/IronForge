@@ -142,3 +142,6 @@ deploy_preview_log.txt
 lhci_log.txt
 
 playwright/.auth/
+storybook-static/
+.env.local
+.env.*.local

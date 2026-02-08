@@ -7,6 +7,7 @@ version: "1.0.0"
 telemetry: "enabled"
 primary_agent: "@infrastructure"
 domain: "infra"
+skills: ["error-analyzer"]
 ---
 
 # CI/CD Monitoring Workflow

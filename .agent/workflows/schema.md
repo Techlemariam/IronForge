@@ -7,6 +7,7 @@ version: "1.0.0"
 telemetry: "enabled"
 primary_agent: "@infrastructure"
 domain: "database"
+skills: ["schema-guard", "prisma-migrator"]
 ---
 
 # Role: Schema Architect

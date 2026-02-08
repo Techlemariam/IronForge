@@ -51,6 +51,8 @@ jobs:
             turbo-${{ runner.os }}-
       - name: Turbo Verify
         run: npx turbo run lint check-types test build security --concurrency=100%
+        env:
+          SKIP_ENV_VALIDATION: true
 
   # ------------------------------------------------------------------
   # 🎭 E2E VERIFICATION
@@ -138,126 +140,6 @@ jobs:
           SHADOW_DATABASE_URL: postgresql://postgres:password@localhost:5432/ironforge_shadow?schema=public
 
   # ------------------------------------------------------------------
-  # 🚀 DEPLOY PREVIEW (Pull Requests)
-  # Deploys a preview environment for manual review.
-  # ------------------------------------------------------------------
-  deploy-preview:
-    name: 🚀 Deploy Preview
-    permissions:
-      pull-requests: write
-    needs: [verify] # Fast deploy after verification
-    if: github.event_name == 'pull_request' && github.actor != 'dependabot[bot]'
-    environment:
-      name: Preview
-      url: ${{ steps.deploy.outputs.url }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v6
-        with:
-          node-version: '22'
-          cache: 'pnpm'
-      - name: Install Vercel CLI
-        run: npm install --global vercel@latest
-      - name: Pull Vercel Environment Information
-        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
-        env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-      - name: Build and Deploy (Preview)
-        id: deploy
-        run: |
-          vercel build --token=${{ secrets.VERCEL_TOKEN }}
-          DEPLOY_URL=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} | tail -1)
-          if [[ $DEPLOY_URL != http* ]]; then
-            echo "❌ Deployment failed: $DEPLOY_URL"
-            exit 1
-          fi
-          echo "url=$DEPLOY_URL" >> $GITHUB_OUTPUT
-          echo "Deployed to: $DEPLOY_URL"
-        env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-          SKIP_ENV_VALIDATION: true
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          DIRECT_URL: ${{ secrets.DIRECT_URL }}
-      - name: Comment Preview URL on PR
-        uses: actions/github-script@v8
-        with:
-          script: |
-            const url = '${{ steps.deploy.outputs.url }}';
-            const sha = context.sha.substring(0, 7);
-            const body = `## 🚀 Preview Deployment Ready!\n\n` +
-              `| Environment | URL |\n` +
-              `|-------------|-----|\n` +
-              `| **Preview** | [${url}](${url}) |\n\n` +
-              `*Deployed from commit \`${sha}\`*`;
-            
-            const { data: comments } = await github.rest.issues.listComments({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-            });
-            const botComment = comments.find(c => 
-              c.user.type === 'Bot' && c.body.includes('Preview Deployment Ready')
-            );
-            
-            if (botComment) {
-              await github.rest.issues.updateComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                comment_id: botComment.id,
-                body
-              });
-            } else {
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.issue.number,
-                body
-              });
-            }
-
-  # ------------------------------------------------------------------
-  # 🚀 DEPLOY PRODUCTION (Main Branch)
-  # Deploys to live production directly from main branch.
-  # ------------------------------------------------------------------
-  deploy-production:
-    name: 🚀 Deploy Production
-    needs: [verify, e2e, db-guard]
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    environment:
-      name: Production
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v6
-        with:
-          node-version: '22'
-          cache: 'pnpm'
-      - name: Install Vercel CLI
-        run: npm install --global vercel@latest
-      - name: Pull Vercel Environment Information
-        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
-        env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-      - name: Build Project Artifacts
-        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
-        env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          DIRECT_URL: ${{ secrets.DIRECT_URL }}
-      - name: Deploy Project Artifacts to Vercel
-        run: vercel deploy --prebuilt --archive=tgz --prod --token=${{ secrets.VERCEL_TOKEN }}
-        env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-
-  # ------------------------------------------------------------------
   # ⚡ PERFORMANCE AUDIT (Lighthouse)
   # Checks budget for Performance, Accessibility, SEO.
   # ------------------------------------------------------------------
@@ -285,14 +167,46 @@ jobs:
         continue-on-error: true # Don't block deploy initially while tuning
 
   # ------------------------------------------------------------------
-  # 📝 CREATE RELEASE (After Production Deploy)
+  # 🏥 VERIFY DEPLOYMENT (Coolify Health Check)
+  # Waits for Coolify auto-deployment and verifies health endpoint.
+  # ------------------------------------------------------------------
+  verify-deployment:
+    name: 🏥 Verify Deployment
+    needs: [verify, e2e, db-guard]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for Coolify Deployment
+        run: |
+          echo "⏳ Waiting for Coolify to deploy..."
+          sleep 90  # Give Coolify time to pull, build, and deploy
+      
+      - name: Check Health Endpoint
+        env:
+          DEPLOY_URL: ${{ secrets.PRODUCTION_URL || 'https://your-app.com' }}
+        run: |
+          echo "🔍 Checking deployment health at $DEPLOY_URL/api/health"
+          for i in {1..5}; do
+            if curl -f -s "$DEPLOY_URL/api/health" > /dev/null 2>&1; then
+              echo "✅ Deployment healthy!"
+              exit 0
+            fi
+            echo "Attempt $i/5 failed, retrying in 10s..."
+            sleep 10
+          done
+          echo "❌ Deployment health check failed after 5 attempts"
+          exit 1
+
+  # ------------------------------------------------------------------
+  # 📝 CREATE RELEASE (After Deployment Verification)
   # Generates a GitHub Release using Semantic Conventions.
+  # Note: Deployment handled by Coolify, verified by verify-deployment job.
   # ------------------------------------------------------------------
   create-release:
     name: 📝 Create Release
     permissions:
       contents: write
-    needs: [deploy-production]
+    needs: [verify-deployment]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     steps:

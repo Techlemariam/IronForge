@@ -133,6 +133,39 @@ Reusable validation modules for workflow protection. Located in `.agent/workflow
 
 ---
 
+## 🧩 Skills
+
+Modular specialist knowledge for reuse across workflows. Located in `.agent/skills/`.
+
+| Skill | Category | Description |
+|:------|:--------:|:------------|
+| **git-guard** | guard | Prevents commits to `main` branch |
+| **gatekeeper** | guard | Pre-commit quality gate |
+| **schema-guard** | guard | Prisma schema validation |
+| **env-validator** | guard | Environment variable validation |
+| **project-linker** | automation | Links PRs/Issues to GitHub Project |
+| **sprint-manager** | automation | Sprint planning automation |
+| **sync-project** | automation | GitHub Project sync |
+| **coolify-deploy** | automation | Coolify deployment |
+| **debt-scanner** | analysis | Technical debt detection |
+| **coverage-check** | analysis | Test coverage thresholds |
+| **a11y-auditor** | analysis | Accessibility audit |
+| **bundle-analyzer** | analysis | Bundle size analysis |
+| **bio-validator** | analysis | Bio integration health |
+| **xp-calculator** | analysis | XP formula validation |
+| **balance-checker** | analysis | Game balance validation |
+| **titan-health** | analysis | Titan bio-data health |
+
+**Usage:**
+
+```markdown
+> Execute Skill: [git-guard](.agent/skills/git-guard/SKILL.md)
+```
+
+**Create New Skill:** See `.agent/skills/examples/SKILL.template.md`
+
+---
+
 ## Version History
 
 ### 1.3.0 (2026-01-18)

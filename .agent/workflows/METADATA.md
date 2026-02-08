@@ -20,6 +20,7 @@ version: "1.0.0"
 telemetry: "enabled|disabled"
 primary_agent: "@agent-name"
 domain: "core|game|bio|auth|meta|monitoring|database|infrastructure|qa"
+skills: ["skill-name-1", "skill-name-2"]
 ---
 ```
 
@@ -35,6 +36,7 @@ domain: "core|game|bio|auth|meta|monitoring|database|infrastructure|qa"
 | `telemetry`     | Yes      | Whether metrics are logged.        | `enabled`, `disabled`                                                                             |
 | `primary_agent` | Yes      | The owning agent/role.             | `@agent`, `@manager`, etc.                                                                        |
 | `domain`        | Yes      | Functional area.                   | `core`, `game`, `bio`, `auth`, `meta`, `monitoring`, `database`, `infra`, `qa`                    |
+| `skills`        | No       | Required skills for this workflow. | Array of skill names, e.g. `["gatekeeper", "linter-fixer"]`                                      |
 
 ## Migration Rules
 

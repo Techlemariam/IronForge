@@ -1,12 +1,13 @@
 ---
-description: "Workflow for gatekeeper"
+description: "Pre-commit quality gate (types, lint, tests)"
 command: "/gatekeeper"
 category: "verification"
 trigger: "manual"
-version: "2.0.0"
+version: "1.0.0"
 telemetry: "enabled"
 primary_agent: "@qa"
-domain: "core"
+domain: "qa"
+skills: ["gatekeeper", "coverage-check", "zod-schema-validator"]
 ---
 
 # 🛡️ The Gatekeeper
