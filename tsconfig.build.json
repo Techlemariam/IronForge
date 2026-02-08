@@ -11,6 +11,9 @@
         "cypress",
         "cypress.config.ts",
         ".storybook",
-        "storybook-static"
+        "storybook-static",
+        "vitest.config.ts",
+        "vitest.integration.config.ts",
+        "playwright.config.ts"
     ]
 }
