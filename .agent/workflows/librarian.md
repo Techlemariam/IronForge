@@ -1,12 +1,13 @@
 ---
 description: "Workflow for librarian"
 command: "/librarian"
-category: "specialist"
+category: "persona"
 trigger: "manual"
 version: "1.0.0"
 telemetry: "enabled"
 primary_agent: "@librarian"
 domain: "meta"
+skills: ["doc-generator", "changelog-generator"]
 ---
 
 # The Librarian

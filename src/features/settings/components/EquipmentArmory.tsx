@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import ForgeCard from "@/components/ui/ForgeCard";
+import { Card } from "@/components/ui/card";
 import { StorageService } from "@/services/storage";
 import { EquipmentType } from "@/data/equipmentDb";
 import { Toggle } from "@/components/ui/Toggle"; // Assuming we have or will create a Toggle component, otherwise use checkbox
@@ -108,7 +108,7 @@ const EquipmentArmory: React.FC = () => {
         </header>
 
         {/* HYPER PRO SPECIAL CONFIG */}
-        <ForgeCard className="border-l-4 border-l-rarity-epic">
+        <Card variant="glass" className="border-l-4 border-l-rarity-epic">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div>
               <h2 className="text-xl font-bold text-rarity-epic flex items-center gap-2">
@@ -134,7 +134,7 @@ const EquipmentArmory: React.FC = () => {
               </span>
             </div>
           </div>
-        </ForgeCard>
+        </Card>
 
         {/* STANDARD EQUIPMENT GRID */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -185,3 +185,4 @@ const EquipmentArmory: React.FC = () => {
 };
 
 export default EquipmentArmory;
+

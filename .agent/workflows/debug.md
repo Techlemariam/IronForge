@@ -3,16 +3,18 @@ description: "Workflow for debug"
 command: "/debug"
 category: "utility"
 trigger: "manual"
-version: "1.1.0"
+version: "1.2.0"
 telemetry: "enabled"
 primary_agent: "@debug"
 domain: "core"
+skills: ["error-analyzer"]
 ---
 
 # Systematic Debugging
 
 **Role:** Error Analyst & Fixer.
 **Trigger:** Build failure | Test failure | Runtime error
+**Skills:** `error-analyzer`
 
 ## Phase 0: Branch Guard
 

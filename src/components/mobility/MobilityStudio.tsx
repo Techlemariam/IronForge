@@ -3,10 +3,8 @@
 import { useState, useEffect } from 'react';
 import { MOBILITY_EXERCISES, MobilityExercise, MobilityRegion } from '@/data/mobilityExercises';
 import { logMobilitySession } from '@/actions/mobility/logMobilityAction';
-import ForgeCard from '@/components/ui/ForgeCard';
-// ...
-
-import ForgeButton from '@/components/ui/ForgeButton';
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Clock } from 'lucide-react';
@@ -88,7 +86,7 @@ export function MobilityStudio() {
                 <ScrollArea className="h-full pr-4">
                     <div className="flex flex-col gap-2">
                         {filteredExercises.map(exercise => (
-                            <ForgeCard
+                            <Card variant="glass"
                                 key={exercise.id}
                                 className={`cursor-pointer transition-all hover:border-emerald-500 ${activeExercise?.id === exercise.id ? 'border-emerald-500 bg-emerald-950/20' : ''}`}
                                 onClick={() => handleStartExercise(exercise)}
@@ -105,7 +103,7 @@ export function MobilityStudio() {
                                         <Badge className="bg-blue-900/50 text-blue-200 text-[10px]">ATG</Badge>
                                     )}
                                 </div>
-                            </ForgeCard>
+                            </Card>
                         ))}
                     </div>
                 </ScrollArea>
@@ -140,18 +138,18 @@ export function MobilityStudio() {
                             </div>
 
                             <div className="flex gap-4">
-                                <ForgeButton
+                                <Button
                                     onClick={toggleTimer}
                                     variant={timerActive ? 'magma' : 'default'}
                                     className="w-32"
                                 >
                                     {timerActive ? 'Pause' : 'Start'}
-                                </ForgeButton>
+                                </Button>
 
                                 {!timerActive && timeLeft !== activeExercise.durationSecs && (
-                                    <ForgeButton onClick={handleComplete} variant="ghost" disabled={isLogging}>
+                                    <Button onClick={handleComplete} variant="ghost" disabled={isLogging}>
                                         {isLogging ? 'Logging...' : 'Complete'}
-                                    </ForgeButton>
+                                    </Button>
                                 )}
                             </div>
                         </div>
@@ -184,3 +182,5 @@ function MetricBox({ label, value }: { label: string, value: number }) {
         </div>
     );
 }
+
+

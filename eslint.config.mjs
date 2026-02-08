@@ -1,3 +1,6 @@
+// For more info, see https://github.com/storybookjs/eslint-plugin-storybook#configuration-flat-config-format
+import storybook from "eslint-plugin-storybook";
+
 import nextPlugin from '@next/eslint-plugin-next';
 import reactPlugin from 'eslint-plugin-react';
 import hooksPlugin from 'eslint-plugin-react-hooks';
@@ -6,8 +9,7 @@ import tsparser from '@typescript-eslint/parser';
 import { fixupPluginRules } from '@eslint/compat';
 
 /** @type {import('eslint').Linter.Config[]} */
-export default [
-    // Global ignores
+export default [// Global ignores
     {
         ignores: [
             'dist/',
@@ -20,9 +22,9 @@ export default [
             'coverage/',
             'playwright-report/',
             'test-results/',
+            'storybook-static/',
         ],
-    },
-    // Manual Next.js Configuration
+    }, // Manual Next.js Configuration
     {
         files: ['**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx'],
         plugins: {
@@ -58,8 +60,7 @@ export default [
                 },
             },
         },
-    },
-    // TypeScript-specific configuration
+    }, // TypeScript-specific configuration
     {
         files: ['**/*.ts', '**/*.tsx'],
         languageOptions: {
@@ -82,5 +83,16 @@ export default [
                 },
             ],
         },
-    },
-];
+    }, // Override for Storybook files
+    {
+        files: ['**/*.stories.tsx', '**/*.stories.ts', '**/stories/**/*.tsx'],
+        rules: {
+            'storybook/no-renderer-packages': 'off',
+        },
+    }, ...storybook.configs["flat/recommended"].map(config => ({
+        ...config,
+        rules: {
+            ...config.rules,
+            'storybook/no-renderer-packages': 'off',
+        },
+    }))];

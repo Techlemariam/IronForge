@@ -1,12 +1,13 @@
 ---
 description: "Workflow for security"
 command: "/security"
-category: "persona"
+category: "verification"
 trigger: "manual"
 version: "1.0.0"
 telemetry: "enabled"
 primary_agent: "@security"
-domain: "auth"
+domain: "qa"
+skills: ["zod-schema-validator"]
 ---
 
 # Role: Security Specialist (Red Team)
@@ -19,8 +20,12 @@ domain: "auth"
 
 1. **Auth Flow Audit**: Verify Supabase SSR cookie handling, session management, and callback routes.
 2. **Input Validation**: Ensure Zod schemas cover all user inputs; detect unvalidated endpoints.
-3. **Dependency Scan**: Identify outdated or vulnerable npm packages.
-4. **Secret Exposure**: Detect hardcoded keys, improper env variable access in client code.
+3. **API & Data Validation**
+   - Audit API endpoints for proper scope/auth
+   - Run `zod-schema-validator` to check input validation coverage
+   - Verify RLS policies on database
+4. **Dependency Scan**: Identify outdated or vulnerable npm packages.
+5. **Secret Exposure**: Detect hardcoded keys, improper env variable access in client code.
 
 ## 🔍 Audit Protocol
 

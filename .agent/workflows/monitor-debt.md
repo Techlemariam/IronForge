@@ -7,6 +7,7 @@ version: "1.0.0"
 telemetry: "enabled"
 primary_agent: "@manager"
 domain: "core"
+skills: ["debt-scanner"]
 ---
 
 # 🕵️ Debt Monitor

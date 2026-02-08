@@ -1,0 +1,32 @@
+# Guardian Bundle
+# Security & Quality Agent Preset
+
+name: guardian
+description: Security-focused agent for code quality and protection
+agent: "@security"
+
+skills:
+  - git-guard
+  - gatekeeper
+  - schema-guard
+  - env-validator
+
+activation:
+  - on_commit
+  - on_push
+  - on_pr_create
+
+rules:
+  - "Block all commits to main branch"
+  - "Require 100% type coverage"
+  - "Validate all environment variables"
+  - "Check Prisma schema integrity"
+  - "Run lint before any push"
+
+alerts:
+  - type: security
+    threshold: critical
+    action: block
+  - type: quality
+    threshold: 5_errors
+    action: warn

@@ -36,7 +36,7 @@ import {
 import { dashboardReducer } from "./logic/dashboardReducer";
 import { useAmbientSound } from "@/hooks/useAmbientSound";
 import { usePlatformContext } from "@/hooks/usePlatformContext";
-import { TvHud } from "@/components/ui/TvHud";
+import { TvHud } from "@/features/dashboard/components/TvHud";
 
 const getAmbientZone = (
   view: View,

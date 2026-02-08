@@ -1,12 +1,13 @@
 ---
 description: "Workflow for triage"
 command: "/triage"
-category: "utility"
+category: "planning"
 trigger: "manual"
 version: "1.0.0"
 telemetry: "enabled"
 primary_agent: "@manager"
-domain: "meta"
+domain: "core"
+skills: ["issue-template-validator", "sprint-manager"]
 ---
 
 # 🎯 Triage Workflow

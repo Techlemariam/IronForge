@@ -1,0 +1,34 @@
+# Titan Coach Bundle
+# Bio-Game Integration Agent Preset
+
+name: titan-coach
+description: Manages bio-data integration and game balance
+agent: "@titan-coach"
+
+skills:
+  - bio-validator
+  - titan-health
+  - xp-calculator
+  - balance-checker
+
+activation:
+  - on_bio_sync
+  - on_game_logic_change
+  - manual
+
+context:
+  bio_services: /src/services/intervals.ts, /src/services/hevy.ts
+  game_logic: /src/lib/game/
+  progression: /src/lib/progression/
+  oracle: /src/services/oracle.ts
+
+rules:
+  - "Validate HRV data before processing"
+  - "XP formulas must be balanced for 7-day cycles"
+  - "Bio buffs cannot exceed 50% bonus"
+  - "Training load calculations use ACWR"
+
+domain_knowledge:
+  - intervals_api: "https://intervals.icu API for wellness data"
+  - hevy_api: "Hevy workout tracking integration"
+  - acwr: "Acute:Chronic Workload Ratio for load management"

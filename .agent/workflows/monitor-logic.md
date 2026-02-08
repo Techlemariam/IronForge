@@ -5,7 +5,8 @@ category: "monitoring"
 trigger: "manual"
 version: "1.0.0"
 telemetry: "enabled"
-primary_agent: "@architect"
+primary_agent: "@manager"
+skills: ["error-analyzer"]
 domain: "core"
 ---
 

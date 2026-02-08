@@ -1,14 +1,16 @@
 import { defineConfig } from 'vitest/config';
+import react from '@vitejs/plugin-react';
 import path from 'path';
 
 export default defineConfig({
+    plugins: [react()],
     test: {
-        environment: 'node',
         globals: true,
+        environment: 'node', // Use node environment for Server Actions
+        setupFiles: ['./tests/mocks/server.ts'], // Auto-start MSW if configured globally
+        include: ['tests/integration/**/*.test.{ts,tsx}'],
         alias: {
-            '@': path.resolve(__dirname, './src'),
-        },
-        include: ['**/*.integration.test.ts', 'src/actions/__tests__/hevy.test.ts'], // Explicitly include integration tests
-        setupFiles: ['./vitest.setup.integration.ts']
-    },
+            '@': path.resolve(__dirname, './src')
+        }
+    }
 });

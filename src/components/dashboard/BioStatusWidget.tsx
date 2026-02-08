@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import ForgeCard from "@/components/ui/ForgeCard";
+import { Card } from "@/components/ui/card";
 import { TrainingContext } from "@/services/data/TrainingContextService";
 import { Activity, Battery, Brain, AlertTriangle, ShieldAlert } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -38,7 +38,7 @@ export default function BioStatusWidget({ context }: BioStatusWidgetProps) {
     const capacityPct = globalMrv > 0 ? Math.min(100, (globalLoad / globalMrv) * 100) : 0;
 
     return (
-        <ForgeCard className="p-4 space-y-4">
+        <Card variant="glass" className="p-4 space-y-4">
             <div className="flex items-center justify-between">
                 <h3 className="text-lg font-bold flex items-center gap-2">
                     <Activity className="h-5 w-5 text-blue-400" />
@@ -100,6 +100,7 @@ export default function BioStatusWidget({ context }: BioStatusWidgetProps) {
                     </ul>
                 </div>
             )}
-        </ForgeCard>
+        </Card>
     );
 }
+

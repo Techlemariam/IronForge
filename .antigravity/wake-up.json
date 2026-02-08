@@ -1,0 +1,90 @@
+{
+    "$schema": "./wake-up.schema.json",
+    "version": "1.0.0",
+    "enabled": true,
+    "# ANTIGRAVITY AUTO WAKE-UP CONFIGURATION": "IronForge Project",
+    "primary": {
+        "workflow": "/night-shift",
+        "description": "Autonomous nightly maintenance - runs debt scanner, dependency updates, bundle analysis",
+        "skills": [
+            "debt-scanner",
+            "dependabot-manager",
+            "bundle-analyzer",
+            "env-validator",
+            "a11y-auditor"
+        ],
+        "estimatedDuration": "15-30 min",
+        "priority": 1
+    },
+    "fallback": {
+        "workflow": "/health-check",
+        "description": "Lightweight system diagnostics if night-shift fails or is blocked",
+        "skills": [
+            "coverage-check",
+            "supabase-inspector",
+            "schema-guard",
+            "env-validator",
+            "debt-scanner"
+        ],
+        "estimatedDuration": "5-10 min",
+        "priority": 2
+    },
+    "secondary": {
+        "workflow": "/evolve",
+        "description": "Meta-optimization and dependency evolution - runs weekly",
+        "skills": [
+            "dependabot-manager"
+        ],
+        "estimatedDuration": "10-20 min",
+        "priority": 3,
+        "runCondition": "weekly"
+    },
+    "schedule": {
+        "preferredTime": "02:00",
+        "timezone": "Europe/Stockholm",
+        "daysOfWeek": [
+            "monday",
+            "wednesday",
+            "friday"
+        ],
+        "skipHolidays": false
+    },
+    "conditions": {
+        "requireCleanGit": true,
+        "skipIfPROpen": true,
+        "skipIfCIFailing": true,
+        "maxConsecutiveFailures": 3,
+        "requiredBranch": "main"
+    },
+    "notifications": {
+        "onSuccess": {
+            "enabled": true,
+            "channel": "github-pr",
+            "createSummaryPR": true
+        },
+        "onFailure": {
+            "enabled": true,
+            "channel": "github-issue",
+            "assignTo": "@manager"
+        }
+    },
+    "skillPriority": {
+        "# Skills to always run first": "",
+        "critical": [
+            "env-validator",
+            "schema-guard"
+        ],
+        "# Skills to run if time permits": "",
+        "optional": [
+            "bundle-analyzer",
+            "a11y-auditor",
+            "seo-optimizer"
+        ]
+    },
+    "quotaManagement": {
+        "reservePercentage": 20,
+        "# Reserve 20% of daily quota for manual work": "",
+        "maxTokensPerSession": 50000,
+        "pauseOnLowQuota": true
+    }
+}

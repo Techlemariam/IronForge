@@ -6,7 +6,8 @@ trigger: "manual"
 version: "2.0.0"
 telemetry: "enabled"
 primary_agent: "@manager"
-domain: "meta"
+domain: "core"
+skills: ["sprint-manager"]
 ---
 
 # Workflow: /sprint-plan

@@ -7,6 +7,7 @@ version: "1.0.0"
 telemetry: "enabled"
 primary_agent: "@infrastructure"
 domain: "database"
+skills: ["supabase-inspector"]
 ---
 
 # Database Monitoring Workflow
@@ -46,7 +47,13 @@ Check the `schema.prisma` file for syntax errors or invalid references before ge
 npx prisma validate
 ```
 
-## 4. Debug Migrations
+## 4. Check Database Health (supabase-inspector)
+
+- [ ] Verify Migrations
+
+If a migration fails, mark it as resolved or reset the database (local only).
+
+## 5. Debug Migrations
 
 If a migration fails, mark it as resolved or reset the database (local only).
 

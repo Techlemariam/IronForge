@@ -5,7 +5,7 @@ import { Exercise } from "@/types";
 import { cn } from "@/lib/utils";
 import { SetRow } from "@/features/strength/SetRow";
 import SetInput from "./SetInput";
-import ForgeCard from "../../../components/ui/ForgeCard";
+import { Card } from "@/components/ui/card";
 import { DemoVideoModal } from "@/components/ui/DemoVideoModal";
 import { useRestTimer } from "@/hooks/useRestTimer";
 import { useSetHistory } from "@/features/strength/hooks/useSetHistory";
@@ -123,7 +123,7 @@ const ExerciseView: React.FC<ExerciseViewProps> = ({
       dragElastic={0.1}
       onDragEnd={handleDragEnd}
     >
-      <ForgeCard
+      <Card variant="glass"
         className={`transition-all duration-500 ${isActive ? "border-magma/80 shadow-glow-magma/40" : "border-white/10"}`}
       >
         {/* Swipe Hint - only on first active set */}
@@ -231,7 +231,7 @@ const ExerciseView: React.FC<ExerciseViewProps> = ({
             />
           </motion.div>
         )}
-      </ForgeCard>
+      </Card>
 
       <DemoVideoModal
         isOpen={showDemo}
@@ -244,3 +244,4 @@ const ExerciseView: React.FC<ExerciseViewProps> = ({
 };
 
 export default ExerciseView;
+
