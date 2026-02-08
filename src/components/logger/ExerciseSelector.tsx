@@ -5,7 +5,7 @@ import { searchExercisesAction, createExerciseAction } from "@/actions/user/logg
 import { Exercise } from "@prisma/client";
 import { Search, Plus, Dumbbell, Lock } from "lucide-react";
 import ForgeInput from "@/components/ui/ForgeInput";
-import ForgeButton from "@/components/ui/ForgeButton";
+import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
@@ -142,10 +142,10 @@ function CreateExerciseDialog({ initialName, onSuccess }: { initialName: string,
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
-                <ForgeButton size="sm" variant="default" className="gap-2">
+                <Button size="sm" variant="default" className="gap-2">
                     <Plus className="h-4 w-4" />
                     Create &quot;{initialName}&quot;
-                </ForgeButton>
+                </Button>
             </DialogTrigger>
             <DialogContent className="bg-zinc-950 border-zinc-800 text-zinc-200">
                 <DialogHeader>
@@ -169,15 +169,16 @@ function CreateExerciseDialog({ initialName, onSuccess }: { initialName: string,
                             </SelectContent>
                         </Select>
                     </div>
-                    <ForgeButton
+                    <Button
                         fullWidth variant="magma"
                         onClick={handleCreate}
                         disabled={isSubmitting}
                     >
                         {isSubmitting ? "Creating..." : "Save to Library"}
-                    </ForgeButton>
+                    </Button>
                 </div>
             </DialogContent>
         </Dialog>
     );
 }
+

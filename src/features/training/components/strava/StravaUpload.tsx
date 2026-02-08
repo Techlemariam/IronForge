@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { uploadToStravaAction } from "@/actions/integrations/strava";
-import ForgeButton from "@/components/ui/ForgeButton";
-import ForgeCard from "@/components/ui/ForgeCard";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import ForgeInput from "@/components/ui/ForgeInput";
 import { Loader2, UploadCloud, CheckCircle, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
@@ -39,7 +39,7 @@ export default function StravaUpload() {
   }
 
   return (
-    <ForgeCard className="w-full max-w-md mx-auto relative overflow-hidden">
+    <Card variant="glass" className="w-full max-w-md mx-auto relative overflow-hidden">
       {/* Header */}
       <div className="flex items-center gap-2 mb-6 border-b border-forge-border pb-4">
         <UploadCloud className="w-6 h-6 text-magma" />
@@ -61,7 +61,7 @@ export default function StravaUpload() {
           />
         </div>
 
-        <ForgeButton
+        <Button
           type="submit"
           disabled={isUploading}
           variant="magma"
@@ -76,7 +76,7 @@ export default function StravaUpload() {
           ) : (
             "Upload to Strava"
           )}
-        </ForgeButton>
+        </Button>
 
         {uploadStatus === "success" && (
           <div className="p-4 bg-green-900/20 border border-green-800 rounded-lg flex items-start gap-3 text-green-400 text-sm animate-fade-in">
@@ -100,6 +100,8 @@ export default function StravaUpload() {
           </div>
         )}
       </form>
-    </ForgeCard>
+    </Card>
   );
 }
+
+

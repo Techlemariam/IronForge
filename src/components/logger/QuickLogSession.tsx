@@ -5,7 +5,7 @@ import { Exercise } from "@prisma/client";
 import ExerciseSelector from "./ExerciseSelector";
 import SetLogger from "./SetLogger";
 import { Dumbbell } from "lucide-react";
-import ForgeCard from "@/components/ui/ForgeCard";
+import { Card } from "@/components/ui/card";
 import DungeonInterface from "@/components/game/dungeon/DungeonInterface";
 import { EquipmentType } from "@/data/equipmentDb";
 import { logExerciseSetsAction } from "@/actions/user/logger";
@@ -102,9 +102,9 @@ export default function QuickLogSession({ activeCombatSession, boss, capabilitie
                         </div>
                     )}
 
-                    <ForgeCard className="max-w-md mx-auto relative overflow-visible">
+                    <Card variant="glass" className="max-w-md mx-auto relative overflow-visible">
                         <ExerciseSelector onSelect={setActiveExercise} capabilities={capabilities} />
-                    </ForgeCard>
+                    </Card>
                 </div>
             ) : (
                 <div className="max-w-md mx-auto">
@@ -123,3 +123,4 @@ export default function QuickLogSession({ activeCombatSession, boss, capabilitie
         </div>
     );
 }
+

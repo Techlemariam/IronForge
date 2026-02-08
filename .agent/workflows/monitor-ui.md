@@ -1,12 +1,13 @@
 ---
-description: "Workflow for monitor-ui"
+description: "Comprehensive UI Health & Accessibility Audit"
 command: "/monitor-ui"
 category: "monitoring"
 trigger: "manual"
-version: "2.0.0"
+version: "1.0.0"
 telemetry: "enabled"
 primary_agent: "@ui-ux"
 domain: "ui"
+skills: ["a11y-auditor", "seo-optimizer"]
 thresholds:
   a11y_score: 100
   perf_score: 90

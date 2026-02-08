@@ -7,6 +7,7 @@ version: "1.0.0"
 telemetry: "enabled"
 primary_agent: "@perf"
 domain: "core"
+skills: ["performance-profiler", "bundle-analyzer"]
 ---
 
 # Role: Performance Engineer

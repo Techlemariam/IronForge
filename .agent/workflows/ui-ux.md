@@ -42,7 +42,10 @@ Comprehensive UX review with metrics.
 > **Tip:** Run `/monitor-ui` first for automated component, a11y, and consistency scans before manual audit.
 
 - Time-to-Delight analysis
-- Cognitive Load scoring (target: <3 decisions per view)
+- Cognitive Load- **Concept Phase**:
+  - Review `brand_guidelines.md`
+  - Use `figma-bridge` to sync tokens
+  - Use `shadcn-theme-generator` to validate color palette
 - User Agency evaluation
 
 ## Output Format (Audit Mode)

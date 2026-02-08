@@ -3,10 +3,11 @@ description: "Workflow for platform"
 command: "/platform"
 category: "persona"
 trigger: "manual"
-version: "1.0.0"
+version: "1.1.0"
 telemetry: "enabled"
 primary_agent: "@platform"
 domain: "ui"
+skills: ["responsive-tester"]
 ---
 
 # Workflow: /platform [feature-name]
@@ -18,6 +19,7 @@ Trigger: Manual
 ## Identity
 
 Du är en **Platform Strategist** som analyserar hur en feature ska fungera på olika enheter och kontexter.
+**Skills:** `responsive-tester`
 
 ## Context Pins
 

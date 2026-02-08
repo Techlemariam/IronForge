@@ -1,0 +1,199 @@
+# =============================================================================
+# REMOTE TRIGGER WORKFLOW
+# =============================================================================
+# Enables external systems (n8n, Moltbot, Slack, etc.) to trigger agent
+# workflows via GitHub's workflow_dispatch API.
+#
+# Endpoints:
+#   - workflow_dispatch: Manual trigger via GitHub UI or API
+#   - repository_dispatch: Webhook trigger from external systems
+# =============================================================================
+
+name: 🎯 Remote Trigger
+
+on:
+  workflow_dispatch:
+    inputs:
+      workflow:
+        description: "Agent workflow to run (e.g., /night-shift, /health-check)"
+        required: true
+        type: choice
+        options:
+          - "/night-shift"
+          - "/health-check"
+          - "/debug"
+          - "/monitor-all"
+          - "/triage"
+          - "/evolve"
+          - "/ci-doctor"
+      branch:
+        description: "Target branch"
+        required: false
+        default: "main"
+      dry_run:
+        description: "Dry run mode (no commits)"
+        required: false
+        type: boolean
+        default: false
+  repository_dispatch:
+    types:
+      - remote-trigger
+      - n8n-trigger
+      - moltbot-trigger
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+env:
+  NODE_VERSION: "22"
+
+jobs:
+  validate:
+    name: 🔐 Validate Request
+    runs-on: ubuntu-latest
+    outputs:
+      workflow: ${{ steps.parse.outputs.workflow }}
+      branch: ${{ steps.parse.outputs.branch }}
+      dry_run: ${{ steps.parse.outputs.dry_run }}
+      is_valid: ${{ steps.validate.outputs.is_valid }}
+    steps:
+      - name: Parse Input
+        id: parse
+        run: |
+          # Handle both workflow_dispatch and repository_dispatch
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "workflow=${{ inputs.workflow }}" >> $GITHUB_OUTPUT
+            echo "branch=${{ inputs.branch }}" >> $GITHUB_OUTPUT
+            echo "dry_run=${{ inputs.dry_run }}" >> $GITHUB_OUTPUT
+          else
+            # repository_dispatch from n8n/Moltbot
+            WORKFLOW="${{ github.event.client_payload.workflow || '/health-check' }}"
+            BRANCH="${{ github.event.client_payload.branch || 'main' }}"
+            DRY_RUN="${{ github.event.client_payload.dry_run || 'false' }}"
+            echo "workflow=$WORKFLOW" >> $GITHUB_OUTPUT
+            echo "branch=$BRANCH" >> $GITHUB_OUTPUT
+            echo "dry_run=$DRY_RUN" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Validate Token (repository_dispatch only)
+        id: validate
+        if: github.event_name == 'repository_dispatch'
+        env:
+          REMOTE_TRIGGER_SECRET: ${{ secrets.REMOTE_TRIGGER_SECRET }}
+          PROVIDED_TOKEN: ${{ github.event.client_payload.token }}
+        run: |
+          if [ -z "$REMOTE_TRIGGER_SECRET" ]; then
+            echo "⚠️ REMOTE_TRIGGER_SECRET not configured. Allowing request."
+            echo "is_valid=true" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          
+          if [ "$PROVIDED_TOKEN" = "$REMOTE_TRIGGER_SECRET" ]; then
+            echo "✅ Token validated"
+            echo "is_valid=true" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Invalid token"
+            echo "is_valid=false" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+  execute:
+    name: 🚀 Execute Workflow
+    needs: validate
+    if: needs.validate.outputs.is_valid != 'false'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.validate.outputs.branch }}
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "pnpm"
+
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: 📋 Log Execution
+        run: |
+          echo "## 🎯 Remote Trigger Execution" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Parameter | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|:----------|:------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Workflow | \`${{ needs.validate.outputs.workflow }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| Branch | \`${{ needs.validate.outputs.branch }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| Dry Run | \`${{ needs.validate.outputs.dry_run }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| Trigger | \`${{ github.event_name }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| Actor | \`${{ github.actor }}\` |" >> $GITHUB_STEP_SUMMARY
+
+      - name: 🔧 Execute Agent Workflow
+        env:
+          WORKFLOW: ${{ needs.validate.outputs.workflow }}
+          DRY_RUN: ${{ needs.validate.outputs.dry_run }}
+        run: |
+          echo "Executing workflow: $WORKFLOW"
+          
+          # Map workflow names to actual commands
+          case "$WORKFLOW" in
+            "/night-shift")
+              echo "Running nightly maintenance..."
+              pnpm run lint --fix || true
+              pnpm run check-types || true
+              ;;
+            "/health-check")
+              echo "Running health checks..."
+              pnpm run check-types
+              pnpm run lint
+              pnpm run test
+              ;;
+            "/debug")
+              echo "Running debug analysis..."
+              pnpm run check-types 2>&1 | tee type-errors.log || true
+              ;;
+            "/monitor-all")
+              echo "Running all monitors..."
+              pnpm run lint
+              pnpm run test --coverage
+              ;;
+            "/triage")
+              echo "Running triage..."
+              # This would be handled by Antigravity agent
+              echo "Triage requires Antigravity agent context"
+              ;;
+            "/evolve")
+              echo "Running evolution..."
+              pnpm outdated --format json > evolve_report.json || true
+              ;;
+            "/ci-doctor")
+              echo "Running CI doctor..."
+              pnpm run check-types
+              pnpm run lint
+              pnpm run test
+              ;;
+            *)
+              echo "Unknown workflow: $WORKFLOW"
+              exit 1
+              ;;
+          esac
+
+      - name: 📢 Report Result
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const workflow = '${{ needs.validate.outputs.workflow }}';
+            const status = '${{ job.status }}';
+            const runUrl = '${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}';
+            
+            // Create a comment on the most recent commit or issue
+            console.log(`Remote trigger completed: ${workflow} - ${status}`);
+            console.log(`Run URL: ${runUrl}`);

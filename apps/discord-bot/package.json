@@ -1,0 +1,17 @@
+{
+    "name": "ironforge-discord-bot",
+    "version": "1.0.0",
+    "description": "Discord bot for triggering IronForge agent workflows",
+    "main": "index.js",
+    "type": "module",
+    "scripts": {
+        "start": "node index.js",
+        "dev": "node --watch index.js"
+    },
+    "dependencies": {
+        "discord.js": "^14.14.1"
+    },
+    "engines": {
+        "node": ">=20"
+    }
+}

@@ -58,30 +58,42 @@
     }
 
     :root {
-        --background: 0 0% 3.9%;
+        /* Base (Void: #030712 -> 223 71% 4%) */
+        --background: 223 71% 4%;
         --foreground: 0 0% 98%;
-        --card: 217 19% 10%; /* Armor */
+
+        /* Surface (Armor: #111827 -> 220 39% 11%) */
+        --card: 220 39% 11%;
         --card-foreground: 0 0% 98%;
-        --popover: 217 19% 10%;
+        --popover: 220 39% 11%;
         --popover-foreground: 0 0% 98%;
-        --primary: 24 95% 53%; /* Plasma */
-        --primary-foreground: 0 0% 9%;
-        --secondary: 215 14% 34%; /* Steel */
+
+        /* Action (Plasma: #f97316 -> 25 95% 53%) */
+        --primary: 25 95% 53%;
+        --primary-foreground: 0 0% 100%;
+
+        /* Structural (Steel: #374151 -> 217 19% 27%) */
+        --secondary: 217 19% 27%;
         --secondary-foreground: 0 0% 98%;
-        --muted: 217 19% 15%;
+        
+        --muted: 217 19% 22%; /* Slightly darker steel */
         --muted-foreground: 215 20% 65%;
-        --accent: 217 19% 15%;
+        
+        --accent: 217 19% 27%;
         --accent-foreground: 0 0% 98%;
+        
         --destructive: 0 84.2% 60.2%;
         --destructive-foreground: 0 0% 98%;
-        --border: 215 14% 34%;
-        --input: 215 14% 34%;
-        --ring: 24 95% 53%;
-        --radius: 0.25rem; /* Industrial Corner */
+        
+        --border: 217 19% 27%; /* Steel */
+        --input: 217 19% 27%;
+        --ring: 25 95% 53%; /* Plasma */
+        
+        --radius: 0.25rem;
     }
     
     .dark {
-        --background: 0 0% 3.9%;
+        --background: 223 71% 4%;
         --foreground: 0 0% 98%;
     }
 }

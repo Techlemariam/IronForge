@@ -5,8 +5,9 @@ category: "planning"
 trigger: "manual"
 version: "1.0.0"
 telemetry: "enabled"
-primary_agent: "@architect"
-domain: "meta"
+primary_agent: "@analyst"
+domain: "core"
+skills: ["requirements-extractor"]
 ---
 
 # Workflow: /spec

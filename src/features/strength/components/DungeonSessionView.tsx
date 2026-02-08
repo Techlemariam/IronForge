@@ -4,7 +4,7 @@ import { BioBuffService, BioBuff } from "@/features/bio/BioBuffService";
 import { Exercise, Set as WorkoutSet } from "@/types";
 import { playSound } from "@/utils";
 import ExerciseView from "@/features/training/components/ExerciseView";
-import ForgeButton from "@/components/ui/ForgeButton";
+import { Button } from "@/components/ui/button";
 import { AnimatePresence } from "framer-motion";
 import BerserkerMode from "@/features/training/components/BerserkerMode";
 import BerserkerChoice from "@/features/training/components/BerserkerChoice";
@@ -423,13 +423,13 @@ const DungeonSessionView: React.FC<IronMinesProps> = ({
             </button>
           </div>
 
-          <ForgeButton
+          <Button
             variant={isQuestFullyCompleted ? "magma" : "default"}
             onClick={handleButtonClick}
             disabled={!isQuestFullyCompleted && completedSets < totalSets}
           >
             {isQuestFullyCompleted ? "Loot Boss" : "Flee Dungeon"}
-          </ForgeButton>
+          </Button>
         </div>
       </div>
 
@@ -543,3 +543,4 @@ const DungeonSessionView: React.FC<IronMinesProps> = ({
 };
 
 export default DungeonSessionView;
+

@@ -7,11 +7,20 @@ version: "1.0.0"
 telemetry: "enabled"
 primary_agent: "@game-designer"
 domain: "game"
+skills: ["hook-loop-designer", "loss-aversion-engine", "variable-reward-system"]
 ---
 
 # Game Monitoring Workflow
 
 This workflow audits game mechanics data integrity, balancing constants, and logic gaps.
+
+## 0. Behavioral Mechanics Audit
+
+Before diving into data, audit the psychological hooks:
+
+- **Hook Loops**: Use `hook-loop-designer` to verify Trigger→Action→Reward→Investment cycle
+- **Loss Mechanics**: Use `loss-aversion-engine` to audit streak/decay balance
+- **Reward Variance**: Use `variable-reward-system` to check drop rate distribution
 
 ## 1. Loot Table Audit
 

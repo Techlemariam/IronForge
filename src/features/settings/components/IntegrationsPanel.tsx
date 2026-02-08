@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import ForgeButton from "@/components/ui/ForgeButton";
+import { Button } from "@/components/ui/button";
 import ForgeInput from "@/components/ui/ForgeInput";
 import {
   connectHevy,
@@ -307,7 +307,7 @@ const IntegrationsPanel: React.FC<IntegrationsPanelProps> = ({
             </button>
           </div>
         ) : (
-          <ForgeButton
+          <Button
             size="sm"
             variant="ghost"
             onClick={() => {
@@ -325,7 +325,7 @@ const IntegrationsPanel: React.FC<IntegrationsPanelProps> = ({
             className={expanded === type ? "bg-white/10" : ""}
           >
             {expanded === type ? "Cancel" : "Connect"}
-          </ForgeButton>
+          </Button>
         )}
       </div>
 
@@ -347,7 +347,7 @@ const IntegrationsPanel: React.FC<IntegrationsPanelProps> = ({
                     value={hevyKey}
                     onChange={(e) => setHevyKey(e.target.value)}
                   />
-                  <ForgeButton
+                  <Button
                     fullWidth
                     variant="magma"
                     onClick={handleConnectHevy}
@@ -358,7 +358,7 @@ const IntegrationsPanel: React.FC<IntegrationsPanelProps> = ({
                     ) : (
                       "Validate & Connect"
                     )}
-                  </ForgeButton>
+                  </Button>
                 </>
               )}
 
@@ -377,7 +377,7 @@ const IntegrationsPanel: React.FC<IntegrationsPanelProps> = ({
                     value={intervalsKey}
                     onChange={(e) => setIntervalsKey(e.target.value)}
                   />
-                  <ForgeButton
+                  <Button
                     fullWidth
                     variant="magma"
                     onClick={handleConnectIntervals}
@@ -388,7 +388,7 @@ const IntegrationsPanel: React.FC<IntegrationsPanelProps> = ({
                     ) : (
                       "Validate & Connect"
                     )}
-                  </ForgeButton>
+                  </Button>
                 </>
               )}
 
@@ -403,7 +403,7 @@ const IntegrationsPanel: React.FC<IntegrationsPanelProps> = ({
                                           But for this edit, I can't call it inside render easily without async.
                                           I'll use a client-side button that calls server action to get URL then redirects.
                                       */}
-                  <ForgeButton
+                  <Button
                     fullWidth
                     variant="magma"
                     onClick={() => {
@@ -425,7 +425,7 @@ const IntegrationsPanel: React.FC<IntegrationsPanelProps> = ({
                   >
                     <Bike className="w-4 h-4 mr-2" />
                     Launch Strava Login
-                  </ForgeButton>
+                  </Button>
                 </div>
               )}
 
@@ -435,10 +435,10 @@ const IntegrationsPanel: React.FC<IntegrationsPanelProps> = ({
                     Connect your Pocket Casts account to stream podcasts during workouts.
                   </p>
                   <Link href="/settings/podcast" className="block">
-                    <ForgeButton fullWidth variant="magma">
+                    <Button fullWidth variant="magma">
                       <Podcast className="w-4 h-4 mr-2" />
                       Go to Podcast Setup
-                    </ForgeButton>
+                    </Button>
                   </Link>
                 </div>
               )}
@@ -448,7 +448,7 @@ const IntegrationsPanel: React.FC<IntegrationsPanelProps> = ({
                   <p className="text-xs text-zinc-400 mb-3">
                     Connect your Garmin Fenix 7X via OAuth to sync wellness and recovery data.
                   </p>
-                  <ForgeButton
+                  <Button
                     fullWidth
                     variant="magma"
                     onClick={() => {
@@ -458,7 +458,7 @@ const IntegrationsPanel: React.FC<IntegrationsPanelProps> = ({
                   >
                     <Activity className="w-4 h-4 mr-2" />
                     Launch Garmin Login
-                  </ForgeButton>
+                  </Button>
                 </div>
               )}
 
@@ -501,7 +501,7 @@ const IntegrationsPanel: React.FC<IntegrationsPanelProps> = ({
             </div>
           </div>
 
-          <ForgeButton
+          <Button
             size="sm"
             variant="ghost"
             onClick={() =>
@@ -510,7 +510,7 @@ const IntegrationsPanel: React.FC<IntegrationsPanelProps> = ({
             className={expanded === "FACTION" ? "bg-white/10" : ""}
           >
             {expanded === "FACTION" ? "Close" : "Change"}
-          </ForgeButton>
+          </Button>
         </div>
 
         <AnimatePresence>
@@ -663,14 +663,14 @@ const IntegrationsPanel: React.FC<IntegrationsPanelProps> = ({
               </p>
             </div>
           </div>
-          <ForgeButton
+          <Button
             size="sm"
             variant={isDemoActive ? "magma" : "ghost"}
             onClick={handleToggleDemo}
             disabled={isPending}
           >
             {isDemoActive ? "Disable Demo" : "Enable Demo Data"}
-          </ForgeButton>
+          </Button>
         </div>
       </div>
     </div>
@@ -678,3 +678,4 @@ const IntegrationsPanel: React.FC<IntegrationsPanelProps> = ({
 };
 
 export default IntegrationsPanel;
+

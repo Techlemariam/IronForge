@@ -1,12 +1,13 @@
 ---
 description: "Workflow for sprint-auto"
 command: "/sprint-auto"
-category: "meta"
+category: "planning"
 trigger: "manual"
-version: "2.0.0"
+version: "1.0.0"
 telemetry: "enabled"
 primary_agent: "@manager"
-domain: "meta"
+domain: "core"
+skills: ["sprint-manager"]
 ---
 
 # Workflow: /sprint-auto

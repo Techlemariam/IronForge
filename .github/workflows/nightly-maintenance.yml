@@ -1,0 +1,347 @@
+# =============================================================================
+# NIGHTLY MAINTENANCE WORKFLOW
+# =============================================================================
+# Autonomous nightly maintenance triggered by cron or manual dispatch.
+# Integrates with Antigravity Auto Wake-up configuration.
+#
+# Schedule: Monday, Wednesday, Friday at 02:00 CET (01:00 UTC)
+# =============================================================================
+
+name: 🌙 Nightly Maintenance
+
+on:
+  schedule:
+    # 01:00 UTC = 02:00 CET (Europe/Stockholm)
+    - cron: "0 1 * * 1,3,5"
+  workflow_dispatch:
+    inputs:
+      workflow:
+        description: "Workflow to run"
+        required: true
+        default: "/night-shift"
+        type: choice
+        options:
+          - "/night-shift"
+          - "/health-check"
+          - "/monitor-debt"
+          - "/evolve"
+      dry_run:
+        description: "Dry run (no commits)"
+        required: false
+        default: false
+        type: boolean
+      skip_pr:
+        description: "Skip PR creation"
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+env:
+  NODE_VERSION: "20"
+  PNPM_VERSION: "9"
+
+jobs:
+  # ===========================================================================
+  # PRE-FLIGHT CHECKS
+  # ===========================================================================
+  preflight:
+    name: 🛫 Pre-flight Checks
+    runs-on: ubuntu-latest
+    outputs:
+      should_run: ${{ steps.check.outputs.should_run }}
+      workflow: ${{ steps.check.outputs.workflow }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check conditions
+        id: check
+        run: |
+          echo "📋 Checking pre-flight conditions..."
+          
+          # Check for open night-shift PRs
+          OPEN_PRS=$(gh pr list --label "night-shift" --state open --json number -q 'length')
+          if [ "$OPEN_PRS" -gt 0 ]; then
+            echo "⚠️ Found $OPEN_PRS open night-shift PR(s), skipping..."
+            echo "should_run=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          
+          # Check if main branch CI is green
+          LAST_RUN=$(gh run list --branch main --workflow "IronForge CI/CD" --limit 1 --json conclusion -q '.[0].conclusion')
+          if [ "$LAST_RUN" != "success" ]; then
+            echo "⚠️ Last CI run was not successful ($LAST_RUN), skipping..."
+            echo "should_run=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          
+          echo "✅ All pre-flight checks passed"
+          echo "should_run=true" >> $GITHUB_OUTPUT
+          echo "workflow=${{ inputs.workflow || '/night-shift' }}" >> $GITHUB_OUTPUT
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # ===========================================================================
+  # MAINTENANCE TASKS
+  # ===========================================================================
+  maintenance:
+    name: 🔧 Run Maintenance
+    needs: preflight
+    if: needs.preflight.outputs.should_run == 'true'
+    runs-on: ubuntu-latest
+    outputs:
+      changes_made: ${{ steps.changes.outputs.changes_made }}
+      summary: ${{ steps.summary.outputs.summary }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Create maintenance branch
+        run: |
+          BRANCH="night-shift/$(date +%Y-%m-%d)"
+          git checkout -b "$BRANCH"
+          echo "BRANCH=$BRANCH" >> $GITHUB_ENV
+
+      # -----------------------------------------------------------------------
+      # TASK 1: Dependency Updates
+      # -----------------------------------------------------------------------
+      - name: 📦 Check for dependency updates
+        id: deps
+        run: |
+          echo "## 📦 Dependency Check" >> $GITHUB_STEP_SUMMARY
+          
+          # Check for outdated packages
+          OUTDATED=$(pnpm outdated --format json 2>/dev/null || echo "{}")
+          if [ "$OUTDATED" != "{}" ]; then
+            echo "Found outdated packages:"
+            echo "$OUTDATED" | jq -r 'to_entries[] | "- \(.key): \(.value.current) → \(.value.latest)"'
+            echo "deps_outdated=true" >> $GITHUB_OUTPUT
+          else
+            echo "✅ All dependencies up to date"
+            echo "deps_outdated=false" >> $GITHUB_OUTPUT
+          fi
+
+      # -----------------------------------------------------------------------
+      # TASK 2: Dependency Evolution (/evolve)
+      # -----------------------------------------------------------------------
+      - name: 🧬 Run Dependency Evolution
+        id: evolve
+        continue-on-error: true
+        run: |
+          echo "## 🧬 Dependency Evolution" >> $GITHUB_STEP_SUMMARY
+          
+          # Check for security vulnerabilities
+          pnpm audit --audit-level=moderate 2>&1 | tee audit-output.txt || true
+          
+          # Update minor/patch versions
+          if [ "${{ inputs.workflow }}" = "/evolve" ]; then
+            echo "Running full dependency update..."
+            pnpm update --latest 2>&1 | tee update-output.txt || true
+            
+            if git diff --quiet package.json pnpm-lock.yaml; then
+              echo "✅ No dependency updates available" >> $GITHUB_STEP_SUMMARY
+              echo "deps_updated=false" >> $GITHUB_OUTPUT
+            else
+              echo "📦 Dependencies updated" >> $GITHUB_STEP_SUMMARY
+              git add package.json pnpm-lock.yaml
+              git commit -m "chore(deps): update dependencies [night-shift]" || true
+              echo "deps_updated=true" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "Skipping full update (use /evolve workflow for updates)"
+            echo "deps_updated=false" >> $GITHUB_OUTPUT
+          fi
+
+      # -----------------------------------------------------------------------
+      # TASK 3: Lint & Type Check
+      # -----------------------------------------------------------------------
+      - name: 🔍 Run Lint Check
+        id: lint
+        continue-on-error: true
+        run: |
+          echo "## 🔍 Lint Check" >> $GITHUB_STEP_SUMMARY
+          pnpm run lint 2>&1 | tee lint-output.txt
+          
+          if [ ${PIPESTATUS[0]} -eq 0 ]; then
+            echo "✅ Lint passed" >> $GITHUB_STEP_SUMMARY
+            echo "lint_clean=true" >> $GITHUB_OUTPUT
+          else
+            echo "⚠️ Lint issues found" >> $GITHUB_STEP_SUMMARY
+            echo "lint_clean=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 🔧 Auto-fix lint issues
+        if: steps.lint.outputs.lint_clean == 'false'
+        run: |
+          pnpm run lint --fix || true
+          git add -A
+          git diff --staged --quiet || git commit -m "fix: auto-fix lint issues [night-shift]"
+
+      # -----------------------------------------------------------------------
+      # TASK 3: Type Check
+      # -----------------------------------------------------------------------
+      - name: 📐 Run Type Check
+        id: types
+        continue-on-error: true
+        run: |
+          echo "## 📐 Type Check" >> $GITHUB_STEP_SUMMARY
+          pnpm run type-check 2>&1 | tee type-output.txt
+          
+          if [ ${PIPESTATUS[0]} -eq 0 ]; then
+            echo "✅ Type check passed" >> $GITHUB_STEP_SUMMARY
+            echo "types_clean=true" >> $GITHUB_OUTPUT
+          else
+            echo "⚠️ Type errors found" >> $GITHUB_STEP_SUMMARY
+            echo "types_clean=false" >> $GITHUB_OUTPUT
+          fi
+
+      # -----------------------------------------------------------------------
+      # TASK 4: Bundle Analysis
+      # -----------------------------------------------------------------------
+      - name: 📊 Analyze Bundle Size
+        id: bundle
+        continue-on-error: true
+        run: |
+          echo "## 📊 Bundle Analysis" >> $GITHUB_STEP_SUMMARY
+          
+          # Build and capture bundle stats
+          pnpm run build 2>&1 | tee build-output.txt
+          
+          if [ ${PIPESTATUS[0]} -eq 0 ]; then
+            echo "✅ Build successful" >> $GITHUB_STEP_SUMMARY
+            
+            # Extract bundle size if available
+            if [ -f ".next/analyze/client.html" ]; then
+              echo "Bundle analysis available" >> $GITHUB_STEP_SUMMARY
+            fi
+            echo "build_success=true" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Build failed" >> $GITHUB_STEP_SUMMARY
+            echo "build_success=false" >> $GITHUB_OUTPUT
+          fi
+
+      # -----------------------------------------------------------------------
+      # TASK 5: Check for changes
+      # -----------------------------------------------------------------------
+      - name: 📝 Check for changes
+        id: changes
+        run: |
+          if git diff --quiet HEAD origin/main; then
+            echo "No changes to commit"
+            echo "changes_made=false" >> $GITHUB_OUTPUT
+          else
+            echo "Changes detected"
+            echo "changes_made=true" >> $GITHUB_OUTPUT
+          fi
+
+      # -----------------------------------------------------------------------
+      # TASK 6: Generate Summary
+      # -----------------------------------------------------------------------
+      - name: 📋 Generate Summary
+        id: summary
+        run: |
+          SUMMARY=$(cat << 'EOF'
+          ## 🌙 Night Shift Summary
+          
+          | Task | Status |
+          |:-----|:-------|
+          | Dependencies | ${{ steps.deps.outputs.deps_outdated == 'true' && '⚠️ Updates available' || '✅ Up to date' }} |
+          | Lint | ${{ steps.lint.outputs.lint_clean == 'true' && '✅ Clean' || '🔧 Auto-fixed' }} |
+          | Types | ${{ steps.types.outputs.types_clean == 'true' && '✅ Clean' || '⚠️ Issues found' }} |
+          | Build | ${{ steps.bundle.outputs.build_success == 'true' && '✅ Success' || '❌ Failed' }} |
+          
+          **Run Time:** $(date -u +"%Y-%m-%d %H:%M UTC")
+          EOF
+          )
+          
+          echo "$SUMMARY" >> $GITHUB_STEP_SUMMARY
+          echo "summary<<EOF" >> $GITHUB_OUTPUT
+          echo "$SUMMARY" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Push changes
+        if: steps.changes.outputs.changes_made == 'true' && inputs.dry_run != true
+        run: |
+          git push -u origin "$BRANCH"
+
+  # ===========================================================================
+  # CREATE PR
+  # ===========================================================================
+  create-pr:
+    name: 📬 Create PR
+    needs: [preflight, maintenance]
+    if: |
+      needs.maintenance.outputs.changes_made == 'true' && 
+      inputs.skip_pr != true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create Pull Request
+        run: |
+          BRANCH="night-shift/$(date +%Y-%m-%d)"
+          
+          gh pr create \
+            --base main \
+            --head "$BRANCH" \
+            --title "🌙 Night Shift: $(date +%Y-%m-%d)" \
+            --body "${{ needs.maintenance.outputs.summary }}" \
+            --label "night-shift,automated" \
+            --assignee "${{ github.repository_owner }}"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # ===========================================================================
+  # FAILURE NOTIFICATION
+  # ===========================================================================
+  notify-failure:
+    name: 🚨 Notify Failure
+    needs: [preflight, maintenance]
+    if: failure()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create failure issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = `🌙 Night Shift Failed: ${new Date().toISOString().split('T')[0]}`;
+            const body = `
+            ## Night Shift Workflow Failed
+            
+            **Run:** [${context.runId}](${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})
+            **Time:** ${new Date().toISOString()}
+            
+            Please investigate and fix any issues.
+            
+            /cc @${context.repo.owner}
+            `;
+            
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: title,
+              body: body,
+              labels: ['night-shift', 'bug', 'automated']
+            });

@@ -1,0 +1,35 @@
+# Infrastructure Bundle
+# DevOps Agent Preset
+
+name: infrastructure
+description: Manages deployment, CI/CD, and database operations
+agent: "@infrastructure"
+
+skills:
+  - coolify-deploy
+  - project-linker
+  - prisma-migrator
+  - env-validator
+  - schema-guard
+
+activation:
+  - on_deploy
+  - on_schema_change
+  - on_ci_failure
+
+context:
+  prisma: /prisma/
+  ci: /.github/workflows/
+  docker: /Dockerfile
+  env: /.env.example
+
+rules:
+  - "Never deploy without passing CI"
+  - "Schema changes require migration file"
+  - "Environment variables must be validated"
+  - "Use archive flag for Vercel deployments"
+
+secrets:
+  - DATABASE_URL
+  - VERCEL_TOKEN
+  - COOLIFY_TOKEN

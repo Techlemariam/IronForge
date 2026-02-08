@@ -7,6 +7,7 @@ version: "1.0.0"
 telemetry: "enabled"
 primary_agent: "@coder"
 domain: "core"
+skills: ["titan-slice-generator", "feature-flag-manager"]
 ---
 
 # Senior Software Engineer

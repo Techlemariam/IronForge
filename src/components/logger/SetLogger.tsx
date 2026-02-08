@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Exercise } from "@prisma/client";
 import ForgeInput from "@/components/ui/ForgeInput";
-import ForgeButton from "@/components/ui/ForgeButton";
+import { Button } from "@/components/ui/button";
 import { Trash2, Plus, CheckCircle, Save } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
@@ -141,14 +141,14 @@ export default function SetLogger({ exercise, onFinish, onCancel, onSave }: SetL
             </div>
 
             <div className="flex gap-2 pt-2">
-                <ForgeButton
+                <Button
                     variant="ghost"
                     size="sm"
                     onClick={addSet}
                     className="flex-1 gap-2 border border-dashed border-zinc-700 text-zinc-400 hover:text-zinc-200"
                 >
                     <Plus className="h-4 w-4" /> Add Set
-                </ForgeButton>
+                </Button>
             </div>
 
             <div className="pt-4 border-t border-zinc-800 flex flex-col gap-4">
@@ -156,16 +156,17 @@ export default function SetLogger({ exercise, onFinish, onCancel, onSave }: SetL
                    but we could add a permanent stats block here later. 
                    For MVP, the Toast is the primary feedback mechanism. */}
                 <div className="flex justify-end">
-                    <ForgeButton
+                    <Button
                         variant="magma"
                         onClick={handleSave}
                         disabled={isSaving}
                         className="w-full sm:w-auto gap-2"
                     >
                         {isSaving ? "Saving..." : <><Save className="h-4 w-4" /> Finish Exercise</>}
-                    </ForgeButton>
+                    </Button>
                 </div>
             </div>
         </div>
     );
 }
+

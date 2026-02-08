@@ -1,12 +1,13 @@
 ---
 description: "Workflow for unit-tests"
 command: "/unit-tests"
-category: "execution"
+category: "verification"
 trigger: "manual"
 version: "1.0.0"
 telemetry: "enabled"
-primary_agent: "@coder"
+primary_agent: "@qa"
 domain: "qa"
+skills: ["api-mocker", "coverage-check"]
 ---
 
 # Workflow: /unit-tests

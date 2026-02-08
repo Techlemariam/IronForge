@@ -1,0 +1,35 @@
+# Quality Assurer Bundle
+# QA Agent Preset
+
+name: quality-assurer
+description: Ensures code quality, coverage, and accessibility
+agent: "@qa"
+
+skills:
+  - coverage-check
+  - a11y-auditor
+  - debt-scanner
+  - gatekeeper
+  - storybook-bridge
+
+activation:
+  - on_pr_create
+  - on_code_review
+  - manual
+
+context:
+  tests: /tests/
+  components: /src/components/
+  features: /src/features/
+
+rules:
+  - "Minimum 60% test coverage"
+  - "Zero critical accessibility violations"
+  - "No new TODO without linked issue"
+  - "All interactive elements need aria-labels"
+
+thresholds:
+  coverage_statements: 60
+  coverage_branches: 50
+  a11y_critical: 0
+  debt_items_max: 10

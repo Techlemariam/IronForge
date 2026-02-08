@@ -7,6 +7,7 @@ version: "1.0.0"
 telemetry: "enabled"
 primary_agent: "@qa"
 domain: "qa"
+skills: ["api-mocker", "qodana-linter", "coverage-check"]
 ---
 
 # QA Engineer

@@ -106,8 +106,8 @@ DO NOT create standard API Routes (`/pages/api` or `route.ts`) unless strictly n
 | Type | Tool | Scope | Command |
 | :--- | :--- | :--- | :--- |
 | **Unit** | Vitest | Utils, Services, Hooks, complex Logic. | `npm test` |
-| **Integration**| Vitest | Server Actions (mocked DB). | `npm test` |
-| **E2E** | Playwright| Critical User Flows (Login, Combat, Checkout). | `npm run test:e2e` |
+| **Integration** | Vitest | Server Actions (mocked DB). | `npm test` |
+| **E2E** | Playwright | Critical User Flows (Login, Combat, Checkout). | `npm run test:e2e` |
 
 ---
 
@@ -137,7 +137,40 @@ IronForge treats physical training as the primary game engine. Progression is de
 
 ---
 
-## 7. 🚀 Deployment & CI/CD
+## 8. 🌩️ Remote Trigger Infrastructure
+
+IronForge uses a hybrid cloud/local infrastructure for autonomous agent workflows and remote triggering.
+
+### 8.1 Architecture Overview
+
+```mermaid
+graph TD
+    A[Discord Bot] -->|Webhook| B[n8n]
+    C[Cron Jobs] -->|Webhook| B
+    B -->|API Request| D[GitHub Actions]
+    D -->|Deploy| E[Vercel]
+    B -->|VPN| F[Local Workspace]
+```
+
+### 8.2 Components
+
+| Component | Technology | Role |
+| :--- | :--- | :--- |
+| **Orchestration** | n8n | Webhook receiver and workflow router. |
+| **Secure Access** | Tailscale | VPN layer for accessing private VPS services. |
+| **Deployment** | Coolify | Self-hosted PaaS on Hetzner VPS for n8n and bots. |
+| **Trigger Interface** | Discord Bot | Interaction layer for triggering workflows (e.g., `/ironforge`). |
+| **Auth** | Shared Secret | `REMOTE_TRIGGER_SECRET` validates webhook payloads. |
+
+### 8.3 Standard Workflows
+
+* **Health Check**: Triggered remotely to verify system status.
+* **Night Shift**: Autonomous maintenance (dependency updates, linting).
+* **Deploy**: Manual override for production deployments.
+
+---
+
+## 9. 🚀 Deployment & CI/CD
 
 IronForge is deployed to **Vercel** with full automation via **GitHub Actions**.
 
@@ -148,12 +181,14 @@ IronForge is deployed to **Vercel** with full automation via **GitHub Actions**.
 
 ### 7.2 Custom Domains
 
-- **Production**: [ironforge.app](https://ironforge.app)
+* **Production**: [ironforge.app](https://ironforge.app)
+
 * **Staging/Preview**: Automatic Vercel Preview URLs for all PRs.
 
 ### 7.3 Essential Secrets (GitHub & Vercel)
 
 The following secrets must be synchronized between GitHub Actions and Vercel:
+
 * `DATABASE_URL`: Production PostgreSQL connection string.
 * `NEXT_PUBLIC_SUPABASE_URL` / `ANON_KEY`: Auth and Storage.
 * `SENTRY_DSN`: Error tracking (Production).

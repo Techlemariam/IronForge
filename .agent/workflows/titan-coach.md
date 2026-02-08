@@ -7,6 +7,7 @@ version: "1.0.0"
 telemetry: "enabled"
 primary_agent: "@titan-coach"
 domain: "bio"
+skills: ["loss-aversion-engine", "variable-reward-system", "bio-validator"]
 ---
 
 # Workflow: /titan-coach
@@ -43,6 +44,8 @@ Translate biometrics to game mechanics:
 
 - Ensure game rewards cannot be "exploited" without real physical effort.
 - Adjust game difficulty based on user's physical form (Fatigue/Form).
+- Use `loss-aversion-engine` to calculate streak decay based on recovery needs.
+- Use `variable-reward-system` to tune loot drops based on workout intensity.
 
 ## 4. Titan Report
 

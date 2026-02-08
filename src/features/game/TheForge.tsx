@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import ForgeCard from "@/components/ui/ForgeCard";
-import ForgeButton from "@/components/ui/ForgeButton";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { ITEMS, RECIPES } from "@/data/gameData";
 import { UserInventory, CraftingRecipe } from "@/types/game";
@@ -117,13 +117,13 @@ const TheForge: React.FC<TheForgeProps> = ({ onClose }) => {
             Refine materials. Forge destiny.
           </p>
         </div>
-        <ForgeButton variant="rune" onClick={onClose}>
+        <Button variant="rune" onClick={onClose}>
           Exit
-        </ForgeButton>
+        </Button>
       </div>
 
       {/* Inventory Bar */}
-      <ForgeCard className="mb-8 p-4 flex items-center gap-6 overflow-x-auto bg-black/40 border-forge-border">
+      <Card variant="glass" className="mb-8 p-4 flex items-center gap-6 overflow-x-auto bg-black/40 border-forge-border">
         <div className="flex items-center gap-2 text-gold font-mono border-r border-forge-border pr-6">
           <Coins className="w-5 h-5" />
           <span className="text-xl">{inventory.gold}</span>
@@ -150,7 +150,7 @@ const TheForge: React.FC<TheForgeProps> = ({ onClose }) => {
             </div>
           );
         })}
-      </ForgeCard>
+      </Card>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {RECIPES.map((recipe) => {
@@ -165,7 +165,7 @@ const TheForge: React.FC<TheForgeProps> = ({ onClose }) => {
             });
 
           return (
-            <ForgeCard
+            <Card variant="glass"
               key={recipe.id}
               className="relative group overflow-visible"
             >
@@ -218,7 +218,7 @@ const TheForge: React.FC<TheForgeProps> = ({ onClose }) => {
                 </div>
               </div>
 
-              <ForgeButton
+              <Button
                 variant={canCraft ? "magma" : "rune"}
                 className="w-full"
                 disabled={!canCraft || craftingId === recipe.id}
@@ -233,8 +233,8 @@ const TheForge: React.FC<TheForgeProps> = ({ onClose }) => {
                     <Hammer className="w-4 h-4 mr-2" /> Forge Item
                   </>
                 )}
-              </ForgeButton>
-            </ForgeCard>
+              </Button>
+            </Card>
           );
         })}
       </div>
@@ -243,3 +243,5 @@ const TheForge: React.FC<TheForgeProps> = ({ onClose }) => {
 };
 
 export default TheForge;
+
+

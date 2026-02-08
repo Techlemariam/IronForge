@@ -7,6 +7,7 @@ version: "2.2.0"
 telemetry: "enabled"
 primary_agent: "@infrastructure"
 domain: "ci"
+skills: ["error-analyzer", "gatekeeper", "dependabot-manager", "env-validator", "linter-fixer", "schema-guard", "qodana-linter", "performance-profiler", "zod-schema-validator", "api-mocker", "bio-validator", "prisma-migrator", "a11y-auditor"]
 ---
 
 # 🩺 CI Doctor (Protocol v2.0)
@@ -29,6 +30,9 @@ if [ ! -f ".agent/config.json" ]; then
 else
   echo "✅ Permissions: Configured"
 fi
+
+# Use env-validator skill to ensure secrets match schemas
+/env-validator
 ```
 
 ### 0.1 Dependency Check
@@ -69,6 +73,8 @@ echo "🔍 Gate 1: Type Safety"
 npm run check-types || exit 1
 
 echo "🔍 Gate 2: Linting"
+# Use linter-fixer skill for enhanced auto-fixes
+/linter-fixer
 npm run lint -- --fix || exit 1
 
 echo "🔍 Gate 3: Unit Tests"
@@ -99,6 +105,19 @@ if [ -f .agent/reports/ui/latest.json ] && grep -q '"status": "CRITICAL"' .agent
   exit 1
 fi
 echo "✅ UI Health: Verified"
+```
+
+### 0.6 Dependency Health Audit
+
+// turbo
+
+```bash
+echo "🔍 Checking dependency health..."
+# Run pnpm audit to find vulnerabilities
+pnpm audit --audit-level high || exit 1
+# Check for outdated critical packages
+# Note: Handled by dependabot-manager skill
+echo "✅ Dependencies: Healthy"
 ```
 
 ---
@@ -138,6 +157,14 @@ fi
 | `Qodana: Duplicated code`      | **DRY_VIOLATION** (See Phase 1.2)                 |
 | `Axe: violations`              | **A11Y_FAIL** (Run `/monitor-ui` & fix markup)    |
 | `Join-Path` / `\` paths       | **PLATFORM_COMPATIBILITY** (Use `/` separators)   |
+| `Prisma: Migration failed`    | **DB_MIGRATION_FAIL** (Use `/schema-guard`)       |
+| `Lighthouse: Performance`     | **PERF_DEGRADATION** (Use `/perf-profiler`)       |
+| `Qodana: Critical issues`     | **STATIC_ANALYSIS_FAIL** (Use `/qodana-linter`)   |
+| `Zod: Validation error`       | **SCHEMA_MISMATCH** (Use `/zod-schema-validator`) |
+| `Mock: Data outdated`         | **STALE_MOCK** (Use `/api-mocker`)                |
+| `Bio: Data sync fail`         | **BIO_SYNC_FAIL** (Use `/bio-validator`)          |
+| `Database: Schema out of sync` | **DB_OUT_OF_SYNC** (Use `/prisma-migrator`)       |
+| `A11y: Contrast/ARIA`         | **ACCESSIBILITY_FAIL** (Use `/a11y-auditor`)      |
 
 ### 1.2 The Qodana Ward (Static Analysis)
 
