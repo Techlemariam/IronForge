@@ -29,6 +29,7 @@
     "lhci": "lhci autorun",
     "docs:generate": "typedoc",
     "clean:logs": "npx tsx scripts/clean-logs.ts",
+    "infra:check": "npx tsx scripts/check-infra.ts",
     "prebuild": "npm run clean:logs",
     "prepare": "husky",
     "storybook": "storybook dev -p 6006",
