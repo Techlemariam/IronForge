@@ -1,0 +1,122 @@
+{
+    "name": "IronForge Health Monitor",
+    "nodes": [
+        {
+            "parameters": {
+                "rule": {
+                    "interval": [
+                        {
+                            "field": "minutes",
+                            "hours": 15
+                        }
+                    ]
+                }
+            },
+            "id": "schedule-trigger",
+            "name": "Every 15 mins",
+            "type": "n8n-nodes-base.scheduleTrigger",
+            "typeVersion": 1,
+            "position": [
+                200,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "url": "=https://ironforge-coolify.tailafb692.ts.net/api/health",
+                "options": {}
+            },
+            "id": "health-check-request",
+            "name": "Check Health API",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 3,
+            "position": [
+                400,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "conditions": {
+                    "number": [
+                        {
+                            "value1": "={{ $json.statusCode }}",
+                            "operation": "equals",
+                            "value2": 200
+                        }
+                    ]
+                }
+            },
+            "id": "is-healthy",
+            "name": "Is Healthy?",
+            "type": "n8n-nodes-base.if",
+            "typeVersion": 1,
+            "position": [
+                600,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "method": "POST",
+                "url": "https://discord.com/api/webhooks/1469991396373958688/4WDf2TawGhR_QQ0FY7xExCcTLZ3plj1O8wcVvG8pxvAHbr1jfQg4DqUiktyuAn1LIe05",
+                "sendBody": true,
+                "specifyBody": "json",
+                "jsonBody": "={\n  \"content\": \"🚨 **IronForge Health Alert!**\\nStatus Code: {{ $json.statusCode }}\\nTime: {{ $now }}\\n\\nWorkflow: [IronForge Remote Trigger](https://ironforge-coolify.tailafb692.ts.net/workflow/1)\"\n}",
+                "options": {}
+            },
+            "id": "alert-discord",
+            "name": "Alert Discord/Slack",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 3,
+            "position": [
+                800,
+                400
+            ]
+        }
+    ],
+    "connections": {
+        "Every 15 mins": {
+            "main": [
+                [
+                    {
+                        "node": "Check Health API",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Check Health API": {
+            "main": [
+                [
+                    {
+                        "node": "Is Healthy?",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Is Healthy?": {
+            "main": [
+                [],
+                [
+                    {
+                        "node": "Alert Discord/Slack",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    },
+    "settings": {
+        "executionOrder": "v1"
+    },
+    "staticData": null,
+    "tags": [
+        "ironforge",
+        "monitoring"
+    ]
+}
