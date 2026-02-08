@@ -54,6 +54,9 @@
     "**/*.stories.ts",
     "**/*.test.ts",
     "**/*.test.tsx",
-    "storybook-static"
+    "storybook-static",
+    "vitest.config.ts",
+    "vitest.integration.config.ts",
+    "playwright.config.ts"
   ]
 }
