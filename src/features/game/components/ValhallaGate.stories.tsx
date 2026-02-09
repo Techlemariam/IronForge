@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { ValhallaGate } from './ValhallaGate';
+import ValhallaGate from './ValhallaGate';
 
 const meta: Meta<typeof ValhallaGate> = {
   title: 'Components/ValhallaGate',

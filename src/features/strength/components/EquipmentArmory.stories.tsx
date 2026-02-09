@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { EquipmentArmory } from './EquipmentArmory';
+import EquipmentArmory from './EquipmentArmory';
 
 const meta: Meta<typeof EquipmentArmory> = {
   title: 'Components/EquipmentArmory',

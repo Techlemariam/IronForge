@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { ShimmerBadge } from './ShimmerBadge';
+import ShimmerBadge from './ShimmerBadge';
 
 const meta: Meta<typeof ShimmerBadge> = {
   title: 'Components/ShimmerBadge',

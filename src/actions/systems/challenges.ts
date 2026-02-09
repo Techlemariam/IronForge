@@ -12,7 +12,7 @@ import { addBattlePassXpAction } from "@/actions/systems/battle-pass";
 import { createClient } from "@/utils/supabase/server";
 // import { cookies } from "next/headers";
 import prisma from "@/lib/prisma";
-import { ChallengeType } from "@prisma/client";
+import { ChallengeType  } from "@/types/prisma";
 import { revalidatePath } from "next/cache";
 
 export interface ChallengeCriteria {

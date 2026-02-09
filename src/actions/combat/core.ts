@@ -18,7 +18,7 @@ import {
 import { modifyTitanHealthAction, awardTitanXpAction } from "@/actions/titan/core";
 import { BioBuff } from "@/features/bio/BioBuffService";
 
-import { Monster as PrismaMonster } from "@prisma/client";
+import { Monster as PrismaMonster  } from "@/types/prisma";
 
 /**
  * Starts a boss fight or resumes an existing one if valid.

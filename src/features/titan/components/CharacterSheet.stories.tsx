@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { CharacterSheet } from './CharacterSheet';
+import CharacterSheet from './CharacterSheet';
 
 const meta: Meta<typeof CharacterSheet> = {
   title: 'Components/CharacterSheet',

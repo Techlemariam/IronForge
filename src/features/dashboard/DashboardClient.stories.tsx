@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { DashboardClient } from './DashboardClient';
+import DashboardClient from './DashboardClient';
 
 const meta: Meta<typeof DashboardClient> = {
   title: 'Components/DashboardClient',

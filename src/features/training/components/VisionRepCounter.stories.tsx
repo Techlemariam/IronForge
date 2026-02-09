@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { VisionRepCounter } from './VisionRepCounter';
+import VisionRepCounter from './VisionRepCounter';
 
 const meta: Meta<typeof VisionRepCounter> = {
   title: 'Components/VisionRepCounter',

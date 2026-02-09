@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { ForgeInput } from './ForgeInput';
+import ForgeInput from './ForgeInput';
 
 const meta: Meta<typeof ForgeInput> = {
   title: 'Components/ForgeInput',

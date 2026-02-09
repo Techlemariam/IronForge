@@ -14,7 +14,7 @@ import {
   OracleRecommendation,
 } from "@/types";
 import { TrainingPath, WeeklyMastery, WorkoutDefinition } from "@/types/training"; // Added WorkoutDefinition
-import { CardioLog, ExerciseLog, Exercise, Titan, DuelChallenge } from "@prisma/client";
+import { CardioLog, ExerciseLog, Exercise, Titan, DuelChallenge  } from "@/types/prisma";
 import { HevyWorkout } from "@/types/hevy";
 import { WORKOUT_LIBRARY } from "@/data/workouts";
 import { GoalPriorityEngine } from "@/services/GoalPriorityEngine";

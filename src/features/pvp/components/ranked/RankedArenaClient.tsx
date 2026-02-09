@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { PvpSeason } from "@prisma/client";
+import { PvpSeason  } from "@/types/prisma";
 import { PlayerRating } from "@/actions/pvp/ranked";
 import { RankBadge } from "@/components/game/pvp/RankBadge";
 import { MatchmakingModal } from "./MatchmakingModal";

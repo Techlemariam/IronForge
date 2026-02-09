@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { SetRow } from './SetRow';
+import SetRow from './SetRow';
 
 const meta: Meta<typeof SetRow> = {
   title: 'Components/SetRow',

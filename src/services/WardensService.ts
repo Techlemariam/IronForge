@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/prisma';
 import { WardensManifest, GoalPriority, MacroPhase } from '@/types/goals';
-import { Prisma } from '@prisma/client';
+import { Prisma  } from "@/types/prisma";
 
 export class WardensService {
     /**

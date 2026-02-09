@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { DungeonBuilder } from './DungeonBuilder';
+import DungeonBuilder from './DungeonBuilder';
 
 const meta: Meta<typeof DungeonBuilder> = {
   title: 'Components/DungeonBuilder',

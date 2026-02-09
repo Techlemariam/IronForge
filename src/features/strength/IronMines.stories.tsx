@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { IronMines } from './IronMines';
+import IronMines from './IronMines';
 
 const meta: Meta<typeof IronMines> = {
   title: 'Components/IronMines',

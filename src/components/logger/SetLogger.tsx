@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Exercise } from "@prisma/client";
+import { Exercise  } from "@/types/prisma";
 import ForgeInput from "@/components/ui/ForgeInput";
 import { Button } from "@/components/ui/button";
 import { Trash2, Plus, CheckCircle, Save } from "lucide-react";

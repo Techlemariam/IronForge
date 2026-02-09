@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { PRCelebration } from './PRCelebration';
+import PRCelebration from './PRCelebration';
 
 const meta: Meta<typeof PRCelebration> = {
   title: 'Components/PRCelebration',

@@ -159,12 +159,12 @@ export const PlannerService = {
     };
 
     // 7. Save to DB
-    // Use Prisma.InputJsonValue from @prisma/client
+    // Use Prisma.InputJsonValue from @/types/prisma
     await prisma.weeklyPlan.create({
       data: {
         userId: user.id,
         weekStart: new Date(plan.weekStart),
-        plan: plan.days as unknown as import("@prisma/client").Prisma.InputJsonValue,
+        plan: plan.days as unknown as import("@/types/prisma").Prisma.InputJsonValue,
       },
     });
 

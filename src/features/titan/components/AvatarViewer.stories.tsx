@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { AvatarViewer } from './AvatarViewer';
+import AvatarViewer from './AvatarViewer';
 
 const meta: Meta<typeof AvatarViewer> = {
   title: 'Components/AvatarViewer',

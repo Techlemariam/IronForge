@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { QuestLog } from './QuestLog';
+import QuestLog from './QuestLog';
 
 const meta: Meta<typeof QuestLog> = {
   title: 'Components/QuestLog',

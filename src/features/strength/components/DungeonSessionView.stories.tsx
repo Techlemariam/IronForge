@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { DungeonSessionView } from './DungeonSessionView';
+import DungeonSessionView from './DungeonSessionView';
 
 const meta: Meta<typeof DungeonSessionView> = {
   title: 'Components/DungeonSessionView',

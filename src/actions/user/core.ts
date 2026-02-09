@@ -3,7 +3,7 @@
 import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 import prisma from "@/lib/prisma";
-import { Faction } from "@prisma/client";
+import { Faction  } from "@/types/prisma";
 
 export async function updateFactionAction(
   faction: Faction,

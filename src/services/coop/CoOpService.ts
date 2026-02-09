@@ -1,5 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
-import { type ActiveSession, type SessionParticipant } from "@prisma/client";
+import { type ActiveSession, type SessionParticipant  } from "@/types/prisma";
 
 // Initialize client safely (handle missing env vars in CI/Test)
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder.supabase.co";

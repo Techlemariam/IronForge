@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { HeartRateMonitor } from './HeartRateMonitor';
+import HeartRateMonitor from './HeartRateMonitor';
 
 const meta: Meta<typeof HeartRateMonitor> = {
   title: 'Components/HeartRateMonitor',

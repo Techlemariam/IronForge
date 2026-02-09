@@ -33,7 +33,7 @@ import {
 } from "@/actions/integrations/strava";
 import { updateFactionAction } from "@/actions/user/core";
 import { toggleDemoModeAction, getDemoModeStatus } from "@/actions/user/demo";
-import { Faction } from "@prisma/client";
+import { Faction  } from "@/types/prisma";
 
 interface IntegrationsPanelProps {
   userId: string;

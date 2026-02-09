@@ -12,7 +12,7 @@ import { SeasonInfo } from "@/actions/pvp/leagues";
 import { LeagueInfo } from "@/lib/game/tier-data";
 import { motion } from "framer-motion";
 
-import { DuelChallenge, User } from '@prisma/client';
+import { DuelChallenge, User  } from "@/types/prisma";
 
 // Extended type matches what we return from getDuelStatusAction
 export type ExtendedDuel = DuelChallenge & {

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { ExerciseView } from './ExerciseView';
+import ExerciseView from './ExerciseView';
 
 const meta: Meta<typeof ExerciseView> = {
   title: 'Components/ExerciseView',

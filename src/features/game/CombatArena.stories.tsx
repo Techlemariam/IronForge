@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { CombatArena } from './CombatArena';
+import CombatArena from './CombatArena';
 
 const meta: Meta<typeof CombatArena> = {
   title: 'Components/CombatArena',

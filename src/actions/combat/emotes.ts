@@ -2,7 +2,7 @@
 
 import { prisma } from '@/lib/prisma';
 import { getSession } from '@/lib/auth';
-import { SubscriptionTier } from '@prisma/client';
+import { SubscriptionTier  } from "@/types/prisma";
 
 // ============================================
 // Types

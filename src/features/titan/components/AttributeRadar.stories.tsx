@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { AttributeRadar } from './AttributeRadar';
+import AttributeRadar from './AttributeRadar';
 
 const meta: Meta<typeof AttributeRadar> = {
   title: 'Components/AttributeRadar',

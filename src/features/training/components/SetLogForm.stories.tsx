@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { SetLogForm } from './SetLogForm';
+import SetLogForm from './SetLogForm';
 
 const meta: Meta<typeof SetLogForm> = {
   title: 'Components/SetLogForm',
