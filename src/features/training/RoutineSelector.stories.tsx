@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { RoutineSelector } from './RoutineSelector';
+import RoutineSelector from './RoutineSelector';
 
 const meta: Meta<typeof RoutineSelector> = {
   title: 'Components/RoutineSelector',

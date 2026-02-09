@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { BluetoothDebug } from './BluetoothDebug';
+import BluetoothDebug from './BluetoothDebug';
 
 const meta: Meta<typeof BluetoothDebug> = {
   title: 'Components/BluetoothDebug',

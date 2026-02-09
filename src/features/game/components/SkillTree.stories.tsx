@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { SkillTree } from './SkillTree';
+import SkillTree from './SkillTree';
 
 const meta: Meta<typeof SkillTree> = {
   title: 'Components/SkillTree',

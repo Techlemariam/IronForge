@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { QuestBadge } from './QuestBadge';
+import QuestBadge from './QuestBadge';
 
 const meta: Meta<typeof QuestBadge> = {
   title: 'Components/QuestBadge',

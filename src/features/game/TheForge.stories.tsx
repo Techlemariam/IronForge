@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { TheForge } from './TheForge';
+import TheForge from './TheForge';
 
 const meta: Meta<typeof TheForge> = {
   title: 'Components/TheForge',

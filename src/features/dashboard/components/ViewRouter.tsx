@@ -6,7 +6,7 @@ import { ArrowLeft } from "lucide-react";
 import { toast } from "@/components/ui/GameToast";
 import { DashboardState, DashboardAction } from "../types";
 import { TitanState } from "@/actions/titan/core";
-import { User } from "@prisma/client";
+import { User  } from "@/types/prisma";
 import { mapQuestToSession } from "@/utils/typeMappers";
 import { mapDefinitionToSession } from "@/utils/workoutMapper";
 

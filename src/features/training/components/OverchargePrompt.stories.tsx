@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { OverchargePrompt } from './OverchargePrompt';
+import OverchargePrompt from './OverchargePrompt';
 
 const meta: Meta<typeof OverchargePrompt> = {
   title: 'Components/OverchargePrompt',

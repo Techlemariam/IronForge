@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { toggleEquipAction } from "@/actions/economy/inventory";
-import { EquipmentType } from "@prisma/client";
+import { EquipmentType  } from "@/types/prisma";
 
 interface InventoryItem {
     item: {

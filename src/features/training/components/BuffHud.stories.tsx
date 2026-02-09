@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { BuffHud } from './BuffHud';
+import BuffHud from './BuffHud';
 
 const meta: Meta<typeof BuffHud> = {
   title: 'Components/BuffHud',

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { GeminiLiveCoach } from './GeminiLiveCoach';
+import GeminiLiveCoach from './GeminiLiveCoach';
 
 const meta: Meta<typeof GeminiLiveCoach> = {
   title: 'Components/GeminiLiveCoach',

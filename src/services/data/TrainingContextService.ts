@@ -4,7 +4,7 @@ import { TrainingPath, SystemMetrics, MacroCycle, NutritionMode } from "@/types/
 import { EXERCISE_DB } from "@/data/exerciseDb";
 import { PATH_VOLUME_MODIFIERS } from "@/data/builds";
 import { AutoSpecEngine } from "@/services/game/AutoSpecEngine";
-import { Prisma } from "@prisma/client";
+import { Prisma  } from "@/types/prisma";
 
 // --- Types ---
 export interface VolumeStatus {

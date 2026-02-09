@@ -14,7 +14,7 @@ function getAbsolutePath(value: string) {
 const config: StorybookConfig = {
   "stories": [
     "../src/**/*.mdx",
-    "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"
+    "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
   ],
   "addons": [
     getAbsolutePath('@chromatic-com/storybook'),
@@ -29,6 +29,23 @@ const config: StorybookConfig = {
   ],
   "typescript": {
     "reactDocgen": false
+  },
+  async viteFinal(config) {
+    const path = await import('path');
+    const { fileURLToPath } = await import('url');
+    const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+    // Mock Prisma types for browser compatibility
+    // Alias @/types/prisma to our mock instead of letting it import from @prisma/client
+    config.resolve = config.resolve || {};
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@/types/prisma': path.resolve(__dirname, 'prisma-mock.ts'),
+      '@prisma/client': path.resolve(__dirname, 'prisma-mock.ts'),
+      '.prisma/client': path.resolve(__dirname, 'prisma-mock.ts'),
+      '.prisma/client/index-browser': path.resolve(__dirname, 'prisma-mock.ts'),
+    };
+    return config;
   }
 };
 export default config;

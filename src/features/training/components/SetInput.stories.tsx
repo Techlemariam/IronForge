@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { SetInput } from './SetInput';
+import SetInput from './SetInput';
 
 const meta: Meta<typeof SetInput> = {
   title: 'Components/SetInput',

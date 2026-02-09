@@ -12,7 +12,7 @@
  */
 
 import prisma from "@/lib/prisma";
-import { Archetype } from "@prisma/client";
+import { Archetype  } from "@/types/prisma";
 import {
     PlayerContext,
     PlayerModifiers,

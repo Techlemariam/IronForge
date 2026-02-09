@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { searchExercisesAction, createExerciseAction } from "@/actions/user/logger";
-import { Exercise } from "@prisma/client";
+import { Exercise  } from "@/types/prisma";
 import { Search, Plus, Dumbbell, Lock } from "lucide-react";
 import ForgeInput from "@/components/ui/ForgeInput";
 import { Button } from "@/components/ui/button";

@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { GameToast } from './GameToast';
+import { GameToaster } from './GameToast';
 
-const meta: Meta<typeof GameToast> = {
+const meta: Meta<typeof GameToaster> = {
   title: 'Components/GameToast',
-  component: GameToast,
+  component: GameToaster,
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
@@ -14,7 +14,7 @@ const meta: Meta<typeof GameToast> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof GameToast>;
+type Story = StoryObj<typeof GameToaster>;
 
 export const Default: Story = {
   args: {

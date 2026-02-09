@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { BerserkerChoice } from './BerserkerChoice';
+import BerserkerChoice from './BerserkerChoice';
 
 const meta: Meta<typeof BerserkerChoice> = {
   title: 'Components/BerserkerChoice',

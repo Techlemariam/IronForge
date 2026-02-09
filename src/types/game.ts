@@ -45,7 +45,7 @@ export interface UserInventory {
 // Player Context System (Unified Modifier Hub)
 // ============================================================================
 
-import { Archetype } from "@prisma/client";
+import { Archetype  } from "@/types/prisma";
 
 // Player Identity
 export interface PlayerIdentity {

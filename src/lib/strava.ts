@@ -1,4 +1,4 @@
-import { CardioLog } from "@prisma/client";
+import { CardioLog  } from "@/types/prisma";
 
 export interface StravaTokenResponse {
   token_type: string;

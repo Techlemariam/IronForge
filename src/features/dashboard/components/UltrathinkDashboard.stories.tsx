@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { UltrathinkDashboard } from './UltrathinkDashboard';
+import UltrathinkDashboard from './UltrathinkDashboard';
 
 const meta: Meta<typeof UltrathinkDashboard> = {
   title: 'Components/UltrathinkDashboard',

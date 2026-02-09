@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { PreWorkoutCheck } from './PreWorkoutCheck';
+import PreWorkoutCheck from './PreWorkoutCheck';
 
 const meta: Meta<typeof PreWorkoutCheck> = {
   title: 'Components/PreWorkoutCheck',

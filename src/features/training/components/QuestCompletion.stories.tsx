@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { QuestCompletion } from './QuestCompletion';
+import QuestCompletion from './QuestCompletion';
 
 const meta: Meta<typeof QuestCompletion> = {
   title: 'Components/QuestCompletion',

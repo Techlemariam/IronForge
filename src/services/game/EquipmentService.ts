@@ -1,5 +1,5 @@
 import prisma from "@/lib/prisma";
-import { EquipmentType as PrismaEquipmentType } from "@prisma/client";
+import { EquipmentType as PrismaEquipmentType  } from "@/types/prisma";
 import { canPerformExercise, EquipmentType as CodeEqType } from "@/data/equipmentDb";
 
 // Map Prisma Enum to Code Enum (should be 1:1, but good to separate)

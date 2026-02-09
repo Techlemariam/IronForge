@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { TransitionView } from './TransitionView';
+import TransitionView from './TransitionView';
 
 const meta: Meta<typeof TransitionView> = {
   title: 'Components/TransitionView',

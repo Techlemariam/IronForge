@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { PlateVisualizer } from './PlateVisualizer';
+import PlateVisualizer from './PlateVisualizer';
 
 const meta: Meta<typeof PlateVisualizer> = {
   title: 'Components/PlateVisualizer',

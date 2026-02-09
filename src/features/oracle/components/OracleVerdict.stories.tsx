@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { OracleVerdict } from './OracleVerdict';
+import OracleVerdict from './OracleVerdict';
 
 const meta: Meta<typeof OracleVerdict> = {
   title: 'Components/OracleVerdict',

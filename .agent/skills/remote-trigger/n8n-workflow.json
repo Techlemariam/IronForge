@@ -1,10 +1,11 @@
 {
-    "name": "IronForge Remote Trigger",
+    "name": "IronForge Remote Trigger V2",
+    "active": true,
     "nodes": [
         {
             "parameters": {
                 "httpMethod": "POST",
-                "path": "ironforge-trigger",
+                "path": "ironforge-trigger-fixed",
                 "options": {}
             },
             "id": "webhook-node",
@@ -39,7 +40,7 @@
         },
         {
             "parameters": {
-                "url": "=https://api.github.com/repos/{{ $env.GITHUB_OWNER }}/{{ $env.GITHUB_REPO }}/dispatches",
+                "url": "=https://api.github.com/repos/Techlemariam/IronForge/dispatches",
                 "authentication": "genericCredentialType",
                 "genericAuthType": "httpHeaderAuth",
                 "sendHeaders": true,

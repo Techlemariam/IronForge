@@ -2,7 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/auth";
-import { Prisma } from "@prisma/client";
+import { Prisma  } from "@/types/prisma";
 // import { revalidatePath } from "next/cache";
 // import { getPvpRank } from "@/lib/pvpRanks";
 

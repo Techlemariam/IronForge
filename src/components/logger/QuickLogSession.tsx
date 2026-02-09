@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Exercise } from "@prisma/client";
+import { Exercise  } from "@/types/prisma";
 import ExerciseSelector from "./ExerciseSelector";
 import SetLogger from "./SetLogger";
 import { Dumbbell } from "lucide-react";

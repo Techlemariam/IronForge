@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { ActionView } from './ActionView';
+import ActionView from './ActionView';
 
 const meta: Meta<typeof ActionView> = {
   title: 'Components/ActionView',
