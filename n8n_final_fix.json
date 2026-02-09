@@ -1,14 +1,12 @@
 {
     "name": "IronForge Remote Trigger V2",
-    "active": true,
     "nodes": [
         {
             "parameters": {
                 "httpMethod": "POST",
-                "path": "ironforge-trigger-fixed",
+                "path": "ironforge-trigger",
                 "options": {}
             },
-            "id": "webhook-node",
             "name": "Webhook",
             "type": "n8n-nodes-base.webhook",
             "typeVersion": 1,
@@ -24,12 +22,11 @@
                         {
                             "value1": "={{ $json.token }}",
                             "operation": "equals",
-                            "value2": "={{ $env.REMOTE_TRIGGER_SECRET }}"
+                            "value2": "={{ $env.REMOTE_TRIGGER_SECRET || 'IF_SECURE_TRIGGER_REDACTED' }}"
                         }
                     ]
                 }
             },
-            "id": "validate-token",
             "name": "Validate Token",
             "type": "n8n-nodes-base.if",
             "typeVersion": 1,
@@ -40,54 +37,40 @@
         },
         {
             "parameters": {
-                "url": "=https://api.github.com/repos/Techlemariam/IronForge/dispatches",
-                "authentication": "genericCredentialType",
-                "genericAuthType": "httpHeaderAuth",
+                "method": "POST",
+                "url": "https://api.github.com/repos/Techlemariam/IronForge/dispatches",
                 "sendHeaders": true,
                 "headerParameters": {
                     "parameters": [
                         {
                             "name": "Accept",
                             "value": "application/vnd.github.v3+json"
+                        },
+                        {
+                            "name": "Authorization",
+                            "value": "token REDACTED_TOKEN"
                         }
                     ]
                 },
                 "sendBody": true,
-                "bodyParameters": {
-                    "parameters": [
-                        {
-                            "name": "event_type",
-                            "value": "remote-trigger"
-                        },
-                        {
-                            "name": "client_payload",
-                            "value": "={{ JSON.stringify({ workflow: $json.workflow || '/health-check', branch: $json.branch || 'main', token: $env.REMOTE_TRIGGER_SECRET }) }}"
-                        }
-                    ]
-                },
+                "specifyBody": "json",
+                "jsonBody": "={{ JSON.stringify({ event_type: 'remote-trigger', client_payload: { workflow: $json.workflow || '/health-check', branch: $json.branch || 'main', token: $json.token } }) }}",
                 "options": {}
             },
-            "id": "github-dispatch",
             "name": "Trigger GitHub Action",
             "type": "n8n-nodes-base.httpRequest",
             "typeVersion": 3,
             "position": [
                 650,
                 200
-            ],
-            "credentials": {
-                "httpHeaderAuth": {
-                    "id": "github-pat",
-                    "name": "GitHub PAT"
-                }
-            }
+            ]
         },
         {
             "parameters": {
                 "respondWith": "json",
-                "responseBody": "={{ { success: false, error: 'Invalid token' } }}"
+                "responseBody": "={{ { success: false, error: 'Invalid token' } }}",
+                "options": {}
             },
-            "id": "reject-response",
             "name": "Reject",
             "type": "n8n-nodes-base.respondToWebhook",
             "typeVersion": 1,
@@ -99,9 +82,9 @@
         {
             "parameters": {
                 "respondWith": "json",
-                "responseBody": "={{ { success: true, workflow: $json.workflow, message: 'Workflow triggered successfully' } }}"
+                "responseBody": "={{ { success: true, workflow: $json.workflow, message: 'Workflow triggered successfully' } }}",
+                "options": {}
             },
-            "id": "success-response",
             "name": "Success Response",
             "type": "n8n-nodes-base.respondToWebhook",
             "typeVersion": 1,
@@ -155,10 +138,5 @@
     },
     "settings": {
         "executionOrder": "v1"
-    },
-    "staticData": null,
-    "tags": [
-        "ironforge",
-        "automation"
-    ]
+    }
 }

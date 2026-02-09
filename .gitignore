@@ -145,3 +145,6 @@ playwright/.auth/
 storybook-static/
 .env.local
 .env.*.local
+
+# Sentry Config File
+.env.sentry-build-plugin

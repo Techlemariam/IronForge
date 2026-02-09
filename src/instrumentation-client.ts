@@ -1,32 +1,31 @@
 import * as Sentry from "@sentry/nextjs";
 
 Sentry.init({
-    dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
+  dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
 
-    // Adjust sample rate in production
-    tracesSampleRate: process.env.NODE_ENV === "production" ? 0.1 : 1.0,
+  integrations: [
+    Sentry.replayIntegration(),
+    Sentry.captureConsoleIntegration({ levels: ["error"] }),
+  ],
 
-    // Capture unhandled promise rejections
-    integrations: [
-        Sentry.captureConsoleIntegration({ levels: ["error"] }),
-    ],
+  tracesSampleRate: process.env.NODE_ENV === "production" ? 0.1 : 1.0,
+  enableLogs: true,
 
-    // Filter out common noise
-    ignoreErrors: [
-        // Browser extensions
-        /^chrome-extension:\/\//,
-        // Network errors that are expected
-        /^Network Error$/,
-        /^Failed to fetch$/,
-        // User navigation
-        /^ResizeObserver loop/,
-    ],
+  replaysSessionSampleRate: 0.1,
+  replaysOnErrorSampleRate: 1.0,
 
-    // Environment tagging
-    environment: process.env.NODE_ENV,
+  sendDefaultPii: true,
 
-    // Only enable in production or if explicitly enabled
-    enabled: process.env.NODE_ENV === "production" || !!process.env.NEXT_PUBLIC_SENTRY_DSN,
+  ignoreErrors: [
+      /^chrome-extension:\/\//,
+      /^Network Error$/,
+      /^Failed to fetch$/,
+      /^ResizeObserver loop/,
+  ],
+
+  environment: process.env.NODE_ENV,
+
+  enabled: process.env.NODE_ENV === "production" || !!process.env.NEXT_PUBLIC_SENTRY_DSN,
 });
 
 export const onRouterTransitionStart = Sentry.captureRouterTransitionStart;

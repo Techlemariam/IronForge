@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "supabase": {
+      "httpUrl": "https://mcp.supabase.com/mcp?project_ref=cyrqtdojvmkmorsxuvkg"
+    },
+    "n8n-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "supergateway",
+        "--streamableHttp",
+        "https://ironforge-coolify.tailafb692.ts.net/mcp-server/http",
+        "--header",
+        "authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5MThkZjhkZC0yOGJlLTQ1NWMtYWY5NS1mNTQxZTM2NGIxYjQiLCJpc3MiOiJuOG4iLCJhdWQiOiJtY3Atc2VydmVyLWFwaSIsImp0aSI6IjJiYTJhYWJmLTY0NTUtNGFjNC04NDJkLWNkYWU4Yjc3NjVlYiIsImlhdCI6MTc3MDU3NjAzN30.PkcWybiupI1lqxtQTypO_qJDkF5EIIq7Yby8clSUjcU"
+      ]
+    }
+  }
+}
