@@ -1,0 +1,39 @@
+{
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "extends": [
+        "config:recommended",
+        ":separateMajorReleases",
+        ":combinePatchMinorReleases",
+        ":ignoreUnstable",
+        ":prImmediately",
+        ":renovatePrefix",
+        ":semanticCommits"
+    ],
+    "packageRules": [
+        {
+            "matchPackagePatterns": [
+                "^@radix-ui/"
+            ],
+            "groupName": "radix-ui"
+        },
+        {
+            "matchPackagePatterns": [
+                "^next$"
+            ],
+            "groupName": "next.js"
+        },
+        {
+            "matchPackagePatterns": [
+                "^prisma",
+                "^@prisma/"
+            ],
+            "groupName": "prisma"
+        }
+    ],
+    "timezone": "Europe/Stockholm",
+    "schedule": [
+        "at any time"
+    ],
+    "automerge": false,
+    "dependencyDashboard": true
+}

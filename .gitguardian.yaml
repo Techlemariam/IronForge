@@ -1,0 +1,14 @@
+# GitGuardian configuration
+# Documentation: https://docs.gitguardian.com/ggshield-docs/reference/configuration
+
+version: 2
+instance: https://dashboard.gitguardian.com
+
+secret:
+  # Paths to ignore for secrets scanning
+  ignored-paths:
+    - "**/node_modules/**"
+    - "**/tests/**"
+    - "**/*.test.ts"
+    - "**/*.spec.ts"
+    - ".env.example"
