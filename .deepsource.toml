@@ -13,7 +13,23 @@ enabled = true
 name = "test-coverage"
 enabled = true
 
-[exclude_patterns]
-- "node_modules/**"
-- ".next/**"
-- "tests/**"
+version = 1
+
+exclude_patterns = [
+  "node_modules/**",
+  ".next/**",
+  "tests/**"
+]
+
+[[analyzers]]
+name = "javascript"
+enabled = true
+
+  [analyzers.meta]
+  environment = ["browser", "node"]
+  module_system = "esm"
+  ts_config_path = "tsconfig.json"
+
+[[analyzers]]
+name = "test-coverage"
+enabled = true

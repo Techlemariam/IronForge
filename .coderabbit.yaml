@@ -4,12 +4,11 @@
 language: "sv-SE"
 
 reviews:
-  profile: "comprehensive"
-  request_review_command: "/review"
+  profile: "chill"
   high_level_summary: true
   auto_review:
     enabled: true
     ignore_title_keywords: ["WIP", "v0.0."]
 
 chat:
-  enabled: true
+  auto_reply: true
