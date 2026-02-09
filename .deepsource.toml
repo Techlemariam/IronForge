@@ -13,7 +13,8 @@ enabled = true
 name = "test-coverage"
 enabled = true
 
-[exclude_patterns]
-- "node_modules/**"
-- ".next/**"
-- "tests/**"
+exclude_patterns = [
+  "node_modules/**",
+  ".next/**",
+  "tests/**"
+]
