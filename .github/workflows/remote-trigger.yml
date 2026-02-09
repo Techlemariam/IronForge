@@ -139,6 +139,7 @@ jobs:
         env:
           WORKFLOW: ${{ needs.validate.outputs.workflow }}
           DRY_RUN: ${{ needs.validate.outputs.dry_run }}
+        shell: bash
         run: |
           echo "Executing workflow: $WORKFLOW"
           
