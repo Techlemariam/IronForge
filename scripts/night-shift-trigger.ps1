@@ -17,6 +17,10 @@ $ErrorActionPreference = "Stop"
 
 # --- Config ---
 $WORKSPACE = "c:\Users\alexa\Workspaces\IronForge"
+
+# Quota Strategy: Gemini CLI shares Google One Premium quota with Antigravity.
+# Autonomous jobs run BEFORE 09:00 CET reset → uses "yesterday's" leftover tokens.
+# After 09:00, fresh quota is available for interactive Antigravity work.
 $LOG_DIR = Join-Path $WORKSPACE ".agent\logs"
 $TIMESTAMP = Get-Date -Format "yyyyMMdd-HHmmss"
 $LOG_FILE = Join-Path $LOG_DIR "night-shift-gemini-$TIMESTAMP.log"

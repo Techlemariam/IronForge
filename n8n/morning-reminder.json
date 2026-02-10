@@ -1,0 +1,58 @@
+{
+    "name": "IronForge Morning Reminder",
+    "nodes": [
+        {
+            "parameters": {
+                "rule": {
+                    "interval": [
+                        {
+                            "triggerAtHour": 8,
+                            "triggerAtMinute": 5
+                        }
+                    ]
+                }
+            },
+            "name": "Daily Trigger",
+            "type": "n8n-nodes-base.scheduleTrigger",
+            "typeVersion": 1.2,
+            "position": [
+                400,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "method": "POST",
+                "url": "={{$env.DISCORD_WEBHOOK_URL}}",
+                "sendBody": true,
+                "specifyBody": "json",
+                "jsonBody": "{ \"content\": \"☀️ **IronForge Morning Briefing** — Quota just reset!\\n\\n1. `/startup` — Context + health check\\n2. `/triage` — Process nya issues\\n3. Check logs: `.agent/logs/`\" }",
+                "options": {}
+            },
+            "name": "Discord Webhook",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.2,
+            "position": [
+                620,
+                300
+            ]
+        }
+    ],
+    "connections": {
+        "Daily Trigger": {
+            "main": [
+                [
+                    {
+                        "node": "Discord Webhook",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    },
+    "settings": {
+        "saveManualExecutions": false,
+        "callerPolicy": "workflowsFromSameOwner"
+    }
+}
