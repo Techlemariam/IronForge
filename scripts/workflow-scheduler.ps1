@@ -26,15 +26,18 @@ $WORKSPACE = "c:\Users\alexa\Workspaces\IronForge"
 # All heavy autonomous work runs BEFORE 09:00 CET quota reset.
 # Model selection: Pro for complex coding, Flash for light/fast tasks.
 $schedules = @(
-    # PRE-RESET (03:00-08:00) - Uses yesterday's leftover Premium quota
-    @{ Name = "IronForge Night Shift"; Time = "03:00"; Workflow = "night-shift"; Freq = "DAILY"; Model = "gemini-2.5-pro" }
-    @{ Name = "IronForge Security Audit"; Time = "04:00"; Workflow = "security"; Freq = "WEEKLY"; Model = "gemini-2.5-pro" }
-    @{ Name = "IronForge Git Hygiene"; Time = "05:00"; Workflow = "git-hygiene"; Freq = "DAILY"; Model = "gemini-2.5-flash" }
-    @{ Name = "IronForge Polish"; Time = "06:00"; Workflow = "polish"; Freq = "DAILY"; Model = "gemini-2.5-flash" }
-    @{ Name = "IronForge Cleanup"; Time = "07:00"; Workflow = "cleanup"; Freq = "DAILY"; Model = "gemini-2.5-flash" }
-    @{ Name = "IronForge Debt Attack"; Time = "08:00"; Workflow = "debt-attack"; Freq = "DAILY"; Model = "gemini-2.5-pro" }
+    # PRE-RESET: Flash first (cheap), Pro last (heavy) → maximizes leftover quota before 09:00 CET reset
+    # 03:00-05:00 — Light Flash tasks (low token cost)
+    @{ Name = "IronForge Git Hygiene"; Time = "03:00"; Workflow = "git-hygiene"; Freq = "DAILY"; Model = "gemini-2.5-flash" }
+    @{ Name = "IronForge Polish"; Time = "04:00"; Workflow = "polish"; Freq = "DAILY"; Model = "gemini-2.5-flash" }
+    @{ Name = "IronForge Cleanup"; Time = "05:00"; Workflow = "cleanup"; Freq = "DAILY"; Model = "gemini-2.5-flash" }
 
-    # POST-RESET evening - Light weekly work only
+    # 06:00-08:00 — Heavy Pro tasks (high token cost, closer to reset)
+    @{ Name = "IronForge Night Shift"; Time = "06:00"; Workflow = "night-shift"; Freq = "DAILY"; Model = "gemini-2.5-pro" }
+    @{ Name = "IronForge Debt Attack"; Time = "07:00"; Workflow = "debt-attack"; Freq = "DAILY"; Model = "gemini-2.5-pro" }
+    @{ Name = "IronForge Security Audit"; Time = "08:00"; Workflow = "security"; Freq = "WEEKLY"; Model = "gemini-2.5-pro" }
+
+    # POST-RESET evening — Light weekly work only
     @{ Name = "IronForge Sprint Auto"; Time = "20:00"; Workflow = "sprint-auto"; Freq = "WEEKLY"; Model = "gemini-2.5-flash" }
 )
 
