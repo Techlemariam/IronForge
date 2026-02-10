@@ -139,52 +139,51 @@ jobs:
         env:
           WORKFLOW: ${{ needs.validate.outputs.workflow }}
           DRY_RUN: ${{ needs.validate.outputs.dry_run }}
-        shell: bash
+        shell: pwsh
         run: |
-          echo "Executing workflow: $WORKFLOW"
+          Write-Host "Executing workflow: $env:WORKFLOW" -ForegroundColor Cyan
           
           # Map workflow names to actual commands
-          case "$WORKFLOW" in
-            "/night-shift")
-              echo "Running nightly maintenance..."
-              pnpm run lint --fix || true
-              pnpm run check-types || true
-              ;;
-            "/health-check")
-              echo "Running health checks..."
+          switch ($env:WORKFLOW) {
+            "/night-shift" {
+              Write-Host "Running nightly maintenance..." -ForegroundColor Yellow
+              pnpm run lint --fix
+              pnpm run check-types
+            }
+            "/health-check" {
+              Write-Host "Running health checks..." -ForegroundColor Yellow
               pnpm run check-types
               pnpm run lint
               pnpm run test
-              ;;
-            "/debug")
-              echo "Running debug analysis..."
-              pnpm run check-types 2>&1 | tee type-errors.log || true
-              ;;
-            "/monitor-all")
-              echo "Running all monitors..."
+            }
+            "/debug" {
+              Write-Host "Running debug analysis..." -ForegroundColor Yellow
+              pnpm run check-types 2>&1 | Tee-Object -FilePath type-errors.log
+            }
+            "/monitor-all" {
+              Write-Host "Running all monitors..." -ForegroundColor Yellow
               pnpm run lint
               pnpm run test --coverage
-              ;;
-            "/triage")
-              echo "Running triage..."
-              # This would be handled by Antigravity agent
-              echo "Triage requires Antigravity agent context"
-              ;;
-            "/evolve")
-              echo "Running evolution..."
-              pnpm outdated --format json > evolve_report.json || true
-              ;;
-            "/ci-doctor")
-              echo "Running CI doctor..."
+            }
+            "/triage" {
+              Write-Host "Running triage..." -ForegroundColor Yellow
+              Write-Host "Triage requires Antigravity agent context"
+            }
+            "/evolve" {
+              Write-Host "Running evolution..." -ForegroundColor Yellow
+              pnpm outdated --format json | Out-File -FilePath evolve_report.json
+            }
+            "/ci-doctor" {
+              Write-Host "Running CI doctor..." -ForegroundColor Yellow
               pnpm run check-types
               pnpm run lint
               pnpm run test
-              ;;
-            *)
-              echo "Unknown workflow: $WORKFLOW"
+            }
+            Default {
+              Write-Error "Unknown workflow: $env:WORKFLOW"
               exit 1
-              ;;
-          esac
+            }
+          }
 
       - name: 📢 Report Result
         if: always()
