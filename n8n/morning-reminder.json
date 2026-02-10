@@ -6,15 +6,15 @@
                 "rule": {
                     "interval": [
                         {
-                            "triggerAtHour": 8,
-                            "triggerAtMinute": 5
+                            "field": "cronExpression",
+                            "expression": "5 8 * * 1-5"
                         }
                     ]
                 }
             },
-            "name": "Daily Trigger",
+            "name": "Daily 09:05 CET",
             "type": "n8n-nodes-base.scheduleTrigger",
-            "typeVersion": 1.2,
+            "typeVersion": 1.1,
             "position": [
                 400,
                 300
@@ -23,15 +23,21 @@
         {
             "parameters": {
                 "method": "POST",
-                "url": "={{$env.DISCORD_WEBHOOK_URL}}",
+                "url": "https://discord.com/api/webhooks/1469991396373958688/4WDf2TawGhR_QQ0FY7xExCcTLZ3plj1O8wcVvG8pxvAHbr1jfQg4DqUiktyuAn1LIe05",
                 "sendBody": true,
-                "specifyBody": "json",
-                "jsonBody": "{ \"content\": \"☀️ **IronForge Morning Briefing** — Quota just reset!\\n\\n1. `/startup` — Context + health check\\n2. `/triage` — Process nya issues\\n3. Check logs: `.agent/logs/`\" }",
+                "bodyParameters": {
+                    "parameters": [
+                        {
+                            "name": "content",
+                            "value": "☀️ **IronForge Morning Briefing** — Quota resettas!\n\n1. Kör `/startup` i Antigravity\n2. Kör `/triage` — process nya issues\n3. Check Night Shift logs: `.agent/logs/`"
+                        }
+                    ]
+                },
                 "options": {}
             },
-            "name": "Discord Webhook",
+            "name": "Discord Reminder",
             "type": "n8n-nodes-base.httpRequest",
-            "typeVersion": 4.2,
+            "typeVersion": 3,
             "position": [
                 620,
                 300
@@ -39,11 +45,11 @@
         }
     ],
     "connections": {
-        "Daily Trigger": {
+        "Daily 09:05 CET": {
             "main": [
                 [
                     {
-                        "node": "Discord Webhook",
+                        "node": "Discord Reminder",
                         "type": "main",
                         "index": 0
                     }
