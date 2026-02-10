@@ -57,5 +57,9 @@
                 ]
             ]
         }
+    },
+    "settings": {
+        "saveManualExecutions": false,
+        "callerPolicy": "workflowsFromSameOwner"
     }
 }
