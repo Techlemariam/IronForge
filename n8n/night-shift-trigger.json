@@ -1,0 +1,61 @@
+{
+    "name": "Trigger Night Shift (IronForge)",
+    "nodes": [
+        {
+            "parameters": {
+                "path": "trigger-night-shift",
+                "responseMode": "lastNode",
+                "options": {}
+            },
+            "name": "Webhook",
+            "type": "n8n-nodes-base.webhook",
+            "typeVersion": 1,
+            "position": [
+                460,
+                300
+            ],
+            "credentials": {
+                "httpHeaderAuth": {
+                    "id": "IRONFORGE_LOCAL_SECRET",
+                    "name": "IronForge Local Secret"
+                }
+            },
+            "webhookId": "fb857342-9a3d-4c3e-8c6e-1d5f3b7a5e9d"
+        },
+        {
+            "parameters": {
+                "url": "https://khameleon.tailafb692.ts.net:8443/trigger-night-shift",
+                "method": "POST",
+                "authentication": "genericCredentialType",
+                "genericAuthType": "httpHeaderAuth",
+                "options": {}
+            },
+            "name": "Trigger Local Script",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 3,
+            "position": [
+                680,
+                300
+            ],
+            "credentials": {
+                "httpHeaderAuth": {
+                    "id": "IRONFORGE_LOCAL_SECRET",
+                    "name": "IronForge Local Secret"
+                }
+            }
+        }
+    ],
+    "connections": {
+        "Webhook": {
+            "main": [
+                [
+                    {
+                        "node": "Trigger Local Script",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    }
+}
