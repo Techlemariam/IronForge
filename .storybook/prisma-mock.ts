@@ -32,33 +32,44 @@ export const Prisma = {
 
 // Mock all commonly used Prisma types and enums
 export enum Archetype {
-    WARRIOR = 'WARRIOR',
-    MAGE = 'MAGE',
-    ROGUE = 'ROGUE',
+    JUGGERNAUT = 'JUGGERNAUT',
+    PATHFINDER = 'PATHFINDER',
+    WARDEN = 'WARDEN',
 }
 
 export enum Faction {
-    IRON_LEGION = 'IRON_LEGION',
-    SHADOW_GUILD = 'SHADOW_GUILD',
-    NEUTRAL = 'NEUTRAL',
+    ALLIANCE = 'ALLIANCE',
+    HORDE = 'HORDE',
 }
 
 export enum EquipmentType {
-    WEAPON = 'WEAPON',
-    ARMOR = 'ARMOR',
-    ACCESSORY = 'ACCESSORY',
+    BODYWEIGHT = 'BODYWEIGHT',
+    BARBELL = 'BARBELL',
+    DUMBBELL = 'DUMBBELL',
+    CABLE = 'CABLE',
+    MACHINE = 'MACHINE',
+    KETTLEBELL = 'KETTLEBELL',
+    BAND = 'BAND',
+    HYPER_PRO = 'HYPER_PRO',
+    OTHER = 'OTHER',
 }
 
 export enum ChallengeType {
     DAILY = 'DAILY',
     WEEKLY = 'WEEKLY',
-    SPECIAL = 'SPECIAL',
+    SEASONAL = 'SEASONAL',
 }
 
 export enum SubscriptionTier {
     FREE = 'FREE',
-    PREMIUM = 'PREMIUM',
-    ELITE = 'ELITE',
+    PRO = 'PRO',
+    LIFETIME = 'LIFETIME',
+}
+
+export enum TerritoryType {
+    TRAINING_GROUNDS = 'TRAINING_GROUNDS',
+    RESOURCE_NODE = 'RESOURCE_NODE',
+    FORTRESS = 'FORTRESS',
 }
 
 // Mock type interfaces (empty objects for type compatibility)
@@ -74,3 +85,7 @@ export type PvpSeason = Record<string, any>;
 export type Challenge = Record<string, any>;
 export type UserChallenge = Record<string, any>;
 export type Monster = Record<string, any>;
+export type RaidBoss = Record<string, any>;
+export type WorldRegion = Record<string, any>;
+export type Territory = Record<string, any>;
+export type Guild = Record<string, any>;

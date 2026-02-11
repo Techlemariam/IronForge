@@ -78,14 +78,7 @@ export default function WorldMap({ onClose, onEnterCombat }: WorldMapProps) {
         Return to Citadel
       </button>
       {/* Background Texture (Abstract Grid for now) */}
-      <div
-        className="absolute inset-0 opacity-20"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle at 1px 1px, var(--color-steel) 1px, transparent 0)",
-          backgroundSize: "40px 40px",
-        }}
-      ></div>
+      <div className="absolute inset-0 opacity-20 bg-grid-titan"></div>
 
       {/* Title Overlay */}
       <div className="absolute top-6 left-6 z-10 pointer-events-none">
@@ -128,10 +121,10 @@ export default function WorldMap({ onClose, onEnterCombat }: WorldMapProps) {
             {region.isUnlocked && (
               <div
                 className={`absolute inset-0 rounded-full animate-ping opacity-20 ${region.id === "iron_forge"
-                    ? "bg-orange-500"
-                    : region.id === "shadow_realms"
-                      ? "bg-purple-500"
-                      : "bg-white"
+                  ? "bg-orange-500"
+                  : region.id === "shadow_realms"
+                    ? "bg-purple-500"
+                    : "bg-white"
                   }`}
               ></div>
             )}

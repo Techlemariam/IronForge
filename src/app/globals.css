@@ -2,19 +2,31 @@
 
 @theme {
     /* THE CHROMATIC LATTICE (Periodic Table) */
-    --color-void: #030712;      /* Deep Space (Bg) */
-    --color-armor: #111827;     /* Hardened Steel (Card) */
-    --color-steel: #374151;     /* Structural (Border) */
-    --color-plasma: #f97316;    /* Action / Legendary */
-    --color-pulse: #0ea5e9;     /* Data / Rare */
-    --color-venom: #22c55e;     /* Restoration / Set Item */
-    --color-crisis: #ef4444;    /* Failure / Cursed */
-    --color-gold: #eab308;      /* Artifact / Warden */
-    --color-cyan: #06b6d4;      /* Pathfinder */
-    --color-clay: #c79c6e;      /* Classic UI / Parchment */
-    --color-warp: #a335ee;      /* Warp / Epic (Purple) */
-    --color-legend: #ff8000;    /* Solar / Legendary (Orange) */
-    
+    --color-void: #030712;
+    /* Deep Space (Bg) */
+    --color-armor: #111827;
+    /* Hardened Steel (Card) */
+    --color-steel: #374151;
+    /* Structural (Border) */
+    --color-plasma: #f97316;
+    /* Action / Legendary */
+    --color-pulse: #0ea5e9;
+    /* Data / Rare */
+    --color-venom: #22c55e;
+    /* Restoration / Set Item */
+    --color-crisis: #ef4444;
+    /* Failure / Cursed */
+    --color-gold: #eab308;
+    /* Artifact / Warden */
+    --color-cyan: #06b6d4;
+    /* Pathfinder */
+    --color-clay: #c79c6e;
+    /* Classic UI / Parchment */
+    --color-warp: #a335ee;
+    /* Warp / Epic (Purple) */
+    --color-legend: #ff8000;
+    /* Solar / Legendary (Orange) */
+
     /* Legacy Mappings (Deprecation Bridge) */
     --color-forge-950: var(--color-void);
     --color-forge-900: var(--color-armor);
@@ -22,17 +34,33 @@
     --color-magma: var(--color-plasma);
 
     /* KINETIC PHYSICS */
-    --ease-bolt-action: cubic-bezier(0.23, 1, 0.32, 1); /* Mechanical Lock */
+    --ease-bolt-action: cubic-bezier(0.23, 1, 0.32, 1);
+    /* Mechanical Lock */
     --ease-recoil: cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
     /* Animation Definitions */
     @keyframes deploy {
-        from { opacity: 0; transform: translateY(10px) scale(0.98); }
-        to { opacity: 1; transform: translateY(0) scale(1); }
+        from {
+            opacity: 0;
+            transform: translateY(10px) scale(0.98);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
     }
+
     @keyframes pulse-mechanical {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.5; }
+
+        0%,
+        100% {
+            opacity: 1;
+        }
+
+        50% {
+            opacity: 0.5;
+        }
     }
 
     /* Animation Utilities */
@@ -43,17 +71,23 @@
 @layer base {
     body {
         background-color: var(--color-void);
-        color: #f3f4f6; /* Gray-100 */
+        color: #f3f4f6;
+        /* Gray-100 */
         font-feature-settings: "tnum" on, "cv11" on, "ss01" on;
         -webkit-font-smoothing: antialiased;
     }
 
     /* TYPOGRAPHY PROTOCOL */
-    h1, h2, h3, h4, h5, h6 {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
         @apply font-serif font-bold tracking-wider uppercase text-white;
-        text-shadow: 0 0 20px rgba(0,0,0,0.5);
+        text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
     }
-    
+
     /* DATA PROTOCOL */
     .font-mono {
         font-variant-numeric: tabular-nums;
@@ -78,23 +112,26 @@
         /* Structural (Steel: #374151 -> 217 19% 27%) */
         --secondary: 217 19% 27%;
         --secondary-foreground: 0 0% 98%;
-        
-        --muted: 217 19% 22%; /* Slightly darker steel */
+
+        --muted: 217 19% 22%;
+        /* Slightly darker steel */
         --muted-foreground: 215 20% 65%;
-        
+
         --accent: 217 19% 27%;
         --accent-foreground: 0 0% 98%;
-        
+
         --destructive: 0 84.2% 60.2%;
         --destructive-foreground: 0 0% 98%;
-        
-        --border: 217 19% 27%; /* Steel */
+
+        --border: 217 19% 27%;
+        /* Steel */
         --input: 217 19% 27%;
-        --ring: 25 95% 53%; /* Plasma */
-        
+        --ring: 25 95% 53%;
+        /* Plasma */
+
         --radius: 0.25rem;
     }
-    
+
     .dark {
         --background: 223 71% 4%;
         --foreground: 0 0% 98%;
@@ -108,6 +145,11 @@
 
     .glass-panel {
         @apply bg-forge-900/80 backdrop-blur-sm border border-white/10;
+    }
+
+    .bg-grid-titan {
+        background-image: radial-gradient(circle at 1px 1px, var(--color-steel) 1px, transparent 0);
+        background-size: 40px 40px;
     }
 
 }

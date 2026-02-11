@@ -48,6 +48,12 @@ const TIER_SIZE: Record<NodeTier, number> = {
   keystone: 100,
 };
 
+const TIER_CLASSES: Record<NodeTier, string> = {
+  minor: "w-[50px] h-[50px]",
+  notable: "w-[70px] h-[70px]",
+  keystone: "w-[100px] h-[100px]",
+};
+
 // --- CUSTOM NODE COMPONENT ---
 interface CustomNodeData {
   node: SkillNodeV2;
@@ -65,7 +71,7 @@ const CustomSkillNode = ({ data, selected }: NodeProps<CustomNodeData>) => {
   const isEndurance = node.currency === "kinetic_shard";
 
   // Base Sizes
-  const size = TIER_SIZE[tier];
+  const tierClass = TIER_CLASSES[tier];
   const iconSize = tier === "keystone" ? 48 : tier === "notable" ? 32 : 24;
 
   // Style Logic
@@ -114,8 +120,10 @@ const CustomSkillNode = ({ data, selected }: NodeProps<CustomNodeData>) => {
 
   return (
     <div
-      style={{ width: size, height: size }}
-      className={`relative ${shapeClass} ${borderStyle} ${borderClass} ${bgClass} ${glow} flex items-center justify-center transition-all duration-300 group`}
+      role="button"
+      tabIndex={0}
+      aria-label={`${node.title} (${tier}) - ${status}`}
+      className={`relative ${shapeClass} ${tierClass} ${borderStyle} ${borderClass} ${bgClass} ${glow} flex items-center justify-center transition-all duration-300 group focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black`}
     >
       {/* Handles for connections */}
       <Handle

@@ -177,10 +177,7 @@ const DungeonBuilder: React.FC<DungeonBuilderProps> = ({
                 onChange={(e) => updateBlock(bIdx, "name", e.target.value)}
                 aria-label="Block Name"
                 placeholder="Block Name"
-                style={{
-                  color: "var(--color-clay)",
-                }}
-                className="bg-transparent text-xl font-bold text-white focus:outline-none w-full"
+                className="bg-transparent text-xl font-bold text-[var(--color-clay)] focus:outline-none w-full"
               />
               <span className="text-[10px] uppercase font-bold text-[var(--color-clay)] bg-[var(--color-clay)]/10 px-2 py-0.5 rounded">
                 {block.type}
