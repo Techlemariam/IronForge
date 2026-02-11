@@ -1,0 +1,43 @@
+name: Autonomous Trigger (Mobile)
+
+on:
+  workflow_dispatch:
+    inputs:
+      workflow:
+        description: 'Workflow to run'
+        required: true
+        default: 'polish'
+        type: choice
+        options:
+          - night-shift
+          - polish
+          - git-hygiene
+          - cleanup
+          - debt-attack
+          - security
+          - sprint-auto
+      model:
+        description: 'Gemini Model'
+        required: true
+        default: 'gemini-2.5-flash'
+        type: choice
+        options:
+          - gemini-2.5-flash
+          - gemini-2.5-pro
+
+jobs:
+  run-autonomous-workflow:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Execute Workflow
+        shell: powershell
+        run: |
+          Set-Location $env:GITHUB_WORKSPACE
+          .\scripts\workflow-launcher.ps1 -Workflow "${{ inputs.workflow }}" -Model "${{ inputs.model }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

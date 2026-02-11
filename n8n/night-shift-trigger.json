@@ -1,0 +1,50 @@
+{
+    "name": "Trigger Night Shift (IronForge)",
+    "nodes": [
+        {
+            "parameters": {
+                "path": "trigger-night-shift",
+                "responseMode": "lastNode",
+                "options": {}
+            },
+            "name": "Webhook",
+            "type": "n8n-nodes-base.webhook",
+            "typeVersion": 1,
+            "position": [
+                32,
+                32
+            ]
+        },
+        {
+            "parameters": {
+                "method": "POST",
+                "url": "https://khameleon.tailafb692.ts.net:8443/trigger-night-shift",
+                "options": {}
+            },
+            "name": "Trigger Local Script",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 3,
+            "position": [
+                240,
+                32
+            ]
+        }
+    ],
+    "connections": {
+        "Webhook": {
+            "main": [
+                [
+                    {
+                        "node": "Trigger Local Script",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    },
+    "settings": {
+        "executionOrder": "v1",
+        "callerPolicy": "workflowsFromSameOwner"
+    }
+}

@@ -1,6 +1,12 @@
 <#
 .SYNOPSIS
   Generic workflow launcher for IronForge autonomous scheduling.
+.DESCRIPTION
+  Called by Windows Task Scheduler. Invokes Gemini CLI with a specific workflow and model.
+.PARAMETER Workflow
+  The workflow to execute, e.g. "night-shift", "polish", "cleanup".
+.PARAMETER Model
+  The Gemini model to use, e.g. "gemini-2.5-pro", "gemini-2.5-flash".
 #>
 param(
   [Parameter(Mandatory)][string]$Workflow,
@@ -45,6 +51,7 @@ if (Test-Path $EnvFile) {
 Write-Log "=== Workflow Launcher ==="
 Write-Log "Workflow: /$Workflow"
 Write-Log "Model: $Model"
+Write-Log "Log: $LOG_FILE"
 
 # --- Git State: Stash dirty state ---
 $gitStatus = git status --porcelain
