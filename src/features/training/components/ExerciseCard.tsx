@@ -70,7 +70,7 @@ const SetItem: React.FC<SetItemProps> = ({
 
   return (
     <div
-      className={`relative flex items-center justify-between p-3 rounded border transition-all duration-300 ${rarityClass} ${isActive ? "bg-zinc-800/80 border-l-4 border-l-magma" : ""} ${animateClass}`}
+      className={`relative flex items-center justify-between p-3 rounded border transition-all duration-300 ${rarityClass} ${isActive ? "bg-armor/80 border-l-4 border-l-plasma" : ""} ${animateClass}`}
     >
       {/* Loot Beam Effect for Legendary/Epic */}
       {isDone && (set.rarity === "legendary" || set.rarity === "epic") && (
@@ -124,7 +124,7 @@ const SetItem: React.FC<SetItemProps> = ({
       )}
 
       {isActive && !isDone && (
-        <div className="text-[9px] text-magma font-bold animate-pulse">
+        <div className="text-[9px] text-plasma font-bold animate-pulse">
           ENGAGED
         </div>
       )}
@@ -163,7 +163,7 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({
       <div ref={activeRef} className="relative animate-slide-up">
         {/* ENCOUNTER HEADER */}
         <div className="flex items-center gap-3 mb-6">
-          <div className="w-10 h-10 flex items-center justify-center rounded border-2 transform rotate-45 bg-magma border-magma-glow text-white shadow-[0_0_15px_#ff4500]">
+          <div className="w-10 h-10 flex items-center justify-center rounded border-2 transform rotate-45 bg-plasma border-plasma/50 text-white shadow-[0_0_15px_rgba(249,115,22,0.4)]">
             <span className="transform -rotate-45 font-mono font-bold text-lg">
               {index + 1}
             </span>
@@ -173,8 +173,8 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({
               {exercise.name}
             </h2>
             {exercise.trainingMax && (
-              <div className="flex items-center gap-2 text-xs font-mono text-zinc-500 mt-1">
-                <span className="bg-zinc-900 px-2 py-0.5 rounded border border-zinc-800">
+              <div className="flex items-center gap-2 text-xs font-mono text-steel mt-1">
+                <span className="bg-void px-2 py-0.5 rounded border border-steel/20">
                   TM: {exercise.trainingMax}kg
                 </span>
                 {exercise.instructions && (
@@ -198,8 +198,8 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({
           )}
 
           {/* UPCOMING WAVES (REMAINING SETS) */}
-          <div className="bg-zinc-900/30 border border-zinc-800 rounded p-4 relative">
-            <h3 className="text-[10px] font-bold uppercase text-zinc-500 tracking-widest mb-3 border-b border-zinc-800 pb-1">
+          <div className="bg-armor/30 border border-steel/20 rounded p-4 relative">
+            <h3 className="text-[10px] font-bold uppercase text-steel tracking-widest mb-3 border-b border-steel/20 pb-1">
               Encounter Log
             </h3>
             <div className="space-y-2">
@@ -247,26 +247,26 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({
     return (
       <div className="group transition-all duration-500 opacity-60 hover:opacity-100 hover:scale-[1.01]">
         <div className="flex items-center gap-3 mb-2">
-          <div className="w-8 h-8 flex items-center justify-center rounded border-2 border-green-800 bg-green-950 text-green-500 transform rotate-45 shadow-[0_0_10px_rgba(34,197,94,0.3)]">
+          <div className="w-8 h-8 flex items-center justify-center rounded border-2 border-venom/30 bg-venom/10 text-venom transform rotate-45 shadow-[0_0_10px_rgba(34,197,94,0.2)]">
             <CheckCircle2 className="w-5 h-5 transform -rotate-45" />
           </div>
-          <h2 className="text-xl font-bold uppercase tracking-tight text-zinc-500 group-hover:text-white transition-colors">
+          <h2 className="text-xl font-bold uppercase tracking-tight text-steel group-hover:text-white transition-colors">
             {exercise.name}
           </h2>
         </div>
 
-        <div className="bg-zinc-900/50 border-l-4 border-green-700 p-4 rounded ml-4 relative overflow-hidden group-hover:bg-zinc-900 transition-colors">
-          <div className="relative z-10 flex items-center gap-6 text-xs text-zinc-400 font-mono">
+        <div className="bg-armor/50 border-l-4 border-venom p-4 rounded ml-4 relative overflow-hidden group-hover:bg-armor transition-colors">
+          <div className="relative z-10 flex items-center gap-6 text-xs text-steel font-mono">
             <div className="flex items-center gap-2">
-              <Dumbbell className="w-3 h-3 text-zinc-600 group-hover:text-zinc-400" />
+              <Dumbbell className="w-3 h-3 text-steel/60 group-hover:text-steel" />
               <span>Volume: {totalReps} Reps</span>
             </div>
             <div className="flex items-center gap-2">
-              <Skull className="w-3 h-3 text-zinc-600 group-hover:text-zinc-400" />
+              <Skull className="w-3 h-3 text-steel/60 group-hover:text-steel" />
               <span>Peak Load: {maxWeight}kg</span>
             </div>
             <div className="flex items-center gap-2 ml-auto">
-              <span className="text-green-600 font-bold tracking-widest text-[10px] uppercase">
+              <span className="text-venom font-bold tracking-widest text-[10px] uppercase">
                 Quest Complete
               </span>
             </div>

@@ -71,35 +71,35 @@ const QuestLog: React.FC<QuestLogProps> = ({
   return (
     <div className="bg-[var(--color-void)] border-2 border-[var(--color-steel)] rounded-lg overflow-hidden flex flex-col shadow-2xl">
       {/* Header / Tabs */}
-      <div className="flex border-b border-[var(--color-steel)]">
+      <div className="flex border-b border-steel/50 bg-void/50">
         {acts.map((act) => (
           <button
             key={act.id}
             onClick={() => setActiveAct(act.id as ActFilter)}
-            className={`flex-1 py-4 px-2 flex flex-col items-center gap-1 transition-all relative overflow-hidden group
+            className={`flex-1 py-4 px-1 sm:px-2 flex flex-col items-center gap-1 transition-all relative overflow-hidden group
               ${activeAct === act.id
-                ? "bg-[var(--color-armor)] text-[var(--color-gold)]"
-                : "bg-[var(--color-void)] text-[var(--color-steel)] hover:text-zinc-400 hover:bg-[var(--color-armor)]"
+                ? "bg-armor text-gold"
+                : "bg-void text-steel hover:text-white hover:bg-armor/50"
               }
             `}
           >
             {activeAct === act.id && (
-              <div className="absolute top-0 left-0 w-full h-0.5 bg-[var(--color-gold)] shadow-[0_0_10px_var(--color-gold)]" />
+              <div className="absolute top-0 left-0 w-full h-0.5 bg-gold shadow-[0_0_10px_var(--color-gold)]" />
             )}
             <div
-              className={`p-1 rounded ${activeAct === act.id ? "bg-[var(--color-gold)]/10" : ""}`}
+              className={`p-1 rounded ${activeAct === act.id ? "bg-gold/10" : "bg-steel/5"}`}
             >
               {act.icon}
             </div>
-            <span className="text-[10px] font-bold uppercase tracking-widest">
-              {act.label}
+            <span className="text-[8px] sm:text-[10px] font-bold uppercase tracking-tighter sm:tracking-widest">
+              {act.label.split(": ")[1] || act.label}
             </span>
           </button>
         ))}
       </div>
 
       {/* Content Area */}
-      <div className="p-6 min-h-[300px] bg-[var(--color-void)]/50">
+      <div className="p-4 sm:p-6 min-h-[300px] bg-void/50">
         {/* Act Description */}
         <div className="mb-6 flex items-center justify-between">
           <div>

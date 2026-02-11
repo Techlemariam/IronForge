@@ -132,29 +132,29 @@ export default function WorldMap({ onClose, onEnterCombat }: WorldMapProps) {
             {/* Node Icon */}
             <div
               className={`
-                            w-12 h-12 md:w-16 md:h-16 rounded-full border-2 flex items-center justify-center shadow-lg transition-all duration-300 relative z-10
+                            w-10 h-10 md:w-16 md:h-16 rounded-full border-2 flex items-center justify-center shadow-lg transition-all duration-300 relative z-10
                             ${region.isUnlocked
                   ? region.id === "iron_forge"
-                    ? "bg-[var(--color-void)] border-[var(--color-plasma)] text-[var(--color-plasma)] hover:shadow-[0_0_30px_rgba(249,115,22,0.6)]"
+                    ? "bg-void border-plasma text-plasma hover:shadow-[0_0_30px_rgba(249,115,22,0.6)]"
                     : region.id === "shadow_realms"
-                      ? "bg-[var(--color-void)] border-[var(--color-warp)] text-[var(--color-warp)] hover:shadow-[0_0_30px_rgba(163,53,238,0.6)]"
-                      : "bg-[var(--color-void)] border-white text-white hover:shadow-[0_0_30px_rgba(255,255,255,0.4)]"
-                  : "bg-[var(--color-void)] border-[var(--color-steel)] text-[var(--color-steel)] grayscale cursor-not-allowed"
+                      ? "bg-void border-warp text-warp hover:shadow-[0_0_30px_rgba(163,53,238,0.6)]"
+                      : "bg-void border-white text-white hover:shadow-[0_0_30px_rgba(255,255,255,0.4)]"
+                  : "bg-void border-steel text-steel grayscale cursor-not-allowed"
                 }
                         `}
             >
               {region.isUnlocked ? (
-                <MapIcon className="w-6 h-6" />
+                <MapIcon className="w-5 h-5 md:w-6 md:h-6" />
               ) : (
-                <Lock className="w-5 h-5" />
+                <Lock className="w-4 h-4 md:w-5 md:h-5" />
               )}
             </div>
 
             {/* Label */}
             <div
               className={`
-                            absolute top-full mt-3 left-1/2 -translate-x-1/2 whitespace-nowrap px-3 py-1 rounded bg-[var(--color-void)]/90 border border-[var(--color-steel)] text-xs font-bold uppercase tracking-widest backdrop-blur-sm transition-all
-                            ${region.name === "???" ? "text-[var(--color-steel)] blur-[2px]" : region.isUnlocked ? "text-zinc-300 group-hover:text-white group-hover:border-zinc-500" : "text-[var(--color-steel)]"}
+                            absolute top-full mt-2 left-1/2 -translate-x-1/2 whitespace-nowrap px-2 py-0.5 md:px-3 md:py-1 rounded bg-void/90 border border-steel text-[8px] md:text-xs font-bold uppercase tracking-tighter md:tracking-widest backdrop-blur-sm transition-all
+                            ${region.name === "???" ? "text-steel blur-[2px]" : region.isUnlocked ? "text-zinc-300 group-hover:text-white group-hover:border-zinc-500" : "text-steel"}
                         `}
             >
               {region.name}

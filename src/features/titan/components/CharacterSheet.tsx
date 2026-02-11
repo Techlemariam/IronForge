@@ -165,9 +165,9 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({
             </div>
 
             {/* The Avatar Model & Gear Slots */}
-            <div className="flex-1 relative flex justify-between px-4 py-2">
-              {/* Left Slots */}
-              <div className="flex flex-col gap-2 pt-4">
+            <div className="flex-1 relative flex flex-col sm:flex-row justify-between px-4 py-2 overflow-y-auto sm:overflow-hidden">
+              {/* Left Slots (Upper on mobile) */}
+              <div className="flex sm:flex-col flex-row flex-wrap justify-center gap-2 pt-4">
                 <GearSlot
                   icon={<Brain className="w-5 h-5" />}
                   rarity="epic"
@@ -201,23 +201,23 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({
               </div>
 
               {/* Center Model (Placeholder) */}
-              <div className="flex-1 flex items-center justify-center relative">
+              <div className="flex-1 flex items-center justify-center relative min-h-[200px] sm:min-h-0">
                 {/* Background Glow behind character */}
                 <div className="absolute w-48 h-48 bg-blue-500/10 rounded-full blur-[50px]"></div>
 
-                <div className="relative w-40 h-64 bg-zinc-900/50 border border-zinc-700/50 rounded-lg flex flex-col items-center justify-center group overflow-hidden">
+                <div className="relative w-32 h-48 sm:w-40 sm:h-64 bg-zinc-900/50 border border-zinc-700/50 rounded-lg flex flex-col items-center justify-center group overflow-hidden">
                   {/* Render a 3D-ish looking silhouette or the user icon */}
                   <User
-                    className={`w-24 h-24 ${isElite ? "text-gold" : "text-zinc-500"} drop-shadow-2xl`}
+                    className={`w-16 h-16 sm:w-24 sm:h-24 ${isElite ? "text-gold" : "text-zinc-500"} drop-shadow-2xl`}
                   />
-                  <div className="absolute bottom-2 text-[10px] text-zinc-500 font-sans uppercase tracking-widest group-hover:text-white transition-colors">
+                  <div className="absolute bottom-2 text-[8px] sm:text-[10px] text-zinc-500 font-sans uppercase tracking-widest group-hover:text-white transition-colors">
                     Model Viewer
                   </div>
                 </div>
               </div>
 
-              {/* Right Slots */}
-              <div className="flex flex-col gap-2 pt-4">
+              {/* Right Slots (Lower on mobile) */}
+              <div className="flex sm:flex-col flex-row flex-wrap justify-center gap-2 pb-4 sm:pt-4">
                 <GearSlot
                   icon={<Swords className="w-5 h-5" />}
                   rarity="rare"

@@ -38,20 +38,20 @@ const TTBCompass: React.FC<TTBCompassProps> = ({ indices }) => {
           : "DEPLETED";
   const healthColor =
     healthPercentage > 70
-      ? "bg-rarity-rare"
+      ? "bg-venom"
       : healthPercentage > 40
-        ? "bg-warrior-light"
-        : "bg-magma";
+        ? "bg-gold"
+        : "bg-plasma";
 
   return (
-    <div className="bg-[#111] border-2 border-[#46321d] rounded-lg shadow-2xl relative overflow-hidden group p-4">
-      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/dark-matter.png')] opacity-20"></div>
+    <div className="bg-armor border-2 border-clay/30 rounded-lg shadow-2xl relative overflow-hidden group p-4">
+      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/dark-matter.png')] opacity-10"></div>
       <div className="relative z-10">
         <div className="flex justify-between items-baseline mb-2">
-          <h3 className="font-serif text-sm uppercase tracking-widest text-warrior-light">
+          <h3 className="font-serif text-sm uppercase tracking-widest text-clay">
             Sys. Vitality
           </h3>
-          <span className="text-xs font-mono bg-forge-900 text-rarity-rare px-2 py-1 rounded text-shadow-neon-cyan">
+          <span className="text-xs font-mono bg-void text-cyan px-2 py-1 rounded shadow-[0_0_10px_rgba(6,182,212,0.3)]">
             TSB-S
           </span>
         </div>
@@ -70,8 +70,8 @@ const TTBCompass: React.FC<TTBCompassProps> = ({ indices }) => {
                   fx="50%"
                   fy="50%"
                 >
-                  <stop offset="0%" stopColor="rgba(255, 215, 0, 0.1)" />
-                  <stop offset="100%" stopColor="rgba(255, 215, 0, 0.3)" />
+                  <stop offset="0%" stopColor="var(--color-gold)" stopOpacity="0.1" />
+                  <stop offset="100%" stopColor="var(--color-gold)" stopOpacity="0.3" />
                 </radialGradient>
               </defs>
 
@@ -81,7 +81,7 @@ const TTBCompass: React.FC<TTBCompassProps> = ({ indices }) => {
                 y1={center}
                 x2={maxWellness.x}
                 y2={maxWellness.y}
-                stroke="#4f422e"
+                stroke="var(--color-steel)"
                 strokeWidth="1"
               />
               <line
@@ -89,7 +89,7 @@ const TTBCompass: React.FC<TTBCompassProps> = ({ indices }) => {
                 y1={center}
                 x2={maxStrength.x}
                 y2={maxStrength.y}
-                stroke="#4f422e"
+                stroke="var(--color-steel)"
                 strokeWidth="1"
               />
               <line
@@ -97,7 +97,7 @@ const TTBCompass: React.FC<TTBCompassProps> = ({ indices }) => {
                 y1={center}
                 x2={maxEndurance.x}
                 y2={maxEndurance.y}
-                stroke="#4f422e"
+                stroke="var(--color-steel)"
                 strokeWidth="1"
               />
 
@@ -110,8 +110,9 @@ const TTBCompass: React.FC<TTBCompassProps> = ({ indices }) => {
                     key={pct}
                     points={`${w.x},${w.y} ${s.x},${s.y} ${e.x},${e.y}`}
                     fill="none"
-                    stroke="#4f422e"
+                    stroke="var(--color-steel)"
                     strokeWidth={pct === 100 ? 1.5 : 0.5}
+                    strokeOpacity={pct === 100 ? 0.5 : 0.3}
                   />
                 );
               })}
@@ -120,19 +121,19 @@ const TTBCompass: React.FC<TTBCompassProps> = ({ indices }) => {
               <polygon
                 points={`${pWellness.x},${pWellness.y} ${pStrength.x},${pStrength.y} ${pEndurance.x},${pEndurance.y}`}
                 fill="url(#radarGradient)"
-                stroke="#ffd700"
+                stroke="var(--color-gold)"
                 strokeWidth="2"
-                className="drop-shadow-[0_0_8px_rgba(255,215,0,0.7)] transition-all duration-1000 ease-out"
+                className="drop-shadow-[0_0_8px_rgba(234,179,8,0.7)] transition-all duration-1000 ease-out"
               />
 
               {/* Vertices */}
-              <circle cx={pWellness.x} cy={pWellness.y} r="3" fill="#ffd700" />
-              <circle cx={pStrength.x} cy={pStrength.y} r="3" fill="#ffd700" />
+              <circle cx={pWellness.x} cy={pWellness.y} r="3" fill="var(--color-gold)" />
+              <circle cx={pStrength.x} cy={pStrength.y} r="3" fill="var(--color-gold)" />
               <circle
                 cx={pEndurance.x}
                 cy={pEndurance.y}
                 r="3"
-                fill="#ffd700"
+                fill="var(--color-gold)"
               />
 
               {/* Labels */}
@@ -140,18 +141,18 @@ const TTBCompass: React.FC<TTBCompassProps> = ({ indices }) => {
                 x={maxWellness.x - 10}
                 y={maxWellness.y + 5}
                 textAnchor="end"
-                fill="#c79c6e"
+                fill="var(--color-clay)"
                 fontSize="8"
                 fontWeight="bold"
                 className="uppercase font-serif"
               >
-                HEL
+                WEL
               </text>
               <text
                 x={maxStrength.x + 10}
                 y={maxStrength.y + 5}
                 textAnchor="start"
-                fill="#c79c6e"
+                fill="var(--color-clay)"
                 fontSize="8"
                 fontWeight="bold"
                 className="uppercase font-serif"
@@ -162,7 +163,7 @@ const TTBCompass: React.FC<TTBCompassProps> = ({ indices }) => {
                 x={maxEndurance.x - 10}
                 y={maxEndurance.y + 5}
                 textAnchor="end"
-                fill="#c79c6e"
+                fill="var(--color-clay)"
                 fontSize="8"
                 fontWeight="bold"
                 className="uppercase font-serif"
@@ -174,16 +175,16 @@ const TTBCompass: React.FC<TTBCompassProps> = ({ indices }) => {
 
           <div className="w-full px-2 mt-2">
             <div className="flex justify-between items-center mb-1">
-              <span className="text-xs font-serif text-warrior">
-                HEALTH (TSB)
+              <span className="text-xs font-serif text-steel">
+                SYST. HEALTH
               </span>
-              <span className={`text-xs font-bold text-warrior-light`}>
+              <span className="text-[10px] font-bold text-clay uppercase">
                 {healthStatus}
               </span>
             </div>
-            <div className="w-full bg-forge-800 rounded-full h-2.5">
+            <div className="w-full bg-steel/20 rounded-full h-1.5">
               <div
-                className={`${healthColor} h-2.5 rounded-full`}
+                className={`${healthColor} h-1.5 rounded-full transition-all duration-1000 shadow-[0_0_10px_rgba(var(--color-gold),0.3)]`}
                 style={{ width: `${healthPercentage}%` }}
               ></div>
             </div>
