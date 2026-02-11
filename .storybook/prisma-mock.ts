@@ -72,6 +72,12 @@ export enum TerritoryType {
     FORTRESS = 'FORTRESS',
 }
 
+export enum FriendshipStatus {
+    PENDING = 'PENDING',
+    ACCEPTED = 'ACCEPTED',
+    BLOCKED = 'BLOCKED',
+}
+
 // Mock type interfaces (empty objects for type compatibility)
 export type User = Record<string, any>;
 export type Exercise = Record<string, any>;
@@ -89,3 +95,33 @@ export type RaidBoss = Record<string, any>;
 export type WorldRegion = Record<string, any>;
 export type Territory = Record<string, any>;
 export type Guild = Record<string, any>;
+export type Notification = Record<string, any>;
+export type CombatSession = Record<string, any>;
+export type TitanMemory = Record<string, any>;
+export type TitanScar = Record<string, any>;
+export type Follow = Record<string, any>;
+export type Friendship = Record<string, any>;
+export type Title = Record<string, any>;
+export type UserTitle = Record<string, any>;
+export type WorkoutTemplate = Record<string, any>;
+export type BodyMetric = Record<string, any>;
+export type MeditationLog = Record<string, any>;
+export type GrimoireEntry = Record<string, any>;
+export type UnlockedMonster = Record<string, any>;
+export type UserSkill = Record<string, any>;
+export type UserAchievement = Record<string, any>;
+export type UserEquipment = Record<string, any>;
+export type Item = Record<string, any>;
+export type ChatMessage = Record<string, any>;
+export type PvpProfile = Record<string, any>;
+export type BattleLog = Record<string, any>;
+export type PvpRating = Record<string, any>;
+export type PvpMatch = Record<string, any>;
+export type WeeklyPlan = Record<string, any>;
+export type GauntletRun = Record<string, any>;
+export type GuildRaid = Record<string, any>;
+export type GuildRaidContribution = Record<string, any>;
+export type Achievement = Record<string, any>;
+export type TrainingProgram = Record<string, any>;
+export type TerritoryContestEntry = Record<string, any>;
+export type TerritoryHistory = Record<string, any>;
