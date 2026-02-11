@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 /**
  * Daily Territory Income Cron Job
  * Runs daily at 00:05 UTC.
- * Schedule: "5 0 * * *" (configured in vercel.json)
+ * Schedule: "5 0 * * *" (configured in Coolify/n8n)
  */
 export async function GET(request: NextRequest) {
     const authHeader = request.headers.get("authorization");

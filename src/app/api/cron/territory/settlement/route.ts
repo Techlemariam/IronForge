@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 /**
  * Weekly Territory Settlement Cron Job
  * Runs Sundays at 23:59 UTC.
- * Schedule: "59 23 * * 0" (configured in vercel.json)
+ * Schedule: "59 23 * * 0" (configured in Coolify/n8n)
  */
 export async function GET(request: NextRequest) {
     const authHeader = request.headers.get("authorization");
