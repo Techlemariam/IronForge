@@ -85,6 +85,7 @@ async function main() {
     const testUser = await prisma.user.upsert({
         where: { email: testEmail },
         update: {
+            heroName: 'E2E Hunter', // ENSURE heroName is set if user exists
             hasCompletedOnboarding: true, // CRITICAL: Bypass FirstLoginQuest
             level: 10,
             gold: 5000,
