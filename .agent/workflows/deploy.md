@@ -21,22 +21,22 @@ domain: "infra"
    - 🛑 **STOP** if gatekeeper score < 100.
    - ✅ **Auto-pushes** to feature branch and **creates PR**.
 3. **Cloud Verification:** GitHub Actions runs `Verify`, `E2E`, `DB Guard`, and `Perf Audit`.
-4. **Preview (Automated):** PR triggers **Vercel Preview**.
+4. **Preview (Automated):** PR triggers **Deploy Preview**.
    - 🤖 Bot comments Preview URL on PR.
 5. **Release (Automated):** Merge PR to `main`.
-   - 🤖 CI deploys immediately to **Production**.
+   - 🤖 GitHub Action triggers **Coolify Deployment**.
    - 🏷️ Creates GitHub Release + Release Notes.
 
 ## 📋 Pre-Merge Checklist
 
 1. **CI Green:** All checks (⚡ Verify, 🎭 E2E, 🗄️ DB Guard) must be green.
-2. **Preview Verified:** Check the Vercel Preview URL for UI/UX regressions.
+2. **Preview Verified:** Check the Preview URL for UI/UX regressions.
 3. **Lighthouse:** Ensure performance scores are within budget.
 
 ## 🚨 Rollback
 
 1. **Revert PR:** GitHub Revert on `main` triggers an auto-deploy of the previous state.
-2. **Manual Override:** Vercel Dashboard -> Rollback to previous deployment for instant recovery.
+2. **Manual Override:** Coolify Dashboard -> Rollback to previous deployment image.
 
 ---
 

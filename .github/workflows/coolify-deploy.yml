@@ -1,0 +1,14 @@
+name: Deploy to Coolify
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Trigger Coolify Deployment
+        run: |
+          curl "${{ secrets.COOLIFY_WEBHOOK }}"
