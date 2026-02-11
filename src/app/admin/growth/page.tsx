@@ -88,7 +88,7 @@ export default async function GrowthDashboardPage() {
                             </div>
                             <div className="text-2xl font-bold text-zinc-400">—</div>
                             <div className="text-sm text-zinc-500 mt-1">Monthly Cost</div>
-                            <div className="text-xs text-zinc-600 mt-2">Target: &gt;500 SEK/mo (Vercel/Supabase)</div>
+                            <div className="text-xs text-zinc-600 mt-2">Target: &gt;500 SEK/mo (Coolify/Supabase)</div>
                         </div>
                     </div>
                 </section>
