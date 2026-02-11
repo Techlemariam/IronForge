@@ -97,14 +97,36 @@ Presentera en dashboard:
 └─────────────────────────────────────────────┘
 ```
 
-## 4. Proactive Suggestions
+## 4. Post-Quota-Reset Automation (09:00+ CET)
+
+> **Context:** Antigravity quota resets at 09:00 CET. These tasks run automatically at session start to maximize fresh quota usage.
+
+// turbo
+
+1. **Night Shift Review:** Check if a Night Shift PR was created overnight.
+
+```powershell
+$nightBranch = "night-shift/$(Get-Date -Format 'yyyy-MM-dd')"
+$prExists = gh pr list --head $nightBranch --json number --jq '.[0].number' 2>$null
+if ($prExists) {
+    Write-Host "🌙 Night Shift PR #$prExists ready for review"
+    Write-Host "   Run: gh pr view $prExists"
+} else {
+    Write-Host "ℹ️  No Night Shift PR found for today"
+}
+```
+
+1. **Quick Health Check:** Run `/health-check` in background.
+2. **Triage New Issues:** Run `/triage` to process any new issues.
+3. **Sync Project Board:** Run `/sync-project` to keep GitHub Project current.
+
+## 5. Proactive Suggestions
 
 Baserat på state, föreslå:
 
 - Fortsätt pågående arbete?
 - Kör `/cleanup` om debt > 5?
 - Kör `/triage` för att prioritera identifierade gaps och uppdatera roadmap?
-- Kör `/evolve` för token-optimering om nya workflows skapats?
 - Kör `/evolve` för token-optimering om nya workflows skapats?
 - **Allow List**: Om kommandon körs ofta, uppdatera `.agent/config.json` för att undvika manuella godkännanden.
 
