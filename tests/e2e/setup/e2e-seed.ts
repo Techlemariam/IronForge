@@ -37,6 +37,21 @@ async function main() {
     });
     console.log(`✅ Battle Pass Season ensured: ${season.id}`);
 
+    // Seed PVP Season for Ranked Arena
+    const pvpSeason = await prisma.pvpSeason.upsert({
+        where: { id: 'e2e-season-1' },
+        update: { isActive: true },
+        create: {
+            id: 'e2e-season-1',
+            name: 'Genesis',
+            startDate: new Date(),
+            endDate: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
+            isActive: true,
+            rewards: []
+        }
+    });
+    console.log(`✅ PVP Season ensured: ${pvpSeason.id}`);
+
     // 2. Seed Mock Opponents for Duels
     // Create a few users with Titans of different levels
     const opponents = [

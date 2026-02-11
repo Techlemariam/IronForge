@@ -52,13 +52,13 @@ const SetItem: React.FC<SetItemProps> = ({
   const getRarityStyles = (rarity?: string) => {
     switch (rarity) {
       case "legendary":
-        return "bg-gradient-to-r from-zinc-950 to-[#ff8000]/10 border-[#ff8000] text-[#ff8000] shadow-[0_0_20px_rgba(255,128,0,0.3)]";
+        return "bg-gradient-to-r from-zinc-950 to-legend/10 border-legend text-legend shadow-[0_0_20px_rgba(255,128,0,0.3)]";
       case "epic":
-        return "bg-gradient-to-r from-zinc-950 to-[#a335ee]/10 border-[#a335ee] text-[#a335ee] shadow-[0_0_15px_rgba(163,53,238,0.2)]";
+        return "bg-gradient-to-r from-zinc-950 to-warp/10 border-warp text-warp shadow-[0_0_15px_rgba(163,53,238,0.2)]";
       case "rare":
-        return "border-[#0070dd] text-[#0070dd] shadow-[0_0_10px_rgba(0,112,221,0.1)]";
+        return "border-pulse text-pulse shadow-[0_0_10px_rgba(0,112,221,0.1)]";
       case "uncommon":
-        return "border-[#1eff00] text-[#1eff00]";
+        return "border-venom text-venom";
       default:
         return "border-zinc-800 text-zinc-600";
     }
@@ -91,7 +91,7 @@ const SetItem: React.FC<SetItemProps> = ({
               <>
                 <span>{set.completedReps} reps</span>
                 {set.rarity === "legendary" && (
-                  <span className="text-[9px] bg-[#ff8000] text-black px-1 rounded font-black animate-pulse">
+                  <span className="text-[9px] bg-legend text-black px-1 rounded font-black animate-pulse">
                     PR
                   </span>
                 )}

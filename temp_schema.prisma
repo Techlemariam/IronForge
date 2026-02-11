@@ -1,0 +1,997 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id                      String                  @id @default(cuid())
+  heroName                String?
+  email                   String?                 @unique
+  gold                    Int                     @default(0)
+  level                   Int                     @default(1)
+  totalExperience         Int                     @default(0)
+  kineticEnergy           Int                     @default(0)
+  bodyWeight              Float                   @default(75.0)
+  intervalsApiKey         String?
+  intervalsAthleteId      String?
+  hevyApiKey              String?
+  stravaAccessToken       String?
+  stravaRefreshToken      String?
+  stravaExpiresAt         Int?
+  stravaAthleteId         String?
+  prioritizeHyperPro      Boolean                 @default(false)
+  ftpCycle                Int?                    @default(200)
+  ftpRun                  Int?                    @default(250)
+  lthr                    Int?                    @default(170)
+  maxHr                   Int?                    @default(190)
+  restingHr               Int?                    @default(60)
+  hrv                     Float?                  @default(0.0)
+  hrZones                 Json?
+  powerZonesCycle         Json?
+  powerZonesRun           Json?
+  createdAt               DateTime                @default(now())
+  updatedAt               DateTime                @updatedAt
+  lastLoginDate           DateTime?
+  loginStreak             Int                     @default(0)
+  longestLoginStreak      Int                     @default(0)
+  notificationPreferences Json?
+  activePath              String?                 @default("WARDEN")
+  currentMacroCycle       String?                 @default("ALPHA")
+  mobilityLevel           String?                 @default("NONE")
+  recoveryLevel           String?                 @default("NONE")
+  subscriptionTier        SubscriptionTier        @default(FREE)
+  subscriptionStatus      String?
+  subscriptionExpiry      DateTime?
+  city                    String?
+  country                 String?
+  faction                 Faction                 @default(HORDE)
+  activeTitleId           String?
+  guildId                 String?
+  pocketCastsEnabled      Boolean                 @default(false)
+  pocketCastsToken        String?
+  homeLatitude            Float?
+  homeLongitude           Float?
+  consecutiveStalls       Int                     @default(0)
+  macroCycleStartDate     DateTime                @default(now())
+  nutritionMode           String?                 @default("MAINTENANCE")
+  archetype               Archetype               @default(WARDEN) @map("archetype")
+  archetypeSetAt          DateTime?
+  hasCompletedOnboarding  Boolean                 @default(false)
+  garminAccessToken       String?
+  garminConnected         Boolean                 @default(false)
+  garminRefreshToken      String?
+  garminUserSecret        String?
+  garminUserToken         String?
+  preferences             Json?
+  bodyMetrics             BodyMetric[]
+  cardioLogs              CardioLog[]
+  combatSession           CombatSession?
+  challengesSent          DuelChallenge[]         @relation("DuelChallenger")
+  challengesReceived      DuelChallenge[]         @relation("DuelDefender")
+  duelsWon                DuelChallenge[]         @relation("DuelWinner")
+  exerciseLogs            ExerciseLog[]
+  following               Follow[]                @relation("UserFollowing")
+  followedBy              Follow[]                @relation("UserFollowedBy")
+  friendshipsA            Friendship[]            @relation("FriendshipA")
+  friendshipsB            Friendship[]            @relation("FriendshipB")
+  gauntletRuns            GauntletRun[]
+  grimoireEntries         GrimoireEntry[]
+  ledGuild                Guild?                  @relation("GuildLeader")
+  guildContributions      GuildRaidContribution[]
+  InventorySlot           InventorySlot[]
+  meditationLogs          MeditationLog[]
+  mobilityLogs            MobilityLog[]
+  notifications           Notification[]
+  oracleMessages          OracleMessage[]
+  pushSubscriptions       PushSubscription[]
+  pvpProfile              PvpProfile?
+  pvpRatings              PvpRating[]
+  skillPresets            SkillPreset[]
+  ownedTiles              TerritoryTile[]         @relation("TileOwner")
+  tileControls            TileControl[]
+  titan                   Titan?
+  createdPrograms         TrainingProgram[]       @relation("ProgramCreator")
+  unlockedMonsters        UnlockedMonster[]
+  activeTitle             Title?                  @relation("ActiveTitle", fields: [activeTitleId], references: [id])
+  guild                   Guild?                  @relation(fields: [guildId], references: [id])
+  achievements            UserAchievement[]
+  userBattlePasses        UserBattlePass[]
+  userChallenges          UserChallenge[]
+  equipment               UserEquipment[]
+  skills                  UserSkill[]
+  titles                  UserTitle[]
+  wardensManifest         WardensManifest?
+  weeklyPlans             WeeklyPlan[]
+  workoutTemplates        WorkoutTemplate[]
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  type      String
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model CombatSession {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  bossId      String
+  bossHp      Int
+  bossMaxHp   Int
+  playerHp    Int
+  playerMaxHp Int
+  turnCount   Int      @default(0)
+  isVictory   Boolean  @default(false)
+  isDefeat    Boolean  @default(false)
+  logs        Json[]
+  updatedAt   DateTime @updatedAt
+  createdAt   DateTime @default(now())
+  expiresAt   DateTime
+  user        User     @relation(fields: [userId], references: [id])
+}
+
+model Titan {
+  id              String        @id @default(cuid())
+  userId          String        @unique
+  name            String        @default("Unnamed Titan")
+  level           Int           @default(1)
+  xp              Int           @default(0)
+  currentHp       Int           @default(100)
+  maxHp           Int           @default(100)
+  strength        Int           @default(10)
+  vitality        Int           @default(10)
+  endurance       Int           @default(10)
+  agility         Int           @default(10)
+  willpower       Int           @default(10)
+  mood            String        @default("NEUTRAL")
+  dailyDecree     Json?
+  streak          Int           @default(0)
+  currentBuff     Json?
+  buffExpiresAt   DateTime?
+  hrvBaseline     Float?
+  isInjured       Boolean       @default(false)
+  isResting       Boolean       @default(false)
+  lastActive      DateTime      @default(now())
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  currentEnergy   Int           @default(100)
+  maxEnergy       Int           @default(100)
+  cardioIndex     Float         @default(0)
+  lastPowerCalcAt DateTime?
+  mrvAdherence    Float         @default(1.0)
+  powerRating     Float         @default(0)
+  strengthIndex   Float         @default(0)
+  user            User          @relation(fields: [userId], references: [id])
+  memories        TitanMemory[]
+  scars           TitanScar[]
+}
+
+model TitanMemory {
+  id          String   @id @default(cuid())
+  titanId     String
+  type        String
+  description String
+  importance  Int      @default(1)
+  occurredAt  DateTime @default(now())
+  titan       Titan    @relation(fields: [titanId], references: [id])
+}
+
+model TitanScar {
+  id        String   @id @default(cuid())
+  titanId   String
+  location  String
+  source    String
+  isVisible Boolean  @default(true)
+  createdAt DateTime @default(now())
+  titan     Titan    @relation(fields: [titanId], references: [id])
+}
+
+model Follow {
+  followerId  String
+  followingId String
+  createdAt   DateTime @default(now())
+  follower    User     @relation("UserFollowing", fields: [followerId], references: [id])
+  following   User     @relation("UserFollowedBy", fields: [followingId], references: [id])
+
+  @@id([followerId, followingId])
+}
+
+model Friendship {
+  id        String           @id @default(cuid())
+  userAId   String
+  userBId   String
+  status    FriendshipStatus @default(PENDING)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+  userA     User             @relation("FriendshipA", fields: [userAId], references: [id])
+  userB     User             @relation("FriendshipB", fields: [userBId], references: [id])
+
+  @@unique([userAId, userBId])
+}
+
+model CardioLog {
+  id          Int      @id @default(autoincrement())
+  userId      String
+  date        DateTime @default(now())
+  intervalsId String   @unique
+  type        String
+  duration    Int
+  load        Float
+  averageHr   Float?
+  user        User     @relation(fields: [userId], references: [id])
+
+  @@index([userId, date])
+}
+
+model Title {
+  id             String      @id @default(cuid())
+  name           String
+  description    String?
+  conditionType  String
+  conditionValue Int
+  activeUsers    User[]      @relation("ActiveTitle")
+  users          UserTitle[]
+}
+
+model UserTitle {
+  userId     String
+  titleId    String
+  unlockedAt DateTime @default(now())
+  title      Title    @relation(fields: [titleId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
+
+  @@id([userId, titleId])
+}
+
+model ExerciseLog {
+  id               String    @id @default(cuid())
+  userId           String
+  exerciseId       String
+  date             DateTime  @default(now())
+  sets             Json
+  notes            String?
+  weight           Float?
+  reps             Int?
+  isPersonalRecord Boolean   @default(false)
+  archetype        Archetype @default(WARDEN)
+  exercise         Exercise  @relation(fields: [exerciseId], references: [id])
+  user             User      @relation(fields: [userId], references: [id])
+
+  @@index([userId, date])
+}
+
+model Exercise {
+  id               String        @id @default(cuid())
+  name             String
+  muscleGroup      String
+  secondaryMuscles String[]
+  equipment        String
+  videoUrl         String?
+  instructions     String?
+  logs             ExerciseLog[]
+}
+
+model WorkoutTemplate {
+  id        String   @id @default(cuid())
+  userId    String
+  name      String
+  exercises Json
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model BodyMetric {
+  id           String   @id @default(cuid())
+  userId       String
+  date         DateTime @default(now())
+  weight       Float?
+  bodyFat      Float?
+  measurements Json?
+  photoUrl     String?
+  user         User     @relation(fields: [userId], references: [id])
+}
+
+model MeditationLog {
+  id              Int      @id @default(autoincrement())
+  userId          String
+  date            DateTime @default(now())
+  durationMinutes Int
+  source          String
+  user            User     @relation(fields: [userId], references: [id])
+
+  @@index([userId, date])
+}
+
+model GrimoireEntry {
+  id          String   @id @default(cuid())
+  userId      String
+  date        DateTime @default(now())
+  type        String
+  title       String
+  description String?
+  rarity      String   @default("common")
+  metadata    Json?
+  user        User     @relation(fields: [userId], references: [id])
+
+  @@index([userId, date])
+}
+
+model UnlockedMonster {
+  userId     String
+  monsterId  String
+  kills      Int      @default(0)
+  unlockedAt DateTime @default(now())
+  monster    RaidBoss @relation(fields: [monsterId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
+
+  @@id([userId, monsterId])
+}
+
+model UserSkill {
+  userId   String
+  skillId  String
+  status   String  @default("LOCKED")
+  unlocked Boolean @default(false)
+  user     User    @relation(fields: [userId], references: [id])
+
+  @@id([userId, skillId])
+}
+
+model UserAchievement {
+  userId        String
+  achievementId String
+  unlockedAt    DateTime    @default(now())
+  achievement   Achievement @relation(fields: [achievementId], references: [id])
+  user          User        @relation(fields: [userId], references: [id])
+
+  @@id([userId, achievementId])
+}
+
+model UserEquipment {
+  userId      String
+  equipmentId String
+  isOwned     Boolean @default(true)
+  equipped    Boolean @default(false)
+  item        Item    @relation(fields: [equipmentId], references: [id])
+  user        User    @relation(fields: [userId], references: [id])
+
+  @@id([userId, equipmentId])
+}
+
+model Item {
+  id            String          @id @default(cuid())
+  name          String
+  description   String
+  type          String
+  rarity        String
+  power         Int             @default(0)
+  image         String?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  equipmentType EquipmentType?
+  users         UserEquipment[]
+}
+
+model Monster {
+  id          String   @id @default(cuid())
+  name        String
+  title       String
+  description String
+  type        String
+  difficulty  String
+  level       Int      @default(1)
+  hp          Int      @default(100)
+  weakness    String?
+  stats       Json
+  image       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model RaidBoss {
+  id               String            @id
+  name             String
+  totalHp          BigInt            @map("total_hp")
+  currentHp        BigInt            @map("current_hp")
+  image            String?
+  description      String?
+  rewards          String[]
+  isActive         Boolean           @default(true) @map("is_active")
+  createdAt        DateTime          @default(now()) @map("created_at")
+  regionId         String            @default("iron_forge")
+  levelReq         Int               @default(1)
+  unlockedMonsters UnlockedMonster[]
+  region           WorldRegion       @relation(fields: [regionId], references: [id])
+
+  @@map("raid_bosses")
+}
+
+model WorldRegion {
+  id          String     @id
+  name        String
+  description String
+  image       String?
+  levelReq    Int        @default(1)
+  coordX      Int        @default(0)
+  coordY      Int        @default(0)
+  createdAt   DateTime   @default(now()) @map("created_at")
+  bosses      RaidBoss[]
+
+  @@map("world_regions")
+}
+
+model ChatMessage {
+  id        String   @id @default(uuid())
+  userName  String   @map("user_name")
+  message   String
+  timestamp DateTime @default(now())
+  type      String   @default("CHAT")
+
+  @@map("chat_messages")
+}
+
+model PvpProfile {
+  userId            String   @id
+  rankScore         Int      @default(1000)
+  wins              Int      @default(0)
+  losses            Int      @default(0)
+  totalDamageDealt  BigInt   @default(0)
+  highestWilksScore Float    @default(0)
+  season            Int      @default(1)
+  updatedAt         DateTime @updatedAt
+  duelElo           Int      @default(1200)
+  duelsWon          Int      @default(0)
+  duelsLost         Int      @default(0)
+  weeklyDuels       Int      @default(0)
+  lastDuelReset     DateTime @default(now())
+  user              User     @relation(fields: [userId], references: [id])
+}
+
+model BattleLog {
+  id         String   @id @default(cuid())
+  attackerId String
+  defenderId String
+  winnerId   String
+  timestamp  DateTime @default(now())
+  battleType String   @default("DUEL")
+  logData    Json?
+}
+
+model PvpSeason {
+  id           String      @id @default(cuid())
+  name         String
+  startDate    DateTime
+  endDate      DateTime
+  isActive     Boolean     @default(false)
+  rewards      Json
+  matches      PvpMatch[]
+  participants PvpRating[]
+}
+
+model PvpRating {
+  id         String    @id @default(cuid())
+  userId     String
+  seasonId   String
+  rating     Int       @default(1200)
+  peakRating Int       @default(1200)
+  wins       Int       @default(0)
+  losses     Int       @default(0)
+  rank       String    @default("BRONZE")
+  season     PvpSeason @relation(fields: [seasonId], references: [id])
+  user       User      @relation(fields: [userId], references: [id])
+
+  @@unique([userId, seasonId])
+  @@index([seasonId, rating])
+}
+
+model PvpMatch {
+  id            String        @id @default(cuid())
+  seasonId      String
+  player1Id     String
+  player2Id     String
+  winnerId      String?
+  player1Rating Int
+  player2Rating Int
+  ratingChange  Int
+  createdAt     DateTime      @default(now())
+  emoteLogs     PvpEmoteLog[]
+  season        PvpSeason     @relation(fields: [seasonId], references: [id])
+
+  @@index([seasonId])
+  @@index([player1Id])
+  @@index([player2Id])
+}
+
+model WeeklyPlan {
+  id        String   @id @default(cuid())
+  userId    String
+  weekStart DateTime
+  plan      Json
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@index([userId, weekStart])
+}
+
+model Challenge {
+  id           String          @id @default(cuid())
+  code         String          @unique
+  title        String
+  description  String
+  type         ChallengeType
+  startDate    DateTime        @default(now())
+  endDate      DateTime
+  criteria     Json
+  rewards      Json
+  userProgress UserChallenge[]
+}
+
+model UserChallenge {
+  userId      String
+  challengeId String
+  progress    Float     @default(0)
+  completed   Boolean   @default(false)
+  claimed     Boolean   @default(false)
+  updatedAt   DateTime  @updatedAt
+  challenge   Challenge @relation(fields: [challengeId], references: [id])
+  user        User      @relation(fields: [userId], references: [id])
+
+  @@id([userId, challengeId])
+}
+
+model GauntletRun {
+  id           String   @id @default(cuid())
+  userId       String
+  date         DateTime @default(now())
+  wavesCleared Int
+  totalDamage  Int
+  maxHeartRate Int?
+  avgHeartRate Int?
+  duration     Int
+  difficulty   String   @default("NORMAL")
+  user         User     @relation(fields: [userId], references: [id])
+
+  @@index([userId, wavesCleared])
+}
+
+model Guild {
+  id          String      @id @default(cuid())
+  name        String      @unique
+  tag         String      @unique
+  description String?
+  leaderId    String      @unique
+  isPublic    Boolean     @default(true)
+  minLevel    Int         @default(1)
+  xp          Int         @default(0)
+  level       Int         @default(1)
+  createdAt   DateTime    @default(now())
+  powerRating Float       @default(0)
+  leader      User        @relation("GuildLeader", fields: [leaderId], references: [id])
+  raids       GuildRaid[]
+  territories Territory[] @relation("GuildTerritories")
+  members     User[]
+}
+
+model Territory {
+  id             String                  @id @default(cuid())
+  name           String
+  region         String
+  type           TerritoryType           @default(TRAINING_GROUNDS)
+  bonuses        Json
+  coordX         Int                     @default(0)
+  coordY         Int                     @default(0)
+  controlledById String?
+  controlledAt   DateTime?
+  createdAt      DateTime                @default(now())
+  updatedAt      DateTime                @updatedAt
+  controlledBy   Guild?                  @relation("GuildTerritories", fields: [controlledById], references: [id])
+  contestEntries TerritoryContestEntry[]
+  history        TerritoryHistory[]
+
+  @@index([region])
+  @@index([controlledById])
+}
+
+model TerritoryContestEntry {
+  id           String    @id @default(cuid())
+  territoryId  String
+  guildId      String
+  weekNumber   Int
+  year         Int
+  totalVolume  Float     @default(0)
+  workoutCount Int       @default(0)
+  xpEarned     Int       @default(0)
+  memberCount  Int       @default(0)
+  territory    Territory @relation(fields: [territoryId], references: [id])
+
+  @@unique([territoryId, guildId, weekNumber, year])
+  @@index([territoryId, weekNumber, year])
+}
+
+model TerritoryHistory {
+  id          String    @id @default(cuid())
+  territoryId String
+  guildId     String
+  claimedAt   DateTime  @default(now())
+  lostAt      DateTime?
+  weekNumber  Int
+  year        Int
+  territory   Territory @relation(fields: [territoryId], references: [id])
+}
+
+model GuildRaid {
+  id            String                  @id @default(cuid())
+  guildId       String
+  bossName      String
+  totalHp       Int
+  currentHp     Int
+  startDate     DateTime                @default(now())
+  endDate       DateTime
+  guild         Guild                   @relation(fields: [guildId], references: [id])
+  contributions GuildRaidContribution[]
+}
+
+model GuildRaidContribution {
+  id        String    @id @default(cuid())
+  raidId    String
+  userId    String
+  damage    Int
+  timestamp DateTime  @default(now())
+  raid      GuildRaid @relation(fields: [raidId], references: [id])
+  user      User      @relation(fields: [userId], references: [id])
+}
+
+model Achievement {
+  id          String            @id @default(cuid())
+  code        String            @unique
+  name        String
+  description String
+  icon        String
+  condition   Json
+  users       UserAchievement[]
+}
+
+model TrainingProgram {
+  id           String        @id @default(cuid())
+  creatorId    String
+  name         String
+  description  String?
+  weeks        Int
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  programWeeks ProgramWeek[]
+  creator      User          @relation("ProgramCreator", fields: [creatorId], references: [id])
+}
+
+model ProgramWeek {
+  id         String           @id @default(cuid())
+  programId  String
+  weekNumber Int
+  focus      String
+  program    TrainingProgram  @relation(fields: [programId], references: [id])
+  workouts   ProgramWorkout[]
+}
+
+model ProgramWorkout {
+  id                  String      @id @default(cuid())
+  weekId              String
+  day                 Int
+  workoutDefinitionId String
+  workoutData         Json
+  week                ProgramWeek @relation(fields: [weekId], references: [id])
+}
+
+model PushSubscription {
+  id        String   @id @default(cuid())
+  userId    String
+  endpoint  String   @unique
+  keys      Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model DuelChallenge {
+  id                  String    @id @default(cuid())
+  challengerId        String
+  defenderId          String
+  status              String    @default("PENDING")
+  startDate           DateTime?
+  endDate             DateTime?
+  challengerScore     Int       @default(0)
+  defenderScore       Int       @default(0)
+  winnerId            String?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+  activityType        String?
+  challengerDistance  Float?    @default(0)
+  defenderDistance    Float?    @default(0)
+  duelType            String?   @default("TITAN_VS_TITAN")
+  durationMinutes     Int?
+  targetDistance      Float?
+  wkgTier             Float?
+  challengerDuration  Float?    @default(0)
+  challengerElevation Float?    @default(0)
+  defenderDuration    Float?    @default(0)
+  defenderElevation   Float?    @default(0)
+  challenger          User      @relation("DuelChallenger", fields: [challengerId], references: [id])
+  defender            User      @relation("DuelDefender", fields: [defenderId], references: [id])
+  winner              User?     @relation("DuelWinner", fields: [winnerId], references: [id])
+
+  @@index([challengerId])
+  @@index([defenderId])
+  @@index([status])
+}
+
+model BattlePassSeason {
+  id           String           @id @default(cuid())
+  name         String
+  code         String           @unique
+  startDate    DateTime
+  endDate      DateTime
+  isActive     Boolean          @default(false)
+  tiers        BattlePassTier[]
+  userProgress UserBattlePass[]
+}
+
+model BattlePassTier {
+  id                String           @id @default(cuid())
+  seasonId          String
+  tierLevel         Int
+  requiredXp        Int
+  freeRewardId      String?
+  premiumRewardId   String?
+  freeRewardData    Json?
+  premiumRewardData Json?
+  season            BattlePassSeason @relation(fields: [seasonId], references: [id])
+
+  @@unique([seasonId, tierLevel])
+}
+
+model UserBattlePass {
+  id          String                @id @default(cuid())
+  userId      String
+  seasonId    String
+  hasPremium  Boolean               @default(false)
+  seasonXp    Int                   @default(0)
+  currentTier Int                   @default(0)
+  season      BattlePassSeason      @relation(fields: [seasonId], references: [id])
+  user        User                  @relation(fields: [userId], references: [id])
+  claims      UserBattlePassClaim[]
+
+  @@unique([userId, seasonId])
+}
+
+model UserBattlePassClaim {
+  id               String         @id @default(cuid())
+  userBattlePassId String
+  tierLevel        Int
+  isPremium        Boolean
+  claimedAt        DateTime       @default(now())
+  battlePass       UserBattlePass @relation(fields: [userBattlePassId], references: [id])
+
+  @@unique([userBattlePassId, tierLevel, isPremium])
+}
+
+model OracleMessage {
+  id        String   @id @default(cuid())
+  userId    String
+  role      String
+  content   String
+  timestamp DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@index([userId, timestamp])
+}
+
+model SkillPreset {
+  id          String   @id @default(cuid())
+  userId      String
+  name        String
+  description String?
+  skillIds    String[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  user        User     @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+}
+
+model TerritoryTile {
+  id             String        @id
+  cityId         String?
+  cityName       String?
+  currentOwnerId String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  currentOwner   User?         @relation("TileOwner", fields: [currentOwnerId], references: [id])
+  controls       TileControl[]
+
+  @@index([cityId])
+  @@index([currentOwnerId])
+}
+
+model TileControl {
+  id             String        @id @default(cuid())
+  tileId         String
+  userId         String
+  controlPoints  Int           @default(0)
+  lastVisitAt    DateTime      @default(now())
+  visitCount     Int           @default(1)
+  dailyVisits    Int           @default(1)
+  lastDailyReset DateTime      @default(now())
+  tile           TerritoryTile @relation(fields: [tileId], references: [id])
+  user           User          @relation(fields: [userId], references: [id])
+
+  @@unique([tileId, userId])
+  @@index([userId])
+  @@index([tileId])
+}
+
+model BattleEmote {
+  id          String        @id @default(cuid())
+  name        String
+  category    String
+  gifPath     String
+  unlockLevel Int           @default(1)
+  isPremium   Boolean       @default(false)
+  seasonCode  String?
+  logs        PvpEmoteLog[]
+
+  @@index([category])
+  @@index([isPremium])
+}
+
+model PvpEmoteLog {
+  id        String      @id @default(cuid())
+  matchId   String
+  senderId  String
+  emoteId   String
+  createdAt DateTime    @default(now())
+  emote     BattleEmote @relation(fields: [emoteId], references: [id])
+  match     PvpMatch    @relation(fields: [matchId], references: [id])
+
+  @@index([matchId])
+  @@index([senderId])
+}
+
+model MobilityExercise {
+  id            String        @id @default(cuid())
+  name          String
+  source        String        @default("ATG")
+  difficulty    String        @default("BEGINNER")
+  durationSecs  Int           @default(60)
+  videoUrl      String?
+  instructions  String?
+  costCns       Float         @default(0.2)
+  costMuscular  Float         @default(0.15)
+  costMetabolic Float         @default(0.05)
+  targetRegions Json
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  logs          MobilityLog[]
+
+  @@index([source])
+  @@index([difficulty])
+}
+
+model MobilityLog {
+  id                String           @id @default(cuid())
+  userId            String
+  exerciseId        String
+  date              DateTime         @default(now())
+  durationSecs      Int
+  notes             String?
+  xpEarned          Int              @default(0)
+  passiveLayerLevel String?
+  exercise          MobilityExercise @relation(fields: [exerciseId], references: [id])
+  user              User             @relation(fields: [userId], references: [id])
+
+  @@index([userId, date])
+  @@index([exerciseId])
+}
+
+model WardensManifest {
+  id             String   @id @default(cuid())
+  userId         String   @unique
+  phase          String
+  phaseStartDate DateTime @default(now())
+  phaseWeek      Int      @default(1)
+  autoRotate     Boolean  @default(true)
+  privacyHealth  Boolean  @default(true)
+  privacyPublic  Boolean  @default(true)
+  goals          Json
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  user           User     @relation(fields: [userId], references: [id])
+}
+
+model ActiveSession {
+  id               String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  host_id          String
+  created_at       DateTime @default(now()) @db.Timestamptz(6)
+  status           String   @default("waiting")
+  workout_name     String?
+  max_participants Int?     @default(4)
+  invite_code      String?  @unique
+
+  @@map("active_sessions")
+}
+
+model SessionParticipant {
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  session_id     String   @db.Uuid
+  user_id        String
+  hero_name      String?
+  joined_at      DateTime @default(now()) @db.Timestamptz(6)
+  last_heartbeat DateTime @default(now()) @db.Timestamptz(6)
+  status         String   @default("active")
+
+  @@unique([session_id, user_id])
+  @@map("session_participants")
+}
+
+model InventorySlot {
+  id        String   @id
+  userId    String
+  itemId    String
+  count     Int      @default(0)
+  updatedAt DateTime
+  User      User     @relation(fields: [userId], references: [id])
+
+  @@unique([userId, itemId])
+}
+
+enum FriendshipStatus {
+  PENDING
+  ACCEPTED
+  BLOCKED
+}
+
+enum SubscriptionTier {
+  FREE
+  PRO
+  LIFETIME
+}
+
+enum Faction {
+  ALLIANCE
+  HORDE
+}
+
+enum ChallengeType {
+  DAILY
+  WEEKLY
+  SEASONAL
+}
+
+enum Archetype {
+  JUGGERNAUT
+  PATHFINDER
+  WARDEN
+}
+
+enum EquipmentType {
+  BODYWEIGHT
+  BARBELL
+  DUMBBELL
+  CABLE
+  MACHINE
+  KETTLEBELL
+  BAND
+  HYPER_PRO
+  OTHER
+}
+
+enum TerritoryType {
+  TRAINING_GROUNDS
+  RESOURCE_NODE
+  FORTRESS
+}

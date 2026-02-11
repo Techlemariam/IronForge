@@ -112,21 +112,21 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({
   };
 
   // --- WOW THEME CONSTANTS ---
-  const WOW_GOLD = "text-[#FFD100]";
-  const WOW_GREEN = "text-[#1eff00]";
-  const WOW_GREY = "text-[#9d9d9d]";
+  const WOW_GOLD = "text-gold";
+  const WOW_GREEN = "text-venom";
+  const WOW_GREY = "text-zinc-500";
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 font-serif">
       {/* MAIN FRAME - The "C" Menu */}
-      <div className="relative w-full max-w-4xl bg-[#0f0f11] border-[3px] border-[#444] rounded-lg shadow-[0_0_50px_rgba(0,0,0,0.8)] flex flex-col max-h-[90vh] overflow-hidden">
+      <div className="relative w-full max-w-4xl bg-armor border-[3px] border-steel rounded-lg shadow-[0_0_50px_rgba(0,0,0,0.8)] flex flex-col max-h-[90vh] overflow-hidden">
         {/* TEXTURE OVERLAY */}
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/dark-leather.png')] opacity-50 pointer-events-none"></div>
 
         {/* --- HEADER --- */}
-        <div className="relative h-12 bg-gradient-to-b from-[#2a2a2a] to-[#111] border-b border-[#555] flex items-center justify-between px-4 shrink-0 z-10">
+        <div className="relative h-12 bg-gradient-to-b from-steel/20 to-armor border-b border-steel/50 flex items-center justify-between px-4 shrink-0 z-10">
           <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[#FFD100] to-[#b8860b] border border-white/20 flex items-center justify-center shadow-inner">
+            <div className="w-6 h-6 rounded-full bg-gradient-to-br from-gold to-gold/60 border border-white/20 flex items-center justify-center shadow-inner">
               <User className="w-4 h-4 text-black" />
             </div>
             <span
@@ -137,6 +137,7 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({
           </div>
           <button
             onClick={onClose}
+            aria-label="Close"
             className="text-zinc-400 hover:text-white hover:bg-red-900/50 rounded p-1 transition-colors"
           >
             <X className="w-5 h-5" />
@@ -146,16 +147,16 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({
         {/* --- CONTENT BODY --- */}
         <div className="relative flex-1 flex flex-col md:flex-row overflow-hidden">
           {/* LEFT PANEL: PAPER DOLL (Gear Slots & Avatar) */}
-          <div className="w-full md:w-[45%] bg-[#050505] relative flex flex-col border-r border-[#333]">
+          <div className="w-full md:w-[45%] bg-void relative flex flex-col border-r border-steel/50">
             {/* Top Info */}
-            <div className="p-4 text-center z-10 bg-gradient-to-b from-[#1a1a1a] to-transparent">
+            <div className="p-4 text-center z-10 bg-gradient-to-b from-armor to-transparent">
               <h1 className="text-2xl font-bold text-white tracking-wide drop-shadow-md">
                 Athlete Name
               </h1>
               <div className="text-sm font-sans font-bold text-white flex justify-center gap-2 items-center">
                 <span className={WOW_GOLD}>Level {level}</span>
                 <span className={WOW_GREY}>|</span>
-                <span className={isElite ? "text-[#a335ee]" : "text-[#0070dd]"}>
+                <span className={isElite ? "text-warp" : "text-pulse"}>
                   {currentRank.name}
                 </span>
                 <span className={WOW_GREY}>|</span>
@@ -207,7 +208,7 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({
                 <div className="relative w-40 h-64 bg-zinc-900/50 border border-zinc-700/50 rounded-lg flex flex-col items-center justify-center group overflow-hidden">
                   {/* Render a 3D-ish looking silhouette or the user icon */}
                   <User
-                    className={`w-24 h-24 ${isElite ? "text-[#FFD100]" : "text-zinc-500"} drop-shadow-2xl`}
+                    className={`w-24 h-24 ${isElite ? "text-gold" : "text-zinc-500"} drop-shadow-2xl`}
                   />
                   <div className="absolute bottom-2 text-[10px] text-zinc-500 font-sans uppercase tracking-widest group-hover:text-white transition-colors">
                     Model Viewer
@@ -251,7 +252,7 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({
             </div>
 
             {/* Bottom Bar (Reputation / XP) */}
-            <div className="p-4 bg-[#111] border-t border-[#333] z-10">
+            <div className="p-4 bg-armor border-t border-steel/50 z-10">
               <div className="flex justify-between text-[10px] font-bold uppercase text-zinc-400 mb-1">
                 <span>Experience</span>
                 <span>
@@ -268,14 +269,14 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({
           </div>
 
           {/* RIGHT PANEL: TABS CONTENT */}
-          <div className="w-full md:w-[55%] bg-[#151515] p-0 overflow-y-auto custom-scrollbar relative flex flex-col">
+          <div className="w-full md:w-[55%] bg-void/50 p-0 overflow-y-auto custom-scrollbar relative flex flex-col">
             <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10 pointer-events-none"></div>
 
             {/* TAB: ATTRIBUTES */}
             {activeTab === "attributes" && (
               <>
                 {/* RADAR CHART HERO */}
-                <div className="p-6 bg-[#0a0a0a] border-b border-[#333] relative">
+                <div className="p-6 bg-void border-b border-steel/50 relative">
                   <AttributeRadar attributes={attributes} />
                 </div>
 
@@ -396,7 +397,7 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({
                       key={date}
                       className="bg-zinc-900/50 border border-zinc-800 rounded-lg overflow-hidden group hover:border-zinc-700 transition-colors"
                     >
-                      <div className="bg-[#1a1a1a] px-4 py-2 border-b border-zinc-800 flex justify-between items-center">
+                      <div className="bg-armor px-4 py-2 border-b border-steel/50 flex justify-between items-center">
                         <div className="flex items-center gap-2">
                           <Calendar className="w-3 h-3 text-zinc-500" />
                           <span className="text-xs font-bold font-sans text-zinc-300">
@@ -455,7 +456,7 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({
         </div>
 
         {/* --- FOOTER TABS --- */}
-        <div className="h-10 bg-[#111] border-t border-[#444] flex items-center justify-center gap-2 px-4 z-10">
+        <div className="h-10 bg-armor border-t border-steel flex items-center justify-center gap-2 px-4 z-10">
           <TabButton
             label="Attributes"
             active={activeTab === "attributes"}
@@ -487,18 +488,18 @@ const GearSlot: React.FC<{
   const getBorderColor = () => {
     switch (rarity) {
       case "epic":
-        return "border-[#a335ee]";
+        return "border-warp";
       case "rare":
-        return "border-[#0070dd]";
+        return "border-pulse";
       case "uncommon":
-        return "border-[#1eff00]";
-      default:
-        return "border-[#9d9d9d]";
+        return "border-venom";
+      case "common":
+        return "border-steel";
     }
   };
 
   return (
-    <div className="group relative w-10 h-10 bg-[#1a1a1a] border border-zinc-700 rounded-sm flex items-center justify-center cursor-pointer hover:brightness-125 transition-all">
+    <div className="group relative w-10 h-10 bg-armor border border-steel rounded-sm flex items-center justify-center cursor-pointer hover:brightness-125 transition-all">
       <div
         className={`absolute inset-0 border-2 opacity-50 ${getBorderColor()}`}
       ></div>
@@ -507,14 +508,14 @@ const GearSlot: React.FC<{
       </div>
 
       {/* Tooltip */}
-      <div className="absolute left-12 top-0 hidden group-hover:block z-50 w-48 bg-[#050505] border border-zinc-600 rounded p-2 pointer-events-none shadow-xl">
+      <div className="absolute left-12 top-0 hidden group-hover:block z-50 w-48 bg-void border border-steel rounded p-2 pointer-events-none shadow-xl">
         <div
           className={`font-bold text-sm ${rarity === "epic"
-            ? "text-[#a335ee]"
+            ? "text-warp"
             : rarity === "rare"
-              ? "text-[#0070dd]"
+              ? "text-pulse"
               : rarity === "uncommon"
-                ? "text-[#1eff00]"
+                ? "text-venom"
                 : "text-white"
             }`}
         >
@@ -523,7 +524,7 @@ const GearSlot: React.FC<{
         <div className="text-[10px] text-white mt-1">
           Item Level {Math.floor(Math.random() * 100) + 200}
         </div>
-        <div className="text-[10px] text-[#ffd700] mt-1">
+        <div className="text-[10px] text-gold mt-1">
           &lt;Right Click to Equip&gt;
         </div>
       </div>
@@ -542,12 +543,12 @@ const StatRow: React.FC<{
 
   // FM Coloring: 16-20 Gold, 11-15 Green, 6-10 White, 1-5 Grey
   let valueColor = "text-zinc-500";
-  if (numericValue > 15) valueColor = "text-[#ffd700]";
-  else if (numericValue > 10) valueColor = "text-[#1eff00]";
+  if (numericValue > 15) valueColor = "text-gold";
+  else if (numericValue > 10) valueColor = "text-venom";
   else if (numericValue > 5) valueColor = "text-white";
 
   return (
-    <div className="flex justify-between items-center text-sm group relative cursor-help border-b border-[#222] py-1 last:border-0 hover:bg-[#1a1a1a] px-2 rounded">
+    <div className="flex justify-between items-center text-sm group relative cursor-help border-b border-steel/20 py-1 last:border-0 hover:bg-armor px-2 rounded">
       <div className="flex flex-col">
         <span className="text-zinc-400 group-hover:text-white transition-colors text-xs uppercase font-bold tracking-wider">
           {label}
@@ -557,7 +558,7 @@ const StatRow: React.FC<{
         )}
       </div>
       <span
-        className={`font-mono font-bold text-sm ${valueColor} bg-[#000] px-2 py-0.5 rounded border border-[#333]`}
+        className={`font-mono font-bold text-sm ${valueColor} bg-void px-2 py-0.5 rounded border border-steel/30`}
       >
         {value}
       </span>
@@ -580,8 +581,8 @@ const TabButton: React.FC<{
       onClick={onClick}
       className={`px-4 py-1 rounded-t-lg text-xs font-bold transition-all
             ${active
-          ? "bg-[#1a1a1a] text-white border-x border-t border-[#444] -mb-1 pb-2"
-          : "bg-[#0f0f11] text-zinc-500 hover:text-zinc-300 hover:bg-[#151515]"
+          ? "bg-armor text-white border-x border-t border-steel -mb-1 pb-2"
+          : "bg-void text-zinc-500 hover:text-zinc-300 hover:bg-armor"
         }
         `}
     >

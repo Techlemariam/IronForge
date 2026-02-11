@@ -78,7 +78,7 @@ const IronMines: React.FC<IronMinesProps> = ({
             </button>
             <button
               onClick={handleDiscard}
-              className="w-full py-3 bg-zinc-900 border border-zinc-700 text-zinc-400 uppercase"
+              className="w-full py-3 bg-armor border border-steel/50 text-zinc-400 uppercase"
             >
               Discard
             </button>
@@ -108,7 +108,7 @@ const IronMines: React.FC<IronMinesProps> = ({
   if (completed) {
     const sessionType = IntegrationService.detectSessionType(activeSession);
     return (
-      <div className="flex flex-col items-center justify-center h-screen bg-zinc-950 p-6 text-center space-y-6 animate-fade-in font-serif">
+      <div className="flex flex-col items-center justify-center h-screen bg-void p-6 text-center space-y-6 animate-fade-in font-serif">
         <div className="w-24 h-24 rounded-full bg-green-900/20 flex items-center justify-center border-2 border-green-800 text-green-500 mb-4 shadow-[0_0_30px_rgba(34,197,94,0.2)]">
           <CheckCircle2 className="w-12 h-12" />
         </div>
@@ -176,7 +176,7 @@ const IronMines: React.FC<IronMinesProps> = ({
     <>
       {showAbandonConfirm && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-sm p-6 animate-fade-in font-serif">
-          <div className="bg-[#111] border-2 border-red-900 w-full max-w-sm rounded-lg p-6 shadow-[0_0_50px_rgba(220,38,38,0.3)]">
+          <div className="bg-armor border-2 border-red-900 w-full max-w-sm rounded-lg p-6 shadow-[0_0_50px_rgba(220,38,38,0.3)]">
             <h3 className="text-red-500 font-bold uppercase text-lg mb-4 flex items-center gap-2">
               <AlertTriangle className="w-6 h-6" />
               Abandon Quest?
@@ -194,7 +194,7 @@ const IronMines: React.FC<IronMinesProps> = ({
               </button>
               <button
                 onClick={() => setShowAbandonConfirm(false)}
-                className="w-full py-3 bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white font-mono text-xs uppercase rounded"
+                className="w-full py-3 bg-armor border border-steel/50 text-zinc-400 hover:text-white font-mono text-xs uppercase rounded"
               >
                 Cancel
               </button>

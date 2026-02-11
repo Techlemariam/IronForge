@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { PvpSeason  } from "@/types/prisma";
+import { PvpSeason } from "@/types/prisma";
 import { PlayerRating } from "@/actions/pvp/ranked";
 import { RankBadge } from "@/components/game/pvp/RankBadge";
 import { MatchmakingModal } from "./MatchmakingModal";
@@ -105,7 +105,7 @@ export function RankedArenaClient({ season, playerRating, leaderboard, userId, f
 
             {/* LEADERBOARD & REWARDS */}
             <Tabs defaultValue="leaderboard" className="w-full">
-                <TabsList className="bg-zinc-900 border border-zinc-800">
+                <TabsList className="bg-zinc-900 border border-zinc-800" aria-label="Arena Navigation">
                     <TabsTrigger value="leaderboard" className="font-bold uppercase tracking-wider text-xs">Global Leaderboard</TabsTrigger>
                     <TabsTrigger value="rewards" className="font-bold uppercase tracking-wider text-xs">Season Rewards</TabsTrigger>
                 </TabsList>

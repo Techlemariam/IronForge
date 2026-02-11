@@ -73,7 +73,7 @@ export default function WorldMap({ onClose, onEnterCombat }: WorldMapProps) {
       {/* Back Button */}
       <button
         onClick={onClose}
-        className="absolute top-6 right-6 z-20 px-4 py-2 bg-zinc-900/80 border border-zinc-800 text-zinc-400 hover:text-white uppercase text-xs font-bold tracking-widest rounded transition-colors backdrop-blur-md"
+        className="absolute top-6 right-6 z-20 px-4 py-2 bg-[var(--color-void)]/80 border border-[var(--color-steel)] text-[var(--color-steel)] hover:text-white uppercase text-xs font-bold tracking-widest rounded transition-colors backdrop-blur-md"
       >
         Return to Citadel
       </button>
@@ -82,17 +82,17 @@ export default function WorldMap({ onClose, onEnterCombat }: WorldMapProps) {
         className="absolute inset-0 opacity-20"
         style={{
           backgroundImage:
-            "radial-gradient(circle at 1px 1px, #333 1px, transparent 0)",
+            "radial-gradient(circle at 1px 1px, var(--color-steel) 1px, transparent 0)",
           backgroundSize: "40px 40px",
         }}
       ></div>
 
       {/* Title Overlay */}
       <div className="absolute top-6 left-6 z-10 pointer-events-none">
-        <h2 className="text-4xl font-black italic uppercase text-zinc-800 tracking-tighter">
+        <h2 className="text-4xl font-black italic uppercase text-[var(--color-steel)] tracking-tighter">
           Known World
         </h2>
-        <div className="flex items-center gap-2 text-zinc-600 text-xs font-mono mt-1">
+        <div className="flex items-center gap-2 text-[var(--color-steel)] text-xs font-mono mt-1">
           <Compass className="w-4 h-4" />
           <span>SECTOR 7-G</span>
         </div>
@@ -127,13 +127,12 @@ export default function WorldMap({ onClose, onEnterCombat }: WorldMapProps) {
             {/* Ping / Ripple Effect if Unlocked */}
             {region.isUnlocked && (
               <div
-                className={`absolute inset-0 rounded-full animate-ping opacity-20 ${
-                  region.id === "iron_forge"
+                className={`absolute inset-0 rounded-full animate-ping opacity-20 ${region.id === "iron_forge"
                     ? "bg-orange-500"
                     : region.id === "shadow_realms"
                       ? "bg-purple-500"
                       : "bg-white"
-                }`}
+                  }`}
               ></div>
             )}
 
@@ -141,15 +140,14 @@ export default function WorldMap({ onClose, onEnterCombat }: WorldMapProps) {
             <div
               className={`
                             w-12 h-12 md:w-16 md:h-16 rounded-full border-2 flex items-center justify-center shadow-lg transition-all duration-300 relative z-10
-                            ${
-                              region.isUnlocked
-                                ? region.id === "iron_forge"
-                                  ? "bg-zinc-900 border-orange-500 text-orange-500 hover:shadow-[0_0_30px_rgba(249,115,22,0.6)]"
-                                  : region.id === "shadow_realms"
-                                    ? "bg-zinc-900 border-purple-500 text-purple-500 hover:shadow-[0_0_30px_rgba(168,85,247,0.6)]"
-                                    : "bg-zinc-950 border-white text-white hover:shadow-[0_0_30px_rgba(255,255,255,0.4)]"
-                                : "bg-zinc-950 border-zinc-800 text-zinc-700 grayscale cursor-not-allowed"
-                            }
+                            ${region.isUnlocked
+                  ? region.id === "iron_forge"
+                    ? "bg-[var(--color-void)] border-[var(--color-plasma)] text-[var(--color-plasma)] hover:shadow-[0_0_30px_rgba(249,115,22,0.6)]"
+                    : region.id === "shadow_realms"
+                      ? "bg-[var(--color-void)] border-[var(--color-warp)] text-[var(--color-warp)] hover:shadow-[0_0_30px_rgba(163,53,238,0.6)]"
+                      : "bg-[var(--color-void)] border-white text-white hover:shadow-[0_0_30px_rgba(255,255,255,0.4)]"
+                  : "bg-[var(--color-void)] border-[var(--color-steel)] text-[var(--color-steel)] grayscale cursor-not-allowed"
+                }
                         `}
             >
               {region.isUnlocked ? (
@@ -162,8 +160,8 @@ export default function WorldMap({ onClose, onEnterCombat }: WorldMapProps) {
             {/* Label */}
             <div
               className={`
-                            absolute top-full mt-3 left-1/2 -translate-x-1/2 whitespace-nowrap px-3 py-1 rounded bg-black/90 border border-zinc-800 text-xs font-bold uppercase tracking-widest backdrop-blur-sm transition-all
-                            ${region.name === "???" ? "text-zinc-700 blur-[2px]" : region.isUnlocked ? "text-zinc-300 group-hover:text-white group-hover:border-zinc-500" : "text-zinc-600"}
+                            absolute top-full mt-3 left-1/2 -translate-x-1/2 whitespace-nowrap px-3 py-1 rounded bg-[var(--color-void)]/90 border border-[var(--color-steel)] text-xs font-bold uppercase tracking-widest backdrop-blur-sm transition-all
+                            ${region.name === "???" ? "text-[var(--color-steel)] blur-[2px]" : region.isUnlocked ? "text-zinc-300 group-hover:text-white group-hover:border-zinc-500" : "text-[var(--color-steel)]"}
                         `}
             >
               {region.name}
@@ -179,14 +177,14 @@ export default function WorldMap({ onClose, onEnterCombat }: WorldMapProps) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
-            className="absolute bottom-6 left-6 right-6 md:left-auto md:right-6 md:w-96 bg-zinc-900/90 border border-[#ffd700]/30 backdrop-blur-xl p-6 rounded-xl shadow-2xl z-20"
+            className="absolute bottom-6 left-6 right-6 md:left-auto md:right-6 md:w-96 bg-[var(--color-armor)]/90 border border-[var(--color-gold)]/30 backdrop-blur-xl p-6 rounded-xl shadow-2xl z-20"
           >
             <div className="flex justify-between items-start mb-4">
               <div>
-                <h3 className="text-2xl font-black italic uppercase text-[#ffd700]">
+                <h3 className="text-2xl font-black italic uppercase text-[var(--color-gold)]">
                   {selectedRegion.name}
                 </h3>
-                <div className="text-xs font-mono text-zinc-500 uppercase tracking-widest">
+                <div className="text-xs font-mono text-[var(--color-steel)] uppercase tracking-widest">
                   Difficulty:{" "}
                   {selectedRegion.levelReq >= 20
                     ? "EXTREME"
@@ -197,7 +195,7 @@ export default function WorldMap({ onClose, onEnterCombat }: WorldMapProps) {
               </div>
               <button
                 onClick={() => setSelectedRegion(null)}
-                className="text-zinc-500 hover:text-white"
+                className="text-[var(--color-steel)] hover:text-white"
               >
                 ✕
               </button>
@@ -209,14 +207,14 @@ export default function WorldMap({ onClose, onEnterCombat }: WorldMapProps) {
 
             <div className="flex items-center gap-4">
               {!selectedRegion.isUnlocked ? (
-                <div className="w-full py-3 bg-zinc-800 text-zinc-500 font-bold uppercase text-center rounded flex items-center justify-center gap-2">
+                <div className="w-full py-3 bg-[var(--color-armor)] text-[var(--color-steel)] font-bold uppercase text-center rounded flex items-center justify-center gap-2">
                   <Lock className="w-4 h-4" /> Requires Level{" "}
                   {selectedRegion.levelReq}
                 </div>
               ) : (
                 <button
                   onClick={handleEnterRegion}
-                  className="w-full py-3 bg-[#ffd700] text-black font-black uppercase tracking-widest rounded hover:bg-white transition-colors"
+                  className="w-full py-3 bg-[var(--color-gold)] text-[var(--color-void)] font-black uppercase tracking-widest rounded hover:bg-white transition-colors"
                 >
                   Enter Region
                 </button>

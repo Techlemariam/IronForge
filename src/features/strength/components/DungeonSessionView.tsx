@@ -177,7 +177,7 @@ const DungeonSessionView: React.FC<IronMinesProps> = ({
       return acc + weight * reps;
     }, 0);
     setTotalHp(Math.max(calculatedHp, 1000));
-     
+
   }, []);
 
   useEffect(() => {
@@ -354,7 +354,7 @@ const DungeonSessionView: React.FC<IronMinesProps> = ({
   };
 
   return (
-    <div className="flex flex-col h-full w-full p-4 md:p-8 animate-fade-in gap-4 bg-[#0a0a0a]">
+    <div className="flex flex-col h-full w-full p-4 md:p-8 animate-fade-in gap-4 bg-void">
       {/* 1. HUD */}
       <div className="flex-shrink-0 relative">
         <DungeonInterface

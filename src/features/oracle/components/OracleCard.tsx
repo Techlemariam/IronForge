@@ -42,11 +42,11 @@ const OracleCard: React.FC<OracleCardProps> = ({
       break;
     case "PR_ATTEMPT":
       theme = {
-        border: "border-[#ffd700]",
+        border: "border-gold",
         bg: "bg-gradient-to-br from-yellow-950/40 to-black",
-        icon: <Skull className="w-6 h-6 text-[#ffd700]" />,
-        accent: "text-[#ffd700]",
-        button: "bg-[#ffd700] text-black font-bold hover:bg-yellow-400",
+        icon: <Skull className="w-6 h-6 text-gold" />,
+        accent: "text-gold",
+        button: "bg-gold text-black font-bold hover:bg-yellow-400",
         glow: "shadow-[0_0_20px_rgba(255,215,0,0.25)] animate-pulse-slow",
       };
       break;
@@ -63,11 +63,11 @@ const OracleCard: React.FC<OracleCardProps> = ({
       break;
     case "GRIND":
       theme = {
-        border: "border-[#c79c6e]",
-        bg: "bg-zinc-900",
-        icon: <TrendingUp className="w-6 h-6 text-[#c79c6e]" />,
-        accent: "text-[#c79c6e]",
-        button: "bg-[#c79c6e] text-[#46321d] font-bold hover:bg-[#d4a87a]",
+        border: "border-clay",
+        bg: "bg-armor",
+        icon: <TrendingUp className="w-6 h-6 text-clay" />,
+        accent: "text-clay",
+        button: "bg-clay text-[#46321d] font-bold hover:bg-clay/80",
         glow: "",
       };
       break;

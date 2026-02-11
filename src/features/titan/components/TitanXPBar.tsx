@@ -59,7 +59,7 @@ export function TitanXPBar({
       : "bg-gradient-to-b from-purple-500 via-purple-600 to-purple-800 shadow-[0_0_15px_rgba(147,51,234,0.5)]";
 
   const containerBorder = isElite
-    ? "border-[#ffd700] shadow-[0_0_10px_rgba(255,215,0,0.3)]"
+    ? "border-gold shadow-[0_0_10px_rgba(255,215,0,0.3)]"
     : "border-zinc-700 shadow-[inset_0_2px_6px_rgba(0,0,0,1)]";
 
   return (
@@ -68,15 +68,15 @@ export function TitanXPBar({
       {showLevelUp && (
         <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black/90 backdrop-blur-md animate-fade-in-fast pointer-events-none">
           {/* Burst Background */}
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-[#ffd700]/20 via-transparent to-transparent animate-pulse-slow"></div>
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-gold/20 via-transparent to-transparent animate-pulse-slow"></div>
 
           {/* Icon */}
           <div className="relative mb-6 animate-slide-up-fade">
-            <ArrowUpCircle className="w-24 h-24 text-[#ffd700] drop-shadow-[0_0_30px_rgba(255,215,0,0.6)]" />
+            <ArrowUpCircle className="w-24 h-24 text-gold drop-shadow-[0_0_30px_rgba(255,215,0,0.6)]" />
             <Sparkles className="absolute -top-4 -right-4 w-12 h-12 text-white animate-spin-slow" />
           </div>
 
-          <h2 className="text-4xl md:text-6xl font-serif font-black text-transparent bg-clip-text bg-gradient-to-b from-[#ffd700] to-[#b8860b] uppercase tracking-[0.2em] mb-4 animate-scale-bounce drop-shadow-lg">
+          <h2 className="text-4xl md:text-6xl font-serif font-black text-transparent bg-clip-text bg-gradient-to-b from-gold to-armor uppercase tracking-[0.2em] mb-4 animate-scale-bounce drop-shadow-lg">
             Level Up
           </h2>
 
@@ -89,7 +89,7 @@ export function TitanXPBar({
             </span>
           </div>
 
-          <div className="mt-8 px-6 py-2 border border-[#ffd700]/50 bg-[#ffd700]/10 rounded-full text-[#ffd700] text-sm uppercase tracking-widest font-bold animate-pulse">
+          <div className="mt-8 px-6 py-2 border border-gold/50 bg-gold/10 rounded-full text-gold text-sm uppercase tracking-widest font-bold animate-pulse">
             Skill Points Awarded
           </div>
 
@@ -117,7 +117,7 @@ export function TitanXPBar({
       <div className="flex justify-between items-end mb-2 px-1">
         <div className="flex items-baseline gap-2">
           <span
-            className={`text-xs font-bold tracking-widest uppercase ${isElite ? "text-[#ffd700]" : "text-zinc-500"}`}
+            className={`text-xs font-bold tracking-widest uppercase ${isElite ? "text-gold" : "text-zinc-500"}`}
           >
             Level
           </span>
@@ -130,7 +130,7 @@ export function TitanXPBar({
 
         <div className="text-right">
           <span
-            className={`font-mono font-bold text-sm ${isElite ? "text-white" : isRested ? "text-blue-400" : "text-[#ffd700]"}`}
+            className={`font-mono font-bold text-sm ${isElite ? "text-white" : isRested ? "text-blue-400" : "text-gold"}`}
           >
             {animatedXP}
             <span className="text-zinc-500 mx-1">/</span>

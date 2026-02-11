@@ -11,6 +11,9 @@
     --color-crisis: #ef4444;    /* Failure / Cursed */
     --color-gold: #eab308;      /* Artifact / Warden */
     --color-cyan: #06b6d4;      /* Pathfinder */
+    --color-clay: #c79c6e;      /* Classic UI / Parchment */
+    --color-warp: #a335ee;      /* Warp / Epic (Purple) */
+    --color-legend: #ff8000;    /* Solar / Legendary (Orange) */
     
     /* Legacy Mappings (Deprecation Bridge) */
     --color-forge-950: var(--color-void);
