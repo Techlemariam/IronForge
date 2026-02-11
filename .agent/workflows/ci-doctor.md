@@ -7,7 +7,7 @@ version: "2.2.0"
 telemetry: "enabled"
 primary_agent: "@infrastructure"
 domain: "ci"
-skills: ["error-analyzer", "gatekeeper", "dependabot-manager", "env-validator", "linter-fixer", "schema-guard", "qodana-linter", "performance-profiler", "zod-schema-validator", "api-mocker", "bio-validator", "prisma-migrator", "a11y-auditor", "coverage-check", "bundle-analyzer", "git-guard", "supabase-inspector", "storybook-bridge"]
+skills: ["error-analyzer", "gatekeeper", "dependabot-manager", "env-validator", "linter-fixer", "schema-guard", "qodana-linter", "performance-profiler", "zod-schema-validator", "api-mocker", "bio-validator", "prisma-migrator", "a11y-auditor", "coverage-check", "bundle-analyzer", "git-guard", "supabase-inspector", "storybook-bridge", "coolify-deploy"]
 ---
 
 # 🩺 CI Doctor (Protocol v2.0)
@@ -118,16 +118,6 @@ pnpm audit --audit-level high || exit 1
 # Check for outdated critical packages
 # Note: Handled by dependabot-manager skill
 echo "✅ Dependencies: Healthy"
-\`\`\`
-
-### 0.7 Infrastructure Health
-
-// turbo
-
-\`\`\`bash
-echo "🔍 Checking Infrastructure..."
-npx tsx scripts/check-infra.ts
-# Note: This checks health of internal/external services
 ```
 
 ### 0.8 Git Hygiene (Branch & Commit)
@@ -200,6 +190,18 @@ fi
 | `Bio: Data sync fail`         | **BIO_SYNC_FAIL** (Use `/bio-validator`)          |
 | `Database: Schema out of sync` | **DB_OUT_OF_SYNC** (Use `/prisma-migrator`)       |
 | `A11y: Contrast/ARIA`         | **ACCESSIBILITY_FAIL** (Use `/a11y-auditor`)      |
+| `Coolify: Deployment failed`  | **COOLIFY_DOWN** (Use `/coolify-deploy`)          |
+
+### 1.5 External Vital Signs (Coolify)
+
+// turbo
+
+```bash
+echo "🔍 Checking Coolify Infrastructure..."
+# Uses coolify-deploy scripts to verify instance health
+/coolify-deploy
+npx tsx scripts/check-infra.ts
+```
 
 ### 1.2 The Qodana Ward (Static Analysis)
 
