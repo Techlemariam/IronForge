@@ -175,7 +175,7 @@ const AvatarViewer: React.FC<AvatarViewerProps> = ({
   return (
     <div className="w-full h-full min-h-[400px] bg-gradient-to-b from-zinc-950 to-black rounded-lg overflow-hidden relative border border-zinc-800">
       <div className="absolute top-4 left-4 z-10">
-        <h3 className="text-[#c79c6e] font-bold uppercase tracking-widest text-xs">
+        <h3 className="text-clay font-bold uppercase tracking-widest text-xs">
           Titan Holo-Projector
         </h3>
         <p className="text-[10px] text-zinc-500 font-mono">
@@ -194,8 +194,8 @@ const AvatarViewer: React.FC<AvatarViewerProps> = ({
           <span className="text-yellow-500">Accumulating</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-2 h-2 bg-[#c79c6e] rounded-full"></div>
-          <span className="text-[#c79c6e]">Optimal</span>
+          <div className="w-2 h-2 bg-clay rounded-full"></div>
+          <span className="text-clay">Optimal</span>
         </div>
       </div>
 

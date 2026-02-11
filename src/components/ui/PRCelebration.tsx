@@ -63,9 +63,9 @@ export const PRCelebration: React.FC<PRCelebrationProps> = ({
                             animate={{ y: 0 }}
                             className="relative mb-6"
                         >
-                            <Trophy className="w-24 h-24 text-amber-500 mx-auto drop-shadow-[0_0_30px_rgba(245,158,11,0.5)]" />
-                            <Sparkles className="w-8 h-8 text-amber-300 absolute -top-2 -right-2 animate-pulse" />
-                            <Sparkles className="w-6 h-6 text-amber-300 absolute -bottom-1 -left-1 animate-pulse" />
+                            <Trophy className="w-24 h-24 text-gold mx-auto drop-shadow-[0_0_30px_rgba(234,179,8,0.5)]" />
+                            <Sparkles className="w-8 h-8 text-gold/80 absolute -top-2 -right-2 animate-pulse" />
+                            <Sparkles className="w-6 h-6 text-gold/80 absolute -bottom-1 -left-1 animate-pulse" />
                         </motion.div>
 
                         {/* Title */}
@@ -84,7 +84,7 @@ export const PRCelebration: React.FC<PRCelebrationProps> = ({
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 transition={{ delay: 0.2 }}
-                                className="text-zinc-400 text-lg mb-4 uppercase tracking-widest"
+                                className="text-steel text-lg mb-4 uppercase tracking-widest"
                             >
                                 {exerciseName}
                             </motion.p>
@@ -95,7 +95,7 @@ export const PRCelebration: React.FC<PRCelebrationProps> = ({
                             initial={{ scale: 0.8, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
                             transition={{ delay: 0.2, type: "spring" }}
-                            className="text-7xl md:text-8xl font-black text-amber-500 mb-4 drop-shadow-[0_0_20px_rgba(245,158,11,0.3)]"
+                            className="text-7xl md:text-8xl font-black text-gold mb-4 drop-shadow-[0_0_20px_rgba(234,179,8,0.3)]"
                         >
                             {newReps}
                         </motion.div>
@@ -106,7 +106,7 @@ export const PRCelebration: React.FC<PRCelebrationProps> = ({
                                 initial={{ y: 10, opacity: 0 }}
                                 animate={{ y: 0, opacity: 1 }}
                                 transition={{ delay: 0.3 }}
-                                className="text-2xl font-bold text-green-500"
+                                className="text-2xl font-bold text-venom"
                             >
                                 +{delta} reps!
                             </motion.div>
@@ -117,12 +117,12 @@ export const PRCelebration: React.FC<PRCelebrationProps> = ({
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ delay: 0.5 }}
-                            className="mt-6 flex items-center justify-center gap-4 text-sm text-zinc-500"
+                            className="mt-6 flex items-center justify-center gap-4 text-sm text-steel"
                         >
-                            <span className="bg-amber-500/10 text-amber-400 px-3 py-1 rounded-full">
+                            <span className="bg-gold/10 text-gold px-3 py-1 rounded-full border border-gold/20">
                                 +50 XP
                             </span>
-                            <span className="bg-purple-500/10 text-purple-400 px-3 py-1 rounded-full">
+                            <span className="bg-warp/10 text-warp px-3 py-1 rounded-full border border-warp/20">
                                 🏆 Achievement
                             </span>
                         </motion.div>

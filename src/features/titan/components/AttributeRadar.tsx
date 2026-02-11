@@ -56,9 +56,9 @@ const AttributeRadar: React.FC<AttributeRadarProps> = ({ attributes }) => {
             key={level}
             points={keys.map((_, i) => getPoint(level, i, 20)).join(" ")}
             fill="none"
-            stroke="#333"
+            stroke="var(--color-steel)"
             strokeWidth="1"
-            className="opacity-50"
+            className="opacity-20"
           />
         ))}
 
@@ -70,19 +70,20 @@ const AttributeRadar: React.FC<AttributeRadarProps> = ({ attributes }) => {
             y1={center}
             x2={getPoint(20, i, 20).split(",")[0]}
             y2={getPoint(20, i, 20).split(",")[1]}
-            stroke="#333"
+            stroke="var(--color-steel)"
             strokeWidth="1"
-            className="opacity-30"
+            className="opacity-10"
           />
         ))}
 
         {/* The Stat Polygon */}
         <polygon
           points={points}
-          fill="rgba(34, 211, 238, 0.2)" // Cyan tint
-          stroke="#22d3ee"
+          fill="var(--color-cyan)"
+          fillOpacity="0.15"
+          stroke="var(--color-cyan)"
           strokeWidth="2"
-          className="drop-shadow-[0_0_10px_rgba(34,211,238,0.5)] transition-all duration-1000 ease-out"
+          className="drop-shadow-[0_0_10px_rgba(6,182,212,0.4)] transition-all duration-1000 ease-out"
         />
 
         {/* Dots at vertices */}
@@ -93,22 +94,20 @@ const AttributeRadar: React.FC<AttributeRadarProps> = ({ attributes }) => {
               key={key}
               cx={x}
               cy={y}
-              r="3"
-              fill="#fff"
-              className="drop-shadow-md"
+              r="2.5"
+              fill="white"
+              className="drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]"
             />
           );
         })}
 
         {/* Labels */}
         {keys.map((key, i) => {
-          // Push labels out slightly further than radius
           const angle = (Math.PI / 3) * i - Math.PI / 2;
-          const labelR = radius + 20;
+          const labelR = radius + 22;
           const x = center + labelR * Math.cos(angle);
           const y = center + labelR * Math.sin(angle);
 
-          // Anchor adjustment based on position
           let anchor: "start" | "middle" | "end" = "middle";
           if (i === 1 || i === 2) anchor = "start";
           if (i === 4 || i === 5) anchor = "end";
@@ -120,10 +119,10 @@ const AttributeRadar: React.FC<AttributeRadarProps> = ({ attributes }) => {
               y={y}
               textAnchor={anchor}
               dominantBaseline="middle"
-              fill="#9ca3af" // Zinc-400
-              fontSize="8"
-              fontWeight="bold"
-              className="uppercase tracking-widest font-sans"
+              fill="var(--color-steel)"
+              fontSize="7"
+              fontWeight="900"
+              className="uppercase tracking-[0.2em] font-sans opacity-80"
             >
               {labels[key]}
             </text>

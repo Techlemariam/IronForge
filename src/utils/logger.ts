@@ -5,8 +5,7 @@ const isDevelopment = process.env.NODE_ENV === "development";
 /**
  * Structured Logger
  * Provides consistent, level-based logging for the application.
- * In development, it uses pino-pretty for better readability.
- * In production, it outputs raw JSON for log aggregators (e.g., Sentry, Vercel).
+ * In production, it outputs raw JSON for log aggregators (e.g., Sentry, Coolify).
  */
 export const logger = pino({
     level: process.env.LOG_LEVEL || "info",

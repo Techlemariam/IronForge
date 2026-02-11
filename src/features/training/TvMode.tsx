@@ -309,6 +309,7 @@ export const TvMode: React.FC<TvModeProps> = ({
               e.stopPropagation();
               setSensorsMenuOpen(true);
             }}
+            aria-label="Manage Bluetooth Sensors"
             className="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl flex items-center justify-center gap-2 transition-transform active:scale-95"
           >
             <Bluetooth className="w-5 h-5" /> Manage Sensors
@@ -319,6 +320,7 @@ export const TvMode: React.FC<TvModeProps> = ({
               e.stopPropagation();
               onExit();
             }}
+            aria-label="End Workout Session"
             className="w-full py-4 bg-zinc-800 hover:bg-zinc-700 text-white font-bold rounded-xl flex items-center justify-center gap-2 transition-transform active:scale-95"
           >
             <X className="w-5 h-5" /> End Session
@@ -500,7 +502,10 @@ export const TvMode: React.FC<TvModeProps> = ({
                           <Podcast className="w-3 h-3" />
                           Pocket Casts
                         </div>
-                        <button onClick={() => setPodcastOpen(false)}>
+                        <button
+                          onClick={() => setPodcastOpen(false)}
+                          aria-label="Close Podcast Player"
+                        >
                           <X className="w-3 h-3 text-zinc-400 hover:text-white" />
                         </button>
                       </div>
@@ -629,6 +634,7 @@ export const TvMode: React.FC<TvModeProps> = ({
                 </div>
                 <button
                   onClick={() => setQrVisible(false)}
+                  aria-label="Close QR Code Overlay"
                   className="px-8 py-3 bg-black text-white font-bold rounded-xl hover:bg-zinc-800 transition-colors"
                 >
                   CLOSE

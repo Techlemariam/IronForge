@@ -17,11 +17,29 @@
 
 ---
 
+## 1.1 🎨 Titan Tech Design System (Tokens)
+
+We utilize a semantic token system defined in `globals.css` to ensure consistency across the application.
+
+| Token | Hex | Semantic Usage |
+| :--- | :--- | :--- |
+| `void` | `#030712` | Deep Space (Backgrounds) |
+| `armor` | `#111827` | Hardened Steel (Cards, Surfaces) |
+| `steel` | `#374151` | Structural (Borders, Muted Text) |
+| `plasma` | `#f97316` | Action, Legendary Items, Primary Buttons |
+| `warp` | `#a335ee` | Epic Items, High-Energy Effects |
+| `gold` | `#eab308` | Artifacts, Warden Path, Accents |
+| `clay` | `#c79c6e` | Classic UI, Parchment, Secondary Accents |
+| `venom` | `#22c55e` | Restoration, Set Items, Success States |
+| `crisis` | `#ef4444` | Failure, Cursed Items, Danger States |
+
+---
+
 ## 2. 📂 Project Structure (Feature-First)
 
 We follow a **Feature-based Architecture** to prevent "Drawer Structure" (separating files by type instead of domain).
 
-```
+```bash
 src/
 ├── app/                  # Routing Layer only. Minimal logic.
 │   ├── (auth)/           # Route Groups for layout segregation

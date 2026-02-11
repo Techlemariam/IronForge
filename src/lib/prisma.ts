@@ -24,7 +24,7 @@ const prismaClientSingleton = () => {
 
   // Determine runtime and choose adapter accordingly
   // We utilize the Neon adapter specifically for Edge runtimes where TCP is limited/unavailable.
-  // For standard Node.js environments (Local or Vercel Serverless), we use the native Rust engine for best performance and stability.
+  // For standard Node.js environments (Local or Coolify), we use the native Rust engine for best performance and stability.
   if (process.env.NEXT_RUNTIME === "edge") {
     // Neon adapter for Edge
     const pool = new NeonPool({ connectionString });

@@ -41,7 +41,7 @@ const SetLogForm: React.FC<SetLogFormProps> = ({
   };
 
   return (
-    <div className="bg-[#0f1012] border-2 border-forge-border rounded-lg p-4 shadow-xl relative overflow-hidden">
+    <div className="bg-armor border-2 border-forge-border rounded-lg p-4 shadow-xl relative overflow-hidden">
       {/* Background Tech Elements */}
       <div className="absolute top-0 right-0 p-2 opacity-10 pointer-events-none">
         <Zap className="w-24 h-24 text-zinc-500" />
@@ -51,13 +51,14 @@ const SetLogForm: React.FC<SetLogFormProps> = ({
         {/* ROW 1: METRICS CONTROL */}
         <div className="grid grid-cols-2 gap-4">
           {/* WEIGHT CONTROL */}
-          <div className="bg-[#050505] p-2 rounded border border-zinc-800 flex flex-col items-center gap-2">
+          <div className="bg-void p-2 rounded border border-steel/50 flex flex-col items-center gap-2">
             <span className="text-[10px] font-bold uppercase text-zinc-500 tracking-widest flex items-center gap-1">
               <Shield className="w-3 h-3" /> Load (kg)
             </span>
             <div className="flex items-center w-full justify-between">
               <button
                 onClick={() => adjustWeight(-2.5)}
+                aria-label="Decrease Load"
                 className="w-10 h-10 bg-zinc-900 border border-zinc-700 rounded hover:bg-red-900/30 hover:border-red-700 text-zinc-400 active:scale-95 transition-all"
               >
                 <Minus className="w-5 h-5 mx-auto" />
@@ -67,6 +68,7 @@ const SetLogForm: React.FC<SetLogFormProps> = ({
               </span>
               <button
                 onClick={() => adjustWeight(2.5)}
+                aria-label="Increase Load"
                 className="w-10 h-10 bg-zinc-900 border border-zinc-700 rounded hover:bg-green-900/30 hover:border-green-700 text-zinc-400 active:scale-95 transition-all"
               >
                 <Plus className="w-5 h-5 mx-auto" />
@@ -89,13 +91,14 @@ const SetLogForm: React.FC<SetLogFormProps> = ({
           </div>
 
           {/* REPS CONTROL */}
-          <div className="bg-[#050505] p-2 rounded border border-zinc-800 flex flex-col items-center gap-2">
+          <div className="bg-void p-2 rounded border border-steel/50 flex flex-col items-center gap-2">
             <span className="text-[10px] font-bold uppercase text-zinc-500 tracking-widest flex items-center gap-1">
               <Target className="w-3 h-3" /> Reps
             </span>
             <div className="flex items-center w-full justify-between">
               <button
                 onClick={() => adjustReps(-1)}
+                aria-label="Decrease Reps"
                 className="w-10 h-10 bg-zinc-900 border border-zinc-700 rounded hover:bg-red-900/30 hover:border-red-700 text-zinc-400 active:scale-95 transition-all"
               >
                 <Minus className="w-5 h-5 mx-auto" />
@@ -105,6 +108,7 @@ const SetLogForm: React.FC<SetLogFormProps> = ({
               </span>
               <button
                 onClick={() => adjustReps(1)}
+                aria-label="Increase Reps"
                 className="w-10 h-10 bg-zinc-900 border border-zinc-700 rounded hover:bg-green-900/30 hover:border-green-700 text-zinc-400 active:scale-95 transition-all"
               >
                 <Plus className="w-5 h-5 mx-auto" />

@@ -97,7 +97,7 @@ export const SupersetGroup: React.FC<{
 
     return (
         <div className="relative pl-6 border-l-4 border-zinc-800 my-8 rounded-l-3xl bg-white/5 p-4 border-y border-r border-white/5 rounded-r-xl">
-            <div className="absolute -left-[13px] top-1/2 -translate-y-1/2 bg-[#0a0a0a] border border-zinc-700 rounded-full p-1.5 shadow-xl z-20">
+            <div className="absolute -left-[13px] top-1/2 -translate-y-1/2 bg-void border border-steel rounded-full p-1.5 shadow-xl z-20">
                 <Link2 className="w-5 h-5 text-zinc-400" />
             </div>
 

@@ -56,7 +56,7 @@ export default function PrivacyPolicyPage() {
         </p>
         <ul className="list-disc list-inside mt-2 text-zinc-300 space-y-1">
           <li>Supabase (authentication and database hosting)</li>
-          <li>Vercel (application hosting)</li>
+          <li>Coolify (application orchestration)</li>
           <li>Google AI (for Oracle recommendations, anonymized)</li>
         </ul>
       </section>

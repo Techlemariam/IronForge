@@ -112,10 +112,10 @@ const PreWorkoutCheck: React.FC<PreWorkoutCheckProps> = ({
   };
 
   return (
-    <div className="h-full flex flex-col bg-[#050505] text-white animate-fade-in relative font-serif">
+    <div className="h-full flex flex-col bg-void text-white animate-fade-in relative font-serif">
       {showOverrideConfirm && (
         <div className="absolute inset-0 z-50 bg-black/95 flex items-center justify-center p-6 backdrop-blur-sm">
-          <div className="bg-[#111] border-2 border-red-900 rounded-lg p-6 max-w-sm w-full shadow-[0_0_50px_rgba(220,38,38,0.3)]">
+          <div className="bg-armor border-2 border-red-900 rounded-lg p-6 max-w-sm w-full shadow-[0_0_50px_rgba(220,38,38,0.3)]">
             <div className="flex items-center gap-3 text-red-500 mb-4 border-b border-red-900/50 pb-4">
               <ShieldAlert className="w-8 h-8" />
               <h2 className="text-xl font-bold uppercase">Critical Warning</h2>
@@ -150,6 +150,7 @@ const PreWorkoutCheck: React.FC<PreWorkoutCheckProps> = ({
         </h2>
         <button
           onClick={onCancel}
+          aria-label="Close"
           className="text-zinc-500 hover:text-white transition-colors p-2"
         >
           <X className="w-5 h-5" />
@@ -163,7 +164,7 @@ const PreWorkoutCheck: React.FC<PreWorkoutCheckProps> = ({
               <Zap className="w-10 h-10 text-zinc-600" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold uppercase text-[#c79c6e]">
+              <h1 className="text-2xl font-bold uppercase text-gold">
                 Check Vitality
               </h1>
               <p className="text-zinc-500 text-sm max-w-xs mx-auto mt-2 font-sans">
@@ -173,7 +174,7 @@ const PreWorkoutCheck: React.FC<PreWorkoutCheckProps> = ({
             <div className="flex flex-col gap-2 mt-4">
               <button
                 onClick={() => runScan(false)}
-                className="px-8 py-3 bg-[#c79c6e] text-[#46321d] border border-[#46321d] font-bold uppercase tracking-widest rounded hover:brightness-110 transition-all shadow-lg"
+                className="px-8 py-3 bg-gold text-void border border-void font-bold uppercase tracking-widest rounded hover:brightness-110 transition-all shadow-lg"
               >
                 Cast Scan
               </button>
@@ -237,7 +238,7 @@ const PreWorkoutCheck: React.FC<PreWorkoutCheckProps> = ({
 
               <div className="grid grid-cols-2 gap-4">
                 <div
-                  className={`p-4 rounded border-2 bg-zinc-900 ${bodyBattery < 30 ? "border-red-900 text-red-500" : "border-zinc-800 text-[#1eff00]"}`}
+                  className={`p-4 rounded border-2 bg-zinc-900 ${bodyBattery < 30 ? "border-red-900 text-red-500" : "border-zinc-800 text-venom"}`}
                 >
                   <div className="flex items-center gap-2 mb-2 text-zinc-500">
                     <Battery className="w-4 h-4" />
@@ -246,7 +247,7 @@ const PreWorkoutCheck: React.FC<PreWorkoutCheckProps> = ({
                   <span className="text-3xl font-black">{bodyBattery}</span>
                 </div>
                 <div
-                  className={`p-4 rounded border-2 bg-zinc-900 ${sleepScore < 50 ? "border-red-900 text-red-500" : "border-zinc-800 text-[#1eff00]"}`}
+                  className={`p-4 rounded border-2 bg-zinc-900 ${sleepScore < 50 ? "border-red-900 text-red-500" : "border-zinc-800 text-venom"}`}
                 >
                   <div className="flex items-center gap-2 mb-2 text-zinc-500">
                     <Moon className="w-4 h-4" />
@@ -257,7 +258,7 @@ const PreWorkoutCheck: React.FC<PreWorkoutCheckProps> = ({
               </div>
 
               {isCompromised ? (
-                <div className="bg-[#111] p-4 rounded border border-red-900/50">
+                <div className="bg-armor p-4 rounded border border-red-900/50">
                   <h3 className="flex items-center gap-2 text-red-500 font-bold uppercase text-sm mb-3">
                     <ShieldAlert className="w-4 h-4" />
                     Debuff: Exhaustion
@@ -291,7 +292,7 @@ const PreWorkoutCheck: React.FC<PreWorkoutCheckProps> = ({
                       playSound("quest_accept");
                       onProceed(session);
                     }}
-                    className="w-full py-4 bg-[#c79c6e] hover:bg-[#d4a87a] text-[#46321d] border-2 border-[#46321d] font-bold uppercase tracking-widest rounded flex items-center justify-center gap-2 transition-all shadow-xl active:scale-95"
+                    className="w-full py-4 bg-gold hover:bg-gold/80 text-void border-2 border-void font-bold uppercase tracking-widest rounded flex items-center justify-center gap-2 transition-all shadow-xl active:scale-95"
                   >
                     Accept Quest
                   </button>

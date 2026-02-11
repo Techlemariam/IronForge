@@ -133,6 +133,7 @@ export const TrainingCenter: React.FC<TrainingCenterProps> = ({
               {onImportRoutines && (
                 <button
                   onClick={onImportRoutines}
+                  aria-label="Import routines from Hevy"
                   className="bg-magma/20 backdrop-blur-md p-3 rounded-xl border border-magma/50 text-center min-w-[100px] hover:bg-magma/30 transition-colors"
                 >
                   <div className="text-xs text-magma uppercase font-bold">
@@ -318,6 +319,7 @@ const TabButton: React.FC<{
   <button
     onClick={onClick}
     data-testid={testId}
+    aria-label={`${label} Tab`}
     className={cn(
       "flex items-center gap-2 px-4 py-2 rounded-md text-xs font-bold uppercase transition-all",
       active

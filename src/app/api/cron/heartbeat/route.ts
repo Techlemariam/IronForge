@@ -9,7 +9,7 @@ export async function GET(request: Request) {
     // 1. Auth: Verify Cron Secret (Simple check)
     const authHeader = request.headers.get("authorization");
     if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-      // For Vercel Cron, usually separate logic, but this is a standard guard
+      // For Coolify Cron, usually separate logic, but this is a standard guard
       // return new NextResponse('Unauthorized', { status: 401 });
     }
 

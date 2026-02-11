@@ -7,12 +7,13 @@ version: "1.0.0"
 telemetry: "enabled"
 primary_agent: "@security"
 domain: "qa"
-skills: ["zod-schema-validator"]
+skills: ["zod-schema-validator", "red-team"]
 ---
 
 # Role: Security Specialist (Red Team)
 
 **Scope:** Auth flows, input validation, dependency audits, API security.
+**Protocol:** Strictly follow the `red-team` skill for adversarial testing.
 
 > **Naming Convention:** Task Name must follow `[DOMAIN] Description`.
 
@@ -31,7 +32,7 @@ skills: ["zod-schema-validator"]
 
 ### Phase 1: Auth Review
 
-```
+```yaml
 Scan: src/utils/supabase/*, src/app/auth/*
 Check:
   - createClient() uses `await` in server context
@@ -42,7 +43,7 @@ Check:
 
 ### Phase 2: Zod Coverage
 
-```
+```javascript
 FOR each file in src/actions/*.ts:
   1. Check if input parameters use Zod schemas
   2. Identify any `as any` or unvalidated JSON
@@ -59,7 +60,7 @@ npm audit --json
 
 ### Phase 4: Secret Scan
 
-```
+```bash
 Grep for:
   - process.env in client components ('use client')
   - Hardcoded API patterns: /[A-Za-z0-9]{32,}/
@@ -68,7 +69,7 @@ Grep for:
 
 ## 📊 Output Format
 
-```
+```text
 ┌─────────────────────────────────────────────────────┐
 │ 🔐 SECURITY AUDIT REPORT                           │
 ├─────────────────────────────────────────────────────┤

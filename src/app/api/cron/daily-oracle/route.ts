@@ -11,7 +11,7 @@ export const maxDuration = 60; // Allow up to 60s for processing multiple users
 /**
  * Daily Oracle Cron Job
  * Runs at 06:00 UTC to generate proactive decrees for all active Titans.
- * Schedule: "0 6 * * *" (configured in vercel.json)
+ * Schedule: "0 6 * * *" (configured in Coolify/n8n)
  */
 
 const handler = async (request: NextRequest) => {

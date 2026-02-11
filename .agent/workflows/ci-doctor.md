@@ -7,7 +7,7 @@ version: "2.2.0"
 telemetry: "enabled"
 primary_agent: "@infrastructure"
 domain: "ci"
-skills: ["error-analyzer", "gatekeeper", "dependabot-manager", "env-validator", "linter-fixer", "schema-guard", "qodana-linter", "performance-profiler", "zod-schema-validator", "api-mocker", "bio-validator", "prisma-migrator", "a11y-auditor"]
+skills: ["error-analyzer", "gatekeeper", "dependabot-manager", "env-validator", "linter-fixer", "schema-guard", "qodana-linter", "performance-profiler", "zod-schema-validator", "api-mocker", "bio-validator", "prisma-migrator", "a11y-auditor", "coverage-check", "bundle-analyzer", "git-guard", "supabase-inspector", "storybook-bridge", "coolify-deploy"]
 ---
 
 # 🩺 CI Doctor (Protocol v2.0)
@@ -41,11 +41,18 @@ fi
 
 ```bash
 echo "🔍 Checking dependency integrity..."
-if ! git diff --quiet package-lock.json; then
-  echo "⛔ ERROR: package-lock.json is dirty. Run 'npm ci' immediately."
-  exit 1
+if ! git diff --quiet pnpm-lock.yaml; then
+  echo "⚠️ pnpm-lock.yaml is dirty. Attempting self-healing..."
+  pnpm install
+  if ! git diff --quiet pnpm-lock.yaml; then
+     echo "⛔ Still dirty after auto-fix. Please commit the `pnpm-lock.yaml` file."
+     exit 1
+  else
+     echo "✅ Dependencies: Healed"
+  fi
+else
+  echo "✅ Dependencies: Clean"
 fi
-echo "✅ Dependencies: Clean"
 ```
 
 ### 0.2 The Time Dilator (Staleness Check)
@@ -69,16 +76,9 @@ fi
 // turbo
 
 ```bash
-echo "🔍 Gate 1: Type Safety"
-npm run check-types || exit 1
-
-echo "🔍 Gate 2: Linting"
-# Use linter-fixer skill for enhanced auto-fixes
-/linter-fixer
-npm run lint -- --fix || exit 1
-
-echo "🔍 Gate 3: Unit Tests"
-npm test || exit 1
+echo "🚀 Running Triple Gate (Parallel)..."
+# Uses Turbo to run check-types, lint, and test concurrently
+pnpm exec turbo run check-types lint test || exit 1
 
 echo "✅ Triple Gate Passed"
 ```
@@ -88,7 +88,7 @@ echo "✅ Triple Gate Passed"
 // turbo
 
 ```bash
-npx ts-node scripts/validate-mocks.ts
+npx tsx scripts/validate-mocks.ts
 ```
 
 ### 0.5 UI Health Audit
@@ -120,6 +120,25 @@ pnpm audit --audit-level high || exit 1
 echo "✅ Dependencies: Healthy"
 ```
 
+### 0.8 Git Hygiene (Branch & Commit)
+
+// turbo
+
+```bash
+echo "🔍 Checking Git health..."
+/git-guard
+```
+
+### 0.9 Database Integrity
+
+// turbo
+
+```bash
+echo "🔍 Checking DB Schema Integrity..."
+/supabase-inspector
+/prisma-migrator
+```
+
 ---
 
 ## Phase 1: Surgical Strike (Failure Isolation)
@@ -133,15 +152,21 @@ echo "✅ Dependencies: Healthy"
 RUN_ID=$(gh run list --limit 1 --json databaseId -q '.[0].databaseId')
 echo "🎯 Analyzing Run: $RUN_ID"
 
-# Extract failed test names
-FAILED_TESTS=$(gh run view $RUN_ID --log-failed | grep "Error:" | grep ".spec.ts" | uniq)
+# 1. Automated Diagnosis (Classifier)
+echo "🔮 Running CI Classifier..."
+gh run view $RUN_ID --log | npx tsx scripts/ci-classifier.ts --stdin
+
+# 2. Automated Target Acquisition
+FAILED_TESTS=$(gh run view $RUN_ID --log-failed | grep "Error:" | grep -oE "tests/[^[:space:]]+\.spec\.ts" | sort | uniq | tr '\n' ' ')
 
 if [ -z "$FAILED_TESTS" ]; then
-    echo "✅ No obvious patterns found. Proceeding to standard classification."
+    echo "✅ No specific test artifacts found. Proceeding to standard classification."
 else
     echo "🚨 TARGETS ACQUIRED:"
     echo "$FAILED_TESTS"
-    echo "👉 Run Phase 2 specifically on these targets."
+    echo ""
+    echo "👉 COPY/PASTE THIS TO START REPAIR:"
+    echo "export TARGETS=\"$FAILED_TESTS\""
 fi
 ```
 
@@ -165,6 +190,18 @@ fi
 | `Bio: Data sync fail`         | **BIO_SYNC_FAIL** (Use `/bio-validator`)          |
 | `Database: Schema out of sync` | **DB_OUT_OF_SYNC** (Use `/prisma-migrator`)       |
 | `A11y: Contrast/ARIA`         | **ACCESSIBILITY_FAIL** (Use `/a11y-auditor`)      |
+| `Coolify: Deployment failed`  | **COOLIFY_DOWN** (Use `/coolify-deploy`)          |
+
+### 1.5 External Vital Signs (Coolify)
+
+// turbo
+
+```bash
+echo "🔍 Checking Coolify Infrastructure..."
+# Uses coolify-deploy scripts to verify instance health
+/coolify-deploy
+npx tsx scripts/check-infra.ts
+```
 
 ### 1.2 The Qodana Ward (Static Analysis)
 
@@ -191,6 +228,27 @@ fi
 - **Fix:** Always use forward slashes (`/`) in relative paths. PowerShell handles `/` on Windows fine, but Linux fails on `\`.
 - **Rule:** `Join-Path "folder/file.ext"` >>> `Join-Path "folder\file.ext"`.
 
+### 1.3 Performance & Size (Bloat Check)
+
+**Protocol: BUNDLE_BLOAT**
+
+- **Detection:** `/bundle-analyzer` reports gzip size increase > 5%.
+- **Fix:** Analyzes `next build` output. Look for large dependencies (e.g., `lodash` vs `lodash-es`, heavy icons).
+- **Tool:** Run `/bundle-analyzer` to visualize and verify.
+
+### 1.4 Coverage & Visuals
+
+**Protocol: COVERAGE_DROP**
+
+- **Detection:** `/coverage-check` reports coverage below threshold (e.g. 80%).
+- **Fix:** Write unit tests for new logic.
+- **Tool:** `/unit-tests` to scaffold missing tests.
+
+**Protocol: VISUAL_REGRESSION**
+
+- **Detection:** Chromatic or Storybook build failure.
+- **Fix:** Run `/storybook-bridge` to validate stories match components.
+
 ---
 
 ## Phase 2: The Repair Loop
@@ -198,8 +256,15 @@ fi
 **ITERATION LIMIT: 3**
 
 ```bash
-# Set Target
-TARGET="tests/e2e/example.spec.ts" # <-- REPLACE THIS
+# Set Target (Paste from Phase 1.0 output)
+# export TARGETS="tests/e2e/example.spec.ts" 
+
+if [ -z "$TARGETS" ]; then
+  echo "⛔ No TARGETS defined. Please set export TARGETS='...'"
+  exit 1
+fi
+
+echo "🔫 Locked on: $TARGETS"
 
  ITERATION=0
  MAX_ITERATIONS=3
@@ -208,14 +273,14 @@ TARGET="tests/e2e/example.spec.ts" # <-- REPLACE THIS
    echo "🔧 Iteration $((ITERATION + 1))"
 
    # STRATEGY A: Native Surgical Strike
-   npx playwright test $TARGET --workers=1 --retries=0
+   npx playwright test $TARGETS --workers=1 --retries=0
 
    if [ $? -eq 0 ]; then
      echo "✅ Tests pass locally. Verifying in Docker..."
 
      # STRATEGY B: Docker Simulation (The Truth)
      docker run --rm -v $(pwd):/work -w /work mcr.microsoft.com/playwright:v1.40.0-jammy \
-       npx playwright test $TARGET --workers=1
+       npx playwright test $TARGETS --workers=1
 
      if [ $? -eq 0 ]; then
         echo "✅ Docker verification passed. Push authorized."

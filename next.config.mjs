@@ -3,40 +3,40 @@ import { withSentryConfig } from "@sentry/nextjs";
 import "./src/env.mjs";
 
 const withSerwist = withSerwistInit({
-    swSrc: "src/app/sw.ts",
-    swDest: "public/sw.js",
-    disable: process.env.NODE_ENV === "development",
+  swSrc: "src/app/sw.ts",
+  swDest: "public/sw.js",
+  disable: process.env.NODE_ENV === "development",
 });
 
 const nextConfig = {
-    reactStrictMode: true,
-    output: 'standalone', // Required for Docker production builds
-    transpilePackages: ['@supabase/ssr', '@supabase/supabase-js'],
-    images: {
-        remotePatterns: [
-            {
-                protocol: 'https',
-                hostname: 'placehold.co',
-            }
-        ]
-    }
+  reactStrictMode: true,
+  output: 'standalone', // Required for Docker production builds
+  transpilePackages: ['@supabase/ssr', '@supabase/supabase-js'],
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'placehold.co',
+      }
+    ]
+  }
 };
 
 // Sentry configuration options
 const sentryConfig = {
-    // Upload source maps for better stack traces
-    silent: true, // Suppress Sentry CLI output
-    org: process.env.SENTRY_ORG,
-    project: process.env.SENTRY_PROJECT,
+  // Upload source maps for better stack traces
+  silent: true, // Suppress Sentry CLI output
+  org: process.env.SENTRY_ORG,
+  project: process.env.SENTRY_PROJECT,
 
-    // Only upload source maps in CI
-    disableSourceMapUpload: !process.env.CI,
+  // Only upload source maps in CI
+  disableSourceMapUpload: !process.env.CI,
 
-    // Hide source maps from client bundles
-    hideSourceMaps: true,
+  // Hide source maps from client bundles
+  hideSourceMaps: true,
 
-    // Tunnel Sentry requests to avoid ad-blockers (optional)
-    // tunnelRoute: "/monitoring",
+  // Tunnel Sentry requests to avoid ad-blockers (optional)
+  // tunnelRoute: "/monitoring",
 };
 
 // Compose plugins: Serwist (PWA) -> Next.js
@@ -66,12 +66,6 @@ export default withSentryConfig(nextConfig, {
   tunnelRoute: "/monitoring",
 
   webpack: {
-    // Enables automatic instrumentation of Vercel Cron Monitors. (Does not yet work with App Router route handlers.)
-    // See the following for more information:
-    // https://docs.sentry.io/product/crons/
-    // https://vercel.com/docs/cron-jobs
-    automaticVercelMonitors: true,
-
     // Tree-shaking options for reducing bundle size
     treeshake: {
       // Automatically tree-shake Sentry logger statements to reduce bundle size

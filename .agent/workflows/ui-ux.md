@@ -26,6 +26,8 @@ Frontend implementation with React, Tailwind, Framer Motion.
 - Ensure WCAG compliance and semantic HTML.
 - Optimize images (Next/Image), minimize bundle sizes.
 
+> **Pro Tip:** For radical, high-end "Titan-tier" designs, use `/ui-ux-pro-max` instead.
+
 ### Mode: Polish (`/ui-ux polish`)
 
 Post-development UX audit and game-feel optimization.

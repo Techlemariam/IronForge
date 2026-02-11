@@ -13,25 +13,25 @@ const forecastData = [
 
 const PredictivePRWindow: React.FC = () => {
   return (
-    <div className="bg-[#111] border-2 border-[#46321d] rounded-lg shadow-2xl relative overflow-hidden group p-4">
-      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/dark-matter.png')] opacity-20"></div>
+    <div className="bg-armor border-2 border-clay/30 rounded-lg shadow-2xl relative overflow-hidden group p-4">
+      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/dark-matter.png')] opacity-10"></div>
       <div className="relative z-10">
-        <h3 className="font-serif text-sm uppercase tracking-widest text-warrior-light mb-4">
+        <h3 className="font-serif text-sm uppercase tracking-widest text-clay mb-4">
           PREDICTIVE PR WINDOW (7-DAY FORECAST)
         </h3>
         <div className="space-y-2">
           {forecastData.map((item) => (
             <div key={item.day} className="flex items-center justify-between">
-              <span className="font-mono text-xs text-rarity-common w-8">
+              <span className="font-mono text-xs text-steel w-8 text-[10px] uppercase">
                 {item.day}
               </span>
-              <div className="flex-1 bg-forge-800 rounded-full h-4 mx-2">
+              <div className="flex-1 bg-void rounded-full h-2 mx-2 border border-steel/20">
                 <div
-                  className="bg-rarity-legendary h-4 rounded-full"
+                  className="bg-plasma h-2 rounded-full shadow-[0_0_10px_rgba(249,115,22,0.4)] transition-all duration-1000"
                   style={{ width: `${item.barPercentage}%` }}
                 ></div>
               </div>
-              <span className="font-mono text-xs text-warrior w-12 text-right">
+              <span className="font-mono text-xs text-clay w-12 text-right text-[10px]">
                 {item.tsb}
                 {item.value} TSB
               </span>

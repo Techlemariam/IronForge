@@ -60,11 +60,17 @@ test.describe('Ranked Arena PvP', () => {
     test('should display season rewards with rank tiers', async ({ page }) => {
         await page.goto('/ranked-arena');
 
-        // Click rewards tab
-        await page.getByRole('tab', { name: /rewards/i }).click();
+        // Target the rewards tab specifically
+        const rewardsTab = page.getByRole('tab', { name: /rewards/i });
+        await rewardsTab.click();
 
-        // Verify reward tiers are shown
-        // The SeasonRewards component should show rank-based rewards
-        await expect(page.getByRole('tabpanel').getByText(/gems/i).first()).toBeVisible();
+        // Wait for the tab to be properly activated (Radix UI sets data-state="active")
+        await expect(rewardsTab).toHaveAttribute('data-state', 'active');
+
+        // Verify reward tiers are shown within the rewards content
+        // using a more specific locator to avoid matching hidden elements
+        const highWarlordCard = page.locator('.space-y-2').filter({ hasText: 'High Warlord' });
+        await expect(highWarlordCard).toBeVisible();
+        await expect(highWarlordCard).toContainText('5000 Gems');
     });
 });

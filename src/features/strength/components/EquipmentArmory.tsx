@@ -88,7 +88,7 @@ const EquipmentArmory: React.FC<EquipmentArmoryProps> = ({ onClose }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm p-4 animate-fade-in font-serif">
-      <div className="w-full max-w-4xl bg-[#111] border-2 border-zinc-700 rounded-lg shadow-[0_0_50px_rgba(0,0,0,0.8)] flex flex-col max-h-[90vh] overflow-hidden">
+      <div className="w-full max-w-4xl bg-armor border-2 border-steel rounded-lg shadow-[0_0_50px_rgba(0,0,0,0.8)] flex flex-col max-h-[90vh] overflow-hidden">
         {/* Header */}
         <div className="p-6 bg-zinc-900 border-b border-zinc-800 flex justify-between items-center">
           <div className="flex items-center gap-3">
@@ -106,6 +106,7 @@ const EquipmentArmory: React.FC<EquipmentArmoryProps> = ({ onClose }) => {
           </div>
           <button
             onClick={onClose}
+            aria-label="Close"
             className="text-zinc-500 hover:text-white transition-colors"
           >
             <X className="w-6 h-6" />
@@ -113,14 +114,14 @@ const EquipmentArmory: React.FC<EquipmentArmoryProps> = ({ onClose }) => {
         </div>
 
         {/* Tabs */}
-        <div className="flex border-b border-zinc-800 bg-[#0a0a0a]">
+        <div className="flex border-b border-steel bg-void">
           <button
             onClick={() => {
               playSound("ui_click");
               setActiveTab("INVENTORY");
             }}
             onMouseEnter={() => playSound("ui_hover")}
-            className={`flex-1 py-4 text-xs font-bold uppercase tracking-widest transition-colors ${activeTab === "INVENTORY" ? "bg-[#111] text-[#c79c6e] border-t-2 border-[#c79c6e]" : "text-zinc-600 hover:text-zinc-400"}`}
+            className={`flex-1 py-4 text-xs font-bold uppercase tracking-widest transition-colors ${activeTab === "INVENTORY" ? "bg-armor text-clay border-t-2 border-clay" : "text-zinc-600 hover:text-zinc-400"}`}
           >
             Current Inventory ({inventory.length})
           </button>
@@ -130,7 +131,7 @@ const EquipmentArmory: React.FC<EquipmentArmoryProps> = ({ onClose }) => {
               setActiveTab("REQUISITION");
             }}
             onMouseEnter={() => playSound("ui_hover")}
-            className={`flex-1 py-4 text-xs font-bold uppercase tracking-widest transition-colors ${activeTab === "REQUISITION" ? "bg-[#111] text-[#c79c6e] border-t-2 border-[#c79c6e]" : "text-zinc-600 hover:text-zinc-400"}`}
+            className={`flex-1 py-4 text-xs font-bold uppercase tracking-widest transition-colors ${activeTab === "REQUISITION" ? "bg-armor text-clay border-t-2 border-clay" : "text-zinc-600 hover:text-zinc-400"}`}
           >
             Requisition (Add New)
           </button>
@@ -156,7 +157,7 @@ const EquipmentArmory: React.FC<EquipmentArmoryProps> = ({ onClose }) => {
                   {inventory.map((item) => (
                     <div
                       key={item.id}
-                      className="bg-[#1a1a1a] border border-zinc-800 p-4 rounded group hover:border-[#c79c6e] transition-colors relative"
+                      className="bg-armor border border-steel p-4 rounded group hover:border-clay transition-colors relative"
                     >
                       <div className="flex justify-between items-start">
                         <div className="flex items-center gap-3">
@@ -222,8 +223,8 @@ const EquipmentArmory: React.FC<EquipmentArmoryProps> = ({ onClose }) => {
                         onMouseEnter={() => !isOwned && playSound("ui_hover")}
                         disabled={isOwned}
                         className={`p-3 rounded border text-left flex items-center justify-between transition-all ${isOwned
-                            ? "bg-zinc-900 border-zinc-800 opacity-50 cursor-default"
-                            : "bg-[#1a1a1a] border-zinc-700 hover:border-[#c79c6e] hover:bg-zinc-800"
+                          ? "bg-void border-steel opacity-50 cursor-default"
+                          : "bg-armor border-steel/50 hover:border-clay hover:bg-armor/80"
                           }`}
                       >
                         <span
@@ -243,7 +244,7 @@ const EquipmentArmory: React.FC<EquipmentArmoryProps> = ({ onClose }) => {
               </div>
 
               {/* Custom Order */}
-              <div className="bg-[#1a1a1a] border border-zinc-800 p-6 rounded-lg">
+              <div className="bg-armor border border-steel p-6 rounded-lg">
                 <h3 className="text-sm font-bold text-zinc-500 uppercase tracking-widest mb-4 flex items-center gap-2">
                   <Hammer className="w-4 h-4" /> Custom Fabrication
                 </h3>
@@ -256,7 +257,7 @@ const EquipmentArmory: React.FC<EquipmentArmoryProps> = ({ onClose }) => {
                       value={customName}
                       onChange={(e) => setCustomName(e.target.value)}
                       placeholder="e.g. Reverse Hyper"
-                      className="w-full bg-zinc-950 border border-zinc-800 p-3 rounded text-zinc-200 focus:border-[#c79c6e] focus:outline-none"
+                      className="w-full bg-void border border-steel p-3 rounded text-zinc-200 focus:border-clay focus:outline-none"
                     />
                   </div>
                   <div className="w-full md:w-48 space-y-1">
@@ -268,7 +269,8 @@ const EquipmentArmory: React.FC<EquipmentArmoryProps> = ({ onClose }) => {
                       onChange={(e) =>
                         setCustomCategory(e.target.value as EquipmentCategory)
                       }
-                      className="w-full bg-zinc-950 border border-zinc-800 p-3 rounded text-zinc-200 focus:border-[#c79c6e] focus:outline-none"
+                      aria-label="Category"
+                      className="w-full bg-void border border-steel p-3 rounded text-zinc-200 focus:border-clay focus:outline-none"
                     >
                       <option value="Barbell">Barbell</option>
                       <option value="Weights">Weights</option>
@@ -281,7 +283,7 @@ const EquipmentArmory: React.FC<EquipmentArmoryProps> = ({ onClose }) => {
                   <button
                     onClick={handleCustomAdd}
                     disabled={!customName}
-                    className="w-full md:w-auto px-6 py-3 bg-[#c79c6e] hover:bg-[#d4a87a] text-[#46321d] font-bold uppercase tracking-widest rounded disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full md:w-auto px-6 py-3 bg-clay hover:bg-clay/80 text-black font-bold uppercase tracking-widest rounded disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     Fabricate
                   </button>
