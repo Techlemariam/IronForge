@@ -1,7 +1,8 @@
 param (
     [string]$Feature,
     [string]$Station = "design",
-    [string]$Action = "RUN" # RUN, GET-MODE, SET-MODE, CHECK-GUARD, PROCESS-QUEUE
+    [string]$Action = "RUN", # RUN, GET-MODE, SET-MODE, CHECK-GUARD, PROCESS-QUEUE, GET-PROMPT
+    [switch]$GeminiCLI
 )
 
 # -----------------------------------------------------------------------------
@@ -102,6 +103,30 @@ function Sync-BranchWithMain {
     return $true
 }
 
+function Get-TokenBudget {
+    $UsageFile = ".agent/usage.json"
+    if (-not (Test-Path $UsageFile)) { return $true }
+    try {
+        $content = Get-Content $UsageFile -Raw
+        if ([string]::IsNullOrWhiteSpace($content)) { return $true }
+        $usage = $content | ConvertFrom-Json
+        $today = Get-Date -Format "yyyy-MM-dd"
+        
+        $dailyLimit = if ($env:TOKEN_DAILY_LIMIT) { [int64]$env:TOKEN_DAILY_LIMIT } else { 500000 }
+        $dailyUsage = 0
+
+        if ($usage.history) {
+            foreach ($entry in $usage.history) {
+                if ($entry.date -eq $today) { $dailyUsage += $entry.tokens }
+            }
+        }
+
+        if ($dailyUsage -ge $dailyLimit) { return $false }
+        return $true
+    }
+    catch { return $true }
+}
+
 # --- Actions ---
 
 if ($Action -eq "GET-MODE") {
@@ -147,6 +172,21 @@ if ($Action -eq "PROCESS-QUEUE") {
     exit 0
 }
 
+if ($Action -eq "GET-PROMPT") {
+    if (-not $Feature) { exit 1 }
+    $SpecFile = "specs/$Feature.md"
+    if (-not (Test-Path $SpecFile)) { exit 1 }
+
+    $Prompt = switch ($Station) {
+        "fabrication" { "Based on the spec at $SpecFile , implement the feature. Focus on syntax and clean code." }
+        "verify" { "Run quality control for $Feature . Verify types, lint, and tests." }
+        "ship" { "Prepare shipment for $Feature . Commit changes and create PR." }
+        default { "Review the spec at $SpecFile and ensure it is Factory Ready." }
+    }
+    Write-Output $Prompt
+    exit 0
+}
+
 # --- Workflow Logic ---
 
 $SpecFile = "specs/$Feature.md"
@@ -159,6 +199,21 @@ if ($Action -eq "RUN") {
 
     Log-Factory "Starting Factory Line for Feature: $Feature at Station: $Station"
     $TokensStart = Get-TotalTokenUsage
+
+    # Budget Check
+    if (-not (Get-TokenBudget) -and -not $GeminiCLI) {
+        Log-Factory "TOKEN_BUDGET_EXCEEDED: Daily quota reached. Enabling -GeminiCLI fallback mode..." "WARNING"
+        $GeminiCLI = $true
+    }
+
+    if ($GeminiCLI) {
+        Log-Factory "HEADLESS_FALLBACK: Outputting prompt for Gemini CLI..." "SUCCESS"
+        $Prompt = & $PSCommandPath -Feature $Feature -Station $Station -Action "GET-PROMPT"
+        Write-Output "PROMPT_START"
+        Write-Output $Prompt
+        Write-Output "PROMPT_END"
+        exit 0
+    }
 
     # Temporal Sync: Ensure branch is ready for work (except for design which might be on main/draft)
     if ($Station -ne "design") {

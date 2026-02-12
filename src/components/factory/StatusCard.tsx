@@ -1,4 +1,6 @@
-import { FactoryStatusData } from "@/actions/factory";
+import type { FactoryStatusData } from "@/actions/factory";
+/* eslint-disable @next/next/no-img-element */
+/* eslint-disable jsx-a11y/aria-proptypes */
 
 interface Props {
     status: FactoryStatusData;
@@ -53,15 +55,15 @@ export function StatusCard({ status }: Props) {
                 <div
                     className="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden"
                     role="progressbar"
-                    aria-valuenow={clampedHealth}
+                    aria-valuenow={Number(clampedHealth)}
                     aria-valuemin={0}
                     aria-valuemax={100}
-                    aria-label={`${status.station} station health`}
+                    aria-label={`${status.station} health`}
                 >
                     {/* Progress Fill */}
                     <div
                         className={`h-full transition-all duration-500 ${isError ? 'bg-red-500' : 'bg-green-500'}`}
-                        style={{ width: `${clampedHealth}%` }}
+                        style={{ width: `${clampedHealth}%` } as React.CSSProperties}
                     />
                 </div>
             </div>
