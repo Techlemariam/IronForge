@@ -123,7 +123,6 @@ dist
 .vscode
 .idea
 !.agent/
-!.agent/
 test_output.txt
 test_suite_output*.txt
 test_context*.txt
