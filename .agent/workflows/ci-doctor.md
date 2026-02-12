@@ -159,14 +159,19 @@ gh run view $RUN_ID --log | npx tsx scripts/ci-classifier.ts --stdin
 # 2. Automated Target Acquisition
 FAILED_TESTS=$(gh run view $RUN_ID --log-failed | grep "Error:" | grep -oE "tests/[^[:space:]]+\.spec\.ts" | sort | uniq | tr '\n' ' ')
 
-if [ -z "$FAILED_TESTS" ]; then
-    echo "✅ No specific test artifacts found. Proceeding to standard classification."
+# 3. External Intelligence Acquisition (GitHub Apps)
+echo "📡 Syncing with PR Assistants (CodeRabbit, Snyk, CodeFactor)..."
+PR_NUM=$(gh pr view --json number -q '.number')
+INTELLIGENCE=$(gh pr view $PR_NUM --json comments,statusCheckRollup | npx tsx scripts/app-intelligence.ts)
+echo "🧠 Intelligence Received:"
+echo "$INTELLIGENCE"
+
+if [ -z "$FAILED_TESTS" ] && [ "$INTELLIGENCE" == '{"targets":[],"protocols":[]}' ]; then
+    echo "✅ No specific failure artifacts or App feedback found. Proceeding to standard classification."
 else
     echo "🚨 TARGETS ACQUIRED:"
     echo "$FAILED_TESTS"
-    echo ""
-    echo "👉 COPY/PASTE THIS TO START REPAIR:"
-    echo "export TARGETS=\"$FAILED_TESTS\""
+    echo "$INTELLIGENCE"
 fi
 ```
 
@@ -191,6 +196,9 @@ fi
 | `Database: Schema out of sync` | **DB_OUT_OF_SYNC** (Use `/prisma-migrator`)       |
 | `A11y: Contrast/ARIA`         | **ACCESSIBILITY_FAIL** (Use `/a11y-auditor`)      |
 | `Coolify: Deployment failed`  | **COOLIFY_DOWN** (Use `/coolify-deploy`)          |
+| `Merge conflicts detected`    | **MERGE_CONFLICT_PROTOCOL** (Use `git rebase`)    |
+| `Patch coverage missing`      | **COVERAGE_DROP** (Use `/unit-tests`)             |
+| `Insufficent docstrings`      | **DOCSTRING_FAIL** (Use `/librarian`)             |
 
 ### 1.5 External Vital Signs (Coolify)
 
