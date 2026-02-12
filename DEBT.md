@@ -87,7 +87,11 @@
 | 2026-01-18 | `src/components/**/*` | [Consistency] 75 instances of arbitrary Tailwind values (e.g., `w-[375px]`) | @ui-ux | 🔴 Open |
 | 2026-01-18 | `src/components/**/*` | [Consistency] Low dark mode coverage (only 2 components using `dark:` prefix) | @ui-ux | 🔴 Open |
 | 2026-01-18 | `src/components/**/*` | [Responsive] Only 8/35 (23%) UI components have mobile breakpoints | @ui-ux | 🔴 Open |
+<<<<<<< HEAD
 | 2026-02-10 | `Storybook/Chromatic` | Chromatic deployment blocked by Prisma integration. Synced mock with schema. prisma-mock.ts updated. | @architect | ✅ Resolved |
+=======
+| 2026-02-10 | `Storybook/Chromatic` | Chromatic deployment blocked by Prisma integration. Requires architectural refactoring to separate data layer from presentation components (container/presenter pattern). Local Storybook works perfectly. | @architect | 🔴 Open |
+>>>>>>> 5fbb0a0 (docs: add Chromatic architectural debt to DEBT.md)
 
 ---
 
