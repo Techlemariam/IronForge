@@ -14,11 +14,32 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
-$WORKSPACE = "c:\Users\alexa\Workspaces\IronForge"
+
+# --- Dynamic Path Resolution ---
+$PSScriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
+$WORKSPACE = Split-Path -Parent $PSScriptRoot
 $LOG_DIR = Join-Path $WORKSPACE ".agent\logs"
 $TIMESTAMP = Get-Date -Format "yyyyMMdd-HHmmss"
 $LOG_FILE = Join-Path $LOG_DIR "$Workflow-$TIMESTAMP.log"
-$GEMINI_JS = "D:\Scoop\apps\nodejs-lts\current\bin\node_modules\@google\gemini-cli\dist\index.js"
+
+# Search for gemini-cli index.js
+$GEMINI_JS_CANDIDATES = @(
+  Join-Path $WORKSPACE "node_modules\@google\gemini-cli\dist\index.js",
+  "D:\Scoop\apps\nodejs-lts\current\bin\node_modules\@google\gemini-cli\dist\index.js",
+  "C:\Users\alexa\AppData\Roaming\npm\node_modules\@google\gemini-cli\dist\index.js"
+)
+
+$GEMINI_JS = ""
+foreach ($path in $GEMINI_JS_CANDIDATES) {
+  if (Test-Path $path) {
+    $GEMINI_JS = $path
+    break
+  }
+}
+
+if (-not $GEMINI_JS) {
+  Write-Error "Could not find gemini-cli index.js in search paths."
+}
 
 if (-not (Test-Path $LOG_DIR)) {
   New-Item -ItemType Directory -Path $LOG_DIR -Force | Out-Null
@@ -33,22 +54,28 @@ function Write-Log {
 
 Set-Location $WORKSPACE
 
-# --- Auth: Load API Key from .env ---
-$EnvFile = Join-Path $WORKSPACE ".env"
-if (Test-Path $EnvFile) {
-  $envContent = Get-Content $EnvFile
-  foreach ($line in $envContent) {
-    if ($line -match "^GEMINI_API_KEY=(.*)$") {
-      $val = $matches[1].Trim()
-      $val = $val -replace "^['""]", "" -replace "['""]$", ""
-      $env:GEMINI_API_KEY = $val
-      Write-Log "Loaded GEMINI_API_KEY from .env"
-      break
+# --- Auth: Load API Key ---
+if ($env:GEMINI_API_KEY) {
+  Write-Log "Using existing GEMINI_API_KEY from environment."
+}
+else {
+  $EnvFile = Join-Path $WORKSPACE ".env"
+  if (Test-Path $EnvFile) {
+    $envContent = Get-Content $EnvFile
+    foreach ($line in $envContent) {
+      if ($line -match "^GEMINI_API_KEY=(.*)$") {
+        $val = $matches[1].Trim()
+        $val = $val -replace "^['""]", "" -replace "['""]$", ""
+        $env:GEMINI_API_KEY = $val
+        Write-Log "Loaded GEMINI_API_KEY from .env"
+        break
+      }
     }
   }
 }
 
 Write-Log "=== Workflow Launcher ==="
+Write-Log "Workspace: $WORKSPACE"
 Write-Log "Workflow: /$Workflow"
 Write-Log "Model: $Model"
 Write-Log "Log: $LOG_FILE"
@@ -60,7 +87,7 @@ if ($gitStatus) {
   git stash push -m "auto-stash-$Workflow-$TIMESTAMP"
 }
 
-# --- MCP Safe Mode: Disable workspace settings.json to prevent hangs ---
+# --- MCP Safe Mode: Disable workspace settings.json ---
 $WorkspaceSettings = Join-Path $WORKSPACE ".gemini\settings.json"
 $DisabledSettings = Join-Path $WORKSPACE ".gemini\settings.json.disabled"
 $DisabledByMe = $false
@@ -75,17 +102,24 @@ if (Test-Path $WorkspaceSettings) {
 Write-Log "Invoking Gemini CLI via Node.js..."
 
 try {
-  # Using node directly to avoid pwsh wrapper encoding/interleaving issues
   $promptValue = "Execute /$Workflow"
+  
+  # Crucial: We DON'T redirect stderr to stdout (2>&1) here because 
+  # PowerShell's $ErrorActionPreference = "Stop" will treat any stderr output as a fatal error.
+  # Instead, we let node run and check the exit code.
+  
+  $proc = Start-Process -FilePath "node" -ArgumentList "--no-deprecation", "`"$GEMINI_JS`"", "-p", "`"$promptValue`"", "--model", "$Model", "--yolo", "--sandbox=false" `
+    -Wait -NoNewWindow -PassThru -RedirectStandardOutput $LOG_FILE -RedirectStandardError $LOG_FILE
     
-  # Run node and capture output. 
-  # We use --no-deprecation to silence the punycode warning.
-  node --no-deprecation $GEMINI_JS -p $promptValue --model $Model --yolo --sandbox=false 2>&1 | Tee-Object -FilePath $LOG_FILE -Append
-    
-  Write-Log "Gemini CLI finished with exit code: $LASTEXITCODE"
+  Write-Log "Gemini CLI finished with exit code: $($proc.ExitCode)"
+  
+  if ($proc.ExitCode -ne 0) {
+    Write-Error "Gemini CLI failed with exit code $($proc.ExitCode). Check log: $LOG_FILE"
+  }
 }
 catch {
-  Write-Log "Gemini CLI execution failed: $_"
+  Write-Log "Gemini CLI execution encountered an exception: $_"
+  throw $_
 }
 finally {
   # --- Cleanup ---
