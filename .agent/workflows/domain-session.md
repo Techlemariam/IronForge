@@ -113,20 +113,18 @@ Ask the user:
 
 > **What do you want to focus on in this session?**
 >
-> 1. 🆕 **New Feature** - Plan and implement something new
+> 1. 🏭 **Factory Run** - Design & Build a new Feature (Recommended)
 > 2. 🐛 **Bugfix/Debt** - Fix existing issues
 > 3. 🎯 **Triage & Roadmap** - Audit gaps and update domain roadmap
 > 4. 🔍 **Research** - Explore and understand the domain better
-> 5. 📋 **Review** - Review and improve existing code
 
 Based on selection, trigger appropriate sub-workflow.
 **CRITICAL:** When starting the new workflow/task, the Task Name MUST be: `[DOMAIN] <Description>`
 
-- Ny feature → `/feature [feature-name]`
+- Factory → `/factory design [feature-name]`
 - Bugfix → `/cleanup` → `/qa`
 - Triage → `/triage` (filtered for this domain)
 - Research → `/librarian`
-- Review → `/qa` → `/polish`
 
 ---
 
