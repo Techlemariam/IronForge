@@ -173,9 +173,6 @@ jobs:
         continue-on-error: true # Don't block deploy initially while tuning
 
   # ------------------------------------------------------------------
-  # 🎨 VISUAL REGRESSION (Chromatic)
-  # Catches UI changes in Storybook components.
-  # TEMPORARILY DISABLED: Fails due to Prisma mocking issues in CI.
   # ------------------------------------------------------------------
   chromatic:
     name: 🎨 Chromatic
@@ -191,6 +188,8 @@ jobs:
           node-version: '22'
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
+      - name: Generate Prisma Client
+        run: npx prisma generate
       - name: Run Chromatic
         uses: chromaui/action@v15
         with:
