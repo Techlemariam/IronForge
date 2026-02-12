@@ -102,7 +102,7 @@ The "Line" begins here. The Agent (@coder) enters "Factory Mode" - high focus, l
 **Trigger:** Automatic on failure or "Shortcut Taken".
 
 - If a shortcut is taken (e.g. `// TODO: fix later`), it MUST be logged to `DEBT.md`.
-- **Format**: `-[ ] [High] [Feature] shortcut description <!-- source: factory -->`
+- **Format**: `- [ ] [High] [Feature] shortcut description <!-- source: factory -->`
 
 ---
 

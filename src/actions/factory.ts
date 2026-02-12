@@ -51,6 +51,13 @@ export async function getFactoryStatus(): Promise<FactoryStatusData[]> {
     }
 }
 
+/**
+ * Seedes the initial factory status data if the database is empty.
+ * Uses upsert to ensure idempotency and prevent duplicate stations.
+ * Default stations: 'design', 'fabrication', 'qc', 'scrap', 'ship'.
+ * 
+ * @returns {Promise<void>}
+ */
 async function seedFactoryStatus() {
     const stations = ['design', 'fabrication', 'qc', 'scrap', 'ship'];
 

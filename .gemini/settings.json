@@ -55,8 +55,11 @@
       "args": [
         "-y",
         "@modelcontextprotocol/server-postgres",
-        "${env:DIRECT_URL}"
-      ]
+        "${env:DATABASE_URL}"
+      ],
+      "env": {
+        "DATABASE_URL": "${env:DIRECT_URL}"
+      }
     },
     "sentry": {
       "command": "npx",

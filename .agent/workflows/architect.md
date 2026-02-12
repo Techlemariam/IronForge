@@ -51,7 +51,7 @@ You are responsible for the `## System Design` section of `specs/[feature].md`.
 
 **Requirements:**
 
-1. **Schema**: Must use invalid Prisma code? No, define the *changes* clearly.
+1. **Schema**: Define schema changes clearly using valid Prisma syntax.
 2. **API**: Define Server Actions with Zod inputs/outputs.
 3. **Data Flow**: Diagram how data moves (Client -> Action -> DB).
 

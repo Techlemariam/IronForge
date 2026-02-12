@@ -49,7 +49,7 @@ export function StatusCard({ status }: Props) {
                     </p>
                 </div>
 
-                {/* Progress Bar */}
+                {/* Progress Bar Container */}
                 <div
                     className="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden"
                     role="progressbar"
@@ -58,6 +58,7 @@ export function StatusCard({ status }: Props) {
                     aria-valuemax={100}
                     aria-label={`${status.station} station health`}
                 >
+                    {/* Progress Fill */}
                     <div
                         className={`h-full transition-all duration-500 ${isError ? 'bg-red-500' : 'bg-green-500'}`}
                         style={{ width: `${clampedHealth}%` }}
