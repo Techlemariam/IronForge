@@ -120,9 +120,19 @@ try {
     Write-Host "`n⏳ Adding PR to Project (GraphQL)..." -ForegroundColor Yellow
     
     $query = 'mutation($project:ID!, $item:ID!) { addProjectV2ItemById(input: {projectId: $project, contentId: $item}) { item { id } } }'
-    $addResultJson = gh api graphql -f query=$query -f project=$($config.projectId) -f item=$prNodeId 2>&1
     
-    if ($LASTEXITCODE -ne 0) {
+    # Temporarily lower ErrorActionPreference to prevent stderr warnings from triggering catch
+    $oldEAP = $ErrorActionPreference
+    $ErrorActionPreference = "Continue"
+    try {
+        $addResultJson = gh api graphql -f query=$query -f project=$($config.projectId) -f item=$prNodeId 2>&1
+        $exitCode = $LASTEXITCODE
+    }
+    finally {
+        $ErrorActionPreference = $oldEAP
+    }
+    
+    if ($exitCode -ne 0) {
         throw "Failed to add PR to Project via GraphQL: $addResultJson"
     }
     
@@ -141,9 +151,17 @@ try {
     Write-Host "`n⏳ Setting Status = '$Status' (GraphQL)..." -ForegroundColor Yellow
     
     $mutation = 'mutation($project:ID!, $item:ID!, $field:ID!, $value:String!) { updateProjectV2ItemFieldValue(input: {projectId: $project, itemId: $item, fieldId: $field, value: { singleSelectOptionId: $value }}) { projectV2Item { id } } }'
-    $updateResult = gh api graphql -f query=$mutation -f project=$($config.projectId) -f item=$itemId -f field=$($statusField.id) -f value=$statusOptionId 2>&1
+    
+    $ErrorActionPreference = "Continue"
+    try {
+        $updateResult = gh api graphql -f query=$mutation -f project=$($config.projectId) -f item=$itemId -f field=$($statusField.id) -f value=$statusOptionId 2>&1
+        $exitCode = $LASTEXITCODE
+    }
+    finally {
+        $ErrorActionPreference = $oldEAP
+    }
 
-    if ($LASTEXITCODE -ne 0) {
+    if ($exitCode -ne 0) {
         throw "Failed to set status via GraphQL: $updateResult"
     }
 

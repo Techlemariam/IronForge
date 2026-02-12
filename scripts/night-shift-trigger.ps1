@@ -88,16 +88,26 @@ if ($DryRun) {
 # --- Execute via Gemini CLI ---
 Write-Log "Invoking Gemini CLI in headless + yolo mode..."
 
+# Temporarily lower ErrorActionPreference to prevent stderr warnings from triggering catch
+$oldEAP = $ErrorActionPreference
+$ErrorActionPreference = "Continue"
+
 try {
     # Pipe prompt to gemini
     $prompt | gemini --yolo --sandbox=false 2>&1 | Out-File -FilePath $LOG_FILE -Append -Encoding utf8
     $exitCode = $LASTEXITCODE
-    Write-Log "Gemini CLI exited with code: $exitCode"
+    
+    if ($exitCode -ne 0) {
+        Write-Log "Gemini CLI finished with error exit code: $exitCode"
+    }
+    else {
+        Write-Log "Gemini CLI finished successfully."
+    }
 }
-catch {
-    Write-Log "Gemini CLI failed: $_"
-    exit 1
+finally {
+    $ErrorActionPreference = $oldEAP
 }
+
 
 # --- Post-flight ---
 # Return to original branch if needed
