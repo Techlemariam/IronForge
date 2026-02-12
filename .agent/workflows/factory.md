@@ -109,6 +109,7 @@ The "Line" begins here. The Agent (@coder) enters "Factory Mode" - high focus, l
 ## 🏭 Station 5: Shipping (Delivery)
 
 **Command:** `/factory ship [feature-name]`
+**Auto-Flow:** If mode is `ON`, Station 3 automatically triggers Station 5 (Shipping) upon PR verification.
 
 **Protocol:**
 
