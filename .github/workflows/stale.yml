@@ -1,0 +1,33 @@
+name: "Stale"
+on:
+  schedule:
+    - cron: "30 1 * * *"
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/stale@v9
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          stale-issue-message: "This issue is stale because it has been open 60 days with no activity. If this is important technical debt, please add it to DEBT.md before this issue closes in 7 days."
+          stale-pr-message: "This PR is stale because it has been open 45 days with no activity. If this works needs to be saved, please document it in DEBT.md or merge it before it closes in 7 days."
+          close-issue-message: "This issue was closed because it has been stalled for 7 days with no activity."
+          close-pr-message: "This PR was closed because it has been stalled for 7 days with no activity."
+
+          days-before-issue-stale: 60
+          days-before-pr-stale: 45
+          days-before-issue-close: 7
+          days-before-pr-close: 7
+          # Exemptions
+          exempt-issue-labels: "pinned,security,high-priority,bug"
+          exempt-pr-labels: "pinned,security,high-priority,dependencies"
+          exempt-milestones: true
+          exempt-all-assignees: true 
+          # Operations
+          enable-statistics: true
+          operations-per-run: 100

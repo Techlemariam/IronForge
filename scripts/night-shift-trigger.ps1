@@ -86,18 +86,81 @@ if ($DryRun) {
 }
 
 # --- Execute via Gemini CLI ---
-Write-Log "Invoking Gemini CLI in headless + yolo mode..."
+# --- Auth: Load API Key from .env ---
+$EnvFile = Join-Path $WORKSPACE ".env"
+if (Test-Path $EnvFile) {
+    $envContent = Get-Content $EnvFile
+    foreach ($line in $envContent) {
+        if ($line -match "^GEMINI_API_KEY=(.*)$") {
+            $val = $matches[1].Trim()
+            $val = $val -replace "^['""]", "" -replace "['""]$", ""
+            $env:GEMINI_API_KEY = $val
+            Write-Log "Loaded GEMINI_API_KEY from .env"
+            break
+        }
+    }
+}
+
+# --- Execute via Gemini CLI ---
+Write-Log "Invoking Gemini CLI in headless + yolo mode (Node.js wrapper)..."
+$GEMINI_JS = "D:\Scoop\apps\nodejs-lts\current\bin\node_modules\@google\gemini-cli\dist\index.js"
 
 try {
-    # Pipe prompt to gemini
-    $prompt | gemini --yolo --sandbox=false 2>&1 | Out-File -FilePath $LOG_FILE -Append -Encoding utf8
-    $exitCode = $LASTEXITCODE
-    Write-Log "Gemini CLI exited with code: $exitCode"
+    # Using node directly to avoid pwsh wrapper encoding/interleaving issues
+    # and to suppress punycode warning via --no-deprecation
+    
+    # We pipe the prompt to the process
+    $psi = New-Object System.Diagnostics.ProcessStartInfo
+    $psi.FileName = "node"
+    $psi.Arguments = "--no-deprecation `"$GEMINI_JS`" --yolo --sandbox=false"
+    $psi.RedirectStandardInput = $true
+    $psi.RedirectStandardOutput = $true
+    $psi.RedirectStandardError = $true
+    $psi.UseShellExecute = $false
+    $psi.StandardOutputEncoding = [System.Text.Encoding]::UTF8
+    $psi.StandardErrorEncoding = [System.Text.Encoding]::UTF8
+    $psi.EnvironmentVariables["GEMINI_API_KEY"] = $env:GEMINI_API_KEY
+    $psi.WorkingDirectory = $WORKSPACE
+
+    $proc = [System.Diagnostics.Process]::Start($psi)
+    
+    # Write prompt to stdin
+    $proc.StandardInput.WriteLine($prompt)
+    $proc.StandardInput.Close()
+
+    # Capture output
+    $stdout = $proc.StandardOutput.ReadToEnd()
+    $stderr = $proc.StandardError.ReadToEnd()
+    
+    $proc.WaitForExit()
+    
+    # Log output
+    if ($stdout) { 
+        $stdout | Out-File -FilePath $LOG_FILE -Append -Encoding utf8 
+        Write-Host $stdout
+    }
+    if ($stderr) { 
+        $stderr | Out-File -FilePath $LOG_FILE -Append -Encoding utf8 
+        Write-Host $stderr -ForegroundColor Yellow
+    }
+    
+    if ($proc.ExitCode -ne 0) {
+        Write-Log "Gemini CLI finished with error exit code: $($proc.ExitCode)"
+        # If expected error, maybe don't throw? But we want to know.
+        if ($stderr -notmatch "DeprecationWarning") {
+            throw "Gemini CLI failed with code $($proc.ExitCode)"
+        }
+    }
+    else {
+        Write-Log "Gemini CLI finished successfully."
+    }
 }
 catch {
-    Write-Log "Gemini CLI failed: $_"
+    Write-Log "Gemini CLI execution failed: $_"
     exit 1
 }
+
+
 
 # --- Post-flight ---
 # Return to original branch if needed

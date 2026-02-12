@@ -172,9 +172,19 @@ try {
     Write-Host "`n⏳ Adding Issue to Project (GraphQL)..." -ForegroundColor Yellow
     
     $query = 'mutation($project:ID!, $item:ID!) { addProjectV2ItemById(input: {projectId: $project, contentId: $item}) { item { id } } }'
-    $addResultJson = gh api graphql -f query=$query -f project=$($config.projectId) -f item=$issueNodeId 2>&1
     
-    if ($LASTEXITCODE -ne 0) {
+    # Temporarily lower ErrorActionPreference to prevent stderr warnings from triggering catch
+    $oldEAP = $ErrorActionPreference
+    $ErrorActionPreference = "Continue"
+    try {
+        $addResultJson = gh api graphql -f query=$query -f project=$($config.projectId) -f item=$issueNodeId 2>&1
+        $exitCode = $LASTEXITCODE
+    }
+    finally {
+        $ErrorActionPreference = $oldEAP
+    }
+
+    if ($exitCode -ne 0) {
         throw "Failed to add issue to Project via GraphQL: $addResultJson"
     }
     
@@ -190,8 +200,17 @@ try {
     $statusOptionId = $statusField.options.$Status
     if ($statusOptionId) {
         $mutation = 'mutation($project:ID!, $item:ID!, $field:ID!, $value:String!) { updateProjectV2ItemFieldValue(input: {projectId: $project, itemId: $item, fieldId: $field, value: { singleSelectOptionId: $value }}) { projectV2Item { id } } }'
-        $res = gh api graphql -f query=$mutation -f project=$($config.projectId) -f item=$itemId -f field=$($statusField.id) -f value=$statusOptionId 2>&1
-        if ($LASTEXITCODE -ne 0) { throw "Failed to set Status: $res" }
+        
+        $ErrorActionPreference = "Continue"
+        try {
+            $res = gh api graphql -f query=$mutation -f project=$($config.projectId) -f item=$itemId -f field=$($statusField.id) -f value=$statusOptionId 2>&1
+            $exitCode = $LASTEXITCODE
+        }
+        finally {
+            $ErrorActionPreference = $oldEAP
+        }
+        
+        if ($exitCode -ne 0) { throw "Failed to set Status: $res" }
         $updates += "Status=$Status"
     }
 
@@ -201,8 +220,17 @@ try {
         $priorityOptionId = $priorityField.options.$Priority
         if ($priorityOptionId) {
             $mutation = 'mutation($project:ID!, $item:ID!, $field:ID!, $value:String!) { updateProjectV2ItemFieldValue(input: {projectId: $project, itemId: $item, fieldId: $field, value: { singleSelectOptionId: $value }}) { projectV2Item { id } } }'
-            $res = gh api graphql -f query=$mutation -f project=$($config.projectId) -f item=$itemId -f field=$($priorityField.id) -f value=$priorityOptionId 2>&1
-            if ($LASTEXITCODE -ne 0) { throw "Failed to set Priority: $res" }
+            
+            $ErrorActionPreference = "Continue"
+            try {
+                $res = gh api graphql -f query=$mutation -f project=$($config.projectId) -f item=$itemId -f field=$($priorityField.id) -f value=$priorityOptionId 2>&1
+                $exitCode = $LASTEXITCODE
+            }
+            finally {
+                $ErrorActionPreference = $oldEAP
+            }
+            
+            if ($exitCode -ne 0) { throw "Failed to set Priority: $res" }
             $updates += "Priority=$Priority"
         }
     }
@@ -213,8 +241,17 @@ try {
         $domainOptionId = $domainField.options.$Domain
         if ($domainOptionId) {
             $mutation = 'mutation($project:ID!, $item:ID!, $field:ID!, $value:String!) { updateProjectV2ItemFieldValue(input: {projectId: $project, itemId: $item, fieldId: $field, value: { singleSelectOptionId: $value }}) { projectV2Item { id } } }'
-            $res = gh api graphql -f query=$mutation -f project=$($config.projectId) -f item=$itemId -f field=$($domainField.id) -f value=$domainOptionId 2>&1
-            if ($LASTEXITCODE -ne 0) { throw "Failed to set Domain: $res" }
+            
+            $ErrorActionPreference = "Continue"
+            try {
+                $res = gh api graphql -f query=$mutation -f project=$($config.projectId) -f item=$itemId -f field=$($domainField.id) -f value=$domainOptionId 2>&1
+                $exitCode = $LASTEXITCODE
+            }
+            finally {
+                $ErrorActionPreference = $oldEAP
+            }
+            
+            if ($exitCode -ne 0) { throw "Failed to set Domain: $res" }
             $updates += "Domain=$Domain"
         }
     }
@@ -225,8 +262,17 @@ try {
         $effortOptionId = $effortField.options.$Effort
         if ($effortOptionId) {
             $mutation = 'mutation($project:ID!, $item:ID!, $field:ID!, $value:String!) { updateProjectV2ItemFieldValue(input: {projectId: $project, itemId: $item, fieldId: $field, value: { singleSelectOptionId: $value }}) { projectV2Item { id } } }'
-            $res = gh api graphql -f query=$mutation -f project=$($config.projectId) -f item=$itemId -f field=$($effortField.id) -f value=$effortOptionId 2>&1
-            if ($LASTEXITCODE -ne 0) { throw "Failed to set Effort: $res" }
+            
+            $ErrorActionPreference = "Continue"
+            try {
+                $res = gh api graphql -f query=$mutation -f project=$($config.projectId) -f item=$itemId -f field=$($effortField.id) -f value=$effortOptionId 2>&1
+                $exitCode = $LASTEXITCODE
+            }
+            finally {
+                $ErrorActionPreference = $oldEAP
+            }
+            
+            if ($exitCode -ne 0) { throw "Failed to set Effort: $res" }
             $updates += "Effort=$Effort"
         }
     }
@@ -235,8 +281,17 @@ try {
     if ($ROI) {
         $roiField = $config.fields.roi
         $mutation = 'mutation($project:ID!, $item:ID!, $field:ID!, $value:Float!) { updateProjectV2ItemFieldValue(input: {projectId: $project, itemId: $item, fieldId: $field, value: { number: $value }}) { projectV2Item { id } } }'
-        $res = gh api graphql -f query=$mutation -f project=$($config.projectId) -f item=$itemId -f field=$($roiField.id) -F value=$ROI 2>&1
-        if ($LASTEXITCODE -ne 0) { throw "Failed to set ROI: $res" }
+        
+        $ErrorActionPreference = "Continue"
+        try {
+            $res = gh api graphql -f query=$mutation -f project=$($config.projectId) -f item=$itemId -f field=$($roiField.id) -F value=$ROI 2>&1
+            $exitCode = $LASTEXITCODE
+        }
+        finally {
+            $ErrorActionPreference = $oldEAP
+        }
+        
+        if ($exitCode -ne 0) { throw "Failed to set ROI: $res" }
         $updates += "ROI=$ROI"
     }
 
