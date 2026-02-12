@@ -16,6 +16,15 @@ if ($Feature -and ($Feature -match "[\\/..]")) {
     exit 1
 }
 
+function Get-EstimatedCostSEK {
+    param ([int64]$Tokens)
+    # Gemini 1.5 Flash: Mixed avg ~$0.15 / 1M tokens
+    # USD -> SEK: ~10.5
+    $RatePerMillion = 0.15 * 10.5
+    $Cost = ($Tokens / 1000000) * $RatePerMillion
+    return [math]::Round($Cost, 4)
+}
+
 function Log-Factory {
     param ([string]$Message, [string]$Level = "INFO")
     $Timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
@@ -324,9 +333,10 @@ if ($Action -eq "RUN") {
         # Token Telemetry & ROI
         $TokensEnd = Get-TotalTokenUsage
         $Cost = $TokensEnd - $TokensStart
+        $CostSEK = Get-EstimatedCostSEK -Tokens $Cost
         $PVS = 85 # Target 95% passive
         Log-Factory "Passive Viability Score: $PVS/100" "SUCCESS"
-        Log-Factory "Feature Assembly Cost: $Cost tokens" "INFO"
+        Log-Factory "Feature Assembly Cost: $Cost tokens (~$CostSEK SEK)" "INFO"
 
         # Handoff Protocol
         $HandoffDir = ".agent/handoffs"
@@ -339,13 +349,13 @@ if ($Action -eq "RUN") {
 - **ID**: $(New-Guid)
 - **Status**: Shipped
 - **PVS**: $PVS
-- **Cost**: $Cost tokens
+- **Cost**: $Cost tokens (~$CostSEK SEK)
 - **PR**: $PRUrl
 - **Next Station**: @librarian (Indexing)
 "@
         $HandoffContent | Out-File $HandoffFile -Encoding utf8
         Log-Factory "Strategic Handoff Artifact generated: [$(Split-Path $HandoffFile -Leaf)](file:///$(($HandoffFile -replace '\\', '/')))"
-        Send-FactoryNotification -Status "SUCCESS" -Message "Feature $Feature SHIPPED! 🚢`n`n- **PR**: $PRUrl`n- **Cost**: $Cost tokens`n- **PVS**: $PVS/100"
+        Send-FactoryNotification -Status "SUCCESS" -Message "Feature $Feature SHIPPED! 🚢`n`n- **PR**: $PRUrl`n- **Cost**: $Cost tokens (~$CostSEK SEK)`n- **PVS**: $PVS/100"
     }
 
     else {

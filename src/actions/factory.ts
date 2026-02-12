@@ -25,7 +25,7 @@ export type FactoryStatusData = {
  * 
  * @returns {Promise<FactoryStatusData[]>} A list of status objects for all stations.
  */
-export async function getFactoryStatus(): Promise<FactoryStatusData[]> {
+export async function getFactoryStatus(): Promise<(FactoryStatusData & { costSEK?: number })[]> {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
@@ -44,7 +44,11 @@ export async function getFactoryStatus(): Promise<FactoryStatusData[]> {
             return await prisma.factoryStatus.findMany({ orderBy: { station: 'asc' } });
         }
 
-        return status;
+        // Add dummy/calculated cost for the UI
+        return status.map(s => ({
+            ...s,
+            costSEK: s.current ? 0.042 : 0 // Mock for now, will integrate with usage.json in next iteration
+        }));
     } catch (error) {
         console.error('Failed to fetch factory status:', error);
         return [];
