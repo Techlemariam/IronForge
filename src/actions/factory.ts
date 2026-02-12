@@ -1,7 +1,7 @@
 'use server';
 
 import { prisma } from '@/lib/prisma';
-import { revalidatePath } from 'next/cache';
+import { createClient } from '@/utils/supabase/server';
 
 /**
  * Represents the health and status of a single factory station.
@@ -26,6 +26,13 @@ export type FactoryStatusData = {
  * @returns {Promise<FactoryStatusData[]>} A list of status objects for all stations.
  */
 export async function getFactoryStatus(): Promise<FactoryStatusData[]> {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+        throw new Error('Unauthorized');
+    }
+
     try {
         const status = await prisma.factoryStatus.findMany({
             orderBy: { station: 'asc' },
@@ -48,8 +55,10 @@ async function seedFactoryStatus() {
     const stations = ['design', 'fabrication', 'qc', 'scrap', 'ship'];
 
     for (const station of stations) {
-        await prisma.factoryStatus.create({
-            data: {
+        await prisma.factoryStatus.upsert({
+            where: { station },
+            update: {},
+            create: {
                 station,
                 health: 100,
                 current: null,

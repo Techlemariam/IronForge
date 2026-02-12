@@ -3,6 +3,16 @@ param (
     [string]$Station = "design"
 )
 
+# Sanitize $Feature to prevent path traversal
+if ($Feature -match "[\\/..]") {
+    Write-Error "Invalid Feature name: Path traversal detected."
+    exit 1
+}
+if ($Feature -match "[^a-zA-Z0-9_\-]") {
+    Write-Error "Invalid Feature name: Special characters not allowed."
+    exit 1
+}
+
 # -----------------------------------------------------------------------------
 # 🏭 FACTORY MANAGER v1.0
 # The Foreman of the Antigravity Factory.
@@ -60,20 +70,22 @@ elseif ($Station -eq "verify") {
     Log-Factory "Running Quality Control..."
     
     # Run Gatekeeper
-    # Convert POSIX path to Windows if needed
     $Gatekeeper = ".agent/scripts/gatekeeper.ps1" 
     if (Test-Path $Gatekeeper) {
-        Invoke-Expression $Gatekeeper
+        & $Gatekeeper
+        if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
     }
     else {
         # Fallback to manual checks
-        npm run build
-        npm run test
+        pnpm run build
+        if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+        pnpm run test
+        if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
     }
 }
 
 # -----------------------------------------------------------------------------
-# Station 6: Shipping (@delivery)
+# Station 5: Shipping (@delivery)
 # -----------------------------------------------------------------------------
 elseif ($Station -eq "ship") {
     Log-Factory "Preparing Shipment..."

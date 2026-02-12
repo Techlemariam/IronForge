@@ -12,9 +12,10 @@ interface Props {
  * @param {FactoryStatusData} props.status - The status data for the station.
  */
 export function StatusCard({ status }: Props) {
-    const isHealthy = status.health > 80;
     const isBusy = !!status.current;
     const isError = status.health < 50;
+    const clampedHealth = Math.min(100, Math.max(0, status.health || 0));
+    const statusLabel = isError ? 'Error' : isBusy ? 'Busy' : 'Available';
 
     return (
         <div className={`
@@ -27,10 +28,10 @@ export function StatusCard({ status }: Props) {
                 <h3 className="text-xl font-bold capitalize text-slate-100">
                     {status.station}
                 </h3>
-                <div className={`
-          h-3 w-3 rounded-full animate-pulse
-          ${isError ? 'bg-red-500' : isBusy ? 'bg-amber-500' : 'bg-green-500'}
-        `} />
+                <div
+                    className={`h-3 w-3 rounded-full animate-pulse ${isError ? 'bg-red-500' : isBusy ? 'bg-amber-500' : 'bg-green-500'}`}
+                    aria-label={`Station status: ${statusLabel}`}
+                />
             </div>
 
             <div className="space-y-4">
@@ -49,10 +50,17 @@ export function StatusCard({ status }: Props) {
                 </div>
 
                 {/* Progress Bar */}
-                <div className="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden">
+                <div
+                    className="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden"
+                    role="progressbar"
+                    aria-valuenow={clampedHealth}
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    aria-label={`${status.station} station health`}
+                >
                     <div
                         className={`h-full transition-all duration-500 ${isError ? 'bg-red-500' : 'bg-green-500'}`}
-                        style={{ width: `${status.health}%` }}
+                        style={{ width: `${clampedHealth}%` }}
                     />
                 </div>
             </div>

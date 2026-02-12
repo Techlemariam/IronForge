@@ -1148,7 +1148,7 @@ model SessionParticipant {
 
 model FactoryStatus {
   id        String   @id @default(cuid())
-  station   String   // design, fabrication, qc, scrap, ship
+  station   String   @unique // design, fabrication, qc, scrap, ship
   health    Int      // 0-100
   current   String?  // Active job name
   updatedAt DateTime @updatedAt

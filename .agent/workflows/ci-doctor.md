@@ -7,7 +7,7 @@ version: "2.2.0"
 telemetry: "enabled"
 primary_agent: "@infrastructure"
 domain: "ci"
-skills: ["error-analyzer", "gatekeeper", "dependabot-manager", "env-validator", "linter-fixer", "schema-guard", "qodana-linter", "performance-profiler", "zod-schema-validator", "api-mocker", "bio-validator", "prisma-migrator", "a11y-auditor", "coverage-check", "bundle-analyzer", "git-guard", "supabase-inspector", "storybook-bridge", "coolify-deploy"]
+skills: ["error-analyzer", "gatekeeper", "dependabot-manager", "env-validator", "linter-fixer", "schema-guard", "qodana-linter", "performance-profiler", "zod-schema-validator", "api-mocker", "bio-validator", "prisma-migrator", "a11y-auditor", "coverage-check", "bundle-analyzer", "git-guard", "supabase-inspector", "storybook-bridge", "coolify-deploy", "doc-generator", "red-team", "clean-code-pro"]
 ---
 
 # 🩺 CI Doctor (Protocol v2.0)
@@ -198,7 +198,8 @@ fi
 | `Coolify: Deployment failed`   | **COOLIFY_DOWN** (Use `/coolify-deploy`)          |
 | `Merge conflicts detected`     | **MERGE_CONFLICT_PROTOCOL** (Use `git rebase`)    |
 | `Patch coverage missing`       | **COVERAGE_DROP** (Use `/unit-tests`)             |
-| `Insufficent docstrings`       | **DOCSTRING_FAIL** (Use `/librarian`)             |
+| `Insufficent docstrings`       | **DOCSTRING_FAIL** (Use `/doc-generator`)         |
+| `Path traversal risk`          | **SECURE_INPUT_FAIL** (Use `/red-team`)           |
 
 ### 1.5 External Vital Signs (Coolify)
 
