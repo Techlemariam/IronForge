@@ -19,7 +19,10 @@ skills: ["clean-code-pro", "git-guard", "project-linker", "remote-trigger"]
 
 ## 🏭 Station 1: The Design Studio (Planning)
 
-**Protocol: Lean Manufacturing (Token Efficiency)**
+> [!IMPORTANT]
+> **Operational Guard**: Before starting, run `powershell scripts/factory-manager.ps1 CHECK-GUARD`.
+
+### Protocol: Lean Manufacturing (Token Efficiency)
 
 1. **Context**: Use `nextjs-route-visualizer` to map context. DO NOT read entire codebase.
 2. **Tools**: Use `prisma-migrator` for schema changes.
@@ -48,6 +51,9 @@ Before the line starts, the **Council of Roles** must sign off on the Spec.
 
 ## 🏭 Station 2: Fabrication (Implementation)
 
+> [!IMPORTANT]
+> **Operational Guard**: Run `powershell scripts/factory-manager.ps1 CHECK-GUARD`.
+
 The "Line" begins here. The Agent (@coder) enters "Factory Mode" - high focus, low chatter.
 
 **Command:** `/factory start [feature-name]`
@@ -62,6 +68,8 @@ The "Line" begins here. The Agent (@coder) enters "Factory Mode" - high focus, l
     - Generate Server Actions.
     - Generate UI Components (using Design tokens).
 4. **Unit Test**: Write tests defined in `## Test Plan`.
+
+**Auto-Flow**: If mode is `ON`, automatically proceed to Station 3 after implementation.
 
 ---
 
@@ -82,9 +90,10 @@ The "Line" begins here. The Agent (@coder) enters "Factory Mode" - high focus, l
 **Failure Protocol:**
 
 - If QC fails:
-  1. Read Error Log.
-  2. Attempt Fix (max 3 retries).
-  3. If still failing, Log to `DEBT.md` and alert User.
+  1. **Hire Maintenance**: Automatically trigger `powershell scripts/factory-manager.ps1 MAINTAIN`.
+  2. This invokes `/ci-doctor` to perform surgical strikes on the failure.
+  3. **Hire Librarian**: If fixed, run `powershell scripts/factory-manager.ps1 INDEX` to document the fix.
+  4. If still failing after 3 iterations, Log to `DEBT.md` and alert User.
 
 ---
 
@@ -110,7 +119,8 @@ The "Line" begins here. The Agent (@coder) enters "Factory Mode" - high focus, l
     - Body: Links to Spec, Test Results, and Screenshots.
 4. **Project & Knowledge**:
     - Execute `project-linker` to move card to "In Review".
-    - Trigger `/librarian` to index new Spec/Code.
+    - **Hire Librarian**: Trigger `/librarian` to index new Spec/Code automatically.
+    - Run `powershell scripts/factory-manager.ps1 INDEX`.
 5. **Remote Deployment**:
     - `gh workflow run coolify-deploy.yml`
 
@@ -120,7 +130,7 @@ The "Line" begins here. The Agent (@coder) enters "Factory Mode" - high focus, l
 
 **Command:** `/factory status`
 
-```
+```text
 ┌─────────────────────────────────────────────┐
 | 🏭 FACTORY STATUS                           |
 ├─────────────────────────────────────────────┤

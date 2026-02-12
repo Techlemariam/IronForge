@@ -5,6 +5,7 @@
 ## 🚀 Active Development
 
 - [x] **Iron Command Center (TV Mode)** <!-- status: shipped | priority: critical | roi: 5.5 | effort: L | source: strategic-diff -->
+- [x] **Factory Pilot: Landing Dashboard** <!-- status: shipped | priority: medium | roi: 4.0 | effort: S | source: factory-pilot -->
 - [/] **Cardio PvP Duels** ([Spec](specs/cardio-duels.md)) ([#80](https://github.com/Techlemariam/IronForge/issues/80)) <!-- status: in-progress | architect: /architect | priority: medium | effort: M | source: user/idea -->
 
 ## 🚨 Business Trigger Watchlist (Scale-Up Indicators)

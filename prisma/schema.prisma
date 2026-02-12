@@ -1154,4 +1154,10 @@ model FactoryStatus {
   updatedAt DateTime @updatedAt
 }
 
+model FactorySettings {
+  id        String   @id @default("global")
+  mode      String   @default("MANUAL") // ON, OFF, MANUAL
+  updatedAt DateTime @updatedAt
+}
+
 
