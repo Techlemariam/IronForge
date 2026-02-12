@@ -69,37 +69,37 @@ const QuestLog: React.FC<QuestLogProps> = ({
   ];
 
   return (
-    <div className="bg-[var(--color-void)] border-2 border-[var(--color-steel)] rounded-lg overflow-hidden flex flex-col shadow-2xl">
+    <div className="bg-[#111] border-2 border-[#46321d] rounded-lg overflow-hidden flex flex-col shadow-2xl">
       {/* Header / Tabs */}
-      <div className="flex border-b border-steel/50 bg-void/50">
+      <div className="flex border-b border-[#46321d]">
         {acts.map((act) => (
           <button
             key={act.id}
             onClick={() => setActiveAct(act.id as ActFilter)}
-            className={`flex-1 py-4 px-1 sm:px-2 flex flex-col items-center gap-1 transition-all relative overflow-hidden group
+            className={`flex-1 py-4 px-2 flex flex-col items-center gap-1 transition-all relative overflow-hidden group
               ${activeAct === act.id
-                ? "bg-armor text-gold"
-                : "bg-void text-steel hover:text-white hover:bg-armor/50"
+                ? "bg-[#1a1a1a] text-[#c79c6e]"
+                : "bg-[#0a0a0a] text-zinc-500 hover:text-zinc-400 hover:bg-[#111]"
               }
             `}
           >
             {activeAct === act.id && (
-              <div className="absolute top-0 left-0 w-full h-0.5 bg-gold shadow-[0_0_10px_var(--color-gold)]" />
+              <div className="absolute top-0 left-0 w-full h-0.5 bg-[#c79c6e] shadow-[0_0_10px_#c79c6e]" />
             )}
             <div
-              className={`p-1 rounded ${activeAct === act.id ? "bg-gold/10" : "bg-steel/5"}`}
+              className={`p-1 rounded ${activeAct === act.id ? "bg-[#c79c6e]/10" : ""}`}
             >
               {act.icon}
             </div>
-            <span className="text-[8px] sm:text-[10px] font-bold uppercase tracking-tighter sm:tracking-widest">
-              {act.label.split(": ")[1] || act.label}
+            <span className="text-[10px] font-bold uppercase tracking-widest">
+              {act.label}
             </span>
           </button>
         ))}
       </div>
 
       {/* Content Area */}
-      <div className="p-4 sm:p-6 min-h-[300px] bg-void/50">
+      <div className="p-6 min-h-[300px] bg-[url('https://www.transparenttextures.com/patterns/dark-leather.png')] bg-zinc-900/50">
         {/* Act Description */}
         <div className="mb-6 flex items-center justify-between">
           <div>
@@ -146,19 +146,19 @@ const QuestLog: React.FC<QuestLogProps> = ({
               const isGenerated = session.isGenerated;
               const isCustom = session.isCustom;
 
-              let borderColor = "border-[var(--color-steel)] group-hover:border-[var(--color-warp)]";
-              let iconColor = "bg-[var(--color-armor)] border-[var(--color-steel)] text-[var(--color-gold)]";
+              let borderColor = "border-[#c0b3a0] group-hover:border-[#a335ee]";
+              let iconColor = "bg-[#46321d] border-[#6b4e31] text-[#c79c6e]";
               let typeLabel = "Daily Quest";
 
               if (isGenerated) {
                 borderColor =
-                  "border-[var(--color-warp)] shadow-[0_0_10px_rgba(168,85,247,0.15)] group-hover:border-purple-400";
-                iconColor = "bg-purple-900 border-[var(--color-warp)] text-purple-200";
+                  "border-purple-500 shadow-[0_0_10px_rgba(168,85,247,0.15)] group-hover:border-purple-400";
+                iconColor = "bg-purple-900 border-purple-500 text-purple-200";
                 typeLabel = "Prophecy";
               } else if (isCustom) {
                 borderColor =
-                  "border-[var(--color-venom)] shadow-[0_0_10px_rgba(34,197,94,0.15)] group-hover:border-green-400";
-                iconColor = "bg-green-900 border-[var(--color-venom)] text-green-200";
+                  "border-green-500 shadow-[0_0_10px_rgba(34,197,94,0.15)] group-hover:border-green-400";
+                iconColor = "bg-green-900 border-green-500 text-green-200";
                 typeLabel = "Construct";
               }
 
@@ -195,8 +195,9 @@ const QuestLog: React.FC<QuestLogProps> = ({
                       {session.zoneName || "Unknown Territory"}
                     </p>
 
+                    {/* Rewards / Difficulty */}
                     <div className="flex items-center gap-4 mt-3 text-[10px] text-zinc-400 font-mono uppercase">
-                      <span className="flex items-center gap-1 text-[var(--color-gold)]">
+                      <span className="flex items-center gap-1 text-[#ffd700]">
                         <Star className="w-3 h-3 fill-current" />
                         XP: High
                       </span>
@@ -213,7 +214,7 @@ const QuestLog: React.FC<QuestLogProps> = ({
                     </div>
                   </div>
 
-                  <div className="self-center opacity-0 group-hover:opacity-100 transition-opacity -ml-4 group-hover:ml-0 text-[var(--color-gold)]">
+                  <div className="self-center opacity-0 group-hover:opacity-100 transition-opacity -ml-4 group-hover:ml-0 text-[#c79c6e]">
                     <ChevronRight className="w-6 h-6" />
                   </div>
                 </button>

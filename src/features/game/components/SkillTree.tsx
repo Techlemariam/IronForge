@@ -48,12 +48,6 @@ const TIER_SIZE: Record<NodeTier, number> = {
   keystone: 100,
 };
 
-const TIER_CLASSES: Record<NodeTier, string> = {
-  minor: "w-[50px] h-[50px]",
-  notable: "w-[70px] h-[70px]",
-  keystone: "w-[100px] h-[100px]",
-};
-
 // --- CUSTOM NODE COMPONENT ---
 interface CustomNodeData {
   node: SkillNodeV2;
@@ -71,12 +65,12 @@ const CustomSkillNode = ({ data, selected }: NodeProps<CustomNodeData>) => {
   const isEndurance = node.currency === "kinetic_shard";
 
   // Base Sizes
-  const tierClass = TIER_CLASSES[tier];
+  const size = TIER_SIZE[tier];
   const iconSize = tier === "keystone" ? 48 : tier === "notable" ? 32 : 24;
 
   // Style Logic
-  let borderClass = "border-[var(--color-steel)]";
-  let bgClass = "bg-[var(--color-void)]";
+  let borderClass = "border-zinc-800";
+  let bgClass = "bg-[#0a0a0a]";
   let iconColor = "text-zinc-600";
   let glow = "";
   let borderStyle = "border-2";
@@ -85,12 +79,12 @@ const CustomSkillNode = ({ data, selected }: NodeProps<CustomNodeData>) => {
   if (tier === "notable") borderStyle = "border-3";
 
   if (isMastered) {
-    borderClass = isEndurance ? "border-[var(--color-cyan)]" : "border-[var(--color-gold)]";
+    borderClass = isEndurance ? "border-cyan-500" : "border-[#ffd700]";
     bgClass = isEndurance ? "bg-cyan-950" : "bg-yellow-950/50";
-    iconColor = isEndurance ? "text-[var(--color-cyan)]" : "text-[var(--color-gold)]";
+    iconColor = isEndurance ? "text-cyan-400" : "text-[#ffd700]";
     glow = isEndurance
       ? "shadow-[0_0_30px_rgba(6,182,212,0.6)]"
-      : "shadow-[0_0_30px_rgba(234,179,8,0.6)]";
+      : "shadow-[0_0_30px_rgba(255,215,0,0.6)]";
   } else if (isUnlocked) {
     if (isAffordable) {
       borderClass = "border-green-500";
@@ -120,10 +114,8 @@ const CustomSkillNode = ({ data, selected }: NodeProps<CustomNodeData>) => {
 
   return (
     <div
-      role="button"
-      tabIndex={0}
-      aria-label={`${node.title} (${tier}) - ${status}`}
-      className={`relative ${shapeClass} ${tierClass} ${borderStyle} ${borderClass} ${bgClass} ${glow} flex items-center justify-center transition-all duration-300 group focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black`}
+      style={{ width: size, height: size }}
+      className={`relative ${shapeClass} ${borderStyle} ${borderClass} ${bgClass} ${glow} flex items-center justify-center transition-all duration-300 group`}
     >
       {/* Handles for connections */}
       <Handle
@@ -245,11 +237,11 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onExit, wellness: _wellness }) =>
           style: {
             stroke: isFullyMastered
               ? isEndurance
-                ? "var(--color-cyan)"
-                : "var(--color-gold)"
+                ? "#06b6d4"
+                : "#ffd700"
               : isPathActive
-                ? "var(--color-steel)"
-                : "var(--color-armor)",
+                ? "#555"
+                : "#333",
             strokeWidth: isFullyMastered ? 3 : 1,
             opacity: isPathActive ? 1 : 0.3,
           },
@@ -298,13 +290,12 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onExit, wellness: _wellness }) =>
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-[var(--color-void)] flex flex-col text-white animate-in fade-in duration-300">
+    <div className="fixed inset-0 z-50 bg-[#050505] flex flex-col text-white animate-in fade-in duration-300">
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b border-[var(--color-armor)] bg-[var(--color-void)] z-10 shadow-md">
+      <div className="flex items-center justify-between p-4 border-b border-zinc-900 bg-[#0a0a0a] z-10 shadow-md">
         <div className="flex items-center gap-4">
           <button
             onClick={onExit}
-            aria-label="Exit Neural Lattice"
             className="p-2 hover:bg-zinc-800 rounded-full transition-colors text-zinc-400 hover:text-white"
           >
             <ArrowLeft className="w-6 h-6" />
@@ -348,9 +339,9 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onExit, wellness: _wellness }) =>
           minZoom={0.2}
           maxZoom={2}
           defaultEdgeOptions={{ type: "default", animated: false }}
-          className="bg-[var(--color-void)]"
+          className="bg-[#050505]"
         >
-          <Background color="var(--color-steel)" gap={20} size={1} />
+          <Background color="#222" gap={20} size={1} />
           <Controls
             position="bottom-right"
             className="bg-zinc-900 border-zinc-800 fill-zinc-400"
@@ -365,12 +356,11 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onExit, wellness: _wellness }) =>
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="absolute top-0 right-0 h-full w-full md:w-96 bg-[var(--color-void)]/95 backdrop-blur-xl border-l border-[var(--color-steel)] shadow-2xl p-6 overflow-y-auto z-20"
+              className="absolute top-0 right-0 h-full w-full md:w-96 bg-[#0a0a0a]/95 backdrop-blur-xl border-l border-zinc-800 shadow-2xl p-6 overflow-y-auto z-20"
             >
               <div className="flex justify-end mb-4">
                 <button
                   onClick={() => setSelectedNodeId(null)}
-                  aria-label="Close Node Details"
                   className="p-1 hover:bg-zinc-800 rounded text-zinc-500"
                 >
                   <X className="w-6 h-6" />
@@ -396,7 +386,7 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onExit, wellness: _wellness }) =>
                     </span>
                   </div>
                   <h2
-                    className={`text-3xl font-black uppercase italic leading-none ${selectedNodeData.tier === "keystone" ? "text-[var(--color-gold)]" : "text-white"}`}
+                    className={`text-3xl font-black uppercase italic leading-none ${selectedNodeData.tier === "keystone" ? "text-yellow-500" : "text-white"}`}
                   >
                     {selectedNodeData.title}
                   </h2>
