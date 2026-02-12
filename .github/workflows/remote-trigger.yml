@@ -137,53 +137,20 @@ jobs:
 
       - name: 🔧 Execute Agent Workflow
         env:
-          WORKFLOW: ${{ needs.validate.outputs.workflow }}
+          WORKFLOW_INPUT: ${{ needs.validate.outputs.workflow }}
           DRY_RUN: ${{ needs.validate.outputs.dry_run }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         shell: pwsh
         run: |
-          Write-Host "Executing workflow: $env:WORKFLOW" -ForegroundColor Cyan
+          # Sanitize workflow name (remove leading slash)
+          $workflowName = $env:WORKFLOW_INPUT -replace "^/", ""
           
-          # Map workflow names to actual commands
-          switch ($env:WORKFLOW) {
-            "/night-shift" {
-              Write-Host "Running nightly maintenance..." -ForegroundColor Yellow
-              pnpm run lint --fix
-              pnpm run check-types
-            }
-            "/health-check" {
-              Write-Host "Running health checks..." -ForegroundColor Yellow
-              pnpm run check-types
-              pnpm run lint
-              pnpm run test
-            }
-            "/debug" {
-              Write-Host "Running debug analysis..." -ForegroundColor Yellow
-              pnpm run check-types 2>&1 | Tee-Object -FilePath type-errors.log
-            }
-            "/monitor-all" {
-              Write-Host "Running all monitors..." -ForegroundColor Yellow
-              pnpm run lint
-              pnpm run test --coverage
-            }
-            "/triage" {
-              Write-Host "Running triage..." -ForegroundColor Yellow
-              Write-Host "Triage requires Antigravity agent context"
-            }
-            "/evolve" {
-              Write-Host "Running evolution..." -ForegroundColor Yellow
-              pnpm outdated --format json | Out-File -FilePath evolve_report.json
-            }
-            "/ci-doctor" {
-              Write-Host "Running CI doctor..." -ForegroundColor Yellow
-              pnpm run check-types
-              pnpm run lint
-              pnpm run test
-            }
-            Default {
-              Write-Error "Unknown workflow: $env:WORKFLOW"
-              exit 1
-            }
-          }
+          Write-Host "🚀 Triggering Agent Workflow: $workflowName" -ForegroundColor Cyan
+          
+          # Call the centralized launcher
+          # Note: workflow-launcher.ps1 handles git stashing, logging, and gemini execution
+          .\scripts\workflow-launcher.ps1 -Workflow $workflowName -Model "gemini-2.5-flash"
+
 
       - name: 📢 Report Result
         if: always()

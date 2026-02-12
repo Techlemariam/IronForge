@@ -1,0 +1,36 @@
+# Labeler Configuration
+# Maps changed files to labels
+
+# Areas
+area/ui:
+  - changed-files:
+      - any-glob-to-any-file: ['src/components/**/*', 'src/app/**/*']
+
+area/backend:
+  - changed-files:
+      - any-glob-to-any-file: ['src/server/**/*', 'src/lib/**/*']
+
+area/db:
+  - changed-files:
+      - any-glob-to-any-file: ['prisma/**/*']
+
+area/infra:
+  - changed-files:
+      - any-glob-to-any-file: ['.github/**/*', 'docker-compose.yml', 'Dockerfile']
+
+area/agent:
+  - changed-files:
+      - any-glob-to-any-file: ['.agent/**/*', 'scripts/**/*']
+
+# Kinds
+kind/test:
+  - changed-files:
+      - any-glob-to-any-file: ['tests/**/*', '**/*.test.ts', '**/*.spec.ts']
+
+kind/doc:
+  - changed-files:
+      - any-glob-to-any-file: ['**/*.md', 'docs/**/*']
+
+kind/config:
+  - changed-files:
+      - any-glob-to-any-file: ['package.json', 'pnpm-lock.yaml', 'tsconfig.json']
