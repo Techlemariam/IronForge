@@ -1,3 +1,7 @@
+/**
+ * External Intelligence Parser for CI Doctor.
+ * Extracts failure targets and repair protocols from GitHub App comments (CodeRabbit, Snyk, CodeFactor, Codecov).
+ */
 import * as fs from 'fs';
 
 interface Comment {

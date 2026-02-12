@@ -190,15 +190,15 @@ fi
 | `Prisma: Migration failed`    | **DB_MIGRATION_FAIL** (Use `/schema-guard`)       |
 | `Lighthouse: Performance`     | **PERF_DEGRADATION** (Use `/perf-profiler`)       |
 | `Qodana: Critical issues`     | **STATIC_ANALYSIS_FAIL** (Use `/qodana-linter`)   |
-| `Zod: Validation error`       | **SCHEMA_MISMATCH** (Use `/zod-schema-validator`) |
-| `Mock: Data outdated`         | **STALE_MOCK** (Use `/api-mocker`)                |
-| `Bio: Data sync fail`         | **BIO_SYNC_FAIL** (Use `/bio-validator`)          |
+| `Zod: Validation error`         | **SCHEMA_MISMATCH** (Use `/zod-schema-validator`) |
+| `Mock: Data outdated`          | **STALE_MOCK** (Use `/api-mocker`)                |
+| `Bio: Data sync fail`          | **BIO_SYNC_FAIL** (Use `/bio-validator`)          |
 | `Database: Schema out of sync` | **DB_OUT_OF_SYNC** (Use `/prisma-migrator`)       |
-| `A11y: Contrast/ARIA`         | **ACCESSIBILITY_FAIL** (Use `/a11y-auditor`)      |
-| `Coolify: Deployment failed`  | **COOLIFY_DOWN** (Use `/coolify-deploy`)          |
-| `Merge conflicts detected`    | **MERGE_CONFLICT_PROTOCOL** (Use `git rebase`)    |
-| `Patch coverage missing`      | **COVERAGE_DROP** (Use `/unit-tests`)             |
-| `Insufficent docstrings`      | **DOCSTRING_FAIL** (Use `/librarian`)             |
+| `A11y: Contrast/ARIA`          | **ACCESSIBILITY_FAIL** (Use `/a11y-auditor`)      |
+| `Coolify: Deployment failed`   | **COOLIFY_DOWN** (Use `/coolify-deploy`)          |
+| `Merge conflicts detected`     | **MERGE_CONFLICT_PROTOCOL** (Use `git rebase`)    |
+| `Patch coverage missing`       | **COVERAGE_DROP** (Use `/unit-tests`)             |
+| `Insufficent docstrings`       | **DOCSTRING_FAIL** (Use `/librarian`)             |
 
 ### 1.5 External Vital Signs (Coolify)
 
@@ -213,23 +213,23 @@ npx tsx scripts/check-infra.ts
 
 ### 1.2 The Qodana Ward (Static Analysis)
 
-**Protocol: SECURITY_BREACH**
+### Protocol: SECURITY_BREACH
 
 - **Detection:** `grep -r "password" .github/workflows` or check `cypress.env.json`.
 - **Fix:** Replace hardcoded strings with `${{ secrets.MY_KEY }}` or environment variables.
 - **Verify:** `git grep "my-secret-value"` should return nothing.
 
-**Protocol: DRY_VIOLATION (Duplication)**
+### Protocol: DRY_VIOLATION (Duplication)
 
 - **Threshold:** Qodana flags >10 duplicate lines.
 - **Fix:** Extract logic to `src/lib/utils.ts` or a shared component.
 - **Exemption:** If intentional (e.g. seed scripts), add `// noinspection DuplicatedCode` to the file header.
 
-**Protocol: REGEX_REDUNDANCY**
+### Protocol: REGEX_REDUNDANCY
 
 - **Fix:** Simplify Regex patterns (e.g., remove unnecessary groups).
 
-**Protocol: PLATFORM_COMPATIBILITY (Linux/Windows)**
+### Protocol: PLATFORM_COMPATIBILITY (Linux/Windows)
 
 - **Context:** PowerShell scripts running on GitHub Actions (`ubuntu-latest`).
 - **Detection:** `Join-Path` errors or "File not found" due to backslashes (`\`).

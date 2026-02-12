@@ -4,6 +4,13 @@ interface Props {
     status: FactoryStatusData;
 }
 
+/**
+ * Displays the status, health, and current job of a specific factory station.
+ * Uses color-coded indicators (Green, Amber, Red) based on health and busy state.
+ * 
+ * @param {Props} props - The component props.
+ * @param {FactoryStatusData} props.status - The status data for the station.
+ */
 export function StatusCard({ status }: Props) {
     const isHealthy = status.health > 80;
     const isBusy = !!status.current;

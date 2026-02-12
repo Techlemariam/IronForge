@@ -1,6 +1,10 @@
 import 'dotenv/config';
 import { prisma } from '../src/lib/prisma';
 
+/**
+ * Utility script to interact with FactorySettings in the database.
+ * Supports getting and setting the factory mode (ON, OFF, MANUAL).
+ */
 async function main() {
     const action = process.argv[2];
     const value = process.argv[3];

@@ -1,3 +1,14 @@
+<#
+.SYNOPSIS
+    The Foreman script for the Antigravity Factory.
+.DESCRIPTION
+    Manages factory operating modes (ON, OFF, MANUAL), enforces operational guards,
+    and orchestrates station flow including automated maintenance and indexing.
+.PARAMETER Action
+    The action to perform: GET-MODE, SET-MODE, CHECK-GUARD, AUTO-FLOW, MAINTAIN, INDEX.
+.PARAMETER Value
+    The value for the action (e.g., the mode to set).
+#>
 param (
     [Parameter(Mandatory = $false)]
     [ValidateSet("GET-MODE", "SET-MODE", "CHECK-GUARD", "AUTO-FLOW")]

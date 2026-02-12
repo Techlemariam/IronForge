@@ -48,5 +48,19 @@ describe('Factory Actions', () => {
             // Should have called findMany twice
             expect(prisma.factoryStatus.findMany).toHaveBeenCalledTimes(2);
         });
+
+        it('should return empty array and log error on failure', async () => {
+            const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
+            (prisma.factoryStatus.findMany as any).mockRejectedValue(new Error('DB Error'));
+
+            const result = await getFactoryStatus();
+
+            expect(result).toEqual([]);
+            expect(consoleSpy).toHaveBeenCalledWith(
+                'Failed to fetch factory status:',
+                expect.any(Error)
+            );
+            consoleSpy.mockRestore();
+        });
     });
 });
