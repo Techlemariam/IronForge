@@ -22,6 +22,11 @@ $USAGE_FILE = Join-Path $WORKSPACE ".agent\usage.json"
 $TIMESTAMP = Get-Date -Format "yyyyMMdd-HHmmss"
 $LOG_FILE = Join-Path $LOG_DIR "$Workflow-$TIMESTAMP.log"
 
+# Ensure UTF-8 output for captured console logs
+$OutputEncoding = [System.Text.Encoding]::UTF8
+$PSDefaultParameterValues['Out-File:Encoding'] = 'utf8'
+$PSDefaultParameterValues['Out-String:Width'] = 4096
+
 # Path to the Gemini CLI JS
 $GEMINI_JS = "D:\Scoop\apps\nodejs-lts\current\bin\node_modules\@google\gemini-cli\dist\index.js"
 if (-not (Test-Path $GEMINI_JS)) {
@@ -72,7 +77,8 @@ function Check-Budget {
         return $false
       }
       Write-Log "Budget Check: Daily ($dailyUsage / $dailyLimit), Monthly ($monthlyUsage / $monthlyLimit)"
-    } catch {
+    }
+    catch {
       Write-Log "Warning: Could not parse usage.json. Proceeding anyway."
     }
   }
@@ -92,9 +98,10 @@ function Log-Usage {
   $usage = @{ history = @() }
   if (Test-Path $USAGE_FILE) {
     try {
-        $content = Get-Content $USAGE_FILE -Raw
-        if ($content) { $usage = $content | ConvertFrom-Json }
-    } catch {}
+      $content = Get-Content $USAGE_FILE -Raw
+      if ($content) { $usage = $content | ConvertFrom-Json }
+    }
+    catch {}
   }
   if (-not $usage.history) { $usage.history = @() }
   $usage.history += $newEntry
@@ -153,13 +160,17 @@ try {
     foreach ($line in $logContent) {
       if ($line -match "Tokens:\s*(\d+)") { $totalTokens += [int]$matches[1] }
     }
-    Log-Usage (if ($totalTokens -gt 0) { $totalTokens } else { 1000 })
-  } else {
+    $tokensToLog = if ($totalTokens -gt 0) { $totalTokens } else { 1000 }
+    Log-Usage $tokensToLog
+  }
+  else {
     Write-Log "Error: Gemini CLI failed with exit code $exitCode"
   }
-} catch {
+}
+catch {
   Write-Log "Gemini CLI execution encountered an exception: $_"
-} finally {
+}
+finally {
   if ($DisabledByMe -and (Test-Path $DisabledSettings)) {
     Write-Log "Restoring workspace MCP settings..."
     Move-Item $DisabledSettings $WorkspaceSettings -Force
@@ -176,3 +187,217 @@ if (-not $success) {
   exit 1
 }
 exit 0
+if (-not $success) {
+  Write-Output "Workflow failed. Exiting with status 1."
+  exit 1
+}
+exit 0
+try {
+  $promptValue = "Execute /$Workflow"
+  
+  # Crucial: We DON'T redirect stderr to stdout (2>&1) here because 
+  # PowerShell's $ErrorActionPreference = "Stop" will treat any stderr output as a fatal error.
+  # Instead, we let node run and check the exit code.
+  
+  $proc = Start-Process -FilePath "node" -ArgumentList "--no-deprecation", "`"$GEMINI_JS`"", "-p", "`"$promptValue`"", "--model", "$Model", "--yolo", "--sandbox=false" `
+    -Wait -NoNewWindow -PassThru -RedirectStandardOutput $LOG_FILE -RedirectStandardError $LOG_FILE
+    
+  Write-Log "Gemini CLI finished with exit code: $($proc.ExitCode)"
+  
+  if ($proc.ExitCode -ne 0) {
+    Write-Error "Gemini CLI failed with exit code $($proc.ExitCode). Check log: $LOG_FILE"
+  }
+}
+catch {
+  Write-Log "Gemini CLI execution encountered an exception: $_"
+  throw $_
+}
+finally {
+  # --- Cleanup ---
+  if ($DisabledByMe -and (Test-Path $DisabledSettings)) {
+    Write-Log "Restoring workspace MCP settings..."
+    Move-Item $DisabledSettings $WorkspaceSettings -Force
+  }
+
+  if ($gitStatus) {
+    Write-Log "Restoring stashed changes..."
+    git stash pop 2>$null
+  }
+}
+
+Write-Log "=== Workflow Launcher Complete ==="
+try {
+  $promptValue = "Execute /$Workflow"
+  
+  # Crucial: We DON'T redirect stderr to stdout (2>&1) here because 
+  # PowerShell's $ErrorActionPreference = "Stop" will treat any stderr output as a fatal error.
+  # Instead, we let node run and check the exit code.
+  
+  $proc = Start-Process -FilePath "node" -ArgumentList "--no-deprecation", "`"$GEMINI_JS`"", "-p", "`"$promptValue`"", "--model", "$Model", "--yolo", "--sandbox=false" `
+    -Wait -NoNewWindow -PassThru -RedirectStandardOutput $LOG_FILE -RedirectStandardError $LOG_FILE
+    
+  Write-Log "Gemini CLI finished with exit code: $($proc.ExitCode)"
+  
+  if ($proc.ExitCode -ne 0) {
+    Write-Error "Gemini CLI failed with exit code $($proc.ExitCode). Check log: $LOG_FILE"
+  }
+}
+catch {
+  Write-Log "Gemini CLI execution encountered an exception: $_"
+  throw $_
+}
+finally {
+  # --- Cleanup ---
+  if ($DisabledByMe -and (Test-Path $DisabledSettings)) {
+    Write-Log "Restoring workspace MCP settings..."
+    Move-Item $DisabledSettings $WorkspaceSettings -Force
+  }
+
+  if ($gitStatus) {
+    Write-Log "Restoring stashed changes..."
+    git stash pop 2>$null
+  }
+}
+
+Write-Log "=== Workflow Launcher Complete ==="
+try {
+  $promptValue = "Execute /$Workflow"
+  
+  # Crucial: We DON'T redirect stderr to stdout (2>&1) here because 
+  # PowerShell's $ErrorActionPreference = "Stop" will treat any stderr output as a fatal error.
+  # Instead, we let node run and check the exit code.
+  
+  $proc = Start-Process -FilePath "node" -ArgumentList "--no-deprecation", "`"$GEMINI_JS`"", "-p", "`"$promptValue`"", "--model", "$Model", "--yolo", "--sandbox=false" `
+    -Wait -NoNewWindow -PassThru -RedirectStandardOutput $LOG_FILE -RedirectStandardError $LOG_FILE
+    
+  Write-Log "Gemini CLI finished with exit code: $($proc.ExitCode)"
+  
+  if ($proc.ExitCode -ne 0) {
+    Write-Error "Gemini CLI failed with exit code $($proc.ExitCode). Check log: $LOG_FILE"
+  }
+}
+catch {
+  Write-Log "Gemini CLI execution encountered an exception: $_"
+  throw $_
+}
+finally {
+  # --- Cleanup ---
+  if ($DisabledByMe -and (Test-Path $DisabledSettings)) {
+    Write-Log "Restoring workspace MCP settings..."
+    Move-Item $DisabledSettings $WorkspaceSettings -Force
+  }
+
+  if ($gitStatus) {
+    Write-Log "Restoring stashed changes..."
+    git stash pop 2>$null
+  }
+}
+
+Write-Log "=== Workflow Launcher Complete ==="
+if (-not $success) {
+  Write-Output "Workflow failed. Exiting with status 1."
+  exit 1
+}
+exit 0
+try {
+  $promptValue = "Execute /$Workflow"
+  
+  # Crucial: We DON'T redirect stderr to stdout (2>&1) here because 
+  # PowerShell's $ErrorActionPreference = "Stop" will treat any stderr output as a fatal error.
+  # Instead, we let node run and check the exit code.
+  
+  $proc = Start-Process -FilePath "node" -ArgumentList "--no-deprecation", "`"$GEMINI_JS`"", "-p", "`"$promptValue`"", "--model", "$Model", "--yolo", "--sandbox=false" `
+    -Wait -NoNewWindow -PassThru -RedirectStandardOutput $LOG_FILE -RedirectStandardError $LOG_FILE
+    
+  Write-Log "Gemini CLI finished with exit code: $($proc.ExitCode)"
+  
+  if ($proc.ExitCode -ne 0) {
+    Write-Error "Gemini CLI failed with exit code $($proc.ExitCode). Check log: $LOG_FILE"
+  }
+}
+catch {
+  Write-Log "Gemini CLI execution encountered an exception: $_"
+  throw $_
+}
+finally {
+  # --- Cleanup ---
+  if ($DisabledByMe -and (Test-Path $DisabledSettings)) {
+    Write-Log "Restoring workspace MCP settings..."
+    Move-Item $DisabledSettings $WorkspaceSettings -Force
+  }
+
+  if ($gitStatus) {
+    Write-Log "Restoring stashed changes..."
+    git stash pop 2>$null
+  }
+}
+
+Write-Log "=== Workflow Launcher Complete ==="
+try {
+  $promptValue = "Execute /$Workflow"
+  
+  # Crucial: We DON'T redirect stderr to stdout (2>&1) here because 
+  # PowerShell's $ErrorActionPreference = "Stop" will treat any stderr output as a fatal error.
+  # Instead, we let node run and check the exit code.
+  
+  $proc = Start-Process -FilePath "node" -ArgumentList "--no-deprecation", "`"$GEMINI_JS`"", "-p", "`"$promptValue`"", "--model", "$Model", "--yolo", "--sandbox=false" `
+    -Wait -NoNewWindow -PassThru -RedirectStandardOutput $LOG_FILE -RedirectStandardError $LOG_FILE
+    
+  Write-Log "Gemini CLI finished with exit code: $($proc.ExitCode)"
+  
+  if ($proc.ExitCode -ne 0) {
+    Write-Error "Gemini CLI failed with exit code $($proc.ExitCode). Check log: $LOG_FILE"
+  }
+}
+catch {
+  Write-Log "Gemini CLI execution encountered an exception: $_"
+  throw $_
+}
+finally {
+  # --- Cleanup ---
+  if ($DisabledByMe -and (Test-Path $DisabledSettings)) {
+    Write-Log "Restoring workspace MCP settings..."
+    Move-Item $DisabledSettings $WorkspaceSettings -Force
+  }
+
+  if ($gitStatus) {
+    Write-Log "Restoring stashed changes..."
+    git stash pop 2>$null
+  }
+}
+
+Write-Log "=== Workflow Launcher Complete ==="
+try {
+  $promptValue = "Execute /$Workflow"
+  
+  # Crucial: We DON'T redirect stderr to stdout (2>&1) here because 
+  # PowerShell's $ErrorActionPreference = "Stop" will treat any stderr output as a fatal error.
+  # Instead, we let node run and check the exit code.
+  
+  $proc = Start-Process -FilePath "node" -ArgumentList "--no-deprecation", "`"$GEMINI_JS`"", "-p", "`"$promptValue`"", "--model", "$Model", "--yolo", "--sandbox=false" `
+    -Wait -NoNewWindow -PassThru -RedirectStandardOutput $LOG_FILE -RedirectStandardError $LOG_FILE
+    
+  Write-Log "Gemini CLI finished with exit code: $($proc.ExitCode)"
+  
+  if ($proc.ExitCode -ne 0) {
+    Write-Error "Gemini CLI failed with exit code $($proc.ExitCode). Check log: $LOG_FILE"
+  }
+}
+catch {
+  Write-Log "Gemini CLI execution encountered an exception: $_"
+  throw $_
+}
+finally {
+  # --- Cleanup ---
+  if ($DisabledByMe -and (Test-Path $DisabledSettings)) {
+    Write-Log "Restoring workspace MCP settings..."
+    Move-Item $DisabledSettings $WorkspaceSettings -Force
+  }
+
+  if ($gitStatus) {
+    Write-Log "Restoring stashed changes..."
+    git stash pop 2>$null
+  }
+}
+
+Write-Log "=== Workflow Launcher Complete ==="
