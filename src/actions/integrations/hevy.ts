@@ -5,6 +5,7 @@ import axios from "axios";
 import prisma from "@/lib/prisma";
 import { getHevyTemplates } from "@/lib/hevy";
 import { createClient } from "@/utils/supabase/server";
+import { TerritoryService } from "@/services/game/TerritoryService";
 
 import { HevyHelperSchema, ImportHevyHistorySchema } from "@/types/schemas";
 
@@ -158,6 +159,16 @@ export async function saveWorkoutAction(apiKey: string, payload: any) {
       // --- POWER RATING UPDATE ---
       const { recalculatePowerRatingAction } = await import("@/actions/titan/power-rating");
       await recalculatePowerRatingAction(user.id);
+
+      // --- GUILD TERRITORIES ---
+      const dbUser = await prisma.user.findUnique({
+        where: { id: user.id },
+        select: { guildId: true },
+      });
+
+      if (dbUser?.guildId) {
+        await TerritoryService.recordGuildActivity(dbUser.guildId, totalVolume);
+      }
 
       // We could notify user here but let's stick to API response augmentation
       response.data.rewards = { energy: energyGain };

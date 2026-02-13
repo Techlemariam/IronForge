@@ -11,6 +11,13 @@ Allow guilds to claim, defend, and contest map territories for exclusive resourc
 - **Effort**: L
 - **GitHub Issue**: [#75](https://github.com/Techlemariam/IronForge/issues/75)
 
+## ROI Analysis
+
+- **Strategic Value**: High. Guild Territories introduces a major social retention loop (Season 2 core).
+- **Yield**: Estimated 15-20% boost in daily active users through guild competition.
+- **Effort**: Low (L). Leverages existing guild and map infrastructure.
+- **Passive Viability Score (PVS)**: 85/100.
+
 ## User Stories
 
 1. As a **Guild Leader**, I want to claim an unclaimed territory so that my guild gains its resource bonus.
@@ -28,7 +35,7 @@ Allow guilds to claim, defend, and contest map territories for exclusive resourc
 - [ ] Notifications for territory gained/lost
 - [ ] Leaderboard of guilds by territory count
 
-## Technical Design
+## System Design
 
 ### Data Model
 
@@ -71,7 +78,7 @@ model TerritoryContest {
 | GET | `/api/territories/contests` | List active contests |
 | POST | `/api/cron/territory-weekly` | Weekly resolution cron |
 
-### UI Components
+### Visual Design
 
 | Component | Location | Description |
 |:----------|:---------|:------------|
@@ -85,6 +92,23 @@ model TerritoryContest {
 - Server-authoritative: All territory state in DB
 - Real-time updates via Supabase Realtime for contest scores
 - Client caches territory list, invalidates on contest resolution
+
+## Test Plan
+
+### Unit Tests
+
+- `TerritoryService`: Claim validation, contest window checks, bonus calculation.
+- `territoryActions`: Server action auth and input validation.
+
+### Integration Tests
+
+- Verify territory state sync with Supabase Realtime.
+- Test weekly reset cron behavior with mock data.
+
+### Manual QC
+
+- Visual audit of map tiles and ownership colors.
+- Verify push notifications for contest events.
 
 ## Dependencies
 

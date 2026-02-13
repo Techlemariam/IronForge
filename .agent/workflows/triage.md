@@ -163,6 +163,7 @@ Based on priority and category, route items to appropriate workflows:
 ### 🟠 P1/P2 Feature/Logic Gaps
 
 ```bash
+/factory        # [NEW] For automated feature assembly
 /feature        # For new functionality needed
 /coder          # For implementation fixes
 /architect      # For design/pattern issues
