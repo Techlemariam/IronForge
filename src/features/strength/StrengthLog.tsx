@@ -8,6 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useMaxReps } from "@/hooks/useMaxReps";
 import { PRBadge } from "@/components/ui/PRBadge";
 import { PRCelebration } from "@/components/ui/PRCelebration";
+import { useUser } from "@/hooks/useUser";
 
 interface ExerciseLogProps {
   userId: string;
@@ -26,6 +27,7 @@ export const StrengthLog: React.FC<ExerciseLogProps> = ({
 }) => {
   const [sets, setSets] = useState<SetData[]>(initialSets);
   const { toast } = useToast();
+  const { user } = useUser();
 
   // Max Reps PR tracking
   const { maxReps, isLoading, checkPR } = useMaxReps(exerciseId, currentWeight);
@@ -139,6 +141,7 @@ export const StrengthLog: React.FC<ExerciseLogProps> = ({
         newReps={newPRReps}
         previousReps={previousMax}
         exerciseName={exerciseName}
+        username={user?.heroName || 'Hero'}
         onClose={() => setShowCelebration(false)}
       />
     </div>

@@ -1,6 +1,6 @@
 import type { FactoryStatusData } from "@/actions/factory";
-/* eslint-disable @next/next/no-img-element */
-/* eslint-disable jsx-a11y/aria-proptypes */
+ 
+ 
 
 interface Props {
     status: FactoryStatusData;

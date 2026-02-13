@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Trophy, Sparkles, Video, CheckCircle, AlertTriangle } from "lucide-react";
 import { fireConfetti, playSound } from "@/utils";
+import { getISOWeek } from 'date-fns';
 import { Button } from "./button";
 
 interface PRCelebrationProps {
@@ -45,11 +46,11 @@ export const PRCelebration: React.FC<PRCelebrationProps> = ({
 
     const handleGenerateVideo = async () => {
         setVideoState('loading');
-        
+
         // Prepare props for the Remotion video
         const videoProps = {
             username: username,
-            weekNumber: new Date().getWeek(), // Example: Get current week number
+            weekNumber: getISOWeek(new Date()), // Example: Get current week number
             strengthGains: newReps, // Using newReps as a proxy for strength gains
         };
 
@@ -65,7 +66,7 @@ export const PRCelebration: React.FC<PRCelebrationProps> = ({
             if (!response.ok) {
                 throw new Error(data.error || 'Server rendering error.');
             }
-            
+
             setVideoUrl(data.videoPath);
             setVideoState('success');
 
@@ -120,7 +121,7 @@ export const PRCelebration: React.FC<PRCelebrationProps> = ({
                                 +{delta} reps!
                             </motion.div>
                         )}
-                        
+
                         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="mt-8 space-y-4" >
                             {videoState === 'idle' && (
                                 <Button onClick={handleGenerateVideo} className="w-full" size="lg">
@@ -142,7 +143,7 @@ export const PRCelebration: React.FC<PRCelebrationProps> = ({
                                     </Button>
                                 </a>
                             )}
-                             {videoState === 'error' && (
+                            {videoState === 'error' && (
                                 <Button className="w-full bg-red-600 hover:bg-red-700" size="lg" onClick={handleGenerateVideo}>
                                     <AlertTriangle className="mr-2 h-5 w-5" />
                                     Försök igen
@@ -157,14 +158,6 @@ export const PRCelebration: React.FC<PRCelebrationProps> = ({
     );
 };
 
-// Helper to get week number
-Date.prototype.getWeek = function() {
-  var date = new Date(this.getTime());
-  date.setHours(0, 0, 0, 0);
-  date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
-  var week1 = new Date(date.getFullYear(), 0, 4);
-  return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
-}
 
 export default PRCelebration;
 

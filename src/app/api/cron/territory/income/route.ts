@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { distributeDailyIncome } from "@/services/game/TerritoryService";
+import { TerritoryService } from "@/services/game/TerritoryService";
 
 export const dynamic = "force-dynamic";
 
@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
 
     try {
         console.log("[Cron: Territory Income] Starting distribution...");
-        await distributeDailyIncome();
+        await TerritoryService.distributeDailyIncome();
         return NextResponse.json({ success: true, message: "Income distributed" });
     } catch (error) {
         console.error("[Cron: Territory Income] Error:", error);

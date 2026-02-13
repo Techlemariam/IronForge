@@ -536,6 +536,7 @@ const DungeonSessionView: React.FC<IronMinesProps> = ({
         newReps={prData.newReps}
         previousReps={prData.oldMax}
         exerciseName={exercises[activeExIndex]?.name}
+        username={user?.heroName || 'Hero'}
         onClose={() => setShowPRCelebration(false)}
       />
     </div >
