@@ -20,7 +20,8 @@ export const Toggle: React.FC<SwitchProps> = ({
     <button
       type="button"
       role="switch"
-      aria-checked={checked}
+      aria-checked={checked ? "true" : "false"}
+      aria-label="Toggle setting"
       onClick={() => onCheckedChange(!checked)}
       className={`w-14 h-7 flex items-center rounded-full p-1 cursor-pointer transition-colors focus:outline-none focus:ring-2 focus:ring-rarity-epic focus:ring-offset-2 focus:ring-offset-void ${checked ? "bg-rarity-epic" : "bg-gray-700"} ${className}`}
     >
