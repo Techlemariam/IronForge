@@ -23,8 +23,8 @@ Detta dokument definierar de specialiserade agenter som utgör IronForge-teamet.
 
 | Agent | Command | Description |
 | :--- | :--- | :--- |
-| **Analyst** | `/analyst` | **Requirements.** Översätter affärsmål till tekniska spex. Skriver User Stories. |
-| **UI/UX** | `/ui-ux` | **Frontend Design.** Tailwind, animationer, tillgänglighet, "Pixel Perfect". |
+| **Analyst** | `/analyst` | **Requirements.** Översätter affärsmål till tekniska spex. Skriver User Stories. Ansvarar vid specplanering för att identifiera möjligheter där programmatisk video (Remotion) kan skapa värde. |
+| **UI/UX** | `/ui-ux` | **Frontend Design.** Äger **Remotion-stationen** för programmatisk video. Ansvarar för Tailwind, animationer, tillgänglighet, och "Pixel Perfect" implementation av både traditionell UI och videokomponenter. |
 | **Game Designer** | `/game-designer` | **Mechanics.** Balanserar spelet, designar progressionssystem och ekonomi. |
 
 ## 🧠 Specialist Support

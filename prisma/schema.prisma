@@ -574,10 +574,12 @@ model Guild {
   level       Int         @default(1)
   createdAt   DateTime    @default(now())
   powerRating Float       @default(0)
+  gold        Int         @default(0)
   leader      User        @relation("GuildLeader", fields: [leaderId], references: [id])
   raids       GuildRaid[]
   territories Territory[] @relation("GuildTerritories")
   members     User[]
+  contests    TerritoryContest[] @relation("GuildContests")
 }
 
 model Territory {
@@ -595,9 +597,30 @@ model Territory {
   controlledBy   Guild?                  @relation("GuildTerritories", fields: [controlledById], references: [id])
   contestEntries TerritoryContestEntry[]
   history        TerritoryHistory[]
+  activeContests TerritoryContest[]      @relation("ContestTerritory")
 
   @@index([region])
   @@index([controlledById])
+}
+
+model TerritoryContest {
+  id            String    @id @default(cuid())
+  territoryId   String
+  territory     Territory @relation("ContestTerritory", fields: [territoryId], references: [id])
+  attackerId    String
+  attacker      Guild     @relation("GuildContests", fields: [attackerId], references: [id])
+  defenderId    String?
+  attackerScore Int       @default(0)
+  defenderScore Int       @default(0)
+  startsAt      DateTime  @default(now())
+  endsAt        DateTime
+  status        String    @default("active") // "active", "resolved"
+  winnerId      String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([territoryId])
+  @@index([attackerId])
 }
 
 model TerritoryContestEntry {

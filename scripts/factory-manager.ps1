@@ -5,17 +5,23 @@
     Manages factory operating modes (ON, OFF, MANUAL), enforces operational guards,
     and orchestrates station flow including automated maintenance and indexing.
 .PARAMETER Action
-    The action to perform: GET-MODE, SET-MODE, CHECK-GUARD, AUTO-FLOW, MAINTAIN, INDEX.
+    The action to perform: GET-MODE, SET-MODE, CHECK-GUARD, AUTO-FLOW, MAINTAIN, INDEX, RUN, PROCESS-QUEUE, GET-PROMPT.
 .PARAMETER Value
-    The value for the action (e.g., the mode to set).
+    The value for the action (e.g., the mode to set, or the feature name for RUN).
+.PARAMETER Station
+    The factory station to run (for RUN/GET-PROMPT): design, fabrication, verify, ship.
 #>
 param (
     [Parameter(Mandatory = $false)]
-    [ValidateSet("GET-MODE", "SET-MODE", "CHECK-GUARD", "AUTO-FLOW", "MAINTAIN", "INDEX")]
+    [ValidateSet("GET-MODE", "SET-MODE", "CHECK-GUARD", "AUTO-FLOW", "MAINTAIN", "INDEX", "RUN", "PROCESS-QUEUE", "GET-PROMPT")]
     [string]$Action = "GET-MODE",
 
     [Parameter(Mandatory = $false)]
-    [string]$Value = ""
+    [string]$Value = "",
+
+    [Parameter(Mandatory = $false)]
+    [ValidateSet("design", "fabrication", "verify", "ship")]
+    [string]$Station = "design"
 )
 
 
@@ -59,12 +65,22 @@ switch ($Action) {
     }
     "MAINTAIN" {
         Write-Host "Hiring Maintenance (@ci-doctor)..."
-        # Trigger the ci-doctor via the workflow launcher
         powershell scripts/workflow-launcher.ps1 -Workflow ci-doctor
     }
     "INDEX" {
         Write-Host "Hiring Librarian (@librarian)..."
-        # Trigger the librarian via the workflow launcher
         powershell scripts/workflow-launcher.ps1 -Workflow librarian
+    }
+    "RUN" {
+        # Forward to orchestration core
+        powershell .agent/scripts/factory-manager.ps1 -Feature $Value -Station $Station -Action RUN
+    }
+    "PROCESS-QUEUE" {
+        # Forward to orchestration core
+        powershell .agent/scripts/factory-manager.ps1 -Action PROCESS-QUEUE
+    }
+    "GET-PROMPT" {
+        # Forward to orchestration core
+        powershell .agent/scripts/factory-manager.ps1 -Feature $Value -Station $Station -Action GET-PROMPT
     }
 }
