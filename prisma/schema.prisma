@@ -973,6 +973,7 @@ model FactoryStatus {
   station   String   @unique
   health    Int
   current   String?
+  metadata  Json?
   updatedAt DateTime @updatedAt
 }
 
@@ -980,6 +981,19 @@ model FactorySettings {
   id        String   @id @default("global")
   mode      String   @default("MANUAL")
   updatedAt DateTime @updatedAt
+}
+
+model FactoryTask {
+  id          String   @id @default(cuid())
+  description String
+  status      String   @default("PENDING") // PENDING, IN_PROGRESS, COMPLETED, FAILED
+  stage       String   @default("DESIGN")  // DESIGN, FABRICATION, VERIFICATION, SHIPPING
+  source      String   @default("DISCORD") // DISCORD, WEB, SYSTEM
+  metadata    Json?    // Store Discord user info, audio URL reference, etc.
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([status])
 }
 
 enum FriendshipStatus {
