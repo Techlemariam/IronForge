@@ -7,7 +7,7 @@ Write-Host "🔍 Monitoring Factory Recovery for branch: $branch"
 # Check latest run status using gh CLI
 # Ensure gh is logged in and accessible
 try {
-    $latestRunJson = gh run list --branch $branch --limit 1 --json status, conclusion, databaseId, headSha
+    $latestRunJson = gh run list --branch $branch --limit 1 --json "status,conclusion,databaseId,headSha"
     $latestRun = $latestRunJson | ConvertFrom-Json
 }
 catch {
@@ -44,19 +44,26 @@ if ($latestRun -and $latestRun.Count -gt 0) {
         } | ConvertTo-Json
         
         $recoveryInfo | Out-File -FilePath "$reportDir/recovery-status.json" -Encoding utf8
-        Write-Host "✅ Recovery status updated in $reportDir/recovery-status.json"
+        Write-Host "✅ [Local] Recovery status updated in $reportDir/recovery-status.json"
+        
+        # NEW: Sync to database for remote dashboard (Coolify)
+        Write-Host "🚀 Syncing to remote database..." -ForegroundColor Cyan
+        npx tsx --env-file=.env scripts/sync-recovery.ts
     }
     else {
         Write-Host "✅ CI is healthy, in progress, or recently cleared."
         # If we had a previous failure for THIS SHA, we might keep it, 
         # but if it's a new successful run or a new SHA, we clear it.
         if (Test-Path "$reportDir/recovery-status.json") {
-            $oldStatus = Get-Content "$reportDir/recovery-status.json" | ConvertFrom-Json
+            # $oldStatus = Get-Content "$reportDir/recovery-status.json" | ConvertFrom-Json # This line was commented out in the original, keeping it that way
             if ($status -eq "completed" -and $conclusion -eq "success") {
                 Remove-Item "$reportDir/recovery-status.json"
-                Write-Host "🧹 Cleared old recovery status."
+                Write-Host "🧹 [Local] Cleared old recovery status."
             }
         }
+        # Always sync the healthy state if it's success/healthy
+        Write-Host "🚀 Syncing (HEALTHY) to remote database..." -ForegroundColor Cyan
+        npx tsx --env-file=.env scripts/sync-recovery.ts
     }
 }
 else {

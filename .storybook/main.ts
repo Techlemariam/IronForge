@@ -35,15 +35,15 @@ const config: StorybookConfig = {
     const { fileURLToPath } = await import('url');
     const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-    // Mock Prisma types for browser compatibility
-    // Alias @/types/prisma to our mock instead of letting it import from @prisma/client
+    // Mock Prisma and Next.js server modules for browser compatibility
     config.resolve = config.resolve || {};
     config.resolve.alias = {
       ...config.resolve.alias,
       '@/types/prisma': path.resolve(__dirname, 'prisma-mock.ts'),
+      '@/lib/prisma': path.resolve(__dirname, 'lib-prisma-mock.ts'),
       '@prisma/client': path.resolve(__dirname, 'prisma-mock.ts'),
       '.prisma/client': path.resolve(__dirname, 'prisma-mock.ts'),
-      '.prisma/client/index-browser': path.resolve(__dirname, 'prisma-mock.ts'),
+      'next/headers': path.resolve(__dirname, 'next-headers-mock.ts'),
     };
     return config;
   }
