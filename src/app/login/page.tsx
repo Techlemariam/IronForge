@@ -186,7 +186,6 @@ export default function LoginPage() {
                   required={isPasswordLogin}
                   className="w-full bg-black/40 border border-forge-border/50 rounded p-3 text-white focus:outline-none focus:border-warrior focus:bg-black/60 transition-all font-mono placeholder:text-gray-700"
                   placeholder="••••••••"
-                  autoFocus
                 />
               </motion.div>
             )}
