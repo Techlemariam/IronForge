@@ -17,3 +17,6 @@ CREATE TABLE "FactorySettings" (
 
     CONSTRAINT "FactorySettings_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "FactoryStatus_station_key" ON "FactoryStatus"("station");

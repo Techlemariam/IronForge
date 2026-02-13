@@ -11,7 +11,7 @@
 #>
 param (
     [Parameter(Mandatory = $false)]
-    [ValidateSet("GET-MODE", "SET-MODE", "CHECK-GUARD", "AUTO-FLOW")]
+    [ValidateSet("GET-MODE", "SET-MODE", "CHECK-GUARD", "AUTO-FLOW", "MAINTAIN", "INDEX")]
     [string]$Action = "GET-MODE",
 
     [Parameter(Mandatory = $false)]
@@ -59,12 +59,12 @@ switch ($Action) {
     }
     "MAINTAIN" {
         Write-Host "Hiring Maintenance (@ci-doctor)..."
-        # Trigger the ci-doctor workflow
-        Invoke-Expression "powershell .agent/workflows/ci-doctor.md"
+        # Trigger the ci-doctor via the workflow launcher
+        powershell scripts/workflow-launcher.ps1 -Workflow ci-doctor
     }
     "INDEX" {
         Write-Host "Hiring Librarian (@librarian)..."
-        # Trigger the librarian workflow to index and document
-        Invoke-Expression "powershell .agent/workflows/librarian.md"
+        # Trigger the librarian via the workflow launcher
+        powershell scripts/workflow-launcher.ps1 -Workflow librarian
     }
 }

@@ -31,7 +31,7 @@ skills: ["red-team", "zod-schema-validator", "gatekeeper"]
 
 ## 🏭 Factory Protocol (Audit Station)
 
-When triggered by `/factory verify` (Station 4) or manually:
+When triggered by `/factory verify` (Station 3) or manually:
 
 ### 1. Threat Modeling (Design Phase)
 

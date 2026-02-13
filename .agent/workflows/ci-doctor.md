@@ -198,7 +198,7 @@ fi
 | `Coolify: Deployment failed`   | **COOLIFY_DOWN** (Use `/coolify-deploy`)          |
 | `Merge conflicts detected`     | **MERGE_CONFLICT_PROTOCOL** (Use `git rebase`)    |
 | `Patch coverage missing`       | **COVERAGE_DROP** (Use `/unit-tests`)             |
-| `Insufficent docstrings`       | **DOCSTRING_FAIL** (Use `/doc-generator`)         |
+| `Insufficient docstrings`       | **DOCSTRING_FAIL** (Use `/doc-generator`)         |
 | `Path traversal risk`          | **SECURE_INPUT_FAIL** (Use `/red-team`)           |
 
 ### 1.5 External Vital Signs (Coolify)
