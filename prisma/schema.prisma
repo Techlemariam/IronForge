@@ -945,7 +945,7 @@ model SessionParticipant {
 
 model FactoryStatus {
   id        String   @id @default(cuid())
-  station   String
+  station   String   @unique
   health    Int
   current   String?
   updatedAt DateTime @updatedAt
