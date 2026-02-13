@@ -5,7 +5,7 @@ import { logger } from "@/lib/logger";
 import { ProgressionService } from "@/services/progression";
 import { processUserCardioActivity } from "@/actions/pvp/duel";
 import { getActivityStream } from "@/lib/intervals";
-import { conquestFromActivity } from "@/services/game/TerritoryService";
+import { TerritoryService } from "@/services/game/TerritoryService";
 
 // Defines the shape of an Intervals.icu Activity Event
 // Reference: https://intervals.icu/api/v1/athlete/{id}/activities
@@ -121,22 +121,12 @@ export async function POST(request: NextRequest) {
       const isConquestSport = ["Run", "Walk", "Hike", "VirtualRun"].includes(activity.type);
 
       if (isConquestSport && distanceKm > 0.1 && user.intervalsApiKey) {
-        logger.info(`[Intervals Webhook] Fetching GPS stream for Territory Conquest...`);
-        const gpsTrack = await getActivityStream(activity.id, user.intervalsApiKey);
+        logger.info(`[Intervals Webhook] Processing Guild Territory Activity...`);
 
-        if (gpsTrack && gpsTrack.length > 0) {
-          const conquest = await conquestFromActivity(user.id, gpsTrack, {
-            avgHr: activity.average_heartrate,
-            maxHr: activity.max_heartrate,
-            avgPower: activity.average_watts,
-            ftp: user.ftpRun ?? 250,
-          });
-
-          logger.info(
-            `[Intervals Webhook] Territory Updated: ${conquest.tilesConquered} new, ${conquest.tilesReinforced} reinforced.`
-          );
-        } else {
-          logger.warn(`[Intervals Webhook] No GPS track found for activity ${activity.id}`);
+        // Match the guild-based system: volume = distance in meters for now
+        if (user.guildId) {
+          await TerritoryService.recordGuildActivity(user.guildId, distanceMeters);
+          logger.info(`[Intervals Webhook] Recorded ${distanceMeters} volume for Guild ${user.guildId}`);
         }
       }
     } else {

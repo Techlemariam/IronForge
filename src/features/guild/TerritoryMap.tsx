@@ -8,7 +8,7 @@ import {
     contestTerritoryAction
 } from "@/actions/game/territory";
 import { Loader2, RefreshCw } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 
 interface TerritoryMapProps {
     userId: string;

@@ -1,5 +1,5 @@
 import prisma from "@/lib/prisma";
-import { getISOWeek, getISOWeekYear } from "date-fns";
+import { getISOWeek, getISOWeekYear, format } from "date-fns";
 
 export const CONTEST_COST_GOLD = 1000;
 export const CONTEST_DURATION_DAYS = 7;
@@ -115,8 +115,8 @@ export class TerritoryService {
     }
 
     /**
-   * Update contest scores for ALL active contests a guild is involved in.
-   */
+     * Update contest scores for ALL active contests a guild is involved in.
+     */
     static async recordGuildActivity(guildId: string, volume: number) {
         const contests = await prisma.territoryContest.findMany({
             where: {
@@ -140,13 +140,60 @@ export class TerritoryService {
         }
     }
 
+    static async conquestFromActivity(guildId: string, volume: number) {
+        return await this.recordGuildActivity(guildId, volume);
+    }
+
+    static async getUserTerritoryStats(userId: string) {
+        const user = await prisma.user.findUnique({
+            where: { id: userId },
+            select: { guildId: true }
+        });
+
+        if (!user?.guildId) return null;
+
+        const territories = await prisma.territory.findMany({
+            where: { controlledById: user.guildId }
+        });
+
+        // Map to TerritoryStatsData expected by the UI
+        return {
+            ownedTiles: territories.length,
+            contestedTiles: 0, // Placeholder
+            totalControlPoints: territories.length * 10, // Mock calculation
+            dailyGold: territories.length * 100,
+            dailyXP: territories.length * 50,
+            largestConnectedArea: territories.length // Placeholder
+        };
+    }
+
+    static async distributeDailyIncome() {
+        const territories = await prisma.territory.findMany({
+            where: { NOT: { controlledById: null } }
+        });
+
+        for (const territory of territories) {
+            if (!territory.controlledById) continue;
+
+            // Assume 100 gold per territory per day for now
+            await prisma.guild.update({
+                where: { id: territory.controlledById },
+                data: { gold: { increment: 100 } }
+            });
+        }
+    }
+
+    static async runWeeklySettlement() {
+        return await this.resolveExpiredContests();
+    }
+
     /**
      * Returns the current state of all territories for map rendering.
      */
     static async getMapData(): Promise<any[]> {
         const now = new Date();
-        const weekNumber = this.getISOWeek(now);
-        const year = now.getFullYear();
+        const weekNumber = getISOWeek(now);
+        const year = getISOWeekYear(now);
 
         const territories = await prisma.territory.findMany({
             include: {

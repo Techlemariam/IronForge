@@ -2,8 +2,8 @@
 
 import React from "react";
 import { MapPin, Shield, Sword, Trophy } from "lucide-react";
-import { Button } from "@/components/ui/Button";
-import { Progress } from "@/components/ui/Progress";
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
 
 interface TerritoryCardProps {
     territory: any;

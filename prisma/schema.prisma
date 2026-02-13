@@ -579,7 +579,8 @@ model Guild {
   raids       GuildRaid[]
   territories Territory[] @relation("GuildTerritories")
   members     User[]
-  contests    TerritoryContest[] @relation("GuildContests")
+  attackerContests TerritoryContest[] @relation("AttackerRelation")
+  defenderContests TerritoryContest[] @relation("DefenderRelation")
 }
 
 model Territory {
@@ -608,8 +609,9 @@ model TerritoryContest {
   territoryId   String
   territory     Territory @relation("ContestTerritory", fields: [territoryId], references: [id])
   attackerId    String
-  attacker      Guild     @relation("GuildContests", fields: [attackerId], references: [id])
+  attacker      Guild     @relation("AttackerRelation", fields: [attackerId], references: [id])
   defenderId    String?
+  defender      Guild?    @relation("DefenderRelation", fields: [defenderId], references: [id])
   attackerScore Int       @default(0)
   defenderScore Int       @default(0)
   startsAt      DateTime  @default(now())

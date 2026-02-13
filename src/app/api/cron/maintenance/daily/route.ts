@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { OracleService } from "@/services/oracle";
-import { distributeDailyIncome } from "@/services/game/TerritoryService";
+import { TerritoryService } from "@/services/game/TerritoryService";
 import { revalidatePath } from "next/cache";
 
 export const dynamic = "force-dynamic";
@@ -74,7 +74,7 @@ export async function GET(request: NextRequest) {
 
     // 2. Territory Income
     try {
-        await distributeDailyIncome();
+        await TerritoryService.distributeDailyIncome();
         report.tasks.territoryIncome = { success: true };
     } catch (e) {
         report.tasks.territoryIncome = { success: false, error: String(e) };
