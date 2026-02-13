@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { POST } from "@/app/api/sync/user/route";
 
-import { getUserAction, updateSettingsAction, updateGoldAction, updateEquipmentAction } from "@/actions/user-actions";
+import { getUserAction, updateGoldAction, updateEquipmentAction } from "@/actions/user-actions";
 import * as AuthLib from "@/lib/auth";
 
 // Mock dependencies
