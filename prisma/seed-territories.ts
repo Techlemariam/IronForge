@@ -17,13 +17,13 @@ const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
 async function main() {
-    console.log('🌱 Seeding Territories...');
+    console.log('🌱 Seeding Territories (Robust Mode)...');
 
     const territories = [
         {
             name: 'Iron Forge',
             region: 'Central',
-            type: 'Industrial',
+            type: 'FORTRESS',
             coordX: 0,
             coordY: 0,
             bonuses: { xp: 10, gold: 5 },
@@ -31,7 +31,7 @@ async function main() {
         {
             name: 'Shadow Basin',
             region: 'South',
-            type: 'Darkness',
+            type: 'RESOURCE_NODE',
             coordX: -10,
             coordY: -15,
             bonuses: { xp: 10, kinetic: 5 },
@@ -39,7 +39,7 @@ async function main() {
         {
             name: 'Azure Peak',
             region: 'North',
-            type: 'Highland',
+            type: 'TRAINING_GROUNDS',
             coordX: 15,
             coordY: 20,
             bonuses: { xp: 10, recovery: 5 },
@@ -47,19 +47,35 @@ async function main() {
     ];
 
     for (const t of territories) {
-        await prisma.territory.upsert({
-            where: { name: t.name },
-            update: {},
-            create: {
-                name: t.name,
-                region: t.region,
-                type: t.type,
-                coordX: t.coordX,
-                coordY: t.coordY,
-                bonuses: t.bonuses,
-            },
+        const existing = await prisma.territory.findFirst({
+            where: { name: t.name }
         });
-        console.log(`✅ Territory ${t.name} seeded.`);
+
+        if (existing) {
+            await prisma.territory.update({
+                where: { id: existing.id },
+                data: {
+                    region: t.region,
+                    type: t.type as any,
+                    coordX: t.coordX,
+                    coordY: t.coordY,
+                    bonuses: t.bonuses,
+                }
+            });
+            console.log(`✅ Territory ${t.name} updated.`);
+        } else {
+            await prisma.territory.create({
+                data: {
+                    name: t.name,
+                    region: t.region,
+                    type: t.type as any,
+                    coordX: t.coordX,
+                    coordY: t.coordY,
+                    bonuses: t.bonuses,
+                },
+            });
+            console.log(`✅ Territory ${t.name} created.`);
+        }
     }
 
     console.log('✨ Seed complete.');
