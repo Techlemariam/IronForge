@@ -46,10 +46,10 @@ export default function MarketingLayout({
                 <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
                     <div className="text-2xl font-black italic tracking-tighter">IRONFORGE</div>
                     <div className="flex gap-12 text-sm font-bold uppercase tracking-widest text-slate-500">
-                        <a href="/" className="hover:text-magma transition-colors">Manifesto</a>
-                        <a href="/" className="hover:text-magma transition-colors">Roadmap</a>
-                        <a href="/" className="hover:text-magma transition-colors">Discord</a>
-                        <a href="/" className="hover:text-magma transition-colors">Privacy</a>
+                        <Link href="/" className="hover:text-magma transition-colors">Manifesto</Link>
+                        <Link href="/" className="hover:text-magma transition-colors">Roadmap</Link>
+                        <Link href="/" className="hover:text-magma transition-colors">Discord</Link>
+                        <Link href="/" className="hover:text-magma transition-colors">Privacy</Link>
                     </div>
                     <div className="text-slate-600 text-sm italic">© 2026 IronForge Systems Corp.</div>
                 </div>
