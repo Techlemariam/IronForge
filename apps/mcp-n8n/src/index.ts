@@ -28,7 +28,7 @@ if (!BASE_URL && process.env.N8N_WEBHOOK_URL) {
   try {
     const url = new URL(process.env.N8N_WEBHOOK_URL);
     BASE_URL = `${url.protocol}//${url.host}`;
-  } catch (e) {
+  } catch {
     // ignore
   }
 }
@@ -84,7 +84,7 @@ class N8nClient {
     let query = "?limit=100";
     if (active !== undefined) query += `&active=${active}`;
     if (tags && tags.length > 0) query += `&tags=${tags.join(",")}`;
-    
+
     return this.fetch(`/workflows${query}`);
   }
 
@@ -263,35 +263,35 @@ function zodToJsonSchema(schema: z.ZodType): any {
   // In a real app, use zod-to-json-schema package
   const zodSchema = schema as any;
   if (zodSchema._def.typeName === "ZodObject") {
-      const properties: any = {};
-      const required: string[] = [];
-      
-      for (const [key, value] of Object.entries(zodSchema.shape)) {
-          const field = value as any;
-          properties[key] = {
-              type: field._def.typeName === "ZodNumber" ? "number" : 
-                    field._def.typeName === "ZodBoolean" ? "boolean" :
-                    field._def.typeName === "ZodArray" ? "array" : "string"
-          };
-          
-          if (field.description) {
-              properties[key].description = field.description;
-          }
+    const properties: any = {};
+    const required: string[] = [];
 
-          if (field._def.typeName === "ZodEnum") {
-            properties[key].enum = field._def.values;
-          }
-          
-          if (!field.isOptional()) {
-              required.push(key);
-          }
-      }
-      
-      return {
-          type: "object",
-          properties,
-          required: required.length > 0 ? required : undefined
+    for (const [key, value] of Object.entries(zodSchema.shape)) {
+      const field = value as any;
+      properties[key] = {
+        type: field._def.typeName === "ZodNumber" ? "number" :
+          field._def.typeName === "ZodBoolean" ? "boolean" :
+            field._def.typeName === "ZodArray" ? "array" : "string"
       };
+
+      if (field.description) {
+        properties[key].description = field.description;
+      }
+
+      if (field._def.typeName === "ZodEnum") {
+        properties[key].enum = field._def.values;
+      }
+
+      if (!field.isOptional()) {
+        required.push(key);
+      }
+    }
+
+    return {
+      type: "object",
+      properties,
+      required: required.length > 0 ? required : undefined
+    };
   }
   return {};
 }

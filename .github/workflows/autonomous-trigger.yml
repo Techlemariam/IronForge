@@ -16,6 +16,8 @@ on:
           - debt-attack
           - security
           - sprint-auto
+          - factory
+          - triage
       model:
         description: 'Gemini Model'
         required: true

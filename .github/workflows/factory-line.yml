@@ -1,0 +1,68 @@
+name: Factory Line
+
+on:
+  workflow_dispatch:
+    inputs:
+      feature_name:
+        description: 'Name of the feature (must match specs/NAME.md)'
+        required: true
+      station:
+        description: 'Target Station (design, fabrication, verify, ship)'
+        required: true
+        default: 'verify'
+  push:
+    paths:
+      - 'specs/**'
+
+jobs:
+  factory-line:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+      repository-projects: write
+
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
+
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: 🏭 Factory Manager
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          $Feature = "${{ github.event.inputs.feature_name }}"
+          if (-not $Feature) {
+            # Extract from push event if triggered by spec change
+            $Before = "${{ github.event.before }}"
+            $After = "${{ github.event.after }}"
+            if ($Before -match "^0+$" -or -not $Before) {
+              $ChangedFiles = git show --name-only $After
+            } else {
+              $ChangedFiles = git diff --name-only $Before $After
+            }
+            $SpecFile = $ChangedFiles | Where-Object { $_ -match "^specs/(.*)\.md$" } | Select-Object -First 1
+            if ($SpecFile) {
+               $Feature = ($SpecFile -split "/")[-1] -replace "\.md$",""
+               Write-Host "Detected Spec Change: $Feature"
+            }
+          }
+          
+          if ($Feature) {
+             ./.agent/scripts/factory-manager.ps1 -Feature $Feature -Station "${{ github.event.inputs.station || 'verify' }}"
+          } else {
+             Write-Host "No feature detected. Exiting."
+          }

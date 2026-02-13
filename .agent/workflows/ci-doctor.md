@@ -7,7 +7,7 @@ version: "2.2.0"
 telemetry: "enabled"
 primary_agent: "@infrastructure"
 domain: "ci"
-skills: ["error-analyzer", "gatekeeper", "dependabot-manager", "env-validator", "linter-fixer", "schema-guard", "qodana-linter", "performance-profiler", "zod-schema-validator", "api-mocker", "bio-validator", "prisma-migrator", "a11y-auditor", "coverage-check", "bundle-analyzer", "git-guard", "supabase-inspector", "storybook-bridge", "coolify-deploy"]
+skills: ["error-analyzer", "gatekeeper", "dependabot-manager", "env-validator", "linter-fixer", "schema-guard", "qodana-linter", "performance-profiler", "zod-schema-validator", "api-mocker", "bio-validator", "prisma-migrator", "a11y-auditor", "coverage-check", "bundle-analyzer", "git-guard", "supabase-inspector", "storybook-bridge", "coolify-deploy", "doc-generator", "red-team", "clean-code-pro"]
 ---
 
 # 🩺 CI Doctor (Protocol v2.0)
@@ -159,14 +159,19 @@ gh run view $RUN_ID --log | npx tsx scripts/ci-classifier.ts --stdin
 # 2. Automated Target Acquisition
 FAILED_TESTS=$(gh run view $RUN_ID --log-failed | grep "Error:" | grep -oE "tests/[^[:space:]]+\.spec\.ts" | sort | uniq | tr '\n' ' ')
 
-if [ -z "$FAILED_TESTS" ]; then
-    echo "✅ No specific test artifacts found. Proceeding to standard classification."
+# 3. External Intelligence Acquisition (GitHub Apps)
+echo "📡 Syncing with PR Assistants (CodeRabbit, Snyk, CodeFactor)..."
+PR_NUM=$(gh pr view --json number -q '.number')
+INTELLIGENCE=$(gh pr view $PR_NUM --json comments,statusCheckRollup | npx tsx scripts/app-intelligence.ts)
+echo "🧠 Intelligence Received:"
+echo "$INTELLIGENCE"
+
+if [ -z "$FAILED_TESTS" ] && [ "$INTELLIGENCE" == '{"targets":[],"protocols":[]}' ]; then
+    echo "✅ No specific failure artifacts or App feedback found. Proceeding to standard classification."
 else
     echo "🚨 TARGETS ACQUIRED:"
     echo "$FAILED_TESTS"
-    echo ""
-    echo "👉 COPY/PASTE THIS TO START REPAIR:"
-    echo "export TARGETS=\"$FAILED_TESTS\""
+    echo "$INTELLIGENCE"
 fi
 ```
 
@@ -185,12 +190,16 @@ fi
 | `Prisma: Migration failed`    | **DB_MIGRATION_FAIL** (Use `/schema-guard`)       |
 | `Lighthouse: Performance`     | **PERF_DEGRADATION** (Use `/perf-profiler`)       |
 | `Qodana: Critical issues`     | **STATIC_ANALYSIS_FAIL** (Use `/qodana-linter`)   |
-| `Zod: Validation error`       | **SCHEMA_MISMATCH** (Use `/zod-schema-validator`) |
-| `Mock: Data outdated`         | **STALE_MOCK** (Use `/api-mocker`)                |
-| `Bio: Data sync fail`         | **BIO_SYNC_FAIL** (Use `/bio-validator`)          |
+| `Zod: Validation error`         | **SCHEMA_MISMATCH** (Use `/zod-schema-validator`) |
+| `Mock: Data outdated`          | **STALE_MOCK** (Use `/api-mocker`)                |
+| `Bio: Data sync fail`          | **BIO_SYNC_FAIL** (Use `/bio-validator`)          |
 | `Database: Schema out of sync` | **DB_OUT_OF_SYNC** (Use `/prisma-migrator`)       |
-| `A11y: Contrast/ARIA`         | **ACCESSIBILITY_FAIL** (Use `/a11y-auditor`)      |
-| `Coolify: Deployment failed`  | **COOLIFY_DOWN** (Use `/coolify-deploy`)          |
+| `A11y: Contrast/ARIA`          | **ACCESSIBILITY_FAIL** (Use `/a11y-auditor`)      |
+| `Coolify: Deployment failed`   | **COOLIFY_DOWN** (Use `/coolify-deploy`)          |
+| `Merge conflicts detected`     | **MERGE_CONFLICT_PROTOCOL** (Use `git rebase`)    |
+| `Patch coverage missing`       | **COVERAGE_DROP** (Use `/unit-tests`)             |
+| `Insufficient docstrings`       | **DOCSTRING_FAIL** (Use `/doc-generator`)         |
+| `Path traversal risk`          | **SECURE_INPUT_FAIL** (Use `/red-team`)           |
 
 ### 1.5 External Vital Signs (Coolify)
 
@@ -205,23 +214,23 @@ npx tsx scripts/check-infra.ts
 
 ### 1.2 The Qodana Ward (Static Analysis)
 
-**Protocol: SECURITY_BREACH**
+### Protocol: SECURITY_BREACH
 
 - **Detection:** `grep -r "password" .github/workflows` or check `cypress.env.json`.
 - **Fix:** Replace hardcoded strings with `${{ secrets.MY_KEY }}` or environment variables.
 - **Verify:** `git grep "my-secret-value"` should return nothing.
 
-**Protocol: DRY_VIOLATION (Duplication)**
+### Protocol: DRY_VIOLATION (Duplication)
 
 - **Threshold:** Qodana flags >10 duplicate lines.
 - **Fix:** Extract logic to `src/lib/utils.ts` or a shared component.
 - **Exemption:** If intentional (e.g. seed scripts), add `// noinspection DuplicatedCode` to the file header.
 
-**Protocol: REGEX_REDUNDANCY**
+### Protocol: REGEX_REDUNDANCY
 
 - **Fix:** Simplify Regex patterns (e.g., remove unnecessary groups).
 
-**Protocol: PLATFORM_COMPATIBILITY (Linux/Windows)**
+### Protocol: PLATFORM_COMPATIBILITY (Linux/Windows)
 
 - **Context:** PowerShell scripts running on GitHub Actions (`ubuntu-latest`).
 - **Detection:** `Join-Path` errors or "File not found" due to backslashes (`\`).

@@ -3,72 +3,79 @@ description: "Workflow for architect"
 command: "/architect"
 category: "persona"
 trigger: "manual"
-version: "1.0.0"
+version: "2.0.0"
 telemetry: "enabled"
 primary_agent: "@architect"
 domain: "core"
-skills: ["nextjs-route-visualizer"]
+skills: ["nextjs-route-visualizer", "prisma-migrator", "doc-generator"]
 ---
 
-# Workflow: /architect
+# 🏗️ System Architect (Level 10)
+
+**Role:** The Blueprint Designer.
+**Goal:** Create "Factory Ready" specifications that are impossible to misunderstand.
 
 > **Naming Convention:** Task Name must follow `[DOMAIN] Description`.
 
-## System Architect
+## 🧠 Core Philosophy
 
-**Role:** Technical Design & Planning.
+"Code is only as good as its blueprint. We do not guess; we design."
 
-**Responsibilities:**
+## 🛠️ Toolbelt (Skills)
 
-1. **Design**: Scalable, secure systems.
-2. **Plan**: Own `implementation_plan.md`.
-3. **Feasibility**: Validate constraints.
-
-## Phase 0: Branch Guard
-
-> **Guard:** `.agent/workflows/_guards/branch-guard.md`
-
-// turbo
-
-```bash
-current_branch=$(git rev-parse --abbrev-ref HEAD)
-if [ "$current_branch" = "main" ]; then
-  echo "⛔ ERROR: /architect requires a feature branch. Run /claim-task first."
-  exit 1
-fi
-echo "✅ Branch: $current_branch"
-```
+- `nextjs-route-visualizer`: Map the territory before designing.
+- `prisma-migrator`: Design database changes safely.
+- `doc-generator`: Maintain the Knowledge Graph.
 
 ---
 
-## Protocol
+## 🏭 Factory Protocol (Blueprint Station)
 
-1. **Bootstrap Check**: If `ARCHITECTURE.md` is missing, STOP. Create it first defining:
-   - Tech Stack (Next3. **System Design & Context**
-   - Review `src/app` structure
-   - Run `nextjs-route-visualizer` to map current architecture
-   - Create component diagram
-   - Data Flow (Server Actions + Zod).
-2. Read `task.md` & `ARCHITECTURE.md`.
-3. **C4 System Context**:
-   - Create/Update `docs/c4-system-context.mermaid` using Mermaid.js.
-   - Visualize: User -> [IronForge System] -> External Systems (Supabase, OpenAI, etc).
-4. **ADR (Architecture Decision Records)**:
-   - For significant changes, create `docs/adr/XXXX-[title].md`.
-   - Format: Context, Decision, Consequences.
-5. **Config**: Suggest adding new safe CLI tools to `terminalAllowList` in `.agent/config.json`.
-6. **Feature Cohesion**: Enforce `src/features/[name]` structure. Generic UI goes to `src/components`.
-7. Validate Scope (Feature vs Refactor).
-8. Update `implementation_plan.md`.
-9. **Platform Scope**: Reference `docs/PLATFORM_MATRIX.md` for cross-device considerations.
+When triggered by `/factory design` or manually:
 
-## CVP Compliance
+### 1. Map the Territory
 
-- Context Verification Protocol required.
-- Log decisions in `DEBT.md`.
+Before adding *anything*, understand *everything*.
+
+```powershell
+# 1. Visualize current routes (Context)
+pwsh .agent/skills/nextjs-route-visualizer/scripts/visualize.ps1
+
+# 2. Check Database State
+pwsh .agent/skills/prisma-migrator/scripts/check-drift.ps1
+```
+
+### 2. Design the System (The Spec)
+
+You are responsible for the `## System Design` section of `specs/[feature].md`.
+
+**Requirements:**
+
+1. **Schema**: Define schema changes clearly using valid Prisma syntax.
+2. **API**: Define Server Actions with Zod inputs/outputs.
+3. **Data Flow**: Diagram how data moves (Client -> Action -> DB).
+
+### 3. Database Migrations
+
+If the feature requires Schema changes:
+
+1. **Draft**: Update `prisma/schema.prisma`.
+2. **Validate**: Run `npx prisma validate`.
+3. **Migration Plan**: Document the migration strategy in the Spec.
+    - *Do not execute migrations yet. That happens in Fabrication.*
+
+### 4. Implementation Plan
+
+Update `implementation_plan.md` with the verified architectural path.
+
+## 🔍 Validation (Self-Correction)
+
+- **Circular Dependencies**: Did you introduce any?
+- **Security**: Did you expose any `user_id` without Auth check?
+- **Performance**: Did you require a 5-level join?
 
 ## Version History
 
-### 1.0.0 (2026-01-08)
+### 2.0.0 (2026-02-12)
 
-- Initial stable release with standardized metadata
+- Upgraded to Level 10 Integration (Factory Ready).

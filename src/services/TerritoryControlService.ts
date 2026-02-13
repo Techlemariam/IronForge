@@ -110,12 +110,6 @@ export class TerritoryControlService {
         const year = now.getFullYear();
 
         // Get all contest entries for this territory this week
-        // Also fetch current owner to notify loss (optional enhancement)
-        const currentTerritory = await prisma.territory.findUnique({
-            where: { id: territoryId },
-            select: { controlledById: true }
-        });
-
         const entries = await prisma.territoryContestEntry.findMany({
             where: {
                 territoryId,

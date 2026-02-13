@@ -3,109 +3,59 @@ description: "Workflow for polish"
 command: "/polish"
 category: "utility"
 trigger: "manual"
-version: "1.1.0"
+version: "2.0.0"
 telemetry: "enabled"
 primary_agent: "@polish"
 domain: "core"
-skills: ["linter-fixer"]
+skills: ["linter-fixer", "clean-code-pro"]
 ---
 
-# Role: Code Polisher
+# ✨ Code Polisher (Level 10)
 
-**Scope:** ESLint fixes, Prettier formatting, dead code removal, import optimization.
-**Skills:** `linter-fixer`
+**Role:** The Finisher.
+**Goal:** Make the codebase consistent, readable, and debt-free.
 
 > **Naming Convention:** Task Name must follow `[DOMAIN] Description`.
 
-## 🎯 Trigger
+## 🧠 Core Philosophy
 
-- After `/coder` completes implementation
-- Parallel with `/qa`
-- Manual: `/polish [scope]`
-- **Config**: Ensure lint/prettier commands are in `.agent/config.json`.
+"A broken window invites more crime. Keep the code pristine."
 
-## Phase 0: Branch Guard
+## 🛠️ Toolbelt (Skills)
 
-> **Guard:** `.agent/workflows/_guards/branch-guard.md`
-
-// turbo
-
-```bash
-current_branch=$(git rev-parse --abbrev-ref HEAD)
-if [ "$current_branch" = "main" ]; then
-  echo "⛔ ERROR: /polish requires a feature branch. Run /claim-task first."
-  exit 1
-fi
-echo "✅ Branch: $current_branch"
-```
+- `linter-fixer`: Auto-fix ESLint/Prettier issues.
+- `clean-code-pro`: Identify Code Smells (Complexity, Duplication).
 
 ---
 
-## 🧹 Polish Protocol
+## 🏭 Factory Protocol (Polish Station)
 
-### 1. Auto-Fix Linting
+When triggered by `/factory verify` (Station 5) or manually:
 
-```bash
-npm run lint -- --fix
-## Or: npx eslint src --fix
-```
+### 1. Auto-Fix (The Standard)
 
-### 2. Format Code
+1. **Lint**: `pnpm run lint -- --fix`
+2. **Format**: `pnpm dlx prettier --write .`
+3. **Imports**: Sort and organize imports.
 
-```bash
-npx prettier --write "src/**/*.{ts,tsx}"
-```
+### 2. Code Smell Detection
 
-### 3. Import Optimization
+Run `clean-code-pro` heuristics:
 
-```
-For each modified file:
-  - Sort imports (React first, then libs, then local)
-  - Remove unused imports
-  - Convert default → named where appropriate
-```
+- **Complexity**: Warn if Cyclomatic Complexity > 10.
+- **Duplication**: Warn if Copy/Paste detected.
+- **Dead Code**: Remove unused exports/variables.
 
-### 4. Type Safety Audit
+### 3. Debt Logger (The Scrap Yard)
 
-```
-1. Scan for explicit `: any`:
-   grep -r ": any" src/
-2. Check for Zod schema usage in Server Actions.
-3. If critical `any` found -> Create DEBT.md item.
-```
+If "Quick Fixes" are found (`// TODO`, `any` type casts):
 
-### 5. Dead Code Detection
-
-```
-Scan for:
-  - Unused exports (no importers)
-  - Commented code blocks > 5 lines
-  - TODO/FIXME older than 30 days
-```
-
-## 📊 Output Format
-
-```
-┌─────────────────────────────────────────────────────┐
-│ ✨ POLISH REPORT                                   │
-├─────────────────────────────────────────────────────┤
-│ Files Formatted:  [N]                              │
-│ Lint Fixes:       [N]                              │
-│ Imports Cleaned:  [N]                              │
-│ Dead Code Found:  [N items]                        │
-├─────────────────────────────────────────────────────┤
-│ Remaining Warnings: [list]                         │
-└─────────────────────────────────────────────────────┘
-```
-
-## 🔗 Handoff
-
-- **Verify Branch:** Ensure you are NOT on `main` before committing.
-- Auto-commit with message: `style: polish [scope]`
-- Notify `/qa` when complete
+1. **Extract**: Capture the comment and context.
+2. **Log**: Append to `DEBT.md` with [Low/Medium] priority.
+3. **Tag**: Mark as `<!-- source: factory -->`.
 
 ## Version History
 
-### 1.0.0 (2026-01-08)
+### 2.0.0 (2026-02-12)
 
-- Initial stable release with standardized metadata
+- Upgraded to Level 10 Integration (Factory Ready).

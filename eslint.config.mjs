@@ -7,6 +7,7 @@ import hooksPlugin from 'eslint-plugin-react-hooks';
 import tseslint from '@typescript-eslint/eslint-plugin';
 import tsparser from '@typescript-eslint/parser';
 import { fixupPluginRules } from '@eslint/compat';
+import jsxA11y from 'eslint-plugin-jsx-a11y';
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [// Global ignores
@@ -31,6 +32,7 @@ export default [// Global ignores
             '@next/next': fixupPluginRules(nextPlugin),
             'react': fixupPluginRules(reactPlugin),
             'react-hooks': fixupPluginRules(hooksPlugin),
+            'jsx-a11y': fixupPluginRules(jsxA11y),
         },
         settings: {
             react: {
@@ -42,6 +44,15 @@ export default [// Global ignores
             ...nextPlugin.configs['core-web-vitals'].rules,
             ...reactPlugin.configs.recommended.rules,
             ...hooksPlugin.configs.recommended.rules,
+            ...jsxA11y.flatConfigs.recommended.rules,
+            "jsx-a11y/anchor-is-valid": "warn",
+            "jsx-a11y/no-autofocus": "warn",
+            "jsx-a11y/heading-has-content": "warn",
+            "jsx-a11y/label-has-associated-control": "warn",
+            "jsx-a11y/click-events-have-key-events": "warn",
+            "jsx-a11y/no-static-element-interactions": "warn",
+            "jsx-a11y/no-noninteractive-element-interactions": "warn",
+            "jsx-a11y/media-has-caption": "warn",
             'react/react-in-jsx-scope': 'off',
             'react/jsx-uses-react': 'off',
             'react/prop-types': 'off',

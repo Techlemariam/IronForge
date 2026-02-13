@@ -123,5 +123,6 @@ export type GuildRaid = Record<string, any>;
 export type GuildRaidContribution = Record<string, any>;
 export type Achievement = Record<string, any>;
 export type TrainingProgram = Record<string, any>;
+export type FactoryStatus = Record<string, any>;
 export type TerritoryContestEntry = Record<string, any>;
 export type TerritoryHistory = Record<string, any>;
