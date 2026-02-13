@@ -16,7 +16,7 @@ export default function GlobalError({
   }, [error]);
 
   return (
-    <html>
+    <html lang="en">
       <body className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 flex items-center justify-center p-4">
         <div className="max-w-md w-full bg-slate-800/50 border border-red-500/30 rounded-xl p-8 text-center">
           <div className="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-4">

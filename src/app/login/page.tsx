@@ -155,10 +155,14 @@ export default function LoginPage() {
 
         <form onSubmit={handleLogin} className="space-y-4 relative">
           <div>
-            <label className="block text-xs font-mono uppercase text-forge-muted mb-1 flex items-center gap-2">
+            <label
+              htmlFor="email"
+              className="block text-xs font-mono uppercase text-forge-muted mb-1 flex items-center gap-2"
+            >
               <Mail className="w-3 h-3" /> Email Coordinates
             </label>
             <input
+              id="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -176,10 +180,14 @@ export default function LoginPage() {
                 exit={{ opacity: 0, height: 0 }}
                 transition={{ duration: 0.2 }}
               >
-                <label className="block text-xs font-mono uppercase text-forge-muted mb-1 flex items-center gap-2">
+                <label
+                  htmlFor="password"
+                  className="block text-xs font-mono uppercase text-forge-muted mb-1 flex items-center gap-2"
+                >
                   <Key className="w-3 h-3" /> Password
                 </label>
                 <input
+                  id="password"
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
