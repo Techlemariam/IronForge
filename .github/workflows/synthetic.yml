@@ -1,4 +1,4 @@
-name: 🌐 Synthetic Monitoring
+name: 🛡️ Production Uptime Guard (Live Site Health)
 on:
   schedule:
     - cron: '0 * * * *' # Run every hour
@@ -6,7 +6,7 @@ on:
 
 jobs:
   synthetic-check:
-    name: 🏥 Prod Health Check
+    name: 🔍 Verify Site Availability & Health
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
