@@ -1,6 +1,7 @@
 "use server";
 
-import { prisma } from "@/lib/prisma";
+import prisma from "@/lib/prisma";
+import { logger } from "@/lib/logger";
 import { revalidatePath } from "next/cache";
 import { TitanState, getAuthoritativeTitanState } from "./titan-state-schema";
 
@@ -82,7 +83,7 @@ export async function pullTitanState(
       lastSyncedAt: new Date(),
     };
   } catch (error) {
-    console.error("Pull sync failed:", error);
+    logger.error({ err: error }, "Pull sync failed");
     return {
       success: false,
       state: null,
@@ -141,7 +142,7 @@ export async function pushTitanState(
       lastSyncedAt: new Date(),
     };
   } catch (error) {
-    console.error("Push sync failed:", error);
+    logger.error({ err: error }, "Push sync failed");
     return {
       success: false,
       state: null,

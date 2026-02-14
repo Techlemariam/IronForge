@@ -1,6 +1,5 @@
-"use server";
-
-import { prisma } from "@/lib/prisma";
+import prisma from "@/lib/prisma";
+import { logger } from "@/lib/logger";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
@@ -90,7 +89,7 @@ export async function mutateTitanXp(
       },
     });
 
-    console.log(`[MUTATION] XP: +${amount} from ${source} for ${userId}`);
+    logger.info(`[MUTATION] XP: +${amount} from ${source} for ${userId}`);
     revalidatePath("/dashboard");
 
     return {
@@ -100,7 +99,7 @@ export async function mutateTitanXp(
       message: levelUp ? `Level up! Now level ${newLevel}` : `+${amount} XP`,
     };
   } catch (error) {
-    console.error("XP mutation failed:", error);
+    logger.error({ err: error }, "XP mutation failed");
     return { success: false, message: "XP mutation failed" };
   }
 }
@@ -136,12 +135,12 @@ export async function mutateTitanStats(
       data: updates,
     });
 
-    console.log(`[MUTATION] Stats: ${JSON.stringify(changes)} from ${source}`);
+    logger.info(`[MUTATION] Stats: ${JSON.stringify(changes)} from ${source}`);
     revalidatePath("/dashboard");
 
     return { success: true, newValue: updates, message: "Stats updated" };
   } catch (error) {
-    console.error("Stats mutation failed:", error);
+    logger.error({ err: error }, "Stats mutation failed");
     return { success: false, message: "Stats mutation failed" };
   }
 }
@@ -182,14 +181,14 @@ export async function mutateTitanResources(
       data: updates,
     });
 
-    console.log(
+    logger.info(
       `[MUTATION] Resources: ${JSON.stringify(changes)} from ${source}`,
     );
     revalidatePath("/dashboard");
 
     return { success: true, newValue: updates, message: "Resources updated" };
   } catch (error) {
-    console.error("Resource mutation failed:", error);
+    logger.error({ err: error }, "Resource mutation failed");
     return { success: false, message: "Resource mutation failed" };
   }
 }
@@ -229,14 +228,14 @@ export async function mutateTitanEconomy(
       data: updates,
     });
 
-    console.log(
+    logger.info(
       `[MUTATION] Economy: ${JSON.stringify(changes)} from ${source}`,
     );
     revalidatePath("/dashboard");
 
     return { success: true, newValue: updates, message: "Economy updated" };
   } catch (error) {
-    console.error("Economy mutation failed:", error);
+    logger.error({ err: error }, "Economy mutation failed");
     return { success: false, message: "Economy mutation failed" };
   }
 }

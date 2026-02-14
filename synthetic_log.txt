@@ -1,0 +1,698 @@
+🏥 Prod Health Check	UNKNOWN STEP	﻿2026-02-13T20:23:44.3105187Z Current runner version: '2.331.0'
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:44.3138873Z ##[group]Runner Image Provisioner
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:44.3140247Z Hosted Compute Agent
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:44.3141295Z Version: 20260123.484
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:44.3142244Z Commit: 6bd6555ca37d84114959e1c76d2c01448ff61c5d
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:44.3143397Z Build Date: 2026-01-23T19:41:17Z
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:44.3144501Z Worker ID: {21ae2b02-d831-4b3a-ad29-245ea32ec320}
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:44.3145648Z Azure Region: eastus2
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:44.3146556Z ##[endgroup]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:44.3149294Z ##[group]Operating System
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:44.3150355Z Ubuntu
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:44.3151134Z 24.04.3
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:44.3151921Z LTS
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:44.3152675Z ##[endgroup]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:44.3153478Z ##[group]Runner Image
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:44.3154480Z Image: ubuntu-24.04
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:44.3155362Z Version: 20260209.23.1
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:44.3157603Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260209.23/images/ubuntu/Ubuntu2404-Readme.md
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:44.3160100Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260209.23
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:44.3161704Z ##[endgroup]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:44.3163583Z ##[group]GITHUB_TOKEN Permissions
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:44.3166324Z Contents: read
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:44.3167543Z Metadata: read
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:44.3168352Z Packages: read
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:44.3169143Z ##[endgroup]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:44.3172049Z Secret source: Actions
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:44.3173134Z Prepare workflow directory
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:44.3627600Z Prepare all required actions
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:44.3683121Z Getting action download info
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:44.6752713Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:44.8532293Z Download action repository 'pnpm/action-setup@v4' (SHA:41ff72655975bd51cab0327fa583b6e92b6d3061)
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.1877746Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.2800629Z Download action repository 'actions/github-script@v7' (SHA:f28e40c7f34bde8b3046d885e986cb6290c5673b)
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.6365578Z Complete job name: 🏥 Prod Health Check
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.7192163Z ##[group]Run actions/checkout@v4
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.7193787Z with:
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.7194537Z   repository: Techlemariam/IronForge
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.7195783Z   token: ***
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.7196491Z   ssh-strict: true
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.7197400Z   ssh-user: git
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.7198168Z   persist-credentials: true
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.7199010Z   clean: true
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.7199780Z   sparse-checkout-cone-mode: true
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.7200695Z   fetch-depth: 1
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.7201434Z   fetch-tags: false
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.7202250Z   show-progress: true
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.7203014Z   lfs: false
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.7203720Z   submodules: false
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.7204491Z   set-safe-directory: true
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.7205627Z ##[endgroup]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.8303470Z Syncing repository: Techlemariam/IronForge
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.8306004Z ##[group]Getting Git version info
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.8307938Z Working directory is '/home/runner/work/IronForge/IronForge'
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.8310046Z [command]/usr/bin/git version
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.8310975Z git version 2.52.0
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.8333910Z ##[endgroup]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.8349167Z Temporarily overriding HOME='/home/runner/work/_temp/9c9e5eed-c68f-40e9-9f55-f2468018ea02' before making global git config changes
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.8361520Z Adding repository directory to the temporary git global config as a safe directory
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.8363694Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/IronForge/IronForge
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.8406868Z Deleting the contents of '/home/runner/work/IronForge/IronForge'
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.8410947Z ##[group]Initializing the repository
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.8414685Z [command]/usr/bin/git init /home/runner/work/IronForge/IronForge
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.8543833Z hint: Using 'master' as the name for the initial branch. This default branch name
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.8546112Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.8549555Z hint: to use in all of your new repositories, which will suppress this warning,
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.8551291Z hint: call:
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.8552115Z hint:
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.8553804Z hint: 	git config --global init.defaultBranch <name>
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.8555426Z hint:
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.8556517Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.8558716Z hint: 'development'. The just-created branch can be renamed via this command:
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.8560089Z hint:
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.8560770Z hint: 	git branch -m <name>
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.8561611Z hint:
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.8562724Z hint: Disable this message with "git config set advice.defaultBranchName false"
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.8564870Z Initialized empty Git repository in /home/runner/work/IronForge/IronForge/.git/
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.8568113Z [command]/usr/bin/git remote add origin https://github.com/Techlemariam/IronForge
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.8597125Z ##[endgroup]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.8598447Z ##[group]Disabling automatic garbage collection
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.8601130Z [command]/usr/bin/git config --local gc.auto 0
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.8630308Z ##[endgroup]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.8631529Z ##[group]Setting up auth
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.8637357Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.8668297Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.9060789Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.9091554Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.9324430Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.9355220Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.9598516Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.9635220Z ##[endgroup]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.9637856Z ##[group]Fetching the repository
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:45.9646869Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +d9659f27375774780e39ff8f1ae1146389181ed6:refs/remotes/origin/main
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:46.6239934Z From https://github.com/Techlemariam/IronForge
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:46.6242588Z  * [new ref]         d9659f27375774780e39ff8f1ae1146389181ed6 -> origin/main
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:46.6275604Z ##[endgroup]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:46.6277315Z ##[group]Determining the checkout info
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:46.6278783Z ##[endgroup]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:46.6283107Z [command]/usr/bin/git sparse-checkout disable
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:46.6324991Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:46.6351247Z ##[group]Checking out the ref
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:46.6355235Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:46.8076884Z Switched to a new branch 'main'
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:46.8078387Z branch 'main' set up to track 'origin/main'.
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:46.8094214Z ##[endgroup]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:46.8133816Z [command]/usr/bin/git log -1 --format=%H
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:46.8157456Z d9659f27375774780e39ff8f1ae1146389181ed6
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:46.8367588Z ##[group]Run pnpm/action-setup@v4
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:46.8368290Z with:
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:46.8368841Z   dest: ~/setup-pnpm
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:46.8369421Z   run_install: null
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:46.8370018Z   package_json_file: package.json
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:46.8370904Z   standalone: false
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:46.8371462Z ##[endgroup]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:46.8924414Z ##[group]Running self-installer...
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:47.6423688Z Progress: resolved 1, reused 0, downloaded 0, added 0
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:47.6640372Z Packages: +1
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:47.6641059Z +
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:48.0598196Z Progress: resolved 1, reused 0, downloaded 1, added 1, done
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:48.0871684Z 
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:48.0872168Z dependencies:
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:48.0872583Z + pnpm 9.15.0 (10.29.3 is available)
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:48.0872837Z 
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:48.0906785Z Done in 1s
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:48.1084689Z ##[endgroup]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:48.1089016Z Installation Completed!
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:48.1254026Z ##[group]Run actions/setup-node@v4
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:48.1254307Z with:
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:48.1254491Z   node-version: 22
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:48.1254701Z   cache: pnpm
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:48.1254887Z   always-auth: false
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:48.1255082Z   check-latest: false
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:48.1316802Z   token: ***
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:48.1317134Z env:
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:48.1317584Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:48.1318174Z ##[endgroup]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:48.3112712Z Found in cache @ /opt/hostedtoolcache/node/22.22.0/x64
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:48.3119096Z ##[group]Environment details
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:48.6877067Z node: v22.22.0
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:48.6877505Z npm: 10.9.4
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:48.6877804Z yarn: 1.22.22
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:48.6878797Z ##[endgroup]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:48.6902250Z [command]/home/runner/setup-pnpm/node_modules/.bin/pnpm store path --silent
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:49.0979304Z /home/runner/setup-pnpm/node_modules/.bin/store/v3
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:49.2057130Z Cache hit for: node-cache-Linux-x64-pnpm-5ae21efdd9fc90b05d2e90ec0bb194970174719ed70ca26d6979950924e66d94
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:50.2647956Z Received 222298112 of 464998437 (47.8%), 211.8 MBs/sec
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:51.2586318Z Received 464998437 of 464998437 (100.0%), 221.5 MBs/sec
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:51.2588091Z Cache Size: ~443 MB (464998437 B)
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:51.2707995Z [command]/usr/bin/tar -xf /home/runner/work/_temp/f6fac195-38d2-433c-ad68-7b9d6732d7db/cache.tzst -P -C /home/runner/work/IronForge/IronForge --use-compress-program unzstd
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:56.8694940Z Cache restored successfully
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:56.9575557Z Cache restored from key: node-cache-Linux-x64-pnpm-5ae21efdd9fc90b05d2e90ec0bb194970174719ed70ca26d6979950924e66d94
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:56.9748423Z ##[group]Run pnpm install --frozen-lockfile
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:56.9748814Z [36;1mpnpm install --frozen-lockfile[0m
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:56.9809415Z shell: /usr/bin/bash -e {0}
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:56.9809671Z env:
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:56.9809953Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:56.9810254Z ##[endgroup]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:57.4716363Z Lockfile is up to date, resolution step is skipped
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:57.5847917Z Progress: resolved 1, reused 0, downloaded 0, added 0
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:57.8094671Z Packages: +1526
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:57.8096324Z ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:58.6058358Z Progress: resolved 1526, reused 1062, downloaded 0, added 0
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:23:59.6072624Z Progress: resolved 1526, reused 1526, downloaded 0, added 461
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:00.6068871Z Progress: resolved 1526, reused 1526, downloaded 0, added 1227
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:00.9343337Z Progress: resolved 1526, reused 1526, downloaded 0, added 1526, done
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1085856Z 
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1086396Z dependencies:
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1087081Z + @ai-sdk/google 3.0.26
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1087538Z + @ai-sdk/react 3.0.84
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1087917Z + @capacitor/android 8.1.0
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1088339Z + @capacitor/cli 8.1.0
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1088708Z + @capacitor/core 8.1.0
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1089074Z + @google/genai 1.41.0
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1089530Z + @mediapipe/tasks-vision 0.10.32
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1090081Z + @neondatabase/serverless 1.0.2
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1090558Z + @prisma/adapter-neon 7.4.0
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1091374Z + @prisma/adapter-pg 7.4.0
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1091800Z + @prisma/client 7.4.0
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1092245Z + @radix-ui/react-avatar 1.1.11
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1092728Z + @radix-ui/react-dialog 1.1.15
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1093191Z + @radix-ui/react-label 2.1.8
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1093688Z + @radix-ui/react-popover 1.1.15
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1094178Z + @radix-ui/react-progress 1.1.8
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1094712Z + @radix-ui/react-scroll-area 1.2.10
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1095289Z + @radix-ui/react-select 2.2.6
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1095738Z + @radix-ui/react-slider 1.3.6
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1096169Z + @radix-ui/react-slot 1.2.4
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1097684Z + @radix-ui/react-tabs 1.1.13
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1098211Z + @react-three/drei 10.7.7
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1098718Z + @react-three/fiber 9.5.0
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1099136Z + @sentry/nextjs 10.38.0
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1099525Z + @serwist/next 9.5.5
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1099907Z + @supabase/ssr 0.8.0
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1100343Z + @supabase/supabase-js 2.95.3
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1100859Z + @types/canvas-confetti 1.9.0
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1101307Z + @types/howler 2.2.12
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1101703Z + @types/web-push 3.6.4
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1102101Z + ai 6.0.82
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1102490Z + axios 1.13.5
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1103187Z + canvas-confetti 1.9.4
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1103696Z + class-variance-authority 0.7.1
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1104294Z + clsx 2.1.1
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1104888Z + framer-motion 12.34.0
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1105457Z + h3-js 4.4.0
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1105969Z + howler 2.2.4
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1106796Z + import-in-the-middle 3.0.0
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1107614Z + lucide-react 0.563.0
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1108115Z + maplibre-gl 5.18.0
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1108745Z + next 16.1.6
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1109062Z + pg 8.18.0
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1109579Z + pino 10.3.1
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1109934Z + pino-pretty 13.1.3
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1111820Z + qrcode.react 4.2.0
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1112169Z + react 19.2.4
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1112499Z + react-dom 19.2.4
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1112898Z + react-dropzone 15.0.0
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1113297Z + react-player 3.4.0
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1113646Z + reactflow 11.11.4
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1113943Z + recharts 3.7.0
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1114280Z + require-in-the-middle 8.0.1
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1114651Z + serwist 9.5.5
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1114927Z + sonner 2.0.7
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1115240Z + tailwind-merge 3.4.0
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1115863Z + tailwindcss-animate 1.0.7
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1116243Z + three 0.182.0
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1116739Z + web-push 3.6.7
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1117070Z + zod 4.3.6
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1117357Z + zustand 5.0.11
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1117550Z 
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1117687Z devDependencies:
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1118187Z + @chromatic-com/storybook 5.0.1
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1118624Z + @eslint/compat 2.0.2
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1119084Z + @eslint/eslintrc 3.3.3
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1119491Z + @lhci/cli 0.15.1
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1119851Z + @playwright/test 1.58.2
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1120300Z + @storybook/addon-a11y 10.2.8
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1120774Z + @storybook/addon-docs 10.2.8
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1121307Z + @storybook/addon-onboarding 10.2.8
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1121820Z + @storybook/addon-vitest 10.2.8
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1122303Z + @storybook/nextjs-vite 10.2.8
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1122742Z + @tailwindcss/postcss 4.1.18
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1123171Z + @testing-library/dom 10.4.1
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1123639Z + @testing-library/react 16.3.2
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1124066Z + @types/geojson 7946.0.16
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1124455Z + @types/node 25.2.3
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1124807Z + @types/pg 8.16.0
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1125176Z + @types/react 19.2.14
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1125599Z + @types/react-dom 19.2.3
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1125984Z + @types/three 0.182.0
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1126368Z + @types/web-bluetooth 0.0.21
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1126914Z + @types/ws 8.18.1
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1127360Z + @typescript-eslint/eslint-plugin 8.55.0
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1127911Z + @typescript-eslint/parser 8.55.0
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1128551Z + @vitejs/plugin-react 5.1.4
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1129034Z + @vitest/browser-playwright 4.0.18
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1129494Z + @vitest/coverage-v8 4.0.18
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1129897Z + autoprefixer 10.4.24
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1130257Z + chromatic 15.1.0
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1130569Z + dotenv 17.2.4
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1130884Z + dotenv-cli 11.0.0
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1131178Z + eslint 10.0.0
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1131510Z + eslint-config-next 16.1.6
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1131940Z + eslint-plugin-storybook 10.2.8
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1132303Z + husky 9.1.7
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1132577Z + jsdom 28.0.0
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1132848Z + magicast 0.5.2
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1133132Z + msw 2.12.10
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1133433Z + playwright 1.58.2
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1133764Z + postcss 8.5.6
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1134067Z + prisma 7.4.0
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1134384Z + storybook 10.2.8
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1134724Z + tailwindcss 4.1.18
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1135050Z + tsx 4.21.0
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1135341Z + turbo 2.8.7
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1135671Z + typedoc 0.28.16
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1136083Z + typedoc-plugin-markdown 4.10.0
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1136506Z + typescript 5.9.3
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1137078Z + vite 7.3.1
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1137377Z + vitest 4.0.18
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1137675Z + ws 8.19.0
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1137842Z 
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1490813Z 
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1493208Z > ironforge-rpg@1.0.0 postinstall /home/runner/work/IronForge/IronForge
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1493946Z > prisma generate
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:02.1494166Z 
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:03.3305872Z Loaded Prisma config from prisma.config.ts.
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:03.3306348Z 
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:03.4658843Z Prisma schema loaded from prisma/schema.prisma.
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:03.4728279Z warn Preview feature "driverAdapters" is deprecated. The functionality can be used without specifying it as a preview feature.
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:04.4472316Z 
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:04.4475092Z ✔ Generated Prisma Client (v7.4.0) to ./node_modules/.pnpm/@prisma+client@7.4.0_prisma@7.4.0_@types+react@19.2.14_magicast@0.5.2_react-dom@19.2.4_react@_kbihlyeorb7my7bafhyofzhtla/node_modules/@prisma/client in 604ms
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:04.4476389Z 
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:04.4477203Z Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:04.4477732Z 
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:04.4477741Z 
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:04.4759737Z 
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:04.4761156Z > ironforge-rpg@1.0.0 prepare /home/runner/work/IronForge/IronForge
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:04.4761891Z > husky
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:04.4762071Z 
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:04.5222826Z Done in 7.5s
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:04.5745488Z ##[group]Run npx playwright install --with-deps chromium
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:04.5745944Z [36;1mnpx playwright install --with-deps chromium[0m
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:04.5797006Z shell: /usr/bin/bash -e {0}
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:04.5797251Z env:
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:04.5797494Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:04.5797800Z ##[endgroup]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:05.9630531Z Installing dependencies...
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:05.9700886Z Switching to root user to install dependencies...
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:06.0538283Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:06.0902856Z Hit:2 http://azure.archive.ubuntu.com/ubuntu noble InRelease
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:06.0917457Z Get:3 http://azure.archive.ubuntu.com/ubuntu noble-updates InRelease [126 kB]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:06.0987122Z Get:4 http://azure.archive.ubuntu.com/ubuntu noble-backports InRelease [126 kB]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:06.1025158Z Get:5 http://azure.archive.ubuntu.com/ubuntu noble-security InRelease [126 kB]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:06.1091767Z Get:6 https://packages.microsoft.com/repos/azure-cli noble InRelease [3564 B]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:06.1182090Z Get:7 https://packages.microsoft.com/ubuntu/24.04/prod noble InRelease [3600 B]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:06.2293698Z Get:8 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 Packages [1742 kB]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:06.2482588Z Get:9 http://azure.archive.ubuntu.com/ubuntu noble-updates/main Translation-en [325 kB]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:06.2522925Z Get:10 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 Components [175 kB]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:06.2542346Z Get:11 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 c-n-f Metadata [16.5 kB]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:06.2555698Z Get:12 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 Packages [1529 kB]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:06.2681109Z Get:13 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe Translation-en [313 kB]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:06.2710123Z Get:14 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 Components [386 kB]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:06.2745498Z Get:15 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 c-n-f Metadata [31.9 kB]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:06.2759938Z Get:16 http://azure.archive.ubuntu.com/ubuntu noble-updates/restricted amd64 Packages [2594 kB]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:06.2895397Z Get:17 http://azure.archive.ubuntu.com/ubuntu noble-updates/restricted Translation-en [595 kB]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:06.3363517Z Get:18 http://azure.archive.ubuntu.com/ubuntu noble-updates/restricted amd64 Components [212 B]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:06.3374306Z Get:19 http://azure.archive.ubuntu.com/ubuntu noble-updates/multiverse amd64 Components [940 B]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:06.3380120Z Get:20 http://azure.archive.ubuntu.com/ubuntu noble-backports/main amd64 Components [7284 B]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:06.3385903Z Get:21 http://azure.archive.ubuntu.com/ubuntu noble-backports/universe amd64 Components [10.5 kB]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:06.3396343Z Get:22 http://azure.archive.ubuntu.com/ubuntu noble-backports/restricted amd64 Components [216 B]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:06.3406925Z Get:23 http://azure.archive.ubuntu.com/ubuntu noble-backports/multiverse amd64 Components [212 B]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:06.3597872Z Get:24 http://azure.archive.ubuntu.com/ubuntu noble-security/main amd64 Packages [1448 kB]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:06.3683470Z Get:25 http://azure.archive.ubuntu.com/ubuntu noble-security/main Translation-en [234 kB]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:06.3704207Z Get:26 http://azure.archive.ubuntu.com/ubuntu noble-security/main amd64 Components [21.5 kB]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:06.3715721Z Get:27 http://azure.archive.ubuntu.com/ubuntu noble-security/main amd64 c-n-f Metadata [9892 B]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:06.3730860Z Get:28 http://azure.archive.ubuntu.com/ubuntu noble-security/universe amd64 Packages [930 kB]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:06.3784129Z Get:29 http://azure.archive.ubuntu.com/ubuntu noble-security/universe Translation-en [212 kB]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:06.3804077Z Get:30 http://azure.archive.ubuntu.com/ubuntu noble-security/universe amd64 Components [74.3 kB]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:06.3818442Z Get:31 http://azure.archive.ubuntu.com/ubuntu noble-security/universe amd64 c-n-f Metadata [19.9 kB]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:06.4218633Z Get:36 https://packages.microsoft.com/repos/azure-cli noble/main amd64 Packages [2129 B]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:06.4280498Z Get:32 http://azure.archive.ubuntu.com/ubuntu noble-security/restricted amd64 Packages [2452 kB]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:06.4408532Z Get:33 http://azure.archive.ubuntu.com/ubuntu noble-security/restricted Translation-en [564 kB]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:06.4452850Z Get:34 http://azure.archive.ubuntu.com/ubuntu noble-security/restricted amd64 Components [212 B]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:06.4459524Z Get:35 http://azure.archive.ubuntu.com/ubuntu noble-security/multiverse amd64 Components [212 B]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:06.4832958Z Get:37 https://packages.microsoft.com/ubuntu/24.04/prod noble/main arm64 Packages [68.9 kB]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:06.4982038Z Get:38 https://packages.microsoft.com/ubuntu/24.04/prod noble/main all Packages [643 B]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:06.5049865Z Get:39 https://packages.microsoft.com/ubuntu/24.04/prod noble/main amd64 Packages [89.5 kB]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:06.5146919Z Get:40 https://packages.microsoft.com/ubuntu/24.04/prod noble/main armhf Packages [11.4 kB]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:12.0356006Z Fetched 14.3 MB in 2s (8765 kB/s)
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:12.8507625Z Reading package lists...
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:12.8782887Z Reading package lists...
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.0847746Z Building dependency tree...
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.0855582Z Reading state information...
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.2995073Z libasound2t64 is already the newest version (1.2.11-1ubuntu0.1).
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.2996152Z libasound2t64 set to manually installed.
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.2997462Z libatk-bridge2.0-0t64 is already the newest version (2.52.0-1build1).
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.2998278Z libatk-bridge2.0-0t64 set to manually installed.
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.2999034Z libatk1.0-0t64 is already the newest version (2.52.0-1build1).
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.2999715Z libatk1.0-0t64 set to manually installed.
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3000445Z libatspi2.0-0t64 is already the newest version (2.52.0-1build1).
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3001130Z libatspi2.0-0t64 set to manually installed.
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3001858Z libcairo2 is already the newest version (1.18.0-3build1).
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3002460Z libcairo2 set to manually installed.
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3003135Z libcups2t64 is already the newest version (2.4.7-1.2ubuntu7.9).
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3003861Z libcups2t64 set to manually installed.
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3004527Z libdbus-1-3 is already the newest version (1.14.10-4ubuntu4.1).
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3005186Z libdbus-1-3 set to manually installed.
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3005948Z libdrm2 is already the newest version (2.4.125-1ubuntu0.1~24.04.1).
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3006811Z libdrm2 set to manually installed.
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3007555Z libgbm1 is already the newest version (25.2.8-0ubuntu0.24.04.1).
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3008269Z libgbm1 set to manually installed.
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3008957Z libnspr4 is already the newest version (2:4.35-1.1build1).
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3009629Z libnspr4 set to manually installed.
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3010335Z libnss3 is already the newest version (2:3.98-1build1).
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3010908Z libnss3 set to manually installed.
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3011571Z libpango-1.0-0 is already the newest version (1.52.1+ds-1build1).
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3012231Z libpango-1.0-0 set to manually installed.
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3012853Z libx11-6 is already the newest version (2:1.8.7-1build1).
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3013423Z libx11-6 set to manually installed.
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3014025Z libxcb1 is already the newest version (1.15-1ubuntu2).
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3014609Z libxcb1 set to manually installed.
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3015295Z libxcomposite1 is already the newest version (1:0.4.5-1build3).
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3015969Z libxcomposite1 set to manually installed.
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3016918Z libxdamage1 is already the newest version (1:1.1.6-1build1).
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3017632Z libxdamage1 set to manually installed.
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3018659Z libxext6 is already the newest version (2:1.3.4-1build2).
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3019337Z libxext6 set to manually installed.
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3020017Z libxfixes3 is already the newest version (1:6.0.0-2build1).
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3020688Z libxfixes3 set to manually installed.
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3021395Z libxkbcommon0 is already the newest version (1.6.0-1build1).
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3022060Z libxkbcommon0 set to manually installed.
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3022748Z libxrandr2 is already the newest version (2:1.5.2-2build1).
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3023385Z libxrandr2 set to manually installed.
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3024048Z xvfb is already the newest version (2:21.1.12-1ubuntu1.5).
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3024951Z fonts-noto-color-emoji is already the newest version (2.047-0ubuntu0.24.04.1).
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3025903Z libfontconfig1 is already the newest version (2.15.0-1.1ubuntu2).
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3026782Z libfontconfig1 set to manually installed.
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3027539Z libfreetype6 is already the newest version (2.13.2+dfsg-1build3).
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3028237Z libfreetype6 set to manually installed.
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3028929Z fonts-liberation is already the newest version (1:2.1.5-3).
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3029613Z fonts-liberation set to manually installed.
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3030269Z The following additional packages will be installed:
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3031115Z   gir1.2-glib-2.0 libglib2.0-bin libglib2.0-data xfonts-encodings xfonts-utils
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3031810Z Suggested packages:
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3032420Z   low-memory-monitor
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3032794Z Recommended packages:
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3033221Z   fonts-ipafont-mincho fonts-tlwg-loma
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3283919Z The following NEW packages will be installed:
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3284895Z   fonts-freefont-ttf fonts-ipafont-gothic fonts-tlwg-loma-otf fonts-unifont
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3295396Z   fonts-wqy-zenhei xfonts-cyrillic xfonts-encodings xfonts-scalable
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3296405Z   xfonts-utils
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3301399Z The following packages will be upgraded:
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3309043Z   gir1.2-glib-2.0 libglib2.0-0t64 libglib2.0-bin libglib2.0-data
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3508137Z 4 upgraded, 9 newly installed, 0 to remove and 14 not upgraded.
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3508620Z Need to get 23.0 MB of archives.
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3509124Z After this operation, 79.5 MB of additional disk space will be used.
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3509984Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.3706898Z Get:2 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-ipafont-gothic all 00303-21ubuntu1 [3513 kB]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.4000690Z Get:3 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libglib2.0-data all 2.80.0-6ubuntu3.8 [49.6 kB]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.4024751Z Get:4 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libglib2.0-bin amd64 2.80.0-6ubuntu3.8 [97.9 kB]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.4053654Z Get:5 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 gir1.2-glib-2.0 amd64 2.80.0-6ubuntu3.8 [183 kB]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.4088083Z Get:6 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libglib2.0-0t64 amd64 2.80.0-6ubuntu3.8 [1545 kB]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.4255199Z Get:7 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 fonts-freefont-ttf all 20211204+svn4273-2 [5641 kB]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.4947958Z Get:8 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-tlwg-loma-otf all 1:0.7.3-1 [107 kB]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.4971087Z Get:9 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-unifont all 1:15.1.01-1build1 [2993 kB]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.5165940Z Get:10 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-wqy-zenhei all 0.9.45-8 [7472 kB]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.5901903Z Get:11 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 xfonts-encodings all 1:1.0.5-0ubuntu2 [578 kB]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.5987134Z Get:12 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 xfonts-utils amd64 1:7.7+6build3 [94.4 kB]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.6050326Z Get:13 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 xfonts-cyrillic all 1:1.0.5+nmu1 [384 kB]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.6149953Z Get:14 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 xfonts-scalable all 1:1.0.3-1.3 [304 kB]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.8988280Z Fetched 23.0 MB in 0s (82.5 MB/s)
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.9250776Z Selecting previously unselected package fonts-ipafont-gothic.
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.9559035Z (Reading database ... 
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.9559424Z (Reading database ... 5%
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.9559717Z (Reading database ... 10%
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.9559969Z (Reading database ... 15%
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.9560208Z (Reading database ... 20%
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.9560439Z (Reading database ... 25%
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.9560662Z (Reading database ... 30%
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.9560880Z (Reading database ... 35%
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.9561100Z (Reading database ... 40%
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.9561318Z (Reading database ... 45%
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.9561539Z (Reading database ... 50%
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:13.9678094Z (Reading database ... 55%
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:14.0335954Z (Reading database ... 60%
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:14.0907641Z (Reading database ... 65%
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:14.1497804Z (Reading database ... 70%
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:14.2006359Z (Reading database ... 75%
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:14.3255476Z (Reading database ... 80%
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:14.5355751Z (Reading database ... 85%
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:14.7266179Z (Reading database ... 90%
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:14.9030160Z (Reading database ... 95%
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:14.9031000Z (Reading database ... 100%
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:14.9031670Z (Reading database ... 218331 files and directories currently installed.)
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:14.9077113Z Preparing to unpack .../00-fonts-ipafont-gothic_00303-21ubuntu1_all.deb ...
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:14.9169053Z Unpacking fonts-ipafont-gothic (00303-21ubuntu1) ...
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:15.1675398Z Preparing to unpack .../01-libglib2.0-data_2.80.0-6ubuntu3.8_all.deb ...
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:15.1707923Z Unpacking libglib2.0-data (2.80.0-6ubuntu3.8) over (2.80.0-6ubuntu3.7) ...
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:15.2121725Z Preparing to unpack .../02-libglib2.0-bin_2.80.0-6ubuntu3.8_amd64.deb ...
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:15.2150471Z Unpacking libglib2.0-bin (2.80.0-6ubuntu3.8) over (2.80.0-6ubuntu3.7) ...
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:15.2781030Z Preparing to unpack .../03-gir1.2-glib-2.0_2.80.0-6ubuntu3.8_amd64.deb ...
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:15.2808760Z Unpacking gir1.2-glib-2.0:amd64 (2.80.0-6ubuntu3.8) over (2.80.0-6ubuntu3.7) ...
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:15.3299685Z Preparing to unpack .../04-libglib2.0-0t64_2.80.0-6ubuntu3.8_amd64.deb ...
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:15.3393627Z Unpacking libglib2.0-0t64:amd64 (2.80.0-6ubuntu3.8) over (2.80.0-6ubuntu3.7) ...
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:15.3882936Z Selecting previously unselected package fonts-freefont-ttf.
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:15.4047252Z Preparing to unpack .../05-fonts-freefont-ttf_20211204+svn4273-2_all.deb ...
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:15.4056205Z Unpacking fonts-freefont-ttf (20211204+svn4273-2) ...
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:15.4997399Z Selecting previously unselected package fonts-tlwg-loma-otf.
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:15.5159076Z Preparing to unpack .../06-fonts-tlwg-loma-otf_1%3a0.7.3-1_all.deb ...
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:15.5169502Z Unpacking fonts-tlwg-loma-otf (1:0.7.3-1) ...
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:15.5407487Z Selecting previously unselected package fonts-unifont.
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:15.5570565Z Preparing to unpack .../07-fonts-unifont_1%3a15.1.01-1build1_all.deb ...
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:15.5584357Z Unpacking fonts-unifont (1:15.1.01-1build1) ...
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:15.6818657Z Selecting previously unselected package fonts-wqy-zenhei.
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:15.6981295Z Preparing to unpack .../08-fonts-wqy-zenhei_0.9.45-8_all.deb ...
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:15.7093641Z Unpacking fonts-wqy-zenhei (0.9.45-8) ...
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:16.3379418Z Selecting previously unselected package xfonts-encodings.
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:16.3542149Z Preparing to unpack .../09-xfonts-encodings_1%3a1.0.5-0ubuntu2_all.deb ...
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:16.3552883Z Unpacking xfonts-encodings (1:1.0.5-0ubuntu2) ...
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:16.3887295Z Selecting previously unselected package xfonts-utils.
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:16.4049432Z Preparing to unpack .../10-xfonts-utils_1%3a7.7+6build3_amd64.deb ...
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:16.4062259Z Unpacking xfonts-utils (1:7.7+6build3) ...
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:16.4486005Z Selecting previously unselected package xfonts-cyrillic.
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:16.4648675Z Preparing to unpack .../11-xfonts-cyrillic_1%3a1.0.5+nmu1_all.deb ...
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:16.4660658Z Unpacking xfonts-cyrillic (1:1.0.5+nmu1) ...
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:16.5080867Z Selecting previously unselected package xfonts-scalable.
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:16.5242668Z Preparing to unpack .../12-xfonts-scalable_1%3a1.0.3-1.3_all.deb ...
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:16.5259125Z Unpacking xfonts-scalable (1:1.0.3-1.3) ...
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:16.5744804Z Setting up fonts-wqy-zenhei (0.9.45-8) ...
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:16.5904591Z Setting up fonts-freefont-ttf (20211204+svn4273-2) ...
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:16.5939576Z Setting up libglib2.0-0t64:amd64 (2.80.0-6ubuntu3.8) ...
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:16.6099801Z Setting up libglib2.0-data (2.80.0-6ubuntu3.8) ...
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:16.6139075Z Setting up fonts-tlwg-loma-otf (1:0.7.3-1) ...
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:16.6185184Z Setting up xfonts-encodings (1:1.0.5-0ubuntu2) ...
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:16.6219167Z Setting up gir1.2-glib-2.0:amd64 (2.80.0-6ubuntu3.8) ...
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:16.6252065Z Setting up fonts-ipafont-gothic (00303-21ubuntu1) ...
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:16.6342879Z update-alternatives: using /usr/share/fonts/opentype/ipafont-gothic/ipag.ttf to provide /usr/share/fonts/truetype/fonts-japanese-gothic.ttf (fonts-japanese-gothic.ttf) in auto mode
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:16.6363640Z Setting up fonts-unifont (1:15.1.01-1build1) ...
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:16.6393825Z Setting up libglib2.0-bin (2.80.0-6ubuntu3.8) ...
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:16.6424990Z Setting up xfonts-utils (1:7.7+6build3) ...
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:16.6485390Z Setting up xfonts-cyrillic (1:1.0.5+nmu1) ...
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:16.6821481Z Setting up xfonts-scalable (1:1.0.3-1.3) ...
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:16.7150762Z Processing triggers for libc-bin (2.39-0ubuntu8.7) ...
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:16.7518218Z Processing triggers for man-db (2.12.0-4build2) ...
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:16.7551387Z Not building database; man-db/auto-update is not 'true'.
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:16.7572353Z Processing triggers for fontconfig (2.15.0-1.1ubuntu2) ...
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:17.5487362Z 
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:17.5488105Z Running kernel seems to be up-to-date.
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:17.5488618Z 
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:17.5488853Z Restarting services...
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:17.5986975Z  systemctl restart packagekit.service php8.3-fpm.service polkit.service udisks2.service
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:17.7772120Z 
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:17.7773166Z Service restarts being deferred:
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:17.7774080Z  systemctl restart ModemManager.service
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:17.7774743Z  systemctl restart networkd-dispatcher.service
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:17.7775121Z 
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:17.7775372Z No containers need to be restarted.
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:17.7775678Z 
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:17.7775986Z No user sessions are running outdated binaries.
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:17.7776351Z 
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:17.7777091Z No VM guests are running outdated hypervisor (qemu) binaries on this host.
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:18.8990712Z Downloading Chrome for Testing 145.0.7632.6 (playwright chromium v1208) from https://cdn.playwright.dev/builds/cft/145.0.7632.6/linux64/chrome-linux64.zip
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:19.0760512Z |                                                                                |   0% of 167.3 MiB
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:19.2251661Z |■■■■■■■■                                                                        |  10% of 167.3 MiB
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:19.3165886Z |■■■■■■■■■■■■■■■■                                                                |  20% of 167.3 MiB
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:19.3887825Z |■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 167.3 MiB
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:19.4507101Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 167.3 MiB
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:19.5206472Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 167.3 MiB
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:19.5920238Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 167.3 MiB
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:19.6596875Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 167.3 MiB
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:19.7180404Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 167.3 MiB
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:19.7754004Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 167.3 MiB
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:19.8304950Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 167.3 MiB
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:22.3697519Z Chrome for Testing 145.0.7632.6 (playwright chromium v1208) downloaded to /home/runner/.cache/ms-playwright/chromium-1208
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:22.3701530Z Downloading FFmpeg (playwright ffmpeg v1011) from https://cdn.playwright.dev/dbazure/download/playwright/builds/ffmpeg/1011/ffmpeg-linux.zip
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:22.5167688Z |                                                                                |   0% of 2.3 MiB
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:22.5295508Z |■■■■■■■■                                                                        |  10% of 2.3 MiB
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:22.5431863Z |■■■■■■■■■■■■■■■■                                                                |  20% of 2.3 MiB
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:22.5461121Z |■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 2.3 MiB
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:22.5488576Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 2.3 MiB
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:22.5513585Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 2.3 MiB
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:22.5536866Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 2.3 MiB
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:22.5556312Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 2.3 MiB
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:22.5573956Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 2.3 MiB
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:22.5585639Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 2.3 MiB
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:22.5600895Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 2.3 MiB
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:22.6162744Z FFmpeg (playwright ffmpeg v1011) downloaded to /home/runner/.cache/ms-playwright/ffmpeg-1011
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:22.6166533Z Downloading Chrome Headless Shell 145.0.7632.6 (playwright chromium-headless-shell v1208) from https://cdn.playwright.dev/builds/cft/145.0.7632.6/linux64/chrome-headless-shell-linux64.zip
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:22.7819913Z |                                                                                |   0% of 110.9 MiB
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:22.9631537Z |■■■■■■■■                                                                        |  10% of 110.9 MiB
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:23.0648469Z |■■■■■■■■■■■■■■■■                                                                |  20% of 110.9 MiB
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:23.1486216Z |■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 110.9 MiB
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:23.2218995Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 110.9 MiB
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:23.2889094Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 110.9 MiB
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:23.3503221Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 110.9 MiB
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:23.4887937Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 110.9 MiB
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:23.5758666Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 110.9 MiB
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:23.6300115Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 110.9 MiB
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:23.6758811Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 110.9 MiB
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:25.5845936Z Chrome Headless Shell 145.0.7632.6 (playwright chromium-headless-shell v1208) downloaded to /home/runner/.cache/ms-playwright/chromium_headless_shell-1208
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:25.6463642Z ##[group]Run echo "Running synthetic check against $BASE_URL"
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:25.6464382Z [36;1mecho "Running synthetic check against $BASE_URL"[0m
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:25.6465128Z [36;1m# Run specifically the landing page test or a dedicated synthetic spec[0m
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:25.6466313Z [36;1m# Overriding the baseURL in playwright config via env var or CLI arg would be ideal,[0m
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:25.6467489Z [36;1m# but for now we assume the test can adapt or we just check basic reachability.[0m
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:25.6468144Z [36;1m[0m
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:25.6468739Z [36;1m# Creating a temporary synthetic test on the fly if one doesn't exist designed for prod[0m
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:25.6469627Z [36;1mecho "import { test, expect } from '@playwright/test';[0m
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:25.6470152Z [36;1m[0m
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:25.6470549Z [36;1mtest('Synthetic Health Check', async ({ page }) => {[0m
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:25.6471174Z [36;1m  const response = await page.goto('$BASE_URL');[0m
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:25.6471760Z [36;1m  expect(response.status()).toBe(200);[0m
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:25.6472307Z [36;1m  await expect(page).toHaveTitle(/IronForge/i);[0m
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:25.6472832Z [36;1m});" > tests/e2e/synthetic.spec.ts[0m
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:25.6473258Z [36;1m[0m
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:25.6473746Z [36;1mnpx playwright test tests/e2e/synthetic.spec.ts --project=chromium[0m
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:25.6538140Z shell: /usr/bin/bash -e {0}
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:25.6538507Z env:
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:25.6538879Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:25.6539633Z   BASE_URL: ***
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:25.6539923Z   CI: true
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:25.6540184Z ##[endgroup]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:25.6627871Z Running synthetic check against ***
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:27.1110143Z [dotenv@17.2.4] injecting env (0) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:28.4974787Z [WebServer] ❌ Invalid environment variables: {
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:28.4977042Z [WebServer]   DATABASE_URL: [ [32m'Invalid input: expected string, received undefined'[39m ],
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:28.4978432Z [WebServer]   DIRECT_URL: [ [32m'Invalid input: expected string, received undefined'[39m ],
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:28.4979847Z [WebServer]   NEXT_PUBLIC_SUPABASE_URL: [ [32m'Invalid input: expected string, received undefined'[39m ],
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:28.4981391Z [WebServer]   NEXT_PUBLIC_SUPABASE_ANON_KEY: [ [32m'Invalid input: expected string, received undefined'[39m ]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:28.4982207Z [WebServer] }
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:28.4983890Z [WebServer] [31m[1m⨯[22m[39m Failed to load next.config.mjs, see more info here https://nextjs.org/docs/messages/next-config-error
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:28.5349078Z [WebServer] Error: Invalid environment variables
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:28.5350112Z [WebServer]     at <unknown> (src/env.mjs:56:15)
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:28.9202090Z [WebServer] ❌ Invalid environment variables: {
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:28.9203704Z [WebServer]   DATABASE_URL: [ [32m'Invalid input: expected string, received undefined'[39m ],
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:28.9205541Z [WebServer]   DIRECT_URL: [ [32m'Invalid input: expected string, received undefined'[39m ],
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:28.9207759Z [WebServer]   NEXT_PUBLIC_SUPABASE_URL: [ [32m'Invalid input: expected string, received undefined'[39m ],
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:28.9209967Z [WebServer]   NEXT_PUBLIC_SUPABASE_ANON_KEY: [ [32m'Invalid input: expected string, received undefined'[39m ]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:28.9210735Z [WebServer] }
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:28.9371805Z 
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:28.9372469Z Error: Process from config.webServer was not able to start. Exit code: 1
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:28.9382577Z 
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:28.9386800Z 
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:28.9761590Z ##[error]Process completed with exit code 1.
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:28.9835153Z ##[group]Run actions/github-script@v7
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:28.9835440Z with:
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:28.9837007Z   script: const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+🏥 Prod Health Check	UNKNOWN STEP	await github.rest.issues.create({
+🏥 Prod Health Check	UNKNOWN STEP	  owner: context.repo.owner,
+🏥 Prod Health Check	UNKNOWN STEP	  repo: context.repo.repo,
+🏥 Prod Health Check	UNKNOWN STEP	  title: '🚨 Synthetic Monitor Failed',
+🏥 Prod Health Check	UNKNOWN STEP	  body: `The hourly synthetic health check failed against production.\n\n[View Run Log](${runUrl})`,
+🏥 Prod Health Check	UNKNOWN STEP	  labels: ['critical', 'ops']
+🏥 Prod Health Check	UNKNOWN STEP	});
+🏥 Prod Health Check	UNKNOWN STEP	
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:28.9838543Z   github-token: ***
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:28.9838763Z   debug: false
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:28.9838961Z   user-agent: actions/github-script
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:28.9839211Z   result-encoding: json
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:28.9839414Z   retries: 0
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:28.9839623Z   retry-exempt-status-codes: 400,401,403,404,422
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:28.9839906Z env:
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:28.9840128Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:28.9840418Z ##[endgroup]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3042514Z RequestError [HttpError]: Resource not accessible by integration
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3043626Z     at /home/runner/work/_actions/actions/github-script/v7/dist/index.js:9537:21
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3044748Z     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3046314Z     at async eval (eval at callAsyncFunction (/home/runner/work/_actions/actions/github-script/v7/dist/index.js:36187:16), <anonymous>:4:1)
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3047537Z     at async main (/home/runner/work/_actions/actions/github-script/v7/dist/index.js:36285:20) {
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3048011Z   status: 403,
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3048206Z   response: {
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3048552Z     url: 'https://api.github.com/repos/Techlemariam/IronForge/issues',
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3048906Z     status: 403,
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3049095Z     headers: {
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3049330Z       'access-control-allow-origin': '*',
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3050796Z       'access-control-expose-headers': 'ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset',
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3052132Z       'content-encoding': 'gzip',
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3052459Z       'content-security-policy': "default-src 'none'",
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3052841Z       'content-type': 'application/json; charset=utf-8',
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3053176Z       date: 'Fri, 13 Feb 2026 20:24:29 GMT',
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3053634Z       'referrer-policy': 'origin-when-cross-origin, strict-origin-when-cross-origin',
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3054056Z       server: 'github.com',
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3054458Z       'strict-transport-security': 'max-age=31536000; includeSubdomains; preload',
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3054883Z       'transfer-encoding': 'chunked',
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3055214Z       vary: 'Accept-Encoding, Accept, X-Requested-With',
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3055600Z       'x-accepted-github-permissions': 'issues=write',
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3055934Z       'x-content-type-options': 'nosniff',
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3056224Z       'x-frame-options': 'deny',
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3056527Z       'x-github-api-version-selected': '2022-11-28',
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3057094Z       'x-github-media-type': 'github.v3; format=json',
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3057487Z       'x-github-request-id': '1440:1CC0FF:513CA:15ADF5:698F887D',
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3057828Z       'x-ratelimit-limit': '5000',
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3058099Z       'x-ratelimit-remaining': '4974',
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3058726Z       'x-ratelimit-reset': '1771014888',
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3059013Z       'x-ratelimit-resource': 'core',
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3059288Z       'x-ratelimit-used': '26',
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3059532Z       'x-xss-protection': '0'
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3059748Z     },
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3059910Z     data: {
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3060379Z       message: 'Resource not accessible by integration',
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3060922Z       documentation_url: 'https://docs.github.com/rest/issues/issues#create-an-issue',
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3061337Z       status: '403'
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3061518Z     }
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3061674Z   },
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3061828Z   request: {
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3062008Z     method: 'POST',
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3062346Z     url: 'https://api.github.com/repos/Techlemariam/IronForge/issues',
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3062689Z     headers: {
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3062932Z       accept: 'application/vnd.github.v3+json',
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3063436Z       'user-agent': 'actions/github-script octokit-core.js/5.0.1 Node.js/20.19.6 (linux; x64)',
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3063894Z       authorization: 'token [REDACTED]',
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3064429Z       'content-type': 'application/json; charset=utf-8'
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3064914Z     },
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3066841Z     body: '{"title":"🚨 Synthetic Monitor Failed","body":"The hourly synthetic health check failed against production.\\n\\n[View Run Log](https://github.com/Techlemariam/IronForge/actions/runs/22001598607)","labels":["critical","ops"]}',
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3067767Z     request: {
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3067952Z       agent: [Agent],
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3068193Z       fetch: [Function: proxyFetch],
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3068490Z       hook: [Function: bound bound register]
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3068732Z     }
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3068891Z   }
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3069049Z }
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3080378Z ##[error]Unhandled error: HttpError: Resource not accessible by integration
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.3763190Z Post job cleanup.
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.4319107Z Pruning is unnecessary.
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.4419882Z Post job cleanup.
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.5374165Z [command]/usr/bin/git version
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.5412000Z git version 2.52.0
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.5456997Z Temporarily overriding HOME='/home/runner/work/_temp/f5392e87-7c40-45f3-afc2-20286d9abb3e' before making global git config changes
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.5458638Z Adding repository directory to the temporary git global config as a safe directory
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.5463873Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/IronForge/IronForge
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.5502532Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.5537515Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.5786479Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.5809508Z http.https://github.com/.extraheader
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.5823097Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.5856301Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.6102242Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.6138710Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+🏥 Prod Health Check	UNKNOWN STEP	2026-02-13T20:24:29.6510633Z Cleaning up orphan processes

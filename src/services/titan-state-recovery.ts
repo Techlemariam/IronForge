@@ -1,6 +1,7 @@
 "use server";
 
-import { prisma } from "@/lib/prisma";
+import prisma from "@/lib/prisma";
+import { logger } from "@/lib/logger";
 import { revalidatePath } from "next/cache";
 import { TitanState, getAuthoritativeTitanState } from "./titan-state-schema";
 import {
@@ -42,7 +43,7 @@ export async function createRecoveryCheckpoint(
   const state = await getAuthoritativeTitanState(userId);
 
   if (!state) {
-    console.error("Cannot create checkpoint: no Titan state found");
+    logger.error("Cannot create checkpoint: no Titan state found");
     return null;
   }
 
@@ -65,7 +66,7 @@ export async function createRecoveryCheckpoint(
     if (index > -1) checkpoints.splice(index, 1);
   }
 
-  console.log(`[RECOVERY] Checkpoint created for ${userId}: ${reason}`);
+  logger.info(`[RECOVERY] Checkpoint created for ${userId}: ${reason}`);
   await recordTitanEvent(userId, "STATE_RECOVERED", {
     action: "checkpoint_created",
     reason,
@@ -148,7 +149,7 @@ export async function rollbackToCheckpoint(
       message: `Rolled back to checkpoint from ${checkpoint.createdAt.toLocaleString()}`,
     };
   } catch (error) {
-    console.error("Rollback failed:", error);
+    logger.error({ err: error }, "Rollback failed");
     return { success: false, message: "Rollback failed" };
   }
 }
@@ -199,7 +200,7 @@ export async function rollbackToVersion(
       message: `Rolled back to version ${targetVersion}`,
     };
   } catch (error) {
-    console.error("Version rollback failed:", error);
+    logger.error({ err: error }, "Version rollback failed");
     return { success: false, message: "Version rollback failed" };
   }
 }
@@ -289,7 +290,7 @@ export async function autoHealIntegrityIssues(
     return { success: true, message: "No issues to heal" };
   }
 
-  console.log(`[RECOVERY] Auto-healing ${issues.length} issues for ${userId}`);
+  logger.info(`[RECOVERY] Auto-healing ${issues.length} issues for ${userId}`);
 
   // Create checkpoint before healing
   await createRecoveryCheckpoint(userId, "pre-auto-heal");

@@ -231,8 +231,12 @@ export const calculateTitanAttributes = (
     const hrv = wellness.hrv || 40;
 
     // Complex calculation: Sleep is king, HRV is queen
-    const weightedWellness = sleep * 0.5 + bb * 0.3 + (hrv / 100) * 20;
-    recScore = Math.ceil(weightedWellness / 5);
+    const safeHrv = Number(hrv) || 0;
+    const safeSleep = Number(sleep) || 0;
+    const safeBb = Number(bb) || 0;
+
+    const weightedWellness = safeSleep * 0.5 + safeBb * 0.3 + (safeHrv / 100) * 20;
+    recScore = isNaN(weightedWellness) ? 7 : Math.ceil(weightedWellness / 5);
   }
 
   // --- TECHNICAL ATTRIBUTES ---
@@ -269,14 +273,14 @@ export const calculateAdaptiveCost = (
 
   // Calculate Composite Readiness Score (0-100)
   // We assume 50 is a neutral baseline for missing values
-  const sleep = wellness.sleepScore || 50;
-  // HRV Baseline assumption: 60ms is "100%" for normalization purposes in this MVP
-  // In a production app, this would be relative to the user's specific baseline.
-  const hrv = wellness.hrv ? Math.min(100, (wellness.hrv / 60) * 100) : 50;
-  const bb = wellness.bodyBattery || 50;
-
   // Formula: 40% Sleep, 40% Body Battery, 20% HRV
-  const readiness = sleep * 0.4 + bb * 0.4 + hrv * 0.2;
+  const safeHrv = wellness.hrv ? Math.min(100, (Number(wellness.hrv) / 60) * 100) : 50;
+  const safeSleep = Number(wellness.sleepScore) || 50;
+  const safeBb = Number(wellness.bodyBattery) || 50;
+
+  const readiness = isNaN(safeSleep * 0.4 + safeBb * 0.4 + safeHrv * 0.2)
+    ? 50
+    : safeSleep * 0.4 + safeBb * 0.4 + safeHrv * 0.2;
 
   let modifier = 0;
 

@@ -163,6 +163,18 @@ export async function recordTerritoryActivityAction(input: {
     volume: number;
     xp: number;
 }) {
+    const session = await getSession();
+    if (!session?.user?.id) throw new Error("Unauthorized");
+
+    const user = await prisma.user.findUnique({
+        where: { id: session.user.id },
+        select: { guildId: true }
+    });
+
+    if (!user || user.guildId !== input.guildId) {
+        throw new Error("Forbidden: You can only record activity for your own guild.");
+    }
+
     const schema = z.object({
         guildId: z.string().min(1),
         volume: z.number().min(0),
@@ -218,6 +230,18 @@ export async function recordTerritoryActivityAction(input: {
  * Determines winner for each territory based on weekly activity
  */
 export async function processWeeklyTerritoryClaimsAction() {
+    // Auth Check: Either session admin or Cron Secret
+    const session = await getSession();
+    const isAdmin = session?.user?.email?.endsWith("@ironforge.rpg");
+
+    const headerList = await import("next/headers").then(h => h.headers());
+    const secret = headerList.get("x-cron-secret");
+    const systemSecret = process.env.CRON_SECRET;
+
+    if (!isAdmin && (!secret || secret !== systemSecret)) {
+        throw new Error("Unauthorized");
+    }
+
     const { week, year } = getISOWeekNumber(new Date());
     const lastWeek = week === 1 ? 52 : week - 1;
     const lastYear = week === 1 ? year - 1 : year;

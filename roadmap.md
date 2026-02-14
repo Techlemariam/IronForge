@@ -178,8 +178,12 @@
 
 ### Critical Priority (Production Readiness)
 
-- [ ] **DB Drift: active_sessions table** ([#73](https://github.com/Techlemariam/IronForge/issues/73)) <!-- status: planned | priority: critical | roi: 5.0 | effort: S | source: debt-audit | date: 2026-01-14 -->
-  - **Issue**: `active_sessions` table exists in DB but not in migration history. Requires reset.
+- [x] **DB Drift: active_sessions table** ([#73](https://github.com/Techlemariam/IronForge/issues/73)) <!-- status: shipped | priority: critical | roi: 5.0 | effort: S | source: debt-audit | date: 2026-02-14 -->
+  - **Issue**: Resolved via Prisma migration reset.
+- [ ] **Unified Env Management & Validation** <!-- status: planned | priority: high | roi: 4.5 | effort: S | source: triage -->
+  - **Goal**: Consolidate `.env` keys, enforce `.env.example` parity, and use Zod for runtime validation in ALL scripts.
+- [ ] **Automated Health Matrix** <!-- status: planned | priority: medium | roi: 4.0 | effort: M | source: triage -->
+  - **Goal**: Expand `check-infra.ts` to include DB integrity checks and n8n workflow health.
 - [x] **Sentry Error Tracking Integration** <!-- status: shipped | priority: critical | roi: 5.0 | effort: M | source: infrastructure-audit | date: 2025-12-29 -->
   - Installed `@sentry/nextjs`, created client/server/edge configs, wrapped `next.config.mjs`, added `global-error.tsx`.
 - [x] **E2E Tests with Dev Server** <!-- status: shipped | priority: critical | roi: 4.8 | effort: S | source: infrastructure-audit | date: 2025-12-29 -->
@@ -267,8 +271,8 @@
 ### Research & Analysis
 
 - [x] **MCP Integration Plan** ([Analysis](docs/analysis/mcp_integration_plan.md)) <!-- status: shipped | priority: medium | roi: 4.0 | effort: S | source: research-session | date: 2026-01-05 -->
-- [ ] **Fix CI/CD Failures** ([#74](https://github.com/Techlemariam/IronForge/issues/74)) <!-- status: planned | priority: critical | roi: 5.0 | effort: S | source: monitor-ci | date: 2026-01-05 -->
-  - Investigate `pnpm test` failures in `react-dom` passive effects.
+- [/] **Fix CI/CD Failures** ([#74](https://github.com/Techlemariam/IronForge/issues/74)) <!-- status: in-progress | priority: critical | roi: 5.0 | effort: S | source: monitor-ci | date: 2026-02-14 -->
+  - Investigating `pnpm test` failures in `react-dom` passive effects.
 - [ ] **Fix Iron Mines E2E Flakiness** ([#88](https://github.com/Techlemariam/IronForge/issues/88)) <!-- status: planned | priority: high | roi: 4.5 | effort: S | source: monitor-ci | date: 2026-01-14 -->
   - **Issue**: `iron-mines.spec.ts` failing on session list visibility check.
 

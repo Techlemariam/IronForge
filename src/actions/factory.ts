@@ -5,6 +5,8 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import { createClient } from '@/utils/supabase/server';
 import { AssemblyLineTask, FactoryService } from '@/services/game/FactoryService';
+import { z } from 'zod';
+import { headers } from 'next/headers';
 
 const COST_SEK_PER_ACTIVE_STATION = 0.042;
 
@@ -89,10 +91,35 @@ export async function getFactoryStatus(): Promise<(FactoryStatusData & { costSEK
 }
 
 /**
+ * Internal helper to verify authorization for sensitive factory operations.
+ */
+async function verifyFactoryAuth() {
+    const supabase = await createClient();
+    const { data: { session } } = await supabase.auth.getSession();
+
+    if (session) return true;
+
+    // Fallback for automation/scripts: check for a secret in headers
+    const headerList = await headers();
+    const secret = headerList.get('x-factory-secret') || headerList.get('x-cron-secret');
+    const systemSecret = process.env.FACTORY_SECRET || process.env.CRON_SECRET;
+
+    if (secret && systemSecret && secret === systemSecret) {
+        return true;
+    }
+
+    return false;
+}
+
+/**
  * Updates the recovery status in the database.
  * This can be called from local scripts to sync local CI failures to the remote dashboard.
  */
 export async function updateFactoryRecovery(data: any | null) {
+    if (!(await verifyFactoryAuth())) {
+        return { success: false, error: 'Unauthorized' };
+    }
+
     try {
         await prisma.factoryStatus.update({
             where: { station: 'recovery' },
@@ -113,6 +140,9 @@ export async function updateFactoryRecovery(data: any | null) {
  * Fetches all recent factory tasks, primarily from external sources like Discord.
  */
 export async function getFactoryTasks(): Promise<any[]> {
+    if (!(await verifyFactoryAuth())) {
+        throw new Error("Unauthorized");
+    }
     try {
         return await prisma.factoryTask.findMany({
             orderBy: { createdAt: 'desc' },
@@ -128,6 +158,22 @@ export async function getFactoryTasks(): Promise<any[]> {
  * Adds a new task to the factory board.
  */
 export async function addFactoryTask(description: string, source: string = 'DISCORD', metadata: any = {}) {
+    if (!(await verifyFactoryAuth())) {
+        return { success: false, error: 'Unauthorized' };
+    }
+
+    // Validate input
+    const taskSchema = z.object({
+        description: z.string().min(1).max(500),
+        source: z.string().optional(),
+        metadata: z.record(z.any()).optional(),
+    });
+
+    const result = taskSchema.safeParse({ description, source, metadata });
+    if (!result.success) {
+        return { success: false, error: 'Invalid task data', details: result.error.format() };
+    }
+
     try {
         const task = await prisma.factoryTask.create({
             data: {
@@ -148,14 +194,23 @@ export async function getFactoryTasksAction() {
 }
 
 export async function getFactoryStatusAction() {
+    if (!(await verifyFactoryAuth())) {
+        return { success: false, error: 'Unauthorized' };
+    }
     return { success: true, stats: await getFactoryStatus() };
 }
 
 export async function getAssemblyLineTasksAction(): Promise<AssemblyLineTask[]> {
+    if (!(await verifyFactoryAuth())) {
+        throw new Error("Unauthorized");
+    }
     return await FactoryService.getAssemblyLineTasks();
 }
 
 export async function getFactoryStatsAction() {
+    if (!(await verifyFactoryAuth())) {
+        return { success: false, error: 'Unauthorized' };
+    }
     try {
         const { FactoryService } = await import("@/services/game/FactoryService");
         const stats = await FactoryService.getStats();
@@ -173,6 +228,9 @@ export async function getFactoryStatsAction() {
 }
 
 export async function getBacklogItemsAction() {
+    if (!(await verifyFactoryAuth())) {
+        return { success: false, error: 'Unauthorized' };
+    }
     try {
         const { BacklogService } = await import("@/services/game/BacklogService");
         const items = await BacklogService.getItems();
@@ -184,6 +242,7 @@ export async function getBacklogItemsAction() {
 }
 
 export async function startBacklogTaskAction(itemTitle: string, source: string) {
+    // addFactoryTask already performs auth and validation checks
     try {
         return await addFactoryTask(
             itemTitle,

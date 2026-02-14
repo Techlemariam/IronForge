@@ -53,7 +53,8 @@ export const AnalyticsService = {
     // Driven by HRV vs Baseline and TSB.
     // Baseline HRV assumed 60 for demo.
     // TSB Floor: -20.
-    const hrvScore = Math.min(100, ((wellness.hrv || 40) / 60) * 100);
+    const hrvValue = Number(wellness.hrv) || 40;
+    const hrvScore = Math.min(100, (hrvValue / 60) * 100);
     const tsbPenalty = (wellness.tsb || 0) < -15 ? 50 : 0;
     const wellnessScore = Math.max(0, hrvScore - tsbPenalty);
 
@@ -159,7 +160,7 @@ export const AnalyticsService = {
     const titanLoad =
       (volumeLoad / 100) * avgIntensityPct * neuroFactor * multiplier;
 
-    const discrepancy = ((titanLoad - standardTss) / standardTss) * 100;
+    const discrepancy = standardTss > 0 ? ((titanLoad - standardTss) / standardTss) * 100 : 0;
 
     return {
       standardTss: Math.round(standardTss),
@@ -213,7 +214,7 @@ export const AnalyticsService = {
     const ctl = currentWellness.ctl || 0;
     // Mocking a 'previous' CTL for this logic since we only have snapshot wellness in this demo
     const previousCtl = ctl * 0.85;
-    const aerobicSpike = (ctl - previousCtl) / previousCtl > 0.1;
+    const aerobicSpike = previousCtl > 0 ? (ctl - previousCtl) / previousCtl > 0.1 : false;
 
     if (aerobicSpike) {
       return {

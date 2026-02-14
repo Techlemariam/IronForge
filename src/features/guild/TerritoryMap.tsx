@@ -37,15 +37,20 @@ export const TerritoryMap: React.FC<TerritoryMapProps> = ({ userId, guildId }) =
         }
     }, [toast]);
 
+    const hasLoaded = React.useRef(false);
+
     useEffect(() => {
-        loadData();
+        if (!hasLoaded.current) {
+            loadData();
+            hasLoaded.current = true;
+        }
     }, [loadData]);
 
     const handleClaim = async (id: string) => {
         if (!guildId) return;
         setBusyId(id);
         try {
-            await claimTerritoryAction(guildId, id, userId);
+            await claimTerritoryAction(guildId, id);
             toast({ title: "Success", description: "Territory claimed for your guild!" });
             loadData();
         } catch (err: any) {
@@ -63,7 +68,7 @@ export const TerritoryMap: React.FC<TerritoryMapProps> = ({ userId, guildId }) =
         if (!guildId) return;
         setBusyId(id);
         try {
-            await contestTerritoryAction(guildId, id, userId);
+            await contestTerritoryAction(guildId, id);
             toast({ title: "Challenge Issued!", description: "Contest started. Log workouts to win!" });
             loadData();
         } catch (err: any) {

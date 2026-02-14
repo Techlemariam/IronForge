@@ -12,14 +12,16 @@ export class BioPulseService {
             let baseXP = 500;
             if (workout.exercises) baseXP += workout.exercises.length * 50;
 
-            const xpResult = await awardTitanXpAction(userId, baseXP, "WORKOUT_PULSE");
             const titan = await prisma.titan.findUnique({ where: { userId } });
+            if (!titan) throw new Error(`Titan not found for user ${userId}`);
+
+            const xpResult = await awardTitanXpAction(userId, baseXP, "WORKOUT_PULSE");
 
             // 2. Create a Titan Memory
             const description = `Genomförde ett ${workout.exercises?.length || 0}-övnings pass med fokus på kraft.`;
             const memory = await prisma.titanMemory.create({
                 data: {
-                    titanId: titan?.id || '',
+                    titanId: titan.id,
                     type: "WORKOUT",
                     description,
                     importance: baseXP > 1000 ? 3 : 1,
@@ -55,13 +57,14 @@ export class BioPulseService {
             // 1. Sync Titan state (Energy, Mood, etc.)
             const syncResult = await syncTitanStateWithWellness(userId, wellness);
             const titan = await prisma.titan.findUnique({ where: { userId } });
+            if (!titan) throw new Error(`Titan not found for user ${userId}`);
 
             // 2. Notable events (HRV/Battery)
             let eventMemory = null;
             if (wellness.bodyBattery && wellness.bodyBattery < 20) {
                 eventMemory = await prisma.titanMemory.create({
                     data: {
-                        titanId: titan?.id || '',
+                        titanId: titan.id,
                         type: "FATIGUE",
                         description: "Titanens energi är kritiskt låg. Återhämtning krävs.",
                         importance: 2,

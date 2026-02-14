@@ -88,7 +88,11 @@
 | 2026-01-18 | `src/components/**/*` | [Consistency] Low dark mode coverage (only 2 components using `dark:` prefix) | @ui-ux | 🔴 Open |
 | 2026-01-18 | `src/components/**/*` | [Responsive] Only 8/35 (23%) UI components have mobile breakpoints | @ui-ux | 🔴 Open |
 | 2026-02-12 | `Storybook/Chromatic` | Pilot Dashboard blocked by Prisma resolution (Run 21960052134) | @architect | 🔴 Scrap Yard |
-| 2026-02-12 | `Prisma/Infrastructure` | DB Drift: `FactoryStatus` model pushed via `db push`, missing migrations | @infrastructure | 🔴 Scrap Yard |
+| 2026-02-14 | `scripts/check-env.ts` | Env key mismatch (`SUPABASE_SERVICE_KEY` vs `ROLE_KEY`) | @infrastructure | 🔄 Open |
+| 2026-02-14 | `src/services/progression.ts` | Missing `gender` in User model (Required for Wilks) | @architect | 🔄 Open |
+| 2026-02-14 | `src/services/bio/*` | Missing baseline tracking (RHR/HRV) for Recovery Oracle | @titan-coach | 🔄 Open |
+| 2026-02-14 | `Integration Layer` | n8n/Coolify URLs hardcoded in check scripts | @infrastructure | 🔄 Open |
+| 2025-12-29 | `Prisma/Infrastructure` | DB Drift: `FactoryStatus` model resolved via migration reset | @infrastructure | ✅ Resolved |
 | 2026-02-10 | `Storybook/Chromatic` | Chromatic deployment blocked by Prisma integration. Requires architectural refactoring to separate data layer from presentation components (container/presenter pattern). Local Storybook works perfectly. | @architect | 🔴 Open |
 
 ---

@@ -15,26 +15,26 @@ export const QuotaGauges: React.FC<QuotaGaugesProps> = ({ quotas }) => {
                 <div key={quota.model} className="flex flex-col items-center space-y-3">
                     <div className="relative w-24 h-24">
                         {/* Background Circle */}
-                        <svg className="w-full h-full transform -rotate-90">
+                        <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
                             <circle
-                                cx="48"
-                                cy="48"
-                                r="40"
+                                cx="50"
+                                cy="50"
+                                r="44"
                                 stroke="currentColor"
-                                strokeWidth="6"
+                                strokeWidth="8"
                                 fill="transparent"
                                 className="text-slate-800"
                             />
                             {/* Progress Circle */}
                             <motion.circle
-                                cx="48"
-                                cy="48"
-                                r="40"
+                                cx="50"
+                                cy="50"
+                                r="44"
                                 stroke="currentColor"
-                                strokeWidth="6"
-                                strokeDasharray={2 * Math.PI * 40}
-                                initial={{ strokeDashoffset: 2 * Math.PI * 40 }}
-                                animate={{ strokeDashoffset: 2 * Math.PI * 40 * (1 - quota.progress / 100) }}
+                                strokeWidth="8"
+                                strokeDasharray={2 * Math.PI * 44}
+                                initial={{ strokeDashoffset: 2 * Math.PI * 44 }}
+                                animate={{ strokeDashoffset: 2 * Math.PI * 44 * (1 - quota.progress / 100) }}
                                 transition={{ duration: 1.5, delay: i * 0.2, ease: "easeOut" }}
                                 fill="transparent"
                                 strokeLinecap="round"
@@ -43,7 +43,7 @@ export const QuotaGauges: React.FC<QuotaGaugesProps> = ({ quotas }) => {
                         </svg>
 
                         {/* Center Text */}
-                        <div className="absolute inset-0 flex flex-col items-center justify-center space-y-1">
+                        <div className="absolute inset-0 flex flex-col items-center justify-center space-y-0">
                             <span className="text-xl font-black text-white leading-none">
                                 {quota.progress}<span className="text-[10px] font-bold text-slate-500">%</span>
                             </span>
@@ -52,8 +52,8 @@ export const QuotaGauges: React.FC<QuotaGaugesProps> = ({ quotas }) => {
                             </span>
                         </div>
 
-                        {/* Inner Glow (Optional/Stylistic) */}
-                        <div className={`absolute inset-4 rounded-full blur-xl opacity-20 ${quota.progress > 85 ? "bg-red-500" : "bg-cyan-400"
+                        {/* Inner Glow */}
+                        <div className={`absolute inset-4 rounded-full blur-xl opacity-20 pointer-events-none ${quota.progress > 85 ? "bg-red-500" : "bg-cyan-400"
                             }`} />
                     </div>
 

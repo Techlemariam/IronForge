@@ -1,4 +1,5 @@
 import prisma from "../lib/prisma";
+import { logger } from "@/lib/logger";
 import { runFullAudit } from "./auditorOrchestrator";
 import { OracleService } from "./oracle";
 import { getWellness } from "../lib/intervals";
@@ -24,7 +25,7 @@ export const PlannerService = {
    * Can be called from Server Actions or Cron Jobs.
    */
   triggerWeeklyPlanGeneration: async (userId: string) => {
-    console.log(`Planner: Generating plan for user ${userId}`);
+    logger.info(`Planner: Generating plan for user ${userId}`);
 
     // 1. Fetch User Credentials & Settings
     const user = await prisma.user.findUnique({
@@ -168,7 +169,7 @@ export const PlannerService = {
       },
     });
 
-    console.log(`Planner: Plan generated and saved for user ${userId}`);
+    logger.info(`Planner: Plan generated and saved for user ${userId}`);
     return plan;
   },
 };

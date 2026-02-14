@@ -35,7 +35,7 @@ describe('Factory Actions', () => {
         it('should return status data even if unauthenticated', async () => {
             // Mock data
             const mockData = [
-                { id: '1', station: 'design', health: 100, current: null, updatedAt: new Date() },
+                { id: '1', station: 'design', health: 100, current: 0, updatedAt: new Date() },
             ];
             (prisma.factoryStatus.findMany as any).mockResolvedValue(mockData);
 
@@ -49,7 +49,7 @@ describe('Factory Actions', () => {
             mockSupabase.auth.getUser.mockResolvedValue({ data: { user: { id: 'test-user' } }, error: null });
 
             const mockData = [
-                { id: '1', station: 'design', health: 100, current: null, updatedAt: new Date() },
+                { id: '1', station: 'design', health: 100, current: 0, updatedAt: new Date() },
             ];
 
             (prisma.factoryStatus.findMany as any).mockResolvedValue(mockData);
