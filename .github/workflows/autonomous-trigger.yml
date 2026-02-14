@@ -18,6 +18,7 @@ on:
           - sprint-auto
           - factory
           - triage
+          - ci-doctor
       model:
         description: 'Gemini Model'
         required: true
