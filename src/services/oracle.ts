@@ -119,7 +119,7 @@ export class OracleService {
         if (wData && !Array.isArray(wData)) {
           const wellnessData = wData as WellnessData;
           wellness = {
-            bodyBattery: wellnessData.readiness ?? undefined,
+            bodyBattery: wellnessData.bodyBattery || 50,
             sleepScore: wellnessData.sleepScore ?? undefined,
             hrv: wellnessData.hrv ?? undefined,
             restingHR: wellnessData.restingHR ?? undefined,
