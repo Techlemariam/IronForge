@@ -65,7 +65,7 @@ export function VoiceCommandPresenter({
             {transcript && (
                 <div className="p-4 rounded-xl bg-slate-950/50 border border-slate-800/50 animate-in fade-in slide-in-from-top-2 duration-300">
                     <p className="text-sm italic text-slate-300">
-                        "{transcript}"
+                        &quot;{transcript}&quot;
                         {isListening && <span className="inline-block w-1.5 h-4 ml-1 bg-indigo-500 animate-pulse align-middle" />}
                     </p>
                 </div>

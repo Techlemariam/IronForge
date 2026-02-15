@@ -1,4 +1,4 @@
-import { getFactoryStatusAction, getAssemblyLineTasksAction, getFactoryTasksAction } from "@/actions/factory";
+import { getFactoryStatusAction, getAssemblyLineTasksAction, getFactoryTasksAction, getLatestActiveRunAction } from "@/actions/factory";
 import { StatusGrid } from "@/components/factory/StatusGrid";
 import { RenderVideoForm } from "@/components/factory/RenderVideoForm";
 import { TaskFeed } from "@/components/factory/TaskFeed";
@@ -7,14 +7,16 @@ import { VoiceCommandControl } from "@/components/factory/VoiceCommandControl";
 import { AssemblyLinePresenter } from "@/components/factory/AssemblyLinePresenter";
 import { LayoutDashboard, Activity, Mic2, Wrench } from "lucide-react";
 import { BacklogBoard } from "@/components/factory/BacklogBoard";
+import { FactoryRunConveyor } from "@/components/factory/FactoryRunConveyor";
 
 export const dynamic = 'force-dynamic';
 
 export default async function FactoryPage() {
-    const [statusData, tasks, feedTasks] = await Promise.all([
+    const [statusData, tasks, feedTasks, activeRun] = await Promise.all([
         getFactoryStatusAction(),
         getAssemblyLineTasksAction(),
-        getFactoryTasksAction()
+        getFactoryTasksAction(),
+        getLatestActiveRunAction()
     ]);
 
     // stats data processing for statusData since it returns different types now
@@ -41,6 +43,9 @@ export default async function FactoryPage() {
 
                 {/* Operations Telemetry (Command Center) */}
                 <CommandCenter />
+
+                {/* Main Process Tracking */}
+                <FactoryRunConveyor activeRun={activeRun} />
 
                 {/* Integration Controls */}
                 <div className="grid gap-6 md:grid-cols-2">

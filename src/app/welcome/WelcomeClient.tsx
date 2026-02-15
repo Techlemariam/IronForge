@@ -13,9 +13,9 @@ import {
 
 export function WelcomeClient() {
     return (
-        <div className="min-h-screen bg-forge-950 text-white overflow-x-hidden selection:bg-warrior selection:text-black">
+        <main className="min-h-screen bg-forge-950 text-white overflow-x-hidden selection:bg-warrior selection:text-black">
             {/* Navigation */}
-            <nav className="fixed top-0 w-full z-50 bg-forge-950/80 backdrop-blur-md border-b border-white/5">
+            <nav className="fixed top-0 w-full z-50 bg-forge-950/80 backdrop-blur-md border-b border-white/5" role="navigation" aria-label="Main Navigation">
                 <div className="container mx-auto px-6 h-16 flex items-center justify-between">
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 bg-warrior rounded flex items-center justify-center overflow-hidden border border-warrior/50 shadow-[0_0_15px_rgba(255,215,0,0.2)]">
@@ -110,9 +110,9 @@ export function WelcomeClient() {
                             <div className="w-12 h-12 bg-purple-900/20 rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                                 <Brain className="w-6 h-6 text-purple-400" />
                             </div>
-                            <h3 className="text-xl font-bold mb-3 text-white">
+                            <h2 className="text-xl font-bold mb-3 text-white">
                                 The Oracle AI
-                            </h3>
+                            </h2>
                             <p className="text-forge-muted leading-relaxed">
                                 An adaptive intelligence that analyzes your HRV, sleep, and
                                 performance to generate the perfect daily workout.
@@ -129,9 +129,9 @@ export function WelcomeClient() {
                             <div className="w-12 h-12 bg-red-900/20 rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                                 <Swords className="w-6 h-6 text-red-400" />
                             </div>
-                            <h3 className="text-xl font-bold mb-3 text-white">
+                            <h2 className="text-xl font-bold mb-3 text-white">
                                 PvP & Boss Battles
-                            </h3>
+                            </h2>
                             <p className="text-forge-muted leading-relaxed">
                                 Join a faction. Battle raid bosses with your squad. Your
                                 physical effort deals real damage in the digital realm.
@@ -148,9 +148,9 @@ export function WelcomeClient() {
                             <div className="w-12 h-12 bg-emerald-900/20 rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                                 <Activity className="w-6 h-6 text-emerald-400" />
                             </div>
-                            <h3 className="text-xl font-bold mb-3 text-white">
+                            <h2 className="text-xl font-bold mb-3 text-white">
                                 Neural Lattice
-                            </h3>
+                            </h2>
                             <p className="text-forge-muted leading-relaxed">
                                 A visualized skill tree of your physical capabilities. Unlock
                                 perks and abilities as you master different domains.
@@ -207,6 +207,6 @@ export function WelcomeClient() {
                     </Link>
                 </div>
             </footer>
-        </div>
+        </main>
     );
 }

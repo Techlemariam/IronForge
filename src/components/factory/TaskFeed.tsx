@@ -52,7 +52,7 @@ export function TaskFeed({ tasks }: TaskFeedProps) {
                     </div>
 
                     <p className="text-sm text-slate-200 line-clamp-3 mb-4 leading-relaxed italic">
-                        "{task.description}"
+                        &quot;{task.description}&quot;
                     </p>
 
                     <div className="mt-auto flex items-center justify-between pt-3 border-t border-slate-800/50">

@@ -155,6 +155,17 @@ export async function getAssemblyLineTasksAction(): Promise<AssemblyLineTask[]> 
     return await FactoryService.getAssemblyLineTasks();
 }
 
+/**
+ * Fetches the singular latest active run for visualization focus.
+ */
+export async function getLatestActiveRunAction(): Promise<AssemblyLineTask | null> {
+    if (!(await verifyFactoryAuth())) {
+        throw new Error("Unauthorized");
+    }
+    const tasks = await FactoryService.getAssemblyLineTasks();
+    return tasks.length > 0 ? tasks[0] : null;
+}
+
 export async function getFactoryStatsAction() {
     try {
         const { FactoryService } = await import("@/services/game/FactoryService");
