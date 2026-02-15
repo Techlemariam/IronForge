@@ -4,7 +4,7 @@ param(
     [switch]$Json
 )
 
-if (-not $Json) { Write-Host "🔍 Starting Codebase Audit..." -ForegroundColor Cyan }
+if (-not $Json) { Write-Host "[+] Starting Codebase Audit..." -ForegroundColor Cyan }
 
 # 1. Source File Analysis
 $sourceFiles = Get-ChildItem -Path $Root -Recurse -Include "*.ts", "*.tsx" | Where-Object { $_.Name -notmatch "\.test\.|\.stories\.|\.d\." }
@@ -15,17 +15,12 @@ $missingTests = @()
 $missingDocs = @()
 
 foreach ($file in $sourceFiles) {
-    # Check for test
-    $testName = $file.Name -replace "\.tsx?$", ".test.tsx" 
+    $testName = $file.Name -replace "\.tsx?$", ".test.tsx"
     $testName2 = $file.Name -replace "\.tsx?$", ".test.ts"
-    
     $hasTest = $testFiles | Where-Object { $_.DirectoryName -eq $file.DirectoryName -and ($_.Name -eq $testName -or $_.Name -eq $testName2) }
-
     if (-not $hasTest) {
         $missingTests += $file.FullName
     }
-
-    # Check for docs (README in same dir)
     $hasReadme = Test-Path (Join-Path $file.DirectoryName "README.md")
     if (-not $hasReadme) {
         $missingDocs += $file.FullName
@@ -33,9 +28,10 @@ foreach ($file in $sourceFiles) {
 }
 
 # 2. Logic & Safety Gaps
-if (-not $Json) { Write-Host "`n🕵️ Scanning for Logic & Safety Gaps..." }
-$todos = Select-String -Path "$Root\*" -Pattern "TODO|FIXME" -Include "*.ts", "*.tsx" -Recurse
-$anys = Select-String -Path "$Root\*" -Pattern ": any|as any|@ts-ignore" -Include "*.ts", "*.tsx" -Recurse
+if (-not $Json) { Write-Host "`n[+] Scanning for Logic & Safety Gaps..." }
+$allSourceFiles = Get-ChildItem -Path $Root -Recurse -Include "*.ts", "*.tsx"
+$todos = $allSourceFiles | Select-String -Pattern "TODO|FIXME"
+$anys = $allSourceFiles | Select-String -Pattern ": any", "as any", "@ts-ignore"
 
 # 3. Workflow Integrity
 $workflowIssues = @()
@@ -56,8 +52,8 @@ if ($Json) {
             storyFiles     = $storyFiles.Count
             missingTests   = $missingTests.Count
             missingDocs    = $missingDocs.Count
-            logicGaps      = $todos.Count
-            safetyGaps     = $anys.Count
+            logicGaps      = ($todos | Measure-Object).Count
+            safetyGaps     = ($anys | Measure-Object).Count
             workflowIssues = $workflowIssues.Count
         }
         details   = @{
@@ -67,20 +63,23 @@ if ($Json) {
     $report | ConvertTo-Json -Depth 3
 }
 else {
-    Write-Host "📊 Source Files: $($sourceFiles.Count)"
-    Write-Host "📚 Story Files:  $($storyFiles.Count)"
-    Write-Host "❌ Missing Tests: $($missingTests.Count)" -ForegroundColor Yellow
-    Write-Host "❌ Missing Docs:  $($missingDocs.Count)" -ForegroundColor Yellow
+    Write-Host "[STATS] Source Files: $($sourceFiles.Count)"
+    Write-Host "[STATS] Story Files:  $($storyFiles.Count)"
+    Write-Host "[!] Missing Tests: $($missingTests.Count)" -ForegroundColor Yellow
+    Write-Host "[!] Missing Docs:  $($missingDocs.Count)" -ForegroundColor Yellow
     
-    Write-Host "Found $($todos.Count) TODO/FIXME markers." -ForegroundColor Magenta
-    Write-Host "Found $($anys.Count) type safety bypasses." -ForegroundColor Red
+    $todoCount = ($todos | Measure-Object).Count
+    $anyCount = ($anys | Measure-Object).Count
+
+    Write-Host "[!] Found $todoCount TODO/FIXME markers." -ForegroundColor Magenta
+    Write-Host "[!] Found $anyCount type safety bypasses." -ForegroundColor Red
 
     if ($workflowIssues.Count -gt 0) {
-        Write-Host "⚠️  $($workflowIssues.Count) workflows missing schema definitions." -ForegroundColor Yellow
+        Write-Host "[!] $($workflowIssues.Count) workflows missing schema definitions." -ForegroundColor Yellow
     }
     else {
-        Write-Host "✅ Workflows look structured." -ForegroundColor Green
+        Write-Host "[OK] Workflows look structured." -ForegroundColor Green
     }
     
-    Write-Host "`n✅ Audit Complete."
+    Write-Host "`n[+] Audit Complete."
 }
