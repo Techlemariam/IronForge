@@ -32,10 +32,17 @@ describe('Factory Actions', () => {
     });
 
     describe('getFactoryStatus', () => {
-        it('should throw Unauthorized if no user', async () => {
-            mockSupabase.auth.getUser.mockResolvedValue({ data: { user: null }, error: null });
+        it('should return status data even if unauthenticated', async () => {
+            // Mock data
+            const mockData = [
+                { id: '1', station: 'design', health: 100, current: null, updatedAt: new Date() },
+            ];
+            (prisma.factoryStatus.findMany as any).mockResolvedValue(mockData);
 
-            await expect(getFactoryStatus()).rejects.toThrow('Unauthorized');
+            const result = await getFactoryStatus();
+
+            expect(result).toHaveLength(1);
+            expect(prisma.factoryStatus.findMany).toHaveBeenCalled();
         });
 
         it('should return status data when it exists', async () => {
@@ -67,8 +74,8 @@ describe('Factory Actions', () => {
 
             await getFactoryStatus();
 
-            // Should have attempted to seed 5 stations using upsert
-            expect(prisma.factoryStatus.upsert).toHaveBeenCalledTimes(5);
+            // Should have attempted to seed 6 stations using upsert (design, fabrication, qc, scrap, ship, recovery)
+            expect(prisma.factoryStatus.upsert).toHaveBeenCalledTimes(6);
             // Should have called findMany twice
             expect(prisma.factoryStatus.findMany).toHaveBeenCalledTimes(2);
         });

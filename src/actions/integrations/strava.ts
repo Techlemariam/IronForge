@@ -18,6 +18,7 @@ import {
   mapStravaActivityToCardioLog,
 } from "@/lib/strava";
 import { processUserCardioActivity } from "@/actions/pvp/duel";
+import { TerritoryService } from "@/services/game/TerritoryService";
 
 // Constants removed for lazy evaluation
 // const STRAVA_CLIENT_ID = process.env.STRAVA_CLIENT_ID;
@@ -260,6 +261,17 @@ export async function syncStravaActivitiesAction() {
               kineticEnergy: { increment: Math.floor(minutes / 2) },
             },
           });
+        }
+
+        // --- GUILD TERRITORIES ---
+        const dbUser = await prisma.user.findUnique({
+          where: { id: user.id },
+          select: { guildId: true },
+        });
+
+        if (dbUser?.guildId) {
+          const volume = activity.distance / 1000; // volume = km for cardio
+          await TerritoryService.recordGuildActivity(dbUser.guildId, volume);
         }
 
         syncedCount++;

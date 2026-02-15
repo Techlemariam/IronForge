@@ -24,10 +24,6 @@ if (typeof window !== 'undefined' && !window.matchMedia) {
 // Global setup for Vitest
 import { vi } from 'vitest';
 
-// Mock Clerk Auth - Global
-vi.mock('@clerk/nextjs/server', () => ({
-    auth: vi.fn(() => ({ userId: 'test-user-123' }))
-}));
 
 // Mock Next.js Headers - Global
 vi.mock('next/headers', () => ({
@@ -64,27 +60,7 @@ vi.mock('@/utils/supabase/server', () => ({
     })),
 }));
 
-// Mock Prisma Client - Global  
-vi.mock('@/lib/prisma', () => ({
-    prisma: {
-        exercise: {
-            findFirst: vi.fn(),
-            findMany: vi.fn(),
-            create: vi.fn(),
-            update: vi.fn()
-        },
-        exerciseDefinition: {
-            findFirst: vi.fn(),
-            findMany: vi.fn(),
-            create: vi.fn()
-        },
-        exerciseLog: {
-            findFirst: vi.fn(),
-            findMany: vi.fn(),
-            create: vi.fn()
-        }
-    }
-}));
+// Prisma is mocked locally in test files to prevent conflicts
 
 const setup = async () => {
     // any async setup if needed

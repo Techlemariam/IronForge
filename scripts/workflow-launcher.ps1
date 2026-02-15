@@ -131,6 +131,44 @@ Write-Log "Log: $LOG_FILE"
 
 if (-not (Check-Budget)) { exit 1 }
 
+# --- Antigravity Handoff Logic ---
+# If quota is healthy, we prefer yielding to Antigravity's autonomous executor.
+$QUOTA_FILE = Join-Path $WORKSPACE ".agent\quota_usage.json"
+$isCritical = $false
+if (Test-Path $QUOTA_FILE) {
+  try {
+    $quotaData = Get-Content $QUOTA_FILE -Raw | ConvertFrom-Json
+    $today = Get-Date -Format "yyyy-MM-dd"
+    if ($quotaData.date -eq $today -and $quotaData.count -gt 1350) {
+      # 90% of 1500
+      $isCritical = $true
+    }
+  }
+  catch {}
+}
+
+if (-not $isCritical) {
+  $TASK_SIGNAL = Join-Path $WORKSPACE ".agent\tasks\current.md"
+  Write-Log "Quota OK. Yielding mission to Antigravity via $TASK_SIGNAL..."
+  $taskContent = "# Autonomous Mission: $Workflow`nModel: $Model`nTriggered via Runner at $(Get-Date -Format 'o')"
+    
+  # Ensure directory exists
+  $taskDir = Split-Path -Parent $TASK_SIGNAL
+  if (-not (Test-Path $taskDir)) { New-Item -ItemType Directory -Path $taskDir -Force | Out-Null }
+    
+  $taskContent | Out-File -FilePath $TASK_SIGNAL -Encoding utf8
+    
+  # Increment local quota tracking (simulated)
+  if (Test-Path $QUOTA_FILE) {
+    $quotaData.count += 1
+    $quotaData | ConvertTo-Json | Out-File $QUOTA_FILE -Encoding utf8
+  }
+    
+  Write-Log "Handoff Complete. Antigravity will resume the mission."
+  exit 0
+}
+# ---------------------------------
+
 $gitStatus = git status --porcelain
 if ($gitStatus) {
   Write-Log "Stashing uncommitted changes..."

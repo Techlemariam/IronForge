@@ -100,6 +100,17 @@
       "env": {
         "PERPLEXITY_API_KEY": "${env:PERPLEXITY_API_KEY}"
       }
+    },
+    "ironforge-factory": {
+      "command": "node",
+      "args": [
+        "mcp/factory-server/build/index.js"
+      ],
+      "env": {
+        "GITHUB_TOKEN": "${env:GITHUB_TOKEN}",
+        "REPO_OWNER": "Techlemariam",
+        "REPO_NAME": "IronForge"
+      }
     }
   }
 }

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { runWeeklySettlement } from "@/services/game/TerritoryService";
+import { TerritoryService } from "@/services/game/TerritoryService";
 
 export const dynamic = "force-dynamic";
 
@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
 
     try {
         console.log("[Cron: Territory Settlement] Starting weekly settlement...");
-        const result = await runWeeklySettlement();
+        const result = await TerritoryService.runWeeklySettlement();
         return NextResponse.json({
             success: true,
             message: "Weekly settlement complete",

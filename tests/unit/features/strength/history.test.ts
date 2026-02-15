@@ -4,10 +4,26 @@ import { prisma } from '@/lib/prisma';
 // Import functions under test (mocks already applied globally)
 import { getLastSetForExercise, getExerciseHistory } from '@/features/strength/actions/history';
 
+vi.mock('@/lib/prisma', () => {
+    const mockPrisma = {
+        exerciseLog: {
+            findFirst: vi.fn(),
+            findMany: vi.fn(),
+        },
+        exercise: {
+            findFirst: vi.fn(),
+        },
+    };
+    return {
+        prisma: mockPrisma,
+        default: mockPrisma,
+    };
+});
+
 // Access mocked prisma functions
-const mockFindFirstLog = prisma.exerciseLog.findFirst as ReturnType<typeof vi.fn>;
-const mockFindManyLog = prisma.exerciseLog.findMany as ReturnType<typeof vi.fn>;
-const mockFindFirstEx = prisma.exercise.findFirst as ReturnType<typeof vi.fn>;
+const mockFindFirstLog = prisma.exerciseLog.findFirst as any;
+const mockFindManyLog = prisma.exerciseLog.findMany as any;
+const mockFindFirstEx = prisma.exercise.findFirst as any;
 
 describe('getLastSetForExercise', () => {
     beforeEach(() => {
