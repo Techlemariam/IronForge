@@ -44,3 +44,4 @@ Detta dokument definierar de specialiserade agenter som utgör IronForge-teamet.
 | **Polish** | `/polish` | **Code Cleanup.** ESLint fix, Prettier, import sorting, dead code. |
 | **Perf** | `/perf` | **Performance.** Bundle analysis, RSC optimization, Lighthouse. |
 | **Platform** | `/platform` | **Cross-Device.** Analyserar features för Desktop, Mobile, TV Mode, Companion. |
+| **Workspace** | `@workspace_protocol.md` | **Coordination.** Rules for multi-chat branch management and git locks. |
