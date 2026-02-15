@@ -53,20 +53,20 @@ describe('Factory Actions', () => {
                 error: null
             } as any);
 
-            // First call returns empty
-            vi.mocked(prisma.factoryStatus.findMany)
-                .mockResolvedValueOnce([])
-                // Second call (after seed) returns data
-                .mockResolvedValueOnce([
-                    { id: '1', station: 'design', health: 100, current: null, updatedAt: new Date() }
-                ] as any);
+            // Mock findMany to return empty array initially to trigger seeding
+            vi.mocked(prisma.factoryStatus.findMany).mockResolvedValueOnce([]);
+
+            // Mock upsert to return data
+            vi.mocked(prisma.factoryStatus.upsert).mockResolvedValue({
+                id: '1', station: 'any', health: 100, current: null, updatedAt: new Date()
+            } as any);
 
             await getFactoryStatus();
 
             // Should have attempted to seed 18 stations (Gemini Brotherhood roster)
             expect(prisma.factoryStatus.upsert).toHaveBeenCalledTimes(18);
-            // Should have called findMany twice
-            expect(prisma.factoryStatus.findMany).toHaveBeenCalledTimes(2);
+            // Should have called findMany once
+            expect(prisma.factoryStatus.findMany).toHaveBeenCalledTimes(1);
         });
 
         it('should return empty array and log error on failure', async () => {

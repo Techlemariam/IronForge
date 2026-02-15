@@ -1,6 +1,6 @@
 import type { FactoryStatusData } from "@/actions/factory";
- 
- 
+
+
 
 interface Props {
     status: FactoryStatusData;
@@ -21,10 +21,11 @@ export function StatusCard({ status }: Props) {
 
     return (
         <div className={`
-      relative overflow-hidden rounded-xl border p-6 transition-all
-      ${isError ? 'border-red-500/50 bg-red-950/20' :
-                isBusy ? 'border-amber-500/50 bg-amber-950/20' :
-                    'border-green-500/50 bg-green-950/20'}
+      relative overflow-hidden rounded-xl border p-5 transition-all duration-300 hover:shadow-lg hover:shadow-indigo-500/10
+      backdrop-blur-sm shadow-xl
+      ${isError ? 'border-red-500/30 bg-red-950/20' :
+                isBusy ? 'border-amber-500/30 bg-amber-950/20' :
+                    'border-slate-800/60 bg-slate-900/50'}
     `}>
             <div className="flex items-center justify-between mb-4">
                 <h3 className="text-xl font-bold capitalize text-slate-100">
@@ -55,7 +56,7 @@ export function StatusCard({ status }: Props) {
                 <div
                     className="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden"
                     role="progressbar"
-                    aria-valuenow={Number(clampedHealth)}
+                    aria-valuenow={clampedHealth}
                     aria-valuemin={0}
                     aria-valuemax={100}
                     aria-label={`${status.station} health`}
@@ -63,7 +64,7 @@ export function StatusCard({ status }: Props) {
                     {/* Progress Fill */}
                     <div
                         className={`h-full transition-all duration-500 ${isError ? 'bg-red-500' : 'bg-green-500'}`}
-                        style={{ width: `${clampedHealth}%` } as React.CSSProperties}
+                        style={{ width: `${clampedHealth}%` }}
                     />
                 </div>
             </div>
