@@ -4,6 +4,14 @@ import {
 } from "@/lib/powerRating";
 
 /**
+ * Interface for a single set within an exercise log.
+ */
+interface WorkoutSet {
+    reps?: number | string;
+    weight?: number | string;
+}
+
+/**
  * Service for calculating and managing Titan Power Ratings.
  * Implements Oracle 3.0 Power Score logic.
  */
@@ -27,7 +35,7 @@ export class PowerRatingService {
         let totalVolume = 0;
 
         for (const log of logs) {
-            const sets = log.sets as any[];
+            const sets = log.sets as unknown as WorkoutSet[];
             if (Array.isArray(sets)) {
                 for (const set of sets) {
                     const weight = Number(set.weight || 0);
@@ -168,8 +176,8 @@ export class PowerRatingService {
                 powerRating: result.powerRating,
                 strengthIndex: result.strengthIndex,
                 cardioIndex: result.cardioIndex,
-                // mrvAdherence is deprecated in 3.0 logic but kept for DB compat? 
-                // We can set it to 1.0 or repurpose it as 'Activity Index' later.
+                // mrvAdherence is deprecated in 3.0 logic but kept for database compatibility.
+                // Defaults to 1.0 (perfect adherence).
                 // For now, let's leave it as 1.0.
                 mrvAdherence: 1.0,
                 lastPowerCalcAt: new Date(),

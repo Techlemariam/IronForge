@@ -89,7 +89,7 @@
 | 2026-01-18 | `src/components/**/*` | [Responsive] Only 8/35 (23%) UI components have mobile breakpoints | @ui-ux | 🔴 Open |
 | 2026-02-12 | `Storybook/Chromatic` | Pilot Dashboard blocked by Prisma resolution (Run 21960052134) | @architect | 🔴 Scrap Yard |
 | 2026-02-12 | `Prisma/Infrastructure` | DB Drift: `FactoryStatus` model pushed via `db push`, missing migrations | @infrastructure | 🔴 Scrap Yard |
-| 2026-02-15 | `src/services/game/PowerRatingService.ts` | P1: `getConsecutiveWeeks` uses inaccurate Streak/7 proxy | @game-designer | 🔄 Open |
+| 2026-02-15 | `src/services/game/PowerRatingService.ts` | P1: `getConsecutiveWeeks` uses inaccurate Streak/7 proxy | @game-designer | ✅ Resolved |
 | 2026-02-15 | `src/**/*` | P2: [A11y/UI] 100+ hardcoded colors and missing aria-labels (ROADMAP.md:85) | @ui-ux | 🔄 Open |
 | 2026-02-10 | `Storybook/Chromatic` | Chromatic deployment blocked by Prisma integration. Requires architectural refactoring to separate data layer from presentation components (container/presenter pattern). Local Storybook works perfectly. | @architect | 🔴 Open |
 
