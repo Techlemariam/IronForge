@@ -18,6 +18,17 @@ on:
           - sprint-auto
           - factory
           - triage
+          - ci-doctor
+          - autonomous-gardener
+          - autonomous-sim
+          - evolve
+          - perf
+          - platform
+          - spec
+          - sync-roadmap
+          - sync-project
+          - monitor-all
+          - monitor-ui
       model:
         description: 'Gemini Model'
         required: true
@@ -27,9 +38,19 @@ on:
           - gemini-2.5-flash
           - gemini-2.5-pro
 
+permissions:
+  contents: write
+  pull-requests: write
+
+# Prevent overlapping runs of the same autonomous workflow on the self-hosted runner
+concurrency:
+  group: autonomous-${{ github.workflow }}-${{ inputs.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   run-autonomous-workflow:
     runs-on: self-hosted
+    timeout-minutes: 120
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -43,3 +64,4 @@ jobs:
           .\scripts\workflow-launcher.ps1 -Workflow "${{ inputs.workflow }}" -Model "${{ inputs.model }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
