@@ -175,7 +175,7 @@ export class TerritoryService {
         for (const territory of territories) {
             if (!territory.controlledById) continue;
 
-            // Assume 100 gold per territory per day for now
+            // distributing income to guild gold
             await prisma.guild.update({
                 where: { id: territory.controlledById },
                 data: { gold: { increment: 100 } }

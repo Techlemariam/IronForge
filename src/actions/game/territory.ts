@@ -4,6 +4,7 @@ import { z } from "zod";
 import { TerritoryService } from "@/services/game/TerritoryService";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/utils/supabase/server";
+import { prisma } from "@/lib/prisma";
 
 // --- Schemas ---
 

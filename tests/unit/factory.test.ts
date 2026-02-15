@@ -84,7 +84,10 @@ describe('Factory Actions', () => {
             mockSupabase.auth.getUser.mockResolvedValue({ data: { user: { id: 'test-user' } }, error: null });
 
             const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
-            (prisma.factoryStatus.findMany as any).mockRejectedValue(new Error('DB Error'));
+            // Ensure any previous mocks are cleared for this specific test
+            (prisma.factoryStatus.findMany as any).mockImplementationOnce(() => {
+                throw new Error('DB Error');
+            });
 
             const result = await getFactoryStatus();
 

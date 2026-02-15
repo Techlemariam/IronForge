@@ -166,7 +166,7 @@ export async function addFactoryTask(description: string, source: string = 'DISC
     const taskSchema = z.object({
         description: z.string().min(1).max(500),
         source: z.string().optional(),
-        metadata: z.record(z.any()).optional(),
+        metadata: z.record(z.string(), z.any()).optional(),
     });
 
     const result = taskSchema.safeParse({ description, source, metadata });

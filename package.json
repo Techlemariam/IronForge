@@ -21,6 +21,8 @@
     "agent:build": "turbo run build",
     "agent:test": "turbo run test",
     "agent:lint": "turbo run lint",
+    "agent:install": "pnpm install --frozen-lockfile",
+    "agent:clean": "pnpm store prune",
     "security": "pnpm audit --audit-level=high",
     "postinstall": "prisma generate",
     "test:docker:down": "docker-compose -f docker-compose.test.yml down",
