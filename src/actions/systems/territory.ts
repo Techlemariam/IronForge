@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import prisma from "@/lib/prisma";
 import { getSession } from "@/lib/auth";
-import { getUserTerritoryStats } from "@/services/game/TerritoryService";
+import { TerritoryService } from "@/services/game/TerritoryService";
 import { MapTile } from "@/features/territory/types";
 import { tileIdToCoords } from "@/lib/territory/tileUtils";
 import { contestTerritoryAction as contestTerritoryInternal, getContestLeaderboardAction as getContestLeaderboardInternal } from "@/actions/guild-actions";
@@ -17,7 +17,7 @@ export async function getTerritoryAppData() {
     const userId = session.user.id;
 
     const [stats, controlRecords, user] = await Promise.all([
-        getUserTerritoryStats(userId),
+        TerritoryService.getUserTerritoryStats(userId),
         prisma.tileControl.findMany({
             where: { userId },
             include: {

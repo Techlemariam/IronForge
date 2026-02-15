@@ -21,7 +21,7 @@ if (!BASE_URL && process.env.N8N_WEBHOOK_URL) {
         const url = new URL(process.env.N8N_WEBHOOK_URL);
         BASE_URL = `${url.protocol}//${url.host}`;
     }
-    catch (e) {
+    catch {
         // ignore
     }
 }

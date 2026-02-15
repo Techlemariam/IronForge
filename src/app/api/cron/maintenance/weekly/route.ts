@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { runWeeklySettlement } from "@/services/game/TerritoryService";
+import { TerritoryService } from "@/services/game/TerritoryService";
 
 
 export const dynamic = "force-dynamic";
@@ -27,10 +27,9 @@ export async function GET(request: NextRequest) {
 
     const sixtyDaysAgo = new Date(now.getTime() - 60 * 24 * 60 * 60 * 1000);
 
-    // 1. Territory Settlement (Individual User Tiles)
     try {
-        const result = await runWeeklySettlement();
-        report.tasks.settlement = { success: true, ...result };
+        await TerritoryService.runWeeklySettlement();
+        report.tasks.settlement = { success: true };
     } catch (e) {
         report.tasks.settlement = { success: false, error: String(e) };
     }

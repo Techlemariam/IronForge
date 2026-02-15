@@ -574,15 +574,18 @@ model Guild {
   level       Int         @default(1)
   createdAt   DateTime    @default(now())
   powerRating Float       @default(0)
+  gold        Int         @default(0)
   leader      User        @relation("GuildLeader", fields: [leaderId], references: [id])
   raids       GuildRaid[]
   territories Territory[] @relation("GuildTerritories")
   members     User[]
+  attackerContests TerritoryContest[] @relation("AttackerRelation")
+  defenderContests TerritoryContest[] @relation("DefenderRelation")
 }
 
 model Territory {
   id             String                  @id @default(cuid())
-  name           String
+  name           String                  @unique
   region         String
   type           TerritoryType           @default(TRAINING_GROUNDS)
   bonuses        Json
@@ -595,9 +598,31 @@ model Territory {
   controlledBy   Guild?                  @relation("GuildTerritories", fields: [controlledById], references: [id])
   contestEntries TerritoryContestEntry[]
   history        TerritoryHistory[]
+  activeContests TerritoryContest[]      @relation("ContestTerritory")
 
   @@index([region])
   @@index([controlledById])
+}
+
+model TerritoryContest {
+  id            String    @id @default(cuid())
+  territoryId   String
+  territory     Territory @relation("ContestTerritory", fields: [territoryId], references: [id])
+  attackerId    String
+  attacker      Guild     @relation("AttackerRelation", fields: [attackerId], references: [id])
+  defenderId    String?
+  defender      Guild?    @relation("DefenderRelation", fields: [defenderId], references: [id])
+  attackerScore Int       @default(0)
+  defenderScore Int       @default(0)
+  startsAt      DateTime  @default(now())
+  endsAt        DateTime
+  status        String    @default("active") // "active", "resolved"
+  winnerId      String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([territoryId])
+  @@index([attackerId])
 }
 
 model TerritoryContestEntry {
@@ -948,6 +973,7 @@ model FactoryStatus {
   station   String   @unique
   health    Int
   current   String?
+  metadata  Json?
   updatedAt DateTime @updatedAt
 }
 
@@ -955,6 +981,19 @@ model FactorySettings {
   id        String   @id @default("global")
   mode      String   @default("MANUAL")
   updatedAt DateTime @updatedAt
+}
+
+model FactoryTask {
+  id          String   @id @default(cuid())
+  description String
+  status      String   @default("PENDING") // PENDING, IN_PROGRESS, COMPLETED, FAILED
+  stage       String   @default("DESIGN")  // DESIGN, FABRICATION, VERIFICATION, SHIPPING
+  source      String   @default("DISCORD") // DISCORD, WEB, SYSTEM
+  metadata    Json?    // Store Discord user info, audio URL reference, etc.
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([status])
 }
 
 enum FriendshipStatus {

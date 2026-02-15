@@ -1,0 +1,64 @@
+
+> ironforge-rpg@1.0.0 check-types
+> tsc --project tsconfig.build.json --noEmit
+
+src/app/(main)/territory/page.tsx(42,29): error TS2322: Type '{ count: number; territories: { id: string; name: string; }[]; } | null' is not assignable to type 'TerritoryStatsData'.
+  Type 'null' is not assignable to type 'TerritoryStatsData'.
+src/app/admin/cron/page.tsx(5,24): error TS2307: Cannot find module '@/components/ui/button' or its corresponding type declarations.
+src/app/api/cron/maintenance/weekly/route.ts(33,52): error TS2698: Spread types may only be created from object types.
+src/app/iron-arena/ArenaClient.tsx(8,24): error TS2307: Cannot find module '@/components/ui/button' or its corresponding type declarations.
+src/components/factory/RenderVideoForm.tsx(5,24): error TS2307: Cannot find module '@/components/ui/button' or its corresponding type declarations.
+src/components/game/pvp/SeasonRewards.tsx(2,26): error TS2307: Cannot find module '@/components/ui/progress' or its corresponding type declarations.
+src/components/game/territory/TerritoryCard.tsx(5,24): error TS2307: Cannot find module '@/components/ui/button' or its corresponding type declarations.
+src/components/game/WorldMap.tsx(7,24): error TS2307: Cannot find module '@/components/ui/button' or its corresponding type declarations.
+src/components/logger/ExerciseSelector.tsx(8,24): error TS2307: Cannot find module '@/components/ui/button' or its corresponding type declarations.
+src/components/logger/SetLogger.tsx(6,24): error TS2307: Cannot find module '@/components/ui/button' or its corresponding type declarations.
+src/components/mobility/MobilityStudio.tsx(7,24): error TS2307: Cannot find module '@/components/ui/button' or its corresponding type declarations.
+src/components/ui/PRCelebration.tsx(9,24): error TS2307: Cannot find module './button' or its corresponding type declarations.
+src/components/ui/PRCelebration.tsx(161,16): error TS2339: Property 'getWeek' does not exist on type 'Date'.
+src/features/dashboard/TitansChoice.tsx(5,24): error TS2307: Cannot find module '@/components/ui/button' or its corresponding type declarations.
+src/features/game/components/campaign/BluetoothDebug.tsx(5,24): error TS2307: Cannot find module '@/components/ui/button' or its corresponding type declarations.
+src/features/game/DuelArena.tsx(8,24): error TS2307: Cannot find module '@/components/ui/button' or its corresponding type declarations.
+src/features/game/TheForge.tsx(5,24): error TS2307: Cannot find module '@/components/ui/button' or its corresponding type declarations.
+src/features/gamification/components/battle-pass/BattlePassView.tsx(5,26): error TS2307: Cannot find module '@/components/ui/progress' or its corresponding type declarations.
+src/features/gamification/components/battle-pass/BattlePassView.tsx(8,24): error TS2307: Cannot find module '@/components/ui/button' or its corresponding type declarations.
+src/features/gamification/components/battle-pass/RewardNode.tsx(5,24): error TS2307: Cannot find module '@/components/ui/button' or its corresponding type declarations.
+src/features/guild/TerritoryCard.tsx(5,24): error TS2307: Cannot find module '@/components/ui/button' or its corresponding type declarations.
+src/features/guild/TerritoryCard.tsx(6,26): error TS2307: Cannot find module '@/components/ui/progress' or its corresponding type declarations.
+src/features/onboarding/components/FirstTimeHints.tsx(6,24): error TS2307: Cannot find module '@/components/ui/button' or its corresponding type declarations.
+src/features/oracle/components/PushSubscriptionToggle.tsx(5,24): error TS2307: Cannot find module '@/components/ui/button' or its corresponding type declarations.
+src/features/podcast/components/PocketCastsAuth.tsx(4,24): error TS2307: Cannot find module '@/components/ui/button' or its corresponding type declarations.
+src/features/podcast/components/PocketCastsPlayer.tsx(8,24): error TS2307: Cannot find module '@/components/ui/button' or its corresponding type declarations.
+src/features/podcast/components/PodcastBrowser.tsx(5,24): error TS2307: Cannot find module '@/components/ui/button' or its corresponding type declarations.
+src/features/pvp/components/CardioDuelCard.tsx(4,26): error TS2307: Cannot find module '@/components/ui/progress' or its corresponding type declarations.
+src/features/pvp/components/CardioDuelCard.tsx(6,24): error TS2307: Cannot find module '@/components/ui/button' or its corresponding type declarations.
+src/features/pvp/components/CardioDuelLobby.tsx(5,24): error TS2307: Cannot find module '@/components/ui/button' or its corresponding type declarations.
+src/features/pvp/components/duel/CardioDuelModal.tsx(11,24): error TS2307: Cannot find module '@/components/ui/button' or its corresponding type declarations.
+src/features/pvp/components/duel/ChallengeModal.tsx(5,24): error TS2307: Cannot find module '@/components/ui/button' or its corresponding type declarations.
+src/features/pvp/components/duel/DuelCard.tsx(4,24): error TS2307: Cannot find module '@/components/ui/button' or its corresponding type declarations.
+src/features/pvp/components/duel/DuelVictoryScreen.tsx(3,24): error TS2307: Cannot find module '@/components/ui/button' or its corresponding type declarations.
+src/features/pvp/components/EmotePicker.tsx(13,24): error TS2307: Cannot find module '@/components/ui/button' or its corresponding type declarations.
+src/features/pvp/components/ranked/MatchmakingModal.tsx(4,24): error TS2307: Cannot find module '@/components/ui/button' or its corresponding type declarations.
+src/features/pvp/components/ranked/RankedArenaClient.tsx(8,24): error TS2307: Cannot find module '@/components/ui/button' or its corresponding type declarations.
+src/features/settings/components/IntegrationsPanel.tsx(19,24): error TS2307: Cannot find module '@/components/ui/button' or its corresponding type declarations.
+src/features/social/components/ShareableReplayCard.tsx(6,24): error TS2307: Cannot find module '@/components/ui/button' or its corresponding type declarations.
+src/features/strength/components/DungeonSessionView.tsx(7,24): error TS2307: Cannot find module '@/components/ui/button' or its corresponding type declarations.
+src/features/training/components/BerserkerChoice.tsx(3,24): error TS2307: Cannot find module '@/components/ui/button' or its corresponding type declarations.
+src/features/training/components/BerserkerMode.tsx(3,24): error TS2307: Cannot find module '@/components/ui/button' or its corresponding type declarations.
+src/features/training/components/QuestCompletion.tsx(2,24): error TS2307: Cannot find module '@/components/ui/button' or its corresponding type declarations.
+src/features/training/components/SetInput.tsx(3,24): error TS2307: Cannot find module '@/components/ui/button' or its corresponding type declarations.
+src/features/training/components/strava/StravaUpload.tsx(5,24): error TS2307: Cannot find module '@/components/ui/button' or its corresponding type declarations.
+src/features/training/RoutineSelector.tsx(9,24): error TS2307: Cannot find module '@/components/ui/button' or its corresponding type declarations.
+src/services/game/TerritoryService.ts(11,22): error TS18048: 'prisma' is possibly 'undefined'.
+src/services/game/TerritoryService.ts(41,22): error TS18048: 'prisma' is possibly 'undefined'.
+src/services/game/TerritoryService.ts(74,22): error TS18048: 'prisma' is possibly 'undefined'.
+src/services/game/TerritoryService.ts(120,32): error TS18048: 'prisma' is possibly 'undefined'.
+src/services/game/TerritoryService.ts(129,23): error TS18048: 'prisma' is possibly 'undefined'.
+src/services/game/TerritoryService.ts(134,23): error TS18048: 'prisma' is possibly 'undefined'.
+src/services/game/TerritoryService.ts(147,28): error TS18048: 'prisma' is possibly 'undefined'.
+src/services/game/TerritoryService.ts(154,35): error TS18048: 'prisma' is possibly 'undefined'.
+src/services/game/TerritoryService.ts(165,35): error TS18048: 'prisma' is possibly 'undefined'.
+src/services/game/TerritoryService.ts(173,19): error TS18048: 'prisma' is possibly 'undefined'.
+src/services/game/TerritoryService.ts(192,35): error TS18048: 'prisma' is possibly 'undefined'.
+src/services/game/TerritoryService.ts(215,31): error TS18048: 'prisma' is possibly 'undefined'.
+src/services/game/TerritoryService.ts(224,19): error TS18048: 'prisma' is possibly 'undefined'.

@@ -39,7 +39,7 @@ export default async function TerritoryPage() {
             </div>
 
             {/* Stats Overview */}
-            <TerritoryStats stats={stats} />
+            {stats && <TerritoryStats stats={stats} />}
 
             {/* Main Interactive Section */}
             <Tabs defaultValue="map" className="w-full">

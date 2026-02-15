@@ -137,4 +137,15 @@ export class PowerRatingService {
             titan: updatedTitan
         };
     }
+
+    /**
+     * Get tier details based on power rating.
+     */
+    static getTierDetails(powerRating: number) {
+        if (powerRating >= 1000) return { name: "Diamond", color: "#B9F2FF" };
+        if (powerRating >= 750) return { name: "Platinum", color: "#E5E4E2" };
+        if (powerRating >= 500) return { name: "Gold", color: "#FFD700" };
+        if (powerRating >= 250) return { name: "Silver", color: "#C0C0C0" };
+        return { name: "Bronze", color: "#CD7F32" };
+    }
 }
