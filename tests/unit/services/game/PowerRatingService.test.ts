@@ -2,19 +2,16 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { PowerRatingService } from '@/services/game/PowerRatingService';
 import prisma from '@/lib/prisma';
 
-// Mock Prisma
-vi.mock('@/lib/prisma', () => ({
-    default: {
-        exerciseLog: { findMany: vi.fn() },
-        cardioLog: { findMany: vi.fn() },
-        user: { findUnique: vi.fn() },
-        titan: { update: vi.fn() },
-    }
-}));
+// Use centralized Prisma mock from src/lib/__mocks__/prisma.ts
+vi.mock('@/lib/prisma');
 
 describe('PowerRatingService', () => {
     beforeEach(() => {
         vi.clearAllMocks();
+        (prisma.exerciseLog.findMany as any).mockClear();
+        (prisma.cardioLog.findMany as any).mockClear();
+        (prisma.user.findUnique as any).mockClear();
+        (prisma.titan.update as any).mockClear();
     });
 
     describe('getWeeklyVolume', () => {
@@ -52,6 +49,59 @@ describe('PowerRatingService', () => {
         });
     });
 
+    describe('getConsecutiveWeeks', () => {
+        it('calculates streak correctly for active users', async () => {
+            // Mock dates for 3 consecutive weeks
+            // Use a fixed Monday to perfectly align with ISO week logic (weekStartsOn: 1)
+            const { subWeeks, startOfWeek } = await import('date-fns');
+            const now = startOfWeek(new Date(), { weekStartsOn: 1 }); // Monday
+
+            const w1 = now;
+            const w2 = subWeeks(now, 1);
+            const w3 = subWeeks(now, 2);
+
+            (prisma.exerciseLog.findMany as any).mockResolvedValue([
+                { date: w1 },
+                { date: w2 }
+            ]);
+            (prisma.cardioLog.findMany as any).mockResolvedValue([
+                { date: w3 }
+            ]);
+
+            const streak = await PowerRatingService.getConsecutiveWeeks('user1');
+            expect(streak).toBe(3);
+        });
+
+        it('maintains streak if current week has no data but last week does (grace period)', async () => {
+            const { subWeeks, startOfWeek } = await import('date-fns');
+            const now = startOfWeek(new Date(), { weekStartsOn: 1 });
+            const lastWeek = subWeeks(now, 1);
+            const twoWeeksAgo = subWeeks(now, 2);
+
+            (prisma.exerciseLog.findMany as any).mockResolvedValue([
+                { date: lastWeek },
+                { date: twoWeeksAgo }
+            ]);
+            (prisma.cardioLog.findMany as any).mockResolvedValue([]);
+
+            const streak = await PowerRatingService.getConsecutiveWeeks('user1');
+            expect(streak).toBe(2); // Last week + week before
+        });
+
+        it('resets streak if there is a gap', async () => {
+            const { subWeeks } = await import('date-fns');
+            const threeWeeksAgo = subWeeks(new Date(), 3);
+
+            (prisma.exerciseLog.findMany as any).mockResolvedValue([
+                { date: threeWeeksAgo }
+            ]);
+            (prisma.cardioLog.findMany as any).mockResolvedValue([]);
+
+            const streak = await PowerRatingService.getConsecutiveWeeks('user1');
+            expect(streak).toBe(0);
+        });
+    });
+
     describe('syncPowerRating', () => {
         it('calculates full power rating and updates titan', async () => {
             // 1. Mock User & Titan
@@ -73,13 +123,21 @@ describe('PowerRatingService', () => {
             });
 
             // Mock Volume (100,000 total)
+            const threeWeeksAgo = new Date();
+            threeWeeksAgo.setDate(threeWeeksAgo.getDate() - 21);
+            const twoWeeksAgo = new Date();
+            twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
+            const oneWeekAgo = new Date();
+            oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+
             (prisma.exerciseLog.findMany as any).mockResolvedValue([
-                { sets: [{ weight: 100, reps: 1000 }] } // 100,000 kg
+                { date: oneWeekAgo, sets: [{ weight: 100, reps: 500 }] }, // 50,000 kg
+                { date: twoWeeksAgo, sets: [{ weight: 100, reps: 500 }] }  // 50,000 kg
             ]);
 
             // Mock Cardio (4 hours)
             (prisma.cardioLog.findMany as any).mockResolvedValue([
-                { duration: 4 * 3600 }
+                { date: threeWeeksAgo, duration: 4 * 3600 }
             ]);
 
             const result = await PowerRatingService.syncPowerRating('user1');

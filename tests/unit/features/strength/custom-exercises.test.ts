@@ -12,12 +12,14 @@ vi.mock('@/utils/supabase/server', () => ({
     }))
 }));
 
-import { prisma } from '@/lib/prisma';
+import prisma from '@/lib/prisma';
 import { createCustomExercise, getCustomExercises } from '@/features/strength/actions/custom-exercises';
 
 // Access mocked prisma functions
 const mockCreate = prisma.exercise.create as ReturnType<typeof vi.fn>;
 const mockFindMany = prisma.exercise.findMany as ReturnType<typeof vi.fn>;
+
+vi.mock('@/lib/prisma');
 
 describe('createCustomExercise', () => {
     beforeEach(() => {

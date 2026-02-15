@@ -12,17 +12,12 @@ vi.mock("@/utils/supabase/server", () => ({
 }));
 
 // Mock Prisma
-vi.mock("@/lib/prisma", () => ({
-  default: {
-    workoutTemplate: {
-      create: vi.fn(),
-    },
-  },
-}));
+vi.mock("@/lib/prisma");
 
 describe("importHevyRoutineToTemplateAction", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    (prisma.workoutTemplate.create as any).mockClear();
   });
 
   it("should import a valid routine as a workout template", async () => {

@@ -60,7 +60,7 @@
 | 1 | **Loot Tables** | Drop rates not audited for fairness (Hardcoded rarity weights) | Medium | 🟡 Needs Review |
 | 2 | **XP Multipliers** | Multiple XP sources (streaks, buffs, bio) may stack excessively (Hardcoded 500 XP base) | Medium | 🟡 Needs Review |
 | 3 | **Combat Balance** | Boss HP scaling vs player DPS not formally tested (Derived purely from Level) | Medium | 🟡 Needs Review |
-| 4 | **Power Rating Accuracy** | Consecutive weeks proxy (Streak/7) provides inaccurate ranking ladder | High | 🔴 P1: Needs Refactor |
+| 4 | **Power Rating Accuracy** | Consecutive weeks proxy (Streak/7) provides inaccurate ranking ladder | High | ✅ Shipped (ISO Weeks + Grace Period) |
 
 ## 🔧 Logic & Type Safety Gaps (Monitor: `/monitor-logic`)
 

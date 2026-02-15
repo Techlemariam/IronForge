@@ -66,47 +66,61 @@ export class PowerRatingService {
      * Counts how many consecutive calendar weeks the user has recorded at least one log.
      */
     static async getConsecutiveWeeks(userId: string): Promise<number> {
-        // Fetch all log dates for the user
+        const { startOfWeek, subWeeks, getISOWeek, getISOWeekYear } = await import("date-fns");
+
+        // Caching week-year keys for performance. Streak bonus caps at 10, so we only need ~15 weeks of data maximum
+        // to determine if the current streak is at least 10.
         const [exerciseLogs, cardioLogs] = await Promise.all([
             prisma.exerciseLog.findMany({
                 where: { userId },
                 select: { date: true },
-                orderBy: { date: "desc" }
+                orderBy: { date: "desc" },
+                take: 100 // Optimization: We don't need all training history for a 10-week cap
             }),
             prisma.cardioLog.findMany({
                 where: { userId },
                 select: { date: true },
-                orderBy: { date: "desc" }
+                orderBy: { date: "desc" },
+                take: 100
             })
         ]);
 
-        const allDates = [
-            ...exerciseLogs.map(l => l.date),
-            ...cardioLogs.map(l => l.date)
-        ].sort((a, b) => b.getTime() - a.getTime());
+        const logWeeksSet = new Set<string>();
+        const appendToSet = (date: Date) => {
+            const week = getISOWeek(date);
+            const year = getISOWeekYear(date);
+            logWeeksSet.add(`${year}-W${week}`);
+        };
 
-        if (allDates.length === 0) return 0;
+        exerciseLogs.forEach(l => appendToSet(l.date));
+        cardioLogs.forEach(l => appendToSet(l.date));
 
-        const { startOfWeek, subWeeks, isSameWeek } = await import("date-fns");
+        if (logWeeksSet.size === 0) return 0;
 
         let consecutiveWeeks = 0;
-        let currentCheckWeek = startOfWeek(new Date(), { weekStartsOn: 1 }); // Start with current week (Monday)
+        let currentCheckDate = startOfWeek(new Date(), { weekStartsOn: 1 });
+        const now = new Date();
 
-        // We iterate backwards through weeks as long as we find a log in that week
         while (true) {
-            const hasLogInWeek = allDates.some(date => isSameWeek(date, currentCheckWeek, { weekStartsOn: 1 }));
+            const week = getISOWeek(currentCheckDate);
+            const year = getISOWeekYear(currentCheckDate);
+            const key = `${year}-W${week}`;
 
-            if (hasLogInWeek) {
+            if (logWeeksSet.has(key)) {
                 consecutiveWeeks++;
-                currentCheckWeek = subWeeks(currentCheckWeek, 1);
+                currentCheckDate = subWeeks(currentCheckDate, 1);
             } else {
-                // If it's the current week, we don't break yet, maybe they just haven't trained THIS week but did LAST week
-                if (isSameWeek(currentCheckWeek, new Date(), { weekStartsOn: 1 })) {
-                    currentCheckWeek = subWeeks(currentCheckWeek, 1);
+                // Grace Period: If no log this week, but it's the current week, continue to last week
+                const isCurrentWeek = getISOWeek(now) === week && getISOWeekYear(now) === year;
+                if (isCurrentWeek) {
+                    currentCheckDate = subWeeks(currentCheckDate, 1);
                     continue;
                 }
                 break;
             }
+
+            // Safety break: Consistency bonus caps at 10, no need to count forever
+            if (consecutiveWeeks >= 20) break;
         }
 
         return consecutiveWeeks;
