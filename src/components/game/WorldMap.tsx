@@ -60,8 +60,8 @@ export default function WorldMap({ onClose }: WorldMapProps) {
               key={region}
               onClick={() => setSelectedRegion(selectedRegion === region ? null : region)}
               className={`text-[10px] whitespace-nowrap px-3 py-1.5 rounded-full border transition-all ${selectedRegion === region
-                  ? 'bg-white text-black border-white font-bold'
-                  : 'bg-transparent text-zinc-500 border-zinc-800 hover:border-zinc-600'
+                ? 'bg-white text-black border-white font-bold'
+                : 'bg-transparent text-zinc-500 border-zinc-800 hover:border-zinc-600'
                 }`}
             >
               {region}
@@ -77,7 +77,7 @@ export default function WorldMap({ onClose }: WorldMapProps) {
       </div>
 
       {/* Map Content */}
-      <div className="flex-1 relative overflow-hidden bg-[#050505]">
+      <div className="flex-1 relative overflow-hidden bg-void">
         {/* Background Texture */}
         <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] pointer-events-none" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(20,20,20,0)_0%,rgba(0,0,0,1)_100%)] pointer-events-none" />
@@ -85,7 +85,7 @@ export default function WorldMap({ onClose }: WorldMapProps) {
         {loading ? (
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="flex flex-col items-center gap-4">
-              <Loader2 className="w-12 h-12 text-cyan-500 animate-spin" />
+              <Loader2 className="w-12 h-12 text-cyan animate-spin" />
               <p className="text-zinc-500 font-mono text-xs animate-pulse">Establishing Satellite Uplink...</p>
             </div>
           </div>
@@ -93,7 +93,7 @@ export default function WorldMap({ onClose }: WorldMapProps) {
           <div className="relative w-full h-full md:p-20 overflow-auto">
             {/* Map Grid Lines */}
             <div className="absolute inset-0 opacity-10 pointer-events-none"
-              style={{ backgroundImage: 'linear-gradient(#333 1px, transparent 1px), linear-gradient(90deg, #333 1px, transparent 1px)', backgroundSize: '100px 100px' }}
+              style={{ backgroundImage: 'linear-gradient(var(--color-steel) 1px, transparent 1px), linear-gradient(90deg, var(--color-steel) 1px, transparent 1px)', backgroundSize: '100px 100px' }}
             />
 
             {/* Mobile: Just list them if strict map view is too hard, but let's try absolute positioning with scroll */}

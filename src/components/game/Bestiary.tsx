@@ -52,7 +52,7 @@ export const Bestiary: React.FC<BestiaryProps> = ({ userLevel, onClose }) => {
     userLevel >= monster.level || unlockedIds.includes(monster.id);
 
   return (
-    <div className="h-full bg-[#050505] p-6 overflow-y-auto font-serif text-zinc-200">
+    <div className="h-full bg-void p-6 overflow-y-auto font-serif text-zinc-200">
       <div className="flex justify-between items-center mb-8 border-b border-forge-border pb-4">
         <div>
           <h1 className="text-3xl font-black text-warrior-light uppercase tracking-tighter flex items-center gap-3">
@@ -81,7 +81,7 @@ export const Bestiary: React.FC<BestiaryProps> = ({ userLevel, onClose }) => {
             <div
               key={monster.id}
               className={cn(
-                "group bg-[#111] border-2 rounded-lg overflow-hidden transition-all duration-300 relative",
+                "group bg-armor border-2 rounded-lg overflow-hidden transition-all duration-300 relative",
                 unlocked
                   ? "border-forge-border hover:border-rarity-common shadow-lg"
                   : "border-zinc-900 opacity-60 grayscale",
@@ -130,8 +130,8 @@ export const Bestiary: React.FC<BestiaryProps> = ({ userLevel, onClose }) => {
                     {unlocked
                       ? monster.description
                       : "Surpass Level " +
-                        monster.level +
-                        " to identify this entity."}
+                      monster.level +
+                      " to identify this entity."}
                   </p>
                 </div>
 
@@ -149,7 +149,7 @@ export const Bestiary: React.FC<BestiaryProps> = ({ userLevel, onClose }) => {
                         <div
                           className="h-full bg-red-600 shadow-[0_0_8px_rgba(220,38,38,0.5)]"
                           style={{
-                            width: `${(monster.hp / monster.maxHp) * 100}%`,
+                            width: `${Math.min(100, (monster.hp / monster.maxHp) * 100)}%`,
                           }}
                         />
                       </div>

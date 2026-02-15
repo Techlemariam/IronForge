@@ -56,7 +56,7 @@ const MindfulnessModal: React.FC<MindfulnessModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-fade-in">
-      <div className="bg-[#111] border-2 border-blue-900 w-full max-w-sm rounded-lg shadow-[0_0_50px_rgba(30,58,138,0.3)] overflow-hidden font-serif">
+      <div className="bg-armor border-2 border-blue-900 w-full max-w-sm rounded-lg shadow-[0_0_50px_rgba(30,58,138,0.3)] overflow-hidden font-serif">
         {/* Header */}
         <div className="bg-blue-950/30 p-4 border-b border-blue-900/50 flex justify-between items-center relative overflow-hidden">
           <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-30 animate-pulse-slow"></div>
@@ -68,6 +68,7 @@ const MindfulnessModal: React.FC<MindfulnessModalProps> = ({
           </div>
           <button
             onClick={onClose}
+            aria-label="Close modal"
             className="text-zinc-500 hover:text-white transition-colors relative z-10"
           >
             <X className="w-5 h-5" />
@@ -86,7 +87,9 @@ const MindfulnessModal: React.FC<MindfulnessModalProps> = ({
               <span>Duration</span>
               <span>{duration} Min</span>
             </div>
+            <label htmlFor="duration-slider" className="sr-only">Meditation Duration</label>
             <input
+              id="duration-slider"
               type="range"
               min="5"
               max="60"
@@ -103,11 +106,10 @@ const MindfulnessModal: React.FC<MindfulnessModalProps> = ({
               <button
                 key={s}
                 onClick={() => setSource(s as any)}
-                className={`py-2 text-[10px] font-bold uppercase tracking-wider border rounded transition-all ${
-                  source === s
-                    ? "bg-blue-900/40 border-blue-500 text-blue-300 shadow-[0_0_10px_rgba(59,130,246,0.2)]"
-                    : "bg-zinc-900 border-zinc-800 text-zinc-500 hover:border-zinc-600"
-                }`}
+                className={`py-2 text-[10px] font-bold uppercase tracking-wider border rounded transition-all ${source === s
+                  ? "bg-blue-900/40 border-blue-500 text-blue-300 shadow-[0_0_10px_rgba(59,130,246,0.2)]"
+                  : "bg-zinc-900 border-zinc-800 text-zinc-500 hover:border-zinc-600"
+                  }`}
               >
                 {s}
               </button>

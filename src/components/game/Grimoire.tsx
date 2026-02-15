@@ -101,7 +101,7 @@ export const Grimoire: React.FC<GrimoireProps> = ({ onClose }) => {
   };
 
   return (
-    <div className="h-full bg-[#050505] p-6 overflow-y-auto font-serif text-zinc-200">
+    <div className="h-full bg-void p-6 overflow-y-auto font-serif text-zinc-200">
       <div className="flex justify-between items-center mb-8 border-b border-[#222] pb-6">
         <div className="flex items-center gap-4">
           <div className="p-3 bg-zinc-900 border border-zinc-800 rounded-full">
@@ -142,7 +142,7 @@ export const Grimoire: React.FC<GrimoireProps> = ({ onClose }) => {
           {entries.map((entry) => (
             <div
               key={entry.id}
-              className="bg-[#0f0f12] border border-zinc-800/50 hover:border-zinc-700 rounded-lg p-5 flex gap-5 transition-all group cursor-default"
+              className="bg-armor border border-zinc-800/50 hover:border-zinc-700 rounded-lg p-5 flex gap-5 transition-all group cursor-default"
             >
               {/* Date Column */}
               <div className="shrink-0 flex flex-col items-center justify-center w-16 border-r border-zinc-900 pr-5">
