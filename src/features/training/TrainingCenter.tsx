@@ -114,7 +114,7 @@ export const TrainingCenter: React.FC<TrainingCenterProps> = ({
             </div>
 
             <div className="flex gap-4">
-              <div className="bg-black/40 backdrop-blur-md p-3 rounded-xl border border-white/5 text-center min-w-[100px]">
+              <div className="bg-black/40 backdrop-blur-md p-3 rounded-xl border border-white/5 text-center min-w-24">
                 <div className="text-xs text-zinc-500 uppercase font-bold">
                   Strength
                 </div>
@@ -122,7 +122,7 @@ export const TrainingCenter: React.FC<TrainingCenterProps> = ({
                   {pathInfo.strengthLevel}
                 </div>
               </div>
-              <div className="bg-black/40 backdrop-blur-md p-3 rounded-xl border border-white/5 text-center min-w-[100px]">
+              <div className="bg-black/40 backdrop-blur-md p-3 rounded-xl border border-white/5 text-center min-w-24">
                 <div className="text-xs text-zinc-500 uppercase font-bold">
                   Cardio
                 </div>
@@ -134,7 +134,7 @@ export const TrainingCenter: React.FC<TrainingCenterProps> = ({
                 <button
                   onClick={onImportRoutines}
                   aria-label="Import routines from Hevy"
-                  className="bg-magma/20 backdrop-blur-md p-3 rounded-xl border border-magma/50 text-center min-w-[100px] hover:bg-magma/30 transition-colors"
+                  className="bg-magma/20 backdrop-blur-md p-3 rounded-xl border border-magma/50 text-center min-w-24 hover:bg-magma/30 transition-colors"
                 >
                   <div className="text-xs text-magma uppercase font-bold">
                     Hevy

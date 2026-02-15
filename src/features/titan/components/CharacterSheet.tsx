@@ -147,7 +147,7 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({
         {/* --- CONTENT BODY --- */}
         <div className="relative flex-1 flex flex-col md:flex-row overflow-hidden">
           {/* LEFT PANEL: PAPER DOLL (Gear Slots & Avatar) */}
-          <div className="w-full md:w-[45%] bg-void relative flex flex-col border-r border-steel/50">
+          <div className="w-full md:w-5/12 bg-void relative flex flex-col border-r border-steel/50">
             {/* Top Info */}
             <div className="p-4 text-center z-10 bg-gradient-to-b from-armor to-transparent">
               <h1 className="text-2xl font-bold text-white tracking-wide drop-shadow-md">
@@ -201,7 +201,7 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({
               </div>
 
               {/* Center Model (Placeholder) */}
-              <div className="flex-1 flex items-center justify-center relative min-h-[200px] sm:min-h-0">
+              <div className="flex-1 flex items-center justify-center relative min-h-48 sm:min-h-0">
                 {/* Background Glow behind character */}
                 <div className="absolute w-48 h-48 bg-blue-500/10 rounded-full blur-[50px]"></div>
 
@@ -269,7 +269,7 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({
           </div>
 
           {/* RIGHT PANEL: TABS CONTENT */}
-          <div className="w-full md:w-[55%] bg-void/50 p-0 overflow-y-auto custom-scrollbar relative flex flex-col">
+          <div className="w-full md:w-7/12 bg-void/50 p-0 overflow-y-auto custom-scrollbar relative flex flex-col">
             <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10 pointer-events-none"></div>
 
             {/* TAB: ATTRIBUTES */}

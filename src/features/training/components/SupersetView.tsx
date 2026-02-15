@@ -33,7 +33,7 @@ const _SupersetView: React.FC<SupersetViewProps> = ({
     return (
         <div className="relative space-y-4">
             {/* Visual Connector Line */}
-            <div className="absolute left-[-24px] top-6 bottom-6 w-4 border-l-2 border-dashed border-magma/50 hidden md:block" />
+            <div className="absolute -left-6 top-6 bottom-6 w-4 border-l-2 border-dashed border-magma/50 hidden md:block" />
 
             {/* Badge */}
             <div className="flex items-center gap-2 mb-2">
@@ -97,11 +97,11 @@ export const SupersetGroup: React.FC<{
 
     return (
         <div className="relative pl-6 border-l-4 border-zinc-800 my-8 rounded-l-3xl bg-white/5 p-4 border-y border-r border-white/5 rounded-r-xl">
-            <div className="absolute -left-[13px] top-1/2 -translate-y-1/2 bg-void border border-steel rounded-full p-1.5 shadow-xl z-20">
+            <div className="absolute -left-3.5 top-1/2 -translate-y-1/2 bg-void border border-steel rounded-full p-1.5 shadow-xl z-20">
                 <Link2 className="w-5 h-5 text-zinc-400" />
             </div>
 
-            <div className="absolute -left-[2px] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-zinc-700 to-transparent" />
+            <div className="absolute -left-0.5 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-zinc-700 to-transparent" />
 
             <div className="space-y-8">
                 {exercises.map((ex, i) => {
