@@ -11,8 +11,7 @@ vi.mock("@/utils/supabase/server", () => ({
   })),
 }));
 
-// Mock Prisma
-vi.mock("@/lib/prisma");
+// describe
 
 describe("importHevyRoutineToTemplateAction", () => {
   beforeEach(() => {

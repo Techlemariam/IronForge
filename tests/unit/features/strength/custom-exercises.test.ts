@@ -19,8 +19,6 @@ import { createCustomExercise, getCustomExercises } from '@/features/strength/ac
 const mockCreate = prisma.exercise.create as ReturnType<typeof vi.fn>;
 const mockFindMany = prisma.exercise.findMany as ReturnType<typeof vi.fn>;
 
-vi.mock('@/lib/prisma');
-
 describe('createCustomExercise', () => {
     beforeEach(() => {
         vi.clearAllMocks();

@@ -13,8 +13,6 @@ vi.mock("@/utils/supabase/server", () => ({
   })),
 }));
 
-vi.mock("@/lib/prisma");
-
 import { createClient } from "@/utils/supabase/server";
 import prisma from "@/lib/prisma";
 

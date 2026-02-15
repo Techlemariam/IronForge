@@ -2,9 +2,6 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { PowerRatingService } from '@/services/game/PowerRatingService';
 import prisma from '@/lib/prisma';
 
-// Use centralized Prisma mock from src/lib/__mocks__/prisma.ts
-vi.mock('@/lib/prisma');
-
 describe('PowerRatingService', () => {
     beforeEach(() => {
         vi.clearAllMocks();
