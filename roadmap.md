@@ -57,10 +57,10 @@
 
 | # | Area | Issue | Severity | Status |
 |---|------|-------|----------|--------|
-| 1 | **Loot Tables** | Drop rates not audited for fairness | Medium | 🟡 Needs Review |
-| 2 | **XP Multipliers** | Multiple XP sources (streaks, buffs, bio) may stack excessively | Medium | 🟡 Needs Review |
-| 3 | **Combat Balance** | Boss HP scaling vs player DPS not formally tested | Medium | 🟡 Needs Review |
-| 4 | **Chase Mode** | Pace thresholds may be too strict for casual runners | Low | 🔴 Not Audited |
+| 1 | **Loot Tables** | Drop rates not audited for fairness (Hardcoded rarity weights) | Medium | 🟡 Needs Review |
+| 2 | **XP Multipliers** | Multiple XP sources (streaks, buffs, bio) may stack excessively (Hardcoded 500 XP base) | Medium | 🟡 Needs Review |
+| 3 | **Combat Balance** | Boss HP scaling vs player DPS not formally tested (Derived purely from Level) | Medium | 🟡 Needs Review |
+| 4 | **Power Rating Accuracy** | Consecutive weeks proxy (Streak/7) provides inaccurate ranking ladder | High | 🔴 P1: Needs Refactor |
 
 ## 🔧 Logic & Type Safety Gaps (Monitor: `/monitor-logic`)
 
@@ -150,7 +150,9 @@
 
 ### High Priority (New Features)
 
-- [ ] **Guild Territories** ([Spec](specs/guild-territories.md)) ([#75](https://github.com/Techlemariam/IronForge/issues/75)) <!-- status: planned | priority: high | roi: 4.6 | effort: L | source: brainstorm -->
+- [ ] **Guild Territories** ([Spec](specs/guild-territories.md)) ([#75](https://github.com/Techlemariam/IronForge/issues/75)) <!-- status: planned | priority: critical | roi: 5.2 | effort: M | source: monitor-game | date: 2026-02-15 -->
+  - [ ] Implement weekly resolution loop (Sunday resolution)
+  - [ ] Implement territory bonus capping (3 territories max)
 - [ ] **Oracle 3.0 (Phase 2)** - Advanced Audio Coaching ([#76](https://github.com/Techlemariam/IronForge/issues/76)) <!-- status: planned | priority: high | roi: 4.8 | effort: M | source: enhancement -->
 
 ### High Priority (Enhancements to_Existing)

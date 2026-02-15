@@ -1,6 +1,6 @@
 import prisma from "@/lib/prisma";
 
-export type NotificationType = "ORACLE_DECREE" | "DUEL_UPDATE" | "SYSTEM" | "ACHIEVEMENT";
+export type NotificationType = "ORACLE_DECREE" | "DUEL_UPDATE" | "SYSTEM" | "ACHIEVEMENT" | "TERRITORY_UPDATE";
 
 export interface NotificationPayload {
     userId: string;

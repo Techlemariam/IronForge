@@ -152,33 +152,51 @@ export class TerritoryService {
 
         if (!user?.guildId) return null;
 
-        const territories = await prisma.territory.findMany({
+        const allTerritories = await prisma.territory.findMany({
             where: { controlledById: user.guildId }
         });
 
+        // Cap at 3 for bonuses
+        const cappedTerritories = allTerritories.slice(0, 3);
+
         // Map to TerritoryStatsData expected by the UI
         return {
-            ownedTiles: territories.length,
+            ownedTiles: allTerritories.length,
             contestedTiles: 0, // Placeholder
-            totalControlPoints: territories.length * 10, // Mock calculation
-            dailyGold: territories.length * 100,
-            dailyXP: territories.length * 50,
-            largestConnectedArea: territories.length // Placeholder
+            totalControlPoints: allTerritories.length * 10,
+            dailyGold: cappedTerritories.length * 100,
+            dailyXP: cappedTerritories.length * 50,
+            largestConnectedArea: allTerritories.length // Placeholder
         };
     }
 
     static async distributeDailyIncome() {
-        const territories = await prisma.territory.findMany({
-            where: { NOT: { controlledById: null } }
+        const guildsWithTerritories = await prisma.guild.findMany({
+            where: {
+                territories: {
+                    some: {}
+                }
+            },
+            include: {
+                territories: {
+                    select: { id: true }
+                }
+            }
         });
 
-        for (const territory of territories) {
-            if (!territory.controlledById) continue;
+        for (const guild of guildsWithTerritories) {
+            const count = Math.min(guild.territories.length, 3);
+            if (count === 0) continue;
 
-            // Assume 100 gold per territory per day for now
+            const totalGold = count * 100;
+            const totalXP = count * 50;
+
             await prisma.guild.update({
-                where: { id: territory.controlledById },
-                data: { gold: { increment: 100 } }
+                where: { id: guild.id },
+                data: {
+                    gold: { increment: totalGold },
+                    xp: { increment: totalXP }
+                }
             });
         }
     }

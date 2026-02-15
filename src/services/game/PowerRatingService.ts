@@ -62,22 +62,54 @@ export class PowerRatingService {
     }
 
     /**
-     * Get Consecutive Weeks Streak.
-     * Uses user.loginStreak or titan.streak as a proxy for now, 
-     * or counts active weeks from logs.
-     * MVP: Use Titan Streak / 7 if available, otherwise 0.
-     * 
-     * Actually, let's calculate it accurately from logs if possible, 
-     * or fallback to `titan.streak` (which tracks daily logins) / 7.
+     * Get Consecutive Active Weeks Streak.
+     * Counts how many consecutive calendar weeks the user has recorded at least one log.
      */
     static async getConsecutiveWeeks(userId: string): Promise<number> {
-        const user = await prisma.user.findUnique({
-            where: { id: userId },
-            select: { loginStreak: true } // Daily login streak
-        });
+        // Fetch all log dates for the user
+        const [exerciseLogs, cardioLogs] = await Promise.all([
+            prisma.exerciseLog.findMany({
+                where: { userId },
+                select: { date: true },
+                orderBy: { date: "desc" }
+            }),
+            prisma.cardioLog.findMany({
+                where: { userId },
+                select: { date: true },
+                orderBy: { date: "desc" }
+            })
+        ]);
 
-        // MVP Proxy: Streak Days / 7
-        return user ? Math.floor(user.loginStreak / 7) : 0;
+        const allDates = [
+            ...exerciseLogs.map(l => l.date),
+            ...cardioLogs.map(l => l.date)
+        ].sort((a, b) => b.getTime() - a.getTime());
+
+        if (allDates.length === 0) return 0;
+
+        const { startOfWeek, subWeeks, isSameWeek } = await import("date-fns");
+
+        let consecutiveWeeks = 0;
+        let currentCheckWeek = startOfWeek(new Date(), { weekStartsOn: 1 }); // Start with current week (Monday)
+
+        // We iterate backwards through weeks as long as we find a log in that week
+        while (true) {
+            const hasLogInWeek = allDates.some(date => isSameWeek(date, currentCheckWeek, { weekStartsOn: 1 }));
+
+            if (hasLogInWeek) {
+                consecutiveWeeks++;
+                currentCheckWeek = subWeeks(currentCheckWeek, 1);
+            } else {
+                // If it's the current week, we don't break yet, maybe they just haven't trained THIS week but did LAST week
+                if (isSameWeek(currentCheckWeek, new Date(), { weekStartsOn: 1 })) {
+                    currentCheckWeek = subWeeks(currentCheckWeek, 1);
+                    continue;
+                }
+                break;
+            }
+        }
+
+        return consecutiveWeeks;
     }
 
     /**
