@@ -123,7 +123,38 @@ export const StartBossFightSchema = z.object({
  * Schema for performing a combat action.
  */
 export const PerformCombatActionInputSchema = z.object({
-  action: z.any(), // CombatAction type is complex, using any for validation here
+  action: z.any(),
   clientState: z.any().optional(),
+});
+
+/**
+ * Schema for awarding gold to a user.
+ */
+export const AwardGoldSchema = z.object({
+  amount: z.number().nonnegative()
+});
+
+/**
+ * Helper schema for Hevy API interactions.
+ */
+export const HevyHelperSchema = z.object({
+  apiKey: z.string().min(1, "Hevy API Key is required."),
+  page: z.number().int().positive().optional(),
+  pageSize: z.number().int().positive().optional(),
+  count: z.number().int().positive().optional(),
+});
+
+/**
+ * Schema for importing Hevy workout history.
+ */
+export const ImportHevyHistorySchema = z.object({
+  workouts: z.array(z.any()),
+});
+
+/**
+ * Schema for crafting an item.
+ */
+export const CraftItemSchema = z.object({
+  recipeId: z.string().min(1),
 });
 
