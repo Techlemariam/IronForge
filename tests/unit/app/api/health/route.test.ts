@@ -1,19 +1,18 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+
+// Mock Prisma using vi.hoisted to ensure mock is applied before module import
+const mockPrisma = vi.hoisted(() => ({
+    $queryRaw: vi.fn(),
+}));
+
+vi.mock('@/lib/prisma', () => ({
+    __esModule: true,
+    default: mockPrisma,
+    prisma: mockPrisma,
+}));
+
 import { GET } from '@/app/api/health/route';
 import { prisma } from '@/lib/prisma';
-
-
-// Mock Prisma
-vi.mock('@/lib/prisma', () => {
-    const mockPrisma = {
-        $queryRaw: vi.fn(),
-    };
-    return {
-        __esModule: true,
-        default: mockPrisma,
-        prisma: mockPrisma,
-    };
-});
 
 describe('GET /api/health', () => {
     beforeEach(() => {
