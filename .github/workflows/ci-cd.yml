@@ -3,8 +3,18 @@ name: IronForge CI/CD
 on:
   push:
     branches: [main, release]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - '.agent/**'
+      - '.vscode/**'
   pull_request:
     branches: [main, release]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - '.agent/**'
+      - '.vscode/**'
   workflow_dispatch:
 
 

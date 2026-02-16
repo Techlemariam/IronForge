@@ -41,6 +41,10 @@ on:
       - n8n-trigger
       - moltbot-trigger
 
+concurrency:
+  group: remote-${{ github.workflow }}-${{ github.event.inputs.workflow || github.event.client_payload.workflow || 'default' }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: write
   pull-requests: write

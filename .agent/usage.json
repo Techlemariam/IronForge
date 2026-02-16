@@ -1,18 +1,25 @@
-{
-  "history": [
-    {
-      "workflow": "cleanup",
-      "tokens": 1000,
-      "timestamp": "2026-02-12T14:40:29.7507679+01:00",
-      "date": "2026-02-12",
-      "model": "gemini-2.5-flash"
-    },
-    {
-      "workflow": "cleanup",
-      "tokens": 1000,
-      "timestamp": "2026-02-12T14:43:12.0921701+01:00",
-      "date": "2026-02-12",
-      "model": "gemini-2.5-flash"
-    }
-  ]
+﻿{
+    "history":  [
+                    {
+                        "workflow":  "cleanup",
+                        "tokens":  1000,
+                        "timestamp":  "2026-02-12T14:40:29.7507679+01:00",
+                        "date":  "2026-02-12",
+                        "model":  "gemini-2.5-flash"
+                    },
+                    {
+                        "workflow":  "cleanup",
+                        "tokens":  1000,
+                        "timestamp":  "2026-02-12T14:43:12.0921701+01:00",
+                        "date":  "2026-02-12",
+                        "model":  "gemini-2.5-flash"
+                    },
+                    {
+                        "date":  "2026-02-16",
+                        "timestamp":  "2026-02-16T20:01:42.5432180+01:00",
+                        "tokens":  1000,
+                        "model":  "gemini-2.5-flash",
+                        "workflow":  "sprint-auto"
+                    }
+                ]
 }
