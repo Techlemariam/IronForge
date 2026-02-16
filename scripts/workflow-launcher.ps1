@@ -147,14 +147,31 @@ if (Test-Path $WorkspaceSettings) {
 }
 
 Write-Log "Invoking Gemini CLI via Start-Process (Headless Safe)..."
+Write-Log "Node Path: $(Get-Command node -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source)"
+Write-Log "Gemini JS Path: $GEMINI_JS (Exists: $(Test-Path $GEMINI_JS))"
+
 $success = $false
 try {
   $promptValue = "Execute /$Workflow"
+  # Use an array for ArgumentList for better reliability
+  $ArgList = @(
+    "--no-deprecation",
+    $GEMINI_JS,
+    "-p",
+    $promptValue,
+    "--model",
+    $Model,
+    "--yolo",
+    "--sandbox=false"
+  )
+  
+  Write-Log "Arguments: $($ArgList -join ' ')"
+
   # Use Start-Process to avoid terminal attachment issues (AttachConsole) in headless environments
-  $proc = Start-Process -FilePath "node" -ArgumentList "--no-deprecation", "`"$GEMINI_JS`"", "-p", "`"$promptValue`"", "--model", "$Model", "--yolo", "--sandbox=false" `
+  $proc = Start-Process -FilePath "node" -ArgumentList $ArgList `
     -Wait -NoNewWindow -PassThru -RedirectStandardOutput $LOG_FILE -RedirectStandardError $LOG_FILE
     
-  $exitCode = $proc.ExitCode
+  $exitCode = if ($null -ne $proc) { $proc.ExitCode } else { -1 }
   Write-Log "Gemini CLI finished with exit code: $exitCode"
   
   if ($exitCode -eq 0) {
