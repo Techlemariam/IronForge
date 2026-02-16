@@ -110,3 +110,20 @@ export const TitanMutationSchema = z.object({
 });
 
 export type TitanMutation = z.infer<typeof TitanMutationSchema>;
+
+/**
+ * Schema for starting a boss fight.
+ */
+export const StartBossFightSchema = z.object({
+  bossId: z.string(),
+  tier: z.enum(["STORY", "HEROIC", "TITAN_SLAYER"]),
+});
+
+/**
+ * Schema for performing a combat action.
+ */
+export const PerformCombatActionInputSchema = z.object({
+  action: z.any(), // CombatAction type is complex, using any for validation here
+  clientState: z.any().optional(),
+});
+
