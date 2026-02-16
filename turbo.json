@@ -37,6 +37,21 @@
                 "DIRECT_URL"
             ]
         },
+        "test:coverage": {
+            "dependsOn": [],
+            "outputs": [
+                "coverage/**"
+            ],
+            "inputs": [
+                "src/**/*.tsx",
+                "src/**/*.ts",
+                "test/**/*.ts"
+            ],
+            "env": [
+                "DATABASE_URL",
+                "DIRECT_URL"
+            ]
+        },
         "lint": {
             "inputs": [
                 "src/**/*.tsx",
