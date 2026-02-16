@@ -154,8 +154,8 @@ Write-Log "Gemini JS Path: $GEMINI_JS (Exists: $(Test-Path $GEMINI_JS))"
 
 $success = $false
 try {
-  $promptValue = "Execute /$Workflow"
-  # Use an array for ArgumentList for better reliability. Do not add extra quotes here; Start-Process handles it.
+  $promptValue = "`"Execute /$Workflow`""
+  # Use an array for ArgumentList for better reliability.
   $ArgList = @(
     "--no-deprecation",
     $GEMINI_JS,
