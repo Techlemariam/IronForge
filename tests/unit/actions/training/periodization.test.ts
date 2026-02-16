@@ -1,17 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import * as periodizationActions from '@/actions/training/periodization';
-import { prisma } from '@/lib/prisma';
+import prisma from '@/lib/prisma';
 import {
     calculateVolumeL3,
     wellnessToRecoveryFactor
 } from '@/utils/volumeCalculatorEnhanced';
-
-// Mock DB
-vi.mock('@/lib/prisma', () => ({
-    prisma: {
-        user: { findUnique: vi.fn() }
-    }
-}));
 
 // Mock Utils
 vi.mock('@/utils/volumeCalculatorEnhanced', () => ({
@@ -27,8 +20,8 @@ describe('Periodization Actions', () => {
 
     describe('generatePeriodizationPlanAction', () => {
         it('should generate plan for HYPERTROPHY week 1', async () => {
-            (prisma.user.findUnique as any).mockResolvedValue({ titan: { level: 5 } }); // Beginner
-            (calculateVolumeL3 as any).mockReturnValue({ optimal: 10 });
+            vi.mocked(prisma.user.findUnique).mockResolvedValue({ titan: { level: 5 } } as any); // Beginner
+            vi.mocked(calculateVolumeL3).mockReturnValue({ optimal: 10 } as any);
 
             const result = await periodizationActions.generatePeriodizationPlanAction('u1', 'HYPERTROPHY', 1);
 
@@ -40,8 +33,8 @@ describe('Periodization Actions', () => {
 
         it('should resolve correct phase for later weeks', async () => {
             // Hypertrophy: Acc (4w), Int (3w). Week 5 should be Intensification Week 1.
-            (prisma.user.findUnique as any).mockResolvedValue({ titan: { level: 20 } });
-            (calculateVolumeL3 as any).mockReturnValue({ optimal: 10 });
+            vi.mocked(prisma.user.findUnique).mockResolvedValue({ titan: { level: 20 } } as any);
+            vi.mocked(calculateVolumeL3).mockReturnValue({ optimal: 10 } as any);
 
             const result = await periodizationActions.generatePeriodizationPlanAction('u1', 'HYPERTROPHY', 5);
 
@@ -54,7 +47,7 @@ describe('Periodization Actions', () => {
 
     describe('adaptPlanToWellnessAction', () => {
         it('should reduce volume on low recovery', async () => {
-            (wellnessToRecoveryFactor as any).mockReturnValue(0.7);
+            vi.mocked(wellnessToRecoveryFactor).mockReturnValue(0.7);
 
             const startPlan: any = {
                 recommendations: {
@@ -73,7 +66,7 @@ describe('Periodization Actions', () => {
         });
 
         it('should keep plan on neutral recovery', async () => {
-            (wellnessToRecoveryFactor as any).mockReturnValue(1.0);
+            vi.mocked(wellnessToRecoveryFactor).mockReturnValue(1.0);
 
             const startPlan: any = {
                 recommendations: {
@@ -93,13 +86,13 @@ describe('Periodization Actions', () => {
 
     describe('getRecommendedGoalAction', () => {
         it('should return HYPERTROPHY for beginners', async () => {
-            (prisma.user.findUnique as any).mockResolvedValue({ titan: { level: 10 } });
+            vi.mocked(prisma.user.findUnique).mockResolvedValue({ titan: { level: 10 } } as any);
             const result = await periodizationActions.getRecommendedGoalAction('u1');
             expect(result).toBe('HYPERTROPHY');
         });
 
         it('should return STRENGTH for intermediates', async () => {
-            (prisma.user.findUnique as any).mockResolvedValue({ titan: { level: 25 } });
+            vi.mocked(prisma.user.findUnique).mockResolvedValue({ titan: { level: 25 } } as any);
             const result = await periodizationActions.getRecommendedGoalAction('u1');
             expect(result).toBe('STRENGTH');
         });

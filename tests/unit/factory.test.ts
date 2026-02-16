@@ -1,43 +1,24 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { getFactoryStatus } from '@/actions/factory';
-import { prisma } from '@/lib/prisma';
+import prisma from '@/lib/prisma';
 import { createClient } from '@/utils/supabase/server';
 
-// Mock Prisma
-vi.mock('@/lib/prisma', () => ({
-    prisma: {
-        factoryStatus: {
-            findMany: vi.fn(),
-            upsert: vi.fn(),
-        },
-    },
-}));
-
-// Mock Supabase
-vi.mock('@/utils/supabase/server', () => ({
-    createClient: vi.fn(),
-}));
-
 describe('Factory Actions', () => {
-    let mockSupabase: any;
 
     beforeEach(() => {
         vi.clearAllMocks();
-        mockSupabase = {
-            auth: {
-                getUser: vi.fn(),
-            },
-        };
-        (createClient as any).mockResolvedValue(mockSupabase);
     });
 
     describe('getFactoryStatus', () => {
         it('should return status data even if unauthenticated', async () => {
+            const mockSupabase = await createClient();
+            vi.mocked(mockSupabase.auth.getSession).mockResolvedValue({ data: { session: null }, error: null } as any);
+
             // Mock data
             const mockData = [
                 { id: '1', station: 'design', health: 100, current: null, updatedAt: new Date() },
             ];
-            (prisma.factoryStatus.findMany as any).mockResolvedValue(mockData);
+            vi.mocked(prisma.factoryStatus.findMany).mockResolvedValue(mockData as any);
 
             const result = await getFactoryStatus();
 
@@ -46,13 +27,17 @@ describe('Factory Actions', () => {
         });
 
         it('should return status data when it exists', async () => {
-            mockSupabase.auth.getUser.mockResolvedValue({ data: { user: { id: 'test-user' } }, error: null });
+            const mockSupabase = await createClient();
+            vi.mocked(mockSupabase.auth.getSession).mockResolvedValue({
+                data: { session: { user: { id: 'test-user', email: 'test@ironforge.rpg' } } },
+                error: null
+            } as any);
 
             const mockData = [
                 { id: '1', station: 'design', health: 100, current: null, updatedAt: new Date() },
             ];
 
-            (prisma.factoryStatus.findMany as any).mockResolvedValue(mockData);
+            vi.mocked(prisma.factoryStatus.findMany).mockResolvedValue(mockData as any);
 
             const result = await getFactoryStatus();
 
@@ -62,29 +47,37 @@ describe('Factory Actions', () => {
         });
 
         it('should seed data if empty', async () => {
-            mockSupabase.auth.getUser.mockResolvedValue({ data: { user: { id: 'test-user' } }, error: null });
+            const mockSupabase = await createClient();
+            vi.mocked(mockSupabase.auth.getSession).mockResolvedValue({
+                data: { session: { user: { id: 'test-user', email: 'test@ironforge.rpg' } } },
+                error: null
+            } as any);
 
-            // First call returns empty
-            (prisma.factoryStatus.findMany as any)
-                .mockResolvedValueOnce([])
-                // Second call (after seed) returns data
-                .mockResolvedValueOnce([
-                    { id: '1', station: 'design', health: 100, current: null, updatedAt: new Date() }
-                ]);
+            // Mock findMany to return empty array initially to trigger seeding
+            vi.mocked(prisma.factoryStatus.findMany).mockResolvedValueOnce([]);
+
+            // Mock upsert to return data
+            vi.mocked(prisma.factoryStatus.upsert).mockResolvedValue({
+                id: '1', station: 'any', health: 100, current: null, updatedAt: new Date()
+            } as any);
 
             await getFactoryStatus();
 
-            // Should have attempted to seed 6 stations using upsert (design, fabrication, qc, scrap, ship, recovery)
-            expect(prisma.factoryStatus.upsert).toHaveBeenCalledTimes(6);
-            // Should have called findMany twice
-            expect(prisma.factoryStatus.findMany).toHaveBeenCalledTimes(2);
+            // Should have attempted to seed 18 stations (Gemini Brotherhood roster)
+            expect(prisma.factoryStatus.upsert).toHaveBeenCalledTimes(18);
+            // Should have called findMany once
+            expect(prisma.factoryStatus.findMany).toHaveBeenCalledTimes(1);
         });
 
         it('should return empty array and log error on failure', async () => {
-            mockSupabase.auth.getUser.mockResolvedValue({ data: { user: { id: 'test-user' } }, error: null });
+            const mockSupabase = await createClient();
+            vi.mocked(mockSupabase.auth.getSession).mockResolvedValue({
+                data: { session: { user: { id: 'test-user', email: 'test@ironforge.rpg' } } },
+                error: null
+            } as any);
 
             const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
-            (prisma.factoryStatus.findMany as any).mockRejectedValue(new Error('DB Error'));
+            vi.mocked(prisma.factoryStatus.findMany).mockRejectedValue(new Error('DB Error'));
 
             const result = await getFactoryStatus();
 

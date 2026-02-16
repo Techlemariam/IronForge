@@ -43,21 +43,22 @@ test.describe('Factory Orchestration Dashboard', () => {
 
     test('should verify Quota Gauges rendering and numerical values', async ({ page }) => {
         // Verify we have at least one radial gauge
-        await expect(page.locator('svg')).toHaveCount(quotaCount => quotaCount >= 1, { timeout: 15000 });
+        const svgs = page.locator('svg');
+        await expect(svgs.first()).toBeVisible({ timeout: 15000 });
 
         // Check for specific model labels
         await expect(page.getByText(/Gemini Flash/i)).toBeVisible({ timeout: 15000 });
 
         // Verify numerical values (Progress %, Hours, and Token Usage)
         // Progress should be a percentage
-        await expect(page.getByText(/%/)).first().toBeVisible();
+        await expect(page.getByText(/%/).first()).toBeVisible();
 
         // Hours left
-        await expect(page.getByText(/h/)).first().toBeVisible();
+        await expect(page.getByText(/h/).first()).toBeVisible();
 
         // Token usage count (e.g. "0 / 1,000,000")
         // We use a regex to look for digits/commas separated by a slash
-        await expect(page.getByText(/[\d,]+\s*\/\s*[\d,]+/)).first().toBeVisible();
+        await expect(page.getByText(/[\d,]+\s*\/\s*[\d,]/).first()).toBeVisible();
     });
 
     test('should handle Emergency Stop toggle', async ({ page }) => {

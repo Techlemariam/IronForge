@@ -33,7 +33,25 @@ describe("Bio-Integrations Tests", () => {
             expect(result).toEqual(expect.objectContaining({
                 date: "2024-01-01",
                 restingHR: 50,
-                readiness: 80,
+                bodyBattery: 80,
+            }));
+        });
+
+        it("should use default bodyBattery if readiness is missing", async () => {
+            const mockResponse = {
+                id: "w1",
+                date: "2024-01-01",
+            };
+
+            fetchMock.mockResolvedValue({
+                ok: true,
+                json: async () => mockResponse,
+            });
+
+            const result = await getWellness("2024-01-01", apiKey, athleteId);
+
+            expect(result).toEqual(expect.objectContaining({
+                bodyBattery: 50,
             }));
         });
 

@@ -3,33 +3,11 @@ import { updateCardioDuelProgressInternalWithUser } from '@/actions/pvp/duel';
 import prisma from '@/lib/prisma';
 import { DuelRewardsService } from '@/services/pvp/DuelRewardsService';
 
-// Mock Prisma (Handle both default and named imports)
-vi.mock('@/lib/prisma', () => {
-    const mockPrisma = {
-        duelChallenge: {
-            findUnique: vi.fn(),
-            update: vi.fn()
-        },
-        user: {
-            update: vi.fn()
-        }
-    };
-    return {
-        default: mockPrisma,
-        prisma: mockPrisma
-    };
-});
-
 // Mock Rewards Service
 vi.mock('@/services/pvp/DuelRewardsService', () => ({
     DuelRewardsService: {
-        calculateRewards: vi.fn().mockResolvedValue({ xp: 100, gold: 50, kineticEnergy: 10 })
+        calculateRewards: vi.fn()
     }
-}));
-
-// Mock Supabase (to avoid import errors)
-vi.mock('@/utils/supabase/server', () => ({
-    createClient: vi.fn()
 }));
 
 // Mock Next Cache
@@ -55,7 +33,7 @@ describe('Cardio Duel Logic', () => {
             activityType: 'RUNNING'
         };
 
-        (prisma.duelChallenge.findUnique as any).mockResolvedValue(duel);
+        vi.mocked(prisma.duelChallenge.findUnique).mockResolvedValue(duel as any);
 
         await updateCardioDuelProgressInternalWithUser('duel1', 'user1', 1.5, 10);
 
@@ -82,7 +60,8 @@ describe('Cardio Duel Logic', () => {
             activityType: 'RUNNING'
         };
 
-        (prisma.duelChallenge.findUnique as any).mockResolvedValue(duel);
+        vi.mocked(prisma.duelChallenge.findUnique).mockResolvedValue(duel as any);
+        vi.mocked(DuelRewardsService.calculateRewards).mockResolvedValue({ xp: 100, gold: 50, kineticEnergy: 10 } as any);
 
         const result = await updateCardioDuelProgressInternalWithUser('duel1', 'user1', 1.0, 10);
 
@@ -104,7 +83,7 @@ describe('Cardio Duel Logic', () => {
     });
 
     it('does not update if duel is not active', async () => {
-        (prisma.duelChallenge.findUnique as any).mockResolvedValue({ status: 'PENDING' });
+        vi.mocked(prisma.duelChallenge.findUnique).mockResolvedValue({ status: 'PENDING' } as any);
         const result = await updateCardioDuelProgressInternalWithUser('duel1', 'user1', 1.0, 10);
         expect(result.success).toBe(false);
     });

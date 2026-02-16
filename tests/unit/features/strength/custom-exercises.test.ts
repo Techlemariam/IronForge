@@ -12,7 +12,7 @@ vi.mock('@/utils/supabase/server', () => ({
     }))
 }));
 
-import { prisma } from '@/lib/prisma';
+import prisma from '@/lib/prisma';
 import { createCustomExercise, getCustomExercises } from '@/features/strength/actions/custom-exercises';
 
 // Access mocked prisma functions

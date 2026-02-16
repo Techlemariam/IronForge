@@ -1,34 +1,13 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { getTerritoryAppData } from '@/actions/systems/territory';
+import prisma from '@/lib/prisma';
+import { getSession } from '@/lib/auth';
 
-// Mock dependencies
-const prismaMock = vi.hoisted(() => ({
-    tileControl: {
-        findMany: vi.fn(),
-    },
-    user: {
-        findUnique: vi.fn(),
-    },
-    userTerritoryStats: {
-        findUnique: vi.fn(),
-    },
-    territoryTile: {
-        findMany: vi.fn().mockResolvedValue([]),
-    }
-}));
-
-const notificationServiceMock = vi.hoisted(() => ({
-    create: vi.fn(),
-}));
-
-// Mock modules
-vi.mock('@/lib/prisma', () => ({
-    default: prismaMock,
-    prisma: prismaMock,
-}));
-
+// Mock dependencies (Keep these specific ones)
 vi.mock('@/services/notifications', () => ({
-    NotificationService: notificationServiceMock,
+    NotificationService: {
+        create: vi.fn(),
+    },
 }));
 
 // Mock tileUtils functions we use
@@ -40,19 +19,8 @@ vi.mock('@/lib/territory/tileUtils', () => ({
     HOME_ZONE_RADIUS_METERS: 500,
 }));
 
-// Mock server auth
-vi.mock('@/utils/supabase/server', () => ({
-    createClient: () => ({
-        auth: {
-            getUser: () => Promise.resolve({ data: { user: { id: 'user-123' } }, error: null }),
-        },
-    }),
-}));
-
 vi.mock('@/lib/auth', () => ({
-    getSession: vi.fn().mockResolvedValue({
-        user: { id: 'user-123', email: 'test@example.com' },
-    }),
+    getSession: vi.fn(),
 }));
 
 describe('territory actions', () => {
@@ -62,22 +30,27 @@ describe('territory actions', () => {
 
     describe('getTerritoryAppData', () => {
         it('should return territory data when user is found', async () => {
+            // Mock session - Must be inside it for mockReset compatibility
+            vi.mocked(getSession).mockResolvedValue({
+                user: { id: 'user-123', email: 'test@example.com' },
+            } as any);
+
             // Mock happy path where user exists
-            prismaMock.user.findUnique.mockResolvedValue({
+            vi.mocked(prisma.user.findUnique).mockResolvedValue({
                 id: 'user-123',
                 homeLatitude: 59.32,
                 homeLongitude: 18.06
-            });
+            } as any);
 
             // Mock Stats
-            prismaMock.userTerritoryStats.findUnique.mockResolvedValue({
+            vi.mocked(prisma.userTerritoryStats.findUnique).mockResolvedValue({
                 userId: 'user-123',
                 ownedTiles: 10,
                 controlPoints: 500,
-            });
+            } as any);
 
             // Mock Control Records with nested tile relation
-            prismaMock.tileControl.findMany.mockResolvedValue([
+            vi.mocked(prisma.tileControl.findMany).mockResolvedValue([
                 {
                     tileId: 'tile-1',
                     controllerId: 'user-123',
@@ -100,7 +73,7 @@ describe('territory actions', () => {
                         currentOwner: { heroName: 'Hero' }
                     }
                 }
-            ]);
+            ] as any);
 
             const result = await getTerritoryAppData();
 
@@ -109,7 +82,6 @@ describe('territory actions', () => {
             expect(result.stats).toBeDefined();
 
             // Verify Home Zone logic
-            // We mocked isWithinHomeZone to return true for 'home_zone_tile'
             const homeTile = result.tiles.find((t: any) => t.id === 'home_zone_tile');
             expect(homeTile).toBeDefined();
             expect(homeTile?.state).toBe('HOME_ZONE');

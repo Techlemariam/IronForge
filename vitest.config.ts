@@ -9,6 +9,7 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     globals: true,
+    mockReset: true,
     alias: {
       '@': path.resolve(dirname, './src'),
       '@clerk/nextjs/server': path.resolve(dirname, './tests/mocks/clerk.ts')

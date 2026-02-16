@@ -13,19 +13,6 @@ vi.mock("@/utils/supabase/server", () => ({
   })),
 }));
 
-vi.mock("@/lib/prisma", () => ({
-  default: {
-    gauntletRun: {
-      create: vi.fn(),
-      findFirst: vi.fn(),
-      count: vi.fn(),
-    },
-    user: {
-      update: vi.fn(),
-    },
-  },
-}));
-
 import { createClient } from "@/utils/supabase/server";
 import prisma from "@/lib/prisma";
 
@@ -39,6 +26,10 @@ describe("Gauntlet Server Actions", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     (createClient as any).mockResolvedValue(mockSupabase);
+    (prisma.gauntletRun.create as any).mockClear();
+    (prisma.gauntletRun.findFirst as any).mockClear();
+    (prisma.gauntletRun.count as any).mockClear();
+    (prisma.user.update as any).mockClear();
   });
 
   describe("logGauntletRunAction", () => {

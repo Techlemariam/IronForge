@@ -36,31 +36,57 @@ vi.mock('next/headers', () => ({
     headers: vi.fn(async () => new Map()),
 }));
 
-// Mock Supabase Server Client - Global
-vi.mock('@/utils/supabase/server', () => ({
-    createClient: vi.fn(async () => ({
-        auth: {
-            getUser: vi.fn(async () => ({
-                data: { user: { id: 'test-user-123' } },
-                error: null,
-            })),
-            getSession: vi.fn(async () => ({
-                data: { session: null },
-                error: null,
-            })),
-        },
-        from: vi.fn(() => ({
-            select: vi.fn().mockReturnThis(),
-            insert: vi.fn().mockReturnThis(),
-            update: vi.fn().mockReturnThis(),
-            delete: vi.fn().mockReturnThis(),
-            eq: vi.fn().mockReturnThis(),
-            single: vi.fn().mockResolvedValue({ data: null, error: null }),
+// Global Supabase Mock Instance
+const mockSupabase = {
+    auth: {
+        getUser: vi.fn(async () => ({
+            data: { user: { id: 'test-user-123' } },
+            error: null,
         })),
+        getSession: vi.fn(async () => ({
+            data: { session: null },
+            error: null,
+        })),
+    },
+    from: vi.fn(() => ({
+        select: vi.fn().mockReturnThis(),
+        insert: vi.fn().mockReturnThis(),
+        update: vi.fn().mockReturnThis(),
+        delete: vi.fn().mockReturnThis(),
+        eq: vi.fn().mockReturnThis(),
+        single: vi.fn().mockResolvedValue({ data: null, error: null }),
     })),
+};
+
+vi.mock('@/utils/supabase/server', () => ({
+    createClient: vi.fn(async () => mockSupabase),
 }));
 
-// Prisma is mocked locally in test files to prevent conflicts
+// Global Prisma Mock Instance
+const mockPrisma = {
+    user: { findUnique: vi.fn(), findFirst: vi.fn(), findMany: vi.fn(), create: vi.fn(), update: vi.fn(), delete: vi.fn(), upsert: vi.fn(), count: vi.fn() },
+    titan: { findUnique: vi.fn(), findFirst: vi.fn(), findMany: vi.fn(), create: vi.fn(), update: vi.fn(), delete: vi.fn(), upsert: vi.fn(), count: vi.fn() },
+    exercise: { findUnique: vi.fn(), findFirst: vi.fn(), findMany: vi.fn(), create: vi.fn(), update: vi.fn(), delete: vi.fn(), upsert: vi.fn(), count: vi.fn() },
+    exerciseLog: { findUnique: vi.fn(), findFirst: vi.fn(), findMany: vi.fn(), create: vi.fn(), update: vi.fn(), delete: vi.fn(), upsert: vi.fn(), count: vi.fn() },
+    cardioLog: { findUnique: vi.fn(), findFirst: vi.fn(), findMany: vi.fn(), create: vi.fn(), update: vi.fn(), delete: vi.fn(), upsert: vi.fn(), count: vi.fn() },
+    workoutTemplate: { findUnique: vi.fn(), findFirst: vi.fn(), findMany: vi.fn(), create: vi.fn(), update: vi.fn(), delete: vi.fn(), upsert: vi.fn(), count: vi.fn() },
+    gauntletRun: { findUnique: vi.fn(), findFirst: vi.fn(), findMany: vi.fn(), create: vi.fn(), update: vi.fn(), delete: vi.fn(), upsert: vi.fn(), count: vi.fn() },
+    customExercise: { findUnique: vi.fn(), findFirst: vi.fn(), findMany: vi.fn(), create: vi.fn(), update: vi.fn(), delete: vi.fn(), upsert: vi.fn(), count: vi.fn() },
+    season: { findUnique: vi.fn(), findFirst: vi.fn(), findMany: vi.fn(), create: vi.fn(), update: vi.fn(), delete: vi.fn(), upsert: vi.fn(), count: vi.fn() },
+    userBattlePass: { findUnique: vi.fn(), findFirst: vi.fn(), findMany: vi.fn(), create: vi.fn(), update: vi.fn(), delete: vi.fn(), upsert: vi.fn(), count: vi.fn() },
+    battlePassTier: { findUnique: vi.fn(), findFirst: vi.fn(), findMany: vi.fn(), create: vi.fn(), update: vi.fn(), delete: vi.fn(), upsert: vi.fn(), count: vi.fn() },
+    factoryStatus: { findUnique: vi.fn(), findFirst: vi.fn(), findMany: vi.fn(), create: vi.fn(), update: vi.fn(), delete: vi.fn(), upsert: vi.fn(), count: vi.fn() },
+    factoryTask: { findUnique: vi.fn(), findFirst: vi.fn(), findMany: vi.fn(), create: vi.fn(), update: vi.fn(), delete: vi.fn(), upsert: vi.fn(), count: vi.fn() },
+    tileControl: { findUnique: vi.fn(), findFirst: vi.fn(), findMany: vi.fn(), create: vi.fn(), update: vi.fn(), delete: vi.fn(), upsert: vi.fn(), count: vi.fn() },
+    userTerritoryStats: { findUnique: vi.fn(), findFirst: vi.fn(), findMany: vi.fn(), create: vi.fn(), update: vi.fn(), delete: vi.fn(), upsert: vi.fn(), count: vi.fn() },
+    territoryTile: { findUnique: vi.fn(), findFirst: vi.fn(), findMany: vi.fn(), create: vi.fn(), update: vi.fn(), delete: vi.fn(), upsert: vi.fn(), count: vi.fn() },
+    duelChallenge: { findUnique: vi.fn(), findFirst: vi.fn(), findMany: vi.fn(), create: vi.fn(), update: vi.fn(), delete: vi.fn(), upsert: vi.fn(), count: vi.fn() },
+};
+
+vi.mock('@/lib/prisma', () => ({
+    prisma: mockPrisma,
+    default: mockPrisma,
+}));
 
 const setup = async () => {
     // any async setup if needed

@@ -146,7 +146,7 @@ export function TitanXPBar({
         {/* Technical Grid Background */}
         <div className="absolute inset-0 w-full h-full flex justify-between px-2 z-0 opacity-20 pointer-events-none">
           {[...Array(9)].map((_, i) => (
-            <div key={i} className="w-[1px] h-full bg-zinc-500" />
+            <div key={i} className="w-px h-full bg-zinc-500" />
           ))}
         </div>
 

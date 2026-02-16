@@ -5,6 +5,7 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import { createClient } from '@/utils/supabase/server';
 import { AssemblyLineTask, FactoryService } from '@/services/game/FactoryService';
+import { z } from 'zod';
 
 const COST_SEK_PER_ACTIVE_STATION = 0.042;
 
@@ -18,14 +19,16 @@ async function verifyFactoryAuth() {
 /**
  * Represents the health and status of a single factory station.
  */
-export type FactoryStatusData = {
-    id: string;
-    station: string;
-    health: number;
-    current: string | null;
-    updatedAt: Date;
-    metadata: any;
-};
+export const FactoryStatusSchema = z.object({
+    id: z.string(),
+    station: z.string(),
+    health: z.number().min(0).max(100),
+    current: z.string().nullable(),
+    updatedAt: z.date(),
+    metadata: z.any().optional(),
+});
+
+export type FactoryStatusData = z.infer<typeof FactoryStatusSchema>;
 
 /**
  * Fetches the current status of all factory stations.

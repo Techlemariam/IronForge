@@ -287,39 +287,6 @@ export async function processWeeklyTerritoryClaimsAction() {
             }
         }
 
-        // Update territory ownership
-        if (winner.guildId !== previousOwner) {
-            // Close previous owner's history
-            if (previousOwner) {
-                await prisma.territoryHistory.updateMany({
-                    where: {
-                        territoryId: territory.id,
-                        guildId: previousOwner,
-                        lostAt: null,
-                    },
-                    data: { lostAt: new Date() },
-                });
-            }
-
-            // Create new history entry
-            await prisma.territoryHistory.create({
-                data: {
-                    territoryId: territory.id,
-                    guildId: winner.guildId,
-                    weekNumber: lastWeek,
-                    year: lastYear,
-                },
-            });
-
-            await prisma.territory.update({
-                where: { id: territory.id },
-                data: {
-                    controlledById: winner.guildId,
-                    controlledAt: new Date(),
-                },
-            });
-        }
-
         results.push({
             territoryId: territory.id,
             territoryName: territory.name,
@@ -327,6 +294,26 @@ export async function processWeeklyTerritoryClaimsAction() {
             newOwner: winner.guildId,
             reason: `Won with ${winner.totalVolume.toFixed(0)}kg total volume`,
         });
+
+        // Notify Guild Members (New and Old Owner)
+        if (winner.guildId !== previousOwner) {
+            const { NotificationService } = await import("@/services/notifications");
+            const guildMembers = await prisma.user.findMany({
+                where: { guildId: { in: [previousOwner, winner.guildId].filter(Boolean) as string[] } },
+                select: { id: true, guildId: true }
+            });
+
+            for (const member of guildMembers) {
+                const isWinner = member.guildId === winner.guildId;
+                await NotificationService.create({
+                    userId: member.id,
+                    type: "TERRITORY_UPDATE",
+                    message: isWinner
+                        ? `GLORY! Your guild has conquered ${territory.name}!`
+                        : `DEFEAT! Your guild has lost control of ${territory.name}.`
+                });
+            }
+        }
     }
 
     revalidatePath("/world-map");
@@ -339,13 +326,17 @@ export async function processWeeklyTerritoryClaimsAction() {
 export async function getGuildTerritoryBonusesAction(guildId: string) {
     const territories = await prisma.territory.findMany({
         where: { controlledById: guildId },
+        orderBy: { controlledAt: 'asc' } // Oldest territories kept if over limit
     });
 
     let xpBonus = 0;
     let goldBonus = 0;
     let defenseBonus = 0;
 
-    for (const territory of territories) {
+    // Apply 3-territory cap
+    const activeTerritories = territories.slice(0, 3);
+
+    for (const territory of activeTerritories) {
         const bonuses = territory.bonuses as TerritoryWithControl["bonuses"];
         xpBonus += bonuses.xpBonus ?? 0;
         goldBonus += bonuses.goldBonus ?? 0;
@@ -353,6 +344,7 @@ export async function getGuildTerritoryBonusesAction(guildId: string) {
     }
 
     // Region control bonus (all territories in a region)
+    // Only counts if the guilt controls the whole region, regardless of the 3-tile cap for raw bonuses
     const regions = [...new Set(territories.map((t) => t.region))];
     for (const region of regions) {
         const regionTerritories = await prisma.territory.findMany({
@@ -371,6 +363,7 @@ export async function getGuildTerritoryBonusesAction(guildId: string) {
         goldBonus,
         defenseBonus,
         territoriesControlled: territories.length,
+        activeBonusTiles: activeTerritories.length,
         regionsControlled: regions.length,
     };
 }

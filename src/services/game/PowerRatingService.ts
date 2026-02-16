@@ -4,6 +4,14 @@ import {
 } from "@/lib/powerRating";
 
 /**
+ * Interface for a single set within an exercise log.
+ */
+interface WorkoutSet {
+    reps?: number | string;
+    weight?: number | string;
+}
+
+/**
  * Service for calculating and managing Titan Power Ratings.
  * Implements Oracle 3.0 Power Score logic.
  */
@@ -27,7 +35,7 @@ export class PowerRatingService {
         let totalVolume = 0;
 
         for (const log of logs) {
-            const sets = log.sets as any[];
+            const sets = log.sets as unknown as WorkoutSet[];
             if (Array.isArray(sets)) {
                 for (const set of sets) {
                     const weight = Number(set.weight || 0);
@@ -62,22 +70,68 @@ export class PowerRatingService {
     }
 
     /**
-     * Get Consecutive Weeks Streak.
-     * Uses user.loginStreak or titan.streak as a proxy for now, 
-     * or counts active weeks from logs.
-     * MVP: Use Titan Streak / 7 if available, otherwise 0.
-     * 
-     * Actually, let's calculate it accurately from logs if possible, 
-     * or fallback to `titan.streak` (which tracks daily logins) / 7.
+     * Get Consecutive Active Weeks Streak.
+     * Counts how many consecutive calendar weeks the user has recorded at least one log.
      */
     static async getConsecutiveWeeks(userId: string): Promise<number> {
-        const user = await prisma.user.findUnique({
-            where: { id: userId },
-            select: { loginStreak: true } // Daily login streak
-        });
+        const { startOfWeek, subWeeks, getISOWeek, getISOWeekYear } = await import("date-fns");
 
-        // MVP Proxy: Streak Days / 7
-        return user ? Math.floor(user.loginStreak / 7) : 0;
+        // Caching week-year keys for performance. Streak bonus caps at 10, so we only need ~15 weeks of data maximum
+        // to determine if the current streak is at least 10.
+        const [exerciseLogs, cardioLogs] = await Promise.all([
+            prisma.exerciseLog.findMany({
+                where: { userId },
+                select: { date: true },
+                orderBy: { date: "desc" },
+                take: 100 // Optimization: We don't need all training history for a 10-week cap
+            }),
+            prisma.cardioLog.findMany({
+                where: { userId },
+                select: { date: true },
+                orderBy: { date: "desc" },
+                take: 100
+            })
+        ]);
+
+        const logWeeksSet = new Set<string>();
+        const appendToSet = (date: Date) => {
+            const week = getISOWeek(date);
+            const year = getISOWeekYear(date);
+            logWeeksSet.add(`${year}-W${week}`);
+        };
+
+        exerciseLogs.forEach(l => appendToSet(l.date));
+        cardioLogs.forEach(l => appendToSet(l.date));
+
+        if (logWeeksSet.size === 0) return 0;
+
+        let consecutiveWeeks = 0;
+        let currentCheckDate = startOfWeek(new Date(), { weekStartsOn: 1 });
+        const now = new Date();
+
+        while (true) {
+            const week = getISOWeek(currentCheckDate);
+            const year = getISOWeekYear(currentCheckDate);
+            const key = `${year}-W${week}`;
+
+            if (logWeeksSet.has(key)) {
+                consecutiveWeeks++;
+                currentCheckDate = subWeeks(currentCheckDate, 1);
+            } else {
+                // Grace Period: If no log this week, but it's the current week, continue to last week
+                const isCurrentWeek = getISOWeek(now) === week && getISOWeekYear(now) === year;
+                if (isCurrentWeek) {
+                    currentCheckDate = subWeeks(currentCheckDate, 1);
+                    continue;
+                }
+                break;
+            }
+
+            // Safety break: Consistency bonus caps at 10, no need to count forever
+            if (consecutiveWeeks >= 20) break;
+        }
+
+        return consecutiveWeeks;
     }
 
     /**
@@ -122,8 +176,8 @@ export class PowerRatingService {
                 powerRating: result.powerRating,
                 strengthIndex: result.strengthIndex,
                 cardioIndex: result.cardioIndex,
-                // mrvAdherence is deprecated in 3.0 logic but kept for DB compat? 
-                // We can set it to 1.0 or repurpose it as 'Activity Index' later.
+                // mrvAdherence is deprecated in 3.0 logic but kept for database compatibility.
+                // Defaults to 1.0 (perfect adherence).
                 // For now, let's leave it as 1.0.
                 mrvAdherence: 1.0,
                 lastPowerCalcAt: new Date(),

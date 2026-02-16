@@ -10,8 +10,8 @@ interface PowerRatingBadgeProps {
 export function PowerRatingBadge({ rating, className }: PowerRatingBadgeProps) {
     // Determine Tier Color
     const getTierColor = (r: number) => {
-        if (r >= 900) return "text-cyan-400 drop-shadow-[0_0_8px_rgba(34,211,238,0.8)]"; // Diamond/Cyber
-        if (r >= 750) return "text-[#ffd700] drop-shadow-[0_0_8px_rgba(255,215,0,0.6)]"; // Gold
+        if (r >= 900) return "text-cyan drop-shadow-[0_0_8px_var(--color-cyan)]"; // Diamond/Cyber
+        if (r >= 750) return "text-gold drop-shadow-[0_0_8px_var(--color-gold)]"; // Gold
         if (r >= 500) return "text-zinc-300 drop-shadow-[0_0_5px_rgba(255,255,255,0.4)]"; // Silver
         return "text-amber-700"; // Bronze
     };

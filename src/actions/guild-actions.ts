@@ -60,17 +60,27 @@ export async function contestTerritoryAction(guildId: string, territoryId: strin
 
     if (existingEntry) throw new Error("Already contesting this territory this week");
 
-    // Charge User
+    // Charge Guild or User
     return await prisma.$transaction(async (tx) => {
+        const guild = await tx.guild.findUnique({ where: { id: guildId }, select: { gold: true, leaderId: true } });
         const user = await tx.user.findUnique({ where: { id: userId } });
-        if (!user || user.gold < CONTEST_COST_GOLD) {
-            throw new Error(`Insufficient gold. Requires ${CONTEST_COST_GOLD} Gold.`);
-        }
 
-        await tx.user.update({
-            where: { id: userId },
-            data: { gold: { decrement: CONTEST_COST_GOLD } }
-        });
+        if (!user) throw new Error("User not found");
+
+        // Prefer Guild Gold if enough, otherwise fallback to User Gold if they are the leader
+        if (guild && guild.gold >= CONTEST_COST_GOLD) {
+            await tx.guild.update({
+                where: { id: guildId },
+                data: { gold: { decrement: CONTEST_COST_GOLD } }
+            });
+        } else if (user.gold >= CONTEST_COST_GOLD) {
+            await tx.user.update({
+                where: { id: userId },
+                data: { gold: { decrement: CONTEST_COST_GOLD } }
+            });
+        } else {
+            throw new Error(`Insufficient gold. Need ${CONTEST_COST_GOLD} (Guild or Personal).`);
+        }
 
         return await tx.territoryContestEntry.create({
             data: {
@@ -81,6 +91,7 @@ export async function contestTerritoryAction(guildId: string, territoryId: strin
                 workoutCount: 0,
                 totalVolume: 0,
                 xpEarned: 0,
+                memberCount: 1 // Initial member
             }
         });
     });
