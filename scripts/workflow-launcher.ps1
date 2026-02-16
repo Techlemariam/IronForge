@@ -147,13 +147,15 @@ if (Test-Path $WorkspaceSettings) {
 }
 
 Write-Log "Invoking Gemini CLI via Start-Process (Headless Safe)..."
-Write-Log "Node Path: $(Get-Command node -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source)"
+$nodePath = (Get-Command node -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source)
+if (-not $nodePath) { $nodePath = "node" }
+Write-Log "Node Path: $nodePath"
 Write-Log "Gemini JS Path: $GEMINI_JS (Exists: $(Test-Path $GEMINI_JS))"
 
 $success = $false
 try {
   $promptValue = "Execute /$Workflow"
-  # Use an array for ArgumentList for better reliability
+  # Use an array for ArgumentList for better reliability. Do not add extra quotes here; Start-Process handles it.
   $ArgList = @(
     "--no-deprecation",
     $GEMINI_JS,
@@ -167,14 +169,25 @@ try {
   
   Write-Log "Arguments: $($ArgList -join ' ')"
 
-  # Use Start-Process to avoid terminal attachment issues (AttachConsole) in headless environments
-  $proc = Start-Process -FilePath "node" -ArgumentList $ArgList `
-    -Wait -NoNewWindow -PassThru -RedirectStandardOutput $LOG_FILE -RedirectStandardError $LOG_FILE
-    
-  $exitCode = if ($null -ne $proc) { $proc.ExitCode } else { -1 }
-  Write-Log "Gemini CLI finished with exit code: $exitCode"
+  # Attempt Start-Process for headless safety
+  try {
+    $proc = Start-Process -FilePath $nodePath -ArgumentList $ArgList `
+      -Wait -NoNewWindow -PassThru -RedirectStandardOutput $LOG_FILE -RedirectStandardError $LOG_FILE -ErrorAction Stop
+      
+    $exitCode = if ($null -ne $proc) { $proc.ExitCode } else { -1 }
+    Write-Log "Gemini CLI finished with exit code: $exitCode"
+    $success = ($exitCode -eq 0)
+  }
+  catch {
+    Write-Log "Start-Process failed: $_. Falling back to direct invocation..."
+    # Fallback to direct execution if Start-Process fails (some environments/permissions)
+    & $nodePath @ArgList | Out-File -FilePath $LOG_FILE -Append -Encoding utf8
+    $exitCode = $LASTEXITCODE
+    Write-Log "Direct invocation finished with exit code: $exitCode"
+    $success = ($exitCode -eq 0)
+  }
   
-  if ($exitCode -eq 0) {
+  if ($success) {
     $success = $true
     Start-Sleep -Seconds 1
     $logContent = Get-Content $LOG_FILE -Encoding utf8
