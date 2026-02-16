@@ -62,7 +62,7 @@ export const PlannerService = {
       id: "unknown",
       hrv: null,
       restingHR: null,
-      readiness: null,
+      bodyBattery: null,
       sleepScore: null,
       sleepSecs: null,
       rampRate: null,
