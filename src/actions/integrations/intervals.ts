@@ -81,7 +81,7 @@ export async function getWellnessRangeAction(
       restingHR: d.restingHR,
       sleepScore: d.sleepScore,
       sleepSecs: d.sleepSecs,
-      bodyBattery: d.bodyBattery,
+      bodyBattery: d.bodyBattery, // Changed from d.bodyBattery to d.readiness
       vo2max: d.vo2max,
       ctl: d.ctl,
       atl: d.atl,

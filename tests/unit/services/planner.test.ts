@@ -18,9 +18,19 @@ vi.mock("@/lib/prisma", () => {
     prisma: mockPrisma,
   };
 });
-vi.mock("@/services/auditorOrchestrator", () => ({
-  runFullAudit: vi.fn().mockResolvedValue({ highestPriorityGap: null }),
-}));
+vi.mock("@/services/auditorOrchestrator", () => {
+  console.log("Mock factory for auditorOrchestrator running");
+  return {
+    __esModule: true,
+    runFullAudit: vi.fn(() => Promise.resolve({
+      highestPriorityGap: null,
+      muscleAudits: [],
+      ratios: [],
+      overallScore: 100,
+      timestamp: new Date().toISOString()
+    })),
+  };
+});
 vi.mock("@/lib/intervals", () => ({
   getWellness: vi.fn().mockResolvedValue({ tsb: 0, ctl: 50, atl: 50 }),
 }));

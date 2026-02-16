@@ -1,5 +1,5 @@
 import prisma from "../lib/prisma";
-import { runFullAudit } from "./auditorOrchestrator";
+import { runFullAudit } from "@/services/auditorOrchestrator";
 import { OracleService } from "./oracle";
 import { getWellness } from "../lib/intervals";
 import { AnalyticsService } from "./analytics";
