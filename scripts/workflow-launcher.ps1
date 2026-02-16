@@ -168,13 +168,27 @@ try {
   )
   
   Write-Log "Arguments: $($ArgList -join ' ')"
+  
+  # Ensure different files for stdout/stderr to avoid Start-Process collision
+  $ERR_LOG = $LOG_FILE + ".err"
+  
+  # Set environment variables for headless safety
+  $env:CI = "true"
+  $env:TERM = "dumb"
 
   # Attempt Start-Process for headless safety
   try {
     $proc = Start-Process -FilePath $nodePath -ArgumentList $ArgList `
-      -Wait -NoNewWindow -PassThru -RedirectStandardOutput $LOG_FILE -RedirectStandardError $LOG_FILE -ErrorAction Stop
+      -Wait -NoNewWindow -PassThru -RedirectStandardOutput $LOG_FILE -RedirectStandardError $ERR_LOG -ErrorAction Stop
       
     $exitCode = if ($null -ne $proc) { $proc.ExitCode } else { -1 }
+    
+    # Append error log to main log if it exists
+    if (Test-Path $ERR_LOG) {
+      Get-Content $ERR_LOG | Out-File -FilePath $LOG_FILE -Append -Encoding utf8
+      Remove-Item $ERR_LOG
+    }
+    
     Write-Log "Gemini CLI finished with exit code: $exitCode"
     $success = ($exitCode -eq 0)
   }
