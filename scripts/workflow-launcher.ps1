@@ -169,37 +169,27 @@ try {
   
   Write-Log "Arguments: $($ArgList -join ' ')"
   
-  # Ensure different files for stdout/stderr to avoid Start-Process collision
+  # Ensure different files for stdout/stderr to avoid stream collisions
   $ERR_LOG = $LOG_FILE + ".err"
   
   # Set environment variables for headless safety
   $env:CI = "true"
   $env:TERM = "dumb"
 
-  # Attempt Start-Process for headless safety
-  try {
-    $proc = Start-Process -FilePath $nodePath -ArgumentList $ArgList `
-      -Wait -NoNewWindow -PassThru -RedirectStandardOutput $LOG_FILE -RedirectStandardError $ERR_LOG -ErrorAction Stop
-      
-    $exitCode = if ($null -ne $proc) { $proc.ExitCode } else { -1 }
-    
-    # Append error log to main log if it exists
-    if (Test-Path $ERR_LOG) {
-      Get-Content $ERR_LOG | Out-File -FilePath $LOG_FILE -Append -Encoding utf8
-      Remove-Item $ERR_LOG
-    }
-    
-    Write-Log "Gemini CLI finished with exit code: $exitCode"
-    $success = ($exitCode -eq 0)
+  Write-Log "Invoking Gemini CLI via direct operator (Headless Safe)..."
+  
+  # Execute via direct operator for better PTY/console management in CI
+  & $nodePath --no-deprecation $GEMINI_JS -p $promptValue --model $Model --yolo --sandbox=false 1> $LOG_FILE 2> $ERR_LOG
+  $exitCode = $LASTEXITCODE
+  
+  # Append error log to main log if it exists
+  if (Test-Path $ERR_LOG) {
+    Get-Content $ERR_LOG | Out-File -FilePath $LOG_FILE -Append -Encoding utf8
+    Remove-Item $ERR_LOG
   }
-  catch {
-    Write-Log "Start-Process failed: $_. Falling back to direct invocation..."
-    # Fallback to direct execution if Start-Process fails (some environments/permissions)
-    & $nodePath @ArgList | Out-File -FilePath $LOG_FILE -Append -Encoding utf8
-    $exitCode = $LASTEXITCODE
-    Write-Log "Direct invocation finished with exit code: $exitCode"
-    $success = ($exitCode -eq 0)
-  }
+  
+  Write-Log "Gemini CLI finished with exit code: $exitCode"
+  $success = ($exitCode -eq 0)
   
   if ($success) {
     $success = $true
