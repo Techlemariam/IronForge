@@ -2,7 +2,8 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-import { TitanState, getAuthoritativeTitanState } from "./titan-state-schema";
+import { TitanState } from "@/types/schemas";
+import { getAuthoritativeTitanState } from "./titan-state-schema";
 import {
   recordTitanEvent,
   replayTitanEvents,

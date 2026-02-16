@@ -975,12 +975,16 @@ model FactoryStatus {
   current   String?
   metadata  Json?
   updatedAt DateTime @updatedAt
+
+  @@map("factory_statuses")
 }
 
 model FactorySettings {
   id        String   @id @default("global")
   mode      String   @default("MANUAL")
   updatedAt DateTime @updatedAt
+
+  @@map("factory_settings")
 }
 
 model FactoryTask {
@@ -994,6 +998,7 @@ model FactoryTask {
   updatedAt   DateTime @updatedAt
 
   @@index([status])
+  @@map("factory_tasks")
 }
 
 enum FriendshipStatus {
