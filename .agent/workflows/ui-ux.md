@@ -7,7 +7,7 @@ version: "2.0.0"
 telemetry: "enabled"
 primary_agent: "@ui-ux"
 domain: "ui"
-skills: ["shadcn-theme-generator", "figma-bridge", "a11y-auditor", "ui-ux-pro-max"]
+skills: ["shadcn-theme-generator", "figma-bridge", "stitch-bridge", "a11y-auditor", "ui-ux-pro-max"]
 ---
 
 # 🎨 UI/UX Alchemist (Level 10)
