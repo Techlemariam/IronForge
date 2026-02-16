@@ -41,17 +41,37 @@ fi
 
 ```bash
 echo "🔍 Checking dependency integrity..."
-if ! git diff --quiet pnpm-lock.yaml; then
-  echo "⚠️ pnpm-lock.yaml is dirty. Attempting self-healing..."
+
+# Step 1: Validate pnpm overrides exist on registry
+echo "🔍 Validating override versions..."
+if [ -f package.json ]; then
+  OVERRIDES=$(node -e "const pkg = require('./package.json'); const overrides = pkg.pnpm?.overrides || {}; Object.entries(overrides).forEach(([name, version]) => console.log(name + '@' + version));")
+  for override in $OVERRIDES; do
+    PKG_NAME=$(echo $override | cut -d'@' -f1)
+    PKG_VERSION=$(echo $override | cut -d'@' -f2-)
+    echo "  Checking $PKG_NAME@$PKG_VERSION..."
+    if ! npm view "$PKG_NAME@$PKG_VERSION" version &>/dev/null; then
+      echo "⛔ Override validation failed: $PKG_NAME@$PKG_VERSION does not exist on registry"
+      echo "💡 Run: npm view $PKG_NAME versions --json"
+      exit 1
+    fi
+  done
+  echo "✅ Override versions: Valid"
+fi
+
+# Step 2: Lockfile integrity check (frozen-lockfile dry-run)
+echo "🔍 Verifying lockfile consistency..."
+if ! pnpm install --frozen-lockfile --dry-run &>/dev/null; then
+  echo "⚠️ Lockfile out of sync with package.json. Attempting self-healing..."
   pnpm install
   if ! git diff --quiet pnpm-lock.yaml; then
-     echo "⛔ Still dirty after auto-fix. Please commit the `pnpm-lock.yaml` file."
+     echo "⛔ Lockfile updated. Please commit the `pnpm-lock.yaml` file."
      exit 1
   else
      echo "✅ Dependencies: Healed"
   fi
 else
-  echo "✅ Dependencies: Clean"
+  echo "✅ Lockfile: Consistent"
 fi
 ```
 
@@ -113,9 +133,26 @@ echo "✅ UI Health: Verified"
 
 ```bash
 echo "🔍 Checking dependency health..."
-# Run pnpm audit to find vulnerabilities
+
+# Step 1: Snyk code scanning (first-party code)
+echo "🔍 Running Snyk code scan..."
+if command -v snyk &>/dev/null; then
+  snyk code test --severity-threshold=high || {
+    echo "⚠️ Snyk found high-severity issues in first-party code"
+    echo "💡 Review findings and apply fixes before proceeding"
+    exit 1
+  }
+  echo "✅ Snyk: No critical issues"
+else
+  echo "⚠️ Snyk CLI not installed. Skipping code scan."
+  echo "💡 Install: npm install -g snyk && snyk auth"
+fi
+
+# Step 2: pnpm audit for dependency vulnerabilities
+echo "🔍 Running pnpm audit..."
 pnpm audit --audit-level high || exit 1
-# Check for outdated critical packages
+
+# Step 3: Check for outdated critical packages
 # Note: Handled by dependabot-manager skill
 echo "✅ Dependencies: Healthy"
 ```
