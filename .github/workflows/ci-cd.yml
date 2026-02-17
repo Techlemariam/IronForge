@@ -109,7 +109,7 @@ jobs:
         ports:
           - 5432:5432
         options: >-
-          --health-cmd pg_isready
+          --health-cmd "pg_isready -U postgres"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
@@ -136,13 +136,13 @@ jobs:
       - name: Initialize E2E DB
         run: |
           sleep 30
-          npx prisma db push
+          npx prisma db push --force-reset
         env:
-          DATABASE_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_e2e
+          DATABASE_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_e2e?schema=public
       - name: Seed E2E Database
         run: npx tsx tests/e2e/setup/e2e-seed.ts
         env:
-          DATABASE_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_e2e
+          DATABASE_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_e2e?schema=public
       - name: Run Playwright Tests
         run: npx playwright test
         env:
