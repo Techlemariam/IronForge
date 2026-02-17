@@ -1,39 +1,50 @@
-# ☀️ IronForge Daily Briefing - 2026-02-15
+# Night Shift Maintenance Report - 2026-02-17
 
-> Session initialized via `/startup` // branch: `feat/game-factory-mechanics-viz`
+This autonomous report summarizes the findings of the nightly maintenance workflow.
 
-## 📊 Session Dashboard
+## 🛡️ Security Audit
 
-```
-┌─────────────────────────────────────────────┐
-│ 🔥 IRONFORGE DAILY BRIEFING                │
-├─────────────────────────────────────────────┤
-│ Last Session: 2026-02-15 21:04:48           │
-│ Active Task:  feat/game-factory-mechanics-viz│
-│ Queue Depth:  1 item(s)                     │
-│ Health:       PASS                          │
-│ Tech Debt:    7 items in DEBT.md            │
-└─────────────────────────────────────────────┘
-```
+Found **2 high-severity** vulnerabilities.
 
-## 📍 Context Restoration
+| Package | Severity | Recommendation |
+| --- | --- | --- |
+| @modelcontextprotocol/sdk | high | Upgrade to version 1.24.0 or later |
+| @modelcontextprotocol/sdk | high | Upgrade to version 1.25.2 or later |
 
-- **Current Branch:** `feat/game-factory-mechanics-viz`
-- **Git Status:** Uncommitted changes in tests and configuration (`vitest.config.ts`, `vitest.setup.ts`, etc.).
-- **Last Action:** PR test failures were being resolved, specifically around `PowerRatingService` and Prisma mocks.
-- **Project Sync:** Roadmap reconciled with GitHub Project #4. No major drift detected in active items.
+## 🏗️ Codebase Audit
 
-## 🌙 Night Shift Review
+| Category | Count |
+| --- | --- |
+| Source Files | 600 |
+| Story Files | 134 |
+| Missing Tests | 600 |
+| Missing Docs | 600 |
+| Logic Gaps (TODO/FIXME) | 146 |
+| Type Safety Bypasses | 4 |
+| Workflows w/o Schema | 60 |
 
-- No new Night Shift PRs detected for current date.
-- Background health-check initiated; results logged to `.agent/feedback/startup-health.log`.
+**Action Required:** 60 workflows require attention to add schema definitions.
 
-## 🎯 Proactive Suggestions
+## 📦 Outdated Dependencies
 
-1. **Continue Current Feature:** Resume work on the mechanical visualization for the Game Factory on `feat/game-factory-mechanics-viz`.
-2. **Debt Resolution:** Run `/cleanup` to systematically address the 7 open items in `DEBT.md`, including type-safety improvements and A11y gaps.
-3. **Triage Session:** Run `/triage` to re-evaluate the priority of backlog items against the current sprint goals.
-4. **Code Quality:** Run `/gatekeeper` before your next push to ensure all tests and linting pass locally.
+| Package | Current | Wanted | Latest |
+| --- | --- | --- | --- |
+| @ai-sdk/google | 3.0.26 | 3.0.29 | 3.0.29 |
+| @ai-sdk/react | 3.0.84 | 3.0.88 | 3.0.88 |
+| @remotion/cli | 4.0.421 | 4.0.423 | 4.0.423 |
+| @sentry/nextjs | 10.38.0 | 10.39.0 | 10.39.0 |
+| @serwist/next | 9.5.5 | 9.5.6 | 9.5.6 |
+| @typescript-eslint/eslint-plugin | 8.55.0 | 8.55.0 | 8.56.0 |
+| @typescript-eslint/parser | 8.55.0 | 8.55.0 | 8.56.0 |
+| ai | 6.0.82 | 6.0.86 | 6.0.86 |
+| dotenv | 17.2.4 | 17.3.1 | 17.3.1 |
+| jsdom | 28.0.0 | 28.1.0 | 28.1.0 |
+| lucide-react | 0.563.0 | 0.563.0 | 0.568.0 |
+| remotion | 4.0.421 | 4.0.423 | 4.0.423 |
+| serwist | 9.5.5 | 9.5.6 | 9.5.6 |
+| tailwind-merge | 3.4.0 | 3.4.1 | 3.4.1 |
+| turbo | 2.8.7 | 2.8.9 | 2.8.9 |
+| typedoc | 0.28.16 | 0.28.17 | 0.28.17 |
 
 ---
-*Session started at 22:11 CET*
+*Report generated automatically.*

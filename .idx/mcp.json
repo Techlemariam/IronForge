@@ -109,7 +109,10 @@
       "env": {
         "GITHUB_TOKEN": "${env:GITHUB_TOKEN}",
         "REPO_OWNER": "Techlemariam",
-        "REPO_NAME": "IronForge"
+        "REPO_NAME": "IronForge",
+        "ENABLE_WEBHOOK_SERVER": "true",
+        "WEBHOOK_PORT": "3030",
+        "WEBHOOK_SECRET": "${env:WEBHOOK_SECRET}"
       }
     }
   }

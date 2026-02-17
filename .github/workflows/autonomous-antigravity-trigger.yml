@@ -1,0 +1,140 @@
+name: Autonomous Antigravity Trigger
+on:
+  workflow_dispatch:
+    inputs:
+      workflow:
+        description: 'Workflow to execute'
+        required: true
+        type: choice
+        options:
+          - night-shift
+          - polish
+          - git-hygiene
+          - cleanup
+          - debt-attack
+          - security
+          - sprint-auto
+      model:
+        description: 'Gemini model to use'
+        required: true
+        type: choice
+        options:
+          - gemini-2.5-flash
+          - gemini-2.5-pro
+        default: gemini-2.5-flash
+
+jobs:
+  trigger-via-antigravity:
+    runs-on: self-hosted
+    timeout-minutes: 120
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        
+      - name: Validate Antigravity Environment
+        id: validate
+        run: |
+          # Check if Antigravity MCP server is available
+          if (Test-Path "$env:USERPROFILE\.gemini\antigravity\mcp_config.json") {
+            Write-Output "✅ Antigravity MCP config found"
+            echo "antigravity_available=true" >> $env:GITHUB_OUTPUT
+          } else {
+            Write-Output "⚠️ Antigravity MCP config not found"
+            echo "antigravity_available=false" >> $env:GITHUB_OUTPUT
+          }
+          
+          # Check if task directory exists
+          if (Test-Path ".agent\tasks") {
+            Write-Output "✅ Task directory found"
+          } else {
+            Write-Output "⚠️ Task directory not found, creating..."
+            New-Item -ItemType Directory -Path ".agent\tasks" -Force
+          }
+        shell: pwsh
+        
+      - name: Trigger Workflow via MCP
+        if: steps.validate.outputs.antigravity_available == 'true'
+        run: |
+          # Create task signal for Antigravity to pick up
+          $taskContent = @"
+          # Autonomous Mission: ${{ inputs.workflow }}
+          Model: ${{ inputs.model }}
+          Triggered via GitHub Actions at $(Get-Date -Format "o")
+          
+          ## Instructions
+          Execute the `/${{ inputs.workflow }}` workflow using the ${{ inputs.model }} model.
+          
+          This task was triggered by GitHub Actions and should use Antigravity's native quota system.
+          
+          ## Context
+          - Workflow: ${{ inputs.workflow }}
+          - Model: ${{ inputs.model }}
+          - Triggered by: ${{ github.actor }}
+          - Run ID: ${{ github.run_id }}
+          "@
+          
+          Set-Content -Path ".agent\tasks\current.md" -Value $taskContent
+          Write-Output "✅ Task signal written to .agent\tasks\current.md"
+          Write-Output "Antigravity will pick up this task and execute using its native quota system."
+        shell: pwsh
+        
+      - name: Fallback to Direct Workflow Dispatch
+        if: steps.validate.outputs.antigravity_available != 'true'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            console.log('⚠️ Antigravity unavailable, triggering fallback workflow...');
+            
+            try {
+              await github.rest.actions.createWorkflowDispatch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: `autonomous-${{ inputs.workflow }}.yml`,
+                ref: 'main',
+                inputs: {
+                  workflow: '${{ inputs.workflow }}',
+                  model: '${{ inputs.model }}'
+                }
+              });
+              
+              console.log('✅ Fallback workflow dispatched successfully');
+            } catch (error) {
+              console.error('❌ Fallback failed:', error.message);
+              throw error;
+            }
+            
+      - name: Monitor Task Execution
+        if: steps.validate.outputs.antigravity_available == 'true'
+        run: |
+          Write-Output "📊 Monitoring task execution..."
+          Write-Output "Task file: .agent\tasks\current.md"
+          
+          # Wait for Antigravity to pick up the task (check if file is modified/deleted)
+          $timeout = 300 # 5 minutes
+          $elapsed = 0
+          $interval = 10
+          
+          while ($elapsed -lt $timeout) {
+            if (Test-Path ".agent\tasks\current.md") {
+              $lastWrite = (Get-Item ".agent\tasks\current.md").LastWriteTime
+              $age = (Get-Date) - $lastWrite
+              
+              if ($age.TotalSeconds -gt 60) {
+                Write-Output "⏳ Task file hasn't been updated in $([math]::Round($age.TotalSeconds))s"
+              } else {
+                Write-Output "✅ Task file recently updated, Antigravity is processing..."
+              }
+            } else {
+              Write-Output "✅ Task file removed, Antigravity has picked up the task!"
+              break
+            }
+            
+            Start-Sleep -Seconds $interval
+            $elapsed += $interval
+          }
+          
+          Write-Output "Monitoring complete. Check Antigravity logs for execution details."
+        shell: pwsh
+        continue-on-error: true

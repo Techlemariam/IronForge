@@ -1,0 +1,1260 @@
+﻿2026-02-16T21:30:31.3576634Z Current runner version: '2.331.0'
+2026-02-16T21:30:31.3599596Z ##[group]Runner Image Provisioner
+2026-02-16T21:30:31.3601040Z Hosted Compute Agent
+2026-02-16T21:30:31.3601742Z Version: 20260123.484
+2026-02-16T21:30:31.3602518Z Commit: 6bd6555ca37d84114959e1c76d2c01448ff61c5d
+2026-02-16T21:30:31.3603318Z Build Date: 2026-01-23T19:41:17Z
+2026-02-16T21:30:31.3604080Z Worker ID: {05d94dbd-fd71-4300-b706-11c29a05e85c}
+2026-02-16T21:30:31.3604855Z Azure Region: eastus2
+2026-02-16T21:30:31.3605417Z ##[endgroup]
+2026-02-16T21:30:31.3606976Z ##[group]Operating System
+2026-02-16T21:30:31.3607667Z Ubuntu
+2026-02-16T21:30:31.3608241Z 24.04.3
+2026-02-16T21:30:31.3608820Z LTS
+2026-02-16T21:30:31.3609337Z ##[endgroup]
+2026-02-16T21:30:31.3609854Z ##[group]Runner Image
+2026-02-16T21:30:31.3610762Z Image: ubuntu-24.04
+2026-02-16T21:30:31.3611378Z Version: 20260209.23.1
+2026-02-16T21:30:31.3612753Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260209.23/images/ubuntu/Ubuntu2404-Readme.md
+2026-02-16T21:30:31.3614303Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260209.23
+2026-02-16T21:30:31.3615342Z ##[endgroup]
+2026-02-16T21:30:31.3616604Z ##[group]GITHUB_TOKEN Permissions
+2026-02-16T21:30:31.3618608Z Contents: read
+2026-02-16T21:30:31.3619276Z Metadata: read
+2026-02-16T21:30:31.3619856Z Packages: read
+2026-02-16T21:30:31.3620622Z ##[endgroup]
+2026-02-16T21:30:31.3622715Z Secret source: Actions
+2026-02-16T21:30:31.3623494Z Prepare workflow directory
+2026-02-16T21:30:31.4212252Z Prepare all required actions
+2026-02-16T21:30:31.4250459Z Getting action download info
+2026-02-16T21:30:31.8233874Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+2026-02-16T21:30:31.9744035Z Download action repository 'pnpm/action-setup@v4' (SHA:41ff72655975bd51cab0327fa583b6e92b6d3061)
+2026-02-16T21:30:32.2479251Z Download action repository 'actions/setup-node@v6' (SHA:6044e13b5dc448c55e2357c09f80417699197238)
+2026-02-16T21:30:32.3403706Z Download action repository 'actions/cache@v5' (SHA:cdf6c1fa76f9f475f3d7449005a359c84ca0f306)
+2026-02-16T21:30:32.4571880Z Download action repository 'codecov/codecov-action@v5' (SHA:671740ac38dd9b0130fbe1cec585b89eea48d3de)
+2026-02-16T21:30:32.7569681Z Getting action download info
+2026-02-16T21:30:32.8721499Z Download action repository 'actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea' (SHA:60a0d83039c74a4aee543508d2ffcb1c3799cdea)
+2026-02-16T21:30:33.1955568Z Complete job name: ⚡ Verify
+2026-02-16T21:30:33.2739578Z ##[group]Run actions/checkout@v4
+2026-02-16T21:30:33.2740895Z with:
+2026-02-16T21:30:33.2741584Z   repository: Techlemariam/IronForge
+2026-02-16T21:30:33.2742524Z   token: ***
+2026-02-16T21:30:33.2743173Z   ssh-strict: true
+2026-02-16T21:30:33.2743830Z   ssh-user: git
+2026-02-16T21:30:33.2744503Z   persist-credentials: true
+2026-02-16T21:30:33.2745223Z   clean: true
+2026-02-16T21:30:33.2745888Z   sparse-checkout-cone-mode: true
+2026-02-16T21:30:33.2746650Z   fetch-depth: 1
+2026-02-16T21:30:33.2747328Z   fetch-tags: false
+2026-02-16T21:30:33.2747995Z   show-progress: true
+2026-02-16T21:30:33.2748668Z   lfs: false
+2026-02-16T21:30:33.2749294Z   submodules: false
+2026-02-16T21:30:33.2750102Z   set-safe-directory: true
+2026-02-16T21:30:33.2751059Z env:
+2026-02-16T21:30:33.2752481Z   DATABASE_URL: ***
+2026-02-16T21:30:33.2753767Z   DIRECT_URL: ***
+2026-02-16T21:30:33.2754657Z   NEXT_PUBLIC_SUPABASE_URL: ***
+2026-02-16T21:30:33.2757121Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+2026-02-16T21:30:33.2757964Z   SKIP_ENV_VALIDATION: true
+2026-02-16T21:30:33.2758687Z ##[endgroup]
+2026-02-16T21:30:33.4228991Z Syncing repository: Techlemariam/IronForge
+2026-02-16T21:30:33.4252722Z ##[group]Getting Git version info
+2026-02-16T21:30:33.4254344Z Working directory is '/home/runner/work/IronForge/IronForge'
+2026-02-16T21:30:33.4256788Z [command]/usr/bin/git version
+2026-02-16T21:30:33.4283099Z git version 2.52.0
+2026-02-16T21:30:33.4359540Z ##[endgroup]
+2026-02-16T21:30:33.4392313Z Temporarily overriding HOME='/home/runner/work/_temp/160f2c81-411e-4349-a3ad-a9b86c366de5' before making global git config changes
+2026-02-16T21:30:33.4400216Z Adding repository directory to the temporary git global config as a safe directory
+2026-02-16T21:30:33.4411741Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/IronForge/IronForge
+2026-02-16T21:30:33.4484537Z Deleting the contents of '/home/runner/work/IronForge/IronForge'
+2026-02-16T21:30:33.4490385Z ##[group]Initializing the repository
+2026-02-16T21:30:33.4495924Z [command]/usr/bin/git init /home/runner/work/IronForge/IronForge
+2026-02-16T21:30:33.4626517Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-02-16T21:30:33.4630140Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-02-16T21:30:33.4632143Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-02-16T21:30:33.4633837Z hint: call:
+2026-02-16T21:30:33.4634844Z hint:
+2026-02-16T21:30:33.4636005Z hint: 	git config --global init.defaultBranch <name>
+2026-02-16T21:30:33.4637449Z hint:
+2026-02-16T21:30:33.4638932Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-02-16T21:30:33.4641338Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-02-16T21:30:33.4643087Z hint:
+2026-02-16T21:30:33.4644255Z hint: 	git branch -m <name>
+2026-02-16T21:30:33.4645467Z hint:
+2026-02-16T21:30:33.4646954Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-02-16T21:30:33.4653753Z Initialized empty Git repository in /home/runner/work/IronForge/IronForge/.git/
+2026-02-16T21:30:33.4657239Z [command]/usr/bin/git remote add origin https://github.com/Techlemariam/IronForge
+2026-02-16T21:30:33.4700801Z ##[endgroup]
+2026-02-16T21:30:33.4703075Z ##[group]Disabling automatic garbage collection
+2026-02-16T21:30:33.4707742Z [command]/usr/bin/git config --local gc.auto 0
+2026-02-16T21:30:33.4748796Z ##[endgroup]
+2026-02-16T21:30:33.4750776Z ##[group]Setting up auth
+2026-02-16T21:30:33.4763792Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-02-16T21:30:33.4854903Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-02-16T21:30:33.5269369Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-02-16T21:30:33.5304771Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-02-16T21:30:33.5564231Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-02-16T21:30:33.5599493Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-02-16T21:30:33.5856680Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-02-16T21:30:33.5896072Z ##[endgroup]
+2026-02-16T21:30:33.5898666Z ##[group]Fetching the repository
+2026-02-16T21:30:33.5908115Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +8e8faa63253967e7a89fcdba4a60d639c5d5167c:refs/remotes/pull/196/merge
+2026-02-16T21:30:34.3556313Z From https://github.com/Techlemariam/IronForge
+2026-02-16T21:30:34.3559652Z  * [new ref]         8e8faa63253967e7a89fcdba4a60d639c5d5167c -> pull/196/merge
+2026-02-16T21:30:34.3599792Z ##[endgroup]
+2026-02-16T21:30:34.3601893Z ##[group]Determining the checkout info
+2026-02-16T21:30:34.3605251Z ##[endgroup]
+2026-02-16T21:30:34.3608115Z [command]/usr/bin/git sparse-checkout disable
+2026-02-16T21:30:34.3654290Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-02-16T21:30:34.3688238Z ##[group]Checking out the ref
+2026-02-16T21:30:34.3691291Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/196/merge
+2026-02-16T21:30:34.5492597Z Note: switching to 'refs/remotes/pull/196/merge'.
+2026-02-16T21:30:34.5493869Z 
+2026-02-16T21:30:34.5494927Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-02-16T21:30:34.5497567Z changes and commit them, and you can discard any commits you make in this
+2026-02-16T21:30:34.5500366Z state without impacting any branches by switching back to a branch.
+2026-02-16T21:30:34.5501937Z 
+2026-02-16T21:30:34.5502892Z If you want to create a new branch to retain commits you create, you may
+2026-02-16T21:30:34.5505314Z do so (now or later) by using -c with the switch command. Example:
+2026-02-16T21:30:34.5506677Z 
+2026-02-16T21:30:34.5507266Z   git switch -c <new-branch-name>
+2026-02-16T21:30:34.5512226Z 
+2026-02-16T21:30:34.5512804Z Or undo this operation with:
+2026-02-16T21:30:34.5513721Z 
+2026-02-16T21:30:34.5514189Z   git switch -
+2026-02-16T21:30:34.5514891Z 
+2026-02-16T21:30:34.5516129Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-02-16T21:30:34.5518059Z 
+2026-02-16T21:30:34.5520352Z HEAD is now at 8e8faa6 Merge cf20098ae94e235b3b91254fc4bb7aea43a6da6f into 328655f6a7140ff72903cbd17d913247949fe3ce
+2026-02-16T21:30:34.5526388Z ##[endgroup]
+2026-02-16T21:30:34.5561814Z [command]/usr/bin/git log -1 --format=%H
+2026-02-16T21:30:34.5588527Z 8e8faa63253967e7a89fcdba4a60d639c5d5167c
+2026-02-16T21:30:34.5855605Z ##[group]Run pnpm/action-setup@v4
+2026-02-16T21:30:34.5856610Z with:
+2026-02-16T21:30:34.5857298Z   dest: ~/setup-pnpm
+2026-02-16T21:30:34.5858093Z   run_install: null
+2026-02-16T21:30:34.5858917Z   package_json_file: package.json
+2026-02-16T21:30:34.5860075Z   standalone: false
+2026-02-16T21:30:34.5860839Z env:
+2026-02-16T21:30:34.5863600Z   DATABASE_URL: ***
+2026-02-16T21:30:34.5865925Z   DIRECT_URL: ***
+2026-02-16T21:30:34.5867180Z   NEXT_PUBLIC_SUPABASE_URL: ***
+2026-02-16T21:30:34.5873200Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+2026-02-16T21:30:34.5874290Z   SKIP_ENV_VALIDATION: true
+2026-02-16T21:30:34.5875182Z ##[endgroup]
+2026-02-16T21:30:34.6441737Z ##[group]Running self-installer...
+2026-02-16T21:30:35.3143539Z Progress: resolved 1, reused 0, downloaded 0, added 0
+2026-02-16T21:30:35.3393260Z Packages: +1
+2026-02-16T21:30:35.3450842Z +
+2026-02-16T21:30:35.9673099Z Progress: resolved 1, reused 0, downloaded 1, added 1, done
+2026-02-16T21:30:36.0092982Z 
+2026-02-16T21:30:36.0094153Z dependencies:
+2026-02-16T21:30:36.0095039Z + pnpm 9.15.0 (10.29.3 is available)
+2026-02-16T21:30:36.0095796Z 
+2026-02-16T21:30:36.0139714Z Done in 1.1s
+2026-02-16T21:30:36.0344841Z ##[endgroup]
+2026-02-16T21:30:36.0355247Z Installation Completed!
+2026-02-16T21:30:36.0529654Z ##[group]Run actions/setup-node@v6
+2026-02-16T21:30:36.0530129Z with:
+2026-02-16T21:30:36.0530318Z   node-version: 22
+2026-02-16T21:30:36.0530526Z   cache: pnpm
+2026-02-16T21:30:36.0530725Z   check-latest: false
+2026-02-16T21:30:36.0531053Z   token: ***
+2026-02-16T21:30:36.0531271Z   package-manager-cache: true
+2026-02-16T21:30:36.0531533Z env:
+2026-02-16T21:30:36.0532170Z   DATABASE_URL: ***
+2026-02-16T21:30:36.0532768Z   DIRECT_URL: ***
+2026-02-16T21:30:36.0533103Z   NEXT_PUBLIC_SUPABASE_URL: ***
+2026-02-16T21:30:36.0534400Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+2026-02-16T21:30:36.0534668Z   SKIP_ENV_VALIDATION: true
+2026-02-16T21:30:36.0534975Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-02-16T21:30:36.0535297Z ##[endgroup]
+2026-02-16T21:30:36.1909152Z Found in cache @ /opt/hostedtoolcache/node/22.22.0/x64
+2026-02-16T21:30:36.1910803Z ##[group]Environment details
+2026-02-16T21:30:38.5493015Z node: v22.22.0
+2026-02-16T21:30:38.5494010Z npm: 10.9.4
+2026-02-16T21:30:38.5494854Z yarn: 1.22.22
+2026-02-16T21:30:38.5496682Z ##[endgroup]
+2026-02-16T21:30:38.5543233Z [command]/home/runner/setup-pnpm/node_modules/.bin/pnpm store path --silent
+2026-02-16T21:30:39.2494558Z /home/runner/setup-pnpm/node_modules/.bin/store/v3
+2026-02-16T21:30:39.3869770Z Cache hit for: node-cache-Linux-x64-pnpm-2e3808add3c092416d13f49b68df864f467f42200d024f9ff89a370f61f50a52
+2026-02-16T21:30:40.4609421Z Received 142606336 of 501210383 (28.5%), 132.8 MBs/sec
+2026-02-16T21:30:41.4706097Z Received 427819008 of 501210383 (85.4%), 200.5 MBs/sec
+2026-02-16T21:30:41.7137906Z Received 501210383 of 501210383 (100.0%), 209.8 MBs/sec
+2026-02-16T21:30:41.7141955Z Cache Size: ~478 MB (501210383 B)
+2026-02-16T21:30:41.7336203Z [command]/usr/bin/tar -xf /home/runner/work/_temp/71bc6e53-8980-4e7a-9ba5-d585e62e7f33/cache.tzst -P -C /home/runner/work/IronForge/IronForge --use-compress-program unzstd
+2026-02-16T21:30:49.9201225Z Cache restored successfully
+2026-02-16T21:30:50.0169467Z Cache restored from key: node-cache-Linux-x64-pnpm-2e3808add3c092416d13f49b68df864f467f42200d024f9ff89a370f61f50a52
+2026-02-16T21:30:50.0385740Z ##[group]Run pnpm install --frozen-lockfile
+2026-02-16T21:30:50.0386139Z [36;1mpnpm install --frozen-lockfile[0m
+2026-02-16T21:30:50.0567692Z shell: /usr/bin/bash -e {0}
+2026-02-16T21:30:50.0568083Z env:
+2026-02-16T21:30:50.0569217Z   DATABASE_URL: ***
+2026-02-16T21:30:50.0570372Z   DIRECT_URL: ***
+2026-02-16T21:30:50.0570900Z   NEXT_PUBLIC_SUPABASE_URL: ***
+2026-02-16T21:30:50.0573117Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+2026-02-16T21:30:50.0573558Z   SKIP_ENV_VALIDATION: true
+2026-02-16T21:30:50.0574012Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-02-16T21:30:50.0574499Z ##[endgroup]
+2026-02-16T21:30:50.7037991Z Scope: all 4 workspace projects
+2026-02-16T21:30:50.8487326Z Lockfile is up to date, resolution step is skipped
+2026-02-16T21:30:51.3801508Z Progress: resolved 1, reused 0, downloaded 0, added 0
+2026-02-16T21:30:51.7453117Z Packages: +1671
+2026-02-16T21:30:51.7454905Z ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2026-02-16T21:30:52.3801999Z Progress: resolved 1671, reused 312, downloaded 0, added 0
+2026-02-16T21:30:53.3901267Z Progress: resolved 1671, reused 789, downloaded 0, added 0
+2026-02-16T21:30:54.3912869Z Progress: resolved 1671, reused 1472, downloaded 0, added 0
+2026-02-16T21:30:55.3925781Z Progress: resolved 1671, reused 1669, downloaded 0, added 235
+2026-02-16T21:30:56.3941554Z Progress: resolved 1671, reused 1669, downloaded 0, added 421
+2026-02-16T21:30:57.3944019Z Progress: resolved 1671, reused 1669, downloaded 0, added 626
+2026-02-16T21:30:58.4003522Z Progress: resolved 1671, reused 1669, downloaded 0, added 724
+2026-02-16T21:30:59.3976097Z Progress: resolved 1671, reused 1669, downloaded 0, added 790
+2026-02-16T21:31:00.3978634Z Progress: resolved 1671, reused 1669, downloaded 0, added 1144
+2026-02-16T21:31:01.3956713Z Progress: resolved 1671, reused 1669, downloaded 0, added 1671, done
+2026-02-16T21:31:02.9880925Z 
+2026-02-16T21:31:02.9881951Z dependencies:
+2026-02-16T21:31:02.9884560Z + @ai-sdk/google 3.0.26
+2026-02-16T21:31:02.9885071Z + @ai-sdk/react 3.0.84
+2026-02-16T21:31:02.9885549Z + @capacitor/android 8.1.0
+2026-02-16T21:31:02.9886008Z + @capacitor/cli 8.1.0
+2026-02-16T21:31:02.9886396Z + @capacitor/core 8.1.0
+2026-02-16T21:31:02.9886768Z + @google/genai 1.41.0
+2026-02-16T21:31:02.9887229Z + @mediapipe/tasks-vision 0.10.32
+2026-02-16T21:31:02.9887716Z + @neondatabase/serverless 1.0.2
+2026-02-16T21:31:02.9888157Z + @prisma/adapter-neon 7.4.0
+2026-02-16T21:31:02.9888608Z + @prisma/adapter-pg 7.4.0
+2026-02-16T21:31:02.9889183Z + @prisma/client 7.4.0
+2026-02-16T21:31:02.9889657Z + @radix-ui/react-avatar 1.1.11
+2026-02-16T21:31:02.9890406Z + @radix-ui/react-dialog 1.1.15
+2026-02-16T21:31:02.9890897Z + @radix-ui/react-label 2.1.8
+2026-02-16T21:31:02.9891443Z + @radix-ui/react-popover 1.1.15
+2026-02-16T21:31:02.9892077Z + @radix-ui/react-progress 1.1.8
+2026-02-16T21:31:02.9892625Z + @radix-ui/react-scroll-area 1.2.10
+2026-02-16T21:31:02.9893159Z + @radix-ui/react-select 2.2.6
+2026-02-16T21:31:02.9893685Z + @radix-ui/react-slider 1.3.6
+2026-02-16T21:31:02.9894170Z + @radix-ui/react-slot 1.2.4
+2026-02-16T21:31:02.9894656Z + @radix-ui/react-tabs 1.1.13
+2026-02-16T21:31:02.9895129Z + @react-three/drei 10.7.7
+2026-02-16T21:31:02.9895610Z + @react-three/fiber 9.5.0
+2026-02-16T21:31:02.9896409Z + @remotion/cli 4.0.421
+2026-02-16T21:31:02.9896869Z + @sentry/nextjs 10.38.0
+2026-02-16T21:31:02.9897332Z + @serwist/next 9.5.5
+2026-02-16T21:31:02.9897743Z + @supabase/ssr 0.8.0
+2026-02-16T21:31:02.9898212Z + @supabase/supabase-js 2.95.3
+2026-02-16T21:31:02.9898753Z + @types/canvas-confetti 1.9.0
+2026-02-16T21:31:02.9899228Z + @types/howler 2.2.12
+2026-02-16T21:31:02.9899658Z + @types/web-push 3.6.4
+2026-02-16T21:31:02.9900275Z + ai 6.0.82
+2026-02-16T21:31:02.9900605Z + axios 1.13.5
+2026-02-16T21:31:02.9900987Z + canvas-confetti 1.9.4
+2026-02-16T21:31:02.9901501Z + class-variance-authority 0.7.1
+2026-02-16T21:31:02.9901961Z + clsx 2.1.1
+2026-02-16T21:31:02.9902312Z + date-fns 4.1.0
+2026-02-16T21:31:02.9902995Z + framer-motion 12.34.0
+2026-02-16T21:31:02.9903417Z + h3-js 4.4.0
+2026-02-16T21:31:02.9903759Z + howler 2.2.4
+2026-02-16T21:31:02.9904160Z + import-in-the-middle 3.0.0
+2026-02-16T21:31:02.9904621Z + lucide-react 0.563.0
+2026-02-16T21:31:02.9905041Z + maplibre-gl 5.18.0
+2026-02-16T21:31:02.9905417Z + next 16.1.6
+2026-02-16T21:31:02.9905766Z + pg 8.18.0
+2026-02-16T21:31:02.9906095Z + pino 10.3.1
+2026-02-16T21:31:02.9906466Z + pino-pretty 13.1.3
+2026-02-16T21:31:02.9906881Z + qrcode.react 4.2.0
+2026-02-16T21:31:02.9907264Z + react 19.2.4
+2026-02-16T21:31:02.9907643Z + react-dom 19.2.4
+2026-02-16T21:31:02.9908073Z + react-dropzone 15.0.0
+2026-02-16T21:31:02.9908495Z + react-player 3.4.0
+2026-02-16T21:31:02.9908899Z + reactflow 11.11.4
+2026-02-16T21:31:02.9909281Z + recharts 3.7.0
+2026-02-16T21:31:02.9909677Z + remotion 4.0.421
+2026-02-16T21:31:02.9910482Z + require-in-the-middle 8.0.1
+2026-02-16T21:31:02.9910936Z + serwist 9.5.5
+2026-02-16T21:31:02.9911307Z + sonner 2.0.7
+2026-02-16T21:31:02.9911707Z + tailwind-merge 3.4.0
+2026-02-16T21:31:02.9912176Z + tailwindcss-animate 1.0.7
+2026-02-16T21:31:02.9912592Z + three 0.182.0
+2026-02-16T21:31:02.9912939Z + web-push 3.6.7
+2026-02-16T21:31:02.9913294Z + zod 4.3.6
+2026-02-16T21:31:02.9913621Z + zustand 5.0.11
+2026-02-16T21:31:02.9913935Z 
+2026-02-16T21:31:02.9914093Z devDependencies:
+2026-02-16T21:31:02.9914601Z + @chromatic-com/storybook 5.0.1
+2026-02-16T21:31:02.9915093Z + @eslint/compat 2.0.2
+2026-02-16T21:31:02.9915576Z + @eslint/eslintrc 3.3.3
+2026-02-16T21:31:02.9916076Z + @lhci/cli 0.15.1
+2026-02-16T21:31:02.9916500Z + @playwright/test 1.58.2
+2026-02-16T21:31:02.9917011Z + @storybook/addon-a11y 10.2.8
+2026-02-16T21:31:02.9917539Z + @storybook/addon-docs 10.2.8
+2026-02-16T21:31:02.9918090Z + @storybook/addon-onboarding 10.2.8
+2026-02-16T21:31:02.9918675Z + @storybook/addon-vitest 10.2.8
+2026-02-16T21:31:02.9922028Z + @storybook/nextjs-vite 10.2.8
+2026-02-16T21:31:02.9922587Z + @tailwindcss/postcss 4.1.18
+2026-02-16T21:31:02.9923117Z + @testing-library/dom 10.4.1
+2026-02-16T21:31:02.9923684Z + @testing-library/react 16.3.2
+2026-02-16T21:31:02.9924385Z + @types/geojson 7946.0.16
+2026-02-16T21:31:02.9924855Z + @types/node 25.2.3
+2026-02-16T21:31:02.9926471Z + @types/pg 8.16.0
+2026-02-16T21:31:02.9927899Z + @types/react 19.2.14
+2026-02-16T21:31:02.9928364Z + @types/react-dom 19.2.3
+2026-02-16T21:31:02.9928796Z + @types/three 0.182.0
+2026-02-16T21:31:02.9929222Z + @types/web-bluetooth 0.0.21
+2026-02-16T21:31:02.9929669Z + @types/ws 8.18.1
+2026-02-16T21:31:02.9930363Z + @typescript-eslint/eslint-plugin 8.55.0
+2026-02-16T21:31:02.9930965Z + @typescript-eslint/parser 8.55.0
+2026-02-16T21:31:02.9931463Z + @vitejs/plugin-react 5.1.4
+2026-02-16T21:31:02.9931980Z + @vitest/browser-playwright 4.0.18
+2026-02-16T21:31:02.9932480Z + @vitest/coverage-v8 4.0.18
+2026-02-16T21:31:02.9932919Z + autoprefixer 10.4.24
+2026-02-16T21:31:02.9933311Z + chromatic 15.1.0
+2026-02-16T21:31:02.9933656Z + dotenv 17.2.4
+2026-02-16T21:31:02.9934015Z + dotenv-cli 11.0.0
+2026-02-16T21:31:02.9934359Z + eslint 10.0.0
+2026-02-16T21:31:02.9934774Z + eslint-config-next 16.1.6
+2026-02-16T21:31:02.9936403Z + eslint-plugin-storybook 10.2.8
+2026-02-16T21:31:02.9936898Z + husky 9.1.7
+2026-02-16T21:31:02.9937267Z + jsdom 28.0.0
+2026-02-16T21:31:02.9937640Z + magicast 0.5.2
+2026-02-16T21:31:02.9938332Z + msw 2.12.10
+2026-02-16T21:31:02.9938724Z + playwright 1.58.2
+2026-02-16T21:31:02.9939128Z + postcss 8.5.6
+2026-02-16T21:31:02.9939496Z + prisma 7.4.0
+2026-02-16T21:31:02.9940096Z + storybook 10.2.8
+2026-02-16T21:31:02.9940668Z + tailwindcss 4.1.18
+2026-02-16T21:31:02.9941075Z + tsx 4.21.0
+2026-02-16T21:31:02.9941428Z + turbo 2.8.7
+2026-02-16T21:31:02.9941799Z + typedoc 0.28.16
+2026-02-16T21:31:02.9942297Z + typedoc-plugin-markdown 4.10.0
+2026-02-16T21:31:02.9942811Z + typescript 5.9.3
+2026-02-16T21:31:02.9943207Z + vite 7.3.1
+2026-02-16T21:31:02.9943570Z + vitest 4.0.18
+2026-02-16T21:31:02.9943944Z + ws 8.19.0
+2026-02-16T21:31:02.9944147Z 
+2026-02-16T21:31:03.0412956Z . postinstall$ prisma generate
+2026-02-16T21:31:04.0391725Z . postinstall: Loaded Prisma config from prisma.config.ts.
+2026-02-16T21:31:04.1057938Z . postinstall: Prisma schema loaded from prisma/schema.prisma.
+2026-02-16T21:31:04.1244249Z . postinstall: warn Preview feature "driverAdapters" is deprecated. The functionality can be used without specifying it as a preview feature.
+2026-02-16T21:31:05.4465771Z . postinstall: ✔ Generated Prisma Client (v7.4.0) to ./node_modules/.pnpm/@prisma+client@7.4.0_prisma@7.4.0_@types+react@19.2.14_magicast@0.5.2_react-dom@19.2.4_react@_kbihlyeorb7my7bafhyofzhtla/node_modules/@prisma/client in 780ms
+2026-02-16T21:31:05.4475387Z . postinstall: Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+2026-02-16T21:31:05.4724741Z . postinstall: Done
+2026-02-16T21:31:05.4731022Z . prepare$ husky
+2026-02-16T21:31:05.5188833Z . prepare: Done
+2026-02-16T21:31:05.5204170Z Done in 15.4s
+2026-02-16T21:31:05.5588479Z ##[group]Run npx prisma generate
+2026-02-16T21:31:05.5588815Z [36;1mnpx prisma generate[0m
+2026-02-16T21:31:05.5637513Z shell: /usr/bin/bash -e {0}
+2026-02-16T21:31:05.5637761Z env:
+2026-02-16T21:31:05.5638469Z   DATABASE_URL: ***
+2026-02-16T21:31:05.5639054Z   DIRECT_URL: ***
+2026-02-16T21:31:05.5639381Z   NEXT_PUBLIC_SUPABASE_URL: ***
+2026-02-16T21:31:05.5640815Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+2026-02-16T21:31:05.5641094Z   SKIP_ENV_VALIDATION: true
+2026-02-16T21:31:05.5641384Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-02-16T21:31:05.5641690Z ##[endgroup]
+2026-02-16T21:31:08.7616811Z Loaded Prisma config from prisma.config.ts.
+2026-02-16T21:31:08.7621763Z 
+2026-02-16T21:31:08.8264808Z Prisma schema loaded from prisma/schema.prisma.
+2026-02-16T21:31:08.8393207Z warn Preview feature "driverAdapters" is deprecated. The functionality can be used without specifying it as a preview feature.
+2026-02-16T21:31:10.2245587Z 
+2026-02-16T21:31:10.2248377Z ✔ Generated Prisma Client (v7.4.0) to ./node_modules/.pnpm/@prisma+client@7.4.0_prisma@7.4.0_@types+react@19.2.14_magicast@0.5.2_react-dom@19.2.4_react@_kbihlyeorb7my7bafhyofzhtla/node_modules/@prisma/client in 839ms
+2026-02-16T21:31:10.2252406Z 
+2026-02-16T21:31:10.2253253Z Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+2026-02-16T21:31:10.2255075Z 
+2026-02-16T21:31:10.2257329Z 
+2026-02-16T21:31:10.3014900Z ##[group]Run actions/cache@v5
+2026-02-16T21:31:10.3015180Z with:
+2026-02-16T21:31:10.3015371Z   path: .turbo
+2026-02-16T21:31:10.3015654Z   key: turbo-Linux-8e8faa63253967e7a89fcdba4a60d639c5d5167c
+2026-02-16T21:31:10.3015999Z   restore-keys: turbo-Linux-
+
+2026-02-16T21:31:10.3016255Z   enableCrossOsArchive: false
+2026-02-16T21:31:10.3016507Z   fail-on-cache-miss: false
+2026-02-16T21:31:10.3016738Z   lookup-only: false
+2026-02-16T21:31:10.3016945Z   save-always: false
+2026-02-16T21:31:10.3017142Z env:
+2026-02-16T21:31:10.3017835Z   DATABASE_URL: ***
+2026-02-16T21:31:10.3018435Z   DIRECT_URL: ***
+2026-02-16T21:31:10.3018775Z   NEXT_PUBLIC_SUPABASE_URL: ***
+2026-02-16T21:31:10.3020365Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+2026-02-16T21:31:10.3020658Z   SKIP_ENV_VALIDATION: true
+2026-02-16T21:31:10.3020968Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-02-16T21:31:10.3021280Z ##[endgroup]
+2026-02-16T21:31:10.4944470Z Cache hit for restore-key: turbo-Linux-b2ad1640a10d2a2d3db1af8b95e8524efa7fffe0
+2026-02-16T21:31:11.3335064Z Received 137192109 of 137192109 (100.0%), 168.4 MBs/sec
+2026-02-16T21:31:11.3337705Z Cache Size: ~131 MB (137192109 B)
+2026-02-16T21:31:11.3369704Z [command]/usr/bin/tar -xf /home/runner/work/_temp/36cc2ce6-110a-4e7f-8323-5a63d3324fca/cache.tzst -P -C /home/runner/work/IronForge/IronForge --use-compress-program unzstd
+2026-02-16T21:31:11.5661583Z Cache restored successfully
+2026-02-16T21:31:11.6017012Z Cache restored from key: turbo-Linux-b2ad1640a10d2a2d3db1af8b95e8524efa7fffe0
+2026-02-16T21:31:11.6176101Z ##[group]Run npx turbo run lint check-types test:coverage build security --concurrency=100%
+2026-02-16T21:31:11.6176784Z [36;1mnpx turbo run lint check-types test:coverage build security --concurrency=100%[0m
+2026-02-16T21:31:11.6226033Z shell: /usr/bin/bash -e {0}
+2026-02-16T21:31:11.6226297Z env:
+2026-02-16T21:31:11.6227024Z   DATABASE_URL: ***
+2026-02-16T21:31:11.6227614Z   DIRECT_URL: ***
+2026-02-16T21:31:11.6227970Z   NEXT_PUBLIC_SUPABASE_URL: ***
+2026-02-16T21:31:11.6229296Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+2026-02-16T21:31:11.6229579Z   SKIP_ENV_VALIDATION: true
+2026-02-16T21:31:11.6230064Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-02-16T21:31:11.6230473Z ##[endgroup]
+2026-02-16T21:31:11.9624232Z 
+2026-02-16T21:31:11.9626981Z Attention:
+2026-02-16T21:31:11.9628163Z Turborepo now collects completely anonymous telemetry regarding usage.
+2026-02-16T21:31:11.9638617Z This information is used to shape the Turborepo roadmap and prioritize features.
+2026-02-16T21:31:11.9643618Z You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+2026-02-16T21:31:11.9644819Z https://turborepo.dev/docs/telemetry
+2026-02-16T21:31:11.9645190Z 
+2026-02-16T21:31:12.0412138Z • Packages in scope: ironforge-discord-bot, ironforge-factory-mcp, ironforge-rpg, mcp-n8n
+2026-02-16T21:31:12.0420976Z • Running lint, check-types, test:coverage, build, security in 4 packages
+2026-02-16T21:31:12.0421799Z • Remote caching disabled
+2026-02-16T21:32:07.0052307Z ##[group]ironforge-rpg:check-types
+2026-02-16T21:32:07.0075121Z cache miss, executing 44c232ce298c0cfe
+2026-02-16T21:32:07.0076173Z 
+2026-02-16T21:32:07.0079864Z > ironforge-rpg@1.0.0 check-types /home/runner/work/IronForge/IronForge
+2026-02-16T21:32:07.0111139Z > tsc --project tsconfig.build.json --noEmit
+2026-02-16T21:32:07.0111975Z 
+2026-02-16T21:32:07.0112726Z ##[endgroup]
+2026-02-16T21:32:15.9798188Z ##[group]ironforge-rpg:lint
+2026-02-16T21:32:15.9804945Z cache miss, executing 492d7a83fcfe340b
+2026-02-16T21:32:15.9806942Z 
+2026-02-16T21:32:15.9807629Z > ironforge-rpg@1.0.0 lint /home/runner/work/IronForge/IronForge
+2026-02-16T21:32:15.9813190Z > eslint .
+2026-02-16T21:32:15.9813486Z 
+2026-02-16T21:32:15.9815231Z (node:2296) ESLintIgnoreWarning: The ".eslintignore" file is no longer supported. Switch to using the "ignores" property in "eslint.config.js": https://eslint.org/docs/latest/use/configure/migration-guide#ignore-files
+2026-02-16T21:32:15.9817178Z (Use `node --trace-warnings ...` to show where the warning was created)
+2026-02-16T21:32:15.9817677Z 
+2026-02-16T21:32:15.9818176Z /home/runner/work/IronForge/IronForge/.storybook/next-headers-mock.ts
+2026-02-16T21:32:16.0055821Z ##[warning]  5:11  warning  'name' is defined but never used. Allowed unused args must match /^_/u     @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0068448Z ##[warning]  6:11  warning  'name' is defined but never used. Allowed unused args must match /^_/u     @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0090395Z ##[warning]  6:25  warning  'value' is defined but never used. Allowed unused args must match /^_/u    @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0093250Z ##[warning]  6:40  warning  'options' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0096049Z ##[warning]  7:14  warning  'name' is defined but never used. Allowed unused args must match /^_/u     @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0097837Z 
+2026-02-16T21:32:16.0098318Z /home/runner/work/IronForge/IronForge/mcp/factory-server/src/index.ts
+2026-02-16T21:32:16.0164058Z ##[warning]  10:10  warning  'z' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0165680Z 
+2026-02-16T21:32:16.0166242Z /home/runner/work/IronForge/IronForge/mcp/factory-server/src/quota-manager.ts
+2026-02-16T21:32:16.0168094Z ##[warning]  51:18  warning  'e' is defined but never used  @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0169433Z 
+2026-02-16T21:32:16.0169831Z /home/runner/work/IronForge/IronForge/src/actions/factory.ts
+2026-02-16T21:32:16.0184138Z ##[warning]   8:10  warning  'z' is defined but never used. Allowed unused vars must match /^_/u                    @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0187441Z ##[warning]  19:10  warning  'FactoryStatusSchema' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0189153Z 
+2026-02-16T21:32:16.0189799Z /home/runner/work/IronForge/IronForge/src/actions/systems/__tests__/territories.test.ts
+2026-02-16T21:32:16.0293025Z ##[warning]  2:42  warning  'processWeeklyTerritoryClaimsAction' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0294972Z 
+2026-02-16T21:32:16.0295590Z /home/runner/work/IronForge/IronForge/src/app/api/cron/territory-weekly/route.ts
+2026-02-16T21:32:16.0298010Z ##[warning]  17:15  warning  'result' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0299688Z 
+2026-02-16T21:32:16.0339084Z /home/runner/work/IronForge/IronForge/src/app/api/webhooks/intervals/route.ts
+2026-02-16T21:32:16.0341827Z ##[warning]  7:10  warning  'getActivityStream' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0343610Z 
+2026-02-16T21:32:16.0344233Z /home/runner/work/IronForge/IronForge/src/components/factory/AssemblyLineCard.tsx
+2026-02-16T21:32:16.0346449Z ##[warning]  6:5  warning  'Code2' is defined but never used. Allowed unused vars must match /^_/u         @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0349529Z ##[warning]  7:5  warning  'CheckCircle2' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0352833Z ##[warning]  8:5  warning  'Rocket' is defined but never used. Allowed unused vars must match /^_/u        @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0355792Z ##[warning]  9:5  warning  'Palette' is defined but never used. Allowed unused vars must match /^_/u       @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0357402Z 
+2026-02-16T21:32:16.0358059Z /home/runner/work/IronForge/IronForge/src/components/factory/AssemblyLinePresenter.tsx
+2026-02-16T21:32:16.0360154Z ##[warning]  4:10  warning  'motion' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0362952Z 
+2026-02-16T21:32:16.0363544Z /home/runner/work/IronForge/IronForge/src/components/factory/BacklogBoard.tsx
+2026-02-16T21:32:16.0365600Z ##[warning]  4:10  warning  'ClipboardList' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0368696Z ##[warning]  4:25  warning  'AlertCircle' is defined but never used. Allowed unused vars must match /^_/u    @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0372253Z ##[warning]  4:38  warning  'Play' is defined but never used. Allowed unused vars must match /^_/u           @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0375391Z ##[warning]  4:44  warning  'Loader2' is defined but never used. Allowed unused vars must match /^_/u        @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0403519Z ##[warning]  4:53  warning  'CheckCircle2' is defined but never used. Allowed unused vars must match /^_/u   @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0405545Z 
+2026-02-16T21:32:16.0406185Z /home/runner/work/IronForge/IronForge/src/components/factory/FactoryRunConveyor.tsx
+2026-02-16T21:32:16.0408306Z ##[warning]  10:5   warning  'BrainCircuit' is defined but never used. Allowed unused vars must match /^_/u         @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0422464Z ##[warning]  99:27  warning  'isUpcoming' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0424245Z 
+2026-02-16T21:32:16.0424876Z /home/runner/work/IronForge/IronForge/src/components/factory/RenderVideoForm.tsx
+2026-02-16T21:32:16.0426912Z ##[warning]   5:10  warning  'Button' is defined but never used. Allowed unused vars must match /^_/u           @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0430122Z ##[warning]   6:10  warning  'Card' is defined but never used. Allowed unused vars must match /^_/u             @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0433172Z ##[warning]   6:16  warning  'CardContent' is defined but never used. Allowed unused vars must match /^_/u      @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0472399Z ##[warning]   6:29  warning  'CardDescription' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0475521Z ##[warning]   6:46  warning  'CardFooter' is defined but never used. Allowed unused vars must match /^_/u       @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0478626Z ##[warning]   6:58  warning  'CardHeader' is defined but never used. Allowed unused vars must match /^_/u       @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0482087Z ##[warning]   6:70  warning  'CardTitle' is defined but never used. Allowed unused vars must match /^_/u        @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0485203Z ##[warning]   7:10  warning  'Textarea' is defined but never used. Allowed unused vars must match /^_/u         @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0488270Z ##[warning]   8:10  warning  'Label' is defined but never used. Allowed unused vars must match /^_/u            @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0491242Z ##[warning]  32:14  warning  'error' is defined but never used                                                  @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0492534Z 
+2026-02-16T21:32:16.0493083Z /home/runner/work/IronForge/IronForge/src/components/factory/VoiceCommandControl.tsx
+2026-02-16T21:32:16.0494725Z ##[warning]   4:10  warning  'Mic' is defined but never used. Allowed unused vars must match /^_/u       @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0497419Z ##[warning]   4:15  warning  'MicOff' is defined but never used. Allowed unused vars must match /^_/u    @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0507293Z ##[warning]   4:23  warning  'Send' is defined but never used. Allowed unused vars must match /^_/u      @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0511013Z ##[warning]   4:29  warning  'Loader2' is defined but never used. Allowed unused vars must match /^_/u   @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0514494Z ##[warning]   4:38  warning  'Sparkles' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0517636Z ##[warning]  81:18  warning  'err' is defined but never used                                             @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0525818Z 
+2026-02-16T21:32:16.0528411Z /home/runner/work/IronForge/IronForge/src/components/ui/card.tsx
+2026-02-16T21:32:16.0531302Z ##[warning]  53:3  warning  Headings must have content and the content must be accessible by a screen reader  jsx-a11y/heading-has-content
+2026-02-16T21:32:16.0533347Z 
+2026-02-16T21:32:16.0533987Z /home/runner/work/IronForge/IronForge/src/components/workout/QuickLogWidget.tsx
+2026-02-16T21:32:16.0536292Z ##[warning]   62:9  warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+2026-02-16T21:32:16.0650152Z ##[warning]   93:9  warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+2026-02-16T21:32:16.0652874Z ##[warning]  120:9  warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+2026-02-16T21:32:16.0654367Z 
+2026-02-16T21:32:16.0654908Z /home/runner/work/IronForge/IronForge/src/features/coop/LiveSessionHUD.tsx
+2026-02-16T21:32:16.0658484Z ##[warning]  179:45  warning  Visible, non-interactive elements with click handlers must have at least one keyboard listener                                                                                                     jsx-a11y/click-events-have-key-events
+2026-02-16T21:32:16.0663744Z ##[warning]  179:45  warning  Avoid non-native interactive elements. If using native HTML is not possible, add an appropriate role and support for tabbing, mouse, keyboard, and touch inputs to an interactive content element  jsx-a11y/no-static-element-interactions
+2026-02-16T21:32:16.0666029Z 
+2026-02-16T21:32:16.0666594Z /home/runner/work/IronForge/IronForge/src/features/dashboard/DashboardClient.tsx
+2026-02-16T21:32:16.0668686Z ##[warning]   5:10  warning  'PwaInstallBanner' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0672026Z ##[warning]   6:8   warning  'Link' is defined but never used. Allowed unused vars must match /^_/u              @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0675066Z ##[warning]  13:10  warning  'AnimatePresence' is defined but never used. Allowed unused vars must match /^_/u   @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0678108Z ##[warning]  13:27  warning  'motion' is defined but never used. Allowed unused vars must match /^_/u            @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0681486Z ##[warning]  18:8   warning  'GeminiLiveCoach' is defined but never used. Allowed unused vars must match /^_/u   @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0684544Z ##[warning]  19:10  warning  'Settings' is defined but never used. Allowed unused vars must match /^_/u          @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0687472Z ##[warning]  23:10  warning  'OracleChat' is defined but never used. Allowed unused vars must match /^_/u        @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0690505Z ##[warning]  27:10  warning  'PersistentHeader' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0693462Z ##[warning]  28:10  warning  'CoachToggle' is defined but never used. Allowed unused vars must match /^_/u       @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0696551Z ##[warning]  29:10  warning  'ViewRouter' is defined but never used. Allowed unused vars must match /^_/u        @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0699590Z ##[warning]  30:10  warning  'CodexLoader' is defined but never used. Allowed unused vars must match /^_/u       @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0702855Z ##[warning]  39:10  warning  'TvHud' is defined but never used. Allowed unused vars must match /^_/u             @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0704483Z 
+2026-02-16T21:32:16.0705216Z /home/runner/work/IronForge/IronForge/src/features/dashboard/components/DashboardPresenter.tsx
+2026-02-16T21:32:16.0707635Z ##[warning]   6:20  warning  'Activity' is defined but never used. Allowed unused vars must match /^_/u                           @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0711237Z ##[warning]  19:5   warning  'DashboardClientProps' is defined but never used. Allowed unused vars must match /^_/u               @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0714728Z ##[warning]  67:9   warning  'showOnboarding' is assigned a value but never used. Allowed unused vars must match /^_/u            @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0718491Z ##[warning]  70:9   warning  'onShowOnboardingComplete' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0720483Z 
+2026-02-16T21:32:16.0720999Z /home/runner/work/IronForge/IronForge/src/features/game/GuildHall.tsx
+2026-02-16T21:32:16.0724233Z ##[warning]  330:11  warning  Visible, non-interactive elements with click handlers must have at least one keyboard listener                                                                                                     jsx-a11y/click-events-have-key-events
+2026-02-16T21:32:16.0729292Z ##[warning]  330:11  warning  Avoid non-native interactive elements. If using native HTML is not possible, add an appropriate role and support for tabbing, mouse, keyboard, and touch inputs to an interactive content element  jsx-a11y/no-static-element-interactions
+2026-02-16T21:32:16.0732019Z 
+2026-02-16T21:32:16.0732634Z /home/runner/work/IronForge/IronForge/src/features/game/components/ActionView.tsx
+2026-02-16T21:32:16.0735762Z ##[warning]  161:9  warning  Visible, non-interactive elements with click handlers must have at least one keyboard listener                                                                                                     jsx-a11y/click-events-have-key-events
+2026-02-16T21:32:16.0741108Z ##[warning]  161:9  warning  Avoid non-native interactive elements. If using native HTML is not possible, add an appropriate role and support for tabbing, mouse, keyboard, and touch inputs to an interactive content element  jsx-a11y/no-static-element-interactions
+2026-02-16T21:32:16.0743554Z 
+2026-02-16T21:32:16.0744200Z /home/runner/work/IronForge/IronForge/src/features/game/components/DungeonBuilder.tsx
+2026-02-16T21:32:16.0745882Z ##[warning]  115:11  warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+2026-02-16T21:32:16.0748381Z ##[warning]  126:11  warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+2026-02-16T21:32:16.0750129Z 
+2026-02-16T21:32:16.0750768Z /home/runner/work/IronForge/IronForge/src/features/game/components/ValhallaGate.tsx
+2026-02-16T21:32:16.0752418Z ##[warning]  143:17  warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+2026-02-16T21:32:16.0753977Z 
+2026-02-16T21:32:16.0754524Z /home/runner/work/IronForge/IronForge/src/features/guild/TerritoryMap.tsx
+2026-02-16T21:32:16.0755981Z ##[warning]  29:18  warning  'err' is defined but never used  @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0757222Z 
+2026-02-16T21:32:16.0757876Z /home/runner/work/IronForge/IronForge/src/features/onboarding/components/FirstTimeHints.tsx
+2026-02-16T21:32:16.0761216Z ##[warning]  115:9  warning  Visible, non-interactive elements with click handlers must have at least one keyboard listener                                                                                                     jsx-a11y/click-events-have-key-events
+2026-02-16T21:32:16.0766545Z ##[warning]  115:9  warning  Avoid non-native interactive elements. If using native HTML is not possible, add an appropriate role and support for tabbing, mouse, keyboard, and touch inputs to an interactive content element  jsx-a11y/no-static-element-interactions
+2026-02-16T21:32:16.0768992Z 
+2026-02-16T21:32:16.0769677Z /home/runner/work/IronForge/IronForge/src/features/podcast/components/PocketCastsAuth.tsx
+2026-02-16T21:32:16.0771896Z ##[warning]  64:25  warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+2026-02-16T21:32:16.0774457Z ##[warning]  74:25  warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+2026-02-16T21:32:16.0775912Z 
+2026-02-16T21:32:16.0776557Z /home/runner/work/IronForge/IronForge/src/features/pvp/components/CardioDuelLobby.tsx
+2026-02-16T21:32:16.0779362Z ##[warning]   78:29  warning  A form label must be associated with a control                                                                                                                                                     jsx-a11y/label-has-associated-control
+2026-02-16T21:32:16.0783729Z ##[warning]   95:29  warning  A form label must be associated with a control                                                                                                                                                     jsx-a11y/label-has-associated-control
+2026-02-16T21:32:16.0787715Z ##[warning]  112:25  warning  A form label must be associated with a control                                                                                                                                                     jsx-a11y/label-has-associated-control
+2026-02-16T21:32:16.0792223Z ##[warning]  115:33  warning  Visible, non-interactive elements with click handlers must have at least one keyboard listener                                                                                                     jsx-a11y/click-events-have-key-events
+2026-02-16T21:32:16.0797285Z ##[warning]  115:33  warning  Avoid non-native interactive elements. If using native HTML is not possible, add an appropriate role and support for tabbing, mouse, keyboard, and touch inputs to an interactive content element  jsx-a11y/no-static-element-interactions
+2026-02-16T21:32:16.0799700Z 
+2026-02-16T21:32:16.0800585Z /home/runner/work/IronForge/IronForge/src/features/settings/components/EquipmentArmory.tsx
+2026-02-16T21:32:16.0803848Z ##[warning]  146:15  warning  Visible, non-interactive elements with click handlers must have at least one keyboard listener                                                                                                     jsx-a11y/click-events-have-key-events
+2026-02-16T21:32:16.0808833Z ##[warning]  146:15  warning  Avoid non-native interactive elements. If using native HTML is not possible, add an appropriate role and support for tabbing, mouse, keyboard, and touch inputs to an interactive content element  jsx-a11y/no-static-element-interactions
+2026-02-16T21:32:16.0811543Z 
+2026-02-16T21:32:16.0812221Z /home/runner/work/IronForge/IronForge/src/features/strength/components/EquipmentArmory.tsx
+2026-02-16T21:32:16.0814162Z ##[warning]  253:21  warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+2026-02-16T21:32:16.0816641Z ##[warning]  264:21  warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+2026-02-16T21:32:16.0818106Z 
+2026-02-16T21:32:16.0818821Z /home/runner/work/IronForge/IronForge/src/features/strength/components/ExerciseLibrary.tsx
+2026-02-16T21:32:16.0821203Z ##[warning]  132:13  warning  The autoFocus prop should not be used, as it can reduce usability and accessibility for users  jsx-a11y/no-autofocus
+2026-02-16T21:32:16.0824422Z ##[warning]  159:13  warning  A form label must be associated with a control                                                 jsx-a11y/label-has-associated-control
+2026-02-16T21:32:16.0827510Z ##[warning]  170:15  warning  A form label must be associated with a control                                                 jsx-a11y/label-has-associated-control
+2026-02-16T21:32:16.0830988Z ##[warning]  180:15  warning  A form label must be associated with a control                                                 jsx-a11y/label-has-associated-control
+2026-02-16T21:32:16.0832731Z 
+2026-02-16T21:32:16.0833322Z /home/runner/work/IronForge/IronForge/src/features/training/CardioStudio.tsx
+2026-02-16T21:32:16.0835827Z ##[warning]   982:9   warning  Visible, non-interactive elements with click handlers must have at least one keyboard listener  jsx-a11y/click-events-have-key-events
+2026-02-16T21:32:16.0839571Z ##[warning]  1017:9   warning  Visible, non-interactive elements with click handlers must have at least one keyboard listener  jsx-a11y/click-events-have-key-events
+2026-02-16T21:32:16.0843237Z ##[warning]  1027:15  warning  Media elements such as <audio> and <video> must have a <track> for captions                     jsx-a11y/media-has-caption
+2026-02-16T21:32:16.0845346Z 
+2026-02-16T21:32:16.0845933Z /home/runner/work/IronForge/IronForge/src/features/training/ProgramBuilder.tsx
+2026-02-16T21:32:16.0847757Z ##[warning]  41:11  warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+2026-02-16T21:32:16.0850748Z ##[warning]  53:11  warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+2026-02-16T21:32:16.0852391Z 
+2026-02-16T21:32:16.0852940Z /home/runner/work/IronForge/IronForge/src/features/training/TvMode.tsx
+2026-02-16T21:32:16.0856267Z ##[warning]  232:5   warning  Visible, non-interactive elements with click handlers must have at least one keyboard listener                                                                                                     jsx-a11y/click-events-have-key-events
+2026-02-16T21:32:16.0861722Z ##[warning]  232:5   warning  Avoid non-native interactive elements. If using native HTML is not possible, add an appropriate role and support for tabbing, mouse, keyboard, and touch inputs to an interactive content element  jsx-a11y/no-static-element-interactions
+2026-02-16T21:32:16.0866717Z ##[warning]  615:15  warning  Visible, non-interactive elements with click handlers must have at least one keyboard listener                                                                                                     jsx-a11y/click-events-have-key-events
+2026-02-16T21:32:16.0872081Z ##[warning]  615:15  warning  Avoid non-native interactive elements. If using native HTML is not possible, add an appropriate role and support for tabbing, mouse, keyboard, and touch inputs to an interactive content element  jsx-a11y/no-static-element-interactions
+2026-02-16T21:32:16.0874546Z 
+2026-02-16T21:32:16.0875227Z /home/runner/work/IronForge/IronForge/src/features/training/components/BerserkerMode.tsx
+2026-02-16T21:32:16.0877522Z ##[warning]  119:15  warning  The autoFocus prop should not be used, as it can reduce usability and accessibility for users  jsx-a11y/no-autofocus
+2026-02-16T21:32:16.0879200Z 
+2026-02-16T21:32:16.0879756Z /home/runner/work/IronForge/IronForge/src/services/game/TerritoryService.ts
+2026-02-16T21:32:16.0882328Z ##[warning]    2:38  warning  'format' is defined but never used. Allowed unused vars must match /^_/u               @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0885549Z ##[warning]  213:15  warning  'weekNumber' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0888672Z ##[warning]  214:15  warning  'year' is assigned a value but never used. Allowed unused vars must match /^_/u        @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0890547Z 
+2026-02-16T21:32:16.0891234Z /home/runner/work/IronForge/IronForge/src/services/game/__tests__/PowerRatingService.test.ts
+2026-02-16T21:32:16.0893465Z ##[warning]  4:10  warning  'subDays' is defined but never used. Allowed unused vars must match /^_/u      @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0896455Z ##[warning]  4:29  warning  'startOfWeek' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0898087Z 
+2026-02-16T21:32:16.0898611Z /home/runner/work/IronForge/IronForge/src/services/titan-state-schema.ts
+2026-02-16T21:32:16.0900782Z ##[warning]   4:10  warning  'z' is defined but never used. Allowed unused vars must match /^_/u                    @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0904028Z ##[warning]  11:10  warning  'TitanStateSchema' is defined but never used. Allowed unused vars must match /^_/u     @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0907203Z ##[warning]  11:28  warning  'TitanMutationSchema' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0910559Z ##[warning]  11:71  warning  'TitanMutation' is defined but never used. Allowed unused vars must match /^_/u        @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0912293Z 
+2026-02-16T21:32:16.0913173Z /home/runner/work/IronForge/IronForge/tests/integration/actions/user-actions.test.ts
+2026-02-16T21:32:16.0915361Z ##[warning]  1:32  warning  'vi' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-16T21:32:16.0917071Z 
+2026-02-16T21:32:16.0917657Z ✖ 107 problems (0 errors, 107 warnings)
+2026-02-16T21:32:16.0918080Z 
+2026-02-16T21:32:16.0918660Z ##[endgroup]
+2026-02-16T21:35:06.0974979Z [;31mironforge-rpg:test:coverage[;0m
+2026-02-16T21:35:06.0977708Z cache miss, executing 3a968f3bc952a8d3
+2026-02-16T21:35:06.0978158Z 
+2026-02-16T21:35:06.0978700Z > ironforge-rpg@1.0.0 test:coverage /home/runner/work/IronForge/IronForge
+2026-02-16T21:35:06.0979439Z > vitest run --coverage
+2026-02-16T21:35:06.0979685Z 
+2026-02-16T21:35:06.0979694Z 
+2026-02-16T21:35:06.0980658Z [1m[46m RUN [49m[22m [36mv4.0.18 [39m[90m/home/runner/work/IronForge/IronForge[39m
+2026-02-16T21:35:06.0981587Z       [2mCoverage enabled with [22m[33mv8[39m
+2026-02-16T21:35:06.0981973Z 
+2026-02-16T21:35:06.0982847Z  [32m✓[39m tests/unit/actions/combat/core.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+2026-02-16T21:35:06.0984489Z  [32m✓[39m tests/unit/services/game/GameContextService.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+2026-02-16T21:35:06.0986932Z [90mstderr[2m | tests/unit/actions/systems/battle-pass.test.ts[2m > [22m[2mBattle Pass Actions[2m > [22m[2mgetActiveSeasonAction[2m > [22m[2mshould return null on error
+2026-02-16T21:35:06.0988707Z [22m[39mError fetching active season: Error: DB Error
+2026-02-16T21:35:06.0990228Z     at [90m/home/runner/work/IronForge/IronForge/[39mtests/unit/actions/systems/battle-pass.test.ts:64:74
+2026-02-16T21:35:06.0992352Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:145:11
+2026-02-16T21:35:06.0994783Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:915:26
+2026-02-16T21:35:06.0997279Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1243:20
+2026-02-16T21:35:06.0998643Z     at new Promise (<anonymous>)
+2026-02-16T21:35:06.1005482Z     at runWithTimeout [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1209:10[90m)[39m
+2026-02-16T21:35:06.1016452Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:37
+2026-02-16T21:35:06.1020134Z     at Traces.$ [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/vitest@4.0.18_@edge-runtime+vm@3.2.0_@opentelemetry+api@1.9.0_@types+node@25.2.3_@vitest+brow_egenrxx3k5kr54rerwzg5eg2iu/node_modules/[4mvitest[24m/dist/chunks/traces.CCmnQaNT.js:142:27[90m)[39m
+2026-02-16T21:35:06.1024504Z     at trace [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/vitest@4.0.18_@edge-runtime+vm@3.2.0_@opentelemetry+api@1.9.0_@types+node@25.2.3_@vitest+brow_egenrxx3k5kr54rerwzg5eg2iu/node_modules/[4mvitest[24m/dist/chunks/test.B8ej_ZHS.js:239:21[90m)[39m
+2026-02-16T21:35:06.1027933Z     at runTest [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:12[90m)[39m
+2026-02-16T21:35:06.1029207Z 
+2026-02-16T21:35:06.1054715Z  [32m✓[39m tests/unit/actions/systems/battle-pass.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 25[2mms[22m[39m
+2026-02-16T21:35:06.1056549Z  [32m✓[39m src/features/training/__tests__/TvMode.test.tsx [2m([22m[2m11 tests[22m[2m)[22m[33m 321[2mms[22m[39m
+2026-02-16T21:35:06.1058254Z  [32m✓[39m tests/unit/app/api/cron/power-rating/route.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 30[2mms[22m[39m
+2026-02-16T21:35:06.1060436Z  [32m✓[39m tests/unit/services/GoalPriorityEngine.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 20[2mms[22m[39m
+2026-02-16T21:35:06.1062105Z  [32m✓[39m tests/unit/actions/titan/core.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 65[2mms[22m[39m
+2026-02-16T21:35:06.1064022Z  [32m✓[39m tests/unit/services/trainingMemoryManager.test.ts [2m([22m[2m15 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+2026-02-16T21:35:06.1076106Z [90mstderr[2m | tests/unit/actions/guild/raids.test.ts[2m > [22m[2mGuild Raids Server Actions[2m > [22m[2mjoinGuildAction[2m > [22m[2mshould handle join failure
+2026-02-16T21:35:06.1077620Z [22m[39mError: DB Error
+2026-02-16T21:35:06.1078711Z     at [90m/home/runner/work/IronForge/IronForge/[39mtests/unit/actions/guild/raids.test.ts:114:53
+2026-02-16T21:35:06.1081037Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:145:11
+2026-02-16T21:35:06.1083564Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:915:26
+2026-02-16T21:35:06.1086190Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1243:20
+2026-02-16T21:35:06.1087639Z     at new Promise (<anonymous>)
+2026-02-16T21:35:06.1089531Z     at runWithTimeout [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1209:10[90m)[39m
+2026-02-16T21:35:06.1092429Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:37
+2026-02-16T21:35:06.1096033Z     at Traces.$ [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/vitest@4.0.18_@edge-runtime+vm@3.2.0_@opentelemetry+api@1.9.0_@types+node@25.2.3_@vitest+brow_egenrxx3k5kr54rerwzg5eg2iu/node_modules/[4mvitest[24m/dist/chunks/traces.CCmnQaNT.js:142:27[90m)[39m
+2026-02-16T21:35:06.1100551Z     at trace [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/vitest@4.0.18_@edge-runtime+vm@3.2.0_@opentelemetry+api@1.9.0_@types+node@25.2.3_@vitest+brow_egenrxx3k5kr54rerwzg5eg2iu/node_modules/[4mvitest[24m/dist/chunks/test.B8ej_ZHS.js:239:21[90m)[39m
+2026-02-16T21:35:06.1103958Z     at runTest [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:12[90m)[39m
+2026-02-16T21:35:06.1105189Z 
+2026-02-16T21:35:06.1106109Z  [32m✓[39m tests/unit/actions/guild/raids.test.ts [2m([22m[2m13 tests[22m[2m)[22m[32m 44[2mms[22m[39m
+2026-02-16T21:35:06.1108547Z [90mstderr[2m | tests/unit/actions/integrations/strava.test.ts[2m > [22m[2mStrava Server Actions[2m > [22m[2mexchangeStravaTokenAction[2m > [22m[2mshould handle axios error
+2026-02-16T21:35:06.1110484Z [22m[39mStrava Token Exchange Error: Error: Strava Down
+2026-02-16T21:35:06.1111833Z     at [90m/home/runner/work/IronForge/IronForge/[39mtests/unit/actions/integrations/strava.test.ts:123:45
+2026-02-16T21:35:06.1113923Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:145:11
+2026-02-16T21:35:06.1116214Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:915:26
+2026-02-16T21:35:06.1118682Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1243:20
+2026-02-16T21:35:06.1120422Z     at new Promise (<anonymous>)
+2026-02-16T21:35:06.1122359Z     at runWithTimeout [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1209:10[90m)[39m
+2026-02-16T21:35:06.1125033Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:37
+2026-02-16T21:35:06.1128808Z     at Traces.$ [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/vitest@4.0.18_@edge-runtime+vm@3.2.0_@opentelemetry+api@1.9.0_@types+node@25.2.3_@vitest+brow_egenrxx3k5kr54rerwzg5eg2iu/node_modules/[4mvitest[24m/dist/chunks/traces.CCmnQaNT.js:142:27[90m)[39m
+2026-02-16T21:35:06.1133336Z     at trace [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/vitest@4.0.18_@edge-runtime+vm@3.2.0_@opentelemetry+api@1.9.0_@types+node@25.2.3_@vitest+brow_egenrxx3k5kr54rerwzg5eg2iu/node_modules/[4mvitest[24m/dist/chunks/test.B8ej_ZHS.js:239:21[90m)[39m
+2026-02-16T21:35:06.1136677Z     at runTest [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:12[90m)[39m
+2026-02-16T21:35:06.1137878Z 
+2026-02-16T21:35:06.1139532Z [90mstdout[2m | tests/unit/actions/integrations/strava.test.ts[2m > [22m[2mStrava Server Actions[2m > [22m[2msyncStravaActivitiesAction[2m > [22m[2mshould sync new activities
+2026-02-16T21:35:06.1141647Z [22m[39mProcessing cardio for user test-user-id: Run 5km 0m elevation
+2026-02-16T21:35:06.1142173Z 
+2026-02-16T21:35:06.1143817Z [90mstderr[2m | tests/unit/actions/integrations/strava.test.ts[2m > [22m[2mStrava Server Actions[2m > [22m[2msyncStravaActivitiesAction[2m > [22m[2mshould sync new activities
+2026-02-16T21:35:06.1145760Z [22m[39mFailed to process cardio for duels TypeError: activeDuels is not iterable
+2026-02-16T21:35:06.1147373Z     at processUserCardioActivity [90m(/home/runner/work/IronForge/IronForge/[39msrc/actions/pvp/duel.ts:458:24[90m)[39m
+2026-02-16T21:35:06.1149058Z [90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
+2026-02-16T21:35:06.1151005Z     at Module.syncStravaActivitiesAction [90m(/home/runner/work/IronForge/IronForge/[39msrc/actions/integrations/strava.ts:250:9[90m)[39m
+2026-02-16T21:35:06.1152986Z     at [90m/home/runner/work/IronForge/IronForge/[39mtests/unit/actions/integrations/strava.test.ts:156:22
+2026-02-16T21:35:06.1155165Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:915:20
+2026-02-16T21:35:06.1156322Z 
+2026-02-16T21:35:06.1157327Z  [32m✓[39m tests/unit/actions/integrations/strava.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 43[2mms[22m[39m
+2026-02-16T21:35:06.1159665Z [90mstdout[2m | tests/integration/strava-webhook.test.ts[2m > [22m[2mStrava Webhook Integration[2m > [22m[2mGET Verification[2m > [22m[2mshould verify with correct token
+2026-02-16T21:35:06.1161218Z [22m[39mStrava Webhook Verified
+2026-02-16T21:35:06.1161509Z 
+2026-02-16T21:35:06.1162974Z [90mstdout[2m | tests/integration/strava-webhook.test.ts[2m > [22m[2mStrava Webhook Integration[2m > [22m[2mPOST Event Handling[2m > [22m[2mshould process new activity event
+2026-02-16T21:35:06.1164375Z [22m[39mStrava Webhook Event: {
+2026-02-16T21:35:06.1165002Z   object_type: [32m'activity'[39m,
+2026-02-16T21:35:06.1165596Z   aspect_type: [32m'create'[39m,
+2026-02-16T21:35:06.1166118Z   object_id: [33m12345[39m,
+2026-02-16T21:35:06.1166610Z   owner_id: [33m999[39m
+2026-02-16T21:35:06.1166994Z }
+2026-02-16T21:35:06.1167155Z 
+2026-02-16T21:35:06.1168772Z [90mstdout[2m | tests/integration/strava-webhook.test.ts[2m > [22m[2mStrava Webhook Integration[2m > [22m[2mPOST Event Handling[2m > [22m[2mshould refresh token if expired
+2026-02-16T21:35:06.1170813Z [22m[39mStrava Webhook Event: {
+2026-02-16T21:35:06.1171447Z   object_type: [32m'activity'[39m,
+2026-02-16T21:35:06.1172021Z   aspect_type: [32m'create'[39m,
+2026-02-16T21:35:06.1172538Z   object_id: [33m12345[39m,
+2026-02-16T21:35:06.1173013Z   owner_id: [33m999[39m
+2026-02-16T21:35:06.1173391Z }
+2026-02-16T21:35:06.1173594Z 
+2026-02-16T21:35:06.1174476Z  [32m✓[39m tests/integration/strava-webhook.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 76[2mms[22m[39m
+2026-02-16T21:35:06.1176380Z  [32m✓[39m tests/unit/actions/systems/challenges.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+2026-02-16T21:35:06.1179217Z [90mstdout[2m | tests/unit/services/data/TrainingContextService.test.ts[2m > [22m[2mTrainingContextService[2m > [22m[2mgetTrainingContext[2m > [22m[2mshould return context with readiness and volume
+2026-02-16T21:35:06.1181381Z [22m[39mAutoSpec: Evaluating transition from ALPHA {
+2026-02-16T21:35:06.1182093Z   ctl: [33m0[39m,
+2026-02-16T21:35:06.1182532Z   atl: [33m0[39m,
+2026-02-16T21:35:06.1182972Z   tsb: [33m0[39m,
+2026-02-16T21:35:06.1183420Z   hrv: [33m80[39m,
+2026-02-16T21:35:06.1183894Z   sleepScore: [33m85[39m,
+2026-02-16T21:35:06.1184444Z   bodyBattery: [33m90[39m,
+2026-02-16T21:35:06.1185001Z   strengthDelta: [33m0[39m,
+2026-02-16T21:35:06.1185607Z   consecutiveStalls: [33m0[39m,
+2026-02-16T21:35:06.1186172Z   weeksInPhase: [33m0[39m,
+2026-02-16T21:35:06.1186821Z   nutritionMode: [32m'MAINTENANCE'[39m,
+2026-02-16T21:35:06.1187507Z   sleepDebt: [33m0[39m,
+2026-02-16T21:35:06.1187997Z   acwr: [33m1[39m,
+2026-02-16T21:35:06.1188546Z   junkMilePercent: [33m0[39m,
+2026-02-16T21:35:06.1189094Z   neuralLoad: [33m0[39m,
+2026-02-16T21:35:06.1189615Z   impactLoad: [33m0[39m,
+2026-02-16T21:35:06.1190430Z   interferenceEvents: [33m0[39m
+2026-02-16T21:35:06.1190895Z }
+2026-02-16T21:35:06.1191065Z 
+2026-02-16T21:35:06.1192922Z [90mstdout[2m | tests/unit/services/data/TrainingContextService.test.ts[2m > [22m[2mTrainingContextService[2m > [22m[2mgetTrainingContext[2m > [22m[2mshould trigger warnings for low recovery
+2026-02-16T21:35:06.1194703Z [22m[39mAutoSpec: Evaluating transition from ALPHA {
+2026-02-16T21:35:06.1195311Z   ctl: [33m0[39m,
+2026-02-16T21:35:06.1195709Z   atl: [33m0[39m,
+2026-02-16T21:35:06.1196096Z   tsb: [33m0[39m,
+2026-02-16T21:35:06.1196492Z   hrv: [33m50[39m,
+2026-02-16T21:35:06.1196981Z   sleepScore: [33m50[39m,
+2026-02-16T21:35:06.1197508Z   bodyBattery: [33m20[39m,
+2026-02-16T21:35:06.1198063Z   strengthDelta: [33m0[39m,
+2026-02-16T21:35:06.1198735Z   consecutiveStalls: [33m0[39m,
+2026-02-16T21:35:06.1199324Z   weeksInPhase: [33m0[39m,
+2026-02-16T21:35:06.1200298Z   nutritionMode: [32m'MAINTENANCE'[39m,
+2026-02-16T21:35:06.1200960Z   sleepDebt: [33m3.5[39m,
+2026-02-16T21:35:06.1201465Z   acwr: [33m1[39m,
+2026-02-16T21:35:06.1202004Z   junkMilePercent: [33m0[39m,
+2026-02-16T21:35:06.1202551Z   neuralLoad: [33m0[39m,
+2026-02-16T21:35:06.1203084Z   impactLoad: [33m0[39m,
+2026-02-16T21:35:06.1203678Z   interferenceEvents: [33m0[39m
+2026-02-16T21:35:06.1204143Z }
+2026-02-16T21:35:06.1206091Z [90mstderr[2m | tests/unit/services/data/TrainingContextService.test.ts[2m > [22m[2mTrainingContextService[2m > [22m[2mgetTrainingContext[2m > [22m[2mshould detect high cardio fatigue
+2026-02-16T21:35:06.1207895Z [22m[39mAutoSpec: CRITICAL STRESS. FORCE DELOAD.
+2026-02-16T21:35:06.1208315Z 
+2026-02-16T21:35:06.1210303Z [90mstdout[2m | tests/unit/services/data/TrainingContextService.test.ts[2m > [22m[2mTrainingContextService[2m > [22m[2mgetTrainingContext[2m > [22m[2mshould detect high cardio fatigue
+2026-02-16T21:35:06.1212152Z [22m[39mAutoSpec: Evaluating transition from ALPHA {
+2026-02-16T21:35:06.1212822Z   ctl: [33m0[39m,
+2026-02-16T21:35:06.1213258Z   atl: [33m0[39m,
+2026-02-16T21:35:06.1213496Z 
+2026-02-16T21:35:06.1213707Z   tsb: [33m0[39m,
+2026-02-16T21:35:06.1214148Z   hrv: [33m0[39m,
+2026-02-16T21:35:06.1214919Z   sleepScore: [33m100[39m,
+2026-02-16T21:35:06.1215477Z   bodyBattery: [33m80[39m,
+2026-02-16T21:35:06.1216019Z   strengthDelta: [33m0[39m,
+2026-02-16T21:35:06.1216607Z   consecutiveStalls: [33m0[39m,
+2026-02-16T21:35:06.1217182Z   weeksInPhase: [33m0[39m,
+2026-02-16T21:35:06.1217804Z   nutritionMode: [32m'MAINTENANCE'[39m,
+2026-02-16T21:35:06.1218397Z   sleepDebt: [33m0[39m,
+2026-02-16T21:35:06.1218881Z   acwr: [33m1[39m,
+2026-02-16T21:35:06.1219412Z   junkMilePercent: [33m0[39m,
+2026-02-16T21:35:06.1220515Z   neuralLoad: [33m0[39m,
+2026-02-16T21:35:06.1221105Z   impactLoad: [33m0[39m,
+2026-02-16T21:35:06.1221713Z   interferenceEvents: [33m0[39m
+2026-02-16T21:35:06.1222170Z }
+2026-02-16T21:35:06.1222378Z 
+2026-02-16T21:35:06.1223502Z  [32m✓[39m tests/unit/services/data/TrainingContextService.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+2026-02-16T21:35:06.1225432Z  [32m✓[39m tests/unit/services/pvp/DuelRewardsService.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+2026-02-16T21:35:06.1228171Z [90mstderr[2m | tests/unit/lib/integrations.test.ts[2m > [22m[2mBio-Integrations Tests[2m > [22m[2mIntervals.icu (Zod Validation)[2m > [22m[2mshould throw error on invalid schema (Zod)
+2026-02-16T21:35:06.1230125Z [22m[39mIntervals Parsing Warning: ZodError: [
+2026-02-16T21:35:06.1230675Z   {
+2026-02-16T21:35:06.1231043Z     "expected": "string",
+2026-02-16T21:35:06.1231503Z     "code": "invalid_type",
+2026-02-16T21:35:06.1231948Z     "path": [
+2026-02-16T21:35:06.1232317Z       "date"
+2026-02-16T21:35:06.1232668Z     ],
+2026-02-16T21:35:06.1233254Z     "message": "Invalid input: expected string, received number"
+2026-02-16T21:35:06.1233860Z   }
+2026-02-16T21:35:06.1234206Z ]
+2026-02-16T21:35:06.1235767Z     at new ZodError [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/zod@4.3.6/node_modules/[4mzod[24m/v4/core/core.js:39:39[90m)[39m
+2026-02-16T21:35:06.1238424Z     at Module.<anonymous> [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/zod@4.3.6/node_modules/[4mzod[24m/v4/core/parse.js:40:20[90m)[39m
+2026-02-16T21:35:06.1241242Z     at _.inst.safeParse [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/zod@4.3.6/node_modules/[4mzod[24m/v4/classic/schemas.js:40:46[90m)[39m
+2026-02-16T21:35:06.1243296Z     at fetchIntervals [90m(/home/runner/work/IronForge/IronForge/[39msrc/lib/intervals.ts:162:29[90m)[39m
+2026-02-16T21:35:06.1244843Z [90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
+2026-02-16T21:35:06.1246385Z     at getWellness [90m(/home/runner/work/IronForge/IronForge/[39msrc/lib/intervals.ts:194:10[90m)[39m
+2026-02-16T21:35:06.1247891Z     at [90m/home/runner/work/IronForge/IronForge/[39mtests/unit/lib/integrations.test.ts:91:13
+2026-02-16T21:35:06.1250104Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:915:20
+2026-02-16T21:35:06.1251196Z 
+2026-02-16T21:35:06.1252794Z [90mstderr[2m | tests/unit/lib/integrations.test.ts[2m > [22m[2mBio-Integrations Tests[2m > [22m[2mHevy (Zod Validation)[2m > [22m[2mshould throw validation error if schema mismatch
+2026-02-16T21:35:06.1254574Z [22m[39mHevy Validation Warning (Workouts): ZodError: [
+2026-02-16T21:35:06.1255246Z   {
+2026-02-16T21:35:06.1255620Z     "expected": "string",
+2026-02-16T21:35:06.1256094Z     "code": "invalid_type",
+2026-02-16T21:35:06.1256596Z     "path": [
+2026-02-16T21:35:06.1256949Z       "workouts",
+2026-02-16T21:35:06.1257310Z       0,
+2026-02-16T21:35:06.1257669Z       "title"
+2026-02-16T21:35:06.1257998Z     ],
+2026-02-16T21:35:06.1258627Z     "message": "Invalid input: expected string, received undefined"
+2026-02-16T21:35:06.1259322Z   },
+2026-02-16T21:35:06.1259650Z   {
+2026-02-16T21:35:06.1260282Z     "expected": "string",
+2026-02-16T21:35:06.1260730Z     "code": "invalid_type",
+2026-02-16T21:35:06.1261443Z     "path": [
+2026-02-16T21:35:06.1261818Z       "workouts",
+2026-02-16T21:35:06.1262172Z       0,
+2026-02-16T21:35:06.1262502Z       "start_time"
+2026-02-16T21:35:06.1262866Z     ],
+2026-02-16T21:35:06.1263446Z     "message": "Invalid input: expected string, received undefined"
+2026-02-16T21:35:06.1264090Z   },
+2026-02-16T21:35:06.1264403Z   {
+2026-02-16T21:35:06.1264748Z     "expected": "number",
+2026-02-16T21:35:06.1265190Z     "code": "invalid_type",
+2026-02-16T21:35:06.1265851Z     "path": [
+2026-02-16T21:35:06.1266248Z       "workouts",
+2026-02-16T21:35:06.1266606Z       0,
+2026-02-16T21:35:06.1266953Z       "duration_seconds"
+2026-02-16T21:35:06.1267342Z     ],
+2026-02-16T21:35:06.1267898Z     "message": "Invalid input: expected number, received undefined"
+2026-02-16T21:35:06.1268527Z   }
+2026-02-16T21:35:06.1268849Z ]
+2026-02-16T21:35:06.1270607Z     at new ZodError [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/zod@4.3.6/node_modules/[4mzod[24m/v4/core/core.js:39:39[90m)[39m
+2026-02-16T21:35:06.1272969Z     at Module.<anonymous> [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/zod@4.3.6/node_modules/[4mzod[24m/v4/core/parse.js:40:20[90m)[39m
+2026-02-16T21:35:06.1275500Z     at _.inst.safeParse [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/zod@4.3.6/node_modules/[4mzod[24m/v4/classic/schemas.js:40:46[90m)[39m
+2026-02-16T21:35:06.1277498Z     at getHevyWorkouts [90m(/home/runner/work/IronForge/IronForge/[39msrc/lib/hevy.ts:77:47[90m)[39m
+2026-02-16T21:35:06.1279052Z [90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
+2026-02-16T21:35:06.1280762Z     at [90m/home/runner/work/IronForge/IronForge/[39mtests/unit/lib/integrations.test.ts:170:13
+2026-02-16T21:35:06.1282852Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:915:20
+2026-02-16T21:35:06.1284452Z getHevyWorkouts library error: Hevy Data Invalid: [
+2026-02-16T21:35:06.1285165Z   {
+2026-02-16T21:35:06.1285502Z     "expected": "string",
+2026-02-16T21:35:06.1285930Z     "code": "invalid_type",
+2026-02-16T21:35:06.1286366Z     "path": [
+2026-02-16T21:35:06.1286752Z       "workouts",
+2026-02-16T21:35:06.1287122Z       0,
+2026-02-16T21:35:06.1287514Z       "title"
+2026-02-16T21:35:06.1287860Z     ],
+2026-02-16T21:35:06.1288444Z     "message": "Invalid input: expected string, received undefined"
+2026-02-16T21:35:06.1289082Z   },
+2026-02-16T21:35:06.1289402Z   {
+2026-02-16T21:35:06.1289757Z     "expected": "string",
+2026-02-16T21:35:06.1290422Z     "code": "invalid_type",
+2026-02-16T21:35:06.1290856Z     "path": [
+2026-02-16T21:35:06.1291211Z       "workouts",
+2026-02-16T21:35:06.1291565Z       0,
+2026-02-16T21:35:06.1291906Z       "start_time"
+2026-02-16T21:35:06.1292287Z     ],
+2026-02-16T21:35:06.1292872Z     "message": "Invalid input: expected string, received undefined"
+2026-02-16T21:35:06.1293502Z   },
+2026-02-16T21:35:06.1293809Z   {
+2026-02-16T21:35:06.1294150Z     "expected": "number",
+2026-02-16T21:35:06.1294583Z     "code": "invalid_type",
+2026-02-16T21:35:06.1295019Z     "path": [
+2026-02-16T21:35:06.1295386Z       "workouts",
+2026-02-16T21:35:06.1295739Z       0,
+2026-02-16T21:35:06.1296097Z       "duration_seconds"
+2026-02-16T21:35:06.1296513Z     ],
+2026-02-16T21:35:06.1297105Z     "message": "Invalid input: expected number, received undefined"
+2026-02-16T21:35:06.1297729Z   }
+2026-02-16T21:35:06.1298042Z ]
+2026-02-16T21:35:06.1298224Z 
+2026-02-16T21:35:06.1299121Z  [32m✓[39m tests/unit/lib/integrations.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 49[2mms[22m[39m
+2026-02-16T21:35:06.1300953Z  [32m✓[39m tests/unit/actions/social/core.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+2026-02-16T21:35:06.1302441Z  [32m✓[39m tests/unit/actions/duel.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 68[2mms[22m[39m
+2026-02-16T21:35:06.1304435Z  [32m✓[39m tests/unit/actions/progression/achievements.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+2026-02-16T21:35:06.1306603Z [90mstdout[2m | src/features/dashboard/__tests__/DashboardClient.test.tsx[2m > [22m[2mDashboardClient[2m > [22m[2mrenders the settings link by default
+2026-02-16T21:35:06.1308255Z [22m[39m[ViewRouter] Rendering view: citadel ActiveQuest: [33mfalse[39m
+2026-02-16T21:35:06.1309705Z [ViewRouter] Rendering view: citadel ActiveQuest: [33mfalse[39m
+2026-02-16T21:35:06.1310479Z 
+2026-02-16T21:35:06.1312211Z [90mstdout[2m | src/features/dashboard/__tests__/DashboardClient.test.tsx[2m > [22m[2mDashboardClient[2m > [22m[2mrenders dashboard content even if not configured (gate removed)
+2026-02-16T21:35:06.1314141Z [22m[39m[ViewRouter] Rendering view: citadel ActiveQuest: [33mfalse[39m
+2026-02-16T21:35:06.1315299Z [ViewRouter] Rendering view: citadel ActiveQuest: [33mfalse[39m
+2026-02-16T21:35:06.1315842Z 
+2026-02-16T21:35:06.1316921Z  [32m✓[39m src/features/dashboard/__tests__/DashboardClient.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 199[2mms[22m[39m
+2026-02-16T21:35:06.1318647Z  [32m✓[39m tests/unit/actions/user/logger.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 23[2mms[22m[39m
+2026-02-16T21:35:06.1320584Z  [32m✓[39m tests/unit/features/dashboard/FeedPanel.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[32m 134[2mms[22m[39m
+2026-02-16T21:35:06.1322357Z  [32m✓[39m tests/unit/actions/integrations/core.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 47[2mms[22m[39m
+2026-02-16T21:35:06.1324188Z  [32m✓[39m tests/unit/services/analytics/GrowthMetricsService.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+2026-02-16T21:35:06.1325964Z  [32m✓[39m tests/unit/actions/systems/world.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+2026-02-16T21:35:06.1327574Z  [32m✓[39m tests/unit/hooks/useSkillEffects.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+2026-02-16T21:35:06.1329656Z [90mstderr[2m | tests/unit/features/strength/history.test.ts[2m > [22m[2mgetLastSetForExercise[2m > [22m[2mreturns null on prisma error
+2026-02-16T21:35:06.1331517Z [22m[39mFailed to fetch last set: Error: DB Error
+2026-02-16T21:35:06.1332822Z     at [90m/home/runner/work/IronForge/IronForge/[39mtests/unit/features/strength/history.test.ts:77:48
+2026-02-16T21:35:06.1335049Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:145:11
+2026-02-16T21:35:06.1337562Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:915:26
+2026-02-16T21:35:06.1340361Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1243:20
+2026-02-16T21:35:06.1341757Z     at new Promise (<anonymous>)
+2026-02-16T21:35:06.1343663Z     at runWithTimeout [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1209:10[90m)[39m
+2026-02-16T21:35:06.1346315Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:37
+2026-02-16T21:35:06.1350242Z     at Traces.$ [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/vitest@4.0.18_@edge-runtime+vm@3.2.0_@opentelemetry+api@1.9.0_@types+node@25.2.3_@vitest+brow_egenrxx3k5kr54rerwzg5eg2iu/node_modules/[4mvitest[24m/dist/chunks/traces.CCmnQaNT.js:142:27[90m)[39m
+2026-02-16T21:35:06.1354598Z     at trace [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/vitest@4.0.18_@edge-runtime+vm@3.2.0_@opentelemetry+api@1.9.0_@types+node@25.2.3_@vitest+brow_egenrxx3k5kr54rerwzg5eg2iu/node_modules/[4mvitest[24m/dist/chunks/test.B8ej_ZHS.js:239:21[90m)[39m
+2026-02-16T21:35:06.1358173Z     at runTest [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:12[90m)[39m
+2026-02-16T21:35:06.1359431Z 
+2026-02-16T21:35:06.1360910Z [90mstderr[2m | tests/unit/features/strength/history.test.ts[2m > [22m[2mgetExerciseHistory[2m > [22m[2mreturns empty array on error
+2026-02-16T21:35:06.1362589Z [22m[39mHistory chart error Error: DB Error
+2026-02-16T21:35:06.1363891Z     at [90m/home/runner/work/IronForge/IronForge/[39mtests/unit/features/strength/history.test.ts:132:47
+2026-02-16T21:35:06.1365993Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:145:11
+2026-02-16T21:35:06.1368394Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:915:26
+2026-02-16T21:35:06.1370914Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1243:20
+2026-02-16T21:35:06.1372383Z     at new Promise (<anonymous>)
+2026-02-16T21:35:06.1374378Z     at runWithTimeout [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1209:10[90m)[39m
+2026-02-16T21:35:06.1377115Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:37
+2026-02-16T21:35:06.1381100Z     at Traces.$ [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/vitest@4.0.18_@edge-runtime+vm@3.2.0_@opentelemetry+api@1.9.0_@types+node@25.2.3_@vitest+brow_egenrxx3k5kr54rerwzg5eg2iu/node_modules/[4mvitest[24m/dist/chunks/traces.CCmnQaNT.js:142:27[90m)[39m
+2026-02-16T21:35:06.1384858Z     at trace [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/vitest@4.0.18_@edge-runtime+vm@3.2.0_@opentelemetry+api@1.9.0_@types+node@25.2.3_@vitest+brow_egenrxx3k5kr54rerwzg5eg2iu/node_modules/[4mvitest[24m/dist/chunks/test.B8ej_ZHS.js:239:21[90m)[39m
+2026-02-16T21:35:06.1387538Z     at runTest [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:12[90m)[39m
+2026-02-16T21:35:06.1388515Z 
+2026-02-16T21:35:06.1389240Z  [32m✓[39m tests/unit/features/strength/history.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 46[2mms[22m[39m
+2026-02-16T21:35:06.1390996Z  [32m✓[39m tests/unit/app/api/sync/user/route.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 42[2mms[22m[39m
+2026-02-16T21:35:06.1392739Z  [32m✓[39m tests/unit/services/TerritoryControlService.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+2026-02-16T21:35:06.1395336Z [90mstderr[2m | tests/unit/actions/integrations/intervals.test.ts[2m > [22m[2mIntervals Actions[2m > [22m[2mgetWellnessAction[2m > [22m[2mshould return empty object on error
+2026-02-16T21:35:06.1397002Z [22m[39mServer Action Intervals Wellness Error: API Error
+2026-02-16T21:35:06.1397440Z 
+2026-02-16T21:35:06.1399183Z [90mstderr[2m | tests/unit/actions/integrations/intervals.test.ts[2m > [22m[2mIntervals Actions[2m > [22m[2mgetWellnessAction[2m > [22m[2mshould return empty object if user not connected
+2026-02-16T21:35:06.1401168Z [22m[39mServer Action Intervals Wellness Error: Intervals.icu not connected
+2026-02-16T21:35:06.1401621Z 
+2026-02-16T21:35:06.1402887Z [90mstderr[2m | tests/unit/actions/integrations/intervals.test.ts[2m > [22m[2mIntervals Actions[2m > [22m[2mgetAthleteSettingsAction[2m > [22m[2mshould return null on failure
+2026-02-16T21:35:06.1404414Z [22m[39mServer Action Intervals Settings Error: Fail
+2026-02-16T21:35:06.1404749Z 
+2026-02-16T21:35:06.1405633Z  [31m❯[39m tests/unit/actions/integrations/intervals.test.ts [2m([22m[2m8 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[32m 22[2mms[22m[39m
+2026-02-16T21:35:06.1406991Z [31m       [31m×[31m should return mapped wellness data on success[39m[32m 13[2mms[22m[39m
+2026-02-16T21:35:06.1407894Z        [32m✓[39m should return empty object on error[32m 3[2mms[22m[39m
+2026-02-16T21:35:06.1408934Z        [32m✓[39m should return empty object if user not connected[32m 1[2mms[22m[39m
+2026-02-16T21:35:06.1409768Z        [32m✓[39m should return activities[32m 1[2mms[22m[39m
+2026-02-16T21:35:06.1410993Z        [32m✓[39m should return events[32m 0[2mms[22m[39m
+2026-02-16T21:35:06.1412076Z        [32m✓[39m should return empty array on failure[32m 0[2mms[22m[39m
+2026-02-16T21:35:06.1413098Z        [32m✓[39m should return settings[32m 0[2mms[22m[39m
+2026-02-16T21:35:06.1414102Z        [32m✓[39m should return null on failure[32m 1[2mms[22m[39m
+2026-02-16T21:35:06.1415667Z  [32m✓[39m tests/unit/actions/training/periodization.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 33[2mms[22m[39m
+2026-02-16T21:35:06.1417537Z  [2m[90m↓[39m[22m tests/unit/actions/integrations/hevy.test.ts [2m([22m[2m6 tests[22m[2m | [22m[33m6 skipped[39m[2m)[22m
+2026-02-16T21:35:06.1420403Z [90mstdout[2m | tests/unit/actions/pvp/core.test.ts[2m > [22m[2mPvP Server Actions[2m > [22m[2mcreateSegmentBattleAction[2m > [22m[2mshould create a segment battle challenge
+2026-02-16T21:35:06.1421837Z [22m[39mUser user-1 challenged opponent-456 on segment segment-123
+2026-02-16T21:35:06.1422240Z 
+2026-02-16T21:35:06.1422861Z  [32m✓[39m tests/unit/actions/pvp/core.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+2026-02-16T21:35:06.1424065Z  [32m✓[39m tests/unit/actions/training/gauntlet.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+2026-02-16T21:35:06.1425331Z  [32m✓[39m tests/unit/services/pvp/PvpCombatService.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+2026-02-16T21:35:06.1426714Z  [32m✓[39m tests/unit/services/progression.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+2026-02-16T21:35:06.1428104Z  [32m✓[39m tests/unit/utils/apre.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+2026-02-16T21:35:06.1429386Z  [32m✓[39m tests/unit/actions/guild/core.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 22[2mms[22m[39m
+2026-02-16T21:35:06.1431631Z  [32m✓[39m tests/unit/factory.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 38[2mms[22m[39m
+2026-02-16T21:35:06.1433936Z  [32m✓[39m tests/unit/services/BudgetCalculator.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+2026-02-16T21:35:06.1435460Z  [32m✓[39m tests/unit/lib/powerRating.test.ts [2m([22m[2m16 tests[22m[2m)[22m[32m 23[2mms[22m[39m
+2026-02-16T21:35:06.1437433Z [90mstdout[2m | tests/unit/actions/economy/forge.test.ts[2m > [22m[2mForge Server Actions[2m > [22m[2mshould successfully craft an item if resources are sufficient
+2026-02-16T21:35:06.1438853Z [22m[39m[Forge] Crafted Iron Sword for test@example.com
+2026-02-16T21:35:06.1439188Z 
+2026-02-16T21:35:06.1439830Z  [32m✓[39m tests/unit/actions/economy/forge.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 50[2mms[22m[39m
+2026-02-16T21:35:06.1441342Z  [32m✓[39m src/services/game/__tests__/PowerRatingService.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 26[2mms[22m[39m
+2026-02-16T21:35:06.1443241Z [90mstderr[2m | tests/unit/actions/progression/core.test.ts[2m > [22m[2mProgression Actions[2m > [22m[2mgetProgressionAction[2m > [22m[2mshould return null when unauthorized
+2026-02-16T21:35:06.1444948Z [22m[39mProgression Action Error: Error: Unauthorized
+2026-02-16T21:35:06.1446474Z     at Module.getProgressionAction [90m(/home/runner/work/IronForge/IronForge/[39msrc/actions/progression/core.ts:13:22[90m)[39m
+2026-02-16T21:35:06.1448544Z [90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
+2026-02-16T21:35:06.1450330Z     at [90m/home/runner/work/IronForge/IronForge/[39mtests/unit/actions/progression/core.test.ts:45:22
+2026-02-16T21:35:06.1452475Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:915:20
+2026-02-16T21:35:06.1453597Z 
+2026-02-16T21:35:06.1455376Z [90mstderr[2m | tests/unit/actions/progression/core.test.ts[2m > [22m[2mProgression Actions[2m > [22m[2mgetProgressionAction[2m > [22m[2mshould handle service errors
+2026-02-16T21:35:06.1457118Z [22m[39mProgression Action Error: Error: Service Error
+2026-02-16T21:35:06.1458409Z     at [90m/home/runner/work/IronForge/IronForge/[39mtests/unit/actions/progression/core.test.ts:53:9
+2026-02-16T21:35:06.1460583Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:145:11
+2026-02-16T21:35:06.1463142Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:915:26
+2026-02-16T21:35:06.1466017Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1243:20
+2026-02-16T21:35:06.1467811Z     at new Promise (<anonymous>)
+2026-02-16T21:35:06.1470148Z     at runWithTimeout [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1209:10[90m)[39m
+2026-02-16T21:35:06.1473185Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:37
+2026-02-16T21:35:06.1477277Z     at Traces.$ [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/vitest@4.0.18_@edge-runtime+vm@3.2.0_@opentelemetry+api@1.9.0_@types+node@25.2.3_@vitest+brow_egenrxx3k5kr54rerwzg5eg2iu/node_modules/[4mvitest[24m/dist/chunks/traces.CCmnQaNT.js:142:27[90m)[39m
+2026-02-16T21:35:06.1482276Z     at trace [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/vitest@4.0.18_@edge-runtime+vm@3.2.0_@opentelemetry+api@1.9.0_@types+node@25.2.3_@vitest+brow_egenrxx3k5kr54rerwzg5eg2iu/node_modules/[4mvitest[24m/dist/chunks/test.B8ej_ZHS.js:239:21[90m)[39m
+2026-02-16T21:35:06.1486042Z     at runTest [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:12[90m)[39m
+2026-02-16T21:35:06.1487398Z 
+2026-02-16T21:35:06.1489275Z [90mstderr[2m | tests/unit/actions/progression/core.test.ts[2m > [22m[2mProgression Actions[2m > [22m[2mawardGoldAction[2m > [22m[2mshould return null for invalid input (Zod validation)
+2026-02-16T21:35:06.1491716Z [22m[39mAward Gold Action Error: Error: Validation Failed
+2026-02-16T21:35:06.1493301Z     at [90m/home/runner/work/IronForge/IronForge/[39mtests/unit/actions/progression/core.test.ts:89:9
+2026-02-16T21:35:06.1495690Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:145:11
+2026-02-16T21:35:06.1524220Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:915:26
+2026-02-16T21:35:06.1526710Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1243:20
+2026-02-16T21:35:06.1528087Z     at new Promise (<anonymous>)
+2026-02-16T21:35:06.1530275Z     at runWithTimeout [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1209:10[90m)[39m
+2026-02-16T21:35:06.1533507Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:37
+2026-02-16T21:35:06.1537232Z     at Traces.$ [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/vitest@4.0.18_@edge-runtime+vm@3.2.0_@opentelemetry+api@1.9.0_@types+node@25.2.3_@vitest+brow_egenrxx3k5kr54rerwzg5eg2iu/node_modules/[4mvitest[24m/dist/chunks/traces.CCmnQaNT.js:142:27[90m)[39m
+2026-02-16T21:35:06.1541801Z     at trace [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/vitest@4.0.18_@edge-runtime+vm@3.2.0_@opentelemetry+api@1.9.0_@types+node@25.2.3_@vitest+brow_egenrxx3k5kr54rerwzg5eg2iu/node_modules/[4mvitest[24m/dist/chunks/test.B8ej_ZHS.js:239:21[90m)[39m
+2026-02-16T21:35:06.1545262Z     at runTest [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:12[90m)[39m
+2026-02-16T21:35:06.1546514Z 
+2026-02-16T21:35:06.1548121Z [90mstderr[2m | tests/unit/actions/progression/core.test.ts[2m > [22m[2mProgression Actions[2m > [22m[2mawardGoldAction[2m > [22m[2mshould return null when unauthorized
+2026-02-16T21:35:06.1549814Z [22m[39mAward Gold Action Error: Error: Unauthorized
+2026-02-16T21:35:06.1551526Z     at Module.awardGoldAction [90m(/home/runner/work/IronForge/IronForge/[39msrc/actions/progression/core.ts:28:22[90m)[39m
+2026-02-16T21:35:06.1553191Z [90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
+2026-02-16T21:35:06.1554679Z     at [90m/home/runner/work/IronForge/IronForge/[39mtests/unit/actions/progression/core.test.ts:97:22
+2026-02-16T21:35:06.1556774Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:915:20
+2026-02-16T21:35:06.1557905Z 
+2026-02-16T21:35:06.1558858Z  [32m✓[39m tests/unit/actions/progression/core.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 103[2mms[22m[39m
+2026-02-16T21:35:06.1561306Z [90mstdout[2m | tests/unit/actions/training/core.test.ts[2m > [22m[2mTraining Actions[2m > [22m[2mlogTitanSet[2m > [22m[2mshould log set and award rewards
+2026-02-16T21:35:06.1562901Z [22m[39m[MUTATION] XP: +20 from WORKOUT for test-user
+2026-02-16T21:35:06.1563721Z [MUTATION] Economy: {"kineticEnergy":20} from WORKOUT
+2026-02-16T21:35:06.1564125Z 
+2026-02-16T21:35:06.1565976Z [90mstderr[2m | tests/unit/actions/training/core.test.ts[2m > [22m[2mTraining Actions[2m > [22m[2mupdateActivePathAction[2m > [22m[2mshould fail if updateActivePathAction is called with WARDEN but DB fails
+2026-02-16T21:35:06.1567775Z [22m[39mUpdate Path Error: Error: DB Error
+2026-02-16T21:35:06.1569093Z     at [90m/home/runner/work/IronForge/IronForge/[39mtests/unit/actions/training/core.test.ts:81:59
+2026-02-16T21:35:06.1570942Z [90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
+2026-02-16T21:35:06.1573041Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:915:20
+2026-02-16T21:35:06.1575626Z 
+2026-02-16T21:35:06.1576625Z  [32m✓[39m tests/unit/actions/training/core.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+2026-02-16T21:35:06.1578574Z  [32m✓[39m tests/unit/services/game/GuildTerritoryService.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 37[2mms[22m[39m
+2026-02-16T21:35:06.1580609Z  [32m✓[39m tests/unit/features/territory/territory.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 7[2mms[22m[39m
+2026-02-16T21:35:06.1582231Z  [32m✓[39m tests/unit/services/oracle.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+2026-02-16T21:35:06.1584108Z  [32m✓[39m tests/unit/utils/volumeCalculator.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+2026-02-16T21:35:06.1585727Z  [32m✓[39m tests/unit/features/CardioDuel.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 29[2mms[22m[39m
+2026-02-16T21:35:06.1587494Z  [32m✓[39m tests/unit/services/integration/GPE_Fallback.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+2026-02-16T21:35:06.1589489Z  [32m✓[39m src/features/game/components/__tests__/SkillTree.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 198[2mms[22m[39m
+2026-02-16T21:35:06.1592487Z [90mstderr[2m | tests/unit/actions/user/onboarding.test.ts[2m > [22m[2mOnboarding Server Actions[2m > [22m[2mcompleteOnboardingAction[2m > [22m[2mshould handle progression service errors gracefully
+2026-02-16T21:35:06.1594396Z [22m[39mFailed to complete onboarding: Error: DB Error
+2026-02-16T21:35:06.1595646Z     at [90m/home/runner/work/IronForge/IronForge/[39mtests/unit/actions/user/onboarding.test.ts:97:9
+2026-02-16T21:35:06.1597757Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:145:11
+2026-02-16T21:35:06.1600444Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:915:26
+2026-02-16T21:35:06.1602923Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1243:20
+2026-02-16T21:35:06.1604264Z     at new Promise (<anonymous>)
+2026-02-16T21:35:06.1606153Z     at runWithTimeout [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1209:10[90m)[39m
+2026-02-16T21:35:06.1608778Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:37
+2026-02-16T21:35:06.1612732Z     at Traces.$ [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/vitest@4.0.18_@edge-runtime+vm@3.2.0_@opentelemetry+api@1.9.0_@types+node@25.2.3_@vitest+brow_egenrxx3k5kr54rerwzg5eg2iu/node_modules/[4mvitest[24m/dist/chunks/traces.CCmnQaNT.js:142:27[90m)[39m
+2026-02-16T21:35:06.1617394Z     at trace [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/vitest@4.0.18_@edge-runtime+vm@3.2.0_@opentelemetry+api@1.9.0_@types+node@25.2.3_@vitest+brow_egenrxx3k5kr54rerwzg5eg2iu/node_modules/[4mvitest[24m/dist/chunks/test.B8ej_ZHS.js:239:21[90m)[39m
+2026-02-16T21:35:06.1621051Z     at runTest [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:12[90m)[39m
+2026-02-16T21:35:06.1622516Z 
+2026-02-16T21:35:06.1623427Z  [32m✓[39m tests/unit/actions/user/onboarding.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+2026-02-16T21:35:06.1625080Z  [32m✓[39m tests/unit/utils/weaknessAuditor.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 45[2mms[22m[39m
+2026-02-16T21:35:06.1627038Z [90mstderr[2m | tests/unit/app/api/sync/sync.test.ts[2m > [22m[2mSync API Route (Logs)[2m > [22m[2mshould handle server error
+2026-02-16T21:35:06.1628283Z [22m[39mLog API Error: Error: DB Error
+2026-02-16T21:35:06.1629417Z     at [90m/home/runner/work/IronForge/IronForge/[39mtests/unit/app/api/sync/sync.test.ts:83:7
+2026-02-16T21:35:06.1631715Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:145:11
+2026-02-16T21:35:06.1634182Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:915:26
+2026-02-16T21:35:06.1636975Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1243:20
+2026-02-16T21:35:06.1638315Z     at new Promise (<anonymous>)
+2026-02-16T21:35:06.1640495Z     at runWithTimeout [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1209:10[90m)[39m
+2026-02-16T21:35:06.1643326Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:37
+2026-02-16T21:35:06.1646994Z     at Traces.$ [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/vitest@4.0.18_@edge-runtime+vm@3.2.0_@opentelemetry+api@1.9.0_@types+node@25.2.3_@vitest+brow_egenrxx3k5kr54rerwzg5eg2iu/node_modules/[4mvitest[24m/dist/chunks/traces.CCmnQaNT.js:142:27[90m)[39m
+2026-02-16T21:35:06.1651380Z     at trace [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/vitest@4.0.18_@edge-runtime+vm@3.2.0_@opentelemetry+api@1.9.0_@types+node@25.2.3_@vitest+brow_egenrxx3k5kr54rerwzg5eg2iu/node_modules/[4mvitest[24m/dist/chunks/test.B8ej_ZHS.js:239:21[90m)[39m
+2026-02-16T21:35:06.1655014Z     at runTest [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:12[90m)[39m
+2026-02-16T21:35:06.1656385Z 
+2026-02-16T21:35:06.1657244Z  [32m✓[39m tests/unit/app/api/sync/sync.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 50[2mms[22m[39m
+2026-02-16T21:35:06.1658986Z  [32m✓[39m tests/unit/features/dashboard/StatsHeader.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[32m 107[2mms[22m[39m
+2026-02-16T21:35:06.1661025Z  [32m✓[39m tests/integration/OracleFlow.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 38[2mms[22m[39m
+2026-02-16T21:35:06.1663200Z [90mstderr[2m | tests/unit/features/strength/custom-exercises.test.ts[2m > [22m[2mcreateCustomExercise[2m > [22m[2mreturns fallback object on DB error
+2026-02-16T21:35:06.1664827Z [22m[39mCreate custom exercise failed Error: DB Error
+2026-02-16T21:35:06.1666174Z     at [90m/home/runner/work/IronForge/IronForge/[39mtests/unit/features/strength/custom-exercises.test.ts:48:42
+2026-02-16T21:35:06.1668383Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:145:11
+2026-02-16T21:35:06.1671105Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:915:26
+2026-02-16T21:35:06.1673731Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1243:20
+2026-02-16T21:35:06.1675119Z     at new Promise (<anonymous>)
+2026-02-16T21:35:06.1677042Z     at runWithTimeout [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1209:10[90m)[39m
+2026-02-16T21:35:06.1679689Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:37
+2026-02-16T21:35:06.1683554Z     at Traces.$ [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/vitest@4.0.18_@edge-runtime+vm@3.2.0_@opentelemetry+api@1.9.0_@types+node@25.2.3_@vitest+brow_egenrxx3k5kr54rerwzg5eg2iu/node_modules/[4mvitest[24m/dist/chunks/traces.CCmnQaNT.js:142:27[90m)[39m
+2026-02-16T21:35:06.1687880Z     at trace [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/vitest@4.0.18_@edge-runtime+vm@3.2.0_@opentelemetry+api@1.9.0_@types+node@25.2.3_@vitest+brow_egenrxx3k5kr54rerwzg5eg2iu/node_modules/[4mvitest[24m/dist/chunks/test.B8ej_ZHS.js:239:21[90m)[39m
+2026-02-16T21:35:06.1691807Z     at runTest [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:12[90m)[39m
+2026-02-16T21:35:06.1693021Z 
+2026-02-16T21:35:06.1694034Z  [32m✓[39m tests/unit/features/strength/custom-exercises.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 17[2mms[22m[39m
+2026-02-16T21:35:06.1695907Z  [32m✓[39m tests/unit/services/MobilityAuditor.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+2026-02-16T21:35:06.1697556Z  [32m✓[39m tests/unit/lib/volume.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+2026-02-16T21:35:06.1699176Z  [32m✓[39m tests/unit/actions/validation.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+2026-02-16T21:35:06.1701792Z  [32m✓[39m tests/unit/actions/leaderboards.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+2026-02-16T21:35:06.1712139Z  [32m✓[39m tests/unit/lib/territory/tileUtils.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+2026-02-16T21:35:06.1714009Z  [32m✓[39m tests/unit/utils/combatMechanics.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+2026-02-16T21:35:06.1716352Z [90mstderr[2m | tests/unit/actions/user/account.test.ts[2m > [22m[2maccount actions[2m > [22m[2mdeleteAccountAction[2m > [22m[2mshould handle errors gracefully
+2026-02-16T21:35:06.1718014Z [22m[39mFailed to delete account: Error: DB Error
+2026-02-16T21:35:06.1719272Z     at [90m/home/runner/work/IronForge/IronForge/[39mtests/unit/actions/user/account.test.ts:67:53
+2026-02-16T21:35:06.1721616Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:145:11
+2026-02-16T21:35:06.1724341Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:915:26
+2026-02-16T21:35:06.1729255Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1243:20
+2026-02-16T21:35:06.1730810Z     at new Promise (<anonymous>)
+2026-02-16T21:35:06.1732731Z     at runWithTimeout [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1209:10[90m)[39m
+2026-02-16T21:35:06.1735540Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:37
+2026-02-16T21:35:06.1739160Z     at Traces.$ [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/vitest@4.0.18_@edge-runtime+vm@3.2.0_@opentelemetry+api@1.9.0_@types+node@25.2.3_@vitest+brow_egenrxx3k5kr54rerwzg5eg2iu/node_modules/[4mvitest[24m/dist/chunks/traces.CCmnQaNT.js:142:27[90m)[39m
+2026-02-16T21:35:06.1743802Z     at trace [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/vitest@4.0.18_@edge-runtime+vm@3.2.0_@opentelemetry+api@1.9.0_@types+node@25.2.3_@vitest+brow_egenrxx3k5kr54rerwzg5eg2iu/node_modules/[4mvitest[24m/dist/chunks/test.B8ej_ZHS.js:239:21[90m)[39m
+2026-02-16T21:35:06.1747305Z     at runTest [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:12[90m)[39m
+2026-02-16T21:35:06.1748556Z 
+2026-02-16T21:35:06.1749508Z  [32m✓[39m tests/unit/actions/user/account.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+2026-02-16T21:35:06.1751382Z  [32m✓[39m tests/unit/services/OracleService.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+2026-02-16T21:35:06.1753513Z  [32m✓[39m src/services/game/__tests__/TerritoryService.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+2026-02-16T21:35:06.1755672Z [90mstderr[2m | tests/unit/features/strength/useSetHistory.test.ts[2m > [22m[2museSetHistory[2m > [22m[2mreturns isLoading true initially
+2026-02-16T21:35:06.1757268Z [22m[39mAn update to TestComponent inside a test was not wrapped in act(...).
+2026-02-16T21:35:06.1757861Z 
+2026-02-16T21:35:06.1758701Z When testing, code that causes React state updates should be wrapped into act(...):
+2026-02-16T21:35:06.1759346Z 
+2026-02-16T21:35:06.1759514Z act(() => {
+2026-02-16T21:35:06.1760194Z   /* fire events that update state */
+2026-02-16T21:35:06.1760670Z });
+2026-02-16T21:35:06.1761036Z /* assert on the output */
+2026-02-16T21:35:06.1761340Z 
+2026-02-16T21:35:06.1762418Z This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+2026-02-16T21:35:06.1763464Z 
+2026-02-16T21:35:06.1764919Z [90mstderr[2m | tests/unit/features/strength/useSetHistory.test.ts[2m > [22m[2museSetHistory[2m > [22m[2mhandles fetch error gracefully
+2026-02-16T21:35:06.1766388Z [22m[39mHistory fetch error Error: Network Error
+2026-02-16T21:35:06.1767776Z     at [90m/home/runner/work/IronForge/IronForge/[39mtests/unit/features/strength/useSetHistory.test.ts:57:42
+2026-02-16T21:35:06.1770240Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:145:11
+2026-02-16T21:35:06.1772752Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:915:26
+2026-02-16T21:35:06.1775241Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1243:20
+2026-02-16T21:35:06.1776587Z     at new Promise (<anonymous>)
+2026-02-16T21:35:06.1778496Z     at runWithTimeout [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1209:10[90m)[39m
+2026-02-16T21:35:06.1781491Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:37
+2026-02-16T21:35:06.1787616Z     at Traces.$ [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/vitest@4.0.18_@edge-runtime+vm@3.2.0_@opentelemetry+api@1.9.0_@types+node@25.2.3_@vitest+brow_egenrxx3k5kr54rerwzg5eg2iu/node_modules/[4mvitest[24m/dist/chunks/traces.CCmnQaNT.js:142:27[90m)[39m
+2026-02-16T21:35:06.1795726Z     at trace [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/vitest@4.0.18_@edge-runtime+vm@3.2.0_@opentelemetry+api@1.9.0_@types+node@25.2.3_@vitest+brow_egenrxx3k5kr54rerwzg5eg2iu/node_modules/[4mvitest[24m/dist/chunks/test.B8ej_ZHS.js:239:21[90m)[39m
+2026-02-16T21:35:06.1800398Z     at runTest [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:12[90m)[39m
+2026-02-16T21:35:06.1801610Z 
+2026-02-16T21:35:06.1802591Z  [32m✓[39m tests/unit/features/strength/useSetHistory.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 203[2mms[22m[39m
+2026-02-16T21:35:06.1804427Z  [32m✓[39m tests/unit/services/GeminiService.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+2026-02-16T21:35:06.1806284Z  [32m✓[39m tests/unit/features/training/logic/zones.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+2026-02-16T21:35:06.1808006Z  [32m✓[39m tests/unit/actions/user-actions.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+2026-02-16T21:35:06.1829196Z  [32m✓[39m tests/unit/actions/integrations/hevy_import.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 20[2mms[22m[39m
+2026-02-16T21:35:06.1831453Z  [32m✓[39m tests/unit/features/training/logic/buffs.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+2026-02-16T21:35:06.1832772Z [90mstdout[2m | tests/unit/services/planner.test.ts
+2026-02-16T21:35:06.1833687Z [22m[39mMock factory for auditorOrchestrator running
+2026-02-16T21:35:06.1834104Z 
+2026-02-16T21:35:06.1835500Z [90mstdout[2m | tests/unit/services/planner.test.ts[2m > [22m[2mPlannerService[2m > [22m[2mshould generate a plan for a valid user
+2026-02-16T21:35:06.1836798Z [22m[39mPlanner: Generating plan for user user1
+2026-02-16T21:35:06.1837202Z 
+2026-02-16T21:35:06.1838469Z [90mstdout[2m | tests/unit/services/planner.test.ts[2m > [22m[2mPlannerService[2m > [22m[2mshould generate a plan for a valid user
+2026-02-16T21:35:06.1840282Z [22m[39mPlanner: Plan generated and saved for user user1
+2026-02-16T21:35:06.1840757Z 
+2026-02-16T21:35:06.1841628Z  [32m✓[39m tests/unit/services/planner.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 7[2mms[22m[39m
+2026-02-16T21:35:06.1843278Z  [32m✓[39m src/actions/systems/__tests__/territories.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 9[2mms[22m[39m
+2026-02-16T21:35:06.1845076Z  [32m✓[39m tests/unit/services/game/EffortCalculator.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+2026-02-16T21:35:06.1847717Z [90mstderr[2m | tests/unit/actions/territory.test.ts[2m > [22m[2mTerritory Actions[2m > [22m[2mgetTerritoryMapAction[2m > [22m[2mshould handle errors gracefully
+2026-02-16T21:35:06.1849365Z [22m[39mgetTerritoryMapAction error: Error: DB Error
+2026-02-16T21:35:06.1853094Z     at [90m/home/runner/work/IronForge/IronForge/[39mtests/unit/actions/territory.test.ts:40:78
+2026-02-16T21:35:06.1866002Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:145:11
+2026-02-16T21:35:06.1868628Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:915:26
+2026-02-16T21:35:06.1871408Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1243:20
+2026-02-16T21:35:06.1872764Z     at new Promise (<anonymous>)
+2026-02-16T21:35:06.1874726Z     at runWithTimeout [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1209:10[90m)[39m
+2026-02-16T21:35:06.1877390Z     at [90mfile:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:37
+2026-02-16T21:35:06.1911282Z     at Traces.$ [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/vitest@4.0.18_@edge-runtime+vm@3.2.0_@opentelemetry+api@1.9.0_@types+node@25.2.3_@vitest+brow_egenrxx3k5kr54rerwzg5eg2iu/node_modules/[4mvitest[24m/dist/chunks/traces.CCmnQaNT.js:142:27[90m)[39m
+2026-02-16T21:35:06.1915718Z     at trace [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/vitest@4.0.18_@edge-runtime+vm@3.2.0_@opentelemetry+api@1.9.0_@types+node@25.2.3_@vitest+brow_egenrxx3k5kr54rerwzg5eg2iu/node_modules/[4mvitest[24m/dist/chunks/test.B8ej_ZHS.js:239:21[90m)[39m
+2026-02-16T21:35:06.1919089Z     at runTest [90m(file:///home/runner/work/IronForge/IronForge/[39mnode_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:12[90m)[39m
+2026-02-16T21:35:06.1920537Z 
+2026-02-16T21:35:06.1921419Z  [32m✓[39m tests/unit/actions/territory.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+2026-02-16T21:35:06.1922876Z  [32m✓[39m tests/unit/lib/wilks.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+2026-02-16T21:35:06.1924704Z  [32m✓[39m tests/unit/app/api/chat/route.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 17[2mms[22m[39m
+2026-02-16T21:35:06.1941296Z {"level":50,"time":1771277682476,"env":"test","err":{"type":"Error","message":"DB Connection Failed","stack":"Error: DB Connection Failed\n    at /home/runner/work/IronForge/IronForge/tests/unit/app/api/health/route.test.ts:38:53\n    at file:///home/runner/work/IronForge/IronForge/node_modules/.pnpm/@vitest+runner@4.0.18/node_modules/@vitest/runner/dist/index.js:145:11\n    at file:///home/runner/work/IronForge/IronForge/node_modules/.pnpm/@vitest+runner@4.0.18/node_modules/@vitest/runner/dist/index.js:915:26\n    at file:///home/runner/work/IronForge/IronForge/node_modules/.pnpm/@vitest+runner@4.0.18/node_modules/@vitest/runner/dist/index.js:1243:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/runner/work/IronForge/IronForge/node_modules/.pnpm/@vitest+runner@4.0.18/node_modules/@vitest/runner/dist/index.js:1209:10)\n    at file:///home/runner/work/IronForge/IronForge/node_modules/.pnpm/@vitest+runner@4.0.18/node_modules/@vitest/runner/dist/index.js:1653:37\n    at Traces.$ (file:///home/runner/work/IronForge/IronForge/node_modules/.pnpm/vitest@4.0.18_@edge-runtime+vm@3.2.0_@opentelemetry+api@1.9.0_@types+node@25.2.3_@vitest+brow_egenrxx3k5kr54rerwzg5eg2iu/node_modules/vitest/dist/chunks/traces.CCmnQaNT.js:142:27)\n    at trace (file:///home/runner/work/IronForge/IronForge/node_modules/.pnpm/vitest@4.0.18_@edge-runtime+vm@3.2.0_@opentelemetry+api@1.9.0_@types+node@25.2.3_@vitest+brow_egenrxx3k5kr54rerwzg5eg2iu/node_modules/vitest/dist/chunks/test.B8ej_ZHS.js:239:21)\n    at runTest (file:///home/runner/work/IronForge/IronForge/node_modules/.pnpm/@vitest+runner@4.0.18/node_modules/@vitest/runner/dist/index.js:1653:12)"},"msg":"Health check failed"}
+2026-02-16T21:35:06.1953246Z  [32m✓[39m tests/unit/app/api/health/route.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 22[2mms[22m[39m
+2026-02-16T21:35:06.1955158Z  [32m✓[39m tests/unit/components/marketing/Pricing.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[33m 536[2mms[22m[39m
+2026-02-16T21:35:06.1956625Z      [33m[2m✓[22m[39m renders CTA links correctly [33m 390[2mms[22m[39m
+2026-02-16T21:35:06.1958135Z  [32m✓[39m tests/unit/data/workout_generator.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+2026-02-16T21:35:06.1960147Z  [32m✓[39m tests/unit/components/marketing/FeatureGrid.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[32m 153[2mms[22m[39m
+2026-02-16T21:35:06.1962082Z  [32m✓[39m tests/unit/features/dashboard/QuickActions.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 183[2mms[22m[39m
+2026-02-16T21:35:06.1963883Z  [32m✓[39m tests/integration/actions/user-actions.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 38[2mms[22m[39m
+2026-02-16T21:35:06.1965640Z  [32m✓[39m tests/unit/components/marketing/Hero.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[33m 749[2mms[22m[39m
+2026-02-16T21:35:06.1967080Z      [33m[2m✓[22m[39m renders the main heading correctly [33m 528[2mms[22m[39m
+2026-02-16T21:35:06.1968493Z  [32m✓[39m tests/unit/actions/pvp/duel.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 31[2mms[22m[39m
+2026-02-16T21:35:06.1970282Z  [32m✓[39m tests/unit/actions/pvp/ranked.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+2026-02-16T21:35:06.1971884Z  [32m✓[39m tests/unit/actions/pvp/segment.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 4[2mms[22m[39m
+2026-02-16T21:35:06.1972633Z 
+2026-02-16T21:35:06.1973247Z [31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+2026-02-16T21:35:06.1973738Z 
+2026-02-16T21:35:06.1975440Z [41m[1m FAIL [22m[49m tests/unit/actions/integrations/intervals.test.ts[2m > [22mIntervals Actions[2m > [22mgetWellnessAction[2m > [22mshould return mapped wellness data on success
+2026-02-16T21:35:06.1977436Z [31m[1mAssertionError[22m: expected undefined to be 80 // Object.is equality[39m
+2026-02-16T21:35:06.1978056Z 
+2026-02-16T21:35:06.1978619Z [32m- Expected:[39m 
+2026-02-16T21:35:06.1979034Z 80
+2026-02-16T21:35:06.1979225Z 
+2026-02-16T21:35:06.1979482Z [31m+ Received:[39m 
+2026-02-16T21:35:06.1980185Z undefined
+2026-02-16T21:35:06.1980443Z 
+2026-02-16T21:35:06.1981282Z [36m [2m❯[22m tests/unit/actions/integrations/intervals.test.ts:[2m73:34[22m[39m
+2026-02-16T21:35:06.1982443Z     [90m 71| [39m        [32m"athlete-id"[39m[33m,[39m
+2026-02-16T21:35:06.1983222Z     [90m 72| [39m      )[33m;[39m
+2026-02-16T21:35:06.1984973Z     [90m 73| [39m      [34mexpect[39m(result[33m.[39mbodyBattery)[33m.[39m[34mtoBe[39m([34m80[39m)[33m;[39m
+2026-02-16T21:35:06.1986207Z     [90m   | [39m                                 [31m^[39m
+2026-02-16T21:35:06.1987316Z     [90m 74| [39m      [34mexpect[39m(result[33m.[39mhrv)[33m.[39m[34mtoBe[39m([34m50[39m)[33m;[39m
+2026-02-16T21:35:06.1988366Z     [90m 75| [39m    })[33m;[39m
+2026-02-16T21:35:06.1988700Z 
+2026-02-16T21:35:06.1989174Z [31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+2026-02-16T21:35:06.1989573Z 
+2026-02-16T21:35:06.1989584Z 
+2026-02-16T21:35:06.1990866Z [2m Test Files [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m86 passed[39m[22m[2m | [22m[33m1 skipped[39m[90m (88)[39m
+2026-02-16T21:35:06.1992758Z [2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m458 passed[39m[22m[2m | [22m[33m6 skipped[39m[90m (465)[39m
+2026-02-16T21:35:06.1993869Z [2m   Start at [22m 21:32:08
+2026-02-16T21:35:06.1995149Z [2m   Duration [22m 177.36s[2m (transform 6.61s, setup 2.39s, import 34.98s, tests 4.52s, environment 99.79s)[22m
+2026-02-16T21:35:06.1995907Z 
+2026-02-16T21:35:06.1995916Z 
+2026-02-16T21:35:06.2019079Z ##[error]AssertionError: expected undefined to be 80 // Object.is equality
+
+- Expected: 
+80
+
++ Received: 
+undefined
+
+ ❯ tests/unit/actions/integrations/intervals.test.ts:73:34
+
+
+2026-02-16T21:35:06.2021914Z  ELIFECYCLE  Command failed with exit code 1.
+2026-02-16T21:35:06.2023583Z [ERROR] command finished with error: command (/home/runner/work/IronForge/IronForge/) /home/runner/setup-pnpm/node_modules/.bin/pnpm run test:coverage exited (1)
+2026-02-16T21:35:06.2025244Z ##[group]ironforge-rpg:security
+2026-02-16T21:35:06.2025833Z cache miss, executing 212d8c0ca91170ed
+2026-02-16T21:35:06.2026597Z ##[endgroup]
+2026-02-16T21:35:06.2027228Z ##[group]mcp-n8n:build
+2026-02-16T21:35:06.2027762Z cache miss, executing 22f7f57d4e736207
+2026-02-16T21:35:06.2028498Z ##[endgroup]
+2026-02-16T21:35:06.2029131Z ##[group]ironforge-factory-mcp:build
+2026-02-16T21:35:06.2029779Z cache miss, executing 4bd63baf0f875d18
+2026-02-16T21:35:06.2030791Z ##[endgroup]
+2026-02-16T21:35:06.6103615Z ##[group]ironforge-rpg:build
+2026-02-16T21:35:06.6106005Z cache miss, executing fcbf09d344647120
+2026-02-16T21:35:06.6106535Z 
+2026-02-16T21:35:06.6107285Z > ironforge-rpg@1.0.0 prebuild /home/runner/work/IronForge/IronForge
+2026-02-16T21:35:06.6108085Z > npm run clean:logs
+2026-02-16T21:35:06.6108422Z 
+2026-02-16T21:35:06.6108526Z 
+2026-02-16T21:35:06.6108894Z > ironforge-rpg@1.0.0 clean:logs
+2026-02-16T21:35:06.6109504Z > npx tsx scripts/clean-logs.ts
+2026-02-16T21:35:06.6110164Z 
+2026-02-16T21:35:06.6110823Z No log directory found at /home/runner/work/IronForge/IronForge/src/logs
+2026-02-16T21:35:06.6111455Z 
+2026-02-16T21:35:06.6111975Z > ironforge-rpg@1.0.0 build /home/runner/work/IronForge/IronForge
+2026-02-16T21:35:06.6112698Z > next build --webpack
+2026-02-16T21:35:06.6113051Z 
+2026-02-16T21:35:06.6114485Z ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
+2026-02-16T21:35:06.6118327Z ##[error]ironforge-rpg#test:coverage: command (/home/runner/work/IronForge/IronForge/) /home/runner/setup-pnpm/node_modules/.bin/pnpm run test:coverage exited (1)
+2026-02-16T21:35:06.6124888Z Attention: Next.js now collects completely anonymous telemetry regarding usage.
+2026-02-16T21:35:06.6126082Z This information is used to shape Next.js' roadmap and prioritize features.
+2026-02-16T21:35:06.6128033Z You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+2026-02-16T21:35:06.6129147Z https://nextjs.org/telemetry
+2026-02-16T21:35:06.6129473Z 
+2026-02-16T21:35:06.6129782Z ▲ Next.js 16.1.6 (webpack)
+2026-02-16T21:35:06.6130480Z - Experiments (use with caution):
+2026-02-16T21:35:06.6131701Z   · clientTraceMetadata
+2026-02-16T21:35:06.6131966Z 
+2026-02-16T21:35:06.6133498Z ⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+2026-02-16T21:35:06.6134745Z   Creating an optimized production build ...
+2026-02-16T21:35:06.6137936Z [@sentry/nextjs] DEPRECATION WARNING: It is recommended renaming your `sentry.client.config.ts` file, or moving its content to `instrumentation-client.ts`. When using Turbopack `sentry.client.config.ts` will no longer work. Read more about the `instrumentation-client.ts` file: https://nextjs.org/docs/app/api-reference/file-conventions/instrumentation-client
+2026-02-16T21:35:06.6141608Z [@sentry/nextjs - Node.js] Info: Sending telemetry data on issues and performance to Sentry. To disable telemetry, set `options.telemetry` to `false`.
+2026-02-16T21:35:06.6144242Z [@sentry/nextjs - Node.js] Warning: No auth token provided. Will not create release. Please set the `authToken` option. You can find information on how to generate a Sentry auth token here: https://docs.sentry.io/api/auth/
+2026-02-16T21:35:06.6146881Z You seem to be using Turborepo, did you forget to put SENTRY_AUTH_TOKEN in `passThroughEnv`? https://turbo.build/repo/docs/reference/configuration#passthroughenv
+2026-02-16T21:35:06.6149649Z [@sentry/nextjs - Node.js] Warning: No auth token provided. Will not upload source maps. Please set the `authToken` option. You can find information on how to generate a Sentry auth token here: https://docs.sentry.io/api/auth/
+2026-02-16T21:35:06.6152626Z You seem to be using Turborepo, did you forget to put SENTRY_AUTH_TOKEN in `passThroughEnv`? https://turbo.build/repo/docs/reference/configuration#passthroughenv
+2026-02-16T21:35:06.6154915Z [@sentry/nextjs - Edge] Info: Sending telemetry data on issues and performance to Sentry. To disable telemetry, set `options.telemetry` to `false`.
+2026-02-16T21:35:06.6157754Z [@sentry/nextjs - Edge] Warning: No auth token provided. Will not create release. Please set the `authToken` option. You can find information on how to generate a Sentry auth token here: https://docs.sentry.io/api/auth/
+2026-02-16T21:35:06.6160618Z You seem to be using Turborepo, did you forget to put SENTRY_AUTH_TOKEN in `passThroughEnv`? https://turbo.build/repo/docs/reference/configuration#passthroughenv
+2026-02-16T21:35:06.6163367Z [@sentry/nextjs - Edge] Warning: No auth token provided. Will not upload source maps. Please set the `authToken` option. You can find information on how to generate a Sentry auth token here: https://docs.sentry.io/api/auth/
+2026-02-16T21:35:06.6165995Z You seem to be using Turborepo, did you forget to put SENTRY_AUTH_TOKEN in `passThroughEnv`? https://turbo.build/repo/docs/reference/configuration#passthroughenv
+2026-02-16T21:35:06.6168340Z <w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (133kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+2026-02-16T21:35:06.6170714Z [@sentry/nextjs - Client] Info: Sending telemetry data on issues and performance to Sentry. To disable telemetry, set `options.telemetry` to `false`.
+2026-02-16T21:35:06.6172085Z ##[endgroup]
+2026-02-16T21:35:06.6238076Z 
+2026-02-16T21:35:06.6241383Z  Tasks:    2 successful, 7 total
+2026-02-16T21:35:06.6244952Z Cached:    0 cached, 7 total
+2026-02-16T21:35:06.6260677Z   Time:    3m54.625s 
+2026-02-16T21:35:06.6261785Z Failed:    ironforge-rpg#test:coverage
+2026-02-16T21:35:06.6262274Z 
+2026-02-16T21:35:06.6367127Z  ERROR  run failed: command  exited (1)
+2026-02-16T21:35:06.7596248Z ##[error]Process completed with exit code 1.
+2026-02-16T21:35:06.7784531Z Post job cleanup.
+2026-02-16T21:35:06.9511048Z Pruning is unnecessary.
+2026-02-16T21:35:06.9895856Z Post job cleanup.
+2026-02-16T21:35:07.4040650Z [command]/usr/bin/git version
+2026-02-16T21:35:07.4250882Z git version 2.52.0
+2026-02-16T21:35:07.4501815Z Temporarily overriding HOME='/home/runner/work/_temp/bc72f327-e396-4a25-8b3b-a049f237304d' before making global git config changes
+2026-02-16T21:35:07.4503818Z Adding repository directory to the temporary git global config as a safe directory
+2026-02-16T21:35:07.4561522Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/IronForge/IronForge
+2026-02-16T21:35:07.4701955Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-02-16T21:35:07.4837437Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-02-16T21:35:07.6083815Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-02-16T21:35:07.6210979Z http.https://github.com/.extraheader
+2026-02-16T21:35:07.6332471Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-02-16T21:35:07.6560189Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-02-16T21:35:07.7901100Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-02-16T21:35:07.8015410Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-02-16T21:35:07.9488471Z Cleaning up orphan processes
+2026-02-16T21:35:08.0783612Z Terminate orphan process: pid (2489) (sh)
+2026-02-16T21:35:08.0871717Z Terminate orphan process: pid (2490) (node)
