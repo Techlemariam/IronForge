@@ -62,7 +62,9 @@ jobs:
       - name: Generate Prisma Client
         run: npx prisma generate
       - name: Initialize DB
-        run: npx prisma db push --force-reset
+        run: |
+          sleep 15
+          npx prisma db push --force-reset
         env:
           DATABASE_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge?schema=public
       - name: Cache Turbo
@@ -206,7 +208,7 @@ jobs:
            git commit -m "chore: fix migrations via CI [skip ci]" || echo "No changes"
            git push
         env:
-           DATABASE_URL: postgresql://postgres:password@localhost:5432/ironforge_test?schema=public
+           DATABASE_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_test?schema=public
       
       - name: Verify Prisma Drift
         if: ${{ inputs.fix_drift != true }}

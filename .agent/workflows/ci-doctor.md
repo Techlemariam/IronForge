@@ -135,6 +135,9 @@ echo "🔍 Checking Git health..."
 
 ```bash
 echo "🔍 Checking DB Schema Integrity..."
+
+# Hygiene Rule: Standardize DATABASE_URL to 127.0.0.1 and include ?schema=public
+# Hygiene Rule: Health checks MUST use -U postgres to avoid 'root' role errors
 /supabase-inspector
 /prisma-migrator
 ```
@@ -186,11 +189,11 @@ fi
 | `Qodana: Hardcoded password`   | **SECURITY_BREACH** (See Phase 1.2)               |
 | `Qodana: Duplicated code`      | **DRY_VIOLATION** (See Phase 1.2)                 |
 | `Axe: violations`              | **A11Y_FAIL** (Run `/monitor-ui` & fix markup)    |
-| `Join-Path` / `\` paths       | **PLATFORM_COMPATIBILITY** (Use `/` separators)   |
+| `Join-Path` / `\` paths        | **PLATFORM_COMPATIBILITY** (Use `/` separators)   |
 | `Prisma: Migration failed`    | **DB_MIGRATION_FAIL** (Use `/schema-guard`)       |
 | `Lighthouse: Performance`     | **PERF_DEGRADATION** (Use `/perf-profiler`)       |
-| `Qodana: Critical issues`     | **STATIC_ANALYSIS_FAIL** (Use `/qodana-linter`)   |
-| `Zod: Validation error`         | **SCHEMA_MISMATCH** (Use `/zod-schema-validator`) |
+| `Qodana: Critical issues`      | **STATIC_ANALYSIS_FAIL** (Use `/qodana-linter`)   |
+| `Zod: Validation error`        | **SCHEMA_MISMATCH** (Use `/zod-schema-validator`) |
 | `Mock: Data outdated`          | **STALE_MOCK** (Use `/api-mocker`)                |
 | `Bio: Data sync fail`          | **BIO_SYNC_FAIL** (Use `/bio-validator`)          |
 | `Database: Schema out of sync` | **DB_OUT_OF_SYNC** (Use `/prisma-migrator`)       |
@@ -198,8 +201,12 @@ fi
 | `Coolify: Deployment failed`   | **COOLIFY_DOWN** (Use `/coolify-deploy`)          |
 | `Merge conflicts detected`     | **MERGE_CONFLICT_PROTOCOL** (Use `git rebase`)    |
 | `Patch coverage missing`       | **COVERAGE_DROP** (Use `/unit-tests`)             |
-| `Insufficient docstrings`       | **DOCSTRING_FAIL** (Use `/doc-generator`)         |
+| `Insufficient docstrings`      | **DOCSTRING_FAIL** (Use `/doc-generator`)         |
 | `Path traversal risk`          | **SECURE_INPUT_FAIL** (Use `/red-team`)           |
+| `pg_isready: role "root"...`   | **POSTGRES_USER_MISMATCH** (Apply `-U postgres`)  |
+| `relation "X" does not exist`  | **SCHEMA_SYNC_FAIL** (Add `?schema=public`)       |
+| `Connection timeout (Prisma)`  | **SERVICE_RACE_CONDITION** (Add `sleep 30`)       |
+| `Storybook: Module not found`  | **ALIAS_MISSING** (Verify `@` alias in main.ts)   |
 
 ### 1.5 External Vital Signs (Coolify)
 
@@ -239,7 +246,7 @@ npx tsx scripts/check-infra.ts
 
 ### 1.3 Performance & Size (Bloat Check)
 
-**Protocol: BUNDLE_BLOAT**
+#### Protocol: BUNDLE_BLOAT
 
 - **Detection:** `/bundle-analyzer` reports gzip size increase > 5%.
 - **Fix:** Analyzes `next build` output. Look for large dependencies (e.g., `lodash` vs `lodash-es`, heavy icons).
@@ -247,13 +254,13 @@ npx tsx scripts/check-infra.ts
 
 ### 1.4 Coverage & Visuals
 
-**Protocol: COVERAGE_DROP**
+#### Protocol: COVERAGE_DROP
 
 - **Detection:** `/coverage-check` reports coverage below threshold (e.g. 80%).
 - **Fix:** Write unit tests for new logic.
 - **Tool:** `/unit-tests` to scaffold missing tests.
 
-**Protocol: VISUAL_REGRESSION**
+#### Protocol: VISUAL_REGRESSION
 
 - **Detection:** Chromatic or Storybook build failure.
 - **Fix:** Run `/storybook-bridge` to validate stories match components.
@@ -262,7 +269,7 @@ npx tsx scripts/check-infra.ts
 
 ## Phase 2: The Repair Loop
 
-**ITERATION LIMIT: 3**
+### ITERATION LIMIT: 3
 
 ```bash
 # Set Target (Paste from Phase 1.0 output)
