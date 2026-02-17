@@ -13,7 +13,7 @@ async function main() {
     console.log('🌱 Starting E2E Database Seeding...');
 
     // 1. Seed Battle Pass Season
-    const seasonCode = 'SEASON_1';
+    const seasonCode = 'S1';
     console.log(`Checking Battle Pass Season: ${seasonCode}`);
 
     const season = await prisma.battlePassSeason.upsert({
