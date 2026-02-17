@@ -25,7 +25,125 @@ env:
   SKIP_ENV_VALIDATION: true
 
 jobs:
-  # ... (all jobs)
+  # ------------------------------------------------------------------
+  # 🛡️ QUALITY GATE
+  # Fast feedback on code standards, unit tests, and security.
+  # ------------------------------------------------------------------
+  # ------------------------------------------------------------------
+  # ⚡ VERIFY (Lint, Test, Build, Security)
+  # Runs all checks in parallel using Turborepo.
+  # ------------------------------------------------------------------
+  verify:
+    name: ⚡ Verify
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: ironforge
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Generate Prisma Client
+        run: npx prisma generate
+      - name: Initialize DB
+        run: npx prisma db push
+        env:
+          DATABASE_URL: postgresql://postgres:password@localhost:5432/ironforge?schema=public
+      - name: Cache Turbo
+        uses: actions/cache@v5
+        with:
+          path: .turbo
+          key: turbo-${{ runner.os }}-${{ github.sha }}
+          restore-keys: |
+            turbo-${{ runner.os }}-
+      - name: Turbo Verify
+        run: npx turbo run lint check-types test:coverage build security --concurrency=100%
+        env:
+          SKIP_ENV_VALIDATION: true
+      - name: Upload Coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage/lcov.info
+          fail_ci_if_error: false
+
+  # ------------------------------------------------------------------
+  # 🎭 E2E VERIFICATION
+  # Simulates critical user flows.
+  # ------------------------------------------------------------------
+  e2e:
+    name: 🎭 E2E Tests
+    if: github.actor != 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: ironforge_e2e
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Generate Prisma Client
+        run: npx prisma generate
+      - name: Cache Playwright Browsers
+        uses: actions/cache@v5
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('**/pnpm-lock.yaml') }}
+      - name: Install Playwright Browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps
+      - name: Push Schema to E2E DB
+        run: npx prisma db push --skip-generate
+        env:
+          DATABASE_URL: postgresql://postgres:password@localhost:5432/ironforge_e2e
+          DIRECT_URL: postgresql://postgres:password@localhost:5432/ironforge_e2e
+      - name: Seed E2E Database
+        run: npx tsx tests/e2e/setup/e2e-seed.ts
+        env:
+          DATABASE_URL: postgresql://postgres:password@localhost:5432/ironforge_e2e
+      - name: Run Playwright Tests
+        run: npx playwright test
+        env:
+          CI: true
+          TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
+          TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          NEXT_PUBLIC_APP_URL: http://localhost:3000
+          DATABASE_URL: postgresql://postgres:password@localhost:5432/ironforge_e2e
+          DIRECT_URL: postgresql://postgres:password@localhost:5432/ironforge_e2e
 
   # ------------------------------------------------------------------
   # 🗄️ DATABASE GUARD
@@ -50,14 +168,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-           token: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v6
         with:
           node-version: '22'
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
-      
       - name: Create Shadow Database
         run: |
           PGPASSWORD=password psql -h localhost -U postgres -c "CREATE DATABASE ironforge_shadow;"
@@ -73,7 +190,6 @@ jobs:
            git push
         env:
            DATABASE_URL: postgresql://postgres:password@localhost:5432/ironforge_test?schema=public
-           # migrate dev handles shadow db automatically or we specify it if needed
       
       - name: Verify Prisma Drift
         if: ${{ inputs.fix_drift != true }}
@@ -213,6 +329,3 @@ jobs:
           else
             echo "ℹ️ No RELEASE_NOTES.md found."
           fi
-
-
-
