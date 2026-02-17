@@ -327,4 +327,29 @@ If a test fails reliably in CI but passes 100% locally (even in Docker):
 
 1. **Decontaminate:** Remove `console.log`.
 2. **Record:** Update `DEBT.md`.
-3. **Evolve:** Update this protocol if a new failure mode was discovered.
+3. **Evolve:** Proceed to Phase 5 if a new failure mode was discovered.
+
+---
+
+## Phase 5: Perpetual Learning & Immunity (Agent Only)
+
+**Goal:** Ensure the CI Doctor never fails the same way twice.
+
+### 5.1 Failure Pattern Extraction
+
+If a repair required a manual intervention or a "new" type of fix (e.g. adding a 30s sleep):
+
+- **Classify:** Is this a **Logic Failure** (code bug) or a **Horizontal Failure** (infrastructure/environment)?
+- **Extract:** What was the specific error string? (e.g. `pg_isready: role "root" does not exist`)
+- **Fix:** What was the surgical patch? (e.g. `-U postgres`)
+
+### 5.2 Protocol Injection
+
+1. **Update Classification Matrix (Phase 1.1):** Add the new Symptom/Protocol pair.
+2. **Update System Diagnostics (Phase 0.x):** If the failure is "Horizontal", add a Hygiene Rule to Phase 0.9 to prevent recurrence.
+3. **Draft Workflow Update:** If the failure reveals a gap in local validation, update `.github/workflows/ci-cd.yml` parity.
+
+### 5.3 Immunity Verification
+
+- Run `/ci-doctor` again on the fixed branch.
+- Ensure Phase 0.9 now catches the potential failure before it hits the remote runner.

@@ -197,6 +197,10 @@ jobs:
           node-version: '22'
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
+      - name: Create Shadow Database
+        run: |
+          sleep 15
+          PGPASSWORD=password psql -h 127.0.0.1 -U postgres -c "CREATE DATABASE ironforge_shadow;"
       - name: Fix Drift (Conditioned)
         if: ${{ inputs.fix_drift == true }}
         run: |
