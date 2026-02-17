@@ -16,19 +16,7 @@ async function verifyFactoryAuth() {
     return session.user.email?.endsWith("@ironforge.rpg") || false;
 }
 
-/**
- * Represents the health and status of a single factory station.
- */
-export const FactoryStatusSchema = z.object({
-    id: z.string(),
-    station: z.string(),
-    health: z.number().min(0).max(100),
-    current: z.string().nullable(),
-    updatedAt: z.date(),
-    metadata: z.any().optional(),
-});
-
-export type FactoryStatusData = z.infer<typeof FactoryStatusSchema>;
+import { FactoryStatusSchema, FactoryStatusData } from '@/lib/schemas/factory';
 
 /**
  * Fetches the current status of all factory stations.

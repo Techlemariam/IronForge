@@ -74,9 +74,9 @@ jobs:
       - name: Verify All (Lint, Types, Test, Build, Security)
         run: npx turbo run lint check-types test build security --concurrency=100%
         env:
-          SKIP_ENV_VALIDATION: true
           DATABASE_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge?schema=public
           DIRECT_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge?schema=public
+          PRISMA_CLI_SKIP_INTERACTIVE: true
 
       - name: Upload Coverage to Codecov
         uses: codecov/codecov-action@v5
@@ -134,6 +134,7 @@ jobs:
         env:
           DATABASE_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_e2e?schema=public
           DIRECT_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_e2e?schema=public
+          PRISMA_CLI_SKIP_INTERACTIVE: true
 
       - name: Seed E2E Database
         run: npx tsx tests/e2e/setup/e2e-seed.ts
@@ -201,6 +202,7 @@ jobs:
         env:
            DATABASE_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_test?schema=public
            DIRECT_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_test?schema=public
+           PRISMA_CLI_SKIP_INTERACTIVE: true
       
       - name: Verify Prisma Drift
         if: ${{ inputs.fix_drift != true }}
@@ -212,6 +214,7 @@ jobs:
         env:
           DATABASE_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_test?schema=public
           SHADOW_DATABASE_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_shadow?schema=public
+          PRISMA_CLI_SKIP_INTERACTIVE: true
 
   # ------------------------------------------------------------------
   # ⚡ PERFORMANCE AUDIT (Lighthouse)
