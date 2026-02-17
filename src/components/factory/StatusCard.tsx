@@ -1,4 +1,4 @@
-import type { FactoryStatusData } from "@/actions/factory";
+import type { FactoryStatusData } from "@/lib/schemas/factory";
 
 
 
