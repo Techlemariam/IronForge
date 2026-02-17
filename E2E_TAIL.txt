@@ -1,0 +1,200 @@
+2026-02-17T14:31:55.8379644Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 99.5 MiB
+2026-02-17T14:31:55.8867654Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 99.5 MiB
+2026-02-17T14:31:55.9405254Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 99.5 MiB
+2026-02-17T14:31:55.9905151Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 99.5 MiB
+2026-02-17T14:31:56.0508438Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 99.5 MiB
+2026-02-17T14:31:58.2727677Z Firefox 146.0.1 (playwright firefox v1509) downloaded to /home/runner/.cache/ms-playwright/firefox-1509
+2026-02-17T14:31:58.2733868Z Downloading WebKit 26.0 (playwright webkit v2248) from https://cdn.playwright.dev/dbazure/download/playwright/builds/webkit/2248/webkit-ubuntu-24.04.zip
+2026-02-17T14:31:58.4076164Z |                                                                                |   0% of 99.2 MiB
+2026-02-17T14:31:58.4979312Z |■■■■■■■■                                                                        |  10% of 99.2 MiB
+2026-02-17T14:31:58.5728231Z |■■■■■■■■■■■■■■■■                                                                |  20% of 99.2 MiB
+2026-02-17T14:31:58.6389674Z |■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 99.2 MiB
+2026-02-17T14:31:58.6970469Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 99.2 MiB
+2026-02-17T14:31:58.7608763Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 99.2 MiB
+2026-02-17T14:31:58.8102068Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 99.2 MiB
+2026-02-17T14:31:58.8582998Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 99.2 MiB
+2026-02-17T14:31:58.9080981Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 99.2 MiB
+2026-02-17T14:31:58.9560149Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 99.2 MiB
+2026-02-17T14:31:59.0045835Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 99.2 MiB
+2026-02-17T14:32:01.2577986Z WebKit 26.0 (playwright webkit v2248) downloaded to /home/runner/.cache/ms-playwright/webkit-2248
+2026-02-17T14:32:01.2583981Z Downloading FFmpeg (playwright ffmpeg v1011) from https://cdn.playwright.dev/dbazure/download/playwright/builds/ffmpeg/1011/ffmpeg-linux.zip
+2026-02-17T14:32:01.3992247Z |                                                                                |   0% of 2.3 MiB
+2026-02-17T14:32:01.4064440Z |■■■■■■■■                                                                        |  10% of 2.3 MiB
+2026-02-17T14:32:01.4097761Z |■■■■■■■■■■■■■■■■                                                                |  20% of 2.3 MiB
+2026-02-17T14:32:01.4126162Z |■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 2.3 MiB
+2026-02-17T14:32:01.4156549Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 2.3 MiB
+2026-02-17T14:32:01.4174949Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 2.3 MiB
+2026-02-17T14:32:01.4200131Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 2.3 MiB
+2026-02-17T14:32:01.4230005Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 2.3 MiB
+2026-02-17T14:32:01.4248448Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 2.3 MiB
+2026-02-17T14:32:01.4269582Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 2.3 MiB
+2026-02-17T14:32:01.4283879Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 2.3 MiB
+2026-02-17T14:32:01.4943529Z FFmpeg (playwright ffmpeg v1011) downloaded to /home/runner/.cache/ms-playwright/ffmpeg-1011
+2026-02-17T14:32:02.2040587Z ##[group]Run sleep 30
+2026-02-17T14:32:02.2040869Z [36;1msleep 30[0m
+2026-02-17T14:32:02.2041088Z [36;1mnpx prisma db push[0m
+2026-02-17T14:32:02.2130990Z shell: /usr/bin/bash -e {0}
+2026-02-17T14:32:02.2131358Z env:
+2026-02-17T14:32:02.2131801Z   DATABASE_URL: ***127.0.0.1:5432/ironforge_e2e
+2026-02-17T14:32:02.2132485Z   DIRECT_URL: ***
+2026-02-17T14:32:02.2132858Z   NEXT_PUBLIC_SUPABASE_URL: ***
+2026-02-17T14:32:02.2134268Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+2026-02-17T14:32:02.2134551Z   SKIP_ENV_VALIDATION: true
+2026-02-17T14:32:02.2134843Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-02-17T14:32:02.2135145Z ##[endgroup]
+2026-02-17T14:32:33.4318880Z Loaded Prisma config from prisma.config.ts.
+2026-02-17T14:32:33.4319749Z 
+2026-02-17T14:32:33.4919608Z Prisma schema loaded from prisma/schema.prisma.
+2026-02-17T14:32:33.5043011Z Datasource "db": PostgreSQL database "postgres", schema "public" at "aws-1-eu-west-1.pooler.supabase.com:5432"
+2026-02-17T14:32:38.2696018Z 
+2026-02-17T14:32:38.2696743Z The database is already in sync with the Prisma schema.
+2026-02-17T14:32:38.2699764Z 
+2026-02-17T14:32:38.3941610Z ##[group]Run npx tsx tests/e2e/setup/e2e-seed.ts
+2026-02-17T14:32:38.3942300Z [36;1mnpx tsx tests/e2e/setup/e2e-seed.ts[0m
+2026-02-17T14:32:38.4002616Z shell: /usr/bin/bash -e {0}
+2026-02-17T14:32:38.4002877Z env:
+2026-02-17T14:32:38.4003438Z   DATABASE_URL: ***127.0.0.1:5432/ironforge_e2e
+2026-02-17T14:32:38.4004710Z   DIRECT_URL: ***
+2026-02-17T14:32:38.4005355Z   NEXT_PUBLIC_SUPABASE_URL: ***
+2026-02-17T14:32:38.4007962Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+2026-02-17T14:32:38.4008270Z   SKIP_ENV_VALIDATION: true
+2026-02-17T14:32:38.4008582Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-02-17T14:32:38.4008893Z ##[endgroup]
+2026-02-17T14:32:39.2072120Z 🌱 Starting E2E Database Seeding with URL: ***127.0.0.1:5432/ironforge_e2e
+2026-02-17T14:32:39.2077847Z Checking Battle Pass Season: S1
+2026-02-17T14:32:39.5687094Z ❌ Seeding failed: PrismaClientKnownRequestError: 
+2026-02-17T14:32:39.5688210Z Invalid `prisma.battlePassSeason.upsert()` invocation in
+2026-02-17T14:32:39.5690614Z /home/runner/work/IronForge/IronForge/tests/e2e/setup/e2e-seed.ts:20:50
+2026-02-17T14:32:39.5691193Z 
+2026-02-17T14:32:39.5692172Z   17 const seasonCode = 'S1';
+2026-02-17T14:32:39.5692861Z   18 console.log(`Checking Battle Pass Season: ${seasonCode}`);
+2026-02-17T14:32:39.5693489Z   19 
+2026-02-17T14:32:39.5694232Z → 20 const season = await prisma.battlePassSeason.upsert(
+2026-02-17T14:32:39.5695220Z The table `public.BattlePassSeason` does not exist in the current database.
+2026-02-17T14:32:39.5697730Z     at zr.handleRequestError (/home/runner/work/IronForge/IronForge/node_modules/.pnpm/@prisma+client@7.4.0_prisma@7.4.0_@types+react@19.2.14_magicast@0.5.2_react-dom@19.2.4_react@_kbihlyeorb7my7bafhyofzhtla/node_modules/@prisma/client/src/runtime/RequestHandler.ts:228:13)
+2026-02-17T14:32:39.5701761Z     at zr.handleAndLogRequestError (/home/runner/work/IronForge/IronForge/node_modules/.pnpm/@prisma+client@7.4.0_prisma@7.4.0_@types+react@19.2.14_magicast@0.5.2_react-dom@19.2.4_react@_kbihlyeorb7my7bafhyofzhtla/node_modules/@prisma/client/src/runtime/RequestHandler.ts:174:12)
+2026-02-17T14:32:39.5705490Z     at zr.request (/home/runner/work/IronForge/IronForge/node_modules/.pnpm/@prisma+client@7.4.0_prisma@7.4.0_@types+react@19.2.14_magicast@0.5.2_react-dom@19.2.4_react@_kbihlyeorb7my7bafhyofzhtla/node_modules/@prisma/client/src/runtime/RequestHandler.ts:143:12)
+2026-02-17T14:32:39.5707788Z     at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2026-02-17T14:32:39.5710212Z     at async a (/home/runner/work/IronForge/IronForge/node_modules/.pnpm/@prisma+client@7.4.0_prisma@7.4.0_@types+react@19.2.14_magicast@0.5.2_react-dom@19.2.4_react@_kbihlyeorb7my7bafhyofzhtla/node_modules/@prisma/client/src/runtime/getPrismaClient.ts:807:24)
+2026-02-17T14:32:39.5736606Z     at async main (/home/runner/work/IronForge/IronForge/tests/e2e/setup/e2e-seed.ts:20:20)
+2026-02-17T14:32:39.5737986Z     at async globalSetup (/home/runner/work/IronForge/IronForge/tests/e2e/setup/e2e-seed.ts:140:9) {
+2026-02-17T14:32:39.5739370Z   code: 'P2021',
+2026-02-17T14:32:39.5739745Z   meta: {
+2026-02-17T14:32:39.5740199Z     modelName: 'BattlePassSeason',
+2026-02-17T14:32:39.5740977Z     driverAdapterError: DriverAdapterError: TableDoesNotExist
+2026-02-17T14:32:39.5743172Z         at PgTransaction.onError (file:///home/runner/work/IronForge/IronForge/node_modules/.pnpm/@prisma+adapter-pg@7.4.0/node_modules/@prisma/adapter-pg/dist/index.mjs:651:11)
+2026-02-17T14:32:39.5745770Z         at PgTransaction.performIO (file:///home/runner/work/IronForge/IronForge/node_modules/.pnpm/@prisma+adapter-pg@7.4.0/node_modules/@prisma/adapter-pg/dist/index.mjs:646:12)
+2026-02-17T14:32:39.5747710Z         at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2026-02-17T14:32:39.5750395Z         at async PgTransaction.queryRaw (file:///home/runner/work/IronForge/IronForge/node_modules/.pnpm/@prisma+adapter-pg@7.4.0/node_modules/@prisma/adapter-pg/dist/index.mjs:566:30)
+2026-02-17T14:32:39.5754059Z         at async e.interpretNode (/home/runner/work/IronForge/IronForge/node_modules/.pnpm/@prisma+client@7.4.0_prisma@7.4.0_@types+react@19.2.14_magicast@0.5.2_react-dom@19.2.4_react@_kbihlyeorb7my7bafhyofzhtla/node_modules/@prisma/client-engine-runtime/src/interpreter/query-interpreter.ts:182:26)
+2026-02-17T14:32:39.5758280Z         at async e.interpretNode (/home/runner/work/IronForge/IronForge/node_modules/.pnpm/@prisma+client@7.4.0_prisma@7.4.0_@types+react@19.2.14_magicast@0.5.2_react-dom@19.2.4_react@_kbihlyeorb7my7bafhyofzhtla/node_modules/@prisma/client-engine-runtime/src/interpreter/query-interpreter.ts:124:29)
+2026-02-17T14:32:39.5762637Z         at async e.interpretNode (/home/runner/work/IronForge/IronForge/node_modules/.pnpm/@prisma+client@7.4.0_prisma@7.4.0_@types+react@19.2.14_magicast@0.5.2_react-dom@19.2.4_react@_kbihlyeorb7my7bafhyofzhtla/node_modules/@prisma/client-engine-runtime/src/interpreter/query-interpreter.ts:268:41)
+2026-02-17T14:32:39.5766776Z         at async e.interpretNode (/home/runner/work/IronForge/IronForge/node_modules/.pnpm/@prisma+client@7.4.0_prisma@7.4.0_@types+react@19.2.14_magicast@0.5.2_react-dom@19.2.4_react@_kbihlyeorb7my7bafhyofzhtla/node_modules/@prisma/client-engine-runtime/src/interpreter/query-interpreter.ts:258:25)
+2026-02-17T14:32:39.5770735Z         at async e.run (/home/runner/work/IronForge/IronForge/node_modules/.pnpm/@prisma+client@7.4.0_prisma@7.4.0_@types+react@19.2.14_magicast@0.5.2_react-dom@19.2.4_react@_kbihlyeorb7my7bafhyofzhtla/node_modules/@prisma/client-engine-runtime/src/interpreter/query-interpreter.ts:93:23)
+2026-02-17T14:32:39.5774920Z         at async e.execute (/home/runner/work/IronForge/IronForge/node_modules/.pnpm/@prisma+client@7.4.0_prisma@7.4.0_@types+react@19.2.14_magicast@0.5.2_react-dom@19.2.4_react@_kbihlyeorb7my7bafhyofzhtla/node_modules/@prisma/client/src/runtime/core/engines/client/LocalExecutor.ts:81:12) {
+2026-02-17T14:32:39.5776955Z       cause: [Object]
+2026-02-17T14:32:39.5777312Z     }
+2026-02-17T14:32:39.5777598Z   },
+2026-02-17T14:32:39.5777936Z   clientVersion: '7.4.0'
+2026-02-17T14:32:39.5778315Z }
+2026-02-17T14:32:39.8516087Z ##[error]Process completed with exit code 1.
+2026-02-17T14:32:39.8599881Z Post job cleanup.
+2026-02-17T14:32:39.9164250Z Pruning is unnecessary.
+2026-02-17T14:32:39.9288333Z Post job cleanup.
+2026-02-17T14:32:40.0338094Z [command]/usr/bin/git version
+2026-02-17T14:32:40.0392628Z git version 2.52.0
+2026-02-17T14:32:40.0443158Z Temporarily overriding HOME='/home/runner/work/_temp/3ce9e0f7-ce05-4895-95a5-b0b7605db67a' before making global git config changes
+2026-02-17T14:32:40.0444843Z Adding repository directory to the temporary git global config as a safe directory
+2026-02-17T14:32:40.0449555Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/IronForge/IronForge
+2026-02-17T14:32:40.0489204Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-02-17T14:32:40.0533186Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-02-17T14:32:40.0987730Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-02-17T14:32:40.1030346Z http.https://github.com/.extraheader
+2026-02-17T14:32:40.1050142Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-02-17T14:32:40.1100711Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-02-17T14:32:40.1470223Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-02-17T14:32:40.1510992Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-02-17T14:32:40.1889415Z Print service container logs: 50ef49125c5e4dd9b4ca938370088c52_postgres15_619d9e
+2026-02-17T14:32:40.1894309Z ##[command]/usr/bin/docker logs --details 6b80cf732f9f2289ffea0dcae75aaf88bcf7a4a9b3753f5eb3bf5da528cc6aca
+2026-02-17T14:32:40.2041970Z  The files belonging to this database system will be owned by user "postgres".
+2026-02-17T14:32:40.2047861Z  initdb: warning: enabling "trust" authentication for local connections
+2026-02-17T14:32:40.2049180Z  initdb: hint: You can change this by editing pg_hba.conf or using the option -A, or --auth-local and --auth-host, the next time you run initdb.
+2026-02-17T14:32:40.2053800Z  2026-02-17 14:29:47.441 UTC [1] LOG:  starting PostgreSQL 15.16 (Debian 15.16-1.pgdg13+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+2026-02-17T14:32:40.2054580Z  2026-02-17 14:29:47.441 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+2026-02-17T14:32:40.2055103Z  2026-02-17 14:29:47.441 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+2026-02-17T14:32:40.2055679Z  2026-02-17 14:29:47.442 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2026-02-17T14:32:40.2056297Z  2026-02-17 14:29:47.445 UTC [63] LOG:  database system was shut down at 2026-02-17 14:29:47 UTC
+2026-02-17T14:32:40.2056815Z  2026-02-17 14:29:47.449 UTC [1] LOG:  database system is ready to accept connections
+2026-02-17T14:32:40.2057266Z  2026-02-17 14:29:56.408 UTC [75] FATAL:  role "root" does not exist
+2026-02-17T14:32:40.2057658Z  2026-02-17 14:30:06.503 UTC [83] FATAL:  role "root" does not exist
+2026-02-17T14:32:40.2058067Z  2026-02-17 14:30:16.633 UTC [91] FATAL:  role "root" does not exist
+2026-02-17T14:32:40.2058448Z  2026-02-17 14:30:26.768 UTC [100] FATAL:  role "root" does not exist
+2026-02-17T14:32:40.2058838Z  2026-02-17 14:30:36.841 UTC [108] FATAL:  role "root" does not exist
+2026-02-17T14:32:40.2059217Z  2026-02-17 14:30:46.947 UTC [117] FATAL:  role "root" does not exist
+2026-02-17T14:32:40.2059602Z  2026-02-17 14:30:57.055 UTC [126] FATAL:  role "root" does not exist
+2026-02-17T14:32:40.2059977Z  2026-02-17 14:31:07.136 UTC [135] FATAL:  role "root" does not exist
+2026-02-17T14:32:40.2060373Z  2026-02-17 14:31:17.219 UTC [144] FATAL:  role "root" does not exist
+2026-02-17T14:32:40.2060747Z  2026-02-17 14:31:27.314 UTC [153] FATAL:  role "root" does not exist
+2026-02-17T14:32:40.2061122Z  2026-02-17 14:31:37.409 UTC [160] FATAL:  role "root" does not exist
+2026-02-17T14:32:40.2061728Z  2026-02-17 14:31:47.487 UTC [168] FATAL:  role "root" does not exist
+2026-02-17T14:32:40.2062120Z  2026-02-17 14:31:57.662 UTC [177] FATAL:  role "root" does not exist
+2026-02-17T14:32:40.2062498Z  2026-02-17 14:32:07.729 UTC [186] FATAL:  role "root" does not exist
+2026-02-17T14:32:40.2062876Z  2026-02-17 14:32:17.795 UTC [195] FATAL:  role "root" does not exist
+2026-02-17T14:32:40.2063251Z  2026-02-17 14:32:27.861 UTC [203] FATAL:  role "root" does not exist
+2026-02-17T14:32:40.2063630Z  2026-02-17 14:32:37.926 UTC [211] FATAL:  role "root" does not exist
+2026-02-17T14:32:40.2064156Z  2026-02-17 14:32:39.525 UTC [212] ERROR:  relation "public.BattlePassSeason" does not exist at character 46
+2026-02-17T14:32:40.2065298Z  2026-02-17 14:32:39.525 UTC [212] STATEMENT:  SELECT "public"."BattlePassSeason"."id" FROM "public"."BattlePassSeason" WHERE ("public"."BattlePassSeason"."code" = $1 AND 1=1) OFFSET $2
+2026-02-17T14:32:40.2066045Z  This user must also own the server process.
+2026-02-17T14:32:40.2066322Z  
+2026-02-17T14:32:40.2066606Z  The database cluster will be initialized with locale "en_US.utf8".
+2026-02-17T14:32:40.2067054Z  The default database encoding has accordingly been set to "UTF8".
+2026-02-17T14:32:40.2067481Z  The default text search configuration will be set to "english".
+2026-02-17T14:32:40.2067804Z  
+2026-02-17T14:32:40.2067995Z  Data page checksums are disabled.
+2026-02-17T14:32:40.2068238Z  
+2026-02-17T14:32:40.2068527Z  fixing permissions on existing directory /var/lib/postgresql/data ... ok
+2026-02-17T14:32:40.2069089Z  creating subdirectories ... ok
+2026-02-17T14:32:40.2069413Z  selecting dynamic shared memory implementation ... posix
+2026-02-17T14:32:40.2069768Z  selecting default max_connections ... 100
+2026-02-17T14:32:40.2070057Z  selecting default shared_buffers ... 128MB
+2026-02-17T14:32:40.2070339Z  selecting default time zone ... Etc/UTC
+2026-02-17T14:32:40.2070613Z  creating configuration files ... ok
+2026-02-17T14:32:40.2070881Z  running bootstrap script ... ok
+2026-02-17T14:32:40.2071178Z  performing post-bootstrap initialization ... ok
+2026-02-17T14:32:40.2071603Z  syncing data to disk ... ok
+2026-02-17T14:32:40.2071822Z  
+2026-02-17T14:32:40.2071981Z  
+2026-02-17T14:32:40.2072205Z  Success. You can now start the database server using:
+2026-02-17T14:32:40.2072498Z  
+2026-02-17T14:32:40.2072727Z      pg_ctl -D /var/lib/postgresql/data -l logfile start
+2026-02-17T14:32:40.2073016Z  
+2026-02-17T14:32:40.2073659Z  waiting for server to start....2026-02-17 14:29:47.127 UTC [47] LOG:  starting PostgreSQL 15.16 (Debian 15.16-1.pgdg13+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+2026-02-17T14:32:40.2074562Z  2026-02-17 14:29:47.128 UTC [47] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2026-02-17T14:32:40.2075135Z  2026-02-17 14:29:47.132 UTC [50] LOG:  database system was shut down at 2026-02-17 14:29:46 UTC
+2026-02-17T14:32:40.2075641Z  2026-02-17 14:29:47.135 UTC [47] LOG:  database system is ready to accept connections
+2026-02-17T14:32:40.2076004Z   done
+2026-02-17T14:32:40.2076178Z  server started
+2026-02-17T14:32:40.2076375Z  CREATE DATABASE
+2026-02-17T14:32:40.2076555Z  
+2026-02-17T14:32:40.2076707Z  
+2026-02-17T14:32:40.2077015Z  /usr/local/bin/docker-entrypoint.sh: ignoring /docker-entrypoint-initdb.d/*
+2026-02-17T14:32:40.2077401Z  
+2026-02-17T14:32:40.2077749Z  waiting for server to shut down...2026-02-17 14:29:47.319 UTC [47] LOG:  received fast shutdown request
+2026-02-17T14:32:40.2078286Z  .2026-02-17 14:29:47.320 UTC [47] LOG:  aborting any active transactions
+2026-02-17T14:32:40.2078862Z  2026-02-17 14:29:47.323 UTC [47] LOG:  background worker "logical replication launcher" (PID 53) exited with exit code 1
+2026-02-17T14:32:40.2079401Z  2026-02-17 14:29:47.324 UTC [48] LOG:  shutting down
+2026-02-17T14:32:40.2079782Z  2026-02-17 14:29:47.324 UTC [48] LOG:  checkpoint starting: shutdown immediate
+2026-02-17T14:32:40.2080776Z  2026-02-17 14:29:47.342 UTC [48] LOG:  checkpoint complete: wrote 922 buffers (5.6%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.015 s, sync=0.002 s, total=0.018 s; sync files=301, longest=0.001 s, average=0.001 s; distance=4239 kB, estimate=4239 kB
+2026-02-17T14:32:40.2081848Z  2026-02-17 14:29:47.349 UTC [47] LOG:  database system is shut down
+2026-02-17T14:32:40.2082166Z   done
+2026-02-17T14:32:40.2082338Z  server stopped
+2026-02-17T14:32:40.2082533Z  
+2026-02-17T14:32:40.2082763Z  PostgreSQL init process complete; ready for start up.
+2026-02-17T14:32:40.2083072Z  
+2026-02-17T14:32:40.2518184Z Stop and remove container: 50ef49125c5e4dd9b4ca938370088c52_postgres15_619d9e
+2026-02-17T14:32:40.2523548Z ##[command]/usr/bin/docker rm --force 6b80cf732f9f2289ffea0dcae75aaf88bcf7a4a9b3753f5eb3bf5da528cc6aca
+2026-02-17T14:32:40.4284906Z 6b80cf732f9f2289ffea0dcae75aaf88bcf7a4a9b3753f5eb3bf5da528cc6aca
+2026-02-17T14:32:40.4320626Z Remove container network: github_network_70be2707c7e44760bd93e895153066ca
+2026-02-17T14:32:40.4326326Z ##[command]/usr/bin/docker network rm github_network_70be2707c7e44760bd93e895153066ca
+2026-02-17T14:32:40.5079522Z github_network_70be2707c7e44760bd93e895153066ca
+2026-02-17T14:32:40.5141845Z Cleaning up orphan processes

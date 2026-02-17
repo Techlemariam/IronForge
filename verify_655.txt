@@ -1,0 +1,862 @@
+﻿2026-02-17T09:32:18.4521624Z Current runner version: '2.331.0'
+2026-02-17T09:32:18.4595663Z ##[group]Runner Image Provisioner
+2026-02-17T09:32:18.4596991Z Hosted Compute Agent
+2026-02-17T09:32:18.4598158Z Version: 20260123.484
+2026-02-17T09:32:18.4599237Z Commit: 6bd6555ca37d84114959e1c76d2c01448ff61c5d
+2026-02-17T09:32:18.4600900Z Build Date: 2026-01-23T19:41:17Z
+2026-02-17T09:32:18.4602307Z Worker ID: {19687818-5722-45ba-95c3-23953f98f891}
+2026-02-17T09:32:18.4603499Z Azure Region: eastus2
+2026-02-17T09:32:18.4604519Z ##[endgroup]
+2026-02-17T09:32:18.4607219Z ##[group]Operating System
+2026-02-17T09:32:18.4608235Z Ubuntu
+2026-02-17T09:32:18.4609236Z 24.04.3
+2026-02-17T09:32:18.4630376Z LTS
+2026-02-17T09:32:18.4631990Z ##[endgroup]
+2026-02-17T09:32:18.4633126Z ##[group]Runner Image
+2026-02-17T09:32:18.4634196Z Image: ubuntu-24.04
+2026-02-17T09:32:18.4635300Z Version: 20260209.23.1
+2026-02-17T09:32:18.4637477Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260209.23/images/ubuntu/Ubuntu2404-Readme.md
+2026-02-17T09:32:18.4640581Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260209.23
+2026-02-17T09:32:18.4642367Z ##[endgroup]
+2026-02-17T09:32:18.4644560Z ##[group]GITHUB_TOKEN Permissions
+2026-02-17T09:32:18.4647557Z Contents: read
+2026-02-17T09:32:18.4648439Z Metadata: read
+2026-02-17T09:32:18.4649651Z Packages: read
+2026-02-17T09:32:18.4671139Z ##[endgroup]
+2026-02-17T09:32:18.4674444Z Secret source: Actions
+2026-02-17T09:32:18.4676310Z Prepare workflow directory
+2026-02-17T09:32:18.6367517Z Prepare all required actions
+2026-02-17T09:32:18.6485709Z Getting action download info
+2026-02-17T09:32:18.9708590Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+2026-02-17T09:32:19.1366099Z Download action repository 'pnpm/action-setup@v4' (SHA:41ff72655975bd51cab0327fa583b6e92b6d3061)
+2026-02-17T09:32:19.4222626Z Download action repository 'actions/setup-node@v6' (SHA:6044e13b5dc448c55e2357c09f80417699197238)
+2026-02-17T09:32:19.5156049Z Download action repository 'actions/cache@v5' (SHA:cdf6c1fa76f9f475f3d7449005a359c84ca0f306)
+2026-02-17T09:32:19.6350332Z Download action repository 'codecov/codecov-action@v5' (SHA:671740ac38dd9b0130fbe1cec585b89eea48d3de)
+2026-02-17T09:32:19.9669606Z Getting action download info
+2026-02-17T09:32:20.1153169Z Download action repository 'actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea' (SHA:60a0d83039c74a4aee543508d2ffcb1c3799cdea)
+2026-02-17T09:32:20.4040406Z Complete job name: ⚡ Verify
+2026-02-17T09:32:20.4540958Z ##[group]Checking docker version
+2026-02-17T09:32:20.4554438Z ##[command]/usr/bin/docker version --format '{{.Server.APIVersion}}'
+2026-02-17T09:32:20.5513724Z '1.52'
+2026-02-17T09:32:20.5528403Z Docker daemon API version: '1.52'
+2026-02-17T09:32:20.5529447Z ##[command]/usr/bin/docker version --format '{{.Client.APIVersion}}'
+2026-02-17T09:32:20.5695061Z '1.52'
+2026-02-17T09:32:20.5709389Z Docker client API version: '1.52'
+2026-02-17T09:32:20.5716232Z ##[endgroup]
+2026-02-17T09:32:20.5719462Z ##[group]Clean up resources from previous jobs
+2026-02-17T09:32:20.5725790Z ##[command]/usr/bin/docker ps --all --quiet --no-trunc --filter "label=0b1ee6"
+2026-02-17T09:32:20.5869456Z ##[command]/usr/bin/docker network prune --force --filter "label=0b1ee6"
+2026-02-17T09:32:20.6007166Z ##[endgroup]
+2026-02-17T09:32:20.6008048Z ##[group]Create local container network
+2026-02-17T09:32:20.6085273Z ##[command]/usr/bin/docker network create --label 0b1ee6 github_network_03898f82264f460d907b4da598cc1ef2
+2026-02-17T09:32:20.6797816Z 72f7c2f1557ddcfa3c7676e54a0d874896536036947b9c48c015cf4d4a7e2e01
+2026-02-17T09:32:20.6818708Z ##[endgroup]
+2026-02-17T09:32:20.6848982Z ##[group]Starting postgres service container
+2026-02-17T09:32:20.6870700Z ##[command]/usr/bin/docker pull postgres:15
+2026-02-17T09:32:20.9754539Z 15: Pulling from library/postgres
+2026-02-17T09:32:21.1383045Z 49b40a0a623d: Pulling fs layer
+2026-02-17T09:32:21.1397249Z 0c8d55a45c0d: Pulling fs layer
+2026-02-17T09:32:21.1398146Z 03cf9c337134: Pulling fs layer
+2026-02-17T09:32:21.1399458Z d64dbdf800a2: Pulling fs layer
+2026-02-17T09:32:21.1400528Z 2710e764d89a: Pulling fs layer
+2026-02-17T09:32:21.1401341Z c50a02fe2f5f: Pulling fs layer
+2026-02-17T09:32:21.1402155Z 0ace4c983c3e: Pulling fs layer
+2026-02-17T09:32:21.1402979Z b64f280cfa2b: Pulling fs layer
+2026-02-17T09:32:21.1403829Z ea5e741a30ce: Pulling fs layer
+2026-02-17T09:32:21.1404672Z e60549838c5a: Pulling fs layer
+2026-02-17T09:32:21.1405479Z 6771773ef0da: Pulling fs layer
+2026-02-17T09:32:21.1406301Z 049b2237836a: Pulling fs layer
+2026-02-17T09:32:21.1411087Z 7b098c79e38c: Pulling fs layer
+2026-02-17T09:32:21.1412215Z 7aa308802868: Pulling fs layer
+2026-02-17T09:32:21.2078966Z 49b40a0a623d: Download complete
+2026-02-17T09:32:21.3100418Z ea5e741a30ce: Download complete
+2026-02-17T09:32:21.3124631Z 6771773ef0da: Download complete
+2026-02-17T09:32:21.3140453Z 7aa308802868: Download complete
+2026-02-17T09:32:21.3162691Z 03cf9c337134: Download complete
+2026-02-17T09:32:21.3164622Z b64f280cfa2b: Download complete
+2026-02-17T09:32:21.3184464Z 049b2237836a: Download complete
+2026-02-17T09:32:21.3203592Z 2710e764d89a: Download complete
+2026-02-17T09:32:21.3269416Z 7b098c79e38c: Download complete
+2026-02-17T09:32:21.3340969Z 45604b1409ee: Download complete
+2026-02-17T09:32:21.4389424Z 0ace4c983c3e: Download complete
+2026-02-17T09:32:21.6350805Z 99548d060f18: Download complete
+2026-02-17T09:32:21.6353913Z d64dbdf800a2: Download complete
+2026-02-17T09:32:21.6356013Z c50a02fe2f5f: Download complete
+2026-02-17T09:32:21.7054720Z 0c8d55a45c0d: Download complete
+2026-02-17T09:32:22.6986075Z e60549838c5a: Download complete
+2026-02-17T09:32:23.3119186Z 03cf9c337134: Pull complete
+2026-02-17T09:32:23.3168209Z 0c8d55a45c0d: Pull complete
+2026-02-17T09:32:23.5098435Z 2710e764d89a: Pull complete
+2026-02-17T09:32:23.5122567Z d64dbdf800a2: Pull complete
+2026-02-17T09:32:23.8047942Z ea5e741a30ce: Pull complete
+2026-02-17T09:32:23.8062940Z b64f280cfa2b: Pull complete
+2026-02-17T09:32:23.8081229Z 0ace4c983c3e: Pull complete
+2026-02-17T09:32:23.8089268Z c50a02fe2f5f: Pull complete
+2026-02-17T09:32:26.1042336Z 6771773ef0da: Pull complete
+2026-02-17T09:32:26.1059244Z 049b2237836a: Pull complete
+2026-02-17T09:32:26.1075107Z e60549838c5a: Pull complete
+2026-02-17T09:32:26.1461912Z 49b40a0a623d: Pull complete
+2026-02-17T09:32:26.1467363Z 7aa308802868: Pull complete
+2026-02-17T09:32:26.1476674Z 7b098c79e38c: Pull complete
+2026-02-17T09:32:26.1483813Z Digest: sha256:dafc4d8e8369da730a5ee9a320a0f0b3c6aa516f41244689c4493a27dc84472d
+2026-02-17T09:32:26.1486193Z Status: Downloaded newer image for postgres:15
+2026-02-17T09:32:26.1496965Z docker.io/library/postgres:15
+2026-02-17T09:32:26.1571469Z ##[command]/usr/bin/docker create --name aaac72f2aea24bb986a6fb62971c7603_postgres15_672ca0 --label 0b1ee6 --network github_network_03898f82264f460d907b4da598cc1ef2 --network-alias postgres -p 5432:5432 --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5 -e "POSTGRES_USER=postgres" -e "POSTGRES_PASSWORD=password" -e "POSTGRES_DB=ironforge" -e GITHUB_ACTIONS=true -e CI=true postgres:15
+2026-02-17T09:32:28.3437336Z 46f010aa3e515263eeda2915ea617ada24c3cfbd24f67411e2f45eed481005cd
+2026-02-17T09:32:28.3466913Z ##[command]/usr/bin/docker start 46f010aa3e515263eeda2915ea617ada24c3cfbd24f67411e2f45eed481005cd
+2026-02-17T09:32:28.5796861Z 46f010aa3e515263eeda2915ea617ada24c3cfbd24f67411e2f45eed481005cd
+2026-02-17T09:32:28.5837266Z ##[command]/usr/bin/docker ps --all --filter id=46f010aa3e515263eeda2915ea617ada24c3cfbd24f67411e2f45eed481005cd --filter status=running --no-trunc --format "{{.ID}} {{.Status}}"
+2026-02-17T09:32:28.6206277Z 46f010aa3e515263eeda2915ea617ada24c3cfbd24f67411e2f45eed481005cd Up Less than a second (health: starting)
+2026-02-17T09:32:28.6248941Z ##[command]/usr/bin/docker port 46f010aa3e515263eeda2915ea617ada24c3cfbd24f67411e2f45eed481005cd
+2026-02-17T09:32:28.6452989Z 5432/tcp -> 0.0.0.0:5432
+2026-02-17T09:32:28.6457598Z 5432/tcp -> [::]:5432
+2026-02-17T09:32:28.6532028Z ##[endgroup]
+2026-02-17T09:32:28.6545072Z ##[group]Waiting for all services to be ready
+2026-02-17T09:32:28.6563635Z ##[command]/usr/bin/docker inspect --format="{{if .Config.Healthcheck}}{{print .State.Health.Status}}{{end}}" 46f010aa3e515263eeda2915ea617ada24c3cfbd24f67411e2f45eed481005cd
+2026-02-17T09:32:28.6780829Z starting
+2026-02-17T09:32:28.6814095Z postgres service is starting, waiting 2 seconds before checking again.
+2026-02-17T09:32:30.6813225Z ##[command]/usr/bin/docker inspect --format="{{if .Config.Healthcheck}}{{print .State.Health.Status}}{{end}}" 46f010aa3e515263eeda2915ea617ada24c3cfbd24f67411e2f45eed481005cd
+2026-02-17T09:32:30.6952577Z starting
+2026-02-17T09:32:30.6968552Z postgres service is starting, waiting 3 seconds before checking again.
+2026-02-17T09:32:34.4974902Z ##[command]/usr/bin/docker inspect --format="{{if .Config.Healthcheck}}{{print .State.Health.Status}}{{end}}" 46f010aa3e515263eeda2915ea617ada24c3cfbd24f67411e2f45eed481005cd
+2026-02-17T09:32:34.5138763Z starting
+2026-02-17T09:32:34.5157635Z postgres service is starting, waiting 7 seconds before checking again.
+2026-02-17T09:32:41.7264048Z ##[command]/usr/bin/docker inspect --format="{{if .Config.Healthcheck}}{{print .State.Health.Status}}{{end}}" 46f010aa3e515263eeda2915ea617ada24c3cfbd24f67411e2f45eed481005cd
+2026-02-17T09:32:41.7401974Z healthy
+2026-02-17T09:32:41.7424053Z postgres service is healthy.
+2026-02-17T09:32:41.7425030Z ##[endgroup]
+2026-02-17T09:32:41.7670342Z ##[group]Run actions/checkout@v4
+2026-02-17T09:32:41.7671008Z with:
+2026-02-17T09:32:41.7671219Z   repository: Techlemariam/IronForge
+2026-02-17T09:32:41.7671632Z   token: ***
+2026-02-17T09:32:41.7671830Z   ssh-strict: true
+2026-02-17T09:32:41.7672013Z   ssh-user: git
+2026-02-17T09:32:41.7672207Z   persist-credentials: true
+2026-02-17T09:32:41.7672422Z   clean: true
+2026-02-17T09:32:41.7672615Z   sparse-checkout-cone-mode: true
+2026-02-17T09:32:41.7672848Z   fetch-depth: 1
+2026-02-17T09:32:41.7673027Z   fetch-tags: false
+2026-02-17T09:32:41.7673210Z   show-progress: true
+2026-02-17T09:32:41.7673419Z   lfs: false
+2026-02-17T09:32:41.7673583Z   submodules: false
+2026-02-17T09:32:41.7673770Z   set-safe-directory: true
+2026-02-17T09:32:41.7674159Z env:
+2026-02-17T09:32:41.7674798Z   DATABASE_URL: ***
+2026-02-17T09:32:41.7675388Z   DIRECT_URL: ***
+2026-02-17T09:32:41.7675709Z   NEXT_PUBLIC_SUPABASE_URL: ***
+2026-02-17T09:32:41.7677013Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+2026-02-17T09:32:41.7677293Z   SKIP_ENV_VALIDATION: true
+2026-02-17T09:32:41.7677501Z ##[endgroup]
+2026-02-17T09:32:41.8831220Z Syncing repository: Techlemariam/IronForge
+2026-02-17T09:32:41.8832857Z ##[group]Getting Git version info
+2026-02-17T09:32:41.8833448Z Working directory is '/home/runner/work/IronForge/IronForge'
+2026-02-17T09:32:41.8834288Z [command]/usr/bin/git version
+2026-02-17T09:32:41.8861276Z git version 2.52.0
+2026-02-17T09:32:41.8890959Z ##[endgroup]
+2026-02-17T09:32:41.8910377Z Temporarily overriding HOME='/home/runner/work/_temp/51972b24-ff32-4e7d-9995-1baf896458d8' before making global git config changes
+2026-02-17T09:32:41.8914463Z Adding repository directory to the temporary git global config as a safe directory
+2026-02-17T09:32:41.8927393Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/IronForge/IronForge
+2026-02-17T09:32:41.8972808Z Deleting the contents of '/home/runner/work/IronForge/IronForge'
+2026-02-17T09:32:41.8977460Z ##[group]Initializing the repository
+2026-02-17T09:32:41.8983169Z [command]/usr/bin/git init /home/runner/work/IronForge/IronForge
+2026-02-17T09:32:41.9098286Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-02-17T09:32:41.9099321Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-02-17T09:32:41.9100333Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-02-17T09:32:41.9100977Z hint: call:
+2026-02-17T09:32:41.9101270Z hint:
+2026-02-17T09:32:41.9101750Z hint: 	git config --global init.defaultBranch <name>
+2026-02-17T09:32:41.9102270Z hint:
+2026-02-17T09:32:41.9103036Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-02-17T09:32:41.9103889Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-02-17T09:32:41.9104565Z hint:
+2026-02-17T09:32:41.9104930Z hint: 	git branch -m <name>
+2026-02-17T09:32:41.9105343Z hint:
+2026-02-17T09:32:41.9116085Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-02-17T09:32:41.9117188Z Initialized empty Git repository in /home/runner/work/IronForge/IronForge/.git/
+2026-02-17T09:32:41.9122603Z [command]/usr/bin/git remote add origin https://github.com/Techlemariam/IronForge
+2026-02-17T09:32:41.9159858Z ##[endgroup]
+2026-02-17T09:32:41.9161349Z ##[group]Disabling automatic garbage collection
+2026-02-17T09:32:41.9164319Z [command]/usr/bin/git config --local gc.auto 0
+2026-02-17T09:32:41.9197446Z ##[endgroup]
+2026-02-17T09:32:41.9198348Z ##[group]Setting up auth
+2026-02-17T09:32:41.9206652Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-02-17T09:32:41.9243344Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-02-17T09:32:41.9629674Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-02-17T09:32:41.9666781Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-02-17T09:32:41.9917742Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-02-17T09:32:41.9960650Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-02-17T09:32:42.0216982Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-02-17T09:32:42.0256593Z ##[endgroup]
+2026-02-17T09:32:42.0257744Z ##[group]Fetching the repository
+2026-02-17T09:32:42.0266183Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +a47162149ecac950b2a64052efe7c23c1536c2ed:refs/remotes/origin/night-shift/2026-02-17
+2026-02-17T09:32:42.7184877Z From https://github.com/Techlemariam/IronForge
+2026-02-17T09:32:42.7185848Z  * [new ref]         a47162149ecac950b2a64052efe7c23c1536c2ed -> origin/night-shift/2026-02-17
+2026-02-17T09:32:42.7221820Z ##[endgroup]
+2026-02-17T09:32:42.7223255Z ##[group]Determining the checkout info
+2026-02-17T09:32:42.7224432Z ##[endgroup]
+2026-02-17T09:32:42.7231953Z [command]/usr/bin/git sparse-checkout disable
+2026-02-17T09:32:42.7279332Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-02-17T09:32:42.7310254Z ##[group]Checking out the ref
+2026-02-17T09:32:42.7316334Z [command]/usr/bin/git checkout --progress --force -B night-shift/2026-02-17 refs/remotes/origin/night-shift/2026-02-17
+2026-02-17T09:32:42.9308451Z Switched to a new branch 'night-shift/2026-02-17'
+2026-02-17T09:32:42.9312392Z branch 'night-shift/2026-02-17' set up to track 'origin/night-shift/2026-02-17'.
+2026-02-17T09:32:42.9328276Z ##[endgroup]
+2026-02-17T09:32:42.9377535Z [command]/usr/bin/git log -1 --format=%H
+2026-02-17T09:32:42.9404169Z a47162149ecac950b2a64052efe7c23c1536c2ed
+2026-02-17T09:32:42.9583144Z ##[group]Run pnpm/action-setup@v4
+2026-02-17T09:32:42.9583418Z with:
+2026-02-17T09:32:42.9583605Z   dest: ~/setup-pnpm
+2026-02-17T09:32:42.9583818Z   run_install: null
+2026-02-17T09:32:42.9584033Z   package_json_file: package.json
+2026-02-17T09:32:42.9584274Z   standalone: false
+2026-02-17T09:32:42.9584466Z env:
+2026-02-17T09:32:42.9585190Z   DATABASE_URL: ***
+2026-02-17T09:32:42.9585755Z   DIRECT_URL: ***
+2026-02-17T09:32:42.9586077Z   NEXT_PUBLIC_SUPABASE_URL: ***
+2026-02-17T09:32:42.9587388Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+2026-02-17T09:32:42.9587648Z   SKIP_ENV_VALIDATION: true
+2026-02-17T09:32:42.9588041Z ##[endgroup]
+2026-02-17T09:32:43.0136861Z ##[group]Running self-installer...
+2026-02-17T09:32:43.5626053Z Progress: resolved 1, reused 0, downloaded 0, added 0
+2026-02-17T09:32:43.5843902Z Packages: +1
+2026-02-17T09:32:43.5890665Z +
+2026-02-17T09:32:44.0372589Z Progress: resolved 1, reused 0, downloaded 1, added 1, done
+2026-02-17T09:32:44.0656089Z 
+2026-02-17T09:32:44.0659414Z dependencies:
+2026-02-17T09:32:44.0663248Z + pnpm 9.15.0 (10.29.3 is available)
+2026-02-17T09:32:44.0665897Z 
+2026-02-17T09:32:44.0699294Z Done in 876ms
+2026-02-17T09:32:44.0838429Z ##[endgroup]
+2026-02-17T09:32:44.0845152Z Installation Completed!
+2026-02-17T09:32:44.0991826Z ##[group]Run actions/setup-node@v6
+2026-02-17T09:32:44.0992107Z with:
+2026-02-17T09:32:44.0992291Z   node-version: 22
+2026-02-17T09:32:44.0992485Z   cache: pnpm
+2026-02-17T09:32:44.0992674Z   check-latest: false
+2026-02-17T09:32:44.0992987Z   token: ***
+2026-02-17T09:32:44.0993191Z   package-manager-cache: true
+2026-02-17T09:32:44.0993436Z env:
+2026-02-17T09:32:44.0994052Z   DATABASE_URL: ***
+2026-02-17T09:32:44.0994598Z   DIRECT_URL: ***
+2026-02-17T09:32:44.0994909Z   NEXT_PUBLIC_SUPABASE_URL: ***
+2026-02-17T09:32:44.0996254Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+2026-02-17T09:32:44.0996512Z   SKIP_ENV_VALIDATION: true
+2026-02-17T09:32:44.0996789Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-02-17T09:32:44.0997072Z ##[endgroup]
+2026-02-17T09:32:44.2360227Z Found in cache @ /opt/hostedtoolcache/node/22.22.0/x64
+2026-02-17T09:32:44.2363148Z ##[group]Environment details
+2026-02-17T09:32:44.6861988Z node: v22.22.0
+2026-02-17T09:32:44.6873931Z npm: 10.9.4
+2026-02-17T09:32:44.6874370Z yarn: 1.22.22
+2026-02-17T09:32:44.6876019Z ##[endgroup]
+2026-02-17T09:32:44.6899760Z [command]/home/runner/setup-pnpm/node_modules/.bin/pnpm store path --silent
+2026-02-17T09:32:45.1284751Z /home/runner/setup-pnpm/node_modules/.bin/store/v3
+2026-02-17T09:32:45.2555586Z pnpm cache is not found
+2026-02-17T09:32:45.2686846Z ##[group]Run pnpm install --frozen-lockfile
+2026-02-17T09:32:45.2687242Z [36;1mpnpm install --frozen-lockfile[0m
+2026-02-17T09:32:45.2745213Z shell: /usr/bin/bash -e {0}
+2026-02-17T09:32:45.2745462Z env:
+2026-02-17T09:32:45.2746319Z   DATABASE_URL: ***
+2026-02-17T09:32:45.2746920Z   DIRECT_URL: ***
+2026-02-17T09:32:45.2747252Z   NEXT_PUBLIC_SUPABASE_URL: ***
+2026-02-17T09:32:45.2748567Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+2026-02-17T09:32:45.2748825Z   SKIP_ENV_VALIDATION: true
+2026-02-17T09:32:45.2749096Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-02-17T09:32:45.2749382Z ##[endgroup]
+2026-02-17T09:32:45.7708420Z Scope: all 4 workspace projects
+2026-02-17T09:32:45.8859102Z Lockfile is up to date, resolution step is skipped
+2026-02-17T09:32:46.0410741Z Progress: resolved 1, reused 0, downloaded 0, added 0
+2026-02-17T09:32:46.3470444Z Packages: +1671
+2026-02-17T09:32:46.3471124Z ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2026-02-17T09:32:47.0395021Z Progress: resolved 1671, reused 0, downloaded 13, added 0
+2026-02-17T09:32:48.0402978Z Progress: resolved 1671, reused 0, downloaded 141, added 131
+2026-02-17T09:32:49.0418119Z Progress: resolved 1671, reused 0, downloaded 243, added 232
+2026-02-17T09:32:50.0424720Z Progress: resolved 1671, reused 0, downloaded 274, added 267
+2026-02-17T09:32:51.0440571Z Progress: resolved 1671, reused 0, downloaded 305, added 292
+2026-02-17T09:32:52.0448526Z Progress: resolved 1671, reused 0, downloaded 395, added 387
+2026-02-17T09:32:53.0464451Z Progress: resolved 1671, reused 0, downloaded 481, added 478
+2026-02-17T09:32:54.0463810Z Progress: resolved 1671, reused 0, downloaded 556, added 550
+2026-02-17T09:32:55.0605403Z Progress: resolved 1671, reused 0, downloaded 586, added 572
+2026-02-17T09:32:56.0621881Z Progress: resolved 1671, reused 0, downloaded 667, added 662
+2026-02-17T09:32:57.0616264Z Progress: resolved 1671, reused 0, downloaded 682, added 671
+2026-02-17T09:32:58.0623807Z Progress: resolved 1671, reused 0, downloaded 685, added 673
+2026-02-17T09:32:59.0671496Z Progress: resolved 1671, reused 0, downloaded 688, added 678
+2026-02-17T09:33:00.0658317Z Progress: resolved 1671, reused 0, downloaded 691, added 680
+2026-02-17T09:33:01.0661460Z Progress: resolved 1671, reused 0, downloaded 694, added 681
+2026-02-17T09:33:02.0672538Z Progress: resolved 1671, reused 0, downloaded 737, added 727
+2026-02-17T09:33:03.0684277Z Progress: resolved 1671, reused 0, downloaded 748, added 736
+2026-02-17T09:33:04.0684716Z Progress: resolved 1671, reused 0, downloaded 841, added 833
+2026-02-17T09:33:05.0701608Z Progress: resolved 1671, reused 0, downloaded 931, added 920
+2026-02-17T09:33:06.0712768Z Progress: resolved 1671, reused 0, downloaded 1037, added 1025
+2026-02-17T09:33:07.0718943Z Progress: resolved 1671, reused 0, downloaded 1124, added 1113
+2026-02-17T09:33:08.0732811Z Progress: resolved 1671, reused 0, downloaded 1224, added 1218
+2026-02-17T09:33:09.0734951Z Progress: resolved 1671, reused 0, downloaded 1360, added 1348
+2026-02-17T09:33:10.0746845Z Progress: resolved 1671, reused 0, downloaded 1499, added 1487
+2026-02-17T09:33:11.0824768Z Progress: resolved 1671, reused 0, downloaded 1587, added 1587
+2026-02-17T09:33:12.0835970Z Progress: resolved 1671, reused 0, downloaded 1619, added 1607
+2026-02-17T09:33:13.0114180Z Progress: resolved 1671, reused 0, downloaded 1669, added 1671, done
+2026-02-17T09:33:13.6228493Z .../node_modules/@prisma/engines postinstall$ node scripts/postinstall.js
+2026-02-17T09:33:13.6411896Z .../node_modules/msw postinstall$ node -e "import('./config/scripts/postinstall.js').catch(() => void 0)"
+2026-02-17T09:33:13.6419588Z .../node_modules/unrs-resolver postinstall$ napi-postinstall unrs-resolver 1.11.1 check
+2026-02-17T09:33:13.6433188Z .../sharp@0.34.5/node_modules/sharp install$ node install/check.js || npm run build
+2026-02-17T09:33:13.6703962Z .../esbuild@0.25.0/node_modules/esbuild postinstall$ node install.js
+2026-02-17T09:33:13.7762422Z .../node_modules/msw postinstall: Done
+2026-02-17T09:33:13.8013333Z .../node_modules/unrs-resolver postinstall: Done
+2026-02-17T09:33:13.8430488Z .../esbuild@0.25.0/node_modules/esbuild postinstall: Done
+2026-02-17T09:33:13.9103578Z .../node_modules/protobufjs postinstall$ node scripts/postinstall
+2026-02-17T09:33:13.9497161Z .../sharp@0.34.5/node_modules/sharp install: Done
+2026-02-17T09:33:13.9571417Z .../node_modules/@sentry/cli postinstall$ node ./scripts/install.js
+2026-02-17T09:33:14.0254651Z .../node_modules/protobufjs postinstall: Done
+2026-02-17T09:33:14.0814579Z .../node_modules/@sentry/cli postinstall: Done
+2026-02-17T09:33:15.0404354Z .../node_modules/@prisma/engines postinstall: Done
+2026-02-17T09:33:15.1396941Z .../node_modules/prisma preinstall$ node scripts/preinstall-entry.js
+2026-02-17T09:33:15.1914902Z .../node_modules/prisma preinstall: Done
+2026-02-17T09:33:15.7224511Z 
+2026-02-17T09:33:15.7244670Z dependencies:
+2026-02-17T09:33:15.7251074Z + @ai-sdk/google 3.0.26
+2026-02-17T09:33:15.7270863Z + @ai-sdk/react 3.0.84
+2026-02-17T09:33:15.7271348Z + @capacitor/android 8.1.0
+2026-02-17T09:33:15.7271803Z + @capacitor/cli 8.1.0
+2026-02-17T09:33:15.7272192Z + @capacitor/core 8.1.0
+2026-02-17T09:33:15.7272560Z + @google/genai 1.41.0
+2026-02-17T09:33:15.7273009Z + @mediapipe/tasks-vision 0.10.32
+2026-02-17T09:33:15.7273465Z + @neondatabase/serverless 1.0.2
+2026-02-17T09:33:15.7273875Z + @prisma/adapter-neon 7.4.0
+2026-02-17T09:33:15.7274287Z + @prisma/adapter-pg 7.4.0
+2026-02-17T09:33:15.7274667Z + @prisma/client 7.4.0
+2026-02-17T09:33:15.7275075Z + @radix-ui/react-avatar 1.1.11
+2026-02-17T09:33:15.7275612Z + @radix-ui/react-dialog 1.1.15
+2026-02-17T09:33:15.7276017Z + @radix-ui/react-label 2.1.8
+2026-02-17T09:33:15.7276489Z + @radix-ui/react-popover 1.1.15
+2026-02-17T09:33:15.7277008Z + @radix-ui/react-progress 1.1.8
+2026-02-17T09:33:15.7277538Z + @radix-ui/react-scroll-area 1.2.10
+2026-02-17T09:33:15.7278052Z + @radix-ui/react-select 2.2.6
+2026-02-17T09:33:15.7278538Z + @radix-ui/react-slider 1.3.6
+2026-02-17T09:33:15.7279001Z + @radix-ui/react-slot 1.2.4
+2026-02-17T09:33:15.7279475Z + @radix-ui/react-tabs 1.1.13
+2026-02-17T09:33:15.7280532Z + @react-three/drei 10.7.7
+2026-02-17T09:33:15.7280971Z + @react-three/fiber 9.5.0
+2026-02-17T09:33:15.7281383Z + @remotion/cli 4.0.421
+2026-02-17T09:33:15.7281775Z + @sentry/nextjs 10.38.0
+2026-02-17T09:33:15.7282159Z + @serwist/next 9.5.5
+2026-02-17T09:33:15.7282534Z + @supabase/ssr 0.8.0
+2026-02-17T09:33:15.7282968Z + @supabase/supabase-js 2.95.3
+2026-02-17T09:33:15.7283512Z + @types/canvas-confetti 1.9.0
+2026-02-17T09:33:15.7283939Z + @types/howler 2.2.12
+2026-02-17T09:33:15.7284318Z + @types/web-push 3.6.4
+2026-02-17T09:33:15.7284672Z + ai 6.0.82
+2026-02-17T09:33:15.7284971Z + axios 1.13.5
+2026-02-17T09:33:15.7285316Z + canvas-confetti 1.9.4
+2026-02-17T09:33:15.7285774Z + class-variance-authority 0.7.1
+2026-02-17T09:33:15.7286182Z + clsx 2.1.1
+2026-02-17T09:33:15.7286492Z + date-fns 4.1.0
+2026-02-17T09:33:15.7286845Z + framer-motion 12.34.0
+2026-02-17T09:33:15.7287196Z + h3-js 4.4.0
+2026-02-17T09:33:15.7287511Z + howler 2.2.4
+2026-02-17T09:33:15.7327256Z + import-in-the-middle 3.0.0
+2026-02-17T09:33:15.7327783Z + lucide-react 0.563.0
+2026-02-17T09:33:15.7328205Z + maplibre-gl 5.18.0
+2026-02-17T09:33:15.7328565Z + next 16.1.6
+2026-02-17T09:33:15.7328878Z + pg 8.18.0
+2026-02-17T09:33:15.7329183Z + pino 10.3.1
+2026-02-17T09:33:15.7329529Z + pino-pretty 13.1.3
+2026-02-17T09:33:15.7329916Z + qrcode.react 4.2.0
+2026-02-17T09:33:15.7330467Z + react 19.2.4
+2026-02-17T09:33:15.7330812Z + react-dom 19.2.4
+2026-02-17T09:33:15.7331190Z + react-dropzone 15.0.0
+2026-02-17T09:33:15.7331587Z + react-player 3.4.0
+2026-02-17T09:33:15.7331957Z + reactflow 11.11.4
+2026-02-17T09:33:15.7332296Z + recharts 3.7.0
+2026-02-17T09:33:15.7332623Z + remotion 4.0.421
+2026-02-17T09:33:15.7333003Z + require-in-the-middle 8.0.1
+2026-02-17T09:33:15.7333406Z + serwist 9.5.5
+2026-02-17T09:33:15.7333720Z + sonner 2.0.7
+2026-02-17T09:33:15.7334074Z + tailwind-merge 3.4.0
+2026-02-17T09:33:15.7334489Z + tailwindcss-animate 1.0.7
+2026-02-17T09:33:15.7335084Z + three 0.182.0
+2026-02-17T09:33:15.7335441Z + web-push 3.6.7
+2026-02-17T09:33:15.7335762Z + zod 4.3.6
+2026-02-17T09:33:15.7336057Z + zustand 5.0.11
+2026-02-17T09:33:15.7336269Z 
+2026-02-17T09:33:15.7336407Z devDependencies:
+2026-02-17T09:33:15.7336861Z + @chromatic-com/storybook 5.0.1
+2026-02-17T09:33:15.7337332Z + @eslint/compat 2.0.2
+2026-02-17T09:33:15.7337742Z + @eslint/eslintrc 3.3.3
+2026-02-17T09:33:15.7338120Z + @lhci/cli 0.15.1
+2026-02-17T09:33:15.7338485Z + @playwright/test 1.58.2
+2026-02-17T09:33:15.7338950Z + @storybook/addon-a11y 10.2.8
+2026-02-17T09:33:15.7339412Z + @storybook/addon-docs 10.2.8
+2026-02-17T09:33:15.7339900Z + @storybook/addon-onboarding 10.2.8
+2026-02-17T09:33:15.7359673Z + @storybook/addon-vitest 10.2.8
+2026-02-17T09:33:15.7370617Z + @storybook/nextjs-vite 10.2.8
+2026-02-17T09:33:15.7371112Z + @tailwindcss/postcss 4.1.18
+2026-02-17T09:33:15.7371579Z + @testing-library/dom 10.4.1
+2026-02-17T09:33:15.7372073Z + @testing-library/react 16.3.2
+2026-02-17T09:33:15.7372540Z + @types/geojson 7946.0.16
+2026-02-17T09:33:15.7372957Z + @types/node 25.2.3
+2026-02-17T09:33:15.7373325Z + @types/pg 8.16.0
+2026-02-17T09:33:15.7373687Z + @types/react 19.2.14
+2026-02-17T09:33:15.7374082Z + @types/react-dom 19.2.3
+2026-02-17T09:33:15.7374484Z + @types/three 0.182.0
+2026-02-17T09:33:15.7374881Z + @types/web-bluetooth 0.0.21
+2026-02-17T09:33:15.7375297Z + @types/ws 8.18.1
+2026-02-17T09:33:15.7375774Z + @typescript-eslint/eslint-plugin 8.55.0
+2026-02-17T09:33:15.7376354Z + @typescript-eslint/parser 8.55.0
+2026-02-17T09:33:15.7376841Z + @vitejs/plugin-react 5.1.4
+2026-02-17T09:33:15.7377352Z + @vitest/browser-playwright 4.0.18
+2026-02-17T09:33:15.7377848Z + @vitest/coverage-v8 4.0.18
+2026-02-17T09:33:15.7378271Z + autoprefixer 10.4.24
+2026-02-17T09:33:15.7378651Z + chromatic 15.1.0
+2026-02-17T09:33:15.7378993Z + dotenv 17.2.4
+2026-02-17T09:33:15.7379340Z + dotenv-cli 11.0.0
+2026-02-17T09:33:15.7379674Z + eslint 10.0.0
+2026-02-17T09:33:15.7387086Z + eslint-config-next 16.1.6
+2026-02-17T09:33:15.7387673Z + eslint-plugin-storybook 10.2.8
+2026-02-17T09:33:15.7388366Z + husky 9.1.7
+2026-02-17T09:33:15.7388692Z + jsdom 28.0.0
+2026-02-17T09:33:15.7389014Z + magicast 0.5.2
+2026-02-17T09:33:15.7389343Z + msw 2.12.10
+2026-02-17T09:33:15.7389686Z + playwright 1.58.2
+2026-02-17T09:33:15.7390206Z + postcss 8.5.6
+2026-02-17T09:33:15.7390546Z + prisma 7.4.0
+2026-02-17T09:33:15.7390884Z + storybook 10.2.8
+2026-02-17T09:33:15.7410418Z + tailwindcss 4.1.18
+2026-02-17T09:33:15.7410790Z + tsx 4.21.0
+2026-02-17T09:33:15.7411106Z + turbo 2.8.7
+2026-02-17T09:33:15.7411448Z + typedoc 0.28.16
+2026-02-17T09:33:15.7411891Z + typedoc-plugin-markdown 4.10.0
+2026-02-17T09:33:15.7412347Z + typescript 5.9.3
+2026-02-17T09:33:15.7412692Z + vite 7.3.1
+2026-02-17T09:33:15.7413003Z + vitest 4.0.18
+2026-02-17T09:33:15.7413322Z + ws 8.19.0
+2026-02-17T09:33:15.7413494Z 
+2026-02-17T09:33:15.7967100Z . postinstall$ prisma generate
+2026-02-17T09:33:16.8931448Z . postinstall: Loaded Prisma config from prisma.config.ts.
+2026-02-17T09:33:17.0565401Z . postinstall: Prisma schema loaded from prisma/schema.prisma.
+2026-02-17T09:33:17.0684984Z . postinstall: warn Preview feature "driverAdapters" is deprecated. The functionality can be used without specifying it as a preview feature.
+2026-02-17T09:33:18.3728215Z . postinstall: ✔ Generated Prisma Client (v7.4.0) to ./node_modules/.pnpm/@prisma+client@7.4.0_prisma@7.4.0_@types+react@19.2.14_magicast@0.5.2_react-dom@19.2.4_react@_kbihlyeorb7my7bafhyofzhtla/node_modules/@prisma/client in 825ms
+2026-02-17T09:33:18.3730637Z . postinstall: Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+2026-02-17T09:33:18.3981271Z . postinstall: Done
+2026-02-17T09:33:18.3985590Z . prepare$ husky
+2026-02-17T09:33:18.4501555Z . prepare: Done
+2026-02-17T09:33:18.4514022Z Done in 33.1s
+2026-02-17T09:33:18.5122921Z ##[group]Run npx prisma generate
+2026-02-17T09:33:18.5123248Z [36;1mnpx prisma generate[0m
+2026-02-17T09:33:18.5172031Z shell: /usr/bin/bash -e {0}
+2026-02-17T09:33:18.5172268Z env:
+2026-02-17T09:33:18.5172961Z   DATABASE_URL: ***
+2026-02-17T09:33:18.5173529Z   DIRECT_URL: ***
+2026-02-17T09:33:18.5173846Z   NEXT_PUBLIC_SUPABASE_URL: ***
+2026-02-17T09:33:18.5175146Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+2026-02-17T09:33:18.5175402Z   SKIP_ENV_VALIDATION: true
+2026-02-17T09:33:18.5175670Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-02-17T09:33:18.5175954Z ##[endgroup]
+2026-02-17T09:33:20.1162549Z Loaded Prisma config from prisma.config.ts.
+2026-02-17T09:33:20.1167668Z 
+2026-02-17T09:33:20.2968352Z Prisma schema loaded from prisma/schema.prisma.
+2026-02-17T09:33:20.3071633Z warn Preview feature "driverAdapters" is deprecated. The functionality can be used without specifying it as a preview feature.
+2026-02-17T09:33:21.6037545Z 
+2026-02-17T09:33:21.6044675Z ✔ Generated Prisma Client (v7.4.0) to ./node_modules/.pnpm/@prisma+client@7.4.0_prisma@7.4.0_@types+react@19.2.14_magicast@0.5.2_react-dom@19.2.4_react@_kbihlyeorb7my7bafhyofzhtla/node_modules/@prisma/client in 822ms
+2026-02-17T09:33:21.6048706Z 
+2026-02-17T09:33:21.6052050Z Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+2026-02-17T09:33:21.6055030Z 
+2026-02-17T09:33:21.6056504Z 
+2026-02-17T09:33:21.6758173Z ##[group]Run npx prisma db push
+2026-02-17T09:33:21.6758493Z [36;1mnpx prisma db push[0m
+2026-02-17T09:33:21.6807481Z shell: /usr/bin/bash -e {0}
+2026-02-17T09:33:21.6807713Z env:
+2026-02-17T09:33:21.6808173Z   DATABASE_URL: ***localhost:5432/ironforge?schema=public
+2026-02-17T09:33:21.6808853Z   DIRECT_URL: ***
+2026-02-17T09:33:21.6809175Z   NEXT_PUBLIC_SUPABASE_URL: ***
+2026-02-17T09:33:21.6810796Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+2026-02-17T09:33:21.6811062Z   SKIP_ENV_VALIDATION: true
+2026-02-17T09:33:21.6811331Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-02-17T09:33:21.6811625Z ##[endgroup]
+2026-02-17T09:33:22.8681176Z Loaded Prisma config from prisma.config.ts.
+2026-02-17T09:33:22.8681823Z 
+2026-02-17T09:33:23.0417829Z Prisma schema loaded from prisma/schema.prisma.
+2026-02-17T09:33:23.0557441Z Datasource "db": PostgreSQL database "postgres", schema "public" at "aws-1-eu-west-1.pooler.supabase.com:5432"
+2026-02-17T09:33:27.0380741Z 
+2026-02-17T09:33:27.0381544Z The database is already in sync with the Prisma schema.
+2026-02-17T09:33:27.0385853Z 
+2026-02-17T09:33:27.1483478Z ##[group]Run actions/cache@v5
+2026-02-17T09:33:27.1483752Z with:
+2026-02-17T09:33:27.1483937Z   path: .turbo
+2026-02-17T09:33:27.1484242Z   key: turbo-Linux-a47162149ecac950b2a64052efe7c23c1536c2ed
+2026-02-17T09:33:27.1484580Z   restore-keys: turbo-Linux-
+
+2026-02-17T09:33:27.1484818Z   enableCrossOsArchive: false
+2026-02-17T09:33:27.1485049Z   fail-on-cache-miss: false
+2026-02-17T09:33:27.1485269Z   lookup-only: false
+2026-02-17T09:33:27.1485477Z   save-always: false
+2026-02-17T09:33:27.1485656Z env:
+2026-02-17T09:33:27.1486350Z   DATABASE_URL: ***
+2026-02-17T09:33:27.1486921Z   DIRECT_URL: ***
+2026-02-17T09:33:27.1487242Z   NEXT_PUBLIC_SUPABASE_URL: ***
+2026-02-17T09:33:27.1488546Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+2026-02-17T09:33:27.1488813Z   SKIP_ENV_VALIDATION: true
+2026-02-17T09:33:27.1489080Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-02-17T09:33:27.1489363Z ##[endgroup]
+2026-02-17T09:33:27.3489283Z Cache hit for restore-key: turbo-Linux-b2ad1640a10d2a2d3db1af8b95e8524efa7fffe0
+2026-02-17T09:33:28.1619157Z Received 137192109 of 137192109 (100.0%), 168.4 MBs/sec
+2026-02-17T09:33:28.1620615Z Cache Size: ~131 MB (137192109 B)
+2026-02-17T09:33:28.1653694Z [command]/usr/bin/tar -xf /home/runner/work/_temp/9e98dd70-39e1-4ac3-b1c9-50b14e22695d/cache.tzst -P -C /home/runner/work/IronForge/IronForge --use-compress-program unzstd
+2026-02-17T09:33:28.4011952Z Cache restored successfully
+2026-02-17T09:33:28.4414702Z Cache restored from key: turbo-Linux-b2ad1640a10d2a2d3db1af8b95e8524efa7fffe0
+2026-02-17T09:33:28.4544787Z ##[group]Run npx turbo run lint --concurrency=100%
+2026-02-17T09:33:28.4545195Z [36;1mnpx turbo run lint --concurrency=100%[0m
+2026-02-17T09:33:28.4595208Z shell: /usr/bin/bash -e {0}
+2026-02-17T09:33:28.4595454Z env:
+2026-02-17T09:33:28.4596159Z   DATABASE_URL: ***
+2026-02-17T09:33:28.4596732Z   DIRECT_URL: ***
+2026-02-17T09:33:28.4597081Z   NEXT_PUBLIC_SUPABASE_URL: ***
+2026-02-17T09:33:28.4598408Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+2026-02-17T09:33:28.4598671Z   SKIP_ENV_VALIDATION: true
+2026-02-17T09:33:28.4598947Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-02-17T09:33:28.4599240Z ##[endgroup]
+2026-02-17T09:33:28.7956818Z 
+2026-02-17T09:33:28.7957728Z Attention:
+2026-02-17T09:33:28.7958769Z Turborepo now collects completely anonymous telemetry regarding usage.
+2026-02-17T09:33:28.7963242Z This information is used to shape the Turborepo roadmap and prioritize features.
+2026-02-17T09:33:28.7967708Z You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+2026-02-17T09:33:28.7968798Z https://turborepo.dev/docs/telemetry
+2026-02-17T09:33:28.7969135Z 
+2026-02-17T09:33:28.8720995Z • Packages in scope: ironforge-discord-bot, ironforge-factory-mcp, ironforge-rpg, mcp-n8n
+2026-02-17T09:33:28.8727880Z • Running lint in 4 packages
+2026-02-17T09:33:28.8728600Z • Remote caching disabled
+2026-02-17T09:34:05.3469323Z ##[group]ironforge-rpg:lint
+2026-02-17T09:34:05.3470247Z cache miss, executing 1b2b772e02f1ece8
+2026-02-17T09:34:05.3470593Z 
+2026-02-17T09:34:05.3471042Z > ironforge-rpg@1.0.0 lint /home/runner/work/IronForge/IronForge
+2026-02-17T09:34:05.3471636Z > eslint .
+2026-02-17T09:34:05.3471810Z 
+2026-02-17T09:34:05.3473530Z (node:2883) ESLintIgnoreWarning: The ".eslintignore" file is no longer supported. Switch to using the "ignores" property in "eslint.config.js": https://eslint.org/docs/latest/use/configure/migration-guide#ignore-files
+2026-02-17T09:34:05.3475380Z (Use `node --trace-warnings ...` to show where the warning was created)
+2026-02-17T09:34:05.3475882Z 
+2026-02-17T09:34:05.3476361Z /home/runner/work/IronForge/IronForge/.storybook/next-headers-mock.ts
+2026-02-17T09:34:05.3519629Z ##[warning]  5:11  warning  'name' is defined but never used. Allowed unused args must match /^_/u     @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3531891Z ##[warning]  6:11  warning  'name' is defined but never used. Allowed unused args must match /^_/u     @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3534841Z ##[warning]  6:25  warning  'value' is defined but never used. Allowed unused args must match /^_/u    @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3537777Z ##[warning]  6:40  warning  'options' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3540920Z ##[warning]  7:14  warning  'name' is defined but never used. Allowed unused args must match /^_/u     @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3542576Z 
+2026-02-17T09:34:05.3543240Z /home/runner/work/IronForge/IronForge/mcp/factory-server/src/__tests__/index.test.ts
+2026-02-17T09:34:05.3545906Z ##[warning]  2:10  warning  'CallToolRequestSchema' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3547791Z 
+2026-02-17T09:34:05.3548512Z /home/runner/work/IronForge/IronForge/mcp/factory-server/src/__tests__/quota-manager.test.ts
+2026-02-17T09:34:05.3550878Z ##[warning]   2:55  warning  'vi' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3553719Z ##[warning]  23:22  warning  'e' is defined but never used                                         @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3555262Z 
+2026-02-17T09:34:05.3555782Z /home/runner/work/IronForge/IronForge/mcp/factory-server/src/index.ts
+2026-02-17T09:34:05.3558177Z ##[warning]   10:10  warning  'z' is defined but never used. Allowed unused vars must match /^_/u                          @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3562101Z ##[warning]   70:15  warning  'antigravityTasks' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3565307Z ##[warning]  139:18  warning  'e' is defined but never used                                                                @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3568221Z ##[warning]  259:30  warning  'e' is defined but never used                                                                @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3569817Z 
+2026-02-17T09:34:05.3570750Z /home/runner/work/IronForge/IronForge/mcp/factory-server/src/quota-manager.ts
+2026-02-17T09:34:05.3572334Z ##[warning]  59:18  warning  'e' is defined but never used  @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3573755Z 
+2026-02-17T09:34:05.3574440Z /home/runner/work/IronForge/IronForge/src/actions/systems/__tests__/territories.test.ts
+2026-02-17T09:34:05.3577379Z ##[warning]  2:42  warning  'processWeeklyTerritoryClaimsAction' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3579335Z 
+2026-02-17T09:34:05.3580172Z /home/runner/work/IronForge/IronForge/src/app/api/cron/territory-weekly/route.ts
+2026-02-17T09:34:05.3582851Z ##[warning]  17:15  warning  'result' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3584644Z 
+2026-02-17T09:34:05.3585262Z /home/runner/work/IronForge/IronForge/src/app/api/webhooks/intervals/route.ts
+2026-02-17T09:34:05.3587575Z ##[warning]  7:10  warning  'getActivityStream' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3589522Z 
+2026-02-17T09:34:05.3590603Z /home/runner/work/IronForge/IronForge/src/components/factory/AssemblyLineCard.tsx
+2026-02-17T09:34:05.3592987Z ##[warning]  6:5  warning  'Code2' is defined but never used. Allowed unused vars must match /^_/u         @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3596062Z ##[warning]  7:5  warning  'CheckCircle2' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3599164Z ##[warning]  8:5  warning  'Rocket' is defined but never used. Allowed unused vars must match /^_/u        @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3602328Z ##[warning]  9:5  warning  'Palette' is defined but never used. Allowed unused vars must match /^_/u       @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3603856Z 
+2026-02-17T09:34:05.3604462Z /home/runner/work/IronForge/IronForge/src/components/factory/AssemblyLinePresenter.tsx
+2026-02-17T09:34:05.3606378Z ##[warning]  4:10  warning  'motion' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3607903Z 
+2026-02-17T09:34:05.3608713Z /home/runner/work/IronForge/IronForge/src/components/factory/BacklogBoard.tsx
+2026-02-17T09:34:05.3611101Z ##[warning]  4:10  warning  'ClipboardList' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3614072Z ##[warning]  4:25  warning  'AlertCircle' is defined but never used. Allowed unused vars must match /^_/u    @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3617390Z ##[warning]  4:38  warning  'Play' is defined but never used. Allowed unused vars must match /^_/u           @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3621616Z ##[warning]  4:44  warning  'Loader2' is defined but never used. Allowed unused vars must match /^_/u        @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3624874Z ##[warning]  4:53  warning  'CheckCircle2' is defined but never used. Allowed unused vars must match /^_/u   @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3626709Z 
+2026-02-17T09:34:05.3627587Z /home/runner/work/IronForge/IronForge/src/components/factory/FactoryRunConveyor.tsx
+2026-02-17T09:34:05.3629954Z ##[warning]  10:5   warning  'BrainCircuit' is defined but never used. Allowed unused vars must match /^_/u         @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3634882Z ##[warning]  99:27  warning  'isUpcoming' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3636415Z 
+2026-02-17T09:34:05.3636958Z /home/runner/work/IronForge/IronForge/src/components/factory/RenderVideoForm.tsx
+2026-02-17T09:34:05.3638716Z ##[warning]   5:10  warning  'Button' is defined but never used. Allowed unused vars must match /^_/u           @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3642107Z ##[warning]   6:10  warning  'Card' is defined but never used. Allowed unused vars must match /^_/u             @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3645107Z ##[warning]   6:16  warning  'CardContent' is defined but never used. Allowed unused vars must match /^_/u      @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3647934Z ##[warning]   6:29  warning  'CardDescription' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3651017Z ##[warning]   6:46  warning  'CardFooter' is defined but never used. Allowed unused vars must match /^_/u       @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3653988Z ##[warning]   6:58  warning  'CardHeader' is defined but never used. Allowed unused vars must match /^_/u       @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3657124Z ##[warning]   6:70  warning  'CardTitle' is defined but never used. Allowed unused vars must match /^_/u        @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3660263Z ##[warning]   7:10  warning  'Textarea' is defined but never used. Allowed unused vars must match /^_/u         @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3663215Z ##[warning]   8:10  warning  'Label' is defined but never used. Allowed unused vars must match /^_/u            @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3665808Z ##[warning]  32:14  warning  'error' is defined but never used                                                  @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3667654Z 
+2026-02-17T09:34:05.3668286Z /home/runner/work/IronForge/IronForge/src/components/factory/VoiceCommandControl.tsx
+2026-02-17T09:34:05.3670546Z ##[warning]   4:10  warning  'Mic' is defined but never used. Allowed unused vars must match /^_/u       @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3673539Z ##[warning]   4:15  warning  'MicOff' is defined but never used. Allowed unused vars must match /^_/u    @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3676544Z ##[warning]   4:23  warning  'Send' is defined but never used. Allowed unused vars must match /^_/u      @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3679534Z ##[warning]   4:29  warning  'Loader2' is defined but never used. Allowed unused vars must match /^_/u   @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3682803Z ##[warning]   4:38  warning  'Sparkles' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3685752Z ##[warning]  81:18  warning  'err' is defined but never used                                             @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3687270Z 
+2026-02-17T09:34:05.3687720Z /home/runner/work/IronForge/IronForge/src/components/ui/card.tsx
+2026-02-17T09:34:05.3689839Z ##[warning]  53:3  warning  Headings must have content and the content must be accessible by a screen reader  jsx-a11y/heading-has-content
+2026-02-17T09:34:05.3691804Z 
+2026-02-17T09:34:05.3692422Z /home/runner/work/IronForge/IronForge/src/components/workout/QuickLogWidget.tsx
+2026-02-17T09:34:05.3694218Z ##[warning]   62:9  warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+2026-02-17T09:34:05.3696802Z ##[warning]   93:9  warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+2026-02-17T09:34:05.3699082Z ##[warning]  120:9  warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+2026-02-17T09:34:05.3700852Z 
+2026-02-17T09:34:05.3701360Z /home/runner/work/IronForge/IronForge/src/features/auth/NeonNoirLogin.tsx
+2026-02-17T09:34:05.3703088Z ##[warning]  61:29  warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+2026-02-17T09:34:05.3705345Z ##[warning]  79:29  warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+2026-02-17T09:34:05.3706684Z 
+2026-02-17T09:34:05.3707193Z /home/runner/work/IronForge/IronForge/src/features/coop/LiveSessionHUD.tsx
+2026-02-17T09:34:05.3710333Z ##[warning]  179:45  warning  Visible, non-interactive elements with click handlers must have at least one keyboard listener                                                                                                     jsx-a11y/click-events-have-key-events
+2026-02-17T09:34:05.3715710Z ##[warning]  179:45  warning  Avoid non-native interactive elements. If using native HTML is not possible, add an appropriate role and support for tabbing, mouse, keyboard, and touch inputs to an interactive content element  jsx-a11y/no-static-element-interactions
+2026-02-17T09:34:05.3718066Z 
+2026-02-17T09:34:05.3718582Z /home/runner/work/IronForge/IronForge/src/features/dashboard/DashboardClient.tsx
+2026-02-17T09:34:05.3720846Z ##[warning]   5:10  warning  'PwaInstallBanner' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3723652Z ##[warning]   6:8   warning  'Link' is defined but never used. Allowed unused vars must match /^_/u              @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3726574Z ##[warning]  13:10  warning  'AnimatePresence' is defined but never used. Allowed unused vars must match /^_/u   @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3729411Z ##[warning]  13:27  warning  'motion' is defined but never used. Allowed unused vars must match /^_/u            @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3732447Z ##[warning]  18:8   warning  'GeminiLiveCoach' is defined but never used. Allowed unused vars must match /^_/u   @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3735502Z ##[warning]  19:10  warning  'Settings' is defined but never used. Allowed unused vars must match /^_/u          @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3738309Z ##[warning]  23:10  warning  'OracleChat' is defined but never used. Allowed unused vars must match /^_/u        @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3741597Z ##[warning]  27:10  warning  'PersistentHeader' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3744424Z ##[warning]  28:10  warning  'CoachToggle' is defined but never used. Allowed unused vars must match /^_/u       @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3747118Z ##[warning]  29:10  warning  'ViewRouter' is defined but never used. Allowed unused vars must match /^_/u        @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3749767Z ##[warning]  30:10  warning  'CodexLoader' is defined but never used. Allowed unused vars must match /^_/u       @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3752866Z ##[warning]  39:10  warning  'TvHud' is defined but never used. Allowed unused vars must match /^_/u             @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3754324Z 
+2026-02-17T09:34:05.3754983Z /home/runner/work/IronForge/IronForge/src/features/dashboard/components/DashboardPresenter.tsx
+2026-02-17T09:34:05.3757226Z ##[warning]   6:20  warning  'Activity' is defined but never used. Allowed unused vars must match /^_/u                           @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3760793Z ##[warning]  19:5   warning  'DashboardClientProps' is defined but never used. Allowed unused vars must match /^_/u               @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3763986Z ##[warning]  67:9   warning  'showOnboarding' is assigned a value but never used. Allowed unused vars must match /^_/u            @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3767167Z ##[warning]  70:9   warning  'onShowOnboardingComplete' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3768810Z 
+2026-02-17T09:34:05.3769287Z /home/runner/work/IronForge/IronForge/src/features/game/GuildHall.tsx
+2026-02-17T09:34:05.3772333Z ##[warning]  330:11  warning  Visible, non-interactive elements with click handlers must have at least one keyboard listener                                                                                                     jsx-a11y/click-events-have-key-events
+2026-02-17T09:34:05.3777208Z ##[warning]  330:11  warning  Avoid non-native interactive elements. If using native HTML is not possible, add an appropriate role and support for tabbing, mouse, keyboard, and touch inputs to an interactive content element  jsx-a11y/no-static-element-interactions
+2026-02-17T09:34:05.3780604Z 
+2026-02-17T09:34:05.3781186Z /home/runner/work/IronForge/IronForge/src/features/game/components/ActionView.tsx
+2026-02-17T09:34:05.3784387Z ##[warning]  161:9  warning  Visible, non-interactive elements with click handlers must have at least one keyboard listener                                                                                                     jsx-a11y/click-events-have-key-events
+2026-02-17T09:34:05.3787186Z ##[warning]  161:9  warning  Avoid non-native interactive elements. If using native HTML is not possible, add an appropriate role and support for tabbing, mouse, keyboard, and touch inputs to an interactive content element  jsx-a11y/no-static-element-interactions
+2026-02-17T09:34:05.3788502Z 
+2026-02-17T09:34:05.3788849Z /home/runner/work/IronForge/IronForge/src/features/game/components/DungeonBuilder.tsx
+2026-02-17T09:34:05.3789775Z ##[warning]  115:11  warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+2026-02-17T09:34:05.3791495Z ##[warning]  126:11  warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+2026-02-17T09:34:05.3792516Z 
+2026-02-17T09:34:05.3792850Z /home/runner/work/IronForge/IronForge/src/features/game/components/ValhallaGate.tsx
+2026-02-17T09:34:05.3793754Z ##[warning]  143:17  warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+2026-02-17T09:34:05.3794561Z 
+2026-02-17T09:34:05.3794859Z /home/runner/work/IronForge/IronForge/src/features/guild/TerritoryMap.tsx
+2026-02-17T09:34:05.3795688Z ##[warning]  29:18  warning  'err' is defined but never used  @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3796456Z 
+2026-02-17T09:34:05.3796831Z /home/runner/work/IronForge/IronForge/src/features/onboarding/components/FirstTimeHints.tsx
+2026-02-17T09:34:05.3798603Z ##[warning]  115:9  warning  Visible, non-interactive elements with click handlers must have at least one keyboard listener                                                                                                     jsx-a11y/click-events-have-key-events
+2026-02-17T09:34:05.3801642Z ##[warning]  115:9  warning  Avoid non-native interactive elements. If using native HTML is not possible, add an appropriate role and support for tabbing, mouse, keyboard, and touch inputs to an interactive content element  jsx-a11y/no-static-element-interactions
+2026-02-17T09:34:05.3802991Z 
+2026-02-17T09:34:05.3803404Z /home/runner/work/IronForge/IronForge/src/features/podcast/components/PocketCastsAuth.tsx
+2026-02-17T09:34:05.3804508Z ##[warning]  64:25  warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+2026-02-17T09:34:05.3805880Z ##[warning]  74:25  warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+2026-02-17T09:34:05.3806686Z 
+2026-02-17T09:34:05.3807185Z /home/runner/work/IronForge/IronForge/src/features/pvp/components/CardioDuelLobby.tsx
+2026-02-17T09:34:05.3808728Z ##[warning]   78:29  warning  A form label must be associated with a control                                                                                                                                                     jsx-a11y/label-has-associated-control
+2026-02-17T09:34:05.3811520Z ##[warning]   95:29  warning  A form label must be associated with a control                                                                                                                                                     jsx-a11y/label-has-associated-control
+2026-02-17T09:34:05.3814410Z ##[warning]  112:25  warning  A form label must be associated with a control                                                                                                                                                     jsx-a11y/label-has-associated-control
+2026-02-17T09:34:05.3816680Z ##[warning]  115:33  warning  Visible, non-interactive elements with click handlers must have at least one keyboard listener                                                                                                     jsx-a11y/click-events-have-key-events
+2026-02-17T09:34:05.3819337Z ##[warning]  115:33  warning  Avoid non-native interactive elements. If using native HTML is not possible, add an appropriate role and support for tabbing, mouse, keyboard, and touch inputs to an interactive content element  jsx-a11y/no-static-element-interactions
+2026-02-17T09:34:05.3820986Z 
+2026-02-17T09:34:05.3821368Z /home/runner/work/IronForge/IronForge/src/features/settings/components/EquipmentArmory.tsx
+2026-02-17T09:34:05.3823188Z ##[warning]  146:15  warning  Visible, non-interactive elements with click handlers must have at least one keyboard listener                                                                                                     jsx-a11y/click-events-have-key-events
+2026-02-17T09:34:05.3825890Z ##[warning]  146:15  warning  Avoid non-native interactive elements. If using native HTML is not possible, add an appropriate role and support for tabbing, mouse, keyboard, and touch inputs to an interactive content element  jsx-a11y/no-static-element-interactions
+2026-02-17T09:34:05.3827246Z 
+2026-02-17T09:34:05.3827788Z /home/runner/work/IronForge/IronForge/src/features/strength/components/EquipmentArmory.tsx
+2026-02-17T09:34:05.3828901Z ##[warning]  253:21  warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+2026-02-17T09:34:05.3830720Z ##[warning]  264:21  warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+2026-02-17T09:34:05.3832070Z 
+2026-02-17T09:34:05.3832542Z /home/runner/work/IronForge/IronForge/src/features/strength/components/ExerciseLibrary.tsx
+2026-02-17T09:34:05.3833760Z ##[warning]  132:13  warning  The autoFocus prop should not be used, as it can reduce usability and accessibility for users  jsx-a11y/no-autofocus
+2026-02-17T09:34:05.3835443Z ##[warning]  159:13  warning  A form label must be associated with a control                                                 jsx-a11y/label-has-associated-control
+2026-02-17T09:34:05.3837055Z ##[warning]  170:15  warning  A form label must be associated with a control                                                 jsx-a11y/label-has-associated-control
+2026-02-17T09:34:05.3838655Z ##[warning]  180:15  warning  A form label must be associated with a control                                                 jsx-a11y/label-has-associated-control
+2026-02-17T09:34:05.3839531Z 
+2026-02-17T09:34:05.3839892Z /home/runner/work/IronForge/IronForge/src/features/training/CardioStudio.tsx
+2026-02-17T09:34:05.3841558Z ##[warning]   982:9   warning  Visible, non-interactive elements with click handlers must have at least one keyboard listener  jsx-a11y/click-events-have-key-events
+2026-02-17T09:34:05.3843654Z ##[warning]  1017:9   warning  Visible, non-interactive elements with click handlers must have at least one keyboard listener  jsx-a11y/click-events-have-key-events
+2026-02-17T09:34:05.3845503Z ##[warning]  1027:15  warning  Media elements such as <audio> and <video> must have a <track> for captions                     jsx-a11y/media-has-caption
+2026-02-17T09:34:05.3846421Z 
+2026-02-17T09:34:05.3846754Z /home/runner/work/IronForge/IronForge/src/features/training/ProgramBuilder.tsx
+2026-02-17T09:34:05.3847636Z ##[warning]  41:11  warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+2026-02-17T09:34:05.3848994Z ##[warning]  53:11  warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+2026-02-17T09:34:05.3849788Z 
+2026-02-17T09:34:05.3850266Z /home/runner/work/IronForge/IronForge/src/features/training/TvMode.tsx
+2026-02-17T09:34:05.3851863Z ##[warning]  232:5   warning  Visible, non-interactive elements with click handlers must have at least one keyboard listener                                                                                                     jsx-a11y/click-events-have-key-events
+2026-02-17T09:34:05.3854565Z ##[warning]  232:5   warning  Avoid non-native interactive elements. If using native HTML is not possible, add an appropriate role and support for tabbing, mouse, keyboard, and touch inputs to an interactive content element  jsx-a11y/no-static-element-interactions
+2026-02-17T09:34:05.3857123Z ##[warning]  615:15  warning  Visible, non-interactive elements with click handlers must have at least one keyboard listener                                                                                                     jsx-a11y/click-events-have-key-events
+2026-02-17T09:34:05.3859777Z ##[warning]  615:15  warning  Avoid non-native interactive elements. If using native HTML is not possible, add an appropriate role and support for tabbing, mouse, keyboard, and touch inputs to an interactive content element  jsx-a11y/no-static-element-interactions
+2026-02-17T09:34:05.3861413Z 
+2026-02-17T09:34:05.3861782Z /home/runner/work/IronForge/IronForge/src/features/training/components/BerserkerMode.tsx
+2026-02-17T09:34:05.3863078Z ##[warning]  119:15  warning  The autoFocus prop should not be used, as it can reduce usability and accessibility for users  jsx-a11y/no-autofocus
+2026-02-17T09:34:05.3864159Z 
+2026-02-17T09:34:05.3864475Z /home/runner/work/IronForge/IronForge/src/services/game/TerritoryService.ts
+2026-02-17T09:34:05.3865717Z ##[warning]    2:38  warning  'format' is defined but never used. Allowed unused vars must match /^_/u               @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3867418Z ##[warning]  213:15  warning  'weekNumber' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3869124Z ##[warning]  214:15  warning  'year' is assigned a value but never used. Allowed unused vars must match /^_/u        @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3870258Z 
+2026-02-17T09:34:05.3870686Z /home/runner/work/IronForge/IronForge/src/services/game/__tests__/PowerRatingService.test.ts
+2026-02-17T09:34:05.3871904Z ##[warning]  4:10  warning  'subDays' is defined but never used. Allowed unused vars must match /^_/u      @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3873556Z ##[warning]  4:29  warning  'startOfWeek' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3874446Z 
+2026-02-17T09:34:05.3874782Z /home/runner/work/IronForge/IronForge/tests/integration/actions/user-actions.test.ts
+2026-02-17T09:34:05.3875963Z ##[warning]  1:32  warning  'vi' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-17T09:34:05.3876823Z 
+2026-02-17T09:34:05.3877219Z ✖ 109 problems (0 errors, 109 warnings)
+2026-02-17T09:34:05.3877409Z 
+2026-02-17T09:34:05.3877688Z ##[endgroup]
+2026-02-17T09:34:05.3877812Z 
+2026-02-17T09:34:05.3877934Z  Tasks:    1 successful, 1 total
+2026-02-17T09:34:05.3878212Z Cached:    0 cached, 1 total
+2026-02-17T09:34:05.3878601Z   Time:    36.53s 
+2026-02-17T09:34:05.3878743Z 
+2026-02-17T09:34:05.3913726Z ##[group]Run npx turbo run check-types --concurrency=100%
+2026-02-17T09:34:05.3914170Z [36;1mnpx turbo run check-types --concurrency=100%[0m
+2026-02-17T09:34:05.3963489Z shell: /usr/bin/bash -e {0}
+2026-02-17T09:34:05.3963748Z env:
+2026-02-17T09:34:05.3964445Z   DATABASE_URL: ***
+2026-02-17T09:34:05.3965033Z   DIRECT_URL: ***
+2026-02-17T09:34:05.3965361Z   NEXT_PUBLIC_SUPABASE_URL: ***
+2026-02-17T09:34:05.3966701Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+2026-02-17T09:34:05.3966968Z   SKIP_ENV_VALIDATION: true
+2026-02-17T09:34:05.3967249Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-02-17T09:34:05.3967542Z ##[endgroup]
+2026-02-17T09:34:05.8709647Z • Packages in scope: ironforge-discord-bot, ironforge-factory-mcp, ironforge-rpg, mcp-n8n
+2026-02-17T09:34:05.8712976Z • Running check-types in 4 packages
+2026-02-17T09:34:05.8719940Z • Remote caching disabled
+2026-02-17T09:34:33.3866952Z ##[group]ironforge-rpg:check-types
+2026-02-17T09:34:33.3870548Z cache miss, executing eb402d65b8dece33
+2026-02-17T09:34:33.3875687Z 
+2026-02-17T09:34:33.3876257Z > ironforge-rpg@1.0.0 check-types /home/runner/work/IronForge/IronForge
+2026-02-17T09:34:33.3877159Z > tsc --project tsconfig.build.json --noEmit
+2026-02-17T09:34:33.3877543Z 
+2026-02-17T09:34:33.3877946Z ##[endgroup]
+2026-02-17T09:34:33.3879740Z 
+2026-02-17T09:34:33.3880356Z  Tasks:    1 successful, 1 total
+2026-02-17T09:34:33.3881519Z Cached:    0 cached, 1 total
+2026-02-17T09:34:33.3882456Z   Time:    27.572s 
+2026-02-17T09:34:33.3887083Z 
+2026-02-17T09:34:33.4127796Z ##[group]Run npx turbo run test:coverage --concurrency=100%
+2026-02-17T09:34:33.4128927Z [36;1mnpx turbo run test:coverage --concurrency=100%[0m
+2026-02-17T09:34:33.4245149Z shell: /usr/bin/bash -e {0}
+2026-02-17T09:34:33.4245407Z env:
+2026-02-17T09:34:33.4246149Z   DATABASE_URL: ***
+2026-02-17T09:34:33.4246749Z   DIRECT_URL: ***
+2026-02-17T09:34:33.4247082Z   NEXT_PUBLIC_SUPABASE_URL: ***
+2026-02-17T09:34:33.4248452Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+2026-02-17T09:34:33.4248722Z   SKIP_ENV_VALIDATION: true
+2026-02-17T09:34:33.4249001Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-02-17T09:34:33.4249287Z ##[endgroup]
+2026-02-17T09:34:33.9303550Z   x Missing tasks in project
+2026-02-17T09:34:33.9307152Z   `->   x Could not find task `test:coverage` in project
+2026-02-17T09:34:33.9309004Z 
+2026-02-17T09:34:33.9461692Z ##[error]Process completed with exit code 1.
+2026-02-17T09:34:33.9524834Z Post job cleanup.
+2026-02-17T09:34:34.0087610Z Pruning is unnecessary.
+2026-02-17T09:34:34.0188867Z Post job cleanup.
+2026-02-17T09:34:34.1193813Z [command]/usr/bin/git version
+2026-02-17T09:34:34.1247946Z git version 2.52.0
+2026-02-17T09:34:34.1293976Z Temporarily overriding HOME='/home/runner/work/_temp/e04aee04-ed30-4ead-8889-a364d50dac57' before making global git config changes
+2026-02-17T09:34:34.1295913Z Adding repository directory to the temporary git global config as a safe directory
+2026-02-17T09:34:34.1302469Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/IronForge/IronForge
+2026-02-17T09:34:34.1347618Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-02-17T09:34:34.1389858Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-02-17T09:34:34.1661435Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-02-17T09:34:34.1686771Z http.https://github.com/.extraheader
+2026-02-17T09:34:34.1703035Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-02-17T09:34:34.1740771Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-02-17T09:34:34.1997803Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-02-17T09:34:34.2035543Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-02-17T09:34:34.2410723Z Print service container logs: aaac72f2aea24bb986a6fb62971c7603_postgres15_672ca0
+2026-02-17T09:34:34.2415755Z ##[command]/usr/bin/docker logs --details 46f010aa3e515263eeda2915ea617ada24c3cfbd24f67411e2f45eed481005cd
+2026-02-17T09:34:34.2569100Z  initdb: warning: enabling "trust" authentication for local connections
+2026-02-17T09:34:34.2570228Z  The files belonging to this database system will be owned by user "postgres".
+2026-02-17T09:34:34.2571533Z  initdb: hint: You can change this by editing pg_hba.conf or using the option -A, or --auth-local and --auth-host, the next time you run initdb.
+2026-02-17T09:34:34.2577972Z  2026-02-17 09:32:29.641 UTC [1] LOG:  starting PostgreSQL 15.16 (Debian 15.16-1.pgdg13+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+2026-02-17T09:34:34.2579229Z  2026-02-17 09:32:29.641 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+2026-02-17T09:34:34.2580254Z  2026-02-17 09:32:29.641 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+2026-02-17T09:34:34.2581176Z  2026-02-17 09:32:29.643 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2026-02-17T09:34:34.2582113Z  2026-02-17 09:32:29.646 UTC [62] LOG:  database system was shut down at 2026-02-17 09:32:29 UTC
+2026-02-17T09:34:34.2582960Z  2026-02-17 09:32:29.650 UTC [1] LOG:  database system is ready to accept connections
+2026-02-17T09:34:34.2583692Z  2026-02-17 09:32:38.643 UTC [74] FATAL:  role "root" does not exist
+2026-02-17T09:34:34.2584337Z  2026-02-17 09:32:48.788 UTC [82] FATAL:  role "root" does not exist
+2026-02-17T09:34:34.2584971Z  2026-02-17 09:32:58.930 UTC [90] FATAL:  role "root" does not exist
+2026-02-17T09:34:34.2585610Z  2026-02-17 09:33:09.034 UTC [100] FATAL:  role "root" does not exist
+2026-02-17T09:34:34.2586236Z  2026-02-17 09:33:19.153 UTC [108] FATAL:  role "root" does not exist
+2026-02-17T09:34:34.2586847Z  2026-02-17 09:33:29.250 UTC [117] FATAL:  role "root" does not exist
+2026-02-17T09:34:34.2587469Z  2026-02-17 09:33:39.364 UTC [126] FATAL:  role "root" does not exist
+2026-02-17T09:34:34.2588402Z  2026-02-17 09:33:49.478 UTC [134] FATAL:  role "root" does not exist
+2026-02-17T09:34:34.2589030Z  2026-02-17 09:33:59.625 UTC [142] FATAL:  role "root" does not exist
+2026-02-17T09:34:34.2589600Z  This user must also own the server process.
+2026-02-17T09:34:34.2590184Z  
+2026-02-17T09:34:34.2590637Z  The database cluster will be initialized with locale "en_US.utf8".
+2026-02-17T09:34:34.2591420Z  The default database encoding has accordingly been set to "UTF8".
+2026-02-17T09:34:34.2592126Z  The default text search configuration will be set to "english".
+2026-02-17T09:34:34.2592658Z  
+2026-02-17T09:34:34.2592954Z  Data page checksums are disabled.
+2026-02-17T09:34:34.2593351Z  
+2026-02-17T09:34:34.2593820Z  fixing permissions on existing directory /var/lib/postgresql/data ... ok
+2026-02-17T09:34:34.2594450Z  creating subdirectories ... ok
+2026-02-17T09:34:34.2594991Z  selecting dynamic shared memory implementation ... posix
+2026-02-17T09:34:34.2597220Z  selecting default max_connections ... 100
+2026-02-17T09:34:34.2597724Z  selecting default shared_buffers ... 128MB
+2026-02-17T09:34:34.2598204Z  selecting default time zone ... Etc/UTC
+2026-02-17T09:34:34.2598667Z  creating configuration files ... ok
+2026-02-17T09:34:34.2599113Z  running bootstrap script ... ok
+2026-02-17T09:34:34.2599450Z  performing post-bootstrap initialization ... ok
+2026-02-17T09:34:34.2599748Z  syncing data to disk ... ok
+2026-02-17T09:34:34.2600145Z  
+2026-02-17T09:34:34.2600369Z  
+2026-02-17T09:34:34.2600598Z  Success. You can now start the database server using:
+2026-02-17T09:34:34.2600899Z  
+2026-02-17T09:34:34.2601130Z      pg_ctl -D /var/lib/postgresql/data -l logfile start
+2026-02-17T09:34:34.2601435Z  
+2026-02-17T09:34:34.2602057Z  waiting for server to start....2026-02-17 09:32:29.331 UTC [46] LOG:  starting PostgreSQL 15.16 (Debian 15.16-1.pgdg13+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+2026-02-17T09:34:34.2603163Z  2026-02-17 09:32:29.332 UTC [46] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2026-02-17T09:34:34.2603741Z  2026-02-17 09:32:29.336 UTC [49] LOG:  database system was shut down at 2026-02-17 09:32:29 UTC
+2026-02-17T09:34:34.2604235Z  2026-02-17 09:32:29.340 UTC [46] LOG:  database system is ready to accept connections
+2026-02-17T09:34:34.2604589Z   done
+2026-02-17T09:34:34.2604760Z  server started
+2026-02-17T09:34:34.2604947Z  CREATE DATABASE
+2026-02-17T09:34:34.2605129Z  
+2026-02-17T09:34:34.2605282Z  
+2026-02-17T09:34:34.2605586Z  /usr/local/bin/docker-entrypoint.sh: ignoring /docker-entrypoint-initdb.d/*
+2026-02-17T09:34:34.2605970Z  
+2026-02-17T09:34:34.2606214Z  2026-02-17 09:32:29.520 UTC [46] LOG:  received fast shutdown request
+2026-02-17T09:34:34.2606717Z  waiting for server to shut down....2026-02-17 09:32:29.521 UTC [46] LOG:  aborting any active transactions
+2026-02-17T09:34:34.2607387Z  2026-02-17 09:32:29.523 UTC [46] LOG:  background worker "logical replication launcher" (PID 52) exited with exit code 1
+2026-02-17T09:34:34.2607922Z  2026-02-17 09:32:29.525 UTC [47] LOG:  shutting down
+2026-02-17T09:34:34.2608296Z  2026-02-17 09:32:29.526 UTC [47] LOG:  checkpoint starting: shutdown immediate
+2026-02-17T09:34:34.2609253Z  2026-02-17 09:32:29.547 UTC [47] LOG:  checkpoint complete: wrote 922 buffers (5.6%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.015 s, sync=0.003 s, total=0.022 s; sync files=301, longest=0.001 s, average=0.001 s; distance=4239 kB, estimate=4239 kB
+2026-02-17T09:34:34.2610657Z  2026-02-17 09:32:29.553 UTC [46] LOG:  database system is shut down
+2026-02-17T09:34:34.2610994Z   done
+2026-02-17T09:34:34.2611168Z  server stopped
+2026-02-17T09:34:34.2611356Z  
+2026-02-17T09:34:34.2611594Z  PostgreSQL init process complete; ready for start up.
+2026-02-17T09:34:34.2611890Z  
+2026-02-17T09:34:34.2612142Z  2026-02-17 09:34:09.727 UTC [152] FATAL:  role "root" does not exist
+2026-02-17T09:34:34.2612533Z  2026-02-17 09:34:19.847 UTC [160] FATAL:  role "root" does not exist
+2026-02-17T09:34:34.2613064Z  2026-02-17 09:34:29.974 UTC [169] FATAL:  role "root" does not exist
+2026-02-17T09:34:34.2618309Z Stop and remove container: aaac72f2aea24bb986a6fb62971c7603_postgres15_672ca0
+2026-02-17T09:34:34.2623461Z ##[command]/usr/bin/docker rm --force 46f010aa3e515263eeda2915ea617ada24c3cfbd24f67411e2f45eed481005cd
+2026-02-17T09:34:34.4677941Z 46f010aa3e515263eeda2915ea617ada24c3cfbd24f67411e2f45eed481005cd
+2026-02-17T09:34:34.4719838Z Remove container network: github_network_03898f82264f460d907b4da598cc1ef2
+2026-02-17T09:34:34.4724774Z ##[command]/usr/bin/docker network rm github_network_03898f82264f460d907b4da598cc1ef2
+2026-02-17T09:34:34.5356890Z github_network_03898f82264f460d907b4da598cc1ef2
+2026-02-17T09:34:34.5417069Z Cleaning up orphan processes
