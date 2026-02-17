@@ -39,12 +39,19 @@ const config: StorybookConfig = {
     config.resolve = config.resolve || {};
     config.resolve.alias = {
       ...config.resolve.alias,
+      '@': path.resolve(__dirname, '../src'),
       '@/types/prisma': path.resolve(__dirname, 'prisma-mock.ts'),
       '@/lib/prisma': path.resolve(__dirname, 'lib-prisma-mock.ts'),
       '@prisma/client': path.resolve(__dirname, 'prisma-mock.ts'),
       '.prisma/client': path.resolve(__dirname, 'prisma-mock.ts'),
       'next/headers': path.resolve(__dirname, 'next-headers-mock.ts'),
     };
+
+    // Disable sourcemaps to prevent Rollup from crashing on large bundles in CI
+    if (config.build) {
+      config.build.sourcemap = false;
+    }
+
     return config;
   }
 };

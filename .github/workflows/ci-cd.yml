@@ -46,7 +46,7 @@ jobs:
         ports:
           - 5432:5432
         options: >-
-          --health-cmd pg_isready
+          --health-cmd "pg_isready -U postgres"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
@@ -62,9 +62,9 @@ jobs:
       - name: Generate Prisma Client
         run: npx prisma generate
       - name: Initialize DB
-        run: npx prisma db push
+        run: npx prisma db push --force-reset
         env:
-          DATABASE_URL: postgresql://postgres:password@localhost:5432/ironforge?schema=public
+          DATABASE_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge?schema=public
       - name: Cache Turbo
         uses: actions/cache@v5
         with:
@@ -111,12 +111,13 @@ jobs:
       postgres:
         image: postgres:15
         env:
+          POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
           POSTGRES_DB: ironforge_e2e
         ports:
           - 5432:5432
         options: >-
-          --health-cmd pg_isready
+          --health-cmd "pg_isready -U postgres"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
@@ -141,14 +142,16 @@ jobs:
         if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: npx playwright install --with-deps
       - name: Push Schema to E2E DB
-        run: npx prisma db push --skip-generate
+        run: |
+          sleep 30
+          npx prisma db push --force-reset
         env:
-          DATABASE_URL: postgresql://postgres:password@localhost:5432/ironforge_e2e
-          DIRECT_URL: postgresql://postgres:password@localhost:5432/ironforge_e2e
+          DATABASE_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_e2e?schema=public
+          DIRECT_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_e2e?schema=public
       - name: Seed E2E Database
         run: npx tsx tests/e2e/setup/e2e-seed.ts
         env:
-          DATABASE_URL: postgresql://postgres:password@localhost:5432/ironforge_e2e
+          DATABASE_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_e2e?schema=public
       - name: Run Playwright Tests
         run: npx playwright test
         env:
@@ -158,8 +161,8 @@ jobs:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           NEXT_PUBLIC_APP_URL: http://localhost:3000
-          DATABASE_URL: postgresql://postgres:password@localhost:5432/ironforge_e2e
-          DIRECT_URL: postgresql://postgres:password@localhost:5432/ironforge_e2e
+          DATABASE_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_e2e?schema=public
+          DIRECT_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_e2e?schema=public
 
   # ------------------------------------------------------------------
   # 🗄️ DATABASE GUARD
@@ -172,12 +175,13 @@ jobs:
       postgres:
         image: postgres:15
         env:
+          POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
           POSTGRES_DB: ironforge_test
         ports:
           - 5432:5432
         options: >-
-          --health-cmd pg_isready
+          --health-cmd "pg_isready -U postgres"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
@@ -212,8 +216,8 @@ jobs:
             --to-schema prisma/schema.prisma \
             --exit-code
         env:
-          DATABASE_URL: postgresql://postgres:password@localhost:5432/ironforge_test?schema=public
-          SHADOW_DATABASE_URL: postgresql://postgres:password@localhost:5432/ironforge_shadow?schema=public
+          DATABASE_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_test?schema=public
+          SHADOW_DATABASE_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_shadow?schema=public
 
   # ------------------------------------------------------------------
   # ⚡ PERFORMANCE AUDIT (Lighthouse)
