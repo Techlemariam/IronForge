@@ -1,7 +1,5 @@
 import type { StorybookConfig } from '@storybook/nextjs-vite';
-
-import { dirname } from "path"
-
+import { dirname, resolve } from "path"
 import { fileURLToPath } from "url"
 
 /**
@@ -11,6 +9,7 @@ import { fileURLToPath } from "url"
 function getAbsolutePath(value: string) {
   return dirname(fileURLToPath(import.meta.resolve(`${value}/package.json`)))
 }
+
 const config: StorybookConfig = {
   "stories": [
     "../src/**/*.mdx",
@@ -35,7 +34,8 @@ const config: StorybookConfig = {
     const { fileURLToPath } = await import('url');
     const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-    // Mock Prisma and Next.js server modules for browser compatibility
+    // Manually reconstruct the '@' alias to ensure cross-environment stability
+    // instead of relying on vite-tsconfig-paths which might hit resolution issues in Storybook's isolated build context
     config.resolve = config.resolve || {};
     config.resolve.alias = {
       ...config.resolve.alias,
