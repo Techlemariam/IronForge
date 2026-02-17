@@ -1,0 +1,452 @@
+﻿2026-02-17T08:11:22.5671858Z Current runner version: '2.331.0'
+2026-02-17T08:11:22.5707993Z ##[group]Runner Image Provisioner
+2026-02-17T08:11:22.5709350Z Hosted Compute Agent
+2026-02-17T08:11:22.5710417Z Version: 20260123.484
+2026-02-17T08:11:22.5711432Z Commit: 6bd6555ca37d84114959e1c76d2c01448ff61c5d
+2026-02-17T08:11:22.5712689Z Build Date: 2026-01-23T19:41:17Z
+2026-02-17T08:11:22.5713891Z Worker ID: {08fc2722-2afc-4694-a86c-55f7338176c4}
+2026-02-17T08:11:22.5715141Z Azure Region: eastus2
+2026-02-17T08:11:22.5716370Z ##[endgroup]
+2026-02-17T08:11:22.5718694Z ##[group]Operating System
+2026-02-17T08:11:22.5719755Z Ubuntu
+2026-02-17T08:11:22.5720647Z 24.04.3
+2026-02-17T08:11:22.5721483Z LTS
+2026-02-17T08:11:22.5722316Z ##[endgroup]
+2026-02-17T08:11:22.5723450Z ##[group]Runner Image
+2026-02-17T08:11:22.5724441Z Image: ubuntu-24.04
+2026-02-17T08:11:22.5725370Z Version: 20260209.23.1
+2026-02-17T08:11:22.5727889Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260209.23/images/ubuntu/Ubuntu2404-Readme.md
+2026-02-17T08:11:22.5730579Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260209.23
+2026-02-17T08:11:22.5732329Z ##[endgroup]
+2026-02-17T08:11:22.5734308Z ##[group]GITHUB_TOKEN Permissions
+2026-02-17T08:11:22.5737359Z Contents: read
+2026-02-17T08:11:22.5738249Z Metadata: read
+2026-02-17T08:11:22.5739319Z Packages: read
+2026-02-17T08:11:22.5740232Z ##[endgroup]
+2026-02-17T08:11:22.5743845Z Secret source: Actions
+2026-02-17T08:11:22.5745400Z Prepare workflow directory
+2026-02-17T08:11:22.6515045Z Prepare all required actions
+2026-02-17T08:11:22.6571148Z Getting action download info
+2026-02-17T08:11:23.0229761Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+2026-02-17T08:11:23.1782590Z Download action repository 'pnpm/action-setup@v4' (SHA:41ff72655975bd51cab0327fa583b6e92b6d3061)
+2026-02-17T08:11:23.5024338Z Download action repository 'actions/setup-node@v6' (SHA:6044e13b5dc448c55e2357c09f80417699197238)
+2026-02-17T08:11:23.6565764Z Download action repository 'actions/cache@v5' (SHA:cdf6c1fa76f9f475f3d7449005a359c84ca0f306)
+2026-02-17T08:11:23.8592976Z Download action repository 'codecov/codecov-action@v5' (SHA:671740ac38dd9b0130fbe1cec585b89eea48d3de)
+2026-02-17T08:11:24.1891956Z Getting action download info
+2026-02-17T08:11:24.3151292Z Download action repository 'actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea' (SHA:60a0d83039c74a4aee543508d2ffcb1c3799cdea)
+2026-02-17T08:11:24.5780768Z Complete job name: ⚡ Verify
+2026-02-17T08:11:24.6590549Z ##[group]Run actions/checkout@v4
+2026-02-17T08:11:24.6591699Z with:
+2026-02-17T08:11:24.6592362Z   repository: Techlemariam/IronForge
+2026-02-17T08:11:24.6593373Z   token: ***
+2026-02-17T08:11:24.6594017Z   ssh-strict: true
+2026-02-17T08:11:24.6594673Z   ssh-user: git
+2026-02-17T08:11:24.6595339Z   persist-credentials: true
+2026-02-17T08:11:24.6596417Z   clean: true
+2026-02-17T08:11:24.6597177Z   sparse-checkout-cone-mode: true
+2026-02-17T08:11:24.6597954Z   fetch-depth: 1
+2026-02-17T08:11:24.6598650Z   fetch-tags: false
+2026-02-17T08:11:24.6599318Z   show-progress: true
+2026-02-17T08:11:24.6599989Z   lfs: false
+2026-02-17T08:11:24.6600615Z   submodules: false
+2026-02-17T08:11:24.6601289Z   set-safe-directory: true
+2026-02-17T08:11:24.6602322Z env:
+2026-02-17T08:11:24.6603843Z   DATABASE_URL: ***
+2026-02-17T08:11:24.6605180Z   DIRECT_URL: ***
+2026-02-17T08:11:24.6606358Z   NEXT_PUBLIC_SUPABASE_URL: ***
+2026-02-17T08:11:24.6608983Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+2026-02-17T08:11:24.6609820Z   SKIP_ENV_VALIDATION: true
+2026-02-17T08:11:24.6610546Z ##[endgroup]
+2026-02-17T08:11:24.7809946Z Syncing repository: Techlemariam/IronForge
+2026-02-17T08:11:24.7813904Z ##[group]Getting Git version info
+2026-02-17T08:11:24.7817531Z Working directory is '/home/runner/work/IronForge/IronForge'
+2026-02-17T08:11:24.7819834Z [command]/usr/bin/git version
+2026-02-17T08:11:24.7840557Z git version 2.52.0
+2026-02-17T08:11:24.7873567Z ##[endgroup]
+2026-02-17T08:11:24.7888230Z Temporarily overriding HOME='/home/runner/work/_temp/7db9c959-8723-41ed-ae7a-918b8ab10952' before making global git config changes
+2026-02-17T08:11:24.7893489Z Adding repository directory to the temporary git global config as a safe directory
+2026-02-17T08:11:24.7897387Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/IronForge/IronForge
+2026-02-17T08:11:24.7942398Z Deleting the contents of '/home/runner/work/IronForge/IronForge'
+2026-02-17T08:11:24.7948651Z ##[group]Initializing the repository
+2026-02-17T08:11:24.7953273Z [command]/usr/bin/git init /home/runner/work/IronForge/IronForge
+2026-02-17T08:11:24.8085117Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-02-17T08:11:24.8088407Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-02-17T08:11:24.8092191Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-02-17T08:11:24.8094278Z hint: call:
+2026-02-17T08:11:24.8095419Z hint:
+2026-02-17T08:11:24.8096993Z hint: 	git config --global init.defaultBranch <name>
+2026-02-17T08:11:24.8098570Z hint:
+2026-02-17T08:11:24.8100096Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-02-17T08:11:24.8102171Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-02-17T08:11:24.8103925Z hint:
+2026-02-17T08:11:24.8105074Z hint: 	git branch -m <name>
+2026-02-17T08:11:24.8106648Z hint:
+2026-02-17T08:11:24.8108268Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-02-17T08:11:24.8112173Z Initialized empty Git repository in /home/runner/work/IronForge/IronForge/.git/
+2026-02-17T08:11:24.8116432Z [command]/usr/bin/git remote add origin https://github.com/Techlemariam/IronForge
+2026-02-17T08:11:24.8157411Z ##[endgroup]
+2026-02-17T08:11:24.8161678Z ##[group]Disabling automatic garbage collection
+2026-02-17T08:11:24.8165653Z [command]/usr/bin/git config --local gc.auto 0
+2026-02-17T08:11:24.8197483Z ##[endgroup]
+2026-02-17T08:11:24.8199322Z ##[group]Setting up auth
+2026-02-17T08:11:24.8204337Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-02-17T08:11:24.8241297Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-02-17T08:11:24.8635168Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-02-17T08:11:24.8669394Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-02-17T08:11:24.8924951Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-02-17T08:11:24.8973550Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-02-17T08:11:24.9237023Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-02-17T08:11:24.9278011Z ##[endgroup]
+2026-02-17T08:11:24.9281951Z ##[group]Fetching the repository
+2026-02-17T08:11:24.9288698Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +2a52f6a545258527bcf62219b17b29d30d68705f:refs/remotes/pull/197/merge
+2026-02-17T08:11:25.8129118Z From https://github.com/Techlemariam/IronForge
+2026-02-17T08:11:25.8133544Z  * [new ref]         2a52f6a545258527bcf62219b17b29d30d68705f -> pull/197/merge
+2026-02-17T08:11:25.8163644Z ##[endgroup]
+2026-02-17T08:11:25.8165360Z ##[group]Determining the checkout info
+2026-02-17T08:11:25.8167582Z ##[endgroup]
+2026-02-17T08:11:25.8177058Z [command]/usr/bin/git sparse-checkout disable
+2026-02-17T08:11:25.8222509Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-02-17T08:11:25.8260106Z ##[group]Checking out the ref
+2026-02-17T08:11:25.8262354Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/197/merge
+2026-02-17T08:11:26.0409827Z Note: switching to 'refs/remotes/pull/197/merge'.
+2026-02-17T08:11:26.0419901Z 
+2026-02-17T08:11:26.0421256Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-02-17T08:11:26.0429689Z changes and commit them, and you can discard any commits you make in this
+2026-02-17T08:11:26.0432622Z state without impacting any branches by switching back to a branch.
+2026-02-17T08:11:26.0434333Z 
+2026-02-17T08:11:26.0435421Z If you want to create a new branch to retain commits you create, you may
+2026-02-17T08:11:26.0438505Z do so (now or later) by using -c with the switch command. Example:
+2026-02-17T08:11:26.0440089Z 
+2026-02-17T08:11:26.0440533Z   git switch -c <new-branch-name>
+2026-02-17T08:11:26.0441525Z 
+2026-02-17T08:11:26.0441994Z Or undo this operation with:
+2026-02-17T08:11:26.0442900Z 
+2026-02-17T08:11:26.0443287Z   git switch -
+2026-02-17T08:11:26.0443942Z 
+2026-02-17T08:11:26.0445140Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-02-17T08:11:26.0459665Z 
+2026-02-17T08:11:26.0461953Z HEAD is now at 2a52f6a Merge aa5d53d75563cd5fa60f7e10c037e2fc1108f9e2 into 74ff59a93a03b9a3ae9dd8ae7367b896e8b915c7
+2026-02-17T08:11:26.0475893Z ##[endgroup]
+2026-02-17T08:11:26.0478787Z [command]/usr/bin/git log -1 --format=%H
+2026-02-17T08:11:26.0480440Z 2a52f6a545258527bcf62219b17b29d30d68705f
+2026-02-17T08:11:26.0765772Z ##[group]Run pnpm/action-setup@v4
+2026-02-17T08:11:26.0767464Z with:
+2026-02-17T08:11:26.0768275Z   dest: ~/setup-pnpm
+2026-02-17T08:11:26.0769303Z   run_install: null
+2026-02-17T08:11:26.0770341Z   package_json_file: package.json
+2026-02-17T08:11:26.0771680Z   standalone: false
+2026-02-17T08:11:26.0772682Z env:
+2026-02-17T08:11:26.0776939Z   DATABASE_URL: ***
+2026-02-17T08:11:26.0780393Z   DIRECT_URL: ***
+2026-02-17T08:11:26.0782195Z   NEXT_PUBLIC_SUPABASE_URL: ***
+2026-02-17T08:11:26.0791730Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+2026-02-17T08:11:26.0793300Z   SKIP_ENV_VALIDATION: true
+2026-02-17T08:11:26.0794469Z ##[endgroup]
+2026-02-17T08:11:26.1578837Z ##[group]Running self-installer...
+2026-02-17T08:11:26.9701063Z Progress: resolved 1, reused 0, downloaded 0, added 0
+2026-02-17T08:11:26.9828005Z Packages: +1
+2026-02-17T08:11:26.9828869Z +
+2026-02-17T08:11:27.4561100Z Progress: resolved 1, reused 0, downloaded 1, added 1, done
+2026-02-17T08:11:27.5026314Z 
+2026-02-17T08:11:27.5042422Z dependencies:
+2026-02-17T08:11:27.5043502Z + pnpm 9.15.0 (10.29.3 is available)
+2026-02-17T08:11:27.5043947Z 
+2026-02-17T08:11:27.5064871Z Done in 1.1s
+2026-02-17T08:11:27.5326972Z ##[endgroup]
+2026-02-17T08:11:27.5327793Z Installation Completed!
+2026-02-17T08:11:27.5481087Z ##[group]Run actions/setup-node@v6
+2026-02-17T08:11:27.5481555Z with:
+2026-02-17T08:11:27.5481864Z   node-version: 22
+2026-02-17T08:11:27.5482205Z   cache: pnpm
+2026-02-17T08:11:27.5482525Z   check-latest: false
+2026-02-17T08:11:27.5483021Z   token: ***
+2026-02-17T08:11:27.5483359Z   package-manager-cache: true
+2026-02-17T08:11:27.5483777Z env:
+2026-02-17T08:11:27.5484891Z   DATABASE_URL: ***
+2026-02-17T08:11:27.5485907Z   DIRECT_URL: ***
+2026-02-17T08:11:27.5486711Z   NEXT_PUBLIC_SUPABASE_URL: ***
+2026-02-17T08:11:27.5489270Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+2026-02-17T08:11:27.5489726Z   SKIP_ENV_VALIDATION: true
+2026-02-17T08:11:27.5490214Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-02-17T08:11:27.5490737Z ##[endgroup]
+2026-02-17T08:11:27.7754037Z Found in cache @ /opt/hostedtoolcache/node/22.22.0/x64
+2026-02-17T08:11:27.7759545Z ##[group]Environment details
+2026-02-17T08:11:28.3993384Z node: v22.22.0
+2026-02-17T08:11:28.3994408Z npm: 10.9.4
+2026-02-17T08:11:28.3995090Z yarn: 1.22.22
+2026-02-17T08:11:28.3996791Z ##[endgroup]
+2026-02-17T08:11:28.4047187Z [command]/home/runner/setup-pnpm/node_modules/.bin/pnpm store path --silent
+2026-02-17T08:11:29.0748787Z /home/runner/setup-pnpm/node_modules/.bin/store/v3
+2026-02-17T08:11:29.1939795Z pnpm cache is not found
+2026-02-17T08:11:29.2108714Z ##[group]Run pnpm install --frozen-lockfile
+2026-02-17T08:11:29.2109333Z [36;1mpnpm install --frozen-lockfile[0m
+2026-02-17T08:11:29.2187947Z shell: /usr/bin/bash -e {0}
+2026-02-17T08:11:29.2188351Z env:
+2026-02-17T08:11:29.2189563Z   DATABASE_URL: ***
+2026-02-17T08:11:29.2190574Z   DIRECT_URL: ***
+2026-02-17T08:11:29.2191120Z   NEXT_PUBLIC_SUPABASE_URL: ***
+2026-02-17T08:11:29.2193676Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+2026-02-17T08:11:29.2194125Z   SKIP_ENV_VALIDATION: true
+2026-02-17T08:11:29.2194597Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-02-17T08:11:29.2195108Z ##[endgroup]
+2026-02-17T08:11:29.9415047Z Scope: all 4 workspace projects
+2026-02-17T08:11:30.1287841Z Lockfile is up to date, resolution step is skipped
+2026-02-17T08:11:30.3927418Z Progress: resolved 1, reused 0, downloaded 0, added 0
+2026-02-17T08:11:30.7591545Z Packages: +1671
+2026-02-17T08:11:30.7593414Z ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2026-02-17T08:11:31.3958124Z Progress: resolved 1671, reused 0, downloaded 1, added 0
+2026-02-17T08:11:32.3949997Z Progress: resolved 1671, reused 0, downloaded 61, added 59
+2026-02-17T08:11:33.3954188Z Progress: resolved 1671, reused 0, downloaded 221, added 213
+2026-02-17T08:11:34.3957141Z Progress: resolved 1671, reused 0, downloaded 257, added 242
+2026-02-17T08:11:35.3955381Z Progress: resolved 1671, reused 0, downloaded 286, added 270
+2026-02-17T08:11:36.3964337Z Progress: resolved 1671, reused 0, downloaded 376, added 369
+2026-02-17T08:11:37.3969885Z Progress: resolved 1671, reused 0, downloaded 422, added 408
+2026-02-17T08:11:38.3969932Z Progress: resolved 1671, reused 0, downloaded 531, added 524
+2026-02-17T08:11:39.3989915Z Progress: resolved 1671, reused 0, downloaded 624, added 622
+2026-02-17T08:11:40.4003560Z Progress: resolved 1671, reused 0, downloaded 678, added 663
+2026-02-17T08:11:42.2664001Z Progress: resolved 1671, reused 0, downloaded 679, added 663
+2026-02-17T08:11:43.2669855Z Progress: resolved 1671, reused 0, downloaded 692, added 678
+2026-02-17T08:11:44.2690512Z Progress: resolved 1671, reused 0, downloaded 693, added 678
+2026-02-17T08:11:45.2708109Z Progress: resolved 1671, reused 0, downloaded 712, added 699
+2026-02-17T08:11:46.2692712Z Progress: resolved 1671, reused 0, downloaded 735, added 721
+2026-02-17T08:11:47.2699093Z Progress: resolved 1671, reused 0, downloaded 750, added 735
+2026-02-17T08:11:48.2759622Z Progress: resolved 1671, reused 0, downloaded 798, added 790
+2026-02-17T08:11:49.2767272Z Progress: resolved 1671, reused 0, downloaded 895, added 890
+2026-02-17T08:11:50.2779739Z Progress: resolved 1671, reused 0, downloaded 994, added 982
+2026-02-17T08:11:51.2776910Z Progress: resolved 1671, reused 0, downloaded 1054, added 1038
+2026-02-17T08:11:52.2807479Z Progress: resolved 1671, reused 0, downloaded 1103, added 1092
+2026-02-17T08:11:53.2828059Z Progress: resolved 1671, reused 0, downloaded 1211, added 1196
+2026-02-17T08:11:54.2825027Z Progress: resolved 1671, reused 0, downloaded 1343, added 1336
+2026-02-17T08:11:55.2827224Z Progress: resolved 1671, reused 0, downloaded 1476, added 1469
+2026-02-17T08:11:56.2829236Z Progress: resolved 1671, reused 0, downloaded 1537, added 1522
+2026-02-17T08:11:57.2830450Z Progress: resolved 1671, reused 0, downloaded 1616, added 1601
+2026-02-17T08:11:58.2790003Z Progress: resolved 1671, reused 0, downloaded 1671, added 1671, done
+2026-02-17T08:11:58.9567734Z .../node_modules/@prisma/engines postinstall$ node scripts/postinstall.js
+2026-02-17T08:11:58.9785419Z .../node_modules/msw postinstall$ node -e "import('./config/scripts/postinstall.js').catch(() => void 0)"
+2026-02-17T08:11:58.9817369Z .../sharp@0.34.5/node_modules/sharp install$ node install/check.js || npm run build
+2026-02-17T08:11:58.9818940Z .../node_modules/unrs-resolver postinstall$ napi-postinstall unrs-resolver 1.11.1 check
+2026-02-17T08:11:58.9820110Z .../esbuild@0.25.0/node_modules/esbuild postinstall$ node install.js
+2026-02-17T08:11:59.1185291Z .../node_modules/msw postinstall: Done
+2026-02-17T08:11:59.1607729Z .../node_modules/unrs-resolver postinstall: Done
+2026-02-17T08:11:59.2008120Z .../esbuild@0.25.0/node_modules/esbuild postinstall: Done
+2026-02-17T08:11:59.2677296Z .../node_modules/protobufjs postinstall$ node scripts/postinstall
+2026-02-17T08:11:59.3027877Z .../node_modules/@sentry/cli postinstall$ node ./scripts/install.js
+2026-02-17T08:11:59.3977828Z .../node_modules/protobufjs postinstall: Done
+2026-02-17T08:11:59.4367944Z .../node_modules/@sentry/cli postinstall: Done
+2026-02-17T08:11:59.5487861Z .../sharp@0.34.5/node_modules/sharp install: Done
+2026-02-17T08:11:59.9613620Z .../node_modules/@prisma/engines postinstall: Done
+2026-02-17T08:12:00.0695620Z .../node_modules/prisma preinstall$ node scripts/preinstall-entry.js
+2026-02-17T08:12:00.1214280Z .../node_modules/prisma preinstall: Done
+2026-02-17T08:12:00.5089564Z 
+2026-02-17T08:12:00.5090055Z dependencies:
+2026-02-17T08:12:00.5090567Z + @ai-sdk/google 3.0.26
+2026-02-17T08:12:00.5091006Z + @ai-sdk/react 3.0.84
+2026-02-17T08:12:00.5091475Z + @capacitor/android 8.1.0
+2026-02-17T08:12:00.5091937Z + @capacitor/cli 8.1.0
+2026-02-17T08:12:00.5092358Z + @capacitor/core 8.1.0
+2026-02-17T08:12:00.5092768Z + @google/genai 1.41.0
+2026-02-17T08:12:00.5093252Z + @mediapipe/tasks-vision 0.10.32
+2026-02-17T08:12:00.5093800Z + @neondatabase/serverless 1.0.2
+2026-02-17T08:12:00.5094289Z + @prisma/adapter-neon 7.4.0
+2026-02-17T08:12:00.5094813Z + @prisma/adapter-pg 7.4.0
+2026-02-17T08:12:00.5095290Z + @prisma/client 7.4.0
+2026-02-17T08:12:00.5100796Z + @radix-ui/react-avatar 1.1.11
+2026-02-17T08:12:00.5101346Z + @radix-ui/react-dialog 1.1.15
+2026-02-17T08:12:00.5106535Z + @radix-ui/react-label 2.1.8
+2026-02-17T08:12:00.5107106Z + @radix-ui/react-popover 1.1.15
+2026-02-17T08:12:00.5116818Z + @radix-ui/react-progress 1.1.8
+2026-02-17T08:12:00.5135430Z + @radix-ui/react-scroll-area 1.2.10
+2026-02-17T08:12:00.5136435Z + @radix-ui/react-select 2.2.6
+2026-02-17T08:12:00.5139491Z + @radix-ui/react-slider 1.3.6
+2026-02-17T08:12:00.5140193Z + @radix-ui/react-slot 1.2.4
+2026-02-17T08:12:00.5141521Z + @radix-ui/react-tabs 1.1.13
+2026-02-17T08:12:00.5142153Z + @react-three/drei 10.7.7
+2026-02-17T08:12:00.5143127Z + @react-three/fiber 9.5.0
+2026-02-17T08:12:00.5144296Z + @remotion/cli 4.0.421
+2026-02-17T08:12:00.5178700Z + @sentry/nextjs 10.38.0
+2026-02-17T08:12:00.5179303Z + @serwist/next 9.5.5
+2026-02-17T08:12:00.5179848Z + @supabase/ssr 0.8.0
+2026-02-17T08:12:00.5180450Z + @supabase/supabase-js 2.95.3
+2026-02-17T08:12:00.5181072Z + @types/canvas-confetti 1.9.0
+2026-02-17T08:12:00.5181556Z + @types/howler 2.2.12
+2026-02-17T08:12:00.5183850Z + @types/web-push 3.6.4
+2026-02-17T08:12:00.5185766Z + ai 6.0.82
+2026-02-17T08:12:00.5187821Z + axios 1.13.5
+2026-02-17T08:12:00.5189150Z + canvas-confetti 1.9.4
+2026-02-17T08:12:00.5200046Z + class-variance-authority 0.7.1
+2026-02-17T08:12:00.5200752Z + clsx 2.1.1
+2026-02-17T08:12:00.5201101Z + date-fns 4.1.0
+2026-02-17T08:12:00.5201505Z + framer-motion 12.34.0
+2026-02-17T08:12:00.5201906Z + h3-js 4.4.0
+2026-02-17T08:12:00.5202247Z + howler 2.2.4
+2026-02-17T08:12:00.5202615Z + import-in-the-middle 3.0.0
+2026-02-17T08:12:00.5203105Z + lucide-react 0.563.0
+2026-02-17T08:12:00.5203504Z + maplibre-gl 5.18.0
+2026-02-17T08:12:00.5203863Z + next 16.1.6
+2026-02-17T08:12:00.5204190Z + pg 8.18.0
+2026-02-17T08:12:00.5204506Z + pino 10.3.1
+2026-02-17T08:12:00.5204839Z + pino-pretty 13.1.3
+2026-02-17T08:12:00.5205254Z + qrcode.react 4.2.0
+2026-02-17T08:12:00.5205627Z + react 19.2.4
+2026-02-17T08:12:00.5205986Z + react-dom 19.2.4
+2026-02-17T08:12:00.5216789Z + react-dropzone 15.0.0
+2026-02-17T08:12:00.5217260Z + react-player 3.4.0
+2026-02-17T08:12:00.5217671Z + reactflow 11.11.4
+2026-02-17T08:12:00.5218036Z + recharts 3.7.0
+2026-02-17T08:12:00.5218406Z + remotion 4.0.421
+2026-02-17T08:12:00.5218823Z + require-in-the-middle 8.0.1
+2026-02-17T08:12:00.5219252Z + serwist 9.5.5
+2026-02-17T08:12:00.5219600Z + sonner 2.0.7
+2026-02-17T08:12:00.5219962Z + tailwind-merge 3.4.0
+2026-02-17T08:12:00.5220397Z + tailwindcss-animate 1.0.7
+2026-02-17T08:12:00.5221139Z + three 0.182.0
+2026-02-17T08:12:00.5221758Z + web-push 3.6.7
+2026-02-17T08:12:00.5222088Z + zod 4.3.6
+2026-02-17T08:12:00.5222377Z + zustand 5.0.11
+2026-02-17T08:12:00.5222577Z 
+2026-02-17T08:12:00.5222735Z devDependencies:
+2026-02-17T08:12:00.5223574Z + @chromatic-com/storybook 5.0.1
+2026-02-17T08:12:00.5224071Z + @eslint/compat 2.0.2
+2026-02-17T08:12:00.5224646Z + @eslint/eslintrc 3.3.3
+2026-02-17T08:12:00.5225186Z + @lhci/cli 0.15.1
+2026-02-17T08:12:00.5225723Z + @playwright/test 1.58.2
+2026-02-17T08:12:00.5236821Z + @storybook/addon-a11y 10.2.8
+2026-02-17T08:12:00.5237511Z + @storybook/addon-docs 10.2.8
+2026-02-17T08:12:00.5238162Z + @storybook/addon-onboarding 10.2.8
+2026-02-17T08:12:00.5238835Z + @storybook/addon-vitest 10.2.8
+2026-02-17T08:12:00.5239452Z + @storybook/nextjs-vite 10.2.8
+2026-02-17T08:12:00.5240043Z + @tailwindcss/postcss 4.1.18
+2026-02-17T08:12:00.5240545Z + @testing-library/dom 10.4.1
+2026-02-17T08:12:00.5256898Z + @testing-library/react 16.3.2
+2026-02-17T08:12:00.5257408Z + @types/geojson 7946.0.16
+2026-02-17T08:12:00.5257831Z + @types/node 25.2.3
+2026-02-17T08:12:00.5258203Z + @types/pg 8.16.0
+2026-02-17T08:12:00.5258567Z + @types/react 19.2.14
+2026-02-17T08:12:00.5258960Z + @types/react-dom 19.2.3
+2026-02-17T08:12:00.5259363Z + @types/three 0.182.0
+2026-02-17T08:12:00.5259758Z + @types/web-bluetooth 0.0.21
+2026-02-17T08:12:00.5260176Z + @types/ws 8.18.1
+2026-02-17T08:12:00.5260638Z + @typescript-eslint/eslint-plugin 8.55.0
+2026-02-17T08:12:00.5261235Z + @typescript-eslint/parser 8.55.0
+2026-02-17T08:12:00.5261734Z + @vitejs/plugin-react 5.1.4
+2026-02-17T08:12:00.5262354Z + @vitest/browser-playwright 4.0.18
+2026-02-17T08:12:00.5262891Z + @vitest/coverage-v8 4.0.18
+2026-02-17T08:12:00.5263332Z + autoprefixer 10.4.24
+2026-02-17T08:12:00.5263727Z + chromatic 15.1.0
+2026-02-17T08:12:00.5264063Z + dotenv 17.2.4
+2026-02-17T08:12:00.5264419Z + dotenv-cli 11.0.0
+2026-02-17T08:12:00.5264764Z + eslint 10.0.0
+2026-02-17T08:12:00.5265147Z + eslint-config-next 16.1.6
+2026-02-17T08:12:00.5265666Z + eslint-plugin-storybook 10.2.8
+2026-02-17T08:12:00.5266282Z + husky 9.1.7
+2026-02-17T08:12:00.5266621Z + jsdom 28.0.0
+2026-02-17T08:12:00.5266954Z + magicast 0.5.2
+2026-02-17T08:12:00.5267495Z + msw 2.12.10
+2026-02-17T08:12:00.5267854Z + playwright 1.58.2
+2026-02-17T08:12:00.5268326Z + postcss 8.5.6
+2026-02-17T08:12:00.5268791Z + prisma 7.4.0
+2026-02-17T08:12:00.5269256Z + storybook 10.2.8
+2026-02-17T08:12:00.5269724Z + tailwindcss 4.1.18
+2026-02-17T08:12:00.5270173Z + tsx 4.21.0
+2026-02-17T08:12:00.5270580Z + turbo 2.8.7
+2026-02-17T08:12:00.5271025Z + typedoc 0.28.16
+2026-02-17T08:12:00.5271572Z + typedoc-plugin-markdown 4.10.0
+2026-02-17T08:12:00.5272137Z + typescript 5.9.3
+2026-02-17T08:12:00.5272573Z + vite 7.3.1
+2026-02-17T08:12:00.5272992Z + vitest 4.0.18
+2026-02-17T08:12:00.5273407Z + ws 8.19.0
+2026-02-17T08:12:00.5273678Z 
+2026-02-17T08:12:00.5732788Z . postinstall$ prisma generate
+2026-02-17T08:12:01.7665050Z . postinstall: Loaded Prisma config from prisma.config.ts.
+2026-02-17T08:12:01.9395409Z . postinstall: Prisma schema loaded from prisma/schema.prisma.
+2026-02-17T08:12:01.9564917Z . postinstall: warn Preview feature "driverAdapters" is deprecated. The functionality can be used without specifying it as a preview feature.
+2026-02-17T08:12:03.3071356Z . postinstall: ✔ Generated Prisma Client (v7.4.0) to ./node_modules/.pnpm/@prisma+client@7.4.0_prisma@7.4.0_@types+react@19.2.14_magicast@0.5.2_react-dom@19.2.4_react@_kbihlyeorb7my7bafhyofzhtla/node_modules/@prisma/client in 802ms
+2026-02-17T08:12:03.3073744Z . postinstall: Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+2026-02-17T08:12:03.3318813Z . postinstall: Done
+2026-02-17T08:12:03.3322289Z . prepare$ husky
+2026-02-17T08:12:03.3841728Z . prepare: Done
+2026-02-17T08:12:03.3854802Z Done in 34.1s
+2026-02-17T08:12:03.4351605Z ##[group]Run npx prisma generate
+2026-02-17T08:12:03.4351941Z [36;1mnpx prisma generate[0m
+2026-02-17T08:12:03.4401830Z shell: /usr/bin/bash -e {0}
+2026-02-17T08:12:03.4402082Z env:
+2026-02-17T08:12:03.4403013Z   DATABASE_URL: ***
+2026-02-17T08:12:03.4403627Z   DIRECT_URL: ***
+2026-02-17T08:12:03.4403969Z   NEXT_PUBLIC_SUPABASE_URL: ***
+2026-02-17T08:12:03.4405353Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+2026-02-17T08:12:03.4405625Z   SKIP_ENV_VALIDATION: true
+2026-02-17T08:12:03.4405918Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-02-17T08:12:03.4406529Z ##[endgroup]
+2026-02-17T08:12:05.0597413Z Loaded Prisma config from prisma.config.ts.
+2026-02-17T08:12:05.0598128Z 
+2026-02-17T08:12:05.2380889Z Prisma schema loaded from prisma/schema.prisma.
+2026-02-17T08:12:05.2485422Z warn Preview feature "driverAdapters" is deprecated. The functionality can be used without specifying it as a preview feature.
+2026-02-17T08:12:06.5680329Z 
+2026-02-17T08:12:06.5683690Z ✔ Generated Prisma Client (v7.4.0) to ./node_modules/.pnpm/@prisma+client@7.4.0_prisma@7.4.0_@types+react@19.2.14_magicast@0.5.2_react-dom@19.2.4_react@_kbihlyeorb7my7bafhyofzhtla/node_modules/@prisma/client in 838ms
+2026-02-17T08:12:06.5685950Z 
+2026-02-17T08:12:06.5686799Z Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+2026-02-17T08:12:06.5687421Z 
+2026-02-17T08:12:06.5687430Z 
+2026-02-17T08:12:06.6453444Z ##[group]Run actions/cache@v5
+2026-02-17T08:12:06.6453712Z with:
+2026-02-17T08:12:06.6453899Z   path: .turbo
+2026-02-17T08:12:06.6454180Z   key: turbo-Linux-2a52f6a545258527bcf62219b17b29d30d68705f
+2026-02-17T08:12:06.6454530Z   restore-keys: turbo-Linux-
+
+2026-02-17T08:12:06.6454788Z   enableCrossOsArchive: false
+2026-02-17T08:12:06.6455033Z   fail-on-cache-miss: false
+2026-02-17T08:12:06.6455257Z   lookup-only: false
+2026-02-17T08:12:06.6455466Z   save-always: false
+2026-02-17T08:12:06.6455660Z env:
+2026-02-17T08:12:06.6456808Z   DATABASE_URL: ***
+2026-02-17T08:12:06.6457419Z   DIRECT_URL: ***
+2026-02-17T08:12:06.6457758Z   NEXT_PUBLIC_SUPABASE_URL: ***
+2026-02-17T08:12:06.6459112Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+2026-02-17T08:12:06.6459394Z   SKIP_ENV_VALIDATION: true
+2026-02-17T08:12:06.6459684Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-02-17T08:12:06.6460013Z ##[endgroup]
+2026-02-17T08:12:06.8415247Z Cache hit for restore-key: turbo-Linux-b2ad1640a10d2a2d3db1af8b95e8524efa7fffe0
+2026-02-17T08:12:07.6515187Z Received 137192109 of 137192109 (100.0%), 175.6 MBs/sec
+2026-02-17T08:12:07.6516686Z Cache Size: ~131 MB (137192109 B)
+2026-02-17T08:12:07.6557322Z [command]/usr/bin/tar -xf /home/runner/work/_temp/6e0ce248-857d-4aa8-9f94-5a90a4e1fd9c/cache.tzst -P -C /home/runner/work/IronForge/IronForge --use-compress-program unzstd
+2026-02-17T08:12:07.9044294Z Cache restored successfully
+2026-02-17T08:12:07.9397882Z Cache restored from key: turbo-Linux-b2ad1640a10d2a2d3db1af8b95e8524efa7fffe0
+2026-02-17T08:12:07.9540961Z ##[group]Run npx turbo run lint check-types test:coverage build security --concurrency=100%
+2026-02-17T08:12:07.9541624Z [36;1mnpx turbo run lint check-types test:coverage build security --concurrency=100%[0m
+2026-02-17T08:12:07.9590934Z shell: /usr/bin/bash -e {0}
+2026-02-17T08:12:07.9591210Z env:
+2026-02-17T08:12:07.9591948Z   DATABASE_URL: ***
+2026-02-17T08:12:07.9592545Z   DIRECT_URL: ***
+2026-02-17T08:12:07.9592888Z   NEXT_PUBLIC_SUPABASE_URL: ***
+2026-02-17T08:12:07.9594260Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+2026-02-17T08:12:07.9594539Z   SKIP_ENV_VALIDATION: true
+2026-02-17T08:12:07.9594830Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-02-17T08:12:07.9595134Z ##[endgroup]
+2026-02-17T08:12:08.2969628Z 
+2026-02-17T08:12:08.2973320Z Attention:
+2026-02-17T08:12:08.2977377Z Turborepo now collects completely anonymous telemetry regarding usage.
+2026-02-17T08:12:08.2979936Z This information is used to shape the Turborepo roadmap and prioritize features.
+2026-02-17T08:12:08.2983297Z You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+2026-02-17T08:12:08.2990219Z https://turborepo.dev/docs/telemetry
+2026-02-17T08:12:08.2990595Z 
+2026-02-17T08:12:08.3807991Z   x Missing tasks in project
+2026-02-17T08:12:08.3817055Z   `->   x Could not find task `test:coverage` in project
+2026-02-17T08:12:08.3817799Z 
+2026-02-17T08:12:08.4018250Z ##[error]Process completed with exit code 1.
+2026-02-17T08:12:08.4085796Z Post job cleanup.
+2026-02-17T08:12:08.4673147Z Pruning is unnecessary.
+2026-02-17T08:12:08.4801027Z Post job cleanup.
+2026-02-17T08:12:08.5812235Z [command]/usr/bin/git version
+2026-02-17T08:12:08.5854441Z git version 2.52.0
+2026-02-17T08:12:08.5913299Z Temporarily overriding HOME='/home/runner/work/_temp/79f0c3c3-d779-4821-9ece-0e6d0e0be382' before making global git config changes
+2026-02-17T08:12:08.5915258Z Adding repository directory to the temporary git global config as a safe directory
+2026-02-17T08:12:08.5921422Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/IronForge/IronForge
+2026-02-17T08:12:08.5960371Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-02-17T08:12:08.6000084Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-02-17T08:12:08.6270147Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-02-17T08:12:08.6295657Z http.https://github.com/.extraheader
+2026-02-17T08:12:08.6311967Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-02-17T08:12:08.6349080Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-02-17T08:12:08.6607123Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-02-17T08:12:08.6642605Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-02-17T08:12:08.7009348Z Cleaning up orphan processes
