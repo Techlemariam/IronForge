@@ -45,6 +45,11 @@ const config: StorybookConfig = {
       '.prisma/client': path.resolve(__dirname, 'prisma-mock.ts'),
       'next/headers': path.resolve(__dirname, 'next-headers-mock.ts'),
     };
+
+    // Disable sourcemaps to prevent resolution errors with framer-motion/React 19
+    config.build = config.build || {};
+    config.build.sourcemap = false;
+
     return config;
   }
 };
