@@ -68,6 +68,19 @@ jobs:
     name: 🎭 E2E Tests
     if: github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: ironforge_e2e
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -88,10 +101,15 @@ jobs:
       - name: Install Playwright Browsers
         if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: npx playwright install --with-deps
+      - name: Push Schema to E2E DB
+        run: npx prisma db push --skip-generate
+        env:
+          DATABASE_URL: postgresql://postgres:password@localhost:5432/ironforge_e2e
+          DIRECT_URL: postgresql://postgres:password@localhost:5432/ironforge_e2e
       - name: Seed E2E Database
         run: npx tsx tests/e2e/setup/e2e-seed.ts
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DATABASE_URL: postgresql://postgres:password@localhost:5432/ironforge_e2e
       - name: Run Playwright Tests
         run: npx playwright test
         env:
@@ -101,8 +119,8 @@ jobs:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           NEXT_PUBLIC_APP_URL: http://localhost:3000
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          DIRECT_URL: ${{ secrets.DIRECT_URL }}
+          DATABASE_URL: postgresql://postgres:password@localhost:5432/ironforge_e2e
+          DIRECT_URL: postgresql://postgres:password@localhost:5432/ironforge_e2e
 
   # ------------------------------------------------------------------
   # 🗄️ DATABASE GUARD
