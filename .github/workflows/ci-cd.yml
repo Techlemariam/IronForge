@@ -184,7 +184,7 @@ jobs:
         run: |
            git config --global user.name 'CI Bot'
            git config --global user.email 'ci@ironforge.gg'
-           npx prisma migrate dev --name fix_ci_drift
+           yes | npx prisma migrate dev --name fix_ci_drift
            git add prisma/migrations
            git commit -m "chore: fix migrations via CI [skip ci]" || echo "No changes"
            git push
