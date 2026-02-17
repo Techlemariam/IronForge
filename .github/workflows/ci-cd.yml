@@ -81,7 +81,7 @@ jobs:
         env:
           SKIP_ENV_VALIDATION: true
       - name: Verify Tests
-        run: npx turbo run test:coverage --concurrency=100%
+        run: npx turbo run test --concurrency=100%
         env:
           SKIP_ENV_VALIDATION: true
       - name: Verify Build
@@ -191,19 +191,12 @@ jobs:
           node-version: '22'
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
-      - name: Create Shadow Database
-        run: |
-          PGPASSWORD=password psql -h localhost -U postgres -c "CREATE DATABASE ironforge_shadow;"
-      
       - name: Fix Drift (Conditioned)
         if: ${{ inputs.fix_drift == true }}
         run: |
            git config --global user.name 'CI Bot'
            git config --global user.email 'ci@ironforge.gg'
-           git config --global user.name 'CI Bot'
-           git config --global user.email 'ci@ironforge.gg'
-           # Force reset to ensure clean slate for migration generation (non-interactive)
-           npx prisma migrate reset --force --skip-seed
+           # Create only is safe for automation
            npx prisma migrate dev --name fix_ci_drift --create-only
            git add prisma/migrations
            git commit -m "chore: fix migrations via CI [skip ci]" || echo "No changes"

@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { getGuildTerritoryBonusesAction, processWeeklyTerritoryClaimsAction } from "../territories";
+import { getGuildTerritoryBonusesAction } from "../territories";
 import { prisma } from "@/lib/prisma";
 
 // Mock Prisma
