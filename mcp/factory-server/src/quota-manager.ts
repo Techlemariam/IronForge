@@ -2,8 +2,14 @@ import fs from 'fs';
 import path from 'path';
 
 // Tracking file path relative to project root
-const QUOTA_FILE_PATH = path.resolve(process.cwd(), '../../.agent/quota_usage.json');
+// Tracking file path relative to project root
+let quotaFilePath = path.resolve(process.cwd(), '../../.agent/quota_usage.json');
 const DAILY_LIMIT = 1500; // Google One AI Pro typical daily RPD limit
+
+export function setQuotaFilePath(path: string) {
+    quotaFilePath = path;
+}
+
 
 export interface QuotaStatus {
     used: number;
@@ -16,12 +22,12 @@ export interface QuotaStatus {
 export function getQuota(): QuotaStatus {
     const today = new Date().toISOString().split('T')[0];
 
-    if (!fs.existsSync(QUOTA_FILE_PATH)) {
+    if (!fs.existsSync(quotaFilePath)) {
         return { used: 0, remaining: DAILY_LIMIT, percentUsed: 0, status: 'Healthy', source: 'antigravity' };
     }
 
     try {
-        const data = JSON.parse(fs.readFileSync(QUOTA_FILE_PATH, 'utf-8'));
+        const data = JSON.parse(fs.readFileSync(quotaFilePath, 'utf-8'));
         if (data.date !== today) {
             return { used: 0, remaining: DAILY_LIMIT, percentUsed: 0, status: 'Healthy', source: 'antigravity' };
         }
@@ -44,9 +50,9 @@ export function trackUsage(increment = 1): QuotaStatus {
     const today = new Date().toISOString().split('T')[0];
     let data = { date: today, count: 0 };
 
-    if (fs.existsSync(QUOTA_FILE_PATH)) {
+    if (fs.existsSync(quotaFilePath)) {
         try {
-            const fileContent = JSON.parse(fs.readFileSync(QUOTA_FILE_PATH, 'utf-8'));
+            const fileContent = JSON.parse(fs.readFileSync(quotaFilePath, 'utf-8'));
             if (fileContent.date === today) {
                 data = fileContent;
             }
@@ -58,12 +64,12 @@ export function trackUsage(increment = 1): QuotaStatus {
     data.count += increment;
 
     // Ensure directory exists
-    const dir = path.dirname(QUOTA_FILE_PATH);
+    const dir = path.dirname(quotaFilePath);
     if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir, { recursive: true });
     }
 
-    fs.writeFileSync(QUOTA_FILE_PATH, JSON.stringify(data, null, 2));
+    fs.writeFileSync(quotaFilePath, JSON.stringify(data, null, 2));
 
     const percent = (data.count / DAILY_LIMIT) * 100;
     return {
