@@ -135,7 +135,7 @@ jobs:
         run: npx playwright install --with-deps
       - name: Initialize E2E DB
         run: |
-          sleep 15
+          sleep 30
           npx prisma db push
         env:
           DATABASE_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_e2e

@@ -10,7 +10,8 @@ const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
 async function main() {
-    console.log('🌱 Starting E2E Database Seeding...');
+    const redactedUrl = (process.env.DATABASE_URL || '').replace(/:[^:@]+@/, ':****@');
+    console.log(`🌱 Starting E2E Database Seeding with URL: ${redactedUrl}`);
 
     // 1. Seed Battle Pass Season
     const seasonCode = 'S1';
