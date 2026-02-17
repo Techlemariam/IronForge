@@ -10,7 +10,7 @@
     "start": "next start",
     "test": "vitest run",
     "test:unit": "vitest run",
-    "test:coverage": "vitest run --coverage",
+    "test:coverage": "vitest run --coverage --exclude tests/integration/**",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "lint": "eslint .",
