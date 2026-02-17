@@ -67,7 +67,9 @@ jobs:
       - name: Generate Prisma Client
         run: npx prisma generate
       - name: Initialize DB
-        run: npx prisma db push --skip-generate
+        run: |
+          sleep 15
+          npx prisma db push
         env:
           DATABASE_URL: postgresql://postgres:password@localhost:5432/ironforge_test?schema=public
       - name: Cache Turbo

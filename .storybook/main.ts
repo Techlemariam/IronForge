@@ -39,6 +39,7 @@ const config: StorybookConfig = {
     config.resolve = config.resolve || {};
     config.resolve.alias = {
       ...config.resolve.alias,
+      '@': path.resolve(__dirname, '../src'),
       '@/types/prisma': path.resolve(__dirname, 'prisma-mock.ts'),
       '@/lib/prisma': path.resolve(__dirname, 'lib-prisma-mock.ts'),
       '@prisma/client': path.resolve(__dirname, 'prisma-mock.ts'),
