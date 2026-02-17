@@ -1,0 +1,33 @@
+name: 'Setup Pipeline'
+description: 'Standardized setup for Node.js, PNPM, and Prisma'
+inputs:
+  node-version:
+    description: 'Node.js version'
+    default: '20'
+  pnpm-version:
+    description: 'PNPM version'
+    default: '9.0.0'
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 2
+    
+    - uses: pnpm/action-setup@v4
+      with:
+        version: ${{ inputs.pnpm-version }}
+
+    - uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node-version }}
+        cache: 'pnpm'
+
+    - name: Install dependencies
+      shell: bash
+      run: pnpm install --frozen-lockfile
+
+    - name: Generate Prisma Client
+      shell: bash
+      run: npx prisma generate
