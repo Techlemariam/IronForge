@@ -72,8 +72,24 @@ jobs:
           key: turbo-${{ runner.os }}-${{ github.sha }}
           restore-keys: |
             turbo-${{ runner.os }}-
-      - name: Turbo Verify
-        run: npx turbo run lint check-types test:coverage build security --concurrency=100%
+      - name: Verify Lint
+        run: npx turbo run lint --concurrency=100%
+        env:
+          SKIP_ENV_VALIDATION: true
+      - name: Verify Types
+        run: npx turbo run check-types --concurrency=100%
+        env:
+          SKIP_ENV_VALIDATION: true
+      - name: Verify Tests
+        run: npx turbo run test:coverage --concurrency=100%
+        env:
+          SKIP_ENV_VALIDATION: true
+      - name: Verify Build
+        run: npx turbo run build --concurrency=100%
+        env:
+          SKIP_ENV_VALIDATION: true
+      - name: Verify Security
+        run: npx turbo run security --concurrency=100%
         env:
           SKIP_ENV_VALIDATION: true
       - name: Upload Coverage to Codecov
@@ -184,6 +200,10 @@ jobs:
         run: |
            git config --global user.name 'CI Bot'
            git config --global user.email 'ci@ironforge.gg'
+           git config --global user.name 'CI Bot'
+           git config --global user.email 'ci@ironforge.gg'
+           # Force reset to ensure clean slate for migration generation (non-interactive)
+           npx prisma migrate reset --force --skip-seed
            npx prisma migrate dev --name fix_ci_drift --create-only
            git add prisma/migrations
            git commit -m "chore: fix migrations via CI [skip ci]" || echo "No changes"
