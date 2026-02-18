@@ -191,7 +191,7 @@ jobs:
           PGPASSWORD=password psql -h 127.0.0.1 -U postgres -c "CREATE DATABASE ironforge_shadow;"
 
       - name: Fix Drift (Conditioned)
-        if: ${{ inputs.fix_drift == true }}
+        if: ${{ github.event.inputs.fix_drift == 'true' || inputs.fix_drift == true || inputs.fix_drift == 'true' }}
         run: |
            git config --global user.name 'CI Bot'
            git config --global user.email 'ci@ironforge.gg'
