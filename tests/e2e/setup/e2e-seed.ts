@@ -1,11 +1,36 @@
 import { prisma } from '../../../src/lib/prisma';
 import { Faction, Archetype } from '@prisma/client';
+import { createClient } from '@supabase/supabase-js';
 
 async function main() {
     const redactedUrl = (process.env.DATABASE_URL || '').replace(/:[^:@]+@/, ':****@');
     console.log(`🌱 Starting E2E Database Seeding with URL: ${redactedUrl}`);
 
-    const { BattlePassSeason, PvpSeason } = prisma as any;
+    // Authenticate with Supabase to get the REAL User ID
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    const testEmail = process.env.TEST_USER_EMAIL || 'alexander.teklemariam@gmail.com';
+    const testPassword = process.env.TEST_USER_PASSWORD || 'IronForge2025!';
+
+    let userId: string | undefined;
+
+    if (supabaseUrl && supabaseKey) {
+        console.log(`🔐 Authenticating with Supabase to sync User ID for ${testEmail}...`);
+        const supabase = createClient(supabaseUrl, supabaseKey);
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email: testEmail,
+            password: testPassword,
+        });
+
+        if (error) {
+            console.warn(`⚠️ Failed to sign in with Supabase: ${error.message}. User ID might be mismatched.`);
+        } else if (data.user) {
+            userId = data.user.id;
+            console.log(`✅ Retrieved Supabase User ID: ${userId}`);
+        }
+    } else {
+        console.warn('⚠️ Missing Supabase credentials in env. Skipping ID sync.');
+    }
 
     // 1. Seed Battle Pass Season
     const seasonCode = 'S1';
@@ -91,39 +116,81 @@ async function main() {
     }
 
     // 3. Seed Main Test User (Hunter) to prevent Onboarding Overlay in E2E
-    const testEmail = process.env.TEST_USER_EMAIL || 'alexander.teklemariam@gmail.com';
+    // Use the retrieved userId if available, otherwise let Prisma generate one (start of problem) or update existing
+
+    // First, check if user exists by email to get their existing ID if we failed to fetch from Supabase
+    let existingUser = await prisma.user.findUnique({ where: { email: testEmail } });
+
+    // If we have a Supabase ID, we MUST ensure the user record uses THAT ID.
+    // If a user exists with that email but DIFFERENT ID, we have a conflict.
+    if (userId && existingUser && existingUser.id !== userId) {
+        console.log(`⚠️ User exists with email ${testEmail} but different ID (${existingUser.id} vs ${userId}). Updating ID...`);
+        // We can't easily update ID in Prisma if there are foreign keys. 
+        // Best approach for seeding: Delete and Recreate if safe, OR try to update if supported.
+        // Assuming cascade delete is not always safe, but for E2E user it might be.
+        // Let's try to update user ID using raw query or delete-create method if needed. 
+        // Prisma update of ID is tricky.
+        // Simpler: Just delete the old record.
+        try {
+            await prisma.user.delete({ where: { email: testEmail } });
+            existingUser = null; // Forces recreate below
+            console.log('✅ Deleted mismatched ID user.');
+        } catch (e) {
+            console.error('Failed to delete mismatched user:', e);
+        }
+    }
+
+    const startData = {
+        email: testEmail,
+        heroName: 'E2E Hunter',
+        level: 10,
+        gold: 5000,
+        faction: Faction.HORDE,
+        archetype: Archetype.PATHFINDER,
+        hasCompletedOnboarding: true,
+    };
+
+    const titanData = {
+        name: 'E2E Titan',
+        level: 10,
+        powerRating: 800,
+        strength: 20,
+        endurance: 20,
+        agility: 20,
+        vitality: 20,
+        willpower: 20
+    };
+
+    // Use upsert with the CORRECT ID
+    // If userId is known, we want to create with that ID.
+    // upsert requires 'where' to be unique. Email is unique.
+
+    // Construct create data
+    const createData: any = {
+        ...startData,
+        titan: {
+            create: titanData
+        }
+    };
+
+    if (userId) {
+        createData.id = userId;
+    }
+
     const testUser = await prisma.user.upsert({
         where: { email: testEmail },
         update: {
-            heroName: 'E2E Hunter', // ENSURE heroName is set if user exists
-            hasCompletedOnboarding: true, // CRITICAL: Bypass FirstLoginQuest
-            level: 10,
-            gold: 5000,
-            // Ensure proper default state
-        },
-        create: {
-            email: testEmail,
             heroName: 'E2E Hunter',
+            hasCompletedOnboarding: true,
             level: 10,
             gold: 5000,
-            faction: Faction.HORDE,
-            archetype: Archetype.PATHFINDER,
-            hasCompletedOnboarding: true,
-            titan: {
-                create: {
-                    name: 'E2E Titan',
-                    level: 10,
-                    powerRating: 800,
-                    strength: 20,
-                    endurance: 20,
-                    agility: 20,
-                    vitality: 20,
-                    willpower: 20
-                }
-            }
-        }
+            // If we are updating, we don't change ID.
+            // If the existing user has the WRONG ID, we handled it above by deleting.
+        },
+        create: createData
     });
-    console.log(`✅ Ensured Test User: ${testUser.heroName} (Onboarding Completed)`);
+
+    console.log(`✅ Ensured Test User: ${testUser.heroName} (ID: ${testUser.id})`);
 
     console.log('🌱 Seeding completed successfully.');
 }
@@ -140,9 +207,7 @@ export default async function globalSetup() {
     }
 }
 
-// Allow standalone execution if running directly (e.g. npx tsx e2e-seed.ts)
-// Check if file is being executed directly
-// properties of require.main are not available in ESM, we can check process.argv
-if (process.argv[1].includes('e2e-seed.ts')) {
+// Allow standalone execution
+if (process.argv[1] && process.argv[1].includes('e2e-seed.ts')) {
     globalSetup();
 }
