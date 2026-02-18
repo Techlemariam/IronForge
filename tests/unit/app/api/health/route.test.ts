@@ -15,6 +15,16 @@ vi.mock('@/lib/prisma', () => {
     };
 });
 
+// Mock Logger to suppress expected error output in CI
+vi.mock('@/lib/logger', () => ({
+    logger: {
+        error: vi.fn(),
+        info: vi.fn(),
+        warn: vi.fn(),
+        debug: vi.fn(),
+    }
+}));
+
 describe('GET /api/health', () => {
     beforeEach(() => {
         vi.clearAllMocks();
