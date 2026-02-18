@@ -6,12 +6,11 @@ import { trackUsage } from '../quota-manager.js';
 
 // Mock dependencies
 vi.mock('fs');
-vi.mock('path');
 vi.mock('../quota-manager');
 
 // Mock specific path methods we use
-vi.mocked(path.resolve).mockImplementation((...args) => args.join('/'));
-vi.mocked(path.join).mockImplementation((...args) => args.join('/'));
+vi.spyOn(path, 'resolve').mockImplementation((...args) => args.join('/'));
+vi.spyOn(path, 'join').mockImplementation((...args) => args.join('/'));
 
 // Create a mock for Octokit
 const mockCreateWorkflowDispatch = vi.fn();

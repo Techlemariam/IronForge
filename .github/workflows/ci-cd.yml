@@ -161,6 +161,8 @@ jobs:
     name: 🗄️ DB Guard
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    permissions:
+      contents: write
     services:
       postgres:
         image: postgres:15
@@ -191,11 +193,9 @@ jobs:
           PGPASSWORD=password psql -h 127.0.0.1 -U postgres -c "CREATE DATABASE ironforge_shadow;"
 
       - name: Fix Drift (Conditioned)
+        id: fix-drift
         if: ${{ github.event.inputs.fix_drift == 'true' || inputs.fix_drift == true || inputs.fix_drift == 'true' }}
         run: |
-           git config --global user.name 'CI Bot'
-           git config --global user.email 'ci@ironforge.gg'
-           
            # Generate migration using diff (non-interactive safe)
            MIGRATION_NAME="$(date +%Y%m%d%H%M%S)_fix_ci_drift"
            mkdir -p prisma/migrations/$MIGRATION_NAME
@@ -206,19 +206,26 @@ jobs:
              --script > prisma/migrations/$MIGRATION_NAME/migration.sql
            
            if [ -s prisma/migrations/$MIGRATION_NAME/migration.sql ]; then
-             echo "Generated migration SQL:"
-             cat prisma/migrations/$MIGRATION_NAME/migration.sql
-             git add prisma/migrations
-             git commit -m "chore: fix migrations via CI [skip ci]"
-             git push
+             echo "Generated migration SQL."
+             echo "has_changes=true" >> $GITHUB_OUTPUT
            else
              echo "No migration generated."
              rm -rf prisma/migrations/$MIGRATION_NAME
+             echo "has_changes=false" >> $GITHUB_OUTPUT
            fi
         env:
            DATABASE_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_test?schema=public
            SHADOW_DATABASE_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_shadow?schema=public
            PRISMA_CLI_SKIP_INTERACTIVE: true
+
+      - name: Auto-Commit Migration
+        if: ${{ steps.fix-drift.outputs.has_changes == 'true' }}
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: fix migrations via CI [skip ci]"
+          file_pattern: 'prisma/migrations/*/migration.sql'
+          commit_user_name: 'CI Bot'
+          commit_user_email: 'ci@ironforge.gg'
       
       - name: Verify Prisma Drift
         if: ${{ inputs.fix_drift != true }}
