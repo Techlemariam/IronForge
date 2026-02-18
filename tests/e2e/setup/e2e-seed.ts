@@ -1,10 +1,11 @@
 
 import { PrismaClient, Faction, Archetype } from '@prisma/client';
 
+const connectionString = process.env.DATABASE_URL || 'postgresql://postgres:password@127.0.0.1:5432/ironforge_e2e';
 const prisma = new PrismaClient({
     datasources: {
         db: {
-            url: process.env.DATABASE_URL
+            url: connectionString
         }
     }
 });
