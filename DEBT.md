@@ -85,8 +85,8 @@
 | 2026-01-18 | `src/components/**/*` | [A11y] 55 interactive elements missing `aria-label` or `aria-labelledby` | @ui-ux | 🔴 Open |
 | 2026-01-18 | `src/components/**/*` | [Consistency] 61 instances of hardcoded hex colors instead of design tokens | @ui-ux | ✅ Resolved |
 | 2026-01-18 | `src/components/**/*` | [Consistency] 75 instances of arbitrary Tailwind values (e.g., `w-[375px]`) | @ui-ux | ✅ Resolved |
-| 2026-01-18 | `src/components/**/*` | [Consistency] Low dark mode coverage (only 2 components using `dark:` prefix) | @ui-ux | 🔴 Open |
-| 2026-01-18 | `src/components/**/*` | [Responsive] Only 8/35 (23%) UI components have mobile breakpoints | @ui-ux | 🔴 Open |
+| 2026-01-18 | `src/components/**/*` | [Consistency] Foundational UI components now support dark mode. More work needed. | @ui-ux | 🟡 In Progress |
+| 2026-01-18 | `src/components/**/*` | [Responsive] Foundational UI components now have improved responsive styles. More work needed. | @ui-ux | 🟡 In Progress |
 | 2026-02-12 | `Storybook/Chromatic` | Pilot Dashboard blocked by Prisma resolution (Run 21960052134) | @architect | 🔴 Scrap Yard |
 | 2026-02-12 | `Prisma/Infrastructure` | DB Drift: `FactoryStatus` model pushed via `db push`, missing migrations | @infrastructure | 🔴 Scrap Yard |
 | 2026-02-15 | `src/services/game/PowerRatingService.ts` | P1: `getConsecutiveWeeks` uses inaccurate Streak/7 proxy | @game-designer | ✅ Resolved |

@@ -1,0 +1,757 @@
+🗄️ DB Guard	Set up job	﻿2026-02-17T22:36:55.4273677Z Current runner version: '2.331.0'
+🗄️ DB Guard	Set up job	2026-02-17T22:36:55.4365311Z ##[group]Runner Image Provisioner
+🗄️ DB Guard	Set up job	2026-02-17T22:36:55.4367141Z Hosted Compute Agent
+🗄️ DB Guard	Set up job	2026-02-17T22:36:55.4368010Z Version: 20260123.484
+🗄️ DB Guard	Set up job	2026-02-17T22:36:55.4369115Z Commit: 6bd6555ca37d84114959e1c76d2c01448ff61c5d
+🗄️ DB Guard	Set up job	2026-02-17T22:36:55.4370189Z Build Date: 2026-01-23T19:41:17Z
+🗄️ DB Guard	Set up job	2026-02-17T22:36:55.4371183Z Worker ID: {a1c281dd-aad4-4893-8908-2422f1dde0cb}
+🗄️ DB Guard	Set up job	2026-02-17T22:36:55.4372394Z Azure Region: eastus2
+🗄️ DB Guard	Set up job	2026-02-17T22:36:55.4373232Z ##[endgroup]
+🗄️ DB Guard	Set up job	2026-02-17T22:36:55.4386495Z ##[group]Operating System
+🗄️ DB Guard	Set up job	2026-02-17T22:36:55.4387510Z Ubuntu
+🗄️ DB Guard	Set up job	2026-02-17T22:36:55.4388250Z 24.04.3
+🗄️ DB Guard	Set up job	2026-02-17T22:36:55.4389095Z LTS
+🗄️ DB Guard	Set up job	2026-02-17T22:36:55.4389847Z ##[endgroup]
+🗄️ DB Guard	Set up job	2026-02-17T22:36:55.4390626Z ##[group]Runner Image
+🗄️ DB Guard	Set up job	2026-02-17T22:36:55.4391710Z Image: ubuntu-24.04
+🗄️ DB Guard	Set up job	2026-02-17T22:36:55.4392596Z Version: 20260209.23.1
+🗄️ DB Guard	Set up job	2026-02-17T22:36:55.4394348Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260209.23/images/ubuntu/Ubuntu2404-Readme.md
+🗄️ DB Guard	Set up job	2026-02-17T22:36:55.4397543Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260209.23
+🗄️ DB Guard	Set up job	2026-02-17T22:36:55.4399865Z ##[endgroup]
+🗄️ DB Guard	Set up job	2026-02-17T22:36:55.4401665Z ##[group]GITHUB_TOKEN Permissions
+🗄️ DB Guard	Set up job	2026-02-17T22:36:55.4405055Z Contents: read
+🗄️ DB Guard	Set up job	2026-02-17T22:36:55.4436572Z Metadata: read
+🗄️ DB Guard	Set up job	2026-02-17T22:36:55.4437662Z Packages: read
+🗄️ DB Guard	Set up job	2026-02-17T22:36:55.4438480Z ##[endgroup]
+🗄️ DB Guard	Set up job	2026-02-17T22:36:55.4441705Z Secret source: Actions
+🗄️ DB Guard	Set up job	2026-02-17T22:36:55.4443629Z Prepare workflow directory
+🗄️ DB Guard	Set up job	2026-02-17T22:36:55.5642902Z Prepare all required actions
+🗄️ DB Guard	Set up job	2026-02-17T22:36:55.5719562Z Getting action download info
+🗄️ DB Guard	Set up job	2026-02-17T22:36:55.8337840Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+🗄️ DB Guard	Set up job	2026-02-17T22:36:56.0850232Z Complete job name: 🗄️ DB Guard
+🗄️ DB Guard	Initialize containers	﻿2026-02-17T22:36:56.1409239Z ##[group]Checking docker version
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:56.1422847Z ##[command]/usr/bin/docker version --format '{{.Server.APIVersion}}'
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:56.2273383Z '1.52'
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:56.2283732Z Docker daemon API version: '1.52'
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:56.2284880Z ##[command]/usr/bin/docker version --format '{{.Client.APIVersion}}'
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:56.2496491Z '1.52'
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:56.2512754Z Docker client API version: '1.52'
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:56.2518980Z ##[endgroup]
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:56.2521326Z ##[group]Clean up resources from previous jobs
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:56.2527807Z ##[command]/usr/bin/docker ps --all --quiet --no-trunc --filter "label=2dd690"
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:56.2698505Z ##[command]/usr/bin/docker network prune --force --filter "label=2dd690"
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:56.2844283Z ##[endgroup]
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:56.2844854Z ##[group]Create local container network
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:56.2855108Z ##[command]/usr/bin/docker network create --label 2dd690 github_network_bf4ca2e2585843188935bc1a629bd07e
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:56.3550453Z 100a62e94fe93aa8856151bd0ed56d0a7bdaee41b76c71d68baaa39f519e2913
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:56.3589995Z ##[endgroup]
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:56.3623803Z ##[group]Starting postgres service container
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:56.3719733Z ##[command]/usr/bin/docker pull postgres:15
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:56.6671266Z 15: Pulling from library/postgres
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:56.8733356Z 49b40a0a623d: Pulling fs layer
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:56.8779473Z b64f280cfa2b: Pulling fs layer
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:56.8816913Z ea5e741a30ce: Pulling fs layer
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:56.8822314Z e60549838c5a: Pulling fs layer
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:56.8853230Z 6771773ef0da: Pulling fs layer
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:56.8871628Z 049b2237836a: Pulling fs layer
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:56.8876435Z 7b098c79e38c: Pulling fs layer
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:56.8881095Z 7aa308802868: Pulling fs layer
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:56.8886793Z d64dbdf800a2: Pulling fs layer
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:56.8887923Z 0c8d55a45c0d: Pulling fs layer
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:56.8943439Z 03cf9c337134: Pulling fs layer
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:56.8946314Z c50a02fe2f5f: Pulling fs layer
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:56.8949548Z 2710e764d89a: Pulling fs layer
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:56.8950620Z 0ace4c983c3e: Pulling fs layer
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:56.9947915Z 45604b1409ee: Download complete
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:56.9953979Z 7b098c79e38c: Download complete
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:56.9964818Z 49b40a0a623d: Download complete
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:57.1041674Z 6771773ef0da: Download complete
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:57.1093864Z ea5e741a30ce: Download complete
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:57.1146695Z 2710e764d89a: Download complete
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:57.1181913Z 0ace4c983c3e: Download complete
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:57.1262542Z 049b2237836a: Download complete
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:57.1289730Z 7aa308802868: Download complete
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:57.1339984Z 03cf9c337134: Download complete
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:57.1981670Z 99548d060f18: Download complete
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:57.2027577Z b64f280cfa2b: Download complete
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:57.2033332Z d64dbdf800a2: Download complete
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:57.2957500Z c50a02fe2f5f: Download complete
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:57.5257101Z 0c8d55a45c0d: Download complete
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:58.4937802Z e60549838c5a: Download complete
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:58.7976717Z 03cf9c337134: Pull complete
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:58.8008674Z 0c8d55a45c0d: Pull complete
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:58.9952003Z 2710e764d89a: Pull complete
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:59.0017852Z d64dbdf800a2: Pull complete
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:59.2940663Z 0ace4c983c3e: Pull complete
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:59.2960072Z b64f280cfa2b: Pull complete
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:59.2969875Z c50a02fe2f5f: Pull complete
+🗄️ DB Guard	Initialize containers	2026-02-17T22:36:59.3956264Z ea5e741a30ce: Pull complete
+🗄️ DB Guard	Initialize containers	2026-02-17T22:37:02.3917267Z 7b098c79e38c: Pull complete
+🗄️ DB Guard	Initialize containers	2026-02-17T22:37:02.3921316Z 49b40a0a623d: Pull complete
+🗄️ DB Guard	Initialize containers	2026-02-17T22:37:02.3930364Z 6771773ef0da: Pull complete
+🗄️ DB Guard	Initialize containers	2026-02-17T22:37:02.3969627Z 049b2237836a: Pull complete
+🗄️ DB Guard	Initialize containers	2026-02-17T22:37:02.4010433Z 7aa308802868: Pull complete
+🗄️ DB Guard	Initialize containers	2026-02-17T22:37:02.4017411Z e60549838c5a: Pull complete
+🗄️ DB Guard	Initialize containers	2026-02-17T22:37:02.4148410Z Digest: sha256:dafc4d8e8369da730a5ee9a320a0f0b3c6aa516f41244689c4493a27dc84472d
+🗄️ DB Guard	Initialize containers	2026-02-17T22:37:02.4152315Z Status: Downloaded newer image for postgres:15
+🗄️ DB Guard	Initialize containers	2026-02-17T22:37:02.4166660Z docker.io/library/postgres:15
+🗄️ DB Guard	Initialize containers	2026-02-17T22:37:02.4266925Z ##[command]/usr/bin/docker create --name 5aa6e80ece3041f6a2df5bc142fe0a43_postgres15_1f692a --label 2dd690 --network github_network_bf4ca2e2585843188935bc1a629bd07e --network-alias postgres -p 5432:5432 --health-cmd "pg_isready -U postgres" --health-interval 10s --health-timeout 5s --health-retries 5 -e "POSTGRES_USER=postgres" -e "POSTGRES_PASSWORD=password" -e "POSTGRES_DB=ironforge_test" -e GITHUB_ACTIONS=true -e CI=true postgres:15
+🗄️ DB Guard	Initialize containers	2026-02-17T22:37:05.0523202Z aaafc6e8c9383de8e1de21dde14132373241d699e0d2d3ef85fe61267994256b
+🗄️ DB Guard	Initialize containers	2026-02-17T22:37:05.0558497Z ##[command]/usr/bin/docker start aaafc6e8c9383de8e1de21dde14132373241d699e0d2d3ef85fe61267994256b
+🗄️ DB Guard	Initialize containers	2026-02-17T22:37:05.3000319Z aaafc6e8c9383de8e1de21dde14132373241d699e0d2d3ef85fe61267994256b
+🗄️ DB Guard	Initialize containers	2026-02-17T22:37:05.3066941Z ##[command]/usr/bin/docker ps --all --filter id=aaafc6e8c9383de8e1de21dde14132373241d699e0d2d3ef85fe61267994256b --filter status=running --no-trunc --format "{{.ID}} {{.Status}}"
+🗄️ DB Guard	Initialize containers	2026-02-17T22:37:05.3496849Z aaafc6e8c9383de8e1de21dde14132373241d699e0d2d3ef85fe61267994256b Up Less than a second (health: starting)
+🗄️ DB Guard	Initialize containers	2026-02-17T22:37:05.3535418Z ##[command]/usr/bin/docker port aaafc6e8c9383de8e1de21dde14132373241d699e0d2d3ef85fe61267994256b
+🗄️ DB Guard	Initialize containers	2026-02-17T22:37:05.3756980Z 5432/tcp -> 0.0.0.0:5432
+🗄️ DB Guard	Initialize containers	2026-02-17T22:37:05.3762059Z 5432/tcp -> [::]:5432
+🗄️ DB Guard	Initialize containers	2026-02-17T22:37:05.3840611Z ##[endgroup]
+🗄️ DB Guard	Initialize containers	2026-02-17T22:37:05.3852335Z ##[group]Waiting for all services to be ready
+🗄️ DB Guard	Initialize containers	2026-02-17T22:37:05.3870187Z ##[command]/usr/bin/docker inspect --format="{{if .Config.Healthcheck}}{{print .State.Health.Status}}{{end}}" aaafc6e8c9383de8e1de21dde14132373241d699e0d2d3ef85fe61267994256b
+🗄️ DB Guard	Initialize containers	2026-02-17T22:37:05.4102325Z starting
+🗄️ DB Guard	Initialize containers	2026-02-17T22:37:05.4144735Z postgres service is starting, waiting 2 seconds before checking again.
+🗄️ DB Guard	Initialize containers	2026-02-17T22:37:07.4149081Z ##[command]/usr/bin/docker inspect --format="{{if .Config.Healthcheck}}{{print .State.Health.Status}}{{end}}" aaafc6e8c9383de8e1de21dde14132373241d699e0d2d3ef85fe61267994256b
+🗄️ DB Guard	Initialize containers	2026-02-17T22:37:07.4306481Z starting
+🗄️ DB Guard	Initialize containers	2026-02-17T22:37:07.4322184Z postgres service is starting, waiting 3 seconds before checking again.
+🗄️ DB Guard	Initialize containers	2026-02-17T22:37:11.2609539Z ##[command]/usr/bin/docker inspect --format="{{if .Config.Healthcheck}}{{print .State.Health.Status}}{{end}}" aaafc6e8c9383de8e1de21dde14132373241d699e0d2d3ef85fe61267994256b
+🗄️ DB Guard	Initialize containers	2026-02-17T22:37:11.2773481Z starting
+🗄️ DB Guard	Initialize containers	2026-02-17T22:37:11.2796158Z postgres service is starting, waiting 8 seconds before checking again.
+🗄️ DB Guard	Initialize containers	2026-02-17T22:37:19.7927151Z ##[command]/usr/bin/docker inspect --format="{{if .Config.Healthcheck}}{{print .State.Health.Status}}{{end}}" aaafc6e8c9383de8e1de21dde14132373241d699e0d2d3ef85fe61267994256b
+🗄️ DB Guard	Initialize containers	2026-02-17T22:37:19.8098619Z healthy
+🗄️ DB Guard	Initialize containers	2026-02-17T22:37:19.8120514Z postgres service is healthy.
+🗄️ DB Guard	Initialize containers	2026-02-17T22:37:19.8121290Z ##[endgroup]
+🗄️ DB Guard	Run actions/checkout@v4	﻿2026-02-17T22:37:19.8377342Z ##[group]Run actions/checkout@v4
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.8377832Z with:
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.8378345Z   token: ***
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.8378570Z   repository: Techlemariam/IronForge
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.8378835Z   ssh-strict: true
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.8379025Z   ssh-user: git
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.8379251Z   persist-credentials: true
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.8379480Z   clean: true
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.8379921Z   sparse-checkout-cone-mode: true
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.8380513Z   fetch-depth: 1
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.8380992Z   fetch-tags: false
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.8381207Z   show-progress: true
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.8381410Z   lfs: false
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.8381597Z   submodules: false
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.8381831Z   set-safe-directory: true
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.8382228Z env:
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.8382930Z   DATABASE_URL: ***
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.8383505Z   DIRECT_URL: ***
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.8383836Z   NEXT_PUBLIC_SUPABASE_URL: ***
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.8385185Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.8385436Z   SKIP_ENV_VALIDATION: true
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.8386014Z ##[endgroup]
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.9600578Z Syncing repository: Techlemariam/IronForge
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.9603225Z ##[group]Getting Git version info
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.9604190Z Working directory is '/home/runner/work/IronForge/IronForge'
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.9606004Z [command]/usr/bin/git version
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.9615316Z git version 2.52.0
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.9646261Z ##[endgroup]
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.9661051Z Temporarily overriding HOME='/home/runner/work/_temp/62792fa1-32b0-4bcc-9c06-b546dcbd4530' before making global git config changes
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.9662951Z Adding repository directory to the temporary git global config as a safe directory
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.9680925Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/IronForge/IronForge
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.9733114Z Deleting the contents of '/home/runner/work/IronForge/IronForge'
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.9735983Z ##[group]Initializing the repository
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.9740962Z [command]/usr/bin/git init /home/runner/work/IronForge/IronForge
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.9848122Z hint: Using 'master' as the name for the initial branch. This default branch name
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.9857294Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.9858141Z hint: to use in all of your new repositories, which will suppress this warning,
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.9858964Z hint: call:
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.9859253Z hint:
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.9859742Z hint: 	git config --global init.defaultBranch <name>
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.9860348Z hint:
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.9860801Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.9862417Z hint: 'development'. The just-created branch can be renamed via this command:
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.9863028Z hint:
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.9863323Z hint: 	git branch -m <name>
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.9863668Z hint:
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.9864147Z hint: Disable this message with "git config set advice.defaultBranchName false"
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.9864970Z Initialized empty Git repository in /home/runner/work/IronForge/IronForge/.git/
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.9866877Z [command]/usr/bin/git remote add origin https://github.com/Techlemariam/IronForge
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.9915350Z ##[endgroup]
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.9916675Z ##[group]Disabling automatic garbage collection
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.9917269Z [command]/usr/bin/git config --local gc.auto 0
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.9954885Z ##[endgroup]
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.9956048Z ##[group]Setting up auth
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:19.9962766Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:20.0002311Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:20.0389616Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:20.0430423Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:20.0720631Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:20.0773651Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:20.1077434Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:20.1124596Z ##[endgroup]
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:20.1125852Z ##[group]Fetching the repository
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:20.1136852Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +2ab55e2237a24d514ebaf0d8124821e704d09412:refs/remotes/origin/night-shift/2026-02-17
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:20.8477168Z From https://github.com/Techlemariam/IronForge
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:20.8486825Z  * [new ref]         2ab55e2237a24d514ebaf0d8124821e704d09412 -> origin/night-shift/2026-02-17
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:20.8546873Z ##[endgroup]
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:20.8547945Z ##[group]Determining the checkout info
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:20.8549504Z ##[endgroup]
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:20.8550202Z [command]/usr/bin/git sparse-checkout disable
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:20.8598962Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:20.8637462Z ##[group]Checking out the ref
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:20.8642288Z [command]/usr/bin/git checkout --progress --force -B night-shift/2026-02-17 refs/remotes/origin/night-shift/2026-02-17
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:21.0553201Z Switched to a new branch 'night-shift/2026-02-17'
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:21.0557252Z branch 'night-shift/2026-02-17' set up to track 'origin/night-shift/2026-02-17'.
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:21.0576577Z ##[endgroup]
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:21.0646597Z [command]/usr/bin/git log -1 --format=%H
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T22:37:21.0666569Z 2ab55e2237a24d514ebaf0d8124821e704d09412
+🗄️ DB Guard	Setup Pipeline	﻿2026-02-17T22:37:21.1033786Z Prepare all required actions
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.1034261Z Getting action download info
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.2648237Z Download action repository 'pnpm/action-setup@v4' (SHA:41ff72655975bd51cab0327fa583b6e92b6d3061)
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.5833081Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.7161360Z ##[group]Run ./.github/actions/setup-pipeline
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.7161661Z with:
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.7161855Z   node-version: 22
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.7162064Z   pnpm-version: 9.15.0
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.7162268Z env:
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.7163053Z   DATABASE_URL: ***
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.7163629Z   DIRECT_URL: ***
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.7163948Z   NEXT_PUBLIC_SUPABASE_URL: ***
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.7165292Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.7165892Z   SKIP_ENV_VALIDATION: true
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.7166185Z ##[endgroup]
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.7307937Z ##[group]Run actions/checkout@v4
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.7308206Z with:
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.7308484Z   fetch-depth: 2
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.7308786Z   repository: Techlemariam/IronForge
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.7309180Z   token: ***
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.7309453Z   ssh-strict: true
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.7309695Z   ssh-user: git
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.7309908Z   persist-credentials: true
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.7310455Z   clean: true
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.7310667Z   sparse-checkout-cone-mode: true
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.7310919Z   fetch-tags: false
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.7311232Z   show-progress: true
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.7311442Z   lfs: false
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.7311628Z   submodules: false
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.7311823Z   set-safe-directory: true
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.7312159Z env:
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.7312880Z   DATABASE_URL: ***
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.7313474Z   DIRECT_URL: ***
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.7313923Z   NEXT_PUBLIC_SUPABASE_URL: ***
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.7315672Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.7315940Z   SKIP_ENV_VALIDATION: true
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.7316266Z ##[endgroup]
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.8425857Z Syncing repository: Techlemariam/IronForge
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.8426779Z ##[group]Getting Git version info
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.8427304Z Working directory is '/home/runner/work/IronForge/IronForge'
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.8473764Z [command]/usr/bin/git version
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.8519709Z git version 2.52.0
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.8547623Z ##[endgroup]
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.8562788Z Temporarily overriding HOME='/home/runner/work/_temp/a06babee-acba-4be6-bd5b-9af2723934a7' before making global git config changes
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.8566188Z Adding repository directory to the temporary git global config as a safe directory
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.8588558Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/IronForge/IronForge
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.8636894Z [command]/usr/bin/git config --local --get remote.origin.url
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.8666475Z https://github.com/Techlemariam/IronForge
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.8685877Z ##[group]Removing previously created refs, to avoid conflicts
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.8692505Z [command]/usr/bin/git rev-parse --symbolic-full-name --verify --quiet HEAD
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.8776700Z refs/heads/night-shift/2026-02-17
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.8778674Z [command]/usr/bin/git checkout --detach
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.9342187Z HEAD is now at 2ab55e2 fix: update component imports for factory refactor
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.9432406Z [command]/usr/bin/git branch --delete --force night-shift/2026-02-17
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.9483762Z Deleted branch night-shift/2026-02-17 (was 2ab55e2).
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.9562110Z ##[endgroup]
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:21.9562562Z [command]/usr/bin/git submodule status
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:22.0008477Z ##[group]Cleaning the repository
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:22.0009048Z [command]/usr/bin/git clean -ffdx
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:22.0235731Z [command]/usr/bin/git reset --hard HEAD
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:22.1148379Z HEAD is now at 2ab55e2 fix: update component imports for factory refactor
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:22.1178386Z ##[endgroup]
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:22.1179179Z ##[group]Disabling automatic garbage collection
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:22.1180972Z [command]/usr/bin/git config --local gc.auto 0
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:22.1257745Z ##[endgroup]
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:22.1258571Z ##[group]Setting up auth
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:22.1259296Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:22.1328357Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:22.1783929Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:22.1831701Z http.https://github.com/.extraheader
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:22.1852390Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:22.1914264Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:22.2372026Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:22.2442170Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:22.2897035Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:22.2966503Z ##[endgroup]
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:22.2982525Z ##[group]Fetching the repository
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:22.2990530Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=2 origin +2ab55e2237a24d514ebaf0d8124821e704d09412:refs/remotes/origin/night-shift/2026-02-17
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:22.5126660Z ##[endgroup]
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:22.5127267Z ##[group]Determining the checkout info
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:22.5127885Z ##[endgroup]
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:22.5137206Z [command]/usr/bin/git sparse-checkout disable
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:22.5251385Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:22.5311830Z ##[group]Checking out the ref
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:22.5327127Z [command]/usr/bin/git checkout --progress --force -B night-shift/2026-02-17 refs/remotes/origin/night-shift/2026-02-17
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:22.5540806Z Switched to a new branch 'night-shift/2026-02-17'
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:22.5542087Z branch 'night-shift/2026-02-17' set up to track 'origin/night-shift/2026-02-17'.
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:22.5566542Z ##[endgroup]
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:22.5646593Z [command]/usr/bin/git log -1 --format=%H
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:22.5704812Z 2ab55e2237a24d514ebaf0d8124821e704d09412
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:22.5893518Z ##[group]Run pnpm/action-setup@v4
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:22.5893804Z with:
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:22.5893990Z   version: 9.15.0
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:22.5894195Z   dest: ~/setup-pnpm
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:22.5894402Z   run_install: null
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:22.5894612Z   package_json_file: package.json
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:22.5894840Z   standalone: false
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:22.5895023Z env:
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:22.5896018Z   DATABASE_URL: ***
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:22.5896585Z   DIRECT_URL: ***
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:22.5896918Z   NEXT_PUBLIC_SUPABASE_URL: ***
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:22.5898273Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:22.5898550Z   SKIP_ENV_VALIDATION: true
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:22.5898801Z ##[endgroup]
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:22.6508766Z ##[group]Running self-installer...
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:23.2467886Z Progress: resolved 1, reused 0, downloaded 0, added 0
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:23.2594664Z Packages: +1
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:23.2599795Z +
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:23.6847427Z Progress: resolved 1, reused 0, downloaded 1, added 1, done
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:23.7163573Z 
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:23.7166797Z dependencies:
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:23.7167917Z + pnpm 9.15.0 (10.30.0 is available)
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:23.7168230Z 
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:23.7192808Z Done in 873ms
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:23.7351402Z ##[endgroup]
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:23.7355103Z Installation Completed!
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:23.7482213Z ##[group]Run actions/setup-node@v4
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:23.7482829Z with:
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:23.7509024Z   node-version: 22
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:23.7509325Z   cache: pnpm
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:23.7509607Z   always-auth: false
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:23.7509916Z   check-latest: false
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:23.7510428Z   token: ***
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:23.7510701Z env:
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:23.7511817Z   DATABASE_URL: ***
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:23.7512715Z   DIRECT_URL: ***
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:23.7513216Z   NEXT_PUBLIC_SUPABASE_URL: ***
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:23.7514727Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:23.7515002Z   SKIP_ENV_VALIDATION: true
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:23.7515286Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:23.7515819Z ##[endgroup]
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:23.9404137Z Found in cache @ /opt/hostedtoolcache/node/22.22.0/x64
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:23.9410378Z ##[group]Environment details
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:24.3451276Z node: v22.22.0
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:24.3453865Z npm: 10.9.4
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:24.3456621Z yarn: 1.22.22
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:24.3458498Z ##[endgroup]
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:24.3488518Z [command]/home/runner/setup-pnpm/node_modules/.bin/pnpm store path --silent
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:24.7611660Z /home/runner/setup-pnpm/node_modules/.bin/store/v3
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:24.8840867Z pnpm cache is not found
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:24.8985074Z ##[group]Run pnpm install --frozen-lockfile
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:24.8986179Z [36;1mpnpm install --frozen-lockfile[0m
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:24.9052130Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:24.9052502Z env:
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:24.9053558Z   DATABASE_URL: ***
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:24.9054162Z   DIRECT_URL: ***
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:24.9054493Z   NEXT_PUBLIC_SUPABASE_URL: ***
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:24.9056038Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:24.9056303Z   SKIP_ENV_VALIDATION: true
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:24.9056587Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:24.9056886Z ##[endgroup]
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:25.4632787Z Scope: all 4 workspace projects
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:25.5772065Z Lockfile is up to date, resolution step is skipped
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:25.7326788Z Progress: resolved 1, reused 0, downloaded 0, added 0
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:25.9763376Z Packages: +1671
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:25.9768994Z ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:26.7324245Z Progress: resolved 1671, reused 0, downloaded 10, added 0
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:27.7327901Z Progress: resolved 1671, reused 0, downloaded 141, added 131
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:28.7328820Z Progress: resolved 1671, reused 0, downloaded 254, added 248
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:29.7336603Z Progress: resolved 1671, reused 0, downloaded 277, added 266
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:30.7336920Z Progress: resolved 1671, reused 0, downloaded 301, added 291
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:31.7344089Z Progress: resolved 1671, reused 0, downloaded 393, added 380
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:32.7436972Z Progress: resolved 1671, reused 0, downloaded 420, added 413
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:33.7466033Z Progress: resolved 1671, reused 0, downloaded 487, added 478
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:34.7466196Z Progress: resolved 1671, reused 0, downloaded 552, added 542
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:35.7557493Z Progress: resolved 1671, reused 0, downloaded 587, added 573
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:36.7597271Z Progress: resolved 1671, reused 0, downloaded 672, added 662
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:37.7602100Z Progress: resolved 1671, reused 0, downloaded 686, added 676
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:38.7619549Z Progress: resolved 1671, reused 0, downloaded 689, added 678
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:39.7623235Z Progress: resolved 1671, reused 0, downloaded 691, added 679
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:40.7625221Z Progress: resolved 1671, reused 0, downloaded 692, added 682
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:41.7623761Z Progress: resolved 1671, reused 0, downloaded 721, added 711
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:42.7628975Z Progress: resolved 1671, reused 0, downloaded 742, added 734
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:43.7639524Z Progress: resolved 1671, reused 0, downloaded 795, added 790
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:44.7684557Z Progress: resolved 1671, reused 0, downloaded 893, added 889
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:45.7875858Z Progress: resolved 1671, reused 0, downloaded 1004, added 1002
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:46.7771486Z Progress: resolved 1671, reused 0, downloaded 1068, added 1059
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:47.7780901Z Progress: resolved 1671, reused 0, downloaded 1156, added 1156
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:48.7784405Z Progress: resolved 1671, reused 0, downloaded 1223, added 1209
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:49.7792240Z Progress: resolved 1671, reused 0, downloaded 1263, added 1255
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:50.7801612Z Progress: resolved 1671, reused 0, downloaded 1448, added 1447
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:51.7809121Z Progress: resolved 1671, reused 0, downloaded 1512, added 1503
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:52.7817944Z Progress: resolved 1671, reused 0, downloaded 1607, added 1602
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:53.7830313Z Progress: resolved 1671, reused 0, downloaded 1627, added 1614
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:54.4284086Z Progress: resolved 1671, reused 0, downloaded 1669, added 1671, done
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:55.2325885Z .../node_modules/@prisma/engines postinstall$ node scripts/postinstall.js
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:55.2550688Z .../sharp@0.34.5/node_modules/sharp install$ node install/check.js || npm run build
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:55.2559106Z .../node_modules/unrs-resolver postinstall$ napi-postinstall unrs-resolver 1.11.1 check
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:55.2572181Z .../node_modules/msw postinstall$ node -e "import('./config/scripts/postinstall.js').catch(() => void 0)"
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:55.2587827Z .../esbuild@0.25.0/node_modules/esbuild postinstall$ node install.js
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:55.4543641Z .../node_modules/unrs-resolver postinstall: Done
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:55.4627436Z .../node_modules/msw postinstall: Done
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:55.5120000Z .../node_modules/protobufjs postinstall$ node scripts/postinstall
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:55.6117213Z .../esbuild@0.25.0/node_modules/esbuild postinstall: Done
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:55.6577133Z .../node_modules/protobufjs postinstall: Done
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:55.7062541Z .../sharp@0.34.5/node_modules/sharp install: Done
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:55.7120937Z .../node_modules/@sentry/cli postinstall$ node ./scripts/install.js
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:55.9857965Z .../node_modules/@sentry/cli postinstall: Done
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.3158777Z .../node_modules/@prisma/engines postinstall: Done
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.3810296Z .../node_modules/prisma preinstall$ node scripts/preinstall-entry.js
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.4347717Z .../node_modules/prisma preinstall: Done
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7921981Z 
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7927903Z dependencies:
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7941159Z + @ai-sdk/google 3.0.26
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7942584Z + @ai-sdk/react 3.0.84
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7944026Z + @capacitor/android 8.1.0
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7944473Z + @capacitor/cli 8.1.0
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7944844Z + @capacitor/core 8.1.0
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7945227Z + @google/genai 1.41.0
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7945855Z + @mediapipe/tasks-vision 0.10.32
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7947120Z + @neondatabase/serverless 1.0.2
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7947543Z + @prisma/adapter-neon 7.4.0
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7947890Z + @prisma/adapter-pg 7.4.0
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7948309Z + @prisma/client 7.4.0
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7948656Z + @radix-ui/react-avatar 1.1.11
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7949049Z + @radix-ui/react-dialog 1.1.15
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7949408Z + @radix-ui/react-label 2.1.8
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7949781Z + @radix-ui/react-popover 1.1.15
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7950161Z + @radix-ui/react-progress 1.1.8
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7950544Z + @radix-ui/react-scroll-area 1.2.10
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7950942Z + @radix-ui/react-select 2.2.6
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7951297Z + @radix-ui/react-slider 1.3.6
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7951636Z + @radix-ui/react-slot 1.2.4
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7952003Z + @radix-ui/react-tabs 1.1.13
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7952382Z + @react-three/drei 10.7.7
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7952736Z + @react-three/fiber 9.5.0
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7953089Z + @remotion/cli 4.0.421
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7953414Z + @sentry/nextjs 10.38.0
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7953750Z + @serwist/next 9.5.5
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7954094Z + @supabase/ssr 0.8.0
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7954466Z + @supabase/supabase-js 2.95.3
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7954915Z + @types/canvas-confetti 1.9.0
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7955301Z + @types/howler 2.2.12
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7962310Z + @types/web-push 3.6.4
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7962649Z + ai 6.0.82
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7962921Z + axios 1.13.5
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7963244Z + canvas-confetti 1.9.4
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7963666Z + class-variance-authority 0.7.1
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7964051Z + clsx 2.1.1
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7964353Z + date-fns 4.1.0
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7964695Z + framer-motion 12.34.0
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7965012Z + h3-js 4.4.0
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7965309Z + howler 2.2.4
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7965884Z + import-in-the-middle 3.0.0
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7966327Z + lucide-react 0.563.0
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7966685Z + maplibre-gl 5.18.0
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7967020Z + next 16.1.6
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7967311Z + pg 8.18.0
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7967566Z + pino 10.3.1
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7967877Z + pino-pretty 13.1.3
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7968216Z + qrcode.react 4.2.0
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7968524Z + react 19.2.4
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7968833Z + react-dom 19.2.4
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7969172Z + react-dropzone 15.0.0
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7969537Z + react-player 3.4.0
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7969950Z + reactflow 11.11.4
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7970243Z + recharts 3.7.0
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7970560Z + remotion 4.0.421
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7970917Z + require-in-the-middle 8.0.1
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7971297Z + serwist 9.5.5
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7971907Z + sonner 2.0.7
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7972235Z + tailwind-merge 3.4.0
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7972619Z + tailwindcss-animate 1.0.7
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7972976Z + three 0.182.0
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7973275Z + web-push 3.6.7
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7973571Z + zod 4.3.6
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7973849Z + zustand 5.0.11
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7974116Z 
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7974257Z devDependencies:
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7974669Z + @chromatic-com/storybook 5.0.1
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7975087Z + @eslint/compat 2.0.2
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7975653Z + @eslint/eslintrc 3.3.3
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7976006Z + @lhci/cli 0.15.1
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7976342Z + @playwright/test 1.58.2
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7976785Z + @storybook/addon-a11y 10.2.8
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7977231Z + @storybook/addon-docs 10.2.8
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7977670Z + @storybook/addon-onboarding 10.2.8
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7978134Z + @storybook/addon-vitest 10.2.8
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7978584Z + @storybook/nextjs-vite 10.2.8
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7978983Z + @tailwindcss/postcss 4.1.18
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7979381Z + @testing-library/dom 10.4.1
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7979801Z + @testing-library/react 16.3.2
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7980203Z + @types/geojson 7946.0.16
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7980563Z + @types/node 25.2.3
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7980901Z + @types/pg 8.16.0
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7981208Z + @types/react 19.2.14
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7981534Z + @types/react-dom 19.2.3
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7981882Z + @types/three 0.182.0
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7982218Z + @types/web-bluetooth 0.0.21
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7982570Z + @types/ws 8.18.1
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7982961Z + @typescript-eslint/eslint-plugin 8.55.0
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7983465Z + @typescript-eslint/parser 8.55.0
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7983887Z + @vitejs/plugin-react 5.1.4
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7984352Z + @vitest/browser-playwright 4.0.18
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7984778Z + @vitest/coverage-v8 4.0.18
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7985157Z + autoprefixer 10.4.24
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7985727Z + chromatic 15.1.0
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7986030Z + dotenv 17.2.4
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7986355Z + dotenv-cli 11.0.0
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7986653Z + eslint 10.0.0
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7986990Z + eslint-config-next 16.1.6
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7987437Z + eslint-plugin-storybook 10.2.8
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7987796Z + husky 9.1.7
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7988075Z + jsdom 28.0.0
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7988352Z + magicast 0.5.2
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7988643Z + msw 2.12.10
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7988941Z + playwright 1.58.2
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7989234Z + postcss 8.5.6
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7989520Z + prisma 7.4.0
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7989819Z + storybook 10.2.8
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7990133Z + tailwindcss 4.1.18
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7990441Z + tsx 4.21.0
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7990714Z + turbo 2.8.7
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7991015Z + typedoc 0.28.16
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7991725Z + typedoc-plugin-markdown 4.10.0
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7992117Z + typescript 5.9.3
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7992445Z + vite 7.3.1
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7992714Z + vitest 4.0.18
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7992986Z + ws 8.19.0
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.7993157Z 
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:56.8510453Z . postinstall$ prisma generate
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:58.0250270Z . postinstall: Loaded Prisma config from prisma.config.ts.
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:58.1977918Z . postinstall: Prisma schema loaded from prisma/schema.prisma.
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:58.2068779Z . postinstall: warn Preview feature "driverAdapters" is deprecated. The functionality can be used without specifying it as a preview feature.
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:59.5476868Z . postinstall: ✔ Generated Prisma Client (v7.4.0) to ./node_modules/.pnpm/@prisma+client@7.4.0_prisma@7.4.0_@types+react@19.2.14_magicast@0.5.2_react-dom@19.2.4_react@_kbihlyeorb7my7bafhyofzhtla/node_modules/@prisma/client in 800ms
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:59.5478875Z . postinstall: Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:59.5743470Z . postinstall: Done
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:59.5747242Z . prepare$ husky
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:59.6329362Z . prepare: Done
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:59.6344198Z Done in 34.6s
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:59.7130180Z ##[group]Run npx prisma generate
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:59.7130779Z [36;1mnpx prisma generate[0m
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:59.7186324Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:59.7186669Z env:
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:59.7187403Z   DATABASE_URL: ***
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:59.7187970Z   DIRECT_URL: ***
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:59.7188304Z   NEXT_PUBLIC_SUPABASE_URL: ***
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:59.7189666Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:59.7189930Z   SKIP_ENV_VALIDATION: true
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:59.7190212Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:37:59.7190508Z ##[endgroup]
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:38:01.2508092Z Loaded Prisma config from prisma.config.ts.
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:38:01.2526086Z 
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:38:01.4311746Z Prisma schema loaded from prisma/schema.prisma.
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:38:01.4447459Z warn Preview feature "driverAdapters" is deprecated. The functionality can be used without specifying it as a preview feature.
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:38:02.8788274Z 
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:38:02.8792574Z ✔ Generated Prisma Client (v7.4.0) to ./node_modules/.pnpm/@prisma+client@7.4.0_prisma@7.4.0_@types+react@19.2.14_magicast@0.5.2_react-dom@19.2.4_react@_kbihlyeorb7my7bafhyofzhtla/node_modules/@prisma/client in 906ms
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:38:02.8793971Z 
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:38:02.8796192Z Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:38:02.8796931Z 
+🗄️ DB Guard	Setup Pipeline	2026-02-17T22:38:02.8798847Z 
+🗄️ DB Guard	Create Shadow Database	﻿2026-02-17T22:38:02.9613724Z ##[group]Run until pg_isready -h 127.0.0.1 -U postgres; do sleep 1; done
+🗄️ DB Guard	Create Shadow Database	2026-02-17T22:38:02.9614255Z [36;1muntil pg_isready -h 127.0.0.1 -U postgres; do sleep 1; done[0m
+🗄️ DB Guard	Create Shadow Database	2026-02-17T22:38:02.9614785Z [36;1mPGPASSWORD=password psql -h 127.0.0.1 -U postgres -c "CREATE DATABASE ironforge_shadow;"[0m
+🗄️ DB Guard	Create Shadow Database	2026-02-17T22:38:02.9671100Z shell: /usr/bin/bash -e {0}
+🗄️ DB Guard	Create Shadow Database	2026-02-17T22:38:02.9671359Z env:
+🗄️ DB Guard	Create Shadow Database	2026-02-17T22:38:02.9672101Z   DATABASE_URL: ***
+🗄️ DB Guard	Create Shadow Database	2026-02-17T22:38:02.9672673Z   DIRECT_URL: ***
+🗄️ DB Guard	Create Shadow Database	2026-02-17T22:38:02.9673005Z   NEXT_PUBLIC_SUPABASE_URL: ***
+🗄️ DB Guard	Create Shadow Database	2026-02-17T22:38:02.9674349Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+🗄️ DB Guard	Create Shadow Database	2026-02-17T22:38:02.9674631Z   SKIP_ENV_VALIDATION: true
+🗄️ DB Guard	Create Shadow Database	2026-02-17T22:38:02.9674909Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+🗄️ DB Guard	Create Shadow Database	2026-02-17T22:38:02.9675203Z ##[endgroup]
+🗄️ DB Guard	Create Shadow Database	2026-02-17T22:38:03.0231567Z 127.0.0.1:5432 - accepting connections
+🗄️ DB Guard	Create Shadow Database	2026-02-17T22:38:03.1389378Z CREATE DATABASE
+🗄️ DB Guard	Fix Drift (Conditioned)	﻿2026-02-17T22:38:03.1453447Z ##[group]Run git config --global user.name 'CI Bot'
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:03.1453862Z [36;1mgit config --global user.name 'CI Bot'[0m
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:03.1454203Z [36;1mgit config --global user.email 'ci@ironforge.gg'[0m
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:03.1454613Z [36;1myes | npx prisma migrate dev --name fix_ci_drift --create-only[0m
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:03.1454977Z [36;1mgit add prisma/migrations[0m
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:03.1455353Z [36;1mgit commit -m "chore: fix migrations via CI [skip ci]" || echo "No changes"[0m
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:03.1456119Z [36;1mgit push[0m
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:03.1510337Z shell: /usr/bin/bash -e {0}
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:03.1510604Z env:
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:03.1511111Z   DATABASE_URL: ***127.0.0.1:5432/ironforge_test?schema=public
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:03.1511675Z   DIRECT_URL: ***127.0.0.1:5432/ironforge_test?schema=public
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:03.1512136Z   NEXT_PUBLIC_SUPABASE_URL: ***
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:03.1513485Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:03.1513748Z   SKIP_ENV_VALIDATION: true
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:03.1514083Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:03.1514394Z   PRISMA_CLI_SKIP_INTERACTIVE: true
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:03.1514636Z ##[endgroup]
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:04.4916236Z Loaded Prisma config from prisma.config.ts.
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:04.4921629Z 
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:04.6740588Z Prisma schema loaded from prisma/schema.prisma.
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:04.6830327Z Datasource "db": PostgreSQL database "ironforge_test", schema "public" at "127.0.0.1:5432"
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:04.6832804Z 
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:05.6038888Z Applying migration `20251229190624_add_battle_pass`
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:05.7487240Z Applying migration `20251230215137_add_pocket_casts_fields`
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:05.9567344Z Applying migration `20251230225914_add_combat_session_v2`
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:05.9685881Z Applying migration `20251231161514_add_territory_conquest`
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:05.9877719Z Applying migration `20260101120000_fix_drift`
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:05.9947803Z Applying migration `20260102000000_add_titan_power_rating`
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:05.9998292Z Applying migration `20260102170000_sync_schema`
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.0044116Z Applying migration `20260102224941_add_onboarding_completed_field`
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.0080594Z Applying migration `20260104193000_sync_schema_drift`
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.0316482Z Applying migration `20260104201000_add_pvp_tables`
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.0626372Z Applying migration `20260105001214_add_friendship_model`
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.0711931Z Applying migration `20260106183642_add_cardio_duel_duration_elevation`
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.0744680Z Applying migration `20260108200145_sync_wardens_manifest`
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.0910489Z Applying migration `20260110234000_add_coop_tables`
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.1024840Z Applying migration `20260212192200_add_factory_models`
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.1099399Z Applying migration `20260215200000_resolve_factory_drift`
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.1156718Z Applying migration `20260217110000_add_territory_contest`
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.1244141Z 
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.1246643Z The following migration(s) have been applied:
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.1247193Z 
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.1247364Z migrations/
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.1248081Z   └─ 20251229190624_add_battle_pass/
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.1248526Z     └─ migration.sql
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.1248997Z   └─ 20251230215137_add_pocket_casts_fields/
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.1249459Z     └─ migration.sql
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.1249910Z   └─ 20251230225914_add_combat_session_v2/
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.1250351Z     └─ migration.sql
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.1250797Z   └─ 20251231161514_add_territory_conquest/
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.1251240Z     └─ migration.sql
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.1251633Z   └─ 20260101120000_fix_drift/
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.1252024Z     └─ migration.sql
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.1252486Z   └─ 20260102000000_add_titan_power_rating/
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.1252929Z     └─ migration.sql
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.1253214Z   └─ 20260102170000_sync_schema/
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.1253463Z     └─ migration.sql
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.1253767Z   └─ 20260102224941_add_onboarding_completed_field/
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.1254473Z     └─ migration.sql
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.1254749Z   └─ 20260104193000_sync_schema_drift/
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.1255028Z     └─ migration.sql
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.1255293Z   └─ 20260104201000_add_pvp_tables/
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.1258037Z     └─ migration.sql
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.1258599Z   └─ 20260105001214_add_friendship_model/
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.1259065Z     └─ migration.sql
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.1262438Z   └─ 20260106183642_add_cardio_duel_duration_elevation/
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.1266927Z     └─ migration.sql
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.1268206Z   └─ 20260108200145_sync_wardens_manifest/
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.1268529Z     └─ migration.sql
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.1268817Z   └─ 20260110234000_add_coop_tables/
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.1269141Z     └─ migration.sql
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.1269411Z   └─ 20260212192200_add_factory_models/
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.1269688Z     └─ migration.sql
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.1269961Z   └─ 20260215200000_resolve_factory_drift/
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.1270239Z     └─ migration.sql
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.1270530Z   └─ 20260217110000_add_territory_contest/
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.1270800Z     └─ migration.sql
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.6879559Z 
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.6881168Z ⚠️  Warnings for the current datasource:
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.6881898Z 
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.6890527Z   • A unique constraint covering the columns `[name]` on the table `Territory` will be added. If there are existing duplicate values, this will fail.
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.6892521Z 
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.6939019Z Error: Prisma Migrate has detected that the environment is non-interactive, which is not supported.
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.6939712Z 
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.6940487Z `prisma migrate dev` is an interactive command designed to create new migrations and evolve the database in development.
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.6942317Z To apply existing migrations in deployments, use prisma migrate deploy.
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.6943003Z See https://pris.ly/d/migrate-deploy
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.7232433Z yes: standard output: Broken pipe
+🗄️ DB Guard	Fix Drift (Conditioned)	2026-02-17T22:38:06.7250099Z ##[error]Process completed with exit code 1.
+🗄️ DB Guard	Post Setup Pipeline	﻿2026-02-17T22:38:06.7354400Z Post job cleanup.
+🗄️ DB Guard	Post Setup Pipeline	2026-02-17T22:38:06.7387439Z Post job cleanup.
+🗄️ DB Guard	Post Setup Pipeline	2026-02-17T22:38:06.7963816Z Pruning is unnecessary.
+🗄️ DB Guard	Post Setup Pipeline	2026-02-17T22:38:06.8072149Z Post job cleanup.
+🗄️ DB Guard	Post Setup Pipeline	2026-02-17T22:38:06.9095196Z [command]/usr/bin/git version
+🗄️ DB Guard	Post Setup Pipeline	2026-02-17T22:38:06.9146461Z git version 2.52.0
+🗄️ DB Guard	Post Setup Pipeline	2026-02-17T22:38:06.9198152Z Copying '/home/runner/.gitconfig' to '/home/runner/work/_temp/30702c88-4415-4daf-930d-b8bf58dae7dc/.gitconfig'
+🗄️ DB Guard	Post Setup Pipeline	2026-02-17T22:38:06.9211826Z Temporarily overriding HOME='/home/runner/work/_temp/30702c88-4415-4daf-930d-b8bf58dae7dc' before making global git config changes
+🗄️ DB Guard	Post Setup Pipeline	2026-02-17T22:38:06.9213420Z Adding repository directory to the temporary git global config as a safe directory
+🗄️ DB Guard	Post Setup Pipeline	2026-02-17T22:38:06.9219902Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/IronForge/IronForge
+🗄️ DB Guard	Post Setup Pipeline	2026-02-17T22:38:06.9279691Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+🗄️ DB Guard	Post Setup Pipeline	2026-02-17T22:38:06.9333915Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+🗄️ DB Guard	Post Setup Pipeline	2026-02-17T22:38:06.9658636Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+🗄️ DB Guard	Post Setup Pipeline	2026-02-17T22:38:06.9688518Z http.https://github.com/.extraheader
+🗄️ DB Guard	Post Setup Pipeline	2026-02-17T22:38:06.9705140Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+🗄️ DB Guard	Post Setup Pipeline	2026-02-17T22:38:06.9746196Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+🗄️ DB Guard	Post Setup Pipeline	2026-02-17T22:38:07.0038738Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+🗄️ DB Guard	Post Setup Pipeline	2026-02-17T22:38:07.0081033Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+🗄️ DB Guard	Post Run actions/checkout@v4	﻿2026-02-17T22:38:07.0511912Z Post job cleanup.
+🗄️ DB Guard	Post Run actions/checkout@v4	2026-02-17T22:38:07.1683434Z [command]/usr/bin/git version
+🗄️ DB Guard	Post Run actions/checkout@v4	2026-02-17T22:38:07.1761395Z git version 2.52.0
+🗄️ DB Guard	Post Run actions/checkout@v4	2026-02-17T22:38:07.1832356Z Copying '/home/runner/.gitconfig' to '/home/runner/work/_temp/88c9ec2c-f8c2-46ae-aef7-97c09277ec7f/.gitconfig'
+🗄️ DB Guard	Post Run actions/checkout@v4	2026-02-17T22:38:07.1856198Z Temporarily overriding HOME='/home/runner/work/_temp/88c9ec2c-f8c2-46ae-aef7-97c09277ec7f' before making global git config changes
+🗄️ DB Guard	Post Run actions/checkout@v4	2026-02-17T22:38:07.1863626Z Adding repository directory to the temporary git global config as a safe directory
+🗄️ DB Guard	Post Run actions/checkout@v4	2026-02-17T22:38:07.1879673Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/IronForge/IronForge
+🗄️ DB Guard	Post Run actions/checkout@v4	2026-02-17T22:38:07.1979454Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+🗄️ DB Guard	Post Run actions/checkout@v4	2026-02-17T22:38:07.2036905Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+🗄️ DB Guard	Post Run actions/checkout@v4	2026-02-17T22:38:07.2468455Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+🗄️ DB Guard	Post Run actions/checkout@v4	2026-02-17T22:38:07.2536462Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+🗄️ DB Guard	Post Run actions/checkout@v4	2026-02-17T22:38:07.2991896Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+🗄️ DB Guard	Post Run actions/checkout@v4	2026-02-17T22:38:07.3068285Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+🗄️ DB Guard	Stop containers	﻿2026-02-17T22:38:07.3655859Z Print service container logs: 5aa6e80ece3041f6a2df5bc142fe0a43_postgres15_1f692a
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3661981Z ##[command]/usr/bin/docker logs --details aaafc6e8c9383de8e1de21dde14132373241d699e0d2d3ef85fe61267994256b
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3830287Z  The files belonging to this database system will be owned by user "postgres".
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3832628Z  This user must also own the server process.
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3833405Z  
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3833836Z  The database cluster will be initialized with locale "en_US.utf8".
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3834719Z  The default database encoding has accordingly been set to "UTF8".
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3835358Z  The default text search configuration will be set to "english".
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3835973Z  
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3836256Z  Data page checksums are disabled.
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3836619Z  
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3837067Z  fixing permissions on existing directory /var/lib/postgresql/data ... ok
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3837601Z  creating subdirectories ... ok
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3838156Z  selecting dynamic shared memory implementation ... posix
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3838698Z  selecting default max_connections ... 100
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3839145Z  selecting default shared_buffers ... 128MB
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3839604Z  selecting default time zone ... Etc/UTC
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3840229Z  creating configuration files ... ok
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3840644Z  running bootstrap script ... ok
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3841229Z  performing post-bootstrap initialization ... ok
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3841664Z  syncing data to disk ... ok
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3841976Z  
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3842204Z  
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3842538Z  Success. You can now start the database server using:
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3842969Z  
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3843315Z      pg_ctl -D /var/lib/postgresql/data -l logfile start
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3843769Z  
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3844749Z  waiting for server to start....2026-02-17 22:37:06.091 UTC [46] LOG:  starting PostgreSQL 15.16 (Debian 15.16-1.pgdg13+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3854931Z  2026-02-17 22:37:06.092 UTC [46] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3855907Z  2026-02-17 22:37:06.095 UTC [49] LOG:  database system was shut down at 2026-02-17 22:37:05 UTC
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3856653Z  2026-02-17 22:37:06.099 UTC [46] LOG:  database system is ready to accept connections
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3857203Z   done
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3857449Z  server started
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3857716Z  CREATE DATABASE
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3857977Z  
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3858202Z  
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3858626Z  /usr/local/bin/docker-entrypoint.sh: ignoring /docker-entrypoint-initdb.d/*
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3859170Z  
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3859679Z  waiting for server to shut down...2026-02-17 22:37:06.284 UTC [46] LOG:  received fast shutdown request
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3860484Z  .2026-02-17 22:37:06.284 UTC [46] LOG:  aborting any active transactions
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3861305Z  2026-02-17 22:37:06.288 UTC [46] LOG:  background worker "logical replication launcher" (PID 52) exited with exit code 1
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3862136Z  2026-02-17 22:37:06.288 UTC [47] LOG:  shutting down
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3862703Z  2026-02-17 22:37:06.289 UTC [47] LOG:  checkpoint starting: shutdown immediate
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3864200Z  2026-02-17 22:37:06.308 UTC [47] LOG:  checkpoint complete: wrote 922 buffers (5.6%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.016 s, sync=0.002 s, total=0.020 s; sync files=301, longest=0.001 s, average=0.001 s; distance=4239 kB, estimate=4239 kB
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3865930Z  2026-02-17 22:37:06.315 UTC [46] LOG:  database system is shut down
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3866409Z   done
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3866672Z  server stopped
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3866948Z  
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3867286Z  PostgreSQL init process complete; ready for start up.
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3867721Z  
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3869714Z  initdb: warning: enabling "trust" authentication for local connections
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3871236Z  initdb: hint: You can change this by editing pg_hba.conf or using the option -A, or --auth-local and --auth-host, the next time you run initdb.
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3872344Z  2026-02-17 22:37:06.407 UTC [1] LOG:  starting PostgreSQL 15.16 (Debian 15.16-1.pgdg13+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3873016Z  2026-02-17 22:37:06.408 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3873460Z  2026-02-17 22:37:06.408 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3873945Z  2026-02-17 22:37:06.409 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3874470Z  2026-02-17 22:37:06.412 UTC [62] LOG:  database system was shut down at 2026-02-17 22:37:06 UTC
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3874945Z  2026-02-17 22:37:06.416 UTC [1] LOG:  database system is ready to accept connections
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3876407Z  2026-02-17 22:38:04.995 UTC [109] ERROR:  relation "_prisma_migrations" does not exist at character 126
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3877816Z  2026-02-17 22:38:04.995 UTC [109] STATEMENT:  SELECT "id", "checksum", "finished_at", "migration_name", "logs", "rolled_back_at", "started_at", "applied_steps_count" FROM "_prisma_migrations" ORDER BY "started_at" ASC
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3879105Z  2026-02-17 22:38:05.167 UTC [60] LOG:  checkpoint starting: immediate force wait
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3880607Z  2026-02-17 22:38:05.188 UTC [60] LOG:  checkpoint complete: wrote 969 buffers (5.9%); 0 WAL file(s) added, 0 removed, 1 recycled; write=0.017 s, sync=0.002 s, total=0.021 s; sync files=310, longest=0.001 s, average=0.001 s; distance=8814 kB, estimate=8814 kB
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3882078Z  2026-02-17 22:38:05.570 UTC [60] LOG:  checkpoint starting: immediate force wait
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3883059Z  2026-02-17 22:38:05.572 UTC [60] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.001 s, sync=0.001 s, total=0.003 s; sync files=4, longest=0.001 s, average=0.001 s; distance=6057 kB, estimate=8538 kB
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3883939Z  2026-02-17 22:38:06.658 UTC [60] LOG:  checkpoint starting: immediate force wait
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3884799Z  2026-02-17 22:38:06.669 UTC [60] LOG:  checkpoint complete: wrote 226 buffers (1.4%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.005 s, sync=0.004 s, total=0.011 s; sync files=378, longest=0.001 s, average=0.001 s; distance=8076 kB, estimate=8492 kB
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3891694Z Stop and remove container: 5aa6e80ece3041f6a2df5bc142fe0a43_postgres15_1f692a
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:07.3897143Z ##[command]/usr/bin/docker rm --force aaafc6e8c9383de8e1de21dde14132373241d699e0d2d3ef85fe61267994256b
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:08.4459104Z aaafc6e8c9383de8e1de21dde14132373241d699e0d2d3ef85fe61267994256b
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:08.4493623Z Remove container network: github_network_bf4ca2e2585843188935bc1a629bd07e
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:08.4498875Z ##[command]/usr/bin/docker network rm github_network_bf4ca2e2585843188935bc1a629bd07e
+🗄️ DB Guard	Stop containers	2026-02-17T22:38:08.5141616Z github_network_bf4ca2e2585843188935bc1a629bd07e
+🗄️ DB Guard	Complete job	﻿2026-02-17T22:38:08.5209963Z Cleaning up orphan processes

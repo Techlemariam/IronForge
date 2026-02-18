@@ -115,7 +115,7 @@ $fullWorkflow = @{
 $body = $fullWorkflow | ConvertTo-Json -Depth 10
 
 try {
-    $response = Invoke-RestMethod -Uri "https://ironforge-coolify.tailafb692.ts.net/api/v1/workflows/RgDX5gDwrj8gsKzw" -Method Put -Headers $headers -Body $body
+    $response = Invoke-RestMethod -Uri "https://coolify.ironforge.com/api/v1/workflows/RgDX5gDwrj8gsKzw" -Method Put -Headers $headers -Body $body
     Write-Host "✅ Workflow updated successfully!"
 }
 catch {
