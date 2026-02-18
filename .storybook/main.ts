@@ -1,5 +1,6 @@
 import type { StorybookConfig } from '@storybook/nextjs-vite';
-import { fileURLToPath } from "url"
+import { fileURLToPath } from "url";
+import { dirname } from "path";
 
 /**
 * This function is used to resolve the absolute path of a package.
