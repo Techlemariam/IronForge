@@ -11,9 +11,25 @@ const COST_SEK_PER_ACTIVE_STATION = 0.042;
 
 async function verifyFactoryAuth() {
     const supabase = await createClient();
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session?.user?.id) return false;
-    return session.user.email?.endsWith("@ironforge.rpg") || false;
+    // Use getUser() for more secure/stable verification in E2E environments
+    const { data: { user }, error } = await supabase.auth.getUser();
+
+    if (error) {
+        console.error("Factory Auth Error:", error.message);
+        return false;
+    }
+
+    if (!user?.id) {
+        console.warn("Factory Auth: No user session found");
+        return false;
+    }
+
+    const isAuthorized = user.email?.endsWith("@ironforge.rpg") || false;
+    if (!isAuthorized) {
+        console.warn(`Factory Auth: User ${user.email} not authorized for factory operations`);
+    }
+
+    return isAuthorized;
 }
 
 import { FactoryStatusSchema, type FactoryStatusData } from '@/types/schemas';

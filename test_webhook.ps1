@@ -23,7 +23,7 @@ $body = @{
 } | ConvertTo-Json
 
 try {
-    $response = Invoke-RestMethod -Uri "https://ironforge-coolify.tailafb692.ts.net/webhook/ironforge-trigger" -Method Post -Headers $headers -Body $body
+    $response = Invoke-RestMethod -Uri "https://coolify.ironforge.com/webhook/ironforge-trigger" -Method Post -Headers $headers -Body $body
     Write-Host "✅ Success!"
     $response | ConvertTo-Json
 }

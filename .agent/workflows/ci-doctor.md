@@ -358,3 +358,17 @@ If a test fails reliably in CI but passes 100% locally (even in Docker):
 1. **Decontaminate:** Remove `console.log`.
 2. **Record:** Update `DEBT.md`.
 3. **Evolve:** Update this protocol if a new failure mode was discovered.
+
+---
+
+## Phase 5: Perpetual Learning & Immunity
+
+**Goal:** Transform novel failures into rigorous prevention rules.
+
+1. **Capture:** Identify "Horizontal Failures" (infrastructure, connectivity, build-tools).
+2. **Codify:** Update `ci-doctor.md` Classification Matrix.
+3. **Immunize:** Inject hygiene rules into `ci-cd.yml` or `package.json`.
+   - **Rule 1:** Mandatory `127.0.0.1` and `?schema=public` validation.
+   - **Rule 2:** Mandatory `-U postgres` health check verification.
+   - **Rule 3:** Mandatory readiness buffers (`sleep 30`) for Postgres service jobs.
+   - **Rule 4:** Next.js 16 Compatibility (`middleware` -> `proxy`).

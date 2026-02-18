@@ -45,7 +45,10 @@ setup('authenticate', async ({ page }) => {
     // Click the login button and wait for navigation
     console.log("Clicking Initialize Uplink and waiting for URL...");
     await Promise.all([
-        page.waitForURL(url => url.pathname === '/' || url.pathname === '/welcome', { timeout: 60000 }).catch((e: any) => console.log("Navigation check:", e.message)),
+        page.waitForURL(url => {
+            console.log(`Navigation target check: ${url.pathname}`);
+            return url.pathname === '/' || url.pathname === '/welcome';
+        }, { timeout: 60000 }).catch((e: any) => console.error("Navigation check failed:", e.message)),
         page.getByRole('button', { name: /Initialize Uplink/i }).click()
     ]);
 

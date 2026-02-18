@@ -7,7 +7,7 @@ version: "2.1.0"
 telemetry: "enabled"
 primary_agent: "@qa"
 domain: "core"
-skills: ["git-guard", "gatekeeper", "coverage-check", "linter-fixer"]
+skills: ["git-guard", "gatekeeper", "coverage-check", "linter-fixer", "github"]
 ---
 
 # 🚀 Pre-PR Pipeline (v2.0)
