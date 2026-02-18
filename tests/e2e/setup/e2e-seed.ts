@@ -1,22 +1,11 @@
-
 import { prisma } from '../../../src/lib/prisma';
 import { Faction, Archetype } from '@prisma/client';
 
 async function main() {
-    console.log('DEBUG: Starting E2E Seed script');
     const redactedUrl = (process.env.DATABASE_URL || '').replace(/:[^:@]+@/, ':****@');
-    console.log(`DEBUG: E2E Seed process.env.DATABASE_URL: ${redactedUrl}`);
-
-    // Verify connection and table existence
-    try {
-        const tableCheck = await prisma.$queryRaw`SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'BattlePassSeason';`;
-        console.log('DEBUG: Table check result:', tableCheck);
-    } catch (e) {
-        console.error('DEBUG: Table check failed:', e);
-    }
+    console.log(`🌱 Starting E2E Database Seeding with URL: ${redactedUrl}`);
 
     const { BattlePassSeason, PvpSeason } = prisma as any;
-    console.log(`🌱 Starting E2E Database Seeding with URL: ${redactedUrl}`);
 
     // 1. Seed Battle Pass Season
     const seasonCode = 'S1';

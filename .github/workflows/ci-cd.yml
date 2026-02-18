@@ -139,6 +139,7 @@ jobs:
           npx prisma db push --force-reset
         env:
           DATABASE_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_e2e?schema=public
+          DIRECT_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_e2e?schema=public
       - name: Seed E2E Database
         run: npx tsx tests/e2e/setup/e2e-seed.ts
         env:
