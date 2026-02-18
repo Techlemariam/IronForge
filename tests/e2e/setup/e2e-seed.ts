@@ -1,13 +1,13 @@
 
 import { PrismaClient, Faction, Archetype } from '@prisma/client';
-import { Pool as PgPool } from 'pg';
-import { PrismaPg } from '@prisma/adapter-pg';
 
-// Prisma 7 requires explicit adapter configuration
-const connectionString = process.env.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5432/postgres';
-const pool = new PgPool({ connectionString });
-const adapter = new PrismaPg(pool);
-const prisma = new PrismaClient({ adapter });
+const prisma = new PrismaClient({
+    datasources: {
+        db: {
+            url: process.env.DATABASE_URL
+        }
+    }
+});
 
 async function main() {
     const redactedUrl = (process.env.DATABASE_URL || '').replace(/:[^:@]+@/, ':****@');
