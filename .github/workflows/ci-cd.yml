@@ -195,13 +195,30 @@ jobs:
         run: |
            git config --global user.name 'CI Bot'
            git config --global user.email 'ci@ironforge.gg'
-           yes | npx prisma migrate dev --name fix_ci_drift --create-only
-           git add prisma/migrations
-           git commit -m "chore: fix migrations via CI [skip ci]" || echo "No changes"
-           git push
+           
+           # Generate migration using diff (non-interactive safe)
+           MIGRATION_NAME="$(date +%Y%m%d%H%M%S)_fix_ci_drift"
+           mkdir -p prisma/migrations/$MIGRATION_NAME
+           
+           npx prisma migrate diff \
+             --from-migrations prisma/migrations \
+             --to-schema prisma/schema.prisma \
+             --shadow-database-url "${{ env.SHADOW_DATABASE_URL }}" \
+             --script > prisma/migrations/$MIGRATION_NAME/migration.sql
+           
+           if [ -s prisma/migrations/$MIGRATION_NAME/migration.sql ]; then
+             echo "Generated migration SQL:"
+             cat prisma/migrations/$MIGRATION_NAME/migration.sql
+             git add prisma/migrations
+             git commit -m "chore: fix migrations via CI [skip ci]"
+             git push
+           else
+             echo "No migration generated."
+             rm -rf prisma/migrations/$MIGRATION_NAME
+           fi
         env:
            DATABASE_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_test?schema=public
-           DIRECT_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_test?schema=public
+           SHADOW_DATABASE_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_shadow?schema=public
            PRISMA_CLI_SKIP_INTERACTIVE: true
       
       - name: Verify Prisma Drift
