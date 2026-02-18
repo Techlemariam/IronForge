@@ -203,7 +203,6 @@ jobs:
            npx prisma migrate diff \
              --from-migrations prisma/migrations \
              --to-schema prisma/schema.prisma \
-             --shadow-database-url "${{ env.SHADOW_DATABASE_URL }}" \
              --script > prisma/migrations/$MIGRATION_NAME/migration.sql
            
            if [ -s prisma/migrations/$MIGRATION_NAME/migration.sql ]; then
