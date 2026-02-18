@@ -13,6 +13,11 @@ if (typeof window === "undefined") {
 
 const prismaClientSingleton = () => {
   let connectionString = process.env.DATABASE_URL;
+  console.log('DEBUG: Initializing Prisma Client. NODE_ENV:', process.env.NODE_ENV, 'DATABASE_URL provided:', !!connectionString);
+  if (connectionString) {
+    console.log('DEBUG: Connection string target:', connectionString.replace(/:[^:@]+@/, ':****@'));
+  }
+
   if (!connectionString && (process.env.NODE_ENV === "test" || process.env.SKIP_ENV_VALIDATION === "true")) {
     connectionString = "postgresql://postgres:postgres@localhost:5432/postgres";
     process.env.DATABASE_URL = connectionString;
