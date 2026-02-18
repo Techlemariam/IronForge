@@ -15,6 +15,11 @@ setup('authenticate', async ({ page }) => {
     page.on('pageerror', err => {
         console.log(`BROWSER EXCEPTION: ${err.message}`);
     });
+    page.on('response', response => {
+        if (response.url().includes('/api/auth') || response.status() >= 400) {
+            console.log(`NETWORK RESPONSE: ${response.status()} ${response.url()}`);
+        }
+    });
 
     // Toggle to password mode
     const passwordModeButton = page.getByRole('button', { name: /Login with Password/i });
