@@ -39,7 +39,7 @@ describe('trigger_autonomous_workflow logic', () => {
     beforeEach(() => {
         vi.clearAllMocks();
         vi.spyOn(process, 'cwd').mockReturnValue(cwd);
-        vi.mocked(path.resolve).mockImplementation((...args) => args.join('/'));
+        vi.spyOn(path, 'resolve').mockImplementation((...args) => args.join('/'));
     });
 
     afterEach(() => {
@@ -48,8 +48,8 @@ describe('trigger_autonomous_workflow logic', () => {
 
     it('should signal Antigravity when available', async () => {
         // Setup scenarios
-        vi.mocked(fs.existsSync).mockReturnValue(true); // Antigravity/Tasks dir exists
-        vi.mocked(fs.writeFileSync).mockReturnValue(undefined);
+        vi.spyOn(fs, 'existsSync').mockReturnValue(true); // Antigravity/Tasks dir exists
+        vi.spyOn(fs, 'writeFileSync').mockReturnValue(undefined);
 
         // Emulate the logic from index.ts
         const taskDir = path.resolve(cwd, "../../.agent/tasks");
@@ -78,8 +78,8 @@ describe('trigger_autonomous_workflow logic', () => {
     });
 
     it('should fallback to GitHub Actions when Antigravity is unavailable', async () => {
-        // Setup scenarios
-        vi.mocked(fs.existsSync).mockReturnValue(false); // Task dir does not exist
+        vi.spyOn(fs, 'existsSync').mockReturnValue(false); // Task dir does not exist
+        vi.spyOn(fs, 'writeFileSync').mockReturnValue(undefined);
 
         // Emulate the logic
         const taskDir = path.resolve(cwd, "../../.agent/tasks");
