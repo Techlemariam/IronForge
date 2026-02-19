@@ -100,6 +100,7 @@ async function main() {
     const testUser = await prisma.user.upsert({
         where: { email: testEmail },
         update: {
+            id: 'e2e-test-user-id', // Predictable ID for E2E
             heroName: 'E2E Hunter', // ENSURE heroName is set if user exists
             hasCompletedOnboarding: true, // CRITICAL: Bypass FirstLoginQuest
             level: 10,
@@ -107,6 +108,7 @@ async function main() {
             // Ensure proper default state
         },
         create: {
+            id: 'e2e-test-user-id',
             email: testEmail,
             heroName: 'E2E Hunter',
             level: 10,
@@ -128,7 +130,7 @@ async function main() {
             }
         }
     });
-    console.log(`✅ Ensured Test User: ${testUser.heroName} (Onboarding Completed)`);
+    console.log(`✅ Ensured Test User: ${testUser.heroName} (Onboarding Completed) with ID: ${testUser.id}`);
 
     console.log('🌱 Seeding completed successfully.');
 }
