@@ -180,14 +180,16 @@ async function main() {
     const testUser = await prisma.user.upsert({
         where: { email: testEmail },
         update: {
+            id: 'e2e-test-user-id',
             heroName: 'E2E Hunter',
             hasCompletedOnboarding: true,
             level: 10,
             gold: 5000,
-            // If we are updating, we don't change ID.
-            // If the existing user has the WRONG ID, we handled it above by deleting.
         },
-        create: createData
+        create: {
+            ...createData,
+            id: 'e2e-test-user-id'
+        }
     });
 
     console.log(`✅ Ensured Test User: ${testUser.heroName} (ID: ${testUser.id})`);

@@ -21,7 +21,7 @@
     "agent:build": "turbo run build",
     "agent:test": "turbo run test",
     "agent:lint": "turbo run lint",
-    "security": "pnpm audit --audit-level=high",
+    "security": "for i in 1 2 3; do pnpm audit --audit-level=high && exit 0 || sleep 5; done; exit 1",
     "postinstall": "prisma generate",
     "test:docker:down": "docker-compose -f docker-compose.test.yml down",
     "test:integration": "npm run test:docker:up && dotenv -e .env.test -- npx prisma db push --accept-data-loss && dotenv -e .env.test -- vitest run --config vitest.integration.config.ts",
