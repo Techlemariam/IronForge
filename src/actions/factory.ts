@@ -32,7 +32,7 @@ async function verifyFactoryAuth() {
     return isAuthorized;
 }
 
-import { FactoryStatusSchema, type FactoryStatusData } from '@/types/schemas';
+import { FactoryStatusSchema, FactoryStatusData } from '@/lib/schemas/factory';
 
 
 /**

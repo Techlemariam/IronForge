@@ -373,7 +373,7 @@ importers:
   apps/mcp-n8n:
     dependencies:
       '@modelcontextprotocol/sdk':
-        specifier: ^1.24.0
+        specifier: ^1.25.2
         version: 1.26.0(zod@3.25.76)
       dotenv:
         specifier: ^17.2.4
@@ -392,7 +392,7 @@ importers:
   mcp/factory-server:
     dependencies:
       '@modelcontextprotocol/sdk':
-        specifier: ^1.0.1
+        specifier: ^1.25.2
         version: 1.26.0(zod@3.25.76)
       dotenv:
         specifier: ^16.3.1

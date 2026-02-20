@@ -53,27 +53,21 @@ export async function getTitanAction(userId: string) {
 
 export async function ensureTitanAction(userId: string) {
   try {
-    // Check if a titan already exists for the user
-    let titan = await prisma.titan.findUnique({
+    const titan = await prisma.titan.upsert({
       where: { userId },
+      update: {},
+      create: {
+        userId,
+        name: "Iron Initiate",
+        level: 1,
+        xp: 0,
+        currentHp: 100,
+        maxHp: 100,
+        currentEnergy: 100,
+        maxEnergy: 100,
+        mood: "NEUTRAL",
+      },
     });
-
-    if (!titan) {
-      // If not, create a new titan with default values
-      titan = await prisma.titan.create({
-        data: {
-          userId,
-          name: "Iron Initiate",
-          level: 1,
-          xp: 0,
-          currentHp: 100,
-          maxHp: 100,
-          currentEnergy: 100,
-          maxEnergy: 100,
-          mood: "NEUTRAL",
-        },
-      });
-    }
 
     revalidatePath("/citadel");
     return { success: true, data: titan };
@@ -82,6 +76,7 @@ export async function ensureTitanAction(userId: string) {
     return { success: false, error: "Failed to create or fetch Titan" };
   }
 }
+
 
 /**
  * @deprecated UNSAFE: Clients should not dictate state directly. Use specific actions below.

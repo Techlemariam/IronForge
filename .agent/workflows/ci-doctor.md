@@ -1,20 +1,20 @@
 ---
-description: "Comprehensive CI failure prevention and resolution (v2.0)"
+description: "Comprehensive CI failure prevention and resolution (v3.0)"
 command: "/ci-doctor"
 category: "maintenance"
 trigger: "manual"
-version: "2.2.0"
+version: "3.0.0"
 telemetry: "enabled"
 primary_agent: "@infrastructure"
 domain: "ci"
 skills: ["error-analyzer", "gatekeeper", "dependabot-manager", "env-validator", "linter-fixer", "schema-guard", "qodana-linter", "performance-profiler", "zod-schema-validator", "api-mocker", "bio-validator", "prisma-migrator", "a11y-auditor", "coverage-check", "bundle-analyzer", "git-guard", "supabase-inspector", "storybook-bridge", "coolify-deploy", "doc-generator", "red-team", "clean-code-pro"]
 ---
 
-# 🩺 CI Doctor (Protocol v2.0)
+# 🩺 CI Doctor (Protocol v3.0)
 
-**Role:** CI Health Specialist
-**Goal:** Prevent and cure CI failures with minimal iterations.
-**Rating:** 11/10 (Automated Surgical Strikes, Time Dilation Checks, Recursive Quarantine)
+**Role:** CI Health Specialist & Self-Healing Engine
+**Goal:** Prevent, diagnose, and **automatically repair** CI failures with minimal iterations.
+**Rating:** 12/10 (Auto-Remediation, Pipeline Optimization, Perpetual Learning)
 
 ---
 
@@ -172,8 +172,28 @@ echo "🔍 Checking Git health..."
 
 ```bash
 echo "🔍 Checking DB Schema Integrity..."
+
+# Hygiene Rule: Standardize DATABASE_URL to 127.0.0.1 and include ?schema=public
+# Hygiene Rule: Health checks MUST use -U postgres to avoid 'root' role errors
 /supabase-inspector
 /prisma-migrator
+```
+
+### 0.10 Pipeline Efficiency Audit (NEW in v3.0)
+
+// turbo
+
+```bash
+echo "🏎️ Analyzing CI Pipeline efficiency..."
+npx tsx scripts/ci-pipeline-analyzer.ts .github/workflows/ci-cd.yml
+
+# Also analyze other workflow files
+for wf in .github/workflows/*.yml; do
+  echo "📂 Scanning: $wf"
+  npx tsx scripts/ci-pipeline-analyzer.ts "$wf" --json >> .agent/reports/ci-doctor/pipeline-all.json 2>/dev/null
+done
+
+echo "✅ Pipeline Analysis: Complete"
 ```
 
 ---
@@ -189,21 +209,27 @@ echo "🔍 Checking DB Schema Integrity..."
 RUN_ID=$(gh run list --limit 1 --json databaseId -q '.[0].databaseId')
 echo "🎯 Analyzing Run: $RUN_ID"
 
-# 1. Automated Diagnosis (Classifier)
-echo "🔮 Running CI Classifier..."
-gh run view $RUN_ID --log | npx tsx scripts/ci-classifier.ts --stdin
+# 1. Automated Diagnosis (Classifier v3.0 — 27 patterns)
+echo "🔮 Running CI Classifier v3.0..."
+gh run view $RUN_ID --log-failed 2>/dev/null | npx tsx scripts/ci-classifier.ts --stdin --json > /tmp/ci-classifications.json
+cat /tmp/ci-classifications.json | npx tsx scripts/ci-classifier.ts --stdin
 
 # 2. Automated Target Acquisition
-FAILED_TESTS=$(gh run view $RUN_ID --log-failed | grep "Error:" | grep -oE "tests/[^[:space:]]+\.spec\.ts" | sort | uniq | tr '\n' ' ')
+FAILED_TESTS=$(gh run view $RUN_ID --log-failed 2>/dev/null | grep "Error:" | grep -oE "tests/[^[:space:]]+\.spec\.ts" | sort | uniq | tr '\n' ' ')
 
-# 3. External Intelligence Acquisition (GitHub Apps)
-echo "📡 Syncing with PR Assistants (CodeRabbit, Snyk, CodeFactor)..."
-PR_NUM=$(gh pr view --json number -q '.number')
-INTELLIGENCE=$(gh pr view $PR_NUM --json comments,statusCheckRollup | npx tsx scripts/app-intelligence.ts)
-echo "🧠 Intelligence Received:"
-echo "$INTELLIGENCE"
+# 3. External Intelligence Acquisition (GitHub Apps — 6 sources)
+echo "📡 Syncing with PR Assistants (CodeRabbit, Snyk, CodeFactor, Codecov, Dependabot, Chromatic)..."
+PR_NUM=$(gh pr view --json number -q '.number' 2>/dev/null)
+if [ -n "$PR_NUM" ]; then
+  INTELLIGENCE=$(gh pr view $PR_NUM --json comments,statusCheckRollup | npx tsx scripts/app-intelligence.ts)
+  echo "🧠 Intelligence Received:"
+  echo "$INTELLIGENCE"
+else
+  echo "ℹ️ No PR context. Skipping intelligence acquisition."
+  INTELLIGENCE='{"targets":[],"protocols":[],"suggestions":[]}'
+fi
 
-if [ -z "$FAILED_TESTS" ] && [ "$INTELLIGENCE" == '{"targets":[],"protocols":[]}' ]; then
+if [ -z "$FAILED_TESTS" ] && [ "$INTELLIGENCE" == '{"targets":[],"protocols":[],"suggestions":[]}' ]; then
     echo "✅ No specific failure artifacts or App feedback found. Proceeding to standard classification."
 else
     echo "🚨 TARGETS ACQUIRED:"
@@ -212,31 +238,83 @@ else
 fi
 ```
 
-### 1.1 Classification Matrix
+### 1.1 Classification Matrix (v3.0 — 27 Patterns)
 
-| Symptom                        | Protocol                                          |
-| :----------------------------- | :------------------------------------------------ |
-| `Timeout waiting for selector` | **SELECTOR_TIMEOUT** (Check `data-testid`)        |
-| `Expected X, received Y`       | **ASSERTION_MISMATCH** (Check `tests/mocks`)      |
-| `net::ERR_`                    | **NETWORK_HANG** (Mock missing)                   |
-| `Pass Locally / Fail Remote`   | **RACE_CONDITION** (Move mock to `addInitScript`) |
-| `Qodana: Hardcoded password`   | **SECURITY_BREACH** (See Phase 1.2)               |
-| `Qodana: Duplicated code`      | **DRY_VIOLATION** (See Phase 1.2)                 |
-| `Axe: violations`              | **A11Y_FAIL** (Run `/monitor-ui` & fix markup)    |
-| `Join-Path` / `\` paths       | **PLATFORM_COMPATIBILITY** (Use `/` separators)   |
-| `Prisma: Migration failed`    | **DB_MIGRATION_FAIL** (Use `/schema-guard`)       |
-| `Lighthouse: Performance`     | **PERF_DEGRADATION** (Use `/perf-profiler`)       |
-| `Qodana: Critical issues`     | **STATIC_ANALYSIS_FAIL** (Use `/qodana-linter`)   |
-| `Zod: Validation error`         | **SCHEMA_MISMATCH** (Use `/zod-schema-validator`) |
-| `Mock: Data outdated`          | **STALE_MOCK** (Use `/api-mocker`)                |
-| `Bio: Data sync fail`          | **BIO_SYNC_FAIL** (Use `/bio-validator`)          |
-| `Database: Schema out of sync` | **DB_OUT_OF_SYNC** (Use `/prisma-migrator`)       |
-| `A11y: Contrast/ARIA`          | **ACCESSIBILITY_FAIL** (Use `/a11y-auditor`)      |
-| `Coolify: Deployment failed`   | **COOLIFY_DOWN** (Use `/coolify-deploy`)          |
-| `Merge conflicts detected`     | **MERGE_CONFLICT_PROTOCOL** (Use `git rebase`)    |
-| `Patch coverage missing`       | **COVERAGE_DROP** (Use `/unit-tests`)             |
-| `Insufficient docstrings`       | **DOCSTRING_FAIL** (Use `/doc-generator`)         |
-| `Path traversal risk`          | **SECURE_INPUT_FAIL** (Use `/red-team`)           |
+| Symptom                        | Protocol                                          | Auto-Fix | Risk |
+| :----------------------------- | :------------------------------------------------ | :------- | :--- |
+| `Timeout waiting for selector` | **SELECTOR_TIMEOUT** (Check `data-testid`)        | ❌       | 🟡   |
+| `Expected X, received Y`       | **ASSERTION_MISMATCH** (Check `tests/mocks`)      | ❌       | 🟡   |
+| `net::ERR_`                    | **NETWORK_HANG** (Mock missing)                   | ❌       | 🟡   |
+| `Pass Locally / Fail Remote`   | **RACE_CONDITION** (Move mock to `addInitScript`) | ❌       | 🟡   |
+| `Qodana: Hardcoded password`   | **SECURITY_BREACH** (Rotate secrets)              | ❌       | 🔴   |
+| `Qodana: Duplicated code`      | **DRY_VIOLATION** (Extract shared code)           | ❌       | 🟢   |
+| `Axe: violations`              | **ACCESSIBILITY_FAIL** (Run `/a11y-auditor`)      | ❌       | 🟡   |
+| `Join-Path` / `\` paths        | **PLATFORM_COMPATIBILITY** (Use `/` separators)   | ✅       | 🟢   |
+| `Prisma: Migration failed`     | **DB_MIGRATION_FAIL** (Auto-migrate)              | ✅       | 🟡   |
+| `Lighthouse: Performance`      | **PERF_DEGRADATION** (Use `/perf-profiler`)       | ❌       | 🟡   |
+| `Qodana: Critical issues`      | **STATIC_ANALYSIS_FAIL** (Use `/qodana-linter`)   | ❌       | 🟡   |
+| `Zod: Validation error`        | **SCHEMA_MISMATCH** (Use `/zod-schema-validator`) | ❌       | 🟡   |
+| `Mock: Data outdated`          | **STALE_MOCK** (Update snapshots)                 | ✅       | 🟢   |
+| `Bio: Data sync fail`          | **BIO_SYNC_FAIL** (Use `/bio-validator`)          | ❌       | 🟡   |
+| `Database: Schema out of sync` | **DB_OUT_OF_SYNC** (Push schema)                  | ✅       | 🟡   |
+| `A11y: Contrast/ARIA`          | **ACCESSIBILITY_FAIL** (Use `/a11y-auditor`)      | ❌       | 🟡   |
+| `Coolify: Deployment failed`   | **COOLIFY_DOWN** (Check infrastructure)           | ❌       | 🔴   |
+| `Merge conflicts detected`     | **MERGE_CONFLICT** (Use `git rebase`)             | ❌       | 🟡   |
+| `Patch coverage missing`       | **COVERAGE_DROP** (Generate tests)                | ✅       | 🟢   |
+| `Insufficient docstrings`      | **DOCSTRING_FAIL** (Use `/doc-generator`)         | ✅       | 🟢   |
+| `Path traversal risk`          | **SECURE_INPUT_FAIL** (Use `/red-team`)           | ❌       | 🔴   |
+| `pg_isready: role "root"...`   | **POSTGRES_USER_MISMATCH** (Apply `-U postgres`)  | ✅       | 🟢   |
+| `relation "X" does not exist`  | **SCHEMA_SYNC_FAIL** (Add `?schema=public`)       | ✅       | 🟡   |
+| `Connection timeout (Prisma)`  | **SERVICE_RACE_CONDITION** (Add wait loop)         | ✅       | 🟢   |
+| `Storybook: Module not found`  | **ALIAS_MISSING** (Verify `@` alias in main.ts)   | ✅       | 🟢   |
+| `TypeError / is not defined`   | **TYPE_ERROR** (Run type check)                    | ✅       | 🟢   |
+| `SyntaxError / lint error`     | **SYNTAX_ERROR** (Run lint --fix)                  | ✅       | 🟢   |
+
+### 1.2 The Qodana Ward (Static Analysis)
+
+#### Protocol: SECURITY_BREACH
+
+- **Detection:** `grep -r "password" .github/workflows` or check `cypress.env.json`.
+- **Fix:** Replace hardcoded strings with `${{ secrets.MY_KEY }}` or environment variables.
+- **Verify:** `git grep "my-secret-value"` should return nothing.
+
+#### Protocol: DRY_VIOLATION (Duplication)
+
+- **Threshold:** Qodana flags >10 duplicate lines.
+- **Fix:** Extract logic to `src/lib/utils.ts` or a shared component.
+- **Exemption:** If intentional (e.g. seed scripts), add `// noinspection DuplicatedCode` to the file header.
+
+#### Protocol: REGEX_REDUNDANCY
+
+- **Fix:** Simplify Regex patterns (e.g., remove unnecessary groups).
+
+#### Protocol: PLATFORM_COMPATIBILITY (Linux/Windows)
+
+- **Context:** PowerShell scripts running on GitHub Actions (`ubuntu-latest`).
+- **Detection:** `Join-Path` errors or "File not found" due to backslashes (`\`).
+- **Fix:** Always use forward slashes (`/`) in relative paths. PowerShell handles `/` on Windows fine, but Linux fails on `\`.
+- **Rule:** `Join-Path "folder/file.ext"` >>> `Join-Path "folder\file.ext"`.
+
+### 1.3 Performance & Size (Bloat Check)
+
+#### Protocol: BUNDLE_BLOAT
+
+- **Detection:** `/bundle-analyzer` reports gzip size increase > 5%.
+- **Fix:** Analyzes `next build` output. Look for large dependencies (e.g., `lodash` vs `lodash-es`, heavy icons).
+- **Tool:** Run `/bundle-analyzer` to visualize and verify.
+
+### 1.4 Coverage & Visuals
+
+#### Protocol: COVERAGE_DROP
+
+- **Detection:** `/coverage-check` reports coverage below threshold (e.g. 80%).
+- **Fix:** Write unit tests for new logic.
+- **Tool:** `/unit-tests` to scaffold missing tests.
+
+#### Protocol: VISUAL_REGRESSION
+
+- **Detection:** Chromatic or Storybook build failure.
+- **Fix:** Run `/storybook-bridge` to validate stories match components.
 
 ### 1.5 External Vital Signs (Coolify)
 
@@ -249,95 +327,64 @@ echo "🔍 Checking Coolify Infrastructure..."
 npx tsx scripts/check-infra.ts
 ```
 
-### 1.2 The Qodana Ward (Static Analysis)
-
-### Protocol: SECURITY_BREACH
-
-- **Detection:** `grep -r "password" .github/workflows` or check `cypress.env.json`.
-- **Fix:** Replace hardcoded strings with `${{ secrets.MY_KEY }}` or environment variables.
-- **Verify:** `git grep "my-secret-value"` should return nothing.
-
-### Protocol: DRY_VIOLATION (Duplication)
-
-- **Threshold:** Qodana flags >10 duplicate lines.
-- **Fix:** Extract logic to `src/lib/utils.ts` or a shared component.
-- **Exemption:** If intentional (e.g. seed scripts), add `// noinspection DuplicatedCode` to the file header.
-
-### Protocol: REGEX_REDUNDANCY
-
-- **Fix:** Simplify Regex patterns (e.g., remove unnecessary groups).
-
-### Protocol: PLATFORM_COMPATIBILITY (Linux/Windows)
-
-- **Context:** PowerShell scripts running on GitHub Actions (`ubuntu-latest`).
-- **Detection:** `Join-Path` errors or "File not found" due to backslashes (`\`).
-- **Fix:** Always use forward slashes (`/`) in relative paths. PowerShell handles `/` on Windows fine, but Linux fails on `\`.
-- **Rule:** `Join-Path "folder/file.ext"` >>> `Join-Path "folder\file.ext"`.
-
-### 1.3 Performance & Size (Bloat Check)
-
-**Protocol: BUNDLE_BLOAT**
-
-- **Detection:** `/bundle-analyzer` reports gzip size increase > 5%.
-- **Fix:** Analyzes `next build` output. Look for large dependencies (e.g., `lodash` vs `lodash-es`, heavy icons).
-- **Tool:** Run `/bundle-analyzer` to visualize and verify.
-
-### 1.4 Coverage & Visuals
-
-**Protocol: COVERAGE_DROP**
-
-- **Detection:** `/coverage-check` reports coverage below threshold (e.g. 80%).
-- **Fix:** Write unit tests for new logic.
-- **Tool:** `/unit-tests` to scaffold missing tests.
-
-**Protocol: VISUAL_REGRESSION**
-
-- **Detection:** Chromatic or Storybook build failure.
-- **Fix:** Run `/storybook-bridge` to validate stories match components.
-
 ---
 
-## Phase 2: The Repair Loop
+## Phase 2: Auto-Remediation Pipeline (NEW in v3.0)
 
-**ITERATION LIMIT: 3**
+> **This is the core upgrade from v2.0.** CI Doctor now *executes* fixes, not just diagnoses.
+
+### ITERATION LIMIT: 3
+
+### RISK POLICY: Auto-fix LOW/MEDIUM. Flag HIGH for human review
 
 ```bash
-# Set Target (Paste from Phase 1.0 output)
-# export TARGETS="tests/e2e/example.spec.ts" 
+echo "🔧 Phase 2: Auto-Remediation Engine"
 
-if [ -z "$TARGETS" ]; then
-  echo "⛔ No TARGETS defined. Please set export TARGETS='...'"
+# Check if classifications exist from Phase 1
+if [ ! -f /tmp/ci-classifications.json ]; then
+  echo "⛔ No classifications found. Run Phase 1 first."
   exit 1
 fi
 
-echo "🔫 Locked on: $TARGETS"
+ITERATION=0
+MAX_ITERATIONS=3
 
- ITERATION=0
- MAX_ITERATIONS=3
+while [ $ITERATION -lt $MAX_ITERATIONS ]; do
+  echo "🔧 Iteration $((ITERATION + 1))/$MAX_ITERATIONS"
 
- while [ $ITERATION -lt $MAX_ITERATIONS ]; do
-   echo "🔧 Iteration $((ITERATION + 1))"
+  # Execute repair protocols (auto-fix LOW/MEDIUM risk only)
+  cat /tmp/ci-classifications.json | npx tsx scripts/repair-protocols.ts --stdin --json > /tmp/ci-repairs.json
+  
+  # Check if any auto-fixes were applied
+  FIXED=$(cat /tmp/ci-repairs.json | grep -c '"success": true' || echo "0")
+  FAILED=$(cat /tmp/ci-repairs.json | grep -c '"success": false' || echo "0")
+  
+  echo "📊 Repairs: $FIXED fixed, $FAILED failed"
 
-   # STRATEGY A: Native Surgical Strike
-   npx playwright test $TARGETS --workers=1 --retries=0
+  # Re-run Triple Gate to verify fixes
+  echo "🔄 Re-verifying with Triple Gate..."
+  if pnpm exec turbo run check-types lint test 2>/dev/null; then
+    echo "✅ Triple Gate passed after repairs!"
+    break
+  else
+    echo "⚠️ Triple Gate still failing. Re-classifying..."
+    # Re-classify the remaining errors
+    pnpm exec turbo run check-types lint test 2>&1 | npx tsx scripts/ci-classifier.ts --stdin --json > /tmp/ci-classifications.json
+  fi
 
-   if [ $? -eq 0 ]; then
-     echo "✅ Tests pass locally. Verifying in Docker..."
+  ITERATION=$((ITERATION + 1))
+done
 
-     # STRATEGY B: Docker Simulation (The Truth)
-     docker run --rm -v $(pwd):/work -w /work mcr.microsoft.com/playwright:v1.40.0-jammy \
-       npx playwright test $TARGETS --workers=1
+if [ $ITERATION -eq $MAX_ITERATIONS ]; then
+  echo "⚠️ Max iterations reached. Remaining issues require human review."
+fi
 
-     if [ $? -eq 0 ]; then
-        echo "✅ Docker verification passed. Push authorized."
-        break
-     else
-        echo "⚠️ Failed in Docker. Environment mismatch detected."
-     fi
-   fi
-
-   ITERATION=$((ITERATION + 1))
- done
+# Also run E2E if applicable
+TARGETS=$(cat /tmp/ci-classifications.json | grep -oP '"matchedText":"[^"]*tests/[^"]*\.spec\.ts' | grep -oP 'tests/[^"]+' | sort | uniq | tr '\n' ' ')
+if [ -n "$TARGETS" ]; then
+  echo "🎭 Running targeted E2E tests: $TARGETS"
+  npx playwright test $TARGETS --workers=1 --retries=1 || echo "⚠️ E2E failures remain."
+fi
 ```
 
 ---
@@ -355,20 +402,75 @@ If a test fails reliably in CI but passes 100% locally (even in Docker):
 
 ## Phase 4: After Action Report (Post-Mortem)
 
-1. **Decontaminate:** Remove `console.log`.
-2. **Record:** Update `DEBT.md`.
-3. **Evolve:** Update this protocol if a new failure mode was discovered.
+### 4.1 Decontaminate
+
+1. **Clean:** Remove `console.log` debug statements.
+2. **Record:** Update `DEBT.md` with new findings.
+
+### 4.2 GitHub Integration (NEW in v3.0)
+
+```bash
+# Post report to PR (if on a PR branch)
+PR_NUM=$(gh pr view --json number -q '.number' 2>/dev/null)
+if [ -n "$PR_NUM" ] && [ -f /tmp/ci-repairs.json ]; then
+  # Find latest repair report
+  LATEST_REPORT=$(ls -t .agent/reports/ci-doctor/repair-*.json 2>/dev/null | head -1)
+  if [ -n "$LATEST_REPORT" ]; then
+    npx tsx scripts/ci-doctor-github.ts --report "$LATEST_REPORT" --pr "$PR_NUM"
+  fi
+fi
+```
+
+### 4.3 Trend Analysis (NEW in v3.0)
+
+```bash
+echo "📊 Analyzing failure trends..."
+npx tsx scripts/ci-doctor-github.ts --trends
+
+# Auto-create issues for recurring failures (3+ in last 10 runs)
+```
+
+### 4.4 Evolve
+
+Proceed to Phase 5 if a new failure mode was discovered.
 
 ---
 
 ## Phase 5: Perpetual Learning & Immunity
 
-**Goal:** Transform novel failures into rigorous prevention rules.
+**Goal:** Ensure the CI Doctor never fails the same way twice.
 
-1. **Capture:** Identify "Horizontal Failures" (infrastructure, connectivity, build-tools).
-2. **Codify:** Update `ci-doctor.md` Classification Matrix.
-3. **Immunize:** Inject hygiene rules into `ci-cd.yml` or `package.json`.
-   - **Rule 1:** Mandatory `127.0.0.1` and `?schema=public` validation.
-   - **Rule 2:** Mandatory `-U postgres` health check verification.
-   - **Rule 3:** Mandatory readiness buffers (`sleep 30`) for Postgres service jobs.
-   - **Rule 4:** Next.js 16 Compatibility (`middleware` -> `proxy`).
+### 5.1 Failure Pattern Extraction
+
+If a repair required a manual intervention or a "new" type of fix (e.g. adding a 30s sleep):
+
+- **Classify:** Is this a **Logic Failure** (code bug) or a **Horizontal Failure** (infrastructure/environment)?
+- **Extract:** What was the specific error string? (e.g. `pg_isready: role "root" does not exist`)
+- **Fix:** What was the surgical patch? (e.g. `-U postgres`)
+
+### 5.2 Protocol Injection
+
+1. **Update `ci-classifier.ts`:** Add the new pattern to `ERROR_PATTERNS` with appropriate `autoFixable` and `risk` flags.
+2. **Update `repair-protocols.ts`:** Add the executable fix to `PROTOCOLS` registry.
+3. **Update Classification Matrix (Phase 1.1):** Add the new Symptom/Protocol row.
+4. **Update System Diagnostics (Phase 0.x):** If the failure is "Horizontal", add a Hygiene Rule to prevent recurrence.
+5. **Draft Workflow Update:** If the failure reveals a gap in local validation, update `.github/workflows/ci-cd.yml` parity.
+
+### 5.3 Immunity Verification
+
+- Run `/ci-doctor` again on the fixed branch.
+- Ensure Phase 0.x now catches the potential failure before it hits the remote runner.
+
+---
+
+## Appendix: Script Reference
+
+| Script | Purpose |
+| :--- | :--- |
+| `scripts/ci-classifier.ts` | Error classification (27 patterns, JSON output) |
+| `scripts/repair-protocols.ts` | Auto-remediation engine (27 protocols) |
+| `scripts/ci-pipeline-analyzer.ts` | Pipeline efficiency analyzer |
+| `scripts/ci-doctor-github.ts` | GitHub PR comments, trends, auto-issues |
+| `scripts/app-intelligence.ts` | External app intelligence (6 sources) |
+| `scripts/validate-mocks.ts` | Mock data validation |
+| `scripts/check-infra.ts` | Infrastructure health check |

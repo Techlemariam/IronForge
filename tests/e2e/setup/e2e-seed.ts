@@ -191,7 +191,8 @@ async function main() {
         }
     });
 
-    console.log(`✅ Ensured Test User: ${testUser.heroName} (ID: ${testUser.id})`);
+    console.log(`✅ Ensured Test User: ${testUser.heroName} (Onboarding Completed) with ID: ${testUser.id}`);
+
 
     console.log('🌱 Seeding completed successfully.');
 }
