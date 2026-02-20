@@ -114,9 +114,57 @@ interface ClassificationResult {
     description: string;
     solution: string;
     matchedText: string;
+    location?: { file: string; line: number; column: number };
 }
 
-function classifyError(logContent: string): ClassificationResult[] {
+function classifyError(logContent: string, source: 'logs' | 'playwright' | 'turbo' = 'logs'): ClassificationResult[] {
+    if (source === 'playwright') {
+        try {
+            const data = JSON.parse(logContent);
+            const results: ClassificationResult[] = [];
+
+            // Extract from Playwright errors array
+            if (data.errors) {
+                data.errors.forEach((err: any) => {
+                    results.push({
+                        category: 'E2E_FAILURE',
+                        confidence: 'HIGH',
+                        description: 'Playwright test failure detected in JSON report.',
+                        solution: 'Check the location mapping and fix the specific test case.',
+                        matchedText: err.message.substring(0, 200),
+                        location: err.location
+                    });
+                });
+            }
+            return results;
+        } catch (e) {
+            return [{ category: 'UNPARSEABLE_JSON', confidence: 'LOW', description: 'Failed to parse Playwright JSON', solution: 'Fall back to log investigation', matchedText: '' }];
+        }
+    }
+
+    if (source === 'turbo') {
+        try {
+            const data = JSON.parse(logContent);
+            const results: ClassificationResult[] = [];
+            if (data.tasks) {
+                data.tasks.forEach((task: any) => {
+                    if (task.execution.exitCode !== 0) {
+                        results.push({
+                            category: `TURBO_FAIL_${task.task.toUpperCase()}`,
+                            confidence: 'HIGH',
+                            description: `Turbo task ${task.task} failed.`,
+                            solution: `Run 'npx turbo run ${task.task}' locally to debug.`,
+                            matchedText: `Exit code: ${task.execution.exitCode}`
+                        });
+                    }
+                });
+            }
+            return results;
+        } catch (e) {
+            return [{ category: 'UNPARSEABLE_JSON', confidence: 'LOW', description: 'Failed to parse Turbo JSON', solution: 'Fall back to log investigation', matchedText: '' }];
+        }
+    }
+
     const results: ClassificationResult[] = [];
 
     for (const [category, config] of Object.entries(ERROR_PATTERNS)) {
@@ -156,6 +204,9 @@ function formatResults(results: ClassificationResult[]): string {
         output += `${icon} Category: ${result.category}\n`;
         output += `   Confidence: ${result.confidence}\n`;
         output += `   Description: ${result.description}\n`;
+        if (result.location) {
+            output += `   Location: ${result.location.file}:${result.location.line}:${result.location.column}\n`;
+        }
         if (result.matchedText) {
             output += `   Matched: "${result.matchedText}..."\n`;
         }
@@ -172,13 +223,19 @@ function main() {
 
     if (args.length === 0) {
         console.log('Usage: npx ts-node scripts/ci-classifier.ts <log-file>');
-        console.log('       npx ts-node scripts/ci-classifier.ts --stdin');
+        console.log('       npx ts-node scripts/ci-classifier.ts --stdin [--source logs|playwright|turbo]');
         process.exit(1);
     }
 
     let logContent: string;
+    let source: 'logs' | 'playwright' | 'turbo' = 'logs';
 
-    if (args[0] === '--stdin') {
+    const sourceIdx = args.indexOf('--source');
+    if (sourceIdx !== -1 && args[sourceIdx + 1]) {
+        source = args[sourceIdx + 1] as any;
+    }
+
+    if (args.includes('--stdin')) {
         // Read from stdin
         logContent = fs.readFileSync(0, 'utf-8');
     } else {
@@ -191,13 +248,14 @@ function main() {
         logContent = fs.readFileSync(logFile, 'utf-8');
     }
 
-    const results = classifyError(logContent);
+    const results = classifyError(logContent, source);
     console.log(formatResults(results));
 
-    // Exit with error code if unknown
-    if (results.length === 1 && results[0].category === 'UNKNOWN') {
-        process.exit(1);
+    // Exit with error code if unknown or failure found
+    if (results.length > 0 && results[0].category !== 'UNKNOWN') {
+        process.exit(0);
     }
+    process.exit(1);
 }
 
 main();

@@ -80,10 +80,19 @@ jobs:
           restore-keys: |
             turbo-${{ runner.os }}-
       - name: Turbo Verify
-        run: npx turbo run lint check-types test --concurrency=100%
+        run: npx turbo run lint check-types test --summarize --concurrency=100%
         env:
           SKIP_ENV_VALIDATION: true
           DATABASE_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_test?schema=public
+
+      - name: Upload Turbo Summary
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: turbo-summary
+          path: .turbo/runs/*.json
+          retention-days: 7
+
       - name: Upload Coverage to Codecov
         uses: codecov/codecov-action@v5
         with:
@@ -149,9 +158,11 @@ jobs:
           TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
           TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
       - name: Run Playwright Tests
-        run: npx playwright test
+        id: playwright
+        run: npx playwright test --reporter=list,json
         env:
           CI: true
+          PLAYWRIGHT_JSON_OUTPUT_NAME: playwright-report.json
           TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
           TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
@@ -161,6 +172,26 @@ jobs:
           DIRECT_URL: postgresql://postgres:password@localhost:5432/ironforge_e2e?schema=public
           API_KEY: ${{ secrets.GEMINI_API_KEY || secrets.API_KEY }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+
+      - name: Generate E2E Summary
+        if: failure()
+        run: |
+          echo "### 🎭 E2E Failure Summary" >> $GITHUB_STEP_SUMMARY
+          if [ -f playwright-report.json ]; then
+            echo "#### ❌ Top Failures" >> $GITHUB_STEP_SUMMARY
+            # Use jq to extract the first few error messages
+            jq -r '.errors[] | substr(0; 200)' playwright-report.json | sed 's/^/- /' | head -n 5 >> $GITHUB_STEP_SUMMARY
+          else
+            echo "⚠️ Playwright report not found." >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Upload Playwright Result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report.json
+          retention-days: 7
 
   # ------------------------------------------------------------------
   # 🗄️ DATABASE GUARD

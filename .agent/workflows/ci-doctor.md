@@ -139,6 +139,15 @@ echo "🔍 Checking DB Schema Integrity..."
 /prisma-migrator
 ```
 
+### 0.11 Git Hygiene Scan
+
+// turbo
+
+```bash
+echo "🔍 Checking Git Health (Hygiene Swab)..."
+/git-hygiene
+```
+
 ---
 
 ## Phase 1: Surgical Strike (Failure Isolation)
@@ -153,11 +162,30 @@ RUN_ID=$(gh run list --limit 1 --json databaseId -q '.[0].databaseId')
 echo "🎯 Analyzing Run: $RUN_ID"
 
 # 1. Automated Diagnosis (Classifier)
-echo "🔮 Running CI Classifier..."
+echo "🔮 Running CI Classifier (Logs)..."
 gh run view $RUN_ID --log | npx tsx scripts/ci-classifier.ts --stdin
 
-# 2. Automated Target Acquisition
-FAILED_TESTS=$(gh run view $RUN_ID --log-failed | grep "Error:" | grep -oE "tests/[^[:space:]]+\.spec\.ts" | sort | uniq | tr '\n' ' ')
+# 2. JSON-Powered Precision Diagnostics
+echo "🔍 Downloading Diagnostic Artifacts..."
+gh run download $RUN_ID --name playwright-report --dir .agent/artifacts/playwright/ 2>/dev/null || echo "⚠️ No Playwright artifact found."
+gh run download $RUN_ID --name turbo-summary --dir .agent/artifacts/turbo/ 2>/dev/null || echo "⚠️ No Turbo artifact found."
+
+if [ -f .agent/artifacts/playwright/playwright-report.json ]; then
+    echo "🎯 Playwright JSON found. Using precision classification..."
+    cat .agent/artifacts/playwright/playwright-report.json | npx tsx scripts/ci-classifier.ts --stdin --source playwright
+    
+    # Update TARGETS automatically from JSON if not already set
+    if [ -z "$TARGETS" ]; then
+        TARGETS=$(jq -r '.errors[] | .location.file' .agent/artifacts/playwright/playwright-report.json | sort | uniq | tr '\n' ' ')
+        echo "🚨 SURGICAL TARGETS ACQUIRED (Playwright): $TARGETS"
+        export TARGETS
+    fi
+fi
+
+if [ -f .agent/artifacts/turbo/turbo-summary.json ]; then
+    echo "🎯 Turbo Summary JSON found. Using task-level diagnostics..."
+    cat .agent/artifacts/turbo/turbo-summary.json | npx tsx scripts/ci-classifier.ts --stdin --source turbo
+fi
 
 # 3. External Intelligence Acquisition (GitHub Apps)
 echo "📡 Syncing with PR Assistants (CodeRabbit, Snyk, CodeFactor)..."
@@ -166,12 +194,11 @@ INTELLIGENCE=$(gh pr view $PR_NUM --json comments,statusCheckRollup | npx tsx sc
 echo "🧠 Intelligence Received:"
 echo "$INTELLIGENCE"
 
-if [ -z "$FAILED_TESTS" ] && [ "$INTELLIGENCE" == '{"targets":[],"protocols":[]}' ]; then
+if [ -z "$TARGETS" ] && [ "$INTELLIGENCE" == '{"targets":[],"protocols":[]}' ]; then
     echo "✅ No specific failure artifacts or App feedback found. Proceeding to standard classification."
 else
-    echo "🚨 TARGETS ACQUIRED:"
-    echo "$FAILED_TESTS"
-    echo "$INTELLIGENCE"
+    echo "🚨 TARGETS ACQUIRED: $TARGETS"
+    echo "🚨 INTELLIGENCE: $INTELLIGENCE"
 fi
 ```
 
