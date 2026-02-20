@@ -77,7 +77,8 @@ async function main() {
     const opponents = [
         { email: 'opponent1@ironforge.gg', name: 'Iron Breaker', level: 5, power: 500 },
         { email: 'opponent2@ironforge.gg', name: 'Steel Viper', level: 10, power: 1200 },
-        { email: 'opponent3@ironforge.gg', name: 'Shadow Walker', level: 15, power: 1800 }
+        { email: 'opponent3@ironforge.gg', name: 'Shadow Walker', level: 15, power: 1800 },
+        { email: 'opponent4@ironforge.gg', name: 'Blade Master', level: 8, power: 850 }
     ];
 
     for (const opp of opponents) {
