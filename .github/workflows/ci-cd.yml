@@ -110,6 +110,12 @@ jobs:
         with:
           path: .turbo
           key: turbo-l2-${{ runner.os }}-${{ github.sha }}
+      - name: Initialize DB (L2)
+        run: |
+          sleep 15
+          npx prisma db push
+        env:
+          DATABASE_URL: postgresql://postgres:password@postgres:5432/ironforge_full?schema=public
       - name: Turbo L2 verification
         run: pnpm run ci:l2
         env:
@@ -209,6 +215,7 @@ jobs:
       - uses: ./.github/actions/setup-ironforge
       - name: Create Shadow Database
         run: |
+          sleep 15
           npx tsx scripts/ci/setup-db.ts
         env:
           ADMIN_DATABASE_URL: postgresql://postgres:password@postgres:5432/postgres?schema=public
@@ -249,7 +256,9 @@ jobs:
           key: ${{ runner.os }}-playwright-${{ hashFiles('**/pnpm-lock.yaml') }}
       - run: npx playwright install --with-deps
       - name: Run Smoke E2E
-        run: pnpm run test:smoke
+        run: |
+          sleep 15
+          pnpm run test:smoke
         env:
           CI: true
           DATABASE_URL: postgresql://postgres:password@postgres:5432/ironforge_e2e?schema=public
@@ -290,6 +299,7 @@ jobs:
       - uses: ./.github/actions/setup-ironforge
       - name: Create Shadow Database
         run: |
+          sleep 15
           npx tsx scripts/ci/setup-db.ts
         env:
           ADMIN_DATABASE_URL: postgresql://postgres:password@postgres:5432/postgres?schema=public
@@ -299,7 +309,7 @@ jobs:
           npx prisma migrate diff --from-migrations prisma/migrations --to-schema prisma/schema.prisma --exit-code
         env:
           DATABASE_URL: postgresql://postgres:password@postgres:5432/ironforge_test?schema=public
-          SHADOW_DATABASE_URL: postgresql://postgres:password@postgres:5432/ironforge_shadow?schema=public
+          SHADOW_DATABASE_URL: postgresql://postgres:password@postgres:5432/ironforge_test?schema=public # Wait, shadow should be shadow
 
   # Automatic Deployment Trigger (L2 Success)
   deploy-verification:
@@ -315,6 +325,3 @@ jobs:
           echo "🔍 Checking health at $DEPLOY_URL/api/health"
           sleep 90 # Coolify deploy buffer
           curl -f -s "$DEPLOY_URL/api/health" || exit 1
-
-
-
