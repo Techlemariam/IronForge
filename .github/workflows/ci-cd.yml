@@ -309,7 +309,7 @@ jobs:
           npx prisma migrate diff --from-migrations prisma/migrations --to-schema prisma/schema.prisma --exit-code
         env:
           DATABASE_URL: postgresql://postgres:password@postgres:5432/ironforge_test?schema=public
-          SHADOW_DATABASE_URL: postgresql://postgres:password@postgres:5432/ironforge_test?schema=public # Wait, shadow should be shadow
+          SHADOW_DATABASE_URL: postgresql://postgres:password@postgres:5432/ironforge_shadow?schema=public
 
   # Automatic Deployment Trigger (L2 Success)
   deploy-verification:
