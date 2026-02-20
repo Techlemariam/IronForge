@@ -174,14 +174,12 @@ async function main() {
         }
     };
 
-    if (userId) {
-        createData.id = userId;
-    }
+    const effectiveId = userId || 'e2e-test-user-id';
 
     const testUser = await prisma.user.upsert({
         where: { email: testEmail },
         update: {
-            id: 'e2e-test-user-id',
+            id: effectiveId,
             heroName: 'E2E Hunter',
             hasCompletedOnboarding: true,
             level: 10,
@@ -189,7 +187,7 @@ async function main() {
         },
         create: {
             ...createData,
-            id: 'e2e-test-user-id'
+            id: effectiveId
         }
     });
 
