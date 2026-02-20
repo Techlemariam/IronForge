@@ -30,21 +30,6 @@ env:
   SKIP_ENV_VALIDATION: true
 
 jobs:
-  # ==================================================================
-  # PRE-FLIGHT: VALIDATE SECRETS
-  # ==================================================================
-  pre-flight:
-    name: "🚀 Pre-flight"
-    runs-on: [self-hosted, IronForge-Local] # Using user specified local runner
-    steps:
-      - uses: actions/checkout@v4
-      - name: Validate Critical Secrets
-        shell: pwsh
-        run: .\scripts\ci\validate-secrets.ps1
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
 
   # ==================================================================
   # TIER L1: FAST FEEDBACK (PR)
@@ -52,7 +37,6 @@ jobs:
   # ==================================================================
   l1-verify:
     name: "⚡ L1: Verify"
-    needs: pre-flight
     if: github.event_name == 'pull_request'
     runs-on: [self-hosted, IronForge-Local] # Target specific local runner
     timeout-minutes: 10

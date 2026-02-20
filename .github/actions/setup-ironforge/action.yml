@@ -13,10 +13,22 @@ inputs:
     description: 'Cache provider'
     required: false
     default: 'pnpm'
+  skip-validation:
+    description: 'Skip secret validation'
+    required: false
+    default: 'false'
 
 runs:
   using: "composite"
   steps:
+    - name: Validate Secrets (Fast-Track)
+      if: inputs.skip-validation != 'true'
+      shell: pwsh
+      run: .\scripts\ci\validate-secrets.ps1
+      env:
+        DATABASE_URL: ${{ env.DATABASE_URL }}
+        NEXT_PUBLIC_SUPABASE_URL: ${{ env.NEXT_PUBLIC_SUPABASE_URL }}
+        NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ env.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
     - name: Setup pnpm
       uses: pnpm/action-setup@v4
       with:
