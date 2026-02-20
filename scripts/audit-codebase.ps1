@@ -33,9 +33,9 @@ foreach ($file in $sourceFiles) {
 }
 
 # 2. Logic & Safety Gaps
-if (-not $Json) { Write-Host "`nScanning for Logic & Safety Gaps..." }
+if (-not $Json) { Write-Host "`nScanning for Logic and Safety Gaps..." }
 $todos = Get-ChildItem -Path $Root -Recurse -Include "*.ts", "*.tsx" | Select-String -Pattern "TODO|FIXME"
-$anys = Get-ChildItem -Path $Root -Recurse -Include "*.ts", "*.tsx" | Select-String -Pattern ": any|as any|ts-ignore" | Where-Object { $_.Line -like '*@ts-ignore*' }
+$anys = Get-ChildItem -Path $Root -Recurse -Include "*.ts", "*.tsx" | Select-String -Pattern ": any|as any|@ts-ignore"
 
 # 3. Workflow Integrity
 $workflowIssues = @()

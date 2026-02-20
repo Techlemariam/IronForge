@@ -82,7 +82,7 @@ jobs:
           sleep 15
           npx prisma db push
         env:
-          DATABASE_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_test?schema=public
+          DATABASE_URL: postgresql://postgres:password@host.docker.internal:5432/ironforge_test?schema=public
       - name: Cache Turbo
         uses: actions/cache@v5
         with:
@@ -93,7 +93,7 @@ jobs:
       - name: Turbo L1 Verify (Differential)
         run: pnpm run ci:l1
         env:
-          DATABASE_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_test?schema=public
+          DATABASE_URL: postgresql://postgres:password@host.docker.internal:5432/ironforge_test?schema=public
 
   # ==================================================================
   # TIER L2: FULL VERIFICATION (MERGE)
@@ -169,11 +169,11 @@ jobs:
           sleep 30
           npx prisma db push --force-reset
         env:
-          DATABASE_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_e2e?schema=public
+          DATABASE_URL: postgresql://postgres:password@host.docker.internal:5432/ironforge_e2e?schema=public
       - name: Seed E2E Database
         run: npx tsx tests/e2e/setup/e2e-seed.ts
         env:
-          DATABASE_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_e2e?schema=public
+          DATABASE_URL: postgresql://postgres:password@host.docker.internal:5432/ironforge_e2e?schema=public
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
@@ -187,7 +187,7 @@ jobs:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           NEXT_PUBLIC_APP_URL: http://localhost:3000
-          DATABASE_URL: postgresql://postgres:password@localhost:5432/ironforge_e2e?schema=public
+          DATABASE_URL: postgresql://postgres:password@host.docker.internal:5432/ironforge_e2e?schema=public
 
   # 🗄️ DATABASE GUARD
   db-guard:
@@ -208,7 +208,10 @@ jobs:
       - uses: ./.github/actions/setup-ironforge
       - name: Create Shadow Database
         run: |
-          PGPASSWORD=password psql -h 127.0.0.1 -U postgres -c "CREATE DATABASE ironforge_shadow;"
+          npx tsx scripts/ci/setup-db.ts
+        env:
+          ADMIN_DATABASE_URL: postgresql://postgres:password@host.docker.internal:5432/postgres?schema=public
+          TARGET_DB: ironforge_shadow
       - name: Verify Prisma Drift
         run: |
           npx prisma migrate diff \
@@ -216,8 +219,8 @@ jobs:
             --to-schema prisma/schema.prisma \
             --exit-code
         env:
-          DATABASE_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_test?schema=public
-          SHADOW_DATABASE_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_shadow?schema=public
+          DATABASE_URL: postgresql://postgres:password@host.docker.internal:5432/ironforge_test?schema=public
+          SHADOW_DATABASE_URL: postgresql://postgres:password@host.docker.internal:5432/ironforge_shadow?schema=public
 
   # E2E Smoke Tests for L2
   l2-e2e-smoke:
@@ -236,12 +239,7 @@ jobs:
           - 5432:5432
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v6
-        with:
-          node-version: '22'
-          cache: 'pnpm'
-      - run: pnpm install --frozen-lockfile
+      - uses: ./.github/actions/setup-ironforge
       - run: npx prisma generate
       - name: Cache Playwright
         uses: actions/cache@v5
@@ -253,7 +251,7 @@ jobs:
         run: pnpm run test:smoke
         env:
           CI: true
-          DATABASE_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_e2e?schema=public
+          DATABASE_URL: postgresql://postgres:password@host.docker.internal:5432/ironforge_e2e?schema=public
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           NEXT_PUBLIC_APP_URL: http://localhost:3000
@@ -266,12 +264,7 @@ jobs:
     runs-on: [self-hosted, IronForge-Local] # Target specific local runner
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v6
-        with:
-          node-version: '22'
-          cache: 'pnpm'
-      - run: pnpm install --frozen-lockfile
+      - uses: ./.github/actions/setup-ironforge
       - run: pnpm run build
       - name: Run Lighthouse Audit
         run: pnpm run lhci
@@ -293,17 +286,19 @@ jobs:
           - 5432:5432
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v6
-        with:
-          node-version: '22'
-          cache: 'pnpm'
-      - run: pnpm install --frozen-lockfile
+      - uses: ./.github/actions/setup-ironforge
+      - name: Create Shadow Database
+        run: |
+          npx tsx scripts/ci/setup-db.ts
+        env:
+          ADMIN_DATABASE_URL: postgresql://postgres:password@host.docker.internal:5432/postgres?schema=public
+          TARGET_DB: ironforge_shadow
       - name: Verify Prisma Drift
         run: |
           npx prisma migrate diff --from-migrations prisma/migrations --to-schema prisma/schema.prisma --exit-code
         env:
-          DATABASE_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_test?schema=public
+          DATABASE_URL: postgresql://postgres:password@host.docker.internal:5432/ironforge_test?schema=public
+          SHADOW_DATABASE_URL: postgresql://postgres:password@host.docker.internal:5432/ironforge_shadow?schema=public
 
   # Automatic Deployment Trigger (L2 Success)
   deploy-verification:
