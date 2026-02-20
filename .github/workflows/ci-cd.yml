@@ -35,7 +35,7 @@ jobs:
   # ==================================================================
   pre-flight:
     name: "🚀 Pre-flight"
-    runs-on: windows-latest # Using Windows for PowerShell Core consistency with local dev
+    runs-on: self-hosted # Using Self-Hosted to bypass billing limits
     steps:
       - uses: actions/checkout@v4
       - name: Validate Critical Secrets
@@ -54,7 +54,7 @@ jobs:
     name: "⚡ L1: Verify"
     needs: pre-flight
     if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     timeout-minutes: 10
     services:
       postgres:
@@ -102,7 +102,7 @@ jobs:
   l2-verification:
     name: "🚀 L2: Verification"
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     services:
       postgres:
         image: postgres:15
@@ -135,7 +135,7 @@ jobs:
   e2e:
     name: 🎭 E2E Tests
     if: github.event_name == 'pull_request' && github.actor != 'dependabot[bot]'
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     services:
       postgres:
         image: postgres:15
@@ -193,7 +193,7 @@ jobs:
   db-guard:
     name: 🗄️ DB Guard
     if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     services:
       postgres:
         image: postgres:15
@@ -224,7 +224,7 @@ jobs:
     name: "🎭 L2: E2E Smoke"
     needs: [l2-verification]
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     services:
       postgres:
         image: postgres:15
@@ -263,7 +263,7 @@ jobs:
     name: "📊 L2: Perf Audit"
     needs: [l2-verification]
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -282,7 +282,7 @@ jobs:
   l2-db-guard:
     name: "🗄️ L2: DB Guard"
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     services:
       postgres:
         image: postgres:15
@@ -310,7 +310,7 @@ jobs:
     name: 🏥 Deployment Status
     needs: [l2-verification, l2-e2e-smoke, l2-db-guard, l2-perf-audit]
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Verify Health
         env:
