@@ -48,7 +48,7 @@ jobs:
           POSTGRES_PASSWORD: password
           POSTGRES_DB: ironforge_test
         ports:
-          - 5432:5432
+          - 5432
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -66,7 +66,7 @@ jobs:
           sleep 15
           npx prisma db push
         env:
-          DATABASE_URL: postgresql://postgres:password@host.docker.internal:5432/ironforge_test?schema=public
+          DATABASE_URL: postgresql://postgres:password@postgres:5432/ironforge_test?schema=public
       - name: Cache Turbo
         uses: actions/cache@v5
         with:
@@ -77,7 +77,7 @@ jobs:
       - name: Turbo L1 Verify (Differential)
         run: pnpm run ci:l1
         env:
-          DATABASE_URL: postgresql://postgres:password@host.docker.internal:5432/ironforge_test?schema=public
+          DATABASE_URL: postgresql://postgres:password@postgres:5432/ironforge_test?schema=public
 
   # ==================================================================
   # TIER L2: FULL VERIFICATION (MERGE)
@@ -95,7 +95,7 @@ jobs:
           POSTGRES_PASSWORD: password
           POSTGRES_DB: ironforge_full
         ports:
-          - 5432:5432
+          - 5432
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -113,7 +113,7 @@ jobs:
       - name: Turbo L2 verification
         run: pnpm run ci:l2
         env:
-          DATABASE_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_full?schema=public
+          DATABASE_URL: postgresql://postgres:password@postgres:5432/ironforge_full?schema=public
 
   # 🐳 DOCKER VERIFICATION
   docker-verify:
@@ -145,7 +145,7 @@ jobs:
           POSTGRES_PASSWORD: password
           POSTGRES_DB: ironforge_e2e
         ports:
-          - 5432:5432
+          - 5432
         options: >-
           --health-cmd "pg_isready -U postgres"
           --health-interval 10s
@@ -170,11 +170,11 @@ jobs:
           sleep 30
           npx prisma db push --force-reset
         env:
-          DATABASE_URL: postgresql://postgres:password@host.docker.internal:5432/ironforge_e2e?schema=public
+          DATABASE_URL: postgresql://postgres:password@postgres:5432/ironforge_e2e?schema=public
       - name: Seed E2E Database
         run: npx tsx tests/e2e/setup/e2e-seed.ts
         env:
-          DATABASE_URL: postgresql://postgres:password@host.docker.internal:5432/ironforge_e2e?schema=public
+          DATABASE_URL: postgresql://postgres:password@postgres:5432/ironforge_e2e?schema=public
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
@@ -188,7 +188,7 @@ jobs:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           NEXT_PUBLIC_APP_URL: http://localhost:3000
-          DATABASE_URL: postgresql://postgres:password@host.docker.internal:5432/ironforge_e2e?schema=public
+          DATABASE_URL: postgresql://postgres:password@postgres:5432/ironforge_e2e?schema=public
 
   # 🗄️ DATABASE GUARD
   db-guard:
@@ -211,7 +211,7 @@ jobs:
         run: |
           npx tsx scripts/ci/setup-db.ts
         env:
-          ADMIN_DATABASE_URL: postgresql://postgres:password@host.docker.internal:5432/postgres?schema=public
+          ADMIN_DATABASE_URL: postgresql://postgres:password@postgres:5432/postgres?schema=public
           TARGET_DB: ironforge_shadow
       - name: Verify Prisma Drift
         run: |
@@ -220,8 +220,8 @@ jobs:
             --to-schema prisma/schema.prisma \
             --exit-code
         env:
-          DATABASE_URL: postgresql://postgres:password@host.docker.internal:5432/ironforge_test?schema=public
-          SHADOW_DATABASE_URL: postgresql://postgres:password@host.docker.internal:5432/ironforge_shadow?schema=public
+          DATABASE_URL: postgresql://postgres:password@postgres:5432/ironforge_test?schema=public
+          SHADOW_DATABASE_URL: postgresql://postgres:password@postgres:5432/ironforge_shadow?schema=public
 
   # E2E Smoke Tests for L2
   l2-e2e-smoke:
@@ -252,7 +252,7 @@ jobs:
         run: pnpm run test:smoke
         env:
           CI: true
-          DATABASE_URL: postgresql://postgres:password@host.docker.internal:5432/ironforge_e2e?schema=public
+          DATABASE_URL: postgresql://postgres:password@postgres:5432/ironforge_e2e?schema=public
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           NEXT_PUBLIC_APP_URL: http://localhost:3000
@@ -292,14 +292,14 @@ jobs:
         run: |
           npx tsx scripts/ci/setup-db.ts
         env:
-          ADMIN_DATABASE_URL: postgresql://postgres:password@host.docker.internal:5432/postgres?schema=public
+          ADMIN_DATABASE_URL: postgresql://postgres:password@postgres:5432/postgres?schema=public
           TARGET_DB: ironforge_shadow
       - name: Verify Prisma Drift
         run: |
           npx prisma migrate diff --from-migrations prisma/migrations --to-schema prisma/schema.prisma --exit-code
         env:
-          DATABASE_URL: postgresql://postgres:password@host.docker.internal:5432/ironforge_test?schema=public
-          SHADOW_DATABASE_URL: postgresql://postgres:password@host.docker.internal:5432/ironforge_shadow?schema=public
+          DATABASE_URL: postgresql://postgres:password@postgres:5432/ironforge_test?schema=public
+          SHADOW_DATABASE_URL: postgresql://postgres:password@postgres:5432/ironforge_shadow?schema=public
 
   # Automatic Deployment Trigger (L2 Success)
   deploy-verification:
