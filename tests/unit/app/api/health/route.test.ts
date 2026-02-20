@@ -26,6 +26,7 @@ vi.mock('@/lib/logger', () => ({
 
 describe('GET /api/health', () => {
     beforeEach(() => {
+        vi.resetModules();
         vi.clearAllMocks();
     });
 
