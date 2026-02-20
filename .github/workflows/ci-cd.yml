@@ -6,12 +6,7 @@ on:
   pull_request:
     branches: [main, release]
   workflow_dispatch:
-    inputs:
-      fix_drift:
-        description: 'Run prisma migrate dev to fix schema drift'
-        required: false
-        default: 'false'
-        type: boolean
+
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -26,58 +21,38 @@ env:
 
 jobs:
   # ------------------------------------------------------------------
+  # 🛡️ QUALITY GATE
+  # Fast feedback on code standards, unit tests, and security.
+  # ------------------------------------------------------------------
+  # ------------------------------------------------------------------
   # ⚡ VERIFY (Lint, Test, Build, Security)
   # Runs all checks in parallel using Turborepo.
   # ------------------------------------------------------------------
   verify:
     name: ⚡ Verify
     runs-on: ubuntu-latest
-    timeout-minutes: 30
-    services:
-      postgres:
-        image: postgres:15
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: password
-          POSTGRES_DB: ironforge
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd "pg_isready -U postgres"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
     steps:
       - uses: actions/checkout@v4
-      
-      - name: Setup Pipeline
-        uses: ./.github/actions/setup-pipeline
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: '22'
-
-      - name: Initialize DB
-        run: |
-          until pg_isready -h 127.0.0.1 -U postgres; do sleep 1; done
-          npx prisma db push --force-reset
-        env:
-          DATABASE_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge?schema=public
-          DIRECT_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge?schema=public
-
+          cache: 'pnpm'
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Generate Prisma Client
+        run: npx prisma generate
       - name: Cache Turbo
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: .turbo
-          key: turbo-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ github.sha }}
+          key: turbo-${{ runner.os }}-${{ github.sha }}
           restore-keys: |
-            turbo-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}-
-
-      - name: Verify All (Lint, Types, Test, Build, Security)
-        run: npx turbo run lint check-types test build security --concurrency=100%
+            turbo-${{ runner.os }}-
+      - name: Turbo Verify
+        run: npx turbo run lint check-types test:coverage build security --concurrency=100%
         env:
-          DATABASE_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge?schema=public
-          DIRECT_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge?schema=public
-          PRISMA_CLI_SKIP_INTERACTIVE: true
-
+          SKIP_ENV_VALIDATION: true
       - name: Upload Coverage to Codecov
         uses: codecov/codecov-action@v5
         with:
@@ -93,54 +68,30 @@ jobs:
     name: 🎭 E2E Tests
     if: github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
-    timeout-minutes: 30
-    services:
-      postgres:
-        image: postgres:15
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: password
-          POSTGRES_DB: ironforge_e2e
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd "pg_isready -U postgres"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
     steps:
       - uses: actions/checkout@v4
-      
-      - name: Setup Pipeline
-        uses: ./.github/actions/setup-pipeline
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: '22'
-
+          cache: 'pnpm'
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Generate Prisma Client
+        run: npx prisma generate
       - name: Cache Playwright Browsers
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         id: playwright-cache
         with:
           path: ~/.cache/ms-playwright
           key: ${{ runner.os }}-playwright-${{ hashFiles('**/pnpm-lock.yaml') }}
-      
       - name: Install Playwright Browsers
         if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: npx playwright install --with-deps
-
-      - name: Push Schema to E2E DB
-        run: |
-          until pg_isready -h 127.0.0.1 -U postgres; do sleep 1; done
-          npx prisma db push --force-reset
-        env:
-          DATABASE_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_e2e?schema=public
-          DIRECT_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_e2e?schema=public
-          PRISMA_CLI_SKIP_INTERACTIVE: true
-
       - name: Seed E2E Database
         run: npx tsx tests/e2e/setup/e2e-seed.ts
         env:
-          DATABASE_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_e2e?schema=public
-
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
       - name: Run Playwright Tests
         run: npx playwright test
         env:
@@ -150,8 +101,8 @@ jobs:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           NEXT_PUBLIC_APP_URL: http://localhost:3000
-          DATABASE_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_e2e?schema=public
-          DIRECT_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_e2e?schema=public
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DIRECT_URL: ${{ secrets.DIRECT_URL }}
 
   # ------------------------------------------------------------------
   # 🗄️ DATABASE GUARD
@@ -160,84 +111,39 @@ jobs:
   db-guard:
     name: 🗄️ DB Guard
     runs-on: ubuntu-latest
-    timeout-minutes: 20
-    permissions:
-      contents: write
     services:
       postgres:
         image: postgres:15
         env:
-          POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
           POSTGRES_DB: ironforge_test
         ports:
           - 5432:5432
         options: >-
-          --health-cmd "pg_isready -U postgres"
+          --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
     steps:
       - uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
-      
-      - name: Setup Pipeline
-        uses: ./.github/actions/setup-pipeline
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: '22'
-
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
       - name: Create Shadow Database
         run: |
-          until pg_isready -h 127.0.0.1 -U postgres; do sleep 1; done
-          PGPASSWORD=password psql -h 127.0.0.1 -U postgres -c "CREATE DATABASE ironforge_shadow;"
-
-      - name: Fix Drift (Conditioned)
-        id: fix-drift
-        if: ${{ github.event.inputs.fix_drift == 'true' || inputs.fix_drift == true || inputs.fix_drift == 'true' }}
-        run: |
-           # Generate migration using diff (non-interactive safe)
-           MIGRATION_NAME="$(date +%Y%m%d%H%M%S)_fix_ci_drift"
-           mkdir -p prisma/migrations/$MIGRATION_NAME
-           
-           npx prisma migrate diff \
-             --from-migrations prisma/migrations \
-             --to-schema prisma/schema.prisma \
-             --script > prisma/migrations/$MIGRATION_NAME/migration.sql
-           
-           if [ -s prisma/migrations/$MIGRATION_NAME/migration.sql ]; then
-             echo "Generated migration SQL."
-             echo "has_changes=true" >> $GITHUB_OUTPUT
-           else
-             echo "No migration generated."
-             rm -rf prisma/migrations/$MIGRATION_NAME
-             echo "has_changes=false" >> $GITHUB_OUTPUT
-           fi
-        env:
-           DATABASE_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_test?schema=public
-           SHADOW_DATABASE_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_shadow?schema=public
-           PRISMA_CLI_SKIP_INTERACTIVE: true
-
-      - name: Auto-Commit Migration
-        if: ${{ steps.fix-drift.outputs.has_changes == 'true' }}
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "chore: fix migrations via CI [skip ci]"
-          file_pattern: 'prisma/migrations/*/migration.sql'
-          commit_user_name: 'CI Bot'
-          commit_user_email: 'ci@ironforge.gg'
-      
+          PGPASSWORD=password psql -h localhost -U postgres -c "CREATE DATABASE ironforge_shadow;"
       - name: Verify Prisma Drift
-        if: ${{ inputs.fix_drift != true }}
         run: |
           npx prisma migrate diff \
             --from-migrations prisma/migrations \
             --to-schema prisma/schema.prisma \
             --exit-code
         env:
-          DATABASE_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_test?schema=public
-          SHADOW_DATABASE_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_shadow?schema=public
-          PRISMA_CLI_SKIP_INTERACTIVE: true
+          DATABASE_URL: postgresql://postgres:password@localhost:5432/ironforge_test?schema=public
+          SHADOW_DATABASE_URL: postgresql://postgres:password@localhost:5432/ironforge_shadow?schema=public
 
   # ------------------------------------------------------------------
   # ⚡ PERFORMANCE AUDIT (Lighthouse)
@@ -246,47 +152,46 @@ jobs:
   perf-audit:
     name: ⚡ Performance Audit
     runs-on: ubuntu-latest
-    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
-      
-      - name: Setup Pipeline
-        uses: ./.github/actions/setup-pipeline
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: '22'
-
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - name: Generate Prisma Client
+        run: npx prisma generate
       - name: Build Application
         run: pnpm build
         env:
           SKIP_ENV_VALIDATION: true
-
       - name: Run Lighthouse CI
         run: pnpm run lhci
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
-        continue-on-error: true
+        continue-on-error: true # Don't block deploy initially while tuning
 
   # ------------------------------------------------------------------
-  # 🎨 CHROMATIC
-  # Visual regression testing.
   # ------------------------------------------------------------------
   chromatic:
     name: 🎨 Chromatic
     runs-on: ubuntu-latest
-    timeout-minutes: 20
     if: github.event_name == 'pull_request'
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0 
-      
-      - name: Setup Pipeline
-        uses: ./.github/actions/setup-pipeline
+          fetch-depth: 0 # Required for Chromatic
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: '22'
-
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - name: Generate Prisma Client
+        run: npx prisma generate
       - name: Run Chromatic
-        uses: chromaui/action@v11
+        uses: chromaui/action@v15
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -300,20 +205,17 @@ jobs:
     needs: [verify, e2e, db-guard]
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     runs-on: ubuntu-latest
-    timeout-minutes: 15
     steps:
       - name: Wait for Coolify Deployment
         run: |
           echo "⏳ Waiting for Coolify to deploy..."
-          sleep 90
+          sleep 90  # Give Coolify time to pull, build, and deploy
       
       - name: Check Health Endpoint
         env:
-          # Use add-mask to safely handle secret URL if it's sensitive
           DEPLOY_URL: ${{ secrets.PRODUCTION_URL || 'https://your-app.com' }}
         run: |
-          echo "::add-mask::$DEPLOY_URL"
-          echo "🔍 Checking deployment health..."
+          echo "🔍 Checking deployment health at $DEPLOY_URL/api/health"
           for i in {1..5}; do
             if curl -f -s "$DEPLOY_URL/api/health" > /dev/null 2>&1; then
               echo "✅ Deployment healthy!"
@@ -328,6 +230,7 @@ jobs:
   # ------------------------------------------------------------------
   # 📝 CREATE RELEASE (After Deployment Verification)
   # Generates a GitHub Release using Semantic Conventions.
+  # Note: Deployment handled by Coolify, verified by verify-deployment job.
   # ------------------------------------------------------------------
   create-release:
     name: 📝 Create Release
@@ -336,7 +239,6 @@ jobs:
     needs: [verify-deployment]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    timeout-minutes: 10
     steps:
       - name: Create Release
         id: create_release
@@ -358,10 +260,18 @@ jobs:
         run: |
           if [ -f "RELEASE_NOTES.md" ]; then
             echo "📄 Found RELEASE_NOTES.md, appending to release..."
+            # Fetch current body
             gh release view "$TAG_NAME" --json body -q .body > current_body.txt
+            
+            # Append custom notes
             echo -e "\n\n### 📝 Developer Notes\n" >> current_body.txt
             cat RELEASE_NOTES.md >> current_body.txt
+            
+            # Update release
             gh release edit "$TAG_NAME" --notes-file current_body.txt
           else
             echo "ℹ️ No RELEASE_NOTES.md found."
           fi
+
+
+
