@@ -48,10 +48,12 @@ test.describe('Titan Duels Flow', () => {
         const challengeButton = page.getByRole('button', { name: /Challenge Titan/i });
         await expect(challengeButton).toBeDisabled();
 
-        // Select an opponent from the list (wait for "Lvl" to appear)
-        const opponentButton = page.locator('button').filter({ hasText: /Lvl/i }).first();
-        await expect(opponentButton).toBeVisible({ timeout: 10000 });
-        await opponentButton.click();
+        // Wait for loading to finish and opponents to appear
+        const opponentCard = page.getByTestId('opponent-card').first();
+        await expect(opponentCard).toBeVisible({ timeout: 15000 });
+
+        // Select the first opponent
+        await opponentCard.click();
 
         // Button should now be enabled
         await expect(challengeButton).toBeEnabled();

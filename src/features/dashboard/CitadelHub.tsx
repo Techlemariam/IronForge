@@ -52,7 +52,7 @@ const NavButton: React.FC<{
             : undefined
       }
       className={`
-                relative flex items-center p-3 border rounded-lg shadow-md transition-all duration-200 group w-full text-left focus:outline-none
+                relative flex items-center p-3 md:p-4 border rounded-lg shadow-md transition-all duration-200 group w-full text-left focus:outline-none
                 ${variants[variant]}
                 ${isActive ? "ring-2 ring-offset-2 ring-offset-black" : ""}
             `}
@@ -97,20 +97,20 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
       onMouseEnter={() => playSound("ui_hover")}
       aria-label={`${title}: ${description}`}
       className={`
-        relative group flex flex-col items-center justify-center p-6 h-48
+        relative group flex flex-col items-center justify-center p-4 md:p-6 h-40 md:h-48
         rounded-xl border border-${color}-800/30 bg-black/40 backdrop-blur-sm
         hover:bg-${color}-950/30 hover:border-${color}-500/50 hover:scale-[1.02]
         transition-all duration-300
       `}
     >
       <div className={`
-        p-4 rounded-full bg-${color}-950/50 text-${color}-400 mb-4
+        p-3 md:p-4 rounded-full bg-${color}-950/50 text-${color}-400 mb-3 md:mb-4
         group-hover:text-${color}-200 group-hover:scale-110 transition-all
       `}>
-        {React.cloneElement(icon as React.ReactElement<{ className?: string }>, { className: "w-8 h-8" })}
+        {React.cloneElement(icon as React.ReactElement<{ className?: string }>, { className: "w-6 h-6 md:w-8 md:h-8" })}
       </div>
 
-      <h3 className={`text-xl font-bold uppercase tracking-widest text-${color}-100 mb-2`}>
+      <h3 className={`text-lg md:text-xl font-bold uppercase tracking-widest text-${color}-100 mb-2`}>
         {title}
       </h3>
 

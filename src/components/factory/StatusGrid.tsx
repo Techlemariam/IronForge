@@ -1,4 +1,4 @@
-import { FactoryStatusData } from "@/actions/factory";
+import { FactoryStatusData } from "@/types/schemas";
 import { StatusCard } from "./StatusCard";
 
 interface Props {

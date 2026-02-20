@@ -36,6 +36,7 @@ Detta dokument definierar de specialiserade agenter som utgör IronForge-teamet.
 | **Cleanup** | `/cleanup` | **Debt Resolution.** Autonomt fixar items i `DEBT.md`. |
 | **Strategist** | `/strategist` | **Business Strategy.** Prisättning, marknadsanalys och tillväxtstrategi. |
 | **Writer** | `/writer` | **Narrative Design.** Story, dialog och världsbygge. |
+| **Actor** | `/act` | **Persona Injection.** Dynamisk rollantagning via `prompts-chat`. T.ex. `/act "Linux Terminal"`. |
 
 ## ⚙️ Meta & Process
 

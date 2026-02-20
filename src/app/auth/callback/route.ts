@@ -16,22 +16,32 @@ export async function GET(request: Request) {
         data: { user },
       } = await supabase.auth.getUser();
 
-      if (user) {
-        // Check if user exists
-        const { data: existingUser } = await supabase
-          .from("User")
-          .select("id")
-          .eq("id", user.id)
-          .single();
+      if (user && user.email) {
+        // Atomic Upsert using Prisma to handle race conditions and email conflicts
+        const existingByEmail = await prisma.user.findUnique({
+          where: { email: user.email },
+        });
 
-        if (!existingUser) {
-          // Create new user record
-          await supabase.from("User").insert({
-            id: user.id,
-            email: user.email,
-            heroName: user.email?.split("@")[0] || "Hero",
-            subscriptionTier: "FREE", // Default
-            updatedAt: new Date().toISOString(),
+        if (existingByEmail && existingByEmail.id !== user.id) {
+          console.log(`Reconciling user ID for ${user.email}: ${existingByEmail.id} -> ${user.id}`);
+          await prisma.user.update({
+            where: { email: user.email },
+            data: { id: user.id },
+          });
+        } else {
+          await prisma.user.upsert({
+            where: { id: user.id },
+            update: {
+              email: user.email,
+              lastLoginDate: new Date(),
+            },
+            create: {
+              id: user.id,
+              email: user.email,
+              heroName: user.email.split("@")[0] || "Hero",
+              subscriptionTier: "FREE",
+              updatedAt: new Date(),
+            },
           });
         }
       }

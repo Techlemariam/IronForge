@@ -53,28 +53,33 @@ export async function getTitanAction(userId: string) {
 
 export async function ensureTitanAction(userId: string) {
   try {
-    const existing = await prisma.titan.findUnique({ where: { userId } });
-    if (existing) return { success: true, data: existing };
-
-    const newTitan = await prisma.titan.create({
-      data: {
-        userId,
-        name: "Iron Initiate",
-        level: 1,
-        xp: 0,
-        currentHp: 100,
-        maxHp: 100,
-        currentEnergy: 100,
-        maxEnergy: 100,
-        mood: "NEUTRAL",
-      },
+    // Check if a titan already exists for the user
+    let titan = await prisma.titan.findUnique({
+      where: { userId },
     });
 
+    if (!titan) {
+      // If not, create a new titan with default values
+      titan = await prisma.titan.create({
+        data: {
+          userId,
+          name: "Iron Initiate",
+          level: 1,
+          xp: 0,
+          currentHp: 100,
+          maxHp: 100,
+          currentEnergy: 100,
+          maxEnergy: 100,
+          mood: "NEUTRAL",
+        },
+      });
+    }
+
     revalidatePath("/citadel");
-    return { success: true, data: newTitan };
+    return { success: true, data: titan };
   } catch (error) {
     console.error("Error ensuring titan:", error);
-    return { success: false, error: "Failed to create Titan" };
+    return { success: false, error: "Failed to create or fetch Titan" };
   }
 }
 

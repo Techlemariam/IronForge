@@ -45,14 +45,14 @@ export async function getWellnessAction(
     if (!data || Array.isArray(data)) return {} as IntervalsWellness;
 
     // Map Lib type (WellnessData) to App type (IntervalsWellness)
-    // lib/intervals.ts uses 'readiness' for bodyBattery, type uses 'bodyBattery'
+    // getWellness already transforms 'readiness' to 'bodyBattery'
     return {
       id: data?.id,
       hrv: data?.hrv,
       restingHR: data?.restingHR,
       sleepScore: data?.sleepScore,
       sleepSecs: data?.sleepSecs,
-      bodyBattery: data?.bodyBattery,
+      bodyBattery: data?.bodyBattery, // Corrected from data.readiness
       vo2max: data?.vo2max,
       ctl: data?.ctl,
       atl: data?.atl,

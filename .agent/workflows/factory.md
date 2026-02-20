@@ -7,7 +7,7 @@ version: "1.0.0"
 telemetry: "enabled"
 primary_agent: "@manager"
 domain: "core"
-skills: ["clean-code-pro", "git-guard", "project-linker", "remote-trigger"]
+skills: ["clean-code-pro", "git-guard", "project-linker", "remote-trigger", "ironforge-factory"]
 ---
 
 # 🏭 The Antigravity Factory

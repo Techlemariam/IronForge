@@ -30,13 +30,13 @@
                                             {
                                                 "json": {
                                                     "headers": {
-                                                        "host": "ironforge-coolify.tailafb692.ts.net",
+                                                        "host": "coolify.ironforge.com",
                                                         "user-agent": "curl/8.16.0",
                                                         "content-length": "151",
                                                         "accept": "*/*",
                                                         "content-type": "application/json",
                                                         "x-forwarded-for": "10.0.1.1",
-                                                        "x-forwarded-host": "ironforge-coolify.tailafb692.ts.net",
+                                                        "x-forwarded-host": "coolify.ironforge.com",
                                                         "x-forwarded-port": "443",
                                                         "x-forwarded-proto": "https",
                                                         "x-forwarded-server": "eb9374084dab",
@@ -52,7 +52,7 @@
                                                         "source": "discord",
                                                         "user": "Antigravity#Debug"
                                                     },
-                                                    "webhookUrl": "https://ironforge-coolify.tailafb692.ts.net/webhook/ironforge-trigger",
+                                                    "webhookUrl": "https://coolify.ironforge.com/webhook/ironforge-trigger",
                                                     "executionMode": "production"
                                                 },
                                                 "pairedItem": {
@@ -82,13 +82,13 @@
                                             {
                                                 "json": {
                                                     "headers": {
-                                                        "host": "ironforge-coolify.tailafb692.ts.net",
+                                                        "host": "coolify.ironforge.com",
                                                         "user-agent": "curl/8.16.0",
                                                         "content-length": "151",
                                                         "accept": "*/*",
                                                         "content-type": "application/json",
                                                         "x-forwarded-for": "10.0.1.1",
-                                                        "x-forwarded-host": "ironforge-coolify.tailafb692.ts.net",
+                                                        "x-forwarded-host": "coolify.ironforge.com",
                                                         "x-forwarded-port": "443",
                                                         "x-forwarded-proto": "https",
                                                         "x-forwarded-server": "eb9374084dab",
@@ -104,7 +104,7 @@
                                                         "source": "discord",
                                                         "user": "Antigravity#Debug"
                                                     },
-                                                    "webhookUrl": "https://ironforge-coolify.tailafb692.ts.net/webhook/ironforge-trigger",
+                                                    "webhookUrl": "https://coolify.ironforge.com/webhook/ironforge-trigger",
                                                     "executionMode": "production"
                                                 },
                                                 "pairedItem": {
@@ -319,13 +319,13 @@
                                             {
                                                 "json": {
                                                     "headers": {
-                                                        "host": "ironforge-coolify.tailafb692.ts.net",
+                                                        "host": "coolify.ironforge.com",
                                                         "user-agent": "curl/8.16.0",
                                                         "content-length": "151",
                                                         "accept": "*/*",
                                                         "content-type": "application/json",
                                                         "x-forwarded-for": "10.0.1.1",
-                                                        "x-forwarded-host": "ironforge-coolify.tailafb692.ts.net",
+                                                        "x-forwarded-host": "coolify.ironforge.com",
                                                         "x-forwarded-port": "443",
                                                         "x-forwarded-proto": "https",
                                                         "x-forwarded-server": "eb9374084dab",
@@ -341,7 +341,7 @@
                                                         "source": "discord",
                                                         "user": "Antigravity#Debug"
                                                     },
-                                                    "webhookUrl": "https://ironforge-coolify.tailafb692.ts.net/webhook/ironforge-trigger",
+                                                    "webhookUrl": "https://coolify.ironforge.com/webhook/ironforge-trigger",
                                                     "executionMode": "production"
                                                 },
                                                 "pairedItem": {
@@ -371,13 +371,13 @@
                                             {
                                                 "json": {
                                                     "headers": {
-                                                        "host": "ironforge-coolify.tailafb692.ts.net",
+                                                        "host": "coolify.ironforge.com",
                                                         "user-agent": "curl/8.16.0",
                                                         "content-length": "151",
                                                         "accept": "*/*",
                                                         "content-type": "application/json",
                                                         "x-forwarded-for": "10.0.1.1",
-                                                        "x-forwarded-host": "ironforge-coolify.tailafb692.ts.net",
+                                                        "x-forwarded-host": "coolify.ironforge.com",
                                                         "x-forwarded-port": "443",
                                                         "x-forwarded-proto": "https",
                                                         "x-forwarded-server": "eb9374084dab",
@@ -393,7 +393,7 @@
                                                         "source": "discord",
                                                         "user": "Antigravity#Debug"
                                                     },
-                                                    "webhookUrl": "https://ironforge-coolify.tailafb692.ts.net/webhook/ironforge-trigger",
+                                                    "webhookUrl": "https://coolify.ironforge.com/webhook/ironforge-trigger",
                                                     "executionMode": "production"
                                                 },
                                                 "pairedItem": {
@@ -604,7 +604,7 @@
                                     "accept": "application/json,text/html,application/xhtml+xml,application/xml,text/*;q=0.9, image/*;q=0.8, */*;q=0.7"
                                 },
                                 "method": "GET",
-                                "uri": "https://ironforge-coolify.tailafb692.ts.net/api/health",
+                                "uri": "https://coolify.ironforge.com/api/health",
                                 "gzip": true,
                                 "rejectUnauthorized": true,
                                 "followRedirect": false,
@@ -622,7 +622,7 @@
                                 "preBuiltAgentsCalloutHttpRequest": "",
                                 "curlImport": "",
                                 "method": "GET",
-                                "url": "=https://ironforge-coolify.tailafb692.ts.net/api/health",
+                                "url": "=https://coolify.ironforge.com/api/health",
                                 "authentication": "none",
                                 "provideSslCertificates": false,
                                 "sendQuery": false,
@@ -705,7 +705,7 @@
                                                 "accept": "application/json,text/html,application/xhtml+xml,application/xml,text/*;q=0.9, image/*;q=0.8, */*;q=0.7"
                                             },
                                             "method": "GET",
-                                            "uri": "https://ironforge-coolify.tailafb692.ts.net/api/health",
+                                            "uri": "https://coolify.ironforge.com/api/health",
                                             "gzip": true,
                                             "rejectUnauthorized": true,
                                             "followRedirect": false,
@@ -723,7 +723,7 @@
                                             "preBuiltAgentsCalloutHttpRequest": "",
                                             "curlImport": "",
                                             "method": "GET",
-                                            "url": "=https://ironforge-coolify.tailafb692.ts.net/api/health",
+                                            "url": "=https://coolify.ironforge.com/api/health",
                                             "authentication": "none",
                                             "provideSslCertificates": false,
                                             "sendQuery": false,
@@ -762,7 +762,7 @@
                                     "preBuiltAgentsCalloutHttpRequest": "",
                                     "curlImport": "",
                                     "method": "GET",
-                                    "url": "=https://ironforge-coolify.tailafb692.ts.net/api/health",
+                                    "url": "=https://coolify.ironforge.com/api/health",
                                     "authentication": "none",
                                     "provideSslCertificates": false,
                                     "sendQuery": false,
@@ -862,7 +862,7 @@
                             "preBuiltAgentsCalloutHttpRequest": "",
                             "curlImport": "",
                             "method": "GET",
-                            "url": "=https://ironforge-coolify.tailafb692.ts.net/api/health",
+                            "url": "=https://coolify.ironforge.com/api/health",
                             "authentication": "none",
                             "provideSslCertificates": false,
                             "sendQuery": false,

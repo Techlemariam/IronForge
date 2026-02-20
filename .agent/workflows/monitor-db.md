@@ -24,10 +24,10 @@ npx prisma migrate status
 
 - **Config**: Add `npx prisma` commands to `.agent/config.json`.
 
-## 2. Verify Schema Drift (MCP)
+## 2. Verify Schema Drift (MCP: supabase)
 
 // turbo
-If `SUPABASE_SERVICE_KEY` is configured, use the agent's tools to compare the actual DB schema with your local Prisma file.
+If `SUPABASE_SERVICE_KEY` is configured, use the agent's tools (e.g., `mcp_supabase_list_tables`, `mcp_supabase_execute_sql`) to compare the actual DB schema with your local Prisma file.
 
 - Query: "List all tables and check if they match prisma.schema"
 

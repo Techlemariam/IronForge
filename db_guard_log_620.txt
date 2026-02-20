@@ -1,0 +1,625 @@
+﻿2026-02-16T20:23:01.9358438Z Current runner version: '2.331.0'
+2026-02-16T20:23:01.9451787Z ##[group]Runner Image Provisioner
+2026-02-16T20:23:01.9453156Z Hosted Compute Agent
+2026-02-16T20:23:01.9454281Z Version: 20260123.484
+2026-02-16T20:23:01.9455498Z Commit: 6bd6555ca37d84114959e1c76d2c01448ff61c5d
+2026-02-16T20:23:01.9457111Z Build Date: 2026-01-23T19:41:17Z
+2026-02-16T20:23:01.9458355Z Worker ID: {ac2531d0-a290-4543-a19e-3ea955e22984}
+2026-02-16T20:23:01.9459707Z Azure Region: centralus
+2026-02-16T20:23:01.9460738Z ##[endgroup]
+2026-02-16T20:23:01.9463278Z ##[group]Operating System
+2026-02-16T20:23:01.9464346Z Ubuntu
+2026-02-16T20:23:01.9465167Z 24.04.3
+2026-02-16T20:23:01.9486641Z LTS
+2026-02-16T20:23:01.9487533Z ##[endgroup]
+2026-02-16T20:23:01.9488566Z ##[group]Runner Image
+2026-02-16T20:23:01.9489543Z Image: ubuntu-24.04
+2026-02-16T20:23:01.9490451Z Version: 20260209.23.1
+2026-02-16T20:23:01.9492708Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260209.23/images/ubuntu/Ubuntu2404-Readme.md
+2026-02-16T20:23:01.9495440Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260209.23
+2026-02-16T20:23:01.9497577Z ##[endgroup]
+2026-02-16T20:23:01.9499596Z ##[group]GITHUB_TOKEN Permissions
+2026-02-16T20:23:01.9502769Z Contents: read
+2026-02-16T20:23:01.9503731Z Metadata: read
+2026-02-16T20:23:01.9504742Z Packages: read
+2026-02-16T20:23:01.9505758Z ##[endgroup]
+2026-02-16T20:23:01.9529099Z Secret source: Actions
+2026-02-16T20:23:01.9530522Z Prepare workflow directory
+2026-02-16T20:23:02.0926963Z Prepare all required actions
+2026-02-16T20:23:02.1025447Z Getting action download info
+2026-02-16T20:23:02.5325507Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+2026-02-16T20:23:02.6701678Z Download action repository 'pnpm/action-setup@v4' (SHA:41ff72655975bd51cab0327fa583b6e92b6d3061)
+2026-02-16T20:23:03.4259088Z Download action repository 'actions/setup-node@v6' (SHA:6044e13b5dc448c55e2357c09f80417699197238)
+2026-02-16T20:23:03.6175161Z Complete job name: 🗄️ DB Guard
+2026-02-16T20:23:03.6623360Z ##[group]Checking docker version
+2026-02-16T20:23:03.6636774Z ##[command]/usr/bin/docker version --format '{{.Server.APIVersion}}'
+2026-02-16T20:23:03.7776453Z '1.52'
+2026-02-16T20:23:03.7792618Z Docker daemon API version: '1.52'
+2026-02-16T20:23:03.7793464Z ##[command]/usr/bin/docker version --format '{{.Client.APIVersion}}'
+2026-02-16T20:23:03.7966197Z '1.52'
+2026-02-16T20:23:03.7980138Z Docker client API version: '1.52'
+2026-02-16T20:23:03.7985588Z ##[endgroup]
+2026-02-16T20:23:03.7989737Z ##[group]Clean up resources from previous jobs
+2026-02-16T20:23:03.7995019Z ##[command]/usr/bin/docker ps --all --quiet --no-trunc --filter "label=c01cb3"
+2026-02-16T20:23:03.8141213Z ##[command]/usr/bin/docker network prune --force --filter "label=c01cb3"
+2026-02-16T20:23:03.8274555Z ##[endgroup]
+2026-02-16T20:23:03.8275117Z ##[group]Create local container network
+2026-02-16T20:23:03.8285197Z ##[command]/usr/bin/docker network create --label c01cb3 github_network_5b9e4983216d4364af8efe24e1e571bc
+2026-02-16T20:23:03.8944543Z 4448b4ecd2db4cfce6b6e6e92b1cc27bc2c008e8ec783d76f860027655fc2af3
+2026-02-16T20:23:03.8963581Z ##[endgroup]
+2026-02-16T20:23:03.9001177Z ##[group]Starting postgres service container
+2026-02-16T20:23:03.9036937Z ##[command]/usr/bin/docker pull postgres:15
+2026-02-16T20:23:04.5025229Z 15: Pulling from library/postgres
+2026-02-16T20:23:04.8026560Z 49b40a0a623d: Pulling fs layer
+2026-02-16T20:23:04.8033763Z 0c8d55a45c0d: Pulling fs layer
+2026-02-16T20:23:04.8034689Z 03cf9c337134: Pulling fs layer
+2026-02-16T20:23:04.8035653Z d64dbdf800a2: Pulling fs layer
+2026-02-16T20:23:04.8036767Z 2710e764d89a: Pulling fs layer
+2026-02-16T20:23:04.8037640Z e60549838c5a: Pulling fs layer
+2026-02-16T20:23:04.8038592Z c50a02fe2f5f: Pulling fs layer
+2026-02-16T20:23:04.8039596Z 0ace4c983c3e: Pulling fs layer
+2026-02-16T20:23:04.8040470Z b64f280cfa2b: Pulling fs layer
+2026-02-16T20:23:04.8048745Z 6771773ef0da: Pulling fs layer
+2026-02-16T20:23:04.8049674Z ea5e741a30ce: Pulling fs layer
+2026-02-16T20:23:04.8051363Z 049b2237836a: Pulling fs layer
+2026-02-16T20:23:04.8052244Z 7b098c79e38c: Pulling fs layer
+2026-02-16T20:23:04.8053107Z 7aa308802868: Pulling fs layer
+2026-02-16T20:23:05.0273366Z b64f280cfa2b: Download complete
+2026-02-16T20:23:05.0282277Z 45604b1409ee: Download complete
+2026-02-16T20:23:05.0286678Z 99548d060f18: Download complete
+2026-02-16T20:23:05.0292243Z 49b40a0a623d: Download complete
+2026-02-16T20:23:05.0298379Z 03cf9c337134: Download complete
+2026-02-16T20:23:05.0304119Z 6771773ef0da: Download complete
+2026-02-16T20:23:05.0310107Z ea5e741a30ce: Download complete
+2026-02-16T20:23:05.1267598Z 0ace4c983c3e: Download complete
+2026-02-16T20:23:05.1285208Z 7b098c79e38c: Download complete
+2026-02-16T20:23:05.1294109Z 049b2237836a: Download complete
+2026-02-16T20:23:05.1307289Z 7aa308802868: Download complete
+2026-02-16T20:23:05.1321381Z 2710e764d89a: Download complete
+2026-02-16T20:23:05.2302424Z c50a02fe2f5f: Download complete
+2026-02-16T20:23:05.4407757Z 0c8d55a45c0d: Download complete
+2026-02-16T20:23:05.8265848Z d64dbdf800a2: Download complete
+2026-02-16T20:23:06.5273369Z 03cf9c337134: Pull complete
+2026-02-16T20:23:06.5344961Z 0c8d55a45c0d: Pull complete
+2026-02-16T20:23:06.7314705Z 2710e764d89a: Pull complete
+2026-02-16T20:23:06.7324513Z d64dbdf800a2: Pull complete
+2026-02-16T20:23:07.0264888Z b64f280cfa2b: Pull complete
+2026-02-16T20:23:07.0286614Z ea5e741a30ce: Pull complete
+2026-02-16T20:23:07.0319546Z 0ace4c983c3e: Pull complete
+2026-02-16T20:23:07.0328584Z c50a02fe2f5f: Pull complete
+2026-02-16T20:23:08.4254569Z e60549838c5a: Download complete
+2026-02-16T20:23:10.7293521Z e60549838c5a: Pull complete
+2026-02-16T20:23:10.7901961Z 49b40a0a623d: Pull complete
+2026-02-16T20:23:10.7909502Z 6771773ef0da: Pull complete
+2026-02-16T20:23:10.7925378Z 7b098c79e38c: Pull complete
+2026-02-16T20:23:10.7929154Z 049b2237836a: Pull complete
+2026-02-16T20:23:10.7944183Z 7aa308802868: Pull complete
+2026-02-16T20:23:10.7947013Z Digest: sha256:dafc4d8e8369da730a5ee9a320a0f0b3c6aa516f41244689c4493a27dc84472d
+2026-02-16T20:23:10.7947914Z Status: Downloaded newer image for postgres:15
+2026-02-16T20:23:10.7954078Z docker.io/library/postgres:15
+2026-02-16T20:23:10.8029952Z ##[command]/usr/bin/docker create --name 45412096b59b46749996831884d83648_postgres15_51474c --label c01cb3 --network github_network_5b9e4983216d4364af8efe24e1e571bc --network-alias postgres -p 5432:5432 --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5 -e "POSTGRES_PASSWORD=password" -e "POSTGRES_DB=ironforge_test" -e GITHUB_ACTIONS=true -e CI=true postgres:15
+2026-02-16T20:23:13.0127805Z b2f7b56e08865503069b3eedf65987066d4f0d43ce3577e5f1ff1a403f03e206
+2026-02-16T20:23:13.0155437Z ##[command]/usr/bin/docker start b2f7b56e08865503069b3eedf65987066d4f0d43ce3577e5f1ff1a403f03e206
+2026-02-16T20:23:13.2501573Z b2f7b56e08865503069b3eedf65987066d4f0d43ce3577e5f1ff1a403f03e206
+2026-02-16T20:23:13.2549105Z ##[command]/usr/bin/docker ps --all --filter id=b2f7b56e08865503069b3eedf65987066d4f0d43ce3577e5f1ff1a403f03e206 --filter status=running --no-trunc --format "{{.ID}} {{.Status}}"
+2026-02-16T20:23:13.2911602Z b2f7b56e08865503069b3eedf65987066d4f0d43ce3577e5f1ff1a403f03e206 Up Less than a second (health: starting)
+2026-02-16T20:23:13.2939935Z ##[command]/usr/bin/docker port b2f7b56e08865503069b3eedf65987066d4f0d43ce3577e5f1ff1a403f03e206
+2026-02-16T20:23:13.3128554Z 5432/tcp -> 0.0.0.0:5432
+2026-02-16T20:23:13.3131814Z 5432/tcp -> [::]:5432
+2026-02-16T20:23:13.3212460Z ##[endgroup]
+2026-02-16T20:23:13.3225205Z ##[group]Waiting for all services to be ready
+2026-02-16T20:23:13.3244683Z ##[command]/usr/bin/docker inspect --format="{{if .Config.Healthcheck}}{{print .State.Health.Status}}{{end}}" b2f7b56e08865503069b3eedf65987066d4f0d43ce3577e5f1ff1a403f03e206
+2026-02-16T20:23:13.3437722Z starting
+2026-02-16T20:23:13.3472575Z postgres service is starting, waiting 2 seconds before checking again.
+2026-02-16T20:23:15.3467653Z ##[command]/usr/bin/docker inspect --format="{{if .Config.Healthcheck}}{{print .State.Health.Status}}{{end}}" b2f7b56e08865503069b3eedf65987066d4f0d43ce3577e5f1ff1a403f03e206
+2026-02-16T20:23:15.3609634Z starting
+2026-02-16T20:23:15.3626462Z postgres service is starting, waiting 3 seconds before checking again.
+2026-02-16T20:23:19.2719467Z ##[command]/usr/bin/docker inspect --format="{{if .Config.Healthcheck}}{{print .State.Health.Status}}{{end}}" b2f7b56e08865503069b3eedf65987066d4f0d43ce3577e5f1ff1a403f03e206
+2026-02-16T20:23:19.2883156Z starting
+2026-02-16T20:23:19.2905640Z postgres service is starting, waiting 7 seconds before checking again.
+2026-02-16T20:23:26.3012079Z ##[command]/usr/bin/docker inspect --format="{{if .Config.Healthcheck}}{{print .State.Health.Status}}{{end}}" b2f7b56e08865503069b3eedf65987066d4f0d43ce3577e5f1ff1a403f03e206
+2026-02-16T20:23:26.3162840Z healthy
+2026-02-16T20:23:26.3180740Z postgres service is healthy.
+2026-02-16T20:23:26.3181548Z ##[endgroup]
+2026-02-16T20:23:26.3521766Z ##[group]Run actions/checkout@v4
+2026-02-16T20:23:26.3522323Z with:
+2026-02-16T20:23:26.3522552Z   repository: Techlemariam/IronForge
+2026-02-16T20:23:26.3522997Z   token: ***
+2026-02-16T20:23:26.3523209Z   ssh-strict: true
+2026-02-16T20:23:26.3523405Z   ssh-user: git
+2026-02-16T20:23:26.3523596Z   persist-credentials: true
+2026-02-16T20:23:26.3523812Z   clean: true
+2026-02-16T20:23:26.3524006Z   sparse-checkout-cone-mode: true
+2026-02-16T20:23:26.3524245Z   fetch-depth: 1
+2026-02-16T20:23:26.3524430Z   fetch-tags: false
+2026-02-16T20:23:26.3524624Z   show-progress: true
+2026-02-16T20:23:26.3524820Z   lfs: false
+2026-02-16T20:23:26.3524985Z   submodules: false
+2026-02-16T20:23:26.3525179Z   set-safe-directory: true
+2026-02-16T20:23:26.3525572Z env:
+2026-02-16T20:23:26.3526814Z   DATABASE_URL: ***
+2026-02-16T20:23:26.3527458Z   DIRECT_URL: ***
+2026-02-16T20:23:26.3527798Z   NEXT_PUBLIC_SUPABASE_URL: ***
+2026-02-16T20:23:26.3529052Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+2026-02-16T20:23:26.3529357Z   SKIP_ENV_VALIDATION: true
+2026-02-16T20:23:26.3529566Z ##[endgroup]
+2026-02-16T20:23:26.4690151Z Syncing repository: Techlemariam/IronForge
+2026-02-16T20:23:26.4692266Z ##[group]Getting Git version info
+2026-02-16T20:23:26.4693188Z Working directory is '/home/runner/work/IronForge/IronForge'
+2026-02-16T20:23:26.4699822Z [command]/usr/bin/git version
+2026-02-16T20:23:26.4716592Z git version 2.52.0
+2026-02-16T20:23:26.4744610Z ##[endgroup]
+2026-02-16T20:23:26.4761147Z Temporarily overriding HOME='/home/runner/work/_temp/e3c6cba8-4efd-4b33-b9b2-457f62f2b0c5' before making global git config changes
+2026-02-16T20:23:26.4764470Z Adding repository directory to the temporary git global config as a safe directory
+2026-02-16T20:23:26.4768695Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/IronForge/IronForge
+2026-02-16T20:23:26.4813700Z Deleting the contents of '/home/runner/work/IronForge/IronForge'
+2026-02-16T20:23:26.4818589Z ##[group]Initializing the repository
+2026-02-16T20:23:26.4824004Z [command]/usr/bin/git init /home/runner/work/IronForge/IronForge
+2026-02-16T20:23:26.4948155Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-02-16T20:23:26.4953337Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-02-16T20:23:26.4954745Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-02-16T20:23:26.4958101Z hint: call:
+2026-02-16T20:23:26.4958986Z hint:
+2026-02-16T20:23:26.4959590Z hint: 	git config --global init.defaultBranch <name>
+2026-02-16T20:23:26.4960126Z hint:
+2026-02-16T20:23:26.4960634Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-02-16T20:23:26.4961558Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-02-16T20:23:26.4962230Z hint:
+2026-02-16T20:23:26.4962593Z hint: 	git branch -m <name>
+2026-02-16T20:23:26.4970975Z hint:
+2026-02-16T20:23:26.4971921Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-02-16T20:23:26.4972902Z Initialized empty Git repository in /home/runner/work/IronForge/IronForge/.git/
+2026-02-16T20:23:26.4977239Z [command]/usr/bin/git remote add origin https://github.com/Techlemariam/IronForge
+2026-02-16T20:23:26.5018384Z ##[endgroup]
+2026-02-16T20:23:26.5019064Z ##[group]Disabling automatic garbage collection
+2026-02-16T20:23:26.5024235Z [command]/usr/bin/git config --local gc.auto 0
+2026-02-16T20:23:26.5058288Z ##[endgroup]
+2026-02-16T20:23:26.5058932Z ##[group]Setting up auth
+2026-02-16T20:23:26.5066985Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-02-16T20:23:26.5102716Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-02-16T20:23:26.5469868Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-02-16T20:23:26.5515706Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-02-16T20:23:26.5771101Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-02-16T20:23:26.5808128Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-02-16T20:23:26.6075394Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-02-16T20:23:26.6115755Z ##[endgroup]
+2026-02-16T20:23:26.6116704Z ##[group]Fetching the repository
+2026-02-16T20:23:26.6125909Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +b821d38242d15553947be914c3973b00ccdc9b05:refs/remotes/pull/196/merge
+2026-02-16T20:23:27.2968992Z From https://github.com/Techlemariam/IronForge
+2026-02-16T20:23:27.2973787Z  * [new ref]         b821d38242d15553947be914c3973b00ccdc9b05 -> pull/196/merge
+2026-02-16T20:23:27.3013420Z ##[endgroup]
+2026-02-16T20:23:27.3017659Z ##[group]Determining the checkout info
+2026-02-16T20:23:27.3018391Z ##[endgroup]
+2026-02-16T20:23:27.3019277Z [command]/usr/bin/git sparse-checkout disable
+2026-02-16T20:23:27.3068352Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-02-16T20:23:27.3100411Z ##[group]Checking out the ref
+2026-02-16T20:23:27.3103034Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/196/merge
+2026-02-16T20:23:27.5353500Z Note: switching to 'refs/remotes/pull/196/merge'.
+2026-02-16T20:23:27.5355395Z 
+2026-02-16T20:23:27.5357021Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-02-16T20:23:27.5357804Z changes and commit them, and you can discard any commits you make in this
+2026-02-16T20:23:27.5358561Z state without impacting any branches by switching back to a branch.
+2026-02-16T20:23:27.5359052Z 
+2026-02-16T20:23:27.5359349Z If you want to create a new branch to retain commits you create, you may
+2026-02-16T20:23:27.5360059Z do so (now or later) by using -c with the switch command. Example:
+2026-02-16T20:23:27.5360474Z 
+2026-02-16T20:23:27.5360653Z   git switch -c <new-branch-name>
+2026-02-16T20:23:27.5360955Z 
+2026-02-16T20:23:27.5361117Z Or undo this operation with:
+2026-02-16T20:23:27.5361380Z 
+2026-02-16T20:23:27.5361522Z   git switch -
+2026-02-16T20:23:27.5361780Z 
+2026-02-16T20:23:27.5362138Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-02-16T20:23:27.5362673Z 
+2026-02-16T20:23:27.5363258Z HEAD is now at b821d38 Merge b83a66f623f521a574fe670bc0cc17ba43f28bd5 into 5117ec3675bcbf05013c5b81d3de7421f60d2cc5
+2026-02-16T20:23:27.5393083Z ##[endgroup]
+2026-02-16T20:23:27.5433554Z [command]/usr/bin/git log -1 --format=%H
+2026-02-16T20:23:27.5459317Z b821d38242d15553947be914c3973b00ccdc9b05
+2026-02-16T20:23:27.5655752Z ##[group]Run pnpm/action-setup@v4
+2026-02-16T20:23:27.5656366Z with:
+2026-02-16T20:23:27.5656651Z   dest: ~/setup-pnpm
+2026-02-16T20:23:27.5657111Z   run_install: null
+2026-02-16T20:23:27.5657325Z   package_json_file: package.json
+2026-02-16T20:23:27.5657570Z   standalone: false
+2026-02-16T20:23:27.5657757Z env:
+2026-02-16T20:23:27.5658509Z   DATABASE_URL: ***
+2026-02-16T20:23:27.5659078Z   DIRECT_URL: ***
+2026-02-16T20:23:27.5659413Z   NEXT_PUBLIC_SUPABASE_URL: ***
+2026-02-16T20:23:27.5660690Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+2026-02-16T20:23:27.5660962Z   SKIP_ENV_VALIDATION: true
+2026-02-16T20:23:27.5661182Z ##[endgroup]
+2026-02-16T20:23:27.6230386Z ##[group]Running self-installer...
+2026-02-16T20:23:28.3239313Z Progress: resolved 1, reused 0, downloaded 0, added 0
+2026-02-16T20:23:28.3370956Z Packages: +1
+2026-02-16T20:23:28.3382031Z +
+2026-02-16T20:23:28.7839603Z Progress: resolved 1, reused 0, downloaded 1, added 1, done
+2026-02-16T20:23:28.8128019Z 
+2026-02-16T20:23:28.8132144Z dependencies:
+2026-02-16T20:23:28.8134533Z + pnpm 9.15.0 (10.29.3 is available)
+2026-02-16T20:23:28.8139666Z 
+2026-02-16T20:23:28.8175063Z Done in 1s
+2026-02-16T20:23:28.8320334Z ##[endgroup]
+2026-02-16T20:23:28.8327043Z Installation Completed!
+2026-02-16T20:23:28.8452528Z ##[group]Run actions/setup-node@v6
+2026-02-16T20:23:28.8452807Z with:
+2026-02-16T20:23:28.8452993Z   node-version: 22
+2026-02-16T20:23:28.8453190Z   cache: pnpm
+2026-02-16T20:23:28.8453388Z   check-latest: false
+2026-02-16T20:23:28.8453702Z   token: ***
+2026-02-16T20:23:28.8453907Z   package-manager-cache: true
+2026-02-16T20:23:28.8454142Z env:
+2026-02-16T20:23:28.8454763Z   DATABASE_URL: ***
+2026-02-16T20:23:28.8455306Z   DIRECT_URL: ***
+2026-02-16T20:23:28.8455619Z   NEXT_PUBLIC_SUPABASE_URL: ***
+2026-02-16T20:23:28.8457321Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+2026-02-16T20:23:28.8457601Z   SKIP_ENV_VALIDATION: true
+2026-02-16T20:23:28.8457894Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-02-16T20:23:28.8458196Z ##[endgroup]
+2026-02-16T20:23:28.9831042Z Found in cache @ /opt/hostedtoolcache/node/22.22.0/x64
+2026-02-16T20:23:28.9832426Z ##[group]Environment details
+2026-02-16T20:23:29.4215853Z node: v22.22.0
+2026-02-16T20:23:29.4223452Z npm: 10.9.4
+2026-02-16T20:23:29.4223860Z yarn: 1.22.22
+2026-02-16T20:23:29.4225263Z ##[endgroup]
+2026-02-16T20:23:29.4246805Z [command]/home/runner/setup-pnpm/node_modules/.bin/pnpm store path --silent
+2026-02-16T20:23:29.8631473Z /home/runner/setup-pnpm/node_modules/.bin/store/v3
+2026-02-16T20:23:30.0331389Z pnpm cache is not found
+2026-02-16T20:23:30.0460810Z ##[group]Run pnpm install --frozen-lockfile
+2026-02-16T20:23:30.0461244Z [36;1mpnpm install --frozen-lockfile[0m
+2026-02-16T20:23:30.0522561Z shell: /usr/bin/bash -e {0}
+2026-02-16T20:23:30.0522829Z env:
+2026-02-16T20:23:30.0523783Z   DATABASE_URL: ***
+2026-02-16T20:23:30.0524399Z   DIRECT_URL: ***
+2026-02-16T20:23:30.0524738Z   NEXT_PUBLIC_SUPABASE_URL: ***
+2026-02-16T20:23:30.0526406Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+2026-02-16T20:23:30.0526705Z   SKIP_ENV_VALIDATION: true
+2026-02-16T20:23:30.0526997Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-02-16T20:23:30.0527306Z ##[endgroup]
+2026-02-16T20:23:30.5666645Z Scope: all 4 workspace projects
+2026-02-16T20:23:30.6732026Z Lockfile is up to date, resolution step is skipped
+2026-02-16T20:23:30.8338584Z Progress: resolved 1, reused 0, downloaded 0, added 0
+2026-02-16T20:23:31.0993737Z Packages: +1671
+2026-02-16T20:23:31.0994411Z ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2026-02-16T20:23:31.8339733Z Progress: resolved 1671, reused 0, downloaded 5, added 0
+2026-02-16T20:23:32.8357632Z Progress: resolved 1671, reused 0, downloaded 131, added 116
+2026-02-16T20:23:33.8353035Z Progress: resolved 1671, reused 0, downloaded 246, added 234
+2026-02-16T20:23:34.8391142Z Progress: resolved 1671, reused 0, downloaded 275, added 264
+2026-02-16T20:23:35.8392153Z Progress: resolved 1671, reused 0, downloaded 297, added 286
+2026-02-16T20:23:36.8394717Z Progress: resolved 1671, reused 0, downloaded 391, added 386
+2026-02-16T20:23:37.8410611Z Progress: resolved 1671, reused 0, downloaded 417, added 408
+2026-02-16T20:23:38.8427735Z Progress: resolved 1671, reused 0, downloaded 481, added 479
+2026-02-16T20:23:39.8434868Z Progress: resolved 1671, reused 0, downloaded 565, added 557
+2026-02-16T20:23:40.8438625Z Progress: resolved 1671, reused 0, downloaded 635, added 623
+2026-02-16T20:23:41.8667896Z Progress: resolved 1671, reused 0, downloaded 679, added 671
+2026-02-16T20:23:42.8674303Z Progress: resolved 1671, reused 0, downloaded 694, added 683
+2026-02-16T20:23:43.8696388Z Progress: resolved 1671, reused 0, downloaded 697, added 686
+2026-02-16T20:23:44.8724911Z Progress: resolved 1671, reused 0, downloaded 705, added 692
+2026-02-16T20:23:46.0008505Z Progress: resolved 1671, reused 0, downloaded 706, added 692
+2026-02-16T20:23:47.0017017Z Progress: resolved 1671, reused 0, downloaded 736, added 733
+2026-02-16T20:23:48.0016663Z Progress: resolved 1671, reused 0, downloaded 752, added 738
+2026-02-16T20:23:49.0028032Z Progress: resolved 1671, reused 0, downloaded 891, added 890
+2026-02-16T20:23:50.0066282Z Progress: resolved 1671, reused 0, downloaded 922, added 911
+2026-02-16T20:23:51.0053496Z Progress: resolved 1671, reused 0, downloaded 1021, added 1022
+2026-02-16T20:23:52.0068819Z Progress: resolved 1671, reused 0, downloaded 1079, added 1065
+2026-02-16T20:23:53.0081668Z Progress: resolved 1671, reused 0, downloaded 1189, added 1190
+2026-02-16T20:23:54.0071290Z Progress: resolved 1671, reused 0, downloaded 1281, added 1283
+2026-02-16T20:23:55.0075263Z Progress: resolved 1671, reused 0, downloaded 1444, added 1444
+2026-02-16T20:23:56.0082807Z Progress: resolved 1671, reused 0, downloaded 1515, added 1503
+2026-02-16T20:23:57.0086300Z Progress: resolved 1671, reused 0, downloaded 1598, added 1593
+2026-02-16T20:23:58.0090802Z Progress: resolved 1671, reused 0, downloaded 1628, added 1616
+2026-02-16T20:23:58.7091441Z Progress: resolved 1671, reused 0, downloaded 1669, added 1671, done
+2026-02-16T20:23:59.3501788Z .../node_modules/@prisma/engines postinstall$ node scripts/postinstall.js
+2026-02-16T20:23:59.3698047Z .../sharp@0.34.5/node_modules/sharp install$ node install/check.js || npm run build
+2026-02-16T20:23:59.3707634Z .../node_modules/msw postinstall$ node -e "import('./config/scripts/postinstall.js').catch(() => void 0)"
+2026-02-16T20:23:59.3720705Z .../esbuild@0.25.0/node_modules/esbuild postinstall$ node install.js
+2026-02-16T20:23:59.3808082Z .../node_modules/unrs-resolver postinstall$ napi-postinstall unrs-resolver 1.11.1 check
+2026-02-16T20:23:59.5186625Z .../node_modules/msw postinstall: Done
+2026-02-16T20:23:59.5857972Z .../esbuild@0.25.0/node_modules/esbuild postinstall: Done
+2026-02-16T20:23:59.6132247Z .../sharp@0.34.5/node_modules/sharp install: Done
+2026-02-16T20:23:59.6414092Z .../node_modules/unrs-resolver postinstall: Done
+2026-02-16T20:23:59.6684523Z .../node_modules/protobufjs postinstall$ node scripts/postinstall
+2026-02-16T20:23:59.7378204Z .../node_modules/@sentry/cli postinstall$ node ./scripts/install.js
+2026-02-16T20:23:59.7648299Z .../node_modules/protobufjs postinstall: Done
+2026-02-16T20:23:59.8357665Z .../node_modules/@sentry/cli postinstall: Done
+2026-02-16T20:24:00.2321463Z .../node_modules/@prisma/engines postinstall: Done
+2026-02-16T20:24:00.3187539Z .../node_modules/prisma preinstall$ node scripts/preinstall-entry.js
+2026-02-16T20:24:00.3661578Z .../node_modules/prisma preinstall: Done
+2026-02-16T20:24:00.6982458Z 
+2026-02-16T20:24:00.6986399Z dependencies:
+2026-02-16T20:24:00.6992988Z + @ai-sdk/google 3.0.26
+2026-02-16T20:24:00.6993643Z + @ai-sdk/react 3.0.84
+2026-02-16T20:24:00.6994080Z + @capacitor/android 8.1.0
+2026-02-16T20:24:00.6994492Z + @capacitor/cli 8.1.0
+2026-02-16T20:24:00.6994893Z + @capacitor/core 8.1.0
+2026-02-16T20:24:00.6995315Z + @google/genai 1.41.0
+2026-02-16T20:24:00.6995796Z + @mediapipe/tasks-vision 0.10.32
+2026-02-16T20:24:00.6996557Z + @neondatabase/serverless 1.0.2
+2026-02-16T20:24:00.6997046Z + @prisma/adapter-neon 7.4.0
+2026-02-16T20:24:00.6997486Z + @prisma/adapter-pg 7.4.0
+2026-02-16T20:24:00.6997898Z + @prisma/client 7.4.0
+2026-02-16T20:24:00.6998687Z + @radix-ui/react-avatar 1.1.11
+2026-02-16T20:24:00.6999559Z + @radix-ui/react-dialog 1.1.15
+2026-02-16T20:24:00.7000053Z + @radix-ui/react-label 2.1.8
+2026-02-16T20:24:00.7000583Z + @radix-ui/react-popover 1.1.15
+2026-02-16T20:24:00.7001123Z + @radix-ui/react-progress 1.1.8
+2026-02-16T20:24:00.7001667Z + @radix-ui/react-scroll-area 1.2.10
+2026-02-16T20:24:00.7002211Z + @radix-ui/react-select 2.2.6
+2026-02-16T20:24:00.7002719Z + @radix-ui/react-slider 1.3.6
+2026-02-16T20:24:00.7003222Z + @radix-ui/react-slot 1.2.4
+2026-02-16T20:24:00.7003684Z + @radix-ui/react-tabs 1.1.13
+2026-02-16T20:24:00.7004130Z + @react-three/drei 10.7.7
+2026-02-16T20:24:00.7004556Z + @react-three/fiber 9.5.0
+2026-02-16T20:24:00.7004975Z + @remotion/cli 4.0.421
+2026-02-16T20:24:00.7005379Z + @sentry/nextjs 10.38.0
+2026-02-16T20:24:00.7005771Z + @serwist/next 9.5.5
+2026-02-16T20:24:00.7006356Z + @supabase/ssr 0.8.0
+2026-02-16T20:24:00.7006800Z + @supabase/supabase-js 2.95.3
+2026-02-16T20:24:00.7007297Z + @types/canvas-confetti 1.9.0
+2026-02-16T20:24:00.7007747Z + @types/howler 2.2.12
+2026-02-16T20:24:00.7008141Z + @types/web-push 3.6.4
+2026-02-16T20:24:00.7008500Z + ai 6.0.82
+2026-02-16T20:24:00.7008806Z + axios 1.13.5
+2026-02-16T20:24:00.7009162Z + canvas-confetti 1.9.4
+2026-02-16T20:24:00.7009618Z + class-variance-authority 0.7.1
+2026-02-16T20:24:00.7010028Z + clsx 2.1.1
+2026-02-16T20:24:00.7010345Z + date-fns 4.1.0
+2026-02-16T20:24:00.7010716Z + framer-motion 12.34.0
+2026-02-16T20:24:00.7011080Z + h3-js 4.4.0
+2026-02-16T20:24:00.7011413Z + howler 2.2.4
+2026-02-16T20:24:00.7011803Z + import-in-the-middle 3.0.0
+2026-02-16T20:24:00.7012269Z + lucide-react 0.563.0
+2026-02-16T20:24:00.7012691Z + maplibre-gl 5.18.0
+2026-02-16T20:24:00.7013060Z + next 16.1.6
+2026-02-16T20:24:00.7013403Z + pg 8.18.0
+2026-02-16T20:24:00.7013707Z + pino 10.3.1
+2026-02-16T20:24:00.7014071Z + pino-pretty 13.1.3
+2026-02-16T20:24:00.7014417Z + qrcode.react 4.2.0
+2026-02-16T20:24:00.7014741Z + react 19.2.4
+2026-02-16T20:24:00.7015066Z + react-dom 19.2.4
+2026-02-16T20:24:00.7015455Z + react-dropzone 15.0.0
+2026-02-16T20:24:00.7015882Z + react-player 3.4.0
+2026-02-16T20:24:00.7016544Z + reactflow 11.11.4
+2026-02-16T20:24:00.7016891Z + recharts 3.7.0
+2026-02-16T20:24:00.7017243Z + remotion 4.0.421
+2026-02-16T20:24:00.7017638Z + require-in-the-middle 8.0.1
+2026-02-16T20:24:00.7018063Z + serwist 9.5.5
+2026-02-16T20:24:00.7018420Z + sonner 2.0.7
+2026-02-16T20:24:00.7019080Z + tailwind-merge 3.4.0
+2026-02-16T20:24:00.7019575Z + tailwindcss-animate 1.0.7
+2026-02-16T20:24:00.7020016Z + three 0.182.0
+2026-02-16T20:24:00.7020379Z + web-push 3.6.7
+2026-02-16T20:24:00.7020725Z + zod 4.3.6
+2026-02-16T20:24:00.7021053Z + zustand 5.0.11
+2026-02-16T20:24:00.7021285Z 
+2026-02-16T20:24:00.7021451Z devDependencies:
+2026-02-16T20:24:00.7021927Z + @chromatic-com/storybook 5.0.1
+2026-02-16T20:24:00.7022401Z + @eslint/compat 2.0.2
+2026-02-16T20:24:00.7022805Z + @eslint/eslintrc 3.3.3
+2026-02-16T20:24:00.7023185Z + @lhci/cli 0.15.1
+2026-02-16T20:24:00.7023570Z + @playwright/test 1.58.2
+2026-02-16T20:24:00.7024047Z + @storybook/addon-a11y 10.2.8
+2026-02-16T20:24:00.7024551Z + @storybook/addon-docs 10.2.8
+2026-02-16T20:24:00.7025059Z + @storybook/addon-onboarding 10.2.8
+2026-02-16T20:24:00.7025580Z + @storybook/addon-vitest 10.2.8
+2026-02-16T20:24:00.7026276Z + @storybook/nextjs-vite 10.2.8
+2026-02-16T20:24:00.7026771Z + @tailwindcss/postcss 4.1.18
+2026-02-16T20:24:00.7027257Z + @testing-library/dom 10.4.1
+2026-02-16T20:24:00.7027759Z + @testing-library/react 16.3.2
+2026-02-16T20:24:00.7028205Z + @types/geojson 7946.0.16
+2026-02-16T20:24:00.7028602Z + @types/node 25.2.3
+2026-02-16T20:24:00.7028969Z + @types/pg 8.16.0
+2026-02-16T20:24:00.7029339Z + @types/react 19.2.14
+2026-02-16T20:24:00.7029742Z + @types/react-dom 19.2.3
+2026-02-16T20:24:00.7030155Z + @types/three 0.182.0
+2026-02-16T20:24:00.7030547Z + @types/web-bluetooth 0.0.21
+2026-02-16T20:24:00.7030973Z + @types/ws 8.18.1
+2026-02-16T20:24:00.7031439Z + @typescript-eslint/eslint-plugin 8.55.0
+2026-02-16T20:24:00.7032033Z + @typescript-eslint/parser 8.55.0
+2026-02-16T20:24:00.7032757Z + @vitejs/plugin-react 5.1.4
+2026-02-16T20:24:00.7033249Z + @vitest/browser-playwright 4.0.18
+2026-02-16T20:24:00.7033750Z + @vitest/coverage-v8 4.0.18
+2026-02-16T20:24:00.7034158Z + autoprefixer 10.4.24
+2026-02-16T20:24:00.7034532Z + chromatic 15.1.0
+2026-02-16T20:24:00.7034886Z + dotenv 17.2.4
+2026-02-16T20:24:00.7035301Z + dotenv-cli 11.0.0
+2026-02-16T20:24:00.7035654Z + eslint 10.0.0
+2026-02-16T20:24:00.7036247Z + eslint-config-next 16.1.6
+2026-02-16T20:24:00.7036772Z + eslint-plugin-storybook 10.2.8
+2026-02-16T20:24:00.7037203Z + husky 9.1.7
+2026-02-16T20:24:00.7037524Z + jsdom 28.0.0
+2026-02-16T20:24:00.7037848Z + magicast 0.5.2
+2026-02-16T20:24:00.7038176Z + msw 2.12.10
+2026-02-16T20:24:00.7038520Z + playwright 1.58.2
+2026-02-16T20:24:00.7038866Z + postcss 8.5.6
+2026-02-16T20:24:00.7039195Z + prisma 7.4.0
+2026-02-16T20:24:00.7039536Z + storybook 10.2.8
+2026-02-16T20:24:00.7039906Z + tailwindcss 4.1.18
+2026-02-16T20:24:00.7040239Z + tsx 4.21.0
+2026-02-16T20:24:00.7040525Z + turbo 2.8.7
+2026-02-16T20:24:00.7040864Z + typedoc 0.28.16
+2026-02-16T20:24:00.7041286Z + typedoc-plugin-markdown 4.10.0
+2026-02-16T20:24:00.7041710Z + typescript 5.9.3
+2026-02-16T20:24:00.7042018Z + vite 7.3.1
+2026-02-16T20:24:00.7042299Z + vitest 4.0.18
+2026-02-16T20:24:00.7042614Z + ws 8.19.0
+2026-02-16T20:24:00.7042798Z 
+2026-02-16T20:24:00.7577196Z . postinstall$ prisma generate
+2026-02-16T20:24:01.8287792Z . postinstall: Loaded Prisma config from prisma.config.ts.
+2026-02-16T20:24:01.9911401Z . postinstall: Prisma schema loaded from prisma/schema.prisma.
+2026-02-16T20:24:02.0042700Z . postinstall: warn Preview feature "driverAdapters" is deprecated. The functionality can be used without specifying it as a preview feature.
+2026-02-16T20:24:03.4000263Z . postinstall: ✔ Generated Prisma Client (v7.4.0) to ./node_modules/.pnpm/@prisma+client@7.4.0_prisma@7.4.0_@types+react@19.2.14_magicast@0.5.2_react-dom@19.2.4_react@_kbihlyeorb7my7bafhyofzhtla/node_modules/@prisma/client in 890ms
+2026-02-16T20:24:03.4027396Z . postinstall: Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+2026-02-16T20:24:03.4315335Z . postinstall: Done
+2026-02-16T20:24:03.4315799Z . prepare$ husky
+2026-02-16T20:24:03.5068304Z . prepare: Done
+2026-02-16T20:24:03.5087718Z Done in 33.4s
+2026-02-16T20:24:03.5785316Z ##[group]Run PGPASSWORD=password psql -h localhost -U postgres -c "CREATE DATABASE ironforge_shadow;"
+2026-02-16T20:24:03.5786435Z [36;1mPGPASSWORD=password psql -h localhost -U postgres -c "CREATE DATABASE ironforge_shadow;"[0m
+2026-02-16T20:24:03.5836780Z shell: /usr/bin/bash -e {0}
+2026-02-16T20:24:03.5837036Z env:
+2026-02-16T20:24:03.5837732Z   DATABASE_URL: ***
+2026-02-16T20:24:03.5838307Z   DIRECT_URL: ***
+2026-02-16T20:24:03.5838633Z   NEXT_PUBLIC_SUPABASE_URL: ***
+2026-02-16T20:24:03.5839911Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+2026-02-16T20:24:03.5840180Z   SKIP_ENV_VALIDATION: true
+2026-02-16T20:24:03.5840460Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-02-16T20:24:03.5840755Z ##[endgroup]
+2026-02-16T20:24:03.8061517Z CREATE DATABASE
+2026-02-16T20:24:03.8118018Z ##[group]Run npx prisma migrate diff \
+2026-02-16T20:24:03.8118554Z [36;1mnpx prisma migrate diff \[0m
+2026-02-16T20:24:03.8119069Z [36;1m  --from-migrations prisma/migrations \[0m
+2026-02-16T20:24:03.8119627Z [36;1m  --to-schema prisma/schema.prisma \[0m
+2026-02-16T20:24:03.8120105Z [36;1m  --exit-code[0m
+2026-02-16T20:24:03.8183185Z shell: /usr/bin/bash -e {0}
+2026-02-16T20:24:03.8183454Z env:
+2026-02-16T20:24:03.8183961Z   DATABASE_URL: ***localhost:5432/ironforge_test?schema=public
+2026-02-16T20:24:03.8184707Z   DIRECT_URL: ***
+2026-02-16T20:24:03.8185039Z   NEXT_PUBLIC_SUPABASE_URL: ***
+2026-02-16T20:24:03.8186617Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+2026-02-16T20:24:03.8186905Z   SKIP_ENV_VALIDATION: true
+2026-02-16T20:24:03.8187194Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-02-16T20:24:03.8187757Z   SHADOW_DATABASE_URL: ***localhost:5432/ironforge_shadow?schema=public
+2026-02-16T20:24:03.8188126Z ##[endgroup]
+2026-02-16T20:24:06.2783912Z Loaded Prisma config from prisma.config.ts.
+2026-02-16T20:24:06.2784412Z 
+2026-02-16T20:24:06.7560866Z Error: P3006
+2026-02-16T20:24:06.7566857Z 
+2026-02-16T20:24:06.7567699Z Migration `20260216190000_add_active_sessions` failed to apply cleanly to the shadow database. 
+2026-02-16T20:24:06.7569469Z Error:
+2026-02-16T20:24:06.7571494Z ERROR: relation "active_sessions" already exists
+2026-02-16T20:24:06.7572767Z 
+2026-02-16T20:24:06.7573029Z 
+2026-02-16T20:24:06.8146383Z ##[error]Process completed with exit code 1.
+2026-02-16T20:24:06.8213441Z Post job cleanup.
+2026-02-16T20:24:06.8767854Z Pruning is unnecessary.
+2026-02-16T20:24:06.8872837Z Post job cleanup.
+2026-02-16T20:24:06.9841537Z [command]/usr/bin/git version
+2026-02-16T20:24:06.9895847Z git version 2.52.0
+2026-02-16T20:24:06.9944915Z Temporarily overriding HOME='/home/runner/work/_temp/85a1a2c6-e5ef-4a1e-8e4b-142f43c753af' before making global git config changes
+2026-02-16T20:24:06.9947432Z Adding repository directory to the temporary git global config as a safe directory
+2026-02-16T20:24:06.9952157Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/IronForge/IronForge
+2026-02-16T20:24:06.9991561Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-02-16T20:24:07.0030175Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-02-16T20:24:07.0367691Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-02-16T20:24:07.0411811Z http.https://github.com/.extraheader
+2026-02-16T20:24:07.0450006Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-02-16T20:24:07.0515567Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-02-16T20:24:07.0917703Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-02-16T20:24:07.0970744Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-02-16T20:24:07.1352934Z Print service container logs: 45412096b59b46749996831884d83648_postgres15_51474c
+2026-02-16T20:24:07.1358575Z ##[command]/usr/bin/docker logs --details b2f7b56e08865503069b3eedf65987066d4f0d43ce3577e5f1ff1a403f03e206
+2026-02-16T20:24:07.1504720Z  initdb: warning: enabling "trust" authentication for local connections
+2026-02-16T20:24:07.1508497Z  initdb: hint: You can change this by editing pg_hba.conf or using the option -A, or --auth-local and --auth-host, the next time you run initdb.
+2026-02-16T20:24:07.1510199Z  2026-02-16 20:23:14.352 UTC [1] LOG:  starting PostgreSQL 15.16 (Debian 15.16-1.pgdg13+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+2026-02-16T20:24:07.1511486Z  2026-02-16 20:23:14.353 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+2026-02-16T20:24:07.1512284Z  2026-02-16 20:23:14.353 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+2026-02-16T20:24:07.1513256Z  2026-02-16 20:23:14.354 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2026-02-16T20:24:07.1514252Z  2026-02-16 20:23:14.357 UTC [63] LOG:  database system was shut down at 2026-02-16 20:23:14 UTC
+2026-02-16T20:24:07.1515171Z  2026-02-16 20:23:14.361 UTC [1] LOG:  database system is ready to accept connections
+2026-02-16T20:24:07.1515960Z  2026-02-16 20:23:23.318 UTC [74] FATAL:  role "root" does not exist
+2026-02-16T20:24:07.1516832Z  2026-02-16 20:23:33.430 UTC [83] FATAL:  role "root" does not exist
+2026-02-16T20:24:07.1517500Z  2026-02-16 20:23:43.556 UTC [91] FATAL:  role "root" does not exist
+2026-02-16T20:24:07.1518170Z  2026-02-16 20:23:53.664 UTC [100] FATAL:  role "root" does not exist
+2026-02-16T20:24:07.1519158Z  2026-02-16 20:24:03.797 UTC [110] FATAL:  role "root" does not exist
+2026-02-16T20:24:07.1519920Z  2026-02-16 20:24:06.539 UTC [111] ERROR:  table "_prisma_migrations" does not exist
+2026-02-16T20:24:07.1520736Z  2026-02-16 20:24:06.539 UTC [111] STATEMENT:  DROP TABLE _prisma_migrations
+2026-02-16T20:24:07.1521524Z  2026-02-16 20:24:06.751 UTC [111] ERROR:  relation "active_sessions" already exists
+2026-02-16T20:24:07.1522275Z  2026-02-16 20:24:06.751 UTC [111] STATEMENT:  -- CreateTable
+2026-02-16T20:24:07.1522831Z  	CREATE TABLE "active_sessions" (
+2026-02-16T20:24:07.1523305Z  	    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
+2026-02-16T20:24:07.1523793Z  	    "hostId" TEXT NOT NULL,
+2026-02-16T20:24:07.1524336Z  	    "createdAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+2026-02-16T20:24:07.1524946Z  	    "status" TEXT NOT NULL DEFAULT 'waiting',
+2026-02-16T20:24:07.1525418Z  	    "workoutName" TEXT,
+2026-02-16T20:24:07.1525846Z  	    "maxParticipants" INTEGER NOT NULL DEFAULT 4,
+2026-02-16T20:24:07.1526606Z  	    "inviteCode" TEXT,
+2026-02-16T20:24:07.1526958Z  	
+2026-02-16T20:24:07.1527341Z  	    CONSTRAINT "active_sessions_pkey" PRIMARY KEY ("id")
+2026-02-16T20:24:07.1527847Z  	);
+2026-02-16T20:24:07.1528113Z  	
+2026-02-16T20:24:07.1528409Z  	-- CreateTable
+2026-02-16T20:24:07.1528806Z  	CREATE TABLE "session_participants" (
+2026-02-16T20:24:07.1529290Z  	    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
+2026-02-16T20:24:07.1529779Z  	    "sessionId" UUID NOT NULL,
+2026-02-16T20:24:07.1530180Z  	    "userId" TEXT NOT NULL,
+2026-02-16T20:24:07.1530548Z  	    "heroName" TEXT,
+2026-02-16T20:24:07.1531031Z  	    "joinedAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+2026-02-16T20:24:07.1531768Z  	    "lastHeartbeat" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+2026-02-16T20:24:07.1532409Z  	    "status" TEXT NOT NULL DEFAULT 'active',
+2026-02-16T20:24:07.1532900Z  	
+2026-02-16T20:24:07.1533319Z  	    CONSTRAINT "session_participants_pkey" PRIMARY KEY ("id")
+2026-02-16T20:24:07.1533877Z  	);
+2026-02-16T20:24:07.1534150Z  	
+2026-02-16T20:24:07.1534431Z  	-- CreateIndex
+2026-02-16T20:24:07.1535053Z  	CREATE UNIQUE INDEX "active_sessions_inviteCode_key" ON "active_sessions"("inviteCode");
+2026-02-16T20:24:07.1535783Z  	
+2026-02-16T20:24:07.1536611Z  	-- CreateIndex
+2026-02-16T20:24:07.1537920Z  	CREATE UNIQUE INDEX "session_participants_sessionId_userId_key" ON "session_participants"("sessionId", "userId");
+2026-02-16T20:24:07.1539109Z  	
+2026-02-16T20:24:07.1539688Z  	-- AddForeignKey
+2026-02-16T20:24:07.1541374Z  	ALTER TABLE "active_sessions" ADD CONSTRAINT "active_sessions_hostId_fkey" FOREIGN KEY ("hostId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+2026-02-16T20:24:07.1542646Z  	
+2026-02-16T20:24:07.1543085Z  	-- AddForeignKey
+2026-02-16T20:24:07.1544032Z  	ALTER TABLE "session_participants" ADD CONSTRAINT "session_participants_sessionId_fkey" FOREIGN KEY ("sessionId") REFERENCES "active_sessions"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+2026-02-16T20:24:07.1544908Z  	
+2026-02-16T20:24:07.1545174Z  	-- AddForeignKey
+2026-02-16T20:24:07.1546382Z  	ALTER TABLE "session_participants" ADD CONSTRAINT "session_participants_sessionId_fkey" FOREIGN KEY ("sessionId") REFERENCES "active_sessions"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+2026-02-16T20:24:07.1547248Z  	
+2026-02-16T20:24:07.1547593Z  	-- AddForeignKey
+2026-02-16T20:24:07.1548348Z  	ALTER TABLE "session_participants" ADD CONSTRAINT "session_participants_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+2026-02-16T20:24:07.1549121Z  	
+2026-02-16T20:24:07.1549659Z  The files belonging to this database system will be owned by user "postgres".
+2026-02-16T20:24:07.1550180Z  This user must also own the server process.
+2026-02-16T20:24:07.1550531Z  
+2026-02-16T20:24:07.1563895Z  The database cluster will be initialized with locale "en_US.utf8".
+2026-02-16T20:24:07.1564717Z  The default database encoding has accordingly been set to "UTF8".
+2026-02-16T20:24:07.1565431Z  The default text search configuration will be set to "english".
+2026-02-16T20:24:07.1565978Z  
+2026-02-16T20:24:07.1566383Z  Data page checksums are disabled.
+2026-02-16T20:24:07.1566626Z  
+2026-02-16T20:24:07.1566919Z  fixing permissions on existing directory /var/lib/postgresql/data ... ok
+2026-02-16T20:24:07.1567311Z  creating subdirectories ... ok
+2026-02-16T20:24:07.1567622Z  selecting dynamic shared memory implementation ... posix
+2026-02-16T20:24:07.1567972Z  selecting default max_connections ... 100
+2026-02-16T20:24:07.1568263Z  selecting default shared_buffers ... 128MB
+2026-02-16T20:24:07.1568546Z  selecting default time zone ... Etc/UTC
+2026-02-16T20:24:07.1568807Z  creating configuration files ... ok
+2026-02-16T20:24:07.1569069Z  running bootstrap script ... ok
+2026-02-16T20:24:07.1569352Z  performing post-bootstrap initialization ... ok
+2026-02-16T20:24:07.1569644Z  syncing data to disk ... ok
+2026-02-16T20:24:07.1569862Z  
+2026-02-16T20:24:07.1570020Z  
+2026-02-16T20:24:07.1570251Z  Success. You can now start the database server using:
+2026-02-16T20:24:07.1570548Z  
+2026-02-16T20:24:07.1570780Z      pg_ctl -D /var/lib/postgresql/data -l logfile start
+2026-02-16T20:24:07.1571070Z  
+2026-02-16T20:24:07.1571707Z  waiting for server to start....2026-02-16 20:23:14.041 UTC [47] LOG:  starting PostgreSQL 15.16 (Debian 15.16-1.pgdg13+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+2026-02-16T20:24:07.1572575Z  2026-02-16 20:23:14.042 UTC [47] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2026-02-16T20:24:07.1573121Z  2026-02-16 20:23:14.045 UTC [50] LOG:  database system was shut down at 2026-02-16 20:23:13 UTC
+2026-02-16T20:24:07.1573611Z  2026-02-16 20:23:14.049 UTC [47] LOG:  database system is ready to accept connections
+2026-02-16T20:24:07.1573965Z   done
+2026-02-16T20:24:07.1574134Z  server started
+2026-02-16T20:24:07.1574318Z  CREATE DATABASE
+2026-02-16T20:24:07.1574494Z  
+2026-02-16T20:24:07.1574647Z  
+2026-02-16T20:24:07.1574941Z  /usr/local/bin/docker-entrypoint.sh: ignoring /docker-entrypoint-initdb.d/*
+2026-02-16T20:24:07.1575317Z  
+2026-02-16T20:24:07.1575569Z  2026-02-16 20:23:14.232 UTC [47] LOG:  received fast shutdown request
+2026-02-16T20:24:07.1576517Z  waiting for server to shut down....2026-02-16 20:23:14.233 UTC [47] LOG:  aborting any active transactions
+2026-02-16T20:24:07.1577246Z  2026-02-16 20:23:14.236 UTC [47] LOG:  background worker "logical replication launcher" (PID 53) exited with exit code 1
+2026-02-16T20:24:07.1577786Z  2026-02-16 20:23:14.237 UTC [48] LOG:  shutting down
+2026-02-16T20:24:07.1578157Z  2026-02-16 20:23:14.237 UTC [48] LOG:  checkpoint starting: shutdown immediate
+2026-02-16T20:24:07.1579131Z  2026-02-16 20:23:14.255 UTC [48] LOG:  checkpoint complete: wrote 922 buffers (5.6%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.015 s, sync=0.002 s, total=0.019 s; sync files=301, longest=0.001 s, average=0.001 s; distance=4239 kB, estimate=4239 kB
+2026-02-16T20:24:07.1580111Z  2026-02-16 20:23:14.262 UTC [47] LOG:  database system is shut down
+2026-02-16T20:24:07.1580436Z   done
+2026-02-16T20:24:07.1580608Z  server stopped
+2026-02-16T20:24:07.1580787Z  
+2026-02-16T20:24:07.1581030Z  PostgreSQL init process complete; ready for start up.
+2026-02-16T20:24:07.1581316Z  
+2026-02-16T20:24:07.1588370Z Stop and remove container: 45412096b59b46749996831884d83648_postgres15_51474c
+2026-02-16T20:24:07.1593460Z ##[command]/usr/bin/docker rm --force b2f7b56e08865503069b3eedf65987066d4f0d43ce3577e5f1ff1a403f03e206
+2026-02-16T20:24:08.2579682Z b2f7b56e08865503069b3eedf65987066d4f0d43ce3577e5f1ff1a403f03e206
+2026-02-16T20:24:08.2609249Z Remove container network: github_network_5b9e4983216d4364af8efe24e1e571bc
+2026-02-16T20:24:08.2613611Z ##[command]/usr/bin/docker network rm github_network_5b9e4983216d4364af8efe24e1e571bc
+2026-02-16T20:24:08.3260346Z github_network_5b9e4983216d4364af8efe24e1e571bc
+2026-02-16T20:24:08.3321508Z Cleaning up orphan processes
