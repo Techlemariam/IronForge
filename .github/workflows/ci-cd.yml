@@ -141,6 +141,7 @@ jobs:
   # 🎭 E2E VERIFICATION
   e2e:
     name: 🎭 E2E Tests
+    needs: [db-guard]
     if: github.event_name == 'pull_request' && github.actor != 'dependabot[bot]'
     runs-on: [self-hosted, IronForge-Local] # Target specific local runner
     services:
@@ -199,6 +200,7 @@ jobs:
   # 🗄️ DATABASE GUARD
   db-guard:
     name: 🗄️ DB Guard
+    needs: [l1-verify]
     if: github.event_name == 'pull_request'
     runs-on: [self-hosted, IronForge-Local] # Target specific local runner
     services:
