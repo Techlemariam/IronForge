@@ -294,7 +294,7 @@ const ERROR_PATTERNS: Record<string, ErrorPattern> = {
         protocol: 'FIX_ACCESSIBILITY',
     },
 
-    // ── Deployment ──────────────────────────────────────────────────────
+    // ── Deployment / Docker ─────────────────────────────────────────────
     COOLIFY_DOWN: {
         pattern: /coolify.*deploy.*fail|502 bad gateway|health.*check.*fail.*deploy/i,
         description: 'Coolify deployment or health check failure',
@@ -302,6 +302,33 @@ const ERROR_PATTERNS: Record<string, ErrorPattern> = {
         autoFixable: false,
         risk: 'HIGH',
         protocol: 'CHECK_COOLIFY',
+    },
+
+    DOCKER_SERVICE_DOWN: {
+        pattern: /Cannot connect to the Docker daemon|docker.*not running|Cannot connect to host.docker.internal/i,
+        description: 'Docker daemon or host service is unreachable',
+        solution: 'Ensure Docker is running on the host. Check host.docker.internal connectivity.',
+        autoFixable: true,
+        risk: 'MEDIUM',
+        protocol: 'DOCKER_SERVICE_RESTART',
+    },
+
+    CONTAINER_UNHEALTHY: {
+        pattern: /container.*unhealthy|health check failed.*docker|service.*not ready.*docker/i,
+        description: 'Sovereign container failed health check',
+        solution: 'Run scripts/ci/manage-ci-services.ps1 -Action reset to restore services.',
+        autoFixable: true,
+        risk: 'MEDIUM',
+        protocol: 'DOCKER_SERVICE_RESET',
+    },
+
+    DOCKER_RESOURCE_LIMIT: {
+        pattern: /OOMKilled|out of memory.*container|No space left on device.*docker/i,
+        description: 'Docker container hit resource limits (OOM/Disk)',
+        solution: 'Check host resources. Run docker system prune -f. Increase container RAM limits.',
+        autoFixable: false,
+        risk: 'HIGH',
+        protocol: 'DOCKER_RESOURCE_LIMIT',
     },
 
     // ── Git / Merge ─────────────────────────────────────────────────────

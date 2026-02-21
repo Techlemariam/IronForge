@@ -196,6 +196,32 @@ done
 echo "✅ Pipeline Analysis: Complete"
 ```
 
+### 0.11 Sovereign Service Health
+
+// turbo
+
+```bash
+echo "🛡️ Checking Sovereign Service Health..."
+
+# Verify persistent CI services on host
+SERVICES=("ironforge-pg-l1" "ironforge-pg-e2e" "ironforge-pg-guard")
+MISSING=0
+
+for service in "${SERVICES[@]}"; do
+  if ! docker ps --filter "name=$service" --filter "status=running" --format "{{.Names}}" | grep -q "$service"; then
+    echo "⛔ ERROR: Sovereign service '$service' is down or unhealthy."
+    MISSING=$((MISSING + 1))
+  fi
+done
+
+if [ "$MISSING" -gt 0 ]; then
+  echo "💡 Suggestion: Run 'scripts/ci/manage-ci-services.ps1 -Action reset' on the runner host."
+  exit 1
+fi
+
+echo "✅ Sovereign Services: Healthy"
+```
+
 ---
 
 ## Phase 1: Surgical Strike (Failure Isolation)
@@ -214,7 +240,19 @@ echo "🔮 Running CI Classifier v3.0..."
 gh run view $RUN_ID --log-failed 2>/dev/null | npx tsx scripts/ci-classifier.ts --stdin --json > /tmp/ci-classifications.json
 cat /tmp/ci-classifications.json | npx tsx scripts/ci-classifier.ts --stdin
 
-# 2. Automated Target Acquisition
+# 2. Sovereign Ground Truth Extraction (NEW in v3.0)
+# If DB connection failed, pull local Docker logs for deeper diagnostics
+if grep -q "ECONNREFUSED\|ECONNRESET\|Prisma" /tmp/ci-classifications.json; then
+  echo "🔍 DB Failure detected. Fetching Sovereign Ground Truth (Docker Logs)..."
+  for service in "ironforge-pg-l1" "ironforge-pg-e2e" "ironforge-pg-guard"; do
+    if docker ps --filter "name=$service" --format "{{.ID}}" | grep -q "."; then
+      echo "📂 Logs for $service:"
+      docker logs "$service" --tail 50
+    fi
+  done
+fi
+
+# 3. Automated Target Acquisition
 FAILED_TESTS=$(gh run view $RUN_ID --log-failed 2>/dev/null | grep "Error:" | grep -oE "tests/[^[:space:]]+\.spec\.ts" | sort | uniq | tr '\n' ' ')
 
 # 3. External Intelligence Acquisition (GitHub Apps — 6 sources)
@@ -259,6 +297,9 @@ fi
 | `Database: Schema out of sync` | **DB_OUT_OF_SYNC** (Push schema)                  | ✅       | 🟡   |
 | `A11y: Contrast/ARIA`          | **ACCESSIBILITY_FAIL** (Use `/a11y-auditor`)      | ❌       | 🟡   |
 | `Coolify: Deployment failed`   | **COOLIFY_DOWN** (Check infrastructure)           | ❌       | 🔴   |
+| `Docker daemon down`          | **DOCKER_SERVICE_RESTART** (Start Docker)         | ✅       | 🟡   |
+| `Container unhealthy`         | **DOCKER_SERVICE_RESET** (Reset services)         | ✅       | 🟡   |
+| `Container OOM/Disk Full`     | **DOCKER_RESOURCE_LIMIT** (Prune system)          | ❌       | 🔴   |
 | `Merge conflicts detected`     | **MERGE_CONFLICT** (Use `git rebase`)             | ❌       | 🟡   |
 | `Patch coverage missing`       | **COVERAGE_DROP** (Generate tests)                | ✅       | 🟢   |
 | `Insufficient docstrings`      | **DOCSTRING_FAIL** (Use `/doc-generator`)         | ✅       | 🟢   |
