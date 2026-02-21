@@ -40,14 +40,21 @@ runs:
           }
           
           $Port = $PortMap["${{ inputs.tier }}"]
-          $TargetURL = "postgresql://postgres:password@127.0.0.1:$Port/ironforge_test?schema=public"
+          
+          # Detect if running in a container
+          $HostAddr = "127.0.0.1"
+          if (Test-Path /.dockerenv) {
+              $HostAddr = "host.docker.internal"
+          }
+
+          $TargetURL = "postgresql://postgres:password@$HostAddr:$Port/ironforge_test?schema=public"
           
           if ("${{ inputs.tier }}" -eq "e2e") {
-             $TargetURL = "postgresql://postgres:password@127.0.0.1:$Port/ironforge_e2e?schema=public"
+             $TargetURL = "postgresql://postgres:password@$HostAddr:$Port/ironforge_e2e?schema=public"
           }
           
           echo "DATABASE_URL=$TargetURL" >> $env:GITHUB_ENV
-          Write-Host "🚀 Exported DATABASE_URL to GITHUB_ENV (Port $Port)" -ForegroundColor Cyan
+          Write-Host "🚀 Exported DATABASE_URL to GITHUB_ENV (Host: $HostAddr, Port $Port)" -ForegroundColor Cyan
         } else {
           Write-Host "⚠️ Managed Service not found for tier: ${{ inputs.tier }}. Falling back to ephemeral service." -ForegroundColor Yellow
         }
