@@ -28,14 +28,8 @@ runs:
     - name: Managed-Services Detection
       shell: pwsh
       run: |
-        $Tier = "${{ inputs.tier }}"
-        Write-Host "🔍 Detecting Managed Service for tier: $Tier" -ForegroundColor Cyan
-        
-        $ContainerName = "ironforge-pg-$Tier"
-        $ContainerId = docker ps -q -f "name=$ContainerName"
-        
-        if ($null -ne $ContainerId -and $ContainerId.Length -gt 0) {
-          Write-Host "🟢 Found Managed Service: $ContainerName (ID: $ContainerId)" -ForegroundColor Green
+        if (docker ps -q -f name=ironforge-pg-${{ inputs.tier }}) {
+          Write-Host "🟢 Found Managed Service: ironforge-pg-${{ inputs.tier }}" -ForegroundColor Green
           
           # Map Ports based on Tier
           $PortMap = @{
@@ -45,33 +39,17 @@ runs:
             "l3"    = "5436"
           }
           
-          $Port = $PortMap[$Tier]
-          if ($null -eq $Port) {
-             Write-Error "❌ Invalid tier specified: $Tier"
-             exit 1
-          }
-
-          # Detect if running in a container
-          $HostAddr = "127.0.0.1"
-          if (Test-Path /.dockerenv -Or (Get-Item -Path "Env:DOCKER_CONTAINER" -ErrorAction SilentlyContinue)) {
-              $HostAddr = "host.docker.internal"
-              Write-Host "📦 Containerized environment detected. Using host.docker.internal" -ForegroundColor Yellow
-          }
-
-          $TargetURL = "postgresql://postgres:password@$HostAddr:$Port/ironforge_test?schema=public"
+          $Port = $PortMap["${{ inputs.tier }}"]
+          $TargetURL = "postgresql://postgres:password@host.docker.internal:$Port/ironforge_test?schema=public"
           
-          if ($Tier -eq "e2e") {
-             $TargetURL = "postgresql://postgres:password@$HostAddr:$Port/ironforge_e2e?schema=public"
+          if ("${{ inputs.tier }}" -eq "e2e") {
+             $TargetURL = "postgresql://postgres:password@host.docker.internal:$Port/ironforge_e2e?schema=public"
           }
           
-          "DATABASE_URL=$TargetURL" | Out-File -FilePath "$env:GITHUB_ENV" -Append -Encoding utf8
-          Write-Host "🚀 Exported DATABASE_URL to GITHUB_ENV (Host: $HostAddr, Port $Port)" -ForegroundColor Cyan
+          echo "DATABASE_URL=$TargetURL" >> $env:GITHUB_ENV
+          Write-Host "🚀 Exported DATABASE_URL to GITHUB_ENV (Port $Port)" -ForegroundColor Cyan
         } else {
-          Write-Host "⚠️ Managed Service '$ContainerName' not found. Falling back to persistent env or ephemeral container." -ForegroundColor Yellow
-          # Ensure DATABASE_URL is initialized if not present
-          if ($null -eq $env:DATABASE_URL) {
-             Write-Host "💡 Initializing DATABASE_URL fallback" -ForegroundColor Gray
-          }
+          Write-Host "⚠️ Managed Service not found for tier: ${{ inputs.tier }}. Falling back to ephemeral service." -ForegroundColor Yellow
         }
 
     - name: Validate Secrets (Fast-Track)
