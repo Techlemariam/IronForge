@@ -41,7 +41,7 @@ jobs:
     runs-on: [self-hosted, IronForge-Local] # Target specific local runner
     timeout-minutes: 10
     services:
-      postgres:
+      postgres-l1:
         image: postgres:15
         env:
           POSTGRES_USER: postgres
@@ -66,7 +66,7 @@ jobs:
           sleep 15
           npx prisma db push
         env:
-          DATABASE_URL: postgresql://postgres:password@postgres:5432/ironforge_test?schema=public
+          DATABASE_URL: postgresql://postgres:password@postgres-l1:5432/ironforge_test?schema=public
       - name: Cache Turbo
         uses: actions/cache@v5
         with:
@@ -77,7 +77,7 @@ jobs:
       - name: Turbo L1 Verify (Differential)
         run: pnpm run ci:l1
         env:
-          DATABASE_URL: postgresql://postgres:password@postgres:5432/ironforge_test?schema=public
+          DATABASE_URL: postgresql://postgres:password@postgres-l1:5432/ironforge_test?schema=public
 
   # ==================================================================
   # TIER L2: FULL VERIFICATION (MERGE)
@@ -144,7 +144,7 @@ jobs:
     if: github.event_name == 'pull_request' && github.actor != 'dependabot[bot]'
     runs-on: [self-hosted, IronForge-Local] # Target specific local runner
     services:
-      postgres:
+      postgres-e2e:
         image: postgres:15
         env:
           POSTGRES_USER: postgres
@@ -176,11 +176,11 @@ jobs:
           sleep 30
           npx prisma db push --force-reset
         env:
-          DATABASE_URL: postgresql://postgres:password@postgres:5432/ironforge_e2e?schema=public
+          DATABASE_URL: postgresql://postgres:password@postgres-e2e:5432/ironforge_e2e?schema=public
       - name: Seed E2E Database
         run: npx tsx tests/e2e/setup/e2e-seed.ts
         env:
-          DATABASE_URL: postgresql://postgres:password@postgres:5432/ironforge_e2e?schema=public
+          DATABASE_URL: postgresql://postgres:password@postgres-e2e:5432/ironforge_e2e?schema=public
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
@@ -194,7 +194,7 @@ jobs:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           NEXT_PUBLIC_APP_URL: http://localhost:3000
-          DATABASE_URL: postgresql://postgres:password@postgres:5432/ironforge_e2e?schema=public
+          DATABASE_URL: postgresql://postgres:password@postgres-e2e:5432/ironforge_e2e?schema=public
 
   # 🗄️ DATABASE GUARD
   db-guard:
@@ -202,7 +202,7 @@ jobs:
     if: github.event_name == 'pull_request'
     runs-on: [self-hosted, IronForge-Local] # Target specific local runner
     services:
-      postgres:
+      postgres-guard:
         image: postgres:15
         env:
           POSTGRES_USER: postgres
@@ -210,6 +210,11 @@ jobs:
           POSTGRES_DB: ironforge_test
         ports:
           - 5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-ironforge
@@ -218,7 +223,7 @@ jobs:
           sleep 15
           npx tsx scripts/ci/setup-db.ts
         env:
-          ADMIN_DATABASE_URL: postgresql://postgres:password@postgres:5432/postgres?schema=public
+          ADMIN_DATABASE_URL: postgresql://postgres:password@postgres-guard:5432/postgres?schema=public
           TARGET_DB: ironforge_shadow
       - name: Verify Prisma Drift
         run: |
@@ -227,8 +232,8 @@ jobs:
             --to-schema prisma/schema.prisma \
             --exit-code
         env:
-          DATABASE_URL: postgresql://postgres:password@postgres:5432/ironforge_test?schema=public
-          SHADOW_DATABASE_URL: postgresql://postgres:password@postgres:5432/ironforge_shadow?schema=public
+          DATABASE_URL: postgresql://postgres:password@postgres-guard:5432/ironforge_test?schema=public
+          SHADOW_DATABASE_URL: postgresql://postgres:password@postgres-guard:5432/ironforge_shadow?schema=public
 
   # E2E Smoke Tests for L2
   l2-e2e-smoke:
@@ -287,13 +292,19 @@ jobs:
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     runs-on: [self-hosted, IronForge-Local] # Target specific local runner
     services:
-      postgres:
+      postgres-guard-l2:
         image: postgres:15
         env:
+          POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
           POSTGRES_DB: ironforge_test
         ports:
           - 5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-ironforge
@@ -302,14 +313,14 @@ jobs:
           sleep 15
           npx tsx scripts/ci/setup-db.ts
         env:
-          ADMIN_DATABASE_URL: postgresql://postgres:password@postgres:5432/postgres?schema=public
+          ADMIN_DATABASE_URL: postgresql://postgres:password@postgres-guard-l2:5432/postgres?schema=public
           TARGET_DB: ironforge_shadow
       - name: Verify Prisma Drift
         run: |
           npx prisma migrate diff --from-migrations prisma/migrations --to-schema prisma/schema.prisma --exit-code
         env:
-          DATABASE_URL: postgresql://postgres:password@postgres:5432/ironforge_test?schema=public
-          SHADOW_DATABASE_URL: postgresql://postgres:password@postgres:5432/ironforge_shadow?schema=public
+          DATABASE_URL: postgresql://postgres:password@postgres-guard-l2:5432/ironforge_test?schema=public
+          SHADOW_DATABASE_URL: postgresql://postgres:password@postgres-guard-l2:5432/ironforge_shadow?schema=public
 
   # Automatic Deployment Trigger (L2 Success)
   deploy-verification:
