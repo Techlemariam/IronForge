@@ -195,9 +195,7 @@ jobs:
             --from-migrations prisma/migrations \
             --to-schema prisma/schema.prisma \
             --exit-code
-        env:
-          # DATABASE_URL and SHADOW_DATABASE_URL use namespaced ports from setup-ironforge
-          SHADOW_DATABASE_URL: ${{ env.DATABASE_URL }}
+        # DATABASE_URL and SHADOW_DATABASE_URL are already namespaced and exported by setup-ironforge
 
   # E2E Smoke Tests for L2
   l2-e2e-smoke:
