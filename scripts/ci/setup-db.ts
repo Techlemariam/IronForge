@@ -5,7 +5,7 @@ async function setupDatabase() {
     const dbName = process.env.TARGET_DB || 'ironforge_shadow';
     const connectionString = process.env.ADMIN_DATABASE_URL || 'postgresql://postgres:password@127.0.0.1:5432/postgres';
 
-    console.log(`🚀 Setting up database: ${dbName}`);
+    console.log(`🚀 Setting up database: "${dbName}"`);
     console.log(`🔗 Connecting to: ${connectionString.replace(/:([^:@]+)@/, ':****@')}`);
 
     let retries = 5;
@@ -39,17 +39,23 @@ async function setupDatabase() {
 
     try {
         // Check if database exists
+        console.log(`🔍 Checking if database "${dbName}" exists...`);
         const checkRes = await client.query("SELECT 1 FROM pg_database WHERE datname = $1", [dbName]);
+        const exists = checkRes.rowCount && checkRes.rowCount > 0;
 
-        if (checkRes.rowCount && checkRes.rowCount > 0) {
-            console.log(`♻️ Database ${dbName} already exists. Dropping for a clean slate...`);
-            await client.query(`DROP DATABASE ${dbName} WITH (FORCE)`);
+        if (exists) {
+            console.log(`♻️ Database "${dbName}" already exists. Dropping for a clean slate...`);
+            // Quote identifier to handle any special characters and ensure precision
+            await client.query(`DROP DATABASE "${dbName}" WITH (FORCE)`);
+            console.log(`✅ Database "${dbName}" dropped.`);
+        } else {
+            console.log(`ℹ️ Database "${dbName}" does not exist.`);
         }
 
         // Create database
-        // Note: CREATE DATABASE cannot be executed in a transaction block
-        await client.query(`CREATE DATABASE ${dbName}`);
-        console.log(`✨ Database ${dbName} created successfully.`);
+        console.log(`🏗️ Creating database "${dbName}"...`);
+        await client.query(`CREATE DATABASE "${dbName}"`);
+        console.log(`✨ Database "${dbName}" created successfully.`);
     } catch (error) {
         console.error('❌ Error setting up database:', error);
         process.exit(1);

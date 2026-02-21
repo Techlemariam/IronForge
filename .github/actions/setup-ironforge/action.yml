@@ -46,13 +46,17 @@ runs:
           $TargetURL = "$BaseURL/$TargetDB?schema=public"
           echo "DATABASE_URL=$TargetURL" >> $env:GITHUB_ENV
           
+          # Export Admin URL for maintenance tasks (always points to 'postgres' system DB)
+          $AdminURL = "$BaseURL/postgres?schema=public"
+          echo "ADMIN_DATABASE_URL=$AdminURL" >> $env:GITHUB_ENV
+          
           if ("${{ inputs.tier }}" -eq "guard") {
             $ShadowURL = "$BaseURL/ironforge_shadow?schema=public"
             echo "SHADOW_DATABASE_URL=$ShadowURL" >> $env:GITHUB_ENV
             Write-Host "🚀 Exported SHADOW_DATABASE_URL to GITHUB_ENV" -ForegroundColor Cyan
           }
           
-          Write-Host "🚀 Exported DATABASE_URL to GITHUB_ENV (Port $Port, DB $TargetDB)" -ForegroundColor Cyan
+          Write-Host "🚀 Exported DATABASE_URL and ADMIN_DATABASE_URL (Port $Port)" -ForegroundColor Cyan
         } else {
           Write-Host "⚠️ Managed Service not found for tier: ${{ inputs.tier }}. Falling back to ephemeral service." -ForegroundColor Yellow
         }

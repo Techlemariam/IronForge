@@ -186,9 +186,9 @@ jobs:
           # Managed-services assumes DB is already healthy
           npx tsx scripts/ci/setup-db.ts
         env:
-          # ADMIN_DATABASE_URL is managed by setup-ironforge to point to namespaced port
+          # TARGET_DB tells setup-db.ts which database to create/reset
+          # ADMIN_DATABASE_URL is now automatically exported by setup-ironforge
           TARGET_DB: ironforge_shadow
-          ADMIN_DATABASE_URL: ${{ env.DATABASE_URL }}
       - name: Verify Prisma Drift
         run: |
           npx prisma migrate diff \
