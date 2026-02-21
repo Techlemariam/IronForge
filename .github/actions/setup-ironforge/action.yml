@@ -44,15 +44,15 @@ runs:
           $TargetDB = if ("${{ inputs.tier }}" -eq "e2e") { "ironforge_e2e" } else { "ironforge_test" }
           
           $TargetURL = "$BaseURL/$TargetDB?schema=public"
-          echo "DATABASE_URL=$TargetURL" >> $env:GITHUB_ENV
+          "DATABASE_URL=$TargetURL" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
           
           # Export Admin URL for maintenance tasks (always points to 'postgres' system DB)
           $AdminURL = "$BaseURL/postgres?schema=public"
-          echo "ADMIN_DATABASE_URL=$AdminURL" >> $env:GITHUB_ENV
+          "ADMIN_DATABASE_URL=$AdminURL" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
           
           if ("${{ inputs.tier }}" -eq "guard") {
             $ShadowURL = "$BaseURL/ironforge_shadow?schema=public"
-            echo "SHADOW_DATABASE_URL=$ShadowURL" >> $env:GITHUB_ENV
+            "SHADOW_DATABASE_URL=$ShadowURL" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
             Write-Host "🚀 Exported SHADOW_DATABASE_URL to GITHUB_ENV" -ForegroundColor Cyan
           }
           
