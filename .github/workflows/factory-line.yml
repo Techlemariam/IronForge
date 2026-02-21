@@ -20,7 +20,7 @@ concurrency:
 
 jobs:
   factory-line:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, IronForge-Local]
     permissions:
       contents: write
       pull-requests: write
