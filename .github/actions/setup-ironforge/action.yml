@@ -42,17 +42,16 @@ runs:
           $Port = $PortMap["${{ inputs.tier }}"]
           $BaseURL = "postgresql://postgres:password@host.docker.internal:$Port"
           if ("${{ inputs.tier }}" -eq "e2e") { $idb = "ironforge_e2e" } else { $idb = "ironforge_test" }
-          
           $TargetURL = "$($BaseURL)/$($idb)?schema=public"
-          "DATABASE_URL=$TargetURL" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          [System.IO.File]::AppendAllText($env:GITHUB_ENV, "DATABASE_URL=$TargetURL`n")
           
           # Export Admin URL for maintenance tasks (always points to 'postgres' system DB)
           $AdminURL = "$BaseURL/postgres?schema=public"
-          "ADMIN_DATABASE_URL=$AdminURL" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          [System.IO.File]::AppendAllText($env:GITHUB_ENV, "ADMIN_DATABASE_URL=$AdminURL`n")
           
           if ("${{ inputs.tier }}" -eq "guard") {
             $ShadowURL = "$BaseURL/ironforge_shadow?schema=public"
-            "SHADOW_DATABASE_URL=$ShadowURL" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+            [System.IO.File]::AppendAllText($env:GITHUB_ENV, "SHADOW_DATABASE_URL=$ShadowURL`n")
             Write-Host "🚀 Exported SHADOW_DATABASE_URL to GITHUB_ENV" -ForegroundColor Cyan
           }
           
