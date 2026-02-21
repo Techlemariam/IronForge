@@ -8,24 +8,33 @@ async function setupDatabase() {
     console.log(`🚀 Setting up database: ${dbName}`);
     console.log(`🔗 Connecting to: ${connectionString.replace(/:([^:@]+)@/, ':****@')}`);
 
-    const client = new Client({ connectionString });
     let retries = 5;
     let connected = false;
+    let client: pg.Client | null = null;
 
     while (retries > 0 && !connected) {
         try {
+            client = new Client({ connectionString });
             await client.connect();
             connected = true;
             console.log('✅ Connected to database server.');
         } catch (err) {
             retries--;
             console.warn(`⚠️ Connection failed. Retries left: ${retries}. Error: ${err instanceof Error ? err.message : String(err)}`);
+            if (client) {
+                await client.end().catch(() => { });
+            }
             if (retries === 0) {
                 console.error('❌ Failed to connect to database server after all retries.');
                 process.exit(1);
             }
             await new Promise(resolve => setTimeout(resolve, 5000));
         }
+    }
+
+    if (!client) {
+        console.error('❌ Client initialization failed.');
+        process.exit(1);
     }
 
     try {
