@@ -40,33 +40,19 @@ jobs:
     if: github.event_name == 'pull_request'
     runs-on: [self-hosted, IronForge-Local] # Target specific local runner
     timeout-minutes: 10
-    services:
-      postgres1:
-        image: postgres:15
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: password
-          POSTGRES_DB: ironforge_test
-        ports:
-          - 5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0 # Required for turbo comparison
       - uses: ./.github/actions/setup-ironforge
+        with:
+          tier: 'l1'
       - name: Generate Prisma Client
         run: npx prisma generate
       - name: Initialize DB (L1)
         run: |
-          sleep 15
+          # Managed-services assumes DB is already healthy (0s wait)
           npx prisma db push
-        env:
-          DATABASE_URL: postgresql://postgres:password@postgres1:5432/ironforge_test?schema=public
       - name: Cache Turbo
         uses: actions/cache@v5
         with:
@@ -144,23 +130,11 @@ jobs:
     needs: [db-guard]
     if: github.event_name == 'pull_request' && github.actor != 'dependabot[bot]'
     runs-on: [self-hosted, IronForge-Local] # Target specific local runner
-    services:
-      postgres2:
-        image: postgres:15
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: password
-          POSTGRES_DB: ironforge_e2e
-        ports:
-          - 5432
-        options: >-
-          --health-cmd "pg_isready -U postgres"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-ironforge
+        with:
+          tier: 'e2e'
       - name: Generate Prisma Client
         run: npx prisma generate
       - name: Cache Playwright Browsers
@@ -174,14 +148,12 @@ jobs:
         run: npx playwright install --with-deps
       - name: Initialize E2E DB
         run: |
-          sleep 30
+          # Managed-services assumes DB is already healthy
           npx prisma db push --force-reset
-        env:
-          DATABASE_URL: postgresql://postgres:password@postgres2:5432/ironforge_e2e?schema=public
       - name: Seed E2E Database
         run: npx tsx tests/e2e/setup/e2e-seed.ts
         env:
-          DATABASE_URL: postgresql://postgres:password@postgres2:5432/ironforge_e2e?schema=public
+          # DATABASE_URL is now managed by setup-ironforge to point to namespaced port
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
@@ -195,7 +167,7 @@ jobs:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           NEXT_PUBLIC_APP_URL: http://localhost:3000
-          DATABASE_URL: postgresql://postgres:password@postgres2:5432/ironforge_e2e?schema=public
+          # DATABASE_URL is now managed by setup-ironforge
 
   # 🗄️ DATABASE GUARD
   db-guard:
@@ -203,30 +175,19 @@ jobs:
     needs: [l1-verify]
     if: github.event_name == 'pull_request'
     runs-on: [self-hosted, IronForge-Local] # Target specific local runner
-    services:
-      postgres3:
-        image: postgres:15
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: password
-          POSTGRES_DB: ironforge_test
-        ports:
-          - 5432
-        options: >-
-          --health-cmd "pg_isready -U postgres"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-ironforge
+        with:
+          tier: 'guard'
       - name: Create Shadow Database
         run: |
-          sleep 15
+          # Managed-services assumes DB is already healthy
           npx tsx scripts/ci/setup-db.ts
         env:
-          ADMIN_DATABASE_URL: postgresql://postgres:password@postgres3:5432/postgres?schema=public
+          # ADMIN_DATABASE_URL is managed by setup-ironforge to point to namespaced port
           TARGET_DB: ironforge_shadow
+          ADMIN_DATABASE_URL: ${{ env.DATABASE_URL }}
       - name: Verify Prisma Drift
         run: |
           npx prisma migrate diff \
@@ -234,8 +195,8 @@ jobs:
             --to-schema prisma/schema.prisma \
             --exit-code
         env:
-          DATABASE_URL: postgresql://postgres:password@postgres3:5432/ironforge_test?schema=public
-          SHADOW_DATABASE_URL: postgresql://postgres:password@postgres3:5432/ironforge_shadow?schema=public
+          # DATABASE_URL and SHADOW_DATABASE_URL use namespaced ports from setup-ironforge
+          SHADOW_DATABASE_URL: ${{ env.DATABASE_URL }}
 
   # E2E Smoke Tests for L2
   l2-e2e-smoke:

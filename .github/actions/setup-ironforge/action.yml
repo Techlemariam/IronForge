@@ -17,10 +17,41 @@ inputs:
     description: 'Skip secret validation'
     required: false
     default: 'false'
+  tier:
+    description: 'CI Tier (l1, e2e, guard, l3)'
+    required: false
+    default: 'l1'
 
 runs:
   using: "composite"
   steps:
+    - name: Managed-Services Detection
+      shell: pwsh
+      run: |
+        if (docker ps -q -f name=ironforge-pg-${{ inputs.tier }}) {
+          Write-Host "🟢 Found Managed Service: ironforge-pg-${{ inputs.tier }}" -ForegroundColor Green
+          
+          # Map Ports based on Tier
+          $PortMap = @{
+            "l1"    = "5433"
+            "e2e"   = "5434"
+            "guard" = "5435"
+            "l3"    = "5436"
+          }
+          
+          $Port = $PortMap["${{ inputs.tier }}"]
+          $TargetURL = "postgresql://postgres:password@127.0.0.1:$Port/ironforge_test?schema=public"
+          
+          if ("${{ inputs.tier }}" -eq "e2e") {
+             $TargetURL = "postgresql://postgres:password@127.0.0.1:$Port/ironforge_e2e?schema=public"
+          }
+          
+          echo "DATABASE_URL=$TargetURL" >> $env:GITHUB_ENV
+          Write-Host "🚀 Exported DATABASE_URL to GITHUB_ENV (Port $Port)" -ForegroundColor Cyan
+        } else {
+          Write-Host "⚠️ Managed Service not found for tier: ${{ inputs.tier }}. Falling back to ephemeral service." -ForegroundColor Yellow
+        }
+
     - name: Validate Secrets (Fast-Track)
       if: inputs.skip-validation != 'true'
       shell: pwsh
