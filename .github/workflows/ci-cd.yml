@@ -182,14 +182,14 @@ jobs:
         with:
           tier: 'guard'
       - name: Create Shadow Database
+        shell: bash
         run: |
           # Managed-services assumes DB is already healthy
           npx tsx scripts/ci/setup-db.ts
         env:
-          # TARGET_DB tells setup-db.ts which database to create/reset
-          # ADMIN_DATABASE_URL is now automatically exported by setup-ironforge
           TARGET_DB: ironforge_shadow
       - name: Verify Prisma Drift
+        shell: bash
         run: |
           npx prisma migrate diff \
             --from-migrations prisma/migrations \
