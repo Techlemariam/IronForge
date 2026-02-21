@@ -190,11 +190,7 @@ jobs:
           TARGET_DB: ironforge_shadow
       - name: Verify Prisma Drift
         shell: bash
-        run: |
-          echo "🔍 Verifying Drift..."
-          echo "🔗 TARGET: $DATABASE_URL"
-          echo "🔗 SHADOW: $SHADOW_DATABASE_URL"
-          npx prisma migrate diff --from-migrations prisma/migrations --to-schema prisma/schema.prisma --shadow-database-url "$SHADOW_DATABASE_URL" --exit-code
+        run: pnpm exec prisma migrate diff --from-migrations prisma/migrations --to-schema prisma/schema.prisma --shadow-database-url "$SHADOW_DATABASE_URL" --exit-code
         # DATABASE_URL and SHADOW_DATABASE_URL are already namespaced and exported by setup-ironforge
 
   # E2E Smoke Tests for L2

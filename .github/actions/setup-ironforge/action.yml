@@ -41,9 +41,9 @@ runs:
           
           $Port = $PortMap["${{ inputs.tier }}"]
           $BaseURL = "postgresql://postgres:password@host.docker.internal:$Port"
-          $TargetDB = if ("${{ inputs.tier }}" -eq "e2e") { "ironforge_e2e" } else { "ironforge_test" }
+          if ("${{ inputs.tier }}" -eq "e2e") { $idb = "ironforge_e2e" } else { $idb = "ironforge_test" }
           
-          $TargetURL = "$BaseURL/$TargetDB?schema=public"
+          $TargetURL = "$($BaseURL)/$($idb)?schema=public"
           "DATABASE_URL=$TargetURL" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
           
           # Export Admin URL for maintenance tasks (always points to 'postgres' system DB)
