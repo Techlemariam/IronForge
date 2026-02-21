@@ -42,13 +42,14 @@ async function setupDatabase() {
         const checkRes = await client.query("SELECT 1 FROM pg_database WHERE datname = $1", [dbName]);
 
         if (checkRes.rowCount && checkRes.rowCount > 0) {
-            console.log(`✅ Database ${dbName} already exists.`);
-        } else {
-            // Create database
-            // Note: CREATE DATABASE cannot be executed in a transaction block
-            await client.query(`CREATE DATABASE ${dbName}`);
-            console.log(`✨ Database ${dbName} created successfully.`);
+            console.log(`♻️ Database ${dbName} already exists. Dropping for a clean slate...`);
+            await client.query(`DROP DATABASE ${dbName} WITH (FORCE)`);
         }
+
+        // Create database
+        // Note: CREATE DATABASE cannot be executed in a transaction block
+        await client.query(`CREATE DATABASE ${dbName}`);
+        console.log(`✨ Database ${dbName} created successfully.`);
     } catch (error) {
         console.error('❌ Error setting up database:', error);
         process.exit(1);
