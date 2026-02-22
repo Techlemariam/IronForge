@@ -6,7 +6,7 @@ enabled = true
 
   [analyzers.meta]
   environment = ["browser", "nodejs", "vitest"]
-  module_system = "esm"
+  module_system = "es-modules"
   ts_config_path = "tsconfig.json"
 
 [[analyzers]]
