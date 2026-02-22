@@ -66,6 +66,58 @@ jobs:
         env:
           DATABASE_URL: postgresql://postgres:password@postgres1:5432/ironforge_test?schema=public
 
+      # ==================================================================
+      # ACTIVE HANDOVER: Proactive Monitoring on Success
+      # ==================================================================
+      - name: "✨ Active Handover: Proactive Optimization"
+        if: success()
+        run: |
+          echo "❇️ CI Doctor: Success detected. Initiating Proactive Monitoring..."
+          
+          # Check for CodeRabbit presence to trigger Optimizer
+          if gh pr view --json reviews -q '.reviews[].author.login' | grep -q "coderabbit"; then
+             echo "🤖 Triggering Code Optimizer..."
+             echo "OPTIMIZE: Implement CodeRabbit suggestions in $GITHUB_SHA" > .agent/tasks/doctor-code-optimize.md
+          fi
+
+          # Proactive Security Check
+          echo "🛡️ Triggering Security Sentinel..."
+          echo "HARDEN: Proactive security scan for $GITHUB_SHA" > .agent/tasks/doctor-security-sentinel.md
+
+
+      # ==================================================================
+      # ACTIVE HANDOVER: Auto-Triage on Failure
+      # ==================================================================
+      - name: "🩺 Active Handover: Auto-Triage"
+        if: failure()
+        run: |
+          echo "🚨 CI Doctor: Failure detected in L1. Initiating Board-Level Triage..."
+          
+          # 1. Check for Security limits (doctor-security)
+          if grep -q "limit of private tests\|snyk" /tmp/combined-logs.txt 2>/dev/null; then
+             echo "🛡️ Dispatching Security Specialist..."
+             echo "FIX: Security limit reached in $GITHUB_SHA" > .agent/tasks/doctor-security-signal.md
+          fi
+
+          # 2. Check for Meta-workflow failures (doctor-meta)
+          if grep -q "PR Labeler\|Release Drafter\|DeepSource" /tmp/combined-logs.txt 2>/dev/null; then
+             echo "⚙️ Dispatching Meta Specialist..."
+             echo "FIX: Meta/Config failure in $GITHUB_SHA" > .agent/tasks/doctor-meta-signal.md
+          fi
+
+          # 3. Check for Build/Type/Lint failures (doctor-code)
+          if grep -q "ELIFECYCLE\|TypeCheck\|ESLint" /tmp/combined-logs.txt 2>/dev/null; then
+             echo "🔬 Dispatching Code Specialist..."
+             echo "FIX: Type/Lint failure in $GITHUB_SHA" > .agent/tasks/doctor-code-signal.md
+          fi
+          
+          # 4. Check for DB/Infra failures (doctor-infra)
+          if grep -q "ECONNREFUSED\|PrismaClientInitializationError" /tmp/combined-logs.txt 2>/dev/null; then
+             echo "🛡️ Dispatching Infra Specialist..."
+             echo "FIX: Infra failure in $GITHUB_SHA" > .agent/tasks/doctor-infra-signal.md
+          fi
+
+
   # ==================================================================
   # TIER L2: FULL VERIFICATION (MERGE)
   # Objective: Comprehensive check before deployment.

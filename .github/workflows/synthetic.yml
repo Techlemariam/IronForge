@@ -13,7 +13,11 @@ jobs:
     name: 🏥 Prod Health Check
     runs-on: [self-hosted, IronForge-Local]
     container:
-      image: mcr.microsoft.com/playwright:v1.45.0-noble
+      image: ghcr.io/${{ github.repository }}/ironforge-agent:latest
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
     steps:
       - name: Setup IronForge
         uses: ./.github/actions/setup-ironforge

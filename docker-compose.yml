@@ -59,9 +59,10 @@ services:
       - ironforge-net
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U postgres" ]
-      interval: 5s
-      timeout: 5s
-      retries: 5
+      interval: 2s
+      timeout: 1s
+      retries: 3
+      start_period: 5s
 
 networks:
   ironforge-net:

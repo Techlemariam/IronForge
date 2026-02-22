@@ -95,7 +95,11 @@ jobs:
     if: needs.preflight.outputs.should_run == 'true'
     runs-on: [self-hosted, IronForge-Local]
     container:
-      image: mcr.microsoft.com/playwright:v1.45.0-noble
+      image: ghcr.io/${{ github.repository }}/ironforge-agent:latest
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
     outputs:
       changes_made: ${{ steps.changes.outputs.changes_made }}
       summary: ${{ steps.summary.outputs.summary }}
@@ -212,7 +216,7 @@ jobs:
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: 💾 Commit Changes
-        id: auto_commit
+        id: changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "chore: nightly maintenance updates [skip ci]"
