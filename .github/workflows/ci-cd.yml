@@ -71,11 +71,14 @@ jobs:
         if: success()
         run: |
           echo "❇️ CI Doctor: Success detected. Initiating Proactive Monitoring..."
+          mkdir -p .agent/tasks
           
           # Check for CodeRabbit presence to trigger Optimizer
           if gh pr view --json reviews -q '.reviews[].author.login' | grep -q "coderabbit"; then
              echo "🤖 Triggering Code Optimizer..."
              echo "OPTIMIZE: Implement CodeRabbit suggestions in $GITHUB_SHA" > .agent/tasks/doctor-code-optimize.md
+             # Skip itself and specialized workflows
+             if [[ "$file" == *"/governance-guard.yml" || "$file" == *"/labeler.yml" || "$file" == *"/release-drafter.yml" || "$file" == *"/stale.yml" ]]; then continue; fi
           fi
 
           # Proactive Security Check
@@ -112,6 +115,7 @@ jobs:
           # 4. Check for DB/Infra failures (doctor-infra)
           if grep -q "ECONNREFUSED\|PrismaClientInitializationError" /tmp/combined-logs.txt 2>/dev/null; then
              echo "🛡️ Dispatching Infra Specialist..."
+             mkdir -p .agent/tasks
              echo "FIX: Infra failure in $GITHUB_SHA" > .agent/tasks/doctor-infra-signal.md
           fi
 
