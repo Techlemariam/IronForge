@@ -197,6 +197,7 @@ export function wellnessToSystemMetrics(
             ? wellness.atl / wellness.ctl
             : 1.0,
         sleepScore: wellness?.sleepScore ?? 80,
+        bodyBattery: wellness?.bodyBattery ?? 50,
         soreness: wellness?.soreness ?? 0,
         mood: wellness?.mood !== null && wellness?.mood !== undefined
             ? (wellness.mood < -3 ? 'EXHAUSTED' : wellness.mood < 0 ? 'TIRED' : 'NORMAL')
