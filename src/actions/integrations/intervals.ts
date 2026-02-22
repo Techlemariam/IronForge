@@ -52,7 +52,7 @@ export async function getWellnessAction(
       restingHR: data?.restingHR,
       sleepScore: data?.sleepScore,
       sleepSecs: data?.sleepSecs,
-      bodyBattery: (data as any)?.readiness ?? data?.bodyBattery,
+      bodyBattery: data?.bodyBattery ?? 50, // Hardened mapping: ignore raw 'readiness' here as lib handles it
 
       vo2max: data?.vo2max,
       ctl: data?.ctl,
