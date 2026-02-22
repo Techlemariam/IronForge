@@ -33,7 +33,7 @@ $patch = @{
 $body = $patch | ConvertTo-Json -Depth 10
 
 try {
-    $response = Invoke-RestMethod -Uri "https://ironforge-coolify.tailafb692.ts.net/api/v1/workflows/RgDX5gDwrj8gsKzw/nodes/c21284a3-6375-4828-a9fb-2ca83ed5675e" -Method Patch -Headers $headers -Body $body
+    $response = Invoke-RestMethod -Uri "https://coolify.ironforge.com/api/v1/workflows/RgDX5gDwrj8gsKzw/nodes/c21284a3-6375-4828-a9fb-2ca83ed5675e" -Method Patch -Headers $headers -Body $body
     Write-Host "✅ Node patched successfully!"
     $response | ConvertTo-Json
 }

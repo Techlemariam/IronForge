@@ -7,7 +7,7 @@ version: "1.0.0"
 telemetry: "enabled"
 primary_agent: "@strategist"
 domain: "business"
-skills: ["market-analyzer"]
+skills: ["market-analyzer", "google-maps"]
 ---
 
 # 📈 Growth & Revenue Engine Monitor

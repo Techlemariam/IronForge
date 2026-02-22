@@ -1,0 +1,48 @@
+{
+  "file": "C:\\Users\\alexa\\Workspaces\\IronForge\\.github\\workflows\\nightly-maintenance.yml",
+  "totalJobs": 16,
+  "totalSteps": 19,
+  "optimizations": [
+    {
+      "id": "DUP_CHECKOUT",
+      "severity": "MEDIUM",
+      "category": "duplication",
+      "title": "Checkout repeated 3x across jobs",
+      "description": "actions/checkout appears 3 times. Each checkout adds ~5-15s.",
+      "currentState": "3 separate checkout steps",
+      "suggestedFix": "Use a composite action or reusable workflow to share checkout + setup.",
+      "estimatedSavings": "~20s"
+    },
+    {
+      "id": "TIMING_NO_TIMEOUT",
+      "severity": "MEDIUM",
+      "category": "timing",
+      "title": "No job timeout configured",
+      "description": "Jobs without timeout-minutes can run indefinitely on hung processes.",
+      "currentState": "No timeout-minutes set",
+      "suggestedFix": "Add timeout-minutes: 30 to each job to prevent runaway costs.",
+      "estimatedSavings": "Prevents runaway billing"
+    },
+    {
+      "id": "SEC_UNPINNED_ACTIONS",
+      "severity": "LOW",
+      "category": "security",
+      "title": "Actions use tag versions instead of SHA pins",
+      "description": "Tag-based versions (e.g., @v4) can be moved. SHA-pinning prevents supply chain attacks.",
+      "currentState": "7 tag-versioned actions",
+      "suggestedFix": "Pin critical actions to SHA: e.g., actions/checkout@<sha>",
+      "estimatedSavings": "Improved supply chain security"
+    },
+    {
+      "id": "SEC_SECRET_ECHO",
+      "severity": "MEDIUM",
+      "category": "security",
+      "title": "Potential secret exposure in echo/log output",
+      "description": "Secrets used near echo commands could be accidentally logged.",
+      "currentState": "echo commands near secret references",
+      "suggestedFix": "Use ::add-mask:: for dynamic secrets. Never echo ${{ secrets.* }}.",
+      "estimatedSavings": "Prevents secret exposure"
+    }
+  ],
+  "score": 73
+}

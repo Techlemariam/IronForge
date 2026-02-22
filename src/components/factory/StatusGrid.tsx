@@ -1,4 +1,5 @@
-import { FactoryStatusData } from "@/actions/factory";
+import { FactoryStatusData } from "@/lib/schemas/factory";
+
 import { StatusCard } from "./StatusCard";
 
 interface Props {

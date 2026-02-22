@@ -6,7 +6,11 @@ import { exec } from "child_process";
 import { promisify } from "util";
 import fs from "fs";
 import path from "path";
+import { fileURLToPath } from "url";
 import { getQuota, trackUsage } from "./quota-manager.js";
+import { startWebhookServer } from "./webhook-server.js";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const execAsync = promisify(exec);
 // Environment variables
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
@@ -22,6 +26,34 @@ const server = new Server({
         tools: {},
     },
 });
+// Helper to find the agent tasks directory
+function getTaskDirectory() {
+    // 1. Try environment variable
+    if (process.env.AGENT_TASKS_DIR) {
+        return process.env.AGENT_TASKS_DIR;
+    }
+    // 2. Try to find .agent/tasks relative to this script
+    // We assume the standard structure: <workspace>/.agent/tasks
+    // This script is usually at <workspace>/mcp/factory-server/build/index.js
+    // Try to find workspace root by looking for .agent directory walking up
+    let currentDir = __dirname;
+    const root = path.parse(currentDir).root;
+    while (currentDir !== root) {
+        const agentDir = path.join(currentDir, ".agent");
+        if (fs.existsSync(agentDir)) {
+            return path.join(agentDir, "tasks");
+        }
+        currentDir = path.dirname(currentDir);
+    }
+    // 3. Fallback to hardcoded Antigravity path if we can't find it (Windows specific)
+    const userProfile = process.env.USERPROFILE;
+    if (userProfile) {
+        const antigravityTasks = path.join(userProfile, ".gemini", "antigravity", "tasks"); // Guessing path
+        // Better fallback: just use the CWD fallback but log warning
+    }
+    // 4. Fallback to original relative path logic (often fails if CWD is wrong)
+    return path.resolve(process.cwd(), "../../.agent/tasks");
+}
 /**
  * Resources
  */
@@ -40,6 +72,12 @@ server.setRequestHandler(ListResourcesRequestSchema, async () => {
                 mimeType: "application/json",
                 description: "Daily token consumption metrics",
             },
+            {
+                uri: "factory://health",
+                name: "MCP Server Health",
+                mimeType: "application/json",
+                description: "Health status of MCP server and Antigravity integration",
+            },
         ],
     };
 });
@@ -57,14 +95,49 @@ server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
         };
     }
     if (uri === "factory://status") {
-        // In a real implementation, this would query the DB. 
-        // For now, we return a summary from the filesystem or a mock.
         return {
             contents: [
                 {
                     uri,
                     mimeType: "application/json",
                     text: JSON.stringify({ status: "operational", stations: 8 }, null, 2),
+                },
+            ],
+        };
+    }
+    if (uri === "factory://health") {
+        const taskDir = getTaskDirectory();
+        let antigravityAvailable = false;
+        try {
+            antigravityAvailable = fs.existsSync(taskDir);
+        }
+        catch (e) {
+            antigravityAvailable = false;
+        }
+        const health = {
+            status: "healthy",
+            timestamp: new Date().toISOString(),
+            uptime: process.uptime(),
+            antigravity: {
+                available: antigravityAvailable,
+                taskDirectory: taskDir,
+                cwd: process.cwd(),
+                dirname: __dirname
+            },
+            quota: getQuota(),
+            mcp: {
+                version: "1.0.0",
+                server: "ironforge-factory-mcp",
+                webhook_enabled: process.env.ENABLE_WEBHOOK_SERVER === "true",
+                webhook_port: process.env.WEBHOOK_PORT || "3030"
+            },
+        };
+        return {
+            contents: [
+                {
+                    uri,
+                    mimeType: "application/json",
+                    text: JSON.stringify(health, null, 2),
                 },
             ],
         };
@@ -143,35 +216,46 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             // Quota-Aware Fallback Logic
             if (quota.status !== "Critical") {
                 // Option A: Signal Antigravity via file
-                const taskPath = path.resolve(process.cwd(), "../../.agent/tasks/current.md");
-                const taskContent = `# Autonomous Mission: ${workflow}\nModel: ${model}\nTriggered via MCP at ${new Date().toISOString()}`;
-                fs.writeFileSync(taskPath, taskContent);
-                trackUsage(1);
-                return {
-                    content: [{ type: "text", text: `Quota OK. Task signal written to .agent/tasks/current.md for Antigravity.` }],
-                };
-            }
-            else {
-                // Option B: Trigger directly via GitHub API (Octokit)
-                try {
-                    await octokit.rest.actions.createWorkflowDispatch({
-                        owner: REPO_OWNER,
-                        repo: REPO_NAME,
-                        workflow_id: "autonomous-trigger.yml", // Assuming this is the filename
-                        ref: "main",
-                        inputs: { workflow, model },
-                    });
+                const taskDir = getTaskDirectory();
+                const taskPath = path.join(taskDir, "current.md");
+                // Ensure directory exists
+                if (!fs.existsSync(taskDir)) {
+                    try {
+                        fs.mkdirSync(taskDir, { recursive: true });
+                    }
+                    catch (e) {
+                        // Ignore, let write fail or fallback
+                    }
+                }
+                if (fs.existsSync(taskDir)) {
+                    const taskContent = `# Autonomous Mission: ${workflow}\nModel: ${model}\nTriggered via MCP at ${new Date().toISOString()}`;
+                    fs.writeFileSync(taskPath, taskContent);
                     trackUsage(1);
                     return {
-                        content: [{ type: "text", text: `Quota CRITICAL. Triggered fallback via GitHub Actions workflow_dispatch.` }],
+                        content: [{ type: "text", text: `Quota OK. Task signal written to ${taskPath} for Antigravity.` }],
                     };
                 }
-                catch (error) {
-                    return {
-                        content: [{ type: "text", text: `Fallback trigger failed: ${error.message}` }],
-                        isError: true,
-                    };
-                }
+            }
+            // Fallback (or if Option A failed/skipped)
+            // Option B: Trigger directly via GitHub API (Octokit)
+            try {
+                await octokit.rest.actions.createWorkflowDispatch({
+                    owner: REPO_OWNER,
+                    repo: REPO_NAME,
+                    workflow_id: "autonomous-antigravity-trigger.yml", // Corrected filename
+                    ref: "main",
+                    inputs: { workflow, model },
+                });
+                trackUsage(1);
+                return {
+                    content: [{ type: "text", text: `Triggered fallback via GitHub Actions workflow_dispatch.` }],
+                };
+            }
+            catch (error) {
+                return {
+                    content: [{ type: "text", text: `Fallback trigger failed: ${error.message}` }],
+                    isError: true,
+                };
             }
         }
         default:
@@ -182,6 +266,16 @@ async function main() {
     const transport = new StdioServerTransport();
     await server.connect(transport);
     console.error("Factory MCP Server running on stdio");
+    // Optionally start webhook server for external integrations
+    if (process.env.ENABLE_WEBHOOK_SERVER === "true") {
+        try {
+            startWebhookServer();
+            console.error(`Webhook server enabled on port ${process.env.WEBHOOK_PORT || 3030}`);
+        }
+        catch (e) {
+            console.error(`Failed to start webhook server: ${e.message}`);
+        }
+    }
 }
 main().catch((error) => {
     console.error("Fatal error in main():", error);

@@ -1,152 +1,75 @@
 
-> ironforge-rpg@1.0.0 test
-> vitest run --reporter=default
+[1m[46m RUN [49m[22m [36mv4.0.18 [39m[90mC:/Users/alexa/Workspaces/IronForge[39m
 
+ [32mÔ£ô[39m mcp/factory-server/src/__tests__/quota-manager.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 86[2mms[22m[39m
+ [31mÔØ»[39m mcp/factory-server/src/__tests__/index.test.ts [2m([22m[2m2 tests[22m[2m | [22m[31m2 failed[39m[2m)[22m[32m 11[2mms[22m[39m
+[31m     [31m├ù[31m should signal Antigravity when available[39m[32m 7[2mms[22m[39m
+[31m     [31m├ù[31m should fallback to GitHub Actions when Antigravity is unavailable[39m[32m 1[2mms[22m[39m
+[90mstdout[2m | tests/integration/strava-webhook.test.ts[2m > [22m[2mStrava Webhook Integration[2m > [22m[2mGET Verification[2m > [22m[2mshould verify with correct token
+[22m[39mStrava Webhook Verified
 
-[1m[46m RUN [49m[22m [36mv4.0.16 [39m[90mC:/Users/alexa/Workspaces/IronForge[39m
+[90mstdout[2m | tests/integration/strava-webhook.test.ts[2m > [22m[2mStrava Webhook Integration[2m > [22m[2mPOST Event Handling[2m > [22m[2mshould process new activity event
+[22m[39mStrava Webhook Event: {
+  object_type: [32m'activity'[39m,
+  aspect_type: [32m'create'[39m,
+  object_id: [33m12345[39m,
+  owner_id: [33m999[39m
+}
 
-[90mstdout[2m | src/actions/__tests__/titan.test.ts
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒöÉ encrypt with Dotenvx: https://dotenvx.com
+[90mstdout[2m | tests/integration/strava-webhook.test.ts[2m > [22m[2mStrava Webhook Integration[2m > [22m[2mPOST Event Handling[2m > [22m[2mshould refresh token if expired
+[22m[39mStrava Webhook Event: {
+  object_type: [32m'activity'[39m,
+  aspect_type: [32m'create'[39m,
+  object_id: [33m12345[39m,
+  owner_id: [33m999[39m
+}
 
-[90mstdout[2m | src/utils/__tests__/weaknessAuditor.test.ts
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒöä add secrets lifecycle management: https://dotenvx.com/ops
+ [32mÔ£ô[39m tests/integration/strava-webhook.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 133[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/features/strength/useSetHistory.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 279[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/features/dashboard/FeedPanel.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[32m 95[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/actions/guild/raids.test.ts [2m([22m[2m13 tests[22m[2m)[22m[32m 81[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/components/marketing/Pricing.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[33m 552[2mms[22m[39m
+     [33m[2mÔ£ô[22m[39m renders CTA links correctly [33m 384[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/components/marketing/FeatureGrid.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[32m 193[2mms[22m[39m
+ [32mÔ£ô[39m src/features/game/components/__tests__/SkillTree.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 131[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/components/marketing/Hero.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[33m 530[2mms[22m[39m
+     [33m[2mÔ£ô[22m[39m renders the main heading correctly [33m 365[2mms[22m[39m
+ [32mÔ£ô[39m src/features/training/__tests__/TvMode.test.tsx [2m([22m[2m11 tests[22m[2m)[22m[33m 394[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/features/dashboard/StatsHeader.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[32m 77[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/actions/integrations/core.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 56[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/actions/titan/core.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 63[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/factory.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 46[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/features/dashboard/QuickActions.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 84[2mms[22m[39m
+ [32mÔ£ô[39m tests/integration/actions/user-actions.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 34[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/app/api/cron/power-rating/route.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 39[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/app/api/sync/user/route.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 32[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/lib/integrations.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 35[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/actions/systems/battle-pass.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 30[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/app/api/sync/sync.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 29[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/features/strength/history.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 21[2mms[22m[39m
+[90mstdout[2m | tests/unit/actions/training/core.test.ts[2m > [22m[2mTraining Actions[2m > [22m[2mlogTitanSet[2m > [22m[2mshould log set and award rewards
+[22m[39m[MUTATION] XP: +20 from WORKOUT for test-user
+[MUTATION] Economy: {"kineticEnergy":20} from WORKOUT
 
-[90mstdout[2m | src/lib/__tests__/integrations.test.ts
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒöæ add access controls to secrets: https://dotenvx.com/ops
+ [32mÔ£ô[39m tests/unit/actions/training/core.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 50[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/actions/progression/core.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 24[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/actions/social/core.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 23[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/actions/duel.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 20[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/actions/user/logger.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 21[2mms[22m[39m
+[90mstdout[2m | tests/unit/actions/integrations/strava.test.ts[2m > [22m[2mStrava Server Actions[2m > [22m[2msyncStravaActivitiesAction[2m > [22m[2mshould sync new activities
+[22m[39mProcessing cardio for user test-user-id: Run 5km 0m elevation
 
-[90mstdout[2m | src/actions/__tests__/guild-raids.test.ts
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒùé´©Å backup and recover secrets: https://dotenvx.com/ops
-
-[90mstdout[2m | src/actions/__tests__/logger.test.ts
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ÔÜÖ´©Å  write to custom object with { processEnv: myObject }
-
-[90mstdout[2m | src/actions/__tests__/integrations.test.ts
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: Ô£à audit secrets and track compliance: https://dotenvx.com/ops
-
-[90mstdout[2m | src/app/api/chat/__tests__/route.test.ts
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: Ô£à audit secrets and track compliance: https://dotenvx.com/ops
-
-[90mstdout[2m | src/app/api/health/route.test.ts
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒöÉ encrypt with Dotenvx: https://dotenvx.com
-
- [32mÔ£ô[39m src/lib/__tests__/integrations.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 33[2mms[22m[39m
- [32mÔ£ô[39m src/app/api/chat/__tests__/route.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 60[2mms[22m[39m
- [32mÔ£ô[39m src/actions/__tests__/integrations.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 99[2mms[22m[39m
- [31mÔØ»[39m src/utils/__tests__/weaknessAuditor.test.ts [2m([22m[2m4 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[32m 25[2mms[22m[39m
-[31m     [31m├ù[31m WA-01: Detects UNDERTRAINED status[39m[32m 19[2mms[22m[39m
-     [32mÔ£ô[39m WA-02: Detects OVERREACHED status[32m 1[2mms[22m[39m
-     [32mÔ£ô[39m WA-05: Calculates Push/Pull Ratio correctly[32m 1[2mms[22m[39m
-     [32mÔ£ô[39m WA-06: Identifies Balanced Quad/Ham Ratio[32m 1[2mms[22m[39m
- [32mÔ£ô[39m src/actions/__tests__/guild-raids.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 242[2mms[22m[39m
-{"level":50,"time":1767361054218,"env":"test","err":{"type":"Error","message":"DB Connection Failed","stack":"Error: DB Connection Failed\n    at C:/Users/alexa/Workspaces/IronForge/src/app/api/health/route.test.ts:35:53\n    at file:///C:/Users/alexa/Workspaces/IronForge/node_modules/.pnpm/@vitest+runner@4.0.16/node_modules/@vitest/runner/dist/index.js:145:11\n    at file:///C:/Users/alexa/Workspaces/IronForge/node_modules/.pnpm/@vitest+runner@4.0.16/node_modules/@vitest/runner/dist/index.js:915:26\n    at file:///C:/Users/alexa/Workspaces/IronForge/node_modules/.pnpm/@vitest+runner@4.0.16/node_modules/@vitest/runner/dist/index.js:1243:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///C:/Users/alexa/Workspaces/IronForge/node_modules/.pnpm/@vitest+runner@4.0.16/node_modules/@vitest/runner/dist/index.js:1209:10)\n    at file:///C:/Users/alexa/Workspaces/IronForge/node_modules/.pnpm/@vitest+runner@4.0.16/node_modules/@vitest/runner/dist/index.js:1653:37\n    at Traces.$ (file:///C:/Users/alexa/Workspaces/IronForge/node_modules/.pnpm/vitest@4.0.16_@edge-runtime+vm@3.2.0_@opentelemetry+api@1.9.0_@types+node@25.0.3_jiti@1.21.7__swywsdnwd3vcivva55rlo4ebbi/node_modules/vitest/dist/chunks/traces.U4xDYhzZ.js:115:27)\n    at trace (file:///C:/Users/alexa/Workspaces/IronForge/node_modules/.pnpm/vitest@4.0.16_@edge-runtime+vm@3.2.0_@opentelemetry+api@1.9.0_@types+node@25.0.3_jiti@1.21.7__swywsdnwd3vcivva55rlo4ebbi/node_modules/vitest/dist/chunks/test.B8ej_ZHS.js:239:21)\n    at runTest (file:///C:/Users/alexa/Workspaces/IronForge/node_modules/.pnpm/@vitest+runner@4.0.16/node_modules/@vitest/runner/dist/index.js:1653:12)"},"msg":"Health Check Failed"}
- [32mÔ£ô[39m src/app/api/health/route.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 81[2mms[22m[39m
- [32mÔ£ô[39m src/actions/__tests__/titan.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 96[2mms[22m[39m
- [31mÔØ»[39m src/actions/__tests__/logger.test.ts [2m([22m[2m4 tests[22m[2m | [22m[31m2 failed[39m[2m)[22m[32m 40[2mms[22m[39m
-     [32mÔ£ô[39m should search exercises[32m 6[2mms[22m[39m
-     [32mÔ£ô[39m should create a new exercise[32m 9[2mms[22m[39m
-[31m     [31m├ù[31m should log sets and award energy[39m[32m 19[2mms[22m[39m
-[31m     [31m├ù[31m should apply damage to active combat session[39m[32m 3[2mms[22m[39m
-[90mstdout[2m | src/app/api/sync/__tests__/sync.test.ts
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ÔÜÖ´©Å  write to custom object with { processEnv: myObject }
-
-[90mstdout[2m | src/actions/__tests__/challenges.test.ts
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒæÑ sync secrets across teammates & machines: https://dotenvx.com/ops
-
-[90mstdout[2m | src/app/api/sync/user/__tests__/route.test.ts
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ÔÜÖ´©Å  specify custom .env file path with { path: '/custom/path/.env' }
-
-[90mstdout[2m | src/actions/__tests__/progression.test.ts
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒùé´©Å backup and recover secrets: https://dotenvx.com/ops
-
-[90mstdout[2m | src/actions/__tests__/strava.test.ts
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ÔÜÖ´©Å  override existing env vars with { override: true }
-
-[90mstdout[2m | src/actions/__tests__/social.test.ts
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ÔÜÖ´©Å  write to custom object with { processEnv: myObject }
-
- [32mÔ£ô[39m src/actions/__tests__/challenges.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 93[2mms[22m[39m
- [32mÔ£ô[39m src/app/api/sync/__tests__/sync.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 44[2mms[22m[39m
-[90mstdout[2m | src/actions/__tests__/combat.test.ts
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ÔÜÖ´©Å  override existing env vars with { override: true }
-
- [32mÔ£ô[39m src/actions/__tests__/progression.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 26[2mms[22m[39m
-[90mstdout[2m | src/actions/__tests__/training.test.ts
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒöæ add access controls to secrets: https://dotenvx.com/ops
-
-[90mstdout[2m | src/features/training/__tests__/TvMode.test.tsx
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ÔÜÖ´©Å  specify custom .env file path with { path: '/custom/path/.env' }
-
-[90mstdout[2m | src/actions/__tests__/duel.test.ts
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ÔÜÖ´©Å  override existing env vars with { override: true }
-
-[90mstdout[2m | src/actions/__tests__/guild.test.ts
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: Ô£à audit secrets and track compliance: https://dotenvx.com/ops
-
- [32mÔ£ô[39m src/app/api/sync/user/__tests__/route.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 41[2mms[22m[39m
- [32mÔ£ô[39m src/actions/__tests__/social.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 24[2mms[22m[39m
-[90mstdout[2m | src/features/dashboard/__tests__/DashboardClient.test.tsx
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒöÉ prevent building .env in docker: https://dotenvx.com/prebuild
-
-[90mstdout[2m | src/actions/__tests__/validation.test.ts
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒæÑ sync secrets across teammates & machines: https://dotenvx.com/ops
-
-[90mstdout[2m | src/actions/__tests__/strava.test.ts[2m > [22m[2mStrava Server Actions[2m > [22m[2msyncStravaActivitiesAction[2m > [22m[2mshould sync new activities
-[22m[39mProcessing cardio for user test-user-id: Run 5km
-
- [32mÔ£ô[39m src/actions/__tests__/strava.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 47[2mms[22m[39m
- [32mÔ£ô[39m src/actions/__tests__/training.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 32[2mms[22m[39m
- [32mÔ£ô[39m src/actions/__tests__/duel.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 23[2mms[22m[39m
-[90mstdout[2m | src/features/game/components/__tests__/SkillTree.test.tsx
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒøá´©Å  run anywhere with `dotenvx run -- yourcommand`
-
- [32mÔ£ô[39m src/actions/__tests__/combat.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 21[2mms[22m[39m
- [32mÔ£ô[39m src/actions/__tests__/guild.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 47[2mms[22m[39m
-[90mstdout[2m | src/actions/__tests__/account.test.ts
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: Ô£à audit secrets and track compliance: https://dotenvx.com/ops
-
-[90mstdout[2m | tests/unit/leaderboard.test.ts
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ÔÜÖ´©Å  suppress all logs with { quiet: true }
-
- [32mÔ£ô[39m src/actions/__tests__/account.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 20[2mms[22m[39m
- [32mÔ£ô[39m tests/unit/leaderboard.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 17[2mms[22m[39m
-[90mstdout[2m | src/actions/__tests__/onboarding.test.ts
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒöä add secrets lifecycle management: https://dotenvx.com/ops
-
- [32mÔ£ô[39m src/actions/__tests__/validation.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 19[2mms[22m[39m
-[90mstdout[2m | src/services/data/__tests__/TrainingContextService.test.ts
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ÔÜÖ´©Å  write to custom object with { processEnv: myObject }
-
-[90mstdout[2m | src/actions/__tests__/intervals.test.ts
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒöæ add access controls to secrets: https://dotenvx.com/ops
-
-[90mstdout[2m | src/actions/__tests__/achievements.test.ts
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ÔÜÖ´©Å  override existing env vars with { override: true }
-
-[90mstdout[2m | tests/unit/apre.test.ts
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ÔÜÖ´©Å  override existing env vars with { override: true }
-
-[90mstdout[2m | src/services/game/__tests__/GameContextService.test.ts
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒæÑ sync secrets across teammates & machines: https://dotenvx.com/ops
-
-[90mstdout[2m | src/services/__tests__/trainingMemoryManager.test.ts
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒæÑ sync secrets across teammates & machines: https://dotenvx.com/ops
-
-[90mstdout[2m | src/actions/__tests__/gauntlet.test.ts
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ÔÜÖ´©Å  override existing env vars with { override: true }
-
- [32mÔ£ô[39m src/actions/__tests__/onboarding.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 16[2mms[22m[39m
- [32mÔ£ô[39m src/actions/__tests__/intervals.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 18[2mms[22m[39m
- [32mÔ£ô[39m tests/unit/apre.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 16[2mms[22m[39m
- [32mÔ£ô[39m src/services/__tests__/trainingMemoryManager.test.ts [2m([22m[2m15 tests[22m[2m)[22m[32m 14[2mms[22m[39m
- [32mÔ£ô[39m src/actions/__tests__/gauntlet.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 16[2mms[22m[39m
- [32mÔ£ô[39m src/actions/__tests__/achievements.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 14[2mms[22m[39m
-[90mstdout[2m | src/services/data/__tests__/TrainingContextService.test.ts[2m > [22m[2mTrainingContextService[2m > [22m[2mgetTrainingContext[2m > [22m[2mshould return context with readiness and volume
+ [32mÔ£ô[39m tests/unit/actions/integrations/strava.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 33[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/actions/guild/core.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+ [32mÔ£ô[39m tests/integration/OracleFlow.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 22[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/actions/integrations/intervals.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+[90mstdout[2m | tests/unit/services/data/TrainingContextService.test.ts[2m > [22m[2mTrainingContextService[2m > [22m[2mgetTrainingContext[2m > [22m[2mshould return context with readiness and volume
 [22m[39mAutoSpec: Evaluating transition from ALPHA {
   ctl: [33m0[39m,
   atl: [33m0[39m,
   tsb: [33m0[39m,
   hrv: [33m80[39m,
-  sleepScore: [33m100[39m,
+  sleepScore: [33m85[39m,
   bodyBattery: [33m90[39m,
   strengthDelta: [33m0[39m,
   consecutiveStalls: [33m0[39m,
@@ -160,7 +83,7 @@
   interferenceEvents: [33m0[39m
 }
 
-[90mstdout[2m | src/services/data/__tests__/TrainingContextService.test.ts[2m > [22m[2mTrainingContextService[2m > [22m[2mgetTrainingContext[2m > [22m[2mshould trigger warnings for low recovery
+[90mstdout[2m | tests/unit/services/data/TrainingContextService.test.ts[2m > [22m[2mTrainingContextService[2m > [22m[2mgetTrainingContext[2m > [22m[2mshould trigger warnings for low recovery
 [22m[39mAutoSpec: Evaluating transition from ALPHA {
   ctl: [33m0[39m,
   atl: [33m0[39m,
@@ -172,7 +95,7 @@
   consecutiveStalls: [33m0[39m,
   weeksInPhase: [33m0[39m,
   nutritionMode: [32m'MAINTENANCE'[39m,
-  sleepDebt: [33m0[39m,
+  sleepDebt: [33m3.5[39m,
   acwr: [33m1[39m,
   junkMilePercent: [33m0[39m,
   neuralLoad: [33m0[39m,
@@ -180,7 +103,7 @@
   interferenceEvents: [33m0[39m
 }
 
-[90mstdout[2m | src/services/data/__tests__/TrainingContextService.test.ts[2m > [22m[2mTrainingContextService[2m > [22m[2mgetTrainingContext[2m > [22m[2mshould detect high cardio fatigue
+[90mstdout[2m | tests/unit/services/data/TrainingContextService.test.ts[2m > [22m[2mTrainingContextService[2m > [22m[2mgetTrainingContext[2m > [22m[2mshould detect high cardio fatigue
 [22m[39mAutoSpec: Evaluating transition from ALPHA {
   ctl: [33m0[39m,
   atl: [33m0[39m,
@@ -200,113 +123,90 @@
   interferenceEvents: [33m0[39m
 }
 
- [32mÔ£ô[39m src/services/data/__tests__/TrainingContextService.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 20[2mms[22m[39m
- [32mÔ£ô[39m src/services/game/__tests__/GameContextService.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 16[2mms[22m[39m
-[90mstdout[2m | src/services/pvp/__tests__/DuelRewardsService.test.ts
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ÔÜÖ´©Å  suppress all logs with { quiet: true }
+ [32mÔ£ô[39m tests/unit/services/data/TrainingContextService.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 20[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/lib/territory/tileUtils.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/actions/user/account.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 20[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/actions/combat/core.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/features/strength/custom-exercises.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 17[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/actions/leaderboards.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/actions/user/onboarding.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 17[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/services/game/GameContextService.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+[90mstdout[2m | src/features/dashboard/__tests__/DashboardClient.test.tsx[2m > [22m[2mDashboardClient[2m > [22m[2mrenders the settings link by default
+[22m[39m[ViewRouter] Rendering view: citadel ActiveQuest: [33mfalse[39m
+[ViewRouter] Rendering view: citadel ActiveQuest: [33mfalse[39m
 
- [32mÔ£ô[39m src/services/pvp/__tests__/DuelRewardsService.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 12[2mms[22m[39m
-[90mstdout[2m | src/lib/territory/__tests__/tileUtils.test.ts
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒöæ add access controls to secrets: https://dotenvx.com/ops
+[90mstdout[2m | src/features/dashboard/__tests__/DashboardClient.test.tsx[2m > [22m[2mDashboardClient[2m > [22m[2mrenders dashboard content even if not configured (gate removed)
+[22m[39m[ViewRouter] Rendering view: citadel ActiveQuest: [33mfalse[39m
+[ViewRouter] Rendering view: citadel ActiveQuest: [33mfalse[39m
 
-[90mstdout[2m | src/actions/__tests__/world.test.ts
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒöÉ prevent building .env in docker: https://dotenvx.com/prebuild
-
-[90mstdout[2m | src/actions/__tests__/pvp.test.ts
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: Ô£à audit secrets and track compliance: https://dotenvx.com/ops
-
-[90mstdout[2m | src/services/__tests__/progression.test.ts
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒöæ add access controls to secrets: https://dotenvx.com/ops
-
-[90mstdout[2m | src/actions/__tests__/forge.test.ts
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ÔÜÖ´©Å  suppress all logs with { quiet: true }
-
- [32mÔ£ô[39m src/lib/territory/__tests__/tileUtils.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 20[2mms[22m[39m
-[90mstdout[2m | src/actions/__tests__/hevy_import.test.ts
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ÔÜÖ´©Å  suppress all logs with { quiet: true }
-
-[90mstdout[2m | src/actions/__tests__/pvp.test.ts[2m > [22m[2mPvP Server Actions[2m > [22m[2mcreateSegmentBattleAction[2m > [22m[2mshould create a segment battle challenge
+ [32mÔ£ô[39m src/features/dashboard/__tests__/DashboardClient.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 221[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/services/game/GuildTerritoryService.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/services/TerritoryControlService.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/services/analytics/GrowthMetricsService.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/actions/validation.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/app/api/chat/route.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/services/progression.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/app/api/health/route.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+ [32mÔ£ô[39m src/services/game/__tests__/PowerRatingService.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 17[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/actions/systems/challenges.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/lib/powerRating.test.ts [2m([22m[2m16 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/actions/territory.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/actions/training/gauntlet.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/actions/user-actions.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/features/CardioDuel.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/actions/progression/achievements.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+[90mstdout[2m | tests/unit/actions/pvp/core.test.ts[2m > [22m[2mPvP Server Actions[2m > [22m[2mcreateSegmentBattleAction[2m > [22m[2mshould create a segment battle challenge
 [22m[39mUser user-1 challenged opponent-456 on segment segment-123
 
- [32mÔ£ô[39m src/actions/__tests__/world.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 13[2mms[22m[39m
- [32mÔ£ô[39m src/actions/__tests__/pvp.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 14[2mms[22m[39m
- [32mÔ£ô[39m src/services/__tests__/progression.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 12[2mms[22m[39m
-[90mstdout[2m | src/actions/__tests__/forge.test.ts[2m > [22m[2mForge Server Actions[2m > [22m[2mshould successfully craft an item if resources are sufficient
+ [32mÔ£ô[39m tests/unit/actions/pvp/core.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/services/trainingMemoryManager.test.ts [2m([22m[2m15 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/services/pvp/DuelRewardsService.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/services/oracle.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/services/GoalPriorityEngine.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+[90mstdout[2m | tests/unit/actions/economy/forge.test.ts[2m > [22m[2mForge Server Actions[2m > [22m[2mshould successfully craft an item if resources are sufficient
 [22m[39m[Forge] Crafted Iron Sword for test@example.com
 
- [32mÔ£ô[39m src/actions/__tests__/forge.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 13[2mms[22m[39m
-[90mstdout[2m | src/services/__tests__/oracle.test.ts
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒöä add secrets lifecycle management: https://dotenvx.com/ops
+ [32mÔ£ô[39m tests/unit/actions/economy/forge.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+ [32mÔ£ô[39m src/services/game/__tests__/TerritoryService.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/actions/systems/world.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/utils/combatMechanics.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/actions/training/periodization.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/features/training/logic/zones.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/utils/apre.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/actions/integrations/hevy_import.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/services/MobilityAuditor.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/services/GeminiService.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/hooks/useSkillEffects.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/lib/volume.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/services/BudgetCalculator.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/data/workout_generator.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/features/training/logic/buffs.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/utils/volumeCalculator.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/utils/weaknessAuditor.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/lib/wilks.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/services/game/EffortCalculator.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/services/pvp/PvpCombatService.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+[90mstdout[2m | tests/unit/services/planner.test.ts
+[22m[39mMock factory for auditorOrchestrator running
 
- [32mÔ£ô[39m src/features/game/components/__tests__/SkillTree.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 207[2mms[22m[39m
-[90mstdout[2m | tests/unit/combatMechanics.test.ts
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ÔÜÖ´©Å  write to custom object with { processEnv: myObject }
-
- [32mÔ£ô[39m src/services/__tests__/oracle.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 11[2mms[22m[39m
- [32mÔ£ô[39m tests/unit/combatMechanics.test.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 12[2mms[22m[39m
- [32mÔ£ô[39m src/actions/__tests__/hevy_import.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 15[2mms[22m[39m
-[90mstdout[2m | tests/unit/volume.test.ts
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ÔÜÖ´©Å  suppress all logs with { quiet: true }
-
-[90mstdout[2m | tests/unit/zones.test.ts
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ÔÜÖ´©Å  write to custom object with { processEnv: myObject }
-
-[90mstdout[2m | src/utils/__tests__/combatMechanics.test.ts
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ÔÜÖ´©Å  override existing env vars with { override: true }
-
- [32mÔ£ô[39m tests/unit/volume.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 10[2mms[22m[39m
-[90mstdout[2m | src/services/planner.test.ts
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ÔÜÖ´©Å  specify custom .env file path with { path: '/custom/path/.env' }
-
-[90mstdout[2m | tests/unit/buffs.test.ts
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒöÉ encrypt with Dotenvx: https://dotenvx.com
-
- [32mÔ£ô[39m tests/unit/zones.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 10[2mms[22m[39m
- [32mÔ£ô[39m src/utils/__tests__/combatMechanics.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 12[2mms[22m[39m
- [32mÔ£ô[39m src/features/training/__tests__/TvMode.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[33m 797[2mms[22m[39m
-     [33m[2mÔ£ô[22m[39m renders the connection/setup screen initially if disconnected [33m 322[2mms[22m[39m
-[90mstdout[2m | src/features/territory/__tests__/territory.test.ts
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒöÉ prevent committing .env to code: https://dotenvx.com/precommit
-
-[90mstdout[2m | src/services/planner.test.ts[2m > [22m[2mPlannerService[2m > [22m[2mshould generate a plan for a valid user
+[90mstdout[2m | tests/unit/services/planner.test.ts[2m > [22m[2mPlannerService[2m > [22m[2mshould generate a plan for a valid user
 [22m[39mPlanner: Generating plan for user user1
 
-[90mstdout[2m | src/services/planner.test.ts[2m > [22m[2mPlannerService[2m > [22m[2mshould generate a plan for a valid user
+[90mstdout[2m | tests/unit/services/planner.test.ts[2m > [22m[2mPlannerService[2m > [22m[2mshould generate a plan for a valid user
 [22m[39mPlanner: Plan generated and saved for user user1
 
- [32mÔ£ô[39m src/services/planner.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 9[2mms[22m[39m
-[90mstdout[2m | src/hooks/__tests__/useSkillEffects.test.ts
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ÔÜÖ´©Å  write to custom object with { processEnv: myObject }
+ [32mÔ£ô[39m tests/unit/services/planner.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 7[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/services/OracleService.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/services/integration/GPE_Fallback.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 4[2mms[22m[39m
+ [32mÔ£ô[39m src/actions/systems/__tests__/territories.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 5[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/actions/pvp/ranked.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 4[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/actions/pvp/segment.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 3[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/actions/pvp/duel.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 3[2mms[22m[39m
+ [32mÔ£ô[39m tests/unit/features/territory/territory.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 4[2mms[22m[39m
+ [2m[90mÔåô[39m[22m tests/unit/actions/integrations/hevy.test.ts [2m([22m[2m6 tests[22m[2m | [22m[33m6 skipped[39m[2m)[22m
 
-[90mstdout[2m | src/utils/__tests__/volumeCalculator.test.ts
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ÔÜÖ´©Å  write to custom object with { processEnv: myObject }
-
- [32mÔ£ô[39m tests/unit/buffs.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 13[2mms[22m[39m
-[90mstdout[2m | src/services/game/__tests__/EffortCalculator.test.ts
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒùé´©Å backup and recover secrets: https://dotenvx.com/ops
-
- [32mÔ£ô[39m src/hooks/__tests__/useSkillEffects.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 9[2mms[22m[39m
- [32mÔ£ô[39m src/utils/__tests__/volumeCalculator.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 9[2mms[22m[39m
- [32mÔ£ô[39m src/services/game/__tests__/EffortCalculator.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 9[2mms[22m[39m
- [32mÔ£ô[39m src/features/territory/__tests__/territory.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 10[2mms[22m[39m
-[90mstdout[2m | src/services/pvp/__tests__/PvpCombatService.test.ts
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ÔÜÖ´©Å  load multiple .env files with { path: ['.env.local', '.env'] }
-
-[90mstdout[2m | tests/unit/wilks.test.ts
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒöÉ encrypt with Dotenvx: https://dotenvx.com
-
- [32mÔ£ô[39m src/services/pvp/__tests__/PvpCombatService.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 8[2mms[22m[39m
- [32mÔ£ô[39m tests/unit/wilks.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 7[2mms[22m[39m
-[90mstdout[2m | src/actions/__tests__/hevy.test.ts
-[22m[39m[dotenv@17.2.3] injecting env (2) from .env.test -- tip: ­ƒôí add observability to secrets: https://dotenvx.com/ops
-
- [2m[90mÔåô[39m[22m src/actions/__tests__/hevy.test.ts [2m([22m[2m6 tests[22m[2m | [22m[33m6 skipped[39m[2m)[22m
- [31mÔØ»[39m src/features/dashboard/__tests__/DashboardClient.test.tsx [2m([22m[2m2 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[32m 97[2mms[22m[39m
-[31m     [31m├ù[31m renders the settings link by default[39m[32m 74[2mms[22m[39m
-     [32mÔ£ô[39m shows configuration scanlines if not configured[32m 21[2mms[22m[39m
-
-[2m Test Files [22m [1m[31m3 failed[39m[22m[2m | [22m[1m[32m49 passed[39m[22m[2m | [22m[33m1 skipped[39m[90m (53)[39m
-[2m      Tests [22m [1m[31m4 failed[39m[22m[2m | [22m[1m[32m290 passed[39m[22m[2m | [22m[33m6 skipped[39m[90m (300)[39m
-[2m   Start at [22m 14:37:32
-[2m   Duration [22m 13.75s[2m (transform 22.60s, setup 3.17s, import 45.55s, tests 2.59s, environment 10.92s)[22m
+[2m Test Files [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m88 passed[39m[22m[2m | [22m[33m1 skipped[39m[90m (90)[39m
+[2m      Tests [22m [1m[31m2 failed[39m[22m[2m | [22m[1m[32m469 passed[39m[22m[2m | [22m[33m6 skipped[39m[90m (477)[39m
+[2m   Start at [22m 22:06:23
+[2m   Duration [22m 23.38s[2m (transform 8.80s, setup 2.89s, import 48.12s, tests 4.12s, environment 143.38s)[22m
 

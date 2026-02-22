@@ -1,0 +1,279 @@
+🗄️ DB Guard	Set up job	﻿2026-02-17T21:55:39.8194074Z Current runner version: '2.331.0'
+🗄️ DB Guard	Set up job	2026-02-17T21:55:39.8230715Z ##[group]Runner Image Provisioner
+🗄️ DB Guard	Set up job	2026-02-17T21:55:39.8232383Z Hosted Compute Agent
+🗄️ DB Guard	Set up job	2026-02-17T21:55:39.8233495Z Version: 20260123.484
+🗄️ DB Guard	Set up job	2026-02-17T21:55:39.8234723Z Commit: 6bd6555ca37d84114959e1c76d2c01448ff61c5d
+🗄️ DB Guard	Set up job	2026-02-17T21:55:39.8236001Z Build Date: 2026-01-23T19:41:17Z
+🗄️ DB Guard	Set up job	2026-02-17T21:55:39.8237184Z Worker ID: {1119f89e-40a9-483a-84dc-6f4afef447a2}
+🗄️ DB Guard	Set up job	2026-02-17T21:55:39.8238521Z Azure Region: northcentralus
+🗄️ DB Guard	Set up job	2026-02-17T21:55:39.8239522Z ##[endgroup]
+🗄️ DB Guard	Set up job	2026-02-17T21:55:39.8242268Z ##[group]Operating System
+🗄️ DB Guard	Set up job	2026-02-17T21:55:39.8243490Z Ubuntu
+🗄️ DB Guard	Set up job	2026-02-17T21:55:39.8244368Z 24.04.3
+🗄️ DB Guard	Set up job	2026-02-17T21:55:39.8245160Z LTS
+🗄️ DB Guard	Set up job	2026-02-17T21:55:39.8246144Z ##[endgroup]
+🗄️ DB Guard	Set up job	2026-02-17T21:55:39.8247192Z ##[group]Runner Image
+🗄️ DB Guard	Set up job	2026-02-17T21:55:39.8248177Z Image: ubuntu-24.04
+🗄️ DB Guard	Set up job	2026-02-17T21:55:39.8249338Z Version: 20260209.23.1
+🗄️ DB Guard	Set up job	2026-02-17T21:55:39.8251495Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260209.23/images/ubuntu/Ubuntu2404-Readme.md
+🗄️ DB Guard	Set up job	2026-02-17T21:55:39.8254743Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260209.23
+🗄️ DB Guard	Set up job	2026-02-17T21:55:39.8256359Z ##[endgroup]
+🗄️ DB Guard	Set up job	2026-02-17T21:55:39.8258455Z ##[group]GITHUB_TOKEN Permissions
+🗄️ DB Guard	Set up job	2026-02-17T21:55:39.8261338Z Contents: read
+🗄️ DB Guard	Set up job	2026-02-17T21:55:39.8262402Z Metadata: read
+🗄️ DB Guard	Set up job	2026-02-17T21:55:39.8263364Z Packages: read
+🗄️ DB Guard	Set up job	2026-02-17T21:55:39.8264169Z ##[endgroup]
+🗄️ DB Guard	Set up job	2026-02-17T21:55:39.8267476Z Secret source: Actions
+🗄️ DB Guard	Set up job	2026-02-17T21:55:39.8268746Z Prepare workflow directory
+🗄️ DB Guard	Set up job	2026-02-17T21:55:39.9897254Z Prepare all required actions
+🗄️ DB Guard	Set up job	2026-02-17T21:55:39.9953792Z Getting action download info
+🗄️ DB Guard	Set up job	2026-02-17T21:55:40.2714850Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+🗄️ DB Guard	Set up job	2026-02-17T21:55:40.5251371Z Complete job name: 🗄️ DB Guard
+🗄️ DB Guard	Initialize containers	﻿2026-02-17T21:55:40.5775849Z ##[group]Checking docker version
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:40.5789258Z ##[command]/usr/bin/docker version --format '{{.Server.APIVersion}}'
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:40.6609301Z '1.52'
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:40.6617105Z Docker daemon API version: '1.52'
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:40.6617874Z ##[command]/usr/bin/docker version --format '{{.Client.APIVersion}}'
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:40.6788421Z '1.52'
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:40.6803446Z Docker client API version: '1.52'
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:40.6808938Z ##[endgroup]
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:40.6812239Z ##[group]Clean up resources from previous jobs
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:40.6817419Z ##[command]/usr/bin/docker ps --all --quiet --no-trunc --filter "label=604212"
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:40.6977801Z ##[command]/usr/bin/docker network prune --force --filter "label=604212"
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:40.7114691Z ##[endgroup]
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:40.7115244Z ##[group]Create local container network
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:40.7125838Z ##[command]/usr/bin/docker network create --label 604212 github_network_0c90294aa5804567aff5bcd5925d8225
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:40.7863166Z 137a30927be868a0bb7c18d0921ff86d6f22d11b60f771c193b553974fdf80d8
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:40.7877233Z ##[endgroup]
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:40.7913334Z ##[group]Starting postgres service container
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:40.7941361Z ##[command]/usr/bin/docker pull postgres:15
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:41.2136428Z 15: Pulling from library/postgres
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:41.4013059Z 49b40a0a623d: Pulling fs layer
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:41.4024484Z 0c8d55a45c0d: Pulling fs layer
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:41.4027058Z 03cf9c337134: Pulling fs layer
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:41.4029355Z d64dbdf800a2: Pulling fs layer
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:41.4033768Z 2710e764d89a: Pulling fs layer
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:41.5170744Z e60549838c5a: Pulling fs layer
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:41.5172345Z 6771773ef0da: Pulling fs layer
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:41.5173658Z 049b2237836a: Pulling fs layer
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:41.5174973Z 0ace4c983c3e: Pulling fs layer
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:41.5176310Z 7b098c79e38c: Pulling fs layer
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:41.5178884Z b64f280cfa2b: Pulling fs layer
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:41.5195881Z 7aa308802868: Pulling fs layer
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:41.5197470Z c50a02fe2f5f: Pulling fs layer
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:41.5199058Z ea5e741a30ce: Pulling fs layer
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:41.5202142Z ea5e741a30ce: Download complete
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:41.5210698Z 49b40a0a623d: Download complete
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:41.6332959Z 03cf9c337134: Download complete
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:41.6337002Z 0ace4c983c3e: Download complete
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:41.6345680Z 049b2237836a: Download complete
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:41.6355007Z b64f280cfa2b: Download complete
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:41.6385434Z 6771773ef0da: Download complete
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:42.3245229Z 45604b1409ee: Download complete
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:42.4173216Z 99548d060f18: Download complete
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:42.4181717Z 2710e764d89a: Download complete
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:42.4188591Z 7b098c79e38c: Download complete
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:42.4197553Z 7aa308802868: Download complete
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:42.5173823Z d64dbdf800a2: Download complete
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:42.5209355Z c50a02fe2f5f: Download complete
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:42.7164977Z 0c8d55a45c0d: Download complete
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:43.9127697Z e60549838c5a: Download complete
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:43.9201192Z 0c8d55a45c0d: Pull complete
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:44.0154232Z 03cf9c337134: Pull complete
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:44.1216018Z d64dbdf800a2: Pull complete
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:44.2174502Z 2710e764d89a: Pull complete
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:44.4204175Z c50a02fe2f5f: Pull complete
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:44.5158356Z ea5e741a30ce: Pull complete
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:44.5177752Z 0ace4c983c3e: Pull complete
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:44.5224043Z b64f280cfa2b: Pull complete
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:47.0136540Z 049b2237836a: Pull complete
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:47.0149997Z 6771773ef0da: Pull complete
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:47.0153405Z 7b098c79e38c: Pull complete
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:47.0169100Z 7aa308802868: Pull complete
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:47.0169652Z e60549838c5a: Pull complete
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:47.0509543Z 49b40a0a623d: Pull complete
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:47.0512392Z Digest: sha256:dafc4d8e8369da730a5ee9a320a0f0b3c6aa516f41244689c4493a27dc84472d
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:47.0519317Z Status: Downloaded newer image for postgres:15
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:47.0522672Z docker.io/library/postgres:15
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:47.0609766Z ##[command]/usr/bin/docker create --name 81fc5520c5e54697a16dccc57cceb4de_postgres15_7be745 --label 604212 --network github_network_0c90294aa5804567aff5bcd5925d8225 --network-alias postgres -p 5432:5432 --health-cmd "pg_isready -U postgres" --health-interval 10s --health-timeout 5s --health-retries 5 -e "POSTGRES_USER=postgres" -e "POSTGRES_PASSWORD=password" -e "POSTGRES_DB=ironforge_test" -e GITHUB_ACTIONS=true -e CI=true postgres:15
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:50.4341660Z f36f000484ff003711fac40b97ab7251afd6bc1c8dee65f189a2f06729eb8e91
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:50.4368430Z ##[command]/usr/bin/docker start f36f000484ff003711fac40b97ab7251afd6bc1c8dee65f189a2f06729eb8e91
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:50.6811258Z f36f000484ff003711fac40b97ab7251afd6bc1c8dee65f189a2f06729eb8e91
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:50.6851858Z ##[command]/usr/bin/docker ps --all --filter id=f36f000484ff003711fac40b97ab7251afd6bc1c8dee65f189a2f06729eb8e91 --filter status=running --no-trunc --format "{{.ID}} {{.Status}}"
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:50.7288838Z f36f000484ff003711fac40b97ab7251afd6bc1c8dee65f189a2f06729eb8e91 Up Less than a second (health: starting)
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:50.7327818Z ##[command]/usr/bin/docker port f36f000484ff003711fac40b97ab7251afd6bc1c8dee65f189a2f06729eb8e91
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:50.7517321Z 5432/tcp -> 0.0.0.0:5432
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:50.7522076Z 5432/tcp -> [::]:5432
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:50.7619430Z ##[endgroup]
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:50.7631622Z ##[group]Waiting for all services to be ready
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:50.7650631Z ##[command]/usr/bin/docker inspect --format="{{if .Config.Healthcheck}}{{print .State.Health.Status}}{{end}}" f36f000484ff003711fac40b97ab7251afd6bc1c8dee65f189a2f06729eb8e91
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:50.7877140Z starting
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:50.7931266Z postgres service is starting, waiting 2 seconds before checking again.
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:52.7933302Z ##[command]/usr/bin/docker inspect --format="{{if .Config.Healthcheck}}{{print .State.Health.Status}}{{end}}" f36f000484ff003711fac40b97ab7251afd6bc1c8dee65f189a2f06729eb8e91
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:52.8077692Z starting
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:52.8096310Z postgres service is starting, waiting 4 seconds before checking again.
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:57.0145965Z ##[command]/usr/bin/docker inspect --format="{{if .Config.Healthcheck}}{{print .State.Health.Status}}{{end}}" f36f000484ff003711fac40b97ab7251afd6bc1c8dee65f189a2f06729eb8e91
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:57.0355506Z starting
+🗄️ DB Guard	Initialize containers	2026-02-17T21:55:57.0379982Z postgres service is starting, waiting 7 seconds before checking again.
+🗄️ DB Guard	Initialize containers	2026-02-17T21:56:04.0607473Z ##[command]/usr/bin/docker inspect --format="{{if .Config.Healthcheck}}{{print .State.Health.Status}}{{end}}" f36f000484ff003711fac40b97ab7251afd6bc1c8dee65f189a2f06729eb8e91
+🗄️ DB Guard	Initialize containers	2026-02-17T21:56:04.0765188Z healthy
+🗄️ DB Guard	Initialize containers	2026-02-17T21:56:04.0777174Z postgres service is healthy.
+🗄️ DB Guard	Initialize containers	2026-02-17T21:56:04.0778199Z ##[endgroup]
+🗄️ DB Guard	Run actions/checkout@v4	﻿2026-02-17T21:56:04.1038839Z ##[group]Run actions/checkout@v4
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.1039482Z with:
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.1039982Z   token: ***
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.1040373Z   repository: Techlemariam/IronForge
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.1040625Z   ssh-strict: true
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.1040805Z   ssh-user: git
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.1041019Z   persist-credentials: true
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.1041234Z   clean: true
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.1041429Z   sparse-checkout-cone-mode: true
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.1041669Z   fetch-depth: 1
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.1041859Z   fetch-tags: false
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.1042046Z   show-progress: true
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.1042230Z   lfs: false
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.1042397Z   submodules: false
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.1042588Z   set-safe-directory: true
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.1043022Z env:
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.1043746Z   DATABASE_URL: ***
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.1044322Z   DIRECT_URL: ***
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.1044741Z   NEXT_PUBLIC_SUPABASE_URL: ***
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.1046285Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.1046770Z   SKIP_ENV_VALIDATION: true
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.1047035Z ##[endgroup]
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.2223894Z Syncing repository: Techlemariam/IronForge
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.2225807Z ##[group]Getting Git version info
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.2226428Z Working directory is '/home/runner/work/IronForge/IronForge'
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.2227279Z [command]/usr/bin/git version
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.2238665Z git version 2.52.0
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.2266762Z ##[endgroup]
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.2284502Z Temporarily overriding HOME='/home/runner/work/_temp/b4ca1f9e-2939-4c0b-8eb6-0c3d71ffe8b6' before making global git config changes
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.2286661Z Adding repository directory to the temporary git global config as a safe directory
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.2304286Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/IronForge/IronForge
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.2352856Z Deleting the contents of '/home/runner/work/IronForge/IronForge'
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.2357876Z ##[group]Initializing the repository
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.2363834Z [command]/usr/bin/git init /home/runner/work/IronForge/IronForge
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.2471767Z hint: Using 'master' as the name for the initial branch. This default branch name
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.2475221Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.2476410Z hint: to use in all of your new repositories, which will suppress this warning,
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.2477108Z hint: call:
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.2477402Z hint:
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.2477890Z hint: 	git config --global init.defaultBranch <name>
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.2478464Z hint:
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.2478934Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.2479721Z hint: 'development'. The just-created branch can be renamed via this command:
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.2480530Z hint:
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.2480846Z hint: 	git branch -m <name>
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.2481188Z hint:
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.2481672Z hint: Disable this message with "git config set advice.defaultBranchName false"
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.2482666Z Initialized empty Git repository in /home/runner/work/IronForge/IronForge/.git/
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.2498371Z [command]/usr/bin/git remote add origin https://github.com/Techlemariam/IronForge
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.2543461Z ##[endgroup]
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.2551160Z ##[group]Disabling automatic garbage collection
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.2551808Z [command]/usr/bin/git config --local gc.auto 0
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.2598342Z ##[endgroup]
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.2599008Z ##[group]Setting up auth
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.2606292Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.2646358Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.3017398Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.3052985Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.3316282Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.3360612Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.3623492Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.3663658Z ##[endgroup]
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.3666771Z ##[group]Fetching the repository
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:04.3674559Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +ecdb92ca44dce74ff2633d6877b9a2daef4567e4:refs/remotes/origin/night-shift/2026-02-17
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:05.1328867Z From https://github.com/Techlemariam/IronForge
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:05.1334333Z  * [new ref]         ecdb92ca44dce74ff2633d6877b9a2daef4567e4 -> origin/night-shift/2026-02-17
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:05.1376437Z ##[endgroup]
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:05.1377059Z ##[group]Determining the checkout info
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:05.1383815Z ##[endgroup]
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:05.1389105Z [command]/usr/bin/git sparse-checkout disable
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:05.1440672Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:05.1490874Z ##[group]Checking out the ref
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:05.1492133Z [command]/usr/bin/git checkout --progress --force -B night-shift/2026-02-17 refs/remotes/origin/night-shift/2026-02-17
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:05.3297222Z Switched to a new branch 'night-shift/2026-02-17'
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:05.3299363Z branch 'night-shift/2026-02-17' set up to track 'origin/night-shift/2026-02-17'.
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:05.3313935Z ##[endgroup]
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:05.3368386Z [command]/usr/bin/git log -1 --format=%H
+🗄️ DB Guard	Run actions/checkout@v4	2026-02-17T21:56:05.3398443Z ecdb92ca44dce74ff2633d6877b9a2daef4567e4
+🗄️ DB Guard	Setup Pipeline	﻿2026-02-17T21:56:05.3645132Z ##[error]Can't find 'action.yml', 'action.yaml' or 'Dockerfile' under '/home/runner/work/IronForge/IronForge/.github/actions/setup-pipeline'. Did you forget to run actions/checkout before running your local action?
+🗄️ DB Guard	Post Run actions/checkout@v4	﻿2026-02-17T21:56:05.3846462Z Post job cleanup.
+🗄️ DB Guard	Post Run actions/checkout@v4	2026-02-17T21:56:05.4834599Z [command]/usr/bin/git version
+🗄️ DB Guard	Post Run actions/checkout@v4	2026-02-17T21:56:05.4878286Z git version 2.52.0
+🗄️ DB Guard	Post Run actions/checkout@v4	2026-02-17T21:56:05.4929073Z Temporarily overriding HOME='/home/runner/work/_temp/e0f5c4aa-3dd9-429d-876c-ad98da733c0c' before making global git config changes
+🗄️ DB Guard	Post Run actions/checkout@v4	2026-02-17T21:56:05.4931223Z Adding repository directory to the temporary git global config as a safe directory
+🗄️ DB Guard	Post Run actions/checkout@v4	2026-02-17T21:56:05.4936943Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/IronForge/IronForge
+🗄️ DB Guard	Post Run actions/checkout@v4	2026-02-17T21:56:05.4985301Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+🗄️ DB Guard	Post Run actions/checkout@v4	2026-02-17T21:56:05.5025526Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+🗄️ DB Guard	Post Run actions/checkout@v4	2026-02-17T21:56:05.5298101Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+🗄️ DB Guard	Post Run actions/checkout@v4	2026-02-17T21:56:05.5328294Z http.https://github.com/.extraheader
+🗄️ DB Guard	Post Run actions/checkout@v4	2026-02-17T21:56:05.5341957Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+🗄️ DB Guard	Post Run actions/checkout@v4	2026-02-17T21:56:05.5379163Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+🗄️ DB Guard	Post Run actions/checkout@v4	2026-02-17T21:56:05.5748683Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+🗄️ DB Guard	Post Run actions/checkout@v4	2026-02-17T21:56:05.5809208Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+🗄️ DB Guard	Stop containers	﻿2026-02-17T21:56:05.6342703Z Print service container logs: 81fc5520c5e54697a16dccc57cceb4de_postgres15_7be745
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6347190Z ##[command]/usr/bin/docker logs --details f36f000484ff003711fac40b97ab7251afd6bc1c8dee65f189a2f06729eb8e91
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6489941Z  The files belonging to this database system will be owned by user "postgres".
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6495463Z  initdb: warning: enabling "trust" authentication for local connections
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6496262Z  initdb: hint: You can change this by editing pg_hba.conf or using the option -A, or --auth-local and --auth-host, the next time you run initdb.
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6497513Z  This user must also own the server process.
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6497961Z  
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6498401Z  The database cluster will be initialized with locale "en_US.utf8".
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6499126Z  The default database encoding has accordingly been set to "UTF8".
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6499816Z  The default text search configuration will be set to "english".
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6500538Z  
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6500902Z  Data page checksums are disabled.
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6501288Z  
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6501747Z  fixing permissions on existing directory /var/lib/postgresql/data ... ok
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6502391Z  creating subdirectories ... ok
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6502878Z  selecting dynamic shared memory implementation ... posix
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6503434Z  selecting default max_connections ... 100
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6503897Z  selecting default shared_buffers ... 128MB
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6504324Z  selecting default time zone ... Etc/UTC
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6504732Z  creating configuration files ... ok
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6505121Z  running bootstrap script ... ok
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6505557Z  performing post-bootstrap initialization ... ok
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6506031Z  syncing data to disk ... ok
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6506386Z  
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6506636Z  
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6506971Z  Success. You can now start the database server using:
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6507439Z  
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6507793Z      pg_ctl -D /var/lib/postgresql/data -l logfile start
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6508261Z  
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6509355Z  waiting for server to start....2026-02-17 21:55:51.465 UTC [47] LOG:  starting PostgreSQL 15.16 (Debian 15.16-1.pgdg13+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6511003Z  2026-02-17 21:55:51.466 UTC [47] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6511943Z  2026-02-17 21:55:51.469 UTC [50] LOG:  database system was shut down at 2026-02-17 21:55:51 UTC
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6512766Z  2026-02-17 21:55:51.473 UTC [47] LOG:  database system is ready to accept connections
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6513962Z   done
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6514454Z  server started
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6515386Z  CREATE DATABASE
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6515706Z  
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6515961Z  
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6516600Z  2026-02-17 21:55:51.780 UTC [1] LOG:  starting PostgreSQL 15.16 (Debian 15.16-1.pgdg13+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6517378Z  2026-02-17 21:55:51.781 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6517851Z  2026-02-17 21:55:51.781 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6518353Z  2026-02-17 21:55:51.782 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6519120Z  2026-02-17 21:55:51.785 UTC [63] LOG:  database system was shut down at 2026-02-17 21:55:51 UTC
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6519616Z  2026-02-17 21:55:51.789 UTC [1] LOG:  database system is ready to accept connections
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6520307Z  /usr/local/bin/docker-entrypoint.sh: ignoring /docker-entrypoint-initdb.d/*
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6521094Z  
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6521501Z  2026-02-17 21:55:51.657 UTC [47] LOG:  received fast shutdown request
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6522330Z  waiting for server to shut down....2026-02-17 21:55:51.658 UTC [47] LOG:  aborting any active transactions
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6523497Z  2026-02-17 21:55:51.663 UTC [47] LOG:  background worker "logical replication launcher" (PID 53) exited with exit code 1
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6524023Z  2026-02-17 21:55:51.663 UTC [48] LOG:  shutting down
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6524389Z  2026-02-17 21:55:51.663 UTC [48] LOG:  checkpoint starting: shutdown immediate
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6525368Z  2026-02-17 21:55:51.684 UTC [48] LOG:  checkpoint complete: wrote 922 buffers (5.6%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.017 s, sync=0.002 s, total=0.021 s; sync files=301, longest=0.001 s, average=0.001 s; distance=4239 kB, estimate=4239 kB
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6526337Z  2026-02-17 21:55:51.691 UTC [47] LOG:  database system is shut down
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6526639Z   done
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6526806Z  server stopped
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6526983Z  
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6527202Z  PostgreSQL init process complete; ready for start up.
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6527486Z  
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6533200Z Stop and remove container: 81fc5520c5e54697a16dccc57cceb4de_postgres15_7be745
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.6538586Z ##[command]/usr/bin/docker rm --force f36f000484ff003711fac40b97ab7251afd6bc1c8dee65f189a2f06729eb8e91
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.8371605Z f36f000484ff003711fac40b97ab7251afd6bc1c8dee65f189a2f06729eb8e91
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.8389692Z Remove container network: github_network_0c90294aa5804567aff5bcd5925d8225
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.8394161Z ##[command]/usr/bin/docker network rm github_network_0c90294aa5804567aff5bcd5925d8225
+🗄️ DB Guard	Stop containers	2026-02-17T21:56:05.9025896Z github_network_0c90294aa5804567aff5bcd5925d8225
+🗄️ DB Guard	Complete job	﻿2026-02-17T21:56:05.9086218Z Cleaning up orphan processes

@@ -36,7 +36,7 @@ if [ -z "$WEBHOOK_SLUG" ]; then
 fi
 
 # config
-BASE_URL="https://ironforge-coolify.tailafb692.ts.net/webhook"
+BASE_URL="https://coolify.ironforge.com/webhook"
 URL="$BASE_URL/$WEBHOOK_SLUG"
 
 # execute

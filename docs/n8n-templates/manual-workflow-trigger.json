@@ -1,0 +1,124 @@
+{
+    "name": "IronForge Webhook Trigger (Manual)",
+    "nodes": [
+        {
+            "parameters": {},
+            "name": "Manual Trigger",
+            "type": "n8n-nodes-base.manualTrigger",
+            "typeVersion": 1,
+            "position": [
+                250,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "values": {
+                    "string": [
+                        {
+                            "name": "workflow",
+                            "value": "cleanup"
+                        },
+                        {
+                            "name": "model",
+                            "value": "gemini-2.5-flash"
+                        },
+                        {
+                            "name": "source",
+                            "value": "n8n-manual"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "name": "Set Workflow Parameters",
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 2,
+            "position": [
+                450,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "jsCode": "const crypto = require('crypto');\n\n// Get parameters from previous node\nconst workflow = $json.workflow;\nconst model = $json.model;\nconst source = $json.source;\n\n// Create payload\nconst payload = {\n  workflow,\n  model,\n  source,\n  timestamp: new Date().toISOString()\n};\n\nconst payloadString = JSON.stringify(payload);\n\n// Generate HMAC signature\nconst secret = $env.WEBHOOK_SECRET || 'ironforge-webhook-secret';\nconst signature = crypto\n  .createHmac('sha256', secret)\n  .update(payloadString)\n  .digest('hex');\n\nreturn {\n  payload,\n  payloadString,\n  signature\n};"
+            },
+            "name": "Generate Signature",
+            "type": "n8n-nodes-base.code",
+            "typeVersion": 2,
+            "position": [
+                650,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "method": "POST",
+                "url": "http://localhost:3030/webhook/trigger",
+                "authentication": "none",
+                "sendHeaders": true,
+                "headerParameters": {
+                    "parameters": [
+                        {
+                            "name": "X-Webhook-Signature",
+                            "value": "={{ $json.signature }}"
+                        },
+                        {
+                            "name": "Content-Type",
+                            "value": "application/json"
+                        }
+                    ]
+                },
+                "sendBody": true,
+                "specifyBody": "json",
+                "jsonBody": "={{ $json.payloadString }}",
+                "options": {}
+            },
+            "name": "Trigger Workflow",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4,
+            "position": [
+                850,
+                300
+            ]
+        }
+    ],
+    "connections": {
+        "Manual Trigger": {
+            "main": [
+                [
+                    {
+                        "node": "Set Workflow Parameters",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Set Workflow Parameters": {
+            "main": [
+                [
+                    {
+                        "node": "Generate Signature",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Generate Signature": {
+            "main": [
+                [
+                    {
+                        "node": "Trigger Workflow",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    },
+    "settings": {
+        "executionOrder": "v1"
+    }
+}

@@ -93,29 +93,20 @@ jobs:
     name: 🔧 Run Maintenance
     needs: preflight
     if: needs.preflight.outputs.should_run == 'true'
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, IronForge-Local]
+    container:
+      image: mcr.microsoft.com/playwright:v1.45.0-noble
     outputs:
       changes_made: ${{ steps.changes.outputs.changes_made }}
       summary: ${{ steps.summary.outputs.summary }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: ${{ env.PNPM_VERSION }}
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: "pnpm"
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+      - name: Setup IronForge
+        uses: ./.github/actions/setup-ironforge
 
       - name: Create maintenance branch
         run: |
@@ -124,39 +115,35 @@ jobs:
           echo "BRANCH=$BRANCH" >> $GITHUB_ENV
 
       # -----------------------------------------------------------------------
-      # TASK 1: Dependency Updates
+      # TASK 1: Deep Security Audit (Snyk)
       # -----------------------------------------------------------------------
-      - name: 📦 Check for dependency updates
-        id: deps
+      - name: "🛡️ L3: Security Audit (Snyk)"
+        id: security
+        continue-on-error: true
         run: |
-          echo "## 📦 Dependency Check" >> $GITHUB_STEP_SUMMARY
+          echo "## 🛡️ Snyk Security Audit" >> $GITHUB_STEP_SUMMARY
+          pnpm run security 2>&1 | tee security-output.txt
           
-          # Check for outdated packages
-          OUTDATED=$(pnpm outdated --format json 2>/dev/null || echo "{}")
-          if [ "$OUTDATED" != "{}" ]; then
-            echo "Found outdated packages:"
-            echo "$OUTDATED" | jq -r 'to_entries[] | "- \(.key): \(.value.current) → \(.value.latest)"'
-            echo "deps_outdated=true" >> $GITHUB_OUTPUT
+          if [ ${PIPESTATUS[0]} -eq 0 ]; then
+            echo "✅ Security audit passed" >> $GITHUB_STEP_SUMMARY
+            echo "security_clean=true" >> $GITHUB_OUTPUT
           else
-            echo "✅ All dependencies up to date"
-            echo "deps_outdated=false" >> $GITHUB_OUTPUT
+            echo "⚠️ Security vulnerabilities found" >> $GITHUB_STEP_SUMMARY
+            echo "security_clean=false" >> $GITHUB_OUTPUT
           fi
 
       # -----------------------------------------------------------------------
       # TASK 2: Dependency Evolution (/evolve)
       # -----------------------------------------------------------------------
-      - name: 🧬 Run Dependency Evolution
+      - name: "🧬 L3: Dependency Evolution"
         id: evolve
         continue-on-error: true
         run: |
           echo "## 🧬 Dependency Evolution" >> $GITHUB_STEP_SUMMARY
           
-          # Check for security vulnerabilities
-          pnpm audit --audit-level=moderate 2>&1 | tee audit-output.txt || true
-          
           # Update minor/patch versions
-          if [ "${{ inputs.workflow }}" = "/evolve" ]; then
-            echo "Running full dependency update..."
+          if [ "${{ inputs.workflow }}" = "/evolve" ] || [ "${{ github.event_name }}" = "schedule" ]; then
+            echo "Running dependency evolution..."
             pnpm update --latest 2>&1 | tee update-output.txt || true
             
             if git diff --quiet package.json pnpm-lock.yaml; then
@@ -164,111 +151,57 @@ jobs:
               echo "deps_updated=false" >> $GITHUB_OUTPUT
             else
               echo "📦 Dependencies updated" >> $GITHUB_STEP_SUMMARY
-              # Git commit handled by auto-commit action later
               echo "deps_updated=true" >> $GITHUB_OUTPUT
             fi
           else
-            echo "Skipping full update (use /evolve workflow for updates)"
+            echo "Skipping full update"
             echo "deps_updated=false" >> $GITHUB_OUTPUT
           fi
 
       # -----------------------------------------------------------------------
-      # TASK 3: Lint & Type Check
+      # TASK 3: Exhaustive E2E Verification
       # -----------------------------------------------------------------------
-      - name: 🔍 Run Lint Check
-        id: lint
+      - name: "🎭 L3: Exhaustive E2E"
+        id: e2e
         continue-on-error: true
         run: |
-          echo "## 🔍 Lint Check" >> $GITHUB_STEP_SUMMARY
-          pnpm run lint 2>&1 | tee lint-output.txt
+          echo "## 🎭 Exhaustive E2E" >> $GITHUB_STEP_SUMMARY
+          pnpm run test:exhaustive 2>&1 | tee e2e-output.txt
           
           if [ ${PIPESTATUS[0]} -eq 0 ]; then
-            echo "✅ Lint passed" >> $GITHUB_STEP_SUMMARY
-            echo "lint_clean=true" >> $GITHUB_OUTPUT
+            echo "✅ Exhaustive E2E passed" >> $GITHUB_STEP_SUMMARY
+            echo "e2e_clean=true" >> $GITHUB_OUTPUT
           else
-            echo "⚠️ Lint issues found" >> $GITHUB_STEP_SUMMARY
-            echo "lint_clean=false" >> $GITHUB_OUTPUT
-          fi
-
-      - name: 🔧 Auto-fix lint issues
-        if: steps.lint.outputs.lint_clean == 'false'
-        run: |
-          pnpm run lint --fix || true
-          # Git commit handled by auto-commit action later
-
-      # -----------------------------------------------------------------------
-      # TASK 3: Type Check
-      # -----------------------------------------------------------------------
-      - name: 📐 Run Type Check
-        id: types
-        continue-on-error: true
-        run: |
-          echo "## 📐 Type Check" >> $GITHUB_STEP_SUMMARY
-          pnpm run type-check 2>&1 | tee type-output.txt
-          
-          if [ ${PIPESTATUS[0]} -eq 0 ]; then
-            echo "✅ Type check passed" >> $GITHUB_STEP_SUMMARY
-            echo "types_clean=true" >> $GITHUB_OUTPUT
-          else
-            echo "⚠️ Type errors found" >> $GITHUB_STEP_SUMMARY
-            echo "types_clean=false" >> $GITHUB_OUTPUT
+            echo "❌ Exhaustive E2E failed" >> $GITHUB_STEP_SUMMARY
+            echo "e2e_clean=false" >> $GITHUB_OUTPUT
           fi
 
       # -----------------------------------------------------------------------
-      # TASK 4: Bundle Analysis
+      # TASK 4: Quality Checks (L3 specific)
       # -----------------------------------------------------------------------
-      - name: 📊 Analyze Bundle Size
-        id: bundle
-        continue-on-error: true
+      - name: "🔍 L3: Quality Audit"
+        id: quality
         run: |
-          echo "## 📊 Bundle Analysis" >> $GITHUB_STEP_SUMMARY
-          
-          # Build and capture bundle stats
-          pnpm run build 2>&1 | tee build-output.txt
-          
-          if [ ${PIPESTATUS[0]} -eq 0 ]; then
-            echo "✅ Build successful" >> $GITHUB_STEP_SUMMARY
-            
-            # Extract bundle size if available
-            if [ -f ".next/analyze/client.html" ]; then
-              echo "Bundle analysis available" >> $GITHUB_STEP_SUMMARY
-            fi
-            echo "build_success=true" >> $GITHUB_OUTPUT
-          else
-            echo "❌ Build failed" >> $GITHUB_STEP_SUMMARY
-            echo "build_success=false" >> $GITHUB_OUTPUT
-          fi
+          echo "## 🔍 L3 Quality Audit" >> $GITHUB_STEP_SUMMARY
+          pnpm run ci:l3
+          echo "✅ L3 Quality Audit complete" >> $GITHUB_STEP_SUMMARY
 
       # -----------------------------------------------------------------------
-      # TASK 5: Check for changes
-      # -----------------------------------------------------------------------
-      - name: 📝 Check for changes
-        id: changes
-        run: |
-          if git diff --quiet HEAD origin/main; then
-            echo "No changes to commit"
-            echo "changes_made=false" >> $GITHUB_OUTPUT
-          else
-            echo "Changes detected"
-            echo "changes_made=true" >> $GITHUB_OUTPUT
-          fi
-
-      # -----------------------------------------------------------------------
-      # TASK 6: Generate Summary
+      # TASK 5: Generate Summary
       # -----------------------------------------------------------------------
       - name: 📋 Generate Summary
         id: summary
         run: |
           SUMMARY=$(cat << 'EOF'
-          ## 🌙 Night Shift Summary
+          ## 🌙 L3 Assurance Summary
           
           | Task | Status |
           |:-----|:-------|
-          | Dependencies | ${{ steps.deps.outputs.deps_outdated == 'true' && '⚠️ Updates available' || '✅ Up to date' }} |
-          | Lint | ${{ steps.lint.outputs.lint_clean == 'true' && '✅ Clean' || '🔧 Auto-fixed' }} |
-          | Types | ${{ steps.types.outputs.types_clean == 'true' && '✅ Clean' || '⚠️ Issues found' }} |
-          | Build | ${{ steps.bundle.outputs.build_success == 'true' && '✅ Success' || '❌ Failed' }} |
+          | Security (Snyk) | ${{ steps.security.outputs.security_clean == 'true' && '✅ Clean' || '⚠️ Vulnerabilities' }} |
+          | Dependencies | ${{ steps.evolve.outputs.deps_updated == 'true' && '📦 Evolved' || '✅ Stable' }} |
+          | Exhaustive E2E | ${{ steps.e2e.outputs.e2e_clean == 'true' && '✅ Passed' || '❌ Failed' }} |
           
+          **Tier:** L3 (Deep Assurance)
           **Run Time:** $(date -u +"%Y-%m-%d %H:%M UTC")
           EOF
           )

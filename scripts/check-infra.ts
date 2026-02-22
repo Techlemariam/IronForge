@@ -3,9 +3,8 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 const TARGETS = [
     { name: "Production App", url: "https://ironforge.app/api/health" },
-    { name: "n8n Server (Hetzner)", url: "https://ironforge-coolify.tailafb692.ts.net" },
-    { name: "Remote Webhook (POST)", url: "https://ironforge-coolify.tailafb692.ts.net/webhook/ironforge-trigger", method: "POST" }
-];
+    { name: "n8n Server (Hetzner)", url: "https://coolify.ironforge.com" },
+    { name: "Remote Webhook (POST)", url: "https://coolify.ironforge.com/webhook/ironforge-trigger", method: "POST" }];
 
 async function checkHealth() {
     console.log("🔍 Checking IronForge Infrastructure Status...\n");
