@@ -1,3 +1,4 @@
+# Sovereign Service Layer Active: Optimized for sub-second readiness
 name: IronForge CI/CD
 
 on:
@@ -30,21 +31,6 @@ env:
   SKIP_ENV_VALIDATION: true
 
 jobs:
-  # ==================================================================
-  # PRE-FLIGHT: VALIDATE SECRETS
-  # ==================================================================
-  pre-flight:
-    name: "🚀 Pre-flight"
-    runs-on: windows-latest # Using Windows for PowerShell Core consistency with local dev
-    steps:
-      - uses: actions/checkout@v4
-      - name: Validate Critical Secrets
-        shell: pwsh
-        run: .\scripts\ci\validate-secrets.ps1
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
 
   # ==================================================================
   # TIER L1: FAST FEEDBACK (PR)
@@ -52,37 +38,22 @@ jobs:
   # ==================================================================
   l1-verify:
     name: "⚡ L1: Verify"
-    needs: pre-flight
     if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, IronForge-Local] # Target specific local runner
     timeout-minutes: 10
-    services:
-      postgres:
-        image: postgres:15
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: password
-          POSTGRES_DB: ironforge_test
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0 # Required for turbo comparison
       - uses: ./.github/actions/setup-ironforge
+        with:
+          tier: 'l1'
       - name: Generate Prisma Client
         run: npx prisma generate
       - name: Initialize DB (L1)
         run: |
-          sleep 10
+          # Managed-services assumes DB is already healthy (0s wait)
           npx prisma db push
-        env:
-          DATABASE_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_test?schema=public
       - name: Cache Turbo
         uses: actions/cache@v5
         with:
@@ -93,7 +64,7 @@ jobs:
       - name: Turbo L1 Verify (Differential)
         run: pnpm run ci:l1
         env:
-          DATABASE_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_test?schema=public
+          DATABASE_URL: postgresql://postgres:password@postgres1:5432/ironforge_test?schema=public
 
   # ==================================================================
   # TIER L2: FULL VERIFICATION (MERGE)
@@ -102,7 +73,7 @@ jobs:
   l2-verification:
     name: "🚀 L2: Verification"
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, IronForge-Local] # Target specific local runner
     services:
       postgres:
         image: postgres:15
@@ -111,7 +82,7 @@ jobs:
           POSTGRES_PASSWORD: password
           POSTGRES_DB: ironforge_full
         ports:
-          - 5432:5432
+          - 5432
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -119,29 +90,117 @@ jobs:
           --health-retries 5
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v6
-        with:
-          node-version: '22'
-          cache: 'pnpm'
-      - run: pnpm install --frozen-lockfile
+      - uses: ./.github/actions/setup-ironforge
       - run: npx prisma generate
       - name: Cache Turbo L2
         uses: actions/cache@v5
         with:
           path: .turbo
           key: turbo-l2-${{ runner.os }}-${{ github.sha }}
+      - name: Initialize DB (L2)
+        run: |
+          sleep 15
+          npx prisma db push
+        env:
+          DATABASE_URL: postgresql://postgres:password@postgres:5432/ironforge_full?schema=public
       - name: Turbo L2 verification
         run: pnpm run ci:l2
         env:
-          DATABASE_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_full?schema=public
+          DATABASE_URL: postgresql://postgres:password@postgres:5432/ironforge_full?schema=public
+
+  # 🐳 DOCKER VERIFICATION
+  docker-verify:
+    name: "🐳 Docker: Build Verify"
+    needs: l2-verification
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: [self-hosted, IronForge-Local]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build Production Image
+        run: |
+          docker build -t ironforge-app:latest --target runner .
+      - name: Verify Image
+        run: |
+          docker image inspect ironforge-app:latest
+
+  # 🎭 E2E VERIFICATION
+  e2e:
+    name: 🎭 E2E Tests
+    needs: [db-guard]
+    if: github.event_name == 'pull_request' && github.actor != 'dependabot[bot]'
+    runs-on: [self-hosted, IronForge-Local] # Target specific local runner
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-ironforge
+        with:
+          tier: 'e2e'
+      - name: Generate Prisma Client
+        run: npx prisma generate
+      - name: Cache Playwright Browsers
+        uses: actions/cache@v5
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('**/pnpm-lock.yaml') }}
+      - name: Install Playwright Browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps
+      - name: Initialize E2E DB
+        run: |
+          # Managed-services assumes DB is already healthy
+          npx prisma db push --force-reset
+      - name: Seed E2E Database
+        run: npx tsx tests/e2e/setup/e2e-seed.ts
+        env:
+          # DATABASE_URL is now managed by setup-ironforge to point to namespaced port
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
+          TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
+      - name: Run Playwright Tests
+        run: npx playwright test
+        env:
+          CI: true
+          TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
+          TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          NEXT_PUBLIC_APP_URL: http://localhost:3000
+          # DATABASE_URL is now managed by setup-ironforge
+
+  # 🗄️ DATABASE GUARD
+  db-guard:
+    name: 🗄️ DB Guard
+    needs: [l1-verify]
+    if: github.event_name == 'pull_request'
+    runs-on: [self-hosted, IronForge-Local] # Target specific local runner
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-ironforge
+        with:
+          tier: 'guard'
+      - name: Create Shadow Database
+        shell: bash
+        run: |
+          # Managed-services assumes DB is already healthy
+          npx tsx scripts/ci/setup-db.ts
+        env:
+          TARGET_DB: ironforge_shadow
+      - name: Verify Prisma Drift
+        shell: bash
+        run: |
+          pnpm exec prisma -v
+          SHADOW_DATABASE_URL="$SHADOW_DATABASE_URL" pnpm exec prisma migrate diff --from-migrations prisma/migrations --to-schema prisma/schema.prisma --exit-code
+        # DATABASE_URL and SHADOW_DATABASE_URL are already namespaced and exported by setup-ironforge
 
   # E2E Smoke Tests for L2
   l2-e2e-smoke:
     name: "🎭 L2: E2E Smoke"
     needs: [l2-verification]
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, IronForge-Local] # Target specific local runner
     services:
       postgres:
         image: postgres:15
@@ -150,15 +209,10 @@ jobs:
           POSTGRES_PASSWORD: password
           POSTGRES_DB: ironforge_e2e
         ports:
-          - 5432:5432
+          - 5432
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v6
-        with:
-          node-version: '22'
-          cache: 'pnpm'
-      - run: pnpm install --frozen-lockfile
+      - uses: ./.github/actions/setup-ironforge
       - run: npx prisma generate
       - name: Cache Playwright
         uses: actions/cache@v5
@@ -167,10 +221,12 @@ jobs:
           key: ${{ runner.os }}-playwright-${{ hashFiles('**/pnpm-lock.yaml') }}
       - run: npx playwright install --with-deps
       - name: Run Smoke E2E
-        run: pnpm run test:smoke
+        run: |
+          sleep 15
+          pnpm run test:smoke
         env:
           CI: true
-          DATABASE_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_e2e?schema=public
+          DATABASE_URL: postgresql://postgres:password@postgres:5432/ironforge_e2e?schema=public
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           NEXT_PUBLIC_APP_URL: http://localhost:3000
@@ -180,15 +236,10 @@ jobs:
     name: "📊 L2: Perf Audit"
     needs: [l2-verification]
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, IronForge-Local] # Target specific local runner
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v6
-        with:
-          node-version: '22'
-          cache: 'pnpm'
-      - run: pnpm install --frozen-lockfile
+      - uses: ./.github/actions/setup-ironforge
       - run: pnpm run build
       - name: Run Lighthouse Audit
         run: pnpm run lhci
@@ -199,35 +250,44 @@ jobs:
   l2-db-guard:
     name: "🗄️ L2: DB Guard"
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, IronForge-Local] # Target specific local runner
     services:
-      postgres:
+      postgres4:
         image: postgres:15
         env:
+          POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
           POSTGRES_DB: ironforge_test
         ports:
-          - 5432:5432
+          - 5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v6
-        with:
-          node-version: '22'
-          cache: 'pnpm'
-      - run: pnpm install --frozen-lockfile
+      - uses: ./.github/actions/setup-ironforge
+      - name: Create Shadow Database
+        run: |
+          sleep 15
+          npx tsx scripts/ci/setup-db.ts
+        env:
+          ADMIN_DATABASE_URL: postgresql://postgres:password@postgres4:5432/postgres?schema=public
+          TARGET_DB: ironforge_shadow
       - name: Verify Prisma Drift
         run: |
           npx prisma migrate diff --from-migrations prisma/migrations --to-schema prisma/schema.prisma --exit-code
         env:
-          DATABASE_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_test?schema=public
+          DATABASE_URL: postgresql://postgres:password@postgres4:5432/ironforge_test?schema=public
+          SHADOW_DATABASE_URL: postgresql://postgres:password@postgres4:5432/ironforge_shadow?schema=public
 
   # Automatic Deployment Trigger (L2 Success)
   deploy-verification:
     name: 🏥 Deployment Status
     needs: [l2-verification, l2-e2e-smoke, l2-db-guard, l2-perf-audit]
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, IronForge-Local] # Target specific local runner
     steps:
       - name: Verify Health
         env:
@@ -236,6 +296,3 @@ jobs:
           echo "🔍 Checking health at $DEPLOY_URL/api/health"
           sleep 90 # Coolify deploy buffer
           curl -f -s "$DEPLOY_URL/api/health" || exit 1
-
-
-

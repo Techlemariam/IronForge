@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
-// Mock Prisma using vi.hoisted to ensure mock is applied before module import
+// Use sharing mock object for absolute consistency across default and named exports
 const mockPrisma = vi.hoisted(() => ({
     $queryRaw: vi.fn(),
 }));
@@ -14,8 +14,20 @@ vi.mock('@/lib/prisma', () => ({
 import { GET } from '@/app/api/health/route';
 import { prisma } from '@/lib/prisma';
 
+
+// Mock Logger to suppress expected error output in CI
+vi.mock('@/lib/logger', () => ({
+    logger: {
+        error: vi.fn(),
+        info: vi.fn(),
+        warn: vi.fn(),
+        debug: vi.fn(),
+    }
+}));
+
 describe('GET /api/health', () => {
     beforeEach(() => {
+        vi.resetModules();
         vi.clearAllMocks();
     });
 

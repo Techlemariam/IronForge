@@ -93,7 +93,9 @@ jobs:
     name: 🔧 Run Maintenance
     needs: preflight
     if: needs.preflight.outputs.should_run == 'true'
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, IronForge-Local]
+    container:
+      image: mcr.microsoft.com/playwright:v1.45.0-noble
     outputs:
       changes_made: ${{ steps.changes.outputs.changes_made }}
       summary: ${{ steps.summary.outputs.summary }}

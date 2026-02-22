@@ -6,6 +6,25 @@ async function main() {
     const redactedUrl = (process.env.DATABASE_URL || '').replace(/:[^:@]+@/, ':****@');
     console.log(`🌱 Starting E2E Database Seeding with URL: ${redactedUrl}`);
 
+    // Robust connection retry logic
+    let retries = 5;
+    let connected = false;
+    while (retries > 0 && !connected) {
+        try {
+            await prisma.$connect();
+            connected = true;
+            console.log('✅ Connected to database server via Prisma.');
+        } catch (err) {
+            retries--;
+            console.warn(`⚠️ Prisma connection failed. Retries left: ${retries}. Error: ${err instanceof Error ? err.message : String(err)}`);
+            if (retries === 0) {
+                console.error('❌ Failed to connect to database server after all retries.');
+                process.exit(1);
+            }
+            await new Promise(resolve => setTimeout(resolve, 5000));
+        }
+    }
+
     // Authenticate with Supabase to get the REAL User ID
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -191,7 +210,8 @@ async function main() {
         }
     });
 
-    console.log(`✅ Ensured Test User: ${testUser.heroName} (ID: ${testUser.id})`);
+    console.log(`✅ Ensured Test User: ${testUser.heroName} (Onboarding Completed) with ID: ${testUser.id}`);
+
 
     console.log('🌱 Seeding completed successfully.');
 }

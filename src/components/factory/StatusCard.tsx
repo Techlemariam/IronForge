@@ -1,4 +1,5 @@
-import type { FactoryStatusData } from "@/types/schemas";
+import type { FactoryStatusData } from "@/lib/schemas/factory";
+
 
 
 

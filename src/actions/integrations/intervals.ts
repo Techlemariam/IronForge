@@ -52,7 +52,8 @@ export async function getWellnessAction(
       restingHR: data?.restingHR,
       sleepScore: data?.sleepScore,
       sleepSecs: data?.sleepSecs,
-      bodyBattery: data?.bodyBattery, // Corrected from data.readiness
+      bodyBattery: (data as any)?.readiness ?? data?.bodyBattery,
+
       vo2max: data?.vo2max,
       ctl: data?.ctl,
       atl: data?.atl,

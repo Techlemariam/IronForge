@@ -25,6 +25,8 @@
     # Standard DB-sträng för lokal utveckling (anpassa efter din provider)
     DATABASE_URL = "postgresql://user:password@localhost:5432/mydb?schema=public";
     NODE_ENV = "development";
+    ENABLE_WEBHOOK_SERVER = "true";
+    WEBHOOK_PORT = "3030";
   };
 
   # 3. VS Code Extensions (Installeras automatiskt i Antigravity)
@@ -71,6 +73,17 @@
           "0.0.0.0"
         ];
         manager = "web";
+      };
+      webhook = {
+        command = [
+          "npm"
+          "run"
+          "start:webhook" 
+        ]; # We might need a script for this, or just rely on the MCP server starting it
+        manager = "web";
+        data = {
+          port = 3030;
+        };
       };
     };
   };

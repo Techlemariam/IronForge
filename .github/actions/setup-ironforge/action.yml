@@ -8,15 +8,66 @@ inputs:
   pnpm-version:
     description: 'pnpm version'
     required: false
-    default: '9'
+    default: '9.15.0'
   cache:
     description: 'Cache provider'
     required: false
     default: 'pnpm'
+  skip-validation:
+    description: 'Skip secret validation'
+    required: false
+    default: 'false'
+  tier:
+    description: 'CI Tier (l1, e2e, guard, l3)'
+    required: false
+    default: 'l1'
 
 runs:
   using: "composite"
   steps:
+    - name: Managed-Services Detection
+      shell: pwsh
+      run: |
+        if (docker ps -q -f name=ironforge-pg-${{ inputs.tier }}) {
+          Write-Host "🟢 Found Managed Service: ironforge-pg-${{ inputs.tier }}" -ForegroundColor Green
+          
+          # Map Ports based on Tier
+          $PortMap = @{
+            "l1"    = "5433"
+            "e2e"   = "5434"
+            "guard" = "5435"
+            "l3"    = "5436"
+          }
+          
+          $Port = $PortMap["${{ inputs.tier }}"]
+          $BaseURL = "postgresql://postgres:password@host.docker.internal:$Port"
+          if ("${{ inputs.tier }}" -eq "e2e") { $idb = "ironforge_e2e" } else { $idb = "ironforge_test" }
+          $TargetURL = "$($BaseURL)/$($idb)?schema=public"
+          [System.IO.File]::AppendAllText($env:GITHUB_ENV, "DATABASE_URL=$TargetURL`n")
+          
+          # Export Admin URL for maintenance tasks (always points to 'postgres' system DB)
+          $AdminURL = "$BaseURL/postgres?schema=public"
+          [System.IO.File]::AppendAllText($env:GITHUB_ENV, "ADMIN_DATABASE_URL=$AdminURL`n")
+          
+          if ("${{ inputs.tier }}" -eq "guard") {
+            $ShadowURL = "$BaseURL/ironforge_shadow?schema=public"
+            [System.IO.File]::AppendAllText($env:GITHUB_ENV, "SHADOW_DATABASE_URL=$ShadowURL`n")
+            Write-Host "🚀 Exported SHADOW_DATABASE_URL to GITHUB_ENV" -ForegroundColor Cyan
+          }
+          
+          Write-Host "🚀 Exported DATABASE_URL and ADMIN_DATABASE_URL (Port $Port)" -ForegroundColor Cyan
+        } else {
+          Write-Host "⚠️ Managed Service not found for tier: ${{ inputs.tier }}. Falling back to ephemeral service." -ForegroundColor Yellow
+        }
+
+    - name: Validate Secrets (Fast-Track)
+      if: inputs.skip-validation != 'true'
+      shell: pwsh
+      run: .\scripts\ci\validate-secrets.ps1
+      env:
+        DATABASE_URL: ${{ env.DATABASE_URL }}
+        NEXT_PUBLIC_SUPABASE_URL: ${{ env.NEXT_PUBLIC_SUPABASE_URL }}
+        NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ env.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
     - name: Setup pnpm
       uses: pnpm/action-setup@v4
       with:
