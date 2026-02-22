@@ -3,14 +3,14 @@ name: IronForge CI/CD
 
 on:
   push:
-    branches: [main, release]
+    branches: [main, release, fix/*]
     paths-ignore:
       - '**.md'
       - 'docs/**'
       - '.agent/**'
       - '.vscode/**'
   pull_request:
-    branches: [main, release]
+    branches: [main, release, fix/*]
     paths-ignore:
       - '**.md'
       - 'docs/**'
