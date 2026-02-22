@@ -198,52 +198,19 @@ async function main() {
     const testUser = await prisma.user.upsert({
         where: { email: testEmail },
         update: {
-<<<<<<< HEAD
-            id: 'e2e-test-user-id', // Predictable ID for E2E
-            heroName: 'E2E Hunter', // ENSURE heroName is set if user exists
-            hasCompletedOnboarding: true, // CRITICAL: Bypass FirstLoginQuest
-=======
             id: effectiveId,
             heroName: 'E2E Hunter',
             hasCompletedOnboarding: true,
->>>>>>> main
             level: 10,
             gold: 5000,
         },
         create: {
-<<<<<<< HEAD
-            id: 'e2e-test-user-id',
-            email: testEmail,
-            heroName: 'E2E Hunter',
-            level: 10,
-            gold: 5000,
-            faction: Faction.HORDE,
-            archetype: Archetype.PATHFINDER,
-            hasCompletedOnboarding: true,
-            titan: {
-                create: {
-                    name: 'E2E Titan',
-                    level: 10,
-                    powerRating: 800,
-                    strength: 20,
-                    endurance: 20,
-                    agility: 20,
-                    vitality: 20,
-                    willpower: 20
-                }
-            }
-        }
-    });
-    console.log(`✅ Ensured Test User: ${testUser.heroName} (Onboarding Completed) with ID: ${testUser.id}`);
-=======
             ...createData,
             id: effectiveId
         }
     });
 
     console.log(`✅ Ensured Test User: ${testUser.heroName} (Onboarding Completed) with ID: ${testUser.id}`);
-
->>>>>>> main
 
     console.log('🌱 Seeding completed successfully.');
 }
