@@ -1,7 +1,4 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { GET } from '@/app/api/health/route';
-import { prisma } from '@/lib/prisma';
-
 
 // Use sharing mock object for absolute consistency across default and named exports
 const mockPrisma = vi.hoisted(() => ({
@@ -13,6 +10,10 @@ vi.mock('@/lib/prisma', () => ({
     default: mockPrisma,
     prisma: mockPrisma,
 }));
+
+import { GET } from '@/app/api/health/route';
+import { prisma } from '@/lib/prisma';
+
 
 // Mock Logger to suppress expected error output in CI
 vi.mock('@/lib/logger', () => ({

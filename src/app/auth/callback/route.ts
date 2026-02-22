@@ -37,6 +37,7 @@ export async function GET(request: Request) {
             where: { email: user.email },
             data: { id: user.id },
           });
+
         } else {
           await prisma.user.upsert({
             where: { id: user.id },

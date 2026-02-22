@@ -1,5 +1,15 @@
 {
   "mcpServers": {
+    "stitch": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@anthropic/stitch-mcp-server"
+      ],
+      "env": {
+        "GOOGLE_API_KEY": "${env:GOOGLE_API_KEY}"
+      }
+    },
     "figma": {
       "command": "npx",
       "args": [

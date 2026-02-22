@@ -41,6 +41,10 @@ on:
       - n8n-trigger
       - moltbot-trigger
 
+concurrency:
+  group: remote-${{ github.workflow }}-${{ github.event.inputs.workflow || github.event.client_payload.workflow || 'default' }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: write
   pull-requests: write
@@ -106,22 +110,13 @@ jobs:
     runs-on: self-hosted
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
         with:
           ref: ${{ needs.validate.outputs.branch }}
           fetch-depth: 0
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: "pnpm"
-
-      - name: Install Dependencies
-        run: pnpm install --frozen-lockfile
+      - name: Setup IronForge
+        uses: ./.github/actions/setup-ironforge
 
       - name: 📋 Log Execution
         run: |

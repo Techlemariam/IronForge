@@ -247,12 +247,49 @@ const PROTOCOLS: Record<string, RepairProtocol> = {
         verify: () => true,
     },
 
+    // ── Deployment / Docker ─────────────────────────────────────────────
     CHECK_COOLIFY: {
         risk: 'HIGH',
         autoFix: false,
         description: 'Coolify deployment failure — requires infrastructure review',
         execute: () => timedExec('CHECK_COOLIFY', 'HIGH', 'Check Coolify health', () => {
             return { success: true, output: 'Run /coolify-deploy to diagnose. Check Coolify dashboard.' };
+        }),
+        verify: () => true,
+    },
+
+    DOCKER_SERVICE_RESTART: {
+        risk: 'MEDIUM',
+        autoFix: true,
+        description: 'Restart Sovereign CI services on host',
+        execute: () => timedExec('DOCKER_SERVICE_RESTART', 'MEDIUM', 'manage-ci-services.ps1 -Action up', () =>
+            safeExec('powershell.exe -ExecutionPolicy Bypass -File scripts/ci/manage-ci-services.ps1 -Action up')
+        ),
+        verify: () => {
+            const result = safeExec('docker ps --filter "name=ironforge-pg-l1" --filter "status=running" --format "{{.Names}}"');
+            return result.success && result.output.includes('ironforge-pg-l1');
+        },
+    },
+
+    DOCKER_SERVICE_RESET: {
+        risk: 'MEDIUM',
+        autoFix: true,
+        description: 'Hard reset Sovereign CI services on host',
+        execute: () => timedExec('DOCKER_SERVICE_RESET', 'MEDIUM', 'manage-ci-services.ps1 -Action reset', () =>
+            safeExec('powershell.exe -ExecutionPolicy Bypass -File scripts/ci/manage-ci-services.ps1 -Action reset')
+        ),
+        verify: () => {
+            const result = safeExec('docker ps --filter "name=ironforge-pg-l1" --filter "status=running" --format "{{.Names}}"');
+            return result.success && result.output.includes('ironforge-pg-l1');
+        },
+    },
+
+    DOCKER_RESOURCE_LIMIT: {
+        risk: 'HIGH',
+        autoFix: false,
+        description: 'Docker resource limit hit (OOM/Disk) — cleanup suggested',
+        execute: () => timedExec('DOCKER_RESOURCE_LIMIT', 'HIGH', 'docker system prune', () => {
+            return { success: true, output: 'Recommendation: Run "docker system prune -f" and "docker volume prune -f" on host.' };
         }),
         verify: () => true,
     },

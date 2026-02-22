@@ -15,6 +15,11 @@ setup('authenticate', async ({ page }) => {
     page.on('pageerror', err => {
         console.log(`BROWSER EXCEPTION: ${err.message}`);
     });
+    page.on('response', response => {
+        if (response.url().includes('/api/auth') || response.status() >= 400) {
+            console.log(`NETWORK RESPONSE: ${response.status()} ${response.url()}`);
+        }
+    });
 
     // Toggle to password mode
     const passwordModeButton = page.getByRole('button', { name: /Login with Password/i });
@@ -40,7 +45,10 @@ setup('authenticate', async ({ page }) => {
     // Click the login button and wait for navigation
     console.log("Clicking Initialize Uplink and waiting for URL...");
     await Promise.all([
-        page.waitForURL(url => url.pathname === '/' || url.pathname === '/welcome', { timeout: 60000 }).catch((e: any) => console.log("Navigation check:", e.message)),
+        page.waitForURL(url => {
+            console.log(`Navigation target check: ${url.pathname}`);
+            return url.pathname === '/' || url.pathname === '/welcome';
+        }, { timeout: 60000 }).catch((e: any) => console.error("Navigation check failed:", e.message)),
         page.getByRole('button', { name: /Initialize Uplink/i }).click()
     ]);
 

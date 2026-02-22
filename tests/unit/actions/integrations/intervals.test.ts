@@ -59,7 +59,7 @@ describe("Intervals Actions", () => {
       (getWellness as any).mockResolvedValue({
         id: "w-1",
         hrv: 50,
-        readiness: 80, // Maps to bodyBattery
+        bodyBattery: 80, // Transformed from readiness in lib
         sleepScore: 90,
       });
 

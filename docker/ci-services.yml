@@ -1,0 +1,43 @@
+version: '3.8'
+services:
+  pg-l1:
+    image: postgres:15-alpine
+    container_name: ironforge-pg-l1
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: ironforge
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  pg-e2e:
+    image: postgres:15-alpine
+    container_name: ironforge-pg-e2e
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: ironforge
+    ports:
+      - "5434:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  pg-guard:
+    image: postgres:15-alpine
+    container_name: ironforge-pg-guard
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: ironforge
+    ports:
+      - "5435:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5

@@ -7,7 +7,7 @@ version: "2.0.0"
 telemetry: "enabled"
 primary_agent: "@analyst"
 domain: "core"
-skills: ["requirements-extractor", "feature-flag-manager"]
+skills: ["requirements-extractor", "feature-flag-manager", "perplexity", "sequential-thinking"]
 ---
 
 # 🕵️ Lead Business Analyst (Level 10)

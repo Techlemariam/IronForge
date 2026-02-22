@@ -23,7 +23,7 @@
         },
         {
             "parameters": {
-                "url": "=https://ironforge-coolify.tailafb692.ts.net/api/health",
+                "url": "=https://coolify.ironforge.com/api/health",
                 "options": {
                     "allowUnauthorizedCerts": true,
                     "ignoreSslIssues": true

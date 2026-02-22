@@ -41,17 +41,37 @@ fi
 
 ```bash
 echo "🔍 Checking dependency integrity..."
-if ! git diff --quiet pnpm-lock.yaml; then
-  echo "⚠️ pnpm-lock.yaml is dirty. Attempting self-healing..."
+
+# Step 1: Validate pnpm overrides exist on registry
+echo "🔍 Validating override versions..."
+if [ -f package.json ]; then
+  OVERRIDES=$(node -e "const pkg = require('./package.json'); const overrides = pkg.pnpm?.overrides || {}; Object.entries(overrides).forEach(([name, version]) => console.log(name + '@' + version));")
+  for override in $OVERRIDES; do
+    PKG_NAME=$(echo $override | cut -d'@' -f1)
+    PKG_VERSION=$(echo $override | cut -d'@' -f2-)
+    echo "  Checking $PKG_NAME@$PKG_VERSION..."
+    if ! npm view "$PKG_NAME@$PKG_VERSION" version &>/dev/null; then
+      echo "⛔ Override validation failed: $PKG_NAME@$PKG_VERSION does not exist on registry"
+      echo "💡 Run: npm view $PKG_NAME versions --json"
+      exit 1
+    fi
+  done
+  echo "✅ Override versions: Valid"
+fi
+
+# Step 2: Lockfile integrity check (frozen-lockfile dry-run)
+echo "🔍 Verifying lockfile consistency..."
+if ! pnpm install --frozen-lockfile --dry-run &>/dev/null; then
+  echo "⚠️ Lockfile out of sync with package.json. Attempting self-healing..."
   pnpm install
   if ! git diff --quiet pnpm-lock.yaml; then
-     echo "⛔ Still dirty after auto-fix. Please commit the `pnpm-lock.yaml` file."
+     echo "⛔ Lockfile updated. Please commit the `pnpm-lock.yaml` file."
      exit 1
   else
      echo "✅ Dependencies: Healed"
   fi
 else
-  echo "✅ Dependencies: Clean"
+  echo "✅ Lockfile: Consistent"
 fi
 ```
 
@@ -113,9 +133,26 @@ echo "✅ UI Health: Verified"
 
 ```bash
 echo "🔍 Checking dependency health..."
-# Run pnpm audit to find vulnerabilities
+
+# Step 1: Snyk code scanning (first-party code)
+echo "🔍 Running Snyk code scan..."
+if command -v snyk &>/dev/null; then
+  snyk code test --severity-threshold=high || {
+    echo "⚠️ Snyk found high-severity issues in first-party code"
+    echo "💡 Review findings and apply fixes before proceeding"
+    exit 1
+  }
+  echo "✅ Snyk: No critical issues"
+else
+  echo "⚠️ Snyk CLI not installed. Skipping code scan."
+  echo "💡 Install: npm install -g snyk && snyk auth"
+fi
+
+# Step 2: pnpm audit for dependency vulnerabilities
+echo "🔍 Running pnpm audit..."
 pnpm audit --audit-level high || exit 1
-# Check for outdated critical packages
+
+# Step 3: Check for outdated critical packages
 # Note: Handled by dependabot-manager skill
 echo "✅ Dependencies: Healthy"
 ```
@@ -159,6 +196,32 @@ done
 echo "✅ Pipeline Analysis: Complete"
 ```
 
+### 0.11 Sovereign Service Health
+
+// turbo
+
+```bash
+echo "🛡️ Checking Sovereign Service Health..."
+
+# Verify persistent CI services on host
+SERVICES=("ironforge-pg-l1" "ironforge-pg-e2e" "ironforge-pg-guard")
+MISSING=0
+
+for service in "${SERVICES[@]}"; do
+  if ! docker ps --filter "name=$service" --filter "status=running" --format "{{.Names}}" | grep -q "$service"; then
+    echo "⛔ ERROR: Sovereign service '$service' is down or unhealthy."
+    MISSING=$((MISSING + 1))
+  fi
+done
+
+if [ "$MISSING" -gt 0 ]; then
+  echo "💡 Suggestion: Run 'scripts/ci/manage-ci-services.ps1 -Action reset' on the runner host."
+  exit 1
+fi
+
+echo "✅ Sovereign Services: Healthy"
+```
+
 ---
 
 ## Phase 1: Surgical Strike (Failure Isolation)
@@ -177,7 +240,19 @@ echo "🔮 Running CI Classifier v3.0..."
 gh run view $RUN_ID --log-failed 2>/dev/null | npx tsx scripts/ci-classifier.ts --stdin --json > /tmp/ci-classifications.json
 cat /tmp/ci-classifications.json | npx tsx scripts/ci-classifier.ts --stdin
 
-# 2. Automated Target Acquisition
+# 2. Sovereign Ground Truth Extraction (NEW in v3.0)
+# If DB connection failed, pull local Docker logs for deeper diagnostics
+if grep -q "ECONNREFUSED\|ECONNRESET\|Prisma" /tmp/ci-classifications.json; then
+  echo "🔍 DB Failure detected. Fetching Sovereign Ground Truth (Docker Logs)..."
+  for service in "ironforge-pg-l1" "ironforge-pg-e2e" "ironforge-pg-guard"; do
+    if docker ps --filter "name=$service" --format "{{.ID}}" | grep -q "."; then
+      echo "📂 Logs for $service:"
+      docker logs "$service" --tail 50
+    fi
+  done
+fi
+
+# 3. Automated Target Acquisition
 FAILED_TESTS=$(gh run view $RUN_ID --log-failed 2>/dev/null | grep "Error:" | grep -oE "tests/[^[:space:]]+\.spec\.ts" | sort | uniq | tr '\n' ' ')
 
 # 3. External Intelligence Acquisition (GitHub Apps — 6 sources)
@@ -222,6 +297,9 @@ fi
 | `Database: Schema out of sync` | **DB_OUT_OF_SYNC** (Push schema)                  | ✅       | 🟡   |
 | `A11y: Contrast/ARIA`          | **ACCESSIBILITY_FAIL** (Use `/a11y-auditor`)      | ❌       | 🟡   |
 | `Coolify: Deployment failed`   | **COOLIFY_DOWN** (Check infrastructure)           | ❌       | 🔴   |
+| `Docker daemon down`          | **DOCKER_SERVICE_RESTART** (Start Docker)         | ✅       | 🟡   |
+| `Container unhealthy`         | **DOCKER_SERVICE_RESET** (Reset services)         | ✅       | 🟡   |
+| `Container OOM/Disk Full`     | **DOCKER_RESOURCE_LIMIT** (Prune system)          | ❌       | 🔴   |
 | `Merge conflicts detected`     | **MERGE_CONFLICT** (Use `git rebase`)             | ❌       | 🟡   |
 | `Patch coverage missing`       | **COVERAGE_DROP** (Generate tests)                | ✅       | 🟢   |
 | `Insufficient docstrings`      | **DOCSTRING_FAIL** (Use `/doc-generator`)         | ✅       | 🟢   |
@@ -399,7 +477,7 @@ Proceed to Phase 5 if a new failure mode was discovered.
 
 ---
 
-## Phase 5: Perpetual Learning & Immunity (Agent Only)
+## Phase 5: Perpetual Learning & Immunity
 
 **Goal:** Ensure the CI Doctor never fails the same way twice.
 

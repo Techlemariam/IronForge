@@ -2,6 +2,7 @@ import type { FactoryStatusData } from "@/lib/schemas/factory";
 
 
 
+
 interface Props {
     status: FactoryStatusData;
 }
