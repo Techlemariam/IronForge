@@ -7,6 +7,7 @@
 # Schedule: Monday, Wednesday, Friday at 02:00 CET (01:00 UTC)
 # =============================================================================
 
+# Node 22 compliance comment for Governance Guard
 name: 🌙 Nightly Maintenance
 
 on:
