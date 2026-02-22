@@ -214,7 +214,7 @@ We use **Snyk** as our primary security gate in Layer 3.
 * **Infrastructure**: Hosted on Hetzner VPS (managed via Tailscale).
 * **Rollbacks**: Automated via Sentry alerts (`sentry-rollback.yml`) if error rates spike.
 
-### 9.5 Titan-Tier Governance (10/10)
+### 9.4 Titan-Tier Governance (10/10)
 
 The CI/CD pipeline is **self-healing** and enforced via automated governance.
 
