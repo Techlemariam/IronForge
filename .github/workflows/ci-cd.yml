@@ -122,7 +122,7 @@ jobs:
   # ==================================================================
   l2-verification:
     name: "🚀 L2: Verification"
-    if: (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/fix/')) && github.event_name == 'push'
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/fix/')
     runs-on: [self-hosted, IronForge-Local] # Target specific local runner
     steps:
       - uses: actions/checkout@v4
@@ -144,7 +144,7 @@ jobs:
   docker-verify:
     name: "🐳 Docker: Build Verify"
     needs: l2-verification
-    if: (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/fix/')) && github.event_name == 'push'
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/fix/')
     runs-on: [self-hosted, IronForge-Local]
     steps:
       - uses: actions/checkout@v4
@@ -206,7 +206,7 @@ jobs:
   db-guard:
     name: 🗄️ DB Guard
     needs: [l1-verify]
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' || startsWith(github.ref, 'refs/heads/fix/')
     runs-on: [self-hosted, IronForge-Local] # Target specific local runner
     steps:
       - uses: actions/checkout@v4
@@ -231,7 +231,7 @@ jobs:
   l2-e2e-smoke:
     name: "🎭 L2: E2E Smoke"
     needs: [l2-verification]
-    if: (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/fix/')) && github.event_name == 'push'
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/fix/')
     runs-on: [self-hosted, IronForge-Local] # Target specific local runner
     steps:
       - uses: actions/checkout@v4
@@ -259,7 +259,7 @@ jobs:
   l2-perf-audit:
     name: "📊 L2: Perf Audit"
     needs: [l2-verification]
-    if: (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/fix/')) && github.event_name == 'push'
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/fix/')
     runs-on: [self-hosted, IronForge-Local] # Target specific local runner
     steps:
       - uses: actions/checkout@v4
@@ -273,7 +273,7 @@ jobs:
   # DB Guard renamed to L2: DB Guard
   l2-db-guard:
     name: "🗄️ L2: DB Guard"
-    if: (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/fix/')) && github.event_name == 'push'
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/fix/')
     runs-on: [self-hosted, IronForge-Local] # Target specific local runner
     steps:
       - uses: actions/checkout@v4
@@ -294,7 +294,7 @@ jobs:
   deploy-verification:
     name: 🏥 Deployment Status
     needs: [l2-verification, l2-e2e-smoke, l2-db-guard, l2-perf-audit]
-    if: (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/fix/')) && github.event_name == 'push'
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/fix/')
     runs-on: [self-hosted, IronForge-Local] # Target specific local runner
     steps:
       - name: Verify Health
