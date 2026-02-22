@@ -19,7 +19,6 @@ vi.mock("@/lib/prisma", () => {
   };
 });
 vi.mock("@/services/auditorOrchestrator", () => {
-  console.log("Mock factory for auditorOrchestrator running");
   return {
     __esModule: true,
     runFullAudit: vi.fn(() => Promise.resolve({

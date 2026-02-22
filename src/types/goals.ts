@@ -57,6 +57,7 @@ export interface SystemMetrics {
 
     // Wellness
     sleepScore: number;       // 0-100
+    bodyBattery: number;      // Garmin/System energy metric (0-100)
     soreness: number;         // 1-10
     mood: "EXHAUSTED" | "TIRED" | "NORMAL" | "FRESH" | "PEAK" | string;
 

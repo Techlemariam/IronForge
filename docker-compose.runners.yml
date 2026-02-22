@@ -13,6 +13,8 @@ services:
       - RUNNER_GROUP=Default
       - ORG_RUNNER=false
       - LABELS=self-hosted,IronForge-Local
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - .:/app
