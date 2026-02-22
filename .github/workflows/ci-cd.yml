@@ -77,8 +77,6 @@ jobs:
           if gh pr view --json reviews -q '.reviews[].author.login' | grep -q "coderabbit"; then
              echo "🤖 Triggering Code Optimizer..."
              echo "OPTIMIZE: Implement CodeRabbit suggestions in $GITHUB_SHA" > .agent/tasks/doctor-code-optimize.md
-             # Skip itself and specialized workflows
-             if [[ "$file" == *"/governance-guard.yml" || "$file" == *"/labeler.yml" || "$file" == *"/release-drafter.yml" || "$file" == *"/stale.yml" ]]; then continue; fi
           fi
 
           # Proactive Security Check

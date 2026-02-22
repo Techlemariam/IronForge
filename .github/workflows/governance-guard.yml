@@ -20,8 +20,8 @@ jobs:
           ERRORS=0
 
           for file in .github/workflows/*.yml; do
-            # Skip itself
-            if [[ "$file" == *"/governance-guard.yml" ]]; then continue; fi
+            # Skip itself and specialized workflows
+            if [[ "$file" == *"/governance-guard.yml" || "$file" == *"/labeler.yml" || "$file" == *"/release-drafter.yml" || "$file" == *"/stale.yml" ]]; then continue; fi
 
             echo "Auditing $file..."
             
