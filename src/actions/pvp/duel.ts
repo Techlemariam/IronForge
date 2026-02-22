@@ -392,6 +392,8 @@ export async function getPotentialOpponentsAction() {
         id: true,
         heroName: true,
         level: true,
+        faction: true,
+        archetype: true,
         titan: {
           select: { powerRating: true }
         }

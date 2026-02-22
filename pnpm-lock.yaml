@@ -9,7 +9,7 @@ overrides:
   esbuild: 0.25.0
   tmp: 0.2.3
   glob: ^11.0.1
-  hono: 4.11.9
+  hono: '>=4.11.9'
   tar: '>=7.4.3'
   framer-motion: 12.34.0
 
@@ -373,8 +373,8 @@ importers:
   apps/mcp-n8n:
     dependencies:
       '@modelcontextprotocol/sdk':
-        specifier: ^0.6.0
-        version: 0.6.1
+        specifier: ^1.25.2
+        version: 1.26.0(zod@3.25.76)
       dotenv:
         specifier: ^17.2.4
         version: 17.2.4
@@ -392,7 +392,7 @@ importers:
   mcp/factory-server:
     dependencies:
       '@modelcontextprotocol/sdk':
-        specifier: ^1.0.1
+        specifier: ^1.25.2
         version: 1.26.0(zod@3.25.76)
       dotenv:
         specifier: ^16.3.1
@@ -942,7 +942,7 @@ packages:
     resolution: {integrity: sha512-vHL6w3ecZsky+8P5MD+eFfaGTyCeOHUIFYMGpQGbrBTSmNNoxv0if69rEZ5giu36weC5saFuznL411gRX7bJDw==}
     engines: {node: '>=18.14.1'}
     peerDependencies:
-      hono: 4.11.9
+      hono: '>=4.11.9'
 
   '@humanfs/core@0.19.1':
     resolution: {integrity: sha512-5DyQ4+1JEUzejeK1JGICcideyfUbGixgS9jNgex5nqkW+cY7WZhxBigmieN5Qnw9ZosSNVC9KQKyb+GUaGyKUA==}
@@ -1263,9 +1263,6 @@ packages:
 
   '@mediapipe/tasks-vision@0.10.32':
     resolution: {integrity: sha512-3tiAZnmKloYnRXYoO3dKltTUGnqeCwzC4lV03uY0vCsE+aveJTyEVQyZHOlQGQNsjK+gRHzkf9q08C99Qm2K0Q==}
-
-  '@modelcontextprotocol/sdk@0.6.1':
-    resolution: {integrity: sha512-OkVXMix3EIbB5Z6yife2XTrSlOnVvCLR1Kg91I4pYFEsV9RbnoyQVScXCuVhGaZHOnTZgso8lMQN1Po2TadGKQ==}
 
   '@modelcontextprotocol/sdk@1.26.0':
     resolution: {integrity: sha512-Y5RmPncpiDtTXDbLKswIJzTqu2hyBKxTNsgKqKclDbhIgg1wgtf1fRuvxgTnRfcnxtvvgbIEcqUOzZrJ6iSReg==}
@@ -4155,8 +4152,8 @@ packages:
   balanced-match@1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
 
-  balanced-match@4.0.3:
-    resolution: {integrity: sha512-1pHv8LX9CpKut1Zp4EXey7Z8OfH11ONNH6Dhi2WDUt31VVZFXZzKwXcysBgqSumFCmR+0dqjMK5v5JiFHzi0+g==}
+  balanced-match@4.0.2:
+    resolution: {integrity: sha512-x0K50QvKQ97fdEz2kPehIerj+YTeptKF9hyYkKf6egnwmMWAkADiO0QCzSp0R5xN8FTZgYaBfSaue46Ej62nMg==}
     engines: {node: 20 || >=22}
 
   bare-events@2.8.2:
@@ -9515,12 +9512,6 @@ snapshots:
 
   '@mediapipe/tasks-vision@0.10.32': {}
 
-  '@modelcontextprotocol/sdk@0.6.1':
-    dependencies:
-      content-type: 1.0.5
-      raw-body: 3.0.2
-      zod: 3.25.76
-
   '@modelcontextprotocol/sdk@1.26.0(zod@3.25.76)':
     dependencies:
       '@hono/node-server': 1.19.9(hono@4.11.9)
@@ -12835,7 +12826,9 @@ snapshots:
 
   balanced-match@1.0.2: {}
 
-  balanced-match@4.0.3: {}
+  balanced-match@4.0.2:
+    dependencies:
+      jackspeak: 4.2.3
 
   bare-events@2.8.2: {}
 
@@ -12959,7 +12952,7 @@ snapshots:
 
   brace-expansion@5.0.2:
     dependencies:
-      balanced-match: 4.0.3
+      balanced-match: 4.0.2
 
   braces@3.0.3:
     dependencies:

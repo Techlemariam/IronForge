@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  runner:
+    image: myoung34/github-runner:latest
+    restart: always
+    environment:
+      - REPO_URL=https://github.com/Techlemariam/IronForge
+      - ACCESS_TOKEN=${GITHUB_PERSONAL_ACCESS_TOKEN}
+      - RUNNER_NAME_PREFIX=IronForge-Local
+      - RUNNER_LABELS=self-hosted,IronForge-Local
+      - RUNNER_WORKDIR=/tmp/github-runner-your-repo
+      - RUNNER_GROUP=Default
+      - ORG_RUNNER=false
+      - LABELS=self-hosted,IronForge-Local
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - .:/app
+    # Run multiple instances with: docker compose -f docker-compose.runners.yml up --scale runner=3 -d

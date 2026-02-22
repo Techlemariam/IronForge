@@ -22,7 +22,7 @@ jobs:
     if: github.event_name == 'repository_dispatch' || inputs.confirm_rollback == true
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
       - name: 🚨 Analyze Alert (Sentry)
         if: github.event_name == 'repository_dispatch'

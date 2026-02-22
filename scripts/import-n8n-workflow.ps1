@@ -1,6 +1,6 @@
 $ErrorActionPreference = "Stop"
 
-$url = "https://ironforge-coolify.tailafb692.ts.net/api/v1/workflows"
+$url = "https://coolify.ironforge.com/api/v1/workflows"
 $apiKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5MThkZjhkZC0yOGJlLTQ1NWMtYWY5NS1mNTQxZTM2NGIxYjQiLCJpc3MiOiJuOG4iLCJhdWQiOiJwdWJsaWMtYXBpIiwiaWF0IjoxNzcwNjI2MTgxfQ.MtuAV2QCu98qhn7CbuVm1PYsDvCun_7KTwt3iIFgZYA"
 $n8nDir = "c:\Users\alexa\Workspaces\IronForge\n8n"
 

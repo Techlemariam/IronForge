@@ -1,0 +1,28 @@
+{
+  "file": "C:\\Users\\alexa\\Workspaces\\IronForge\\.github\\workflows\\night-shift-auto.yml",
+  "totalJobs": 5,
+  "totalSteps": 2,
+  "optimizations": [
+    {
+      "id": "TIMING_NO_TIMEOUT",
+      "severity": "MEDIUM",
+      "category": "timing",
+      "title": "No job timeout configured",
+      "description": "Jobs without timeout-minutes can run indefinitely on hung processes.",
+      "currentState": "No timeout-minutes set",
+      "suggestedFix": "Add timeout-minutes: 30 to each job to prevent runaway costs.",
+      "estimatedSavings": "Prevents runaway billing"
+    },
+    {
+      "id": "SEC_UNPINNED_ACTIONS",
+      "severity": "LOW",
+      "category": "security",
+      "title": "Actions use tag versions instead of SHA pins",
+      "description": "Tag-based versions (e.g., @v4) can be moved. SHA-pinning prevents supply chain attacks.",
+      "currentState": "1 tag-versioned actions",
+      "suggestedFix": "Pin critical actions to SHA: e.g., actions/checkout@<sha>",
+      "estimatedSavings": "Improved supply chain security"
+    }
+  ],
+  "score": 89
+}

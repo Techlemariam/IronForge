@@ -12,7 +12,15 @@ const google = createGoogleGenerativeAI({
 export const maxDuration = 30;
 
 export async function POST(req: Request) {
-  const { messages, context } = await req.json();
+  let body;
+  try {
+    body = await req.json();
+  } catch (e) {
+    console.error("Chat API: Failed to parse request JSON:", e);
+    return new Response(JSON.stringify({ error: "Invalid JSON input" }), { status: 400 });
+  }
+
+  const { messages, context } = body;
 
   let strategySummary = "No strategy generated (Insufficient Data).";
 

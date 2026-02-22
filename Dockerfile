@@ -4,6 +4,8 @@
 
 # Base stage with pnpm
 FROM node:22-alpine AS base
+# Add libc6-compat for Alpine compatibility (needed for Prisma and some Next.js binaries)
+RUN apk add --no-cache libc6-compat
 RUN corepack enable && corepack prepare pnpm@9.15.0 --activate
 WORKDIR /app
 
@@ -12,6 +14,7 @@ WORKDIR /app
 # --------------------------------
 FROM base AS deps
 COPY package.json pnpm-lock.yaml ./
+# Include prisma schema for generate in deps or builder
 COPY prisma ./prisma
 RUN pnpm install --frozen-lockfile
 

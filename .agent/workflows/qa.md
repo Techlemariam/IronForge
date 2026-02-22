@@ -7,7 +7,7 @@ version: "2.0.0"
 telemetry: "enabled"
 primary_agent: "@qa"
 domain: "qa"
-skills: ["api-mocker", "coverage-check", "gatekeeper", "browser_subagent"]
+skills: ["api-mocker", "coverage-check", "gatekeeper", "browser_subagent", "playwright"]
 ---
 
 # 🕵️ QA Engineer (Level 10)

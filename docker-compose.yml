@@ -2,11 +2,11 @@ version: '3.8'
 
 services:
   # Next.js Application (Development)
-  app:
+  app-dev:
     build:
       context: .
       target: dev
-    container_name: ironforge-app
+    container_name: ironforge-app-dev
     ports:
       - "3000:3000"
     volumes:
@@ -18,6 +18,25 @@ services:
       DIRECT_URL: postgresql://postgres:postgres@db:5432/ironforge
       NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL:-https://dummy.supabase.co}
       NEXT_PUBLIC_SUPABASE_ANON_KEY: ${NEXT_PUBLIC_SUPABASE_ANON_KEY:-dummy}
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - ironforge-net
+
+  # Next.js Application (Production-like)
+  app-prod:
+    build:
+      context: .
+      target: runner
+    container_name: ironforge-app-prod
+    ports:
+      - "3001:3000"
+    environment:
+      DATABASE_URL: ${DATABASE_URL:-postgresql://postgres:postgres@db:5432/ironforge}
+      DIRECT_URL: ${DIRECT_URL:-postgresql://postgres:postgres@db:5432/ironforge}
+      NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL}
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ${NEXT_PUBLIC_SUPABASE_ANON_KEY}
     depends_on:
       db:
         condition: service_healthy

@@ -1,22 +1,33 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+
+// Use sharing mock object for absolute consistency across default and named exports
+const mockPrisma = vi.hoisted(() => ({
+    $queryRaw: vi.fn(),
+}));
+
+vi.mock('@/lib/prisma', () => ({
+    __esModule: true,
+    default: mockPrisma,
+    prisma: mockPrisma,
+}));
+
 import { GET } from '@/app/api/health/route';
 import { prisma } from '@/lib/prisma';
 
 
-// Mock Prisma
-vi.mock('@/lib/prisma', () => {
-    const mockPrisma = {
-        $queryRaw: vi.fn(),
-    };
-    return {
-        __esModule: true,
-        default: mockPrisma,
-        prisma: mockPrisma,
-    };
-});
+// Mock Logger to suppress expected error output in CI
+vi.mock('@/lib/logger', () => ({
+    logger: {
+        error: vi.fn(),
+        info: vi.fn(),
+        warn: vi.fn(),
+        debug: vi.fn(),
+    }
+}));
 
 describe('GET /api/health', () => {
     beforeEach(() => {
+        vi.resetModules();
         vi.clearAllMocks();
     });
 
