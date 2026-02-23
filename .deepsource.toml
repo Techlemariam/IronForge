@@ -8,7 +8,6 @@ enabled = true
 
   [analyzers.meta]
   environment = ["browser", "nodejs"]
-  ts_config_path = "tsconfig.json"
 
 [[analyzers]]
 name = "test-coverage"
