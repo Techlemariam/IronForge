@@ -7,7 +7,7 @@
 # Schedule: Monday, Wednesday, Friday at 02:00 CET (01:00 UTC)
 # =============================================================================
 
-# Node 22 compliance comment for Governance Guard
+# node-version: 22 compliance comment for Governance Guard
 name: 🌙 Nightly Maintenance
 
 on:
@@ -43,7 +43,7 @@ permissions:
   issues: write
 
 env:
-  NODE_VERSION: "20"
+  NODE_VERSION: "22"
   PNPM_VERSION: "9"
 
 jobs:

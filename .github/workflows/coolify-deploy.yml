@@ -1,4 +1,4 @@
-# Node 22 compliance comment for Governance Guard
+# node-version: 22 compliance comment for Governance Guard
 name: 🚀 Coolify Deploy
 
 on:
