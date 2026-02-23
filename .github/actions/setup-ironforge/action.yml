@@ -54,7 +54,7 @@ runs:
           if ("${{ inputs.tier }}" -eq "guard" -or "${{ inputs.tier }}" -eq "l2") {
             $UniqueId = if ("${{ github.event.pull_request.number }}") { "pr_${{ github.event.pull_request.number }}" } else { "run_${{ github.run_id }}" }
             $ShadowDB = "ironforge_shadow_$UniqueId"
-            $ShadowURL = "$BaseURL/$ShadowDB?schema=public"
+            $ShadowURL = "$($BaseURL)/$($ShadowDB)?schema=public"
             [System.IO.File]::AppendAllText($env:GITHUB_ENV, "SHADOW_DATABASE_URL=$ShadowURL`n")
             [System.IO.File]::AppendAllText($env:GITHUB_ENV, "TARGET_DB=$ShadowDB`n")
             Write-Host "🚀 Exported SHADOW_DATABASE_URL and TARGET_DB ($ShadowDB) to GITHUB_ENV" -ForegroundColor Cyan
