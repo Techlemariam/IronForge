@@ -7,7 +7,6 @@ import {
     ReadResourceRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
 import { Octokit } from "octokit";
-import { z } from "zod";
 import { exec } from "child_process";
 import { promisify } from "util";
 import fs from "fs";
@@ -136,7 +135,7 @@ server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
         let antigravityAvailable = false;
         try {
             antigravityAvailable = fs.existsSync(taskDir);
-        } catch (e) {
+        } catch (_e) {
             antigravityAvailable = false;
         }
 
@@ -256,7 +255,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
                 if (!fs.existsSync(taskDir)) {
                     try {
                         fs.mkdirSync(taskDir, { recursive: true });
-                    } catch (e) {
+                    } catch (_e) {
                         // Ignore, let write fail or fallback
                     }
                 }
@@ -310,7 +309,7 @@ async function main() {
         try {
             startWebhookServer();
             console.error(`Webhook server enabled on port ${process.env.WEBHOOK_PORT || 3030}`);
-        } catch (e: any) {
+        } catch (_e: any) {
             console.error(`Failed to start webhook server: ${e.message}`);
         }
     }
