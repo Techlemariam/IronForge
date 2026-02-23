@@ -1,4 +1,6 @@
+# DeepSource configuration
 version = 1
+
 
 [[analyzers]]
 name = "javascript"
