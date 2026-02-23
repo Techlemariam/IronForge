@@ -4,7 +4,7 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
+  provider = "postgresql"
 }
 
 model User {
@@ -563,24 +563,25 @@ model GauntletRun {
 }
 
 model Guild {
-  id          String      @id @default(cuid())
-  name        String      @unique
-  tag         String      @unique
-  description String?
-  leaderId    String      @unique
-  isPublic    Boolean     @default(true)
-  minLevel    Int         @default(1)
-  xp          Int         @default(0)
-  level       Int         @default(1)
-  createdAt   DateTime    @default(now())
-  powerRating Float       @default(0)
-  gold        Int         @default(0)
-  leader      User        @relation("GuildLeader", fields: [leaderId], references: [id])
-  raids       GuildRaid[]
-  territories Territory[] @relation("GuildTerritories")
-  members     User[]
+  id               String             @id @default(cuid())
+  name             String             @unique
+  tag              String             @unique
+  description      String?
+  leaderId         String             @unique
+  isPublic         Boolean            @default(true)
+  minLevel         Int                @default(1)
+  xp               Int                @default(0)
+  level            Int                @default(1)
+  createdAt        DateTime           @default(now())
+  powerRating      Float              @default(0)
+  gold             Int                @default(0)
+  leader           User               @relation("GuildLeader", fields: [leaderId], references: [id])
+  raids            GuildRaid[]
+  territories      Territory[]        @relation("GuildTerritories")
+  members          User[]
   attackerContests TerritoryContest[] @relation("AttackerRelation")
   defenderContests TerritoryContest[] @relation("DefenderRelation")
+  wonContests      TerritoryContest[] @relation("WinnerRelation")
 }
 
 model Territory {
@@ -618,6 +619,7 @@ model TerritoryContest {
   endsAt        DateTime
   status        String    @default("active") // "active", "resolved"
   winnerId      String?
+  winner        Guild?    @relation("WinnerRelation", fields: [winnerId], references: [id])
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
@@ -991,9 +993,9 @@ model FactoryTask {
   id          String   @id @default(cuid())
   description String
   status      String   @default("PENDING") // PENDING, IN_PROGRESS, COMPLETED, FAILED
-  stage       String   @default("DESIGN")  // DESIGN, FABRICATION, VERIFICATION, SHIPPING
+  stage       String   @default("DESIGN") // DESIGN, FABRICATION, VERIFICATION, SHIPPING
   source      String   @default("DISCORD") // DISCORD, WEB, SYSTEM
-  metadata    Json?    // Store Discord user info, audio URL reference, etc.
+  metadata    Json? // Store Discord user info, audio URL reference, etc.
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
