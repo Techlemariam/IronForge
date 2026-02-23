@@ -54,10 +54,23 @@ async function setupDatabase() {
 
         // Create database
         console.log(`🏗️ Creating database "${dbName}"...`);
+        // Terminal all other connections to template1 to avoid "source database is being accessed by other users"
+        console.log(`🧹 Forcibly terminating connections to "template1"...`);
+        await client.query(`
+            SELECT pg_terminate_backend(pg_stat_activity.pid)
+            FROM pg_stat_activity
+            WHERE pg_stat_activity.datname = 'template1'
+              AND pid <> pg_backend_pid();
+        `);
+
         await client.query(`CREATE DATABASE "${dbName}"`);
         console.log(`✨ Database "${dbName}" created successfully.`);
     } catch (error) {
         console.error('❌ Error setting up database:', error);
+        // Log more PG-specific details if available
+        if (typeof error === 'object' && error !== null) {
+            console.error('Debug details:', JSON.stringify(error, null, 2));
+        }
         process.exit(1);
     } finally {
         if (connected) {
