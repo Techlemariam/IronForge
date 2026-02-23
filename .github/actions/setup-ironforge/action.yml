@@ -51,9 +51,12 @@ runs:
           [System.IO.File]::AppendAllText($env:GITHUB_ENV, "ADMIN_DATABASE_URL=$AdminURL`n")
           
           if ("${{ inputs.tier }}" -eq "guard" -or "${{ inputs.tier }}" -eq "l2") {
-            $ShadowURL = "$BaseURL/ironforge_shadow?schema=public"
+            $UniqueId = if ("${{ github.event.pull_request.number }}") { "pr_${{ github.event.pull_request.number }}" } else { "run_${{ github.run_id }}" }
+            $ShadowDB = "ironforge_shadow_$UniqueId"
+            $ShadowURL = "$BaseURL/$ShadowDB?schema=public"
             [System.IO.File]::AppendAllText($env:GITHUB_ENV, "SHADOW_DATABASE_URL=$ShadowURL`n")
-            Write-Host "🚀 Exported SHADOW_DATABASE_URL to GITHUB_ENV" -ForegroundColor Cyan
+            [System.IO.File]::AppendAllText($env:GITHUB_ENV, "TARGET_DB=$ShadowDB`n")
+            Write-Host "🚀 Exported SHADOW_DATABASE_URL and TARGET_DB ($ShadowDB) to GITHUB_ENV" -ForegroundColor Cyan
           }
           
           Write-Host "🚀 Exported DATABASE_URL and ADMIN_DATABASE_URL (Port $Port)" -ForegroundColor Cyan
