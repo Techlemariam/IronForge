@@ -14,7 +14,7 @@ jobs:
           POSTGRES_PASSWORD: password
           POSTGRES_DB: ironforge
         ports:
-          - 5432
+          - 5432:5432
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -24,7 +24,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v4
         with:
           node-version: '22'
           cache: 'pnpm'
@@ -33,7 +33,7 @@ jobs:
       
       - name: Run Migrate Dev
         env:
-          DATABASE_URL: postgresql://postgres:password@postgres:5432/ironforge?schema=public
+          DATABASE_URL: postgresql://postgres:password@localhost:5432/ironforge?schema=public
         run: npx prisma migrate dev --name fix_ci_drift
 
       - name: Commit Changes
