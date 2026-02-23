@@ -9,7 +9,7 @@ on:
 jobs:
   audit-workflows:
     name: Audit Workflow Standards
-    runs-on: [self-hosted, IronForge-Local]
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 

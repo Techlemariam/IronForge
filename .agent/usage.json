@@ -27,6 +27,13 @@
                         "tokens":  1000,
                         "model":  "gemini-2.5-pro",
                         "workflow":  "debt-attack"
+                    },
+                    {
+                        "date":  "2026-02-23",
+                        "timestamp":  "2026-02-23T20:03:17.9566514+01:00",
+                        "tokens":  1000,
+                        "model":  "gemini-2.5-flash",
+                        "workflow":  "sprint-auto"
                     }
                 ]
 }

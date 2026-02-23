@@ -309,8 +309,8 @@ async function main() {
         try {
             startWebhookServer();
             console.error(`Webhook server enabled on port ${process.env.WEBHOOK_PORT || 3030}`);
-        } catch (_e: any) {
-            console.error(`Failed to start webhook server: ${_e.message}`);
+        } catch (_e: unknown) {
+            console.error(`Failed to start webhook server: ${(_e as Error).message}`);
         }
     }
 }

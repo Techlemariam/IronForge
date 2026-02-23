@@ -1,0 +1,89 @@
+🚀 L2: Verification	Initialize DB (L2)	﻿2026-02-23T17:48:21.0113273Z ##[group]Run sleep 15
+🚀 L2: Verification	Initialize DB (L2)	2026-02-23T17:48:21.0114107Z [36;1msleep 15[0m
+🚀 L2: Verification	Initialize DB (L2)	2026-02-23T17:48:21.0114581Z [36;1mnpx prisma db push[0m
+🚀 L2: Verification	Initialize DB (L2)	2026-02-23T17:48:21.0229437Z shell: /usr/bin/bash -e {0}
+🚀 L2: Verification	Initialize DB (L2)	2026-02-23T17:48:21.0230208Z env:
+🚀 L2: Verification	Initialize DB (L2)	2026-02-23T17:48:21.0231954Z   DATABASE_URL: ***host.docker.internal:5433/ironforge_test?schema=public
+🚀 L2: Verification	Initialize DB (L2)	2026-02-23T17:48:21.0234750Z   DIRECT_URL: ***
+🚀 L2: Verification	Initialize DB (L2)	2026-02-23T17:48:21.0235785Z   NEXT_PUBLIC_SUPABASE_URL: ***
+🚀 L2: Verification	Initialize DB (L2)	2026-02-23T17:48:21.0241461Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+🚀 L2: Verification	Initialize DB (L2)	2026-02-23T17:48:21.0242326Z   SKIP_ENV_VALIDATION: true
+🚀 L2: Verification	Initialize DB (L2)	2026-02-23T17:48:21.0244038Z   ADMIN_DATABASE_URL: ***host.docker.internal:5433/postgres?schema=public
+🚀 L2: Verification	Initialize DB (L2)	2026-02-23T17:48:21.0245500Z   PNPM_HOME: /root/setup-pnpm/node_modules/.bin
+🚀 L2: Verification	Initialize DB (L2)	2026-02-23T17:48:21.0246751Z ##[endgroup]
+🚀 L2: Verification	Initialize DB (L2)	2026-02-23T17:48:42.3606754Z Loaded Prisma config from prisma.config.ts.
+🚀 L2: Verification	Initialize DB (L2)	2026-02-23T17:48:42.3613984Z 
+🚀 L2: Verification	Initialize DB (L2)	2026-02-23T17:48:42.9060544Z Prisma schema loaded from prisma/schema.prisma.
+🚀 L2: Verification	Initialize DB (L2)	2026-02-23T17:48:42.9250424Z Datasource "db": PostgreSQL database "postgres", schema "public" at "aws-1-eu-west-1.pooler.supabase.com:5432"
+🚀 L2: Verification	Initialize DB (L2)	2026-02-23T17:48:47.7925521Z 
+🚀 L2: Verification	Initialize DB (L2)	2026-02-23T17:48:47.7928438Z Error: P1001: Can't reach database server at `aws-1-eu-west-1.pooler.supabase.com:5432`
+🚀 L2: Verification	Initialize DB (L2)	2026-02-23T17:48:47.7929980Z 
+🚀 L2: Verification	Initialize DB (L2)	2026-02-23T17:48:47.7931829Z Please make sure your database server is running at `aws-1-eu-west-1.pooler.supabase.com:5432`.
+🚀 L2: Verification	Initialize DB (L2)	2026-02-23T17:48:47.8626829Z ##[error]Process completed with exit code 1.
+🗄️ L2: DB Guard	Verify Prisma Drift	﻿2026-02-23T17:46:04.9234267Z ##[group]Run npx prisma migrate diff --from-migrations prisma/migrations --to-schema prisma/schema.prisma --exit-code
+🗄️ L2: DB Guard	Verify Prisma Drift	2026-02-23T17:46:04.9238167Z [36;1mnpx prisma migrate diff --from-migrations prisma/migrations --to-schema prisma/schema.prisma --exit-code[0m
+🗄️ L2: DB Guard	Verify Prisma Drift	2026-02-23T17:46:04.9282882Z shell: /usr/bin/bash -e {0}
+🗄️ L2: DB Guard	Verify Prisma Drift	2026-02-23T17:46:04.9283803Z env:
+🗄️ L2: DB Guard	Verify Prisma Drift	2026-02-23T17:46:04.9286603Z   DATABASE_URL: ***host.docker.internal:5437/ironforge_test?schema=public
+🗄️ L2: DB Guard	Verify Prisma Drift	2026-02-23T17:46:04.9289980Z   DIRECT_URL: ***
+🗄️ L2: DB Guard	Verify Prisma Drift	2026-02-23T17:46:04.9291442Z   NEXT_PUBLIC_SUPABASE_URL: ***
+🗄️ L2: DB Guard	Verify Prisma Drift	2026-02-23T17:46:04.9299678Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+🗄️ L2: DB Guard	Verify Prisma Drift	2026-02-23T17:46:04.9300793Z   SKIP_ENV_VALIDATION: true
+🗄️ L2: DB Guard	Verify Prisma Drift	2026-02-23T17:46:04.9303158Z   ADMIN_DATABASE_URL: ***host.docker.internal:5437/postgres?schema=public
+🗄️ L2: DB Guard	Verify Prisma Drift	2026-02-23T17:46:04.9305673Z   SHADOW_DATABASE_URL: ***host.docker.internal:5437/=public
+🗄️ L2: DB Guard	Verify Prisma Drift	2026-02-23T17:46:04.9307303Z   TARGET_DB: ironforge_shadow_run_22317612773
+🗄️ L2: DB Guard	Verify Prisma Drift	2026-02-23T17:46:04.9328463Z   PNPM_HOME: /root/setup-pnpm/node_modules/.bin
+🗄️ L2: DB Guard	Verify Prisma Drift	2026-02-23T17:46:04.9335784Z ##[endgroup]
+🗄️ L2: DB Guard	Verify Prisma Drift	2026-02-23T17:46:08.0727919Z Loaded Prisma config from prisma.config.ts.
+🗄️ L2: DB Guard	Verify Prisma Drift	2026-02-23T17:46:08.0732875Z 
+🗄️ L2: DB Guard	Verify Prisma Drift	2026-02-23T17:46:08.8063618Z Error: P1001
+🗄️ L2: DB Guard	Verify Prisma Drift	2026-02-23T17:46:08.8064147Z 
+🗄️ L2: DB Guard	Verify Prisma Drift	2026-02-23T17:46:08.8065664Z Can't reach database server at `host.docker.internal:5437`
+🗄️ L2: DB Guard	Verify Prisma Drift	2026-02-23T17:46:08.8066645Z 
+🗄️ L2: DB Guard	Verify Prisma Drift	2026-02-23T17:46:08.8068276Z Please make sure your database server is running at `host.docker.internal:5437`.
+🗄️ L2: DB Guard	Verify Prisma Drift	2026-02-23T17:46:08.8080358Z 
+🗄️ L2: DB Guard	Verify Prisma Drift	2026-02-23T17:46:08.9009290Z ##[error]Process completed with exit code 1.
+🗄️ DB Guard	Create Shadow Database	﻿2026-02-23T17:54:31.9257664Z ##[group]Run # Managed-services assumes DB is already healthy
+🗄️ DB Guard	Create Shadow Database	2026-02-23T17:54:31.9258424Z [36;1m# Managed-services assumes DB is already healthy[0m
+🗄️ DB Guard	Create Shadow Database	2026-02-23T17:54:31.9258936Z [36;1mnpx tsx scripts/ci/setup-db.ts[0m
+🗄️ DB Guard	Create Shadow Database	2026-02-23T17:54:31.9278809Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+🗄️ DB Guard	Create Shadow Database	2026-02-23T17:54:31.9279321Z env:
+🗄️ DB Guard	Create Shadow Database	2026-02-23T17:54:31.9280098Z   DATABASE_URL: ***host.docker.internal:5435/ironforge_test?schema=public
+🗄️ DB Guard	Create Shadow Database	2026-02-23T17:54:31.9281195Z   DIRECT_URL: ***
+🗄️ DB Guard	Create Shadow Database	2026-02-23T17:54:31.9281694Z   NEXT_PUBLIC_SUPABASE_URL: ***
+🗄️ DB Guard	Create Shadow Database	2026-02-23T17:54:31.9283801Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+🗄️ DB Guard	Create Shadow Database	2026-02-23T17:54:31.9284724Z   SKIP_ENV_VALIDATION: true
+🗄️ DB Guard	Create Shadow Database	2026-02-23T17:54:31.9285497Z   ADMIN_DATABASE_URL: ***host.docker.internal:5435/postgres?schema=public
+🗄️ DB Guard	Create Shadow Database	2026-02-23T17:54:31.9286346Z   SHADOW_DATABASE_URL: ***host.docker.internal:5435/=public
+🗄️ DB Guard	Create Shadow Database	2026-02-23T17:54:31.9286870Z   TARGET_DB: ironforge_shadow_run_22317612773
+🗄️ DB Guard	Create Shadow Database	2026-02-23T17:54:31.9287368Z   PNPM_HOME: /root/setup-pnpm/node_modules/.bin
+🗄️ DB Guard	Create Shadow Database	2026-02-23T17:54:31.9287859Z ##[endgroup]
+🗄️ DB Guard	Create Shadow Database	2026-02-23T17:54:32.7773254Z 🚀 Setting up database: "ironforge_shadow_run_22317612773"
+🗄️ DB Guard	Create Shadow Database	2026-02-23T17:54:32.7774613Z 🔗 Connecting to: ***host.docker.internal:5435/postgres?schema=public
+🗄️ DB Guard	Create Shadow Database	2026-02-23T17:54:32.8129543Z ✅ Connected to database server.
+🗄️ DB Guard	Create Shadow Database	2026-02-23T17:54:32.8130371Z 🔍 Checking if database "ironforge_shadow_run_22317612773" exists...
+🗄️ DB Guard	Create Shadow Database	2026-02-23T17:54:32.8190496Z ℹ️ Database "ironforge_shadow_run_22317612773" does not exist.
+🗄️ DB Guard	Create Shadow Database	2026-02-23T17:54:32.8191356Z 🏗️ Creating database "ironforge_shadow_run_22317612773"...
+🗄️ DB Guard	Create Shadow Database	2026-02-23T17:54:32.8243800Z ❌ Error setting up database: error: template database "template1" has a collation version, but no actual collation version could be determined
+🗄️ DB Guard	Create Shadow Database	2026-02-23T17:54:32.8247339Z     at /tmp/github-runner-your-repo/IronForge/IronForge/node_modules/.pnpm/pg@8.18.0/node_modules/pg/lib/client.js:624:17
+🗄️ DB Guard	Create Shadow Database	2026-02-23T17:54:32.8248980Z     at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+🗄️ DB Guard	Create Shadow Database	2026-02-23T17:54:32.8250107Z     at async setupDatabase (/tmp/github-runner-your-repo/IronForge/IronForge/scripts/ci/setup-db.ts:57:9) {
+🗄️ DB Guard	Create Shadow Database	2026-02-23T17:54:32.8250829Z   length: 164,
+🗄️ DB Guard	Create Shadow Database	2026-02-23T17:54:32.8251129Z   severity: 'ERROR',
+🗄️ DB Guard	Create Shadow Database	2026-02-23T17:54:32.8251447Z   code: 'XX000',
+🗄️ DB Guard	Create Shadow Database	2026-02-23T17:54:32.8251748Z   detail: undefined,
+🗄️ DB Guard	Create Shadow Database	2026-02-23T17:54:32.8252063Z   hint: undefined,
+🗄️ DB Guard	Create Shadow Database	2026-02-23T17:54:32.8252713Z   position: undefined,
+🗄️ DB Guard	Create Shadow Database	2026-02-23T17:54:32.8253314Z   internalPosition: undefined,
+🗄️ DB Guard	Create Shadow Database	2026-02-23T17:54:32.8253751Z   internalQuery: undefined,
+🗄️ DB Guard	Create Shadow Database	2026-02-23T17:54:32.8254101Z   where: undefined,
+🗄️ DB Guard	Create Shadow Database	2026-02-23T17:54:32.8254847Z   schema: undefined,
+🗄️ DB Guard	Create Shadow Database	2026-02-23T17:54:32.8255196Z   table: undefined,
+🗄️ DB Guard	Create Shadow Database	2026-02-23T17:54:32.8255503Z   column: undefined,
+🗄️ DB Guard	Create Shadow Database	2026-02-23T17:54:32.8255826Z   dataType: undefined,
+🗄️ DB Guard	Create Shadow Database	2026-02-23T17:54:32.8256157Z   constraint: undefined,
+🗄️ DB Guard	Create Shadow Database	2026-02-23T17:54:32.8256493Z   file: 'dbcommands.c',
+🗄️ DB Guard	Create Shadow Database	2026-02-23T17:54:32.8256812Z   line: '1139',
+🗄️ DB Guard	Create Shadow Database	2026-02-23T17:54:32.8257623Z   routine: 'createdb'
+🗄️ DB Guard	Create Shadow Database	2026-02-23T17:54:32.8257937Z }
+🗄️ DB Guard	Create Shadow Database	2026-02-23T17:54:32.8625308Z ##[error]Process completed with exit code 1.
