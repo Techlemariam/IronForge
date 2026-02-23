@@ -1,12 +1,13 @@
+# DeepSource configuration
 version = 1
+
 
 [[analyzers]]
 name = "javascript"
 enabled = true
 
   [analyzers.meta]
-  environment = ["browser", "nodejs", "vitest"]
-  module_system = "esm"
+  environment = ["browser", "nodejs"]
   ts_config_path = "tsconfig.json"
 
 [[analyzers]]

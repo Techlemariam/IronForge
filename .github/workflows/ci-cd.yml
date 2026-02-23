@@ -3,14 +3,14 @@ name: IronForge CI/CD
 
 on:
   push:
-    branches: [main, release]
+    branches: [main, release, fix/*]
     paths-ignore:
       - '**.md'
       - 'docs/**'
       - '.agent/**'
       - '.vscode/**'
   pull_request:
-    branches: [main, release]
+    branches: [main, release, fix/*]
     paths-ignore:
       - '**.md'
       - 'docs/**'
@@ -38,7 +38,7 @@ jobs:
   # ==================================================================
   l1-verify:
     name: "⚡ L1: Verify"
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' || startsWith(github.ref, 'refs/heads/fix/')
     runs-on: [self-hosted, IronForge-Local] # Target specific local runner
     timeout-minutes: 10
     steps:
@@ -63,8 +63,6 @@ jobs:
             turbo-l1-${{ runner.os }}-
       - name: Turbo L1 Verify (Differential)
         run: pnpm run ci:l1
-        env:
-          DATABASE_URL: postgresql://postgres:password@postgres1:5432/ironforge_test?schema=public
 
       # ==================================================================
       # ACTIVE HANDOVER: Proactive Monitoring on Success
@@ -73,6 +71,7 @@ jobs:
         if: success()
         run: |
           echo "❇️ CI Doctor: Success detected. Initiating Proactive Monitoring..."
+          mkdir -p .agent/tasks
           
           # Check for CodeRabbit presence to trigger Optimizer
           if gh pr view --json reviews -q '.reviews[].author.login' | grep -q "coderabbit"; then
@@ -114,6 +113,7 @@ jobs:
           # 4. Check for DB/Infra failures (doctor-infra)
           if grep -q "ECONNREFUSED\|PrismaClientInitializationError" /tmp/combined-logs.txt 2>/dev/null; then
              echo "🛡️ Dispatching Infra Specialist..."
+             mkdir -p .agent/tasks
              echo "FIX: Infra failure in $GITHUB_SHA" > .agent/tasks/doctor-infra-signal.md
           fi
 
@@ -124,22 +124,8 @@ jobs:
   # ==================================================================
   l2-verification:
     name: "🚀 L2: Verification"
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/fix/')
     runs-on: [self-hosted, IronForge-Local] # Target specific local runner
-    services:
-      postgres:
-        image: postgres:15
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: password
-          POSTGRES_DB: ironforge_full
-        ports:
-          - 5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-ironforge
@@ -153,18 +139,14 @@ jobs:
         run: |
           sleep 15
           npx prisma db push
-        env:
-          DATABASE_URL: postgresql://postgres:password@postgres:5432/ironforge_full?schema=public
       - name: Turbo L2 verification
         run: pnpm run ci:l2
-        env:
-          DATABASE_URL: postgresql://postgres:password@postgres:5432/ironforge_full?schema=public
 
   # 🐳 DOCKER VERIFICATION
   docker-verify:
     name: "🐳 Docker: Build Verify"
     needs: l2-verification
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/fix/')
     runs-on: [self-hosted, IronForge-Local]
     steps:
       - uses: actions/checkout@v4
@@ -226,7 +208,7 @@ jobs:
   db-guard:
     name: 🗄️ DB Guard
     needs: [l1-verify]
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' || startsWith(github.ref, 'refs/heads/fix/')
     runs-on: [self-hosted, IronForge-Local] # Target specific local runner
     steps:
       - uses: actions/checkout@v4
@@ -251,20 +233,13 @@ jobs:
   l2-e2e-smoke:
     name: "🎭 L2: E2E Smoke"
     needs: [l2-verification]
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/fix/')
     runs-on: [self-hosted, IronForge-Local] # Target specific local runner
-    services:
-      postgres:
-        image: postgres:15
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: password
-          POSTGRES_DB: ironforge_e2e
-        ports:
-          - 5432
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-ironforge
+        with:
+          tier: 'l2'
       - run: npx prisma generate
       - name: Cache Playwright
         uses: actions/cache@v5
@@ -278,7 +253,6 @@ jobs:
           pnpm run test:smoke
         env:
           CI: true
-          DATABASE_URL: postgresql://postgres:password@postgres:5432/ironforge_e2e?schema=public
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           NEXT_PUBLIC_APP_URL: http://localhost:3000
@@ -287,7 +261,7 @@ jobs:
   l2-perf-audit:
     name: "📊 L2: Perf Audit"
     needs: [l2-verification]
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/fix/')
     runs-on: [self-hosted, IronForge-Local] # Target specific local runner
     steps:
       - uses: actions/checkout@v4
@@ -301,44 +275,28 @@ jobs:
   # DB Guard renamed to L2: DB Guard
   l2-db-guard:
     name: "🗄️ L2: DB Guard"
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/fix/')
     runs-on: [self-hosted, IronForge-Local] # Target specific local runner
-    services:
-      postgres4:
-        image: postgres:15
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: password
-          POSTGRES_DB: ironforge_test
-        ports:
-          - 5432
-        options: >-
-          --health-cmd "pg_isready -U postgres"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-ironforge
+        with:
+          tier: 'l2'
       - name: Create Shadow Database
         run: |
           sleep 15
           npx tsx scripts/ci/setup-db.ts
         env:
-          ADMIN_DATABASE_URL: postgresql://postgres:password@postgres4:5432/postgres?schema=public
           TARGET_DB: ironforge_shadow
       - name: Verify Prisma Drift
         run: |
           npx prisma migrate diff --from-migrations prisma/migrations --to-schema prisma/schema.prisma --exit-code
-        env:
-          DATABASE_URL: postgresql://postgres:password@postgres4:5432/ironforge_test?schema=public
-          SHADOW_DATABASE_URL: postgresql://postgres:password@postgres4:5432/ironforge_shadow?schema=public
 
   # Automatic Deployment Trigger (L2 Success)
   deploy-verification:
     name: 🏥 Deployment Status
     needs: [l2-verification, l2-e2e-smoke, l2-db-guard, l2-perf-audit]
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/fix/')
     runs-on: [self-hosted, IronForge-Local] # Target specific local runner
     steps:
       - name: Verify Health

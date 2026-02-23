@@ -190,27 +190,37 @@ graph TD
 
 ## 9. 🚀 Deployment & CI/CD
 
-IronForge is deployed to **Vercel** with full automation via **GitHub Actions**.
+IronForge implements a **Tiered CI/CD Architecture** to balance rapid developer feedback (L1) with rigorous production assurance (L2/L3). All deployments are handled via **Coolify** on self-hosted infrastructure.
 
-### 7.1 Pipeline Overview
+### 9.1 CI/CD Tiers
 
-1. **Verify & Quality Gate (`ci-cd.yml`)**: Triggered on all Pull Requests and pushes to `main`. Runs Lint, Vitest (Unit/Integration), Playwright (E2E), and DB Drift checks. Uses Turborepo Caching.
-2. **Production Deploy (`ci-cd.yml`)**: Automated deployment to Vercel triggered on successful build/merge to the `main` branch.
+| Tier | Objective | Trigger | Scope | SLA |
+| :--- | :--- | :--- | :--- | :--- |
+| **L1: Fast Feedback** | Logic & Syntax | Pull Request | `Lint`, `Type Check`, `Unit Tests` (Differential) | < 5m |
+| **L2: Verification** | Build & Smoke | Push to `main` | `Full Build`, `E2E Smoke`, `Perf Audit`, `DB Drift` | < 15m |
+| **L3: Assurance** | Security & Depth | Nightly (Cron) | `Exhaustive E2E`, `Snyk Security Audit`, `Sentry Hygiene` | Daily |
 
-### 7.2 Custom Domains
+### 9.2 Security Auditing (Snyk)
 
-* **Production**: [ironforge.app](https://ironforge.app)
+We use **Snyk** as our primary security gate in Layer 3.
 
-* **Staging/Preview**: Automatic Vercel Preview URLs for all PRs.
+* **Coverage**: Scans 1st party code and 3rd party dependencies.
+* **Enforcement**: Integrated into `nightly-maintenance.yml`.
+* **Reporting**: Results are logged to the GitHub Security tab and workflow summaries.
 
-### 7.3 Essential Secrets (GitHub & Vercel)
+### 9.3 Deployment (Coolify)
 
-The following secrets must be synchronized between GitHub Actions and Vercel:
+* **Production**: Merges to `main` that pass Tier L2 verification automatically trigger a Coolify webhook.
+* **Infrastructure**: Hosted on Hetzner VPS (managed via Tailscale).
+* **Rollbacks**: Automated via Sentry alerts (`sentry-rollback.yml`) if error rates spike.
 
-* `DATABASE_URL`: Production PostgreSQL connection string.
-* `NEXT_PUBLIC_SUPABASE_URL` / `ANON_KEY`: Auth and Storage.
-* `SENTRY_DSN`: Error tracking (Production).
-* `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`: Required for CLI-based deployment triggers if standard GitHub hooks are disabled.
+### 9.4 Titan-Tier Governance (10/10)
+
+The CI/CD pipeline is **self-healing** and enforced via automated governance.
+
+* **Workflow Linter**: The `governance-guard.yml` workflow audits all PRs to ensure environment parity (Node 22, pnpm 9, `actions/checkout@v4`).
+* **Modular Setup**: All workflows use `uses: ./.github/actions/setup-ironforge` to ensure a single source of truth for repository initialization.
+* **Pre-flight Validation**: Critical flows include a `pre-flight` job (`validate-secrets.ps1`) that fails fast if required environment secrets are missing, preventing redundant runner usage.
 
 > [!IMPORTANT]
-> Always verify that `npm run agent:verify` passes locally before pushing to `main`.
+> Always verify that `pnpm agent:verify` passes locally before pushing. This command runs a hybrid L1/L2 check.

@@ -34,6 +34,7 @@ runs:
           # Map Ports based on Tier
           $PortMap = @{
             "l1"    = "5433"
+            "l2"    = "5437"
             "e2e"   = "5434"
             "guard" = "5435"
             "l3"    = "5436"
@@ -49,7 +50,7 @@ runs:
           $AdminURL = "$BaseURL/postgres?schema=public"
           [System.IO.File]::AppendAllText($env:GITHUB_ENV, "ADMIN_DATABASE_URL=$AdminURL`n")
           
-          if ("${{ inputs.tier }}" -eq "guard") {
+          if ("${{ inputs.tier }}" -eq "guard" -or "${{ inputs.tier }}" -eq "l2") {
             $ShadowURL = "$BaseURL/ironforge_shadow?schema=public"
             [System.IO.File]::AppendAllText($env:GITHUB_ENV, "SHADOW_DATABASE_URL=$ShadowURL`n")
             Write-Host "🚀 Exported SHADOW_DATABASE_URL to GITHUB_ENV" -ForegroundColor Cyan

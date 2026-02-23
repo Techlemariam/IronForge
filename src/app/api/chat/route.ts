@@ -36,6 +36,7 @@ export async function POST(req: Request) {
         ctl: context.indices.ctl || 0,
         acwr: 1.0, // Default
         sleepScore: context.wellness.sleepScore || 0,
+        bodyBattery: context.wellness.bodyBattery || 50,
         soreness: context.wellness.soreness || 0,
         mood: context.wellness.mood || "NORMAL",
         consecutiveStalls: 0

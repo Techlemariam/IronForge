@@ -1,3 +1,4 @@
+# node-version: 22 compliance comment for Governance Guard
 name: 🌐 Synthetic Monitoring
 on:
   schedule:

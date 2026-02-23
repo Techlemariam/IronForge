@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   triage:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, IronForge-Local]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/labeler@v5

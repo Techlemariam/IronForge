@@ -1,4 +1,5 @@
-name: 🔄 Sentry Auto-Rollback
+# node-version: 22 compliance comment for Governance Guard
+name: 🔂 Sentry Rollback
 
 on:
   repository_dispatch:

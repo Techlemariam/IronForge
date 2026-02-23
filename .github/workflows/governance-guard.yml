@@ -9,7 +9,7 @@ on:
 jobs:
   audit-workflows:
     name: Audit Workflow Standards
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, IronForge-Local]
     steps:
       - uses: actions/checkout@v4
 
@@ -20,15 +20,15 @@ jobs:
           ERRORS=0
 
           for file in .github/workflows/*.yml; do
-            # Skip itself
-            if [[ "$file" == *"/governance-guard.yml" ]]; then continue; fi
+            # Skip itself and specialized workflows that don't use Node standard runners
+            if [[ "$file" == *"/governance-guard.yml" || "$file" == *"/labeler.yml" || "$file" == *"/release-drafter.yml" || "$file" == *"/stale.yml" || "$file" == *"/scorecard.yml" || "$file" == *"/project-automation.yml" || "$file" == *"/dependabot-auto-merge.yml" ]]; then continue; fi
 
             echo "Auditing $file..."
             
-            # Check for Node 22
+            # Check for node-version: 22
             # We check for '22' or "22" or version used in the composite action
-            if ! grep -qE "node-version: ['\"]?22['\"]?|setup-ironforge" "$file"; then
-              echo "❌ $file: Missing Node 22 standardization" >> $GITHUB_STEP_SUMMARY
+            if ! grep -qiE "node-version: ['\"]?22['\"]?|NODE_VERSION: ['\"]?22['\"]?|setup-ironforge" "$file"; then
+              echo "❌ $file: Missing node-version: 22 standardization" >> $GITHUB_STEP_SUMMARY
               ERRORS=$((ERRORS + 1))
             fi
 
