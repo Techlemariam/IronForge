@@ -7,8 +7,8 @@ name = "javascript"
 enabled = true
 
   [analyzers.meta]
-  environment = ["browser", "nodejs", "vitest"]
-  module_system = "commonjs"
+  environment = ["browser", "nodejs"]
+  module_system = "es-modules"
   ts_config_path = "tsconfig.json"
 
 [[analyzers]]
