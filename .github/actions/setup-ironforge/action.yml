@@ -45,6 +45,7 @@ runs:
           if ("${{ inputs.tier }}" -eq "e2e") { $idb = "ironforge_e2e" } else { $idb = "ironforge_test" }
           $TargetURL = "$($BaseURL)/$($idb)?schema=public"
           [System.IO.File]::AppendAllText($env:GITHUB_ENV, "DATABASE_URL=$TargetURL`n")
+          [System.IO.File]::AppendAllText($env:GITHUB_ENV, "DIRECT_URL=$TargetURL`n")
           
           # Export Admin URL for maintenance tasks (always points to 'postgres' system DB)
           $AdminURL = "$BaseURL/postgres?schema=public"
