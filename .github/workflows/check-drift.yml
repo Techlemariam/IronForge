@@ -1,0 +1,12 @@
+name: 🔍 Check Drift
+on: [workflow_dispatch]
+jobs:
+  check-drift:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-ironforge
+        with:
+          tier: L2
+      - run: npx prisma db pull
+      - run: git diff prisma/schema.prisma
