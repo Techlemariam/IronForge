@@ -27,7 +27,7 @@ jobs:
             
             # Check for node-version: 22
             # We check for '22' or "22" or version used in the composite action
-            if ! grep -qE "node-version: ['\"]?22['\"]?|NODE_VERSION: ['\"]?22['\"]?|setup-ironforge" "$file"; then
+            if ! grep -qiE "node-version: ['\"]?22['\"]?|NODE_VERSION: ['\"]?22['\"]?|setup-ironforge" "$file"; then
               echo "❌ $file: Missing node-version: 22 standardization" >> $GITHUB_STEP_SUMMARY
               ERRORS=$((ERRORS + 1))
             fi
