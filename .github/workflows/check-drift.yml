@@ -1,0 +1,16 @@
+name: 🔍 Check Drift
+on: [workflow_dispatch]
+jobs:
+  check-drift:
+    runs-on: [self-hosted, IronForge-Local]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-ironforge
+        with:
+          tier: L2
+      - name: DB Pull
+        run: npx prisma db pull
+      - name: Show Drift
+        run: git diff prisma/schema.prisma
+      - name: Cleanup
+        run: git checkout prisma/schema.prisma

@@ -2,6 +2,8 @@
 name: 🗄️ Fix Migrations
 
 on: [workflow_dispatch]
+permissions:
+  contents: write
 
 jobs:
   fix-migrations:
