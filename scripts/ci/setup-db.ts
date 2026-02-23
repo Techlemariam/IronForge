@@ -70,7 +70,9 @@ async function setupDatabase() {
                 // Small delay to allow connections to fully close
                 await new Promise(resolve => setTimeout(resolve, 2000));
 
-                await client.query(`CREATE DATABASE "${dbName}"`);
+                // Use template0 to avoid collation version mismatch on self-hosted runners where
+                // the OS/glibc has been updated without running pg_upgrade on the cluster.
+                await client.query(`CREATE DATABASE "${dbName}" TEMPLATE template0`);
                 console.log(`✨ Database "${dbName}" created successfully.`);
                 break;
             } catch (err) {
