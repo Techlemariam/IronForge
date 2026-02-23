@@ -210,7 +210,7 @@ We use **Snyk** as our primary security gate in Layer 3.
 
 ### 9.3 Deployment (Coolify)
 
-* **Production**: Merges to `main` that pass Tier L2 verification automatically trigger a Coolify webhook.
+* **Production**: Publishing a GitHub Release triggers a Coolify webhook via `coolify-deploy.yml`. Manual deploys can also be triggered via `workflow_dispatch`.
 * **Infrastructure**: Hosted on Hetzner VPS (managed via Tailscale).
 * **Rollbacks**: Automated via Sentry alerts (`sentry-rollback.yml`) if error rates spike.
 
