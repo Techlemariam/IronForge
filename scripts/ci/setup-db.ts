@@ -54,17 +54,36 @@ async function setupDatabase() {
 
         // Create database
         console.log(`🏗️ Creating database "${dbName}"...`);
-        // Terminal all other connections to template1 to avoid "source database is being accessed by other users"
-        console.log(`🧹 Forcibly terminating connections to "template1"...`);
-        await client.query(`
-            SELECT pg_terminate_backend(pg_stat_activity.pid)
-            FROM pg_stat_activity
-            WHERE pg_stat_activity.datname = 'template1'
-              AND pid <> pg_backend_pid();
-        `);
 
-        await client.query(`CREATE DATABASE "${dbName}"`);
-        console.log(`✨ Database "${dbName}" created successfully.`);
+        let createRetries = 3;
+        while (createRetries > 0) {
+            try {
+                // Terminal all other connections to template1 to avoid "source database is being accessed by other users"
+                console.log(`🧹 Forcibly terminating connections to "template1" (Attempt ${4 - createRetries})...`);
+                await client.query(`
+                    SELECT pg_terminate_backend(pg_stat_activity.pid)
+                    FROM pg_stat_activity
+                    WHERE pg_stat_activity.datname = 'template1'
+                      AND pid <> pg_backend_pid();
+                `);
+
+                // Small delay to allow connections to fully close
+                await new Promise(resolve => setTimeout(resolve, 2000));
+
+                await client.query(`CREATE DATABASE "${dbName}"`);
+                console.log(`✨ Database "${dbName}" created successfully.`);
+                break;
+            } catch (err) {
+                createRetries--;
+                const msg = err instanceof Error ? err.message : String(err);
+                if (createRetries > 0 && msg.includes('template1')) {
+                    console.warn(`⚠️ Template1 lock persists. Retrying in 5s...`);
+                    await new Promise(resolve => setTimeout(resolve, 5000));
+                } else {
+                    throw err;
+                }
+            }
+        }
     } catch (error) {
         console.error('❌ Error setting up database:', error);
         // Log more PG-specific details if available
