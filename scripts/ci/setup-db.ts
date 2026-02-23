@@ -56,11 +56,15 @@ async function setupDatabase() {
         console.log(`🏗️ Creating database "${dbName}"...`);
         await client.query(`CREATE DATABASE "${dbName}"`);
         console.log(`✨ Database "${dbName}" created successfully.`);
-    } catch (error) {
-        console.error('❌ Error setting up database:', error);
+    } catch (error: any) {
+        console.error('❌ Error setting up database:', error.message || error);
+        if (error.stack) console.error(error.stack);
+        // If it's a specific PG error, log more details
+        if (error.code) console.error(`PG Error Code: ${error.code}`);
+        if (error.detail) console.error(`PG Error Detail: ${error.detail}`);
         process.exit(1);
     } finally {
-        if (connected) {
+        if (connected && client) {
             await client.end();
         }
     }
