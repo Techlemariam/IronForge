@@ -69,7 +69,11 @@ export async function ensureTitanAction(userId: string) {
       },
     });
 
-    revalidatePath("/citadel");
+    // NOTE: Do NOT call revalidatePath here.
+    // ensureTitanAction is invoked during RSC render (dashboard/page.tsx) —
+    // calling revalidatePath during render is unsupported by Next.js.
+    // Cache invalidation for /citadel is handled by mutation-specific actions
+    // (updateTitanAction, awardTitanXpAction, etc.) that are triggered by user interactions.
     return { success: true, data: titan };
   } catch (error) {
     console.error("Error ensuring titan:", error);
