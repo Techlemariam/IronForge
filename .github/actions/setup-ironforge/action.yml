@@ -41,7 +41,7 @@ runs:
           }
           
           $Port = $PortMap["${{ inputs.tier }}"]
-          $BaseURL = "postgresql://postgres:password@host.docker.internal:$Port"
+          $BaseURL = "postgresql://postgres:password@127.0.0.1:$Port"
           if ("${{ inputs.tier }}" -eq "e2e") { $idb = "ironforge_e2e" } else { $idb = "ironforge_test" }
           $TargetURL = "$($BaseURL)/$($idb)?schema=public"
           [System.IO.File]::AppendAllText($env:GITHUB_ENV, "DATABASE_URL=$TargetURL`n")
