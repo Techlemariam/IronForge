@@ -66,7 +66,7 @@ function getTaskDirectory(): string {
     // 3. Fallback to hardcoded Antigravity path if we can't find it (Windows specific)
     const userProfile = process.env.USERPROFILE;
     if (userProfile) {
-        const antigravityTasks = path.join(userProfile, ".gemini", "antigravity", "tasks"); // Guessing path
+        // const antigravityTasks = path.join(userProfile, ".gemini", "antigravity", "tasks"); // Guessing path
         // Better fallback: just use the CWD fallback but log warning
     }
 
@@ -135,7 +135,7 @@ server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
         let antigravityAvailable = false;
         try {
             antigravityAvailable = fs.existsSync(taskDir);
-        } catch (_e) {
+        } catch {
             antigravityAvailable = false;
         }
 
@@ -255,7 +255,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
                 if (!fs.existsSync(taskDir)) {
                     try {
                         fs.mkdirSync(taskDir, { recursive: true });
-                    } catch (_e) {
+                    } catch {
                         // Ignore, let write fail or fallback
                     }
                 }

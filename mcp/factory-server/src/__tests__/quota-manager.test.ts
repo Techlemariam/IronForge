@@ -20,7 +20,7 @@ describe('quota-manager', () => {
         if (fs.existsSync(tempFile)) {
             try {
                 fs.unlinkSync(tempFile);
-            } catch (_e) {
+            } catch {
                 // Ignore
             }
         }

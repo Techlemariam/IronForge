@@ -11,7 +11,7 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
-import * as yaml from 'yaml'; // Note: requires yaml dep or use simple parser
+// import * as yaml from 'yaml'; // Note: requires yaml dep or use simple parser
 
 // ---------------------------------------------------------------------------
 // Types
@@ -45,8 +45,8 @@ function analyzeDuplicateSteps(content: string): Optimization[] {
 
     // Count occurrences of common setup patterns
     const checkoutCount = (content.match(/actions\/checkout@/g) || []).length;
-    const pnpmSetupCount = (content.match(/pnpm\/action-setup@/g) || []).length;
-    const nodeSetupCount = (content.match(/actions\/setup-node@/g) || []).length;
+    const _pnpmSetupCount = (content.match(/pnpm\/action-setup@/g) || []).length;
+    const _nodeSetupCount = (content.match(/actions\/setup-node@/g) || []).length;
     const installCount = (content.match(/pnpm install --frozen-lockfile/g) || []).length;
     const prismaGenCount = (content.match(/prisma generate/g) || []).length;
 

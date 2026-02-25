@@ -26,11 +26,7 @@ interface Issue {
     autoFixable: boolean;
 }
 
-interface WorkflowStats {
-    total: number;
-    optimized: number;
-    issues: Issue[];
-}
+// removed unused interface WorkflowStats
 
 function parseFrontmatter(content: string): Record<string, any> | null {
     const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
