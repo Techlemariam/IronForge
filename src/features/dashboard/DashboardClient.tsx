@@ -186,18 +186,8 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
         hasCompletedOnboarding={hasCompletedOnboarding}
         leaderboardData={leaderboardData}
         platform={platform}
-        showOnboarding={showOnboarding}
         onSaveWorkout={handleSaveWorkout}
         onToggleCoach={() => dispatch({ type: "TOGGLE_COACH" })}
-        onShowOnboardingComplete={(newState) => {
-          setShowOnboarding(false);
-          if (newState) {
-            dispatch({
-              type: "RECALCULATE_PROGRESSION",
-              payload: { level: newState.level },
-            });
-          }
-        }}
       />
       {showOnboarding && (
         <FirstLoginQuest
