@@ -79,7 +79,7 @@ async function main() {
     if (action === 'list-apps') {
         console.log("!!! STARTING LIST-APPS OPERATION !!!");
         try {
-            const res = await request('/api/v1/applications');
+            const res = await request('/api/v1/services');
             console.log("!!! API RESPONSE RECEIVED !!!");
             console.log("Status Code:", res.status);
             console.log("--- DATA START ---");
