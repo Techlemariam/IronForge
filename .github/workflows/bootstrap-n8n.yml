@@ -1,0 +1,18 @@
+name: "🩺 Bootstrap n8n Workflows"
+
+on:
+  workflow_dispatch:
+
+jobs:
+  bootstrap:
+    runs-on: [self-hosted, IronForge-Local]
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: "🚀 Activate Workflows"
+        env:
+          N8N_API_KEY: ${{ secrets.N8N_API_KEY }}
+          N8N_HOST: "https://ironforge-coolify.tailafb692.ts.net"
+          NODE_TLS_REJECT_UNAUTHORIZED: "0"
+        run: |
+          node scripts/ci/activate-n8n-bootstrap.js
