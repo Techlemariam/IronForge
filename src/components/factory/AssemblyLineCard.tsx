@@ -3,9 +3,6 @@
 import React from "react";
 import { motion } from "framer-motion";
 import {
-    Code2,
-    CheckCircle2,
-    Rocket,
     Palette,
     AlertCircle,
     User,

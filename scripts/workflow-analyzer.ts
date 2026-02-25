@@ -271,9 +271,9 @@ function analyzeFile(filePath: string, fixMode: boolean, knownSkills: Set<string
     // 4. Turbo Opportunities
     // Look for bash code blocks without // turbo
     const lines = content.split('\n');
-    let codeBlockOpen = false;
-    let insideBash = false;
-    let justSawTurbo = false;
+    let _codeBlockOpen = false;
+    let _insideBash = false;
+    let _justSawTurbo = false;
     let contentChanged = false;
 
     // Check if content was already changed by pnpm fix
