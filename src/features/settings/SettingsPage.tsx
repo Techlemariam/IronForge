@@ -165,7 +165,11 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
                     Hide RPG visuals and focus on pure training data. Efficient for weak neural links.
                   </p>
                 </div>
-                <Toggle checked={liteMode} onCheckedChange={handleLiteModeToggle} />
+                <Toggle
+                  checked={liteMode}
+                  onCheckedChange={handleLiteModeToggle}
+                  ariaLabel="Toggle Lite Mode"
+                />
               </div>
             </div>
           </TabsContent>
