@@ -179,11 +179,18 @@ jobs:
           WORKFLOW_INPUT: ${{ needs.validate.outputs.workflow }}
           MODEL_INPUT: ${{ needs.validate.outputs.model }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          N8N_API_KEY: ${{ secrets.N8N_API_KEY }}
+          N8N_HOST: "https://ironforge-coolify.tailafb692.ts.net"
+          NODE_TLS_REJECT_UNAUTHORIZED: "0"
         shell: pwsh
         run: |
           $workflowName = $env:WORKFLOW_INPUT -replace "^/", ""
           Write-Host "🚀 Running Direct Execution: $workflowName" -ForegroundColor Cyan
-          .\scripts\workflow-launcher.ps1 -Workflow $workflowName -Model $env:MODEL_INPUT
+          if ($workflowName -eq "bootstrap-n8n") {
+            node scripts/ci/activate-n8n-bootstrap.js
+          } else {
+            .\scripts\workflow-launcher.ps1 -Workflow $workflowName -Model $env:MODEL_INPUT
+          }
 
 
       - name: 📢 Report Result
