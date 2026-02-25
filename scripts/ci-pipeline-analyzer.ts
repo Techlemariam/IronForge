@@ -44,7 +44,7 @@ function analyzeDuplicateSteps(content: string): Optimization[] {
     const optimizations: Optimization[] = [];
 
     // Count occurrences of common setup patterns
-    const checkoutCount = (content.match(/actions\/checkout@/g) || []).length;
+    const _checkoutCount = (content.match(/actions\/checkout@/g) || []).length;
     const _pnpmSetupCount = (content.match(/pnpm\/action-setup@/g) || []).length;
     const _nodeSetupCount = (content.match(/actions\/setup-node@/g) || []).length;
     const installCount = (content.match(/pnpm install --frozen-lockfile/g) || []).length;

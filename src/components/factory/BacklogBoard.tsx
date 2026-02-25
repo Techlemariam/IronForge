@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { ClipboardList, AlertCircle, Play, Loader2, CheckCircle2 } from 'lucide-react';
 import { getBacklogItemsAction, startBacklogTaskAction } from '@/actions/factory';
 
 
