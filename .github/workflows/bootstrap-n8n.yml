@@ -15,4 +15,6 @@ jobs:
           N8N_HOST: "https://ironforge-coolify.tailafb692.ts.net"
           NODE_TLS_REJECT_UNAUTHORIZED: "0"
         run: |
+          echo "Checking connectivity to n8n..."
+          curl -I -k https://ironforge-coolify.tailafb692.ts.net/api/v1/workflows || echo "cURL failed"
           node scripts/ci/activate-n8n-bootstrap.js

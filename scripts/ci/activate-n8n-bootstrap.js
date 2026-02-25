@@ -63,9 +63,14 @@ async function request(url, options = {}) {
 }
 
 async function activate() {
+    console.log("--- ACTIVATION BOOTSTRAP START ---");
+    console.log(`Target Host: ${HOST}`);
+    console.log(`API Key Length: ${API_KEY ? API_KEY.length : 0}`);
+
     console.log(`Starting activation on ${HOST}...`);
 
     for (const workflowPath of workflows) {
+        console.log(`Looking for file: ${workflowPath}`);
         const filePath = path.resolve(workflowPath);
         if (!fs.existsSync(filePath)) {
             console.error(`Workflow file not found: ${workflowPath}`);
