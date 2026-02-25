@@ -78,7 +78,7 @@ export function VoiceCommandControl() {
             } else {
                 setError('Kunde inte spara uppgiften.');
             }
-        } catch (_err) {
+        } catch {
             setError('Ett fel uppstod vid kommunikation med servern.');
         } finally {
             setIsProcessing(false);

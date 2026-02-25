@@ -119,9 +119,9 @@ export function QuickLogWidget({
 
       {/* RPE (Optional) */}
       <div className="mb-4">
-        <label id="rpe-label" className="text-sm text-gray-400 mb-2 block">
+        <div id="rpe-label" className="text-sm text-gray-400 mb-2 block">
           RPE (optional)
-        </label>
+        </div>
         <div role="group" aria-labelledby="rpe-label" className="flex gap-1">
           {[6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10].map((r) => (
             <button

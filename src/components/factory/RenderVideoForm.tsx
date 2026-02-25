@@ -26,7 +26,7 @@ export function RenderVideoForm() {
     let props;
     try {
       props = JSON.parse(propsJson);
-    } catch (_error) {
+    } catch {
       setIsLoading(false);
       setResult({ message: 'Fel:', error: 'Ogiltig JSON. Kontrollera din indata.' });
       return;

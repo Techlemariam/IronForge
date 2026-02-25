@@ -8,23 +8,20 @@ import { useRouter } from "next/navigation";
 
 import { saveWorkoutAction } from "@/actions/integrations/hevy";
 
-import { motion } from "framer-motion";
+
 import { mapQuestToHevyPayload } from "@/utils/hevyAdapter";
 
 
 import { getProgressionAction } from "@/actions/progression/core";
-import GeminiLiveCoach from "@/features/training/components/GeminiLiveCoach";
-import { Settings } from "lucide-react";
+
 
 
 import { Faction } from "@/types/training";
-import { OracleChat } from "@/features/oracle/components/OracleChat";
+
 
 // Dynamic Imports moved to ViewRouter
 import { FirstLoginQuest } from "@/features/onboarding/FirstLoginQuest";
-import { PersistentHeader } from "@/components/core/PersistentHeader";
-import { CoachToggle } from "./components/CoachToggle";
-import { ViewRouter } from "./components/ViewRouter";
+
 import { CodexLoader } from "./components/SecondaryViews";
 import {
   View,
