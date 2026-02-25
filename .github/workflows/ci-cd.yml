@@ -241,7 +241,7 @@ jobs:
       - name: Verify Prisma Drift
         shell: pwsh
         run: |
-          npx prisma migrate diff --from-migrations prisma/migrations --to-schema prisma/schema.prisma --exit-code
+          npx prisma migrate diff --from-migrations prisma/migrations --to-schema prisma/schema.prisma --shadow-database-url $env:SHADOW_DATABASE_URL --exit-code
 
   # Automatic Deployment Trigger (L2 Success)
   deploy-verification:
