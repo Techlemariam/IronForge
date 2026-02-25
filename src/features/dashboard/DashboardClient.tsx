@@ -2,7 +2,6 @@
 
 import React, { useReducer, useEffect, useState } from "react";
 import { toast } from "@/components/ui/GameToast";
-import { toast } from "@/components/ui/GameToast";
 import { useRouter } from "next/navigation";
 
 
