@@ -63,34 +63,29 @@ jobs:
         run: pnpm run ci:l1
 
       # ==================================================================
-      # ACTIVE HANDOVER: Proactive Monitoring on Success
+      # ACTIVE HANDOVER v4: n8n Triage Router
       # ==================================================================
-      - name: "✨ Active Handover: Proactive Optimization"
-        if: success()
-        run: |
-          printf "❇️ CI Doctor: Success detected. Initiating Proactive Monitoring...\n"
-          mkdir -p .agent/tasks
-          
-          # Check for CodeRabbit presence to trigger Optimizer
-          if gh pr view --json reviews -q '.reviews[].author.login' | grep -q "coderabbit"; then
-             printf "🤖 Triggering Code Optimizer...\n"
-             printf "OPTIMIZE: Implement CodeRabbit suggestions in $GITHUB_SHA\n" > .agent/tasks/doctor-code-optimize.md
-          fi
-
-          # Proactive Security Check
-          printf "🛡️ Triggering Security Sentinel...\n"
-          printf "HARDEN: Proactive security scan for $GITHUB_SHA\n" > .agent/tasks/doctor-security-sentinel.md
-
-
-      # ==================================================================
-      # ACTIVE HANDOVER: Auto-Triage on Failure
-      # ==================================================================
-      - name: "🩺 Active Handover: Auto-Triage"
+      - name: "🩺 Active Handover: Dispatch to n8n"
         if: failure()
+        shell: pwsh
+        env:
+          N8N_WEBHOOK_URL: ${{ secrets.N8N_CI_TRIAGE_WEBHOOK_URL }}
         run: |
-          printf "🚨 CI Doctor: Failure detected in L1. Initiating Board-Level Triage...\n"
-          printf "⚠️ Extracting logs for AI diagnosis is currently disabled for cross-platform compatibility.\n"
-          printf "FIX: L1 Failure in $GITHUB_SHA\n" > .agent/tasks/doctor-infra-signal.md
+          $payload = @{
+            job_name = 'l1-verify'
+            run_id = '${{ github.run_id }}'
+            pr_number = '${{ github.event.pull_request.number }}'
+            branch = '${{ github.head_ref || github.ref_name }}'
+            conclusion = 'failure'
+            logs_summary = 'L1 Verify failed: lint, types, or tests'
+          } | ConvertTo-Json -Compress
+          
+          if ($env:N8N_WEBHOOK_URL) {
+            Invoke-RestMethod -Uri $env:N8N_WEBHOOK_URL -Method Post -Body $payload -ContentType 'application/json'
+            Write-Host "🩺 Dispatched to n8n CI Triage Router"
+          } else {
+            Write-Host "⚠️ N8N_CI_TRIAGE_WEBHOOK_URL not set. Skipping Active Handover."
+          }
 
 
   # ==================================================================
@@ -118,6 +113,24 @@ jobs:
         continue-on-error: true
       - name: Turbo L2 verification
         run: pnpm run ci:l2
+      - name: "🩺 Active Handover: L2 Failure"
+        if: failure()
+        shell: pwsh
+        env:
+          N8N_WEBHOOK_URL: ${{ secrets.N8N_CI_TRIAGE_WEBHOOK_URL }}
+        run: |
+          $payload = @{
+            job_name = 'l2-verification'
+            run_id = '${{ github.run_id }}'
+            pr_number = '${{ github.event.pull_request.number }}'
+            branch = '${{ github.head_ref || github.ref_name }}'
+            conclusion = 'failure'
+            logs_summary = 'L2 Verification failed: build or integration tests'
+          } | ConvertTo-Json -Compress
+          if ($env:N8N_WEBHOOK_URL) {
+            Invoke-RestMethod -Uri $env:N8N_WEBHOOK_URL -Method Post -Body $payload -ContentType 'application/json'
+            Write-Host "🩺 Dispatched L2 failure to n8n"
+          }
 
   # 🐳 DOCKER VERIFICATION
   docker-verify:
@@ -242,6 +255,24 @@ jobs:
         shell: pwsh
         run: |
           npx prisma migrate diff --from-migrations prisma/migrations --to-schema prisma/schema.prisma --shadow-database-url $env:SHADOW_DATABASE_URL --exit-code
+      - name: "🩺 Active Handover: DB Guard Failure"
+        if: failure()
+        shell: pwsh
+        env:
+          N8N_WEBHOOK_URL: ${{ secrets.N8N_CI_TRIAGE_WEBHOOK_URL }}
+        run: |
+          $payload = @{
+            job_name = 'l2-db-guard'
+            run_id = '${{ github.run_id }}'
+            pr_number = '${{ github.event.pull_request.number }}'
+            branch = '${{ github.head_ref || github.ref_name }}'
+            conclusion = 'failure'
+            logs_summary = 'DB Guard failed: Prisma schema drift or shadow DB error'
+          } | ConvertTo-Json -Compress
+          if ($env:N8N_WEBHOOK_URL) {
+            Invoke-RestMethod -Uri $env:N8N_WEBHOOK_URL -Method Post -Body $payload -ContentType 'application/json'
+            Write-Host "🩺 Dispatched DB Guard failure to n8n"
+          }
 
   # Automatic Deployment Trigger (L2 Success)
   deploy-verification:

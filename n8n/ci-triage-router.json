@@ -1,0 +1,297 @@
+{
+    "name": "CI Triage Router",
+    "nodes": [
+        {
+            "parameters": {
+                "httpMethod": "POST",
+                "path": "ci-triage",
+                "responseMode": "onReceived",
+                "responseData": "allEntries"
+            },
+            "id": "webhook-trigger",
+            "name": "CI Failure Webhook",
+            "type": "n8n-nodes-base.webhook",
+            "typeVersion": 2,
+            "position": [
+                250,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "rules": {
+                    "rules": [
+                        {
+                            "value": "l1-verify",
+                            "output": 0
+                        },
+                        {
+                            "value": "l2-db-guard",
+                            "output": 1
+                        },
+                        {
+                            "value2": "e2e",
+                            "operation": "contains",
+                            "output": 2
+                        },
+                        {
+                            "value2": "security",
+                            "operation": "contains",
+                            "output": 3
+                        }
+                    ],
+                    "fallbackOutput": 4
+                },
+                "dataPropertyName": "={{$json.body.job_name}}"
+            },
+            "id": "switch-router",
+            "name": "Job Router",
+            "type": "n8n-nodes-base.switch",
+            "typeVersion": 3,
+            "position": [
+                500,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "method": "POST",
+                "url": "https://api.github.com/repos/Techlemariam/IronForge/dispatches",
+                "authentication": "genericCredentialType",
+                "genericAuthType": "httpHeaderAuth",
+                "sendBody": true,
+                "bodyParameters": {
+                    "parameters": [
+                        {
+                            "name": "event_type",
+                            "value": "doctor-code"
+                        },
+                        {
+                            "name": "client_payload",
+                            "value": "={{ JSON.stringify({ run_id: $json.body.run_id, pr_number: $json.body.pr_number, branch: $json.body.branch, job_name: $json.body.job_name, logs_summary: $json.body.logs_summary || '' }) }}"
+                        }
+                    ]
+                }
+            },
+            "id": "dispatch-code",
+            "name": "Dispatch: doctor-code",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.2,
+            "position": [
+                750,
+                100
+            ],
+            "credentials": {
+                "httpHeaderAuth": {
+                    "id": "GITHUB_TOKEN_CREDENTIAL_ID",
+                    "name": "GitHub PAT"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "method": "POST",
+                "url": "https://api.github.com/repos/Techlemariam/IronForge/dispatches",
+                "authentication": "genericCredentialType",
+                "genericAuthType": "httpHeaderAuth",
+                "sendBody": true,
+                "bodyParameters": {
+                    "parameters": [
+                        {
+                            "name": "event_type",
+                            "value": "doctor-infra"
+                        },
+                        {
+                            "name": "client_payload",
+                            "value": "={{ JSON.stringify({ run_id: $json.body.run_id, pr_number: $json.body.pr_number, branch: $json.body.branch, job_name: $json.body.job_name, logs_summary: $json.body.logs_summary || '' }) }}"
+                        }
+                    ]
+                }
+            },
+            "id": "dispatch-infra",
+            "name": "Dispatch: doctor-infra",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.2,
+            "position": [
+                750,
+                300
+            ],
+            "credentials": {
+                "httpHeaderAuth": {
+                    "id": "GITHUB_TOKEN_CREDENTIAL_ID",
+                    "name": "GitHub PAT"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "method": "POST",
+                "url": "https://api.github.com/repos/Techlemariam/IronForge/dispatches",
+                "authentication": "genericCredentialType",
+                "genericAuthType": "httpHeaderAuth",
+                "sendBody": true,
+                "bodyParameters": {
+                    "parameters": [
+                        {
+                            "name": "event_type",
+                            "value": "doctor-qa"
+                        },
+                        {
+                            "name": "client_payload",
+                            "value": "={{ JSON.stringify({ run_id: $json.body.run_id, pr_number: $json.body.pr_number, branch: $json.body.branch, job_name: $json.body.job_name, logs_summary: $json.body.logs_summary || '' }) }}"
+                        }
+                    ]
+                }
+            },
+            "id": "dispatch-qa",
+            "name": "Dispatch: doctor-qa",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.2,
+            "position": [
+                750,
+                500
+            ],
+            "credentials": {
+                "httpHeaderAuth": {
+                    "id": "GITHUB_TOKEN_CREDENTIAL_ID",
+                    "name": "GitHub PAT"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "method": "POST",
+                "url": "https://api.github.com/repos/Techlemariam/IronForge/dispatches",
+                "authentication": "genericCredentialType",
+                "genericAuthType": "httpHeaderAuth",
+                "sendBody": true,
+                "bodyParameters": {
+                    "parameters": [
+                        {
+                            "name": "event_type",
+                            "value": "doctor-security"
+                        },
+                        {
+                            "name": "client_payload",
+                            "value": "={{ JSON.stringify({ run_id: $json.body.run_id, pr_number: $json.body.pr_number, branch: $json.body.branch, job_name: $json.body.job_name, logs_summary: $json.body.logs_summary || '' }) }}"
+                        }
+                    ]
+                }
+            },
+            "id": "dispatch-security",
+            "name": "Dispatch: doctor-security",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.2,
+            "position": [
+                750,
+                700
+            ],
+            "credentials": {
+                "httpHeaderAuth": {
+                    "id": "GITHUB_TOKEN_CREDENTIAL_ID",
+                    "name": "GitHub PAT"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "method": "POST",
+                "url": "https://api.github.com/repos/Techlemariam/IronForge/dispatches",
+                "authentication": "genericCredentialType",
+                "genericAuthType": "httpHeaderAuth",
+                "sendBody": true,
+                "bodyParameters": {
+                    "parameters": [
+                        {
+                            "name": "event_type",
+                            "value": "doctor-code"
+                        },
+                        {
+                            "name": "client_payload",
+                            "value": "={{ JSON.stringify({ run_id: $json.body.run_id, pr_number: $json.body.pr_number, branch: $json.body.branch, job_name: $json.body.job_name, logs_summary: 'Unknown failure type - defaulting to code doctor', fallback: true }) }}"
+                        }
+                    ]
+                }
+            },
+            "id": "dispatch-fallback",
+            "name": "Dispatch: Fallback (doctor-code)",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.2,
+            "position": [
+                750,
+                900
+            ],
+            "credentials": {
+                "httpHeaderAuth": {
+                    "id": "GITHUB_TOKEN_CREDENTIAL_ID",
+                    "name": "GitHub PAT"
+                }
+            }
+        }
+    ],
+    "connections": {
+        "CI Failure Webhook": {
+            "main": [
+                [
+                    {
+                        "node": "Job Router",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Job Router": {
+            "main": [
+                [
+                    {
+                        "node": "Dispatch: doctor-code",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "Dispatch: doctor-infra",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "Dispatch: doctor-qa",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "Dispatch: doctor-security",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "Dispatch: Fallback (doctor-code)",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    },
+    "settings": {
+        "executionOrder": "v1"
+    },
+    "tags": [
+        {
+            "name": "ci",
+            "id": "1"
+        },
+        {
+            "name": "active-handover",
+            "id": "2"
+        }
+    ]
+}
