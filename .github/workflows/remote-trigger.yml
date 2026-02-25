@@ -181,6 +181,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           N8N_API_KEY: ${{ secrets.N8N_API_KEY }}
           N8N_HOST: "https://ironforge-coolify.tailafb692.ts.net"
+          COOLIFY_API_KEY: ${{ secrets.COOLIFY_API_KEY }}
           NODE_TLS_REJECT_UNAUTHORIZED: "0"
         shell: pwsh
         run: |
