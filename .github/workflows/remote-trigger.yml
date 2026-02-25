@@ -43,6 +43,16 @@ on:
         required: false
         type: boolean
         default: false
+      COOLIFY_ACTION:
+        description: "Action for coolify-ops"
+        required: false
+        default: "list-apps"
+      APP_UUID:
+        description: "App UUID for coolify-ops"
+        required: false
+      CMD:
+        description: "Command for coolify-ops"
+        required: false
   repository_dispatch:
     types:
       - remote-trigger
@@ -189,8 +199,14 @@ jobs:
           Write-Host "🚀 Running Direct Execution: $workflowName" -ForegroundColor Cyan
           if ($workflowName -eq "bootstrap-n8n") {
             node scripts/ci/activate-n8n-bootstrap.js
+          } elseif ($workflowName -eq "coolify-ops") {
+            $env:COOLIFY_ACTION = "${{ github.event.client_payload.COOLIFY_ACTION }}"
+            if (-not $env:COOLIFY_ACTION) { $env:COOLIFY_ACTION = "${{ inputs.COOLIFY_ACTION }}" }
+            $env:APP_UUID = "${{ github.event.client_payload.APP_UUID }}"
+            $env:CMD = "${{ github.event.client_payload.CMD }}"
+            node scripts/ci/coolify-ops.js
           } else {
-            .\scripts\workflow-launcher.ps1 -Workflow $workflowName -Model $env:MODEL_INPUT
+            ./scripts/workflow-launcher.ps1 -Workflow $workflowName -Model $env:MODEL_INPUT
           }
 
 
