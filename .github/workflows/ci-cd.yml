@@ -113,6 +113,9 @@ jobs:
             turbo-l2-${{ runner.os }}-
       - name: Initialize DB (L2)
         run: npx prisma db push
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps chromium
+        continue-on-error: true
       - name: Turbo L2 verification
         run: pnpm run ci:l2
 
@@ -230,10 +233,13 @@ jobs:
         with:
           tier: 'l2'
       - name: Create Shadow Database
+        shell: pwsh
         run: npx tsx scripts/ci/setup-db.ts
         env:
           TARGET_DB: ironforge_shadow
+          ADMIN_DATABASE_URL: ${{ env.ADMIN_DATABASE_URL }}
       - name: Verify Prisma Drift
+        shell: pwsh
         run: |
           npx prisma migrate diff --from-migrations prisma/migrations --to-schema prisma/schema.prisma --exit-code
 
