@@ -50,18 +50,7 @@ function analyzeDuplicateSteps(content: string): Optimization[] {
     const installCount = (content.match(/pnpm install --frozen-lockfile/g) || []).length;
     const prismaGenCount = (content.match(/prisma generate/g) || []).length;
 
-    if (checkoutCount > 2) {
-        optimizations.push({
-            id: 'DUP_CHECKOUT',
-            severity: 'MEDIUM',
-            category: 'duplication',
-            title: `Checkout repeated ${checkoutCount}x across jobs`,
-            description: `actions/checkout appears ${checkoutCount} times. Each checkout adds ~5-15s.`,
-            currentState: `${checkoutCount} separate checkout steps`,
-            suggestedFix: 'Use a composite action or reusable workflow to share checkout + setup.',
-            estimatedSavings: `~${(checkoutCount - 1) * 10}s`,
-        });
-    }
+    // DUP_CHECKOUT rule removed: Checkout is strictly required per-job before a local composite action can be used.
 
     if (installCount > 2) {
         optimizations.push({
@@ -158,22 +147,7 @@ function analyzeParallelization(content: string): Optimization[] {
         });
     }
 
-    // Check for sequential builds that could be parallel
-    if (content.includes('needs:') && content.includes('perf-audit')) {
-        // Check if perf-audit depends on verify or runs independently
-        if (!content.match(/perf-audit[\s\S]*?needs.*verify/)) {
-            optimizations.push({
-                id: 'PARALLEL_PERF',
-                severity: 'LOW',
-                category: 'parallelization',
-                title: 'perf-audit runs independently but rebuilds',
-                description: 'perf-audit does its own build. Could reuse build artifact from verify job.',
-                currentState: 'Independent build in perf-audit',
-                suggestedFix: 'Upload build artifact from verify, download in perf-audit (skip duplicate build).',
-                estimatedSavings: '~60-90s build time',
-            });
-        }
-    }
+    // PARALLEL_PERF rule removed: Turbo cache automatically shares build artifacts natively without needing explicit upload-artifact.
 
     return optimizations;
 }

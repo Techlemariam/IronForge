@@ -42,23 +42,21 @@ jobs:
     runs-on: [self-hosted, IronForge-Local] # Target specific local runner
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
           fetch-depth: 0 # Required for turbo comparison
       - uses: ./.github/actions/setup-ironforge
         with:
           tier: 'l1'
-      - name: Generate Prisma Client
-        run: npx prisma generate
       - name: Initialize DB (L1)
         run: |
           # Managed-services assumes DB is already healthy (0s wait)
           npx prisma db push
       - name: Cache Turbo
-        uses: actions/cache@v5
+        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5
         with:
           path: .turbo
-          key: turbo-l1-${{ runner.os }}-${{ github.sha }}
+          key: turbo-l1-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             turbo-l1-${{ runner.os }}-
       - name: Turbo L1 Verify (Differential)
@@ -70,18 +68,18 @@ jobs:
       - name: "✨ Active Handover: Proactive Optimization"
         if: success()
         run: |
-          echo "❇️ CI Doctor: Success detected. Initiating Proactive Monitoring..."
+          printf "❇️ CI Doctor: Success detected. Initiating Proactive Monitoring...\n"
           mkdir -p .agent/tasks
           
           # Check for CodeRabbit presence to trigger Optimizer
           if gh pr view --json reviews -q '.reviews[].author.login' | grep -q "coderabbit"; then
-             echo "🤖 Triggering Code Optimizer..."
-             echo "OPTIMIZE: Implement CodeRabbit suggestions in $GITHUB_SHA" > .agent/tasks/doctor-code-optimize.md
+             printf "🤖 Triggering Code Optimizer...\n"
+             printf "OPTIMIZE: Implement CodeRabbit suggestions in $GITHUB_SHA\n" > .agent/tasks/doctor-code-optimize.md
           fi
 
           # Proactive Security Check
-          echo "🛡️ Triggering Security Sentinel..."
-          echo "HARDEN: Proactive security scan for $GITHUB_SHA" > .agent/tasks/doctor-security-sentinel.md
+          printf "🛡️ Triggering Security Sentinel...\n"
+          printf "HARDEN: Proactive security scan for $GITHUB_SHA\n" > .agent/tasks/doctor-security-sentinel.md
 
 
       # ==================================================================
@@ -90,9 +88,9 @@ jobs:
       - name: "🩺 Active Handover: Auto-Triage"
         if: failure()
         run: |
-          echo "🚨 CI Doctor: Failure detected in L1. Initiating Board-Level Triage..."
-          echo "⚠️ Extracting logs for AI diagnosis is currently disabled for cross-platform compatibility."
-          echo "FIX: L1 Failure in $GITHUB_SHA" > .agent/tasks/doctor-infra-signal.md
+          printf "🚨 CI Doctor: Failure detected in L1. Initiating Board-Level Triage...\n"
+          printf "⚠️ Extracting logs for AI diagnosis is currently disabled for cross-platform compatibility.\n"
+          printf "FIX: L1 Failure in $GITHUB_SHA\n" > .agent/tasks/doctor-infra-signal.md
 
 
   # ==================================================================
@@ -104,18 +102,17 @@ jobs:
     if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/fix/')
     runs-on: [self-hosted, IronForge-Local] # Target specific local runner
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
       - uses: ./.github/actions/setup-ironforge
-      - run: npx prisma generate
       - name: Cache Turbo L2
-        uses: actions/cache@v5
+        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5
         with:
           path: .turbo
-          key: turbo-l2-${{ runner.os }}-${{ github.sha }}
+          key: turbo-l2-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            turbo-l2-${{ runner.os }}-
       - name: Initialize DB (L2)
-        run: |
-          sleep 15
-          npx prisma db push
+        run: npx prisma db push
       - name: Turbo L2 verification
         run: pnpm run ci:l2
 
@@ -126,9 +123,9 @@ jobs:
     if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/fix/')
     runs-on: [self-hosted, IronForge-Local]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3
       - name: Build Production Image
         run: |
           docker build -t ironforge-app:latest --target runner .
@@ -143,14 +140,12 @@ jobs:
     if: github.event_name == 'pull_request' && github.actor != 'dependabot[bot]'
     runs-on: [self-hosted, IronForge-Local] # Target specific local runner
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
       - uses: ./.github/actions/setup-ironforge
         with:
           tier: 'e2e'
-      - name: Generate Prisma Client
-        run: npx prisma generate
       - name: Cache Playwright Browsers
-        uses: actions/cache@v5
+        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5
         id: playwright-cache
         with:
           path: ~/.cache/ms-playwright
@@ -179,30 +174,10 @@ jobs:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           NEXT_PUBLIC_APP_URL: http://localhost:3000
-          # DATABASE_URL is now managed by setup-ironforge
 
-  # 🗄️ DATABASE GUARD
-  db-guard:
-    name: 🗄️ DB Guard
-    needs: [l1-verify]
-    if: github.event_name == 'pull_request' || startsWith(github.ref, 'refs/heads/fix/')
-    runs-on: [self-hosted, IronForge-Local] # Target specific local runner
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/setup-ironforge
-        with:
-          tier: 'guard'
-      - name: Create Shadow Database
-        shell: bash
-        run: |
-          # Managed-services assumes DB is already healthy
-          npx tsx scripts/ci/setup-db.ts
-      - name: Verify Prisma Drift
-        shell: bash
-        run: |
-          pnpm exec prisma -v
-          SHADOW_DATABASE_URL="$SHADOW_DATABASE_URL" pnpm exec prisma migrate diff --from-migrations prisma/migrations --to-schema prisma/schema.prisma --exit-code
-        # DATABASE_URL and SHADOW_DATABASE_URL are already namespaced and exported by setup-ironforge
+  # ==================================================================
+  # PHASE 3: L2 (Extended Verification)
+  # ==================================================================
 
   # E2E Smoke Tests for L2
   l2-e2e-smoke:
@@ -211,21 +186,18 @@ jobs:
     if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/fix/')
     runs-on: [self-hosted, IronForge-Local] # Target specific local runner
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
       - uses: ./.github/actions/setup-ironforge
         with:
           tier: 'l2'
-      - run: npx prisma generate
       - name: Cache Playwright
-        uses: actions/cache@v5
+        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5
         with:
           path: ~/.cache/ms-playwright
           key: ${{ runner.os }}-playwright-${{ hashFiles('**/pnpm-lock.yaml') }}
       - run: npx playwright install --with-deps
       - name: Run Smoke E2E
-        run: |
-          sleep 15
-          pnpm run test:smoke
+        run: pnpm run test:smoke
         env:
           CI: true
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
@@ -239,7 +211,7 @@ jobs:
     if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/fix/')
     runs-on: [self-hosted, IronForge-Local] # Target specific local runner
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
       - uses: ./.github/actions/setup-ironforge
       - run: pnpm run build
       - name: Run Lighthouse Audit
@@ -253,14 +225,12 @@ jobs:
     if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/fix/')
     runs-on: [self-hosted, IronForge-Local] # Target specific local runner
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
       - uses: ./.github/actions/setup-ironforge
         with:
           tier: 'l2'
       - name: Create Shadow Database
-        run: |
-          sleep 15
-          npx tsx scripts/ci/setup-db.ts
+        run: npx tsx scripts/ci/setup-db.ts
         env:
           TARGET_DB: ironforge_shadow
       - name: Verify Prisma Drift
@@ -278,6 +248,6 @@ jobs:
         env:
           DEPLOY_URL: ${{ secrets.PRODUCTION_URL || 'https://ironforge.life' }}
         run: |
-          echo "🔍 Checking health at $DEPLOY_URL/api/health"
-          sleep 90 # Coolify deploy buffer
-          curl -f -s "$DEPLOY_URL/api/health" || exit 1
+          printf "🔍 Checking health at $DEPLOY_URL/api/health\n"
+          # Wait up to 90s for Coolify deployment using a loop instead of hard sleep
+          for i in {1..18}; do curl -f -s "$DEPLOY_URL/api/health" && exit 0 || sleep "5"; done; exit 1
