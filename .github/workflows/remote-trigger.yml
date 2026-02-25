@@ -204,7 +204,7 @@ jobs:
             if (-not $env:COOLIFY_ACTION) { $env:COOLIFY_ACTION = "${{ inputs.COOLIFY_ACTION }}" }
             $env:APP_UUID = "${{ github.event.client_payload.APP_UUID }}"
             $env:CMD = "${{ github.event.client_payload.CMD }}"
-            node scripts/ci/coolify-ops.js
+            node scripts/ci/coolify-ops.cjs
           } else {
             ./scripts/workflow-launcher.ps1 -Workflow $workflowName -Model $env:MODEL_INPUT
           }
