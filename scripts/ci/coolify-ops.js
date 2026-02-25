@@ -8,36 +8,68 @@ if (!API_KEY) {
     process.exit(1);
 }
 
+console.log("Environment Check:", {
+    HAS_API_KEY: !!API_KEY,
+    HOST: HOST,
+    ACTION: process.env.COOLIFY_ACTION,
+    APP_UUID: process.env.APP_UUID,
+    CMD: process.env.CMD
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+});
+
+process.on('uncaughtException', (err) => {
+    console.error('Uncaught Exception:', err);
+});
+
 function request(path, options = {}) {
+    console.log(`> Request: ${options.method || 'GET'} ${path}`);
     return new Promise((resolve, reject) => {
-        const reqOptions = {
-            method: options.method || 'GET',
-            hostname: new URL(HOST).hostname,
-            port: 443,
-            path: path,
-            headers: {
-                'Authorization': `Bearer ${API_KEY}`,
-                'Content-Type': 'application/json',
-                ...options.headers
-            },
-            rejectUnauthorized: false
-        };
+        try {
+            const url = new URL(HOST);
+            const reqOptions = {
+                method: options.method || 'GET',
+                hostname: url.hostname,
+                port: 443,
+                path: path,
+                headers: {
+                    'Authorization': `Bearer ${API_KEY}`,
+                    'Content-Type': 'application/json',
+                    ...options.headers
+                },
+                rejectUnauthorized: false
+            };
 
-        const req = https.request(reqOptions, (res) => {
-            let data = '';
-            res.on('data', (chunk) => data += chunk);
-            res.on('end', () => {
-                try {
-                    resolve({ status: res.statusCode, data: JSON.parse(data) });
-                } catch (e) {
-                    resolve({ status: res.statusCode, data });
-                }
+            const req = https.request(reqOptions, (res) => {
+                let data = '';
+                console.log(`< Response Status: ${res.statusCode}`);
+                res.on('data', (chunk) => data += chunk);
+                res.on('end', () => {
+                    try {
+                        resolve({ status: res.statusCode, data: JSON.parse(data) });
+                    } catch (e) {
+                        resolve({ status: res.statusCode, data });
+                    }
+                });
             });
-        });
 
-        req.on('error', reject);
-        if (options.body) req.write(JSON.stringify(options.body));
-        req.end();
+            req.on('error', (e) => {
+                console.error("!! Request Error:", e.message);
+                reject(e);
+            });
+
+            if (options.body) {
+                const body = JSON.stringify(options.body);
+                console.log(`> Body: ${body}`);
+                req.write(body);
+            }
+            req.end();
+        } catch (err) {
+            console.error("!! Setup Error:", err.message);
+            reject(err);
+        }
     });
 }
 
