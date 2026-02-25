@@ -2,15 +2,14 @@
 
 import React, { useReducer, useEffect, useState } from "react";
 import { toast } from "@/components/ui/GameToast";
-import { PwaInstallBanner } from "@/components/ui/PwaInstallBanner";
-import Link from "next/link";
+import { toast } from "@/components/ui/GameToast";
 import { useRouter } from "next/navigation";
 
 
 
 import { saveWorkoutAction } from "@/actions/integrations/hevy";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { mapQuestToHevyPayload } from "@/utils/hevyAdapter";
 
 
