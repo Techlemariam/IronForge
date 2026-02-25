@@ -3,7 +3,7 @@
 import React from "react";
 import { PwaInstallBanner } from "@/components/ui/PwaInstallBanner";
 import Link from "next/link";
-import { Settings, Activity } from "lucide-react";
+import { Settings } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 
 import { PersistentHeader } from "@/components/core/PersistentHeader";
@@ -16,7 +16,6 @@ import { TvHud } from "@/features/dashboard/components/TvHud";
 
 import {
     DashboardState,
-    DashboardClientProps,
     DashboardAction,
 } from "../types";
 
@@ -30,9 +29,7 @@ interface DashboardPresenterProps {
     hasCompletedOnboarding: boolean;
     leaderboardData: any[];
     platform: string;
-    showOnboarding: boolean;
     onSaveWorkout: (isPrivate: boolean) => Promise<void>;
-    onShowOnboardingComplete: (newState: any) => void;
     onToggleCoach: () => void;
 }
 
@@ -64,10 +61,7 @@ export const DashboardPresenter: React.FC<DashboardPresenterProps> = (props) => 
         pocketCastsConnected,
         liteMode,
         platform,
-        showOnboarding,
-        leaderboardData,
         onSaveWorkout,
-        onShowOnboardingComplete,
         onToggleCoach,
     } = props;
 

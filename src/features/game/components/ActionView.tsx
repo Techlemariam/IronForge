@@ -159,6 +159,7 @@ const SetRow = memo(
     if (set.completed) {
       return (
         <div
+          role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onToggle(exIndex, setIndex); }}
           className={`flex items-center justify-between p-2 bg-zinc-950/50 border border-zinc-900 rounded-md opacity-70 transition-all hover:opacity-100 cursor-pointer`}
           onClick={() => onToggle(exIndex, setIndex)}
         >
@@ -579,7 +580,7 @@ const ActionView: React.FC<ActionViewProps> = ({
       }
       if (found) break;
     }
-     
+
   }, []); // Only on mount
 
   useEffect(() => {

@@ -328,6 +328,7 @@ export const GuildHall: React.FC<GuildHallProps> = ({ onClose }) => {
 
           {/* Boss Visualization */}
           <div
+            role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleAttack(e as any); }}
             className={cn(
               "relative group cursor-pointer transition-transform active:scale-95 select-none",
               kineticEnergy < ATTACK_COST

@@ -21,8 +21,6 @@ import { Faction } from "@/types/training";
 
 // Dynamic Imports moved to ViewRouter
 import { FirstLoginQuest } from "@/features/onboarding/FirstLoginQuest";
-
-import { CodexLoader } from "./components/SecondaryViews";
 import {
   View,
   DashboardState,
@@ -31,7 +29,6 @@ import {
 import { dashboardReducer } from "./logic/dashboardReducer";
 import { useAmbientSound } from "@/hooks/useAmbientSound";
 import { usePlatformContext } from "@/hooks/usePlatformContext";
-import { TvHud } from "@/features/dashboard/components/TvHud";
 
 const getAmbientZone = (
   view: View,
