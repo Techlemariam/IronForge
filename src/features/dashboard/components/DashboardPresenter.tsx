@@ -61,6 +61,7 @@ export const DashboardPresenter: React.FC<DashboardPresenterProps> = (props) => 
         pocketCastsConnected,
         liteMode,
         platform,
+        leaderboardData,
         onSaveWorkout,
         onToggleCoach,
     } = props;
