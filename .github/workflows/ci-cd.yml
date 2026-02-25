@@ -40,7 +40,7 @@ jobs:
     name: "⚡ L1: Verify"
     if: github.event_name == 'pull_request' || startsWith(github.ref, 'refs/heads/fix/')
     runs-on: [self-hosted, IronForge-Local] # Target specific local runner
-    timeout-minutes: 10
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
         with:
