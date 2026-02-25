@@ -77,27 +77,32 @@ async function main() {
     const action = process.env.COOLIFY_ACTION || 'list-apps';
 
     if (action === 'list-apps') {
-        console.log("Listing Coolify applications...");
+        console.log("!!! STARTING LIST-APPS OPERATION !!!");
         try {
             const res = await request('/api/v1/applications');
-            console.log("Status:", res.status);
+            console.log("!!! API RESPONSE RECEIVED !!!");
+            console.log("Status Code:", res.status);
+            console.log("--- DATA START ---");
             console.log(JSON.stringify(res.data, null, 2));
+            console.log("--- DATA END ---");
         } catch (e) {
-            console.error("Failed to list apps:", e.message);
+            console.error("!!! FAILED TO LIST APPS !!!", e.message);
         }
     } else if (action === 'exec-cmd') {
         const uuid = process.env.APP_UUID;
         const command = process.env.CMD;
-        console.log(`Executing command on ${uuid}: ${command}`);
+        console.log(`!!! STARTING EXEC-CMD OPERATION on ${uuid} !!!`);
+        console.log(`Command: ${command}`);
         try {
             const res = await request(`/api/v1/applications/${uuid}/execute`, {
                 method: 'POST',
                 body: { command }
             });
-            console.log("Status:", res.status);
+            console.log("!!! EXEC RESPONSE RECEIVED !!!");
+            console.log("Status Code:", res.status);
             console.log(JSON.stringify(res.data, null, 2));
         } catch (e) {
-            console.error("Failed to exec command:", e.message);
+            console.error("!!! FAILED TO EXEC COMMAND !!!", e.message);
         }
     }
 }
