@@ -16,6 +16,16 @@ skills: ["error-analyzer", "zod-schema-validator", "api-mocker", "coverage-check
 
 ## Diagnostic Protocol
 
+### 0. Doppler Pre-flight Check
+
+Ensure the environment is secured and Doppler is active.
+
+// turbo
+
+```bash
+doppler run -- echo "🔐 Doppler Protected Execution Active"
+```
+
 ### 1. Test Failure Isolation
 
 Identify which tests failed and why.
@@ -23,8 +33,8 @@ Identify which tests failed and why.
 // turbo
 
 ```bash
-RUN_ID=$(gh run list --limit 1 --json databaseId -q '.[0].databaseId')
-gh run view $RUN_ID --log-failed | grep "Error:" | grep -oE "tests/[^[:space:]]+\.spec\.ts"
+RUN_ID=$(doppler run -- gh run list --limit 1 --json databaseId -q '.[0].databaseId')
+doppler run -- gh run view $RUN_ID --log-failed | grep "Error:" | grep -oE "tests/[^[:space:]]+\.spec\.ts"
 ```
 
 ### 2. Snapshot & Mock Audit

@@ -38,13 +38,25 @@ When `ci-cd.yml` detects a failure via `if: failure()`, it POSTs to the n8n `ci-
 
 ### Manual (via CLI)
 
+### 0. Doppler Pre-flight Check
+
+Ensure the environment is secured and Doppler is active.
+
+// turbo
+
+```bash
+doppler run -- echo "🔐 Doppler Protected Execution Active"
+```
+
+### 1. Identify the latest failed run
+
 // turbo
 
 ```bash
 echo "🩺 CI Doctor v4: Manual Triage"
 
 # 1. Identify the latest failed run
-FAILED_RUN=$(gh run list --limit 5 --json conclusion,databaseId,name --jq '[.[] | select(.conclusion == "failure")] | .[0]')
+FAILED_RUN=$(doppler run -- gh run list --limit 5 --json conclusion,databaseId,name --jq '[.[] | select(.conclusion == "failure")] | .[0]')
 RUN_ID=$(echo $FAILED_RUN | jq -r '.databaseId')
 
 if [ -z "$RUN_ID" ]; then
@@ -57,7 +69,7 @@ echo "🚨 Failed run found: $RUN_ID"
 gh run view $RUN_ID
 
 # 2. Fetch failed job name
-FAILED_JOB=$(gh run view $RUN_ID --json jobs --jq '[.jobs[] | select(.conclusion == "failure")] | .[0].name')
+FAILED_JOB=$(doppler run -- gh run view $RUN_ID --json jobs --jq '[.jobs[] | select(.conclusion == "failure")] | .[0].name')
 echo "📋 Failed job: $FAILED_JOB"
 
 # 3. Route to specialist
@@ -90,7 +102,7 @@ esac
 The decentralized doctor team handles all actual diagnostics:
 
 | Specialist | Trigger | Focus |
-|:---|:---|:---|
+| :--- | :--- | :--- |
 | `/doctor-code` | L1 lint/type/test failures | ESLint, TypeScript, Vitest, CodeRabbit Autopilot |
 | `/doctor-infra` | DB Guard, Docker failures | Prisma drift, container health, env vars |
 | `/doctor-qa` | E2E/Smoke test failures | Playwright, test flakiness, seed data |
@@ -110,7 +122,7 @@ The n8n `reviewer-aggregator` workflow periodically:
 ## n8n Workflows
 
 | Workflow | Trigger | Purpose |
-|:---|:---|:---|
+| :--- | :--- | :--- |
 | `ci-triage-router` | Webhook from ci-cd.yml | Routes failures to specialists |
 | `reviewer-aggregator` | Cron (hourly) / Webhook | Aggregates and auto-applies reviewer feedback |
 

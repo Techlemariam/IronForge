@@ -16,6 +16,16 @@ skills: ["error-analyzer", "linter-fixer", "clean-code-pro", "dependabot-manager
 
 ## Diagnostic Protocol
 
+### 0. Doppler Pre-flight Check
+
+Ensure the environment is secured and Doppler is active.
+
+// turbo
+
+```bash
+doppler run -- echo "🔐 Doppler Protected Execution Active"
+```
+
 ### 1. Build & Type Integrity
 
 Check if the code compiles and passes TS check.
@@ -24,7 +34,7 @@ Check if the code compiles and passes TS check.
 
 ```bash
 echo "🔍 Checking types..."
-pnpm run check-types || exit 1
+doppler run -- pnpm run check-types || exit 1
 ```
 
 ### 2. Lint & Style
@@ -65,7 +75,7 @@ Aggregate all outstanding suggestions from CodeRabbit, DeepSource, and human rev
 
 ```bash
 echo "🤖 doctor-code: Aggregating reviewer comments..."
-PR_NUMBER=$(gh pr view --json number -q '.number' 2>/dev/null)
+PR_NUMBER=$(doppler run -- gh pr view --json number -q '.number' 2>/dev/null)
 
 if [ -z "$PR_NUMBER" ]; then
   echo "ℹ️ No active PR found. Skipping reviewer aggregation."
@@ -73,7 +83,7 @@ if [ -z "$PR_NUMBER" ]; then
 fi
 
 # Fetch CodeRabbit and DeepSource suggestions
-gh pr view $PR_NUMBER --json reviews,comments --jq '
+doppler run -- gh pr view $PR_NUMBER --json reviews,comments --jq '
   (.reviews // [] | map(select(.author.login == "coderabbitai" or .author.login == "deepsource-autofix[bot]")) | .[]),
   (.comments // [] | map(select(.author.login == "coderabbitai" or .author.login == "deepsource-autofix[bot]")) | .[])
 ' > /tmp/reviewer-suggestions.json
