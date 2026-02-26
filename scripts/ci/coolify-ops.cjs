@@ -1,7 +1,7 @@
 const https = require('https');
 
 const API_KEY = process.env.COOLIFY_API_KEY;
-const HOST = "https://ironforge-coolify.tailafb692.ts.net";
+const HOST = "http://77.42.45.229:8000";
 
 if (!API_KEY) {
     console.error("COOLIFY_API_KEY is not set");
@@ -79,14 +79,15 @@ async function main() {
     if (action === 'list-apps') {
         console.log("!!! STARTING LIST-APPS OPERATION !!!");
         try {
-            const res = await request('/api/v1/services');
-            console.log("!!! API RESPONSE RECEIVED !!!");
-            console.log("Status Code:", res.status);
-            console.log("--- DATA START ---");
-            console.log(JSON.stringify(res.data, null, 2));
-            console.log("--- DATA END ---");
+            const resServices = await request('/api/v1/services');
+            console.log("--- SERVICES ---");
+            console.log(JSON.stringify(resServices.data, null, 2));
+
+            const resApps = await request('/api/v1/applications');
+            console.log("--- APPLICATIONS ---");
+            console.log(JSON.stringify(resApps.data, null, 2));
         } catch (e) {
-            console.error("!!! FAILED TO LIST APPS !!!", e.message);
+            console.error("!!! FAILED TO LIST APPS/SERVICES !!!", e.message);
         }
     } else if (action === 'exec-cmd') {
         const uuid = process.env.APP_UUID;
