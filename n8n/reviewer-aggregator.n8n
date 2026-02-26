@@ -1,371 +1,354 @@
-[
-  {
-    "name": "Reviewer Aggregator",
-    "nodes": [
-      {
-        "parameters": {
-          "httpMethod": "POST",
-          "path": "reviewer-aggregate",
-          "responseMode": "onReceived",
-          "responseData": "allEntries"
-        },
-        "id": "webhook-trigger",
-        "name": "Review Event Webhook",
-        "type": "n8n-nodes-base.webhook",
-        "typeVersion": 2,
-        "position": [
-          250,
-          300
-        ]
+{
+  "name": "Reviewer Aggregator",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "reviewer-aggregate",
+        "responseMode": "onReceived",
+        "responseData": "allEntries"
       },
-      {
-        "parameters": {
-          "rule": {
-            "interval": [
-              {
-                "field": "hours",
-                "hoursInterval": 1
-              }
-            ]
-          }
-        },
-        "id": "cron-trigger",
-        "name": "Hourly Review Check",
-        "type": "n8n-nodes-base.scheduleTrigger",
-        "typeVersion": 1.2,
-        "position": [
-          250,
-          500
-        ]
+      "id": "webhook-trigger",
+      "name": "Review Event Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        250,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 1
+            }
+          ]
+        }
       },
-      {
-        "parameters": {
-          "method": "GET",
-          "url": "https://api.github.com/repos/Techlemariam/IronForge/pulls?state=open&sort=updated&direction=desc&per_page=5",
-          "authentication": "genericCredentialType",
-          "genericAuthType": "httpHeaderAuth",
-          "options": {
+      "id": "cron-trigger",
+      "name": "Hourly Review Check",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        250,
+        500
+      ]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "https://api.github.com/repos/Techlemariam/IronForge/pulls?state=open&sort=updated&direction=desc&per_page=5",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {
+          "response": {
             "response": {
               "response": {
                 "fullResponse": false
               }
             }
           }
-        },
-        "id": "fetch-open-prs",
-        "name": "Fetch Open PRs",
-        "type": "n8n-nodes-base.httpRequest",
-        "typeVersion": 4.2,
-        "position": [
-          500,
-          400
-        ],
-        "credentials": {
-          "httpHeaderAuth": {
-            "id": "GITHUB_TOKEN_CREDENTIAL_ID",
-            "name": "GitHub PAT"
-          }
         }
       },
-      {
-        "parameters": {
-          "method": "GET",
-          "url": "=https://api.github.com/repos/Techlemariam/IronForge/pulls/{{ $json.number }}/reviews",
-          "authentication": "genericCredentialType",
-          "genericAuthType": "httpHeaderAuth"
-        },
-        "id": "fetch-reviews",
-        "name": "Fetch PR Reviews",
-        "type": "n8n-nodes-base.httpRequest",
-        "typeVersion": 4.2,
-        "position": [
-          750,
-          300
-        ],
-        "credentials": {
-          "httpHeaderAuth": {
-            "id": "GITHUB_TOKEN_CREDENTIAL_ID",
-            "name": "GitHub PAT"
-          }
-        }
-      },
-      {
-        "parameters": {
-          "method": "GET",
-          "url": "=https://api.github.com/repos/Techlemariam/IronForge/pulls/{{ $json.number }}/comments",
-          "authentication": "genericCredentialType",
-          "genericAuthType": "httpHeaderAuth"
-        },
-        "id": "fetch-comments",
-        "name": "Fetch PR Comments",
-        "type": "n8n-nodes-base.httpRequest",
-        "typeVersion": 4.2,
-        "position": [
-          750,
-          500
-        ],
-        "credentials": {
-          "httpHeaderAuth": {
-            "id": "GITHUB_TOKEN_CREDENTIAL_ID",
-            "name": "GitHub PAT"
-          }
-        }
-      },
-      {
-        "parameters": {
-          "conditions": {
-            "string": [
-              {
-                "value1": "={{ $json.user?.login }}",
-                "value2": "coderabbitai",
-                "operation": "equals"
-              }
-            ]
-          },
-          "combineConditions": "any"
-        },
-        "id": "filter-ai-reviews",
-        "name": "Filter AI Reviewer Comments",
-        "type": "n8n-nodes-base.filter",
-        "typeVersion": 2,
-        "position": [
-          1000,
-          400
-        ]
-      },
-      {
-        "parameters": {
-          "jsCode": "// Extract actionable suggestions from CodeRabbit/DeepSource comments\nconst items = $input.all();\nconst suggestions = [];\n\nfor (const item of items) {\n  const body = item.json.body || '';\n  const author = item.json.user?.login || 'unknown';\n  const path = item.json.path || 'unknown';\n  const line = item.json.original_line || item.json.line || 0;\n  \n  // Extract code suggestions (```suggestion blocks)\n  const suggestionRegex = /```suggestion\\n([\\s\\S]*?)```/g;\n  let match;\n  while ((match = suggestionRegex.exec(body)) !== null) {\n    suggestions.push({\n      author,\n      path,\n      line,\n      suggestion: match[1].trim(),\n      type: 'code_suggestion',\n      autoFixable: true\n    });\n  }\n  \n  // Extract general comments (non-code)\n  if (!suggestionRegex.test(body) && body.length > 10) {\n    suggestions.push({\n      author,\n      path,\n      line,\n      suggestion: body.substring(0, 500),\n      type: 'comment',\n      autoFixable: false\n    });\n  }\n}\n\nconst autoFixable = suggestions.filter(s => s.autoFixable);\nconst manualReview = suggestions.filter(s => !s.autoFixable);\n\nreturn [{\n  json: {\n    totalSuggestions: suggestions.length,\n    autoFixableCount: autoFixable.length,\n    manualReviewCount: manualReview.length,\n    autoFixable,\n    manualReview,\n    timestamp: new Date().toISOString()\n  }\n}];"
-        },
-        "id": "parse-suggestions",
-        "name": "Parse Suggestions",
-        "type": "n8n-nodes-base.code",
-        "typeVersion": 2,
-        "position": [
-          1250,
-          400
-        ]
-      },
-      {
-        "parameters": {
-          "conditions": {
-            "number": [
-              {
-                "value1": "={{ $json.autoFixableCount }}",
-                "value2": 0,
-                "operation": "gt"
-              }
-            ]
-          }
-        },
-        "id": "has-auto-fixes",
-        "name": "Has Auto-Fixable?",
-        "type": "n8n-nodes-base.if",
-        "typeVersion": 2,
-        "position": [
-          1500,
-          400
-        ]
-      },
-      {
-        "parameters": {
-          "method": "POST",
-          "url": "https://api.github.com/repos/Techlemariam/IronForge/dispatches",
-          "authentication": "genericCredentialType",
-          "genericAuthType": "httpHeaderAuth",
-          "sendBody": true,
-          "bodyParameters": {
-            "parameters": [
-              {
-                "name": "event_type",
-                "value": "doctor-code"
-              },
-              {
-                "name": "client_payload",
-                "value": "={{ JSON.stringify({ pr_number: $('Fetch Open PRs').item.json.number, branch: $('Fetch Open PRs').item.json.head.ref, job_name: 'reviewer-aggregator', logs_summary: 'Auto-fixable suggestions: ' + $json.autoFixableCount }) }}"
-              }
-            ]
-          }
-        },
-        "id": "trigger-auto-fix",
-        "name": "Trigger Auto-Fix via doctor-code",
-        "type": "n8n-nodes-base.httpRequest",
-        "typeVersion": 4.2,
-        "position": [
-          1750,
-          300
-        ],
-        "credentials": {
-          "httpHeaderAuth": {
-            "id": "GITHUB_TOKEN_CREDENTIAL_ID",
-            "name": "GitHub PAT"
-          }
-        }
-      },
-      {
-        "parameters": {
-          "method": "POST",
-          "url": "=https://api.github.com/repos/Techlemariam/IronForge/issues/{{ $('Fetch Open PRs').item.json.number }}/comments",
-          "authentication": "genericCredentialType",
-          "genericAuthType": "httpHeaderAuth",
-          "sendBody": true,
-          "bodyParameters": {
-            "parameters": [
-              {
-                "name": "body",
-                "value": "=🩺 **Reviewer Aggregator Report**\\n\\n- Auto-fixable: {{ $json.autoFixableCount }}\\n- Manual review: {{ $json.manualReviewCount }}\\n\\n{{ $json.autoFixableCount > 0 ? '✅ Auto-fix dispatched via doctor-code.' : 'ℹ️ No auto-fixable suggestions found.' }}"
-              }
-            ]
-          }
-        },
-        "id": "post-summary",
-        "name": "Post Summary Comment",
-        "type": "n8n-nodes-base.httpRequest",
-        "typeVersion": 4.2,
-        "position": [
-          1750,
-          500
-        ],
-        "credentials": {
-          "httpHeaderAuth": {
-            "id": "GITHUB_TOKEN_CREDENTIAL_ID",
-            "name": "GitHub PAT"
-          }
+      "id": "fetch-open-prs",
+      "name": "Fetch Open PRs",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        500,
+        400
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "6BhE9M39PCG9q2Ob",
+          "name": "GitHub PAT"
         }
       }
-    ],
-    "connections": {
-      "Review Event Webhook": {
-        "main": [
-          [
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "=https://api.github.com/repos/Techlemariam/IronForge/pulls/{{ $json.number }}/reviews",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth"
+      },
+      "id": "fetch-reviews",
+      "name": "Fetch PR Reviews",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        750,
+        300
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "6BhE9M39PCG9q2Ob",
+          "name": "GitHub PAT"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "=https://api.github.com/repos/Techlemariam/IronForge/pulls/{{ $json.number }}/comments",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth"
+      },
+      "id": "fetch-comments",
+      "name": "Fetch PR Comments",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        750,
+        500
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "6BhE9M39PCG9q2Ob",
+          "name": "GitHub PAT"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
             {
-              "node": "Fetch Open PRs",
-              "type": "main",
-              "index": 0
+              "value1": "={{ $json.user?.login }}",
+              "value2": "coderabbitai",
+              "operation": "equals"
             }
           ]
-        ]
+        },
+        "combineConditions": "any"
       },
-      "Hourly Review Check": {
-        "main": [
-          [
+      "id": "filter-ai-reviews",
+      "name": "Filter AI Reviewer Comments",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        1000,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extract actionable suggestions from CodeRabbit/DeepSource comments\nconst items = $input.all();\nconst suggestions = [];\n\nfor (const item of items) {\n  const body = item.json.body || '';\n  const author = item.json.user?.login || 'unknown';\n  const path = item.json.path || 'unknown';\n  const line = item.json.original_line || item.json.line || 0;\n  \n  // Extract code suggestions (```suggestion blocks)\n  const suggestionRegex = /```suggestion\\n([\\s\\S]*?)```/g;\n  let match;\n  while ((match = suggestionRegex.exec(body)) !== null) {\n    suggestions.push({\n      author,\n      path,\n      line,\n      suggestion: match[1].trim(),\n      type: 'code_suggestion',\n      autoFixable: true\n    });\n  }\n  \n  // Extract general comments (non-code)\n  if (!suggestionRegex.test(body) && body.length > 10) {\n    suggestions.push({\n      author,\n      path,\n      line,\n      suggestion: body.substring(0, 500),\n      type: 'comment',\n      autoFixable: false\n    });\n  }\n}\n\nconst autoFixable = suggestions.filter(s => s.autoFixable);\nconst manualReview = suggestions.filter(s => !s.autoFixable);\n\nreturn [{\n  json: {\n    totalSuggestions: suggestions.length,\n    autoFixableCount: autoFixable.length,\n    manualReviewCount: manualReview.length,\n    autoFixable,\n    manualReview,\n    timestamp: new Date().toISOString()\n  }\n}];"
+      },
+      "id": "parse-suggestions",
+      "name": "Parse Suggestions",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1250,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
             {
-              "node": "Fetch Open PRs",
-              "type": "main",
-              "index": 0
+              "value1": "={{ $json.autoFixableCount }}",
+              "value2": 0,
+              "operation": "gt"
             }
           ]
-        ]
+        }
       },
-      "Fetch Open PRs": {
-        "main": [
-          [
+      "id": "has-auto-fixes",
+      "name": "Has Auto-Fixable?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        1500,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.github.com/repos/Techlemariam/IronForge/dispatches",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
             {
-              "node": "Fetch PR Reviews",
-              "type": "main",
-              "index": 0
+              "name": "event_type",
+              "value": "doctor-code"
             },
             {
-              "node": "Fetch PR Comments",
-              "type": "main",
-              "index": 0
+              "name": "client_payload",
+              "value": "={{ JSON.stringify({ pr_number: $('Fetch Open PRs').item.json.number, branch: $('Fetch Open PRs').item.json.head.ref, job_name: 'reviewer-aggregator', logs_summary: 'Auto-fixable suggestions: ' + $json.autoFixableCount }) }}"
             }
           ]
-        ]
+        }
       },
-      "Fetch PR Reviews": {
-        "main": [
-          [
-            {
-              "node": "Filter AI Reviewer Comments",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Fetch PR Comments": {
-        "main": [
-          [
-            {
-              "node": "Filter AI Reviewer Comments",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Filter AI Reviewer Comments": {
-        "main": [
-          [
-            {
-              "node": "Parse Suggestions",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Parse Suggestions": {
-        "main": [
-          [
-            {
-              "node": "Has Auto-Fixable?",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Has Auto-Fixable?": {
-        "main": [
-          [
-            {
-              "node": "Trigger Auto-Fix via doctor-code",
-              "type": "main",
-              "index": 0
-            }
-          ],
-          [
-            {
-              "node": "Post Summary Comment",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Trigger Auto-Fix via doctor-code": {
-        "main": [
-          [
-            {
-              "node": "Post Summary Comment",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
+      "id": "trigger-auto-fix",
+      "name": "Trigger Auto-Fix via doctor-code",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1750,
+        300
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "6BhE9M39PCG9q2Ob",
+          "name": "GitHub PAT"
+        }
       }
     },
-    "settings": {
-      "executionOrder": "v1"
-    },
-    "staticData": null,
-    "meta": {
-      "templateCredentialApiKeys": {}
-    },
-    "pinData": {},
-    "active": false,
-    "id": "reviewer-aggregator",
-    "tags": [
-      {
-        "name": "ci",
-        "id": "1"
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.github.com/repos/Techlemariam/IronForge/issues/{{ $('Fetch Open PRs').item.json.number }}/comments",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "body",
+              "value": "=🩺 **Reviewer Aggregator Report**\\n\\n- Auto-fixable: {{ $json.autoFixableCount }}\\n- Manual review: {{ $json.manualReviewCount }}\\n\\n{{ $json.autoFixableCount > 0 ? '✅ Auto-fix dispatched via doctor-code.' : 'ℹ️ No auto-fixable suggestions found.' }}"
+            }
+          ]
+        }
       },
-      {
-        "name": "reviewer-aggregation",
-        "id": "3"
+      "id": "post-summary",
+      "name": "Post Summary Comment",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2250,
+        400
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "6BhE9M39PCG9q2Ob",
+          "name": "GitHub PAT"
+        }
       }
-    ]
+    }
+  ],
+  "connections": {
+    "Review Event Webhook": {
+      "main": [
+        [
+          {
+            "node": "Fetch Open PRs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Hourly Review Check": {
+      "main": [
+        [
+          {
+            "node": "Fetch Open PRs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Open PRs": {
+      "main": [
+        [
+          {
+            "node": "Fetch PR Reviews",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Fetch PR Comments",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch PR Reviews": {
+      "main": [
+        [
+          {
+            "node": "Filter AI Reviewer Comments",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch PR Comments": {
+      "main": [
+        [
+          {
+            "node": "Filter AI Reviewer Comments",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter AI Reviewer Comments": {
+      "main": [
+        [
+          {
+            "node": "Parse Suggestions",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Suggestions": {
+      "main": [
+        [
+          {
+            "node": "Has Auto-Fixable?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has Auto-Fixable?": {
+      "main": [
+        [
+          {
+            "node": "Trigger Auto-Fix via doctor-code",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Post Summary Comment",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trigger Auto-Fix via doctor-code": {
+      "main": [
+        [
+          {
+            "node": "Post Summary Comment",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
   }
-]
+}

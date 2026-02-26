@@ -1,0 +1,47 @@
+# n8n Docker Compose — IronForge Edition
+# Managed by Doppler secrets. Run with: doppler run -- docker compose -f docker/n8n.yml up -d
+#
+# To UPDATE n8n:
+#   1. Change N8N_VERSION below (or set to 'latest')
+#   2. Run: doppler run -- docker compose -f docker/n8n.yml pull && doppler run -- docker compose -f docker/n8n.yml up -d
+#
+version: '3.8'
+
+services:
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: ironforge-n8n
+    restart: unless-stopped
+    ports:
+      - "5678:5678"
+    environment:
+      # Core
+      N8N_HOST: ${N8N_PUBLIC_HOST:-localhost}
+      N8N_PORT: 5678
+      N8N_PROTOCOL: https
+      WEBHOOK_URL: https://${N8N_PUBLIC_HOST:-localhost}
+      # Auth
+      N8N_BASIC_AUTH_ACTIVE: "false"
+      # DB — use SQLite (default) or override with POSTGRES
+      DB_TYPE: ${N8N_DB_TYPE:-sqlite}
+      DB_POSTGRESDB_HOST: ${N8N_DB_HOST:-}
+      DB_POSTGRESDB_PORT: ${N8N_DB_PORT:-5432}
+      DB_POSTGRESDB_DATABASE: ${N8N_DB_NAME:-n8n}
+      DB_POSTGRESDB_USER: ${N8N_DB_USER:-}
+      DB_POSTGRESDB_PASSWORD: ${N8N_DB_PASSWORD:-}
+      # External secrets — Doppler injects these at runtime
+      N8N_API_KEY: ${N8N_API_KEY}
+      GH_PAT: ${GH_PAT}
+      # Execution
+      EXECUTIONS_PROCESS: main
+      N8N_LOG_LEVEL: info
+    volumes:
+      - n8n_data:/home/node/.n8n
+    labels:
+      # Coolify routing labels (update domain as needed)
+      caddy: ${N8N_PUBLIC_HOST:-n8n.ironforge.life}
+      caddy.reverse_proxy: "{{upstreams 5678}}"
+
+volumes:
+  n8n_data:
+    driver: local
