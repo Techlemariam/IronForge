@@ -6,7 +6,7 @@ trigger: "manual"
 version: "1.0.0"
 primary_agent: "@coder"
 domain: "code"
-skills: ["error-analyzer", "linter-fixer", "clean-code-pro", "dependabot-manager"]
+skills: ["error-analyzer", "linter-fixer", "clean-code-pro", "dependabot-manager", "doppler", "n8n"]
 ---
 
 # 🩺 doctor-code

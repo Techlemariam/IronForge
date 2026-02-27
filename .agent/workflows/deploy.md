@@ -7,7 +7,7 @@ version: "2.0.0"
 telemetry: "enabled"
 primary_agent: "@infrastructure"
 domain: "infra"
-skills: ["coolify-deploy", "gatekeeper", "sentry-rollback"]
+skills: ["coolify-deploy", "gatekeeper", "sentry-rollback", "doppler"]
 ---
 
 # 🚀 Delivery Manager (Level 10)
@@ -40,10 +40,15 @@ When triggered by `/factory ship` (Station 6) or manually:
 
 ### 2. Deployment
 
-Execute `coolify-deploy`:
+Execute `coolify-deploy` via Doppler:
 
 ```powershell
-pwsh .agent/skills/coolify-deploy/scripts/deploy.ps1
+# Pre-flight: verify Doppler is active
+doppler run -- echo "Doppler OK"
+
+# Deploy via Coolify API
+doppler run -- pwsh scripts/coolify-deploy-n8n.ps1
+# Or for the main IronForge app: trigger Coolify redeploy via API
 ```
 
 - **Build**: Production build.

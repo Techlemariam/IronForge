@@ -1,65 +1,82 @@
 ---
-description: "Workflow for monitor-deploy"
+description: "Monitor Coolify deployments — inspect service health, logs, and trigger restarts via API"
 command: "/monitor-deploy"
 category: "monitoring"
 trigger: "manual"
-version: "1.0.0"
+version: "2.0.0"
 telemetry: "enabled"
 primary_agent: "@infrastructure"
 domain: "infra"
-skills: ["coolify-deploy"]
+skills: ["coolify-deploy", "doppler", "n8n"]
 ---
 
 # Deployment Monitoring Workflow
 
-This workflow describes how to monitor, inspect, and debug Vercel deployments using the Vercel CLI.
+Monitor, inspect, and manage IronForge services on Coolify.
 
-## 1. List Recent Deployments
-
-View the status of recent deployments to production and preview environments.
-
-```bash
-npx vercel list --limit 5
-```
-
-- **Config**: ensure `npx vercel` is allowed in `.agent/config.json`.
-
-## 2. Inspect a Deployment
-
-Get detailed information about a specific deployment, including build configuration and routes.
-
-```bash
-## Inspect by URL or ID
-npx vercel inspect <DEPLOYMENT_URL_OR_ID>
-```
-
-## 3. Analyze Logs (MCP)
+## 1. Pre-flight Check
 
 // turbo
-If `VERCEL_TOKEN` is configured, use the agent's tools to fetch build logs directly.
 
-- Query: "Get build logs for latest deployment"
-  Stream runtime logs from a specific deployment (or the latest production one).
-
-```bash
-## Stream production logs
-npx vercel logs production
-
-## Stream logs from a specific deployment
-npx vercel logs <DEPLOYMENT_URL>
+```powershell
+doppler run -- echo "Doppler active"
 ```
 
-## 4. Check Deployment Status (CI)
+## 2. Check n8n Service Health
 
-If a deployment fails in GitHub Actions but isn't clear why, check the Vercel build logs directly.
+// turbo
 
-```bash
-## View build logs for the latest deployment
-npx vercel logs --build
+```powershell
+doppler run -- pwsh scripts/coolify-status-n8n.ps1
+```
+
+Expected output:
+
+- `n8n: n8nio/n8n:* [running:healthy]` ✅
+- `task-runners: [running:unhealthy]` ⚠️ — known issue, non-blocking
+
+## 3. Inspect All Coolify Services
+
+// turbo
+
+```powershell
+doppler run -- pwsh scripts/coolify-inspect.ps1
+```
+
+## 4. Check n8n Workflow Status
+
+```powershell
+doppler run -- pwsh scripts/n8n-update-workflows.ps1
+```
+
+## 5. Restart n8n if Unhealthy
+
+```powershell
+doppler run -- pwsh scripts/coolify-start-n8n.ps1
+```
+
+> **Note:** Never use the Coolify `restart` endpoint alone — it causes both containers to exit. Always follow with `start`.
+
+## 6. Verify CI Triage Router Webhook
+
+After confirming n8n is healthy, verify the CI Doctor v4 pipeline is end-to-end:
+
+1. Open `https://ironforge-coolify.tailafb692.ts.net`
+2. Check **CI Triage Router** is Active (green toggle)
+3. Confirm `N8N_CI_TRIAGE_WEBHOOK_URL` in Doppler matches the webhook URL
+
+```powershell
+doppler secrets get N8N_CI_TRIAGE_WEBHOOK_URL --plain
 ```
 
 ## Version History
 
+### 2.0.0 (2026-02-27)
+
+- Migrated from Vercel CLI to Coolify API
+- Added n8n health monitoring steps
+- Added CI Triage Router verification
+
 ### 1.0.0 (2026-01-08)
 
-- Initial stable release with standardized metadata
+- Initial stable release
