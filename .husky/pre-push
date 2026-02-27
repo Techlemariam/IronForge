@@ -1,15 +1,8 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
-echo "🚦 Pre-push Gatekeeper: Running fast checks..."
-
-# Type check
 pnpm run check-types || {
   echo "❌ Type errors detected. Push blocked."
   exit 1
 }
 
-# Lint (no fix, just check)
 pnpm run lint || {
   echo "❌ Lint errors detected. Run 'pnpm run lint --fix' first."
   exit 1
