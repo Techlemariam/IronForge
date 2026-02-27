@@ -342,7 +342,7 @@ const SkillTree: React.FC<SkillTreeProps> = ({
                 </span>
               </div>
             </div>
-            <button onClick={() => setSelectedNodeId(null)}>
+            <button onClick={() => setSelectedNodeId(null)} aria-label="Close skill details">
               <X className="w-5 h-5 hover:text-white transition-colors" />
             </button>
           </div>

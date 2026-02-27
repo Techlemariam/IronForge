@@ -25,7 +25,12 @@ const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const REPO_OWNER = process.env.REPO_OWNER || "Techlemariam";
 const REPO_NAME = process.env.REPO_NAME || "IronForge";
 
-const octokit = new Octokit({ auth: GITHUB_TOKEN });
+let octokit: Octokit | null = null;
+if (GITHUB_TOKEN) {
+    octokit = new Octokit({ auth: GITHUB_TOKEN });
+} else {
+    console.warn("Warning: GITHUB_TOKEN is missing. GitHub-related tools will be unavailable.");
+}
 
 const server = new Server(
     {
@@ -274,6 +279,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             // Fallback (or if Option A failed/skipped)
             // Option B: Trigger directly via GitHub API (Octokit)
             try {
+                if (!octokit) {
+                    throw new Error("Missing GITHUB_TOKEN. Please ensure it is set in your environment variables or GitHub Secrets.");
+                }
                 await octokit.rest.actions.createWorkflowDispatch({
                     owner: REPO_OWNER,
                     repo: REPO_NAME,

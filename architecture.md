@@ -145,10 +145,12 @@ IronForge treats physical training as the primary game engine. Progression is de
 * **Currencies:** Talent Points (TP) from action, Kinetic Shards (KS) from recovery.
 * **Gatekeeping:** Highly impactful "Keystones" define playstyles but come with significant trade-offs and physical prerequisites (e.g., 1RM targets).
 
-### 6.3 Goal-Priority Engine (The Brain)
+### 6.3 Goal-Priority- [Identity & Persona](file:///c:/Users/alexa/Workspaces/IronForge/IDENTITY.md): Defines the core purpose and ethics of IronForge
 
-* **Strategy:** Replaces high-overhead AI with deterministic periodization focus.
-* **Mechanic:** Users declare & prioritize goals. Engine rotates Macro-Phases (Build/Peak/Deload) to resolve interference.
+- [Secret Management Protocol](file:///c:/Users/alexa/Workspaces/IronForge/docs/SECRET_MANAGEMENT.md): Documentation on Doppler-first secret handling and token naming conventions.
+* [Daily Brief](file:///c:/Users/alexa/Workspaces/IronForge/DAILY_BRIEF.md): Tracks high-level progress.
+ Macro-Phases (Build/Peak/Deload) to resolve interference.
+
 * **Tactical Layer:** `TrainingCalendar` generates week plans based on `DailyReadiness` and `ResourceBudget` (CNS/Metabolic/Muscular).
 * **Motivation:** Integrated "Motivation Engine" (Streaks, PvP, Progression Transparency) ensures adherence via psychological hooks.
 * **Bio-Safeguards:** Hard-coded triggers (ACWR, HRV, Sleep) enforce deloads regardless of user ambition.

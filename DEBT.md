@@ -83,7 +83,7 @@
 | 2026-01-16 | `src/services/planner.ts` | P4 Type Safety: `any` casts removed. Mapped Prisma types to internal `ExerciseLog`. | @coder | ✅ Resolved |
 | 2026-01-16 | `src/lib/territory/tileUtils.ts` | P4 Type Safety: `any` usage replaced with strict GeoJSON types. | @coder | ✅ Resolved |
 | 2026-02-24 | `src/components/**/*` | [A11y] Fixed 26 icon buttons & interactive elements missing `aria-label`s | @cleanup | ✅ Resolved |
-| 2026-01-18 | `src/components/**/*` | [A11y] ~29 interactive elements still missing labels (re-assess) | @ui-ux | 🔴 Open |
+| 2026-02-25 | `src/components/**/*` | [A11y] Re-assessed and fixed 2 remaining icon buttons missing aria-labels. | @cleanup | ✅ Resolved |
 | 2026-01-18 | `src/components/**/*` | [Consistency] 61 instances of hardcoded hex colors instead of design tokens | @ui-ux | ✅ Resolved |
 | 2026-01-18 | `src/components/**/*` | [Consistency] 75 instances of arbitrary Tailwind values (e.g., `w-[375px]`) | @ui-ux | ✅ Resolved |
 | 2026-01-18 | `src/components/**/*` | [Consistency] Foundational UI components now support dark mode. More work needed. | @ui-ux | 🟡 In Progress |
