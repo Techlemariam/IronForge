@@ -122,9 +122,30 @@ jobs:
           pnpm audit --audit-level high 2>&1 | Out-File -FilePath .agent/tasks/security-audit.log
           Write-Host "📋 Security audit saved."
 
+      # --- Auto-Commit Fixes (#3) ---
+      - name: "🔧 Auto-Commit Fixes"
+        if: github.event.action == 'doctor-code'
+        shell: pwsh
+        run: |
+          git config user.name "IronForge CI Doctor"
+          git config user.email "ci-doctor@ironforge.life"
+          $changes = git diff --name-only
+          if ($changes) {
+            Write-Host "🔧 Auto-committing fixes..." -ForegroundColor Green
+            git add -A
+            git commit -m "fix(ci): auto-fix lint/type errors [ci-doctor]"
+            git push
+            Write-Host "✅ Fixes pushed to branch"
+            "auto_fixed=true" | Out-File -Append $env:GITHUB_OUTPUT
+          } else {
+            Write-Host "ℹ️ No auto-fixable changes detected"
+            "auto_fixed=false" | Out-File -Append $env:GITHUB_OUTPUT
+          }
+
       # --- Post-Diagnostic Summary ---
       - name: "📊 Post Diagnostic Summary"
         if: always()
+        id: summary
         shell: pwsh
         run: |
           $specialist = "${{ steps.payload.outputs.specialist }}"
@@ -136,11 +157,14 @@ jobs:
           Write-Host "========================================`n" -ForegroundColor Cyan
 
           # List all generated diagnostic files
+          $logFiles = @()
           if (Test-Path .agent/tasks) {
             Get-ChildItem .agent/tasks/*.log -ErrorAction SilentlyContinue | ForEach-Object {
               Write-Host "  📄 $($_.Name) ($([math]::Round($_.Length / 1024, 1)) KB)"
+              $logFiles += $_.Name
             }
           }
+          "log_count=$($logFiles.Count)" | Out-File -Append $env:GITHUB_OUTPUT
 
       - name: "📤 Upload Diagnostics"
         if: always()
@@ -150,3 +174,67 @@ jobs:
           path: .agent/tasks/*.log
           retention-days: 7
           if-no-files-found: ignore
+
+      # --- PR Comment Feedback (#4) ---
+      - name: "💬 Post PR Comment"
+        if: always() && steps.payload.outputs.pr_number != ''
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          $pr = "${{ steps.payload.outputs.pr_number }}"
+          $specialist = "${{ steps.payload.outputs.specialist }}"
+          $runUrl = "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+          $body = "## 🩺 CI Doctor Report`n`n"
+          $body += "| Field | Value |`n|:---|:---|`n"
+          $body += "| **Specialist** | ``$specialist`` |`n"
+          $body += "| **Triggered by** | ``${{ steps.payload.outputs.run_id }}`` |`n"
+          $body += "| **Run** | [View Logs]($runUrl) |`n`n"
+
+          # Append log summaries
+          if (Test-Path .agent/tasks) {
+            $logs = Get-ChildItem .agent/tasks/*.log -ErrorAction SilentlyContinue
+            foreach ($f in $logs) {
+              $preview = Get-Content $f -TotalCount 30 -ErrorAction SilentlyContinue | Out-String
+              $body += "### 📄 $($f.Name)`n``````n$preview``````n`n"
+            }
+          }
+
+          if (-not $logs -or $logs.Count -eq 0) {
+            $body += "> No diagnostic logs generated.`n"
+          }
+
+          gh pr comment $pr --body $body
+
+      # --- Discord Notification (#9) ---
+      - name: "📢 Discord Alert"
+        if: always()
+        shell: pwsh
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_CI_WEBHOOK_URL }}
+        run: |
+          if (-not $env:DISCORD_WEBHOOK_URL) {
+            Write-Host "⚠️ DISCORD_CI_WEBHOOK_URL not set. Skipping."
+            exit 0
+          }
+
+          $specialist = "${{ steps.payload.outputs.specialist }}"
+          $pr = "${{ steps.payload.outputs.pr_number }}"
+          $branch = "${{ steps.payload.outputs.branch }}"
+          $runUrl = "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+          # Green if job succeeded, red if failed
+          $color = if ($?) { 3066993 } else { 15158332 }
+
+          $payload = @{
+            embeds = @(@{
+              title = "🩺 CI Doctor: $specialist"
+              description = "**PR:** #$pr`n**Branch:** ``$branch```n**Run:** [View Logs]($runUrl)"
+              color = $color
+              timestamp = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+            })
+          } | ConvertTo-Json -Depth 4
+
+          Invoke-RestMethod -Uri $env:DISCORD_WEBHOOK_URL -Method Post -Body $payload -ContentType 'application/json'
+          Write-Host "📢 Discord alert sent"

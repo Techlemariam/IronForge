@@ -70,6 +70,9 @@ jobs:
       - uses: ./.github/actions/setup-ironforge
         with:
           tier: 'l1'
+      - name: "🔮 Predictive Failure Analysis"
+        run: npx tsx scripts/predict-failures.ts
+        continue-on-error: true
       - name: Initialize DB (L1)
         run: |
           # Managed-services assumes DB is already healthy (0s wait)
@@ -170,6 +173,24 @@ jobs:
       - name: Verify Image
         run: |
           docker image inspect ironforge-app:latest
+      - name: "🩺 Active Handover: Docker Verify Failure"
+        if: failure()
+        shell: pwsh
+        env:
+          N8N_WEBHOOK_URL: ${{ env.N8N_CI_TRIAGE_WEBHOOK_URL }}
+        run: |
+          $payload = @{
+            job_name = 'docker-verify'
+            run_id = '${{ github.run_id }}'
+            pr_number = '${{ github.event.pull_request.number }}'
+            branch = '${{ github.head_ref || github.ref_name }}'
+            conclusion = 'failure'
+            logs_summary = 'Docker Build Verify failed: image build or inspect error'
+          } | ConvertTo-Json -Compress
+          if ($env:N8N_WEBHOOK_URL) {
+            Invoke-RestMethod -Uri $env:N8N_WEBHOOK_URL -Method Post -Body $payload -ContentType 'application/json'
+            Write-Host "🩺 Dispatched Docker Verify failure to n8n"
+          }
 
   # 🎭 E2E VERIFICATION
   e2e:
@@ -212,6 +233,24 @@ jobs:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           NEXT_PUBLIC_APP_URL: http://localhost:3000
+      - name: "🩺 Active Handover: E2E Failure"
+        if: failure()
+        shell: pwsh
+        env:
+          N8N_WEBHOOK_URL: ${{ env.N8N_CI_TRIAGE_WEBHOOK_URL }}
+        run: |
+          $payload = @{
+            job_name = 'e2e'
+            run_id = '${{ github.run_id }}'
+            pr_number = '${{ github.event.pull_request.number }}'
+            branch = '${{ github.head_ref || github.ref_name }}'
+            conclusion = 'failure'
+            logs_summary = 'E2E Tests failed: Playwright test suite'
+          } | ConvertTo-Json -Compress
+          if ($env:N8N_WEBHOOK_URL) {
+            Invoke-RestMethod -Uri $env:N8N_WEBHOOK_URL -Method Post -Body $payload -ContentType 'application/json'
+            Write-Host "🩺 Dispatched E2E failure to n8n"
+          }
 
   # ==================================================================
   # PHASE 3: L2 (Extended Verification)
@@ -241,6 +280,24 @@ jobs:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           NEXT_PUBLIC_APP_URL: http://localhost:3000
+      - name: "🩺 Active Handover: L2 E2E Smoke Failure"
+        if: failure()
+        shell: pwsh
+        env:
+          N8N_WEBHOOK_URL: ${{ env.N8N_CI_TRIAGE_WEBHOOK_URL }}
+        run: |
+          $payload = @{
+            job_name = 'l2-e2e-smoke'
+            run_id = '${{ github.run_id }}'
+            pr_number = '${{ github.event.pull_request.number }}'
+            branch = '${{ github.head_ref || github.ref_name }}'
+            conclusion = 'failure'
+            logs_summary = 'L2 E2E Smoke failed: critical user flows'
+          } | ConvertTo-Json -Compress
+          if ($env:N8N_WEBHOOK_URL) {
+            Invoke-RestMethod -Uri $env:N8N_WEBHOOK_URL -Method Post -Body $payload -ContentType 'application/json'
+            Write-Host "🩺 Dispatched L2 E2E Smoke failure to n8n"
+          }
 
   # Performance Audit for L2
   l2-perf-audit:
@@ -256,6 +313,24 @@ jobs:
         run: pnpm run lhci
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+      - name: "🩺 Active Handover: Perf Audit Failure"
+        if: failure()
+        shell: pwsh
+        env:
+          N8N_WEBHOOK_URL: ${{ env.N8N_CI_TRIAGE_WEBHOOK_URL }}
+        run: |
+          $payload = @{
+            job_name = 'l2-perf-audit'
+            run_id = '${{ github.run_id }}'
+            pr_number = '${{ github.event.pull_request.number }}'
+            branch = '${{ github.head_ref || github.ref_name }}'
+            conclusion = 'failure'
+            logs_summary = 'L2 Perf Audit failed: Lighthouse regression'
+          } | ConvertTo-Json -Compress
+          if ($env:N8N_WEBHOOK_URL) {
+            Invoke-RestMethod -Uri $env:N8N_WEBHOOK_URL -Method Post -Body $payload -ContentType 'application/json'
+            Write-Host "🩺 Dispatched Perf Audit failure to n8n"
+          }
 
   # DB Guard renamed to L2: DB Guard
   l2-db-guard:
