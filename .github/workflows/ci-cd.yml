@@ -262,6 +262,10 @@ jobs:
     needs: [l2-verification]
     if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/fix/')
     runs-on: [self-hosted, IronForge-Local] # Target specific local runner
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5437/ironforge_test?schema=public
+      DIRECT_URL: postgresql://postgres:postgres@localhost:5437/ironforge_test?schema=public
+      NEXT_PUBLIC_APP_URL: http://localhost:3000
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-ironforge
@@ -277,10 +281,6 @@ jobs:
         run: npx prisma db push --force-reset
       - name: Run Smoke E2E
         run: pnpm run test:smoke
-        env:
-          DATABASE_URL: postgresql://postgres:postgres@localhost:5437/ironforge_test?schema=public
-          DIRECT_URL: postgresql://postgres:postgres@localhost:5437/ironforge_test?schema=public
-          NEXT_PUBLIC_APP_URL: http://localhost:3000
       - name: "🩺 Active Handover: L2 E2E Smoke Failure"
         if: failure()
         shell: pwsh
@@ -306,6 +306,9 @@ jobs:
     needs: [l2-verification]
     if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/fix/')
     runs-on: [self-hosted, IronForge-Local] # Target specific local runner
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5433/ironforge_test?schema=public
+      DIRECT_URL: postgresql://postgres:postgres@localhost:5433/ironforge_test?schema=public
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-ironforge
@@ -315,8 +318,6 @@ jobs:
       - name: Run Lighthouse Audit
         run: pnpm run lhci
         env:
-          DATABASE_URL: postgresql://postgres:postgres@localhost:5433/ironforge_test?schema=public
-          DIRECT_URL: postgresql://postgres:postgres@localhost:5433/ironforge_test?schema=public
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
       - name: "🩺 Active Handover: Perf Audit Failure"
         if: failure()

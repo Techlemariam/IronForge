@@ -114,6 +114,8 @@ export type AthleteSettings = z.infer<typeof AthleteSettingsSchema>;
 
 // --- API CLIENT ---
 
+import { MOCK_WELLNESS, MOCK_ACTIVITIES, MOCK_EVENTS } from "./mock-data";
+
 /**
  * Standard fetch wrapper for Intervals.icu
  * Throws standard Error objects on failure.
@@ -124,6 +126,36 @@ async function fetchIntervals<T>(
   apiKey: string,
   schema?: z.ZodType<any>
 ): Promise<T | null> {
+  // E2E Mock Bypass: Prevent external fetch during CI if mock key is used
+  if (apiKey === 'mock-e2e-api-key') {
+    console.log(`[Intervals-Mock] Intercepting ${endpoint}`);
+
+    // Return appropriate mock data based on endpoint
+    if (endpoint.includes('/wellness')) {
+      // Return array if range, single object otherwise
+      if (endpoint.includes('oldest=')) {
+        return [MOCK_WELLNESS] as unknown as T;
+      }
+      return MOCK_WELLNESS as unknown as T;
+    }
+    if (endpoint.includes('/activities')) {
+      return MOCK_ACTIVITIES as unknown as T;
+    }
+    if (endpoint.includes('/events')) {
+      return MOCK_EVENTS as unknown as T;
+    }
+    if (endpoint.includes('/athlete')) {
+      return {
+        id: 'i123456',
+        name: 'Mock Titan',
+        timezone: 'UTC',
+        resting_hr: 48,
+        max_hr: 190,
+        ftp: 300,
+      } as unknown as T;
+    }
+  }
+
   if (!apiKey) {
     throw new Error("Intervals API Key is missing");
   }
