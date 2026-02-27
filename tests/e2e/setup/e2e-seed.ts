@@ -168,6 +168,8 @@ async function main() {
         faction: Faction.HORDE,
         archetype: Archetype.PATHFINDER,
         hasCompletedOnboarding: true,
+        intervalsApiKey: 'mock-e2e-api-key',
+        intervalsAthleteId: 'i123456',
     };
 
     const titanData = {

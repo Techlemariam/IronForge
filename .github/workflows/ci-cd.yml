@@ -278,9 +278,8 @@ jobs:
       - name: Run Smoke E2E
         run: pnpm run test:smoke
         env:
-          CI: true
-          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5437/ironforge_test?schema=public
+          DIRECT_URL: postgresql://postgres:postgres@localhost:5437/ironforge_test?schema=public
           NEXT_PUBLIC_APP_URL: http://localhost:3000
       - name: "🩺 Active Handover: L2 E2E Smoke Failure"
         if: failure()
@@ -311,11 +310,13 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-ironforge
       - name: Setup Chrome
-        uses: browser-actions/setup-chrome@latest
+        run: npx playwright install chrome
       - run: pnpm run build
       - name: Run Lighthouse Audit
         run: pnpm run lhci
         env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5433/ironforge_test?schema=public
+          DIRECT_URL: postgresql://postgres:postgres@localhost:5433/ironforge_test?schema=public
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
       - name: "🩺 Active Handover: Perf Audit Failure"
         if: failure()
