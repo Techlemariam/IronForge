@@ -106,7 +106,7 @@ jobs:
           } | ConvertTo-Json -Compress
           
           if ($env:N8N_WEBHOOK_URL) {
-            Invoke-RestMethod -Uri $env:N8N_WEBHOOK_URL -Method Post -Body $payload -ContentType 'application/json'
+            Invoke-RestMethod -Uri $env:N8N_WEBHOOK_URL -Method Post -Body $payload -ContentType 'application/json' -SkipCertificateCheck
             Write-Host "🩺 Dispatched to n8n CI Triage Router"
           } else {
             Write-Host "⚠️ N8N_CI_TRIAGE_WEBHOOK_URL not set. Skipping Active Handover."
@@ -153,7 +153,7 @@ jobs:
             logs_summary = 'L2 Verification failed: build or integration tests'
           } | ConvertTo-Json -Compress
           if ($env:N8N_WEBHOOK_URL) {
-            Invoke-RestMethod -Uri $env:N8N_WEBHOOK_URL -Method Post -Body $payload -ContentType 'application/json'
+            Invoke-RestMethod -Uri $env:N8N_WEBHOOK_URL -Method Post -Body $payload -ContentType 'application/json' -SkipCertificateCheck
             Write-Host "🩺 Dispatched L2 failure to n8n"
           }
 
@@ -188,7 +188,7 @@ jobs:
             logs_summary = 'Docker Build Verify failed: image build or inspect error'
           } | ConvertTo-Json -Compress
           if ($env:N8N_WEBHOOK_URL) {
-            Invoke-RestMethod -Uri $env:N8N_WEBHOOK_URL -Method Post -Body $payload -ContentType 'application/json'
+            Invoke-RestMethod -Uri $env:N8N_WEBHOOK_URL -Method Post -Body $payload -ContentType 'application/json' -SkipCertificateCheck
             Write-Host "🩺 Dispatched Docker Verify failure to n8n"
           }
 
@@ -248,7 +248,7 @@ jobs:
             logs_summary = 'E2E Tests failed: Playwright test suite'
           } | ConvertTo-Json -Compress
           if ($env:N8N_WEBHOOK_URL) {
-            Invoke-RestMethod -Uri $env:N8N_WEBHOOK_URL -Method Post -Body $payload -ContentType 'application/json'
+            Invoke-RestMethod -Uri $env:N8N_WEBHOOK_URL -Method Post -Body $payload -ContentType 'application/json' -SkipCertificateCheck
             Write-Host "🩺 Dispatched E2E failure to n8n"
           }
 
@@ -295,7 +295,7 @@ jobs:
             logs_summary = 'L2 E2E Smoke failed: critical user flows'
           } | ConvertTo-Json -Compress
           if ($env:N8N_WEBHOOK_URL) {
-            Invoke-RestMethod -Uri $env:N8N_WEBHOOK_URL -Method Post -Body $payload -ContentType 'application/json'
+            Invoke-RestMethod -Uri $env:N8N_WEBHOOK_URL -Method Post -Body $payload -ContentType 'application/json' -SkipCertificateCheck
             Write-Host "🩺 Dispatched L2 E2E Smoke failure to n8n"
           }
 
@@ -328,7 +328,7 @@ jobs:
             logs_summary = 'L2 Perf Audit failed: Lighthouse regression'
           } | ConvertTo-Json -Compress
           if ($env:N8N_WEBHOOK_URL) {
-            Invoke-RestMethod -Uri $env:N8N_WEBHOOK_URL -Method Post -Body $payload -ContentType 'application/json'
+            Invoke-RestMethod -Uri $env:N8N_WEBHOOK_URL -Method Post -Body $payload -ContentType 'application/json' -SkipCertificateCheck
             Write-Host "🩺 Dispatched Perf Audit failure to n8n"
           }
 
@@ -367,7 +367,7 @@ jobs:
             logs_summary = 'DB Guard failed: Prisma schema drift or shadow DB error'
           } | ConvertTo-Json -Compress
           if ($env:N8N_WEBHOOK_URL) {
-            Invoke-RestMethod -Uri $env:N8N_WEBHOOK_URL -Method Post -Body $payload -ContentType 'application/json'
+            Invoke-RestMethod -Uri $env:N8N_WEBHOOK_URL -Method Post -Body $payload -ContentType 'application/json' -SkipCertificateCheck
             Write-Host "🩺 Dispatched DB Guard failure to n8n"
           }
 
