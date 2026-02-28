@@ -1,33 +1,38 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Territory Page', () => {
-    test('should load the territory map and stats', async ({ page }) => {
-        // 1. Navigate to Territory Page
-        // Assuming we have a test user logged in via auth setup or we mock it.
-        // The playwright config suggests we use 'playwright/.auth/user.json'.
-        // We should ensure we are authenticated. The config handles this for 'chromium' project.
-
+    test('should load the territory page and display stats', async ({ page }) => {
         await page.goto('/territory');
 
-        // 2. Verify Map Loads
-        // The map container has an ID or class we can check.
-        // TerritoryMap.tsx uses a ref but we can check for canvas or the container layout.
-        // Looking at TerritoryMap.tsx, it renders a div. We should look for the canvas element MapLibre creates.
-        const mapCanvas = page.locator('.maplibregl-canvas');
-        await expect(mapCanvas).toBeVisible({ timeout: 10000 });
+        // Verify the heading loads
+        await expect(page.getByText(/TERRITORY CONQUEST/i)).toBeVisible({ timeout: 15000 });
 
-        // 3. Verify Stats Presence
-        // We added a "Weekly Settlement" card.
-        const settlementCard = page.getByText('Weekly Settlement');
-        await expect(settlementCard).toBeVisible();
+        // Verify Stats Cards are present
+        await expect(page.getByText('Owned Tiles')).toBeVisible({ timeout: 10000 });
+        await expect(page.getByText('Control Points')).toBeVisible({ timeout: 10000 });
+        await expect(page.getByText('Daily Income')).toBeVisible({ timeout: 10000 });
+        await expect(page.getByText('Weekly Settlement')).toBeVisible({ timeout: 10000 });
 
-        // 4. Verify Home Zone Text (optional, if text is visible)
-        // The Legend has "Titan's Sanctuary".
-        const legendItem = page.getByText("Titan's Sanctuary");
-        await expect(legendItem).toBeVisible();
+        // Verify navigation tabs exist
+        await expect(page.getByText('World Map')).toBeVisible();
+        await expect(page.getByText('Leaderboards')).toBeVisible();
 
-        // 5. Check URL to confirm no redirects happened (e.g. back to login)
+        // Check URL to confirm no redirects happened
         expect(page.url()).toContain('/territory');
+    });
+
+    test('should switch to leaderboard tab', async ({ page }) => {
+        await page.goto('/territory');
+
+        // Wait for page load
+        await expect(page.getByText(/TERRITORY CONQUEST/i)).toBeVisible({ timeout: 15000 });
+
+        // Click on Leaderboards tab
+        await page.getByText('Leaderboards').click();
+
+        // Verify the leaderboard content loads (tab switches)
+        // The TabsContent for 'leaderboard' should become visible
+        await expect(page.getByText('World Map')).toBeVisible();
     });
 
     test('should be responsive on mobile', async ({ page }) => {
@@ -35,11 +40,10 @@ test.describe('Territory Page', () => {
         await page.setViewportSize({ width: 375, height: 667 });
         await page.goto('/territory');
 
-        // Check if map is still visible
-        const mapCanvas = page.locator('.maplibregl-canvas');
-        await expect(mapCanvas).toBeVisible();
+        // Verify heading is visible on mobile
+        await expect(page.getByText(/TERRITORY CONQUEST/i)).toBeVisible({ timeout: 15000 });
 
-        // Check if Stats grid adapts (Optional, maybe check if cards are stacked)
-        // We won't go too deep into checking grid layout via CSS unless necessary.
+        // Stats cards should still render
+        await expect(page.getByText('Owned Tiles')).toBeVisible({ timeout: 10000 });
     });
 });

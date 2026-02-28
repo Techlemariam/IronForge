@@ -140,6 +140,7 @@ jobs:
         run: pnpm run ci:l2
       - name: "🩺 Active Handover: L2 Failure"
         if: failure()
+        continue-on-error: true
         shell: pwsh
         env:
           N8N_WEBHOOK_URL: ${{ env.N8N_CI_TRIAGE_WEBHOOK_URL }}
@@ -236,6 +237,7 @@ jobs:
           GOOGLE_GENERATIVE_AI_API_KEY: ${{ secrets.GOOGLE_GENERATIVE_AI_API_KEY || 'dummy_google_ai_key_for_e2e_tests' }}
       - name: "🩺 Active Handover: E2E Failure"
         if: failure()
+        continue-on-error: true
         shell: pwsh
         env:
           N8N_WEBHOOK_URL: ${{ env.N8N_CI_TRIAGE_WEBHOOK_URL }}
@@ -284,6 +286,7 @@ jobs:
         run: pnpm run test:smoke
       - name: "🩺 Active Handover: L2 E2E Smoke Failure"
         if: failure()
+        continue-on-error: true
         shell: pwsh
         env:
           N8N_WEBHOOK_URL: ${{ env.N8N_CI_TRIAGE_WEBHOOK_URL }}
@@ -322,6 +325,7 @@ jobs:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
       - name: "🩺 Active Handover: Perf Audit Failure"
         if: failure()
+        continue-on-error: true
         shell: pwsh
         env:
           N8N_WEBHOOK_URL: ${{ env.N8N_CI_TRIAGE_WEBHOOK_URL }}
@@ -361,6 +365,7 @@ jobs:
           npx prisma migrate diff --from-migrations prisma/migrations --to-schema-datamodel prisma/schema.prisma --shadow-database-url $env:SHADOW_DATABASE_URL --exit-code
       - name: "🩺 Active Handover: DB Guard Failure"
         if: failure()
+        continue-on-error: true
         shell: pwsh
         env:
           N8N_WEBHOOK_URL: ${{ env.N8N_CI_TRIAGE_WEBHOOK_URL }}
