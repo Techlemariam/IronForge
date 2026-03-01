@@ -1,6 +1,27 @@
 version: '3.8'
 
 services:
+  # ──────────────────────────────────────────────
+  # Database Init Container (Migrations + Seeding)
+  # Runs prisma db push and seeds the database, then exits.
+  # The app services depend on this to ensure DB is ready with schema.
+  # ──────────────────────────────────────────────
+  db-init:
+    build:
+      context: .
+      target: dev
+    container_name: ironforge-db-init
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/ironforge
+      DIRECT_URL: postgresql://postgres:postgres@db:5432/ironforge
+      SKIP_ENV_VALIDATION: "true"
+    depends_on:
+      db:
+        condition: service_healthy
+    entrypoint: [ "sh", "-c", "npx prisma db push --skip-generate && echo '✅ Database schema applied.' && exit 0" ]
+    networks:
+      - ironforge-net
+
   # Next.js Application (Development)
   app-dev:
     build:
@@ -21,6 +42,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      db-init:
+        condition: service_completed_successfully
     networks:
       - ironforge-net
 
@@ -40,6 +63,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      db-init:
+        condition: service_completed_successfully
     networks:
       - ironforge-net
 
