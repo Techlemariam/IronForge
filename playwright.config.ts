@@ -40,10 +40,28 @@ export default defineConfig({
             testMatch: /.*\.setup\.ts/,
         },
         {
-            name: 'chromium',
+            name: 'desktop',
             use: {
                 ...devices['Desktop Chrome'],
                 // Use prepared auth state.
+                storageState: 'playwright/.auth/user.json',
+            },
+            dependencies: ['setup'],
+        },
+        {
+            name: 'mobile',
+            use: {
+                ...devices['Pixel 5'],
+                storageState: 'playwright/.auth/user.json',
+            },
+            dependencies: ['setup'],
+        },
+        {
+            name: 'tv',
+            use: {
+                viewport: { width: 1920, height: 1080 },
+                hasTouch: false,
+                colorScheme: 'dark',
                 storageState: 'playwright/.auth/user.json',
             },
             dependencies: ['setup'],

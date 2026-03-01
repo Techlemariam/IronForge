@@ -162,6 +162,8 @@ model Titan {
   lastActive      DateTime      @default(now())
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
+  dailyXpEarned   Int           @default(0)
+  lastXpReset     DateTime      @default(now())
   currentEnergy   Int           @default(100)
   maxEnergy       Int           @default(100)
   cardioIndex     Float         @default(0)

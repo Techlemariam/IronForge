@@ -1,199 +1,98 @@
 "use server";
 
+import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
-type ItemCategory =
-  | "CONSUMABLE"
-  | "EQUIPMENT"
-  | "MATERIAL"
-  | "COSMETIC"
-  | "BOOST";
-
-interface ShopItem {
-  id: string;
-  name: string;
-  description: string;
-  category: ItemCategory;
-  price: number;
-  currency: "GOLD" | "GEMS";
-  stock: number | null; // null = unlimited
-  owned: number;
-  requiresLevel?: number;
-  discount?: number;
-}
-
-interface ShopSection {
-  id: string;
-  name: string;
-  items: ShopItem[];
-  refreshesAt?: Date;
-}
-
-const SHOP_INVENTORY: ShopSection[] = [
+/**
+ * Valid items for purchase in the Gold Shop.
+ */
+const SHOP_ITEMS = [
   {
-    id: "consumables",
-    name: "Consumables",
-    items: [
-      {
-        id: "potion-health",
-        name: "Health Potion",
-        description: "Restores 50 HP",
-        category: "CONSUMABLE",
-        price: 50,
-        currency: "GOLD",
-        stock: null,
-        owned: 5,
-      },
-      {
-        id: "potion-energy",
-        name: "Energy Potion",
-        description: "Restores 25 energy",
-        category: "CONSUMABLE",
-        price: 75,
-        currency: "GOLD",
-        stock: null,
-        owned: 2,
-      },
-      {
-        id: "potion-xp",
-        name: "XP Elixir",
-        description: "+50% XP for 1 hour",
-        category: "BOOST",
-        price: 200,
-        currency: "GOLD",
-        stock: 3,
-        owned: 0,
-      },
-    ],
+    id: "streak_freeze",
+    name: "Streak Freeze Shield",
+    description: "Equip this to protect your streak if you miss a single day.",
+    cost: 1500, // Gold sink
+    type: "CONSUMABLE",
   },
   {
-    id: "equipment",
-    name: "Equipment",
-    items: [
-      {
-        id: "sword-steel",
-        name: "Steel Sword",
-        description: "+15 attack",
-        category: "EQUIPMENT",
-        price: 500,
-        currency: "GOLD",
-        stock: 1,
-        owned: 0,
-      },
-      {
-        id: "armor-iron",
-        name: "Iron Armor",
-        description: "+20 defense",
-        category: "EQUIPMENT",
-        price: 600,
-        currency: "GOLD",
-        stock: 1,
-        owned: 0,
-      },
-      {
-        id: "ring-might",
-        name: "Ring of Might",
-        description: "+5% strength",
-        category: "EQUIPMENT",
-        price: 1000,
-        currency: "GOLD",
-        stock: 1,
-        owned: 0,
-        requiresLevel: 20,
-      },
-    ],
+    id: "energy_potion",
+    name: "Titan Energy Potion",
+    description: "Instantly restores 50 Energy to your Titan.",
+    cost: 500,
+    type: "CONSUMABLE",
   },
   {
-    id: "daily-deals",
-    name: "Daily Deals",
-    refreshesAt: new Date(Date.now() + 12 * 60 * 60 * 1000),
-    items: [
-      {
-        id: "deal-crate",
-        name: "Mystery Crate",
-        description: "Random rare reward",
-        category: "CONSUMABLE",
-        price: 150,
-        currency: "GOLD",
-        stock: 1,
-        owned: 0,
-        discount: 50,
-      },
-    ],
-  },
+    id: "oracle_reroll",
+    name: "Oracle Decree Reroll",
+    description: "Change today's Oracle Decree if it gave you a DEBUFF.",
+    cost: 3000,
+    type: "CONSUMABLE",
+  }
 ];
 
-/**
- * Get shop inventory.
- */
-export async function getShopInventoryAction(
-  _userId: string,
-): Promise<ShopSection[]> {
-  return SHOP_INVENTORY;
+export async function fetchShopItemsAction() {
+  return { success: true, items: SHOP_ITEMS };
 }
 
 /**
- * Buy item from shop.
+ * Purchases an item from the shop using Gold.
  */
-export async function buyItemAction(
-  userId: string,
-  itemId: string,
-  quantity: number = 1,
-): Promise<{ success: boolean; message: string; newBalance?: number }> {
-  const allItems = SHOP_INVENTORY.flatMap((s) => s.items);
-  const item = allItems.find((i) => i.id === itemId);
+export async function purchaseShopItemAction(userId: string, itemId: string) {
+  try {
+    const itemDefinition = SHOP_ITEMS.find((i) => i.id === itemId);
+    if (!itemDefinition) {
+      return { success: false, error: "Item not found in shop." };
+    }
 
-  if (!item) return { success: false, message: "Item not found" };
-  if (item.stock !== null && item.stock < quantity)
-    return { success: false, message: "Not enough stock" };
+    // Use a transaction to ensure gold isn't spent without receiving the item
+    const result = await prisma.$transaction(async (tx) => {
+      const user = await tx.user.findUnique({
+        where: { id: userId },
+        select: { gold: true },
+      });
 
-  const totalCost = item.price * quantity * (1 - (item.discount || 0) / 100);
-  console.log(
-    `Purchased ${quantity}x ${item.name} for ${totalCost} ${item.currency}`,
-  );
-  revalidatePath("/shop");
+      if (!user) throw new Error("User not found");
+      if (user.gold < itemDefinition.cost) {
+        throw new Error("Not enough gold");
+      }
 
-  return {
-    success: true,
-    message: `Purchased ${quantity}x ${item.name}`,
-    newBalance: 1000 - totalCost,
-  };
-}
+      // Deduct Gold
+      await tx.user.update({
+        where: { id: userId },
+        data: { gold: { decrement: itemDefinition.cost } },
+      });
 
-/**
- * Sell item.
- */
-export async function sellItemAction(
-  userId: string,
-  itemId: string,
-  quantity: number = 1,
-): Promise<{ success: boolean; goldReceived: number }> {
-  // Items sell for 50% of their buy price
-  const sellPrice = 50 * quantity;
-  console.log(`Sold ${quantity}x ${itemId} for ${sellPrice} gold`);
-  revalidatePath("/inventory");
+      // Grant Item Effect
+      if (itemDefinition.id === "energy_potion") {
+        await tx.titan.update({
+          where: { userId },
+          data: { currentEnergy: { increment: 50 } }, // In reality we'd cap this at maxEnergy
+        });
+      } else if (itemDefinition.id === "streak_freeze") {
+        // Here we'd typically add it to an Inventory table, but for now we'll 
+        // store it in the user's generic preferences or a specific Inventory model
+        // Assume we just grant a simple DB row:
+        const systemItem = await tx.item.upsert({
+          where: { id: "item_streak_freeze" },
+          create: { id: "item_streak_freeze", name: itemDefinition.name, description: itemDefinition.description, type: "CONSUMABLE", rarity: "EPIC" },
+          update: {}
+        });
 
-  return { success: true, goldReceived: sellPrice };
-}
+        await tx.userEquipment.upsert({
+          where: { userId_equipmentId: { userId, equipmentId: systemItem.id } },
+          create: { userId, equipmentId: systemItem.id, isOwned: true },
+          update: {}
+        });
+      }
 
-/**
- * Get user's gold balance.
- */
-export async function getGoldBalanceAction(_userId: string): Promise<number> {
-  return 2500;
-}
+      return { success: true };
+    });
 
-/**
- * Check if user can afford item.
- */
-export async function canAffordItemAction(
-  userId: string,
-  itemId: string,
-  quantity: number,
-): Promise<boolean> {
-  const balance = await getGoldBalanceAction(userId);
-  const allItems = SHOP_INVENTORY.flatMap((s) => s.items);
-  const item = allItems.find((i) => i.id === itemId);
-  if (!item) return false;
-  return balance >= item.price * quantity;
+    revalidatePath("/dashboard");
+    return result;
+
+  } catch (error: any) {
+    console.error("Purchase failed:", error);
+    return { success: false, error: error.message || "Transaction failed" };
+  }
 }

@@ -18,4 +18,4 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - .:/app
-    # Run multiple instances with: docker compose -f docker-compose.runners.yml up --scale runner=3 -d
+    # Run multiple instances with: docker compose -f docker-compose.runners.yml up --scale runner=5 -d

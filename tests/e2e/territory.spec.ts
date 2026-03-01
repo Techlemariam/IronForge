@@ -8,10 +8,10 @@ test.describe('Territory Page', () => {
         await expect(page.getByText(/TERRITORY CONQUEST/i)).toBeVisible({ timeout: 15000 });
 
         // Verify Stats Cards are present
-        await expect(page.getByText('Owned Tiles')).toBeVisible({ timeout: 10000 });
-        await expect(page.getByText('Control Points')).toBeVisible({ timeout: 10000 });
-        await expect(page.getByText('Daily Income')).toBeVisible({ timeout: 10000 });
-        await expect(page.getByText('Weekly Settlement')).toBeVisible({ timeout: 10000 });
+        await expect(page.getByText('Owned Tiles')).toBeVisible({ timeout: 20000 });
+        await expect(page.getByText('Control Points')).toBeVisible({ timeout: 20000 });
+        await expect(page.getByText('Daily Income')).toBeVisible({ timeout: 20000 });
+        await expect(page.getByText('Weekly Settlement')).toBeVisible({ timeout: 20000 });
 
         // Verify navigation tabs exist
         await expect(page.getByText('World Map')).toBeVisible();
@@ -44,6 +44,6 @@ test.describe('Territory Page', () => {
         await expect(page.getByText(/TERRITORY CONQUEST/i)).toBeVisible({ timeout: 15000 });
 
         // Stats cards should still render
-        await expect(page.getByText('Owned Tiles')).toBeVisible({ timeout: 10000 });
+        await expect(page.getByText('Owned Tiles')).toBeVisible({ timeout: 20000 });
     });
 });

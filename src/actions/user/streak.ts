@@ -76,7 +76,27 @@ export async function checkAndIncrementStreakAction(
         else if (newStreak === 100) bonusXp = 2000;
         else if (newStreak % 7 === 0) bonusXp = 50; // Weekly bonus
       } else {
-        // Streak broken - reset to 1
+        // Streak broken
+        // LOSS AVERSION PENALTY
+        if (user.loginStreak && user.loginStreak >= 7) {
+          try {
+            await prisma.titan.update({
+              where: { userId },
+              data: { mood: "DEPRESSED" },
+            });
+
+            // Make sure not to crash if NotificationService isn't available
+            const { NotificationService } = await import("@/services/notifications");
+            await NotificationService.create({
+              userId,
+              type: "STREAK_BROKEN",
+              message: `Your ${user.loginStreak}-day streak has been broken! Your Titan's mood dropped to DEPRESSED, reducing XP gains. Get back to work to recover.`,
+            });
+          } catch (err) {
+            console.error("Failed to apply streak penalty", err);
+          }
+        }
+
         newStreak = 1;
         streakMaintained = false;
       }
@@ -101,6 +121,15 @@ export async function checkAndIncrementStreakAction(
           xp: { increment: bonusXp },
         },
       });
+    }
+
+    // Evaluate Physical Skills based on new data
+    try {
+      const { PhysicalSkillService } = await import("@/services/physical-skills");
+      // Execute in background
+      PhysicalSkillService.evaluateAndUnlockSkills(userId).catch(console.error);
+    } catch (err) {
+      console.error("Failed to load PhysicalSkillService", err);
     }
 
     revalidatePath("/dashboard");

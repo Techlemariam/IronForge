@@ -66,6 +66,7 @@
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.4.2",
     "@remotion/cli": "^4.0.421",
+    "@remotion/lambda": "^4.0.431",
     "@remotion/player": "^4.0.431",
     "@sentry/nextjs": "^10.38.0",
     "@serwist/next": "^9.5.5",

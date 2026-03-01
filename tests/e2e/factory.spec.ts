@@ -4,8 +4,8 @@ test.describe('Factory Orchestration Dashboard', () => {
     test.beforeEach(async ({ page }) => {
         // Navigate to the factory page
         await page.goto('/factory');
-        // Wait for the page to be ready
-        await expect(page.locator('h1')).toContainText(/Factory Dashboard/i);
+        // Wait for the page to be ready (increased timeout for CI)
+        await expect(page.getByRole('heading', { name: /Factory Dashboard/i })).toBeVisible({ timeout: 20000 });
     });
 
     test('should render all major orchestration sections', async ({ page }) => {

@@ -146,8 +146,11 @@ Score calculation:
 If you've had repeated CI E2E failures, run this **before** pushing to simulate the CI environment:
 
 ```bash
-## Requires Docker installed locally
-docker run --rm -v $(pwd):/work -w /work mcr.microsoft.com/playwright:v1.40.0-jammy \
+## Recommended: Use the containerized Playwright runner
+docker compose -f docker-compose.test.yml run playwright-runner
+
+## Manual fallback (standalone)
+docker run --rm -v $(pwd):/work -w /work mcr.microsoft.com/playwright:v1.58.2-noble \
   npx playwright test --workers=1 --retries=0
 ```
 
@@ -166,6 +169,11 @@ docker run --rm -v $(pwd):/work -w /work mcr.microsoft.com/playwright:v1.40.0-ja
 - Added temporal drift check (0.1)
 - Added Docker E2E verification section
 - Renumbered sections
+
+### 2.1.0 (2026-03-01)
+
+- Updated Docker E2E to use `docker-compose.test.yml` playwright-runner
+- Updated Playwright image from v1.40.0-jammy to v1.58.2-noble
 
 ### 1.0.0 (2026-01-08)
 
