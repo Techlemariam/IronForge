@@ -41,7 +41,8 @@ jobs:
           file: ./Dockerfile.agent
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}/agent:latest
-            ghcr.io/${{ github.repository }}/agent:${{ github.sha }}
+            ghcr.io/techlemariam/ironforge/agent:latest
+            ghcr.io/techlemariam/ironforge/agent:${{ github.sha }}
+
           cache-from: type=gha
           cache-to: type=gha,mode=max
