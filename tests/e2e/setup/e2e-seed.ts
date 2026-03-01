@@ -214,6 +214,53 @@ async function main() {
 
     console.log(`✅ Ensured Test User: ${testUser.heroName} (Onboarding Completed) with ID: ${testUser.id}`);
 
+    // 4. Seed E2E Guild + Territory so /territory page renders TerritoryStats
+    // getUserTerritoryStats() returns null if user has no guildId — causing 'Owned Tiles' to not render
+    console.log('🏰 Seeding E2E Guild and Territory...');
+    const e2eGuildId = 'e2e-guild-id';
+
+    const e2eGuild = await prisma.guild.upsert({
+        where: { id: e2eGuildId },
+        update: {
+            leaderId: testUser.id,
+        },
+        create: {
+            id: e2eGuildId,
+            name: 'E2E Iron Vanguard',
+            tag: 'E2EV',
+            leaderId: testUser.id,
+            isPublic: true,
+            xp: 1000,
+            level: 3,
+            gold: 5000,
+        },
+    });
+    console.log(`✅ Ensured E2E Guild: ${e2eGuild.name} (${e2eGuild.id})`);
+
+    // Assign guild to the test user
+    await prisma.user.update({
+        where: { id: testUser.id },
+        data: { guildId: e2eGuild.id },
+    });
+    console.log(`✅ Assigned guild ${e2eGuild.tag} to test user.`);
+
+    // Create a territory controlled by the E2E guild
+    await prisma.territory.upsert({
+        where: { name: 'E2E Iron Peaks' },
+        update: { controlledById: e2eGuild.id },
+        create: {
+            name: 'E2E Iron Peaks',
+            region: 'Nordheim',
+            type: 'TRAINING_GROUNDS',
+            bonuses: { goldPerDay: 100, xpPerDay: 50 },
+            coordX: 10,
+            coordY: 10,
+            controlledById: e2eGuild.id,
+            controlledAt: new Date(),
+        },
+    });
+    console.log('✅ Seeded E2E territory controlled by guild.');
+
     console.log('🌱 Seeding completed successfully.');
 }
 
