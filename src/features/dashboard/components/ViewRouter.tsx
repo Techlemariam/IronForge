@@ -16,7 +16,7 @@ import { StrengthContainer } from "@/features/strength/StrengthContainer";
 import { ProgramBuilder } from "@/features/training/ProgramBuilder";
 import { TrophyRoom } from "@/features/gamification/TrophyRoom";
 import { GuildHall } from "@/features/guild/GuildHall";
-import TrainingCenter from "@/features/training/TrainingCenter";
+import { TrainingCenter } from "@/features/training/TrainingCenter";
 import { Citadel } from "./Citadel";
 import { QuestCompletion } from "./QuestCompletion";
 import {

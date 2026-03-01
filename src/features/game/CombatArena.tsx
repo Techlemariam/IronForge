@@ -28,7 +28,7 @@ import {
 } from "lucide-react";
 import { LootItem } from "@/types/loot";
 import { playSound, triggerHaptic } from "@/utils";
-import useCelebration from "@/hooks/useCelebration";
+import { useCelebration } from "@/hooks/useCelebration";
 import { LootReveal } from "@/components/game/LootReveal";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import Image from "next/image";

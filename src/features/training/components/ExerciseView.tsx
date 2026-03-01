@@ -12,7 +12,7 @@ import { useSetHistory } from "@/features/strength/hooks/useSetHistory";
 import { ExerciseProgressChart } from "@/components/charts/ExerciseProgressChart";
 import { getExerciseHistory } from "@/features/strength/actions/history";
 import { BarChart2 } from "lucide-react";
-import PRBadge from "@/components/ui/PRBadge";
+import { PRBadge } from "@/components/ui/PRBadge";
 import { useMaxReps } from "@/hooks/useMaxReps";
 
 import { SetData } from "@/actions/training/strength";

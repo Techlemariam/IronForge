@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import ViewRouter from './ViewRouter';
+import { ViewRouter } from './ViewRouter';
 
 const meta: Meta<typeof ViewRouter> = {
   title: 'Components/ViewRouter',

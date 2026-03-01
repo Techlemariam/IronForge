@@ -16,7 +16,7 @@ import { useSetLogging } from "@/features/strength/hooks/useSetLogging";
 import { useVolumeTracking } from "@/features/strength/hooks/useVolumeTracking";
 
 
-import SupersetGroup from "@/features/training/components/SupersetView";
+import { SupersetGroup } from "@/features/training/components/SupersetView";
 import { useHRRecoveryTimer } from "@/features/strength/hooks/useHRRecoveryTimer";
 import { BiometricsHUD } from "@/features/strength/components/BiometricsHUD";
 import { CardiacDriftWarning } from "@/features/strength/components/CardiacDriftWarning";
