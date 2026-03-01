@@ -159,5 +159,3 @@ export const PRCelebration: React.FC<PRCelebrationProps> = ({
 };
 
 
-export default PRCelebration;
-

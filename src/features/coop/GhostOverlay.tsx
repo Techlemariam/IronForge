@@ -82,4 +82,3 @@ export const GhostOverlay: React.FC<GhostOverlayProps> = ({ events, currentUserI
     );
 };
 
-export default GhostOverlay;
