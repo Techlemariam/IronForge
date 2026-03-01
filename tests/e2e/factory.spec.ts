@@ -39,7 +39,8 @@ test.describe('Factory Orchestration Dashboard', () => {
         await runButton.click();
 
         // 3. Wait for processing to complete (the specific item title should disappear from the backlog)
-        await expect(page.getByText(itemTitle as string, { exact: true })).toHaveCount(0, { timeout: 15000 });
+        const backlogSection = page.locator('[data-testid="backlog-section"], section:has(h2:has-text("Backlog"))').first();
+        await expect(backlogSection.getByText(itemTitle as string, { exact: true })).toHaveCount(0, { timeout: 15000 });
     });
 
     test('should verify Quota Gauges rendering and numerical values', async ({ page }) => {
