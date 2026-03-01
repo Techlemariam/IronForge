@@ -38,7 +38,7 @@ export class PocketCastsClient {
         }
     }
 
-    private async _request(endpoint: string, method: "GET" | "POST" = "GET", body: any = null) {
+    private async _request(endpoint: string, method: "GET" | "POST" = "GET", body: unknown = null) {
         const url = `${this.baseUrl}${endpoint}`;
         const options: RequestInit = {
             method,

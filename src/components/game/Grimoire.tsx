@@ -187,7 +187,7 @@ export const Grimoire: React.FC<GrimoireProps> = ({ onClose }) => {
                         <span className="text-zinc-700">
                           {key.toUpperCase()}:
                         </span>
-                        <span className="text-rarity-legendary">{val}</span>
+                        <span className="text-rarity-legendary">{String(val)}</span>
                       </span>
                     ))}
                   </div>

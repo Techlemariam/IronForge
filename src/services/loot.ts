@@ -95,7 +95,7 @@ export const LootService = {
 
                 return {
                     type: "ITEM",
-                    itemRarity: selectedLoot.rarity as any,
+                    itemRarity: selectedLoot.rarity as "COMMON" | "UNCOMMON" | "RARE" | "EPIC" | "LEGENDARY",
                     message: `Looted a ${selectedLoot.rarity} Item: ${item.name}!`,
                 };
             } else {

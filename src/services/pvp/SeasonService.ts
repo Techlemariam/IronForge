@@ -1,5 +1,7 @@
 import prisma from "@/lib/prisma";
 
+import { Prisma } from "@prisma/client";
+
 /**
  * SeasonService
  * 
@@ -22,7 +24,7 @@ export class SeasonService {
     /**
      * Create a new PvP season.
      */
-    static async createSeason(name: string, startDate: Date, endDate: Date, rewards: any) {
+    static async createSeason(name: string, startDate: Date, endDate: Date, rewards: Prisma.InputJsonValue) {
         return await prisma.pvpSeason.create({
             data: {
                 name,
@@ -83,7 +85,7 @@ export class SeasonService {
                 `Season ${parseInt(currentSeason.name.split(' ')[1] || '1') + 1}`,
                 nextStart,
                 nextEnd,
-                currentSeason.rewards // Reuse same reward structure
+                (currentSeason.rewards as Prisma.InputJsonValue) || {} // Reuse same reward structure
             );
         }
 

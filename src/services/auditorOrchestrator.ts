@@ -2,6 +2,7 @@ import { calculateWeeklyVolume } from "../utils/volumeCalculator";
 import { auditWeaknesses } from "../utils/weaknessAuditor";
 import { StorageService } from "./storage";
 import { AuditReport } from "../types/auditor";
+import { HevyWorkout } from "../types/hevy";
 import { getWeeklyMobilityLogs } from "@/actions/mobility/logMobilityAction";
 import { auditMobility } from "./MobilityAuditor";
 
@@ -28,21 +29,21 @@ import { auditMobility } from "./MobilityAuditor";
 export const runFullAudit = async (
   forceRefresh: boolean = false,
   userId?: string,
-  prefetchedHistory?: any[],
+  prefetchedHistory?: HevyWorkout[],
 ): Promise<AuditReport> => {
   // 1. Check cache first
   if (!forceRefresh && !prefetchedHistory) {
     const cached = await StorageService.getLatestAuditorReport();
     if (cached) {
-      const reportAge = Date.now() - new Date((cached as any).timestamp).getTime();
+      const reportAge = Date.now() - new Date((cached as unknown as { timestamp: string | number | Date }).timestamp).getTime();
       if (reportAge < 1000 * 60 * 60) {
         console.log("Using cached Auditor Report");
-        return cached as any as AuditReport;
+        return cached as unknown as AuditReport;
       }
     }
   }
 
-  let history: any[] = [];
+  let history: HevyWorkout[] = [];
 
   if (prefetchedHistory && prefetchedHistory.length > 0) {
     // Use injected history (e.g. from Demo Mode or already fetched)

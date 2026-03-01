@@ -85,8 +85,8 @@ export class FactoryService {
         return tasks.map(t => ({
             id: t.id,
             description: t.description,
-            status: t.status as any,
-            stage: (t as any).stage || 'DESIGN',
+            status: t.status as AssemblyLineTask['status'],
+            stage: ((t as unknown as { stage?: string }).stage as AssemblyLineTask['stage']) || 'DESIGN',
             source: t.source,
             createdAt: t.createdAt
         }));

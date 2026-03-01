@@ -3,7 +3,7 @@ import { awardTitanXpAction, syncTitanStateWithWellness } from "@/actions/titan/
 import { logger } from "@/lib/logger";
 
 export class BioPulseService {
-    static async handleWorkoutPulse(userId: string, workout: any) {
+    static async handleWorkoutPulse(userId: string, workout: { id: string; exercises?: unknown[] }) {
         try {
             logger.info({ userId, workoutId: workout.id }, "Processing Workout Bio-Pulse");
 
@@ -48,7 +48,7 @@ export class BioPulseService {
         }
     }
 
-    static async handleWellnessPulse(userId: string, wellness: any) {
+    static async handleWellnessPulse(userId: string, wellness: { bodyBattery?: number;[key: string]: unknown }) {
         try {
             logger.info({ userId }, "Processing Wellness Bio-Pulse");
 
@@ -71,7 +71,7 @@ export class BioPulseService {
 
             const moltbotContext = {
                 role: "Moltbot",
-                tone: wellness.bodyBattery < 40 ? "Strict/Recovery-focused" : "Observational",
+                tone: (wellness.bodyBattery ?? 100) < 40 ? "Strict/Recovery-focused" : "Observational",
                 message: `Bio-data synkad. Energi: ${wellness.bodyBattery}%. Humör: ${titan?.mood}.`,
                 prompt_hint: `Analysera Titanens vitalvärden. Energi är ${wellness.bodyBattery}%. Ge ett kort råd på svenska.`
             };
