@@ -48,6 +48,7 @@ services:
       - ironforge-net
 
   # Next.js Application (Production-like)
+  # Run with: doppler run -- docker compose up app-prod
   app-prod:
     build:
       context: .
@@ -60,6 +61,11 @@ services:
       DIRECT_URL: ${DIRECT_URL:-postgresql://postgres:postgres@db:5432/ironforge}
       NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL}
       NEXT_PUBLIC_SUPABASE_ANON_KEY: ${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '1.0'
     depends_on:
       db:
         condition: service_healthy
@@ -78,6 +84,11 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
       POSTGRES_DB: ${POSTGRES_DB:-ironforge}
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.5'
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
