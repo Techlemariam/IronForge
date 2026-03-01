@@ -196,7 +196,7 @@ const SetRow = memo(
     return (
       <div
         ref={activeSetRef}
-        className={`group relative bg-[#0a0a0a] border-2 rounded-lg overflow-hidden transition-all duration-300 
+        className={`group relative bg-void border-2 rounded-lg overflow-hidden transition-all duration-300 
               ${isFocused ? `scale-[1.02] z-10 shadow-xl ${borderColor}` : `border-zinc-900 hover:border-zinc-700`}
             `}
       >
@@ -289,7 +289,7 @@ const SetRow = memo(
                               )
                             }
                             onClick={(e) => e.stopPropagation()}
-                            className="w-16 bg-zinc-900 border-b-2 border-zinc-500 text-white text-3xl font-serif font-bold text-center p-0 rounded-none focus:border-[#c79c6e] focus:outline-none placeholder-zinc-700"
+                            className="w-16 bg-zinc-900 border-b-2 border-zinc-500 text-white text-3xl font-serif font-bold text-center p-0 rounded-none focus:border-clay focus:outline-none placeholder-zinc-700"
                           />
                           <button
                             onClick={(e) => {
@@ -904,12 +904,12 @@ const ActionView: React.FC<ActionViewProps> = ({
 
   return (
     <div
-      className={`flex flex-col h-full bg-[#050505] transition-colors duration-500 relative ${!isSystemOverheated && bpm ? "bg-green-950/5" : ""}`}
+      className={`flex flex-col h-full bg-void transition-colors duration-500 relative ${!isSystemOverheated && bpm ? "bg-green-950/5" : ""}`}
     >
       {/* REST TIMER HUD */}
       {isResting && (
         <div className="fixed top-24 right-4 z-50 animate-slide-left">
-          <div className="bg-[#111] border-2 border-zinc-700 rounded-lg p-3 shadow-[0_0_20px_rgba(0,0,0,0.8)] flex items-center gap-4">
+          <div className="bg-armor border-2 border-zinc-700 rounded-lg p-3 shadow-[0_0_20px_rgba(0,0,0,0.8)] flex items-center gap-4">
             <div className="text-center">
               <div className="text-[10px] uppercase font-bold text-zinc-500 mb-1">
                 Rest Timer
@@ -932,7 +932,7 @@ const ActionView: React.FC<ActionViewProps> = ({
       {/* APRE TOAST */}
       {apreSuggestion && (
         <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-50 animate-slide-up w-80">
-          <div className="bg-[#111] border-2 border-cyan-500 rounded-lg p-4 shadow-[0_0_20px_rgba(6,182,212,0.3)]">
+          <div className="bg-armor border-2 border-cyan-500 rounded-lg p-4 shadow-[0_0_20px_rgba(6,182,212,0.3)]">
             <div className="flex items-center gap-2 mb-2 text-cyan-400 font-bold uppercase text-xs tracking-widest">
               <Zap className="w-4 h-4" /> Neuro-Optimization
             </div>
@@ -995,7 +995,7 @@ const ActionView: React.FC<ActionViewProps> = ({
         <div className="fixed inset-0 z-[60] flex items-center justify-center pointer-events-none">
           <div className="flex flex-col items-center animate-scale-bounce">
             <div
-              className="text-6xl font-black italic text-[#ffd700] uppercase tracking-tighter drop-shadow-[0_0_15px_rgba(255,215,0,0.8)] stroke-black"
+              className="text-6xl font-black italic text-gold uppercase tracking-tighter shadow-glow-gold stroke-black"
               style={{ WebkitTextStroke: "2px black" }}
             >
               Critical Hit!
@@ -1132,7 +1132,7 @@ const ActionView: React.FC<ActionViewProps> = ({
                 </div>
 
                 {isInfoOpen && (
-                  <div className="bg-[#111] border border-zinc-800 rounded p-4 text-sm animate-fade-in mb-4 shadow-xl">
+                  <div className="bg-armor border border-zinc-800 rounded p-4 text-sm animate-fade-in mb-4 shadow-xl">
                     {ex.instructions && (
                       <ul className="space-y-2 mb-4">
                         {ex.instructions.map((inst, i) => (

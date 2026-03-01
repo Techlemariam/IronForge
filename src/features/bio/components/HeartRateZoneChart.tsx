@@ -22,13 +22,13 @@ const ZONE_GAMIFICATION = [
   {
     name: "Recovery",
     label: "Regeneration",
-    color: "#10b981",
+    color: "var(--color-venom)",
     desc: "Active recovery & healing",
   }, // Z1
   {
     name: "Endurance",
     label: "Endurance Capacitor",
-    color: "#3b82f6",
+    color: "var(--color-pulse)",
     desc: "Base building & fat burn",
   }, // Z2
   {
@@ -40,13 +40,13 @@ const ZONE_GAMIFICATION = [
   {
     name: "Threshold",
     label: "Redline Limit",
-    color: "#f59e0b",
+    color: "var(--color-gold)",
     desc: "Lactate threshold",
   }, // Z4
   {
     name: "VO2 Max",
     label: "Nitro Boost",
-    color: "#ef4444",
+    color: "var(--color-crisis)",
     desc: "Max aerobic capacity",
   }, // Z5
   {
@@ -58,7 +58,7 @@ const ZONE_GAMIFICATION = [
   {
     name: "Neuromuscular",
     label: "Overdrive",
-    color: "#8b5cf6",
+    color: "var(--color-warp)",
     desc: "Pure sprint power",
   }, // Z7
 ];
@@ -147,8 +147,8 @@ export const HeartRateZoneChart: React.FC<HeartRateZoneChartProps> = ({
             <Tooltip
               cursor={{ fill: "rgba(255,255,255,0.05)" }}
               contentStyle={{
-                backgroundColor: "#09090b",
-                borderColor: "#27272a",
+                backgroundColor: "var(--color-void)",
+                borderColor: "var(--color-steel)",
                 borderRadius: "8px",
               }}
               itemStyle={{ color: "#fff", fontSize: "12px" }}

@@ -143,6 +143,22 @@
         text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
     }
 
+    .shadow-glow-clay {
+      box-shadow: 0 0 10px var(--color-clay);
+    }
+
+    .shadow-glow-gold {
+      box-shadow: 0 0 15px var(--color-gold);
+    }
+
+    .shadow-glow-cyan {
+      box-shadow: 0 0 20px var(--color-cyan);
+    }
+
+    .shadow-glow-plasma {
+      box-shadow: 0 0 15px var(--color-plasma);
+    }
+
     .glass-panel {
         @apply bg-forge-900/80 backdrop-blur-sm border border-white/10;
     }
