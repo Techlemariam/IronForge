@@ -38,7 +38,7 @@ export class FactoryService {
 
         if (fs.existsSync(this.USAGE_PATH)) {
             try {
-                const content = fs.readFileSync(this.USAGE_PATH, 'utf-8');
+                const content = fs.readFileSync(this.USAGE_PATH, 'utf-8').replace(/^\uFEFF/, '');
                 const data = JSON.parse(content);
                 if (data.history) {
                     for (const entry of data.history) {

@@ -16,7 +16,7 @@ test.describe('Factory Orchestration Dashboard', () => {
         await expect(page.getByText(/Enterprise Backlog/i)).toBeVisible({ timeout: 15000 });
 
         // Check for Feature Assembly Line (page.tsx section heading)
-        await expect(page.getByText(/Feature Assembly Line/i)).toBeVisible({ timeout: 15000 });
+        await expect(page.locator('h2', { hasText: 'Feature Assembly Line' }).first()).toBeVisible({ timeout: 15000 });
 
         // Check for Intelligence Quota Dashboard (CommandCenterPresenter)
         await expect(page.getByText(/Intelligence Quota Dashboard/i)).toBeVisible({ timeout: 15000 });
