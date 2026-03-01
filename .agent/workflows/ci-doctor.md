@@ -76,7 +76,7 @@ When `ci-cd.yml` detects a failure via `if: failure()`, it POSTs to the n8n `ci-
 2. Routes via Switch Node to the correct specialist
 3. Dispatches via GitHub `repository_dispatch` to `active-handover.yml`
 
-**Coverage:** All 7 CI jobs now have failure hooks: `l1-verify`, `l2-verification`, `l2-db-guard`, `e2e`, `l2-e2e-smoke`, `l2-perf-audit`, `docker-verify`.
+**Coverage:** All 8 CI jobs now have failure hooks: `l1-verify`, `l2-verification`, `l2-db-guard`, `e2e`, `l2-e2e-smoke`, `l2-perf-audit`, `docker-verify`, `publish-image`.
 
 ### Manual (via CLI)
 
