@@ -36,7 +36,7 @@ test.describe('Factory Orchestration Dashboard', () => {
         await runButton.click();
 
         // 3. Wait for processing to complete (button shows loader, then item disappears)
-        await expect(runButton).toBeEnabled({ timeout: 15000 });
+        await expect(runButton).not.toBeAttached({ timeout: 15000 });
     });
 
     test('should verify Quota Gauges rendering and numerical values', async ({ page }) => {
