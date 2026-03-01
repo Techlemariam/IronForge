@@ -26,17 +26,20 @@ test.describe('Factory Orchestration Dashboard', () => {
     });
 
     test('should Promote item from Backlog to Assembly Line', async ({ page }) => {
-        // 1. Find a "Kör" (Run) button in the backlog
-        const runButton = page.locator('button:has-text("Kör")').first();
+        // 1. Find a specific item container in the backlog
+        const firstItem = page.locator('.group.relative.flex').first();
+        await firstItem.waitFor({ state: 'visible', timeout: 15000 });
 
-        await runButton.waitFor({ state: 'visible', timeout: 15000 });
-        const itemTitle = await page.locator('p.text-slate-200.line-clamp-1').first().textContent();
+        const itemTitle = await firstItem.locator('p.line-clamp-1').textContent();
+        expect(itemTitle).toBeTruthy();
+
+        const runButton = firstItem.locator('button:has-text("Kör")');
 
         // 2. Click Promote
         await runButton.click();
 
-        // 3. Wait for processing to complete (button shows loader, then item disappears)
-        await expect(runButton).not.toBeAttached({ timeout: 15000 });
+        // 3. Wait for processing to complete (the specific item title should disappear from the backlog)
+        await expect(page.getByText(itemTitle as string, { exact: true })).toHaveCount(0, { timeout: 15000 });
     });
 
     test('should verify Quota Gauges rendering and numerical values', async ({ page }) => {

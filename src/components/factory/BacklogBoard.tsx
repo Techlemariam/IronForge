@@ -25,11 +25,16 @@ export function BacklogBoard() {
 
     const handleStartTask = async (item: BacklogItem) => {
         setProcessingId(item.id);
-        const res = await startBacklogTaskAction(item.title, item.source);
-        if (res.success) {
-            setItems(prev => prev.filter(i => i.id !== item.id));
+        try {
+            const res = await startBacklogTaskAction(item.title, item.source);
+            if (res && res.success) {
+                setItems(prev => prev.filter(i => i.id !== item.id));
+            }
+        } catch (e) {
+            console.error("Task start failed:", e);
+        } finally {
+            setProcessingId(null);
         }
-        setProcessingId(null);
     };
 
     return (
