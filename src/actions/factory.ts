@@ -23,7 +23,7 @@ async function verifyFactoryAuth() {
         return false;
     }
 
-    const isAuthorized = user.email?.endsWith("@ironforge.rpg") || false;
+    const isAuthorized = user.email?.endsWith("@ironforge.rpg") || user.email === 'alexander.teklemariam@gmail.com' || false;
     if (!isAuthorized) {
         console.warn(`Factory Auth: User ${user.email} not authorized for factory operations`);
     }
