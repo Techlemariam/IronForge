@@ -41,9 +41,9 @@ jobs:
               fi
             fi
 
-            # Check for checkout@v4
-            if grep -q "actions/checkout@v" "$file" && ! grep -q "actions/checkout@v4" "$file"; then
-              echo "❌ $file: Uses outdated checkout action (use @v4)" >> $GITHUB_STEP_SUMMARY
+            # Check for checkout v4 or newer
+            if grep -q "actions/checkout@v" "$file" && ! grep -qE "actions/checkout@v[4-9]" "$file"; then
+              echo "❌ $file: Uses outdated checkout action (use @v4+)" >> $GITHUB_STEP_SUMMARY
               ERRORS=$((ERRORS + 1))
             fi
           done
