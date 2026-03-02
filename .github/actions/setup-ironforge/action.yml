@@ -1,5 +1,5 @@
 name: 'Setup IronForge'
-description: 'Standardized Environment Setup (Node 22, pnpm 9, Caching)'
+description: 'Standardized Environment Setup (Node 22, pnpm 10, Caching)'
 inputs:
   node-version:
     description: 'Node.js version'
@@ -8,7 +8,7 @@ inputs:
   pnpm-version:
     description: 'pnpm version'
     required: false
-    default: '9.15.0'
+    default: '10.30.3'
   cache:
     description: 'Cache provider'
     required: false
