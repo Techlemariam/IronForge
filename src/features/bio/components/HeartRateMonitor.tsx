@@ -46,7 +46,7 @@ const HeartRateMonitor: React.FC<HeartRateMonitorProps> = ({
   const containerBorder = hasAura
     ? isOverheated
       ? "border-orange-900/50"
-      : "border-[#ffd700] shadow-[0_0_15px_rgba(255,215,0,0.15)]"
+      : "border-[var(--color-gold-bright)] shadow-[0_0_15px_rgba(255,215,0,0.15)]"
     : isOverheated
       ? "border-orange-900/50"
       : bpm
@@ -78,9 +78,9 @@ const HeartRateMonitor: React.FC<HeartRateMonitorProps> = ({
     >
       {/* Aura Visual Indicator */}
       {hasAura && isConnected && (
-        <div className="absolute -top-2 left-4 bg-black border border-[#ffd700] px-2 py-0.5 rounded-full flex items-center gap-1 shadow-lg">
-          <Flame className="w-3 h-3 text-[#ffd700] fill-current animate-pulse" />
-          <span className="text-[9px] font-bold text-[#ffd700] uppercase tracking-wider">
+        <div className="absolute -top-2 left-4 bg-black border border-[var(--color-gold-bright)] px-2 py-0.5 rounded-full flex items-center gap-1 shadow-lg">
+          <Flame className="w-3 h-3 text-[var(--color-gold-bright)] fill-current animate-pulse" />
+          <span className="text-[9px] font-bold text-[var(--color-gold-bright)] uppercase tracking-wider">
             Aura: +1.5% Accuracy
           </span>
         </div>
@@ -128,7 +128,7 @@ const HeartRateMonitor: React.FC<HeartRateMonitorProps> = ({
             </button>
           ) : (
             <div
-              className={`flex items-center gap-2 px-3 py-2 text-xs font-bold rounded border ${hasAura ? "text-[#ffd700] bg-[#ffd700]/10 border-[#ffd700]/30" : "text-green-500/80 bg-green-900/10 border-green-900/20"}`}
+              className={`flex items-center gap-2 px-3 py-2 text-xs font-bold rounded border ${hasAura ? "text-[var(--color-gold-bright)] bg-[var(--color-gold-bright)]/10 border-[var(--color-gold-bright)]/30" : "text-green-500/80 bg-green-900/10 border-green-900/20"}`}
             >
               <Activity className="w-4 h-4" />
               LINKED
@@ -199,3 +199,4 @@ const HeartRateMonitor: React.FC<HeartRateMonitorProps> = ({
 };
 
 export default HeartRateMonitor;
+

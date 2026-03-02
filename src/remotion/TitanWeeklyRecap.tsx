@@ -135,7 +135,7 @@ export const TitanWeeklyRecap = ({
                     <StatCard label="Styrka" value={strengthGains} suffix="+" color="#4ade80" frame={frame} delay={40} />
                     <StatCard label="XP Earned" value={xpEarned} color="#22d3ee" frame={frame} delay={50} />
                     <StatCard label="Workouts" value={workoutsLogged} color="#f59e0b" frame={frame} delay={60} />
-                    <StatCard label="Monsters" value={monstersDefeated} color="#ef4444" frame={frame} delay={70} />
+                    <StatCard label="Monsters" value={monstersDefeated} color="var(--color-crisis)" frame={frame} delay={70} />
                 </div>
             </Sequence>
 
@@ -159,3 +159,4 @@ export const TitanWeeklyRecap = ({
         </div>
     );
 };
+
