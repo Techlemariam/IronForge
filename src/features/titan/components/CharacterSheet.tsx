@@ -27,6 +27,18 @@ import { StorageService } from "../../../services/storage";
 import { IntervalsWellness } from "../../../types";
 import AttributeRadar from "@/features/titan/components/AttributeRadar";
 
+// Pre-compute exercise map for O(1) lookups
+const EXERCISE_MAP = new Map<string, string>();
+for (const s of SESSIONS) {
+  for (const b of s.blocks) {
+    if (b.exercises) {
+      for (const ex of b.exercises) {
+        EXERCISE_MAP.set(ex.id, ex.name);
+      }
+    }
+  }
+}
+
 interface CharacterSheetProps {
   unlockedIds: Set<string>;
   onClose: () => void;
@@ -87,13 +99,8 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({
   }, [historyLogs]);
 
   const getExerciseName = (id: string) => {
-    // Simple lookup, could be optimized with a map
-    for (const s of SESSIONS) {
-      for (const b of s.blocks) {
-        const ex = b.exercises?.find((e: any) => e.id === id);
-        if (ex) return ex.name;
-      }
-    }
+    const name = EXERCISE_MAP.get(id);
+    if (name !== undefined) return name;
     // Fallback for warmup exercises or unknown IDs
     return id.replace("ex_", "").replace(/_/g, " ");
   };
