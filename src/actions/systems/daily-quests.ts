@@ -150,21 +150,30 @@ export async function generateDailyQuestsAction(
     }
 
     // 3. Assign to User
-    const newQuests = [];
-    for (const c of dbChallenges) {
-      const userQuest = await prisma.userChallenge.create({
-        data: {
+    if (dbChallenges.length > 0) {
+      await prisma.userChallenge.createMany({
+        data: dbChallenges.map((c) => ({
           userId,
           challengeId: c.id,
           progress: 0,
-          completed: false
-        },
-        include: { challenge: true }
+          completed: false,
+          claimed: false,
+        })),
+        skipDuplicates: true,
       });
-      newQuests.push(mapUserChallengeToDailyQuest(userQuest));
+
+      const createdUserChallenges = await prisma.userChallenge.findMany({
+        where: {
+          userId,
+          challengeId: { in: dbChallenges.map((c) => c.id) },
+        },
+        include: { challenge: true },
+      });
+
+      return createdUserChallenges.map(mapUserChallengeToDailyQuest);
     }
 
-    return newQuests;
+    return [];
 
   } catch (error) {
     console.error("Error generating daily quests:", error);

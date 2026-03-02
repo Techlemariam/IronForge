@@ -3,10 +3,12 @@ import { calculateWeeklyVolume } from "@/utils/volumeCalculator";
 import { HevyWorkout } from "@/types/hevy";
 
 // Mock Data
+const REF_DATE = new Date("2024-01-10T12:00:00.000Z");
+
 const mockWorkoutToday: HevyWorkout = {
   id: "w1",
   title: "Chest Day",
-  start_time: new Date().toISOString(),
+  start_time: REF_DATE.toISOString(),
   duration_seconds: 3600,
   exercises: [
     {
@@ -34,7 +36,7 @@ const mockWorkoutToday: HevyWorkout = {
 const mockWorkoutOld: HevyWorkout = {
   id: "w2",
   title: "Old Workout",
-  start_time: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000).toISOString(), // 8 days ago
+  start_time: new Date(REF_DATE.getTime() - 8 * 24 * 60 * 60 * 1000).toISOString(), // 8 days ago
   duration_seconds: 3600,
   exercises: [
     {
@@ -47,7 +49,7 @@ const mockWorkoutOld: HevyWorkout = {
 
 describe("Volume Calculator", () => {
   it("VC-01: Aggregates volume correctly for muscle groups", () => {
-    const volumes = calculateWeeklyVolume([mockWorkoutToday]);
+    const volumes = calculateWeeklyVolume([mockWorkoutToday], REF_DATE);
 
     // Bench (3) + Pushups (3 normal sets - 1 warmup) = 6 sets for Chest
     const chestVol = volumes.find((v: any) => v.muscleGroup === "Chest");
@@ -55,7 +57,7 @@ describe("Volume Calculator", () => {
   });
 
   it("VC-02: Filters out workouts older than 7 days", () => {
-    const volumes = calculateWeeklyVolume([mockWorkoutToday, mockWorkoutOld]);
+    const volumes = calculateWeeklyVolume([mockWorkoutToday, mockWorkoutOld], REF_DATE);
     // Should ignore 'mockWorkoutOld' (8 days ago)
     const chestVol = volumes.find((v: any) => v.muscleGroup === "Chest");
     expect(chestVol?.weeklyVolume).toBe(6); // Still 6, not 7
@@ -63,7 +65,7 @@ describe("Volume Calculator", () => {
 
   it("VC-03: Excludes warmup sets", () => {
     // Verified in VC-01 logic
-    const volumes = calculateWeeklyVolume([mockWorkoutToday]);
+    const volumes = calculateWeeklyVolume([mockWorkoutToday], REF_DATE);
     const chestVol = volumes.find((v: any) => v.muscleGroup === "Chest");
     expect(chestVol?.weeklyVolume).toBe(6);
   });
@@ -72,7 +74,7 @@ describe("Volume Calculator", () => {
     const weirdWorkout: HevyWorkout = {
       id: "w3",
       title: "Weird",
-      start_time: new Date().toISOString(),
+      start_time: REF_DATE.toISOString(),
       duration_seconds: 60,
       exercises: [
         {
@@ -82,7 +84,7 @@ describe("Volume Calculator", () => {
         },
       ],
     };
-    const volumes = calculateWeeklyVolume([weirdWorkout]);
+    const volumes = calculateWeeklyVolume([weirdWorkout], REF_DATE);
     // Should not crash, volumes should be 0 per muscle group (or not incremented)
     const chestVol = volumes.find((v: any) => v.muscleGroup === "Chest");
     expect(chestVol?.weeklyVolume).toBe(0);
