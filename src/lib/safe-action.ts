@@ -6,8 +6,8 @@ export const actionClient = createSafeActionClient({
     handleServerError(e) {
         console.error("Action error:", e.message);
 
-        // Only expose error details in development
-        if (process.env.NODE_ENV === "development" && e instanceof Error) {
+        // Only expose error details in development or test environments
+        if ((process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test") && e instanceof Error) {
             return e.message;
         }
 
