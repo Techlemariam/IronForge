@@ -54,38 +54,10 @@ async function setupDatabase() {
 
         // Create database
         console.log(`🏗️ Creating database "${dbName}"...`);
-
-        let createRetries = 3;
-        while (createRetries > 0) {
-            try {
-                // Terminal all other connections to template1 to avoid "source database is being accessed by other users"
-                console.log(`🧹 Forcibly terminating connections to "template1" (Attempt ${4 - createRetries})...`);
-                await client.query(`
-                    SELECT pg_terminate_backend(pg_stat_activity.pid)
-                    FROM pg_stat_activity
-                    WHERE pg_stat_activity.datname = 'template1'
-                      AND pid <> pg_backend_pid();
-                `);
-
-                // Small delay to allow connections to fully close
-                await new Promise(resolve => setTimeout(resolve, 2000));
-
-                // Use template0 to avoid collation version mismatch on self-hosted runners where
-                // the OS/glibc has been updated without running pg_upgrade on the cluster.
-                await client.query(`CREATE DATABASE "${dbName}" TEMPLATE template0`);
-                console.log(`✨ Database "${dbName}" created successfully.`);
-                break;
-            } catch (err) {
-                createRetries--;
-                const msg = err instanceof Error ? err.message : String(err);
-                if (createRetries > 0 && msg.includes('template1')) {
-                    console.warn('⚠️ Template1 lock persists. Retrying in 5s...');
-                    await new Promise(resolve => setTimeout(resolve, 5000));
-                } else {
-                    throw err;
-                }
-            }
-        }
+        // Use LC_COLLATE and LC_CTYPE to match expected version or default to standard C
+        // This addresses "template database 'template1' has a collation version, but no actual collation version could be determined"
+        await client.query(`CREATE DATABASE "${dbName}" LC_COLLATE = 'en_US.utf8' LC_CTYPE = 'en_US.utf8'`);
+        console.log(`✨ Database "${dbName}" created successfully.`);
     } catch (error) {
         console.error('❌ Error setting up database:', error);
         // Log more PG-specific details if available

@@ -99,7 +99,10 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({
   }, [historyLogs]);
 
   const getExerciseName = (id: string) => {
-    return EXERCISE_MAP.get(id) || id.replace("ex_", "").replace(/_/g, " ");
+    const name = EXERCISE_MAP.get(id);
+    if (name !== undefined) return name;
+    // Fallback for warmup exercises or unknown IDs
+    return id.replace("ex_", "").replace(/_/g, " ");
   };
 
   const formatDate = (dateString: string) => {
