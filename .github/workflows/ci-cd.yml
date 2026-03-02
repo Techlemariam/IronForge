@@ -64,7 +64,7 @@ jobs:
     runs-on: [self-hosted, IronForge-Local] # Target specific local runner
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0 # Required for turbo comparison
       - uses: ./.github/actions/setup-ironforge
@@ -122,7 +122,7 @@ jobs:
     if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/fix/')
     runs-on: [self-hosted, IronForge-Local] # Target specific local runner
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./.github/actions/setup-ironforge
       - name: Cache Turbo L2
         uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5
@@ -165,7 +165,7 @@ jobs:
     if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/fix/')
     runs-on: [self-hosted, IronForge-Local]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Build Production Image
@@ -200,7 +200,7 @@ jobs:
     if: (github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch') && github.actor != 'dependabot[bot]'
     runs-on: [self-hosted, IronForge-Local] # Target specific local runner
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./.github/actions/setup-ironforge
         with:
           tier: 'e2e'
@@ -276,7 +276,7 @@ jobs:
       DIRECT_URL: postgresql://postgres:postgres@localhost:5437/ironforge_test?schema=public
       NEXT_PUBLIC_APP_URL: http://localhost:3000
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./.github/actions/setup-ironforge
         with:
           tier: 'l2'
@@ -320,7 +320,7 @@ jobs:
       DATABASE_URL: postgresql://postgres:postgres@localhost:5433/ironforge_test?schema=public
       DIRECT_URL: postgresql://postgres:postgres@localhost:5433/ironforge_test?schema=public
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./.github/actions/setup-ironforge
       - name: Setup Chrome
         run: npx playwright install chrome
@@ -355,7 +355,7 @@ jobs:
     if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/fix/')
     runs-on: [self-hosted, IronForge-Local] # Target specific local runner
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./.github/actions/setup-ironforge
         with:
           tier: 'l2'
@@ -418,7 +418,7 @@ jobs:
       contents: read
       packages: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Log in to GHCR
         uses: docker/login-action@v3

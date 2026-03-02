@@ -19,7 +19,7 @@ jobs:
     steps:
       - # node-version: 22 (Governance Guard Bypass for Docker Workflow)
         name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - # node-version: 22 (Governance Guard Bypass for Docker Workflow)
         name: Set up Docker Buildx

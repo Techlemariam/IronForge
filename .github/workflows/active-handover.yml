@@ -21,7 +21,7 @@ jobs:
     runs-on: [self-hosted, IronForge-Local]
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: ${{ github.event.client_payload.branch || 'main' }}
           fetch-depth: 0
