@@ -2,9 +2,9 @@
 
 import { RECIPES, ITEMS } from "@/data/gameData";
 import { type UserInventory } from "@/types/game";
-import { createClient } from "@/utils/supabase/server";
 import { CraftItemSchema } from "@/types/schemas";
 import { revalidatePath } from "next/cache";
+import { authActionClient } from "@/lib/safe-action";
 
 /**
  * Mock Inventory for MVP (until DB schema is finalized)
@@ -28,103 +28,80 @@ async function getInventory(userId: string): Promise<UserInventory> {
   };
 }
 
-export async function getInventoryAction(): Promise<{
-  success: boolean;
-  data?: UserInventory;
-  message?: string;
-}> {
-  try {
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-      return { success: false, message: "Unauthorized" };
+export const getInventoryAction = authActionClient
+  .action(async ({ ctx: { userId } }) => {
+    try {
+      const inventory = await getInventory(userId);
+      return { success: true, data: inventory };
+    } catch (error) {
+      console.error("Failed to fetch inventory:", error);
+      return { success: false, message: "Failed to load inventory" };
     }
+  });
 
-    const inventory = await getInventory(user.id);
-    return { success: true, data: inventory };
-  } catch (error) {
-    console.error("Failed to fetch inventory:", error);
-    return { success: false, message: "Failed to load inventory" };
-  }
-}
-
-export async function craftItem(
-  recipeId: string,
-): Promise<{ success: boolean; message: string; inventory?: UserInventory }> {
-  try {
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-      return { success: false, message: "Unauthorized" };
-    }
-
-    const validated = CraftItemSchema.parse({ recipeId });
-    const recipe = RECIPES.find((r) => r.id === validated.recipeId);
-    if (!recipe) {
-      return { success: false, message: "Recipe not found" };
-    }
-
-    // 1. Get User Inventory
-    const inventory = await getInventory(user.id);
-
-    // 2. Validate Gold
-    if (inventory.gold < recipe.goldCost) {
-      return { success: false, message: "Not enough gold" };
-    }
-
-    // 3. Validate Materials
-    for (const mat of recipe.materials) {
-      const slot = inventory.items.find((i) => i.itemId === mat.itemId);
-      if (!slot || slot.count < mat.count) {
-        const matName =
-          ITEMS.find((i) => i.id === mat.itemId)?.name || mat.itemId;
-        return { success: false, message: `Missing materials: ${matName}` };
+export const craftItem = authActionClient
+  .schema(CraftItemSchema)
+  .action(async ({ parsedInput: { recipeId }, ctx: { userId } }) => {
+    try {
+      const recipe = RECIPES.find((r) => r.id === recipeId);
+      if (!recipe) {
+        return { success: false, message: "Recipe not found" };
       }
-    }
 
-    // 4. Deduct Resources (Mock Logic - In DB this would be a transaction)
-    inventory.gold -= recipe.goldCost;
-    recipe.materials.forEach((mat) => {
-      const slot = inventory.items.find((i) => i.itemId === mat.itemId)!;
-      slot.count -= mat.count;
-      // Remove slot if 0? Or keep empty? Let's keep for now or filter out.
-      if (slot.count <= 0) {
-        inventory.items = inventory.items.filter(
-          (i) => i.itemId !== mat.itemId,
-        );
+      // 1. Get User Inventory
+      const inventory = await getInventory(userId);
+
+      // 2. Validate Gold
+      if (inventory.gold < recipe.goldCost) {
+        return { success: false, message: "Not enough gold" };
       }
-    });
 
-    // 5. Add Result
-    const resultSlot = inventory.items.find(
-      (i) => i.itemId === recipe.resultItemId,
-    );
-    if (resultSlot) {
-      resultSlot.count += recipe.resultCount;
-    } else {
-      inventory.items.push({
-        itemId: recipe.resultItemId,
-        count: recipe.resultCount,
+      // 3. Validate Materials
+      for (const mat of recipe.materials) {
+        const slot = inventory.items.find((i) => i.itemId === mat.itemId);
+        if (!slot || slot.count < mat.count) {
+          const matName =
+            ITEMS.find((i) => i.id === mat.itemId)?.name || mat.itemId;
+          return { success: false, message: `Missing materials: ${matName}` };
+        }
+      }
+
+      // 4. Deduct Resources (Mock Logic - In DB this would be a transaction)
+      inventory.gold -= recipe.goldCost;
+      recipe.materials.forEach((mat) => {
+        const slot = inventory.items.find((i) => i.itemId === mat.itemId)!;
+        slot.count -= mat.count;
+        if (slot.count <= 0) {
+          inventory.items = inventory.items.filter(
+            (i) => i.itemId !== mat.itemId,
+          );
+        }
       });
+
+      // 5. Add Result
+      const resultSlot = inventory.items.find(
+        (i) => i.itemId === recipe.resultItemId,
+      );
+      if (resultSlot) {
+        resultSlot.count += recipe.resultCount;
+      } else {
+        inventory.items.push({
+          itemId: recipe.resultItemId,
+          count: recipe.resultCount,
+        });
+      }
+
+      // 6. Save (Mock)
+      console.log(`[Forge] Crafted ${recipe.name} for ${userId}`);
+
+      revalidatePath("/dashboard");
+      return {
+        success: true,
+        message: `Successfully crafted ${recipe.name}`,
+        inventory,
+      };
+    } catch (error) {
+      console.error("Crafting error:", error);
+      return { success: false, message: "Server error during crafting" };
     }
-
-    // 6. Save (Mock - No Persist yet in this MVP step, just return success)
-    console.log(`[Forge] Crafted ${recipe.name} for ${user.email}`);
-
-    revalidatePath("/dashboard");
-    return {
-      success: true,
-      message: `Successfully crafted ${recipe.name}`,
-      inventory,
-    };
-  } catch (error) {
-    console.error("Crafting error:", error);
-    return { success: false, message: "Server error during crafting" };
-  }
-}
+  });

@@ -16,6 +16,16 @@ skills: ["monitor-ui", "a11y-auditor", "performance-profiler", "storybook-bridge
 
 ## Diagnostic Protocol
 
+### 0. Doppler Pre-flight Check
+
+Ensure the environment is secured and Doppler is active.
+
+// turbo
+
+```bash
+doppler run -- echo "🔐 Doppler Protected Execution Active"
+```
+
 ### 1. A11y Audit
 
 Check for ARIA/Contrast violations.
@@ -23,7 +33,7 @@ Check for ARIA/Contrast violations.
 // turbo
 
 ```bash
-/a11y-auditor
+doppler run -- /a11y-auditor
 ```
 
 ### 2. Visual Regression Check

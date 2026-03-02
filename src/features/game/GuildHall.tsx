@@ -75,10 +75,10 @@ export const GuildHall: React.FC<GuildHallProps> = ({ onClose }) => {
       setIsConnected(true);
 
       // Fetch User Stats (Ammo)
-      const userStats = await getUserStatsAction();
-      if (userStats && mounted) {
-        setKineticEnergy(userStats.kineticEnergy);
-        // setHeroName(userStats.heroName || "Titan");
+      const res = await getUserStatsAction();
+      if (res?.data && mounted) {
+        setKineticEnergy(res.data.kineticEnergy);
+        // setHeroName(res.data.heroName || "Titan");
       }
 
       // 1. Fetch Initial Boss State
@@ -223,9 +223,12 @@ export const GuildHall: React.FC<GuildHallProps> = ({ onClose }) => {
     setInput("");
 
     try {
-      await sendChatAction(msgToSend);
-    } catch {
-      // console.error("Failed to send message", _e);
+      const res = await sendChatAction(msgToSend);
+      if (res?.serverError) {
+        console.error("Failed to send message", res.serverError);
+      }
+    } catch (e) {
+      console.error("Failed to send message", e);
     }
   };
 
@@ -247,9 +250,11 @@ export const GuildHall: React.FC<GuildHallProps> = ({ onClose }) => {
 
     // 4. Server Action
     try {
-      const result = await attackBossAction(boss.id);
-      if (result.damage) {
-        spawnFloatingText(`-${result.damage}`, "#facc15"); // Yellow
+      const res = await attackBossAction(boss.id);
+      if (res?.data?.damage) {
+        spawnFloatingText(`-${res.data.damage}`, "#facc15"); // Yellow
+      } else if (res?.serverError || res?.data?.message) {
+        spawnFloatingText("ERROR!", "#a1a1aa");
       }
     } catch (err: any) {
       console.error("Attack failed", err);
@@ -328,6 +333,7 @@ export const GuildHall: React.FC<GuildHallProps> = ({ onClose }) => {
 
           {/* Boss Visualization */}
           <div
+            role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleAttack(e as any); }}
             className={cn(
               "relative group cursor-pointer transition-transform active:scale-95 select-none",
               kineticEnergy < ATTACK_COST
@@ -484,9 +490,11 @@ export const GuildHall: React.FC<GuildHallProps> = ({ onClose }) => {
               <button
                 onClick={handleSendMessage}
                 disabled={!isConnected}
+                title="Send Message"
+                aria-label="Send Message"
                 className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-zinc-500 hover:text-cyan-500 transition-colors disabled:opacity-50"
               >
-                <Send className="w-4 h-4" />
+                <Send className="w-4 h-4" aria-hidden="true" />
               </button>
             </div>
           </div>

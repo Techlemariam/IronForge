@@ -22,9 +22,7 @@ setup('authenticate', async ({ page }) => {
     });
 
     // Toggle to password mode
-    const passwordModeButton = page.getByRole('button', { name: /Login with Password/i });
-    await passwordModeButton.waitFor({ state: 'visible', timeout: 30000 });
-    await passwordModeButton.click();
+    await page.getByText(/Password/i).first().click({ force: true });
 
     // Wait for email input to appear (confirms toggle worked)
     console.log("Filling credentials...");

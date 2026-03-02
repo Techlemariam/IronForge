@@ -106,30 +106,32 @@ const DungeonBuilder: React.FC<DungeonBuilderProps> = ({
 
   return (
     <div className="h-full bg-[#050505] p-6 overflow-y-auto font-serif text-zinc-200">
-      <h1 className="text-3xl font-black text-[#c79c6e] mb-6 border-b border-[#46321d] pb-4">
+      <h1 className="text-3xl font-black text-clay mb-6 border-b border-[#46321d] pb-4">
         Dungeon Architect
       </h1>
 
       <div className="space-y-4 mb-8">
         <div className="space-y-1">
-          <label className="text-xs font-bold uppercase text-zinc-500">
+          <label htmlFor="dungeon-name" className="text-xs font-bold uppercase text-zinc-500">
             Dungeon Name
           </label>
           <input
+            id="dungeon-name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full bg-[#111] border border-zinc-700 p-3 rounded focus:border-[#c79c6e] focus:outline-none"
+            className="w-full bg-[#111] border border-zinc-700 p-3 rounded focus:border-clay focus:outline-none"
             placeholder="e.g. The Iron Fortress"
           />
         </div>
         <div className="space-y-1">
-          <label className="text-xs font-bold uppercase text-zinc-500">
+          <label htmlFor="zone-name" className="text-xs font-bold uppercase text-zinc-500">
             Zone / Flavor Text
           </label>
           <input
+            id="zone-name"
             value={zoneName}
             onChange={(e) => setZoneName(e.target.value)}
-            className="w-full bg-[#111] border border-zinc-700 p-3 rounded focus:border-[#c79c6e] focus:outline-none"
+            className="w-full bg-[#111] border border-zinc-700 p-3 rounded focus:border-clay focus:outline-none"
             placeholder="e.g. A dark cavern filled with heavy weights..."
           />
         </div>
@@ -175,7 +177,7 @@ const DungeonBuilder: React.FC<DungeonBuilderProps> = ({
                 }}
                 className="bg-transparent text-xl font-bold text-white focus:outline-none w-full"
               />
-              <span className="text-[10px] uppercase font-bold text-[#c79c6e] bg-[#c79c6e]/10 px-2 py-0.5 rounded">
+              <span className="text-[10px] uppercase font-bold text-clay bg-clay/10 px-2 py-0.5 rounded">
                 {block.type}
               </span>
             </div>
@@ -208,7 +210,7 @@ const DungeonBuilder: React.FC<DungeonBuilderProps> = ({
                 ))}
                 <button
                   onClick={() => addExercise(bIdx)}
-                  className="text-xs text-zinc-500 hover:text-[#c79c6e] flex items-center gap-1"
+                  className="text-xs text-zinc-500 hover:text-clay flex items-center gap-1"
                 >
                   <Plus className="w-3 h-3" /> Add Monster (Exercise)
                 </button>
@@ -235,7 +237,7 @@ const DungeonBuilder: React.FC<DungeonBuilderProps> = ({
       <div className="mt-8 grid grid-cols-2 gap-4">
         <button
           onClick={() => addBlock(BlockType.STATION)}
-          className="py-4 border-2 border-dashed border-zinc-700 text-zinc-500 hover:border-[#c79c6e] hover:text-[#c79c6e] rounded flex justify-center items-center gap-2 uppercase font-bold text-xs"
+          className="py-4 border-2 border-dashed border-zinc-700 text-zinc-500 hover:border-clay hover:text-clay rounded flex justify-center items-center gap-2 uppercase font-bold text-xs"
         >
           <Plus className="w-4 h-4" /> Add Station
         </button>
@@ -256,7 +258,7 @@ const DungeonBuilder: React.FC<DungeonBuilderProps> = ({
         </button>
         <button
           onClick={handleSave}
-          className="flex-1 py-3 bg-[#c79c6e] hover:bg-[#d4a87a] text-[#46321d] font-bold uppercase tracking-widest rounded flex items-center justify-center gap-2"
+          className="flex-1 py-3 bg-clay hover:bg-[#d4a87a] text-[#46321d] font-bold uppercase tracking-widest rounded flex items-center justify-center gap-2"
         >
           <Save className="w-4 h-4" /> Save Dungeon
         </button>

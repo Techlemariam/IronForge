@@ -10,6 +10,7 @@ const withSerwist = withSerwistInit({
 
 const nextConfig = {
   reactStrictMode: true,
+  optimizeFonts: false, // Prevent build-time fetch errors in restricted egress environments
   output: 'standalone', // Required for Docker production builds
   transpilePackages: ['@supabase/ssr', '@supabase/supabase-js'],
   images: {

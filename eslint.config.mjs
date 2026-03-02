@@ -1,7 +1,7 @@
 // For more info, see https://github.com/storybookjs/eslint-plugin-storybook#configuration-flat-config-format
 import storybook from "eslint-plugin-storybook";
 
-import nextPlugin from '@next/eslint-plugin-next';
+import nextPlugin from '@next/eslint-plugin-next/dist/index.js';
 import reactPlugin from 'eslint-plugin-react';
 import hooksPlugin from 'eslint-plugin-react-hooks';
 import tseslint from '@typescript-eslint/eslint-plugin';
@@ -94,6 +94,34 @@ export default [// Global ignores
                 },
             ],
         },
+    }, // Enforce Heavy Library Isolation
+    {
+        files: ['**/*.ts', '**/*.tsx'],
+        ignores: ['**/*Visual.tsx', '**/remotion/TitanWeeklyRecap.tsx', '**/*.d.ts'],
+        rules: {
+            'no-restricted-imports': ['error', {
+                paths: [
+                    {
+                        name: '@remotion/player',
+                        message: 'Tungt bibliotek! Använd next/dynamic och lägg logiken i en *Visual.tsx-komponent.'
+                    },
+                    {
+                        name: 'recharts',
+                        message: 'Tungt bibliotek! Använd next/dynamic och lägg logiken i en *Visual.tsx-komponent.'
+                    },
+                    {
+                        name: 'three',
+                        message: 'Tungt 3D-bibliotek! Använd next/dynamic och lägg logiken i en *Visual.tsx-komponent.'
+                    }
+                ],
+                patterns: [
+                    {
+                        group: ['@react-three/*'],
+                        message: 'Tungt 3D-bibliotek! Använd next/dynamic och lägg logiken i en *Visual.tsx-komponent.'
+                    }
+                ]
+            }]
+        }
     }, // Override for Storybook files
     {
         files: ['**/*.stories.tsx', '**/*.stories.ts', '**/stories/**/*.tsx'],

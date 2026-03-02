@@ -45,6 +45,7 @@ export function OvertrainingBanner({
       >
         <button
           onClick={handleDismiss}
+          aria-label="Dismiss overtraining banner"
           className="absolute top-2 right-2 text-slate-400 hover:text-white"
         >
           <X className="w-4 h-4" />

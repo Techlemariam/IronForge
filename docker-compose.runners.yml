@@ -6,7 +6,7 @@ services:
     restart: always
     environment:
       - REPO_URL=https://github.com/Techlemariam/IronForge
-      - ACCESS_TOKEN=${GITHUB_PERSONAL_ACCESS_TOKEN}
+      - ACCESS_TOKEN=${GH_PAT}
       - RUNNER_NAME_PREFIX=IronForge-Local
       - RUNNER_LABELS=self-hosted,IronForge-Local
       - RUNNER_WORKDIR=/tmp/github-runner-your-repo
@@ -18,4 +18,4 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - .:/app
-    # Run multiple instances with: docker compose -f docker-compose.runners.yml up --scale runner=3 -d
+    # Run multiple instances with: docker compose -f docker-compose.runners.yml up --scale runner=5 -d

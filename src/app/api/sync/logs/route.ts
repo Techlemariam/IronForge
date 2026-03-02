@@ -8,9 +8,14 @@ export async function POST(request: Request) {
     const { action, userId, payload } = body;
 
     // For demo/migration, ensure user exists
-    const user = await getOrCreateUserAction(
-      userId ? undefined : "default",
-    );
+    const res = await getOrCreateUserAction({
+      email: userId ? undefined : "default"
+    });
+    const user = res?.data?.user;
+
+    if (!user) {
+      return NextResponse.json({ error: "User or Session not found" }, { status: 404 });
+    }
 
     switch (action) {
       case "SAVE_LOG":

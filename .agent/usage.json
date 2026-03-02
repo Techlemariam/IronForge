@@ -27,6 +27,34 @@
                         "tokens":  1000,
                         "model":  "gemini-2.5-pro",
                         "workflow":  "debt-attack"
+                    },
+                    {
+                        "date":  "2026-02-23",
+                        "timestamp":  "2026-02-23T20:03:17.9566514+01:00",
+                        "tokens":  1000,
+                        "model":  "gemini-2.5-flash",
+                        "workflow":  "sprint-auto"
+                    },
+                    {
+                        "date":  "2026-02-24",
+                        "timestamp":  "2026-02-24T07:13:12.3220880+01:00",
+                        "tokens":  1000,
+                        "model":  "gemini-2.5-pro",
+                        "workflow":  "debt-attack"
+                    },
+                    {
+                        "date":  "2026-02-25",
+                        "timestamp":  "2026-02-25T07:19:48.4520751+01:00",
+                        "tokens":  1000,
+                        "model":  "gemini-2.5-pro",
+                        "workflow":  "debt-attack"
+                    },
+                    {
+                        "date":  "2026-03-01",
+                        "timestamp":  "2026-03-01T07:24:03.6649478+01:00",
+                        "tokens":  1000,
+                        "model":  "gemini-2.5-pro",
+                        "workflow":  "debt-attack"
                     }
                 ]
 }

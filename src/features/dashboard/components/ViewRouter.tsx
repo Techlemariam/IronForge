@@ -6,7 +6,7 @@ import { ArrowLeft } from "lucide-react";
 import { toast } from "@/components/ui/GameToast";
 import { DashboardState, DashboardAction } from "../types";
 import { TitanState } from "@/actions/titan/core";
-import { User  } from "@/types/prisma";
+import { User } from "@/types/prisma";
 import { mapQuestToSession } from "@/utils/typeMappers";
 import { mapDefinitionToSession } from "@/utils/workoutMapper";
 
@@ -16,7 +16,7 @@ import { StrengthContainer } from "@/features/strength/StrengthContainer";
 import { ProgramBuilder } from "@/features/training/ProgramBuilder";
 import { TrophyRoom } from "@/features/gamification/TrophyRoom";
 import { GuildHall } from "@/features/guild/GuildHall";
-import TrainingCenter from "@/features/training/TrainingCenter";
+import { TrainingCenter } from "@/features/training/TrainingCenter";
 import { Citadel } from "./Citadel";
 import { QuestCompletion } from "./QuestCompletion";
 import {
@@ -347,4 +347,3 @@ const ViewWithCloseButton: React.FC<{
     </div>
 );
 
-export default ViewRouter;

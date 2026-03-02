@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import GhostOverlay from './GhostOverlay';
+import { GhostOverlay } from './GhostOverlay';
 
 const meta: Meta<typeof GhostOverlay> = {
   title: 'Components/GhostOverlay',

@@ -1,6 +1,6 @@
-"use server";
-
 import { revalidatePath } from "next/cache";
+import { z } from "zod";
+import { authActionClient } from "@/lib/safe-action";
 
 type MaterialRarity = "COMMON" | "UNCOMMON" | "RARE" | "EPIC" | "LEGENDARY";
 type RecipeCategory =
@@ -173,87 +173,77 @@ const RECIPES: CraftingRecipe[] = [
 /**
  * Get user's materials.
  */
-export async function getMaterialsAction(
-  _userId: string,
-): Promise<CraftingMaterial[]> {
-  return MATERIALS;
-}
+export const getMaterialsAction = authActionClient
+  .action(async ({ ctx: { userId } }) => {
+    return MATERIALS;
+  });
 
 /**
  * Get available recipes.
  */
-export async function getRecipesAction(
-  _userId: string,
-): Promise<CraftingRecipe[]> {
-  return RECIPES;
-}
+export const getRecipesAction = authActionClient
+  .action(async ({ ctx: { userId } }) => {
+    return RECIPES;
+  });
 
 /**
  * Craft an item.
  */
-export async function craftItemAction(
-  userId: string,
-  recipeId: string,
-): Promise<CraftingResult> {
-  try {
-    const recipe = RECIPES.find((r) => r.id === recipeId);
-    if (!recipe) {
-      return { success: false, message: "Recipe not found" };
+export const craftItemAction = authActionClient
+  .schema(z.string())
+  .action(async ({ parsedInput: recipeId, ctx: { userId } }) => {
+    try {
+      const recipe = RECIPES.find((r) => r.id === recipeId);
+      if (!recipe) {
+        return { success: false, message: "Recipe not found" };
+      }
+
+      if (!recipe.isUnlocked) {
+        return { success: false, message: "Recipe not unlocked" };
+      }
+
+      const criticalSuccess = Math.random() < 0.1;
+      console.log(
+        `Crafted ${recipe.name}${criticalSuccess ? " (CRITICAL!)" : ""}`,
+      );
+      revalidatePath("/crafting");
+
+      return {
+        success: true,
+        item: recipe.resultItem,
+        criticalSuccess,
+        bonus: criticalSuccess ? "+1 bonus item" : undefined,
+        message: criticalSuccess
+          ? `Critical success! Crafted ${recipe.name} with bonus!`
+          : `Successfully crafted ${recipe.name}`,
+      };
+    } catch (error) {
+      console.error("Error crafting:", error);
+      return { success: false, message: "Crafting failed" };
     }
-
-    if (!recipe.isUnlocked) {
-      return { success: false, message: "Recipe not unlocked" };
-    }
-
-    // Check materials (in production, validate inventory)
-    // Deduct materials and create item
-
-    const criticalSuccess = Math.random() < 0.1;
-    console.log(
-      `Crafted ${recipe.name}${criticalSuccess ? " (CRITICAL!)" : ""}`,
-    );
-    revalidatePath("/crafting");
-
-    return {
-      success: true,
-      item: recipe.resultItem,
-      criticalSuccess,
-      bonus: criticalSuccess ? "+1 bonus item" : undefined,
-      message: criticalSuccess
-        ? `Critical success! Crafted ${recipe.name} with bonus!`
-        : `Successfully crafted ${recipe.name}`,
-    };
-  } catch (error) {
-    console.error("Error crafting:", error);
-    return { success: false, message: "Crafting failed" };
-  }
-}
+  });
 
 /**
  * Check if recipe can be crafted.
  */
-export async function canCraftRecipeAction(
-  userId: string,
-  recipeId: string,
-): Promise<{
-  canCraft: boolean;
-  missingMaterials: Array<{ name: string; required: number; have: number }>;
-}> {
-  const recipe = RECIPES.find((r) => r.id === recipeId);
-  if (!recipe) return { canCraft: false, missingMaterials: [] };
+export const canCraftRecipeAction = authActionClient
+  .schema(z.string())
+  .action(async ({ parsedInput: recipeId, ctx: { userId } }) => {
+    const recipe = RECIPES.find((r) => r.id === recipeId);
+    if (!recipe) return { canCraft: false, missingMaterials: [] };
 
-  const missing: Array<{ name: string; required: number; have: number }> = [];
+    const missing: Array<{ name: string; required: number; have: number }> = [];
 
-  for (const req of recipe.materials) {
-    const mat = MATERIALS.find((m) => m.id === req.materialId);
-    if (!mat || mat.currentAmount < req.amount) {
-      missing.push({
-        name: mat?.name || req.materialId,
-        required: req.amount,
-        have: mat?.currentAmount || 0,
-      });
+    for (const req of recipe.materials) {
+      const mat = MATERIALS.find((m) => m.id === req.materialId);
+      if (!mat || mat.currentAmount < req.amount) {
+        missing.push({
+          name: mat?.name || req.materialId,
+          required: req.amount,
+          have: mat?.currentAmount || 0,
+        });
+      }
     }
-  }
 
-  return { canCraft: missing.length === 0, missingMaterials: missing };
-}
+    return { canCraft: missing.length === 0, missingMaterials: missing };
+  });

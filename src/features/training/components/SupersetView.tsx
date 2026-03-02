@@ -127,4 +127,3 @@ export const SupersetGroup: React.FC<{
     );
 }
 
-export default SupersetGroup;

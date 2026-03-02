@@ -123,7 +123,10 @@ export const StartBossFightSchema = z.object({
  * Schema for performing a combat action.
  */
 export const PerformCombatActionInputSchema = z.object({
-  action: z.any(),
+  action: z.object({
+    type: z.enum(["ATTACK", "DEFEND", "HEAL", "ULTIMATE"]),
+    payload: z.any().optional(),
+  }),
   clientState: z.any().optional(),
 });
 
@@ -131,7 +134,7 @@ export const PerformCombatActionInputSchema = z.object({
  * Schema for awarding gold to a user.
  */
 export const AwardGoldSchema = z.object({
-  amount: z.number().nonnegative()
+  amount: z.number().nonnegative().max(1000000)
 });
 
 /**
@@ -155,6 +158,6 @@ export const ImportHevyHistorySchema = z.object({
  * Schema for crafting an item.
  */
 export const CraftItemSchema = z.object({
-  recipeId: z.string().min(1),
+  recipeId: z.string().min(1).regex(/^[a-zA-Z0-9_-]+$/, "Invalid recipe format"),
 });
 

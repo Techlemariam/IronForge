@@ -3,7 +3,7 @@
 import React from "react";
 import { PwaInstallBanner } from "@/components/ui/PwaInstallBanner";
 import Link from "next/link";
-import { Settings, Activity } from "lucide-react";
+import { Settings } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 
 import { PersistentHeader } from "@/components/core/PersistentHeader";
@@ -16,7 +16,6 @@ import { TvHud } from "@/features/dashboard/components/TvHud";
 
 import {
     DashboardState,
-    DashboardClientProps,
     DashboardAction,
 } from "../types";
 
@@ -30,9 +29,7 @@ interface DashboardPresenterProps {
     hasCompletedOnboarding: boolean;
     leaderboardData: any[];
     platform: string;
-    showOnboarding: boolean;
     onSaveWorkout: (isPrivate: boolean) => Promise<void>;
-    onShowOnboardingComplete: (newState: any) => void;
     onToggleCoach: () => void;
 }
 
@@ -64,10 +61,8 @@ export const DashboardPresenter: React.FC<DashboardPresenterProps> = (props) => 
         pocketCastsConnected,
         liteMode,
         platform,
-        showOnboarding,
         leaderboardData,
         onSaveWorkout,
-        onShowOnboardingComplete,
         onToggleCoach,
     } = props;
 
@@ -85,8 +80,9 @@ export const DashboardPresenter: React.FC<DashboardPresenterProps> = (props) => 
     if (state.isCodexLoading) return <main id="codex-loader"><CodexLoader /></main>;
 
     return (
-        <div id="main-content" className="bg-forge-900 min-h-screen bg-noise">
-            <div className="scanlines pointer-events-none fixed inset-0 z-50 opacity-5" />
+        <div id="app-wrapper" className="bg-slate-950 min-h-screen bg-noise relative overflow-hidden">
+            {/* Titan Scanline System */}
+            <div className="scanline-overlay" />
 
             <PwaInstallBanner />
 
@@ -100,10 +96,10 @@ export const DashboardPresenter: React.FC<DashboardPresenterProps> = (props) => 
 
             <Link
                 href="/settings"
-                className="fixed top-6 right-6 z-50 text-forge-muted hover:text-white transition-colors p-2 hover:rotate-90 duration-300"
-                aria-label="Settings"
+                className="fixed top-6 right-6 z-50 text-slate-500 hover:text-emerald-400 transition-all p-2 hover:rotate-90 duration-500 border border-transparent hover:border-emerald-500/20 bg-black/20 backdrop-blur-md"
+                aria-label="Open Settings"
             >
-                <Settings size={24} />
+                <Settings size={20} />
             </Link>
 
             <PersistentHeader
@@ -114,16 +110,18 @@ export const DashboardPresenter: React.FC<DashboardPresenterProps> = (props) => 
                 powerRating={titanState?.powerRating || 0}
             />
 
-            <AnimatePresence mode="wait">
-                <AnimatedViewWrapper viewKey={state.currentView}>
-                    <main id="view-container">
-                        <ViewRouter {...viewRouterProps} />
-                    </main>
-                </AnimatedViewWrapper>
-            </AnimatePresence>
-
-            {/* Onboarding Logic would normally go here, but we pass it as a component if needed or handle it specifically */}
-            {/* For Storybook compatibility, we might want to mock the onboarding component too */}
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
+                <AnimatePresence mode="wait">
+                    <AnimatedViewWrapper viewKey={state.currentView}>
+                        <main id="main-content" role="main" className="mechanical-panel p-1">
+                            {/* Inner Bezel */}
+                            <div className="border border-slate-900 bg-slate-900/40 p-4 sm:p-6 min-h-[70vh]">
+                                <ViewRouter {...viewRouterProps} />
+                            </div>
+                        </main>
+                    </AnimatedViewWrapper>
+                </AnimatePresence>
+            </div>
 
             <CoachToggle onClick={onToggleCoach} />
             <GeminiLiveCoach

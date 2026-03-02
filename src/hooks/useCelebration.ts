@@ -78,4 +78,3 @@ export const useCelebration = () => {
   };
 };
 
-export default useCelebration;

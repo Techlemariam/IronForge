@@ -1,0 +1,105 @@
+# Runner Heartbeat: Auto-detect and recover dead self-hosted runners
+name: "💓 Runner Heartbeat"
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'  # Every 15 minutes
+  workflow_dispatch:
+
+concurrency:
+  group: runner-heartbeat
+  cancel-in-progress: true
+
+jobs:
+  heartbeat:
+    name: "💓 Check Runner Health"
+    runs-on: ubuntu-latest  # Must run on hosted runner (can't rely on self-hosted being alive)
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: "🔍 Check Self-Hosted Runners"
+        id: check
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          echo "💓 Runner Heartbeat: Checking self-hosted runner status..."
+
+          RUNNERS=$(gh api /repos/${{ github.repository }}/actions/runners --jq '.runners[] | select(.labels[].name == "IronForge-Local") | {name: .name, status: .status, busy: .busy}')
+
+          ONLINE_COUNT=$(echo "$RUNNERS" | jq -s '[.[] | select(.status == "online")] | length')
+          TOTAL_COUNT=$(echo "$RUNNERS" | jq -s 'length')
+
+          echo "online_count=$ONLINE_COUNT" >> $GITHUB_OUTPUT
+          echo "total_count=$TOTAL_COUNT" >> $GITHUB_OUTPUT
+
+          echo "📊 Runners: $ONLINE_COUNT/$TOTAL_COUNT online"
+
+          if [ "$ONLINE_COUNT" -eq 0 ]; then
+            echo "status=dead" >> $GITHUB_OUTPUT
+            echo "🚨 ALL RUNNERS ARE DOWN!"
+          elif [ "$ONLINE_COUNT" -lt "$TOTAL_COUNT" ]; then
+            echo "status=degraded" >> $GITHUB_OUTPUT
+            echo "⚠️ Some runners are offline"
+          else
+            echo "status=healthy" >> $GITHUB_OUTPUT
+            echo "✅ All runners healthy"
+          fi
+
+      - name: "🔄 Auto-Recovery via Tailscale"
+        if: steps.check.outputs.status == 'dead' || steps.check.outputs.status == 'degraded'
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          echo "🔄 Attempting runner auto-recovery..."
+          echo "⚠️ Auto-recovery requires Tailscale SSH access to the host machine."
+          echo "Manual recovery: Run 'docker compose -f docker-compose.runners.yml up -d --scale runner=3' on the host."
+
+          # Flag for Discord notification
+          echo "RECOVERY_NEEDED=true" >> $GITHUB_ENV
+
+      - name: "📢 Discord Alert"
+        if: always() && steps.check.outputs.status != 'healthy'
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_CI_WEBHOOK_URL }}
+        run: |
+          if [ -z "$DISCORD_WEBHOOK_URL" ]; then
+            echo "⚠️ DISCORD_CI_WEBHOOK_URL not set. Skipping notification."
+            exit 0
+          fi
+
+          STATUS="${{ steps.check.outputs.status }}"
+          ONLINE="${{ steps.check.outputs.online_count }}"
+          TOTAL="${{ steps.check.outputs.total_count }}"
+
+          if [ "$STATUS" = "dead" ]; then
+            COLOR=15158332  # Red
+            TITLE="🚨 ALL RUNNERS DOWN"
+          else
+            COLOR=16776960  # Yellow
+            TITLE="⚠️ Runner Degraded"
+          fi
+
+          PAYLOAD=$(cat <<EOF
+          {
+            "embeds": [{
+              "title": "$TITLE",
+              "description": "**Online:** $ONLINE/$TOTAL runners\n**Action:** Manual restart required\n\`\`\`\ndocker compose -f docker-compose.runners.yml up -d --scale runner=3\n\`\`\`",
+              "color": $COLOR,
+              "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            }]
+          }
+          EOF
+          )
+
+          curl -s -H "Content-Type: application/json" -d "$PAYLOAD" "$DISCORD_WEBHOOK_URL"
+          echo "📢 Discord alert sent"
+
+      - name: "📊 Post Heartbeat Summary"
+        if: always()
+        run: |
+          echo ""
+          echo "================================"
+          echo "  💓 Runner Heartbeat Summary"
+          echo "  Status: ${{ steps.check.outputs.status }}"
+          echo "  Online: ${{ steps.check.outputs.online_count }}/${{ steps.check.outputs.total_count }}"
+          echo "================================"

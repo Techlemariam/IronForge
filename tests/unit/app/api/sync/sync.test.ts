@@ -20,7 +20,7 @@ import { LogService } from "@/services/server/LogService";
 describe("Sync API Route (Logs)", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    (getOrCreateUserAction as any).mockResolvedValue({ id: "user-1" });
+    (getOrCreateUserAction as any).mockResolvedValue({ data: { user: { id: "user-1" } } });
   });
 
   it("should save exercise log correctly", async () => {
