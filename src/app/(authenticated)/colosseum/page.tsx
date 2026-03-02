@@ -36,7 +36,7 @@ export default async function ColosseumPage({
       {/* HEADER */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 border-b border-zinc-800 pb-6">
         <div>
-          <h1 className="text-4xl md:text-6xl font-black uppercase italic tracking-tighter text-[#ffd700] drop-shadow-[0_0_15px_rgba(255,215,0,0.5)]">
+          <h1 className="text-4xl md:text-6xl font-black uppercase italic tracking-tighter text-[var(--color-gold-bright)] drop-shadow-[0_0_15px_rgba(255,215,0,0.5)]">
             The Iron Colosseum
           </h1>
           <p className="text-zinc-500 font-serif italic mt-2 max-w-lg">
@@ -105,3 +105,4 @@ export default async function ColosseumPage({
     </div>
   );
 }
+

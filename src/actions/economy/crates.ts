@@ -33,7 +33,7 @@ interface RewardCrate {
 
 const RARITY_COLORS: Record<CrateRarity, string> = {
   COMMON: "#9ca3af",
-  UNCOMMON: "#22c55e",
+  UNCOMMON: "var(--color-venom)",
   RARE: "#3b82f6",
   EPIC: "#a855f7",
   LEGENDARY: "#f59e0b",
@@ -300,3 +300,4 @@ export async function awardCrateAction(
 export function getCrateColors() {
   return RARITY_COLORS;
 }
+

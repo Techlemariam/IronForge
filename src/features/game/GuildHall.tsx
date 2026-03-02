@@ -237,7 +237,7 @@ export const GuildHall: React.FC<GuildHallProps> = ({ onClose }) => {
 
     // 1. Check Energy (Optimistic Check)
     if (kineticEnergy < ATTACK_COST) {
-      spawnFloatingText("LOW ENERGY!", "#ef4444"); // Red
+      spawnFloatingText("LOW ENERGY!", "var(--color-crisis)"); // Red
       return;
     }
 
@@ -505,3 +505,4 @@ export const GuildHall: React.FC<GuildHallProps> = ({ onClose }) => {
 };
 
 export default GuildHall;
+

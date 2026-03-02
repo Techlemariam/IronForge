@@ -14,7 +14,7 @@ interface TerritoryMapProps {
 
 const TILE_COLORS = {
     OWNED: "#10b981",      // Emerald 500
-    HOSTILE: "#ef4444",    // Red 500
+    HOSTILE: "var(--color-crisis)",    // Red 500
     CONTESTED: "#f59e0b",  // Amber 500
     NEUTRAL: "#4b5563",    // Gray 600
     HOME_ZONE: "#3b82f6",  // Blue 500
@@ -173,3 +173,4 @@ export const TerritoryMap: React.FC<TerritoryMapProps> = ({ tiles, homeLocation 
         </div>
     );
 };
+
