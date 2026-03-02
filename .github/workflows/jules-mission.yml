@@ -17,6 +17,8 @@ jobs:
   jules-invoke:
     name: Invoke Jules
     runs-on: ubuntu-latest
+    env:
+      NODE_VERSION: '22'
     steps:
       - uses: actions/setup-node@v4
         with:
