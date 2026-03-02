@@ -1,10 +1,5 @@
 import React from "react";
 
-// Simplified toggle from standard UI lib
-// interface ToggleProps {
-//   className?: string;
-// }
-
 interface SwitchProps {
   checked: boolean;
   onCheckedChange: (checked: boolean) => void;
