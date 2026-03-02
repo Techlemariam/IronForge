@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test } from '@playwright/test';
 
 test('DuelVictoryScreen renders without metricLabel', async ({ page }) => {
   // Since we don't have a specific way to trigger this screen easily in a local environment without seed data,
