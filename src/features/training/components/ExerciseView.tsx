@@ -68,7 +68,6 @@ const ExerciseView: React.FC<ExerciseViewProps> = ({
 
   // Gestures
   const x = useMotionValue(0);
-  // const opacity = useTransform(x, [0, 100], [1, 0]);
   const bg = useTransform(x, [0, 100], ["rgba(0,0,0,0)", "rgba(34, 197, 94, 0.2)"]); // Green tint on swipe right
 
   const handleDragEnd = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
