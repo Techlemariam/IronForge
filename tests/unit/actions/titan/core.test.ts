@@ -188,7 +188,7 @@ describe("Titan Server Actions", () => {
   });
   describe("checkAndIncrementStreakAction", () => {
     beforeEach(() => {
-      vi.useFakeTimers();
+      vi.useFakeTimers({ shouldAdvanceTime: true });
     });
 
     afterEach(() => {
