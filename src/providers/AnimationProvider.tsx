@@ -9,7 +9,7 @@ import { LazyMotion, domMax } from "framer-motion";
  */
 export function AnimationProvider({ children }: { children: React.ReactNode }) {
     return (
-        <LazyMotion features={domMax} strict>
+        <LazyMotion features={domMax}>
             {children}
         </LazyMotion>
     );

@@ -9,9 +9,9 @@
 | **Framework** | Next.js (App Router) | 15.1+ | RSC standards, Streaming, Server Actions. |
 | **Core** | React | 19.0+ | Actions, `useFormStatus`, `useOptimistic`. |
 | **Language** | TypeScript | 5.0+ | Strict Mode required. No `any`. |
-| **Database** | PostgreSQL | Latest | Relational integrity for RPG data. |
+| **Database** | Supabase (Local CLI) | Latest | Full local stack (GoTrue, PostgREST, Realtime). |
 | **ORM** | Prisma | 6.0+ | Type-safe DB access. |
-| **Styling** | Tailwind CSS | 3.3+ | Utility-first, co-located styles. |
+| **Styling** | Tailwind CSS | 4.0 | Utility-first, v4 with @theme support. |
 | **UI Primitive** | shadcn/ui | Latest | Radix-based accessible components. |
 | **Validation** | Zod | 3.22+ | Runtime validation for ALL inputs. |
 
@@ -32,6 +32,8 @@ We utilize a semantic token system defined in `globals.css` to ensure consistenc
 | `clay` | `#c79c6e` | Classic UI, Parchment, Secondary Accents |
 | `venom` | `#22c55e` | Restoration, Set Items, Success States |
 | `crisis` | `#ef4444` | Failure, Cursed Items, Danger States |
+| `emerald-glow`| `#10b981` | Titan Bio-Data, High-Level Mastery |
+| `teal-glow`   | `#14b8a6` | Synthetic Neural Lattice, UI Accents |
 
 ---
 
@@ -156,7 +158,7 @@ IronForge treats physical training as the primary game engine. Progression is de
 
 - [Secret Management Protocol](file:///c:/Users/alexa/Workspaces/IronForge/docs/SECRET_MANAGEMENT.md): Documentation on Doppler-first secret handling and token naming conventions.
 
-* [Daily Brief](file:///c:/Users/alexa/Workspaces/IronForge/DAILY_BRIEF.md): Tracks high-level progress.
+- [Daily Brief](file:///c:/Users/alexa/Workspaces/IronForge/DAILY_BRIEF.md): Tracks high-level progress.
  Macro-Phases (Build/Peak/Deload) to resolve interference.
 
 - **Tactical Layer:** `TrainingCalendar` generates week plans based on `DailyReadiness` and `ResourceBudget` (CNS/Metabolic/Muscular).
@@ -209,6 +211,7 @@ IronForge implements a **Tiered CI/CD Architecture** to balance rapid developer 
 | **L1: Fast Feedback** | Logic & Syntax | Pull Request | `Lint`, `Type Check`, `Unit Tests` (Differential) | < 5m |
 | **L2: Verification** | Build & Smoke | Push to `main` | `Full Build`, `E2E Smoke`, `Perf Audit`, `DB Drift` | < 15m |
 | **L3: Assurance** | Security & Depth | Nightly (Cron) | `Exhaustive E2E`, `Snyk Security Audit`, `Sentry Hygiene` | Daily |
+| **🤖 Jules Mission** | AI-Agent Coding | Manual/Push | `Remote Code Execution`, `PR Feedback`, `Autonomous Fixes` | Async |
 
 ### 9.2 Security Auditing (Snyk)
 

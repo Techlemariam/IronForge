@@ -14,8 +14,8 @@
 | 2026-01-18 | `src/components/**/*` | [Consistency] Foundational UI components now support dark mode. More work needed. | @ui-ux | 🟡 In Progress |
 | 2026-01-18 | `src/components/**/*` | [Responsive] Foundational UI components now have improved responsive styles. More work needed. | @ui-ux | 🟡 In Progress |
 | 2026-02-12 | `Storybook/Chromatic` | Pilot Dashboard blocked by Prisma resolution (Run 21960052134) - part of larger refactoring. | @architect | ⚠️ Deferred |
-| 2026-02-12 | `Prisma/Infrastructure` | DB Drift: `FactoryStatus` model pushed via `db push`, missing migrations. DB not accessible to create migration. | @infrastructure | 🚫 Blocked |
-| 2026-02-15 | `src/**/*` | P2: [A11y/UI] 100+ hardcoded colors and missing aria-labels (ROADMAP.md:85) | @ui-ux | 🔄 Open |
+| 2026-02-12 | `Prisma/Infrastructure` | DB Drift: `FactoryStatus` model pushed via `db push`, missing migrations. Fixed with local Supabase stack and fresh migrations. | @infrastructure | ✅ Resolved |
+| 2026-02-15 | `src/**/*` | P2: [A11y/UI] 100+ hardcoded colors and missing aria-labels (ROADMAP.md:85). Partial audit complete. | @ui-ux | 🟡 In Progress |
 | 2026-02-10 | `Storybook/Chromatic` | Chromatic deployment blocked by Prisma integration. Requires architectural refactoring (container/presenter pattern). | @architect | ⚠️ Deferred |
 
 ---
