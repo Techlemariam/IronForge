@@ -34,7 +34,7 @@ export function CardioDuelLobby() {
             // Fix: Map to ensure heroName is string (fallback for null)
             const sanitized: Opponent[] = res.opponents.map((opp: any) => ({
                 id: opp.id,
-                heroName: opp.heroName || "Unknown Titan",
+                heroName: (opp.heroName && typeof opp.heroName === 'string') ? opp.heroName : "Unknown Titan",
                 level: opp.level, // Assuming level is always present/valid based on schema, otherwise provide default
                 titan: opp.titan ? { powerRating: opp.titan.powerRating } : undefined
             }));
