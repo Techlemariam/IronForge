@@ -36,10 +36,6 @@ export function ChaseOverlay({
     const statusMessage = ChaseEngine.getStatusMessage(chaseState);
     const requiredPace = ChaseEngine.getRequiredPace(chaseState, difficulty);
 
-    // Color based on danger level
-    // Color based on danger level
-    // const dangerColor = useMemo(() => { ... });
-
     const bgPulse = dangerLevel > 0.7 && !chaseState.isCaught && !chaseState.hasEscaped;
 
     // Heartbeat Effect
