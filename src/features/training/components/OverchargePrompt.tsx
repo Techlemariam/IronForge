@@ -57,6 +57,7 @@ const OverchargePrompt: React.FC<OverchargePromptProps> = ({
           </button>
           <button
             onClick={onDecline}
+            aria-label="Decline Overcharge"
             className="px-4 bg-zinc-800 hover:bg-zinc-700 text-zinc-400 hover:text-white rounded transition-colors"
           >
             <XCircle className="w-5 h-5" />

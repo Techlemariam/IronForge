@@ -1,6 +1,9 @@
 name: Jules Autonomous Mission
 
 on:
+  push:
+    branches:
+      - 'fix/ci-harmonization-run-775'
   workflow_dispatch:
     inputs:
       mission:

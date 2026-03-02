@@ -24,14 +24,17 @@ export const PersistentHeader: React.FC<PersistentHeaderProps> = ({
     <div
       className={`fixed top-0 left-0 right-0 z-40 p-4 pointer-events-none flex justify-center md:justify-start ${className}`}
     >
-      <div className="bg-black/80 backdrop-blur-md border border-white/10 rounded-full px-6 py-2 flex items-center gap-6 shadow-xl pointer-events-auto">
+      <nav
+        aria-label="Global Player Statistics"
+        className="bg-black/80 backdrop-blur-md border border-white/10 rounded-full px-6 py-2 flex items-center gap-6 shadow-xl pointer-events-auto"
+      >
         {/* Level */}
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full bg-magma text-black font-bold flex items-center justify-center ring-2 ring-magma/50">
+          <div aria-label={`Level ${level}`} className="w-8 h-8 rounded-full bg-magma text-black font-bold flex items-center justify-center ring-2 ring-magma/50">
             {level}
           </div>
           {/* XP Hidden on mobile to save space, visible on hover? */}
-          <div className="hidden md:flex flex-col">
+          <div className="hidden md:flex flex-col" aria-label={`${xp.toLocaleString()} Experience Points`}>
             <span className="text-[10px] text-zinc-400 uppercase tracking-widest leading-none">
               Level
             </span>
@@ -42,10 +45,10 @@ export const PersistentHeader: React.FC<PersistentHeaderProps> = ({
         </div>
 
         {/* Vertical Divider */}
-        <div className="w-px h-8 bg-white/10"></div>
+        <div className="w-px h-8 bg-white/10" aria-hidden="true"></div>
 
         {/* Gold */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2" aria-label={`${gold.toLocaleString()} Gold`}>
           <Coins className="w-4 h-4 text-yellow-400" />
           <span className="font-mono font-bold text-yellow-400">
             {gold.toLocaleString()}
@@ -53,23 +56,24 @@ export const PersistentHeader: React.FC<PersistentHeaderProps> = ({
         </div>
 
         {/* Vertical Divider */}
-        <div className="w-px h-8 bg-white/10"></div>
+        <div className="w-px h-8 bg-white/10" aria-hidden="true"></div>
 
         {/* Faction */}
         <div
+          aria-label={`Current Faction: ${faction}`}
           className={`text-xs font-black italic tracking-wider ${faction === "ALLIANCE" ? "text-blue-500" : "text-red-500"}`}
         >
           {faction}
         </div>
 
         {/* Vertical Divider */}
-        <div className="w-px h-8 bg-white/10"></div>
+        <div className="w-px h-8 bg-white/10" aria-hidden="true"></div>
 
         {/* Power Rating */}
         <div data-testid="power-rating">
           <PowerRatingBadge rating={powerRating} className="scale-75 origin-left" />
         </div>
-      </div>
+      </nav>
     </div>
   );
 };
