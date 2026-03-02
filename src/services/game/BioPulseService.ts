@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { awardTitanXpAction, syncTitanStateWithWellness } from "@/actions/titan/core";
+import { TitanService } from "@/services/game/TitanService";
 import { logger } from "@/lib/logger";
 
 export class BioPulseService {
@@ -12,7 +12,7 @@ export class BioPulseService {
             let baseXP = 500;
             if (workout.exercises) baseXP += workout.exercises.length * 50;
 
-            const xpResult = await awardTitanXpAction(userId, baseXP, "WORKOUT_PULSE");
+            const xpResult = await TitanService.awardXp(userId, baseXP, "WORKOUT_PULSE");
             const titan = await prisma.titan.findUnique({ where: { userId } });
 
             // 2. Create a Titan Memory
@@ -53,7 +53,7 @@ export class BioPulseService {
             logger.info({ userId }, "Processing Wellness Bio-Pulse");
 
             // 1. Sync Titan state (Energy, Mood, etc.)
-            const syncResult = await syncTitanStateWithWellness(userId, wellness);
+            const syncResult = await TitanService.syncWellness(userId, wellness);
             const titan = await prisma.titan.findUnique({ where: { userId } });
 
             // 2. Notable events (HRV/Battery)

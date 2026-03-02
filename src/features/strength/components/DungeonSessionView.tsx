@@ -209,7 +209,7 @@ const DungeonSessionView: React.FC<IronMinesProps> = ({
 
         // --- GUILD ACTION ---
         if (user?.id) {
-          contributeGuildDamageAction(user.id, damage).catch(e => console.error("Guild Action Failed", e));
+          contributeGuildDamageAction({ damage }).catch(e => console.error("Guild Action Failed", e));
 
           // --- GHOST BROADCAST ---
           if (activeSessionId) {
@@ -394,7 +394,7 @@ const DungeonSessionView: React.FC<IronMinesProps> = ({
                 )}
                 style={{
                   width: `${Math.min(100, volumeFeedback.percentage)}%`,
-                }}
+                } as React.CSSProperties}
               />
             </div>
           </div>

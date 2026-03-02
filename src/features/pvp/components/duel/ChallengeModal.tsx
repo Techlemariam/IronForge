@@ -28,7 +28,7 @@ export function ChallengeModal(props: ChallengeModalProps) {
     if (isOpen) {
       setLoadingOpponents(true);
       getPotentialOpponentsAction().then(res => {
-        if (res.success && res.opponents) {
+        if (res?.success && res.opponents) {
           setOpponents(res.opponents);
         }
       }).finally(() => setLoadingOpponents(false));
@@ -46,14 +46,14 @@ export function ChallengeModal(props: ChallengeModalProps) {
 
     setLoading(true);
     try {
-      const result = await createDuelChallengeAction(targetId);
-      if (result.success) {
+      const result = await createDuelChallengeAction({ targetUserId: targetId });
+      if (result?.data?.success) {
         toast.success('Challenge sent successfully!', {
           icon: <Swords className="w-4 h-4" />
         });
         onClose();
       } else {
-        toast.error(result.error || 'Failed to send challenge');
+        toast.error(result?.data?.error || result?.serverError || 'Failed to send challenge');
       }
     } catch {
       toast.error('An unexpected error occurred');

@@ -184,6 +184,8 @@ model TitanMemory {
   importance  Int      @default(1)
   occurredAt  DateTime @default(now())
   titan       Titan    @relation(fields: [titanId], references: [id])
+
+  @@index([titanId])
 }
 
 model TitanScar {
@@ -194,6 +196,8 @@ model TitanScar {
   isVisible Boolean  @default(true)
   createdAt DateTime @default(now())
   titan     Titan    @relation(fields: [titanId], references: [id])
+
+  @@index([titanId])
 }
 
 model Follow {
@@ -355,6 +359,7 @@ model UserAchievement {
   user          User        @relation(fields: [userId], references: [id])
 
   @@id([userId, achievementId])
+  @@index([userId])
 }
 
 model UserEquipment {
@@ -366,6 +371,7 @@ model UserEquipment {
   user        User    @relation(fields: [userId], references: [id])
 
   @@id([userId, equipmentId])
+  @@index([userId])
 }
 
 model Item {
@@ -547,6 +553,7 @@ model UserChallenge {
   user        User      @relation(fields: [userId], references: [id])
 
   @@id([userId, challengeId])
+  @@index([userId])
 }
 
 model GauntletRun {
@@ -676,6 +683,9 @@ model GuildRaidContribution {
   timestamp DateTime  @default(now())
   raid      GuildRaid @relation(fields: [raidId], references: [id])
   user      User      @relation(fields: [userId], references: [id])
+
+  @@index([raidId])
+  @@index([userId])
 }
 
 model Achievement {

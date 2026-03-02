@@ -1,17 +1,16 @@
 "use client";
 
-import React, { useMemo } from "react";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  Cell,
-} from "recharts";
+import { useMemo } from "react";
+import dynamic from "next/dynamic";
 import { IntervalsActivity, AthleteSettings } from "@/types";
 import { Activity } from "lucide-react";
+
+const HeartRateZoneChartVisual = dynamic(() => import("./HeartRateZoneChartVisual"), {
+  ssr: false,
+  loading: () => (
+    <div className="h-full w-full bg-white/5 animate-pulse rounded-lg border border-white/10" />
+  ),
+});
 
 interface HeartRateZoneChartProps {
   activities: IntervalsActivity[];
@@ -129,41 +128,7 @@ export const HeartRateZoneChart: React.FC<HeartRateZoneChartProps> = ({
       </div>
 
       <div className="h-64 w-full">
-        <ResponsiveContainer width="100%" height="100%">
-          <BarChart
-            data={zoneData}
-            layout="vertical"
-            margin={{ left: 0, right: 30 }}
-          >
-            <XAxis type="number" hide />
-            <YAxis
-              type="category"
-              dataKey="name"
-              tick={{ fill: "#a1a1aa", fontSize: 10, fontWeight: 600 }}
-              width={110}
-              axisLine={false}
-              tickLine={false}
-            />
-            <Tooltip
-              cursor={{ fill: "rgba(255,255,255,0.05)" }}
-              contentStyle={{
-                backgroundColor: "var(--color-void)",
-                borderColor: "var(--color-steel)",
-                borderRadius: "8px",
-              }}
-              itemStyle={{ color: "#fff", fontSize: "12px" }}
-              formatter={(value: any, name: any, props: any) => [
-                `${value} hrs`,
-                props.payload.originalName || "",
-              ]}
-            />
-            <Bar dataKey="value" radius={[0, 4, 4, 0]} barSize={20}>
-              {zoneData.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={entry.color} />
-              ))}
-            </Bar>
-          </BarChart>
-        </ResponsiveContainer>
+        <HeartRateZoneChartVisual zoneData={zoneData} />
       </div>
 
       {/* Legend / Insight */}

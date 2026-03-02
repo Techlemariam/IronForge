@@ -18,7 +18,7 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    entrypoint: [ "sh", "-c", "npx prisma db push --skip-generate && echo '✅ Database schema applied.' && exit 0" ]
+    entrypoint: [ "sh", "-c", "npx prisma db push --accept-data-loss && echo '✅ Database schema applied.' && exit 0" ]
     networks:
       - ironforge-net
 

@@ -3,7 +3,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import { Trophy, Sparkles, Video, CheckCircle, AlertTriangle } from "lucide-react";
 import { fireConfetti, playSound } from "@/utils";
 import { getISOWeek } from 'date-fns';
@@ -82,14 +82,14 @@ export const PRCelebration: React.FC<PRCelebrationProps> = ({
     return (
         <AnimatePresence>
             {isVisible && (
-                <motion.div
+                <m.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm"
                     onClick={onClose}
                 >
-                    <motion.div
+                    <m.div
                         initial={{ scale: 0.5, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
                         exit={{ scale: 0.8, opacity: 0 }}
@@ -97,32 +97,32 @@ export const PRCelebration: React.FC<PRCelebrationProps> = ({
                         className="text-center p-8 rounded-2xl bg-slate-900/50 border border-slate-700 w-[90%] max-w-md"
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <motion.div initial={{ y: -20 }} animate={{ y: 0 }} className="relative mb-6" >
+                        <m.div initial={{ y: -20 }} animate={{ y: 0 }} className="relative mb-6" >
                             <Trophy className="w-24 h-24 text-gold mx-auto drop-shadow-[0_0_30px_rgba(234,179,8,0.5)]" />
                             <Sparkles className="w-8 h-8 text-gold/80 absolute -top-2 -right-2 animate-pulse" />
-                        </motion.div>
+                        </m.div>
 
-                        <motion.h1 initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.1 }} className="text-4xl md:text-5xl font-black text-white mb-2 tracking-tight" >
+                        <m.h1 initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.1 }} className="text-4xl md:text-5xl font-black text-white mb-2 tracking-tight" >
                             🎉 NEW PR! 🎉
-                        </motion.h1>
+                        </m.h1>
 
                         {exerciseName && (
-                            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="text-steel text-lg mb-4 uppercase tracking-widest" >
+                            <m.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="text-steel text-lg mb-4 uppercase tracking-widest" >
                                 {exerciseName}
-                            </motion.p>
+                            </m.p>
                         )}
 
-                        <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ delay: 0.2, type: "spring" }} className="text-7xl md:text-8xl font-black text-gold mb-4 drop-shadow-[0_0_20px_rgba(234,179,8,0.3)]" >
+                        <m.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ delay: 0.2, type: "spring" }} className="text-7xl md:text-8xl font-black text-gold mb-4 drop-shadow-[0_0_20px_rgba(234,179,8,0.3)]" >
                             {newReps}
-                        </motion.div>
+                        </m.div>
 
                         {delta !== null && delta > 0 && (
-                            <motion.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.3 }} className="text-2xl font-bold text-venom" >
+                            <m.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.3 }} className="text-2xl font-bold text-venom" >
                                 +{delta} reps!
-                            </motion.div>
+                            </m.div>
                         )}
 
-                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="mt-8 space-y-4" >
+                        <m.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="mt-8 space-y-4" >
                             {videoState === 'idle' && (
                                 <Button onClick={handleGenerateVideo} className="w-full" size="lg">
                                     <Video className="mr-2 h-5 w-5" />
@@ -131,7 +131,7 @@ export const PRCelebration: React.FC<PRCelebrationProps> = ({
                             )}
                             {videoState === 'loading' && (
                                 <Button className="w-full" size="lg" disabled>
-                                    <motion.div className="mr-2 h-5 w-5 animate-spin rounded-full border-b-2 border-white"></motion.div>
+                                    <m.div className="mr-2 h-5 w-5 animate-spin rounded-full border-b-2 border-white"></m.div>
                                     Renderar video...
                                 </Button>
                             )}
@@ -150,9 +150,9 @@ export const PRCelebration: React.FC<PRCelebrationProps> = ({
                                 </Button>
                             )}
                             <Button variant="ghost" onClick={onClose} className="w-full text-slate-400">Stäng</Button>
-                        </motion.div>
-                    </motion.div>
-                </motion.div>
+                        </m.div>
+                    </m.div>
+                </m.div>
             )}
         </AnimatePresence>
     );

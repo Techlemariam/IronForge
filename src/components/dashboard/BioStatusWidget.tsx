@@ -1,9 +1,8 @@
 "use client";
 
 import React from "react";
-import { Card } from "@/components/ui/card";
+import { Activity, Battery, Brain, ShieldAlert } from "lucide-react";
 import { TrainingContext } from "@/services/data/TrainingContextService";
-import { Activity, Battery, Brain, AlertTriangle, ShieldAlert } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { JargonTooltip } from "@/components/ui/JargonTooltip";
 
@@ -42,7 +41,7 @@ export default function BioStatusWidget({ context }: BioStatusWidgetProps) {
 
             <div className="relative flex items-center justify-between z-10">
                 <div className="flex items-center gap-3">
-                    <Activity className="h-5 w-5 text-emerald-400 text-glow-emerald" />
+                    <Activity className="h-5 w-5 text-emerald-400 text-glow-emerald" aria-hidden="true" />
                     <h3 className="text-sm font-mono tracking-widest text-slate-400 uppercase">
                         Life-Support: <span className="text-slate-100">Status</span>
                     </h3>
@@ -56,17 +55,24 @@ export default function BioStatusWidget({ context }: BioStatusWidgetProps) {
             <div className="relative space-y-2 z-10">
                 <div className="flex justify-between items-end">
                     <span className="flex items-center gap-2 text-[10px] font-mono text-slate-500 uppercase tracking-tighter">
-                        <Brain className="h-3.5 w-3.5 text-teal-400" />
+                        <Brain className="h-3.5 w-3.5 text-teal-400" aria-hidden="true" />
                         <JargonTooltip term="CNS">Neural Load Index</JargonTooltip>
                     </span>
                     <span className="text-[10px] font-mono text-slate-300 bg-slate-900 px-1.5 border border-slate-800">
                         {cnsFatigue}
                     </span>
                 </div>
-                <div className="h-3 w-full bg-slate-950 border border-slate-800 p-[1px]">
+                <div
+                    className="h-3 w-full bg-slate-950 border border-slate-800 p-[1px]"
+                    role="progressbar"
+                    aria-label="Neural Load Index"
+                    aria-valuenow={cnsFatigue === 'LOW' ? 25 : cnsFatigue === 'MODERATE' ? 50 : cnsFatigue === 'HIGH' ? 75 : 100}
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                >
                     <div
                         className={cn("h-full transition-all duration-1000 ease-out", cnsColor)}
-                        style={{ width: cnsFatigue === 'LOW' ? '25%' : cnsFatigue === 'MODERATE' ? '50%' : cnsFatigue === 'HIGH' ? '75%' : '100%' }}
+                        style={{ width: cnsFatigue === 'LOW' ? '25%' : cnsFatigue === 'MODERATE' ? '50%' : cnsFatigue === 'HIGH' ? '75%' : '100%' } as React.CSSProperties}
                     />
                 </div>
             </div>
@@ -75,14 +81,21 @@ export default function BioStatusWidget({ context }: BioStatusWidgetProps) {
             <div className="relative space-y-2 z-10">
                 <div className="flex justify-between items-end">
                     <span className="flex items-center gap-2 text-[10px] font-mono text-slate-500 uppercase tracking-tighter">
-                        <Battery className="h-3.5 w-3.5 text-emerald-400" />
+                        <Battery className="h-3.5 w-3.5 text-emerald-400" aria-hidden="true" />
                         <JargonTooltip term="MRV">System Capacity</JargonTooltip>
                     </span>
                     <span className="text-[10px] font-mono text-slate-300">
                         {globalLoad} <span className="text-slate-600">/</span> {globalMrv} <span className="text-slate-600">SETS</span>
                     </span>
                 </div>
-                <div className="relative h-6 w-full bg-slate-950 border border-slate-800 overflow-hidden">
+                <div
+                    className="relative h-6 w-full bg-slate-950 border border-slate-800 overflow-hidden"
+                    role="progressbar"
+                    aria-label="System Capacity"
+                    aria-valuenow={Math.round(capacityPct)}
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                >
                     {/* Grid Overlay */}
                     <div className="absolute inset-0 bg-grid-titan opacity-20 pointer-events-none" />
 
@@ -90,7 +103,7 @@ export default function BioStatusWidget({ context }: BioStatusWidgetProps) {
                         className={cn("absolute top-0 left-0 h-full transition-all duration-1000 ease-out border-r border-white/20",
                             capacityPct > 100 ? "bg-red-950/60" : capacityPct > 80 ? "bg-amber-500/40" : "bg-emerald-500/30"
                         )}
-                        style={{ width: `${capacityPct}%` }}
+                        style={{ width: `${capacityPct}%` } as React.CSSProperties}
                     />
 
                     {/* The "Ghost" Warning */}
@@ -106,7 +119,7 @@ export default function BioStatusWidget({ context }: BioStatusWidgetProps) {
             {warnings.length > 0 && (
                 <div className="relative pt-4 border-t border-slate-800 z-10">
                     <div className="flex items-center gap-2 mb-2">
-                        <ShieldAlert className="h-3.5 w-3.5 text-red-500" />
+                        <ShieldAlert className="h-3.5 w-3.5 text-red-500" aria-hidden="true" />
                         <p className="text-[10px] font-mono font-bold text-red-400 uppercase tracking-widest">
                             Integrity Threats
                         </p>

@@ -1,5 +1,6 @@
 import { useCurrentFrame, interpolate, spring, useVideoConfig, Sequence } from 'remotion';
 import { z } from 'zod';
+import styles from './TitanWeeklyRecap.module.css';
 
 // ─── Schema ───────────────────────────────────────────────
 export const titanRecapSchema = z.object({
@@ -15,9 +16,9 @@ export const titanRecapSchema = z.object({
 type TitanRecapProps = z.infer<typeof titanRecapSchema>;
 
 // ─── Animated Counter ─────────────────────────────────────
-const AnimatedNumber: React.FC<{ value: number; frame: number; delay: number }> = ({
+const AnimatedNumber = ({
     value, frame, delay,
-}) => {
+}: { value: number; frame: number; delay: number }) => {
     const progress = interpolate(frame - delay, [0, 30], [0, 1], {
         extrapolateLeft: 'clamp',
         extrapolateRight: 'clamp',
@@ -26,14 +27,14 @@ const AnimatedNumber: React.FC<{ value: number; frame: number; delay: number }> 
 };
 
 // ─── Stat Card ────────────────────────────────────────────
-const StatCard: React.FC<{
+const StatCard = ({ label, value, suffix, color, frame, delay }: {
     label: string;
     value: number;
     suffix?: string;
     color: string;
     frame: number;
     delay: number;
-}> = ({ label, value, suffix, color, frame, delay }) => {
+}) => {
     const opacity = interpolate(frame - delay, [0, 15], [0, 1], {
         extrapolateLeft: 'clamp',
         extrapolateRight: 'clamp',
@@ -45,32 +46,17 @@ const StatCard: React.FC<{
 
     return (
         <div
+            className={styles.statCard}
             style={{
                 opacity,
                 transform: `translateY(${y}px)`,
-                background: 'rgba(255,255,255,0.04)',
-                border: '1px solid rgba(255,255,255,0.08)',
-                borderRadius: '16px',
-                padding: '24px 32px',
-                minWidth: '200px',
-                textAlign: 'center',
-                backdropFilter: 'blur(10px)',
-            }}
+            } as React.CSSProperties}
         >
-            <div style={{ fontSize: '48px', fontWeight: 800, color, fontFamily: 'Inter, sans-serif' }}>
+            <div className={styles.statValue} style={{ color }}>
                 <AnimatedNumber value={value} frame={frame} delay={delay} />
-                {suffix && <span style={{ fontSize: '32px', opacity: 0.7 }}>{suffix}</span>}
+                {suffix && <span className={styles.statSuffix}>{suffix}</span>}
             </div>
-            <div
-                style={{
-                    fontSize: '16px',
-                    color: 'rgba(255,255,255,0.5)',
-                    textTransform: 'uppercase',
-                    letterSpacing: '2px',
-                    marginTop: '8px',
-                    fontFamily: 'Inter, sans-serif',
-                }}
-            >
+            <div className={styles.statLabel}>
                 {label}
             </div>
         </div>
@@ -78,7 +64,7 @@ const StatCard: React.FC<{
 };
 
 // ─── Main Composition ─────────────────────────────────────
-export const TitanWeeklyRecap: React.FC<TitanRecapProps> = ({
+export const TitanWeeklyRecap = ({
     username,
     weekNumber,
     strengthGains,
@@ -86,12 +72,12 @@ export const TitanWeeklyRecap: React.FC<TitanRecapProps> = ({
     workoutsLogged,
     monstersDefeated,
     streakDays,
-}) => {
+}: TitanRecapProps) => {
     const frame = useCurrentFrame();
     const { fps } = useVideoConfig();
 
     // Background pulse
-    const pulse = interpolate(Math.sin(frame * 0.05), [-1, 1], [0.02, 0.06]);
+    const pulseOpacity = interpolate(Math.sin(frame * 0.05), [-1, 1], [0.02, 0.06]);
 
     // Title animations
     const titleScale = spring({ frame, fps, config: { damping: 12 } });
@@ -109,73 +95,33 @@ export const TitanWeeklyRecap: React.FC<TitanRecapProps> = ({
 
     return (
         <div
+            className={styles.container}
             style={{
-                width: '100%',
-                height: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-                background: `radial-gradient(ellipse at 50% 40%, rgba(74, 222, 128, ${pulse}) 0%, #0a0a0a 70%)`,
-                color: 'white',
-                fontFamily: 'Inter, system-ui, sans-serif',
-                overflow: 'hidden',
-                position: 'relative',
-            }}
+                '--pulse-opacity': pulseOpacity,
+            } as React.CSSProperties}
         >
             {/* Decorative grid lines */}
-            <div
-                style={{
-                    position: 'absolute',
-                    inset: 0,
-                    backgroundImage:
-                        'linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)',
-                    backgroundSize: '60px 60px',
-                }}
-            />
+            <div className={styles.gridOverlay} />
 
             {/* Title Block */}
             <Sequence from={0} durationInFrames={150}>
                 <div
+                    className={styles.titleBlock}
                     style={{
-                        position: 'absolute',
-                        top: '10%',
-                        textAlign: 'center',
                         opacity: titleOpacity,
                         transform: `scale(${titleScale})`,
                     }}
                 >
-                    <div
-                        style={{
-                            fontSize: '18px',
-                            color: 'rgba(255,255,255,0.4)',
-                            textTransform: 'uppercase',
-                            letterSpacing: '6px',
-                            marginBottom: '12px',
-                        }}
-                    >
+                    <div className={styles.recapLabel}>
                         ⚔️ Titan Weekly Recap
                     </div>
-                    <h1
-                        style={{
-                            fontSize: '64px',
-                            fontWeight: 900,
-                            background: 'linear-gradient(135deg, #4ade80, #22d3ee)',
-                            backgroundClip: 'text',
-                            WebkitBackgroundClip: 'text',
-                            color: 'transparent',
-                            margin: 0,
-                            lineHeight: 1.1,
-                        }}
-                    >
+                    <h1 className={styles.username}>
                         {username}
                     </h1>
                     <div
+                        className={styles.weekSub}
                         style={{
                             opacity: subtitleOpacity,
-                            fontSize: '24px',
-                            color: 'rgba(255,255,255,0.6)',
-                            marginTop: '8px',
                         }}
                     >
                         Vecka {weekNumber}
@@ -185,17 +131,7 @@ export const TitanWeeklyRecap: React.FC<TitanRecapProps> = ({
 
             {/* Stats Grid */}
             <Sequence from={0} durationInFrames={150}>
-                <div
-                    style={{
-                        position: 'absolute',
-                        top: '45%',
-                        display: 'flex',
-                        gap: '20px',
-                        flexWrap: 'wrap',
-                        justifyContent: 'center',
-                        maxWidth: '1100px',
-                    }}
-                >
+                <div className={styles.statsGrid}>
                     <StatCard label="Styrka" value={strengthGains} suffix="+" color="#4ade80" frame={frame} delay={40} />
                     <StatCard label="XP Earned" value={xpEarned} color="#22d3ee" frame={frame} delay={50} />
                     <StatCard label="Workouts" value={workoutsLogged} color="#f59e0b" frame={frame} delay={60} />
@@ -207,22 +143,14 @@ export const TitanWeeklyRecap: React.FC<TitanRecapProps> = ({
             {streakDays > 0 && (
                 <Sequence from={0} durationInFrames={150}>
                     <div
+                        className={styles.streakBadge}
                         style={{
-                            position: 'absolute',
-                            bottom: '10%',
                             opacity: streakOpacity,
                             transform: `scale(${streakScale})`,
-                            background: 'linear-gradient(135deg, rgba(245,158,11,0.2), rgba(239,68,68,0.2))',
-                            border: '1px solid rgba(245,158,11,0.3)',
-                            borderRadius: '100px',
-                            padding: '16px 40px',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '12px',
                         }}
                     >
-                        <span style={{ fontSize: '36px' }}>🔥</span>
-                        <span style={{ fontSize: '28px', fontWeight: 700, color: '#f59e0b' }}>
+                        <span className={styles.streakEmoji}>🔥</span>
+                        <span className={styles.streakText}>
                             {streakDays}-dagars streak!
                         </span>
                     </div>

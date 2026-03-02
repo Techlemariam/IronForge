@@ -24,11 +24,11 @@ const TheForge: React.FC<TheForgeProps> = ({ onClose }) => {
   // Initial Load
   useEffect(() => {
     async function load() {
-      const result = await getInventoryAction();
-      if (result.success && result.data) {
-        setInventory(result.data);
+      const res = await getInventoryAction();
+      if (res?.data?.success && res.data.data) {
+        setInventory(res.data.data);
       } else {
-        toast.error(result.message || "Failed to access the Armory");
+        toast.error(res?.data?.message || res?.serverError || "Failed to access the Armory");
       }
     }
     load();
@@ -39,21 +39,9 @@ const TheForge: React.FC<TheForgeProps> = ({ onClose }) => {
     setCraftingId(recipe.id);
 
     try {
-      const result = await craftItem(recipe.id);
-      if (result.success && result.inventory) {
-        // Update local state with new inventory from server
-        // Note: The mock server action returns the inventory, so we use that.
-        // In a real app we might revalidatePath or use a router refresh.
-        // But for client interactivity, updating state is faster.
-        // Since the mock action is stateless (doesn't persist to DB truly yet),
-        // we might need to manually update local state if the server result isn't fully persistent.
-        // BUT, our server action returns 'inventory'. Let's trust it.
-        // Wait, the Mock Action re-computes inventory freshly every time from static mock,
-        // so it won't persist across calls in this specific implementation step.
-        // TO FIX: The server action calculates result based on Input Inventory it generates.
-        // For this UI to feel "real", we should manually update the local state
-        // to reflect the craft immediately, assuming success.
-
+      const res = await craftItem({ recipeId: recipe.id });
+      if (res?.data?.success && res.data.inventory) {
+        const inventoryData = res.data.inventory;
         // Manual Optimistic Update for MVP fluidity:
         const newItems = [...inventory.items];
 
@@ -91,11 +79,11 @@ const TheForge: React.FC<TheForgeProps> = ({ onClose }) => {
           items: newItems,
         });
 
-        toast.success(result.message, {
+        toast.success(res.data.message || "Crafted", {
           description: "Item added to inventory.",
         });
       } else {
-        toast.error(result.message);
+        toast.error(res?.data?.message || res?.serverError || "Crafting failed");
       }
     } catch {
       toast.error("The Hammer failed to strike.");

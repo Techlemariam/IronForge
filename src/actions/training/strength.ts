@@ -116,9 +116,9 @@ export async function logSetAction(
         // Damage = Weight * Reps (Kinetic Force)
         const damage = Math.floor(validatedSet.weight * validatedSet.reps);
         if (damage > 0) {
-          const raidResult = await contributeGuildDamageAction(userId, damage);
-          if (raidResult.success && raidResult.damageDealt) {
-            raidDamageDealt = raidResult.damageDealt;
+          const raidResult = await contributeGuildDamageAction({ damage });
+          if (raidResult?.data?.success && raidResult.data.damageDealt) {
+            raidDamageDealt = raidResult.data.damageDealt;
           }
         }
       } catch (e) {

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { motion, useMotionValue, useTransform, PanInfo } from "framer-motion";
+import { m, useMotionValue, useTransform, PanInfo } from "framer-motion";
 import { ChevronDown, ChevronsRight, CheckCircle, PlayCircle } from "lucide-react";
 import { Exercise } from "@/types";
 import { cn } from "@/lib/utils";
@@ -111,7 +111,7 @@ const ExerciseView: React.FC<ExerciseViewProps> = ({
   };
 
   return (
-    <motion.div
+    <m.div
       variants={cardVariants}
       animate={getAnimationState()}
       initial="inactive"
@@ -217,7 +217,7 @@ const ExerciseView: React.FC<ExerciseViewProps> = ({
         </div>
 
         {isActive && activeSet && (
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
@@ -229,7 +229,7 @@ const ExerciseView: React.FC<ExerciseViewProps> = ({
               }
               targetRPE={activeSet.rpe || 8}
             />
-          </motion.div>
+          </m.div>
         )}
       </Card>
 
@@ -239,7 +239,7 @@ const ExerciseView: React.FC<ExerciseViewProps> = ({
         exerciseName={exercise.name}
         videoUrl={exercise.demoUrl}
       />
-    </motion.div>
+    </m.div>
   );
 };
 

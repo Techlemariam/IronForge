@@ -27,25 +27,48 @@ async function main() {
 
     // Authenticate with Supabase to get the REAL User ID
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    const serviceKey = process.env.SUPABASE_SERVICE_KEY;
     const testEmail = process.env.TEST_USER_EMAIL || 'alexander.teklemariam@gmail.com';
     const testPassword = process.env.TEST_USER_PASSWORD || 'IronForge2025!';
 
     let userId: string | undefined;
 
-    if (supabaseUrl && supabaseKey) {
-        console.log(`🔐 Authenticating with Supabase to sync User ID for ${testEmail}...`);
-        const supabase = createClient(supabaseUrl, supabaseKey);
-        const { data, error } = await supabase.auth.signInWithPassword({
-            email: testEmail,
-            password: testPassword,
+    if (supabaseUrl && serviceKey) {
+        console.log(`🔐 Ensuring test user ${testEmail} exists in local Supabase Auth...`);
+        // Use service role key to manage users without email confirmation
+        const supabaseAdmin = createClient(supabaseUrl, serviceKey, {
+            auth: {
+                autoRefreshToken: false,
+                persistSession: false
+            }
         });
 
-        if (error) {
-            console.warn(`⚠️ Failed to sign in with Supabase: ${error.message}. User ID might be mismatched.`);
-        } else if (data.user) {
-            userId = data.user.id;
-            console.log(`✅ Retrieved Supabase User ID: ${userId}`);
+        // Try to get existing user
+        const { data: { users }, error: listError } = await supabaseAdmin.auth.admin.listUsers();
+
+        if (listError) {
+            console.warn(`⚠️ Failed to list users: ${listError.message}`);
+        } else {
+            const existingAuthUser = users.find(u => u.email === testEmail);
+            if (existingAuthUser) {
+                userId = existingAuthUser.id;
+                console.log(`✅ Found existing Supabase Auth User ID: ${userId}`);
+            } else {
+                console.log(`👤 User ${testEmail} not found. Creating via Admin API...`);
+                const { data: { user }, error: createError } = await supabaseAdmin.auth.admin.createUser({
+                    email: testEmail,
+                    password: testPassword,
+                    email_confirm: true,
+                    user_metadata: { heroName: 'E2E Hunter' }
+                });
+
+                if (createError) {
+                    console.error(`❌ Failed to create auth user: ${createError.message}`);
+                } else if (user) {
+                    userId = user.id;
+                    console.log(`✅ Created Supabase Auth User ID: ${userId}`);
+                }
+            }
         }
     } else {
         console.warn('⚠️ Missing Supabase credentials in env. Skipping ID sync.');
