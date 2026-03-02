@@ -16,8 +16,9 @@ export const maxDuration = 60;
  */
 const handler = async (request: NextRequest) => {
     const authHeader = request.headers.get("authorization");
-    const secret = process.env.CRON_SECRET || "dev_secret";
-    if (authHeader !== `Bearer ${secret}`) {
+    const secret = process.env.CRON_SECRET;
+
+    if (!secret || authHeader !== `Bearer ${secret}`) {
         logger.warn("Power Rating Cron: Unauthorized attempt");
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }

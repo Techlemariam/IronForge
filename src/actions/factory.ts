@@ -5,7 +5,6 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import { createClient } from '@/utils/supabase/server';
 import { AssemblyLineTask, FactoryService } from '@/services/game/FactoryService';
-import { z } from 'zod';
 
 const COST_SEK_PER_ACTIVE_STATION = 0.042;
 
@@ -32,7 +31,7 @@ async function verifyFactoryAuth() {
     return isAuthorized;
 }
 
-import { FactoryStatusSchema, FactoryStatusData } from '@/lib/schemas/factory';
+import { FactoryStatusData } from '@/lib/schemas/factory';
 
 
 /**

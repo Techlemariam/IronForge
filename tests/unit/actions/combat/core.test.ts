@@ -121,7 +121,7 @@ describe("Combat Server Actions", () => {
         level: 5,
       });
 
-      const result = await startBossFight("boss-1");
+      const result = await startBossFight("boss-1", "HEROIC");
 
       expect(result.success).toBe(true);
       expect(result.state).toBeDefined();

@@ -275,8 +275,6 @@ function analyzeFile(filePath: string, fixMode: boolean, knownSkills: Set<string
     // 4. Turbo Opportunities
     // Look for bash code blocks without // turbo
     const lines = content.split('\n');
-    let codeBlockOpen = false;
-    let insideBash = false;
     let justSawTurbo = false;
     let contentChanged = false;
 
@@ -290,8 +288,6 @@ function analyzeFile(filePath: string, fixMode: boolean, knownSkills: Set<string
         const line = lines[i].trim();
 
         if (line.startsWith('```bash') || line.startsWith('```sh') || line.startsWith('```powershell')) {
-            codeBlockOpen = true;
-            insideBash = true;
             // Check previous line for // turbo
             const prevLine = lines[i - 1]?.trim() || '';
             const isTurbo = prevLine === '// turbo';
@@ -325,9 +321,6 @@ function analyzeFile(filePath: string, fixMode: boolean, knownSkills: Set<string
                     contentChanged = true; // Mark as changed due to turbo fix
                 }
             }
-        } else if (line.startsWith('```')) {
-            codeBlockOpen = false;
-            insideBash = false;
         }
     }
 

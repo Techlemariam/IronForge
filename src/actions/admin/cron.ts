@@ -57,7 +57,11 @@ export async function triggerCronAction(path: string) {
             return { success: false, error: "Invalid cron path" };
         }
 
-        const secret = process.env.CRON_SECRET || "dev_secret";
+        const secret = process.env.CRON_SECRET;
+        if (!secret) {
+            logger.error("CRON_SECRET is not configured on the server");
+            return { success: false, error: "Server configuration error" };
+        }
 
         // 4. Secure URL Construction
         const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https';

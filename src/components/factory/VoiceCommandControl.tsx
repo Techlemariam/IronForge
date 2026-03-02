@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Mic, MicOff, Send, Loader2, Sparkles } from 'lucide-react';
 import { addFactoryTask } from '@/actions/factory';
 import { useRouter } from 'next/navigation';
 
