@@ -47,10 +47,21 @@ async function prepareDatabase(client: pg.Client, dbName: string) {
         await client.query(`ALTER DATABASE template1 REFRESH COLLATION VERSION`);
     } catch (collationError) {
         console.warn(`⚠️ Could not refresh collation version for template1:`, collationError instanceof Error ? collationError.message : String(collationError));
+        try {
+            console.log(`🔄 Attempting to nullify collation version to bypass ICU mismatch...`);
+            await client.query(`UPDATE pg_database SET datcollversion = NULL WHERE datname IN ('template1', 'postgres')`);
+        } catch (updateError) {
+            console.warn(`⚠️ Could not nullify collation version:`, updateError instanceof Error ? updateError.message : String(updateError));
+        }
     }
 
     console.log(`🏗️ Creating database "${dbName}"...`);
-    await client.query(`CREATE DATABASE "${dbName}"`);
+    try {
+        await client.query(`CREATE DATABASE "${dbName}"`);
+    } catch (createErr) {
+        console.warn(`⚠️ Standard CREATE DATABASE failed, attempting with C collation. Error: ${createErr instanceof Error ? createErr.message : String(createErr)}`);
+        await client.query(`CREATE DATABASE "${dbName}" LC_COLLATE = 'C' LC_CTYPE = 'C'`);
+    }
     console.log(`✨ Database "${dbName}" created successfully.`);
 }
 
