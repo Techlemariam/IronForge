@@ -334,6 +334,15 @@ export const muscleMap = new Map<string, MuscleGroup>([
   ],
 ]);
 
+// ⚡ Bolt: Pre-compute exercise to muscle group mapping for O(1) lookups
+// This avoids O(N*M) string matching during volume calculations
+const exerciseToMuscleMap = new Map<string, string>();
+for (const [group, data] of muscleMap.entries()) {
+  for (const exercise of data.exercises) {
+    exerciseToMuscleMap.set(exercise.toLowerCase(), group);
+  }
+}
+
 /**
  * Finds the IronForge muscle group category for a given Hevy exercise title.
  * @param exerciseTitle The title of the exercise from Hevy.
@@ -342,14 +351,6 @@ export const muscleMap = new Map<string, MuscleGroup>([
 export const getMuscleGroupForExercise = (
   exerciseTitle: string,
 ): string | null => {
-  for (const [group, data] of muscleMap.entries()) {
-    if (
-      data.exercises.some(
-        (ex) => ex.toLowerCase() === exerciseTitle.toLowerCase(),
-      )
-    ) {
-      return group;
-    }
-  }
-  return null; // Return null if no mapping is found
+  // ⚡ Bolt: Replaced nested loops with O(1) hash map lookup
+  return exerciseToMuscleMap.get(exerciseTitle.toLowerCase()) || null;
 };
