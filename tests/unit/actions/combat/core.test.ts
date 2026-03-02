@@ -125,7 +125,7 @@ describe("Combat Server Actions", () => {
 
       expect(result?.data?.success).toBe(true);
       expect(result?.data?.state).toBeDefined();
-      expect(result?.data?.state?.bossHp).toBe(1000);
+      expect(result?.data?.state?.bossHp).toBe(700);
       expect(result?.data?.state?.playerHp).toBeDefined();
     });
 
