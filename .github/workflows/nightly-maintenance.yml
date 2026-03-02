@@ -218,7 +218,7 @@ jobs:
 
       - name: 💾 Commit Changes
         id: changes
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: "chore: nightly maintenance updates [skip ci]"
           branch: ${{ env.BRANCH }}
