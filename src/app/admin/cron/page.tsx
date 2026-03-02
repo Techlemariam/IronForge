@@ -4,7 +4,8 @@ import React, { useState } from "react";
 import { toast, GameToaster } from "@/components/ui/GameToast";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Loader2, Zap, Play, CheckCircle2, AlertTriangle } from "lucide-react";
+import { Loader2, Zap, Play, CheckCircle2 } from "lucide-react";
+import { triggerCronAction } from "@/actions/admin/cron";
 
 export default function AdminCronPage() {
     const [isLoading, setIsLoading] = useState<string | null>(null);
@@ -12,20 +13,14 @@ export default function AdminCronPage() {
     const triggerCron = async (path: string, name: string) => {
         setIsLoading(name);
         try {
-            // In a real app we'd call the API with the secret
-            const res = await fetch(path, {
-                headers: {
-                    Authorization: `Bearer ${process.env.NEXT_PUBLIC_CRON_SECRET || 'dev_secret'}`
-                }
-            });
+            const res = await triggerCronAction(path);
 
-            if (res.ok) {
+            if (res.success) {
                 toast.success(`${name} trigger success`, {
-                    className: "toast" // Added class for E2E test locator if needed
+                    className: "toast"
                 });
             } else {
-                const data = await res.json().catch(() => ({}));
-                toast.error(`${name} failed: ${data.error || res.statusText}`);
+                toast.error(`${name} failed: ${res.error}`);
             }
         } catch (e) {
             toast.error(`${name} error: ${String(e)}`);
@@ -96,15 +91,6 @@ export default function AdminCronPage() {
                                 </Button>
                             </CardContent>
                         </Card>
-                    </div>
-
-                    <div className="bg-amber-950/20 border border-amber-900/50 p-4 rounded-lg flex gap-3">
-                        <AlertTriangle className="w-5 h-5 text-amber-500 shrink-0" />
-                        <div className="text-xs text-amber-200/70">
-                            <p className="font-bold text-amber-500 uppercase mb-1">Warning</p>
-                            Triggering these manually will affect production data. Use with caution.
-                            Authorization relies on NEXT_PUBLIC_CRON_SECRET in this interface.
-                        </div>
                     </div>
                 </div>
             </div>
