@@ -5,9 +5,12 @@ import { createClient } from "@/utils/supabase/server";
 export const actionClient = createSafeActionClient({
     handleServerError(e) {
         console.error("Action error:", e.message);
-        if (e instanceof Error) {
+
+        // Only expose error details in development
+        if (process.env.NODE_ENV === "development" && e instanceof Error) {
             return e.message;
         }
+
         return DEFAULT_SERVER_ERROR_MESSAGE;
     }
 });

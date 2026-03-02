@@ -2,9 +2,6 @@
 name: Jules Autonomous Mission
 
 on:
-  push:
-    branches:
-      - 'fix/ci-harmonization-run-775'
   workflow_dispatch:
     inputs:
       mission:
@@ -25,13 +22,13 @@ jobs:
           node-version: 22
 
       - name: Install Doppler CLI
-        uses: dopplerhq/cli-action@v1
+        uses: dopplerhq/cli-action@v3
 
       - name: Fetch Doppler Secrets
-        uses: dopplerhq/secrets-fetch-action@v1
-        with:
-          doppler-token: ${{ secrets.DOPPLER_TOKEN }}
-          inject-env-vars: true
+        run: |
+          doppler secrets download --no-file --format env-no-quotes --project ironforge --config dev > $GITHUB_ENV
+        env:
+          DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
 
       - name: Jules Invoke
         uses: BeksOmega/jules-action@v1.0.0
@@ -39,17 +36,9 @@ jobs:
           jules_api_key: ${{ env.JULES_API_KEY }}
           prompt: ${{ inputs.mission }}
 
-      - name: Jules PR Comment
-        if: github.event_name == 'pull_request'
-        uses: BeksOmega/jules-publish@v1.0.0
-        with:
-          jules_api_key: ${{ env.JULES_API_KEY }}
-          pr_number: ${{ github.event.pull_request.number }}
-
       - name: Send Feedback to Jules
         if: always()
         uses: BeksOmega/jules-comms@v1.0.0
         with:
           jules_api_key: ${{ env.JULES_API_KEY }}
           feedback_users: ${{ github.actor }}
-
