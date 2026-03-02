@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest  # Must run on hosted runner (can't rely on self-hosted being alive)
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: "🔍 Check Self-Hosted Runners"
         id: check
         env:
