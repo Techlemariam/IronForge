@@ -1,0 +1,779 @@
+{
+    "data": [
+        {
+            "updatedAt": "2026-02-07T22:54:24.000Z",
+            "createdAt": "2026-02-04T22:19:37.437Z",
+            "id": "9Sw7r7tP7wQstiOb",
+            "name": "My workflow",
+            "active": false,
+            "isArchived": true,
+            "nodes": [
+                {
+                    "parameters": {
+                        "httpMethod": "POST",
+                        "path": "ironforge-trigger",
+                        "options": {}
+                    },
+                    "id": "a3ccbe9e-4392-4eb9-b157-0bcfd6d0413b",
+                    "name": "Webhook",
+                    "type": "n8n-nodes-base.webhook",
+                    "typeVersion": 1,
+                    "position": [
+                        -400,
+                        112
+                    ],
+                    "webhookId": "776e9ed4-b76f-40a2-b4d5-6701a66227c5"
+                },
+                {
+                    "parameters": {
+                        "conditions": {
+                            "string": [
+                                {
+                                    "value1": "={{ $json.token }}",
+                                    "operation": "equals",
+                                    "value2": "={{ $env.REMOTE_TRIGGER_SECRET }}"
+                                }
+                            ]
+                        }
+                    },
+                    "id": "8f549bd5-0512-4bd0-96fb-c5ffd8da371d",
+                    "name": "Validate Token",
+                    "type": "n8n-nodes-base.if",
+                    "typeVersion": 1,
+                    "position": [
+                        -208,
+                        112
+                    ]
+                },
+                {
+                    "parameters": {
+                        "url": "=https://api.github.com/repos/{{ $env.GITHUB_OWNER }}/{{ $env.GITHUB_REPO }}/dispatches",
+                        "authentication": "genericCredentialType",
+                        "genericAuthType": "httpHeaderAuth",
+                        "sendHeaders": true,
+                        "headerParameters": {
+                            "parameters": [
+                                {
+                                    "name": "Accept",
+                                    "value": "application/vnd.github.v3+json"
+                                }
+                            ]
+                        },
+                        "sendBody": true,
+                        "bodyParameters": {
+                            "parameters": [
+                                {
+                                    "name": "event_type",
+                                    "value": "remote-trigger"
+                                },
+                                {
+                                    "name": "client_payload",
+                                    "value": "={{ JSON.stringify({ workflow: $json.workflow || '/health-check', branch: $json.branch || 'main', token: $env.REMOTE_TRIGGER_SECRET }) }}"
+                                }
+                            ]
+                        },
+                        "options": {}
+                    },
+                    "id": "527b163f-d23f-4d5a-8f75-96546f1233f8",
+                    "name": "Trigger GitHub Action",
+                    "type": "n8n-nodes-base.httpRequest",
+                    "typeVersion": 3,
+                    "position": [
+                        0,
+                        0
+                    ]
+                },
+                {
+                    "parameters": {
+                        "respondWith": "json",
+                        "responseBody": "={{ { success: false, error: 'Invalid token' } }}",
+                        "options": {}
+                    },
+                    "id": "36a905fb-7939-471c-8198-f5f4fdd98e63",
+                    "name": "Reject",
+                    "type": "n8n-nodes-base.respondToWebhook",
+                    "typeVersion": 1,
+                    "position": [
+                        0,
+                        208
+                    ]
+                },
+                {
+                    "parameters": {
+                        "respondWith": "json",
+                        "responseBody": "={{ { success: true, workflow: $json.workflow, message: 'Workflow triggered successfully' } }}",
+                        "options": {}
+                    },
+                    "id": "befe78b8-6b82-40ed-af35-41248eb8b657",
+                    "name": "Success Response",
+                    "type": "n8n-nodes-base.respondToWebhook",
+                    "typeVersion": 1,
+                    "position": [
+                        208,
+                        0
+                    ]
+                }
+            ],
+            "connections": {
+                "Webhook": {
+                    "main": [
+                        [
+                            {
+                                "node": "Validate Token",
+                                "type": "main",
+                                "index": 0
+                            }
+                        ]
+                    ]
+                },
+                "Validate Token": {
+                    "main": [
+                        [
+                            {
+                                "node": "Trigger GitHub Action",
+                                "type": "main",
+                                "index": 0
+                            }
+                        ],
+                        [
+                            {
+                                "node": "Reject",
+                                "type": "main",
+                                "index": 0
+                            }
+                        ]
+                    ]
+                },
+                "Trigger GitHub Action": {
+                    "main": [
+                        [
+                            {
+                                "node": "Success Response",
+                                "type": "main",
+                                "index": 0
+                            }
+                        ]
+                    ]
+                }
+            },
+            "settings": {
+                "executionOrder": "v1",
+                "availableInMCP": false
+            },
+            "staticData": null,
+            "meta": null,
+            "pinData": {},
+            "versionId": "7a35845b-b5a3-4cd8-ac6b-fe40df00b284",
+            "activeVersionId": null,
+            "triggerCount": 0,
+            "shared": [
+                {
+                    "updatedAt": "2026-02-04T22:19:37.445Z",
+                    "createdAt": "2026-02-04T22:19:37.445Z",
+                    "role": "workflow:owner",
+                    "workflowId": "9Sw7r7tP7wQstiOb",
+                    "projectId": "xSv7yo2oxCZw4gZE"
+                }
+            ],
+            "activeVersion": null,
+            "tags": []
+        },
+        {
+            "updatedAt": "2026-02-09T08:51:57.889Z",
+            "createdAt": "2026-02-07T06:11:48.139Z",
+            "id": "RgDX5gDwrj8gsKzw",
+            "name": "IF Remote Trigger",
+            "active": true,
+            "isArchived": false,
+            "nodes": [
+                {
+                    "parameters": {
+                        "httpMethod": "POST",
+                        "path": "ironforge-trigger",
+                        "options": {}
+                    },
+                    "id": "95be271a-5109-4a0b-bd9e-0fe8a7ca5943",
+                    "name": "Webhook",
+                    "type": "n8n-nodes-base.webhook",
+                    "typeVersion": 1,
+                    "position": [
+                        -400,
+                        112
+                    ],
+                    "webhookId": "b393f991-493e-4132-b9e6-06cd75cca66e"
+                },
+                {
+                    "parameters": {
+                        "conditions": {
+                            "string": [
+                                {
+                                    "value1": "={{ $json.token }}",
+                                    "operation": "equals",
+                                    "value2": "={{ $env.REMOTE_TRIGGER_SECRET }}"
+                                }
+                            ]
+                        }
+                    },
+                    "id": "bbfa8fb0-90cf-43c6-a729-41be03cd58b6",
+                    "name": "Validate Token",
+                    "type": "n8n-nodes-base.if",
+                    "typeVersion": 1,
+                    "position": [
+                        -208,
+                        112
+                    ]
+                },
+                {
+                    "parameters": {
+                        "method": "POST",
+                        "url": "https://api.github.com/repos/Techlemariam/IronForge/dispatches",
+                        "sendHeaders": true,
+                        "headerParameters": {
+                            "parameters": [
+                                {
+                                    "name": "Accept",
+                                    "value": "application/vnd.github.v3+json"
+                                },
+                                {
+                                    "name": "Authorization",
+                                    "value": "token REDACTED_TOKEN"
+                                }
+                            ]
+                        },
+                        "sendBody": true,
+                        "contentType": "form-urlencoded",
+                        "bodyParameters": {
+                            "parameters": [
+                                {
+                                    "name": "{\"event_type\": \"remote-trigger\", \"client_payload\": {\"workflow\": \"/health-check\", \"branch\": \"main\", \"secret\": \"2dNRs6PPJ*"
+                                },
+                                {
+                                    "name": "pIe\"}}"
+                                }
+                            ]
+                        },
+                        "options": {}
+                    },
+                    "id": "c21284a3-6375-4828-a9fb-2ca83ed5675e",
+                    "name": "Trigger GitHub Action",
+                    "type": "n8n-nodes-base.httpRequest",
+                    "typeVersion": 3,
+                    "position": [
+                        0,
+                        0
+                    ]
+                },
+                {
+                    "parameters": {
+                        "respondWith": "json",
+                        "responseBody": "={{ { success: false, error: 'Invalid token' } }}",
+                        "options": {}
+                    },
+                    "id": "fe1930e2-e352-48cf-ad27-68377bf23591",
+                    "name": "Reject",
+                    "type": "n8n-nodes-base.respondToWebhook",
+                    "typeVersion": 1,
+                    "position": [
+                        0,
+                        208
+                    ]
+                },
+                {
+                    "parameters": {
+                        "respondWith": "json",
+                        "responseBody": "={{ { success: true, workflow: $json.workflow, message: 'Workflow triggered successfully' } }}",
+                        "options": {}
+                    },
+                    "id": "d5e2e067-eace-4e3a-853e-43ff9399c26d",
+                    "name": "Success Response",
+                    "type": "n8n-nodes-base.respondToWebhook",
+                    "typeVersion": 1,
+                    "position": [
+                        208,
+                        0
+                    ]
+                }
+            ],
+            "connections": {
+                "Webhook": {
+                    "main": [
+                        [
+                            {
+                                "node": "Validate Token",
+                                "type": "main",
+                                "index": 0
+                            }
+                        ]
+                    ]
+                },
+                "Validate Token": {
+                    "main": [
+                        [
+                            {
+                                "node": "Trigger GitHub Action",
+                                "type": "main",
+                                "index": 0
+                            }
+                        ],
+                        [
+                            {
+                                "node": "Reject",
+                                "type": "main",
+                                "index": 0
+                            }
+                        ]
+                    ]
+                },
+                "Trigger GitHub Action": {
+                    "main": [
+                        [
+                            {
+                                "node": "Success Response",
+                                "type": "main",
+                                "index": 0
+                            }
+                        ]
+                    ]
+                }
+            },
+            "settings": {
+                "executionOrder": "v1",
+                "availableInMCP": true
+            },
+            "staticData": null,
+            "meta": null,
+            "pinData": {},
+            "versionId": "d71d0320-49e5-41eb-be9b-a742a18c250f",
+            "activeVersionId": "d71d0320-49e5-41eb-be9b-a742a18c250f",
+            "triggerCount": 1,
+            "shared": [
+                {
+                    "updatedAt": "2026-02-07T06:11:48.145Z",
+                    "createdAt": "2026-02-07T06:11:48.145Z",
+                    "role": "workflow:owner",
+                    "workflowId": "RgDX5gDwrj8gsKzw",
+                    "projectId": "xSv7yo2oxCZw4gZE"
+                }
+            ],
+            "activeVersion": {
+                "updatedAt": "2026-02-07T23:02:15.000Z",
+                "createdAt": "2026-02-07T06:41:35.544Z",
+                "versionId": "d71d0320-49e5-41eb-be9b-a742a18c250f",
+                "workflowId": "RgDX5gDwrj8gsKzw",
+                "nodes": [
+                    {
+                        "parameters": {
+                            "httpMethod": "POST",
+                            "path": "ironforge-trigger",
+                            "options": {}
+                        },
+                        "id": "95be271a-5109-4a0b-bd9e-0fe8a7ca5943",
+                        "name": "Webhook",
+                        "type": "n8n-nodes-base.webhook",
+                        "typeVersion": 1,
+                        "position": [
+                            -400,
+                            112
+                        ],
+                        "webhookId": "b393f991-493e-4132-b9e6-06cd75cca66e"
+                    },
+                    {
+                        "parameters": {
+                            "conditions": {
+                                "string": [
+                                    {
+                                        "value1": "={{ $json.token }}",
+                                        "operation": "equals",
+                                        "value2": "={{ $env.REMOTE_TRIGGER_SECRET }}"
+                                    }
+                                ]
+                            }
+                        },
+                        "id": "bbfa8fb0-90cf-43c6-a729-41be03cd58b6",
+                        "name": "Validate Token",
+                        "type": "n8n-nodes-base.if",
+                        "typeVersion": 1,
+                        "position": [
+                            -208,
+                            112
+                        ]
+                    },
+                    {
+                        "parameters": {
+                            "method": "POST",
+                            "url": "https://api.github.com/repos/Techlemariam/IronForge/dispatches",
+                            "sendHeaders": true,
+                            "headerParameters": {
+                                "parameters": [
+                                    {
+                                        "name": "Accept",
+                                        "value": "application/vnd.github.v3+json"
+                                    },
+                                    {
+                                        "name": "Authorization",
+                                        "value": "token REDACTED_TOKEN"
+                                    }
+                                ]
+                            },
+                            "sendBody": true,
+                            "contentType": "form-urlencoded",
+                            "bodyParameters": {
+                                "parameters": [
+                                    {
+                                        "name": "{\"event_type\": \"remote-trigger\", \"client_payload\": {\"workflow\": \"/health-check\", \"branch\": \"main\", \"secret\": \"2dNRs6PPJ*"
+                                    },
+                                    {
+                                        "name": "pIe\"}}"
+                                    }
+                                ]
+                            },
+                            "options": {}
+                        },
+                        "id": "c21284a3-6375-4828-a9fb-2ca83ed5675e",
+                        "name": "Trigger GitHub Action",
+                        "type": "n8n-nodes-base.httpRequest",
+                        "typeVersion": 3,
+                        "position": [
+                            0,
+                            0
+                        ]
+                    },
+                    {
+                        "parameters": {
+                            "respondWith": "json",
+                            "responseBody": "={{ { success: false, error: 'Invalid token' } }}",
+                            "options": {}
+                        },
+                        "id": "fe1930e2-e352-48cf-ad27-68377bf23591",
+                        "name": "Reject",
+                        "type": "n8n-nodes-base.respondToWebhook",
+                        "typeVersion": 1,
+                        "position": [
+                            0,
+                            208
+                        ]
+                    },
+                    {
+                        "parameters": {
+                            "respondWith": "json",
+                            "responseBody": "={{ { success: true, workflow: $json.workflow, message: 'Workflow triggered successfully' } }}",
+                            "options": {}
+                        },
+                        "id": "d5e2e067-eace-4e3a-853e-43ff9399c26d",
+                        "name": "Success Response",
+                        "type": "n8n-nodes-base.respondToWebhook",
+                        "typeVersion": 1,
+                        "position": [
+                            208,
+                            0
+                        ]
+                    }
+                ],
+                "connections": {
+                    "Webhook": {
+                        "main": [
+                            [
+                                {
+                                    "node": "Validate Token",
+                                    "type": "main",
+                                    "index": 0
+                                }
+                            ]
+                        ]
+                    },
+                    "Validate Token": {
+                        "main": [
+                            [
+                                {
+                                    "node": "Trigger GitHub Action",
+                                    "type": "main",
+                                    "index": 0
+                                }
+                            ],
+                            [
+                                {
+                                    "node": "Reject",
+                                    "type": "main",
+                                    "index": 0
+                                }
+                            ]
+                        ]
+                    },
+                    "Trigger GitHub Action": {
+                        "main": [
+                            [
+                                {
+                                    "node": "Success Response",
+                                    "type": "main",
+                                    "index": 0
+                                }
+                            ]
+                        ]
+                    }
+                },
+                "authors": "Alexander Teklemariam",
+                "name": "Version d71d0320",
+                "description": "",
+                "autosaved": false
+            },
+            "tags": []
+        },
+        {
+            "updatedAt": "2026-02-09T08:51:52.727Z",
+            "createdAt": "2026-02-08T09:14:12.273Z",
+            "id": "Tv0z7QUCzTfgLDGq",
+            "name": "Monitoring Dashboard",
+            "active": true,
+            "isArchived": false,
+            "nodes": [
+                {
+                    "parameters": {
+                        "rule": {
+                            "interval": [
+                                {
+                                    "field": "minutes"
+                                }
+                            ]
+                        }
+                    },
+                    "id": "22818fb3-1196-4e7a-a192-3dc4a4cc1c7d",
+                    "name": "Every 15 mins",
+                    "type": "n8n-nodes-base.scheduleTrigger",
+                    "typeVersion": 1,
+                    "position": [
+                        32,
+                        32
+                    ]
+                },
+                {
+                    "parameters": {
+                        "url": "=https://coolify.ironforge.com/api/health",
+                        "options": {}
+                    },
+                    "id": "b343ccfc-4365-491e-b8c3-8b0c6cf74db7",
+                    "name": "Check Health API",
+                    "type": "n8n-nodes-base.httpRequest",
+                    "typeVersion": 3,
+                    "position": [
+                        240,
+                        32
+                    ]
+                },
+                {
+                    "parameters": {
+                        "conditions": {
+                            "number": [
+                                {
+                                    "value1": "={{ $json.statusCode }}",
+                                    "operation": "equals",
+                                    "value2": 200
+                                }
+                            ]
+                        }
+                    },
+                    "id": "da9cfd02-9793-46cd-bb0a-df0f11fe2fcf",
+                    "name": "Is Healthy?",
+                    "type": "n8n-nodes-base.if",
+                    "typeVersion": 1,
+                    "position": [
+                        432,
+                        32
+                    ]
+                },
+                {
+                    "parameters": {
+                        "url": "https://discord.com/api/webhooks/1469991396373958688/4WDf2TawGhR_QQ0FY7xExCcTLZ3plj1O8wcVvG8pxvAHbr1jfQg4DqUiktyuAn1LIe05",
+                        "options": {}
+                    },
+                    "id": "84498432-0480-4212-8e4e-a180b62d5647",
+                    "name": "Alert Discord/Slack",
+                    "type": "n8n-nodes-base.httpRequest",
+                    "typeVersion": 3,
+                    "position": [
+                        640,
+                        144
+                    ]
+                }
+            ],
+            "connections": {
+                "Every 15 mins": {
+                    "main": [
+                        [
+                            {
+                                "node": "Check Health API",
+                                "type": "main",
+                                "index": 0
+                            }
+                        ]
+                    ]
+                },
+                "Check Health API": {
+                    "main": [
+                        [
+                            {
+                                "node": "Is Healthy?",
+                                "type": "main",
+                                "index": 0
+                            }
+                        ]
+                    ]
+                },
+                "Is Healthy?": {
+                    "main": [
+                        [],
+                        [
+                            {
+                                "node": "Alert Discord/Slack",
+                                "type": "main",
+                                "index": 0
+                            }
+                        ]
+                    ]
+                }
+            },
+            "settings": {
+                "executionOrder": "v1",
+                "availableInMCP": true,
+                "timeSavedMode": "fixed",
+                "callerPolicy": "workflowsFromSameOwner"
+            },
+            "staticData": {
+                "node:Every 15 mins": {
+                    "recurrenceRules": []
+                }
+            },
+            "meta": null,
+            "pinData": {},
+            "versionId": "c97cdf0d-8f4d-4111-a78b-30ab228ea731",
+            "activeVersionId": "c97cdf0d-8f4d-4111-a78b-30ab228ea731",
+            "triggerCount": 1,
+            "shared": [
+                {
+                    "updatedAt": "2026-02-08T09:14:12.285Z",
+                    "createdAt": "2026-02-08T09:14:12.285Z",
+                    "role": "workflow:owner",
+                    "workflowId": "Tv0z7QUCzTfgLDGq",
+                    "projectId": "xSv7yo2oxCZw4gZE"
+                }
+            ],
+            "activeVersion": {
+                "updatedAt": "2026-02-08T09:45:33.000Z",
+                "createdAt": "2026-02-08T09:45:27.576Z",
+                "versionId": "c97cdf0d-8f4d-4111-a78b-30ab228ea731",
+                "workflowId": "Tv0z7QUCzTfgLDGq",
+                "nodes": [
+                    {
+                        "parameters": {
+                            "rule": {
+                                "interval": [
+                                    {
+                                        "field": "minutes"
+                                    }
+                                ]
+                            }
+                        },
+                        "id": "22818fb3-1196-4e7a-a192-3dc4a4cc1c7d",
+                        "name": "Every 15 mins",
+                        "type": "n8n-nodes-base.scheduleTrigger",
+                        "typeVersion": 1,
+                        "position": [
+                            32,
+                            32
+                        ]
+                    },
+                    {
+                        "parameters": {
+                            "url": "=https://coolify.ironforge.com/api/health",
+                            "options": {}
+                        },
+                        "id": "b343ccfc-4365-491e-b8c3-8b0c6cf74db7",
+                        "name": "Check Health API",
+                        "type": "n8n-nodes-base.httpRequest",
+                        "typeVersion": 3,
+                        "position": [
+                            240,
+                            32
+                        ]
+                    },
+                    {
+                        "parameters": {
+                            "conditions": {
+                                "number": [
+                                    {
+                                        "value1": "={{ $json.statusCode }}",
+                                        "operation": "equals",
+                                        "value2": 200
+                                    }
+                                ]
+                            }
+                        },
+                        "id": "da9cfd02-9793-46cd-bb0a-df0f11fe2fcf",
+                        "name": "Is Healthy?",
+                        "type": "n8n-nodes-base.if",
+                        "typeVersion": 1,
+                        "position": [
+                            432,
+                            32
+                        ]
+                    },
+                    {
+                        "parameters": {
+                            "url": "https://discord.com/api/webhooks/1469991396373958688/4WDf2TawGhR_QQ0FY7xExCcTLZ3plj1O8wcVvG8pxvAHbr1jfQg4DqUiktyuAn1LIe05",
+                            "options": {}
+                        },
+                        "id": "84498432-0480-4212-8e4e-a180b62d5647",
+                        "name": "Alert Discord/Slack",
+                        "type": "n8n-nodes-base.httpRequest",
+                        "typeVersion": 3,
+                        "position": [
+                            640,
+                            144
+                        ]
+                    }
+                ],
+                "connections": {
+                    "Every 15 mins": {
+                        "main": [
+                            [
+                                {
+                                    "node": "Check Health API",
+                                    "type": "main",
+                                    "index": 0
+                                }
+                            ]
+                        ]
+                    },
+                    "Check Health API": {
+                        "main": [
+                            [
+                                {
+                                    "node": "Is Healthy?",
+                                    "type": "main",
+                                    "index": 0
+                                }
+                            ]
+                        ]
+                    },
+                    "Is Healthy?": {
+                        "main": [
+                            [],
+                            [
+                                {
+                                    "node": "Alert Discord/Slack",
+                                    "type": "main",
+                                    "index": 0
+                                }
+                            ]
+                        ]
+                    }
+                },
+                "authors": "Alexander Teklemariam",
+                "name": "Version c97cdf0d",
+                "description": "",
+                "autosaved": false
+            },
+            "tags": []
+        }
+    ],
+    "nextCursor": null
+}

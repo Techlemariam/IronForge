@@ -5,6 +5,7 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import { createClient } from '@/utils/supabase/server';
 import { AssemblyLineTask, FactoryService } from '@/services/game/FactoryService';
+import { z } from 'zod';
 
 const COST_SEK_PER_ACTIVE_STATION = 0.042;
 
@@ -23,7 +24,7 @@ async function verifyFactoryAuth() {
         return false;
     }
 
-    const isAuthorized = user.email?.endsWith("@ironforge.rpg") || user.email === 'alexander.teklemariam@gmail.com' || false;
+    const isAuthorized = user.email?.endsWith("@ironforge.rpg") || false;
     if (!isAuthorized) {
         console.warn(`Factory Auth: User ${user.email} not authorized for factory operations`);
     }
@@ -31,7 +32,7 @@ async function verifyFactoryAuth() {
     return isAuthorized;
 }
 
-import { FactoryStatusData } from '@/lib/schemas/factory';
+import { FactoryStatusSchema, FactoryStatusData } from '@/lib/schemas/factory';
 
 
 /**
@@ -174,8 +175,7 @@ export async function getAssemblyLineTasksAction(): Promise<AssemblyLineTask[]> 
  */
 export async function getLatestActiveRunAction(): Promise<AssemblyLineTask | null> {
     if (!(await verifyFactoryAuth())) {
-        // Graceful fallback: non-authorized users (incl. E2E) see no active run
-        return null;
+        throw new Error("Unauthorized");
     }
     const tasks = await FactoryService.getAssemblyLineTasks();
     return tasks.length > 0 ? tasks[0] : null;

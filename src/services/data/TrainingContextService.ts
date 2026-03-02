@@ -4,7 +4,7 @@ import { TrainingPath, SystemMetrics, MacroCycle, NutritionMode } from "@/types/
 import { EXERCISE_DB } from "@/data/exerciseDb";
 import { PATH_VOLUME_MODIFIERS } from "@/data/builds";
 import { AutoSpecEngine } from "@/services/game/AutoSpecEngine";
-import { Prisma } from "@/types/prisma";
+import { Prisma  } from "@/types/prisma";
 
 // --- Types ---
 export interface VolumeStatus {
@@ -33,7 +33,7 @@ interface WorkoutSet {
 // Helper to safely parse sets from Prisma JSON
 function parseSets(json: Prisma.JsonValue): WorkoutSet[] {
     if (!Array.isArray(json)) return [];
-    return (json as Record<string, unknown>[]).map((item) => ({
+    return (json as unknown as any[]).map((item) => ({
         reps: Number(item?.reps || 0),
         weight: Number(item?.weight || 0),
         rpe: typeof item?.rpe === 'number' ? item.rpe : undefined,

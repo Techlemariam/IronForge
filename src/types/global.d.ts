@@ -76,7 +76,7 @@ declare global {
   // We use ThreeElement from @react-three/fiber to provide actual type safety
   // instead of 'any', reducing technical debt in 3D components.
   namespace JSX {
-    import type { ThreeElement } from "@react-three/fiber";
+    import { ThreeElement } from "@react-three/fiber";
     interface IntrinsicElements {
       meshStandardMaterial: ThreeElement<typeof import("three").MeshStandardMaterial>;
       group: ThreeElement<typeof import("three").Group>;
@@ -97,7 +97,7 @@ declare global {
   // React Three Fiber Intrinsic Elements (React.JSX for React 18+)
   namespace React {
     namespace JSX {
-      import type { ThreeElement } from "@react-three/fiber";
+      import { ThreeElement } from "@react-three/fiber";
       interface IntrinsicElements {
         meshStandardMaterial: ThreeElement<typeof import("three").MeshStandardMaterial>;
         group: ThreeElement<typeof import("three").Group>;

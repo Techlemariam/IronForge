@@ -123,7 +123,6 @@ const Marketplace: React.FC<MarketplaceProps> = ({ onClose }) => {
             </div>
             <button
               onClick={onClose}
-              aria-label="Close marketplace"
               className="p-2 hover:bg-white/10 rounded-full transition-colors"
             >
               <X className="w-6 h-6 text-zinc-400" />

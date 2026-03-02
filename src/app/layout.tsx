@@ -12,8 +12,6 @@ export const metadata: Metadata = {
   description: "The AI-augmented strength training RPG. Integrate your workouts, battle bosses, and forge your legend.",
 };
 
-import { AnimationProvider } from "@/providers/AnimationProvider";
-
 export default function RootLayout({
   children,
 }: {
@@ -22,10 +20,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} ${cinzel.variable} ${jetbrains.variable} bg-background text-foreground antialiased`}>
-        <AnimationProvider>
-          {children}
-          <GameToaster />
-        </AnimationProvider>
+        {children}
+        <GameToaster />
       </body>
     </html>
   );

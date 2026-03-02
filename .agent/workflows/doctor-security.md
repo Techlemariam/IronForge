@@ -16,16 +16,6 @@ skills: ["red-team", "dependabot-manager", "qodana-linter", "env-validator"]
 
 ## Diagnostic Protocol
 
-### 0. Doppler Pre-flight Check
-
-Ensure the environment is secured and Doppler is active.
-
-// turbo
-
-```bash
-doppler run -- echo "🔐 Doppler Protected Execution Active"
-```
-
 ### 1. External Service Limits
 
 Check if Snyk or other external scanners are failing due to quota limits.
@@ -35,7 +25,7 @@ Check if Snyk or other external scanners are failing due to quota limits.
 ```bash
 echo "🔍 Checking Security Service Status..."
 # Look for "used your limit" or "quota exceeded" in logs
-doppler run -- gh run view --log-failed | grep -E "limit of private tests|quota exceeded" && {
+gh run view --log-failed | grep -E "limit of private tests|quota exceeded" && {
   echo "⚠️ ALERT: Security service limit reached. Please check account tier."
 }
 ```
@@ -58,7 +48,7 @@ Run a local audit to bypass CI quotas if possible.
 // turbo
 
 ```bash
-doppler run -- pnpm audit --audit-level high
+pnpm audit --audit-level high
 ```
 
 ## Phase 2: Proactive Sentinel Mode
@@ -84,7 +74,7 @@ Check for reachable vulnerabilities that might not be breaking CI yet.
 // turbo
 
 ```bash
-doppler run -- pnpm run security:proactive
+pnpm run security:proactive
 ```
 
 ## Remediation Pipeline

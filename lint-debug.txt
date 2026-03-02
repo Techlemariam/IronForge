@@ -1,0 +1,15 @@
+
+> ironforge-rpg@1.0.0 lint C:\Users\alexa\Workspaces\IronForge
+> next lint
+
+`next lint` is deprecated and will be removed in Next.js 16.
+For new projects, use create-next-app to choose your preferred linter.
+For existing projects, migrate to the ESLint CLI:
+npx @next/codemod@canary next-lint-to-eslint-cli .
+
+
+./src/services/game/PowerRatingService.ts
+26:13  Error: Definition for rule '@typescript-eslint/no-explicit-any' was not found.  @typescript-eslint/no-explicit-any
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
+ÔÇëELIFECYCLEÔÇë Command failed with exit code 1.

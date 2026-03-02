@@ -54,17 +54,13 @@ export class PushNotificationService {
                     };
 
                     await webpush.sendNotification(pushSubscription, notificationPayload);
-                } catch (error: unknown) {
-                    // Safe property check for statusCode on WebPushError
-                    const isWebPushError = error && typeof error === 'object' && 'statusCode' in error;
-                    const statusCode = isWebPushError ? (error as { statusCode: number }).statusCode : null;
-
+                } catch (error: any) {
                     // If the subscription is no longer valid, delete it
-                    if (statusCode === 404 || statusCode === 410) {
+                    if (error.statusCode === 404 || error.statusCode === 410) {
                         console.log(`PushNotificationService: Cleaning up expired subscription for user ${userId}`);
                         await prisma.pushSubscription.delete({ where: { id: sub.id } });
                     } else {
-                        console.error(`PushNotificationService: Error sending to ${sub.endpoint}`, error instanceof Error ? error.message : String(error));
+                        console.error(`PushNotificationService: Error sending to ${sub.endpoint}`, error);
                     }
                 }
             })

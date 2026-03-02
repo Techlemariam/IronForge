@@ -1,17 +1,16 @@
-# Integrated Secret Management: Doppler
-# Verifying active session...
-try {
-    $dopplerCheck = doppler run -- echo "Secret Sanctum Verified"
-    Write-Host "🔐 Doppler Active: $dopplerCheck" -ForegroundColor Cyan
-} catch {
-    Write-Error "❌ Doppler session not found. Please run 'doppler login' and 'doppler setup'."
-    exit 1
+# Load .env variables
+Get-Content .env | ForEach-Object {
+    if ($_ -match '^([^#]+?)=(.*)$') {
+        $name = $matches[1].Trim()
+        $value = $matches[2].Trim().Trim('"')
+        [Environment]::SetEnvironmentVariable($name, $value, "Process")
+    }
 }
 
 # Alias tokens for CLI tools
-if ($env:GH_PAT) {
-    [Environment]::SetEnvironmentVariable("GH_TOKEN", $env:GH_PAT, "Process")
-    [Environment]::SetEnvironmentVariable("GITHUB_TOKEN", $env:GH_PAT, "Process")
+if ($env:GITHUB_PERSONAL_ACCESS_TOKEN) {
+    [Environment]::SetEnvironmentVariable("GH_TOKEN", $env:GITHUB_PERSONAL_ACCESS_TOKEN, "Process")
+    [Environment]::SetEnvironmentVariable("GITHUB_TOKEN", $env:GITHUB_PERSONAL_ACCESS_TOKEN, "Process")
 }
 
 

@@ -10,13 +10,13 @@ vi.mock("next/headers", () => ({
 
 // Mock Supabase and DB FIRST to ensure they are active for the actions
 vi.mock("@/utils/supabase/server", () => ({
-  createClient: vi.fn(() => ({
+  createClient: vi.fn().mockResolvedValue({
     auth: {
       getUser: vi.fn(() =>
         Promise.resolve({ data: { user: { id: "test-user" } } }),
       ),
     },
-  })),
+  }),
 }));
 
 vi.mock("@/lib/prisma", () => ({
@@ -61,25 +61,26 @@ describe("Security Validation (Zod)", () => {
   });
 
   describe("Combat Actions", () => {
-    it("should return validation errors for empty bossId", async () => {
-      const result = await startBossFight({ bossId: "" });
-      console.log("BOSS_FIGHT_RESULT:", JSON.stringify(result, null, 2));
-      expect(result?.validationErrors).toBeDefined();
+    it("should reject empty bossId", async () => {
+      // startBossFight throws validation error directly (no try/catch wrapper in action)
+      await expect(startBossFight("")).rejects.toThrow();
     });
 
-    it("should return validation errors for invalid action type", async () => {
-      const result = await performCombatAction({
-        action: { type: "DANCE" as any, payload: {} },
-      });
-      expect(result?.validationErrors).toBeDefined();
+    it("should reject invalid action type", async () => {
+      // performCombatAction also throws validation error
+      await expect(
+        performCombatAction({ type: "DANCE" as any }),
+      ).rejects.toThrow();
     });
   });
 
   // Skip Forge Actions tests due to mock complexity - needs refactoring
   describe("Forge Actions", () => {
-    it("should return validation errors for invalid recipeId format", async () => {
-      const result = await craftItem({ recipeId: "INVALID @ ID" });
-      expect(result?.validationErrors).toBeDefined();
+    it("should return failure for invalid recipeId format", async () => {
+      // craftItem catches validation error and returns success: false
+      const result = await craftItem("INVALID @ ID");
+      expect(result.success).toBe(false);
+      expect(result.message).toContain("Server error");
     });
   });
 });

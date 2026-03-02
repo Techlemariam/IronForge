@@ -1,0 +1,36 @@
+
+[1m[46m RUN [49m[22m [36mv4.0.18 [39m[90mC:/Users/alexa/Workspaces/IronForge[39m
+
+stderr | tests/unit/factory.test.ts > Factory Actions > getFactoryStatus > should seed data if empty
+Failed to fetch factory status: TypeError: Cannot read properties of undefined (reading 'current')
+    at C:/Users/alexa/Workspaces/IronForge/src/actions/factory.ts:74:29
+    at Array.map (<anonymous>)
+    at getFactoryStatus (C:/Users/alexa/Workspaces/IronForge/src/actions/factory.ts:73:25)
+    at C:/Users/alexa/Workspaces/IronForge/tests/unit/factory.test.ts:64:13
+    at file:///C:/Users/alexa/Workspaces/IronForge/node_modules/.pnpm/@vitest+runner@4.0.18/node_modules/@vitest/runner/dist/index.js:915:20
+
+ [31mÔØ»[39m tests/unit/factory.test.ts [2m([22m[2m4 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[32m 33[2mms[22m[39m
+       [32mÔ£ô[39m should return status data even if unauthenticated[32m 7[2mms[22m[39m
+       [32mÔ£ô[39m should return status data when it exists[32m 2[2mms[22m[39m
+[31m       [31m├ù[31m should seed data if empty[39m[32m 15[2mms[22m[39m
+       [32mÔ£ô[39m should return empty array and log error on failure[32m 5[2mms[22m[39m
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ» Failed Tests 1 ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»
+
+ FAIL  tests/unit/factory.test.ts > Factory Actions > getFactoryStatus > should seed data if empty
+AssertionError: expected "vi.fn()" to be called 2 times, but got 1 times
+ ÔØ» tests/unit/factory.test.ts:69:51
+     67|             expect(prisma.factoryStatus.upsert).toHaveBeenCalledTimes(ÔÇª
+     68|             // Should have called findMany twice
+     69|             expect(prisma.factoryStatus.findMany).toHaveBeenCalledTimeÔÇª
+       |                                                   ^
+     70|         });
+     71|
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[1/1]ÔÄ»
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m3 passed[39m[22m[90m (4)[39m
+[2m   Start at [22m 23:10:51
+[2m   Duration [22m 2.09s[2m (transform 223ms, setup 158ms, import 331ms, tests 33ms, environment 1.19s)[22m

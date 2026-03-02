@@ -70,7 +70,7 @@ const CustomSkillNode = ({ data, selected }: NodeProps<CustomNodeData>) => {
 
   // Style Logic
   let borderClass = "border-zinc-800";
-  let bgClass = "bg-void";
+  let bgClass = "bg-[#0a0a0a]";
   let iconColor = "text-zinc-600";
   let glow = "";
   let borderStyle = "border-2";
@@ -79,9 +79,9 @@ const CustomSkillNode = ({ data, selected }: NodeProps<CustomNodeData>) => {
   if (tier === "notable") borderStyle = "border-3";
 
   if (isMastered) {
-    borderClass = isEndurance ? "border-cyan" : "border-gold";
+    borderClass = isEndurance ? "border-cyan-500" : "border-[#ffd700]";
     bgClass = isEndurance ? "bg-cyan-950" : "bg-yellow-950/50";
-    iconColor = isEndurance ? "text-cyan-400" : "text-gold";
+    iconColor = isEndurance ? "text-cyan-400" : "text-[#ffd700]";
     glow = isEndurance
       ? "shadow-[0_0_30px_rgba(6,182,212,0.6)]"
       : "shadow-[0_0_30px_rgba(255,215,0,0.6)]";
@@ -237,8 +237,8 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onExit, wellness: _wellness }) =>
           style: {
             stroke: isFullyMastered
               ? isEndurance
-                ? "var(--color-cyan)"
-                : "var(--color-gold)"
+                ? "#06b6d4"
+                : "#ffd700"
               : isPathActive
                 ? "#555"
                 : "#333",
@@ -290,9 +290,9 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onExit, wellness: _wellness }) =>
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-void flex flex-col text-white animate-in fade-in duration-300">
+    <div className="fixed inset-0 z-50 bg-[#050505] flex flex-col text-white animate-in fade-in duration-300">
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b border-zinc-900 bg-void z-10 shadow-md">
+      <div className="flex items-center justify-between p-4 border-b border-zinc-900 bg-[#0a0a0a] z-10 shadow-md">
         <div className="flex items-center gap-4">
           <button
             onClick={onExit}
@@ -339,7 +339,7 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onExit, wellness: _wellness }) =>
           minZoom={0.2}
           maxZoom={2}
           defaultEdgeOptions={{ type: "default", animated: false }}
-          className="bg-void"
+          className="bg-[#050505]"
         >
           <Background color="#222" gap={20} size={1} />
           <Controls
@@ -356,7 +356,7 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onExit, wellness: _wellness }) =>
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="absolute top-0 right-0 h-full w-full md:w-96 bg-void/95 backdrop-blur-xl border-l border-zinc-800 shadow-2xl p-6 overflow-y-auto z-20"
+              className="absolute top-0 right-0 h-full w-full md:w-96 bg-[#0a0a0a]/95 backdrop-blur-xl border-l border-zinc-800 shadow-2xl p-6 overflow-y-auto z-20"
             >
               <div className="flex justify-end mb-4">
                 <button

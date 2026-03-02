@@ -51,18 +51,11 @@ export const PathSelector: React.FC<PathSelectorProps> = ({
           return (
             <motion.div
               key={pathId}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  handleSelect(pathId)
-                }
-              }}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => handleSelect(pathId)}
               className={cn(
-                "cursor-pointer rounded-xl border-2 p-4 transition-all relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-zinc-900 focus:ring-white",
+                "cursor-pointer rounded-xl border-2 p-4 transition-all relative overflow-hidden",
                 isSelected
                   ? `border-${info.color.split("-")[1]}-500 bg-zinc-900 shadow-[0_0_15px_rgba(0,0,0,0.5)]`
                   : "border-zinc-800 bg-zinc-900/50 hover:bg-zinc-800",

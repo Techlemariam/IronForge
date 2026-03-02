@@ -5,11 +5,6 @@ import {
   checkAndIncrementStreakAction,
 } from "@/actions/titan/core";
 import { prisma } from "@/lib/prisma";
-import { createClient } from "@/utils/supabase/server";
-
-vi.mock("@/utils/supabase/server", () => ({
-  createClient: vi.fn(),
-}));
 
 vi.mock("@/lib/prisma", () => {
   const mockPrisma = {
@@ -56,12 +51,6 @@ describe("Titan Server Actions", () => {
       id: "u1",
       subscriptionTier: "FREE",
     });
-
-    (createClient as any).mockResolvedValue({
-      auth: {
-        getUser: vi.fn().mockResolvedValue({ data: { user: { id: "u1" } } }),
-      },
-    });
   });
 
   describe("modifyTitanHealthAction", () => {
@@ -72,9 +61,9 @@ describe("Titan Server Actions", () => {
         currentHp: 80,
       });
 
-      const result = await modifyTitanHealthAction({ delta: -20, reason: "Test Damage" });
+      const result = await modifyTitanHealthAction("u1", -20, "Test Damage");
 
-      expect(result?.data?.success).toBe(true);
+      expect(result.success).toBe(true);
       expect(prisma.titan.update).toHaveBeenCalledWith({
         where: { userId: "u1" },
         data: expect.objectContaining({
@@ -92,9 +81,9 @@ describe("Titan Server Actions", () => {
         isInjured: true,
       });
 
-      const result = await modifyTitanHealthAction({ delta: -150, reason: "Fatal Damage" });
+      const result = await modifyTitanHealthAction("u1", -150, "Fatal Damage");
 
-      expect(result?.data?.success).toBe(true);
+      expect(result.success).toBe(true);
       expect(prisma.titan.update).toHaveBeenCalledWith({
         where: { userId: "u1" },
         data: expect.objectContaining({
@@ -113,10 +102,10 @@ describe("Titan Server Actions", () => {
       // 500 * 1.5 = 750 (Floor)
       (prisma.titan.update as any).mockResolvedValue({ ...mockTitan, xp: 750 });
 
-      const result = await awardTitanXpAction({ amount: 500, source: "Quest" });
+      const result = await awardTitanXpAction("u1", 500, "Quest");
 
-      expect(result?.data?.success).toBe(true);
-      expect(result?.data?.leveledUp).toBe(false);
+      expect(result.success).toBe(true);
+      expect(result.leveledUp).toBe(false);
       expect(prisma.titan.update).toHaveBeenCalledWith({
         where: { userId: "u1" },
         data: expect.objectContaining({ xp: 750, level: 1 }),
@@ -143,10 +132,10 @@ describe("Titan Server Actions", () => {
       // 200 * 1.5 = 300 XP.
       // 900 + 300 = 1200.
       // 1200 - 1000 (Level 1 req) = 200 XP carried over. Level 2.
-      const result = await awardTitanXpAction({ amount: 200, source: "Big Quest" });
+      const result = await awardTitanXpAction("u1", 200, "Big Quest");
 
-      expect(result?.data?.success).toBe(true);
-      expect(result?.data?.leveledUp).toBe(true);
+      expect(result.success).toBe(true);
+      expect(result.leveledUp).toBe(true);
       expect(prisma.titan.update).toHaveBeenCalledWith({
         where: { userId: "u1" },
         data: expect.objectContaining({
@@ -177,9 +166,9 @@ describe("Titan Server Actions", () => {
       (prisma.titan.findUnique as any).mockResolvedValue(richTitan);
       (prisma.titan.update as any).mockResolvedValue({ ...richTitan, xp: 220 });
 
-      const result = await awardTitanXpAction({ amount: 100, source: "Test" });
+      const result = await awardTitanXpAction("u1", 100, "Test");
 
-      expect(result?.data?.success).toBe(true);
+      expect(result.success).toBe(true);
       expect(prisma.titan.update).toHaveBeenCalledWith({
         where: { userId: "u1" },
         data: expect.objectContaining({ xp: 220 }), // 0 + 100 * 2.2 = 220
@@ -205,10 +194,10 @@ describe("Titan Server Actions", () => {
         lastActive: new Date("2024-01-01T10:00:00Z"), // Yesterday
       });
 
-      const result = await checkAndIncrementStreakAction({ timezone: "UTC" });
+      const result = await checkAndIncrementStreakAction("u1", "UTC");
 
-      expect(result?.data?.success).toBe(true);
-      expect(result?.data?.streak).toBe(6);
+      expect(result.success).toBe(true);
+      expect(result.streak).toBe(6);
       expect(prisma.titan.update).toHaveBeenCalledWith({
         where: { userId: "u1" },
         data: expect.objectContaining({ streak: 6 }),
@@ -225,10 +214,10 @@ describe("Titan Server Actions", () => {
         lastActive: new Date("2024-01-01T10:00:00Z"), // 2 days ago
       });
 
-      const result = await checkAndIncrementStreakAction({ timezone: "UTC" });
+      const result = await checkAndIncrementStreakAction("u1", "UTC");
 
-      expect(result?.data?.success).toBe(true);
-      expect(result?.data?.streak).toBe(1); // Reset to 1 (today)
+      expect(result.success).toBe(true);
+      expect(result.streak).toBe(1); // Reset to 1 (today)
       expect(prisma.titan.update).toHaveBeenCalledWith({
         where: { userId: "u1" },
         data: expect.objectContaining({ streak: 1 }),
@@ -245,10 +234,10 @@ describe("Titan Server Actions", () => {
         lastActive: new Date("2024-01-02T10:00:00Z"), // Same day
       });
 
-      const result = await checkAndIncrementStreakAction({ timezone: "UTC" });
+      const result = await checkAndIncrementStreakAction("u1", "UTC");
 
-      expect(result?.data?.success).toBe(true);
-      expect(result?.data?.streak).toBe(5);
+      expect(result.success).toBe(true);
+      expect(result.streak).toBe(5);
       expect(prisma.titan.update).not.toHaveBeenCalled();
     });
   });

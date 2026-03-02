@@ -59,13 +59,19 @@ describe("Guild Actions", () => {
       });
     });
 
-    it("should reject long messages", async () => {
+    it("should truncate long messages", async () => {
       (prisma.user.findUnique as any).mockResolvedValue(mockUser);
       const longMessage = "a".repeat(300);
 
-      const result = await sendChatAction(longMessage);
+      await sendChatAction(longMessage);
 
-      expect(prisma.chatMessage.create).not.toHaveBeenCalled();
+      expect(prisma.chatMessage.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: expect.objectContaining({
+            message: expect.stringMatching(/^a{255}$/),
+          }),
+        }),
+      );
     });
   });
 
@@ -85,8 +91,8 @@ describe("Guild Actions", () => {
 
       const result = await attackBossAction("boss-1");
 
-      expect(result?.data?.damage).toBe(100);
-      expect(result?.data?.newHp).toBe("900");
+      expect(result.damage).toBe(100);
+      expect(result.newHp).toBe("900");
       expect(prisma.user.update).toHaveBeenCalledWith({
         where: { id: "user-123" },
         data: { kineticEnergy: { decrement: 5 } },
@@ -103,7 +109,7 @@ describe("Guild Actions", () => {
       });
 
       const result = await attackBossAction("boss-1");
-      expect(result?.data).toEqual({ message: "Boss is already defeated!" });
+      expect(result).toEqual({ message: "Boss is already defeated!" });
     });
 
     it("should throw if insufficient energy", async () => {
@@ -117,8 +123,9 @@ describe("Guild Actions", () => {
         currentHp: BigInt(1000),
       });
 
-      const result = await attackBossAction("boss-1");
-      expect(result?.serverError).toContain("Insufficient Kinetic Energy");
+      await expect(attackBossAction("boss-1")).rejects.toThrow(
+        "Insufficient Kinetic Energy",
+      );
     });
   });
 
@@ -126,7 +133,7 @@ describe("Guild Actions", () => {
     it("should return user stats", async () => {
       (prisma.user.findUnique as any).mockResolvedValue(mockUser);
       const result = await getUserStatsAction();
-      expect(result?.data).toEqual(mockUser);
+      expect(result).toEqual(mockUser);
     });
   });
 });

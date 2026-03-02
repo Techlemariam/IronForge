@@ -13,7 +13,7 @@ export interface CombatState {
 
 export interface CombatAction {
   type: "ATTACK" | "DEFEND" | "HEAL" | "ULTIMATE";
-  payload?: unknown;
+  payload?: any;
 }
 
 export interface TurnResult {

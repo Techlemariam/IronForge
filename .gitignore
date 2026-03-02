@@ -148,15 +148,3 @@ storybook-static/
 
 # Sentry Config File
 .env.sentry-build-plugin
-
-# Temporary Artifacts & Results
-*.txt
-*.json
-!package.json
-!package-lock.json
-!tsconfig.json
-!next-env.d.ts
-!components.json
-!audit_results.json
-audit.cjs
-test_gov.sh

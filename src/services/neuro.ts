@@ -15,7 +15,7 @@ export const NeuroService = {
   init() {
     if (!this.ctx && typeof window !== "undefined") {
       const AudioCtxClass =
-        window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+        window.AudioContext || (window as any).webkitAudioContext;
       if (AudioCtxClass) {
         this.ctx = new AudioCtxClass();
         this.gainNode = this.ctx.createGain();

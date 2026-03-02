@@ -26,15 +26,17 @@ if (!BASE_URL && process.env.N8N_WEBHOOK_URL) {
     }
 }
 if (!API_KEY) {
-    console.warn("Warning: N8N_API_KEY environment variable is missing. Some tools will be unavailable.");
+    console.error("Error: N8N_API_KEY environment variable is required");
+    // We don't exit here to allow the server to start and report error via tools if needed,
+    // but for now, strict requirement is better for debugging.
+    process.exit(1);
 }
 if (!BASE_URL) {
-    console.warn("Warning: N8N_HOST or N8N_WEBHOOK_URL environment variable is missing. n8n API tools will be unavailable.");
+    console.error("Error: N8N_HOST or N8N_WEBHOOK_URL environment variable is required");
+    process.exit(1);
 }
 // Ensure no trailing slash
-if (BASE_URL) {
-    BASE_URL = BASE_URL.replace(/\/$/, "");
-}
+BASE_URL = BASE_URL.replace(/\/$/, "");
 class N8nClient {
     headers;
     constructor() {
@@ -44,12 +46,6 @@ class N8nClient {
         };
     }
     async fetch(endpoint, options = {}) {
-        if (!API_KEY) {
-            throw new Error("Missing N8N_API_KEY. Please ensure it is set in your environment variables or GitHub Secrets.");
-        }
-        if (!BASE_URL) {
-            throw new Error("Missing N8N_HOST or N8N_WEBHOOK_URL. Please ensure one of these is set.");
-        }
         const url = `${BASE_URL}/api/v1${endpoint}`;
         try {
             const response = await fetch(url, {

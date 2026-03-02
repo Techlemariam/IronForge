@@ -128,7 +128,6 @@ const EquipmentArmory: React.FC = () => {
                   setHyperProMode(val);
                   StorageService.saveHyperProPriority(val);
                 }}
-                ariaLabel="Toggle Hyper Pro Protocol"
               />
               <span className="font-mono text-sm font-bold uppercase">
                 {hyperProMode ? "ACTIVE" : "OFFLINE"}

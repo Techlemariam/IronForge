@@ -23,3 +23,4 @@ export const ShimmerBadge: React.FC<ShimmerBadgeProps> = ({
   );
 };
 
+export default ShimmerBadge;

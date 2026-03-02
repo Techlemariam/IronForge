@@ -1,5 +1,5 @@
 import React from "react";
-import { m, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface BerserkerOverlayProps {
   isActive: boolean;
@@ -9,7 +9,7 @@ const BerserkerOverlay: React.FC<BerserkerOverlayProps> = ({ isActive }) => {
   return (
     <AnimatePresence>
       {isActive && (
-        <m.div
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -23,7 +23,7 @@ const BerserkerOverlay: React.FC<BerserkerOverlayProps> = ({ isActive }) => {
 
           {/* Text Overlay */}
           <div className="absolute bottom-1/4 left-0 right-0 text-center">
-            <m.h2
+            <motion.h2
               initial={{ scale: 0.5, opacity: 0 }}
               animate={{ scale: [1, 1.2, 1], opacity: 1 }}
               transition={{ repeat: Infinity, duration: 0.8 }}
@@ -31,9 +31,9 @@ const BerserkerOverlay: React.FC<BerserkerOverlayProps> = ({ isActive }) => {
               style={{ WebkitTextStroke: "2px black" }}
             >
               RAGE ACTIVE
-            </m.h2>
+            </motion.h2>
           </div>
-        </m.div>
+        </motion.div>
       )}
     </AnimatePresence>
   );

@@ -7,7 +7,6 @@ node_modules
 out
 dist
 .turbo
-storybook-static
 
 # Git
 .git
@@ -16,7 +15,6 @@ storybook-static
 # IDE
 .vscode
 .idea
-.devcontainer
 *.swp
 *.swo
 
@@ -37,28 +35,17 @@ coverage
 playwright-report
 test-results
 .playwright
-playwright
 
-# Docker (self-reference)
+# Docker
 Dockerfile*
 docker-compose*.yml
 .dockerignore
 
-# Documentation & Agent state
+# Misc
 README.md
 ARCHITECTURE.md
 DEBT.md
 roadmap.md
 .agent
 docs
-specs
-
-# Storybook
-.storybook
-
-# Temp CI artifacts (created during CI Doctor runs)
-*.json.tmp
-e2e_failure_logs.txt
-run_logs.txt
-tsc_errors.txt
-
+e2e

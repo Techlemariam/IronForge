@@ -29,8 +29,7 @@ export async function POST(request: Request) {
     // Optimization: We could rely on session.user.id directly for updates, 
     // ensuring users can only modify their own data.
     const userId = session.user.id;
-    const res = await getUserAction();
-    const user = res?.data?.user;
+    const user = await getUserAction(userId);
 
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
@@ -39,17 +38,17 @@ export async function POST(request: Request) {
     // 4. Action Dispatch
     switch (action) {
       case "UPDATE_SETTINGS":
-        await updateSettingsAction(payload);
+        await updateSettingsAction(userId, payload);
         return NextResponse.json({ success: true });
 
       case "UPDATE_GOLD":
         // Gold sync is sensitive. Ideally we'd have server-side validation logic here 
         // to prevent simple "I have 999999 gold" hacks, but for pure sync:
-        await updateGoldAction(payload);
+        await updateGoldAction(userId, payload);
         return NextResponse.json({ success: true });
 
       case "UPDATE_EQUIPMENT":
-        await updateEquipmentAction(payload);
+        await updateEquipmentAction(userId, payload);
         return NextResponse.json({ success: true });
 
       case "GET_USER":

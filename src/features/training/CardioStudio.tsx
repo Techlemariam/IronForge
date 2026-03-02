@@ -221,7 +221,6 @@ export default function CardioStudio(props: CardioStudioProps) {
           {dataSource === "simulation" ? (
             <>
               <input
-                id="pace-sim-slider"
                 type="range"
                 min="0"
                 max="20"
@@ -229,7 +228,6 @@ export default function CardioStudio(props: CardioStudioProps) {
                 value={simulatedValue}
                 onChange={(e) => setSimulatedValue(Number(e.target.value))}
                 className="w-full accent-orange-500"
-                title="Simulate Pace (km/h)"
               />
               <div className="flex justify-between text-sm font-mono text-orange-400 mt-2">
                 <span>{simulatedValue.toFixed(1)} km/h</span>
@@ -252,10 +250,10 @@ export default function CardioStudio(props: CardioStudioProps) {
                 <div className="bg-blue-900/20 border border-blue-900/50 rounded p-2">
                   <div className="flex items-center justify-between text-xs mb-1">
                     <span className="text-blue-200 font-bold flex items-center gap-1">
-                      <Bluetooth className="w-3 h-3" aria-hidden="true" /> Connected
+                      <Bluetooth className="w-3 h-3" /> Connected
                     </span>
-                    <button onClick={disconnectBluetooth} title="Disconnect Bluetooth" aria-label="Disconnect Bluetooth" className="text-zinc-500 hover:text-white">
-                      <RotateCcw className="w-3 h-3" aria-hidden="true" />
+                    <button onClick={disconnectBluetooth} className="text-zinc-500 hover:text-white">
+                      <RotateCcw className="w-3 h-3" />
                     </button>
                   </div>
                   <p className="text-[10px] text-zinc-400 truncate mb-2">{bluetoothDeviceName || "Unknown Device"}</p>
@@ -322,14 +320,12 @@ export default function CardioStudio(props: CardioStudioProps) {
         <div className="absolute bottom-4 left-4 z-[60] bg-black/80 p-2 rounded border border-white/10 w-64">
           <p className="text-xs text-zinc-400 mb-1">DATA SIMULATION</p>
           <input
-            id="gauntlet-sim-slider"
             type="range"
             min="0"
             max="400"
             value={simulatedValue}
             onChange={(e) => setSimulatedValue(Number(e.target.value))}
             className="w-full accent-magma"
-            title="Simulate Power/HR"
           />
           <div className="flex justify-between text-xs font-mono text-magma mt-1">
             <span>
@@ -759,11 +755,7 @@ function CardioCockpit({
           (newDist - lastReportedDistance.current > 0.1 ||
             currentDuration % 10 === 0)
         ) {
-          updateCardioDuelProgressAction({
-            duelId: duel.id,
-            distanceKm: newDist,
-            durationMinutes: Math.floor(currentDuration / 60) // Optional but good for consistency
-          }).catch((err) =>
+          updateCardioDuelProgressAction(duel.id, newDist).catch((err) =>
             console.error("Duel update failed", err)
           );
           lastReportedDistance.current = newDist;
@@ -864,11 +856,9 @@ function CardioCockpit({
 
           <button
             onClick={handleExit}
-            title="Exit Cardio Studio"
-            aria-label="Exit Cardio Studio"
             className="bg-red-900/40 hover:bg-red-900/60 p-2 rounded-lg text-red-200 transition-colors"
           >
-            <X className="w-5 h-5" aria-hidden="true" />
+            <X className="w-5 h-5" />
           </button>
         </div>
       </header>

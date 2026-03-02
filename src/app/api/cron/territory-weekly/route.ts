@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
     }
 
     try {
-        const _result = await TerritoryService.runWeeklySettlement();
+        const result = await TerritoryService.runWeeklySettlement();
 
         return NextResponse.json({
             success: true,

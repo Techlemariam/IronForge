@@ -220,11 +220,11 @@ export default async function Page() {
     "WARDEN";
 
   // 4b. Fetch Titan State (Moved up for Oracle Dependency)
-  if (wellness) {
-    await syncTitanStateWithWellness(wellness);
+  if (wellness && user.id) {
+    await syncTitanStateWithWellness(user.id, wellness);
   }
-  const titanRes = await ensureTitanAction();
-  const titanState = titanRes?.data?.success ? titanRes.data.data : null;
+  const titanRes = await ensureTitanAction(user.id);
+  const titanState = titanRes.success ? titanRes.data : null;
 
   // 4c. Fetch Active Duel Status
   const { getDuelStatusAction } = await import("@/actions/pvp/duel");
@@ -316,8 +316,7 @@ export default async function Page() {
   const liteMode = !!(dbUser?.preferences as any)?.liteMode;
 
   // New: Fetch Leaderboard Statically (ISG-ish)
-  const strengthLeaderboardRes = await getStrengthLeaderboardAction(5).catch(() => null);
-  const strengthLeaderboard = strengthLeaderboardRes?.data ?? [];
+  const strengthLeaderboard = await getStrengthLeaderboardAction(5).catch(() => []);
 
   return (
     <DashboardClient

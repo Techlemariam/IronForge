@@ -121,12 +121,12 @@ describe("Combat Server Actions", () => {
         level: 5,
       });
 
-      const result = await startBossFight({ bossId: "boss-1", tier: "STORY" });
+      const result = await startBossFight("boss-1", "HEROIC");
 
-      expect(result?.data?.success).toBe(true);
-      expect(result?.data?.state).toBeDefined();
-      expect(result?.data?.state?.bossHp).toBe(1000);
-      expect(result?.data?.state?.playerHp).toBeDefined();
+      expect(result.success).toBe(true);
+      expect(result.state).toBeDefined();
+      expect(result.state?.bossHp).toBe(1000);
+      expect(result.state?.playerHp).toBeDefined();
     });
 
     it("should fail if boss not found", async () => {
@@ -141,10 +141,10 @@ describe("Combat Server Actions", () => {
       });
       (prisma.monster.findUnique as any).mockResolvedValue(null);
 
-      const result = await startBossFight({ bossId: "missing-boss", tier: "STORY" });
+      const result = await startBossFight("missing-boss");
 
-      expect(result?.data?.success).toBe(false);
-      expect(result?.data?.message).toBe("Boss not found");
+      expect(result.success).toBe(false);
+      expect(result.message).toBe("Boss not found");
     });
   });
 
@@ -184,7 +184,8 @@ describe("Combat Server Actions", () => {
         isDefeat: false,
       });
 
-      await startBossFight({ bossId: "boss-1", tier: "STORY" });
+      // Call startBossFight to populate session
+      await startBossFight("boss-1");
 
       // Mock for performCombatAction (re-fetch user)
       (prisma.user.findUnique as any).mockResolvedValue({
@@ -200,9 +201,9 @@ describe("Combat Server Actions", () => {
         logs: [],
       });
 
-      const result = await performCombatAction({ action: { type: "ATTACK" } as any } as any);
+      const result = await performCombatAction({ type: "ATTACK" } as any);
 
-      expect(result?.data?.success).toBe(true);
+      expect(result.success).toBe(true);
       expect(CombatEngine.processTurn).toHaveBeenCalled();
     });
 
@@ -240,18 +241,18 @@ describe("Combat Server Actions", () => {
         isDefeat: false,
       });
 
-      await startBossFight({ bossId: "boss-1", tier: "STORY" });
+      await startBossFight("boss-1");
 
       (CombatEngine.processTurn as any).mockReturnValue({
         newState: { isVictory: true, isDefeat: false },
         logs: [],
       });
 
-      const result = await performCombatAction({ action: { type: "ATTACK" } as any } as any);
+      const result = await performCombatAction({ type: "ATTACK" } as any);
 
-      expect(result?.data?.success).toBe(true);
-      expect(result?.data?.loot).toBeDefined();
-      expect(result?.data?.reward).toEqual({ xp: 250, gold: 125 });
+      expect(result.success).toBe(true);
+      expect(result.loot).toBeDefined();
+      expect(result.reward).toEqual({ xp: 250, gold: 125 });
       expect(prisma.user.update).toHaveBeenCalled();
     });
 
@@ -295,7 +296,8 @@ describe("Combat Server Actions", () => {
         isDefeat: false,
       });
 
-      await startBossFight({ bossId: "boss-1", tier: "STORY" });
+      // Initialize session
+      await startBossFight("boss-1");
 
       // Setup capture of arguments to CombatEngine.processTurn
       (CombatEngine.processTurn as any).mockReturnValue({
@@ -303,7 +305,7 @@ describe("Combat Server Actions", () => {
         logs: [],
       });
 
-      await performCombatAction({ action: { type: "ATTACK" } as any } as any);
+      await performCombatAction({ type: "ATTACK" } as any);
 
       expect(CombatEngine.processTurn).toHaveBeenCalled();
 
@@ -354,14 +356,14 @@ describe("Combat Server Actions", () => {
       // Mock titan for safety
       (prisma.titan.findUnique as any).mockResolvedValue(userHappy.titan);
 
-      await startBossFight({ bossId: "boss-1", tier: "STORY" });
+      await startBossFight("boss-1");
 
       (CombatEngine.processTurn as any).mockReturnValue({
         newState: { playerHp: 100, bossHp: 900, isVictory: false },
         logs: [],
       });
 
-      await performCombatAction({ action: { type: "ATTACK" } as any } as any);
+      await performCombatAction({ type: "ATTACK" } as any);
 
       const calls = (CombatEngine.processTurn as any).mock.calls;
       const attributesArg = calls[calls.length - 1][2];

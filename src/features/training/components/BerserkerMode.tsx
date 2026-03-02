@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { m } from "framer-motion";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { playSound } from "../../../utils";
@@ -43,7 +43,7 @@ const BerserkerMode: React.FC<BerserkerModeProps> = ({
   const progressPercentage = (timeLeft / BERSERKER_DURATION) * 100;
 
   return (
-    <m.div
+    <motion.div
       className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50 p-4"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -72,7 +72,7 @@ const BerserkerMode: React.FC<BerserkerModeProps> = ({
                 cx="50"
                 cy="50"
               />
-              <m.circle
+              <motion.circle
                 className="text-blood"
                 strokeWidth="5"
                 strokeDasharray={2 * Math.PI * 45}
@@ -105,7 +105,7 @@ const BerserkerMode: React.FC<BerserkerModeProps> = ({
             <p className="text-forge-muted animate-pulse">Finish your set...</p>
           </div>
         ) : (
-          <m.div
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             className="flex flex-col items-center"
@@ -125,10 +125,10 @@ const BerserkerMode: React.FC<BerserkerModeProps> = ({
             >
               Log Fury
             </Button>
-          </m.div>
+          </motion.div>
         )}
       </Card>
-    </m.div>
+    </motion.div>
   );
 };
 

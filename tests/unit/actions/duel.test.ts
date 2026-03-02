@@ -54,7 +54,7 @@ describe("Titan Duel Actions", () => {
         id: "duel-123",
       });
 
-      const result = await createDuelChallengeAction({ targetUserId: targetId });
+      const result = await createDuelChallengeAction(targetId);
 
       expect(prisma.duelChallenge.findFirst).toHaveBeenCalled();
       expect(prisma.duelChallenge.create).toHaveBeenCalledWith({
@@ -65,7 +65,7 @@ describe("Titan Duel Actions", () => {
           duelType: "TITAN_VS_TITAN",
         }),
       });
-      expect(result?.data).toEqual({ success: true, duelId: "duel-123" });
+      expect(result).toEqual({ success: true, duelId: "duel-123" });
     });
 
     it("should create a CARDIO challenge with valid options", async () => {
@@ -80,7 +80,7 @@ describe("Titan Duel Actions", () => {
         targetDistance: 20,
       };
 
-      const result = await createDuelChallengeAction({ targetUserId: targetId, options: options as any });
+      const result = await createDuelChallengeAction(targetId, options as any);
 
       expect(prisma.duelChallenge.create).toHaveBeenCalledWith({
         data: expect.objectContaining({
@@ -89,22 +89,22 @@ describe("Titan Duel Actions", () => {
           targetDistance: 20,
         }),
       });
-      expect(result?.data?.success).toBe(true);
+      expect(result.success).toBe(true);
     });
 
     it("should fail if trying to duel self", async () => {
-      const result = await createDuelChallengeAction({ targetUserId: mockUser.id });
-      expect(result?.data?.success).toBe(false);
-      expect(result?.data?.error).toBe("Cannot duel yourself");
+      const result = await createDuelChallengeAction(mockUser.id);
+      expect(result.success).toBe(false);
+      expect(result.error).toBe("Cannot duel yourself");
     });
 
     it("should fail if duel already active", async () => {
       (prisma.duelChallenge.findFirst as any).mockResolvedValue({
         id: "existing",
       });
-      const result = await createDuelChallengeAction({ targetUserId: targetId });
-      expect(result?.data?.success).toBe(false);
-      expect(result?.data?.error).toContain("already active");
+      const result = await createDuelChallengeAction(targetId);
+      expect(result.success).toBe(false);
+      expect(result.error).toContain("already active");
     });
   });
 
@@ -121,7 +121,7 @@ describe("Titan Duel Actions", () => {
         where: { id: "duel-123" },
         data: expect.objectContaining({ status: "ACTIVE" }),
       });
-      expect(result?.data?.success).toBe(true);
+      expect(result.success).toBe(true);
     });
   });
 
@@ -134,13 +134,13 @@ describe("Titan Duel Actions", () => {
         status: "ACTIVE",
       });
 
-      const result = await updateCardioDuelProgressAction({ duelId: "duel-active", distanceKm: 5.5, durationMinutes: 0 });
+      const result = await updateCardioDuelProgressAction("duel-active", 5.5);
 
       expect(prisma.duelChallenge.update).toHaveBeenCalledWith({
         where: { id: "duel-active" },
         data: { challengerDistance: 5.5, challengerDuration: 0, challengerElevation: 0 },
       });
-      expect(result?.data?.success).toBe(true);
+      expect(result.success).toBe(true);
     });
 
     it("should update defender distance", async () => {
@@ -151,13 +151,13 @@ describe("Titan Duel Actions", () => {
         status: "ACTIVE",
       });
 
-      const result = await updateCardioDuelProgressAction({ duelId: "duel-active", distanceKm: 3.2, durationMinutes: 0 });
+      const result = await updateCardioDuelProgressAction("duel-active", 3.2);
 
       expect(prisma.duelChallenge.update).toHaveBeenCalledWith({
         where: { id: "duel-active" },
         data: { defenderDistance: 3.2, defenderDuration: 0, defenderElevation: 0 },
       });
-      expect(result?.data?.success).toBe(true);
+      expect(result.success).toBe(true);
     });
 
     it("should fail if not participant", async () => {
@@ -168,9 +168,9 @@ describe("Titan Duel Actions", () => {
         status: "ACTIVE",
       });
 
-      const result = await updateCardioDuelProgressAction({ duelId: "duel-active", distanceKm: 10, durationMinutes: 0 });
-      expect(result?.data?.success).toBe(false);
-      expect(result?.data?.error).toBe("Not participant");
+      const result = await updateCardioDuelProgressAction("duel-active", 10);
+      expect(result.success).toBe(false);
+      expect(result.error).toBe("Not participant");
     });
   });
 });

@@ -2,7 +2,10 @@
 "use client";
 
 import { useState } from 'react';
-
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
 
 
 import { RenderVideoPresenter } from './RenderVideoPresenter';
@@ -26,7 +29,7 @@ export function RenderVideoForm() {
     let props;
     try {
       props = JSON.parse(propsJson);
-    } catch {
+    } catch (error) {
       setIsLoading(false);
       setResult({ message: 'Fel:', error: 'Ogiltig JSON. Kontrollera din indata.' });
       return;

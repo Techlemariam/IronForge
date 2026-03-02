@@ -4,10 +4,11 @@ import path from 'path';
 import { trackUsage } from '../quota-manager.js';
 // Mock dependencies
 vi.mock('fs');
+vi.mock('path');
 vi.mock('../quota-manager');
 // Mock specific path methods we use
-vi.spyOn(path, 'resolve').mockImplementation((...args) => args.join('/'));
-vi.spyOn(path, 'join').mockImplementation((...args) => args.join('/'));
+vi.mocked(path.resolve).mockImplementation((...args) => args.join('/'));
+vi.mocked(path.join).mockImplementation((...args) => args.join('/'));
 // Create a mock for Octokit
 const mockCreateWorkflowDispatch = vi.fn();
 vi.mock('octokit', () => ({
@@ -32,15 +33,15 @@ describe('trigger_autonomous_workflow logic', () => {
     beforeEach(() => {
         vi.clearAllMocks();
         vi.spyOn(process, 'cwd').mockReturnValue(cwd);
-        vi.spyOn(path, 'resolve').mockImplementation((...args) => args.join('/'));
+        vi.mocked(path.resolve).mockImplementation((...args) => args.join('/'));
     });
     afterEach(() => {
         vi.restoreAllMocks();
     });
     it('should signal Antigravity when available', async () => {
         // Setup scenarios
-        vi.spyOn(fs, 'existsSync').mockReturnValue(true); // Antigravity/Tasks dir exists
-        vi.spyOn(fs, 'writeFileSync').mockReturnValue(undefined);
+        vi.mocked(fs.existsSync).mockReturnValue(true); // Antigravity/Tasks dir exists
+        vi.mocked(fs.writeFileSync).mockReturnValue(undefined);
         // Emulate the logic from index.ts
         const taskDir = path.resolve(cwd, "../../.agent/tasks");
         const antigravityAvailable = fs.existsSync(taskDir);
@@ -63,8 +64,8 @@ describe('trigger_autonomous_workflow logic', () => {
         expect(mockCreateWorkflowDispatch).not.toHaveBeenCalled();
     });
     it('should fallback to GitHub Actions when Antigravity is unavailable', async () => {
-        vi.spyOn(fs, 'existsSync').mockReturnValue(false); // Task dir does not exist
-        vi.spyOn(fs, 'writeFileSync').mockReturnValue(undefined);
+        // Setup scenarios
+        vi.mocked(fs.existsSync).mockReturnValue(false); // Task dir does not exist
         // Emulate the logic
         const taskDir = path.resolve(cwd, "../../.agent/tasks");
         const antigravityAvailable = fs.existsSync(taskDir);

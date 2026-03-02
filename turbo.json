@@ -52,20 +52,6 @@
                 "DIRECT_URL"
             ]
         },
-        "test:smoke": {
-            "dependsOn": [
-                "build"
-            ],
-            "inputs": [
-                "tests/e2e/**/*.ts",
-                "src/**/*.tsx",
-                "src/**/*.ts"
-            ],
-            "env": [
-                "DATABASE_URL",
-                "DIRECT_URL"
-            ]
-        },
         "lint": {
             "inputs": [
                 "src/**/*.tsx",

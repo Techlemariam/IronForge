@@ -58,20 +58,20 @@ describe("Forge Server Actions", () => {
     // Default mock inventory has 500 gold, 10 iron ore
     // Recipe needs 100 gold, 2 iron ore
 
-    const result = await craftItem({ recipeId: "recipe_sword" });
+    const result = await craftItem("recipe_sword");
 
-    expect(result?.data?.success).toBe(true);
-    expect(result?.data?.inventory).toBeDefined();
+    expect(result.success).toBe(true);
+    expect(result.inventory).toBeDefined();
 
     // Verify Deductions
-    expect(result?.data?.inventory?.gold).toBe(400); // 500 - 100
-    const ore = result?.data?.inventory?.items.find(
+    expect(result.inventory?.gold).toBe(400); // 500 - 100
+    const ore = result.inventory?.items.find(
       (i) => i.itemId === "item_iron_ore",
     );
     expect(ore?.count).toBe(8); // 10 - 2
 
     // Verify Addition
-    const sword = result?.data?.inventory?.items.find(
+    const sword = result.inventory?.items.find(
       (i) => i.itemId === "item_iron_sword",
     );
     expect(sword).toBeDefined();
@@ -106,15 +106,16 @@ describe("Forge Server Actions", () => {
       data: { user: { id: "user-1" } },
     });
 
-    const result = await craftItem({ recipeId: "invalid_recipe" });
-    expect(result?.data?.success).toBe(false);
-    expect(result?.data?.message).toBe("Recipe not found");
+    const result = await craftItem("invalid_recipe");
+    expect(result.success).toBe(false);
+    expect(result.message).toBe("Recipe not found");
   });
 
   it("should fail if unauthorized", async () => {
     mockSupabase.auth.getUser.mockResolvedValue({ data: { user: null } });
 
-    const result = await craftItem({ recipeId: "recipe_sword" });
-    expect(result?.serverError).toBeDefined();
+    const result = await craftItem("recipe_sword");
+    expect(result.success).toBe(false);
+    expect(result.message).toBe("Unauthorized");
   });
 });

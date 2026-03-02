@@ -16,16 +16,6 @@ skills: ["git-guard", "issue-template-validator", "doc-generator"]
 
 ## Diagnostic Protocol
 
-### 0. Doppler Pre-flight Check
-
-Ensure the environment is secured and Doppler is active.
-
-// turbo
-
-```bash
-doppler run -- echo "🔐 Doppler Protected Execution Active"
-```
-
 ### 1. Workflow Configuration Scan
 
 Check for syntax or permission errors in meta-workflows.
@@ -35,7 +25,6 @@ Check for syntax or permission errors in meta-workflows.
 ```bash
 echo "🔍 Checking Meta-Workflow integrity..."
 # Check for common path-ignore or pull_request_target issues
-doppler run -- gh run list --limit 1 --json name,conclusion > /dev/null
 ls .github/workflows/labeler.yml .github/workflows/release-drafter.yml > /dev/null || echo "⚠️ Missing meta-configs."
 ```
 

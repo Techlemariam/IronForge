@@ -1,5 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
-import { type ActiveSession, type SessionParticipant } from "@/types/prisma";
+import { type ActiveSession, type SessionParticipant  } from "@/types/prisma";
 
 // Initialize client safely (handle missing env vars in CI/Test)
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder.supabase.co";
@@ -215,7 +215,7 @@ export const CoOpService = {
     /**
      * Get realtime subscription channel
      */
-    subscribeToSession(sessionId: string, onUpdate: (payload: unknown) => void) {
+    subscribeToSession(sessionId: string, onUpdate: (payload: any) => void) {
         // E2E Mock
         if (typeof window !== 'undefined' && window.__mockCoOpSession) {
             return { unsubscribe: () => { } };

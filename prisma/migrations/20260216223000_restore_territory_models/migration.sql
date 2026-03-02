@@ -30,8 +30,3 @@ ALTER TABLE "TerritoryContest" ADD CONSTRAINT "TerritoryContest_attackerId_fkey"
 
 -- AddForeignKey
 ALTER TABLE "TerritoryContest" ADD CONSTRAINT "TerritoryContest_defenderId_fkey" FOREIGN KEY ("defenderId") REFERENCES "Guild"("id") ON DELETE SET NULL ON UPDATE CASCADE;
--- AddForeignKey
-ALTER TABLE "TerritoryContest" ADD CONSTRAINT "TerritoryContest_winnerId_fkey" FOREIGN KEY ("winnerId") REFERENCES "Guild"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddCheckConstraint
-ALTER TABLE "TerritoryContest" ADD CONSTRAINT "TerritoryContest_endsAt_check" CHECK ("endsAt" > "startsAt");

@@ -5,7 +5,7 @@ import { DashboardState } from '@/features/dashboard/types';
 
 // Mocks
 vi.mock('@/features/oracle/components/OracleVerdict', () => ({
-    OracleVerdict: ({ decree }: { decree: any }) => <div data-testid="oracle-verdict">{decree.title}</div>
+    default: ({ decree }: { decree: any }) => <div data-testid="oracle-verdict">{decree.title}</div>
 }));
 
 vi.mock('@/features/oracle/components/OracleCard', () => ({

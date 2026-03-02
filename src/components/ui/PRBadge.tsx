@@ -93,3 +93,4 @@ export const PRBadge: React.FC<PRBadgeProps> = ({
     );
 };
 
+export default PRBadge;

@@ -260,12 +260,12 @@ const GeminiLiveCoach: React.FC<GeminiLiveCoachProps> = ({
               Gemini Coach
             </span>
           </div>
-          <button aria-label="Close Gemini Coach" onClick={onClose} className="text-zinc-500 hover:text-white">
+          <button onClick={onClose} className="text-zinc-500 hover:text-white">
             <X className="w-4 h-4" />
           </button>
         </div>
 
-        <div aria-hidden="true" className="h-24 bg-zinc-900 rounded border border-zinc-800 flex items-center justify-center relative overflow-hidden">
+        <div className="h-24 bg-zinc-900 rounded border border-zinc-800 flex items-center justify-center relative overflow-hidden">
           {/* Visualizer (Fake) */}
           <div className="flex gap-1 items-end h-10">
             {[...Array(8)].map((_, i) => (
@@ -276,7 +276,7 @@ const GeminiLiveCoach: React.FC<GeminiLiveCoachProps> = ({
               ></div>
             ))}
           </div>
-          <div aria-live="polite" aria-atomic="true" className="absolute top-2 left-2 text-[9px] text-zinc-500 font-mono">
+          <div className="absolute top-2 left-2 text-[9px] text-zinc-500 font-mono">
             STATUS: {status}
           </div>
         </div>

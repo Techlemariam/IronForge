@@ -1,0 +1,738 @@
+﻿2026-02-16T19:16:21.0496207Z Current runner version: '2.331.0'
+2026-02-16T19:16:21.0519544Z ##[group]Runner Image Provisioner
+2026-02-16T19:16:21.0520534Z Hosted Compute Agent
+2026-02-16T19:16:21.0521220Z Version: 20260123.484
+2026-02-16T19:16:21.0521875Z Commit: 6bd6555ca37d84114959e1c76d2c01448ff61c5d
+2026-02-16T19:16:21.0522862Z Build Date: 2026-01-23T19:41:17Z
+2026-02-16T19:16:21.0523589Z Worker ID: {e5129a24-1b27-42f5-8809-487ee0b4b150}
+2026-02-16T19:16:21.0524273Z Azure Region: westus
+2026-02-16T19:16:21.0525031Z ##[endgroup]
+2026-02-16T19:16:21.0526492Z ##[group]Operating System
+2026-02-16T19:16:21.0527135Z Ubuntu
+2026-02-16T19:16:21.0527770Z 24.04.3
+2026-02-16T19:16:21.0528297Z LTS
+2026-02-16T19:16:21.0528766Z ##[endgroup]
+2026-02-16T19:16:21.0529435Z ##[group]Runner Image
+2026-02-16T19:16:21.0530094Z Image: ubuntu-24.04
+2026-02-16T19:16:21.0530746Z Version: 20260209.23.1
+2026-02-16T19:16:21.0532059Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260209.23/images/ubuntu/Ubuntu2404-Readme.md
+2026-02-16T19:16:21.0534136Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260209.23
+2026-02-16T19:16:21.0535125Z ##[endgroup]
+2026-02-16T19:16:21.0536387Z ##[group]GITHUB_TOKEN Permissions
+2026-02-16T19:16:21.0538331Z Contents: read
+2026-02-16T19:16:21.0538952Z Metadata: read
+2026-02-16T19:16:21.0539640Z Packages: read
+2026-02-16T19:16:21.0540226Z ##[endgroup]
+2026-02-16T19:16:21.0542242Z Secret source: Actions
+2026-02-16T19:16:21.0543707Z Prepare workflow directory
+2026-02-16T19:16:21.1142071Z Prepare all required actions
+2026-02-16T19:16:21.1185868Z Getting action download info
+2026-02-16T19:16:21.6369028Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+2026-02-16T19:16:21.8031083Z Download action repository 'pnpm/action-setup@v4' (SHA:41ff72655975bd51cab0327fa583b6e92b6d3061)
+2026-02-16T19:16:22.4188880Z Download action repository 'actions/setup-node@v6' (SHA:6044e13b5dc448c55e2357c09f80417699197238)
+2026-02-16T19:16:22.5507959Z Download action repository 'actions/cache@v5' (SHA:cdf6c1fa76f9f475f3d7449005a359c84ca0f306)
+2026-02-16T19:16:22.7451201Z Download action repository 'codecov/codecov-action@v5' (SHA:671740ac38dd9b0130fbe1cec585b89eea48d3de)
+2026-02-16T19:16:23.3295301Z Getting action download info
+2026-02-16T19:16:23.4917986Z Download action repository 'actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea' (SHA:60a0d83039c74a4aee543508d2ffcb1c3799cdea)
+2026-02-16T19:16:23.9691464Z Complete job name: ⚡ Verify
+2026-02-16T19:16:24.0513997Z ##[group]Run actions/checkout@v4
+2026-02-16T19:16:24.0515115Z with:
+2026-02-16T19:16:24.0515759Z   repository: Techlemariam/IronForge
+2026-02-16T19:16:24.0516660Z   token: ***
+2026-02-16T19:16:24.0517268Z   ssh-strict: true
+2026-02-16T19:16:24.0517898Z   ssh-user: git
+2026-02-16T19:16:24.0518523Z   persist-credentials: true
+2026-02-16T19:16:24.0519192Z   clean: true
+2026-02-16T19:16:24.0519819Z   sparse-checkout-cone-mode: true
+2026-02-16T19:16:24.0520541Z   fetch-depth: 1
+2026-02-16T19:16:24.0521190Z   fetch-tags: false
+2026-02-16T19:16:24.0521845Z   show-progress: true
+2026-02-16T19:16:24.0522489Z   lfs: false
+2026-02-16T19:16:24.0523266Z   submodules: false
+2026-02-16T19:16:24.0523893Z   set-safe-directory: true
+2026-02-16T19:16:24.0524809Z env:
+2026-02-16T19:16:24.0526197Z   DATABASE_URL: ***
+2026-02-16T19:16:24.0527456Z   DIRECT_URL: ***
+2026-02-16T19:16:24.0528273Z   NEXT_PUBLIC_SUPABASE_URL: ***
+2026-02-16T19:16:24.0532223Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+2026-02-16T19:16:24.0533398Z   SKIP_ENV_VALIDATION: true
+2026-02-16T19:16:24.0534070Z ##[endgroup]
+2026-02-16T19:16:24.2035497Z Syncing repository: Techlemariam/IronForge
+2026-02-16T19:16:24.2038514Z ##[group]Getting Git version info
+2026-02-16T19:16:24.2040110Z Working directory is '/home/runner/work/IronForge/IronForge'
+2026-02-16T19:16:24.2042437Z [command]/usr/bin/git version
+2026-02-16T19:16:24.2044047Z git version 2.52.0
+2026-02-16T19:16:24.2047891Z ##[endgroup]
+2026-02-16T19:16:24.2055332Z Temporarily overriding HOME='/home/runner/work/_temp/98b9ab68-e534-404b-8de5-ce8512aa70e7' before making global git config changes
+2026-02-16T19:16:24.2058507Z Adding repository directory to the temporary git global config as a safe directory
+2026-02-16T19:16:24.2060725Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/IronForge/IronForge
+2026-02-16T19:16:24.2073530Z Deleting the contents of '/home/runner/work/IronForge/IronForge'
+2026-02-16T19:16:24.2094797Z ##[group]Initializing the repository
+2026-02-16T19:16:24.2096468Z [command]/usr/bin/git init /home/runner/work/IronForge/IronForge
+2026-02-16T19:16:24.2225352Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-02-16T19:16:24.2237086Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-02-16T19:16:24.2253906Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-02-16T19:16:24.2259105Z hint: call:
+2026-02-16T19:16:24.2260566Z hint:
+2026-02-16T19:16:24.2262413Z hint: 	git config --global init.defaultBranch <name>
+2026-02-16T19:16:24.2264572Z hint:
+2026-02-16T19:16:24.2269241Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-02-16T19:16:24.2278532Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-02-16T19:16:24.2280254Z hint:
+2026-02-16T19:16:24.2281285Z hint: 	git branch -m <name>
+2026-02-16T19:16:24.2282446Z hint:
+2026-02-16T19:16:24.2284233Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-02-16T19:16:24.2286469Z Initialized empty Git repository in /home/runner/work/IronForge/IronForge/.git/
+2026-02-16T19:16:24.2313136Z [command]/usr/bin/git remote add origin https://github.com/Techlemariam/IronForge
+2026-02-16T19:16:24.2378379Z ##[endgroup]
+2026-02-16T19:16:24.2384099Z ##[group]Disabling automatic garbage collection
+2026-02-16T19:16:24.2385559Z [command]/usr/bin/git config --local gc.auto 0
+2026-02-16T19:16:24.2414482Z ##[endgroup]
+2026-02-16T19:16:24.2416830Z ##[group]Setting up auth
+2026-02-16T19:16:24.2423194Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-02-16T19:16:24.2459551Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-02-16T19:16:24.2813225Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-02-16T19:16:24.2850655Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-02-16T19:16:24.3120376Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-02-16T19:16:24.3156740Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-02-16T19:16:24.3413348Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-02-16T19:16:24.3458325Z ##[endgroup]
+2026-02-16T19:16:24.3460745Z ##[group]Fetching the repository
+2026-02-16T19:16:24.3469801Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +b8ceb8f4d63f8ee936a05b16632ea43bf6437c5a:refs/remotes/pull/196/merge
+2026-02-16T19:16:25.3858402Z From https://github.com/Techlemariam/IronForge
+2026-02-16T19:16:25.3860542Z  * [new ref]         b8ceb8f4d63f8ee936a05b16632ea43bf6437c5a -> pull/196/merge
+2026-02-16T19:16:25.3877300Z ##[endgroup]
+2026-02-16T19:16:25.3878582Z ##[group]Determining the checkout info
+2026-02-16T19:16:25.3881240Z ##[endgroup]
+2026-02-16T19:16:25.3885696Z [command]/usr/bin/git sparse-checkout disable
+2026-02-16T19:16:25.3930517Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-02-16T19:16:25.3960844Z ##[group]Checking out the ref
+2026-02-16T19:16:25.3964875Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/196/merge
+2026-02-16T19:16:25.5742831Z Note: switching to 'refs/remotes/pull/196/merge'.
+2026-02-16T19:16:25.5746307Z
+2026-02-16T19:16:25.5747168Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-02-16T19:16:25.5749380Z changes and commit them, and you can discard any commits you make in this
+2026-02-16T19:16:25.5751596Z state without impacting any branches by switching back to a branch.
+2026-02-16T19:16:25.5753183Z
+2026-02-16T19:16:25.5753993Z If you want to create a new branch to retain commits you create, you may
+2026-02-16T19:16:25.5756061Z do so (now or later) by using -c with the switch command. Example:
+2026-02-16T19:16:25.5757281Z
+2026-02-16T19:16:25.5757623Z   git switch -c <new-branch-name>
+2026-02-16T19:16:25.5758403Z
+2026-02-16T19:16:25.5758734Z Or undo this operation with:
+2026-02-16T19:16:25.5759473Z
+2026-02-16T19:16:25.5759768Z   git switch -
+2026-02-16T19:16:25.5760276Z
+2026-02-16T19:16:25.5761265Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-02-16T19:16:25.5763831Z
+2026-02-16T19:16:25.5765863Z HEAD is now at b8ceb8f Merge f0bbf263bb93e3151bfac70b9900550deb4698e6 into 44fe0a58f7b2cbaa969f96ed803d8d866d395340
+2026-02-16T19:16:25.5771978Z ##[endgroup]
+2026-02-16T19:16:25.5810937Z [command]/usr/bin/git log -1 --format=%H
+2026-02-16T19:16:25.5836497Z b8ceb8f4d63f8ee936a05b16632ea43bf6437c5a
+2026-02-16T19:16:25.6099378Z ##[group]Run pnpm/action-setup@v4
+2026-02-16T19:16:25.6100143Z with:
+2026-02-16T19:16:25.6100556Z   dest: ~/setup-pnpm
+2026-02-16T19:16:25.6101090Z   run_install: null
+2026-02-16T19:16:25.6101643Z   package_json_file: package.json
+2026-02-16T19:16:25.6102378Z   standalone: false
+2026-02-16T19:16:25.6103233Z env:
+2026-02-16T19:16:25.6105608Z   DATABASE_URL: ***
+2026-02-16T19:16:25.6107667Z   DIRECT_URL: ***
+2026-02-16T19:16:25.6108665Z   NEXT_PUBLIC_SUPABASE_URL: ***
+2026-02-16T19:16:25.6114349Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+2026-02-16T19:16:25.6115166Z   SKIP_ENV_VALIDATION: true
+2026-02-16T19:16:25.6115792Z ##[endgroup]
+2026-02-16T19:16:25.6670139Z ##[group]Running self-installer...
+2026-02-16T19:16:26.4111815Z Progress: resolved 1, reused 0, downloaded 0, added 0
+2026-02-16T19:16:26.4238874Z Packages: +1
+2026-02-16T19:16:26.4244281Z +
+2026-02-16T19:16:26.8618783Z Progress: resolved 1, reused 0, downloaded 1, added 1, done
+2026-02-16T19:16:26.9020874Z
+2026-02-16T19:16:26.9025205Z dependencies:
+2026-02-16T19:16:26.9028291Z + pnpm 9.15.0 (10.29.3 is available)
+2026-02-16T19:16:26.9033439Z
+2026-02-16T19:16:26.9070088Z Done in 1s
+2026-02-16T19:16:26.9209633Z ##[endgroup]
+2026-02-16T19:16:26.9215891Z Installation Completed!
+2026-02-16T19:16:26.9347966Z ##[group]Run actions/setup-node@v6
+2026-02-16T19:16:26.9348253Z with:
+2026-02-16T19:16:26.9348442Z   node-version: 22
+2026-02-16T19:16:26.9348652Z   cache: pnpm
+2026-02-16T19:16:26.9348852Z   check-latest: false
+2026-02-16T19:16:26.9349166Z   token: ***
+2026-02-16T19:16:26.9349378Z   package-manager-cache: true
+2026-02-16T19:16:26.9349630Z env:
+2026-02-16T19:16:26.9350287Z   DATABASE_URL: ***
+2026-02-16T19:16:26.9350877Z   DIRECT_URL: ***
+2026-02-16T19:16:26.9351206Z   NEXT_PUBLIC_SUPABASE_URL: ***
+2026-02-16T19:16:26.9352725Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+2026-02-16T19:16:26.9353001Z   SKIP_ENV_VALIDATION: true
+2026-02-16T19:16:26.9353299Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-02-16T19:16:26.9353612Z ##[endgroup]
+2026-02-16T19:16:27.0707541Z Found in cache @ /opt/hostedtoolcache/node/22.22.0/x64
+2026-02-16T19:16:27.0710568Z ##[group]Environment details
+2026-02-16T19:16:27.4896400Z node: v22.22.0
+2026-02-16T19:16:27.4904038Z npm: 10.9.4
+2026-02-16T19:16:27.4904483Z yarn: 1.22.22
+2026-02-16T19:16:27.4908384Z ##[endgroup]
+2026-02-16T19:16:27.4955794Z [command]/home/runner/setup-pnpm/node_modules/.bin/pnpm store path --silent
+2026-02-16T19:16:27.9113646Z /home/runner/setup-pnpm/node_modules/.bin/store/v3
+2026-02-16T19:16:28.2173858Z pnpm cache is not found
+2026-02-16T19:16:28.2301854Z ##[group]Run pnpm install --frozen-lockfile
+2026-02-16T19:16:28.2302425Z [36;1mpnpm install --frozen-lockfile[0m
+2026-02-16T19:16:28.2359101Z shell: /usr/bin/bash -e {0}
+2026-02-16T19:16:28.2359360Z env:
+2026-02-16T19:16:28.2360055Z   DATABASE_URL: ***
+2026-02-16T19:16:28.2360652Z   DIRECT_URL: ***
+2026-02-16T19:16:28.2360987Z   NEXT_PUBLIC_SUPABASE_URL: ***
+2026-02-16T19:16:28.2362325Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+2026-02-16T19:16:28.2362763Z   SKIP_ENV_VALIDATION: true
+2026-02-16T19:16:28.2363041Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-02-16T19:16:28.2363343Z ##[endgroup]
+2026-02-16T19:16:28.7370947Z Scope: all 4 workspace projects
+2026-02-16T19:16:28.8507566Z Lockfile is up to date, resolution step is skipped
+2026-02-16T19:16:28.9944225Z Progress: resolved 1, reused 0, downloaded 0, added 0
+2026-02-16T19:16:29.2913775Z Packages: +1671
+2026-02-16T19:16:29.2923530Z ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2026-02-16T19:16:29.9957210Z Progress: resolved 1671, reused 0, downloaded 13, added 0
+2026-02-16T19:16:30.9969090Z Progress: resolved 1671, reused 0, downloaded 142, added 129
+2026-02-16T19:16:31.9969285Z Progress: resolved 1671, reused 0, downloaded 243, added 231
+2026-02-16T19:16:32.9990536Z Progress: resolved 1671, reused 0, downloaded 259, added 245
+2026-02-16T19:16:33.9996595Z Progress: resolved 1671, reused 0, downloaded 273, added 261
+2026-02-16T19:16:34.9998341Z Progress: resolved 1671, reused 0, downloaded 304, added 291
+2026-02-16T19:16:36.0065892Z Progress: resolved 1671, reused 0, downloaded 396, added 382
+2026-02-16T19:16:37.0163352Z Progress: resolved 1671, reused 0, downloaded 437, added 424
+2026-02-16T19:16:38.0162929Z Progress: resolved 1671, reused 0, downloaded 515, added 504
+2026-02-16T19:16:39.0193192Z Progress: resolved 1671, reused 0, downloaded 570, added 558
+2026-02-16T19:16:40.0236366Z Progress: resolved 1671, reused 0, downloaded 625, added 624
+2026-02-16T19:16:41.0289783Z Progress: resolved 1671, reused 0, downloaded 675, added 665
+2026-02-16T19:16:42.0296849Z Progress: resolved 1671, reused 0, downloaded 685, added 673
+2026-02-16T19:16:43.1026086Z Progress: resolved 1671, reused 0, downloaded 686, added 673
+2026-02-16T19:16:44.1029684Z Progress: resolved 1671, reused 0, downloaded 690, added 678
+2026-02-16T19:16:45.1036316Z Progress: resolved 1671, reused 0, downloaded 701, added 687
+2026-02-16T19:16:46.1046558Z Progress: resolved 1671, reused 0, downloaded 737, added 726
+2026-02-16T19:16:47.1084809Z Progress: resolved 1671, reused 0, downloaded 753, added 739
+2026-02-16T19:16:48.1064662Z Progress: resolved 1671, reused 0, downloaded 820, added 806
+2026-02-16T19:16:49.1124141Z Progress: resolved 1671, reused 0, downloaded 923, added 915
+2026-02-16T19:16:50.1102101Z Progress: resolved 1671, reused 0, downloaded 1032, added 1021
+2026-02-16T19:16:51.1131281Z Progress: resolved 1671, reused 0, downloaded 1107, added 1095
+2026-02-16T19:16:52.1136432Z Progress: resolved 1671, reused 0, downloaded 1208, added 1197
+2026-02-16T19:16:53.1140045Z Progress: resolved 1671, reused 0, downloaded 1301, added 1295
+2026-02-16T19:16:54.1151240Z Progress: resolved 1671, reused 0, downloaded 1450, added 1448
+2026-02-16T19:16:55.1163239Z Progress: resolved 1671, reused 0, downloaded 1521, added 1507
+2026-02-16T19:16:56.1168913Z Progress: resolved 1671, reused 0, downloaded 1604, added 1592
+2026-02-16T19:16:57.1174274Z Progress: resolved 1671, reused 0, downloaded 1619, added 1605
+2026-02-16T19:16:57.5024056Z Progress: resolved 1671, reused 0, downloaded 1669, added 1671, done
+2026-02-16T19:16:58.1125112Z .../node_modules/@prisma/engines postinstall$ node scripts/postinstall.js
+2026-02-16T19:16:58.1299079Z .../node_modules/msw postinstall$ node -e "import('./config/scripts/postinstall.js').catch(() => void 0)"
+2026-02-16T19:16:58.1304126Z .../node_modules/unrs-resolver postinstall$ napi-postinstall unrs-resolver 1.11.1 check
+2026-02-16T19:16:58.1316574Z .../sharp@0.34.5/node_modules/sharp install$ node install/check.js || npm run build
+2026-02-16T19:16:58.1320211Z .../esbuild@0.25.0/node_modules/esbuild postinstall$ node install.js
+2026-02-16T19:16:58.2524293Z .../node_modules/msw postinstall: Done
+2026-02-16T19:16:58.2802124Z .../node_modules/unrs-resolver postinstall: Done
+2026-02-16T19:16:58.4072300Z .../esbuild@0.25.0/node_modules/esbuild postinstall: Done
+2026-02-16T19:16:58.4212136Z .../sharp@0.34.5/node_modules/sharp install: Done
+2026-02-16T19:16:58.4520517Z .../node_modules/protobufjs postinstall$ node scripts/postinstall
+2026-02-16T19:16:58.4876222Z .../node_modules/@sentry/cli postinstall$ node ./scripts/install.js
+2026-02-16T19:16:58.5376173Z .../node_modules/protobufjs postinstall: Done
+2026-02-16T19:16:58.6148386Z .../node_modules/@sentry/cli postinstall: Done
+2026-02-16T19:16:58.9253957Z .../node_modules/@prisma/engines postinstall: Done
+2026-02-16T19:16:59.0007585Z .../node_modules/prisma preinstall$ node scripts/preinstall-entry.js
+2026-02-16T19:16:59.0470186Z .../node_modules/prisma preinstall: Done
+2026-02-16T19:16:59.5987408Z
+2026-02-16T19:16:59.5989698Z dependencies:
+2026-02-16T19:16:59.5990463Z + @ai-sdk/google 3.0.26
+2026-02-16T19:16:59.5996609Z + @ai-sdk/react 3.0.84
+2026-02-16T19:16:59.5997131Z + @capacitor/android 8.1.0
+2026-02-16T19:16:59.5997591Z + @capacitor/cli 8.1.0
+2026-02-16T19:16:59.5998020Z + @capacitor/core 8.1.0
+2026-02-16T19:16:59.5998439Z + @google/genai 1.41.0
+2026-02-16T19:16:59.5998927Z + @mediapipe/tasks-vision 0.10.32
+2026-02-16T19:16:59.5999472Z + @neondatabase/serverless 1.0.2
+2026-02-16T19:16:59.5999964Z + @prisma/adapter-neon 7.4.0
+2026-02-16T19:16:59.6000409Z + @prisma/adapter-pg 7.4.0
+2026-02-16T19:16:59.6003015Z + @prisma/client 7.4.0
+2026-02-16T19:16:59.6003499Z + @radix-ui/react-avatar 1.1.11
+2026-02-16T19:16:59.6003981Z + @radix-ui/react-dialog 1.1.15
+2026-02-16T19:16:59.6004415Z + @radix-ui/react-label 2.1.8
+2026-02-16T19:16:59.6004892Z + @radix-ui/react-popover 1.1.15
+2026-02-16T19:16:59.6005369Z + @radix-ui/react-progress 1.1.8
+2026-02-16T19:16:59.6005888Z + @radix-ui/react-scroll-area 1.2.10
+2026-02-16T19:16:59.6006430Z + @radix-ui/react-select 2.2.6
+2026-02-16T19:16:59.6006958Z + @radix-ui/react-slider 1.3.6
+2026-02-16T19:16:59.6007449Z + @radix-ui/react-slot 1.2.4
+2026-02-16T19:16:59.6007896Z + @radix-ui/react-tabs 1.1.13
+2026-02-16T19:16:59.6008358Z + @react-three/drei 10.7.7
+2026-02-16T19:16:59.6008823Z + @react-three/fiber 9.5.0
+2026-02-16T19:16:59.6009283Z + @remotion/cli 4.0.421
+2026-02-16T19:16:59.6009726Z + @sentry/nextjs 10.38.0
+2026-02-16T19:16:59.6010179Z + @serwist/next 9.5.5
+2026-02-16T19:16:59.6010615Z + @supabase/ssr 0.8.0
+2026-02-16T19:16:59.6011112Z + @supabase/supabase-js 2.95.3
+2026-02-16T19:16:59.6011671Z + @types/canvas-confetti 1.9.0
+2026-02-16T19:16:59.6012156Z + @types/howler 2.2.12
+2026-02-16T19:16:59.6012796Z + @types/web-push 3.6.4
+2026-02-16T19:16:59.6013184Z + ai 6.0.82
+2026-02-16T19:16:59.6013495Z + axios 1.13.5
+2026-02-16T19:16:59.6013861Z + canvas-confetti 1.9.4
+2026-02-16T19:16:59.6016715Z + class-variance-authority 0.7.1
+2026-02-16T19:16:59.6017183Z + clsx 2.1.1
+2026-02-16T19:16:59.6017525Z + date-fns 4.1.0
+2026-02-16T19:16:59.6017913Z + framer-motion 12.34.0
+2026-02-16T19:16:59.6018287Z + h3-js 4.4.0
+2026-02-16T19:16:59.6018622Z + howler 2.2.4
+2026-02-16T19:16:59.6019010Z + import-in-the-middle 3.0.0
+2026-02-16T19:16:59.6019460Z + lucide-react 0.563.0
+2026-02-16T19:16:59.6019862Z + maplibre-gl 5.18.0
+2026-02-16T19:16:59.6020235Z + next 16.1.6
+2026-02-16T19:16:59.6020581Z + pg 8.18.0
+2026-02-16T19:16:59.6020909Z + pino 10.3.1
+2026-02-16T19:16:59.6021276Z + pino-pretty 13.1.3
+2026-02-16T19:16:59.6021686Z + qrcode.react 4.2.0
+2026-02-16T19:16:59.6022057Z + react 19.2.4
+2026-02-16T19:16:59.6022424Z + react-dom 19.2.4
+2026-02-16T19:16:59.6031261Z + react-dropzone 15.0.0
+2026-02-16T19:16:59.6031723Z + react-player 3.4.0
+2026-02-16T19:16:59.6032134Z + reactflow 11.11.4
+2026-02-16T19:16:59.6032479Z + recharts 3.7.0
+2026-02-16T19:16:59.6033133Z + remotion 4.0.421
+2026-02-16T19:16:59.6033556Z + require-in-the-middle 8.0.1
+2026-02-16T19:16:59.6034274Z + serwist 9.5.5
+2026-02-16T19:16:59.6034825Z + sonner 2.0.7
+2026-02-16T19:16:59.6035211Z + tailwind-merge 3.4.0
+2026-02-16T19:16:59.6035650Z + tailwindcss-animate 1.0.7
+2026-02-16T19:16:59.6036059Z + three 0.182.0
+2026-02-16T19:16:59.6036406Z + web-push 3.6.7
+2026-02-16T19:16:59.6036752Z + zod 4.3.6
+2026-02-16T19:16:59.6037096Z + zustand 5.0.11
+2026-02-16T19:16:59.6037388Z
+2026-02-16T19:16:59.6037549Z devDependencies:
+2026-02-16T19:16:59.6038037Z + @chromatic-com/storybook 5.0.1
+2026-02-16T19:16:59.6038510Z + @eslint/compat 2.0.2
+2026-02-16T19:16:59.6038938Z + @eslint/eslintrc 3.3.3
+2026-02-16T19:16:59.6039360Z + @lhci/cli 0.15.1
+2026-02-16T19:16:59.6039744Z + @playwright/test 1.58.2
+2026-02-16T19:16:59.6040267Z + @storybook/addon-a11y 10.2.8
+2026-02-16T19:16:59.6040824Z + @storybook/addon-docs 10.2.8
+2026-02-16T19:16:59.6041418Z + @storybook/addon-onboarding 10.2.8
+2026-02-16T19:16:59.6042030Z + @storybook/addon-vitest 10.2.8
+2026-02-16T19:16:59.6042805Z + @storybook/nextjs-vite 10.2.8
+2026-02-16T19:16:59.6043353Z + @tailwindcss/postcss 4.1.18
+2026-02-16T19:16:59.6043856Z + @testing-library/dom 10.4.1
+2026-02-16T19:16:59.6044390Z + @testing-library/react 16.3.2
+2026-02-16T19:16:59.6044926Z + @types/geojson 7946.0.16
+2026-02-16T19:16:59.6045555Z + @types/node 25.2.3
+2026-02-16T19:16:59.6045951Z + @types/pg 8.16.0
+2026-02-16T19:16:59.6046347Z + @types/react 19.2.14
+2026-02-16T19:16:59.6046783Z + @types/react-dom 19.2.3
+2026-02-16T19:16:59.6047224Z + @types/three 0.182.0
+2026-02-16T19:16:59.6047649Z + @types/web-bluetooth 0.0.21
+2026-02-16T19:16:59.6048082Z + @types/ws 8.18.1
+2026-02-16T19:16:59.6048563Z + @typescript-eslint/eslint-plugin 8.55.0
+2026-02-16T19:16:59.6049155Z + @typescript-eslint/parser 8.55.0
+2026-02-16T19:16:59.6049649Z + @vitejs/plugin-react 5.1.4
+2026-02-16T19:16:59.6050169Z + @vitest/browser-playwright 4.0.18
+2026-02-16T19:16:59.6050664Z + @vitest/coverage-v8 4.0.18
+2026-02-16T19:16:59.6051090Z + autoprefixer 10.4.24
+2026-02-16T19:16:59.6051475Z + chromatic 15.1.0
+2026-02-16T19:16:59.6051824Z + dotenv 17.2.4
+2026-02-16T19:16:59.6052183Z + dotenv-cli 11.0.0
+2026-02-16T19:16:59.6052713Z + eslint 10.0.0
+2026-02-16T19:16:59.6053111Z + eslint-config-next 16.1.6
+2026-02-16T19:16:59.6053617Z + eslint-plugin-storybook 10.2.8
+2026-02-16T19:16:59.6054057Z + husky 9.1.7
+2026-02-16T19:16:59.6054411Z + jsdom 28.0.0
+2026-02-16T19:16:59.6054765Z + magicast 0.5.2
+2026-02-16T19:16:59.6055109Z + msw 2.12.10
+2026-02-16T19:16:59.6055484Z + playwright 1.58.2
+2026-02-16T19:16:59.6055861Z + postcss 8.5.6
+2026-02-16T19:16:59.6056206Z + prisma 7.4.0
+2026-02-16T19:16:59.6056574Z + storybook 10.2.8
+2026-02-16T19:16:59.6056967Z + tailwindcss 4.1.18
+2026-02-16T19:16:59.6057338Z + tsx 4.21.0
+2026-02-16T19:16:59.6057673Z + turbo 2.8.7
+2026-02-16T19:16:59.6058043Z + typedoc 0.28.16
+2026-02-16T19:16:59.6058523Z + typedoc-plugin-markdown 4.10.0
+2026-02-16T19:16:59.6058997Z + typescript 5.9.3
+2026-02-16T19:16:59.6059364Z + vite 7.3.1
+2026-02-16T19:16:59.6059697Z + vitest 4.0.18
+2026-02-16T19:16:59.6060029Z + ws 8.19.0
+2026-02-16T19:16:59.6060242Z
+2026-02-16T19:16:59.6579513Z . postinstall$ prisma generate
+2026-02-16T19:17:00.6840745Z . postinstall: Loaded Prisma config from prisma.config.ts.
+2026-02-16T19:17:00.8514514Z . postinstall: Prisma schema loaded from prisma/schema.prisma.
+2026-02-16T19:17:00.8641113Z . postinstall: warn Preview feature "driverAdapters" is deprecated. The functionality can be used without specifying it as a preview feature.
+2026-02-16T19:17:02.1645840Z . postinstall: ✔ Generated Prisma Client (v7.4.0) to ./node_modules/.pnpm/@prisma+client@7.4.0_prisma@7.4.0_@types+react@19.2.14_magicast@0.5.2_react-dom@19.2.4_react@_kbihlyeorb7my7bafhyofzhtla/node_modules/@prisma/client in 821ms
+2026-02-16T19:17:02.1661461Z . postinstall: Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+2026-02-16T19:17:02.2013481Z . postinstall: Done
+2026-02-16T19:17:02.2014081Z . prepare$ husky
+2026-02-16T19:17:02.2726357Z . prepare: Done
+2026-02-16T19:17:02.2746540Z Done in 34s
+2026-02-16T19:17:02.3620879Z ##[group]Run npx prisma generate
+2026-02-16T19:17:02.3621389Z [36;1mnpx prisma generate[0m
+2026-02-16T19:17:02.3670690Z shell: /usr/bin/bash -e {0}
+2026-02-16T19:17:02.3670936Z env:
+2026-02-16T19:17:02.3671622Z   DATABASE_URL: ***
+2026-02-16T19:17:02.3672189Z   DIRECT_URL: ***
+2026-02-16T19:17:02.3672709Z   NEXT_PUBLIC_SUPABASE_URL: ***
+2026-02-16T19:17:02.3674148Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+2026-02-16T19:17:02.3674422Z   SKIP_ENV_VALIDATION: true
+2026-02-16T19:17:02.3674706Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-02-16T19:17:02.3675005Z ##[endgroup]
+2026-02-16T19:17:05.1173808Z Loaded Prisma config from prisma.config.ts.
+2026-02-16T19:17:05.1175050Z
+2026-02-16T19:17:05.2923198Z Prisma schema loaded from prisma/schema.prisma.
+2026-02-16T19:17:05.3044216Z warn Preview feature "driverAdapters" is deprecated. The functionality can be used without specifying it as a preview feature.
+2026-02-16T19:17:06.5914250Z
+2026-02-16T19:17:06.5918887Z ✔ Generated Prisma Client (v7.4.0) to ./node_modules/.pnpm/@prisma+client@7.4.0_prisma@7.4.0_@types+react@19.2.14_magicast@0.5.2_react-dom@19.2.4_react@_kbihlyeorb7my7bafhyofzhtla/node_modules/@prisma/client in 821ms
+2026-02-16T19:17:06.5920838Z
+2026-02-16T19:17:06.5921869Z Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+2026-02-16T19:17:06.5922891Z
+2026-02-16T19:17:06.5923072Z
+2026-02-16T19:17:06.6689989Z ##[group]Run actions/cache@v5
+2026-02-16T19:17:06.6690255Z with:
+2026-02-16T19:17:06.6690443Z   path: .turbo
+2026-02-16T19:17:06.6690720Z   key: turbo-Linux-b8ceb8f4d63f8ee936a05b16632ea43bf6437c5a
+2026-02-16T19:17:06.6691060Z   restore-keys: turbo-Linux-
+
+2026-02-16T19:17:06.6691312Z   enableCrossOsArchive: false
+2026-02-16T19:17:06.6691557Z   fail-on-cache-miss: false
+2026-02-16T19:17:06.6691791Z   lookup-only: false
+2026-02-16T19:17:06.6692002Z   save-always: false
+2026-02-16T19:17:06.6692198Z env:
+2026-02-16T19:17:06.6693200Z   DATABASE_URL: ***
+2026-02-16T19:17:06.6693789Z   DIRECT_URL: ***
+2026-02-16T19:17:06.6694123Z   NEXT_PUBLIC_SUPABASE_URL: ***
+2026-02-16T19:17:06.6695476Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+2026-02-16T19:17:06.6695744Z   SKIP_ENV_VALIDATION: true
+2026-02-16T19:17:06.6696028Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-02-16T19:17:06.6696329Z ##[endgroup]
+2026-02-16T19:17:07.0411386Z Cache hit for restore-key: turbo-Linux-b2ad1640a10d2a2d3db1af8b95e8524efa7fffe0
+2026-02-16T19:17:08.3403737Z Received 0 of 137192109 (0.0%), 0.0 MBs/sec
+2026-02-16T19:17:09.4144497Z Received 134217728 of 137192109 (97.8%), 61.6 MBs/sec
+2026-02-16T19:17:09.5905186Z Received 137192109 of 137192109 (100.0%), 58.0 MBs/sec
+2026-02-16T19:17:09.5908549Z Cache Size: ~131 MB (137192109 B)
+2026-02-16T19:17:09.5954019Z [command]/usr/bin/tar -xf /home/runner/work/_temp/15b8d727-053a-48fd-8076-076276dac2ef/cache.tzst -P -C /home/runner/work/IronForge/IronForge --use-compress-program unzstd
+2026-02-16T19:17:09.8187737Z Cache restored successfully
+2026-02-16T19:17:09.8568807Z Cache restored from key: turbo-Linux-b2ad1640a10d2a2d3db1af8b95e8524efa7fffe0
+2026-02-16T19:17:09.8706938Z ##[group]Run npx turbo run lint check-types test:coverage build security --concurrency=100%
+2026-02-16T19:17:09.8707610Z [36;1mnpx turbo run lint check-types test:coverage build security --concurrency=100%[0m
+2026-02-16T19:17:09.8757876Z shell: /usr/bin/bash -e {0}
+2026-02-16T19:17:09.8758126Z env:
+2026-02-16T19:17:09.8758809Z   DATABASE_URL: ***
+2026-02-16T19:17:09.8759393Z   DIRECT_URL: ***
+2026-02-16T19:17:09.8759728Z   NEXT_PUBLIC_SUPABASE_URL: ***
+2026-02-16T19:17:09.8761079Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+2026-02-16T19:17:09.8761367Z   SKIP_ENV_VALIDATION: true
+2026-02-16T19:17:09.8761664Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+2026-02-16T19:17:09.8761969Z ##[endgroup]
+2026-02-16T19:17:10.2251791Z
+2026-02-16T19:17:10.2257834Z Attention:
+2026-02-16T19:17:10.2261996Z Turborepo now collects completely anonymous telemetry regarding usage.
+2026-02-16T19:17:10.2265551Z This information is used to shape the Turborepo roadmap and prioritize features.
+2026-02-16T19:17:10.2274977Z You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+2026-02-16T19:17:10.2276196Z https://turborepo.dev/docs/telemetry
+2026-02-16T19:17:10.2276551Z
+2026-02-16T19:17:10.3027711Z • Packages in scope: ironforge-discord-bot, ironforge-factory-mcp, ironforge-rpg, mcp-n8n
+2026-02-16T19:17:10.3030370Z • Running lint, check-types, test:coverage, build, security in 4 packages
+2026-02-16T19:17:10.3031163Z • Remote caching disabled
+2026-02-16T19:17:15.5683530Z ##[group]ironforge-rpg:security
+2026-02-16T19:17:15.5686215Z cache miss, executing 6552c4c5d4e76777
+2026-02-16T19:17:15.5688082Z
+2026-02-16T19:17:15.5690191Z > ironforge-rpg@1.0.0 security /home/runner/work/IronForge/IronForge
+2026-02-16T19:17:15.5695734Z > pnpm audit --audit-level=high
+2026-02-16T19:17:15.5700503Z
+2026-02-16T19:17:15.5704930Z 6 vulnerabilities found
+2026-02-16T19:17:15.5710211Z Severity: 2 low | 4 moderate
+2026-02-16T19:17:15.5734301Z ##[endgroup]
+2026-02-16T19:17:15.7875502Z ##[group]mcp-n8n:build
+2026-02-16T19:17:15.7876223Z cache miss, executing 4f2aa49f8bfdd885
+2026-02-16T19:17:15.7877478Z
+2026-02-16T19:17:15.7878337Z > mcp-n8n@1.0.0 build /home/runner/work/IronForge/IronForge/apps/mcp-n8n
+2026-02-16T19:17:15.7893482Z > tsc
+2026-02-16T19:17:15.7894429Z
+2026-02-16T19:17:15.7895057Z ##[endgroup]
+2026-02-16T19:18:18.2143776Z ##[group]ironforge-rpg:lint
+2026-02-16T19:18:18.2146194Z cache miss, executing 82db1ba1c1f1f527
+2026-02-16T19:18:18.2148144Z
+2026-02-16T19:18:18.2163605Z > ironforge-rpg@1.0.0 lint /home/runner/work/IronForge/IronForge
+2026-02-16T19:18:18.2164324Z > eslint .
+2026-02-16T19:18:18.2164510Z
+2026-02-16T19:18:18.2166257Z (node:2433) ESLintIgnoreWarning: The ".eslintignore" file is no longer supported. Switch to using the "ignores" property in "eslint.config.js": https://eslint.org/docs/latest/use/configure/migration-guide#ignore-files
+2026-02-16T19:18:18.2168242Z (Use `node --trace-warnings ...` to show where the warning was created)
+2026-02-16T19:18:18.2168768Z
+2026-02-16T19:18:18.2169279Z /home/runner/work/IronForge/IronForge/.storybook/next-headers-mock.ts
+2026-02-16T19:18:18.2235428Z ##[warning]  5:11  warning  'name' is defined but never used. Allowed unused args must match /^_/u     @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2277369Z ##[warning]  6:11  warning  'name' is defined but never used. Allowed unused args must match /^_/u     @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2280438Z ##[warning]  6:25  warning  'value' is defined but never used. Allowed unused args must match /^_/u    @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2283787Z ##[warning]  6:40  warning  'options' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2286900Z ##[warning]  7:14  warning  'name' is defined but never used. Allowed unused args must match /^_/u     @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2288505Z
+2026-02-16T19:18:18.2289379Z /home/runner/work/IronForge/IronForge/mcp/factory-server/src/index.ts
+2026-02-16T19:18:18.2291394Z ##[warning]  10:10  warning  'z' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2363323Z
+2026-02-16T19:18:18.2363971Z /home/runner/work/IronForge/IronForge/mcp/factory-server/src/quota-manager.ts
+2026-02-16T19:18:18.2365482Z ##[warning]  51:18  warning  'e' is defined but never used  @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2366837Z
+2026-02-16T19:18:18.2367290Z /home/runner/work/IronForge/IronForge/src/actions/factory.ts
+2026-02-16T19:18:18.2369445Z ##[warning]   8:10  warning  'z' is defined but never used. Allowed unused vars must match /^_/u                    @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2372875Z ##[warning]  19:10  warning  'FactoryStatusSchema' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2374742Z
+2026-02-16T19:18:18.2375766Z /home/runner/work/IronForge/IronForge/src/actions/systems/__tests__/territories.test.ts
+2026-02-16T19:18:18.2378567Z ##[warning]  2:42  warning  'processWeeklyTerritoryClaimsAction' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2380645Z
+2026-02-16T19:18:18.2381288Z /home/runner/work/IronForge/IronForge/src/app/api/cron/territory-weekly/route.ts
+2026-02-16T19:18:18.2404120Z ##[warning]  17:15  warning  'result' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2406251Z
+2026-02-16T19:18:18.2406879Z /home/runner/work/IronForge/IronForge/src/app/api/webhooks/intervals/route.ts
+2026-02-16T19:18:18.2409311Z ##[warning]  7:10  warning  'getActivityStream' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2411134Z
+2026-02-16T19:18:18.2411818Z /home/runner/work/IronForge/IronForge/src/components/factory/AssemblyLineCard.tsx
+2026-02-16T19:18:18.2414335Z ##[warning]  6:5  warning  'Code2' is defined but never used. Allowed unused vars must match /^_/u         @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2417375Z ##[warning]  7:5  warning  'CheckCircle2' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2420339Z ##[warning]  8:5  warning  'Rocket' is defined but never used. Allowed unused vars must match /^_/u        @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2443754Z ##[warning]  9:5  warning  'Palette' is defined but never used. Allowed unused vars must match /^_/u       @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2445558Z
+2026-02-16T19:18:18.2446281Z /home/runner/work/IronForge/IronForge/src/components/factory/AssemblyLinePresenter.tsx
+2026-02-16T19:18:18.2448448Z ##[warning]  4:10  warning  'motion' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2450206Z
+2026-02-16T19:18:18.2450827Z /home/runner/work/IronForge/IronForge/src/components/factory/BacklogBoard.tsx
+2026-02-16T19:18:18.2453154Z ##[warning]  4:10  warning  'ClipboardList' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2456268Z ##[warning]  4:25  warning  'AlertCircle' is defined but never used. Allowed unused vars must match /^_/u    @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2459328Z ##[warning]  4:38  warning  'Play' is defined but never used. Allowed unused vars must match /^_/u           @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2462353Z ##[warning]  4:44  warning  'Loader2' is defined but never used. Allowed unused vars must match /^_/u        @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2480476Z ##[warning]  4:53  warning  'CheckCircle2' is defined but never used. Allowed unused vars must match /^_/u   @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2482766Z
+2026-02-16T19:18:18.2483459Z /home/runner/work/IronForge/IronForge/src/components/factory/FactoryRunConveyor.tsx
+2026-02-16T19:18:18.2485685Z ##[warning]  10:5   warning  'BrainCircuit' is defined but never used. Allowed unused vars must match /^_/u         @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2489008Z ##[warning]  99:27  warning  'isUpcoming' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2490922Z
+2026-02-16T19:18:18.2491571Z /home/runner/work/IronForge/IronForge/src/components/factory/RenderVideoForm.tsx
+2026-02-16T19:18:18.2514048Z ##[warning]   5:10  warning  'Button' is defined but never used. Allowed unused vars must match /^_/u           @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2517249Z ##[warning]   6:10  warning  'Card' is defined but never used. Allowed unused vars must match /^_/u             @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2520435Z ##[warning]   6:16  warning  'CardContent' is defined but never used. Allowed unused vars must match /^_/u      @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2524148Z ##[warning]   6:29  warning  'CardDescription' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2527236Z ##[warning]   6:46  warning  'CardFooter' is defined but never used. Allowed unused vars must match /^_/u       @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2530162Z ##[warning]   6:58  warning  'CardHeader' is defined but never used. Allowed unused vars must match /^_/u       @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2553360Z ##[warning]   6:70  warning  'CardTitle' is defined but never used. Allowed unused vars must match /^_/u        @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2556835Z ##[warning]   7:10  warning  'Textarea' is defined but never used. Allowed unused vars must match /^_/u         @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2560428Z ##[warning]   8:10  warning  'Label' is defined but never used. Allowed unused vars must match /^_/u            @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2564054Z ##[warning]  32:14  warning  'error' is defined but never used                                                  @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2565938Z
+2026-02-16T19:18:18.2566720Z /home/runner/work/IronForge/IronForge/src/components/factory/VoiceCommandControl.tsx
+2026-02-16T19:18:18.2569056Z ##[warning]   4:10  warning  'Mic' is defined but never used. Allowed unused vars must match /^_/u       @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2591290Z ##[warning]   4:15  warning  'MicOff' is defined but never used. Allowed unused vars must match /^_/u    @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2595090Z ##[warning]   4:23  warning  'Send' is defined but never used. Allowed unused vars must match /^_/u      @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2598427Z ##[warning]   4:29  warning  'Loader2' is defined but never used. Allowed unused vars must match /^_/u   @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2602018Z ##[warning]   4:38  warning  'Sparkles' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2669434Z ##[warning]  81:18  warning  'err' is defined but never used                                             @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2671069Z
+2026-02-16T19:18:18.2671588Z /home/runner/work/IronForge/IronForge/src/components/ui/card.tsx
+2026-02-16T19:18:18.2714077Z ##[warning]  53:3  warning  Headings must have content and the content must be accessible by a screen reader  jsx-a11y/heading-has-content
+2026-02-16T19:18:18.2715861Z
+2026-02-16T19:18:18.2716513Z /home/runner/work/IronForge/IronForge/src/components/workout/QuickLogWidget.tsx
+2026-02-16T19:18:18.2718369Z ##[warning]   62:9  warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+2026-02-16T19:18:18.2721304Z ##[warning]   93:9  warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+2026-02-16T19:18:18.2744395Z ##[warning]  120:9  warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+2026-02-16T19:18:18.2745956Z
+2026-02-16T19:18:18.2746535Z /home/runner/work/IronForge/IronForge/src/features/coop/LiveSessionHUD.tsx
+2026-02-16T19:18:18.2750098Z ##[warning]  179:45  warning  Visible, non-interactive elements with click handlers must have at least one keyboard listener                                                                                                     jsx-a11y/click-events-have-key-events
+2026-02-16T19:18:18.2771035Z ##[warning]  179:45  warning  Avoid non-native interactive elements. If using native HTML is not possible, add an appropriate role and support for tabbing, mouse, keyboard, and touch inputs to an interactive content element  jsx-a11y/no-static-element-interactions
+2026-02-16T19:18:18.2774088Z
+2026-02-16T19:18:18.2774744Z /home/runner/work/IronForge/IronForge/src/features/dashboard/DashboardClient.tsx
+2026-02-16T19:18:18.2777071Z ##[warning]   5:10  warning  'PwaInstallBanner' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2780467Z ##[warning]   6:8   warning  'Link' is defined but never used. Allowed unused vars must match /^_/u              @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2801227Z ##[warning]  13:10  warning  'AnimatePresence' is defined but never used. Allowed unused vars must match /^_/u   @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2804530Z ##[warning]  13:27  warning  'motion' is defined but never used. Allowed unused vars must match /^_/u            @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2807514Z ##[warning]  18:8   warning  'GeminiLiveCoach' is defined but never used. Allowed unused vars must match /^_/u   @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2810465Z ##[warning]  19:10  warning  'Settings' is defined but never used. Allowed unused vars must match /^_/u          @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2813598Z ##[warning]  23:10  warning  'OracleChat' is defined but never used. Allowed unused vars must match /^_/u        @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2816571Z ##[warning]  27:10  warning  'PersistentHeader' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2819503Z ##[warning]  28:10  warning  'CoachToggle' is defined but never used. Allowed unused vars must match /^_/u       @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2822415Z ##[warning]  29:10  warning  'ViewRouter' is defined but never used. Allowed unused vars must match /^_/u        @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2856476Z ##[warning]  30:10  warning  'CodexLoader' is defined but never used. Allowed unused vars must match /^_/u       @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2859565Z ##[warning]  39:10  warning  'TvHud' is defined but never used. Allowed unused vars must match /^_/u             @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2861192Z
+2026-02-16T19:18:18.2861940Z /home/runner/work/IronForge/IronForge/src/features/dashboard/components/DashboardPresenter.tsx
+2026-02-16T19:18:18.2864583Z ##[warning]   6:20  warning  'Activity' is defined but never used. Allowed unused vars must match /^_/u                           @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2867897Z ##[warning]  19:5   warning  'DashboardClientProps' is defined but never used. Allowed unused vars must match /^_/u               @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2871230Z ##[warning]  67:9   warning  'showOnboarding' is assigned a value but never used. Allowed unused vars must match /^_/u            @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2957548Z ##[warning]  70:9   warning  'onShowOnboardingComplete' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.2959580Z
+2026-02-16T19:18:18.2960135Z /home/runner/work/IronForge/IronForge/src/features/game/GuildHall.tsx
+2026-02-16T19:18:18.2963656Z ##[warning]  330:11  warning  Visible, non-interactive elements with click handlers must have at least one keyboard listener                                                                                                     jsx-a11y/click-events-have-key-events
+2026-02-16T19:18:18.2969111Z ##[warning]  330:11  warning  Avoid non-native interactive elements. If using native HTML is not possible, add an appropriate role and support for tabbing, mouse, keyboard, and touch inputs to an interactive content element  jsx-a11y/no-static-element-interactions
+2026-02-16T19:18:18.2971670Z
+2026-02-16T19:18:18.2972275Z /home/runner/work/IronForge/IronForge/src/features/game/components/ActionView.tsx
+2026-02-16T19:18:18.2997566Z ##[warning]  161:9  warning  Visible, non-interactive elements with click handlers must have at least one keyboard listener                                                                                                     jsx-a11y/click-events-have-key-events
+2026-02-16T19:18:18.3003535Z ##[warning]  161:9  warning  Avoid non-native interactive elements. If using native HTML is not possible, add an appropriate role and support for tabbing, mouse, keyboard, and touch inputs to an interactive content element  jsx-a11y/no-static-element-interactions
+2026-02-16T19:18:18.3006041Z
+2026-02-16T19:18:18.3006739Z /home/runner/work/IronForge/IronForge/src/features/game/components/DungeonBuilder.tsx
+2026-02-16T19:18:18.3008488Z ##[warning]  115:11  warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+2026-02-16T19:18:18.3011189Z ##[warning]  126:11  warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+2026-02-16T19:18:18.3043568Z
+2026-02-16T19:18:18.3044291Z /home/runner/work/IronForge/IronForge/src/features/game/components/ValhallaGate.tsx
+2026-02-16T19:18:18.3046153Z ##[warning]  143:17  warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+2026-02-16T19:18:18.3047768Z
+2026-02-16T19:18:18.3048364Z /home/runner/work/IronForge/IronForge/src/features/guild/TerritoryMap.tsx
+2026-02-16T19:18:18.3050054Z ##[warning]  29:18  warning  'err' is defined but never used  @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.3051526Z
+2026-02-16T19:18:18.3052291Z /home/runner/work/IronForge/IronForge/src/features/onboarding/components/FirstTimeHints.tsx
+2026-02-16T19:18:18.3056009Z ##[warning]  115:9  warning  Visible, non-interactive elements with click handlers must have at least one keyboard listener                                                                                                     jsx-a11y/click-events-have-key-events
+2026-02-16T19:18:18.3061393Z ##[warning]  115:9  warning  Avoid non-native interactive elements. If using native HTML is not possible, add an appropriate role and support for tabbing, mouse, keyboard, and touch inputs to an interactive content element  jsx-a11y/no-static-element-interactions
+2026-02-16T19:18:18.3084299Z
+2026-02-16T19:18:18.3085073Z /home/runner/work/IronForge/IronForge/src/features/podcast/components/PocketCastsAuth.tsx
+2026-02-16T19:18:18.3087180Z ##[warning]  64:25  warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+2026-02-16T19:18:18.3089875Z ##[warning]  74:25  warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+2026-02-16T19:18:18.3091400Z
+2026-02-16T19:18:18.3092105Z /home/runner/work/IronForge/IronForge/src/features/pvp/components/CardioDuelLobby.tsx
+2026-02-16T19:18:18.3095557Z ##[warning]   78:29  warning  A form label must be associated with a control                                                                                                                                                     jsx-a11y/label-has-associated-control
+2026-02-16T19:18:18.3099728Z ##[warning]   95:29  warning  A form label must be associated with a control                                                                                                                                                     jsx-a11y/label-has-associated-control
+2026-02-16T19:18:18.3124171Z ##[warning]  112:25  warning  A form label must be associated with a control                                                                                                                                                     jsx-a11y/label-has-associated-control
+2026-02-16T19:18:18.3128923Z ##[warning]  115:33  warning  Visible, non-interactive elements with click handlers must have at least one keyboard listener                                                                                                     jsx-a11y/click-events-have-key-events
+2026-02-16T19:18:18.3134654Z ##[warning]  115:33  warning  Avoid non-native interactive elements. If using native HTML is not possible, add an appropriate role and support for tabbing, mouse, keyboard, and touch inputs to an interactive content element  jsx-a11y/no-static-element-interactions
+2026-02-16T19:18:18.3137575Z
+2026-02-16T19:18:18.3138348Z /home/runner/work/IronForge/IronForge/src/features/settings/components/EquipmentArmory.tsx
+2026-02-16T19:18:18.3141965Z ##[warning]  146:15  warning  Visible, non-interactive elements with click handlers must have at least one keyboard listener                                                                                                     jsx-a11y/click-events-have-key-events
+2026-02-16T19:18:18.3167834Z ##[warning]  146:15  warning  Avoid non-native interactive elements. If using native HTML is not possible, add an appropriate role and support for tabbing, mouse, keyboard, and touch inputs to an interactive content element  jsx-a11y/no-static-element-interactions
+2026-02-16T19:18:18.3170453Z
+2026-02-16T19:18:18.3171223Z /home/runner/work/IronForge/IronForge/src/features/strength/components/EquipmentArmory.tsx
+2026-02-16T19:18:18.3173536Z ##[warning]  253:21  warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+2026-02-16T19:18:18.3176314Z ##[warning]  264:21  warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+2026-02-16T19:18:18.3177819Z
+2026-02-16T19:18:18.3178537Z /home/runner/work/IronForge/IronForge/src/features/strength/components/ExerciseLibrary.tsx
+2026-02-16T19:18:18.3180865Z ##[warning]  132:13  warning  The autoFocus prop should not be used, as it can reduce usability and accessibility for users  jsx-a11y/no-autofocus
+2026-02-16T19:18:18.3214526Z ##[warning]  159:13  warning  A form label must be associated with a control                                                 jsx-a11y/label-has-associated-control
+2026-02-16T19:18:18.3217832Z ##[warning]  170:15  warning  A form label must be associated with a control                                                 jsx-a11y/label-has-associated-control
+2026-02-16T19:18:18.3221049Z ##[warning]  180:15  warning  A form label must be associated with a control                                                 jsx-a11y/label-has-associated-control
+2026-02-16T19:18:18.3222955Z
+2026-02-16T19:18:18.3223580Z /home/runner/work/IronForge/IronForge/src/features/training/CardioStudio.tsx
+2026-02-16T19:18:18.3226159Z ##[warning]   982:9   warning  Visible, non-interactive elements with click handlers must have at least one keyboard listener  jsx-a11y/click-events-have-key-events
+2026-02-16T19:18:18.3229898Z ##[warning]  1017:9   warning  Visible, non-interactive elements with click handlers must have at least one keyboard listener  jsx-a11y/click-events-have-key-events
+2026-02-16T19:18:18.3253742Z ##[warning]  1027:15  warning  Media elements such as <audio> and <video> must have a <track> for captions                     jsx-a11y/media-has-caption
+2026-02-16T19:18:18.3255611Z
+2026-02-16T19:18:18.3256489Z /home/runner/work/IronForge/IronForge/src/features/training/ProgramBuilder.tsx
+2026-02-16T19:18:18.3258314Z ##[warning]  41:11  warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+2026-02-16T19:18:18.3261000Z ##[warning]  53:11  warning  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+2026-02-16T19:18:18.3262797Z
+2026-02-16T19:18:18.3263367Z /home/runner/work/IronForge/IronForge/src/features/training/TvMode.tsx
+2026-02-16T19:18:18.3266491Z ##[warning]  232:5   warning  Visible, non-interactive elements with click handlers must have at least one keyboard listener                                                                                                     jsx-a11y/click-events-have-key-events
+2026-02-16T19:18:18.3271787Z ##[warning]  232:5   warning  Avoid non-native interactive elements. If using native HTML is not possible, add an appropriate role and support for tabbing, mouse, keyboard, and touch inputs to an interactive content element  jsx-a11y/no-static-element-interactions
+2026-02-16T19:18:18.3291554Z ##[warning]  615:15  warning  Visible, non-interactive elements with click handlers must have at least one keyboard listener                                                                                                     jsx-a11y/click-events-have-key-events
+2026-02-16T19:18:18.3297233Z ##[warning]  615:15  warning  Avoid non-native interactive elements. If using native HTML is not possible, add an appropriate role and support for tabbing, mouse, keyboard, and touch inputs to an interactive content element  jsx-a11y/no-static-element-interactions
+2026-02-16T19:18:18.3299871Z
+2026-02-16T19:18:18.3300613Z /home/runner/work/IronForge/IronForge/src/features/training/components/BerserkerMode.tsx
+2026-02-16T19:18:18.3333387Z ##[warning]  119:15  warning  The autoFocus prop should not be used, as it can reduce usability and accessibility for users  jsx-a11y/no-autofocus
+2026-02-16T19:18:18.3335277Z
+2026-02-16T19:18:18.3335915Z /home/runner/work/IronForge/IronForge/src/services/game/TerritoryService.ts
+2026-02-16T19:18:18.3338338Z ##[warning]    2:38  warning  'format' is defined but never used. Allowed unused vars must match /^_/u               @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.3341678Z ##[warning]  213:15  warning  'weekNumber' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.3345229Z ##[warning]  214:15  warning  'year' is assigned a value but never used. Allowed unused vars must match /^_/u        @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.3347207Z
+2026-02-16T19:18:18.3347990Z /home/runner/work/IronForge/IronForge/src/services/game/__tests__/PowerRatingService.test.ts
+2026-02-16T19:18:18.3350342Z ##[warning]  4:10  warning  'subDays' is defined but never used. Allowed unused vars must match /^_/u      @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.3403912Z ##[warning]  4:29  warning  'startOfWeek' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.3405747Z
+2026-02-16T19:18:18.3406347Z /home/runner/work/IronForge/IronForge/src/services/titan-state-schema.ts
+2026-02-16T19:18:18.3408481Z ##[warning]   4:10  warning  'z' is defined but never used. Allowed unused vars must match /^_/u                    @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.3411770Z ##[warning]  11:10  warning  'TitanStateSchema' is defined but never used. Allowed unused vars must match /^_/u     @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.3415408Z ##[warning]  11:28  warning  'TitanMutationSchema' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.3418762Z ##[warning]  11:71  warning  'TitanMutation' is defined but never used. Allowed unused vars must match /^_/u        @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.3420543Z
+2026-02-16T19:18:18.3421226Z /home/runner/work/IronForge/IronForge/tests/integration/actions/user-actions.test.ts
+2026-02-16T19:18:18.3464062Z ##[warning]  1:32  warning  'vi' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+2026-02-16T19:18:18.3465827Z
+2026-02-16T19:18:18.3466430Z ✖ 107 problems (0 errors, 107 warnings)
+2026-02-16T19:18:18.3466794Z
+2026-02-16T19:18:18.3467287Z ##[endgroup]
+2026-02-16T19:18:25.3880907Z ##[group]ironforge-factory-mcp:build
+2026-02-16T19:18:25.3903747Z cache miss, executing 6db148f3a9f7bc60
+2026-02-16T19:18:25.3904167Z
+2026-02-16T19:18:25.3904915Z > ironforge-factory-mcp@1.0.0 build /home/runner/work/IronForge/IronForge/mcp/factory-server
+2026-02-16T19:18:25.3905882Z > tsc
+2026-02-16T19:18:25.3906176Z
+2026-02-16T19:18:25.3906799Z ##[endgroup]
+2026-02-16T19:19:28.6880754Z [;31mironforge-rpg:check-types[;0m
+2026-02-16T19:19:28.6884252Z cache miss, executing d5a12963d0f4d454
+2026-02-16T19:19:28.6884631Z
+2026-02-16T19:19:28.6885434Z > ironforge-rpg@1.0.0 check-types /home/runner/work/IronForge/IronForge
+2026-02-16T19:19:28.6900396Z > tsc --project tsconfig.build.json --noEmit
+2026-02-16T19:19:28.6900779Z
+2026-02-16T19:19:28.7347326Z ##[error]src/actions/combat/core.ts(15,3): error TS2305: Module '"@/types/schemas"' has no exported member 'StartBossFightSchema'.
+2026-02-16T19:19:28.7385191Z ##[error]src/actions/combat/core.ts(16,3): error TS2305: Module '"@/types/schemas"' has no exported member 'PerformCombatActionInputSchema'.
+2026-02-16T19:19:28.7390409Z ##[error]src/actions/economy/forge.ts(6,10): error TS2305: Module '"@/types/schemas"' has no exported member 'CraftItemSchema'.
+2026-02-16T19:19:28.7394561Z ##[error]src/actions/integrations/hevy.ts(10,10): error TS2305: Module '"@/types/schemas"' has no exported member 'HevyHelperSchema'.
+2026-02-16T19:19:28.7398481Z ##[error]src/actions/integrations/hevy.ts(10,28): error TS2305: Module '"@/types/schemas"' has no exported member 'ImportHevyHistorySchema'.
+2026-02-16T19:19:28.7402270Z ##[error]src/actions/progression/core.ts(5,10): error TS2305: Module '"@/types/schemas"' has no exported member 'AwardGoldSchema'.
+2026-02-16T19:19:28.7406239Z ##[error]src/components/factory/StatusCard.tsx(1,15): error TS2459: Module '"@/actions/factory"' declares 'FactoryStatusData' locally, but it is not exported.
+2026-02-16T19:19:28.7408260Z ##[error]src/components/factory/StatusGrid.tsx(1,10): error TS2459: Module '"@/actions/factory"' declares 'FactoryStatusData' locally, but it is not exported.
+2026-02-16T19:19:28.7410872Z ##[error]src/services/titan-conflict-resolution.ts(3,10): error TS2459: Module '"./titan-state-schema"' declares 'TitanState' locally, but it is not exported.
+2026-02-16T19:19:28.7415190Z ##[error]src/services/titan-state-recovery.ts(5,10): error TS2459: Module '"./titan-state-schema"' declares 'TitanState' locally, but it is not exported.
+2026-02-16T19:19:28.7418604Z ##[error]src/services/titan-sync-service.ts(5,10): error TS2459: Module '"./titan-state-schema"' declares 'TitanState' locally, but it is not exported.
+2026-02-16T19:19:28.7440758Z  ELIFECYCLE  Command failed with exit code 2.
+2026-02-16T19:19:28.7447563Z [ERROR] command finished with error: command (/home/runner/work/IronForge/IronForge/) /home/runner/setup-pnpm/node_modules/.bin/pnpm run check-types exited (2)
+2026-02-16T19:19:28.7807704Z ##[group]ironforge-rpg:test:coverage
+2026-02-16T19:19:28.7808371Z cache miss, executing 9dc6b37f5df5b312
+2026-02-16T19:19:28.7812780Z ##[endgroup]
+2026-02-16T19:19:29.1905016Z ##[group]ironforge-rpg:build
+2026-02-16T19:19:29.1906299Z cache miss, executing 5bdcd21036432801
+2026-02-16T19:19:29.1906685Z
+2026-02-16T19:19:29.1907196Z > ironforge-rpg@1.0.0 prebuild /home/runner/work/IronForge/IronForge
+2026-02-16T19:19:29.1908163Z > npm run clean:logs
+2026-02-16T19:19:29.1908403Z
+2026-02-16T19:19:29.1908412Z
+2026-02-16T19:19:29.1908653Z > ironforge-rpg@1.0.0 clean:logs
+2026-02-16T19:19:29.1909477Z > npx tsx scripts/clean-logs.ts
+2026-02-16T19:19:29.1909767Z
+2026-02-16T19:19:29.1910265Z No log directory found at /home/runner/work/IronForge/IronForge/src/logs
+2026-02-16T19:19:29.1911436Z
+2026-02-16T19:19:29.1912163Z > ironforge-rpg@1.0.0 build /home/runner/work/IronForge/IronForge
+2026-02-16T19:19:29.1913000Z > next build --webpack
+2026-02-16T19:19:29.1913239Z
+2026-02-16T19:19:29.1914513Z ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
+2026-02-16T19:19:29.1915965Z Attention: Next.js now collects completely anonymous telemetry regarding usage.
+2026-02-16T19:19:29.1917162Z This information is used to shape Next.js' roadmap and prioritize features.
+2026-02-16T19:19:29.1918937Z You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+2026-02-16T19:19:29.1919762Z https://nextjs.org/telemetry
+2026-02-16T19:19:29.1920076Z
+2026-02-16T19:19:29.1920438Z ▲ Next.js 16.1.6 (webpack)
+2026-02-16T19:19:29.1921008Z - Experiments (use with caution):
+2026-02-16T19:19:29.1921634Z   · clientTraceMetadata
+2026-02-16T19:19:29.1921932Z
+2026-02-16T19:19:29.1923893Z ⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+2026-02-16T19:19:29.1925201Z   Creating an optimized production build ...
+2026-02-16T19:19:29.1928571Z [@sentry/nextjs] DEPRECATION WARNING: It is recommended renaming your `sentry.client.config.ts` file, or moving its content to `instrumentation-client.ts`. When using Turbopack `sentry.client.config.ts` will no longer work. Read more about the `instrumentation-client.ts` file: https://nextjs.org/docs/app/api-reference/file-conventions/instrumentation-client
+2026-02-16T19:19:29.1932126Z [@sentry/nextjs - Node.js] Info: Sending telemetry data on issues and performance to Sentry. To disable telemetry, set `options.telemetry` to `false`.
+2026-02-16T19:19:29.1935171Z [@sentry/nextjs - Node.js] Warning: No auth token provided. Will not create release. Please set the `authToken` option. You can find information on how to generate a Sentry auth token here: https://docs.sentry.io/api/auth/
+2026-02-16T19:19:29.1938001Z You seem to be using Turborepo, did you forget to put SENTRY_AUTH_TOKEN in `passThroughEnv`? https://turbo.build/repo/docs/reference/configuration#passthroughenv
+2026-02-16T19:19:29.1940972Z [@sentry/nextjs - Node.js] Warning: No auth token provided. Will not upload source maps. Please set the `authToken` option. You can find information on how to generate a Sentry auth token here: https://docs.sentry.io/api/auth/
+2026-02-16T19:19:29.1943919Z You seem to be using Turborepo, did you forget to put SENTRY_AUTH_TOKEN in `passThroughEnv`? https://turbo.build/repo/docs/reference/configuration#passthroughenv
+2026-02-16T19:19:29.1945320Z ##[endgroup]
+2026-02-16T19:19:29.2301143Z ##[error]ironforge-rpg#check-types: command (/home/runner/work/IronForge/IronForge/) /home/runner/setup-pnpm/node_modules/.bin/pnpm run check-types exited (2)
+2026-02-16T19:19:29.2348883Z
+2026-02-16T19:19:29.2352737Z  Tasks:    4 successful, 7 total
+2026-02-16T19:19:29.2355384Z Cached:    0 cached, 7 total
+2026-02-16T19:19:29.2356238Z   Time:    2m18.947s
+2026-02-16T19:19:29.2356785Z Failed:    ironforge-rpg#check-types
+2026-02-16T19:19:29.2357291Z
+2026-02-16T19:19:29.3878711Z  WARNING  no output files found for task ironforge-factory-mcp#build. Please check your `outputs` key in `turbo.json`
+2026-02-16T19:19:29.3885871Z  WARNING  no output files found for task mcp-n8n#build. Please check your `outputs` key in `turbo.json`
+2026-02-16T19:19:29.3891491Z  ERROR  run failed: command  exited (2)
+2026-02-16T19:19:29.8634008Z ##[error]Process completed with exit code 2.
+2026-02-16T19:19:29.9048253Z Post job cleanup.
+2026-02-16T19:19:30.0592187Z Pruning is unnecessary.
+2026-02-16T19:19:30.0782134Z Post job cleanup.
+2026-02-16T19:19:30.1825007Z [command]/usr/bin/git version
+2026-02-16T19:19:30.1885615Z git version 2.52.0
+2026-02-16T19:19:30.1955118Z Temporarily overriding HOME='/home/runner/work/_temp/5167b104-52cd-4d89-8279-706b3df51c6c' before making global git config changes
+2026-02-16T19:19:30.1957171Z Adding repository directory to the temporary git global config as a safe directory
+2026-02-16T19:19:30.1961615Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/IronForge/IronForge
+2026-02-16T19:19:30.2001863Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-02-16T19:19:30.2040713Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-02-16T19:19:30.2358331Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-02-16T19:19:30.2383840Z http.https://github.com/.extraheader
+2026-02-16T19:19:30.2400573Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-02-16T19:19:30.2437429Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-02-16T19:19:30.2721048Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-02-16T19:19:30.3083261Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-02-16T19:19:30.3225668Z Cleaning up orphan processes

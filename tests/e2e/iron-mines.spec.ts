@@ -656,13 +656,13 @@ test.describe('Iron Mines - LiveSessionHUD Interactions', () => {
         await expect(toggleButton).toBeVisible();
 
         // Click to open
-        await toggleButton.click({ force: true });
+        await toggleButton.click();
 
         // Verify session list appears
         await expect(page.getByTestId('session-list')).toBeVisible();
 
         // Click again to close
-        await toggleButton.click({ force: true });
+        await toggleButton.click();
 
         // Verify session list disappears
         await expect(page.getByTestId('session-list')).toBeHidden();

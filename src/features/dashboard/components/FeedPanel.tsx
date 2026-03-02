@@ -1,6 +1,6 @@
 import React from "react";
 import { DashboardState, DashboardAction } from "../types";
-import { OracleVerdict } from "@/features/oracle/components/OracleVerdict";
+import OracleVerdict from "@/features/oracle/components/OracleVerdict";
 import OracleCard from "@/features/oracle/components/OracleCard";
 import { PushSubscriptionToggle } from "@/features/oracle/components/PushSubscriptionToggle";
 import { toast } from "@/components/ui/GameToast";

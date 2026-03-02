@@ -20,6 +20,6 @@ export const logger = pino({
     redact: ['req.headers.authorization', 'password', 'token'],
 });
 
-export const logError = (msg: string, error: unknown, context?: Record<string, unknown>) => {
+export const logError = (msg: string, error: any, context?: Record<string, any>) => {
     logger.error({ err: error, ...context }, msg);
 };

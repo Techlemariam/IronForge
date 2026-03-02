@@ -7,6 +7,7 @@ import {
     Code2,
     ShieldCheck,
     Rocket,
+    BrainCircuit,
     Zap,
     Cpu,
     Activity
@@ -95,7 +96,7 @@ export const FactoryRunConveyor: React.FC<FactoryRunConveyorProps> = ({ activeRu
                 {STAGES.map((stage, idx) => {
                     const isActive = activeStageIndex === idx;
                     const isCompleted = activeStageIndex > idx;
-                    const _isUpcoming = activeStageIndex < idx && activeStageIndex !== -1;
+                    const isUpcoming = activeStageIndex < idx && activeStageIndex !== -1;
 
                     return (
                         <div key={stage.id} className="relative z-10 flex flex-col items-center gap-4 flex-1">

@@ -9,9 +9,9 @@
 | **Framework** | Next.js (App Router) | 15.1+ | RSC standards, Streaming, Server Actions. |
 | **Core** | React | 19.0+ | Actions, `useFormStatus`, `useOptimistic`. |
 | **Language** | TypeScript | 5.0+ | Strict Mode required. No `any`. |
-| **Database** | Supabase (Local CLI) | Latest | Full local stack (GoTrue, PostgREST, Realtime). |
+| **Database** | PostgreSQL | Latest | Relational integrity for RPG data. |
 | **ORM** | Prisma | 6.0+ | Type-safe DB access. |
-| **Styling** | Tailwind CSS | 4.0 | Utility-first, v4 with @theme support. |
+| **Styling** | Tailwind CSS | 3.3+ | Utility-first, co-located styles. |
 | **UI Primitive** | shadcn/ui | Latest | Radix-based accessible components. |
 | **Validation** | Zod | 3.22+ | Runtime validation for ALL inputs. |
 
@@ -32,8 +32,6 @@ We utilize a semantic token system defined in `globals.css` to ensure consistenc
 | `clay` | `#c79c6e` | Classic UI, Parchment, Secondary Accents |
 | `venom` | `#22c55e` | Restoration, Set Items, Success States |
 | `crisis` | `#ef4444` | Failure, Cursed Items, Danger States |
-| `emerald-glow`| `#10b981` | Titan Bio-Data, High-Level Mastery |
-| `teal-glow`   | `#14b8a6` | Synthetic Neural Lattice, UI Accents |
 
 ---
 
@@ -75,13 +73,6 @@ src/
     └── adapter/          # External API Adapters (Strava/Hevy)
 ```
 
-### 2.1 UI Architecture (Container/Presenter)
-
-To ensure high testability (especially in tools like Storybook/Chromatic) and decouple data fetching from rendering, complex features follow the **Container/Presenter** pattern:
-
-- **Container (`DashboardClient.tsx`)**: Responsible for fetching data, managing `useActionState`, global Zustand stores, and complex side-effects. It handles all business logic.
-- **Presenter (`DashboardPresenter.tsx`)**: A pure, dumb component that strictly receives data via `props` and returns JSX. It handles all animations, styling, and visual logic, remaining completely devoid of network or database dependencies.
-
 ---
 
 ## 3. 🌊 Data Flow & Patterns
@@ -97,15 +88,15 @@ DO NOT create standard API Routes (`/pages/api` or `route.ts`) unless strictly n
 
 ### 3.2 React Server Components (RSC)
 
-- **Default:** All components are Server Components by default.
-- **Fetch:** Fetch data directly in the RSC using Prisma or Service.
-- **Client Boundary:** Use `'use client'` ONLY for interactivity (Inputs, Buttons, Hooks). Push Client Components down the tree ("Leaf Nodes").
+* **Default:** All components are Server Components by default.
+* **Fetch:** Fetch data directly in the RSC using Prisma or Service.
+* **Client Boundary:** Use `'use client'` ONLY for interactivity (Inputs, Buttons, Hooks). Push Client Components down the tree ("Leaf Nodes").
 
 ### 3.3 State Management
 
-- **Server State:** URL Search Params + Server Actions (revalidatePath).
-- **Global Client State:** Zustand (Use sparingly).
-- **Form State:** `useActionState` (React 19) or standard controlled inputs.
+* **Server State:** URL Search Params + Server Actions (revalidatePath).
+* **Global Client State:** Zustand (Use sparingly).
+* **Form State:** `useActionState` (React 19) or standard controlled inputs.
 
 ---
 
@@ -113,18 +104,18 @@ DO NOT create standard API Routes (`/pages/api` or `route.ts`) unless strictly n
 
 ### 4.1 Zero-Trust Input
 
-- **Never trust the client.**
-- Every Server Action must start with `props = schema.parse(input)`.
+* **Never trust the client.**
+* Every Server Action must start with `props = schema.parse(input)`.
 
 ### 4.2 Error Handling
 
-- **User Facing:** UI must handle errors gracefully (Toast notifications).
-- **System:** Log critical errors to Sentry (via `lib/logger` or direct import).
+* **User Facing:** UI must handle errors gracefully (Toast notifications).
+* **System:** Log critical errors to Sentry (via `lib/logger` or direct import).
 
 ### 4.3 Database Guardrails
 
-- **No "God Objects":** Avoid adding fields to `User` unless absolutely generic. Use specific tables (`UserMetrics`, `UserSettings`) linked by ID.
-- **Indexes:** Ensure foreign keys and frequently queried fields are indexed.
+* **No "God Objects":** Avoid adding fields to `User` unless absolutely generic. Use specific tables (`UserMetrics`, `UserSettings`) linked by ID.
+* **Indexes:** Ensure foreign keys and frequently queried fields are indexed.
 
 ---
 
@@ -144,26 +135,23 @@ IronForge treats physical training as the primary game engine. Progression is de
 
 ### 6.1 Training Paths (The Pillars)
 
-- **Purpose:** Defines the athlete's specialization (Juggernaut, Pathfinder, Warden).
-- **Logic:** Modifies combat stats, volume targets, and reward weights.
-- **Parallel Tracks:** "Passive Layers" (Mobility & Recovery) provide long-term risk reduction.
+* **Purpose:** Defines the athlete's specialization (Juggernaut, Pathfinder, Warden).
+* **Logic:** Modifies combat stats, volume targets, and reward weights.
+* **Parallel Tracks:** "Passive Layers" (Mobility & Recovery) provide long-term risk reduction.
 
 ### 6.2 Neural Lattice (Passive Mastery)
 
-- **Structure:** A PoE-inspired non-linear skill tree.
-- **Currencies:** Talent Points (TP) from action, Kinetic Shards (KS) from recovery.
-- **Gatekeeping:** Highly impactful "Keystones" define playstyles but come with significant trade-offs and physical prerequisites (e.g., 1RM targets).
+* **Structure:** A PoE-inspired non-linear skill tree.
+* **Currencies:** Talent Points (TP) from action, Kinetic Shards (KS) from recovery.
+* **Gatekeeping:** Highly impactful "Keystones" define playstyles but come with significant trade-offs and physical prerequisites (e.g., 1RM targets).
 
-### 6.3 Goal-Priority- [Identity & Persona](file:///c:/Users/alexa/Workspaces/IronForge/IDENTITY.md): Defines the core purpose and ethics of IronForge
+### 6.3 Goal-Priority Engine (The Brain)
 
-- [Secret Management Protocol](file:///c:/Users/alexa/Workspaces/IronForge/docs/SECRET_MANAGEMENT.md): Documentation on Doppler-first secret handling and token naming conventions.
-
-- [Daily Brief](file:///c:/Users/alexa/Workspaces/IronForge/DAILY_BRIEF.md): Tracks high-level progress.
- Macro-Phases (Build/Peak/Deload) to resolve interference.
-
-- **Tactical Layer:** `TrainingCalendar` generates week plans based on `DailyReadiness` and `ResourceBudget` (CNS/Metabolic/Muscular).
-- **Motivation:** Integrated "Motivation Engine" (Streaks, PvP, Progression Transparency) ensures adherence via psychological hooks.
-- **Bio-Safeguards:** Hard-coded triggers (ACWR, HRV, Sleep) enforce deloads regardless of user ambition.
+* **Strategy:** Replaces high-overhead AI with deterministic periodization focus.
+* **Mechanic:** Users declare & prioritize goals. Engine rotates Macro-Phases (Build/Peak/Deload) to resolve interference.
+* **Tactical Layer:** `TrainingCalendar` generates week plans based on `DailyReadiness` and `ResourceBudget` (CNS/Metabolic/Muscular).
+* **Motivation:** Integrated "Motivation Engine" (Streaks, PvP, Progression Transparency) ensures adherence via psychological hooks.
+* **Bio-Safeguards:** Hard-coded triggers (ACWR, HRV, Sleep) enforce deloads regardless of user ambition.
 
 ---
 
@@ -194,9 +182,9 @@ graph TD
 
 ### 8.3 Standard Workflows
 
-- **Health Check**: Triggered remotely to verify system status.
-- **Night Shift**: Autonomous maintenance (dependency updates, linting).
-- **Deploy**: Manual override for production deployments.
+* **Health Check**: Triggered remotely to verify system status.
+* **Night Shift**: Autonomous maintenance (dependency updates, linting).
+* **Deploy**: Manual override for production deployments.
 
 ---
 
@@ -211,49 +199,28 @@ IronForge implements a **Tiered CI/CD Architecture** to balance rapid developer 
 | **L1: Fast Feedback** | Logic & Syntax | Pull Request | `Lint`, `Type Check`, `Unit Tests` (Differential) | < 5m |
 | **L2: Verification** | Build & Smoke | Push to `main` | `Full Build`, `E2E Smoke`, `Perf Audit`, `DB Drift` | < 15m |
 | **L3: Assurance** | Security & Depth | Nightly (Cron) | `Exhaustive E2E`, `Snyk Security Audit`, `Sentry Hygiene` | Daily |
-| **🤖 Jules Mission** | AI-Agent Coding | Manual/Push | `Remote Code Execution`, `PR Feedback`, `Autonomous Fixes` | Async |
 
 ### 9.2 Security Auditing (Snyk)
 
 We use **Snyk** as our primary security gate in Layer 3.
 
-- **Coverage**: Scans 1st party code and 3rd party dependencies.
-- **Enforcement**: Integrated into `nightly-maintenance.yml`.
-- **Reporting**: Results are logged to the GitHub Security tab and workflow summaries.
+* **Coverage**: Scans 1st party code and 3rd party dependencies.
+* **Enforcement**: Integrated into `nightly-maintenance.yml`.
+* **Reporting**: Results are logged to the GitHub Security tab and workflow summaries.
 
 ### 9.3 Deployment (Coolify)
 
-- **Production**: Publishing a GitHub Release triggers a Coolify webhook via `coolify-deploy.yml`. Manual deploys can also be triggered via `workflow_dispatch`.
-- **Infrastructure**: Hosted on Hetzner VPS (managed via Tailscale).
-- **Rollbacks**: Automated via Sentry alerts (`sentry-rollback.yml`) if error rates spike.
+* **Production**: Merges to `main` that pass Tier L2 verification automatically trigger a Coolify webhook.
+* **Infrastructure**: Hosted on Hetzner VPS (managed via Tailscale).
+* **Rollbacks**: Automated via Sentry alerts (`sentry-rollback.yml`) if error rates spike.
 
 ### 9.4 Titan-Tier Governance (10/10)
 
 The CI/CD pipeline is **self-healing** and enforced via automated governance.
 
-- **Workflow Linter**: The `governance-guard.yml` workflow audits all PRs to ensure environment parity (Node 22, pnpm 9, `actions/checkout@v4`).
-- **Modular Setup**: All workflows use `uses: ./.github/actions/setup-ironforge` to ensure a single source of truth for repository initialization.
-- **Pre-flight Validation**: Critical flows include a `pre-flight` job (`validate-secrets.ps1`) that fails fast if required environment secrets are missing, preventing redundant runner usage.
+* **Workflow Linter**: The `governance-guard.yml` workflow audits all PRs to ensure environment parity (Node 22, pnpm 9, `actions/checkout@v4`).
+* **Modular Setup**: All workflows use `uses: ./.github/actions/setup-ironforge` to ensure a single source of truth for repository initialization.
+* **Pre-flight Validation**: Critical flows include a `pre-flight` job (`validate-secrets.ps1`) that fails fast if required environment secrets are missing, preventing redundant runner usage.
 
 > [!IMPORTANT]
 > Always verify that `pnpm agent:verify` passes locally before pushing. This command runs a hybrid L1/L2 check.
-
----
-
-## 10. 📹 Remotion Programmatic Video
-
-Programmatic video is a core component of the IronForge sharing ecosystem, enabling players to export high-quality, data-driven clips of their workouts and PvP duels.
-
-### 10.1 Core Concepts
-
-- **Framework**: `remotion` (React-based programmatic video).
-- **Location**: All video-related code is co-located in `src/remotion/`.
-- **Compositions**: Video templates are defined as `Composition` components in the `Root.tsx` file.
-- **Data Hydration**: Video components accept strictly typed data objects via `defaultProps` and `getInputProps()`, ensuring safe generation pipelines in CI and on the backend.
-
-### 10.2 Workflow / Pipeline
-
-1. **User Action**: The user completes an activity (e.g., Weekly Recap, Titan Level-up).
-2. **Data Assembly**: The UI queries the `TitanService` and compiles the necessary video properties (`fps`, `durationInFrames`, and the payload).
-3. **Render Initiation**: Triggering a share calls a dedicated Server Action or Next.js route that leverages `@remotion/lambda` (in production) to render the video.
-4. **Delivery**: The resulting MP4 is uploaded to the CDN and served to the user for social media sharing.

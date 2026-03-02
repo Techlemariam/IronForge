@@ -44,8 +44,7 @@ export function useUser() {
                 if (authUser && mounted) {
                     // Fetch stats (heroName) from server action
                     // Note: getUserStatsAction internal logic uses authUser.id to find public.User
-                    const res = await getUserStatsAction();
-                    const stats = res?.data;
+                    const stats = await getUserStatsAction();
 
                     setUser({
                         id: authUser.id,

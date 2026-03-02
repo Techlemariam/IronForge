@@ -1,7 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { getProgressionAction, awardGoldAction } from "@/actions/progression/core";
 import { ProgressionService } from "@/services/progression";
-import { createClient } from "@/utils/supabase/server";
 
 // Mock dependencies
 vi.mock("@/services/progression", () => ({

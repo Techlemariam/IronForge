@@ -1,0 +1,590 @@
+🗄️ DB Guard	UNKNOWN STEP	﻿2026-02-16T18:04:08.6150227Z Current runner version: '2.331.0'
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:08.6188215Z ##[group]Runner Image Provisioner
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:08.6189609Z Hosted Compute Agent
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:08.6190846Z Version: 20260123.484
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:08.6192130Z Commit: 6bd6555ca37d84114959e1c76d2c01448ff61c5d
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:08.6193429Z Build Date: 2026-01-23T19:41:17Z
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:08.6194565Z Worker ID: {ab0cd365-4332-4a88-9d01-49739b173760}
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:08.6195990Z Azure Region: westus
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:08.6197047Z ##[endgroup]
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:08.6199457Z ##[group]Operating System
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:08.6200900Z Ubuntu
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:08.6201740Z 24.04.3
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:08.6202725Z LTS
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:08.6203652Z ##[endgroup]
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:08.6204712Z ##[group]Runner Image
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:08.6205928Z Image: ubuntu-24.04
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:08.6206892Z Version: 20260209.23.1
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:08.6209140Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260209.23/images/ubuntu/Ubuntu2404-Readme.md
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:08.6212165Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260209.23
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:08.6214039Z ##[endgroup]
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:08.6216051Z ##[group]GITHUB_TOKEN Permissions
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:08.6218919Z Contents: read
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:08.6220251Z Metadata: read
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:08.6221196Z Packages: read
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:08.6222225Z ##[endgroup]
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:08.6225413Z Secret source: Actions
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:08.6226689Z Prepare workflow directory
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:08.7266513Z Prepare all required actions
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:08.7324265Z Getting action download info
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:09.2736196Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:09.3965825Z Download action repository 'pnpm/action-setup@v4' (SHA:41ff72655975bd51cab0327fa583b6e92b6d3061)
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:10.1647670Z Download action repository 'actions/setup-node@v6' (SHA:6044e13b5dc448c55e2357c09f80417699197238)
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:10.3613691Z Complete job name: 🗄️ DB Guard
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:10.4076290Z ##[group]Checking docker version
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:10.4090104Z ##[command]/usr/bin/docker version --format '{{.Server.APIVersion}}'
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:10.5024417Z '1.52'
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:10.5039582Z Docker daemon API version: '1.52'
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:10.5041517Z ##[command]/usr/bin/docker version --format '{{.Client.APIVersion}}'
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:10.5220182Z '1.52'
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:10.5234278Z Docker client API version: '1.52'
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:10.5241086Z ##[endgroup]
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:10.5244172Z ##[group]Clean up resources from previous jobs
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:10.5250892Z ##[command]/usr/bin/docker ps --all --quiet --no-trunc --filter "label=553acc"
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:10.5429039Z ##[command]/usr/bin/docker network prune --force --filter "label=553acc"
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:10.5577198Z ##[endgroup]
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:10.5577825Z ##[group]Create local container network
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:10.5589196Z ##[command]/usr/bin/docker network create --label 553acc github_network_3f2400ebc0a54b789ca98cb31ccda07f
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:10.6227579Z 2a226982983ad5ff1403ca7d6e1ae35fd07c27466e044e0d8233674fe2de3964
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:10.6254353Z ##[endgroup]
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:10.6305681Z ##[group]Starting postgres service container
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:10.6335542Z ##[command]/usr/bin/docker pull postgres:15
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:11.3828025Z 15: Pulling from library/postgres
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:11.6586296Z 0c8d55a45c0d: Pulling fs layer
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:11.6587949Z 49b40a0a623d: Pulling fs layer
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:11.6589430Z 03cf9c337134: Pulling fs layer
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:11.6591336Z d64dbdf800a2: Pulling fs layer
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:11.6598061Z e60549838c5a: Pulling fs layer
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:11.6599870Z c50a02fe2f5f: Pulling fs layer
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:11.6601436Z 0ace4c983c3e: Pulling fs layer
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:11.6602930Z b64f280cfa2b: Pulling fs layer
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:11.6604581Z ea5e741a30ce: Pulling fs layer
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:11.6610949Z 049b2237836a: Pulling fs layer
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:11.6615585Z 6771773ef0da: Pulling fs layer
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:11.6623227Z 2710e764d89a: Pulling fs layer
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:11.6629067Z 7aa308802868: Pulling fs layer
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:11.6632258Z 7b098c79e38c: Pulling fs layer
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:11.8654918Z 49b40a0a623d: Download complete
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:11.8661099Z d64dbdf800a2: Download complete
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:11.9955214Z 6771773ef0da: Download complete
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:12.0092878Z 7b098c79e38c: Download complete
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:12.0202303Z 7aa308802868: Download complete
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:12.0245761Z 03cf9c337134: Download complete
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:12.0411636Z b64f280cfa2b: Download complete
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:12.0460493Z ea5e741a30ce: Download complete
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:12.0526105Z 049b2237836a: Download complete
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:12.0873463Z 2710e764d89a: Download complete
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:12.0903404Z 0ace4c983c3e: Download complete
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:12.1640778Z c50a02fe2f5f: Download complete
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:12.2643115Z 99548d060f18: Download complete
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:12.2654200Z 0c8d55a45c0d: Download complete
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:12.2664297Z 45604b1409ee: Download complete
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:13.5622421Z e60549838c5a: Download complete
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:13.9723887Z 0c8d55a45c0d: Pull complete
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:14.0667666Z 03cf9c337134: Pull complete
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:14.3633025Z d64dbdf800a2: Pull complete
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:14.3692155Z 2710e764d89a: Pull complete
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:14.6667282Z 0ace4c983c3e: Pull complete
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:14.6672688Z c50a02fe2f5f: Pull complete
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:14.7656522Z b64f280cfa2b: Pull complete
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:14.7668215Z ea5e741a30ce: Pull complete
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:17.2618638Z 49b40a0a623d: Pull complete
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:17.2627731Z 6771773ef0da: Pull complete
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:17.2635924Z 7b098c79e38c: Pull complete
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:17.2643211Z 7aa308802868: Pull complete
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:17.2653306Z 049b2237836a: Pull complete
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:17.2658853Z e60549838c5a: Pull complete
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:17.2775525Z Digest: sha256:dafc4d8e8369da730a5ee9a320a0f0b3c6aa516f41244689c4493a27dc84472d
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:17.2776367Z Status: Downloaded newer image for postgres:15
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:17.2786775Z docker.io/library/postgres:15
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:17.2858705Z ##[command]/usr/bin/docker create --name 45e8c7290b894b698eabc8b0b238d715_postgres15_30900f --label 553acc --network github_network_3f2400ebc0a54b789ca98cb31ccda07f --network-alias postgres -p 5432:5432 --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5 -e "POSTGRES_PASSWORD=password" -e "POSTGRES_DB=ironforge_test" -e GITHUB_ACTIONS=true -e CI=true postgres:15
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:20.6696684Z 3373502bfb0ccfef71075a93e627621f7e5b4a430b2a6d5ae9860316f5254dd9
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:20.6725161Z ##[command]/usr/bin/docker start 3373502bfb0ccfef71075a93e627621f7e5b4a430b2a6d5ae9860316f5254dd9
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:20.8999403Z 3373502bfb0ccfef71075a93e627621f7e5b4a430b2a6d5ae9860316f5254dd9
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:20.9053117Z ##[command]/usr/bin/docker ps --all --filter id=3373502bfb0ccfef71075a93e627621f7e5b4a430b2a6d5ae9860316f5254dd9 --filter status=running --no-trunc --format "{{.ID}} {{.Status}}"
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:20.9469559Z 3373502bfb0ccfef71075a93e627621f7e5b4a430b2a6d5ae9860316f5254dd9 Up Less than a second (health: starting)
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:20.9535218Z ##[command]/usr/bin/docker port 3373502bfb0ccfef71075a93e627621f7e5b4a430b2a6d5ae9860316f5254dd9
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:20.9751154Z 5432/tcp -> 0.0.0.0:5432
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:20.9756581Z 5432/tcp -> [::]:5432
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:20.9836933Z ##[endgroup]
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:20.9849465Z ##[group]Waiting for all services to be ready
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:20.9868584Z ##[command]/usr/bin/docker inspect --format="{{if .Config.Healthcheck}}{{print .State.Health.Status}}{{end}}" 3373502bfb0ccfef71075a93e627621f7e5b4a430b2a6d5ae9860316f5254dd9
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:21.0123791Z starting
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:21.0168456Z postgres service is starting, waiting 2 seconds before checking again.
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:23.0169216Z ##[command]/usr/bin/docker inspect --format="{{if .Config.Healthcheck}}{{print .State.Health.Status}}{{end}}" 3373502bfb0ccfef71075a93e627621f7e5b4a430b2a6d5ae9860316f5254dd9
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:23.0315303Z starting
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:23.0332388Z postgres service is starting, waiting 4 seconds before checking again.
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:27.2867075Z ##[command]/usr/bin/docker inspect --format="{{if .Config.Healthcheck}}{{print .State.Health.Status}}{{end}}" 3373502bfb0ccfef71075a93e627621f7e5b4a430b2a6d5ae9860316f5254dd9
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:27.3048751Z starting
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:27.3065748Z postgres service is starting, waiting 7 seconds before checking again.
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.3682970Z ##[command]/usr/bin/docker inspect --format="{{if .Config.Healthcheck}}{{print .State.Health.Status}}{{end}}" 3373502bfb0ccfef71075a93e627621f7e5b4a430b2a6d5ae9860316f5254dd9
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.3833489Z healthy
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.3851039Z postgres service is healthy.
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.3851916Z ##[endgroup]
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.4187274Z ##[group]Run actions/checkout@v4
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.4187815Z with:
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.4188034Z   repository: Techlemariam/IronForge
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.4188484Z   token: ***
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.4188679Z   ssh-strict: true
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.4188865Z   ssh-user: git
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.4189068Z   persist-credentials: true
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.4189292Z   clean: true
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.4189492Z   sparse-checkout-cone-mode: true
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.4189926Z   fetch-depth: 1
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.4190115Z   fetch-tags: false
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.4190309Z   show-progress: true
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.4190499Z   lfs: false
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.4190674Z   submodules: false
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.4190871Z   set-safe-directory: true
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.4191306Z env:
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.4191968Z   DATABASE_URL: ***
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.4192572Z   DIRECT_URL: ***
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.4192896Z   NEXT_PUBLIC_SUPABASE_URL: ***
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.4194155Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.4194456Z   SKIP_ENV_VALIDATION: true
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.4194669Z ##[endgroup]
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.5358172Z Syncing repository: Techlemariam/IronForge
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.5366564Z ##[group]Getting Git version info
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.5367466Z Working directory is '/home/runner/work/IronForge/IronForge'
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.5377794Z [command]/usr/bin/git version
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.5390052Z git version 2.52.0
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.5417968Z ##[endgroup]
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.5434889Z Temporarily overriding HOME='/home/runner/work/_temp/56466f04-3abc-46cf-a192-60fa321df5d1' before making global git config changes
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.5438041Z Adding repository directory to the temporary git global config as a safe directory
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.5442363Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/IronForge/IronForge
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.5484583Z Deleting the contents of '/home/runner/work/IronForge/IronForge'
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.5489454Z ##[group]Initializing the repository
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.5495193Z [command]/usr/bin/git init /home/runner/work/IronForge/IronForge
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.5596256Z hint: Using 'master' as the name for the initial branch. This default branch name
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.5601411Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.5602687Z hint: to use in all of your new repositories, which will suppress this warning,
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.5605874Z hint: call:
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.5606193Z hint:
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.5606626Z hint: 	git config --global init.defaultBranch <name>
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.5607203Z hint:
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.5607740Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.5608675Z hint: 'development'. The just-created branch can be renamed via this command:
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.5609386Z hint:
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.5621115Z hint: 	git branch -m <name>
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.5621588Z hint:
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.5622195Z hint: Disable this message with "git config set advice.defaultBranchName false"
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.5623152Z Initialized empty Git repository in /home/runner/work/IronForge/IronForge/.git/
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.5625198Z [command]/usr/bin/git remote add origin https://github.com/Techlemariam/IronForge
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.5661414Z ##[endgroup]
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.5662629Z ##[group]Disabling automatic garbage collection
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.5664756Z [command]/usr/bin/git config --local gc.auto 0
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.5698676Z ##[endgroup]
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.5701264Z ##[group]Setting up auth
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.5707886Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.5744945Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.6123595Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.6160077Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.6420431Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.6457074Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.6724925Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.6764719Z ##[endgroup]
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.6765758Z ##[group]Fetching the repository
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:34.6776340Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +2e67c677465d3967e18fd8ec9fe4c26e3c3ac01b:refs/remotes/pull/196/merge
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:35.5800400Z From https://github.com/Techlemariam/IronForge
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:35.5801240Z  * [new ref]         2e67c677465d3967e18fd8ec9fe4c26e3c3ac01b -> pull/196/merge
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:35.5837797Z ##[endgroup]
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:35.5838644Z ##[group]Determining the checkout info
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:35.5840589Z ##[endgroup]
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:35.5847943Z [command]/usr/bin/git sparse-checkout disable
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:35.5897549Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:35.5931270Z ##[group]Checking out the ref
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:35.5934856Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/196/merge
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:35.7715737Z Note: switching to 'refs/remotes/pull/196/merge'.
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:35.7719010Z
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:35.7722141Z You are in 'detached HEAD' state. You can look around, make experimental
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:35.7722999Z changes and commit them, and you can discard any commits you make in this
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:35.7723777Z state without impacting any branches by switching back to a branch.
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:35.7724275Z
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:35.7724567Z If you want to create a new branch to retain commits you create, you may
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:35.7725359Z do so (now or later) by using -c with the switch command. Example:
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:35.7725794Z
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:35.7725952Z   git switch -c <new-branch-name>
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:35.7726230Z
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:35.7726383Z Or undo this operation with:
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:35.7726636Z
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:35.7726766Z   git switch -
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:35.7727068Z
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:35.7727422Z Turn off this advice by setting config variable advice.detachedHead to false
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:35.7727940Z
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:35.7728554Z HEAD is now at 2e67c67 Merge d09ce0ad6ab782d2ff5da6f7e4e57473a286a555 into f7b6ef9ea5d3ed2f00be428fa32007c39d8624ce
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:35.7744864Z ##[endgroup]
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:35.7789185Z [command]/usr/bin/git log -1 --format=%H
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:35.7815133Z 2e67c677465d3967e18fd8ec9fe4c26e3c3ac01b
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:35.8009072Z ##[group]Run pnpm/action-setup@v4
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:35.8009356Z with:
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:35.8009540Z   dest: ~/setup-pnpm
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:35.8010058Z   run_install: null
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:35.8010462Z   package_json_file: package.json
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:35.8010704Z   standalone: false
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:35.8010890Z env:
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:35.8011651Z   DATABASE_URL: ***
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:35.8012225Z   DIRECT_URL: ***
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:35.8012550Z   NEXT_PUBLIC_SUPABASE_URL: ***
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:35.8013823Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:35.8014088Z   SKIP_ENV_VALIDATION: true
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:35.8014305Z ##[endgroup]
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:35.8578365Z ##[group]Running self-installer...
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:36.4561663Z Progress: resolved 1, reused 0, downloaded 0, added 0
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:36.4687306Z Packages: +1
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:36.4688052Z +
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:36.9156843Z Progress: resolved 1, reused 0, downloaded 1, added 1, done
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:36.9472808Z
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:36.9473412Z dependencies:
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:36.9473795Z + pnpm 9.15.0 (10.29.3 is available)
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:36.9474072Z
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:36.9509302Z Done in 898ms
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:36.9666191Z ##[endgroup]
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:36.9672344Z Installation Completed!
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:36.9795145Z ##[group]Run actions/setup-node@v6
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:36.9795414Z with:
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:36.9795601Z   node-version: 22
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:36.9795802Z   cache: pnpm
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:36.9795992Z   check-latest: false
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:36.9796304Z   token: ***
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:36.9796510Z   package-manager-cache: true
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:36.9796740Z env:
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:36.9797367Z   DATABASE_URL: ***
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:36.9797926Z   DIRECT_URL: ***
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:36.9798246Z   NEXT_PUBLIC_SUPABASE_URL: ***
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:36.9799513Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:36.9800149Z   SKIP_ENV_VALIDATION: true
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:36.9800453Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:36.9800750Z ##[endgroup]
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:37.1200660Z Found in cache @ /opt/hostedtoolcache/node/22.22.0/x64
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:37.1202241Z ##[group]Environment details
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:37.5375419Z node: v22.22.0
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:37.5381338Z npm: 10.9.4
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:37.5381730Z yarn: 1.22.22
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:37.5383419Z ##[endgroup]
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:37.5401989Z [command]/home/runner/setup-pnpm/node_modules/.bin/pnpm store path --silent
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:37.9643095Z /home/runner/setup-pnpm/node_modules/.bin/store/v3
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:38.2323678Z pnpm cache is not found
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:38.2462813Z ##[group]Run pnpm install --frozen-lockfile
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:38.2463230Z [36;1mpnpm install --frozen-lockfile[0m
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:38.2524561Z shell: /usr/bin/bash -e {0}
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:38.2524820Z env:
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:38.2525714Z   DATABASE_URL: ***
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:38.2526320Z   DIRECT_URL: ***
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:38.2526652Z   NEXT_PUBLIC_SUPABASE_URL: ***
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:38.2527989Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:38.2528261Z   SKIP_ENV_VALIDATION: true
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:38.2528544Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:38.2528848Z ##[endgroup]
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:38.7607321Z Scope: all 4 workspace projects
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:38.8775784Z Lockfile is up to date, resolution step is skipped
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:39.0721002Z Progress: resolved 1, reused 0, downloaded 0, added 0
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:39.3528374Z Packages: +1672
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:39.3529103Z ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:40.0709365Z Progress: resolved 1672, reused 0, downloaded 13, added 0
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:41.0718111Z Progress: resolved 1672, reused 0, downloaded 118, added 107
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:42.0777047Z Progress: resolved 1672, reused 0, downloaded 245, added 233
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:43.0778342Z Progress: resolved 1672, reused 0, downloaded 275, added 263
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:44.0783287Z Progress: resolved 1672, reused 0, downloaded 298, added 285
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:45.0801718Z Progress: resolved 1672, reused 0, downloaded 392, added 379
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:46.0804020Z Progress: resolved 1672, reused 0, downloaded 420, added 409
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:47.0808704Z Progress: resolved 1672, reused 0, downloaded 482, added 472
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:48.0809063Z Progress: resolved 1672, reused 0, downloaded 568, added 556
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:49.0809182Z Progress: resolved 1672, reused 0, downloaded 621, added 614
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:50.0922050Z Progress: resolved 1672, reused 0, downloaded 672, added 664
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:51.0918576Z Progress: resolved 1672, reused 0, downloaded 684, added 673
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:52.6526676Z Progress: resolved 1672, reused 0, downloaded 685, added 673
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:53.6542668Z Progress: resolved 1672, reused 0, downloaded 692, added 680
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:54.6549084Z Progress: resolved 1672, reused 0, downloaded 704, added 691
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:55.6580937Z Progress: resolved 1672, reused 0, downloaded 740, added 734
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:56.6577206Z Progress: resolved 1672, reused 0, downloaded 756, added 742
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:57.6594021Z Progress: resolved 1672, reused 0, downloaded 845, added 843
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:58.6598908Z Progress: resolved 1672, reused 0, downloaded 903, added 892
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:04:59.6593679Z Progress: resolved 1672, reused 0, downloaded 967, added 968
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:00.6602092Z Progress: resolved 1672, reused 0, downloaded 1047, added 1035
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:01.6596585Z Progress: resolved 1672, reused 0, downloaded 1155, added 1154
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:02.6604413Z Progress: resolved 1672, reused 0, downloaded 1225, added 1219
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:03.6609068Z Progress: resolved 1672, reused 0, downloaded 1379, added 1371
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:04.6622978Z Progress: resolved 1672, reused 0, downloaded 1500, added 1487
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:05.6627231Z Progress: resolved 1672, reused 0, downloaded 1596, added 1587
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:06.6631595Z Progress: resolved 1672, reused 0, downloaded 1627, added 1614
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:07.6640712Z Progress: resolved 1672, reused 0, downloaded 1655, added 1646
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:07.9702185Z Progress: resolved 1672, reused 0, downloaded 1670, added 1672, done
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:08.6945232Z .../node_modules/@prisma/engines postinstall$ node scripts/postinstall.js
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:08.7132810Z .../sharp@0.34.5/node_modules/sharp install$ node install/check.js || npm run build
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:08.7143899Z .../node_modules/msw postinstall$ node -e "import('./config/scripts/postinstall.js').catch(() => void 0)"
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:08.7154281Z .../esbuild@0.25.0/node_modules/esbuild postinstall$ node install.js
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:08.7331222Z .../node_modules/unrs-resolver postinstall$ napi-postinstall unrs-resolver 1.11.1 check
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:08.8651730Z .../node_modules/msw postinstall: Done
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:08.8873762Z .../esbuild@0.25.0/node_modules/esbuild postinstall: Done
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:08.9425580Z .../sharp@0.34.5/node_modules/sharp install: Done
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:08.9477040Z .../node_modules/unrs-resolver postinstall: Done
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:08.9932306Z .../node_modules/protobufjs postinstall$ node scripts/postinstall
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:09.0560025Z .../node_modules/@sentry/cli postinstall$ node ./scripts/install.js
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:09.1177461Z .../node_modules/protobufjs postinstall: Done
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:09.2140876Z .../node_modules/@sentry/cli postinstall: Done
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:09.5362470Z .../node_modules/@prisma/engines postinstall: Done
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:09.6135505Z .../node_modules/prisma preinstall$ node scripts/preinstall-entry.js
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:09.6612404Z .../node_modules/prisma preinstall: Done
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0289870Z
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0290450Z dependencies:
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0291038Z + @ai-sdk/google 3.0.26
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0291549Z + @ai-sdk/react 3.0.84
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0291988Z + @capacitor/android 8.1.0
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0292435Z + @capacitor/cli 8.1.0
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0292856Z + @capacitor/core 8.1.0
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0293437Z + @google/genai 1.41.0
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0293919Z + @mediapipe/tasks-vision 0.10.32
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0294649Z + @neondatabase/serverless 1.0.2
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0295300Z + @prisma/adapter-neon 7.4.0
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0296173Z + @prisma/adapter-pg 7.4.0
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0320513Z + @prisma/client 7.4.0
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0335980Z + @radix-ui/react-avatar 1.1.11
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0400411Z + @radix-ui/react-dialog 1.1.15
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0401304Z + @radix-ui/react-label 2.1.8
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0403514Z + @radix-ui/react-popover 1.1.15
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0404405Z + @radix-ui/react-progress 1.1.8
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0406498Z + @radix-ui/react-scroll-area 1.2.10
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0408557Z + @radix-ui/react-select 2.2.6
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0409265Z + @radix-ui/react-slider 1.3.6
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0411014Z + @radix-ui/react-slot 1.2.4
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0412576Z + @radix-ui/react-tabs 1.1.13
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0413366Z + @react-three/drei 10.7.7
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0414122Z + @react-three/fiber 9.5.0
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0414851Z + @remotion/cli 4.0.421
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0420675Z + @sentry/nextjs 10.38.0
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0421059Z + @serwist/next 9.5.5
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0421405Z + @supabase/ssr 0.8.0
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0421792Z + @supabase/supabase-js 2.95.3
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0422262Z + @types/canvas-confetti 1.9.0
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0422645Z + @types/howler 2.2.12
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0422996Z + @types/web-push 3.6.4
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0423313Z + ai 6.0.82
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0423587Z + axios 1.13.5
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0423905Z + canvas-confetti 1.9.4
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0424323Z + class-variance-authority 0.7.1
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0424712Z + clsx 2.1.1
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0425001Z + date-fns 4.1.0
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0425342Z + framer-motion 12.34.0
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0425680Z + h3-js 4.4.0
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0425966Z + howler 2.2.4
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0426295Z + import-in-the-middle 3.0.0
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0426691Z + lucide-react 0.563.0
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0427040Z + maplibre-gl 5.18.0
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0427340Z + next 16.1.6
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0427615Z + pg 8.18.0
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0427877Z + pino 10.3.1
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0428174Z + pino-pretty 13.1.3
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0428500Z + qrcode.react 4.2.0
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0428805Z + react 19.2.4
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0429112Z + react-dom 19.2.4
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0429442Z + react-dropzone 15.0.0
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0429977Z + react-player 3.4.0
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0430305Z + reactflow 11.11.4
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0430600Z + recharts 3.7.0
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0430913Z + remotion 4.0.421
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0431265Z + require-in-the-middle 8.0.1
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0431916Z + serwist 9.5.5
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0432210Z + sonner 2.0.7
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0432523Z + tailwind-merge 3.4.0
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0432884Z + tailwindcss-animate 1.0.7
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0433220Z + three 0.182.0
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0433498Z + web-push 3.6.7
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0433778Z + zod 4.3.6
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0434042Z + zustand 5.0.11
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0434232Z
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0434356Z devDependencies:
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0434742Z + @chromatic-com/storybook 5.0.1
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0435148Z + @eslint/compat 2.0.2
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0435498Z + @eslint/eslintrc 3.3.3
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0435836Z + @lhci/cli 0.15.1
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0436182Z + @playwright/test 1.58.2
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0436596Z + @storybook/addon-a11y 10.2.8
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0437028Z + @storybook/addon-docs 10.2.8
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0437475Z + @storybook/addon-onboarding 10.2.8
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0437939Z + @storybook/addon-vitest 10.2.8
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0438390Z + @storybook/nextjs-vite 10.2.8
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0438785Z + @tailwindcss/postcss 4.1.18
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0439205Z + @testing-library/dom 10.4.1
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0439639Z + @testing-library/react 16.3.2
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0490229Z + @types/geojson 7946.0.16
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0490614Z + @types/node 25.2.3
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0490938Z + @types/pg 8.16.0
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0491246Z + @types/react 19.2.14
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0491587Z + @types/react-dom 19.2.3
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0491933Z + @types/three 0.182.0
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0492277Z + @types/web-bluetooth 0.0.21
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0492632Z + @types/ws 8.18.1
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0493031Z + @typescript-eslint/eslint-plugin 8.55.0
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0493801Z + @typescript-eslint/parser 8.55.0
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0494292Z + @vitejs/plugin-react 5.1.4
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0494735Z + @vitest/browser-playwright 4.0.18
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0495157Z + @vitest/coverage-v8 4.0.18
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0495524Z + autoprefixer 10.4.24
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0495864Z + chromatic 15.1.0
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0496168Z + dotenv 17.2.4
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0496511Z + dotenv-cli 11.0.0
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0496817Z + eslint 10.0.0
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0497158Z + eslint-config-next 16.1.6
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0497618Z + eslint-plugin-storybook 10.2.8
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0497989Z + husky 9.1.7
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0498261Z + jsdom 28.0.0
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0498548Z + magicast 0.5.2
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0498836Z + msw 2.12.10
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0499140Z + playwright 1.58.2
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0499455Z + postcss 8.5.6
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0507322Z + prisma 7.4.0
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0507666Z + storybook 10.2.8
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0508002Z + tailwindcss 4.1.18
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0508337Z + tsx 4.21.0
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0508611Z + turbo 2.8.7
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0508916Z + typedoc 0.28.16
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0509314Z + typedoc-plugin-markdown 4.10.0
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0509895Z + typescript 5.9.3
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0510207Z + vite 7.3.1
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0510484Z + vitest 4.0.18
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0510774Z + ws 8.19.0
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.0510937Z
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:10.1328321Z . postinstall$ prisma generate
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:11.1891313Z . postinstall: Loaded Prisma config from prisma.config.ts.
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:11.3574190Z . postinstall: Prisma schema loaded from prisma/schema.prisma.
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:11.3705101Z . postinstall: warn Preview feature "driverAdapters" is deprecated. The functionality can be used without specifying it as a preview feature.
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:12.7641305Z . postinstall: ✔ Generated Prisma Client (v7.4.0) to ./node_modules/.pnpm/@prisma+client@7.4.0_prisma@7.4.0_@types+react@19.2.14_magicast@0.5.2_react-dom@19.2.4_react@_kbihlyeorb7my7bafhyofzhtla/node_modules/@prisma/client in 826ms
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:12.7656281Z . postinstall: Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:12.7896097Z . postinstall: Done
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:12.7899138Z . prepare$ husky
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:12.8431011Z . prepare: Done
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:12.8444909Z Done in 34.5s
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:12.8996287Z ##[group]Run PGPASSWORD=password psql -h localhost -U postgres -c "CREATE DATABASE ironforge_shadow;"
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:12.8997051Z [36;1mPGPASSWORD=password psql -h localhost -U postgres -c "CREATE DATABASE ironforge_shadow;"[0m
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:12.9047079Z shell: /usr/bin/bash -e {0}
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:12.9047324Z env:
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:12.9048055Z   DATABASE_URL: ***
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:12.9048664Z   DIRECT_URL: ***
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:12.9048997Z   NEXT_PUBLIC_SUPABASE_URL: ***
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:12.9050751Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:12.9051035Z   SKIP_ENV_VALIDATION: true
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:12.9051325Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:12.9051654Z ##[endgroup]
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:13.0419640Z CREATE DATABASE
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:13.0475783Z ##[group]Run npx prisma migrate diff \
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:13.0476130Z [36;1mnpx prisma migrate diff \[0m
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:13.0476434Z [36;1m  --from-migrations prisma/migrations \[0m
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:13.0476759Z [36;1m  --to-schema prisma/schema.prisma \[0m
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:13.0477027Z [36;1m  --exit-code[0m
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:13.0527330Z shell: /usr/bin/bash -e {0}
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:13.0527574Z env:
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:13.0528048Z   DATABASE_URL: ***localhost:5432/ironforge_test?schema=public
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:13.0528766Z   DIRECT_URL: ***
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:13.0529099Z   NEXT_PUBLIC_SUPABASE_URL: ***
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:13.0530735Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:13.0531023Z   SKIP_ENV_VALIDATION: true
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:13.0531306Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:13.0531856Z   SHADOW_DATABASE_URL: ***localhost:5432/ironforge_shadow?schema=public
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:13.0532413Z ##[endgroup]
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:15.0714063Z Loaded Prisma config from prisma.config.ts.
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:15.0715062Z
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:15.8987779Z
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:15.8988619Z [+] Added tables
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:15.8990912Z   - TerritoryContest
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:15.9001970Z
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:15.9002518Z [*] Changed the `Guild` table
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:15.9004863Z   [+] Added column `gold`
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:15.9005117Z
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:15.9005344Z [*] Changed the `Territory` table
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:15.9005901Z   [+] Added unique index on columns (name)
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:15.9006233Z
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:15.9006504Z [*] Changed the `TerritoryContest` table
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:15.9007047Z   [+] Added index on columns (territoryId)
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:15.9007566Z   [+] Added index on columns (attackerId)
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:15.9008148Z   [+] Added foreign key on columns (territoryId)
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:15.9008698Z   [+] Added foreign key on columns (attackerId)
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:15.9009316Z   [+] Added foreign key on columns (defenderId)
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:15.9621862Z ##[error]Process completed with exit code 2.
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:15.9686116Z Post job cleanup.
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.0242065Z Pruning is unnecessary.
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.0348042Z Post job cleanup.
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.1346554Z [command]/usr/bin/git version
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.1390256Z git version 2.52.0
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.1439542Z Temporarily overriding HOME='/home/runner/work/_temp/f40d9b85-3c03-478f-b7ef-e0ce5f7a4154' before making global git config changes
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.1441792Z Adding repository directory to the temporary git global config as a safe directory
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.1459403Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/IronForge/IronForge
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.1500384Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.1538980Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.1896739Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.1958268Z http.https://github.com/.extraheader
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.1968508Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.2019423Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.2408598Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.2460536Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.2847814Z Print service container logs: 45e8c7290b894b698eabc8b0b238d715_postgres15_30900f
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.2852846Z ##[command]/usr/bin/docker logs --details 3373502bfb0ccfef71075a93e627621f7e5b4a430b2a6d5ae9860316f5254dd9
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3000986Z  initdb: warning: enabling "trust" authentication for local connections
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3002605Z  initdb: hint: You can change this by editing pg_hba.conf or using the option -A, or --auth-local and --auth-host, the next time you run initdb.
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3003993Z  The files belonging to this database system will be owned by user "postgres".
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3005520Z  2026-02-16 18:04:22.013 UTC [1] LOG:  starting PostgreSQL 15.16 (Debian 15.16-1.pgdg13+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3006722Z  This user must also own the server process.
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3009144Z  2026-02-16 18:04:22.014 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3010243Z  2026-02-16 18:04:22.014 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3011440Z  2026-02-16 18:04:22.015 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3012426Z  2026-02-16 18:04:22.018 UTC [64] LOG:  database system was shut down at 2026-02-16 18:04:21 UTC
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3013298Z  2026-02-16 18:04:22.023 UTC [1] LOG:  database system is ready to accept connections
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3014047Z  2026-02-16 18:04:30.967 UTC [75] FATAL:  role "root" does not exist
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3014699Z  2026-02-16 18:04:41.066 UTC [84] FATAL:  role "root" does not exist
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3015349Z  2026-02-16 18:04:51.350 UTC [92] FATAL:  role "root" does not exist
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3015992Z  2026-02-16 18:05:01.460 UTC [100] FATAL:  role "root" does not exist
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3016650Z  2026-02-16 18:05:11.654 UTC [107] FATAL:  role "root" does not exist
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3017382Z  2026-02-16 18:05:15.338 UTC [109] ERROR:  table "_prisma_migrations" does not exist
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3018168Z  2026-02-16 18:05:15.338 UTC [109] STATEMENT:  DROP TABLE _prisma_migrations
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3018739Z
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3019202Z  The database cluster will be initialized with locale "en_US.utf8".
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3021130Z  The default database encoding has accordingly been set to "UTF8".
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3021857Z  The default text search configuration will be set to "english".
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3022400Z
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3022698Z  Data page checksums are disabled.
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3023084Z
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3023557Z  fixing permissions on existing directory /var/lib/postgresql/data ... ok
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3024206Z  creating subdirectories ... ok
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3024704Z  selecting dynamic shared memory implementation ... posix
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3025267Z  selecting default max_connections ... 100
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3025743Z  selecting default shared_buffers ... 128MB
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3026203Z  selecting default time zone ... Etc/UTC
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3026637Z  creating configuration files ... ok
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3027066Z  running bootstrap script ... ok
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3027528Z  performing post-bootstrap initialization ... ok
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3027983Z  syncing data to disk ... ok
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3028312Z
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3028539Z
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3028860Z  Success. You can now start the database server using:
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3029336Z
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3029955Z      pg_ctl -D /var/lib/postgresql/data -l logfile start
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3030442Z
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3031507Z  waiting for server to start....2026-02-16 18:04:21.701 UTC [48] LOG:  starting PostgreSQL 15.16 (Debian 15.16-1.pgdg13+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3033066Z  2026-02-16 18:04:21.702 UTC [48] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3034339Z  2026-02-16 18:04:21.705 UTC [51] LOG:  database system was shut down at 2026-02-16 18:04:21 UTC
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3035168Z  2026-02-16 18:04:21.709 UTC [48] LOG:  database system is ready to accept connections
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3035724Z   done
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3035990Z  server started
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3036283Z  CREATE DATABASE
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3036572Z
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3036827Z
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3037325Z  /usr/local/bin/docker-entrypoint.sh: ignoring /docker-entrypoint-initdb.d/*
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3037981Z
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3038549Z  waiting for server to shut down....2026-02-16 18:04:21.892 UTC [48] LOG:  received fast shutdown request
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3041680Z  2026-02-16 18:04:21.893 UTC [48] LOG:  aborting any active transactions
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3042689Z  2026-02-16 18:04:21.897 UTC [48] LOG:  background worker "logical replication launcher" (PID 54) exited with exit code 1
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3043608Z  2026-02-16 18:04:21.897 UTC [49] LOG:  shutting down
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3044260Z  2026-02-16 18:04:21.898 UTC [49] LOG:  checkpoint starting: shutdown immediate
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3046566Z  2026-02-16 18:04:21.916 UTC [49] LOG:  checkpoint complete: wrote 922 buffers (5.6%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.015 s, sync=0.002 s, total=0.019 s; sync files=301, longest=0.001 s, average=0.001 s; distance=4239 kB, estimate=4239 kB
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3048109Z  2026-02-16 18:04:21.923 UTC [48] LOG:  database system is shut down
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3048437Z   done
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3048621Z  server stopped
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3048809Z
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3049039Z  PostgreSQL init process complete; ready for start up.
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3049331Z
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3054927Z Stop and remove container: 45e8c7290b894b698eabc8b0b238d715_postgres15_30900f
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:16.3060034Z ##[command]/usr/bin/docker rm --force 3373502bfb0ccfef71075a93e627621f7e5b4a430b2a6d5ae9860316f5254dd9
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:17.7886119Z 3373502bfb0ccfef71075a93e627621f7e5b4a430b2a6d5ae9860316f5254dd9
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:17.7920238Z Remove container network: github_network_3f2400ebc0a54b789ca98cb31ccda07f
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:17.7925933Z ##[command]/usr/bin/docker network rm github_network_3f2400ebc0a54b789ca98cb31ccda07f
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:17.8522973Z github_network_3f2400ebc0a54b789ca98cb31ccda07f
+🗄️ DB Guard	UNKNOWN STEP	2026-02-16T18:05:17.8583427Z Cleaning up orphan processes

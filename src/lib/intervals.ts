@@ -62,7 +62,7 @@ const WellnessDataSchema = z.object({
   menstrual_phase_predicted: z.boolean().optional().nullable(),
   blood_glucose: z.number().optional().nullable(),
   sp_o2: z.number().optional().nullable(),
-}).transform((data) => ({
+}).transform((data: any) => ({
   id: data.id,
   date: data.date,
   hrv: data.hrv,
@@ -106,15 +106,13 @@ const AthleteSettingsSchema = z.object({
   lthr: z.number().optional().nullable(),
   ftp: z.number().optional().nullable(),
   run_ftp: z.number().optional().nullable(),
-  heart_rate_zones: z.array(z.unknown()).optional().nullable(),
-  power_zones: z.array(z.unknown()).optional().nullable(),
+  heart_rate_zones: z.array(z.any()).optional().nullable(),
+  power_zones: z.array(z.any()).optional().nullable(),
 });
 
 export type AthleteSettings = z.infer<typeof AthleteSettingsSchema>;
 
 // --- API CLIENT ---
-
-import { MOCK_WELLNESS, MOCK_ACTIVITIES, MOCK_EVENTS } from "./mock-data";
 
 /**
  * Standard fetch wrapper for Intervals.icu
@@ -126,36 +124,6 @@ async function fetchIntervals<T>(
   apiKey: string,
   schema?: z.ZodType<any>
 ): Promise<T | null> {
-  // E2E Mock Bypass: Prevent external fetch during CI if mock key is used
-  if (apiKey === 'mock-e2e-api-key') {
-    console.log(`[Intervals-Mock] Intercepting ${endpoint}`);
-
-    // Return appropriate mock data based on endpoint
-    if (endpoint.includes('/wellness')) {
-      // Return array if range, single object otherwise
-      if (endpoint.includes('oldest=')) {
-        return [MOCK_WELLNESS] as unknown as T;
-      }
-      return MOCK_WELLNESS as unknown as T;
-    }
-    if (endpoint.includes('/activities')) {
-      return MOCK_ACTIVITIES as unknown as T;
-    }
-    if (endpoint.includes('/events')) {
-      return MOCK_EVENTS as unknown as T;
-    }
-    if (endpoint.includes('/athlete')) {
-      return {
-        id: 'i123456',
-        name: 'Mock Titan',
-        timezone: 'UTC',
-        resting_hr: 48,
-        max_hr: 190,
-        ftp: 300,
-      } as unknown as T;
-    }
-  }
-
   if (!apiKey) {
     throw new Error("Intervals API Key is missing");
   }
@@ -200,9 +168,9 @@ async function fetchIntervals<T>(
     }
 
     return data as T;
-  } catch (error: unknown) {
+  } catch (error: any) {
     // Enhance error message with endpoint context
-    throw new Error(`FetchIntervals Failed [${endpoint}]: ${error instanceof Error ? error.message : String(error)}`);
+    throw new Error(`FetchIntervals Failed [${endpoint}]: ${error.message}`);
   }
 }
 
@@ -301,14 +269,14 @@ export async function getActivityStream(
   apiKey: string
 ): Promise<Array<{ lat: number; lng: number }> | null> {
   // We don't use strict schema here yet due to complex stream structure
-  const data = await fetchIntervals<{ type: string; data: [number, number][] }[]>(
+  const data = await fetchIntervals<any[]>(
     `/activity/${activityId}/streams?types=latlng`,
     apiKey
   );
 
   if (!data) return null;
 
-  const latlngStream = data.find((s) => s.type === "latlng");
+  const latlngStream = data.find((s: any) => s.type === "latlng");
   if (!latlngStream || !latlngStream.data) return null;
 
   return latlngStream.data.map((point: [number, number]) => ({

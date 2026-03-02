@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { MigrationTool } from './MigrationTool';
+import MigrationTool from './MigrationTool';
 
 const meta: Meta<typeof MigrationTool> = {
   title: 'Components/MigrationTool',

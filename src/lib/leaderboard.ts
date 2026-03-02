@@ -4,7 +4,6 @@ import {
   LeaderboardScope,
   LeaderboardType,
 } from "@/features/leaderboard/types";
-import { Prisma } from "@prisma/client";
 
 export type { LeaderboardScope, LeaderboardType, LeaderboardEntry };
 
@@ -25,7 +24,7 @@ export async function getLeaderboard({
   limit = 50,
   userIds,
 }: GetLeaderboardOptions): Promise<LeaderboardEntry[]> {
-  const where: Prisma.UserWhereInput = {};
+  const where: any = {};
 
   // 1. Scope Filtering
   if (scope === "CITY" && city) {
@@ -37,7 +36,7 @@ export async function getLeaderboard({
   }
 
   // 2. Type Filtering & Ordering
-  let orderBy: Prisma.UserOrderByWithRelationInput = {};
+  let orderBy: any = {};
 
   // Default ensure pvpProfile exists for PvP stats, but NOT for XP
   if (type === "PVP_RANK") {
@@ -76,7 +75,7 @@ export async function getLeaderboard({
     level: u.level,
     highestWilksScore: u.pvpProfile?.highestWilksScore || 0,
     totalExperience: u.totalExperience,
-    faction: ((u as unknown as { faction?: string }).faction as "HORDE" | "ALLIANCE") || "HORDE",
-    guildName: (u as unknown as { guild?: { name: string } }).guild?.name || null,
+    faction: ((u as any).faction as "HORDE" | "ALLIANCE") || "HORDE",
+    guildName: (u as any).guild?.name || null,
   }));
 }

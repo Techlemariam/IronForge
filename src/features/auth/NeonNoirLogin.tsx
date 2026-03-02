@@ -58,13 +58,12 @@ export const NeonNoirLogin: React.FC = () => {
                     <form onSubmit={handleSubmit} className="space-y-5">
                         {/* Email Input */}
                         <div className="relative group">
-                            <label htmlFor="operator-id" className="block text-xs font-mono uppercase tracking-wider text-muted-foreground mb-2">
+                            <label className="block text-xs font-mono uppercase tracking-wider text-muted-foreground mb-2">
                                 Operator ID
                             </label>
                             <div className="relative">
                                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-steel transition-colors group-focus-within:text-cyan" />
                                 <Input
-                                    id="operator-id"
                                     type="email"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
@@ -77,13 +76,12 @@ export const NeonNoirLogin: React.FC = () => {
 
                         {/* Password Input */}
                         <div className="relative group">
-                            <label htmlFor="access-code" className="block text-xs font-mono uppercase tracking-wider text-muted-foreground mb-2">
+                            <label className="block text-xs font-mono uppercase tracking-wider text-muted-foreground mb-2">
                                 Access Code
                             </label>
                             <div className="relative">
                                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-steel transition-colors group-focus-within:text-plasma" />
                                 <Input
-                                    id="access-code"
                                     type="password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}

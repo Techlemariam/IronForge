@@ -460,3 +460,4 @@ const CompactWorkoutCard: React.FC<{
   );
 };
 
+export default TrainingCenter;

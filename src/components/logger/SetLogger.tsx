@@ -120,7 +120,6 @@ export default function SetLogger({ exercise, onFinish, onCancel, onSave }: SetL
                         <div className="flex items-center gap-1">
                             <button
                                 onClick={() => toggleComplete(set.id)}
-                                aria-label={set.completed ? "Mark set as incomplete" : "Mark set as complete"}
                                 className={cn(
                                     "p-2 rounded hover:bg-zinc-800 transition-colors",
                                     set.completed ? "text-green-500" : "text-zinc-600"
@@ -131,7 +130,6 @@ export default function SetLogger({ exercise, onFinish, onCancel, onSave }: SetL
                             {sets.length > 1 && (
                                 <button
                                     onClick={() => removeSet(set.id)}
-                                    aria-label={`Remove set ${idx + 1}`}
                                     className="p-2 text-zinc-600 hover:text-red-400 rounded hover:bg-zinc-800 transition-colors"
                                 >
                                     <Trash2 className="h-4 w-4" />

@@ -153,11 +153,7 @@ echo "✅ Gate 3 Passed"
 If you have E2E tests and want maximum CI confidence:
 
 ```bash
-## Recommended: Containerized Playwright runner (includes DB + seeding)
-docker compose -f docker-compose.test.yml run playwright-runner
-
-## Manual fallback (standalone, no DB)
-docker run --rm -v $(pwd):/work -w /work mcr.microsoft.com/playwright:v1.58.2-noble \
+docker run --rm -v $(pwd):/work -w /work mcr.microsoft.com/playwright:v1.40.0-jammy \
   npx playwright test --workers=1 --retries=0
 ```
 

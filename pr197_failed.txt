@@ -1,0 +1,1190 @@
+🎭 E2E Tests	Run Playwright Tests	﻿2026-02-18T21:41:54.0660432Z ##[group]Run npx playwright test
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:41:54.0661030Z [36;1mnpx playwright test[0m
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:41:54.0737411Z shell: /usr/bin/bash -e {0}
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:41:54.0737871Z env:
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:41:54.0738676Z   DATABASE_URL: ***127.0.0.1:5432/ironforge_e2e?schema=public
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:41:54.0739653Z   DIRECT_URL: ***127.0.0.1:5432/ironforge_e2e?schema=public
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:41:54.0740506Z   NEXT_PUBLIC_SUPABASE_URL: ***
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:41:54.0743317Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:41:54.0743944Z   SKIP_ENV_VALIDATION: true
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:41:54.0744679Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:41:54.0745243Z   CI: true
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:41:54.0745691Z   TEST_USER_EMAIL: ***
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:41:54.0746127Z   TEST_USER_PASSWORD: ***
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:41:54.0746617Z   NEXT_PUBLIC_APP_URL: http://localhost:3000
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:41:54.0747149Z ##[endgroup]
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:41:55.6382102Z [dotenv@17.2.4] injecting env (0) from .env -- tip: ✅ audit secrets and track compliance: https://dotenvx.com/ops
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:03.0655799Z [WebServer] [33m[1m⚠[22m[39m The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:17.1745836Z 🌱 Starting E2E Database Seeding...
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:17.1746586Z Checking Battle Pass Season: SEASON_1
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:17.5485955Z ✅ Battle Pass Season ensured: cmlsk4ozc00002l3y2j3b2ifv
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:17.5546635Z ✅ PVP Season ensured: e2e-season-1
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:17.5767642Z ✅ Ensured opponent: Iron Breaker (Lvl 5) - ID: cmlsk4p19001f2l3yr0tivjo1
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:17.5806478Z ✅ Ensured opponent: Steel Viper (Lvl 10) - ID: cmlsk4p64001h2l3yxiopx9zx
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:17.5929728Z ✅ Ensured opponent: Shadow Walker (Lvl 15) - ID: cmlsk4peg001j2l3y71hyyqgd
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:17.6102236Z ✅ Ensured Test User: E2E Hunter (Onboarding Completed)
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:17.6103591Z 🌱 Seeding completed successfully.
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:19.1414907Z
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:19.1415500Z Running 109 tests using 1 worker
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:21.7506376Z [dotenv@17.2.4] injecting env (0) from .env -- tip: 📡 add observability to secrets: https://dotenvx.com/ops
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:26.4005331Z BROWSER LOG: [Fast Refresh] rebuilding
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:26.5184551Z Filling credentials...
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:26.7078542Z Pre-injecting Hevy API key...
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:26.7218118Z Clicking Initialize Uplink and waiting for URL...
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:26.9855297Z BROWSER LOG: [Fast Refresh] done in 713ms
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:28.6755431Z BROWSER LOG: [Fast Refresh] rebuilding
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:49.7285461Z BROWSER LOG: [Fast Refresh] done in 21151ms
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:51.2579283Z [WebServer] Failed to ensure user: Error [PrismaClientKnownRequestError]:
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:51.2581180Z [WebServer] Invalid `__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"].user.create()` invocation in
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:51.2583631Z [WebServer] /home/runner/work/IronForge/IronForge/.next/dev/server/chunks/ssr/src_960f9045._.js:3639:164
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:51.2584798Z [WebServer]
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:51.2585281Z [WebServer]   3636     success: true,
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:51.2585849Z [WebServer]   3637     data: existing
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:51.2586335Z [WebServer]   3638 };
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:51.2588323Z [WebServer] → 3639 const newUser = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"].user.create(
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:51.2589882Z [WebServer] Unique constraint failed on the fields: (`email`)
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:51.2590768Z [WebServer]     at <unknown> (src/actions/user/core.ts:65:39)
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:51.2591984Z [WebServer]     at async ensureUserAction (src/actions/user/core.ts:65:21)
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:51.2593083Z [WebServer]     at async Page (src/app/(authenticated)/dashboard/page.tsx:56:3)
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:51.2616716Z [WebServer] [0m [90m 63 |[39m     [36mif[39m (existing) [36mreturn[39m { success[33m:[39m [36mtrue[39m[33m,[39m data[33m:[39m existing }[33m;[39m
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:51.2618396Z [WebServer]  [90m 64 |[39m
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:51.2619824Z [WebServer] [31m[1m>[22m[39m[90m 65 |[39m     [36mconst[39m newUser [33m=[39m [36mawait[39m prisma[33m.[39muser[33m.[39mcreate({
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:51.2621300Z [WebServer]  [90m    |[39m                                       [31m[1m^[22m[39m
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:51.2622222Z [WebServer]  [90m 66 |[39m       data[33m:[39m {
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:51.2622997Z [WebServer]  [90m 67 |[39m         id[33m,[39m
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:51.2623836Z [WebServer]  [90m 68 |[39m         email[33m,[39m[0m {
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:51.2624820Z [WebServer]   code: [32m'P2002'[39m,
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:51.2625493Z [WebServer]   meta: [36m[Object][39m,
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:51.2626225Z [WebServer]   clientVersion: [32m'7.4.0'[39m
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:51.2626743Z [WebServer] }
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:51.2857269Z [WebServer] Orchestrator: getIronForgeStrengthLogs not yet implemented. Returning empty history.
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:51.4649735Z [WebServer] Error ensuring titan: Error [PrismaClientKnownRequestError]:
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:51.4653271Z [WebServer] Invalid `__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].titan.create()` invocation in
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:51.4655415Z [WebServer] /home/runner/work/IronForge/IronForge/.next/dev/server/chunks/ssr/src_960f9045._.js:3219:165
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:51.4656350Z [WebServer]
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:51.4656854Z [WebServer]   3216     success: true,
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:51.4657451Z [WebServer]   3217     data: existing
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:51.4657964Z [WebServer]   3218 };
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:51.4659979Z [WebServer] → 3219 const newTitan = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].titan.create(
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:51.4661751Z [WebServer] Foreign key constraint violated on the constraint: `Titan_userId_fkey`
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:51.4662833Z [WebServer]     at <unknown> (src/actions/titan/core.ts:59:41)
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:51.4663818Z [WebServer]     at async ensureTitanAction (src/actions/titan/core.ts:59:22)
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:51.4685244Z [WebServer]     at async Page (src/app/(authenticated)/dashboard/page.tsx:226:20)
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:51.4687198Z [WebServer] [0m [90m 57 |[39m     [36mif[39m (existing) [36mreturn[39m { success[33m:[39m [36mtrue[39m[33m,[39m data[33m:[39m existing }[33m;[39m
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:51.4688438Z [WebServer]  [90m 58 |[39m
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:51.4689859Z [WebServer] [31m[1m>[22m[39m[90m 59 |[39m     [36mconst[39m newTitan [33m=[39m [36mawait[39m prisma[33m.[39mtitan[33m.[39mcreate({
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:51.4691347Z [WebServer]  [90m    |[39m                                         [31m[1m^[22m[39m
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:51.4692775Z [WebServer]  [90m 60 |[39m       data[33m:[39m {
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:51.4693608Z [WebServer]  [90m 61 |[39m         userId[33m,[39m
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:51.4694960Z [WebServer]  [90m 62 |[39m         name[33m:[39m [32m"Iron Initiate"[39m[33m,[39m[0m {
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:51.4695897Z [WebServer]   code: [32m'P2003'[39m,
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:51.4696595Z [WebServer]   meta: [36m[Object][39m,
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:51.4697341Z [WebServer]   clientVersion: [32m'7.4.0'[39m
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:51.4697872Z [WebServer] }
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:51.6069787Z [WebServer] Server Action Intervals Wellness Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:51.6306881Z [WebServer] Server Action Intervals Activities Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:51.6318727Z [WebServer] AutoSpec: CRITICAL STRESS. FORCE DELOAD.
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:51.6816430Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:53.8415058Z BROWSER LOG: %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:42:53.9236707Z BROWSER LOG: [HMR] connected
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:43:26.7349154Z Navigation check: page.waitForURL: Timeout 60000ms exceeded.
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:43:26.7351129Z =========================== logs ===========================
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:43:26.7351774Z waiting for navigation until "load"
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:43:26.7352403Z   navigated to "http://localhost:3000/login"
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:43:26.7353064Z   navigated to "http://localhost:3000/login"
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:43:26.7353764Z ============================================================
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:43:26.7384989Z Current URL after login attempt: http://localhost:3000/login
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:43:26.8101251Z Waiting for dashboard selectors...
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:44:56.8190393Z Landing page wait timed out or failed. Current URL: http://localhost:3000/login
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:44:56.8332248Z Auth setup failed to land on dashboard. URL: http://localhost:3000/login. Body snippet: <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="/_next/static/chunks/%5Broot-of-the-server%5D__8eba4a94._.css" data-precedence="next_static/chunks/[root-of-the-server]__8eba4a94._.css"><link rel="preload" as="script" fetchpriority="low" href="/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_d20b2ada._.js"><script src="/_next/static/chunks/d4a44_next_dist_compiled_r. Error: page.waitForSelector: Timeout 90000ms exceeded.
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:44:56.8339300Z Call log:
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:44:56.8340272Z [2m  - waiting for locator('#main-content') to be visible[22m
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:44:56.8340754Z
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:44:58.1036439Z ×[dotenv@17.2.4] injecting env (0) from .env -- tip: 👥 sync secrets across teammates & machines: https://dotenvx.com/ops
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:44:59.7250918Z Filling credentials...
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:44:59.8648179Z Pre-injecting Hevy API key...
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:44:59.8807841Z Clicking Initialize Uplink and waiting for URL...
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:01.3917137Z [WebServer] Failed to ensure user: Error [PrismaClientKnownRequestError]:
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:01.3919520Z [WebServer] Invalid `__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"].user.create()` invocation in
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:01.3925725Z [WebServer] /home/runner/work/IronForge/IronForge/.next/dev/server/chunks/ssr/src_960f9045._.js:3639:164
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:01.3926680Z [WebServer]
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:01.3927153Z [WebServer]   3636     success: true,
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:01.3927785Z [WebServer]   3637     data: existing
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:01.3928292Z [WebServer]   3638 };
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:01.3930804Z [WebServer] → 3639 const newUser = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"].user.create(
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:01.3932442Z [WebServer] Unique constraint failed on the fields: (`email`)
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:01.3933344Z [WebServer]     at <unknown> (src/actions/user/core.ts:65:39)
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:01.3934530Z [WebServer]     at async ensureUserAction (src/actions/user/core.ts:65:21)
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:01.3935614Z [WebServer]     at async Page (src/app/(authenticated)/dashboard/page.tsx:56:3)
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:01.3937551Z [WebServer] [0m [90m 63 |[39m     [36mif[39m (existing) [36mreturn[39m { success[33m:[39m [36mtrue[39m[33m,[39m data[33m:[39m existing }[33m;[39m
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:01.3938795Z [WebServer]  [90m 64 |[39m
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:01.3940218Z [WebServer] [31m[1m>[22m[39m[90m 65 |[39m     [36mconst[39m newUser [33m=[39m [36mawait[39m prisma[33m.[39muser[33m.[39mcreate({
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:01.3941696Z [WebServer]  [90m    |[39m                                       [31m[1m^[22m[39m
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:01.3942656Z [WebServer]  [90m 66 |[39m       data[33m:[39m {
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:01.3943837Z [WebServer]  [90m 67 |[39m         id[33m,[39m
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:01.3951794Z [WebServer]  [90m 68 |[39m         email[33m,[39m[0m {
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:01.3952649Z [WebServer]   code: [32m'P2002'[39m,
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:01.3953360Z [WebServer]   meta: [36m[Object][39m,
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:01.3954334Z [WebServer]   clientVersion: [32m'7.4.0'[39m
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:01.3954890Z [WebServer] }
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:01.4052747Z [WebServer] Orchestrator: getIronForgeStrengthLogs not yet implemented. Returning empty history.
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:01.5122775Z [WebServer] Error ensuring titan: Error [PrismaClientKnownRequestError]:
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:01.5127971Z [WebServer] Invalid `__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].titan.create()` invocation in
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:01.5142372Z [WebServer] /home/runner/work/IronForge/IronForge/.next/dev/server/chunks/ssr/src_960f9045._.js:3219:165
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:01.5143301Z [WebServer]
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:01.5143810Z [WebServer]   3216     success: true,
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:01.5144604Z [WebServer]   3217     data: existing
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:01.5145134Z [WebServer]   3218 };
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:01.5147097Z [WebServer] → 3219 const newTitan = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["prisma"].titan.create(
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:01.5148885Z [WebServer] Foreign key constraint violated on the constraint: `Titan_userId_fkey`
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:01.5149943Z [WebServer]     at <unknown> (src/actions/titan/core.ts:59:41)
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:01.5150948Z [WebServer]     at async ensureTitanAction (src/actions/titan/core.ts:59:22)
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:01.5152062Z [WebServer]     at async Page (src/app/(authenticated)/dashboard/page.tsx:226:20)
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:01.5153980Z [WebServer] [0m [90m 57 |[39m     [36mif[39m (existing) [36mreturn[39m { success[33m:[39m [36mtrue[39m[33m,[39m data[33m:[39m existing }[33m;[39m
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:01.5155381Z [WebServer]  [90m 58 |[39m
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:01.5156706Z [WebServer] [31m[1m>[22m[39m[90m 59 |[39m     [36mconst[39m newTitan [33m=[39m [36mawait[39m prisma[33m.[39mtitan[33m.[39mcreate({
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:01.5157943Z [WebServer]  [90m    |[39m                                         [31m[1m^[22m[39m
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:01.5158691Z [WebServer]  [90m 60 |[39m       data[33m:[39m {
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:01.5159327Z [WebServer]  [90m 61 |[39m         userId[33m,[39m
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:01.5160192Z [WebServer]  [90m 62 |[39m         name[33m:[39m [32m"Iron Initiate"[39m[33m,[39m[0m {
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:01.5160897Z [WebServer]   code: [32m'P2003'[39m,
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:01.5161415Z [WebServer]   meta: [36m[Object][39m,
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:01.5161955Z [WebServer]   clientVersion: [32m'7.4.0'[39m
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:01.5162747Z [WebServer] }
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:01.6046280Z [WebServer] Server Action Intervals Wellness Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:01.6318136Z [WebServer] Server Action Intervals Activities Error: Intervals.icu not connected
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:01.6321595Z [WebServer] AutoSpec: CRITICAL STRESS. FORCE DELOAD.
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:01.7389253Z [WebServer] Using the user object as returned from supabase.auth.getSession() or from some supabase.auth.onAuthStateChange() events could be insecure! This value comes directly from the storage medium (usually cookies on the server) and may not be authentic. Use supabase.auth.getUser() instead which authenticates the data by contacting the Supabase Auth server.
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:02.2656428Z BROWSER LOG: [Client Instrumentation Hook] Slow execution detected: 19ms (Note: Code download overhead is not included in this measurement)
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:02.2828641Z BROWSER LOG: %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:02.6753972Z BROWSER LOG: [HMR] connected
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:59.8906219Z Navigation check: page.waitForURL: Timeout 60000ms exceeded.
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:59.8910304Z =========================== logs ===========================
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:59.8914822Z waiting for navigation until "load"
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:59.8915937Z   navigated to "http://localhost:3000/login"
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:59.8916564Z   navigated to "http://localhost:3000/login"
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:59.8917235Z ============================================================
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:59.8929475Z Current URL after login attempt: http://localhost:3000/login
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:45:59.9975463Z Waiting for dashboard selectors...
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.0081312Z Landing page wait timed out or failed. Current URL: http://localhost:3000/login
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.0290676Z Auth setup failed to land on dashboard. URL: http://localhost:3000/login. Body snippet: <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="/_next/static/chunks/%5Broot-of-the-server%5D__8eba4a94._.css" data-precedence="next_static/chunks/[root-of-the-server]__8eba4a94._.css"><link rel="preload" as="script" fetchpriority="low" href="/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_d20b2ada._.js"><script src="/_next/static/chunks/d4a44_next_dist_compiled_r. Error: page.waitForURL: Timeout 90000ms exceeded.
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.0295353Z =========================== logs ===========================
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.0296060Z waiting for navigation until "load"
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.0296738Z ============================================================
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.5648038Z F
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.5657993Z
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.5670883Z   1) [setup] › tests/e2e/auth.setup.ts:5:1 › authenticate ──────────────────────────────────────────
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.5672188Z
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.5677210Z     Error: Auth setup failed to land on dashboard. URL: http://localhost:3000/login. Body snippet: <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="/_next/static/chunks/%5Broot-of-the-server%5D__8eba4a94._.css" data-precedence="next_static/chunks/[root-of-the-server]__8eba4a94._.css"><link rel="preload" as="script" fetchpriority="low" href="/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_d20b2ada._.js"><script src="/_next/static/chunks/d4a44_next_dist_compiled_r. Error: page.waitForSelector: Timeout 90000ms exceeded.
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.5681681Z     Call log:
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.5682487Z     [2m  - waiting for locator('#main-content') to be visible[22m
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.5682950Z
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.5682979Z
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.5684006Z       83 |             const message = `Auth setup failed to land on dashboard. URL: ${page.url()}. Body snippet: ${content?.substring(0, 500)}. Error: ${e.message}`;
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.5688919Z       84 |             console.error(message);
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.5689605Z     > 85 |             throw new Error(message);
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.5690209Z          |                   ^
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.5690699Z       86 |         }
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.5691118Z       87 |     }
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.5691495Z       88 |
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.5692162Z         at /home/runner/work/IronForge/IronForge/tests/e2e/auth.setup.ts:85:19
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.5692761Z
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.5693326Z     Error Context: test-results/auth.setup.ts-authenticate-setup/error-context.md
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.5693957Z
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.5695042Z     Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.5695639Z
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.5700175Z     Error: Auth setup failed to land on dashboard. URL: http://localhost:3000/login. Body snippet: <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="/_next/static/chunks/%5Broot-of-the-server%5D__8eba4a94._.css" data-precedence="next_static/chunks/[root-of-the-server]__8eba4a94._.css"><link rel="preload" as="script" fetchpriority="low" href="/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_d20b2ada._.js"><script src="/_next/static/chunks/d4a44_next_dist_compiled_r. Error: page.waitForURL: Timeout 90000ms exceeded.
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.5713555Z     =========================== logs ===========================
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.5714471Z     waiting for navigation until "load"
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.5715092Z     ============================================================
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.5715496Z
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.5716477Z       83 |             const message = `Auth setup failed to land on dashboard. URL: ${page.url()}. Body snippet: ${content?.substring(0, 500)}. Error: ${e.message}`;
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.5717738Z       84 |             console.error(message);
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.5718404Z     > 85 |             throw new Error(message);
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.5718943Z          |                   ^
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.5719368Z       86 |         }
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.5719789Z       87 |     }
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.5720160Z       88 |
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.5720814Z         at /home/runner/work/IronForge/IronForge/tests/e2e/auth.setup.ts:85:19
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.5721359Z
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.5721953Z     Error Context: test-results/auth.setup.ts-authenticate-setup-retry1/error-context.md
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.5733426Z
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.5734525Z     attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.5735632Z     test-results/auth.setup.ts-authenticate-setup-retry1/trace.zip
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.5736315Z     Usage:
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.5736526Z
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.5737159Z         npx playwright show-trace test-results/auth.setup.ts-authenticate-setup-retry1/trace.zip
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.5737894Z
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.5738647Z     ────────────────────────────────────────────────────────────────────────────────────────────────
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.5739226Z
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.5739398Z   1 failed
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.5740455Z     [setup] › tests/e2e/auth.setup.ts:5:1 › authenticate ───────────────────────────────────────────
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.5741313Z   108 did not run
+🎭 E2E Tests	Run Playwright Tests	2026-02-18T21:47:30.6477756Z ##[error]Process completed with exit code 1.
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	﻿2026-02-18T21:41:13.8943707Z ##[group]Run npx turbo run lint check-types test build security --concurrency=100%
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:13.8944711Z [36;1mnpx turbo run lint check-types test build security --concurrency=100%[0m
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:13.9011781Z shell: /usr/bin/bash -e {0}
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:13.9012045Z env:
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:13.9012543Z   DATABASE_URL: ***127.0.0.1:5432/ironforge?schema=public
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:13.9013066Z   DIRECT_URL: ***127.0.0.1:5432/ironforge?schema=public
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:13.9013694Z   NEXT_PUBLIC_SUPABASE_URL: ***
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:13.9016159Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:13.9016675Z   SKIP_ENV_VALIDATION: true
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:13.9017199Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:13.9017783Z   PRISMA_CLI_SKIP_INTERACTIVE: true
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:13.9018528Z ##[endgroup]
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:14.2462007Z
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:14.2463549Z Attention:
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:14.2464845Z Turborepo now collects completely anonymous telemetry regarding usage.
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:14.2466072Z This information is used to shape the Turborepo roadmap and prioritize features.
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:14.2467555Z You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:14.2469145Z https://turborepo.dev/docs/telemetry
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:14.2469482Z
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:14.3415376Z • Packages in scope: ironforge-discord-bot, ironforge-factory-mcp, ironforge-rpg, mcp-n8n
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:14.3421947Z • Running lint, check-types, test, build, security in 4 packages
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:14.3427756Z • Remote caching disabled
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:19.9986148Z [;31mironforge-rpg:security[;0m
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:19.9991728Z cache miss, executing cd4109df4a9495a8
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:19.9996434Z
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0006536Z > ironforge-rpg@1.0.0 security /home/runner/work/IronForge/IronForge
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0014132Z > pnpm audit --audit-level=high
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0014741Z
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0017516Z ┌─────────────────────┬────────────────────────────────────────────────────────┐
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0039241Z │ high                │ Arbitrary File Read/Write via Hardlink Target Escape   │
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0040378Z │                     │ Through Symlink Chain in node-tar Extraction           │
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0041458Z ├─────────────────────┼────────────────────────────────────────────────────────┤
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0042380Z │ Package             │ tar                                                    │
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0043356Z ├─────────────────────┼────────────────────────────────────────────────────────┤
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0044315Z │ Vulnerable versions │ <7.5.8                                                 │
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0045344Z ├─────────────────────┼────────────────────────────────────────────────────────┤
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0046326Z │ Patched versions    │ >=7.5.8                                                │
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0047372Z ├─────────────────────┼────────────────────────────────────────────────────────┤
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0052242Z │ Paths               │ . > @capacitor/cli@8.1.0 > tar@7.5.7                   │
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0053283Z ├─────────────────────┼────────────────────────────────────────────────────────┤
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0054316Z │ More info           │ https://github.com/advisories/GHSA-83g3-92jg-28cx      │
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0055374Z └─────────────────────┴────────────────────────────────────────────────────────┘
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0055968Z 9 vulnerabilities found
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0056437Z Severity: 2 low | 6 moderate | 1 high
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0057122Z  ELIFECYCLE  Command failed with exit code 1.
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0058806Z [ERROR] command finished with error: command (/home/runner/work/IronForge/IronForge/) /home/runner/setup-pnpm/node_modules/.bin/pnpm run security exited (1)
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0076326Z ##[group]ironforge-rpg:check-types
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0081638Z cache miss, executing dd591e33ab6a2916
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0082634Z ##[endgroup]
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0123736Z ##[group]ironforge-rpg:test
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0127519Z cache miss, executing 6ff8d75f30bc27bd
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0128923Z ##[endgroup]
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0169780Z ##[group]ironforge-rpg:build
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0170978Z cache miss, executing 8f67f6bcea86686f
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0171886Z ##[endgroup]
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0204271Z ##[group]mcp-n8n:build
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0205094Z cache miss, executing 2a8ccb4f1d903fd5
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0205964Z ##[endgroup]
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0455515Z ##[group]ironforge-rpg:lint
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0456251Z cache miss, executing c9d02afcee815602
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0456611Z
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0457067Z > ironforge-rpg@1.0.0 lint /home/runner/work/IronForge/IronForge
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0457672Z > eslint .
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0457860Z
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0459656Z (node:3066) ESLintIgnoreWarning: The ".eslintignore" file is no longer supported. Switch to using the "ignores" property in "eslint.config.js": https://eslint.org/docs/latest/use/configure/migration-guide#ignore-files
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0461735Z (Use `node --trace-warnings ...` to show where the warning was created)
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0462745Z ##[endgroup]
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0471664Z ##[group]ironforge-factory-mcp:build
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0479525Z cache miss, executing 1db3b4bb917a2c31
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0480312Z ##[endgroup]
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0528776Z ##[error]ironforge-rpg#security: command (/home/runner/work/IronForge/IronForge/) /home/runner/setup-pnpm/node_modules/.bin/pnpm run security exited (1)
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0540549Z
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0540874Z  Tasks:    0 successful, 7 total
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0541433Z Cached:    0 cached, 7 total
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0541878Z   Time:    5.78s
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0542382Z Failed:    ironforge-rpg#security
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0542723Z
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.0588783Z  ERROR  run failed: command  exited (1)
+⚡ Verify	Verify All (Lint, Types, Test, Build, Security)	2026-02-18T21:41:20.2830819Z ##[error]Process completed with exit code 1.
+🎨 Chromatic	Run Chromatic	﻿2026-02-18T21:40:24.6617451Z ##[group]Run chromaui/action@v11
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:24.6618070Z with:
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:24.6618364Z   projectToken: ***
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:24.6618664Z   token: ***
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:24.6618862Z env:
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:24.6619490Z   DATABASE_URL: ***
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:24.6620071Z   DIRECT_URL: ***
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:24.6620391Z   NEXT_PUBLIC_SUPABASE_URL: ***
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:24.6621703Z   NEXT_PUBLIC_SUPABASE_ANON_KEY: ***
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:24.6621965Z   SKIP_ENV_VALIDATION: true
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:24.6622243Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:24.6622536Z ##[endgroup]
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:25.3294905Z
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:25.3379807Z 21:40:25.337 Chromatic CLI v11.29.0
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:25.3381735Z              https://www.chromatic.com/docs/cli
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:25.3382181Z
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:25.4793773Z 21:40:25.478 Authenticating with Chromatic
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:25.4800440Z 21:40:25.479     → Connecting to https://index.chromatic.com
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:25.6840443Z 21:40:25.683 Authenticated with Chromatic
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:25.6842772Z                  → Using project token '****************11b8'
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:25.6849263Z 21:40:25.684 Retrieving git information
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:26.0185739Z 21:40:26.018 ⚠ Using outdated package
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:26.0188530Z              You are using an outdated version of the Chromatic CLI (v11.29.0).
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:26.0193213Z              A new major version is available (v15.1.1).
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:26.0194148Z              Run yarn upgrade chromatic --latest to upgrade.
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:26.3410515Z 21:40:26.340 Retrieved git information
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:26.3412820Z                  → Commit 'ae76302' on branch 'night-shift/2026-02-17'; no ancestor found
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:26.3417482Z 21:40:26.341 Collecting Storybook metadata
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:26.3875989Z 21:40:26.387 No viewlayer package listed in dependencies. Checking transitive dependencies.
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:26.3921784Z 21:40:26.391 Collected Storybook metadata
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:26.3925600Z                  → ; no supported addons found
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:26.4041523Z 21:40:26.392 Initializing build
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:26.9838960Z 21:40:26.983 Initialized build
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:26.9839859Z                  → Build 94 initialized
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:26.9872736Z 21:40:26.986 Building your Storybook
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:26.9877171Z 21:40:26.987     → Running command: pnpm run build-storybook --output-dir=/tmp/chromatic--2354-4NUGEbMAkqq3
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:26.9881728Z 21:40:26.987     → [*                   ]
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:36.9955271Z 21:40:36.992     → [ *                  ]
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:46.9970453Z 21:40:46.996     → [  *                 ]
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.0044053Z 21:40:57.003     → [   *                ]
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1084417Z 21:40:57.105 The CLI tried to run your build-storybook script, but the command failed. This indicates a problem with your Storybook. Here's what to do:
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1089809Z 21:40:57.108     → Command failed: pnpm run build-storybook --output-dir=/tmp/chromatic--2354-4NUGEbMAkqq3
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1095624Z
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1099270Z              - Check the Storybook build log printed below.
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1103709Z              - Run npm run build-storybook or yarn build-storybook yourself and make sure it outputs a valid Storybook by opening the generated index.html in your browser.
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1108931Z              - Review the build-storybook CLI options at https://storybook.js.org/docs/configurations/cli-options/#for-build-storybook
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1123560Z
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1124545Z              Command failed with exit code 1: pnpm run build-storybook --output-dir=/tmp/chromatic--2354-4NUGEbMAkqq3
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1125462Z
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1125959Z              ℹ Build command:
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1126755Z              pnpm run build-storybook --output-dir=/tmp/chromatic--2354-4NUGEbMAkqq3
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1127473Z
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1128216Z              ℹ Runtime metadata:
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1129126Z              {
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1129581Z                "nodePlatform": "linux",
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1130152Z                "nodeVersion": "20.19.6",
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1130731Z                "packageManager": "pnpm",
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1131326Z                "packageManagerVersion": "9.15.0"
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1131843Z              }
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1132186Z
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1132713Z              ℹ Storybook build output:
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1133453Z              /home/runner/work/IronForge/IronForge/build-storybook.log
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1134079Z
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1134768Z              > ironforge-rpg@1.0.0 build-storybook /home/runner/work/IronForge/IronForge
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1135785Z              > storybook build "--output-dir=/tmp/chromatic--2354-4NUGEbMAkqq3"
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1136788Z              [90m┌[39m  Building storybook v10.2.8
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1137418Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1138632Z              [32m◇[39m  Cleaning outputDir: [36m../../../../../tmp/chromatic--2354-4NUGEbMAkqq3[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1139562Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1140152Z              [32m◇[39m  Loading presets
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1140728Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1141301Z              [32m◇[39m  Building manager..
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1158582Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1159349Z              [33m▲[39m  unable to find package.json for react-player
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1160009Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1160538Z              [34m●[39m  Building preview..
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1161083Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1161766Z              [34m●[39m  Copying static files: [36mpublic[39m at
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1162988Z              [90m│[39m  [36m../../../../../tmp/chromatic--2354-4NUGEbMAkqq3[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1163695Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1164556Z              [33m▲[39m  No story files found for the specified pattern: [34msrc/**/*.mdx[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1165982Z              [90m│[39m  [43mVite[49m [36mvite v7.3.1 [32mbuilding client environment for production...[36m[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1166897Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1171201Z              [34m●[39m  Storybook collects completely anonymous usage telemetry. We use it to
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1172500Z              [90m│[39m  shape Storybook's roadmap and prioritize features. You can learn more,
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1178395Z              [90m│[39m  including how to opt out, at ]8;;https://storybook.js.org/telemetryhttps://storybook.js.org/telemetry]8;;
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1179779Z              [90m│[39m  [43mVite[49m transforming...
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1180429Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1181521Z              [33m▲[39m  [43mVite[49m [33msrc/components/factory/BacklogBoardPresenter.tsx (1:0): Error[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1183064Z              [90m│[39m  [33mwhen using sourcemap for reporting an error: Can't resolve original[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1184132Z              [90m│[39m  [33mlocation of error.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1184674Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1185689Z              [33m▲[39m  [43mVite[49m [33msrc/components/factory/BacklogBoardPresenter.tsx (1:0): Module[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1186993Z              [90m│[39m  [33mlevel directives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1190734Z              [90m│[39m  [33m"src/components/factory/BacklogBoardPresenter.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1191575Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1192600Z              [33m▲[39m  [43mVite[49m [33msrc/components/factory/VoiceCommandPresenter.tsx (1:0): Error[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1193988Z              [90m│[39m  [33mwhen using sourcemap for reporting an error: Can't resolve original[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1195135Z              [90m│[39m  [33mlocation of error.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1195704Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1197110Z              [33m▲[39m  [43mVite[49m [33msrc/components/factory/VoiceCommandPresenter.tsx (1:0): Module[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1198953Z              [90m│[39m  [33mlevel directives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1200284Z              [90m│[39m  [33m"src/components/factory/VoiceCommandPresenter.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1201200Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1202524Z              [33m▲[39m  [43mVite[49m [33msrc/components/ui/HintTooltip.tsx (1:0): Error when using[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1203994Z              [90m│[39m  [33msourcemap for reporting an error: Can't resolve original location of[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1205017Z              [90m│[39m  [33merror.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1205594Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1206662Z              [33m▲[39m  [43mVite[49m [33msrc/components/ui/HintTooltip.tsx (1:0): Module level directives[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1208154Z              [90m│[39m  [33mcause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1209226Z              [90m│[39m  [33m"src/components/ui/HintTooltip.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1209993Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1211127Z              [33m▲[39m  [43mVite[49m [33msrc/components/factory/RenderVideoPresenter.tsx (1:0): Error when[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1212605Z              [90m│[39m  [33musing sourcemap for reporting an error: Can't resolve original[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1213655Z              [90m│[39m  [33mlocation of error.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1214274Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1215363Z              [33m▲[39m  [43mVite[49m [33msrc/components/factory/RenderVideoPresenter.tsx (1:0): Module[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1217195Z              [90m│[39m  [33mlevel directives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1218887Z              [90m│[39m  [33m"src/components/factory/RenderVideoPresenter.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1219795Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1220869Z              [33m▲[39m  [43mVite[49m [33msrc/components/factory/CommandCenterPresenter.tsx (1:0): Error[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1222355Z              [90m│[39m  [33mwhen using sourcemap for reporting an error: Can't resolve original[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1223390Z              [90m│[39m  [33mlocation of error.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1223991Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1225080Z              [33m▲[39m  [43mVite[49m [33msrc/components/factory/CommandCenterPresenter.tsx (1:0): Module[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1226512Z              [90m│[39m  [33mlevel directives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1228147Z              [90m│[39m  [33m"src/components/factory/CommandCenterPresenter.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1229079Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1230127Z              [33m▲[39m  [43mVite[49m [33msrc/components/factory/TaskFeed.tsx (1:0): Error when using[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1231633Z              [90m│[39m  [33msourcemap for reporting an error: Can't resolve original location of[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1232657Z              [90m│[39m  [33merror.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1233245Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1234234Z              [33m▲[39m  [43mVite[49m [33msrc/components/factory/TaskFeed.tsx (1:0): Module level[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1235404Z              [90m│[39m  [33mdirectives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1236438Z              [90m│[39m  [33m"src/components/factory/TaskFeed.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1244949Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1245864Z              [33m▲[39m  [43mVite[49m [33msrc/components/ui/ShimmerBadge.tsx (1:0): Error when using[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1247119Z              [90m│[39m  [33msourcemap for reporting an error: Can't resolve original location of[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1248429Z              [90m│[39m  [33merror.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1248891Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1249793Z              [33m▲[39m  [43mVite[49m [33msrc/components/ui/ShimmerBadge.tsx (1:0): Module level directives[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1250887Z              [90m│[39m  [33mcause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1251737Z              [90m│[39m  [33m"src/components/ui/ShimmerBadge.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1252368Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1253330Z              [33m▲[39m  [43mVite[49m [33msrc/components/ui/PwaInstallBanner.tsx (1:0): Error when using[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1254631Z              [90m│[39m  [33msourcemap for reporting an error: Can't resolve original location of[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1255539Z              [90m│[39m  [33merror.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1256016Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1256934Z              [33m▲[39m  [43mVite[49m [33msrc/components/ui/PwaInstallBanner.tsx (1:0): Module level[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1258452Z              [90m│[39m  [33mdirectives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1259531Z              [90m│[39m  [33m"src/components/ui/PwaInstallBanner.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1260230Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1261162Z              [33m▲[39m  [43mVite[49m [33msrc/components/ui/PRBadge.tsx (1:0): Error when using sourcemap[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1262384Z              [90m│[39m  [33mfor reporting an error: Can't resolve original location of error.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1263076Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1263992Z              [33m▲[39m  [43mVite[49m [33msrc/components/ui/PRBadge.tsx (1:0): Module level directives[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1265281Z              [90m│[39m  [33mcause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1266190Z              [90m│[39m  [33m"src/components/ui/PRBadge.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1266838Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1267979Z              [33m▲[39m  [43mVite[49m [33msrc/components/ui/GameToast.tsx (1:0): Error when using sourcemap[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1269293Z              [90m│[39m  [33mfor reporting an error: Can't resolve original location of error.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1270045Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1271047Z              [33m▲[39m  [43mVite[49m [33msrc/components/ui/GameToast.tsx (1:0): Module level directives[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1272192Z              [90m│[39m  [33mcause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1273116Z              [90m│[39m  [33m"src/components/ui/GameToast.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1273775Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1274684Z              [33m▲[39m  [43mVite[49m [33msrc/components/ui/PRCelebration.tsx (1:0): Error when using[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1275957Z              [90m│[39m  [33msourcemap for reporting an error: Can't resolve original location of[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1276778Z              [90m│[39m  [33merror.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1277318Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1278306Z              [33m▲[39m  [43mVite[49m [33msrc/components/ui/PRCelebration.tsx (1:0): Module level[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1279375Z              [90m│[39m  [33mdirectives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1280348Z              [90m│[39m  [33m"src/components/ui/PRCelebration.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1280980Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1281870Z              [33m▲[39m  [43mVite[49m [33msrc/components/ui/NotificationBell.tsx (1:0): Error when using[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1283106Z              [90m│[39m  [33msourcemap for reporting an error: Can't resolve original location of[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1283916Z              [90m│[39m  [33merror.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1284547Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1285419Z              [33m▲[39m  [43mVite[49m [33msrc/components/ui/NotificationBell.tsx (1:0): Module level[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1286524Z              [90m│[39m  [33mdirectives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1287520Z              [90m│[39m  [33m"src/components/ui/NotificationBell.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1288320Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1289296Z              [33m▲[39m  [43mVite[49m [33msrc/components/ui/TutorialTooltip.tsx (1:0): Error when using[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1290612Z              [90m│[39m  [33msourcemap for reporting an error: Can't resolve original location of[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1291474Z              [90m│[39m  [33merror.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1291964Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1292863Z              [33m▲[39m  [43mVite[49m [33msrc/components/ui/TutorialTooltip.tsx (1:0): Module level[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1294025Z              [90m│[39m  [33mdirectives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1295058Z              [90m│[39m  [33m"src/components/ui/TutorialTooltip.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1295736Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1296641Z              [33m▲[39m  [43mVite[49m [33msrc/features/auth/NeonNoirLogin.tsx (1:0): Error when using[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1298165Z              [90m│[39m  [33msourcemap for reporting an error: Can't resolve original location of[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1299050Z              [90m│[39m  [33merror.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1299523Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1300394Z              [33m▲[39m  [43mVite[49m [33msrc/features/auth/NeonNoirLogin.tsx (1:0): Module level[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1301665Z              [90m│[39m  [33mdirectives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1302648Z              [90m│[39m  [33m"src/features/auth/NeonNoirLogin.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1303334Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1304246Z              [33m▲[39m  [43mVite[49m [33msrc/features/game/GauntletArena.tsx (1:0): Error when using[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1305530Z              [90m│[39m  [33msourcemap for reporting an error: Can't resolve original location of[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1306367Z              [90m│[39m  [33merror.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1306809Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1307806Z              [33m▲[39m  [43mVite[49m [33msrc/features/game/GauntletArena.tsx (1:0): Module level[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1308898Z              [90m│[39m  [33mdirectives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1309893Z              [90m│[39m  [33m"src/features/game/GauntletArena.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1310569Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1311515Z              [33m▲[39m  [43mVite[49m [33msrc/features/gamification/TrophyRoom.tsx (1:0): Error when using[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1312812Z              [90m│[39m  [33msourcemap for reporting an error: Can't resolve original location of[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1313637Z              [90m│[39m  [33merror.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1314088Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1314963Z              [33m▲[39m  [43mVite[49m [33msrc/features/gamification/TrophyRoom.tsx (1:0): Module level[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1316071Z              [90m│[39m  [33mdirectives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1317089Z              [90m│[39m  [33m"src/features/gamification/TrophyRoom.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1317897Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1318835Z              [33m▲[39m  [43mVite[49m [33msrc/features/game/DuelArena.tsx (1:0): Error when using sourcemap[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1320077Z              [90m│[39m  [33mfor reporting an error: Can't resolve original location of error.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1320787Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1321859Z              [33m▲[39m  [43mVite[49m [33msrc/features/game/DuelArena.tsx (1:0): Module level directives[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1323012Z              [90m│[39m  [33mcause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1323915Z              [90m│[39m  [33m"src/features/game/DuelArena.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1324541Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1325494Z              [33m▲[39m  [43mVite[49m [33msrc/features/game/TheForge.tsx (1:0): Error when using sourcemap[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1326776Z              [90m│[39m  [33mfor reporting an error: Can't resolve original location of error.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1327529Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1328637Z              [33m▲[39m  [43mVite[49m [33msrc/features/game/TheForge.tsx (1:0): Module level directives[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1329721Z              [90m│[39m  [33mcause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1330653Z              [90m│[39m  [33m"src/features/game/TheForge.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1331283Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1332165Z              [33m▲[39m  [43mVite[49m [33msrc/features/guild/GuildHall.tsx (1:0): Error when using[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1333430Z              [90m│[39m  [33msourcemap for reporting an error: Can't resolve original location of[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1334281Z              [90m│[39m  [33merror.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1334726Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1335622Z              [33m▲[39m  [43mVite[49m [33msrc/features/guild/GuildHall.tsx (1:0): Module level directives[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1336715Z              [90m│[39m  [33mcause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1338049Z              [90m│[39m  [33m"src/features/guild/GuildHall.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1338724Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1339666Z              [33m▲[39m  [43mVite[49m [33msrc/features/strength/StrengthLog.tsx (1:0): Error when using[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1341006Z              [90m│[39m  [33msourcemap for reporting an error: Can't resolve original location of[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1341874Z              [90m│[39m  [33merror.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1342345Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1343316Z              [33m▲[39m  [43mVite[49m [33msrc/features/strength/StrengthLog.tsx (1:0): Module level[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1344471Z              [90m│[39m  [33mdirectives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1345504Z              [90m│[39m  [33m"src/features/strength/StrengthLog.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1346183Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1347173Z              [33m▲[39m  [43mVite[49m [33msrc/features/dashboard/components/DashboardPresenter.tsx (1:0):[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1348624Z              [90m│[39m  [33mError when using sourcemap for reporting an error: Can't resolve[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1349576Z              [90m│[39m  [33moriginal location of error.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1350111Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1351044Z              [33m▲[39m  [43mVite[49m [33msrc/features/dashboard/components/DashboardPresenter.tsx (1:0):[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1352298Z              [90m│[39m  [33mModule level directives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1353461Z              [90m│[39m  [33m"src/features/dashboard/components/DashboardPresenter.tsx" was[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1354291Z              [90m│[39m  [33mignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1354758Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1355637Z              [33m▲[39m  [43mVite[49m [33msrc/features/strength/IronMines.tsx (1:0): Error when using[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1356887Z              [90m│[39m  [33msourcemap for reporting an error: Can't resolve original location of[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1357870Z              [90m│[39m  [33merror.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1358543Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1359406Z              [33m▲[39m  [43mVite[49m [33msrc/features/strength/IronMines.tsx (1:0): Module level[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1360483Z              [90m│[39m  [33mdirectives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1361482Z              [90m│[39m  [33m"src/features/strength/IronMines.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1362172Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1363123Z              [33m▲[39m  [43mVite[49m [33msrc/features/dashboard/TitansChoice.tsx (1:0): Error when using[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1364437Z              [90m│[39m  [33msourcemap for reporting an error: Can't resolve original location of[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1365314Z              [90m│[39m  [33merror.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1365786Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1366697Z              [33m▲[39m  [43mVite[49m [33msrc/features/dashboard/TitansChoice.tsx (1:0): Module level[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1368068Z              [90m│[39m  [33mdirectives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1369158Z              [90m│[39m  [33m"src/features/dashboard/TitansChoice.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1369856Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1370326Z              [33m▲[39m  [43mVite[49m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1372213Z              [90m│[39m  [33mnode_modules/.pnpm/react-player@3.4.0_@svta+cml-cta@1.0.1_@svta+cml-structured-field-values@1.0.1_@svta+cml-util_i6bgqwzmkdofvgljps6yyajmdq/node_modules/react-player/dist/index.js[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1374143Z              [90m│[39m  [33m(1:0): Module level directives cause errors when bundled, "use client"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1375162Z              [90m│[39m  [33min[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1376931Z              [90m│[39m  [33m"node_modules/.pnpm/react-player@3.4.0_@svta+cml-cta@1.0.1_@svta+cml-structured-field-values@1.0.1_@svta+cml-util_i6bgqwzmkdofvgljps6yyajmdq/node_modules/react-player/dist/index.js"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1378924Z              [90m│[39m  [33mwas ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1379497Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1380423Z              [33m▲[39m  [43mVite[49m [33msrc/features/game/CombatArena.tsx (1:0): Error when using[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1382021Z              [90m│[39m  [33msourcemap for reporting an error: Can't resolve original location of[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1382925Z              [90m│[39m  [33merror.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1383394Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1384383Z              [33m▲[39m  [43mVite[49m [33msrc/features/game/CombatArena.tsx (1:0): Module level directives[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1385500Z              [90m│[39m  [33mcause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1386461Z              [90m│[39m  [33m"src/features/game/CombatArena.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1387046Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1387593Z              [33m▲[39m  [43mVite[49m [33msrc/features/strength/RestTimer.tsx (1:0): Error when using[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1389238Z              [90m│[39m  [33msourcemap for reporting an error: Can't resolve original location of[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1390113Z              [90m│[39m  [33merror.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1390587Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1391475Z              [33m▲[39m  [43mVite[49m [33msrc/features/strength/RestTimer.tsx (1:0): Module level[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1392612Z              [90m│[39m  [33mdirectives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1393626Z              [90m│[39m  [33m"src/features/strength/RestTimer.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1394091Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1394652Z              [33m▲[39m  [43mVite[49m [33msrc/features/strength/StrengthContainer.tsx (1:0): Error when[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1395363Z              [90m│[39m  [33musing sourcemap for reporting an error: Can't resolve original[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1396080Z              [90m│[39m  [33mlocation of error.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1396381Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1396933Z              [33m▲[39m  [43mVite[49m [33msrc/features/strength/StrengthContainer.tsx (1:0): Module level[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1397607Z              [90m│[39m  [33mdirectives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1399148Z              [90m│[39m  [33m"src/features/strength/StrengthContainer.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1399598Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1400151Z              [33m▲[39m  [43mVite[49m [33msrc/features/strength/ExerciseSearch.tsx (1:0): Error when using[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1400924Z              [90m│[39m  [33msourcemap for reporting an error: Can't resolve original location of[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1401433Z              [90m│[39m  [33merror.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1401713Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1402256Z              [33m▲[39m  [43mVite[49m [33msrc/features/strength/ExerciseSearch.tsx (1:0): Module level[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1402915Z              [90m│[39m  [33mdirectives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1403518Z              [90m│[39m  [33m"src/features/strength/ExerciseSearch.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1403920Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1404428Z              [33m▲[39m  [43mVite[49m [33msrc/features/social/SocialHub.tsx (1:0): Error when using[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1405139Z              [90m│[39m  [33msourcemap for reporting an error: Can't resolve original location of[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1405624Z              [90m│[39m  [33merror.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1406064Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1406606Z              [33m▲[39m  [43mVite[49m [33msrc/features/social/SocialHub.tsx (1:0): Module level directives[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1407239Z              [90m│[39m  [33mcause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1408103Z              [90m│[39m  [33m"src/features/social/SocialHub.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1408538Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1409098Z              [33m▲[39m  [43mVite[49m [33msrc/features/onboarding/FirstLoginQuest.tsx (1:0): Error when[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1409809Z              [90m│[39m  [33musing sourcemap for reporting an error: Can't resolve original[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1410319Z              [90m│[39m  [33mlocation of error.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1410622Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1411162Z              [33m▲[39m  [43mVite[49m [33msrc/features/onboarding/FirstLoginQuest.tsx (1:0): Module level[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1411853Z              [90m│[39m  [33mdirectives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1412466Z              [90m│[39m  [33m"src/features/onboarding/FirstLoginQuest.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1412887Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1413164Z              [33m▲[39m  [43mVite[49m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1413873Z              [90m│[39m  [33mnode_modules/.pnpm/sonner@2.0.7_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/sonner/dist/index.mjs[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1414697Z              [90m│[39m  [33m(1:0): Module level directives cause errors when bundled, "use client"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1415177Z              [90m│[39m  [33min[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1415882Z              [90m│[39m  [33m"node_modules/.pnpm/sonner@2.0.7_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/sonner/dist/index.mjs"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1416501Z              [90m│[39m  [33mwas ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1416806Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1417356Z              [33m▲[39m  [43mVite[49m [33msrc/features/training/ProgramBuilder.tsx (1:0): Error when using[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1418469Z              [90m│[39m  [33msourcemap for reporting an error: Can't resolve original location of[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1419159Z              [90m│[39m  [33merror.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1419442Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1419980Z              [33m▲[39m  [43mVite[49m [33msrc/features/training/ProgramBuilder.tsx (1:0): Module level[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1420646Z              [90m│[39m  [33mdirectives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1421247Z              [90m│[39m  [33m"src/features/training/ProgramBuilder.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1421655Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1422194Z              [33m▲[39m  [43mVite[49m [33msrc/features/settings/SettingsPage.tsx (1:0): Error when using[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1422938Z              [90m│[39m  [33msourcemap for reporting an error: Can't resolve original location of[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1423430Z              [90m│[39m  [33merror.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1423720Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1424233Z              [33m▲[39m  [43mVite[49m [33msrc/features/settings/SettingsPage.tsx (1:0): Module level[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1424880Z              [90m│[39m  [33mdirectives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1425461Z              [90m│[39m  [33m"src/features/settings/SettingsPage.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1425848Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1426372Z              [33m▲[39m  [43mVite[49m [33msrc/features/bio/components/GarminWidget.tsx (1:0): Error when[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1427079Z              [90m│[39m  [33musing sourcemap for reporting an error: Can't resolve original[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1427582Z              [90m│[39m  [33mlocation of error.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1428301Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1428888Z              [33m▲[39m  [43mVite[49m [33msrc/features/bio/components/GarminWidget.tsx (1:0): Module level[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1429593Z              [90m│[39m  [33mdirectives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1430212Z              [90m│[39m  [33m"src/features/bio/components/GarminWidget.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1430635Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1431185Z              [33m▲[39m  [43mVite[49m [33msrc/features/bio/components/HeartRateZoneChart.tsx (1:0): Error[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1431926Z              [90m│[39m  [33mwhen using sourcemap for reporting an error: Can't resolve original[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1432441Z              [90m│[39m  [33mlocation of error.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1432738Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1433284Z              [33m▲[39m  [43mVite[49m [33msrc/features/bio/components/HeartRateZoneChart.tsx (1:0): Module[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1434002Z              [90m│[39m  [33mlevel directives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1434696Z              [90m│[39m  [33m"src/features/bio/components/HeartRateZoneChart.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1435155Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1435669Z              [33m▲[39m  [43mVite[49m [33msrc/features/training/TvMode.tsx (1:0): Error when using[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1436384Z              [90m│[39m  [33msourcemap for reporting an error: Can't resolve original location of[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1436878Z              [90m│[39m  [33merror.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1437155Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1437876Z              [33m▲[39m  [43mVite[49m [33msrc/features/training/TvMode.tsx (1:0): Module level directives[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1438546Z              [90m│[39m  [33mcause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1439091Z              [90m│[39m  [33m"src/features/training/TvMode.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1439461Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1440017Z              [33m▲[39m  [43mVite[49m [33msrc/features/pvp/components/ranked/RankedArenaClient.tsx (1:0):[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1440906Z              [90m│[39m  [33mError when using sourcemap for reporting an error: Can't resolve[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1441465Z              [90m│[39m  [33moriginal location of error.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1441784Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1442327Z              [33m▲[39m  [43mVite[49m [33msrc/features/pvp/components/ranked/RankedArenaClient.tsx (1:0):[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1443093Z              [90m│[39m  [33mModule level directives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1443772Z              [90m│[39m  [33m"src/features/pvp/components/ranked/RankedArenaClient.tsx" was[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1444274Z              [90m│[39m  [33mignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1444561Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1445099Z              [33m▲[39m  [43mVite[49m [33msrc/features/training/components/ChaseOverlay.tsx (1:0): Error[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1445840Z              [90m│[39m  [33mwhen using sourcemap for reporting an error: Can't resolve original[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1446358Z              [90m│[39m  [33mlocation of error.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1446655Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1447204Z              [33m▲[39m  [43mVite[49m [33msrc/features/training/components/ChaseOverlay.tsx (1:0): Module[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1448222Z              [90m│[39m  [33mlevel directives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1448930Z              [90m│[39m  [33m"src/features/training/components/ChaseOverlay.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1449370Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1449910Z              [33m▲[39m  [43mVite[49m [33msrc/features/game/components/bestiary/MonsterList.tsx (1:0):[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1450789Z              [90m│[39m  [33mError when using sourcemap for reporting an error: Can't resolve[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1451329Z              [90m│[39m  [33moriginal location of error.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1451662Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1452191Z              [33m▲[39m  [43mVite[49m [33msrc/features/game/components/bestiary/MonsterList.tsx (1:0):[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1452908Z              [90m│[39m  [33mModule level directives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1453608Z              [90m│[39m  [33m"src/features/game/components/bestiary/MonsterList.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1454052Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1454589Z              [33m▲[39m  [43mVite[49m [33msrc/features/oracle/components/OracleChat.tsx (1:0): Error when[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1455300Z              [90m│[39m  [33musing sourcemap for reporting an error: Can't resolve original[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1455809Z              [90m│[39m  [33mlocation of error.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1456107Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1456655Z              [33m▲[39m  [43mVite[49m [33msrc/features/oracle/components/OracleChat.tsx (1:0): Module level[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1457343Z              [90m│[39m  [33mdirectives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1458230Z              [90m│[39m  [33m"src/features/oracle/components/OracleChat.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1458671Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1459234Z              [33m▲[39m  [43mVite[49m [33msrc/features/oracle/components/PushSubscriptionToggle.tsx (1:0):[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1459967Z              [90m│[39m  [33mError when using sourcemap for reporting an error: Can't resolve[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1460502Z              [90m│[39m  [33moriginal location of error.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1460833Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1461392Z              [33m▲[39m  [43mVite[49m [33msrc/features/oracle/components/PushSubscriptionToggle.tsx (1:0):[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1462131Z              [90m│[39m  [33mModule level directives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1463007Z              [90m│[39m  [33m"src/features/oracle/components/PushSubscriptionToggle.tsx" was[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1463501Z              [90m│[39m  [33mignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1463784Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1464332Z              [33m▲[39m  [43mVite[49m [33msrc/features/gamification/components/battle-pass/RewardNode.tsx[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1465036Z              [90m│[39m  [33m(1:0): Error when using sourcemap for reporting an error: Can't[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1465585Z              [90m│[39m  [33mresolve original location of error.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1465922Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1466478Z              [33m▲[39m  [43mVite[49m [33msrc/features/gamification/components/battle-pass/RewardNode.tsx[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1467215Z              [90m│[39m  [33m(1:0): Module level directives cause errors when bundled, "use client"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1468183Z              [90m│[39m  [33min "src/features/gamification/components/battle-pass/RewardNode.tsx"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1468721Z              [90m│[39m  [33mwas ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1469019Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1469570Z              [33m▲[39m  [43mVite[49m [33msrc/features/game/components/campaign/BluetoothDebug.tsx (1:0):[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1470290Z              [90m│[39m  [33mError when using sourcemap for reporting an error: Can't resolve[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1470823Z              [90m│[39m  [33moriginal location of error.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1471171Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1471709Z              [33m▲[39m  [43mVite[49m [33msrc/features/game/components/campaign/BluetoothDebug.tsx (1:0):[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1472598Z              [90m│[39m  [33mModule level directives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1473285Z              [90m│[39m  [33m"src/features/game/components/campaign/BluetoothDebug.tsx" was[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1473783Z              [90m│[39m  [33mignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1474067Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1474621Z              [33m▲[39m  [43mVite[49m [33msrc/features/social/components/ShareableReplayCard.tsx (1:0):[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1475347Z              [90m│[39m  [33mError when using sourcemap for reporting an error: Can't resolve[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1475898Z              [90m│[39m  [33moriginal location of error.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1476218Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1476757Z              [33m▲[39m  [43mVite[49m [33msrc/features/social/components/ShareableReplayCard.tsx (1:0):[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1477495Z              [90m│[39m  [33mModule level directives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1478774Z              [90m│[39m  [33m"src/features/social/components/ShareableReplayCard.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1479285Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1479859Z              [33m▲[39m  [43mVite[49m [33msrc/features/territory/components/TerritoryStats.tsx (1:0): Error[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1480608Z              [90m│[39m  [33mwhen using sourcemap for reporting an error: Can't resolve original[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1481132Z              [90m│[39m  [33mlocation of error.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1481436Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1481965Z              [33m▲[39m  [43mVite[49m [33msrc/features/territory/components/TerritoryStats.tsx (1:0):[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1482680Z              [90m│[39m  [33mModule level directives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1483399Z              [90m│[39m  [33m"src/features/territory/components/TerritoryStats.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1483845Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1484397Z              [33m▲[39m  [43mVite[49m [33msrc/features/pvp/components/CardioDuelCard.tsx (1:0): Error when[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1485290Z              [90m│[39m  [33musing sourcemap for reporting an error: Can't resolve original[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1485794Z              [90m│[39m  [33mlocation of error.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1486094Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1486625Z              [33m▲[39m  [43mVite[49m [33msrc/features/pvp/components/CardioDuelCard.tsx (1:0): Module[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1487325Z              [90m│[39m  [33mlevel directives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1488123Z              [90m│[39m  [33m"src/features/pvp/components/CardioDuelCard.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1488565Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1489112Z              [33m▲[39m  [43mVite[49m [33msrc/features/training/components/ProgramGenerator.tsx (1:0):[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1489825Z              [90m│[39m  [33mError when using sourcemap for reporting an error: Can't resolve[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1490377Z              [90m│[39m  [33moriginal location of error.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1490697Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1491228Z              [33m▲[39m  [43mVite[49m [33msrc/features/training/components/ProgramGenerator.tsx (1:0):[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1491947Z              [90m│[39m  [33mModule level directives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1492651Z              [90m│[39m  [33m"src/features/training/components/ProgramGenerator.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1493101Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1493650Z              [33m▲[39m  [43mVite[49m [33msrc/features/strength/components/armory/ItemGrid.tsx (1:0): Error[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1494536Z              [90m│[39m  [33mwhen using sourcemap for reporting an error: Can't resolve original[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1495055Z              [90m│[39m  [33mlocation of error.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1495364Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1495888Z              [33m▲[39m  [43mVite[49m [33msrc/features/strength/components/armory/ItemGrid.tsx (1:0):[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1496597Z              [90m│[39m  [33mModule level directives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1497297Z              [90m│[39m  [33m"src/features/strength/components/armory/ItemGrid.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1497857Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1498418Z              [33m▲[39m  [43mVite[49m [33msrc/features/pvp/components/duel/CardioDuelModal.tsx (1:0): Error[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1499161Z              [90m│[39m  [33mwhen using sourcemap for reporting an error: Can't resolve original[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1499682Z              [90m│[39m  [33mlocation of error.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1499978Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1500498Z              [33m▲[39m  [43mVite[49m [33msrc/features/pvp/components/duel/CardioDuelModal.tsx (1:0):[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1501225Z              [90m│[39m  [33mModule level directives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1501917Z              [90m│[39m  [33m"src/features/pvp/components/duel/CardioDuelModal.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1502360Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1502644Z              [33m▲[39m  [43mVite[49m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1503197Z              [90m│[39m  [33msrc/features/gamification/components/battle-pass/BattlePassView.tsx[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1503890Z              [90m│[39m  [33m(1:0): Error when using sourcemap for reporting an error: Can't[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1504444Z              [90m│[39m  [33mresolve original location of error.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1504798Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1505085Z              [33m▲[39m  [43mVite[49m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1505636Z              [90m│[39m  [33msrc/features/gamification/components/battle-pass/BattlePassView.tsx[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1506496Z              [90m│[39m  [33m(1:0): Module level directives cause errors when bundled, "use client"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1506973Z              [90m│[39m  [33min[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1507526Z              [90m│[39m  [33m"src/features/gamification/components/battle-pass/BattlePassView.tsx"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1508173Z              [90m│[39m  [33mwas ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1508470Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1509039Z              [33m▲[39m  [43mVite[49m [33msrc/features/pvp/components/CardioDuelLobby.tsx (1:0): Error when[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1509769Z              [90m│[39m  [33musing sourcemap for reporting an error: Can't resolve original[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1510287Z              [90m│[39m  [33mlocation of error.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1510592Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1511131Z              [33m▲[39m  [43mVite[49m [33msrc/features/pvp/components/CardioDuelLobby.tsx (1:0): Module[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1511836Z              [90m│[39m  [33mlevel directives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1512497Z              [90m│[39m  [33m"src/features/pvp/components/CardioDuelLobby.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1512925Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1513465Z              [33m▲[39m  [43mVite[49m [33msrc/features/pvp/components/ranked/MatchmakingModal.tsx (1:0):[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1514189Z              [90m│[39m  [33mError when using sourcemap for reporting an error: Can't resolve[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1514727Z              [90m│[39m  [33moriginal location of error.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1515047Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1515724Z              [33m▲[39m  [43mVite[49m [33msrc/features/pvp/components/ranked/MatchmakingModal.tsx (1:0):[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1516452Z              [90m│[39m  [33mModule level directives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1517177Z              [90m│[39m  [33m"src/features/pvp/components/ranked/MatchmakingModal.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1517745Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1518296Z              [33m▲[39m  [43mVite[49m [33msrc/features/pvp/components/EmotePicker.tsx (1:0): Error when[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1519014Z              [90m│[39m  [33musing sourcemap for reporting an error: Can't resolve original[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1519519Z              [90m│[39m  [33mlocation of error.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1519823Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1520367Z              [33m▲[39m  [43mVite[49m [33msrc/features/pvp/components/EmotePicker.tsx (1:0): Module level[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1521045Z              [90m│[39m  [33mdirectives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1521675Z              [90m│[39m  [33m"src/features/pvp/components/EmotePicker.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1522089Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1522662Z              [33m▲[39m  [43mVite[49m [33msrc/features/territory/components/TerritoryLeaderboard.tsx (1:0):[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1523398Z              [90m│[39m  [33mError when using sourcemap for reporting an error: Can't resolve[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1523938Z              [90m│[39m  [33moriginal location of error.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1524261Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1524814Z              [33m▲[39m  [43mVite[49m [33msrc/features/territory/components/TerritoryLeaderboard.tsx (1:0):[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1525553Z              [90m│[39m  [33mModule level directives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1526238Z              [90m│[39m  [33m"src/features/territory/components/TerritoryLeaderboard.tsx" was[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1526741Z              [90m│[39m  [33mignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1527023Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1527571Z              [33m▲[39m  [43mVite[49m [33msrc/features/oracle/components/RecoveryOracleVerdict.tsx (1:0):[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1528584Z              [90m│[39m  [33mError when using sourcemap for reporting an error: Can't resolve[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1529130Z              [90m│[39m  [33moriginal location of error.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1529450Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1529997Z              [33m▲[39m  [43mVite[49m [33msrc/features/oracle/components/RecoveryOracleVerdict.tsx (1:0):[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1530728Z              [90m│[39m  [33mModule level directives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1531414Z              [90m│[39m  [33m"src/features/oracle/components/RecoveryOracleVerdict.tsx" was[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1531914Z              [90m│[39m  [33mignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1532198Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1532747Z              [33m▲[39m  [43mVite[49m [33msrc/features/strength/components/VolumeProgressBadge.tsx (1:0):[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1533481Z              [90m│[39m  [33mError when using sourcemap for reporting an error: Can't resolve[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1534016Z              [90m│[39m  [33moriginal location of error.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1534335Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1534886Z              [33m▲[39m  [43mVite[49m [33msrc/features/strength/components/VolumeProgressBadge.tsx (1:0):[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1535612Z              [90m│[39m  [33mModule level directives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1536293Z              [90m│[39m  [33m"src/features/strength/components/VolumeProgressBadge.tsx" was[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1536777Z              [90m│[39m  [33mignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1537188Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1537834Z              [33m▲[39m  [43mVite[49m [33msrc/features/podcast/components/PocketCastsPlayer.tsx (1:0):[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1538563Z              [90m│[39m  [33mError when using sourcemap for reporting an error: Can't resolve[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1539106Z              [90m│[39m  [33moriginal location of error.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1539425Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1539956Z              [33m▲[39m  [43mVite[49m [33msrc/features/podcast/components/PocketCastsPlayer.tsx (1:0):[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1540673Z              [90m│[39m  [33mModule level directives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1541378Z              [90m│[39m  [33m"src/features/podcast/components/PocketCastsPlayer.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1541839Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1542394Z              [33m▲[39m  [43mVite[49m [33msrc/features/podcast/components/PocketCastsAuth.tsx (1:0): Error[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1543195Z              [90m│[39m  [33mwhen using sourcemap for reporting an error: Can't resolve original[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1543715Z              [90m│[39m  [33mlocation of error.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1544023Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1544581Z              [33m▲[39m  [43mVite[49m [33msrc/features/podcast/components/PocketCastsAuth.tsx (1:0): Module[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1545302Z              [90m│[39m  [33mlevel directives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1545976Z              [90m│[39m  [33m"src/features/podcast/components/PocketCastsAuth.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1546423Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1546968Z              [33m▲[39m  [43mVite[49m [33msrc/features/podcast/components/PodcastBrowser.tsx (1:0): Error[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1547808Z              [90m│[39m  [33mwhen using sourcemap for reporting an error: Can't resolve original[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1548344Z              [90m│[39m  [33mlocation of error.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1548654Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1549215Z              [33m▲[39m  [43mVite[49m [33msrc/features/podcast/components/PodcastBrowser.tsx (1:0): Module[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1550072Z              [90m│[39m  [33mlevel directives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1550742Z              [90m│[39m  [33m"src/features/podcast/components/PodcastBrowser.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1551184Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1551722Z              [33m▲[39m  [43mVite[49m [33msrc/features/pvp/components/EmoteOverlay.tsx (1:0): Error when[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1552436Z              [90m│[39m  [33musing sourcemap for reporting an error: Can't resolve original[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1552942Z              [90m│[39m  [33mlocation of error.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1553242Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1553922Z              [33m▲[39m  [43mVite[49m [33msrc/features/pvp/components/EmoteOverlay.tsx (1:0): Module level[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1554609Z              [90m│[39m  [33mdirectives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1555237Z              [90m│[39m  [33m"src/features/pvp/components/EmoteOverlay.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1555659Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1556202Z              [33m▲[39m  [43mVite[49m [33msrc/features/settings/components/ArchetypeSelector.tsx (1:0):[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1556921Z              [90m│[39m  [33mError when using sourcemap for reporting an error: Can't resolve[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1557459Z              [90m│[39m  [33moriginal location of error.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1557923Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1558461Z              [33m▲[39m  [43mVite[49m [33msrc/features/settings/components/ArchetypeSelector.tsx (1:0):[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1559207Z              [90m│[39m  [33mModule level directives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1559921Z              [90m│[39m  [33m"src/features/settings/components/ArchetypeSelector.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1560387Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1560931Z              [33m▲[39m  [43mVite[49m [33msrc/features/settings/components/MigrationTool.tsx (1:0): Error[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1561669Z              [90m│[39m  [33mwhen using sourcemap for reporting an error: Can't resolve original[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1562191Z              [90m│[39m  [33mlocation of error.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1562496Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1563043Z              [33m▲[39m  [43mVite[49m [33msrc/features/settings/components/MigrationTool.tsx (1:0): Module[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1563751Z              [90m│[39m  [33mlevel directives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1564432Z              [90m│[39m  [33m"src/features/settings/components/MigrationTool.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1564870Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1565403Z              [33m▲[39m  [43mVite[49m [33msrc/features/oracle/components/OracleVerdict.tsx (1:0): Error[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1566280Z              [90m│[39m  [33mwhen using sourcemap for reporting an error: Can't resolve original[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1566799Z              [90m│[39m  [33mlocation of error.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1567101Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1567748Z              [33m▲[39m  [43mVite[49m [33msrc/features/oracle/components/OracleVerdict.tsx (1:0): Module[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1568476Z              [90m│[39m  [33mlevel directives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1569142Z              [90m│[39m  [33m"src/features/oracle/components/OracleVerdict.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1569584Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1570134Z              [33m▲[39m  [43mVite[49m [33msrc/features/leaderboard/components/LeaderboardHub.tsx (1:0):[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1570851Z              [90m│[39m  [33mError when using sourcemap for reporting an error: Can't resolve[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1571401Z              [90m│[39m  [33moriginal location of error.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1571720Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1572253Z              [33m▲[39m  [43mVite[49m [33msrc/features/leaderboard/components/LeaderboardHub.tsx (1:0):[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1572982Z              [90m│[39m  [33mModule level directives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1573693Z              [90m│[39m  [33m"src/features/leaderboard/components/LeaderboardHub.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1574149Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1574673Z              [33m▲[39m  [43mVite[49m [33msrc/features/game/components/SkillTree.tsx (1:0): Error when[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1575505Z              [90m│[39m  [33musing sourcemap for reporting an error: Can't resolve original[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1576011Z              [90m│[39m  [33mlocation of error.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1576317Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1576860Z              [33m▲[39m  [43mVite[49m [33msrc/features/game/components/SkillTree.tsx (1:0): Module level[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1577523Z              [90m│[39m  [33mdirectives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1578248Z              [90m│[39m  [33m"src/features/game/components/SkillTree.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1578657Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1579185Z              [33m▲[39m  [43mVite[49m [33msrc/features/training/components/HevyImportWizard.tsx (1:0):[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1579901Z              [90m│[39m  [33mError when using sourcemap for reporting an error: Can't resolve[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1580438Z              [90m│[39m  [33moriginal location of error.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1580765Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1581299Z              [33m▲[39m  [43mVite[49m [33msrc/features/training/components/HevyImportWizard.tsx (1:0):[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1582033Z              [90m│[39m  [33mModule level directives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1582742Z              [90m│[39m  [33m"src/features/training/components/HevyImportWizard.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1583199Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1583744Z              [33m▲[39m  [43mVite[49m [33msrc/actions/progression/achievements.ts (1:0): Error when using[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1584484Z              [90m│[39m  [33msourcemap for reporting an error: Can't resolve original location of[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1584978Z              [90m│[39m  [33merror.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1585261Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1585783Z              [33m▲[39m  [43mVite[49m [33msrc/actions/progression/achievements.ts (1:0): Module level[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1586458Z              [90m│[39m  [33mdirectives cause errors when bundled, "use server" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1587056Z              [90m│[39m  [33m"src/actions/progression/achievements.ts" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1587588Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1588248Z              [33m▲[39m  [43mVite[49m [33msrc/features/settings/components/IntegrationsPanel.tsx (1:0):[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1588964Z              [90m│[39m  [33mError when using sourcemap for reporting an error: Can't resolve[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1589501Z              [90m│[39m  [33moriginal location of error.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1589829Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1590361Z              [33m▲[39m  [43mVite[49m [33msrc/features/settings/components/IntegrationsPanel.tsx (1:0):[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1591111Z              [90m│[39m  [33mModule level directives cause errors when bundled, "use client" in[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1591836Z              [90m│[39m  [33m"src/features/settings/components/IntegrationsPanel.tsx" was ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1592291Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1592582Z              [33m▲[39m  [43mVite[49m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1593534Z              [90m│[39m  [33mnode_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/components/AnimatePresence/PopChild.mjs[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1594539Z              [90m│[39m  [33m(1:0): Module level directives cause errors when bundled, "use client"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1595017Z              [90m│[39m  [33min[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1595960Z              [90m│[39m  [33m"node_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/components/AnimatePresence/PopChild.mjs"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1596759Z              [90m│[39m  [33mwas ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1597191Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1597475Z              [33m▲[39m  [43mVite[49m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1598483Z              [90m│[39m  [33mnode_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/components/LayoutGroup/index.mjs[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1599472Z              [90m│[39m  [33m(1:0): Module level directives cause errors when bundled, "use client"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1599946Z              [90m│[39m  [33min[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1600830Z              [90m│[39m  [33m"node_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/components/LayoutGroup/index.mjs"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1614089Z              [90m│[39m  [33mwas ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1614696Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1615032Z              [33m▲[39m  [43mVite[49m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1616040Z              [90m│[39m  [33mnode_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/components/AnimatePresence/PresenceChild.mjs[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1617112Z              [90m│[39m  [33m(1:0): Module level directives cause errors when bundled, "use client"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1617617Z              [90m│[39m  [33min[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1618758Z              [90m│[39m  [33m"node_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/components/AnimatePresence/PresenceChild.mjs"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1619583Z              [90m│[39m  [33mwas ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1619883Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1620170Z              [33m▲[39m  [43mVite[49m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1621055Z              [90m│[39m  [33mnode_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/components/LazyMotion/index.mjs[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1622035Z              [90m│[39m  [33m(1:0): Module level directives cause errors when bundled, "use client"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1622513Z              [90m│[39m  [33min[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1623394Z              [90m│[39m  [33m"node_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/components/LazyMotion/index.mjs"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1624354Z              [90m│[39m  [33mwas ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1624646Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1624929Z              [33m▲[39m  [43mVite[49m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1625811Z              [90m│[39m  [33mnode_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/components/MotionConfig/index.mjs[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1626776Z              [90m│[39m  [33m(1:0): Module level directives cause errors when bundled, "use client"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1627258Z              [90m│[39m  [33min[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1628265Z              [90m│[39m  [33m"node_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/components/MotionConfig/index.mjs"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1629050Z              [90m│[39m  [33mwas ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1629345Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1629629Z              [33m▲[39m  [43mVite[49m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1630526Z              [90m│[39m  [33mnode_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/motion/utils/use-visual-state.mjs[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1631490Z              [90m│[39m  [33m(1:0): Module level directives cause errors when bundled, "use client"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1631969Z              [90m│[39m  [33min[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1632861Z              [90m│[39m  [33m"node_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/motion/utils/use-visual-state.mjs"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1633774Z              [90m│[39m  [33mwas ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1634074Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1634357Z              [33m▲[39m  [43mVite[49m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1635227Z              [90m│[39m  [33mnode_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/utils/use-force-update.mjs[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1636176Z              [90m│[39m  [33m(1:0): Module level directives cause errors when bundled, "use client"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1636654Z              [90m│[39m  [33min[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1637510Z              [90m│[39m  [33m"node_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/utils/use-force-update.mjs"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1638378Z              [90m│[39m  [33mwas ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1638682Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1638963Z              [33m▲[39m  [43mVite[49m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1639849Z              [90m│[39m  [33mnode_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/utils/use-isomorphic-effect.mjs[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1640815Z              [90m│[39m  [33m(1:0): Module level directives cause errors when bundled, "use client"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1641302Z              [90m│[39m  [33min[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1642193Z              [90m│[39m  [33m"node_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/utils/use-isomorphic-effect.mjs"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1643000Z              [90m│[39m  [33mwas ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1643295Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1643583Z              [33m▲[39m  [43mVite[49m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1644456Z              [90m│[39m  [33mnode_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/utils/use-unmount-effect.mjs[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1645419Z              [90m│[39m  [33m(1:0): Module level directives cause errors when bundled, "use client"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1646037Z              [90m│[39m  [33min[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1646910Z              [90m│[39m  [33m"node_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/utils/use-unmount-effect.mjs"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1647778Z              [90m│[39m  [33mwas ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1648090Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1648375Z              [33m▲[39m  [43mVite[49m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1649282Z              [90m│[39m  [33mnode_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/render/dom/features-animation.mjs[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1650251Z              [90m│[39m  [33m(1:0): Module level directives cause errors when bundled, "use client"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1650739Z              [90m│[39m  [33min[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1651635Z              [90m│[39m  [33m"node_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/render/dom/features-animation.mjs"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1652413Z              [90m│[39m  [33mwas ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1652709Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1652988Z              [33m▲[39m  [43mVite[49m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1653871Z              [90m│[39m  [33mnode_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/render/dom/features-max.mjs[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1654818Z              [90m│[39m  [33m(1:0): Module level directives cause errors when bundled, "use client"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1655294Z              [90m│[39m  [33min[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1656158Z              [90m│[39m  [33m"node_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/render/dom/features-max.mjs"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1657051Z              [90m│[39m  [33mwas ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1657351Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1657736Z              [33m▲[39m  [43mVite[49m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1658619Z              [90m│[39m  [33mnode_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/render/dom/features-min.mjs[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1659567Z              [90m│[39m  [33m(1:0): Module level directives cause errors when bundled, "use client"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1660048Z              [90m│[39m  [33min[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1660908Z              [90m│[39m  [33m"node_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/render/dom/features-min.mjs"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1661662Z              [90m│[39m  [33mwas ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1661947Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1662227Z              [33m▲[39m  [43mVite[49m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1663112Z              [90m│[39m  [33mnode_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/utils/use-motion-value-event.mjs[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1664087Z              [90m│[39m  [33m(1:0): Module level directives cause errors when bundled, "use client"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1664561Z              [90m│[39m  [33min[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1665445Z              [90m│[39m  [33m"node_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/utils/use-motion-value-event.mjs"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1666207Z              [90m│[39m  [33mwas ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1666494Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1666773Z              [33m▲[39m  [43mVite[49m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1667760Z              [90m│[39m  [33mnode_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/value/use-motion-template.mjs[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1668726Z              [90m│[39m  [33m(1:0): Module level directives cause errors when bundled, "use client"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1669341Z              [90m│[39m  [33min[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1670220Z              [90m│[39m  [33m"node_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/value/use-motion-template.mjs"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1670970Z              [90m│[39m  [33mwas ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1671265Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1671543Z              [33m▲[39m  [43mVite[49m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1672370Z              [90m│[39m  [33mnode_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/value/use-scroll.mjs[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1673293Z              [90m│[39m  [33m(1:0): Module level directives cause errors when bundled, "use client"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1673764Z              [90m│[39m  [33min[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1674600Z              [90m│[39m  [33m"node_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/value/use-scroll.mjs"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1675320Z              [90m│[39m  [33mwas ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1675610Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1675887Z              [33m▲[39m  [43mVite[49m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1676744Z              [90m│[39m  [33mnode_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/value/use-follow-value.mjs[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1677788Z              [90m│[39m  [33m(1:0): Module level directives cause errors when bundled, "use client"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1678280Z              [90m│[39m  [33min[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1679281Z              [90m│[39m  [33m"node_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/value/use-follow-value.mjs"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1680036Z              [90m│[39m  [33mwas ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1680322Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1680600Z              [33m▲[39m  [43mVite[49m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1681450Z              [90m│[39m  [33mnode_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/value/use-motion-value.mjs[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1682389Z              [90m│[39m  [33m(1:0): Module level directives cause errors when bundled, "use client"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1682859Z              [90m│[39m  [33min[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1683712Z              [90m│[39m  [33m"node_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/value/use-motion-value.mjs"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1684457Z              [90m│[39m  [33mwas ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1684749Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1685041Z              [33m▲[39m  [43mVite[49m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1685902Z              [90m│[39m  [33mnode_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/value/use-spring.mjs[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1686845Z              [90m│[39m  [33m(1:0): Module level directives cause errors when bundled, "use client"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1687325Z              [90m│[39m  [33min[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1688294Z              [90m│[39m  [33m"node_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/value/use-spring.mjs"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1689029Z              [90m│[39m  [33mwas ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1689322Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1689622Z              [33m▲[39m  [43mVite[49m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1690445Z              [90m│[39m  [33mnode_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/value/use-time.mjs[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1691493Z              [90m│[39m  [33m(1:0): Module level directives cause errors when bundled, "use client"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1691969Z              [90m│[39m  [33min[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1692795Z              [90m│[39m  [33m"node_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/value/use-time.mjs"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1693515Z              [90m│[39m  [33mwas ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1693810Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1694089Z              [33m▲[39m  [43mVite[49m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1694942Z              [90m│[39m  [33mnode_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/value/use-transform.mjs[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1695887Z              [90m│[39m  [33m(1:0): Module level directives cause errors when bundled, "use client"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1696361Z              [90m│[39m  [33min[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1697244Z              [90m│[39m  [33m"node_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/value/use-transform.mjs"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1698097Z              [90m│[39m  [33mwas ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1698391Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1698668Z              [33m▲[39m  [43mVite[49m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1699511Z              [90m│[39m  [33mnode_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/value/use-velocity.mjs[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1700434Z              [90m│[39m  [33m(1:0): Module level directives cause errors when bundled, "use client"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1701053Z              [90m│[39m  [33min[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1701897Z              [90m│[39m  [33m"node_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/value/use-velocity.mjs"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1702632Z              [90m│[39m  [33mwas ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1702923Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1703202Z              [33m▲[39m  [43mVite[49m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1704078Z              [90m│[39m  [33mnode_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/value/use-will-change/index.mjs[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1705040Z              [90m│[39m  [33m(1:0): Module level directives cause errors when bundled, "use client"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1705511Z              [90m│[39m  [33min[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1706386Z              [90m│[39m  [33m"node_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/value/use-will-change/index.mjs"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1707151Z              [90m│[39m  [33mwas ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1707437Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1707958Z              [33m▲[39m  [43mVite[49m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1708990Z              [90m│[39m  [33mnode_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/utils/reduced-motion/use-reduced-motion-config.mjs[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1710035Z              [90m│[39m  [33m(1:0): Module level directives cause errors when bundled, "use client"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1710518Z              [90m│[39m  [33min[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1711495Z              [90m│[39m  [33m"node_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/utils/reduced-motion/use-reduced-motion-config.mjs"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1712324Z              [90m│[39m  [33mwas ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1712628Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1712914Z              [33m▲[39m  [43mVite[49m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1713798Z              [90m│[39m  [33mnode_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/animation/hooks/use-animate.mjs[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1714911Z              [90m│[39m  [33m(1:0): Module level directives cause errors when bundled, "use client"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1715390Z              [90m│[39m  [33min[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1716276Z              [90m│[39m  [33m"node_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/animation/hooks/use-animate.mjs"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1717040Z              [90m│[39m  [33mwas ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1717332Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1717616Z              [33m▲[39m  [43mVite[49m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1718642Z              [90m│[39m  [33mnode_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/animation/hooks/use-animation.mjs[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1719623Z              [90m│[39m  [33m(1:0): Module level directives cause errors when bundled, "use client"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1720116Z              [90m│[39m  [33min[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1721011Z              [90m│[39m  [33m"node_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/animation/hooks/use-animation.mjs"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1721781Z              [90m│[39m  [33mwas ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1722071Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1722353Z              [33m▲[39m  [43mVite[49m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1723258Z              [90m│[39m  [33mnode_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/animation/hooks/use-animate-style.mjs[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1724382Z              [90m│[39m  [33m(1:0): Module level directives cause errors when bundled, "use client"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1724856Z              [90m│[39m  [33min[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1725767Z              [90m│[39m  [33m"node_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/animation/hooks/use-animate-style.mjs"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1726564Z              [90m│[39m  [33mwas ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1726852Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1727136Z              [33m▲[39m  [43mVite[49m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1728189Z              [90m│[39m  [33mnode_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/components/AnimatePresence/use-presence.mjs[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1729216Z              [90m│[39m  [33m(1:0): Module level directives cause errors when bundled, "use client"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1729698Z              [90m│[39m  [33min[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1730641Z              [90m│[39m  [33m"node_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/components/AnimatePresence/use-presence.mjs"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1731467Z              [90m│[39m  [33mwas ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1731754Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1732029Z              [33m▲[39m  [43mVite[49m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1732996Z              [90m│[39m  [33mnode_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/components/AnimatePresence/use-presence-data.mjs[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1734017Z              [90m│[39m  [33m(1:0): Module level directives cause errors when bundled, "use client"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1734488Z              [90m│[39m  [33min[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1735457Z              [90m│[39m  [33m"node_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/components/AnimatePresence/use-presence-data.mjs"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1736299Z              [90m│[39m  [33mwas ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1736586Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1736998Z              [33m▲[39m  [43mVite[49m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1737951Z              [90m│[39m  [33mnode_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/events/use-dom-event.mjs[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1738885Z              [90m│[39m  [33m(1:0): Module level directives cause errors when bundled, "use client"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1739357Z              [90m│[39m  [33min[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1740203Z              [90m│[39m  [33m"node_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/events/use-dom-event.mjs"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1740941Z              [90m│[39m  [33mwas ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1741236Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1741513Z              [33m▲[39m  [43mVite[49m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1742384Z              [90m│[39m  [33mnode_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/utils/use-animation-frame.mjs[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1743389Z              [90m│[39m  [33m(1:0): Module level directives cause errors when bundled, "use client"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1743859Z              [90m│[39m  [33min[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1744736Z              [90m│[39m  [33m"node_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/utils/use-animation-frame.mjs"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1745485Z              [90m│[39m  [33mwas ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1745771Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1746050Z              [33m▲[39m  [43mVite[49m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1746876Z              [90m│[39m  [33mnode_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/utils/use-cycle.mjs[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1748040Z              [90m│[39m  [33m(1:0): Module level directives cause errors when bundled, "use client"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1748522Z              [90m│[39m  [33min[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1749352Z              [90m│[39m  [33m"node_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/utils/use-cycle.mjs"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1750069Z              [90m│[39m  [33mwas ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1750360Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1750636Z              [33m▲[39m  [43mVite[49m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1751460Z              [90m│[39m  [33mnode_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/utils/use-in-view.mjs[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1752370Z              [90m│[39m  [33m(1:0): Module level directives cause errors when bundled, "use client"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1752851Z              [90m│[39m  [33min[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1753690Z              [90m│[39m  [33m"node_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/utils/use-in-view.mjs"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1754439Z              [90m│[39m  [33mwas ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1754725Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1755000Z              [33m▲[39m  [43mVite[49m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1755882Z              [90m│[39m  [33mnode_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/utils/use-instant-transition.mjs[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1756841Z              [90m│[39m  [33m(1:0): Module level directives cause errors when bundled, "use client"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1757315Z              [90m│[39m  [33min[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1758305Z              [90m│[39m  [33m"node_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/utils/use-instant-transition.mjs"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1759092Z              [90m│[39m  [33mwas ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1759513Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1759793Z              [33m▲[39m  [43mVite[49m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1760652Z              [90m│[39m  [33mnode_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/utils/use-page-in-view.mjs[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1761604Z              [90m│[39m  [33m(1:0): Module level directives cause errors when bundled, "use client"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1762077Z              [90m│[39m  [33min[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1762945Z              [90m│[39m  [33m"node_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/utils/use-page-in-view.mjs"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1763695Z              [90m│[39m  [33mwas ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1763982Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1764257Z              [33m▲[39m  [43mVite[49m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1765137Z              [90m│[39m  [33mnode_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/context/LayoutGroupContext.mjs[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1766102Z              [90m│[39m  [33m(1:0): Module level directives cause errors when bundled, "use client"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1766572Z              [90m│[39m  [33min[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1767453Z              [90m│[39m  [33m"node_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/context/LayoutGroupContext.mjs"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1768324Z              [90m│[39m  [33mwas ignored.[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1768618Z              [90m│[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1768901Z              [33m▲[39m  [43mVite[49m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1769923Z              [90m│[39m  [33mnode_modules/.pnpm/framer-motion@12.34.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/framer-motion/dist/es/context/MotionConfigContext.mjs[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1770891Z              [90m│[39m  [33m(1:0): Module level directives cause errors when bundled, "use client"[39m
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1771368Z              [90m│[39m  [33mi
+🎨 Chromatic	Run Chromatic	2026-02-18T21:40:57.1788983Z ##[error]non-zero exit code

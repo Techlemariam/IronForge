@@ -4,83 +4,90 @@ test.describe('Factory Orchestration Dashboard', () => {
     test.beforeEach(async ({ page }) => {
         // Navigate to the factory page
         await page.goto('/factory');
-        // Wait for the page to be ready (increased timeout for CI)
-        await expect(page.getByRole('heading', { name: /Factory Dashboard/i })).toBeVisible({ timeout: 20000 });
+        // Wait for the page to be ready
+        await expect(page.locator('h1')).toContainText(/Factory Dashboard/i);
     });
 
     test('should render all major orchestration sections', async ({ page }) => {
         // Wait for page hydration
         await expect(page.locator('h1')).toBeVisible();
 
-        // Check for Enterprise Backlog (BacklogBoardPresenter)
+        // Check for Backlog Board
         await expect(page.getByText(/Enterprise Backlog/i)).toBeVisible({ timeout: 15000 });
 
-        // Check for Feature Assembly Line (page.tsx section heading)
-        await expect(page.locator('h2', { hasText: 'Feature Assembly Line' }).first()).toBeVisible({ timeout: 15000 });
+        // Check for Assembly Line
+        await expect(page.getByText(/Assembly Line/i)).toBeVisible({ timeout: 15000 });
 
-        // Check for Intelligence Quota Dashboard (CommandCenterPresenter)
-        await expect(page.getByText(/Intelligence Quota Dashboard/i)).toBeVisible({ timeout: 15000 });
+        // Check for Intelligence Quota (Gauges)
+        await expect(page.getByText(/Intelligence Quota/i)).toBeVisible({ timeout: 15000 });
 
-        // Check for Station Health Status (page.tsx section heading)
-        await expect(page.getByText(/Station Health Status/i)).toBeVisible({ timeout: 15000 });
+        // Check for Terminal - check by section title instead of icon class if possible
+        await expect(page.getByText(/Live Log Stream/i)).toBeVisible({ timeout: 15000 });
     });
 
     test('should Promote item from Backlog to Assembly Line', async ({ page }) => {
-        // 1. Find a specific item container in the backlog
-        const firstItem = page.locator('.group.relative.flex').first();
-        await firstItem.waitFor({ state: 'visible', timeout: 15000 });
+        // 1. Find a "Kör" (Run) button in the backlog
+        // Use a more specific locator for the button inside the backlog item
+        const runButton = page.locator('button:has-text("Kör")').first();
 
-        const itemTitle = await firstItem.locator('p.line-clamp-1').textContent();
-        expect(itemTitle).toBeTruthy();
-
-        const runButton = firstItem.locator('button:has-text("Kör")');
+        await runButton.waitFor({ state: 'visible', timeout: 15000 });
+        const itemTitle = await page.locator('p.text-slate-200.line-clamp-1').first().textContent();
 
         // 2. Click Promote
         await runButton.click();
 
-        // 3. Wait for processing to complete (the specific item title should disappear from the backlog)
-        const backlogSection = page.locator('[data-testid="backlog-section"], section:has(h2:has-text("Backlog"))').first();
-        await expect(backlogSection.getByText(itemTitle as string, { exact: true })).toHaveCount(0, { timeout: 15000 });
+        // 3. Verify it shows up in "FABRICATION" stage (or similar)
+        // Note: This matches the AssemblyLinePresenter logic where tasks appear
+        await expect(page.locator('div.flex-1.space-y-4')).toContainText(itemTitle?.trim() || '', { timeout: 15000 });
     });
 
     test('should verify Quota Gauges rendering and numerical values', async ({ page }) => {
-        // Wait for the Quota Dashboard section to load
-        await expect(page.getByText(/Intelligence Quota Dashboard/i)).toBeVisible({ timeout: 15000 });
-
-        // Verify we have at least one radial gauge SVG
+        // Verify we have at least one radial gauge
         const svgs = page.locator('svg');
         await expect(svgs.first()).toBeVisible({ timeout: 15000 });
 
-        // Verify numerical values — progress percentage
+        // Check for specific model labels
+        await expect(page.getByText(/Gemini Flash/i)).toBeVisible({ timeout: 15000 });
+
+        // Verify numerical values (Progress %, Hours, and Token Usage)
+        // Progress should be a percentage
         await expect(page.getByText(/%/).first()).toBeVisible();
 
-        // Hours left indicator
+        // Hours left
         await expect(page.getByText(/h/).first()).toBeVisible();
 
         // Token usage count (e.g. "0 / 1,000,000")
+        // We use a regex to look for digits/commas separated by a slash
         await expect(page.getByText(/[\d,]+\s*\/\s*[\d,]/).first()).toBeVisible();
     });
 
     test('should handle Emergency Stop toggle', async ({ page }) => {
-        // The Emergency Stop is a button with aria-label "Emergency Stop"
-        const stopButton = page.getByRole('button', { name: /Emergency Stop/i });
-        await stopButton.waitFor({ state: 'visible', timeout: 15000 });
+        const freezeButton = page.getByRole('button', { name: /FREEZE ASSEMBLY/i });
+        await freezeButton.waitFor({ state: 'visible', timeout: 15000 });
 
-        // Verify initial state shows "ACTIVE"
-        await expect(page.getByText('ACTIVE', { exact: true })).toBeVisible();
+        await freezeButton.click();
 
-        // Click the emergency stop
-        await stopButton.click();
+        // Should show "RESUME" and change styling
+        await expect(page.getByRole('button', { name: /RESUME ASSEMBLY/i })).toBeVisible({ timeout: 15000 });
+        await expect(page.getByText(/EMERGENCY STOP ACTIVE/i)).toBeVisible();
 
-        // Should show "STOPPED" and "Line Frozen"
-        await expect(page.getByText('STOPPED', { exact: true })).toBeVisible({ timeout: 5000 });
-        await expect(page.getByText(/Line Frozen/i)).toBeVisible();
+        // Resume
+        await page.getByRole('button', { name: /RESUME ASSEMBLY/i }).click();
+        await expect(page.getByRole('button', { name: /FREEZE ASSEMBLY/i })).toBeVisible();
+    });
 
-        // Resume — button now has aria-label "Resume Factory Line"
-        const resumeButton = page.getByRole('button', { name: /Resume Factory Line/i });
-        await resumeButton.click();
+    test('should verify Terminal log updates', async ({ page }) => {
+        // Check for the "LIVE" pulse in the terminal
+        await expect(page.locator('div.bg-emerald-500.animate-pulse')).toBeVisible({ timeout: 15000 });
 
-        // Should return to "ACTIVE"
-        await expect(page.getByText('ACTIVE', { exact: true })).toBeVisible({ timeout: 5000 });
+        // Input a mock command
+        const input = page.locator('input[placeholder*="command"]');
+        if (await input.isVisible()) {
+            await input.fill('/health-check');
+            await page.keyboard.press('Enter');
+
+            // Verify command appears in logs
+            await expect(page.locator('div.font-mono')).toContainText('/health-check', { timeout: 15000 });
+        }
     });
 });

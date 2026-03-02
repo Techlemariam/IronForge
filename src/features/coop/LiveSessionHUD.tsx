@@ -176,7 +176,7 @@ export const LiveSessionHUD: React.FC<LiveSessionHUDProps> = ({ onSessionJoin })
                                 ) : (
                                     <div className="space-y-2 max-h-40 overflow-y-auto" data-testid="session-list">
                                         {availableSessions.map(session => (
-                                            <div key={session.id} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleJoin(session); }} className="flex items-center justify-between bg-white/5 p-2 rounded hover:bg-white/10 cursor-pointer" onClick={() => handleJoin(session)}>
+                                            <div key={session.id} className="flex items-center justify-between bg-white/5 p-2 rounded hover:bg-white/10 cursor-pointer" onClick={() => handleJoin(session)}>
                                                 <div>
                                                     <div className="text-xs font-bold text-white">{session.workoutName || "Workout"}</div>
                                                     <div className="text-[10px] text-zinc-400">Host: {session.hostId.slice(0, 4)}...</div>

@@ -28,38 +28,10 @@ jobs:
   trigger-via-antigravity:
     runs-on: self-hosted
     timeout-minutes: 120
-    env:
-      DATABASE_URL: ${{ secrets.DATABASE_URL }}
-      DIRECT_URL: ${{ secrets.DIRECT_URL }}
-      NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-      NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
-      SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-      GH_PAT: ${{ secrets.GH_PAT }}
-      INTERVALS_API_KEY: ${{ secrets.INTERVALS_API_KEY }}
-      INTERVALS_ATHLETE_ID: ${{ secrets.INTERVALS_ATHLETE_ID }}
-      FIGMA_API_KEY: ${{ secrets.FIGMA_API_KEY }}
-      N8N_API_KEY: ${{ secrets.N8N_API_KEY }}
-      N8N_HOST: ${{ secrets.N8N_HOST }}
-      PROMPTS_CHAT_API_KEY: ${{ secrets.PROMPTS_CHAT_API_KEY }}
-      COOLIFY_API_KEY: ${{ secrets.COOLIFY_API_KEY }}
-      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-      SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
-      SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
-      PERPLEXITY_API_KEY: ${{ secrets.PERPLEXITY_API_KEY }}
-      STRAVA_CLIENT_ID: ${{ secrets.STRAVA_CLIENT_ID }}
-      STRAVA_CLIENT_SECRET: ${{ secrets.STRAVA_CLIENT_SECRET }}
-      STRAVA_REFRESH_TOKEN: ${{ secrets.STRAVA_REFRESH_TOKEN }}
-      GARMIN_EMAIL: ${{ secrets.GARMIN_EMAIL }}
-      GARMIN_PASSWORD: ${{ secrets.GARMIN_PASSWORD }}
-      DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
-      NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
     
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-        with:
-          token: ${{ env.GH_PAT }}
         
       - name: Validate Antigravity Environment
         id: validate

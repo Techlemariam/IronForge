@@ -105,12 +105,13 @@ export const MigrationTool = () => {
         onClick={runMigration}
         disabled={status === "MIGRATING"}
         className={`w-full py-3 px-4 rounded font-bold uppercase tracking-wider transition-all
-                    ${status === "DONE"
-            ? "bg-green-600 hover:bg-green-700 text-white"
-            : status === "MIGRATING"
-              ? "bg-gray-600 text-gray-300 cursor-wait"
-              : "bg-warrior hover:bg-warrior-light text-black"
-          }
+                    ${
+                      status === "DONE"
+                        ? "bg-green-600 hover:bg-green-700 text-white"
+                        : status === "MIGRATING"
+                          ? "bg-gray-600 text-gray-300 cursor-wait"
+                          : "bg-warrior hover:bg-warrior-light text-black"
+                    }
                 `}
       >
         {status === "MIGRATING" && (
@@ -128,3 +129,4 @@ export const MigrationTool = () => {
   );
 };
 
+export default MigrationTool;

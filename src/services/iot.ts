@@ -49,7 +49,7 @@ export const IoTService = {
     }
   },
 
-  async setGroupState(groupId: number, state: Record<string, unknown>) {
+  async setGroupState(groupId: number, state: any) {
     if (!this.bridgeIp || !this.username) return;
 
     try {

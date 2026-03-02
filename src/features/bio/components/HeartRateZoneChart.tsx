@@ -1,16 +1,17 @@
 "use client";
 
-import { useMemo } from "react";
-import dynamic from "next/dynamic";
+import React, { useMemo } from "react";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  Cell,
+} from "recharts";
 import { IntervalsActivity, AthleteSettings } from "@/types";
 import { Activity } from "lucide-react";
-
-const HeartRateZoneChartVisual = dynamic(() => import("./HeartRateZoneChartVisual"), {
-  ssr: false,
-  loading: () => (
-    <div className="h-full w-full bg-white/5 animate-pulse rounded-lg border border-white/10" />
-  ),
-});
 
 interface HeartRateZoneChartProps {
   activities: IntervalsActivity[];
@@ -21,13 +22,13 @@ const ZONE_GAMIFICATION = [
   {
     name: "Recovery",
     label: "Regeneration",
-    color: "var(--color-venom)",
+    color: "#10b981",
     desc: "Active recovery & healing",
   }, // Z1
   {
     name: "Endurance",
     label: "Endurance Capacitor",
-    color: "var(--color-pulse)",
+    color: "#3b82f6",
     desc: "Base building & fat burn",
   }, // Z2
   {
@@ -39,13 +40,13 @@ const ZONE_GAMIFICATION = [
   {
     name: "Threshold",
     label: "Redline Limit",
-    color: "var(--color-gold)",
+    color: "#f59e0b",
     desc: "Lactate threshold",
   }, // Z4
   {
     name: "VO2 Max",
     label: "Nitro Boost",
-    color: "var(--color-crisis)",
+    color: "#ef4444",
     desc: "Max aerobic capacity",
   }, // Z5
   {
@@ -57,7 +58,7 @@ const ZONE_GAMIFICATION = [
   {
     name: "Neuromuscular",
     label: "Overdrive",
-    color: "var(--color-warp)",
+    color: "#8b5cf6",
     desc: "Pure sprint power",
   }, // Z7
 ];
@@ -128,7 +129,41 @@ export const HeartRateZoneChart: React.FC<HeartRateZoneChartProps> = ({
       </div>
 
       <div className="h-64 w-full">
-        <HeartRateZoneChartVisual zoneData={zoneData} />
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart
+            data={zoneData}
+            layout="vertical"
+            margin={{ left: 0, right: 30 }}
+          >
+            <XAxis type="number" hide />
+            <YAxis
+              type="category"
+              dataKey="name"
+              tick={{ fill: "#a1a1aa", fontSize: 10, fontWeight: 600 }}
+              width={110}
+              axisLine={false}
+              tickLine={false}
+            />
+            <Tooltip
+              cursor={{ fill: "rgba(255,255,255,0.05)" }}
+              contentStyle={{
+                backgroundColor: "#09090b",
+                borderColor: "#27272a",
+                borderRadius: "8px",
+              }}
+              itemStyle={{ color: "#fff", fontSize: "12px" }}
+              formatter={(value: any, name: any, props: any) => [
+                `${value} hrs`,
+                props.payload.originalName || "",
+              ]}
+            />
+            <Bar dataKey="value" radius={[0, 4, 4, 0]} barSize={20}>
+              {zoneData.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={entry.color} />
+              ))}
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
       </div>
 
       {/* Legend / Insight */}

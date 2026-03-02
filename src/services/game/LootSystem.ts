@@ -1,5 +1,4 @@
 import prisma from "@/lib/prisma";
-import { Item } from "@prisma/client";
 
 export class LootSystem {
   /**
@@ -71,7 +70,7 @@ export class LootSystem {
       legendary: 2,
     };
 
-    const weightedPool: Item[] = [];
+    const weightedPool: any[] = [];
     for (const item of unownedItems) {
       const weight = rarityWeights[item.rarity] || 10;
       // Add item to pool 'weight' times

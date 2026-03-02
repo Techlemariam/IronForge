@@ -78,16 +78,16 @@ const QuestLog: React.FC<QuestLogProps> = ({
             onClick={() => setActiveAct(act.id as ActFilter)}
             className={`flex-1 py-4 px-2 flex flex-col items-center gap-1 transition-all relative overflow-hidden group
               ${activeAct === act.id
-                ? "bg-[#1a1a1a] text-clay"
+                ? "bg-[#1a1a1a] text-[#c79c6e]"
                 : "bg-[#0a0a0a] text-zinc-500 hover:text-zinc-400 hover:bg-[#111]"
               }
             `}
           >
             {activeAct === act.id && (
-              <div className="absolute top-0 left-0 w-full h-0.5 bg-clay shadow-glow-clay" />
+              <div className="absolute top-0 left-0 w-full h-0.5 bg-[#c79c6e] shadow-[0_0_10px_#c79c6e]" />
             )}
             <div
-              className={`p-1 rounded ${activeAct === act.id ? "bg-clay/10" : ""}`}
+              className={`p-1 rounded ${activeAct === act.id ? "bg-[#c79c6e]/10" : ""}`}
             >
               {act.icon}
             </div>
@@ -146,8 +146,8 @@ const QuestLog: React.FC<QuestLogProps> = ({
               const isGenerated = session.isGenerated;
               const isCustom = session.isCustom;
 
-              let borderColor = "border-[#c0b3a0] group-hover:border-warp";
-              let iconColor = "bg-[#46321d] border-[#6b4e31] text-clay";
+              let borderColor = "border-[#c0b3a0] group-hover:border-[#a335ee]";
+              let iconColor = "bg-[#46321d] border-[#6b4e31] text-[#c79c6e]";
               let typeLabel = "Daily Quest";
 
               if (isGenerated) {
@@ -197,7 +197,7 @@ const QuestLog: React.FC<QuestLogProps> = ({
 
                     {/* Rewards / Difficulty */}
                     <div className="flex items-center gap-4 mt-3 text-[10px] text-zinc-400 font-mono uppercase">
-                      <span className="flex items-center gap-1 text-gold">
+                      <span className="flex items-center gap-1 text-[#ffd700]">
                         <Star className="w-3 h-3 fill-current" />
                         XP: High
                       </span>
@@ -214,7 +214,7 @@ const QuestLog: React.FC<QuestLogProps> = ({
                     </div>
                   </div>
 
-                  <div className="self-center opacity-0 group-hover:opacity-100 transition-opacity -ml-4 group-hover:ml-0 text-clay">
+                  <div className="self-center opacity-0 group-hover:opacity-100 transition-opacity -ml-4 group-hover:ml-0 text-[#c79c6e]">
                     <ChevronRight className="w-6 h-6" />
                   </div>
                 </button>

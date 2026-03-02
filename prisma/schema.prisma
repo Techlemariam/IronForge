@@ -4,7 +4,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider  = "postgresql"
 }
 
 model User {
@@ -162,8 +162,6 @@ model Titan {
   lastActive      DateTime      @default(now())
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
-  dailyXpEarned   Int           @default(0)
-  lastXpReset     DateTime      @default(now())
   currentEnergy   Int           @default(100)
   maxEnergy       Int           @default(100)
   cardioIndex     Float         @default(0)
@@ -184,8 +182,6 @@ model TitanMemory {
   importance  Int      @default(1)
   occurredAt  DateTime @default(now())
   titan       Titan    @relation(fields: [titanId], references: [id])
-
-  @@index([titanId])
 }
 
 model TitanScar {
@@ -196,8 +192,6 @@ model TitanScar {
   isVisible Boolean  @default(true)
   createdAt DateTime @default(now())
   titan     Titan    @relation(fields: [titanId], references: [id])
-
-  @@index([titanId])
 }
 
 model Follow {
@@ -359,7 +353,6 @@ model UserAchievement {
   user          User        @relation(fields: [userId], references: [id])
 
   @@id([userId, achievementId])
-  @@index([userId])
 }
 
 model UserEquipment {
@@ -371,7 +364,6 @@ model UserEquipment {
   user        User    @relation(fields: [userId], references: [id])
 
   @@id([userId, equipmentId])
-  @@index([userId])
 }
 
 model Item {
@@ -553,7 +545,6 @@ model UserChallenge {
   user        User      @relation(fields: [userId], references: [id])
 
   @@id([userId, challengeId])
-  @@index([userId])
 }
 
 model GauntletRun {
@@ -572,25 +563,24 @@ model GauntletRun {
 }
 
 model Guild {
-  id               String             @id @default(cuid())
-  name             String             @unique
-  tag              String             @unique
-  description      String?
-  leaderId         String             @unique
-  isPublic         Boolean            @default(true)
-  minLevel         Int                @default(1)
-  xp               Int                @default(0)
-  level            Int                @default(1)
-  createdAt        DateTime           @default(now())
-  powerRating      Float              @default(0)
-  gold             Int                @default(0)
-  leader           User               @relation("GuildLeader", fields: [leaderId], references: [id])
-  raids            GuildRaid[]
-  territories      Territory[]        @relation("GuildTerritories")
-  members          User[]
+  id          String      @id @default(cuid())
+  name        String      @unique
+  tag         String      @unique
+  description String?
+  leaderId    String      @unique
+  isPublic    Boolean     @default(true)
+  minLevel    Int         @default(1)
+  xp          Int         @default(0)
+  level       Int         @default(1)
+  createdAt   DateTime    @default(now())
+  powerRating Float       @default(0)
+  gold        Int         @default(0)
+  leader      User        @relation("GuildLeader", fields: [leaderId], references: [id])
+  raids       GuildRaid[]
+  territories Territory[] @relation("GuildTerritories")
+  members     User[]
   attackerContests TerritoryContest[] @relation("AttackerRelation")
   defenderContests TerritoryContest[] @relation("DefenderRelation")
-  wonContests      TerritoryContest[] @relation("WinnerRelation")
 }
 
 model Territory {
@@ -628,7 +618,6 @@ model TerritoryContest {
   endsAt        DateTime
   status        String    @default("active") // "active", "resolved"
   winnerId      String?
-  winner        Guild?    @relation("WinnerRelation", fields: [winnerId], references: [id])
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
@@ -683,9 +672,6 @@ model GuildRaidContribution {
   timestamp DateTime  @default(now())
   raid      GuildRaid @relation(fields: [raidId], references: [id])
   user      User      @relation(fields: [userId], references: [id])
-
-  @@index([raidId])
-  @@index([userId])
 }
 
 model Achievement {
@@ -1005,9 +991,9 @@ model FactoryTask {
   id          String   @id @default(cuid())
   description String
   status      String   @default("PENDING") // PENDING, IN_PROGRESS, COMPLETED, FAILED
-  stage       String   @default("DESIGN") // DESIGN, FABRICATION, VERIFICATION, SHIPPING
+  stage       String   @default("DESIGN")  // DESIGN, FABRICATION, VERIFICATION, SHIPPING
   source      String   @default("DISCORD") // DISCORD, WEB, SYSTEM
-  metadata    Json? // Store Discord user info, audio URL reference, etc.
+  metadata    Json?    // Store Discord user info, audio URL reference, etc.
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 

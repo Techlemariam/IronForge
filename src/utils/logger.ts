@@ -35,3 +35,4 @@ export const logError = (message: string, error: unknown, metadata: object = {})
     );
 };
 
+export default logger;

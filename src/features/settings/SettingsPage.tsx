@@ -2,8 +2,8 @@
 
 import React from "react";
 import IntegrationsPanel from "@/features/settings/components/IntegrationsPanel";
-import { MigrationTool } from "@/features/settings/components/MigrationTool";
-import { Faction } from "@/types/prisma";
+import MigrationTool from "@/features/settings/components/MigrationTool";
+import { Faction  } from "@/types/prisma";
 import { Sparkles, ArrowLeft, Upload } from "lucide-react";
 import Link from "next/link";
 import { HevyImportWizard } from "@/features/training/components/HevyImportWizard";
@@ -165,11 +165,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
                     Hide RPG visuals and focus on pure training data. Efficient for weak neural links.
                   </p>
                 </div>
-                <Toggle
-                  checked={liteMode}
-                  onCheckedChange={handleLiteModeToggle}
-                  ariaLabel="Toggle Lite Mode"
-                />
+                <Toggle checked={liteMode} onCheckedChange={handleLiteModeToggle} />
               </div>
             </div>
           </TabsContent>

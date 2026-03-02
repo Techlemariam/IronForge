@@ -4,6 +4,7 @@ import { logger } from "@/lib/logger";
 
 import { ProgressionService } from "@/services/progression";
 import { processUserCardioActivity } from "@/actions/pvp/duel";
+import { getActivityStream } from "@/lib/intervals";
 import { TerritoryService } from "@/services/game/TerritoryService";
 
 // Defines the shape of an Intervals.icu Activity Event

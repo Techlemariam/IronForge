@@ -1,5 +1,5 @@
 #!/usr/bin/env bun
-
+import { writed, file } from "bun";
 
 const PROMPTS_URL = "https://raw.githubusercontent.com/f/prompts.chat/master/prompts.csv";
 const OUTPUT_PATH = ".agent/skills/prompts-chat/prompts.csv";

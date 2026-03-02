@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { ClipboardList, AlertCircle, Play, Loader2, CheckCircle2 } from 'lucide-react';
 import { getBacklogItemsAction, startBacklogTaskAction } from '@/actions/factory';
 
 
@@ -25,16 +26,11 @@ export function BacklogBoard() {
 
     const handleStartTask = async (item: BacklogItem) => {
         setProcessingId(item.id);
-        try {
-            const res = await startBacklogTaskAction(item.title, item.source);
-            if (res && res.success) {
-                setItems(prev => prev.filter(i => i.id !== item.id));
-            }
-        } catch (e) {
-            console.error("Task start failed:", e);
-        } finally {
-            setProcessingId(null);
+        const res = await startBacklogTaskAction(item.title, item.source);
+        if (res.success) {
+            setItems(prev => prev.filter(i => i.id !== item.id));
         }
+        setProcessingId(null);
     };
 
     return (

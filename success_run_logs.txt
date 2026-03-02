@@ -1,0 +1,200 @@
+run-autonomous-workflow	Set up job	﻿2026-02-16T09:21:39.5139122Z Current runner version: '2.331.0'
+run-autonomous-workflow	Set up job	2026-02-16T09:21:39.5158225Z Runner name: 'IronForge-Local'
+run-autonomous-workflow	Set up job	2026-02-16T09:21:39.5159569Z Runner group name: 'Default'
+run-autonomous-workflow	Set up job	2026-02-16T09:21:39.5160899Z Machine name: 'KHAMELEON'
+run-autonomous-workflow	Set up job	2026-02-16T09:21:39.5166177Z ##[group]GITHUB_TOKEN Permissions
+run-autonomous-workflow	Set up job	2026-02-16T09:21:39.5170183Z Contents: write
+run-autonomous-workflow	Set up job	2026-02-16T09:21:39.5171098Z Metadata: read
+run-autonomous-workflow	Set up job	2026-02-16T09:21:39.5171928Z PullRequests: write
+run-autonomous-workflow	Set up job	2026-02-16T09:21:39.5172851Z ##[endgroup]
+run-autonomous-workflow	Set up job	2026-02-16T09:21:39.5176396Z Secret source: Actions
+run-autonomous-workflow	Set up job	2026-02-16T09:21:39.5177520Z Prepare workflow directory
+run-autonomous-workflow	Set up job	2026-02-16T09:21:39.6336341Z Prepare all required actions
+run-autonomous-workflow	Set up job	2026-02-16T09:21:39.6409182Z Getting action download info
+run-autonomous-workflow	Set up job	2026-02-16T09:21:40.3389160Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+run-autonomous-workflow	Set up job	2026-02-16T09:21:41.7762096Z Complete job name: run-autonomous-workflow
+run-autonomous-workflow	Checkout	﻿2026-02-16T09:21:42.1889230Z ##[group]Run actions/checkout@v4
+run-autonomous-workflow	Checkout	2026-02-16T09:21:42.1891772Z with:
+run-autonomous-workflow	Checkout	2026-02-16T09:21:42.1892766Z   fetch-depth: 0
+run-autonomous-workflow	Checkout	2026-02-16T09:21:42.1894144Z   repository: Techlemariam/IronForge
+run-autonomous-workflow	Checkout	2026-02-16T09:21:42.1896395Z   token: ***
+run-autonomous-workflow	Checkout	2026-02-16T09:21:42.1897613Z   ssh-strict: true
+run-autonomous-workflow	Checkout	2026-02-16T09:21:42.1898780Z   ssh-user: git
+run-autonomous-workflow	Checkout	2026-02-16T09:21:42.1899961Z   persist-credentials: true
+run-autonomous-workflow	Checkout	2026-02-16T09:21:42.1901363Z   clean: true
+run-autonomous-workflow	Checkout	2026-02-16T09:21:42.1902562Z   sparse-checkout-cone-mode: true
+run-autonomous-workflow	Checkout	2026-02-16T09:21:42.1904216Z   fetch-tags: false
+run-autonomous-workflow	Checkout	2026-02-16T09:21:42.1921215Z   show-progress: true
+run-autonomous-workflow	Checkout	2026-02-16T09:21:42.1922557Z   lfs: false
+run-autonomous-workflow	Checkout	2026-02-16T09:21:42.1924224Z   submodules: false
+run-autonomous-workflow	Checkout	2026-02-16T09:21:42.1925524Z   set-safe-directory: true
+run-autonomous-workflow	Checkout	2026-02-16T09:21:42.1928256Z ##[endgroup]
+run-autonomous-workflow	Checkout	2026-02-16T09:21:44.1444806Z Syncing repository: Techlemariam/IronForge
+run-autonomous-workflow	Checkout	2026-02-16T09:21:44.1450598Z ##[group]Getting Git version info
+run-autonomous-workflow	Checkout	2026-02-16T09:21:44.1453270Z Working directory is 'C:\actions-runner\_work\IronForge\IronForge'
+run-autonomous-workflow	Checkout	2026-02-16T09:21:44.4971680Z [command]"C:\Program Files\Git\cmd\git.exe" version
+run-autonomous-workflow	Checkout	2026-02-16T09:21:44.5996616Z git version 2.50.0.windows.1
+run-autonomous-workflow	Checkout	2026-02-16T09:21:44.6941786Z ##[endgroup]
+run-autonomous-workflow	Checkout	2026-02-16T09:21:44.7256175Z Copying 'C:\Users\alexa\.gitconfig' to 'C:\actions-runner\_work\_temp\4e185c72-70a5-4942-b7ff-d3e99f4a1ecc\.gitconfig'
+run-autonomous-workflow	Checkout	2026-02-16T09:21:44.7327141Z Temporarily overriding HOME='C:\actions-runner\_work\_temp\4e185c72-70a5-4942-b7ff-d3e99f4a1ecc' before making global git config changes
+run-autonomous-workflow	Checkout	2026-02-16T09:21:44.7444975Z Adding repository directory to the temporary git global config as a safe directory
+run-autonomous-workflow	Checkout	2026-02-16T09:21:44.7573202Z [command]"C:\Program Files\Git\cmd\git.exe" config --global --add safe.directory C:\actions-runner\_work\IronForge\IronForge
+run-autonomous-workflow	Checkout	2026-02-16T09:21:44.8640296Z [command]"C:\Program Files\Git\cmd\git.exe" config --local --get remote.origin.url
+run-autonomous-workflow	Checkout	2026-02-16T09:21:45.0034709Z https://github.com/Techlemariam/IronForge
+run-autonomous-workflow	Checkout	2026-02-16T09:21:45.0475980Z ##[group]Removing previously created refs, to avoid conflicts
+run-autonomous-workflow	Checkout	2026-02-16T09:21:45.0512604Z [command]"C:\Program Files\Git\cmd\git.exe" rev-parse --symbolic-full-name --verify --quiet HEAD
+run-autonomous-workflow	Checkout	2026-02-16T09:21:45.3134405Z refs/heads/main
+run-autonomous-workflow	Checkout	2026-02-16T09:21:45.3601443Z [command]"C:\Program Files\Git\cmd\git.exe" checkout --detach
+run-autonomous-workflow	Checkout	2026-02-16T09:21:45.8366528Z HEAD is now at 5a91ad2 Update github-metrics.svg - [Skip GitHub Action]
+run-autonomous-workflow	Checkout	2026-02-16T09:21:46.6407740Z ##[endgroup]
+run-autonomous-workflow	Checkout	2026-02-16T09:21:46.6410452Z [command]"C:\Program Files\Git\cmd\git.exe" submodule status
+run-autonomous-workflow	Checkout	2026-02-16T09:21:51.3902929Z ##[group]Cleaning the repository
+run-autonomous-workflow	Checkout	2026-02-16T09:21:51.3974218Z [command]"C:\Program Files\Git\cmd\git.exe" clean -ffdx
+run-autonomous-workflow	Checkout	2026-02-16T09:21:52.0097124Z Removing .agent/logs/
+run-autonomous-workflow	Checkout	2026-02-16T09:21:52.0427785Z [command]"C:\Program Files\Git\cmd\git.exe" reset --hard HEAD
+run-autonomous-workflow	Checkout	2026-02-16T09:21:52.7630158Z HEAD is now at 5a91ad2 Update github-metrics.svg - [Skip GitHub Action]
+run-autonomous-workflow	Checkout	2026-02-16T09:21:52.7935497Z ##[endgroup]
+run-autonomous-workflow	Checkout	2026-02-16T09:21:52.8033175Z ##[group]Disabling automatic garbage collection
+run-autonomous-workflow	Checkout	2026-02-16T09:21:52.8180933Z [command]"C:\Program Files\Git\cmd\git.exe" config --local gc.auto 0
+run-autonomous-workflow	Checkout	2026-02-16T09:21:53.2544120Z ##[endgroup]
+run-autonomous-workflow	Checkout	2026-02-16T09:21:53.2617902Z ##[group]Setting up auth
+run-autonomous-workflow	Checkout	2026-02-16T09:21:53.2620157Z [command]"C:\Program Files\Git\cmd\git.exe" config --local --name-only --get-regexp core\.sshCommand
+run-autonomous-workflow	Checkout	2026-02-16T09:21:53.6152364Z [command]"C:\Program Files\Git\cmd\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+run-autonomous-workflow	Checkout	2026-02-16T09:21:58.5895866Z [command]"C:\Program Files\Git\cmd\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+run-autonomous-workflow	Checkout	2026-02-16T09:21:58.7925317Z [command]"C:\Program Files\Git\cmd\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+run-autonomous-workflow	Checkout	2026-02-16T09:22:02.1990418Z [command]"C:\Program Files\Git\cmd\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+run-autonomous-workflow	Checkout	2026-02-16T09:22:02.3867361Z includeif.gitdir:C:/actions-runner/_work/IronForge/IronForge/.git.path
+run-autonomous-workflow	Checkout	2026-02-16T09:22:02.3954567Z includeif.gitdir:C:/actions-runner/_work/IronForge/IronForge/.git/worktrees/*.path
+run-autonomous-workflow	Checkout	2026-02-16T09:22:02.4544539Z [command]"C:\Program Files\Git\cmd\git.exe" config --local --get-all includeif.gitdir:C:/actions-runner/_work/IronForge/IronForge/.git.path
+run-autonomous-workflow	Checkout	2026-02-16T09:22:02.6163845Z C:\actions-runner\_work\_temp\git-credentials-bd4ed0ce-86e3-4bfd-bb37-6b47d66c543a.config
+run-autonomous-workflow	Checkout	2026-02-16T09:22:02.6572093Z [command]"C:\Program Files\Git\cmd\git.exe" config --local --unset includeif.gitdir:C:/actions-runner/_work/IronForge/IronForge/.git.path C:\actions-runner\_work\_temp\git-credentials-bd4ed0ce-86e3-4bfd-bb37-6b47d66c543a.config
+run-autonomous-workflow	Checkout	2026-02-16T09:22:02.8798284Z [command]"C:\Program Files\Git\cmd\git.exe" config --local --get-all includeif.gitdir:C:/actions-runner/_work/IronForge/IronForge/.git/worktrees/*.path
+run-autonomous-workflow	Checkout	2026-02-16T09:22:02.9950523Z C:\actions-runner\_work\_temp\git-credentials-bd4ed0ce-86e3-4bfd-bb37-6b47d66c543a.config
+run-autonomous-workflow	Checkout	2026-02-16T09:22:03.1060387Z [command]"C:\Program Files\Git\cmd\git.exe" config --local --unset includeif.gitdir:C:/actions-runner/_work/IronForge/IronForge/.git/worktrees/*.path C:\actions-runner\_work\_temp\git-credentials-bd4ed0ce-86e3-4bfd-bb37-6b47d66c543a.config
+run-autonomous-workflow	Checkout	2026-02-16T09:22:03.3614478Z [command]"C:\Program Files\Git\cmd\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+run-autonomous-workflow	Checkout	2026-02-16T09:22:07.5410974Z [command]"C:\Program Files\Git\cmd\git.exe" config --local http.https://github.com/.extraheader "AUTHORIZATION: basic ***"
+run-autonomous-workflow	Checkout	2026-02-16T09:22:08.0207541Z ##[endgroup]
+run-autonomous-workflow	Checkout	2026-02-16T09:22:08.0208647Z ##[group]Fetching the repository
+run-autonomous-workflow	Checkout	2026-02-16T09:22:08.0326822Z [command]"C:\Program Files\Git\cmd\git.exe" -c protocol.version=2 fetch --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/*
+run-autonomous-workflow	Checkout	2026-02-16T09:22:09.3774217Z From https://github.com/Techlemariam/IronForge
+run-autonomous-workflow	Checkout	2026-02-16T09:22:09.3775632Z    5a91ad2..0283592  main       -> origin/main
+run-autonomous-workflow	Checkout	2026-02-16T09:22:09.5849785Z [command]"C:\Program Files\Git\cmd\git.exe" branch --list --remote origin/main
+run-autonomous-workflow	Checkout	2026-02-16T09:22:09.7575749Z   origin/main
+run-autonomous-workflow	Checkout	2026-02-16T09:22:09.8335844Z [command]"C:\Program Files\Git\cmd\git.exe" rev-parse refs/remotes/origin/main
+run-autonomous-workflow	Checkout	2026-02-16T09:22:10.1169589Z 02835924df1a41e9bd578251a6e1fdcfc0700e47
+run-autonomous-workflow	Checkout	2026-02-16T09:22:10.1736922Z ##[endgroup]
+run-autonomous-workflow	Checkout	2026-02-16T09:22:10.1861844Z ##[group]Determining the checkout info
+run-autonomous-workflow	Checkout	2026-02-16T09:22:10.2090222Z ##[endgroup]
+run-autonomous-workflow	Checkout	2026-02-16T09:22:10.2144848Z [command]"C:\Program Files\Git\cmd\git.exe" sparse-checkout disable
+run-autonomous-workflow	Checkout	2026-02-16T09:22:10.5760668Z [command]"C:\Program Files\Git\cmd\git.exe" config --local --unset-all extensions.worktreeConfig
+run-autonomous-workflow	Checkout	2026-02-16T09:22:10.9275794Z ##[group]Checking out the ref
+run-autonomous-workflow	Checkout	2026-02-16T09:22:10.9278492Z [command]"C:\Program Files\Git\cmd\git.exe" checkout --progress --force -B main refs/remotes/origin/main
+run-autonomous-workflow	Checkout	2026-02-16T09:22:11.3630458Z branch 'main' set up to track 'origin/main'.
+run-autonomous-workflow	Checkout	2026-02-16T09:22:11.3809632Z Your branch is up to date with 'origin/main'.
+run-autonomous-workflow	Checkout	2026-02-16T09:22:11.4151530Z Previous HEAD position was 5a91ad2 Update github-metrics.svg - [Skip GitHub Action]
+run-autonomous-workflow	Checkout	2026-02-16T09:22:11.4215054Z Switched to and reset branch 'main'
+run-autonomous-workflow	Checkout	2026-02-16T09:22:11.4479797Z ##[endgroup]
+run-autonomous-workflow	Checkout	2026-02-16T09:22:11.6611443Z [command]"C:\Program Files\Git\cmd\git.exe" log -1 --format=%H
+run-autonomous-workflow	Checkout	2026-02-16T09:22:11.7968484Z 02835924df1a41e9bd578251a6e1fdcfc0700e47
+run-autonomous-workflow	Execute Workflow	﻿2026-02-16T09:22:12.3109944Z ##[group]Run Set-Location $env:GITHUB_WORKSPACE
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:22:12.3111218Z [36;1mSet-Location $env:GITHUB_WORKSPACE[0m
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:22:12.3113970Z [36;1m.\scripts\workflow-launcher.ps1 -Workflow "ci-doctor" -Model "gemini-2.5-flash"[0m
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:22:12.3320838Z shell: C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.EXE -command ". '{0}'"
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:22:12.3322285Z env:
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:22:12.3323504Z   GITHUB_TOKEN: ***
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:22:12.3324024Z   GEMINI_API_KEY:
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:22:12.3324554Z ##[endgroup]
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:22:16.7813276Z [10:22:16] === Workflow Launcher ===
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:22:16.8228726Z [10:22:16] Workflow: /ci-doctor
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:22:16.8375503Z [10:22:16] Model: gemini-2.5-flash
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:22:16.8422492Z [10:22:16] Log: C:\actions-runner\_work\IronForge\IronForge\.agent\logs\ci-doctor-20260216-102216.log
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:22:17.0065153Z [10:22:17] Budget Check: Daily (0 / 500000), Monthly (2000 / 5000000)
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:22:17.3116333Z [10:22:17] Temporarily disabling workspace MCP settings...
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:22:17.3459379Z [10:22:17] Invoking Gemini CLI via Start-Process (Headless Safe)...
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:22:17.3649130Z [10:22:17] Node Path: D:\Scoop\apps\nodejs-lts\current\node.exe
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:22:17.4326161Z [10:22:17] Gemini JS Path: D:\Scoop\apps\nodejs-lts\current\bin\node_modules\@google\gemini-cli\dist\index.js (Exists: True)
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:22:17.4403735Z [10:22:17] Arguments: --no-deprecation D:\Scoop\apps\nodejs-lts\current\bin\node_modules\@google\gemini-cli\dist\index.js -p Execute /ci-doctor --model gemini-2.5-flash --yolo --sandbox=false
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:22:17.4712767Z [10:22:17] Start-Process failed: This command cannot be run because "RedirectStandardOutput" and "RedirectStandardError" are same. Give different inputs and Run your command again.. Falling back to direct invocation...
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:23:16.8015211Z YOLO mode is enabled. All tool calls will be automatically approved.
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:23:16.8016005Z Loaded cached credentials.
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:23:16.8016550Z YOLO mode is enabled. All tool calls will be automatically approved.
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:23:16.8017088Z Hook registry initialized with 0 hook entries
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:23:57.7878405Z Error executing tool activate_skill: params/name must be equal to one of the allowed values
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:24:16.8611034Z D:\Scoop\persist\nodejs-lts\bin\node_modules\@google\gemini-cli\node_modules\@lydell\node-pty\conpty_console_list_agent.js:11
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:24:16.8613199Z var consoleProcessList = getConsoleProcessList(shellPid);
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:24:16.8614214Z                          ^
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:24:16.8614578Z
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:24:16.8614889Z Error: AttachConsole failed
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:24:16.8618007Z     at Object.<anonymous> (D:\Scoop\persist\nodejs-lts\bin\node_modules\@google\gemini-cli\node_modules\@lydell\node-pty\conpty_console_list_agent.js:11:26)
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:24:16.8620997Z     at Module._compile (node:internal/modules/cjs/loader:1804:14)
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:24:16.8622521Z     at Object..js (node:internal/modules/cjs/loader:1936:10)
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:24:16.8624191Z     at Module.load (node:internal/modules/cjs/loader:1525:32)
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:24:16.8625767Z     at Module._load (node:internal/modules/cjs/loader:1327:12)
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:24:16.8627412Z     at TracingChannel.traceSync (node:diagnostics_channel:328:14)
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:24:16.8629422Z     at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:24:16.8631636Z     at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:24:16.8634367Z     at node:internal/main/run_main_module:33:47
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:24:16.8635140Z
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:24:16.8635448Z Node.js v24.13.1
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:24:23.5286087Z D:\Scoop\persist\nodejs-lts\bin\node_modules\@google\gemini-cli\node_modules\@lydell\node-pty\conpty_console_list_agent.js:11
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:24:23.5287714Z var consoleProcessList = getConsoleProcessList(shellPid);
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:24:23.5288493Z                          ^
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:24:23.5288713Z
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:24:23.5291935Z Error: AttachConsole failed
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:24:23.5293142Z     at Object.<anonymous> (D:\Scoop\persist\nodejs-lts\bin\node_modules\@google\gemini-cli\node_modules\@lydell\node-pty\conpty_console_list_agent.js:11:26)
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:24:23.5294395Z     at Module._compile (node:internal/modules/cjs/loader:1804:14)
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:24:23.5295124Z     at Object..js (node:internal/modules/cjs/loader:1936:10)
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:24:23.5295804Z     at Module.load (node:internal/modules/cjs/loader:1525:32)
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:24:23.5296518Z     at Module._load (node:internal/modules/cjs/loader:1327:12)
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:24:23.5297248Z     at TracingChannel.traceSync (node:diagnostics_channel:328:14)
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:24:23.5298562Z     at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:24:23.5299473Z     at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:24:23.5300253Z     at node:internal/main/run_main_module:33:47
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:24:23.5300624Z
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:24:23.5300794Z Node.js v24.13.1
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:24:29.2529049Z Attempt 1 failed: You have exhausted your capacity on this model. Your quota will reset after 0s.. Retrying after 277.219941ms...
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:24:35.4209358Z Attempt 1 failed: You have exhausted your capacity on this model. Your quota will reset after 0s.. Retrying after 106.453529ms...
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:25:11.1529845Z D:\Scoop\persist\nodejs-lts\bin\node_modules\@google\gemini-cli\node_modules\@lydell\node-pty\conpty_console_list_agent.js:11
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:25:11.1531086Z var consoleProcessList = getConsoleProcessList(shellPid);
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:25:11.1531604Z                          ^
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:25:11.1531811Z
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:25:11.1531989Z Error: AttachConsole failed
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:25:11.1533094Z     at Object.<anonymous> (D:\Scoop\persist\nodejs-lts\bin\node_modules\@google\gemini-cli\node_modules\@lydell\node-pty\conpty_console_list_agent.js:11:26)
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:25:11.1534287Z     at Module._compile (node:internal/modules/cjs/loader:1804:14)
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:25:11.1534973Z     at Object..js (node:internal/modules/cjs/loader:1936:10)
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:25:11.1535629Z     at Module.load (node:internal/modules/cjs/loader:1525:32)
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:25:11.1536266Z     at Module._load (node:internal/modules/cjs/loader:1327:12)
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:25:11.1536956Z     at TracingChannel.traceSync (node:diagnostics_channel:328:14)
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:25:11.1537642Z     at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:25:11.1538485Z     at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:25:11.1539228Z     at node:internal/main/run_main_module:33:47
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:25:11.1539533Z
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:25:11.1539679Z Node.js v24.13.1
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:25:19.5492370Z [10:25:19] Direct invocation finished with exit code: 0
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:25:20.7312358Z [10:25:20] Logged 1000 tokens to usage.json
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:25:20.7380006Z [10:25:20] Restoring workspace MCP settings...
+run-autonomous-workflow	Execute Workflow	2026-02-16T09:25:20.7461107Z [10:25:20] === Workflow Launcher Complete ===
+run-autonomous-workflow	Post Checkout	﻿2026-02-16T09:25:20.8470702Z Post job cleanup.
+run-autonomous-workflow	Post Checkout	2026-02-16T09:25:21.1148012Z [command]"C:\Program Files\Git\cmd\git.exe" version
+run-autonomous-workflow	Post Checkout	2026-02-16T09:25:21.1580872Z git version 2.50.0.windows.1
+run-autonomous-workflow	Post Checkout	2026-02-16T09:25:21.1685620Z Copying 'C:\Users\alexa\.gitconfig' to 'C:\actions-runner\_work\_temp\8ec4f9f4-1016-4780-a3a9-16b60401b8c4\.gitconfig'
+run-autonomous-workflow	Post Checkout	2026-02-16T09:25:21.1721462Z Temporarily overriding HOME='C:\actions-runner\_work\_temp\8ec4f9f4-1016-4780-a3a9-16b60401b8c4' before making global git config changes
+run-autonomous-workflow	Post Checkout	2026-02-16T09:25:21.1723045Z Adding repository directory to the temporary git global config as a safe directory
+run-autonomous-workflow	Post Checkout	2026-02-16T09:25:21.1735002Z [command]"C:\Program Files\Git\cmd\git.exe" config --global --add safe.directory C:\actions-runner\_work\IronForge\IronForge
+run-autonomous-workflow	Post Checkout	2026-02-16T09:25:21.2256824Z [command]"C:\Program Files\Git\cmd\git.exe" config --local --name-only --get-regexp core\.sshCommand
+run-autonomous-workflow	Post Checkout	2026-02-16T09:25:21.2793950Z [command]"C:\Program Files\Git\cmd\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+run-autonomous-workflow	Post Checkout	2026-02-16T09:25:22.1690344Z [command]"C:\Program Files\Git\cmd\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+run-autonomous-workflow	Post Checkout	2026-02-16T09:25:22.2188450Z http.https://github.com/.extraheader
+run-autonomous-workflow	Post Checkout	2026-02-16T09:25:22.2267607Z [command]"C:\Program Files\Git\cmd\git.exe" config --local --unset-all http.https://github.com/.extraheader
+run-autonomous-workflow	Post Checkout	2026-02-16T09:25:22.2823669Z [command]"C:\Program Files\Git\cmd\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+run-autonomous-workflow	Post Checkout	2026-02-16T09:25:23.3100873Z [command]"C:\Program Files\Git\cmd\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+run-autonomous-workflow	Post Checkout	2026-02-16T09:25:23.3819178Z includeif.gitdir:C:/actions-runner/_work/IronForge/IronForge/.git.path
+run-autonomous-workflow	Post Checkout	2026-02-16T09:25:23.3820611Z includeif.gitdir:C:/actions-runner/_work/IronForge/IronForge/.git/worktrees/*.path
+run-autonomous-workflow	Post Checkout	2026-02-16T09:25:23.3910989Z [command]"C:\Program Files\Git\cmd\git.exe" config --local --get-all includeif.gitdir:C:/actions-runner/_work/IronForge/IronForge/.git.path
+run-autonomous-workflow	Post Checkout	2026-02-16T09:25:23.4360107Z C:\actions-runner\_work\_temp\git-credentials-bd4ed0ce-86e3-4bfd-bb37-6b47d66c543a.config
+run-autonomous-workflow	Post Checkout	2026-02-16T09:25:23.4437858Z [command]"C:\Program Files\Git\cmd\git.exe" config --local --unset includeif.gitdir:C:/actions-runner/_work/IronForge/IronForge/.git.path C:\actions-runner\_work\_temp\git-credentials-bd4ed0ce-86e3-4bfd-bb37-6b47d66c543a.config
+run-autonomous-workflow	Post Checkout	2026-02-16T09:25:23.4955598Z [command]"C:\Program Files\Git\cmd\git.exe" config --local --get-all includeif.gitdir:C:/actions-runner/_work/IronForge/IronForge/.git/worktrees/*.path
+run-autonomous-workflow	Post Checkout	2026-02-16T09:25:23.5403384Z C:\actions-runner\_work\_temp\git-credentials-bd4ed0ce-86e3-4bfd-bb37-6b47d66c543a.config
+run-autonomous-workflow	Post Checkout	2026-02-16T09:25:23.5490204Z [command]"C:\Program Files\Git\cmd\git.exe" config --local --unset includeif.gitdir:C:/actions-runner/_work/IronForge/IronForge/.git/worktrees/*.path C:\actions-runner\_work\_temp\git-credentials-bd4ed0ce-86e3-4bfd-bb37-6b47d66c543a.config
+run-autonomous-workflow	Post Checkout	2026-02-16T09:25:23.6030351Z [command]"C:\Program Files\Git\cmd\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+run-autonomous-workflow	Complete job	﻿2026-02-16T09:25:24.4439970Z Cleaning up orphan processes

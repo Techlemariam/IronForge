@@ -8,23 +8,9 @@ import { calculateWilks } from "@/utils/wilks";
  */
 
 const XP_PER_ACHIEVEMENT_POINT = 100;
+const XP_LEVEL_THRESHOLD = 1000;
 
 export const ProgressionService = {
-  /**
-   * Calculates required XP for a specific level using an exponential curve.
-   * e.g. Lvl 1: 1000, Lvl 2: ~2828, Lvl 3: ~5196
-   */
-  calculateRequiredXP(level: number) {
-    return Math.floor(1000 * Math.pow(level, 1.5));
-  },
-
-  /**
-   * Derives current level from total XP using the inverse curve.
-   */
-  calculateLevelFromXP(totalXp: number) {
-    if (totalXp < 1000) return 1;
-    return Math.floor(Math.pow(totalXp / 1000, 2 / 3));
-  },
   /**
    * Awards Gold to a user.
    */
@@ -38,76 +24,24 @@ export const ProgressionService = {
   /**
    * Awards Experience to a user and handles leveling.
    */
-  async addExperience(userId: string, amount: number, triggerLoot: boolean = false) {
+  async addExperience(userId: string, amount: number) {
     const user = await prisma.user.findUnique({
       where: { id: userId },
-      select: { totalExperience: true, level: true, titan: true, guildId: true },
+      select: { totalExperience: true, level: true },
     });
 
     if (!user) throw new Error("User not found");
 
-    let finalAmount = amount;
+    const newTotalXp = user.totalExperience + amount;
+    const newLevel = Math.floor(newTotalXp / XP_LEVEL_THRESHOLD) + 1;
 
-    // Apply Guild Territory Bonus
-    if (user.guildId) {
-      try {
-        const { getGuildTerritoryBonusesAction } = await import("@/actions/systems/territories");
-        const bonuses = await getGuildTerritoryBonusesAction(user.guildId);
-        if (bonuses.xpBonus > 0) {
-          finalAmount = Math.floor(finalAmount * (1 + bonuses.xpBonus));
-        }
-      } catch (e) {
-        console.error("Failed to apply guild XP bonus:", e);
-      }
-    }
-
-    // Daily XP Cap Logic
-    if (user.titan) {
-      const today = new Date();
-      const lastReset = user.titan.lastXpReset;
-      let currentDailyXp = user.titan.dailyXpEarned;
-
-      // Reset if it's a new day
-      if (
-        lastReset.getDate() !== today.getDate() ||
-        lastReset.getMonth() !== today.getMonth() ||
-        lastReset.getFullYear() !== today.getFullYear()
-      ) {
-        currentDailyXp = 0;
-      }
-
-      // Soft cap: 50% XP if over 5000 daily
-      if (currentDailyXp > 5000) {
-        finalAmount = Math.floor(finalAmount * 0.5);
-      }
-
-      await prisma.titan.update({
-        where: { id: user.titan.id },
-        data: {
-          dailyXpEarned: currentDailyXp + finalAmount,
-          lastXpReset: today,
-        },
-      });
-    }
-
-    const newTotalXp = user.totalExperience + finalAmount;
-    const newLevel = this.calculateLevelFromXP(newTotalXp);
-
-    const updatedUser = await prisma.user.update({
+    return prisma.user.update({
       where: { id: userId },
       data: {
         totalExperience: newTotalXp,
         level: newLevel,
       },
     });
-
-    let lootDrop = null;
-    if (triggerLoot) {
-      const { LootService } = await import("./loot");
-      lootDrop = await LootService.rollWorkoutLoot(userId);
-    }
-
-    return { user: updatedUser, lootDrop };
   },
 
   /**
@@ -148,22 +82,9 @@ export const ProgressionService = {
 
     if (!user) return null;
 
-    const currentLevelRequiredXp = this.calculateRequiredXP(user.level);
-    const nextLevelRequiredXp = this.calculateRequiredXP(user.level + 1);
-
-    const xpInCurrentLevel = user.totalExperience - currentLevelRequiredXp;
-    const levelXpSpan = nextLevelRequiredXp - currentLevelRequiredXp;
-
-    // Safety check for level 1 (if xp < 1000)
-    let progressPct = 0;
-    let xpToNextLevel = nextLevelRequiredXp - user.totalExperience;
-
-    if (user.level === 1 && user.totalExperience < 1000) {
-      progressPct = (user.totalExperience / 1000) * 100;
-      xpToNextLevel = 1000 - user.totalExperience;
-    } else {
-      progressPct = (xpInCurrentLevel / levelXpSpan) * 100;
-    }
+    const xpInCurrentLevel = user.totalExperience % XP_LEVEL_THRESHOLD;
+    const progressPct = (xpInCurrentLevel / XP_LEVEL_THRESHOLD) * 100;
+    const xpToNextLevel = XP_LEVEL_THRESHOLD - xpInCurrentLevel;
 
     return {
       level: user.level,

@@ -6,7 +6,7 @@ import { createClient } from "@/utils/supabase/client";
 import { useState, useEffect } from "react";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { Database, Key, Mail, ShieldAlert, CheckCircle2 } from "lucide-react";
-import { m, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -93,14 +93,14 @@ export default function LoginPage() {
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-warrior to-transparent opacity-50" />
 
         <div className="flex justify-center mb-6">
-          <m.div
+          <motion.div
             initial={{ scale: 0.8 }}
             animate={{ scale: 1 }}
             transition={{ type: "spring", stiffness: 200, damping: 15 }}
             className="w-16 h-16 bg-warrior/10 rounded-full flex items-center justify-center border border-warrior/30"
           >
             <Database className="w-8 h-8 text-warrior" />
-          </m.div>
+          </motion.div>
         </div>
 
         <h1 className="text-3xl font-serif text-center text-white mb-2 tracking-widest uppercase text-shadow-glow">
@@ -174,7 +174,7 @@ export default function LoginPage() {
 
           <AnimatePresence mode="wait">
             {isPasswordLogin && (
-              <m.div
+              <motion.div
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: "auto" }}
                 exit={{ opacity: 0, height: 0 }}
@@ -195,7 +195,7 @@ export default function LoginPage() {
                   className="w-full bg-black/40 border border-forge-border/50 rounded p-3 text-white focus:outline-none focus:border-warrior focus:bg-black/60 transition-all font-mono placeholder:text-gray-700"
                   placeholder="••••••••"
                 />
-              </m.div>
+              </motion.div>
             )}
           </AnimatePresence>
 
@@ -234,7 +234,7 @@ export default function LoginPage() {
 
         <AnimatePresence>
           {message && (
-            <m.div
+            <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
@@ -249,7 +249,7 @@ export default function LoginPage() {
                 <CheckCircle2 className="w-5 h-5 shrink-0" />
               )}
               <span className="font-mono">{message.text}</span>
-            </m.div>
+            </motion.div>
           )}
         </AnimatePresence>
       </div>

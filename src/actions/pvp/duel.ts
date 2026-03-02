@@ -1,10 +1,9 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { authActionClient } from "@/lib/safe-action";
+import { createClient } from "@/utils/supabase/server";
 
 // Schema for duel creation
 const _DuelChallengeSchema = z.object({
@@ -18,116 +17,131 @@ const _DuelChallengeSchema = z.object({
 
 type DuelChallengeInput = z.infer<typeof _DuelChallengeSchema>;
 
-export const createDuelChallengeAction = authActionClient
-  .schema(z.object({
-    targetUserId: z.string(),
-    options: _DuelChallengeSchema.partial().optional()
-  }))
-  .action(async ({ parsedInput: { targetUserId, options }, ctx: { userId: challengerId } }) => {
-    try {
-      if (challengerId === targetUserId) {
-        return { success: false, error: "Cannot duel yourself" };
-      }
+export async function createDuelChallengeAction(
+  targetUserId: string,
+  options?: Partial<DuelChallengeInput>,
+) {
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) throw new Error("Unauthorized");
+    const challengerId = user.id;
 
-      // Check if there is already an active or pending duel between these two
-      const existingDuel = await prisma.duelChallenge.findFirst({
-        where: {
-          OR: [
-            { challengerId: challengerId, defenderId: targetUserId },
-            { challengerId: targetUserId, defenderId: challengerId },
-          ],
-          status: { in: ["PENDING", "ACTIVE"] },
-        },
-      });
-
-      if (existingDuel) {
-        return {
-          success: false,
-          error: "A duel is already active or pending between you.",
-        };
-      }
-
-      // Create the challenge
-      const challenge = await prisma.duelChallenge.create({
-        data: {
-          challengerId,
-          defenderId: targetUserId,
-          status: "PENDING",
-          duelType: options?.duelType || "TITAN_VS_TITAN",
-          activityType: options?.activityType,
-          durationMinutes: options?.durationMinutes,
-          wkgTier: options?.wkgTier,
-          targetDistance: options?.targetDistance,
-        },
-      });
-
-      revalidatePath("/iron-arena");
-      return { success: true, duelId: challenge.id };
-    } catch (error) {
-      console.error("Error creating duel challenge:", error);
-      return { success: false, error: "Failed to create challenge" };
+    if (challengerId === targetUserId) {
+      return { success: false, error: "Cannot duel yourself" };
     }
-  });
 
-export const acceptDuelChallengeAction = authActionClient
-  .schema(z.string())
-  .action(async ({ parsedInput: challengeId, ctx: { userId } }) => {
-    try {
-      const duel = await prisma.duelChallenge.findUnique({
-        where: { id: challengeId },
-      });
+    // Check if there is already an active or pending duel between these two
+    const existingDuel = await prisma.duelChallenge.findFirst({
+      where: {
+        OR: [
+          { challengerId: challengerId, defenderId: targetUserId },
+          { challengerId: targetUserId, defenderId: challengerId },
+        ],
+        status: { in: ["PENDING", "ACTIVE"] },
+      },
+    });
 
-      if (!duel) return { success: false, error: "Duel not found" };
-      if (duel.defenderId !== userId)
-        return { success: false, error: "Not your challenge to accept" };
-      if (duel.status !== "PENDING")
-        return { success: false, error: "Duel is not pending" };
-
-      const startDate = new Date();
-      const endDate = new Date();
-      endDate.setDate(startDate.getDate() + 7);
-
-      await prisma.duelChallenge.update({
-        where: { id: challengeId },
-        data: {
-          status: "ACTIVE",
-          startDate,
-          endDate,
-        },
-      });
-
-      revalidatePath("/iron-arena");
-      return { success: true };
-    } catch (error) {
-      console.error("Error accepting duel:", error);
-      return { success: false, error: "Failed to accept duel" };
+    if (existingDuel) {
+      return {
+        success: false,
+        error: "A duel is already active or pending between you.",
+      };
     }
-  });
 
-export const declineDuelChallengeAction = authActionClient
-  .schema(z.string())
-  .action(async ({ parsedInput: challengeId, ctx: { userId } }) => {
-    try {
-      const duel = await prisma.duelChallenge.findUnique({
-        where: { id: challengeId },
-      });
+    // Create the challenge
+    const challenge = await prisma.duelChallenge.create({
+      data: {
+        challengerId,
+        defenderId: targetUserId,
+        status: "PENDING",
+        duelType: options?.duelType || "TITAN_VS_TITAN",
+        activityType: options?.activityType,
+        durationMinutes: options?.durationMinutes,
+        wkgTier: options?.wkgTier,
+        targetDistance: options?.targetDistance,
+      },
+    });
 
-      if (!duel) return { success: false, error: "Duel not found" };
-      if (duel.defenderId !== userId)
-        return { success: false, error: "Not your challenge to decline" };
+    revalidatePath("/iron-arena");
+    return { success: true, duelId: challenge.id };
+  } catch (error) {
+    console.error("Error creating duel challenge:", error);
+    return { success: false, error: "Failed to create challenge" };
+  }
+}
 
-      await prisma.duelChallenge.update({
-        where: { id: challengeId },
-        data: { status: "DECLINED" },
-      });
+export async function acceptDuelChallengeAction(challengeId: string) {
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) throw new Error("Unauthorized");
+    const userId = user.id;
 
-      revalidatePath("/iron-arena");
-      return { success: true };
-    } catch (error) {
-      console.error("Error declining duel:", error);
-      return { success: false, error: "Failed to decline duel" };
-    }
-  });
+    const duel = await prisma.duelChallenge.findUnique({
+      where: { id: challengeId },
+    });
+
+    if (!duel) return { success: false, error: "Duel not found" };
+    if (duel.defenderId !== userId)
+      return { success: false, error: "Not your challenge to accept" };
+    if (duel.status !== "PENDING")
+      return { success: false, error: "Duel is not pending" };
+
+    const startDate = new Date();
+    const endDate = new Date();
+    endDate.setDate(startDate.getDate() + 7);
+
+    await prisma.duelChallenge.update({
+      where: { id: challengeId },
+      data: {
+        status: "ACTIVE",
+        startDate,
+        endDate,
+      },
+    });
+
+    revalidatePath("/iron-arena");
+    return { success: true };
+  } catch (error) {
+    console.error("Error accepting duel:", error);
+    return { success: false, error: "Failed to accept duel" };
+  }
+}
+
+export async function declineDuelChallengeAction(challengeId: string) {
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) throw new Error("Unauthorized");
+    const userId = user.id;
+
+    const duel = await prisma.duelChallenge.findUnique({
+      where: { id: challengeId },
+    });
+
+    if (!duel) return { success: false, error: "Duel not found" };
+    if (duel.defenderId !== userId)
+      return { success: false, error: "Not your challenge to decline" };
+
+    await prisma.duelChallenge.update({
+      where: { id: challengeId },
+      data: { status: "DECLINED" },
+    });
+
+    revalidatePath("/iron-arena");
+    return { success: true };
+  } catch (error) {
+    console.error("Error declining duel:", error);
+    return { success: false, error: "Failed to decline duel" };
+  }
+}
 
 export async function getDuelStatusAction() {
   try {
@@ -305,24 +319,26 @@ export async function updateCardioDuelProgressInternalWithUser(
   return { success: true, isWin: !!winnerId };
 }
 
-const cardioProgressSchema = z.object({
-  duelId: z.string(),
-  distanceKm: z.number().min(0).max(10000), // Max 10,000km arbitrary cap to prevent huge number overflows
-  durationMinutes: z.number().min(0).max(10000)
-});
+export async function updateCardioDuelProgressAction(
+  duelId: string,
+  distanceKm: number,
+  durationMinutes: number = 0
+) {
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) throw new Error("Unauthorized");
 
-export const updateCardioDuelProgressAction = authActionClient
-  .schema(cardioProgressSchema)
-  .action(async ({ parsedInput: { duelId, distanceKm, durationMinutes }, ctx: { userId } }) => {
-    try {
-      const result = await updateCardioDuelProgressInternalWithUser(duelId, userId, distanceKm, durationMinutes);
-      revalidatePath("/iron-arena");
-      return result;
-    } catch (error) {
-      console.error("Error updating cardio progress:", error);
-      return { success: false, error: "Failed update" };
-    }
-  });
+    const result = await updateCardioDuelProgressInternalWithUser(duelId, user.id, distanceKm, durationMinutes);
+    revalidatePath("/iron-arena");
+    return result;
+  } catch (error) {
+    console.error("Error updating cardio progress:", error);
+    return { success: false, error: "Failed update" };
+  }
+}
 
 export async function sendTauntAction(duelId: string, message: string = "Prepare to be crushed!") {
   // In a real app, this would create a notification or chat message

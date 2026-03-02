@@ -28,28 +28,6 @@ env:
   DIRECT_URL: ${{ secrets.DIRECT_URL }}
   NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL || 'https://dummy.supabase.co' }}
   NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'dummy' }}
-  SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-  SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-  GH_PAT: ${{ secrets.GH_PAT }}
-  INTERVALS_API_KEY: ${{ secrets.INTERVALS_API_KEY }}
-  INTERVALS_ATHLETE_ID: ${{ secrets.INTERVALS_ATHLETE_ID }}
-  FIGMA_API_KEY: ${{ secrets.FIGMA_API_KEY }}
-  N8N_API_KEY: ${{ secrets.N8N_API_KEY }}
-  N8N_HOST: ${{ secrets.N8N_HOST }}
-  PROMPTS_CHAT_API_KEY: ${{ secrets.PROMPTS_CHAT_API_KEY }}
-  COOLIFY_API_KEY: ${{ secrets.COOLIFY_API_KEY }}
-  SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-  SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
-  SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
-  PERPLEXITY_API_KEY: ${{ secrets.PERPLEXITY_API_KEY }}
-  STRAVA_CLIENT_ID: ${{ secrets.STRAVA_CLIENT_ID }}
-  STRAVA_CLIENT_SECRET: ${{ secrets.STRAVA_CLIENT_SECRET }}
-  STRAVA_REFRESH_TOKEN: ${{ secrets.STRAVA_REFRESH_TOKEN }}
-  GARMIN_EMAIL: ${{ secrets.GARMIN_EMAIL }}
-  GARMIN_PASSWORD: ${{ secrets.GARMIN_PASSWORD }}
-  DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
-  NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
-  N8N_CI_TRIAGE_WEBHOOK_URL: ${{ secrets.N8N_CI_TRIAGE_WEBHOOK_URL }}
   SKIP_ENV_VALIDATION: true
 
 jobs:
@@ -62,7 +40,7 @@ jobs:
     name: "⚡ L1: Verify"
     if: github.event_name == 'pull_request' || startsWith(github.ref, 'refs/heads/fix/')
     runs-on: [self-hosted, IronForge-Local] # Target specific local runner
-    timeout-minutes: 20
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
         with:
@@ -70,47 +48,74 @@ jobs:
       - uses: ./.github/actions/setup-ironforge
         with:
           tier: 'l1'
-      - name: "🔮 Predictive Failure Analysis"
-        run: npx tsx scripts/predict-failures.ts
-        continue-on-error: true
+      - name: Generate Prisma Client
+        run: npx prisma generate
       - name: Initialize DB (L1)
         run: |
           # Managed-services assumes DB is already healthy (0s wait)
           npx prisma db push
       - name: Cache Turbo
-        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5
+        uses: actions/cache@v5
         with:
           path: .turbo
-          key: turbo-l1-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: turbo-l1-${{ runner.os }}-${{ github.sha }}
           restore-keys: |
             turbo-l1-${{ runner.os }}-
       - name: Turbo L1 Verify (Differential)
         run: pnpm run ci:l1
 
       # ==================================================================
-      # ACTIVE HANDOVER v4: n8n Triage Router
+      # ACTIVE HANDOVER: Proactive Monitoring on Success
       # ==================================================================
-      - name: "🩺 Active Handover: Dispatch to n8n"
-        if: failure()
-        shell: pwsh
-        env:
-          N8N_WEBHOOK_URL: ${{ env.N8N_CI_TRIAGE_WEBHOOK_URL }}
+      - name: "✨ Active Handover: Proactive Optimization"
+        if: success()
         run: |
-          $payload = @{
-            job_name = 'l1-verify'
-            run_id = '${{ github.run_id }}'
-            pr_number = '${{ github.event.pull_request.number }}'
-            branch = '${{ github.head_ref || github.ref_name }}'
-            conclusion = 'failure'
-            logs_summary = 'L1 Verify failed: lint, types, or tests'
-          } | ConvertTo-Json -Compress
+          echo "❇️ CI Doctor: Success detected. Initiating Proactive Monitoring..."
+          mkdir -p .agent/tasks
+
+          # Check for CodeRabbit presence to trigger Optimizer
+          if gh pr view --json reviews -q '.reviews[].author.login' | grep -q "coderabbit"; then
+             echo "🤖 Triggering Code Optimizer..."
+             echo "OPTIMIZE: Implement CodeRabbit suggestions in $GITHUB_SHA" > .agent/tasks/doctor-code-optimize.md
+          fi
+
+          # Proactive Security Check
+          echo "🛡️ Triggering Security Sentinel..."
+          echo "HARDEN: Proactive security scan for $GITHUB_SHA" > .agent/tasks/doctor-security-sentinel.md
+
+
+      # ==================================================================
+      # ACTIVE HANDOVER: Auto-Triage on Failure
+      # ==================================================================
+      - name: "🩺 Active Handover: Auto-Triage"
+        if: failure()
+        run: |
+          echo "🚨 CI Doctor: Failure detected in L1. Initiating Board-Level Triage..."
           
-          if ($env:N8N_WEBHOOK_URL) {
-            Invoke-RestMethod -Uri $env:N8N_WEBHOOK_URL -Method Post -Body $payload -ContentType 'application/json' -SkipCertificateCheck
-            Write-Host "🩺 Dispatched to n8n CI Triage Router"
-          } else {
-            Write-Host "⚠️ N8N_CI_TRIAGE_WEBHOOK_URL not set. Skipping Active Handover."
-          }
+          # 1. Check for Security limits (doctor-security)
+          if grep -q "limit of private tests\|snyk" /tmp/combined-logs.txt 2>/dev/null; then
+             echo "🛡️ Dispatching Security Specialist..."
+             echo "FIX: Security limit reached in $GITHUB_SHA" > .agent/tasks/doctor-security-signal.md
+          fi
+
+          # 2. Check for Meta-workflow failures (doctor-meta)
+          if grep -q "PR Labeler\|Release Drafter\|DeepSource" /tmp/combined-logs.txt 2>/dev/null; then
+             echo "⚙️ Dispatching Meta Specialist..."
+             echo "FIX: Meta/Config failure in $GITHUB_SHA" > .agent/tasks/doctor-meta-signal.md
+          fi
+
+          # 3. Check for Build/Type/Lint failures (doctor-code)
+          if grep -q "ELIFECYCLE\|TypeCheck\|ESLint" /tmp/combined-logs.txt 2>/dev/null; then
+             echo "🔬 Dispatching Code Specialist..."
+             echo "FIX: Type/Lint failure in $GITHUB_SHA" > .agent/tasks/doctor-code-signal.md
+          fi
+
+          # 4. Check for DB/Infra failures (doctor-infra)
+          if grep -q "ECONNREFUSED\|PrismaClientInitializationError" /tmp/combined-logs.txt 2>/dev/null; then
+             echo "🛡️ Dispatching Infra Specialist..."
+             mkdir -p .agent/tasks
+             echo "FIX: Infra failure in $GITHUB_SHA" > .agent/tasks/doctor-infra-signal.md
+          fi
 
 
   # ==================================================================
@@ -124,39 +129,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-ironforge
+      - run: npx prisma generate
       - name: Cache Turbo L2
-        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5
+        uses: actions/cache@v5
         with:
           path: .turbo
-          key: turbo-l2-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            turbo-l2-${{ runner.os }}-
+          key: turbo-l2-${{ runner.os }}-${{ github.sha }}
       - name: Initialize DB (L2)
-        run: npx prisma db push
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps chromium
-        continue-on-error: true
+        run: |
+          sleep 15
+          npx prisma db push
       - name: Turbo L2 verification
         run: pnpm run ci:l2
-      - name: "🩺 Active Handover: L2 Failure"
-        if: failure()
-        continue-on-error: true
-        shell: pwsh
-        env:
-          N8N_WEBHOOK_URL: ${{ env.N8N_CI_TRIAGE_WEBHOOK_URL }}
-        run: |
-          $payload = @{
-            job_name = 'l2-verification'
-            run_id = '${{ github.run_id }}'
-            pr_number = '${{ github.event.pull_request.number }}'
-            branch = '${{ github.head_ref || github.ref_name }}'
-            conclusion = 'failure'
-            logs_summary = 'L2 Verification failed: build or integration tests'
-          } | ConvertTo-Json -Compress
-          if ($env:N8N_WEBHOOK_URL) {
-            Invoke-RestMethod -Uri $env:N8N_WEBHOOK_URL -Method Post -Body $payload -ContentType 'application/json' -SkipCertificateCheck
-            Write-Host "🩺 Dispatched L2 failure to n8n"
-          }
 
   # 🐳 DOCKER VERIFICATION
   docker-verify:
@@ -170,42 +154,26 @@ jobs:
         uses: docker/setup-buildx-action@v3
       - name: Build Production Image
         run: |
-          docker buildx build -t ironforge-app:latest --target runner --load .
+          docker build -t ironforge-app:latest --target runner .
       - name: Verify Image
         run: |
           docker image inspect ironforge-app:latest
-      - name: "🩺 Active Handover: Docker Verify Failure"
-        if: failure()
-        shell: pwsh
-        env:
-          N8N_WEBHOOK_URL: ${{ env.N8N_CI_TRIAGE_WEBHOOK_URL }}
-        run: |
-          $payload = @{
-            job_name = 'docker-verify'
-            run_id = '${{ github.run_id }}'
-            pr_number = '${{ github.event.pull_request.number }}'
-            branch = '${{ github.head_ref || github.ref_name }}'
-            conclusion = 'failure'
-            logs_summary = 'Docker Build Verify failed: image build or inspect error'
-          } | ConvertTo-Json -Compress
-          if ($env:N8N_WEBHOOK_URL) {
-            Invoke-RestMethod -Uri $env:N8N_WEBHOOK_URL -Method Post -Body $payload -ContentType 'application/json' -SkipCertificateCheck
-            Write-Host "🩺 Dispatched Docker Verify failure to n8n"
-          }
 
   # 🎭 E2E VERIFICATION
   e2e:
     name: 🎭 E2E Tests
-    needs: [l1-verify]
-    if: (github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch') && github.actor != 'dependabot[bot]'
+    needs: [db-guard]
+    if: github.event_name == 'pull_request' && github.actor != 'dependabot[bot]'
     runs-on: [self-hosted, IronForge-Local] # Target specific local runner
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-ironforge
         with:
           tier: 'e2e'
+      - name: Generate Prisma Client
+        run: npx prisma generate
       - name: Cache Playwright Browsers
-        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5
+        uses: actions/cache@v5
         id: playwright-cache
         with:
           path: ~/.cache/ms-playwright
@@ -225,14 +193,8 @@ jobs:
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
           TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
-      - name: Run Playwright Matrix Tests
-        run: |
-          echo "==== Running Desktop (Chromium) Tests ===="
-          npx playwright test --project=desktop
-          echo "==== Running Mobile Tests ===="
-          npx playwright test --project=mobile
-          echo "==== Running TV Tests ===="
-          npx playwright test --project=tv
+      - name: Run Playwright Tests
+        run: npx playwright test
         env:
           CI: true
           TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
@@ -240,30 +202,32 @@ jobs:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           NEXT_PUBLIC_APP_URL: http://localhost:3000
-          GOOGLE_GENERATIVE_AI_API_KEY: ${{ secrets.GOOGLE_GENERATIVE_AI_API_KEY || 'dummy_google_ai_key_for_e2e_tests' }}
-      - name: "🩺 Active Handover: E2E Failure"
-        if: failure()
-        continue-on-error: true
-        shell: pwsh
-        env:
-          N8N_WEBHOOK_URL: ${{ env.N8N_CI_TRIAGE_WEBHOOK_URL }}
-        run: |
-          $payload = @{
-            job_name = 'e2e'
-            run_id = '${{ github.run_id }}'
-            pr_number = '${{ github.event.pull_request.number }}'
-            branch = '${{ github.head_ref || github.ref_name }}'
-            conclusion = 'failure'
-            logs_summary = 'E2E Tests failed: Playwright test suite'
-          } | ConvertTo-Json -Compress
-          if ($env:N8N_WEBHOOK_URL) {
-            Invoke-RestMethod -Uri $env:N8N_WEBHOOK_URL -Method Post -Body $payload -ContentType 'application/json' -SkipCertificateCheck
-            Write-Host "🩺 Dispatched E2E failure to n8n"
-          }
+          # DATABASE_URL is now managed by setup-ironforge
 
-  # ==================================================================
-  # PHASE 3: L2 (Extended Verification)
-  # ==================================================================
+  # 🗄️ DATABASE GUARD
+  db-guard:
+    name: 🗄️ DB Guard
+    needs: [l1-verify]
+    if: github.event_name == 'pull_request' || startsWith(github.ref, 'refs/heads/fix/')
+    runs-on: [self-hosted, IronForge-Local] # Target specific local runner
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-ironforge
+        with:
+          tier: 'guard'
+      - name: Create Shadow Database
+        shell: bash
+        run: |
+          # Managed-services assumes DB is already healthy
+          npx tsx scripts/ci/setup-db.ts
+        env:
+          TARGET_DB: ironforge_shadow
+      - name: Verify Prisma Drift
+        shell: bash
+        run: |
+          pnpm exec prisma -v
+          SHADOW_DATABASE_URL="$SHADOW_DATABASE_URL" pnpm exec prisma migrate diff --from-migrations prisma/migrations --to-schema prisma/schema.prisma --exit-code
+        # DATABASE_URL and SHADOW_DATABASE_URL are already namespaced and exported by setup-ironforge
 
   # E2E Smoke Tests for L2
   l2-e2e-smoke:
@@ -271,44 +235,27 @@ jobs:
     needs: [l2-verification]
     if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/fix/')
     runs-on: [self-hosted, IronForge-Local] # Target specific local runner
-    env:
-      DATABASE_URL: postgresql://postgres:postgres@localhost:5437/ironforge_test?schema=public
-      DIRECT_URL: postgresql://postgres:postgres@localhost:5437/ironforge_test?schema=public
-      NEXT_PUBLIC_APP_URL: http://localhost:3000
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-ironforge
         with:
           tier: 'l2'
+      - run: npx prisma generate
       - name: Cache Playwright
-        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5
+        uses: actions/cache@v5
         with:
           path: ~/.cache/ms-playwright
           key: ${{ runner.os }}-playwright-${{ hashFiles('**/pnpm-lock.yaml') }}
       - run: npx playwright install --with-deps
-      - name: Initialize Smoke DB
-        run: npx prisma db push --force-reset
       - name: Run Smoke E2E
-        run: pnpm run test:smoke
-      - name: "🩺 Active Handover: L2 E2E Smoke Failure"
-        if: failure()
-        continue-on-error: true
-        shell: pwsh
-        env:
-          N8N_WEBHOOK_URL: ${{ env.N8N_CI_TRIAGE_WEBHOOK_URL }}
         run: |
-          $payload = @{
-            job_name = 'l2-e2e-smoke'
-            run_id = '${{ github.run_id }}'
-            pr_number = '${{ github.event.pull_request.number }}'
-            branch = '${{ github.head_ref || github.ref_name }}'
-            conclusion = 'failure'
-            logs_summary = 'L2 E2E Smoke failed: critical user flows'
-          } | ConvertTo-Json -Compress
-          if ($env:N8N_WEBHOOK_URL) {
-            Invoke-RestMethod -Uri $env:N8N_WEBHOOK_URL -Method Post -Body $payload -ContentType 'application/json' -SkipCertificateCheck
-            Write-Host "🩺 Dispatched L2 E2E Smoke failure to n8n"
-          }
+          sleep 15
+          pnpm run test:smoke
+        env:
+          CI: true
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          NEXT_PUBLIC_APP_URL: http://localhost:3000
 
   # Performance Audit for L2
   l2-perf-audit:
@@ -316,38 +263,14 @@ jobs:
     needs: [l2-verification]
     if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/fix/')
     runs-on: [self-hosted, IronForge-Local] # Target specific local runner
-    env:
-      DATABASE_URL: postgresql://postgres:postgres@localhost:5433/ironforge_test?schema=public
-      DIRECT_URL: postgresql://postgres:postgres@localhost:5433/ironforge_test?schema=public
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-ironforge
-      - name: Setup Chrome
-        run: npx playwright install chrome
       - run: pnpm run build
       - name: Run Lighthouse Audit
         run: pnpm run lhci
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
-      - name: "🩺 Active Handover: Perf Audit Failure"
-        if: failure()
-        continue-on-error: true
-        shell: pwsh
-        env:
-          N8N_WEBHOOK_URL: ${{ env.N8N_CI_TRIAGE_WEBHOOK_URL }}
-        run: |
-          $payload = @{
-            job_name = 'l2-perf-audit'
-            run_id = '${{ github.run_id }}'
-            pr_number = '${{ github.event.pull_request.number }}'
-            branch = '${{ github.head_ref || github.ref_name }}'
-            conclusion = 'failure'
-            logs_summary = 'L2 Perf Audit failed: Lighthouse regression'
-          } | ConvertTo-Json -Compress
-          if ($env:N8N_WEBHOOK_URL) {
-            Invoke-RestMethod -Uri $env:N8N_WEBHOOK_URL -Method Post -Body $payload -ContentType 'application/json' -SkipCertificateCheck
-            Write-Host "🩺 Dispatched Perf Audit failure to n8n"
-          }
 
   # DB Guard renamed to L2: DB Guard
   l2-db-guard:
@@ -360,34 +283,14 @@ jobs:
         with:
           tier: 'l2'
       - name: Create Shadow Database
-        shell: pwsh
-        run: npx tsx scripts/ci/setup-db.ts
+        run: |
+          sleep 15
+          npx tsx scripts/ci/setup-db.ts
         env:
           TARGET_DB: ironforge_shadow
-          ADMIN_DATABASE_URL: ${{ env.ADMIN_DATABASE_URL }}
       - name: Verify Prisma Drift
-        shell: pwsh
         run: |
           npx prisma migrate diff --from-migrations prisma/migrations --to-schema prisma/schema.prisma --exit-code
-      - name: "🩺 Active Handover: DB Guard Failure"
-        if: failure()
-        continue-on-error: true
-        shell: pwsh
-        env:
-          N8N_WEBHOOK_URL: ${{ env.N8N_CI_TRIAGE_WEBHOOK_URL }}
-        run: |
-          $payload = @{
-            job_name = 'l2-db-guard'
-            run_id = '${{ github.run_id }}'
-            pr_number = '${{ github.event.pull_request.number }}'
-            branch = '${{ github.head_ref || github.ref_name }}'
-            conclusion = 'failure'
-            logs_summary = 'DB Guard failed: Prisma schema drift or shadow DB error'
-          } | ConvertTo-Json -Compress
-          if ($env:N8N_WEBHOOK_URL) {
-            Invoke-RestMethod -Uri $env:N8N_WEBHOOK_URL -Method Post -Body $payload -ContentType 'application/json' -SkipCertificateCheck
-            Write-Host "🩺 Dispatched DB Guard failure to n8n"
-          }
 
   # Automatic Deployment Trigger (L2 Success)
   deploy-verification:
@@ -400,45 +303,6 @@ jobs:
         env:
           DEPLOY_URL: ${{ secrets.PRODUCTION_URL || 'https://ironforge.life' }}
         run: |
-          printf "🔍 Checking health at $DEPLOY_URL/api/health\n"
-          # Wait up to 90s for Coolify deployment using a loop instead of hard sleep
-          for i in {1..18}; do curl -f -s "$DEPLOY_URL/api/health" && exit 0 || sleep "5"; done; exit 1
-
-  # ==================================================================
-  # GHCR Image Registry (Docker 10/10)
-  # Builds and pushes production image on main merges.
-  # Enables instant rollbacks and eliminates on-server builds.
-  # ==================================================================
-  publish-image:
-    name: 📦 Publish Docker Image
-    needs: [l2-verification]
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Log in to GHCR
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Build and push
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          target: runner
-          push: true
-          tags: |
-            ghcr.io/techlemariam/ironforge:latest
-            ghcr.io/techlemariam/ironforge:sha-${{ github.sha }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
+          echo "🔍 Checking health at $DEPLOY_URL/api/health"
+          sleep 90 # Coolify deploy buffer
+          curl -f -s "$DEPLOY_URL/api/health" || exit 1

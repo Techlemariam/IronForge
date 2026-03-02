@@ -1,13 +1,15 @@
 'use client';
 
-import dynamic from 'next/dynamic';
-
-const ExerciseProgressChartVisual = dynamic(() => import('./ExerciseProgressChartVisual'), {
-    ssr: false,
-    loading: () => (
-        <div className="w-full h-full bg-black/20 rounded-lg animate-pulse border border-white/5" />
-    ),
-});
+import React from 'react';
+import {
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    ResponsiveContainer,
+    Area,
+    AreaChart
+} from 'recharts';
 
 interface HistoryPoint {
     date: string;
@@ -41,7 +43,46 @@ export const ExerciseProgressChart: React.FC<ExerciseProgressChartProps> = ({ da
     return (
         <div className="w-full h-48 bg-black/20 rounded-lg p-2 border border-white/5">
             <div className="text-xs text-zinc-400 mb-2 font-bold uppercase tracking-wider ml-1">Estimated 1RM Trend</div>
-            <ExerciseProgressChartVisual data={data} />
+            <ResponsiveContainer width="100%" height="100%">
+                <AreaChart
+                    data={data}
+                    margin={{
+                        top: 5,
+                        right: 10,
+                        left: -20,
+                        bottom: 0,
+                    }}
+                >
+                    <defs>
+                        <linearGradient id="colorE1rm" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor="#06b6d4" stopOpacity={0.3} />
+                            <stop offset="95%" stopColor="#06b6d4" stopOpacity={0} />
+                        </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#333" vertical={false} />
+                    <XAxis
+                        dataKey="date"
+                        tick={{ fontSize: 10, fill: '#666' }}
+                        tickFormatter={(vals) => vals.substring(5)} // MM-DD
+                        interval="preserveStartEnd"
+                    />
+                    <YAxis tick={{ fontSize: 10, fill: '#666' }} domain={['auto', 'auto']} />
+                    <Tooltip
+                        contentStyle={{ backgroundColor: '#18181b', borderColor: '#333', fontSize: '12px' }}
+                        itemStyle={{ color: '#fff' }}
+                        labelStyle={{ color: '#888' }}
+                    />
+                    <Area
+                        type="monotone"
+                        dataKey="e1rm"
+                        stroke="#06b6d4"
+                        fillOpacity={1}
+                        fill="url(#colorE1rm)"
+                        strokeWidth={2}
+                        activeDot={{ r: 4, strokeWidth: 0, fill: '#fff' }}
+                    />
+                </AreaChart>
+            </ResponsiveContainer>
         </div>
     );
 };

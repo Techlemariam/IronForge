@@ -185,3 +185,4 @@ export const OracleVerdict: React.FC<OracleVerdictProps> = ({
   );
 };
 
+export default OracleVerdict;

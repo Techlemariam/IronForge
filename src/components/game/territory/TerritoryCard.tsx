@@ -34,13 +34,6 @@ export const TerritoryCard = ({ territory, userGuildId, onClick }: TerritoryCard
             whileHover={{ scale: 1.05, zIndex: 10 }}
             transition={{ duration: 0.2 }}
             onClick={onClick}
-            onKeyDown={(e) => {
-                if (onClick && (e.key === "Enter" || e.key === " ")) {
-                    onClick();
-                }
-            }}
-            role={onClick ? "button" : undefined}
-            tabIndex={onClick ? 0 : undefined}
             data-testid="territory-card"
         >
             <Card className={cn(

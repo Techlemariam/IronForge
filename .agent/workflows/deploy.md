@@ -7,7 +7,7 @@ version: "2.0.0"
 telemetry: "enabled"
 primary_agent: "@infrastructure"
 domain: "infra"
-skills: ["coolify-deploy", "gatekeeper", "sentry-rollback", "doppler"]
+skills: ["coolify-deploy", "gatekeeper", "sentry-rollback"]
 ---
 
 # 🚀 Delivery Manager (Level 10)
@@ -40,40 +40,23 @@ When triggered by `/factory ship` (Station 6) or manually:
 
 ### 2. Deployment
 
-Execute deployment via Doppler + GHCR:
+Execute `coolify-deploy`:
 
 ```powershell
-# Pre-flight: verify Doppler is active
-doppler run -- echo "Doppler OK"
-
-# Deploy via GHCR image pull (built by CI publish-image job)
-docker pull ghcr.io/techlemariam/ironforge:latest
-
-# Or deploy via Coolify API (auto-pulls GHCR image)
-doppler run -- pwsh scripts/coolify-deploy-n8n.ps1
+pwsh .agent/skills/coolify-deploy/scripts/deploy.ps1
 ```
 
-- **Pull**: GHCR image pulled by Coolify (`ghcr.io/techlemariam/ironforge:latest`).
+- **Build**: Production build.
+- **Push**: Docker image / Git push.
 - **Migrate**: Run `prisma migrate deploy` (if strict schema changes).
-
-> [!TIP]
-> For local dev environment setup, use the DevContainer: open the project in VS Code and select "Reopen in Container" — everything is pre-configured.
 
 ### 3. Verification & Rollback
 
 1. **Smoke Test**: Check Health Endpoint (`/api/health`).
 2. **Monitor**: Watch Sentry for 5 minutes.
-3. **Rollback**: If Error Rate > 1%:
-   - **Instant**: `docker pull ghcr.io/techlemariam/ironforge:sha-<previous_sha>`
-   - **Sentry**: Execute `sentry-rollback`.
+3. **Rollback**: If Error Rate > 1%, execute `sentry-rollback`.
 
 ## Version History
-
-### 2.1.0 (2026-03-01)
-
-- Updated deployment to pull from GHCR instead of building on-server
-- Added SHA-based instant rollback strategy
-- Added DevContainer reference for local dev
 
 ### 2.0.0 (2026-02-12)
 

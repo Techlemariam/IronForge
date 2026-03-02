@@ -86,8 +86,8 @@ export const getHevyWorkouts = async (
       workouts: result.data.workouts,
       page_count: result.data.page_count || 1,
     };
-  } catch (error: unknown) {
-    console.error("getHevyWorkouts library error:", error instanceof Error ? error.message : String(error));
+  } catch (error: any) {
+    console.error("getHevyWorkouts library error:", error.message);
     throw error;
   }
 };
@@ -144,8 +144,8 @@ export const getHevyTemplates = async (
     }
 
     return allExercises;
-  } catch (error: unknown) {
-    console.error("getHevyTemplates library error:", error instanceof Error ? error.message : String(error));
+  } catch (error: any) {
+    console.error("getHevyTemplates library error:", error.message);
     throw error;
   }
 };

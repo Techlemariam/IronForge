@@ -16,7 +16,7 @@ import { useSetLogging } from "@/features/strength/hooks/useSetLogging";
 import { useVolumeTracking } from "@/features/strength/hooks/useVolumeTracking";
 
 
-import { SupersetGroup } from "@/features/training/components/SupersetView";
+import SupersetGroup from "@/features/training/components/SupersetView";
 import { useHRRecoveryTimer } from "@/features/strength/hooks/useHRRecoveryTimer";
 import { BiometricsHUD } from "@/features/strength/components/BiometricsHUD";
 import { CardiacDriftWarning } from "@/features/strength/components/CardiacDriftWarning";
@@ -209,7 +209,7 @@ const DungeonSessionView: React.FC<IronMinesProps> = ({
 
         // --- GUILD ACTION ---
         if (user?.id) {
-          contributeGuildDamageAction({ damage }).catch(e => console.error("Guild Action Failed", e));
+          contributeGuildDamageAction(user.id, damage).catch(e => console.error("Guild Action Failed", e));
 
           // --- GHOST BROADCAST ---
           if (activeSessionId) {
@@ -394,7 +394,7 @@ const DungeonSessionView: React.FC<IronMinesProps> = ({
                 )}
                 style={{
                   width: `${Math.min(100, volumeFeedback.percentage)}%`,
-                } as React.CSSProperties}
+                }}
               />
             </div>
           </div>

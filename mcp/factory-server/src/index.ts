@@ -7,6 +7,7 @@ import {
     ReadResourceRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
 import { Octokit } from "octokit";
+import { z } from "zod";
 import { exec } from "child_process";
 import { promisify } from "util";
 import fs from "fs";
@@ -25,12 +26,7 @@ const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const REPO_OWNER = process.env.REPO_OWNER || "Techlemariam";
 const REPO_NAME = process.env.REPO_NAME || "IronForge";
 
-let octokit: Octokit | null = null;
-if (GITHUB_TOKEN) {
-    octokit = new Octokit({ auth: GITHUB_TOKEN });
-} else {
-    console.warn("Warning: GITHUB_TOKEN is missing. GitHub-related tools will be unavailable.");
-}
+const octokit = new Octokit({ auth: GITHUB_TOKEN });
 
 const server = new Server(
     {
@@ -71,7 +67,7 @@ function getTaskDirectory(): string {
     // 3. Fallback to hardcoded Antigravity path if we can't find it (Windows specific)
     const userProfile = process.env.USERPROFILE;
     if (userProfile) {
-        // const antigravityTasks = path.join(userProfile, ".gemini", "antigravity", "tasks"); // Guessing path
+        const antigravityTasks = path.join(userProfile, ".gemini", "antigravity", "tasks"); // Guessing path
         // Better fallback: just use the CWD fallback but log warning
     }
 
@@ -140,7 +136,7 @@ server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
         let antigravityAvailable = false;
         try {
             antigravityAvailable = fs.existsSync(taskDir);
-        } catch {
+        } catch (e) {
             antigravityAvailable = false;
         }
 
@@ -260,7 +256,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
                 if (!fs.existsSync(taskDir)) {
                     try {
                         fs.mkdirSync(taskDir, { recursive: true });
-                    } catch {
+                    } catch (e) {
                         // Ignore, let write fail or fallback
                     }
                 }
@@ -279,9 +275,6 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             // Fallback (or if Option A failed/skipped)
             // Option B: Trigger directly via GitHub API (Octokit)
             try {
-                if (!octokit) {
-                    throw new Error("Missing GITHUB_TOKEN. Please ensure it is set in your environment variables or GitHub Secrets.");
-                }
                 await octokit.rest.actions.createWorkflowDispatch({
                     owner: REPO_OWNER,
                     repo: REPO_NAME,
@@ -317,8 +310,8 @@ async function main() {
         try {
             startWebhookServer();
             console.error(`Webhook server enabled on port ${process.env.WEBHOOK_PORT || 3030}`);
-        } catch (_e: unknown) {
-            console.error(`Failed to start webhook server: ${(_e as Error).message}`);
+        } catch (e: any) {
+            console.error(`Failed to start webhook server: ${e.message}`);
         }
     }
 }

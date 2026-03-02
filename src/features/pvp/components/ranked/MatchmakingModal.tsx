@@ -28,8 +28,7 @@ export function MatchmakingModal({ isOpen, onClose, currentRating }: Matchmaking
             // Simulate partial delay for suspense
             await new Promise(r => setTimeout(r, 1500));
 
-            const result = await findRankedOpponentAction();
-            const found = result?.data;
+            const found = await findRankedOpponentAction();
             if (found) {
                 setOpponent(found);
                 setStatus("FOUND");

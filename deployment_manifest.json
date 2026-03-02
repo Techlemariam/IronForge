@@ -1,0 +1,28 @@
+{
+    "deployment": {
+        "module": "IronForge Core",
+        "version": "1.1.0-feature-trio",
+        "timestamp": "2026-01-03T20:45:00Z",
+        "environment": "production",
+        "status": "READY"
+    },
+    "features": [
+        "Power Rating System (Service + Cron)",
+        "Cardio PvP Duels (Webhook + UI)",
+        "Battle Pass XP Tracking (Action)"
+    ],
+    "secrets_injected": [
+        "STRAVA_CLIENT_ID",
+        "STRAVA_CLIENT_SECRET",
+        "STRAVA_VERIFY_TOKEN",
+        "CRON_SECRET",
+        "DATABASE_URL"
+    ],
+    "smoke_tests": {
+        "build": "PASS",
+        "unit_tests": "PASS",
+        "lint": "PASS",
+        "security_audit": "PASS"
+    },
+    "rollback_plan": "Revert commit and re-deploy previous tag."
+}

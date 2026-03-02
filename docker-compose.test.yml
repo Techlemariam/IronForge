@@ -30,53 +30,6 @@ services:
     networks:
       - ironforge-test-net
 
-  # ──────────────────────────────────────────────
-  # Playwright E2E Runner (Platform Matrix Tests)
-  # Uses official MS image with all browsers pre-installed.
-  # Eliminates host OS issues (Windows EPERM, browser version mismatches).
-  # Usage: docker compose -f docker-compose.test.yml run playwright-runner
-  # ──────────────────────────────────────────────
-  playwright-runner:
-    image: mcr.microsoft.com/playwright:v1.58.2-noble
-    container_name: ironforge-playwright
-    working_dir: /app
-    volumes:
-      - .:/app
-      - /app/node_modules
-    environment:
-      DATABASE_URL: postgresql://postgres:postgres@db-test:5432/ironforge_test
-      NEXT_PUBLIC_APP_URL: http://localhost:3000
-      CI: "true"
-    depends_on:
-      db-test:
-        condition: service_healthy
-    entrypoint: [ "sh", "-c", "corepack enable && pnpm install --frozen-lockfile && npx prisma db push --force-reset && npx tsx tests/e2e/setup/e2e-seed.ts && pnpm exec playwright test" ]
-    networks:
-      - ironforge-test-net
-
-  # ──────────────────────────────────────────────
-  # Lighthouse CI Profiler
-  # Runs lhci autorun inside a container to avoid Windows temp file issues.
-  # Usage: docker compose -f docker-compose.test.yml run lhci-runner
-  # ──────────────────────────────────────────────
-  lhci-runner:
-    image: node:22-slim
-    container_name: ironforge-lhci
-    working_dir: /app
-    volumes:
-      - .:/app
-      - /app/node_modules
-      - /app/.next
-    environment:
-      DATABASE_URL: postgresql://postgres:postgres@db-test:5432/ironforge_test
-      CI: "true"
-    depends_on:
-      db-test:
-        condition: service_healthy
-    entrypoint: [ "sh", "-c", "apt-get update && apt-get install -y chromium && corepack enable && pnpm install --frozen-lockfile && pnpm build && pnpm lhci" ]
-    networks:
-      - ironforge-test-net
-
 networks:
   ironforge-test-net:
     driver: bridge

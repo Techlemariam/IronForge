@@ -1,0 +1,1622 @@
+{
+    "data": [
+        {
+            "id": "314",
+            "finished": true,
+            "mode": "webhook",
+            "retryOf": null,
+            "retrySuccessId": null,
+            "status": "success",
+            "startedAt": "2026-02-09T10:25:16.910Z",
+            "stoppedAt": "2026-02-09T10:25:17.355Z",
+            "workflowId": "N6l6IZxtvbhnwS3x",
+            "waitTill": null,
+            "data": {
+                "version": 1,
+                "startData": {},
+                "resultData": {
+                    "runData": {
+                        "Webhook": [
+                            {
+                                "startTime": 1770632716913,
+                                "executionIndex": 0,
+                                "source": [],
+                                "hints": [],
+                                "executionTime": 0,
+                                "executionStatus": "success",
+                                "data": {
+                                    "main": [
+                                        [
+                                            {
+                                                "json": {
+                                                    "headers": {
+                                                        "host": "coolify.ironforge.com",
+                                                        "user-agent": "curl/8.16.0",
+                                                        "content-length": "151",
+                                                        "accept": "*/*",
+                                                        "content-type": "application/json",
+                                                        "x-forwarded-for": "10.0.1.1",
+                                                        "x-forwarded-host": "coolify.ironforge.com",
+                                                        "x-forwarded-port": "443",
+                                                        "x-forwarded-proto": "https",
+                                                        "x-forwarded-server": "eb9374084dab",
+                                                        "x-real-ip": "10.0.1.1",
+                                                        "accept-encoding": "gzip"
+                                                    },
+                                                    "params": {},
+                                                    "query": {},
+                                                    "body": {
+                                                        "workflow": "/health-check",
+                                                        "branch": "main",
+                                                        "token": "IF_SECURE_TRIGGER_REDACTED",
+                                                        "source": "discord",
+                                                        "user": "Antigravity#Debug"
+                                                    },
+                                                    "webhookUrl": "https://coolify.ironforge.com/webhook/ironforge-trigger",
+                                                    "executionMode": "production"
+                                                },
+                                                "pairedItem": {
+                                                    "item": 0
+                                                }
+                                            }
+                                        ]
+                                    ]
+                                }
+                            }
+                        ],
+                        "ValidateToken": [
+                            {
+                                "startTime": 1770632716913,
+                                "executionIndex": 1,
+                                "source": [
+                                    {
+                                        "previousNode": "Webhook"
+                                    }
+                                ],
+                                "hints": [],
+                                "executionTime": 15,
+                                "executionStatus": "success",
+                                "data": {
+                                    "main": [
+                                        [
+                                            {
+                                                "json": {
+                                                    "headers": {
+                                                        "host": "coolify.ironforge.com",
+                                                        "user-agent": "curl/8.16.0",
+                                                        "content-length": "151",
+                                                        "accept": "*/*",
+                                                        "content-type": "application/json",
+                                                        "x-forwarded-for": "10.0.1.1",
+                                                        "x-forwarded-host": "coolify.ironforge.com",
+                                                        "x-forwarded-port": "443",
+                                                        "x-forwarded-proto": "https",
+                                                        "x-forwarded-server": "eb9374084dab",
+                                                        "x-real-ip": "10.0.1.1",
+                                                        "accept-encoding": "gzip"
+                                                    },
+                                                    "params": {},
+                                                    "query": {},
+                                                    "body": {
+                                                        "workflow": "/health-check",
+                                                        "branch": "main",
+                                                        "token": "IF_SECURE_TRIGGER_REDACTED",
+                                                        "source": "discord",
+                                                        "user": "Antigravity#Debug"
+                                                    },
+                                                    "webhookUrl": "https://coolify.ironforge.com/webhook/ironforge-trigger",
+                                                    "executionMode": "production"
+                                                },
+                                                "pairedItem": {
+                                                    "item": 0
+                                                }
+                                            }
+                                        ],
+                                        []
+                                    ]
+                                }
+                            }
+                        ],
+                        "TriggerGitHub": [
+                            {
+                                "startTime": 1770632716928,
+                                "executionIndex": 2,
+                                "source": [
+                                    {
+                                        "previousNode": "ValidateToken"
+                                    }
+                                ],
+                                "hints": [],
+                                "executionTime": 426,
+                                "executionStatus": "success",
+                                "data": {
+                                    "main": [
+                                        [
+                                            {
+                                                "json": {},
+                                                "pairedItem": {
+                                                    "item": 0
+                                                }
+                                            }
+                                        ]
+                                    ]
+                                }
+                            }
+                        ]
+                    },
+                    "lastNodeExecuted": "TriggerGitHub"
+                },
+                "executionData": {
+                    "contextData": {},
+                    "nodeExecutionStack": [],
+                    "metadata": {},
+                    "waitingExecution": {},
+                    "waitingExecutionSource": {},
+                    "runtimeData": {
+                        "version": 1,
+                        "establishedAt": 1770632716913,
+                        "source": "webhook",
+                        "triggerNode": {
+                            "name": "Webhook",
+                            "type": "n8n-nodes-base.webhook"
+                        }
+                    }
+                }
+            },
+            "workflowData": {
+                "id": "N6l6IZxtvbhnwS3x",
+                "name": "IronForge Remote Trigger V3",
+                "active": true,
+                "activeVersionId": "892993bb-f6a6-411d-bade-e3cb3f24db67",
+                "isArchived": false,
+                "createdAt": "2026-02-09T10:04:31.674Z",
+                "updatedAt": "2026-02-09T10:25:16.718Z",
+                "nodes": [
+                    {
+                        "parameters": {
+                            "multipleMethods": false,
+                            "httpMethod": "POST",
+                            "path": "ironforge-trigger",
+                            "authentication": "none",
+                            "responseMode": "onReceived",
+                            "responseCode": 200,
+                            "contentTypeNotice": "",
+                            "options": {}
+                        },
+                        "name": "Webhook",
+                        "type": "n8n-nodes-base.webhook",
+                        "typeVersion": 1,
+                        "position": [
+                            250,
+                            300
+                        ],
+                        "webhookId": "776e9ed4-b76f-40a2-b4d5-6701a66227c5",
+                        "id": "76202c18-1fbc-4747-a63f-0ad3d9b195c6"
+                    },
+                    {
+                        "parameters": {
+                            "conditions": {
+                                "boolean": [
+                                    {
+                                        "value1": "={{ $json.body.token.trim() === 'IF_SECURE_TRIGGER_REDACTED' }}",
+                                        "operation": "equal",
+                                        "value2": true
+                                    }
+                                ]
+                            },
+                            "combineOperation": "all"
+                        },
+                        "name": "ValidateToken",
+                        "type": "n8n-nodes-base.if",
+                        "typeVersion": 1,
+                        "position": [
+                            450,
+                            300
+                        ],
+                        "id": "7e0c9346-746e-46d3-b7e7-a244539e2d13"
+                    },
+                    {
+                        "parameters": {
+                            "preBuiltAgentsCalloutHttpRequest": "",
+                            "curlImport": "",
+                            "method": "POST",
+                            "url": "https://api.github.com/repos/Techlemariam/IronForge/dispatches",
+                            "authentication": "none",
+                            "provideSslCertificates": false,
+                            "sendQuery": false,
+                            "sendHeaders": true,
+                            "specifyHeaders": "keypair",
+                            "headerParameters": {
+                                "parameters": [
+                                    {
+                                        "name": "Accept",
+                                        "value": "application/vnd.github.v3+json"
+                                    },
+                                    {
+                                        "name": "Authorization",
+                                        "value": "token REDACTED_TOKEN"
+                                    }
+                                ]
+                            },
+                            "sendBody": true,
+                            "contentType": "json",
+                            "specifyBody": "json",
+                            "jsonBody": "={{ JSON.stringify({ event_type: 'remote-trigger', client_payload: { workflow: $json.body.workflow || '/health-check', branch: $json.body.branch || 'main', token: $json.body.token } }) }}",
+                            "options": {},
+                            "infoMessage": ""
+                        },
+                        "name": "TriggerGitHub",
+                        "type": "n8n-nodes-base.httpRequest",
+                        "typeVersion": 3,
+                        "position": [
+                            650,
+                            200
+                        ],
+                        "id": "8074f9fe-f088-47a7-8727-774c5c1c2806"
+                    }
+                ],
+                "connections": {
+                    "Webhook": {
+                        "main": [
+                            [
+                                {
+                                    "node": "ValidateToken",
+                                    "type": "main",
+                                    "index": 0
+                                }
+                            ]
+                        ]
+                    },
+                    "ValidateToken": {
+                        "main": [
+                            [
+                                {
+                                    "node": "TriggerGitHub",
+                                    "type": "main",
+                                    "index": 0
+                                }
+                            ]
+                        ]
+                    }
+                },
+                "settings": {
+                    "executionOrder": "v1",
+                    "callerPolicy": "workflowsFromSameOwner",
+                    "availableInMCP": false
+                },
+                "staticData": {},
+                "pinData": null
+            },
+            "customData": {}
+        },
+        {
+            "id": "313",
+            "finished": false,
+            "mode": "trigger",
+            "retryOf": null,
+            "retrySuccessId": null,
+            "status": "error",
+            "startedAt": "2026-02-09T10:25:03.029Z",
+            "stoppedAt": "2026-02-09T10:25:03.052Z",
+            "workflowId": "Tv0z7QUCzTfgLDGq",
+            "waitTill": null,
+            "data": {
+                "version": 1,
+                "startData": {},
+                "resultData": {
+                    "error": {
+                        "level": "warning",
+                        "tags": {},
+                        "timestamp": 1770632703050,
+                        "context": {
+                            "itemIndex": 0,
+                            "request": {
+                                "headers": {
+                                    "accept": "application/json,text/html,application/xhtml+xml,application/xml,text/*;q=0.9, image/*;q=0.8, */*;q=0.7"
+                                },
+                                "method": "GET",
+                                "uri": "https://coolify.ironforge.com/api/health",
+                                "gzip": true,
+                                "rejectUnauthorized": true,
+                                "followRedirect": false,
+                                "resolveWithFullResponse": true,
+                                "timeout": 300000,
+                                "encoding": null,
+                                "json": false,
+                                "useStream": true
+                            }
+                        },
+                        "functionality": "regular",
+                        "name": "NodeApiError",
+                        "node": {
+                            "parameters": {
+                                "preBuiltAgentsCalloutHttpRequest": "",
+                                "curlImport": "",
+                                "method": "GET",
+                                "url": "=https://coolify.ironforge.com/api/health",
+                                "authentication": "none",
+                                "provideSslCertificates": false,
+                                "sendQuery": false,
+                                "sendHeaders": false,
+                                "sendBody": false,
+                                "options": {},
+                                "infoMessage": ""
+                            },
+                            "id": "b343ccfc-4365-491e-b8c3-8b0c6cf74db7",
+                            "name": "Check Health API",
+                            "type": "n8n-nodes-base.httpRequest",
+                            "typeVersion": 3,
+                            "position": [
+                                240,
+                                32
+                            ]
+                        },
+                        "messages": [
+                            "SSL Issue: consider using the 'Ignore SSL issues' option"
+                        ],
+                        "httpCode": null,
+                        "message": "SSL Issue: consider using the 'Ignore SSL issues' option",
+                        "stack": "NodeApiError: SSL Issue: consider using the 'Ignore SSL issues' option\n    at ExecuteContext.execute (/usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-nodes-base@file+packages+nodes-base_@aws-sdk+credential-providers@3.808.0_asn1.js@5_8da18263ca0574b0db58d4fefd8173ce/node_modules/n8n-nodes-base/nodes/HttpRequest/V3/HttpRequestV3.node.ts:859:16)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at WorkflowExecute.executeNode (/usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-core@file+packages+core_@opentelemetry+api@1.9.0_@opentelemetry+sdk-trace-base@1.30_ec37920eb95917b28efaa783206b20f3/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:1045:8)\n    at WorkflowExecute.runNode (/usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-core@file+packages+core_@opentelemetry+api@1.9.0_@opentelemetry+sdk-trace-base@1.30_ec37920eb95917b28efaa783206b20f3/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:1226:11)\n    at /usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-core@file+packages+core_@opentelemetry+api@1.9.0_@opentelemetry+sdk-trace-base@1.30_ec37920eb95917b28efaa783206b20f3/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:1662:27\n    at /usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-core@file+packages+core_@opentelemetry+api@1.9.0_@opentelemetry+sdk-trace-base@1.30_ec37920eb95917b28efaa783206b20f3/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:2274:11"
+                    },
+                    "runData": {
+                        "Every 15 mins": [
+                            {
+                                "startTime": 1770632703033,
+                                "executionIndex": 0,
+                                "source": [],
+                                "hints": [],
+                                "executionTime": 0,
+                                "executionStatus": "success",
+                                "data": {
+                                    "main": [
+                                        [
+                                            {
+                                                "json": {
+                                                    "timestamp": "2026-02-09T10:25:03.004+00:00",
+                                                    "Readable date": "February 9th 2026, 10:25:03 am",
+                                                    "Readable time": "10:25:03 am",
+                                                    "Day of week": "Monday",
+                                                    "Year": "2026",
+                                                    "Month": "February",
+                                                    "Day of month": "09",
+                                                    "Hour": "10",
+                                                    "Minute": "25",
+                                                    "Second": "03",
+                                                    "Timezone": "UTC (UTC+00:00)"
+                                                },
+                                                "pairedItem": {
+                                                    "item": 0
+                                                }
+                                            }
+                                        ]
+                                    ]
+                                }
+                            }
+                        ],
+                        "Check Health API": [
+                            {
+                                "startTime": 1770632703033,
+                                "executionIndex": 1,
+                                "source": [
+                                    {
+                                        "previousNode": "Every 15 mins"
+                                    }
+                                ],
+                                "hints": [],
+                                "executionTime": 19,
+                                "executionStatus": "error",
+                                "error": {
+                                    "level": "warning",
+                                    "tags": {},
+                                    "timestamp": 1770632703050,
+                                    "context": {
+                                        "itemIndex": 0,
+                                        "request": {
+                                            "headers": {
+                                                "accept": "application/json,text/html,application/xhtml+xml,application/xml,text/*;q=0.9, image/*;q=0.8, */*;q=0.7"
+                                            },
+                                            "method": "GET",
+                                            "uri": "https://coolify.ironforge.com/api/health",
+                                            "gzip": true,
+                                            "rejectUnauthorized": true,
+                                            "followRedirect": false,
+                                            "resolveWithFullResponse": true,
+                                            "timeout": 300000,
+                                            "encoding": null,
+                                            "json": false,
+                                            "useStream": true
+                                        }
+                                    },
+                                    "functionality": "regular",
+                                    "name": "NodeApiError",
+                                    "node": {
+                                        "parameters": {
+                                            "preBuiltAgentsCalloutHttpRequest": "",
+                                            "curlImport": "",
+                                            "method": "GET",
+                                            "url": "=https://coolify.ironforge.com/api/health",
+                                            "authentication": "none",
+                                            "provideSslCertificates": false,
+                                            "sendQuery": false,
+                                            "sendHeaders": false,
+                                            "sendBody": false,
+                                            "options": {},
+                                            "infoMessage": ""
+                                        },
+                                        "id": "b343ccfc-4365-491e-b8c3-8b0c6cf74db7",
+                                        "name": "Check Health API",
+                                        "type": "n8n-nodes-base.httpRequest",
+                                        "typeVersion": 3,
+                                        "position": [
+                                            240,
+                                            32
+                                        ]
+                                    },
+                                    "messages": [
+                                        "SSL Issue: consider using the 'Ignore SSL issues' option"
+                                    ],
+                                    "httpCode": null,
+                                    "message": "SSL Issue: consider using the 'Ignore SSL issues' option",
+                                    "stack": "NodeApiError: SSL Issue: consider using the 'Ignore SSL issues' option\n    at ExecuteContext.execute (/usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-nodes-base@file+packages+nodes-base_@aws-sdk+credential-providers@3.808.0_asn1.js@5_8da18263ca0574b0db58d4fefd8173ce/node_modules/n8n-nodes-base/nodes/HttpRequest/V3/HttpRequestV3.node.ts:859:16)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at WorkflowExecute.executeNode (/usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-core@file+packages+core_@opentelemetry+api@1.9.0_@opentelemetry+sdk-trace-base@1.30_ec37920eb95917b28efaa783206b20f3/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:1045:8)\n    at WorkflowExecute.runNode (/usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-core@file+packages+core_@opentelemetry+api@1.9.0_@opentelemetry+sdk-trace-base@1.30_ec37920eb95917b28efaa783206b20f3/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:1226:11)\n    at /usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-core@file+packages+core_@opentelemetry+api@1.9.0_@opentelemetry+sdk-trace-base@1.30_ec37920eb95917b28efaa783206b20f3/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:1662:27\n    at /usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-core@file+packages+core_@opentelemetry+api@1.9.0_@opentelemetry+sdk-trace-base@1.30_ec37920eb95917b28efaa783206b20f3/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:2274:11"
+                                }
+                            }
+                        ]
+                    },
+                    "lastNodeExecuted": "Check Health API"
+                },
+                "executionData": {
+                    "contextData": {},
+                    "nodeExecutionStack": [
+                        {
+                            "node": {
+                                "parameters": {
+                                    "preBuiltAgentsCalloutHttpRequest": "",
+                                    "curlImport": "",
+                                    "method": "GET",
+                                    "url": "=https://coolify.ironforge.com/api/health",
+                                    "authentication": "none",
+                                    "provideSslCertificates": false,
+                                    "sendQuery": false,
+                                    "sendHeaders": false,
+                                    "sendBody": false,
+                                    "options": {},
+                                    "infoMessage": ""
+                                },
+                                "id": "b343ccfc-4365-491e-b8c3-8b0c6cf74db7",
+                                "name": "Check Health API",
+                                "type": "n8n-nodes-base.httpRequest",
+                                "typeVersion": 3,
+                                "position": [
+                                    240,
+                                    32
+                                ]
+                            },
+                            "data": {
+                                "main": [
+                                    [
+                                        {
+                                            "json": {
+                                                "timestamp": "2026-02-09T10:25:03.004+00:00",
+                                                "Readable date": "February 9th 2026, 10:25:03 am",
+                                                "Readable time": "10:25:03 am",
+                                                "Day of week": "Monday",
+                                                "Year": "2026",
+                                                "Month": "February",
+                                                "Day of month": "09",
+                                                "Hour": "10",
+                                                "Minute": "25",
+                                                "Second": "03",
+                                                "Timezone": "UTC (UTC+00:00)"
+                                            },
+                                            "pairedItem": {
+                                                "item": 0
+                                            }
+                                        }
+                                    ]
+                                ]
+                            },
+                            "source": {
+                                "main": [
+                                    {
+                                        "previousNode": "Every 15 mins"
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "metadata": {},
+                    "waitingExecution": {},
+                    "waitingExecutionSource": {},
+                    "runtimeData": {
+                        "version": 1,
+                        "establishedAt": 1770632703032,
+                        "source": "trigger",
+                        "triggerNode": {
+                            "name": "Every 15 mins",
+                            "type": "n8n-nodes-base.scheduleTrigger"
+                        }
+                    }
+                }
+            },
+            "workflowData": {
+                "id": "Tv0z7QUCzTfgLDGq",
+                "name": "Monitoring Dashboard",
+                "active": true,
+                "activeVersionId": "c97cdf0d-8f4d-4111-a78b-30ab228ea731",
+                "isArchived": false,
+                "createdAt": "2026-02-08T09:14:12.273Z",
+                "updatedAt": "2026-02-09T08:51:52.727Z",
+                "nodes": [
+                    {
+                        "parameters": {
+                            "notice": "",
+                            "rule": {
+                                "interval": [
+                                    {
+                                        "field": "minutes",
+                                        "minutesInterval": 5
+                                    }
+                                ]
+                            }
+                        },
+                        "id": "22818fb3-1196-4e7a-a192-3dc4a4cc1c7d",
+                        "name": "Every 15 mins",
+                        "type": "n8n-nodes-base.scheduleTrigger",
+                        "typeVersion": 1,
+                        "position": [
+                            32,
+                            32
+                        ]
+                    },
+                    {
+                        "parameters": {
+                            "preBuiltAgentsCalloutHttpRequest": "",
+                            "curlImport": "",
+                            "method": "GET",
+                            "url": "=https://coolify.ironforge.com/api/health",
+                            "authentication": "none",
+                            "provideSslCertificates": false,
+                            "sendQuery": false,
+                            "sendHeaders": false,
+                            "sendBody": false,
+                            "options": {},
+                            "infoMessage": ""
+                        },
+                        "id": "b343ccfc-4365-491e-b8c3-8b0c6cf74db7",
+                        "name": "Check Health API",
+                        "type": "n8n-nodes-base.httpRequest",
+                        "typeVersion": 3,
+                        "position": [
+                            240,
+                            32
+                        ]
+                    },
+                    {
+                        "parameters": {
+                            "conditions": {
+                                "number": [
+                                    {
+                                        "value1": "={{ $json.statusCode }}",
+                                        "operation": "equals",
+                                        "value2": 200
+                                    }
+                                ]
+                            },
+                            "combineOperation": "all"
+                        },
+                        "id": "da9cfd02-9793-46cd-bb0a-df0f11fe2fcf",
+                        "name": "Is Healthy?",
+                        "type": "n8n-nodes-base.if",
+                        "typeVersion": 1,
+                        "position": [
+                            432,
+                            32
+                        ]
+                    },
+                    {
+                        "parameters": {
+                            "preBuiltAgentsCalloutHttpRequest": "",
+                            "curlImport": "",
+                            "method": "GET",
+                            "url": "https://discord.com/api/webhooks/1469991396373958688/4WDf2TawGhR_QQ0FY7xExCcTLZ3plj1O8wcVvG8pxvAHbr1jfQg4DqUiktyuAn1LIe05",
+                            "authentication": "none",
+                            "provideSslCertificates": false,
+                            "sendQuery": false,
+                            "sendHeaders": false,
+                            "sendBody": false,
+                            "options": {},
+                            "infoMessage": ""
+                        },
+                        "id": "84498432-0480-4212-8e4e-a180b62d5647",
+                        "name": "Alert Discord/Slack",
+                        "type": "n8n-nodes-base.httpRequest",
+                        "typeVersion": 3,
+                        "position": [
+                            640,
+                            144
+                        ]
+                    }
+                ],
+                "connections": {
+                    "Every 15 mins": {
+                        "main": [
+                            [
+                                {
+                                    "node": "Check Health API",
+                                    "type": "main",
+                                    "index": 0
+                                }
+                            ]
+                        ]
+                    },
+                    "Check Health API": {
+                        "main": [
+                            [
+                                {
+                                    "node": "Is Healthy?",
+                                    "type": "main",
+                                    "index": 0
+                                }
+                            ]
+                        ]
+                    },
+                    "Is Healthy?": {
+                        "main": [
+                            [],
+                            [
+                                {
+                                    "node": "Alert Discord/Slack",
+                                    "type": "main",
+                                    "index": 0
+                                }
+                            ]
+                        ]
+                    }
+                },
+                "settings": {
+                    "executionOrder": "v1",
+                    "availableInMCP": true,
+                    "timeSavedMode": "fixed",
+                    "callerPolicy": "workflowsFromSameOwner"
+                },
+                "staticData": {
+                    "node:Every 15 mins": {
+                        "recurrenceRules": []
+                    }
+                },
+                "pinData": {}
+            },
+            "customData": {}
+        },
+        {
+            "id": "312",
+            "finished": true,
+            "mode": "webhook",
+            "retryOf": null,
+            "retrySuccessId": null,
+            "status": "success",
+            "startedAt": "2026-02-09T10:23:48.059Z",
+            "stoppedAt": "2026-02-09T10:23:48.092Z",
+            "workflowId": "N6l6IZxtvbhnwS3x",
+            "waitTill": null,
+            "data": {
+                "version": 1,
+                "startData": {},
+                "resultData": {
+                    "runData": {
+                        "Webhook": [
+                            {
+                                "startTime": 1770632628064,
+                                "executionIndex": 0,
+                                "source": [],
+                                "hints": [],
+                                "executionTime": 0,
+                                "executionStatus": "success",
+                                "data": {
+                                    "main": [
+                                        [
+                                            {
+                                                "json": {
+                                                    "headers": {
+                                                        "host": "coolify.ironforge.com",
+                                                        "user-agent": "curl/8.16.0",
+                                                        "content-length": "151",
+                                                        "accept": "*/*",
+                                                        "content-type": "application/json",
+                                                        "x-forwarded-for": "10.0.1.1",
+                                                        "x-forwarded-host": "coolify.ironforge.com",
+                                                        "x-forwarded-port": "443",
+                                                        "x-forwarded-proto": "https",
+                                                        "x-forwarded-server": "eb9374084dab",
+                                                        "x-real-ip": "10.0.1.1",
+                                                        "accept-encoding": "gzip"
+                                                    },
+                                                    "params": {},
+                                                    "query": {},
+                                                    "body": {
+                                                        "workflow": "/health-check",
+                                                        "branch": "main",
+                                                        "token": "IF_SECURE_TRIGGER_REDACTED",
+                                                        "source": "discord",
+                                                        "user": "Antigravity#Debug"
+                                                    },
+                                                    "webhookUrl": "https://coolify.ironforge.com/webhook/ironforge-trigger",
+                                                    "executionMode": "production"
+                                                },
+                                                "pairedItem": {
+                                                    "item": 0
+                                                }
+                                            }
+                                        ]
+                                    ]
+                                }
+                            }
+                        ],
+                        "ValidateToken": [
+                            {
+                                "startTime": 1770632628064,
+                                "executionIndex": 1,
+                                "source": [
+                                    {
+                                        "previousNode": "Webhook"
+                                    }
+                                ],
+                                "hints": [],
+                                "executionTime": 28,
+                                "executionStatus": "success",
+                                "data": {
+                                    "main": [
+                                        [],
+                                        [
+                                            {
+                                                "json": {
+                                                    "headers": {
+                                                        "host": "coolify.ironforge.com",
+                                                        "user-agent": "curl/8.16.0",
+                                                        "content-length": "151",
+                                                        "accept": "*/*",
+                                                        "content-type": "application/json",
+                                                        "x-forwarded-for": "10.0.1.1",
+                                                        "x-forwarded-host": "coolify.ironforge.com",
+                                                        "x-forwarded-port": "443",
+                                                        "x-forwarded-proto": "https",
+                                                        "x-forwarded-server": "eb9374084dab",
+                                                        "x-real-ip": "10.0.1.1",
+                                                        "accept-encoding": "gzip"
+                                                    },
+                                                    "params": {},
+                                                    "query": {},
+                                                    "body": {
+                                                        "workflow": "/health-check",
+                                                        "branch": "main",
+                                                        "token": "IF_SECURE_TRIGGER_REDACTED",
+                                                        "source": "discord",
+                                                        "user": "Antigravity#Debug"
+                                                    },
+                                                    "webhookUrl": "https://coolify.ironforge.com/webhook/ironforge-trigger",
+                                                    "executionMode": "production"
+                                                },
+                                                "pairedItem": {
+                                                    "item": 0
+                                                }
+                                            }
+                                        ]
+                                    ]
+                                }
+                            }
+                        ]
+                    },
+                    "lastNodeExecuted": "ValidateToken"
+                },
+                "executionData": {
+                    "contextData": {},
+                    "nodeExecutionStack": [],
+                    "metadata": {},
+                    "waitingExecution": {},
+                    "waitingExecutionSource": {},
+                    "runtimeData": {
+                        "version": 1,
+                        "establishedAt": 1770632628063,
+                        "source": "webhook",
+                        "triggerNode": {
+                            "name": "Webhook",
+                            "type": "n8n-nodes-base.webhook"
+                        }
+                    }
+                }
+            },
+            "workflowData": {
+                "id": "N6l6IZxtvbhnwS3x",
+                "name": "IronForge Remote Trigger V3",
+                "active": true,
+                "activeVersionId": "957e44b8-0a6d-4b46-9eb2-62a40eb424b7",
+                "isArchived": false,
+                "createdAt": "2026-02-09T10:04:31.674Z",
+                "updatedAt": "2026-02-09T10:23:47.633Z",
+                "nodes": [
+                    {
+                        "parameters": {
+                            "multipleMethods": false,
+                            "httpMethod": "POST",
+                            "path": "ironforge-trigger",
+                            "authentication": "none",
+                            "responseMode": "onReceived",
+                            "responseCode": 200,
+                            "contentTypeNotice": "",
+                            "options": {}
+                        },
+                        "name": "Webhook",
+                        "type": "n8n-nodes-base.webhook",
+                        "typeVersion": 1,
+                        "position": [
+                            250,
+                            300
+                        ],
+                        "webhookId": "776e9ed4-b76f-40a2-b4d5-6701a66227c5",
+                        "id": "985f9608-c02f-4521-8355-1a71c6dfc348"
+                    },
+                    {
+                        "parameters": {
+                            "conditions": {
+                                "boolean": [
+                                    {
+                                        "value1": "={{ $json.token.trim() === 'IF_SECURE_TRIGGER_REDACTED' }}",
+                                        "operation": "equal",
+                                        "value2": true
+                                    }
+                                ]
+                            },
+                            "combineOperation": "all"
+                        },
+                        "name": "ValidateToken",
+                        "type": "n8n-nodes-base.if",
+                        "typeVersion": 1,
+                        "position": [
+                            450,
+                            300
+                        ],
+                        "id": "20d01519-771c-40d1-b38c-54730a9b0418"
+                    },
+                    {
+                        "parameters": {
+                            "preBuiltAgentsCalloutHttpRequest": "",
+                            "curlImport": "",
+                            "method": "POST",
+                            "url": "https://api.github.com/repos/Techlemariam/IronForge/dispatches",
+                            "authentication": "none",
+                            "provideSslCertificates": false,
+                            "sendQuery": false,
+                            "sendHeaders": true,
+                            "specifyHeaders": "keypair",
+                            "headerParameters": {
+                                "parameters": [
+                                    {
+                                        "name": "Accept",
+                                        "value": "application/vnd.github.v3+json"
+                                    },
+                                    {
+                                        "name": "Authorization",
+                                        "value": "token REDACTED_TOKEN"
+                                    }
+                                ]
+                            },
+                            "sendBody": true,
+                            "contentType": "json",
+                            "specifyBody": "json",
+                            "jsonBody": "={{ JSON.stringify({ event_type: 'remote-trigger', client_payload: { workflow: $json.workflow || '/health-check', branch: $json.branch || 'main', token: $json.token } }) }}",
+                            "options": {},
+                            "infoMessage": ""
+                        },
+                        "name": "TriggerGitHub",
+                        "type": "n8n-nodes-base.httpRequest",
+                        "typeVersion": 3,
+                        "position": [
+                            650,
+                            200
+                        ],
+                        "id": "896c607b-2b75-446e-9120-ad3409e6dced"
+                    }
+                ],
+                "connections": {
+                    "Webhook": {
+                        "main": [
+                            [
+                                {
+                                    "node": "ValidateToken",
+                                    "type": "main",
+                                    "index": 0
+                                }
+                            ]
+                        ]
+                    },
+                    "ValidateToken": {
+                        "main": [
+                            [
+                                {
+                                    "node": "TriggerGitHub",
+                                    "type": "main",
+                                    "index": 0
+                                }
+                            ]
+                        ]
+                    }
+                },
+                "settings": {
+                    "executionOrder": "v1",
+                    "callerPolicy": "workflowsFromSameOwner",
+                    "availableInMCP": false
+                },
+                "staticData": {},
+                "pinData": null
+            },
+            "customData": {}
+        },
+        {
+            "id": "311",
+            "finished": true,
+            "mode": "webhook",
+            "retryOf": null,
+            "retrySuccessId": null,
+            "status": "success",
+            "startedAt": "2026-02-09T10:20:30.040Z",
+            "stoppedAt": "2026-02-09T10:20:30.044Z",
+            "workflowId": "N6l6IZxtvbhnwS3x",
+            "waitTill": null,
+            "data": {
+                "version": 1,
+                "startData": {},
+                "resultData": {
+                    "runData": {
+                        "Webhook": [
+                            {
+                                "startTime": 1770632430043,
+                                "executionIndex": 0,
+                                "source": [],
+                                "hints": [],
+                                "executionTime": 0,
+                                "executionStatus": "success",
+                                "data": {
+                                    "main": [
+                                        [
+                                            {
+                                                "json": {
+                                                    "headers": {
+                                                        "host": "coolify.ironforge.com",
+                                                        "user-agent": "node",
+                                                        "content-length": "121",
+                                                        "accept": "*/*",
+                                                        "accept-encoding": "br, gzip, deflate",
+                                                        "accept-language": "*",
+                                                        "content-type": "application/json",
+                                                        "sec-fetch-mode": "cors",
+                                                        "x-forwarded-for": "10.0.1.1",
+                                                        "x-forwarded-host": "coolify.ironforge.com",
+                                                        "x-forwarded-port": "443",
+                                                        "x-forwarded-proto": "https",
+                                                        "x-forwarded-server": "eb9374084dab",
+                                                        "x-real-ip": "10.0.1.1"
+                                                    },
+                                                    "params": {},
+                                                    "query": {},
+                                                    "body": {
+                                                        "workflow": "/health-check",
+                                                        "branch": "main",
+                                                        "token": "IF_SECURE_TRIGGER_REDACTED",
+                                                        "source": "discord",
+                                                        "user": "mustaparta#0"
+                                                    },
+                                                    "webhookUrl": "https://coolify.ironforge.com/webhook/ironforge-trigger",
+                                                    "executionMode": "production"
+                                                },
+                                                "pairedItem": {
+                                                    "item": 0
+                                                }
+                                            }
+                                        ]
+                                    ]
+                                }
+                            }
+                        ],
+                        "ValidateToken": [
+                            {
+                                "startTime": 1770632430043,
+                                "executionIndex": 1,
+                                "source": [
+                                    {
+                                        "previousNode": "Webhook"
+                                    }
+                                ],
+                                "hints": [],
+                                "executionTime": 0,
+                                "executionStatus": "success",
+                                "data": {
+                                    "main": [
+                                        [],
+                                        [
+                                            {
+                                                "json": {
+                                                    "headers": {
+                                                        "host": "coolify.ironforge.com",
+                                                        "user-agent": "node",
+                                                        "content-length": "121",
+                                                        "accept": "*/*",
+                                                        "accept-encoding": "br, gzip, deflate",
+                                                        "accept-language": "*",
+                                                        "content-type": "application/json",
+                                                        "sec-fetch-mode": "cors",
+                                                        "x-forwarded-for": "10.0.1.1",
+                                                        "x-forwarded-host": "coolify.ironforge.com",
+                                                        "x-forwarded-port": "443",
+                                                        "x-forwarded-proto": "https",
+                                                        "x-forwarded-server": "eb9374084dab",
+                                                        "x-real-ip": "10.0.1.1"
+                                                    },
+                                                    "params": {},
+                                                    "query": {},
+                                                    "body": {
+                                                        "workflow": "/health-check",
+                                                        "branch": "main",
+                                                        "token": "IF_SECURE_TRIGGER_REDACTED",
+                                                        "source": "discord",
+                                                        "user": "mustaparta#0"
+                                                    },
+                                                    "webhookUrl": "https://coolify.ironforge.com/webhook/ironforge-trigger",
+                                                    "executionMode": "production"
+                                                },
+                                                "pairedItem": {
+                                                    "item": 0
+                                                }
+                                            }
+                                        ]
+                                    ]
+                                }
+                            }
+                        ]
+                    },
+                    "lastNodeExecuted": "ValidateToken"
+                },
+                "executionData": {
+                    "contextData": {},
+                    "nodeExecutionStack": [],
+                    "metadata": {},
+                    "waitingExecution": {},
+                    "waitingExecutionSource": {},
+                    "runtimeData": {
+                        "version": 1,
+                        "establishedAt": 1770632430042,
+                        "source": "webhook",
+                        "triggerNode": {
+                            "name": "Webhook",
+                            "type": "n8n-nodes-base.webhook"
+                        }
+                    }
+                }
+            },
+            "workflowData": {
+                "id": "N6l6IZxtvbhnwS3x",
+                "name": "IronForge Remote Trigger V3",
+                "active": true,
+                "activeVersionId": "f0c8af3b-67d7-4e5b-b0d7-7602a23602e3",
+                "isArchived": false,
+                "createdAt": "2026-02-09T10:04:31.674Z",
+                "updatedAt": "2026-02-09T10:19:02.413Z",
+                "nodes": [
+                    {
+                        "parameters": {
+                            "multipleMethods": false,
+                            "httpMethod": "POST",
+                            "path": "ironforge-trigger",
+                            "authentication": "none",
+                            "responseMode": "onReceived",
+                            "responseCode": 200,
+                            "contentTypeNotice": "",
+                            "options": {}
+                        },
+                        "name": "Webhook",
+                        "type": "n8n-nodes-base.webhook",
+                        "typeVersion": 1,
+                        "position": [
+                            250,
+                            300
+                        ],
+                        "webhookId": "776e9ed4-b76f-40a2-b4d5-6701a66227c5",
+                        "id": "1191d6c7-19ac-477c-a2ef-8b9ada1e12b5"
+                    },
+                    {
+                        "parameters": {
+                            "conditions": {
+                                "string": [
+                                    {
+                                        "value1": "={{ $json.token }}",
+                                        "operation": "equal",
+                                        "value2": "IF_SECURE_TRIGGER_REDACTED"
+                                    }
+                                ]
+                            },
+                            "combineOperation": "all"
+                        },
+                        "name": "ValidateToken",
+                        "type": "n8n-nodes-base.if",
+                        "typeVersion": 1,
+                        "position": [
+                            450,
+                            300
+                        ],
+                        "id": "28355d3c-70cc-4165-9468-19960057375d"
+                    },
+                    {
+                        "parameters": {
+                            "preBuiltAgentsCalloutHttpRequest": "",
+                            "curlImport": "",
+                            "method": "POST",
+                            "url": "https://api.github.com/repos/Techlemariam/IronForge/dispatches",
+                            "authentication": "none",
+                            "provideSslCertificates": false,
+                            "sendQuery": false,
+                            "sendHeaders": true,
+                            "specifyHeaders": "keypair",
+                            "headerParameters": {
+                                "parameters": [
+                                    {
+                                        "name": "Accept",
+                                        "value": "application/vnd.github.v3+json"
+                                    },
+                                    {
+                                        "name": "Authorization",
+                                        "value": "token REDACTED_TOKEN"
+                                    }
+                                ]
+                            },
+                            "sendBody": true,
+                            "contentType": "json",
+                            "specifyBody": "json",
+                            "jsonBody": "={{ JSON.stringify({ event_type: 'remote-trigger', client_payload: { workflow: $json.workflow || '/health-check', branch: $json.branch || 'main', token: $json.token } }) }}",
+                            "options": {},
+                            "infoMessage": ""
+                        },
+                        "name": "TriggerGitHub",
+                        "type": "n8n-nodes-base.httpRequest",
+                        "typeVersion": 3,
+                        "position": [
+                            650,
+                            200
+                        ],
+                        "id": "20969657-196c-419d-bf82-a9d0bf2beff9"
+                    }
+                ],
+                "connections": {
+                    "Webhook": {
+                        "main": [
+                            [
+                                {
+                                    "node": "ValidateToken",
+                                    "type": "main",
+                                    "index": 0
+                                }
+                            ]
+                        ]
+                    },
+                    "ValidateToken": {
+                        "main": [
+                            [
+                                {
+                                    "node": "TriggerGitHub",
+                                    "type": "main",
+                                    "index": 0
+                                }
+                            ]
+                        ]
+                    }
+                },
+                "settings": {
+                    "executionOrder": "v1",
+                    "callerPolicy": "workflowsFromSameOwner",
+                    "availableInMCP": false
+                },
+                "staticData": {},
+                "pinData": null
+            },
+            "customData": {}
+        },
+        {
+            "id": "310",
+            "finished": false,
+            "mode": "trigger",
+            "retryOf": null,
+            "retrySuccessId": null,
+            "status": "error",
+            "startedAt": "2026-02-09T10:20:03.014Z",
+            "stoppedAt": "2026-02-09T10:20:03.031Z",
+            "workflowId": "Tv0z7QUCzTfgLDGq",
+            "waitTill": null,
+            "data": {
+                "version": 1,
+                "startData": {},
+                "resultData": {
+                    "error": {
+                        "level": "warning",
+                        "tags": {},
+                        "timestamp": 1770632403030,
+                        "context": {
+                            "itemIndex": 0,
+                            "request": {
+                                "headers": {
+                                    "accept": "application/json,text/html,application/xhtml+xml,application/xml,text/*;q=0.9, image/*;q=0.8, */*;q=0.7"
+                                },
+                                "method": "GET",
+                                "uri": "https://coolify.ironforge.com/api/health",
+                                "gzip": true,
+                                "rejectUnauthorized": true,
+                                "followRedirect": false,
+                                "resolveWithFullResponse": true,
+                                "timeout": 300000,
+                                "encoding": null,
+                                "json": false,
+                                "useStream": true
+                            }
+                        },
+                        "functionality": "regular",
+                        "name": "NodeApiError",
+                        "node": {
+                            "parameters": {
+                                "preBuiltAgentsCalloutHttpRequest": "",
+                                "curlImport": "",
+                                "method": "GET",
+                                "url": "=https://coolify.ironforge.com/api/health",
+                                "authentication": "none",
+                                "provideSslCertificates": false,
+                                "sendQuery": false,
+                                "sendHeaders": false,
+                                "sendBody": false,
+                                "options": {},
+                                "infoMessage": ""
+                            },
+                            "id": "b343ccfc-4365-491e-b8c3-8b0c6cf74db7",
+                            "name": "Check Health API",
+                            "type": "n8n-nodes-base.httpRequest",
+                            "typeVersion": 3,
+                            "position": [
+                                240,
+                                32
+                            ]
+                        },
+                        "messages": [
+                            "SSL Issue: consider using the 'Ignore SSL issues' option"
+                        ],
+                        "httpCode": null,
+                        "message": "SSL Issue: consider using the 'Ignore SSL issues' option",
+                        "stack": "NodeApiError: SSL Issue: consider using the 'Ignore SSL issues' option\n    at ExecuteContext.execute (/usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-nodes-base@file+packages+nodes-base_@aws-sdk+credential-providers@3.808.0_asn1.js@5_8da18263ca0574b0db58d4fefd8173ce/node_modules/n8n-nodes-base/nodes/HttpRequest/V3/HttpRequestV3.node.ts:859:16)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at WorkflowExecute.executeNode (/usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-core@file+packages+core_@opentelemetry+api@1.9.0_@opentelemetry+sdk-trace-base@1.30_ec37920eb95917b28efaa783206b20f3/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:1045:8)\n    at WorkflowExecute.runNode (/usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-core@file+packages+core_@opentelemetry+api@1.9.0_@opentelemetry+sdk-trace-base@1.30_ec37920eb95917b28efaa783206b20f3/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:1226:11)\n    at /usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-core@file+packages+core_@opentelemetry+api@1.9.0_@opentelemetry+sdk-trace-base@1.30_ec37920eb95917b28efaa783206b20f3/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:1662:27\n    at /usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-core@file+packages+core_@opentelemetry+api@1.9.0_@opentelemetry+sdk-trace-base@1.30_ec37920eb95917b28efaa783206b20f3/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:2274:11"
+                    },
+                    "runData": {
+                        "Every 15 mins": [
+                            {
+                                "startTime": 1770632403017,
+                                "executionIndex": 0,
+                                "source": [],
+                                "hints": [],
+                                "executionTime": 0,
+                                "executionStatus": "success",
+                                "data": {
+                                    "main": [
+                                        [
+                                            {
+                                                "json": {
+                                                    "timestamp": "2026-02-09T10:20:03.002+00:00",
+                                                    "Readable date": "February 9th 2026, 10:20:03 am",
+                                                    "Readable time": "10:20:03 am",
+                                                    "Day of week": "Monday",
+                                                    "Year": "2026",
+                                                    "Month": "February",
+                                                    "Day of month": "09",
+                                                    "Hour": "10",
+                                                    "Minute": "20",
+                                                    "Second": "03",
+                                                    "Timezone": "UTC (UTC+00:00)"
+                                                },
+                                                "pairedItem": {
+                                                    "item": 0
+                                                }
+                                            }
+                                        ]
+                                    ]
+                                }
+                            }
+                        ],
+                        "Check Health API": [
+                            {
+                                "startTime": 1770632403017,
+                                "executionIndex": 1,
+                                "source": [
+                                    {
+                                        "previousNode": "Every 15 mins"
+                                    }
+                                ],
+                                "hints": [],
+                                "executionTime": 14,
+                                "executionStatus": "error",
+                                "error": {
+                                    "level": "warning",
+                                    "tags": {},
+                                    "timestamp": 1770632403030,
+                                    "context": {
+                                        "itemIndex": 0,
+                                        "request": {
+                                            "headers": {
+                                                "accept": "application/json,text/html,application/xhtml+xml,application/xml,text/*;q=0.9, image/*;q=0.8, */*;q=0.7"
+                                            },
+                                            "method": "GET",
+                                            "uri": "https://coolify.ironforge.com/api/health",
+                                            "gzip": true,
+                                            "rejectUnauthorized": true,
+                                            "followRedirect": false,
+                                            "resolveWithFullResponse": true,
+                                            "timeout": 300000,
+                                            "encoding": null,
+                                            "json": false,
+                                            "useStream": true
+                                        }
+                                    },
+                                    "functionality": "regular",
+                                    "name": "NodeApiError",
+                                    "node": {
+                                        "parameters": {
+                                            "preBuiltAgentsCalloutHttpRequest": "",
+                                            "curlImport": "",
+                                            "method": "GET",
+                                            "url": "=https://coolify.ironforge.com/api/health",
+                                            "authentication": "none",
+                                            "provideSslCertificates": false,
+                                            "sendQuery": false,
+                                            "sendHeaders": false,
+                                            "sendBody": false,
+                                            "options": {},
+                                            "infoMessage": ""
+                                        },
+                                        "id": "b343ccfc-4365-491e-b8c3-8b0c6cf74db7",
+                                        "name": "Check Health API",
+                                        "type": "n8n-nodes-base.httpRequest",
+                                        "typeVersion": 3,
+                                        "position": [
+                                            240,
+                                            32
+                                        ]
+                                    },
+                                    "messages": [
+                                        "SSL Issue: consider using the 'Ignore SSL issues' option"
+                                    ],
+                                    "httpCode": null,
+                                    "message": "SSL Issue: consider using the 'Ignore SSL issues' option",
+                                    "stack": "NodeApiError: SSL Issue: consider using the 'Ignore SSL issues' option\n    at ExecuteContext.execute (/usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-nodes-base@file+packages+nodes-base_@aws-sdk+credential-providers@3.808.0_asn1.js@5_8da18263ca0574b0db58d4fefd8173ce/node_modules/n8n-nodes-base/nodes/HttpRequest/V3/HttpRequestV3.node.ts:859:16)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at WorkflowExecute.executeNode (/usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-core@file+packages+core_@opentelemetry+api@1.9.0_@opentelemetry+sdk-trace-base@1.30_ec37920eb95917b28efaa783206b20f3/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:1045:8)\n    at WorkflowExecute.runNode (/usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-core@file+packages+core_@opentelemetry+api@1.9.0_@opentelemetry+sdk-trace-base@1.30_ec37920eb95917b28efaa783206b20f3/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:1226:11)\n    at /usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-core@file+packages+core_@opentelemetry+api@1.9.0_@opentelemetry+sdk-trace-base@1.30_ec37920eb95917b28efaa783206b20f3/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:1662:27\n    at /usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-core@file+packages+core_@opentelemetry+api@1.9.0_@opentelemetry+sdk-trace-base@1.30_ec37920eb95917b28efaa783206b20f3/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:2274:11"
+                                }
+                            }
+                        ]
+                    },
+                    "lastNodeExecuted": "Check Health API"
+                },
+                "executionData": {
+                    "contextData": {},
+                    "nodeExecutionStack": [
+                        {
+                            "node": {
+                                "parameters": {
+                                    "preBuiltAgentsCalloutHttpRequest": "",
+                                    "curlImport": "",
+                                    "method": "GET",
+                                    "url": "=https://coolify.ironforge.com/api/health",
+                                    "authentication": "none",
+                                    "provideSslCertificates": false,
+                                    "sendQuery": false,
+                                    "sendHeaders": false,
+                                    "sendBody": false,
+                                    "options": {},
+                                    "infoMessage": ""
+                                },
+                                "id": "b343ccfc-4365-491e-b8c3-8b0c6cf74db7",
+                                "name": "Check Health API",
+                                "type": "n8n-nodes-base.httpRequest",
+                                "typeVersion": 3,
+                                "position": [
+                                    240,
+                                    32
+                                ]
+                            },
+                            "data": {
+                                "main": [
+                                    [
+                                        {
+                                            "json": {
+                                                "timestamp": "2026-02-09T10:20:03.002+00:00",
+                                                "Readable date": "February 9th 2026, 10:20:03 am",
+                                                "Readable time": "10:20:03 am",
+                                                "Day of week": "Monday",
+                                                "Year": "2026",
+                                                "Month": "February",
+                                                "Day of month": "09",
+                                                "Hour": "10",
+                                                "Minute": "20",
+                                                "Second": "03",
+                                                "Timezone": "UTC (UTC+00:00)"
+                                            },
+                                            "pairedItem": {
+                                                "item": 0
+                                            }
+                                        }
+                                    ]
+                                ]
+                            },
+                            "source": {
+                                "main": [
+                                    {
+                                        "previousNode": "Every 15 mins"
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "metadata": {},
+                    "waitingExecution": {},
+                    "waitingExecutionSource": {},
+                    "runtimeData": {
+                        "version": 1,
+                        "establishedAt": 1770632403017,
+                        "source": "trigger",
+                        "triggerNode": {
+                            "name": "Every 15 mins",
+                            "type": "n8n-nodes-base.scheduleTrigger"
+                        }
+                    }
+                }
+            },
+            "workflowData": {
+                "id": "Tv0z7QUCzTfgLDGq",
+                "name": "Monitoring Dashboard",
+                "active": true,
+                "activeVersionId": "c97cdf0d-8f4d-4111-a78b-30ab228ea731",
+                "isArchived": false,
+                "createdAt": "2026-02-08T09:14:12.273Z",
+                "updatedAt": "2026-02-09T08:51:52.727Z",
+                "nodes": [
+                    {
+                        "parameters": {
+                            "notice": "",
+                            "rule": {
+                                "interval": [
+                                    {
+                                        "field": "minutes",
+                                        "minutesInterval": 5
+                                    }
+                                ]
+                            }
+                        },
+                        "id": "22818fb3-1196-4e7a-a192-3dc4a4cc1c7d",
+                        "name": "Every 15 mins",
+                        "type": "n8n-nodes-base.scheduleTrigger",
+                        "typeVersion": 1,
+                        "position": [
+                            32,
+                            32
+                        ]
+                    },
+                    {
+                        "parameters": {
+                            "preBuiltAgentsCalloutHttpRequest": "",
+                            "curlImport": "",
+                            "method": "GET",
+                            "url": "=https://coolify.ironforge.com/api/health",
+                            "authentication": "none",
+                            "provideSslCertificates": false,
+                            "sendQuery": false,
+                            "sendHeaders": false,
+                            "sendBody": false,
+                            "options": {},
+                            "infoMessage": ""
+                        },
+                        "id": "b343ccfc-4365-491e-b8c3-8b0c6cf74db7",
+                        "name": "Check Health API",
+                        "type": "n8n-nodes-base.httpRequest",
+                        "typeVersion": 3,
+                        "position": [
+                            240,
+                            32
+                        ]
+                    },
+                    {
+                        "parameters": {
+                            "conditions": {
+                                "number": [
+                                    {
+                                        "value1": "={{ $json.statusCode }}",
+                                        "operation": "equals",
+                                        "value2": 200
+                                    }
+                                ]
+                            },
+                            "combineOperation": "all"
+                        },
+                        "id": "da9cfd02-9793-46cd-bb0a-df0f11fe2fcf",
+                        "name": "Is Healthy?",
+                        "type": "n8n-nodes-base.if",
+                        "typeVersion": 1,
+                        "position": [
+                            432,
+                            32
+                        ]
+                    },
+                    {
+                        "parameters": {
+                            "preBuiltAgentsCalloutHttpRequest": "",
+                            "curlImport": "",
+                            "method": "GET",
+                            "url": "https://discord.com/api/webhooks/1469991396373958688/4WDf2TawGhR_QQ0FY7xExCcTLZ3plj1O8wcVvG8pxvAHbr1jfQg4DqUiktyuAn1LIe05",
+                            "authentication": "none",
+                            "provideSslCertificates": false,
+                            "sendQuery": false,
+                            "sendHeaders": false,
+                            "sendBody": false,
+                            "options": {},
+                            "infoMessage": ""
+                        },
+                        "id": "84498432-0480-4212-8e4e-a180b62d5647",
+                        "name": "Alert Discord/Slack",
+                        "type": "n8n-nodes-base.httpRequest",
+                        "typeVersion": 3,
+                        "position": [
+                            640,
+                            144
+                        ]
+                    }
+                ],
+                "connections": {
+                    "Every 15 mins": {
+                        "main": [
+                            [
+                                {
+                                    "node": "Check Health API",
+                                    "type": "main",
+                                    "index": 0
+                                }
+                            ]
+                        ]
+                    },
+                    "Check Health API": {
+                        "main": [
+                            [
+                                {
+                                    "node": "Is Healthy?",
+                                    "type": "main",
+                                    "index": 0
+                                }
+                            ]
+                        ]
+                    },
+                    "Is Healthy?": {
+                        "main": [
+                            [],
+                            [
+                                {
+                                    "node": "Alert Discord/Slack",
+                                    "type": "main",
+                                    "index": 0
+                                }
+                            ]
+                        ]
+                    }
+                },
+                "settings": {
+                    "executionOrder": "v1",
+                    "availableInMCP": true,
+                    "timeSavedMode": "fixed",
+                    "callerPolicy": "workflowsFromSameOwner"
+                },
+                "staticData": {
+                    "node:Every 15 mins": {
+                        "recurrenceRules": []
+                    }
+                },
+                "pinData": {}
+            },
+            "customData": {}
+        }
+    ],
+    "nextCursor": "eyJsYXN0SWQiOiIzMTAiLCJsaW1pdCI6NX0="
+}

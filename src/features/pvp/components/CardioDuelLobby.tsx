@@ -30,7 +30,7 @@ export function CardioDuelLobby() {
 
     const loadOpponents = async () => {
         const res = await getPotentialOpponentsAction();
-        if (res?.success && res.opponents) {
+        if (res.success && res.opponents) {
             // Fix: Map to ensure heroName is string (fallback for null)
             const sanitized: Opponent[] = res.opponents.map((opp: any) => ({
                 id: opp.id,
@@ -46,20 +46,17 @@ export function CardioDuelLobby() {
         if (!selectedOpponent) return;
         setLoading(true);
 
-        const result = await createDuelChallengeAction({
-            targetUserId: selectedOpponent,
-            options: {
-                duelType,
-                activityType,
-                targetDistance: parseFloat(distance),
-            }
+        const result = await createDuelChallengeAction(selectedOpponent, {
+            duelType,
+            activityType,
+            targetDistance: parseFloat(distance),
         });
 
-        if (result?.data?.success) {
+        if (result.success) {
             toast.success("Duel Challenge Sent!");
             setSelectedOpponent(null);
         } else {
-            toast.error(result?.data?.error || result?.serverError || "Failed to send challenge");
+            toast.error(result.error);
         }
         setLoading(false);
     };

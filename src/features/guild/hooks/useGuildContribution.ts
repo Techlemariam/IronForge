@@ -89,15 +89,18 @@ export const useGuildContribution = ({
           // Actually, if it fails we want to retry.
           // Let's keep it simple: sync, then subtract.
 
-          const result = await contributeGuildDamageAction({ damage: damageToSync });
+          const result = await contributeGuildDamageAction(
+            userId,
+            damageToSync,
+          );
 
-          if (result?.data?.success) {
+          if (result.success) {
             pendingDamageRef.current -= damageToSync;
             setStats((prev) => ({
               ...prev,
               pendingDamage: pendingDamageRef.current,
-              bossHp: (result.data?.bossHp as number) || prev.bossHp,
-              bossTotalHp: (result.data?.bossTotalHp as number) || prev.bossTotalHp,
+              bossHp: (result.bossHp as number) || prev.bossHp,
+              bossTotalHp: (result.bossTotalHp as number) || prev.bossTotalHp,
             }));
           }
         } catch (e) {

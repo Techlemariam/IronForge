@@ -113,18 +113,18 @@ export const PlannerService = {
     const exerciseLogs: ExerciseLog[] = user.exerciseLogs.map(log => ({
       ...log,
       date: log.date.toISOString(), // Convert Date to string
-      sets: log.sets as unknown as import("@/types").Set[], // JsonValue to expected type
+      sets: log.sets as any, // JsonValue to expected type
       e1rm: 0, // Defaulting to 0 as Prisma model lacks this column? Checked schema: it's missing.
       rpe: 0,   // Defaulting to 0
       isEpic: log.isPersonalRecord, // Mapping isPersonalRecord to isEpic? Wait, check definitions.
-      archetype: log.archetype as unknown as import("@/types").Archetype // Prisma Enum vs Internal Enum mismatch prevention
+      archetype: log.archetype as any // Prisma Enum vs Internal Enum mismatch prevention
     }));
 
     // Ensure wellness matches the shape expected by Analytics (WellnessData is compatible)
     const ttb = AnalyticsService.calculateTTB(
       exerciseLogs,
       activities,
-      wellness as unknown as import("@/types").IntervalsWellness
+      wellness
     );
 
     // If auditor says we are neglecting something, that becomes lowest TTB
@@ -134,7 +134,7 @@ export const PlannerService = {
 
     // 6. Generate Plan via Oracle
     const recommendation = await OracleService.consult(
-      wellness as unknown as import("@/types").IntervalsWellness,
+      wellness,
       ttb,
       [], // events
       auditReport,

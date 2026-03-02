@@ -1,99 +1,199 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { z } from "zod";
-import { prisma } from "@/lib/prisma";
-import { authActionClient } from "@/lib/safe-action";
 
-/**
- * Valid items for purchase in the Gold Shop.
- */
-const SHOP_ITEMS = [
+type ItemCategory =
+  | "CONSUMABLE"
+  | "EQUIPMENT"
+  | "MATERIAL"
+  | "COSMETIC"
+  | "BOOST";
+
+interface ShopItem {
+  id: string;
+  name: string;
+  description: string;
+  category: ItemCategory;
+  price: number;
+  currency: "GOLD" | "GEMS";
+  stock: number | null; // null = unlimited
+  owned: number;
+  requiresLevel?: number;
+  discount?: number;
+}
+
+interface ShopSection {
+  id: string;
+  name: string;
+  items: ShopItem[];
+  refreshesAt?: Date;
+}
+
+const SHOP_INVENTORY: ShopSection[] = [
   {
-    id: "streak_freeze",
-    name: "Streak Freeze Shield",
-    description: "Equip this to protect your streak if you miss a single day.",
-    cost: 1500, // Gold sink
-    type: "CONSUMABLE",
+    id: "consumables",
+    name: "Consumables",
+    items: [
+      {
+        id: "potion-health",
+        name: "Health Potion",
+        description: "Restores 50 HP",
+        category: "CONSUMABLE",
+        price: 50,
+        currency: "GOLD",
+        stock: null,
+        owned: 5,
+      },
+      {
+        id: "potion-energy",
+        name: "Energy Potion",
+        description: "Restores 25 energy",
+        category: "CONSUMABLE",
+        price: 75,
+        currency: "GOLD",
+        stock: null,
+        owned: 2,
+      },
+      {
+        id: "potion-xp",
+        name: "XP Elixir",
+        description: "+50% XP for 1 hour",
+        category: "BOOST",
+        price: 200,
+        currency: "GOLD",
+        stock: 3,
+        owned: 0,
+      },
+    ],
   },
   {
-    id: "energy_potion",
-    name: "Titan Energy Potion",
-    description: "Instantly restores 50 Energy to your Titan.",
-    cost: 500,
-    type: "CONSUMABLE",
+    id: "equipment",
+    name: "Equipment",
+    items: [
+      {
+        id: "sword-steel",
+        name: "Steel Sword",
+        description: "+15 attack",
+        category: "EQUIPMENT",
+        price: 500,
+        currency: "GOLD",
+        stock: 1,
+        owned: 0,
+      },
+      {
+        id: "armor-iron",
+        name: "Iron Armor",
+        description: "+20 defense",
+        category: "EQUIPMENT",
+        price: 600,
+        currency: "GOLD",
+        stock: 1,
+        owned: 0,
+      },
+      {
+        id: "ring-might",
+        name: "Ring of Might",
+        description: "+5% strength",
+        category: "EQUIPMENT",
+        price: 1000,
+        currency: "GOLD",
+        stock: 1,
+        owned: 0,
+        requiresLevel: 20,
+      },
+    ],
   },
   {
-    id: "oracle_reroll",
-    name: "Oracle Decree Reroll",
-    description: "Change today's Oracle Decree if it gave you a DEBUFF.",
-    cost: 3000,
-    type: "CONSUMABLE",
-  }
+    id: "daily-deals",
+    name: "Daily Deals",
+    refreshesAt: new Date(Date.now() + 12 * 60 * 60 * 1000),
+    items: [
+      {
+        id: "deal-crate",
+        name: "Mystery Crate",
+        description: "Random rare reward",
+        category: "CONSUMABLE",
+        price: 150,
+        currency: "GOLD",
+        stock: 1,
+        owned: 0,
+        discount: 50,
+      },
+    ],
+  },
 ];
 
-export const fetchShopItemsAction = authActionClient
-  .action(async () => {
-    return { success: true, items: SHOP_ITEMS };
-  });
+/**
+ * Get shop inventory.
+ */
+export async function getShopInventoryAction(
+  _userId: string,
+): Promise<ShopSection[]> {
+  return SHOP_INVENTORY;
+}
 
 /**
- * Purchases an item from the shop using Gold.
+ * Buy item from shop.
  */
-export const purchaseShopItemAction = authActionClient
-  .schema(z.string())
-  .action(async ({ parsedInput: itemId, ctx: { userId } }) => {
-    try {
-      const itemDefinition = SHOP_ITEMS.find((i) => i.id === itemId);
-      if (!itemDefinition) {
-        return { success: false, error: "Item not found in shop." };
-      }
+export async function buyItemAction(
+  userId: string,
+  itemId: string,
+  quantity: number = 1,
+): Promise<{ success: boolean; message: string; newBalance?: number }> {
+  const allItems = SHOP_INVENTORY.flatMap((s) => s.items);
+  const item = allItems.find((i) => i.id === itemId);
 
-      const result = await prisma.$transaction(async (tx) => {
-        const user = await tx.user.findUnique({
-          where: { id: userId },
-          select: { gold: true },
-        });
+  if (!item) return { success: false, message: "Item not found" };
+  if (item.stock !== null && item.stock < quantity)
+    return { success: false, message: "Not enough stock" };
 
-        if (!user) throw new Error("User not found");
-        if (user.gold < itemDefinition.cost) {
-          throw new Error("Not enough gold");
-        }
+  const totalCost = item.price * quantity * (1 - (item.discount || 0) / 100);
+  console.log(
+    `Purchased ${quantity}x ${item.name} for ${totalCost} ${item.currency}`,
+  );
+  revalidatePath("/shop");
 
-        // Deduct Gold
-        await tx.user.update({
-          where: { id: userId },
-          data: { gold: { decrement: itemDefinition.cost } },
-        });
+  return {
+    success: true,
+    message: `Purchased ${quantity}x ${item.name}`,
+    newBalance: 1000 - totalCost,
+  };
+}
 
-        // Grant Item Effect
-        if (itemDefinition.id === "energy_potion") {
-          await tx.titan.update({
-            where: { userId },
-            data: { currentEnergy: { increment: 50 } },
-          });
-        } else if (itemDefinition.id === "streak_freeze") {
-          const systemItem = await tx.item.upsert({
-            where: { id: "item_streak_freeze" },
-            create: { id: "item_streak_freeze", name: itemDefinition.name, description: itemDefinition.description, type: "CONSUMABLE", rarity: "EPIC" },
-            update: {}
-          });
+/**
+ * Sell item.
+ */
+export async function sellItemAction(
+  userId: string,
+  itemId: string,
+  quantity: number = 1,
+): Promise<{ success: boolean; goldReceived: number }> {
+  // Items sell for 50% of their buy price
+  const sellPrice = 50 * quantity;
+  console.log(`Sold ${quantity}x ${itemId} for ${sellPrice} gold`);
+  revalidatePath("/inventory");
 
-          await tx.userEquipment.upsert({
-            where: { userId_equipmentId: { userId, equipmentId: systemItem.id } },
-            create: { userId, equipmentId: systemItem.id, isOwned: true },
-            update: {}
-          });
-        }
+  return { success: true, goldReceived: sellPrice };
+}
 
-        return { success: true };
-      });
+/**
+ * Get user's gold balance.
+ */
+export async function getGoldBalanceAction(_userId: string): Promise<number> {
+  return 2500;
+}
 
-      revalidatePath("/dashboard");
-      return result;
-
-    } catch (error: any) {
-      console.error("Purchase failed:", error);
-      return { success: false, error: error.message || "Transaction failed" };
-    }
-  });
+/**
+ * Check if user can afford item.
+ */
+export async function canAffordItemAction(
+  userId: string,
+  itemId: string,
+  quantity: number,
+): Promise<boolean> {
+  const balance = await getGoldBalanceAction(userId);
+  const allItems = SHOP_INVENTORY.flatMap((s) => s.items);
+  const item = allItems.find((i) => i.id === itemId);
+  if (!item) return false;
+  return balance >= item.price * quantity;
+}

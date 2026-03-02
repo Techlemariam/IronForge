@@ -2,25 +2,32 @@
 
 import React, { useReducer, useEffect, useState } from "react";
 import { toast } from "@/components/ui/GameToast";
+import { PwaInstallBanner } from "@/components/ui/PwaInstallBanner";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 
 
 import { saveWorkoutAction } from "@/actions/integrations/hevy";
 
-
+import { AnimatePresence, motion } from "framer-motion";
 import { mapQuestToHevyPayload } from "@/utils/hevyAdapter";
 
 
 import { getProgressionAction } from "@/actions/progression/core";
-
+import GeminiLiveCoach from "@/features/training/components/GeminiLiveCoach";
+import { Settings } from "lucide-react";
 
 
 import { Faction } from "@/types/training";
-
+import { OracleChat } from "@/features/oracle/components/OracleChat";
 
 // Dynamic Imports moved to ViewRouter
 import { FirstLoginQuest } from "@/features/onboarding/FirstLoginQuest";
+import { PersistentHeader } from "@/components/core/PersistentHeader";
+import { CoachToggle } from "./components/CoachToggle";
+import { ViewRouter } from "./components/ViewRouter";
+import { CodexLoader } from "./components/SecondaryViews";
 import {
   View,
   DashboardState,
@@ -29,6 +36,7 @@ import {
 import { dashboardReducer } from "./logic/dashboardReducer";
 import { useAmbientSound } from "@/hooks/useAmbientSound";
 import { usePlatformContext } from "@/hooks/usePlatformContext";
+import { TvHud } from "@/features/dashboard/components/TvHud";
 
 const getAmbientZone = (
   view: View,
@@ -186,8 +194,18 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
         hasCompletedOnboarding={hasCompletedOnboarding}
         leaderboardData={leaderboardData}
         platform={platform}
+        showOnboarding={showOnboarding}
         onSaveWorkout={handleSaveWorkout}
         onToggleCoach={() => dispatch({ type: "TOGGLE_COACH" })}
+        onShowOnboardingComplete={(newState) => {
+          setShowOnboarding(false);
+          if (newState) {
+            dispatch({
+              type: "RECALCULATE_PROGRESSION",
+              payload: { level: newState.level },
+            });
+          }
+        }}
       />
       {showOnboarding && (
         <FirstLoginQuest

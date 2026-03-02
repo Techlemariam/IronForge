@@ -126,7 +126,7 @@ export const GeminiService = {
     priority: string;
     trigger: string;
     wellness: IntervalsWellness;
-    data?: unknown; // e.g. TTB, Auditor findings
+    data?: any; // e.g. TTB, Auditor findings
   }): Promise<string> {
     if (!process.env.API_KEY) return "The Spirits are silent (No API Key).";
 

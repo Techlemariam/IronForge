@@ -1,0 +1,79 @@
+# npm audit report
+
+ai  <=5.0.51
+Severity: moderate
+VercelÔÇÖs AI SDK's filetype whitelists can be bypassed when uploading files - https://github.com/advisories/GHSA-rwvc-j5jr-mgvh
+Depends on vulnerable versions of jsondiffpatch
+fix available via `npm audit fix --force`
+Will install ai@6.0.5, which is a breaking change
+node_modules/ai
+
+esbuild  <=0.24.2
+Severity: moderate
+esbuild enables any website to send any requests to the development server and read the response - https://github.com/advisories/GHSA-67mh-4wv8-2f99
+fix available via `npm audit fix --force`
+Will install vercel@50.1.3, which is a breaking change
+node_modules/@vercel/gatsby-plugin-vercel-builder/node_modules/esbuild
+node_modules/@vercel/node/node_modules/esbuild
+  @vercel/gatsby-plugin-vercel-builder  *
+  Depends on vulnerable versions of @vercel/routing-utils
+  Depends on vulnerable versions of esbuild
+  node_modules/@vercel/gatsby-plugin-vercel-builder
+    @vercel/static-build  >=1.3.0
+    Depends on vulnerable versions of @vercel/gatsby-plugin-vercel-builder
+    node_modules/@vercel/static-build
+      vercel  >=24.2.5-canary.0
+      Depends on vulnerable versions of @vercel/fun
+      Depends on vulnerable versions of @vercel/node
+      Depends on vulnerable versions of @vercel/redwood
+      Depends on vulnerable versions of @vercel/static-build
+      node_modules/vercel
+  @vercel/node  >=2.3.1
+  Depends on vulnerable versions of esbuild
+  Depends on vulnerable versions of path-to-regexp
+  Depends on vulnerable versions of undici
+  node_modules/@vercel/node
+
+jsondiffpatch  <0.7.2
+Severity: moderate
+jsondiffpatch is vulnerable to Cross-site Scripting (XSS) via HtmlFormatter::nodeBegin - https://github.com/advisories/GHSA-33vc-wfww-vjfv
+fix available via `npm audit fix --force`
+Will install ai@6.0.5, which is a breaking change
+node_modules/jsondiffpatch
+
+path-to-regexp  4.0.0 - 6.2.2
+Severity: high
+path-to-regexp outputs backtracking regular expressions - https://github.com/advisories/GHSA-9wv6-86v2-598j
+fix available via `npm audit fix --force`
+Will install vercel@50.1.3, which is a breaking change
+node_modules/@vercel/routing-utils/node_modules/path-to-regexp
+node_modules/path-to-regexp
+  @vercel/routing-utils  <=3.1.0 || >=5.0.0
+  Depends on vulnerable versions of path-to-regexp
+  node_modules/@vercel/routing-utils
+    @vercel/redwood  0.6.1-canary.0 - 2.2.0
+    Depends on vulnerable versions of @vercel/routing-utils
+    node_modules/@vercel/redwood
+
+tar  <6.2.1
+Severity: moderate
+Denial of service while parsing a tar file due to lack of folders count validation - https://github.com/advisories/GHSA-f5x3-32g6-xq36
+fix available via `npm audit fix --force`
+Will install vercel@50.1.3, which is a breaking change
+node_modules/@vercel/fun/node_modules/tar
+  @vercel/fun  <=1.1.4
+  Depends on vulnerable versions of tar
+  node_modules/@vercel/fun
+
+undici  <=5.28.5
+Severity: moderate
+Use of Insufficiently Random Values in undici - https://github.com/advisories/GHSA-c76h-2ccp-4975
+undici Denial of Service attack via bad certificate data - https://github.com/advisories/GHSA-cxrh-j4jr-qwg3
+fix available via `npm audit fix --force`
+Will install vercel@50.1.3, which is a breaking change
+node_modules/undici
+
+13 vulnerabilities (7 moderate, 6 high)
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force

@@ -28,7 +28,7 @@ import {
 } from "lucide-react";
 import { LootItem } from "@/types/loot";
 import { playSound, triggerHaptic } from "@/utils";
-import { useCelebration } from "@/hooks/useCelebration";
+import useCelebration from "@/hooks/useCelebration";
 import { LootReveal } from "@/components/game/LootReveal";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import Image from "next/image";
@@ -125,10 +125,10 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
     const checkSession = async () => {
       try {
         const res = await getActiveCombatSession();
-        if (mounted && res?.data?.success && res.data.session) {
+        if (mounted && res.success && res.session) {
           setResumeData({
             hasSession: true,
-            bossName: (res.data.boss as any)?.name || "Unknown Boss"
+            bossName: (res.boss as any)?.name || "Unknown Boss"
           });
         }
       } catch (e) {
@@ -147,18 +147,17 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
     playSound("dungeon_ambient" as any);
 
     try {
-      const res = await startBossFight({ bossId, tier });
-      if (res?.data?.success && res.data.state && res.data.boss) {
-        setGameState(res.data.state);
-        setBoss(res.data.boss as any);
+      const res = await startBossFight(bossId, tier);
+      if (res.success && res.state && res.boss) {
+        setGameState(res.state);
+        setBoss(res.boss as any);
         setCombatStarted(true);
-        if (res.data.message) {
-          toast.success("Combat Resumed", { description: res.data.message });
+        if (res.message) {
+          toast.success("Combat Resumed", { description: res.message });
         }
       } else {
-        const errorMsg = res?.data?.message || res?.serverError || "Unknown error";
-        console.error("Failed to start fight:", errorMsg);
-        toast.error("Arena Locked", { description: errorMsg });
+        console.error("Failed to start fight:", res.message);
+        toast.error("Arena Locked", { description: res.message });
         onClose();
       }
     } catch (error) {
@@ -184,11 +183,10 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
       setIsProcessingTurn(true);
 
       try {
-        const res = await performCombatAction({ action: { type } });
+        const res = await performCombatAction({ type });
 
-        if (res?.data?.success && res.data.newState) {
-          const newState = res.data.newState;
-          setGameState(newState);
+        if (res.success && res.newState) {
+          setGameState(res.newState);
 
           // Sounds
           if (type === "ATTACK") playSound("sword_hit" as any);
@@ -196,12 +194,12 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
           if (type === "DEFEND") playSound("shield_block" as any);
 
           // Check Victory
-          if (newState.isVictory) {
+          if (res.newState.isVictory) {
             playSound("victory_fanfare" as any);
             victorySequence(); // Confetti + Shake
-            if (res.data.loot) setDroppedItem(res.data.loot);
-            if (res.data.reward) setRewards(res.data.reward);
-          } else if (newState.isDefeat) {
+            if (res.loot) setDroppedItem(res.loot);
+            if (res.reward) setRewards(res.reward);
+          } else if (res.newState.isDefeat) {
             playSound("game_over" as any);
             triggerHaptic("error");
           } else {
@@ -209,8 +207,7 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
             if (type === "ATTACK") screenShake("light");
           }
         } else {
-          const errorMsg = res?.data?.message || res?.serverError || "Unknown error";
-          console.error("Combat Action Failed", errorMsg);
+          console.error("Combat Action Failed", res.message);
         }
       } catch (e) {
         console.error(e);
@@ -226,7 +223,7 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
     setIsProcessingTurn(true);
     try {
       const res = await fleeFromCombat(50);
-      if (res?.data?.success) {
+      if (res.success) {
         playSound("flee" as any);
         setIsFleeing(true);
         setTimeout(() => {
@@ -234,7 +231,7 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
         }, 1500);
       } else {
         toast.error("Escape Failed", {
-          description: res?.data?.message || res?.serverError || "The enemy blocks your path!",
+          description: res.message || "The enemy blocks your path!",
         });
         setIsProcessingTurn(false);
       }

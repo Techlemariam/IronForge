@@ -21,9 +21,7 @@ export default async function LoggerPage() {
     if (!user) return <div>Auth Error</div>;
 
     // 2. Data Fetching
-    const res = await getActiveCombatSession();
-    const session = res?.data?.session;
-    const boss = res?.data?.boss;
+    const { session, boss } = await getActiveCombatSession();
     const capabilities = await EquipmentService.getUserCapabilities(user.id);
 
     return (

@@ -41,8 +41,8 @@ Check if the DB matches the schema and if migrations are pending.
 // turbo
 
 ```bash
-doppler run -- /supabase-inspector
-doppler run -- /prisma-migrator
+/supabase-inspector
+/prisma-migrator
 ```
 
 ### 3. Environment Sanitization
@@ -52,7 +52,7 @@ Validate that secrets match the required Zod schemas.
 // turbo
 
 ```bash
-doppler run -- /env-validator
+/env-validator
 ```
 
 ## Remediation Pipeline
