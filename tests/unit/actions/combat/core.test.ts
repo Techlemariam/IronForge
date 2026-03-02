@@ -121,7 +121,8 @@ describe("Combat Server Actions", () => {
         level: 5,
       });
 
-      const result = await startBossFight({ bossId: "boss-1", tier: "HEROIC" });
+      // Default tier is HEROIC (multiplier 1.0)
+      const result = await startBossFight("boss-1", "HEROIC");
 
       expect(result?.data?.success).toBe(true);
       expect(result?.data?.state).toBeDefined();
