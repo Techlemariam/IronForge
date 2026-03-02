@@ -16,6 +16,8 @@ jobs:
   jules-invoke:
     name: Invoke Jules
     runs-on: ubuntu-latest
+    env:
+      NODE_VERSION: '22'
     steps:
       - name: Install Doppler CLI
         uses: dopplerhq/cli-action@v1
