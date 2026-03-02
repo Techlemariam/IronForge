@@ -8,7 +8,7 @@ add-type @"
 [System.Net.ServicePointManager]::CertificatePolicy = New-Object TrustAllCertsPolicy
 
 $headers = @{
-    "X-N8N-API-KEY" = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5MThkZjhkZC0yOGJlLTQ1NWMtYWY5NS1mNTQxZTM2NGIxYjQiLCJpc3MiOiJuOG4iLCJhdWQiOiJwdWJsaWMtYXBpIiwiaWF0IjoxNzcwNjI2MTgxfQ.MtuAV2QCu98qhn7CbuVm1PYsDvCun_7KTwt3iIFgZYA"
+    "X-N8N-API-KEY" = $env:N8N_API_KEY
     "Content-Type"  = "application/json"
 }
 
@@ -120,7 +120,7 @@ try {
 
     # 2. Activate workflow
     $activateHeaders = @{
-        "X-N8N-API-KEY" = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5MThkZjhkZC0yOGJlLTQ1NWMtYWY5NS1mNTQxZTM2NGIxYjQiLCJpc3MiOiJuOG4iLCJhdWQiOiJwdWJsaWMtYXBpIiwiaWF0IjoxNzcwNjI2MTgxfQ.MtuAV2QCu98qhn7CbuVm1PYsDvCun_7KTwt3iIFgZYA"
+        "X-N8N-API-KEY" = $env:N8N_API_KEY
         "Content-Type"  = "application/json"
     }
     Invoke-RestMethod -Uri "https://ironforge-coolify.tailafb692.ts.net/api/v1/workflows/RgDX5gDwrj8gsKzw/activate" -Method Post -Headers $activateHeaders -Body "{}"
