@@ -37,6 +37,34 @@
                 "DIRECT_URL"
             ]
         },
+        "test:exhaustive": {
+            "dependsOn": [],
+            "outputs": [],
+            "inputs": [
+                "src/**/*.tsx",
+                "src/**/*.ts",
+                "test/**/*.ts",
+                "tests/**/*.ts"
+            ],
+            "env": [
+                "DATABASE_URL",
+                "DIRECT_URL"
+            ]
+        },
+        "test:smoke": {
+            "dependsOn": [],
+            "outputs": [],
+            "inputs": [
+                "src/**/*.tsx",
+                "src/**/*.ts",
+                "test/**/*.ts",
+                "tests/**/*.ts"
+            ],
+            "env": [
+                "DATABASE_URL",
+                "DIRECT_URL"
+            ]
+        },
         "test:coverage": {
             "dependsOn": [],
             "outputs": [

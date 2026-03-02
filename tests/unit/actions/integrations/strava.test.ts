@@ -136,6 +136,8 @@ describe("Strava Server Actions", () => {
         stravaExpiresAt: Date.now() / 1000 + 3600, // Valid for 1h
       });
 
+      (prisma.duelChallenge.findMany as any).mockResolvedValue([]);
+
       // Mock Strava API
       const mockActivities = [
         {

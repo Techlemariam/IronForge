@@ -54,9 +54,7 @@ async function setupDatabase() {
 
         // Create database
         console.log(`🏗️ Creating database "${dbName}"...`);
-        // Use LC_COLLATE and LC_CTYPE to match expected version or default to standard C
-        // This addresses "template database 'template1' has a collation version, but no actual collation version could be determined"
-        await client.query(`CREATE DATABASE "${dbName}" LC_COLLATE = 'en_US.utf8' LC_CTYPE = 'en_US.utf8'`);
+        await client.query(`CREATE DATABASE "${dbName}" LC_COLLATE 'C' LC_CTYPE 'C'`);
         console.log(`✨ Database "${dbName}" created successfully.`);
     } catch (error) {
         console.error('❌ Error setting up database:', error);
