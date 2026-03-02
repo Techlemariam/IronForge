@@ -74,7 +74,6 @@ export const TvHud: React.FC<TvHudProps> = ({
                         initial={{ opacity: 0, x: 50 }}
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: 50 }}
-                        aria-label="Quest Progress Overlay"
                         aria-label="Quest Progress"
                         className="absolute top-12 right-12 text-right"
                     >
@@ -116,7 +115,6 @@ export const TvHud: React.FC<TvHudProps> = ({
                         initial={{ opacity: 0, y: 100 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: 100 }}
-                        aria-label="Boss Status Overlay"
                         aria-label="Boss Status"
                         className="absolute bottom-12 left-1/2 -translate-x-1/2 w-full max-w-5xl px-12"
                     >
