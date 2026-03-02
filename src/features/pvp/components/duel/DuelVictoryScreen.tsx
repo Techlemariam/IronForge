@@ -22,7 +22,6 @@ export function DuelVictoryScreen({ duel, currentUserId, onClose }: DuelVictoryS
     const opponentStats = duel.challengerId === currentUserId ? (duel.defenderDistance || duel.defenderScore) : (duel.challengerDistance || duel.challengerScore);
 
     // Determine stats based on duel type
-    // const metricLabel = duel.duelType === 'TITAN_VS_TITAN' ? 'Points' : 'Distance';
     const metricUnit = duel.duelType === 'TITAN_VS_TITAN' ? 'pts' : 'km';
 
     // Helper to format value
