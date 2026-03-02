@@ -52,6 +52,13 @@ async function setupDatabase() {
             console.log(`ℹ️ Database "${dbName}" does not exist.`);
         }
 
+        try {
+            console.log(`🔄 Attempting to refresh collation version for template1...`);
+            await client.query(`ALTER DATABASE template1 REFRESH COLLATION VERSION`);
+        } catch (collationError) {
+            console.warn(`⚠️ Could not refresh collation version for template1:`, collationError instanceof Error ? collationError.message : String(collationError));
+        }
+
         // Create database
         console.log(`🏗️ Creating database "${dbName}"...`);
         await client.query(`CREATE DATABASE "${dbName}" LC_COLLATE 'C' LC_CTYPE 'C'`);
