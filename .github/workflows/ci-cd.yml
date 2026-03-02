@@ -81,7 +81,7 @@ jobs:
         uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5
         with:
           path: .turbo
-          key: turbo-l1-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: turbo-l1-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
             turbo-l1-${{ runner.os }}-
       - name: Turbo L1 Verify (Differential)
@@ -128,7 +128,7 @@ jobs:
         uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5
         with:
           path: .turbo
-          key: turbo-l2-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: turbo-l2-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
             turbo-l2-${{ runner.os }}-
       - name: Initialize DB (L2)
@@ -209,7 +209,7 @@ jobs:
         id: playwright-cache
         with:
           path: ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: ${{ runner.os }}-playwright-${{ hashFiles('pnpm-lock.yaml') }}
       - name: Install Playwright Browsers
         if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: npx playwright install --with-deps
@@ -284,7 +284,7 @@ jobs:
         uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5
         with:
           path: ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: ${{ runner.os }}-playwright-${{ hashFiles('pnpm-lock.yaml') }}
       - run: npx playwright install --with-deps
       - name: Initialize Smoke DB
         run: npx prisma db push --force-reset
