@@ -7,13 +7,22 @@ import { z } from "zod";
 import { authActionClient } from "@/lib/safe-action";
 
 // Schema for duel creation
+const DuelTypeSchema = z.enum([
+  "TITAN_VS_TITAN",
+  "DISTANCE_RACE",
+  "SPEED_DEMON",
+  "ELEVATION_GRIND"
+]);
+
+const ActivityTypeSchema = z.enum(["CYCLING", "RUNNING"]);
+
 const _DuelChallengeSchema = z.object({
-  duelType: z.string(), // Reverted to string to support all frontend types
-  activityType: z.string(), // Reverted to string
-  targetDistance: z.number().optional(),
-  durationMinutes: z.number().optional(),
-  wkgTier: z.number().optional(),
-  wager: z.number().optional(),
+  duelType: DuelTypeSchema.default("DISTANCE_RACE"),
+  activityType: ActivityTypeSchema.optional(),
+  targetDistance: z.number().min(0.1).optional(),
+  durationMinutes: z.number().min(1).optional(),
+  wkgTier: z.number().min(1).max(7).optional(),
+  wager: z.number().min(0).optional(),
 });
 
 type DuelChallengeInput = z.infer<typeof _DuelChallengeSchema>;
@@ -129,48 +138,43 @@ export const declineDuelChallengeAction = authActionClient
     }
   });
 
-export async function getDuelStatusAction() {
-  try {
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    if (!user) throw new Error("Unauthorized");
-    const userId = user.id;
-
-    const activeDuel = await prisma.duelChallenge.findFirst({
-      where: {
-        OR: [{ challengerId: userId }, { defenderId: userId }],
-        status: "ACTIVE",
-      },
-      include: {
-        challenger: {
-          select: { id: true, heroName: true, level: true, faction: true },
+export const getDuelStatusAction = authActionClient.action(
+  async ({ ctx: { userId } }) => {
+    try {
+      const activeDuel = await prisma.duelChallenge.findFirst({
+        where: {
+          OR: [{ challengerId: userId }, { defenderId: userId }],
+          status: "ACTIVE",
         },
-        defender: {
-          select: { id: true, heroName: true, level: true, faction: true },
+        include: {
+          challenger: {
+            select: { id: true, heroName: true, level: true, faction: true },
+          },
+          defender: {
+            select: { id: true, heroName: true, level: true, faction: true },
+          },
         },
-      },
-    });
+      });
 
-    if (activeDuel) return { success: true, duel: activeDuel };
+      if (activeDuel) return { success: true, duel: activeDuel };
 
-    const pendingChallenges = await prisma.duelChallenge.findMany({
-      where: {
-        defenderId: userId,
-        status: "PENDING",
-      },
-      include: {
-        challenger: { select: { id: true, heroName: true, level: true, faction: true } },
-      },
-    });
+      const pendingChallenges = await prisma.duelChallenge.findMany({
+        where: {
+          defenderId: userId,
+          status: "PENDING",
+        },
+        include: {
+          challenger: { select: { id: true, heroName: true, level: true, faction: true } },
+        },
+      });
 
-    return { success: true, duel: null, pending: pendingChallenges };
-  } catch (error) {
-    console.error("Error fetching duel status:", error);
-    return { success: false, error: "Failed to fetch status" };
+      return { success: true, duel: null, pending: pendingChallenges };
+    } catch (error) {
+      console.error("Error fetching duel status:", error);
+      return { success: false, error: "Failed to fetch status" };
+    }
   }
-}
+);
 
 // Internal helper (No Auth Context needed)
 // elevationMeters is optional for elevation grind mode
@@ -238,7 +242,8 @@ export async function updateCardioDuelProgressInternalWithUser(
     }
   } else if (duel.duelType === "ELEVATION_GRIND") {
     // Elevation Grind: First to gain target elevation wins
-    const targetElevation = (duel.targetDistance || 1000); // Target in meters (reusing targetDistance field)
+    // Target is in meters (reusing targetDistance field as the target value)
+    const targetElevation = duel.targetDistance || 1000;
     if (newElevation >= targetElevation) {
       winnerId = userId;
       isFinished = true;
@@ -324,101 +329,132 @@ export const updateCardioDuelProgressAction = authActionClient
     }
   });
 
-export async function sendTauntAction(duelId: string, message: string = "Prepare to be crushed!") {
-  // In a real app, this would create a notification or chat message
-  // For now, we'll just log it and maybe simulate a delay
-  try {
-    const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) throw new Error("Unauthorized");
+const SendTauntSchema = z.object({
+  duelId: z.string(),
+  message: z.string().optional().default("Prepare to be crushed!")
+});
 
-    console.log(`Taunt sent in duel ${duelId} from ${user.id}: ${message}`);
+export const sendTauntAction = authActionClient
+  .schema(SendTauntSchema)
+  .action(async ({ parsedInput: { duelId, message }, ctx: { userId } }) => {
+    try {
+      console.log(`Taunt sent in duel ${duelId} from ${userId}: ${message}`);
 
-    // Potential future expansion: Insert into a DuelEvents table
+      // Potential future expansion: Insert into a DuelEvents table
 
-    return { success: true };
-  } catch (error) {
-    console.error("Error sending taunt:", error);
-    return { success: false, error: "Failed to send taunt" };
-  }
-}
+      return { success: true };
+    } catch (error) {
+      console.error("Error sending taunt:", error);
+      return { success: false, error: "Failed to send taunt" };
+    }
+  });
 
-export async function getPotentialOpponentsAction() {
-  try {
-    const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) throw new Error("Unauthorized");
+export const getPotentialOpponentsAction = authActionClient.action(
+  async ({ ctx: { userId } }) => {
+    try {
+      // Fetch own Power Rating
+      const currentUser = await prisma.user.findUnique({
+        where: { id: userId },
+        include: { titan: true },
+      });
+      const myRating = currentUser?.titan?.powerRating || 0;
 
-    // Fetch own Power Rating
-    const currentUser = await prisma.user.findUnique({
-      where: { id: user.id },
-      include: { titan: true },
-    });
-    const myRating = currentUser?.titan?.powerRating || 0;
+      // Find active duels to exclude them
+      const activeDuels = await prisma.duelChallenge.findMany({
+        where: {
+          OR: [{ challengerId: userId }, { defenderId: userId }],
+          status: { in: ["PENDING", "ACTIVE"] },
+        },
+        select: { challengerId: true, defenderId: true }
+      });
 
-    // Filter by Power Rating (Skill-Biased Matchmaking)
-    // Range: +/- 100 for now, can tighten later
-    const opponents = await prisma.user.findMany({
-      where: {
-        id: { not: user.id },
-        titan: {
-          powerRating: {
-            gte: Math.max(0, myRating - 100),
-            lte: myRating + 100
+      const excludedUserIds = new Set<string>([userId]);
+      activeDuels.forEach(d => {
+        excludedUserIds.add(d.challengerId);
+        excludedUserIds.add(d.defenderId);
+      });
+
+      const fetchOpponents = async (bracketSize: number | null) => {
+        return prisma.user.findMany({
+          where: {
+            id: { notIn: Array.from(excludedUserIds) },
+            ...(bracketSize !== null ? {
+              titan: {
+                powerRating: {
+                  gte: Math.max(0, myRating - bracketSize),
+                  lte: myRating + bracketSize
+                }
+              }
+            } : {})
+          },
+          take: 20,
+          orderBy: {
+            titan: { powerRating: 'desc' }
+          },
+          select: {
+            id: true,
+            heroName: true,
+            level: true,
+            faction: true,
+            archetype: true,
+            titan: {
+              select: { powerRating: true }
+            }
           }
-        }
-      },
-      take: 20,
-      orderBy: {
-        titan: { powerRating: 'desc' }
-      },
-      select: {
-        id: true,
-        heroName: true,
-        level: true,
-        faction: true,
-        archetype: true,
-        titan: {
-          select: { powerRating: true }
-        }
+        });
+      };
+
+      // Progressively expand matchmaking bracket
+      let opponents = await fetchOpponents(100);
+
+      if (opponents.length < 5) {
+        opponents = await fetchOpponents(250);
       }
-    });
 
-    return { success: true, opponents };
-  } catch (error) {
-    console.error("Error fetching opponents:", error);
-    return { success: false, error: "Failed to fetch opponents" };
+      if (opponents.length < 5) {
+        opponents = await fetchOpponents(500);
+      }
+
+      if (opponents.length < 5) {
+        opponents = await fetchOpponents(null); // Completely open
+      }
+
+      return { success: true, opponents };
+    } catch (error) {
+      console.error("Error fetching opponents:", error);
+      return { success: false, error: "Failed to fetch opponents" };
+    }
   }
-}
+);
 
-export async function getDuelArenaStateAction(duelId: string) {
-  try {
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    if (!user) throw new Error("Unauthorized");
-
-    const duel = await prisma.duelChallenge.findUnique({
-      where: { id: duelId },
-      include: {
-        challenger: {
-          select: { id: true, heroName: true, level: true, faction: true },
+export const getDuelArenaStateAction = authActionClient
+  .schema(z.string())
+  .action(async ({ parsedInput: duelId, ctx: { userId } }) => {
+    try {
+      const duel = await prisma.duelChallenge.findUnique({
+        where: { id: duelId },
+        include: {
+          challenger: {
+            select: { id: true, heroName: true, level: true, faction: true },
+          },
+          defender: {
+            select: { id: true, heroName: true, level: true, faction: true },
+          },
         },
-        defender: {
-          select: { id: true, heroName: true, level: true, faction: true },
-        },
-      },
-    });
+      });
 
-    if (!duel) return { success: false, error: "Duel not found" };
+      if (!duel) return { success: false, error: "Duel not found" };
 
-    return { success: true, duel };
-  } catch (error) {
-    console.error("Error fetching arena state:", error);
-    return { success: false, error: "Failed to fetch arena state" };
-  }
-}
+      // Make sure the user is part of this duel? Or maybe arenas are public.
+      // If public, we're okay. If private, check:
+      // if (duel.challengerId !== userId && duel.defenderId !== userId) return { success: false, error: "Unauthorized" };
+
+      return { success: true, duel };
+    } catch (error) {
+      console.error("Error fetching arena state:", error);
+      return { success: false, error: "Failed to fetch arena state" };
+    }
+  });
 
 export async function processUserCardioActivity(
   userId: string,

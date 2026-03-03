@@ -10,7 +10,7 @@ export type IntegrationStatus = "connected" | "disconnected" | "error";
 export interface ValidationResult {
   valid: boolean;
   error?: string;
-  metadata?: any;
+  metadata?: Record<string, unknown>;
 }
 
 // --- HEVY ---
@@ -22,10 +22,11 @@ export async function validateHevyApiKey(
     // Fetch a single workout to validate the key
     await getHevyWorkouts(apiKey, 1, 1);
     return { valid: true };
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : "Invalid Hevy API Key";
     return {
       valid: false,
-      error: error.message || "Invalid Hevy API Key",
+      error: message,
     };
   }
 }
@@ -46,8 +47,8 @@ export async function connectHevy(userId: string, apiKey: string) {
 
     revalidatePath("/");
     return { success: true };
-  } catch (error: any) {
-    return { success: false, error: error.message };
+  } catch (error: unknown) {
+    return { success: false, error: error instanceof Error ? error.message : "Unknown error" };
   }
 }
 

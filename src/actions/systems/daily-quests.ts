@@ -2,6 +2,8 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { z } from "zod";
+import { authActionClient } from "@/lib/safe-action";
 
 type QuestType =
   | "WORKOUT"
@@ -63,123 +65,124 @@ const DAILY_QUEST_TEMPLATES = [
  * Generate (or fetch) daily quests for a user.
  * Now backed by DB.
  */
-export async function generateDailyQuestsAction(
-  userId: string,
-): Promise<DailyQuest[]> {
-  try {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const tomorrow = new Date(today);
-    tomorrow.setDate(tomorrow.getDate() + 1);
-
-    // 1. Check existing active daily quests
-    const existing = await prisma.userChallenge.findMany({
-      where: {
-        userId,
-        challenge: {
-          type: "DAILY",
-          endDate: { gt: new Date() } // Not expired
-        }
-      },
-      include: { challenge: true }
-    });
-
-    if (existing.length > 0) {
-      return existing.map(mapUserChallengeToDailyQuest);
-    }
-
-    // 2. Generate new ones if none exist
-
-    // GPE Integration: Check for DELOAD
-    let templateList = [...DAILY_QUEST_TEMPLATES];
+export const generateDailyQuestsAction = authActionClient.action(
+  async ({ ctx: { userId } }): Promise<DailyQuest[]> => {
     try {
-      const user = await prisma.user.findUnique({
-        where: { id: userId },
-        include: { wardensManifest: true }
-      });
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const tomorrow = new Date(today);
+      tomorrow.setDate(tomorrow.getDate() + 1);
 
-      if (user && user.wardensManifest) {
-        const phase = user.wardensManifest.phase || "BALANCED";
-
-        if (phase === "DELOAD") {
-          // Filter out Volume/High-Intensity
-          templateList = templateList.filter(t => t.code !== 'DAILY_VOL_1' && t.code !== 'DAILY_WORKOUT_1');
-
-          // Add Recovery Quest
-          templateList.push({
-            code: "DAILY_RECOVERY_1",
-            title: "Active Recovery",
-            description: "Log 15 min mobility or yoga",
-            type: "DAILY",
-            criteria: { metric: "duration_min", target: 15 },
-            rewards: { xp: 200, gold: 0 },
-            difficulty: "EASY"
-          });
-        }
-      }
-    } catch (e) {
-      console.warn("GPE Quest Check failed", e);
-    }
-
-    // Create/Find Templates
-    const dbChallenges = [];
-    for (const tpl of templateList) {
-      // Daily challenges need unique dates if we track history? 
-      // Or we re-use the same "Challenge" def and just create new "UserChallenge" rows?
-      // Schema: UserChallenge has ID (userId, challengeId). 
-      // If we reuse challengeId, we can't track history.
-      // We likely need a "Active Daily Challenge" system.
-      // Let's create specific Challenge rows for TODAY.
-      const code = `${tpl.code}_${today.toISOString().split('T')[0]}`;
-
-      const challenge = await prisma.challenge.upsert({
-        where: { code },
-        create: {
-          code,
-          title: tpl.title,
-          description: tpl.description,
-          type: "DAILY",
-          startDate: today,
-          endDate: tomorrow,
-          criteria: tpl.criteria,
-          rewards: tpl.rewards
-        },
-        update: {}
-      });
-      dbChallenges.push(challenge);
-    }
-
-    // 3. Assign to User
-    if (dbChallenges.length > 0) {
-      await prisma.userChallenge.createMany({
-        data: dbChallenges.map((c) => ({
-          userId,
-          challengeId: c.id,
-          progress: 0,
-          completed: false,
-          claimed: false,
-        })),
-        skipDuplicates: true,
-      });
-
-      const createdUserChallenges = await prisma.userChallenge.findMany({
+      // 1. Check existing active daily quests
+      const existing = await prisma.userChallenge.findMany({
         where: {
           userId,
-          challengeId: { in: dbChallenges.map((c) => c.id) },
+          challenge: {
+            type: "DAILY",
+            endDate: { gt: new Date() }, // Not expired
+          },
         },
         include: { challenge: true },
       });
 
-      return createdUserChallenges.map(mapUserChallengeToDailyQuest);
+      if (existing.length > 0) {
+        return existing.map(mapUserChallengeToDailyQuest);
+      }
+
+      // 2. Generate new ones if none exist
+
+      // GPE Integration: Check for DELOAD
+      let templateList = [...DAILY_QUEST_TEMPLATES];
+      try {
+        const user = await prisma.user.findUnique({
+          where: { id: userId },
+          include: { wardensManifest: true },
+        });
+
+        if (user && user.wardensManifest) {
+          const phase = user.wardensManifest.phase || "BALANCED";
+
+          if (phase === "DELOAD") {
+            // Filter out Volume/High-Intensity
+            templateList = templateList.filter(
+              (t) => t.code !== "DAILY_VOL_1" && t.code !== "DAILY_WORKOUT_1",
+            );
+
+            // Add Recovery Quest
+            templateList.push({
+              code: "DAILY_RECOVERY_1",
+              title: "Active Recovery",
+              description: "Log 15 min mobility or yoga",
+              type: "DAILY",
+              criteria: { metric: "duration_min", target: 15 },
+              rewards: { xp: 200, gold: 0 },
+              difficulty: "EASY",
+            });
+          }
+        }
+      } catch (e) {
+        console.warn("GPE Quest Check failed", e);
+      }
+
+      // Create/Find Templates
+      const dbChallenges = [];
+      for (const tpl of templateList) {
+        // Daily challenges need unique dates if we track history?
+        // Or we re-use the same "Challenge" def and just create new "UserChallenge" rows?
+        // Schema: UserChallenge has ID (userId, challengeId).
+        // If we reuse challengeId, we can't track history.
+        // We likely need a "Active Daily Challenge" system.
+        // Let's create specific Challenge rows for TODAY.
+        const code = `${tpl.code}_${today.toISOString().split("T")[0]}`;
+
+        const challenge = await prisma.challenge.upsert({
+          where: { code },
+          create: {
+            code,
+            title: tpl.title,
+            description: tpl.description,
+            type: "DAILY",
+            startDate: today,
+            endDate: tomorrow,
+            criteria: tpl.criteria,
+            rewards: tpl.rewards,
+          },
+          update: {},
+        });
+        dbChallenges.push(challenge);
+      }
+
+      // 3. Assign to User
+      if (dbChallenges.length > 0) {
+        await prisma.userChallenge.createMany({
+          data: dbChallenges.map((c) => ({
+            userId,
+            challengeId: c.id,
+            progress: 0,
+            completed: false,
+            claimed: false,
+          })),
+          skipDuplicates: true,
+        });
+
+        const createdUserChallenges = await prisma.userChallenge.findMany({
+          where: {
+            userId,
+            challengeId: { in: dbChallenges.map((c) => c.id) },
+          },
+          include: { challenge: true },
+        });
+
+        return createdUserChallenges.map(mapUserChallengeToDailyQuest);
+      }
+
+      return [];
+    } catch (error) {
+      console.error("Error generating daily quests:", error);
+      return [];
     }
-
-    return [];
-
-  } catch (error) {
-    console.error("Error generating daily quests:", error);
-    return [];
-  }
-}
+  },
+);
 
 function mapUserChallengeToDailyQuest(uc: any): DailyQuest {
   const c = uc.challenge;
@@ -212,65 +215,69 @@ function mapMetricToType(metric: string): QuestType {
 /**
  * Get user's current daily quests.
  */
-export async function getDailyQuestsAction(
-  userId: string,
-): Promise<DailyQuest[]> {
-  return generateDailyQuestsAction(userId);
-}
+export const getDailyQuestsAction = authActionClient.action(
+  async (): Promise<DailyQuest[]> => {
+    const res = await generateDailyQuestsAction();
+    return res?.data || [];
+  },
+);
 
 /**
  * Update quest progress - DEPRECATED via wrapper.
  * Actual logic is in challengeService.ts processWorkoutLog
  */
-export async function updateQuestProgressAction(
-  _userId: string,
-  _questType: QuestType,
-  _amount: number,
-): Promise<{ questsUpdated: number; questsCompleted: string[] }> {
-  // No-op, logic moved to challengeService
-  return { questsUpdated: 0, questsCompleted: [] };
-}
+export const updateQuestProgressAction = authActionClient.action(
+  async (): Promise<{ questsUpdated: number; questsCompleted: string[] }> => {
+    // No-op, logic moved to challengeService
+    return { questsUpdated: 0, questsCompleted: [] };
+  },
+);
 
 /**
  * Claim completed quest rewards.
  */
-export async function claimQuestRewardAction(
-  userId: string,
-  questId: string, // actually challengeId
-): Promise<{ success: boolean; xp: number; gold: number; bonus?: string }> {
-  try {
-    const uc = await prisma.userChallenge.findUnique({
-      where: { userId_challengeId: { userId, challengeId: questId } },
-      include: { challenge: true }
-    });
+const ClaimQuestRewardSchema = z.object({ questId: z.string() });
+export const claimQuestRewardAction = authActionClient
+  .schema(ClaimQuestRewardSchema)
+  .action(
+    async ({
+      parsedInput: { questId },
+      ctx: { userId },
+    }): Promise<{ success: boolean; xp: number; gold: number; bonus?: string }> => {
+      try {
+        const uc = await prisma.userChallenge.findUnique({
+          where: { userId_challengeId: { userId, challengeId: questId } },
+          include: { challenge: true },
+        });
 
-    if (!uc || !uc.completed || uc.claimed) {
-      return { success: false, xp: 0, gold: 0 };
-    }
+        if (!uc || !uc.completed || uc.claimed) {
+          return { success: false, xp: 0, gold: 0 };
+        }
 
-    const rewards = uc.challenge.rewards as any;
-    const xp = rewards.xp || 0;
-    const gold = rewards.gold || 0;
+        const rewards = uc.challenge.rewards as any;
+        const xp = rewards.xp || 0;
+        const gold = rewards.gold || 0;
 
-    // 1. Award
-    const { ProgressionService } = await import("@/services/progression");
-    if (xp > 0) await ProgressionService.addExperience(userId, xp);
-    if (gold > 0) await ProgressionService.awardGold(userId, gold);
+        // 1. Award
+        const { ProgressionService } = await import("@/services/progression");
+        if (xp > 0) await ProgressionService.addExperience(userId, xp);
+        if (gold > 0) await ProgressionService.awardGold(userId, gold);
 
-    // 2. Mark Claimed
-    await prisma.userChallenge.update({
-      where: { userId_challengeId: { userId, challengeId: questId } },
-      data: { claimed: true }
-    });
+        // 2. Mark Claimed
+        await prisma.userChallenge.update({
+          where: { userId_challengeId: { userId, challengeId: questId } },
+          data: { claimed: true },
+        });
 
-    revalidatePath("/daily-quests");
-    return {
-      success: true,
-      xp,
-      gold,
-    };
-  } catch (error) {
-    console.error("Error claiming quest:", error);
-    return { success: false, xp: 0, gold: 0 };
-  }
-}
+        revalidatePath("/daily-quests");
+        return {
+          success: true,
+          xp,
+          gold,
+        };
+      } catch (error) {
+        console.error("Error claiming quest:", error);
+        return { success: false, xp: 0, gold: 0 };
+      }
+    },
+  );

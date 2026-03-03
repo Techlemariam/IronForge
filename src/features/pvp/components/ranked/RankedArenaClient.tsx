@@ -136,14 +136,14 @@ export function RankedArenaClient({ season, playerRating, leaderboard, userId, f
                                             </td>
                                             <td className="px-6 py-4">
                                                 <div className="font-bold text-zinc-200">{entry.name}</div>
-                                                <div className="text-xs text-zinc-500">{entry.metadata?.title || "Novice"}</div>
+                                                <div className="text-xs text-zinc-500">{(entry.metadata?.title as string) || "Novice"}</div>
                                             </td>
                                             <td className="px-6 py-4">
                                                 <RankBadge rating={entry.score} faction={(entry.faction as Faction) || "HORDE"} size="sm" />
                                             </td>
                                             <td className="px-6 py-4 text-right font-mono text-zinc-400">
-                                                {entry.metadata?.wins + entry.metadata?.losses > 0
-                                                    ? Math.round((entry.metadata?.wins / (entry.metadata?.wins + entry.metadata?.losses)) * 100)
+                                                {((entry.metadata?.wins as number) || 0) + ((entry.metadata?.losses as number) || 0) > 0
+                                                    ? Math.round(((entry.metadata?.wins as number) || 0) / (((entry.metadata?.wins as number) || 0) + ((entry.metadata?.losses as number) || 0)) * 100)
                                                     : 0}%
                                             </td>
                                         </tr>

@@ -3,6 +3,28 @@ import { revalidatePath } from "next/cache";
 import { ProgressionService } from "@/services/progression";
 import { IntervalsWellness } from "@/types";
 import { BioBuff } from "@/features/bio/BioBuffService";
+import { getSkillNodeById } from "@/features/neural-lattice/data";
+import { StatModifier } from "@/features/neural-lattice/types";
+import { SKILL_TREE, ACHIEVEMENTS } from "@/data/static";
+
+export interface EffectiveTitanStats {
+    maxHp: number;
+    maxEnergy: number;
+    strength: number;
+    vitality: number;
+    endurance: number;
+    agility: number;
+    willpower: number;
+}
+
+export interface TitanAttributes {
+    strength: number;
+    endurance: number;
+    technique: number;
+    recovery: number;
+    mental: number;
+    hypertrophy: number;
+}
 
 export class TitanService {
     static async getTitan(userId: string) {
@@ -13,6 +35,119 @@ export class TitanService {
                 scars: true,
             },
         });
+    }
+
+    static async getTitanWithModifiers(userId: string) {
+        const titan = await prisma.titan.findUnique({
+            where: { userId },
+            include: {
+                user: {
+                    include: {
+                        skills: true,
+                        achievements: true,
+                        meditationLogs: {
+                            orderBy: { date: 'desc' },
+                            take: 20
+                        }
+                    }
+                }
+            }
+        });
+
+        if (!titan) return null;
+
+        const baseStats = {
+            maxHp: titan.maxHp,
+            maxEnergy: titan.maxEnergy,
+            strength: titan.strength,
+            vitality: titan.vitality,
+            endurance: titan.endurance,
+            agility: titan.agility,
+            willpower: titan.willpower,
+        };
+
+        const unlockedSkills = titan.user?.skills.filter((s: any) => s.unlocked) || [];
+        const purchasedSkillIds = new Set(unlockedSkills.map((s: any) => s.skillId));
+        const unlockedAchievementIds = new Set(titan.user?.achievements.map((a: any) => a.achievementId) || []);
+
+        const flatModifiers: StatModifier[] = [];
+        const percentageModifiers: StatModifier[] = [];
+
+        unlockedSkills.forEach((skill: any) => {
+            const node = getSkillNodeById(skill.skillId);
+            if (node) {
+                node.modifiers.forEach((mod) => {
+                    if (mod.isPercentage) {
+                        percentageModifiers.push(mod);
+                    } else {
+                        flatModifiers.push(mod);
+                    }
+                });
+            }
+        });
+
+        const effectiveStats: EffectiveTitanStats = { ...baseStats };
+
+        // 1. Apply Flat Math
+        flatModifiers.forEach((mod) => {
+            if (mod.stat in effectiveStats) {
+                effectiveStats[mod.stat as keyof EffectiveTitanStats] += mod.value;
+            }
+        });
+
+        // 2. Apply Percentage Math
+        percentageModifiers.forEach((mod) => {
+            if (mod.stat in effectiveStats) {
+                const baseVal = baseStats[mod.stat as keyof typeof baseStats];
+                effectiveStats[mod.stat as keyof EffectiveTitanStats] += Math.floor(baseVal * (mod.value / 100));
+            }
+        });
+
+        // 3. Bridge to legacy TitanAttributes (1-20 scale)
+        // Consolidating logic from root_utils.ts
+        const normalize = (val: number, max: number) => Math.max(1, Math.min(20, Math.round((val / max) * 20)));
+
+        // Strength Calculation
+        const strengthTalents = SKILL_TREE.filter(n => n.category === "push" || n.category === "legs").length;
+        const strengthUnlocked = SKILL_TREE.filter(n => (n.category === "push" || n.category === "legs") && purchasedSkillIds.has(n.id)).length;
+        let strengthAttr = normalize(strengthUnlocked, strengthTalents + 5);
+
+        // Endurance Calculation
+        const endTalents = SKILL_TREE.filter(n => n.category === "endurance").length;
+        const endUnlocked = SKILL_TREE.filter(n => n.category === "endurance" && purchasedSkillIds.has(n.id)).length;
+        const enduranceAttr = normalize(endUnlocked, endTalents + 8);
+
+        // Hypertrophy Calculation
+        const pullSkills = SKILL_TREE.filter(n => n.category === "pull" && purchasedSkillIds.has(n.id)).length;
+        const hypertrophyAttr = normalize(pullSkills * 2 + unlockedAchievementIds.size / 2, 25);
+
+        // Mental Calculation
+        const mindfulnessBonus = Math.min(10, Math.ceil((titan.user?.meditationLogs?.reduce((sum, log) => sum + log.durationMinutes, 0) || 0) / 12));
+        const mentalAttr = Math.min(20, normalize(titan.level, 10) + mindfulnessBonus);
+
+        // Recovery Calculation
+        const recoveryAttr = Math.max(1, Math.min(20, Math.round(effectiveStats.vitality / 2))); // Simple 1-20 scale from vitality
+
+        // Technique Calculation
+        const coreSkills = SKILL_TREE.filter(n => n.category === "core" && purchasedSkillIds.has(n.id)).length;
+        const techAchievements = ACHIEVEMENTS.filter(a => a.category === "professions" && unlockedAchievementIds.has(a.id)).length;
+        const techniqueAttr = normalize(techAchievements + coreSkills, 10);
+
+        const attributes: TitanAttributes = {
+            strength: Math.min(20, strengthAttr + (effectiveStats.strength - baseStats.strength)),
+            endurance: Math.min(20, enduranceAttr + (effectiveStats.endurance - baseStats.endurance)),
+            technique: Math.min(20, techniqueAttr + (effectiveStats.agility - baseStats.agility)),
+            mental: Math.min(20, mentalAttr + (effectiveStats.willpower - baseStats.willpower)),
+            recovery: Math.min(20, recoveryAttr + (effectiveStats.vitality - baseStats.vitality)),
+            hypertrophy: hypertrophyAttr,
+        };
+
+        return {
+            titan,
+            effectiveStats,
+            attributes,
+            activeModifiers: [...flatModifiers, ...percentageModifiers]
+        };
     }
 
     static async ensureTitan(userId: string) {
@@ -34,11 +169,13 @@ export class TitanService {
     }
 
     static async modifyHealth(userId: string, delta: number, _reason: string) {
-        const titan = await prisma.titan.findUnique({ where: { userId } });
-        if (!titan) throw new Error("Titan not found");
+        const titanData = await TitanService.getTitanWithModifiers(userId);
+        if (!titanData) throw new Error("Titan not found");
+
+        const { titan, effectiveStats } = titanData;
 
         let newHp = titan.currentHp + delta;
-        if (newHp > titan.maxHp) newHp = titan.maxHp;
+        if (newHp > effectiveStats.maxHp) newHp = effectiveStats.maxHp;
         if (newHp < 0) newHp = 0;
 
         const isInjured = newHp === 0;
@@ -61,8 +198,10 @@ export class TitanService {
     }
 
     static async awardXp(userId: string, amount: number, _source: string) {
-        const titan = await prisma.titan.findUnique({ where: { userId } });
-        if (!titan) throw new Error("Titan not found");
+        const titanData = await TitanService.getTitanWithModifiers(userId);
+        if (!titanData) throw new Error("Titan not found");
+
+        const { titan, effectiveStats, activeModifiers } = titanData;
 
         const user = await prisma.user.findUnique({ where: { id: userId } });
 
@@ -97,8 +236,19 @@ export class TitanService {
 
         if (leveledUp) {
             data.maxHp = 100 + newLevel * 10;
-            data.currentHp = data.maxHp;
-            data.currentEnergy = 100;
+
+            // Calculate new effective Max HP
+            let newEffectiveMaxHp = data.maxHp;
+            activeModifiers.filter(m => !m.isPercentage && m.stat === "maxHp").forEach(m => newEffectiveMaxHp += m.value);
+            activeModifiers.filter(m => m.isPercentage && m.stat === "maxHp").forEach(m => newEffectiveMaxHp += Math.floor(data.maxHp * (m.value / 100)));
+
+            // Calculate new effective Max Energy
+            let newEffectiveMaxEnergy = 100;
+            activeModifiers.filter(m => !m.isPercentage && m.stat === "maxEnergy").forEach(m => newEffectiveMaxEnergy += m.value);
+            activeModifiers.filter(m => m.isPercentage && m.stat === "maxEnergy").forEach(m => newEffectiveMaxEnergy += Math.floor(100 * (m.value / 100)));
+
+            data.currentHp = newEffectiveMaxHp;
+            data.currentEnergy = newEffectiveMaxEnergy;
         }
 
         const updated = await prisma.titan.update({
@@ -131,10 +281,17 @@ export class TitanService {
     }
 
     static async syncWellness(userId: string, wellness: IntervalsWellness) {
-        const titan = await prisma.titan.findUnique({ where: { userId } });
-        if (!titan) throw new Error("Titan not found");
+        const titanData = await TitanService.getTitanWithModifiers(userId);
+        if (!titanData) throw new Error("Titan not found");
 
-        const newEnergy = wellness.bodyBattery || titan.currentEnergy;
+        const { titan, effectiveStats } = titanData;
+
+        let newEnergy = titan.currentEnergy;
+        if (wellness.bodyBattery !== undefined) {
+            // Scale energy based on effective Max Energy
+            newEnergy = Math.floor((wellness.bodyBattery / 100) * effectiveStats.maxEnergy);
+        }
+
         let newMood = "NEUTRAL";
         const sleepScore = wellness.sleepScore || 0;
         const hrv = wellness.hrv || 0;

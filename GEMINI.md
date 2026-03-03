@@ -47,3 +47,4 @@ Detta dokument definierar de specialiserade agenter som utgör IronForge-teamet.
 | **Platform** | `/platform` | **Cross-Device.** Analyserar features för Desktop, Mobile, TV Mode, Companion. |
 | **Secrets** | `docs/SECRET_MANAGEMENT.md` | **Security.** Doppler is the single source of truth. No local `.env`. Use `GH_PAT`. |
 | **Workspace** | `@workspace_protocol.md` | **Coordination.** Rules for multi-chat branch management and git locks. |
+| **Handover** | `/handover` | **Inter-Agent Comms.** Används för att lämna över kontext, filer och alerts till nästa agent via Supabase Shared Memory. |

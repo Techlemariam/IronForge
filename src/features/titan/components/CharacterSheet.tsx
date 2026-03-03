@@ -21,7 +21,7 @@ import {
   History,
 } from "lucide-react";
 import { TitanXPBar } from "@/features/titan/components/TitanXPBar";
-import { calculateTitanRank, calculateTitanAttributes } from "../../../utils";
+import { calculateTitanRank } from "../../../utils";
 import { useSkills } from "../../../context/SkillContext";
 import { StorageService } from "../../../services/storage";
 import { IntervalsWellness } from "../../../types";
@@ -43,6 +43,7 @@ interface CharacterSheetProps {
   unlockedIds: Set<string>;
   onClose: () => void;
   meditationLogs?: MeditationLog[];
+  passedAttributes?: import("@/services/game/TitanService").TitanAttributes;
 }
 
 type TabType = "attributes" | "contract" | "history";
@@ -51,6 +52,7 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({
   unlockedIds,
   onClose,
   meditationLogs = [],
+  passedAttributes,
 }) => {
   const [activeTab, setActiveTab] = useState<TabType>("attributes");
   const [wellness] = useState<IntervalsWellness | null>(null);
@@ -63,12 +65,15 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({
   const { currentRank, level, talentPoints, kineticShards, isElite } =
     calculateTitanRank(unlockedIds);
 
-  const attributes = calculateTitanAttributes(
-    unlockedIds,
-    wellness,
-    purchasedSkillIds,
-    meditationLogs,
-  );
+  // Calculate attributes with a safe fallback to baseline values if server data is missing
+  const attributes = passedAttributes || {
+    strength: 1,
+    endurance: 1,
+    technique: 1,
+    mental: 1,
+    recovery: 1,
+    hypertrophy: 1
+  };
 
   const totalXP = talentPoints * 10 + (kineticShards / 10) * 2;
   const currentXP = totalXP % 100;

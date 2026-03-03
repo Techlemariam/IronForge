@@ -61,10 +61,16 @@ export function CardioDuelModal({
       if (result?.data?.success) {
         toast.success("Duel challenge sent!");
         onClose();
+        // Force a refresh to show pending challenges in IronArena
+        window.location.reload();
       } else {
-        toast.error(result?.data?.error || result?.serverError || "Failed to send challenge");
+        const errorMsg = result?.validationErrors
+          ? "Invalid duel settings. Please check your inputs."
+          : (result?.data?.error || result?.serverError || "Failed to send challenge");
+        toast.error(errorMsg);
       }
-    } catch {
+    } catch (error) {
+      console.error("Submission error:", error);
       toast.error("Something went wrong");
     } finally {
       setIsSubmitting(false);
@@ -86,7 +92,7 @@ export function CardioDuelModal({
           <div className="grid grid-cols-2 gap-4">
             <button
               type="button"
-              aria-pressed={activityType === "CYCLING"}
+              aria-pressed={activityType === "CYCLING" ? "true" : "false"}
               onClick={() => setActivityType("CYCLING")}
               className={`p-4 rounded-xl border-2 flex flex-col items-center gap-2 transition-all ${activityType === "CYCLING"
                 ? "border-blue-500 bg-blue-500/10 text-blue-400"
@@ -98,7 +104,7 @@ export function CardioDuelModal({
             </button>
             <button
               type="button"
-              aria-pressed={activityType === "RUNNING"}
+              aria-pressed={activityType === "RUNNING" ? "true" : "false"}
               onClick={() => setActivityType("RUNNING")}
               className={`p-4 rounded-xl border-2 flex flex-col items-center gap-2 transition-all ${activityType === "RUNNING"
                 ? "border-emerald-500 bg-emerald-500/10 text-emerald-400"
@@ -116,7 +122,7 @@ export function CardioDuelModal({
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
               <button
                 type="button"
-                aria-pressed={duelType === "DISTANCE_RACE"}
+                aria-pressed={duelType === "DISTANCE_RACE" ? "true" : "false"}
                 onClick={() => setDuelType("DISTANCE_RACE")}
                 className={`px-3 py-2 rounded-lg text-sm border transition-all ${duelType === "DISTANCE_RACE"
                   ? "bg-slate-800 border-indigo-500 text-white"
@@ -127,7 +133,7 @@ export function CardioDuelModal({
               </button>
               <button
                 type="button"
-                aria-pressed={duelType === "SPEED_DEMON"}
+                aria-pressed={duelType === "SPEED_DEMON" ? "true" : "false"}
                 onClick={() => setDuelType("SPEED_DEMON")}
                 className={`px-3 py-2 rounded-lg text-sm border transition-all ${duelType === "SPEED_DEMON"
                   ? "bg-slate-800 border-indigo-500 text-white"
@@ -139,7 +145,7 @@ export function CardioDuelModal({
               {activityType === "CYCLING" && (
                 <button
                   type="button"
-                  aria-pressed={duelType === "ELEVATION_GRIND"}
+                  aria-pressed={duelType === "ELEVATION_GRIND" ? "true" : "false"}
                   onClick={() => setDuelType("ELEVATION_GRIND")}
                   className={`px-3 py-2 rounded-lg text-sm border transition-all ${duelType === "ELEVATION_GRIND"
                     ? "bg-slate-800 border-indigo-500 text-white"
@@ -155,7 +161,7 @@ export function CardioDuelModal({
           {/* Dynamic Inputs based on Type */}
           <AnimatePresence mode="wait">
             <motion.div
-              key={duelType}
+              key={`${duelType}-${activityType}`}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               className="space-y-4"
@@ -171,9 +177,10 @@ export function CardioDuelModal({
                       {[5, 10, 15, 30].map((m) => (
                         <button
                           key={m}
+                          type="button"
                           onClick={() => setDuration(m)}
-                          className={`flex-1 py-2 rounded-md border text-sm font-medium ${duration === m
-                            ? "bg-indigo-600 border-indigo-600 text-white"
+                          className={`flex-1 py-2 rounded-md border text-sm font-medium transition-all ${duration === m
+                            ? "bg-indigo-600 border-indigo-600 text-white shadow-lg"
                             : "bg-slate-900 border-slate-700 text-slate-400 hover:border-slate-500"
                             }`}
                         >
@@ -197,9 +204,10 @@ export function CardioDuelModal({
                     ).map((d) => (
                       <button
                         key={d}
+                        type="button"
                         onClick={() => setDistance(d)}
-                        className={`flex-1 py-2 rounded-md border text-sm font-medium ${distance === d
-                          ? "bg-indigo-600 border-indigo-600 text-white"
+                        className={`flex-1 py-2 rounded-md border text-sm font-medium transition-all ${distance === d
+                          ? "bg-indigo-600 border-indigo-600 text-white shadow-lg"
                           : "bg-slate-900 border-slate-700 text-slate-400 hover:border-slate-500"
                           }`}
                       >
@@ -212,7 +220,7 @@ export function CardioDuelModal({
 
               {activityType === "CYCLING" && (
                 <div className="space-y-2 pt-2 border-t border-slate-800">
-                  <Label htmlFor="wkg-tier-slider" className="text-yellow-400">
+                  <Label htmlFor="wkg-tier-slider" className="text-yellow-400 font-bold">
                     Fairness Tier (W/kg)
                   </Label>
                   <p className="text-xs text-slate-500 mb-2">
@@ -243,13 +251,13 @@ export function CardioDuelModal({
         </div>
 
         <DialogFooter>
-          <Button variant="ghost" onClick={onClose} className="text-slate-400">
+          <Button variant="ghost" onClick={onClose} className="text-slate-400 hover:text-white">
             Cancel
           </Button>
           <Button
             onClick={handleSubmit}
             disabled={isSubmitting}
-            className="bg-gradient-to-r from-indigo-600 to-purple-600"
+            className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 shadow-xl"
           >
             {isSubmitting ? "Sending..." : "Challenge Titan"}
           </Button>

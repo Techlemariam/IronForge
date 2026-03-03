@@ -1,6 +1,8 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { z } from "zod";
+import { authActionClient } from "@/lib/safe-action";
 
 type UpgradeRarity = "COMMON" | "UNCOMMON" | "RARE" | "EPIC" | "LEGENDARY";
 
@@ -91,55 +93,53 @@ const STAT_MULTIPLIERS: Record<number, number> = {
 /**
  * Get upgrade cost for next level.
  */
-export async function getUpgradeCostAction(
-  itemId: string,
-  currentLevel: number,
-): Promise<UpgradeCost | null> {
-  const nextLevel = currentLevel + 1;
-  return UPGRADE_COSTS[nextLevel] || null;
-}
+export const getUpgradeCostAction = authActionClient
+  .schema(z.object({ itemId: z.string(), currentLevel: z.number() }))
+  .action(async ({ parsedInput: { itemId, currentLevel }, ctx: { userId } }): Promise<UpgradeCost | null> => {
+    const nextLevel = currentLevel + 1;
+    return UPGRADE_COSTS[nextLevel] || null;
+  });
 
 /**
  * Attempt to upgrade equipment.
  */
-export async function upgradeEquipmentAction(
-  userId: string,
-  itemId: string,
-): Promise<{ success: boolean; newLevel?: number; message: string }> {
-  try {
-    // In production, validate item ownership and resources
-    const currentLevel = 3; // Would fetch from DB
-    const cost = UPGRADE_COSTS[currentLevel + 1];
+export const upgradeEquipmentAction = authActionClient
+  .schema(z.object({ itemId: z.string() }))
+  .action(async ({ parsedInput: { itemId }, ctx: { userId } }) => {
+    try {
+      // In production, validate item ownership and resources
+      const currentLevel = 3; // Would fetch from DB
+      const cost = UPGRADE_COSTS[currentLevel + 1];
 
-    if (!cost) {
-      return { success: false, message: "Item is already at max level" };
+      if (!cost) {
+        return { success: false, message: "Item is already at max level" };
+      }
+
+      // Simulate upgrade attempt
+      const roll = Math.random() * 100;
+      const succeeded = roll <= cost.successRate;
+
+      if (succeeded) {
+        const newLevel = currentLevel + 1;
+        console.log(`Upgrade success: ${itemId} -> Level ${newLevel}`);
+        revalidatePath("/inventory");
+        return {
+          success: true,
+          newLevel,
+          message: `Upgrade successful! Item is now level ${newLevel}`,
+        };
+      } else {
+        console.log(`Upgrade failed: ${itemId}`);
+        return {
+          success: false,
+          message: "Upgrade failed. Materials were consumed.",
+        };
+      }
+    } catch (error) {
+      console.error("Error upgrading equipment:", error);
+      throw new Error("An error occurred");
     }
-
-    // Simulate upgrade attempt
-    const roll = Math.random() * 100;
-    const succeeded = roll <= cost.successRate;
-
-    if (succeeded) {
-      const newLevel = currentLevel + 1;
-      console.log(`Upgrade success: ${itemId} -> Level ${newLevel}`);
-      revalidatePath("/inventory");
-      return {
-        success: true,
-        newLevel,
-        message: `Upgrade successful! Item is now level ${newLevel}`,
-      };
-    } else {
-      console.log(`Upgrade failed: ${itemId}`);
-      return {
-        success: false,
-        message: "Upgrade failed. Materials were consumed.",
-      };
-    }
-  } catch (error) {
-    console.error("Error upgrading equipment:", error);
-    return { success: false, message: "An error occurred" };
-  }
-}
+  });
 
 /**
  * Calculate stats at specific level.
@@ -161,28 +161,27 @@ export function calculateUpgradedStats(
 /**
  * Get user's upgradeable equipment.
  */
-export async function getUpgradeableEquipmentAction(
-  _userId: string,
-): Promise<EquipmentItem[]> {
-  // MVP: Return sample equipment
-  return [
-    {
-      id: "item-sword-1",
-      name: "Iron Sword",
-      rarity: "UNCOMMON",
-      level: 3,
-      maxLevel: 10,
-      stats: { damage: 50, critChance: 5 },
-      upgradeHistory: [],
-    },
-    {
-      id: "item-armor-1",
-      name: "Steel Plate",
-      rarity: "RARE",
-      level: 5,
-      maxLevel: 10,
-      stats: { defense: 80, hp: 100 },
-      upgradeHistory: [],
-    },
-  ];
-}
+export const getUpgradeableEquipmentAction = authActionClient
+  .action(async ({ ctx: { userId } }): Promise<EquipmentItem[]> => {
+    // MVP: Return sample equipment
+    return [
+      {
+        id: "item-sword-1",
+        name: "Iron Sword",
+        rarity: "UNCOMMON",
+        level: 3,
+        maxLevel: 10,
+        stats: { damage: 50, critChance: 5 },
+        upgradeHistory: [],
+      },
+      {
+        id: "item-armor-1",
+        name: "Steel Plate",
+        rarity: "RARE",
+        level: 5,
+        maxLevel: 10,
+        stats: { defense: 80, hp: 100 },
+        upgradeHistory: [],
+      },
+    ];
+  });

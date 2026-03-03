@@ -62,9 +62,9 @@ const Marketplace: React.FC<MarketplaceProps> = ({ onClose }) => {
 
   useEffect(() => {
     const loadEconomy = async () => {
-      const state = await getProgressionAction();
-      if (state) {
-        setGold(state.gold);
+      const result = await getProgressionAction({});
+      if (result?.data) {
+        setGold(result.data.gold);
       }
       const currentInv =
         (await StorageService.getState<string[]>("inventory")) || [];
@@ -76,9 +76,9 @@ const Marketplace: React.FC<MarketplaceProps> = ({ onClose }) => {
   const handleBuy = async (item: ShopItem) => {
     if (gold >= item.cost) {
       // Deduct Gold
-      const result = await awardGoldAction(-item.cost); // Negative award = deduct
-      if (result) {
-        setGold(result.gold);
+      const result = await awardGoldAction({ amount: -item.cost }); // Negative award = deduct
+      if (result?.data) {
+        setGold(result.data.gold);
       }
 
       // Add to Inventory (Hypothetical)
@@ -171,11 +171,10 @@ const Marketplace: React.FC<MarketplaceProps> = ({ onClose }) => {
                   onClick={() => handleBuy(item)}
                   disabled={gold < item.cost}
                   className={`w-full py-3 rounded font-bold uppercase tracking-wider text-sm transition-all
-                                        ${
-                                          gold >= item.cost
-                                            ? "bg-yellow-700 hover:bg-yellow-600 text-white shadow-lg"
-                                            : "bg-zinc-800 text-zinc-600 cursor-not-allowed"
-                                        }`}
+                                        ${gold >= item.cost
+                      ? "bg-yellow-700 hover:bg-yellow-600 text-white shadow-lg"
+                      : "bg-zinc-800 text-zinc-600 cursor-not-allowed"
+                    }`}
                 >
                   {gold >= item.cost ? "Purchase" : "Insuf. Funds"}
                 </button>

@@ -18,6 +18,7 @@ import { TrophyRoom } from "@/features/gamification/TrophyRoom";
 import { GuildHall } from "@/features/guild/GuildHall";
 import { TrainingCenter } from "@/features/training/TrainingCenter";
 import { Citadel } from "./Citadel";
+import CharacterSheet from "@/features/titan/components/CharacterSheet";
 import { QuestCompletion } from "./QuestCompletion";
 import {
     EquipmentArmory,
@@ -53,6 +54,10 @@ const CardioStudio = dynamic(() => import("@/features/training/CardioStudio"), {
 });
 
 import { LeaderboardEntry } from "@/actions/social/leaderboards";
+import { EffectiveTitanStats } from "@/services/game/TitanService";
+import { StatModifier } from "@/features/neural-lattice/types";
+
+
 
 export interface ViewRouterProps {
     state: DashboardState;
@@ -63,6 +68,9 @@ export interface ViewRouterProps {
     liteMode?: boolean;
     onSaveWorkout: (isPrivate: boolean) => void;
     leaderboardEntries?: LeaderboardEntry[];
+    effectiveStats?: import("@/services/game/TitanService").EffectiveTitanStats;
+    activeModifiers?: import("@/features/neural-lattice/types").StatModifier[];
+    attributes?: import("@/services/game/TitanService").TitanAttributes;
 }
 
 /**
@@ -78,9 +86,21 @@ export const ViewRouter: React.FC<ViewRouterProps> = ({
     liteMode,
     onSaveWorkout,
     leaderboardEntries,
+    effectiveStats,
+    activeModifiers,
+    attributes,
 }) => {
     console.log("[ViewRouter] Rendering view:", state.currentView, "ActiveQuest:", !!state.activeQuest);
     switch (state.currentView) {
+        case "character_sheet":
+            return (
+                <CharacterSheet
+                    passedAttributes={attributes}
+                    unlockedIds={[] as any} // Placeholder for achievements if needed
+                    onClose={() => dispatch({ type: "SET_VIEW", payload: "citadel" })}
+                />
+            );
+
         case "citadel":
             return (
                 <Citadel
@@ -90,6 +110,9 @@ export const ViewRouter: React.FC<ViewRouterProps> = ({
                     pocketCastsConnected={pocketCastsConnected}
                     liteMode={liteMode}
                     leaderboardEntries={leaderboardEntries}
+                    effectiveStats={effectiveStats}
+                    activeModifiers={activeModifiers}
+                    attributes={attributes}
                 />
             );
 
@@ -152,10 +175,7 @@ export const ViewRouter: React.FC<ViewRouterProps> = ({
                 <RoutineSelector
                     exerciseNameMap={state.exerciseNameMap}
                     onSelectRoutine={(routine) =>
-                        dispatch({
-                            type: "SELECT_ROUTINE",
-                            payload: { routine, nameMap: state.exerciseNameMap },
-                        })
+                        dispatch({ type: "SELECT_ROUTINE", payload: { routine, nameMap: state.exerciseNameMap } })
                     }
                 />
             );
@@ -288,6 +308,9 @@ export const ViewRouter: React.FC<ViewRouterProps> = ({
                     pocketCastsConnected={pocketCastsConnected}
                     titanState={titanState}
                     liteMode={liteMode}
+                    effectiveStats={effectiveStats}
+                    activeModifiers={activeModifiers}
+                    attributes={attributes}
                 />
             );
 
@@ -322,9 +345,20 @@ export const ViewRouter: React.FC<ViewRouterProps> = ({
                 </div>
             );
 
+
         default:
             return (
-                <Citadel state={state} dispatch={dispatch} titanState={titanState} />
+                <Citadel
+                    state={state}
+                    dispatch={dispatch}
+                    titanState={titanState}
+                    pocketCastsConnected={pocketCastsConnected}
+                    liteMode={liteMode}
+                    leaderboardEntries={leaderboardEntries}
+                    effectiveStats={effectiveStats}
+                    activeModifiers={activeModifiers}
+                    attributes={attributes}
+                />
             );
     }
 };

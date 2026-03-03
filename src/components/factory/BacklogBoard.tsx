@@ -17,8 +17,8 @@ export function BacklogBoard() {
 
     const fetchBacklog = async () => {
         const res = await getBacklogItemsAction();
-        if (res.success && res.items) {
-            setItems(res.items);
+        if (res?.data?.success && res.data.items) {
+            setItems(res.data.items);
         }
         setLoading(false);
     };
@@ -26,8 +26,8 @@ export function BacklogBoard() {
     const handleStartTask = async (item: BacklogItem) => {
         setProcessingId(item.id);
         try {
-            const res = await startBacklogTaskAction(item.title, item.source);
-            if (res && res.success) {
+            const res = await startBacklogTaskAction({ itemTitle: item.title, source: item.source });
+            if (res?.data?.success) {
                 setItems(prev => prev.filter(i => i.id !== item.id));
             }
         } catch (e) {

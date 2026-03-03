@@ -28,23 +28,51 @@ runs:
     - name: Managed-Services Detection
       shell: pwsh
       run: |
-        if (docker ps -q -f name=ironforge-pg-${{ inputs.tier }}) {
-          Write-Host "🟢 Found Managed Service: ironforge-pg-${{ inputs.tier }}" -ForegroundColor Green
+        $PortMap = @{
+          "l1"    = "5433"
+          "l2"    = "5437"
+          "e2e"   = "5434"
+          "guard" = "5435"
+          "l3"    = "5436"
+        }
+        
+        $Port = $PortMap["${{ inputs.tier }}"]
+        $DBName = if ("${{ inputs.tier }}" -eq "e2e") { "ironforge_e2e" } else { "ironforge_test" }
+        if ("${{ inputs.tier }}" -eq "guard" -or "${{ inputs.tier }}" -eq "l2") {
+          $DBName = "ironforge_shadow_run_${{ github.run_id }}"
+        }
+
+        $Tier = "${{ inputs.tier }}"
+        if (!(docker ps -q -f name="ironforge-pg-$Tier")) {
+          Write-Host "⚠️ Managed Service not found for tier: $Tier. Booting ephemeral PostgreSQL container..." -ForegroundColor Yellow
           
-          # Map Ports based on Tier
-          $PortMap = @{
-            "l1"    = "5433"
-            "l2"    = "5437"
-            "e2e"   = "5434"
-            "guard" = "5435"
-            "l3"    = "5436"
-          }
+          # We're running in a Rootless Docker environment (GitHub Runner on Coolify).
+          # Directly provision the test container inside the isolated workspace.
+          $composeContent = @"
+services:
+  db-$Tier:
+    image: postgres:15-alpine
+    container_name: ironforge-pg-$Tier
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: $DBName
+    ports:
+      - "$Port:5432"
+"@
+          Set-Content -Path "docker-compose-ephemeral.yml" -Value $composeContent
+          docker compose -f docker-compose-ephemeral.yml up -d
+          Start-Sleep -Seconds 5
+        }
+        
+        if (docker ps -q -f name="ironforge-pg-$Tier") {
+          Write-Host "🟢 Found Managed Service: ironforge-pg-$Tier" -ForegroundColor Green
           
-          $Port = $PortMap["${{ inputs.tier }}"]
           $DockerHost = if ("${{ runner.os }}" -eq "Windows") { "127.0.0.1" } else { "host.docker.internal" }
+          # For Docker-in-Docker isolated namespaces, fallback to localhost if host.docker.internal fails.
+          if ("${{ runner.os }}" -ne "Windows") { $DockerHost = "localhost" }
+          
           $BaseURL = "postgresql://postgres:password@${DockerHost}:$Port"
-          if ("${{ inputs.tier }}" -eq "e2e") { $idb = "ironforge_e2e" } else { $idb = "ironforge_test" }
-          $TargetURL = "$($BaseURL)/$($idb)?schema=public"
+          $TargetURL = "$($BaseURL)/$($DBName)?schema=public"
           [System.IO.File]::AppendAllText($env:GITHUB_ENV, "DATABASE_URL=$TargetURL`n")
           [System.IO.File]::AppendAllText($env:GITHUB_ENV, "DIRECT_URL=$TargetURL`n")
           
@@ -52,19 +80,12 @@ runs:
           $AdminURL = "$BaseURL/postgres?schema=public"
           [System.IO.File]::AppendAllText($env:GITHUB_ENV, "ADMIN_DATABASE_URL=$AdminURL`n")
           
-          if ("${{ inputs.tier }}" -eq "guard" -or "${{ inputs.tier }}" -eq "l2") {
-            $UniqueId = if ("${{ github.event.pull_request.number }}") { "pr_${{ github.event.pull_request.number }}" } else { "run_${{ github.run_id }}" }
-            $ShadowDB = "ironforge_shadow_$UniqueId"
-            $ShadowURL = "$($BaseURL)/$($ShadowDB)?schema=public"
-            [System.IO.File]::AppendAllText($env:GITHUB_ENV, "SHADOW_DATABASE_URL=$ShadowURL`n")
-            [System.IO.File]::AppendAllText($env:GITHUB_ENV, "TARGET_DB=$ShadowDB`n")
-            Write-Host "🚀 Exported SHADOW_DATABASE_URL and TARGET_DB ($ShadowDB) to GITHUB_ENV" -ForegroundColor Cyan
-          }
-          
-          Write-Host "🚀 Exported DATABASE_URL and ADMIN_DATABASE_URL (Port $Port)" -ForegroundColor Cyan
+          Write-Host "🚀 Exported DATABASE_URL ($TargetURL) and ADMIN_DATABASE_URL (Port $Port)" -ForegroundColor Cyan
         } else {
-          Write-Host "⚠️ Managed Service not found for tier: ${{ inputs.tier }}. Falling back to ephemeral service." -ForegroundColor Yellow
+          Write-Host "❌ CRITICAL: Failed to boot Ephemeral Service for tier: ${{ inputs.tier }}." -ForegroundColor Red
+          exit 1
         }
+
 
     - name: Validate Secrets (Fast-Track)
       if: inputs.skip-validation != 'true'

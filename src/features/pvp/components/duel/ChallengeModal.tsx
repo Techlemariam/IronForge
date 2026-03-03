@@ -28,8 +28,8 @@ export function ChallengeModal(props: ChallengeModalProps) {
     if (isOpen) {
       setLoadingOpponents(true);
       getPotentialOpponentsAction().then(res => {
-        if (res?.success && res.opponents) {
-          setOpponents(res.opponents);
+        if (res?.data?.success && res.data.opponents) {
+          setOpponents(res.data.opponents);
         }
       }).finally(() => setLoadingOpponents(false));
     }

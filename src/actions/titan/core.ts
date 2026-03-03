@@ -47,6 +47,18 @@ export const getTitanAction = authActionClient
     }
   });
 
+export const getTitanWithModifiersAction = authActionClient
+  .action(async ({ ctx: { userId } }) => {
+    try {
+      const result = await TitanService.getTitanWithModifiers(userId);
+      if (!result) return { success: false, error: "Titan not found" };
+      return { success: true, data: result };
+    } catch (error) {
+      console.error("Error fetching titan with modifiers:", error);
+      return { success: false, error: "Failed to fetch Titan modifiers" };
+    }
+  });
+
 export const ensureTitanAction = authActionClient
   .action(async ({ ctx: { userId } }) => {
     try {

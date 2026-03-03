@@ -9,6 +9,8 @@ import { PocketCastsPlayer } from "@/features/podcast/components/PocketCastsPlay
 import { FeedPanel } from "./FeedPanel";
 import { StatsHeader } from "./StatsHeader";
 import { QuickActions } from "./QuickActions";
+import { EffectiveTitanStats, TitanAttributes } from "@/services/game/TitanService";
+import { StatModifier } from "@/features/neural-lattice/types";
 
 
 interface CitadelProps {
@@ -18,11 +20,14 @@ interface CitadelProps {
     pocketCastsConnected?: boolean;
     liteMode?: boolean;
     leaderboardEntries?: LeaderboardEntry[];
+    effectiveStats?: EffectiveTitanStats;
+    activeModifiers?: StatModifier[];
+    attributes?: TitanAttributes;
 }
 
-export const Citadel: React.FC<CitadelProps> = ({ state, dispatch, titanState, pocketCastsConnected, liteMode, leaderboardEntries = [] }) => (
+export const Citadel: React.FC<CitadelProps> = ({ state, dispatch, titanState, pocketCastsConnected, liteMode, leaderboardEntries = [], effectiveStats, activeModifiers, attributes }) => (
     <div className="w-full max-w-6xl mx-auto p-4 md:p-6 space-y-8 animate-fade-in">
-        <StatsHeader state={state} titanState={titanState} liteMode={liteMode} />
+        <StatsHeader state={state} dispatch={dispatch} titanState={titanState} liteMode={liteMode} effectiveStats={effectiveStats} activeModifiers={activeModifiers} />
 
         {!liteMode && (
             <section id="quest-board">

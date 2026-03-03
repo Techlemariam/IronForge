@@ -16,7 +16,8 @@ export default async function BattlePassPage() {
   }
 
   // Fetch data
-  const progress = await getUserBattlePassProgressAction(user.id);
+  const progressRes = await getUserBattlePassProgressAction();
+  const progress = progressRes?.data ?? null;
 
   return (
     <div className="container mx-auto py-8">

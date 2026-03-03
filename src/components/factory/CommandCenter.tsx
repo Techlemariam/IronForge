@@ -12,8 +12,8 @@ export function CommandCenter() {
     useEffect(() => {
         const fetchStats = async () => {
             const res = await getFactoryStatsAction();
-            if (res.success && res.stats) {
-                setStats(res.stats as any);
+            if (res?.data?.success && res.data.stats) {
+                setStats(res.data.stats as any);
             }
             setLoading(false);
         };

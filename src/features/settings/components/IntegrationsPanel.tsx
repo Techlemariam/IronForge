@@ -33,7 +33,7 @@ import {
 } from "@/actions/integrations/strava";
 import { updateFactionAction } from "@/actions/user/core";
 import { toggleDemoModeAction, getDemoModeStatus } from "@/actions/user/demo";
-import { Faction  } from "@/types/prisma";
+import { Faction } from "@/types/prisma";
 
 interface IntegrationsPanelProps {
   userId: string;
@@ -242,13 +242,13 @@ const IntegrationsPanel: React.FC<IntegrationsPanelProps> = ({
     if (faction === currentFaction) return;
 
     startTransition(async () => {
-      const result = await updateFactionAction(faction);
-      if (result.success) {
+      const result = await updateFactionAction({ faction });
+      if (result?.data?.success) {
         setCurrentFaction(faction);
         // We don't close the panel or reload immediately, allowing the user to see the selection change
         onIntegrationChanged?.(); // This might trigger a reload from parent if strict
       } else {
-        setError(result.error || "Failed to update faction");
+        setError(result?.serverError || "Failed to update faction");
       }
     });
   };

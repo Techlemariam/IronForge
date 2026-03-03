@@ -31,6 +31,9 @@ interface DashboardPresenterProps {
     platform: string;
     onSaveWorkout: (isPrivate: boolean) => Promise<void>;
     onToggleCoach: () => void;
+    effectiveStats?: import("@/services/game/TitanService").EffectiveTitanStats;
+    activeModifiers?: import("@/features/neural-lattice/types").StatModifier[];
+    attributes?: import("@/services/game/TitanService").TitanAttributes;
 }
 
 const AnimatedViewWrapper = ({
@@ -64,6 +67,9 @@ export const DashboardPresenter: React.FC<DashboardPresenterProps> = (props) => 
         leaderboardData,
         onSaveWorkout,
         onToggleCoach,
+        effectiveStats,
+        activeModifiers,
+        attributes,
     } = props;
 
     const viewRouterProps = {
@@ -75,6 +81,9 @@ export const DashboardPresenter: React.FC<DashboardPresenterProps> = (props) => 
         liteMode,
         onSaveWorkout,
         leaderboardEntries: leaderboardData,
+        effectiveStats,
+        activeModifiers,
+        attributes: props.attributes,
     };
 
     if (state.isCodexLoading) return <main id="codex-loader"><CodexLoader /></main>;

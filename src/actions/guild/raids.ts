@@ -200,7 +200,7 @@ export async function contributeToRaidAction(raidId: string, damage: number) {
         // Boss killed logic
         const { checkAchievementsAction } =
           await import("@/actions/progression/achievements");
-        await checkAchievementsAction(user.id);
+        await checkAchievementsAction({ _trigger: "raid-boss-kill" });
       }
     }
 

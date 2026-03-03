@@ -29,27 +29,16 @@ export class DuelRewardsService {
         let baseGold = isWinner ? 50 : 15;
         let baseKe = isWinner ? 25 : 5;
 
-        // --- Performance Modifiers ---
+        // Calculate close match multiplier
+        // This rewards players for close games, regardless of win/loss
+        const scoreDifference = Math.abs(totalScore - opponentScore);
+        // Example: If difference is 0, multiplier is 1.2. If difference is 100, multiplier is 1.0.
+        // Max bonus of 20% for a perfect tie (if it were possible in non-draw scenario)
+        const closeMatchMult = 1.0 + Math.max(0, (100 - scoreDifference) / 500); // 100 diff -> 1.0, 0 diff -> 1.2
 
-        // 1. Score Bonus (+5 XP per 100 score/damage)
-        const scoreBonus = Math.floor(totalScore / 100) * 5;
-        if (scoreBonus > 0) {
-            baseXp += scoreBonus;
-            bonuses.push(`Performance Bonus +${scoreBonus} XP`);
+        if (closeMatchMult > 1.0) {
+            bonuses.push(`Close Match Bonus x${closeMatchMult.toFixed(2)}`);
         }
-
-        // 2. Close Match Bonus (+20% XP/Gold if margin < 10%)
-        const margin = Math.abs(totalScore - opponentScore);
-        const maxScore = Math.max(totalScore, opponentScore, 1); // Avoid div by zero
-        const pctDiff = margin / maxScore;
-
-        let closeMatchMult = 1.0;
-        if (pctDiff < 0.1) {
-            closeMatchMult = 1.2;
-            bonuses.push("Close Match +20%");
-        }
-
-        // --- Context Modifiers ---
 
         // XP Gain Modifier (Archetype, Skills, Oracle)
         const xpMult = context.modifiers.xpGain * closeMatchMult;

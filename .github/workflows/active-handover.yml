@@ -18,7 +18,7 @@ concurrency:
 jobs:
   dispatch:
     name: "🩺 ${{ github.event.action }} Specialist"
-    runs-on: [self-hosted, IronForge-Local]
+    runs-on: [self-hosted, IronForge-VPS]
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v6

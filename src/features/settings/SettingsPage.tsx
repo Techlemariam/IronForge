@@ -51,8 +51,8 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
 
   const handleLiteModeToggle = async (checked: boolean) => {
     setLiteMode(checked);
-    const result = await updateUserPreferencesAction(userId, { liteMode: checked });
-    if (result.success) {
+    const result = await updateUserPreferencesAction({ liteMode: checked });
+    if (result?.data?.success) {
       toast.success(checked ? "Lite Mode Enabled" : "RPG Mode Enabled");
     } else {
       setLiteMode(!checked); // Revert

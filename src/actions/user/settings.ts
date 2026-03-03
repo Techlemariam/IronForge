@@ -2,6 +2,8 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { z } from "zod";
+import { authActionClient } from "@/lib/safe-action";
 
 export interface UserPreferences {
     liteMode?: boolean;
@@ -9,42 +11,47 @@ export interface UserPreferences {
     // Add more preferences here as needed
 }
 
-export async function updateUserPreferencesAction(
-    userId: string,
-    preferences: UserPreferences
-) {
-    try {
-        const user = await prisma.user.findUnique({
-            where: { id: userId },
-            select: { preferences: true },
-        });
+const userPreferencesSchema = z.object({
+    liteMode: z.boolean().optional(),
+    theme: z.enum(["light", "dark", "system"]).optional(),
+});
 
-        const currentPreferences = (user?.preferences as UserPreferences) || {};
-        const updatedPreferences = { ...currentPreferences, ...preferences };
+export const updateUserPreferencesAction = authActionClient
+    .schema(userPreferencesSchema)
+    .action(async ({ parsedInput: preferences, ctx: { userId } }) => {
+        try {
+            const user = await prisma.user.findUnique({
+                where: { id: userId },
+                select: { preferences: true },
+            });
 
-        await prisma.user.update({
-            where: { id: userId },
-            data: { preferences: updatedPreferences },
-        });
+            const currentPreferences = (user?.preferences as UserPreferences) || {};
+            const updatedPreferences = { ...currentPreferences, ...preferences };
 
-        revalidatePath("/settings");
-        revalidatePath("/dashboard");
-        return { success: true };
-    } catch (error) {
-        console.error("Error updating user preferences:", error);
-        return { success: false, error: "Failed to update preferences" };
-    }
-}
+            await prisma.user.update({
+                where: { id: userId },
+                data: { preferences: updatedPreferences },
+            });
 
-export async function getUserPreferencesAction(userId: string): Promise<UserPreferences> {
-    try {
-        const user = await prisma.user.findUnique({
-            where: { id: userId },
-            select: { preferences: true },
-        });
-        return (user?.preferences as UserPreferences) || {};
-    } catch (error) {
-        console.error("Error getting user preferences:", error);
-        return {};
-    }
-}
+            revalidatePath("/settings");
+            revalidatePath("/dashboard");
+            return { success: true };
+        } catch (error) {
+            console.error("Error updating user preferences:", error);
+            throw new Error("Failed to update preferences");
+        }
+    });
+
+export const getUserPreferencesAction = authActionClient
+    .action(async ({ ctx: { userId } }) => {
+        try {
+            const user = await prisma.user.findUnique({
+                where: { id: userId },
+                select: { preferences: true },
+            });
+            return (user?.preferences as UserPreferences) || {}; // Fallback typed cleanly
+        } catch (error) {
+            console.error("Error getting user preferences:", error);
+            return {};
+        }
+    });

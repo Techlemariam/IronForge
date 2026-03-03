@@ -678,17 +678,21 @@ function CardioCockpit({
       toast.info("Saving Cardio Session...");
       try {
         const { saveCardioSessionAction } = await import("@/actions/training/cardio");
-        // Determine type
         const type = mode === "cycling" ? "CYCLE" : "RUN";
 
-        await saveCardioSessionAction(userId, {
+        // authActionClient — no userId param needed, session is resolved server-side
+        const result = await saveCardioSessionAction({
           type,
           durationSec: sessionDuration,
           distanceKm: totalDistanceKm,
           avgHr: 140, // Mock for now, need tracking array
-          maxHr: 170,  // Mock    
+          maxHr: 170, // Mock
         });
-        toast.success("Cardio Session Saved!");
+        if (result?.data) {
+          toast.success("Cardio Session Saved!");
+        } else {
+          toast.error("Failed to save session");
+        }
       } catch (e) {
         console.error("Failed to save cardio", e);
         toast.error("Failed to save session");
@@ -980,9 +984,10 @@ function CardioCockpit({
           <div className="absolute top-20 right-6 z-50 w-96 shadow-2xl animate-in slide-in-from-right-10 fade-in duration-300">
             <button
               onClick={() => setShowPodcast(false)}
+              aria-label="Close Podcast Player"
               className="absolute -top-2 -right-2 z-[60] p-1 bg-red-600 hover:bg-red-500 text-white rounded-full shadow-lg border-2 border-zinc-900 transition-colors"
             >
-              <X className="w-4 h-4" />
+              <X className="w-4 h-4" aria-hidden="true" />
             </button>
             <PocketCastsPlayer />
           </div>

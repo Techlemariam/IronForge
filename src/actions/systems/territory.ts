@@ -2,131 +2,133 @@
 
 import { revalidatePath } from "next/cache";
 import prisma from "@/lib/prisma";
-import { getSession } from "@/lib/auth";
 import { TerritoryService } from "@/services/game/TerritoryService";
 import { MapTile } from "@/features/territory/types";
 import { tileIdToCoords } from "@/lib/territory/tileUtils";
 import { contestTerritoryAction as contestTerritoryInternal, getContestLeaderboardAction as getContestLeaderboardInternal } from "@/actions/guild-actions";
+import { z } from "zod";
+import { actionClient, authActionClient } from "@/lib/safe-action";
 
 /**
  * Get all tiles and stats for the current user's territory view
  */
-export async function getTerritoryAppData() {
-    const session = await getSession();
-    if (!session?.user?.id) throw new Error("Unauthorized");
-    const userId = session.user.id;
-
-    const [stats, controlRecords, user] = await Promise.all([
-        TerritoryService.getUserTerritoryStats(userId),
-        prisma.tileControl.findMany({
-            where: { userId },
-            include: {
-                tile: {
-                    include: {
-                        currentOwner: {
-                            select: { heroName: true }
+export const getTerritoryAppData = authActionClient.action(
+    async ({ ctx: { userId } }) => {
+        const [stats, controlRecords, user] = await Promise.all([
+            TerritoryService.getUserTerritoryStats(userId),
+            prisma.tileControl.findMany({
+                where: { userId },
+                include: {
+                    tile: {
+                        include: {
+                            currentOwner: {
+                                select: { heroName: true }
+                            }
                         }
                     }
                 }
+            }),
+            prisma.user.findUnique({
+                where: { id: userId },
+                select: { homeLatitude: true, homeLongitude: true }
+            })
+        ]);
+
+        const { HOME_ZONE_RADIUS_METERS, isWithinHomeZone } = await import("@/lib/territory/tileUtils");
+
+        // Map to UI format
+        const mapTiles: MapTile[] = controlRecords.map(c => {
+            const coords = tileIdToCoords(c.tileId);
+            let state: MapTile["state"] = "CONTESTED";
+
+            if (c.tile.currentOwnerId === userId) {
+                state = "OWNED";
+            } else if (c.tile.currentOwnerId) {
+                state = "HOSTILE";
             }
-        }),
-        prisma.user.findUnique({
-            where: { id: userId },
-            select: { homeLatitude: true, homeLongitude: true }
-        })
-    ]);
 
-    const { HOME_ZONE_RADIUS_METERS, isWithinHomeZone } = await import("@/lib/territory/tileUtils");
-
-    // Map to UI format
-    const mapTiles: MapTile[] = controlRecords.map(c => {
-        const coords = tileIdToCoords(c.tileId);
-        let state: MapTile["state"] = "CONTESTED";
-
-        if (c.tile.currentOwnerId === userId) {
-            state = "OWNED";
-        } else if (c.tile.currentOwnerId) {
-            state = "HOSTILE";
-        }
-
-        // Home Zone Override
-        if (user?.homeLatitude && user?.homeLongitude) {
-            if (isWithinHomeZone(c.tileId, user.homeLatitude, user.homeLongitude, HOME_ZONE_RADIUS_METERS)) {
-                state = "HOME_ZONE";
+            // Home Zone Override
+            if (user?.homeLatitude && user?.homeLongitude) {
+                if (isWithinHomeZone(c.tileId, user.homeLatitude, user.homeLongitude, HOME_ZONE_RADIUS_METERS)) {
+                    state = "HOME_ZONE";
+                }
             }
-        }
+
+            return {
+                id: c.tileId,
+                lat: coords.lat,
+                lng: coords.lng,
+                state,
+                controlPoints: c.controlPoints,
+                ownerName: c.tile.currentOwner?.heroName || undefined,
+                cityName: c.tile.cityName || undefined
+            };
+        });
 
         return {
-            id: c.tileId,
-            lat: coords.lat,
-            lng: coords.lng,
-            state,
-            controlPoints: c.controlPoints,
-            ownerName: c.tile.currentOwner?.heroName || undefined,
-            cityName: c.tile.cityName || undefined
+            stats,
+            tiles: mapTiles,
+            homeLocation: user?.homeLatitude && user?.homeLongitude
+                ? { lat: user.homeLatitude, lng: user.homeLongitude }
+                : null
         };
-    });
-
-    return {
-        stats,
-        tiles: mapTiles,
-        homeLocation: user?.homeLatitude && user?.homeLongitude
-            ? { lat: user.homeLatitude, lng: user.homeLongitude }
-            : null
-    };
-}
+    }
+);
 
 /**
  * Get global or city leaderboards
  */
-export async function getTerritoryLeaderboard(cityId?: string) {
-    const users = await prisma.user.findMany({
-        where: {
-            AND: [
-                cityId ? { city: cityId } : {},
-                {
-                    ownedTiles: {
-                        some: {} // Only fetch users who own tiles
+const GetTerritoryLeaderboardSchema = z.object({ cityId: z.string().optional() });
+export const getTerritoryLeaderboard = actionClient
+    .schema(GetTerritoryLeaderboardSchema)
+    .action(async ({ parsedInput: { cityId } }) => {
+        const users = await prisma.user.findMany({
+            where: {
+                AND: [
+                    cityId ? { city: cityId } : {},
+                    {
+                        ownedTiles: {
+                            some: {} // Only fetch users who own tiles
+                        }
+                    }
+                ]
+            },
+            select: {
+                id: true,
+                heroName: true,
+                city: true,
+                _count: {
+                    select: { ownedTiles: true }
+                },
+                guild: {
+                    select: {
+                        name: true,
+                        tag: true
                     }
                 }
-            ]
-        },
-        select: {
-            id: true,
-            heroName: true,
-            city: true,
-            _count: {
-                select: { ownedTiles: true }
             },
-            guild: {
-                select: {
-                    name: true,
-                    tag: true
+            orderBy: {
+                ownedTiles: {
+                    _count: "desc"
                 }
-            }
-        },
-        orderBy: {
-            ownedTiles: {
-                _count: "desc"
-            }
-        },
-        take: 50
-    });
+            },
+            take: 50
+        });
 
-    return users.map((u, index) => ({
-        rank: index + 1,
-        userId: u.id,
-        name: u.heroName || "Unknown Titan",
-        city: u.city,
-        ownedTiles: u._count.ownedTiles,
-        guildTag: u.guild?.tag
-    }));
-}
+        return users.map((u, index) => ({
+            rank: index + 1,
+            userId: u.id,
+            name: u.heroName || "Unknown Titan",
+            city: u.city,
+            ownedTiles: u._count.ownedTiles,
+            guildTag: u.guild?.tag
+        }));
+    });
 
 /**
  * Get Guild Leaderboard by aggregated territory
  */
-export async function getGuildLeaderboard() {
+export const getGuildLeaderboard = actionClient.action(async () => {
     // Group by Guild is bit tricky with Prisma alone if we want deep relations
     // But we can fetch guilds and count their members' tiles
 
@@ -169,13 +171,13 @@ export async function getGuildLeaderboard() {
             rank: index + 1,
             ...g
         }));
-}
+});
 
 /**
  * Get World Map (Zones/Territories)
  * Returns all predefined territories (Zones) like "Iron Peaks"
  */
-export async function getTerritoryMapAction() {
+export const getTerritoryMapAction = actionClient.action(async () => {
     try {
         const territories = await prisma.territory.findMany({
             include: {
@@ -188,35 +190,38 @@ export async function getTerritoryMapAction() {
     } catch (error: any) {
         return { success: false, error: error.message };
     }
-}
+});
 
 /**
  * Contest a Territory (Zone)
  */
-export async function contestTerritoryAction(territoryId: string, guildId: string) {
-    try {
-        const session = await getSession();
-        if (!session?.user?.id) throw new Error("Unauthorized");
+const ContestTerritorySchema = z.object({ territoryId: z.string(), guildId: z.string() });
+export const contestTerritoryAction = authActionClient
+    .schema(ContestTerritorySchema)
+    .action(async ({ parsedInput: { territoryId, guildId }, ctx: { userId } }) => {
+        try {
+            // Use the service which charges the user
+            const result = await contestTerritoryInternal(guildId, territoryId, userId);
 
-        // Use the service which charges the user
-        const result = await contestTerritoryInternal(guildId, territoryId, session.user.id);
-
-        revalidatePath("/territory");
-        return { success: true, data: result };
-    } catch (error: any) {
-        return { success: false, error: error.message };
-    }
-}
+            revalidatePath("/territory");
+            return { success: true, data: result };
+        } catch (error: any) {
+            return { success: false, error: error.message };
+        }
+    });
 
 /**
  * Get Contest Leaderboard for a Territory
  */
-export async function getContestLeaderboardAction(territoryId: string) {
-    try {
-        const leaderboard = await getContestLeaderboardInternal(territoryId);
-        return { success: true, data: leaderboard };
-    } catch (error: any) {
-        return { success: false, error: error.message };
-    }
-}
+const GetContestLeaderboardSchema = z.object({ territoryId: z.string() });
+export const getContestLeaderboardAction = actionClient
+    .schema(GetContestLeaderboardSchema)
+    .action(async ({ parsedInput: { territoryId } }) => {
+        try {
+            const leaderboard = await getContestLeaderboardInternal(territoryId);
+            return { success: true, data: leaderboard };
+        } catch (error: any) {
+            return { success: false, error: error.message };
+        }
+    });
 

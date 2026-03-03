@@ -13,8 +13,10 @@ export const TrophyRoom: React.FC<TrophyRoomProps> = ({ userId }) => {
   const [unlocked, setUnlocked] = useState<any[]>([]);
 
   useEffect(() => {
-    getUnlockedAchievementsAction(userId).then(setUnlocked);
-  }, [userId]);
+    getUnlockedAchievementsAction({}).then((res) => {
+      if (res?.data) setUnlocked(res.data);
+    });
+  }, []);
 
   const unlockedIds = new Set(unlocked.map((a) => a.code));
 
@@ -36,11 +38,10 @@ export const TrophyRoom: React.FC<TrophyRoomProps> = ({ userId }) => {
           return (
             <div
               key={ach.code}
-              className={`p-4 rounded-lg flex flex-col items-center text-center gap-2 border transition-all ${
-                isUnlocked
+              className={`p-4 rounded-lg flex flex-col items-center text-center gap-2 border transition-all ${isUnlocked
                   ? "bg-yellow-500/10 border-yellow-500/30 shadow-[0_0_15px_rgba(234,179,8,0.1)]"
                   : "bg-black/20 border-white/5 opacity-50 grayscale"
-              }`}
+                }`}
             >
               <div className="text-3xl">{ach.icon}</div>
               <div className="font-bold text-sm text-zinc-200">{ach.name}</div>

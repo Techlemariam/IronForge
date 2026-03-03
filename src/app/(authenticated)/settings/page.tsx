@@ -37,7 +37,8 @@ export default async function SettingsRoute() {
   }
 
   const isDemoMode = await getDemoModeStatus();
-  const preferences = await getUserPreferencesAction(dbUser.id);
+  const preferencesRes = await getUserPreferencesAction();
+  const preferences = preferencesRes?.data || { liteMode: false, currentArchetype: null, showSystemStats: false, language: 'sv-SE' };
 
   return (
     <SettingsPage

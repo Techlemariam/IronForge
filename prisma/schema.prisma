@@ -144,6 +144,7 @@ model Titan {
   name            String        @default("Unnamed Titan")
   level           Int           @default(1)
   xp              Int           @default(0)
+  talentPoints    Int           @default(0)
   currentHp       Int           @default(100)
   maxHp           Int           @default(100)
   strength        Int           @default(10)
@@ -955,12 +956,12 @@ model WardensManifest {
 
 model ActiveSession {
   id              String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  hostId          String
-  createdAt       DateTime             @default(now()) @db.Timestamptz(6)
+  hostId          String               @map("host_id")
+  createdAt       DateTime             @default(now()) @map("created_at") @db.Timestamptz(6)
   status          String               @default("waiting")
-  workoutName     String?
-  maxParticipants Int                  @default(4)
-  inviteCode      String?              @unique
+  workoutName     String?              @map("workout_name")
+  maxParticipants Int                  @default(4) @map("max_participants")
+  inviteCode      String?              @unique @map("invite_code")
   host            User                 @relation("ActiveSessionHost", fields: [hostId], references: [id], onDelete: Cascade)
   participants    SessionParticipant[]
 
@@ -969,11 +970,11 @@ model ActiveSession {
 
 model SessionParticipant {
   id            String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  sessionId     String        @db.Uuid
-  userId        String
-  heroName      String?
-  joinedAt      DateTime      @default(now()) @db.Timestamptz(6)
-  lastHeartbeat DateTime      @default(now()) @db.Timestamptz(6)
+  sessionId     String        @map("session_id") @db.Uuid
+  userId        String        @map("user_id")
+  heroName      String?       @map("hero_name")
+  joinedAt      DateTime      @default(now()) @map("joined_at") @db.Timestamptz(6)
+  lastHeartbeat DateTime      @default(now()) @map("last_heartbeat") @db.Timestamptz(6)
   status        String        @default("active")
   session       ActiveSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
   user          User          @relation("SessionParticipantUser", fields: [userId], references: [id], onDelete: Cascade)
@@ -1013,6 +1014,26 @@ model FactoryTask {
 
   @@index([status])
   @@map("factory_tasks")
+}
+
+model AgentMessage {
+  id              String   @id @default(cuid())
+  senderRole      String   // e.g., "@manager", "@architect"
+  receiverRole    String   // e.g., "@coder", "all", "system"
+  topic           String   // e.g., "HANDOFF", "ALERT", "TASK"
+  content         String   // Markdown description or summary
+  contextPayload  Json?    // Optional structured data (branch names, PRs, file paths)
+  status          String   @default("UNREAD") // UNREAD, READ, PROCESSED
+  createdAt       DateTime @default(now())
+  readAt          DateTime?
+
+  // Metadata for tracing
+  taskId          String?  // References roadmap tasks e.g., "R-03"
+  prNumber        Int?     
+
+  @@index([receiverRole, status])
+  @@index([createdAt])
+  @@map("agent_messages")
 }
 
 enum FriendshipStatus {
