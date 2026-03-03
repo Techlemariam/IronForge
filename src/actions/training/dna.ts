@@ -129,11 +129,12 @@ export async function exportTrainingDnaAction(
       include: { titan: true },
     });
 
-    const dnaId = `dna-${userId}-${Date.now()}`;
+    // Use a random UUID so userId is never embedded in the public dnaId or shareUrl
+    const dnaId = `dna-${crypto.randomUUID()}`;
     const shareUrl = `/marketplace/dna/${dnaId}`;
 
     // In production, save to database
-    console.log(`Exported DNA: ${name} by ${user?.heroName}`);
+    console.log(`Exported DNA: ${name} by [heroName redacted]`);
 
     return { success: true, dnaId, shareUrl };
   } catch (error) {

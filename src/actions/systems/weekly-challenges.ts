@@ -1,6 +1,8 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { z } from "zod";
+import { authActionClient } from "@/lib/safe-action";
 
 type WeeklyChallengeType = "COMMUNITY" | "GUILD" | "GLOBAL";
 
@@ -41,6 +43,12 @@ export async function getWeeklyChallengesAction(
   _userId: string,
 ): Promise<WeeklyChallenge[]> {
   const now = new Date();
+
+  // Use fresh Date copies to avoid mutating `now` across calculations
+  const weekStart = new Date(now);
+  weekStart.setDate(weekStart.getDate() - weekStart.getDay());
+  weekStart.setHours(0, 0, 0, 0);
+
   const weekEnd = new Date(now);
   weekEnd.setDate(weekEnd.getDate() + (7 - weekEnd.getDay()));
   weekEnd.setHours(23, 59, 59, 999);
@@ -55,7 +63,7 @@ export async function getWeeklyChallengesAction(
       currentProgress: 7250000,
       userContribution: 45000,
       participants: 1247,
-      startsAt: new Date(now.setDate(now.getDate() - now.getDay())),
+      startsAt: weekStart,
       endsAt: weekEnd,
       rewards: [
         { type: "XP", name: "Community XP", value: 500, tier: 1 },
@@ -88,7 +96,7 @@ export async function getWeeklyChallengesAction(
       currentProgress: 3200,
       userContribution: 3,
       participants: 2100,
-      startsAt: new Date(now.setDate(now.getDate() - now.getDay())),
+      startsAt: weekStart,
       endsAt: weekEnd,
       rewards: [
         { type: "XP", name: "PR Hunter XP", value: 1000, tier: 1 },
@@ -114,45 +122,65 @@ export async function getWeeklyChallengesAction(
   ];
 }
 
+const MAX_CONTRIBUTION_AMOUNT = 1_000_000;
+
 /**
  * Contribute to weekly challenge.
+ * userId is derived from the server-side session via authActionClient context — not trusted from caller.
  */
-export async function contributeToWeeklyChallengeAction(
-  userId: string,
-  challengeId: string,
-  amount: number,
-): Promise<{ success: boolean; newProgress: number; tierReached?: number }> {
-  try {
-    console.log(`User ID:[REDACTED] contributed ${amount} to ${challengeId}`);
-    revalidatePath("/weekly-challenges");
-    return { success: true, newProgress: 7250000 + amount };
-  } catch (error) {
-    console.error("Error contributing:", error);
-    return { success: false, newProgress: 0 };
-  }
-}
+export const contributeToWeeklyChallengeAction = authActionClient
+  .schema(
+    z.object({
+      challengeId: z.string().uuid(),
+      amount: z
+        .number()
+        .int()
+        .min(1, "Amount must be at least 1")
+        .max(MAX_CONTRIBUTION_AMOUNT, `Amount cannot exceed ${MAX_CONTRIBUTION_AMOUNT}`),
+    }),
+  )
+  .action(
+    async ({
+      parsedInput: { challengeId, amount },
+      ctx: { userId: _userId },
+    }) => {
+      try {
+        // userId obtained from session context (not caller param). Log redacted.
+        console.log(`contributeToWeeklyChallengeAction: +${amount} on challenge [ID]`);
+        revalidatePath("/weekly-challenges");
+        // TODO: persist contribution to DB and compute real tierReached
+        return { success: true, newProgress: 7250000 + amount };
+      } catch (error) {
+        console.error("Error contributing:", error);
+        return { success: false, newProgress: 0 };
+      }
+    },
+  );
 
 /**
  * Claim weekly challenge rewards.
+ * userId is derived from server-side session — the caller-provided userId param is ignored.
  */
-export async function claimWeeklyChallengeRewardsAction(
-  userId: string,
-  challengeId: string,
-): Promise<{ success: boolean; rewards: WeeklyChallengeReward[] }> {
-  try {
-    const rewards: WeeklyChallengeReward[] = [
-      { type: "XP", name: "Community XP", value: 500, tier: 1 },
-      { type: "GOLD", name: "Bonus Gold", value: 250, tier: 2 },
-    ];
+export const claimWeeklyChallengeRewardsAction = authActionClient
+  .schema(z.object({ challengeId: z.string().uuid() }))
+  .action(
+    async ({ parsedInput: { challengeId }, ctx: { userId: _userId } }) => {
+      try {
+        // TODO: verify challenge exists, verify eligibility, check not already claimed, then persist
+        const rewards: WeeklyChallengeReward[] = [
+          { type: "XP", name: "Community XP", value: 500, tier: 1 },
+          { type: "GOLD", name: "Bonus Gold", value: 250, tier: 2 },
+        ];
 
-    console.log(`Claimed rewards for ${challengeId}`);
-    revalidatePath("/weekly-challenges");
-    return { success: true, rewards };
-  } catch (error) {
-    console.error("Error claiming rewards:", error);
-    return { success: false, rewards: [] };
-  }
-}
+        console.log(`claimWeeklyChallengeRewardsAction: challenge claimed [challengeId redacted]`);
+        revalidatePath("/weekly-challenges");
+        return { success: true, rewards };
+      } catch (error) {
+        console.error("Error claiming rewards:", error);
+        return { success: false, rewards: [] };
+      }
+    },
+  );
 
 /**
  * Get weekly challenge leaderboard.

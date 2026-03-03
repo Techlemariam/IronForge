@@ -245,7 +245,7 @@ export async function getUserCratesAction(
  * Open a crate and get rewards.
  */
 export async function openCrateAction(
-  userId: string,
+  _userId: string, // MVP: ownership not verified — replace with DB check in production
   crateId: string,
 ): Promise<{ success: boolean; rewards: CrateReward[]; animation?: string }> {
   try {
@@ -287,8 +287,9 @@ export async function awardCrateAction(
   source: string,
 ): Promise<{ success: boolean; crateId?: string }> {
   try {
-    const crateId = `crate-${userId}-${Date.now()}`;
-    console.log(`Awarded ${rarity} crate to ID:[REDACTED] from ${source}`);
+    // Use a random UUID to avoid embedding userId in the public crateId
+    const crateId = `crate-${crypto.randomUUID()}`;
+    console.log(`Awarded ${rarity} crate from ${source} (crateId: ${crateId})`);
     revalidatePath("/inventory");
     return { success: true, crateId };
   } catch (error) {

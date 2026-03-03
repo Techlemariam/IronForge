@@ -1,5 +1,6 @@
 "use server";
 
+import { z } from "zod";
 // import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
@@ -105,8 +106,15 @@ export async function addRivalAction(
   userId: string,
   rivalId: string,
 ): Promise<{ success: boolean }> {
+  // Validate rivalId format before processing
+  const rivalIdResult = z.string().uuid().safeParse(rivalId);
+  if (!rivalIdResult.success) {
+    console.warn(`addRivalAction: invalid rivalId format`);
+    return { success: false };
+  }
   try {
-    console.log(`Added rival ${rivalId} for user ID:[REDACTED]`);
+    // Log only that a rival was added — IDs are not written to logs
+    console.log(`addRivalAction: rival relationship recorded`);
     revalidatePath("/rivals");
     return { success: true };
   } catch (error) {

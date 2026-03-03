@@ -1,7 +1,29 @@
 "use server";
 
+import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+
+const AppearanceUpdateSchema = z.object({
+  skinTone: z.enum(["PALE", "FAIR", "MEDIUM", "TAN", "DARK", "EBONY"]).optional(),
+  hairStyle: z.enum(["BALD", "SHORT", "MEDIUM", "LONG", "MOHAWK", "BRAIDED"]).optional(),
+  hairColor: z.enum(["BLACK", "BROWN", "BLONDE", "RED", "GRAY", "WHITE", "BLUE", "PURPLE"]).optional(),
+  beardStyle: z.string().optional(),
+  scars: z.array(z.string()).optional(),
+  tattoos: z.array(z.string()).optional(),
+  eyeColor: z.string().regex(/^#[0-9a-fA-F]{6}$/, "eyeColor must be a hex colour").optional(),
+});
+
+const ArmorSlotSchema = z.enum(["HEAD", "CHEST", "HANDS", "LEGS", "FEET", "BACK"]);
+
+const EquipItemSchema = z.object({
+  itemId: z.string().min(1),
+  slot: ArmorSlotSchema,
+});
+
+const SetTitleSchema = z.object({
+  titleId: z.string().min(1),
+});
 
 type SkinTone = "PALE" | "FAIR" | "MEDIUM" | "TAN" | "DARK" | "EBONY";
 type HairStyle = "BALD" | "SHORT" | "MEDIUM" | "LONG" | "MOHAWK" | "BRAIDED";
@@ -100,8 +122,13 @@ export async function updateTitanAppearanceAction(
   userId: string,
   updates: Partial<TitanAppearance>,
 ): Promise<{ success: boolean }> {
+  const parsed = AppearanceUpdateSchema.safeParse(updates);
+  if (!parsed.success) {
+    console.warn("updateTitanAppearanceAction: invalid input", parsed.error.flatten());
+    return { success: false };
+  }
   try {
-    console.log(`Updated titan appearance for ID:[REDACTED]:`, updates);
+    console.log(`Updated titan appearance for ID:[REDACTED]`);
     revalidatePath("/titan");
     return { success: true };
   } catch (error) {
@@ -118,8 +145,13 @@ export async function equipItemAction(
   itemId: string,
   slot: ArmorSlot,
 ): Promise<{ success: boolean; unequipped?: string }> {
+  const parsed = EquipItemSchema.safeParse({ itemId, slot });
+  if (!parsed.success) {
+    console.warn("equipItemAction: invalid input", parsed.error.flatten());
+    return { success: false };
+  }
   try {
-    console.log(`Equipped ${itemId} to ${slot} for ID:[REDACTED]`);
+    console.log(`Equipped ${parsed.data.slot} for ID:[REDACTED]`);
     revalidatePath("/titan");
     return { success: true };
   } catch (error) {
@@ -128,15 +160,17 @@ export async function equipItemAction(
   }
 }
 
-/**
- * Unequip an item.
- */
 export async function unequipItemAction(
   userId: string,
   slot: ArmorSlot,
 ): Promise<{ success: boolean }> {
+  const parsed = ArmorSlotSchema.safeParse(slot);
+  if (!parsed.success) {
+    console.warn("unequipItemAction: invalid slot", parsed.error.flatten());
+    return { success: false };
+  }
   try {
-    console.log(`Unequipped ${slot} for ID:[REDACTED]`);
+    console.log(`Unequipped ${parsed.data} for ID:[REDACTED]`);
     revalidatePath("/titan");
     return { success: true };
   } catch (error) {
@@ -152,8 +186,13 @@ export async function setTitanTitleAction(
   userId: string,
   titleId: string,
 ): Promise<{ success: boolean }> {
+  const parsed = SetTitleSchema.safeParse({ titleId });
+  if (!parsed.success) {
+    console.warn("setTitanTitleAction: invalid titleId");
+    return { success: false };
+  }
   try {
-    console.log(`Set title for ID:[REDACTED]: ${titleId}`);
+    console.log(`Set title for ID:[REDACTED]`);
     revalidatePath("/titan");
     return { success: true };
   } catch (error) {

@@ -1,6 +1,8 @@
 "use server";
 
+import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { createClient } from "@/utils/supabase/server";
 
 interface BackupData {
   version: string;
@@ -27,12 +29,35 @@ interface RestoreResult {
 
 const BACKUP_VERSION = "1.0.0";
 
+// Zod schema that mirrors BackupData for safe parsing
+const BackupDataSchema = z.object({
+  version: z.string(),
+  createdAt: z.string(),
+  userId: z.string(),
+  heroName: z.string(),
+  profile: z.unknown(),
+  titan: z.unknown(),
+  workoutHistory: z.array(z.unknown()),
+  achievements: z.array(z.string()),
+  settings: z.unknown(),
+  equipment: z.array(z.unknown()),
+});
+
 /**
  * Create a full backup of user data.
+ * Verifies the caller's identity via Supabase session before loading any data.
  */
 export async function createBackupAction(
   userId: string,
 ): Promise<BackupData | null> {
+  // Auth guard: verify the session matches the requested userId
+  const supabase = await createClient();
+  const { data: { user: sessionUser } } = await supabase.auth.getUser();
+  if (!sessionUser || sessionUser.id !== userId) {
+    console.warn("createBackupAction: unauthorized attempt to access user data.");
+    return null;
+  }
+
   try {
     const user = await prisma.user.findUnique({
       where: { id: userId },
@@ -105,13 +130,22 @@ export async function createBackupAction(
 
 /**
  * Restore user data from backup.
+ * Validates the JSON with Zod before accessing any fields.
  */
 export async function restoreBackupAction(
   userId: string,
   backupJson: string,
 ): Promise<RestoreResult> {
   try {
-    const backup: BackupData = JSON.parse(backupJson);
+    // Zod-validated parse — avoids unsafe JSON.parse cast
+    const parseResult = BackupDataSchema.safeParse(JSON.parse(backupJson));
+    if (!parseResult.success) {
+      return {
+        success: false,
+        message: `Invalid backup format: ${parseResult.error.message}`,
+      };
+    }
+    const backup = parseResult.data;
 
     // Validate backup version
     if (!backup.version || backup.version !== BACKUP_VERSION) {
@@ -160,18 +194,9 @@ export function validateBackupFile(content: string): {
   valid: boolean;
   error?: string;
 } {
-  try {
-    const data = JSON.parse(content);
-
-    if (!data.version) return { valid: false, error: "Missing version field" };
-    if (!data.userId) return { valid: false, error: "Missing userId field" };
-    if (!data.createdAt)
-      return { valid: false, error: "Missing createdAt field" };
-    if (!Array.isArray(data.workoutHistory))
-      return { valid: false, error: "Invalid workoutHistory" };
-
-    return { valid: true };
-  } catch {
-    return { valid: false, error: "Invalid JSON format" };
+  const result = BackupDataSchema.safeParse(JSON.parse(content));
+  if (!result.success) {
+    return { valid: false, error: result.error.message };
   }
+  return { valid: true };
 }

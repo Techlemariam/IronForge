@@ -14,11 +14,15 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-$coolifyHost = "https://77.42.45.229:8000"
+# SECURITY NOTE: COOLIFY_HOST must be a fully-qualified hostname (e.g., coolify.example.com) with a
+# valid TLS certificate. Using a bare IP address with -SkipCertificateCheck is not supported.
+# Ensure your Coolify instance has a proper domain and cert before using this script.
+$coolifyHost = $env:COOLIFY_HOST
 $token = $env:COOLIFY_API_TOKEN
 $ghPat = $env:GH_PAT
 $envName = "production"
 
+if (-not $coolifyHost) { Write-Error "COOLIFY_HOST env var not set. Set it to your Coolify hostname (e.g., https://coolify.example.com)."; exit 1 }
 if (-not $token) { Write-Error "COOLIFY_API_TOKEN not set. Run via: doppler run --"; exit 1 }
 
 $headers = @{
@@ -38,7 +42,7 @@ function Get-RunnerStatus {
   Write-Host "Coolify Services Status:" -ForegroundColor Cyan
   foreach ($uuid in $runnerServices) {
     try {
-      $svc = Invoke-RestMethod -Uri "$coolifyHost/api/v1/services/$uuid" -Headers $headers -ErrorAction Stop -SkipCertificateCheck
+      $svc = Invoke-RestMethod -Uri "$coolifyHost/api/v1/services/$uuid" -Headers $headers -ErrorAction Stop
       Write-Host "  $($svc.name): $($svc.status)"
     }
     catch {
@@ -82,16 +86,16 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
 '@
         
-    $projects = Invoke-RestMethod -Uri "$coolifyHost/api/v1/projects" -Headers $headers -SkipCertificateCheck
+    $projects = Invoke-RestMethod -Uri "$coolifyHost/api/v1/projects" -Headers $headers
     if (-not $projects -or $projects.Count -eq 0) { Write-Error "No projects found"; exit 1 }
     $project = $projects | Select-Object -First 1
     $projectUuid = $project.uuid
     
-    $envs = Invoke-RestMethod -Uri "$coolifyHost/api/v1/projects/$projectUuid/environments" -Headers $headers -SkipCertificateCheck
+    $envs = Invoke-RestMethod -Uri "$coolifyHost/api/v1/projects/$projectUuid/environments" -Headers $headers
     if (-not $envs -or $envs.Count -eq 0) { Write-Error "No environments found"; exit 1 }
     $envName = $envs[0].name
 
-    $servers = Invoke-RestMethod -Uri "$coolifyHost/api/v1/servers" -Headers $headers -SkipCertificateCheck
+    $servers = Invoke-RestMethod -Uri "$coolifyHost/api/v1/servers" -Headers $headers
     if (-not $servers -or $servers.Count -eq 0) { Write-Error "No servers found"; exit 1 }
     $serverUuid = $servers[0].uuid
 
@@ -113,7 +117,7 @@ services:
 
       Write-Host "Deploying $name..."
       try {
-        $r = Invoke-RestMethod -Uri "$coolifyHost/api/v1/services" -Method POST -Headers $headers -Body $body -SkipCertificateCheck
+        $r = Invoke-RestMethod -Uri "$coolifyHost/api/v1/services" -Method POST -Headers $headers -Body $body
         Write-Host "  Created: $($r.uuid)" -ForegroundColor Green
       }
       catch {
@@ -125,7 +129,7 @@ services:
   "start" {
     foreach ($uuid in $runnerServices) {
       Write-Host "Starting $uuid..."
-      try { Invoke-RestMethod -Uri "$coolifyHost/api/v1/services/$uuid/start" -Method POST -Headers $headers -SkipCertificateCheck | Out-Null } catch {}
+      try { Invoke-RestMethod -Uri "$coolifyHost/api/v1/services/$uuid/start" -Method POST -Headers $headers | Out-Null } catch {}
     }
     Write-Host "Start requests sent" -ForegroundColor Green
     Start-Sleep -Seconds 10
@@ -135,7 +139,7 @@ services:
   "stop" {
     foreach ($uuid in $runnerServices) {
       Write-Host "Stopping $uuid..."
-      try { Invoke-RestMethod -Uri "$coolifyHost/api/v1/services/$uuid/stop" -Method POST -Headers $headers -SkipCertificateCheck | Out-Null } catch {}
+      try { Invoke-RestMethod -Uri "$coolifyHost/api/v1/services/$uuid/stop" -Method POST -Headers $headers | Out-Null } catch {}
     }
     Write-Host "Stop requests sent" -ForegroundColor Yellow
   }

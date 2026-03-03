@@ -140,7 +140,7 @@ export async function commentOnActivityAction(
   activityId: string,
   content: string,
 ): Promise<{ success: boolean; commentId?: string }> {
-  console.log(`User ID:[REDACTED] commented on ${activityId}: ${content}`);
+  console.log(`User ID:[REDACTED] commented on ${activityId} (content:[REDACTED_CONTENT])`);
   return { success: true, commentId: `comment-${Date.now()}` };
 }
 

@@ -146,11 +146,8 @@ export const commentOnFeedItemAction = authActionClient
   }))
   .action(async ({ parsedInput: { feedItemId, comment }, ctx: { userId } }) => {
     try {
-      if (comment.length > 500) {
-        return { success: false };
-      }
-
-      console.log(`Comment on ${feedItemId}: ${comment}`);
+      // Log only metadata — never raw comment content to prevent PII exposure
+      console.log(`Comment on feedItem:${feedItemId} (len:${comment.length})`);
       return { success: true, commentId: `comment-${Date.now()}` };
     } catch (error) {
       console.error("Error commenting:", error);
@@ -168,7 +165,7 @@ export const shareWorkoutToFeedAction = authActionClient
   }))
   .action(async ({ parsedInput: { workoutId, message }, ctx: { userId } }) => {
     try {
-      console.log(`User ID:[REDACTED] shared workout ${workoutId} with message: ${message}`);
+      console.log(`User ID:[REDACTED] shared workout ${workoutId} with message: [REDACTED]`);
       return { success: true, feedItemId: `feed-${Date.now()}` };
     } catch (error) {
       console.error("Error sharing workout:", error);
