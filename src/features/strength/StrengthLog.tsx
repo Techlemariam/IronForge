@@ -2,7 +2,8 @@
 
 import React, { useState } from "react";
 import { SetRow } from "./SetRow";
-import { logSetAction, SetData } from "@/actions/training/strength";
+import { logSetAction } from "@/actions/training/strength";
+import type { SetData } from "@/actions/training/strength";
 import { Plus, Dumbbell } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useMaxReps } from "@/hooks/useMaxReps";
@@ -73,9 +74,9 @@ export const StrengthLog: React.FC<ExerciseLogProps> = ({
       }
     }
 
-    // Server Action
-    const result = await logSetAction(userId, exerciseId, set);
-    if (!result.success) {
+    // Server Action (authActionClient — no userId param needed)
+    const result = await logSetAction({ exerciseId, set });
+    if (result?.serverError || !result?.data) {
       toast({
         title: "Error",
         description: "Failed to log set",

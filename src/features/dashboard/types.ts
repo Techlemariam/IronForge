@@ -23,8 +23,11 @@ import { ChallengeWithStatus } from "@/components/gamification/QuestBoard";
 import { TitanState } from "@/actions/titan/core";
 import { TrainingContext } from "@/services/data/TrainingContextService";
 import { LeaderboardEntry } from "@/actions/social/leaderboards";
+import { EffectiveTitanStats, TitanAttributes } from "@/services/game/TitanService";
+import { StatModifier } from "@/features/neural-lattice/types";
 
 export type View =
+  | "character_sheet"
   | "citadel"
   | "war_room"
   | "iron_mines"
@@ -80,6 +83,9 @@ export interface DashboardClientProps {
   titanState?: TitanState | null;
   activeDuel?: any;
   liteMode?: boolean;
+  effectiveStats?: EffectiveTitanStats;
+  activeModifiers?: StatModifier[];
+  attributes?: TitanAttributes;
 
   leaderboardData?: LeaderboardEntry[];
 }

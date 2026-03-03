@@ -78,6 +78,9 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
     challenges,
     titanState,
     liteMode,
+    effectiveStats,
+    activeModifiers,
+    attributes,
   } = props;
 
   const leaderboardData = props.leaderboardData || [];
@@ -163,11 +166,11 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
         description: "Uplink to Hevy failed. Check console.",
       });
     } finally {
-      const newProgression = await getProgressionAction();
-      if (newProgression) {
+      const result = await getProgressionAction({});
+      if (result?.data) {
         dispatch({
           type: "RECALCULATE_PROGRESSION",
-          payload: { level: newProgression.level },
+          payload: { level: result.data.level },
         });
       }
       dispatch({ type: "SAVE_WORKOUT" });
@@ -181,6 +184,9 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
         dispatch={dispatch}
         userData={userData}
         titanState={titanState}
+        effectiveStats={effectiveStats}
+        activeModifiers={activeModifiers}
+        attributes={attributes}
         pocketCastsConnected={pocketCastsConnected}
         liteMode={liteMode}
         hasCompletedOnboarding={hasCompletedOnboarding}

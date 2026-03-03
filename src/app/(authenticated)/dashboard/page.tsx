@@ -19,6 +19,7 @@ import { AnalyticsService } from "@/services/analytics";
 import { ProgressionService } from "@/services/progression";
 import { OracleService } from "@/services/oracle";
 import { RecoveryService } from "@/services/bio/RecoveryService";
+import { TitanService } from "@/services/game/TitanService";
 import DashboardClient from "@/features/dashboard/DashboardClient";
 import { getActiveChallengesAction } from "@/actions/systems/challenges";
 import { ensureTitanAction, syncTitanStateWithWellness } from "@/actions/titan/core";
@@ -53,7 +54,7 @@ export default async function Page() {
   }
 
   // 0b. Fetch DB User & Config
-  await ensureUserAction(user.id, user.email);
+  await ensureUserAction({ id: user.id, email: user.email });
   const dbUser = await prisma.user.findUnique({
     where: { id: user.id },
     include: { achievements: true, skills: true },
@@ -226,10 +227,16 @@ export default async function Page() {
   const titanRes = await ensureTitanAction();
   const titanState = titanRes?.data?.success ? titanRes.data.data : null;
 
+  // 4b.5. Calculate effective stats from Neural Lattice
+  const titanData = await TitanService.getTitanWithModifiers(user.id).catch(() => null);
+  const effectiveStats = titanData?.effectiveStats;
+  const activeModifiers = titanData?.activeModifiers;
+  const attributes = titanData?.attributes;
+
   // 4c. Fetch Active Duel Status
   const { getDuelStatusAction } = await import("@/actions/pvp/duel");
   const duelRes = await getDuelStatusAction();
-  const activeDuel = duelRes.success ? duelRes.duel : null;
+  const activeDuel = duelRes?.data?.success ? duelRes.data.duel : null;
 
   const oracleRec = await OracleService.consult(
     wellness,
@@ -322,10 +329,13 @@ export default async function Page() {
   return (
     <DashboardClient
       initialData={initialData as any}
-      userData={dbUser as any} // Cast to UI User type
+      userData={dbUser as any}
       dbUser={dbUser as any}
-      titanState={titanState} // Pass server-side state
-      isMobile={false} // Would need UA check
+      titanState={titanState}
+      effectiveStats={effectiveStats}
+      activeModifiers={activeModifiers}
+      attributes={attributes}
+      isMobile={false}
       hevyTemplates={hevyTemplates}
       hevyRoutines={hevyRoutines}
       intervalsConnected={

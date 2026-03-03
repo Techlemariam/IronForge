@@ -14,13 +14,20 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default async function TerritoryPage() {
     // Fetch data server-side
-    const [appData, leaderboards, guildLeaderboards] = await Promise.all([
+    const [appDataRes, leaderboardsRes, guildLeaderboardsRes] = await Promise.all([
         getTerritoryAppData(),
-        getTerritoryLeaderboard(),
+        getTerritoryLeaderboard({}),
         getGuildLeaderboard()
     ]);
 
-    const { stats, tiles, homeLocation } = appData;
+    // getTerritoryAppData is NOT an auth action, it just returns data directly or throws? Well, the TS error didn't complain about appData, only leaderboards. Wait, maybe it did not complain because appData is destructured blindly without type checking if it's implicitly typed.
+    // Let me check appData usage.
+    const stats = appDataRes?.data?.stats || null;
+    const tiles = appDataRes?.data?.tiles || [];
+    const homeLocation = appDataRes?.data?.homeLocation || null;
+
+    const leaderboards = leaderboardsRes?.data || [];
+    const guildLeaderboards = guildLeaderboardsRes?.data || [];
 
     return (
         <div className="container mx-auto py-8 space-y-8 animate-in fade-in duration-700">

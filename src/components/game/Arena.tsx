@@ -41,8 +41,8 @@ const Arena: React.FC<ArenaProps> = ({ onClose }) => {
 
   useEffect(() => {
     const loadPlayer = async () => {
-      const progression = await getProgressionAction();
-      const playerLevel = progression?.level ?? 1;
+      const result = await getProgressionAction({});
+      const playerLevel = result?.data?.level ?? 1;
       const startHp = 100 + playerLevel * 10;
 
       // Load Inventory for Stats
@@ -158,7 +158,7 @@ const Arena: React.FC<ArenaProps> = ({ onClose }) => {
 
   const handleVictory = async () => {
     const rewardGold = 25;
-    await awardGoldAction(rewardGold);
+    await awardGoldAction({ amount: rewardGold });
     setLogs((prev) => [...prev, `Victory! Earned ${rewardGold} Gold.`]);
   };
 

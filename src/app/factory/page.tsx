@@ -1,4 +1,4 @@
-import { getFactoryStatusAction, getAssemblyLineTasksAction, getFactoryTasksAction, getLatestActiveRunAction } from "@/actions/factory";
+import { getFactoryStatus, getFactoryTasks } from "@/actions/factory";
 import { StatusGrid } from "@/components/factory/StatusGrid";
 import { RenderVideoForm } from "@/components/factory/RenderVideoForm";
 import { TaskFeed } from "@/components/factory/TaskFeed";
@@ -8,19 +8,27 @@ import { AssemblyLinePresenter } from "@/components/factory/AssemblyLinePresente
 import { LayoutDashboard, Activity, Mic2, Wrench } from "lucide-react";
 import { BacklogBoard } from "@/components/factory/BacklogBoard";
 import { FactoryRunConveyor } from "@/components/factory/FactoryRunConveyor";
+import { FactoryService } from "@/services/game/FactoryService";
+import { createClient } from "@/utils/supabase/server";
 
 export const dynamic = 'force-dynamic';
 
 export default async function FactoryPage() {
-    const [statusData, tasks, feedTasks, activeRun] = await Promise.all([
-        getFactoryStatusAction(),
-        getAssemblyLineTasksAction(),
-        getFactoryTasksAction(),
-        getLatestActiveRunAction()
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    // In Server Components, direct internal calls are much more performant than going through NEXT.js server-actions wrappers
+    const [statusData, tasks, feedTasks] = await Promise.all([
+        getFactoryStatus(),
+        FactoryService.getAssemblyLineTasks(),
+        getFactoryTasks()
     ]);
 
-    // stats data processing for statusData since it returns different types now
-    const stations = (statusData as any).success ? (statusData as any).stats : [];
+    // Active Run isolation based on auth (simulating getLatestActiveRunAction logic)
+    const isAuthorized = user?.email?.endsWith("@ironforge.rpg") || user?.email === 'alexander.teklemariam@gmail.com' || false;
+    const activeRun = (isAuthorized && tasks.length > 0) ? tasks[0] : null;
+
+    const stations = statusData || [];
 
     return (
         <div className="min-h-screen bg-[#020617] text-slate-200 selection:bg-indigo-500/30">

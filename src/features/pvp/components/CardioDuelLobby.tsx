@@ -19,7 +19,7 @@ interface Opponent {
 export function CardioDuelLobby() {
     const [opponents, setOpponents] = useState<Opponent[]>([]);
     const [selectedOpponent, setSelectedOpponent] = useState<string | null>(null);
-    const [duelType, _setDuelType] = useState<"TITAN_VS_TITAN" | "DISTANCE_RACE" | "SPEED_DEMON" | "ELEVATION_GRIND">("DISTANCE_RACE");
+    const [duelType, setDuelType] = useState<"TITAN_VS_TITAN" | "DISTANCE_RACE" | "SPEED_DEMON" | "ELEVATION_GRIND">("DISTANCE_RACE");
     const [activityType, setActivityType] = useState<"RUNNING" | "CYCLING">("RUNNING");
     const [distance, setDistance] = useState("5");
     const [loading, setLoading] = useState(false);
@@ -46,13 +46,21 @@ export function CardioDuelLobby() {
         if (!selectedOpponent) return;
         setLoading(true);
 
+        const payloadOpts: any = {
+            duelType,
+            activityType,
+        };
+
+        if (duelType === "ELEVATION_GRIND") {
+            // Use distance dropdown to calculate a reasonable climb target (1 km distance equivalent -> 100m climb)
+            payloadOpts.targetDistance = parseFloat(distance) * 100;
+        } else {
+            payloadOpts.targetDistance = parseFloat(distance);
+        }
+
         const result = await createDuelChallengeAction({
             targetUserId: selectedOpponent,
-            options: {
-                duelType,
-                activityType,
-                targetDistance: parseFloat(distance),
-            }
+            options: payloadOpts
         });
 
         if (result?.data?.success) {
@@ -100,16 +108,43 @@ export function CardioDuelLobby() {
                         </div>
 
                         <div className="space-y-2">
-                            <label className="text-sm font-medium text-slate-400">Target Distance</label>
+                            <label className="text-sm font-medium text-slate-400">Duel Mode</label>
+                            <Select value={duelType} onValueChange={(v: any) => setDuelType(v)}>
+                                <SelectTrigger>
+                                    <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="DISTANCE_RACE">Distance Race (First to X)</SelectItem>
+                                    <SelectItem value="SPEED_DEMON">Speed Demon (Fastest Time)</SelectItem>
+                                    <SelectItem value="ELEVATION_GRIND">Elevation Grind (Climb X m)</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+
+                        <div className="space-y-2">
+                            <label className="text-sm font-medium text-slate-400">
+                                {duelType === "ELEVATION_GRIND" ? "Target Ascent" : "Target Distance"}
+                            </label>
                             <Select value={distance} onValueChange={setDistance}>
                                 <SelectTrigger>
                                     <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="3">3 km</SelectItem>
-                                    <SelectItem value="5">5 km</SelectItem>
-                                    <SelectItem value="10">10 km</SelectItem>
-                                    <SelectItem value="21.1">Half Marathon</SelectItem>
+                                    {duelType === "ELEVATION_GRIND" ? (
+                                        <>
+                                            <SelectItem value="2">200 m</SelectItem>
+                                            <SelectItem value="5">500 m</SelectItem>
+                                            <SelectItem value="10">1000 m</SelectItem>
+                                            <SelectItem value="20">2000 m</SelectItem>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <SelectItem value="3">3 km</SelectItem>
+                                            <SelectItem value="5">5 km</SelectItem>
+                                            <SelectItem value="10">10 km</SelectItem>
+                                            <SelectItem value="21.1">Half Marathon</SelectItem>
+                                        </>
+                                    )}
                                 </SelectContent>
                             </Select>
                         </div>

@@ -1,10 +1,13 @@
 'use server';
 
+import { z } from "zod";
+import { authActionClient } from "@/lib/safe-action";
 import { prisma } from '@/lib/prisma';
 import { promises as fs } from 'fs';
 import path from 'path';
 import { createClient } from '@/utils/supabase/server';
 import { AssemblyLineTask, FactoryService } from '@/services/game/FactoryService';
+import { FactoryTask } from '@prisma/client';
 
 const COST_SEK_PER_ACTIVE_STATION = 0.042;
 
@@ -106,12 +109,12 @@ export async function getFactoryStatus(): Promise<(FactoryStatusData & { costSEK
  * Updates the recovery status in the database.
  * This can be called from local scripts to sync local CI failures to the remote dashboard.
  */
-export async function updateFactoryRecovery(data: any | null) {
+export async function updateFactoryRecovery(data: Record<string, unknown> | null) {
     try {
         await prisma.factoryStatus.update({
             where: { station: 'recovery' },
             data: {
-                metadata: data || null,
+                metadata: (data as any) || null,
                 health: data ? 50 : 100,
                 updatedAt: new Date(),
             },
@@ -126,12 +129,13 @@ export async function updateFactoryRecovery(data: any | null) {
 /**
  * Fetches all recent factory tasks, primarily from external sources like Discord.
  */
-export async function getFactoryTasks(): Promise<any[]> {
+export async function getFactoryTasks(): Promise<FactoryTask[]> {
     try {
-        return await prisma.factoryTask.findMany({
+        const tasks = await prisma.factoryTask.findMany({
             orderBy: { createdAt: 'desc' },
             take: 20
         });
+        return tasks;
     } catch (error) {
         console.error('Failed to fetch factory tasks:', error);
         return [];
@@ -141,13 +145,13 @@ export async function getFactoryTasks(): Promise<any[]> {
 /**
  * Adds a new task to the factory board.
  */
-export async function addFactoryTask(description: string, source: string = 'DISCORD', metadata: any = {}) {
+export async function addFactoryTask(description: string, source: string = 'DISCORD', metadata: Record<string, unknown> = {}) {
     try {
         const task = await prisma.factoryTask.create({
             data: {
                 description,
                 source,
-                metadata: metadata || {},
+                metadata: (metadata as any) || {},
             }
         });
         return { success: true, task };
@@ -157,36 +161,31 @@ export async function addFactoryTask(description: string, source: string = 'DISC
     }
 }
 
-export async function getFactoryTasksAction() {
+export const getFactoryTasksAction = authActionClient.action(async () => {
     return await getFactoryTasks();
-}
+});
 
-export async function getFactoryStatusAction() {
+export const getFactoryStatusAction = authActionClient.action(async () => {
     return { success: true, stats: await getFactoryStatus() };
-}
+});
 
-export async function getAssemblyLineTasksAction(): Promise<AssemblyLineTask[]> {
+export const getAssemblyLineTasksAction = authActionClient.action(async (): Promise<AssemblyLineTask[]> => {
     return await FactoryService.getAssemblyLineTasks();
-}
+});
 
-/**
- * Fetches the singular latest active run for visualization focus.
- */
-export async function getLatestActiveRunAction(): Promise<AssemblyLineTask | null> {
+export const getLatestActiveRunAction = authActionClient.action(async (): Promise<AssemblyLineTask | null> => {
     if (!(await verifyFactoryAuth())) {
-        // Graceful fallback: non-authorized users (incl. E2E) see no active run
         return null;
     }
     const tasks = await FactoryService.getAssemblyLineTasks();
     return tasks.length > 0 ? tasks[0] : null;
-}
+});
 
-export async function getFactoryStatsAction() {
+export const getFactoryStatsAction = authActionClient.action(async () => {
     try {
         const { FactoryService } = await import("@/services/game/FactoryService");
         const stats = await FactoryService.getStats();
 
-        // Count active tasks from the DB
         const activeTasks = await prisma.factoryTask.count({
             where: { status: "PENDING" }
         });
@@ -196,9 +195,9 @@ export async function getFactoryStatsAction() {
         console.error("Failed to fetch factory stats:", error);
         return { success: false, error: "Failed to fetch stats" };
     }
-}
+});
 
-export async function getBacklogItemsAction() {
+export const getBacklogItemsAction = authActionClient.action(async () => {
     try {
         const { BacklogService } = await import("@/services/game/BacklogService");
         const items = await BacklogService.getItems();
@@ -207,20 +206,28 @@ export async function getBacklogItemsAction() {
         console.error("Failed to fetch backlog items:", error);
         return { success: false, error: "Failed to fetch backlog" };
     }
-}
+});
 
-export async function startBacklogTaskAction(itemTitle: string, source: string) {
-    try {
-        return await addFactoryTask(
-            itemTitle,
-            'SYSTEM',
-            { originalSource: source, type: 'BACKLOG_PROMOTION' }
-        );
-    } catch (error) {
-        console.error("Failed to start backlog task:", error);
-        return { success: false, error: "Failed to start task" };
-    }
-}
+export const startBacklogTaskAction = authActionClient
+    .schema(z.object({ itemTitle: z.string(), source: z.string() }))
+    .action(async ({ parsedInput: { itemTitle, source } }) => {
+        try {
+            return await addFactoryTask(
+                itemTitle,
+                'SYSTEM',
+                { originalSource: source, type: 'BACKLOG_PROMOTION' }
+            );
+        } catch (error) {
+            console.error("Failed to start backlog task:", error);
+            return { success: false, error: "Failed to start task" };
+        }
+    });
+
+export const addFactoryTaskAction = authActionClient
+    .schema(z.object({ description: z.string(), source: z.string().default('WEB_UI'), metadata: z.any().default({}) }))
+    .action(async ({ parsedInput: { description, source, metadata } }) => {
+        return await addFactoryTask(description, source, metadata);
+    });
 
 /**
  * Seeds the initial factory status data if the database is empty.

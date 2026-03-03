@@ -12,7 +12,7 @@ import { SeasonInfo } from "@/actions/pvp/leagues";
 import { LeagueInfo } from "@/lib/game/tier-data";
 import { motion } from "framer-motion";
 
-import { DuelChallenge, User  } from "@/types/prisma";
+import { DuelChallenge, User } from "@/types/prisma";
 
 // Extended type matches what we return from getDuelStatusAction
 export type ExtendedDuel = DuelChallenge & {
@@ -152,8 +152,8 @@ export function ArenaClient({ activeDuel, currentUserId, leagueInfo, seasonInfo,
                 onTaunt={async () => {
                   try {
                     const { sendTauntAction } = await import('@/actions/pvp/duel');
-                    const res = await sendTauntAction(activeDuel.id);
-                    if (res.success) toast.success("Taunt sent!");
+                    const res = await sendTauntAction({ duelId: activeDuel.id });
+                    if (res?.data?.success) toast.success("Taunt sent!");
                     else toast.error("Taunt failed.");
                   } catch { toast.error("Error sending taunt"); }
                 }}

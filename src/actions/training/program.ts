@@ -1,11 +1,11 @@
 "use server";
 
+import { z } from "zod";
+import { authActionClient } from "@/lib/safe-action";
 import { getWellness } from "@/lib/intervals";
 import prisma from "@/lib/prisma";
 import { GeminiService } from "@/services/gemini";
 import { AnalyticsService } from "@/services/analytics";
-
-import { getSession } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
 import { EquipmentService } from "@/services/game/EquipmentService";
 
@@ -18,112 +18,72 @@ function getNextMonday() {
   return nextMonday;
 }
 
-export async function generateProgramAction(preferences: {
-  intent: string;
-  daysPerWeek: number;
-}) {
-  // 1. Auth Check
-  const session = await getSession();
-  if (!session?.user) throw new Error("Unauthorized");
+const GenerateProgramSchema = z.object({
+  intent: z.string().min(1),
+  daysPerWeek: z.number().int().min(1).max(7),
+});
 
-  const sessionUser = await prisma.user.findUnique({
-    where: { id: session.user.id }
-  });
-  if (!sessionUser) throw new Error("User not found");
+export const generateProgramAction = authActionClient
+  .schema(GenerateProgramSchema)
+  .action(async ({ parsedInput: { intent, daysPerWeek }, ctx: { userId } }) => {
+    const sessionUser = await prisma.user.findUnique({ where: { id: userId } });
+    if (!sessionUser) throw new Error("User not found");
 
-  // 2. Fetch Context
-  let wellness = { id: "unknown", bodyBattery: 80, sleepScore: 80 };
-  if (sessionUser.intervalsApiKey && sessionUser.intervalsAthleteId) {
-    const today = new Date().toISOString().split("T")[0];
-    const w = await getWellness(
-      today,
-      sessionUser.intervalsApiKey,
-      sessionUser.intervalsAthleteId,
+    let wellness = { id: "unknown", bodyBattery: 80, sleepScore: 80 };
+    if (sessionUser.intervalsApiKey && sessionUser.intervalsAthleteId) {
+      const today = new Date().toISOString().split("T")[0];
+      const w = await getWellness(today, sessionUser.intervalsApiKey, sessionUser.intervalsAthleteId);
+      if (w) wellness = w as any;
+    }
+
+    const [dbLogs, dbCardio] = await Promise.all([
+      prisma.exerciseLog.findMany({ where: { userId }, orderBy: { date: "desc" }, take: 20 }),
+      prisma.cardioLog.findMany({ where: { userId }, orderBy: { date: "desc" }, take: 10 }),
+    ]);
+
+    const history = dbLogs.map((log) => {
+      const sets = (log.sets as any[]) || [];
+      const bestE1rm = sets.length > 0 ? Math.max(...sets.map((s) => (s.weight || 0) * (1 + (s.reps || 0) / 30))) : 0;
+      const avgRpe = sets.length > 0 ? sets.reduce((acc, s) => acc + (s.rpe || 7), 0) / sets.length : 7;
+      return { date: log.date.toISOString(), exerciseId: log.exerciseId, e1rm: bestE1rm, rpe: avgRpe, isEpic: log.isPersonalRecord };
+    });
+
+    const activities = dbCardio.map((c) => ({
+      icu_intensity: c.load,
+      moving_time: c.duration,
+      type: c.type,
+      start_date_local: c.date.toISOString(),
+    }));
+
+    const ttb = AnalyticsService.calculateTTB(history as any, activities as any, wellness as any);
+
+    const [capabilities, titan] = await Promise.all([
+      EquipmentService.getUserCapabilities(userId),
+      prisma.titan.findUnique({ where: { userId } }),
+    ]);
+
+    const injuries = titan?.isInjured ? ["General Fatigue/Injury"] : [];
+
+    const plan = await GeminiService.generateWeeklyPlanAI(
+      {
+        heroName: sessionUser.heroName || "Titan",
+        level: sessionUser.level,
+        trainingPath: sessionUser.activePath || "WARDEN",
+        equipment: capabilities,
+        injuries,
+      },
+      { wellness: wellness as any, ttb, intent, daysPerWeek },
     );
-    if (w) wellness = w as any;
-  }
 
-  // 3. Fetch real TTB Analysis
-  const [dbLogs, dbCardio] = await Promise.all([
-    prisma.exerciseLog.findMany({
-      where: { userId: session.user.id },
-      orderBy: { date: 'desc' },
-      take: 20
-    }),
-    prisma.cardioLog.findMany({
-      where: { userId: session.user.id },
-      orderBy: { date: 'desc' },
-      take: 10
-    })
-  ]);
-
-  // Map Prisma logs to Analytics format
-  const history = dbLogs.map(log => {
-    const sets = (log.sets as any[]) || [];
-    const bestE1rm = sets.length > 0 ? Math.max(...sets.map(s => (s.weight || 0) * (1 + (s.reps || 0) / 30))) : 0;
-    const avgRpe = sets.length > 0 ? sets.reduce((acc, s) => acc + (s.rpe || 7), 0) / sets.length : 7;
-    return {
-      date: log.date.toISOString(),
-      exerciseId: log.exerciseId,
-      e1rm: bestE1rm,
-      rpe: avgRpe,
-      isEpic: log.isPersonalRecord
-    };
+    return { plan };
   });
 
-  const activities = dbCardio.map(c => ({
-    icu_intensity: c.load, // Using load as intensity proxy for simple TTB
-    moving_time: c.duration,
-    type: c.type,
-    start_date_local: c.date.toISOString()
-  }));
-
-  const ttb = AnalyticsService.calculateTTB(history as any, activities as any, wellness as any);
-
-  // 4. Fetch Capabilities & Status
-  const [capabilities, titan] = await Promise.all([
-    EquipmentService.getUserCapabilities(session.user.id),
-    prisma.titan.findUnique({ where: { userId: session.user.id } })
-  ]);
-
-  const injuries = titan?.isInjured ? ["General Fatigue/Injury"] : [];
-
-  // 5. Call Gemini
-  const plan = await GeminiService.generateWeeklyPlanAI(
-    {
-      heroName: sessionUser.heroName || "Titan",
-      level: sessionUser.level,
-      trainingPath: sessionUser.activePath || "WARDEN",
-      equipment: capabilities,
-      injuries: injuries,
-    },
-    {
-      wellness: wellness as any,
-      ttb,
-      intent: preferences.intent,
-      daysPerWeek: preferences.daysPerWeek,
-    },
-  );
-
-  return { success: true, plan };
-}
-
-export async function saveProgramAction(plan: any) {
-  const session = await getSession();
-  if (!session?.user) throw new Error("Unauthorized");
-
-  const sessionUser = await prisma.user.findUnique({ where: { id: session.user.id } });
-  if (!sessionUser) throw new Error("User not found");
-
-  // Persist to DB
-  await prisma.weeklyPlan.create({
-    data: {
-      userId: sessionUser.id,
-      weekStart: getNextMonday(),
-      plan: plan,
-    },
+export const saveProgramAction = authActionClient
+  .schema(z.object({ plan: z.any() }))
+  .action(async ({ parsedInput: { plan }, ctx: { userId } }) => {
+    await prisma.weeklyPlan.create({
+      data: { userId, weekStart: getNextMonday(), plan },
+    });
+    revalidatePath("/dashboard");
+    return { saved: true };
   });
-
-  revalidatePath("/dashboard");
-  return { success: true };
-}

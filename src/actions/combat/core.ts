@@ -7,7 +7,6 @@ import {
   CombatEngine,
   CombatAction,
 } from "@/services/game/CombatEngine";
-import { calculateTitanAttributes } from "@/utils";
 import { Monster, MonsterType } from "@/types";
 import { LootSystem } from "@/services/game/LootSystem";
 import { revalidatePath } from "next/cache";
@@ -62,33 +61,28 @@ export const startBossFight = authActionClient
         return { success: true, state: resumedState, boss: dbBoss, message: "Resuming active combat..." };
       }
     }
+    // 2. Re-fetch context (Effective Attributes from Neural Lattice)
+    const titanData = await TitanService.getTitanWithModifiers(userId);
 
-    // 2. Fetch User Stats & Titan
-    const dbUser = await prisma.user.findUnique({
-      where: { id: userId },
-      include: { titan: true },
-    });
-
-    if (!dbUser) return { success: false, message: "User not found" };
-
-    if (!dbUser.titan) {
+    if (!titanData || !titanData.titan) {
       return {
         success: false,
         message: "Titan Soul not found. Visit Citadel first.",
       };
     }
 
-    const currentHp = dbUser.titan.currentHp;
-    const maxHp = dbUser.titan.maxHp;
+    const { titan: baseTitan, effectiveStats } = titanData;
+    const currentHp = baseTitan.currentHp;
+    const maxHp = effectiveStats.maxHp;
 
     // Safety: If dead, can't fight
-    if (dbUser.titan.isInjured || currentHp <= 0) {
+    if (baseTitan.isInjured || currentHp <= 0) {
       return { success: false, message: "Titan is too injured to fight." };
     }
 
     // Bio-Buff Check: Exhaustion
-    if (dbUser.titan.currentBuff) {
-      const buff = dbUser.titan.currentBuff as unknown as BioBuff;
+    if (baseTitan.currentBuff) {
+      const buff = baseTitan.currentBuff as unknown as BioBuff;
       if (buff.effects && buff.effects.canFight === false) {
         return {
           success: false,
@@ -183,27 +177,17 @@ export const performCombatAction = authActionClient
       isDefeat: session.isDefeat
     };
 
-    // 2. Re-fetch context (Attributes)
-    const dbUser = await prisma.user.findUnique({
-      where: { id: userId },
-      include: { achievements: true, skills: true, titan: true },
-    });
+    // 2. Re-fetch context (Effective Attributes from Neural Lattice)
+    const titanData = await TitanService.getTitanWithModifiers(userId);
+    if (!titanData || !titanData.titan) {
+      return { success: false, message: "Titan not found" };
+    }
 
-    if (!dbUser) return { success: false, message: "User not found" };
-
-    const unlockedIds = new Set<string>();
-    dbUser.achievements.forEach((ua) => unlockedIds.add(ua.achievementId));
-    const purchasedSkillIds = dbUser.skills.map((s) => s.skillId);
-    const attributes = calculateTitanAttributes(
-      unlockedIds,
-      null,
-      new Set(purchasedSkillIds),
-      [],
-    );
+    const { titan: baseTitan, effectiveStats, attributes } = titanData;
 
     // Apply Mood Modifiers
-    if (dbUser.titan) {
-      const mood = dbUser.titan.mood || "NEUTRAL";
+    if (baseTitan) {
+      const mood = baseTitan.mood || "NEUTRAL";
       let moodMod = 1.0;
       if (mood === "HAPPY") moodMod = 1.1;
       if (mood === "WEAKENED") moodMod = 0.8;
@@ -216,9 +200,8 @@ export const performCombatAction = authActionClient
     }
 
     // Bio-Combat Buff System
-    if (dbUser.titan && dbUser.titan.currentBuff) {
-      // Safe cast since we know the structure from the service, but ideally we validate
-      const buff = dbUser.titan.currentBuff as unknown as BioBuff;
+    if (baseTitan.currentBuff) {
+      const buff = baseTitan.currentBuff as unknown as BioBuff;
       if (buff && buff.effects) {
         const { attackMod = 1.0, defenseMod = 1.0 } = buff.effects;
         if (attackMod !== 1.0) {
@@ -231,9 +214,6 @@ export const performCombatAction = authActionClient
           attributes.recovery = Math.round(attributes.recovery * defenseMod);
           attributes.hypertrophy = Math.round(attributes.hypertrophy * defenseMod);
         }
-
-        // Log the effect (only once per session technically, but for now every turn start check is fine or just rely on UI)
-        // To avoid spamming logs, we skip adding it here, UI handles badges.
       }
     }
 

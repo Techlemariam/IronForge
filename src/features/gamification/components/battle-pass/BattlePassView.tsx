@@ -70,14 +70,13 @@ export function BattlePassView({ initialData, userId }: BattlePassViewProps) {
     if (loading) return;
     setLoading(true);
     // Optimistic update could happen here, but for now simple await
-    const result = await claimBattlePassRewardAction(
-      userId,
+    const result = await claimBattlePassRewardAction({
       tierLevel,
       isPremium,
-    );
+    });
 
-    if (result.success) {
-      toast.success(result.message);
+    if (result?.data?.success) {
+      toast.success(result.data.message);
       // In a real app we'd re-fetch or optimistically update local state.
       // For simplicity, we are forcing a refresh via router or just manual state update:
       setData((prev) => {
@@ -97,7 +96,7 @@ export function BattlePassView({ initialData, userId }: BattlePassViewProps) {
         };
       });
     } else {
-      toast.error(result.message);
+      toast.error(result?.data?.message || result?.serverError || "Failed to claim target");
     }
     setLoading(false);
   };
@@ -105,13 +104,13 @@ export function BattlePassView({ initialData, userId }: BattlePassViewProps) {
   const handleUpgrade = async () => {
     if (loading) return;
     setLoading(true);
-    const result = await upgradeToPremiumAction(userId);
-    if (result.success) {
+    const result = await upgradeToPremiumAction();
+    if (result?.data?.success) {
       toast.success("Premium Unlocked!");
       // Optimistic update
       setData(prev => prev ? ({ ...prev, hasPremium: true }) : null);
     } else {
-      toast.error(result.message);
+      toast.error(result?.data?.message || result?.serverError || "Failed to upgrade");
     }
     setLoading(false);
   };

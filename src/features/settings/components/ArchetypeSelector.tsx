@@ -49,7 +49,7 @@ export const ArchetypeSelector: React.FC<ArchetypeSelectorProps> = ({
   const handleSelect = (archetype: Archetype) => {
     if (archetype === current) return;
     startTransition(async () => {
-      await updateArchetypeAction(archetype);
+      await updateArchetypeAction({ archetype });
       setCurrent(archetype);
     });
   };
@@ -67,27 +67,24 @@ export const ArchetypeSelector: React.FC<ArchetypeSelectorProps> = ({
               key={arch.id}
               onClick={() => handleSelect(arch.id)}
               disabled={isPending}
-              className={`relative p-4 rounded-lg border-2 text-left transition-all ${
-                isActive
+              className={`relative p-4 rounded-lg border-2 text-left transition-all ${isActive
                   ? `${arch.bg} ${arch.border} shadow-lg ring-1 ring-white/10`
                   : "bg-white/5 border-white/10 hover:bg-white/10"
-              }`}
+                }`}
               whileHover={{ scale: 1.01 }}
               whileTap={{ scale: 0.99 }}
             >
               <div className="flex items-start gap-4">
                 <div
-                  className={`p-3 rounded-full ${
-                    isActive ? "bg-black/20" : "bg-white/5"
-                  } ${arch.color}`}
+                  className={`p-3 rounded-full ${isActive ? "bg-black/20" : "bg-white/5"
+                    } ${arch.color}`}
                 >
                   {arch.icon}
                 </div>
                 <div className="flex-1">
                   <h4
-                    className={`font-bold text-sm ${
-                      isActive ? "text-white" : "text-zinc-400"
-                    }`}
+                    className={`font-bold text-sm ${isActive ? "text-white" : "text-zinc-400"
+                      }`}
                   >
                     {arch.name}
                   </h4>

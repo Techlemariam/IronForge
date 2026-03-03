@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 
-import { addFactoryTask } from '@/actions/factory';
+import { addFactoryTaskAction } from '@/actions/factory';
 import { useRouter } from 'next/navigation';
 
 import { VoiceCommandPresenter } from './VoiceCommandPresenter';
@@ -67,12 +67,16 @@ export function VoiceCommandControl() {
 
         setIsProcessing(true);
         try {
-            const result = await addFactoryTask(transcript, 'WEB_UI', {
-                userAgent: navigator.userAgent,
-                timestamp: new Date().toISOString()
+            const result = await addFactoryTaskAction({
+                description: transcript,
+                source: 'WEB_UI',
+                metadata: {
+                    userAgent: navigator.userAgent,
+                    timestamp: new Date().toISOString()
+                }
             });
 
-            if (result.success) {
+            if (result?.data?.success) {
                 setTranscript('');
                 router.refresh();
             } else {

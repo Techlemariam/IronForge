@@ -64,7 +64,7 @@ export async function logTitanSet(
 
       // Award Battle Pass XP (50% of Titan XP, min 5)
       const bpXp = Math.max(5, Math.ceil(xpGained / 2));
-      await addBattlePassXpAction(user.id, bpXp);
+      await addBattlePassXpAction({ amount: bpXp });
     } catch (e) {
       console.error("Challenge Sync Failed", e);
     }

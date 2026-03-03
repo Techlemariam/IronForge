@@ -1,5 +1,8 @@
 "use server";
 
+import { z } from "zod";
+import { authActionClient } from "@/lib/safe-action";
+
 interface GoldMultiplier {
   source: string;
   value: number;
@@ -46,15 +49,79 @@ export function calculateStreakBonus(streakDays: number): number {
 /**
  * Get gold multiplier status.
  */
-export async function getGoldMultiplierStatusAction(
-  _userId: string,
-): Promise<GoldMultiplierStatus> {
+export const getGoldMultiplierStatusAction = authActionClient
+  .action(async ({ ctx: { userId } }): Promise<GoldMultiplierStatus> => {
+    const streakDays = 15;
+    const prestigeLevel = 2;
+
+    const streakBonus = calculateStreakBonus(streakDays);
+    const prestigeBonus = prestigeLevel * 5;
+    const eventBonus = 10; // Winter event
+
+    const activeMultipliers: GoldMultiplier[] = [
+      {
+        source: `${streakDays}-Day Streak`,
+        value: streakBonus,
+        isPermanent: false,
+      },
+      {
+        source: `Prestige ${prestigeLevel}`,
+        value: prestigeBonus,
+        isPermanent: true,
+      },
+      {
+        source: "Winter Festival",
+        value: eventBonus,
+        expiresAt: new Date("2025-01-10"),
+        isPermanent: false,
+      },
+    ];
+
+    const totalBonus = streakBonus + prestigeBonus + eventBonus;
+
+    return {
+      baseMultiplier: 100,
+      totalMultiplier: 100 + totalBonus,
+      activeMultipliers,
+      streakBonus,
+      prestigeBonus,
+      eventBonus,
+    };
+  });
+
+/**
+ * Calculate gold with multipliers.
+ */
+export const calculateGoldWithMultipliersAction = authActionClient
+  .schema(z.object({ baseGold: z.number() }))
+  .action(async ({ parsedInput: { baseGold }, ctx: { userId } }) => {
+    // We execute the inner function of the client Action directly or call the raw one
+    // But since it's wrapped, it returns { data, serverError... } 
+    // To support `await getGoldMultiplierStatusAction(...)` from inside here,
+    // we would ideally abstract the inner logic, but for now we can invoke the wrapped 
+    // function by manually passing context if it was exported, or better - abstract it.
+    // However, since GET is deterministic mock data right now, we can inline it or call it securely.
+
+    // Abstracted internal call due to actionClient nesting restrictions
+    const status = await getGoldMultiplierStatusInternal(userId);
+    const totalGold = Math.floor(baseGold * (status.totalMultiplier / 100));
+
+    return {
+      baseGold,
+      multiplier: status.totalMultiplier,
+      totalGold,
+      breakdown: status.activeMultipliers,
+    };
+  });
+
+// Internal helper to avoid invoking Server Action from Server Action directly (which returns wrappers)
+async function getGoldMultiplierStatusInternal(userId: string): Promise<GoldMultiplierStatus> {
   const streakDays = 15;
   const prestigeLevel = 2;
 
   const streakBonus = calculateStreakBonus(streakDays);
   const prestigeBonus = prestigeLevel * 5;
-  const eventBonus = 10; // Winter event
+  const eventBonus = 10;
 
   const activeMultipliers: GoldMultiplier[] = [
     {
@@ -88,29 +155,6 @@ export async function getGoldMultiplierStatusAction(
 }
 
 /**
- * Calculate gold with multipliers.
- */
-export async function calculateGoldWithMultipliersAction(
-  userId: string,
-  baseGold: number,
-): Promise<{
-  baseGold: number;
-  multiplier: number;
-  totalGold: number;
-  breakdown: GoldMultiplier[];
-}> {
-  const status = await getGoldMultiplierStatusAction(userId);
-  const totalGold = Math.floor(baseGold * (status.totalMultiplier / 100));
-
-  return {
-    baseGold,
-    multiplier: status.totalMultiplier,
-    totalGold,
-    breakdown: status.activeMultipliers,
-  };
-}
-
-/**
  * Get next streak milestone.
  */
 export function getNextStreakMilestone(
@@ -130,12 +174,10 @@ export function getNextStreakMilestone(
 /**
  * Apply temporary gold boost.
  */
-export async function applyGoldBoostAction(
-  userId: string,
-  boostPercent: number,
-  durationHours: number,
-): Promise<{ success: boolean; expiresAt: Date }> {
-  const expiresAt = new Date(Date.now() + durationHours * 60 * 60 * 1000);
-  console.log(`Applied ${boostPercent}% gold boost for ${durationHours} hours`);
-  return { success: true, expiresAt };
-}
+export const applyGoldBoostAction = authActionClient
+  .schema(z.object({ boostPercent: z.number(), durationHours: z.number() }))
+  .action(async ({ parsedInput: { boostPercent, durationHours }, ctx: { userId } }) => {
+    const expiresAt = new Date(Date.now() + durationHours * 60 * 60 * 1000);
+    console.log(`Applied ${boostPercent}% gold boost for ${durationHours} hours to ${userId}`);
+    return { success: true, expiresAt };
+  });
