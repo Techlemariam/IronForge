@@ -113,7 +113,7 @@ export async function pushWatchUpdateAction(
 ): Promise<{ success: boolean }> {
   try {
     // In production, push via WatchConnectivity or push notifications
-    console.log(`Push to watch: user=${userId}, data=${JSON.stringify(data)}`);
+    console.log(`Push to watch: user=ID:[REDACTED], data=${JSON.stringify(data)}`);
     return { success: true };
   } catch (error) {
     console.error("Error pushing to watch:", error);

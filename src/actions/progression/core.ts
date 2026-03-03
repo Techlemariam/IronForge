@@ -6,7 +6,6 @@ import { ProgressionService } from "@/services/progression";
 import { AwardGoldSchema } from "@/types/schemas";
 
 export const getProgressionAction = authActionClient
-  .schema(z.object({}))
   .action(async ({ ctx: { userId } }) => {
     return await ProgressionService.getProgressionState(userId);
   });

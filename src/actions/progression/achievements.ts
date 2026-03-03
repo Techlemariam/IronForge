@@ -60,7 +60,6 @@ export const checkAchievementsAction = authActionClient
   });
 
 export const getUnlockedAchievementsAction = authActionClient
-  .schema(z.object({}))
   .action(async ({ ctx: { userId } }) => {
     const data = await prisma.userAchievement.findMany({
       where: { userId },

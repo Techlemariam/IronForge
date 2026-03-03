@@ -123,7 +123,7 @@ export async function contributeToWeeklyChallengeAction(
   amount: number,
 ): Promise<{ success: boolean; newProgress: number; tierReached?: number }> {
   try {
-    console.log(`User ${userId} contributed ${amount} to ${challengeId}`);
+    console.log(`User ID:[REDACTED] contributed ${amount} to ${challengeId}`);
     revalidatePath("/weekly-challenges");
     return { success: true, newProgress: 7250000 + amount };
   } catch (error) {

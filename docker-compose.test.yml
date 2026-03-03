@@ -47,8 +47,6 @@ services:
       DATABASE_URL: postgresql://postgres:postgres@db-test:5432/ironforge_test
       NEXT_PUBLIC_APP_URL: http://localhost:3000
       CI: "true"
-      # Playwright needs a home directory that the user owns to download browsers to
-      PLAYWRIGHT_BROWSERS_PATH: /app/.playwright
     depends_on:
       db-test:
         condition: service_healthy

@@ -137,7 +137,7 @@ export async function performPrestigeAction(userId: string): Promise<{
   const newLevel = status.currentPrestige + 1;
   const newPrestige = PRESTIGE_LEVELS.find((p) => p.level === newLevel);
 
-  console.log(`User ${userId} prestiged to level ${newLevel}`);
+  console.log(`User ID:[REDACTED] prestiged to level ${newLevel}`);
   revalidatePath("/prestige");
 
   return {

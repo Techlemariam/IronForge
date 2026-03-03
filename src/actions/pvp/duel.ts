@@ -338,7 +338,7 @@ export const sendTauntAction = authActionClient
   .schema(SendTauntSchema)
   .action(async ({ parsedInput: { duelId, message }, ctx: { userId } }) => {
     try {
-      console.log(`Taunt sent in duel ${duelId} from ${userId}: ${message}`);
+      console.log(`Taunt sent in duel ${duelId} from ID:[REDACTED]: ${message}`);
 
       // Potential future expansion: Insert into a DuelEvents table
 
@@ -464,7 +464,7 @@ export async function processUserCardioActivity(
   elevationMeters: number = 0
 ) {
   try {
-    console.log(`Processing cardio for user ${userId}: ${activityType} ${distanceKm}km ${elevationMeters}m elevation`);
+    console.log(`Processing cardio for user ID:[REDACTED]: ${activityType} ${distanceKm}km ${elevationMeters}m elevation`);
 
     const activeDuels = await prisma.duelChallenge.findMany({
       where: {

@@ -186,8 +186,8 @@ export const generateDailyQuestsAction = authActionClient.action(
 
 function mapUserChallengeToDailyQuest(uc: any): DailyQuest {
   const c = uc.challenge;
-  const criteria = c.criteria as any;
-  const rewards = c.rewards as any;
+  const criteria = c.criteria as Record<string, unknown>;
+  const rewards = c.rewards as Record<string, unknown>;
   return {
     id: c.id, // Use Challenge ID for tracking
     type: mapMetricToType(criteria.metric),
@@ -254,7 +254,7 @@ export const claimQuestRewardAction = authActionClient
           return { success: false, xp: 0, gold: 0 };
         }
 
-        const rewards = uc.challenge.rewards as any;
+        const rewards = uc.challenge.rewards as Record<string, unknown>;
         const xp = rewards.xp || 0;
         const gold = rewards.gold || 0;
 

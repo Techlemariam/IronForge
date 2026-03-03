@@ -106,7 +106,7 @@ export const acceptChallengeAction = authActionClient
   .schema(z.string())
   .action(async ({ parsedInput: challengeId, ctx: { userId } }) => {
     try {
-      console.log(`User ${userId} accepted challenge ${challengeId}`);
+      console.log(`User ID:[REDACTED] accepted challenge ${challengeId}`);
       revalidatePath("/challenges");
       return { success: true };
     } catch (error) {
@@ -122,7 +122,7 @@ export const declineChallengeAction = authActionClient
   .schema(z.string())
   .action(async ({ parsedInput: challengeId, ctx: { userId } }) => {
     try {
-      console.log(`User ${userId} declined challenge ${challengeId}`);
+      console.log(`User ID:[REDACTED] declined challenge ${challengeId}`);
       revalidatePath("/challenges");
       return { success: true };
     } catch (error) {

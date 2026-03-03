@@ -37,8 +37,7 @@ interface DungeonFloor {
   bestClearTime?: number;
 }
 
-export const getDungeonProgressAction = authActionClient
-  .schema(z.object({}))
+export const getAvailableFloorsAction = authActionClient
   .action(async () => {
     return {
       currentFloor: 15,
@@ -94,10 +93,9 @@ export const getFloorDetailsAction = authActionClient
     };
   });
 
-export const startDungeonRunAction = authActionClient
-  .schema(z.object({}))
+export const startFloorRunAction = authActionClient
   .action(async ({ ctx: { userId } }) => {
-    console.log(`Starting dungeon run for ${userId}`);
+    console.log(`Starting dungeon run for ID:[REDACTED]`);
     revalidatePath("/dungeon");
     return { startingFloor: 1 };
   });
@@ -109,15 +107,14 @@ export const clearFloorAction = authActionClient
       { type: "XP", amount: 50 * floorNumber, guaranteed: true, dropChance: 100 },
       { type: "GOLD", amount: 25 * floorNumber, guaranteed: true, dropChance: 100 },
     ];
-    console.log(`Cleared floor ${floorNumber} in ${clearTimeMs}ms for ${userId}`);
+    console.log(`Cleared floor ${floorNumber} in ${clearTimeMs}ms for ID:[REDACTED]`);
     revalidatePath("/dungeon");
     return { rewards, nextFloor: floorNumber + 1 };
   });
 
-export const endDungeonRunAction = authActionClient
-  .schema(z.object({}))
+export const endFloorRunAction = authActionClient
   .action(async ({ ctx: { userId } }) => {
-    console.log(`Ending dungeon run for ${userId}`);
+    console.log(`Ending dungeon run for ID:[REDACTED]`);
     revalidatePath("/dungeon");
     return {
       floorsCleared: 5,

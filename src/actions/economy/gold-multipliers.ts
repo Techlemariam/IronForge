@@ -72,7 +72,7 @@ export const getGoldMultiplierStatusAction = authActionClient
       {
         source: "Winter Festival",
         value: eventBonus,
-        expiresAt: new Date("2025-01-10"),
+        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         isPermanent: false,
       },
     ];
@@ -137,7 +137,7 @@ async function getGoldMultiplierStatusInternal(userId: string): Promise<GoldMult
     {
       source: "Winter Festival",
       value: eventBonus,
-      expiresAt: new Date("2025-01-10"),
+      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
       isPermanent: false,
     },
   ];
@@ -178,6 +178,6 @@ export const applyGoldBoostAction = authActionClient
   .schema(z.object({ boostPercent: z.number(), durationHours: z.number() }))
   .action(async ({ parsedInput: { boostPercent, durationHours }, ctx: { userId } }) => {
     const expiresAt = new Date(Date.now() + durationHours * 60 * 60 * 1000);
-    console.log(`Applied ${boostPercent}% gold boost for ${durationHours} hours to ${userId}`);
+    console.log(`Applied ${boostPercent}% gold boost for ${durationHours} hours to ID:[REDACTED]`);
     return { success: true, expiresAt };
   });

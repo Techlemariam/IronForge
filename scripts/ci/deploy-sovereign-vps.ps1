@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-  Deploy the Sovereign Testing Databases (L1, L2, E2E, Guard) to the Hetzner VPS.
+  Deploy the Sovereign Testing Databases (L1, E2E, Guard) to the Hetzner VPS.
 
 .DESCRIPTION
   This script connects to the Hetzner VPS over SSH, transfers the docker-compose.test.yml
@@ -14,6 +14,9 @@
 $ErrorActionPreference = "Stop"
 $vpsHost = "root@77.42.45.229"
 $targetDir = "/data/ironforge-test-db"
+$dbPassword = $env:SOVEREIGN_DB_PASSWORD
+
+if (-not $dbPassword) { Write-Error "CRITICAL: SOVEREIGN_DB_PASSWORD not set."; exit 1 }
 
 Write-Host "🚀 Beginning Sovereign DB VPS Deployment..." -ForegroundColor Cyan
 
@@ -30,7 +33,7 @@ services:
     container_name: ironforge-pg-l1
     restart: unless-stopped
     environment:
-      POSTGRES_PASSWORD: password
+      POSTGRES_PASSWORD: $dbPassword
       POSTGRES_DB: ironforge_test
     ports:
       - "5433:5432"
@@ -44,7 +47,7 @@ services:
     container_name: ironforge-pg-e2e
     restart: unless-stopped
     environment:
-      POSTGRES_PASSWORD: password
+      POSTGRES_PASSWORD: $dbPassword
       POSTGRES_DB: ironforge_e2e
     ports:
       - "5434:5432"
@@ -58,7 +61,7 @@ services:
     container_name: ironforge-pg-guard
     restart: unless-stopped
     environment:
-      POSTGRES_PASSWORD: password
+      POSTGRES_PASSWORD: $dbPassword
       POSTGRES_DB: ironforge_shadow_guard
     ports:
       - "5435:5432"
@@ -77,8 +80,12 @@ Set-Content -Path $localTemp -Value $composeContent
 
 # 3. Transfer Compose File
 Write-Host "Transferring Docker Compose config..."
-scp -o StrictHostKeyChecking=no $localTemp "${vpsHost}:${targetDir}/docker-compose.yml"
-Remove-Item $localTemp
+try {
+  scp -o StrictHostKeyChecking=no $localTemp "${vpsHost}:${targetDir}/docker-compose.yml"
+}
+finally {
+  if (Test-Path $localTemp) { Remove-Item $localTemp }
+}
 
 # 4. Transfer DB Init Script
 Write-Host "Transferring init-db.sql..."

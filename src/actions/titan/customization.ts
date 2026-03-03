@@ -101,7 +101,7 @@ export async function updateTitanAppearanceAction(
   updates: Partial<TitanAppearance>,
 ): Promise<{ success: boolean }> {
   try {
-    console.log(`Updated titan appearance for ${userId}:`, updates);
+    console.log(`Updated titan appearance for ID:[REDACTED]:`, updates);
     revalidatePath("/titan");
     return { success: true };
   } catch (error) {
@@ -119,7 +119,7 @@ export async function equipItemAction(
   slot: ArmorSlot,
 ): Promise<{ success: boolean; unequipped?: string }> {
   try {
-    console.log(`Equipped ${itemId} to ${slot} for ${userId}`);
+    console.log(`Equipped ${itemId} to ${slot} for ID:[REDACTED]`);
     revalidatePath("/titan");
     return { success: true };
   } catch (error) {
@@ -136,7 +136,7 @@ export async function unequipItemAction(
   slot: ArmorSlot,
 ): Promise<{ success: boolean }> {
   try {
-    console.log(`Unequipped ${slot} for ${userId}`);
+    console.log(`Unequipped ${slot} for ID:[REDACTED]`);
     revalidatePath("/titan");
     return { success: true };
   } catch (error) {
@@ -153,7 +153,7 @@ export async function setTitanTitleAction(
   titleId: string,
 ): Promise<{ success: boolean }> {
   try {
-    console.log(`Set title for ${userId}: ${titleId}`);
+    console.log(`Set title for ID:[REDACTED]: ${titleId}`);
     revalidatePath("/titan");
     return { success: true };
   } catch (error) {

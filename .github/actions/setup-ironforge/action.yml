@@ -57,9 +57,7 @@ runs:
         if (docker ps -q -f name="ironforge-pg-$Tier") {
           Write-Host "🟢 Found Managed Service: ironforge-pg-$Tier" -ForegroundColor Green
           
-          $DockerHost = if ("${{ runner.os }}" -eq "Windows") { "127.0.0.1" } else { "host.docker.internal" }
-          # For Docker-in-Docker isolated namespaces, fallback to localhost if host.docker.internal fails.
-          if ("${{ runner.os }}" -ne "Windows") { $DockerHost = "localhost" }
+          $DockerHost = if ("${{ runner.os }}" -eq "Windows") { "127.0.0.1" } else { "localhost" }
           
           $BaseURL = "postgresql://postgres:password@${DockerHost}:$Port"
           $TargetURL = "$($BaseURL)/$($DBName)?schema=public"

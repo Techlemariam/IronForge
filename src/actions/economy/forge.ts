@@ -92,7 +92,7 @@ export const craftItem = authActionClient
       }
 
       // 6. Save (Mock)
-      console.log(`[Forge] Crafted ${recipe.name} for ${userId}`);
+      console.log(`[Forge] Crafted ${recipe.name} for ID:[REDACTED]`);
 
       revalidatePath("/dashboard");
       return {

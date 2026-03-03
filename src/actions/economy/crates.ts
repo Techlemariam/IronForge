@@ -288,7 +288,7 @@ export async function awardCrateAction(
 ): Promise<{ success: boolean; crateId?: string }> {
   try {
     const crateId = `crate-${userId}-${Date.now()}`;
-    console.log(`Awarded ${rarity} crate to ${userId} from ${source}`);
+    console.log(`Awarded ${rarity} crate to ID:[REDACTED] from ${source}`);
     revalidatePath("/inventory");
     return { success: true, crateId };
   } catch (error) {

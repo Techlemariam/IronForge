@@ -80,7 +80,7 @@ export async function markAnnouncementReadAction(
   _userId: string,
   announcementId: string,
 ): Promise<{ success: boolean }> {
-  console.log(`Marked announcement ${announcementId} as read for ${_userId}`);
+  console.log(`Marked announcement ${announcementId} as read for ID:[REDACTED]`);
   return { success: true };
 }
 
@@ -91,7 +91,7 @@ export async function dismissAnnouncementAction(
   _userId: string,
   announcementId: string,
 ): Promise<{ success: boolean }> {
-  console.log(`Dismissed announcement ${announcementId} for ${_userId}`);
+  console.log(`Dismissed announcement ${announcementId} for ID:[REDACTED]`);
   return { success: true };
 }
 

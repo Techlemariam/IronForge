@@ -35,7 +35,15 @@ $payload = @{
   content = $Content
 }
 if ($TaskId) { $payload.taskId = $TaskId }
-if ($PRNumber) { $payload.prNumber = [int]$PRNumber }
+if ($PRNumber) {
+  if ($PRNumber -match '^\d+$') {
+    $payload.prNumber = [int]$PRNumber
+  }
+  else {
+    Write-Error "Invalid PRNumber: '$PRNumber' must be an integer."
+    exit 1
+  }
+}
 
 $body = $payload | ConvertTo-Json -Depth 3 -Compress
 

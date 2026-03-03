@@ -52,11 +52,11 @@ export const logSetAction = authActionClient
     if (existingLog) {
       await prisma.exerciseLog.update({
         where: { id: existingLog.id },
-        data: { sets: currentSets as any },
+        data: { sets: currentSets as unknown as import("@prisma/client").Prisma.InputJsonValue },
       });
     } else {
       const newLog = await prisma.exerciseLog.create({
-        data: { userId, exerciseId, date: new Date(), sets: currentSets as any, isPersonalRecord: false },
+        data: { userId, exerciseId, date: new Date(), sets: currentSets as unknown as import("@prisma/client").Prisma.InputJsonValue, isPersonalRecord: false },
       });
       logId = newLog.id;
     }

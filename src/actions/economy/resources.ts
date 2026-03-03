@@ -112,7 +112,7 @@ export const getPassiveIncomeAction = authActionClient
 export const collectResourcesAction = authActionClient
   .schema(z.object({ generatorId: z.string() }))
   .action(async ({ parsedInput: { generatorId }, ctx: { userId } }) => {
-    console.log(`Collected resources from ${generatorId} by ${userId}`);
+    console.log(`Collected resources from ${generatorId} by ID:[REDACTED]`);
     revalidatePath("/resources");
 
     return {
@@ -127,7 +127,7 @@ export const collectResourcesAction = authActionClient
  */
 export const collectAllResourcesAction = authActionClient
   .action(async ({ ctx: { userId } }): Promise<Record<ResourceType, number>> => {
-    console.log(`Collected all resources for ${userId}`);
+    console.log(`Collected all resources for ID:[REDACTED]`);
     revalidatePath("/resources");
 
     return {
@@ -144,7 +144,7 @@ export const collectAllResourcesAction = authActionClient
 export const upgradeGeneratorAction = authActionClient
   .schema(z.object({ generatorId: z.string() }))
   .action(async ({ parsedInput: { generatorId }, ctx: { userId } }) => {
-    console.log(`Upgraded generator ${generatorId} for ${userId}`);
+    console.log(`Upgraded generator ${generatorId} for ID:[REDACTED]`);
     revalidatePath("/resources");
 
     return {

@@ -106,7 +106,7 @@ export async function addRivalAction(
   rivalId: string,
 ): Promise<{ success: boolean }> {
   try {
-    console.log(`Added rival ${rivalId} for user ${userId}`);
+    console.log(`Added rival ${rivalId} for user ID:[REDACTED]`);
     revalidatePath("/rivals");
     return { success: true };
   } catch (error) {

@@ -113,7 +113,7 @@ export const likeFeedItemAction = authActionClient
   .schema(z.string())
   .action(async ({ parsedInput: feedItemId, ctx: { userId } }) => {
     try {
-      console.log(`User ${userId} liked feed item ${feedItemId}`);
+      console.log(`User ID:[REDACTED] liked feed item ${feedItemId}`);
       return { success: true, newCount: 14 }; // Mock
     } catch (error) {
       console.error("Error liking feed item:", error);
@@ -128,7 +128,7 @@ export const unlikeFeedItemAction = authActionClient
   .schema(z.string())
   .action(async ({ parsedInput: feedItemId, ctx: { userId } }) => {
     try {
-      console.log(`User ${userId} unliked feed item ${feedItemId}`);
+      console.log(`User ID:[REDACTED] unliked feed item ${feedItemId}`);
       return { success: true, newCount: 12 };
     } catch (error) {
       console.error("Error unliking feed item:", error);
@@ -168,7 +168,7 @@ export const shareWorkoutToFeedAction = authActionClient
   }))
   .action(async ({ parsedInput: { workoutId, message }, ctx: { userId } }) => {
     try {
-      console.log(`User ${userId} shared workout ${workoutId} with message: ${message}`);
+      console.log(`User ID:[REDACTED] shared workout ${workoutId} with message: ${message}`);
       return { success: true, feedItemId: `feed-${Date.now()}` };
     } catch (error) {
       console.error("Error sharing workout:", error);

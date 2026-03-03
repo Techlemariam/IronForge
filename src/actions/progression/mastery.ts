@@ -60,7 +60,6 @@ export const getExerciseMasteryAction = authActionClient
   });
 
 export const getAllMasteriesAction = authActionClient
-  .schema(z.object({}))
   .action(async (): Promise<ExerciseMastery[]> => {
     const exercises = ["bench-press", "squat", "deadlift", "overhead-press", "barbell-row"];
     return exercises.map((e) => buildMastery(e, 15));
@@ -69,7 +68,7 @@ export const getAllMasteriesAction = authActionClient
 export const addMasteryXpAction = authActionClient
   .schema(z.object({ exerciseId: z.string(), xpGained: z.number().int().min(1) }))
   .action(async ({ parsedInput: { exerciseId, xpGained }, ctx: { userId } }) => {
-    console.log(`Added ${xpGained} mastery XP for ${exerciseId} (user: ${userId})`);
+    console.log(`Added ${xpGained} mastery XP for ${exerciseId} (user: ID:[REDACTED])`);
     revalidatePath("/mastery");
     return { newLevel: 15, newXp: 7500 + xpGained, leveledUp: false };
   });

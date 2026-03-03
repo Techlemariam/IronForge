@@ -94,4 +94,4 @@ pwsh .agent/scripts/agent-message-read.ps1 -Role "@coder"
 pwsh .agent/scripts/agent-message-read.ps1 -Role "all"
 ```
 
-Scriptet kommer automatiskt hämta alla `UNREAD` meddelanden och därefter markera dem som `READ`. Base your initial planning on the contents of these messages.
+Scriptet kommer automatiskt hämta alla `UNREAD` meddelanden och därefter markera dem som `READ`. Baserat på innehållet i dessa meddelanden, utgå från detta i din initiala planering.

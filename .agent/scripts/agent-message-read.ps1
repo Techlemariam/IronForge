@@ -26,8 +26,9 @@ $status = if ($All) { "" } else { "&status=UNREAD" }
 $endpoint = "$appUrl/api/agent/message?to=$([uri]::EscapeDataString($Role))&limit=$Limit$status"
 $headers = @{ Authorization = "Bearer $cronSecret" }
 
+$timeoutSec = 30
 try {
-  $response = Invoke-RestMethod -Uri $endpoint -Method GET -Headers $headers
+  $response = Invoke-RestMethod -Uri $endpoint -Method GET -Headers $headers -TimeoutSec $timeoutSec
 }
 catch {
   Write-Error "❌ FAILED: $_"
@@ -66,7 +67,8 @@ if ($idsToMark.Count -gt 0 -and ($MarkRead -or -not $All)) {
       -Uri     "$appUrl/api/agent/message" `
       -Method  PATCH `
       -Headers (@{ Authorization = "Bearer $cronSecret"; "Content-Type" = "application/json" }) `
-      -Body    $patchBody
+      -Body    $patchBody `
+      -TimeoutSec $timeoutSec
     Write-Host ""
     Write-Host "✅ Marked $($patch.updated) message(s) as READ." -ForegroundColor Green
   }

@@ -122,7 +122,7 @@ export async function restoreBackupAction(
     }
 
     // In production, restore data to database
-    console.log(`Restoring backup for ${userId} from ${backup.createdAt}`);
+    console.log(`Restoring backup for ID:[REDACTED] from ${backup.createdAt}`);
     console.log(`Workouts to restore: ${backup.workoutHistory.length}`);
 
     return {

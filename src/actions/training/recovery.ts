@@ -117,7 +117,7 @@ export async function overrideRecoveryLockAction(
 ): Promise<{ success: boolean; message: string }> {
   try {
     // Log the override
-    console.log(`Recovery lock override: userId=${userId}, reason=${reason}`);
+    console.log(`Recovery lock override: userId=ID:[REDACTED], reason=${reason}`);
 
     // In production, you might want to:
     // 1. Store this in a log table

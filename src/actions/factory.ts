@@ -26,7 +26,8 @@ async function verifyFactoryAuth() {
         return false;
     }
 
-    const isAuthorized = user.email?.endsWith("@ironforge.rpg") || user.email === 'alexander.teklemariam@gmail.com' || false;
+    const adminEmails = process.env.ADMIN_EMAILS?.split(',') || ['alexander.teklemariam@gmail.com'];
+    const isAuthorized = user.email ? (user.email.endsWith("@ironforge.rpg") || adminEmails.includes(user.email)) : false;
     if (!isAuthorized) {
         console.warn(`Factory Auth: User ${user.email} not authorized for factory operations`);
     }
@@ -45,7 +46,7 @@ import { FactoryStatusData } from '@/lib/schemas/factory';
  */
 export async function getFactoryStatus(): Promise<(FactoryStatusData & { costSEK?: number })[]> {
     try {
-        let statuses: any[] = await prisma.factoryStatus.findMany({
+        let statuses = await prisma.factoryStatus.findMany({
             orderBy: { station: 'asc' },
         });
 
@@ -82,8 +83,8 @@ export async function getFactoryStatus(): Promise<(FactoryStatusData & { costSEK
             let health = s.health;
 
             const stationFileData = stationStatusFiles[s.station];
-            const dbMetadata = s.metadata as Record<string, any> | null;
-            const activityData = (stationFileData || dbMetadata) as Record<string, any> | null;
+            const dbMetadata = s.metadata as Record<string, unknown> | null;
+            const activityData = (stationFileData || dbMetadata) as Record<string, unknown> | null;
 
             if (activityData && activityData.branch) {
                 const isFailure = s.station === 'debug';

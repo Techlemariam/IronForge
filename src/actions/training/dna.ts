@@ -151,7 +151,7 @@ export async function importTrainingDnaAction(
 ): Promise<{ success: boolean; message: string }> {
   try {
     // In production, fetch DNA from database and apply to user's programs
-    console.log(`Imported DNA ${dnaId} for user ${userId}`);
+    console.log(`Imported DNA ${dnaId} for user ID:[REDACTED]`);
 
     return {
       success: true,

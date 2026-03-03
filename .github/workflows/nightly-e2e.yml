@@ -9,8 +9,8 @@ on:
 
 env:
   NODE_VERSION: "22"
-  NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL || 'https://dummy.supabase.co' }}
-  NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'dummy' }}
+  NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
 
 jobs:
   nightly-e2e:
@@ -21,6 +21,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+
+      - name: Verify Core Secrets
+        run: |
+          if [ -z "${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}" ] || [ -z "${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}" ]; then
+            echo "::error::Missing critical Supabase secrets."
+            exit 1
+          fi
 
       - name: Setup IronForge
         uses: ./.github/actions/setup-ironforge
@@ -85,16 +92,18 @@ jobs:
 
       - name: Fetch Doppler Secrets
         run: |
-          doppler secrets download --no-file --format env-no-quotes --project ironforge --config dev > $GITHUB_ENV
+          JULES_API_KEY=$(doppler secrets get JULES_API_KEY --plain --project ironforge --config dev)
+          echo "JULES_API_KEY=$JULES_API_KEY" >> $GITHUB_ENV
         env:
           DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
 
       - name: Read E2E Output
         id: read_output
         run: |
-          echo "logs<<EOF" >> $GITHUB_OUTPUT
+          DELIM=$(uuidgen)
+          echo "logs<<$DELIM" >> $GITHUB_OUTPUT
           tail -n 200 e2e-nightly-results.txt >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          echo "$DELIM" >> $GITHUB_OUTPUT
 
       - name: Jules Invoke for Triage
         uses: BeksOmega/jules-action@v1.0.0
