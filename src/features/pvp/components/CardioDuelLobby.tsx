@@ -84,7 +84,7 @@ export function CardioDuelLobby() {
                     <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
                             <label className="text-sm font-medium text-slate-400">Activity</label>
-                            <Select value={activityType} onValueChange={setActivityType}>
+                            <Select value={activityType} onValueChange={(v) => setActivityType(v as "RUNNING" | "CYCLING")}>
                                 <SelectTrigger>
                                     <SelectValue />
                                 </SelectTrigger>

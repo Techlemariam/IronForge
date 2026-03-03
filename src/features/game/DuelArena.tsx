@@ -34,8 +34,9 @@ export function DuelArena({ duelId, currentUserId, onClose }: DuelArenaProps) {
 
         const fetchState = async () => {
             const result = await getDuelArenaStateAction(duelId);
-            if (result.success) {
-                setDuelState(result.duel);
+            const data = result?.data;
+            if (data?.success) {
+                setDuelState(data.duel);
             } else {
                 toast.error("Lost connection to arena...");
             }
@@ -62,8 +63,8 @@ export function DuelArena({ duelId, currentUserId, onClose }: DuelArenaProps) {
 
                 // Refresh state
                 const stateResult = await getDuelArenaStateAction(duelId);
-                if (stateResult.success) {
-                    setDuelState(stateResult.duel);
+                if (stateResult?.data?.success) {
+                    setDuelState(stateResult.data.duel);
                 }
             } else {
                 toast.error(result.error || "Attack failed");
