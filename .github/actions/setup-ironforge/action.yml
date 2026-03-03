@@ -42,16 +42,17 @@ runs:
           $DBName = "ironforge_shadow_run_${{ github.run_id }}"
         }
 
-        if (!(docker ps -q -f name=ironforge-pg-${{ inputs.tier }})) {
-          Write-Host "⚠️ Managed Service not found for tier: ${{ inputs.tier }}. Booting ephemeral PostgreSQL container..." -ForegroundColor Yellow
+        $Tier = "${{ inputs.tier }}"
+        if (!(docker ps -q -f name="ironforge-pg-$Tier")) {
+          Write-Host "⚠️ Managed Service not found for tier: $Tier. Booting ephemeral PostgreSQL container..." -ForegroundColor Yellow
           
           # We're running in a Rootless Docker environment (GitHub Runner on Coolify).
           # Directly provision the test container inside the isolated workspace.
           $composeContent = @"
 services:
-  db-${{ inputs.tier }}:
+  db-$Tier:
     image: postgres:15-alpine
-    container_name: ironforge-pg-${{ inputs.tier }}
+    container_name: ironforge-pg-$Tier
     environment:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: $DBName
@@ -63,8 +64,8 @@ services:
           Start-Sleep -Seconds 5
         }
         
-        if (docker ps -q -f name=ironforge-pg-${{ inputs.tier }}) {
-          Write-Host "🟢 Found Managed Service: ironforge-pg-${{ inputs.tier }}" -ForegroundColor Green
+        if (docker ps -q -f name="ironforge-pg-$Tier") {
+          Write-Host "🟢 Found Managed Service: ironforge-pg-$Tier" -ForegroundColor Green
           
           $DockerHost = if ("${{ runner.os }}" -eq "Windows") { "127.0.0.1" } else { "host.docker.internal" }
           # For Docker-in-Docker isolated namespaces, fallback to localhost if host.docker.internal fails.
