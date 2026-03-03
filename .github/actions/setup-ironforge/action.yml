@@ -28,6 +28,12 @@ runs:
     - name: Managed-Services Detection
       shell: pwsh
       run: |
+        if (!(docker ps -q -f name=ironforge-pg-${{ inputs.tier }})) {
+          Write-Host "⚠️ Managed Service not found for tier: ${{ inputs.tier }}. Booting ephemeral service via docker-compose.test.yml..." -ForegroundColor Yellow
+          docker compose -f docker-compose.test.yml up -d db-${{ inputs.tier }}
+          Start-Sleep -Seconds 5
+        }
+        
         if (docker ps -q -f name=ironforge-pg-${{ inputs.tier }}) {
           Write-Host "🟢 Found Managed Service: ironforge-pg-${{ inputs.tier }}" -ForegroundColor Green
           
@@ -63,8 +69,10 @@ runs:
           
           Write-Host "🚀 Exported DATABASE_URL and ADMIN_DATABASE_URL (Port $Port)" -ForegroundColor Cyan
         } else {
-          Write-Host "⚠️ Managed Service not found for tier: ${{ inputs.tier }}. Falling back to ephemeral service." -ForegroundColor Yellow
+          Write-Host "❌ CRITICAL: Failed to boot Managed Service for tier: ${{ inputs.tier }}." -ForegroundColor Red
+          exit 1
         }
+
 
     - name: Validate Secrets (Fast-Track)
       if: inputs.skip-validation != 'true'
