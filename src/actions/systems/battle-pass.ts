@@ -24,8 +24,8 @@ interface BattlePassProgress {
   tiers: {
     level: number;
     requiredXp: number;
-    freeReward: { id: string | null; data: any };
-    premiumReward: { id: string | null; data: any };
+    freeReward: { id: string | null; data: unknown };
+    premiumReward: { id: string | null; data: unknown };
     isClaimedFree: boolean;
     isClaimedPremium: boolean;
     isUnlocked: boolean;

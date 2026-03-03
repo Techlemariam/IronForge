@@ -14,7 +14,7 @@ export interface UnifiedLeaderboardEntry {
     score: number;
     faction?: string;
     level?: number;
-    metadata?: any;
+    metadata?: Record<string, unknown>;
 }
 
 /**

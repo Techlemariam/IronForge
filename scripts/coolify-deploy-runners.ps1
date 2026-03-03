@@ -70,11 +70,11 @@ services:
       - REPO_URL=https://github.com/Techlemariam/IronForge
       - ACCESS_TOKEN=PLACEHOLDER
       - RUNNER_NAME_PREFIX=IronForge-VPS
-      - RUNNER_LABELS=self-hosted,IronForge-Local
+      - RUNNER_LABELS=self-hosted,IronForge-VPS
       - RUNNER_WORKDIR=/tmp/github-runner
       - RUNNER_GROUP=Default
       - ORG_RUNNER=false
-      - LABELS=self-hosted,IronForge-Local
+      - LABELS=self-hosted,IronForge-VPS
       - EPHEMERAL=true
       - DISABLE_AUTO_UPDATE=true
     extra_hosts:

@@ -54,7 +54,7 @@ export async function getFactoryStatus(): Promise<(FactoryStatusData & { costSEK
         }
 
         const factoryDir = path.join(process.cwd(), '.agent/factory');
-        const stationStatusFiles: { [key: string]: any } = {};
+        const stationStatusFiles: Record<string, unknown> = {};
 
         try {
             const files = await fs.readdir(factoryDir);
@@ -65,12 +65,12 @@ export async function getFactoryStatus(): Promise<(FactoryStatusData & { costSEK
                     try {
                         const fileContent = await fs.readFile(filePath, 'utf8');
                         stationStatusFiles[stationName] = JSON.parse(fileContent);
-                    } catch (e: any) {
+                    } catch (e: unknown) {
                         console.error(`Failed to read or parse status file ${filePath}:`, e);
                     }
                 }
             }
-        } catch (e: any) {
+        } catch (e: any) { // Prisma/FS error codes are often on 'any' but we can type narrow
             // The factory directory might not exist, which is not a critical error.
             if (e.code !== 'ENOENT') {
                 console.error('Failed to read factory status directory:', e);
@@ -82,8 +82,8 @@ export async function getFactoryStatus(): Promise<(FactoryStatusData & { costSEK
             let health = s.health;
 
             const stationFileData = stationStatusFiles[s.station];
-            const dbMetadata = s.metadata as any;
-            const activityData = stationFileData || dbMetadata;
+            const dbMetadata = s.metadata as Record<string, any> | null;
+            const activityData = (stationFileData || dbMetadata) as Record<string, any> | null;
 
             if (activityData && activityData.branch) {
                 const isFailure = s.station === 'debug';
