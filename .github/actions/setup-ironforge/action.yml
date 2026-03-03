@@ -48,17 +48,7 @@ runs:
           
           # We're running in a Rootless Docker environment (GitHub Runner on Coolify).
           # Directly provision the test container inside the isolated workspace.
-          $composeContent = @"
-services:
-  db-$Tier:
-    image: postgres:15-alpine
-    container_name: ironforge-pg-$Tier
-    environment:
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: $DBName
-    ports:
-      - "$Port:5432"
-"@
+          $composeContent = "services:`n  db-$Tier:`n    image: postgres:15-alpine`n    container_name: ironforge-pg-$Tier`n    environment:`n      POSTGRES_PASSWORD: password`n      POSTGRES_DB: $DBName`n    ports:`n      - \`"$Port:5432\`""
           Set-Content -Path "docker-compose-ephemeral.yml" -Value $composeContent
           docker compose -f docker-compose-ephemeral.yml up -d
           Start-Sleep -Seconds 5
