@@ -29,8 +29,8 @@ runs:
       shell: pwsh
       run: |
         if (!(docker ps -q -f name=ironforge-pg-${{ inputs.tier }})) {
-          Write-Host "⚠️ Managed Service not found for tier: ${{ inputs.tier }}. Booting ephemeral service via docker-compose.test.yml..." -ForegroundColor Yellow
-          docker compose -f docker-compose.test.yml up -d db-${{ inputs.tier }}
+          Write-Host "⚠️ Managed Service not found for tier: ${{ inputs.tier }}. Attempting to start the stopped container 'ironforge-pg-${{ inputs.tier }}'..." -ForegroundColor Yellow
+          docker start ironforge-pg-${{ inputs.tier }}
           Start-Sleep -Seconds 5
         }
         
