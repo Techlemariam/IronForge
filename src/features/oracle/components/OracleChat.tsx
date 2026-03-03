@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { useChat } from "@ai-sdk/react";
+import { useChat, type Message } from "@ai-sdk/react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Send,
@@ -50,7 +50,7 @@ export const OracleChat: React.FC<OracleChatProps> = ({ context }) => {
   const handleSubmit = async (e?: React.FormEvent) => {
     e?.preventDefault();
     if (!input.trim()) return;
-    await sendMessage({ role: "user", content: input } as any);
+    await sendMessage({ role: "user", content: input } as Omit<Message, 'id'>);
     setInput("");
   };
 
@@ -108,6 +108,8 @@ export const OracleChat: React.FC<OracleChatProps> = ({ context }) => {
               <button
                 onClick={() => setIsOpen(false)}
                 className="p-1 hover:bg-white/10 rounded-full text-zinc-400 transition-colors"
+                aria-label="Close chat"
+                title="Close chat"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -118,7 +120,7 @@ export const OracleChat: React.FC<OracleChatProps> = ({ context }) => {
               ref={scrollRef}
               className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-hide"
             >
-              {messages.map((m: any) => (
+              {messages.map((m: Message) => (
                 <div
                   key={m.id}
                   className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}
@@ -192,6 +194,8 @@ export const OracleChat: React.FC<OracleChatProps> = ({ context }) => {
                   type="submit"
                   disabled={!input || isLoading}
                   className="absolute right-2 top-2 p-1.5 rounded-lg bg-indigo-600 text-white disabled:opacity-50 disabled:bg-zinc-700 transition-all hover:bg-indigo-500"
+                  aria-label="Send message"
+                  title="Send message"
                 >
                   <Send className="w-4 h-4" />
                 </button>

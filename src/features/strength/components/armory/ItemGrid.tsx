@@ -44,19 +44,19 @@ export function ItemGrid({ initialItems }: { initialItems: ArmoryItem[] }) {
         <div className="flex gap-2">
           <button
             onClick={() => setFilter("all")}
-            className={`px-4 py-2 rounded text-xs font-mono uppercase border ${filter === "all" ? "bg-warrior/10 border-warrior text-warrior" : "bg-transparent border-forge-border text-gray-400 hover:border-gray-500"}`}
+            className={`px-4 py-2 rounded text-xs font-mono uppercase border ${filter === "all" ? "bg-warrior/10 border-warrior text-warrior" : "bg-transparent border-forge-border text-muted-foreground hover:border-muted"}`}
           >
             All
           </button>
           <button
             onClick={() => setFilter("unlocked")}
-            className={`px-4 py-2 rounded text-xs font-mono uppercase border ${filter === "unlocked" ? "bg-warrior/10 border-warrior text-warrior" : "bg-transparent border-forge-border text-gray-400 hover:border-gray-500"}`}
+            className={`px-4 py-2 rounded text-xs font-mono uppercase border ${filter === "unlocked" ? "bg-warrior/10 border-warrior text-warrior" : "bg-transparent border-forge-border text-muted-foreground hover:border-muted"}`}
           >
             Unlocked
           </button>
           <button
             onClick={() => setFilter("locked")}
-            className={`px-4 py-2 rounded text-xs font-mono uppercase border ${filter === "locked" ? "bg-warrior/10 border-warrior text-warrior" : "bg-transparent border-forge-border text-gray-400 hover:border-gray-500"}`}
+            className={`px-4 py-2 rounded text-xs font-mono uppercase border ${filter === "locked" ? "bg-warrior/10 border-warrior text-warrior" : "bg-transparent border-forge-border text-muted-foreground hover:border-muted"}`}
           >
             Locked
           </button>
@@ -113,7 +113,7 @@ export function ItemGrid({ initialItems }: { initialItems: ArmoryItem[] }) {
                 </p>
 
                 {!item.locked && (
-                  <div className="mt-3 flex items-center gap-2 text-xs font-mono text-gray-400">
+                  <div className="mt-3 flex items-center gap-2 text-xs font-mono text-muted-foreground">
                     <div className="h-1 w-full bg-black/50 rounded-full overflow-hidden">
                       <div className="h-full bg-current w-3/4 opacity-50" />
                     </div>

@@ -66,7 +66,7 @@ interface StatCardProps {
 const StatCard: React.FC<StatCardProps> = ({ title, value, icon, description, highlight }) => (
     <Card className={`bg-black/60 backdrop-blur-md border-emerald-500/20 hover:border-emerald-500/40 transition-all duration-300 ${highlight ? 'ring-1 ring-emerald-500/50 bg-emerald-500/5' : ''}`}>
         <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-sm font-medium text-gray-400 capitalize">{title}</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground capitalize">{title}</CardTitle>
             {icon}
         </CardHeader>
         <CardContent>

@@ -39,14 +39,16 @@ services:
   playwright-runner:
     image: mcr.microsoft.com/playwright:v1.58.2-noble
     container_name: ironforge-playwright
+    user: "1001:127"
     working_dir: /app
     volumes:
       - .:/app
-      - /app/node_modules
     environment:
       DATABASE_URL: postgresql://postgres:postgres@db-test:5432/ironforge_test
       NEXT_PUBLIC_APP_URL: http://localhost:3000
       CI: "true"
+      # Playwright needs a home directory that the user owns to download browsers to
+      PLAYWRIGHT_BROWSERS_PATH: /app/.playwright
     depends_on:
       db-test:
         condition: service_healthy
@@ -62,18 +64,18 @@ services:
   lhci-runner:
     image: node:22-slim
     container_name: ironforge-lhci
+    user: "1001:127"
     working_dir: /app
     volumes:
       - .:/app
-      - /app/node_modules
-      - /app/.next
     environment:
       DATABASE_URL: postgresql://postgres:postgres@db-test:5432/ironforge_test
       CI: "true"
+      NPM_CONFIG_CACHE: /app/.npm-cache
     depends_on:
       db-test:
         condition: service_healthy
-    entrypoint: [ "sh", "-c", "apt-get update && apt-get install -y chromium && corepack enable && pnpm install --frozen-lockfile && pnpm build && pnpm lhci" ]
+    entrypoint: [ "sh", "-c", "corepack enable && pnpm config set store-dir /app/.pnpm-store && pnpm install --frozen-lockfile && pnpm build && pnpm lhci" ]
     networks:
       - ironforge-test-net
 

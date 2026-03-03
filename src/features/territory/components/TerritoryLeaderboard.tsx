@@ -54,7 +54,7 @@ export const TerritoryLeaderboard: React.FC<TerritoryLeaderboardProps> = ({ user
                         ) : (
                             users.map((user) => (
                                 <div key={user.userId} className="flex items-center p-4 hover:bg-emerald-500/5 transition-colors">
-                                    <div className="w-8 flex justify-center font-bold text-gray-400 mr-4">
+                                    <div className="w-8 flex justify-center font-bold text-muted-foreground mr-4">
                                         {user.rank <= 3 ? <Medal className={`w-6 h-6 ${getRankColor(user.rank)}`} /> : user.rank}
                                     </div>
                                     <Avatar className="h-10 w-10 border border-emerald-500/30 mr-4">
@@ -71,7 +71,7 @@ export const TerritoryLeaderboard: React.FC<TerritoryLeaderboardProps> = ({ user
                                                 </Badge>
                                             )}
                                         </div>
-                                        {user.city && <p className="text-xs text-gray-400">{user.city}</p>}
+                                        {user.city && <p className="text-xs text-muted-foreground">{user.city}</p>}
                                     </div>
                                     <div className="text-right">
                                         <div className="font-bold text-emerald-400">{user.ownedTiles}</div>

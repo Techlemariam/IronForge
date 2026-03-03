@@ -114,7 +114,7 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
         {title}
       </h3>
 
-      <p className="text-xs text-gray-400 text-center max-w-[80%] mb-4">
+      <p className="text-xs text-muted-foreground text-center max-w-[80%] mb-4">
         {description}
       </p>
 
@@ -165,7 +165,7 @@ export const CitadelHub: React.FC<CitadelHubProps> = ({ dispatch }) => {
                 <h3 className="text-lg font-bold uppercase tracking-widest text-red-100 mb-1">
                   Strength Focus
                 </h3>
-                <p className="text-xs text-gray-400 text-center">
+                <p className="text-xs text-muted-foreground text-center">
                   Log sets, build programs, level up
                 </p>
                 <div className="mt-3 px-3 py-1 rounded-full text-[10px] font-mono tracking-wider
@@ -191,7 +191,7 @@ export const CitadelHub: React.FC<CitadelHubProps> = ({ dispatch }) => {
                 <h3 className="text-lg font-bold uppercase tracking-widest text-orange-100 mb-1">
                   Cardio Focus
                 </h3>
-                <p className="text-xs text-gray-400 text-center">
+                <p className="text-xs text-muted-foreground text-center">
                   Cycling, running, and cardio quests
                 </p>
                 <div className="mt-3 px-3 py-1 rounded-full text-[10px] font-mono tracking-wider
@@ -424,7 +424,7 @@ export const CitadelHub: React.FC<CitadelHubProps> = ({ dispatch }) => {
                 setTrainingSubCategory(null);
               }
             }}
-            className="p-2 rounded-full hover:bg-white/10 text-gray-400 hover:text-white transition-colors"
+            className="p-2 rounded-full hover:bg-white/10 text-muted-foreground hover:text-white transition-colors"
             title="Back"
             aria-label="Go back"
           >

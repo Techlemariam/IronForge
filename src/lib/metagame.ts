@@ -13,7 +13,7 @@ interface RankThreshold {
 }
 
 const RANKS: RankThreshold[] = [
-    { name: "IRON", minScore: 0, color: "text-gray-400" },
+    { name: "IRON", minScore: 0, color: "text-muted-foreground" },
     { name: "STEEL", minScore: 2000, color: "text-slate-300" },
     { name: "TITANIUM", minScore: 5000, color: "text-cyan-400" },
     { name: "NEUTRONIUM", minScore: 8000, color: "text-purple-400" },

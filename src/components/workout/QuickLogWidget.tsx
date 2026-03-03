@@ -51,7 +51,7 @@ export function QuickLogWidget({
           <button
             onClick={onClose}
             aria-label="Close"
-            className="text-gray-400 hover:text-white p-2"
+            className="text-muted-foreground hover:text-white p-2"
           >
             ✕
           </button>
@@ -60,7 +60,7 @@ export function QuickLogWidget({
 
       {/* Weight Section */}
       <div className="mb-4">
-        <label htmlFor="weight-input" className="text-sm text-gray-400 mb-2 block">Weight (kg)</label>
+        <label htmlFor="weight-input" className="text-sm text-muted-foreground mb-2 block">Weight (kg)</label>
         <div className="flex items-center gap-2">
           {QUICK_WEIGHTS.map((delta) => (
             <button
@@ -92,7 +92,7 @@ export function QuickLogWidget({
 
       {/* Reps Section */}
       <div className="mb-4">
-        <label htmlFor="reps-input" className="text-sm text-gray-400 mb-2 block">Reps</label>
+        <label htmlFor="reps-input" className="text-sm text-muted-foreground mb-2 block">Reps</label>
         <div className="flex flex-wrap gap-2">
           {QUICK_REPS.map((r) => (
             <button
@@ -119,7 +119,7 @@ export function QuickLogWidget({
 
       {/* RPE (Optional) */}
       <div className="mb-4">
-        <div id="rpe-label" className="text-sm text-gray-400 mb-2 block">
+        <div id="rpe-label" className="text-sm text-muted-foreground mb-2 block">
           RPE (optional)
         </div>
         <div role="group" aria-labelledby="rpe-label" className="flex gap-1">
@@ -129,7 +129,7 @@ export function QuickLogWidget({
               onClick={() => setRpe(rpe === r ? undefined : r)}
               className={`px-2 py-1 rounded text-sm ${rpe === r
                 ? "bg-orange-600 text-white"
-                : "bg-gray-800 text-gray-400 hover:bg-gray-700"
+                : "bg-gray-800 text-muted-foreground hover:bg-gray-700"
                 }`}
             >
               {r}
