@@ -30,6 +30,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       
       - name: Setup IronForge
         uses: ./.github/actions/setup-ironforge
@@ -59,5 +61,6 @@ jobs:
           if ($Feature) {
              ./.agent/scripts/factory-manager.ps1 -Feature $Feature -Station "${{ github.event.inputs.station || 'verify' }}"
           } else {
-             Write-Host "No feature detected. Exiting."
+             Write-Host "No feature detected. Exiting gracefully."
+             exit 0
           }
