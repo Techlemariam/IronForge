@@ -35,8 +35,8 @@ export function DuelArena({ duelId, currentUserId, onClose }: DuelArenaProps) {
         const fetchState = async () => {
             const result = await getDuelArenaStateAction(duelId);
             const data = result?.data;
-            if (data?.success) {
-                setDuelState(data.duel);
+            if (result?.data?.success) {
+                setDuelState(result.data.duel);
             } else {
                 toast.error("Lost connection to arena...");
             }
@@ -58,8 +58,8 @@ export function DuelArena({ duelId, currentUserId, onClose }: DuelArenaProps) {
             const result = await executeTitanCombatTurnAction(duelId);
             if (result.success && result.combatLog) {
                 // Add combat messages to log
-                setCombatLog(prev => [...result.combatLog, ...prev].slice(0, 10)); // Keep last 10
-                toast.success(`You dealt ${result.damageDealt?.challenger || result.damageDealt?.defender} damage!`);
+                setCombatLog(prev => [...result.combatLog!, ...prev].slice(0, 10)); // Keep last 10
+                toast.success(`You dealt ${result.damageDealt?.challenger || result.damageDealt?.defender || 0} damage!`);
 
                 // Refresh state
                 const stateResult = await getDuelArenaStateAction(duelId);
@@ -72,7 +72,6 @@ export function DuelArena({ duelId, currentUserId, onClose }: DuelArenaProps) {
         } catch {
             toast.error("Combat error");
         } finally {
-            setIsAttacking(false);
         }
     };
 
