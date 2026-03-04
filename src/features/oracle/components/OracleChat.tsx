@@ -145,7 +145,14 @@ export const OracleChat: React.FC<OracleChatProps> = ({ context }) => {
                         : "bg-white/5 text-zinc-100 border border-white/5 rounded-tl-none font-medium"
                         }`}
                     >
-                      {m.content}
+                      {m.role === 'assistant'
+                        ? (() => {
+                          const text = Array.isArray(m.parts)
+                            ? (m.parts as Array<{ type: string; text?: string }>).filter((p): p is { type: 'text'; text: string } => p.type === 'text').map((p) => p.text).join('')
+                            : '';
+                          return text || (m as { content?: string }).content || '';
+                        })()
+                        : (m as { content?: string }).content}
                     </div>
                   </div>
                 </div>

@@ -19,8 +19,8 @@ interface Opponent {
 export function CardioDuelLobby() {
     const [opponents, setOpponents] = useState<Opponent[]>([]);
     const [selectedOpponent, setSelectedOpponent] = useState<string | null>(null);
-    const [duelType, _setDuelType] = useState("DISTANCE_RACE");
-    const [activityType, setActivityType] = useState("RUNNING");
+    const [duelType, _setDuelType] = useState<"TITAN_VS_TITAN" | "DISTANCE_RACE" | "SPEED_DEMON" | "ELEVATION_GRIND">("DISTANCE_RACE");
+    const [activityType, setActivityType] = useState<"RUNNING" | "CYCLING">("RUNNING");
     const [distance, setDistance] = useState("5");
     const [loading, setLoading] = useState(false);
 
@@ -58,8 +58,13 @@ export function CardioDuelLobby() {
         if (result?.data?.success) {
             toast.success("Duel Challenge Sent!");
             setSelectedOpponent(null);
+            // Refresh the IronArena view to show the pending challenge
+            window.location.reload();
         } else {
-            toast.error(result?.data?.error || result?.serverError || "Failed to send challenge");
+            const errorMsg = result?.validationErrors
+                ? "Invalid duel settings. Please check your inputs."
+                : (result?.data?.error || result?.serverError || "Failed to send challenge");
+            toast.error(errorMsg);
         }
         setLoading(false);
     };
@@ -79,7 +84,7 @@ export function CardioDuelLobby() {
                     <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
                             <label className="text-sm font-medium text-slate-400">Activity</label>
-                            <Select value={activityType} onValueChange={setActivityType}>
+                            <Select value={activityType} onValueChange={(v) => setActivityType(v as "RUNNING" | "CYCLING")}>
                                 <SelectTrigger>
                                     <SelectValue />
                                 </SelectTrigger>

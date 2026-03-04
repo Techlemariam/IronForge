@@ -69,51 +69,62 @@ export function BattlePassView({ initialData, userId }: BattlePassViewProps) {
   const handleClaim = async (tierLevel: number, isPremium: boolean) => {
     if (loading) return;
     setLoading(true);
-    // Optimistic update could happen here, but for now simple await
-    const result = await claimBattlePassRewardAction(
-      userId,
-      tierLevel,
-      isPremium,
-    );
+    try {
+      const result = await claimBattlePassRewardAction(
+        userId,
+        tierLevel,
+        isPremium,
+      );
 
-    if (result.success) {
-      toast.success(result.message);
-      // In a real app we'd re-fetch or optimistically update local state.
-      // For simplicity, we are forcing a refresh via router or just manual state update:
-      setData((prev) => {
-        if (!prev) return null;
-        return {
-          ...prev,
-          tiers: prev.tiers.map((t) => {
-            if (t.level === tierLevel) {
-              return {
-                ...t,
-                isClaimedFree: !isPremium ? true : t.isClaimedFree,
-                isClaimedPremium: isPremium ? true : t.isClaimedPremium,
-              };
-            }
-            return t;
-          }),
-        };
-      });
-    } else {
-      toast.error(result.message);
+      if (result.success) {
+        toast.success(result.message);
+        // In a real app we'd re-fetch or optimistically update local state.
+        // For simplicity, we are forcing a refresh via router or just manual state update:
+        setData((prev) => {
+          if (!prev) return null;
+          return {
+            ...prev,
+            tiers: prev.tiers.map((t) => {
+              if (t.level === tierLevel) {
+                return {
+                  ...t,
+                  isClaimedFree: !isPremium ? true : t.isClaimedFree,
+                  isClaimedPremium: isPremium ? true : t.isClaimedPremium,
+                };
+              }
+              return t;
+            }),
+          };
+        });
+      } else {
+        toast.error(result.message);
+      }
+    } catch (err) {
+      toast.error("An unexpected error occurred. Please try again.");
+      console.error(err);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const handleUpgrade = async () => {
     if (loading) return;
     setLoading(true);
-    const result = await upgradeToPremiumAction(userId);
-    if (result.success) {
-      toast.success("Premium Unlocked!");
-      // Optimistic update
-      setData(prev => prev ? ({ ...prev, hasPremium: true }) : null);
-    } else {
-      toast.error(result.message);
+    try {
+      const result = await upgradeToPremiumAction(userId);
+      if (result.success) {
+        toast.success("Premium Unlocked!");
+        // Optimistic update
+        setData(prev => prev ? ({ ...prev, hasPremium: true }) : null);
+      } else {
+        toast.error(result.message);
+      }
+    } catch (error) {
+      toast.error("An unexpected error occurred during upgrade.");
+      console.error(error);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (

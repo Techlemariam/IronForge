@@ -1,6 +1,18 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { createClient } from "@/utils/supabase/server";
+
+/**
+ * Verifies the authenticated session user matches the requested userId.
+ * Prevents IDOR: one authenticated user querying another user's mastery data.
+ */
+async function verifyMasteryAuth(userId: string): Promise<boolean> {
+  const supabase = await createClient();
+  const { data: { user }, error } = await supabase.auth.getUser();
+  if (error || !user) return false;
+  return user.id === userId;
+}
 
 interface ExerciseMastery {
   exerciseId: string;
@@ -70,19 +82,16 @@ const MASTERY_PERKS: MasteryPerk[] = [
 ];
 
 /**
- * Get mastery for a specific exercise.
+ * Internal: builds mastery data for a single exercise without re-verifying auth.
+ * Auth must be verified by the caller before invoking this.
  */
-export async function getExerciseMasteryAction(
-  userId: string,
-  exerciseId: string,
-): Promise<ExerciseMastery> {
+function buildExerciseMastery(exerciseId: string): ExerciseMastery {
   const level = 15;
   const unlockedPerks = MASTERY_PERKS.filter((p) => p.unlocksAtLevel <= level);
   const nextPerk = MASTERY_PERKS.find((p) => p.unlocksAtLevel > level);
-
   return {
     exerciseId,
-    exerciseName: "Bench Press",
+    exerciseName: exerciseId.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase()),
     level,
     xp: 7500,
     xpToNextLevel: 10000,
@@ -96,22 +105,38 @@ export async function getExerciseMasteryAction(
 }
 
 /**
+ * Get mastery for a specific exercise.
+ */
+export async function getExerciseMasteryAction(
+  userId: string,
+  exerciseId: string,
+): Promise<ExerciseMastery | null> {
+  if (!(await verifyMasteryAuth(userId))) {
+    console.warn('Mastery: Unauthorized access attempt blocked.');
+    return null;
+  }
+  return buildExerciseMastery(exerciseId);
+}
+
+/**
  * Get all exercise masteries for user.
+ * Verifies auth once and then builds all masteries without redundant Supabase calls.
  */
 export async function getAllMasteriesAction(
   userId: string,
 ): Promise<ExerciseMastery[]> {
+  if (!(await verifyMasteryAuth(userId))) {
+    console.warn('Mastery: Unauthorized access attempt blocked.');
+    return [];
+  }
   const exercises = [
-    "bench-press",
-    "squat",
-    "deadlift",
-    "overhead-press",
-    "barbell-row",
+    'bench-press',
+    'squat',
+    'deadlift',
+    'overhead-press',
+    'barbell-row',
   ];
-  const masteries = await Promise.all(
-    exercises.map((e) => getExerciseMasteryAction(userId, e)),
-  );
-  return masteries;
+  return exercises.map(buildExerciseMastery);
 }
 
 /**
@@ -126,8 +151,12 @@ export async function addMasteryXpAction(
   newXp: number;
   leveledUp: boolean;
   newPerk?: MasteryPerk;
-}> {
-  console.log(`Added ${xpGained} mastery XP for ${exerciseId}`);
+} | null> {
+  if (!(await verifyMasteryAuth(userId))) {
+    console.warn('Mastery: Unauthorized access attempt blocked.');
+    return null;
+  }
+  console.log(`Added ${xpGained} mastery XP for exercise ${exerciseId}`);
   revalidatePath("/mastery");
 
   // In production, calculate actual level up

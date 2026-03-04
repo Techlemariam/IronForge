@@ -19,7 +19,6 @@ interface ExerciseLogProps {
 }
 
 export const StrengthLog: React.FC<ExerciseLogProps> = ({
-  userId,
   exerciseId,
   exerciseName,
   initialSets = [],
@@ -74,7 +73,7 @@ export const StrengthLog: React.FC<ExerciseLogProps> = ({
     }
 
     // Server Action
-    const result = await logSetAction(userId, exerciseId, set);
+    const result = await logSetAction(user?.id!, exerciseId, set);
     if (!result.success) {
       toast({
         title: "Error",
