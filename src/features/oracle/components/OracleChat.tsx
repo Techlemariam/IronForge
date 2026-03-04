@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { useChat, type Message } from "@ai-sdk/react";
+import { useChat } from "@ai-sdk/react";
+import { DefaultChatTransport, type UIMessage } from "ai";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Send,
@@ -17,28 +18,33 @@ interface OracleChatProps {
   context?: Record<string, unknown> & { userId?: string };
 }
 
+const WELCOME_MESSAGE: UIMessage = {
+  id: "welcome",
+  role: "assistant",
+  parts: [
+    {
+      type: "text",
+      text: "Identity confirmed. I am the Oracle. Speak, Titan, and I shall guide your evolution. What metrics weigh upon your spirit today?",
+    },
+  ],
+  metadata: undefined,
+};
+
 export const OracleChat: React.FC<OracleChatProps> = ({ context }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [showProgramGenerator, setShowProgramGenerator] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const { messages, sendMessage, status } =
-    useChat({
-      // @ts-ignore - api is valid at runtime but not in UseChatOptions type definition
+  const { messages, sendMessage, status } = useChat({
+    transport: new DefaultChatTransport({
       api: "/api/chat",
       body: {
         context,
         userId: context?.userId,
       },
-      initialMessages: [
-        {
-          id: "welcome",
-          role: "assistant",
-          content:
-            "Identity confirmed. I am the Oracle. Speak, Titan, and I shall guide your evolution. What metrics weigh upon your spirit today?",
-        },
-      ],
-    });
+    }),
+    initialMessages: [WELCOME_MESSAGE],
+  });
 
   const [input, setInput] = useState("");
   const isLoading = status === "submitted" || status === "streaming";
@@ -50,7 +56,7 @@ export const OracleChat: React.FC<OracleChatProps> = ({ context }) => {
   const handleSubmit = async (e?: React.FormEvent) => {
     e?.preventDefault();
     if (!input.trim()) return;
-    await sendMessage({ role: "user", content: input } as Omit<Message, 'id'>);
+    await sendMessage({ text: input });
     setInput("");
   };
 
@@ -60,6 +66,13 @@ export const OracleChat: React.FC<OracleChatProps> = ({ context }) => {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages]);
+
+  /** Extract plain text from a UIMessage (parts-based) */
+  const getMessageText = (m: UIMessage): string =>
+    m.parts
+      .filter((p): p is { type: "text"; text: string } => p.type === "text")
+      .map((p) => p.text)
+      .join("");
 
   return (
     <>
@@ -120,7 +133,7 @@ export const OracleChat: React.FC<OracleChatProps> = ({ context }) => {
               ref={scrollRef}
               className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-hide"
             >
-              {messages.map((m: Message) => (
+              {messages.map((m: UIMessage) => (
                 <div
                   key={m.id}
                   className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}
@@ -130,8 +143,8 @@ export const OracleChat: React.FC<OracleChatProps> = ({ context }) => {
                   >
                     <div
                       className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${m.role === "user"
-                        ? "bg-indigo-600"
-                        : "bg-zinc-800 border border-white/10"
+                          ? "bg-indigo-600"
+                          : "bg-zinc-800 border border-white/10"
                         }`}
                     >
                       {m.role === "user" ? (
@@ -143,11 +156,11 @@ export const OracleChat: React.FC<OracleChatProps> = ({ context }) => {
                     <div
                       data-testid="oracle-message"
                       className={`p-3 rounded-2xl text-sm leading-relaxed ${m.role === "user"
-                        ? "bg-indigo-600 text-white rounded-tr-none"
-                        : "bg-white/5 text-zinc-100 border border-white/5 rounded-tl-none font-medium"
+                          ? "bg-indigo-600 text-white rounded-tr-none"
+                          : "bg-white/5 text-zinc-100 border border-white/5 rounded-tl-none font-medium"
                         }`}
                     >
-                      {m.content}
+                      {getMessageText(m)}
                     </div>
                   </div>
                 </div>
