@@ -187,11 +187,11 @@ function mapUserChallengeToDailyQuest(uc: any): DailyQuest {
   const rewards = c.rewards as any;
   return {
     id: c.id, // Use Challenge ID for tracking
-    type: mapMetricToType(criteria.metric),
+    type: mapMetricToType(criteria.metric != null ? String(criteria.metric) : ''),
     difficulty: "MEDIUM", // Hardcoded for simplified mapping
     title: c.title,
     description: c.description,
-    target: criteria.target,
+    target: Number(criteria.target) || 0,
     current: uc.progress,
     xpReward: rewards.xp || 0,
     goldReward: rewards.gold || 0,
