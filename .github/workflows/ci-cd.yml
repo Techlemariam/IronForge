@@ -61,7 +61,7 @@ jobs:
   l1-verify:
     name: "⚡ L1: Verify"
     if: github.event_name == 'pull_request' || startsWith(github.ref, 'refs/heads/fix/')
-    runs-on: [self-hosted, IronForge-Local] # Target specific local runner
+    runs-on: [self-hosted, IronForge-VPS] # Target specific local runner
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v6
@@ -120,7 +120,7 @@ jobs:
   l2-verification:
     name: "🚀 L2: Verification"
     if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/fix/')
-    runs-on: [self-hosted, IronForge-Local] # Target specific local runner
+    runs-on: [self-hosted, IronForge-VPS] # Target specific local runner
     steps:
       - uses: actions/checkout@v6
       - uses: ./.github/actions/setup-ironforge
@@ -163,7 +163,7 @@ jobs:
     name: "🐳 Docker: Build Verify"
     needs: l2-verification
     if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/fix/')
-    runs-on: [self-hosted, IronForge-Local]
+    runs-on: [self-hosted, IronForge-VPS]
     steps:
       - uses: actions/checkout@v6
       - name: Set up Docker Buildx
@@ -198,7 +198,7 @@ jobs:
     name: 🎭 E2E Tests
     needs: [l1-verify]
     if: (github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch') && github.actor != 'dependabot[bot]'
-    runs-on: [self-hosted, IronForge-Local] # Target specific local runner
+    runs-on: [self-hosted, IronForge-VPS] # Target specific local runner
     steps:
       - uses: actions/checkout@v6
       - uses: ./.github/actions/setup-ironforge
@@ -270,7 +270,7 @@ jobs:
     name: "🎭 L2: E2E Smoke"
     needs: [l2-verification]
     if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/fix/')
-    runs-on: [self-hosted, IronForge-Local] # Target specific local runner
+    runs-on: [self-hosted, IronForge-VPS] # Target specific local runner
     env:
       DATABASE_URL: postgresql://postgres:postgres@localhost:5437/ironforge_test?schema=public
       DIRECT_URL: postgresql://postgres:postgres@localhost:5437/ironforge_test?schema=public
@@ -315,7 +315,7 @@ jobs:
     name: "📊 L2: Perf Audit"
     needs: [l2-verification]
     if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/fix/')
-    runs-on: [self-hosted, IronForge-Local] # Target specific local runner
+    runs-on: [self-hosted, IronForge-VPS] # Target specific local runner
     env:
       DATABASE_URL: postgresql://postgres:postgres@localhost:5433/ironforge_test?schema=public
       DIRECT_URL: postgresql://postgres:postgres@localhost:5433/ironforge_test?schema=public
@@ -353,7 +353,7 @@ jobs:
   l2-db-guard:
     name: "🗄️ L2: DB Guard"
     if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/fix/')
-    runs-on: [self-hosted, IronForge-Local] # Target specific local runner
+    runs-on: [self-hosted, IronForge-VPS] # Target specific local runner
     steps:
       - uses: actions/checkout@v6
       - uses: ./.github/actions/setup-ironforge
@@ -394,7 +394,7 @@ jobs:
     name: 🏥 Deployment Status
     needs: [l2-verification, l2-e2e-smoke, l2-db-guard, l2-perf-audit]
     if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/fix/')
-    runs-on: [self-hosted, IronForge-Local] # Target specific local runner
+    runs-on: [self-hosted, IronForge-VPS] # Target specific local runner
     steps:
       - name: Verify Health
         env:
