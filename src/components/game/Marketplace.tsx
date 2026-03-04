@@ -62,7 +62,7 @@ const Marketplace: React.FC<MarketplaceProps> = ({ onClose }) => {
 
   useEffect(() => {
     const loadEconomy = async () => {
-      const result = await getProgressionAction({});
+      const result = await getProgressionAction();
       if (result?.data) {
         setGold(result.data.gold);
       }

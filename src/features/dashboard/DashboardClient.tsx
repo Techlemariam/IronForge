@@ -166,7 +166,7 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
         description: "Uplink to Hevy failed. Check console.",
       });
     } finally {
-      const result = await getProgressionAction({});
+      const result = await getProgressionAction();
       if (result?.data) {
         dispatch({
           type: "RECALCULATE_PROGRESSION",

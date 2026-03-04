@@ -58,23 +58,29 @@ export function CardioDuelLobby() {
             payloadOpts.targetDistance = parseFloat(distance);
         }
 
-        const result = await createDuelChallengeAction({
-            targetUserId: selectedOpponent,
-            options: payloadOpts
-        });
+        try {
+            const result = await createDuelChallengeAction({
+                targetUserId: selectedOpponent,
+                options: payloadOpts
+            });
 
-        if (result?.data?.success) {
-            toast.success("Duel Challenge Sent!");
-            setSelectedOpponent(null);
-            // Refresh the IronArena view to show the pending challenge
-            window.location.reload();
-        } else {
-            const errorMsg = result?.validationErrors
-                ? "Invalid duel settings. Please check your inputs."
-                : (result?.data?.error || result?.serverError || "Failed to send challenge");
-            toast.error(errorMsg);
+            if (result?.data?.success) {
+                toast.success("Duel Challenge Sent!");
+                setSelectedOpponent(null);
+                // Refresh the IronArena view to show the pending challenge
+                window.location.reload();
+            } else {
+                const errorMsg = result?.validationErrors
+                    ? "Invalid duel settings. Please check your inputs."
+                    : (result?.data?.error || result?.serverError || "Failed to send challenge");
+                toast.error(errorMsg);
+            }
+        } catch (error) {
+            toast.error("An unexpected error occurred while sending the challenge.");
+            console.error(error);
+        } finally {
+            setLoading(false);
         }
-        setLoading(false);
     };
 
     return (

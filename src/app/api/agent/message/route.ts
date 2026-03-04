@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { z } from "zod";
 
 const ALLOWED_TOPICS = [
     "HANDOFF",
@@ -28,29 +29,28 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
     }
 
+    const PostMessageSchema = z.object({
+        from: z.string().min(1),
+        to: z.string().min(1),
+        topic: z.enum(["HANDOFF", "ALERT", "REQUEST", "REVIEW", "INFO", "BLOCKED"]),
+        content: z.string().min(1),
+        taskId: z.string().optional().nullable(),
+        prNumber: z.number().int().positive().optional().nullable(),
+    });
+
+    const parsed = PostMessageSchema.safeParse(body);
+    if (!parsed.success) {
+        return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
+    }
+
     const {
         from: senderRole,
         to: receiverRole,
         topic,
         content,
-        taskId = null,
-        prNumber = null,
-    } = body as Record<string, unknown>;
-
-    // Basic validation
-    if (!senderRole || !receiverRole || !topic || !content) {
-        return NextResponse.json(
-            { error: "Missing required fields: from, to, topic, content" },
-            { status: 400 },
-        );
-    }
-
-    if (!ALLOWED_TOPICS.includes(topic as (typeof ALLOWED_TOPICS)[number])) {
-        return NextResponse.json(
-            { error: `Invalid topic. Allowed: ${ALLOWED_TOPICS.join(", ")}` },
-            { status: 400 },
-        );
-    }
+        taskId,
+        prNumber,
+    } = parsed.data;
 
     try {
         const message = await prisma.agentMessage.create({

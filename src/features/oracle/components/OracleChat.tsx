@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { useChat, type Message } from "@ai-sdk/react";
+import { useChat, type UIMessage } from "@ai-sdk/react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Send,
@@ -22,7 +22,8 @@ export const OracleChat: React.FC<OracleChatProps> = ({ context }) => {
   const [showProgramGenerator, setShowProgramGenerator] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const { messages, sendMessage, status } =
+  // @ts-ignore - append exists on UseChatHelpers but may be missing in current type def
+  const { messages, append, status } =
     useChat({
       // @ts-ignore - api is valid at runtime but not in UseChatOptions type definition
       api: "/api/chat",
@@ -36,6 +37,7 @@ export const OracleChat: React.FC<OracleChatProps> = ({ context }) => {
           role: "assistant",
           content:
             "Identity confirmed. I am the Oracle. Speak, Titan, and I shall guide your evolution. What metrics weigh upon your spirit today?",
+          parts: [],
         },
       ],
     });
@@ -50,7 +52,7 @@ export const OracleChat: React.FC<OracleChatProps> = ({ context }) => {
   const handleSubmit = async (e?: React.FormEvent) => {
     e?.preventDefault();
     if (!input.trim()) return;
-    await sendMessage({ role: "user", content: input } as Omit<Message, 'id'>);
+    await append({ role: "user", content: input });
     setInput("");
   };
 
@@ -120,7 +122,7 @@ export const OracleChat: React.FC<OracleChatProps> = ({ context }) => {
               ref={scrollRef}
               className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-hide"
             >
-              {messages.map((m: Message) => (
+              {messages.map((m: UIMessage) => (
                 <div
                   key={m.id}
                   className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}
@@ -147,7 +149,10 @@ export const OracleChat: React.FC<OracleChatProps> = ({ context }) => {
                         : "bg-white/5 text-zinc-100 border border-white/5 rounded-tl-none font-medium"
                         }`}
                     >
-                      {m.content}
+                      {m.role === 'assistant'
+                        ? (m.parts as any[]).filter(p => p.type === 'text').map((p) => p.text).join('')
+                        /* @ts-ignore - content exists on user messages but not in assistant type in v3 */
+                        : m.content}
                     </div>
                   </div>
                 </div>

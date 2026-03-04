@@ -15,7 +15,7 @@ Använd det här workflowet för att överlämna pågående arbete, kontext, ell
 
 ## Usage
 
-```
+```text
 /handover [receiver-agent] [topic]
 ```
 
@@ -94,4 +94,4 @@ pwsh .agent/scripts/agent-message-read.ps1 -Role "@coder"
 pwsh .agent/scripts/agent-message-read.ps1 -Role "all"
 ```
 
-Scriptet kommer automatiskt hämta alla `UNREAD` meddelanden och därefter markera dem som `READ`. Baserat på innehållet i dessa meddelanden, utgå från detta i din initiala planering.
+Scriptet kommer automatiskt hämta alla `UNREAD` meddelanden och därefter markera dem som `READ`. Basera din initiala planering på innehållet i dessa meddelanden.

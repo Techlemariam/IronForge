@@ -190,14 +190,14 @@ function mapUserChallengeToDailyQuest(uc: any): DailyQuest {
   const rewards = c.rewards as Record<string, unknown>;
   return {
     id: c.id, // Use Challenge ID for tracking
-    type: mapMetricToType(criteria.metric),
+    type: mapMetricToType(String(criteria.metric)),
     difficulty: "MEDIUM", // Hardcoded for simplified mapping
     title: c.title,
     description: c.description,
-    target: criteria.target,
+    target: Number(criteria.target),
     current: uc.progress,
-    xpReward: rewards.xp || 0,
-    goldReward: rewards.gold || 0,
+    xpReward: Number(rewards.xp) || 0,
+    goldReward: Number(rewards.gold) || 0,
     expiresAt: c.endDate,
     isCompleted: uc.completed,
     isClaimed: uc.claimed
@@ -255,8 +255,8 @@ export const claimQuestRewardAction = authActionClient
         }
 
         const rewards = uc.challenge.rewards as Record<string, unknown>;
-        const xp = rewards.xp || 0;
-        const gold = rewards.gold || 0;
+        const xp = Number(rewards.xp) || 0;
+        const gold = Number(rewards.gold) || 0;
 
         // 1. Award
         const { ProgressionService } = await import("@/services/progression");

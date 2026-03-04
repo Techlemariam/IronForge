@@ -41,7 +41,7 @@ const Arena: React.FC<ArenaProps> = ({ onClose }) => {
 
   useEffect(() => {
     const loadPlayer = async () => {
-      const result = await getProgressionAction({});
+      const result = await getProgressionAction();
       const playerLevel = result?.data?.level ?? 1;
       const startHp = 100 + playerLevel * 10;
 

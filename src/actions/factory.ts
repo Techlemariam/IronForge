@@ -95,6 +95,7 @@ export async function getFactoryStatus(): Promise<(FactoryStatusData & { costSEK
 
             return {
                 ...s,
+                metadata: s.metadata ?? null,
                 current,
                 health,
                 costSEK: current ? COST_SEK_PER_ACTIVE_STATION : 0
