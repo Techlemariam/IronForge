@@ -136,6 +136,15 @@ export function calculateE1rmAllFormulas(
 
   const values = Object.values(results).filter((v) => v > 0);
 
+  if (values.length === 0) {
+    return {
+      average: 0,
+      min: 0,
+      max: 0,
+      byFormula: results,
+    };
+  }
+
   return {
     average: Math.round(values.reduce((a, b) => a + b, 0) / values.length),
     min: Math.min(...values),
