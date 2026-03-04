@@ -45,23 +45,14 @@ export function CardioDuelLobby() {
     const handleCreateDuel = async () => {
         if (!selectedOpponent) return;
         setLoading(true);
-
-        const payloadOpts: any = {
-            duelType,
-            activityType,
-        };
-
-        if (duelType === "ELEVATION_GRIND") {
-            // Use distance dropdown to calculate a reasonable climb target (1 km distance equivalent -> 100m climb)
-            payloadOpts.targetDistance = parseFloat(distance) * 100;
-        } else {
-            payloadOpts.targetDistance = parseFloat(distance);
-        }
-
         try {
             const result = await createDuelChallengeAction({
                 targetUserId: selectedOpponent,
-                options: payloadOpts
+                options: {
+                    duelType,
+                    activityType,
+                    targetDistance: parseFloat(distance),
+                }
             });
 
             if (result?.data?.success) {
@@ -75,9 +66,9 @@ export function CardioDuelLobby() {
                     : (result?.data?.error || result?.serverError || "Failed to send challenge");
                 toast.error(errorMsg);
             }
-        } catch (error) {
-            toast.error("An unexpected error occurred while sending the challenge.");
-            console.error(error);
+        } catch (err) {
+            console.error('Failed to create duel challenge:', err);
+            toast.error("An unexpected error occurred. Please try again.");
         } finally {
             setLoading(false);
         }
