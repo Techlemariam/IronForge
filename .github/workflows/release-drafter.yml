@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   update_release_draft:
-    runs-on: [self-hosted, IronForge-Local]
+    runs-on: [self-hosted, IronForge-VPS]
     steps:
       - uses: actions/checkout@v6
         with:

@@ -21,6 +21,8 @@ env:
 jobs:
   update_project:
     runs-on: ubuntu-latest
+    # Skip for Dependabot PRs — Dependabot token cannot access Projects V2 GraphQL API
+    if: github.actor != 'dependabot[bot]'
     permissions:
       issues: write
       pull-requests: write

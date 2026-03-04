@@ -24,7 +24,7 @@ jobs:
         run: |
           echo "💓 Runner Heartbeat: Checking self-hosted runner status..."
 
-          RUNNERS=$(gh api /repos/${{ github.repository }}/actions/runners --jq '.runners[] | select(.labels[].name == "IronForge-Local") | {name: .name, status: .status, busy: .busy}')
+          RUNNERS=$(gh api /repos/${{ github.repository }}/actions/runners --jq '.runners[] | select(.labels[].name == "IronForge-VPS") | {name: .name, status: .status, busy: .busy}')
 
           ONLINE_COUNT=$(echo "$RUNNERS" | jq -s '[.[] | select(.status == "online")] | length')
           TOTAL_COUNT=$(echo "$RUNNERS" | jq -s 'length')

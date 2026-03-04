@@ -12,12 +12,7 @@ concurrency:
 jobs:
   synthetic-check:
     name: 🏥 Prod Health Check
-    runs-on: [self-hosted, IronForge-Local]
-    container:
-      image: ghcr.io/techlemariam/ironforge/ironforge-agent:latest
-      credentials:
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+    runs-on: [self-hosted, IronForge-VPS]
 
     steps:
       - name: Setup IronForge

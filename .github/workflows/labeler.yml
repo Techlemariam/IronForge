@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   triage:
-    runs-on: [self-hosted, IronForge-Local]
+    runs-on: [self-hosted, IronForge-VPS]
     steps:
       - uses: actions/checkout@v6
       - uses: actions/labeler@v5
