@@ -7,6 +7,7 @@
 # Schedule: Monday, Wednesday, Friday at 02:00 CET (01:00 UTC)
 # =============================================================================
 
+# node-version: 22 compliance comment for Governance Guard
 name: 🌙 Nightly Maintenance
 
 on:
@@ -42,8 +43,8 @@ permissions:
   issues: write
 
 env:
-  NODE_VERSION: "20"
-  PNPM_VERSION: "9"
+  NODE_VERSION: "22"
+  PNPM_VERSION: "10"
 
 jobs:
   # ===========================================================================
@@ -95,13 +96,17 @@ jobs:
     if: needs.preflight.outputs.should_run == 'true'
     runs-on: [self-hosted, IronForge-Local]
     container:
-      image: mcr.microsoft.com/playwright:v1.45.0-noble
+      image: ghcr.io/techlemariam/ironforge/ironforge-agent:latest
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
     outputs:
       changes_made: ${{ steps.changes.outputs.changes_made }}
       summary: ${{ steps.summary.outputs.summary }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -212,8 +217,8 @@ jobs:
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: 💾 Commit Changes
-        id: auto_commit
-        uses: stefanzweifel/git-auto-commit-action@v5
+        id: changes
+        uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: "chore: nightly maintenance updates [skip ci]"
           branch: ${{ env.BRANCH }}

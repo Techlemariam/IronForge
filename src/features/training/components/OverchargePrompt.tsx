@@ -1,5 +1,5 @@
 import React from "react";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { Crown, ArrowUpCircle, XCircle } from "lucide-react";
 
 interface OverchargePromptProps {
@@ -14,7 +14,7 @@ const OverchargePrompt: React.FC<OverchargePromptProps> = ({
   suggestedWeight,
 }) => {
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.9 }}
@@ -57,13 +57,14 @@ const OverchargePrompt: React.FC<OverchargePromptProps> = ({
           </button>
           <button
             onClick={onDecline}
+            aria-label="Decline Overcharge"
             className="px-4 bg-zinc-800 hover:bg-zinc-700 text-zinc-400 hover:text-white rounded transition-colors"
           >
             <XCircle className="w-5 h-5" />
           </button>
         </div>
       </div>
-    </motion.div>
+    </m.div>
   );
 };
 

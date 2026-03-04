@@ -27,25 +27,48 @@ async function main() {
 
     // Authenticate with Supabase to get the REAL User ID
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    const serviceKey = process.env.SUPABASE_SERVICE_KEY;
     const testEmail = process.env.TEST_USER_EMAIL || 'alexander.teklemariam@gmail.com';
     const testPassword = process.env.TEST_USER_PASSWORD || 'IronForge2025!';
 
     let userId: string | undefined;
 
-    if (supabaseUrl && supabaseKey) {
-        console.log(`🔐 Authenticating with Supabase to sync User ID for ${testEmail}...`);
-        const supabase = createClient(supabaseUrl, supabaseKey);
-        const { data, error } = await supabase.auth.signInWithPassword({
-            email: testEmail,
-            password: testPassword,
+    if (supabaseUrl && serviceKey) {
+        console.log(`🔐 Ensuring test user ${testEmail} exists in local Supabase Auth...`);
+        // Use service role key to manage users without email confirmation
+        const supabaseAdmin = createClient(supabaseUrl, serviceKey, {
+            auth: {
+                autoRefreshToken: false,
+                persistSession: false
+            }
         });
 
-        if (error) {
-            console.warn(`⚠️ Failed to sign in with Supabase: ${error.message}. User ID might be mismatched.`);
-        } else if (data.user) {
-            userId = data.user.id;
-            console.log(`✅ Retrieved Supabase User ID: ${userId}`);
+        // Try to get existing user
+        const { data: { users }, error: listError } = await supabaseAdmin.auth.admin.listUsers();
+
+        if (listError) {
+            console.warn(`⚠️ Failed to list users: ${listError.message}`);
+        } else {
+            const existingAuthUser = users.find(u => u.email === testEmail);
+            if (existingAuthUser) {
+                userId = existingAuthUser.id;
+                console.log(`✅ Found existing Supabase Auth User ID: ${userId}`);
+            } else {
+                console.log(`👤 User ${testEmail} not found. Creating via Admin API...`);
+                const { data: { user }, error: createError } = await supabaseAdmin.auth.admin.createUser({
+                    email: testEmail,
+                    password: testPassword,
+                    email_confirm: true,
+                    user_metadata: { heroName: 'E2E Hunter' }
+                });
+
+                if (createError) {
+                    console.error(`❌ Failed to create auth user: ${createError.message}`);
+                } else if (user) {
+                    userId = user.id;
+                    console.log(`✅ Created Supabase Auth User ID: ${userId}`);
+                }
+            }
         }
     } else {
         console.warn('⚠️ Missing Supabase credentials in env. Skipping ID sync.');
@@ -168,6 +191,8 @@ async function main() {
         faction: Faction.HORDE,
         archetype: Archetype.PATHFINDER,
         hasCompletedOnboarding: true,
+        intervalsApiKey: 'mock-e2e-api-key',
+        intervalsAthleteId: 'i123456',
     };
 
     const titanData = {
@@ -212,6 +237,52 @@ async function main() {
 
     console.log(`✅ Ensured Test User: ${testUser.heroName} (Onboarding Completed) with ID: ${testUser.id}`);
 
+    // 4. Seed E2E Guild + Territory so /territory page renders TerritoryStats
+    // getUserTerritoryStats() returns null if user has no guildId — causing 'Owned Tiles' to not render
+    console.log('🏰 Seeding E2E Guild and Territory...');
+    const e2eGuildId = 'e2e-guild-id';
+
+    const e2eGuild = await prisma.guild.upsert({
+        where: { id: e2eGuildId },
+        update: {
+            leaderId: testUser.id,
+        },
+        create: {
+            id: e2eGuildId,
+            name: 'E2E Iron Vanguard',
+            tag: 'E2EV',
+            leaderId: testUser.id,
+            isPublic: true,
+            xp: 1000,
+            level: 3,
+            gold: 5000,
+        },
+    });
+    console.log(`✅ Ensured E2E Guild: ${e2eGuild.name} (${e2eGuild.id})`);
+
+    // Assign guild to the test user
+    await prisma.user.update({
+        where: { id: testUser.id },
+        data: { guildId: e2eGuild.id },
+    });
+    console.log(`✅ Assigned guild ${e2eGuild.tag} to test user.`);
+
+    // Create a territory controlled by the E2E guild
+    await prisma.territory.upsert({
+        where: { name: 'E2E Iron Peaks' },
+        update: { controlledById: e2eGuild.id },
+        create: {
+            name: 'E2E Iron Peaks',
+            region: 'Nordheim',
+            type: 'TRAINING_GROUNDS',
+            bonuses: { goldPerDay: 100, xpPerDay: 50 },
+            coordX: 10,
+            coordY: 10,
+            controlledById: e2eGuild.id,
+            controlledAt: new Date(),
+        },
+    });
+    console.log('✅ Seeded E2E territory controlled by guild.');
 
     console.log('🌱 Seeding completed successfully.');
 }

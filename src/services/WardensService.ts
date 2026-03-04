@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/prisma';
 import { WardensManifest, GoalPriority, MacroPhase } from '@/types/goals';
-import { Prisma  } from "@/types/prisma";
+import { Prisma } from "@/types/prisma";
 
 export class WardensService {
     /**
@@ -52,7 +52,7 @@ export class WardensService {
             autoRotate: data.autoRotate ?? true,
             privacyHealth: data.consents?.healthData ?? true,
             privacyPublic: data.consents?.leaderboard ?? true,
-            goals: (data.goals as any) || [],
+            goals: (data.goals as unknown as Prisma.InputJsonValue) || [],
         };
 
         const record = await prisma.wardensManifest.upsert({
@@ -65,7 +65,7 @@ export class WardensService {
                 autoRotate: data.autoRotate,
                 privacyHealth: data.consents?.healthData,
                 privacyPublic: data.consents?.leaderboard,
-                goals: data.goals as any,
+                goals: data.goals as unknown as Prisma.InputJsonValue,
             },
         });
 

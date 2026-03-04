@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
-import { CallToolRequestSchema } from '@modelcontextprotocol/sdk/types.js';
+import { } from '@modelcontextprotocol/sdk/types.js';
 import fs from 'fs';
 import path from 'path';
 import { trackUsage } from '../quota-manager.js';

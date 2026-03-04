@@ -30,11 +30,11 @@ export function CardioDuelLobby() {
 
     const loadOpponents = async () => {
         const res = await getPotentialOpponentsAction();
-        if (res.success && res.opponents) {
+        if (res?.success && res.opponents) {
             // Fix: Map to ensure heroName is string (fallback for null)
             const sanitized: Opponent[] = res.opponents.map((opp: any) => ({
                 id: opp.id,
-                heroName: opp.heroName || "Unknown Titan",
+                heroName: (opp.heroName && typeof opp.heroName === 'string') ? opp.heroName : "Unknown Titan",
                 level: opp.level, // Assuming level is always present/valid based on schema, otherwise provide default
                 titan: opp.titan ? { powerRating: opp.titan.powerRating } : undefined
             }));
@@ -46,17 +46,20 @@ export function CardioDuelLobby() {
         if (!selectedOpponent) return;
         setLoading(true);
 
-        const result = await createDuelChallengeAction(selectedOpponent, {
-            duelType,
-            activityType,
-            targetDistance: parseFloat(distance),
+        const result = await createDuelChallengeAction({
+            targetUserId: selectedOpponent,
+            options: {
+                duelType,
+                activityType,
+                targetDistance: parseFloat(distance),
+            }
         });
 
-        if (result.success) {
+        if (result?.data?.success) {
             toast.success("Duel Challenge Sent!");
             setSelectedOpponent(null);
         } else {
-            toast.error(result.error);
+            toast.error(result?.data?.error || result?.serverError || "Failed to send challenge");
         }
         setLoading(false);
     };

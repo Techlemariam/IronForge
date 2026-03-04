@@ -44,6 +44,14 @@ const PreWorkoutCheck: React.FC<PreWorkoutCheckProps> = ({
   const { purchasedSkillIds } = useSkills();
   const hasFatigueShroud = purchasedSkillIds.has("wind_1"); // 10% tolerance buff
 
+  // E2E Mock Bypass
+  React.useEffect(() => {
+    if (typeof window !== "undefined" && (window as any).__mockAutoCheckIn) {
+      console.log("[E2E-DEBUG] PreWorkoutCheck auto-bypassed via mock");
+      onProceed(session);
+    }
+  }, [session, onProceed]);
+
   const runScan = async (forceLow = false) => {
     setStatus("SCANNING");
     playSound("quest_accept");

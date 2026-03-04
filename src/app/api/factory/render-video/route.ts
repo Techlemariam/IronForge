@@ -14,8 +14,8 @@ export async function POST(request: Request) {
 
     const propsJson = JSON.stringify(props);
     const propsBase64 = Buffer.from(propsJson).toString('base64');
-    
-    const scriptPath = path.resolve(process.cwd(), 'scripts/render-video.mjs');
+
+    const scriptPath = [process.cwd(), 'scripts', 'render-video.mjs'].join('/');
     console.log(`[API] Executing render script at: ${scriptPath}`);
 
     // We use spawn to have better control over the process and its output.
@@ -36,20 +36,20 @@ export async function POST(request: Request) {
     }
 
     const code = await new Promise(resolve => {
-        child.on('close', resolve);
+      child.on('close', resolve);
     });
 
     if (code !== 0) {
       console.error(`[API] Render script failed with code ${code}.`);
-      return NextResponse.json({ 
+      return NextResponse.json({
         error: 'Video rendering failed.',
-        details: stderr 
+        details: stderr
       }, { status: 500 });
     }
-    
+
     const outputPathMatch = stdout.match(/outputPath: (.*)/);
     if (!outputPathMatch) {
-      return NextResponse.json({ 
+      return NextResponse.json({
         error: 'Could not determine output path from script.',
         details: stdout
       }, { status: 500 });
@@ -57,9 +57,9 @@ export async function POST(request: Request) {
 
     const outputPath = outputPathMatch[1].trim();
 
-    return NextResponse.json({ 
+    return NextResponse.json({
       message: 'Video rendered successfully!',
-      videoPath: outputPath 
+      videoPath: outputPath
     }, { status: 200 });
 
   } catch (error) {

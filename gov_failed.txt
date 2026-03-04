@@ -1,0 +1,192 @@
+Audit Workflow Standards	Set up job	´╗┐2026-03-01T07:25:14.4522665Z Current runner version: '2.331.0'
+Audit Workflow Standards	Set up job	2026-03-01T07:25:14.4547064Z ##[group]Runner Image Provisioner
+Audit Workflow Standards	Set up job	2026-03-01T07:25:14.4548138Z Hosted Compute Agent
+Audit Workflow Standards	Set up job	2026-03-01T07:25:14.4548660Z Version: 20260213.493
+Audit Workflow Standards	Set up job	2026-03-01T07:25:14.4549386Z Commit: 5c115507f6dd24b8de37d8bbe0bb4509d0cc0fa3
+Audit Workflow Standards	Set up job	2026-03-01T07:25:14.4550102Z Build Date: 2026-02-13T00:28:41Z
+Audit Workflow Standards	Set up job	2026-03-01T07:25:14.4550725Z Worker ID: {2cdcbf79-378a-4a31-9482-bcb3c7c4d2a2}
+Audit Workflow Standards	Set up job	2026-03-01T07:25:14.4551534Z Azure Region: eastus2
+Audit Workflow Standards	Set up job	2026-03-01T07:25:14.4552058Z ##[endgroup]
+Audit Workflow Standards	Set up job	2026-03-01T07:25:14.4553600Z ##[group]Operating System
+Audit Workflow Standards	Set up job	2026-03-01T07:25:14.4554265Z Ubuntu
+Audit Workflow Standards	Set up job	2026-03-01T07:25:14.4554742Z 24.04.3
+Audit Workflow Standards	Set up job	2026-03-01T07:25:14.4555165Z LTS
+Audit Workflow Standards	Set up job	2026-03-01T07:25:14.4555719Z ##[endgroup]
+Audit Workflow Standards	Set up job	2026-03-01T07:25:14.4556227Z ##[group]Runner Image
+Audit Workflow Standards	Set up job	2026-03-01T07:25:14.4556739Z Image: ubuntu-24.04
+Audit Workflow Standards	Set up job	2026-03-01T07:25:14.4557578Z Version: 20260224.36.1
+Audit Workflow Standards	Set up job	2026-03-01T07:25:14.4558632Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260224.36/images/ubuntu/Ubuntu2404-Readme.md
+Audit Workflow Standards	Set up job	2026-03-01T07:25:14.4560367Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260224.36
+Audit Workflow Standards	Set up job	2026-03-01T07:25:14.4561280Z ##[endgroup]
+Audit Workflow Standards	Set up job	2026-03-01T07:25:14.4563027Z ##[group]GITHUB_TOKEN Permissions
+Audit Workflow Standards	Set up job	2026-03-01T07:25:14.4565138Z Contents: read
+Audit Workflow Standards	Set up job	2026-03-01T07:25:14.4565661Z Metadata: read
+Audit Workflow Standards	Set up job	2026-03-01T07:25:14.4566235Z Packages: read
+Audit Workflow Standards	Set up job	2026-03-01T07:25:14.4566751Z ##[endgroup]
+Audit Workflow Standards	Set up job	2026-03-01T07:25:14.4569047Z Secret source: Actions
+Audit Workflow Standards	Set up job	2026-03-01T07:25:14.4569711Z Prepare workflow directory
+Audit Workflow Standards	Set up job	2026-03-01T07:25:14.4895994Z Prepare all required actions
+Audit Workflow Standards	Set up job	2026-03-01T07:25:14.4933747Z Getting action download info
+Audit Workflow Standards	Set up job	2026-03-01T07:25:14.7241625Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+Audit Workflow Standards	Set up job	2026-03-01T07:25:14.9941645Z Complete job name: Audit Workflow Standards
+Audit Workflow Standards	Run actions/checkout@v4	´╗┐2026-03-01T07:25:15.0639443Z ##[group]Run actions/checkout@v4
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.0640274Z with:
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.0640689Z   repository: Techlemariam/IronForge
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.0641331Z   token: ***
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.0641717Z   ssh-strict: true
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.0642106Z   ssh-user: git
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.0642492Z   persist-credentials: true
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.0642923Z   clean: true
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.0643303Z   sparse-checkout-cone-mode: true
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.0643776Z   fetch-depth: 1
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.0644157Z   fetch-tags: false
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.0644695Z   show-progress: true
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.0645224Z   lfs: false
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.0645807Z   submodules: false
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.0646242Z   set-safe-directory: true
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.0646901Z ##[endgroup]
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.1733405Z Syncing repository: Techlemariam/IronForge
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.1735124Z ##[group]Getting Git version info
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.1735887Z Working directory is '/home/runner/work/IronForge/IronForge'
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.1736948Z [command]/usr/bin/git version
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.1853824Z git version 2.53.0
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.1881121Z ##[endgroup]
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.1897705Z Temporarily overriding HOME='/home/runner/work/_temp/c917c619-871a-4271-945b-0aed39d915f3' before making global git config changes
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.1900161Z Adding repository directory to the temporary git global config as a safe directory
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.1904527Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/IronForge/IronForge
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.1950067Z Deleting the contents of '/home/runner/work/IronForge/IronForge'
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.1954123Z ##[group]Initializing the repository
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.1959147Z [command]/usr/bin/git init /home/runner/work/IronForge/IronForge
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.2129051Z hint: Using 'master' as the name for the initial branch. This default branch name
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.2130162Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.2131488Z hint: to use in all of your new repositories, which will suppress this warning,
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.2132785Z hint: call:
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.2133419Z hint:
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.2134211Z hint: 	git config --global init.defaultBranch <name>
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.2135485Z hint:
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.2136273Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.2137229Z hint: 'development'. The just-created branch can be renamed via this command:
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.2138274Z hint:
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.2138663Z hint: 	git branch -m <name>
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.2139118Z hint:
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.2139714Z hint: Disable this message with "git config set advice.defaultBranchName false"
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.2140908Z Initialized empty Git repository in /home/runner/work/IronForge/IronForge/.git/
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.2146975Z [command]/usr/bin/git remote add origin https://github.com/Techlemariam/IronForge
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.2189102Z ##[endgroup]
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.2190298Z ##[group]Disabling automatic garbage collection
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.2193210Z [command]/usr/bin/git config --local gc.auto 0
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.2222580Z ##[endgroup]
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.2223254Z ##[group]Setting up auth
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.2229562Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.2260347Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.2699263Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.2730364Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.2971720Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.3002684Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.3242677Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.3279616Z ##[endgroup]
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.3280514Z ##[group]Fetching the repository
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.3288963Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +645af4e31a7b8a0ce80df493288ac01618aae711:refs/remotes/pull/201/merge
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.9811447Z From https://github.com/Techlemariam/IronForge
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.9812965Z  * [new ref]         645af4e31a7b8a0ce80df493288ac01618aae711 -> pull/201/merge
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.9846824Z ##[endgroup]
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.9848245Z ##[group]Determining the checkout info
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.9850160Z ##[endgroup]
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.9854289Z [command]/usr/bin/git sparse-checkout disable
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.9900129Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.9929856Z ##[group]Checking out the ref
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:15.9931111Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/201/merge
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:16.1665111Z Note: switching to 'refs/remotes/pull/201/merge'.
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:16.1666503Z 
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:16.1667796Z You are in 'detached HEAD' state. You can look around, make experimental
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:16.1670347Z changes and commit them, and you can discard any commits you make in this
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:16.1672864Z state without impacting any branches by switching back to a branch.
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:16.1674109Z 
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:16.1674800Z If you want to create a new branch to retain commits you create, you may
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:16.1676332Z do so (now or later) by using -c with the switch command. Example:
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:16.1677231Z 
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:16.1677872Z   git switch -c <new-branch-name>
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:16.1678868Z 
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:16.1679372Z Or undo this operation with:
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:16.1680030Z 
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:16.1680319Z   git switch -
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:16.1680740Z 
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:16.1681440Z Turn off this advice by setting config variable advice.detachedHead to false
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:16.1682935Z 
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:16.1684230Z HEAD is now at 645af4e Merge 36d0ed6cc501bd5cf4d02fbeb765fb2e800c613b into 9ddb495284bc13d121fa570711085224a4f17e2c
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:16.1688560Z ##[endgroup]
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:16.1722331Z [command]/usr/bin/git log -1 --format=%H
+Audit Workflow Standards	Run actions/checkout@v4	2026-03-01T07:25:16.1746489Z 645af4e31a7b8a0ce80df493288ac01618aae711
+Audit Workflow Standards	Check Node and pnpm Versions	´╗┐2026-03-01T07:25:16.1987232Z ##[group]Run echo "### ­ƒøí´©Å Workflow Governance Audit" >> $GITHUB_STEP_SUMMARY
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.1989673Z [36;1mecho "### ­ƒøí´©Å Workflow Governance Audit" >> $GITHUB_STEP_SUMMARY[0m
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.1991548Z [36;1mERRORS=0[0m
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.1992436Z [36;1m[0m
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.1993386Z [36;1mfor file in .github/workflows/*.yml; do[0m
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.1995319Z [36;1m  # Skip itself and specialized workflows that don't use Node standard runners[0m
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.2000268Z [36;1m  if [[ "$file" == *"/governance-guard.yml" || "$file" == *"/labeler.yml" || "$file" == *"/release-drafter.yml" || "$file" == *"/stale.yml" || "$file" == *"/scorecard.yml" || "$file" == *"/project-automation.yml" || "$file" == *"/dependabot-auto-merge.yml" ]]; then continue; fi[0m
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.2004351Z [36;1m[0m
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.2005255Z [36;1m  echo "Auditing $file..."[0m
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.2006366Z [36;1m  [0m
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.2007403Z [36;1m  # Check for node-version: 22[0m
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.2009033Z [36;1m  # We check for '22' or "22" or version used in the composite action[0m
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.2011403Z [36;1m  if ! grep -qiE "node-version: ['\"]?22['\"]?|NODE_VERSION: ['\"]?22['\"]?|setup-ironforge" "$file"; then[0m
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.2014008Z [36;1m    echo "ÔØî $file: Missing node-version: 22 standardization" >> $GITHUB_STEP_SUMMARY[0m
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.2015875Z [36;1m    ERRORS=$((ERRORS + 1))[0m
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.2016978Z [36;1m  fi[0m
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.2017903Z [36;1m[0m
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.2018738Z [36;1m  # Check for pnpm 9[0m
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.2020206Z [36;1m  if ! grep -qE "version: ['\"]?9['\"]?|setup-ironforge" "$file"; then[0m
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.2022677Z [36;1m    # Some workflows might not use pnpm (governance only), so we check if setup-pnpm is used at all[0m
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.2024947Z [36;1m    if grep -q "pnpm/action-setup" "$file"; then[0m
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.2026743Z [36;1m      echo "ÔØî $file: Uses pnpm but not version 9" >> $GITHUB_STEP_SUMMARY[0m
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.2028528Z [36;1m      ERRORS=$((ERRORS + 1))[0m
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.2029656Z [36;1m    fi[0m
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.2030504Z [36;1m  fi[0m
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.2031322Z [36;1m[0m
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.2032156Z [36;1m  # Check for checkout@v4[0m
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.2033946Z [36;1m  if grep -q "actions/checkout@v" "$file" && ! grep -q "actions/checkout@v4" "$file"; then[0m
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.2036408Z [36;1m    echo "ÔØî $file: Uses outdated checkout action (use @v4)" >> $GITHUB_STEP_SUMMARY[0m
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.2038409Z [36;1m    ERRORS=$((ERRORS + 1))[0m
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.2039530Z [36;1m  fi[0m
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.2040368Z [36;1mdone[0m
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.2041505Z [36;1m[0m
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.2042367Z [36;1mif [ $ERRORS -gt 0 ]; then[0m
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.2043560Z [36;1m  echo "" >> $GITHUB_STEP_SUMMARY[0m
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.2045960Z [36;1m  echo "ÔÜá´©Å Found $ERRORS governance violations. Please fix them to match IronForge standards." >> $GITHUB_STEP_SUMMARY[0m
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.2048513Z [36;1m  exit 1[0m
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.2049380Z [36;1melse[0m
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.2050775Z [36;1m  echo "Ô£à All workflows meet Titan-Tier standards." >> $GITHUB_STEP_SUMMARY[0m
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.2052489Z [36;1mfi[0m
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.2108370Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.2109859Z ##[endgroup]
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.2213188Z Auditing .github/workflows/active-handover.yml...
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.2268217Z Auditing .github/workflows/agent-image.yml...
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.2333425Z Auditing .github/workflows/autonomous-antigravity-trigger.yml...
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.2398177Z Auditing .github/workflows/autonomous-trigger.yml...
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.2464514Z Auditing .github/workflows/check-drift.yml...
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.2517470Z Auditing .github/workflows/ci-cd.yml...
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.2571117Z Auditing .github/workflows/coolify-deploy.yml...
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.2623601Z Auditing .github/workflows/factory-line.yml...
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.2676325Z Auditing .github/workflows/fix-migrations.yml...
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.2731068Z Auditing .github/workflows/nightly-maintenance.yml...
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.2786554Z Auditing .github/workflows/profile-metrics.yml...
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.2839695Z Auditing .github/workflows/remote-trigger.yml...
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.2893025Z Auditing .github/workflows/runner-heartbeat.yml...
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.2959310Z Auditing .github/workflows/sentry-rollback.yml...
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.3024840Z Auditing .github/workflows/synthetic.yml...
+Audit Workflow Standards	Check Node and pnpm Versions	2026-03-01T07:25:16.3083389Z ##[error]Process completed with exit code 1.
+Audit Workflow Standards	Post Run actions/checkout@v4	´╗┐2026-03-01T07:25:16.3331131Z Post job cleanup.
+Audit Workflow Standards	Post Run actions/checkout@v4	2026-03-01T07:25:16.4309574Z [command]/usr/bin/git version
+Audit Workflow Standards	Post Run actions/checkout@v4	2026-03-01T07:25:16.4358064Z git version 2.53.0
+Audit Workflow Standards	Post Run actions/checkout@v4	2026-03-01T07:25:16.4403852Z Temporarily overriding HOME='/home/runner/work/_temp/a89f198e-fe10-4145-9e3b-bb2151e0ea51' before making global git config changes
+Audit Workflow Standards	Post Run actions/checkout@v4	2026-03-01T07:25:16.4406868Z Adding repository directory to the temporary git global config as a safe directory
+Audit Workflow Standards	Post Run actions/checkout@v4	2026-03-01T07:25:16.4410790Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/IronForge/IronForge
+Audit Workflow Standards	Post Run actions/checkout@v4	2026-03-01T07:25:16.4445644Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+Audit Workflow Standards	Post Run actions/checkout@v4	2026-03-01T07:25:16.4480277Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+Audit Workflow Standards	Post Run actions/checkout@v4	2026-03-01T07:25:16.4726822Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Audit Workflow Standards	Post Run actions/checkout@v4	2026-03-01T07:25:16.4748354Z http.https://github.com/.extraheader
+Audit Workflow Standards	Post Run actions/checkout@v4	2026-03-01T07:25:16.4762040Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+Audit Workflow Standards	Post Run actions/checkout@v4	2026-03-01T07:25:16.4793735Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+Audit Workflow Standards	Post Run actions/checkout@v4	2026-03-01T07:25:16.5026846Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+Audit Workflow Standards	Post Run actions/checkout@v4	2026-03-01T07:25:16.5060938Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+Audit Workflow Standards	Complete job	´╗┐2026-03-01T07:25:16.5434084Z Cleaning up orphan processes

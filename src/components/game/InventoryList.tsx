@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { toggleEquipAction } from "@/actions/economy/inventory";
-import { EquipmentType  } from "@/types/prisma";
+import { EquipmentType } from "@/types/prisma";
 
 interface InventoryItem {
     item: {
@@ -32,12 +32,12 @@ export function InventoryList({ userId, initialInventory }: InventoryListProps) 
         // Optimistic update
         setItems(prev => prev.map(i => i.equipmentId === itemId ? { ...i, equipped: !currentState } : i));
 
-        const res = await toggleEquipAction(userId, itemId, !currentState);
+        const res = await toggleEquipAction({ equipmentId: itemId, isEquipping: !currentState });
 
-        if (!res.success) {
+        if (!res?.data?.success) {
             // Revert on failure
             setItems(prev => prev.map(i => i.equipmentId === itemId ? { ...i, equipped: currentState } : i));
-            alert("Failed to update equipment");
+            alert(res?.serverError || "Failed to update equipment");
         }
         setLoading(null);
     };

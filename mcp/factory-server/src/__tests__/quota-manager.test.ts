@@ -1,5 +1,5 @@
 // @vitest-environment node
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { getQuota, trackUsage, setQuotaFilePath } from '../quota-manager.js';
 import fs from 'fs';
 import path from 'path';
@@ -20,7 +20,7 @@ describe('quota-manager', () => {
         if (fs.existsSync(tempFile)) {
             try {
                 fs.unlinkSync(tempFile);
-            } catch (e) {
+            } catch {
                 // Ignore
             }
         }

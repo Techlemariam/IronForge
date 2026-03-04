@@ -1,0 +1,240 @@
+# Active Handover: Receives specialist dispatch events from n8n CI Triage Router
+name: "🩺 Active Handover"
+
+on:
+  repository_dispatch:
+    types:
+      - doctor-code
+      - doctor-infra
+      - doctor-qa
+      - doctor-security
+      - doctor-ui-ux
+      - doctor-meta
+
+concurrency:
+  group: active-handover-${{ github.event.client_payload.pr_number || github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  dispatch:
+    name: "🩺 ${{ github.event.action }} Specialist"
+    runs-on: [self-hosted, IronForge-Local]
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.client_payload.branch || 'main' }}
+          fetch-depth: 0
+
+      - uses: ./.github/actions/setup-ironforge
+        with:
+          tier: 'l1'
+
+      - name: Extract Payload
+        id: payload
+        shell: pwsh
+        run: |
+          $specialist = "${{ github.event.action }}"
+          $runId = "${{ github.event.client_payload.run_id }}"
+          $prNumber = "${{ github.event.client_payload.pr_number }}"
+          $branch = "${{ github.event.client_payload.branch }}"
+          $jobName = "${{ github.event.client_payload.job_name }}"
+          $logsSummary = "${{ github.event.client_payload.logs_summary }}"
+
+          Write-Host "🩺 Active Handover received:" -ForegroundColor Cyan
+          Write-Host "  Specialist: $specialist"
+          Write-Host "  Run ID:     $runId"
+          Write-Host "  PR:         #$prNumber"
+          Write-Host "  Branch:     $branch"
+          Write-Host "  Job:        $jobName"
+
+          # Export for subsequent steps
+          "specialist=$specialist" | Out-File -Append $env:GITHUB_OUTPUT
+          "run_id=$runId" | Out-File -Append $env:GITHUB_OUTPUT
+          "pr_number=$prNumber" | Out-File -Append $env:GITHUB_OUTPUT
+          "branch=$branch" | Out-File -Append $env:GITHUB_OUTPUT
+
+      # --- Specialist: doctor-code ---
+      - name: "🔧 Doctor Code: Lint & Type Fix"
+        if: github.event.action == 'doctor-code'
+        shell: pwsh
+        run: |
+          Write-Host "🔧 doctor-code: Running diagnostic protocol..." -ForegroundColor Yellow
+
+          # Step 1: Check types
+          pnpm run check-types 2>&1 | Out-File -FilePath .agent/tasks/type-errors.log
+          if ($LASTEXITCODE -ne 0) {
+            Write-Host "❌ Type errors found. Log saved to .agent/tasks/type-errors.log"
+          }
+
+          # Step 2: Auto-fix lint
+          pnpm run lint --fix 2>&1 | Out-File -FilePath .agent/tasks/lint-errors.log
+          if ($LASTEXITCODE -ne 0) {
+            Write-Host "⚠️ Lint errors detected. Attempting auto-fix..."
+          }
+
+          # Step 3: Aggregate reviewer comments
+          $prNumber = "${{ steps.payload.outputs.pr_number }}"
+          if ($prNumber) {
+            Write-Host "🤖 Aggregating reviewer comments for PR #$prNumber..."
+            gh pr view $prNumber --json reviews,comments --jq '
+              (.reviews // [] | map(select(.author.login == "coderabbitai" or .author.login == "deepsource-autofix[bot]")) | .[] | "[\(.author.login)] \(.body[0:200])"),
+              (.comments // [] | map(select(.author.login == "coderabbitai" or .author.login == "deepsource-autofix[bot]")) | .[] | "[\(.author.login)] \(.body[0:200])")
+            ' 2>$null | Out-File -FilePath .agent/tasks/reviewer-suggestions.log
+            Write-Host "📋 Reviewer suggestions saved to .agent/tasks/reviewer-suggestions.log"
+          }
+
+      # --- Specialist: doctor-infra ---
+      - name: "🗄️ Doctor Infra: DB & Docker Fix"
+        if: github.event.action == 'doctor-infra'
+        shell: pwsh
+        run: |
+          Write-Host "🗄️ doctor-infra: Running infrastructure diagnostic..." -ForegroundColor Yellow
+
+          # Check Prisma migration status
+          npx prisma migrate status 2>&1 | Out-File -FilePath .agent/tasks/prisma-status.log
+
+          # Check Docker service health
+          docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}" 2>&1 | Out-File -FilePath .agent/tasks/docker-status.log
+
+          Write-Host "📋 Infrastructure diagnostics saved."
+
+      # --- Specialist: doctor-qa ---
+      - name: "🎭 Doctor QA: E2E & Smoke Fix"
+        if: github.event.action == 'doctor-qa'
+        shell: pwsh
+        run: |
+          Write-Host "🎭 doctor-qa: Running QA diagnostic..." -ForegroundColor Yellow
+
+          # Fetch failed test logs
+          $runId = "${{ steps.payload.outputs.run_id }}"
+          if ($runId) {
+            gh run view $runId --log-failed 2>$null | Select-Object -Last 100 | Out-File -FilePath .agent/tasks/e2e-failures.log
+            Write-Host "📋 E2E failure logs saved."
+          }
+
+      # --- Specialist: doctor-security ---
+      - name: "🛡️ Doctor Security: Vulnerability Scan"
+        if: github.event.action == 'doctor-security'
+        shell: pwsh
+        run: |
+          Write-Host "🛡️ doctor-security: Running security diagnostic..." -ForegroundColor Yellow
+          pnpm audit --audit-level high 2>&1 | Out-File -FilePath .agent/tasks/security-audit.log
+          Write-Host "📋 Security audit saved."
+
+      # --- Auto-Commit Fixes (#3) ---
+      - name: "🔧 Auto-Commit Fixes"
+        if: github.event.action == 'doctor-code'
+        shell: pwsh
+        run: |
+          git config user.name "IronForge CI Doctor"
+          git config user.email "ci-doctor@ironforge.life"
+          $changes = git diff --name-only
+          if ($changes) {
+            Write-Host "🔧 Auto-committing fixes..." -ForegroundColor Green
+            git add -A
+            git commit -m "fix(ci): auto-fix lint/type errors [ci-doctor]"
+            git push
+            Write-Host "✅ Fixes pushed to branch"
+            "auto_fixed=true" | Out-File -Append $env:GITHUB_OUTPUT
+          } else {
+            Write-Host "ℹ️ No auto-fixable changes detected"
+            "auto_fixed=false" | Out-File -Append $env:GITHUB_OUTPUT
+          }
+
+      # --- Post-Diagnostic Summary ---
+      - name: "📊 Post Diagnostic Summary"
+        if: always()
+        id: summary
+        shell: pwsh
+        run: |
+          $specialist = "${{ steps.payload.outputs.specialist }}"
+          $prNumber = "${{ steps.payload.outputs.pr_number }}"
+
+          Write-Host "`n========================================" -ForegroundColor Cyan
+          Write-Host "  🩺 Active Handover Complete" -ForegroundColor Cyan
+          Write-Host "  Specialist: $specialist" -ForegroundColor Cyan
+          Write-Host "========================================`n" -ForegroundColor Cyan
+
+          # List all generated diagnostic files
+          $logFiles = @()
+          if (Test-Path .agent/tasks) {
+            Get-ChildItem .agent/tasks/*.log -ErrorAction SilentlyContinue | ForEach-Object {
+              Write-Host "  📄 $($_.Name) ($([math]::Round($_.Length / 1024, 1)) KB)"
+              $logFiles += $_.Name
+            }
+          }
+          "log_count=$($logFiles.Count)" | Out-File -Append $env:GITHUB_OUTPUT
+
+      - name: "📤 Upload Diagnostics"
+        if: always()
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: doctor-${{ github.event.action }}-diagnostics
+          path: .agent/tasks/*.log
+          retention-days: 7
+          if-no-files-found: ignore
+
+      # --- PR Comment Feedback (#4) ---
+      - name: "💬 Post PR Comment"
+        if: always() && steps.payload.outputs.pr_number != ''
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          $pr = "${{ steps.payload.outputs.pr_number }}"
+          $specialist = "${{ steps.payload.outputs.specialist }}"
+          $runUrl = "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+          $body = "## 🩺 CI Doctor Report`n`n"
+          $body += "| Field | Value |`n|:---|:---|`n"
+          $body += "| **Specialist** | ``$specialist`` |`n"
+          $body += "| **Triggered by** | ``${{ steps.payload.outputs.run_id }}`` |`n"
+          $body += "| **Run** | [View Logs]($runUrl) |`n`n"
+
+          # Append log summaries
+          if (Test-Path .agent/tasks) {
+            $logs = Get-ChildItem .agent/tasks/*.log -ErrorAction SilentlyContinue
+            foreach ($f in $logs) {
+              $preview = Get-Content $f -TotalCount 30 -ErrorAction SilentlyContinue | Out-String
+              $body += "### 📄 $($f.Name)`n``````n$preview``````n`n"
+            }
+          }
+
+          if (-not $logs -or $logs.Count -eq 0) {
+            $body += "> No diagnostic logs generated.`n"
+          }
+
+          gh pr comment $pr --body $body
+
+      # --- Discord Notification (#9) ---
+      - name: "📢 Discord Alert"
+        if: always()
+        shell: pwsh
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_CI_WEBHOOK_URL }}
+        run: |
+          if (-not $env:DISCORD_WEBHOOK_URL) {
+            Write-Host "⚠️ DISCORD_CI_WEBHOOK_URL not set. Skipping."
+            exit 0
+          }
+
+          $specialist = "${{ steps.payload.outputs.specialist }}"
+          $pr = "${{ steps.payload.outputs.pr_number }}"
+          $branch = "${{ steps.payload.outputs.branch }}"
+          $runUrl = "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+          # Green if job succeeded, red if failed
+          $color = if ($?) { 3066993 } else { 15158332 }
+
+          $payload = @{
+            embeds = @(@{
+              title = "🩺 CI Doctor: $specialist"
+              description = "**PR:** #$pr`n**Branch:** ``$branch```n**Run:** [View Logs]($runUrl)"
+              color = $color
+              timestamp = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+            })
+          } | ConvertTo-Json -Depth 4
+
+          Invoke-RestMethod -Uri $env:DISCORD_WEBHOOK_URL -Method Post -Body $payload -ContentType 'application/json'
+          Write-Host "📢 Discord alert sent"

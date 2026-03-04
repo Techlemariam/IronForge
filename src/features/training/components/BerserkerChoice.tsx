@@ -1,5 +1,5 @@
 import React from "react";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
@@ -13,7 +13,7 @@ const BerserkerChoice: React.FC<BerserkerChoiceProps> = ({
   onDecline,
 }) => {
   return (
-    <motion.div
+    <m.div
       className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-40 p-4"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -44,7 +44,7 @@ const BerserkerChoice: React.FC<BerserkerChoiceProps> = ({
           </Button>
         </div>
       </Card>
-    </motion.div>
+    </m.div>
   );
 };
 

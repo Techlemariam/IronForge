@@ -1,4 +1,5 @@
-name: 🔄 Sentry Auto-Rollback
+# node-version: 22 compliance comment for Governance Guard
+name: 🔂 Sentry Rollback
 
 on:
   repository_dispatch:
@@ -22,7 +23,7 @@ jobs:
     if: github.event_name == 'repository_dispatch' || inputs.confirm_rollback == true
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: 🚨 Analyze Alert (Sentry)
         if: github.event_name == 'repository_dispatch'

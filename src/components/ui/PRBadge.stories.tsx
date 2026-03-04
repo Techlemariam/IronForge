@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import PRBadge from './PRBadge';
+import { PRBadge } from './PRBadge';
 
 const meta: Meta<typeof PRBadge> = {
   title: 'Components/PRBadge',

@@ -47,7 +47,7 @@ export const LeaderboardHub: React.FC<LeaderboardHubProps> = ({
             {/* Header */}
             <div className="bg-zinc-900/50 p-4 border-b border-zinc-800">
                 <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-xl font-heading text-[#ffd700] uppercase tracking-widest flex items-center gap-2">
+                    <h3 className="text-xl font-heading text-gold uppercase tracking-widest flex items-center gap-2">
                         <Crown className="w-6 h-6" /> {activeTab === "PVP" ? "Champions of the Arena" : "Iron Network Rankings"}
                     </h3>
                     <div className="text-xs font-mono text-zinc-500 uppercase tracking-tighter">Season 1: The Awakening</div>
@@ -60,7 +60,7 @@ export const LeaderboardHub: React.FC<LeaderboardHubProps> = ({
                         role="tab"
                         aria-selected={activeTab === "PVP"}
                         className={`flex-1 px-4 py-3 rounded font-bold text-xs uppercase tracking-widest transition-all ${activeTab === "PVP"
-                            ? "bg-[#ffd700] text-black shadow-[0_0_15px_rgba(255,215,0,0.3)]"
+                            ? "bg-gold text-black shadow-glow-gold"
                             : "bg-zinc-900 text-zinc-500 hover:text-white border border-zinc-700"
                             }`}
                     >
@@ -71,7 +71,7 @@ export const LeaderboardHub: React.FC<LeaderboardHubProps> = ({
                         role="tab"
                         aria-selected={activeTab === "FACTION"}
                         className={`flex-1 px-4 py-3 rounded font-bold text-xs uppercase tracking-widest transition-all ${activeTab === "FACTION"
-                            ? "bg-[#ffd700] text-black shadow-[0_0_15px_rgba(255,215,0,0.3)]"
+                            ? "bg-gold text-black shadow-glow-gold"
                             : "bg-zinc-900 text-zinc-500 hover:text-white border border-zinc-700"
                             }`}
                     >

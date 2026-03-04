@@ -62,7 +62,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     if (metaTheme) {
       metaTheme.setAttribute(
         "content",
-        resolvedTheme === "dark" ? "#0f172a" : "#f8fafc",
+        resolvedTheme === "dark" ? "var(--color-carbon)" : "#f8fafc",
       );
     }
   }, [resolvedTheme]);
@@ -147,3 +147,4 @@ export function ThemeSelector() {
     </div>
   );
 }
+

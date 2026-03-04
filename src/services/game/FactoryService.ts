@@ -38,7 +38,7 @@ export class FactoryService {
 
         if (fs.existsSync(this.USAGE_PATH)) {
             try {
-                const content = fs.readFileSync(this.USAGE_PATH, 'utf-8');
+                const content = fs.readFileSync(this.USAGE_PATH, 'utf-8').replace(/^\uFEFF/, '');
                 const data = JSON.parse(content);
                 if (data.history) {
                     for (const entry of data.history) {
@@ -85,8 +85,8 @@ export class FactoryService {
         return tasks.map(t => ({
             id: t.id,
             description: t.description,
-            status: t.status as any,
-            stage: (t as any).stage || 'DESIGN',
+            status: t.status as AssemblyLineTask['status'],
+            stage: ((t as unknown as { stage?: string }).stage as AssemblyLineTask['stage']) || 'DESIGN',
             source: t.source,
             createdAt: t.createdAt
         }));

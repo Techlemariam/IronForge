@@ -20,7 +20,7 @@ export const LEAGUE_TIERS = [
         name: "Gold League",
         minRating: 1400,
         maxRating: 1599,
-        color: "#ffd700",
+        color: "var(--color-gold-bright)",
         icon: "🥇",
     },
     {
@@ -44,7 +44,7 @@ export const LEAGUE_TIERS = [
         name: "Master League",
         minRating: 2000,
         maxRating: 2199,
-        color: "#a335ee",
+        color: "var(--color-warp)",
         icon: "🏆",
     },
     {
@@ -52,7 +52,7 @@ export const LEAGUE_TIERS = [
         name: "Grandmaster",
         minRating: 2200,
         maxRating: 2399,
-        color: "#ff8000",
+        color: "var(--color-legend)",
         icon: "👑",
     },
     {
@@ -75,3 +75,4 @@ export interface LeagueInfo {
     nextTier?: (typeof LEAGUE_TIERS)[number];
     pointsToNextTier?: number;
 }
+

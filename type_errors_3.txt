@@ -1,8 +1,0 @@
-
-> ironforge-rpg@1.0.0 check-types
-> tsc --project tsconfig.build.json --noEmit
-
-src/app/(main)/territory/page.tsx(42,29): error TS2322: Type '{ count: number; territories: { id: string; name: string; }[]; } | null' is not assignable to type 'TerritoryStatsData'.
-  Type 'null' is not assignable to type 'TerritoryStatsData'.
-src/app/api/cron/maintenance/weekly/route.ts(32,24): error TS1345: An expression of type 'void' cannot be tested for truthiness.
-src/components/ui/PRCelebration.tsx(161,16): error TS2339: Property 'getWeek' does not exist on type 'Date'.

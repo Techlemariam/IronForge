@@ -1,0 +1,30 @@
+# IronForge Agent Environment
+# Optimized for ultra-fast workflow execution in GitHub Actions
+
+FROM node:22-slim
+
+# Install system dependencies + PowerShell via Microsoft repo
+RUN apt-get update && apt-get install -y \
+    curl \
+    git \
+    ca-certificates \
+    gnupg \
+    && mkdir -p /etc/apt/keyrings \
+    && curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor -o /etc/apt/keyrings/microsoft.gpg \
+    && echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/microsoft.gpg] https://packages.microsoft.com/repos/microsoft-debian-bookworm-prod bookworm main" > /etc/apt/sources.list.d/microsoft.list \
+    && apt-get update && apt-get install -y powershell \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set working directory
+WORKDIR /app
+
+# Install pnpm
+RUN npm install -g pnpm@9.15.0
+
+# Set up environment variables for headless execution
+ENV CI=true
+ENV TERM=dumb
+ENV GITHUB_ACTIONS=true
+
+# Entrypoint is not fixed as this image is used as a base for CI steps
+CMD ["/usr/bin/pwsh"]

@@ -50,6 +50,7 @@ export function QuickLogWidget({
         {onClose && (
           <button
             onClick={onClose}
+            aria-label="Close"
             className="text-gray-400 hover:text-white p-2"
           >
             ✕
@@ -59,7 +60,7 @@ export function QuickLogWidget({
 
       {/* Weight Section */}
       <div className="mb-4">
-        <label className="text-sm text-gray-400 mb-2 block">Weight (kg)</label>
+        <label htmlFor="weight-input" className="text-sm text-gray-400 mb-2 block">Weight (kg)</label>
         <div className="flex items-center gap-2">
           {QUICK_WEIGHTS.map((delta) => (
             <button
@@ -71,6 +72,7 @@ export function QuickLogWidget({
             </button>
           ))}
           <input
+            id="weight-input"
             type="number"
             value={weight}
             onChange={(e) => setWeight(Number(e.target.value))}
@@ -90,22 +92,22 @@ export function QuickLogWidget({
 
       {/* Reps Section */}
       <div className="mb-4">
-        <label className="text-sm text-gray-400 mb-2 block">Reps</label>
+        <label htmlFor="reps-input" className="text-sm text-gray-400 mb-2 block">Reps</label>
         <div className="flex flex-wrap gap-2">
           {QUICK_REPS.map((r) => (
             <button
               key={r}
               onClick={() => setReps(r)}
-              className={`px-4 py-2 rounded font-bold ${
-                reps === r
-                  ? "bg-blue-600 text-white"
-                  : "bg-gray-800 text-gray-300 hover:bg-gray-700"
-              }`}
+              className={`px-4 py-2 rounded font-bold ${reps === r
+                ? "bg-blue-600 text-white"
+                : "bg-gray-800 text-gray-300 hover:bg-gray-700"
+                }`}
             >
               {r}
             </button>
           ))}
           <input
+            id="reps-input"
             type="number"
             value={reps}
             onChange={(e) => setReps(Number(e.target.value))}
@@ -117,19 +119,18 @@ export function QuickLogWidget({
 
       {/* RPE (Optional) */}
       <div className="mb-4">
-        <label className="text-sm text-gray-400 mb-2 block">
+        <div id="rpe-label" className="text-sm text-gray-400 mb-2 block">
           RPE (optional)
-        </label>
-        <div className="flex gap-1">
+        </div>
+        <div role="group" aria-labelledby="rpe-label" className="flex gap-1">
           {[6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10].map((r) => (
             <button
               key={r}
               onClick={() => setRpe(rpe === r ? undefined : r)}
-              className={`px-2 py-1 rounded text-sm ${
-                rpe === r
-                  ? "bg-orange-600 text-white"
-                  : "bg-gray-800 text-gray-400 hover:bg-gray-700"
-              }`}
+              className={`px-2 py-1 rounded text-sm ${rpe === r
+                ? "bg-orange-600 text-white"
+                : "bg-gray-800 text-gray-400 hover:bg-gray-700"
+                }`}
             >
               {r}
             </button>

@@ -15,17 +15,25 @@ on:
   workflow_dispatch:
     inputs:
       workflow:
-        description: "Agent workflow to run (e.g., /night-shift, /health-check)"
+        description: "Agent workflow to run (e.g., night-shift, health-check, polish)"
+        required: true
+        type: string
+      mode:
+        description: "Execution Mode"
         required: true
         type: choice
         options:
-          - "/night-shift"
-          - "/health-check"
-          - "/debug"
-          - "/monitor-all"
-          - "/triage"
-          - "/evolve"
-          - "/ci-doctor"
+          - "antigravity-signal"
+          - "direct-execution"
+        default: "antigravity-signal"
+      model:
+        description: "Gemini model to use"
+        required: true
+        type: choice
+        options:
+          - "gemini-2.5-flash"
+          - "gemini-2.5-pro"
+        default: "gemini-2.5-flash"
       branch:
         description: "Target branch"
         required: false
@@ -40,6 +48,8 @@ on:
       - remote-trigger
       - n8n-trigger
       - moltbot-trigger
+      - google-api-trigger
+      - universal-trigger
 
 concurrency:
   group: remote-${{ github.workflow }}-${{ github.event.inputs.workflow || github.event.client_payload.workflow || 'default' }}-${{ github.ref }}
@@ -55,10 +65,12 @@ env:
 
 jobs:
   validate:
-    name: 🔐 Validate Request
+    name: 🔐 Validate & Route
     runs-on: ubuntu-latest
     outputs:
       workflow: ${{ steps.parse.outputs.workflow }}
+      mode: ${{ steps.parse.outputs.mode }}
+      model: ${{ steps.parse.outputs.model }}
       branch: ${{ steps.parse.outputs.branch }}
       dry_run: ${{ steps.parse.outputs.dry_run }}
       is_valid: ${{ steps.validate.outputs.is_valid }}
@@ -66,17 +78,22 @@ jobs:
       - name: Parse Input
         id: parse
         run: |
-          # Handle both workflow_dispatch and repository_dispatch
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             echo "workflow=${{ inputs.workflow }}" >> $GITHUB_OUTPUT
+            echo "mode=${{ inputs.mode }}" >> $GITHUB_OUTPUT
+            echo "model=${{ inputs.model }}" >> $GITHUB_OUTPUT
             echo "branch=${{ inputs.branch }}" >> $GITHUB_OUTPUT
             echo "dry_run=${{ inputs.dry_run }}" >> $GITHUB_OUTPUT
           else
-            # repository_dispatch from n8n/Moltbot
-            WORKFLOW="${{ github.event.client_payload.workflow || '/health-check' }}"
+            # repository_dispatch from Google API/n8n/Moltbot
+            WORKFLOW="${{ github.event.client_payload.workflow || 'health-check' }}"
+            MODE="${{ github.event.client_payload.mode || 'antigravity-signal' }}"
+            MODEL="${{ github.event.client_payload.model || 'gemini-2.5-flash' }}"
             BRANCH="${{ github.event.client_payload.branch || 'main' }}"
             DRY_RUN="${{ github.event.client_payload.dry_run || 'false' }}"
             echo "workflow=$WORKFLOW" >> $GITHUB_OUTPUT
+            echo "mode=$MODE" >> $GITHUB_OUTPUT
+            echo "model=$MODEL" >> $GITHUB_OUTPUT
             echo "branch=$BRANCH" >> $GITHUB_OUTPUT
             echo "dry_run=$DRY_RUN" >> $GITHUB_OUTPUT
           fi
@@ -104,13 +121,13 @@ jobs:
           fi
 
   execute:
-    name: 🚀 Execute Workflow
+    name: 🚀 Execute (${{ needs.validate.outputs.mode }})
     needs: validate
     if: needs.validate.outputs.is_valid != 'false'
     runs-on: self-hosted
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: ${{ needs.validate.outputs.branch }}
           fetch-depth: 0
@@ -125,26 +142,48 @@ jobs:
           echo "| Parameter | Value |" >> $GITHUB_STEP_SUMMARY
           echo "|:----------|:------|" >> $GITHUB_STEP_SUMMARY
           echo "| Workflow | \`${{ needs.validate.outputs.workflow }}\` |" >> $GITHUB_STEP_SUMMARY
-          echo "| Branch | \`${{ needs.validate.outputs.branch }}\` |" >> $GITHUB_STEP_SUMMARY
-          echo "| Dry Run | \`${{ needs.validate.outputs.dry_run }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| Mode | \`${{ needs.validate.outputs.mode }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| Model | \`${{ needs.validate.outputs.model }}\` |" >> $GITHUB_STEP_SUMMARY
           echo "| Trigger | \`${{ github.event_name }}\` |" >> $GITHUB_STEP_SUMMARY
           echo "| Actor | \`${{ github.actor }}\` |" >> $GITHUB_STEP_SUMMARY
 
-      - name: 🔧 Execute Agent Workflow
+      - name: 📡 Dispatch Antigravity Signal
+        if: needs.validate.outputs.mode == 'antigravity-signal'
+        shell: pwsh
+        run: |
+          $workflow = "${{ needs.validate.outputs.workflow }}" -replace "^/", ""
+          $model = "${{ needs.validate.outputs.model }}"
+          
+          $taskContent = @"
+          # Autonomous Mission: $workflow
+          Model: $model
+          Triggered via Remote: ${{ github.event_name }} at $(Get-Date -Format "o")
+          
+          ## Instructions
+          Execute the `/$workflow` workflow using the $model model.
+          
+          ## Context
+          - Workflow: $workflow
+          - Mode: Antigravity Signal
+          - Actor: ${{ github.actor }}
+          - RunID: ${{ github.run_id }}
+          "@
+          
+          if (!(Test-Path ".agent\tasks")) { New-Item -ItemType Directory -Path ".agent\tasks" -Force }
+          Set-Content -Path ".agent\tasks\current.md" -Value $taskContent
+          Write-Host "✅ Task signal written to .agent\tasks\current.md"
+
+      - name: 🔧 Direct Execution (Fallback/L3)
+        if: needs.validate.outputs.mode == 'direct-execution'
         env:
           WORKFLOW_INPUT: ${{ needs.validate.outputs.workflow }}
-          DRY_RUN: ${{ needs.validate.outputs.dry_run }}
+          MODEL_INPUT: ${{ needs.validate.outputs.model }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         shell: pwsh
         run: |
-          # Sanitize workflow name (remove leading slash)
           $workflowName = $env:WORKFLOW_INPUT -replace "^/", ""
-          
-          Write-Host "🚀 Triggering Agent Workflow: $workflowName" -ForegroundColor Cyan
-          
-          # Call the centralized launcher
-          # Note: workflow-launcher.ps1 handles git stashing, logging, and gemini execution
-          .\scripts\workflow-launcher.ps1 -Workflow $workflowName -Model "gemini-2.5-flash"
+          Write-Host "🚀 Running Direct Execution: $workflowName" -ForegroundColor Cyan
+          .\scripts\workflow-launcher.ps1 -Workflow $workflowName -Model $env:MODEL_INPUT
 
 
       - name: 📢 Report Result

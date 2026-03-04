@@ -254,7 +254,7 @@ export interface AthleteSettings {
   ftp?: number;
   run_ftp?: number;
   heart_rate_zones?: { min: number; max: number; name?: string }[];
-  power_zones?: any[];
+  power_zones?: unknown[];
 }
 
 export interface AppSettings {
@@ -440,7 +440,7 @@ export interface GrimoireEntry {
   title: string;
   description: string;
   rarity: Rarity;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 // --- MONITORING ---

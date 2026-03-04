@@ -26,11 +26,7 @@ interface Issue {
     autoFixable: boolean;
 }
 
-interface WorkflowStats {
-    total: number;
-    optimized: number;
-    issues: Issue[];
-}
+// removed unused interface WorkflowStats
 
 function parseFrontmatter(content: string): Record<string, any> | null {
     const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
@@ -275,9 +271,9 @@ function analyzeFile(filePath: string, fixMode: boolean, knownSkills: Set<string
     // 4. Turbo Opportunities
     // Look for bash code blocks without // turbo
     const lines = content.split('\n');
-    let codeBlockOpen = false;
-    let insideBash = false;
-    let justSawTurbo = false;
+    let _codeBlockOpen = false;
+    let _insideBash = false;
+    let _justSawTurbo = false;
     let contentChanged = false;
 
     // Check if content was already changed by pnpm fix

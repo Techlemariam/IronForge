@@ -27,11 +27,34 @@
     --color-legend: #ff8000;
     /* Solar / Legendary (Orange) */
 
+    /* ITEM RARITY PROTOCOL (WoW-Inspired) */
+    --color-uncommon: #1eff00;
+    /* Green / Uncommon */
+    --color-rare: #0070dd;
+    /* Blue / Rare */
+    --color-gold-bright: #ffd700;
+    /* Gold / UI Highlight */
+    --color-gold-dark: #b8860b;
+    /* Dark Gold / Muted Tier */
+
+    /* TEXT PROTOCOL */
+    --color-text-primary: #f3f4f6;
+    /* Gray-100 (Body text) */
+
     /* Legacy Mappings (Deprecation Bridge) */
     --color-forge-950: var(--color-void);
     --color-forge-900: var(--color-armor);
     --color-forge-border: var(--color-steel);
     --color-magma: var(--color-plasma);
+
+    /* CYBER-PHYSICAL TOKENS (Titan Tier) */
+    --color-emerald-glow: #10b981;
+    --color-teal-glow: #14b8a6;
+    --color-carbon: #0f172a;
+
+    /* Mechanical Border Shorthands */
+    --border-mechanical: 1px solid rgba(255, 255, 255, 0.1);
+    --shadow-mechanical: inset 0 0 10px rgba(0, 0, 0, 0.5), 0 0 15px rgba(16, 185, 129, 0.1);
 
     /* KINETIC PHYSICS */
     --ease-bolt-action: cubic-bezier(0.23, 1, 0.32, 1);
@@ -63,18 +86,30 @@
         }
     }
 
+    @keyframes scanline {
+        0% {
+            transform: translateY(-100%);
+        }
+
+        100% {
+            transform: translateY(100%);
+        }
+    }
+
     /* Animation Utilities */
     --animate-deploy: deploy 0.2s cubic-bezier(0.23, 1, 0.32, 1) forwards;
     --animate-pulse-mech: pulse-mechanical 2s steps(2, end) infinite;
+    --animate-scanline: scanline 8s linear infinite;
 }
 
 @layer base {
     body {
         background-color: var(--color-void);
-        color: #f3f4f6;
+        color: var(--color-text-primary);
         /* Gray-100 */
         font-feature-settings: "tnum" on, "cv11" on, "ss01" on;
         -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
     }
 
     /* TYPOGRAPHY PROTOCOL */
@@ -84,7 +119,7 @@
     h4,
     h5,
     h6 {
-        @apply font-serif font-bold tracking-wider uppercase text-white;
+        @apply font-mono font-bold tracking-tighter uppercase text-white;
         text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
     }
 
@@ -129,7 +164,8 @@
         --ring: 25 95% 53%;
         /* Plasma */
 
-        --radius: 0.25rem;
+        --radius: 0rem;
+        /* Hard corners for mechanical feel */
     }
 
     .dark {
@@ -139,17 +175,46 @@
 }
 
 @layer utilities {
-    .text-glow {
-        text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    .text-glow-emerald {
+        text-shadow: 0 0 15px rgba(16, 185, 129, 0.6);
     }
 
-    .glass-panel {
-        @apply bg-forge-900/80 backdrop-blur-sm border border-white/10;
+    .mechanical-panel {
+        @apply bg-slate-950 border border-slate-800 relative overflow-hidden;
+        box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
     }
 
-    .bg-grid-titan {
-        background-image: radial-gradient(circle at 1px 1px, var(--color-steel) 1px, transparent 0);
-        background-size: 40px 40px;
+    .mechanical-panel::before {
+        content: "";
+        @apply absolute inset-0 opacity-[0.03] pointer-events-none;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    }
+
+    .carbon-fiber {
+        background:
+            linear-gradient(27deg, #151515 5px, transparent 5px) 0 5px,
+            linear-gradient(207deg, #151515 5px, transparent 5px) 10px 0px,
+            linear-gradient(27deg, #222 5px, transparent 5px) 0px 10px,
+            linear-gradient(207deg, #222 5px, transparent 5px) 10px 5px,
+            linear-gradient(90deg, #1b1b1b 10px, transparent 10px),
+            linear-gradient(#1d1d1d 25%, #1a1a1a 25%, #1a1a1a 50%, transparent 50%, transparent 75%, #242424 75%, #242424);
+        background-color: #131313;
+        background-size: 20px 20px;
+    }
+
+    .bg-noise {
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    }
+
+    .scanline-overlay {
+        position: fixed;
+        inset: 0;
+        background: linear-gradient(to bottom,
+                transparent 50%,
+                rgba(0, 255, 170, 0.02) 50%);
+        background-size: 100% 4px;
+        pointer-events: none;
+        z-index: 100;
     }
 
 }

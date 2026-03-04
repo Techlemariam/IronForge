@@ -35,7 +35,6 @@ export const useGuildContribution = ({
   });
 
   const pendingDamageRef = useRef(0);
-  // const lastSyncRef = useRef(Date.now());
 
   // Damage Calculation Loop (1s Interval)
   useEffect(() => {
@@ -89,18 +88,15 @@ export const useGuildContribution = ({
           // Actually, if it fails we want to retry.
           // Let's keep it simple: sync, then subtract.
 
-          const result = await contributeGuildDamageAction(
-            userId,
-            damageToSync,
-          );
+          const result = await contributeGuildDamageAction({ damage: damageToSync });
 
-          if (result.success) {
+          if (result?.data?.success) {
             pendingDamageRef.current -= damageToSync;
             setStats((prev) => ({
               ...prev,
               pendingDamage: pendingDamageRef.current,
-              bossHp: (result.bossHp as number) || prev.bossHp,
-              bossTotalHp: (result.bossTotalHp as number) || prev.bossTotalHp,
+              bossHp: (result.data?.bossHp as number) || prev.bossHp,
+              bossTotalHp: (result.data?.bossTotalHp as number) || prev.bossTotalHp,
             }));
           }
         } catch (e) {

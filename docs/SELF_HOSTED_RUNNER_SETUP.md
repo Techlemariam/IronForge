@@ -4,11 +4,16 @@ This guide walks you through setting up a self-hosted GitHub Actions runner with
 
 ## Prerequisites
 
-- Windows 10/11 or Windows Server
-- Administrator access
-- Antigravity installed and configured
+- Hetzner VPS managed via Coolify (IronForge primary environment)
+- Doppler CLI installed (`doppler run`)
 - GitHub repository admin access
 - PowerShell 7+
+- A valid GitHub Personal Access Token (`GH_PAT`) in Doppler
+
+## Architecture
+
+The IronForge self-hosted runners are run as **Ephemeral Docker Containers** via Coolify on the Hetzner VPS. Three discrete services (`github-runners`, `github-runners-2`, `github-runners-3`) run continuously in `Restart policy: always`.
+Using `EPHEMERAL=true` allows runners to automatically tear down and start fresh after every job, eliminating configuration conflicts.
 
 ## Step 1: Install Antigravity
 
@@ -69,77 +74,37 @@ Restart Antigravity and verify the MCP server is loaded:
    - `check_runner_health`
    - `trigger_autonomous_workflow`
 
-## Step 3: Set Up Self-Hosted Runner
+## Step 3: Deploy Runners via Coolify API
 
-### 3.1 Create Runner Directory
+Instead of manually configuring a Windows service, we deploy 3 ephemeral runners via Docker Compose to the Hetzner VPS directly through the Coolify API.
 
-```powershell
-# Create runner directory
-$runnerDir = "C:\actions-runner"
-New-Item -ItemType Directory -Path $runnerDir -Force
-cd $runnerDir
-```
+### 3.1 Verify Doppler Secrets
 
-### 3.2 Download GitHub Actions Runner
+Ensure the following secrets are present in your Doppler `prd` config:
 
-1. Go to your repository on GitHub
-2. Navigate to **Settings** → **Actions** → **Runners**
-3. Click **New self-hosted runner**
-4. Select **Windows** as the operating system
-5. Copy the download and configuration commands
+- `COOLIFY_API_TOKEN`: Token for Coolify API access
+- `GH_PAT`: GitHub Personal Access Token with repo access
 
-Example:
+### 3.2 Run the Deploy Script
 
 ```powershell
-# Download
-Invoke-WebRequest -Uri https://github.com/actions/runner/releases/download/v2.311.0/actions-runner-win-x64-2.311.0.zip -OutFile actions-runner-win-x64-2.311.0.zip
+# Create the services in Coolify (only run once)
+doppler run --project ironforge --config prd -- pwsh scripts/coolify-deploy-runners.ps1 -Action create
 
-# Extract
-Add-Type -AssemblyName System.IO.Compression.FileSystem
-[System.IO.Compression.ZipFile]::ExtractToDirectory("$PWD\actions-runner-win-x64-2.311.0.zip", "$PWD")
+# Start the services
+doppler run --project ironforge --config prd -- pwsh scripts/coolify-deploy-runners.ps1 -Action start
+
+# Check status of the runners
+doppler run --project ironforge --config prd -- pwsh scripts/coolify-deploy-runners.ps1 -Action status
 ```
 
-### 3.3 Configure Runner
-
-```powershell
-# Configure the runner
-.\config.cmd --url https://github.com/Techlemariam/IronForge --token YOUR_RUNNER_TOKEN
-
-# When prompted:
-# - Enter runner name: ironforge-antigravity-runner
-# - Enter runner group: Default
-# - Enter labels: self-hosted,Windows,X64,antigravity
-# - Enter work folder: _work
-```
-
-### 3.4 Install Runner as Service
-
-```powershell
-# Install as Windows service (requires admin)
-.\svc.sh install
-
-# Start the service
-.\svc.sh start
-
-# Verify service is running
-Get-Service actions.runner.*
-```
+You can view the specific Docker Compose layout in `docker-compose.runners.yml`.
 
 ## Step 4: Configure Environment Variables
 
 ### 4.1 Set Required Environment Variables
 
-The runner needs access to the same environment variables as Antigravity:
-
-```powershell
-# Set system environment variables (requires admin)
-[System.Environment]::SetEnvironmentVariable("GITHUB_TOKEN", "your_github_token", "Machine")
-[System.Environment]::SetEnvironmentVariable("DATABASE_URL", "your_database_url", "Machine")
-[System.Environment]::SetEnvironmentVariable("N8N_API_KEY", "your_n8n_key", "Machine")
-
-# Restart the runner service to pick up new variables
-Restart-Service actions.runner.*
-```
+The runner inherits environment variables from Coolify (injected via Doppler if needed). Ensure `GH_PAT` mapping is intact in the compose file.
 
 ### 4.2 Verify Environment Access
 
@@ -178,20 +143,20 @@ jobs:
 
 Check the workflow logs for:
 
-```
+```sh
 ✅ Antigravity MCP config found
 ✅ Task directory found
 ✅ Task signal written to .agent\tasks\current.md
 Antigravity will pick up this task and execute using its native quota system.
 ```
 
-### 5.3 Check Task Signal
+### 5.3 Check Runner Status
 
-On the runner machine:
+To monitor the runner network:
 
 ```powershell
-# View task signal
-Get-Content C:\Users\alexa\Workspaces\IronForge\.agent\tasks\current.md
+# View runner status
+doppler run --project ironforge --config prd -- pwsh scripts/coolify-deploy-runners.ps1 -Action status
 ```
 
 ### 5.4 Monitor Antigravity
@@ -262,10 +227,9 @@ If using n8n for orchestration:
 
 **Solutions**:
 
-1. Check runner service is running: `Get-Service actions.runner.*`
-2. Verify network connectivity to GitHub
-3. Check runner logs: `Get-Content C:\actions-runner\_diag\Runner_*.log`
-4. Reconfigure runner: `.\config.cmd remove` then reconfigure
+1. Check service status via `coolify-deploy-runners.ps1 -Action status`
+2. Look at logs for the specific runner in the Coolify UI on Hetzner VPS
+3. Restart the specific stuck service: `coolify-deploy-runners.ps1 -Action stop`, wait 10s, then `-Action start`
 
 ### Antigravity Not Found
 
@@ -295,27 +259,18 @@ If using n8n for orchestration:
 
 **Solutions**:
 
-1. Set variables at Machine level, not User level
-2. Restart runner service after setting variables
-3. Verify with test workflow
-4. Check service account has access to variables
+1. Ensure the secret exists in Doppler `prd` config.
+2. In the Docker Compose payload (`coolify-deploy-runners.ps1`), ensure the variable is mounted properly to the `runner:` step if necessary.
 
 ## Maintenance
 
 ### Update Runner
 
 ```powershell
-# Stop service
-.\svc.sh stop
-
-# Download latest version
-Invoke-WebRequest -Uri https://github.com/actions/runner/releases/download/vX.XXX.X/actions-runner-win-x64-X.XXX.X.zip -OutFile actions-runner-win-x64-X.XXX.X.zip
-
-# Extract and replace files
-# (backup old files first)
-
-# Start service
-.\svc.sh start
+# The runner handles self-updating within the ephemeral container.
+# If you need to force an update, rebuild the Coolify service:
+doppler run --project ironforge --config prd -- pwsh scripts/coolify-deploy-runners.ps1 -Action stop
+doppler run --project ironforge --config prd -- pwsh scripts/coolify-deploy-runners.ps1 -Action start
 ```
 
 ### Update MCP Server
@@ -332,17 +287,8 @@ npm run build
 ### Monitor Runner Health
 
 ```powershell
-# Check service status
-Get-Service actions.runner.*
-
-# View recent logs
-Get-Content C:\actions-runner\_diag\Runner_*.log -Tail 50
-
-# Check disk space
-Get-PSDrive C
-
-# Check runner connectivity
-Test-NetConnection github.com -Port 443
+# Check multi-service status via API
+doppler run --project ironforge --config prd -- pwsh scripts/coolify-deploy-runners.ps1 -Action status
 ```
 
 ## Security Considerations

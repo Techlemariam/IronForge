@@ -20,12 +20,12 @@ const AchievementToast: React.FC<AchievementToastProps> = ({
 
   return (
     <div className="fixed top-8 left-1/2 transform -translate-x-1/2 z-[100] animate-toast-slide-down pointer-events-none">
-      <div className="relative w-[320px] h-[80px] bg-gradient-to-b from-[#333] to-[#111] border-2 border-[#b8860b] rounded shadow-[0_0_30px_rgba(255,215,0,0.4)] flex items-center overflow-hidden">
+      <div className="relative w-[320px] h-[80px] bg-gradient-to-b from-[#333] to-[#111] border-2 border-[var(--color-gold-dark)] rounded shadow-[0_0_30px_rgba(255,215,0,0.4)] flex items-center overflow-hidden">
         {/* Background pattern */}
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/black-scales.png')] opacity-30"></div>
 
         {/* Icon Section */}
-        <div className="relative z-10 w-20 h-full flex items-center justify-center bg-gradient-to-b from-[#b8860b] to-[#8b6508] border-r-2 border-[#ffd700]">
+        <div className="relative z-10 w-20 h-full flex items-center justify-center bg-gradient-to-b from-[var(--color-gold-dark)] to-[#8b6508] border-r-2 border-[var(--color-gold-bright)]">
           <Shield
             className="w-10 h-10 text-white drop-shadow-md"
             fill="black"
@@ -34,7 +34,7 @@ const AchievementToast: React.FC<AchievementToastProps> = ({
 
         {/* Text Section */}
         <div className="relative z-10 flex-1 px-4 flex flex-col justify-center">
-          <div className="text-[#ffd700] font-serif text-xs uppercase tracking-widest font-bold mb-1 drop-shadow-sm">
+          <div className="text-[var(--color-gold-bright)] font-serif text-xs uppercase tracking-widest font-bold mb-1 drop-shadow-sm">
             Achievement Earned
           </div>
           <div className="text-white font-serif font-bold leading-none mb-1 text-sm">
@@ -46,7 +46,7 @@ const AchievementToast: React.FC<AchievementToastProps> = ({
         </div>
 
         {/* Points Badge */}
-        <div className="absolute top-2 right-2 bg-black/50 border border-[#b8860b] rounded-full px-2 py-0.5 text-[9px] font-bold text-[#ffd700]">
+        <div className="absolute top-2 right-2 bg-black/50 border border-[var(--color-gold-dark)] rounded-full px-2 py-0.5 text-[9px] font-bold text-[var(--color-gold-bright)]">
           {achievement.points}
         </div>
 
@@ -77,3 +77,4 @@ const AchievementToast: React.FC<AchievementToastProps> = ({
 };
 
 export default AchievementToast;
+

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Mic, MicOff, Send, Loader2, Sparkles } from 'lucide-react';
+
 import { addFactoryTask } from '@/actions/factory';
 import { useRouter } from 'next/navigation';
 
@@ -78,7 +78,7 @@ export function VoiceCommandControl() {
             } else {
                 setError('Kunde inte spara uppgiften.');
             }
-        } catch (err) {
+        } catch {
             setError('Ett fel uppstod vid kommunikation med servern.');
         } finally {
             setIsProcessing(false);

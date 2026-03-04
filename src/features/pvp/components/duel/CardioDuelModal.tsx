@@ -44,22 +44,25 @@ export function CardioDuelModal({
   const handleSubmit = async () => {
     setIsSubmitting(true);
     try {
-      const result = await createDuelChallengeAction(opponentId, {
-        duelType,
-        activityType,
-        durationMinutes:
-          duelType === "DISTANCE_RACE" || duelType === "ELEVATION_GRIND"
-            ? duration
-            : undefined,
-        targetDistance: duelType === "SPEED_DEMON" ? distance : undefined,
-        wkgTier: activityType === "CYCLING" ? wkgTier : undefined,
+      const result = await createDuelChallengeAction({
+        targetUserId: opponentId,
+        options: {
+          duelType,
+          activityType,
+          durationMinutes:
+            duelType === "DISTANCE_RACE" || duelType === "ELEVATION_GRIND"
+              ? duration
+              : undefined,
+          targetDistance: duelType === "SPEED_DEMON" ? distance : undefined,
+          wkgTier: activityType === "CYCLING" ? wkgTier : undefined,
+        }
       });
 
-      if (result.success) {
+      if (result?.data?.success) {
         toast.success("Duel challenge sent!");
         onClose();
       } else {
-        toast.error(result.error || "Failed to send challenge");
+        toast.error(result?.data?.error || result?.serverError || "Failed to send challenge");
       }
     } catch {
       toast.error("Something went wrong");
@@ -209,13 +212,14 @@ export function CardioDuelModal({
 
               {activityType === "CYCLING" && (
                 <div className="space-y-2 pt-2 border-t border-slate-800">
-                  <Label className="text-yellow-400">
+                  <Label htmlFor="wkg-tier-slider" className="text-yellow-400">
                     Fairness Tier (W/kg)
                   </Label>
                   <p className="text-xs text-slate-500 mb-2">
                     Kickr resistance will auto-adjust to your weight.
                   </p>
                   <input
+                    id="wkg-tier-slider"
                     type="range"
                     min="1.5"
                     max="5.0"
@@ -223,6 +227,7 @@ export function CardioDuelModal({
                     value={wkgTier}
                     onChange={(e) => setWkgTier(parseFloat(e.target.value))}
                     className="w-full accent-yellow-500"
+                    title="Fairness Tier (Watts per kg)"
                   />
                   <div className="flex justify-between text-xs text-slate-400 font-mono">
                     <span>Beginner (1.5)</span>

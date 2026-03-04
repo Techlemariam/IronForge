@@ -1,0 +1,44 @@
+# node-version: 22 compliance comment for Governance Guard
+name: Jules Autonomous Mission
+
+on:
+  workflow_dispatch:
+    inputs:
+      mission:
+        description: 'Mission description for Jules'
+        required: true
+        default: 'Identify and fix technical debt in the current branch.'
+        type: string
+
+jobs:
+  jules-invoke:
+    name: Invoke Jules
+    runs-on: ubuntu-latest
+    env:
+      NODE_VERSION: '22'
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install Doppler CLI
+        uses: dopplerhq/cli-action@v3
+
+      - name: Fetch Doppler Secrets
+        run: |
+          doppler secrets download --no-file --format env-no-quotes --project ironforge --config dev > $GITHUB_ENV
+        env:
+          DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
+
+      - name: Jules Invoke
+        uses: BeksOmega/jules-action@v1.0.0
+        with:
+          jules_api_key: ${{ env.JULES_API_KEY }}
+          prompt: ${{ inputs.mission }}
+
+      - name: Send Feedback to Jules
+        if: always()
+        uses: BeksOmega/jules-comms@v1.0.0
+        with:
+          jules_api_key: ${{ env.JULES_API_KEY }}
+          feedback_users: ${{ github.actor }}

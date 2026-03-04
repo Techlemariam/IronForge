@@ -1,9 +1,9 @@
 import { prisma } from "@/lib/prisma";
-import { awardTitanXpAction, syncTitanStateWithWellness } from "@/actions/titan/core";
+import { TitanService } from "@/services/game/TitanService";
 import { logger } from "@/lib/logger";
 
 export class BioPulseService {
-    static async handleWorkoutPulse(userId: string, workout: any) {
+    static async handleWorkoutPulse(userId: string, workout: { id: string; exercises?: unknown[] }) {
         try {
             logger.info({ userId, workoutId: workout.id }, "Processing Workout Bio-Pulse");
 
@@ -12,7 +12,7 @@ export class BioPulseService {
             let baseXP = 500;
             if (workout.exercises) baseXP += workout.exercises.length * 50;
 
-            const xpResult = await awardTitanXpAction(userId, baseXP, "WORKOUT_PULSE");
+            const xpResult = await TitanService.awardXp(userId, baseXP, "WORKOUT_PULSE");
             const titan = await prisma.titan.findUnique({ where: { userId } });
 
             // 2. Create a Titan Memory
@@ -48,12 +48,12 @@ export class BioPulseService {
         }
     }
 
-    static async handleWellnessPulse(userId: string, wellness: any) {
+    static async handleWellnessPulse(userId: string, wellness: { bodyBattery?: number;[key: string]: unknown }) {
         try {
             logger.info({ userId }, "Processing Wellness Bio-Pulse");
 
             // 1. Sync Titan state (Energy, Mood, etc.)
-            const syncResult = await syncTitanStateWithWellness(userId, wellness);
+            const syncResult = await TitanService.syncWellness(userId, wellness);
             const titan = await prisma.titan.findUnique({ where: { userId } });
 
             // 2. Notable events (HRV/Battery)
@@ -71,7 +71,7 @@ export class BioPulseService {
 
             const moltbotContext = {
                 role: "Moltbot",
-                tone: wellness.bodyBattery < 40 ? "Strict/Recovery-focused" : "Observational",
+                tone: (wellness.bodyBattery ?? 100) < 40 ? "Strict/Recovery-focused" : "Observational",
                 message: `Bio-data synkad. Energi: ${wellness.bodyBattery}%. Humör: ${titan?.mood}.`,
                 prompt_hint: `Analysera Titanens vitalvärden. Energi är ${wellness.bodyBattery}%. Ge ett kort råd på svenska.`
             };

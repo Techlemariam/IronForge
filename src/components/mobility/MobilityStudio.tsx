@@ -88,7 +88,14 @@ export function MobilityStudio() {
                         {filteredExercises.map(exercise => (
                             <Card variant="glass"
                                 key={exercise.id}
-                                className={`cursor-pointer transition-all hover:border-emerald-500 ${activeExercise?.id === exercise.id ? 'border-emerald-500 bg-emerald-950/20' : ''}`}
+                                role="button"
+                                tabIndex={0}
+                                onKeyDown={(e) => {
+                                    if (e.key === "Enter" || e.key === " ") {
+                                        handleStartExercise(exercise);
+                                    }
+                                }}
+                                className={`cursor-pointer transition-all hover:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-zinc-900 focus:ring-white ${activeExercise?.id === exercise.id ? 'border-emerald-500 bg-emerald-950/20' : ''}`}
                                 onClick={() => handleStartExercise(exercise)}
                             >
                                 <div className="p-3 flex items-center justify-between">

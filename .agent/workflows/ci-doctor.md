@@ -1,517 +1,227 @@
 ---
-description: "Comprehensive CI failure prevention and resolution (v3.0)"
+description: "Comprehensive CI failure prevention and resolution (v5.0)"
 command: "/ci-doctor"
 category: "maintenance"
 trigger: "manual"
-version: "3.0.0"
+version: "5.0.0"
 telemetry: "enabled"
 primary_agent: "@infrastructure"
 domain: "ci"
-skills: ["error-analyzer", "gatekeeper", "dependabot-manager", "env-validator", "linter-fixer", "schema-guard", "qodana-linter", "performance-profiler", "zod-schema-validator", "api-mocker", "bio-validator", "prisma-migrator", "a11y-auditor", "coverage-check", "bundle-analyzer", "git-guard", "supabase-inspector", "storybook-bridge", "coolify-deploy", "doc-generator", "red-team", "clean-code-pro"]
+skills: ["error-analyzer", "gatekeeper", "dependabot-manager", "env-validator", "linter-fixer", "schema-guard", "qodana-linter", "performance-profiler", "zod-schema-validator", "api-mocker", "bio-validator", "prisma-migrator", "a11y-auditor", "coverage-check", "bundle-analyzer", "git-guard", "supabase-inspector", "storybook-bridge", "coolify-deploy", "doc-generator", "red-team", "clean-code-pro", "doppler", "n8n"]
 ---
 
-# 🩺 CI Doctor (Protocol v3.0)
+# 🩺 CI Doctor (Orchestrator v5.0)
 
-**Role:** CI Health Specialist & Self-Healing Engine
-**Goal:** Prevent, diagnose, and **automatically repair** CI failures with minimal iterations.
-**Rating:** 12/10 (Auto-Remediation, Pipeline Optimization, Perpetual Learning)
-
----
-
-## Phase 0: System Diagnostics (Pre-Flight)
-
-### 0.0 Permission Hygiene
-
-// turbo
-
-```bash
-if [ ! -f ".agent/config.json" ]; then
-  echo "⚠️ Warning: .agent/config.json missing. Permission prompts expected."
-else
-  echo "✅ Permissions: Configured"
-fi
-
-# Use env-validator skill to ensure secrets match schemas
-/env-validator
-```
-
-### 0.1 Dependency Check
-
-// turbo
-
-```bash
-echo "🔍 Checking dependency integrity..."
-
-# Step 1: Validate pnpm overrides exist on registry
-echo "🔍 Validating override versions..."
-if [ -f package.json ]; then
-  OVERRIDES=$(node -e "const pkg = require('./package.json'); const overrides = pkg.pnpm?.overrides || {}; Object.entries(overrides).forEach(([name, version]) => console.log(name + '@' + version));")
-  for override in $OVERRIDES; do
-    PKG_NAME=$(echo $override | cut -d'@' -f1)
-    PKG_VERSION=$(echo $override | cut -d'@' -f2-)
-    echo "  Checking $PKG_NAME@$PKG_VERSION..."
-    if ! npm view "$PKG_NAME@$PKG_VERSION" version &>/dev/null; then
-      echo "⛔ Override validation failed: $PKG_NAME@$PKG_VERSION does not exist on registry"
-      echo "💡 Run: npm view $PKG_NAME versions --json"
-      exit 1
-    fi
-  done
-  echo "✅ Override versions: Valid"
-fi
-
-# Step 2: Lockfile integrity check (frozen-lockfile dry-run)
-echo "🔍 Verifying lockfile consistency..."
-if ! pnpm install --frozen-lockfile --dry-run &>/dev/null; then
-  echo "⚠️ Lockfile out of sync with package.json. Attempting self-healing..."
-  pnpm install
-  if ! git diff --quiet pnpm-lock.yaml; then
-     echo "⛔ Lockfile updated. Please commit the `pnpm-lock.yaml` file."
-     exit 1
-  else
-     echo "✅ Dependencies: Healed"
-  fi
-else
-  echo "✅ Lockfile: Consistent"
-fi
-```
-
-### 0.2 The Time Dilator (Staleness Check)
-
-// turbo
-
-```bash
-echo "🔍 Checking temporal drift..."
-git fetch origin main > /dev/null 2>&1
-behind_count=$(git rev-list --count HEAD..origin/main)
-if [ "$behind_count" -gt 0 ]; then
-  echo "⚠️ WARNING: Branch is $behind_count commits behind main."
-  echo "👉 Suggested: git merge origin/main"
-else
-  echo "✅ Temporal Sync: Optimal"
-fi
-```
-
-### 0.3 The Triple Gate
-
-// turbo
-
-```bash
-echo "🚀 Running Triple Gate (Parallel)..."
-# Uses Turbo to run check-types, lint, and test concurrently
-pnpm exec turbo run check-types lint test || exit 1
-
-echo "✅ Triple Gate Passed"
-```
-
-### 0.4 Mock Validation
-
-// turbo
-
-```bash
-npx tsx scripts/validate-mocks.ts
-```
-
-### 0.5 UI Health Audit
-
-// turbo
-
-```bash
-echo "🔍 Checking UI Health..."
-/monitor-ui
-# Note: Monitor-UI logs critical issues to DEBT.md
-# Fail if critical accessibility issues are found that block release
-if [ -f .agent/reports/ui/latest.json ] && grep -q '"status": "CRITICAL"' .agent/reports/ui/latest.json; then
-  echo "⛔ UI HEALTH CRITICAL: Release blocked by A11y/Consistency violations."
-  exit 1
-fi
-echo "✅ UI Health: Verified"
-```
-
-### 0.6 Dependency Health Audit
-
-// turbo
-
-```bash
-echo "🔍 Checking dependency health..."
-
-# Step 1: Snyk code scanning (first-party code)
-echo "🔍 Running Snyk code scan..."
-if command -v snyk &>/dev/null; then
-  snyk code test --severity-threshold=high || {
-    echo "⚠️ Snyk found high-severity issues in first-party code"
-    echo "💡 Review findings and apply fixes before proceeding"
-    exit 1
-  }
-  echo "✅ Snyk: No critical issues"
-else
-  echo "⚠️ Snyk CLI not installed. Skipping code scan."
-  echo "💡 Install: npm install -g snyk && snyk auth"
-fi
-
-# Step 2: pnpm audit for dependency vulnerabilities
-echo "🔍 Running pnpm audit..."
-pnpm audit --audit-level high || exit 1
-
-# Step 3: Check for outdated critical packages
-# Note: Handled by dependabot-manager skill
-echo "✅ Dependencies: Healthy"
-```
-
-### 0.8 Git Hygiene (Branch & Commit)
-
-// turbo
-
-```bash
-echo "🔍 Checking Git health..."
-/git-guard
-```
-
-### 0.9 Database Integrity
-
-// turbo
-
-```bash
-echo "🔍 Checking DB Schema Integrity..."
-
-# Hygiene Rule: Standardize DATABASE_URL to 127.0.0.1 and include ?schema=public
-# Hygiene Rule: Health checks MUST use -U postgres to avoid 'root' role errors
-/supabase-inspector
-/prisma-migrator
-```
-
-### 0.10 Pipeline Efficiency Audit (NEW in v3.0)
-
-// turbo
-
-```bash
-echo "🏎️ Analyzing CI Pipeline efficiency..."
-npx tsx scripts/ci-pipeline-analyzer.ts .github/workflows/ci-cd.yml
-
-# Also analyze other workflow files
-for wf in .github/workflows/*.yml; do
-  echo "📂 Scanning: $wf"
-  npx tsx scripts/ci-pipeline-analyzer.ts "$wf" --json >> .agent/reports/ci-doctor/pipeline-all.json 2>/dev/null
-done
-
-echo "✅ Pipeline Analysis: Complete"
-```
-
-### 0.11 Sovereign Service Health
-
-// turbo
-
-```bash
-echo "🛡️ Checking Sovereign Service Health..."
-
-# Verify persistent CI services on host
-SERVICES=("ironforge-pg-l1" "ironforge-pg-e2e" "ironforge-pg-guard")
-MISSING=0
-
-for service in "${SERVICES[@]}"; do
-  if ! docker ps --filter "name=$service" --filter "status=running" --format "{{.Names}}" | grep -q "$service"; then
-    echo "⛔ ERROR: Sovereign service '$service' is down or unhealthy."
-    MISSING=$((MISSING + 1))
-  fi
-done
-
-if [ "$MISSING" -gt 0 ]; then
-  echo "💡 Suggestion: Run 'scripts/ci/manage-ci-services.ps1 -Action reset' on the runner host."
-  exit 1
-fi
-
-echo "✅ Sovereign Services: Healthy"
-```
+**Role:** Medical Board Chair / Triage Dispatch Central
+**Goal:** Full-lifecycle CI health — from prevention to self-healing, with observability at every layer.
 
 ---
 
-## Phase 1: Surgical Strike (Failure Isolation)
+## Architecture
 
-### 1.0 Automated Target Acquisition
+```
+Phase -1: Prevention
+  └─ Husky pre-push → check-types + lint (blocks bad pushes)
+  └─ predict-failures.ts → GHA annotations for high-risk areas
+
+Phase 0: Triage
+  └─ ci-cd.yml (failure) → n8n CI Triage Router → repository_dispatch → active-handover.yml
+
+Phase 1: Specialist Consultation
+  └─ active-handover.yml → doctor-code / doctor-infra / doctor-qa / doctor-security / doctor-ui-ux / doctor-meta
+
+Phase 2: Auto-Remediation
+  └─ doctor-code: lint --fix → auto-commit → push back to PR
+  └─ reviewer-aggregator (n8n cron) → parse CodeRabbit/DeepSource → auto-apply patches
+
+Phase 3: Self-Healing Infrastructure
+  └─ runner-heartbeat.yml (cron 15min) → detect dead runners → Discord alert
+  └─ restart-runners.ps1 → docker compose restart
+
+Phase 4: Observability
+  └─ PR Comment: structured diagnostic report posted on every specialist run
+  └─ Discord #ci-alerts: real-time failure/recovery notifications
+  └─ ci-metrics.ts → MTTR, success rate, auto-fix count
+  └─ track-flaky-tests.ts → test stability tracking
+```
+
+## Phase -1: Prevention
+
+### Pre-Push Gatekeeper (Husky)
+
+`.husky/pre-push` blocks pushes with type or lint errors locally, preventing ~40% of CI failures before they reach the pipeline.
+
+### Predictive Failure Analysis
+
+`scripts/predict-failures.ts` runs as an early step in `l1-verify` and maps changed files to risk areas:
+
+| Pattern | Specialist | Risk |
+| :--- | :--- | :--- |
+| `prisma/schema.prisma` | doctor-infra | 🔴 High |
+| `.github/workflows/` | doctor-meta | 🔴 High |
+| `Dockerfile` | doctor-infra | 🔴 High |
+| `tests/e2e/` | doctor-qa | 🟡 Medium |
+| `src/components/` | doctor-ui-ux | 🟡 Medium |
+| `package.json` | doctor-code | 🟡 Medium |
+
+## Phase 0: Triage (Dispatch Router)
+
+CI Doctor v5 no longer runs diagnostics directly. Instead, it serves as the **dispatch central** that routes failures to the correct specialist.
+
+### Automatic (via n8n)
+
+When `ci-cd.yml` detects a failure via `if: failure()`, it POSTs to the n8n `ci-triage-router` webhook. The n8n workflow:
+
+1. Receives the payload `{ job_name, run_id, branch, pr_number, conclusion }`
+2. Routes via Switch Node to the correct specialist
+3. Dispatches via GitHub `repository_dispatch` to `active-handover.yml`
+
+**Coverage:** All 8 CI jobs now have failure hooks: `l1-verify`, `l2-verification`, `l2-db-guard`, `e2e`, `l2-e2e-smoke`, `l2-perf-audit`, `docker-verify`, `publish-image`.
+
+### Manual (via CLI)
+
+### 0. Doppler Pre-flight Check
+
+Ensure the environment is secured and Doppler is active.
 
 // turbo
 
 ```bash
-# Fetch last failed CI run details
-RUN_ID=$(gh run list --limit 1 --json databaseId -q '.[0].databaseId')
-echo "🎯 Analyzing Run: $RUN_ID"
-
-# 1. Automated Diagnosis (Classifier v3.0 — 27 patterns)
-echo "🔮 Running CI Classifier v3.0..."
-gh run view $RUN_ID --log-failed 2>/dev/null | npx tsx scripts/ci-classifier.ts --stdin --json > /tmp/ci-classifications.json
-cat /tmp/ci-classifications.json | npx tsx scripts/ci-classifier.ts --stdin
-
-# 2. Sovereign Ground Truth Extraction (NEW in v3.0)
-# If DB connection failed, pull local Docker logs for deeper diagnostics
-if grep -q "ECONNREFUSED\|ECONNRESET\|Prisma" /tmp/ci-classifications.json; then
-  echo "🔍 DB Failure detected. Fetching Sovereign Ground Truth (Docker Logs)..."
-  for service in "ironforge-pg-l1" "ironforge-pg-e2e" "ironforge-pg-guard"; do
-    if docker ps --filter "name=$service" --format "{{.ID}}" | grep -q "."; then
-      echo "📂 Logs for $service:"
-      docker logs "$service" --tail 50
-    fi
-  done
-fi
-
-# 3. Automated Target Acquisition
-FAILED_TESTS=$(gh run view $RUN_ID --log-failed 2>/dev/null | grep "Error:" | grep -oE "tests/[^[:space:]]+\.spec\.ts" | sort | uniq | tr '\n' ' ')
-
-# 3. External Intelligence Acquisition (GitHub Apps — 6 sources)
-echo "📡 Syncing with PR Assistants (CodeRabbit, Snyk, CodeFactor, Codecov, Dependabot, Chromatic)..."
-PR_NUM=$(gh pr view --json number -q '.number' 2>/dev/null)
-if [ -n "$PR_NUM" ]; then
-  INTELLIGENCE=$(gh pr view $PR_NUM --json comments,statusCheckRollup | npx tsx scripts/app-intelligence.ts)
-  echo "🧠 Intelligence Received:"
-  echo "$INTELLIGENCE"
-else
-  echo "ℹ️ No PR context. Skipping intelligence acquisition."
-  INTELLIGENCE='{"targets":[],"protocols":[],"suggestions":[]}'
-fi
-
-if [ -z "$FAILED_TESTS" ] && [ "$INTELLIGENCE" == '{"targets":[],"protocols":[],"suggestions":[]}' ]; then
-    echo "✅ No specific failure artifacts or App feedback found. Proceeding to standard classification."
-else
-    echo "🚨 TARGETS ACQUIRED:"
-    echo "$FAILED_TESTS"
-    echo "$INTELLIGENCE"
-fi
+doppler run -- echo "🔐 Doppler Protected Execution Active"
 ```
 
-### 1.1 Classification Matrix (v3.0 — 27 Patterns)
-
-| Symptom                        | Protocol                                          | Auto-Fix | Risk |
-| :----------------------------- | :------------------------------------------------ | :------- | :--- |
-| `Timeout waiting for selector` | **SELECTOR_TIMEOUT** (Check `data-testid`)        | ❌       | 🟡   |
-| `Expected X, received Y`       | **ASSERTION_MISMATCH** (Check `tests/mocks`)      | ❌       | 🟡   |
-| `net::ERR_`                    | **NETWORK_HANG** (Mock missing)                   | ❌       | 🟡   |
-| `Pass Locally / Fail Remote`   | **RACE_CONDITION** (Move mock to `addInitScript`) | ❌       | 🟡   |
-| `Qodana: Hardcoded password`   | **SECURITY_BREACH** (Rotate secrets)              | ❌       | 🔴   |
-| `Qodana: Duplicated code`      | **DRY_VIOLATION** (Extract shared code)           | ❌       | 🟢   |
-| `Axe: violations`              | **ACCESSIBILITY_FAIL** (Run `/a11y-auditor`)      | ❌       | 🟡   |
-| `Join-Path` / `\` paths        | **PLATFORM_COMPATIBILITY** (Use `/` separators)   | ✅       | 🟢   |
-| `Prisma: Migration failed`     | **DB_MIGRATION_FAIL** (Auto-migrate)              | ✅       | 🟡   |
-| `Lighthouse: Performance`      | **PERF_DEGRADATION** (Use `/perf-profiler`)       | ❌       | 🟡   |
-| `Qodana: Critical issues`      | **STATIC_ANALYSIS_FAIL** (Use `/qodana-linter`)   | ❌       | 🟡   |
-| `Zod: Validation error`        | **SCHEMA_MISMATCH** (Use `/zod-schema-validator`) | ❌       | 🟡   |
-| `Mock: Data outdated`          | **STALE_MOCK** (Update snapshots)                 | ✅       | 🟢   |
-| `Bio: Data sync fail`          | **BIO_SYNC_FAIL** (Use `/bio-validator`)          | ❌       | 🟡   |
-| `Database: Schema out of sync` | **DB_OUT_OF_SYNC** (Push schema)                  | ✅       | 🟡   |
-| `A11y: Contrast/ARIA`          | **ACCESSIBILITY_FAIL** (Use `/a11y-auditor`)      | ❌       | 🟡   |
-| `Coolify: Deployment failed`   | **COOLIFY_DOWN** (Check infrastructure)           | ❌       | 🔴   |
-| `Docker daemon down`          | **DOCKER_SERVICE_RESTART** (Start Docker)         | ✅       | 🟡   |
-| `Container unhealthy`         | **DOCKER_SERVICE_RESET** (Reset services)         | ✅       | 🟡   |
-| `Container OOM/Disk Full`     | **DOCKER_RESOURCE_LIMIT** (Prune system)          | ❌       | 🔴   |
-| `Merge conflicts detected`     | **MERGE_CONFLICT** (Use `git rebase`)             | ❌       | 🟡   |
-| `Patch coverage missing`       | **COVERAGE_DROP** (Generate tests)                | ✅       | 🟢   |
-| `Insufficient docstrings`      | **DOCSTRING_FAIL** (Use `/doc-generator`)         | ✅       | 🟢   |
-| `Path traversal risk`          | **SECURE_INPUT_FAIL** (Use `/red-team`)           | ❌       | 🔴   |
-| `pg_isready: role "root"...`   | **POSTGRES_USER_MISMATCH** (Apply `-U postgres`)  | ✅       | 🟢   |
-| `relation "X" does not exist`  | **SCHEMA_SYNC_FAIL** (Add `?schema=public`)       | ✅       | 🟡   |
-| `Connection timeout (Prisma)`  | **SERVICE_RACE_CONDITION** (Add wait loop)         | ✅       | 🟢   |
-| `Storybook: Module not found`  | **ALIAS_MISSING** (Verify `@` alias in main.ts)   | ✅       | 🟢   |
-| `TypeError / is not defined`   | **TYPE_ERROR** (Run type check)                    | ✅       | 🟢   |
-| `SyntaxError / lint error`     | **SYNTAX_ERROR** (Run lint --fix)                  | ✅       | 🟢   |
-
-### 1.2 The Qodana Ward (Static Analysis)
-
-#### Protocol: SECURITY_BREACH
-
-- **Detection:** `grep -r "password" .github/workflows` or check `cypress.env.json`.
-- **Fix:** Replace hardcoded strings with `${{ secrets.MY_KEY }}` or environment variables.
-- **Verify:** `git grep "my-secret-value"` should return nothing.
-
-#### Protocol: DRY_VIOLATION (Duplication)
-
-- **Threshold:** Qodana flags >10 duplicate lines.
-- **Fix:** Extract logic to `src/lib/utils.ts` or a shared component.
-- **Exemption:** If intentional (e.g. seed scripts), add `// noinspection DuplicatedCode` to the file header.
-
-#### Protocol: REGEX_REDUNDANCY
-
-- **Fix:** Simplify Regex patterns (e.g., remove unnecessary groups).
-
-#### Protocol: PLATFORM_COMPATIBILITY (Linux/Windows)
-
-- **Context:** PowerShell scripts running on GitHub Actions (`ubuntu-latest`).
-- **Detection:** `Join-Path` errors or "File not found" due to backslashes (`\`).
-- **Fix:** Always use forward slashes (`/`) in relative paths. PowerShell handles `/` on Windows fine, but Linux fails on `\`.
-- **Rule:** `Join-Path "folder/file.ext"` >>> `Join-Path "folder\file.ext"`.
-
-### 1.3 Performance & Size (Bloat Check)
-
-#### Protocol: BUNDLE_BLOAT
-
-- **Detection:** `/bundle-analyzer` reports gzip size increase > 5%.
-- **Fix:** Analyzes `next build` output. Look for large dependencies (e.g., `lodash` vs `lodash-es`, heavy icons).
-- **Tool:** Run `/bundle-analyzer` to visualize and verify.
-
-### 1.4 Coverage & Visuals
-
-#### Protocol: COVERAGE_DROP
-
-- **Detection:** `/coverage-check` reports coverage below threshold (e.g. 80%).
-- **Fix:** Write unit tests for new logic.
-- **Tool:** `/unit-tests` to scaffold missing tests.
-
-#### Protocol: VISUAL_REGRESSION
-
-- **Detection:** Chromatic or Storybook build failure.
-- **Fix:** Run `/storybook-bridge` to validate stories match components.
-
-### 1.5 External Vital Signs (Coolify)
+### 1. Identify the latest failed run
 
 // turbo
 
 ```bash
-echo "🔍 Checking Coolify Infrastructure..."
-# Uses coolify-deploy scripts to verify instance health
-/coolify-deploy
-npx tsx scripts/check-infra.ts
-```
+echo "🩺 CI Doctor v5: Manual Triage"
 
----
+# 1. Identify the latest failed run
+FAILED_RUN=$(doppler run -- gh run list --limit 5 --json conclusion,databaseId,name --jq '[.[] | select(.conclusion == "failure")] | .[0]')
+RUN_ID=$(echo $FAILED_RUN | jq -r '.databaseId')
 
-## Phase 2: Auto-Remediation Pipeline (NEW in v3.0)
-
-> **This is the core upgrade from v2.0.** CI Doctor now *executes* fixes, not just diagnoses.
-
-### ITERATION LIMIT: 3
-
-### RISK POLICY: Auto-fix LOW/MEDIUM. Flag HIGH for human review
-
-```bash
-echo "🔧 Phase 2: Auto-Remediation Engine"
-
-# Check if classifications exist from Phase 1
-if [ ! -f /tmp/ci-classifications.json ]; then
-  echo "⛔ No classifications found. Run Phase 1 first."
-  exit 1
+if [ -z "$RUN_ID" ]; then
+  echo "✅ No recent failures found. Switching to Optimizer mode..."
+  /doctor-code --mode=optimize
+  exit 0
 fi
 
-ITERATION=0
-MAX_ITERATIONS=3
+echo "🚨 Failed run found: $RUN_ID"
+gh run view $RUN_ID
 
-while [ $ITERATION -lt $MAX_ITERATIONS ]; do
-  echo "🔧 Iteration $((ITERATION + 1))/$MAX_ITERATIONS"
+# 2. Fetch failed job name
+FAILED_JOB=$(doppler run -- gh run view $RUN_ID --json jobs --jq '[.jobs[] | select(.conclusion == "failure")] | .[0].name')
+echo "📋 Failed job: $FAILED_JOB"
 
-  # Execute repair protocols (auto-fix LOW/MEDIUM risk only)
-  cat /tmp/ci-classifications.json | npx tsx scripts/repair-protocols.ts --stdin --json > /tmp/ci-repairs.json
-  
-  # Check if any auto-fixes were applied
-  FIXED=$(cat /tmp/ci-repairs.json | grep -c '"success": true' || echo "0")
-  FAILED=$(cat /tmp/ci-repairs.json | grep -c '"success": false' || echo "0")
-  
-  echo "📊 Repairs: $FIXED fixed, $FAILED failed"
-
-  # Re-run Triple Gate to verify fixes
-  echo "🔄 Re-verifying with Triple Gate..."
-  if pnpm exec turbo run check-types lint test 2>/dev/null; then
-    echo "✅ Triple Gate passed after repairs!"
-    break
-  else
-    echo "⚠️ Triple Gate still failing. Re-classifying..."
-    # Re-classify the remaining errors
-    pnpm exec turbo run check-types lint test 2>&1 | npx tsx scripts/ci-classifier.ts --stdin --json > /tmp/ci-classifications.json
-  fi
-
-  ITERATION=$((ITERATION + 1))
-done
-
-if [ $ITERATION -eq $MAX_ITERATIONS ]; then
-  echo "⚠️ Max iterations reached. Remaining issues require human review."
-fi
-
-# Also run E2E if applicable
-TARGETS=$(cat /tmp/ci-classifications.json | grep -oP '"matchedText":"[^"]*tests/[^"]*\.spec\.ts' | grep -oP 'tests/[^"]+' | sort | uniq | tr '\n' ' ')
-if [ -n "$TARGETS" ]; then
-  echo "🎭 Running targeted E2E tests: $TARGETS"
-  npx playwright test $TARGETS --workers=1 --retries=1 || echo "⚠️ E2E failures remain."
-fi
+# 3. Route to specialist
+case "$FAILED_JOB" in
+  *"L1"*|*"Verify"*)
+    echo "🔧 Routing to /doctor-code..."
+    /doctor-code
+    ;;
+  *"DB Guard"*|*"Prisma"*)
+    echo "🗄️ Routing to /doctor-infra..."
+    /doctor-infra
+    ;;
+  *"E2E"*|*"Smoke"*|*"Playwright"*)
+    echo "🎭 Routing to /doctor-qa..."
+    /doctor-qa
+    ;;
+  *"Security"*|*"Snyk"*)
+    echo "🛡️ Routing to /doctor-security..."
+    /doctor-security
+    ;;
+  *"Docker"*)
+    echo "🐳 Routing to /doctor-infra..."
+    /doctor-infra
+    ;;
+  *"Perf"*|*"Lighthouse"*)
+    echo "📊 Routing to /doctor-code..."
+    /doctor-code
+    ;;
+  *)
+    echo "🔧 Unknown failure type. Defaulting to /doctor-code..."
+    /doctor-code
+    ;;
+esac
 ```
 
----
+## Phase 1: Specialist Consultation
 
-## Phase 3: The Quarantine Zone (Flakiness Protocol)
+The decentralized doctor team handles all actual diagnostics:
 
-If a test fails reliably in CI but passes 100% locally (even in Docker):
+| Specialist | Trigger | Focus |
+| :--- | :--- | :--- |
+| `/doctor-code` | L1 lint/type/test failures | ESLint, TypeScript, Vitest, CodeRabbit Autopilot |
+| `/doctor-infra` | DB Guard, Docker failures | Prisma drift, container health, env vars |
+| `/doctor-qa` | E2E/Smoke test failures | Playwright, test flakiness, seed data |
+| `/doctor-security` | Security alerts | pnpm audit, Snyk, GitGuardian |
+| `/doctor-ui-ux` | Visual/a11y regressions | Storybook, axe-core, responsive testing |
+| `/doctor-meta` | Governance/workflow failures | Label, Release Drafter, workflow YAML |
 
-1. **Isolate:** Create `tests/e2e/quarantine/<test>.spec.ts`
-2. **Tag:** Add `@flaky` annotation.
-3. **Track:** Add to `tests/flaky-tests.json`.
-4. **Bypass:** Push with ticket reference to fix later. Do not block deployment.
+## Phase 2: Auto-Remediation
 
----
+### Auto-Commit Lint Fixes
 
-## Phase 4: After Action Report (Post-Mortem)
+When `active-handover.yml` runs `doctor-code` and successfully auto-fixes lint errors, it:
 
-### 4.1 Decontaminate
+1. Commits: `fix(ci): auto-fix lint/type errors [ci-doctor]`
+2. Pushes back to the PR branch
+3. Posts a PR comment summarizing the fix
 
-1. **Clean:** Remove `console.log` debug statements.
-2. **Record:** Update `DEBT.md` with new findings.
+### Reviewer Aggregation
 
-### 4.2 GitHub Integration (NEW in v3.0)
+The n8n `reviewer-aggregator` workflow periodically:
 
-```bash
-# Post report to PR (if on a PR branch)
-PR_NUM=$(gh pr view --json number -q '.number' 2>/dev/null)
-if [ -n "$PR_NUM" ] && [ -f /tmp/ci-repairs.json ]; then
-  # Find latest repair report
-  LATEST_REPORT=$(ls -t .agent/reports/ci-doctor/repair-*.json 2>/dev/null | head -1)
-  if [ -n "$LATEST_REPORT" ]; then
-    npx tsx scripts/ci-doctor-github.ts --report "$LATEST_REPORT" --pr "$PR_NUM"
-  fi
-fi
-```
+1. Fetches open PR reviews from CodeRabbit, DeepSource, and humans
+2. Parses actionable code suggestions (```suggestion blocks)
+3. If auto-fixable → dispatches `doctor-code` to apply diffs
+4. Posts a summary comment on the PR
 
-### 4.3 Trend Analysis (NEW in v3.0)
+Health check: `scripts/check-n8n-cron.ps1` (alerts if last execution > 2h ago)
 
-```bash
-echo "📊 Analyzing failure trends..."
-npx tsx scripts/ci-doctor-github.ts --trends
+## Phase 3: Self-Healing Infrastructure
 
-# Auto-create issues for recurring failures (3+ in last 10 runs)
-```
+### Runner Heartbeat
 
-### 4.4 Evolve
+`.github/workflows/runner-heartbeat.yml` runs every 15 minutes:
 
-Proceed to Phase 5 if a new failure mode was discovered.
+1. Queries GitHub API for self-hosted runner status
+2. If runners are offline → Discord alert with recovery instructions
+3. Recovery script: `scripts/restart-runners.ps1`
 
----
+## Phase 4: Observability
 
-## Phase 5: Perpetual Learning & Immunity
+### PR Comment Feedback
 
-**Goal:** Ensure the CI Doctor never fails the same way twice.
+Every specialist run posts a structured report on the PR with diagnostic logs.
 
-### 5.1 Failure Pattern Extraction
+### Discord #ci-alerts
 
-If a repair required a manual intervention or a "new" type of fix (e.g. adding a 30s sleep):
+Real-time notifications for:
 
-- **Classify:** Is this a **Logic Failure** (code bug) or a **Horizontal Failure** (infrastructure/environment)?
-- **Extract:** What was the specific error string? (e.g. `pg_isready: role "root" does not exist`)
-- **Fix:** What was the surgical patch? (e.g. `-U postgres`)
+- CI failures and specialist dispatch
+- Auto-fix success/failure
+- Runner health degradation
 
-### 5.2 Protocol Injection
+### Metrics Dashboard
 
-1. **Update `ci-classifier.ts`:** Add the new pattern to `ERROR_PATTERNS` with appropriate `autoFixable` and `risk` flags.
-2. **Update `repair-protocols.ts`:** Add the executable fix to `PROTOCOLS` registry.
-3. **Update Classification Matrix (Phase 1.1):** Add the new Symptom/Protocol row.
-4. **Update System Diagnostics (Phase 0.x):** If the failure is "Horizontal", add a Hygiene Rule to prevent recurrence.
-5. **Draft Workflow Update:** If the failure reveals a gap in local validation, update `.github/workflows/ci-cd.yml` parity.
+`scripts/ci-metrics.ts` tracks:
 
-### 5.3 Immunity Verification
+- MTTR (Mean Time To Recovery)
+- Auto-fix success rate
+- Failure frequency per job
 
-- Run `/ci-doctor` again on the fixed branch.
-- Ensure Phase 0.x now catches the potential failure before it hits the remote runner.
+### Flakiness Detection
 
----
+`scripts/track-flaky-tests.ts` maintains per-test stability history and flags tests with >20% fail rate.
 
-## Appendix: Script Reference
+## n8n Workflows
 
-| Script | Purpose |
-| :--- | :--- |
-| `scripts/ci-classifier.ts` | Error classification (27 patterns, JSON output) |
-| `scripts/repair-protocols.ts` | Auto-remediation engine (27 protocols) |
-| `scripts/ci-pipeline-analyzer.ts` | Pipeline efficiency analyzer |
-| `scripts/ci-doctor-github.ts` | GitHub PR comments, trends, auto-issues |
-| `scripts/app-intelligence.ts` | External app intelligence (6 sources) |
-| `scripts/validate-mocks.ts` | Mock data validation |
-| `scripts/check-infra.ts` | Infrastructure health check |
+| Workflow | Trigger | Purpose |
+| :--- | :--- | :--- |
+| `ci-triage-router` | Webhook from ci-cd.yml | Routes failures to specialists |
+| `reviewer-aggregator` | Cron (hourly) / Webhook | Aggregates and auto-applies reviewer feedback |
+
+Workflow JSON files are stored in `n8n/` directory for import into the Coolify n8n instance.

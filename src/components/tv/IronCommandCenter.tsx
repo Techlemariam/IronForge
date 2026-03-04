@@ -98,6 +98,7 @@ export default function IronCommandCenter({ userId: _userId }: TvModeProps) {
           <button
             onClick={() => setIsMuted(!isMuted)}
             className="p-3 rounded-full bg-slate-800 hover:bg-slate-700 transition-colors"
+            aria-label={isMuted ? "Unmute" : "Mute"}
           >
             {isMuted ? (
               <VolumeX className="w-6 h-6" />
@@ -108,6 +109,7 @@ export default function IronCommandCenter({ userId: _userId }: TvModeProps) {
           <button
             onClick={toggleFullscreen}
             className="p-3 rounded-full bg-slate-800 hover:bg-slate-700 transition-colors"
+            aria-label="Toggle Fullscreen"
           >
             <Maximize className="w-6 h-6" />
           </button>
@@ -171,6 +173,7 @@ export default function IronCommandCenter({ userId: _userId }: TvModeProps) {
             <button
               onClick={() => setIsPaused(!isPaused)}
               className="p-6 rounded-full bg-amber-500 hover:bg-amber-400 transition-colors"
+              aria-label={isPaused ? "Play" : "Pause"}
             >
               {isPaused ? (
                 <Play className="w-10 h-10" />
@@ -178,7 +181,7 @@ export default function IronCommandCenter({ userId: _userId }: TvModeProps) {
                 <Pause className="w-10 h-10" />
               )}
             </button>
-            <button className="p-6 rounded-full bg-slate-700 hover:bg-slate-600 transition-colors">
+            <button aria-label="Skip Forward" className="p-6 rounded-full bg-slate-700 hover:bg-slate-600 transition-colors">
               <SkipForward className="w-10 h-10" />
             </button>
           </div>

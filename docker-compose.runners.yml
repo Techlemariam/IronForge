@@ -6,16 +6,18 @@ services:
     restart: always
     environment:
       - REPO_URL=https://github.com/Techlemariam/IronForge
-      - ACCESS_TOKEN=${GITHUB_PERSONAL_ACCESS_TOKEN}
-      - RUNNER_NAME_PREFIX=IronForge-Local
+      - ACCESS_TOKEN=${GH_PAT}
+      - RUNNER_NAME_PREFIX=IronForge-VPS
       - RUNNER_LABELS=self-hosted,IronForge-Local
-      - RUNNER_WORKDIR=/tmp/github-runner-your-repo
+      - RUNNER_WORKDIR=/tmp/github-runner
       - RUNNER_GROUP=Default
       - ORG_RUNNER=false
       - LABELS=self-hosted,IronForge-Local
+      - EPHEMERAL=true
+      - DISABLE_AUTO_UPDATE=true
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - .:/app
-    # Run multiple instances with: docker compose -f docker-compose.runners.yml up --scale runner=3 -d
+    deploy:
+      replicas: 3

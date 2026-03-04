@@ -273,9 +273,9 @@ const UltrathinkDashboard: React.FC<UltrathinkDashboardProps> = ({
 
       {/* Existing Widgets (Events, VO2, Load, PR Forecast) */}
       {upcomingRace && (
-        <div className="bg-[#1a1a1a] border border-[#ffd700]/50 rounded-lg p-4 flex items-center gap-4 animate-slide-up relative overflow-hidden">
+        <div className="bg-[#1a1a1a] border border-[var(--color-gold-bright)]/50 rounded-lg p-4 flex items-center gap-4 animate-slide-up relative overflow-hidden">
           <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20 pointer-events-none"></div>
-          <div className="p-3 bg-[#ffd700]/20 rounded-full border border-[#ffd700] text-[#ffd700]">
+          <div className="p-3 bg-[var(--color-gold-bright)]/20 rounded-full border border-[var(--color-gold-bright)] text-[var(--color-gold-bright)]">
             <Trophy className="w-6 h-6 animate-pulse" />
           </div>
           <div>
@@ -283,7 +283,7 @@ const UltrathinkDashboard: React.FC<UltrathinkDashboardProps> = ({
               Upcoming Boss Fight
             </h3>
             <div className="flex items-center gap-2 mt-1">
-              <span className="text-[#ffd700] font-bold text-lg">
+              <span className="text-[var(--color-gold-bright)] font-bold text-lg">
                 {upcomingRace.name}
               </span>
               <span className="text-zinc-500 text-xs font-mono bg-black/50 px-2 rounded">
@@ -417,3 +417,4 @@ const UltrathinkDashboard: React.FC<UltrathinkDashboardProps> = ({
 };
 
 export default UltrathinkDashboard;
+

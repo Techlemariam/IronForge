@@ -36,6 +36,7 @@ export async function POST(req: Request) {
         ctl: context.indices.ctl || 0,
         acwr: 1.0, // Default
         sleepScore: context.wellness.sleepScore || 0,
+        bodyBattery: context.wellness.bodyBattery ?? 50,
         soreness: context.wellness.soreness || 0,
         mood: context.wellness.mood || "NORMAL",
         consecutiveStalls: 0
@@ -88,6 +89,13 @@ export async function POST(req: Request) {
     
     Respond directly to the Titan's latest query.
   `;
+
+  // CI/E2E Mock Mode
+  if (process.env.GOOGLE_GENERATIVE_AI_API_KEY === 'dummy_google_ai_key_for_e2e_tests') {
+    return new Response("The Oracle is contemplating your Titan path (E2E Mock Response).", {
+      headers: { 'Content-Type': 'text/plain; charset=utf-8' }
+    });
+  }
 
   const result = streamText({
     model: google("gemini-2.5-flash") as any,

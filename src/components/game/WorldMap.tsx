@@ -70,7 +70,7 @@ export default function WorldMap({ onClose }: WorldMapProps) {
 
           <div className="w-px h-8 bg-white/10 mx-2 hidden md:block" />
 
-          <Button variant="ghost" size="icon" onClick={onClose} className="rounded-full hover:bg-white/10 text-zinc-400 hover:text-white shrink-0">
+          <Button variant="ghost" size="icon" onClick={onClose} aria-label="Close map" className="rounded-full hover:bg-white/10 text-zinc-400 hover:text-white shrink-0">
             <X className="w-6 h-6" />
           </Button>
         </div>

@@ -19,9 +19,9 @@ interface WorkoutNote {
 }
 
 const DEFAULT_TAGS: WorkoutTag[] = [
-  { id: "tag-push", name: "Push Day", color: "#ef4444", usageCount: 0 },
+  { id: "tag-push", name: "Push Day", color: "var(--color-crisis)", usageCount: 0 },
   { id: "tag-pull", name: "Pull Day", color: "#3b82f6", usageCount: 0 },
-  { id: "tag-legs", name: "Leg Day", color: "#22c55e", usageCount: 0 },
+  { id: "tag-legs", name: "Leg Day", color: "var(--color-venom)", usageCount: 0 },
   { id: "tag-cardio", name: "Cardio", color: "#f59e0b", usageCount: 0 },
   { id: "tag-deload", name: "Deload", color: "#8b5cf6", usageCount: 0 },
   { id: "tag-pr", name: "PR Day", color: "#ec4899", usageCount: 0 },
@@ -156,3 +156,4 @@ export async function updateWorkoutNoteAction(
     return { success: false };
   }
 }
+

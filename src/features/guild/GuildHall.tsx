@@ -36,9 +36,10 @@ export const GuildHall: React.FC<GuildHallProps> = ({ userId }) => {
     // createGuildAction expects (userId, data) mapping
     // But GuildHall only has createName. I'll need to provide placeholder for tag if not in UI.
     // Or add tag to UI. For now, using name as tag base.
-    await createGuildAction(userId, {
+    await createGuildAction({
       name: createName,
-      tag: createName.slice(0, 4).toUpperCase()
+      tag: createName.slice(0, 4).toUpperCase(),
+      description: "" // Or add a description if needed
     });
     loadGuild();
   };

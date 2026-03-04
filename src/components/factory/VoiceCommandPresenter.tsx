@@ -31,6 +31,7 @@ export function VoiceCommandPresenter({
                         <button
                             onClick={onToggleListening}
                             disabled={isProcessing}
+                            aria-label={isListening ? "Stop listening" : "Start listening"}
                             className={`relative p-3 rounded-full transition-all duration-300 ${isListening
                                 ? 'bg-red-500 text-white shadow-lg shadow-red-500/20'
                                 : 'bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20'

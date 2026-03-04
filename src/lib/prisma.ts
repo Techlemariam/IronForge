@@ -29,7 +29,7 @@ const prismaClientSingleton = () => {
     // Neon adapter for Edge
     const pool = new NeonPool({ connectionString });
     // Cast pool to any due to version mismatch in library types for PrismaNeon
-    const adapter = new PrismaNeon(pool as any);
+    const adapter = new PrismaNeon(pool as unknown as ConstructorParameters<typeof PrismaNeon>[0]);
     return new PrismaClient({ adapter: adapter });
   } else {
     // Standard PG adapter for Node.js/Local

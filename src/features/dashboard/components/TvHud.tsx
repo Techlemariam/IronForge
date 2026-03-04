@@ -36,8 +36,7 @@ export const TvHud: React.FC<TvHudProps> = ({
         <div className="fixed inset-0 z-[100] pointer-events-none bg-gradient-to-b from-black/40 via-transparent to-black/60 font-mono">
             {/* Top Left: Player Stats (Compacted) */}
             <div
-                role="status"
-                aria-label="Player Status"
+                aria-label="Player Status Overlay"
                 className="absolute top-12 left-12 flex items-center gap-4 bg-black/60 backdrop-blur-xl border-2 border-white/10 p-4 rounded-2xl shadow-2xl"
             >
                 <div className="w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center border-2 border-blue-400/50 shadow-[0_0_15px_rgba(59,130,246,0.5)]">
@@ -47,11 +46,18 @@ export const TvHud: React.FC<TvHudProps> = ({
                 <div>
                     <div className="flex items-center gap-1.5 bg-black/40 px-3 py-1.5 rounded-lg border border-white/5">
                         <Heart className="w-5 h-5 text-red-500 fill-current animate-pulse" />
-                        <span className="text-2xl font-mono font-bold text-white tabular-nums leading-none">{heartRate > 0 ? heartRate : "--"}</span>
+                        <span aria-live="polite" aria-atomic="true" className="text-2xl font-mono font-bold text-white tabular-nums leading-none">{heartRate > 0 ? heartRate : "--"}</span>
                         <span className="text-xs text-white/50 uppercase">bpm</span>
                     </div>
 
-                    <div className="w-48 h-2 bg-white/10 rounded-full mt-2 overflow-hidden border border-white/5">
+                    <div
+                        className="w-48 h-2 bg-white/10 rounded-full mt-2 overflow-hidden border border-white/5"
+                        role="progressbar"
+                        aria-valuenow={playerHp}
+                        aria-valuemin={0}
+                        aria-valuemax={playerMaxHp}
+                        aria-label="Player Health"
+                    >
                         <motion.div
                             initial={{ width: 0 }}
                             animate={{ width: `${(playerHp / playerMaxHp) * 100}%` }}
@@ -68,14 +74,20 @@ export const TvHud: React.FC<TvHudProps> = ({
                         initial={{ opacity: 0, x: 50 }}
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: 50 }}
-                        role="status"
                         aria-label="Quest Progress"
                         className="absolute top-12 right-12 text-right"
                     >
                         <div className="bg-black/60 backdrop-blur-xl border-2 border-warrior/20 p-4 rounded-2xl shadow-2xl">
                             <div className="text-2xl font-black text-white mb-2 uppercase tracking-wide text-right">{questTitle}</div>
                             <div className="flex items-center justify-end gap-3">
-                                <div className="w-48 h-2 bg-white/5 rounded-full overflow-hidden">
+                                <div
+                                    className="w-48 h-2 bg-white/5 rounded-full overflow-hidden"
+                                    role="progressbar"
+                                    aria-valuenow={Math.round(questProgress)}
+                                    aria-valuemin={0}
+                                    aria-valuemax={100}
+                                    aria-label="Quest Progress"
+                                >
                                     <motion.div
                                         initial={{ width: 0 }}
                                         animate={{ width: `${questProgress}%` }}
@@ -103,7 +115,6 @@ export const TvHud: React.FC<TvHudProps> = ({
                         initial={{ opacity: 0, y: 100 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: 100 }}
-                        role="status"
                         aria-label="Boss Status"
                         className="absolute bottom-12 left-1/2 -translate-x-1/2 w-full max-w-5xl px-12"
                     >
@@ -113,12 +124,19 @@ export const TvHud: React.FC<TvHudProps> = ({
                                     <div className="text-5xl font-black text-white tracking-tight uppercase italic">{bossName}</div>
                                 </div>
                                 <div className="text-right">
-                                    <div className="text-6xl font-black text-white tabular-nums">
+                                    <div aria-live="polite" aria-atomic="true" className="text-6xl font-black text-white tabular-nums">
                                         {Math.round((bossHp / bossMaxHp) * 100)}%
                                     </div>
                                 </div>
                             </div>
-                            <div className="relative h-6 bg-red-950/50 rounded-full border-2 border-red-500/20 overflow-hidden shadow-inner">
+                            <div
+                                className="relative h-6 bg-red-950/50 rounded-full border-2 border-red-500/20 overflow-hidden shadow-inner"
+                                role="progressbar"
+                                aria-valuenow={bossHp}
+                                aria-valuemin={0}
+                                aria-valuemax={bossMaxHp}
+                                aria-label="Boss Health"
+                            >
                                 <motion.div
                                     initial={{ width: "100%" }}
                                     animate={{ width: `${(bossHp / bossMaxHp) * 100}%` }}

@@ -56,7 +56,7 @@ export function trackUsage(increment = 1): QuotaStatus {
             if (fileContent.date === today) {
                 data = fileContent;
             }
-        } catch (e) {
+        } catch {
             // If corrupted, reset
         }
     }

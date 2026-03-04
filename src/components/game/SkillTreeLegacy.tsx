@@ -257,7 +257,7 @@ const SkillTree: React.FC<SkillTreeProps> = ({
                   d = `M ${startX} ${startY} C ${cpX} ${startY}, ${cpX} ${endY}, ${endX} ${endY}`;
                 }
 
-                const activeColor = isEndurance ? "#06b6d4" : "#ffd700";
+                const activeColor = isEndurance ? "#06b6d4" : "var(--color-gold-bright)";
                 const lockedColor = "#333";
 
                 return (
@@ -342,7 +342,7 @@ const SkillTree: React.FC<SkillTreeProps> = ({
                 </span>
               </div>
             </div>
-            <button onClick={() => setSelectedNodeId(null)}>
+            <button onClick={() => setSelectedNodeId(null)} aria-label="Close skill details">
               <X className="w-5 h-5 hover:text-white transition-colors" />
             </button>
           </div>
@@ -379,7 +379,7 @@ const SkillTree: React.FC<SkillTreeProps> = ({
                     </span>
                   )}
                   <div
-                    className={`text-sm font-bold flex items-center gap-1 ${selectedNode.currency === "kinetic_shard" ? "text-cyan-400" : "text-[#ffd700]"}`}
+                    className={`text-sm font-bold flex items-center gap-1 ${selectedNode.currency === "kinetic_shard" ? "text-cyan-400" : "text-[var(--color-gold-bright)]"}`}
                   >
                     {cost}{" "}
                     {selectedNode.currency === "kinetic_shard"
@@ -417,11 +417,11 @@ const TalentNode: React.FC<{
   if (node.status === SkillStatus.MASTERED) {
     borderColor = isEndurance
       ? "border-cyan-400 bg-cyan-950/30"
-      : "border-[#ffd700] bg-yellow-950/30";
+      : "border-[var(--color-gold-bright)] bg-yellow-950/30";
     shadow = isEndurance
       ? "shadow-[0_0_20px_rgba(34,211,238,0.4)]"
       : "shadow-[0_0_20px_rgba(255,215,0,0.4)]";
-    iconColor = isEndurance ? "text-cyan-400" : "text-[#ffd700]";
+    iconColor = isEndurance ? "text-cyan-400" : "text-[var(--color-gold-bright)]";
   } else if (node.status === SkillStatus.UNLOCKED) {
     borderColor = "border-zinc-500 bg-zinc-900";
     shadow = "shadow-[0_0_10px_rgba(255,255,255,0.1)]";
@@ -444,3 +444,4 @@ const TalentNode: React.FC<{
 };
 
 export default SkillTree;
+

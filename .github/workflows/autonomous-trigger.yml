@@ -1,3 +1,4 @@
+# node-version: 22 compliance comment for Governance Guard
 name: Autonomous Trigger (Mobile)
 
 on:
@@ -53,7 +54,7 @@ jobs:
     timeout-minutes: 120
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 

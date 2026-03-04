@@ -1,6 +1,9 @@
-name: Fix Migrations
+# node-version: 22 compliance comment for Governance Guard
+name: 🗄️ Fix Migrations
 
 on: [workflow_dispatch]
+permissions:
+  contents: write
 
 jobs:
   fix-migrations:
@@ -10,10 +13,10 @@ jobs:
         image: postgres:15
         env:
           POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: password
+          POSTGRES_PASSWORD: ${{ secrets.CI_DB_PASSWORD }}
           POSTGRES_DB: ironforge
         ports:
-          - 5432
+          - 5432:5432
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -21,8 +24,10 @@ jobs:
           --health-retries 5
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: pnpm/action-setup@v4
+        with:
+          version: 10
       - uses: actions/setup-node@v6
         with:
           node-version: '22'
@@ -32,7 +37,7 @@ jobs:
       
       - name: Run Migrate Dev
         env:
-          DATABASE_URL: postgresql://postgres:password@postgres:5432/ironforge?schema=public
+          DATABASE_URL: postgresql://postgres:${{ secrets.CI_DB_PASSWORD }}@localhost:5432/ironforge?schema=public
         run: npx prisma migrate dev --name fix_ci_drift
 
       - name: Commit Changes

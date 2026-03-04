@@ -1,7 +1,29 @@
 version: '3.8'
 
 services:
+  # ──────────────────────────────────────────────
+  # Database Init Container (Migrations + Seeding)
+  # Runs prisma db push and seeds the database, then exits.
+  # Use 'npx supabase start' for local development; this is for production-like builds.
+  # ──────────────────────────────────────────────
+  db-init:
+    build:
+      context: .
+      target: dev
+    container_name: ironforge-db-init
+    environment:
+      DATABASE_URL: ${DATABASE_URL:-postgresql://postgres:postgres@db:5432/ironforge}
+      DIRECT_URL: ${DIRECT_URL:-postgresql://postgres:postgres@db:5432/ironforge}
+      SKIP_ENV_VALIDATION: "true"
+    depends_on:
+      db:
+        condition: service_healthy
+    entrypoint: [ "sh", "-c", "npx prisma db push --accept-data-loss && echo '✅ Database schema applied.' && exit 0" ]
+    networks:
+      - ironforge-net
+
   # Next.js Application (Development)
+  # Preferred alternative: 'npx supabase start' + 'npm run dev' locally.
   app-dev:
     build:
       context: .
@@ -14,17 +36,20 @@ services:
       - /app/node_modules
       - /app/.next
     environment:
-      DATABASE_URL: postgresql://postgres:postgres@db:5432/ironforge
-      DIRECT_URL: postgresql://postgres:postgres@db:5432/ironforge
-      NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL:-https://dummy.supabase.co}
-      NEXT_PUBLIC_SUPABASE_ANON_KEY: ${NEXT_PUBLIC_SUPABASE_ANON_KEY:-dummy}
+      DATABASE_URL: ${DATABASE_URL:-postgresql://postgres:postgres@db:5432/ironforge}
+      DIRECT_URL: ${DIRECT_URL:-postgresql://postgres:postgres@db:5432/ironforge}
+      NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL:-http://localhost:54321}
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ${NEXT_PUBLIC_SUPABASE_ANON_KEY}
     depends_on:
       db:
         condition: service_healthy
+      db-init:
+        condition: service_completed_successfully
     networks:
       - ironforge-net
 
   # Next.js Application (Production-like)
+  # Run with: doppler run -- docker compose up app-prod
   app-prod:
     build:
       context: .
@@ -33,17 +58,25 @@ services:
     ports:
       - "3001:3000"
     environment:
-      DATABASE_URL: ${DATABASE_URL:-postgresql://postgres:postgres@db:5432/ironforge}
-      DIRECT_URL: ${DIRECT_URL:-postgresql://postgres:postgres@db:5432/ironforge}
+      DATABASE_URL: ${DATABASE_URL}
+      DIRECT_URL: ${DIRECT_URL}
       NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL}
       NEXT_PUBLIC_SUPABASE_ANON_KEY: ${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '1.0'
     depends_on:
       db:
         condition: service_healthy
+      db-init:
+        condition: service_completed_successfully
     networks:
       - ironforge-net
 
-  # PostgreSQL Database
+  # PostgreSQL Database (Legacy/Standalone)
+  # Use 'npx supabase start' instead for the full local Supabase stack.
   db:
     image: postgres:16-alpine
     container_name: ironforge-db
@@ -53,15 +86,21 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
       POSTGRES_DB: ${POSTGRES_DB:-ironforge}
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.5'
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - ironforge-net
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U postgres" ]
-      interval: 5s
-      timeout: 5s
-      retries: 5
+      interval: 2s
+      timeout: 1s
+      retries: 3
+      start_period: 5s
 
 networks:
   ironforge-net:
