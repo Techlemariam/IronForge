@@ -82,7 +82,7 @@ export async function getExerciseMasteryAction(
 
   return {
     exerciseId,
-    exerciseName: "Bench Press",
+    exerciseName: exerciseId.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
     level,
     xp: 7500,
     xpToNextLevel: 10000,

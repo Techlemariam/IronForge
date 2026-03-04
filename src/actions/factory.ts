@@ -18,12 +18,14 @@ async function verifyFactoryAuth() {
         return false;
     }
 
-    if (!user?.id) {
-        console.warn("Factory Auth: No user session found");
+    if (!user?.id || !user.email) {
+        console.warn("Factory Auth: No valid user session found");
         return false;
     }
 
-    const isAuthorized = user.email?.endsWith("@ironforge.rpg") || user.email === 'alexander.teklemariam@gmail.com' || false;
+    const adminEmails = (process.env.ADMIN_EMAILS || 'alexander.teklemariam@gmail.com').split(',');
+    const isAuthorized = user.email.endsWith("@ironforge.rpg") || adminEmails.includes(user.email);
+
     if (!isAuthorized) {
         console.warn(`Factory Auth: User ${user.email} not authorized for factory operations`);
     }

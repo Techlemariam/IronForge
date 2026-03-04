@@ -36,7 +36,7 @@ export function CardioDuelCard({ duel, currentUserId }: CardioDuelProps) {
 
     const handleTaunt = async () => {
         setIsTaunting(true);
-        await sendTauntAction({ duelId: duel.id });
+        await sendTauntAction(duel.id);
         toast.success(`Taunted ${opponentName}!`);
         setTimeout(() => setIsTaunting(false), 5000); // Cooldown
     };

@@ -105,15 +105,21 @@ export function BattlePassView({ initialData, userId }: BattlePassViewProps) {
   const handleUpgrade = async () => {
     if (loading) return;
     setLoading(true);
-    const result = await upgradeToPremiumAction(userId);
-    if (result.success) {
-      toast.success("Premium Unlocked!");
-      // Optimistic update
-      setData(prev => prev ? ({ ...prev, hasPremium: true }) : null);
-    } else {
-      toast.error(result.message);
+    try {
+      const result = await upgradeToPremiumAction(userId);
+      if (result.success) {
+        toast.success("Premium Unlocked!");
+        // Optimistic update
+        setData(prev => prev ? ({ ...prev, hasPremium: true }) : null);
+      } else {
+        toast.error(result.message);
+      }
+    } catch (error) {
+      toast.error("An unexpected error occurred during upgrade.");
+      console.error(error);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
