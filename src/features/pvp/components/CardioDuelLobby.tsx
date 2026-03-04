@@ -46,12 +46,17 @@ export function CardioDuelLobby() {
         if (!selectedOpponent) return;
         setLoading(true);
         try {
+            const targetDistance = duelType === "ELEVATION_GRIND"
+                // UI dropdown shows km equivalents (2,5,10,20); convert to elevation meters (×100)
+                ? parseFloat(distance) * 100
+                : parseFloat(distance);
+
             const result = await createDuelChallengeAction({
                 targetUserId: selectedOpponent,
                 options: {
                     duelType,
                     activityType,
-                    targetDistance: parseFloat(distance),
+                    targetDistance,
                 }
             });
 
