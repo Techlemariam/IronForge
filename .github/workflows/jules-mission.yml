@@ -25,6 +25,7 @@ jobs:
         uses: dopplerhq/cli-action@v3
 
       - name: Fetch Doppler Secrets
+        if: ${{ secrets.DOPPLER_TOKEN != '' }}
         run: |
           doppler secrets download --no-file --format env-no-quotes --project ironforge --config dev > $GITHUB_ENV
         env:
@@ -35,10 +36,3 @@ jobs:
         with:
           jules_api_key: ${{ env.JULES_API_KEY }}
           prompt: ${{ inputs.mission }}
-
-      - name: Send Feedback to Jules
-        if: always()
-        uses: BeksOmega/jules-comms@v1.0.0
-        with:
-          jules_api_key: ${{ env.JULES_API_KEY }}
-          feedback_users: ${{ github.actor }}
