@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { DuelRewardsService } from "@/services/pvp/DuelRewardsService";
 
 // Scoring formula based on titan_duels.md analysis
 function calculateDuelScore(
@@ -60,18 +61,20 @@ export async function GET(request: NextRequest) {
         },
       });
 
-      for (const duel of expiredDuels) {
+      const duelUpdatePromises = expiredDuels.map(async (duel) => {
         // Calculate final scores (placeholder - needs real aggregation)
-        const challengerScore = await calculateDuelScore(
-          duel.challengerId,
-          duel.startDate!,
-          duel.endDate!,
-        );
-        const defenderScore = await calculateDuelScore(
-          duel.defenderId,
-          duel.startDate!,
-          duel.endDate!,
-        );
+        const [challengerScore, defenderScore] = await Promise.all([
+          calculateDuelScore(
+            duel.challengerId,
+            duel.startDate!,
+            duel.endDate!,
+          ),
+          calculateDuelScore(
+            duel.defenderId,
+            duel.startDate!,
+            duel.endDate!,
+          ),
+        ]);
 
         // Determine winner
         let winnerId: string | null = null;
@@ -112,8 +115,10 @@ export async function GET(request: NextRequest) {
           defenderDuels,
         );
 
+        const updates: any[] = [];
+
         // Update duel
-        await prisma.duelChallenge.update({
+        updates.push(prisma.duelChallenge.update({
           where: { id: duel.id },
           data: {
             status: "COMPLETED",
@@ -121,11 +126,9 @@ export async function GET(request: NextRequest) {
             defenderScore,
             winnerId,
           },
-        });
+        }));
 
         // --- Calculate Rewards ---
-        const { DuelRewardsService } = await import("@/services/pvp/DuelRewardsService");
-
         // 1. Winner Rewards
         if (winnerId) {
           const winnerScore = winnerId === duel.challengerId ? challengerScore : defenderScore;
@@ -135,19 +138,17 @@ export async function GET(request: NextRequest) {
             winnerId, true, winnerScore, loserScore
           );
 
-          await prisma.user.update({
+          updates.push(prisma.user.update({
             where: { id: winnerId },
             data: {
               totalExperience: { increment: rewards.xp },
               gold: { increment: rewards.gold },
               kineticEnergy: { increment: rewards.kineticEnergy }
             }
-          });
+          }));
         }
 
         // 2. Loser/Draw Rewards
-        // (For MVP we iterate both participants again or smarter logic, keeping it simple:
-        //  if no winner, its a draw -> use loser logic for both or new draw logic)
         const loserId = winnerId ? (winnerId === duel.challengerId ? duel.defenderId : duel.challengerId) : null;
 
         if (loserId) {
@@ -158,45 +159,47 @@ export async function GET(request: NextRequest) {
             loserId, false, myScore, oppScore
           );
 
-          await prisma.user.update({
+          updates.push(prisma.user.update({
             where: { id: loserId },
             data: {
               totalExperience: { increment: rewards.xp },
               gold: { increment: rewards.gold },
               kineticEnergy: { increment: rewards.kineticEnergy }
             }
-          });
+          }));
         } else if (!winnerId) {
           // Draw - Both participants get participation rewards
-          const challengerDrawRewards = await DuelRewardsService.calculateDrawRewards(
-            duel.challengerId, challengerScore
-          );
-          const defenderDrawRewards = await DuelRewardsService.calculateDrawRewards(
-            duel.defenderId, defenderScore
-          );
+          const [challengerDrawRewards, defenderDrawRewards] = await Promise.all([
+            DuelRewardsService.calculateDrawRewards(
+              duel.challengerId, challengerScore
+            ),
+            DuelRewardsService.calculateDrawRewards(
+              duel.defenderId, defenderScore
+            )
+          ]);
 
-          await prisma.user.update({
+          updates.push(prisma.user.update({
             where: { id: duel.challengerId },
             data: {
               totalExperience: { increment: challengerDrawRewards.xp },
               gold: { increment: challengerDrawRewards.gold },
               kineticEnergy: { increment: challengerDrawRewards.kineticEnergy }
             }
-          });
+          }));
 
-          await prisma.user.update({
+          updates.push(prisma.user.update({
             where: { id: duel.defenderId },
             data: {
               totalExperience: { increment: defenderDrawRewards.xp },
               gold: { increment: defenderDrawRewards.gold },
               kineticEnergy: { increment: defenderDrawRewards.kineticEnergy }
             }
-          });
+          }));
         }
 
         // Update PvpProfiles
         if (duel.challenger.pvpProfile) {
-          await prisma.pvpProfile.update({
+          updates.push(prisma.pvpProfile.update({
             where: { userId: duel.challengerId },
             data: {
               duelElo: { increment: challengerEloChange },
@@ -205,11 +208,11 @@ export async function GET(request: NextRequest) {
               duelsLost:
                 winnerId === duel.defenderId ? { increment: 1 } : undefined,
             },
-          });
+          }));
         }
 
         if (duel.defender.pvpProfile) {
-          await prisma.pvpProfile.update({
+          updates.push(prisma.pvpProfile.update({
             where: { userId: duel.defenderId },
             data: {
               duelElo: { increment: defenderEloChange },
@@ -218,8 +221,17 @@ export async function GET(request: NextRequest) {
               duelsLost:
                 winnerId === duel.challengerId ? { increment: 1 } : undefined,
             },
-          });
+          }));
         }
+
+        return updates;
+      });
+
+      const allUpdatesNested = await Promise.all(duelUpdatePromises);
+      const allUpdates = allUpdatesNested.flat();
+
+      if (allUpdates.length > 0) {
+        await prisma.$transaction(allUpdates);
       }
 
       // 2. Reset weekly duel limits (runs on Sunday)
