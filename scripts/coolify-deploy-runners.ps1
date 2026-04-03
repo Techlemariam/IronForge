@@ -14,19 +14,19 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-$coolifyHost = "http://ironforge-coolify.tailafb692.ts.net:8000"
-$token = $env:COOLIFY_API_TOKEN
+. "$PSScriptRoot/coolify-api.ps1"
+$coolifyHost = $script:coolifyHost
+$headers = $script:coolifyHeaders
 $ghPat = $env:GH_PAT
-$serverUuid = "swwk0owc8sokwo80w48k48w0"
-$projectUuid = "n4w4sk0sok0s040w0w0koc8c"
+$serverUuid = $env:COOLIFY_SERVER_UUID
+if (-not $serverUuid) { $serverUuid = "swwk0owc8sokwo80w48k48w0" }
+$projectUuid = $env:COOLIFY_RUNNERS_PROJECT_UUID
+if (-not $projectUuid) { $projectUuid = "n4w4sk0sok0s040w0w0koc8c" }
 
-if (-not $token) { Write-Error "COOLIFY_API_TOKEN not set. Run via: doppler run --"; exit 1 }
-
-$headers = @{
-  "Authorization" = "Bearer $token"
-  "Accept"        = "application/json"
-  "Content-Type"  = "application/json"
+if (-not $env:GH_PAT) {
+  if ($Action -eq "create") { Write-Error "GH_PAT not set"; exit 1 }
 }
+
 
 # The UUIDs for the 3 current runner services:
 $runnerServices = @(

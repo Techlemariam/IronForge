@@ -18,6 +18,7 @@ Detta dokument definierar de specialiserade agenter som utgör IronForge-teamet.
 | **Debug** | `/debug` | **Error Analysis.** Systematisk felanalys för build/test/runtime-fel. Recovery workflows. |
 | **Infrastructure** | `/infrastructure` | **DevOps.** Docker, CI/CD, DB migrations, Remote Trigger Infrastructure (n8n/Coolify). |
 | **Security** | `/security` | **Red Team.** Auth audits, Zod-validering, dependency scans, secret exposure. |
+| **Jules** | `/jules-handoff` | **Async Worker.** Autonom task-exekvering via Jules API. Debt attack, boilerplate, tester. Se även `/jules-dispatch` för remote/schemalagd dispatch. |
 
 ## 🎨 Product & Design
 

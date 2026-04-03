@@ -2,16 +2,14 @@
 # Usage: doppler run -- pwsh scripts/coolify-inspect-n8n.ps1
 # Deep inspect of the n8n project on Coolify
 
-$coolifyHost = "http://ironforge-coolify.tailafb692.ts.net:8000"
-$token = $env:COOLIFY_API_TOKEN
-$headers = @{
-    "Authorization" = "Bearer $token"
-    "Accept"        = "application/json"
-    "Content-Type"  = "application/json"
-}
+. "$PSScriptRoot/coolify-api.ps1"
+$coolifyHost = $script:coolifyHost
+$headers = $script:coolifyHeaders
 
-$n8nProjectUuid = "y4sck8c40g4cockw48sg0sok"
-$serverUuid = "swwk0owc8sokwo80w48k48w0"
+$n8nProjectUuid = $env:N8N_COOLIFY_PROJECT_UUID
+if (-not $n8nProjectUuid) { $n8nProjectUuid = "y4sck8c40g4cockw48sg0sok" }
+$serverUuid = $env:COOLIFY_SERVER_UUID
+if (-not $serverUuid) { $serverUuid = "swwk0owc8sokwo80w48k48w0" }
 
 Write-Host "=== n8n PROJECT FULL DETAIL ===" -ForegroundColor Cyan
 $proj = Invoke-RestMethod -Uri "$coolifyHost/api/v1/projects/$n8nProjectUuid" -Headers $headers

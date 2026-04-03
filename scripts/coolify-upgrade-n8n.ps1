@@ -2,15 +2,17 @@
 # Usage: doppler run -- pwsh scripts/coolify-upgrade-n8n.ps1
 # Updates n8n service image to latest via Coolify service environment variable
 
-$coolifyHost = "http://ironforge-coolify.tailafb692.ts.net:8000"
-$token = $env:COOLIFY_API_TOKEN
-$headers = @{
-    "Authorization" = "Bearer $token"
-    "Accept"        = "application/json"
-    "Content-Type"  = "application/json"
-}
+. "$PSScriptRoot/coolify-api.ps1"
 
-$serviceUuid = "dskgo80w0sw80o8s8k04go84"
+$serviceUuid = $env:N8N_COOLIFY_SERVICE_UUID
+if (-not $serviceUuid) {
+    $serviceUuid = "dskgo80w0sw80o8s8k04go84"
+    Write-Warning "N8N_COOLIFY_SERVICE_UUID not set — using default $serviceUuid"
+}
+$coolifyHost = $script:coolifyHost
+$headers = $script:coolifyHeaders
+
+
 
 # Step 1: Get current service env vars
 Write-Host "Fetching current service env vars..." -ForegroundColor Cyan

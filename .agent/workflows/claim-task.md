@@ -216,6 +216,7 @@ When task is complete or abandoned:
 3. **Frequent rebasing** — `git fetch && git rebase origin/main` before each session
 4. **Use PRs for visibility** — Create draft PR immediately after first commit
 5. **Prefix commits** — Use `[task-id]` in all commit messages for traceability
+6. **Jules delegation** — For isolated, well-scoped tasks, use `/jules-handoff` to delegate to Jules async
 
 ---
 
@@ -227,6 +228,7 @@ When task is complete or abandoned:
 | Bug fix        | `/debug` → `/coder` → `/qa`              |
 | Debt item      | `/cleanup` → `/polish`                   |
 | Verify & PR    | `/pre-pr` (runs gatekeeper + creates PR) |
+| Delegate async | `/jules-handoff` (hand task to Jules)     |
 
 > [!TIP]
 > Use `/pre-pr` when ready to push. It runs full verification and creates PR automatically.

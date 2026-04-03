@@ -3,6 +3,15 @@ import { test as setup } from '@playwright/test';
 const authFile = 'playwright/.auth/user.json';
 
 setup('authenticate', async ({ page }) => {
+    // Fail fast with a clear error rather than falling back to hardcoded credentials.
+    const testEmail = process.env.TEST_USER_EMAIL;
+    const testPassword = process.env.TEST_USER_PASSWORD;
+    if (!testEmail || !testPassword) {
+        throw new Error(
+            'E2E auth setup requires TEST_USER_EMAIL and TEST_USER_PASSWORD env vars. '
+            + 'Set them as GitHub Actions secrets or in your local shell before running tests.'
+        );
+    }
     setup.setTimeout(180000); // 3 minutes total test budget
     // Perform authentication steps. Replace these actions with your own.
     await page.goto('/login');
@@ -25,14 +34,15 @@ setup('authenticate', async ({ page }) => {
     await page.getByText(/Password/i).first().click({ force: true });
 
     // Wait for email input to appear (confirms toggle worked)
-    console.log("Filling credentials...");
+    const maskedEmail = testEmail.replace(/(?<=.{2}).(?=.*@)/g, '*');
+    console.log(`Filling credentials for: ${maskedEmail}`);
     const emailInput = page.getByPlaceholder('hunter@ironforge.com');
     await emailInput.waitFor({ state: 'visible', timeout: 30000 });
-    await emailInput.fill(process.env.TEST_USER_EMAIL || 'alexander.teklemariam@gmail.com');
+    await emailInput.fill(testEmail);
 
     const passwordInput = page.locator('input[type="password"]');
     await passwordInput.waitFor({ state: 'visible', timeout: 30000 });
-    await passwordInput.fill(process.env.TEST_USER_PASSWORD || 'IronForge2025!');
+    await passwordInput.fill(testPassword);
 
     // Pre-inject API key BEFORE login to avoid "Configuration Required" screen entirely
     console.log("Pre-injecting Hevy API key...");

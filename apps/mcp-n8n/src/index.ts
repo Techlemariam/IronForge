@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// Secrets are injected by Doppler at runtime — no .env file needed.
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import {
@@ -8,17 +9,6 @@ import {
   McpError,
 } from "@modelcontextprotocol/sdk/types.js";
 import { z } from "zod";
-import dotenv from "dotenv";
-import path from "path";
-import { fileURLToPath } from "url";
-
-// Load .env from project root
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-// Assuming built file is in build/index.js, root is ../..
-dotenv.config({ path: path.resolve(__dirname, "../../.env") });
-// Also try default location just in case
-dotenv.config();
 
 const API_KEY = process.env.N8N_API_KEY || process.env.n8n_access_token || process.env.N8N_ACCESS_TOKEN;
 let BASE_URL = process.env.N8N_HOST;
