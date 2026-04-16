@@ -86,18 +86,19 @@ if ($DryRun) {
 }
 
 # --- Execute via Gemini CLI ---
-# --- Auth: Load API Key from .env ---
-$EnvFile = Join-Path $WORKSPACE ".env"
-if (Test-Path $EnvFile) {
-    $envContent = Get-Content $EnvFile
-    foreach ($line in $envContent) {
-        if ($line -match "^GEMINI_API_KEY=(.*)$") {
-            $val = $matches[1].Trim()
-            $val = $val -replace "^['""]", "" -replace "['""]$", ""
-            $env:GEMINI_API_KEY = $val
-            Write-Log "Loaded GEMINI_API_KEY from .env"
-            break
+# --- Auth: Load API Key from Doppler ---
+if (-not $env:GEMINI_API_KEY) {
+    try {
+        $env:GEMINI_API_KEY = doppler secrets get GEMINI_API_KEY --project ironforge --config dev --plain 2>$null
+        if ($env:GEMINI_API_KEY) {
+            Write-Log "Loaded GEMINI_API_KEY from Doppler"
         }
+        else {
+            Write-Log "WARNING: GEMINI_API_KEY not found in Doppler"
+        }
+    }
+    catch {
+        Write-Log "WARNING: Doppler unavailable — GEMINI_API_KEY not set: $_"
     }
 }
 

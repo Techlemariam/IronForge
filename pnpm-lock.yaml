@@ -231,8 +231,16 @@ importers:
         specifier: ^2.0.3
         version: 2.0.3(eslint@10.0.3(jiti@2.6.1))
       '@eslint/eslintrc':
+<<<<<<< HEAD
         specifier: ^3.3.5
         version: 3.3.5
+=======
+        specifier: ^3.3.4
+        version: 3.3.4
+      '@google/jules':
+        specifier: ^0.1.42
+        version: 0.1.42
+>>>>>>> feat/ci-doctor-security-enhancements
       '@lhci/cli':
         specifier: ^0.15.1
         version: 0.15.1
@@ -401,9 +409,6 @@ importers:
       '@modelcontextprotocol/sdk':
         specifier: ^1.27.1
         version: 1.27.1(zod@4.3.6)
-      dotenv:
-        specifier: ^17.3.1
-        version: 17.3.1
       zod:
         specifier: ^4.3.6
         version: 4.3.6
@@ -1164,6 +1169,11 @@ packages:
     peerDependenciesMeta:
       '@modelcontextprotocol/sdk':
         optional: true
+
+  '@google/jules@0.1.42':
+    resolution: {integrity: sha512-R6uxhWVe+3HEIqbkPiEQhtW6G9FnICz9IaQ2lSPXDfTU0loTtDNiCNuhwxvZbWrPhyCwCvUw2/EkUkrcTrk7ow==}
+    engines: {node: '>=18.0.0'}
+    hasBin: true
 
   '@hono/node-server@1.19.9':
     resolution: {integrity: sha512-vHL6w3ecZsky+8P5MD+eFfaGTyCeOHUIFYMGpQGbrBTSmNNoxv0if69rEZ5giu36weC5saFuznL411gRX7bJDw==}
@@ -10473,6 +10483,10 @@ snapshots:
       - bufferutil
       - supports-color
       - utf-8-validate
+
+  '@google/jules@0.1.42':
+    dependencies:
+      tar: 7.5.7
 
   '@hono/node-server@1.19.9(hono@4.12.3)':
     dependencies:

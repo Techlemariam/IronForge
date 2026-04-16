@@ -15,10 +15,19 @@
 - **Source of Truth:** Adhere to `ARCHITECTURE.md` and `GEMINI.md`.
 - **Strategy:** Analyze (rg) → Plan (Implementation Artifact) → Execute (Auto-Loop) → Log (DEBT.md).
 - **Errors:** Self-heal failures. Log persistent workarounds to `DEBT.md`.
+- **API-First Rule**: ALWAYS explore if an API, CLI (Doppler), or MCP server exists before using the Browser tool. Browser is for last-resort visual verification only.
+- **Doppler First**: When an API key or secret is needed, PRIORITIZE searching Doppler (`doppler secrets`) before asking the user or searching local files.
 
 ## 🏷️ Operational Domains
 `[INFRA]`, `[GAME]`, `[SPRINT]`, `[QA]`, `[BIO]`, `[BUSINESS]`, `[API]`, `[META]`
 
 ---
+---
 **Comm Style:** Concise. Evidence-based. No fluff. Logic-first.
+
+## 📚 Brotherhood Librarian (Cross-Repo Governance)
+- **Ruleset**: Strictly follow patterns established in sibling repos (IronForge, Panopticon, Taktpinne, Matlogistik).
+- **Drift**: Use `/librarian` to audit architectural entropy.
+- **Artifacts**: Document cross-project learnings in Knowledge Items (KIs) via `bdistill-knowledge-extraction`.
+- **Standards**: NO deviations from the Unified `ship.ps1`, Biome, and pnpm standards.
 

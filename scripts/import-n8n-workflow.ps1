@@ -1,31 +1,38 @@
+#!/usr/bin/env pwsh
+# Usage: doppler run -- pwsh scripts/import-n8n-workflow.ps1 [-Path n8n/my-workflow.json]
+# Imports all *.json (or a specific file) from the n8n/ folder into n8n.
+# ALL credentials come from Doppler via n8n-api.ps1.
+param(
+    [string]$Path = ""   # Optional: import a single file instead of all
+)
+
 $ErrorActionPreference = "Stop"
 
-$url = "https://coolify.ironforge.com/api/v1/workflows"
-$apiKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5MThkZjhkZC0yOGJlLTQ1NWMtYWY5NS1mNTQxZTM2NGIxYjQiLCJpc3MiOiJuOG4iLCJhdWQiOiJwdWJsaWMtYXBpIiwiaWF0IjoxNzcwNjI2MTgxfQ.MtuAV2QCu98qhn7CbuVm1PYsDvCun_7KTwt3iIFgZYA"
-$n8nDir = "c:\Users\alexa\Workspaces\IronForge\n8n"
+# Dot-source shared Doppler-backed n8n credentials
+. "$PSScriptRoot/n8n-api.ps1"
 
-[System.Net.ServicePointManager]::ServerCertificateValidationCallback = { $true }
+$n8nDir = Join-Path (Split-Path $PSScriptRoot -Parent) "n8n"
+$files = if ($Path) {
+    @(Get-Item $Path)
+}
+else {
+    Get-ChildItem -Path $n8nDir -Filter "*.json"
+}
 
-$files = Get-ChildItem -Path $n8nDir -Filter "*.json"
+if (-not $files) { Write-Warning "No workflow files found."; exit 0 }
 
 foreach ($file in $files) {
-    Write-Host "Importing: $($file.Name)..."
+    Write-Host "Importing: $($file.Name)..." -ForegroundColor Cyan
     $json = Get-Content $file.FullName -Raw
     
     try {
-        $params = @{
-            Uri         = $url
-            Method      = "Post"
-            Body        = $json
-            ContentType = "application/json"
-            Headers     = @{ "X-N8N-API-KEY" = $apiKey }
-        }
-        $response = Invoke-RestMethod @params
-        Write-Host "  OK - ID: $($response.id) | Name: $($response.name)" -ForegroundColor Green
+        $response = Invoke-RestMethod @N8nPost `
+            -Uri  "$N8nHost/api/v1/workflows" `
+            -Body $json
+        Write-Host "  ✅ OK — ID: $($response.id) | Name: $($response.name)" -ForegroundColor Green
     }
     catch {
-        $errBody = $_.ErrorDetails.Message
-        Write-Warning "  FAILED: $errBody"
+        Write-Warning "  ❌ FAILED: $($_.ErrorDetails.Message)"
     }
 }
 

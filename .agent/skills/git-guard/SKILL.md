@@ -16,8 +16,10 @@ context:
     - node_modules
 rules:
   - "Never allow commits directly to main"
+  - "Staging Fast-Track: Push directly to develop for rapid staging deploys"
+  - "Production release requires PR from develop -> main"
+  - "PRs must pass 'npm run agent:verify' before Jules/Manager approval"
   - "Feature branches must use prefix format"
-  - "Branch names should be descriptive"
 edgeCases:
   - "Detached HEAD state"
   - "Submodule operations"

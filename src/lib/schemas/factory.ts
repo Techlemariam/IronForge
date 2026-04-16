@@ -9,7 +9,7 @@ export const FactoryStatusSchema = z.object({
     health: z.number().min(0).max(100),
     current: z.string().nullable(),
     updatedAt: z.date(),
-    metadata: z.any().optional(),
+    metadata: z.any().nullish(),
 });
 
 export type FactoryStatusData = z.infer<typeof FactoryStatusSchema>;

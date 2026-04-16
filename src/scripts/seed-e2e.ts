@@ -84,7 +84,12 @@ async function main() {
 
     // Update the main E2E test user to have completed onboarding
     // This prevents the FirstLoginQuest overlay from blocking tests
-    const testUserEmail = process.env.TEST_USER_EMAIL || 'alexander.teklemariam@gmail.com';
+    const testUserEmail = process.env.TEST_USER_EMAIL;
+    if (!testUserEmail) {
+        console.warn('⚠️ TEST_USER_EMAIL env var is not set — skipping test user onboarding update.');
+        console.log('✅ E2E Seeding Complete!');
+        return;
+    }
     const testUser = await prisma.user.findFirst({
         where: { email: testUserEmail },
     });

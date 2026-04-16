@@ -14,7 +14,7 @@ export default defineConfig({
       '@': path.resolve(dirname, './src'),
       '@clerk/nextjs/server': path.resolve(dirname, './tests/mocks/clerk.ts')
     },
-    exclude: ['**/node_modules/**', '**/tests/e2e/**', '**/tests/integration/**', '**/*.stories.tsx', '**/*.stories.ts', '**/build/**', '**/dist/**'],
+    exclude: ['**/node_modules/**', '**/tests/e2e/**', '**/tests/integration/**', '**/*.stories.tsx', '**/*.stories.ts', '**/build/**', '**/dist/**', '**/tmp/**'],
 
     setupFiles: ['./vitest.setup.ts'],
     coverage: {

@@ -35,11 +35,7 @@ export const Citadel: React.FC<CitadelProps> = ({ state, dispatch, titanState, p
             </section>
         )}
 
-        {!liteMode && leaderboardEntries.length > 0 && (
-            <section id="leaderboard-preview">
-                <StrengthLeaderboardPanel entries={leaderboardEntries} />
-            </section>
-        )}
+
 
         <QuickActions dispatch={dispatch} />
 

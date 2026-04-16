@@ -30,9 +30,9 @@ export function CardioDuelLobby() {
 
     const loadOpponents = async () => {
         const res = await getPotentialOpponentsAction();
-        if (res?.data?.success && res.data.opponents) {
+        if (res?.success && res.opponents) {
             // Fix: Map to ensure heroName is string (fallback for null)
-            const sanitized: Opponent[] = res.data.opponents.map((opp: any) => ({
+            const sanitized: Opponent[] = res.opponents.map((opp: any) => ({
                 id: opp.id,
                 heroName: (opp.heroName && typeof opp.heroName === 'string') ? opp.heroName : "Unknown Titan",
                 level: opp.level, // Assuming level is always present/valid based on schema, otherwise provide default

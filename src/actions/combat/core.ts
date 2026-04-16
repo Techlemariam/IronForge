@@ -194,12 +194,15 @@ export const performCombatAction = authActionClient
     const unlockedIds = new Set<string>();
     dbUser.achievements.forEach((ua) => unlockedIds.add(ua.achievementId));
     const purchasedSkillIds = dbUser.skills.map((s) => s.skillId);
-    const attributes = calculateTitanAttributes(
+    const baseAttributes = calculateTitanAttributes(
       unlockedIds,
       null,
       new Set(purchasedSkillIds),
       [],
     );
+
+    // Shallow clone to avoid mutating shared state
+    const attributes = { ...baseAttributes };
 
     // Apply Mood Modifiers
     if (dbUser.titan) {

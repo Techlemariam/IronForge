@@ -18,14 +18,22 @@ async function verifyFactoryAuth() {
         return false;
     }
 
-    if (!user?.id) {
-        console.warn("Factory Auth: No user session found");
+    if (!user?.id || !user.email) {
+        console.warn("Factory Auth: No valid user session found");
         return false;
     }
 
-    const isAuthorized = user.email?.endsWith("@ironforge.rpg") || user.email === 'alexander.teklemariam@gmail.com' || false;
+    const adminEmailsEnv = process.env.ADMIN_EMAILS;
+    if (!adminEmailsEnv) {
+        console.warn("Factory Auth: ADMIN_EMAILS env var is not set. Denying all factory operations.");
+        return false;
+    }
+
+    const adminEmails = adminEmailsEnv.split(',').map(e => e.trim());
+    const isAuthorized = user.email.endsWith("@ironforge.rpg") || adminEmails.includes(user.email);
+
     if (!isAuthorized) {
-        console.warn(`Factory Auth: User ${user.email} not authorized for factory operations`);
+        console.warn('Factory Auth: User is not authorized for factory operations');
     }
 
     return isAuthorized;
@@ -42,7 +50,7 @@ import { FactoryStatusData } from '@/lib/schemas/factory';
  */
 export async function getFactoryStatus(): Promise<(FactoryStatusData & { costSEK?: number })[]> {
     try {
-        let statuses: any[] = await prisma.factoryStatus.findMany({
+        let statuses: FactoryStatusData[] = await prisma.factoryStatus.findMany({
             orderBy: { station: 'asc' },
         });
 
@@ -51,17 +59,27 @@ export async function getFactoryStatus(): Promise<(FactoryStatusData & { costSEK
         }
 
         const factoryDir = path.join(process.cwd(), '.agent/factory');
-        const stationStatusFiles: { [key: string]: any } = {};
+        const stationStatusFiles: { [key: string]: Record<string, unknown> } = {};
+
+        // Allowlist of valid station names to prevent path traversal.
+        const VALID_STATION_NAMES = new Set([
+            'manager', 'architect', 'coder', 'qa', 'debug', 'infrastructure',
+            'security', 'analyst', 'ui-ux', 'game-designer', 'titan-coach',
+            'librarian', 'cleanup', 'strategist', 'writer', 'polish', 'perf',
+            'platform', 'recovery',
+        ]);
 
         try {
             const files = await fs.readdir(factoryDir);
             for (const file of files) {
                 if (path.extname(file) === '.json') {
                     const stationName = path.basename(file, '.json');
-                    const filePath = path.join(factoryDir, file);
+                    // Guard: only process known station names to prevent directory traversal.
+                    if (!VALID_STATION_NAMES.has(stationName)) continue;
+                    const filePath = path.join(factoryDir, `${stationName}.json`);
                     try {
                         const fileContent = await fs.readFile(filePath, 'utf8');
-                        stationStatusFiles[stationName] = JSON.parse(fileContent);
+                        stationStatusFiles[stationName] = JSON.parse(fileContent) as Record<string, unknown>;
                     } catch (e: any) {
                         console.error(`Failed to read or parse status file ${filePath}:`, e);
                     }

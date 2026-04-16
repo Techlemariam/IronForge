@@ -86,6 +86,8 @@ See `n8n-workflow.json` in this directory for a ready-to-import workflow.
 | `/triage` | Priority assessment |
 | `/evolve` | Dependency updates |
 | `/ci-doctor` | CI failure resolution |
+| `/jules-handoff` | Delegate task to Jules (interactive) |
+| `/jules-dispatch` | Trigger Jules session remotely (n8n/CI) |
 
 ## Security
 

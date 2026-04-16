@@ -79,15 +79,18 @@ const Marketplace: React.FC<MarketplaceProps> = ({ onClose }) => {
       const result = await awardGoldAction(-item.cost); // Negative award = deduct
       if (result) {
         setGold(result.gold);
+
+        // Add to Inventory (Hypothetical) - Only if deduction succeeded
+        const currentInv = [...inventory, item.id];
+        setInventory(currentInv);
+        await StorageService.saveState("inventory", currentInv);
+
+        playSound("ding");
+        setMessage(`Purchased ${item.name}!`);
+      } else {
+        playSound("fail");
+        setMessage("Transaction failed at the counter.");
       }
-
-      // Add to Inventory (Hypothetical)
-      const newInv = [...inventory, item.id];
-      setInventory(newInv);
-      await StorageService.saveState("inventory", newInv);
-
-      playSound("ding");
-      setMessage(`Purchased ${item.name}!`);
       setTimeout(() => setMessage(null), 3000);
     } else {
       playSound("fail");
@@ -171,11 +174,10 @@ const Marketplace: React.FC<MarketplaceProps> = ({ onClose }) => {
                   onClick={() => handleBuy(item)}
                   disabled={gold < item.cost}
                   className={`w-full py-3 rounded font-bold uppercase tracking-wider text-sm transition-all
-                                        ${
-                                          gold >= item.cost
-                                            ? "bg-yellow-700 hover:bg-yellow-600 text-white shadow-lg"
-                                            : "bg-zinc-800 text-zinc-600 cursor-not-allowed"
-                                        }`}
+                                        ${gold >= item.cost
+                      ? "bg-yellow-700 hover:bg-yellow-600 text-white shadow-lg"
+                      : "bg-zinc-800 text-zinc-600 cursor-not-allowed"
+                    }`}
                 >
                   {gold >= item.cost ? "Purchase" : "Insuf. Funds"}
                 </button>

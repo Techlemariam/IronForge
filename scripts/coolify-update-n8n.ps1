@@ -2,13 +2,9 @@
 # Usage: doppler run -- pwsh scripts/coolify-update-n8n.ps1
 # Finds service UUID and triggers restart of n8n on Coolify
 
-$coolifyHost = "http://ironforge-coolify.tailafb692.ts.net:8000"
-$token = $env:COOLIFY_API_TOKEN
-$headers = @{
-    "Authorization" = "Bearer $token"
-    "Accept"        = "application/json"
-    "Content-Type"  = "application/json"
-}
+. "$PSScriptRoot/coolify-api.ps1"
+$coolifyHost = $script:coolifyHost
+$headers = $script:coolifyHeaders
 
 Write-Host "Fetching all services to find n8n..." -ForegroundColor Cyan
 $svcs = Invoke-RestMethod -Uri "$coolifyHost/api/v1/services" -Headers $headers
