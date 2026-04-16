@@ -18,6 +18,7 @@
     "postinstall": "prisma generate",
     "lint": "biome check .",
     "format": "biome format --write .",
+    "check-types": "tsc --noEmit",
     "security": "pnpm audit || true",
     "agent:verify": "turbo run lint build security",
     "ship": "pwsh ./scripts/ship.ps1",
