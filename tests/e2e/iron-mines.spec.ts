@@ -25,7 +25,7 @@ test.describe('Iron Mines - Strength Training', () => {
         const exitButton = page.getByTitle("Close (Esc)");
         if (await exitButton.isVisible()) {
             await exitButton.click();
-            await page.waitForTimeout(500);
+            await page.waitForLoadState('domcontentloaded');
         }
 
         // Dismiss onboarding modals
@@ -35,7 +35,8 @@ test.describe('Iron Mines - Strength Training', () => {
             await onboardingButtons.first().click();
             attempts++;
             if (await onboardingButtons.count() === 0) break;
-            await page.waitForTimeout(200); // small delay to let modal change
+            // Wait for either the modal to change or disappear
+            await page.waitForLoadState('networkidle');
         }
     });
 
@@ -200,7 +201,7 @@ test.describe('Iron Mines - Co-Op Sessions', () => {
 
         await page.goto('/dashboard');
 
-        await page.waitForTimeout(1500);
+        await page.waitForLoadState('networkidle');
 
         // Navigate via UI to reach Iron Mines (SPA)
         const trainingOpBtn = page.getByRole('button', { name: /Training Operations/i });

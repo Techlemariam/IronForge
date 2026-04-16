@@ -388,14 +388,7 @@ export const CitadelHub: React.FC<CitadelHubProps> = ({ dispatch }) => {
               itemCount={3}
               onClick={() => setSelectedCategory("CITY")}
             />
-            <CategoryCard
-              title="Colosseum"
-              icon={<Sword />}
-              color="purple"
-              description="PvP Arena, Guilds, and Social Hub"
-              itemCount={4}
-              onClick={() => setSelectedCategory("COLOSSEUM")}
-            />
+
             <CategoryCard
               title="Exploration"
               icon={<Map />}

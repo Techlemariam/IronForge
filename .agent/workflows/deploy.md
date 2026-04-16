@@ -1,80 +1,68 @@
 ---
-description: "Workflow for deploy"
+description: "Zero-Hell Deployment Orchestrator (v10.0)"
 command: "/deploy"
 category: "deployment"
 trigger: "manual"
-version: "2.0.0"
+version: "10.0.0"
 telemetry: "enabled"
 primary_agent: "@infrastructure"
 domain: "infra"
-skills: ["coolify-deploy", "gatekeeper", "sentry-rollback", "doppler"]
+skills: ["coolify-deploy", "gatekeeper", "sentry-rollback", "doppler", "ci-doctor"]
 ---
 
-# 🚀 Delivery Manager (Level 10)
+# 🚀 Zero-Hell Deployer (IronForge Edition)
 
-**Role:** The Shipper.
-**Goal:** Zero-Downtime Deployment with Instant Rollback.
-
-> **Naming Convention:** Task Name must follow `[DOMAIN] Description`.
+**Role:** The Closer.
+**Goal:** 100% Success Rate via Mandatory Pre-flight Triage.
 
 ## 🧠 Core Philosophy
 
-"Shipping is a feature. If it's hard, do it more often."
-
-## 🛠️ Toolbelt (Skills)
-
-- `coolify-deploy`: Automated push to Coolify/VPS.
-- `sentry-rollback`: Auto-revert if error rate spikes.
+"If it's not verified, it doesn't exist. If it breaks, the Doctor fixes it."
 
 ---
 
-## 🏭 Factory Protocol (Shipping Station)
+## 🏭 Standard Protocol
 
-When triggered by `/factory ship` (Station 6) or manually:
-
-### 1. Pre-Flight Check
-
-1. **Gatekeeper**: Must be 100/100.
-2. **Branch**: Must be `main` (for Production) or `dev` (for Staging).
-3. **Changelog**: Identify changed features from `specs/`.
-
-### 2. Deployment
-
-Execute deployment via Doppler + GHCR:
+### 1. Pre-flight Triage (The Doctor's Gate)
+Before any push, we run the **CI Doctor** locally to predict failures and verify L1 gates.
 
 ```powershell
-# Pre-flight: verify Doppler is active
-doppler run -- echo "Doppler OK"
+# 1. Prediction (What could go wrong?)
+doppler run -- npx tsx scripts/predict-failures.ts
 
-# Deploy via GHCR image pull (built by CI publish-image job)
-docker pull ghcr.io/techlemariam/ironforge:latest
-
-# Or deploy via Coolify API (auto-pulls GHCR image)
-doppler run -- pwsh scripts/coolify-deploy-n8n.ps1
+# 2. Local L1 Verification
+doppler run -- pnpm run check-types
+pnpm run lint
 ```
 
-- **Pull**: GHCR image pulled by Coolify (`ghcr.io/techlemariam/ironforge:latest`).
-- **Migrate**: Run `prisma migrate deploy` (if strict schema changes).
+> [!IMPORTANT]
+> If any L1 check fails, the deployment is **BLOCKED**. Run `/ci-doctor` to diagnose.
 
-> [!TIP]
-> For local dev environment setup, use the DevContainer: open the project in VS Code and select "Reopen in Container" — everything is pre-configured.
+### 2. Branch Alignment
+- **Staging**: Target `develop`.
+- **Production**: Target `main` (requires PR from `develop`).
 
-### 3. Verification & Rollback
+### 3. Shipping (The /factory-ship integration)
+Execute the unified release script:
 
-1. **Smoke Test**: Check Health Endpoint (`/api/health`).
-2. **Monitor**: Watch Sentry for 5 minutes.
-3. **Rollback**: If Error Rate > 1%:
-   - **Instant**: `docker pull ghcr.io/techlemariam/ironforge:sha-<previous_sha>`
-   - **Sentry**: Execute `sentry-rollback`.
+```powershell
+# Interactive staging deploy
+./scripts/ship.ps1 --stage
 
-## Version History
+# Production release (Merges develop -> main)
+./scripts/ship.ps1 --prod
+```
 
-### 2.1.0 (2026-03-01)
+### 4. Remote Verification
+Immediately post-deploy, trigger a health audit:
 
-- Updated deployment to pull from GHCR instead of building on-server
-- Added SHA-based instant rollback strategy
-- Added DevContainer reference for local dev
+1. **Smoke Test**: `curl https://ironforge-app.sslip.io/api/health`
+2. **Sentry Check**: Verify no new issue spikes in the last 5 minutes.
 
-### 2.0.0 (2026-02-12)
+---
 
-- Upgraded to Level 10 Integration (Factory Ready).
+## 🩺 Panic Protocol (Rollback)
+
+If the **Success Rate < 100%** or Sentry alerts firing:
+1. **Instant Revert**: `docker pull ghcr.io/techlemariam/ironforge:sha-<last_known_good>`
+2. **Triage**: Discord notification sent to `#ironforge-triage` via `DISCORD_WEBHOOK_TRIAGE`.
