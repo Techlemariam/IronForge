@@ -52,7 +52,7 @@
     {
       "parameters": {
         "method": "PATCH",
-        "url": "=https://discord.com/api/v10/webhooks/1493235518647832606/{{$json.interaction_token}}/messages/@original",
+        "url": "=https://discord.com/api/v10/webhooks/1493508595424165979/{{$json.interaction_token}}/messages/@original",
         "sendBody": true,
         "bodyParameters": {
           "parameters": [

@@ -93,7 +93,7 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
     questTitle: "",
     exerciseNameMap: nameMap,
     startTime: null,
-    currentView: "citadel",
+    currentView: "mission_control",
     oracleRecommendation: initialData.recommendation,
     auditReport: initialData.auditReport,
     weaknessAudit: initialData.auditReport?.highestPriorityGap

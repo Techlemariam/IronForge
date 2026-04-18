@@ -26,7 +26,9 @@ import { LeaderboardEntry } from "@/actions/social/leaderboards";
 
 export type View =
   | "citadel"
+  | "mission_control"
   | "war_room"
+
   | "iron_mines"
   | "quest_completion"
   | "armory"
@@ -135,5 +137,6 @@ export type DashboardAction =
   | { type: "UPDATE_PATH"; payload: TrainingPath }
   | { type: "SET_CARDIO_MODE"; payload: CardioMode }
   | { type: "START_CODEX_WORKOUT"; payload: { workout: WorkoutDefinition } }
+  | { type: "LAUNCH_MISSION" }
   | { type: "RETURN_TO_PREVIOUS" }
   | { type: "UPDATE_CHALLENGES"; payload: ChallengeWithStatus[] };

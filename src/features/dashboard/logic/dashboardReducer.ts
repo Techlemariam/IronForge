@@ -109,7 +109,32 @@ export const dashboardReducer = (
       };
     case "UPDATE_CHALLENGES":
       return { ...state, challenges: action.payload };
+    case "LAUNCH_MISSION":
+      // Decision Offloading Logic
+      const rec = state.oracleRecommendation;
+      if (!rec) return state;
+
+      if (rec.type === "STRENGTH" || rec.type === "MOBILITY") {
+        // Simple safety: if we have a routine recommended, start it
+        return {
+          ...state,
+          questTitle: rec.title || "Titan's Selection",
+          startTime: new Date(),
+          currentView: "iron_mines",
+        };
+      }
+
+      if (rec.type === "CARDIO") {
+        return {
+          ...state,
+          currentView: "cardio_studio",
+          cardioMode: "cycling", // Default to cycling for Titan T80
+        };
+      }
+
+      return state;
     default:
       return state;
+
   }
 };
