@@ -19,6 +19,7 @@ import { GuildHall } from "@/features/guild/GuildHall";
 import { TrainingCenter } from "@/features/training/TrainingCenter";
 import { Citadel } from "./Citadel";
 import { QuestCompletion } from "./QuestCompletion";
+import { TodaysMission } from "./TodaysMission";
 import {
     EquipmentArmory,
     Bestiary,
@@ -81,7 +82,20 @@ export const ViewRouter: React.FC<ViewRouterProps> = ({
 }) => {
     console.log("[ViewRouter] Rendering view:", state.currentView, "ActiveQuest:", !!state.activeQuest);
     switch (state.currentView) {
+        case "mission_control":
+            const rec = state.oracleRecommendation;
+            return (
+                <TodaysMission
+                    missionTitle={rec?.title || "BATTLE READY"}
+                    missionTime={new Date().toLocaleTimeString('sv-SE', { hour: '2d-digit', minute: '2d-digit' })}
+                    exerciseName={rec?.primaryFocus || "Conditioning"}
+                    equipmentSetup={rec?.equipmentId || "Standard"}
+                    onLaunch={() => dispatch({ type: "LAUNCH_MISSION" })}
+                    onToggleMode={() => dispatch({ type: "SET_VIEW", payload: "citadel" })}
+                />
+            );
         case "citadel":
+
             return (
                 <Citadel
                     state={state}
