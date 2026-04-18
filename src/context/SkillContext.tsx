@@ -3,31 +3,19 @@
  * Manages Neural Lattice state with V2 node structure and effect calculation.
  */
 
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useMemo,
-  useEffect,
-  useCallback,
-} from "react";
 import {
-  getNodeById,
-} from "../data/skill-tree-v2";
-import {
-  CalculatedEffects,
-  SkillStatus,
-  SkillRequirement,
-} from "../types/skills";
-import { calculateTitanRank, playSound, getMaxTM } from "../utils";
-import { IntervalsWellness, Archetype } from "../types";
-import { StorageService } from "../services/storage";
-import {
-  useSkillEffects,
+  type SessionMetadata,
   canPurchaseKeystone,
   getPathProgress,
-  SessionMetadata,
-} from "@/features/game/hooks/useSkillEffects";
+  useSkillEffects,
+} from '@/features/game/hooks/useSkillEffects';
+import type React from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { getNodeById } from '../data/skill-tree-v2';
+import { StorageService } from '../services/storage';
+import { Archetype, type IntervalsWellness } from '../types';
+import { type CalculatedEffects, type SkillRequirement, SkillStatus } from '../types/skills';
+import { calculateTitanRank, getMaxTM, playSound } from '../utils';
 
 // ============================================================================
 // Logic Helpers
@@ -39,36 +27,36 @@ import {
 function checkRequirement(
   req: SkillRequirement,
   unlockedAchievementIds: Set<string>,
-  wellness: IntervalsWellness | null,
+  wellness: IntervalsWellness | null
 ): boolean {
   const { type, value, comparison, exerciseId } = req;
 
   const compare = (val: number) => {
-    if (comparison === "gte") return val >= value;
-    if (comparison === "lte") return val <= value;
-    if (comparison === "eq") return val === value;
+    if (comparison === 'gte') return val >= value;
+    if (comparison === 'lte') return val <= value;
+    if (comparison === 'eq') return val === value;
     return false;
   };
 
   switch (type) {
-    case "achievement_count":
+    case 'achievement_count':
       return unlockedAchievementIds.size >= value;
 
-    case "vo2max_value":
+    case 'vo2max_value':
       return wellness?.vo2max ? compare(wellness.vo2max) : false;
 
-    case "1rm_weight": {
+    case '1rm_weight': {
       const maxTM = getMaxTM(exerciseId);
       return compare(maxTM);
     }
 
     // These require more complex data sources not yet fully integrated in V2 context
-    case "rep_count":
-    case "session_count":
-    case "rest_day_count":
-    case "sleep_score_streak":
-    case "brick_workout_count":
-      // For now, these default to true to avoid hard-locking the tree 
+    case 'rep_count':
+    case 'session_count':
+    case 'rest_day_count':
+    case 'sleep_score_streak':
+    case 'brick_workout_count':
+      // For now, these default to true to avoid hard-locking the tree
       // until the relevant tracking services are wired up to the Provider.
       console.warn(`Requirement type ${type} is not yet implemented, defaulting to true.`);
       return true;
@@ -110,7 +98,7 @@ const SkillContext = createContext<SkillContextType | null>(null);
 export const useSkills = () => {
   const context = useContext(SkillContext);
   if (!context) {
-    throw new Error("useSkills must be used within a SkillProvider");
+    throw new Error('useSkills must be used within a SkillProvider');
   }
   return context;
 };
@@ -134,9 +122,7 @@ export const SkillProvider: React.FC<SkillProviderProps> = ({
   sessionMetadata = {},
   userArchetype = Archetype.WARDEN,
 }) => {
-  const [purchasedSkillIds, setPurchasedSkillIds] = useState<Set<string>>(
-    new Set(),
-  );
+  const [purchasedSkillIds, setPurchasedSkillIds] = useState<Set<string>>(new Set());
   const [selectedKeystoneId, setSelectedKeystoneId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -147,28 +133,28 @@ export const SkillProvider: React.FC<SkillProviderProps> = ({
     const loadSkills = async () => {
       try {
         await StorageService.init();
-        const saved = await StorageService.getState<string[]>("skills_v2");
+        const saved = await StorageService.getState<string[]>('skills_v2');
         if (saved) {
           setPurchasedSkillIds(new Set(saved));
         } else {
           // Try loading V1 and migrating
-          const v1Saved = await StorageService.getState<string[]>("skills");
+          const v1Saved = await StorageService.getState<string[]>('skills');
           if (v1Saved) {
             // Basic migration: keep IDs that exist in V2
             const validV2Ids = v1Saved.filter((id) => getNodeById(id));
             setPurchasedSkillIds(new Set(validV2Ids));
             // Save to V2 key
-            await StorageService.saveState("skills_v2", validV2Ids);
+            await StorageService.saveState('skills_v2', validV2Ids);
           }
         }
 
         // Load active keystone
-        const savedKeystone = await StorageService.getState<string>("active_keystone");
+        const savedKeystone = await StorageService.getState<string>('active_keystone');
         if (savedKeystone) {
           setSelectedKeystoneId(savedKeystone);
         }
       } catch (e) {
-        console.error("Skill load failed", e);
+        console.error('Skill load failed', e);
       } finally {
         setIsLoading(false);
       }
@@ -181,7 +167,7 @@ export const SkillProvider: React.FC<SkillProviderProps> = ({
   // ─────────────────────────────────────────────────────────────────────────
   const { talentPoints: totalTP, kineticShards: totalKS } = useMemo(
     () => calculateTitanRank(unlockedAchievementIds),
-    [unlockedAchievementIds],
+    [unlockedAchievementIds]
   );
 
   const { spentTP, spentKS } = useMemo(() => {
@@ -190,8 +176,8 @@ export const SkillProvider: React.FC<SkillProviderProps> = ({
     purchasedSkillIds.forEach((id) => {
       const node = getNodeById(id);
       if (node) {
-        if (node.currency === "talent_point") tp += node.cost;
-        if (node.currency === "kinetic_shard") ks += node.cost;
+        if (node.currency === 'talent_point') tp += node.cost;
+        if (node.currency === 'kinetic_shard') ks += node.cost;
       }
     });
     return { spentTP: tp, spentKS: ks };
@@ -203,15 +189,11 @@ export const SkillProvider: React.FC<SkillProviderProps> = ({
   // ─────────────────────────────────────────────────────────────────────────
   // V2 Effect Calculation
   // ─────────────────────────────────────────────────────────────────────────
-  const calculatedEffects = useSkillEffects(
-    purchasedSkillIds,
-    wellness,
-    { ...sessionMetadata, activeKeystoneId: selectedKeystoneId },
-  );
-  const pathProgress = useMemo(
-    () => getPathProgress(purchasedSkillIds),
-    [purchasedSkillIds],
-  );
+  const calculatedEffects = useSkillEffects(purchasedSkillIds, wellness, {
+    ...sessionMetadata,
+    activeKeystoneId: selectedKeystoneId,
+  });
+  const pathProgress = useMemo(() => getPathProgress(purchasedSkillIds), [purchasedSkillIds]);
   const activeKeystoneId = calculatedEffects.activeKeystoneId;
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -228,15 +210,9 @@ export const SkillProvider: React.FC<SkillProviderProps> = ({
 
       // Check Archetype Gating
       const allowedPaths: Record<Archetype, string[]> = {
-        [Archetype.JUGGERNAUT]: ["juggernaut", "titan", "sage"],
-        [Archetype.PATHFINDER]: ["pathfinder", "sage"],
-        [Archetype.WARDEN]: [
-          "juggernaut",
-          "pathfinder",
-          "warden",
-          "titan",
-          "sage",
-        ],
+        [Archetype.JUGGERNAUT]: ['juggernaut', 'titan', 'sage'],
+        [Archetype.PATHFINDER]: ['pathfinder', 'sage'],
+        [Archetype.WARDEN]: ['juggernaut', 'pathfinder', 'warden', 'titan', 'sage'],
       };
 
       // Default to Warden if undefined (safe fallback)
@@ -250,27 +226,27 @@ export const SkillProvider: React.FC<SkillProviderProps> = ({
       // Check parent requirements
       const parentsUnlocked =
         node.parents.length === 0 ||
-        (node.unlockLogic === "AND"
+        (node.unlockLogic === 'AND'
           ? node.parents.every((pid) => purchasedSkillIds.has(pid))
           : node.parents.some((pid) => purchasedSkillIds.has(pid)));
 
       // Check requirements (achievements, stats, etc.)
       const requirementsMet = node.requirements.every((req) =>
-        checkRequirement(req, unlockedAchievementIds, wellness),
+        checkRequirement(req, unlockedAchievementIds, wellness)
       );
       if (!requirementsMet) return SkillStatus.LOCKED;
 
       if (!parentsUnlocked) return SkillStatus.LOCKED;
 
       // Check Keystone gating
-      if (node.tier === "keystone") {
+      if (node.tier === 'keystone') {
         const { canPurchase } = canPurchaseKeystone(nodeId, purchasedSkillIds);
         if (!canPurchase) return SkillStatus.LOCKED;
       }
 
       return SkillStatus.UNLOCKED;
     },
-    [purchasedSkillIds, unlockedAchievementIds, wellness, userArchetype],
+    [purchasedSkillIds, unlockedAchievementIds, wellness, userArchetype]
   );
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -281,83 +257,76 @@ export const SkillProvider: React.FC<SkillProviderProps> = ({
       const node = getNodeById(skillId);
       if (!node) return false;
 
-      if (node.currency === "talent_point")
-        return availableTalentPoints >= node.cost;
-      if (node.currency === "kinetic_shard")
-        return availableKineticShards >= node.cost;
+      if (node.currency === 'talent_point') return availableTalentPoints >= node.cost;
+      if (node.currency === 'kinetic_shard') return availableKineticShards >= node.cost;
       return false;
     },
-    [availableTalentPoints, availableKineticShards],
+    [availableTalentPoints, availableKineticShards]
   );
 
   const unlockSkill = useCallback(
     (skillId: string): { success: boolean; message?: string } => {
       if (purchasedSkillIds.has(skillId)) {
-        return { success: false, message: "Already unlocked" };
+        return { success: false, message: 'Already unlocked' };
       }
 
       const node = getNodeById(skillId);
       if (!node) {
-        return { success: false, message: "Node not found" };
+        return { success: false, message: 'Node not found' };
       }
 
       // Check status
       const status = getNodeStatus(skillId);
       if (status === SkillStatus.LOCKED) {
-        playSound("fail");
-        return { success: false, message: "Prerequisites not met" };
+        playSound('fail');
+        return { success: false, message: 'Prerequisites not met' };
       }
 
       // Check Keystone gating
-      if (node.tier === "keystone") {
-        const { canPurchase, reason } = canPurchaseKeystone(
-          skillId,
-          purchasedSkillIds,
-        );
+      if (node.tier === 'keystone') {
+        const { canPurchase, reason } = canPurchaseKeystone(skillId, purchasedSkillIds);
         if (!canPurchase) {
-          playSound("fail");
+          playSound('fail');
           return { success: false, message: reason };
         }
       }
 
       // Check affordability
       if (!canAfford(skillId)) {
-        playSound("fail");
-        return { success: false, message: "Insufficient resources" };
+        playSound('fail');
+        return { success: false, message: 'Insufficient resources' };
       }
 
       // Determine sound based on tier
-      if (node.tier === "keystone") {
-        playSound("achievement");
-      } else if (node.tier === "notable") {
-        playSound("loot_epic");
+      if (node.tier === 'keystone') {
+        playSound('achievement');
+      } else if (node.tier === 'notable') {
+        playSound('loot_epic');
       } else {
-        playSound("ding");
+        playSound('ding');
       }
 
       setPurchasedSkillIds((prev) => {
         const next = new Set(prev);
         next.add(skillId);
-        StorageService.saveState("skills_v2", Array.from(next)).catch(
-          console.error,
-        );
+        StorageService.saveState('skills_v2', Array.from(next)).catch(console.error);
         return next;
       });
 
       return { success: true };
     },
-    [purchasedSkillIds, getNodeStatus, canAfford],
+    [purchasedSkillIds, getNodeStatus, canAfford]
   );
 
   const refundSkill = useCallback(
     (skillId: string): { success: boolean; message?: string } => {
       if (!purchasedSkillIds.has(skillId)) {
-        return { success: false, message: "Skill not owned" };
+        return { success: false, message: 'Skill not owned' };
       }
 
       const node = getNodeById(skillId);
       if (!node) {
-        return { success: false, message: "Node not found" };
+        return { success: false, message: 'Node not found' };
       }
 
       // Check if any other owned skills depend on this one
@@ -367,34 +336,32 @@ export const SkillProvider: React.FC<SkillProviderProps> = ({
       });
 
       if (dependents.length > 0) {
-        return { success: false, message: "Other skills depend on this node" };
+        return { success: false, message: 'Other skills depend on this node' };
       }
 
       // Keystones cannot be refunded (for now)
-      if (node.tier === "keystone") {
-        return { success: false, message: "Keystones cannot be refunded" };
+      if (node.tier === 'keystone') {
+        return { success: false, message: 'Keystones cannot be refunded' };
       }
 
-      playSound("ding");
+      playSound('ding');
 
       setPurchasedSkillIds((prev) => {
         const next = new Set(prev);
         next.delete(skillId);
-        StorageService.saveState("skills_v2", Array.from(next)).catch(
-          console.error,
-        );
+        StorageService.saveState('skills_v2', Array.from(next)).catch(console.error);
         return next;
       });
 
       return { success: true };
     },
-    [purchasedSkillIds],
+    [purchasedSkillIds]
   );
 
   const setActiveKeystone = useCallback((keystoneId: string | null) => {
     setSelectedKeystoneId(keystoneId);
-    StorageService.saveState("active_keystone", keystoneId).catch(console.error);
-    if (keystoneId) playSound("ui_click");
+    StorageService.saveState('active_keystone', keystoneId).catch(console.error);
+    if (keystoneId) playSound('ui_click');
   }, []);
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -430,10 +397,8 @@ export const SkillProvider: React.FC<SkillProviderProps> = ({
       getNodeStatus,
       activeKeystoneId,
       setActiveKeystone,
-    ],
+    ]
   );
 
-  return (
-    <SkillContext.Provider value={value}>{children}</SkillContext.Provider>
-  );
+  return <SkillContext.Provider value={value}>{children}</SkillContext.Provider>;
 };

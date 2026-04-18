@@ -1,21 +1,13 @@
-"use server";
+'use server';
 
-import { prisma } from "@/lib/prisma";
-import { revalidatePath } from "next/cache";
+import { prisma } from '@/lib/prisma';
+import { revalidatePath } from 'next/cache';
 
-type SkinTone = "PALE" | "FAIR" | "MEDIUM" | "TAN" | "DARK" | "EBONY";
-type HairStyle = "BALD" | "SHORT" | "MEDIUM" | "LONG" | "MOHAWK" | "BRAIDED";
-type HairColor =
-  | "BLACK"
-  | "BROWN"
-  | "BLONDE"
-  | "RED"
-  | "GRAY"
-  | "WHITE"
-  | "BLUE"
-  | "PURPLE";
-type ArmorSlot = "HEAD" | "CHEST" | "HANDS" | "LEGS" | "FEET" | "BACK";
-type EquipmentRarity = "COMMON" | "UNCOMMON" | "RARE" | "EPIC" | "LEGENDARY";
+type SkinTone = 'PALE' | 'FAIR' | 'MEDIUM' | 'TAN' | 'DARK' | 'EBONY';
+type HairStyle = 'BALD' | 'SHORT' | 'MEDIUM' | 'LONG' | 'MOHAWK' | 'BRAIDED';
+type HairColor = 'BLACK' | 'BROWN' | 'BLONDE' | 'RED' | 'GRAY' | 'WHITE' | 'BLUE' | 'PURPLE';
+type ArmorSlot = 'HEAD' | 'CHEST' | 'HANDS' | 'LEGS' | 'FEET' | 'BACK';
+type EquipmentRarity = 'COMMON' | 'UNCOMMON' | 'RARE' | 'EPIC' | 'LEGENDARY';
 
 interface TitanAppearance {
   skinTone: SkinTone;
@@ -46,18 +38,16 @@ interface TitanCustomization {
 }
 
 const DEFAULT_APPEARANCE: TitanAppearance = {
-  skinTone: "MEDIUM",
-  hairStyle: "SHORT",
-  hairColor: "BROWN",
-  eyeColor: "#4a90d9",
+  skinTone: 'MEDIUM',
+  hairStyle: 'SHORT',
+  hairColor: 'BROWN',
+  eyeColor: '#4a90d9',
 };
 
 /**
  * Get user's Titan customization.
  */
-export async function getTitanCustomizationAction(
-  userId: string,
-): Promise<TitanCustomization> {
+export async function getTitanCustomizationAction(userId: string): Promise<TitanCustomization> {
   try {
     const _titan = await prisma.titan.findFirst({
       where: { userId },
@@ -68,27 +58,27 @@ export async function getTitanCustomizationAction(
       appearance: DEFAULT_APPEARANCE,
       equipment: [
         {
-          slot: "CHEST",
-          itemId: "armor-iron",
-          name: "Iron Plate",
-          rarity: "COMMON",
+          slot: 'CHEST',
+          itemId: 'armor-iron',
+          name: 'Iron Plate',
+          rarity: 'COMMON',
           stats: { defense: 10 },
-          visualId: "iron-chest",
+          visualId: 'iron-chest',
         },
         {
-          slot: "HANDS",
-          itemId: "gloves-leather",
-          name: "Leather Gloves",
-          rarity: "COMMON",
+          slot: 'HANDS',
+          itemId: 'gloves-leather',
+          name: 'Leather Gloves',
+          rarity: 'COMMON',
           stats: { grip: 5 },
-          visualId: "leather-hands",
+          visualId: 'leather-hands',
         },
       ],
-      title: "Iron Initiate",
-      frame: "basic",
+      title: 'Iron Initiate',
+      frame: 'basic',
     };
   } catch (error) {
-    console.error("Error getting titan customization:", error);
+    console.error('Error getting titan customization:', error);
     return { appearance: DEFAULT_APPEARANCE, equipment: [] };
   }
 }
@@ -98,14 +88,14 @@ export async function getTitanCustomizationAction(
  */
 export async function updateTitanAppearanceAction(
   userId: string,
-  updates: Partial<TitanAppearance>,
+  updates: Partial<TitanAppearance>
 ): Promise<{ success: boolean }> {
   try {
     console.log(`Updated titan appearance for ${userId}:`, updates);
-    revalidatePath("/titan");
+    revalidatePath('/titan');
     return { success: true };
   } catch (error) {
-    console.error("Error updating appearance:", error);
+    console.error('Error updating appearance:', error);
     return { success: false };
   }
 }
@@ -116,14 +106,14 @@ export async function updateTitanAppearanceAction(
 export async function equipItemAction(
   userId: string,
   itemId: string,
-  slot: ArmorSlot,
+  slot: ArmorSlot
 ): Promise<{ success: boolean; unequipped?: string }> {
   try {
     console.log(`Equipped ${itemId} to ${slot} for ${userId}`);
-    revalidatePath("/titan");
+    revalidatePath('/titan');
     return { success: true };
   } catch (error) {
-    console.error("Error equipping item:", error);
+    console.error('Error equipping item:', error);
     return { success: false };
   }
 }
@@ -133,14 +123,14 @@ export async function equipItemAction(
  */
 export async function unequipItemAction(
   userId: string,
-  slot: ArmorSlot,
+  slot: ArmorSlot
 ): Promise<{ success: boolean }> {
   try {
     console.log(`Unequipped ${slot} for ${userId}`);
-    revalidatePath("/titan");
+    revalidatePath('/titan');
     return { success: true };
   } catch (error) {
-    console.error("Error unequipping item:", error);
+    console.error('Error unequipping item:', error);
     return { success: false };
   }
 }
@@ -150,14 +140,14 @@ export async function unequipItemAction(
  */
 export async function setTitanTitleAction(
   userId: string,
-  titleId: string,
+  titleId: string
 ): Promise<{ success: boolean }> {
   try {
     console.log(`Set title for ${userId}: ${titleId}`);
-    revalidatePath("/titan");
+    revalidatePath('/titan');
     return { success: true };
   } catch (error) {
-    console.error("Error setting title:", error);
+    console.error('Error setting title:', error);
     return { success: false };
   }
 }
@@ -167,25 +157,9 @@ export async function setTitanTitleAction(
  */
 export function getCustomizationOptions() {
   return {
-    skinTones: ["PALE", "FAIR", "MEDIUM", "TAN", "DARK", "EBONY"],
-    hairStyles: ["BALD", "SHORT", "MEDIUM", "LONG", "MOHAWK", "BRAIDED"],
-    hairColors: [
-      "BLACK",
-      "BROWN",
-      "BLONDE",
-      "RED",
-      "GRAY",
-      "WHITE",
-      "BLUE",
-      "PURPLE",
-    ],
-    eyeColors: [
-      "#4a90d9",
-      "#8b5a2b",
-      "#228b22",
-      "#808080",
-      "#800020",
-      "#9932cc",
-    ],
+    skinTones: ['PALE', 'FAIR', 'MEDIUM', 'TAN', 'DARK', 'EBONY'],
+    hairStyles: ['BALD', 'SHORT', 'MEDIUM', 'LONG', 'MOHAWK', 'BRAIDED'],
+    hairColors: ['BLACK', 'BROWN', 'BLONDE', 'RED', 'GRAY', 'WHITE', 'BLUE', 'PURPLE'],
+    eyeColors: ['#4a90d9', '#8b5a2b', '#228b22', '#808080', '#800020', '#9932cc'],
   };
 }

@@ -1,6 +1,7 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState, useCallback, useMemo } from "react";
+import type React from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import ReactFlow, {
   Background,
@@ -9,32 +10,32 @@ import ReactFlow, {
   useEdgesState,
   Handle,
   Position,
-  NodeProps,
-  Edge,
-  Node,
-} from "reactflow";
-import "reactflow/dist/style.css"; // Ensure base styles are imported
+  type NodeProps,
+  type Edge,
+  type Node,
+} from 'reactflow';
+import 'reactflow/dist/style.css'; // Ensure base styles are imported
 
-import { SKILL_TREE_V2 } from "@/data/skill-tree-v2";
-import { SkillNodeV2, SkillStatus, NodeTier } from "@/types/skills";
-import { IntervalsWellness } from "@/types";
+import { useSkills } from '@/context/SkillContext';
+import { SKILL_TREE_V2 } from '@/data/skill-tree-v2';
+import type { IntervalsWellness } from '@/types';
+import { type NodeTier, type SkillNodeV2, SkillStatus } from '@/types/skills';
 import {
-  Lock,
-  Zap,
   ArrowLeft,
-  X,
+  ArrowUpCircle,
+  Check,
+  Crown,
+  Lock,
+  Shield,
+  Sparkles,
+  Star,
   TrendingUp,
   Wind,
-  Sparkles,
-  Shield,
-  Check,
-  ArrowUpCircle,
-  Crown,
-  Star,
-} from "lucide-react";
-import { useSkills } from "@/context/SkillContext";
+  X,
+  Zap,
+} from 'lucide-react';
 
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from 'framer-motion';
 
 interface SkillTreeProps {
   onExit: () => void;
@@ -62,55 +63,55 @@ const CustomSkillNode = ({ data, selected }: NodeProps<CustomNodeData>) => {
   const isMastered = status === SkillStatus.MASTERED;
   const isUnlocked = status === SkillStatus.UNLOCKED;
   const isLocked = status === SkillStatus.LOCKED;
-  const isEndurance = node.currency === "kinetic_shard";
+  const isEndurance = node.currency === 'kinetic_shard';
 
   // Base Sizes
   const size = TIER_SIZE[tier];
-  const iconSize = tier === "keystone" ? 48 : tier === "notable" ? 32 : 24;
+  const iconSize = tier === 'keystone' ? 48 : tier === 'notable' ? 32 : 24;
 
   // Style Logic
-  let borderClass = "border-zinc-800";
-  let bgClass = "bg-void";
-  let iconColor = "text-zinc-600";
-  let glow = "";
-  let borderStyle = "border-2";
+  let borderClass = 'border-zinc-800';
+  let bgClass = 'bg-void';
+  let iconColor = 'text-zinc-600';
+  let glow = '';
+  let borderStyle = 'border-2';
 
-  if (tier === "keystone") borderStyle = "border-4";
-  if (tier === "notable") borderStyle = "border-3";
+  if (tier === 'keystone') borderStyle = 'border-4';
+  if (tier === 'notable') borderStyle = 'border-3';
 
   if (isMastered) {
-    borderClass = isEndurance ? "border-cyan" : "border-gold";
-    bgClass = isEndurance ? "bg-cyan-950" : "bg-yellow-950/50";
-    iconColor = isEndurance ? "text-cyan-400" : "text-gold";
+    borderClass = isEndurance ? 'border-cyan' : 'border-gold';
+    bgClass = isEndurance ? 'bg-cyan-950' : 'bg-yellow-950/50';
+    iconColor = isEndurance ? 'text-cyan-400' : 'text-gold';
     glow = isEndurance
-      ? "shadow-[0_0_30px_rgba(6,182,212,0.6)]"
-      : "shadow-[0_0_30px_rgba(255,215,0,0.6)]";
+      ? 'shadow-[0_0_30px_rgba(6,182,212,0.6)]'
+      : 'shadow-[0_0_30px_rgba(255,215,0,0.6)]';
   } else if (isUnlocked) {
     if (isAffordable) {
-      borderClass = "border-green-500";
-      bgClass = "bg-zinc-900";
-      iconColor = "text-green-400";
-      glow = "animate-pulse shadow-[0_0_15px_rgba(74,222,128,0.4)]";
+      borderClass = 'border-green-500';
+      bgClass = 'bg-zinc-900';
+      iconColor = 'text-green-400';
+      glow = 'animate-pulse shadow-[0_0_15px_rgba(74,222,128,0.4)]';
     } else {
-      borderClass = "border-zinc-400";
-      bgClass = "bg-zinc-900";
-      iconColor = "text-zinc-200";
-      glow = "shadow-[0_0_10px_rgba(255,255,255,0.1)]";
+      borderClass = 'border-zinc-400';
+      bgClass = 'bg-zinc-900';
+      iconColor = 'text-zinc-200';
+      glow = 'shadow-[0_0_10px_rgba(255,255,255,0.1)]';
     }
   }
 
   if (selected) {
-    borderClass = "border-white ring-2 ring-white";
+    borderClass = 'border-white ring-2 ring-white';
   }
 
   // Feature: Active Keystone Animation
   if (isActiveKeystone) {
-    glow += " ring-4 ring-yellow-500 ring-opacity-50 animate-pulse";
+    glow += ' ring-4 ring-yellow-500 ring-opacity-50 animate-pulse';
   }
 
   // Shape for Keystone (Octagon-ish via CSS clip-path or just rounded-xl)
   // Using rounded-full for all for consistency with ReactFlow handles, can customize later.
-  const shapeClass = tier === "keystone" ? "rounded-full" : "rounded-full";
+  const shapeClass = tier === 'keystone' ? 'rounded-full' : 'rounded-full';
 
   return (
     <div
@@ -133,15 +134,15 @@ const CustomSkillNode = ({ data, selected }: NodeProps<CustomNodeData>) => {
 
       {/* Icon */}
       <div className={`${iconColor} flex items-center justify-center`}>
-        {tier === "keystone" && <Crown size={iconSize} />}
-        {tier === "notable" && <Star size={iconSize} />}
-        {tier === "minor" && (
+        {tier === 'keystone' && <Crown size={iconSize} />}
+        {tier === 'notable' && <Star size={iconSize} />}
+        {tier === 'minor' && (
           <>
-            {node.path === "juggernaut" && <Shield size={iconSize} />}
-            {node.path === "pathfinder" && <Wind size={iconSize} />}
-            {node.path === "warden" && <Zap size={iconSize} />}
-            {node.path === "titan" && <TrendingUp size={iconSize} />}
-            {node.path === "sage" && <Sparkles size={iconSize} />}
+            {node.path === 'juggernaut' && <Shield size={iconSize} />}
+            {node.path === 'pathfinder' && <Wind size={iconSize} />}
+            {node.path === 'warden' && <Zap size={iconSize} />}
+            {node.path === 'titan' && <TrendingUp size={iconSize} />}
+            {node.path === 'sage' && <Sparkles size={iconSize} />}
           </>
         )}
       </div>
@@ -196,7 +197,7 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onExit, wellness: _wellness }) =>
 
       return {
         id: node.id,
-        type: "skillNode",
+        type: 'skillNode',
         position: { x: node.position.x, y: node.position.y },
         data: {
           node,
@@ -206,7 +207,7 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onExit, wellness: _wellness }) =>
           isActiveKeystone: activeKeystoneId === node.id,
         },
         // Z-Index: Keystones on top, then Notables, then Minors
-        zIndex: node.tier === "keystone" ? 3 : node.tier === "notable" ? 2 : 1,
+        zIndex: node.tier === 'keystone' ? 3 : node.tier === 'notable' ? 2 : 1,
       };
     });
 
@@ -221,13 +222,11 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onExit, wellness: _wellness }) =>
         // Edge is "active" if both nodes are mastered (path connected)
         // OR if parent is mastered and this node is unlocked/mastered (path reachable)
         const isPathActive =
-          parentStatus === SkillStatus.MASTERED &&
-          nodeStatus !== SkillStatus.LOCKED;
+          parentStatus === SkillStatus.MASTERED && nodeStatus !== SkillStatus.LOCKED;
         const isFullyMastered =
-          parentStatus === SkillStatus.MASTERED &&
-          nodeStatus === SkillStatus.MASTERED;
+          parentStatus === SkillStatus.MASTERED && nodeStatus === SkillStatus.MASTERED;
 
-        const isEndurance = node.currency === "kinetic_shard";
+        const isEndurance = node.currency === 'kinetic_shard';
 
         flowEdges.push({
           id: `e-${parentId}-${node.id}`,
@@ -237,11 +236,11 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onExit, wellness: _wellness }) =>
           style: {
             stroke: isFullyMastered
               ? isEndurance
-                ? "var(--color-cyan)"
-                : "var(--color-gold)"
+                ? 'var(--color-cyan)'
+                : 'var(--color-gold)'
               : isPathActive
-                ? "#555"
-                : "#333",
+                ? '#555'
+                : '#333',
             strokeWidth: isFullyMastered ? 3 : 1,
             opacity: isPathActive ? 1 : 0.3,
           },
@@ -304,24 +303,18 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onExit, wellness: _wellness }) =>
             <h1 className="text-xl font-bold uppercase tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 to-yellow-200">
               Neural Lattice
             </h1>
-            <p className="text-xs text-zinc-500 font-mono">
-              V2.0 // NEURAL LINK ESTABLISHED
-            </p>
+            <p className="text-xs text-zinc-500 font-mono">V2.0 // NEURAL LINK ESTABLISHED</p>
           </div>
         </div>
 
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-2 px-4 py-2 bg-yellow-950/30 border border-yellow-900/50 rounded-lg">
             <div className="w-3 h-3 bg-yellow-500 rounded-full shadow-[0_0_10px_rgba(234,179,8,0.5)]"></div>
-            <span className="font-mono font-bold text-yellow-500">
-              {availableTalentPoints} TP
-            </span>
+            <span className="font-mono font-bold text-yellow-500">{availableTalentPoints} TP</span>
           </div>
           <div className="flex items-center gap-2 px-4 py-2 bg-cyan-950/30 border border-cyan-900/50 rounded-lg">
             <div className="w-3 h-3 bg-cyan-500 rounded-full shadow-[0_0_10px_rgba(6,182,212,0.5)]"></div>
-            <span className="font-mono font-bold text-cyan-400">
-              {availableKineticShards} KS
-            </span>
+            <span className="font-mono font-bold text-cyan-400">{availableKineticShards} KS</span>
           </div>
         </div>
       </div>
@@ -338,24 +331,21 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onExit, wellness: _wellness }) =>
           fitView
           minZoom={0.2}
           maxZoom={2}
-          defaultEdgeOptions={{ type: "default", animated: false }}
+          defaultEdgeOptions={{ type: 'default', animated: false }}
           className="bg-void"
         >
           <Background color="#222" gap={20} size={1} />
-          <Controls
-            position="bottom-right"
-            className="bg-zinc-900 border-zinc-800 fill-zinc-400"
-          />
+          <Controls position="bottom-right" className="bg-zinc-900 border-zinc-800 fill-zinc-400" />
         </ReactFlow>
 
         {/* Info Drawer */}
         <AnimatePresence>
           {selectedNodeData && (
             <motion.div
-              initial={{ x: "100%" }}
+              initial={{ x: '100%' }}
               animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
               className="absolute top-0 right-0 h-full w-full md:w-96 bg-void/95 backdrop-blur-xl border-l border-zinc-800 shadow-2xl p-6 overflow-y-auto z-20"
             >
               <div className="flex justify-end mb-4">
@@ -371,12 +361,12 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onExit, wellness: _wellness }) =>
                 {/* Header */}
                 <div>
                   <div className="flex items-center gap-2 mb-2">
-                    {selectedNodeData.tier === "keystone" && (
+                    {selectedNodeData.tier === 'keystone' && (
                       <span className="text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 bg-yellow-900/50 text-yellow-500 rounded border border-yellow-700">
                         Keystone
                       </span>
                     )}
-                    {selectedNodeData.tier === "notable" && (
+                    {selectedNodeData.tier === 'notable' && (
                       <span className="text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 bg-purple-900/50 text-purple-400 rounded border border-purple-700">
                         Notable
                       </span>
@@ -386,7 +376,7 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onExit, wellness: _wellness }) =>
                     </span>
                   </div>
                   <h2
-                    className={`text-3xl font-black uppercase italic leading-none ${selectedNodeData.tier === "keystone" ? "text-yellow-500" : "text-white"}`}
+                    className={`text-3xl font-black uppercase italic leading-none ${selectedNodeData.tier === 'keystone' ? 'text-yellow-500' : 'text-white'}`}
                   >
                     {selectedNodeData.title}
                   </h2>
@@ -404,38 +394,24 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onExit, wellness: _wellness }) =>
                   </div>
                   {selectedNodeData.effects && (
                     <div className="bg-zinc-900/50 p-4 rounded border border-zinc-800 space-y-2">
-                      {Object.entries(selectedNodeData.effects).map(
-                        ([key, value]) => {
-                          if (typeof value === "boolean" && value)
-                            return (
-                              <div
-                                key={key}
-                                className="text-green-400 flex items-center gap-2"
-                              >
-                                <Check size={14} />{" "}
-                                <span>
-                                  Unlocks: {key.replace("unlocks", "")}
-                                </span>
-                              </div>
-                            );
-                          if (typeof value === "number")
-                            return (
-                              <div
-                                key={key}
-                                className="text-zinc-300 flex items-center gap-2"
-                              >
-                                <ArrowUpCircle
-                                  size={14}
-                                  className="text-green-500"
-                                />{" "}
-                                <span>
-                                  {key}: +{value}
-                                </span>
-                              </div>
-                            );
-                          return null;
-                        },
-                      )}
+                      {Object.entries(selectedNodeData.effects).map(([key, value]) => {
+                        if (typeof value === 'boolean' && value)
+                          return (
+                            <div key={key} className="text-green-400 flex items-center gap-2">
+                              <Check size={14} /> <span>Unlocks: {key.replace('unlocks', '')}</span>
+                            </div>
+                          );
+                        if (typeof value === 'number')
+                          return (
+                            <div key={key} className="text-zinc-300 flex items-center gap-2">
+                              <ArrowUpCircle size={14} className="text-green-500" />{' '}
+                              <span>
+                                {key}: +{value}
+                              </span>
+                            </div>
+                          );
+                        return null;
+                      })}
                       {/* Fallback for now if object rendering is simple. Phase 5 will pretty print effects */}
                     </div>
                   )}
@@ -458,12 +434,10 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onExit, wellness: _wellness }) =>
                   <div className="flex justify-between items-center text-sm">
                     <span className="text-zinc-500">Cost:</span>
                     <span
-                      className={`font-mono font-bold ${selectedNodeData.currency === "talent_point" ? "text-yellow-500" : "text-cyan-400"}`}
+                      className={`font-mono font-bold ${selectedNodeData.currency === 'talent_point' ? 'text-yellow-500' : 'text-cyan-400'}`}
                     >
-                      {selectedNodeData.cost}{" "}
-                      {selectedNodeData.currency === "talent_point"
-                        ? "TP"
-                        : "KS"}
+                      {selectedNodeData.cost}{' '}
+                      {selectedNodeData.currency === 'talent_point' ? 'TP' : 'KS'}
                     </span>
                   </div>
 
@@ -481,15 +455,14 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onExit, wellness: _wellness }) =>
                       onClick={handleUnlock}
                       disabled={!selectedNodeData.affordable}
                       className={`w-full py-4 font-bold uppercase tracking-widest rounded transition-all flex items-center justify-center gap-2
-                                                ${selectedNodeData.affordable
-                          ? "bg-green-600 hover:bg-green-500 text-black shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:scale-105"
-                          : "bg-zinc-800 text-zinc-500 cursor-not-allowed"
-                        }
+                                                ${
+                                                  selectedNodeData.affordable
+                                                    ? 'bg-green-600 hover:bg-green-500 text-black shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:scale-105'
+                                                    : 'bg-zinc-800 text-zinc-500 cursor-not-allowed'
+                                                }
                                             `}
                     >
-                      {selectedNodeData.affordable
-                        ? "Unlock Node"
-                        : "Insufficient Resources"}
+                      {selectedNodeData.affordable ? 'Unlock Node' : 'Insufficient Resources'}
                     </button>
                   )}
 
@@ -498,7 +471,7 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onExit, wellness: _wellness }) =>
                       <div className="w-full py-4 bg-yellow-950/20 text-yellow-500 font-bold uppercase tracking-widest rounded border border-yellow-500/20 flex items-center justify-center gap-2">
                         <Check size={16} /> Mastered
                       </div>
-                      {selectedNodeData.tier !== "keystone" && (
+                      {selectedNodeData.tier !== 'keystone' && (
                         <button
                           onClick={handleRefund}
                           className="text-xs text-zinc-600 hover:text-red-400 underline decoration-zinc-800 underline-offset-4 transition-colors"

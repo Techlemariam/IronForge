@@ -1,7 +1,7 @@
-"use server";
+'use server';
 
-import { revalidatePath } from "next/cache";
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from '@/utils/supabase/server';
+import { revalidatePath } from 'next/cache';
 
 /**
  * Verifies the authenticated session user matches the requested userId.
@@ -9,7 +9,10 @@ import { createClient } from "@/utils/supabase/server";
  */
 async function verifyMasteryAuth(userId: string): Promise<boolean> {
   const supabase = await createClient();
-  const { data: { user }, error } = await supabase.auth.getUser();
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser();
   if (error || !user) return false;
   return user.id === userId;
 }
@@ -38,45 +41,45 @@ interface MasteryPerk {
 
 const MASTERY_PERKS: MasteryPerk[] = [
   {
-    id: "perk-1",
-    name: "Form Mastery",
-    description: "+5% XP from this exercise",
-    effect: { stat: "exerciseXp", value: 5 },
+    id: 'perk-1',
+    name: 'Form Mastery',
+    description: '+5% XP from this exercise',
+    effect: { stat: 'exerciseXp', value: 5 },
     unlocksAtLevel: 5,
   },
   {
-    id: "perk-2",
-    name: "Muscle Memory",
-    description: "+3% strength during this exercise",
-    effect: { stat: "strength", value: 3 },
+    id: 'perk-2',
+    name: 'Muscle Memory',
+    description: '+3% strength during this exercise',
+    effect: { stat: 'strength', value: 3 },
     unlocksAtLevel: 10,
   },
   {
-    id: "perk-3",
-    name: "Efficient Movement",
-    description: "-10% fatigue from this exercise",
-    effect: { stat: "fatigue", value: -10 },
+    id: 'perk-3',
+    name: 'Efficient Movement',
+    description: '-10% fatigue from this exercise',
+    effect: { stat: 'fatigue', value: -10 },
     unlocksAtLevel: 15,
   },
   {
-    id: "perk-4",
-    name: "Power Focus",
-    description: "+5% damage with this exercise",
-    effect: { stat: "damage", value: 5 },
+    id: 'perk-4',
+    name: 'Power Focus',
+    description: '+5% damage with this exercise',
+    effect: { stat: 'damage', value: 5 },
     unlocksAtLevel: 20,
   },
   {
-    id: "perk-5",
+    id: 'perk-5',
     name: "Master's Touch",
-    description: "+10% crit chance with this exercise",
-    effect: { stat: "critChance", value: 10 },
+    description: '+10% crit chance with this exercise',
+    effect: { stat: 'critChance', value: 10 },
     unlocksAtLevel: 25,
   },
   {
-    id: "perk-6",
-    name: "Legendary Mastery",
-    description: "+15% all bonuses from this exercise",
-    effect: { stat: "allBonuses", value: 15 },
+    id: 'perk-6',
+    name: 'Legendary Mastery',
+    description: '+15% all bonuses from this exercise',
+    effect: { stat: 'allBonuses', value: 15 },
     unlocksAtLevel: 50,
   },
 ];
@@ -109,7 +112,7 @@ function buildExerciseMastery(exerciseId: string): ExerciseMastery {
  */
 export async function getExerciseMasteryAction(
   userId: string,
-  exerciseId: string,
+  exerciseId: string
 ): Promise<ExerciseMastery | null> {
   if (!(await verifyMasteryAuth(userId))) {
     console.warn('Mastery: Unauthorized access attempt blocked.');
@@ -122,20 +125,12 @@ export async function getExerciseMasteryAction(
  * Get all exercise masteries for user.
  * Verifies auth once and then builds all masteries without redundant Supabase calls.
  */
-export async function getAllMasteriesAction(
-  userId: string,
-): Promise<ExerciseMastery[]> {
+export async function getAllMasteriesAction(userId: string): Promise<ExerciseMastery[]> {
   if (!(await verifyMasteryAuth(userId))) {
     console.warn('Mastery: Unauthorized access attempt blocked.');
     return [];
   }
-  const exercises = [
-    'bench-press',
-    'squat',
-    'deadlift',
-    'overhead-press',
-    'barbell-row',
-  ];
+  const exercises = ['bench-press', 'squat', 'deadlift', 'overhead-press', 'barbell-row'];
   return exercises.map(buildExerciseMastery);
 }
 
@@ -145,7 +140,7 @@ export async function getAllMasteriesAction(
 export async function addMasteryXpAction(
   userId: string,
   exerciseId: string,
-  xpGained: number,
+  xpGained: number
 ): Promise<{
   newLevel: number;
   newXp: number;
@@ -157,7 +152,7 @@ export async function addMasteryXpAction(
     return null;
   }
   console.log(`Added ${xpGained} mastery XP for exercise ${exerciseId}`);
-  revalidatePath("/mastery");
+  revalidatePath('/mastery');
 
   // In production, calculate actual level up
   return {
@@ -170,11 +165,7 @@ export async function addMasteryXpAction(
 /**
  * Calculate mastery XP from a set.
  */
-export function calculateMasteryXp(
-  weight: number,
-  reps: number,
-  isPr: boolean,
-): number {
+export function calculateMasteryXp(weight: number, reps: number, isPr: boolean): number {
   const baseXp = Math.floor((weight * reps) / 10);
   const prBonus = isPr ? baseXp * 0.5 : 0;
   return Math.floor(baseXp + prBonus);
@@ -185,11 +176,11 @@ export function calculateMasteryXp(
  */
 export async function getMasteryLeaderboardAction(
   exerciseId: string,
-  _limit: number = 10,
+  _limit = 10
 ): Promise<Array<{ rank: number; heroName: string; level: number }>> {
   return [
-    { rank: 1, heroName: "BenchKing", level: 50 },
-    { rank: 2, heroName: "IronPusher", level: 42 },
-    { rank: 3, heroName: "ChestMaster", level: 38 },
+    { rank: 1, heroName: 'BenchKing', level: 50 },
+    { rank: 2, heroName: 'IronPusher', level: 42 },
+    { rank: 3, heroName: 'ChestMaster', level: 38 },
   ];
 }

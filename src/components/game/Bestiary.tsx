@@ -1,15 +1,8 @@
-import React from "react";
-import { Monster, MonsterType } from "../../types";
-import { MONSTERS } from "../../data/gameData";
-import {
-  Skull,
-  Zap,
-  TrendingUp,
-  Shield,
-  Lock,
-  Info,
-} from "lucide-react";
-import { cn } from "../../lib/utils";
+import { Info, Lock, Shield, Skull, TrendingUp, Zap } from 'lucide-react';
+import React from 'react';
+import { MONSTERS } from '../../data/gameData';
+import { cn } from '../../lib/utils';
+import type { Monster, MonsterType } from '../../types';
 
 interface BestiaryProps {
   userLevel: number;
@@ -19,20 +12,20 @@ interface BestiaryProps {
 export const Bestiary: React.FC<BestiaryProps> = ({ userLevel, onClose }) => {
   const getTypeColor = (type: MonsterType) => {
     switch (type) {
-      case "Giant":
-        return "text-orange-400 border-orange-400 bg-orange-950/20";
-      case "Beast":
-        return "text-red-400 border-red-400 bg-red-950/20";
-      case "Undead":
-        return "text-purple-400 border-purple-400 bg-purple-950/20";
-      case "Elemental":
-        return "text-blue-400 border-blue-400 bg-blue-950/20";
-      case "Construct":
-        return "text-zinc-400 border-zinc-400 bg-zinc-950/20";
-      case "Dragon":
-        return "text-yellow-400 border-yellow-400 bg-yellow-950/20";
+      case 'Giant':
+        return 'text-orange-400 border-orange-400 bg-orange-950/20';
+      case 'Beast':
+        return 'text-red-400 border-red-400 bg-red-950/20';
+      case 'Undead':
+        return 'text-purple-400 border-purple-400 bg-purple-950/20';
+      case 'Elemental':
+        return 'text-blue-400 border-blue-400 bg-blue-950/20';
+      case 'Construct':
+        return 'text-zinc-400 border-zinc-400 bg-zinc-950/20';
+      case 'Dragon':
+        return 'text-yellow-400 border-yellow-400 bg-yellow-950/20';
       default:
-        return "text-zinc-400 border-zinc-400 bg-zinc-950/20";
+        return 'text-zinc-400 border-zinc-400 bg-zinc-950/20';
     }
   };
 
@@ -40,8 +33,8 @@ export const Bestiary: React.FC<BestiaryProps> = ({ userLevel, onClose }) => {
 
   React.useEffect(() => {
     const loadUnlocks = async () => {
-      const ids = await import("../../services/storage").then((m) =>
-        m.StorageService.getUnlockedMonsters(),
+      const ids = await import('../../services/storage').then((m) =>
+        m.StorageService.getUnlockedMonsters()
       );
       setUnlockedIds(ids);
     };
@@ -60,8 +53,7 @@ export const Bestiary: React.FC<BestiaryProps> = ({ userLevel, onClose }) => {
             The Bestiary
           </h1>
           <p className="text-rarity-common text-xs italic mt-1">
-            &quot;Target identification and threat assessment for the aspiring
-            Titan.&quot;
+            &quot;Target identification and threat assessment for the aspiring Titan.&quot;
           </p>
         </div>
         <button
@@ -81,17 +73,17 @@ export const Bestiary: React.FC<BestiaryProps> = ({ userLevel, onClose }) => {
             <div
               key={monster.id}
               className={cn(
-                "group bg-armor border-2 rounded-lg overflow-hidden transition-all duration-300 relative",
+                'group bg-armor border-2 rounded-lg overflow-hidden transition-all duration-300 relative',
                 unlocked
-                  ? "border-forge-border hover:border-rarity-common shadow-lg"
-                  : "border-zinc-900 opacity-60 grayscale",
+                  ? 'border-forge-border hover:border-rarity-common shadow-lg'
+                  : 'border-zinc-900 opacity-60 grayscale'
               )}
             >
               {/* Monster Image Header */}
               <div
                 className={cn(
-                  "h-40 flex items-center justify-center relative bg-gradient-to-b",
-                  unlocked ? "from-zinc-900 to-black" : "from-black to-black",
+                  'h-40 flex items-center justify-center relative bg-gradient-to-b',
+                  unlocked ? 'from-zinc-900 to-black' : 'from-black to-black'
                 )}
               >
                 {unlocked ? (
@@ -113,13 +105,13 @@ export const Bestiary: React.FC<BestiaryProps> = ({ userLevel, onClose }) => {
                 <div>
                   <div className="flex justify-between items-start">
                     <h3 className="text-xl font-bold text-white uppercase tracking-tight">
-                      {unlocked ? monster.name : "Unknown Threat"}
+                      {unlocked ? monster.name : 'Unknown Threat'}
                     </h3>
                     {unlocked && (
                       <span
                         className={cn(
-                          "text-[8px] font-black uppercase px-2 py-0.5 rounded border-2",
-                          typeStyle,
+                          'text-[8px] font-black uppercase px-2 py-0.5 rounded border-2',
+                          typeStyle
                         )}
                       >
                         {monster.type}
@@ -129,9 +121,7 @@ export const Bestiary: React.FC<BestiaryProps> = ({ userLevel, onClose }) => {
                   <p className="text-xs text-rarity-common italic mt-1 h-8 line-clamp-2">
                     {unlocked
                       ? monster.description
-                      : "Surpass Level " +
-                      monster.level +
-                      " to identify this entity."}
+                      : 'Surpass Level ' + monster.level + ' to identify this entity.'}
                   </p>
                 </div>
 
@@ -162,18 +152,10 @@ export const Bestiary: React.FC<BestiaryProps> = ({ userLevel, onClose }) => {
                           key={cat}
                           className="flex items-center gap-1 bg-zinc-900 border border-zinc-800 px-2 py-1 rounded text-[9px] font-bold uppercase text-rarity-common"
                         >
-                          {cat === "push" && (
-                            <Zap className="w-3 h-3 text-yellow-500" />
-                          )}
-                          {cat === "legs" && (
-                            <TrendingUp className="w-3 h-3 text-green-500" />
-                          )}
-                          {cat === "pull" && (
-                            <Lock className="w-3 h-3 text-purple-500" />
-                          )}
-                          {cat === "core" && (
-                            <Shield className="w-3 h-3 text-blue-500" />
-                          )}
+                          {cat === 'push' && <Zap className="w-3 h-3 text-yellow-500" />}
+                          {cat === 'legs' && <TrendingUp className="w-3 h-3 text-green-500" />}
+                          {cat === 'pull' && <Lock className="w-3 h-3 text-purple-500" />}
+                          {cat === 'core' && <Shield className="w-3 h-3 text-blue-500" />}
                           {cat} weakness
                         </div>
                       ))}
@@ -183,10 +165,10 @@ export const Bestiary: React.FC<BestiaryProps> = ({ userLevel, onClose }) => {
                     <div className="bg-black/40 border border-white/5 rounded p-2 flex items-start gap-2">
                       <Info className="w-3 h-3 text-zinc-600 mt-0.5" />
                       <p className="text-[9px] text-zinc-500 leading-tight">
-                        Requires execution of{" "}
+                        Requires execution of{' '}
                         <span className="text-zinc-300 font-bold">
                           {monster.associatedExerciseIds.length}
-                        </span>{" "}
+                        </span>{' '}
                         specific movement patterns to bypass defenses.
                       </p>
                     </div>

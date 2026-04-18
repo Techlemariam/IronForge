@@ -1,8 +1,9 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from "react";
-import { Search, Loader2, Dumbbell } from "lucide-react";
-import { searchExercisesAction } from "@/actions/training/strength";
+import { searchExercisesAction } from '@/actions/training/strength';
+import { Dumbbell, Loader2, Search } from 'lucide-react';
+import type React from 'react';
+import { useEffect, useState } from 'react';
 
 // Inline debounce hook if not exists to be safe
 function useDebounceValue<T>(value: T, delay: number): T {
@@ -19,7 +20,7 @@ interface ExerciseSearchProps {
 }
 
 export const ExerciseSearch: React.FC<ExerciseSearchProps> = ({ onSelect }) => {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState('');
   const [results, setResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const debouncedQuery = useDebounceValue(query, 300);
@@ -67,7 +68,7 @@ export const ExerciseSearch: React.FC<ExerciseSearchProps> = ({ onSelect }) => {
               className="w-full px-4 py-3 flex items-center justify-between hover:bg-white/5 transition-colors text-left group"
               onClick={() => {
                 onSelect(ex.id, ex.name);
-                setQuery("");
+                setQuery('');
                 setResults([]);
               }}
             >
@@ -76,12 +77,8 @@ export const ExerciseSearch: React.FC<ExerciseSearchProps> = ({ onSelect }) => {
                   <Dumbbell className="w-4 h-4" />
                 </div>
                 <div>
-                  <div className="font-bold text-sm text-zinc-200">
-                    {ex.name}
-                  </div>
-                  <div className="text-xs text-zinc-500 uppercase">
-                    {ex.muscleGroup}
-                  </div>
+                  <div className="font-bold text-sm text-zinc-200">{ex.name}</div>
+                  <div className="text-xs text-zinc-500 uppercase">{ex.muscleGroup}</div>
                 </div>
               </div>
             </button>

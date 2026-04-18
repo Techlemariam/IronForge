@@ -1,6 +1,6 @@
-import { create } from "zustand";
-import { AuditReport } from "../types/auditor";
-import { runFullAudit } from "../services/auditorOrchestrator";
+import { create } from 'zustand';
+import { runFullAudit } from '../services/auditorOrchestrator';
+import type { AuditReport } from '../types/auditor';
 
 interface AuditorState {
   report: AuditReport | null;
@@ -23,9 +23,9 @@ export const useAuditorStore = create<AuditorState>((set) => ({
       const report = await runFullAudit(forceRefresh, userId);
       set({ report, loading: false });
     } catch (error) {
-      console.error("Auditor Store Error:", error);
+      console.error('Auditor Store Error:', error);
       set({
-        error: (error as Error).message || "Failed to generate Auditor Report",
+        error: (error as Error).message || 'Failed to generate Auditor Report',
         loading: false,
       });
     }

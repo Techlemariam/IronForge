@@ -1,220 +1,224 @@
 @import "tailwindcss";
 
 @theme {
-    /* THE CHROMATIC LATTICE (Periodic Table) */
-    --color-void: #030712;
-    /* Deep Space (Bg) */
-    --color-armor: #111827;
-    /* Hardened Steel (Card) */
-    --color-steel: #374151;
-    /* Structural (Border) */
-    --color-plasma: #f97316;
-    /* Action / Legendary */
-    --color-pulse: #0ea5e9;
-    /* Data / Rare */
-    --color-venom: #22c55e;
-    /* Restoration / Set Item */
-    --color-crisis: #ef4444;
-    /* Failure / Cursed */
-    --color-gold: #eab308;
-    /* Artifact / Warden */
-    --color-cyan: #06b6d4;
-    /* Pathfinder */
-    --color-clay: #c79c6e;
-    /* Classic UI / Parchment */
-    --color-warp: #a335ee;
-    /* Warp / Epic (Purple) */
-    --color-legend: #ff8000;
-    /* Solar / Legendary (Orange) */
+  /* THE CHROMATIC LATTICE (Periodic Table) */
+  --color-void: #030712;
+  /* Deep Space (Bg) */
+  --color-armor: #111827;
+  /* Hardened Steel (Card) */
+  --color-steel: #374151;
+  /* Structural (Border) */
+  --color-plasma: #f97316;
+  /* Action / Legendary */
+  --color-pulse: #0ea5e9;
+  /* Data / Rare */
+  --color-venom: #22c55e;
+  /* Restoration / Set Item */
+  --color-crisis: #ef4444;
+  /* Failure / Cursed */
+  --color-gold: #eab308;
+  /* Artifact / Warden */
+  --color-cyan: #06b6d4;
+  /* Pathfinder */
+  --color-clay: #c79c6e;
+  /* Classic UI / Parchment */
+  --color-warp: #a335ee;
+  /* Warp / Epic (Purple) */
+  --color-legend: #ff8000;
+  /* Solar / Legendary (Orange) */
 
-    /* ITEM RARITY PROTOCOL (WoW-Inspired) */
-    --color-uncommon: #1eff00;
-    /* Green / Uncommon */
-    --color-rare: #0070dd;
-    /* Blue / Rare */
-    --color-gold-bright: #ffd700;
-    /* Gold / UI Highlight */
-    --color-gold-dark: #b8860b;
-    /* Dark Gold / Muted Tier */
+  /* ITEM RARITY PROTOCOL (WoW-Inspired) */
+  --color-uncommon: #1eff00;
+  /* Green / Uncommon */
+  --color-rare: #0070dd;
+  /* Blue / Rare */
+  --color-gold-bright: #ffd700;
+  /* Gold / UI Highlight */
+  --color-gold-dark: #b8860b;
+  /* Dark Gold / Muted Tier */
 
-    /* TEXT PROTOCOL */
-    --color-text-primary: #f3f4f6;
-    /* Gray-100 (Body text) */
+  /* TEXT PROTOCOL */
+  --color-text-primary: #f3f4f6;
+  /* Gray-100 (Body text) */
 
-    /* Legacy Mappings (Deprecation Bridge) */
-    --color-forge-950: var(--color-void);
-    --color-forge-900: var(--color-armor);
-    --color-forge-border: var(--color-steel);
-    --color-magma: var(--color-plasma);
+  /* Legacy Mappings (Deprecation Bridge) */
+  --color-forge-950: var(--color-void);
+  --color-forge-900: var(--color-armor);
+  --color-forge-border: var(--color-steel);
+  --color-magma: var(--color-plasma);
 
-    /* CYBER-PHYSICAL TOKENS (Titan Tier) */
-    --color-emerald-glow: #10b981;
-    --color-teal-glow: #14b8a6;
-    --color-carbon: #0f172a;
+  /* CYBER-PHYSICAL TOKENS (Titan Tier) */
+  --color-emerald-glow: #10b981;
+  --color-teal-glow: #14b8a6;
+  --color-carbon: #0f172a;
 
-    /* Mechanical Border Shorthands */
-    --border-mechanical: 1px solid rgba(255, 255, 255, 0.1);
-    --shadow-mechanical: inset 0 0 10px rgba(0, 0, 0, 0.5), 0 0 15px rgba(16, 185, 129, 0.1);
+  /* Mechanical Border Shorthands */
+  --border-mechanical: 1px solid rgba(255, 255, 255, 0.1);
+  --shadow-mechanical: inset 0 0 10px rgba(0, 0, 0, 0.5), 0 0 15px rgba(16, 185, 129, 0.1);
 
-    /* KINETIC PHYSICS */
-    --ease-bolt-action: cubic-bezier(0.23, 1, 0.32, 1);
-    /* Mechanical Lock */
-    --ease-recoil: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  /* KINETIC PHYSICS */
+  --ease-bolt-action: cubic-bezier(0.23, 1, 0.32, 1);
+  /* Mechanical Lock */
+  --ease-recoil: cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
-    /* Animation Definitions */
-    @keyframes deploy {
-        from {
-            opacity: 0;
-            transform: translateY(10px) scale(0.98);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
+  /* Animation Definitions */
+  @keyframes deploy {
+    from {
+      opacity: 0;
+      transform: translateY(10px) scale(0.98);
     }
 
-    @keyframes pulse-mechanical {
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
 
-        0%,
-        100% {
-            opacity: 1;
-        }
-
-        50% {
-            opacity: 0.5;
-        }
+  @keyframes pulse-mechanical {
+    0%,
+    100% {
+      opacity: 1;
     }
 
-    @keyframes scanline {
-        0% {
-            transform: translateY(-100%);
-        }
+    50% {
+      opacity: 0.5;
+    }
+  }
 
-        100% {
-            transform: translateY(100%);
-        }
+  @keyframes scanline {
+    0% {
+      transform: translateY(-100%);
     }
 
-    /* Animation Utilities */
-    --animate-deploy: deploy 0.2s cubic-bezier(0.23, 1, 0.32, 1) forwards;
-    --animate-pulse-mech: pulse-mechanical 2s steps(2, end) infinite;
-    --animate-scanline: scanline 8s linear infinite;
+    100% {
+      transform: translateY(100%);
+    }
+  }
+
+  /* Animation Utilities */
+  --animate-deploy: deploy 0.2s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+  --animate-pulse-mech: pulse-mechanical 2s steps(2, end) infinite;
+  --animate-scanline: scanline 8s linear infinite;
 }
 
 @layer base {
-    body {
-        background-color: var(--color-void);
-        color: var(--color-text-primary);
-        /* Gray-100 */
-        font-feature-settings: "tnum" on, "cv11" on, "ss01" on;
-        -webkit-font-smoothing: antialiased;
-        overflow-x: hidden;
-    }
+  body {
+    background-color: var(--color-void);
+    color: var(--color-text-primary);
+    /* Gray-100 */
+    font-feature-settings: "tnum" on, "cv11" on, "ss01" on;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
 
-    /* TYPOGRAPHY PROTOCOL */
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-        @apply font-mono font-bold tracking-tighter uppercase text-white;
-        text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-    }
+  /* TYPOGRAPHY PROTOCOL */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-mono font-bold tracking-tighter uppercase text-white;
+    text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  }
 
-    /* DATA PROTOCOL */
-    .font-mono {
-        font-variant-numeric: tabular-nums;
-        letter-spacing: -0.05em;
-    }
+  /* DATA PROTOCOL */
+  .font-mono {
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.05em;
+  }
 
-    :root {
-        /* Base (Void: #030712 -> 223 71% 4%) */
-        --background: 223 71% 4%;
-        --foreground: 0 0% 98%;
+  :root {
+    /* Base (Void: #030712 -> 223 71% 4%) */
+    --background: 223 71% 4%;
+    --foreground: 0 0% 98%;
 
-        /* Surface (Armor: #111827 -> 220 39% 11%) */
-        --card: 220 39% 11%;
-        --card-foreground: 0 0% 98%;
-        --popover: 220 39% 11%;
-        --popover-foreground: 0 0% 98%;
+    /* Surface (Armor: #111827 -> 220 39% 11%) */
+    --card: 220 39% 11%;
+    --card-foreground: 0 0% 98%;
+    --popover: 220 39% 11%;
+    --popover-foreground: 0 0% 98%;
 
-        /* Action (Plasma: #f97316 -> 25 95% 53%) */
-        --primary: 25 95% 53%;
-        --primary-foreground: 0 0% 100%;
+    /* Action (Plasma: #f97316 -> 25 95% 53%) */
+    --primary: 25 95% 53%;
+    --primary-foreground: 0 0% 100%;
 
-        /* Structural (Steel: #374151 -> 217 19% 27%) */
-        --secondary: 217 19% 27%;
-        --secondary-foreground: 0 0% 98%;
+    /* Structural (Steel: #374151 -> 217 19% 27%) */
+    --secondary: 217 19% 27%;
+    --secondary-foreground: 0 0% 98%;
 
-        --muted: 217 19% 22%;
-        /* Slightly darker steel */
-        --muted-foreground: 215 20% 65%;
+    --muted: 217 19% 22%;
+    /* Slightly darker steel */
+    --muted-foreground: 215 20% 65%;
 
-        --accent: 217 19% 27%;
-        --accent-foreground: 0 0% 98%;
+    --accent: 217 19% 27%;
+    --accent-foreground: 0 0% 98%;
 
-        --destructive: 0 84.2% 60.2%;
-        --destructive-foreground: 0 0% 98%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
 
-        --border: 217 19% 27%;
-        /* Steel */
-        --input: 217 19% 27%;
-        --ring: 25 95% 53%;
-        /* Plasma */
+    --border: 217 19% 27%;
+    /* Steel */
+    --input: 217 19% 27%;
+    --ring: 25 95% 53%;
+    /* Plasma */
 
-        --radius: 0rem;
-        /* Hard corners for mechanical feel */
-    }
+    --radius: 0rem;
+    /* Hard corners for mechanical feel */
+  }
 
-    .dark {
-        --background: 223 71% 4%;
-        --foreground: 0 0% 98%;
-    }
+  .dark {
+    --background: 223 71% 4%;
+    --foreground: 0 0% 98%;
+  }
 }
 
 @layer utilities {
-    .text-glow-emerald {
-        text-shadow: 0 0 15px rgba(16, 185, 129, 0.6);
-    }
+  .text-glow-emerald {
+    text-shadow: 0 0 15px rgba(16, 185, 129, 0.6);
+  }
 
-    .mechanical-panel {
-        @apply bg-slate-950 border border-slate-800 relative overflow-hidden;
-        box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
-    }
+  .mechanical-panel {
+    @apply bg-slate-950 border border-slate-800 relative overflow-hidden;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+  }
 
-    .mechanical-panel::before {
-        content: "";
-        @apply absolute inset-0 opacity-[0.03] pointer-events-none;
-        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    }
+  .mechanical-panel::before {
+    content: "";
+    @apply absolute inset-0 opacity-[0.03] pointer-events-none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  }
 
-    .carbon-fiber {
-        background:
-            linear-gradient(27deg, #151515 5px, transparent 5px) 0 5px,
-            linear-gradient(207deg, #151515 5px, transparent 5px) 10px 0px,
-            linear-gradient(27deg, #222 5px, transparent 5px) 0px 10px,
-            linear-gradient(207deg, #222 5px, transparent 5px) 10px 5px,
-            linear-gradient(90deg, #1b1b1b 10px, transparent 10px),
-            linear-gradient(#1d1d1d 25%, #1a1a1a 25%, #1a1a1a 50%, transparent 50%, transparent 75%, #242424 75%, #242424);
-        background-color: #131313;
-        background-size: 20px 20px;
-    }
+  .carbon-fiber {
+    background:
+      linear-gradient(27deg, #151515 5px, transparent 5px) 0 5px,
+      linear-gradient(207deg, #151515 5px, transparent 5px) 10px 0px,
+      linear-gradient(27deg, #222 5px, transparent 5px) 0px 10px,
+      linear-gradient(207deg, #222 5px, transparent 5px) 10px 5px,
+      linear-gradient(90deg, #1b1b1b 10px, transparent 10px),
+      linear-gradient(
+        #1d1d1d 25%,
+        #1a1a1a 25%,
+        #1a1a1a 50%,
+        transparent 50%,
+        transparent 75%,
+        #242424 75%,
+        #242424
+      );
+    background-color: #131313;
+    background-size: 20px 20px;
+  }
 
-    .bg-noise {
-        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    }
+  .bg-noise {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  }
 
-    .scanline-overlay {
-        position: fixed;
-        inset: 0;
-        background: linear-gradient(to bottom,
-                transparent 50%,
-                rgba(0, 255, 170, 0.02) 50%);
-        background-size: 100% 4px;
-        pointer-events: none;
-        z-index: 100;
-    }
-
+  .scanline-overlay {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 50%, rgba(0, 255, 170, 0.02) 50%);
+    background-size: 100% 4px;
+    pointer-events: none;
+    z-index: 100;
+  }
 }

@@ -1,8 +1,8 @@
-import { useState, useCallback, useEffect } from "react";
-import { ACHIEVEMENTS } from "@/data/static";
-import { Achievement } from "@/types";
-import { playSound } from "@/utils";
-import { StorageService } from "@/services/storage";
+import { ACHIEVEMENTS } from '@/data/static';
+import { StorageService } from '@/services/storage';
+import type { Achievement } from '@/types';
+import { playSound } from '@/utils';
+import { useCallback, useEffect, useState } from 'react';
 
 export const useAchievements = () => {
   const [unlockedIds, setUnlockedIds] = useState<Set<string>>(new Set());
@@ -14,18 +14,17 @@ export const useAchievements = () => {
     const loadData = async () => {
       try {
         await StorageService.init();
-        const saved = await StorageService.getState<string[]>("achievements");
+        const saved = await StorageService.getState<string[]>('achievements');
         if (saved) {
           setUnlockedIds(new Set(saved));
         } else {
           // Fallback migration check
           await StorageService.migrateFromLocalStorage();
-          const migrated =
-            await StorageService.getState<string[]>("achievements");
+          const migrated = await StorageService.getState<string[]>('achievements');
           if (migrated) setUnlockedIds(new Set(migrated));
         }
       } catch (e) {
-        console.error("Failed to load achievements", e);
+        console.error('Failed to load achievements', e);
       } finally {
         setLoading(false);
       }
@@ -42,12 +41,12 @@ export const useAchievements = () => {
 
       // Persist Async
       const arrayData = Array.from(next);
-      StorageService.saveState("achievements", arrayData).catch(console.error);
+      StorageService.saveState('achievements', arrayData).catch(console.error);
 
       // Trigger Sound & Toast
       const achievement = ACHIEVEMENTS.find((a) => a.id === id);
       if (achievement) {
-        playSound("achievement");
+        playSound('achievement');
         setToastQueue((q) => [...q, achievement]);
       }
 

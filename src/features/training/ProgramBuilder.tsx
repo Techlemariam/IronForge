@@ -1,16 +1,17 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import { createProgramAction } from "@/actions/training/programs";
-import { Calendar, Save } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { createProgramAction } from '@/actions/training/programs';
+import { useToast } from '@/hooks/use-toast';
+import { Calendar, Save } from 'lucide-react';
+import type React from 'react';
+import { useState } from 'react';
 
 interface ProgramBuilderProps {
   userId: string;
 }
 
 export const ProgramBuilder: React.FC<ProgramBuilderProps> = ({ userId }) => {
-  const [name, setName] = useState("");
+  const [name, setName] = useState('');
   const [weeks, setWeeks] = useState(4);
   const { toast } = useToast();
   const [isCreating, setIsCreating] = useState(false);
@@ -19,11 +20,11 @@ export const ProgramBuilder: React.FC<ProgramBuilderProps> = ({ userId }) => {
     setIsCreating(true);
     try {
       await createProgramAction(userId, { name, weeks });
-      toast({ title: "Success", description: "Program created!" });
+      toast({ title: 'Success', description: 'Program created!' });
       // Redirect or show builder view (simplified for now)
-      setName("");
+      setName('');
     } catch {
-      toast({ title: "Error", variant: "destructive" });
+      toast({ title: 'Error', variant: 'destructive' });
     } finally {
       setIsCreating(false);
     }
@@ -58,7 +59,7 @@ export const ProgramBuilder: React.FC<ProgramBuilderProps> = ({ userId }) => {
               <button
                 key={w}
                 onClick={() => setWeeks(w)}
-                className={`px-4 py-2 rounded border ${weeks === w ? "bg-magma text-black border-magma" : "bg-transparent border-white/10 text-zinc-400 hover:text-white"}`}
+                className={`px-4 py-2 rounded border ${weeks === w ? 'bg-magma text-black border-magma' : 'bg-transparent border-white/10 text-zinc-400 hover:text-white'}`}
               >
                 {w} Weeks
               </button>
@@ -73,7 +74,7 @@ export const ProgramBuilder: React.FC<ProgramBuilderProps> = ({ userId }) => {
             className="w-full bg-white text-black font-bold py-3 rounded hover:bg-zinc-200 disabled:opacity-50 flex items-center justify-center gap-2"
           >
             {isCreating ? (
-              "Creating..."
+              'Creating...'
             ) : (
               <>
                 <Save className="w-4 h-4" /> Create Program

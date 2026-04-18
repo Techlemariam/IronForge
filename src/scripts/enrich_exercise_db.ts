@@ -1,198 +1,198 @@
-
-import { HEVY_EXERCISE_MAP } from "../data/hevyExercises";
-import * as fs from "fs";
-import * as path from "path";
+import * as fs from 'fs';
+import * as path from 'path';
+import { HEVY_EXERCISE_MAP } from '../data/hevyExercises';
 
 // Heuristics Engine (Copied/Refined from TrainingContextService)
 // Heuristics Engine (Copied/Refined from TrainingContextService)
-function getCnsTier(name: string): "TIER_1" | "TIER_2" | "TIER_3" | "TIER_4" {
-    const n = name.toLowerCase();
+function getCnsTier(name: string): 'TIER_1' | 'TIER_2' | 'TIER_3' | 'TIER_4' {
+  const n = name.toLowerCase();
 
-    // TIER 1: Systemic Killers (Spinal Loading + Heavy) (9 pts)
-    // Goal: Barbell Squats, Deadlifts, Olympic Lifts
-    if (
-        (n.includes("squat") || n.includes("deadlift") || n.includes("clean") || n.includes("snatch")) &&
-        !n.includes("goblet") &&
-        !n.includes("split") &&
-        !n.includes("hack") &&
-        !n.includes("belt") &&
-        !n.includes("dumbbell") &&
-        !n.includes("kettlebell") &&
-        !n.includes("bodyweight") &&
-        !n.includes("air") &&
-        !n.includes("machine") &&
-        !n.includes("smith")
-    ) {
-        return "TIER_1"; // Score 9
-    }
+  // TIER 1: Systemic Killers (Spinal Loading + Heavy) (9 pts)
+  // Goal: Barbell Squats, Deadlifts, Olympic Lifts
+  if (
+    (n.includes('squat') ||
+      n.includes('deadlift') ||
+      n.includes('clean') ||
+      n.includes('snatch')) &&
+    !n.includes('goblet') &&
+    !n.includes('split') &&
+    !n.includes('hack') &&
+    !n.includes('belt') &&
+    !n.includes('dumbbell') &&
+    !n.includes('kettlebell') &&
+    !n.includes('bodyweight') &&
+    !n.includes('air') &&
+    !n.includes('machine') &&
+    !n.includes('smith')
+  ) {
+    return 'TIER_1'; // Score 9
+  }
 
-    // TIER 2: Heavy Compounds / High Load (7 pts)
-    // Goal: Bench, OHP, Row, Weighted Bodyweight, Heavy Machines, Unilateral Legs
-    if (
-        n.includes("bench press") ||
-        n.includes("overhead press") ||
-        n.includes("military press") ||
-        n.includes("push press") ||
-        n.includes("barbell row") ||
-        n.includes("pull up") ||
-        n.includes("chin up") ||
-        n.includes("dip") ||
-        n.includes("leg press") ||
-        n.includes("hack squat") ||
-        n.includes("belt squat") ||
-        n.includes("split squat") ||
-        n.includes("lunge") ||
-        n.includes("step up") ||
-        n.includes("good morning") ||
-        n.includes("hip thrust") ||
-        n.includes("carry") ||
-        n.includes("walk") ||
-        n.includes("sled") ||
-        n.includes("prowler") ||
-        n.includes("smith") // Smith squats/deads usually here
-    ) {
-        return "TIER_2"; // Score 7
-    }
+  // TIER 2: Heavy Compounds / High Load (7 pts)
+  // Goal: Bench, OHP, Row, Weighted Bodyweight, Heavy Machines, Unilateral Legs
+  if (
+    n.includes('bench press') ||
+    n.includes('overhead press') ||
+    n.includes('military press') ||
+    n.includes('push press') ||
+    n.includes('barbell row') ||
+    n.includes('pull up') ||
+    n.includes('chin up') ||
+    n.includes('dip') ||
+    n.includes('leg press') ||
+    n.includes('hack squat') ||
+    n.includes('belt squat') ||
+    n.includes('split squat') ||
+    n.includes('lunge') ||
+    n.includes('step up') ||
+    n.includes('good morning') ||
+    n.includes('hip thrust') ||
+    n.includes('carry') ||
+    n.includes('walk') ||
+    n.includes('sled') ||
+    n.includes('prowler') ||
+    n.includes('smith') // Smith squats/deads usually here
+  ) {
+    return 'TIER_2'; // Score 7
+  }
 
-    // TIER 3: Stabilized Compounds / Dumbbells (5 pts)
-    // TIER 3: Stabilized Compounds / Dumbbells (5 pts)
-    // Goal: Dumbbell Press, Dumbbell Row, Machine Press
-    // EXCLUDES: Isolations (Curls, Raises, Extensions) - they fall to TIER 4
-    if (
-        (
-            n.includes("dumbbell") ||
-            n.includes("kettlebell") ||
-            n.includes("machine") ||
-            n.includes("cable") ||
-            n.includes("plate")
-        ) &&
-        !n.includes("curl") &&
-        !n.includes("raise") &&
-        !n.includes("fly") &&
-        !n.includes("extension") &&
-        !n.includes("kickback") &&
-        !n.includes("pressdown") &&
-        !n.includes("pushdown") &&
-        !n.includes("shrug") &&
-        !n.includes("calf") && // Calves are low CNS
-        !n.includes("crunch") && // Abs are low CNS
-        !n.includes("sit up")
-    ) {
-        return "TIER_3"; // Score 5
-    }
+  // TIER 3: Stabilized Compounds / Dumbbells (5 pts)
+  // TIER 3: Stabilized Compounds / Dumbbells (5 pts)
+  // Goal: Dumbbell Press, Dumbbell Row, Machine Press
+  // EXCLUDES: Isolations (Curls, Raises, Extensions) - they fall to TIER 4
+  if (
+    (n.includes('dumbbell') ||
+      n.includes('kettlebell') ||
+      n.includes('machine') ||
+      n.includes('cable') ||
+      n.includes('plate')) &&
+    !n.includes('curl') &&
+    !n.includes('raise') &&
+    !n.includes('fly') &&
+    !n.includes('extension') &&
+    !n.includes('kickback') &&
+    !n.includes('pressdown') &&
+    !n.includes('pushdown') &&
+    !n.includes('shrug') &&
+    !n.includes('calf') && // Calves are low CNS
+    !n.includes('crunch') && // Abs are low CNS
+    !n.includes('sit up')
+  ) {
+    return 'TIER_3'; // Score 5
+  }
 
-    // Explicit catches for Bodyweight Compounds if not caught above
-    if (
-        n.includes("push up") ||
-        n.includes("goblet") ||
-        n.includes("landmine") ||
-        n.includes("lat pulldown")
-    ) {
-        return "TIER_3"; // Score 5
-    }
+  // Explicit catches for Bodyweight Compounds if not caught above
+  if (
+    n.includes('push up') ||
+    n.includes('goblet') ||
+    n.includes('landmine') ||
+    n.includes('lat pulldown')
+  ) {
+    return 'TIER_3'; // Score 5
+  }
 
-    // TIER 4: Isolation / Small Muscle / Cardio (3 pts)
-    return "TIER_4"; // Score 3
+  // TIER 4: Isolation / Small Muscle / Cardio (3 pts)
+  return 'TIER_4'; // Score 3
 }
 
 function getSecondaryMuscles(name: string, primary: string): string[] {
-    const n = name.toLowerCase();
-    const secondaries = new Set<string>();
+  const n = name.toLowerCase();
+  const secondaries = new Set<string>();
 
-    // Push/Pull/Legs base heuristics
-    if (primary === "chest") {
-        secondaries.add("triceps");
-        secondaries.add("shoulders");
-    }
-    if (primary === "shoulders") {
-        secondaries.add("triceps");
-    }
-    if (primary === "upper_back" || primary === "lats") {
-        secondaries.add("biceps");
-    }
-    if (primary === "quadriceps") {
-        secondaries.add("glutes");
-        secondaries.add("hamstrings");
-    }
-    if (primary === "glutes") {
-        secondaries.add("hamstrings");
-        secondaries.add("lower_back");
-    }
-    if (primary === "hamstrings") {
-        secondaries.add("glutes");
-        secondaries.add("lower_back");
-    }
+  // Push/Pull/Legs base heuristics
+  if (primary === 'chest') {
+    secondaries.add('triceps');
+    secondaries.add('shoulders');
+  }
+  if (primary === 'shoulders') {
+    secondaries.add('triceps');
+  }
+  if (primary === 'upper_back' || primary === 'lats') {
+    secondaries.add('biceps');
+  }
+  if (primary === 'quadriceps') {
+    secondaries.add('glutes');
+    secondaries.add('hamstrings');
+  }
+  if (primary === 'glutes') {
+    secondaries.add('hamstrings');
+    secondaries.add('lower_back');
+  }
+  if (primary === 'hamstrings') {
+    secondaries.add('glutes');
+    secondaries.add('lower_back');
+  }
 
-    // Movement specific overrides
-    if (n.includes("squat")) {
-        secondaries.add("glutes");
-        secondaries.add("hamstrings");
-        secondaries.add("lower_back");
-    }
-    if (n.includes("deadlift")) {
-        secondaries.add("lower_back");
-        secondaries.add("hamstrings");
-        secondaries.add("glutes");
-        secondaries.add("forearms");
-        secondaries.add("traps");
-    }
-    if (n.includes("row")) {
-        secondaries.add("biceps");
-        secondaries.add("shoulders");
-    }
-    if (n.includes("pull up") || n.includes("chin up") || n.includes("pulldown")) {
-        secondaries.add("biceps");
-    }
-    if (n.includes("dip")) {
-        secondaries.add("triceps");
-        if (primary !== "chest") secondaries.add("chest");
-    }
-    if (n.includes("press") && !n.includes("leg press")) {
-        secondaries.add("triceps");
-    }
-    if (n.includes("clean") || n.includes("snatch") || n.includes("thruster")) {
-        secondaries.add("full_body");
-        secondaries.add("shoulders");
-        secondaries.add("glutes");
-        secondaries.add("quadriceps");
-    }
+  // Movement specific overrides
+  if (n.includes('squat')) {
+    secondaries.add('glutes');
+    secondaries.add('hamstrings');
+    secondaries.add('lower_back');
+  }
+  if (n.includes('deadlift')) {
+    secondaries.add('lower_back');
+    secondaries.add('hamstrings');
+    secondaries.add('glutes');
+    secondaries.add('forearms');
+    secondaries.add('traps');
+  }
+  if (n.includes('row')) {
+    secondaries.add('biceps');
+    secondaries.add('shoulders');
+  }
+  if (n.includes('pull up') || n.includes('chin up') || n.includes('pulldown')) {
+    secondaries.add('biceps');
+  }
+  if (n.includes('dip')) {
+    secondaries.add('triceps');
+    if (primary !== 'chest') secondaries.add('chest');
+  }
+  if (n.includes('press') && !n.includes('leg press')) {
+    secondaries.add('triceps');
+  }
+  if (n.includes('clean') || n.includes('snatch') || n.includes('thruster')) {
+    secondaries.add('full_body');
+    secondaries.add('shoulders');
+    secondaries.add('glutes');
+    secondaries.add('quadriceps');
+  }
 
-    // Remove primary if it was added as secondary
-    secondaries.delete(primary);
+  // Remove primary if it was added as secondary
+  secondaries.delete(primary);
 
-    return Array.from(secondaries);
+  return Array.from(secondaries);
 }
 
 const TIER_SCORES = {
-    "TIER_1": 9,
-    "TIER_2": 7,
-    "TIER_3": 5,
-    "TIER_4": 3
+  TIER_1: 9,
+  TIER_2: 7,
+  TIER_3: 5,
+  TIER_4: 3,
 };
 
 async function run() {
-    console.log("Enriching Exercise DB with CNS Tiers and Secondary Muscles...");
+  console.log('Enriching Exercise DB with CNS Tiers and Secondary Muscles...');
 
-    const newDb: Record<string, { muscle: string, secondaryMuscles: string[], cnsTier: number }> = {};
-    let counts = { TIER_1: 0, TIER_2: 0, TIER_3: 0, TIER_4: 0 };
+  const newDb: Record<string, { muscle: string; secondaryMuscles: string[]; cnsTier: number }> = {};
+  const counts = { TIER_1: 0, TIER_2: 0, TIER_3: 0, TIER_4: 0 };
 
-    for (const [name, muscle] of Object.entries(HEVY_EXERCISE_MAP)) {
-        const tier = getCnsTier(name);
-        const score = TIER_SCORES[tier];
-        const secondary = getSecondaryMuscles(name, muscle);
+  for (const [name, muscle] of Object.entries(HEVY_EXERCISE_MAP)) {
+    const tier = getCnsTier(name);
+    const score = TIER_SCORES[tier];
+    const secondary = getSecondaryMuscles(name, muscle);
 
-        newDb[name] = {
-            muscle: muscle,
-            secondaryMuscles: secondary,
-            cnsTier: score
-        };
+    newDb[name] = {
+      muscle: muscle,
+      secondaryMuscles: secondary,
+      cnsTier: score,
+    };
 
-        counts[tier]++;
-    }
+    counts[tier]++;
+  }
 
-    console.log("Stats:", counts);
+  console.log('Stats:', counts);
 
-    const content = `
+  const content = `
 // Auto-generated by src/scripts/enrich_exercise_db.ts
 // Maps Hevy Exercise Names to Muscle Group, Secondaries, and Base CNS Cost (1-10)
 
@@ -205,9 +205,9 @@ export interface ExerciseAttributes {
 export const EXERCISE_DB: Record<string, ExerciseAttributes> = ${JSON.stringify(newDb, null, 2)};
     `.trim();
 
-    const outputPath = path.join(process.cwd(), "src/data/exerciseDb.ts");
-    fs.writeFileSync(outputPath, content);
-    console.log(`Written to ${outputPath}`);
+  const outputPath = path.join(process.cwd(), 'src/data/exerciseDb.ts');
+  fs.writeFileSync(outputPath, content);
+  console.log(`Written to ${outputPath}`);
 }
 
 run();

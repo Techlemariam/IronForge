@@ -1,23 +1,17 @@
- 
-import React, { useMemo, useState, useRef, useEffect } from "react";
-import { SKILL_TREE, SESSIONS } from "../../data/static";
 import {
-  SkillNode,
-  SkillStatus,
-  ExerciseLogic,
-  IntervalsWellness,
-} from "../../types";
-import {
-  Lock,
-  Zap,
   ArrowLeft,
-  X,
-  TrendingUp,
+  Lock,
   Scroll,
-  Wind,
   Sparkles,
   TrendingDown,
-} from "lucide-react";
+  TrendingUp,
+  Wind,
+  X,
+  Zap,
+} from 'lucide-react';
+import React, { useMemo, useState, useRef, useEffect } from 'react';
+import { SESSIONS, SKILL_TREE } from '../../data/static';
+import { ExerciseLogic, type IntervalsWellness, type SkillNode, SkillStatus } from '../../types';
 
 interface SkillTreeProps {
   onExit: () => void;
@@ -25,11 +19,7 @@ interface SkillTreeProps {
   wellness: IntervalsWellness | null;
 }
 
-const SkillTree: React.FC<SkillTreeProps> = ({
-  onExit,
-  unlockedIds,
-  wellness,
-}) => {
+const SkillTree: React.FC<SkillTreeProps> = ({ onExit, unlockedIds, wellness }) => {
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
   const [view, setView] = useState({ x: 0, y: 0, scale: 1 });
   const [isDragging, setIsDragging] = useState(false);
@@ -41,8 +31,7 @@ const SkillTree: React.FC<SkillTreeProps> = ({
     if (!wellness) return { cost: node.cost, modifier: 0 };
 
     let modifier = 0;
-    const isStressHigh =
-      (wellness.sleepScore || 100) < 60 || (wellness.hrv && wellness.hrv < 40);
+    const isStressHigh = (wellness.sleepScore || 100) < 60 || (wellness.hrv && wellness.hrv < 40);
     const isRested = (wellness.bodyBattery || 0) > 80;
 
     // Logic:
@@ -50,10 +39,10 @@ const SkillTree: React.FC<SkillTreeProps> = ({
     // If Rested: Strength costs LESS (encourage intensity)
 
     if (isStressHigh) {
-      if (node.category === "endurance") modifier = 0.2; // +20%
-      if (node.category === "core" || node.category === "pull") modifier = -0.1; // -10% (Easier work)
+      if (node.category === 'endurance') modifier = 0.2; // +20%
+      if (node.category === 'core' || node.category === 'pull') modifier = -0.1; // -10% (Easier work)
     } else if (isRested) {
-      if (node.category === "push" || node.category === "legs") modifier = -0.1; // -10% (Go heavy)
+      if (node.category === 'push' || node.category === 'legs') modifier = -0.1; // -10% (Go heavy)
     }
 
     const newCost = Math.round(node.cost * (1 + modifier));
@@ -62,14 +51,14 @@ const SkillTree: React.FC<SkillTreeProps> = ({
 
   // --- DATA LOGIC ---
   const checkRequirement = React.useCallback(
-    (req: SkillNode["requirements"][0]): boolean => {
+    (req: SkillNode['requirements'][0]): boolean => {
       // 1. Check Achievements
-      if (req.type === "achievement_count") {
+      if (req.type === 'achievement_count') {
         return unlockedIds.size >= req.value;
       }
 
       // 2. Check Physical Stats (1RM) from Static Session Data
-      if (req.type === "1rm_weight") {
+      if (req.type === '1rm_weight') {
         let maxTM = 0;
         SESSIONS.forEach((session) => {
           session.blocks.forEach((block) => {
@@ -84,15 +73,13 @@ const SkillTree: React.FC<SkillTreeProps> = ({
             });
           });
         });
-        return req.comparison === "gte"
-          ? maxTM >= req.value
-          : maxTM <= req.value;
+        return req.comparison === 'gte' ? maxTM >= req.value : maxTM <= req.value;
       }
 
-      if (req.exercise_id === "any") return true;
+      if (req.exercise_id === 'any') return true;
       return false;
     },
-    [unlockedIds],
+    [unlockedIds]
   );
 
   const nodesWithStatus = useMemo(() => {
@@ -100,13 +87,8 @@ const SkillTree: React.FC<SkillTreeProps> = ({
 
     // 1. Check Requirements
     SKILL_TREE.forEach((node) => {
-      const allReqsMet = node.requirements.every((req) =>
-        checkRequirement(req),
-      );
-      statusMap.set(
-        node.id,
-        allReqsMet ? SkillStatus.MASTERED : SkillStatus.LOCKED,
-      );
+      const allReqsMet = node.requirements.every((req) => checkRequirement(req));
+      statusMap.set(node.id, allReqsMet ? SkillStatus.MASTERED : SkillStatus.LOCKED);
     });
 
     // 2. Check Topology (Parent Check)
@@ -125,16 +107,13 @@ const SkillTree: React.FC<SkillTreeProps> = ({
         return p.requirements.every((r) => checkRequirement(r));
       });
 
-      if (reqsMet && anyParentMastered)
-        return { ...node, status: SkillStatus.MASTERED };
+      if (reqsMet && anyParentMastered) return { ...node, status: SkillStatus.MASTERED };
       if (anyParentMastered) return { ...node, status: SkillStatus.UNLOCKED };
       return { ...node, status: SkillStatus.LOCKED };
     });
   }, [checkRequirement]);
 
-  const totalMastery = nodesWithStatus.filter(
-    (n) => n.status === SkillStatus.MASTERED,
-  ).length;
+  const totalMastery = nodesWithStatus.filter((n) => n.status === SkillStatus.MASTERED).length;
 
   // --- INTERACTION ---
   const handleWheel = (e: React.WheelEvent) => {
@@ -177,7 +156,7 @@ const SkillTree: React.FC<SkillTreeProps> = ({
 
   const selectedNode = useMemo(
     () => nodesWithStatus.find((n) => n.id === selectedNodeId),
-    [selectedNodeId, nodesWithStatus],
+    [selectedNodeId, nodesWithStatus]
   );
 
   return (
@@ -238,7 +217,7 @@ const SkillTree: React.FC<SkillTreeProps> = ({
                 if (!parent) return null;
 
                 const isActive = parent.status === SkillStatus.MASTERED;
-                const isEndurance = node.currency === "kinetic_shard";
+                const isEndurance = node.currency === 'kinetic_shard';
 
                 const startX = parent.x + 32;
                 const startY = parent.y + 32;
@@ -248,7 +227,7 @@ const SkillTree: React.FC<SkillTreeProps> = ({
                 // Bezier logic (copied from previous)
                 const distY = Math.abs(endY - startY);
                 const distX = Math.abs(endX - startX);
-                let d = "";
+                let d = '';
                 if (distY > distX) {
                   const cpY = startY + (endY - startY) * 0.5;
                   d = `M ${startX} ${startY} C ${startX} ${cpY}, ${endX} ${cpY}, ${endX} ${endY}`;
@@ -257,8 +236,8 @@ const SkillTree: React.FC<SkillTreeProps> = ({
                   d = `M ${startX} ${startY} C ${cpX} ${startY}, ${cpX} ${endY}, ${endX} ${endY}`;
                 }
 
-                const activeColor = isEndurance ? "#06b6d4" : "var(--color-gold-bright)";
-                const lockedColor = "#333";
+                const activeColor = isEndurance ? '#06b6d4' : 'var(--color-gold-bright)';
+                const lockedColor = '#333';
 
                 return (
                   <path
@@ -303,36 +282,26 @@ const SkillTree: React.FC<SkillTreeProps> = ({
               <div
                 className={`w-10 h-10 rounded border flex items-center justify-center ${
                   selectedNode.status === SkillStatus.MASTERED
-                    ? selectedNode.currency === "kinetic_shard"
-                      ? "bg-cyan-900/20 border-cyan-500 text-cyan-500"
-                      : "bg-yellow-900/20 border-yellow-500 text-yellow-500"
-                    : "bg-zinc-900 border-zinc-700 text-zinc-600"
+                    ? selectedNode.currency === 'kinetic_shard'
+                      ? 'bg-cyan-900/20 border-cyan-500 text-cyan-500'
+                      : 'bg-yellow-900/20 border-yellow-500 text-yellow-500'
+                    : 'bg-zinc-900 border-zinc-700 text-zinc-600'
                 }`}
               >
-                {selectedNode.category === "push" && (
-                  <Zap className="w-5 h-5" />
-                )}
-                {selectedNode.category === "legs" && (
-                  <TrendingUp className="w-5 h-5" />
-                )}
-                {selectedNode.category === "pull" && (
-                  <Lock className="w-5 h-5" />
-                )}
-                {selectedNode.category === "core" && (
-                  <Scroll className="w-5 h-5" />
-                )}
-                {selectedNode.category === "endurance" && (
-                  <Wind className="w-5 h-5" />
-                )}
+                {selectedNode.category === 'push' && <Zap className="w-5 h-5" />}
+                {selectedNode.category === 'legs' && <TrendingUp className="w-5 h-5" />}
+                {selectedNode.category === 'pull' && <Lock className="w-5 h-5" />}
+                {selectedNode.category === 'core' && <Scroll className="w-5 h-5" />}
+                {selectedNode.category === 'endurance' && <Wind className="w-5 h-5" />}
               </div>
               <div>
                 <h3
                   className={`font-serif font-bold text-lg leading-none ${
                     selectedNode.status === SkillStatus.MASTERED
-                      ? "text-white"
+                      ? 'text-white'
                       : selectedNode.status === SkillStatus.UNLOCKED
-                        ? "text-zinc-300"
-                        : "text-zinc-600"
+                        ? 'text-zinc-300'
+                        : 'text-zinc-600'
                   }`}
                 >
                   {selectedNode.title}
@@ -366,25 +335,20 @@ const SkillTree: React.FC<SkillTreeProps> = ({
                   </span>
                   {hasModifier && (
                     <span
-                      className={`text-[10px] font-bold ${modifier > 0 ? "text-red-400" : "text-green-400"}`}
+                      className={`text-[10px] font-bold ${modifier > 0 ? 'text-red-400' : 'text-green-400'}`}
                     >
-                      {modifier > 0 ? "Stress Penalty" : "Optimal State"}
+                      {modifier > 0 ? 'Stress Penalty' : 'Optimal State'}
                     </span>
                   )}
                 </div>
                 <div className="flex items-center gap-2">
                   {hasModifier && (
-                    <span className="text-zinc-600 line-through text-xs">
-                      {selectedNode.cost}
-                    </span>
+                    <span className="text-zinc-600 line-through text-xs">{selectedNode.cost}</span>
                   )}
                   <div
-                    className={`text-sm font-bold flex items-center gap-1 ${selectedNode.currency === "kinetic_shard" ? "text-cyan-400" : "text-[var(--color-gold-bright)]"}`}
+                    className={`text-sm font-bold flex items-center gap-1 ${selectedNode.currency === 'kinetic_shard' ? 'text-cyan-400' : 'text-[var(--color-gold-bright)]'}`}
                   >
-                    {cost}{" "}
-                    {selectedNode.currency === "kinetic_shard"
-                      ? "Shards"
-                      : "TP"}
+                    {cost} {selectedNode.currency === 'kinetic_shard' ? 'Shards' : 'TP'}
                     {hasModifier &&
                       (modifier > 0 ? (
                         <TrendingUp className="w-3 h-3 text-red-400" />
@@ -395,7 +359,6 @@ const SkillTree: React.FC<SkillTreeProps> = ({
                 </div>
               </div>
             );
-             
           })()}
         </div>
       )}
@@ -408,40 +371,39 @@ const TalentNode: React.FC<{
   node: SkillNode & { status: SkillStatus };
   isSelected: boolean;
 }> = ({ node, isSelected }) => {
-  const isEndurance = node.currency === "kinetic_shard";
+  const isEndurance = node.currency === 'kinetic_shard';
   // Borders based on status & type
-  let borderColor = "border-[#333] bg-[#000]";
-  let shadow = "";
-  let iconColor = "text-zinc-700";
+  let borderColor = 'border-[#333] bg-[#000]';
+  let shadow = '';
+  let iconColor = 'text-zinc-700';
 
   if (node.status === SkillStatus.MASTERED) {
     borderColor = isEndurance
-      ? "border-cyan-400 bg-cyan-950/30"
-      : "border-[var(--color-gold-bright)] bg-yellow-950/30";
+      ? 'border-cyan-400 bg-cyan-950/30'
+      : 'border-[var(--color-gold-bright)] bg-yellow-950/30';
     shadow = isEndurance
-      ? "shadow-[0_0_20px_rgba(34,211,238,0.4)]"
-      : "shadow-[0_0_20px_rgba(255,215,0,0.4)]";
-    iconColor = isEndurance ? "text-cyan-400" : "text-[var(--color-gold-bright)]";
+      ? 'shadow-[0_0_20px_rgba(34,211,238,0.4)]'
+      : 'shadow-[0_0_20px_rgba(255,215,0,0.4)]';
+    iconColor = isEndurance ? 'text-cyan-400' : 'text-[var(--color-gold-bright)]';
   } else if (node.status === SkillStatus.UNLOCKED) {
-    borderColor = "border-zinc-500 bg-zinc-900";
-    shadow = "shadow-[0_0_10px_rgba(255,255,255,0.1)]";
-    iconColor = "text-zinc-300";
+    borderColor = 'border-zinc-500 bg-zinc-900';
+    shadow = 'shadow-[0_0_10px_rgba(255,255,255,0.1)]';
+    iconColor = 'text-zinc-300';
   }
 
   return (
     <div
-      className={`w-16 h-16 border-2 rounded-full ${borderColor} ${shadow} ${isSelected ? "scale-125 z-20 ring-2 ring-white" : "z-10"} transition-all duration-300 cursor-pointer flex items-center justify-center relative group`}
+      className={`w-16 h-16 border-2 rounded-full ${borderColor} ${shadow} ${isSelected ? 'scale-125 z-20 ring-2 ring-white' : 'z-10'} transition-all duration-300 cursor-pointer flex items-center justify-center relative group`}
     >
       <div className={`${iconColor} transition-colors duration-300`}>
-        {node.category === "push" && <Zap className="w-8 h-8" />}
-        {node.category === "legs" && <TrendingUp className="w-8 h-8" />}
-        {node.category === "pull" && <Lock className="w-8 h-8" />}
-        {node.category === "core" && <Scroll className="w-8 h-8" />}
-        {node.category === "endurance" && <Wind className="w-8 h-8" />}
+        {node.category === 'push' && <Zap className="w-8 h-8" />}
+        {node.category === 'legs' && <TrendingUp className="w-8 h-8" />}
+        {node.category === 'pull' && <Lock className="w-8 h-8" />}
+        {node.category === 'core' && <Scroll className="w-8 h-8" />}
+        {node.category === 'endurance' && <Wind className="w-8 h-8" />}
       </div>
     </div>
   );
 };
 
 export default SkillTree;
-

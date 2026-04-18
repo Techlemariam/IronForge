@@ -1,27 +1,15 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import { TrainingPath, LayerLevel, WorkoutDefinition } from "@/types/training";
-import {
-  MOBILITY_LAYER_BONUSES,
-  RECOVERY_LAYER_BONUSES,
-  PATH_INFO,
-} from "@/data/builds";
-import { PathSelector } from "@/components/PathSelector";
-import { PassiveLayerProgress } from "@/components/PassiveLayerProgress";
-import {
-  ArrowLeft,
-  Activity,
-  Zap,
-  Book,
-  Dumbbell,
-  Heart,
-  Timer,
-} from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
-import { WORKOUT_LIBRARY } from "@/data/workouts";
-import { cn } from "@/lib/utils";
-import { HeartRateZoneChart } from "@/features/bio/components/HeartRateZoneChart";
+import { PassiveLayerProgress } from '@/components/PassiveLayerProgress';
+import { PathSelector } from '@/components/PathSelector';
+import { MOBILITY_LAYER_BONUSES, PATH_INFO, RECOVERY_LAYER_BONUSES } from '@/data/builds';
+import { WORKOUT_LIBRARY } from '@/data/workouts';
+import { HeartRateZoneChart } from '@/features/bio/components/HeartRateZoneChart';
+import { cn } from '@/lib/utils';
+import type { LayerLevel, TrainingPath, WorkoutDefinition } from '@/types/training';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Activity, ArrowLeft, Book, Dumbbell, Heart, Timer, Zap } from 'lucide-react';
+import React, { useState } from 'react';
 
 interface TrainingCenterProps {
   activePath: TrainingPath;
@@ -41,7 +29,7 @@ export const TrainingCenter: React.FC<TrainingCenterProps> = ({
   onImportRoutines,
 }) => {
   const pathInfo = PATH_INFO[activePath];
-  const pathColor = pathInfo.color.split("-")[1];
+  const pathColor = pathInfo.color.split('-')[1];
 
   // Data Fetching for Zones
   const [zoneActivities, setZoneActivities] = useState<any[]>([]);
@@ -56,22 +44,18 @@ export const TrainingCenter: React.FC<TrainingCenterProps> = ({
           // or assume actions are passed as props.
           // For now, let's assume we can call the actions if they are 'use server' imported at top (which works in Nextjs 14+)
           // But wait, "TrainingCenter" is 'use client'. We can import server actions.
-          import("@/actions/integrations/intervals").then((mod) =>
+          import('@/actions/integrations/intervals').then((mod) =>
             mod.getActivitiesAction(
-              new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
-                .toISOString()
-                .split("T")[0], // Last 7 days
-              new Date().toISOString().split("T")[0],
-            ),
+              new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // Last 7 days
+              new Date().toISOString().split('T')[0]
+            )
           ),
-          import("@/actions/integrations/intervals").then((mod) =>
-            mod.getAthleteSettingsAction(),
-          ),
+          import('@/actions/integrations/intervals').then((mod) => mod.getAthleteSettingsAction()),
         ]);
         setZoneActivities(acts);
         setAthleteSettings(settings);
       } catch (error) {
-        console.error("Failed to load intervals data", error);
+        console.error('Failed to load intervals data', error);
       }
     };
     loadData();
@@ -80,12 +64,8 @@ export const TrainingCenter: React.FC<TrainingCenterProps> = ({
   return (
     <div className="w-full max-w-6xl mx-auto p-4 md:p-6 space-y-8 animate-fade-in pb-20">
       {/* Glassmorphic Header */}
-      <div
-        className={`relative overflow-hidden rounded-2xl border border-white/10 p-8 shadow-2xl`}
-      >
-        <div
-          className={`absolute inset-0 bg-${pathColor}-500/10 backdrop-blur-sm z-0`}
-        />
+      <div className={`relative overflow-hidden rounded-2xl border border-white/10 p-8 shadow-2xl`}>
+        <div className={`absolute inset-0 bg-${pathColor}-500/10 backdrop-blur-sm z-0`} />
         <div
           className={`absolute -right-20 -top-20 w-64 h-64 bg-${pathColor}-500/20 blur-[100px] rounded-full`}
         />
@@ -115,17 +95,13 @@ export const TrainingCenter: React.FC<TrainingCenterProps> = ({
 
             <div className="flex gap-4">
               <div className="bg-black/40 backdrop-blur-md p-3 rounded-xl border border-white/5 text-center min-w-24">
-                <div className="text-xs text-zinc-500 uppercase font-bold">
-                  Strength
-                </div>
+                <div className="text-xs text-zinc-500 uppercase font-bold">Strength</div>
                 <div className={`text-xl font-black text-${pathColor}-400`}>
                   {pathInfo.strengthLevel}
                 </div>
               </div>
               <div className="bg-black/40 backdrop-blur-md p-3 rounded-xl border border-white/5 text-center min-w-24">
-                <div className="text-xs text-zinc-500 uppercase font-bold">
-                  Cardio
-                </div>
+                <div className="text-xs text-zinc-500 uppercase font-bold">Cardio</div>
                 <div className={`text-xl font-black text-${pathColor}-400`}>
                   {pathInfo.cardioLevel}
                 </div>
@@ -136,9 +112,7 @@ export const TrainingCenter: React.FC<TrainingCenterProps> = ({
                   aria-label="Import routines from Hevy"
                   className="bg-magma/20 backdrop-blur-md p-3 rounded-xl border border-magma/50 text-center min-w-24 hover:bg-magma/30 transition-colors"
                 >
-                  <div className="text-xs text-magma uppercase font-bold">
-                    Hevy
-                  </div>
+                  <div className="text-xs text-magma uppercase font-bold">Hevy</div>
                   <div className="text-sm font-black text-white">Import</div>
                 </button>
               )}
@@ -156,10 +130,7 @@ export const TrainingCenter: React.FC<TrainingCenterProps> = ({
 
         {/* Heart Rate Zones (New) */}
         <section>
-          <HeartRateZoneChart
-            activities={zoneActivities}
-            settings={athleteSettings}
-          />
+          <HeartRateZoneChart activities={zoneActivities} settings={athleteSettings} />
         </section>
 
         {/* Passive Layers (Glass) */}
@@ -169,8 +140,8 @@ export const TrainingCenter: React.FC<TrainingCenterProps> = ({
             <PassiveLayerProgress
               mobilityLevel={mobilityLevel}
               recoveryLevel={recoveryLevel}
-              mobilitySessionsCompleted={mobilityLevel === "NONE" ? 2 : 15}
-              recoverySessionsCompleted={recoveryLevel === "NONE" ? 5 : 45}
+              mobilitySessionsCompleted={mobilityLevel === 'NONE' ? 2 : 15}
+              recoverySessionsCompleted={recoveryLevel === 'NONE' ? 5 : 45}
               mobilityBonuses={MOBILITY_LAYER_BONUSES[mobilityLevel]}
               recoveryBonuses={RECOVERY_LAYER_BONUSES[recoveryLevel]}
             />
@@ -186,39 +157,35 @@ export const TrainingCenter: React.FC<TrainingCenterProps> = ({
 
 // --- CODEX 2.0 COMPONENTS ---
 
-type Tab = "FOR_YOU" | "STRENGTH" | "CARDIO" | "RECOVERY";
+type Tab = 'FOR_YOU' | 'STRENGTH' | 'CARDIO' | 'RECOVERY';
 
 const CodexTabs: React.FC<{
   activePath: TrainingPath;
   onSelectWorkout: (w: WorkoutDefinition) => void;
 }> = ({ activePath, onSelectWorkout }) => {
-  const [activeTab, setActiveTab] = useState<Tab>("FOR_YOU");
+  const [activeTab, setActiveTab] = useState<Tab>('FOR_YOU');
 
   // Filter Logic
   const recommended = WORKOUT_LIBRARY.filter((w) =>
-    (w.recommendedPaths || []).includes(activePath),
+    (w.recommendedPaths || []).includes(activePath)
   );
-  const strength = WORKOUT_LIBRARY.filter(
-    (w) => w.type !== "RUN" && w.type !== "BIKE",
-  );
+  const strength = WORKOUT_LIBRARY.filter((w) => w.type !== 'RUN' && w.type !== 'BIKE');
   const cardio = WORKOUT_LIBRARY.filter(
-    (w) =>
-      (w.type === "RUN" || w.type === "BIKE") &&
-      !w.name.toLowerCase().includes("recovery"),
+    (w) => (w.type === 'RUN' || w.type === 'BIKE') && !w.name.toLowerCase().includes('recovery')
   );
   const recovery = WORKOUT_LIBRARY.filter(
-    (w) => w.name.toLowerCase().includes("recovery") || w.intensity === "LOW",
+    (w) => w.name.toLowerCase().includes('recovery') || w.intensity === 'LOW'
   );
 
   const getWorkoutsForTab = () => {
     switch (activeTab) {
-      case "FOR_YOU":
+      case 'FOR_YOU':
         return recommended;
-      case "STRENGTH":
+      case 'STRENGTH':
         return strength;
-      case "CARDIO":
+      case 'CARDIO':
         return cardio;
-      case "RECOVERY":
+      case 'RECOVERY':
         return recovery;
       default:
         return [];
@@ -235,37 +202,35 @@ const CodexTabs: React.FC<{
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-2">
           <Book className="w-6 h-6 text-magma" />
-          <h2 className="text-xl font-bold uppercase text-white tracking-wider">
-            80/20 Codex
-          </h2>
+          <h2 className="text-xl font-bold uppercase text-white tracking-wider">80/20 Codex</h2>
         </div>
 
         {/* Tabs */}
         <div className="flex p-1 bg-zinc-900/80 backdrop-blur-md rounded-lg border border-white/5">
           <TabButton
-            active={activeTab === "FOR_YOU"}
-            onClick={() => setActiveTab("FOR_YOU")}
+            active={activeTab === 'FOR_YOU'}
+            onClick={() => setActiveTab('FOR_YOU')}
             icon={<Zap className="w-3 h-3" />}
             label="For You"
             testId="tab-for-you"
           />
           <TabButton
-            active={activeTab === "STRENGTH"}
-            onClick={() => setActiveTab("STRENGTH")}
+            active={activeTab === 'STRENGTH'}
+            onClick={() => setActiveTab('STRENGTH')}
             icon={<Dumbbell className="w-3 h-3" />}
             label="Strength"
             testId="tab-strength"
           />
           <TabButton
-            active={activeTab === "CARDIO"}
-            onClick={() => setActiveTab("CARDIO")}
+            active={activeTab === 'CARDIO'}
+            onClick={() => setActiveTab('CARDIO')}
             icon={<Heart className="w-3 h-3" />}
             label="Cardio"
             testId="tab-cardio"
           />
           <TabButton
-            active={activeTab === "RECOVERY"}
-            onClick={() => setActiveTab("RECOVERY")}
+            active={activeTab === 'RECOVERY'}
+            onClick={() => setActiveTab('RECOVERY')}
             icon={<Activity className="w-3 h-3" />}
             label="Recovery"
             testId="tab-recovery"
@@ -282,7 +247,7 @@ const CodexTabs: React.FC<{
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
         >
           {getWorkoutsForTab().map((workout) =>
-            activeTab === "FOR_YOU" ? (
+            activeTab === 'FOR_YOU' ? (
               <HeroWorkoutCard
                 key={workout.id}
                 workout={workout}
@@ -296,7 +261,7 @@ const CodexTabs: React.FC<{
                 onClick={() => onSelectWorkout(workout)}
                 testId={`workout-card-${workout.id}`}
               />
-            ),
+            )
           )}
           {getWorkoutsForTab().length === 0 && (
             <div className="col-span-full text-center py-20 text-zinc-500 italic">
@@ -321,10 +286,10 @@ const TabButton: React.FC<{
     data-testid={testId}
     aria-label={`${label} Tab`}
     className={cn(
-      "flex items-center gap-2 px-4 py-2 rounded-md text-xs font-bold uppercase transition-all",
+      'flex items-center gap-2 px-4 py-2 rounded-md text-xs font-bold uppercase transition-all',
       active
-        ? "bg-magma text-black shadow-lg shadow-magma/20"
-        : "text-zinc-500 hover:text-zinc-300 hover:bg-white/5",
+        ? 'bg-magma text-black shadow-lg shadow-magma/20'
+        : 'text-zinc-500 hover:text-zinc-300 hover:bg-white/5'
     )}
   >
     {icon}
@@ -338,9 +303,9 @@ const HeroWorkoutCard: React.FC<{
   testId?: string;
 }> = ({ workout, onClick, testId }) => {
   const intensityColor = {
-    LOW: "text-blue-400",
-    MEDIUM: "text-yellow-400",
-    HIGH: "text-red-500",
+    LOW: 'text-blue-400',
+    MEDIUM: 'text-yellow-400',
+    HIGH: 'text-red-500',
   }[workout.intensity];
 
   return (
@@ -348,14 +313,14 @@ const HeroWorkoutCard: React.FC<{
       layout
       variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }}
       onClick={() => {
-        console.log("[HeroWorkoutCard] Clicked!", workout.name);
+        console.log('[HeroWorkoutCard] Clicked!', workout.name);
         onClick();
       }}
       role="button"
       tabIndex={0}
       aria-label={`Start ${workout.name} workout`}
       onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
+        if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
           onClick();
         }
@@ -375,9 +340,7 @@ const HeroWorkoutCard: React.FC<{
           {workout.rewards && (
             <div className="flex items-center gap-1 bg-yellow-500/20 px-2 py-1 rounded border border-yellow-500/30">
               <Zap className="w-3 h-3 text-yellow-500" />
-              <span className="text-[10px] font-bold text-yellow-400">
-                {workout.rewards.xp} XP
-              </span>
+              <span className="text-[10px] font-bold text-yellow-400">{workout.rewards.xp} XP</span>
             </div>
           )}
         </div>
@@ -385,9 +348,7 @@ const HeroWorkoutCard: React.FC<{
         <h3 className="text-2xl font-black italic text-white mb-2 leading-tight group-hover:text-magma transition-colors">
           {workout.name}
         </h3>
-        <p className="text-zinc-400 text-sm mb-6 line-clamp-3">
-          {workout.description}
-        </p>
+        <p className="text-zinc-400 text-sm mb-6 line-clamp-3">{workout.description}</p>
 
         <div className="mt-auto flex items-center justify-between border-t border-white/5 pt-4">
           <div className="flex items-center gap-4 text-zinc-500 text-xs font-bold uppercase">
@@ -426,7 +387,7 @@ const CompactWorkoutCard: React.FC<{
       tabIndex={0}
       aria-label={`Start ${workout.name} workout`}
       onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
+        if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
           onClick();
         }
@@ -459,4 +420,3 @@ const CompactWorkoutCard: React.FC<{
     </motion.div>
   );
 };
-

@@ -1,17 +1,10 @@
-import React, { useState, useEffect } from "react";
-import {
-  Cloud,
-  X,
-  Shield,
-  RefreshCw,
-  CheckCircle2,
-  Server,
-  Wifi,
-} from "lucide-react";
-import { ValhallaPayload } from "@/types";
-import { ValhallaService } from "@/services/valhalla";
-import { playSound } from "@/utils";
-import { useSkills } from "@/context/SkillContext";
+import { useSkills } from '@/context/SkillContext';
+import { ValhallaService } from '@/services/valhalla';
+import type { ValhallaPayload } from '@/types';
+import { playSound } from '@/utils';
+import { CheckCircle2, Cloud, RefreshCw, Server, Shield, Wifi, X } from 'lucide-react';
+import type React from 'react';
+import { useEffect, useState } from 'react';
 
 interface ValhallaGateProps {
   isOpen: boolean;
@@ -28,10 +21,8 @@ const ValhallaGate: React.FC<ValhallaGateProps> = ({
   onBind,
   syncPayload,
 }) => {
-  const [step, setStep] = useState<"BIND" | "IDLE" | "SYNCING" | "SUCCESS">(
-    "BIND",
-  );
-  const [inputName, setInputName] = useState(heroName || "");
+  const [step, setStep] = useState<'BIND' | 'IDLE' | 'SYNCING' | 'SUCCESS'>('BIND');
+  const [inputName, setInputName] = useState(heroName || '');
   const [logs, setLogs] = useState<string[]>([]);
 
   // Integrate Skills Context
@@ -40,17 +31,17 @@ const ValhallaGate: React.FC<ValhallaGateProps> = ({
   // Construct final payload with skills
   const finalPayload: ValhallaPayload | null = syncPayload
     ? {
-      ...syncPayload,
-      skills: Array.from(purchasedSkillIds),
-    }
+        ...syncPayload,
+        skills: Array.from(purchasedSkillIds),
+      }
     : null;
 
   useEffect(() => {
     if (isOpen) {
       if (heroName) {
-        setStep("IDLE");
+        setStep('IDLE');
       } else {
-        setStep("BIND");
+        setStep('BIND');
       }
       setLogs([]);
     }
@@ -60,13 +51,13 @@ const ValhallaGate: React.FC<ValhallaGateProps> = ({
 
   const handleBind = async () => {
     if (!inputName) return;
-    setStep("SYNCING");
-    addLog("Initiating Soul Bind Protocol...");
+    setStep('SYNCING');
+    addLog('Initiating Soul Bind Protocol...');
 
     const res = await ValhallaService.bindSoul(inputName);
 
     if (res.success) {
-      playSound("quest_accept");
+      playSound('quest_accept');
       addLog(`Identity Confirmed. Welcome, ${inputName}.`);
       addLog(`Valhalla ID Assigned: ${res.id}`);
       onBind(inputName, res.id);
@@ -76,17 +67,17 @@ const ValhallaGate: React.FC<ValhallaGateProps> = ({
 
   const handleSync = async () => {
     if (!finalPayload) return;
-    setStep("SYNCING");
-    playSound("quest_accept");
-    addLog("Opening Bifrost Gate...");
-    addLog("Compressing Soul Data...");
+    setStep('SYNCING');
+    playSound('quest_accept');
+    addLog('Opening Bifrost Gate...');
+    addLog('Compressing Soul Data...');
 
     const res = await ValhallaService.engraveRecords(finalPayload);
 
     if (res.success) {
-      playSound("achievement");
-      addLog("Success: " + res.message);
-      setStep("SUCCESS");
+      playSound('achievement');
+      addLog('Success: ' + res.message);
+      setStep('SUCCESS');
       setTimeout(() => {
         onClose();
       }, 2000);
@@ -106,18 +97,11 @@ const ValhallaGate: React.FC<ValhallaGateProps> = ({
           <div>
             <div className="flex items-center gap-2 text-cyan-400 mb-1">
               <Cloud className="w-6 h-6" />
-              <h2 className="font-bold uppercase tracking-[0.2em] text-sm">
-                Project Valhalla
-              </h2>
+              <h2 className="font-bold uppercase tracking-[0.2em] text-sm">Project Valhalla</h2>
             </div>
-            <p className="text-cyan-700 text-[10px] font-sans">
-              IronForge Cloud Services (v1.0)
-            </p>
+            <p className="text-cyan-700 text-[10px] font-sans">IronForge Cloud Services (v1.0)</p>
           </div>
-          <button
-            onClick={onClose}
-            className="text-cyan-800 hover:text-cyan-400 transition-colors"
-          >
+          <button onClick={onClose} className="text-cyan-800 hover:text-cyan-400 transition-colors">
             <X className="w-6 h-6" />
           </button>
         </div>
@@ -125,7 +109,7 @@ const ValhallaGate: React.FC<ValhallaGateProps> = ({
         {/* Content */}
         <div className="p-8 space-y-6 relative z-10">
           {/* STEP 1: BIND SOUL (Login) */}
-          {step === "BIND" && (
+          {step === 'BIND' && (
             <div className="space-y-4 animate-slide-up">
               <div className="text-center">
                 <div className="w-20 h-20 bg-cyan-900/20 border border-cyan-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-[0_0_20px_rgba(6,182,212,0.3)] animate-pulse">
@@ -135,8 +119,7 @@ const ValhallaGate: React.FC<ValhallaGateProps> = ({
                   Bind Your Soul
                 </h3>
                 <p className="text-cyan-500/60 text-xs font-sans max-w-xs mx-auto">
-                  Create a permanent link to the Hall of Records to enable
-                  cross-device progression.
+                  Create a permanent link to the Hall of Records to enable cross-device progression.
                 </p>
               </div>
               <div className="space-y-2">
@@ -161,7 +144,7 @@ const ValhallaGate: React.FC<ValhallaGateProps> = ({
           )}
 
           {/* STEP 2: DASHBOARD (Sync) */}
-          {step === "IDLE" && (
+          {step === 'IDLE' && (
             <div className="space-y-6 animate-slide-up">
               <div className="flex items-center justify-between bg-cyan-950/20 p-4 rounded border border-cyan-900/30">
                 <div className="flex items-center gap-3">
@@ -169,18 +152,14 @@ const ValhallaGate: React.FC<ValhallaGateProps> = ({
                     {inputName.charAt(0)}
                   </div>
                   <div>
-                    <div className="text-cyan-100 font-bold uppercase text-sm">
-                      {inputName}
-                    </div>
+                    <div className="text-cyan-100 font-bold uppercase text-sm">{inputName}</div>
                     <div className="text-cyan-700 text-[10px] flex items-center gap-1">
                       <Wifi className="w-3 h-3" /> Connected
                     </div>
                   </div>
                 </div>
                 <div className="text-right">
-                  <div className="text-[10px] text-cyan-600 uppercase">
-                    Cloud Status
-                  </div>
+                  <div className="text-[10px] text-cyan-600 uppercase">Cloud Status</div>
                   <div className="text-cyan-400 font-bold text-xs">Ready</div>
                 </div>
               </div>
@@ -191,28 +170,18 @@ const ValhallaGate: React.FC<ValhallaGateProps> = ({
                 </h4>
                 <div className="grid grid-cols-2 gap-2 text-xs text-cyan-600 font-mono">
                   <div>
-                    XP Level:{" "}
-                    <span className="text-cyan-300">
-                      {finalPayload?.level || 0}
-                    </span>
+                    XP Level: <span className="text-cyan-300">{finalPayload?.level || 0}</span>
                   </div>
                   <div>
-                    Achievements:{" "}
-                    <span className="text-cyan-300">
-                      {finalPayload?.achievements.length || 0}
-                    </span>
+                    Achievements:{' '}
+                    <span className="text-cyan-300">{finalPayload?.achievements.length || 0}</span>
                   </div>
                   <div>
-                    Talents:{" "}
-                    <span className="text-cyan-300">
-                      {finalPayload?.skills.length || 0}
-                    </span>
+                    Talents:{' '}
+                    <span className="text-cyan-300">{finalPayload?.skills.length || 0}</span>
                   </div>
                   <div>
-                    Logs:{" "}
-                    <span className="text-cyan-300">
-                      {finalPayload?.historyCount || 0}
-                    </span>
+                    Logs: <span className="text-cyan-300">{finalPayload?.historyCount || 0}</span>
                   </div>
                 </div>
               </div>
@@ -233,22 +202,18 @@ const ValhallaGate: React.FC<ValhallaGateProps> = ({
           )}
 
           {/* STEP 3: TERMINAL LOGS (Syncing/Success) */}
-          {(step === "SYNCING" || step === "SUCCESS") && (
+          {(step === 'SYNCING' || step === 'SUCCESS') && (
             <div className="h-64 bg-black border border-cyan-900/50 p-4 rounded font-mono text-xs overflow-y-auto space-y-2 shadow-inner">
               {logs.map((log, i) => (
                 <div key={i} className="flex gap-2">
-                  <span className="text-cyan-800">
-                    [{new Date().toLocaleTimeString()}]
-                  </span>
+                  <span className="text-cyan-800">[{new Date().toLocaleTimeString()}]</span>
                   <span className="text-cyan-400">{log}</span>
                 </div>
               ))}
-              {step === "SYNCING" && (
-                <div className="animate-pulse text-cyan-600">
-                  _ Process Active...
-                </div>
+              {step === 'SYNCING' && (
+                <div className="animate-pulse text-cyan-600">_ Process Active...</div>
               )}
-              {step === "SUCCESS" && (
+              {step === 'SUCCESS' && (
                 <div className="text-green-500 font-bold mt-4 flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4" />
                   SYNC COMPLETE

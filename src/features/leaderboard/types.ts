@@ -1,5 +1,5 @@
-export type LeaderboardScope = "GLOBAL" | "CITY" | "COUNTRY" | "FRIENDS";
-export type LeaderboardType = "PVP_RANK" | "WINS" | "WILKS" | "XP";
+export type LeaderboardScope = 'GLOBAL' | 'CITY' | 'COUNTRY' | 'FRIENDS';
+export type LeaderboardType = 'PVP_RANK' | 'WINS' | 'WILKS' | 'XP';
 
 export interface LeaderboardEntry {
   userId: string;
@@ -11,7 +11,7 @@ export interface LeaderboardEntry {
   level: number;
   highestWilksScore: number;
   totalExperience: number;
-  faction: "HORDE" | "ALLIANCE";
+  faction: 'HORDE' | 'ALLIANCE';
   avatar?: string;
   guildName?: string | null;
   powerRating?: number;

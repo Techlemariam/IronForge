@@ -1,40 +1,38 @@
-import React, { useState, useEffect, useRef, useMemo } from "react";
-import { IntervalsWellness } from "@/types";
-import { BioBuffService, BioBuff } from "@/features/bio/BioBuffService";
-import { Exercise, Set as WorkoutSet } from "@/types";
-import { playSound } from "@/utils";
-import ExerciseView from "@/features/training/components/ExerciseView";
-import { Button } from "@/components/ui/button";
-import { AnimatePresence } from "framer-motion";
-import BerserkerMode from "@/features/training/components/BerserkerMode";
-import BerserkerChoice from "@/features/training/components/BerserkerChoice";
-import VisionRepCounter from "@/features/training/components/VisionRepCounter";
-import { Eye, EyeOff } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { useJokerSets } from "@/features/strength/hooks/useJokerSets";
-import { useSetLogging } from "@/features/strength/hooks/useSetLogging";
-import { useVolumeTracking } from "@/features/strength/hooks/useVolumeTracking";
+import { Button } from '@/components/ui/button';
+import { type BioBuff, BioBuffService } from '@/features/bio/BioBuffService';
+import { useJokerSets } from '@/features/strength/hooks/useJokerSets';
+import { useSetLogging } from '@/features/strength/hooks/useSetLogging';
+import { useVolumeTracking } from '@/features/strength/hooks/useVolumeTracking';
+import BerserkerChoice from '@/features/training/components/BerserkerChoice';
+import BerserkerMode from '@/features/training/components/BerserkerMode';
+import ExerciseView from '@/features/training/components/ExerciseView';
+import VisionRepCounter from '@/features/training/components/VisionRepCounter';
+import { cn } from '@/lib/utils';
+import type { IntervalsWellness } from '@/types';
+import type { Exercise, Set as WorkoutSet } from '@/types';
+import { playSound } from '@/utils';
+import { AnimatePresence } from 'framer-motion';
+import { Eye, EyeOff } from 'lucide-react';
+import type React from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
+import { PRCelebration } from '@/components/ui/PRCelebration';
+import { BiometricsHUD } from '@/features/strength/components/BiometricsHUD';
+import { CardiacDriftWarning } from '@/features/strength/components/CardiacDriftWarning';
+import { useHRRecoveryTimer } from '@/features/strength/hooks/useHRRecoveryTimer';
+import { SupersetGroup } from '@/features/training/components/SupersetView';
 
-import { SupersetGroup } from "@/features/training/components/SupersetView";
-import { useHRRecoveryTimer } from "@/features/strength/hooks/useHRRecoveryTimer";
-import { BiometricsHUD } from "@/features/strength/components/BiometricsHUD";
-import { CardiacDriftWarning } from "@/features/strength/components/CardiacDriftWarning";
-import { PRCelebration } from "@/components/ui/PRCelebration";
-
-
-
+import BerserkerOverlay from '@/components/game/dungeon/BerserkerOverlay';
 // --- DUNGEON MODE IMPORTS ---
-import DungeonInterface from "@/components/game/dungeon/DungeonInterface";
-import ScreenShake from "@/components/game/dungeon/ScreenShake";
-import BerserkerOverlay from "@/components/game/dungeon/BerserkerOverlay";
-import OverchargePrompt from "@/features/training/components/OverchargePrompt";
+import DungeonInterface from '@/components/game/dungeon/DungeonInterface';
+import ScreenShake from '@/components/game/dungeon/ScreenShake';
+import OverchargePrompt from '@/features/training/components/OverchargePrompt';
 
-import { LiveSessionHUD } from "@/features/coop/LiveSessionHUD";
-import { useUser } from "@/hooks/useUser";
-import { contributeGuildDamageAction } from "@/actions/guild/core";
-import { GhostOverlay } from "@/features/coop/GhostOverlay";
-import { CoOpService, GhostEvent } from "@/services/coop/CoOpService";
+import { contributeGuildDamageAction } from '@/actions/guild/core';
+import { GhostOverlay } from '@/features/coop/GhostOverlay';
+import { LiveSessionHUD } from '@/features/coop/LiveSessionHUD';
+import { useUser } from '@/hooks/useUser';
+import { CoOpService, type GhostEvent } from '@/services/coop/CoOpService';
 
 interface IronMinesProps {
   initialData: Exercise[];
@@ -62,7 +60,7 @@ const DungeonSessionView: React.FC<IronMinesProps> = ({
         try {
           return JSON.parse(saved);
         } catch (e) {
-          console.error("Failed to parse saved session", e);
+          console.error('Failed to parse saved session', e);
         }
       }
     }
@@ -72,7 +70,7 @@ const DungeonSessionView: React.FC<IronMinesProps> = ({
   const [activeExIndex, setActiveExIndex] = useState(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('iron_mines_index');
-      return saved ? parseInt(saved, 10) : 0;
+      return saved ? Number.parseInt(saved, 10) : 0;
     }
     return 0;
   });
@@ -145,7 +143,7 @@ const DungeonSessionView: React.FC<IronMinesProps> = ({
   useEffect(() => {
     // E2E Test Support: Load mock ghost events
     if (typeof window !== 'undefined' && (window as any).__mockGhostEvents) {
-      console.log("[DungeonSessionView] Loading mock ghost events");
+      console.log('[DungeonSessionView] Loading mock ghost events');
       setGhostEvents((window as any).__mockGhostEvents);
       // Simulate real-time updates for mocks? Not strictly needed if we just set initial state
       return;
@@ -154,10 +152,10 @@ const DungeonSessionView: React.FC<IronMinesProps> = ({
     if (!activeSessionId) return;
 
     const channel = CoOpService.subscribeToGhostEvents(activeSessionId, (event) => {
-      setGhostEvents(prev => [event, ...prev].slice(0, 10)); // Keep last 10
+      setGhostEvents((prev) => [event, ...prev].slice(0, 10)); // Keep last 10
       // Auto-clear after 5 seconds
       setTimeout(() => {
-        setGhostEvents(prev => prev.filter(e => e.timestamp !== event.timestamp));
+        setGhostEvents((prev) => prev.filter((e) => e.timestamp !== event.timestamp));
       }, 5000);
     });
 
@@ -171,70 +169,65 @@ const DungeonSessionView: React.FC<IronMinesProps> = ({
     const calculatedHp = exercises.reduce((acc, ex) => {
       const weight = ex.trainingMax || 60;
       const reps = ex.sets.reduce(
-        (rAcc, s) => rAcc + (typeof s.reps === "number" ? s.reps : 10),
-        0,
+        (rAcc, s) => rAcc + (typeof s.reps === 'number' ? s.reps : 10),
+        0
       );
       return acc + weight * reps;
     }, 0);
     setTotalHp(Math.max(calculatedHp, 1000));
-
   }, []);
 
   useEffect(() => {
     if (activeRef.current) {
-      activeRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+      activeRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   }, [activeExIndex]);
 
   // --- HOOKS ---
-  const {
-    jokerPrompt,
-    checkJokerOpportunity,
-    handleJokerAccept,
-    handleJokerDecline,
-  } = useJokerSets(exercises, setExercises, activeExIndex);
+  const { jokerPrompt, checkJokerOpportunity, handleJokerAccept, handleJokerDecline } =
+    useJokerSets(exercises, setExercises, activeExIndex);
 
   const [showPRCelebration, setShowPRCelebration] = useState(false);
-  const [prData, setPrData] = useState<{ newReps: number; oldMax: number | null }>({ newReps: 0, oldMax: 0 });
+  const [prData, setPrData] = useState<{ newReps: number; oldMax: number | null }>({
+    newReps: 0,
+    oldMax: 0,
+  });
 
-  const { handleSetLog } = useSetLogging(
-    exercises,
-    setExercises,
-    activeExIndex,
-    {
-      onDamage: (damage) => {
-        setDamageDealt((prev) => prev + damage);
-        setLastDamage(damage);
-        setShakeTrigger((prev) => prev + 1);
+  const { handleSetLog } = useSetLogging(exercises, setExercises, activeExIndex, {
+    onDamage: (damage) => {
+      setDamageDealt((prev) => prev + damage);
+      setLastDamage(damage);
+      setShakeTrigger((prev) => prev + 1);
 
-        // --- GUILD ACTION ---
-        if (user?.id) {
-          contributeGuildDamageAction({ damage }).catch(e => console.error("Guild Action Failed", e));
+      // --- GUILD ACTION ---
+      if (user?.id) {
+        contributeGuildDamageAction({ damage }).catch((e) =>
+          console.error('Guild Action Failed', e)
+        );
 
-          // --- GHOST BROADCAST ---
-          if (activeSessionId) {
-            CoOpService.broadcastGhostEvent(activeSessionId, {
-              type: 'SET_COMPLETE',
-              userId: user.id,
-              heroName: user.heroName || 'Hero',
-              damage,
-              timestamp: Date.now()
-            });
-          }
+        // --- GHOST BROADCAST ---
+        if (activeSessionId) {
+          CoOpService.broadcastGhostEvent(activeSessionId, {
+            type: 'SET_COMPLETE',
+            userId: user.id,
+            heroName: user.heroName || 'Hero',
+            damage,
+            timestamp: Date.now(),
+          });
         }
-      },
-      onJokerCheck: checkJokerOpportunity,
-      onExerciseComplete: () => setActiveExIndex((prev) => prev + 1),
-      onWorkoutComplete: () => setShowBerserkerChoice(true),
-      onRepPR: (newReps, oldMax) => {
-        setPrData({ newReps, oldMax });
-        setShowPRCelebration(true);
-      },
+      }
     },
-  );
+    onJokerCheck: checkJokerOpportunity,
+    onExerciseComplete: () => setActiveExIndex((prev) => prev + 1),
+    onWorkoutComplete: () => setShowBerserkerChoice(true),
+    onRepPR: (newReps, oldMax) => {
+      setPrData({ newReps, oldMax });
+      setShowPRCelebration(true);
+    },
+  });
 
   const { getVolumeFeedback } = useVolumeTracking(exercises);
-  const activeExerciseName = exercises[activeExIndex]?.name || "";
+  const activeExerciseName = exercises[activeExIndex]?.name || '';
   const volumeFeedback = getVolumeFeedback(activeExerciseName);
 
   const handleVisionRep = () => {
@@ -250,22 +243,26 @@ const DungeonSessionView: React.FC<IronMinesProps> = ({
         currentSets[setIndex] = targetSet;
         currentEx.sets = currentSets;
         newExercises[activeExIndex] = currentEx;
-        playSound("ding");
+        playSound('ding');
       }
       return newExercises;
     });
   };
 
   const handleNotesChange = (notes: string, exerciseIndex: number) => {
-    setExercises(current => {
+    setExercises((current) => {
       const newEx = [...current];
       newEx[exerciseIndex] = { ...newEx[exerciseIndex], notes };
       return newEx;
     });
   };
 
-  const handleSetUpdate = (exerciseIndex: number, setIndex: number, updates: Partial<WorkoutSet>) => {
-    setExercises(current => {
+  const handleSetUpdate = (
+    exerciseIndex: number,
+    setIndex: number,
+    updates: Partial<WorkoutSet>
+  ) => {
+    setExercises((current) => {
       const newEx = [...current];
       const targetEx = { ...newEx[exerciseIndex] };
       const targetSets = [...targetEx.sets];
@@ -304,7 +301,7 @@ const DungeonSessionView: React.FC<IronMinesProps> = ({
         completedReps: reps,
         rpe: 10,
         isPr: true,
-        rarity: "legendary",
+        rarity: 'legendary',
         e1rm: 0,
       };
 
@@ -341,7 +338,7 @@ const DungeonSessionView: React.FC<IronMinesProps> = ({
     if (exercises.length === 0) return false;
     const lastEx = exercises[exercises.length - 1];
     const lastSet = lastEx.sets[lastEx.sets.length - 1];
-    return lastSet.type === "AMRAP" && lastSet.completed;
+    return lastSet.type === 'AMRAP' && lastSet.completed;
   }, [exercises, questOver]);
 
   const handleButtonClick = () => {
@@ -358,7 +355,7 @@ const DungeonSessionView: React.FC<IronMinesProps> = ({
       {/* 1. HUD */}
       <div className="flex-shrink-0 relative">
         <DungeonInterface
-          bossName={title || "The Iron Keeper"}
+          bossName={title || 'The Iron Keeper'}
           totalHp={totalHp}
           currentHp={Math.max(0, totalHp - damageDealt)}
           onDamage={lastDamage}
@@ -369,13 +366,7 @@ const DungeonSessionView: React.FC<IronMinesProps> = ({
         {/* Volume Feedback (L1) */}
         {volumeFeedback && (
           <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full border border-zinc-800 flex items-center gap-2 text-xs font-mono animate-fade-in z-20">
-            <span
-              className={
-                volumeFeedback.status === "OVER"
-                  ? "text-red-400"
-                  : "text-cyan-400"
-              }
-            >
+            <span className={volumeFeedback.status === 'OVER' ? 'text-red-400' : 'text-cyan-400'}>
               {volumeFeedback.muscleGroup}
             </span>
             <span className="text-zinc-500">|</span>
@@ -385,16 +376,18 @@ const DungeonSessionView: React.FC<IronMinesProps> = ({
             <div className="w-16 h-1 bg-zinc-800 rounded-full overflow-hidden ml-1">
               <div
                 className={cn(
-                  "h-full transition-all duration-500",
-                  volumeFeedback.status === "OVER"
-                    ? "bg-red-500"
-                    : volumeFeedback.status === "OPTIMAL"
-                      ? "bg-green-500"
-                      : "bg-cyan-500",
+                  'h-full transition-all duration-500',
+                  volumeFeedback.status === 'OVER'
+                    ? 'bg-red-500'
+                    : volumeFeedback.status === 'OPTIMAL'
+                      ? 'bg-green-500'
+                      : 'bg-cyan-500'
                 )}
-                style={{
-                  width: `${Math.min(100, volumeFeedback.percentage)}%`,
-                } as React.CSSProperties}
+                style={
+                  {
+                    width: `${Math.min(100, volumeFeedback.percentage)}%`,
+                  } as React.CSSProperties
+                }
               />
             </div>
           </div>
@@ -408,27 +401,23 @@ const DungeonSessionView: React.FC<IronMinesProps> = ({
             <button
               onClick={() => setIsVisionActive(!isVisionActive)}
               className={cn(
-                "p-2 rounded-lg border-2 transition-all flex items-center gap-2 font-bold text-xs uppercase tracking-widest",
+                'p-2 rounded-lg border-2 transition-all flex items-center gap-2 font-bold text-xs uppercase tracking-widest',
                 isVisionActive
-                  ? "bg-cyan-500/20 border-cyan-500 text-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.3)]"
-                  : "bg-zinc-900 border-zinc-800 text-zinc-500 hover:border-zinc-500",
+                  ? 'bg-cyan-500/20 border-cyan-500 text-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.3)]'
+                  : 'bg-zinc-900 border-zinc-800 text-zinc-500 hover:border-zinc-500'
               )}
             >
-              {isVisionActive ? (
-                <Eye className="w-4 h-4" />
-              ) : (
-                <EyeOff className="w-4 h-4" />
-              )}
+              {isVisionActive ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
               Titan Vision
             </button>
           </div>
 
           <Button
-            variant={isQuestFullyCompleted ? "magma" : "default"}
+            variant={isQuestFullyCompleted ? 'magma' : 'default'}
             onClick={handleButtonClick}
             disabled={!isQuestFullyCompleted && completedSets < totalSets}
           >
-            {isQuestFullyCompleted ? "Loot Boss" : "Flee Dungeon"}
+            {isQuestFullyCompleted ? 'Loot Boss' : 'Flee Dungeon'}
           </Button>
         </div>
       </div>
@@ -453,20 +442,30 @@ const DungeonSessionView: React.FC<IronMinesProps> = ({
               // Superset Logic:
               // If this exercise has a supersetId....
               if (ex.supersetId) {
-                const supersetGroup = exercises.filter(e => e.supersetId === ex.supersetId);
+                const supersetGroup = exercises.filter((e) => e.supersetId === ex.supersetId);
                 const firstInGroup = supersetGroup[0];
 
                 // Only render if this IS the first one in the group (to avoid duplicates)
                 if (ex.id === firstInGroup.id) {
                   return (
-                    <div key={`superset-${ex.supersetId}`} ref={index === activeExIndex || exercises[activeExIndex]?.supersetId === ex.supersetId ? activeRef : null}>
+                    <div
+                      key={`superset-${ex.supersetId}`}
+                      ref={
+                        index === activeExIndex ||
+                        exercises[activeExIndex]?.supersetId === ex.supersetId
+                          ? activeRef
+                          : null
+                      }
+                    >
                       <SupersetGroup
                         exercises={supersetGroup}
                         activeIndex={activeExIndex}
-                        globalStartIndex={index} // Assumes they are contiguous. 
+                        globalStartIndex={index} // Assumes they are contiguous.
                         onSetLog={(idx, w, r, rpe) => handleSetLog(w, r, rpe, idx)}
                         onNotesChange={(idx, notes) => handleNotesChange(notes, idx)}
-                        onSetUpdate={(exIdx, setIdx, updates) => handleSetUpdate(exIdx, setIdx, updates)}
+                        onSetUpdate={(exIdx, setIdx, updates) =>
+                          handleSetUpdate(exIdx, setIdx, updates)
+                        }
                       />
                     </div>
                   );
@@ -481,15 +480,13 @@ const DungeonSessionView: React.FC<IronMinesProps> = ({
                   <ExerciseView
                     exercise={ex}
                     isActive={index === activeExIndex}
-                    isCompleted={
-                      index < activeExIndex || ex.sets.every((s) => s.completed)
-                    }
+                    isCompleted={index < activeExIndex || ex.sets.every((s) => s.completed)}
                     onSetLog={handleSetLog}
                     onNotesChange={(notes) => handleNotesChange(notes, index)}
                     onSetUpdate={(setIndex, updates) => handleSetUpdate(index, setIndex, updates)}
                   />
                 </div>
-              )
+              );
             })}
           </AnimatePresence>
         </main>
@@ -513,23 +510,16 @@ const DungeonSessionView: React.FC<IronMinesProps> = ({
         )}
       </AnimatePresence>
 
-      {
-        showBerserkerChoice && (
-          <BerserkerChoice
-            onAccept={handleBerserkerAccept}
-            onDecline={handleBerserkerDecline}
-          />
-        )
-      }
+      {showBerserkerChoice && (
+        <BerserkerChoice onAccept={handleBerserkerAccept} onDecline={handleBerserkerDecline} />
+      )}
 
-      {
-        isBerserkerMode && (
-          <BerserkerMode
-            lastExerciseName={exercises[activeExIndex].name}
-            onComplete={handleBerserkerComplete}
-          />
-        )
-      }
+      {isBerserkerMode && (
+        <BerserkerMode
+          lastExerciseName={exercises[activeExIndex].name}
+          onComplete={handleBerserkerComplete}
+        />
+      )}
 
       <PRCelebration
         isVisible={showPRCelebration}
@@ -539,9 +529,8 @@ const DungeonSessionView: React.FC<IronMinesProps> = ({
         username={user?.heroName || 'Hero'}
         onClose={() => setShowPRCelebration(false)}
       />
-    </div >
+    </div>
   );
 };
 
 export default DungeonSessionView;
-

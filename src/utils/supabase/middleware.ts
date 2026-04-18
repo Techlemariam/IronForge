@@ -1,13 +1,13 @@
-import { createServerClient } from "@supabase/ssr";
-import { NextResponse, type NextRequest } from "next/server";
-import type { ResponseCookie } from "next/dist/compiled/@edge-runtime/cookies";
+import { createServerClient } from '@supabase/ssr';
+import type { ResponseCookie } from 'next/dist/compiled/@edge-runtime/cookies';
+import { type NextRequest, NextResponse } from 'next/server';
 
 // Polyfill for Supabase dependency in Edge Runtime
 const globalAny = globalThis as unknown as { process: any };
-if (typeof globalAny.process === "undefined") {
-  globalAny.process = { env: process.env, version: "v18.0.0", versions: { node: "18.0.0" } };
+if (typeof globalAny.process === 'undefined') {
+  globalAny.process = { env: process.env, version: 'v18.0.0', versions: { node: '18.0.0' } };
 } else if (!globalAny.process.versions) {
-  globalAny.process.versions = { node: "18.0.0" };
+  globalAny.process.versions = { node: '18.0.0' };
 }
 
 export async function updateSession(request: NextRequest) {
@@ -24,18 +24,16 @@ export async function updateSession(request: NextRequest) {
           return request.cookies.getAll();
         },
         setAll(cookiesToSet: { name: string; value: string; options?: Partial<ResponseCookie> }[]) {
-          cookiesToSet.forEach(({ name, value }) =>
-            request.cookies.set(name, value),
-          );
+          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
           supabaseResponse = NextResponse.next({
             request,
           });
           cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options),
+            supabaseResponse.cookies.set(name, value, options)
           );
         },
       },
-    },
+    }
   );
 
   // IMPORTANT: Avoid writing any logic between createServerClient and
@@ -47,20 +45,20 @@ export async function updateSession(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   const isPublicRoute =
-    request.nextUrl.pathname.startsWith("/login") ||
-    request.nextUrl.pathname.startsWith("/auth") ||
-    request.nextUrl.pathname.startsWith("/welcome") ||
-    request.nextUrl.pathname.startsWith("/marketing") ||
-    request.nextUrl.pathname.startsWith("/factory");
+    request.nextUrl.pathname.startsWith('/login') ||
+    request.nextUrl.pathname.startsWith('/auth') ||
+    request.nextUrl.pathname.startsWith('/welcome') ||
+    request.nextUrl.pathname.startsWith('/marketing') ||
+    request.nextUrl.pathname.startsWith('/factory');
 
   if (!user && !isPublicRoute) {
     // no user, potentially respond by redirecting the user to the login page
     const url = request.nextUrl.clone();
     // If trying to access root, go to welcome. Otherwise login.
-    if (request.nextUrl.pathname === "/") {
-      url.pathname = "/welcome";
+    if (request.nextUrl.pathname === '/') {
+      url.pathname = '/welcome';
     } else {
-      url.pathname = "/login";
+      url.pathname = '/login';
     }
     return NextResponse.redirect(url);
   }

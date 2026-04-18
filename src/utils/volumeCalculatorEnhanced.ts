@@ -1,4 +1,4 @@
-"use server";
+'use server';
 
 /**
  * Enhanced Volume Calculator
@@ -41,7 +41,7 @@ interface VolumeRecommendation {
   mrv: number; // Maximum Recoverable Volume
   optimal: number; // Sweet spot for growth
   current?: number; // User's current volume
-  status: "LOW" | "OPTIMAL" | "HIGH" | "OVER";
+  status: 'LOW' | 'OPTIMAL' | 'HIGH' | 'OVER';
 }
 
 /**
@@ -50,7 +50,7 @@ interface VolumeRecommendation {
  */
 export function calculateVolumeL1(
   muscleGroup: string,
-  experience: ExperienceLevel,
+  experience: ExperienceLevel
 ): VolumeRecommendation {
   const baseMrv = BASE_MRV[muscleGroup.toLowerCase()] || 16;
   const multiplier = EXPERIENCE_MULTIPLIERS[experience];
@@ -64,7 +64,7 @@ export function calculateVolumeL1(
     mev,
     mrv,
     optimal,
-    status: "OPTIMAL",
+    status: 'OPTIMAL',
   };
 }
 
@@ -76,7 +76,7 @@ export function calculateVolumeL2(
   muscleGroup: string,
   experience: ExperienceLevel,
   stimulusFactor: number, // 0.5-1.5 (training intensity/quality)
-  recoveryFactor: number, // 0.5-1.5 (sleep, nutrition, stress)
+  recoveryFactor: number // 0.5-1.5 (sleep, nutrition, stress)
 ): VolumeRecommendation {
   const baseMrv = BASE_MRV[muscleGroup.toLowerCase()] || 16;
   const expMultiplier = EXPERIENCE_MULTIPLIERS[experience];
@@ -93,7 +93,7 @@ export function calculateVolumeL2(
     mev,
     mrv,
     optimal,
-    status: "OPTIMAL",
+    status: 'OPTIMAL',
   };
 }
 
@@ -120,14 +120,12 @@ export function calculateVolumeL3(
   experience: ExperienceLevel,
   stimulusFactor: number,
   recoveryFactor: number,
-  personalResponseRate?: number, // User's historical response (0.5-1.5)
+  personalResponseRate?: number // User's historical response (0.5-1.5)
 ): VolumeRecommendation {
   const baseMrv = BASE_MRV[muscleGroup.toLowerCase()] || 16;
   const expMultiplier = EXPERIENCE_MULTIPLIERS[experience];
   const responseRate =
-    personalResponseRate ||
-    DEFAULT_RESPONSE_RATES[muscleGroup.toLowerCase()] ||
-    1.0;
+    personalResponseRate || DEFAULT_RESPONSE_RATES[muscleGroup.toLowerCase()] || 1.0;
 
   // High responders need less volume, low responders need more
   const responseAdjusted = baseMrv * (2 - responseRate);
@@ -141,7 +139,7 @@ export function calculateVolumeL3(
     mev,
     mrv,
     optimal,
-    status: "OPTIMAL",
+    status: 'OPTIMAL',
   };
 }
 
@@ -150,12 +148,12 @@ export function calculateVolumeL3(
  */
 export function getVolumeStatus(
   current: number,
-  rec: VolumeRecommendation,
-): VolumeRecommendation["status"] {
-  if (current < rec.mev) return "LOW";
-  if (current > rec.mrv) return "OVER";
-  if (current >= rec.mev && current <= rec.optimal + 2) return "OPTIMAL";
-  return "HIGH";
+  rec: VolumeRecommendation
+): VolumeRecommendation['status'] {
+  if (current < rec.mev) return 'LOW';
+  if (current > rec.mrv) return 'OVER';
+  if (current >= rec.mev && current <= rec.optimal + 2) return 'OPTIMAL';
+  return 'HIGH';
 }
 
 /**
@@ -163,9 +161,9 @@ export function getVolumeStatus(
  */
 export function calculateFullBodyVolume(
   experience: ExperienceLevel,
-  stimulusFactor: number = 1.0,
-  recoveryFactor: number = 1.0,
-  level: 1 | 2 | 3 = 2,
+  stimulusFactor = 1.0,
+  recoveryFactor = 1.0,
+  level: 1 | 2 | 3 = 2
 ): VolumeRecommendation[] {
   const muscleGroups = Object.keys(BASE_MRV);
 
@@ -173,19 +171,9 @@ export function calculateFullBodyVolume(
     if (level === 1) {
       return calculateVolumeL1(muscle, experience);
     } else if (level === 2) {
-      return calculateVolumeL2(
-        muscle,
-        experience,
-        stimulusFactor,
-        recoveryFactor,
-      );
+      return calculateVolumeL2(muscle, experience, stimulusFactor, recoveryFactor);
     } else {
-      return calculateVolumeL3(
-        muscle,
-        experience,
-        stimulusFactor,
-        recoveryFactor,
-      );
+      return calculateVolumeL3(muscle, experience, stimulusFactor, recoveryFactor);
     }
   });
 }
@@ -196,7 +184,7 @@ export function calculateFullBodyVolume(
 export function wellnessToRecoveryFactor(
   sleepScore?: number,
   stressLevel?: number,
-  nutritionScore?: number,
+  nutritionScore?: number
 ): number {
   let factor = 1.0;
 

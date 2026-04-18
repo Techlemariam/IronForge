@@ -1,22 +1,18 @@
-import React, { useState } from "react";
-import { Brain, X, Cloud, Sparkles } from "lucide-react";
-import { StorageService } from "../services/storage";
-import { MeditationLog } from "../types";
-import { playSound } from "../utils";
+import { Brain, Cloud, Sparkles, X } from 'lucide-react';
+import type React from 'react';
+import { useState } from 'react';
+import { StorageService } from '../services/storage';
+import type { MeditationLog } from '../types';
+import { playSound } from '../utils';
 
 interface MindfulnessModalProps {
   onClose: () => void;
   onSave: () => void; // Trigger refresh in parent
 }
 
-const MindfulnessModal: React.FC<MindfulnessModalProps> = ({
-  onClose,
-  onSave,
-}) => {
+const MindfulnessModal: React.FC<MindfulnessModalProps> = ({ onClose, onSave }) => {
   const [duration, setDuration] = useState<number>(10);
-  const [source, setSource] = useState<"Headspace" | "Calm" | "Other">(
-    "Headspace",
-  );
+  const [source, setSource] = useState<'Headspace' | 'Calm' | 'Other'>('Headspace');
   const [isSaved, setIsSaved] = useState(false);
 
   const handleSave = async () => {
@@ -27,7 +23,7 @@ const MindfulnessModal: React.FC<MindfulnessModalProps> = ({
     };
 
     await StorageService.saveMeditation(log);
-    playSound("quest_accept"); // Sound effect
+    playSound('quest_accept'); // Sound effect
     setIsSaved(true);
 
     setTimeout(() => {
@@ -46,9 +42,7 @@ const MindfulnessModal: React.FC<MindfulnessModalProps> = ({
           <h2 className="text-2xl font-serif font-bold text-blue-100 uppercase tracking-widest">
             Mind Fog Cleared
           </h2>
-          <p className="text-blue-300 font-mono text-sm">
-            + {duration} Mana Restored
-          </p>
+          <p className="text-blue-300 font-mono text-sm">+ {duration} Mana Restored</p>
         </div>
       </div>
     );
@@ -62,9 +56,7 @@ const MindfulnessModal: React.FC<MindfulnessModalProps> = ({
           <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-30 animate-pulse-slow"></div>
           <div className="flex items-center gap-2 text-blue-400 relative z-10">
             <Cloud className="w-5 h-5" />
-            <h2 className="font-bold uppercase tracking-widest text-sm">
-              The Void Sanctum
-            </h2>
+            <h2 className="font-bold uppercase tracking-widest text-sm">The Void Sanctum</h2>
           </div>
           <button
             onClick={onClose}
@@ -77,8 +69,8 @@ const MindfulnessModal: React.FC<MindfulnessModalProps> = ({
 
         <div className="p-6 space-y-6">
           <p className="text-zinc-400 text-xs font-sans text-center leading-relaxed">
-            &quot;Direct neural link to Headspace/Calm is unavailable. Manually
-            scribe your time in the void to regenerate mental attributes.&quot;
+            &quot;Direct neural link to Headspace/Calm is unavailable. Manually scribe your time in
+            the void to regenerate mental attributes.&quot;
           </p>
 
           {/* Input Slider */}
@@ -87,7 +79,9 @@ const MindfulnessModal: React.FC<MindfulnessModalProps> = ({
               <span>Duration</span>
               <span>{duration} Min</span>
             </div>
-            <label htmlFor="duration-slider" className="sr-only">Meditation Duration</label>
+            <label htmlFor="duration-slider" className="sr-only">
+              Meditation Duration
+            </label>
             <input
               id="duration-slider"
               type="range"
@@ -95,21 +89,22 @@ const MindfulnessModal: React.FC<MindfulnessModalProps> = ({
               max="60"
               step="5"
               value={duration}
-              onChange={(e) => setDuration(parseInt(e.target.value))}
+              onChange={(e) => setDuration(Number.parseInt(e.target.value))}
               className="w-full h-2 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-blue-500"
             />
           </div>
 
           {/* Source Selector */}
           <div className="grid grid-cols-3 gap-2">
-            {["Headspace", "Calm", "Other"].map((s) => (
+            {['Headspace', 'Calm', 'Other'].map((s) => (
               <button
                 key={s}
                 onClick={() => setSource(s as any)}
-                className={`py-2 text-[10px] font-bold uppercase tracking-wider border rounded transition-all ${source === s
-                  ? "bg-blue-900/40 border-blue-500 text-blue-300 shadow-[0_0_10px_rgba(59,130,246,0.2)]"
-                  : "bg-zinc-900 border-zinc-800 text-zinc-500 hover:border-zinc-600"
-                  }`}
+                className={`py-2 text-[10px] font-bold uppercase tracking-wider border rounded transition-all ${
+                  source === s
+                    ? 'bg-blue-900/40 border-blue-500 text-blue-300 shadow-[0_0_10px_rgba(59,130,246,0.2)]'
+                    : 'bg-zinc-900 border-zinc-800 text-zinc-500 hover:border-zinc-600'
+                }`}
               >
                 {s}
               </button>

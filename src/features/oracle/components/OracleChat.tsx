@@ -1,17 +1,11 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect, useRef } from "react";
-import { useChat } from "@ai-sdk/react";
-import { motion, AnimatePresence } from "framer-motion";
-import {
-  Send,
-  Sparkles,
-  User,
-  Brain,
-  X,
-  MessageSquare,
-} from "lucide-react";
-import { ProgramGenerator } from "@/features/training/components/ProgramGenerator";
+import { ProgramGenerator } from '@/features/training/components/ProgramGenerator';
+import { useChat } from '@ai-sdk/react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Brain, MessageSquare, Send, Sparkles, User, X } from 'lucide-react';
+import type React from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface OracleChatProps {
   context?: Record<string, unknown> & { userId?: string };
@@ -22,26 +16,25 @@ export const OracleChat: React.FC<OracleChatProps> = ({ context }) => {
   const [showProgramGenerator, setShowProgramGenerator] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const { messages, sendMessage, status } =
-    useChat({
-      // @ts-ignore - api is valid at runtime but not in UseChatOptions type definition
-      api: "/api/chat",
-      body: {
-        context,
-        userId: context?.userId,
+  const { messages, sendMessage, status } = useChat({
+    // @ts-ignore - api is valid at runtime but not in UseChatOptions type definition
+    api: '/api/chat',
+    body: {
+      context,
+      userId: context?.userId,
+    },
+    initialMessages: [
+      {
+        id: 'welcome',
+        role: 'assistant',
+        content:
+          'Identity confirmed. I am the Oracle. Speak, Titan, and I shall guide your evolution. What metrics weigh upon your spirit today?',
       },
-      initialMessages: [
-        {
-          id: "welcome",
-          role: "assistant",
-          content:
-            "Identity confirmed. I am the Oracle. Speak, Titan, and I shall guide your evolution. What metrics weigh upon your spirit today?",
-        },
-      ],
-    });
+    ],
+  });
 
-  const [input, setInput] = useState("");
-  const isLoading = status === "submitted" || status === "streaming";
+  const [input, setInput] = useState('');
+  const isLoading = status === 'submitted' || status === 'streaming';
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
@@ -50,8 +43,8 @@ export const OracleChat: React.FC<OracleChatProps> = ({ context }) => {
   const handleSubmit = async (e?: React.FormEvent) => {
     e?.preventDefault();
     if (!input.trim()) return;
-    await sendMessage({ role: "user", content: input } as any);
-    setInput("");
+    await sendMessage({ role: 'user', content: input } as any);
+    setInput('');
   };
 
   // Auto-scroll to bottom
@@ -94,9 +87,7 @@ export const OracleChat: React.FC<OracleChatProps> = ({ context }) => {
                   <Brain className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-white text-sm">
-                    THE IRON ORACLE
-                  </h3>
+                  <h3 className="font-bold text-white text-sm">THE IRON ORACLE</h3>
                   <div className="flex items-center gap-1.5">
                     <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
                     <span className="text-[10px] text-zinc-400 uppercase tracking-widest font-bold">
@@ -114,25 +105,21 @@ export const OracleChat: React.FC<OracleChatProps> = ({ context }) => {
             </div>
 
             {/* Messages Area */}
-            <div
-              ref={scrollRef}
-              className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-hide"
-            >
+            <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-hide">
               {messages.map((m: any) => (
                 <div
                   key={m.id}
-                  className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}
+                  className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
                   <div
-                    className={`flex gap-3 max-w-[85%] ${m.role === "user" ? "flex-row-reverse" : ""}`}
+                    className={`flex gap-3 max-w-[85%] ${m.role === 'user' ? 'flex-row-reverse' : ''}`}
                   >
                     <div
-                      className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${m.role === "user"
-                        ? "bg-indigo-600"
-                        : "bg-zinc-800 border border-white/10"
-                        }`}
+                      className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
+                        m.role === 'user' ? 'bg-indigo-600' : 'bg-zinc-800 border border-white/10'
+                      }`}
                     >
-                      {m.role === "user" ? (
+                      {m.role === 'user' ? (
                         <User className="w-4 h-4 text-white" />
                       ) : (
                         <Sparkles className="w-4 h-4 text-indigo-400" />
@@ -140,18 +127,24 @@ export const OracleChat: React.FC<OracleChatProps> = ({ context }) => {
                     </div>
                     <div
                       data-testid="oracle-message"
-                      className={`p-3 rounded-2xl text-sm leading-relaxed ${m.role === "user"
-                        ? "bg-indigo-600 text-white rounded-tr-none"
-                        : "bg-white/5 text-zinc-100 border border-white/5 rounded-tl-none font-medium"
-                        }`}
+                      className={`p-3 rounded-2xl text-sm leading-relaxed ${
+                        m.role === 'user'
+                          ? 'bg-indigo-600 text-white rounded-tr-none'
+                          : 'bg-white/5 text-zinc-100 border border-white/5 rounded-tl-none font-medium'
+                      }`}
                     >
                       {m.role === 'assistant'
                         ? (() => {
-                          const text = Array.isArray(m.parts)
-                            ? (m.parts as Array<{ type: string; text?: string }>).filter((p): p is { type: 'text'; text: string } => p.type === 'text').map((p) => p.text).join('')
-                            : '';
-                          return text || (m as { content?: string }).content || '';
-                        })()
+                            const text = Array.isArray(m.parts)
+                              ? (m.parts as Array<{ type: string; text?: string }>)
+                                  .filter(
+                                    (p): p is { type: 'text'; text: string } => p.type === 'text'
+                                  )
+                                  .map((p) => p.text)
+                                  .join('')
+                              : '';
+                            return text || (m as { content?: string }).content || '';
+                          })()
                         : (m as { content?: string }).content}
                     </div>
                   </div>
@@ -172,20 +165,17 @@ export const OracleChat: React.FC<OracleChatProps> = ({ context }) => {
             </div>
 
             {/* Input Area */}
-            <form
-              onSubmit={handleSubmit}
-              className="p-4 border-t border-white/10 bg-black/20"
-            >
+            <form onSubmit={handleSubmit} className="p-4 border-t border-white/10 bg-black/20">
               <div className="relative group">
                 <input
                   value={input}
                   onChange={(e) => {
                     const val = e.target.value;
-                    if (val === "/program") {
+                    if (val === '/program') {
                       setShowProgramGenerator(true);
                       handleInputChange({
                         ...e,
-                        target: { ...e.target, value: "" },
+                        target: { ...e.target, value: '' },
                       });
                       setIsOpen(false);
                       return;

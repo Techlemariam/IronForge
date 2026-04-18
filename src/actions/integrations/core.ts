@@ -1,11 +1,11 @@
-"use server";
+'use server';
 
-import { getAthleteSettings } from "@/lib/intervals";
-import { getHevyWorkouts } from "@/lib/hevy";
-import prisma from "@/lib/prisma";
-import { revalidatePath } from "next/cache";
+import { getHevyWorkouts } from '@/lib/hevy';
+import { getAthleteSettings } from '@/lib/intervals';
+import prisma from '@/lib/prisma';
+import { revalidatePath } from 'next/cache';
 
-export type IntegrationStatus = "connected" | "disconnected" | "error";
+export type IntegrationStatus = 'connected' | 'disconnected' | 'error';
 
 export interface ValidationResult {
   valid: boolean;
@@ -15,9 +15,7 @@ export interface ValidationResult {
 
 // --- HEVY ---
 
-export async function validateHevyApiKey(
-  apiKey: string,
-): Promise<ValidationResult> {
+export async function validateHevyApiKey(apiKey: string): Promise<ValidationResult> {
   try {
     // Fetch a single workout to validate the key
     await getHevyWorkouts(apiKey, 1, 1);
@@ -25,7 +23,7 @@ export async function validateHevyApiKey(
   } catch (error: any) {
     return {
       valid: false,
-      error: error.message || "Invalid Hevy API Key",
+      error: error.message || 'Invalid Hevy API Key',
     };
   }
 }
@@ -41,10 +39,10 @@ export async function connectHevy(userId: string, apiKey: string) {
     });
 
     // Update Power Rating with new data source
-    const { recalculatePowerRatingAction } = await import("@/actions/titan/power-rating");
+    const { recalculatePowerRatingAction } = await import('@/actions/titan/power-rating');
     await recalculatePowerRatingAction(userId);
 
-    revalidatePath("/");
+    revalidatePath('/');
     return { success: true };
   } catch (error: any) {
     return { success: false, error: error.message };
@@ -57,7 +55,7 @@ export async function disconnectHevy(userId: string) {
       where: { id: userId },
       data: { hevyApiKey: null },
     });
-    revalidatePath("/");
+    revalidatePath('/');
     return { success: true };
   } catch (error: any) {
     return { success: false, error: error.message };
@@ -68,14 +66,14 @@ export async function disconnectHevy(userId: string) {
 
 export async function validateIntervalsCredentials(
   apiKey: string,
-  athleteId: string,
+  athleteId: string
 ): Promise<ValidationResult> {
   try {
     const settings = await getAthleteSettings(apiKey, athleteId);
     if (!settings) {
       return {
         valid: false,
-        error: "Invalid Credentials or Athlete ID not found",
+        error: 'Invalid Credentials or Athlete ID not found',
       };
     }
     return { valid: true, metadata: { name: settings.name } };
@@ -84,11 +82,7 @@ export async function validateIntervalsCredentials(
   }
 }
 
-export async function connectIntervals(
-  userId: string,
-  apiKey: string,
-  athleteId: string,
-) {
+export async function connectIntervals(userId: string, apiKey: string, athleteId: string) {
   try {
     const validation = await validateIntervalsCredentials(apiKey, athleteId);
     if (!validation.valid) throw new Error(validation.error);
@@ -102,10 +96,10 @@ export async function connectIntervals(
     });
 
     // Update Power Rating with new data source
-    const { recalculatePowerRatingAction } = await import("@/actions/titan/power-rating");
+    const { recalculatePowerRatingAction } = await import('@/actions/titan/power-rating');
     await recalculatePowerRatingAction(userId);
 
-    revalidatePath("/");
+    revalidatePath('/');
     return { success: true };
   } catch (error: any) {
     return { success: false, error: error.message };
@@ -121,7 +115,7 @@ export async function disconnectIntervals(userId: string) {
         intervalsAthleteId: null,
       },
     });
-    revalidatePath("/");
+    revalidatePath('/');
     return { success: true };
   } catch (error: any) {
     return { success: false, error: error.message };
@@ -140,11 +134,9 @@ export async function disconnectGarmin(userId: string) {
         garminRefreshToken: null,
       },
     });
-    revalidatePath("/");
+    revalidatePath('/');
     return { success: true };
   } catch (error: any) {
     return { success: false, error: error.message };
   }
 }
-
-

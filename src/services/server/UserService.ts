@@ -1,5 +1,5 @@
-import prisma from "@/lib/prisma";
-import { AppSettings, Equipment } from "@/types";
+import prisma from '@/lib/prisma';
+import type { AppSettings, Equipment } from '@/types';
 
 /**
  * @deprecated Use @/actions/user-actions instead
@@ -47,7 +47,7 @@ export const UserService = {
 
       // Create default user
       return await prisma.user.create({
-        data: { heroName: "IronLegend" },
+        data: { heroName: 'IronLegend' },
         include: {
           equipment: true,
           skills: true,
@@ -98,7 +98,7 @@ export const UserService = {
         where: { userId_equipmentId: { userId, equipmentId: eq.id } },
         create: { userId, equipmentId: eq.id, isOwned: eq.isOwned },
         update: { isOwned: eq.isOwned },
-      }),
+      })
     );
     return prisma.$transaction(operations);
   },

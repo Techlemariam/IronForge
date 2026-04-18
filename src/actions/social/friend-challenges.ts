@@ -1,15 +1,10 @@
-"use server";
+'use server';
 
 // import { prisma } from "@/lib/prisma";
-import { revalidatePath } from "next/cache";
+import { revalidatePath } from 'next/cache';
 
-type ChallengeType = "VOLUME" | "REPS" | "WEIGHT" | "STREAK" | "XP" | "CUSTOM";
-type ChallengeStatus =
-  | "PENDING"
-  | "ACTIVE"
-  | "COMPLETED"
-  | "DECLINED"
-  | "EXPIRED";
+type ChallengeType = 'VOLUME' | 'REPS' | 'WEIGHT' | 'STREAK' | 'XP' | 'CUSTOM';
+type ChallengeStatus = 'PENDING' | 'ACTIVE' | 'COMPLETED' | 'DECLINED' | 'EXPIRED';
 
 interface FriendChallenge {
   id: string;
@@ -41,30 +36,30 @@ interface ChallengeTemplate {
 
 const CHALLENGE_TEMPLATES: ChallengeTemplate[] = [
   {
-    type: "VOLUME",
-    name: "Volume War",
-    description: "Most total volume wins",
+    type: 'VOLUME',
+    name: 'Volume War',
+    description: 'Most total volume wins',
     defaultTarget: 50000,
     defaultDurationDays: 7,
   },
   {
-    type: "REPS",
-    name: "Rep Battle",
-    description: "Most reps completed",
+    type: 'REPS',
+    name: 'Rep Battle',
+    description: 'Most reps completed',
     defaultTarget: 500,
     defaultDurationDays: 3,
   },
   {
-    type: "STREAK",
-    name: "Streak Showdown",
-    description: "Longest workout streak",
+    type: 'STREAK',
+    name: 'Streak Showdown',
+    description: 'Longest workout streak',
     defaultTarget: 7,
     defaultDurationDays: 14,
   },
   {
-    type: "XP",
-    name: "XP Race",
-    description: "Most XP earned",
+    type: 'XP',
+    name: 'XP Race',
+    description: 'Most XP earned',
     defaultTarget: 5000,
     defaultDurationDays: 7,
   },
@@ -79,19 +74,17 @@ export async function createFriendChallengeAction(
   type: ChallengeType,
   target: number,
   durationDays: number,
-  _wager?: { xp: number; gold: number },
+  _wager?: { xp: number; gold: number }
 ): Promise<{ success: boolean; challengeId?: string }> {
   try {
     const challengeId = `challenge-${Date.now()}`;
     const _deadline = new Date(Date.now() + durationDays * 24 * 60 * 60 * 1000);
 
-    console.log(
-      `Created challenge ${type} from ${challengerId} to ${challengedId}`,
-    );
-    revalidatePath("/challenges");
+    console.log(`Created challenge ${type} from ${challengerId} to ${challengedId}`);
+    revalidatePath('/challenges');
     return { success: true, challengeId };
   } catch (error) {
-    console.error("Error creating challenge:", error);
+    console.error('Error creating challenge:', error);
     return { success: false };
   }
 }
@@ -101,14 +94,14 @@ export async function createFriendChallengeAction(
  */
 export async function acceptChallengeAction(
   userId: string,
-  challengeId: string,
+  challengeId: string
 ): Promise<{ success: boolean }> {
   try {
     console.log(`Accepted challenge ${challengeId}`);
-    revalidatePath("/challenges");
+    revalidatePath('/challenges');
     return { success: true };
   } catch (error) {
-    console.error("Error accepting challenge:", error);
+    console.error('Error accepting challenge:', error);
     return { success: false };
   }
 }
@@ -118,14 +111,14 @@ export async function acceptChallengeAction(
  */
 export async function declineChallengeAction(
   userId: string,
-  challengeId: string,
+  challengeId: string
 ): Promise<{ success: boolean }> {
   try {
     console.log(`Declined challenge ${challengeId}`);
-    revalidatePath("/challenges");
+    revalidatePath('/challenges');
     return { success: true };
   } catch (error) {
-    console.error("Error declining challenge:", error);
+    console.error('Error declining challenge:', error);
     return { success: false };
   }
 }
@@ -133,27 +126,25 @@ export async function declineChallengeAction(
 /**
  * Get user's active challenges.
  */
-export async function getActiveChallengesAction(
-  userId: string,
-): Promise<FriendChallenge[]> {
+export async function getActiveChallengesAction(userId: string): Promise<FriendChallenge[]> {
   return [
     {
-      id: "c1",
-      type: "VOLUME",
-      name: "Volume War",
-      description: "Most total volume wins",
+      id: 'c1',
+      type: 'VOLUME',
+      name: 'Volume War',
+      description: 'Most total volume wins',
       challengers: [
-        { userId, heroName: "You", progress: 32500, isChallenger: true },
+        { userId, heroName: 'You', progress: 32500, isChallenger: true },
         {
-          userId: "f1",
-          heroName: "IronGiant",
+          userId: 'f1',
+          heroName: 'IronGiant',
           progress: 28000,
           isChallenger: false,
         },
       ],
       target: 50000,
       deadline: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
-      status: "ACTIVE",
+      status: 'ACTIVE',
       wager: { xp: 500, gold: 250 },
     },
   ];
@@ -162,27 +153,25 @@ export async function getActiveChallengesAction(
 /**
  * Get pending challenges (received).
  */
-export async function getPendingChallengesAction(
-  userId: string,
-): Promise<FriendChallenge[]> {
+export async function getPendingChallengesAction(userId: string): Promise<FriendChallenge[]> {
   return [
     {
-      id: "c2",
-      type: "STREAK",
-      name: "Streak Showdown",
-      description: "Longest workout streak",
+      id: 'c2',
+      type: 'STREAK',
+      name: 'Streak Showdown',
+      description: 'Longest workout streak',
       challengers: [
         {
-          userId: "f2",
-          heroName: "StormBreaker",
+          userId: 'f2',
+          heroName: 'StormBreaker',
           progress: 0,
           isChallenger: true,
         },
-        { userId, heroName: "You", progress: 0, isChallenger: false },
+        { userId, heroName: 'You', progress: 0, isChallenger: false },
       ],
       target: 7,
       deadline: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
-      status: "PENDING",
+      status: 'PENDING',
     },
   ];
 }
@@ -198,11 +187,11 @@ export function getChallengeTemplates(): ChallengeTemplate[] {
  * Complete and finalize a challenge.
  */
 export async function finalizeChallengeAction(
-  _challengeId: string,
+  _challengeId: string
 ): Promise<{ winnerId: string; rewards: { xp: number; gold: number } }> {
   // In production, calculate winner and distribute rewards
   return {
-    winnerId: "user-id",
+    winnerId: 'user-id',
     rewards: { xp: 1000, gold: 500 },
   };
 }

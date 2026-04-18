@@ -1,10 +1,10 @@
-import { createClient } from "@/utils/supabase/server";
-import { redirect } from "next/navigation";
-import { prisma } from "@/lib/prisma";
-import { SettingsPage } from "@/features/settings/SettingsPage";
+import { SettingsPage } from '@/features/settings/SettingsPage';
+import { prisma } from '@/lib/prisma';
+import { createClient } from '@/utils/supabase/server';
+import { redirect } from 'next/navigation';
 
-import { getDemoModeStatus } from "@/actions/user/demo";
-import { getUserPreferencesAction } from "@/actions/user/settings";
+import { getDemoModeStatus } from '@/actions/user/demo';
+import { getUserPreferencesAction } from '@/actions/user/settings';
 
 export default async function SettingsRoute() {
   const supabase = await createClient();
@@ -13,7 +13,7 @@ export default async function SettingsRoute() {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect("/login");
+    redirect('/login');
   }
 
   const dbUser = await prisma.user.findUnique({

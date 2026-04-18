@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useMemo } from "react";
-import dynamic from "next/dynamic";
-import { IntervalsActivity, AthleteSettings } from "@/types";
-import { Activity } from "lucide-react";
+import type { AthleteSettings, IntervalsActivity } from '@/types';
+import { Activity } from 'lucide-react';
+import dynamic from 'next/dynamic';
+import { useMemo } from 'react';
 
-const HeartRateZoneChartVisual = dynamic(() => import("./HeartRateZoneChartVisual"), {
+const HeartRateZoneChartVisual = dynamic(() => import('./HeartRateZoneChartVisual'), {
   ssr: false,
   loading: () => (
     <div className="h-full w-full bg-white/5 animate-pulse rounded-lg border border-white/10" />
@@ -19,46 +19,46 @@ interface HeartRateZoneChartProps {
 
 const ZONE_GAMIFICATION = [
   {
-    name: "Recovery",
-    label: "Regeneration",
-    color: "var(--color-venom)",
-    desc: "Active recovery & healing",
+    name: 'Recovery',
+    label: 'Regeneration',
+    color: 'var(--color-venom)',
+    desc: 'Active recovery & healing',
   }, // Z1
   {
-    name: "Endurance",
-    label: "Endurance Capacitor",
-    color: "var(--color-pulse)",
-    desc: "Base building & fat burn",
+    name: 'Endurance',
+    label: 'Endurance Capacitor',
+    color: 'var(--color-pulse)',
+    desc: 'Base building & fat burn',
   }, // Z2
   {
-    name: "Tempo",
-    label: "Rhythm Flow",
-    color: "#6366f1",
-    desc: "Aerobic power",
+    name: 'Tempo',
+    label: 'Rhythm Flow',
+    color: '#6366f1',
+    desc: 'Aerobic power',
   }, // Z3
   {
-    name: "Threshold",
-    label: "Redline Limit",
-    color: "var(--color-gold)",
-    desc: "Lactate threshold",
+    name: 'Threshold',
+    label: 'Redline Limit',
+    color: 'var(--color-gold)',
+    desc: 'Lactate threshold',
   }, // Z4
   {
-    name: "VO2 Max",
-    label: "Nitro Boost",
-    color: "var(--color-crisis)",
-    desc: "Max aerobic capacity",
+    name: 'VO2 Max',
+    label: 'Nitro Boost',
+    color: 'var(--color-crisis)',
+    desc: 'Max aerobic capacity',
   }, // Z5
   {
-    name: "Anaerobic",
-    label: "Warp Drive",
-    color: "#ec4899",
-    desc: "Anaerobic capacity",
+    name: 'Anaerobic',
+    label: 'Warp Drive',
+    color: '#ec4899',
+    desc: 'Anaerobic capacity',
   }, // Z6
   {
-    name: "Neuromuscular",
-    label: "Overdrive",
-    color: "var(--color-warp)",
-    desc: "Pure sprint power",
+    name: 'Neuromuscular',
+    label: 'Overdrive',
+    color: 'var(--color-warp)',
+    desc: 'Pure sprint power',
   }, // Z7
 ];
 
@@ -86,9 +86,9 @@ export const HeartRateZoneChart: React.FC<HeartRateZoneChartProps> = ({
         id: `Z${index + 1}`,
         name: ZONE_GAMIFICATION[index]?.label || `Zone ${index + 1}`,
         originalName: ZONE_GAMIFICATION[index]?.name,
-        value: parseFloat(hours),
+        value: Number.parseFloat(hours),
         desc: ZONE_GAMIFICATION[index]?.desc,
-        color: ZONE_GAMIFICATION[index]?.color || "#8884d8",
+        color: ZONE_GAMIFICATION[index]?.color || '#8884d8',
       };
     });
   }, [activities]);
@@ -100,9 +100,7 @@ export const HeartRateZoneChart: React.FC<HeartRateZoneChartProps> = ({
       <div className="flex flex-col items-center justify-center h-48 bg-white/5 rounded-xl border border-white/10 text-zinc-500">
         <Activity className="w-8 h-8 mb-2 opacity-50" />
         <p>No Heart Rate data found for this period.</p>
-        <p className="text-xs mt-1">
-          Make sure accurate zones are set in Intervals.icu
-        </p>
+        <p className="text-xs mt-1">Make sure accurate zones are set in Intervals.icu</p>
       </div>
     );
   }
@@ -118,12 +116,8 @@ export const HeartRateZoneChart: React.FC<HeartRateZoneChartProps> = ({
           <p className="text-zinc-400 text-sm">Time in Zone (Last 7 Days)</p>
         </div>
         <div className="text-right">
-          <div className="text-2xl font-black text-white">
-            {totalHours.toFixed(1)}h
-          </div>
-          <div className="text-xs text-zinc-500 uppercase font-bold">
-            Total Cardio
-          </div>
+          <div className="text-2xl font-black text-white">{totalHours.toFixed(1)}h</div>
+          <div className="text-xs text-zinc-500 uppercase font-bold">Total Cardio</div>
         </div>
       </div>
 
@@ -137,23 +131,12 @@ export const HeartRateZoneChart: React.FC<HeartRateZoneChartProps> = ({
           .filter((z) => z.value > 0)
           .slice(0, 4)
           .map((zone) => (
-            <div
-              key={zone.id}
-              className="bg-white/5 rounded p-2 border border-white/5"
-            >
+            <div key={zone.id} className="bg-white/5 rounded p-2 border border-white/5">
               <div className="flex items-center gap-2 mb-1">
-                <div
-                  className="w-2 h-2 rounded-full"
-                  style={{ backgroundColor: zone.color }}
-                />
-                <span className="text-[10px] uppercase font-bold text-zinc-400">
-                  {zone.id}
-                </span>
+                <div className="w-2 h-2 rounded-full" style={{ backgroundColor: zone.color }} />
+                <span className="text-[10px] uppercase font-bold text-zinc-400">{zone.id}</span>
               </div>
-              <div
-                className="text-xs text-zinc-300 font-medium truncate"
-                title={zone.desc}
-              >
+              <div className="text-xs text-zinc-300 font-medium truncate" title={zone.desc}>
                 {zone.desc}
               </div>
             </div>

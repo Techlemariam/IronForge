@@ -3,8 +3,8 @@
  * Controls Smart Trainers (Wahoo, Tacx) via ERG Mode and Sim Mode.
  */
 
-const FTMS_SERVICE_UUID = "00001826-0000-1000-8000-00805f9b34fb";
-const FTMS_CONTROL_POINT_UUID = "00002ad9-0000-1000-8000-00805f9b34fb";
+const FTMS_SERVICE_UUID = '00001826-0000-1000-8000-00805f9b34fb';
+const FTMS_CONTROL_POINT_UUID = '00002ad9-0000-1000-8000-00805f9b34fb';
 // const FTMS_INDOOR_BIKE_DATA_UUID = '00002ad2-0000-1000-8000-00805f9b34fb';
 
 export const FTMSService = {
@@ -22,16 +22,14 @@ export const FTMSService = {
       if (!this.server) return false;
 
       const service = await this.server.getPrimaryService(FTMS_SERVICE_UUID);
-      this.controlPoint = await service.getCharacteristic(
-        FTMS_CONTROL_POINT_UUID,
-      );
+      this.controlPoint = await service.getCharacteristic(FTMS_CONTROL_POINT_UUID);
 
       // Request Control (Op Code 0x00)
       await this.writeControlPoint([0x00]);
 
       return true;
     } catch (e) {
-      console.error("FTMS Connection Failed", e);
+      console.error('FTMS Connection Failed', e);
       return false;
     }
   },

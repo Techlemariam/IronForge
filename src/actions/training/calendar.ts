@@ -1,11 +1,11 @@
-"use server";
+'use server';
 
-import { prisma } from "@/lib/prisma";
+import { prisma } from '@/lib/prisma';
 
 interface CalendarDay {
   date: string;
   hasWorkout: boolean;
-  workoutType?: "STRENGTH" | "CARDIO" | "MIXED";
+  workoutType?: 'STRENGTH' | 'CARDIO' | 'MIXED';
   totalSets?: number;
   totalVolume?: number;
   hadPr?: boolean;
@@ -27,7 +27,7 @@ interface CalendarMonth {
 export async function getWorkoutCalendarAction(
   userId: string,
   year: number,
-  month: number, // 0-11
+  month: number // 0-11
 ): Promise<CalendarMonth> {
   try {
     const startDate = new Date(year, month, 1);
@@ -61,7 +61,7 @@ export async function getWorkoutCalendarAction(
     > = {};
 
     for (const log of logs) {
-      const day = log.date.toISOString().split("T")[0];
+      const day = log.date.toISOString().split('T')[0];
       if (!workoutsByDay[day])
         workoutsByDay[day] = {
           strength: 0,
@@ -71,13 +71,12 @@ export async function getWorkoutCalendarAction(
         };
       const setsCount = Array.isArray(log.sets) ? log.sets.length : 1;
       workoutsByDay[day].strength += setsCount;
-      workoutsByDay[day].volume +=
-        (log.weight || 0) * (log.reps || 0) * setsCount;
+      workoutsByDay[day].volume += (log.weight || 0) * (log.reps || 0) * setsCount;
       if (log.isPersonalRecord) workoutsByDay[day].hasPr = true;
     }
 
     for (const log of cardioLogs) {
-      const day = log.date.toISOString().split("T")[0];
+      const day = log.date.toISOString().split('T')[0];
       if (!workoutsByDay[day])
         workoutsByDay[day] = {
           strength: 0,
@@ -91,7 +90,7 @@ export async function getWorkoutCalendarAction(
     // Build calendar days
     const days: CalendarDay[] = [];
     for (let d = 1; d <= daysInMonth; d++) {
-      const dateStr = `${year}-${String(month + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+      const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
       const workout = workoutsByDay[dateStr];
 
       days.push({
@@ -99,10 +98,10 @@ export async function getWorkoutCalendarAction(
         hasWorkout: !!workout,
         workoutType: workout
           ? workout.strength > 0 && workout.cardio > 0
-            ? "MIXED"
+            ? 'MIXED'
             : workout.cardio > 0
-              ? "CARDIO"
-              : "STRENGTH"
+              ? 'CARDIO'
+              : 'STRENGTH'
           : undefined,
         totalSets: workout?.strength,
         totalVolume: workout ? Math.round(workout.volume) : undefined,
@@ -111,13 +110,8 @@ export async function getWorkoutCalendarAction(
     }
 
     const totalWorkouts = Object.keys(workoutsByDay).length;
-    const totalVolume = Object.values(workoutsByDay).reduce(
-      (sum, d) => sum + d.volume,
-      0,
-    );
-    const prsThisMonth = Object.values(workoutsByDay).filter(
-      (d) => d.hasPr,
-    ).length;
+    const totalVolume = Object.values(workoutsByDay).reduce((sum, d) => sum + d.volume, 0);
+    const prsThisMonth = Object.values(workoutsByDay).filter((d) => d.hasPr).length;
 
     return {
       year,
@@ -128,7 +122,7 @@ export async function getWorkoutCalendarAction(
       prsThisMonth,
     };
   } catch (error) {
-    console.error("Error getting workout calendar:", error);
+    console.error('Error getting workout calendar:', error);
     return {
       year,
       month,
@@ -145,7 +139,7 @@ export async function getWorkoutCalendarAction(
  */
 export async function getWorkoutDayDetailsAction(
   userId: string,
-  date: string,
+  date: string
 ): Promise<{
   strengthExercises: Array<{ name: string; sets: number; volume: number }>;
   cardioSessions: Array<{ type: string; duration: number }>;
@@ -181,7 +175,7 @@ export async function getWorkoutDayDetailsAction(
       prs: logs.filter((l) => l.isPersonalRecord).map((l) => l.exerciseId),
     };
   } catch (error) {
-    console.error("Error getting day details:", error);
+    console.error('Error getting day details:', error);
     return { strengthExercises: [], cardioSessions: [], prs: [] };
   }
 }

@@ -1,37 +1,38 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect, useRef, useCallback } from "react";
-import { Monster, BossTier, MonsterElement } from "@/types";
-import { CombatState } from "@/services/game/CombatEngine";
 import {
-  startBossFight,
-  performCombatAction,
   fleeFromCombat,
   getActiveCombatSession,
-} from "@/actions/combat/core";
-import { motion, AnimatePresence } from "framer-motion";
-import { toast } from "@/components/ui/GameToast";
+  performCombatAction,
+  startBossFight,
+} from '@/actions/combat/core';
+import { LootReveal } from '@/components/game/LootReveal';
+import { toast } from '@/components/ui/GameToast';
+import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
+import { useCelebration } from '@/hooks/useCelebration';
+import type { CombatState } from '@/services/game/CombatEngine';
+import type { BossTier, Monster, MonsterElement } from '@/types';
+import type { LootItem } from '@/types/loot';
+import { playSound, triggerHaptic } from '@/utils';
+import { AnimatePresence, motion } from 'framer-motion';
 import {
-  Swords,
-  Shield,
-  Heart,
-  Zap,
-  Skull,
-  Trophy,
   DoorOpen,
   Flame,
-  Snowflake,
-  Mountain,
   Ghost,
-  Sun,
+  Heart,
+  Mountain,
   PlayCircle,
-} from "lucide-react";
-import { LootItem } from "@/types/loot";
-import { playSound, triggerHaptic } from "@/utils";
-import { useCelebration } from "@/hooks/useCelebration";
-import { LootReveal } from "@/components/game/LootReveal";
-import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
-import Image from "next/image";
+  Shield,
+  Skull,
+  Snowflake,
+  Sun,
+  Swords,
+  Trophy,
+  Zap,
+} from 'lucide-react';
+import Image from 'next/image';
+import type React from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 interface CombatArenaProps {
   bossId: string;
@@ -39,7 +40,7 @@ interface CombatArenaProps {
 }
 
 const ELEMENT_CONFIG: Record<
-  MonsterElement | "Physical",
+  MonsterElement | 'Physical',
   {
     icon: React.ElementType;
     borderColor: string;
@@ -50,52 +51,52 @@ const ELEMENT_CONFIG: Record<
 > = {
   Physical: {
     icon: Swords,
-    borderColor: "border-zinc-500",
-    badgeBg: "bg-zinc-800",
-    textColor: "text-zinc-200",
-    shadowColor: "shadow-zinc-500/20",
+    borderColor: 'border-zinc-500',
+    badgeBg: 'bg-zinc-800',
+    textColor: 'text-zinc-200',
+    shadowColor: 'shadow-zinc-500/20',
   },
   Fire: {
     icon: Flame,
-    borderColor: "border-orange-500",
-    badgeBg: "bg-orange-950",
-    textColor: "text-orange-400",
-    shadowColor: "shadow-orange-500/40",
+    borderColor: 'border-orange-500',
+    badgeBg: 'bg-orange-950',
+    textColor: 'text-orange-400',
+    shadowColor: 'shadow-orange-500/40',
   },
   Ice: {
     icon: Snowflake,
-    borderColor: "border-cyan-500",
-    badgeBg: "bg-cyan-950",
-    textColor: "text-cyan-300",
-    shadowColor: "shadow-cyan-500/40",
+    borderColor: 'border-cyan-500',
+    badgeBg: 'bg-cyan-950',
+    textColor: 'text-cyan-300',
+    shadowColor: 'shadow-cyan-500/40',
   },
   Lightning: {
     icon: Zap,
-    borderColor: "border-yellow-400",
-    badgeBg: "bg-yellow-950",
-    textColor: "text-yellow-300",
-    shadowColor: "shadow-yellow-400/40",
+    borderColor: 'border-yellow-400',
+    badgeBg: 'bg-yellow-950',
+    textColor: 'text-yellow-300',
+    shadowColor: 'shadow-yellow-400/40',
   },
   Earth: {
     icon: Mountain,
-    borderColor: "border-emerald-600",
-    badgeBg: "bg-emerald-950",
-    textColor: "text-emerald-400",
-    shadowColor: "shadow-emerald-600/40",
+    borderColor: 'border-emerald-600',
+    badgeBg: 'bg-emerald-950',
+    textColor: 'text-emerald-400',
+    shadowColor: 'shadow-emerald-600/40',
   },
   Shadow: {
     icon: Ghost,
-    borderColor: "border-purple-600",
-    badgeBg: "bg-purple-950",
-    textColor: "text-purple-400",
-    shadowColor: "shadow-purple-600/40",
+    borderColor: 'border-purple-600',
+    badgeBg: 'bg-purple-950',
+    textColor: 'text-purple-400',
+    shadowColor: 'shadow-purple-600/40',
   },
   Holy: {
     icon: Sun,
-    borderColor: "border-amber-400",
-    badgeBg: "bg-amber-950",
-    textColor: "text-amber-200",
-    shadowColor: "shadow-amber-400/40",
+    borderColor: 'border-amber-400',
+    badgeBg: 'bg-amber-950',
+    textColor: 'text-amber-200',
+    shadowColor: 'shadow-amber-400/40',
   },
 };
 
@@ -105,16 +106,16 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isProcessingTurn, setIsProcessingTurn] = useState(false);
   const [droppedItem, setDroppedItem] = useState<LootItem | null>(null);
-  const [rewards, setRewards] = useState<{ xp: number; gold: number } | null>(
-    null,
-  );
+  const [rewards, setRewards] = useState<{ xp: number; gold: number } | null>(null);
   const [isFleeing, setIsFleeing] = useState(false);
-  const [resumeData, setResumeData] = useState<{ hasSession: boolean; bossName?: string } | null>(null);
+  const [resumeData, setResumeData] = useState<{ hasSession: boolean; bossName?: string } | null>(
+    null
+  );
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const [combatStarted, setCombatStarted] = useState(false);
-  const [selectedTier, setSelectedTier] = useState<BossTier>("HEROIC");
+  const [selectedTier, setSelectedTier] = useState<BossTier>('HEROIC');
 
   // Final Push: Micro-Celebrations
   const { victorySequence, screenShake } = useCelebration();
@@ -128,7 +129,7 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
         if (mounted && res?.data?.success && res.data.session) {
           setResumeData({
             hasSession: true,
-            bossName: (res.data.boss as any)?.name || "Unknown Boss"
+            bossName: (res.data.boss as any)?.name || 'Unknown Boss',
           });
         }
       } catch (e) {
@@ -138,13 +139,15 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
       }
     };
     checkSession();
-    return () => { mounted = false; };
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   const handleStartFight = async (tier: BossTier) => {
     setIsLoading(true);
     setSelectedTier(tier);
-    playSound("dungeon_ambient" as any);
+    playSound('dungeon_ambient' as any);
 
     try {
       const res = await startBossFight({ bossId, tier });
@@ -153,16 +156,16 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
         setBoss(res.data.boss as any);
         setCombatStarted(true);
         if (res.data.message) {
-          toast.success("Combat Resumed", { description: res.data.message });
+          toast.success('Combat Resumed', { description: res.data.message });
         }
       } else {
-        const errorMsg = res?.data?.message || res?.serverError || "Unknown error";
-        console.error("Failed to start fight:", errorMsg);
-        toast.error("Arena Locked", { description: errorMsg });
+        const errorMsg = res?.data?.message || res?.serverError || 'Unknown error';
+        console.error('Failed to start fight:', errorMsg);
+        toast.error('Arena Locked', { description: errorMsg });
         onClose();
       }
     } catch (error) {
-      console.error("Combat Init Error", error);
+      console.error('Combat Init Error', error);
       onClose();
     } finally {
       setIsLoading(false);
@@ -171,16 +174,16 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
 
   // Auto-scroll logs
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [gameState?.logs]);
 
   const handleAction = useCallback(
-    async (type: "ATTACK" | "DEFEND" | "HEAL" | "ULTIMATE") => {
+    async (type: 'ATTACK' | 'DEFEND' | 'HEAL' | 'ULTIMATE') => {
       if (isProcessingTurn || !gameState) {
-        playSound("ui_error");
+        playSound('ui_error');
         return;
       }
-      playSound("ui_click");
+      playSound('ui_click');
       setIsProcessingTurn(true);
 
       try {
@@ -191,26 +194,26 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
           setGameState(newState);
 
           // Sounds
-          if (type === "ATTACK") playSound("sword_hit" as any);
-          if (type === "HEAL") playSound("heal" as any);
-          if (type === "DEFEND") playSound("shield_block" as any);
+          if (type === 'ATTACK') playSound('sword_hit' as any);
+          if (type === 'HEAL') playSound('heal' as any);
+          if (type === 'DEFEND') playSound('shield_block' as any);
 
           // Check Victory
           if (newState.isVictory) {
-            playSound("victory_fanfare" as any);
+            playSound('victory_fanfare' as any);
             victorySequence(); // Confetti + Shake
             if (res.data.loot) setDroppedItem(res.data.loot);
             if (res.data.reward) setRewards(res.data.reward);
           } else if (newState.isDefeat) {
-            playSound("game_over" as any);
-            triggerHaptic("error");
+            playSound('game_over' as any);
+            triggerHaptic('error');
           } else {
             // Regular hit - subtle shake
-            if (type === "ATTACK") screenShake("light");
+            if (type === 'ATTACK') screenShake('light');
           }
         } else {
-          const errorMsg = res?.data?.message || res?.serverError || "Unknown error";
-          console.error("Combat Action Failed", errorMsg);
+          const errorMsg = res?.data?.message || res?.serverError || 'Unknown error';
+          console.error('Combat Action Failed', errorMsg);
         }
       } catch (e) {
         console.error(e);
@@ -218,7 +221,7 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
         setIsProcessingTurn(false);
       }
     },
-    [isProcessingTurn, gameState, victorySequence, screenShake],
+    [isProcessingTurn, gameState, victorySequence, screenShake]
   );
 
   const handleFlee = useCallback(async () => {
@@ -227,14 +230,14 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
     try {
       const res = await fleeFromCombat(50);
       if (res?.data?.success) {
-        playSound("flee" as any);
+        playSound('flee' as any);
         setIsFleeing(true);
         setTimeout(() => {
           onClose();
         }, 1500);
       } else {
-        toast.error("Escape Failed", {
-          description: res?.data?.message || res?.serverError || "The enemy blocks your path!",
+        toast.error('Escape Failed', {
+          description: res?.data?.message || res?.serverError || 'The enemy blocks your path!',
         });
         setIsProcessingTurn(false);
       }
@@ -251,22 +254,22 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
       if (gameState.isVictory || gameState.isDefeat) return;
 
       switch (e.key) {
-        case "1":
-          handleAction("ATTACK");
+        case '1':
+          handleAction('ATTACK');
           break;
-        case "2":
-          handleAction("DEFEND");
+        case '2':
+          handleAction('DEFEND');
           break;
-        case "3":
-          handleAction("HEAL");
+        case '3':
+          handleAction('HEAL');
           break;
-        case "Escape":
+        case 'Escape':
           handleFlee();
           break;
       }
     };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, [combatStarted, isProcessingTurn, gameState, handleAction, handleFlee]);
 
   if (!combatStarted) {
@@ -275,7 +278,7 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
       <div className="fixed inset-0 z-50 bg-black/90 flex flex-col items-center justify-center p-4">
         <div className="max-w-4xl w-full space-y-8 animate-fade-in text-center">
           <h1 className="text-4xl md:text-6xl font-black text-magma uppercase tracking-widest drop-shadow-[0_0_15px_rgba(255,87,34,0.5)]">
-            {resumeData ? "Combat Active" : "Select Difficulty"}
+            {resumeData ? 'Combat Active' : 'Select Difficulty'}
           </h1>
 
           {resumeData ? (
@@ -300,7 +303,7 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
                 onClick={async () => {
                   await fleeFromCombat(0); // Free flee if abandoning via menu
                   setResumeData(null);
-                  toast.success("Combat Abandoned");
+                  toast.success('Combat Abandoned');
                 }}
                 className="text-red-500 hover:text-red-400 underline decoration-dotted transition-colors hover:scale-105"
               >
@@ -311,7 +314,7 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
               {/* STORY MODE */}
               <button
-                onClick={() => handleStartFight("STORY")}
+                onClick={() => handleStartFight('STORY')}
                 disabled={isLoading}
                 className="group relative p-8 rounded-xl border-2 border-emerald-500/30 hover:border-emerald-500 bg-zinc-900 overflow-hidden transition-all hover:scale-105"
               >
@@ -332,7 +335,7 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
 
               {/* HEROIC (DEFAULT) */}
               <button
-                onClick={() => handleStartFight("HEROIC")}
+                onClick={() => handleStartFight('HEROIC')}
                 disabled={isLoading}
                 className="group relative p-8 rounded-xl border-2 border-magma/30 hover:border-magma bg-zinc-900 overflow-hidden transition-all hover:scale-105"
               >
@@ -353,7 +356,7 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
 
               {/* TITAN SLAYER */}
               <button
-                onClick={() => handleStartFight("TITAN_SLAYER")}
+                onClick={() => handleStartFight('TITAN_SLAYER')}
                 disabled={isLoading}
                 className="group relative p-8 rounded-xl border-2 border-purple-500/30 hover:border-purple-500 bg-zinc-900 overflow-hidden transition-all hover:scale-105"
               >
@@ -395,7 +398,7 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
   if (!gameState || !boss) return null;
 
   // Resolve Element Config
-  const bossElement = (boss.element as MonsterElement) || "Physical";
+  const bossElement = (boss.element as MonsterElement) || 'Physical';
   const elementConfig = ELEMENT_CONFIG[bossElement] || ELEMENT_CONFIG.Physical;
   const ElementIcon = elementConfig.icon as any;
 
@@ -419,16 +422,11 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
             <div
               className={`w-24 h-24 md:w-32 md:h-32 rounded-full border-4 ${elementConfig.borderColor} bg-black overflow-hidden shadow-[0_0_30px_rgba(255,255,255,0.2)] ${elementConfig.shadowColor} relative`}
             >
-              {boss.image && boss.image.startsWith("/") ? (
-                <Image
-                  src={boss.image}
-                  alt={boss.name}
-                  fill
-                  className="object-cover"
-                />
+              {boss.image && boss.image.startsWith('/') ? (
+                <Image src={boss.image} alt={boss.name} fill className="object-cover" />
               ) : (
                 <div className="flex items-center justify-center h-full text-4xl">
-                  {boss.image || "👹"}
+                  {boss.image || '👹'}
                 </div>
               )}
             </div>
@@ -436,15 +434,11 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
               className={`absolute -bottom-2 -right-2 ${elementConfig.badgeBg} ${elementConfig.borderColor} text-xs px-2 py-1 rounded border font-bold flex items-center gap-1 shadow-lg`}
             >
               <span className="text-zinc-300">Lvl {boss.level}</span>
-              {bossElement !== "Physical" && (
+              {bossElement !== 'Physical' && (
                 <>
                   <span className="w-1 h-3 bg-zinc-700/50 rounded-full mx-1"></span>
-                  <ElementIcon
-                    className={`w-3 h-3 ${elementConfig.textColor}`}
-                  />
-                  <span className={`${elementConfig.textColor} uppercase`}>
-                    {bossElement}
-                  </span>
+                  <ElementIcon className={`w-3 h-3 ${elementConfig.textColor}`} />
+                  <span className={`${elementConfig.textColor} uppercase`}>{bossElement}</span>
                 </>
               )}
             </div>
@@ -458,7 +452,7 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
             <div className="relative h-6 bg-zinc-950 rounded-full border border-zinc-700 overflow-hidden">
               <motion.div
                 className="absolute top-0 left-0 h-full bg-gradient-to-r from-red-600 to-red-900"
-                initial={{ width: "100%" }}
+                initial={{ width: '100%' }}
                 animate={{
                   width: `${(gameState.bossHp / gameState.bossMaxHp) * 100}%`,
                 }}
@@ -503,16 +497,16 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
             animate={{
               x: 0,
               opacity: 1,
-              y: isProcessingTurn ? [0, -10, 0] : 0
+              y: isProcessingTurn ? [0, -10, 0] : 0,
             }}
             transition={{
               duration: 0.5,
-              repeat: isProcessingTurn ? 1 : 0
+              repeat: isProcessingTurn ? 1 : 0,
             }}
             className="relative w-40 h-40 md:w-64 md:h-64 scale-x-[-1]"
           >
             <div className="absolute inset-0 bg-red-500/10 blur-3xl rounded-full" />
-            {boss.image && boss.image.startsWith("/") ? (
+            {boss.image && boss.image.startsWith('/') ? (
               <Image
                 src={boss.image}
                 alt={boss.name}
@@ -523,7 +517,7 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
               />
             ) : (
               <div className="flex items-center justify-center h-full text-8xl scale-x-[-1]">
-                {boss.image || "👹"}
+                {boss.image || '👹'}
               </div>
             )}
           </motion.div>
@@ -534,9 +528,9 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
           {gameState.logs.map((log, i) => (
             <div
               key={i}
-              className={`opacity-80 ${log.includes("You") ? (log.includes("defeated") ? "text-yellow-400 font-bold" : "text-cyan-300") : "text-red-400"}`}
+              className={`opacity-80 ${log.includes('You') ? (log.includes('defeated') ? 'text-yellow-400 font-bold' : 'text-cyan-300') : 'text-red-400'}`}
             >
-              {i === gameState.logs.length - 1 ? "> " : ""}
+              {i === gameState.logs.length - 1 ? '> ' : ''}
               {log}
             </div>
           ))}
@@ -572,47 +566,37 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
             icon={<Swords className="w-6 h-6" />}
             label="Attack"
             color="bg-red-600 hover:bg-red-500"
-            onClick={() => handleAction("ATTACK")}
-            disabled={
-              isProcessingTurn || gameState.isVictory || gameState.isDefeat
-            }
+            onClick={() => handleAction('ATTACK')}
+            disabled={isProcessingTurn || gameState.isVictory || gameState.isDefeat}
           />
           <ActionButton
             icon={<Shield className="w-6 h-6" />}
             label="Defend"
             color="bg-blue-600 hover:bg-blue-500"
-            onClick={() => handleAction("DEFEND")}
-            disabled={
-              isProcessingTurn || gameState.isVictory || gameState.isDefeat
-            }
+            onClick={() => handleAction('DEFEND')}
+            disabled={isProcessingTurn || gameState.isVictory || gameState.isDefeat}
           />
           <ActionButton
             icon={<Heart className="w-6 h-6" />}
             label="Heal"
             color="bg-green-600 hover:bg-green-500"
-            onClick={() => handleAction("HEAL")}
-            disabled={
-              isProcessingTurn || gameState.isVictory || gameState.isDefeat
-            }
+            onClick={() => handleAction('HEAL')}
+            disabled={isProcessingTurn || gameState.isVictory || gameState.isDefeat}
           />
           <ActionButton
             icon={<Zap className="w-6 h-6" />}
             label="Ultimate"
             color="bg-purple-600 hover:bg-purple-500"
             isSpecial
-            onClick={() => handleAction("ULTIMATE")}
-            disabled={
-              isProcessingTurn || gameState.isVictory || gameState.isDefeat
-            }
+            onClick={() => handleAction('ULTIMATE')}
+            disabled={isProcessingTurn || gameState.isVictory || gameState.isDefeat}
           />
           <ActionButton
             icon={<DoorOpen className="w-6 h-6" />}
             label="Flee"
             color="bg-amber-600 hover:bg-amber-500"
             onClick={handleFlee}
-            disabled={
-              isProcessingTurn || gameState.isVictory || gameState.isDefeat
-            }
+            disabled={isProcessingTurn || gameState.isVictory || gameState.isDefeat}
           />
         </div>
       </div>
@@ -635,20 +619,12 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
 
             {droppedItem ? (
               <div className="bg-zinc-900 border border-yellow-500/30 p-6 rounded-lg mb-8 text-center animate-pulse">
-                <p className="text-yellow-500 font-bold uppercase text-sm mb-2">
-                  Rewards
-                </p>
-                <p className="text-white font-mono text-lg">
-                  + {rewards?.xp} XP
-                </p>
-                <p className="text-yellow-400 font-mono text-lg">
-                  + {rewards?.gold} Gold
-                </p>
+                <p className="text-yellow-500 font-bold uppercase text-sm mb-2">Rewards</p>
+                <p className="text-white font-mono text-lg">+ {rewards?.xp} XP</p>
+                <p className="text-yellow-400 font-mono text-lg">+ {rewards?.gold} Gold</p>
               </div>
             ) : (
-              <p className="text-zinc-500 text-sm mb-8">
-                No loot found this time...
-              </p>
+              <p className="text-zinc-500 text-sm mb-8">No loot found this time...</p>
             )}
 
             <button
@@ -680,8 +656,7 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
               Defeat
             </h1>
             <p className="text-red-300 mb-8 max-w-md text-center">
-              The {boss.name} was too strong. Train harder and return when you
-              are worthy.
+              The {boss.name} was too strong. Train harder and return when you are worthy.
             </p>
             <button
               onClick={onClose}
@@ -711,9 +686,7 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
                 Retreating...
               </h1>
             </motion.div>
-            <p className="text-amber-300/50 mt-4 font-mono text-sm">
-              Escaping the arena (-50g)
-            </p>
+            <p className="text-amber-300/50 mt-4 font-mono text-sm">Escaping the arena (-50g)</p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -731,22 +704,18 @@ const ActionButton: React.FC<{
 }> = ({ icon, label, color, onClick, disabled, isSpecial }) => (
   <button
     onClick={onClick}
-    onMouseEnter={() => !disabled && playSound("ui_hover")}
+    onMouseEnter={() => !disabled && playSound('ui_hover')}
     disabled={disabled}
-    aria-label={label === "Flee" ? `${label} - costs 50 gold` : label}
+    aria-label={label === 'Flee' ? `${label} - costs 50 gold` : label}
     className={`
             relative group flex flex-col items-center justify-center p-4 rounded-xl transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black
-            ${disabled ? "bg-zinc-900 opacity-50 cursor-not-allowed grayscale" : `${color} shadow-lg hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:-translate-y-1 active:scale-95`}
-            ${isSpecial ? "border-2 border-yellow-400" : ""}
+            ${disabled ? 'bg-zinc-900 opacity-50 cursor-not-allowed grayscale' : `${color} shadow-lg hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:-translate-y-1 active:scale-95`}
+            ${isSpecial ? 'border-2 border-yellow-400' : ''}
         `}
   >
     <div className="mb-2">{icon}</div>
-    <span className="font-bold uppercase tracking-wide text-xs md:text-sm">
-      {label}
-    </span>
-    {label === "Flee" && (
-      <span className="text-[10px] text-yellow-500 font-mono mt-1">-50g</span>
-    )}
+    <span className="font-bold uppercase tracking-wide text-xs md:text-sm">{label}</span>
+    {label === 'Flee' && <span className="text-[10px] text-yellow-500 font-mono mt-1">-50g</span>}
   </button>
 );
 

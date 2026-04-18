@@ -1,13 +1,12 @@
 import {
-  MuscleGroupVolume,
-  AuditReport,
-  MuscleAudit,
+  type AuditReport,
+  type BalanceRatio,
+  type MuscleAudit,
+  type MuscleGroupVolume,
+  type RPVolumeStandards,
   WeaknessLevel,
-  BalanceRatio,
-  RPVolumeStandards,
-} from "../types/auditor";
-import { getStandardsForMuscle } from "./volumeCalculator";
-
+} from '../types/auditor';
+import { getStandardsForMuscle } from './volumeCalculator';
 
 /**
  * Weakness Auditor Engine
@@ -44,8 +43,7 @@ export const auditWeaknesses = (volumes: MuscleGroupVolume[]): AuditReport => {
   const overallScore = calculateOverallScore(muscleAudits, ratios);
 
   // 4. Identify Highest Priority Gap
-  const highestPriorityGap =
-    muscleAudits.sort((a, b) => b.priority - a.priority)[0] || null;
+  const highestPriorityGap = muscleAudits.sort((a, b) => b.priority - a.priority)[0] || null;
 
   return {
     timestamp: new Date().toISOString(),
@@ -59,13 +57,10 @@ export const auditWeaknesses = (volumes: MuscleGroupVolume[]): AuditReport => {
 /**
  * Analyze a single muscle group against standards
  */
-const analyzeMuscle = (
-  vol: MuscleGroupVolume,
-  standards: RPVolumeStandards,
-): MuscleAudit => {
+const analyzeMuscle = (vol: MuscleGroupVolume, standards: RPVolumeStandards): MuscleAudit => {
   let level = WeaknessLevel.NONE;
   let priority = 0;
-  let recommendation = "Maintenance volume is sufficient.";
+  let recommendation = 'Maintenance volume is sufficient.';
   let deficit = 0;
 
   // Logic:
@@ -95,12 +90,12 @@ const analyzeMuscle = (
     level = WeaknessLevel.NONE;
     deficit = standards.MEV - vol.weeklyVolume; // Negative
     priority = 0;
-    recommendation = "Volume is within the effective range.";
+    recommendation = 'Volume is within the effective range.';
   }
 
   // Adjust priority for "Core" muscles or "Side Delts" which are often neglected but visual
   if (
-    ["Side Delts", "Abs", "Back (Width)"].includes(vol.muscleGroup) &&
+    ['Side Delts', 'Abs', 'Back (Width)'].includes(vol.muscleGroup) &&
     level !== WeaknessLevel.NONE
   ) {
     priority += 10;
@@ -121,8 +116,7 @@ const analyzeMuscle = (
  * Calculate structural balance ratios
  */
 const calculateRatios = (audits: MuscleAudit[]): BalanceRatio[] => {
-  const getVol = (name: string) =>
-    audits.find((a) => a.muscleGroup === name)?.weeklyVolume || 0;
+  const getVol = (name: string) => audits.find((a) => a.muscleGroup === name)?.weeklyVolume || 0;
 
   // Helper to sum by category from muscleMap logic (requires mapping back to categories)
   // For now, hardcode the groupings based on standard taxonomy.
@@ -134,52 +128,44 @@ const calculateRatios = (audits: MuscleAudit[]): BalanceRatio[] => {
   // Let's use specific groups for ratios that matter for injury prevention.
 
   // 1. Upper Body Push/Pull
-  const pushVol =
-    getVol("Chest") + getVol("Shoulders (Front)") + getVol("Shoulders (Side)"); // Vertical + Horizontal Push
-  const pullVol =
-    getVol("Back (Width)") +
-    getVol("Back (Thickness)") +
-    getVol("Shoulders (Rear)");
+  const pushVol = getVol('Chest') + getVol('Shoulders (Front)') + getVol('Shoulders (Side)'); // Vertical + Horizontal Push
+  const pullVol = getVol('Back (Width)') + getVol('Back (Thickness)') + getVol('Shoulders (Rear)');
 
-  const pushPullRatioVal =
-    pullVol > 0 ? pushVol / pullVol : pushVol > 0 ? 2.0 : 1.0;
+  const pushPullRatioVal = pullVol > 0 ? pushVol / pullVol : pushVol > 0 ? 2.0 : 1.0;
 
   const pushPullRatio: BalanceRatio = {
-    type: "push_pull",
+    type: 'push_pull',
     value: Number(pushPullRatioVal.toFixed(2)),
     threshold: RATIO_THRESHOLDS.push_pull,
-    status: "balanced",
+    status: 'balanced',
   };
 
   if (pushPullRatio.value > RATIO_THRESHOLDS.push_pull.max) {
-    pushPullRatio.status = "structural_risk"; // Too much push
+    pushPullRatio.status = 'structural_risk'; // Too much push
   } else if (pushPullRatio.value < RATIO_THRESHOLDS.push_pull.min) {
-    pushPullRatio.status = "minor_imbalance"; // Pull dominant (rarely bad, but imbalance)
+    pushPullRatio.status = 'minor_imbalance'; // Pull dominant (rarely bad, but imbalance)
   }
 
   // 2. Quad/Ham
-  const quadVol = getVol("Quads");
-  const hamVol = getVol("Hamstrings");
+  const quadVol = getVol('Quads');
+  const hamVol = getVol('Hamstrings');
   const quadHamVal = hamVol > 0 ? quadVol / hamVol : quadVol > 0 ? 2.0 : 1.0;
 
   const quadHamRatio: BalanceRatio = {
-    type: "quad_ham",
+    type: 'quad_ham',
     value: Number(quadHamVal.toFixed(2)),
     threshold: RATIO_THRESHOLDS.quad_ham,
-    status: "balanced",
+    status: 'balanced',
   };
 
   if (quadHamRatio.value > RATIO_THRESHOLDS.quad_ham.max) {
-    quadHamRatio.status = "structural_risk"; // Too much quad, knee risk
+    quadHamRatio.status = 'structural_risk'; // Too much quad, knee risk
   }
 
   return [pushPullRatio, quadHamRatio];
 };
 
-const calculateOverallScore = (
-  audits: MuscleAudit[],
-  ratios: BalanceRatio[],
-): number => {
+const calculateOverallScore = (audits: MuscleAudit[], ratios: BalanceRatio[]): number => {
   // Start at 100
   let score = 100;
 
@@ -192,8 +178,8 @@ const calculateOverallScore = (
 
   // Deduct for imbalances
   ratios.forEach((r) => {
-    if (r.status === "structural_risk") score -= 15;
-    if (r.status === "minor_imbalance") score -= 5;
+    if (r.status === 'structural_risk') score -= 15;
+    if (r.status === 'minor_imbalance') score -= 5;
   });
 
   return Math.max(0, Math.round(score));

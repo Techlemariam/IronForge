@@ -1,12 +1,12 @@
-import { describe, it, expect } from "vitest";
-import { calculateSkillEffects } from "@/features/game/hooks/useSkillEffects";
-import { SessionMetadata } from "@/features/game/hooks/useSkillEffects";
-import { IntervalsWellness } from "@/types";
+import { calculateSkillEffects } from '@/features/game/hooks/useSkillEffects';
+import type { SessionMetadata } from '@/features/game/hooks/useSkillEffects';
+import type { IntervalsWellness } from '@/types';
+import { describe, expect, it } from 'vitest';
 
-describe("useSkillEffects Logic (Integration)", () => {
+describe('useSkillEffects Logic (Integration)', () => {
   // Helper to create mock wellness
   const mockWellness: IntervalsWellness = {
-    id: "1",
+    id: '1',
     restingHR: 60,
     hrv: 50,
     sleepScore: 80,
@@ -14,7 +14,7 @@ describe("useSkillEffects Logic (Integration)", () => {
     vo2max: 50,
   };
 
-  it("should return default effects when no skills are unlocked", () => {
+  it('should return default effects when no skills are unlocked', () => {
     const effects = calculateSkillEffects(new Set(), mockWellness);
 
     expect(effects.tpMultiplier).toBe(1.0);
@@ -23,8 +23,8 @@ describe("useSkillEffects Logic (Integration)", () => {
     expect(effects.features.brickWorkouts).toBe(false);
   });
 
-  it("should apply simple effects from Juggernaut Origin", () => {
-    const purchased = new Set(["origin_juggernaut"]);
+  it('should apply simple effects from Juggernaut Origin', () => {
+    const purchased = new Set(['origin_juggernaut']);
     const effects = calculateSkillEffects(purchased, mockWellness);
 
     // Origin Juggernaut: Titan Load +10%
@@ -33,44 +33,36 @@ describe("useSkillEffects Logic (Integration)", () => {
     expect(effects.flatTpBonus).toBe(5);
   });
 
-  it("should compound multiplicative effects (Juggernaut Path)", () => {
+  it('should compound multiplicative effects (Juggernaut Path)', () => {
     // Unlock Origin (1.1) and Iron Shoulder (1.15)
-    const purchased = new Set(["origin_juggernaut", "notable_iron_shoulder"]);
+    const purchased = new Set(['origin_juggernaut', 'notable_iron_shoulder']);
     const effects = calculateSkillEffects(purchased, mockWellness);
 
     // 1.1 * 1.15 = 1.265
     expect(effects.titanLoadMultiplier).toBeCloseTo(1.265);
   });
 
-  it("should apply Keystone drawback when conditions are met", () => {
+  it('should apply Keystone drawback when conditions are met', () => {
     // Unlock Iron Discipline (+50% TP, but 0 TP if failed set)
-    const purchased = new Set(["keystone_iron_discipline"]);
+    const purchased = new Set(['keystone_iron_discipline']);
 
     // Scenario 1: No failed sets (Positive Effect)
     const cleanSession: SessionMetadata = { hasFailedSets: false };
-    const effectsClean = calculateSkillEffects(
-      purchased,
-      mockWellness,
-      cleanSession,
-    );
+    const effectsClean = calculateSkillEffects(purchased, mockWellness, cleanSession);
     expect(effectsClean.tpMultiplier).toBe(1.5); // +50%
 
     // Scenario 2: Failed sets (Drawback Applied)
     const failedSession: SessionMetadata = { hasFailedSets: true };
-    const effectsFailed = calculateSkillEffects(
-      purchased,
-      mockWellness,
-      failedSession,
-    );
+    const effectsFailed = calculateSkillEffects(purchased, mockWellness, failedSession);
     expect(effectsFailed.tpMultiplier).toBe(0); // Penalty overrides
   });
 
-  it("should apply conditional effects (Sage Path)", () => {
+  it('should apply conditional effects (Sage Path)', () => {
     // Unlock Sage's Rest (+100 KS/day IF Body Battery > 80)
     // Note: Check ID in data file. It is 'keystone_sages_rest' in previous view.
     // Wait, Sage's Rest effect condition is minBodyBattery: 80
 
-    const purchased = new Set(["keystone_sages_rest"]);
+    const purchased = new Set(['keystone_sages_rest']);
 
     // Scenario 1: High Body Battery (85) -> Effect Active
     const goodWellness = { ...mockWellness, bodyBattery: 85 };
@@ -83,30 +75,30 @@ describe("useSkillEffects Logic (Integration)", () => {
     expect(effectsBad.passiveKsPerDay).toBe(0);
   });
 
-  it("should respect activeKeystoneId if provided and owned", () => {
+  it('should respect activeKeystoneId if provided and owned', () => {
     // Unlock two keystones
-    const purchased = new Set(["keystone_iron_discipline", "keystone_sages_rest"]);
+    const purchased = new Set(['keystone_iron_discipline', 'keystone_sages_rest']);
 
     // Select Iron Discipline
-    const sessionIron: SessionMetadata = { activeKeystoneId: "keystone_iron_discipline" };
+    const sessionIron: SessionMetadata = { activeKeystoneId: 'keystone_iron_discipline' };
     const effectsIron = calculateSkillEffects(purchased, mockWellness, sessionIron);
-    expect(effectsIron.activeKeystoneId).toBe("keystone_iron_discipline");
+    expect(effectsIron.activeKeystoneId).toBe('keystone_iron_discipline');
 
     // Select Sage's Rest
-    const sessionSage: SessionMetadata = { activeKeystoneId: "keystone_sages_rest" };
+    const sessionSage: SessionMetadata = { activeKeystoneId: 'keystone_sages_rest' };
     const effectsSage = calculateSkillEffects(purchased, mockWellness, sessionSage);
-    expect(effectsSage.activeKeystoneId).toBe("keystone_sages_rest");
+    expect(effectsSage.activeKeystoneId).toBe('keystone_sages_rest');
   });
 
-  it("should revert to default if activeKeystoneId is not owned or invalid", () => {
+  it('should revert to default if activeKeystoneId is not owned or invalid', () => {
     // Unlock only Iron Discipline
-    const purchased = new Set(["keystone_iron_discipline"]);
+    const purchased = new Set(['keystone_iron_discipline']);
 
     // Try to select Sage's Rest (not owned)
-    const sessionInvalid: SessionMetadata = { activeKeystoneId: "keystone_sages_rest" };
+    const sessionInvalid: SessionMetadata = { activeKeystoneId: 'keystone_sages_rest' };
     const effects = calculateSkillEffects(purchased, mockWellness, sessionInvalid);
 
     // Should fallback to the owned one
-    expect(effects.activeKeystoneId).toBe("keystone_iron_discipline");
+    expect(effects.activeKeystoneId).toBe('keystone_iron_discipline');
   });
 });

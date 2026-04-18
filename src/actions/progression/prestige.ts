@@ -1,6 +1,6 @@
-"use server";
+'use server';
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath } from 'next/cache';
 
 interface PrestigeLevel {
   level: number;
@@ -13,7 +13,7 @@ interface PrestigeLevel {
 interface PrestigeBonus {
   stat: string;
   value: number;
-  type: "PERCENT" | "FLAT";
+  type: 'PERCENT' | 'FLAT';
 }
 
 interface PrestigeStatus {
@@ -28,81 +28,77 @@ interface PrestigeStatus {
 const PRESTIGE_LEVELS: PrestigeLevel[] = [
   {
     level: 1,
-    name: "Bronze Titan",
+    name: 'Bronze Titan',
     requirement: 50,
-    bonuses: [{ stat: "xpGain", value: 5, type: "PERCENT" }],
-    cosmetic: "frame-bronze",
+    bonuses: [{ stat: 'xpGain', value: 5, type: 'PERCENT' }],
+    cosmetic: 'frame-bronze',
   },
   {
     level: 2,
-    name: "Silver Titan",
+    name: 'Silver Titan',
     requirement: 50,
     bonuses: [
-      { stat: "xpGain", value: 10, type: "PERCENT" },
-      { stat: "goldGain", value: 5, type: "PERCENT" },
+      { stat: 'xpGain', value: 10, type: 'PERCENT' },
+      { stat: 'goldGain', value: 5, type: 'PERCENT' },
     ],
-    cosmetic: "frame-silver",
+    cosmetic: 'frame-silver',
   },
   {
     level: 3,
-    name: "Gold Titan",
+    name: 'Gold Titan',
     requirement: 50,
     bonuses: [
-      { stat: "xpGain", value: 15, type: "PERCENT" },
-      { stat: "goldGain", value: 10, type: "PERCENT" },
+      { stat: 'xpGain', value: 15, type: 'PERCENT' },
+      { stat: 'goldGain', value: 10, type: 'PERCENT' },
     ],
-    cosmetic: "frame-gold",
+    cosmetic: 'frame-gold',
   },
   {
     level: 4,
-    name: "Platinum Titan",
+    name: 'Platinum Titan',
     requirement: 50,
     bonuses: [
-      { stat: "xpGain", value: 20, type: "PERCENT" },
-      { stat: "goldGain", value: 15, type: "PERCENT" },
-      { stat: "damage", value: 5, type: "PERCENT" },
+      { stat: 'xpGain', value: 20, type: 'PERCENT' },
+      { stat: 'goldGain', value: 15, type: 'PERCENT' },
+      { stat: 'damage', value: 5, type: 'PERCENT' },
     ],
-    cosmetic: "frame-platinum",
+    cosmetic: 'frame-platinum',
   },
   {
     level: 5,
-    name: "Diamond Titan",
+    name: 'Diamond Titan',
     requirement: 50,
     bonuses: [
-      { stat: "xpGain", value: 25, type: "PERCENT" },
-      { stat: "goldGain", value: 20, type: "PERCENT" },
-      { stat: "damage", value: 10, type: "PERCENT" },
-      { stat: "defense", value: 5, type: "PERCENT" },
+      { stat: 'xpGain', value: 25, type: 'PERCENT' },
+      { stat: 'goldGain', value: 20, type: 'PERCENT' },
+      { stat: 'damage', value: 10, type: 'PERCENT' },
+      { stat: 'defense', value: 5, type: 'PERCENT' },
     ],
-    cosmetic: "frame-diamond",
+    cosmetic: 'frame-diamond',
   },
   {
     level: 10,
-    name: "Mythic Titan",
+    name: 'Mythic Titan',
     requirement: 50,
     bonuses: [
-      { stat: "xpGain", value: 50, type: "PERCENT" },
-      { stat: "goldGain", value: 50, type: "PERCENT" },
-      { stat: "allStats", value: 10, type: "PERCENT" },
+      { stat: 'xpGain', value: 50, type: 'PERCENT' },
+      { stat: 'goldGain', value: 50, type: 'PERCENT' },
+      { stat: 'allStats', value: 10, type: 'PERCENT' },
     ],
-    cosmetic: "frame-mythic",
+    cosmetic: 'frame-mythic',
   },
 ];
 
 /**
  * Get prestige status.
  */
-export async function getPrestigeStatusAction(
-  _userId: string,
-): Promise<PrestigeStatus> {
+export async function getPrestigeStatusAction(_userId: string): Promise<PrestigeStatus> {
   const currentPrestige = 1;
   const currentLevel = 35;
-  const nextPrestige = PRESTIGE_LEVELS.find(
-    (p) => p.level === currentPrestige + 1,
+  const nextPrestige = PRESTIGE_LEVELS.find((p) => p.level === currentPrestige + 1);
+  const currentBonuses = PRESTIGE_LEVELS.filter((p) => p.level <= currentPrestige).flatMap(
+    (p) => p.bonuses
   );
-  const currentBonuses = PRESTIGE_LEVELS.filter(
-    (p) => p.level <= currentPrestige,
-  ).flatMap((p) => p.bonuses);
 
   return {
     currentPrestige,
@@ -138,13 +134,13 @@ export async function performPrestigeAction(userId: string): Promise<{
   const newPrestige = PRESTIGE_LEVELS.find((p) => p.level === newLevel);
 
   console.log(`User ${userId} prestiged to level ${newLevel}`);
-  revalidatePath("/prestige");
+  revalidatePath('/prestige');
 
   return {
     success: true,
     newPrestigeLevel: newLevel,
     bonusesGained: newPrestige?.bonuses || [],
-    message: `Congratulations! You are now a ${newPrestige?.name || "Titan"}!`,
+    message: `Congratulations! You are now a ${newPrestige?.name || 'Titan'}!`,
   };
 }
 
@@ -152,21 +148,19 @@ export async function performPrestigeAction(userId: string): Promise<{
  * Get prestige leaderboard.
  */
 export async function getPrestigeLeaderboardAction(
-  _limit: number = 10,
+  _limit = 10
 ): Promise<Array<{ rank: number; heroName: string; prestigeLevel: number }>> {
   return [
-    { rank: 1, heroName: "AncientOne", prestigeLevel: 10 },
-    { rank: 2, heroName: "DiamondKing", prestigeLevel: 7 },
-    { rank: 3, heroName: "PlatinumGod", prestigeLevel: 5 },
+    { rank: 1, heroName: 'AncientOne', prestigeLevel: 10 },
+    { rank: 2, heroName: 'DiamondKing', prestigeLevel: 7 },
+    { rank: 3, heroName: 'PlatinumGod', prestigeLevel: 5 },
   ];
 }
 
 /**
  * Calculate total bonuses from prestige.
  */
-export function calculatePrestigeBonuses(
-  prestigeLevel: number,
-): Record<string, number> {
+export function calculatePrestigeBonuses(prestigeLevel: number): Record<string, number> {
   const bonuses: Record<string, number> = {};
 
   for (const prestige of PRESTIGE_LEVELS) {

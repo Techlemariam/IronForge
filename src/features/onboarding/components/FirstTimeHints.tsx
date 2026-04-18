@@ -1,53 +1,51 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { X, Lightbulb, ChevronRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
+import { AnimatePresence, motion } from 'framer-motion';
+import { ChevronRight, Lightbulb, X } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 interface HintConfig {
   id: string;
   targetSelector: string;
   title: string;
   message: string;
-  position?: "top" | "bottom" | "left" | "right";
+  position?: 'top' | 'bottom' | 'left' | 'right';
 }
 
 const FIRST_TIME_HINTS: HintConfig[] = [
   {
-    id: "dashboard_stats",
+    id: 'dashboard_stats',
     targetSelector: '[data-hint="titan-stats"]',
-    title: "Your Titan Stats",
-    message:
-      "Track your Titan's health, energy, and XP here. Keep training to level up!",
-    position: "bottom",
+    title: 'Your Titan Stats',
+    message: "Track your Titan's health, energy, and XP here. Keep training to level up!",
+    position: 'bottom',
   },
   {
-    id: "start_workout",
+    id: 'start_workout',
     targetSelector: '[data-hint="start-workout"]',
-    title: "Begin Your Journey",
+    title: 'Begin Your Journey',
     message:
-      "Tap here to start a workout session. Each set you complete deals damage to dungeon bosses!",
-    position: "top",
+      'Tap here to start a workout session. Each set you complete deals damage to dungeon bosses!',
+    position: 'top',
   },
   {
-    id: "skill_tree",
+    id: 'skill_tree',
     targetSelector: '[data-hint="skill-tree"]',
-    title: "Unlock Skills",
-    message:
-      "Spend skill points to unlock passive bonuses and combat abilities.",
-    position: "left",
+    title: 'Unlock Skills',
+    message: 'Spend skill points to unlock passive bonuses and combat abilities.',
+    position: 'left',
   },
   {
-    id: "streak_badge",
+    id: 'streak_badge',
     targetSelector: '[data-hint="streak"]',
-    title: "Daily Streak",
-    message: "Train every day to maintain your streak and earn bonus XP!",
-    position: "bottom",
+    title: 'Daily Streak',
+    message: 'Train every day to maintain your streak and earn bonus XP!',
+    position: 'bottom',
   },
 ];
 
-const STORAGE_KEY = "ironforge_seen_hints";
+const STORAGE_KEY = 'ironforge_seen_hints';
 
 export function useFirstTimeHints() {
   const [seenHints, setSeenHints] = useState<Set<string>>(new Set());
@@ -112,10 +110,7 @@ export function HintOverlay({ hint, onDismiss, onSkipAll }: HintOverlayProps) {
         className="fixed inset-0 z-[100] pointer-events-none"
       >
         {/* Backdrop */}
-        <div
-          className="absolute inset-0 bg-black/60 pointer-events-auto"
-          onClick={onDismiss}
-        />
+        <div className="absolute inset-0 bg-black/60 pointer-events-auto" onClick={onDismiss} />
 
         {/* Hint Card */}
         <motion.div
@@ -131,23 +126,15 @@ export function HintOverlay({ hint, onDismiss, onSkipAll }: HintOverlayProps) {
               </div>
               <div className="flex-1">
                 <h3 className="font-bold text-white text-sm">{hint.title}</h3>
-                <p className="text-slate-400 text-xs mt-1 leading-relaxed">
-                  {hint.message}
-                </p>
+                <p className="text-slate-400 text-xs mt-1 leading-relaxed">{hint.message}</p>
               </div>
-              <button
-                onClick={onDismiss}
-                className="text-slate-500 hover:text-white"
-              >
+              <button onClick={onDismiss} className="text-slate-500 hover:text-white">
                 <X className="w-4 h-4" />
               </button>
             </div>
 
             <div className="flex justify-between items-center mt-4 pt-3 border-t border-slate-800">
-              <button
-                onClick={onSkipAll}
-                className="text-xs text-slate-500 hover:text-slate-300"
-              >
+              <button onClick={onSkipAll} className="text-xs text-slate-500 hover:text-slate-300">
                 Skip all hints
               </button>
               <Button size="sm" onClick={onDismiss} className="gap-1">

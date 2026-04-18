@@ -1,12 +1,12 @@
-import {
-  IntervalsWellness,
-  IntervalsActivity,
-  WeaknessAudit,
-  TSBForecast,
+import type {
   ExerciseLog,
-  TitanLoadCalculation,
+  IntervalsActivity,
+  IntervalsWellness,
+  TSBForecast,
   TTBIndices,
-} from "../types";
+  TitanLoadCalculation,
+  WeaknessAudit,
+} from '../types';
 
 /**
  * The Ultrathink Analytics Engine
@@ -20,7 +20,7 @@ export const AnalyticsService = {
   calculateTTB: (
     history: ExerciseLog[],
     activities: IntervalsActivity[],
-    wellness: IntervalsWellness,
+    wellness: IntervalsWellness
   ): TTBIndices => {
     // 1. STRENGTH INDEX
     // Driven by recency of Epic Sets or PRs.
@@ -30,8 +30,7 @@ export const AnalyticsService = {
 
     if (lastEpicSet) {
       const daysSince =
-        (new Date().getTime() - new Date(lastEpicSet.date).getTime()) /
-        (1000 * 3600 * 24);
+        (new Date().getTime() - new Date(lastEpicSet.date).getTime()) / (1000 * 3600 * 24);
       strengthScore = Math.max(0, Math.min(100, 100 - (daysSince - 3) * 10));
     } else {
       // Mock data logic for demo if history is empty
@@ -63,7 +62,7 @@ export const AnalyticsService = {
       endurance: enduranceScore,
       wellness: wellnessScore,
     };
-    let lowest: keyof typeof scores = "strength";
+    let lowest: keyof typeof scores = 'strength';
     let minVal = 999;
 
     (Object.keys(scores) as Array<keyof typeof scores>).forEach((key) => {
@@ -89,7 +88,7 @@ export const AnalyticsService = {
    */
   calculateTSBForecast: (
     startWellness: IntervalsWellness,
-    plannedDailyLoad: number[] = [],
+    plannedDailyLoad: number[] = []
   ): TSBForecast[] => {
     const forecast: TSBForecast[] = [];
 
@@ -109,12 +108,12 @@ export const AnalyticsService = {
       // Calculate TSB BEFORE applying today's stress (morning readiness)
       const tsb = ctl - atl;
 
-      let label = "Neutral";
-      if (tsb > 25) label = "Detraining";
-      else if (tsb > 5) label = "PR Window (Optimal)";
-      else if (tsb > -10) label = "Maintenance";
-      else if (tsb > -30) label = "Productive Training";
-      else label = "Overreaching (High Risk)";
+      let label = 'Neutral';
+      if (tsb > 25) label = 'Detraining';
+      else if (tsb > 5) label = 'PR Window (Optimal)';
+      else if (tsb > -10) label = 'Maintenance';
+      else if (tsb > -30) label = 'Productive Training';
+      else label = 'Overreaching (High Risk)';
 
       forecast.push({
         dayOffset: i,
@@ -140,7 +139,7 @@ export const AnalyticsService = {
     volumeLoad: number,
     avgIntensityPct: number,
     durationMinutes: number,
-    multiplier: number = 1.0,
+    multiplier = 1.0
   ): TitanLoadCalculation => {
     // 1. Estimate HR-based TSS (Standard)
     // Assumption: Strength training averages Zone 2 HR (IF 0.6)
@@ -156,8 +155,7 @@ export const AnalyticsService = {
 
     // Simplified scale for demo:
     // Hard session: 5000kg volume * 0.8 intensity -> Titan Load ~75
-    const titanLoad =
-      (volumeLoad / 100) * avgIntensityPct * neuroFactor * multiplier;
+    const titanLoad = (volumeLoad / 100) * avgIntensityPct * neuroFactor * multiplier;
 
     const discrepancy = ((titanLoad - standardTss) / standardTss) * 100;
 
@@ -167,8 +165,8 @@ export const AnalyticsService = {
       discrepancy: Math.round(discrepancy),
       advice:
         discrepancy > 30
-          ? "HR underestimates this session. Rely on Titan Load for recovery planning."
-          : "HR and Strength Load align. Standard recovery applies.",
+          ? 'HR underestimates this session. Rely on Titan Load for recovery planning.'
+          : 'HR and Strength Load align. Standard recovery applies.',
       appliedMultiplier: multiplier,
     };
   },
@@ -179,15 +177,15 @@ export const AnalyticsService = {
    */
   auditWeakness: (
     strengthLogs: ExerciseLog[],
-    currentWellness: IntervalsWellness,
+    currentWellness: IntervalsWellness
   ): WeaknessAudit => {
     // 1. Check for Strength Plateau (Flat e1RM over last 3 logs)
     // Needs at least 3 logs to establish a trend
     if (strengthLogs.length < 3) {
       return {
         detected: false,
-        type: "NONE",
-        message: "Insufficient data for audit.",
+        type: 'NONE',
+        message: 'Insufficient data for audit.',
         confidence: 0,
       };
     }
@@ -202,8 +200,8 @@ export const AnalyticsService = {
     if (!isPlateau) {
       return {
         detected: false,
-        type: "NONE",
-        message: "No plateau detected. Growth is steady.",
+        type: 'NONE',
+        message: 'No plateau detected. Growth is steady.',
         confidence: 100,
       };
     }
@@ -218,35 +216,34 @@ export const AnalyticsService = {
     if (aerobicSpike) {
       return {
         detected: true,
-        type: "AEROBIC_INTERFERENCE",
+        type: 'AEROBIC_INTERFERENCE',
         message:
-          "Aerobic volume spike detected (+15%). This is likely dampening your neural drive for max strength.",
+          'Aerobic volume spike detected (+15%). This is likely dampening your neural drive for max strength.',
         confidence: 85,
-        correlationData: { metric: "CTL (Fitness)", trend: "UP" },
+        correlationData: { metric: 'CTL (Fitness)', trend: 'UP' },
       };
     }
 
     // 3. Correlate with Recovery/Life Stress
     // If TSB is OK, but Sleep/HRV is trash
     const poorRecovery =
-      (currentWellness.sleepScore || 100) < 60 ||
-      (currentWellness.hrv || 100) < 40;
+      (currentWellness.sleepScore || 100) < 60 || (currentWellness.hrv || 100) < 40;
 
     if (poorRecovery) {
       return {
         detected: true,
-        type: "RECOVERY_DEBT",
+        type: 'RECOVERY_DEBT',
         message:
-          "Biological readiness is critically low. Your CNS cannot support PR attempts despite muscular readiness.",
+          'Biological readiness is critically low. Your CNS cannot support PR attempts despite muscular readiness.',
         confidence: 90,
-        correlationData: { metric: "HRV / Sleep", trend: "DOWN" },
+        correlationData: { metric: 'HRV / Sleep', trend: 'DOWN' },
       };
     }
 
     return {
       detected: false,
-      type: "NONE",
-      message: "Plateau detected, but cause is indeterminate.",
+      type: 'NONE',
+      message: 'Plateau detected, but cause is indeterminate.',
       confidence: 40,
     };
   },
@@ -257,27 +254,27 @@ export const AnalyticsService = {
   getMockHistory: (): ExerciseLog[] => {
     return [
       {
-        date: "2023-10-01",
-        exerciseId: "ex_landmine_press",
+        date: '2023-10-01',
+        exerciseId: 'ex_landmine_press',
         e1rm: 70,
         rpe: 8,
         isEpic: true,
       },
       {
-        date: "2023-10-08",
-        exerciseId: "ex_landmine_press",
+        date: '2023-10-08',
+        exerciseId: 'ex_landmine_press',
         e1rm: 72.5,
         rpe: 8.5,
       },
       {
-        date: "2023-10-15",
-        exerciseId: "ex_landmine_press",
+        date: '2023-10-15',
+        exerciseId: 'ex_landmine_press',
         e1rm: 72.5,
         rpe: 9,
       }, // Stagnation
       {
-        date: "2023-10-22",
-        exerciseId: "ex_landmine_press",
+        date: '2023-10-22',
+        exerciseId: 'ex_landmine_press',
         e1rm: 72.5,
         rpe: 9.5,
       }, // Stagnation + Higher RPE

@@ -1,9 +1,9 @@
-"use server";
+'use server';
 
-import { createClient } from "@/utils/supabase/server";
-import prisma from "@/lib/prisma";
+import prisma from '@/lib/prisma';
+import { createClient } from '@/utils/supabase/server';
 
-export type RegionId = "iron_forge" | "shadow_realms" | "the_void";
+export type RegionId = 'iron_forge' | 'shadow_realms' | 'the_void';
 
 export interface WorldRegion {
   id: RegionId;
@@ -37,10 +37,8 @@ export async function getWorldStateAction() {
 
     return {
       id: region.id as RegionId,
-      name: isObscured ? "???" : region.name,
-      description: isObscured
-        ? "Too dangerous to perceive."
-        : region.description,
+      name: isObscured ? '???' : region.name,
+      description: isObscured ? 'Too dangerous to perceive.' : region.description,
       levelReq: region.levelReq,
       coordinates: { x: region.coordX, y: region.coordY },
       isUnlocked,
@@ -63,7 +61,7 @@ export async function getRegionBossAction(regionId: string) {
       isActive: true,
     },
     orderBy: {
-      levelReq: "asc", // Start with the easiest
+      levelReq: 'asc', // Start with the easiest
     },
   });
 

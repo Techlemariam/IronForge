@@ -1,15 +1,7 @@
-import React, { useState, useMemo } from "react";
-import { Session, ExerciseLog } from "@/types";
-import {
-  Scroll,
-  Sword,
-  Map,
-  Lock,
-  Star,
-  Sparkles,
-  Hammer,
-  ChevronRight,
-} from "lucide-react";
+import type { ExerciseLog, Session } from '@/types';
+import { ChevronRight, Hammer, Lock, Map, Scroll, Sparkles, Star, Sword } from 'lucide-react';
+import type React from 'react';
+import { useMemo, useState } from 'react';
 
 interface QuestLogProps {
   sessions: Session[];
@@ -18,7 +10,7 @@ interface QuestLogProps {
   level: number;
 }
 
-type ActFilter = "ACT_I" | "ACT_II" | "ACT_III";
+type ActFilter = 'ACT_I' | 'ACT_II' | 'ACT_III';
 
 const QuestLog: React.FC<QuestLogProps> = ({
   sessions,
@@ -26,20 +18,20 @@ const QuestLog: React.FC<QuestLogProps> = ({
   onSelectSession,
   level,
 }) => {
-  const [activeAct, setActiveAct] = useState<ActFilter>("ACT_I");
+  const [activeAct, setActiveAct] = useState<ActFilter>('ACT_I');
 
   // --- FILTER LOGIC ---
   const filteredSessions = useMemo(() => {
     return sessions.filter((session) => {
-      if (activeAct === "ACT_I") {
+      if (activeAct === 'ACT_I') {
         // Core static sessions: Not Generated AND Not Custom
         return !session.isGenerated && !session.isCustom;
       }
-      if (activeAct === "ACT_II") {
+      if (activeAct === 'ACT_II') {
         // Oracle / Generated: Must be generated
         return session.isGenerated === true;
       }
-      if (activeAct === "ACT_III") {
+      if (activeAct === 'ACT_III') {
         // User Custom Dungeons: Must be custom
         return session.isCustom === true;
       }
@@ -49,22 +41,22 @@ const QuestLog: React.FC<QuestLogProps> = ({
 
   const acts = [
     {
-      id: "ACT_I",
-      label: "Act I: Initiation",
+      id: 'ACT_I',
+      label: 'Act I: Initiation',
       icon: <Map className="w-4 h-4" />,
-      desc: "Standard Protocol",
+      desc: 'Standard Protocol',
     },
     {
-      id: "ACT_II",
-      label: "Act II: The Oracle",
+      id: 'ACT_II',
+      label: 'Act II: The Oracle',
       icon: <Sparkles className="w-4 h-4" />,
-      desc: "AI Generated",
+      desc: 'AI Generated',
     },
     {
-      id: "ACT_III",
-      label: "Act III: Architect",
+      id: 'ACT_III',
+      label: 'Act III: Architect',
       icon: <Hammer className="w-4 h-4" />,
-      desc: "Custom Dungeons",
+      desc: 'Custom Dungeons',
     },
   ];
 
@@ -77,23 +69,20 @@ const QuestLog: React.FC<QuestLogProps> = ({
             key={act.id}
             onClick={() => setActiveAct(act.id as ActFilter)}
             className={`flex-1 py-4 px-2 flex flex-col items-center gap-1 transition-all relative overflow-hidden group
-              ${activeAct === act.id
-                ? "bg-[#1a1a1a] text-clay"
-                : "bg-[#0a0a0a] text-zinc-500 hover:text-zinc-400 hover:bg-[#111]"
+              ${
+                activeAct === act.id
+                  ? 'bg-[#1a1a1a] text-clay'
+                  : 'bg-[#0a0a0a] text-zinc-500 hover:text-zinc-400 hover:bg-[#111]'
               }
             `}
           >
             {activeAct === act.id && (
               <div className="absolute top-0 left-0 w-full h-0.5 bg-clay shadow-glow-clay" />
             )}
-            <div
-              className={`p-1 rounded ${activeAct === act.id ? "bg-clay/10" : ""}`}
-            >
+            <div className={`p-1 rounded ${activeAct === act.id ? 'bg-clay/10' : ''}`}>
               {act.icon}
             </div>
-            <span className="text-[10px] font-bold uppercase tracking-widest">
-              {act.label}
-            </span>
+            <span className="text-[10px] font-bold uppercase tracking-widest">{act.label}</span>
           </button>
         ))}
       </div>
@@ -107,12 +96,10 @@ const QuestLog: React.FC<QuestLogProps> = ({
               {acts.find((a) => a.id === activeAct)?.label}
             </h3>
             <p className="text-xs text-zinc-500 font-sans">
-              {activeAct === "ACT_I" &&
-                "The foundational training grounds. Master the basics."}
-              {activeAct === "ACT_II" &&
-                "Dynamic challenges forged by the Spirit Guide based on your biometrics."}
-              {activeAct === "ACT_III" &&
-                "Custom dungeons constructed by your own hand."}
+              {activeAct === 'ACT_I' && 'The foundational training grounds. Master the basics.'}
+              {activeAct === 'ACT_II' &&
+                'Dynamic challenges forged by the Spirit Guide based on your biometrics.'}
+              {activeAct === 'ACT_III' && 'Custom dungeons constructed by your own hand.'}
             </p>
           </div>
           <div className="text-right">
@@ -130,12 +117,12 @@ const QuestLog: React.FC<QuestLogProps> = ({
               <p className="text-zinc-500 font-serif text-sm">
                 No Quests Available in this Region.
               </p>
-              {activeAct === "ACT_II" && (
+              {activeAct === 'ACT_II' && (
                 <p className="text-[10px] text-zinc-600 mt-1">
                   Consult the Oracle to generate new paths.
                 </p>
               )}
-              {activeAct === "ACT_III" && (
+              {activeAct === 'ACT_III' && (
                 <p className="text-[10px] text-zinc-600 mt-1">
                   Use the Dungeon Builder to construct this area.
                 </p>
@@ -146,20 +133,20 @@ const QuestLog: React.FC<QuestLogProps> = ({
               const isGenerated = session.isGenerated;
               const isCustom = session.isCustom;
 
-              let borderColor = "border-[#c0b3a0] group-hover:border-warp";
-              let iconColor = "bg-[#46321d] border-[#6b4e31] text-clay";
-              let typeLabel = "Daily Quest";
+              let borderColor = 'border-[#c0b3a0] group-hover:border-warp';
+              let iconColor = 'bg-[#46321d] border-[#6b4e31] text-clay';
+              let typeLabel = 'Daily Quest';
 
               if (isGenerated) {
                 borderColor =
-                  "border-purple-500 shadow-[0_0_10px_rgba(168,85,247,0.15)] group-hover:border-purple-400";
-                iconColor = "bg-purple-900 border-purple-500 text-purple-200";
-                typeLabel = "Prophecy";
+                  'border-purple-500 shadow-[0_0_10px_rgba(168,85,247,0.15)] group-hover:border-purple-400';
+                iconColor = 'bg-purple-900 border-purple-500 text-purple-200';
+                typeLabel = 'Prophecy';
               } else if (isCustom) {
                 borderColor =
-                  "border-green-500 shadow-[0_0_10px_rgba(34,197,94,0.15)] group-hover:border-green-400";
-                iconColor = "bg-green-900 border-green-500 text-green-200";
-                typeLabel = "Construct";
+                  'border-green-500 shadow-[0_0_10px_rgba(34,197,94,0.15)] group-hover:border-green-400';
+                iconColor = 'bg-green-900 border-green-500 text-green-200';
+                typeLabel = 'Construct';
               }
 
               return (
@@ -192,7 +179,7 @@ const QuestLog: React.FC<QuestLogProps> = ({
                     </div>
 
                     <p className="text-zinc-500 text-xs italic font-serif mt-1 border-l-2 border-zinc-800 pl-2">
-                      {session.zoneName || "Unknown Territory"}
+                      {session.zoneName || 'Unknown Territory'}
                     </p>
 
                     {/* Rewards / Difficulty */}
@@ -207,8 +194,7 @@ const QuestLog: React.FC<QuestLogProps> = ({
                       </span>
                       {session.levelReq && session.levelReq > level && (
                         <span className="text-red-500 flex items-center gap-1">
-                          <Lock className="w-3 h-3" /> Req Lvl{" "}
-                          {session.levelReq}
+                          <Lock className="w-3 h-3" /> Req Lvl {session.levelReq}
                         </span>
                       )}
                     </div>

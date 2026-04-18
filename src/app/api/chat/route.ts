@@ -1,7 +1,7 @@
-import { createGoogleGenerativeAI } from "@ai-sdk/google";
-import { streamText } from "ai";
-import { OracleService } from "@/services/oracle";
-import { WardensManifest, SystemMetrics } from "@/types/goals";
+import { OracleService } from '@/services/oracle';
+import type { SystemMetrics, WardensManifest } from '@/types/goals';
+import { createGoogleGenerativeAI } from '@ai-sdk/google';
+import { streamText } from 'ai';
 
 // Configure Google Provider with existing project API Key
 const google = createGoogleGenerativeAI({
@@ -16,13 +16,13 @@ export async function POST(req: Request) {
   try {
     body = await req.json();
   } catch (e) {
-    console.error("Chat API: Failed to parse request JSON:", e);
-    return new Response(JSON.stringify({ error: "Invalid JSON input" }), { status: 400 });
+    console.error('Chat API: Failed to parse request JSON:', e);
+    return new Response(JSON.stringify({ error: 'Invalid JSON input' }), { status: 400 });
   }
 
   const { messages, context } = body;
 
-  let strategySummary = "No strategy generated (Insufficient Data).";
+  let strategySummary = 'No strategy generated (Insufficient Data).';
 
   // Try to hydrate Strategy from Context
   if (context && context.wellness && context.indices) {
@@ -38,26 +38,25 @@ export async function POST(req: Request) {
         sleepScore: context.wellness.sleepScore || 0,
         bodyBattery: context.wellness.bodyBattery ?? 50,
         soreness: context.wellness.soreness || 0,
-        mood: context.wellness.mood || "NORMAL",
-        consecutiveStalls: 0
+        mood: context.wellness.mood || 'NORMAL',
+        consecutiveStalls: 0,
       };
 
       const manifest: WardensManifest = {
         userId: context.userId,
-        goals: [{ goal: "FITNESS", weight: 1.0 }], // Default goal if not passed
-        phase: "BALANCED", // Starting assumption
+        goals: [{ goal: 'FITNESS', weight: 1.0 }], // Default goal if not passed
+        phase: 'BALANCED', // Starting assumption
         phaseStartDate: new Date(),
         phaseWeek: 1,
         autoRotate: true,
-        consents: { healthData: true, leaderboard: true }
+        consents: { healthData: true, leaderboard: true },
       };
 
       const strategy = OracleService.generateTrainingStrategy(manifest, metrics);
       strategySummary = strategy.contextSummary;
-
     } catch (error) {
-      console.error("Oracle GPE Error:", error);
-      strategySummary = "Error generating strategy: " + (error as Error).message;
+      console.error('Oracle GPE Error:', error);
+      strategySummary = 'Error generating strategy: ' + (error as Error).message;
     }
   }
 
@@ -80,7 +79,7 @@ export async function POST(req: Request) {
     *Use the above strategy as your 'God's Truth'. Do not contradict the calculated phase or readiness.*
 
     ## RAW TELEMETRY
-    ${context ? JSON.stringify(context, null, 2) : "No specific bio-telemetry available."}
+    ${context ? JSON.stringify(context, null, 2) : 'No specific bio-telemetry available.'}
 
     ## IMPERATIVES
     1. **Analyze First:** Look at the 'Weekly Mastery' and 'Wellness' data in the context before speaking.
@@ -92,13 +91,13 @@ export async function POST(req: Request) {
 
   // CI/E2E Mock Mode
   if (process.env.GOOGLE_GENERATIVE_AI_API_KEY === 'dummy_google_ai_key_for_e2e_tests') {
-    return new Response("The Oracle is contemplating your Titan path (E2E Mock Response).", {
-      headers: { 'Content-Type': 'text/plain; charset=utf-8' }
+    return new Response('The Oracle is contemplating your Titan path (E2E Mock Response).', {
+      headers: { 'Content-Type': 'text/plain; charset=utf-8' },
     });
   }
 
   const result = streamText({
-    model: google("gemini-2.5-flash") as any,
+    model: google('gemini-2.5-flash') as any,
     system: systemPrompt,
     messages,
   });

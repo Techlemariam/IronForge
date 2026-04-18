@@ -1,14 +1,8 @@
-import React, { useState, useEffect } from "react";
-import {
-  Heart,
-  Bluetooth,
-  Activity,
-  Flame,
-  Bike,
-  Settings,
-} from "lucide-react";
-import { FTMSService } from "@/services/bluetooth-ftms";
-import { IoTService } from "@/services/iot"; // IMPORT
+import { FTMSService } from '@/services/bluetooth-ftms';
+import { IoTService } from '@/services/iot'; // IMPORT
+import { Activity, Bike, Bluetooth, Flame, Heart, Settings } from 'lucide-react';
+import type React from 'react';
+import { useEffect, useState } from 'react';
 
 interface HeartRateMonitorProps {
   bpm: number | null;
@@ -38,29 +32,29 @@ const HeartRateMonitor: React.FC<HeartRateMonitorProps> = ({
     }
   }, [bpm]);
 
-  const zoneColor = bpm && bpm < 120 ? "text-green-500" : "text-orange-500";
-  const zoneStatus = bpm ? (bpm < 120 ? "ZONE 2 (READY)" : "RECOVERY") : "";
+  const zoneColor = bpm && bpm < 120 ? 'text-green-500' : 'text-orange-500';
+  const zoneStatus = bpm ? (bpm < 120 ? 'ZONE 2 (READY)' : 'RECOVERY') : '';
   const isOverheated = bpm && bpm > 120;
 
   // Elite Theme Override
   const containerBorder = hasAura
     ? isOverheated
-      ? "border-orange-900/50"
-      : "border-[var(--color-gold-bright)] shadow-[0_0_15px_rgba(255,215,0,0.15)]"
+      ? 'border-orange-900/50'
+      : 'border-[var(--color-gold-bright)] shadow-[0_0_15px_rgba(255,215,0,0.15)]'
     : isOverheated
-      ? "border-orange-900/50"
+      ? 'border-orange-900/50'
       : bpm
-        ? "border-green-900/30"
-        : "border-zinc-800";
+        ? 'border-green-900/30'
+        : 'border-zinc-800';
 
   const containerBg =
     hasAura && !isOverheated && bpm
-      ? "bg-[linear-gradient(45deg,rgba(0,0,0,0.9),rgba(255,215,0,0.05))]"
+      ? 'bg-[linear-gradient(45deg,rgba(0,0,0,0.9),rgba(255,215,0,0.05))]'
       : isOverheated
-        ? "bg-orange-950/10"
+        ? 'bg-orange-950/10'
         : bpm
-          ? "bg-green-950/10"
-          : "bg-zinc-900";
+          ? 'bg-green-950/10'
+          : 'bg-zinc-900';
 
   const handleFtmsConnect = async () => {
     const success = await FTMSService.connect();
@@ -90,10 +84,10 @@ const HeartRateMonitor: React.FC<HeartRateMonitorProps> = ({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div
-            className={`p-2 rounded-full transition-colors ${isConnected ? (isOverheated ? "bg-orange-500/20" : "bg-green-500/20") : "bg-zinc-800"}`}
+            className={`p-2 rounded-full transition-colors ${isConnected ? (isOverheated ? 'bg-orange-500/20' : 'bg-green-500/20') : 'bg-zinc-800'}`}
           >
             <Heart
-              className={`w-5 h-5 transition-colors ${isConnected ? (isOverheated ? "text-orange-500 animate-pulse" : "text-green-500") : "text-zinc-500"}`}
+              className={`w-5 h-5 transition-colors ${isConnected ? (isOverheated ? 'text-orange-500 animate-pulse' : 'text-green-500') : 'text-zinc-500'}`}
             />
           </div>
           <div>
@@ -102,13 +96,13 @@ const HeartRateMonitor: React.FC<HeartRateMonitorProps> = ({
             </div>
             <div className="flex items-baseline gap-2">
               <span
-                className={`text-xl font-bold font-mono transition-colors ${isConnected ? zoneColor : "text-zinc-600"}`}
+                className={`text-xl font-bold font-mono transition-colors ${isConnected ? zoneColor : 'text-zinc-600'}`}
               >
-                {bpm ? bpm : "--"} <span className="text-sm">BPM</span>
+                {bpm ? bpm : '--'} <span className="text-sm">BPM</span>
               </span>
               {bpm && (
                 <span
-                  className={`text-xs font-bold transition-colors ${isOverheated ? "text-orange-400" : "text-green-400"}`}
+                  className={`text-xs font-bold transition-colors ${isOverheated ? 'text-orange-400' : 'text-green-400'}`}
                 >
                   [{zoneStatus}]
                 </span>
@@ -128,7 +122,7 @@ const HeartRateMonitor: React.FC<HeartRateMonitorProps> = ({
             </button>
           ) : (
             <div
-              className={`flex items-center gap-2 px-3 py-2 text-xs font-bold rounded border ${hasAura ? "text-[var(--color-gold-bright)] bg-[var(--color-gold-bright)]/10 border-[var(--color-gold-bright)]/30" : "text-green-500/80 bg-green-900/10 border-green-900/20"}`}
+              className={`flex items-center gap-2 px-3 py-2 text-xs font-bold rounded border ${hasAura ? 'text-[var(--color-gold-bright)] bg-[var(--color-gold-bright)]/10 border-[var(--color-gold-bright)]/30' : 'text-green-500/80 bg-green-900/10 border-green-900/20'}`}
             >
               <Activity className="w-4 h-4" />
               LINKED
@@ -169,12 +163,10 @@ const HeartRateMonitor: React.FC<HeartRateMonitorProps> = ({
               max="400"
               step="5"
               value={targetPower}
-              onChange={(e) => setTargetPower(parseInt(e.target.value))}
+              onChange={(e) => setTargetPower(Number.parseInt(e.target.value))}
               className="flex-1 h-2 bg-zinc-700 rounded-lg appearance-none cursor-pointer accent-cyan-500"
             />
-            <span className="font-mono font-bold text-white w-12 text-right">
-              {targetPower}W
-            </span>
+            <span className="font-mono font-bold text-white w-12 text-right">{targetPower}W</span>
             <button
               onClick={setErgMode}
               className="px-3 py-1 bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold uppercase rounded shadow-lg"
@@ -199,4 +191,3 @@ const HeartRateMonitor: React.FC<HeartRateMonitorProps> = ({
 };
 
 export default HeartRateMonitor;
-

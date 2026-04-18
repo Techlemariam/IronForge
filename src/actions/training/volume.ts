@@ -1,6 +1,6 @@
-"use server";
+'use server';
 
-import { checkOvertrainingStatusAction } from "@/actions/training/overtraining";
+import { checkOvertrainingStatusAction } from '@/actions/training/overtraining';
 
 /**
  * Volume Calculator Level 4: Recovery-State Modulated MRV
@@ -65,9 +65,7 @@ const FATIGUE_RATES: Record<string, number> = {
  * Calculate recovery state from all available data.
  */
 async function calculateRecoveryState(userId: string): Promise<RecoveryState> {
-  const [overtraining] = await Promise.all([
-    checkOvertrainingStatusAction(userId),
-  ]);
+  const [overtraining] = await Promise.all([checkOvertrainingStatusAction(userId)]);
 
   // Calculate training load factor
   const trainingLoadScore = overtraining.isCapped
@@ -110,8 +108,8 @@ async function calculateRecoveryState(userId: string): Promise<RecoveryState> {
 export async function calculateVolumeL4Action(
   userId: string,
   muscleGroup: string,
-  weekNumber: number = 1,
-  previousWeekVolume?: number,
+  weekNumber = 1,
+  previousWeekVolume?: number
 ): Promise<VolumeL4Recommendation> {
   try {
     const recoveryState = await calculateRecoveryState(userId);
@@ -125,11 +123,11 @@ export async function calculateVolumeL4Action(
     recoveryModifier = Math.max(0.5, Math.min(1.3, recoveryModifier));
 
     if (recoveryState.score < 50) {
-      reasoning.push("Low recovery score - volume significantly reduced");
+      reasoning.push('Low recovery score - volume significantly reduced');
     } else if (recoveryState.score < 70) {
-      reasoning.push("Moderate recovery - conservative volume recommended");
+      reasoning.push('Moderate recovery - conservative volume recommended');
     } else if (recoveryState.score > 90) {
-      reasoning.push("Excellent recovery - volume ceiling increased");
+      reasoning.push('Excellent recovery - volume ceiling increased');
     }
 
     // Week-over-week progression
@@ -143,12 +141,12 @@ export async function calculateVolumeL4Action(
     // Deload detection (every 4-5 weeks)
     if (weekNumber % 5 === 0) {
       progressionModifier *= 0.5;
-      reasoning.push("Deload week: 50% volume reduction");
+      reasoning.push('Deload week: 50% volume reduction');
     }
 
     // Calculate adjusted MRV
     const adjustedMrv = Math.round(
-      (baseMrv * recoveryModifier * progressionModifier) / fatigueRate,
+      (baseMrv * recoveryModifier * progressionModifier) / fatigueRate
     );
 
     // Calculate set ranges
@@ -174,7 +172,7 @@ export async function calculateVolumeL4Action(
       reasoning,
     };
   } catch (error) {
-    console.error("Error calculating L4 volume:", error);
+    console.error('Error calculating L4 volume:', error);
     const baseMrv = BASE_MRV[muscleGroup.toLowerCase()] || 16;
     return {
       muscleGroup,
@@ -185,7 +183,7 @@ export async function calculateVolumeL4Action(
       maxSets: baseMrv,
       optimalSets: Math.round(baseMrv * 0.7),
       confidence: 50,
-      reasoning: ["Using default values due to data unavailability"],
+      reasoning: ['Using default values due to data unavailability'],
     };
   }
 }
@@ -195,14 +193,12 @@ export async function calculateVolumeL4Action(
  */
 export async function getFullBodyVolumeL4Action(
   userId: string,
-  weekNumber: number = 1,
+  weekNumber = 1
 ): Promise<VolumeL4Recommendation[]> {
   const muscles = Object.keys(BASE_MRV);
 
   const recommendations = await Promise.all(
-    muscles.map((muscle) =>
-      calculateVolumeL4Action(userId, muscle, weekNumber),
-    ),
+    muscles.map((muscle) => calculateVolumeL4Action(userId, muscle, weekNumber))
   );
 
   return recommendations;

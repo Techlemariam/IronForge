@@ -1,11 +1,11 @@
-import { NextRequest, NextResponse } from "next/server";
-import prisma from "@/lib/prisma";
-import { OracleService } from "@/services/oracle";
-import { PushNotificationService } from "@/services/PushNotificationService";
-import { revalidatePath } from "next/cache";
-import { withCronMonitor } from "@/lib/sentry-cron";
+import prisma from '@/lib/prisma';
+import { withCronMonitor } from '@/lib/sentry-cron';
+import { PushNotificationService } from '@/services/PushNotificationService';
+import { OracleService } from '@/services/oracle';
+import { revalidatePath } from 'next/cache';
+import { type NextRequest, NextResponse } from 'next/server';
 
-export const dynamic = "force-dynamic";
+export const dynamic = 'force-dynamic';
 export const maxDuration = 60; // Allow up to 60s for processing multiple users
 
 /**
@@ -15,103 +15,99 @@ export const maxDuration = 60; // Allow up to 60s for processing multiple users
  */
 
 const handler = async (request: NextRequest) => {
-    // 1. Authorization Check
-    const authHeader = request.headers.get("authorization");
-    if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-        return new NextResponse("Unauthorized", { status: 401 });
-    }
+  // 1. Authorization Check
+  const authHeader = request.headers.get('authorization');
+  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+    return new NextResponse('Unauthorized', { status: 401 });
+  }
 
-    try {
-        // 2. Get all users with active Titans
-        const titans = await prisma.titan.findMany({
-            where: { isInjured: false },
-            select: { userId: true, name: true },
-        });
+  try {
+    // 2. Get all users with active Titans
+    const titans = await prisma.titan.findMany({
+      where: { isInjured: false },
+      select: { userId: true, name: true },
+    });
 
-        console.log(`[Oracle Cron] Processing ${titans.length} Titans...`);
+    console.log(`[Oracle Cron] Processing ${titans.length} Titans...`);
 
-        let processed = 0;
-        let decreesIssued = 0;
-        const errors: string[] = [];
+    let processed = 0;
+    let decreesIssued = 0;
+    const errors: string[] = [];
 
-        // 3. Process each Titan
-        for (const titan of titans) {
-            try {
-                const decree = await OracleService.generateDailyDecree(titan.userId);
+    // 3. Process each Titan
+    for (const titan of titans) {
+      try {
+        const decree = await OracleService.generateDailyDecree(titan.userId);
 
-                // Only store meaningful decrees (BUFF or DEBUFF, not NEUTRAL)
-                if (decree.type !== "NEUTRAL") {
-                    // Update Titan's current buff
-                    await prisma.titan.update({
-                        where: { userId: titan.userId },
-                        data: {
-                            currentBuff: decree as any, // Store decree as JSON
-                            buffExpiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24h TTL
-                        },
-                    });
+        // Only store meaningful decrees (BUFF or DEBUFF, not NEUTRAL)
+        if (decree.type !== 'NEUTRAL') {
+          // Update Titan's current buff
+          await prisma.titan.update({
+            where: { userId: titan.userId },
+            data: {
+              currentBuff: decree as any, // Store decree as JSON
+              buffExpiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24h TTL
+            },
+          });
 
-                    // Log decree to OracleMessage for history
-                    await prisma.oracleMessage.create({
-                        data: {
-                            userId: titan.userId,
-                            role: "assistant",
-                            content: `[${decree.type}] ${decree.label}: ${decree.description}`,
-                        },
-                    });
+          // Log decree to OracleMessage for history
+          await prisma.oracleMessage.create({
+            data: {
+              userId: titan.userId,
+              role: 'assistant',
+              content: `[${decree.type}] ${decree.label}: ${decree.description}`,
+            },
+          });
 
-                    // Create in-app notification
-                    await prisma.notification.create({
-                        data: {
-                            userId: titan.userId,
-                            type: "ORACLE_DECREE",
-                            message: `🔮 ${decree.label}`,
-                        },
-                    });
+          // Create in-app notification
+          await prisma.notification.create({
+            data: {
+              userId: titan.userId,
+              type: 'ORACLE_DECREE',
+              message: `🔮 ${decree.label}`,
+            },
+          });
 
-                    // NEW: Send Push Notification (Oracle 3.0)
-                    try {
-                        await PushNotificationService.sendToUser(titan.userId, {
-                            title: `Oracle Decree: ${decree.label}`,
-                            body: decree.description,
-                            url: "/citadel", // Link to Oracle/Citadel page
-                        });
-                    } catch (pushErr) {
-                        console.error(`[Oracle Cron] Push failed for ${titan.userId}:`, pushErr);
-                    }
+          // NEW: Send Push Notification (Oracle 3.0)
+          try {
+            await PushNotificationService.sendToUser(titan.userId, {
+              title: `Oracle Decree: ${decree.label}`,
+              body: decree.description,
+              url: '/citadel', // Link to Oracle/Citadel page
+            });
+          } catch (pushErr) {
+            console.error(`[Oracle Cron] Push failed for ${titan.userId}:`, pushErr);
+          }
 
-                    decreesIssued++;
-                }
-
-                processed++;
-            } catch (err) {
-                const errorMsg = err instanceof Error ? err.message : String(err);
-                errors.push(`User ${titan.userId}: ${errorMsg}`);
-                console.error(`[Oracle Cron] Error for ${titan.userId}:`, err);
-            }
+          decreesIssued++;
         }
 
-        // 4. Revalidate relevant paths
-        revalidatePath("/dashboard");
-        revalidatePath("/citadel");
-
-        return NextResponse.json({
-            success: true,
-            processed,
-            decreesIssued,
-            errors: errors.length > 0 ? errors : undefined,
-            timestamp: new Date().toISOString(),
-        });
-    } catch (error) {
-        console.error("[Oracle Cron] Critical Error:", error);
-        return NextResponse.json(
-            { success: false, error: "Internal server error" },
-            { status: 500 }
-        );
+        processed++;
+      } catch (err) {
+        const errorMsg = err instanceof Error ? err.message : String(err);
+        errors.push(`User ${titan.userId}: ${errorMsg}`);
+        console.error(`[Oracle Cron] Error for ${titan.userId}:`, err);
+      }
     }
-}
+
+    // 4. Revalidate relevant paths
+    revalidatePath('/dashboard');
+    revalidatePath('/citadel');
+
+    return NextResponse.json({
+      success: true,
+      processed,
+      decreesIssued,
+      errors: errors.length > 0 ? errors : undefined,
+      timestamp: new Date().toISOString(),
+    });
+  } catch (error) {
+    console.error('[Oracle Cron] Critical Error:', error);
+    return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 });
+  }
+};
 
 export const GET = withCronMonitor(handler as any, {
-    slug: "daily-oracle",
-    schedule: "0 6 * * *",
+  slug: 'daily-oracle',
+  schedule: '0 6 * * *',
 });
-

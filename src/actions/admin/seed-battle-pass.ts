@@ -1,10 +1,10 @@
-"use server";
+'use server';
 
-import { prisma } from "@/lib/prisma";
+import { prisma } from '@/lib/prisma';
 
 export async function seedBattlePassSeasonAction() {
   try {
-    const seasonCode = "SEASON_1";
+    const seasonCode = 'SEASON_1';
 
     // Check if exists
     const existing = await prisma.battlePassSeason.findUnique({
@@ -12,13 +12,13 @@ export async function seedBattlePassSeasonAction() {
     });
 
     if (existing) {
-      return { success: false, message: "Season 1 already exists" };
+      return { success: false, message: 'Season 1 already exists' };
     }
 
     // Create Season
     const season = await prisma.battlePassSeason.create({
       data: {
-        name: "Season 1: Genesis",
+        name: 'Season 1: Genesis',
         code: seasonCode,
         startDate: new Date(), // Starts now
         endDate: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000), // +90 days
@@ -41,14 +41,14 @@ export async function seedBattlePassSeasonAction() {
 
       // Every 5 levels: Free Gold
       if (i % 5 === 0) {
-        freeRewardData = { type: "GOLD", amount: 500 * (i / 5) };
+        freeRewardData = { type: 'GOLD', amount: 500 * (i / 5) };
       }
 
       // Every level Premium: Gold or Item placeholder
       if (i % 10 === 0) {
-        premiumRewardData = { type: "TITLE", titleId: `title_s1_tier_${i}` }; // Placeholder
+        premiumRewardData = { type: 'TITLE', titleId: `title_s1_tier_${i}` }; // Placeholder
       } else {
-        premiumRewardData = { type: "GOLD", amount: 100 * i };
+        premiumRewardData = { type: 'GOLD', amount: 100 * i };
       }
 
       tiers.push({
@@ -69,7 +69,7 @@ export async function seedBattlePassSeasonAction() {
       message: `Created Season 1 with ${tiers.length} tiers.`,
     };
   } catch (error) {
-    console.error("Seeding error:", error);
-    return { success: false, message: "Failed to seed season" };
+    console.error('Seeding error:', error);
+    return { success: false, message: 'Failed to seed season' };
   }
 }

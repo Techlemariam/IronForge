@@ -1,8 +1,8 @@
-import React from "react";
-import { createClient } from "@/utils/supabase/server";
-import { redirect } from "next/navigation";
-import prisma from "@/lib/prisma";
-import { StrengthContainer } from "@/features/strength/StrengthContainer";
+import { StrengthContainer } from '@/features/strength/StrengthContainer';
+import prisma from '@/lib/prisma';
+import { createClient } from '@/utils/supabase/server';
+import { redirect } from 'next/navigation';
+import React from 'react';
 
 export default async function StrengthPage() {
   const supabase = await createClient();
@@ -11,7 +11,7 @@ export default async function StrengthPage() {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect("/login");
+    redirect('/login');
   }
 
   // Ensure user exists in Prisma
@@ -21,7 +21,7 @@ export default async function StrengthPage() {
 
   if (!dbUser) {
     // Handle sync edge case or wait
-    redirect("/onboarding");
+    redirect('/onboarding');
   }
 
   return (

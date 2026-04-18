@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
-import prisma from "@/lib/prisma";
-import { logger } from "@/lib/logger";
+import { logger } from '@/lib/logger';
+import prisma from '@/lib/prisma';
+import { type NextRequest, NextResponse } from 'next/server';
 
-import { ProgressionService } from "@/services/progression";
-import { processUserCardioActivity } from "@/actions/pvp/duel";
-import { TerritoryService } from "@/services/game/TerritoryService";
+import { processUserCardioActivity } from '@/actions/pvp/duel';
+import { TerritoryService } from '@/services/game/TerritoryService';
+import { ProgressionService } from '@/services/progression';
 
 // Defines the shape of an Intervals.icu Activity Event
 // Reference: https://intervals.icu/api/v1/athlete/{id}/activities
@@ -25,24 +25,22 @@ export async function POST(request: NextRequest) {
   try {
     // 1. Verify Secret
     // Intervals.icu sends identifying header or you can check Authorization
-    const _signature = request.headers.get("Authorization");
+    const _signature = request.headers.get('Authorization');
 
-    logger.info(
-      "[Intervals Webhook] Incoming Activity. Auth Signature detected.",
-    );
+    logger.info('[Intervals Webhook] Incoming Activity. Auth Signature detected.');
 
     // 2. Parse Body
     const activity: IntervalsActivityPayload = await request.json();
 
     if (!activity.id || !activity.icu_athlete_id) {
       return NextResponse.json(
-        { error: "Invalid payload: missing id or athlete_id" },
-        { status: 400 },
+        { error: 'Invalid payload: missing id or athlete_id' },
+        { status: 400 }
       );
     }
 
     logger.info(
-      `[Intervals Webhook] Processing ${activity.type} for Athlete: ${activity.icu_athlete_id}`,
+      `[Intervals Webhook] Processing ${activity.type} for Athlete: ${activity.icu_athlete_id}`
     );
 
     // 3. Match User
@@ -52,24 +50,24 @@ export async function POST(request: NextRequest) {
 
     if (!user) {
       logger.warn(
-        `[Intervals Webhook] No user found with intervalsAthleteId: ${activity.icu_athlete_id}`,
+        `[Intervals Webhook] No user found with intervalsAthleteId: ${activity.icu_athlete_id}`
       );
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
     // 4. Persistence
     // We only care about Cardio for CardioLog.
     // If it's WeightTraining, Hevy might handle it better, but we can log it too as fallback.
     const isCardio = [
-      "Run",
-      "Ride",
-      "Swim",
-      "Row",
-      "Walk",
-      "Hike",
-      "NordicSki",
-      "VirtualRide",
-      "VirtualRun",
+      'Run',
+      'Ride',
+      'Swim',
+      'Row',
+      'Walk',
+      'Hike',
+      'NordicSki',
+      'VirtualRide',
+      'VirtualRun',
     ].includes(activity.type);
 
     if (isCardio) {
@@ -93,7 +91,7 @@ export async function POST(request: NextRequest) {
         },
       });
       logger.info(
-        `[Intervals Webhook] Persisted CardioLog: ${activity.type} | Load: ${activity.training_load}`,
+        `[Intervals Webhook] Persisted CardioLog: ${activity.type} | Load: ${activity.training_load}`
       );
 
       // Trigger Duel Updates
@@ -117,7 +115,7 @@ export async function POST(request: NextRequest) {
       }
 
       // --- Territory Conquest Integration ---
-      const isConquestSport = ["Run", "Walk", "Hike", "VirtualRun"].includes(activity.type);
+      const isConquestSport = ['Run', 'Walk', 'Hike', 'VirtualRun'].includes(activity.type);
 
       if (isConquestSport && distanceKm > 0.1 && user.intervalsApiKey) {
         logger.info(`[Intervals Webhook] Processing Guild Territory Activity...`);
@@ -125,38 +123,33 @@ export async function POST(request: NextRequest) {
         // Match the guild-based system: volume = distance in meters for now
         if (user.guildId) {
           await TerritoryService.recordGuildActivity(user.guildId, distanceMeters);
-          logger.info(`[Intervals Webhook] Recorded ${distanceMeters} volume for Guild ${user.guildId}`);
+          logger.info(
+            `[Intervals Webhook] Recorded ${distanceMeters} volume for Guild ${user.guildId}`
+          );
         }
       }
     } else {
-      logger.info(
-        `[Intervals Webhook] Skipping non-cardio activity type: ${activity.type}`,
-      );
+      logger.info(`[Intervals Webhook] Skipping non-cardio activity type: ${activity.type}`);
     }
 
     // 4. Trigger Oracle Recalculation
-    logger.info("[Intervals Webhook] Triggering Oracle recalculation...");
+    logger.info('[Intervals Webhook] Triggering Oracle recalculation...');
     // OracleService.recalculate(user.id); // Assuming OracleService has a recalculate method
 
     // 5. Award Rewards
     if (user) {
       await ProgressionService.awardGold(user.id, 15);
       await ProgressionService.addExperience(user.id, 100);
-      logger.info(
-        `[Intervals Webhook] Rewards awarded to ${user.id}: 15g, 100xp`,
-      );
+      logger.info(`[Intervals Webhook] Rewards awarded to ${user.id}: 15g, 100xp`);
     }
 
     // 6. Success
     return NextResponse.json(
-      { success: true, message: "Activity processed & Rewards awarded" },
-      { status: 200 },
+      { success: true, message: 'Activity processed & Rewards awarded' },
+      { status: 200 }
     );
   } catch (error: any) {
     logger.error({ err: error }, `[Intervals Webhook] Error: ${error.message}`);
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

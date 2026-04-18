@@ -1,16 +1,9 @@
-"use client";
+'use client';
 
-import React from "react";
-import { useSkills } from "../context/SkillContext";
-import {
-  Shield,
-  Wind,
-  TrendingUp,
-  Zap,
-  Sparkles,
-  Check,
-} from "lucide-react";
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion';
+import { Check, Shield, Sparkles, TrendingUp, Wind, Zap } from 'lucide-react';
+import type React from 'react';
+import { useSkills } from '../context/SkillContext';
 
 const PATH_ICONS: Record<string, React.ReactNode> = {
   juggernaut: <Shield size={16} />,
@@ -21,11 +14,11 @@ const PATH_ICONS: Record<string, React.ReactNode> = {
 };
 
 const PATH_COLORS: Record<string, string> = {
-  juggernaut: "bg-red-600",
-  engine: "bg-cyan-500",
-  warden: "bg-green-500",
-  titan: "bg-orange-500",
-  sage: "bg-purple-500",
+  juggernaut: 'bg-red-600',
+  engine: 'bg-cyan-500',
+  warden: 'bg-green-500',
+  titan: 'bg-orange-500',
+  sage: 'bg-purple-500',
 };
 
 export const PathProgressWidget: React.FC = () => {
@@ -39,9 +32,7 @@ export const PathProgressWidget: React.FC = () => {
   if (sortedPaths.length === 0) {
     return (
       <div className="p-4 bg-zinc-900/50 border border-zinc-800 rounded-xl">
-        <p className="text-zinc-500 text-xs text-center">
-          No active path progress
-        </p>
+        <p className="text-zinc-500 text-xs text-center">No active path progress</p>
       </div>
     );
   }
@@ -58,15 +49,13 @@ export const PathProgressWidget: React.FC = () => {
             <div className="flex justify-between items-center mb-1">
               <div className="flex items-center gap-2 text-zinc-300">
                 <span
-                  className={`p-1 rounded bg-zinc-900 ${activeKeystoneId?.includes(path) ? "text-yellow-500" : ""}`}
+                  className={`p-1 rounded bg-zinc-900 ${activeKeystoneId?.includes(path) ? 'text-yellow-500' : ''}`}
                 >
                   {PATH_ICONS[path]}
                 </span>
                 <span className="text-xs font-bold uppercase">{path}</span>
               </div>
-              <span className="text-xs font-mono text-zinc-500">
-                {Math.round(progress)}%
-              </span>
+              <span className="text-xs font-mono text-zinc-500">{Math.round(progress)}%</span>
             </div>
 
             {/* Progress Bar */}
@@ -90,14 +79,9 @@ export const PathProgressWidget: React.FC = () => {
               <Check size={16} />
             </div>
             <div className="flex-1">
-              <div className="text-[10px] font-bold uppercase text-yellow-700">
-                Active Keystone
-              </div>
+              <div className="text-[10px] font-bold uppercase text-yellow-700">Active Keystone</div>
               <div className="text-xs font-bold">
-                {activeKeystoneId
-                  .replace("keystone_", "")
-                  .replace("_", " ")
-                  .toUpperCase()}
+                {activeKeystoneId.replace('keystone_', '').replace('_', ' ').toUpperCase()}
               </div>
             </div>
           </div>

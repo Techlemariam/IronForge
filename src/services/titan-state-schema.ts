@@ -1,22 +1,24 @@
-"use server";
+'use server';
 
-import { prisma } from "@/lib/prisma";
-import { z } from "zod";
+import { prisma } from '@/lib/prisma';
+import { z } from 'zod';
 
 // ============================================
 // UNIFIED TITAN SOUL - STATE SCHEMA
 // Authoritative server-side Titan state management
 // ============================================
 
-import { TitanStateSchema, TitanMutationSchema, type TitanState, type TitanMutation } from "@/types/schemas";
-
+import {
+  type TitanMutation,
+  TitanMutationSchema,
+  type TitanState,
+  TitanStateSchema,
+} from '@/types/schemas';
 
 /**
  * Get authoritative Titan state from server.
  */
-export async function getAuthoritativeTitanState(
-  userId: string,
-): Promise<TitanState | null> {
+export async function getAuthoritativeTitanState(userId: string): Promise<TitanState | null> {
   const user = await prisma.user.findUnique({
     where: { id: userId },
     include: { titan: true },
@@ -32,7 +34,7 @@ export async function getAuthoritativeTitanState(
     version: 1,
     lastModified: new Date(),
     name: titan.name,
-    class: "TITAN" as TitanState["class"], // Default class since Titan model has no class field
+    class: 'TITAN' as TitanState['class'], // Default class since Titan model has no class field
     level: user.level,
     prestige: 0,
     stats: {

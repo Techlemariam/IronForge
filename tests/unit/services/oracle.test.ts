@@ -1,10 +1,10 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { getActivities, getWellness } from '@/lib/intervals';
+import prisma from '@/lib/prisma';
 import { OracleService } from '@/services/oracle';
-import prisma from "@/lib/prisma";
-import { getWellness, getActivities } from "@/lib/intervals";
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Mock dependencies
-vi.mock("@/lib/prisma", () => ({
+vi.mock('@/lib/prisma', () => ({
   default: {
     user: { findUnique: vi.fn() },
     cardioLog: { findMany: vi.fn() },
@@ -14,29 +14,28 @@ vi.mock("@/lib/prisma", () => ({
   },
 }));
 
-vi.mock("@/lib/intervals", () => ({
+vi.mock('@/lib/intervals', () => ({
   getWellness: vi.fn(),
   getActivities: vi.fn(),
 }));
 
-vi.mock("@/lib/hevy", () => ({
+vi.mock('@/lib/hevy', () => ({
   getHevyWorkouts: vi.fn(),
 }));
 
-vi.mock("@/services/game/EquipmentService", () => ({
+vi.mock('@/services/game/EquipmentService', () => ({
   EquipmentService: {
-    getUserCapabilities: vi.fn().mockResolvedValue(["BARBELL", "MACHINE"])
-  }
+    getUserCapabilities: vi.fn().mockResolvedValue(['BARBELL', 'MACHINE']),
+  },
 }));
 
-
-describe("OracleService V3", () => {
+describe('OracleService V3', () => {
   const mockUser = {
-    id: "u1",
-    intervalsApiKey: "key",
-    intervalsAthleteId: "id",
+    id: 'u1',
+    intervalsApiKey: 'key',
+    intervalsAthleteId: 'id',
     titan: { isInjured: false },
-    activePath: "WARDEN"
+    activePath: 'WARDEN',
   };
 
   beforeEach(() => {
@@ -48,52 +47,52 @@ describe("OracleService V3", () => {
     (prisma.user.findUnique as any).mockResolvedValue(mockUser);
   });
 
-  it("should return V3 structure with codes", async () => {
+  it('should return V3 structure with codes', async () => {
     (getWellness as any).mockResolvedValue({ bodyBattery: 50, sleepScore: 50 });
-    const decree = await OracleService.generateDailyDecree("u1");
+    const decree = await OracleService.generateDailyDecree('u1');
     expect(decree.code).toBeDefined();
     expect(decree.actions).toBeDefined();
-    expect(decree.code).toBe("BASELINE_GRIND");
+    expect(decree.code).toBe('BASELINE_GRIND');
   });
 
-  it("should return INJURY_PRESERVATION if injured", async () => {
+  it('should return INJURY_PRESERVATION if injured', async () => {
     (prisma.user.findUnique as any).mockResolvedValue({
       ...mockUser,
       titan: { isInjured: true },
     });
 
-    const decree = await OracleService.generateDailyDecree("u1");
+    const decree = await OracleService.generateDailyDecree('u1');
 
-    expect(decree.code).toBe("INJURY_PRESERVATION");
-    expect(decree.actions.lockFeatures).toContain("HEAVY_LIFT");
-    expect(decree.actions.urgency).toBe("HIGH");
+    expect(decree.code).toBe('INJURY_PRESERVATION');
+    expect(decree.actions.lockFeatures).toContain('HEAVY_LIFT');
+    expect(decree.actions.urgency).toBe('HIGH');
   });
 
-  it("should return REST_FORCED if bio-metrics are critical", async () => {
+  it('should return REST_FORCED if bio-metrics are critical', async () => {
     (getWellness as any).mockResolvedValue({ bodyBattery: 20 }); // Low
-    const decree = await OracleService.generateDailyDecree("u1");
+    const decree = await OracleService.generateDailyDecree('u1');
 
-    expect(decree.code).toBe("REST_FORCED");
-    expect(decree.actions.lockFeatures).toContain("HEAVY_LIFT");
+    expect(decree.code).toBe('REST_FORCED');
+    expect(decree.actions.lockFeatures).toContain('HEAVY_LIFT');
   });
 
-  it("should return PVP_RALLY if duel ending soon", async () => {
+  it('should return PVP_RALLY if duel ending soon', async () => {
     (getWellness as any).mockResolvedValue({ bodyBattery: 50, sleepScore: 60 });
 
     // Mock Active Duel ending tomorrow
     (prisma.duelChallenge.findFirst as any).mockResolvedValue({
-      id: "d1",
+      id: 'd1',
       endDate: new Date(Date.now() + 24 * 60 * 60 * 1000), // 1 day left
       targetDistance: 50,
       challengerDistance: 40, // 10km gap from target
       defenderDistance: 40,
-      challengerId: "u1"
+      challengerId: 'u1',
     });
 
-    const decree = await OracleService.generateDailyDecree("u1");
+    const decree = await OracleService.generateDailyDecree('u1');
 
-    expect(decree.code).toBe("PVP_CRISIS");
-    expect(decree.actions.urgency).toBe("HIGH");
+    expect(decree.code).toBe('PVP_CRISIS');
+    expect(decree.actions.urgency).toBe('HIGH');
     expect(decree.actions.notifyUser).toBe(true);
   });
 });

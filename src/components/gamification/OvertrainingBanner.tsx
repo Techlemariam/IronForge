@@ -1,19 +1,16 @@
-"use client";
+'use client';
 
-import { useEffect, useState, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { AlertTriangle, X } from "lucide-react";
-import { checkOvertrainingStatusAction } from "@/actions/training/overtraining";
+import { checkOvertrainingStatusAction } from '@/actions/training/overtraining';
+import { AnimatePresence, motion } from 'framer-motion';
+import { AlertTriangle, X } from 'lucide-react';
+import { useCallback, useEffect, useState } from 'react';
 
 interface OvertrainingBannerProps {
   userId: string;
   onDismiss?: () => void;
 }
 
-export function OvertrainingBanner({
-  userId,
-  onDismiss,
-}: OvertrainingBannerProps) {
+export function OvertrainingBanner({ userId, onDismiss }: OvertrainingBannerProps) {
   const [warnings, setWarnings] = useState<string[]>([]);
   const [xpMultiplier, setXpMultiplier] = useState(1.0);
   const [dismissed, setDismissed] = useState(false);
@@ -68,10 +65,7 @@ export function OvertrainingBanner({
 
             <ul className="mt-2 space-y-1">
               {warnings.map((warning, i) => (
-                <li
-                  key={i}
-                  className="text-xs text-slate-300 flex items-start gap-2"
-                >
+                <li key={i} className="text-xs text-slate-300 flex items-start gap-2">
                   <span className="text-amber-500 mt-0.5">•</span>
                   {warning}
                 </li>

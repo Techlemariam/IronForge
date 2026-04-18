@@ -1,16 +1,9 @@
-"use client";
+'use client';
 
-import { useState, useEffect, useCallback } from "react";
+import { useCallback, useEffect, useState } from 'react';
 
-type WeatherType =
-  | "CLEAR"
-  | "RAIN"
-  | "STORM"
-  | "SNOW"
-  | "FOG"
-  | "SANDSTORM"
-  | "AURORA";
-type TimeOfDay = "DAWN" | "DAY" | "DUSK" | "NIGHT";
+type WeatherType = 'CLEAR' | 'RAIN' | 'STORM' | 'SNOW' | 'FOG' | 'SANDSTORM' | 'AURORA';
+type TimeOfDay = 'DAWN' | 'DAY' | 'DUSK' | 'NIGHT';
 
 interface WeatherState {
   type: WeatherType;
@@ -31,103 +24,103 @@ interface WeatherEffect {
 const WEATHER_EFFECTS: Record<WeatherType, WeatherEffect[]> = {
   CLEAR: [
     {
-      name: "Clear Skies",
-      description: "+10% XP gain",
-      modifier: { stat: "xpGain", value: 10 },
+      name: 'Clear Skies',
+      description: '+10% XP gain',
+      modifier: { stat: 'xpGain', value: 10 },
       isPositive: true,
     },
   ],
   RAIN: [
     {
-      name: "Slippery",
-      description: "-5% speed",
-      modifier: { stat: "speed", value: -5 },
+      name: 'Slippery',
+      description: '-5% speed',
+      modifier: { stat: 'speed', value: -5 },
       isPositive: false,
     },
     {
-      name: "Refreshing",
-      description: "+5% HP regen",
-      modifier: { stat: "hpRegen", value: 5 },
+      name: 'Refreshing',
+      description: '+5% HP regen',
+      modifier: { stat: 'hpRegen', value: 5 },
       isPositive: true,
     },
   ],
   STORM: [
     {
-      name: "Lightning Charge",
-      description: "+15% lightning damage",
-      modifier: { stat: "lightningDamage", value: 15 },
+      name: 'Lightning Charge',
+      description: '+15% lightning damage',
+      modifier: { stat: 'lightningDamage', value: 15 },
       isPositive: true,
     },
     {
-      name: "Treacherous",
-      description: "-10% accuracy",
-      modifier: { stat: "accuracy", value: -10 },
+      name: 'Treacherous',
+      description: '-10% accuracy',
+      modifier: { stat: 'accuracy', value: -10 },
       isPositive: false,
     },
   ],
   SNOW: [
     {
-      name: "Frozen Ground",
-      description: "-10% speed",
-      modifier: { stat: "speed", value: -10 },
+      name: 'Frozen Ground',
+      description: '-10% speed',
+      modifier: { stat: 'speed', value: -10 },
       isPositive: false,
     },
     {
-      name: "Ice Armor",
-      description: "+10% defense",
-      modifier: { stat: "defense", value: 10 },
+      name: 'Ice Armor',
+      description: '+10% defense',
+      modifier: { stat: 'defense', value: 10 },
       isPositive: true,
     },
   ],
   FOG: [
     {
-      name: "Obscured",
-      description: "-20% accuracy, +10% evasion",
-      modifier: { stat: "accuracy", value: -20 },
+      name: 'Obscured',
+      description: '-20% accuracy, +10% evasion',
+      modifier: { stat: 'accuracy', value: -20 },
       isPositive: false,
     },
   ],
   SANDSTORM: [
     {
-      name: "Blinding Sand",
-      description: "-15% accuracy",
-      modifier: { stat: "accuracy", value: -15 },
+      name: 'Blinding Sand',
+      description: '-15% accuracy',
+      modifier: { stat: 'accuracy', value: -15 },
       isPositive: false,
     },
     {
-      name: "Desert Fury",
-      description: "+10% damage",
-      modifier: { stat: "damage", value: 10 },
+      name: 'Desert Fury',
+      description: '+10% damage',
+      modifier: { stat: 'damage', value: 10 },
       isPositive: true,
     },
   ],
   AURORA: [
     {
-      name: "Celestial Blessing",
-      description: "+20% all stats",
-      modifier: { stat: "allStats", value: 20 },
+      name: 'Celestial Blessing',
+      description: '+20% all stats',
+      modifier: { stat: 'allStats', value: 20 },
       isPositive: true,
     },
   ],
 };
 
 const AMBIENT_COLORS: Record<WeatherType, Record<TimeOfDay, string>> = {
-  CLEAR: { DAWN: "#ffd4a8", DAY: "#87ceeb", DUSK: "#ff7e5f", NIGHT: "#1a1a2e" },
-  RAIN: { DAWN: "#a8c0d4", DAY: "#708090", DUSK: "#5a5a7a", NIGHT: "#1a1a28" },
-  STORM: { DAWN: "#6a7080", DAY: "#4a4a5a", DUSK: "#3a3a4a", NIGHT: "#0a0a1a" },
-  SNOW: { DAWN: "#e8f0f8", DAY: "#ffffff", DUSK: "#d8e0e8", NIGHT: "#c8d0d8" },
-  FOG: { DAWN: "#c8c8d0", DAY: "#b0b0b8", DUSK: "#989898", NIGHT: "#787888" },
+  CLEAR: { DAWN: '#ffd4a8', DAY: '#87ceeb', DUSK: '#ff7e5f', NIGHT: '#1a1a2e' },
+  RAIN: { DAWN: '#a8c0d4', DAY: '#708090', DUSK: '#5a5a7a', NIGHT: '#1a1a28' },
+  STORM: { DAWN: '#6a7080', DAY: '#4a4a5a', DUSK: '#3a3a4a', NIGHT: '#0a0a1a' },
+  SNOW: { DAWN: '#e8f0f8', DAY: '#ffffff', DUSK: '#d8e0e8', NIGHT: '#c8d0d8' },
+  FOG: { DAWN: '#c8c8d0', DAY: '#b0b0b8', DUSK: '#989898', NIGHT: '#787888' },
   SANDSTORM: {
-    DAWN: "#e8c878",
-    DAY: "#d8b858",
-    DUSK: "#c8a848",
-    NIGHT: "#8a6a38",
+    DAWN: '#e8c878',
+    DAY: '#d8b858',
+    DUSK: '#c8a848',
+    NIGHT: '#8a6a38',
   },
   AURORA: {
-    DAWN: "#88ff88",
-    DAY: "#88ffaa",
-    DUSK: "#aa88ff",
-    NIGHT: "#ff88aa",
+    DAWN: '#88ff88',
+    DAY: '#88ffaa',
+    DUSK: '#aa88ff',
+    NIGHT: '#ff88aa',
   },
 };
 
@@ -138,25 +131,16 @@ function getCurrentWeather(): WeatherState {
   const hour = new Date().getHours();
   const timeOfDay: TimeOfDay =
     hour >= 5 && hour < 8
-      ? "DAWN"
+      ? 'DAWN'
       : hour >= 8 && hour < 18
-        ? "DAY"
+        ? 'DAY'
         : hour >= 18 && hour < 21
-          ? "DUSK"
-          : "NIGHT";
+          ? 'DUSK'
+          : 'NIGHT';
 
   // Simulate weather based on time
-  const weatherTypes: WeatherType[] = [
-    "CLEAR",
-    "CLEAR",
-    "CLEAR",
-    "RAIN",
-    "STORM",
-    "SNOW",
-    "FOG",
-  ];
-  const randomWeather =
-    weatherTypes[Math.floor(Math.random() * weatherTypes.length)];
+  const weatherTypes: WeatherType[] = ['CLEAR', 'CLEAR', 'CLEAR', 'RAIN', 'STORM', 'SNOW', 'FOG'];
+  const randomWeather = weatherTypes[Math.floor(Math.random() * weatherTypes.length)];
 
   const intensity = 30 + Math.floor(Math.random() * 70);
 
@@ -188,7 +172,7 @@ export function useWeatherEffects() {
       () => {
         setWeather(getCurrentWeather());
       },
-      30 * 60 * 1000,
+      30 * 60 * 1000
     );
 
     return () => clearInterval(interval);
@@ -208,7 +192,7 @@ export function useWeatherEffects() {
         ambientColor: AMBIENT_COLORS[type][current.timeOfDay],
       });
     },
-    [weather],
+    [weather]
   );
 
   const getActiveModifiers = useCallback(() => {
@@ -236,13 +220,13 @@ export function useWeatherEffects() {
  */
 export function getWeatherParticleClass(type: WeatherType): string {
   const classes: Record<WeatherType, string> = {
-    CLEAR: "",
-    RAIN: "weather-rain",
-    STORM: "weather-storm",
-    SNOW: "weather-snow",
-    FOG: "weather-fog",
-    SANDSTORM: "weather-sand",
-    AURORA: "weather-aurora",
+    CLEAR: '',
+    RAIN: 'weather-rain',
+    STORM: 'weather-storm',
+    SNOW: 'weather-snow',
+    FOG: 'weather-fog',
+    SANDSTORM: 'weather-sand',
+    AURORA: 'weather-aurora',
   };
-  return classes[type] || "";
+  return classes[type] || '';
 }

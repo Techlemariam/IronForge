@@ -1,4 +1,4 @@
-import { LootTable, LootTableEntry, LootDrop } from "../types/loot";
+import type { LootDrop, LootTable, LootTableEntry } from '../types/loot';
 
 /**
  * LOOT ENGINE
@@ -11,10 +11,7 @@ import { LootTable, LootTableEntry, LootDrop } from "../types/loot";
  * @param rollModifier Optional multiplier for luck/rolls (default 1).
  * @returns Array of LootDrop instances.
  */
-export const rollLootTable = (
-  table: LootTable,
-  rollModifier: number = 1,
-): LootDrop[] => {
+export const rollLootTable = (table: LootTable, rollModifier = 1): LootDrop[] => {
   const drops: LootDrop[] = [];
   const totalRolls = Math.max(1, Math.round(table.rolls * rollModifier));
 
@@ -39,9 +36,7 @@ export const rollLootTable = (
  * Selects an item from a list based on weight.
  * Algorithms: Weighted Random Selection
  */
-const selectWeightedItem = (
-  entries: LootTableEntry[],
-): LootTableEntry | null => {
+const selectWeightedItem = (entries: LootTableEntry[]): LootTableEntry | null => {
   const totalWeight = entries.reduce((sum, entry) => sum + entry.weight, 0);
   let random = Math.random() * totalWeight;
 

@@ -1,7 +1,7 @@
-"use server";
+'use server';
 
-import { prisma } from "@/lib/prisma";
-import { revalidatePath } from "next/cache";
+import { prisma } from '@/lib/prisma';
+import { revalidatePath } from 'next/cache';
 
 interface StreakResult {
   success: boolean;
@@ -17,7 +17,7 @@ interface StreakResult {
  */
 export async function checkAndIncrementStreakAction(
   userId: string,
-  timezone: string = "UTC",
+  timezone = 'UTC'
 ): Promise<StreakResult> {
   try {
     const user = await prisma.user.findUnique({
@@ -39,12 +39,8 @@ export async function checkAndIncrementStreakAction(
     }
 
     const now = new Date();
-    const today = new Date(
-      now.toLocaleDateString("en-CA", { timeZone: timezone }),
-    );
-    const lastWorkout = user.lastLoginDate
-      ? new Date(user.lastLoginDate)
-      : null;
+    const today = new Date(now.toLocaleDateString('en-CA', { timeZone: timezone }));
+    const lastWorkout = user.lastLoginDate ? new Date(user.lastLoginDate) : null;
 
     let newStreak = user.loginStreak || 0;
     let streakMaintained = false;
@@ -56,10 +52,10 @@ export async function checkAndIncrementStreakAction(
       streakMaintained = true;
     } else {
       const lastWorkoutDay = new Date(
-        lastWorkout.toLocaleDateString("en-CA", { timeZone: timezone }),
+        lastWorkout.toLocaleDateString('en-CA', { timeZone: timezone })
       );
       const diffDays = Math.floor(
-        (today.getTime() - lastWorkoutDay.getTime()) / (1000 * 60 * 60 * 24),
+        (today.getTime() - lastWorkoutDay.getTime()) / (1000 * 60 * 60 * 24)
       );
 
       if (diffDays === 0) {
@@ -82,18 +78,18 @@ export async function checkAndIncrementStreakAction(
           try {
             await prisma.titan.update({
               where: { userId },
-              data: { mood: "DEPRESSED" },
+              data: { mood: 'DEPRESSED' },
             });
 
             // Make sure not to crash if NotificationService isn't available
-            const { NotificationService } = await import("@/services/notifications");
+            const { NotificationService } = await import('@/services/notifications');
             await NotificationService.create({
               userId,
-              type: "STREAK_BROKEN",
+              type: 'STREAK_BROKEN',
               message: `Your ${user.loginStreak}-day streak has been broken! Your Titan's mood dropped to DEPRESSED, reducing XP gains. Get back to work to recover.`,
             });
           } catch (err) {
-            console.error("Failed to apply streak penalty", err);
+            console.error('Failed to apply streak penalty', err);
           }
         }
 
@@ -125,14 +121,14 @@ export async function checkAndIncrementStreakAction(
 
     // Evaluate Physical Skills based on new data
     try {
-      const { PhysicalSkillService } = await import("@/services/physical-skills");
+      const { PhysicalSkillService } = await import('@/services/physical-skills');
       // Execute in background
       PhysicalSkillService.evaluateAndUnlockSkills(userId).catch(console.error);
     } catch (err) {
-      console.error("Failed to load PhysicalSkillService", err);
+      console.error('Failed to load PhysicalSkillService', err);
     }
 
-    revalidatePath("/dashboard");
+    revalidatePath('/dashboard');
 
     return {
       success: true,
@@ -142,7 +138,7 @@ export async function checkAndIncrementStreakAction(
       bonusXp: bonusXp > 0 ? bonusXp : undefined,
     };
   } catch (error) {
-    console.error("Error updating streak:", error);
+    console.error('Error updating streak:', error);
     return {
       success: false,
       currentStreak: 0,
@@ -173,14 +169,11 @@ export async function getStreakStatusAction(userId: string) {
     }
 
     const now = new Date();
-    const lastWorkout = user.lastLoginDate
-      ? new Date(user.lastLoginDate)
-      : null;
+    const lastWorkout = user.lastLoginDate ? new Date(user.lastLoginDate) : null;
 
     let isAtRisk = false;
     if (lastWorkout && user.loginStreak && user.loginStreak > 0) {
-      const hoursSinceLastWorkout =
-        (now.getTime() - lastWorkout.getTime()) / (1000 * 60 * 60);
+      const hoursSinceLastWorkout = (now.getTime() - lastWorkout.getTime()) / (1000 * 60 * 60);
       isAtRisk = hoursSinceLastWorkout > 20; // Less than 4 hours until streak breaks
     }
 
@@ -192,7 +185,7 @@ export async function getStreakStatusAction(userId: string) {
       isAtRisk,
     };
   } catch (error) {
-    console.error("Error fetching streak:", error);
+    console.error('Error fetching streak:', error);
     return {
       success: false,
       currentStreak: 0,

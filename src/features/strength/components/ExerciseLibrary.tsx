@@ -1,5 +1,5 @@
-import React, { useState, useMemo } from "react";
-import { Search, Plus, Dumbbell, ChevronRight } from "lucide-react";
+import { ChevronRight, Dumbbell, Plus, Search } from 'lucide-react';
+import React, { useState, useMemo } from 'react';
 
 interface ExerciseLibraryProps {
   onSelect: (exerciseId: string) => void;
@@ -9,70 +9,62 @@ interface ExerciseLibraryProps {
 // Mock Database - In real app, this comes from Prisma/API
 const EXERCISE_DB = [
   {
-    id: "ex_bench_press",
-    name: "Bench Press",
-    muscle: "Chest",
-    equipment: "Barbell",
+    id: 'ex_bench_press',
+    name: 'Bench Press',
+    muscle: 'Chest',
+    equipment: 'Barbell',
   },
   {
-    id: "ex_squat",
-    name: "Barbell Squat",
-    muscle: "Legs",
-    equipment: "Barbell",
+    id: 'ex_squat',
+    name: 'Barbell Squat',
+    muscle: 'Legs',
+    equipment: 'Barbell',
   },
-  { id: "ex_deadlift", name: "Deadlift", muscle: "Back", equipment: "Barbell" },
+  { id: 'ex_deadlift', name: 'Deadlift', muscle: 'Back', equipment: 'Barbell' },
   {
-    id: "ex_ohp",
-    name: "Overhead Press",
-    muscle: "Shoulders",
-    equipment: "Barbell",
+    id: 'ex_ohp',
+    name: 'Overhead Press',
+    muscle: 'Shoulders',
+    equipment: 'Barbell',
   },
-  { id: "ex_pullup", name: "Pull Up", muscle: "Back", equipment: "Bodyweight" },
-  { id: "ex_dip", name: "Dips", muscle: "Chest", equipment: "Bodyweight" },
+  { id: 'ex_pullup', name: 'Pull Up', muscle: 'Back', equipment: 'Bodyweight' },
+  { id: 'ex_dip', name: 'Dips', muscle: 'Chest', equipment: 'Bodyweight' },
   {
-    id: "ex_db_curl",
-    name: "Dumbbell Curl",
-    muscle: "Biceps",
-    equipment: "Dumbbell",
+    id: 'ex_db_curl',
+    name: 'Dumbbell Curl',
+    muscle: 'Biceps',
+    equipment: 'Dumbbell',
   },
   {
-    id: "ex_tricep_ext",
-    name: "Tricep Extension",
-    muscle: "Triceps",
-    equipment: "Cable",
+    id: 'ex_tricep_ext',
+    name: 'Tricep Extension',
+    muscle: 'Triceps',
+    equipment: 'Cable',
   },
 ];
 
-const MUSCLE_GROUPS = [
-  "All",
-  "Chest",
-  "Back",
-  "Legs",
-  "Shoulders",
-  "Arms",
-  "Core",
-];
+const MUSCLE_GROUPS = ['All', 'Chest', 'Back', 'Legs', 'Shoulders', 'Arms', 'Core'];
 
-import { createCustomExercise, getCustomExercises } from "@/features/strength/actions/custom-exercises";
+import {
+  createCustomExercise,
+  getCustomExercises,
+} from '@/features/strength/actions/custom-exercises';
 
-const ExerciseLibrary: React.FC<ExerciseLibraryProps> = ({
-  onSelect,
-  onClose,
-}) => {
-  const [search, setSearch] = useState("");
-  const [filter, setFilter] = useState("All");
+const ExerciseLibrary: React.FC<ExerciseLibraryProps> = ({ onSelect, onClose }) => {
+  const [search, setSearch] = useState('');
+  const [filter, setFilter] = useState('All');
   const [isCreating, setIsCreating] = useState(false);
   const [customExercises, setCustomExercises] = useState<any[]>([]);
 
   // Form State
-  const [newExName, setNewExName] = useState("");
-  const [newExMuscle, setNewExMuscle] = useState("Chest");
-  const [newExEquip, setNewExEquip] = useState("Barbell");
+  const [newExName, setNewExName] = useState('');
+  const [newExMuscle, setNewExMuscle] = useState('Chest');
+  const [newExEquip, setNewExEquip] = useState('Barbell');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   React.useEffect(() => {
     // Load custom exercises
-    getCustomExercises().then(data => setCustomExercises(data));
+    getCustomExercises().then((data) => setCustomExercises(data));
   }, []);
 
   const handleCreate = async () => {
@@ -80,13 +72,13 @@ const ExerciseLibrary: React.FC<ExerciseLibraryProps> = ({
     const newEx = await createCustomExercise({
       name: newExName,
       muscle: newExMuscle,
-      equipment: newExEquip
+      equipment: newExEquip,
     });
-    setCustomExercises(prev => [...prev, newEx]);
+    setCustomExercises((prev) => [...prev, newEx]);
     setIsCreating(false);
     setIsSubmitting(false);
     // Reset form
-    setNewExName("");
+    setNewExName('');
   };
 
   const allExercises = useMemo(() => {
@@ -95,10 +87,8 @@ const ExerciseLibrary: React.FC<ExerciseLibraryProps> = ({
 
   const filteredExercises = useMemo(() => {
     return allExercises.filter((ex) => {
-      const matchesSearch = ex.name
-        .toLowerCase()
-        .includes(search.toLowerCase());
-      const matchesFilter = filter === "All" || ex.muscle === filter || (ex.muscleGroup === filter); // Handle schema variance
+      const matchesSearch = ex.name.toLowerCase().includes(search.toLowerCase());
+      const matchesFilter = filter === 'All' || ex.muscle === filter || ex.muscleGroup === filter; // Handle schema variance
       return matchesSearch && matchesFilter;
     });
   }, [search, filter, allExercises]);
@@ -111,10 +101,7 @@ const ExerciseLibrary: React.FC<ExerciseLibraryProps> = ({
           <Dumbbell className="w-5 h-5 text-indigo-400" />
           Exercise Library
         </h2>
-        <button
-          onClick={onClose}
-          className="text-zinc-400 hover:text-white text-sm font-medium"
-        >
+        <button onClick={onClose} className="text-zinc-400 hover:text-white text-sm font-medium">
           Close
         </button>
       </div>
@@ -138,10 +125,11 @@ const ExerciseLibrary: React.FC<ExerciseLibraryProps> = ({
               key={group}
               onClick={() => setFilter(group)}
               className={`px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-colors
-                                ${filter === group
-                  ? "bg-indigo-600 text-white"
-                  : "bg-zinc-800 text-zinc-400 hover:bg-zinc-700"
-                }
+                                ${
+                                  filter === group
+                                    ? 'bg-indigo-600 text-white'
+                                    : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700'
+                                }
                             `}
             >
               {group}
@@ -159,7 +147,7 @@ const ExerciseLibrary: React.FC<ExerciseLibraryProps> = ({
             <label className="text-xs text-zinc-500">Name</label>
             <input
               value={newExName}
-              onChange={e => setNewExName(e.target.value)}
+              onChange={(e) => setNewExName(e.target.value)}
               className="w-full bg-black border border-zinc-800 rounded p-2 text-white"
               placeholder="e.g. Plate Pinch"
             />
@@ -170,17 +158,21 @@ const ExerciseLibrary: React.FC<ExerciseLibraryProps> = ({
               <label className="text-xs text-zinc-500">Muscle</label>
               <select
                 value={newExMuscle}
-                onChange={e => setNewExMuscle(e.target.value)}
+                onChange={(e) => setNewExMuscle(e.target.value)}
                 className="w-full bg-black border border-zinc-800 rounded p-2 text-white"
               >
-                {MUSCLE_GROUPS.filter(g => g !== "All").map(g => <option key={g} value={g}>{g}</option>)}
+                {MUSCLE_GROUPS.filter((g) => g !== 'All').map((g) => (
+                  <option key={g} value={g}>
+                    {g}
+                  </option>
+                ))}
               </select>
             </div>
             <div className="space-y-1">
               <label className="text-xs text-zinc-500">Equipment</label>
               <select
                 value={newExEquip}
-                onChange={e => setNewExEquip(e.target.value)}
+                onChange={(e) => setNewExEquip(e.target.value)}
                 className="w-full bg-black border border-zinc-800 rounded p-2 text-white"
               >
                 <option value="Barbell">Barbell</option>
@@ -193,9 +185,18 @@ const ExerciseLibrary: React.FC<ExerciseLibraryProps> = ({
           </div>
 
           <div className="flex gap-2 pt-2">
-            <button onClick={() => setIsCreating(false)} className="flex-1 bg-zinc-800 text-white rounded p-2 text-sm font-bold">Cancel</button>
-            <button onClick={handleCreate} disabled={!newExName || isSubmitting} className="flex-1 bg-magma text-white rounded p-2 text-sm font-bold disabled:opacity-50">
-              {isSubmitting ? "Saving..." : "Create Exercise"}
+            <button
+              onClick={() => setIsCreating(false)}
+              className="flex-1 bg-zinc-800 text-white rounded p-2 text-sm font-bold"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleCreate}
+              disabled={!newExName || isSubmitting}
+              className="flex-1 bg-magma text-white rounded p-2 text-sm font-bold disabled:opacity-50"
+            >
+              {isSubmitting ? 'Saving...' : 'Create Exercise'}
             </button>
           </div>
         </div>
@@ -213,10 +214,12 @@ const ExerciseLibrary: React.FC<ExerciseLibraryProps> = ({
                   <span className="bg-zinc-800 px-1.5 py-0.5 rounded">
                     {ex.muscle || ex.muscleGroup}
                   </span>
-                  <span className="bg-zinc-800 px-1.5 py-0.5 rounded">
-                    {ex.equipment}
-                  </span>
-                  {ex.isCustom && <span className="bg-indigo-900/50 text-indigo-400 px-1.5 py-0.5 rounded">Custom</span>}
+                  <span className="bg-zinc-800 px-1.5 py-0.5 rounded">{ex.equipment}</span>
+                  {ex.isCustom && (
+                    <span className="bg-indigo-900/50 text-indigo-400 px-1.5 py-0.5 rounded">
+                      Custom
+                    </span>
+                  )}
                 </div>
               </div>
               <ChevronRight className="w-5 h-5 text-zinc-600 group-hover:text-indigo-400" />

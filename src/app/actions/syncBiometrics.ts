@@ -1,8 +1,8 @@
-"use server";
+'use server';
 
-import { getAthleteSettings, getWellness } from "@/lib/intervals";
-import prisma from "@/lib/prisma";
-import { revalidatePath } from "next/cache";
+import { getAthleteSettings, getWellness } from '@/lib/intervals';
+import prisma from '@/lib/prisma';
+import { revalidatePath } from 'next/cache';
 
 export async function syncBiometrics(userId: string) {
   try {
@@ -11,16 +11,16 @@ export async function syncBiometrics(userId: string) {
     const athleteId = process.env.INTERVALS_ATHLETE_ID;
 
     if (!apiKey || !athleteId) {
-      throw new Error("Missing Intervals.icu credentials in environment");
+      throw new Error('Missing Intervals.icu credentials in environment');
     }
 
     // 1. Fetch data from Intervals
     const [settings, wellness] = await Promise.all([
       getAthleteSettings(apiKey, athleteId),
-      getWellness(new Date().toISOString().split("T")[0], apiKey, athleteId),
+      getWellness(new Date().toISOString().split('T')[0], apiKey, athleteId),
     ]);
 
-    if (!settings) throw new Error("Could not fetch Athlete Settings");
+    if (!settings) throw new Error('Could not fetch Athlete Settings');
 
     // 2. Prepare update payload
     const dataToUpdate: any = {
@@ -45,10 +45,10 @@ export async function syncBiometrics(userId: string) {
       data: dataToUpdate,
     });
 
-    revalidatePath("/dashboard");
+    revalidatePath('/dashboard');
     return { success: true, synced: dataToUpdate };
   } catch (error: any) {
-    console.error("Biometric Sync Failed:", error.message);
+    console.error('Biometric Sync Failed:', error.message);
     return { success: false, error: error.message };
   }
 }

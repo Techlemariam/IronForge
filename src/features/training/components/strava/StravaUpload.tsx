@@ -1,38 +1,36 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { uploadToStravaAction } from "@/actions/integrations/strava";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import ForgeInput from "@/components/ui/ForgeInput";
-import { Loader2, UploadCloud, CheckCircle, AlertCircle } from "lucide-react";
-import { toast } from "sonner";
+import { uploadToStravaAction } from '@/actions/integrations/strava';
+import ForgeInput from '@/components/ui/ForgeInput';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { AlertCircle, CheckCircle, Loader2, UploadCloud } from 'lucide-react';
+import { useState } from 'react';
+import { toast } from 'sonner';
 
 export default function StravaUpload() {
   const [isUploading, setIsUploading] = useState(false);
-  const [uploadStatus, setUploadStatus] = useState<
-    "idle" | "success" | "error"
-  >("idle");
+  const [uploadStatus, setUploadStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [uploadId, setUploadId] = useState<number | null>(null);
 
   async function handleUpload(formData: FormData) {
     setIsUploading(true);
-    setUploadStatus("idle");
+    setUploadStatus('idle');
 
     try {
       const result = await uploadToStravaAction(formData);
 
       if (result.success && result.uploadId) {
-        setUploadStatus("success");
+        setUploadStatus('success');
         setUploadId(result.uploadId);
         toast.success(`Upload started! ID: ${result.uploadId}`);
       } else {
-        setUploadStatus("error");
-        toast.error(result.error || "Upload failed");
+        setUploadStatus('error');
+        toast.error(result.error || 'Upload failed');
       }
     } catch {
-      setUploadStatus("error");
-      toast.error("An unexpected error occurred");
+      setUploadStatus('error');
+      toast.error('An unexpected error occurred');
     } finally {
       setIsUploading(false);
     }
@@ -43,9 +41,7 @@ export default function StravaUpload() {
       {/* Header */}
       <div className="flex items-center gap-2 mb-6 border-b border-forge-border pb-4">
         <UploadCloud className="w-6 h-6 text-magma" />
-        <h2 className="text-xl font-bold uppercase tracking-widest text-magma">
-          Messenger Tower
-        </h2>
+        <h2 className="text-xl font-bold uppercase tracking-widest text-magma">Messenger Tower</h2>
       </div>
 
       <form action={handleUpload} className="space-y-6">
@@ -74,11 +70,11 @@ export default function StravaUpload() {
               Transmitting...
             </>
           ) : (
-            "Upload to Strava"
+            'Upload to Strava'
           )}
         </Button>
 
-        {uploadStatus === "success" && (
+        {uploadStatus === 'success' && (
           <div className="p-4 bg-green-900/20 border border-green-800 rounded-lg flex items-start gap-3 text-green-400 text-sm animate-fade-in">
             <CheckCircle className="w-5 h-5 shrink-0 mt-0.5" />
             <div>
@@ -88,14 +84,12 @@ export default function StravaUpload() {
           </div>
         )}
 
-        {uploadStatus === "error" && (
+        {uploadStatus === 'error' && (
           <div className="p-4 bg-red-900/20 border border-red-800 rounded-lg flex items-start gap-3 text-red-400 text-sm animate-fade-in">
             <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
             <div>
               <p className="font-bold">Transmission Failed</p>
-              <p>
-                The signal was lost. Please check your connection and try again.
-              </p>
+              <p>The signal was lost. Please check your connection and try again.</p>
             </div>
           </div>
         )}
@@ -103,5 +97,3 @@ export default function StravaUpload() {
     </Card>
   );
 }
-
-

@@ -1,77 +1,77 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { renderHook, waitFor } from '@testing-library/react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Mock the server action at module level
 vi.mock('@/features/strength/actions/history', async (_importOriginal) => {
-    return {
-        getLastSetForExercise: vi.fn()
-    };
+  return {
+    getLastSetForExercise: vi.fn(),
+  };
 });
 
-import { useSetHistory } from '@/features/strength/hooks/useSetHistory';
 import { getLastSetForExercise } from '@/features/strength/actions/history';
+import { useSetHistory } from '@/features/strength/hooks/useSetHistory';
 
 const mockGetLastSet = getLastSetForExercise as ReturnType<typeof vi.fn>;
 
 describe('useSetHistory', () => {
-    beforeEach(() => {
-        vi.clearAllMocks();
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it('returns isLoading true initially', () => {
+    mockGetLastSet.mockResolvedValue(null);
+
+    const { result } = renderHook(() => useSetHistory('ex-123'));
+
+    expect(result.current.isLoading).toBe(true);
+    expect(result.current.history).toBeNull();
+  });
+
+  it('fetches and returns history data', async () => {
+    const mockData = { weight: 80, reps: 8 };
+    mockGetLastSet.mockResolvedValue(mockData);
+
+    const { result } = renderHook(() => useSetHistory('ex-123', 'Squat'));
+
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
     });
 
-    it('returns isLoading true initially', () => {
-        mockGetLastSet.mockResolvedValue(null);
+    expect(result.current.history).toEqual(mockData);
+    expect(mockGetLastSet).toHaveBeenCalledWith('ex-123', 'Squat');
+  });
 
-        const { result } = renderHook(() => useSetHistory('ex-123'));
+  it('handles null response gracefully', async () => {
+    mockGetLastSet.mockResolvedValue(null);
 
-        expect(result.current.isLoading).toBe(true);
-        expect(result.current.history).toBeNull();
+    const { result } = renderHook(() => useSetHistory('ex-123'));
+
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
     });
 
-    it('fetches and returns history data', async () => {
-        const mockData = { weight: 80, reps: 8 };
-        mockGetLastSet.mockResolvedValue(mockData);
+    expect(result.current.history).toBeNull();
+  });
 
-        const { result } = renderHook(() => useSetHistory('ex-123', 'Squat'));
+  it('handles fetch error gracefully', async () => {
+    mockGetLastSet.mockRejectedValue(new Error('Network Error'));
 
-        await waitFor(() => {
-            expect(result.current.isLoading).toBe(false);
-        });
+    const { result } = renderHook(() => useSetHistory('ex-123'));
 
-        expect(result.current.history).toEqual(mockData);
-        expect(mockGetLastSet).toHaveBeenCalledWith('ex-123', 'Squat');
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
     });
 
-    it('handles null response gracefully', async () => {
-        mockGetLastSet.mockResolvedValue(null);
+    expect(result.current.history).toBeNull();
+  });
 
-        const { result } = renderHook(() => useSetHistory('ex-123'));
+  it('skips fetch when exerciseId is empty', async () => {
+    const { result } = renderHook(() => useSetHistory(''));
 
-        await waitFor(() => {
-            expect(result.current.isLoading).toBe(false);
-        });
-
-        expect(result.current.history).toBeNull();
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
     });
 
-    it('handles fetch error gracefully', async () => {
-        mockGetLastSet.mockRejectedValue(new Error('Network Error'));
-
-        const { result } = renderHook(() => useSetHistory('ex-123'));
-
-        await waitFor(() => {
-            expect(result.current.isLoading).toBe(false);
-        });
-
-        expect(result.current.history).toBeNull();
-    });
-
-    it('skips fetch when exerciseId is empty', async () => {
-        const { result } = renderHook(() => useSetHistory(''));
-
-        await waitFor(() => {
-            expect(result.current.isLoading).toBe(false);
-        });
-
-        expect(mockGetLastSet).not.toHaveBeenCalled();
-    });
+    expect(mockGetLastSet).not.toHaveBeenCalled();
+  });
 });

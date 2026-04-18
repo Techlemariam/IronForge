@@ -1,8 +1,8 @@
-"use server";
+'use server';
 
-import prisma from "@/lib/prisma";
-import { createClient } from "@/utils/supabase/server";
-import { cache } from "react";
+import prisma from '@/lib/prisma';
+import { createClient } from '@/utils/supabase/server';
+import { cache } from 'react';
 
 export type BestiaryMonster = {
   id: string;
@@ -26,7 +26,7 @@ export const getBestiaryData = cache(async (): Promise<BestiaryMonster[]> => {
 
   // Fetch all monsters
   const allMonsters = await prisma.monster.findMany({
-    orderBy: { difficulty: "asc" }, // Or name? Let's use difficulty for now, maybe map difficulty text to number later if sorting matters
+    orderBy: { difficulty: 'asc' }, // Or name? Let's use difficulty for now, maybe map difficulty text to number later if sorting matters
   });
 
   // Fetch user's unlocked monsters (kills)

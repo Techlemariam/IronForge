@@ -1,8 +1,8 @@
-"use server";
+'use server';
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath } from 'next/cache';
 
-type ResourceType = "GOLD" | "ENERGY" | "MATERIALS" | "XP";
+type ResourceType = 'GOLD' | 'ENERGY' | 'MATERIALS' | 'XP';
 
 interface ResourceGenerator {
   id: string;
@@ -29,17 +29,15 @@ interface PassiveIncome {
 /**
  * Get passive income status.
  */
-export async function getPassiveIncomeAction(
-  _userId: string,
-): Promise<PassiveIncome> {
+export async function getPassiveIncomeAction(_userId: string): Promise<PassiveIncome> {
   const now = new Date();
 
   const generators: ResourceGenerator[] = [
     {
-      id: "gold-mine",
-      type: "GOLD",
-      name: "Gold Mine",
-      description: "Generates gold over time",
+      id: 'gold-mine',
+      type: 'GOLD',
+      name: 'Gold Mine',
+      description: 'Generates gold over time',
       level: 3,
       maxLevel: 10,
       baseProduction: 10,
@@ -50,10 +48,10 @@ export async function getPassiveIncomeAction(
       upgradeCost: { gold: 500, materials: 5 },
     },
     {
-      id: "energy-well",
-      type: "ENERGY",
-      name: "Energy Well",
-      description: "Restores energy over time",
+      id: 'energy-well',
+      type: 'ENERGY',
+      name: 'Energy Well',
+      description: 'Restores energy over time',
       level: 2,
       maxLevel: 10,
       baseProduction: 5,
@@ -64,10 +62,10 @@ export async function getPassiveIncomeAction(
       upgradeCost: { gold: 300, materials: 3 },
     },
     {
-      id: "material-quarry",
-      type: "MATERIALS",
-      name: "Material Quarry",
-      description: "Produces crafting materials",
+      id: 'material-quarry',
+      type: 'MATERIALS',
+      name: 'Material Quarry',
+      description: 'Produces crafting materials',
       level: 1,
       maxLevel: 10,
       baseProduction: 1,
@@ -110,19 +108,19 @@ export async function getPassiveIncomeAction(
  */
 export async function collectResourcesAction(
   userId: string,
-  generatorId: string,
+  generatorId: string
 ): Promise<{
   success: boolean;
   amountCollected: number;
   resourceType: ResourceType;
 }> {
   console.log(`Collected resources from ${generatorId}`);
-  revalidatePath("/resources");
+  revalidatePath('/resources');
 
   return {
     success: true,
     amountCollected: 120,
-    resourceType: "GOLD",
+    resourceType: 'GOLD',
   };
 }
 
@@ -130,10 +128,10 @@ export async function collectResourcesAction(
  * Collect all resources.
  */
 export async function collectAllResourcesAction(
-  userId: string,
+  userId: string
 ): Promise<Record<ResourceType, number>> {
   console.log(`Collected all resources for ${userId}`);
-  revalidatePath("/resources");
+  revalidatePath('/resources');
 
   return {
     GOLD: 120,
@@ -148,10 +146,10 @@ export async function collectAllResourcesAction(
  */
 export async function upgradeGeneratorAction(
   userId: string,
-  generatorId: string,
+  generatorId: string
 ): Promise<{ success: boolean; newLevel: number; newProduction: number }> {
   console.log(`Upgraded generator ${generatorId}`);
-  revalidatePath("/resources");
+  revalidatePath('/resources');
 
   return {
     success: true,

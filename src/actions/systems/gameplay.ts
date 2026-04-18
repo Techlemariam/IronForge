@@ -1,8 +1,8 @@
-"use server";
+'use server';
 
-import { createClient } from "@/utils/supabase/server";
-import { revalidatePath } from "next/cache";
-import prisma from "@/lib/prisma";
+import prisma from '@/lib/prisma';
+import { createClient } from '@/utils/supabase/server';
+import { revalidatePath } from 'next/cache';
 
 export type LootResult = {
   success: boolean;
@@ -22,7 +22,7 @@ export async function simulateLootDrop(): Promise<LootResult> {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return { success: false, message: "User not authenticated" };
+    return { success: false, message: 'User not authenticated' };
   }
 
   try {
@@ -33,7 +33,7 @@ export async function simulateLootDrop(): Promise<LootResult> {
     const roll = Math.random() * 100;
 
     if (roll > dropChance) {
-      return { success: false, message: "No loot this time." };
+      return { success: false, message: 'No loot this time.' };
     }
 
     const allItems = await prisma.item.findMany();
@@ -46,7 +46,7 @@ export async function simulateLootDrop(): Promise<LootResult> {
     const unownedItems = allItems.filter((i) => !ownedIds.has(i.id));
 
     if (unownedItems.length === 0) {
-      return { success: false, message: "All items unlocked!" };
+      return { success: false, message: 'All items unlocked!' };
     }
 
     const rarityWeights: Record<string, number> = {
@@ -62,8 +62,7 @@ export async function simulateLootDrop(): Promise<LootResult> {
       for (let i = 0; i < weight; i++) weightedPool.push(item);
     }
 
-    const selectedItem =
-      weightedPool[Math.floor(Math.random() * weightedPool.length)];
+    const selectedItem = weightedPool[Math.floor(Math.random() * weightedPool.length)];
 
     await prisma.userEquipment.create({
       data: {
@@ -74,10 +73,10 @@ export async function simulateLootDrop(): Promise<LootResult> {
     });
     // ---------------------------
 
-    revalidatePath("/armory");
+    revalidatePath('/armory');
     return {
       success: true,
-      message: "Loot Drop!",
+      message: 'Loot Drop!',
       item: {
         id: selectedItem.id,
         name: selectedItem.name,
@@ -86,7 +85,7 @@ export async function simulateLootDrop(): Promise<LootResult> {
       },
     };
   } catch (error) {
-    console.error("Loot Action Error:", error);
-    return { success: false, message: "System malfunction." };
+    console.error('Loot Action Error:', error);
+    return { success: false, message: 'System malfunction.' };
   }
 }

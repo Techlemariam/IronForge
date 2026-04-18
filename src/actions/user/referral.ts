@@ -1,10 +1,9 @@
-"use server";
+'use server';
 
-
-import { revalidatePath } from "next/cache";
+import { revalidatePath } from 'next/cache';
 
 interface ReferralReward {
-  type: "REFERRER" | "REFERRED";
+  type: 'REFERRER' | 'REFERRED';
   xp: number;
   gold: number;
   crateRarity?: string;
@@ -30,25 +29,25 @@ export async function getReferralStatsAction(_userId: string): Promise<{
   try {
     // MVP: Return sample data
     return {
-      code: "IRON2025",
+      code: 'IRON2025',
       referralCount: 3,
       pendingRewards: 0,
       totalEarned: { xp: 1500, gold: 750 },
       nextMilestone: {
         count: 5,
         reward: {
-          type: "REFERRER",
+          type: 'REFERRER',
           xp: 2000,
           gold: 1000,
-          crateRarity: "EPIC",
-          milestone: "Recruiter",
+          crateRarity: 'EPIC',
+          milestone: 'Recruiter',
         },
       },
     };
   } catch (error) {
-    console.error("Error getting referral stats:", error);
+    console.error('Error getting referral stats:', error);
     return {
-      code: "",
+      code: '',
       referralCount: 0,
       pendingRewards: 0,
       totalEarned: { xp: 0, gold: 0 },
@@ -61,7 +60,7 @@ export async function getReferralStatsAction(_userId: string): Promise<{
  */
 export async function applyReferralCodeAction(
   newUserId: string,
-  referralCode: string,
+  referralCode: string
 ): Promise<{
   success: boolean;
   referrerReward?: ReferralReward;
@@ -77,23 +76,23 @@ export async function applyReferralCodeAction(
     console.log(`Applied referral code ${referralCode} for user ${newUserId}`);
 
     const referrerReward: ReferralReward = {
-      type: "REFERRER",
+      type: 'REFERRER',
       ...REFERRER_REWARDS.base,
     };
 
     const referredReward: ReferralReward = {
-      type: "REFERRED",
+      type: 'REFERRED',
       ...REFERRED_REWARDS,
     };
 
-    revalidatePath("/referrals");
+    revalidatePath('/referrals');
     return {
       success: true,
       referrerReward,
       referredReward,
     };
   } catch (error) {
-    console.error("Error applying referral code:", error);
+    console.error('Error applying referral code:', error);
     return { success: false };
   }
 }
@@ -102,14 +101,14 @@ export async function applyReferralCodeAction(
  * Get referral leaderboard.
  */
 export async function getReferralLeaderboardAction(
-  _limit: number = 10,
+  _limit = 10
 ): Promise<Array<{ rank: number; heroName: string; referralCount: number }>> {
   // MVP: Return sample leaderboard
   return [
-    { rank: 1, heroName: "RecruitMaster", referralCount: 47 },
-    { rank: 2, heroName: "SocialKing", referralCount: 35 },
-    { rank: 3, heroName: "GrowthHacker", referralCount: 28 },
-    { rank: 4, heroName: "TeamBuilder", referralCount: 22 },
-    { rank: 5, heroName: "NetworkPro", referralCount: 18 },
+    { rank: 1, heroName: 'RecruitMaster', referralCount: 47 },
+    { rank: 2, heroName: 'SocialKing', referralCount: 35 },
+    { rank: 3, heroName: 'GrowthHacker', referralCount: 28 },
+    { rank: 4, heroName: 'TeamBuilder', referralCount: 22 },
+    { rank: 5, heroName: 'NetworkPro', referralCount: 18 },
   ];
 }

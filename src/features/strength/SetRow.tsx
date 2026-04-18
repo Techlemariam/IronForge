@@ -1,19 +1,20 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from "react";
-import { SetData } from "@/actions/training/strength";
-import { CheckCircle, Circle } from "lucide-react";
-import { cn } from "@/lib/utils";
+import type { SetData } from '@/actions/training/strength';
+import { cn } from '@/lib/utils';
+import { CheckCircle, Circle } from 'lucide-react';
+import type React from 'react';
+import { useEffect, useState } from 'react';
 
 // Set types for different training techniques
-export type SetType = "normal" | "failure" | "dropset" | "warmup" | "myoreps";
+export type SetType = 'normal' | 'failure' | 'dropset' | 'warmup' | 'myoreps';
 
 const SET_TYPE_CONFIG: Record<SetType, { label: string; icon: string; color: string }> = {
-  normal: { label: "Normal", icon: "", color: "text-zinc-400" },
-  failure: { label: "Failure", icon: "🔥", color: "text-orange-500" },
-  dropset: { label: "Drop", icon: "⬇️", color: "text-blue-500" },
-  warmup: { label: "Warm", icon: "🌡️", color: "text-yellow-500" },
-  myoreps: { label: "Myo", icon: "⚡", color: "text-purple-500" },
+  normal: { label: 'Normal', icon: '', color: 'text-zinc-400' },
+  failure: { label: 'Failure', icon: '🔥', color: 'text-orange-500' },
+  dropset: { label: 'Drop', icon: '⬇️', color: 'text-blue-500' },
+  warmup: { label: 'Warm', icon: '🌡️', color: 'text-yellow-500' },
+  myoreps: { label: 'Myo', icon: '⚡', color: 'text-purple-500' },
 };
 
 interface SetRowProps {
@@ -40,7 +41,7 @@ export const SetRow: React.FC<SetRowProps> = ({
   const [reps, setReps] = useState(set.reps || 0);
   const [weight, setWeight] = useState(set.weight || 0);
   const [rpe, setRpe] = useState(set.rpe || 8);
-  const [setType, setSetType] = useState<SetType>((set.setType as SetType) || "normal");
+  const [setType, setSetType] = useState<SetType>((set.setType as SetType) || 'normal');
   const [showTypeMenu, setShowTypeMenu] = useState(false);
 
   // Sync local state if prop changes upstream
@@ -74,24 +75,19 @@ export const SetRow: React.FC<SetRowProps> = ({
   return (
     <div
       className={cn(
-        "grid grid-cols-12 gap-2 items-center p-2 rounded-md transition-colors relative",
-        set.completedAt ? "bg-green-500/10" : "bg-black/20"
+        'grid grid-cols-12 gap-2 items-center p-2 rounded-md transition-colors relative',
+        set.completedAt ? 'bg-green-500/10' : 'bg-black/20'
       )}
     >
       {/* Set Number + Type Indicator */}
       <div className="col-span-1 text-center relative">
         <button
           onClick={() => setShowTypeMenu(!showTypeMenu)}
-          className={cn(
-            "font-bold transition-colors",
-            currentTypeConfig.color
-          )}
+          className={cn('font-bold transition-colors', currentTypeConfig.color)}
           title={`Set Type: ${currentTypeConfig.label}`}
         >
           {currentTypeConfig.icon || displayIndex}
-          {!currentTypeConfig.icon && (
-            <span className="text-zinc-500">{displayIndex}</span>
-          )}
+          {!currentTypeConfig.icon && <span className="text-zinc-500">{displayIndex}</span>}
         </button>
 
         {/* Set Type Dropdown */}
@@ -102,11 +98,11 @@ export const SetRow: React.FC<SetRowProps> = ({
                 key={type}
                 onClick={() => handleSetTypeChange(type as SetType)}
                 className={cn(
-                  "w-full px-3 py-1.5 text-left text-xs hover:bg-zinc-700 transition-colors flex items-center gap-2",
-                  setType === type && "bg-zinc-700"
+                  'w-full px-3 py-1.5 text-left text-xs hover:bg-zinc-700 transition-colors flex items-center gap-2',
+                  setType === type && 'bg-zinc-700'
                 )}
               >
-                <span>{config.icon || "○"}</span>
+                <span>{config.icon || '○'}</span>
                 <span className={config.color}>{config.label}</span>
               </button>
             ))}
@@ -118,9 +114,9 @@ export const SetRow: React.FC<SetRowProps> = ({
       <div className="col-span-3 relative">
         <input
           type="number"
-          value={weight || ""}
-          onChange={(e) => setWeight(parseFloat(e.target.value) || 0)}
-          placeholder={lastPerformance ? `${lastPerformance.weight}kg` : "kg"}
+          value={weight || ''}
+          onChange={(e) => setWeight(Number.parseFloat(e.target.value) || 0)}
+          placeholder={lastPerformance ? `${lastPerformance.weight}kg` : 'kg'}
           className="w-full bg-transparent border-b border-white/10 text-center focus:border-magma focus:outline-none font-mono relative z-10"
         />
       </div>
@@ -129,12 +125,12 @@ export const SetRow: React.FC<SetRowProps> = ({
       <div className="col-span-3">
         <input
           type="number"
-          value={reps || ""}
-          onChange={(e) => setReps(parseFloat(e.target.value) || 0)}
-          placeholder={lastPerformance ? `${lastPerformance.reps}` : "reps"}
+          value={reps || ''}
+          onChange={(e) => setReps(Number.parseFloat(e.target.value) || 0)}
+          placeholder={lastPerformance ? `${lastPerformance.reps}` : 'reps'}
           className={cn(
-            "w-full bg-transparent border-b border-white/10 text-center focus:border-magma focus:outline-none font-mono",
-            setType === "failure" && "text-orange-400 font-bold"
+            'w-full bg-transparent border-b border-white/10 text-center focus:border-magma focus:outline-none font-mono',
+            setType === 'failure' && 'text-orange-400 font-bold'
           )}
         />
       </div>
@@ -143,8 +139,8 @@ export const SetRow: React.FC<SetRowProps> = ({
       <div className="col-span-3">
         <input
           type="number"
-          value={rpe || ""}
-          onChange={(e) => setRpe(parseFloat(e.target.value) || 0)}
+          value={rpe || ''}
+          onChange={(e) => setRpe(Number.parseFloat(e.target.value) || 0)}
           placeholder="RPE"
           className="w-full bg-transparent border-b border-white/10 text-center focus:border-magma focus:outline-none font-mono text-xs text-zinc-400"
         />
@@ -155,15 +151,11 @@ export const SetRow: React.FC<SetRowProps> = ({
         <button
           onClick={handleComplete}
           className={cn(
-            "transition-colors",
-            set.completedAt ? "text-green-500" : "text-zinc-500 hover:text-white"
+            'transition-colors',
+            set.completedAt ? 'text-green-500' : 'text-zinc-500 hover:text-white'
           )}
         >
-          {set.completedAt ? (
-            <CheckCircle className="w-5 h-5" />
-          ) : (
-            <Circle className="w-5 h-5" />
-          )}
+          {set.completedAt ? <CheckCircle className="w-5 h-5" /> : <Circle className="w-5 h-5" />}
         </button>
       </div>
     </div>

@@ -1,8 +1,8 @@
 // src/hooks/useRestTimer.ts
-"use client";
+'use client';
 
-import { create } from "zustand";
-import { persist, createJSONStorage } from "zustand/middleware";
+import { create } from 'zustand';
+import { createJSONStorage, persist } from 'zustand/middleware';
 
 interface RestTimerState {
   isActive: boolean;
@@ -71,10 +71,10 @@ export const useRestTimer = create<RestTimerState>()(
             set({ timeLeft: diff });
           }
         }
-      }
+      },
     }),
     {
-      name: "ironforge-rest-timer",
+      name: 'ironforge-rest-timer',
       storage: createJSONStorage(() => localStorage),
       // Only persist essential state to restore
       partialize: (state) => ({
@@ -82,7 +82,7 @@ export const useRestTimer = create<RestTimerState>()(
         endTime: state.endTime,
         initialSeconds: state.initialSeconds,
         totalSeconds: state.totalSeconds,
-        hasFinished: state.hasFinished
+        hasFinished: state.hasFinished,
       }),
     }
   )

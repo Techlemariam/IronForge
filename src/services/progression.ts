@@ -1,6 +1,6 @@
-import prisma from "@/lib/prisma";
-import { ACHIEVEMENTS } from "../data/static";
-import { calculateWilks } from "@/utils/wilks";
+import prisma from '@/lib/prisma';
+import { calculateWilks } from '@/utils/wilks';
+import { ACHIEVEMENTS } from '../data/static';
 
 /**
  * Progression Service (Server-Side)
@@ -38,26 +38,26 @@ export const ProgressionService = {
   /**
    * Awards Experience to a user and handles leveling.
    */
-  async addExperience(userId: string, amount: number, triggerLoot: boolean = false) {
+  async addExperience(userId: string, amount: number, triggerLoot = false) {
     const user = await prisma.user.findUnique({
       where: { id: userId },
       select: { totalExperience: true, level: true, titan: true, guildId: true },
     });
 
-    if (!user) throw new Error("User not found");
+    if (!user) throw new Error('User not found');
 
     let finalAmount = amount;
 
     // Apply Guild Territory Bonus
     if (user.guildId) {
       try {
-        const { getGuildTerritoryBonusesAction } = await import("@/actions/systems/territories");
+        const { getGuildTerritoryBonusesAction } = await import('@/actions/systems/territories');
         const bonuses = await getGuildTerritoryBonusesAction(user.guildId);
         if (bonuses.xpBonus > 0) {
           finalAmount = Math.floor(finalAmount * (1 + bonuses.xpBonus));
         }
       } catch (e) {
-        console.error("Failed to apply guild XP bonus:", e);
+        console.error('Failed to apply guild XP bonus:', e);
       }
     }
 
@@ -103,7 +103,7 @@ export const ProgressionService = {
 
     let lootDrop = null;
     if (triggerLoot) {
-      const { LootService } = await import("./loot");
+      const { LootService } = await import('./loot');
       lootDrop = await LootService.rollWorkoutLoot(userId);
     }
 
@@ -185,24 +185,17 @@ export const ProgressionService = {
       select: { bodyWeight: true },
     });
 
-    if (!user) throw new Error("User not found");
+    if (!user) throw new Error('User not found');
 
     // 2. Find Best Lifts (e1rm)
     // We look for exercise names that distinctively match powerlifts
     // This is a naive heuristic; ideally we'd have semantic tags.
-    const bestSquat = await this.findBestLift(userId, [
-      "Squat",
-      "Back Squat",
-      "Low Bar Squat",
-    ]);
-    const bestBench = await this.findBestLift(userId, [
-      "Bench Press",
-      "Flat Barbell Bench Press",
-    ]);
+    const bestSquat = await this.findBestLift(userId, ['Squat', 'Back Squat', 'Low Bar Squat']);
+    const bestBench = await this.findBestLift(userId, ['Bench Press', 'Flat Barbell Bench Press']);
     const bestDeadlift = await this.findBestLift(userId, [
-      "Deadlift",
-      "Conventional Deadlift",
-      "Sumo Deadlift",
+      'Deadlift',
+      'Conventional Deadlift',
+      'Sumo Deadlift',
     ]);
 
     const total = bestSquat + bestBench + bestDeadlift;
@@ -215,7 +208,7 @@ export const ProgressionService = {
     const wilks = calculateWilks({
       weightLifted: total,
       bodyWeight: user.bodyWeight,
-      sex: "male",
+      sex: 'male',
     });
 
     // 4. Update PVP Profile
@@ -244,7 +237,7 @@ export const ProgressionService = {
       where: {
         userId,
         OR: exerciseNames.map((name) => ({
-          exerciseId: { contains: name, mode: "insensitive" },
+          exerciseId: { contains: name, mode: 'insensitive' },
         })),
       },
       select: { sets: true },
@@ -280,7 +273,7 @@ export const ProgressionService = {
     mood: string,
     subscriptionTier: string,
     decreeType?: string,
-    level: number = 999 // Default to high level (no bonus) if not provided
+    level = 999 // Default to high level (no bonus) if not provided
   ): number {
     let mult = 1.0;
 
@@ -288,17 +281,17 @@ export const ProgressionService = {
     mult += Math.min(streak * 0.01, 0.3);
 
     // Mood
-    if (["HAPPY", "FOCUSED"].includes(mood)) {
+    if (['HAPPY', 'FOCUSED'].includes(mood)) {
       mult += 0.1;
     }
 
     // Subscription
-    if (subscriptionTier === "PRO" || subscriptionTier === "LIFETIME") {
+    if (subscriptionTier === 'PRO' || subscriptionTier === 'LIFETIME') {
       mult += 0.2;
     }
 
     // Decree
-    if (decreeType === "BUFF") {
+    if (decreeType === 'BUFF') {
       mult += 0.3; // Reduced from 0.5 to reduce RNG dependency
     }
 
@@ -308,6 +301,6 @@ export const ProgressionService = {
       mult += 0.5; // +50% XP
     }
 
-    return parseFloat(mult.toFixed(2));
+    return Number.parseFloat(mult.toFixed(2));
   },
 };

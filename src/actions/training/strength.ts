@@ -1,8 +1,8 @@
-"use server";
+'use server';
 
-import { prisma } from "@/lib/prisma";
-import { revalidatePath } from "next/cache";
-import { z } from "zod";
+import { prisma } from '@/lib/prisma';
+import { revalidatePath } from 'next/cache';
+import { z } from 'zod';
 
 // --- Types & Schemas ---
 
@@ -14,12 +14,10 @@ const SetSchema = z.object({
   restSec: z.number().optional(),
   isWarmup: z.boolean().default(false),
   completedAt: z.string().optional(), // ISO date
-  setType: z.enum(["normal", "failure", "dropset", "warmup", "myoreps"]).optional(),
+  setType: z.enum(['normal', 'failure', 'dropset', 'warmup', 'myoreps']).optional(),
 });
 
 export type SetData = z.infer<typeof SetSchema>;
-
-
 
 // --- Actions ---
 
@@ -28,11 +26,7 @@ export type SetData = z.infer<typeof SetSchema>;
  * If a log exists for this exercise on this date, appends the set.
  * Otherwise creates a new log.
  */
-export async function logSetAction(
-  userId: string,
-  exerciseId: string,
-  set: SetData,
-) {
+export async function logSetAction(userId: string, exerciseId: string, set: SetData) {
   try {
     const validatedSet = SetSchema.parse(set);
     const today = new Date();
@@ -52,7 +46,7 @@ export async function logSetAction(
     });
 
     let logId = existingLog?.id;
-    let currentSets = (existingLog?.sets as SetData[]) || [];
+    const currentSets = (existingLog?.sets as SetData[]) || [];
 
     // 2. Add or Update Set
     // Check if set ID exists to update, otherwise append
@@ -99,20 +93,20 @@ export async function logSetAction(
     // 5. Check for Achievements
     let newAchievements: any[] = [];
     try {
-      const { checkAchievementsAction } = await import("@/actions/progression/achievements");
+      const { checkAchievementsAction } = await import('@/actions/progression/achievements');
       const result = await checkAchievementsAction(userId);
-      if (result && "newUnlocks" in result) {
+      if (result && 'newUnlocks' in result) {
         newAchievements = result.newUnlocks;
       }
     } catch (e) {
-      console.error("Achievement check failed:", e);
+      console.error('Achievement check failed:', e);
     }
 
     // 6. Guild Raid Integration (Boss Eraser)
     let raidDamageDealt = 0;
     if (validatedSet.rpe && validatedSet.rpe >= 9 && !validatedSet.isWarmup) {
       try {
-        const { contributeGuildDamageAction } = await import("@/actions/guild/core");
+        const { contributeGuildDamageAction } = await import('@/actions/guild/core');
         // Damage = Weight * Reps (Kinetic Force)
         const damage = Math.floor(validatedSet.weight * validatedSet.reps);
         if (damage > 0) {
@@ -122,24 +116,24 @@ export async function logSetAction(
           }
         }
       } catch (e) {
-        console.error("Guild Raid contribution failed:", e);
+        console.error('Guild Raid contribution failed:', e);
       }
     }
 
     // 7. Challenge & Quest Updates
     try {
-      const { processWorkoutLog } = await import("@/services/challengeService");
+      const { processWorkoutLog } = await import('@/services/challengeService');
       // We log volume (Weight * Reps) and Reps.
       // processWorkoutLog handles "Volume" and "Workout" quest counts via logic updates
       await processWorkoutLog(userId, validatedSet.weight, validatedSet.reps);
     } catch (e) {
-      console.error("Challenge update failed:", e);
+      console.error('Challenge update failed:', e);
     }
 
     return { success: true, logId, sets: currentSets, newAchievements, raidDamageDealt };
   } catch (error) {
-    console.error("Error logging set:", error);
-    return { success: false, error: "Failed to log set" };
+    console.error('Error logging set:', error);
+    return { success: false, error: 'Failed to log set' };
   }
 }
 
@@ -153,20 +147,20 @@ export async function finishWorkoutAction(userId: string, logIds: string[]) {
     const logs = await prisma.exerciseLog.findMany({
       where: {
         userId,
-        id: { in: logIds }
-      }
+        id: { in: logIds },
+      },
     });
 
     // 2. Award XP Modified by Intensity (Resource Cost Proxy)
     // 100kg Deadlift > 100kg Calf Raise.
     // We fetch the exercises to determine the multiplier.
-    const exerciseIds = Array.from(new Set(logs.map(l => l.exerciseId)));
+    const exerciseIds = Array.from(new Set(logs.map((l) => l.exerciseId)));
     const exercises = await prisma.exercise.findMany({
       where: { id: { in: exerciseIds } },
-      select: { id: true, muscleGroup: true }
+      select: { id: true, muscleGroup: true },
     });
 
-    const muscleMap = new Map(exercises.map(e => [e.id, e.muscleGroup]));
+    const muscleMap = new Map(exercises.map((e) => [e.id, e.muscleGroup]));
 
     // Multipliers based on CNS demand
     const TIER_1_MUSCLES = ['QUADS', 'BACK', 'CHEST', 'HAMSTRINGS', 'GLUTES']; // Large Compounds (1.2x)
@@ -175,7 +169,7 @@ export async function finishWorkoutAction(userId: string, logIds: string[]) {
 
     let weightedVolume = 0;
 
-    logs.forEach(log => {
+    logs.forEach((log) => {
       const sets = (log.sets as unknown as SetData[]) || [];
       const muscle = muscleMap.get(log.exerciseId)?.toUpperCase() || 'OTHER';
 
@@ -184,28 +178,28 @@ export async function finishWorkoutAction(userId: string, logIds: string[]) {
       else if (TIER_2_MUSCLES.includes(muscle)) multiplier = 1.0;
       else if (TIER_3_MUSCLES.includes(muscle)) multiplier = 0.8;
 
-      sets.forEach(set => {
-        weightedVolume += (set.weight * set.reps) * multiplier;
+      sets.forEach((set) => {
+        weightedVolume += set.weight * set.reps * multiplier;
       });
     });
 
     const xpAward = Math.floor(weightedVolume * 0.01);
 
     // 3. Execute Progression Updates
-    const { ProgressionService } = await import("@/services/progression");
+    const { ProgressionService } = await import('@/services/progression');
 
     if (xpAward > 0) {
       await ProgressionService.addExperience(userId, xpAward);
 
       // 3b. Award Battle Pass XP (50% of Base XP)
       try {
-        const { addBattlePassXpAction } = await import("@/actions/systems/battle-pass");
+        const { addBattlePassXpAction } = await import('@/actions/systems/battle-pass');
         const bpXp = Math.floor(xpAward * 0.5);
         if (bpXp > 0) {
           await addBattlePassXpAction(userId, bpXp);
         }
       } catch (e) {
-        console.error("Battle Pass update failed:", e);
+        console.error('Battle Pass update failed:', e);
       }
     }
 
@@ -215,27 +209,24 @@ export async function finishWorkoutAction(userId: string, logIds: string[]) {
     // 5. Refill Kinetic Energy (Guild Battery) - Part of Phase 2 but convenient here
     await prisma.user.update({
       where: { id: userId },
-      data: { kineticEnergy: { increment: 10 } }
+      data: { kineticEnergy: { increment: 10 } },
     });
 
-    revalidatePath("/dashboard");
+    revalidatePath('/dashboard');
     return { success: true, xpEarned: xpAward, goldEarned: 100 };
   } catch (error) {
-    console.error("Finish Workout Error:", error);
-    return { success: false, error: "Failed to finish workout" };
+    console.error('Finish Workout Error:', error);
+    return { success: false, error: 'Failed to finish workout' };
   }
 }
 
 /**
  * Get exercise history for charts
  */
-export async function getExerciseHistoryAction(
-  userId: string,
-  exerciseId: string,
-) {
+export async function getExerciseHistoryAction(userId: string, exerciseId: string) {
   const history = await prisma.exerciseLog.findMany({
     where: { userId, exerciseId },
-    orderBy: { date: "asc" },
+    orderBy: { date: 'asc' },
     take: 20,
   });
 
@@ -277,8 +268,8 @@ export async function searchExercisesAction(query: string) {
   const exercises = await prisma.exercise.findMany({
     where: {
       OR: [
-        { name: { contains: query, mode: "insensitive" } },
-        { muscleGroup: { contains: query, mode: "insensitive" } },
+        { name: { contains: query, mode: 'insensitive' } },
+        { muscleGroup: { contains: query, mode: 'insensitive' } },
       ],
     },
     take: 10,

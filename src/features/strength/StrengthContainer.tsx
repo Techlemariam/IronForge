@@ -1,18 +1,17 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import { StrengthLog } from "./StrengthLog";
-import { ExerciseSearch } from "./ExerciseSearch";
-import { RestTimer } from "./RestTimer";
-import { Dumbbell, ArrowLeft } from "lucide-react";
+import { ArrowLeft, Dumbbell } from 'lucide-react';
+import type React from 'react';
+import { useState } from 'react';
+import { ExerciseSearch } from './ExerciseSearch';
+import { RestTimer } from './RestTimer';
+import { StrengthLog } from './StrengthLog';
 
 interface StrengthContainerProps {
   userId: string;
 }
 
-export const StrengthContainer: React.FC<StrengthContainerProps> = ({
-  userId,
-}) => {
+export const StrengthContainer: React.FC<StrengthContainerProps> = ({ userId }) => {
   const [selectedExercise, setSelectedExercise] = useState<{
     id: string;
     name: string;
@@ -25,9 +24,7 @@ export const StrengthContainer: React.FC<StrengthContainerProps> = ({
           <h1 className="text-3xl font-black text-white italic uppercase tracking-tighter">
             Strength Log
           </h1>
-          <p className="text-zinc-400">
-            Track your lifts, set PRs, and become a Titan.
-          </p>
+          <p className="text-zinc-400">Track your lifts, set PRs, and become a Titan.</p>
         </div>
         <div className="hidden md:block">
           <RestTimer />
@@ -39,15 +36,11 @@ export const StrengthContainer: React.FC<StrengthContainerProps> = ({
           <div className="bg-white/5 p-4 rounded-full mb-6">
             <Dumbbell className="w-12 h-12 text-zinc-600" />
           </div>
-          <h2 className="text-xl font-bold text-white mb-2">
-            Select an Exercise
-          </h2>
+          <h2 className="text-xl font-bold text-white mb-2">Select an Exercise</h2>
           <p className="text-zinc-500 mb-6 text-center max-w-sm">
             Search for an exercise to begin logging your workout sets.
           </p>
-          <ExerciseSearch
-            onSelect={(id, name) => setSelectedExercise({ id, name })}
-          />
+          <ExerciseSearch onSelect={(id, name) => setSelectedExercise({ id, name })} />
         </div>
       ) : (
         <div className="space-y-6">
@@ -72,12 +65,8 @@ export const StrengthContainer: React.FC<StrengthContainerProps> = ({
                 <RestTimer />
               </div>
               <div className="bg-zinc-900 border border-white/5 rounded-xl p-4">
-                <h4 className="font-bold text-zinc-400 text-sm mb-2 uppercase">
-                  Exercise Stats
-                </h4>
-                <div className="text-xs text-zinc-600 italic">
-                  No history available yet.
-                </div>
+                <h4 className="font-bold text-zinc-400 text-sm mb-2 uppercase">Exercise Stats</h4>
+                <div className="text-xs text-zinc-600 italic">No history available yet.</div>
               </div>
             </div>
           </div>

@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import * as Sentry from "@sentry/nextjs";
-import { useEffect } from "react";
+import * as Sentry from '@sentry/nextjs';
+import { useEffect } from 'react';
 
 export default function GlobalError({
   error,
@@ -34,9 +34,7 @@ export default function GlobalError({
               />
             </svg>
           </div>
-          <h2 className="text-xl font-bold text-white mb-2">
-            Something went wrong!
-          </h2>
+          <h2 className="text-xl font-bold text-white mb-2">Something went wrong!</h2>
           <p className="text-slate-400 mb-6 text-sm">
             An unexpected error occurred. Our team has been notified.
             {error.digest && (

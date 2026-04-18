@@ -1,4 +1,3 @@
-
 const fs = require('fs');
 const path = require('path');
 
@@ -43,12 +42,12 @@ function processPaths(paths) {
       content += `### ${method.toUpperCase()} \`${route}\`\n\n`;
       if (details.summary) content += `**Summary:** ${details.summary}\n\n`;
       if (details.description) content += `> ${details.description}\n\n`;
-      
+
       if (details.parameters && details.parameters.length > 0) {
         content += '**Parameters:**\n\n';
         content += '| Name | In | Type | Required | Description |\n';
         content += '|------|----|------|----------|-------------|\n';
-        details.parameters.forEach(param => {
+        details.parameters.forEach((param) => {
           const type = param.schema ? param.schema.type : 'any';
           const required = param.required ? '✅' : '';
           const desc = param.description ? param.description.replace(/\n/g, ' ') : '';

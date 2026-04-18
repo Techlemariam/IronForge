@@ -1,8 +1,8 @@
-"use server";
+'use server';
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath } from 'next/cache';
 
-type WeeklyChallengeType = "COMMUNITY" | "GUILD" | "GLOBAL";
+type WeeklyChallengeType = 'COMMUNITY' | 'GUILD' | 'GLOBAL';
 
 interface WeeklyChallenge {
   id: string;
@@ -28,7 +28,7 @@ interface ChallengeTier {
 }
 
 interface WeeklyChallengeReward {
-  type: "XP" | "GOLD" | "CRATE" | "COSMETIC";
+  type: 'XP' | 'GOLD' | 'CRATE' | 'COSMETIC';
   name: string;
   value: number;
   tier: number;
@@ -37,9 +37,7 @@ interface WeeklyChallengeReward {
 /**
  * Get current weekly challenges.
  */
-export async function getWeeklyChallengesAction(
-  _userId: string,
-): Promise<WeeklyChallenge[]> {
+export async function getWeeklyChallengesAction(_userId: string): Promise<WeeklyChallenge[]> {
   const now = new Date();
   const weekEnd = new Date(now);
   weekEnd.setDate(weekEnd.getDate() + (7 - weekEnd.getDay()));
@@ -47,10 +45,10 @@ export async function getWeeklyChallengesAction(
 
   return [
     {
-      id: "wc1",
-      type: "COMMUNITY",
-      name: "Iron Uprising",
-      description: "Community goal: Lift 10,000,000 kg together!",
+      id: 'wc1',
+      type: 'COMMUNITY',
+      name: 'Iron Uprising',
+      description: 'Community goal: Lift 10,000,000 kg together!',
       goal: 10000000,
       currentProgress: 7250000,
       userContribution: 45000,
@@ -58,9 +56,9 @@ export async function getWeeklyChallengesAction(
       startsAt: new Date(now.setDate(now.getDate() - now.getDay())),
       endsAt: weekEnd,
       rewards: [
-        { type: "XP", name: "Community XP", value: 500, tier: 1 },
-        { type: "GOLD", name: "Bonus Gold", value: 250, tier: 2 },
-        { type: "CRATE", name: "Epic Crate", value: 1, tier: 3 },
+        { type: 'XP', name: 'Community XP', value: 500, tier: 1 },
+        { type: 'GOLD', name: 'Bonus Gold', value: 250, tier: 2 },
+        { type: 'CRATE', name: 'Epic Crate', value: 1, tier: 3 },
       ],
       tiers: [
         { level: 1, targetPercentage: 50, reached: true, rewardMultiplier: 1 },
@@ -80,10 +78,10 @@ export async function getWeeklyChallengesAction(
       isActive: true,
     },
     {
-      id: "wc2",
-      type: "GLOBAL",
-      name: "PR Week",
-      description: "Set personal records across all lifts",
+      id: 'wc2',
+      type: 'GLOBAL',
+      name: 'PR Week',
+      description: 'Set personal records across all lifts',
       goal: 5000,
       currentProgress: 3200,
       userContribution: 3,
@@ -91,8 +89,8 @@ export async function getWeeklyChallengesAction(
       startsAt: new Date(now.setDate(now.getDate() - now.getDay())),
       endsAt: weekEnd,
       rewards: [
-        { type: "XP", name: "PR Hunter XP", value: 1000, tier: 1 },
-        { type: "COSMETIC", name: "PR Crown", value: 1, tier: 3 },
+        { type: 'XP', name: 'PR Hunter XP', value: 1000, tier: 1 },
+        { type: 'COSMETIC', name: 'PR Crown', value: 1, tier: 3 },
       ],
       tiers: [
         { level: 1, targetPercentage: 33, reached: true, rewardMultiplier: 1 },
@@ -120,14 +118,14 @@ export async function getWeeklyChallengesAction(
 export async function contributeToWeeklyChallengeAction(
   userId: string,
   challengeId: string,
-  amount: number,
+  amount: number
 ): Promise<{ success: boolean; newProgress: number; tierReached?: number }> {
   try {
     console.log(`User ${userId} contributed ${amount} to ${challengeId}`);
-    revalidatePath("/weekly-challenges");
+    revalidatePath('/weekly-challenges');
     return { success: true, newProgress: 7250000 + amount };
   } catch (error) {
-    console.error("Error contributing:", error);
+    console.error('Error contributing:', error);
     return { success: false, newProgress: 0 };
   }
 }
@@ -137,19 +135,19 @@ export async function contributeToWeeklyChallengeAction(
  */
 export async function claimWeeklyChallengeRewardsAction(
   userId: string,
-  challengeId: string,
+  challengeId: string
 ): Promise<{ success: boolean; rewards: WeeklyChallengeReward[] }> {
   try {
     const rewards: WeeklyChallengeReward[] = [
-      { type: "XP", name: "Community XP", value: 500, tier: 1 },
-      { type: "GOLD", name: "Bonus Gold", value: 250, tier: 2 },
+      { type: 'XP', name: 'Community XP', value: 500, tier: 1 },
+      { type: 'GOLD', name: 'Bonus Gold', value: 250, tier: 2 },
     ];
 
     console.log(`Claimed rewards for ${challengeId}`);
-    revalidatePath("/weekly-challenges");
+    revalidatePath('/weekly-challenges');
     return { success: true, rewards };
   } catch (error) {
-    console.error("Error claiming rewards:", error);
+    console.error('Error claiming rewards:', error);
     return { success: false, rewards: [] };
   }
 }
@@ -159,13 +157,13 @@ export async function claimWeeklyChallengeRewardsAction(
  */
 export async function getWeeklyChallengeLeaderboardAction(
   _challengeId: string,
-  _limit: number = 10,
+  _limit = 10
 ): Promise<Array<{ rank: number; heroName: string; contribution: number }>> {
   return [
-    { rank: 1, heroName: "VolumeKing", contribution: 125000 },
-    { rank: 2, heroName: "IronGiant", contribution: 98000 },
-    { rank: 3, heroName: "MightLord", contribution: 87000 },
-    { rank: 4, heroName: "StormBreaker", contribution: 76000 },
-    { rank: 5, heroName: "You", contribution: 45000 },
+    { rank: 1, heroName: 'VolumeKing', contribution: 125000 },
+    { rank: 2, heroName: 'IronGiant', contribution: 98000 },
+    { rank: 3, heroName: 'MightLord', contribution: 87000 },
+    { rank: 4, heroName: 'StormBreaker', contribution: 76000 },
+    { rank: 5, heroName: 'You', contribution: 45000 },
   ];
 }

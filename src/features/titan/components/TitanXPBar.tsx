@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useRef } from "react";
-import { useCountUp } from "@/hooks/useCountUp";
-import { playSound } from "@/utils";
-import { Sparkles, ArrowUpCircle } from "lucide-react";
+import { useCountUp } from '@/hooks/useCountUp';
+import { playSound } from '@/utils';
+import { ArrowUpCircle, Sparkles } from 'lucide-react';
+import React, { useEffect, useState, useRef } from 'react';
 
 interface TitanXPBarProps {
   currentXP: number;
@@ -38,7 +38,7 @@ export function TitanXPBar({
   useEffect(() => {
     if (prevLevelRef.current < level) {
       setShowLevelUp(true);
-      playSound("ding");
+      playSound('ding');
       const t = setTimeout(() => setShowLevelUp(false), 4000); // Duration of animation
       return () => clearTimeout(t);
     }
@@ -53,14 +53,14 @@ export function TitanXPBar({
 
   // Elite Styles
   const barGradient = isElite
-    ? "bg-gradient-to-b from-yellow-200 via-white to-yellow-400 shadow-[0_0_20px_rgba(255,215,0,0.8)]"
+    ? 'bg-gradient-to-b from-yellow-200 via-white to-yellow-400 shadow-[0_0_20px_rgba(255,215,0,0.8)]'
     : isRested
-      ? "bg-gradient-to-b from-blue-500 via-blue-600 to-blue-800 shadow-[0_0_15px_rgba(59,130,246,0.5)]"
-      : "bg-gradient-to-b from-purple-500 via-purple-600 to-purple-800 shadow-[0_0_15px_rgba(147,51,234,0.5)]";
+      ? 'bg-gradient-to-b from-blue-500 via-blue-600 to-blue-800 shadow-[0_0_15px_rgba(59,130,246,0.5)]'
+      : 'bg-gradient-to-b from-purple-500 via-purple-600 to-purple-800 shadow-[0_0_15px_rgba(147,51,234,0.5)]';
 
   const containerBorder = isElite
-    ? "border-gold shadow-[0_0_10px_rgba(255,215,0,0.3)]"
-    : "border-zinc-700 shadow-[inset_0_2px_6px_rgba(0,0,0,1)]";
+    ? 'border-gold shadow-[0_0_10px_rgba(255,215,0,0.3)]'
+    : 'border-zinc-700 shadow-[inset_0_2px_6px_rgba(0,0,0,1)]';
 
   return (
     <div className="w-full font-serif relative">
@@ -84,9 +84,7 @@ export function TitanXPBar({
             <span className="text-2xl font-sans uppercase tracking-widest text-zinc-400">
               Titan Rank
             </span>
-            <span className="text-8xl font-black text-white text-shadow-gold">
-              {level}
-            </span>
+            <span className="text-8xl font-black text-white text-shadow-gold">{level}</span>
           </div>
 
           <div className="mt-8 px-6 py-2 border border-gold/50 bg-gold/10 rounded-full text-gold text-sm uppercase tracking-widest font-bold animate-pulse">
@@ -117,12 +115,12 @@ export function TitanXPBar({
       <div className="flex justify-between items-end mb-2 px-1">
         <div className="flex items-baseline gap-2">
           <span
-            className={`text-xs font-bold tracking-widest uppercase ${isElite ? "text-gold" : "text-zinc-500"}`}
+            className={`text-xs font-bold tracking-widest uppercase ${isElite ? 'text-gold' : 'text-zinc-500'}`}
           >
             Level
           </span>
           <span
-            className={`text-3xl font-black drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] ${isElite ? "text-white text-shadow-gold" : "text-white"}`}
+            className={`text-3xl font-black drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] ${isElite ? 'text-white text-shadow-gold' : 'text-white'}`}
           >
             {level}
           </span>
@@ -130,7 +128,7 @@ export function TitanXPBar({
 
         <div className="text-right">
           <span
-            className={`font-mono font-bold text-sm ${isElite ? "text-white" : isRested ? "text-blue-400" : "text-gold"}`}
+            className={`font-mono font-bold text-sm ${isElite ? 'text-white' : isRested ? 'text-blue-400' : 'text-gold'}`}
           >
             {animatedXP}
             <span className="text-zinc-500 mx-1">/</span>
@@ -157,7 +155,7 @@ export function TitanXPBar({
         >
           {/* Flash Effect on Gain - Enhanced Visibility */}
           <div
-            className={`absolute inset-0 bg-white z-20 transition-opacity duration-300 ${flash ? "opacity-80" : "opacity-0"}`}
+            className={`absolute inset-0 bg-white z-20 transition-opacity duration-300 ${flash ? 'opacity-80' : 'opacity-0'}`}
           />
 
           {/* Glass Gloss (Top Half) */}
@@ -178,9 +176,9 @@ export function TitanXPBar({
         {/* Centered Text Overlay */}
         <div className="absolute inset-0 flex items-center justify-center z-30 pointer-events-none">
           <span
-            className={`text-[9px] font-black uppercase tracking-[0.2em] drop-shadow-sm mix-blend-overlay ${isElite ? "text-black/60" : "text-white/40"}`}
+            className={`text-[9px] font-black uppercase tracking-[0.2em] drop-shadow-sm mix-blend-overlay ${isElite ? 'text-black/60' : 'text-white/40'}`}
           >
-            {isElite ? "MAXIMUM POWER" : "Titan Protocol"}
+            {isElite ? 'MAXIMUM POWER' : 'Titan Protocol'}
           </span>
         </div>
       </div>
@@ -188,11 +186,7 @@ export function TitanXPBar({
       {/* Footer Flavor Text */}
       <div className="flex justify-between mt-1 px-1">
         <span className="text-[10px] text-zinc-600 italic font-sans">
-          {isElite
-            ? "Legendary Status Active"
-            : isRested
-              ? "Rested (+200% XP)"
-              : "Grinding..."}
+          {isElite ? 'Legendary Status Active' : isRested ? 'Rested (+200% XP)' : 'Grinding...'}
         </span>
         {!isElite && (
           <span className="text-[10px] text-zinc-600 font-sans">

@@ -1,11 +1,11 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { logGauntletRunAction, getGauntletStatsAction } from "@/actions/training/gauntlet";
+import { getGauntletStatsAction, logGauntletRunAction } from '@/actions/training/gauntlet';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-vi.mock("next/cache", () => ({
+vi.mock('next/cache', () => ({
   revalidatePath: vi.fn(),
 }));
 
-vi.mock("@/utils/supabase/server", () => ({
+vi.mock('@/utils/supabase/server', () => ({
   createClient: vi.fn(() => ({
     auth: {
       getUser: vi.fn(),
@@ -13,10 +13,10 @@ vi.mock("@/utils/supabase/server", () => ({
   })),
 }));
 
-import { createClient } from "@/utils/supabase/server";
-import prisma from "@/lib/prisma";
+import prisma from '@/lib/prisma';
+import { createClient } from '@/utils/supabase/server';
 
-describe("Gauntlet Server Actions", () => {
+describe('Gauntlet Server Actions', () => {
   const mockSupabase = {
     auth: {
       getUser: vi.fn(),
@@ -32,8 +32,8 @@ describe("Gauntlet Server Actions", () => {
     (prisma.user.update as any).mockClear();
   });
 
-  describe("logGauntletRunAction", () => {
-    it("should throw error if not authenticated", async () => {
+  describe('logGauntletRunAction', () => {
+    it('should throw error if not authenticated', async () => {
       mockSupabase.auth.getUser.mockResolvedValue({ data: { user: null } });
 
       await expect(
@@ -41,23 +41,23 @@ describe("Gauntlet Server Actions", () => {
           wavesCleared: 5,
           totalDamage: 1000,
           duration: 300,
-        }),
-      ).rejects.toThrow("Unauthorized");
+        })
+      ).rejects.toThrow('Unauthorized');
     });
 
-    it("should log run and award rewards", async () => {
+    it('should log run and award rewards', async () => {
       mockSupabase.auth.getUser.mockResolvedValue({
-        data: { user: { id: "user-1", email: "test@test.com" } },
+        data: { user: { id: 'user-1', email: 'test@test.com' } },
       });
 
       (prisma.gauntletRun.create as any).mockResolvedValue({
-        id: "run-1",
+        id: 'run-1',
         wavesCleared: 10,
         totalDamage: 5000,
       });
 
       (prisma.user.update as any).mockResolvedValue({
-        id: "user-1",
+        id: 'user-1',
         totalExperience: 200,
       });
 
@@ -68,18 +68,18 @@ describe("Gauntlet Server Actions", () => {
       });
 
       expect(result.success).toBe(true);
-      expect(result.runId).toBe("run-1");
+      expect(result.runId).toBe('run-1');
       expect(result.rewards.xp).toBeGreaterThan(0);
       expect(result.rewards.gold).toBeGreaterThan(0);
       expect(result.rewards.kinetic).toBeGreaterThan(0);
     });
 
-    it("should calculate wave multiplier correctly", async () => {
+    it('should calculate wave multiplier correctly', async () => {
       mockSupabase.auth.getUser.mockResolvedValue({
-        data: { user: { id: "user-1" } },
+        data: { user: { id: 'user-1' } },
       });
 
-      (prisma.gauntletRun.create as any).mockResolvedValue({ id: "run-1" });
+      (prisma.gauntletRun.create as any).mockResolvedValue({ id: 'run-1' });
       (prisma.user.update as any).mockResolvedValue({});
 
       // 15 waves = 1 + floor(15/5)*0.1 = 1.3 multiplier
@@ -95,8 +95,8 @@ describe("Gauntlet Server Actions", () => {
     });
   });
 
-  describe("getGauntletStatsAction", () => {
-    it("should return null if not authenticated", async () => {
+  describe('getGauntletStatsAction', () => {
+    it('should return null if not authenticated', async () => {
       mockSupabase.auth.getUser.mockResolvedValue({ data: { user: null } });
 
       const result = await getGauntletStatsAction();
@@ -104,9 +104,9 @@ describe("Gauntlet Server Actions", () => {
       expect(result).toBeNull();
     });
 
-    it("should return best run stats", async () => {
+    it('should return best run stats', async () => {
       mockSupabase.auth.getUser.mockResolvedValue({
-        data: { user: { id: "user-1" } },
+        data: { user: { id: 'user-1' } },
       });
 
       (prisma.gauntletRun.findFirst as any).mockResolvedValue({
@@ -125,9 +125,9 @@ describe("Gauntlet Server Actions", () => {
       });
     });
 
-    it("should return zeros if no runs exist", async () => {
+    it('should return zeros if no runs exist', async () => {
       mockSupabase.auth.getUser.mockResolvedValue({
-        data: { user: { id: "user-1" } },
+        data: { user: { id: 'user-1' } },
       });
 
       (prisma.gauntletRun.findFirst as any).mockResolvedValue(null);
