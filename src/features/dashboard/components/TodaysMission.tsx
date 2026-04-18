@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import React from "react";
-import { motion } from "framer-motion";
-import { Play, Settings2, ShieldAlert, Zap } from "lucide-react";
+import { motion } from 'framer-motion';
+import { Play, Settings2, ShieldAlert, Zap } from 'lucide-react';
+import type React from 'react';
 
 interface TodaysMissionProps {
   missionTitle?: string;
@@ -15,10 +15,10 @@ interface TodaysMissionProps {
 }
 
 export const TodaysMission: React.FC<TodaysMissionProps> = ({
-  missionTitle = "BATTLE READY",
-  missionTime = "06:15",
-  equipmentSetup = "Red 8",
-  exerciseName = "Back Extension",
+  missionTitle = 'BATTLE READY',
+  missionTime = '06:15',
+  equipmentSetup = 'Red 8',
+  exerciseName = 'Back Extension',
   isQuietMode = false,
   onLaunch,
   onToggleMode,
@@ -45,11 +45,11 @@ export const TodaysMission: React.FC<TodaysMissionProps> = ({
           }}
           transition={{
             duration: 3,
-            repeat: Infinity,
-            ease: "easeInOut",
+            repeat: Number.POSITIVE_INFINITY,
+            ease: 'easeInOut',
           }}
           className={`absolute inset-0 rounded-full blur-2xl ${
-            isQuietMode ? "bg-emerald-500/20" : "bg-orange-600/30"
+            isQuietMode ? 'bg-emerald-500/20' : 'bg-orange-600/30'
           }`}
         />
 
@@ -57,9 +57,10 @@ export const TodaysMission: React.FC<TodaysMissionProps> = ({
           onClick={onLaunch}
           className={`
             relative z-10 w-48 h-48 rounded-full border-4 flex flex-col items-center justify-center transition-all duration-500
-            ${isQuietMode 
-              ? "bg-emerald-950/80 border-emerald-500 shadow-[0_0_30px_rgba(16,185,129,0.3)] hover:shadow-[0_0_50px_rgba(16,185,129,0.5)]" 
-              : "bg-orange-950/80 border-orange-600 shadow-[0_0_30px_rgba(234,88,12,0.3)] hover:shadow-[0_0_50px_rgba(234,88,12,0.5)]"
+            ${
+              isQuietMode
+                ? 'bg-emerald-950/80 border-emerald-500 shadow-[0_0_30px_rgba(16,185,129,0.3)] hover:shadow-[0_0_50px_rgba(16,185,129,0.5)]'
+                : 'bg-orange-950/80 border-orange-600 shadow-[0_0_30px_rgba(234,88,12,0.3)] hover:shadow-[0_0_50px_rgba(234,88,12,0.5)]'
             }
           `}
         >
@@ -68,7 +69,10 @@ export const TodaysMission: React.FC<TodaysMissionProps> = ({
             whileTap={{ scale: 0.9 }}
             className="flex flex-col items-center"
           >
-            <Play className={`w-12 h-12 mb-2 ${isQuietMode ? "text-emerald-400" : "text-orange-500"}`} fill="currentColor" />
+            <Play
+              className={`w-12 h-12 mb-2 ${isQuietMode ? 'text-emerald-400' : 'text-orange-500'}`}
+              fill="currentColor"
+            />
             <span className="text-xs font-mono font-bold tracking-widest text-white uppercase">
               Launch Sequence
             </span>
@@ -85,16 +89,16 @@ export const TodaysMission: React.FC<TodaysMissionProps> = ({
         <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-slate-600" />
 
         <div className="flex items-start gap-4">
-          <div className={`p-2 rounded bg-slate-800 ${isQuietMode ? "text-emerald-400" : "text-orange-500"}`}>
+          <div
+            className={`p-2 rounded bg-slate-800 ${isQuietMode ? 'text-emerald-400' : 'text-orange-500'}`}
+          >
             <Settings2 size={20} />
           </div>
           <div className="flex-1">
             <h3 className="text-slate-400 text-[10px] font-mono uppercase tracking-wider mb-1">
               Ready Setup: 01
             </h3>
-            <p className="text-lg font-bold text-white uppercase tracking-tight">
-              {exerciseName}
-            </p>
+            <p className="text-lg font-bold text-white uppercase tracking-tight">{exerciseName}</p>
             <div className="flex items-center gap-2 mt-2">
               <span className="px-2 py-0.5 rounded bg-red-950 text-red-500 text-[10px] font-mono font-bold border border-red-900/50">
                 SETTING: {equipmentSetup}
@@ -108,32 +112,40 @@ export const TodaysMission: React.FC<TodaysMissionProps> = ({
 
       {/* Mode Switcher */}
       <div className="flex items-center gap-4 w-full">
-        <button 
+        <button
           onClick={onToggleMode}
           className={`
             flex-1 p-3 rounded border text-[10px] font-mono uppercase tracking-widest transition-all
-            ${isQuietMode 
-              ? "bg-slate-900 border-emerald-500 text-emerald-400" 
-              : "bg-slate-950 border-slate-800 text-slate-500 hover:border-slate-700 hover:text-slate-300"
+            ${
+              isQuietMode
+                ? 'bg-slate-900 border-emerald-500 text-emerald-400'
+                : 'bg-slate-950 border-slate-800 text-slate-500 hover:border-slate-700 hover:text-slate-300'
             }
           `}
         >
-          {isQuietMode ? "Quiet Mode Active" : "Ready for Combat"}
+          {isQuietMode ? 'Quiet Mode Active' : 'Ready for Combat'}
         </button>
         <div className="flex gap-2">
-            <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <div className={`w-2 h-2 rounded-full ${isQuietMode ? "bg-slate-800" : "bg-orange-600 animate-pulse"}`} />
+          <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+          <div
+            className={`w-2 h-2 rounded-full ${isQuietMode ? 'bg-slate-800' : 'bg-orange-600 animate-pulse'}`}
+          />
         </div>
       </div>
 
       {/* Compliance Indicator */}
       <div className="flex justify-between w-full opacity-40">
         <div className="flex gap-1">
-          {[1,2,3,4,5,6].map(i => (
-            <div key={i} className={`w-3 h-1 ${i < 5 ? (isQuietMode ? 'bg-emerald-500' : 'bg-orange-600') : 'bg-slate-800'}`} />
+          {[1, 2, 3, 4, 5, 6].map((i) => (
+            <div
+              key={i}
+              className={`w-3 h-1 ${i < 5 ? (isQuietMode ? 'bg-emerald-500' : 'bg-orange-600') : 'bg-slate-800'}`}
+            />
           ))}
         </div>
-        <span className="text-[8px] font-mono text-slate-500 uppercase">AuDHD Optimization Unit v4.2</span>
+        <span className="text-[8px] font-mono text-slate-500 uppercase">
+          AuDHD Optimization Unit v4.2
+        </span>
       </div>
     </div>
   );

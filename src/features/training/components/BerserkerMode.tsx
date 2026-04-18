@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { m } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { playSound } from "../../../utils";
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { m } from 'framer-motion';
+import type React from 'react';
+import { useEffect, useState } from 'react';
+import { playSound } from '../../../utils';
 
 interface BerserkerModeProps {
   lastExerciseName: string;
@@ -11,15 +12,12 @@ interface BerserkerModeProps {
 
 const BERSERKER_DURATION = 15; // 15 seconds for intense AMRAP
 
-const BerserkerMode: React.FC<BerserkerModeProps> = ({
-  lastExerciseName,
-  onComplete,
-}) => {
-  const [reps, setReps] = useState<string>("");
+const BerserkerMode: React.FC<BerserkerModeProps> = ({ lastExerciseName, onComplete }) => {
+  const [reps, setReps] = useState<string>('');
   const [timeLeft, setTimeLeft] = useState(BERSERKER_DURATION);
 
   useEffect(() => {
-    playSound("loot_epic");
+    playSound('loot_epic');
     const timer = setInterval(() => {
       setTimeLeft((prevTime) => {
         if (prevTime <= 1) {
@@ -34,8 +32,8 @@ const BerserkerMode: React.FC<BerserkerModeProps> = ({
   }, []);
 
   const handleComplete = () => {
-    const finalReps = parseInt(reps, 10) || 0;
-    playSound("achievement");
+    const finalReps = Number.parseInt(reps, 10) || 0;
+    playSound('achievement');
     onComplete(finalReps);
   };
 
@@ -52,17 +50,12 @@ const BerserkerMode: React.FC<BerserkerModeProps> = ({
         <h2 className="font-heading text-4xl text-blood animate-pulse tracking-widest">
           BERSERKER MODE
         </h2>
-        <p className="font-mono text-rune mt-2">
-          Final set of {lastExerciseName}.
-        </p>
+        <p className="font-mono text-rune mt-2">Final set of {lastExerciseName}.</p>
         <p className="text-white text-lg mt-1">As Many Reps As Possible!</p>
 
         <div className="my-8">
           <div className="relative w-48 h-48 mx-auto flex items-center justify-center">
-            <svg
-              className="absolute inset-0 w-full h-full"
-              viewBox="0 0 100 100"
-            >
+            <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100">
               <circle
                 className="text-gray-800"
                 strokeWidth="5"
@@ -76,9 +69,7 @@ const BerserkerMode: React.FC<BerserkerModeProps> = ({
                 className="text-blood"
                 strokeWidth="5"
                 strokeDasharray={2 * Math.PI * 45}
-                strokeDashoffset={
-                  2 * Math.PI * 45 * (1 - progressPercentage / 100)
-                }
+                strokeDashoffset={2 * Math.PI * 45 * (1 - progressPercentage / 100)}
                 strokeLinecap="round"
                 fill="transparent"
                 r="45"
@@ -87,14 +78,13 @@ const BerserkerMode: React.FC<BerserkerModeProps> = ({
                 transform="rotate(-90 50 50)"
                 initial={{ strokeDashoffset: 2 * Math.PI * 45 }}
                 animate={{
-                  strokeDashoffset:
-                    2 * Math.PI * 45 * (1 - progressPercentage / 100),
+                  strokeDashoffset: 2 * Math.PI * 45 * (1 - progressPercentage / 100),
                 }}
-                transition={{ duration: 1, ease: "linear" }}
+                transition={{ duration: 1, ease: 'linear' }}
               />
             </svg>
             <span className="font-mono text-5xl text-whitetabular-nums">
-              {isTimerActive ? timeLeft : "0"}
+              {isTimerActive ? timeLeft : '0'}
             </span>
           </div>
           <p className="font-mono text-sm text-rune mt-2">TIME REMAINING</p>
@@ -118,11 +108,7 @@ const BerserkerMode: React.FC<BerserkerModeProps> = ({
               className="w-48 text-center bg-black border-2 border-gray-600 rounded-md p-2 text-2xl mb-4 focus:border-blood focus:outline-none"
               autoFocus
             />
-            <Button
-              onClick={handleComplete}
-              variant="magma"
-              className="px-10"
-            >
+            <Button onClick={handleComplete} variant="magma" className="px-10">
               Log Fury
             </Button>
           </m.div>
@@ -133,5 +119,3 @@ const BerserkerMode: React.FC<BerserkerModeProps> = ({
 };
 
 export default BerserkerMode;
-
-

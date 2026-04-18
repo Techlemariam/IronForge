@@ -1,10 +1,10 @@
-"use server";
+'use server';
 
-import { RECIPES, ITEMS } from "@/data/gameData";
-import { type UserInventory } from "@/types/game";
-import { CraftItemSchema } from "@/types/schemas";
-import { revalidatePath } from "next/cache";
-import { authActionClient } from "@/lib/safe-action";
+import { ITEMS, RECIPES } from '@/data/gameData';
+import { authActionClient } from '@/lib/safe-action';
+import type { UserInventory } from '@/types/game';
+import { CraftItemSchema } from '@/types/schemas';
+import { revalidatePath } from 'next/cache';
 
 /**
  * Mock Inventory for MVP (until DB schema is finalized)
@@ -22,22 +22,21 @@ async function getInventory(userId: string): Promise<UserInventory> {
     userId,
     gold: 500,
     items: [
-      { itemId: "item_iron_ore", count: 10 },
-      { itemId: "item_flux", count: 5 },
+      { itemId: 'item_iron_ore', count: 10 },
+      { itemId: 'item_flux', count: 5 },
     ],
   };
 }
 
-export const getInventoryAction = authActionClient
-  .action(async ({ ctx: { userId } }) => {
-    try {
-      const inventory = await getInventory(userId);
-      return { success: true, data: inventory };
-    } catch (error) {
-      console.error("Failed to fetch inventory:", error);
-      return { success: false, message: "Failed to load inventory" };
-    }
-  });
+export const getInventoryAction = authActionClient.action(async ({ ctx: { userId } }) => {
+  try {
+    const inventory = await getInventory(userId);
+    return { success: true, data: inventory };
+  } catch (error) {
+    console.error('Failed to fetch inventory:', error);
+    return { success: false, message: 'Failed to load inventory' };
+  }
+});
 
 export const craftItem = authActionClient
   .schema(CraftItemSchema)
@@ -45,7 +44,7 @@ export const craftItem = authActionClient
     try {
       const recipe = RECIPES.find((r) => r.id === recipeId);
       if (!recipe) {
-        return { success: false, message: "Recipe not found" };
+        return { success: false, message: 'Recipe not found' };
       }
 
       // 1. Get User Inventory
@@ -53,15 +52,14 @@ export const craftItem = authActionClient
 
       // 2. Validate Gold
       if (inventory.gold < recipe.goldCost) {
-        return { success: false, message: "Not enough gold" };
+        return { success: false, message: 'Not enough gold' };
       }
 
       // 3. Validate Materials
       for (const mat of recipe.materials) {
         const slot = inventory.items.find((i) => i.itemId === mat.itemId);
         if (!slot || slot.count < mat.count) {
-          const matName =
-            ITEMS.find((i) => i.id === mat.itemId)?.name || mat.itemId;
+          const matName = ITEMS.find((i) => i.id === mat.itemId)?.name || mat.itemId;
           return { success: false, message: `Missing materials: ${matName}` };
         }
       }
@@ -72,16 +70,12 @@ export const craftItem = authActionClient
         const slot = inventory.items.find((i) => i.itemId === mat.itemId)!;
         slot.count -= mat.count;
         if (slot.count <= 0) {
-          inventory.items = inventory.items.filter(
-            (i) => i.itemId !== mat.itemId,
-          );
+          inventory.items = inventory.items.filter((i) => i.itemId !== mat.itemId);
         }
       });
 
       // 5. Add Result
-      const resultSlot = inventory.items.find(
-        (i) => i.itemId === recipe.resultItemId,
-      );
+      const resultSlot = inventory.items.find((i) => i.itemId === recipe.resultItemId);
       if (resultSlot) {
         resultSlot.count += recipe.resultCount;
       } else {
@@ -94,14 +88,14 @@ export const craftItem = authActionClient
       // 6. Save (Mock)
       console.log(`[Forge] Crafted ${recipe.name} for ${userId}`);
 
-      revalidatePath("/dashboard");
+      revalidatePath('/dashboard');
       return {
         success: true,
         message: `Successfully crafted ${recipe.name}`,
         inventory,
       };
     } catch (error) {
-      console.error("Crafting error:", error);
-      return { success: false, message: "Server error during crafting" };
+      console.error('Crafting error:', error);
+      return { success: false, message: 'Server error during crafting' };
     }
   });

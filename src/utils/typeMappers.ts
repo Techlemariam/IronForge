@@ -1,18 +1,20 @@
 import {
-  Exercise as LegacyExercise,
-  WorkoutSet as LegacySet,
-} from "@/types/ironforge";
-import { Exercise as DomainExercise, Set as DomainSet, ExerciseLogic, BlockType } from "@/types";
+  BlockType,
+  type Exercise as DomainExercise,
+  type Set as DomainSet,
+  ExerciseLogic,
+} from '@/types';
+import type { Exercise as LegacyExercise, WorkoutSet as LegacySet } from '@/types/ironforge';
 
 // Converts Domain Set (new) to Legacy Set (old)
 export const mapDomainSetToLegacy = (set: DomainSet): LegacySet => {
   // Resolve reps: Domain uses 'reps' (number|string), Legacy uses 'targetReps' (number) + optional 'reps'
   let targetReps = 10;
-  if (typeof set.reps === "number") {
+  if (typeof set.reps === 'number') {
     targetReps = set.reps;
   } else {
     // Handle AMRAP strings or others by defaulting to 10 or parsing
-    const parsed = parseInt(set.reps as string);
+    const parsed = Number.parseInt(set.reps as string);
     if (!isNaN(parsed)) targetReps = parsed;
   }
 
@@ -31,22 +33,18 @@ export const mapDomainSetToLegacy = (set: DomainSet): LegacySet => {
   };
 };
 
-export const mapDomainExerciseToLegacy = (
-  ex: DomainExercise,
-): LegacyExercise => {
+export const mapDomainExerciseToLegacy = (ex: DomainExercise): LegacyExercise => {
   return {
     id: ex.id,
     name: ex.name,
-    hevyId: ex.hevyId || "",
+    hevyId: ex.hevyId || '',
     trainingMax: ex.trainingMax,
     notes: ex.notes,
     sets: ex.sets.map(mapDomainSetToLegacy),
   };
 };
 
-export const mapSessionToQuest = (
-  exercises: DomainExercise[] | undefined,
-): LegacyExercise[] => {
+export const mapSessionToQuest = (exercises: DomainExercise[] | undefined): LegacyExercise[] => {
   if (!exercises) return [];
   return exercises.map(mapDomainExerciseToLegacy);
 };
@@ -67,9 +65,7 @@ export const mapLegacySetToDomain = (set: LegacySet): DomainSet => {
   };
 };
 
-export const mapLegacyExerciseToDomain = (
-  ex: LegacyExercise,
-): DomainExercise => {
+export const mapLegacyExerciseToDomain = (ex: LegacyExercise): DomainExercise => {
   return {
     id: ex.id,
     name: ex.name,
@@ -83,15 +79,15 @@ export const mapLegacyExerciseToDomain = (
 
 export const mapQuestToSession = (
   exercises: LegacyExercise[],
-  title: string,
-): import("@/types").Session => {
+  title: string
+): import('@/types').Session => {
   return {
-    id: "active_session_" + Date.now(),
+    id: 'active_session_' + Date.now(),
     name: title,
     blocks: [
       {
-        id: "block_1",
-        name: "Main Block",
+        id: 'block_1',
+        name: 'Main Block',
         type: BlockType.STATION,
         exercises: exercises.map(mapLegacyExerciseToDomain),
       },

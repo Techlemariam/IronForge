@@ -1,10 +1,6 @@
-import { GoogleGenAI, Type } from "@google/genai";
-import {
-  IntervalsWellness,
-  TTBIndices,
-  Session,
-} from "../types";
-import { StorageService } from "./storage";
+import { GoogleGenAI, Type } from '@google/genai';
+import type { IntervalsWellness, Session, TTBIndices } from '../types';
+import { StorageService } from './storage';
 
 // The Spirit Guide Service
 // Uses Gemini to act as an AI Coach with RAG context
@@ -12,10 +8,10 @@ export const GeminiService = {
   async consultSpiritGuide(
     wellness: IntervalsWellness,
     ttb: TTBIndices,
-    _recentPrs: string[],
+    _recentPrs: string[]
   ): Promise<Session | null> {
     if (!process.env.API_KEY) {
-      console.warn("Gemini API Key missing. Spirit Guide dormant.");
+      console.warn('Gemini API Key missing. Spirit Guide dormant.');
       return null;
     }
 
@@ -23,11 +19,8 @@ export const GeminiService = {
     const history = await StorageService.getHistory();
     const recentLogs = history
       .slice(-20)
-      .map(
-        (h) =>
-          `Date: ${h.date.split("T")[0]}, Exercise: ${h.exerciseId}, e1RM: ${h.e1rm}kg`,
-      )
-      .join("\n");
+      .map((h) => `Date: ${h.date.split('T')[0]}, Exercise: ${h.exerciseId}, e1RM: ${h.e1rm}kg`)
+      .join('\n');
 
     const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
@@ -53,10 +46,10 @@ export const GeminiService = {
 
     try {
       const response = await ai.models.generateContent({
-        model: "gemini-1.5-flash",
+        model: 'gemini-1.5-flash',
         contents: prompt,
         config: {
-          responseMimeType: "application/json",
+          responseMimeType: 'application/json',
           responseSchema: {
             type: Type.OBJECT,
             properties: {
@@ -110,14 +103,14 @@ export const GeminiService = {
         },
       });
 
-      const sessionData = JSON.parse(response.text || "{}");
+      const sessionData = JSON.parse(response.text || '{}');
 
       return {
         ...sessionData,
         isGenerated: true,
       } as Session;
     } catch (error) {
-      console.error("The Spirit Guide is silent (Gemini Error):", error);
+      console.error('The Spirit Guide is silent (Gemini Error):', error);
       return null;
     }
   },
@@ -128,7 +121,7 @@ export const GeminiService = {
     wellness: IntervalsWellness;
     data?: unknown; // e.g. TTB, Auditor findings
   }): Promise<string> {
-    if (!process.env.API_KEY) return "The Spirits are silent (No API Key).";
+    if (!process.env.API_KEY) return 'The Spirits are silent (No API Key).';
 
     const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
@@ -147,13 +140,13 @@ export const GeminiService = {
 
     try {
       const response = await ai.models.generateContent({
-        model: "gemini-1.5-flash",
+        model: 'gemini-1.5-flash',
         contents: prompt,
       });
-      return response.text || "The Oracle nods in silence.";
+      return response.text || 'The Oracle nods in silence.';
     } catch (e) {
-      console.error("Oracle Generation Error", e);
-      return "The Oracle focuses on the data.";
+      console.error('Oracle Generation Error', e);
+      return 'The Oracle focuses on the data.';
     }
   },
 
@@ -173,9 +166,9 @@ export const GeminiService = {
       ttb: TTBIndices;
       intent: string; // e.g. "Hypertrophy", "Strength", "Peak Week"
       daysPerWeek: number;
-    },
+    }
   ): Promise<any> {
-    if (!process.env.API_KEY) throw new Error("No API Key");
+    if (!process.env.API_KEY) throw new Error('No API Key');
 
     const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
@@ -185,8 +178,8 @@ export const GeminiService = {
             User Profile:
             - Hero: ${userProfile.heroName} (Level ${userProfile.level})
             - Path: ${userProfile.trainingPath}
-            - Equipment: ${userProfile.equipment.join(", ")}
-            - Injuries: ${userProfile.injuries.join(", ") || "None"}
+            - Equipment: ${userProfile.equipment.join(', ')}
+            - Injuries: ${userProfile.injuries.join(', ') || 'None'}
 
             Context:
             - Intent: ${context.intent}
@@ -219,10 +212,10 @@ export const GeminiService = {
 
     try {
       const response = await ai.models.generateContent({
-        model: "gemini-1.5-flash",
+        model: 'gemini-1.5-flash',
         contents: prompt,
         config: {
-          responseMimeType: "application/json",
+          responseMimeType: 'application/json',
           responseSchema: {
             type: Type.OBJECT,
             properties: {
@@ -293,9 +286,9 @@ export const GeminiService = {
         },
       });
 
-      return JSON.parse(response.text || "{}");
+      return JSON.parse(response.text || '{}');
     } catch (error) {
-      console.error("Gemini Planning Error:", error);
+      console.error('Gemini Planning Error:', error);
       throw error;
     }
   },
@@ -306,22 +299,22 @@ export const GeminiService = {
   async chat(
     message: string,
     history: { role: string; content: string }[],
-    bioContext: string,
+    bioContext: string
   ): Promise<string> {
-    if (!process.env.API_KEY) return "The Spirits are silent (No API Key).";
+    if (!process.env.API_KEY) return 'The Spirits are silent (No API Key).';
 
     const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
     // Construct conversation history with correctly typed roles
-    const contents = history.map(h => ({
+    const contents = history.map((h) => ({
       role: h.role === 'user' ? 'user' : 'model',
-      parts: [{ text: h.content }]
+      parts: [{ text: h.content }],
     }));
 
     // Add current user message
     contents.push({
-      role: "user",
-      parts: [{ text: message }]
+      role: 'user',
+      parts: [{ text: message }],
     });
 
     const systemInstruction = `You are The Oracle, a mystical but scientifically grounded AI coach for IronForge.
@@ -336,16 +329,16 @@ export const GeminiService = {
 
     try {
       const result = await ai.models.generateContent({
-        model: "gemini-1.5-flash",
+        model: 'gemini-1.5-flash',
         contents: contents,
         config: {
           systemInstruction: systemInstruction,
-        }
+        },
       });
-      return result.text || "The Oracle remains silent.";
+      return result.text || 'The Oracle remains silent.';
     } catch (e) {
-      console.error("Oracle Chat Error:", e);
-      return "The connection to the Oracle is unstable.";
+      console.error('Oracle Chat Error:', e);
+      return 'The connection to the Oracle is unstable.';
     }
-  }
+  },
 };

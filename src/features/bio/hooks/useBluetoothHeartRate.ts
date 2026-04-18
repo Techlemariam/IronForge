@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 export const useBluetoothHeartRate = () => {
   const [bpm, setBpm] = useState<number | null>(null);
@@ -13,12 +13,12 @@ export const useBluetoothHeartRate = () => {
   useEffect(() => {
     return () => {
       if (deviceRef.current) {
-        console.log("Cleaning up Bluetooth Connection...");
+        console.log('Cleaning up Bluetooth Connection...');
         // Remove listener to prevent leaks
         if (disconnectHandlerRef.current) {
           deviceRef.current.removeEventListener(
-            "gattserverdisconnected",
-            disconnectHandlerRef.current,
+            'gattserverdisconnected',
+            disconnectHandlerRef.current
           );
         }
         // Disconnect GATT
@@ -34,22 +34,17 @@ export const useBluetoothHeartRate = () => {
       setError(null);
       // Request device with Heart Rate service
       const device = await (navigator as any).bluetooth.requestDevice({
-        filters: [{ services: ["heart_rate"] }],
+        filters: [{ services: ['heart_rate'] }],
       });
 
       deviceRef.current = device;
 
       const server = await device.gatt?.connect();
-      const service = await server?.getPrimaryService("heart_rate");
-      const characteristic = await service?.getCharacteristic(
-        "heart_rate_measurement",
-      );
+      const service = await server?.getPrimaryService('heart_rate');
+      const characteristic = await service?.getCharacteristic('heart_rate_measurement');
 
       await characteristic?.startNotifications();
-      characteristic?.addEventListener(
-        "characteristicvaluechanged",
-        handleHeartRateChanged,
-      );
+      characteristic?.addEventListener('characteristicvaluechanged', handleHeartRateChanged);
 
       setIsConnected(true);
 
@@ -60,10 +55,10 @@ export const useBluetoothHeartRate = () => {
       };
       disconnectHandlerRef.current = handleDisconnect;
 
-      device.addEventListener("gattserverdisconnected", handleDisconnect);
+      device.addEventListener('gattserverdisconnected', handleDisconnect);
     } catch (e: any) {
       console.error(e);
-      setError("Connection failed or cancelled.");
+      setError('Connection failed or cancelled.');
     }
   };
 
@@ -88,8 +83,7 @@ export const useBluetoothHeartRate = () => {
   const playTacticalPing = useCallback(() => {
     // Simple Web Audio API beep
     try {
-      const AudioContext =
-        window.AudioContext || (window as any).webkitAudioContext;
+      const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
       if (!AudioContext) return;
 
       const ctx = new AudioContext();
@@ -99,7 +93,7 @@ export const useBluetoothHeartRate = () => {
       osc.connect(gain);
       gain.connect(ctx.destination);
 
-      osc.type = "sine";
+      osc.type = 'sine';
       osc.frequency.setValueAtTime(880, ctx.currentTime); // High pitch A5
       osc.frequency.exponentialRampToValueAtTime(440, ctx.currentTime + 0.1);
 
@@ -109,7 +103,7 @@ export const useBluetoothHeartRate = () => {
       osc.start();
       osc.stop(ctx.currentTime + 0.5);
     } catch (e) {
-      console.error("Audio play failed", e);
+      console.error('Audio play failed', e);
     }
   }, []);
 

@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useState, useCallback } from "react";
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion';
+import { useCallback, useState } from 'react';
 
 interface QuickLogEntry {
   weight: number;
@@ -19,12 +19,7 @@ interface QuickLogWidgetProps {
 const QUICK_WEIGHTS = [2.5, 5, 10, 20];
 const QUICK_REPS = [1, 2, 3, 5, 8, 10, 12, 15];
 
-export function QuickLogWidget({
-  exerciseName,
-  lastSet,
-  onLog,
-  onClose,
-}: QuickLogWidgetProps) {
+export function QuickLogWidget({ exerciseName, lastSet, onLog, onClose }: QuickLogWidgetProps) {
   const [weight, setWeight] = useState(lastSet?.weight || 60);
   const [reps, setReps] = useState(lastSet?.reps || 10);
   const [rpe, setRpe] = useState<number | undefined>(undefined);
@@ -60,7 +55,9 @@ export function QuickLogWidget({
 
       {/* Weight Section */}
       <div className="mb-4">
-        <label htmlFor="weight-input" className="text-sm text-gray-400 mb-2 block">Weight (kg)</label>
+        <label htmlFor="weight-input" className="text-sm text-gray-400 mb-2 block">
+          Weight (kg)
+        </label>
         <div className="flex items-center gap-2">
           {QUICK_WEIGHTS.map((delta) => (
             <button
@@ -92,16 +89,19 @@ export function QuickLogWidget({
 
       {/* Reps Section */}
       <div className="mb-4">
-        <label htmlFor="reps-input" className="text-sm text-gray-400 mb-2 block">Reps</label>
+        <label htmlFor="reps-input" className="text-sm text-gray-400 mb-2 block">
+          Reps
+        </label>
         <div className="flex flex-wrap gap-2">
           {QUICK_REPS.map((r) => (
             <button
               key={r}
               onClick={() => setReps(r)}
-              className={`px-4 py-2 rounded font-bold ${reps === r
-                ? "bg-blue-600 text-white"
-                : "bg-gray-800 text-gray-300 hover:bg-gray-700"
-                }`}
+              className={`px-4 py-2 rounded font-bold ${
+                reps === r
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+              }`}
             >
               {r}
             </button>
@@ -127,10 +127,11 @@ export function QuickLogWidget({
             <button
               key={r}
               onClick={() => setRpe(rpe === r ? undefined : r)}
-              className={`px-2 py-1 rounded text-sm ${rpe === r
-                ? "bg-orange-600 text-white"
-                : "bg-gray-800 text-gray-400 hover:bg-gray-700"
-                }`}
+              className={`px-2 py-1 rounded text-sm ${
+                rpe === r
+                  ? 'bg-orange-600 text-white'
+                  : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
+              }`}
             >
               {r}
             </button>

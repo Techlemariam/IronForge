@@ -1,155 +1,154 @@
-"use server";
+'use server';
 
-import prisma from "@/lib/prisma";
-import { AppSettings, Equipment } from "@/types";
-import { z } from "zod";
+import prisma from '@/lib/prisma';
+import { AppSettings, Equipment } from '@/types';
+import { z } from 'zod';
 
 // --- Schemas ---
 
 const emailSchema = z.string().email().optional();
 
 function sanitizeUser(user: any) {
-    if (!user) return user;
-    const safeUser = { ...user };
-    delete safeUser.intervalsApiKey;
-    delete safeUser.intervalsAthleteId;
-    delete safeUser.hevyApiKey;
-    delete safeUser.stravaAccessToken;
-    delete safeUser.stravaRefreshToken;
-    delete safeUser.garminAccessToken;
-    delete safeUser.garminRefreshToken;
-    delete safeUser.garminUserSecret;
-    delete safeUser.garminUserToken;
-    delete safeUser.pocketCastsToken;
-    return safeUser;
+  if (!user) return user;
+  const safeUser = { ...user };
+  delete safeUser.intervalsApiKey;
+  delete safeUser.intervalsAthleteId;
+  delete safeUser.hevyApiKey;
+  delete safeUser.stravaAccessToken;
+  delete safeUser.stravaRefreshToken;
+  delete safeUser.garminAccessToken;
+  delete safeUser.garminRefreshToken;
+  delete safeUser.garminUserSecret;
+  delete safeUser.garminUserToken;
+  delete safeUser.pocketCastsToken;
+  return safeUser;
 }
 
 const appSettingsSchema = z.object({
-    intervalsApiKey: z.string().optional(),
-    intervalsAthleteId: z.string().optional(),
-    hevyApiKey: z.string().optional(),
-    supabaseUrl: z.string().optional(),
-    supabaseKey: z.string().optional(),
-    valhallaId: z.string().optional(),
-    heroName: z.string().optional(),
-    hueBridgeIp: z.string().optional(),
-    hueUsername: z.string().optional(),
-    prioritizeHyperPro: z.boolean().optional(),
+  intervalsApiKey: z.string().optional(),
+  intervalsAthleteId: z.string().optional(),
+  hevyApiKey: z.string().optional(),
+  supabaseUrl: z.string().optional(),
+  supabaseKey: z.string().optional(),
+  valhallaId: z.string().optional(),
+  heroName: z.string().optional(),
+  hueBridgeIp: z.string().optional(),
+  hueUsername: z.string().optional(),
+  prioritizeHyperPro: z.boolean().optional(),
 });
 
 const equipmentSchema = z.object({
-    id: z.string(),
-    name: z.string(),
-    category: z.enum(["Barbell", "Weights", "Machine", "Cardio", "Accessory", "Rack"]),
-    isOwned: z.boolean(),
+  id: z.string(),
+  name: z.string(),
+  category: z.enum(['Barbell', 'Weights', 'Machine', 'Cardio', 'Accessory', 'Rack']),
+  isOwned: z.boolean(),
 });
 
 // --- Actions ---
 
-import { authActionClient, actionClient } from "@/lib/safe-action";
+import { actionClient, authActionClient } from '@/lib/safe-action';
 
 export const getOrCreateUserAction = actionClient
-    .schema(z.object({ email: emailSchema }))
-    .action(async ({ parsedInput: { email } }) => {
-        if (email) {
-            let user = await prisma.user.findUnique({
-                where: { email },
-                include: {
-                    equipment: true,
-                    skills: true,
-                    achievements: true,
-                    unlockedMonsters: true,
-                },
-            });
+  .schema(z.object({ email: emailSchema }))
+  .action(async ({ parsedInput: { email } }) => {
+    if (email) {
+      let user = await prisma.user.findUnique({
+        where: { email },
+        include: {
+          equipment: true,
+          skills: true,
+          achievements: true,
+          unlockedMonsters: true,
+        },
+      });
 
-            if (!user) {
-                user = await prisma.user.create({
-                    data: { email },
-                    include: {
-                        equipment: true,
-                        skills: true,
-                        achievements: true,
-                        unlockedMonsters: true,
-                    },
-                });
-            }
-            return { success: true, user: sanitizeUser(user) };
-        } else {
-            // Single player / Fallback Mode
-            const users = await prisma.user.findMany({
-                take: 1,
-                include: {
-                    equipment: true,
-                    skills: true,
-                    achievements: true,
-                    unlockedMonsters: true,
-                },
-            });
-
-            if (users.length > 0) return { success: true, user: sanitizeUser(users[0]) };
-
-            const newUser = await prisma.user.create({
-                data: { heroName: "IronLegend" },
-                include: {
-                    equipment: true,
-                    skills: true,
-                    achievements: true,
-                    unlockedMonsters: true,
-                },
-            });
-            return { success: true, user: sanitizeUser(newUser) };
-        }
-    });
-
-export const getUserAction = authActionClient
-    .action(async ({ ctx: { userId } }) => {
-        const user = await prisma.user.findUnique({
-            where: { id: userId },
-            include: {
-                equipment: true,
-                skills: true,
-                achievements: true,
-                unlockedMonsters: true,
-            },
+      if (!user) {
+        user = await prisma.user.create({
+          data: { email },
+          include: {
+            equipment: true,
+            skills: true,
+            achievements: true,
+            unlockedMonsters: true,
+          },
         });
-        return { success: true, user: sanitizeUser(user) };
-    });
+      }
+      return { success: true, user: sanitizeUser(user) };
+    } else {
+      // Single player / Fallback Mode
+      const users = await prisma.user.findMany({
+        take: 1,
+        include: {
+          equipment: true,
+          skills: true,
+          achievements: true,
+          unlockedMonsters: true,
+        },
+      });
+
+      if (users.length > 0) return { success: true, user: sanitizeUser(users[0]) };
+
+      const newUser = await prisma.user.create({
+        data: { heroName: 'IronLegend' },
+        include: {
+          equipment: true,
+          skills: true,
+          achievements: true,
+          unlockedMonsters: true,
+        },
+      });
+      return { success: true, user: sanitizeUser(newUser) };
+    }
+  });
+
+export const getUserAction = authActionClient.action(async ({ ctx: { userId } }) => {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    include: {
+      equipment: true,
+      skills: true,
+      achievements: true,
+      unlockedMonsters: true,
+    },
+  });
+  return { success: true, user: sanitizeUser(user) };
+});
 
 export const updateSettingsAction = authActionClient
-    .schema(appSettingsSchema.partial())
-    .action(async ({ parsedInput: settings, ctx: { userId } }) => {
-        const updatedUser = await prisma.user.update({
-            where: { id: userId },
-            data: {
-                intervalsApiKey: settings.intervalsApiKey,
-                intervalsAthleteId: settings.intervalsAthleteId,
-                hevyApiKey: settings.hevyApiKey,
-                prioritizeHyperPro: settings.prioritizeHyperPro,
-            },
-        });
-        return { success: true, user: sanitizeUser(updatedUser) };
+  .schema(appSettingsSchema.partial())
+  .action(async ({ parsedInput: settings, ctx: { userId } }) => {
+    const updatedUser = await prisma.user.update({
+      where: { id: userId },
+      data: {
+        intervalsApiKey: settings.intervalsApiKey,
+        intervalsAthleteId: settings.intervalsAthleteId,
+        hevyApiKey: settings.hevyApiKey,
+        prioritizeHyperPro: settings.prioritizeHyperPro,
+      },
     });
+    return { success: true, user: sanitizeUser(updatedUser) };
+  });
 
 export const updateGoldAction = authActionClient
-    .schema(z.number().min(0).max(Number.MAX_SAFE_INTEGER))
-    .action(async ({ parsedInput: amount, ctx: { userId } }) => {
-        const updatedUser = await prisma.user.update({
-            where: { id: userId },
-            data: { gold: amount },
-        });
-        return { success: true, user: sanitizeUser(updatedUser) };
+  .schema(z.number().min(0).max(Number.MAX_SAFE_INTEGER))
+  .action(async ({ parsedInput: amount, ctx: { userId } }) => {
+    const updatedUser = await prisma.user.update({
+      where: { id: userId },
+      data: { gold: amount },
     });
+    return { success: true, user: sanitizeUser(updatedUser) };
+  });
 
 export const updateEquipmentAction = authActionClient
-    .schema(z.array(equipmentSchema))
-    .action(async ({ parsedInput: equipment, ctx: { userId } }) => {
-        const operations = equipment.map((eq) =>
-            prisma.userEquipment.upsert({
-                where: { userId_equipmentId: { userId, equipmentId: eq.id } },
-                create: { userId, equipmentId: eq.id, isOwned: eq.isOwned },
-                update: { isOwned: eq.isOwned },
-            }),
-        );
-        await prisma.$transaction(operations);
-        return { success: true };
-    });
+  .schema(z.array(equipmentSchema))
+  .action(async ({ parsedInput: equipment, ctx: { userId } }) => {
+    const operations = equipment.map((eq) =>
+      prisma.userEquipment.upsert({
+        where: { userId_equipmentId: { userId, equipmentId: eq.id } },
+        create: { userId, equipmentId: eq.id, isOwned: eq.isOwned },
+        update: { isOwned: eq.isOwned },
+      })
+    );
+    await prisma.$transaction(operations);
+    return { success: true };
+  });

@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 const api = axios.create();
 
@@ -7,23 +7,18 @@ api.interceptors.request.use(
   (config) => {
     // Get the latest api key from localStorage if in browser environment
     let apiKey: string | null = null;
-    if (typeof window !== "undefined") {
-      apiKey = localStorage.getItem("hevy_api_key");
-      console.log(
-        "[API Interceptor] Retrieved Key:",
-        apiKey ? "FOUND" : "MISSING",
-      );
+    if (typeof window !== 'undefined') {
+      apiKey = localStorage.getItem('hevy_api_key');
+      console.log('[API Interceptor] Retrieved Key:', apiKey ? 'FOUND' : 'MISSING');
     }
 
     if (apiKey) {
       // Add the key to a custom header to be used by the backend proxy
-      config.headers["X-Hevy-API-Key"] = apiKey;
+      config.headers['X-Hevy-API-Key'] = apiKey;
     } else {
       // If on client, warn. If on server, maybe we are calling a public endpoint or passing it differently.
-      if (typeof window !== "undefined") {
-        console.warn(
-          "Hevy API Key ('hevy_api_key') is not set in localStorage.",
-        );
+      if (typeof window !== 'undefined') {
+        console.warn("Hevy API Key ('hevy_api_key') is not set in localStorage.");
       }
     }
 
@@ -31,7 +26,7 @@ api.interceptors.request.use(
   },
   (error) => {
     return Promise.reject(error);
-  },
+  }
 );
 
 export interface IntervalActivity {
@@ -49,12 +44,12 @@ export const getCardioHistory = async (): Promise<IntervalActivity[]> => {
     const response = await fetch(`/api/intervals/history`);
 
     if (!response.ok) {
-      throw new Error("Failed to fetch cardio history");
+      throw new Error('Failed to fetch cardio history');
     }
 
     return await response.json();
   } catch (error) {
-    console.error("API Error (Cardio History):", error);
+    console.error('API Error (Cardio History):', error);
     throw error;
   }
 };

@@ -1,10 +1,10 @@
-import prisma from "@/lib/prisma";
-import {
+import type {
   LeaderboardEntry,
   LeaderboardScope,
   LeaderboardType,
-} from "@/features/leaderboard/types";
-import { Prisma } from "@prisma/client";
+} from '@/features/leaderboard/types';
+import prisma from '@/lib/prisma';
+import type { Prisma } from '@prisma/client';
 
 export type { LeaderboardScope, LeaderboardType, LeaderboardEntry };
 
@@ -28,11 +28,11 @@ export async function getLeaderboard({
   const where: Prisma.UserWhereInput = {};
 
   // 1. Scope Filtering
-  if (scope === "CITY" && city) {
-    where.city = { equals: city, mode: "insensitive" };
-  } else if (scope === "COUNTRY" && country) {
-    where.country = { equals: country, mode: "insensitive" };
-  } else if (scope === "FRIENDS" && userIds) {
+  if (scope === 'CITY' && city) {
+    where.city = { equals: city, mode: 'insensitive' };
+  } else if (scope === 'COUNTRY' && country) {
+    where.country = { equals: country, mode: 'insensitive' };
+  } else if (scope === 'FRIENDS' && userIds) {
     where.id = { in: userIds };
   }
 
@@ -40,17 +40,17 @@ export async function getLeaderboard({
   let orderBy: Prisma.UserOrderByWithRelationInput = {};
 
   // Default ensure pvpProfile exists for PvP stats, but NOT for XP
-  if (type === "PVP_RANK") {
+  if (type === 'PVP_RANK') {
     where.pvpProfile = { isNot: null };
-    orderBy = { pvpProfile: { rankScore: "desc" } };
-  } else if (type === "WINS") {
+    orderBy = { pvpProfile: { rankScore: 'desc' } };
+  } else if (type === 'WINS') {
     where.pvpProfile = { isNot: null };
-    orderBy = { pvpProfile: { wins: "desc" } };
-  } else if (type === "WILKS") {
+    orderBy = { pvpProfile: { wins: 'desc' } };
+  } else if (type === 'WILKS') {
     where.pvpProfile = { isNot: null };
-    orderBy = { pvpProfile: { highestWilksScore: "desc" } };
-  } else if (type === "XP") {
-    orderBy = { totalExperience: "desc" };
+    orderBy = { pvpProfile: { highestWilksScore: 'desc' } };
+  } else if (type === 'XP') {
+    orderBy = { totalExperience: 'desc' };
   }
 
   const users = await prisma.user.findMany({
@@ -68,7 +68,7 @@ export async function getLeaderboard({
 
   return users.map((u) => ({
     userId: u.id,
-    heroName: u.heroName || "Unknown Hero",
+    heroName: u.heroName || 'Unknown Hero',
     rankScore: u.pvpProfile?.rankScore || 0,
     wins: u.pvpProfile?.wins || 0,
     title: u.activeTitle?.name || null,
@@ -76,7 +76,7 @@ export async function getLeaderboard({
     level: u.level,
     highestWilksScore: u.pvpProfile?.highestWilksScore || 0,
     totalExperience: u.totalExperience,
-    faction: ((u as unknown as { faction?: string }).faction as "HORDE" | "ALLIANCE") || "HORDE",
+    faction: ((u as unknown as { faction?: string }).faction as 'HORDE' | 'ALLIANCE') || 'HORDE',
     guildName: (u as unknown as { guild?: { name: string } }).guild?.name || null,
   }));
 }

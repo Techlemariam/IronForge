@@ -1,4 +1,4 @@
-import { TitanAttributes, Monster } from "@/types";
+import type { Monster, TitanAttributes } from '@/types';
 
 export interface CombatState {
   playerHp: number;
@@ -12,7 +12,7 @@ export interface CombatState {
 }
 
 export interface CombatAction {
-  type: "ATTACK" | "DEFEND" | "HEAL" | "ULTIMATE";
+  type: 'ATTACK' | 'DEFEND' | 'HEAL' | 'ULTIMATE';
   payload?: unknown;
 }
 
@@ -30,7 +30,7 @@ export class CombatEngine {
 
   static calculatePlayerDamage(
     attributes: TitanAttributes,
-    actionType: CombatAction["type"],
+    actionType: CombatAction['type']
   ): { damage: number; isCrit: boolean } {
     // Base damage comes from Strength (Max Force) + Hypertrophy (Muscle Size)
     const basePower = attributes.strength * 2 + attributes.hypertrophy;
@@ -39,16 +39,16 @@ export class CombatEngine {
     let critChance = 0.05 + attributes.technique / 200; // 5% base + 0.5% per technique point
 
     switch (actionType) {
-      case "ATTACK":
+      case 'ATTACK':
         multiplier = 1.0;
         break;
-      case "DEFEND":
+      case 'DEFEND':
         multiplier = 0.2; // Counter-attack
         break;
-      case "HEAL":
+      case 'HEAL':
         multiplier = 0;
         break;
-      case "ULTIMATE":
+      case 'ULTIMATE':
         multiplier = 2.5;
         critChance += 0.2; // +20% crit chance
         break;
@@ -57,9 +57,7 @@ export class CombatEngine {
     const isCrit = Math.random() < critChance;
     const critMult = isCrit ? 1.5 + attributes.mental / 100 : 1; // Mental focus increases crit damage
 
-    const damage = Math.floor(
-      basePower * multiplier * critMult * (0.9 + Math.random() * 0.2),
-    ); // +/- 10% variance
+    const damage = Math.floor(basePower * multiplier * critMult * (0.9 + Math.random() * 0.2)); // +/- 10% variance
 
     return { damage, isCrit };
   }
@@ -67,12 +65,11 @@ export class CombatEngine {
   static calculateBossDamage(
     boss: Monster,
     playerAttributes: TitanAttributes,
-    isDefending: boolean,
+    isDefending: boolean
   ): { damage: number; isCrit: boolean } {
     // Boss damage vs Player Defense
     // Player HP/Defense comes from Endurance (Cardio base) + Recovery (Health)
-    const mitigation =
-      playerAttributes.endurance * 0.5 + playerAttributes.recovery * 1;
+    const mitigation = playerAttributes.endurance * 0.5 + playerAttributes.recovery * 1;
     const defenseMultiplier = isDefending ? 2 : 1;
 
     const effectiveMitigation = mitigation * defenseMultiplier;
@@ -92,7 +89,7 @@ export class CombatEngine {
     state: CombatState,
     action: CombatAction,
     playerAttributes: TitanAttributes,
-    boss: Monster,
+    boss: Monster
   ): TurnResult {
     const events: string[] = [];
     let playerDamage = 0;
@@ -100,22 +97,18 @@ export class CombatEngine {
     let bossDamage = 0;
 
     // 1. Player Turn
-    if (action.type === "HEAL") {
+    if (action.type === 'HEAL') {
       // Healing based on Recovery + Mental
-      const healAmount =
-        playerAttributes.recovery * 5 + playerAttributes.mental * 2;
+      const healAmount = playerAttributes.recovery * 5 + playerAttributes.mental * 2;
       playerHeal = Math.floor(healAmount * (0.9 + Math.random() * 0.2));
       state.playerHp = Math.min(state.playerMaxHp, state.playerHp + playerHeal);
       events.push(`You concentrated and recovered ${playerHeal} HP.`);
     } else {
-      const { damage, isCrit } = this.calculatePlayerDamage(
-        playerAttributes,
-        action.type,
-      );
+      const { damage, isCrit } = this.calculatePlayerDamage(playerAttributes, action.type);
       playerDamage = damage;
       state.bossHp = Math.max(0, state.bossHp - damage);
       events.push(
-        `You used ${action.type}! Dealt ${damage} damage.${isCrit ? " CRITICAL HIT!" : ""}`,
+        `You used ${action.type}! Dealt ${damage} damage.${isCrit ? ' CRITICAL HIT!' : ''}`
       );
     }
 
@@ -134,19 +127,13 @@ export class CombatEngine {
     }
 
     // 3. Boss Turn
-    const isPlayerDefending = action.type === "DEFEND";
-    const { damage: bDmg } = this.calculateBossDamage(
-      boss,
-      playerAttributes,
-      isPlayerDefending,
-    );
+    const isPlayerDefending = action.type === 'DEFEND';
+    const { damage: bDmg } = this.calculateBossDamage(boss, playerAttributes, isPlayerDefending);
     bossDamage = bDmg;
     state.playerHp = Math.max(0, state.playerHp - bossDamage);
 
     if (isPlayerDefending) {
-      events.push(
-        `You braced for impact! The ${boss.name} dealt only ${bossDamage} damage.`,
-      );
+      events.push(`You braced for impact! The ${boss.name} dealt only ${bossDamage} damage.`);
     } else {
       events.push(`The ${boss.name} attacked! You took ${bossDamage} damage.`);
     }

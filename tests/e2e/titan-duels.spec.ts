@@ -1,94 +1,103 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Titan Duels Flow', () => {
-    test.beforeEach(async ({ page }) => {
-        // Navigate to the application
-        await page.goto('/dashboard');
+  test.beforeEach(async ({ page }) => {
+    // Navigate to the application
+    await page.goto('/dashboard');
 
-        // Assume user is already authenticated via auth.setup.ts
-        // If not, add login steps here
+    // Assume user is already authenticated via auth.setup.ts
+    // If not, add login steps here
+  });
+
+  test('should display Iron Arena page', async ({ page }) => {
+    await page.goto('/iron-arena');
+
+    // Wait for page to load
+    await page.waitForLoadState('networkidle');
+    await page.waitForTimeout(1000);
+
+    // Check for main heading or any Iron Arena content
+    await expect(page.getByText(/Iron Arena|Find Opponent|Challenge|Duel/i).first()).toBeVisible({
+      timeout: 15000,
     });
+  });
 
-    test('should display Iron Arena page', async ({ page }) => {
-        await page.goto('/iron-arena');
+  test('should show challenge modal when clicking Find Opponent', async ({ page }) => {
+    await page.goto('/iron-arena');
 
-        // Wait for page to load
-        await page.waitForLoadState('networkidle');
-        await page.waitForTimeout(1000);
+    // Wait for page to load
+    await page.waitForSelector('button:has-text("Find Opponent")', { timeout: 5000 });
 
-        // Check for main heading or any Iron Arena content
-        await expect(page.getByText(/Iron Arena|Find Opponent|Challenge|Duel/i).first()).toBeVisible({ timeout: 15000 });
-    });
+    // Click Find Opponent button
+    await page.click('button:has-text("Find Opponent")');
 
-    test('should show challenge modal when clicking Find Opponent', async ({ page }) => {
-        await page.goto('/iron-arena');
+    // Modal should appear
+    await expect(page.getByRole('dialog')).toBeVisible();
+    await expect(page.getByText(/Issue Challenge/i)).toBeVisible();
+  });
 
-        // Wait for page to load
-        await page.waitForSelector('button:has-text("Find Opponent")', { timeout: 5000 });
+  test('should validate opponent selection', async ({ page }) => {
+    await page.goto('/iron-arena');
 
-        // Click Find Opponent button
-        await page.click('button:has-text("Find Opponent")');
+    // Open challenge modal
+    await page.click('button:has-text("Find Opponent")');
 
-        // Modal should appear
-        await expect(page.getByRole('dialog')).toBeVisible();
-        await expect(page.getByText(/Issue Challenge/i)).toBeVisible();
-    });
+    // Check for "Issue Challenge" header
+    await expect(page.getByText('Issue Challenge')).toBeVisible();
 
-    test('should validate opponent selection', async ({ page }) => {
-        await page.goto('/iron-arena');
+    // The Send button should be disabled initially (no opponent selected)
+    // Note: The button text is "Challenge Titan"
+    const challengeButton = page.getByRole('button', { name: /Challenge Titan/i });
+    await expect(challengeButton).toBeDisabled();
 
-        // Open challenge modal
-        await page.click('button:has-text("Find Opponent")');
+    // Wait for loading to finish and opponents to appear
+    const opponentCard = page.getByTestId('opponent-card').first();
+    await expect(opponentCard).toBeVisible({ timeout: 15000 });
 
-        // Check for "Issue Challenge" header
-        await expect(page.getByText('Issue Challenge')).toBeVisible();
+    // Select the first opponent
+    await opponentCard.click();
 
-        // The Send button should be disabled initially (no opponent selected)
-        // Note: The button text is "Challenge Titan"
-        const challengeButton = page.getByRole('button', { name: /Challenge Titan/i });
-        await expect(challengeButton).toBeDisabled();
+    // Button should now be enabled
+    await expect(challengeButton).toBeEnabled();
+  });
 
-        // Wait for loading to finish and opponents to appear
-        const opponentCard = page.getByTestId('opponent-card').first();
-        await expect(opponentCard).toBeVisible({ timeout: 15000 });
+  test('should display active duel card when duel exists', async ({ page }) => {
+    // This test requires mock data or authenticated test users with active duels
+    // For now, we check for the Iron Arena page content
+    await page.goto('/iron-arena');
 
-        // Select the first opponent
-        await opponentCard.click();
+    // Wait for content to load
+    await page.waitForLoadState('networkidle');
+    await page.waitForTimeout(1000);
 
-        // Button should now be enabled
-        await expect(challengeButton).toBeEnabled();
-    });
+    // Check for Iron Arena elements (Find Opponent button or duel status)
+    const hasArenaContent = await page
+      .getByText(/Iron Arena|Find Opponent|Challenge|Duel/i)
+      .first()
+      .isVisible()
+      .catch(() => false);
 
-    test('should display active duel card when duel exists', async ({ page }) => {
-        // This test requires mock data or authenticated test users with active duels
-        // For now, we check for the Iron Arena page content
-        await page.goto('/iron-arena');
+    expect(hasArenaContent).toBeTruthy();
+  });
 
-        // Wait for content to load
-        await page.waitForLoadState('networkidle');
-        await page.waitForTimeout(1000);
+  test('should display duel stats correctly in DuelCard', async ({ page: _page }) => {
+    // This would require seeded test data with an active duel
+    // Placeholder for future implementation when test data is available
+    test.skip();
+  });
 
-        // Check for Iron Arena elements (Find Opponent button or duel status)
-        const hasArenaContent = await page.getByText(/Iron Arena|Find Opponent|Challenge|Duel/i).first().isVisible().catch(() => false);
+  test('should navigate to leaderboard section', async ({ page }) => {
+    await page.goto('/iron-arena');
 
-        expect(hasArenaContent).toBeTruthy();
-    });
+    // Check if leaderboard component is rendered
+    const leaderboardVisible = await page
+      .locator('text=/Duel Leaderboard/i')
+      .isVisible()
+      .catch(() => false);
 
-    test('should display duel stats correctly in DuelCard', async ({ page: _page }) => {
-        // This would require seeded test data with an active duel
-        // Placeholder for future implementation when test data is available
-        test.skip();
-    });
-
-    test('should navigate to leaderboard section', async ({ page }) => {
-        await page.goto('/iron-arena');
-
-        // Check if leaderboard component is rendered
-        const leaderboardVisible = await page.locator('text=/Duel Leaderboard/i').isVisible().catch(() => false);
-
-        // Leaderboard might be on a separate tab or section
-        if (leaderboardVisible) {
-            await expect(page.locator('table')).toBeVisible();
-        }
-    });
+    // Leaderboard might be on a separate tab or section
+    if (leaderboardVisible) {
+      await expect(page.locator('table')).toBeVisible();
+    }
+  });
 });

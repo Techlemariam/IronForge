@@ -1,8 +1,8 @@
-"use server";
+'use server';
 
-import { prisma } from "@/lib/prisma";
-import { revalidatePath } from "next/cache";
-import { z } from "zod";
+import { prisma } from '@/lib/prisma';
+import { revalidatePath } from 'next/cache';
+import { z } from 'zod';
 
 // ============================================
 // UNIFIED TITAN SOUL - MUTATION ACTIONS
@@ -13,7 +13,7 @@ import { z } from "zod";
 const AwardXpSchema = z.object({
   userId: z.string(),
   amount: z.number().int().positive(),
-  source: z.enum(["WORKOUT", "QUEST", "COMBAT", "ACHIEVEMENT", "BONUS"]),
+  source: z.enum(['WORKOUT', 'QUEST', 'COMBAT', 'ACHIEVEMENT', 'BONUS']),
 });
 
 const ModifyStatsSchema = z.object({
@@ -57,19 +57,17 @@ interface MutationResult {
 /**
  * Award XP to Titan with level-up handling.
  */
-export async function mutateTitanXp(
-  input: z.infer<typeof AwardXpSchema>,
-): Promise<MutationResult> {
+export async function mutateTitanXp(input: z.infer<typeof AwardXpSchema>): Promise<MutationResult> {
   const validated = AwardXpSchema.safeParse(input);
   if (!validated.success) {
-    return { success: false, message: "Invalid XP mutation" };
+    return { success: false, message: 'Invalid XP mutation' };
   }
 
   const { userId, amount, source } = validated.data;
 
   try {
     const user = await prisma.user.findUnique({ where: { id: userId } });
-    if (!user) return { success: false, message: "User not found" };
+    if (!user) return { success: false, message: 'User not found' };
 
     const newXp = user.totalExperience + amount;
     const xpForNextLevel = user.level * 1000;
@@ -91,7 +89,7 @@ export async function mutateTitanXp(
     });
 
     console.log(`[MUTATION] XP: +${amount} from ${source} for ${userId}`);
-    revalidatePath("/dashboard");
+    revalidatePath('/dashboard');
 
     return {
       success: true,
@@ -100,8 +98,8 @@ export async function mutateTitanXp(
       message: levelUp ? `Level up! Now level ${newLevel}` : `+${amount} XP`,
     };
   } catch (error) {
-    console.error("XP mutation failed:", error);
-    return { success: false, message: "XP mutation failed" };
+    console.error('XP mutation failed:', error);
+    return { success: false, message: 'XP mutation failed' };
   }
 }
 
@@ -109,27 +107,25 @@ export async function mutateTitanXp(
  * Modify Titan stats.
  */
 export async function mutateTitanStats(
-  input: z.infer<typeof ModifyStatsSchema>,
+  input: z.infer<typeof ModifyStatsSchema>
 ): Promise<MutationResult> {
   const validated = ModifyStatsSchema.safeParse(input);
   if (!validated.success) {
-    return { success: false, message: "Invalid stats mutation" };
+    return { success: false, message: 'Invalid stats mutation' };
   }
 
   const { userId, changes, source } = validated.data;
 
   try {
     const titan = await prisma.titan.findUnique({ where: { userId } });
-    if (!titan) return { success: false, message: "Titan not found" };
+    if (!titan) return { success: false, message: 'Titan not found' };
 
     const updates: Record<string, number> = {};
     if (changes.strength) updates.strength = titan.strength + changes.strength;
     if (changes.vitality) updates.vitality = titan.vitality + changes.vitality;
-    if (changes.endurance)
-      updates.endurance = titan.endurance + changes.endurance;
+    if (changes.endurance) updates.endurance = titan.endurance + changes.endurance;
     if (changes.agility) updates.agility = titan.agility + changes.agility;
-    if (changes.willpower)
-      updates.willpower = titan.willpower + changes.willpower;
+    if (changes.willpower) updates.willpower = titan.willpower + changes.willpower;
 
     await prisma.titan.update({
       where: { userId },
@@ -137,12 +133,12 @@ export async function mutateTitanStats(
     });
 
     console.log(`[MUTATION] Stats: ${JSON.stringify(changes)} from ${source}`);
-    revalidatePath("/dashboard");
+    revalidatePath('/dashboard');
 
-    return { success: true, newValue: updates, message: "Stats updated" };
+    return { success: true, newValue: updates, message: 'Stats updated' };
   } catch (error) {
-    console.error("Stats mutation failed:", error);
-    return { success: false, message: "Stats mutation failed" };
+    console.error('Stats mutation failed:', error);
+    return { success: false, message: 'Stats mutation failed' };
   }
 }
 
@@ -150,31 +146,25 @@ export async function mutateTitanStats(
  * Modify Titan resources (HP, Energy).
  */
 export async function mutateTitanResources(
-  input: z.infer<typeof ModifyResourcesSchema>,
+  input: z.infer<typeof ModifyResourcesSchema>
 ): Promise<MutationResult> {
   const validated = ModifyResourcesSchema.safeParse(input);
   if (!validated.success) {
-    return { success: false, message: "Invalid resource mutation" };
+    return { success: false, message: 'Invalid resource mutation' };
   }
 
   const { userId, changes, source } = validated.data;
 
   try {
     const titan = await prisma.titan.findUnique({ where: { userId } });
-    if (!titan) return { success: false, message: "Titan not found" };
+    if (!titan) return { success: false, message: 'Titan not found' };
 
     const updates: Record<string, number> = {};
     if (changes.hp !== undefined) {
-      updates.currentHp = Math.max(
-        0,
-        Math.min(titan.maxHp, titan.currentHp + changes.hp),
-      );
+      updates.currentHp = Math.max(0, Math.min(titan.maxHp, titan.currentHp + changes.hp));
     }
     if (changes.energy !== undefined) {
-      updates.currentEnergy = Math.max(
-        0,
-        Math.min(100, titan.currentEnergy + changes.energy),
-      );
+      updates.currentEnergy = Math.max(0, Math.min(100, titan.currentEnergy + changes.energy));
     }
 
     await prisma.titan.update({
@@ -182,15 +172,13 @@ export async function mutateTitanResources(
       data: updates,
     });
 
-    console.log(
-      `[MUTATION] Resources: ${JSON.stringify(changes)} from ${source}`,
-    );
-    revalidatePath("/dashboard");
+    console.log(`[MUTATION] Resources: ${JSON.stringify(changes)} from ${source}`);
+    revalidatePath('/dashboard');
 
-    return { success: true, newValue: updates, message: "Resources updated" };
+    return { success: true, newValue: updates, message: 'Resources updated' };
   } catch (error) {
-    console.error("Resource mutation failed:", error);
-    return { success: false, message: "Resource mutation failed" };
+    console.error('Resource mutation failed:', error);
+    return { success: false, message: 'Resource mutation failed' };
   }
 }
 
@@ -198,29 +186,28 @@ export async function mutateTitanResources(
  * Modify economy (Gold, Gems).
  */
 export async function mutateTitanEconomy(
-  input: z.infer<typeof ModifyEconomySchema>,
+  input: z.infer<typeof ModifyEconomySchema>
 ): Promise<MutationResult> {
   const validated = ModifyEconomySchema.safeParse(input);
   if (!validated.success) {
-    return { success: false, message: "Invalid economy mutation" };
+    return { success: false, message: 'Invalid economy mutation' };
   }
 
   const { userId, changes, source } = validated.data;
 
   try {
     const user = await prisma.user.findUnique({ where: { id: userId } });
-    if (!user) return { success: false, message: "User not found" };
+    if (!user) return { success: false, message: 'User not found' };
 
     const updates: Record<string, number> = {};
     if (changes.gold !== undefined) {
       const newGold = user.gold + changes.gold;
-      if (newGold < 0) return { success: false, message: "Insufficient gold" };
+      if (newGold < 0) return { success: false, message: 'Insufficient gold' };
       updates.gold = newGold;
     }
     if (changes.kineticEnergy !== undefined) {
       const newEnergy = user.kineticEnergy + changes.kineticEnergy;
-      if (newEnergy < 0)
-        return { success: false, message: "Insufficient kinetic energy" };
+      if (newEnergy < 0) return { success: false, message: 'Insufficient kinetic energy' };
       updates.kineticEnergy = newEnergy;
     }
 
@@ -229,15 +216,13 @@ export async function mutateTitanEconomy(
       data: updates,
     });
 
-    console.log(
-      `[MUTATION] Economy: ${JSON.stringify(changes)} from ${source}`,
-    );
-    revalidatePath("/dashboard");
+    console.log(`[MUTATION] Economy: ${JSON.stringify(changes)} from ${source}`);
+    revalidatePath('/dashboard');
 
-    return { success: true, newValue: updates, message: "Economy updated" };
+    return { success: true, newValue: updates, message: 'Economy updated' };
   } catch (error) {
-    console.error("Economy mutation failed:", error);
-    return { success: false, message: "Economy mutation failed" };
+    console.error('Economy mutation failed:', error);
+    return { success: false, message: 'Economy mutation failed' };
   }
 }
 
@@ -247,9 +232,9 @@ export async function mutateTitanEconomy(
 export async function mutateTitanBatch(
   userId: string,
   mutations: Array<{
-    type: "xp" | "stats" | "resources" | "economy";
+    type: 'xp' | 'stats' | 'resources' | 'economy';
     payload: unknown;
-  }>,
+  }>
 ): Promise<{ results: MutationResult[] }> {
   const results: MutationResult[] = [];
 
@@ -257,13 +242,13 @@ export async function mutateTitanBatch(
     let result: MutationResult;
 
     switch (mutation.type) {
-      case "xp":
+      case 'xp':
         result = await mutateTitanXp({
           userId,
-          ...(mutation.payload as { amount: number; source: "WORKOUT" }),
+          ...(mutation.payload as { amount: number; source: 'WORKOUT' }),
         });
         break;
-      case "stats":
+      case 'stats':
         result = await mutateTitanStats({
           userId,
           ...(mutation.payload as {
@@ -272,7 +257,7 @@ export async function mutateTitanBatch(
           }),
         });
         break;
-      case "resources":
+      case 'resources':
         result = await mutateTitanResources({
           userId,
           ...(mutation.payload as {
@@ -281,7 +266,7 @@ export async function mutateTitanBatch(
           }),
         });
         break;
-      case "economy":
+      case 'economy':
         result = await mutateTitanEconomy({
           userId,
           ...(mutation.payload as {
@@ -291,7 +276,7 @@ export async function mutateTitanBatch(
         });
         break;
       default:
-        result = { success: false, message: "Unknown mutation type" };
+        result = { success: false, message: 'Unknown mutation type' };
     }
 
     results.push(result);

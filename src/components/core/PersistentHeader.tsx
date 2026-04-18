@@ -1,7 +1,7 @@
-import React from "react";
-import { Coins } from "lucide-react";
-import { Faction } from "@/types/training";
-import { PowerRatingBadge } from "../PowerRatingBadge";
+import type { Faction } from '@/types/training';
+import { Coins } from 'lucide-react';
+import type React from 'react';
+import { PowerRatingBadge } from '../PowerRatingBadge';
 
 interface PersistentHeaderProps {
   level: number;
@@ -18,7 +18,7 @@ export const PersistentHeader: React.FC<PersistentHeaderProps> = ({
   gold,
   faction,
   powerRating,
-  className = "",
+  className = '',
 }) => {
   return (
     <div
@@ -30,17 +30,21 @@ export const PersistentHeader: React.FC<PersistentHeaderProps> = ({
       >
         {/* Level */}
         <div className="flex items-center gap-2">
-          <div aria-label={`Level ${level}`} className="w-8 h-8 rounded-full bg-magma text-black font-bold flex items-center justify-center ring-2 ring-magma/50">
+          <div
+            aria-label={`Level ${level}`}
+            className="w-8 h-8 rounded-full bg-magma text-black font-bold flex items-center justify-center ring-2 ring-magma/50"
+          >
             {level}
           </div>
           {/* XP Hidden on mobile to save space, visible on hover? */}
-          <div className="hidden md:flex flex-col" aria-label={`${xp.toLocaleString()} Experience Points`}>
+          <div
+            className="hidden md:flex flex-col"
+            aria-label={`${xp.toLocaleString()} Experience Points`}
+          >
             <span className="text-[10px] text-zinc-400 uppercase tracking-widest leading-none">
               Level
             </span>
-            <span className="text-xs font-bold text-white">
-              {xp.toLocaleString()} XP
-            </span>
+            <span className="text-xs font-bold text-white">{xp.toLocaleString()} XP</span>
           </div>
         </div>
 
@@ -50,9 +54,7 @@ export const PersistentHeader: React.FC<PersistentHeaderProps> = ({
         {/* Gold */}
         <div className="flex items-center gap-2" aria-label={`${gold.toLocaleString()} Gold`}>
           <Coins className="w-4 h-4 text-yellow-400" />
-          <span className="font-mono font-bold text-yellow-400">
-            {gold.toLocaleString()}
-          </span>
+          <span className="font-mono font-bold text-yellow-400">{gold.toLocaleString()}</span>
         </div>
 
         {/* Vertical Divider */}
@@ -61,7 +63,7 @@ export const PersistentHeader: React.FC<PersistentHeaderProps> = ({
         {/* Faction */}
         <div
           aria-label={`Current Faction: ${faction}`}
-          className={`text-xs font-black italic tracking-wider ${faction === "ALLIANCE" ? "text-blue-500" : "text-red-500"}`}
+          className={`text-xs font-black italic tracking-wider ${faction === 'ALLIANCE' ? 'text-blue-500' : 'text-red-500'}`}
         >
           {faction}
         </div>

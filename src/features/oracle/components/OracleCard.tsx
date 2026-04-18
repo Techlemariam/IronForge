@@ -1,74 +1,62 @@
-import React from "react";
-import { OracleRecommendation } from "@/types";
-import {
-  TrendingUp,
-  Sword,
-  HeartPulse,
-  ArrowRight,
-  Skull,
-  Sparkles,
-} from "lucide-react";
+import type { OracleRecommendation } from '@/types';
+import { ArrowRight, HeartPulse, Skull, Sparkles, Sword, TrendingUp } from 'lucide-react';
+import type React from 'react';
 
 interface OracleCardProps {
   recommendation: OracleRecommendation;
   onAccept: (rec: OracleRecommendation) => void;
 }
 
-const OracleCard: React.FC<OracleCardProps> = ({
-  recommendation,
-  onAccept,
-}) => {
+const OracleCard: React.FC<OracleCardProps> = ({ recommendation, onAccept }) => {
   // Theme logic based on type
   let theme = {
-    border: "border-zinc-700",
-    bg: "bg-zinc-900",
+    border: 'border-zinc-700',
+    bg: 'bg-zinc-900',
     icon: <Sword className="w-6 h-6" />,
-    accent: "text-zinc-400",
-    button: "bg-zinc-800 text-zinc-300",
-    glow: "",
+    accent: 'text-zinc-400',
+    button: 'bg-zinc-800 text-zinc-300',
+    glow: '',
   };
 
   switch (recommendation.type) {
-    case "RECOVERY":
+    case 'RECOVERY':
       theme = {
-        border: "border-blue-500",
-        bg: "bg-blue-950/30",
+        border: 'border-blue-500',
+        bg: 'bg-blue-950/30',
         icon: <HeartPulse className="w-6 h-6 text-blue-400" />,
-        accent: "text-blue-400",
-        button:
-          "bg-blue-900/50 text-blue-200 border border-blue-500/50 hover:bg-blue-800",
-        glow: "shadow-[0_0_20px_rgba(59,130,246,0.2)]",
+        accent: 'text-blue-400',
+        button: 'bg-blue-900/50 text-blue-200 border border-blue-500/50 hover:bg-blue-800',
+        glow: 'shadow-[0_0_20px_rgba(59,130,246,0.2)]',
       };
       break;
-    case "PR_ATTEMPT":
+    case 'PR_ATTEMPT':
       theme = {
-        border: "border-gold",
-        bg: "bg-gradient-to-br from-yellow-950/40 to-black",
+        border: 'border-gold',
+        bg: 'bg-gradient-to-br from-yellow-950/40 to-black',
         icon: <Skull className="w-6 h-6 text-gold" />,
-        accent: "text-gold",
-        button: "bg-gold text-black font-bold hover:bg-yellow-400",
-        glow: "shadow-[0_0_20px_rgba(255,215,0,0.25)] animate-pulse-slow",
+        accent: 'text-gold',
+        button: 'bg-gold text-black font-bold hover:bg-yellow-400',
+        glow: 'shadow-[0_0_20px_rgba(255,215,0,0.25)] animate-pulse-slow',
       };
       break;
-    case "CARDIO_VALIDATION":
+    case 'CARDIO_VALIDATION':
       theme = {
-        border: "border-cyan-500",
-        bg: "bg-cyan-950/30",
+        border: 'border-cyan-500',
+        bg: 'bg-cyan-950/30',
         icon: <Sparkles className="w-6 h-6 text-cyan-400" />,
-        accent: "text-cyan-400",
-        button:
-          "bg-cyan-900/50 text-cyan-200 border border-cyan-500/50 hover:bg-cyan-800",
-        glow: "shadow-[0_0_20px_rgba(34,211,238,0.2)]",
+        accent: 'text-cyan-400',
+        button: 'bg-cyan-900/50 text-cyan-200 border border-cyan-500/50 hover:bg-cyan-800',
+        glow: 'shadow-[0_0_20px_rgba(34,211,238,0.2)]',
       };
       break;
-    case "GRIND":
+    case 'GRIND':
       theme = {
-        border: "border-clay",
-        bg: "bg-armor",
+        border: 'border-clay',
+        bg: 'bg-armor',
         icon: <TrendingUp className="w-6 h-6 text-clay" />,
-        accent: "text-clay",
-        button: "bg-clay text-[#46321d] font-bold hover:bg-clay/80",
-        glow: "",
+        accent: 'text-clay',
+        button: 'bg-clay text-[#46321d] font-bold hover:bg-clay/80',
+        glow: '',
       };
       break;
   }
@@ -81,18 +69,14 @@ const OracleCard: React.FC<OracleCardProps> = ({
       <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] pointer-events-none"></div>
 
       {/* Icon Area */}
-      <div
-        className={`p-4 rounded-full border-2 ${theme.border} bg-black/50 z-10 shrink-0`}
-      >
+      <div className={`p-4 rounded-full border-2 ${theme.border} bg-black/50 z-10 shrink-0`}>
         {theme.icon}
       </div>
 
       {/* Text Content */}
       <div className="flex-1 z-10 space-y-2">
         <div className="flex items-center gap-2">
-          <span
-            className={`text-[10px] uppercase font-bold tracking-[0.2em] ${theme.accent}`}
-          >
+          <span className={`text-[10px] uppercase font-bold tracking-[0.2em] ${theme.accent}`}>
             The Oracle Commands
           </span>
           {recommendation.generatedSession && (
@@ -116,9 +100,7 @@ const OracleCard: React.FC<OracleCardProps> = ({
           className={`z-10 px-6 py-4 rounded uppercase tracking-widest text-xs flex items-center gap-3 transition-transform active:scale-95 shadow-lg whitespace-nowrap ${theme.button}`}
         >
           <span>
-            {recommendation.generatedSession
-              ? "Accept Special Quest"
-              : "Initiate Protocol"}
+            {recommendation.generatedSession ? 'Accept Special Quest' : 'Initiate Protocol'}
           </span>
           <ArrowRight className="w-4 h-4" />
         </button>

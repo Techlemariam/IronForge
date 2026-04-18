@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { LazyMotion, domMax } from "framer-motion";
+import { LazyMotion, domMax } from 'framer-motion';
 
 /**
  * AnimationProvider implements framer-motion's LazyMotion.
@@ -8,9 +8,5 @@ import { LazyMotion, domMax } from "framer-motion";
  * into a separate chunk that is loaded only when needed.
  */
 export function AnimationProvider({ children }: { children: React.ReactNode }) {
-    return (
-        <LazyMotion features={domMax}>
-            {children}
-        </LazyMotion>
-    );
+  return <LazyMotion features={domMax}>{children}</LazyMotion>;
 }

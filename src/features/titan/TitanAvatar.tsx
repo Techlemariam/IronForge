@@ -1,7 +1,7 @@
-import React from "react";
-import { motion } from "framer-motion";
-import { Zap, Moon, HeartCrack, Flame } from "lucide-react";
-import { TitanState } from "@/actions/titan/core";
+import type { TitanState } from '@/actions/titan/core';
+import { motion } from 'framer-motion';
+import { Flame, HeartCrack, Moon, Zap } from 'lucide-react';
+import type React from 'react';
 
 interface TitanAvatarProps {
   titan: TitanState | null | undefined;
@@ -20,25 +20,25 @@ export const TitanAvatar: React.FC<TitanAvatarProps> = ({ titan }) => {
 
   // Visual Logic
   let statusIcon = <Flame className="w-6 h-6 text-magma" />;
-  let statusText = "Ready for Battle";
-  let glowColor = "shadow-magma/50";
-  let avatarEmoji = "🛡️"; // Default Placeholder
+  let statusText = 'Ready for Battle';
+  let glowColor = 'shadow-magma/50';
+  let avatarEmoji = '🛡️'; // Default Placeholder
 
   if (isResting) {
     statusIcon = <Moon className="w-6 h-6 text-indigo-400" />;
-    statusText = "Resting (Recovering Energy)";
-    glowColor = "shadow-indigo-500/50";
-    avatarEmoji = "😴";
-  } else if (mood === "WEAKENED") {
+    statusText = 'Resting (Recovering Energy)';
+    glowColor = 'shadow-indigo-500/50';
+    avatarEmoji = '😴';
+  } else if (mood === 'WEAKENED') {
     statusIcon = <HeartCrack className="w-6 h-6 text-red-500" />;
-    statusText = "Weakened (Needs Maintenance)";
-    glowColor = "shadow-red-500/50";
-    avatarEmoji = "❤️‍🩹";
-  } else if (mood === "FOCUSED") {
+    statusText = 'Weakened (Needs Maintenance)';
+    glowColor = 'shadow-red-500/50';
+    avatarEmoji = '❤️‍🩹';
+  } else if (mood === 'FOCUSED') {
     statusIcon = <Zap className="w-6 h-6 text-yellow-400" />;
-    statusText = "FOCUSED (XP Bonus Active)";
-    glowColor = "shadow-yellow-500/50";
-    avatarEmoji = "⚡";
+    statusText = 'FOCUSED (XP Bonus Active)';
+    glowColor = 'shadow-yellow-500/50';
+    avatarEmoji = '⚡';
   }
 
   return (
@@ -62,9 +62,7 @@ export const TitanAvatar: React.FC<TitanAvatarProps> = ({ titan }) => {
         {/* Stats & Info */}
         <div className="flex-1 text-center md:text-left space-y-2">
           <div className="flex items-center justify-center md:justify-start gap-2">
-            <h2 className="text-2xl font-bold text-white tracking-wider uppercase">
-              {name}
-            </h2>
+            <h2 className="text-2xl font-bold text-white tracking-wider uppercase">{name}</h2>
             <span className="px-2 py-0.5 bg-magma/20 text-magma text-xs rounded border border-magma/30">
               LVL {level}
             </span>

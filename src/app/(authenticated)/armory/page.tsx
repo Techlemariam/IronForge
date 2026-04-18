@@ -1,6 +1,6 @@
-import { Suspense } from "react";
-import { getArmoryData } from "@/actions/economy/armory";
-import ArmoryClient from "@/features/strength/components/armory/ArmoryClient";
+import { getArmoryData } from '@/actions/economy/armory';
+import ArmoryClient from '@/features/strength/components/armory/ArmoryClient';
+import { Suspense } from 'react';
 
 export default async function ArmoryPage() {
   // Fetch Real Data via Server Action

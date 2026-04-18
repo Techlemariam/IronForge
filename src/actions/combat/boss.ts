@@ -1,13 +1,7 @@
-"use server";
+'use server';
 
-type BossPhase =
-  | "INTRO"
-  | "PHASE_1"
-  | "PHASE_2"
-  | "PHASE_3"
-  | "ENRAGE"
-  | "DEFEATED";
-type AttackType = "PHYSICAL" | "MAGICAL" | "AOE" | "DOT" | "DEBUFF" | "HEAL";
+type BossPhase = 'INTRO' | 'PHASE_1' | 'PHASE_2' | 'PHASE_3' | 'ENRAGE' | 'DEFEATED';
+type AttackType = 'PHYSICAL' | 'MAGICAL' | 'AOE' | 'DOT' | 'DEBUFF' | 'HEAL';
 
 interface BossAttack {
   id: string;
@@ -29,7 +23,7 @@ interface BossPhaseConfig {
 }
 
 interface PhaseModifier {
-  stat: "DAMAGE" | "DEFENSE" | "SPEED" | "CRIT";
+  stat: 'DAMAGE' | 'DEFENSE' | 'SPEED' | 'CRIT';
   multiplier: number;
 }
 
@@ -56,84 +50,84 @@ interface SpecialMechanic {
 // Boss templates
 const BOSS_TEMPLATES: Record<string, Partial<BossMechanics>> = {
   iron_guardian: {
-    name: "Iron Guardian",
-    title: "Keeper of the Forge",
+    name: 'Iron Guardian',
+    title: 'Keeper of the Forge',
     phases: [
       {
-        phase: "PHASE_1",
+        phase: 'PHASE_1',
         hpThreshold: 100,
         attacks: [
           {
-            id: "slam",
-            name: "Iron Slam",
-            type: "PHYSICAL",
+            id: 'slam',
+            name: 'Iron Slam',
+            type: 'PHYSICAL',
             damage: 25,
             cooldownTurns: 0,
-            description: "Heavy physical attack",
+            description: 'Heavy physical attack',
           },
           {
-            id: "shield",
-            name: "Forge Shield",
-            type: "DEBUFF",
+            id: 'shield',
+            name: 'Forge Shield',
+            type: 'DEBUFF',
             damage: 0,
             cooldownTurns: 3,
-            description: "Reduces damage taken",
-            telegraphMessage: "The Guardian raises its shield!",
+            description: 'Reduces damage taken',
+            telegraphMessage: 'The Guardian raises its shield!',
           },
         ],
         modifiers: [],
-        dialogue: "You dare enter MY forge?!",
+        dialogue: 'You dare enter MY forge?!',
       },
       {
-        phase: "PHASE_2",
+        phase: 'PHASE_2',
         hpThreshold: 50,
         attacks: [
           {
-            id: "molten",
-            name: "Molten Strike",
-            type: "MAGICAL",
+            id: 'molten',
+            name: 'Molten Strike',
+            type: 'MAGICAL',
             damage: 35,
             cooldownTurns: 2,
-            description: "Fire damage over time",
-            telegraphMessage: "Heat radiates from the Guardian!",
+            description: 'Fire damage over time',
+            telegraphMessage: 'Heat radiates from the Guardian!',
           },
           {
-            id: "quake",
-            name: "Forge Quake",
-            type: "AOE",
+            id: 'quake',
+            name: 'Forge Quake',
+            type: 'AOE',
             damage: 20,
             cooldownTurns: 4,
-            description: "Damages all party members",
+            description: 'Damages all party members',
           },
         ],
-        modifiers: [{ stat: "DAMAGE", multiplier: 1.25 }],
-        dialogue: "You will be FORGED in flame!",
+        modifiers: [{ stat: 'DAMAGE', multiplier: 1.25 }],
+        dialogue: 'You will be FORGED in flame!',
       },
       {
-        phase: "ENRAGE",
+        phase: 'ENRAGE',
         hpThreshold: 10,
         attacks: [
           {
-            id: "berserk",
-            name: "Berserk Fury",
-            type: "PHYSICAL",
+            id: 'berserk',
+            name: 'Berserk Fury',
+            type: 'PHYSICAL',
             damage: 50,
             cooldownTurns: 0,
-            description: "Devastating attacks",
+            description: 'Devastating attacks',
           },
         ],
         modifiers: [
-          { stat: "DAMAGE", multiplier: 2.0 },
-          { stat: "SPEED", multiplier: 1.5 },
+          { stat: 'DAMAGE', multiplier: 2.0 },
+          { stat: 'SPEED', multiplier: 1.5 },
         ],
-        dialogue: "ENOUGH! I WILL END THIS!",
+        dialogue: 'ENOUGH! I WILL END THIS!',
       },
     ],
     specialMechanic: {
-      name: "Forge Heat",
-      description: "Environmental damage increases over time",
-      triggerCondition: "Every 5 turns",
-      effect: "+10% DOT damage per stack",
+      name: 'Forge Heat',
+      description: 'Environmental damage increases over time',
+      triggerCondition: 'Every 5 turns',
+      effect: '+10% DOT damage per stack',
     },
   },
 };
@@ -143,19 +137,19 @@ const BOSS_TEMPLATES: Record<string, Partial<BossMechanics>> = {
  */
 export async function getBossMechanicsAction(
   bossId: string,
-  level: number,
+  level: number
 ): Promise<BossMechanics> {
   const template = BOSS_TEMPLATES[bossId] || BOSS_TEMPLATES.iron_guardian;
   const scaledHp = 500 + level * 100;
 
   return {
     id: bossId,
-    name: template.name || "Unknown Boss",
-    title: template.title || "The Challenger",
+    name: template.name || 'Unknown Boss',
+    title: template.title || 'The Challenger',
     level,
     maxHp: scaledHp,
     currentHp: scaledHp,
-    currentPhase: "PHASE_1",
+    currentPhase: 'PHASE_1',
     phases: template.phases || [],
     enrageTimer: 30,
     specialMechanic: template.specialMechanic,
@@ -167,7 +161,7 @@ export async function getBossMechanicsAction(
  */
 export async function processBossTurnAction(
   bossState: BossMechanics,
-  playerDefending: boolean,
+  playerDefending: boolean
 ): Promise<{
   attack: BossAttack;
   damage: number;
@@ -187,21 +181,17 @@ export async function processBossTurnAction(
   // Calculate damage with modifiers
   let damage = attack.damage;
   for (const mod of activePhase.modifiers) {
-    if (mod.stat === "DAMAGE") damage *= mod.multiplier;
+    if (mod.stat === 'DAMAGE') damage *= mod.multiplier;
   }
   if (playerDefending) damage *= 0.5;
 
-  const phaseChange =
-    activePhase.phase !== bossState.currentPhase
-      ? activePhase.phase
-      : undefined;
+  const phaseChange = activePhase.phase !== bossState.currentPhase ? activePhase.phase : undefined;
 
   return {
     attack,
     damage: Math.round(damage),
     phaseChange,
-    message:
-      attack.telegraphMessage || `${bossState.name} uses ${attack.name}!`,
+    message: attack.telegraphMessage || `${bossState.name} uses ${attack.name}!`,
   };
 }
 
@@ -209,7 +199,7 @@ export async function processBossTurnAction(
  * Check for boss defeat.
  */
 export async function checkBossDefeatAction(
-  bossState: BossMechanics,
+  bossState: BossMechanics
 ): Promise<{ defeated: boolean; rewards?: unknown }> {
   if (bossState.currentHp <= 0) {
     return {
@@ -217,7 +207,7 @@ export async function checkBossDefeatAction(
       rewards: {
         xp: bossState.level * 500,
         gold: bossState.level * 250,
-        crateRarity: "EPIC",
+        crateRarity: 'EPIC',
       },
     };
   }

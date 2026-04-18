@@ -1,7 +1,7 @@
-import { useState, Dispatch, SetStateAction } from "react";
-import { Exercise, Set as WorkoutSet } from "@/types";
-import { detectJokerOpportunity } from "@/utils/combatMechanics";
-import { playSound } from "@/utils";
+import type { Exercise, Set as WorkoutSet } from '@/types';
+import { playSound } from '@/utils';
+import { detectJokerOpportunity } from '@/utils/combatMechanics';
+import { type Dispatch, type SetStateAction, useState } from 'react';
 
 interface JokerPrompt {
   show: boolean;
@@ -11,7 +11,7 @@ interface JokerPrompt {
 export const useJokerSets = (
   exercises: Exercise[],
   setExercises: Dispatch<SetStateAction<Exercise[]>>,
-  activeExIndex: number,
+  activeExIndex: number
 ) => {
   const [jokerPrompt, setJokerPrompt] = useState<JokerPrompt>({
     show: false,
@@ -26,7 +26,7 @@ export const useJokerSets = (
     if (detectJokerOpportunity(rpe, setIndex, totalSets)) {
       const jokerWeight = Math.round((weight * 1.1) / 2.5) * 2.5;
       setJokerPrompt({ show: true, weight: jokerWeight });
-      playSound("mystery_alert");
+      playSound('mystery_alert');
       return true;
     }
     return false;
@@ -45,9 +45,9 @@ export const useJokerSets = (
         completed: false,
         reps: 1,
         weight: jokerPrompt.weight,
-        type: "JOKER",
+        type: 'JOKER',
         rpe: 9,
-        rarity: "epic",
+        rarity: 'epic',
         completedReps: 0,
       };
 
@@ -55,13 +55,13 @@ export const useJokerSets = (
       currentEx.sets.splice(
         lastCompletedIndex === -1 ? currentEx.sets.length : lastCompletedIndex,
         0,
-        jokerSet,
+        jokerSet
       );
 
       return newExercises;
     });
     setJokerPrompt({ show: false, weight: 0 });
-    playSound("quest_accept");
+    playSound('quest_accept');
   };
 
   const handleJokerDecline = () => {

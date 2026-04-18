@@ -1,9 +1,9 @@
-import { vi, describe, it, expect } from "vitest";
-import { PlannerService } from "@/services/planner";
-import prisma from "@/lib/prisma";
+import prisma from '@/lib/prisma';
+import { PlannerService } from '@/services/planner';
+import { describe, expect, it, vi } from 'vitest';
 
 // Mock dependencies
-vi.mock("@/lib/prisma", () => {
+vi.mock('@/lib/prisma', () => {
   const mockPrisma = {
     user: {
       findUnique: vi.fn(),
@@ -18,59 +18,59 @@ vi.mock("@/lib/prisma", () => {
     prisma: mockPrisma,
   };
 });
-vi.mock("@/services/auditorOrchestrator", () => {
+vi.mock('@/services/auditorOrchestrator', () => {
   return {
     __esModule: true,
-    runFullAudit: vi.fn(() => Promise.resolve({
-      highestPriorityGap: null,
-      muscleAudits: [],
-      ratios: [],
-      overallScore: 100,
-      timestamp: new Date().toISOString()
-    })),
+    runFullAudit: vi.fn(() =>
+      Promise.resolve({
+        highestPriorityGap: null,
+        muscleAudits: [],
+        ratios: [],
+        overallScore: 100,
+        timestamp: new Date().toISOString(),
+      })
+    ),
   };
 });
-vi.mock("@/lib/intervals", () => ({
+vi.mock('@/lib/intervals', () => ({
   getWellness: vi.fn().mockResolvedValue({ tsb: 0, ctl: 50, atl: 50 }),
 }));
-vi.mock("@/services/analytics", () => ({
+vi.mock('@/services/analytics', () => ({
   AnalyticsService: {
-    calculateTTB: vi
-      .fn()
-      .mockReturnValue({
-        strength: 50,
-        endurance: 50,
-        wellness: 50,
-        lowest: "strength",
-      }),
+    calculateTTB: vi.fn().mockReturnValue({
+      strength: 50,
+      endurance: 50,
+      wellness: 50,
+      lowest: 'strength',
+    }),
   },
 }));
-vi.mock("@/services/oracle", () => ({
+vi.mock('@/services/oracle', () => ({
   OracleService: {
     consult: vi.fn().mockResolvedValue({
-      id: "mock-rec",
-      title: "mock-title",
-      rationale: "mock-rationale",
+      id: 'mock-rec',
+      title: 'mock-title',
+      rationale: 'mock-rationale',
       playlist: [],
       generatedSession: null,
     }),
   },
 }));
 
-describe("PlannerService", () => {
-  it("should generate a plan for a valid user", async () => {
+describe('PlannerService', () => {
+  it('should generate a plan for a valid user', async () => {
     // Setup mock user
     (prisma.user.findUnique as any).mockResolvedValue({
-      id: "user1",
-      hevyApiKey: "test-key",
-      intervalsApiKey: "test-key",
-      intervalsAthleteId: "test-id",
+      id: 'user1',
+      hevyApiKey: 'test-key',
+      intervalsApiKey: 'test-key',
+      intervalsAthleteId: 'test-id',
       exerciseLogs: [],
       cardioLogs: [],
-      activePath: "IRON_JUGGERNAUT",
+      activePath: 'IRON_JUGGERNAUT',
     });
 
-    const plan = await PlannerService.triggerWeeklyPlanGeneration("user1");
+    const plan = await PlannerService.triggerWeeklyPlanGeneration('user1');
 
     expect(plan).toBeDefined();
     expect(plan.id).toMatch(/^plan_/);

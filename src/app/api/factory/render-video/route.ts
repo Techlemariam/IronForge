@@ -1,7 +1,6 @@
-
-import { NextResponse } from 'next/server';
 import { spawn } from 'child_process';
 import path from 'path';
+import { NextResponse } from 'next/server';
 
 // This API route provides an endpoint to trigger Remotion video rendering.
 export async function POST(request: Request) {
@@ -35,33 +34,41 @@ export async function POST(request: Request) {
       console.error(`[Render Script STDERR]: ${chunk}`);
     }
 
-    const code = await new Promise(resolve => {
+    const code = await new Promise((resolve) => {
       child.on('close', resolve);
     });
 
     if (code !== 0) {
       console.error(`[API] Render script failed with code ${code}.`);
-      return NextResponse.json({
-        error: 'Video rendering failed.',
-        details: stderr
-      }, { status: 500 });
+      return NextResponse.json(
+        {
+          error: 'Video rendering failed.',
+          details: stderr,
+        },
+        { status: 500 }
+      );
     }
 
     const outputPathMatch = stdout.match(/outputPath: (.*)/);
     if (!outputPathMatch) {
-      return NextResponse.json({
-        error: 'Could not determine output path from script.',
-        details: stdout
-      }, { status: 500 });
+      return NextResponse.json(
+        {
+          error: 'Could not determine output path from script.',
+          details: stdout,
+        },
+        { status: 500 }
+      );
     }
 
     const outputPath = outputPathMatch[1].trim();
 
-    return NextResponse.json({
-      message: 'Video rendered successfully!',
-      videoPath: outputPath
-    }, { status: 200 });
-
+    return NextResponse.json(
+      {
+        message: 'Video rendered successfully!',
+        videoPath: outputPath,
+      },
+      { status: 200 }
+    );
   } catch (error) {
     console.error('[API] An unexpected error occurred:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });

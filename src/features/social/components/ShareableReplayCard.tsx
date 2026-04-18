@@ -1,19 +1,12 @@
-"use client";
+'use client';
 
-import { useRef, useState } from "react";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import {
-  Share2,
-  Copy,
-  Check,
-  Trophy,
-  Flame,
-  Zap,
-} from "lucide-react";
-import { motion } from "framer-motion";
-import { toast } from "sonner";
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { motion } from 'framer-motion';
+import { Check, Copy, Flame, Share2, Trophy, Zap } from 'lucide-react';
+import { useRef, useState } from 'react';
+import { toast } from 'sonner';
 
 interface WorkoutSummary {
   date: string;
@@ -32,10 +25,7 @@ interface ShareableReplayCardProps {
   onShare?: () => void;
 }
 
-export function ShareableReplayCard({
-  workout,
-  onShare,
-}: ShareableReplayCardProps) {
+export function ShareableReplayCard({ workout, onShare }: ShareableReplayCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [copied, setCopied] = useState(false);
 
@@ -55,10 +45,10 @@ export function ShareableReplayCard({
       const shareUrl = `${window.location.origin}/replay/${workout.date}`;
       await navigator.clipboard.writeText(shareUrl);
       setCopied(true);
-      toast.success("Link copied to clipboard!");
+      toast.success('Link copied to clipboard!');
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      toast.error("Failed to copy link");
+      toast.error('Failed to copy link');
     }
   };
 
@@ -93,15 +83,10 @@ export function ShareableReplayCard({
         <CardHeader className="relative z-10 pb-2">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-xl font-black text-white tracking-tight">
-                Workout Complete
-              </h3>
+              <h3 className="text-xl font-black text-white tracking-tight">Workout Complete</h3>
               <p className="text-sm text-slate-400 font-mono">{workout.date}</p>
             </div>
-            <Badge
-              variant="outline"
-              className="border-amber-500/50 text-amber-400 bg-amber-950/30"
-            >
+            <Badge variant="outline" className="border-amber-500/50 text-amber-400 bg-amber-950/30">
               Lvl {workout.userLevel}
             </Badge>
           </div>
@@ -114,25 +99,17 @@ export function ShareableReplayCard({
               <div className="text-3xl font-black text-white">
                 {formatDuration(workout.duration)}
               </div>
-              <div className="text-xs text-slate-500 uppercase tracking-widest">
-                Duration
-              </div>
+              <div className="text-xs text-slate-500 uppercase tracking-widest">Duration</div>
             </div>
             <div className="space-y-1">
               <div className="text-3xl font-black text-amber-400">
                 {formatVolume(workout.totalVolume)}
               </div>
-              <div className="text-xs text-slate-500 uppercase tracking-widest">
-                Volume
-              </div>
+              <div className="text-xs text-slate-500 uppercase tracking-widest">Volume</div>
             </div>
             <div className="space-y-1">
-              <div className="text-3xl font-black text-green-400">
-                {workout.exerciseCount}
-              </div>
-              <div className="text-xs text-slate-500 uppercase tracking-widest">
-                Exercises
-              </div>
+              <div className="text-3xl font-black text-green-400">{workout.exerciseCount}</div>
+              <div className="text-xs text-slate-500 uppercase tracking-widest">Exercises</div>
             </div>
           </div>
 
@@ -141,7 +118,7 @@ export function ShareableReplayCard({
             {workout.prsHit > 0 && (
               <Badge className="bg-purple-900/50 border-purple-500 text-purple-300 flex items-center gap-1">
                 <Trophy className="w-3 h-3" />
-                {workout.prsHit} PR{workout.prsHit > 1 ? "s" : ""}
+                {workout.prsHit} PR{workout.prsHit > 1 ? 's' : ''}
               </Badge>
             )}
             {workout.streak && workout.streak > 0 && (
@@ -163,12 +140,8 @@ export function ShareableReplayCard({
               className="flex-1 border-slate-700 hover:bg-slate-800"
               onClick={handleCopyLink}
             >
-              {copied ? (
-                <Check className="w-4 h-4 mr-2" />
-              ) : (
-                <Copy className="w-4 h-4 mr-2" />
-              )}
-              {copied ? "Copied!" : "Copy Link"}
+              {copied ? <Check className="w-4 h-4 mr-2" /> : <Copy className="w-4 h-4 mr-2" />}
+              {copied ? 'Copied!' : 'Copy Link'}
             </Button>
             <Button
               size="sm"
@@ -182,9 +155,7 @@ export function ShareableReplayCard({
 
           {/* Branding */}
           <div className="text-center pt-2">
-            <span className="text-xs text-slate-600 font-mono tracking-widest">
-              IRONFORGE.GG
-            </span>
+            <span className="text-xs text-slate-600 font-mono tracking-widest">IRONFORGE.GG</span>
           </div>
         </CardContent>
       </Card>

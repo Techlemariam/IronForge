@@ -15,11 +15,11 @@
  * The 4 available training paths, each with unique focus and modifiers.
  */
 export type TrainingPath =
-  | "JUGGERNAUT" // Max styrka (Powerlifting focus)
-  | "PATHFINDER" // VO2max/Uthållighet (Engine)
-  | "WARDEN"; // Balanserad (Hybrid)
+  | 'JUGGERNAUT' // Max styrka (Powerlifting focus)
+  | 'PATHFINDER' // VO2max/Uthållighet (Engine)
+  | 'WARDEN'; // Balanserad (Hybrid)
 
-export type Faction = "ALLIANCE" | "HORDE";
+export type Faction = 'ALLIANCE' | 'HORDE';
 
 /**
  * Path display information for UI
@@ -41,12 +41,12 @@ export interface PathInfo {
 /**
  * Passive layer progression levels
  */
-export type LayerLevel = "NONE" | "BRONZE" | "SILVER" | "GOLD";
+export type LayerLevel = 'NONE' | 'BRONZE' | 'SILVER' | 'GOLD';
 
 /**
  * Passive layer types
  */
-export type PassiveLayerType = "MOBILITY" | "RECOVERY";
+export type PassiveLayerType = 'MOBILITY' | 'RECOVERY';
 
 /**
  * Bonuses provided by passive layers
@@ -67,7 +67,7 @@ export interface LayerBonuses {
  * - BETA: Strength focus (strength at MRV, cardio at MV)
  * - GAMMA: Deload/Recovery (everything at MV)
  */
-export type MacroCycle = "ALPHA" | "BETA" | "GAMMA";
+export type MacroCycle = 'ALPHA' | 'BETA' | 'GAMMA';
 
 /**
  * Metrics used to evaluate macro-cycle transitions
@@ -82,7 +82,7 @@ export interface SystemMetrics {
   strengthDelta: number; // Change in strength metrics
   consecutiveStalls: number; // Number of weeks with <= 0 progress
   weeksInPhase: number; // How long we've been in the current macro-cycle
-  nutritionMode: "DEFICIT" | "MAINTENANCE" | "SURPLUS";
+  nutritionMode: 'DEFICIT' | 'MAINTENANCE' | 'SURPLUS';
   sleepDebt: number; // Hours (positive = debt)
   acwr: number; // Acute:Chronic Workload Ratio
   junkMilePercent: number; // % of Cardio in Zone 3
@@ -91,7 +91,7 @@ export interface SystemMetrics {
   interferenceEvents: number; // Count of <6h gap sessions
 }
 
-export type NutritionMode = "DEFICIT" | "MAINTENANCE" | "SURPLUS";
+export type NutritionMode = 'DEFICIT' | 'MAINTENANCE' | 'SURPLUS';
 
 // =============================================================================
 // VOLUME LANDMARKS (Renaissance Periodization)
@@ -100,7 +100,7 @@ export type NutritionMode = "DEFICIT" | "MAINTENANCE" | "SURPLUS";
 /**
  * Volume level categories
  */
-export type VolumeLevel = "MV" | "MEV" | "MAV" | "MRV";
+export type VolumeLevel = 'MV' | 'MEV' | 'MAV' | 'MRV';
 
 /**
  * Volume landmarks for a muscle group (sets per week)
@@ -116,16 +116,16 @@ export interface VolumeLandmarks {
  * Muscle groups tracked for volume management
  */
 export type MuscleGroup =
-  | "QUADS"
-  | "HAMS"
-  | "GLUTES"
-  | "CHEST"
-  | "BACK"
-  | "SHOULDERS"
-  | "BICEPS"
-  | "TRICEPS"
-  | "ABS"
-  | "CALVES";
+  | 'QUADS'
+  | 'HAMS'
+  | 'GLUTES'
+  | 'CHEST'
+  | 'BACK'
+  | 'SHOULDERS'
+  | 'BICEPS'
+  | 'TRICEPS'
+  | 'ABS'
+  | 'CALVES';
 
 // =============================================================================
 // COMBAT MODIFIERS
@@ -159,15 +159,15 @@ export interface RewardConfig {
 /**
  * Recovery resource types
  */
-export type RecoveryResource = "CNS" | "MUSCULAR" | "METABOLIC";
+export type RecoveryResource = 'CNS' | 'MUSCULAR' | 'METABOLIC';
 
 /**
  * Activity with resource cost for memory management
  */
 export interface TrainingActivity {
   name: string;
-  type: "STRENGTH" | "CARDIO_ZONE2" | "CARDIO_ZONE5" | "MOBILITY";
-  intensity: "LOW" | "MEDIUM" | "HIGH";
+  type: 'STRENGTH' | 'CARDIO_ZONE2' | 'CARDIO_ZONE5' | 'MOBILITY';
+  intensity: 'LOW' | 'MEDIUM' | 'HIGH';
   currentVolume: number;
   targets: VolumeLandmarks;
   resourceCost: Record<RecoveryResource, number>;
@@ -180,7 +180,7 @@ export interface TrainingActivity {
 export interface CapacityModifier {
   multiplier: number; // e.g., 0.8 = -20% capacity
   reason: string;
-  source: "SLEEP" | "HRV" | "PARENTING" | "MANUAL";
+  source: 'SLEEP' | 'HRV' | 'PARENTING' | 'MANUAL';
 }
 
 /**
@@ -191,11 +191,11 @@ export interface WorkoutDefinition {
   code: string; // Short code (e.g., 'RF1', 'CI5')
   name: string;
   description: string;
-  type: "RUN" | "BIKE" | "SWIM" | "STRENGTH" | "MOBILITY";
+  type: 'RUN' | 'BIKE' | 'SWIM' | 'STRENGTH' | 'MOBILITY';
   durationMin: number; // Estimated duration in minutes for sorting/calc
   durationLabel?: string; // Display string (e.g. "6 mi", "1500m")
   intervalsIcuString?: string; // Builder text for Intervals.icu
-  intensity: "LOW" | "MEDIUM" | "HIGH";
+  intensity: 'LOW' | 'MEDIUM' | 'HIGH';
   resourceCost: Partial<Record<RecoveryResource, number>>; // Estimated cost
   recommendedPaths?: TrainingPath[]; // Best fit paths
   rewards?: { xp: number; gold: number }; // Gamification rewards

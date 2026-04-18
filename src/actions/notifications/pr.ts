@@ -1,9 +1,9 @@
-"use server";
+'use server';
 
-import { prisma } from "@/lib/prisma";
+import { prisma } from '@/lib/prisma';
 
 interface PrNotification {
-  type: "NEW_PR" | "APPROACHING_PR" | "PR_STREAK" | "MILESTONE_PR";
+  type: 'NEW_PR' | 'APPROACHING_PR' | 'PR_STREAK' | 'MILESTONE_PR';
   exerciseId: string;
   exerciseName: string;
   previousBest?: number;
@@ -19,7 +19,7 @@ export async function checkForPrNotificationsAction(
   userId: string,
   exerciseId: string,
   newWeight: number,
-  newReps: number,
+  newReps: number
 ): Promise<PrNotification | null> {
   try {
     // Get previous best for this exercise
@@ -29,7 +29,7 @@ export async function checkForPrNotificationsAction(
         exerciseId,
         isPersonalRecord: true,
       },
-      orderBy: { date: "desc" },
+      orderBy: { date: 'desc' },
     });
 
     // Calculate new e1RM
@@ -40,21 +40,15 @@ export async function checkForPrNotificationsAction(
 
     if (newE1rm > previousE1rm) {
       const improvement =
-        previousE1rm > 0
-          ? Math.round(((newE1rm - previousE1rm) / previousE1rm) * 100)
-          : 100;
+        previousE1rm > 0 ? Math.round(((newE1rm - previousE1rm) / previousE1rm) * 100) : 100;
 
       // Check for milestone PRs
-      const milestones = [
-        100, 140, 180, 200, 225, 250, 300, 350, 400, 450, 500,
-      ];
-      const crossedMilestone = milestones.find(
-        (m) => previousE1rm < m && newE1rm >= m,
-      );
+      const milestones = [100, 140, 180, 200, 225, 250, 300, 350, 400, 450, 500];
+      const crossedMilestone = milestones.find((m) => previousE1rm < m && newE1rm >= m);
 
       if (crossedMilestone) {
         return {
-          type: "MILESTONE_PR",
+          type: 'MILESTONE_PR',
           exerciseId,
           exerciseName: exerciseId,
           previousBest: previousE1rm,
@@ -65,7 +59,7 @@ export async function checkForPrNotificationsAction(
       }
 
       return {
-        type: "NEW_PR",
+        type: 'NEW_PR',
         exerciseId,
         exerciseName: exerciseId,
         previousBest: previousE1rm,
@@ -78,7 +72,7 @@ export async function checkForPrNotificationsAction(
     // Check if approaching PR (within 5%)
     if (newE1rm > previousE1rm * 0.95 && newE1rm < previousE1rm) {
       return {
-        type: "APPROACHING_PR",
+        type: 'APPROACHING_PR',
         exerciseId,
         exerciseName: exerciseId,
         previousBest: previousE1rm,
@@ -89,7 +83,7 @@ export async function checkForPrNotificationsAction(
 
     return null;
   } catch (error) {
-    console.error("Error checking for PR notifications:", error);
+    console.error('Error checking for PR notifications:', error);
     return null;
   }
 }
@@ -97,21 +91,18 @@ export async function checkForPrNotificationsAction(
 /**
  * Get user's recent PR history.
  */
-export async function getRecentPrsAction(
-  userId: string,
-  limit: number = 10,
-): Promise<PrNotification[]> {
+export async function getRecentPrsAction(userId: string, limit = 10): Promise<PrNotification[]> {
   try {
     const prs = await prisma.exerciseLog.findMany({
       where: { userId, isPersonalRecord: true },
-      orderBy: { date: "desc" },
+      orderBy: { date: 'desc' },
       take: limit,
     });
 
     return prs.map((pr) => {
       const e1rm = (pr.weight || 0) * (1 + (pr.reps || 0) / 30);
       return {
-        type: "NEW_PR" as const,
+        type: 'NEW_PR' as const,
         exerciseId: pr.exerciseId,
         exerciseName: pr.exerciseId,
         newValue: Math.round(e1rm),
@@ -119,7 +110,7 @@ export async function getRecentPrsAction(
       };
     });
   } catch (error) {
-    console.error("Error getting recent PRs:", error);
+    console.error('Error getting recent PRs:', error);
     return [];
   }
 }
@@ -129,12 +120,10 @@ export async function getRecentPrsAction(
  */
 export async function sendPrPushNotificationAction(
   userId: string,
-  notification: PrNotification,
+  notification: PrNotification
 ): Promise<{ success: boolean }> {
   try {
-    console.log(
-      `Push notification: user=${userId}, message=${notification.message}`,
-    );
+    console.log(`Push notification: user=${userId}, message=${notification.message}`);
 
     // In production:
     // 1. Get user's push token
@@ -143,7 +132,7 @@ export async function sendPrPushNotificationAction(
 
     return { success: true };
   } catch (error) {
-    console.error("Error sending PR notification:", error);
+    console.error('Error sending PR notification:', error);
     return { success: false };
   }
 }
@@ -177,16 +166,16 @@ export async function getPrStatsAction(userId: string): Promise<{
       prsThisWeek: thisWeek,
       prsThisMonth: thisMonth,
       bestStreak: 5, // Would calculate from history
-      exerciseWithMostPrs: "Bench Press", // Would aggregate from history
+      exerciseWithMostPrs: 'Bench Press', // Would aggregate from history
     };
   } catch (error) {
-    console.error("Error getting PR stats:", error);
+    console.error('Error getting PR stats:', error);
     return {
       totalPrs: 0,
       prsThisWeek: 0,
       prsThisMonth: 0,
       bestStreak: 0,
-      exerciseWithMostPrs: "Unknown",
+      exerciseWithMostPrs: 'Unknown',
     };
   }
 }

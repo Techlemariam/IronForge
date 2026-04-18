@@ -1,13 +1,13 @@
-"use server";
+'use server';
 
-import { HevyWorkout, HevyRoutine } from "@/types/hevy";
-import axios from "axios";
-import prisma from "@/lib/prisma";
-import { getHevyTemplates } from "@/lib/hevy";
-import { createClient } from "@/utils/supabase/server";
-import { TerritoryService } from "@/services/game/TerritoryService";
+import { getHevyTemplates } from '@/lib/hevy';
+import prisma from '@/lib/prisma';
+import { TerritoryService } from '@/services/game/TerritoryService';
+import type { HevyRoutine, HevyWorkout } from '@/types/hevy';
+import { createClient } from '@/utils/supabase/server';
+import axios from 'axios';
 
-import { HevyHelperSchema, ImportHevyHistorySchema } from "@/types/schemas";
+import { HevyHelperSchema, ImportHevyHistorySchema } from '@/types/schemas';
 
 export async function getHevyTemplatesAction(apiKey: string) {
   try {
@@ -22,7 +22,7 @@ export async function getHevyTemplatesAction(apiKey: string) {
       total_records: allExercises.length,
     };
   } catch (error: any) {
-    console.error("Server Action Hevy Error:", error.message);
+    console.error('Server Action Hevy Error:', error.message);
     // If it's a ZodError, we might want to format it, but for now just passing message is fine if we want to match the test,
     // BUT ZodError.message is a JSON string array.
     // The test expects "Hevy API Key is required."
@@ -30,28 +30,26 @@ export async function getHevyTemplatesAction(apiKey: string) {
     // OR update the test to accept Zod's error.
     // Let's update the test to be more robust, but first let's see if we can just fix the code.
     if (error.issues) {
-      throw new Error("Hevy API Key is required.");
+      throw new Error('Hevy API Key is required.');
     }
-    throw new Error("Failed to fetch Hevy templates: " + error.message);
+    throw new Error('Failed to fetch Hevy templates: ' + error.message);
   }
 }
 
-export async function getHevyRoutinesAction(
-  apiKey: string,
-  page: number = 1,
-  pageSize: number = 10,
-) {
+export async function getHevyRoutinesAction(apiKey: string, page = 1, pageSize = 10) {
   const {
     apiKey: _key,
     page: _p,
     pageSize: _ps,
-  } = HevyHelperSchema.pick({ apiKey: true, page: true, pageSize: true }).parse(
-    { apiKey, page, pageSize },
-  );
+  } = HevyHelperSchema.pick({ apiKey: true, page: true, pageSize: true }).parse({
+    apiKey,
+    page,
+    pageSize,
+  });
 
   try {
-    const response = await axios.get("https://api.hevyapp.com/v1/routines", {
-      headers: { "api-key": apiKey },
+    const response = await axios.get('https://api.hevyapp.com/v1/routines', {
+      headers: { 'api-key': apiKey },
       params: { page, pageSize },
     });
     return response.data as {
@@ -60,18 +58,14 @@ export async function getHevyRoutinesAction(
       routines: HevyRoutine[];
     };
   } catch (error: any) {
-    console.error("Server Action Hevy Routines Error:", error.message);
+    console.error('Server Action Hevy Routines Error:', error.message);
     throw new Error(
-      "Failed to fetch Hevy routines: " +
-      (error.response?.data?.error || error.message),
+      'Failed to fetch Hevy routines: ' + (error.response?.data?.error || error.message)
     );
   }
 }
 
-export async function getHevyWorkoutHistoryAction(
-  apiKey: string,
-  count: number = 30,
-) {
+export async function getHevyWorkoutHistoryAction(apiKey: string, count = 30) {
   const { apiKey: _key, count: _c } = HevyHelperSchema.pick({
     apiKey: true,
     count: true,
@@ -79,12 +73,12 @@ export async function getHevyWorkoutHistoryAction(
 
   const pageSize = 10;
   const numPagesToFetch = Math.ceil(count / pageSize);
-  let allWorkouts: HevyWorkout[] = [];
+  const allWorkouts: HevyWorkout[] = [];
 
   try {
     for (let page = 1; page <= numPagesToFetch; page++) {
-      const response = await axios.get("https://api.hevyapp.com/v1/workouts", {
-        headers: { "api-key": apiKey },
+      const response = await axios.get('https://api.hevyapp.com/v1/workouts', {
+        headers: { 'api-key': apiKey },
         params: { page, pageSize },
       });
 
@@ -95,16 +89,15 @@ export async function getHevyWorkoutHistoryAction(
         }
       } else {
         console.warn(
-          `Warning: Could not fetch page ${page} of Hevy workout history. Status: ${response.status}`,
+          `Warning: Could not fetch page ${page} of Hevy workout history. Status: ${response.status}`
         );
       }
     }
     return { workouts: allWorkouts.slice(0, count) };
   } catch (error: any) {
-    console.error("Server Action Hevy History Error:", error.message);
+    console.error('Server Action Hevy History Error:', error.message);
     throw new Error(
-      "Failed to fetch Hevy history: " +
-      (error.response?.data?.error || error.message),
+      'Failed to fetch Hevy history: ' + (error.response?.data?.error || error.message)
     );
   }
 }
@@ -121,16 +114,12 @@ export async function saveWorkoutAction(apiKey: string, payload: any) {
   } = await supabase.auth.getUser();
 
   try {
-    const response = await axios.post(
-      "https://api.hevyapp.com/v1/workouts",
-      payload,
-      {
-        headers: {
-          "api-key": apiKey,
-          "Content-Type": "application/json",
-        },
+    const response = await axios.post('https://api.hevyapp.com/v1/workouts', payload, {
+      headers: {
+        'api-key': apiKey,
+        'Content-Type': 'application/json',
       },
-    );
+    });
 
     // --- PERFORMANCE COACH: Award Kinetic Energy ---
     if (user && payload.workout) {
@@ -157,7 +146,7 @@ export async function saveWorkoutAction(apiKey: string, payload: any) {
       });
 
       // --- POWER RATING UPDATE ---
-      const { recalculatePowerRatingAction } = await import("@/actions/titan/power-rating");
+      const { recalculatePowerRatingAction } = await import('@/actions/titan/power-rating');
       await recalculatePowerRatingAction(user.id);
 
       // --- GUILD TERRITORIES ---
@@ -176,11 +165,8 @@ export async function saveWorkoutAction(apiKey: string, payload: any) {
 
     return response.data;
   } catch (error: any) {
-    console.error("Server Action Hevy Save Error:", error.message);
-    throw new Error(
-      "Failed to save workout: " +
-      (error.response?.data?.error || error.message),
-    );
+    console.error('Server Action Hevy Save Error:', error.message);
+    throw new Error('Failed to save workout: ' + (error.response?.data?.error || error.message));
   }
 }
 
@@ -195,20 +181,18 @@ export async function importHevyHistoryAction(workouts: any[]) {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    throw new Error("Unauthorized");
+    throw new Error('Unauthorized');
   }
 
   try {
-    let logsToCreate: any[] = [];
+    const logsToCreate: any[] = [];
     let importedCount = 0;
 
     // Cache known exercises to reduce DB calls
     const existingExercises = await prisma.exercise.findMany({
       select: { id: true, name: true },
     });
-    const exerciseMap = new Map(
-      existingExercises.map((e) => [e.name.toLowerCase(), e.id]),
-    );
+    const exerciseMap = new Map(existingExercises.map((e) => [e.name.toLowerCase(), e.id]));
 
     for (const workout of validatedWorkouts) {
       const date = new Date(workout.start_time);
@@ -218,7 +202,7 @@ export async function importHevyHistoryAction(workouts: any[]) {
         // 1. Try Hevy Template ID if we eventually sync that.
         // 2. Try Name Match (Case insensitive)
         // 3. Create New Exercise
-        const title = exercise.title || "Unknown Exercise";
+        const title = exercise.title || 'Unknown Exercise';
         let exerciseId = exerciseMap.get(title.toLowerCase());
 
         if (!exerciseId) {
@@ -226,8 +210,8 @@ export async function importHevyHistoryAction(workouts: any[]) {
           const newExercise = await prisma.exercise.create({
             data: {
               name: title,
-              muscleGroup: "Other", // Default
-              equipment: "Grid", // Default
+              muscleGroup: 'Other', // Default
+              equipment: 'Grid', // Default
               secondaryMuscles: [],
             },
           });
@@ -274,8 +258,8 @@ export async function importHevyHistoryAction(workouts: any[]) {
 
     return { success: true, count: importedCount, logs: logsToCreate.length };
   } catch (error: any) {
-    console.error("Server Action Hevy Import Error:", error.message);
-    throw new Error("Failed to import history: " + error.message);
+    console.error('Server Action Hevy Import Error:', error.message);
+    throw new Error('Failed to import history: ' + error.message);
   }
 }
 
@@ -286,7 +270,7 @@ export async function importHevyRoutineToTemplateAction(routine: any) {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    throw new Error("Unauthorized");
+    throw new Error('Unauthorized');
   }
 
   try {
@@ -297,7 +281,7 @@ export async function importHevyRoutineToTemplateAction(routine: any) {
       sets: ex.sets.map((s: any) => ({
         reps: s.reps,
         weight: s.weight_kg,
-        type: s.type || "normal",
+        type: s.type || 'normal',
       })),
       notes: ex.notes,
     }));
@@ -312,7 +296,7 @@ export async function importHevyRoutineToTemplateAction(routine: any) {
 
     return { success: true, templateId: template.id };
   } catch (error: any) {
-    console.error("Server Action Hevy Import Routine Error:", error.message);
-    throw new Error("Failed to import routine: " + error.message);
+    console.error('Server Action Hevy Import Routine Error:', error.message);
+    throw new Error('Failed to import routine: ' + error.message);
   }
 }

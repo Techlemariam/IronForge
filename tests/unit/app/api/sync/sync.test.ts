@@ -1,13 +1,13 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { POST } from "@/app/api/sync/logs/route";
-import { getOrCreateUserAction } from "@/actions/user-actions";
+import { getOrCreateUserAction } from '@/actions/user-actions';
+import { POST } from '@/app/api/sync/logs/route';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Mocks
-vi.mock("@/actions/user-actions", () => ({
+vi.mock('@/actions/user-actions', () => ({
   getOrCreateUserAction: vi.fn(),
 }));
 
-vi.mock("@/services/server/LogService", () => ({
+vi.mock('@/services/server/LogService', () => ({
   LogService: {
     saveExerciseLog: vi.fn(),
     saveMeditationLog: vi.fn(),
@@ -15,21 +15,21 @@ vi.mock("@/services/server/LogService", () => ({
   },
 }));
 
-import { LogService } from "@/services/server/LogService";
+import { LogService } from '@/services/server/LogService';
 
-describe("Sync API Route (Logs)", () => {
+describe('Sync API Route (Logs)', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    (getOrCreateUserAction as any).mockResolvedValue({ data: { user: { id: "user-1" } } });
+    (getOrCreateUserAction as any).mockResolvedValue({ data: { user: { id: 'user-1' } } });
   });
 
-  it("should save exercise log correctly", async () => {
-    const mockRequest = new Request("http://localhost:3000/api/sync/logs", {
-      method: "POST",
+  it('should save exercise log correctly', async () => {
+    const mockRequest = new Request('http://localhost:3000/api/sync/logs', {
+      method: 'POST',
       body: JSON.stringify({
-        action: "SAVE_LOG",
-        userId: "user-1",
-        payload: { exercise: "Squat", weight: 100 },
+        action: 'SAVE_LOG',
+        userId: 'user-1',
+        payload: { exercise: 'Squat', weight: 100 },
       }),
     });
 
@@ -37,18 +37,18 @@ describe("Sync API Route (Logs)", () => {
     const data = await response.json();
 
     expect(data.success).toBe(true);
-    expect(LogService.saveExerciseLog).toHaveBeenCalledWith("user-1", {
-      exercise: "Squat",
+    expect(LogService.saveExerciseLog).toHaveBeenCalledWith('user-1', {
+      exercise: 'Squat',
       weight: 100,
     });
   });
 
-  it("should save meditation log correctly", async () => {
-    const mockRequest = new Request("http://localhost:3000/api/sync/logs", {
-      method: "POST",
+  it('should save meditation log correctly', async () => {
+    const mockRequest = new Request('http://localhost:3000/api/sync/logs', {
+      method: 'POST',
       body: JSON.stringify({
-        action: "SAVE_MEDITATION",
-        userId: "user-1",
+        action: 'SAVE_MEDITATION',
+        userId: 'user-1',
         payload: { duration: 10 },
       }),
     });
@@ -57,17 +57,17 @@ describe("Sync API Route (Logs)", () => {
     const data = await response.json();
 
     expect(data.success).toBe(true);
-    expect(LogService.saveMeditationLog).toHaveBeenCalledWith("user-1", {
+    expect(LogService.saveMeditationLog).toHaveBeenCalledWith('user-1', {
       duration: 10,
     });
   });
 
-  it("should handle invalid action", async () => {
-    const mockRequest = new Request("http://localhost:3000/api/sync/logs", {
-      method: "POST",
+  it('should handle invalid action', async () => {
+    const mockRequest = new Request('http://localhost:3000/api/sync/logs', {
+      method: 'POST',
       body: JSON.stringify({
-        action: "INVALID_ACTION",
-        userId: "user-1",
+        action: 'INVALID_ACTION',
+        userId: 'user-1',
       }),
     });
 
@@ -75,19 +75,17 @@ describe("Sync API Route (Logs)", () => {
     const data = await response.json();
 
     expect(response.status).toBe(400);
-    expect(data.error).toBe("Invalid action");
+    expect(data.error).toBe('Invalid action');
   });
 
-  it("should handle server error", async () => {
-    (LogService.saveExerciseLog as any).mockRejectedValue(
-      new Error("DB Error"),
-    );
+  it('should handle server error', async () => {
+    (LogService.saveExerciseLog as any).mockRejectedValue(new Error('DB Error'));
 
-    const mockRequest = new Request("http://localhost:3000/api/sync/logs", {
-      method: "POST",
+    const mockRequest = new Request('http://localhost:3000/api/sync/logs', {
+      method: 'POST',
       body: JSON.stringify({
-        action: "SAVE_LOG",
-        userId: "user-1",
+        action: 'SAVE_LOG',
+        userId: 'user-1',
         payload: {},
       }),
     });
@@ -96,6 +94,6 @@ describe("Sync API Route (Logs)", () => {
     const data = await response.json();
 
     expect(response.status).toBe(500);
-    expect(data.error).toBe("Internal Server Error");
+    expect(data.error).toBe('Internal Server Error');
   });
 });

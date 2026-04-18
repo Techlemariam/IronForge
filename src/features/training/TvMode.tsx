@@ -1,28 +1,21 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from "react";
-import { cn } from "@/lib/utils";
-import { motion, AnimatePresence } from "framer-motion";
-import {
-  Heart,
-  Zap,
-  Flame,
-  Trophy,
-  Bluetooth,
-  BluetoothOff,
-  X,
-} from "lucide-react";
-import { useTitanReaction } from "@/features/titan/useTitanReaction";
-import { useBluetoothPower } from "@/features/bio/hooks/useBluetoothPower";
-import { useBluetoothHeartRate } from "@/features/bio/hooks/useBluetoothHeartRate";
-import { SensorManager } from "./components/SensorManager";
-import { useCompanionRelay } from "@/features/companion/useCompanionRelay";
-import { useGuildContribution } from "@/features/guild/hooks/useGuildContribution";
-import { useLiveCombat } from "@/features/combat/hooks/useLiveCombat";
-import { useSearchParams } from "next/navigation";
-import { QRCodeSVG } from "qrcode.react";
-import { Scan, Podcast } from "lucide-react";
-import { PocketCastsPlayer } from "../podcast/components/PocketCastsPlayer";
+import { useBluetoothHeartRate } from '@/features/bio/hooks/useBluetoothHeartRate';
+import { useBluetoothPower } from '@/features/bio/hooks/useBluetoothPower';
+import { useLiveCombat } from '@/features/combat/hooks/useLiveCombat';
+import { useCompanionRelay } from '@/features/companion/useCompanionRelay';
+import { useGuildContribution } from '@/features/guild/hooks/useGuildContribution';
+import { useTitanReaction } from '@/features/titan/useTitanReaction';
+import { cn } from '@/lib/utils';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Bluetooth, BluetoothOff, Flame, Heart, Trophy, X, Zap } from 'lucide-react';
+import { Podcast, Scan } from 'lucide-react';
+import { useSearchParams } from 'next/navigation';
+import { QRCodeSVG } from 'qrcode.react';
+import type React from 'react';
+import { useEffect, useState } from 'react';
+import { PocketCastsPlayer } from '../podcast/components/PocketCastsPlayer';
+import { SensorManager } from './components/SensorManager';
 
 interface TvModeProps {
   onExit: () => void;
@@ -42,26 +35,23 @@ interface SessionStats {
   kineticEnergy: number;
 }
 
-const ZONE_COLORS: Record<
-  number,
-  { bg: string; border: string; text: string }
-> = {
-  1: { bg: "bg-zinc-950", border: "border-zinc-800", text: "text-zinc-400" },
-  2: { bg: "bg-blue-950/30", border: "border-blue-900", text: "text-blue-400" },
+const ZONE_COLORS: Record<number, { bg: string; border: string; text: string }> = {
+  1: { bg: 'bg-zinc-950', border: 'border-zinc-800', text: 'text-zinc-400' },
+  2: { bg: 'bg-blue-950/30', border: 'border-blue-900', text: 'text-blue-400' },
   3: {
-    bg: "bg-green-950/30",
-    border: "border-green-900",
-    text: "text-green-400",
+    bg: 'bg-green-950/30',
+    border: 'border-green-900',
+    text: 'text-green-400',
   },
   4: {
-    bg: "bg-yellow-950/30",
-    border: "border-yellow-900",
-    text: "text-yellow-400",
+    bg: 'bg-yellow-950/30',
+    border: 'border-yellow-900',
+    text: 'text-yellow-400',
   },
-  5: { bg: "bg-red-950/30", border: "border-red-900", text: "text-red-500" },
+  5: { bg: 'bg-red-950/30', border: 'border-red-900', text: 'text-red-500' },
 };
 
-const getZoneFromHr = (hr: number, maxHr: number = 190) => {
+const getZoneFromHr = (hr: number, maxHr = 190) => {
   const pct = (hr / maxHr) * 100;
   if (pct < 60) return 1;
   if (pct < 70) return 2;
@@ -101,7 +91,6 @@ export const TvMode: React.FC<TvModeProps> = ({
   const [sensorsMenuOpen, setSensorsMenuOpen] = useState(false);
   const [podcastOpen, setPodcastOpen] = useState(false);
 
-
   const [sessionStats, setSessionStats] = useState<SessionStats>({
     elapsedSeconds: 0,
     xpEarned: 0,
@@ -112,26 +101,21 @@ export const TvMode: React.FC<TvModeProps> = ({
   // Session Logic
   const searchParams = useSearchParams();
   // Use existing session from URL or generate new one
-  const [sessionId] = useState(
-    () => searchParams.get("session") || crypto.randomUUID(),
-  );
+  const [sessionId] = useState(() => searchParams.get('session') || crypto.randomUUID());
   const [qrVisible, setQrVisible] = useState(false);
 
   // Companion Relay
 
-  const relayRole = searchParams.get("session") ? "CONTROLLER" : "RECEIVER"; // If session param exists, we joined
+  const relayRole = searchParams.get('session') ? 'CONTROLLER' : 'RECEIVER'; // If session param exists, we joined
 
-  const {
-    lastEvent,
-    isConnected: _isRelayConnected,
-  } = useCompanionRelay(relayRole, sessionId);
+  const { lastEvent, isConnected: _isRelayConnected } = useCompanionRelay(relayRole, sessionId);
 
   // Handle Companion Events (Receiver Handling)
   useEffect(() => {
-    if (!lastEvent || relayRole === "CONTROLLER") return;
+    if (!lastEvent || relayRole === 'CONTROLLER') return;
 
-    if (lastEvent.type === "COMMAND") {
-      if (lastEvent.payload === "PAUSE" || lastEvent.payload === "RESUME") {
+    if (lastEvent.type === 'COMMAND') {
+      if (lastEvent.payload === 'PAUSE' || lastEvent.payload === 'RESUME') {
         // Logic to toggle pause (currently using local state in TvMode, might need prop or internal state)
         // setPaused(p => !p);
         // For now, simpler:
@@ -211,19 +195,19 @@ export const TvMode: React.FC<TvModeProps> = ({
   // Keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onExit();
-      if (e.key === " ") setHudVisible((v) => !v);
-      if (e.key === "p" || e.key === "P") setPodcastOpen((v) => !v);
+      if (e.key === 'Escape') onExit();
+      if (e.key === ' ') setHudVisible((v) => !v);
+      if (e.key === 'p' || e.key === 'P') setPodcastOpen((v) => !v);
     };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, [onExit]);
 
   // Format time
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
-    return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
   const zoneStyle = ZONE_COLORS[zone];
@@ -231,10 +215,10 @@ export const TvMode: React.FC<TvModeProps> = ({
   return (
     <div
       className={cn(
-        "fixed inset-0 bg-black z-50 flex flex-col",
-        "transition-shadow duration-500",
+        'fixed inset-0 bg-black z-50 flex flex-col',
+        'transition-shadow duration-500',
         zoneStyle.border,
-        zoneStyle.bg,
+        zoneStyle.bg
       )}
       onClick={() => setHudVisible(true)}
     >
@@ -259,20 +243,15 @@ export const TvMode: React.FC<TvModeProps> = ({
       {/* --- MOBILE CONTROLLER LAYOUT (Visible on small screens) --- */}
       <div className="md:hidden flex-1 flex flex-col p-6">
         <div className="flex justify-between items-center mb-8">
-          <h2 className="text-xl font-black text-white italic tracking-tighter">
-            IRON COMPANION
-          </h2>
+          <h2 className="text-xl font-black text-white italic tracking-tighter">IRON COMPANION</h2>
           <div className="flex gap-2">
             <div
-              className={cn(
-                "w-2 h-2 rounded-full",
-                isHrConnected ? "bg-green-500" : "bg-red-500",
-              )}
+              className={cn('w-2 h-2 rounded-full', isHrConnected ? 'bg-green-500' : 'bg-red-500')}
             />
             <div
               className={cn(
-                "w-2 h-2 rounded-full",
-                isPowerConnected ? "bg-green-500" : "bg-red-500",
+                'w-2 h-2 rounded-full',
+                isPowerConnected ? 'bg-green-500' : 'bg-red-500'
               )}
             />
           </div>
@@ -282,8 +261,8 @@ export const TvMode: React.FC<TvModeProps> = ({
           <div className="bg-zinc-900/80 p-6 rounded-2xl border border-zinc-800 flex flex-col items-center justify-center">
             <Heart
               className={cn(
-                "w-8 h-8 mb-2",
-                zone >= 4 ? "text-red-500 animate-pulse" : "text-zinc-500",
+                'w-8 h-8 mb-2',
+                zone >= 4 ? 'text-red-500 animate-pulse' : 'text-zinc-500'
               )}
             />
             <span className="text-4xl font-black text-white">{currentHr}</span>
@@ -291,14 +270,9 @@ export const TvMode: React.FC<TvModeProps> = ({
           </div>
           <div className="bg-zinc-900/80 p-6 rounded-2xl border border-zinc-800 flex flex-col items-center justify-center">
             <Zap
-              className={cn(
-                "w-8 h-8 mb-2",
-                isPowerConnected ? "text-yellow-400" : "text-zinc-500",
-              )}
+              className={cn('w-8 h-8 mb-2', isPowerConnected ? 'text-yellow-400' : 'text-zinc-500')}
             />
-            <span className="text-4xl font-black text-white">
-              {currentPower}
-            </span>
+            <span className="text-4xl font-black text-white">{currentPower}</span>
             <span className="text-xs text-zinc-500 uppercase">WATTS</span>
           </div>
         </div>
@@ -332,9 +306,9 @@ export const TvMode: React.FC<TvModeProps> = ({
       <div className="hidden md:block relative w-full h-full">
         <div
           className={cn(
-            "absolute inset-0 pointer-events-none border-8",
+            'absolute inset-0 pointer-events-none border-8',
             zoneStyle.border,
-            "shadow-[inset_0_0_60px_10px]",
+            'shadow-[inset_0_0_60px_10px]'
           )}
         />
 
@@ -351,31 +325,26 @@ export const TvMode: React.FC<TvModeProps> = ({
                 <div className="flex items-center gap-4">
                   <Heart
                     className={cn(
-                      "w-12 h-12 animate-pulse",
-                      zone >= 4 ? "text-red-500" : "text-white",
+                      'w-12 h-12 animate-pulse',
+                      zone >= 4 ? 'text-red-500' : 'text-white'
                     )}
                   />
                   <div>
                     <div className="text-6xl font-black text-white tabular-nums tracking-tighter">
-                      {currentHr}{" "}
-                      <span className="text-2xl text-zinc-400 font-bold">
-                        bpm
-                      </span>
+                      {currentHr} <span className="text-2xl text-zinc-400 font-bold">bpm</span>
                     </div>
                   </div>
                 </div>
                 <div className="flex items-center gap-2 pl-2">
                   <div
                     className={cn(
-                      "px-3 py-1 rounded-full font-bold text-sm uppercase tracking-wider bg-black/50 backdrop-blur",
-                      zoneStyle.text,
+                      'px-3 py-1 rounded-full font-bold text-sm uppercase tracking-wider bg-black/50 backdrop-blur',
+                      zoneStyle.text
                     )}
                   >
                     Zone {zone}
                   </div>
-                  <div className="text-zinc-500 text-sm font-mono">
-                    {sessionStats.xpEarned} XP
-                  </div>
+                  <div className="text-zinc-500 text-sm font-mono">{sessionStats.xpEarned} XP</div>
                 </div>
               </div>
 
@@ -403,18 +372,13 @@ export const TvMode: React.FC<TvModeProps> = ({
                 <div className="flex items-center gap-4">
                   <div>
                     <div className="text-6xl font-black text-white tabular-nums tracking-tighter">
-                      {currentPower}{" "}
-                      <span className="text-2xl text-zinc-400 font-bold">
-                        W
-                      </span>
+                      {currentPower} <span className="text-2xl text-zinc-400 font-bold">W</span>
                     </div>
                   </div>
                   <Zap
                     className={cn(
-                      "w-12 h-12",
-                      isPowerConnected
-                        ? "text-yellow-400 fill-yellow-400"
-                        : "text-zinc-700",
+                      'w-12 h-12',
+                      isPowerConnected ? 'text-yellow-400 fill-yellow-400' : 'text-zinc-700'
                     )}
                   />
                 </div>
@@ -431,10 +395,10 @@ export const TvMode: React.FC<TvModeProps> = ({
                       }}
                       aria-label="Toggle QR Code for Companion App"
                       className={cn(
-                        "p-2 rounded-lg transition-colors",
+                        'p-2 rounded-lg transition-colors',
                         qrVisible
-                          ? "bg-white text-black"
-                          : "bg-zinc-800 hover:bg-zinc-700 text-zinc-400",
+                          ? 'bg-white text-black'
+                          : 'bg-zinc-800 hover:bg-zinc-700 text-zinc-400'
                       )}
                     >
                       <Scan className="w-5 h-5" />
@@ -463,13 +427,15 @@ export const TvMode: React.FC<TvModeProps> = ({
                         }}
                         aria-label="Toggle Podcast Player"
                         className={cn(
-                          "p-2 rounded-lg transition-colors",
+                          'p-2 rounded-lg transition-colors',
                           podcastOpen
-                            ? "bg-magma text-white"
-                            : "bg-zinc-800 hover:bg-zinc-700 text-zinc-400"
+                            ? 'bg-magma text-white'
+                            : 'bg-zinc-800 hover:bg-zinc-700 text-zinc-400'
                         )}
                       >
-                        <Podcast className={cn("w-5 h-5", podcastOpen ? "text-white" : "text-zinc-400")} />
+                        <Podcast
+                          className={cn('w-5 h-5', podcastOpen ? 'text-white' : 'text-zinc-400')}
+                        />
                       </button>
                     )}
 
@@ -556,9 +522,7 @@ export const TvMode: React.FC<TvModeProps> = ({
                     <div className="text-xs text-blue-400 font-bold uppercase tracking-wider">
                       Solo Target
                     </div>
-                    <div className="text-xl font-black text-white">
-                      {soloBoss.name}
-                    </div>
+                    <div className="text-xl font-black text-white">{soloBoss.name}</div>
                   </div>
                   <div className="text-right">
                     <div className="text-sm font-mono text-zinc-300">
@@ -587,9 +551,7 @@ export const TvMode: React.FC<TvModeProps> = ({
                       Guild Raid
                     </div>
                     <div className="text-xl font-black text-white">
-                      {guildStats.bossName !== "Unknown"
-                        ? guildStats.bossName
-                        : "Searching..."}
+                      {guildStats.bossName !== 'Unknown' ? guildStats.bossName : 'Searching...'}
                     </div>
                   </div>
                   <div className="text-right">
@@ -618,18 +580,15 @@ export const TvMode: React.FC<TvModeProps> = ({
               >
                 <div className="bg-zinc-100 p-4 rounded-xl">
                   <QRCodeSVG
-                    value={`${typeof window !== "undefined" ? window.location.origin : ""}/training?mode=tv&session=${sessionId}`}
+                    value={`${typeof window !== 'undefined' ? window.location.origin : ''}/training?mode=tv&session=${sessionId}`}
                     size={256}
                     level="H"
                   />
                 </div>
                 <div className="text-center">
-                  <h3 className="text-2xl font-black text-black mb-2">
-                    SCAN TO CONTROL
-                  </h3>
+                  <h3 className="text-2xl font-black text-black mb-2">SCAN TO CONTROL</h3>
                   <p className="text-zinc-500 text-sm max-w-xs">
-                    Use your phone&apos;s camera to connect as a Companion
-                    Controller.
+                    Use your phone&apos;s camera to connect as a Companion Controller.
                   </p>
                 </div>
                 <button

@@ -1,20 +1,12 @@
+import { SKILL_TREE_V2, countUnlockedNotables, getNodeById } from '@/data/skill-tree-v2';
+import type { IntervalsWellness } from '@/types';
+import type { CalculatedEffects, DrawbackCondition, EffectCondition } from '@/types/skills';
 /**
  * @fileoverview useSkillEffects Hook
  * The "brain" of the Neural Lattice system.
  * Calculates aggregated effects from all unlocked skills.
  */
-import { useMemo } from "react";
-import {
-  CalculatedEffects,
-  EffectCondition,
-  DrawbackCondition,
-} from "@/types/skills";
-import {
-  SKILL_TREE_V2,
-  getNodeById,
-  countUnlockedNotables,
-} from "@/data/skill-tree-v2";
-import { IntervalsWellness } from "@/types";
+import { useMemo } from 'react';
 
 // ============================================================================
 // Session Metadata (for conditional effect checking)
@@ -74,20 +66,17 @@ const DEFAULT_EFFECTS: CalculatedEffects = {
 function checkEffectConditions(
   conditions: EffectCondition | undefined,
   session: SessionMetadata,
-  wellness: IntervalsWellness | null,
+  wellness: IntervalsWellness | null
 ): boolean {
   if (!conditions) return true; // No conditions = always active
 
   // Rep range check
-  if (
-    conditions.minReps !== undefined &&
-    (session.avgReps ?? 0) < conditions.minReps
-  ) {
+  if (conditions.minReps !== undefined && (session.avgReps ?? 0) < conditions.minReps) {
     return false;
   }
   if (
     conditions.maxReps !== undefined &&
-    (session.avgReps ?? Infinity) > conditions.maxReps
+    (session.avgReps ?? Number.POSITIVE_INFINITY) > conditions.maxReps
   ) {
     return false;
   }
@@ -139,13 +128,13 @@ function checkEffectConditions(
 function checkDrawbackConditions(
   conditions: DrawbackCondition | undefined,
   session: SessionMetadata,
-  wellness: IntervalsWellness | null,
+  wellness: IntervalsWellness | null
 ): boolean {
   if (!conditions) return false; // No conditions = drawback never applies
 
   // Low rep drawback (e.g., Hypertrophy Ascendant)
   if (conditions.maxReps !== undefined) {
-    if ((session.avgReps ?? Infinity) <= conditions.maxReps) {
+    if ((session.avgReps ?? Number.POSITIVE_INFINITY) <= conditions.maxReps) {
       return true;
     }
   }
@@ -159,19 +148,14 @@ function checkDrawbackConditions(
 
   // Session too short (e.g., Void Runner)
   if (conditions.maxSessionDurationMins !== undefined) {
-    if (
-      (session.durationMins ?? Infinity) <= conditions.maxSessionDurationMins
-    ) {
+    if ((session.durationMins ?? Number.POSITIVE_INFINITY) <= conditions.maxSessionDurationMins) {
       return true;
     }
   }
 
   // Overtraining check
   if (conditions.consecutiveTrainingDays !== undefined) {
-    if (
-      (session.consecutiveTrainingDays ?? 0) >=
-      conditions.consecutiveTrainingDays
-    ) {
+    if ((session.consecutiveTrainingDays ?? 0) >= conditions.consecutiveTrainingDays) {
       return true;
     }
   }
@@ -195,7 +179,7 @@ function checkDrawbackConditions(
 export function calculateSkillEffects(
   purchasedSkillIds: Set<string>,
   wellness: IntervalsWellness | null,
-  session: SessionMetadata = {},
+  session: SessionMetadata = {}
 ): CalculatedEffects {
   // Start with defaults
   const result: CalculatedEffects = { ...DEFAULT_EFFECTS };
@@ -203,15 +187,12 @@ export function calculateSkillEffects(
   // Find active keystone (if any)
   // Find active keystone (if any)
   const keystones = SKILL_TREE_V2.filter(
-    (node) => node.tier === "keystone" && purchasedSkillIds.has(node.id),
+    (node) => node.tier === 'keystone' && purchasedSkillIds.has(node.id)
   );
 
   if (keystones.length > 0) {
     // If a specific keystone is requested and owned, use it
-    if (
-      session.activeKeystoneId &&
-      purchasedSkillIds.has(session.activeKeystoneId)
-    ) {
+    if (session.activeKeystoneId && purchasedSkillIds.has(session.activeKeystoneId)) {
       result.activeKeystoneId = session.activeKeystoneId;
     } else {
       // Default to first unlocked keystone (legacy behavior)
@@ -225,11 +206,7 @@ export function calculateSkillEffects(
     if (!node) return;
 
     // Check if effect conditions are met
-    const effectsApply = checkEffectConditions(
-      node.effectConditions,
-      session,
-      wellness,
-    );
+    const effectsApply = checkEffectConditions(node.effectConditions, session, wellness);
 
     // Apply effects if conditions are met
     if (effectsApply && node.effects) {
@@ -282,11 +259,7 @@ export function calculateSkillEffects(
     }
 
     // Check if drawback conditions are met (for keystones)
-    const drawbacksApply = checkDrawbackConditions(
-      node.drawbackConditions,
-      session,
-      wellness,
-    );
+    const drawbacksApply = checkDrawbackConditions(node.drawbackConditions, session, wellness);
 
     // Apply drawbacks if conditions are met
     if (drawbacksApply && node.drawbacks) {
@@ -294,27 +267,21 @@ export function calculateSkillEffects(
 
       // Drawback multipliers override (take the worst)
       if (drawbacks.tpMultiplier !== undefined) {
-        result.tpMultiplier = Math.min(
-          result.tpMultiplier,
-          drawbacks.tpMultiplier,
-        );
+        result.tpMultiplier = Math.min(result.tpMultiplier, drawbacks.tpMultiplier);
       }
       if (drawbacks.ksMultiplier !== undefined) {
-        result.ksMultiplier = Math.min(
-          result.ksMultiplier,
-          drawbacks.ksMultiplier,
-        );
+        result.ksMultiplier = Math.min(result.ksMultiplier, drawbacks.ksMultiplier);
       }
       if (drawbacks.titanLoadMultiplier !== undefined) {
         result.titanLoadMultiplier = Math.min(
           result.titanLoadMultiplier,
-          drawbacks.titanLoadMultiplier,
+          drawbacks.titanLoadMultiplier
         );
       }
       if (drawbacks.recoveryRateMultiplier !== undefined) {
         result.recoveryRateMultiplier = Math.min(
           result.recoveryRateMultiplier,
-          drawbacks.recoveryRateMultiplier,
+          drawbacks.recoveryRateMultiplier
         );
       }
     }
@@ -334,7 +301,7 @@ export function calculateSkillEffects(
 export function useSkillEffects(
   purchasedSkillIds: Set<string>,
   wellness: IntervalsWellness | null,
-  session: SessionMetadata = {},
+  session: SessionMetadata = {}
 ): CalculatedEffects {
   return useMemo(() => {
     return calculateSkillEffects(purchasedSkillIds, wellness, session);
@@ -351,14 +318,14 @@ export function useSkillEffects(
  */
 export function canPurchaseKeystone(
   nodeId: string,
-  purchasedSkillIds: Set<string>,
+  purchasedSkillIds: Set<string>
 ): { canPurchase: boolean; reason?: string } {
   const node = getNodeById(nodeId);
   if (!node) {
-    return { canPurchase: false, reason: "Node not found" };
+    return { canPurchase: false, reason: 'Node not found' };
   }
 
-  if (node.tier !== "keystone") {
+  if (node.tier !== 'keystone') {
     return { canPurchase: true }; // Not a keystone, normal rules apply
   }
 
@@ -378,21 +345,14 @@ export function canPurchaseKeystone(
 /**
  * Get the status of each path (% completion toward Keystone).
  */
-export function getPathProgress(
-  purchasedSkillIds: Set<string>,
-): Record<string, number> {
-  const paths = ["juggernaut", "pathfinder", "warden", "titan", "sage"] as const;
+export function getPathProgress(purchasedSkillIds: Set<string>): Record<string, number> {
+  const paths = ['juggernaut', 'pathfinder', 'warden', 'titan', 'sage'] as const;
   const progress: Record<string, number> = {};
 
   paths.forEach((path) => {
-    const pathNodes = SKILL_TREE_V2.filter(
-      (n) => n.path === path && n.tier !== "minor",
-    );
-    const unlockedCount = pathNodes.filter((n) =>
-      purchasedSkillIds.has(n.id),
-    ).length;
-    progress[path] =
-      pathNodes.length > 0 ? (unlockedCount / pathNodes.length) * 100 : 0;
+    const pathNodes = SKILL_TREE_V2.filter((n) => n.path === path && n.tier !== 'minor');
+    const unlockedCount = pathNodes.filter((n) => purchasedSkillIds.has(n.id)).length;
+    progress[path] = pathNodes.length > 0 ? (unlockedCount / pathNodes.length) * 100 : 0;
   });
 
   return progress;

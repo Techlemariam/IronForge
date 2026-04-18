@@ -1,31 +1,34 @@
-import { PrismaClient } from "@prisma/client";
-import { Pool as NeonPool, neonConfig } from "@neondatabase/serverless";
-import { PrismaNeon } from "@prisma/adapter-neon";
-import { Pool as PgPool } from "pg";
-import { PrismaPg } from "@prisma/adapter-pg";
+import { Pool as NeonPool, neonConfig } from '@neondatabase/serverless';
+import { PrismaNeon } from '@prisma/adapter-neon';
+import { PrismaPg } from '@prisma/adapter-pg';
+import { PrismaClient } from '@prisma/client';
+import { Pool as PgPool } from 'pg';
 
-import ws from "ws";
+import ws from 'ws';
 
 // Enable WebSocket for Neon in Node.js
-if (typeof window === "undefined") {
+if (typeof window === 'undefined') {
   neonConfig.webSocketConstructor = ws;
 }
 
 const prismaClientSingleton = () => {
   let connectionString = process.env.DATABASE_URL;
-  if (!connectionString && (process.env.NODE_ENV === "test" || process.env.SKIP_ENV_VALIDATION === "true")) {
-    connectionString = "postgresql://postgres:postgres@localhost:5432/postgres";
+  if (
+    !connectionString &&
+    (process.env.NODE_ENV === 'test' || process.env.SKIP_ENV_VALIDATION === 'true')
+  ) {
+    connectionString = 'postgresql://postgres:postgres@localhost:5432/postgres';
     process.env.DATABASE_URL = connectionString;
   }
 
   if (!connectionString) {
-    throw new Error("DATABASE_URL is not defined");
+    throw new Error('DATABASE_URL is not defined');
   }
 
   // Determine runtime and choose adapter accordingly
   // We utilize the Neon adapter specifically for Edge runtimes where TCP is limited/unavailable.
   // For standard Node.js environments (Local or Coolify), we use the native Rust engine for best performance and stability.
-  if (process.env.NEXT_RUNTIME === "edge") {
+  if (process.env.NEXT_RUNTIME === 'edge') {
     // Neon adapter for Edge
     const pool = new NeonPool({ connectionString });
     // Cast pool to any due to version mismatch in library types for PrismaNeon
@@ -49,4 +52,4 @@ const prisma = globalThis.prisma ?? prismaClientSingleton();
 export default prisma;
 export { prisma };
 
-if (process.env.NODE_ENV !== "production") globalThis.prisma = prisma;
+if (process.env.NODE_ENV !== 'production') globalThis.prisma = prisma;

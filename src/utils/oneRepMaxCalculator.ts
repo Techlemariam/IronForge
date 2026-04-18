@@ -3,16 +3,7 @@
  * Multiple formulas for estimating max strength from submaximal lifts.
  */
 
-type Formula =
-  | "EPLEY"
-  | "BRZYCKI"
-  | "LANDER"
-  | "LOMBARDI"
-  | "MAYHEW"
-  | "OCONNER"
-  | "WATHAN";
-
-
+type Formula = 'EPLEY' | 'BRZYCKI' | 'LANDER' | 'LOMBARDI' | 'MAYHEW' | 'OCONNER' | 'WATHAN';
 
 interface MultiFormulaResult {
   average: number;
@@ -87,25 +78,21 @@ export function calculateE1rmWathan(weight: number, reps: number): number {
 /**
  * Calculate e1RM using specified formula.
  */
-export function calculateE1rm(
-  weight: number,
-  reps: number,
-  formula: Formula = "EPLEY",
-): number {
+export function calculateE1rm(weight: number, reps: number, formula: Formula = 'EPLEY'): number {
   switch (formula) {
-    case "EPLEY":
+    case 'EPLEY':
       return calculateE1rmEpley(weight, reps);
-    case "BRZYCKI":
+    case 'BRZYCKI':
       return calculateE1rmBrzycki(weight, reps);
-    case "LANDER":
+    case 'LANDER':
       return calculateE1rmLander(weight, reps);
-    case "LOMBARDI":
+    case 'LOMBARDI':
       return calculateE1rmLombardi(weight, reps);
-    case "MAYHEW":
+    case 'MAYHEW':
       return calculateE1rmMayhew(weight, reps);
-    case "OCONNER":
+    case 'OCONNER':
       return calculateE1rmOConner(weight, reps);
-    case "WATHAN":
+    case 'WATHAN':
       return calculateE1rmWathan(weight, reps);
     default:
       return calculateE1rmEpley(weight, reps);
@@ -115,18 +102,15 @@ export function calculateE1rm(
 /**
  * Calculate e1RM using all formulas and return aggregated result.
  */
-export function calculateE1rmAllFormulas(
-  weight: number,
-  reps: number,
-): MultiFormulaResult {
+export function calculateE1rmAllFormulas(weight: number, reps: number): MultiFormulaResult {
   const formulas: Formula[] = [
-    "EPLEY",
-    "BRZYCKI",
-    "LANDER",
-    "LOMBARDI",
-    "MAYHEW",
-    "OCONNER",
-    "WATHAN",
+    'EPLEY',
+    'BRZYCKI',
+    'LANDER',
+    'LOMBARDI',
+    'MAYHEW',
+    'OCONNER',
+    'WATHAN',
   ];
 
   const results: Record<Formula, number> = {} as Record<Formula, number>;
@@ -147,10 +131,7 @@ export function calculateE1rmAllFormulas(
 /**
  * Calculate weight for target reps at given percentage of 1RM.
  */
-export function calculateWeightForReps(
-  e1rm: number,
-  targetReps: number,
-): number {
+export function calculateWeightForReps(e1rm: number, targetReps: number): number {
   // Inverse of Epley: weight = e1rm / (1 + reps/30)
   return Math.round(e1rm / (1 + targetReps / 30));
 }
@@ -159,7 +140,7 @@ export function calculateWeightForReps(
  * Generate rep/weight table from 1RM.
  */
 export function generateRepTable(
-  e1rm: number,
+  e1rm: number
 ): Array<{ reps: number; weight: number; percentage: number }> {
   const reps = [1, 2, 3, 4, 5, 6, 8, 10, 12, 15];
   return reps.map((r) => ({
@@ -172,10 +153,7 @@ export function generateRepTable(
 /**
  * Calculate relative strength (1RM / bodyweight).
  */
-export function calculateRelativeStrength(
-  e1rm: number,
-  bodyweight: number,
-): number {
+export function calculateRelativeStrength(e1rm: number, bodyweight: number): number {
   if (bodyweight <= 0) return 0;
   return Math.round((e1rm / bodyweight) * 100) / 100;
 }

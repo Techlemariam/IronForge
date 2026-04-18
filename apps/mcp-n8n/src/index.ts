@@ -1,16 +1,17 @@
 #!/usr/bin/env node
 // Secrets are injected by Doppler at runtime — no .env file needed.
-import { Server } from "@modelcontextprotocol/sdk/server/index.js";
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { Server } from '@modelcontextprotocol/sdk/server/index.js';
+import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import {
   CallToolRequestSchema,
   ErrorCode,
   ListToolsRequestSchema,
   McpError,
-} from "@modelcontextprotocol/sdk/types.js";
-import { z } from "zod";
+} from '@modelcontextprotocol/sdk/types.js';
+import { z } from 'zod';
 
-const API_KEY = process.env.N8N_API_KEY || process.env.n8n_access_token || process.env.N8N_ACCESS_TOKEN;
+const API_KEY =
+  process.env.N8N_API_KEY || process.env.n8n_access_token || process.env.N8N_ACCESS_TOKEN;
 let BASE_URL = process.env.N8N_HOST;
 
 // Try to derive host from webhook URL if not explicitly set
@@ -24,16 +25,20 @@ if (!BASE_URL && process.env.N8N_WEBHOOK_URL) {
 }
 
 if (!API_KEY) {
-  console.warn("Warning: N8N_API_KEY environment variable is missing. Some tools will be unavailable.");
+  console.warn(
+    'Warning: N8N_API_KEY environment variable is missing. Some tools will be unavailable.'
+  );
 }
 
 if (!BASE_URL) {
-  console.warn("Warning: N8N_HOST or N8N_WEBHOOK_URL environment variable is missing. n8n API tools will be unavailable.");
+  console.warn(
+    'Warning: N8N_HOST or N8N_WEBHOOK_URL environment variable is missing. n8n API tools will be unavailable.'
+  );
 }
 
 // Ensure no trailing slash
 if (BASE_URL) {
-  BASE_URL = BASE_URL.replace(/\/$/, "");
+  BASE_URL = BASE_URL.replace(/\/$/, '');
 }
 
 class N8nClient {
@@ -41,17 +46,19 @@ class N8nClient {
 
   constructor() {
     this.headers = {
-      "X-N8N-API-KEY": API_KEY!,
-      "Content-Type": "application/json",
+      'X-N8N-API-KEY': API_KEY!,
+      'Content-Type': 'application/json',
     };
   }
 
   async fetch(endpoint: string, options: RequestInit = {}) {
     if (!API_KEY) {
-      throw new Error("Missing N8N_API_KEY. Please ensure it is set in your environment variables or GitHub Secrets.");
+      throw new Error(
+        'Missing N8N_API_KEY. Please ensure it is set in your environment variables or GitHub Secrets.'
+      );
     }
     if (!BASE_URL) {
-      throw new Error("Missing N8N_HOST or N8N_WEBHOOK_URL. Please ensure one of these is set.");
+      throw new Error('Missing N8N_HOST or N8N_WEBHOOK_URL. Please ensure one of these is set.');
     }
     const url = `${BASE_URL}/api/v1${endpoint}`;
     try {
@@ -75,9 +82,9 @@ class N8nClient {
   }
 
   async listWorkflows(active?: boolean, tags?: string[]) {
-    let query = "?limit=100";
+    let query = '?limit=100';
     if (active !== undefined) query += `&active=${active}`;
-    if (tags && tags.length > 0) query += `&tags=${tags.join(",")}`;
+    if (tags && tags.length > 0) query += `&tags=${tags.join(',')}`;
 
     return this.fetch(`/workflows${query}`);
   }
@@ -87,11 +94,11 @@ class N8nClient {
   }
 
   async activateWorkflow(id: string) {
-    return this.fetch(`/workflows/${id}/activate`, { method: "POST" });
+    return this.fetch(`/workflows/${id}/activate`, { method: 'POST' });
   }
 
   async deactivateWorkflow(id: string) {
-    return this.fetch(`/workflows/${id}/deactivate`, { method: "POST" });
+    return this.fetch(`/workflows/${id}/deactivate`, { method: 'POST' });
   }
 
   async getExecutions(limit = 10, status?: string) {
@@ -105,8 +112,8 @@ const n8nClient = new N8nClient();
 
 const server = new Server(
   {
-    name: "n8n-mcp",
-    version: "1.0.0",
+    name: 'n8n-mcp',
+    version: '1.0.0',
   },
   {
     capabilities: {
@@ -119,49 +126,52 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
   return {
     tools: [
       {
-        name: "n8n_list_workflows",
-        description: "List all workflows in the n8n instance",
+        name: 'n8n_list_workflows',
+        description: 'List all workflows in the n8n instance',
         inputSchema: zodToJsonSchema(
           z.object({
-            active: z.boolean().optional().describe("Filter by active status"),
-            tags: z.array(z.string()).optional().describe("Filter by tags"),
+            active: z.boolean().optional().describe('Filter by active status'),
+            tags: z.array(z.string()).optional().describe('Filter by tags'),
           })
         ),
       },
       {
-        name: "n8n_get_workflow",
-        description: "Get details of a specific workflow",
+        name: 'n8n_get_workflow',
+        description: 'Get details of a specific workflow',
         inputSchema: zodToJsonSchema(
           z.object({
-            id: z.string().describe("The ID of the workflow"),
+            id: z.string().describe('The ID of the workflow'),
           })
         ),
       },
       {
-        name: "n8n_activate_workflow",
-        description: "Activate a workflow",
+        name: 'n8n_activate_workflow',
+        description: 'Activate a workflow',
         inputSchema: zodToJsonSchema(
           z.object({
-            id: z.string().describe("The ID of the workflow"),
+            id: z.string().describe('The ID of the workflow'),
           })
         ),
       },
       {
-        name: "n8n_deactivate_workflow",
-        description: "Deactivate a workflow",
+        name: 'n8n_deactivate_workflow',
+        description: 'Deactivate a workflow',
         inputSchema: zodToJsonSchema(
           z.object({
-            id: z.string().describe("The ID of the workflow"),
+            id: z.string().describe('The ID of the workflow'),
           })
         ),
       },
       {
-        name: "n8n_get_executions",
-        description: "Get recent workflow executions",
+        name: 'n8n_get_executions',
+        description: 'Get recent workflow executions',
         inputSchema: zodToJsonSchema(
           z.object({
-            limit: z.number().optional().default(10).describe("Number of executions to return"),
-            status: z.enum(["running", "waiting", "succeeded", "error", "canceled"]).optional().describe("Filter by status"),
+            limit: z.number().optional().default(10).describe('Number of executions to return'),
+            status: z
+              .enum(['running', 'waiting', 'succeeded', 'error', 'canceled'])
+              .optional()
+              .describe('Filter by status'),
           })
         ),
       },
@@ -172,77 +182,74 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
   try {
     switch (request.params.name) {
-      case "n8n_list_workflows": {
+      case 'n8n_list_workflows': {
         const args = request.params.arguments as any;
         const result = await n8nClient.listWorkflows(args.active, args.tags);
         return {
           content: [
             {
-              type: "text",
+              type: 'text',
               text: JSON.stringify(result, null, 2),
             },
           ],
         };
       }
-      case "n8n_get_workflow": {
+      case 'n8n_get_workflow': {
         const args = request.params.arguments as any;
         const result = await n8nClient.getWorkflow(args.id);
         return {
           content: [
             {
-              type: "text",
+              type: 'text',
               text: JSON.stringify(result, null, 2),
             },
           ],
         };
       }
-      case "n8n_activate_workflow": {
+      case 'n8n_activate_workflow': {
         const args = request.params.arguments as any;
         const result = await n8nClient.activateWorkflow(args.id);
         return {
           content: [
             {
-              type: "text",
+              type: 'text',
               text: JSON.stringify(result, null, 2),
             },
           ],
         };
       }
-      case "n8n_deactivate_workflow": {
+      case 'n8n_deactivate_workflow': {
         const args = request.params.arguments as any;
         const result = await n8nClient.deactivateWorkflow(args.id);
         return {
           content: [
             {
-              type: "text",
+              type: 'text',
               text: JSON.stringify(result, null, 2),
             },
           ],
         };
       }
-      case "n8n_get_executions": {
+      case 'n8n_get_executions': {
         const args = request.params.arguments as any;
         const result = await n8nClient.getExecutions(args.limit, args.status);
         return {
           content: [
             {
-              type: "text",
+              type: 'text',
               text: JSON.stringify(result, null, 2),
             },
           ],
         };
       }
       default:
-        throw new McpError(
-          ErrorCode.MethodNotFound,
-          `Unknown tool: ${request.params.name}`
-        );
+        throw new McpError(ErrorCode.MethodNotFound, `Unknown tool: ${request.params.name}`);
     }
   } catch (error: any) {
     return {
       content: [
         {
-          type: "text",
+          type: 'text',
           text: `Error: ${error.message}`,
         },
       ],
@@ -256,23 +263,28 @@ function zodToJsonSchema(schema: z.ZodType): any {
   // Simplified conversion for this specific use case
   // In a real app, use zod-to-json-schema package
   const zodSchema = schema as any;
-  if (zodSchema._def.typeName === "ZodObject") {
+  if (zodSchema._def.typeName === 'ZodObject') {
     const properties: any = {};
     const required: string[] = [];
 
     for (const [key, value] of Object.entries(zodSchema.shape)) {
       const field = value as any;
       properties[key] = {
-        type: field._def.typeName === "ZodNumber" ? "number" :
-          field._def.typeName === "ZodBoolean" ? "boolean" :
-            field._def.typeName === "ZodArray" ? "array" : "string"
+        type:
+          field._def.typeName === 'ZodNumber'
+            ? 'number'
+            : field._def.typeName === 'ZodBoolean'
+              ? 'boolean'
+              : field._def.typeName === 'ZodArray'
+                ? 'array'
+                : 'string',
       };
 
       if (field.description) {
         properties[key].description = field.description;
       }
 
-      if (field._def.typeName === "ZodEnum") {
+      if (field._def.typeName === 'ZodEnum') {
         properties[key].enum = field._def.values;
       }
 
@@ -282,9 +294,9 @@ function zodToJsonSchema(schema: z.ZodType): any {
     }
 
     return {
-      type: "object",
+      type: 'object',
       properties,
-      required: required.length > 0 ? required : undefined
+      required: required.length > 0 ? required : undefined,
     };
   }
   return {};
@@ -296,6 +308,6 @@ async function run() {
 }
 
 run().catch((error) => {
-  console.error("Server error:", error);
+  console.error('Server error:', error);
   process.exit(1);
 });

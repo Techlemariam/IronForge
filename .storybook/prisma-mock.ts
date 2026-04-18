@@ -6,14 +6,14 @@
 
 // Mock PrismaClient class
 export class PrismaClient {
-    constructor() {
-        console.warn('Using mocked PrismaClient in Storybook');
-    }
+  constructor() {
+    console.warn('Using mocked PrismaClient in Storybook');
+  }
 
-    // Add mock methods as needed
-    $connect = async () => { };
-    $disconnect = async () => { };
-    $transaction = async () => { };
+  // Add mock methods as needed
+  $connect = async () => {};
+  $disconnect = async () => {};
+  $transaction = async () => {};
 }
 
 // Default export
@@ -21,61 +21,61 @@ export default PrismaClient;
 
 // Mock Prisma namespace
 export const Prisma = {
-    ModelName: {},
-    PrismaClientKnownRequestError: class { },
-    PrismaClientUnknownRequestError: class { },
-    PrismaClientRustPanicError: class { },
-    PrismaClientInitializationError: class { },
-    PrismaClientValidationError: class { },
-    InputJsonValue: {} as any,
+  ModelName: {},
+  PrismaClientKnownRequestError: class {},
+  PrismaClientUnknownRequestError: class {},
+  PrismaClientRustPanicError: class {},
+  PrismaClientInitializationError: class {},
+  PrismaClientValidationError: class {},
+  InputJsonValue: {} as any,
 };
 
 // Mock all commonly used Prisma types and enums
 export enum Archetype {
-    JUGGERNAUT = 'JUGGERNAUT',
-    PATHFINDER = 'PATHFINDER',
-    WARDEN = 'WARDEN',
+  JUGGERNAUT = 'JUGGERNAUT',
+  PATHFINDER = 'PATHFINDER',
+  WARDEN = 'WARDEN',
 }
 
 export enum Faction {
-    ALLIANCE = 'ALLIANCE',
-    HORDE = 'HORDE',
+  ALLIANCE = 'ALLIANCE',
+  HORDE = 'HORDE',
 }
 
 export enum EquipmentType {
-    BODYWEIGHT = 'BODYWEIGHT',
-    BARBELL = 'BARBELL',
-    DUMBBELL = 'DUMBBELL',
-    CABLE = 'CABLE',
-    MACHINE = 'MACHINE',
-    KETTLEBELL = 'KETTLEBELL',
-    BAND = 'BAND',
-    HYPER_PRO = 'HYPER_PRO',
-    OTHER = 'OTHER',
+  BODYWEIGHT = 'BODYWEIGHT',
+  BARBELL = 'BARBELL',
+  DUMBBELL = 'DUMBBELL',
+  CABLE = 'CABLE',
+  MACHINE = 'MACHINE',
+  KETTLEBELL = 'KETTLEBELL',
+  BAND = 'BAND',
+  HYPER_PRO = 'HYPER_PRO',
+  OTHER = 'OTHER',
 }
 
 export enum ChallengeType {
-    DAILY = 'DAILY',
-    WEEKLY = 'WEEKLY',
-    SEASONAL = 'SEASONAL',
+  DAILY = 'DAILY',
+  WEEKLY = 'WEEKLY',
+  SEASONAL = 'SEASONAL',
 }
 
 export enum SubscriptionTier {
-    FREE = 'FREE',
-    PRO = 'PRO',
-    LIFETIME = 'LIFETIME',
+  FREE = 'FREE',
+  PRO = 'PRO',
+  LIFETIME = 'LIFETIME',
 }
 
 export enum TerritoryType {
-    TRAINING_GROUNDS = 'TRAINING_GROUNDS',
-    RESOURCE_NODE = 'RESOURCE_NODE',
-    FORTRESS = 'FORTRESS',
+  TRAINING_GROUNDS = 'TRAINING_GROUNDS',
+  RESOURCE_NODE = 'RESOURCE_NODE',
+  FORTRESS = 'FORTRESS',
 }
 
 export enum FriendshipStatus {
-    PENDING = 'PENDING',
-    ACCEPTED = 'ACCEPTED',
-    BLOCKED = 'BLOCKED',
+  PENDING = 'PENDING',
+  ACCEPTED = 'ACCEPTED',
+  BLOCKED = 'BLOCKED',
 }
 
 // Mock type interfaces (empty objects for type compatibility)

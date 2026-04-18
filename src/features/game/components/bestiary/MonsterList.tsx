@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { Search, Shield, Sword } from "lucide-react";
-import type { BestiaryMonster } from "@/actions/systems/bestiary";
+import type { BestiaryMonster } from '@/actions/systems/bestiary';
+import { motion } from 'framer-motion';
+import { Search, Shield, Sword } from 'lucide-react';
+import { useState } from 'react';
 
 const DIFFICULTY_COLORS: Record<string, string> = {
-  Easy: "text-green-400 border-green-900/50 bg-green-950/20",
-  Medium: "text-yellow-400 border-yellow-900/50 bg-yellow-950/20",
-  Hard: "text-orange-400 border-orange-900/50 bg-orange-950/20",
-  Extreme: "text-red-500 border-red-900/50 bg-red-950/20",
+  Easy: 'text-green-400 border-green-900/50 bg-green-950/20',
+  Medium: 'text-yellow-400 border-yellow-900/50 bg-yellow-950/20',
+  Hard: 'text-orange-400 border-orange-900/50 bg-orange-950/20',
+  Extreme: 'text-red-500 border-red-900/50 bg-red-950/20',
 };
 
 export function MonsterList({
@@ -17,13 +17,13 @@ export function MonsterList({
 }: {
   initialMonsters: BestiaryMonster[];
 }) {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
   // const [selectedId, setSelectedId] = useState<string | null>(null) // Unused for now, but good to keep if we add detailed modal
 
   const filteredMonsters = initialMonsters.filter(
     (m) =>
       m.name.toLowerCase().includes(search.toLowerCase()) ||
-      m.type.toLowerCase().includes(search.toLowerCase()),
+      m.type.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
@@ -46,14 +46,12 @@ export function MonsterList({
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             key={monster.id}
-            className={`bg-forge-900 border border-forge-border rounded-lg overflow-hidden transition-all duration-300 hover:shadow-[0_0_20px_rgba(200,0,0,0.2)] ${monster.defeated ? "opacity-75 grayscale hover:grayscale-0" : ""}`}
+            className={`bg-forge-900 border border-forge-border rounded-lg overflow-hidden transition-all duration-300 hover:shadow-[0_0_20px_rgba(200,0,0,0.2)] ${monster.defeated ? 'opacity-75 grayscale hover:grayscale-0' : ''}`}
           >
             <div className="p-6">
               <div className="flex justify-between items-start mb-4">
                 <div>
-                  <h3 className="text-xl font-serif text-white tracking-wide">
-                    {monster.name}
-                  </h3>
+                  <h3 className="text-xl font-serif text-white tracking-wide">{monster.name}</h3>
                   <p className="text-xs text-forge-muted uppercase tracking-wider">
                     {monster.title}
                   </p>
@@ -90,9 +88,7 @@ export function MonsterList({
                       className="h-full bg-red-800"
                     />
                   </div>
-                  <span className="w-6 text-right">
-                    {monster.stats.strength}
-                  </span>
+                  <span className="w-6 text-right">{monster.stats.strength}</span>
                 </div>
                 <div className="flex items-center gap-2 text-xs font-mono text-gray-500">
                   <span className="w-16">END</span>
@@ -104,9 +100,7 @@ export function MonsterList({
                       className="h-full bg-blue-800"
                     />
                   </div>
-                  <span className="w-6 text-right">
-                    {monster.stats.endurance}
-                  </span>
+                  <span className="w-6 text-right">{monster.stats.endurance}</span>
                 </div>
                 <div className="flex items-center gap-2 text-xs font-mono text-gray-500">
                   <span className="w-16">AGI</span>
@@ -118,9 +112,7 @@ export function MonsterList({
                       className="h-full bg-green-800"
                     />
                   </div>
-                  <span className="w-6 text-right">
-                    {monster.stats.agility}
-                  </span>
+                  <span className="w-6 text-right">{monster.stats.agility}</span>
                 </div>
               </div>
             </div>

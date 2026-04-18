@@ -11,19 +11,15 @@
 interface WilksParams {
   weightLifted: number; // in kg
   bodyWeight: number; // in kg
-  sex: "male" | "female";
+  sex: 'male' | 'female';
 }
 
-export const calculateWilks = ({
-  weightLifted,
-  bodyWeight,
-  sex,
-}: WilksParams): number => {
+export const calculateWilks = ({ weightLifted, bodyWeight, sex }: WilksParams): number => {
   const x = bodyWeight;
 
   let coeff = 0;
 
-  if (sex === "male") {
+  if (sex === 'male') {
     const a = -216.0475144;
     const b = 16.2606339;
     const c = -0.002388645;
@@ -32,12 +28,7 @@ export const calculateWilks = ({
     const f = -1.291e-8;
 
     const denominator =
-      a +
-      b * x +
-      c * Math.pow(x, 2) +
-      d * Math.pow(x, 3) +
-      e * Math.pow(x, 4) +
-      f * Math.pow(x, 5);
+      a + b * x + c * Math.pow(x, 2) + d * Math.pow(x, 3) + e * Math.pow(x, 4) + f * Math.pow(x, 5);
     coeff = 500 / denominator;
   } else {
     const a = 594.31747775582;
@@ -48,12 +39,7 @@ export const calculateWilks = ({
     const f = -9.054e-8;
 
     const denominator =
-      a +
-      b * x +
-      c * Math.pow(x, 2) +
-      d * Math.pow(x, 3) +
-      e * Math.pow(x, 4) +
-      f * Math.pow(x, 5);
+      a + b * x + c * Math.pow(x, 2) + d * Math.pow(x, 3) + e * Math.pow(x, 4) + f * Math.pow(x, 5);
     coeff = 500 / denominator;
   }
 

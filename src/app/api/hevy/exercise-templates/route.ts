@@ -1,29 +1,26 @@
-import { NextResponse } from "next/server";
-import axios from "axios";
+import axios from 'axios';
+import { NextResponse } from 'next/server';
 
 function getHevyApiKey(request: Request) {
-  return request.headers.get("x-hevy-api-key");
+  return request.headers.get('x-hevy-api-key');
 }
 
 export async function GET(request: Request) {
   const hevyApiKey = getHevyApiKey(request);
   if (!hevyApiKey) {
-    return NextResponse.json(
-      { error: "Hevy API Key is required." },
-      { status: 401 },
-    );
+    return NextResponse.json({ error: 'Hevy API Key is required.' }, { status: 401 });
   }
 
   try {
-    const url = "https://api.hevyapp.com/v1/exercise_templates";
-    let allExercises = [];
+    const url = 'https://api.hevyapp.com/v1/exercise_templates';
+    const allExercises = [];
     let page = 1;
     let keepFetching = true;
 
     while (keepFetching) {
       try {
         const response = await axios.get(url, {
-          headers: { "api-key": hevyApiKey },
+          headers: { 'api-key': hevyApiKey },
           params: { per_page: 100, page: page },
         });
 
@@ -38,7 +35,7 @@ export async function GET(request: Request) {
         if (
           error.response &&
           error.response.data &&
-          error.response.data.error === "Page not found"
+          error.response.data.error === 'Page not found'
         ) {
           keepFetching = false;
         } else {
@@ -48,16 +45,13 @@ export async function GET(request: Request) {
     }
     return NextResponse.json({ exercise_templates: allExercises });
   } catch (error: any) {
-    console.error(
-      "Hevy Codex Assembly Error:",
-      error.response?.data || error.message,
-    );
+    console.error('Hevy Codex Assembly Error:', error.response?.data || error.message);
     return NextResponse.json(
       {
-        error: "Could not assemble the Exercise Codex.",
+        error: 'Could not assemble the Exercise Codex.',
         details: error.response?.data,
       },
-      { status: error.response?.status || 500 },
+      { status: error.response?.status || 500 }
     );
   }
 }

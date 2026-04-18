@@ -1,7 +1,7 @@
-import React from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Bluetooth, Heart, Zap, X } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Bluetooth, Heart, X, Zap } from 'lucide-react';
+import type React from 'react';
 
 interface SensorManagerProps {
   isOpen: boolean;
@@ -61,33 +61,27 @@ export const SensorManager: React.FC<SensorManagerProps> = ({
                 <div className="flex items-center gap-3">
                   <Heart
                     className={cn(
-                      "w-6 h-6",
-                      hrStatus.connected
-                        ? "text-red-500 fill-red-500"
-                        : "text-zinc-500",
+                      'w-6 h-6',
+                      hrStatus.connected ? 'text-red-500 fill-red-500' : 'text-zinc-500'
                     )}
                   />
                   <div>
                     <div className="font-bold text-zinc-200">Heart Rate</div>
                     <div className="text-sm text-zinc-500">
-                      {hrStatus.connected
-                        ? `${hrStatus.bpm ?? "--"} BPM`
-                        : "Disconnected"}
+                      {hrStatus.connected ? `${hrStatus.bpm ?? '--'} BPM` : 'Disconnected'}
                     </div>
                   </div>
                 </div>
                 <button
-                  onClick={
-                    hrStatus.connected ? hrStatus.disconnect : hrStatus.connect
-                  }
+                  onClick={hrStatus.connected ? hrStatus.disconnect : hrStatus.connect}
                   className={cn(
-                    "px-4 py-2 rounded-lg font-bold text-sm transition-colors",
+                    'px-4 py-2 rounded-lg font-bold text-sm transition-colors',
                     hrStatus.connected
-                      ? "bg-red-500/10 text-red-400 hover:bg-red-500/20"
-                      : "bg-blue-600 text-white hover:bg-blue-500",
+                      ? 'bg-red-500/10 text-red-400 hover:bg-red-500/20'
+                      : 'bg-blue-600 text-white hover:bg-blue-500'
                   )}
                 >
-                  {hrStatus.connected ? "Disconnect" : "Connect"}
+                  {hrStatus.connected ? 'Disconnect' : 'Connect'}
                 </button>
               </div>
 
@@ -96,35 +90,27 @@ export const SensorManager: React.FC<SensorManagerProps> = ({
                 <div className="flex items-center gap-3">
                   <Zap
                     className={cn(
-                      "w-6 h-6",
-                      powerStatus.connected
-                        ? "text-yellow-400 fill-yellow-400"
-                        : "text-zinc-500",
+                      'w-6 h-6',
+                      powerStatus.connected ? 'text-yellow-400 fill-yellow-400' : 'text-zinc-500'
                     )}
                   />
                   <div>
                     <div className="font-bold text-zinc-200">Smart Trainer</div>
                     <div className="text-sm text-zinc-500">
-                      {powerStatus.connected
-                        ? `${powerStatus.watts}W`
-                        : "Disconnected"}
+                      {powerStatus.connected ? `${powerStatus.watts}W` : 'Disconnected'}
                     </div>
                   </div>
                 </div>
                 <button
-                  onClick={
-                    powerStatus.connected
-                      ? powerStatus.disconnect
-                      : powerStatus.connect
-                  }
+                  onClick={powerStatus.connected ? powerStatus.disconnect : powerStatus.connect}
                   className={cn(
-                    "px-4 py-2 rounded-lg font-bold text-sm transition-colors",
+                    'px-4 py-2 rounded-lg font-bold text-sm transition-colors',
                     powerStatus.connected
-                      ? "bg-red-500/10 text-red-400 hover:bg-red-500/20"
-                      : "bg-blue-600 text-white hover:bg-blue-500",
+                      ? 'bg-red-500/10 text-red-400 hover:bg-red-500/20'
+                      : 'bg-blue-600 text-white hover:bg-blue-500'
                   )}
                 >
-                  {powerStatus.connected ? "Disconnect" : "Connect"}
+                  {powerStatus.connected ? 'Disconnect' : 'Connect'}
                 </button>
               </div>
             </div>

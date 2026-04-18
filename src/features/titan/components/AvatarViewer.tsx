@@ -1,14 +1,16 @@
 'use client';
 
-import dynamic from "next/dynamic";
-import { TitanAttributes } from "@/types";
+import type { TitanAttributes } from '@/types';
+import dynamic from 'next/dynamic';
 
-const AvatarViewerVisual = dynamic(() => import("./AvatarViewerVisual"), {
+const AvatarViewerVisual = dynamic(() => import('./AvatarViewerVisual'), {
   ssr: false,
   loading: () => (
     <div className="w-full h-full flex flex-col items-center justify-center bg-black/40 border border-white/5 rounded-2xl">
       <div className="w-16 h-16 border-4 border-clay/20 border-t-clay rounded-full animate-spin mb-4" />
-      <span className="text-clay font-mono text-xs uppercase tracking-widest animate-pulse">Syncing Neural Link...</span>
+      <span className="text-clay font-mono text-xs uppercase tracking-widest animate-pulse">
+        Syncing Neural Link...
+      </span>
     </div>
   ),
 });
@@ -19,20 +21,14 @@ interface AvatarViewerProps {
   muscleHeatmap?: Record<string, number>;
 }
 
-const AvatarViewer: React.FC<AvatarViewerProps> = ({
-  attributes,
-  isElite,
-  muscleHeatmap = {},
-}) => {
+const AvatarViewer: React.FC<AvatarViewerProps> = ({ attributes, isElite, muscleHeatmap = {} }) => {
   return (
     <div className="w-full h-full min-h-[400px] bg-gradient-to-b from-zinc-950 to-black rounded-lg overflow-hidden relative border border-zinc-800">
       <div className="absolute top-4 left-4 z-10">
         <h3 className="text-clay font-bold uppercase tracking-widest text-xs">
           Titan Holo-Projector
         </h3>
-        <p className="text-[10px] text-zinc-500 font-mono">
-          Rendering Mode: Hard Light Construct
-        </p>
+        <p className="text-[10px] text-zinc-500 font-mono">Rendering Mode: Hard Light Construct</p>
       </div>
 
       {/* Legend */}
@@ -51,11 +47,7 @@ const AvatarViewer: React.FC<AvatarViewerProps> = ({
         </div>
       </div>
 
-      <AvatarViewerVisual
-        attributes={attributes}
-        isElite={isElite}
-        muscleHeatmap={muscleHeatmap}
-      />
+      <AvatarViewerVisual attributes={attributes} isElite={isElite} muscleHeatmap={muscleHeatmap} />
     </div>
   );
 };

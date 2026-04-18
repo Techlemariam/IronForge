@@ -1,13 +1,13 @@
-"use server";
+'use server';
 
 type AnnouncementType =
-  | "EVENT"
-  | "MAINTENANCE"
-  | "UPDATE"
-  | "COMMUNITY"
-  | "EMERGENCY"
-  | "CELEBRATION";
-type AnnouncementPriority = "LOW" | "NORMAL" | "HIGH" | "URGENT";
+  | 'EVENT'
+  | 'MAINTENANCE'
+  | 'UPDATE'
+  | 'COMMUNITY'
+  | 'EMERGENCY'
+  | 'CELEBRATION';
+type AnnouncementPriority = 'LOW' | 'NORMAL' | 'HIGH' | 'URGENT';
 
 interface GlobalAnnouncement {
   id: string;
@@ -27,45 +27,42 @@ interface GlobalAnnouncement {
 /**
  * Get active global announcements.
  */
-export async function getGlobalAnnouncementsAction(
-  _userId: string,
-): Promise<GlobalAnnouncement[]> {
+export async function getGlobalAnnouncementsAction(_userId: string): Promise<GlobalAnnouncement[]> {
   const _now = new Date();
 
   return [
     {
-      id: "ann1",
-      type: "EVENT",
-      priority: "HIGH",
-      title: "🎄 Iron Winter Festival is LIVE!",
+      id: 'ann1',
+      type: 'EVENT',
+      priority: 'HIGH',
+      title: '🎄 Iron Winter Festival is LIVE!',
       content:
-        "Complete winter challenges, earn exclusive rewards, and climb the seasonal leaderboard!",
-      actionUrl: "/events/winter-2025",
-      actionLabel: "View Event",
-      startsAt: new Date("2024-12-20"),
-      expiresAt: new Date("2025-01-10"),
+        'Complete winter challenges, earn exclusive rewards, and climb the seasonal leaderboard!',
+      actionUrl: '/events/winter-2025',
+      actionLabel: 'View Event',
+      startsAt: new Date('2024-12-20'),
+      expiresAt: new Date('2025-01-10'),
       isRead: false,
       isDismissed: false,
     },
     {
-      id: "ann2",
-      type: "CELEBRATION",
-      priority: "NORMAL",
-      title: "🎉 10,000 Titans Strong!",
-      content:
-        "Our community just hit 10,000 active Titans! Thanks for being part of the journey.",
+      id: 'ann2',
+      type: 'CELEBRATION',
+      priority: 'NORMAL',
+      title: '🎉 10,000 Titans Strong!',
+      content: 'Our community just hit 10,000 active Titans! Thanks for being part of the journey.',
       startsAt: new Date(Date.now() - 24 * 60 * 60 * 1000),
       isRead: true,
       isDismissed: false,
     },
     {
-      id: "ann3",
-      type: "UPDATE",
-      priority: "NORMAL",
-      title: "⚔️ New Combat System Update",
-      content: "Check out the new combo system and enhanced combat animations!",
-      actionUrl: "/combat",
-      actionLabel: "Try It Now",
+      id: 'ann3',
+      type: 'UPDATE',
+      priority: 'NORMAL',
+      title: '⚔️ New Combat System Update',
+      content: 'Check out the new combo system and enhanced combat animations!',
+      actionUrl: '/combat',
+      actionLabel: 'Try It Now',
       startsAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
       isRead: true,
       isDismissed: false,
@@ -78,7 +75,7 @@ export async function getGlobalAnnouncementsAction(
  */
 export async function markAnnouncementReadAction(
   _userId: string,
-  announcementId: string,
+  announcementId: string
 ): Promise<{ success: boolean }> {
   console.log(`Marked announcement ${announcementId} as read for ${_userId}`);
   return { success: true };
@@ -89,7 +86,7 @@ export async function markAnnouncementReadAction(
  */
 export async function dismissAnnouncementAction(
   _userId: string,
-  announcementId: string,
+  announcementId: string
 ): Promise<{ success: boolean }> {
   console.log(`Dismissed announcement ${announcementId} for ${_userId}`);
   return { success: true };
@@ -98,9 +95,7 @@ export async function dismissAnnouncementAction(
 /**
  * Get unread announcement count.
  */
-export async function getUnreadAnnouncementCountAction(
-  _userId: string,
-): Promise<number> {
+export async function getUnreadAnnouncementCountAction(_userId: string): Promise<number> {
   const announcements = await getGlobalAnnouncementsAction(_userId);
   return announcements.filter((a) => !a.isRead).length;
 }
@@ -108,14 +103,9 @@ export async function getUnreadAnnouncementCountAction(
 /**
  * Check for urgent announcements (maintenance, emergency).
  */
-export async function getUrgentAnnouncementsAction(
-  _userId: string,
-): Promise<GlobalAnnouncement[]> {
+export async function getUrgentAnnouncementsAction(_userId: string): Promise<GlobalAnnouncement[]> {
   const all = await getGlobalAnnouncementsAction(_userId);
   return all.filter(
-    (a) =>
-      a.priority === "URGENT" ||
-      a.type === "EMERGENCY" ||
-      a.type === "MAINTENANCE",
+    (a) => a.priority === 'URGENT' || a.type === 'EMERGENCY' || a.type === 'MAINTENANCE'
   );
 }

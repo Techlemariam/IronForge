@@ -8,30 +8,30 @@
 // ============================================================================
 
 /** Node tier determines visual size, importance, and unlock requirements */
-export type NodeTier = "minor" | "notable" | "keystone";
+export type NodeTier = 'minor' | 'notable' | 'keystone';
 
 /** Training paths aligned with athlete archetypes */
-export type SkillPath = "juggernaut" | "pathfinder" | "warden" | "titan" | "sage";
+export type SkillPath = 'juggernaut' | 'pathfinder' | 'warden' | 'titan' | 'sage';
 
 /** Node status in the player's progression */
 export enum SkillStatus {
-  LOCKED = "LOCKED",
-  UNLOCKED = "UNLOCKED",
-  MASTERED = "MASTERED",
+  LOCKED = 'LOCKED',
+  UNLOCKED = 'UNLOCKED',
+  MASTERED = 'MASTERED',
 }
 
 /** Categories for backward compatibility and node classification */
 export type SkillCategory =
-  | "strength"
-  | "endurance"
-  | "hypertrophy"
-  | "hybrid"
-  | "utility"
+  | 'strength'
+  | 'endurance'
+  | 'hypertrophy'
+  | 'hybrid'
+  | 'utility'
   // Legacy (deprecated, kept for migration)
-  | "push"
-  | "pull"
-  | "legs"
-  | "core";
+  | 'push'
+  | 'pull'
+  | 'legs'
+  | 'core';
 
 // ============================================================================
 // Skill Effects & Drawbacks
@@ -128,14 +128,14 @@ export interface DrawbackCondition {
 
 /** Requirement types for unlocking skills */
 export type SkillRequirementType =
-  | "achievement_count"
-  | "vo2max_value"
-  | "1rm_weight"
-  | "rep_count"
-  | "session_count"
-  | "rest_day_count"
-  | "sleep_score_streak"
-  | "brick_workout_count";
+  | 'achievement_count'
+  | 'vo2max_value'
+  | '1rm_weight'
+  | 'rep_count'
+  | 'session_count'
+  | 'rest_day_count'
+  | 'sleep_score_streak'
+  | 'brick_workout_count';
 
 export interface SkillRequirement {
   type: SkillRequirementType;
@@ -144,7 +144,7 @@ export interface SkillRequirement {
   /** Target value to compare against */
   value: number;
   /** Comparison operator */
-  comparison: "gte" | "lte" | "eq";
+  comparison: 'gte' | 'lte' | 'eq';
 }
 
 // ============================================================================
@@ -174,7 +174,7 @@ export interface SkillNodeV2 {
   /** Parent node IDs that must be unlocked first */
   parents: string[];
   /** How to evaluate multiple parents: 'AND' = all required, 'OR' = any */
-  unlockLogic: "AND" | "OR";
+  unlockLogic: 'AND' | 'OR';
 
   // --- Position ---
   /** X/Y coordinates for tree visualization */
@@ -194,7 +194,7 @@ export interface SkillNodeV2 {
 
   // --- Cost ---
   /** Currency type for purchase */
-  currency: "talent_point" | "kinetic_shard";
+  currency: 'talent_point' | 'kinetic_shard';
   /** Base cost in the specified currency */
   cost: number;
 

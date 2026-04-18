@@ -1,7 +1,8 @@
-import React, { useState } from "react";
-import ForgeInput from "../../../components/ui/ForgeInput";
-import { Button } from "@/components/ui/button";
-import { motion } from "framer-motion";
+import { Button } from '@/components/ui/button';
+import { motion } from 'framer-motion';
+import type React from 'react';
+import { useState } from 'react';
+import ForgeInput from '../../../components/ui/ForgeInput';
 
 interface SetInputProps {
   onSetLog: (weight: number, reps: number, rpe: number) => void;
@@ -9,25 +10,21 @@ interface SetInputProps {
   targetRPE: number;
 }
 
-const SetInput: React.FC<SetInputProps> = ({
-  onSetLog,
-  targetReps,
-  targetRPE,
-}) => {
-  const [weight, setWeight] = useState("");
-  const [reps, setReps] = useState("");
-  const [rpe, setRpe] = useState("");
+const SetInput: React.FC<SetInputProps> = ({ onSetLog, targetReps, targetRPE }) => {
+  const [weight, setWeight] = useState('');
+  const [reps, setReps] = useState('');
+  const [rpe, setRpe] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const weightNum = parseFloat(weight) || 0;
-    const repsNum = parseInt(reps, 10) || 0;
-    const rpeNum = parseFloat(rpe) || 0;
+    const weightNum = Number.parseFloat(weight) || 0;
+    const repsNum = Number.parseInt(reps, 10) || 0;
+    const rpeNum = Number.parseFloat(rpe) || 0;
     onSetLog(weightNum, repsNum, rpeNum);
     // Clear for next set
-    setWeight("");
-    setReps("");
-    setRpe("");
+    setWeight('');
+    setReps('');
+    setRpe('');
   };
 
   return (
@@ -69,4 +66,3 @@ const SetInput: React.FC<SetInputProps> = ({
 };
 
 export default SetInput;
-

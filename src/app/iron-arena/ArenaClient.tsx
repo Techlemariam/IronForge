@@ -1,23 +1,23 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { DuelCard } from "@/features/pvp/components/duel/DuelCard";
+import type { SeasonInfo } from '@/actions/pvp/leagues';
+import { Button } from '@/components/ui/button';
+import { CardioDuelModal } from '@/features/pvp/components/duel/CardioDuelModal';
+import { ChallengeModal } from '@/features/pvp/components/duel/ChallengeModal';
+import { DuelCard } from '@/features/pvp/components/duel/DuelCard';
 import { DuelVictoryScreen } from '@/features/pvp/components/duel/DuelVictoryScreen';
-import { ChallengeModal } from "@/features/pvp/components/duel/ChallengeModal";
-import { CardioDuelModal } from "@/features/pvp/components/duel/CardioDuelModal";
-import { Button } from "@/components/ui/button";
-import { Swords, Crown, TrendingUp, Calendar } from "lucide-react";
-import { toast } from "sonner";
-import { SeasonInfo } from "@/actions/pvp/leagues";
-import { LeagueInfo } from "@/lib/game/tier-data";
-import { motion } from "framer-motion";
+import type { LeagueInfo } from '@/lib/game/tier-data';
+import { motion } from 'framer-motion';
+import { Calendar, Crown, Swords, TrendingUp } from 'lucide-react';
+import { useState } from 'react';
+import { toast } from 'sonner';
 
-import { DuelChallenge, User  } from "@/types/prisma";
+import type { DuelChallenge, User } from '@/types/prisma';
 
 // Extended type matches what we return from getDuelStatusAction
 export type ExtendedDuel = DuelChallenge & {
-  challenger: Pick<User, "id" | "heroName" | "level" | "faction">;
-  defender: Pick<User, "id" | "heroName" | "level" | "faction">;
+  challenger: Pick<User, 'id' | 'heroName' | 'level' | 'faction'>;
+  defender: Pick<User, 'id' | 'heroName' | 'level' | 'faction'>;
 };
 
 interface ArenaClientProps {
@@ -25,10 +25,16 @@ interface ArenaClientProps {
   currentUserId: string;
   leagueInfo: LeagueInfo | null;
   seasonInfo: SeasonInfo;
-  leaderboard: { entries: any[], totalPlayers: number };
+  leaderboard: { entries: any[]; totalPlayers: number };
 }
 
-export function ArenaClient({ activeDuel, currentUserId, leagueInfo, seasonInfo, leaderboard }: ArenaClientProps) {
+export function ArenaClient({
+  activeDuel,
+  currentUserId,
+  leagueInfo,
+  seasonInfo,
+  leaderboard,
+}: ArenaClientProps) {
   const [isChallengeOpen, setIsChallengeOpen] = useState(false);
   const [selectedOpponentId, setSelectedOpponentId] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'ARENA' | 'LEADERBOARD'>('ARENA');
@@ -47,16 +53,26 @@ export function ArenaClient({ activeDuel, currentUserId, leagueInfo, seasonInfo,
   }
 
   // League Display Data
-  const currentTier = leagueInfo?.tier || { name: "Unranked", color: "#666", icon: "🛡️", minRating: 0 };
+  const currentTier = leagueInfo?.tier || {
+    name: 'Unranked',
+    color: '#666',
+    icon: '🛡️',
+    minRating: 0,
+  };
   const nextTier = leagueInfo?.nextTier;
   const points = leagueInfo?.seasonPoints || 0;
   const progressPercent = nextTier
-    ? Math.min(100, Math.max(0, ((points - currentTier.minRating) / (nextTier.minRating - currentTier.minRating)) * 100))
+    ? Math.min(
+        100,
+        Math.max(
+          0,
+          ((points - currentTier.minRating) / (nextTier.minRating - currentTier.minRating)) * 100
+        )
+      )
     : 100;
 
   return (
     <div className="space-y-8 max-w-5xl mx-auto">
-
       {/* --- SEASON HEADER --- */}
       <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6 relative overflow-hidden">
         <div className="absolute top-0 right-0 p-4 opacity-10 pointer-events-none">
@@ -96,7 +112,9 @@ export function ArenaClient({ activeDuel, currentUserId, leagueInfo, seasonInfo,
 
           {/* Right: Season Timer */}
           <div className="flex flex-col items-end">
-            <div className="text-sm font-bold text-zinc-500 uppercase tracking-widest mb-1">Current Season</div>
+            <div className="text-sm font-bold text-zinc-500 uppercase tracking-widest mb-1">
+              Current Season
+            </div>
             <div className="text-xl font-bold text-white flex items-center gap-2">
               {seasonInfo.name}
             </div>
@@ -112,7 +130,9 @@ export function ArenaClient({ activeDuel, currentUserId, leagueInfo, seasonInfo,
           <div className="mt-6">
             <div className="flex justify-between text-xs font-bold text-zinc-500 mb-1 uppercase tracking-wider">
               <span>Progress to {nextTier.name}</span>
-              <span>{points} / {nextTier.minRating}</span>
+              <span>
+                {points} / {nextTier.minRating}
+              </span>
             </div>
             <div className="h-2 bg-zinc-950 rounded-full overflow-hidden">
               <motion.div
@@ -153,9 +173,11 @@ export function ArenaClient({ activeDuel, currentUserId, leagueInfo, seasonInfo,
                   try {
                     const { sendTauntAction } = await import('@/actions/pvp/duel');
                     const res = await sendTauntAction(activeDuel.id);
-                    if (res.success) toast.success("Taunt sent!");
-                    else toast.error("Taunt failed.");
-                  } catch { toast.error("Error sending taunt"); }
+                    if (res.success) toast.success('Taunt sent!');
+                    else toast.error('Taunt failed.');
+                  } catch {
+                    toast.error('Error sending taunt');
+                  }
                 }}
               />
             ) : (
@@ -164,11 +186,10 @@ export function ArenaClient({ activeDuel, currentUserId, leagueInfo, seasonInfo,
                   <Swords className="w-10 h-10 text-zinc-600" />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold text-white mb-2">
-                    Battle Ready?
-                  </h2>
+                  <h2 className="text-2xl font-bold text-white mb-2">Battle Ready?</h2>
                   <p className="text-zinc-400 max-w-md mx-auto">
-                    Challenge a rival Titan to a 7-day duel. Wins grant SR and propel you up the leagues.
+                    Challenge a rival Titan to a 7-day duel. Wins grant SR and propel you up the
+                    leagues.
                   </p>
                 </div>
                 <Button
@@ -194,12 +215,16 @@ export function ArenaClient({ activeDuel, currentUserId, leagueInfo, seasonInfo,
                 </thead>
                 <tbody className="divide-y divide-zinc-800 text-sm">
                   {leaderboard.entries.map((entry) => (
-                    <tr key={entry.userId} className={`hover:bg-zinc-800/50 transition-colors ${entry.userId === currentUserId ? 'bg-amber-950/20' : ''}`}>
+                    <tr
+                      key={entry.userId}
+                      className={`hover:bg-zinc-800/50 transition-colors ${entry.userId === currentUserId ? 'bg-amber-950/20' : ''}`}
+                    >
                       <td className="p-4 font-mono text-zinc-400">#{entry.rank}</td>
                       <td className="p-4 font-bold text-slate-200">{entry.heroName}</td>
                       <td className="p-4 text-center font-mono text-amber-500">{entry.rating}</td>
                       <td className="p-4 text-right text-zinc-400">
-                        <span className="text-green-500">{entry.wins}W</span> - <span className="text-red-500">{entry.losses}L</span>
+                        <span className="text-green-500">{entry.wins}W</span> -{' '}
+                        <span className="text-red-500">{entry.losses}L</span>
                       </td>
                     </tr>
                   ))}

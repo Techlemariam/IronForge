@@ -1,5 +1,5 @@
-import prisma from "@/lib/prisma";
-import { Item } from "@prisma/client";
+import prisma from '@/lib/prisma';
+import type { Item } from '@prisma/client';
 
 export class LootSystem {
   /**
@@ -11,11 +11,7 @@ export class LootSystem {
    * @param durationMinutes - Workout duration in minutes
    * @param lootLuck - Player's lootLuck modifier from PlayerContext (default 1.0)
    */
-  static calculateDropChance(
-    intensity: number = 0.5,
-    durationMinutes: number = 30,
-    lootLuck: number = 1.0,
-  ): number {
+  static calculateDropChance(intensity = 0.5, durationMinutes = 30, lootLuck = 1.0): number {
     const baseChance = 20;
     const intensityBonus = intensity * 30;
     const durationBonus = Math.min(durationMinutes, 60) * 0.5;
@@ -35,9 +31,9 @@ export class LootSystem {
    */
   static async rollForLoot(
     userId: string,
-    intensity: number = 0.5,
-    durationMinutes: number = 30,
-    lootLuck: number = 1.0,
+    intensity = 0.5,
+    durationMinutes = 30,
+    lootLuck = 1.0
   ): Promise<any | null> {
     const dropChance = this.calculateDropChance(intensity, durationMinutes, lootLuck);
     const roll = Math.random() * 100;
@@ -80,8 +76,7 @@ export class LootSystem {
       }
     }
 
-    const selectedItem =
-      weightedPool[Math.floor(Math.random() * weightedPool.length)];
+    const selectedItem = weightedPool[Math.floor(Math.random() * weightedPool.length)];
 
     // Unlock in DB
     await prisma.userEquipment.create({

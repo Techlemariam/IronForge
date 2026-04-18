@@ -1,33 +1,34 @@
-import React, { useEffect, useState } from "react";
-import {
-  IntervalsWellness,
-  WeaknessAudit,
-  TSBForecast,
-  TitanLoadCalculation,
-  TTBIndices,
+import TTBCompass from '@/components/TTBCompass';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/Alert';
+import { JargonTooltip } from '@/components/ui/JargonTooltip';
+import { Skeleton } from '@/components/ui/Skeleton';
+import { AnalyticsWorkerService } from '@/services/analyticsWorker';
+import { StorageService } from '@/services/storage';
+import { TrainingMemoryManager } from '@/services/trainingMemoryManager';
+import type {
   IntervalsEvent,
-} from "@/types";
-import { TrainingPath } from "@/types/training";
+  IntervalsWellness,
+  TSBForecast,
+  TTBIndices,
+  TitanLoadCalculation,
+  WeaknessAudit,
+} from '@/types';
+import type { TrainingPath } from '@/types/training';
 import {
-  Brain,
-  TrendingUp,
-  AlertTriangle,
-  Calendar,
   Activity,
+  AlertTriangle,
+  Brain,
+  Calendar,
   Flame,
-  Wind,
-  Trophy,
   Gauge,
   ShieldAlert,
+  TrendingUp,
+  Trophy,
+  Wind,
   ZapOff,
-} from "lucide-react";
-import { AnalyticsWorkerService } from "@/services/analyticsWorker";
-import { StorageService } from "@/services/storage";
-import TTBCompass from "@/components/TTBCompass";
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/Alert";
-import { TrainingMemoryManager } from "@/services/trainingMemoryManager";
-import { Skeleton } from "@/components/ui/Skeleton";
-import { JargonTooltip } from "@/components/ui/JargonTooltip";
+} from 'lucide-react';
+import type React from 'react';
+import { useEffect, useState } from 'react';
 
 interface UltrathinkDashboardProps {
   wellness: IntervalsWellness | null;
@@ -46,7 +47,7 @@ const UltrathinkDashboard: React.FC<UltrathinkDashboardProps> = ({
   ttb,
   events = [],
   titanAnalysis,
-  activePath = "WARDEN",
+  activePath = 'WARDEN',
 }) => {
   const [acwrData, setAcwrData] = useState<{
     acwr: number;
@@ -59,10 +60,7 @@ const UltrathinkDashboard: React.FC<UltrathinkDashboardProps> = ({
     const runHeavyMath = async () => {
       const history = await StorageService.getHistory();
       if (history && wellness) {
-        const res = await AnalyticsWorkerService.computeAdvancedStats(
-          history,
-          wellness,
-        );
+        const res = await AnalyticsWorkerService.computeAdvancedStats(history, wellness);
         setAcwrData({
           acwr: res.acwr,
           acute: res.acuteLoad,
@@ -78,57 +76,52 @@ const UltrathinkDashboard: React.FC<UltrathinkDashboardProps> = ({
     standardTss: 0,
     titanLoad: 0,
     discrepancy: 0,
-    advice: "No recent weight training detected.",
+    advice: 'No recent weight training detected.',
   };
-  const upcomingRace = events.find(
-    (e) => new Date(e.start_date_local) >= new Date(),
-  );
+  const upcomingRace = events.find((e) => new Date(e.start_date_local) >= new Date());
 
   // ACWR Color Logic
-  let acwrColor = "text-green-500";
-  let acwrStatus = "Optimal Zone";
+  let acwrColor = 'text-green-500';
+  let acwrStatus = 'Optimal Zone';
   if (acwrData) {
     if (acwrData.acwr > 1.5) {
-      acwrColor = "text-red-500 animate-pulse";
-      acwrStatus = "DANGER: High Injury Risk";
+      acwrColor = 'text-red-500 animate-pulse';
+      acwrStatus = 'DANGER: High Injury Risk';
     } else if (acwrData.acwr > 1.3) {
-      acwrColor = "text-orange-500";
-      acwrStatus = "Caution: Overreaching";
+      acwrColor = 'text-orange-500';
+      acwrStatus = 'Caution: Overreaching';
     } else if (acwrData.acwr < 0.8) {
-      acwrColor = "text-zinc-500";
-      acwrStatus = "Detraining";
+      acwrColor = 'text-zinc-500';
+      acwrStatus = 'Detraining';
     }
   }
 
   // --- PARENTING SECURITY LAYER ---
   const debuffs = wellness
-    ? TrainingMemoryManager.calculateDebuffs(
-      wellness.sleepScore || 100,
-      wellness.hrv || 50,
-    )
+    ? TrainingMemoryManager.calculateDebuffs(wellness.sleepScore || 100, wellness.hrv || 50)
     : [];
   const isSurvivalMode = wellness
     ? TrainingMemoryManager.shouldEnterSurvivalMode(
-      {
-        ctl: wellness.ctl || 0,
-        atl: wellness.atl || 0,
-        tsb: wellness.tsb || 0,
-        hrv: wellness.hrv || 50,
-        sleepScore: wellness.sleepScore || 100,
-        bodyBattery: wellness.bodyBattery || 100,
-        strengthDelta: 0,
-        consecutiveStalls: 0,
-        weeksInPhase: 0,
-        nutritionMode: "MAINTENANCE",
-        sleepDebt: 0,
-        acwr: 1.0,
-        junkMilePercent: 0,
-        neuralLoad: 0,
-        impactLoad: 0,
-        interferenceEvents: 0,
-      },
-      activePath,
-    )
+        {
+          ctl: wellness.ctl || 0,
+          atl: wellness.atl || 0,
+          tsb: wellness.tsb || 0,
+          hrv: wellness.hrv || 50,
+          sleepScore: wellness.sleepScore || 100,
+          bodyBattery: wellness.bodyBattery || 100,
+          strengthDelta: 0,
+          consecutiveStalls: 0,
+          weeksInPhase: 0,
+          nutritionMode: 'MAINTENANCE',
+          sleepDebt: 0,
+          acwr: 1.0,
+          junkMilePercent: 0,
+          neuralLoad: 0,
+          impactLoad: 0,
+          interferenceEvents: 0,
+        },
+        activePath
+      )
     : false;
 
   // ... useEffect ...
@@ -147,9 +140,7 @@ const UltrathinkDashboard: React.FC<UltrathinkDashboardProps> = ({
           <h2 className="text-lg font-black uppercase tracking-tight text-white">
             Ultrathink Engine
           </h2>
-          <p className="text-xs text-purple-400 font-mono">
-            Predictive Biometrics & Logistics
-          </p>
+          <p className="text-xs text-purple-400 font-mono">Predictive Biometrics & Logistics</p>
         </div>
       </div>
 
@@ -162,9 +153,8 @@ const UltrathinkDashboard: React.FC<UltrathinkDashboardProps> = ({
               ⚠️ SURVIVAL MODE ACTIVE
             </h3>
             <p className="text-xs text-red-400 mt-1">
-              System integrity critical. All anabolic protocols suspended.
-              Active Debuffs:{" "}
-              {debuffs.map((d) => d.reason).join(", ") || "Low TSB"}.
+              System integrity critical. All anabolic protocols suspended. Active Debuffs:{' '}
+              {debuffs.map((d) => d.reason).join(', ') || 'Low TSB'}.
             </p>
           </div>
         </div>
@@ -175,12 +165,9 @@ const UltrathinkDashboard: React.FC<UltrathinkDashboardProps> = ({
         <div className="bg-orange-950/30 border border-orange-500/50 rounded-lg p-3 flex items-center gap-3">
           <ZapOff className="w-5 h-5 text-orange-500" />
           <div className="flex-1">
-            <h3 className="text-xs font-bold text-orange-500 uppercase">
-              Capacity Reduced
-            </h3>
+            <h3 className="text-xs font-bold text-orange-500 uppercase">Capacity Reduced</h3>
             <p className="text-[10px] text-orange-400">
-              {debuffs.map((d) => d.reason).join(" + ")} detected. High
-              intensity load restricted.
+              {debuffs.map((d) => d.reason).join(' + ')} detected. High intensity load restricted.
             </p>
           </div>
         </div>
@@ -227,7 +214,7 @@ const UltrathinkDashboard: React.FC<UltrathinkDashboardProps> = ({
           <>
             <div className="flex items-center gap-4">
               <div
-                className={`p-3 rounded-full border bg-zinc-900 ${acwrData.acwr > 1.3 ? "border-red-900 text-red-500" : "border-green-900 text-green-500"}`}
+                className={`p-3 rounded-full border bg-zinc-900 ${acwrData.acwr > 1.3 ? 'border-red-900 text-red-500' : 'border-green-900 text-green-500'}`}
               >
                 <Gauge className="w-6 h-6" />
               </div>
@@ -236,12 +223,8 @@ const UltrathinkDashboard: React.FC<UltrathinkDashboardProps> = ({
                   <JargonTooltip term="ACWR">ACWR Score</JargonTooltip>
                 </h3>
                 <div className="flex items-baseline gap-2 mt-1">
-                  <span className={`text-2xl font-black ${acwrColor}`}>
-                    {acwrData.acwr}
-                  </span>
-                  <span className="text-xs text-zinc-500 font-mono uppercase">
-                    {acwrStatus}
-                  </span>
+                  <span className={`text-2xl font-black ${acwrColor}`}>{acwrData.acwr}</span>
+                  <span className="text-xs text-zinc-500 font-mono uppercase">{acwrStatus}</span>
                 </div>
               </div>
             </div>
@@ -306,11 +289,9 @@ const UltrathinkDashboard: React.FC<UltrathinkDashboardProps> = ({
               </h3>
               <div className="flex items-baseline gap-2 mt-1">
                 <span className="text-2xl font-black text-cyan-400">
-                  {wellness?.vo2max || "--"}
+                  {wellness?.vo2max || '--'}
                 </span>
-                <span className="text-xs text-zinc-500 font-mono">
-                  ml/kg/min
-                </span>
+                <span className="text-xs text-zinc-500 font-mono">ml/kg/min</span>
               </div>
             </div>
           </div>
@@ -322,7 +303,7 @@ const UltrathinkDashboard: React.FC<UltrathinkDashboardProps> = ({
               <div
                 className="h-full bg-cyan-500 shadow-[0_0_10px_#22d3ee]"
                 style={{
-                  width: `${Math.min((((wellness?.vo2max || 0) / 70) * 100), 100)}% `,
+                  width: `${Math.min(((wellness?.vo2max || 0) / 70) * 100, 100)}% `,
                 }}
               />
             </div>
@@ -353,12 +334,11 @@ const UltrathinkDashboard: React.FC<UltrathinkDashboardProps> = ({
                   <span className="text-xl font-mono font-bold text-orange-500">
                     {displayTitan.titanLoad} TL
                   </span>
-                  {displayTitan.appliedMultiplier &&
-                    displayTitan.appliedMultiplier > 1.0 && (
-                      <span className="text-[10px] text-orange-400 animate-pulse">
-                        Buff Active: {displayTitan.appliedMultiplier}x
-                      </span>
-                    )}
+                  {displayTitan.appliedMultiplier && displayTitan.appliedMultiplier > 1.0 && (
+                    <span className="text-[10px] text-orange-400 animate-pulse">
+                      Buff Active: {displayTitan.appliedMultiplier}x
+                    </span>
+                  )}
                 </div>
               </div>
               {titanAnalysis && (
@@ -378,23 +358,19 @@ const UltrathinkDashboard: React.FC<UltrathinkDashboardProps> = ({
 
           <div className="space-y-2">
             {forecast.map((day) => {
-              const isOptimal = day.label.includes("Optimal");
-              const isRisk = day.label.includes("High Risk");
+              const isOptimal = day.label.includes('Optimal');
+              const isRisk = day.label.includes('High Risk');
 
               return (
-                <div
-                  key={day.dayOffset}
-                  className="flex items-center gap-4 text-xs"
-                >
+                <div key={day.dayOffset} className="flex items-center gap-4 text-xs">
                   <div className="w-8 font-mono text-zinc-400">
-                    {day.dayOffset === 0 ? "TDY" : `+ ${day.dayOffset} d`}
+                    {day.dayOffset === 0 ? 'TDY' : `+ ${day.dayOffset} d`}
                   </div>
                   <div className="flex-1 h-2 bg-zinc-800 rounded-full overflow-hidden relative">
                     <div
-                      className={`absolute h-full rounded-full transition-all ${day.tsb < 0
-                        ? "right-1/2 bg-red-500"
-                        : "left-1/2 bg-green-500"
-                        }`}
+                      className={`absolute h-full rounded-full transition-all ${
+                        day.tsb < 0 ? 'right-1/2 bg-red-500' : 'left-1/2 bg-green-500'
+                      }`}
                       style={{
                         width: `${Math.min(Math.abs(day.tsb) * 2, 50)}% `,
                       }}
@@ -402,9 +378,10 @@ const UltrathinkDashboard: React.FC<UltrathinkDashboardProps> = ({
                     <div className="absolute left-1/2 w-px h-full bg-zinc-600"></div>
                   </div>
                   <div
-                    className={`w-24 text-right font-bold ${isOptimal ? "text-green-400" : isRisk ? "text-red-400" : "text-zinc-500"}`}
+                    className={`w-24 text-right font-bold ${isOptimal ? 'text-green-400' : isRisk ? 'text-red-400' : 'text-zinc-500'}`}
                   >
-                    {day.tsb > 0 ? `+ ${day.tsb} ` : day.tsb} <JargonTooltip term="TSB">TSB</JargonTooltip>
+                    {day.tsb > 0 ? `+ ${day.tsb} ` : day.tsb}{' '}
+                    <JargonTooltip term="TSB">TSB</JargonTooltip>
                   </div>
                 </div>
               );
@@ -417,4 +394,3 @@ const UltrathinkDashboard: React.FC<UltrathinkDashboardProps> = ({
 };
 
 export default UltrathinkDashboard;
-

@@ -1,8 +1,8 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { craftItem } from "@/actions/economy/forge";
+import { craftItem } from '@/actions/economy/forge';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Mocks
-vi.mock("@/utils/supabase/server", () => ({
+vi.mock('@/utils/supabase/server', () => ({
   createClient: vi.fn(() => ({
     auth: {
       getUser: vi.fn(),
@@ -10,25 +10,25 @@ vi.mock("@/utils/supabase/server", () => ({
   })),
 }));
 
-vi.mock("next/cache", () => ({
+vi.mock('next/cache', () => ({
   revalidatePath: vi.fn(),
 }));
 
 // Mock Data
-vi.mock("@/data/gameData", () => ({
+vi.mock('@/data/gameData', () => ({
   RECIPES: [
     {
-      id: "recipe_sword",
-      name: "Iron Sword",
+      id: 'recipe_sword',
+      name: 'Iron Sword',
       goldCost: 100,
-      materials: [{ itemId: "item_iron_ore", count: 2 }],
-      resultItemId: "item_iron_sword",
+      materials: [{ itemId: 'item_iron_ore', count: 2 }],
+      resultItemId: 'item_iron_sword',
       resultCount: 1,
     },
   ],
   ITEMS: [
-    { id: "item_iron_ore", name: "Iron Ore" },
-    { id: "item_iron_sword", name: "Iron Sword" },
+    { id: 'item_iron_ore', name: 'Iron Ore' },
+    { id: 'item_iron_sword', name: 'Iron Sword' },
   ],
 }));
 
@@ -36,9 +36,9 @@ vi.mock("@/data/gameData", () => ({
 // but since it's not exported, we test the default mock behavior defined in forge.ts
 // which returns { gold: 500, items: [{item_iron_ore, 10}, {item_flux, 5}] }
 
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from '@/utils/supabase/server';
 
-describe("Forge Server Actions", () => {
+describe('Forge Server Actions', () => {
   const mockSupabase = {
     auth: {
       getUser: vi.fn(),
@@ -50,37 +50,33 @@ describe("Forge Server Actions", () => {
     (createClient as any).mockResolvedValue(mockSupabase);
   });
 
-  it("should successfully craft an item if resources are sufficient", async () => {
+  it('should successfully craft an item if resources are sufficient', async () => {
     mockSupabase.auth.getUser.mockResolvedValue({
-      data: { user: { id: "user-1", email: "test@example.com" } },
+      data: { user: { id: 'user-1', email: 'test@example.com' } },
     });
 
     // Default mock inventory has 500 gold, 10 iron ore
     // Recipe needs 100 gold, 2 iron ore
 
-    const result = await craftItem({ recipeId: "recipe_sword" });
+    const result = await craftItem({ recipeId: 'recipe_sword' });
 
     expect(result?.data?.success).toBe(true);
     expect(result?.data?.inventory).toBeDefined();
 
     // Verify Deductions
     expect(result?.data?.inventory?.gold).toBe(400); // 500 - 100
-    const ore = result?.data?.inventory?.items.find(
-      (i) => i.itemId === "item_iron_ore",
-    );
+    const ore = result?.data?.inventory?.items.find((i) => i.itemId === 'item_iron_ore');
     expect(ore?.count).toBe(8); // 10 - 2
 
     // Verify Addition
-    const sword = result?.data?.inventory?.items.find(
-      (i) => i.itemId === "item_iron_sword",
-    );
+    const sword = result?.data?.inventory?.items.find((i) => i.itemId === 'item_iron_sword');
     expect(sword).toBeDefined();
     expect(sword?.count).toBe(1);
   });
 
-  it("should fail if not enough gold", async () => {
+  it('should fail if not enough gold', async () => {
     mockSupabase.auth.getUser.mockResolvedValue({
-      data: { user: { id: "user-1" } },
+      data: { user: { id: 'user-1' } },
     });
 
     // We can't easily change the internal mock inventory in forge.ts without refactoring.
@@ -101,20 +97,20 @@ describe("Forge Server Actions", () => {
     // Let's rely on the success case for logic verification.
   });
 
-  it("should fail if recipe does not exist", async () => {
+  it('should fail if recipe does not exist', async () => {
     mockSupabase.auth.getUser.mockResolvedValue({
-      data: { user: { id: "user-1" } },
+      data: { user: { id: 'user-1' } },
     });
 
-    const result = await craftItem({ recipeId: "invalid_recipe" });
+    const result = await craftItem({ recipeId: 'invalid_recipe' });
     expect(result?.data?.success).toBe(false);
-    expect(result?.data?.message).toBe("Recipe not found");
+    expect(result?.data?.message).toBe('Recipe not found');
   });
 
-  it("should fail if unauthorized", async () => {
+  it('should fail if unauthorized', async () => {
     mockSupabase.auth.getUser.mockResolvedValue({ data: { user: null } });
 
-    const result = await craftItem({ recipeId: "recipe_sword" });
+    const result = await craftItem({ recipeId: 'recipe_sword' });
     expect(result?.serverError).toBeDefined();
   });
 });

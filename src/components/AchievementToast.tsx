@@ -1,16 +1,14 @@
-import React, { useEffect } from "react";
-import { Achievement } from "../types";
-import { Shield } from "lucide-react";
+import { Shield } from 'lucide-react';
+import type React from 'react';
+import { useEffect } from 'react';
+import type { Achievement } from '../types';
 
 interface AchievementToastProps {
   achievement: Achievement;
   onClose: () => void;
 }
 
-const AchievementToast: React.FC<AchievementToastProps> = ({
-  achievement,
-  onClose,
-}) => {
+const AchievementToast: React.FC<AchievementToastProps> = ({ achievement, onClose }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       onClose();
@@ -26,10 +24,7 @@ const AchievementToast: React.FC<AchievementToastProps> = ({
 
         {/* Icon Section */}
         <div className="relative z-10 w-20 h-full flex items-center justify-center bg-gradient-to-b from-[var(--color-gold-dark)] to-[#8b6508] border-r-2 border-[var(--color-gold-bright)]">
-          <Shield
-            className="w-10 h-10 text-white drop-shadow-md"
-            fill="black"
-          />
+          <Shield className="w-10 h-10 text-white drop-shadow-md" fill="black" />
         </div>
 
         {/* Text Section */}
@@ -40,9 +35,7 @@ const AchievementToast: React.FC<AchievementToastProps> = ({
           <div className="text-white font-serif font-bold leading-none mb-1 text-sm">
             {achievement.title}
           </div>
-          <div className="text-zinc-400 text-[10px] font-sans">
-            {achievement.description}
-          </div>
+          <div className="text-zinc-400 text-[10px] font-sans">{achievement.description}</div>
         </div>
 
         {/* Points Badge */}
@@ -77,4 +70,3 @@ const AchievementToast: React.FC<AchievementToastProps> = ({
 };
 
 export default AchievementToast;
-

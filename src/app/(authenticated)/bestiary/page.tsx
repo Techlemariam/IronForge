@@ -1,7 +1,7 @@
-import { Suspense } from "react";
-import { MonsterList } from "@/features/game/components/bestiary/MonsterList";
-import { Skull, Scroll, Swords } from "lucide-react";
-import { getBestiaryData } from "@/actions/systems/bestiary";
+import { getBestiaryData } from '@/actions/systems/bestiary';
+import { MonsterList } from '@/features/game/components/bestiary/MonsterList';
+import { Scroll, Skull, Swords } from 'lucide-react';
+import { Suspense } from 'react';
 
 export default async function BestiaryPage() {
   // Fetch Real Data
@@ -33,19 +33,15 @@ export default async function BestiaryPage() {
             <div className="bg-black/30 px-4 py-2 rounded border border-forge-border flex items-center gap-2">
               <Swords className="w-4 h-4 text-red-400" />
               <span className="font-mono text-sm text-gray-300">
-                Enemies Defeated:{" "}
-                <span className="text-red-400">{defeatedCount}</span>
+                Enemies Defeated: <span className="text-red-400">{defeatedCount}</span>
               </span>
             </div>
             <div className="bg-black/30 px-4 py-2 rounded border border-forge-border flex items-center gap-2">
               <Scroll className="w-4 h-4 text-warrior" />
               <span className="font-mono text-sm text-gray-300">
-                Lore Unlocked:{" "}
+                Lore Unlocked:{' '}
                 <span className="text-warrior">
-                  {Math.round(
-                    (defeatedCount / Math.max(1, monsters.length)) * 100,
-                  )}
-                  %
+                  {Math.round((defeatedCount / Math.max(1, monsters.length)) * 100)}%
                 </span>
               </span>
             </div>

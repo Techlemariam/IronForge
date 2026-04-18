@@ -1,13 +1,13 @@
-"use server";
+'use server';
 
-import { getWellness } from "@/lib/intervals";
-import prisma from "@/lib/prisma";
-import { GeminiService } from "@/services/gemini";
-import { AnalyticsService } from "@/services/analytics";
+import { getWellness } from '@/lib/intervals';
+import prisma from '@/lib/prisma';
+import { AnalyticsService } from '@/services/analytics';
+import { GeminiService } from '@/services/gemini';
 
-import { getSession } from "@/lib/auth";
-import { revalidatePath } from "next/cache";
-import { EquipmentService } from "@/services/game/EquipmentService";
+import { getSession } from '@/lib/auth';
+import { EquipmentService } from '@/services/game/EquipmentService';
+import { revalidatePath } from 'next/cache';
 
 function getNextMonday() {
   const d = new Date();
@@ -24,22 +24,18 @@ export async function generateProgramAction(preferences: {
 }) {
   // 1. Auth Check
   const session = await getSession();
-  if (!session?.user) throw new Error("Unauthorized");
+  if (!session?.user) throw new Error('Unauthorized');
 
   const sessionUser = await prisma.user.findUnique({
-    where: { id: session.user.id }
+    where: { id: session.user.id },
   });
-  if (!sessionUser) throw new Error("User not found");
+  if (!sessionUser) throw new Error('User not found');
 
   // 2. Fetch Context
-  let wellness = { id: "unknown", bodyBattery: 80, sleepScore: 80 };
+  let wellness = { id: 'unknown', bodyBattery: 80, sleepScore: 80 };
   if (sessionUser.intervalsApiKey && sessionUser.intervalsAthleteId) {
-    const today = new Date().toISOString().split("T")[0];
-    const w = await getWellness(
-      today,
-      sessionUser.intervalsApiKey,
-      sessionUser.intervalsAthleteId,
-    );
+    const today = new Date().toISOString().split('T')[0];
+    const w = await getWellness(today, sessionUser.intervalsApiKey, sessionUser.intervalsAthleteId);
     if (w) wellness = w as any;
   }
 
@@ -48,34 +44,38 @@ export async function generateProgramAction(preferences: {
     prisma.exerciseLog.findMany({
       where: { userId: session.user.id },
       orderBy: { date: 'desc' },
-      take: 20
+      take: 20,
     }),
     prisma.cardioLog.findMany({
       where: { userId: session.user.id },
       orderBy: { date: 'desc' },
-      take: 10
-    })
+      take: 10,
+    }),
   ]);
 
   // Map Prisma logs to Analytics format
-  const history = dbLogs.map(log => {
+  const history = dbLogs.map((log) => {
     const sets = (log.sets as any[]) || [];
-    const bestE1rm = sets.length > 0 ? Math.max(...sets.map(s => (s.weight || 0) * (1 + (s.reps || 0) / 30))) : 0;
-    const avgRpe = sets.length > 0 ? sets.reduce((acc, s) => acc + (s.rpe || 7), 0) / sets.length : 7;
+    const bestE1rm =
+      sets.length > 0
+        ? Math.max(...sets.map((s) => (s.weight || 0) * (1 + (s.reps || 0) / 30)))
+        : 0;
+    const avgRpe =
+      sets.length > 0 ? sets.reduce((acc, s) => acc + (s.rpe || 7), 0) / sets.length : 7;
     return {
       date: log.date.toISOString(),
       exerciseId: log.exerciseId,
       e1rm: bestE1rm,
       rpe: avgRpe,
-      isEpic: log.isPersonalRecord
+      isEpic: log.isPersonalRecord,
     };
   });
 
-  const activities = dbCardio.map(c => ({
+  const activities = dbCardio.map((c) => ({
     icu_intensity: c.load, // Using load as intensity proxy for simple TTB
     moving_time: c.duration,
     type: c.type,
-    start_date_local: c.date.toISOString()
+    start_date_local: c.date.toISOString(),
   }));
 
   const ttb = AnalyticsService.calculateTTB(history as any, activities as any, wellness as any);
@@ -83,17 +83,17 @@ export async function generateProgramAction(preferences: {
   // 4. Fetch Capabilities & Status
   const [capabilities, titan] = await Promise.all([
     EquipmentService.getUserCapabilities(session.user.id),
-    prisma.titan.findUnique({ where: { userId: session.user.id } })
+    prisma.titan.findUnique({ where: { userId: session.user.id } }),
   ]);
 
-  const injuries = titan?.isInjured ? ["General Fatigue/Injury"] : [];
+  const injuries = titan?.isInjured ? ['General Fatigue/Injury'] : [];
 
   // 5. Call Gemini
   const plan = await GeminiService.generateWeeklyPlanAI(
     {
-      heroName: sessionUser.heroName || "Titan",
+      heroName: sessionUser.heroName || 'Titan',
       level: sessionUser.level,
-      trainingPath: sessionUser.activePath || "WARDEN",
+      trainingPath: sessionUser.activePath || 'WARDEN',
       equipment: capabilities,
       injuries: injuries,
     },
@@ -102,7 +102,7 @@ export async function generateProgramAction(preferences: {
       ttb,
       intent: preferences.intent,
       daysPerWeek: preferences.daysPerWeek,
-    },
+    }
   );
 
   return { success: true, plan };
@@ -110,10 +110,10 @@ export async function generateProgramAction(preferences: {
 
 export async function saveProgramAction(plan: any) {
   const session = await getSession();
-  if (!session?.user) throw new Error("Unauthorized");
+  if (!session?.user) throw new Error('Unauthorized');
 
   const sessionUser = await prisma.user.findUnique({ where: { id: session.user.id } });
-  if (!sessionUser) throw new Error("User not found");
+  if (!sessionUser) throw new Error('User not found');
 
   // Persist to DB
   await prisma.weeklyPlan.create({
@@ -124,6 +124,6 @@ export async function saveProgramAction(plan: any) {
     },
   });
 
-  revalidatePath("/dashboard");
+  revalidatePath('/dashboard');
   return { success: true };
 }

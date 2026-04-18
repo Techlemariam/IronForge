@@ -1,7 +1,6 @@
-"use server";
+'use server';
 
-import { prisma } from "@/lib/prisma";
-
+import { prisma } from '@/lib/prisma';
 
 // Constants for overtraining detection
 const DAILY_XP_CAP = 2000;
@@ -24,16 +23,10 @@ interface OvertrainingStatus {
  * Checks if user is approaching or at overtraining limits.
  * Returns multipliers and warnings for the training session.
  */
-export async function checkOvertrainingStatusAction(
-  userId: string,
-): Promise<OvertrainingStatus> {
+export async function checkOvertrainingStatusAction(userId: string): Promise<OvertrainingStatus> {
   try {
     const now = new Date();
-    const todayStart = new Date(
-      now.getFullYear(),
-      now.getMonth(),
-      now.getDate(),
-    );
+    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
 
     // Get user's workout history
@@ -42,13 +35,11 @@ export async function checkOvertrainingStatusAction(
         userId,
         date: { gte: weekAgo.toISOString() },
       },
-      orderBy: { date: "desc" },
+      orderBy: { date: 'desc' },
     });
 
     // Calculate daily XP (simplified - count workouts as ~300 XP each)
-    const todaysWorkouts = recentWorkouts.filter(
-      (w) => new Date(w.date) >= todayStart,
-    );
+    const todaysWorkouts = recentWorkouts.filter((w) => new Date(w.date) >= todayStart);
     const dailyXpEarned = todaysWorkouts.length * 300;
 
     // Weekly workout count
@@ -57,8 +48,7 @@ export async function checkOvertrainingStatusAction(
     // Time since last workout
     const lastWorkout = recentWorkouts[0];
     const lastWorkoutHoursAgo = lastWorkout
-      ? (now.getTime() - new Date(lastWorkout.date).getTime()) /
-      (1000 * 60 * 60)
+      ? (now.getTime() - new Date(lastWorkout.date).getTime()) / (1000 * 60 * 60)
       : 24;
 
     // Check conditions
@@ -72,25 +62,21 @@ export async function checkOvertrainingStatusAction(
 
     if (isCapped) {
       xpMultiplier = 0;
-      warnings.push(
-        "Daily XP cap reached. Rest and return tomorrow for full rewards.",
-      );
+      warnings.push('Daily XP cap reached. Rest and return tomorrow for full rewards.');
     } else if (dailyXpEarned >= DAILY_XP_CAP * 0.75) {
-      warnings.push("Approaching daily XP cap. Consider pacing your training.");
+      warnings.push('Approaching daily XP cap. Consider pacing your training.');
     }
 
     if (isFatigued) {
       xpMultiplier *= RECOVERY_PENALTY_MULTIPLIER;
       warnings.push(
-        `Recent workout detected (${Math.round(lastWorkoutHoursAgo)}h ago). XP reduced to allow recovery.`,
+        `Recent workout detected (${Math.round(lastWorkoutHoursAgo)}h ago). XP reduced to allow recovery.`
       );
     }
 
     if (isOverworked) {
       xpMultiplier *= 0.75;
-      warnings.push(
-        "High weekly volume detected. Reduced XP to encourage rest days.",
-      );
+      warnings.push('High weekly volume detected. Reduced XP to encourage rest days.');
     }
 
     return {
@@ -104,7 +90,7 @@ export async function checkOvertrainingStatusAction(
       warnings,
     };
   } catch (error) {
-    console.error("Error checking overtraining status:", error);
+    console.error('Error checking overtraining status:', error);
     return {
       isCapped: false,
       isFatigued: false,
@@ -125,7 +111,7 @@ export async function checkOvertrainingStatusAction(
 export async function applyGuardedXpAction(
   userId: string,
   baseXp: number,
-  _source: string,
+  _source: string
 ): Promise<{ finalXp: number; cappedAmount: number; warnings: string[] }> {
   const status = await checkOvertrainingStatusAction(userId);
 

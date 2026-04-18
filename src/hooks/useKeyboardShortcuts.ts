@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useEffect, useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from 'react';
 
 interface Shortcut {
   key: string;
@@ -15,71 +15,68 @@ interface Shortcut {
   context?: string;
 }
 
-const GLOBAL_SHORTCUTS: Omit<Shortcut, "action">[] = [
-  { key: "n", description: "New workout", modifiers: { ctrl: true } },
-  { key: "d", description: "Go to Dashboard", modifiers: { ctrl: true } },
+const GLOBAL_SHORTCUTS: Omit<Shortcut, 'action'>[] = [
+  { key: 'n', description: 'New workout', modifiers: { ctrl: true } },
+  { key: 'd', description: 'Go to Dashboard', modifiers: { ctrl: true } },
   {
-    key: "g",
-    description: "Go to Guild",
+    key: 'g',
+    description: 'Go to Guild',
     modifiers: { ctrl: true, shift: true },
   },
   {
-    key: "c",
-    description: "Open Combat",
+    key: 'c',
+    description: 'Open Combat',
     modifiers: { ctrl: true, shift: true },
   },
-  { key: "s", description: "Open Settings", modifiers: { ctrl: true } },
-  { key: "/", description: "Open search", modifiers: { ctrl: true } },
-  { key: "Escape", description: "Close modal/cancel" },
+  { key: 's', description: 'Open Settings', modifiers: { ctrl: true } },
+  { key: '/', description: 'Open search', modifiers: { ctrl: true } },
+  { key: 'Escape', description: 'Close modal/cancel' },
   {
-    key: "?",
-    description: "Show keyboard shortcuts",
+    key: '?',
+    description: 'Show keyboard shortcuts',
     modifiers: { shift: true },
   },
 ];
 
-const WORKOUT_SHORTCUTS: Omit<Shortcut, "action">[] = [
-  { key: "Enter", description: "Log set", context: "workout" },
-  { key: "r", description: "Start rest timer", context: "workout" },
+const WORKOUT_SHORTCUTS: Omit<Shortcut, 'action'>[] = [
+  { key: 'Enter', description: 'Log set', context: 'workout' },
+  { key: 'r', description: 'Start rest timer', context: 'workout' },
   {
-    key: "ArrowUp",
-    description: "Increase weight",
+    key: 'ArrowUp',
+    description: 'Increase weight',
     modifiers: { alt: true },
-    context: "workout",
+    context: 'workout',
   },
   {
-    key: "ArrowDown",
-    description: "Decrease weight",
+    key: 'ArrowDown',
+    description: 'Decrease weight',
     modifiers: { alt: true },
-    context: "workout",
+    context: 'workout',
   },
   {
-    key: "n",
-    description: "Next exercise",
+    key: 'n',
+    description: 'Next exercise',
     modifiers: { alt: true },
-    context: "workout",
+    context: 'workout',
   },
   {
-    key: "p",
-    description: "Previous exercise",
+    key: 'p',
+    description: 'Previous exercise',
     modifiers: { alt: true },
-    context: "workout",
+    context: 'workout',
   },
   {
-    key: "f",
-    description: "Finish workout",
+    key: 'f',
+    description: 'Finish workout',
     modifiers: { ctrl: true, shift: true },
-    context: "workout",
+    context: 'workout',
   },
 ];
 
 /**
  * Hook to register keyboard shortcuts.
  */
-export function useKeyboardShortcuts(
-  shortcuts: Shortcut[],
-  enabled: boolean = true,
-) {
+export function useKeyboardShortcuts(shortcuts: Shortcut[], enabled = true) {
   const [showHelp, setShowHelp] = useState(false);
 
   const handleKeyDown = useCallback(
@@ -88,11 +85,7 @@ export function useKeyboardShortcuts(
 
       // Ignore if user is typing in input/textarea
       const target = event.target as HTMLElement;
-      if (
-        target.tagName === "INPUT" ||
-        target.tagName === "TEXTAREA" ||
-        target.isContentEditable
-      ) {
+      if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable) {
         return;
       }
 
@@ -110,12 +103,12 @@ export function useKeyboardShortcuts(
         }
       }
     },
-    [shortcuts, enabled],
+    [shortcuts, enabled]
   );
 
   useEffect(() => {
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleKeyDown]);
 
   const toggleHelp = useCallback(() => setShowHelp((prev) => !prev), []);
@@ -130,26 +123,24 @@ export function useKeyboardShortcuts(
 /**
  * Get all available shortcuts for display.
  */
-export function getAllShortcuts(): Array<Omit<Shortcut, "action">> {
+export function getAllShortcuts(): Array<Omit<Shortcut, 'action'>> {
   return [...GLOBAL_SHORTCUTS, ...WORKOUT_SHORTCUTS];
 }
 
 /**
  * Format shortcut for display.
  */
-export function formatShortcut(shortcut: Omit<Shortcut, "action">): string {
+export function formatShortcut(shortcut: Omit<Shortcut, 'action'>): string {
   const parts: string[] = [];
 
-  if (shortcut.modifiers?.ctrl) parts.push("Ctrl");
-  if (shortcut.modifiers?.shift) parts.push("Shift");
-  if (shortcut.modifiers?.alt) parts.push("Alt");
-  if (shortcut.modifiers?.meta) parts.push("⌘");
+  if (shortcut.modifiers?.ctrl) parts.push('Ctrl');
+  if (shortcut.modifiers?.shift) parts.push('Shift');
+  if (shortcut.modifiers?.alt) parts.push('Alt');
+  if (shortcut.modifiers?.meta) parts.push('⌘');
 
-  parts.push(
-    shortcut.key.length === 1 ? shortcut.key.toUpperCase() : shortcut.key,
-  );
+  parts.push(shortcut.key.length === 1 ? shortcut.key.toUpperCase() : shortcut.key);
 
-  return parts.join(" + ");
+  return parts.join(' + ');
 }
 
 /**

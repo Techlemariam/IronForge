@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from "react";
+import type React from 'react';
+import { useEffect, useState } from 'react';
 
 interface StopwatchProps {
   startTime: Date;
 }
 
 const Stopwatch: React.FC<StopwatchProps> = ({ startTime }) => {
-  const [elapsedTime, setElapsedTime] = useState("00:00:00");
+  const [elapsedTime, setElapsedTime] = useState('00:00:00');
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -14,13 +15,13 @@ const Stopwatch: React.FC<StopwatchProps> = ({ startTime }) => {
 
       const hours = Math.floor(difference / (1000 * 60 * 60))
         .toString()
-        .padStart(2, "0");
+        .padStart(2, '0');
       const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60))
         .toString()
-        .padStart(2, "0");
+        .padStart(2, '0');
       const seconds = Math.floor((difference % (1000 * 60)) / 1000)
         .toString()
-        .padStart(2, "0");
+        .padStart(2, '0');
 
       setElapsedTime(`${hours}:${minutes}:${seconds}`);
     }, 1000);
@@ -28,11 +29,7 @@ const Stopwatch: React.FC<StopwatchProps> = ({ startTime }) => {
     return () => clearInterval(interval);
   }, [startTime]);
 
-  return (
-    <div className="font-mono text-xl text-rune tracking-widest">
-      {elapsedTime}
-    </div>
-  );
+  return <div className="font-mono text-xl text-rune tracking-widest">{elapsedTime}</div>;
 };
 
 export default Stopwatch;

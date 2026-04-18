@@ -1,5 +1,5 @@
-import React from "react";
-import Grimoire from "@/features/game/Grimoire";
+import Grimoire from '@/features/game/Grimoire';
+import React from 'react';
 
 export default function GrimoirePage() {
   return (

@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useEffect, useState, useCallback } from "react";
-import { Flame, AlertTriangle } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
-import { cn } from "@/lib/utils";
-import { getStreakStatusAction } from "@/actions/user/streak";
+import { getStreakStatusAction } from '@/actions/user/streak';
+import { cn } from '@/lib/utils';
+import { AnimatePresence, motion } from 'framer-motion';
+import { AlertTriangle, Flame } from 'lucide-react';
+import { useCallback, useEffect, useState } from 'react';
 
 interface StreakBadgeProps {
   userId: string;
@@ -35,10 +35,10 @@ export function StreakBadge({ userId, compact = false }: StreakBadgeProps) {
     return (
       <div
         className={cn(
-          "flex items-center gap-1 px-2 py-1 rounded-full text-xs font-bold",
+          'flex items-center gap-1 px-2 py-1 rounded-full text-xs font-bold',
           isAtRisk
-            ? "bg-red-900/30 text-red-400 border border-red-600/50 animate-pulse"
-            : "bg-orange-900/30 text-orange-400 border border-orange-600/50",
+            ? 'bg-red-900/30 text-red-400 border border-red-600/50 animate-pulse'
+            : 'bg-orange-900/30 text-orange-400 border border-orange-600/50'
         )}
       >
         <Flame className="w-3 h-3" />
@@ -52,10 +52,8 @@ export function StreakBadge({ userId, compact = false }: StreakBadgeProps) {
       initial={{ scale: 0.9, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       className={cn(
-        "relative flex items-center gap-2 px-4 py-2 rounded-xl border",
-        isAtRisk
-          ? "bg-red-950/40 border-red-600/50"
-          : "bg-orange-950/40 border-orange-600/50",
+        'relative flex items-center gap-2 px-4 py-2 rounded-xl border',
+        isAtRisk ? 'bg-red-950/40 border-red-600/50' : 'bg-orange-950/40 border-orange-600/50'
       )}
     >
       {/* Fire animation */}
@@ -65,31 +63,24 @@ export function StreakBadge({ userId, compact = false }: StreakBadgeProps) {
           scale: [1, 1.1, 1],
         }}
         transition={{
-          repeat: Infinity,
+          repeat: Number.POSITIVE_INFINITY,
           duration: 0.8,
-          ease: "easeInOut",
+          ease: 'easeInOut',
         }}
       >
-        <Flame
-          className={cn(
-            "w-6 h-6",
-            isAtRisk ? "text-red-500" : "text-orange-500",
-          )}
-        />
+        <Flame className={cn('w-6 h-6', isAtRisk ? 'text-red-500' : 'text-orange-500')} />
       </motion.div>
 
       <div className="flex flex-col">
         <span
           className={cn(
-            "text-2xl font-black leading-none",
-            isAtRisk ? "text-red-400" : "text-orange-400",
+            'text-2xl font-black leading-none',
+            isAtRisk ? 'text-red-400' : 'text-orange-400'
           )}
         >
           {streak}
         </span>
-        <span className="text-[10px] uppercase tracking-widest text-slate-500">
-          Day Streak
-        </span>
+        <span className="text-[10px] uppercase tracking-widest text-slate-500">Day Streak</span>
       </div>
 
       {/* At risk indicator */}

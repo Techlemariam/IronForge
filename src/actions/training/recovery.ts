@@ -1,6 +1,6 @@
-"use server";
+'use server';
 
-import { checkOvertrainingStatusAction } from "@/actions/training/overtraining";
+import { checkOvertrainingStatusAction } from '@/actions/training/overtraining';
 
 interface RecoveryLockStatus {
   isLocked: boolean;
@@ -24,9 +24,7 @@ const LOCK_THRESHOLDS = {
  * Check if user should be locked from training.
  * Protects users from overtraining while allowing override in emergencies.
  */
-export async function checkRecoveryLockAction(
-  userId: string,
-): Promise<RecoveryLockStatus> {
+export async function checkRecoveryLockAction(userId: string): Promise<RecoveryLockStatus> {
   try {
     const overtraining = await checkOvertrainingStatusAction(userId);
     const recommendations: string[] = [];
@@ -35,30 +33,28 @@ export async function checkRecoveryLockAction(
     if (overtraining.isCapped) {
       return {
         isLocked: true,
-        lockReason: "Daily training limit reached. Your body needs rest.",
+        lockReason: 'Daily training limit reached. Your body needs rest.',
         canOverride: false,
         recommendations: [
-          "Focus on nutrition and hydration",
-          "Get 7-9 hours of quality sleep",
-          "Light stretching or mobility work only",
+          'Focus on nutrition and hydration',
+          'Get 7-9 hours of quality sleep',
+          'Light stretching or mobility work only',
         ],
       };
     }
 
     // Check fatigue
     if (overtraining.isFatigued) {
-      const hoursNeeded =
-        LOCK_THRESHOLDS.MIN_RECOVERY_HOURS - overtraining.lastWorkoutHoursAgo;
+      const hoursNeeded = LOCK_THRESHOLDS.MIN_RECOVERY_HOURS - overtraining.lastWorkoutHoursAgo;
       return {
         isLocked: true,
         lockReason: `Recent workout detected. Wait ${Math.ceil(hoursNeeded)} more hours.`,
         unlockTime: new Date(Date.now() + hoursNeeded * 60 * 60 * 1000),
         canOverride: true,
-        overrideWarning:
-          "Training now may reduce recovery and increase injury risk.",
+        overrideWarning: 'Training now may reduce recovery and increase injury risk.',
         recommendations: [
-          "Do light mobility work or stretching",
-          "Focus on meal prep or sleep",
+          'Do light mobility work or stretching',
+          'Focus on meal prep or sleep',
           `Come back in ${Math.ceil(hoursNeeded)} hours for full XP`,
         ],
       };
@@ -68,41 +64,39 @@ export async function checkRecoveryLockAction(
     if (overtraining.weeklyWorkouts >= LOCK_THRESHOLDS.MAX_WEEKLY_WORKOUTS) {
       return {
         isLocked: true,
-        lockReason: "High weekly volume. Recovery day recommended.",
+        lockReason: 'High weekly volume. Recovery day recommended.',
         canOverride: true,
-        overrideWarning:
-          "Exceeding recovery limits may lead to overtraining syndrome.",
+        overrideWarning: 'Exceeding recovery limits may lead to overtraining syndrome.',
         recommendations: [
-          "Take a full rest day",
-          "Try light cardio or active recovery",
-          "Focus on sleep and stress management",
+          'Take a full rest day',
+          'Try light cardio or active recovery',
+          'Focus on sleep and stress management',
         ],
       };
     }
 
     // Not locked, but add recommendations based on status
     if (overtraining.weeklyWorkouts >= 10) {
-      recommendations.push("Consider a lighter session today");
+      recommendations.push('Consider a lighter session today');
     }
     if (overtraining.xpMultiplier < 1.0) {
-      recommendations.push("Recovery-focused training recommended");
+      recommendations.push('Recovery-focused training recommended');
     }
     if (overtraining.dailyXpRemaining < 500) {
-      recommendations.push("Approaching daily XP cap - pace yourself");
+      recommendations.push('Approaching daily XP cap - pace yourself');
     }
 
     return {
       isLocked: false,
       canOverride: true,
-      recommendations:
-        recommendations.length > 0 ? recommendations : ["Train freely!"],
+      recommendations: recommendations.length > 0 ? recommendations : ['Train freely!'],
     };
   } catch (error) {
-    console.error("Error checking recovery lock:", error);
+    console.error('Error checking recovery lock:', error);
     return {
       isLocked: false,
       canOverride: true,
-      recommendations: ["System check failed - proceed with caution"],
+      recommendations: ['System check failed - proceed with caution'],
     };
   }
 }
@@ -113,7 +107,7 @@ export async function checkRecoveryLockAction(
  */
 export async function overrideRecoveryLockAction(
   userId: string,
-  reason: string,
+  reason: string
 ): Promise<{ success: boolean; message: string }> {
   try {
     // Log the override
@@ -126,13 +120,13 @@ export async function overrideRecoveryLockAction(
 
     return {
       success: true,
-      message: "Lock overridden. Please train responsibly.",
+      message: 'Lock overridden. Please train responsibly.',
     };
   } catch (error) {
-    console.error("Error overriding recovery lock:", error);
+    console.error('Error overriding recovery lock:', error);
     return {
       success: false,
-      message: "Failed to override lock.",
+      message: 'Failed to override lock.',
     };
   }
 }

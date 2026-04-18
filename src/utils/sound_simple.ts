@@ -1,22 +1,22 @@
-import { Howl } from "howler";
-import confetti from "canvas-confetti";
+import confetti from 'canvas-confetti';
+import { Howl } from 'howler';
 
 // --- Sound Definitions ---
 const sounds = {
   ding: new Howl({
-    src: ["/sounds/ding.wav"],
+    src: ['/sounds/ding.wav'],
     volume: 0.5,
   }),
   loot_legendary: new Howl({
-    src: ["/sounds/loot_legendary.wav"],
+    src: ['/sounds/loot_legendary.wav'],
     volume: 0.7,
   }),
   pr: new Howl({
-    src: ["/sounds/pr.wav"],
+    src: ['/sounds/pr.wav'],
     volume: 0.8,
   }),
   quest_complete: new Howl({
-    src: ["/sounds/quest_complete.wav"],
+    src: ['/sounds/quest_complete.wav'],
     volume: 0.7,
   }),
 };

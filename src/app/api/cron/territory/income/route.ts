@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
-import { TerritoryService } from "@/services/game/TerritoryService";
+import { TerritoryService } from '@/services/game/TerritoryService';
+import { type NextRequest, NextResponse } from 'next/server';
 
-export const dynamic = "force-dynamic";
+export const dynamic = 'force-dynamic';
 
 /**
  * Daily Territory Income Cron Job
@@ -9,17 +9,17 @@ export const dynamic = "force-dynamic";
  * Schedule: "5 0 * * *" (configured in Coolify/n8n)
  */
 export async function GET(request: NextRequest) {
-    const authHeader = request.headers.get("authorization");
-    if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-        return new NextResponse("Unauthorized", { status: 401 });
-    }
+  const authHeader = request.headers.get('authorization');
+  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+    return new NextResponse('Unauthorized', { status: 401 });
+  }
 
-    try {
-        console.log("[Cron: Territory Income] Starting distribution...");
-        await TerritoryService.distributeDailyIncome();
-        return NextResponse.json({ success: true, message: "Income distributed" });
-    } catch (error) {
-        console.error("[Cron: Territory Income] Error:", error);
-        return NextResponse.json({ success: false, error: String(error) }, { status: 500 });
-    }
+  try {
+    console.log('[Cron: Territory Income] Starting distribution...');
+    await TerritoryService.distributeDailyIncome();
+    return NextResponse.json({ success: true, message: 'Income distributed' });
+  } catch (error) {
+    console.error('[Cron: Territory Income] Error:', error);
+    return NextResponse.json({ success: false, error: String(error) }, { status: 500 });
+  }
 }
