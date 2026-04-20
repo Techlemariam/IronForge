@@ -1,7 +1,7 @@
 'use server';
 
-import { promises as fs } from 'fs';
-import path from 'path';
+import { promises as fs } from 'node:fs';
+import path from 'node:path';
 import { prisma } from '@/lib/prisma';
 import { type AssemblyLineTask, FactoryService } from '@/services/game/FactoryService';
 import { createClient } from '@/utils/supabase/server';
@@ -117,7 +117,7 @@ export async function getFactoryStatus(): Promise<(FactoryStatusData & { costSEK
       const dbMetadata = s.metadata as any;
       const activityData = stationFileData || dbMetadata;
 
-      if (activityData && activityData.branch) {
+      if (activityData?.branch) {
         const isFailure = s.station === 'debug';
         const prefix = isFailure ? '🚨 CI FAIL:' : '⚙️ IN PROGRESS:';
         current = `${prefix} ${activityData.branch} (Run #${activityData.runId})`;

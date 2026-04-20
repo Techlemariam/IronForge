@@ -89,7 +89,7 @@ export async function generateDailyQuestsAction(userId: string): Promise<DailyQu
         include: { wardensManifest: true },
       });
 
-      if (user && user.wardensManifest) {
+      if (user?.wardensManifest) {
         const phase = user.wardensManifest.phase || 'BALANCED';
 
         if (phase === 'DELOAD') {

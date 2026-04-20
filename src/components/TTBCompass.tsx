@@ -41,7 +41,7 @@ const TTBCompass: React.FC<TTBCompassProps> = ({ indices }) => {
 
   return (
     <div className="bg-armor border-2 border-clay/30 rounded-lg shadow-2xl relative overflow-hidden group p-4">
-      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/dark-matter.png')] opacity-10"></div>
+      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/dark-matter.png')] opacity-10" />
       <div className="relative z-10">
         <div className="flex justify-between items-baseline mb-2">
           <h3 className="font-serif text-sm uppercase tracking-widest text-clay">Sys. Vitality</h3>
@@ -164,7 +164,7 @@ const TTBCompass: React.FC<TTBCompassProps> = ({ indices }) => {
               <div
                 className={`${healthColor} h-1.5 rounded-full transition-all duration-1000 shadow-[0_0_10px_rgba(var(--color-gold),0.3)]`}
                 style={{ width: `${healthPercentage}%` }}
-              ></div>
+              />
             </div>
           </div>
         </div>

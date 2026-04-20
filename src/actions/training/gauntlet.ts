@@ -71,7 +71,7 @@ export async function logGauntletRunAction(result: GauntletResult) {
     };
   } catch (error: any) {
     console.error('Gauntlet Log Error:', error);
-    throw new Error('Failed to log gauntlet run: ' + error.message);
+    throw new Error(`Failed to log gauntlet run: ${error.message}`);
   }
 }
 

@@ -8,7 +8,7 @@ async function forceCreateLifetime(id: string, email: string) {
     process.exit(1);
   }
 
-  console.log(`Force-creating/updating user:`);
+  console.log('Force-creating/updating user:');
   console.log(`ID: ${id}`);
   console.log(`Email: ${email}`);
 

@@ -170,11 +170,11 @@ export function calculateFullBodyVolume(
   return muscleGroups.map((muscle) => {
     if (level === 1) {
       return calculateVolumeL1(muscle, experience);
-    } else if (level === 2) {
-      return calculateVolumeL2(muscle, experience, stimulusFactor, recoveryFactor);
-    } else {
-      return calculateVolumeL3(muscle, experience, stimulusFactor, recoveryFactor);
     }
+    if (level === 2) {
+      return calculateVolumeL2(muscle, experience, stimulusFactor, recoveryFactor);
+    }
+    return calculateVolumeL3(muscle, experience, stimulusFactor, recoveryFactor);
   });
 }
 

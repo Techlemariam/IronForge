@@ -154,8 +154,8 @@ export async function getComprehensiveStatsAction(_userId: string): Promise<Comp
  * Get stat history for charts.
  */
 export async function getStatHistoryAction(
-  userId: string,
-  stat: string,
+  _userId: string,
+  _stat: string,
   days = 30
 ): Promise<Array<{ date: string; value: number }>> {
   const history: Array<{ date: string; value: number }> = [];

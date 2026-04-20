@@ -66,7 +66,7 @@ const OracleCard: React.FC<OracleCardProps> = ({ recommendation, onAccept }) => 
       className={`relative p-6 rounded-lg border-2 ${theme.border} ${theme.bg} ${theme.glow} transition-all duration-500 flex flex-col md:flex-row items-start md:items-center gap-6 overflow-hidden`}
     >
       {/* Background Texture */}
-      <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] pointer-events-none"></div>
+      <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] pointer-events-none" />
 
       {/* Icon Area */}
       <div className={`p-4 rounded-full border-2 ${theme.border} bg-black/50 z-10 shrink-0`}>

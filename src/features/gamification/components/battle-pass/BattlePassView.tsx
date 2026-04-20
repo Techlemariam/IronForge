@@ -197,7 +197,7 @@ export function BattlePassView({ initialData, userId }: BattlePassViewProps) {
                 <div className="h-8 flex items-center justify-center">
                   <div
                     className={`w-0.5 h-full ${tier.isUnlocked ? 'bg-amber-500' : 'bg-slate-800'}`}
-                  ></div>
+                  />
                 </div>
 
                 {/* Premium Reward */}

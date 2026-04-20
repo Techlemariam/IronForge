@@ -1,5 +1,5 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require('node:fs');
+const path = require('node:path');
 
 const hevyPath = path.join(process.cwd(), 'docs', 'hevy_api.json');
 const intervalsPath = path.join(process.cwd(), 'docs', 'intervals_api.json');

@@ -22,7 +22,7 @@ export const useBluetoothHeartRate = () => {
           );
         }
         // Disconnect GATT
-        if (deviceRef.current.gatt && deviceRef.current.gatt.connected) {
+        if (deviceRef.current.gatt?.connected) {
           deviceRef.current.gatt.disconnect();
         }
       }
@@ -126,7 +126,7 @@ export const useBluetoothHeartRate = () => {
 
   const disconnect = () => {
     if (deviceRef.current) {
-      if (deviceRef.current.gatt && deviceRef.current.gatt.connected) {
+      if (deviceRef.current.gatt?.connected) {
         deviceRef.current.gatt.disconnect();
       }
     }

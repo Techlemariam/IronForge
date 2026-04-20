@@ -20,7 +20,7 @@ export class ChaseEngine {
    * Get a random chaser monster
    */
   static getRandomChaser(): Monster | null {
-    const chasers = this.getChaserMonsters();
+    const chasers = ChaseEngine.getChaserMonsters();
     if (chasers.length === 0) {
       // Fallback: use any monster with a default chase speed
       const fallback = MONSTERS[0];

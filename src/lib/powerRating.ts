@@ -80,7 +80,7 @@ export const applyDecay = (currentRating: number, daysSinceActivity: number): nu
 
   const weeksInactive = Math.floor(daysSinceActivity / 7);
   // 5% decay per week
-  const decayMultiplier = Math.pow(0.95, weeksInactive);
+  const decayMultiplier = 0.95 ** weeksInactive;
 
   return Math.round(currentRating * decayMultiplier);
 };

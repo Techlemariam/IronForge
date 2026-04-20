@@ -39,7 +39,7 @@ export async function getLastSetForExercise(exerciseId: string, exerciseName?: s
             where: { userId, exerciseId: exerciseByName.id },
             orderBy: { date: 'desc' },
           });
-          if (logByName && logByName.sets) {
+          if (logByName?.sets) {
             const sets = logByName.sets as unknown as SetData[];
             const lastSet = sets[sets.length - 1];
             return { weight: lastSet.weight, reps: lastSet.reps, rpe: lastSet.rpe };

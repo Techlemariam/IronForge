@@ -1,5 +1,5 @@
 import 'tsconfig-paths/register';
-import path from 'path';
+import path from 'node:path';
 import dotenv from 'dotenv';
 
 dotenv.config({ path: path.resolve(process.cwd(), '.env') });

@@ -312,6 +312,6 @@ export default async function globalSetup() {
 }
 
 // Allow standalone execution
-if (process.argv[1] && process.argv[1].includes('e2e-seed.ts')) {
+if (process.argv[1]?.includes('e2e-seed.ts')) {
   globalSetup();
 }

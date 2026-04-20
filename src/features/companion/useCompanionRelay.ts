@@ -36,12 +36,12 @@ export const useCompanionRelay = (role: 'CONTROLLER' | 'RECEIVER', sessionId?: s
 
     channel
       .on('broadcast', { event: 'relay' }, (payload) => {
-        console.log(`[Companion] Received:`, payload.payload);
+        console.log('[Companion] Received:', payload.payload);
         setLastEvent(payload.payload as CompanionEvent);
       })
       .subscribe((status) => {
         if (status === 'SUBSCRIBED') {
-          console.log(`[Companion] Connected to channel`);
+          console.log('[Companion] Connected to channel');
           setIsConnected(true);
           setStatus('CONNECTED');
         } else {

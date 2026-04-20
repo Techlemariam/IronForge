@@ -10,7 +10,7 @@ describe('Workout Generator', () => {
     workouts.forEach((workout) => {
       expect(workout.type).toBe('STRENGTH');
       expect(workout.exercises).toBeDefined();
-      expect(workout.exercises!.length).toBeGreaterThan(0);
+      expect(workout.exercises?.length).toBeGreaterThan(0);
     });
   });
 

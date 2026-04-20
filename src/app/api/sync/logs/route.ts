@@ -24,9 +24,10 @@ export async function POST(request: Request) {
       case 'SAVE_MEDITATION':
         await LogService.saveMeditationLog(user.id, payload);
         return NextResponse.json({ success: true });
-      case 'GET_HISTORY':
+      case 'GET_HISTORY': {
         const history = await LogService.getExerciseHistory(user.id);
         return NextResponse.json({ history });
+      }
       default:
         return NextResponse.json({ error: 'Invalid action' }, { status: 400 });
     }

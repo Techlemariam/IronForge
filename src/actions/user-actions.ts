@@ -11,16 +11,16 @@ const emailSchema = z.string().email().optional();
 function sanitizeUser(user: any) {
   if (!user) return user;
   const safeUser = { ...user };
-  delete safeUser.intervalsApiKey;
-  delete safeUser.intervalsAthleteId;
-  delete safeUser.hevyApiKey;
-  delete safeUser.stravaAccessToken;
-  delete safeUser.stravaRefreshToken;
-  delete safeUser.garminAccessToken;
-  delete safeUser.garminRefreshToken;
-  delete safeUser.garminUserSecret;
-  delete safeUser.garminUserToken;
-  delete safeUser.pocketCastsToken;
+  safeUser.intervalsApiKey = undefined;
+  safeUser.intervalsAthleteId = undefined;
+  safeUser.hevyApiKey = undefined;
+  safeUser.stravaAccessToken = undefined;
+  safeUser.stravaRefreshToken = undefined;
+  safeUser.garminAccessToken = undefined;
+  safeUser.garminRefreshToken = undefined;
+  safeUser.garminUserSecret = undefined;
+  safeUser.garminUserToken = undefined;
+  safeUser.pocketCastsToken = undefined;
   return safeUser;
 }
 
@@ -74,31 +74,30 @@ export const getOrCreateUserAction = actionClient
         });
       }
       return { success: true, user: sanitizeUser(user) };
-    } else {
-      // Single player / Fallback Mode
-      const users = await prisma.user.findMany({
-        take: 1,
-        include: {
-          equipment: true,
-          skills: true,
-          achievements: true,
-          unlockedMonsters: true,
-        },
-      });
-
-      if (users.length > 0) return { success: true, user: sanitizeUser(users[0]) };
-
-      const newUser = await prisma.user.create({
-        data: { heroName: 'IronLegend' },
-        include: {
-          equipment: true,
-          skills: true,
-          achievements: true,
-          unlockedMonsters: true,
-        },
-      });
-      return { success: true, user: sanitizeUser(newUser) };
     }
+    // Single player / Fallback Mode
+    const users = await prisma.user.findMany({
+      take: 1,
+      include: {
+        equipment: true,
+        skills: true,
+        achievements: true,
+        unlockedMonsters: true,
+      },
+    });
+
+    if (users.length > 0) return { success: true, user: sanitizeUser(users[0]) };
+
+    const newUser = await prisma.user.create({
+      data: { heroName: 'IronLegend' },
+      include: {
+        equipment: true,
+        skills: true,
+        achievements: true,
+        unlockedMonsters: true,
+      },
+    });
+    return { success: true, user: sanitizeUser(newUser) };
   });
 
 export const getUserAction = authActionClient.action(async ({ ctx: { userId } }) => {

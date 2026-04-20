@@ -64,7 +64,7 @@ export async function getDungeonProgressAction(_userId: string): Promise<ActionS
  * Get floor details.
  */
 export async function getFloorDetailsAction(
-  userId: string,
+  _userId: string,
   floorNumber: number
 ): Promise<DungeonFloor> {
   const type: FloorType =
@@ -130,7 +130,7 @@ export async function startDungeonRunAction(
  * Clear a floor and progress.
  */
 export async function clearFloorAction(
-  userId: string,
+  _userId: string,
   floorNumber: number,
   clearTimeMs: number
 ): Promise<{ success: boolean; rewards: FloorReward[]; nextFloor: number }> {

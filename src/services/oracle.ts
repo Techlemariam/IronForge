@@ -157,7 +157,7 @@ export class OracleService {
     const capabilities = await EquipmentService.getUserCapabilities(userId);
 
     // 5. Harmonize Data
-    const dailyLoads = this.calculateCombinedHistory(
+    const dailyLoads = OracleService.calculateCombinedHistory(
       historyStart,
       now,
       localCardio,
@@ -167,10 +167,10 @@ export class OracleService {
     );
 
     // 6. Analysis
-    const analysis = this.analyzeLoads(dailyLoads);
+    const analysis = OracleService.analyzeLoads(dailyLoads);
 
     // 7. Determine Decree (V3 with Power Rating context)
-    return this.determineDecree(
+    return OracleService.determineDecree(
       userId,
       user.titan,
       wellness,
@@ -184,8 +184,8 @@ export class OracleService {
   }
 
   private static calculateCombinedHistory(
-    start: Date,
-    end: Date,
+    _start: Date,
+    _end: Date,
     localCardio: CardioLog[],
     localStrength: ExerciseLogWithExercise[],
     remoteCardio: IntervalsActivity[],

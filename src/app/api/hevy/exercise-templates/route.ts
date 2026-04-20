@@ -32,11 +32,7 @@ export async function GET(request: Request) {
           keepFetching = false;
         }
       } catch (error: any) {
-        if (
-          error.response &&
-          error.response.data &&
-          error.response.data.error === 'Page not found'
-        ) {
+        if (error.response?.data && error.response.data.error === 'Page not found') {
           keepFetching = false;
         } else {
           throw error;

@@ -37,7 +37,8 @@ export class VisionService {
 
     this.poseLandmarker = await PoseLandmarker.createFromOptions(vision, {
       baseOptions: {
-        modelAssetPath: `https://storage.googleapis.com/mediapipe-models/pose/pose_landmarker/float16/1/pose_landmarker.task`,
+        modelAssetPath:
+          'https://storage.googleapis.com/mediapipe-models/pose/pose_landmarker/float16/1/pose_landmarker.task',
         delegate: 'GPU',
       },
       runningMode: this.runningMode,

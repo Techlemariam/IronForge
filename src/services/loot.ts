@@ -100,10 +100,9 @@ export const LootService = {
           itemRarity: selectedLoot.rarity as 'COMMON' | 'UNCOMMON' | 'RARE' | 'EPIC' | 'LEGENDARY',
           message: `Looted a ${selectedLoot.rarity} Item: ${item.name}!`,
         };
-      } else {
-        // Fallback if no item of rarity exists
-        return { type: 'NOTHING', message: 'No extra loot this time.' };
       }
+      // Fallback if no item of rarity exists
+      return { type: 'NOTHING', message: 'No extra loot this time.' };
     }
 
     return { type: 'NOTHING', message: 'No extra loot this time.' };

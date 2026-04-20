@@ -20,7 +20,7 @@ const AchievementToast: React.FC<AchievementToastProps> = ({ achievement, onClos
     <div className="fixed top-8 left-1/2 transform -translate-x-1/2 z-[100] animate-toast-slide-down pointer-events-none">
       <div className="relative w-[320px] h-[80px] bg-gradient-to-b from-[#333] to-[#111] border-2 border-[var(--color-gold-dark)] rounded shadow-[0_0_30px_rgba(255,215,0,0.4)] flex items-center overflow-hidden">
         {/* Background pattern */}
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/black-scales.png')] opacity-30"></div>
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/black-scales.png')] opacity-30" />
 
         {/* Icon Section */}
         <div className="relative z-10 w-20 h-full flex items-center justify-center bg-gradient-to-b from-[var(--color-gold-dark)] to-[#8b6508] border-r-2 border-[var(--color-gold-bright)]">
@@ -44,7 +44,7 @@ const AchievementToast: React.FC<AchievementToastProps> = ({ achievement, onClos
         </div>
 
         {/* Shine effect */}
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shine pointer-events-none"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shine pointer-events-none" />
       </div>
 
       <style>{`

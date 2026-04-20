@@ -62,7 +62,7 @@ export class SeasonService {
     }
 
     // Distribute rewards for the ended season
-    const rewardResult = await this.distributeSeasonRewards(currentSeason.id);
+    const rewardResult = await SeasonService.distributeSeasonRewards(currentSeason.id);
 
     // Mark current season as inactive
     await prisma.pvpSeason.update({
@@ -85,7 +85,7 @@ export class SeasonService {
       const nextEnd = new Date(nextStart);
       nextEnd.setMonth(nextEnd.getMonth() + 1);
 
-      nextSeason = await this.createSeason(
+      nextSeason = await SeasonService.createSeason(
         `Season ${Number.parseInt(currentSeason.name.split(' ')[1] || '1') + 1}`,
         nextStart,
         nextEnd,
@@ -184,7 +184,7 @@ export class SeasonService {
     const endDate = new Date(now);
     endDate.setMonth(endDate.getMonth() + 1);
 
-    const season = await this.createSeason('Season 1', now, endDate, {
+    const season = await SeasonService.createSeason('Season 1', now, endDate, {
       top1: { gold: 10000, title: 'ARENA_CHAMPION' },
       top10: { gold: 5000, title: 'ARENA_LEGEND' },
       top50: { gold: 2000 },

@@ -69,7 +69,7 @@ export const CoOpService = {
       if (partData) {
         const { data: sessionData } = await supabase
           .from('active_sessions')
-          .select(`*, participants:session_participants(*)`)
+          .select('*, participants:session_participants(*)')
           .eq('id', partData.session_id)
           .single();
 

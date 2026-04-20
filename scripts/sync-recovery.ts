@@ -1,5 +1,5 @@
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 import { prisma } from '../src/lib/prisma';
 
 async function sync() {
@@ -15,7 +15,7 @@ async function sync() {
   }
 
   try {
-    console.log(`📡 Syncing recovery status to database (Station: recovery)...`);
+    console.log('📡 Syncing recovery status to database (Station: recovery)...');
 
     const metadata = data || {};
     const health = data ? 50 : 100;

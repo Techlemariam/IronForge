@@ -1,7 +1,7 @@
-import path from 'path';
+import path from 'node:path';
 import { defineConfig, devices } from '@playwright/test';
 
-import { fileURLToPath } from 'url';
+import { fileURLToPath } from 'node:url';
 import dotenv from 'dotenv';
 
 const __filename = fileURLToPath(import.meta.url);

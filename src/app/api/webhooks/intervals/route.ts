@@ -118,7 +118,7 @@ export async function POST(request: NextRequest) {
       const isConquestSport = ['Run', 'Walk', 'Hike', 'VirtualRun'].includes(activity.type);
 
       if (isConquestSport && distanceKm > 0.1 && user.intervalsApiKey) {
-        logger.info(`[Intervals Webhook] Processing Guild Territory Activity...`);
+        logger.info('[Intervals Webhook] Processing Guild Territory Activity...');
 
         // Match the guild-based system: volume = distance in meters for now
         if (user.guildId) {

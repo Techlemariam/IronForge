@@ -1,5 +1,5 @@
-import * as fs from 'fs';
-import * as path from 'path';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 
 const WORKFLOWS_DIR = path.join(process.cwd(), '.agent/workflows');
 
@@ -143,15 +143,15 @@ function processFile(filePath: string) {
 
     if (line.startsWith('# ')) {
       break; // Good
-    } else if (line.startsWith('## ')) {
+    }
+    if (line.startsWith('## ')) {
       bodyLines[i] = line.substring(1); // Promote to H1
       break;
-    } else {
-      // Content before heading? Insert H1
-      const name = path.basename(filePath, '.md');
-      bodyLines.splice(i, 0, `# Workflow: /${name}`, '');
-      break;
     }
+    // Content before heading? Insert H1
+    const name = path.basename(filePath, '.md');
+    bodyLines.splice(i, 0, `# Workflow: /${name}`, '');
+    break;
   }
 
   // Demote subsequent H1s to H2 to fix MD025 (single H1)
@@ -160,7 +160,7 @@ function processFile(filePath: string) {
     if (bodyLines[i].startsWith('# ')) {
       h1Count++;
       if (h1Count > 1) {
-        bodyLines[i] = '#' + bodyLines[i]; // Demote to ##
+        bodyLines[i] = `#${bodyLines[i]}`; // Demote to ##
       }
     }
   }

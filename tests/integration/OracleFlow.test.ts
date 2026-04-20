@@ -46,7 +46,7 @@ describe('Oracle Flow Integration', () => {
     (prisma.titan.findMany as any).mockResolvedValue([]);
 
     const req = new NextRequest('http://localhost/api/cron', {
-      headers: { authorization: `Bearer test-secret` },
+      headers: { authorization: 'Bearer test-secret' },
     });
 
     await GET(req);
@@ -74,7 +74,7 @@ describe('Oracle Flow Integration', () => {
     });
 
     const req = new NextRequest('http://localhost/api/cron', {
-      headers: { authorization: `Bearer test-secret` },
+      headers: { authorization: 'Bearer test-secret' },
     });
 
     await GET(req);

@@ -14,7 +14,7 @@ const forecastData = [
 const PredictivePRWindow: React.FC = () => {
   return (
     <div className="bg-armor border-2 border-clay/30 rounded-lg shadow-2xl relative overflow-hidden group p-4">
-      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/dark-matter.png')] opacity-10"></div>
+      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/dark-matter.png')] opacity-10" />
       <div className="relative z-10">
         <h3 className="font-serif text-sm uppercase tracking-widest text-clay mb-4">
           PREDICTIVE PR WINDOW (7-DAY FORECAST)
@@ -29,7 +29,7 @@ const PredictivePRWindow: React.FC = () => {
                 <div
                   className="bg-plasma h-2 rounded-full shadow-[0_0_10px_rgba(249,115,22,0.4)] transition-all duration-1000"
                   style={{ width: `${item.barPercentage}%` }}
-                ></div>
+                />
               </div>
               <span className="font-mono text-xs text-clay w-12 text-right text-[10px]">
                 {item.tsb}

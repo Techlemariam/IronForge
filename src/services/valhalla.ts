@@ -75,7 +75,7 @@ export const ValhallaService = {
     if (blobError) {
       return {
         success: false,
-        message: 'Cloud Rejection: ' + blobError.message,
+        message: `Cloud Rejection: ${blobError.message}`,
         timestamp: new Date().toISOString(),
       };
     }

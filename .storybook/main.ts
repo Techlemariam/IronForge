@@ -1,5 +1,5 @@
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
+import { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import type { StorybookConfig } from '@storybook/nextjs-vite';
 
 /**
@@ -25,8 +25,8 @@ const config: StorybookConfig = {
     reactDocgen: false,
   },
   async viteFinal(config) {
-    const path = await import('path');
-    const { fileURLToPath } = await import('url');
+    const path = await import('node:path');
+    const { fileURLToPath } = await import('node:url');
     const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
     // Manually reconstruct the '@' alias to ensure cross-environment stability

@@ -1,4 +1,4 @@
-import fs from 'fs';
+import fs from 'node:fs';
 
 /**
  * CI Forensic Annotator
@@ -28,6 +28,6 @@ async function annotate() {
 }
 
 annotate().catch((err) => {
-  console.error('::error ::Failed to generate annotations: ' + err.message);
+  console.error(`::error ::Failed to generate annotations: ${err.message}`);
   process.exit(1);
 });

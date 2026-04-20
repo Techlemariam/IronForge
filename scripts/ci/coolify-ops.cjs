@@ -1,4 +1,4 @@
-const https = require('https');
+const https = require('node:https');
 
 const API_KEY = process.env.COOLIFY_API_KEY;
 const HOST = 'https://ironforge-coolify.tailafb692.ts.net';
@@ -49,7 +49,7 @@ function request(path, options = {}) {
         res.on('end', () => {
           try {
             resolve({ status: res.statusCode, data: JSON.parse(data) });
-          } catch (e) {
+          } catch (_e) {
             resolve({ status: res.statusCode, data });
           }
         });

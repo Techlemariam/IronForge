@@ -240,11 +240,15 @@ export class TrainingContextService {
     const effectiveScaleFactor = rampFactor * globalBioMod;
 
     // For now, let's pass the raw scale factor to getWeeklyVolume
-    const volume = await this.getWeeklyVolume(userId, effectiveScaleFactor, activePath);
+    const volume = await TrainingContextService.getWeeklyVolume(
+      userId,
+      effectiveScaleFactor,
+      activePath
+    );
 
     // 7. Calculate Readiness (Based on HRV/Sleep)
     let readiness: TrainingContext['readiness'] = 'HIGH';
-    if (wellness && wellness.hrv) {
+    if (wellness?.hrv) {
       const score = wellness.bodyBattery || 50;
       if (score < 30) {
         readiness = 'RECOVERY_NEEDED';
@@ -371,7 +375,7 @@ export class TrainingContextService {
       });
       if (totalSets > 0 && lowRepSets / totalSets > 0.5) {
         warnings.push(
-          `Titan Mismatch: > 50 % of volume is < 5 reps.Leave the powerlifting to Juggernaut.`
+          'Titan Mismatch: > 50 % of volume is < 5 reps.Leave the powerlifting to Juggernaut.'
         );
       }
     }

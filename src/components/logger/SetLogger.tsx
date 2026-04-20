@@ -84,7 +84,7 @@ export default function SetLogger({ exercise, onFinish, onCancel, onSave }: SetL
         <div>Kg</div>
         <div>Reps</div>
         <div>RPE</div>
-        <div></div>
+        <div />
       </div>
 
       <div className="space-y-2">

@@ -6,7 +6,7 @@ const API_KEY = process.env.HEVY_API_KEY;
 const BASE_URL = 'https://api.hevyapp.com/v1';
 
 async function testHevy() {
-  console.log(`Testing Hevy API...`);
+  console.log('Testing Hevy API...');
   if (!API_KEY) {
     console.error('Missing HEVY_API_KEY');
     return;

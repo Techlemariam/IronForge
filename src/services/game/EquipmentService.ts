@@ -65,7 +65,7 @@ export class EquipmentService {
     userId: string,
     exerciseName: string
   ): Promise<{ possible: boolean; missing: CodeEqType[] }> {
-    const capabilities = await this.getUserCapabilities(userId);
+    const capabilities = await EquipmentService.getUserCapabilities(userId);
     const possible = canPerformExercise(exerciseName, capabilities, true); // prioritiseHyperPro = true
 
     // If impossible, let's find what's missing (simple brute force or inspection)

@@ -20,7 +20,7 @@ export class TerritoryControlService {
    */
   static async getMapState(): Promise<TerritoryMapState> {
     const now = new Date();
-    const weekNumber = this.getISOWeek(now);
+    const weekNumber = TerritoryControlService.getISOWeek(now);
     const year = now.getFullYear();
 
     const territories = await prisma.territory.findMany({
@@ -81,7 +81,7 @@ export class TerritoryControlService {
    */
   static async calculateInfluence(guildId: string, territoryId: string): Promise<number> {
     const now = new Date();
-    const weekNumber = this.getISOWeek(now);
+    const weekNumber = TerritoryControlService.getISOWeek(now);
     const year = now.getFullYear();
 
     const entry = await prisma.territoryContestEntry.findUnique({
@@ -106,7 +106,7 @@ export class TerritoryControlService {
    */
   static async processConquest(territoryId: string): Promise<void> {
     const now = new Date();
-    const weekNumber = this.getISOWeek(now);
+    const weekNumber = TerritoryControlService.getISOWeek(now);
     const year = now.getFullYear();
 
     // Get all contest entries for this territory this week
@@ -146,7 +146,11 @@ export class TerritoryControlService {
     });
 
     // Notify Guild Members (New Owner)
-    await this.notifyGuildMembers(winner.guildId, 'VICTORY', `Our guild has conquered territory!`);
+    await TerritoryControlService.notifyGuildMembers(
+      winner.guildId,
+      'VICTORY',
+      'Our guild has conquered territory!'
+    );
 
     // Notify Previous Owner Members (if any)
     // Note: We need to know previous owner. Since we already updated, this is tricky unless we fetched before.
@@ -197,7 +201,7 @@ export class TerritoryControlService {
     };
   }
 
-  private static async notifyGuildMembers(guildId: string, type: string, message: string) {
+  private static async notifyGuildMembers(guildId: string, _type: string, message: string) {
     // Fetch all members
     const members = await prisma.user.findMany({
       where: { guildId },

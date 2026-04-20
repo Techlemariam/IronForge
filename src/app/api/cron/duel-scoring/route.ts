@@ -25,7 +25,7 @@ function calculateEloChange(
   const K = duelsPlayed < 10 ? 40 : duelsPlayed < 30 ? 20 : 10;
 
   // Expected score
-  const expectedScore = 1 / (1 + Math.pow(10, (opponentElo - playerElo) / 400));
+  const expectedScore = 1 / (1 + 10 ** ((opponentElo - playerElo) / 400));
 
   // New Elo
   return Math.round(K * (actualScore - expectedScore));

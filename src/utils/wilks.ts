@@ -27,8 +27,7 @@ export const calculateWilks = ({ weightLifted, bodyWeight, sex }: WilksParams): 
     const e = 7.01863e-6;
     const f = -1.291e-8;
 
-    const denominator =
-      a + b * x + c * Math.pow(x, 2) + d * Math.pow(x, 3) + e * Math.pow(x, 4) + f * Math.pow(x, 5);
+    const denominator = a + b * x + c * x ** 2 + d * x ** 3 + e * x ** 4 + f * x ** 5;
     coeff = 500 / denominator;
   } else {
     const a = 594.31747775582;
@@ -38,8 +37,7 @@ export const calculateWilks = ({ weightLifted, bodyWeight, sex }: WilksParams): 
     const e = 4.731582e-5;
     const f = -9.054e-8;
 
-    const denominator =
-      a + b * x + c * Math.pow(x, 2) + d * Math.pow(x, 3) + e * Math.pow(x, 4) + f * Math.pow(x, 5);
+    const denominator = a + b * x + c * x ** 2 + d * x ** 3 + e * x ** 4 + f * x ** 5;
     coeff = 500 / denominator;
   }
 

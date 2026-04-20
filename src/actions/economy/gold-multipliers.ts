@@ -131,7 +131,7 @@ export function getNextStreakMilestone(
  * Apply temporary gold boost.
  */
 export async function applyGoldBoostAction(
-  userId: string,
+  _userId: string,
   boostPercent: number,
   durationHours: number
 ): Promise<{ success: boolean; expiresAt: Date }> {

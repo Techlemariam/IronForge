@@ -70,7 +70,7 @@ const ExerciseView: React.FC<ExerciseViewProps> = ({
   const x = useMotionValue(0);
   const bg = useTransform(x, [0, 100], ['rgba(0,0,0,0)', 'rgba(34, 197, 94, 0.2)']); // Green tint on swipe right
 
-  const handleDragEnd = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+  const handleDragEnd = (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     if (info.offset.x > 100 && isActive && activeSet) {
       // Haptic Feedback
       if (typeof navigator !== 'undefined' && navigator.vibrate) {

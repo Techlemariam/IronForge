@@ -45,7 +45,7 @@ const merged = serverSchema.merge(clientSchema);
 
 let env = process.env;
 
-if (!!process.env.SKIP_ENV_VALIDATION == false) {
+if (!!process.env.SKIP_ENV_VALIDATION === false) {
   const parsed = merged.safeParse(processEnv);
 
   if (!parsed.success) {

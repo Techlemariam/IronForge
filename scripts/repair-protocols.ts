@@ -10,9 +10,9 @@
  *   echo '[...]' | npx tsx scripts/repair-protocols.ts --stdin
  */
 
-import { execSync } from 'child_process';
-import * as fs from 'fs';
-import * as path from 'path';
+import { execSync } from 'node:child_process';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -602,7 +602,7 @@ export function runRepairs(
 // Report Generator
 // ---------------------------------------------------------------------------
 
-function generateReport(classifications: ClassificationInput[], results: RepairResult[]): string {
+function generateReport(_classifications: ClassificationInput[], results: RepairResult[]): string {
   let output = '\n╔══════════════════════════════════════════════════════════════╗\n';
   output += '║          🩺 CI DOCTOR — REPAIR REPORT (v3.0)                 ║\n';
   output += '╚══════════════════════════════════════════════════════════════╝\n\n';

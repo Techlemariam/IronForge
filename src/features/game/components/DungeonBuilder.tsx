@@ -55,14 +55,14 @@ const DungeonBuilder: React.FC<DungeonBuilderProps> = ({ onSave, onCancel }) => 
 
     const updatedBlocks = [...blocks];
     if (!updatedBlocks[blockIndex].exercises) updatedBlocks[blockIndex].exercises = [];
-    updatedBlocks[blockIndex].exercises!.push(newEx);
+    updatedBlocks[blockIndex].exercises?.push(newEx);
     setBlocks(updatedBlocks);
   };
 
   const updateExercise = (bIdx: number, eIdx: number, field: keyof Exercise, value: any) => {
     const updatedBlocks = [...blocks];
     updatedBlocks[bIdx].exercises![eIdx] = {
-      ...updatedBlocks[bIdx].exercises![eIdx],
+      ...updatedBlocks[bIdx].exercises?.[eIdx],
       [field]: value,
     };
     setBlocks(updatedBlocks);
@@ -135,7 +135,7 @@ const DungeonBuilder: React.FC<DungeonBuilderProps> = ({ onSave, onCancel }) => 
               >
                 <ChevronDown className="w-4 h-4" />
               </button>
-              <div className="w-px h-4 bg-zinc-700 mx-1 self-center"></div>
+              <div className="w-px h-4 bg-zinc-700 mx-1 self-center" />
               <button
                 onClick={() => removeBlock(bIdx)}
                 className="p-1 text-zinc-600 hover:text-red-500"

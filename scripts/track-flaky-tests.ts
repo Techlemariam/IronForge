@@ -7,8 +7,8 @@
  * Usage: npx tsx scripts/track-flaky-tests.ts [--vitest path/to/results.json] [--playwright path/to/results.json]
  */
 
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 
 interface TestResult {
   name: string;
@@ -151,12 +151,12 @@ if (allResults.length === 0) {
 const report = updateReport(allResults);
 saveReport(report);
 
-console.log(`\n📊 Test Stability Report`);
+console.log('\n📊 Test Stability Report');
 console.log(`  Total tests tracked: ${report.totalTests}`);
 console.log(`  Flaky tests (>${FLAKY_THRESHOLD * 100}% fail rate): ${report.flakyTests}`);
 
 if (report.flakyTests > 0) {
-  console.log(`\n⚠️ Flaky Tests:`);
+  console.log('\n⚠️ Flaky Tests:');
   Object.values(report.tests)
     .filter((t) => t.isFlaky)
     .sort((a, b) => b.failRate - a.failRate)

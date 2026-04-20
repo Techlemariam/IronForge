@@ -80,7 +80,7 @@ export const HevyImportWizard = () => {
       setComplete(true);
       toast.success(`Successfully imported ${totalImported} workouts!`);
     } catch (e: any) {
-      toast.error('Import failed: ' + e.message);
+      toast.error(`Import failed: ${e.message}`);
     } finally {
       setIsUploading(false);
     }

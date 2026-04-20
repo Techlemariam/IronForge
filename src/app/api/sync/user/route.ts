@@ -32,7 +32,7 @@ export async function POST(request: Request) {
     // 3. User Existence Check
     // Optimization: We could rely on session.user.id directly for updates,
     // ensuring users can only modify their own data.
-    const userId = session.user.id;
+    const _userId = session.user.id;
     const res = await getUserAction();
     const user = res?.data?.user;
 

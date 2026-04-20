@@ -154,7 +154,7 @@ export const PRCelebration: React.FC<PRCelebrationProps> = ({
               )}
               {videoState === 'loading' && (
                 <Button className="w-full" size="lg" disabled>
-                  <m.div className="mr-2 h-5 w-5 animate-spin rounded-full border-b-2 border-white"></m.div>
+                  <m.div className="mr-2 h-5 w-5 animate-spin rounded-full border-b-2 border-white" />
                   Renderar video...
                 </Button>
               )}

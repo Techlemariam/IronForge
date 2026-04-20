@@ -76,7 +76,7 @@ export default function WorldMap({ onClose, onEnterCombat }: WorldMapProps) {
         Return to Citadel
       </button>
       {/* Background Texture (Abstract Grid for now) */}
-      <div className="absolute inset-0 opacity-20 bg-grid-titan"></div>
+      <div className="absolute inset-0 opacity-20 bg-grid-titan" />
 
       {/* Title Overlay */}
       <div className="absolute top-6 left-6 z-10 pointer-events-none">
@@ -125,7 +125,7 @@ export default function WorldMap({ onClose, onEnterCombat }: WorldMapProps) {
                       ? 'bg-purple-500'
                       : 'bg-white'
                 }`}
-              ></div>
+              />
             )}
 
             {/* Node Icon */}

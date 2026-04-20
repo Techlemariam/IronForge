@@ -107,12 +107,12 @@ export const PhysicalSkillService = {
   /**
    * Helper to unlock a skill in UserSkill without duplicating
    */
-  async unlockSkillSafely(userId: string, skillId: string, skillName: string): Promise<boolean> {
+  async unlockSkillSafely(userId: string, skillId: string, _skillName: string): Promise<boolean> {
     const existing = await prisma.userSkill.findUnique({
       where: { userId_skillId: { userId, skillId } },
     });
 
-    if (existing && existing.unlocked) {
+    if (existing?.unlocked) {
       return false; // Already unlocked
     }
 

@@ -196,7 +196,8 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onExit, unlockedIds, wellness }) 
           style={{
             backgroundPosition: `${view.x}px ${view.y}px`,
             backgroundSize: `${40 * view.scale}px ${40 * view.scale}`,
-            backgroundImage: `linear-gradient(#444 1px, transparent 1px), linear-gradient(90deg, #444 1px, transparent 1px)`,
+            backgroundImage:
+              'linear-gradient(#444 1px, transparent 1px), linear-gradient(90deg, #444 1px, transparent 1px)',
           }}
         />
 

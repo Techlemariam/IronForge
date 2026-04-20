@@ -46,7 +46,7 @@ const WeaknessRadar: React.FC<WeaknessRadarProps> = ({ muscleData, isLoading }) 
                 style={{
                   width: `${maxVolume > 0 ? (weeklyVolume / maxVolume) * 100 : 0}%`,
                 }}
-              ></div>
+              />
             </div>
           </div>
         ))}

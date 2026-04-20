@@ -117,7 +117,7 @@ export async function calculateXpMultiplierAction(
 export async function awardXpWithMultiplierAction(
   userId: string,
   baseXp: number,
-  source: string,
+  _source: string,
   wellnessScore?: number,
   sleepScore?: number
 ): Promise<{ finalXp: number; multiplier: number; breakdown: string[] }> {

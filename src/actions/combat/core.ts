@@ -217,10 +217,10 @@ export const performCombatAction = authActionClient
     }
 
     // Bio-Combat Buff System
-    if (dbUser.titan && dbUser.titan.currentBuff) {
+    if (dbUser.titan?.currentBuff) {
       // Safe cast since we know the structure from the service, but ideally we validate
       const buff = dbUser.titan.currentBuff as unknown as BioBuff;
-      if (buff && buff.effects) {
+      if (buff?.effects) {
         const { attackMod = 1.0, defenseMod = 1.0 } = buff.effects;
         if (attackMod !== 1.0) {
           attributes.strength = Math.round(attributes.strength * attackMod);
@@ -343,7 +343,7 @@ export const performCombatAction = authActionClient
     };
   });
 
-const fleeSchema = z.number().min(0);
+const _fleeSchema = z.number().min(0);
 
 export const fleeFromCombat = authActionClient
   .schema(z.number().min(0).optional())

@@ -237,7 +237,7 @@ export async function getUserCratesAction(_userId: string): Promise<RewardCrate[
  * Open a crate and get rewards.
  */
 export async function openCrateAction(
-  userId: string,
+  _userId: string,
   crateId: string
 ): Promise<{ success: boolean; rewards: CrateReward[]; animation?: string }> {
   try {

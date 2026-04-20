@@ -198,9 +198,9 @@ export async function getUserRankingsAction(userId: string): Promise<{
 
     const exerciseIds = [...new Set(userLogs.map((l) => l.exerciseId))];
     const rankings: { exerciseId: string; rank: number; score: number }[] = [];
-    let gold = 0,
-      silver = 0,
-      bronze = 0;
+    let gold = 0;
+    let silver = 0;
+    let bronze = 0;
 
     for (const exerciseId of exerciseIds) {
       const { userRank } = await getLeaderboardAction('STRENGTH', {

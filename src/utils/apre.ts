@@ -12,7 +12,7 @@ export interface ApreSuggestion {
 
 export const calculateApre = (
   currentWeight: number,
-  repsPerformed: number,
+  _repsPerformed: number,
   rpe: number,
   targetRpe = 8
 ): ApreSuggestion | null => {

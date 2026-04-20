@@ -78,7 +78,9 @@ const BuffHud: React.FC<BuffHudProps> = ({
 
       {/* Active Buff Display */}
       <div
-        className={`flex items-center gap-3 mb-4 p-2 rounded-lg bg-black/40 border border-zinc-800/50`}
+        className={
+          'flex items-center gap-3 mb-4 p-2 rounded-lg bg-black/40 border border-zinc-800/50'
+        }
       >
         <div className={`p-2 rounded-full bg-zinc-800 ${activeBuff.color} animate-pulse`}>
           <Icon className="w-6 h-6" />

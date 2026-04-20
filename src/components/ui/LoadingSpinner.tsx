@@ -54,7 +54,7 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
           color ? color : 'border-magma-DEFAULT',
           className
         )}
-      ></div>
+      />
       {showLore && (
         <p className="text-forge-muted text-sm font-mono animate-pulse">
           {LORE_MESSAGES[loreIndex]}

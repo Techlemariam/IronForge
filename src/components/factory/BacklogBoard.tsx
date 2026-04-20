@@ -26,7 +26,7 @@ export function BacklogBoard() {
     setProcessingId(item.id);
     try {
       const res = await startBacklogTaskAction(item.title, item.source);
-      if (res && res.success) {
+      if (res?.success) {
         setItems((prev) => prev.filter((i) => i.id !== item.id));
       }
     } catch (e) {

@@ -46,14 +46,16 @@ export const TitanAvatar: React.FC<TitanAvatarProps> = ({ titan }) => {
       className={`col-span-full bg-linear-to-b from-zinc-900 to-black border border-white/10 rounded-xl p-6 relative overflow-hidden shadow-lg ${glowColor} transition-all duration-500`}
     >
       {/* Background Ambience */}
-      <div className="absolute inset-0 opacity-20 bg-[url('/noise.png')] mix-blend-overlay pointer-events-none"></div>
+      <div className="absolute inset-0 opacity-20 bg-[url('/noise.png')] mix-blend-overlay pointer-events-none" />
 
       <div className="relative z-10 flex flex-col md:flex-row items-center gap-6">
         {/* Avatar Visual */}
         <motion.div
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          className={`w-32 h-32 rounded-full bg-white/5 border-2 border-white/10 flex items-center justify-center text-6xl shadow-[0_0_30px_rgba(0,0,0,0.5)]`}
+          className={
+            'w-32 h-32 rounded-full bg-white/5 border-2 border-white/10 flex items-center justify-center text-6xl shadow-[0_0_30px_rgba(0,0,0,0.5)]'
+          }
         >
           {/* Placeholder for 3D Model / Image later */}
           <span className="filter drop-shadow-lg">{avatarEmoji}</span>

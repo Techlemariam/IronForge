@@ -25,7 +25,7 @@ export async function POST(req: Request) {
   let strategySummary = 'No strategy generated (Insufficient Data).';
 
   // Try to hydrate Strategy from Context
-  if (context && context.wellness && context.indices) {
+  if (context?.wellness && context.indices) {
     try {
       // Map legacy/client context to rigid GPE types
       const metrics: SystemMetrics = {
@@ -56,7 +56,7 @@ export async function POST(req: Request) {
       strategySummary = strategy.contextSummary;
     } catch (error) {
       console.error('Oracle GPE Error:', error);
-      strategySummary = 'Error generating strategy: ' + (error as Error).message;
+      strategySummary = `Error generating strategy: ${(error as Error).message}`;
     }
   }
 

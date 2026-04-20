@@ -11,7 +11,6 @@ export function WelcomeClient() {
       {/* Navigation */}
       <nav
         className="fixed top-0 w-full z-50 bg-forge-950/80 backdrop-blur-md border-b border-white/5"
-        role="navigation"
         aria-label="Main Navigation"
       >
         <div className="container mx-auto px-6 h-16 flex items-center justify-between">

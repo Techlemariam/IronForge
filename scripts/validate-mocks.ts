@@ -8,8 +8,8 @@
  * Usage: npx ts-node scripts/validate-mocks.ts
  */
 
-import * as fs from 'fs';
-import * as path from 'path';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 
 interface MockDefinition {
   windowKey: string;
@@ -98,7 +98,7 @@ function printResults(results: ValidationResult[]): void {
     console.log(`${icon} [${result.mock}] ${result.message}`);
   }
 
-  console.log('\n' + '─'.repeat(60));
+  console.log(`\n${'─'.repeat(60)}`);
   console.log(`Summary: ${ok.length} OK | ${warnings.length} Warnings | ${errors.length} Errors`);
 
   if (errors.length > 0) {

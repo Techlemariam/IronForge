@@ -68,7 +68,7 @@ export function TitanXPBar({
       {showLevelUp && (
         <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black/90 backdrop-blur-md animate-fade-in-fast pointer-events-none">
           {/* Burst Background */}
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-gold/20 via-transparent to-transparent animate-pulse-slow"></div>
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-gold/20 via-transparent to-transparent animate-pulse-slow" />
 
           {/* Icon */}
           <div className="relative mb-6 animate-slide-up-fade">

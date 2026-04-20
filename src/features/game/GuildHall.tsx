@@ -392,7 +392,7 @@ export const GuildHall: React.FC<GuildHallProps> = ({ onClose }) => {
                 className="h-full bg-gradient-to-r from-red-900 via-red-600 to-red-400 rounded-full shadow-[0_0_20px_rgba(239,68,68,0.6)] transition-all duration-100 ease-out relative overflow-hidden"
                 style={{ width: `${hpPct}%` }}
               >
-                <div className="absolute inset-0 bg-[linear-gradient(45deg,rgba(255,255,255,0.2)_25%,transparent_25%,transparent_50%,rgba(255,255,255,0.2)_50%,rgba(255,255,255,0.2)_75%,transparent_75%,transparent)] bg-[length:2rem_2rem] animate-scroll"></div>
+                <div className="absolute inset-0 bg-[linear-gradient(45deg,rgba(255,255,255,0.2)_25%,transparent_25%,transparent_50%,rgba(255,255,255,0.2)_50%,rgba(255,255,255,0.2)_75%,transparent_75%,transparent)] bg-[length:2rem_2rem] animate-scroll" />
               </div>
             </div>
           </div>

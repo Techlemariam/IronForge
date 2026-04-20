@@ -1,5 +1,5 @@
-import * as fs from 'fs';
-import * as path from 'path';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 import { HEVY_EXERCISE_MAP } from '../data/hevyExercises';
 
 // Heuristics Engine (Copied/Refined from TrainingContextService)

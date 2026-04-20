@@ -126,7 +126,7 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({
       {/* MAIN FRAME - The "C" Menu */}
       <div className="relative w-full max-w-4xl bg-armor border-[3px] border-steel rounded-lg shadow-[0_0_50px_rgba(0,0,0,0.8)] flex flex-col max-h-[90vh] overflow-hidden">
         {/* TEXTURE OVERLAY */}
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/dark-leather.png')] opacity-50 pointer-events-none"></div>
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/dark-leather.png')] opacity-50 pointer-events-none" />
 
         {/* --- HEADER --- */}
         <div className="relative h-12 bg-gradient-to-b from-steel/20 to-armor border-b border-steel/50 flex items-center justify-between px-4 shrink-0 z-10">
@@ -188,7 +188,7 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({
               {/* Center Model (Placeholder) */}
               <div className="flex-1 flex items-center justify-center relative min-h-48 sm:min-h-0">
                 {/* Background Glow behind character */}
-                <div className="absolute w-48 h-48 bg-blue-500/10 rounded-full blur-[50px]"></div>
+                <div className="absolute w-48 h-48 bg-blue-500/10 rounded-full blur-[50px]" />
 
                 <div className="relative w-32 h-48 sm:w-40 sm:h-64 bg-zinc-900/50 border border-zinc-700/50 rounded-lg flex flex-col items-center justify-center group overflow-hidden">
                   {/* Render a 3D-ish looking silhouette or the user icon */}
@@ -230,7 +230,7 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({
 
           {/* RIGHT PANEL: TABS CONTENT */}
           <div className="w-full md:w-7/12 bg-void/50 p-0 overflow-y-auto custom-scrollbar relative flex flex-col">
-            <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10 pointer-events-none"></div>
+            <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10 pointer-events-none" />
 
             {/* TAB: ATTRIBUTES */}
             {activeTab === 'attributes' && (
@@ -430,7 +430,7 @@ const GearSlot: React.FC<{
 
   return (
     <div className="group relative w-10 h-10 bg-armor border border-steel rounded-sm flex items-center justify-center cursor-pointer hover:brightness-125 transition-all">
-      <div className={`absolute inset-0 border-2 opacity-50 ${getBorderColor()}`}></div>
+      <div className={`absolute inset-0 border-2 opacity-50 ${getBorderColor()}`} />
       <div className="text-zinc-500 group-hover:text-white transition-colors">{icon}</div>
 
       {/* Tooltip */}

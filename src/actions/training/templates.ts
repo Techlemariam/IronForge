@@ -171,7 +171,7 @@ export async function getWorkoutTemplatesAction(
  * Start workout from template.
  */
 export async function startWorkoutFromTemplateAction(
-  userId: string,
+  _userId: string,
   templateId: string
 ): Promise<{ success: boolean; workoutId?: string }> {
   try {
@@ -194,7 +194,7 @@ export async function startWorkoutFromTemplateAction(
  * Delete a template.
  */
 export async function deleteWorkoutTemplateAction(
-  userId: string,
+  _userId: string,
   templateId: string
 ): Promise<{ success: boolean }> {
   try {

@@ -406,7 +406,7 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
     <div className="relative w-full h-screen bg-zinc-900 text-white overflow-hidden flex flex-col">
       {/* Background / Arena Immersive Layer */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/dark-stone.png')] opacity-30"></div>
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/dark-stone.png')] opacity-30" />
         {/* Could add dynamic background based on boss zone later */}
       </div>
 
@@ -422,7 +422,7 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
             <div
               className={`w-24 h-24 md:w-32 md:h-32 rounded-full border-4 ${elementConfig.borderColor} bg-black overflow-hidden shadow-[0_0_30px_rgba(255,255,255,0.2)] ${elementConfig.shadowColor} relative`}
             >
-              {boss.image && boss.image.startsWith('/') ? (
+              {boss.image?.startsWith('/') ? (
                 <Image src={boss.image} alt={boss.name} fill className="object-cover" />
               ) : (
                 <div className="flex items-center justify-center h-full text-4xl">
@@ -436,7 +436,7 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
               <span className="text-zinc-300">Lvl {boss.level}</span>
               {bossElement !== 'Physical' && (
                 <>
-                  <span className="w-1 h-3 bg-zinc-700/50 rounded-full mx-1"></span>
+                  <span className="w-1 h-3 bg-zinc-700/50 rounded-full mx-1" />
                   <ElementIcon className={`w-3 h-3 ${elementConfig.textColor}`} />
                   <span className={`${elementConfig.textColor} uppercase`}>{bossElement}</span>
                 </>
@@ -506,7 +506,7 @@ const CombatArena: React.FC<CombatArenaProps> = ({ bossId, onClose }) => {
             className="relative w-40 h-40 md:w-64 md:h-64 scale-x-[-1]"
           >
             <div className="absolute inset-0 bg-red-500/10 blur-3xl rounded-full" />
-            {boss.image && boss.image.startsWith('/') ? (
+            {boss.image?.startsWith('/') ? (
               <Image
                 src={boss.image}
                 alt={boss.name}

@@ -22,7 +22,7 @@ export const getMaxTM = (exerciseId: string): number => {
       session.blocks.forEach((block) => {
         block.exercises?.forEach((ex) => {
           if (ex.logic === ExerciseLogic.TM_PERCENT && ex.trainingMax) {
-            const current = _maxTmCache![ex.id] || 0;
+            const current = _maxTmCache?.[ex.id] || 0;
             _maxTmCache![ex.id] = Math.max(current, ex.trainingMax);
           }
         });
@@ -167,7 +167,7 @@ export const calculateTitanAttributes = (
     (n) => n.category === 'endurance' && purchasedSkills.has(n.id)
   ).length;
   let vo2Bonus = 0;
-  if (wellness && wellness.vo2max) {
+  if (wellness?.vo2max) {
     vo2Bonus = Math.max(0, (wellness.vo2max - 30) / 5); // 30=0, 55=5pts
   }
   const enduranceScore = normalize(endUnlocked + vo2Bonus, endTalents + 8);
@@ -429,7 +429,8 @@ class AudioController {
         osc.stop(now + 0.3);
         break;
 
-      case 'achievement': // Orchestral Snare Hit + Major Chord
+      case 'achievement': {
+        // Orchestral Snare Hit + Major Chord
         // 1. The Drum Hit
         const noise = ctx.createBufferSource();
         const bufferSize = ctx.sampleRate * 0.5; // 0.5 seconds
@@ -462,6 +463,7 @@ class AudioController {
           o.stop(now + 2.0);
         });
         break;
+      }
 
       case 'mystery_alert':
         osc.type = 'sine';

@@ -1,5 +1,5 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require('node:fs');
+const path = require('node:path');
 
 const RAW_DIR = path.join(__dirname, '../data');
 const OUT_FILE = path.join(__dirname, '../data/workouts.ts');
@@ -10,11 +10,11 @@ const processDuration = (dur) => {
     // Estimate 10 min/mile for generic calculation
     return { mins: Number.parseFloat(d) * 10, label: dur };
   }
-  if (d.includes('min') || !isNaN(Number.parseFloat(d))) {
+  if (d.includes('min') || !Number.isNaN(Number.parseFloat(d))) {
     return { mins: Number.parseFloat(d), label: dur.includes('min') ? dur : `${dur} min` };
   }
   // Swim distance? Assume meters/yards. roughly 2:00/100m = 30 min for 1500
-  if (!isNaN(Number.parseFloat(d)) && Number.parseFloat(d) > 100) {
+  if (!Number.isNaN(Number.parseFloat(d)) && Number.parseFloat(d) > 100) {
     return { mins: (Number.parseFloat(d) / 100) * 2, label: `${dur}m` };
   }
   return { mins: 60, label: dur }; // Default fallback

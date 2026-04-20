@@ -9,9 +9,9 @@
  * Usage: npx tsx scripts/ci-metrics.ts
  */
 
-import { execSync } from 'child_process';
-import fs from 'fs';
-import path from 'path';
+import { execSync } from 'node:child_process';
+import fs from 'node:fs';
+import path from 'node:path';
 
 interface CIRun {
   databaseId: number;
@@ -148,7 +148,7 @@ if (!fs.existsSync(dir)) {
 fs.writeFileSync(REPORT_PATH, JSON.stringify(report, null, 2));
 
 // Display
-console.log(`\n📊 CI Metrics Dashboard`);
+console.log('\n📊 CI Metrics Dashboard');
 console.log(`  Total runs: ${report.totalRuns}`);
 console.log(`  Success rate: ${report.successRate}%`);
 console.log(`  Failure rate: ${report.failureRate}%`);
@@ -157,7 +157,7 @@ console.log(`  MTTR: ${report.mttrMinutes !== null ? `${report.mttrMinutes} min`
 console.log(`  Auto-fixes: ${report.autoFixCount}`);
 
 if (Object.keys(report.failuresByJob).length > 0) {
-  console.log(`\n  Failures by workflow:`);
+  console.log('\n  Failures by workflow:');
   Object.entries(report.failuresByJob)
     .sort(([, a], [, b]) => b - a)
     .forEach(([job, count]) => {

@@ -142,7 +142,7 @@ export class TerritoryService {
   }
 
   static async conquestFromActivity(guildId: string, volume: number) {
-    return await this.recordGuildActivity(guildId, volume);
+    return await TerritoryService.recordGuildActivity(guildId, volume);
   }
 
   static async getUserTerritoryStats(userId: string) {
@@ -203,7 +203,7 @@ export class TerritoryService {
   }
 
   static async runWeeklySettlement() {
-    return await this.resolveExpiredContests();
+    return await TerritoryService.resolveExpiredContests();
   }
 
   /**
@@ -211,8 +211,8 @@ export class TerritoryService {
    */
   static async getMapData(): Promise<any[]> {
     const now = new Date();
-    const weekNumber = getISOWeek(now);
-    const year = getISOWeekYear(now);
+    const _weekNumber = getISOWeek(now);
+    const _year = getISOWeekYear(now);
 
     const territories = await prisma.territory.findMany({
       include: {

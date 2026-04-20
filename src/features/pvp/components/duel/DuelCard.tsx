@@ -158,7 +158,7 @@ export function DuelCard({ duel, currentUserId, onTaunt }: DuelCardProps) {
                 animate={{ flex: userScore + 1 }}
                 className="bg-blue-600 h-full"
               />
-              <div className="w-1 bg-black z-10"></div>
+              <div className="w-1 bg-black z-10" />
               <motion.div
                 initial={{ flex: 1 }}
                 animate={{ flex: opponentScore + 1 }}

@@ -41,7 +41,7 @@ describe('APRE (Auto-Regulated Progressive Resistance)', () => {
       const result = calculateApre(100, 5, 2, 8);
 
       expect(result).not.toBeNull();
-      expect(Math.abs(result!.adjustment)).toBeLessThanOrEqual(10);
+      expect(Math.abs(result?.adjustment)).toBeLessThanOrEqual(10);
     });
 
     it('should round adjustments to nearest 2.5kg', () => {
@@ -88,7 +88,7 @@ describe('APRE (Auto-Regulated Progressive Resistance)', () => {
       expect(week1?.newWeight).toBeGreaterThan(100);
 
       // Week 2: Use suggested weight
-      const newWeight = week1!.newWeight;
+      const newWeight = week1?.newWeight;
       const week2 = calculateApre(newWeight, 5, 8, 8);
       expect(week2).toBeNull(); // Perfect RPE, no change needed
     });

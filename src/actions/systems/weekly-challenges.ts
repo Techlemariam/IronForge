@@ -134,7 +134,7 @@ export async function contributeToWeeklyChallengeAction(
  * Claim weekly challenge rewards.
  */
 export async function claimWeeklyChallengeRewardsAction(
-  userId: string,
+  _userId: string,
   challengeId: string
 ): Promise<{ success: boolean; rewards: WeeklyChallengeReward[] }> {
   try {

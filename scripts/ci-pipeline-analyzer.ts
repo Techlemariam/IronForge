@@ -9,8 +9,8 @@
  *        npx tsx scripts/ci-pipeline-analyzer.ts .github/workflows/ci-cd.yml
  */
 
-import * as fs from 'fs';
-import * as path from 'path';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 // import * as yaml from 'yaml'; // Note: requires yaml dep or use simple parser
 
 // ---------------------------------------------------------------------------
@@ -109,7 +109,7 @@ function analyzeCaching(content: string): Optimization[] {
       title: 'Cache key uses exact SHA (low hit rate)',
       description:
         'Using github.sha as cache key means cache only hits on re-runs, not new commits.',
-      currentState: `key: turbo-\${{ runner.os }}-\${{ github.sha }}`,
+      currentState: 'key: turbo-${{ runner.os }}-${{ github.sha }}',
       suggestedFix: 'Use hashFiles for primary key, SHA for restore-keys fallback.',
       estimatedSavings: '~30-60s cache hit improvement',
     });
@@ -143,7 +143,7 @@ function analyzeParallelization(content: string): Optimization[] {
       severity: 'MEDIUM',
       category: 'parallelization',
       title: `${turboSteps.length} separate turbo run commands`,
-      description: `Each turbo run has startup overhead. Combine into single turbo pipeline.`,
+      description: 'Each turbo run has startup overhead. Combine into single turbo pipeline.',
       currentState: turboSteps.map((s) => `  ${s}`).join('\n'),
       suggestedFix:
         'Combine: npx turbo run lint check-types test build security --concurrency=100%',
@@ -171,7 +171,7 @@ function analyzeTiming(content: string): Optimization[] {
       severity: 'HIGH',
       category: 'timing',
       title: `${sleepMatches.length} static sleep commands (${totalSleep}s total)`,
-      description: `Static sleeps waste time. Replace with health-check loops.`,
+      description: 'Static sleeps waste time. Replace with health-check loops.',
       currentState: sleepMatches.join(', '),
       suggestedFix: `Replace 'sleep N' with: while ! pg_isready -h 127.0.0.1 -U postgres; do sleep 2; done`,
       estimatedSavings: `Up to ~${Math.floor(totalSleep * 0.5)}s on average`,
@@ -312,7 +312,7 @@ function formatReport(report: PipelineReport): string {
         security: '🔒',
       }[category] || '📌';
     output += `${icon} ${category.toUpperCase()}\n`;
-    output += '─'.repeat(60) + '\n';
+    output += `${'─'.repeat(60)}\n`;
 
     for (const opt of opts) {
       const sevIcon = opt.severity === 'HIGH' ? '🔴' : opt.severity === 'MEDIUM' ? '🟡' : '🟢';

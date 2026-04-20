@@ -70,7 +70,7 @@ export const useMiningSession = ({ initialSession, onComplete, onExit }: UseMini
 
       try {
         const settings = await StorageService.getState<AppSettings>('settings');
-        if (settings && settings.intervalsApiKey) {
+        if (settings?.intervalsApiKey) {
           const today = new Date().toISOString().split('T')[0];
           if (navigator.onLine) {
             const w = await getWellnessAction(today);

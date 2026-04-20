@@ -1,5 +1,5 @@
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 
 export interface ModelQuota {
   model: string;
@@ -36,9 +36,9 @@ export class FactoryService {
     let totalTokensToday = 0;
     const today = new Date().toISOString().split('T')[0];
 
-    if (fs.existsSync(this.USAGE_PATH)) {
+    if (fs.existsSync(FactoryService.USAGE_PATH)) {
       try {
-        const content = fs.readFileSync(this.USAGE_PATH, 'utf-8').replace(/^\uFEFF/, '');
+        const content = fs.readFileSync(FactoryService.USAGE_PATH, 'utf-8').replace(/^\uFEFF/, '');
         const data = JSON.parse(content);
         if (data.history) {
           for (const entry of data.history) {
@@ -52,7 +52,10 @@ export class FactoryService {
       }
     }
 
-    const costSekToday = (totalTokensToday / 1000000) * this.RATE_PER_MILLION_USD * this.USD_TO_SEK;
+    const costSekToday =
+      (totalTokensToday / 1000000) *
+      FactoryService.RATE_PER_MILLION_USD *
+      FactoryService.USD_TO_SEK;
 
     // Mock Quotas for now as requested (Image reference)
     const quotas: ModelQuota[] = [

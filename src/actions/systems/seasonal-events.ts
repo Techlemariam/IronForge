@@ -190,7 +190,7 @@ export async function getEventProgressAction(
  * Purchase event cosmetic.
  */
 export async function purchaseEventCosmeticAction(
-  userId: string,
+  _userId: string,
   eventId: string,
   cosmeticId: string
 ): Promise<{ success: boolean; newBalance?: number }> {
@@ -208,7 +208,7 @@ export async function purchaseEventCosmeticAction(
  * Claim event reward.
  */
 export async function claimEventRewardAction(
-  userId: string,
+  _userId: string,
   eventId: string,
   rewardId: string
 ): Promise<{ success: boolean; message: string }> {

@@ -27,7 +27,7 @@ export function mapDefinitionToSession(def: WorkoutDefinition): Session {
         logic: ExerciseLogic.FIXED_REPS,
         sets: [
           {
-            id: `s-1`,
+            id: 's-1',
             weight: 0,
             reps: 5,
             rpe: 7,
@@ -35,7 +35,7 @@ export function mapDefinitionToSession(def: WorkoutDefinition): Session {
             type: 'STRAIGHT',
           },
           {
-            id: `s-2`,
+            id: 's-2',
             weight: 0,
             reps: 5,
             rpe: 8,
@@ -43,7 +43,7 @@ export function mapDefinitionToSession(def: WorkoutDefinition): Session {
             type: 'STRAIGHT',
           },
           {
-            id: `s-3`,
+            id: 's-3',
             weight: 0,
             reps: 5,
             rpe: 9,

@@ -106,7 +106,6 @@ const BerserkerMode: React.FC<BerserkerModeProps> = ({ lastExerciseName, onCompl
               onChange={(e) => setReps(e.target.value)}
               placeholder="Enter Your Reps"
               className="w-48 text-center bg-black border-2 border-gray-600 rounded-md p-2 text-2xl mb-4 focus:border-blood focus:outline-none"
-              autoFocus
             />
             <Button onClick={handleComplete} variant="magma" className="px-10">
               Log Fury

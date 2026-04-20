@@ -35,8 +35,8 @@ export const getSocialFeedAction = authActionClient
       .optional()
   )
   .action(async ({ parsedInput, ctx: { userId } }) => {
-    const limit = parsedInput?.limit ?? 20;
-    const offset = parsedInput?.offset ?? 0;
+    const _limit = parsedInput?.limit ?? 20;
+    const _offset = parsedInput?.offset ?? 0;
     try {
       // MVP: Return sample feed
       return [
