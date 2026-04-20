@@ -164,7 +164,7 @@ export const submitMatchResultAction = authActionClient
       });
 
       // ELO Calc
-      const expectedP1 = 1 / (1 + Math.pow(10, (p2.rating - p1.rating) / 400));
+      const expectedP1 = 1 / (1 + 10 ** ((p2.rating - p1.rating) / 400));
       const actualP1 = input.result === 'WIN' ? 1 : 0;
 
       // K-Factor Dynamic

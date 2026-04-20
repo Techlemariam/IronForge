@@ -274,7 +274,7 @@ test.describe('Iron Mines - Co-Op Sessions', () => {
       timeout: 15000,
       state: 'visible',
     });
-    await sessionToggle!.evaluate((el) => (el as HTMLElement).click());
+    await sessionToggle?.evaluate((el) => (el as HTMLElement).click());
 
     // Check for session list UI with increased timeout
     const sessionList = await page.waitForSelector('[data-testid="session-list"]', {
@@ -302,7 +302,7 @@ test.describe('Iron Mines - Co-Op Sessions', () => {
       timeout: 15000,
       state: 'visible',
     });
-    await sessionToggle!.evaluate((el) => (el as HTMLElement).click());
+    await sessionToggle?.evaluate((el) => (el as HTMLElement).click());
 
     // Wait for participants to render with increased timeout
     await expect(page.locator('[data-testid="participant-row"]')).toHaveCount(2, {

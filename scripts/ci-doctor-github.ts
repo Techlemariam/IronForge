@@ -12,9 +12,9 @@
  *   npx tsx scripts/ci-doctor-github.ts --report <report.json> --annotate --sha <commit-sha>
  */
 
-import { execSync } from 'child_process';
-import * as fs from 'fs';
-import * as path from 'path';
+import { execSync } from 'node:child_process';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -71,7 +71,7 @@ export function postPRComment(prNumber: number, report: CIDoctorReport): void {
   const failed = report.results.filter((r) => !r.success && !r.requiresHumanReview);
 
   let body = '## 🩺 CI Doctor Report (v3.0)\n\n';
-  body += `| Metric | Count |\n|:--|:--|\n`;
+  body += '| Metric | Count |\n|:--|:--|\n';
   body += `| Issues Found | ${report.classifications.length} |\n`;
   body += `| ✅ Auto-Fixed | ${fixed.length} |\n`;
   body += `| 🟡 Needs Review | ${manual.length} |\n`;

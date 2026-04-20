@@ -1,8 +1,8 @@
-import { exec } from 'child_process';
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import { promisify } from 'util';
+import { exec } from 'node:child_process';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { promisify } from 'node:util';
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import {
@@ -310,7 +310,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
         return {
           content: [
-            { type: 'text', text: `Triggered fallback via GitHub Actions workflow_dispatch.` },
+            { type: 'text', text: 'Triggered fallback via GitHub Actions workflow_dispatch.' },
           ],
         };
       } catch (error: any) {

@@ -41,7 +41,7 @@ export interface IntervalActivity {
 
 export const getCardioHistory = async (): Promise<IntervalActivity[]> => {
   try {
-    const response = await fetch(`/api/intervals/history`);
+    const response = await fetch('/api/intervals/history');
 
     if (!response.ok) {
       throw new Error('Failed to fetch cardio history');

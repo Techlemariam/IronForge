@@ -55,7 +55,9 @@ export function LootReveal({ item, onClose }: LootRevealProps) {
                 transition={{ delay: 0.2, type: 'spring' }}
               >
                 <div
-                  className={`w-32 h-32 rounded-full border-4 border-white/20 bg-black/50 flex items-center justify-center shadow-2xl`}
+                  className={
+                    'w-32 h-32 rounded-full border-4 border-white/20 bg-black/50 flex items-center justify-center shadow-2xl'
+                  }
                 >
                   {/* Simple Icon placeholder */}
                   <div

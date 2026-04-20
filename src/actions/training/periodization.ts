@@ -227,7 +227,7 @@ function generatePhaseNotes(phase: TrainingPhase, week: number, totalWeeks: numb
  * Adapt plan based on real-time wellness data.
  */
 export async function adaptPlanToWellnessAction(
-  userId: string,
+  _userId: string,
   plan: PeriodizationPlan,
   sleepScore?: number,
   stressLevel?: number

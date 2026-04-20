@@ -61,7 +61,7 @@ describe('Guild Actions', () => {
       (prisma.user.findUnique as any).mockResolvedValue(mockUser);
       const longMessage = 'a'.repeat(300);
 
-      const result = await sendChatAction(longMessage);
+      const _result = await sendChatAction(longMessage);
 
       expect(prisma.chatMessage.create).not.toHaveBeenCalled();
     });

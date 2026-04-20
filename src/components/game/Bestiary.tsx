@@ -121,7 +121,7 @@ export const Bestiary: React.FC<BestiaryProps> = ({ userLevel, onClose }) => {
                   <p className="text-xs text-rarity-common italic mt-1 h-8 line-clamp-2">
                     {unlocked
                       ? monster.description
-                      : 'Surpass Level ' + monster.level + ' to identify this entity.'}
+                      : `Surpass Level ${monster.level} to identify this entity.`}
                   </p>
                 </div>
 

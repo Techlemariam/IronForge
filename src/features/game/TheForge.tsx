@@ -42,7 +42,7 @@ const TheForge: React.FC<TheForgeProps> = ({ onClose }) => {
     try {
       const res = await craftItem({ recipeId: recipe.id });
       if (res?.data?.success && res.data.inventory) {
-        const inventoryData = res.data.inventory;
+        const _inventoryData = res.data.inventory;
         // Manual Optimistic Update for MVP fluidity:
         const newItems = [...inventory.items];
 

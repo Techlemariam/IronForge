@@ -80,7 +80,7 @@ export const ViewRouter: React.FC<ViewRouterProps> = ({
     !!state.activeQuest
   );
   switch (state.currentView) {
-    case 'mission_control':
+    case 'mission_control': {
       const rec = state.oracleRecommendation;
       return (
         <TodaysMission
@@ -95,6 +95,7 @@ export const ViewRouter: React.FC<ViewRouterProps> = ({
           onToggleMode={() => dispatch({ type: 'SET_VIEW', payload: 'citadel' })}
         />
       );
+    }
     case 'citadel':
       return (
         <Citadel

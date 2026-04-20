@@ -34,7 +34,7 @@ const DEFAULT_TAGS: WorkoutTag[] = [
  */
 export async function addWorkoutNoteAction(
   userId: string,
-  workoutDate: string,
+  _workoutDate: string,
   note: string,
   tags: string[] = [],
   _mood?: WorkoutNote['mood']
@@ -87,8 +87,8 @@ export async function createWorkoutTagAction(
  * Search workouts by tags.
  */
 export async function searchWorkoutsByTagAction(
-  userId: string,
-  tags: string[],
+  _userId: string,
+  _tags: string[],
   _limit = 20
 ): Promise<Array<{ date: string; note?: string; tags: string[] }>> {
   try {
@@ -116,7 +116,7 @@ export async function searchWorkoutsByTagAction(
  * Get workout notes for a specific date.
  */
 export async function getWorkoutNotesAction(
-  userId: string,
+  _userId: string,
   date: string
 ): Promise<WorkoutNote | null> {
   try {
@@ -139,7 +139,7 @@ export async function getWorkoutNotesAction(
  * Update a workout note.
  */
 export async function updateWorkoutNoteAction(
-  userId: string,
+  _userId: string,
   noteId: string,
   _updates: Partial<Pick<WorkoutNote, 'content' | 'tags' | 'mood'>>
 ): Promise<{ success: boolean }> {

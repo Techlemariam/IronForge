@@ -49,7 +49,7 @@ export const PersistentHeader: React.FC<PersistentHeaderProps> = ({
         </div>
 
         {/* Vertical Divider */}
-        <div className="w-px h-8 bg-white/10" aria-hidden="true"></div>
+        <div className="w-px h-8 bg-white/10" aria-hidden="true" />
 
         {/* Gold */}
         <div className="flex items-center gap-2" aria-label={`${gold.toLocaleString()} Gold`}>
@@ -58,7 +58,7 @@ export const PersistentHeader: React.FC<PersistentHeaderProps> = ({
         </div>
 
         {/* Vertical Divider */}
-        <div className="w-px h-8 bg-white/10" aria-hidden="true"></div>
+        <div className="w-px h-8 bg-white/10" aria-hidden="true" />
 
         {/* Faction */}
         <div
@@ -69,7 +69,7 @@ export const PersistentHeader: React.FC<PersistentHeaderProps> = ({
         </div>
 
         {/* Vertical Divider */}
-        <div className="w-px h-8 bg-white/10" aria-hidden="true"></div>
+        <div className="w-px h-8 bg-white/10" aria-hidden="true" />
 
         {/* Power Rating */}
         <div data-testid="power-rating">

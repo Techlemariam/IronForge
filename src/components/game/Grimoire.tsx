@@ -52,7 +52,7 @@ export const Grimoire: React.FC<GrimoireProps> = ({ onClose }) => {
                 id: `grimoire_pr_${idx}`,
                 date: log.date,
                 type: 'PR',
-                title: `New Personal Record set!`,
+                title: 'New Personal Record set!',
                 description: `Achieved an e1RM of ${log.e1rm}kg on ${log.exerciseId}.`,
                 rarity: 'rare',
                 metadata: { exerciseId: log.exerciseId, weight: log.e1rm },
@@ -194,7 +194,7 @@ export const Grimoire: React.FC<GrimoireProps> = ({ onClose }) => {
       <div className="mt-12 flex justify-center pb-8">
         <div className="flex items-center gap-4 text-xs font-bold text-zinc-600 uppercase tracking-widest">
           <span className="p-1 cursor-default opacity-50">Older Records</span>
-          <div className="w-12 h-px bg-zinc-900"></div>
+          <div className="w-12 h-px bg-zinc-900" />
           <span className="p-1 cursor-default opacity-50">Newer Records</span>
         </div>
       </div>

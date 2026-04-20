@@ -141,7 +141,7 @@ const Marketplace: React.FC<MarketplaceProps> = ({ onClose }) => {
                 key={item.id}
                 className="bg-zinc-950 border border-zinc-800 p-6 rounded-lg group hover:border-yellow-600 transition-all duration-300 relative overflow-hidden"
               >
-                <div className="absolute top-0 right-0 w-24 h-24 bg-yellow-500/5 rounded-full blur-2xl group-hover:bg-yellow-500/10 transition-all"></div>
+                <div className="absolute top-0 right-0 w-24 h-24 bg-yellow-500/5 rounded-full blur-2xl group-hover:bg-yellow-500/10 transition-all" />
 
                 <div className="flex justify-between items-start mb-4">
                   <div className="p-3 bg-zinc-900 rounded-lg border border-zinc-700 group-hover:border-yellow-500/50 transition-all">

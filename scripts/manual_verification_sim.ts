@@ -95,7 +95,7 @@ async function runSimulation() {
   // TSB -45 (< -40 threshold)
   // Sleep 20 (< 60 threshold) AND HRV 20 (< 40 threshold) -> 2 Debuffs
   const sickWellness = { ...mockWellness, tsb: -45, sleepScore: 20, hrv: 20 };
-  console.log(`User enters with TSB -45, Sleep 20, HRV 20...`);
+  console.log('User enters with TSB -45, Sleep 20, HRV 20...');
 
   const isSurvival = TrainingMemoryManager.shouldEnterSurvivalMode(sickWellness as any); // Type cast for sim
   console.log(`Survival Mode Active? ${isSurvival}`);

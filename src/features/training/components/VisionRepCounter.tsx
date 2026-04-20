@@ -85,7 +85,7 @@ const VisionRepCounter: React.FC<VisionRepCounterProps> = ({ isActive, onRepCoun
     if (result) {
       // Draw Skeleton
       drawingUtils.drawLandmarks(result.landmarks, {
-        radius: (data) => DrawingUtils.lerp(data.from!.z, -0.15, 0.1, 5, 1),
+        radius: (data) => DrawingUtils.lerp(data.from?.z, -0.15, 0.1, 5, 1),
         color: result.metrics.isBelowParallel ? '#1eff00' : '#00e5ff',
       });
 
@@ -132,7 +132,7 @@ const VisionRepCounter: React.FC<VisionRepCounterProps> = ({ isActive, onRepCoun
       <div className="absolute inset-0 pointer-events-none z-20">
         {/* Status Text */}
         <div className="absolute top-4 left-4 flex items-center gap-2">
-          <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
+          <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
           <span className="text-[10px] font-mono text-cyan-400 uppercase tracking-widest">
             Titan Vision v2.0
           </span>

@@ -1,5 +1,5 @@
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 
 const SRC_DIR = path.join(process.cwd(), 'src');
 const OUTPUT_FILE = path.join(process.cwd(), '.agent', 'memory', 'knowledge-graph.json');
@@ -83,10 +83,10 @@ function analyzeFile(filePath: string, nodes: Node[], edges: Edge[]) {
 
     // Attempt to add extension if missing
     if (!resolvedPath.endsWith('.ts') && !resolvedPath.endsWith('.tsx')) {
-      if (fs.existsSync(resolvedPath + '.ts')) resolvedPath += '.ts';
-      else if (fs.existsSync(resolvedPath + '.tsx')) resolvedPath += '.tsx';
-      else if (fs.existsSync(resolvedPath + '/index.ts')) resolvedPath += '/index.ts';
-      else if (fs.existsSync(resolvedPath + '/index.tsx')) resolvedPath += '/index.tsx';
+      if (fs.existsSync(`${resolvedPath}.ts`)) resolvedPath += '.ts';
+      else if (fs.existsSync(`${resolvedPath}.tsx`)) resolvedPath += '.tsx';
+      else if (fs.existsSync(`${resolvedPath}/index.ts`)) resolvedPath += '/index.ts';
+      else if (fs.existsSync(`${resolvedPath}/index.tsx`)) resolvedPath += '/index.tsx';
       else continue; // Could not resolve
     }
 

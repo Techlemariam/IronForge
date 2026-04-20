@@ -105,7 +105,7 @@ const IntegrationsPanel: React.FC<IntegrationsPanelProps> = ({
           newParams.delete('state');
           router.replace(`/settings?${newParams.toString()}`);
         } else {
-          setError('Strava Connection Failed: ' + result.error);
+          setError(`Strava Connection Failed: ${result.error}`);
         }
       });
     }
@@ -184,7 +184,7 @@ const IntegrationsPanel: React.FC<IntegrationsPanelProps> = ({
           setStravaConnected(false);
           onIntegrationChanged?.();
         } else {
-          alert('Failed to disconnect Strava: ' + result.error);
+          alert(`Failed to disconnect Strava: ${result.error}`);
         }
       } catch (error) {
         console.error(error);
@@ -201,7 +201,7 @@ const IntegrationsPanel: React.FC<IntegrationsPanelProps> = ({
           alert(`Strava Sync Complete: ${result.count} activities synced.`);
           onIntegrationChanged?.();
         } else {
-          alert('Strava Sync Failed: ' + result.error);
+          alert(`Strava Sync Failed: ${result.error}`);
         }
       } catch (error) {
         console.error(error);
@@ -411,7 +411,7 @@ const IntegrationsPanel: React.FC<IntegrationsPanelProps> = ({
                           }
                         } catch (e: any) {
                           console.error('Strava Auth Error:', e);
-                          alert('Failed to initiate Strava login: ' + e.message);
+                          alert(`Failed to initiate Strava login: ${e.message}`);
                         }
                       });
                     }}
@@ -622,14 +622,14 @@ const IntegrationsPanel: React.FC<IntegrationsPanelProps> = ({
         'Stream your podcast queue during training'
       )}
 
-      <div className="border-t border-white/5 my-4"></div>
+      <div className="border-t border-white/5 my-4" />
 
       <h3 className="font-heading text-xs text-forge-muted uppercase tracking-widest mb-2 px-1">
         PvP Identity
       </h3>
       {renderFactionCard()}
 
-      <div className="border-t border-white/5 my-4"></div>
+      <div className="border-t border-white/5 my-4" />
 
       <h3 className="font-heading text-xs text-forge-muted uppercase tracking-widest mb-2 px-1">
         System Overrides

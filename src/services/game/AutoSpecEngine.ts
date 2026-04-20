@@ -77,7 +77,7 @@ export class AutoSpecEngine {
 
     // If Gamma, everything is minimal (50%)
     if (phase === 'GAMMA') {
-      return this.applyModifiers(baseTargets, 0.5);
+      return AutoSpecEngine.applyModifiers(baseTargets, 0.5);
     }
 
     // --- BIO-MODIFIERS ---
@@ -96,10 +96,10 @@ export class AutoSpecEngine {
     }
 
     // 4. Nutrition Blindspot
-    globalModifier *= this.getNutritionModifier(metrics.nutritionMode);
+    globalModifier *= AutoSpecEngine.getNutritionModifier(metrics.nutritionMode);
 
     // 5. Sleep Debt
-    globalModifier *= this.getSleepDebtModifier(metrics.sleepDebt);
+    globalModifier *= AutoSpecEngine.getSleepDebtModifier(metrics.sleepDebt);
 
     // 6. ACWR Danger Zone
     if (metrics.acwr > 1.5) {
@@ -107,7 +107,7 @@ export class AutoSpecEngine {
       console.warn('AutoSpec: ACWR > 1.5. Danger Zone Protocol Activated.');
     }
 
-    return this.applyModifiers(baseTargets, globalModifier);
+    return AutoSpecEngine.applyModifiers(baseTargets, globalModifier);
   }
 
   static applyModifiers(targets: BuildVolumeTargets, factor: number): BuildVolumeTargets {

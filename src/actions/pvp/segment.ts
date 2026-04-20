@@ -69,13 +69,12 @@ export async function resolveSegmentBattleAction(uploadId: number) {
           time: se.elapsed_time,
         })),
       };
-    } else {
-      return {
-        success: false,
-        status: upload.status,
-        message: 'Upload not yet fully processed by Strava.',
-      };
     }
+    return {
+      success: false,
+      status: upload.status,
+      message: 'Upload not yet fully processed by Strava.',
+    };
   } catch (error: any) {
     console.error('PvP Resolution Error:', error);
     return { success: false, error: error.message };

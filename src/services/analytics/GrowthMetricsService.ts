@@ -163,11 +163,11 @@ export class GrowthMetricsService {
   static async getGrowthSnapshot() {
     const [recurringUsers, retentionRate, onboardingRate, activationRate, socialEngagement] =
       await Promise.all([
-        this.getRecurringUserCount(),
-        this.getRetentionRate(),
-        this.getOnboardingCompletionRate(),
-        this.getActivationRate(),
-        this.getSocialEngagement(),
+        GrowthMetricsService.getRecurringUserCount(),
+        GrowthMetricsService.getRetentionRate(),
+        GrowthMetricsService.getOnboardingCompletionRate(),
+        GrowthMetricsService.getActivationRate(),
+        GrowthMetricsService.getSocialEngagement(),
       ]);
 
     return {

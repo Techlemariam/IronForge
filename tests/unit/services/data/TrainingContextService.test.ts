@@ -54,9 +54,9 @@ describe('TrainingContextService', () => {
 
       const result = await TrainingContextService.getWeeklyVolume(userId);
 
-      expect(result['CHEST'].weeklySets).toBe(3); // 2 + 1
-      expect(result['QUADS'].weeklySets).toBe(1);
-      expect(result['CHEST'].status).toBe('LOW'); // 3/20 = 15%
+      expect(result.CHEST.weeklySets).toBe(3); // 2 + 1
+      expect(result.QUADS.weeklySets).toBe(1);
+      expect(result.CHEST.status).toBe('LOW'); // 3/20 = 15%
     });
 
     it('should handle mapped muscle groups if explicit group is missing', async () => {
@@ -70,7 +70,7 @@ describe('TrainingContextService', () => {
       const result = await TrainingContextService.getWeeklyVolume(userId);
 
       // "Bicep Curl (Dumbbell)" maps to BICEPS in Hevy Map
-      expect(result['BICEPS'].weeklySets).toBe(1);
+      expect(result.BICEPS.weeklySets).toBe(1);
     });
   });
 

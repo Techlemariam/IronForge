@@ -117,7 +117,7 @@ export async function addRivalAction(
  * Remove a rival.
  */
 export async function removeRivalAction(
-  userId: string,
+  _userId: string,
   rivalId: string
 ): Promise<{ success: boolean }> {
   try {
@@ -134,7 +134,7 @@ export async function removeRivalAction(
  * Toggle favorite rival.
  */
 export async function toggleFavoriteRivalAction(
-  userId: string,
+  _userId: string,
   rivalId: string
 ): Promise<{ success: boolean; isFavorite: boolean }> {
   try {

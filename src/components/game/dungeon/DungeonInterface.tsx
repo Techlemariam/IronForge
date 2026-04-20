@@ -72,7 +72,7 @@ const DungeonInterface: React.FC<DungeonInterfaceProps> = ({
         {/* Simple visual representation of the Boss */}
         <div className="relative w-32 h-32">
           {/* Aura */}
-          <div className="absolute inset-0 bg-red-500 blur-2xl opacity-20 animate-pulse rounded-full"></div>
+          <div className="absolute inset-0 bg-red-500 blur-2xl opacity-20 animate-pulse rounded-full" />
 
           {/* Boss Model (Icon for now) */}
           <div className="absolute inset-0 flex items-center justify-center">
@@ -106,7 +106,7 @@ const DungeonInterface: React.FC<DungeonInterfaceProps> = ({
           transition={{ type: 'spring', stiffness: 50 }}
         >
           {/* Shine effect */}
-          <div className="absolute top-0 right-0 bottom-0 w-[1px] bg-white/50 shadow-[0_0_10px_white]"></div>
+          <div className="absolute top-0 right-0 bottom-0 w-[1px] bg-white/50 shadow-[0_0_10px_white]" />
         </motion.div>
 
         {/* Text overlay */}

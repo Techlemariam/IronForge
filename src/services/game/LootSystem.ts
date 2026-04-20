@@ -35,7 +35,7 @@ export class LootSystem {
     durationMinutes = 30,
     lootLuck = 1.0
   ): Promise<any | null> {
-    const dropChance = this.calculateDropChance(intensity, durationMinutes, lootLuck);
+    const dropChance = LootSystem.calculateDropChance(intensity, durationMinutes, lootLuck);
     const roll = Math.random() * 100;
 
     console.log(`🎲 Loot Roll: ${roll.toFixed(1)} / ${dropChance.toFixed(1)}`);

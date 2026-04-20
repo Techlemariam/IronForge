@@ -31,7 +31,7 @@ async function main() {
 
     for (let i = 1; i <= 50; i++) {
       // Simple XP Curve: 1000 * 1.05^(level-1)
-      const xpForLevel = Math.floor(1000 * Math.pow(1.05, i - 1));
+      const xpForLevel = Math.floor(1000 * 1.05 ** (i - 1));
       xpCumulative += xpForLevel;
 
       // Rewards

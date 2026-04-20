@@ -53,7 +53,9 @@ export const AssemblyLinePresenter: React.FC<AssemblyLinePresenterProps> = ({ ta
               <div className="flex-1 space-y-4">
                 {/* Stage Header */}
                 <div
-                  className={`flex items-center gap-3 p-3 rounded-xl border border-slate-700/50 bg-slate-900/40 backdrop-blur-md`}
+                  className={
+                    'flex items-center gap-3 p-3 rounded-xl border border-slate-700/50 bg-slate-900/40 backdrop-blur-md'
+                  }
                 >
                   <div className={`p-2 rounded-lg ${stage.bg}`}>
                     <stage.icon className={`w-4 h-4 ${stage.color}`} />

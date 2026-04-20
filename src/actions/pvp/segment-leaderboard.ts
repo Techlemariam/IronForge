@@ -154,9 +154,9 @@ export async function getUserRankingsAction(userId: string): Promise<{
     // Get unique exercises
     const exerciseIds = [...new Set(userLogs.map((l) => l.exerciseId))];
     const rankings: { exerciseId: string; rank: number; e1rm: number }[] = [];
-    let gold = 0,
-      silver = 0,
-      bronze = 0;
+    let gold = 0;
+    let silver = 0;
+    let bronze = 0;
 
     for (const exerciseId of exerciseIds) {
       const leaderboard = await getSegmentLeaderboardAction(exerciseId, 'GLOBAL', userId);

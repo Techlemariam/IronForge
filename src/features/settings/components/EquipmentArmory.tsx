@@ -157,7 +157,7 @@ const EquipmentArmory: React.FC = () => {
                 </span>
                 <div
                   className={`w-4 h-4 rounded-sm border ${isSelected ? (isHyperPro ? 'bg-rarity-epic border-rarity-epic' : 'bg-rarity-common border-rarity-common') : 'border-gray-600'}`}
-                ></div>
+                />
               </div>
             );
           })}

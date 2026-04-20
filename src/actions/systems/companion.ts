@@ -182,7 +182,7 @@ export async function getAllCompanionsAction(userId: string): Promise<Companion[
  * Feed companion to increase bond.
  */
 export async function feedCompanionAction(
-  userId: string,
+  _userId: string,
   companionId: string,
   foodType: string
 ): Promise<{ success: boolean; newBond: number }> {
@@ -195,7 +195,7 @@ export async function feedCompanionAction(
  * Train companion to gain XP.
  */
 export async function trainCompanionAction(
-  userId: string,
+  _userId: string,
   companionId: string
 ): Promise<{ success: boolean; xpGained: number; leveledUp: boolean }> {
   console.log(`Trained companion ${companionId}`);
@@ -207,7 +207,7 @@ export async function trainCompanionAction(
  * Set active companion.
  */
 export async function setActiveCompanionAction(
-  userId: string,
+  _userId: string,
   companionId: string
 ): Promise<{ success: boolean }> {
   console.log(`Set active companion: ${companionId}`);

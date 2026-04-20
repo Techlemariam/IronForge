@@ -15,7 +15,7 @@ export const mapDomainSetToLegacy = (set: DomainSet): LegacySet => {
   } else {
     // Handle AMRAP strings or others by defaulting to 10 or parsing
     const parsed = Number.parseInt(set.reps as string);
-    if (!isNaN(parsed)) targetReps = parsed;
+    if (!Number.isNaN(parsed)) targetReps = parsed;
   }
 
   return {
@@ -82,7 +82,7 @@ export const mapQuestToSession = (
   title: string
 ): import('@/types').Session => {
   return {
-    id: 'active_session_' + Date.now(),
+    id: `active_session_${Date.now()}`,
     name: title,
     blocks: [
       {

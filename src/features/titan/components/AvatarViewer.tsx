@@ -34,15 +34,15 @@ const AvatarViewer: React.FC<AvatarViewerProps> = ({ attributes, isElite, muscle
       {/* Legend */}
       <div className="absolute top-4 right-4 z-10 flex flex-col gap-1 text-[9px] font-mono uppercase">
         <div className="flex items-center gap-2">
-          <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
+          <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
           <span className="text-red-500">Critical Load</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+          <div className="w-2 h-2 bg-yellow-500 rounded-full" />
           <span className="text-yellow-500">Accumulating</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-2 h-2 bg-clay rounded-full"></div>
+          <div className="w-2 h-2 bg-clay rounded-full" />
           <span className="text-clay">Optimal</span>
         </div>
       </div>

@@ -16,15 +16,15 @@ export class SeasonService {
 
     if (!activeSeason) {
       console.log('No active season found. Initializing Season 1.');
-      return await this.startNextSeason(1, now);
+      return await SeasonService.startNextSeason(1, now);
     }
 
     if (activeSeason.endDate <= now) {
       console.log(`Season ${activeSeason.name} has ended. Transitioning...`);
-      await this.concludeSeason(activeSeason.id);
+      await SeasonService.concludeSeason(activeSeason.id);
 
       const nextSeasonNumber = Number.parseInt(activeSeason.name.match(/\d+/)?.[0] || '0') + 1;
-      return await this.startNextSeason(nextSeasonNumber, now);
+      return await SeasonService.startNextSeason(nextSeasonNumber, now);
     }
 
     return { status: 'ONGOING', season: activeSeason };

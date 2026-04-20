@@ -176,8 +176,8 @@ const PreWorkoutCheck: React.FC<PreWorkoutCheckProps> = ({ session, onProceed, o
         {status === 'SCANNING' && (
           <div className="text-center space-y-6">
             <div className="relative w-32 h-32 mx-auto flex items-center justify-center">
-              <div className="absolute inset-0 border-4 border-blue-500/20 rounded-full animate-ping"></div>
-              <div className="absolute inset-0 border-4 border-t-blue-500 rounded-full animate-spin"></div>
+              <div className="absolute inset-0 border-4 border-blue-500/20 rounded-full animate-ping" />
+              <div className="absolute inset-0 border-4 border-t-blue-500 rounded-full animate-spin" />
               <RefreshCw className="w-10 h-10 text-blue-500 animate-pulse" />
             </div>
             <div className="space-y-1 font-serif text-xs uppercase text-blue-400">

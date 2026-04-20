@@ -7,7 +7,7 @@
  *
  * Usage: gh pr view <PR> --json comments,statusCheckRollup | npx tsx scripts/app-intelligence.ts [--json]
  */
-import * as fs from 'fs';
+import * as fs from 'node:fs';
 
 // ---------------------------------------------------------------------------
 // Types

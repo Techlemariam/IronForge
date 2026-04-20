@@ -28,7 +28,7 @@ describe('Periodization Actions', () => {
       expect(result.currentPhase).toBe('ACCUMULATION');
       expect(result.weekInPhase).toBe(1);
       // Hypertrophy AccMultiplier is 1.2. 10 * 1.2 = 12
-      expect(result.recommendations.targetVolume['chest']).toBe(12);
+      expect(result.recommendations.targetVolume.chest).toBe(12);
     });
 
     it('should resolve correct phase for later weeks', async () => {
@@ -45,7 +45,7 @@ describe('Periodization Actions', () => {
       expect(result.currentPhase).toBe('INTENSIFICATION');
       expect(result.weekInPhase).toBe(1);
       // IntMultiplier is 1.0. 10 * 1.0 = 10
-      expect(result.recommendations.targetVolume['chest']).toBe(10);
+      expect(result.recommendations.targetVolume.chest).toBe(10);
     });
   });
 
@@ -64,7 +64,7 @@ describe('Periodization Actions', () => {
       const result = await periodizationActions.adaptPlanToWellnessAction('u1', startPlan, 50, 80);
 
       // 10 * 0.7 = 7
-      expect(result.recommendations.targetVolume['chest']).toBe(7);
+      expect(result.recommendations.targetVolume.chest).toBe(7);
       expect(result.recommendations.targetRpe).toBe(7); // 8 - 1
       expect(result.recommendations.notes[0]).toContain('Low wellness');
     });
@@ -82,7 +82,7 @@ describe('Periodization Actions', () => {
 
       const result = await periodizationActions.adaptPlanToWellnessAction('u1', startPlan, 80, 50);
 
-      expect(result.recommendations.targetVolume['chest']).toBe(10);
+      expect(result.recommendations.targetVolume.chest).toBe(10);
       expect(result.recommendations.targetRpe).toBe(8);
       expect(result.recommendations.notes).toHaveLength(0);
     });

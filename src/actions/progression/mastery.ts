@@ -175,7 +175,7 @@ export function calculateMasteryXp(weight: number, reps: number, isPr: boolean):
  * Get mastery leaderboard for an exercise.
  */
 export async function getMasteryLeaderboardAction(
-  exerciseId: string,
+  _exerciseId: string,
   _limit = 10
 ): Promise<Array<{ rank: number; heroName: string; level: number }>> {
   return [

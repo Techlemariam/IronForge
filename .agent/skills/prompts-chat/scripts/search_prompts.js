@@ -1,5 +1,5 @@
-import path from 'path';
-import { fileURLToPath } from 'url';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
 import dotenv from 'dotenv';
@@ -40,9 +40,7 @@ async function main() {
     }
 
     const matches = prompts.filter(
-      (p) =>
-        p.name.toLowerCase().includes(query) ||
-        (p.description && p.description.toLowerCase().includes(query))
+      (p) => p.name.toLowerCase().includes(query) || p.description?.toLowerCase().includes(query)
     );
 
     if (matches.length === 0) {

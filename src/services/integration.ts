@@ -82,7 +82,7 @@ export const IntegrationService = {
         {
           method: 'POST',
           headers: {
-            Authorization: `Basic ${btoa('API_KEY:' + settings.intervalsApiKey)}`,
+            Authorization: `Basic ${btoa(`API_KEY:${settings.intervalsApiKey}`)}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(payload),

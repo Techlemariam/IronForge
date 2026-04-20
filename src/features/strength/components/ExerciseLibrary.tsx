@@ -116,7 +116,6 @@ const ExerciseLibrary: React.FC<ExerciseLibraryProps> = ({ onSelect, onClose }) 
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="w-full bg-zinc-950 border border-zinc-800 rounded-lg py-3 pl-10 pr-4 text-white focus:outline-none focus:border-indigo-500 transition-colors"
-            autoFocus
           />
         </div>
         <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">

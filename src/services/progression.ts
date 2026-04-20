@@ -15,7 +15,7 @@ export const ProgressionService = {
    * e.g. Lvl 1: 1000, Lvl 2: ~2828, Lvl 3: ~5196
    */
   calculateRequiredXP(level: number) {
-    return Math.floor(1000 * Math.pow(level, 1.5));
+    return Math.floor(1000 * level ** 1.5);
   },
 
   /**
@@ -23,7 +23,7 @@ export const ProgressionService = {
    */
   calculateLevelFromXP(totalXp: number) {
     if (totalXp < 1000) return 1;
-    return Math.floor(Math.pow(totalXp / 1000, 2 / 3));
+    return Math.floor((totalXp / 1000) ** (2 / 3));
   },
   /**
    * Awards Gold to a user.

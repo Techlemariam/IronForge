@@ -32,30 +32,29 @@ export const UserService = {
         });
       }
       return user;
-    } else {
-      // Single player mode fallback: get the first user
-      const users = await prisma.user.findMany({
-        take: 1,
-        include: {
-          equipment: true,
-          skills: true,
-          achievements: true,
-          unlockedMonsters: true,
-        },
-      });
-      if (users.length > 0) return users[0];
-
-      // Create default user
-      return await prisma.user.create({
-        data: { heroName: 'IronLegend' },
-        include: {
-          equipment: true,
-          skills: true,
-          achievements: true,
-          unlockedMonsters: true,
-        },
-      });
     }
+    // Single player mode fallback: get the first user
+    const users = await prisma.user.findMany({
+      take: 1,
+      include: {
+        equipment: true,
+        skills: true,
+        achievements: true,
+        unlockedMonsters: true,
+      },
+    });
+    if (users.length > 0) return users[0];
+
+    // Create default user
+    return await prisma.user.create({
+      data: { heroName: 'IronLegend' },
+      include: {
+        equipment: true,
+        skills: true,
+        achievements: true,
+        unlockedMonsters: true,
+      },
+    });
   },
 
   async getUser(userId: string) {

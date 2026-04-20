@@ -72,7 +72,7 @@ export async function createFriendChallengeAction(
   challengerId: string,
   challengedId: string,
   type: ChallengeType,
-  target: number,
+  _target: number,
   durationDays: number,
   _wager?: { xp: number; gold: number }
 ): Promise<{ success: boolean; challengeId?: string }> {
@@ -93,7 +93,7 @@ export async function createFriendChallengeAction(
  * Accept a challenge.
  */
 export async function acceptChallengeAction(
-  userId: string,
+  _userId: string,
   challengeId: string
 ): Promise<{ success: boolean }> {
   try {
@@ -110,7 +110,7 @@ export async function acceptChallengeAction(
  * Decline a challenge.
  */
 export async function declineChallengeAction(
-  userId: string,
+  _userId: string,
   challengeId: string
 ): Promise<{ success: boolean }> {
   try {

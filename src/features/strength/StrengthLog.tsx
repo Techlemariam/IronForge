@@ -103,7 +103,7 @@ export const StrengthLog: React.FC<ExerciseLogProps> = ({
           <div className="col-span-3 text-center">kg</div>
           <div className="col-span-3 text-center">Reps</div>
           <div className="col-span-3 text-center">RPE</div>
-          <div className="col-span-2"></div>
+          <div className="col-span-2" />
         </div>
 
         {sets.map((set, index) => (

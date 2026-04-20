@@ -1,5 +1,11 @@
 {
+  "updatedAt": "2026-04-16T19:01:59.419Z",
+  "createdAt": "2026-04-13T16:36:14.246Z",
+  "id": "nm3K2Fqv5BQELeaF",
   "name": "Panopticon: Status Command Handler",
+  "description": null,
+  "active": true,
+  "isArchived": false,
   "nodes": [
     {
       "parameters": {},
@@ -7,7 +13,10 @@
       "name": "Execute Workflow Trigger",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1,
-      "position": [250, 300]
+      "position": [
+        250,
+        300
+      ]
     },
     {
       "parameters": {
@@ -28,7 +37,10 @@
       "name": "Defer Response",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.1,
-      "position": [450, 300]
+      "position": [
+        450,
+        300
+      ]
     },
     {
       "parameters": {
@@ -41,7 +53,10 @@
       "name": "GitHub CI Status",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.1,
-      "position": [650, 300],
+      "position": [
+        650,
+        300
+      ],
       "credentials": {
         "httpHeaderAuth": {
           "id": "6BhE9M39PCG9q2Ob",
@@ -52,7 +67,7 @@
     {
       "parameters": {
         "method": "PATCH",
-        "url": "=https://discord.com/api/v10/webhooks/1493508595424165979/{{$json.interaction_token}}/messages/@original",
+        "url": "=https://discord.com/api/v10/webhooks/1493235518647832606/{{$json.interaction_token}}/messages/@original",
         "sendBody": true,
         "bodyParameters": {
           "parameters": [
@@ -68,27 +83,233 @@
       "name": "Post Rich Embed",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.1,
-      "position": [850, 300]
+      "position": [
+        850,
+        300
+      ]
     }
   ],
   "connections": {
     "Execute Workflow Trigger": {
       "main": [
-        [{"node": "Defer Response", "type": "main", "index": 0}]
+        [
+          {
+            "node": "Defer Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
     "Defer Response": {
       "main": [
-        [{"node": "GitHub CI Status", "type": "main", "index": 0}]
+        [
+          {
+            "node": "GitHub CI Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
     "GitHub CI Status": {
       "main": [
-        [{"node": "Post Rich Embed", "type": "main", "index": 0}]
+        [
+          {
+            "node": "Post Rich Embed",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     }
   },
   "settings": {
-    "executionOrder": "v1"
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": true,
+    "binaryMode": "separate",
+    "timeSavedMode": "fixed"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": null,
+  "versionId": "8e219a6f-ad92-4dc0-b9c6-48786102f4cd",
+  "activeVersionId": "8e219a6f-ad92-4dc0-b9c6-48786102f4cd",
+  "versionCounter": 6,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-04-13T16:36:14.247Z",
+      "createdAt": "2026-04-13T16:36:14.247Z",
+      "role": "workflow:owner",
+      "workflowId": "nm3K2Fqv5BQELeaF",
+      "projectId": "xSv7yo2oxCZw4gZE",
+      "project": {
+        "updatedAt": "2026-04-13T12:08:30.435Z",
+        "createdAt": "2026-02-04T22:07:22.992Z",
+        "id": "xSv7yo2oxCZw4gZE",
+        "name": "Alexander Teklemariam <alexander.teklemariam@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "918df8dd-28be-455c-af95-f541e364b1b4"
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": {
+    "updatedAt": "2026-04-13T16:36:14.252Z",
+    "createdAt": "2026-04-13T16:36:14.252Z",
+    "versionId": "8e219a6f-ad92-4dc0-b9c6-48786102f4cd",
+    "workflowId": "nm3K2Fqv5BQELeaF",
+    "nodes": [
+      {
+        "parameters": {},
+        "id": "trigger-node",
+        "name": "Execute Workflow Trigger",
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1,
+        "position": [
+          250,
+          300
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "=https://discord.com/api/v10/interactions/{{$json.interaction_id}}/{{$json.interaction_token}}/callback",
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "type",
+                "value": 5
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "defer-interaction",
+        "name": "Defer Response",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.1,
+        "position": [
+          450,
+          300
+        ]
+      },
+      {
+        "parameters": {
+          "url": "=https://api.github.com/repos/Techlemariam/{{$json.project}}/actions/runs?branch=main&per_page=1",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpHeaderAuth",
+          "options": {}
+        },
+        "id": "github-api",
+        "name": "GitHub CI Status",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.1,
+        "position": [
+          650,
+          300
+        ],
+        "credentials": {
+          "httpHeaderAuth": {
+            "id": "6BhE9M39PCG9q2Ob",
+            "name": "GitHub PAT"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "method": "PATCH",
+          "url": "=https://discord.com/api/v10/webhooks/1493235518647832606/{{$json.interaction_token}}/messages/@original",
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "embeds",
+                "value": "=[{\"title\": \"Status: {{$json.project}}\", \"description\": \"Latest CI Workflow run: {{$json.workflow_runs[0].conclusion}}\\nCommit: {{$json.workflow_runs[0].head_commit.message}}\", \"color\": 5763719}]"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "discord-edit",
+        "name": "Post Rich Embed",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.1,
+        "position": [
+          850,
+          300
+        ]
+      }
+    ],
+    "connections": {
+      "Execute Workflow Trigger": {
+        "main": [
+          [
+            {
+              "node": "Defer Response",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Defer Response": {
+        "main": [
+          [
+            {
+              "node": "GitHub CI Status",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GitHub CI Status": {
+        "main": [
+          [
+            {
+              "node": "Post Rich Embed",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Alexander Teklemariam",
+    "name": null,
+    "description": null,
+    "autosaved": false,
+    "workflowPublishHistory": [
+      {
+        "createdAt": "2026-04-14T21:23:44.741Z",
+        "id": 58,
+        "workflowId": "nm3K2Fqv5BQELeaF",
+        "versionId": "8e219a6f-ad92-4dc0-b9c6-48786102f4cd",
+        "event": "activated",
+        "userId": "918df8dd-28be-455c-af95-f541e364b1b4"
+      },
+      {
+        "createdAt": "2026-04-16T19:01:59.457Z",
+        "id": 60,
+        "workflowId": "nm3K2Fqv5BQELeaF",
+        "versionId": "8e219a6f-ad92-4dc0-b9c6-48786102f4cd",
+        "event": "activated",
+        "userId": "918df8dd-28be-455c-af95-f541e364b1b4"
+      },
+      {
+        "createdAt": "2026-04-16T19:01:59.445Z",
+        "id": 59,
+        "workflowId": "nm3K2Fqv5BQELeaF",
+        "versionId": "8e219a6f-ad92-4dc0-b9c6-48786102f4cd",
+        "event": "deactivated",
+        "userId": "918df8dd-28be-455c-af95-f541e364b1b4"
+      }
+    ]
   }
 }

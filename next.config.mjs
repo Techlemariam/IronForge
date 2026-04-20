@@ -2,7 +2,7 @@ import { withSentryConfig } from '@sentry/nextjs';
 import withSerwistInit from '@serwist/next';
 import './src/env.mjs';
 
-const withSerwist = withSerwistInit({
+const _withSerwist = withSerwistInit({
   swSrc: 'src/app/sw.ts',
   swDest: 'public/sw.js',
   disable: process.env.NODE_ENV === 'development',
@@ -24,7 +24,7 @@ const nextConfig = {
 };
 
 // Sentry configuration options
-const sentryConfig = {
+const _sentryConfig = {
   // Upload source maps for better stack traces
   silent: true, // Suppress Sentry CLI output
   org: process.env.SENTRY_ORG,

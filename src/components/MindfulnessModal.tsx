@@ -53,7 +53,7 @@ const MindfulnessModal: React.FC<MindfulnessModalProps> = ({ onClose, onSave }) 
       <div className="bg-armor border-2 border-blue-900 w-full max-w-sm rounded-lg shadow-[0_0_50px_rgba(30,58,138,0.3)] overflow-hidden font-serif">
         {/* Header */}
         <div className="bg-blue-950/30 p-4 border-b border-blue-900/50 flex justify-between items-center relative overflow-hidden">
-          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-30 animate-pulse-slow"></div>
+          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-30 animate-pulse-slow" />
           <div className="flex items-center gap-2 text-blue-400 relative z-10">
             <Cloud className="w-5 h-5" />
             <h2 className="font-bold uppercase tracking-widest text-sm">The Void Sanctum</h2>

@@ -1,5 +1,5 @@
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 
 export interface BacklogItem {
   id: string;
@@ -17,8 +17,8 @@ export class BacklogService {
     const items: BacklogItem[] = [];
 
     // 1. Parse Roadmap
-    if (fs.existsSync(this.ROADMAP_PATH)) {
-      const roadmapContent = fs.readFileSync(this.ROADMAP_PATH, 'utf-8');
+    if (fs.existsSync(BacklogService.ROADMAP_PATH)) {
+      const roadmapContent = fs.readFileSync(BacklogService.ROADMAP_PATH, 'utf-8');
       const roadmapRegex = /- \[ \] \*\*(.+?)\*\*| - \[ \] (.+?)(?= <!--|$)/g;
       let match;
       while ((match = roadmapRegex.exec(roadmapContent)) !== null) {
@@ -34,8 +34,8 @@ export class BacklogService {
     }
 
     // 2. Parse DEBT
-    if (fs.existsSync(this.DEBT_PATH)) {
-      const debtContent = fs.readFileSync(this.DEBT_PATH, 'utf-8');
+    if (fs.existsSync(BacklogService.DEBT_PATH)) {
+      const debtContent = fs.readFileSync(BacklogService.DEBT_PATH, 'utf-8');
       const debtLines = debtContent.split('\n');
       for (const line of debtLines) {
         if (line.includes('Open') && line.includes('|')) {

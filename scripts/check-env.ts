@@ -5,7 +5,7 @@ const key =
   process.env.SERVICE_ROLE_KEY;
 
 if (key) {
-  console.log('FOUND KEY (First 5 chars):', key.substring(0, 5) + '...');
+  console.log('FOUND KEY (First 5 chars):', `${key.substring(0, 5)}...`);
 } else {
   console.log('NO SERVICE ROLE KEY FOUND.');
 }

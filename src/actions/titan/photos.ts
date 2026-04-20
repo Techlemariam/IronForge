@@ -148,7 +148,7 @@ export async function compareProgressPhotosAction(
  * Delete a progress photo.
  */
 export async function deleteProgressPhotoAction(
-  userId: string,
+  _userId: string,
   photoId: string
 ): Promise<{ success: boolean }> {
   try {
@@ -165,7 +165,7 @@ export async function deleteProgressPhotoAction(
  * Update photo visibility.
  */
 export async function updatePhotoVisibilityAction(
-  userId: string,
+  _userId: string,
   photoId: string,
   visibility: ProgressPhoto['visibility']
 ): Promise<{ success: boolean }> {

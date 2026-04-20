@@ -1,5 +1,5 @@
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 // Tracking file path relative to project root
 // Tracking file path relative to project root
 let quotaFilePath = path.resolve(process.cwd(), '../../.agent/quota_usage.json');

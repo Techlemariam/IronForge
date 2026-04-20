@@ -45,7 +45,7 @@ export const ActiveDecree: React.FC<ActiveDecreeProps> = ({ decree }) => {
     <div
       className={`w-full p-4 rounded-lg border flex items-center gap-4 ${styles.bg} ${styles.border} shadow-lg mb-6 animate-fade-in`}
     >
-      <div className={`p-2 rounded-full bg-black/40 border border-white/10`}>{styles.icon}</div>
+      <div className={'p-2 rounded-full bg-black/40 border border-white/10'}>{styles.icon}</div>
       <div className="flex-1">
         <div className="flex items-center justify-between mb-1">
           <h3 className={`text-sm font-bold uppercase tracking-widest ${styles.text}`}>

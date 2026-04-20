@@ -151,7 +151,9 @@ const SetRow = memo(
           onKeyDown={(e) => {
             if (e.key === 'Enter' || e.key === ' ') onToggle(exIndex, setIndex);
           }}
-          className={`flex items-center justify-between p-2 bg-zinc-950/50 border border-zinc-900 rounded-md opacity-70 transition-all hover:opacity-100 cursor-pointer`}
+          className={
+            'flex items-center justify-between p-2 bg-zinc-950/50 border border-zinc-900 rounded-md opacity-70 transition-all hover:opacity-100 cursor-pointer'
+          }
           onClick={() => onToggle(exIndex, setIndex)}
         >
           <div className="flex items-center gap-3">
@@ -185,7 +187,7 @@ const SetRow = memo(
       <div
         ref={activeSetRef}
         className={`group relative bg-void border-2 rounded-lg overflow-hidden transition-all duration-300 
-              ${isFocused ? `scale-[1.02] z-10 shadow-xl ${borderColor}` : `border-zinc-900 hover:border-zinc-700`}
+              ${isFocused ? `scale-[1.02] z-10 shadow-xl ${borderColor}` : 'border-zinc-900 hover:border-zinc-700'}
             `}
       >
         <div className={`flex flex-col gap-3 ${isFocused ? 'p-6' : 'p-4'}`}>
@@ -922,7 +924,7 @@ const ActionView: React.FC<ActionViewProps> = ({
           <div className="flex items-center gap-2 mb-1">
             <span
               className={`w-2 h-2 rotate-45 border ${isSystemOverheated ? 'border-orange-500 bg-orange-900' : 'border-green-500 bg-green-900'}`}
-            ></span>
+            />
             <span
               className={`${isSystemOverheated ? 'text-orange-500' : 'text-green-500'} font-serif text-xs uppercase tracking-widest`}
             >
@@ -946,7 +948,7 @@ const ActionView: React.FC<ActionViewProps> = ({
             </span>
           </div>
 
-          <div className="h-8 w-px bg-zinc-800 hidden md:block"></div>
+          <div className="h-8 w-px bg-zinc-800 hidden md:block" />
 
           <div className="flex gap-2">
             <button
@@ -1108,7 +1110,7 @@ const ActionView: React.FC<ActionViewProps> = ({
               // Since ExerciseLibrary has mock data, we need to map it to our Exercise type
 
               const newExercise: Exercise = {
-                id: exId + '_' + Date.now(),
+                id: `${exId}_${Date.now()}`,
                 name: 'New Exercise', // Should get from library
                 logic: ExerciseLogic.FIXED_REPS,
                 sets: [

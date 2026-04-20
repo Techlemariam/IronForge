@@ -80,11 +80,11 @@ export async function getUserBattlePassProgressAction(
 
     // Map tiers and claims
     const tiers = season.tiers.map((tier) => {
-      const isUnlocked = userPass!.seasonXp >= tier.requiredXp;
-      const freeClaim = userPass!.claims.find(
+      const isUnlocked = userPass?.seasonXp >= tier.requiredXp;
+      const freeClaim = userPass?.claims.find(
         (c) => c.tierLevel === tier.tierLevel && !c.isPremium
       );
-      const premiumClaim = userPass!.claims.find(
+      const premiumClaim = userPass?.claims.find(
         (c) => c.tierLevel === tier.tierLevel && c.isPremium
       );
 

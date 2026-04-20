@@ -42,12 +42,13 @@ export async function GET(req: NextRequest) {
       case 'in-progress':
         data = await client.getInProgress();
         break;
-      case 'episodes':
+      case 'episodes': {
         const uuid = searchParams.get('uuid');
         if (!uuid) throw new Error('Podcast UUID required');
         const page = Number.parseInt(searchParams.get('page') || '1');
         data = await client.getEpisodes(uuid, page);
         break;
+      }
       default:
         return NextResponse.json({ error: 'Invalid type' }, { status: 400 });
     }

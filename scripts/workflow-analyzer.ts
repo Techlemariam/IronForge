@@ -11,8 +11,8 @@
  *   npx tsx scripts/workflow-analyzer.ts [--fix]
  */
 
-import * as fs from 'fs';
-import * as path from 'path';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 
 const WORKFLOW_DIR = path.join(process.cwd(), '.agent', 'workflows');
 const SKILL_DIR = path.join(process.cwd(), '.agent', 'skills');
@@ -254,7 +254,7 @@ function analyzeFile(filePath: string, fixMode: boolean, knownSkills: Set<string
         file: filename,
         severity: 'LOW',
         type: 'LOGIC',
-        message: `CI workflow has build but no explicit install.`,
+        message: 'CI workflow has build but no explicit install.',
         autoFixable: false,
       });
     }
@@ -267,7 +267,7 @@ function analyzeFile(filePath: string, fixMode: boolean, knownSkills: Set<string
       file: filename,
       severity: 'LOW',
       type: 'LOGIC',
-      message: `Git commit found but no git add detected. Ensure stage is handled.`,
+      message: 'Git commit found but no git add detected. Ensure stage is handled.',
       autoFixable: false,
     });
   }
@@ -278,7 +278,7 @@ function analyzeFile(filePath: string, fixMode: boolean, knownSkills: Set<string
       file: filename,
       severity: 'HIGH',
       type: 'SECURITY',
-      message: `Potential hardcoded secret detected.`,
+      message: 'Potential hardcoded secret detected.',
       autoFixable: false,
     });
   }
@@ -318,7 +318,7 @@ function analyzeFile(filePath: string, fixMode: boolean, knownSkills: Set<string
       let blockContent = '';
       let j = i + 1;
       while (j < lines.length && !lines[j].startsWith('```')) {
-        blockContent += lines[j] + '\n';
+        blockContent += `${lines[j]}\n`;
         j++;
       }
 
@@ -426,7 +426,7 @@ function generateGraph(files: string[]): string {
   }
 
   // Edges
-  edges.forEach((edge) => (mermaid += edge + '\n'));
+  edges.forEach((edge) => (mermaid += `${edge}\n`));
 
   return mermaid;
 }

@@ -1,5 +1,5 @@
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 
 const LOG_DIR = path.join(process.cwd(), 'src', 'logs');
 const MAX_AGE_DAYS = 7;

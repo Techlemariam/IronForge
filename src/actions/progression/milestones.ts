@@ -196,7 +196,7 @@ export async function getUnclaimedMilestonesAction(_userId: string): Promise<Mil
  * Claim milestone reward.
  */
 export async function claimMilestoneAction(
-  userId: string,
+  _userId: string,
   milestoneId: string
 ): Promise<{ success: boolean; rewards: MilestoneReward[] }> {
   const milestone = MILESTONES.find((m) => m.id === milestoneId);

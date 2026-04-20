@@ -35,7 +35,7 @@ interface LiveFeedData {
  * Get live activity feed.
  */
 export async function getLiveActivityFeedAction(
-  userId: string,
+  _userId: string,
   _limit = 20,
   _offset = 0
 ): Promise<LiveFeedData> {

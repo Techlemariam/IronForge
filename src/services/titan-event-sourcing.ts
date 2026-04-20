@@ -87,7 +87,7 @@ export async function getTitanEventHistory(
   let events = eventStore.filter((e) => e.userId === userId);
 
   if (options?.eventTypes) {
-    events = events.filter((e) => options.eventTypes!.includes(e.eventType));
+    events = events.filter((e) => options.eventTypes?.includes(e.eventType));
   }
 
   if (options?.since) {
@@ -136,13 +136,14 @@ export async function replayTitanEvents(
       case 'LEVEL_UP':
         state.level = event.newValue as number;
         break;
-      case 'STAT_CHANGED':
+      case 'STAT_CHANGED': {
         const stats = state.stats as Record<string, number>;
         const statChange = event.payload as Record<string, number>;
         for (const [key, value] of Object.entries(statChange)) {
           if (stats[key] !== undefined) stats[key] += value;
         }
         break;
+      }
       case 'GOLD_EARNED':
         (state.economy as Record<string, number>).gold += event.payload.amount as number;
         break;

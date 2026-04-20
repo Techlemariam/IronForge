@@ -107,7 +107,7 @@ export async function getPassiveIncomeAction(_userId: string): Promise<PassiveIn
  * Collect resources from generator.
  */
 export async function collectResourcesAction(
-  userId: string,
+  _userId: string,
   generatorId: string
 ): Promise<{
   success: boolean;
@@ -145,7 +145,7 @@ export async function collectAllResourcesAction(
  * Upgrade generator.
  */
 export async function upgradeGeneratorAction(
-  userId: string,
+  _userId: string,
   generatorId: string
 ): Promise<{ success: boolean; newLevel: number; newProduction: number }> {
   console.log(`Upgraded generator ${generatorId}`);

@@ -18,7 +18,7 @@ export async function GET(request: Request) {
         data: { user },
       } = await supabase.auth.getUser();
 
-      if (user && user.email) {
+      if (user?.email) {
         // Atomic Upsert using Prisma to handle race conditions and email conflicts
         // If a user with this email exists (e.g. from E2E seeding), we MUST use the auth ID
         // Note: Prisma upsert requires a unique field. We use id.

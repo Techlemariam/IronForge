@@ -469,10 +469,9 @@ const DungeonSessionView: React.FC<IronMinesProps> = ({
                       />
                     </div>
                   );
-                } else {
-                  // Skip rendering, it was handled by the first one
-                  return null;
                 }
+                // Skip rendering, it was handled by the first one
+                return null;
               }
 
               return (

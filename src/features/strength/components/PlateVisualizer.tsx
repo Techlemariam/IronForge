@@ -35,7 +35,7 @@ const PlateVisualizer: React.FC<PlateVisualizerProps> = ({ weight, isSingleLoade
       </span>
       <div className="flex items-center gap-1">
         {/* Barbell End */}
-        <div className="w-4 h-6 bg-zinc-400 rounded-sm"></div>
+        <div className="w-4 h-6 bg-zinc-400 rounded-sm" />
         {/* Sleeve */}
         <div className="flex items-center gap-px bg-zinc-800 px-1 py-4 rounded shadow-inner">
           {plates.length === 0 && <span className="text-zinc-600 text-xs px-2">Empty Bar</span>}
@@ -48,7 +48,7 @@ const PlateVisualizer: React.FC<PlateVisualizerProps> = ({ weight, isSingleLoade
           ))}
         </div>
         {/* Collar */}
-        <div className="w-2 h-8 bg-orange-600 rounded"></div>
+        <div className="w-2 h-8 bg-orange-600 rounded" />
       </div>
       <div className="mt-2 flex gap-2 text-xs font-mono text-zinc-400">
         {plates.map((p, i) => (

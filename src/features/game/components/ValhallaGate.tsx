@@ -76,7 +76,7 @@ const ValhallaGate: React.FC<ValhallaGateProps> = ({
 
     if (res.success) {
       playSound('achievement');
-      addLog('Success: ' + res.message);
+      addLog(`Success: ${res.message}`);
       setStep('SUCCESS');
       setTimeout(() => {
         onClose();
@@ -90,7 +90,7 @@ const ValhallaGate: React.FC<ValhallaGateProps> = ({
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-[#050505]/90 backdrop-blur-md animate-fade-in p-4">
       <div className="w-full max-w-md bg-[#0a0f14] border-2 border-cyan-900 rounded-lg shadow-[0_0_50px_rgba(8,145,178,0.2)] overflow-hidden font-serif relative">
         {/* Valhalla Texture */}
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 pointer-events-none"></div>
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 pointer-events-none" />
 
         {/* Header */}
         <div className="relative bg-gradient-to-r from-cyan-950 to-[#0a0f14] p-6 border-b border-cyan-900/50 flex justify-between items-start">

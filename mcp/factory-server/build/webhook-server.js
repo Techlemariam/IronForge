@@ -1,6 +1,6 @@
-import crypto from 'crypto';
-import { createServer } from 'http';
-import { parse } from 'url';
+import crypto from 'node:crypto';
+import { createServer } from 'node:http';
+import { parse } from 'node:url';
 const PORT = process.env.WEBHOOK_PORT || 3030;
 const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET || 'ironforge-webhook-secret';
 /**
@@ -59,8 +59,8 @@ export function startWebhookServer() {
             return;
           }
           // Import dynamically to avoid circular dependencies
-          const fs = await import('fs');
-          const path = await import('path');
+          const fs = await import('node:fs');
+          const path = await import('node:path');
           // Write task signal for Antigravity
           const taskDir = path.resolve(process.cwd(), '../../.agent/tasks');
           const taskPath = path.join(taskDir, 'current.md');

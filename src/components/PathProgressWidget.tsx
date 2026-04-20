@@ -75,7 +75,7 @@ export const PathProgressWidget: React.FC = () => {
         <div className="mt-4 pt-4 border-t border-zinc-900">
           <div className="flex items-center gap-2 text-yellow-500 bg-yellow-950/20 p-2 rounded border border-yellow-900/30">
             <div className="relative">
-              <div className="absolute inset-0 animate-ping bg-yellow-500 rounded-full opacity-20"></div>
+              <div className="absolute inset-0 animate-ping bg-yellow-500 rounded-full opacity-20" />
               <Check size={16} />
             </div>
             <div className="flex-1">

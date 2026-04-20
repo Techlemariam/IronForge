@@ -267,7 +267,7 @@ const GeminiLiveCoach: React.FC<GeminiLiveCoachProps> = ({ isOpen, onClose }) =>
                 key={i}
                 className={`w-2 bg-purple-500 rounded-t ${isConnected ? 'animate-bounce' : 'h-1'}`}
                 style={{ animationDelay: `${i * 0.1}s`, height: '50%' }}
-              ></div>
+              />
             ))}
           </div>
           <div

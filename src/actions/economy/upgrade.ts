@@ -92,7 +92,7 @@ const STAT_MULTIPLIERS: Record<number, number> = {
  * Get upgrade cost for next level.
  */
 export async function getUpgradeCostAction(
-  itemId: string,
+  _itemId: string,
   currentLevel: number
 ): Promise<UpgradeCost | null> {
   const nextLevel = currentLevel + 1;
@@ -103,7 +103,7 @@ export async function getUpgradeCostAction(
  * Attempt to upgrade equipment.
  */
 export async function upgradeEquipmentAction(
-  userId: string,
+  _userId: string,
   itemId: string
 ): Promise<{ success: boolean; newLevel?: number; message: string }> {
   try {
@@ -128,13 +128,12 @@ export async function upgradeEquipmentAction(
         newLevel,
         message: `Upgrade successful! Item is now level ${newLevel}`,
       };
-    } else {
-      console.log(`Upgrade failed: ${itemId}`);
-      return {
-        success: false,
-        message: 'Upgrade failed. Materials were consumed.',
-      };
     }
+    console.log(`Upgrade failed: ${itemId}`);
+    return {
+      success: false,
+      message: 'Upgrade failed. Materials were consumed.',
+    };
   } catch (error) {
     console.error('Error upgrading equipment:', error);
     return { success: false, message: 'An error occurred' };

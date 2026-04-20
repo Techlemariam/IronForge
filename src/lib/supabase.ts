@@ -9,7 +9,7 @@ export const getSupabase = async (): Promise<SupabaseClient | null> => {
 
   // Fetch creds from local storage
   const settings = await StorageService.getState<AppSettings>('settings');
-  if (settings && settings.supabaseUrl && settings.supabaseKey) {
+  if (settings?.supabaseUrl && settings.supabaseKey) {
     try {
       supabase = createClient(settings.supabaseUrl, settings.supabaseKey, {
         realtime: {

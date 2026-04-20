@@ -115,7 +115,7 @@ export const DashboardPresenter: React.FC<DashboardPresenterProps> = (props) => 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
         <AnimatePresence mode="wait">
           <AnimatedViewWrapper viewKey={state.currentView}>
-            <main id="main-content" role="main" className="mechanical-panel p-1">
+            <main id="main-content" className="mechanical-panel p-1">
               {/* Inner Bezel */}
               <div className="border border-slate-900 bg-slate-900/40 p-4 sm:p-6 min-h-[70vh]">
                 <ViewRouter {...viewRouterProps} />

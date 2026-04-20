@@ -45,7 +45,7 @@ export function calculateE1rmLander(weight: number, reps: number): number {
 export function calculateE1rmLombardi(weight: number, reps: number): number {
   if (reps === 1) return weight;
   if (reps <= 0) return 0;
-  return Math.round(weight * Math.pow(reps, 0.1));
+  return Math.round(weight * reps ** 0.1);
 }
 
 /**

@@ -1,5 +1,5 @@
 #!/usr/bin/env bun
-import { readFileSync } from 'fs';
+import { readFileSync } from 'node:fs';
 import { parse } from 'csv-parse/sync';
 
 const PROMPTS_PATH = '.agent/skills/prompts-chat/prompts.csv';

@@ -132,7 +132,7 @@ export async function seedTerritories() {
 
 // Allow running directly
 // ESM compatible main check
-import { fileURLToPath } from 'url';
+import { fileURLToPath } from 'node:url';
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   seedTerritories()

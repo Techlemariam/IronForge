@@ -19,7 +19,7 @@ async function testAuth(method: 'Basic' | 'Bearer') {
 
   let authHeader = '';
   if (method === 'Basic') {
-    authHeader = `Basic ${btoa('API_KEY:' + API_KEY)}`;
+    authHeader = `Basic ${btoa(`API_KEY:${API_KEY}`)}`;
   } else {
     authHeader = `Bearer ${API_KEY}`;
   }

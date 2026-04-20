@@ -454,16 +454,15 @@ function CardioCockpit({
         accentColor: 'from-cyan-500 to-cyan-600',
         headerGradient: 'from-cyan-900/30 to-zinc-900/30',
       };
-    } else {
-      return {
-        title: 'Treadmill Studio',
-        subtitle: 'Run + Zwift Integration',
-        icon: <Footprints className="w-6 h-6 text-white" />,
-        placeholderText: 'Paste a YouTube URL or video link above to start your running session',
-        accentColor: 'from-orange-500 to-orange-600',
-        headerGradient: 'from-orange-900/30 to-zinc-900/30',
-      };
     }
+    return {
+      title: 'Treadmill Studio',
+      subtitle: 'Run + Zwift Integration',
+      icon: <Footprints className="w-6 h-6 text-white" />,
+      placeholderText: 'Paste a YouTube URL or video link above to start your running session',
+      accentColor: 'from-orange-500 to-orange-600',
+      headerGradient: 'from-orange-900/30 to-zinc-900/30',
+    };
   }, [mode]);
 
   // Load from localStorage on mount or mode change
@@ -619,9 +618,10 @@ function CardioCockpit({
         return `${base} w-1/2 h-full`;
       case 'video-pip':
         return `${base} w-full h-full`;
-      case 'zwift-pip':
+      case 'zwift-pip': {
         const borderColor = mode === 'cycling' ? 'border-cyan-500/50' : 'border-orange-500/50';
         return `${base} absolute bottom-4 left-4 w-80 h-48 z-20 rounded-lg overflow-hidden shadow-2xl border-2 ${borderColor} hover:scale-105 hover:z-30 cursor-pointer`;
+      }
       default:
         return `${base} w-1/2 h-full`;
     }
@@ -633,9 +633,10 @@ function CardioCockpit({
     switch (layoutMode) {
       case 'split':
         return `${base} w-1/2 h-full`;
-      case 'video-pip':
+      case 'video-pip': {
         const borderColor = mode === 'cycling' ? 'border-orange-500/50' : 'border-cyan-500/50';
         return `${base} absolute bottom-4 left-4 w-80 h-48 z-20 rounded-lg overflow-hidden shadow-2xl border-2 ${borderColor} hover:scale-105 hover:z-30 cursor-pointer`;
+      }
       case 'zwift-pip':
         return `${base} w-full h-full`;
       default:
@@ -865,7 +866,9 @@ function CardioCockpit({
         />
         <button
           onClick={handleLoadVideo}
-          className={`px-4 py-2 bg-zinc-700 hover:bg-zinc-600 text-white font-semibold rounded-lg transition-colors flex items-center gap-2 border border-zinc-600`}
+          className={
+            'px-4 py-2 bg-zinc-700 hover:bg-zinc-600 text-white font-semibold rounded-lg transition-colors flex items-center gap-2 border border-zinc-600'
+          }
         >
           <Play className="w-4 h-4" />
           Load

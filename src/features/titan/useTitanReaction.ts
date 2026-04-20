@@ -106,7 +106,7 @@ export const useTitanReaction = ({
       timeSinceLastChange > stableDuration; // Regular periodic refresh
 
     if (shouldUpdate) {
-      const thoughts = TITAN_THOUGHTS[category] || TITAN_THOUGHTS['IDLE'];
+      const thoughts = TITAN_THOUGHTS[category] || TITAN_THOUGHTS.IDLE;
       const randomThought = thoughts[Math.floor(Math.random() * thoughts.length)];
 
       setThought(randomThought);

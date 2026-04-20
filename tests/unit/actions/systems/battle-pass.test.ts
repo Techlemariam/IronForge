@@ -95,15 +95,15 @@ describe('Battle Pass Actions', () => {
       const result = await battlePassActions.getUserBattlePassProgressAction('user_1');
 
       expect(result).not.toBeNull();
-      expect(result!.level).toBe(1);
-      expect(result!.xp).toBe(150);
-      expect(result!.tiers).toHaveLength(2);
+      expect(result?.level).toBe(1);
+      expect(result?.xp).toBe(150);
+      expect(result?.tiers).toHaveLength(2);
       // Tier 1: Unlocked (XP 150 >= 100), Free Claimed (in claims list)
-      expect(result!.tiers[0].isUnlocked).toBe(true);
-      expect(result!.tiers[0].isClaimedFree).toBe(true);
-      expect(result!.tiers[0].isClaimedPremium).toBe(false);
+      expect(result?.tiers[0].isUnlocked).toBe(true);
+      expect(result?.tiers[0].isClaimedFree).toBe(true);
+      expect(result?.tiers[0].isClaimedPremium).toBe(false);
       // Tier 2: Locked (XP 150 < 200)
-      expect(result!.tiers[1].isUnlocked).toBe(false);
+      expect(result?.tiers[1].isUnlocked).toBe(false);
     });
 
     it('should create new progress if missing', async () => {

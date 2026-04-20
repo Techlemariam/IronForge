@@ -7,7 +7,7 @@
  * Usage: npx tsx scripts/predict-failures.ts
  */
 
-import { execSync } from 'child_process';
+import { execSync } from 'node:child_process';
 
 interface RiskArea {
   specialist: string;
@@ -119,7 +119,7 @@ function analyzeRisks(files: string[]): RiskArea[] {
 
 // Main
 const files = getChangedFiles();
-console.log(`\n🔮 Predictive Failure Analysis`);
+console.log('\n🔮 Predictive Failure Analysis');
 console.log(`  Files changed: ${files.length}`);
 
 if (files.length === 0) {

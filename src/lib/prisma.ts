@@ -34,13 +34,12 @@ const prismaClientSingleton = () => {
     // Cast pool to any due to version mismatch in library types for PrismaNeon
     const adapter = new PrismaNeon(pool as unknown as ConstructorParameters<typeof PrismaNeon>[0]);
     return new PrismaClient({ adapter: adapter });
-  } else {
-    // Standard PG adapter for Node.js/Local
-    // Using adapter-pg ensures compatibility with Supabase connection pooling and Prisma 7
-    const pool = new PgPool({ connectionString });
-    const adapter = new PrismaPg(pool);
-    return new PrismaClient({ adapter: adapter });
   }
+  // Standard PG adapter for Node.js/Local
+  // Using adapter-pg ensures compatibility with Supabase connection pooling and Prisma 7
+  const pool = new PgPool({ connectionString });
+  const adapter = new PrismaPg(pool);
+  return new PrismaClient({ adapter: adapter });
 };
 
 declare global {

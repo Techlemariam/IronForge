@@ -37,7 +37,7 @@ const recordActivitySchema = z.object({
 export async function contestTerritoryAction(guildId: string, territoryId: string, userId: string) {
   const parsed = contestTerritorySchema.safeParse({ guildId, territoryId, userId });
   if (!parsed.success) {
-    throw new Error('Invalid input: ' + parsed.error.message);
+    throw new Error(`Invalid input: ${parsed.error.message}`);
   }
 
   const territory = await prisma.territory.findUnique({ where: { id: territoryId } });

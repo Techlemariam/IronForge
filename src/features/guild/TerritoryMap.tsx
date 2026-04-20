@@ -27,7 +27,7 @@ export const TerritoryMap: React.FC<TerritoryMapProps> = ({ userId, guildId }) =
     try {
       const data = await getTerritoriesAction();
       setTerritories(data);
-    } catch (err) {
+    } catch (_err) {
       toast({
         title: 'Error',
         description: 'Failed to load territory map',

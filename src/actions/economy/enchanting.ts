@@ -139,7 +139,7 @@ export async function getAvailableEnchantmentsAction(_itemId: string): Promise<E
  * Enchant an item.
  */
 export async function enchantItemAction(
-  userId: string,
+  _userId: string,
   itemId: string,
   enchantId: string
 ): Promise<EnchantResult> {
@@ -194,7 +194,7 @@ export async function enchantItemAction(
  * Remove enchantment from item.
  */
 export async function removeEnchantmentAction(
-  userId: string,
+  _userId: string,
   itemId: string,
   enchantSlot: number
 ): Promise<{ success: boolean; message: string }> {

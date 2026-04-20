@@ -72,7 +72,7 @@ export class GarminService {
   /**
    * Handle the OAuth callback
    */
-  static async handleCallback(oauthToken: string, oauthVerifier: string, userId: string) {
+  static async handleCallback(_oauthToken: string, _oauthVerifier: string, userId: string) {
     // logic to exchange verifier for access token
     // update User model with tokens and garminConnected = true
     await prisma.user.update({

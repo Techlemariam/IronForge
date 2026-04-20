@@ -34,7 +34,7 @@ export class PocketCastsClient {
       Origin: 'https://play.pocketcasts.com',
     };
     if (token) {
-      this.headers['Authorization'] = 'Bearer ' + token;
+      this.headers.Authorization = `Bearer ${token}`;
     }
   }
 
@@ -76,7 +76,7 @@ export class PocketCastsClient {
     }
 
     this.token = data.token;
-    this.headers['Authorization'] = 'Bearer ' + this.token;
+    this.headers.Authorization = `Bearer ${this.token}`;
     return this.token as string;
   }
 

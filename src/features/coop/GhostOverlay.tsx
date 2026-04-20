@@ -71,9 +71,9 @@ export const GhostOverlay: React.FC<GhostOverlayProps> = ({ events, currentUserI
               </span>
               <span className="text-xs font-bold text-white">
                 {event.type === 'SET_COMPLETE' && `Logged ${event.reps} @ ${event.weight}kg`}
-                {event.type === 'REP' && `Rep!`}
+                {event.type === 'REP' && 'Rep!'}
                 {event.type === 'PR' && `🎉 NEW PR! ${event.reps} reps`}
-                {event.type === 'BERSERKER' && `BERSERKER MODE!`}
+                {event.type === 'BERSERKER' && 'BERSERKER MODE!'}
               </span>
             </div>
 

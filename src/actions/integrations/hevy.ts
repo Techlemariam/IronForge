@@ -32,7 +32,7 @@ export async function getHevyTemplatesAction(apiKey: string) {
     if (error.issues) {
       throw new Error('Hevy API Key is required.');
     }
-    throw new Error('Failed to fetch Hevy templates: ' + error.message);
+    throw new Error(`Failed to fetch Hevy templates: ${error.message}`);
   }
 }
 
@@ -60,7 +60,7 @@ export async function getHevyRoutinesAction(apiKey: string, page = 1, pageSize =
   } catch (error: any) {
     console.error('Server Action Hevy Routines Error:', error.message);
     throw new Error(
-      'Failed to fetch Hevy routines: ' + (error.response?.data?.error || error.message)
+      `Failed to fetch Hevy routines: ${error.response?.data?.error || error.message}`
     );
   }
 }
@@ -97,7 +97,7 @@ export async function getHevyWorkoutHistoryAction(apiKey: string, count = 30) {
   } catch (error: any) {
     console.error('Server Action Hevy History Error:', error.message);
     throw new Error(
-      'Failed to fetch Hevy history: ' + (error.response?.data?.error || error.message)
+      `Failed to fetch Hevy history: ${error.response?.data?.error || error.message}`
     );
   }
 }
@@ -166,7 +166,7 @@ export async function saveWorkoutAction(apiKey: string, payload: any) {
     return response.data;
   } catch (error: any) {
     console.error('Server Action Hevy Save Error:', error.message);
-    throw new Error('Failed to save workout: ' + (error.response?.data?.error || error.message));
+    throw new Error(`Failed to save workout: ${error.response?.data?.error || error.message}`);
   }
 }
 
@@ -259,7 +259,7 @@ export async function importHevyHistoryAction(workouts: any[]) {
     return { success: true, count: importedCount, logs: logsToCreate.length };
   } catch (error: any) {
     console.error('Server Action Hevy Import Error:', error.message);
-    throw new Error('Failed to import history: ' + error.message);
+    throw new Error(`Failed to import history: ${error.message}`);
   }
 }
 
@@ -297,6 +297,6 @@ export async function importHevyRoutineToTemplateAction(routine: any) {
     return { success: true, templateId: template.id };
   } catch (error: any) {
     console.error('Server Action Hevy Import Routine Error:', error.message);
-    throw new Error('Failed to import routine: ' + error.message);
+    throw new Error(`Failed to import routine: ${error.message}`);
   }
 }

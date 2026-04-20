@@ -163,7 +163,7 @@ async function fetchIntervals<T>(
     throw new Error('Intervals API Key is missing');
   }
 
-  const authHeader = `Basic ${btoa('API_KEY:' + apiKey)}`;
+  const authHeader = `Basic ${btoa(`API_KEY:${apiKey}`)}`;
 
   try {
     const response = await fetch(`${BASE_URL}${endpoint}`, {

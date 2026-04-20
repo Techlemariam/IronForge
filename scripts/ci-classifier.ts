@@ -12,8 +12,8 @@
  *   npx tsx scripts/ci-classifier.ts --stdin --json
  */
 
-import * as fs from 'fs';
-import * as path from 'path';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -420,7 +420,7 @@ function formatResults(results: ClassificationResult[]): string {
 
   if (autoFixable.length > 0) {
     output += '🔧 AUTO-FIXABLE:\n';
-    output += '─'.repeat(60) + '\n';
+    output += `${'─'.repeat(60)}\n`;
     for (const result of autoFixable) {
       output += formatSingle(result);
     }
@@ -428,7 +428,7 @@ function formatResults(results: ClassificationResult[]): string {
 
   if (manual.length > 0) {
     output += '🔍 MANUAL REVIEW REQUIRED:\n';
-    output += '─'.repeat(60) + '\n';
+    output += `${'─'.repeat(60)}\n`;
     for (const result of manual) {
       output += formatSingle(result);
     }

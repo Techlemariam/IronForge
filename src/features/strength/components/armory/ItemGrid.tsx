@@ -83,7 +83,9 @@ export function ItemGrid({ initialItems }: { initialItems: ArmoryItem[] }) {
 
               <div className="flex justify-between items-start z-10">
                 <span
-                  className={`text-[10px] font-mono uppercase px-2 py-0.5 rounded border border-current bg-black/50 tracking-wider`}
+                  className={
+                    'text-[10px] font-mono uppercase px-2 py-0.5 rounded border border-current bg-black/50 tracking-wider'
+                  }
                 >
                   {item.rarity}
                 </span>

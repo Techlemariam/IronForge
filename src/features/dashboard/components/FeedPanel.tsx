@@ -36,7 +36,7 @@ export const FeedPanel: React.FC<FeedPanelProps> = ({ state, dispatch, titanStat
                 payload: rec.generatedSession,
               });
             } else if (rec.sessionId) {
-              toast.info('Traveling to Static Quest: ' + rec.sessionId);
+              toast.info(`Traveling to Static Quest: ${rec.sessionId}`);
             }
           }}
         />

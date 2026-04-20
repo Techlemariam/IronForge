@@ -28,7 +28,7 @@ const HeartRateZoneChartVisual: React.FC<HeartRateZoneChartVisualProps> = ({ zon
             borderRadius: '8px',
           }}
           itemStyle={{ color: '#fff', fontSize: '12px' }}
-          formatter={(value: any, name: any, props: any) => [
+          formatter={(value: any, _name: any, props: any) => [
             `${value} hrs`,
             props.payload.originalName || '',
           ]}

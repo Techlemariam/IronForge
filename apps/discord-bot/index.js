@@ -81,9 +81,8 @@ async function triggerWorkflow(workflow, branch, user) {
     if (response.ok) {
       const data = await response.json();
       return { success: true, data };
-    } else {
-      return { success: false, error: `HTTP ${response.status}` };
     }
+    return { success: false, error: `HTTP ${response.status}` };
   } catch (error) {
     return { success: false, error: error.message };
   }
@@ -117,11 +116,7 @@ client.on('interactionCreate', async (interaction) => {
 
   if (interaction.commandName === 'ironforge-status') {
     await interaction.reply({
-      content:
-        `🔍 **IronForge Status**\n\n` +
-        `• **n8n**: Online at \`ironforge-coolify.tailafb692.ts.net\`\n` +
-        `• **GitHub Actions**: <https://github.com/Techlemariam/IronForge/actions>\n` +
-        `• **Available Workflows**: ${WORKFLOWS.map((w) => `\`${w.value}\``).join(', ')}`,
+      content: `🔍 **IronForge Status**\n\n• **n8n**: Online at \`ironforge-coolify.tailafb692.ts.net\`\n• **GitHub Actions**: <https://github.com/Techlemariam/IronForge/actions>\n• **Available Workflows**: ${WORKFLOWS.map((w) => `\`${w.value}\``).join(', ')}`,
     });
   }
 });

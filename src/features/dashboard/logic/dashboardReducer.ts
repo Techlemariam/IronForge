@@ -75,7 +75,7 @@ export const dashboardReducer = (
         currentView: 'cardio_studio',
         returnView: state.currentView,
       };
-    case 'START_CODEX_WORKOUT':
+    case 'START_CODEX_WORKOUT': {
       const { workout } = action.payload;
       if (workout.type === 'RUN' || workout.type === 'BIKE') {
         return {
@@ -85,16 +85,16 @@ export const dashboardReducer = (
           currentView: 'cardio_studio',
           returnView: 'training_center',
         };
-      } else {
-        return {
-          ...state,
-          activeWorkout: workout,
-          questTitle: workout.name,
-          activeQuest: null,
-          startTime: new Date(),
-          currentView: 'iron_mines',
-        };
       }
+      return {
+        ...state,
+        activeWorkout: workout,
+        questTitle: workout.name,
+        activeQuest: null,
+        startTime: new Date(),
+        currentView: 'iron_mines',
+      };
+    }
     case 'RETURN_TO_PREVIOUS':
       return {
         ...state,
@@ -104,7 +104,7 @@ export const dashboardReducer = (
       };
     case 'UPDATE_CHALLENGES':
       return { ...state, challenges: action.payload };
-    case 'LAUNCH_MISSION':
+    case 'LAUNCH_MISSION': {
       // Decision Offloading Logic
       const rec = state.oracleRecommendation;
       if (!rec) return state;
@@ -128,6 +128,7 @@ export const dashboardReducer = (
       }
 
       return state;
+    }
     default:
       return state;
   }
