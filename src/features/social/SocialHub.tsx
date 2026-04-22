@@ -1,28 +1,22 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import {
-  getLeaderboard,
-  getSocialFeed,
-  getFactionStatsAction,
-} from "@/actions/social/core";
-import { FeedCard } from "@/features/social/components/FeedCard";
-import { Users, Swords, X } from "lucide-react";
-import { toast } from "sonner";
-import { LeaderboardEntry } from "@/features/leaderboard/types";
-import { LeaderboardHub } from "@/features/leaderboard/components/LeaderboardHub";
+import { getFactionStatsAction, getLeaderboard, getSocialFeed } from '@/actions/social/core';
+import { LeaderboardHub } from '@/features/leaderboard/components/LeaderboardHub';
+import type { LeaderboardEntry } from '@/features/leaderboard/types';
+import { FeedCard } from '@/features/social/components/FeedCard';
+import { motion } from 'framer-motion';
+import { Swords, Users, X } from 'lucide-react';
+import type React from 'react';
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
 interface SocialHubProps {
   onClose: () => void;
   currentUserId?: string;
 }
 
-export const SocialHub: React.FC<SocialHubProps> = ({
-  onClose,
-  currentUserId,
-}) => {
-  const [view, setView] = useState<"FEED" | "LEADERBOARD" | "ARENA">("FEED");
+export const SocialHub: React.FC<SocialHubProps> = ({ onClose, currentUserId }) => {
+  const [view, setView] = useState<'FEED' | 'LEADERBOARD' | 'ARENA'>('FEED');
   const [feed, setFeed] = useState<any[]>([]);
 
   // Leaderboard Data
@@ -38,10 +32,10 @@ export const SocialHub: React.FC<SocialHubProps> = ({
     const loadData = async () => {
       setLoading(true);
       try {
-        if (view === "FEED") {
+        if (view === 'FEED') {
           const data = await getSocialFeed();
           setFeed(data);
-        } else if (view === "LEADERBOARD") {
+        } else if (view === 'LEADERBOARD') {
           // Parallel fetch for leaderboard and stats
           const [lbData, statsData] = await Promise.all([
             getLeaderboard(),
@@ -55,7 +49,7 @@ export const SocialHub: React.FC<SocialHubProps> = ({
         }
       } catch (e) {
         console.error(e);
-        toast.error("Failed to connect to the Iron Network.");
+        toast.error('Failed to connect to the Iron Network.');
       } finally {
         setLoading(false);
       }
@@ -72,12 +66,8 @@ export const SocialHub: React.FC<SocialHubProps> = ({
             <Users className="w-6 h-6" />
           </div>
           <div>
-            <h2 className="text-xl font-black uppercase tracking-widest text-white">
-              Social Hub
-            </h2>
-            <p className="text-xs text-zinc-500 font-mono">
-              CONNECTED TO IRON NETWORK
-            </p>
+            <h2 className="text-xl font-black uppercase tracking-widest text-white">Social Hub</h2>
+            <p className="text-xs text-zinc-500 font-mono">CONNECTED TO IRON NETWORK</p>
           </div>
         </div>
         <button
@@ -91,20 +81,20 @@ export const SocialHub: React.FC<SocialHubProps> = ({
       {/* Nav */}
       <div className="flex border-b border-white/10">
         <button
-          onClick={() => setView("FEED")}
-          className={`flex-1 py-4 text-center font-bold uppercase text-sm border-b-2 transition-all ${view === "FEED" ? "border-indigo-500 text-indigo-400 bg-indigo-900/10" : "border-transparent text-zinc-500 hover:text-white"}`}
+          onClick={() => setView('FEED')}
+          className={`flex-1 py-4 text-center font-bold uppercase text-sm border-b-2 transition-all ${view === 'FEED' ? 'border-indigo-500 text-indigo-400 bg-indigo-900/10' : 'border-transparent text-zinc-500 hover:text-white'}`}
         >
           Activity Feed
         </button>
         <button
-          onClick={() => setView("LEADERBOARD")}
-          className={`flex-1 py-4 text-center font-bold uppercase text-sm border-b-2 transition-all ${view === "LEADERBOARD" ? "border-yellow-500 text-yellow-400 bg-yellow-900/10" : "border-transparent text-zinc-500 hover:text-white"}`}
+          onClick={() => setView('LEADERBOARD')}
+          className={`flex-1 py-4 text-center font-bold uppercase text-sm border-b-2 transition-all ${view === 'LEADERBOARD' ? 'border-yellow-500 text-yellow-400 bg-yellow-900/10' : 'border-transparent text-zinc-500 hover:text-white'}`}
         >
           Leaderboards
         </button>
         <button
-          onClick={() => setView("ARENA")}
-          className={`flex-1 py-4 text-center font-bold uppercase text-sm border-b-2 transition-all ${view === "ARENA" ? "border-red-500 text-red-500 bg-red-900/10" : "border-transparent text-zinc-500 hover:text-white"}`}
+          onClick={() => setView('ARENA')}
+          className={`flex-1 py-4 text-center font-bold uppercase text-sm border-b-2 transition-all ${view === 'ARENA' ? 'border-red-500 text-red-500 bg-red-900/10' : 'border-transparent text-zinc-500 hover:text-white'}`}
         >
           PvP Arena
         </button>
@@ -118,7 +108,7 @@ export const SocialHub: React.FC<SocialHubProps> = ({
           animate={{ opacity: 1, y: 0 }}
           className="max-w-4xl mx-auto space-y-4"
         >
-          {view === "FEED" && (
+          {view === 'FEED' && (
             <div className="space-y-4 max-w-2xl mx-auto">
               {loading ? (
                 <div className="flex justify-center py-20">
@@ -135,7 +125,7 @@ export const SocialHub: React.FC<SocialHubProps> = ({
             </div>
           )}
 
-          {view === "LEADERBOARD" && (
+          {view === 'LEADERBOARD' && (
             <LeaderboardHub
               pvpPlayers={leaderboard}
               factionPlayers={leaderboard} // Assuming same for now, or filter by XP
@@ -144,12 +134,10 @@ export const SocialHub: React.FC<SocialHubProps> = ({
             />
           )}
 
-          {view === "ARENA" && (
+          {view === 'ARENA' && (
             <div className="text-center py-20 text-zinc-500 max-w-2xl mx-auto">
               <Swords className="w-16 h-16 mx-auto mb-4 text-red-900" />
-              <h3 className="text-xl text-red-500 font-bold mb-2">
-                Arena Under Construction
-              </h3>
+              <h3 className="text-xl text-red-500 font-bold mb-2">Arena Under Construction</h3>
               <p>The architects are still building the dueling grounds.</p>
             </div>
           )}

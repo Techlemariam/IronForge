@@ -1,6 +1,6 @@
-"use server";
+'use server';
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath } from 'next/cache';
 
 interface BodyMetrics {
   id: string;
@@ -30,7 +30,7 @@ interface MetricsTrend {
   previous?: number;
   change?: number;
   changePercent?: number;
-  trend: "UP" | "DOWN" | "STABLE";
+  trend: 'UP' | 'DOWN' | 'STABLE';
 }
 
 /**
@@ -38,20 +38,18 @@ interface MetricsTrend {
  */
 export async function logBodyMetricsAction(
   userId: string,
-  data: Omit<BodyMetrics, "id" | "userId" | "date">,
+  data: Omit<BodyMetrics, 'id' | 'userId' | 'date'>
 ): Promise<{ success: boolean; metricsId?: string }> {
   try {
     const metricsId = `metrics-${userId}-${Date.now()}`;
 
-    console.log(
-      `Logged body metrics: weight=${data.weight}kg, bf=${data.bodyFat}%`,
-    );
+    console.log(`Logged body metrics: weight=${data.weight}kg, bf=${data.bodyFat}%`);
 
     // In production, save to database
-    revalidatePath("/body-metrics");
+    revalidatePath('/body-metrics');
     return { success: true, metricsId };
   } catch (error) {
-    console.error("Error logging body metrics:", error);
+    console.error('Error logging body metrics:', error);
     return { success: false };
   }
 }
@@ -61,7 +59,7 @@ export async function logBodyMetricsAction(
  */
 export async function getBodyMetricsHistoryAction(
   userId: string,
-  limit: number = 30,
+  limit = 30
 ): Promise<BodyMetrics[]> {
   try {
     // MVP: Return sample data
@@ -87,7 +85,7 @@ export async function getBodyMetricsHistoryAction(
 
     return history;
   } catch (error) {
-    console.error("Error getting body metrics history:", error);
+    console.error('Error getting body metrics history:', error);
     return [];
   }
 }
@@ -95,9 +93,7 @@ export async function getBodyMetricsHistoryAction(
 /**
  * Get latest body metrics.
  */
-export async function getLatestBodyMetricsAction(
-  userId: string,
-): Promise<BodyMetrics | null> {
+export async function getLatestBodyMetricsAction(userId: string): Promise<BodyMetrics | null> {
   const history = await getBodyMetricsHistoryAction(userId, 1);
   return history[0] || null;
 }
@@ -105,9 +101,7 @@ export async function getLatestBodyMetricsAction(
 /**
  * Get metrics trends.
  */
-export async function getMetricsTrendsAction(
-  userId: string,
-): Promise<MetricsTrend[]> {
+export async function getMetricsTrendsAction(userId: string): Promise<MetricsTrend[]> {
   try {
     const history = await getBodyMetricsHistoryAction(userId, 8);
     if (history.length < 2) return [];
@@ -119,30 +113,30 @@ export async function getMetricsTrendsAction(
     if (current.weight && previous.weight) {
       const change = current.weight - previous.weight;
       trends.push({
-        metric: "Weight",
+        metric: 'Weight',
         current: Math.round(current.weight * 10) / 10,
         previous: Math.round(previous.weight * 10) / 10,
         change: Math.round(change * 10) / 10,
         changePercent: Math.round((change / previous.weight) * 1000) / 10,
-        trend: Math.abs(change) < 0.3 ? "STABLE" : change > 0 ? "UP" : "DOWN",
+        trend: Math.abs(change) < 0.3 ? 'STABLE' : change > 0 ? 'UP' : 'DOWN',
       });
     }
 
     if (current.bodyFat && previous.bodyFat) {
       const change = current.bodyFat - previous.bodyFat;
       trends.push({
-        metric: "Body Fat",
+        metric: 'Body Fat',
         current: Math.round(current.bodyFat * 10) / 10,
         previous: Math.round(previous.bodyFat * 10) / 10,
         change: Math.round(change * 10) / 10,
         changePercent: Math.round((change / previous.bodyFat) * 1000) / 10,
-        trend: Math.abs(change) < 0.2 ? "STABLE" : change > 0 ? "UP" : "DOWN",
+        trend: Math.abs(change) < 0.2 ? 'STABLE' : change > 0 ? 'UP' : 'DOWN',
       });
     }
 
     return trends;
   } catch (error) {
-    console.error("Error getting metrics trends:", error);
+    console.error('Error getting metrics trends:', error);
     return [];
   }
 }

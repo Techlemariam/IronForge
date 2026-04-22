@@ -1,9 +1,9 @@
-"use server";
+'use server';
 
-import { prisma } from "@/lib/prisma";
-import { revalidatePath } from "next/cache";
-import { z } from "zod";
-import { authActionClient } from "@/lib/safe-action";
+import { prisma } from '@/lib/prisma';
+import { authActionClient } from '@/lib/safe-action';
+import { revalidatePath } from 'next/cache';
+import { z } from 'zod';
 
 const GuildCreateSchema = z.object({
   name: z.string().min(3).max(30),
@@ -53,7 +53,7 @@ export const createGuildAction = authActionClient
       if (user?.guildId) {
         return {
           success: false,
-          error: "You must leave your current guild first.",
+          error: 'You must leave your current guild first.',
         };
       }
 
@@ -61,7 +61,7 @@ export const createGuildAction = authActionClient
       if ((user?.titan?.level || 1) < 10) {
         return {
           success: false,
-          error: "You must be level 10 to create a guild.",
+          error: 'You must be level 10 to create a guild.',
         };
       }
 
@@ -73,7 +73,7 @@ export const createGuildAction = authActionClient
       });
 
       if (existing) {
-        return { success: false, error: "Guild name or tag already taken." };
+        return { success: false, error: 'Guild name or tag already taken.' };
       }
 
       // Create guild
@@ -95,11 +95,11 @@ export const createGuildAction = authActionClient
         data: { guildId: guild.id },
       });
 
-      revalidatePath("/guild");
+      revalidatePath('/guild');
       return { success: true, guildId: guild.id };
     } catch (error) {
-      console.error("Error creating guild:", error);
-      return { success: false, error: "Failed to create guild." };
+      console.error('Error creating guild:', error);
+      return { success: false, error: 'Failed to create guild.' };
     }
   });
 
@@ -122,19 +122,19 @@ export const joinGuildAction = authActionClient
       ]);
 
       if (user?.guildId) {
-        return { success: false, error: "Leave your current guild first." };
+        return { success: false, error: 'Leave your current guild first.' };
       }
 
       if (!guild) {
-        return { success: false, error: "Guild not found." };
+        return { success: false, error: 'Guild not found.' };
       }
 
       if (!guild.isPublic) {
-        return { success: false, error: "This guild is invite-only." };
+        return { success: false, error: 'This guild is invite-only.' };
       }
 
       if (guild._count.members >= 100) {
-        return { success: false, error: "Guild is full." };
+        return { success: false, error: 'Guild is full.' };
       }
 
       const userLevel = user?.titan?.level || 1;
@@ -147,50 +147,49 @@ export const joinGuildAction = authActionClient
         data: { guildId },
       });
 
-      revalidatePath("/guild");
+      revalidatePath('/guild');
       return { success: true };
     } catch (error) {
-      console.error("Error joining guild:", error);
-      return { success: false, error: "Failed to join guild." };
+      console.error('Error joining guild:', error);
+      return { success: false, error: 'Failed to join guild.' };
     }
   });
 
 /**
  * Leave a guild.
  */
-export const leaveGuildAction = authActionClient
-  .action(async ({ ctx: { userId } }) => {
-    try {
-      const user = await prisma.user.findUnique({
-        where: { id: userId },
-        select: { guildId: true },
-      });
+export const leaveGuildAction = authActionClient.action(async ({ ctx: { userId } }) => {
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { guildId: true },
+    });
 
-      if (!user?.guildId) {
-        return { success: false, error: "Not in a guild." };
-      }
-
-      const guild = await prisma.guild.findUnique({
-        where: { id: user.guildId },
-        select: { leaderId: true },
-      });
-
-      if (guild?.leaderId === userId) {
-        return { success: false, error: "Transfer leadership before leaving." };
-      }
-
-      await prisma.user.update({
-        where: { id: userId },
-        data: { guildId: null },
-      });
-
-      revalidatePath("/guild");
-      return { success: true };
-    } catch (error) {
-      console.error("Error leaving guild:", error);
-      return { success: false, error: "Failed to leave guild." };
+    if (!user?.guildId) {
+      return { success: false, error: 'Not in a guild.' };
     }
-  });
+
+    const guild = await prisma.guild.findUnique({
+      where: { id: user.guildId },
+      select: { leaderId: true },
+    });
+
+    if (guild?.leaderId === userId) {
+      return { success: false, error: 'Transfer leadership before leaving.' };
+    }
+
+    await prisma.user.update({
+      where: { id: userId },
+      data: { guildId: null },
+    });
+
+    revalidatePath('/guild');
+    return { success: true };
+  } catch (error) {
+    console.error('Error leaving guild:', error);
+    return { success: false, error: 'Failed to leave guild.' };
+  }
+});
 
 /**
  * Get guild info.
@@ -215,7 +214,7 @@ export const getGuildInfoAction = authActionClient
         tag: guild.tag,
         description: guild.description || undefined,
         leaderId: guild.leaderId,
-        leaderName: guild.leader.heroName || "Unknown",
+        leaderName: guild.leader.heroName || 'Unknown',
         memberCount: guild._count.members,
         level: guild.level,
         xp: guild.xp,
@@ -224,7 +223,7 @@ export const getGuildInfoAction = authActionClient
         minLevel: guild.minLevel || 1,
       };
     } catch (error) {
-      console.error("Error getting guild info:", error);
+      console.error('Error getting guild info:', error);
       return null;
     }
   });
@@ -233,18 +232,20 @@ export const getGuildInfoAction = authActionClient
  * Search for guilds.
  */
 export const searchGuildsAction = authActionClient
-  .schema(z.object({
-    query: z.string(),
-    limit: z.number().default(20)
-  }))
+  .schema(
+    z.object({
+      query: z.string(),
+      limit: z.number().default(20),
+    })
+  )
   .action(async ({ parsedInput: { query, limit } }) => {
     try {
       const guilds = await prisma.guild.findMany({
         where: {
           isPublic: true,
           OR: [
-            { name: { contains: query, mode: "insensitive" } },
-            { tag: { contains: query, mode: "insensitive" } },
+            { name: { contains: query, mode: 'insensitive' } },
+            { tag: { contains: query, mode: 'insensitive' } },
           ],
         },
         include: {
@@ -252,7 +253,7 @@ export const searchGuildsAction = authActionClient
           _count: { select: { members: true } },
         },
         take: limit,
-        orderBy: { xp: "desc" },
+        orderBy: { xp: 'desc' },
       });
 
       return guilds.map((g) => ({
@@ -261,7 +262,7 @@ export const searchGuildsAction = authActionClient
         tag: g.tag,
         description: g.description || undefined,
         leaderId: g.leaderId,
-        leaderName: g.leader.heroName || "Unknown",
+        leaderName: g.leader.heroName || 'Unknown',
         memberCount: g._count.members,
         level: g.level,
         xp: g.xp,
@@ -270,7 +271,7 @@ export const searchGuildsAction = authActionClient
         minLevel: g.minLevel || 1,
       }));
     } catch (error) {
-      console.error("Error searching guilds:", error);
+      console.error('Error searching guilds:', error);
       return [];
     }
   });

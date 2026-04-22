@@ -1,5 +1,5 @@
-import { WorkoutDefinition } from "@/types/training";
-import { Session, Block, BlockType, ExerciseLogic } from "@/types";
+import { type Block, BlockType, ExerciseLogic, type Session } from '@/types';
+import type { WorkoutDefinition } from '@/types/training';
 
 /**
  * Maps a static WorkoutDefinition (from the Codex) to an executable Session
@@ -11,44 +11,44 @@ export function mapDefinitionToSession(def: WorkoutDefinition): Session {
     name: def.name, // Use 'name' property as Session title
     // startTime: new Date().toISOString(), // Removed this property as it's not in Session type
     blocks: [],
-    zoneName: "Training Center",
-    difficulty: "Normal",
+    zoneName: 'Training Center',
+    difficulty: 'Normal',
     levelReq: 1,
   };
 
   const genericBlock: Block = {
     id: `blk-${Date.now()}`,
-    name: "Main Workout",
+    name: 'Main Workout',
     type: BlockType.STATION,
     exercises: [
       {
         id: `ex-${Date.now()}`,
-        name: "Primary Lift (Manual)",
+        name: 'Primary Lift (Manual)',
         logic: ExerciseLogic.FIXED_REPS,
         sets: [
           {
-            id: `s-1`,
+            id: 's-1',
             weight: 0,
             reps: 5,
             rpe: 7,
             completed: false,
-            type: "STRAIGHT",
+            type: 'STRAIGHT',
           },
           {
-            id: `s-2`,
+            id: 's-2',
             weight: 0,
             reps: 5,
             rpe: 8,
             completed: false,
-            type: "STRAIGHT",
+            type: 'STRAIGHT',
           },
           {
-            id: `s-3`,
+            id: 's-3',
             weight: 0,
             reps: 5,
             rpe: 9,
             completed: false,
-            type: "STRAIGHT",
+            type: 'STRAIGHT',
           },
         ],
       },

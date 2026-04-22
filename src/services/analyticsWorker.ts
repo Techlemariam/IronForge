@@ -1,4 +1,4 @@
-import { ExerciseLog, IntervalsWellness } from "../types";
+import type { ExerciseLog, IntervalsWellness } from '../types';
 
 const workerCode = `
 self.onmessage = function(e) {
@@ -77,21 +77,18 @@ export const AnalyticsWorkerService = {
   worker: null as Worker | null,
 
   init() {
-    if (typeof window !== "undefined" && !this.worker) {
-      const blob = new Blob([workerCode], { type: "application/javascript" });
+    if (typeof window !== 'undefined' && !this.worker) {
+      const blob = new Blob([workerCode], { type: 'application/javascript' });
       this.worker = new Worker(URL.createObjectURL(blob));
     }
   },
 
-  computeAdvancedStats(
-    history: ExerciseLog[],
-    wellness: IntervalsWellness,
-  ): Promise<any> {
+  computeAdvancedStats(history: ExerciseLog[], wellness: IntervalsWellness): Promise<any> {
     return new Promise((resolve, reject) => {
       if (!this.worker) this.init();
 
       if (!this.worker) {
-        reject("Worker init failed");
+        reject('Worker init failed');
         return;
       }
 

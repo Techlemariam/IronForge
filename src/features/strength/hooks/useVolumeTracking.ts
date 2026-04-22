@@ -1,12 +1,12 @@
-import { useMemo } from "react";
-import type { Exercise } from "@/types";
+import type { Exercise } from '@/types';
+import { useMemo } from 'react';
 
 export interface VolumeFeedback {
   muscleGroup: string;
   currentSets: number;
   mrv: number; // Maximum Recoverable Volume
   percentage: number;
-  status: "LOW" | "OPTIMAL" | "OVER";
+  status: 'LOW' | 'OPTIMAL' | 'OVER';
 }
 
 // Muscle group MRV guidelines (sets per week)
@@ -27,20 +27,15 @@ const MRV_GUIDELINES: Record<string, number> = {
 function detectMuscleGroup(exerciseName: string): string {
   const name = exerciseName.toLowerCase();
 
-  if (
-    name.includes("bench") ||
-    (name.includes("press") && name.includes("chest"))
-  )
-    return "Chest";
-  if (name.includes("squat") || name.includes("leg press")) return "Legs";
-  if (name.includes("deadlift") || name.includes("row")) return "Back";
-  if (name.includes("shoulder") || name.includes("overhead"))
-    return "Shoulders";
-  if (name.includes("curl")) return "Biceps";
-  if (name.includes("extension") || name.includes("dip")) return "Triceps";
-  if (name.includes("lunge")) return "Legs";
+  if (name.includes('bench') || (name.includes('press') && name.includes('chest'))) return 'Chest';
+  if (name.includes('squat') || name.includes('leg press')) return 'Legs';
+  if (name.includes('deadlift') || name.includes('row')) return 'Back';
+  if (name.includes('shoulder') || name.includes('overhead')) return 'Shoulders';
+  if (name.includes('curl')) return 'Biceps';
+  if (name.includes('extension') || name.includes('dip')) return 'Triceps';
+  if (name.includes('lunge')) return 'Legs';
 
-  return "Unknown";
+  return 'Unknown';
 }
 
 /**
@@ -56,9 +51,8 @@ export function useVolumeTracking(exercises: Exercise[]) {
       const muscleGroup = detectMuscleGroup(exercise.name);
       const completedSets = exercise.sets.filter((s) => s.completed).length;
 
-      if (muscleGroup !== "Unknown") {
-        muscleVolumes[muscleGroup] =
-          (muscleVolumes[muscleGroup] || 0) + completedSets;
+      if (muscleGroup !== 'Unknown') {
+        muscleVolumes[muscleGroup] = (muscleVolumes[muscleGroup] || 0) + completedSets;
       }
     });
 
@@ -67,15 +61,15 @@ export function useVolumeTracking(exercises: Exercise[]) {
 
   const getVolumeFeedback = (exerciseName: string): VolumeFeedback | null => {
     const muscleGroup = detectMuscleGroup(exerciseName);
-    if (muscleGroup === "Unknown") return null;
+    if (muscleGroup === 'Unknown') return null;
 
     const currentSets = volumeData[muscleGroup] || 0;
     const mrv = MRV_GUIDELINES[muscleGroup] || 20;
     const percentage = Math.round((currentSets / mrv) * 100);
 
-    let status: "LOW" | "OPTIMAL" | "OVER" = "LOW";
-    if (percentage >= 80) status = "OPTIMAL";
-    if (percentage >= 100) status = "OVER";
+    let status: 'LOW' | 'OPTIMAL' | 'OVER' = 'LOW';
+    if (percentage >= 80) status = 'OPTIMAL';
+    if (percentage >= 100) status = 'OVER';
 
     return {
       muscleGroup,

@@ -3,20 +3,20 @@
  */
 
 export enum Rarity {
-  COMMON = "common", // Grey
-  UNCOMMON = "uncommon", // Green
-  RARE = "rare", // Blue
-  EPIC = "epic", // Purple
-  LEGENDARY = "legendary", // Orange
-  MYTHIC = "mythic", // Red (Special Events)
+  COMMON = 'common', // Grey
+  UNCOMMON = 'uncommon', // Green
+  RARE = 'rare', // Blue
+  EPIC = 'epic', // Purple
+  LEGENDARY = 'legendary', // Orange
+  MYTHIC = 'mythic', // Red (Special Events)
 }
 
 export enum ItemType {
-  CURRENCY = "currency", // Gold, Kinetic Charge
-  CONSUMABLE = "consumable", // Potions, XP Tomes
-  MATERIAL = "material", // Crafting mats (future)
-  KEY_ITEM = "key_item", // Quest items
-  COSMETIC = "cosmetic", // Paper Doll gear
+  CURRENCY = 'currency', // Gold, Kinetic Charge
+  CONSUMABLE = 'consumable', // Potions, XP Tomes
+  MATERIAL = 'material', // Crafting mats (future)
+  KEY_ITEM = 'key_item', // Quest items
+  COSMETIC = 'cosmetic', // Paper Doll gear
 }
 
 export interface LootItem {
@@ -30,7 +30,7 @@ export interface LootItem {
   icon?: string; // Legacy/Lucide support
   value?: number; // Sale value or effect magnitude
   effects?: {
-    type: "restore_hp" | "grant_xp" | "boost_stat" | "grant_kc";
+    type: 'restore_hp' | 'grant_xp' | 'boost_stat' | 'grant_kc';
     value: number;
     duration?: number;
   }[];

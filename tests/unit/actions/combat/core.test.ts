@@ -1,12 +1,12 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { startBossFight, performCombatAction } from "@/actions/combat/core";
+import { performCombatAction, startBossFight } from '@/actions/combat/core';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-vi.mock("next/cache", () => ({
+vi.mock('next/cache', () => ({
   revalidatePath: vi.fn(),
 }));
 
 // Mocks
-vi.mock("@/utils/supabase/server", () => ({
+vi.mock('@/utils/supabase/server', () => ({
   createClient: vi.fn(() => ({
     auth: {
       getUser: vi.fn(),
@@ -14,7 +14,7 @@ vi.mock("@/utils/supabase/server", () => ({
   })),
 }));
 
-vi.mock("@/lib/prisma", () => {
+vi.mock('@/lib/prisma', () => {
   const mockPrisma = {
     user: {
       findUnique: vi.fn(),
@@ -42,20 +42,20 @@ vi.mock("@/lib/prisma", () => {
   };
 });
 
-vi.mock("@/services/game/CombatEngine", () => ({
+vi.mock('@/services/game/CombatEngine', () => ({
   CombatEngine: {
     processTurn: vi.fn(),
   },
 }));
 
-vi.mock("@/services/game/LootSystem", () => ({
+vi.mock('@/services/game/LootSystem', () => ({
   LootSystem: {
-    rollForLoot: vi.fn(() => Promise.resolve({ item: "Rare Sword" })),
+    rollForLoot: vi.fn(() => Promise.resolve({ item: 'Rare Sword' })),
     generateLoot: vi.fn(() => Promise.resolve([])),
   },
 }));
 
-vi.mock("@/utils", () => ({
+vi.mock('@/utils', () => ({
   calculateTitanAttributes: vi.fn(() => ({
     strength: 10,
     endurance: 10,
@@ -66,12 +66,12 @@ vi.mock("@/utils", () => ({
   })),
 }));
 
+import prisma from '@/lib/prisma';
+import { CombatEngine } from '@/services/game/CombatEngine';
 // Import mocks to manipulate them
-import { createClient } from "@/utils/supabase/server";
-import prisma from "@/lib/prisma";
-import { CombatEngine } from "@/services/game/CombatEngine";
+import { createClient } from '@/utils/supabase/server';
 
-describe("Combat Server Actions", () => {
+describe('Combat Server Actions', () => {
   const mockSupabase = {
     auth: {
       getUser: vi.fn(),
@@ -82,28 +82,28 @@ describe("Combat Server Actions", () => {
     vi.clearAllMocks();
     (createClient as any).mockResolvedValue(mockSupabase);
     (prisma.titan.findUnique as any).mockResolvedValue({
-      id: "t1",
-      userId: "user-1",
+      id: 't1',
+      userId: 'user-1',
       currentHp: 100,
       maxHp: 100,
       xp: 0,
       level: 1,
       energy: 100,
-      mood: "NEUTRAL",
+      mood: 'NEUTRAL',
       isInjured: false,
       streak: 0,
       lastActive: new Date(),
     });
   });
 
-  describe("startBossFight", () => {
-    it("should initialize combat state for valid boss", async () => {
+  describe('startBossFight', () => {
+    it('should initialize combat state for valid boss', async () => {
       mockSupabase.auth.getUser.mockResolvedValue({
-        data: { user: { id: "user-1" } },
+        data: { user: { id: 'user-1' } },
       });
 
       (prisma.user.findUnique as any).mockResolvedValue({
-        id: "user-1",
+        id: 'user-1',
         level: 5,
         achievements: [],
         skills: [],
@@ -115,14 +115,14 @@ describe("Combat Server Actions", () => {
       });
 
       (prisma.monster.findUnique as any).mockResolvedValue({
-        id: "boss-1",
+        id: 'boss-1',
         hp: 1000,
-        name: "Boss",
+        name: 'Boss',
         level: 5,
       });
 
       // Default tier is HEROIC (multiplier 1.0)
-      const result = await startBossFight({ bossId: "boss-1", tier: "HEROIC" });
+      const result = await startBossFight({ bossId: 'boss-1', tier: 'HEROIC' });
 
       expect(result?.data?.success).toBe(true);
       expect(result?.data?.state).toBeDefined();
@@ -130,34 +130,34 @@ describe("Combat Server Actions", () => {
       expect(result?.data?.state?.playerHp).toBeDefined();
     });
 
-    it("should fail if boss not found", async () => {
+    it('should fail if boss not found', async () => {
       mockSupabase.auth.getUser.mockResolvedValue({
-        data: { user: { id: "user-1" } },
+        data: { user: { id: 'user-1' } },
       });
       (prisma.user.findUnique as any).mockResolvedValue({
-        id: "user-1",
+        id: 'user-1',
         achievements: [],
         skills: [],
         titan: { currentHp: 100, maxHp: 100, isInjured: false },
       });
       (prisma.monster.findUnique as any).mockResolvedValue(null);
 
-      const result = await startBossFight({ bossId: "missing-boss", tier: "STORY" });
+      const result = await startBossFight({ bossId: 'missing-boss', tier: 'STORY' });
 
       expect(result?.data?.success).toBe(false);
-      expect(result?.data?.message).toBe("Boss not found");
+      expect(result?.data?.message).toBe('Boss not found');
     });
   });
 
-  describe("performCombatAction", () => {
-    it("should process turn and return new state", async () => {
+  describe('performCombatAction', () => {
+    it('should process turn and return new state', async () => {
       mockSupabase.auth.getUser.mockResolvedValue({
-        data: { user: { id: "user-1" } },
+        data: { user: { id: 'user-1' } },
       });
 
       // Mock for startBossFight
       (prisma.user.findUnique as any).mockResolvedValue({
-        id: "user-1",
+        id: 'user-1',
         level: 5,
         achievements: [],
         skills: [],
@@ -165,16 +165,16 @@ describe("Combat Server Actions", () => {
       });
 
       (prisma.monster.findUnique as any).mockResolvedValue({
-        id: "boss-1",
-        name: "Boss",
+        id: 'boss-1',
+        name: 'Boss',
         hp: 1000,
         level: 5,
       });
 
       (prisma.combatSession.findUnique as any).mockResolvedValue({
-        id: "session-1",
-        userId: "user-1",
-        bossId: "boss-1",
+        id: 'session-1',
+        userId: 'user-1',
+        bossId: 'boss-1',
         bossHp: 1000,
         bossMaxHp: 1000,
         playerHp: 100,
@@ -185,11 +185,11 @@ describe("Combat Server Actions", () => {
         isDefeat: false,
       });
 
-      await startBossFight({ bossId: "boss-1", tier: "STORY" });
+      await startBossFight({ bossId: 'boss-1', tier: 'STORY' });
 
       // Mock for performCombatAction (re-fetch user)
       (prisma.user.findUnique as any).mockResolvedValue({
-        id: "user-1",
+        id: 'user-1',
         level: 5,
         achievements: [],
         skills: [],
@@ -201,36 +201,36 @@ describe("Combat Server Actions", () => {
         logs: [],
       });
 
-      const result = await performCombatAction({ action: { type: "ATTACK" } as any } as any);
+      const result = await performCombatAction({ action: { type: 'ATTACK' } as any } as any);
 
       expect(result?.data?.success).toBe(true);
       expect(CombatEngine.processTurn).toHaveBeenCalled();
     });
 
-    it("should handle victory and award loot", async () => {
+    it('should handle victory and award loot', async () => {
       mockSupabase.auth.getUser.mockResolvedValue({
-        data: { user: { id: "user-1" } },
+        data: { user: { id: 'user-1' } },
       });
 
       // Mock consistently
       (prisma.user.findUnique as any).mockResolvedValue({
-        id: "user-1",
+        id: 'user-1',
         level: 5,
         achievements: [],
         skills: [],
         titan: { currentHp: 100, maxHp: 100, isInjured: false },
       });
       (prisma.monster.findUnique as any).mockResolvedValue({
-        id: "boss-1",
-        name: "Boss",
+        id: 'boss-1',
+        name: 'Boss',
         hp: 1000,
         level: 5,
       });
 
       (prisma.combatSession.findUnique as any).mockResolvedValue({
-        id: "session-1",
-        userId: "user-1",
-        bossId: "boss-1",
+        id: 'session-1',
+        userId: 'user-1',
+        bossId: 'boss-1',
         bossHp: 1000,
         bossMaxHp: 1000,
         playerHp: 100,
@@ -241,14 +241,14 @@ describe("Combat Server Actions", () => {
         isDefeat: false,
       });
 
-      await startBossFight({ bossId: "boss-1", tier: "STORY" });
+      await startBossFight({ bossId: 'boss-1', tier: 'STORY' });
 
       (CombatEngine.processTurn as any).mockReturnValue({
         newState: { isVictory: true, isDefeat: false },
         logs: [],
       });
 
-      const result = await performCombatAction({ action: { type: "ATTACK" } as any } as any);
+      const result = await performCombatAction({ action: { type: 'ATTACK' } as any } as any);
 
       expect(result?.data?.success).toBe(true);
       expect(result?.data?.loot).toBeDefined();
@@ -256,10 +256,10 @@ describe("Combat Server Actions", () => {
       expect(prisma.user.update).toHaveBeenCalled();
     });
 
-    it("should reduce attributes if Titan is WEAKENED", async () => {
+    it('should reduce attributes if Titan is WEAKENED', async () => {
       // Mock user with WEAKENED mood
       const userWeak = {
-        id: "user-weak",
+        id: 'user-weak',
         level: 5,
         achievements: [],
         skills: [],
@@ -267,25 +267,25 @@ describe("Combat Server Actions", () => {
           currentHp: 50,
           maxHp: 100,
           isInjured: false,
-          mood: "WEAKENED",
+          mood: 'WEAKENED',
         },
       };
 
       mockSupabase.auth.getUser.mockResolvedValue({
-        data: { user: { id: "user-weak" } },
+        data: { user: { id: 'user-weak' } },
       });
       (prisma.user.findUnique as any).mockResolvedValue(userWeak);
       (prisma.monster.findUnique as any).mockResolvedValue({
-        id: "boss-1",
-        name: "Boss",
+        id: 'boss-1',
+        name: 'Boss',
         hp: 1000,
         level: 5,
       });
 
       (prisma.combatSession.findUnique as any).mockResolvedValue({
-        id: "session-1",
-        userId: "user-weak",
-        bossId: "boss-1",
+        id: 'session-1',
+        userId: 'user-weak',
+        bossId: 'boss-1',
         bossHp: 1000,
         bossMaxHp: 1000,
         playerHp: 50,
@@ -296,7 +296,7 @@ describe("Combat Server Actions", () => {
         isDefeat: false,
       });
 
-      await startBossFight({ bossId: "boss-1", tier: "STORY" });
+      await startBossFight({ bossId: 'boss-1', tier: 'STORY' });
 
       // Setup capture of arguments to CombatEngine.processTurn
       (CombatEngine.processTurn as any).mockReturnValue({
@@ -304,7 +304,7 @@ describe("Combat Server Actions", () => {
         logs: [],
       });
 
-      await performCombatAction({ action: { type: "ATTACK" } as any } as any);
+      await performCombatAction({ action: { type: 'ATTACK' } as any } as any);
 
       expect(CombatEngine.processTurn).toHaveBeenCalled();
 
@@ -317,31 +317,31 @@ describe("Combat Server Actions", () => {
       expect(attributesArg.endurance).toBe(8);
     });
 
-    it("should buff attributes if Titan is HAPPY", async () => {
+    it('should buff attributes if Titan is HAPPY', async () => {
       // Mock user with HAPPY mood
       const userHappy = {
-        id: "user-happy",
+        id: 'user-happy',
         level: 5,
         achievements: [],
         skills: [],
-        titan: { currentHp: 100, maxHp: 100, isInjured: false, mood: "HAPPY" },
+        titan: { currentHp: 100, maxHp: 100, isInjured: false, mood: 'HAPPY' },
       };
 
       mockSupabase.auth.getUser.mockResolvedValue({
-        data: { user: { id: "user-happy" } },
+        data: { user: { id: 'user-happy' } },
       });
       (prisma.user.findUnique as any).mockResolvedValue(userHappy);
       (prisma.monster.findUnique as any).mockResolvedValue({
-        id: "boss-1",
-        name: "Boss",
+        id: 'boss-1',
+        name: 'Boss',
         hp: 1000,
         level: 5,
       });
 
       (prisma.combatSession.findUnique as any).mockResolvedValue({
-        id: "session-1",
-        userId: "user-happy",
-        bossId: "boss-1",
+        id: 'session-1',
+        userId: 'user-happy',
+        bossId: 'boss-1',
         bossHp: 1000,
         bossMaxHp: 1000,
         playerHp: 100,
@@ -355,14 +355,14 @@ describe("Combat Server Actions", () => {
       // Mock titan for safety
       (prisma.titan.findUnique as any).mockResolvedValue(userHappy.titan);
 
-      await startBossFight({ bossId: "boss-1", tier: "STORY" });
+      await startBossFight({ bossId: 'boss-1', tier: 'STORY' });
 
       (CombatEngine.processTurn as any).mockReturnValue({
         newState: { playerHp: 100, bossHp: 900, isVictory: false },
         logs: [],
       });
 
-      await performCombatAction({ action: { type: "ATTACK" } as any } as any);
+      await performCombatAction({ action: { type: 'ATTACK' } as any } as any);
 
       const calls = (CombatEngine.processTurn as any).mock.calls;
       const attributesArg = calls[calls.length - 1][2];

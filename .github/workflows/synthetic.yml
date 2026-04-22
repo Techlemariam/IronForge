@@ -12,7 +12,7 @@ concurrency:
 jobs:
   synthetic-check:
     name: 🏥 Prod Health Check
-    runs-on: [self-hosted, IronForge-VPS]
+    runs-on: [self-hosted, IronForge-Local]
 
     steps:
       - name: Setup IronForge

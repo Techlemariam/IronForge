@@ -1,8 +1,8 @@
-"use server";
+'use server';
 
-import { prisma } from "@/lib/prisma";
+import { prisma } from '@/lib/prisma';
 
-type LeaderboardScope = "GLOBAL" | "COUNTRY" | "CITY";
+type LeaderboardScope = 'GLOBAL' | 'COUNTRY' | 'CITY';
 
 interface LeaderboardEntry {
   rank: number;
@@ -30,9 +30,9 @@ interface LeaderboardResult {
  */
 export async function getSegmentLeaderboardAction(
   exerciseId: string,
-  scope: LeaderboardScope = "GLOBAL",
+  scope: LeaderboardScope = 'GLOBAL',
   userId?: string,
-  limit: number = 50,
+  limit = 50
 ): Promise<LeaderboardResult> {
   try {
     // Get all exercise logs with e1RM for this exercise
@@ -53,9 +53,9 @@ export async function getSegmentLeaderboardAction(
       },
     });
 
-    const logsWithE1rm = logs.map(log => ({
+    const logsWithE1rm = logs.map((log) => ({
       ...log,
-      e1rm: (log.weight || 0) * (1 + (log.reps || 0) / 30)
+      e1rm: (log.weight || 0) * (1 + (log.reps || 0) / 30),
     }));
 
     // Group by user, keeping only best e1RM per user
@@ -70,7 +70,7 @@ export async function getSegmentLeaderboardAction(
     let entries = Array.from(bestByUser.values());
 
     // Filter by scope if needed
-    if (scope === "COUNTRY" && userId) {
+    if (scope === 'COUNTRY' && userId) {
       const currentUser = await prisma.user.findUnique({
         where: { id: userId },
         select: { country: true },
@@ -78,7 +78,7 @@ export async function getSegmentLeaderboardAction(
       if (currentUser?.country) {
         entries = entries.filter((e) => e.user.country === currentUser.country);
       }
-    } else if (scope === "CITY" && userId) {
+    } else if (scope === 'CITY' && userId) {
       const currentUser = await prisma.user.findUnique({
         where: { id: userId },
         select: { city: true },
@@ -108,7 +108,7 @@ export async function getSegmentLeaderboardAction(
       entries: limitedEntries.map((entry, index) => ({
         rank: index + 1,
         userId: entry.userId,
-        heroName: entry.user.heroName || "Unknown Titan",
+        heroName: entry.user.heroName || 'Unknown Titan',
         e1rm: entry.e1rm || 0,
         exerciseId: entry.exerciseId,
         exerciseName: exerciseId, // Would need exercise name lookup
@@ -122,7 +122,7 @@ export async function getSegmentLeaderboardAction(
       totalEntries,
     };
   } catch (error) {
-    console.error("Error fetching segment leaderboard:", error);
+    console.error('Error fetching segment leaderboard:', error);
     return {
       entries: [],
       scope,
@@ -144,24 +144,22 @@ export async function getUserRankingsAction(userId: string): Promise<{
       where: { userId, weight: { gt: 0 } },
     });
 
-    const userLogsWithE1rm = userLogs.map(log => ({
-      ...log,
-      e1rm: (log.weight || 0) * (1 + (log.reps || 0) / 30)
-    })).sort((a, b) => b.e1rm - a.e1rm);
+    const userLogsWithE1rm = userLogs
+      .map((log) => ({
+        ...log,
+        e1rm: (log.weight || 0) * (1 + (log.reps || 0) / 30),
+      }))
+      .sort((a, b) => b.e1rm - a.e1rm);
 
     // Get unique exercises
     const exerciseIds = [...new Set(userLogs.map((l) => l.exerciseId))];
     const rankings: { exerciseId: string; rank: number; e1rm: number }[] = [];
-    let gold = 0,
-      silver = 0,
-      bronze = 0;
+    let gold = 0;
+    let silver = 0;
+    let bronze = 0;
 
     for (const exerciseId of exerciseIds) {
-      const leaderboard = await getSegmentLeaderboardAction(
-        exerciseId,
-        "GLOBAL",
-        userId,
-      );
+      const leaderboard = await getSegmentLeaderboardAction(exerciseId, 'GLOBAL', userId);
       if (leaderboard.userRank) {
         const bestLog = userLogsWithE1rm.find((l) => l.exerciseId === exerciseId);
         rankings.push({
@@ -181,7 +179,7 @@ export async function getUserRankingsAction(userId: string): Promise<{
       medalCount: { gold, silver, bronze },
     };
   } catch (error) {
-    console.error("Error fetching user rankings:", error);
+    console.error('Error fetching user rankings:', error);
     return { globalRanks: [], medalCount: { gold: 0, silver: 0, bronze: 0 } };
   }
 }

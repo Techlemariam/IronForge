@@ -1,34 +1,34 @@
-"use server";
+'use server';
 
-import { prisma } from "@/lib/prisma";
-import { revalidatePath } from "next/cache";
+import { prisma } from '@/lib/prisma';
+import { revalidatePath } from 'next/cache';
 
 interface SharedRewardConfig {
-  bonusType: "XP" | "GOLD" | "BOTH";
+  bonusType: 'XP' | 'GOLD' | 'BOTH';
   percentage: number; // Bonus percentage for guild members
   description: string;
 }
 
 const GUILD_BONUS_TIERS: Record<number, SharedRewardConfig> = {
   5: {
-    bonusType: "XP",
+    bonusType: 'XP',
     percentage: 5,
-    description: "+5% XP (5+ active members)",
+    description: '+5% XP (5+ active members)',
   },
   10: {
-    bonusType: "BOTH",
+    bonusType: 'BOTH',
     percentage: 10,
-    description: "+10% XP/Gold (10+ members)",
+    description: '+10% XP/Gold (10+ members)',
   },
   20: {
-    bonusType: "BOTH",
+    bonusType: 'BOTH',
     percentage: 15,
-    description: "+15% XP/Gold (20+ members)",
+    description: '+15% XP/Gold (20+ members)',
   },
   50: {
-    bonusType: "BOTH",
+    bonusType: 'BOTH',
     percentage: 20,
-    description: "+20% XP/Gold (50+ members)",
+    description: '+20% XP/Gold (50+ members)',
   },
 };
 
@@ -56,7 +56,7 @@ export async function calculateGuildBonusAction(userId: string): Promise<{
       return {
         hasGuild: false,
         bonusMultiplier: 1.0,
-        bonusDescription: "Join a guild for bonus rewards!",
+        bonusDescription: 'Join a guild for bonus rewards!',
       };
     }
 
@@ -65,7 +65,7 @@ export async function calculateGuildBonusAction(userId: string): Promise<{
 
     // Find highest applicable tier
     for (const [threshold, config] of Object.entries(GUILD_BONUS_TIERS)) {
-      if (memberCount >= parseInt(threshold)) {
+      if (memberCount >= Number.parseInt(threshold)) {
         applicableBonus = config;
       }
     }
@@ -74,7 +74,7 @@ export async function calculateGuildBonusAction(userId: string): Promise<{
       return {
         hasGuild: true,
         bonusMultiplier: 1.0,
-        bonusDescription: "Recruit more members for guild bonuses!",
+        bonusDescription: 'Recruit more members for guild bonuses!',
       };
     }
 
@@ -84,11 +84,11 @@ export async function calculateGuildBonusAction(userId: string): Promise<{
       bonusDescription: applicableBonus.description,
     };
   } catch (error) {
-    console.error("Error calculating guild bonus:", error);
+    console.error('Error calculating guild bonus:', error);
     return {
       hasGuild: false,
       bonusMultiplier: 1.0,
-      bonusDescription: "Error calculating bonus",
+      bonusDescription: 'Error calculating bonus',
     };
   }
 }
@@ -100,7 +100,7 @@ export async function awardGuildSharedRewardAction(
   guildId: string,
   baseXp: number,
   baseGold: number,
-  _source: string,
+  _source: string
 ): Promise<{ success: boolean; membersRewarded: number }> {
   try {
     const members = await prisma.user.findMany({
@@ -124,10 +124,10 @@ export async function awardGuildSharedRewardAction(
       }
     }
 
-    revalidatePath("/guild");
+    revalidatePath('/guild');
     return { success: true, membersRewarded: rewarded };
   } catch (error) {
-    console.error("Error awarding guild rewards:", error);
+    console.error('Error awarding guild rewards:', error);
     return { success: false, membersRewarded: 0 };
   }
 }
@@ -154,7 +154,7 @@ export async function getGuildActivitySummaryAction(guildId: string): Promise<{
     });
 
     let totalWorkouts = 0;
-    let totalVolume = 0;
+    const totalVolume = 0;
     const activeMembers = new Set<string>();
 
     members.forEach((member) => {
@@ -165,11 +165,10 @@ export async function getGuildActivitySummaryAction(guildId: string): Promise<{
     });
 
     const topContributorMember = [...members].sort(
-      (a, b) => b.exerciseLogs.length - a.exerciseLogs.length,
+      (a, b) => b.exerciseLogs.length - a.exerciseLogs.length
     )[0];
 
-    const hasTopContributor =
-      topContributorMember && topContributorMember.exerciseLogs.length > 0;
+    const hasTopContributor = topContributorMember && topContributorMember.exerciseLogs.length > 0;
 
     return {
       weeklyWorkouts: totalWorkouts,
@@ -177,14 +176,14 @@ export async function getGuildActivitySummaryAction(guildId: string): Promise<{
       activeMembers: activeMembers.size,
       topContributor: hasTopContributor
         ? {
-          userId: topContributorMember.id,
-          heroName: topContributorMember.heroName || "Unknown",
-          workouts: topContributorMember.exerciseLogs.length,
-        }
+            userId: topContributorMember.id,
+            heroName: topContributorMember.heroName || 'Unknown',
+            workouts: topContributorMember.exerciseLogs.length,
+          }
         : null,
     };
   } catch (error) {
-    console.error("Error getting guild activity:", error);
+    console.error('Error getting guild activity:', error);
     return {
       weeklyWorkouts: 0,
       weeklyVolume: 0,

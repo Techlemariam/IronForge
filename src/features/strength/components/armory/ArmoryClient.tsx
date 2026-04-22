@@ -1,18 +1,18 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { ItemGrid } from "@/features/strength/components/armory/ItemGrid";
-import { LootReveal } from "@/components/game/LootReveal";
-import { simulateLootDrop, type LootResult } from "@/actions/systems/gameplay";
-import { Play } from "lucide-react";
-import type { ArmoryItem } from "@/actions/economy/armory";
+import type { ArmoryItem } from '@/actions/economy/armory';
+import { type LootResult, simulateLootDrop } from '@/actions/systems/gameplay';
+import { LootReveal } from '@/components/game/LootReveal';
+import { ItemGrid } from '@/features/strength/components/armory/ItemGrid';
+import { Play } from 'lucide-react';
+import { useState } from 'react';
 
 export default function ArmoryClient({
   initialItems,
 }: {
   initialItems: ArmoryItem[];
 }) {
-  const [loot, setLoot] = useState<LootResult["item"] | null>(null);
+  const [loot, setLoot] = useState<LootResult['item'] | null>(null);
   const [isSimulating, setIsSimulating] = useState(false);
 
   // Simulate Button Logic
@@ -30,10 +30,7 @@ export default function ArmoryClient({
 
   // Helper calculate stats
   const unlockedCount = initialItems.filter((i) => !i.locked).length;
-  const totalPower = initialItems.reduce(
-    (acc, i) => acc + (i.locked ? 0 : i.power),
-    0,
-  );
+  const totalPower = initialItems.reduce((acc, i) => acc + (i.locked ? 0 : i.power), 0);
 
   return (
     <div className="min-h-screen bg-forge-950 text-white p-6 md:p-12 pb-24">
@@ -52,22 +49,14 @@ export default function ArmoryClient({
           <div className="flex gap-8 mt-6">
             <div>
               <span className="block text-2xl font-bold text-warrior">
-                {unlockedCount}{" "}
-                <span className="text-sm font-normal text-gray-500">
-                  / {initialItems.length}
-                </span>
+                {unlockedCount}{' '}
+                <span className="text-sm font-normal text-gray-500">/ {initialItems.length}</span>
               </span>
-              <span className="text-xs uppercase tracking-wider text-gray-500">
-                Unlocked
-              </span>
+              <span className="text-xs uppercase tracking-wider text-gray-500">Unlocked</span>
             </div>
             <div>
-              <span className="block text-2xl font-bold text-blue-400">
-                {totalPower}
-              </span>
-              <span className="text-xs uppercase tracking-wider text-gray-500">
-                Total Power
-              </span>
+              <span className="block text-2xl font-bold text-blue-400">{totalPower}</span>
+              <span className="text-xs uppercase tracking-wider text-gray-500">Total Power</span>
             </div>
           </div>
         </div>
@@ -78,7 +67,7 @@ export default function ArmoryClient({
           className="flex items-center gap-2 px-6 py-3 bg-red-900/20 border border-red-500/50 text-red-400 rounded hover:bg-red-900/40 transition-all font-mono text-xs uppercase tracking-wider disabled:opacity-50 disabled:cursor-wait"
         >
           <Play className="w-4 h-4" />
-          {isSimulating ? "Simulating Scan..." : "Run Simulation"}
+          {isSimulating ? 'Simulating Scan...' : 'Run Simulation'}
         </button>
       </header>
 

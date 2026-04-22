@@ -1,5 +1,5 @@
-import prisma from "@/lib/prisma";
-import { ExerciseLog, MeditationLog } from "@/types";
+import prisma from '@/lib/prisma';
+import type { ExerciseLog, MeditationLog } from '@/types';
 
 export const LogService = {
   async saveExerciseLog(userId: string, log: ExerciseLog) {
@@ -27,7 +27,7 @@ export const LogService = {
   async getExerciseHistory(userId: string) {
     const logs = await prisma.exerciseLog.findMany({
       where: { userId },
-      orderBy: { date: "desc" },
+      orderBy: { date: 'desc' },
     });
 
     // Map back to frontend type
@@ -51,7 +51,7 @@ export const LogService = {
   async getMeditationHistory(userId: string) {
     const logs = await prisma.meditationLog.findMany({
       where: { userId },
-      orderBy: { date: "desc" },
+      orderBy: { date: 'desc' },
     });
     return logs.map((log) => ({
       ...log,

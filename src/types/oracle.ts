@@ -1,6 +1,6 @@
-import { IntervalsWellness } from "@/types";
+import type { IntervalsWellness } from '@/types';
 
-export type OracleDecreeType = "BUFF" | "DEBUFF" | "NEUTRAL";
+export type OracleDecreeType = 'BUFF' | 'DEBUFF' | 'NEUTRAL';
 
 export interface OracleDecree {
   type: OracleDecreeType;
@@ -9,11 +9,11 @@ export interface OracleDecree {
   description: string;
   actions: {
     lockFeatures?: string[]; // ["HEAVY_LIFT", "PVP"]
-    lockTraining?: boolean;  // Full lock of training generation
-    unlockBuffs?: string[];  // ["XP_BOOST"]
+    lockTraining?: boolean; // Full lock of training generation
+    unlockBuffs?: string[]; // ["XP_BOOST"]
     notifyUser: boolean;
     triggerNotification?: string; // Specific push template
-    urgency: "LOW" | "MEDIUM" | "HIGH";
+    urgency: 'LOW' | 'MEDIUM' | 'HIGH';
   };
   effect?: {
     stat?: string;

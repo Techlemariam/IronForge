@@ -1,4 +1,4 @@
-"use server";
+'use server';
 
 interface GoldMultiplier {
   source: string;
@@ -47,7 +47,7 @@ export function calculateStreakBonus(streakDays: number): number {
  * Get gold multiplier status.
  */
 export async function getGoldMultiplierStatusAction(
-  _userId: string,
+  _userId: string
 ): Promise<GoldMultiplierStatus> {
   const streakDays = 15;
   const prestigeLevel = 2;
@@ -68,9 +68,9 @@ export async function getGoldMultiplierStatusAction(
       isPermanent: true,
     },
     {
-      source: "Winter Festival",
+      source: 'Winter Festival',
       value: eventBonus,
-      expiresAt: new Date("2025-01-10"),
+      expiresAt: new Date('2025-01-10'),
       isPermanent: false,
     },
   ];
@@ -92,7 +92,7 @@ export async function getGoldMultiplierStatusAction(
  */
 export async function calculateGoldWithMultipliersAction(
   userId: string,
-  baseGold: number,
+  baseGold: number
 ): Promise<{
   baseGold: number;
   multiplier: number;
@@ -114,7 +114,7 @@ export async function calculateGoldWithMultipliersAction(
  * Get next streak milestone.
  */
 export function getNextStreakMilestone(
-  currentStreak: number,
+  currentStreak: number
 ): { days: number; bonus: number; daysRemaining: number } | null {
   for (const tier of STREAK_BONUSES) {
     if (currentStreak < tier.days) {
@@ -131,9 +131,9 @@ export function getNextStreakMilestone(
  * Apply temporary gold boost.
  */
 export async function applyGoldBoostAction(
-  userId: string,
+  _userId: string,
   boostPercent: number,
-  durationHours: number,
+  durationHours: number
 ): Promise<{ success: boolean; expiresAt: Date }> {
   const expiresAt = new Date(Date.now() + durationHours * 60 * 60 * 1000);
   console.log(`Applied ${boostPercent}% gold boost for ${durationHours} hours`);

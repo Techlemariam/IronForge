@@ -1,202 +1,201 @@
-import prisma from "@/lib/prisma";
+import prisma from '@/lib/prisma';
 
-import { Prisma } from "@prisma/client";
+import type { Prisma } from '@prisma/client';
 
 /**
  * SeasonService
- * 
+ *
  * Manages PvP Arena season lifecycle:
  * - Season transitions
  * - Reward distribution
  * - Rating resets
  */
 export class SeasonService {
+  /**
+   * Get the currently active PvP season.
+   */
+  static async getActiveSeason() {
+    return await prisma.pvpSeason.findFirst({
+      where: { isActive: true },
+    });
+  }
 
-    /**
-     * Get the currently active PvP season.
-     */
-    static async getActiveSeason() {
-        return await prisma.pvpSeason.findFirst({
-            where: { isActive: true }
-        });
+  /**
+   * Create a new PvP season.
+   */
+  static async createSeason(
+    name: string,
+    startDate: Date,
+    endDate: Date,
+    rewards: Prisma.InputJsonValue
+  ) {
+    return await prisma.pvpSeason.create({
+      data: {
+        name,
+        startDate,
+        endDate,
+        isActive: false,
+        rewards,
+      },
+    });
+  }
+
+  /**
+   * End the current season and start the next one.
+   * Called by the weekly cron job.
+   */
+  static async transitionSeason() {
+    const now = new Date();
+
+    // Find current active season
+    const currentSeason = await prisma.pvpSeason.findFirst({
+      where: { isActive: true },
+    });
+
+    if (!currentSeason) {
+      return { success: false, message: 'No active season found' };
     }
 
-    /**
-     * Create a new PvP season.
-     */
-    static async createSeason(name: string, startDate: Date, endDate: Date, rewards: Prisma.InputJsonValue) {
-        return await prisma.pvpSeason.create({
-            data: {
-                name,
-                startDate,
-                endDate,
-                isActive: false,
-                rewards
-            }
-        });
+    // Check if season has ended
+    if (currentSeason.endDate > now) {
+      return { success: false, message: 'Current season has not ended yet' };
     }
 
-    /**
-     * End the current season and start the next one.
-     * Called by the weekly cron job.
-     */
-    static async transitionSeason() {
-        const now = new Date();
+    // Distribute rewards for the ended season
+    const rewardResult = await SeasonService.distributeSeasonRewards(currentSeason.id);
 
-        // Find current active season
-        const currentSeason = await prisma.pvpSeason.findFirst({
-            where: { isActive: true }
-        });
+    // Mark current season as inactive
+    await prisma.pvpSeason.update({
+      where: { id: currentSeason.id },
+      data: { isActive: false },
+    });
 
-        if (!currentSeason) {
-            return { success: false, message: "No active season found" };
-        }
+    // Find or create next season
+    let nextSeason = await prisma.pvpSeason.findFirst({
+      where: {
+        startDate: { gte: currentSeason.endDate },
+        isActive: false,
+      },
+      orderBy: { startDate: 'asc' },
+    });
 
-        // Check if season has ended
-        if (currentSeason.endDate > now) {
-            return { success: false, message: "Current season has not ended yet" };
-        }
+    if (!nextSeason) {
+      // Auto-create next season (1 month duration)
+      const nextStart = new Date(currentSeason.endDate);
+      const nextEnd = new Date(nextStart);
+      nextEnd.setMonth(nextEnd.getMonth() + 1);
 
-        // Distribute rewards for the ended season
-        const rewardResult = await this.distributeSeasonRewards(currentSeason.id);
+      nextSeason = await SeasonService.createSeason(
+        `Season ${Number.parseInt(currentSeason.name.split(' ')[1] || '1') + 1}`,
+        nextStart,
+        nextEnd,
+        (currentSeason.rewards as Prisma.InputJsonValue) || {} // Reuse same reward structure
+      );
+    }
 
-        // Mark current season as inactive
-        await prisma.pvpSeason.update({
-            where: { id: currentSeason.id },
-            data: { isActive: false }
-        });
+    // Activate next season
+    await prisma.pvpSeason.update({
+      where: { id: nextSeason.id },
+      data: { isActive: true },
+    });
 
-        // Find or create next season
-        let nextSeason = await prisma.pvpSeason.findFirst({
-            where: {
-                startDate: { gte: currentSeason.endDate },
-                isActive: false
+    return {
+      success: true,
+      endedSeason: currentSeason.name,
+      newSeason: nextSeason.name,
+      rewardsDistributed: rewardResult.count,
+    };
+  }
+
+  /**
+   * Distribute rewards to top players in a season.
+   */
+  static async distributeSeasonRewards(seasonId: string) {
+    // Get top 100 players by rating
+    const topPlayers = await prisma.pvpRating.findMany({
+      where: { seasonId },
+      orderBy: { rating: 'desc' },
+      take: 100,
+      include: { user: true },
+    });
+
+    let rewardedCount = 0;
+
+    for (let i = 0; i < topPlayers.length; i++) {
+      const player = topPlayers[i];
+      const rank = i + 1;
+
+      // Reward tiers
+      let goldReward = 0;
+      let titleId: string | null = null;
+
+      if (rank === 1) {
+        goldReward = 10000;
+        titleId = 'ARENA_CHAMPION';
+      } else if (rank <= 10) {
+        goldReward = 5000;
+        titleId = 'ARENA_LEGEND';
+      } else if (rank <= 50) {
+        goldReward = 2000;
+      } else {
+        goldReward = 500;
+      }
+
+      // Award gold
+      await prisma.user.update({
+        where: { id: player.userId },
+        data: { gold: { increment: goldReward } },
+      });
+
+      // Award title if applicable
+      if (titleId) {
+        await prisma.userTitle.upsert({
+          where: {
+            userId_titleId: {
+              userId: player.userId,
+              titleId,
             },
-            orderBy: { startDate: 'asc' }
+          },
+          create: {
+            userId: player.userId,
+            titleId,
+          },
+          update: {}, // Already has it
         });
+      }
 
-        if (!nextSeason) {
-            // Auto-create next season (1 month duration)
-            const nextStart = new Date(currentSeason.endDate);
-            const nextEnd = new Date(nextStart);
-            nextEnd.setMonth(nextEnd.getMonth() + 1);
-
-            nextSeason = await this.createSeason(
-                `Season ${parseInt(currentSeason.name.split(' ')[1] || '1') + 1}`,
-                nextStart,
-                nextEnd,
-                (currentSeason.rewards as Prisma.InputJsonValue) || {} // Reuse same reward structure
-            );
-        }
-
-        // Activate next season
-        await prisma.pvpSeason.update({
-            where: { id: nextSeason.id },
-            data: { isActive: true }
-        });
-
-        return {
-            success: true,
-            endedSeason: currentSeason.name,
-            newSeason: nextSeason.name,
-            rewardsDistributed: rewardResult.count
-        };
+      rewardedCount++;
     }
 
-    /**
-     * Distribute rewards to top players in a season.
-     */
-    static async distributeSeasonRewards(seasonId: string) {
-        // Get top 100 players by rating
-        const topPlayers = await prisma.pvpRating.findMany({
-            where: { seasonId },
-            orderBy: { rating: 'desc' },
-            take: 100,
-            include: { user: true }
-        });
+    return { success: true, count: rewardedCount };
+  }
 
-        let rewardedCount = 0;
+  /**
+   * Initialize the first season if none exists.
+   */
+  static async initializeFirstSeason() {
+    const existingSeason = await prisma.pvpSeason.findFirst();
 
-        for (let i = 0; i < topPlayers.length; i++) {
-            const player = topPlayers[i];
-            const rank = i + 1;
-
-            // Reward tiers
-            let goldReward = 0;
-            let titleId: string | null = null;
-
-            if (rank === 1) {
-                goldReward = 10000;
-                titleId = "ARENA_CHAMPION";
-            } else if (rank <= 10) {
-                goldReward = 5000;
-                titleId = "ARENA_LEGEND";
-            } else if (rank <= 50) {
-                goldReward = 2000;
-            } else {
-                goldReward = 500;
-            }
-
-            // Award gold
-            await prisma.user.update({
-                where: { id: player.userId },
-                data: { gold: { increment: goldReward } }
-            });
-
-            // Award title if applicable
-            if (titleId) {
-                await prisma.userTitle.upsert({
-                    where: {
-                        userId_titleId: {
-                            userId: player.userId,
-                            titleId
-                        }
-                    },
-                    create: {
-                        userId: player.userId,
-                        titleId
-                    },
-                    update: {} // Already has it
-                });
-            }
-
-            rewardedCount++;
-        }
-
-        return { success: true, count: rewardedCount };
+    if (existingSeason) {
+      return { success: false, message: 'Seasons already initialized' };
     }
 
-    /**
-     * Initialize the first season if none exists.
-     */
-    static async initializeFirstSeason() {
-        const existingSeason = await prisma.pvpSeason.findFirst();
+    const now = new Date();
+    const endDate = new Date(now);
+    endDate.setMonth(endDate.getMonth() + 1);
 
-        if (existingSeason) {
-            return { success: false, message: "Seasons already initialized" };
-        }
+    const season = await SeasonService.createSeason('Season 1', now, endDate, {
+      top1: { gold: 10000, title: 'ARENA_CHAMPION' },
+      top10: { gold: 5000, title: 'ARENA_LEGEND' },
+      top50: { gold: 2000 },
+      top100: { gold: 500 },
+    });
 
-        const now = new Date();
-        const endDate = new Date(now);
-        endDate.setMonth(endDate.getMonth() + 1);
+    await prisma.pvpSeason.update({
+      where: { id: season.id },
+      data: { isActive: true },
+    });
 
-        const season = await this.createSeason(
-            "Season 1",
-            now,
-            endDate,
-            {
-                top1: { gold: 10000, title: "ARENA_CHAMPION" },
-                top10: { gold: 5000, title: "ARENA_LEGEND" },
-                top50: { gold: 2000 },
-                top100: { gold: 500 }
-            }
-        );
-
-        await prisma.pvpSeason.update({
-            where: { id: season.id },
-            data: { isActive: true }
-        });
-
-        return { success: true, season };
-    }
+    return { success: true, season };
+  }
 }

@@ -1,7 +1,7 @@
 /// <reference lib="webworker" />
-import { defaultCache } from "@serwist/next/worker";
-import type { PrecacheEntry, SerwistGlobalConfig } from "serwist";
-import { Serwist } from "serwist";
+import { defaultCache } from '@serwist/next/worker';
+import type { PrecacheEntry, SerwistGlobalConfig } from 'serwist';
+import { Serwist } from 'serwist';
 
 // This declares the value of `injectionPoint` to TypeScript.
 // `injectionPoint` is the string that will be replaced by the
@@ -26,7 +26,7 @@ const serwist = new Serwist({
 serwist.addEventListeners();
 
 // Oracle Push Notification Handler
-self.addEventListener("push", (event) => {
+self.addEventListener('push', (event) => {
   const data = event.data?.json();
   if (!data) return;
 
@@ -35,21 +35,21 @@ self.addEventListener("push", (event) => {
   event.waitUntil(
     self.registration.showNotification(title, {
       body,
-      icon: icon || "/icons/icon-192x192.png",
-      badge: "/icons/badge-72x72.png",
+      icon: icon || '/icons/icon-192x192.png',
+      badge: '/icons/badge-72x72.png',
       data: customData,
     })
   );
 });
 
-self.addEventListener("notificationclick", (event) => {
+self.addEventListener('notificationclick', (event) => {
   event.notification.close();
-  const urlToOpen = event.notification.data?.url || "/";
+  const urlToOpen = event.notification.data?.url || '/';
 
   event.waitUntil(
-    self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((clientList) => {
+    self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
       for (const client of clientList) {
-        if (client.url === urlToOpen && "focus" in client) {
+        if (client.url === urlToOpen && 'focus' in client) {
           return client.focus();
         }
       }

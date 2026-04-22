@@ -1,20 +1,13 @@
-"use client";
+'use client';
 
-import React from "react";
-import { TitansChoice } from "@/features/dashboard/TitansChoice";
-import { Session } from "@/types";
-import PreWorkoutCheck from "@/features/training/components/PreWorkoutCheck";
-import {
-  CheckCircle2,
-  Save,
-  Upload,
-  Loader2,
-  Zap,
-  AlertTriangle,
-} from "lucide-react";
-import { useMiningSession } from "./hooks/useMiningSession";
-import { IntegrationService } from "@/services/integration";
-import DungeonSessionView from "./components/DungeonSessionView";
+import { TitansChoice } from '@/features/dashboard/TitansChoice';
+import PreWorkoutCheck from '@/features/training/components/PreWorkoutCheck';
+import { IntegrationService } from '@/services/integration';
+import type { Session } from '@/types';
+import { AlertTriangle, CheckCircle2, Loader2, Save, Upload, Zap } from 'lucide-react';
+import type React from 'react';
+import DungeonSessionView from './components/DungeonSessionView';
+import { useMiningSession } from './hooks/useMiningSession';
 
 interface IronMinesProps {
   session: Session;
@@ -31,7 +24,6 @@ const IronMines: React.FC<IronMinesProps> = ({
   hrvBaseline,
   userId,
 }) => {
-
   const {
     activeSession,
     setActiveSession,
@@ -62,9 +54,7 @@ const IronMines: React.FC<IronMinesProps> = ({
         <div className="max-w-md w-full border-2 border-red-500 rounded-lg p-6 bg-red-950/20 shadow-[0_0_50px_rgba(220,38,38,0.3)]">
           <div className="flex items-center gap-3 text-red-500 mb-4">
             <AlertTriangle className="w-8 h-8" />
-            <h2 className="text-xl font-black uppercase tracking-widest">
-              Session Interrupted
-            </h2>
+            <h2 className="text-xl font-black uppercase tracking-widest">Session Interrupted</h2>
           </div>
           <p className="text-zinc-300 mb-6 font-sans text-sm">
             Resume &quot;{foundRecovery.sessionData.name}&quot;?
@@ -112,13 +102,11 @@ const IronMines: React.FC<IronMinesProps> = ({
         <div className="w-24 h-24 rounded-full bg-green-900/20 flex items-center justify-center border-2 border-green-800 text-green-500 mb-4 shadow-[0_0_30px_rgba(34,197,94,0.2)]">
           <CheckCircle2 className="w-12 h-12" />
         </div>
-        <h1 className="text-4xl font-black text-white uppercase tracking-tight">
-          Quest Complete
-        </h1>
+        <h1 className="text-4xl font-black text-white uppercase tracking-tight">Quest Complete</h1>
         <p className="text-zinc-500 max-w-md font-sans text-sm">
           {isSaving
-            ? "Writing to Tomes..."
-            : "Great work. The logistical data has been logged to the Local Database."}
+            ? 'Writing to Tomes...'
+            : 'Great work. The logistical data has been logged to the Local Database.'}
         </p>
 
         {isRested && (
@@ -133,28 +121,26 @@ const IronMines: React.FC<IronMinesProps> = ({
         {!isSaving && (
           <div className="w-full max-w-sm space-y-4">
             {/* Completion Widget */}
-            <TitansChoice userId={userId || "user_id_placeholder"} className="mb-6 w-full" />
+            <TitansChoice userId={userId || 'user_id_placeholder'} className="mb-6 w-full" />
 
             <button
               onClick={handleExport}
-              disabled={
-                exportStatus === "UPLOADING" || exportStatus === "SUCCESS"
-              }
+              disabled={exportStatus === 'UPLOADING' || exportStatus === 'SUCCESS'}
               className={`w-full py-4 border-2 rounded font-bold uppercase tracking-widest flex items-center justify-center gap-2 transition-all
-                    ${sessionType === "CARDIO" ? "bg-blue-900/20 border-blue-600 text-blue-400" : "bg-orange-900/20 border-orange-600 text-orange-400"}
-                    ${exportStatus === "SUCCESS" ? "opacity-50 cursor-not-allowed" : ""}
+                    ${sessionType === 'CARDIO' ? 'bg-blue-900/20 border-blue-600 text-blue-400' : 'bg-orange-900/20 border-orange-600 text-orange-400'}
+                    ${exportStatus === 'SUCCESS' ? 'opacity-50 cursor-not-allowed' : ''}
                   `}
             >
-              {exportStatus === "UPLOADING" ? (
+              {exportStatus === 'UPLOADING' ? (
                 <Loader2 className="w-5 h-5 animate-spin" />
               ) : (
                 <Upload className="w-5 h-5" />
               )}
-              {exportStatus === "UPLOADING"
-                ? "Syncing..."
-                : exportStatus === "SUCCESS"
-                  ? "Exported"
-                  : "Upload Data"}
+              {exportStatus === 'UPLOADING'
+                ? 'Syncing...'
+                : exportStatus === 'SUCCESS'
+                  ? 'Exported'
+                  : 'Upload Data'}
             </button>
           </div>
         )}
@@ -182,8 +168,8 @@ const IronMines: React.FC<IronMinesProps> = ({
               Abandon Quest?
             </h3>
             <p className="text-zinc-400 text-sm mb-8 leading-relaxed font-sans">
-              Retreating now will forfeit all progress made in this session. Are
-              you sure you want to return to the dashboard?
+              Retreating now will forfeit all progress made in this session. Are you sure you want
+              to return to the dashboard?
             </p>
             <div className="space-y-3">
               <button
@@ -205,7 +191,7 @@ const IronMines: React.FC<IronMinesProps> = ({
 
       {/* DungeonSessionView: The Main Workout Interface (Replaces ActionView) */}
       <DungeonSessionView
-        title={activeSession.name || "Dungeon Quest"}
+        title={activeSession.name || 'Dungeon Quest'}
         initialData={activeSession.blocks[0].exercises || []}
         onComplete={() => setCompleted(true)}
         onAbort={handleAbortRequest}
@@ -215,6 +201,5 @@ const IronMines: React.FC<IronMinesProps> = ({
     </>
   );
 };
-
 
 export default IronMines;

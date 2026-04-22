@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useState, useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 type VoiceCommand = {
   pattern: RegExp;
@@ -18,43 +18,42 @@ interface VoiceCommandResult {
 const VOICE_COMMANDS: VoiceCommand[] = [
   // "log 100 kg for 5 reps" or "100 kilos 5 reps"
   {
-    pattern:
-      /(\d+)\s*(kg|kilos?|pounds?|lbs?)?\s*(for|x|times)?\s*(\d+)\s*(reps?)?/i,
-    action: "LOG_SET",
-    extract: (m) => ({ weight: parseInt(m[1]), reps: parseInt(m[4]) }),
+    pattern: /(\d+)\s*(kg|kilos?|pounds?|lbs?)?\s*(for|x|times)?\s*(\d+)\s*(reps?)?/i,
+    action: 'LOG_SET',
+    extract: (m) => ({ weight: Number.parseInt(m[1]), reps: Number.parseInt(m[4]) }),
   },
   // "5 reps at 100 kg"
   {
     pattern: /(\d+)\s*reps?\s*(at|with)?\s*(\d+)\s*(kg|kilos?)?/i,
-    action: "LOG_SET",
-    extract: (m) => ({ reps: parseInt(m[1]), weight: parseInt(m[3]) }),
+    action: 'LOG_SET',
+    extract: (m) => ({ reps: Number.parseInt(m[1]), weight: Number.parseInt(m[3]) }),
   },
   // "rest" or "start rest"
   {
     pattern: /^(start\s*)?rest$/i,
-    action: "START_REST",
+    action: 'START_REST',
     extract: () => ({}),
   },
   // "rest 90" or "rest 2 minutes"
   {
     pattern: /rest\s*(\d+)\s*(seconds?|secs?|minutes?|mins?)?/i,
-    action: "START_REST",
+    action: 'START_REST',
     extract: (m) => {
-      const value = parseInt(m[1]);
-      const isMinutes = m[2]?.startsWith("min");
+      const value = Number.parseInt(m[1]);
+      const isMinutes = m[2]?.startsWith('min');
       return { seconds: isMinutes ? value * 60 : value };
     },
   },
   // "next exercise"
   {
     pattern: /^next\s*(exercise|set)?$/i,
-    action: "NEXT_EXERCISE",
+    action: 'NEXT_EXERCISE',
     extract: () => ({}),
   },
   // "finish" or "complete workout"
   {
     pattern: /^(finish|complete|end)\s*(workout)?$/i,
-    action: "FINISH_WORKOUT",
+    action: 'FINISH_WORKOUT',
     extract: () => ({}),
   },
 ];
@@ -64,19 +63,17 @@ const VOICE_COMMANDS: VoiceCommand[] = [
  */
 export function isSpeechRecognitionAvailable(): boolean {
   return (
-    typeof window !== "undefined" &&
-    ("SpeechRecognition" in window || "webkitSpeechRecognition" in window)
+    typeof window !== 'undefined' &&
+    ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window)
   );
 }
 
 /**
  * Hook for voice commands.
  */
-export function useVoiceCommands(
-  onCommand?: (result: VoiceCommandResult) => void,
-) {
+export function useVoiceCommands(onCommand?: (result: VoiceCommandResult) => void) {
   const [isListening, setIsListening] = useState(false);
-  const [transcript, setTranscript] = useState("");
+  const [transcript, setTranscript] = useState('');
   const [error, setError] = useState<string | null>(null);
   const recognitionRef = useRef<any | null>(null);
 
@@ -95,18 +92,17 @@ export function useVoiceCommands(
       }
       return null;
     },
-    [],
+    []
   );
 
   useEffect(() => {
     if (!isSpeechRecognitionAvailable()) return;
 
-    const SpeechRecognition =
-      window.SpeechRecognition || window.webkitSpeechRecognition;
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     recognitionRef.current = new SpeechRecognition();
     recognitionRef.current.continuous = false;
     recognitionRef.current.interimResults = true;
-    recognitionRef.current.lang = "en-US";
+    recognitionRef.current.lang = 'en-US';
 
     recognitionRef.current.onresult = (event: any) => {
       const last = event.results[event.results.length - 1];
@@ -135,11 +131,10 @@ export function useVoiceCommands(
     };
   }, [onCommand, parseCommand]);
 
-
   const startListening = useCallback(() => {
     if (!recognitionRef.current) return;
     setError(null);
-    setTranscript("");
+    setTranscript('');
     recognitionRef.current.start();
     setIsListening(true);
   }, []);

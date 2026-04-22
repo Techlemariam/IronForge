@@ -1,6 +1,6 @@
-import { HevyWorkout, HevySet } from "../types/hevy";
-import { MuscleGroupVolume, RPVolumeStandards } from "../types/auditor";
-import { getMuscleGroupForExercise, muscleMap } from "../data/muscleMap";
+import { getMuscleGroupForExercise, muscleMap } from '../data/muscleMap';
+import type { MuscleGroupVolume, RPVolumeStandards } from '../types/auditor';
+import type { HevySet, HevyWorkout } from '../types/hevy';
 
 /**
  * Volume Calculator
@@ -19,7 +19,7 @@ const ONE_WEEK_MS = 7 * 24 * 60 * 60 * 1000;
  */
 export const calculateWeeklyVolume = (
   workouts: HevyWorkout[],
-  referenceDate: Date = new Date(),
+  referenceDate: Date = new Date()
 ): MuscleGroupVolume[] => {
   const windowStart = new Date(referenceDate.getTime() - ONE_WEEK_MS);
 
@@ -63,13 +63,11 @@ export const calculateWeeklyVolume = (
   });
 
   // Convert to output format
-  const result: MuscleGroupVolume[] = Array.from(volumeMap.entries()).map(
-    ([muscle, volume]) => ({
-      muscleGroup: muscle,
-      weeklyVolume: volume,
-      lastUpdated: new Date().toISOString(),
-    }),
-  );
+  const result: MuscleGroupVolume[] = Array.from(volumeMap.entries()).map(([muscle, volume]) => ({
+    muscleGroup: muscle,
+    weeklyVolume: volume,
+    lastUpdated: new Date().toISOString(),
+  }));
 
   return result;
 };
@@ -80,7 +78,7 @@ export const calculateWeeklyVolume = (
 const isSetValid = (set: HevySet): boolean => {
   // If set type is "warmup", exclude it.
   // 'failure', 'drop', 'normal' count.
-  if (set.type && set.type.toLowerCase() === "warmup") {
+  if (set.type && set.type.toLowerCase() === 'warmup') {
     return false;
   }
   return true;
@@ -89,9 +87,7 @@ const isSetValid = (set: HevySet): boolean => {
 /**
  * Gets the RP Standards for a given muscle group
  */
-export const getStandardsForMuscle = (
-  muscleGroup: string,
-): RPVolumeStandards | null => {
+export const getStandardsForMuscle = (muscleGroup: string): RPVolumeStandards | null => {
   const data = muscleMap.get(muscleGroup);
   return data ? data.rpStandards : null;
 };

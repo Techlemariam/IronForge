@@ -1,6 +1,6 @@
 // src/utils/hevyAdapter.ts
-import { HevyRoutine } from "../types/hevy";
-import { Exercise, WorkoutSet } from "../types/ironforge";
+import type { HevyRoutine } from '../types/hevy';
+import type { Exercise, WorkoutSet } from '../types/ironforge';
 
 /**
  * THE TRANSLATOR
@@ -8,21 +8,19 @@ import { Exercise, WorkoutSet } from "../types/ironforge";
  */
 export const mapHevyToQuest = (
   routine: HevyRoutine,
-  exerciseNameMap: Map<string, string>,
+  exerciseNameMap: Map<string, string>
 ): Exercise[] => {
   if (!routine.exercises || routine.exercises.length === 0) {
     return [];
   }
 
   return routine.exercises.map((hevyExerciseSummary, index) => {
-    const questSets: WorkoutSet[] = hevyExerciseSummary.sets.map(
-      (_, setIndex) => ({
-        id: `set-${index}-${setIndex}`,
-        targetReps: 10, // Default value
-        targetRPE: 8, // Default value
-        completed: false,
-      }),
-    );
+    const questSets: WorkoutSet[] = hevyExerciseSummary.sets.map((_, setIndex) => ({
+      id: `set-${index}-${setIndex}`,
+      targetReps: 10, // Default value
+      targetRPE: 8, // Default value
+      completed: false,
+    }));
 
     const exerciseName =
       exerciseNameMap.get(hevyExerciseSummary.exercise_template_id) ||
@@ -32,7 +30,7 @@ export const mapHevyToQuest = (
       id: hevyExerciseSummary.exercise_template_id,
       hevyId: hevyExerciseSummary.exercise_template_id,
       name: exerciseName,
-      type: "strength",
+      type: 'strength',
       sets: questSets,
       completed: false,
     };
@@ -48,19 +46,17 @@ export const mapQuestToHevyPayload = (
   questTitle: string,
   startTime: Date,
   endTime: Date,
-  isPrivate: boolean,
+  isPrivate: boolean
 ) => {
   const hevyExercises = exercises
     .map((ex) => {
       const completedSets = ex.sets
         .filter(
           (set) =>
-            set.completed === true &&
-            set.weight !== undefined &&
-            set.completedReps !== undefined,
+            set.completed === true && set.weight !== undefined && set.completedReps !== undefined
         )
         .map((set) => ({
-          type: "normal",
+          type: 'normal',
           weight_kg: set.weight,
           reps: set.completedReps,
           rpe: set.targetRPE, // Using targetRPE as the logged RPE value

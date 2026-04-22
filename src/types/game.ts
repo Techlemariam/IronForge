@@ -1,11 +1,5 @@
-export type ItemType = "material" | "consumable" | "equipment" | "currency";
-export type ItemRarity =
-  | "common"
-  | "uncommon"
-  | "rare"
-  | "epic"
-  | "legendary"
-  | "mythic";
+export type ItemType = 'material' | 'consumable' | 'equipment' | 'currency';
+export type ItemRarity = 'common' | 'uncommon' | 'rare' | 'epic' | 'legendary' | 'mythic';
 
 export interface GameItem {
   id: string;
@@ -45,7 +39,7 @@ export interface UserInventory {
 // Player Context System (Unified Modifier Hub)
 // ============================================================================
 
-import { Archetype  } from "@/types/prisma";
+import type { Archetype } from '@/types/prisma';
 
 // Player Identity
 export interface PlayerIdentity {
@@ -62,22 +56,22 @@ export interface PlayerIdentity {
  */
 export interface PlayerModifiers {
   // XP & Rewards
-  xpGain: number;           // Global XP multiplier
-  strengthXp: number;       // Strength-specific XP
-  cardioXp: number;         // Cardio-specific XP
-  goldGain: number;         // Gold multiplier
-  lootLuck: number;         // Drop rate modifier
+  xpGain: number; // Global XP multiplier
+  strengthXp: number; // Strength-specific XP
+  cardioXp: number; // Cardio-specific XP
+  goldGain: number; // Gold multiplier
+  lootLuck: number; // Drop rate modifier
 
   // Training
-  titanLoad: number;        // Titan Load calculation modifier
-  mrvScale: number;         // Maximum Recoverable Volume modifier
-  recoverySpeed: number;    // TSB / Body Battery recovery modifier
+  titanLoad: number; // Titan Load calculation modifier
+  mrvScale: number; // Maximum Recoverable Volume modifier
+  recoverySpeed: number; // TSB / Body Battery recovery modifier
 
   // Combat
-  attackPower: number;      // Boss damage multiplier
-  defense: number;          // Damage reduction
-  critChance: number;       // Critical hit chance (0-1)
-  stamina: number;          // Combat stamina / endurance
+  attackPower: number; // Boss damage multiplier
+  defense: number; // Damage reduction
+  critChance: number; // Critical hit chance (0-1)
+  stamina: number; // Combat stamina / endurance
 }
 
 export const DEFAULT_MODIFIERS: PlayerModifiers = {
@@ -95,7 +89,7 @@ export const DEFAULT_MODIFIERS: PlayerModifiers = {
   stamina: 1.0,
 };
 
-export type BuffSource = "ARCHETYPE" | "SKILL" | "ORACLE" | "EQUIPMENT" | "TERRITORY" | "PVP";
+export type BuffSource = 'ARCHETYPE' | 'SKILL' | 'ORACLE' | 'EQUIPMENT' | 'TERRITORY' | 'PVP';
 
 export interface ActiveBuff {
   id: string;
@@ -129,7 +123,6 @@ export interface PlayerContext {
   raw: {
     unlockedSkillIds: string[];
     equippedItemIds: string[];
-    oracleDecreeType?: "BUFF" | "DEBUFF" | "NEUTRAL";
+    oracleDecreeType?: 'BUFF' | 'DEBUFF' | 'NEUTRAL';
   };
 }
-

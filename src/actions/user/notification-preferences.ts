@@ -1,8 +1,8 @@
-"use server";
+'use server';
 
-import { prisma } from "@/lib/prisma";
-import { revalidatePath } from "next/cache";
-import { z } from "zod";
+import { prisma } from '@/lib/prisma';
+import { revalidatePath } from 'next/cache';
+import { z } from 'zod';
 
 const _NotificationPreferencesSchema = z.object({
   // Workout reminders
@@ -32,7 +32,7 @@ type NotificationPreferences = z.infer<typeof _NotificationPreferencesSchema>;
 
 const DEFAULT_PREFERENCES: NotificationPreferences = {
   dailyReminder: true,
-  dailyReminderTime: "09:00",
+  dailyReminderTime: '09:00',
   achievementUnlocked: true,
   levelUp: true,
   newPR: true,
@@ -49,7 +49,7 @@ const DEFAULT_PREFERENCES: NotificationPreferences = {
  * Get user's notification preferences.
  */
 export async function getNotificationPreferencesAction(
-  userId: string,
+  userId: string
 ): Promise<NotificationPreferences> {
   try {
     const user = await prisma.user.findUnique({
@@ -66,7 +66,7 @@ export async function getNotificationPreferencesAction(
 
     return DEFAULT_PREFERENCES;
   } catch (error) {
-    console.error("Error getting notification preferences:", error);
+    console.error('Error getting notification preferences:', error);
     return DEFAULT_PREFERENCES;
   }
 }
@@ -76,7 +76,7 @@ export async function getNotificationPreferencesAction(
  */
 export async function updateNotificationPreferencesAction(
   userId: string,
-  preferences: Partial<NotificationPreferences>,
+  preferences: Partial<NotificationPreferences>
 ): Promise<{ success: boolean; error?: string }> {
   try {
     const current = await getNotificationPreferencesAction(userId);
@@ -87,11 +87,11 @@ export async function updateNotificationPreferencesAction(
       data: { notificationPreferences: updated },
     });
 
-    revalidatePath("/settings");
+    revalidatePath('/settings');
     return { success: true };
   } catch (error) {
-    console.error("Error updating notification preferences:", error);
-    return { success: false, error: "Failed to update preferences" };
+    console.error('Error updating notification preferences:', error);
+    return { success: false, error: 'Failed to update preferences' };
   }
 }
 
@@ -100,7 +100,7 @@ export async function updateNotificationPreferencesAction(
  */
 export async function shouldSendNotificationAction(
   userId: string,
-  type: keyof NotificationPreferences,
+  type: keyof NotificationPreferences
 ): Promise<boolean> {
   try {
     const prefs = await getNotificationPreferencesAction(userId);
@@ -114,7 +114,7 @@ export async function shouldSendNotificationAction(
  * Reset to defaults.
  */
 export async function resetNotificationPreferencesAction(
-  userId: string,
+  userId: string
 ): Promise<{ success: boolean }> {
   try {
     await prisma.user.update({
@@ -122,7 +122,7 @@ export async function resetNotificationPreferencesAction(
       data: { notificationPreferences: DEFAULT_PREFERENCES },
     });
 
-    revalidatePath("/settings");
+    revalidatePath('/settings');
     return { success: true };
   } catch {
     return { success: false };
@@ -134,7 +134,7 @@ export async function resetNotificationPreferencesAction(
  */
 export async function toggleNotificationAction(
   userId: string,
-  key: keyof NotificationPreferences,
+  key: keyof NotificationPreferences
 ): Promise<{ success: boolean; newValue: boolean }> {
   try {
     const prefs = await getNotificationPreferencesAction(userId);

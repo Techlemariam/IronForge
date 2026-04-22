@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import React from "react";
-import { Coins, Zap, Crown, Swords } from "lucide-react";
-import Link from "next/link";
+import { Coins, Crown, Swords, Zap } from 'lucide-react';
+import Link from 'next/link';
+import React from 'react';
 
 interface QuickStatsHeaderProps {
   level: number;
@@ -11,12 +11,7 @@ interface QuickStatsHeaderProps {
   gold: number;
 }
 
-export function QuickStatsHeader({
-  level,
-  currentXP,
-  maxXP,
-  gold,
-}: QuickStatsHeaderProps) {
+export function QuickStatsHeader({ level, currentXP, maxXP, gold }: QuickStatsHeaderProps) {
   const xpPercentage = Math.min((currentXP / maxXP) * 100, 100);
 
   return (
@@ -51,8 +46,6 @@ export function QuickStatsHeader({
             </div>
           </div>
         </div>
-
-
 
         {/* Right: Gold */}
         <Link

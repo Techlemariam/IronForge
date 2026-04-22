@@ -1,7 +1,8 @@
-import React, { useState } from "react";
-import { Minus, Plus, Zap, Shield, Target } from "lucide-react";
-import { playSound } from "@/utils";
-import { JargonTooltip } from "@/components/ui/JargonTooltip";
+import { JargonTooltip } from '@/components/ui/JargonTooltip';
+import { playSound } from '@/utils';
+import { Minus, Plus, Shield, Target, Zap } from 'lucide-react';
+import type React from 'react';
+import { useState } from 'react';
 
 interface SetLogFormProps {
   targetWeight: number;
@@ -20,23 +21,19 @@ const SetLogForm: React.FC<SetLogFormProps> = ({
 }) => {
   // Initialize state with targets (smart defaults)
   const [weight, setWeight] = useState(previousWeight || targetWeight);
-  const [reps, setReps] = useState(
-    typeof targetReps === "number" ? targetReps : 0,
-  );
+  const [reps, setReps] = useState(typeof targetReps === 'number' ? targetReps : 0);
   const [rpe, setRpe] = useState<number | null>(null);
 
   // Plate math increments
-  const adjustWeight = (amount: number) =>
-    setWeight((prev) => Math.max(0, prev + amount));
-  const adjustReps = (amount: number) =>
-    setReps((prev) => Math.max(0, prev + amount));
+  const adjustWeight = (amount: number) => setWeight((prev) => Math.max(0, prev + amount));
+  const adjustReps = (amount: number) => setReps((prev) => Math.max(0, prev + amount));
 
   const handleLog = () => {
     if (rpe !== null) {
-      playSound("ding");
+      playSound('ding');
       onLog(weight, reps, rpe);
     } else {
-      playSound("fail"); // Feedback if RPE missing
+      playSound('fail'); // Feedback if RPE missing
     }
   };
 
@@ -114,9 +111,7 @@ const SetLogForm: React.FC<SetLogFormProps> = ({
                 <Plus className="w-5 h-5 mx-auto" />
               </button>
             </div>
-            <div className="text-[10px] text-zinc-600 font-mono">
-              Target: {targetReps}
-            </div>
+            <div className="text-[10px] text-zinc-600 font-mono">Target: {targetReps}</div>
           </div>
         </div>
 
@@ -127,9 +122,7 @@ const SetLogForm: React.FC<SetLogFormProps> = ({
               <JargonTooltip term="RPE">Rate Perceived Exertion</JargonTooltip>
             </span>
             {rpe && (
-              <span className="text-xs font-mono font-bold text-magma">
-                RPE {rpe} Selected
-              </span>
+              <span className="text-xs font-mono font-bold text-magma">RPE {rpe} Selected</span>
             )}
           </div>
           <div className="grid grid-cols-5 gap-2">
@@ -138,10 +131,11 @@ const SetLogForm: React.FC<SetLogFormProps> = ({
                 key={val}
                 onClick={() => setRpe(val)}
                 className={`h-12 rounded border-2 font-mono font-bold text-lg transition-all duration-200 
-                            ${rpe === val
-                    ? "bg-magma border-magma-glow text-white shadow-[0_0_15px_#ff4500] translate-y-[-2px]"
-                    : "bg-zinc-900 border-zinc-800 text-zinc-500 hover:border-zinc-600 hover:text-zinc-300"
-                  }`}
+                            ${
+                              rpe === val
+                                ? 'bg-magma border-magma-glow text-white shadow-[0_0_15px_#ff4500] translate-y-[-2px]'
+                                : 'bg-zinc-900 border-zinc-800 text-zinc-500 hover:border-zinc-600 hover:text-zinc-300'
+                            }`}
               >
                 {val}
               </button>
@@ -154,17 +148,17 @@ const SetLogForm: React.FC<SetLogFormProps> = ({
           onClick={handleLog}
           disabled={rpe === null}
           className={`w-full py-4 font-black text-xl uppercase tracking-[0.2em] rounded clip-path-polygon transition-all duration-300
-                ${rpe !== null
-              ? "bg-gradient-to-r from-magma to-orange-600 text-white shadow-[0_0_20px_rgba(255,69,0,0.4)] hover:shadow-[0_0_30px_rgba(255,69,0,0.6)] hover:scale-[1.01]"
-              : "bg-zinc-800 text-zinc-600 cursor-not-allowed"
-            }
+                ${
+                  rpe !== null
+                    ? 'bg-gradient-to-r from-magma to-orange-600 text-white shadow-[0_0_20px_rgba(255,69,0,0.4)] hover:shadow-[0_0_30px_rgba(255,69,0,0.6)] hover:scale-[1.01]'
+                    : 'bg-zinc-800 text-zinc-600 cursor-not-allowed'
+                }
             `}
           style={{
-            clipPath:
-              "polygon(5% 0, 100% 0, 100% 80%, 95% 100%, 0 100%, 0 20%)",
+            clipPath: 'polygon(5% 0, 100% 0, 100% 80%, 95% 100%, 0 100%, 0 20%)',
           }} // Industrial cut corners
         >
-          {rpe !== null ? "Confirm Log" : "Select RPE"}
+          {rpe !== null ? 'Confirm Log' : 'Select RPE'}
         </button>
       </div>
     </div>

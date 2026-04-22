@@ -1,14 +1,9 @@
-"use server";
+'use server';
 
-import {
-  getWellness,
-  getActivities,
-  getEvents,
-  getAthleteSettings,
-} from "@/lib/intervals";
-import { createClient } from "@/utils/supabase/server";
-import prisma from "@/lib/prisma";
-import { IntervalsWellness, IntervalsActivity, IntervalsEvent } from "@/types";
+import { getActivities, getAthleteSettings, getEvents, getWellness } from '@/lib/intervals';
+import prisma from '@/lib/prisma';
+import type { IntervalsActivity, IntervalsEvent, IntervalsWellness } from '@/types';
+import { createClient } from '@/utils/supabase/server';
 
 async function getIntervalsCredentials() {
   const supabase = await createClient();
@@ -17,7 +12,7 @@ async function getIntervalsCredentials() {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    throw new Error("Unauthorized");
+    throw new Error('Unauthorized');
   }
 
   const dbUser = await prisma.user.findUnique({
@@ -26,7 +21,7 @@ async function getIntervalsCredentials() {
   });
 
   if (!dbUser?.intervalsApiKey || !dbUser?.intervalsAthleteId) {
-    throw new Error("Intervals.icu not connected");
+    throw new Error('Intervals.icu not connected');
   }
 
   return {
@@ -35,9 +30,7 @@ async function getIntervalsCredentials() {
   };
 }
 
-export async function getWellnessAction(
-  date: string,
-): Promise<IntervalsWellness> {
+export async function getWellnessAction(date: string): Promise<IntervalsWellness> {
   try {
     const { apiKey, athleteId } = await getIntervalsCredentials();
     const data = await getWellness(date, apiKey, athleteId);
@@ -61,14 +54,14 @@ export async function getWellnessAction(
       ramp_rate: data?.rampRate,
     } as IntervalsWellness;
   } catch (error: any) {
-    console.warn("Server Action Intervals Wellness Error:", error.message);
+    console.warn('Server Action Intervals Wellness Error:', error.message);
     return {} as IntervalsWellness;
   }
 }
 
 export async function getWellnessRangeAction(
   startDate: string,
-  endDate: string,
+  endDate: string
 ): Promise<IntervalsWellness[]> {
   try {
     const { apiKey, athleteId } = await getIntervalsCredentials();
@@ -76,42 +69,45 @@ export async function getWellnessRangeAction(
 
     if (!Array.isArray(data)) return [];
 
-    return data.map(d => ({
-      id: d.id,
-      hrv: d.hrv,
-      restingHR: d.restingHR,
-      sleepScore: d.sleepScore,
-      sleepSecs: d.sleepSecs,
-      bodyBattery: d.readiness ?? d.bodyBattery ?? 50,
-      vo2max: d.vo2max,
-      ctl: d.ctl,
-      atl: d.atl,
-      tsb: d.tsb,
-      ramp_rate: d.rampRate,
-    } as IntervalsWellness));
+    return data.map(
+      (d) =>
+        ({
+          id: d.id,
+          hrv: d.hrv,
+          restingHR: d.restingHR,
+          sleepScore: d.sleepScore,
+          sleepSecs: d.sleepSecs,
+          bodyBattery: d.readiness ?? d.bodyBattery ?? 50,
+          vo2max: d.vo2max,
+          ctl: d.ctl,
+          atl: d.atl,
+          tsb: d.tsb,
+          ramp_rate: d.rampRate,
+        }) as IntervalsWellness
+    );
   } catch (error: any) {
-    console.error("Server Action Intervals Wellness Range Error:", error.message);
+    console.error('Server Action Intervals Wellness Range Error:', error.message);
     return [];
   }
 }
 
 export async function getActivitiesAction(
   startDate: string,
-  endDate: string,
+  endDate: string
 ): Promise<IntervalsActivity[]> {
   try {
     const { apiKey, athleteId } = await getIntervalsCredentials();
     const data = await getActivities(startDate, endDate, apiKey, athleteId);
     return data as unknown as IntervalsActivity[];
   } catch (error: any) {
-    console.error("Server Action Intervals Activities Error:", error.message);
+    console.error('Server Action Intervals Activities Error:', error.message);
     return [];
   }
 }
 
 export async function getEventsAction(
   startDate: string,
-  endDate: string,
+  endDate: string
 ): Promise<IntervalsEvent[]> {
   try {
     const { apiKey, athleteId } = await getIntervalsCredentials();
@@ -128,7 +124,7 @@ export async function getAthleteSettingsAction() {
     const data = await getAthleteSettings(apiKey, athleteId);
     return data;
   } catch (error: any) {
-    console.error("Server Action Intervals Settings Error:", error.message);
+    console.error('Server Action Intervals Settings Error:', error.message);
     return null;
   }
 }

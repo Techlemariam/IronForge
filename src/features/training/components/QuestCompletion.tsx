@@ -1,20 +1,18 @@
-import React, { useEffect, useState, useRef } from "react";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import LootDropNotification from "../../../components/game/LootDrop";
-import { rollLootTable } from "../../../utils/lootEngine";
-import { LT_STANDARD_QUEST } from "../../../data/lootTables";
-import { LootDrop } from "../../../types/loot";
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import type React from 'react';
+import { useEffect, useRef, useState } from 'react';
+import LootDropNotification from '../../../components/game/LootDrop';
+import { LT_STANDARD_QUEST } from '../../../data/lootTables';
+import type { LootDrop } from '../../../types/loot';
+import { rollLootTable } from '../../../utils/lootEngine';
 
 interface QuestCompletionProps {
   onSave: (isPrivate: boolean) => void;
   onCancel: () => void;
 }
 
-const QuestCompletion: React.FC<QuestCompletionProps> = ({
-  onSave,
-  onCancel,
-}) => {
+const QuestCompletion: React.FC<QuestCompletionProps> = ({ onSave, onCancel }) => {
   const [drops, setDrops] = useState<LootDrop[]>([]);
   const hasRolled = useRef(false);
 
@@ -50,11 +48,7 @@ const QuestCompletion: React.FC<QuestCompletionProps> = ({
             <Button onClick={() => onSave(true)} className="px-8">
               Ja (Privat)
             </Button>
-            <Button
-              variant="default"
-              onClick={() => onSave(false)}
-              className="px-8"
-            >
+            <Button variant="default" onClick={() => onSave(false)} className="px-8">
               Nej (Offentlig)
             </Button>
           </div>
@@ -69,5 +63,3 @@ const QuestCompletion: React.FC<QuestCompletionProps> = ({
 };
 
 export default QuestCompletion;
-
-

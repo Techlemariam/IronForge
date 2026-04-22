@@ -1,33 +1,33 @@
-import prisma from "@/lib/prisma";
+import prisma from '@/lib/prisma';
 
 export const DEFINED_TITLES = [
   {
-    id: "gladiator",
-    name: "Gladiator",
-    conditionType: "PVP_RANK",
+    id: 'gladiator',
+    name: 'Gladiator',
+    conditionType: 'PVP_RANK',
     conditionValue: 1200,
-    description: "Reach 1200 Rating",
+    description: 'Reach 1200 Rating',
   },
   {
-    id: "warlord",
-    name: "Warlord",
-    conditionType: "PVP_RANK",
+    id: 'warlord',
+    name: 'Warlord',
+    conditionType: 'PVP_RANK',
     conditionValue: 1500,
-    description: "Reach 1500 Rating",
+    description: 'Reach 1500 Rating',
   },
   {
-    id: "high_warlord",
-    name: "High Warlord",
-    conditionType: "PVP_RANK",
+    id: 'high_warlord',
+    name: 'High Warlord',
+    conditionType: 'PVP_RANK',
     conditionValue: 2000,
-    description: "Reach 2000 Rating",
+    description: 'Reach 2000 Rating',
   },
   {
-    id: "iron_born",
-    name: "Iron Born",
-    conditionType: "MINING",
+    id: 'iron_born',
+    name: 'Iron Born',
+    conditionType: 'MINING',
     conditionValue: 100,
-    description: "Mine 100 Ore",
+    description: 'Mine 100 Ore',
   }, // Future example
 ];
 
@@ -54,13 +54,13 @@ export async function checkAndGrantTitles(userId: string) {
   }
 
   const unownedTitles = DEFINED_TITLES.filter(
-    (def) => !user.titles.some((t) => t.title.name === def.name),
+    (def) => !user.titles.some((t) => t.title.name === def.name)
   );
 
   for (const titleDef of unownedTitles) {
     let qualified = false;
 
-    if (titleDef.conditionType === "PVP_RANK") {
+    if (titleDef.conditionType === 'PVP_RANK') {
       if (user.pvpProfile.rankScore >= titleDef.conditionValue) {
         qualified = true;
       }

@@ -1,214 +1,208 @@
-import { useState, useEffect, useContext } from "react";
-import {
-    Session,
-    ExerciseLog,
-    AppSettings,
-    IntervalsWellness,
-} from "@/types";
-import { useBluetoothHeartRate } from "@/features/bio/hooks/useBluetoothHeartRate";
-import { AchievementContext } from "@/context/AchievementContext";
-import { StorageService, ActiveSessionState } from "@/services/storage";
-import { IntegrationService } from "@/services/integration";
-import { getWellnessAction } from "@/actions/integrations/intervals";
-import { logger } from "@/utils/logger";
+import { getWellnessAction } from '@/actions/integrations/intervals';
+import { AchievementContext } from '@/context/AchievementContext';
+import { useBluetoothHeartRate } from '@/features/bio/hooks/useBluetoothHeartRate';
+import { IntegrationService } from '@/services/integration';
+import { type ActiveSessionState, StorageService } from '@/services/storage';
+import type { AppSettings, ExerciseLog, IntervalsWellness, Session } from '@/types';
+import { logger } from '@/utils/logger';
+import { useContext, useEffect, useState } from 'react';
 
 interface UseMiningSessionProps {
-    initialSession: Session;
-    onComplete?: (results?: any) => void;
-    onExit: () => void;
+  initialSession: Session;
+  onComplete?: (results?: any) => void;
+  onExit: () => void;
 }
 
-export const useMiningSession = ({
-    initialSession,
-    onComplete,
-    onExit,
-}: UseMiningSessionProps) => {
-    const [activeSession, setActiveSession] = useState<Session>(initialSession);
+export const useMiningSession = ({ initialSession, onComplete, onExit }: UseMiningSessionProps) => {
+  const [activeSession, setActiveSession] = useState<Session>(initialSession);
 
-    // Lazy init to synchronous check for E2E mocks
-    const [hasCheckedIn, setHasCheckedIn] = useState(() => {
-        if (typeof window !== 'undefined') {
-            const hasMock = (window as any).__mockAutoCheckIn;
-            console.log("[E2E-DEBUG] [useMiningSession] Checking mock auto-checkin:", { hasMock });
-            if (hasMock) return true;
+  // Lazy init to synchronous check for E2E mocks
+  const [hasCheckedIn, setHasCheckedIn] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const hasMock = (window as any).__mockAutoCheckIn;
+      console.log('[E2E-DEBUG] [useMiningSession] Checking mock auto-checkin:', { hasMock });
+      if (hasMock) return true;
+    }
+    return false;
+  });
+
+  const [completed, setCompleted] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [showAbandonConfirm, setShowAbandonConfirm] = useState(false);
+
+  const [wellnessData, setWellnessData] = useState<IntervalsWellness | null>(null);
+  const [exportStatus, setExportStatus] = useState<'IDLE' | 'UPLOADING' | 'SUCCESS' | 'ERROR'>(
+    'IDLE'
+  );
+  const [foundRecovery, setFoundRecovery] = useState<ActiveSessionState | null>(null);
+  const [checkingRecovery, setCheckingRecovery] = useState(true);
+
+  const achievementContext = useContext(AchievementContext);
+  const { bpm } = useBluetoothHeartRate();
+
+  // --- CHECK FOR CRASH RECOVERY ---
+  useEffect(() => {
+    const checkRecovery = async () => {
+      try {
+        // E2E Bypass: Skip recovery check if mock is present
+        if (typeof window !== 'undefined' && (window as any).__mockAutoCheckIn) {
+          setCheckingRecovery(false);
+          return;
         }
-        return false;
-    });
 
-    const [completed, setCompleted] = useState(false);
-    const [isSaving, setIsSaving] = useState(false);
-    const [showAbandonConfirm, setShowAbandonConfirm] = useState(false);
-
-    const [wellnessData, setWellnessData] = useState<IntervalsWellness | null>(null);
-    const [exportStatus, setExportStatus] = useState<"IDLE" | "UPLOADING" | "SUCCESS" | "ERROR">("IDLE");
-    const [foundRecovery, setFoundRecovery] = useState<ActiveSessionState | null>(null);
-    const [checkingRecovery, setCheckingRecovery] = useState(true);
-
-    const achievementContext = useContext(AchievementContext);
-    const { bpm } = useBluetoothHeartRate();
-
-    // --- CHECK FOR CRASH RECOVERY ---
-    useEffect(() => {
-        const checkRecovery = async () => {
-            try {
-                // E2E Bypass: Skip recovery check if mock is present
-                if (typeof window !== 'undefined' && (window as any).__mockAutoCheckIn) {
-                    setCheckingRecovery(false);
-                    return;
-                }
-
-                const recovered = await StorageService.getActiveSession();
-                if (recovered && !completed) {
-                    setFoundRecovery(recovered);
-                }
-            } catch (err) {
-                logger.error(err, "Failed to check recovery session");
-            } finally {
-                setCheckingRecovery(false);
-            }
-        };
-        checkRecovery();
-    }, [completed]);
-
-    // --- LOAD HISTORY & WELLNESS ---
-    useEffect(() => {
-        const fetchData = async () => {
-            if (foundRecovery || checkingRecovery) return;
-
-            try {
-                const settings = await StorageService.getState<AppSettings>("settings");
-                if (settings && settings.intervalsApiKey) {
-                    const today = new Date().toISOString().split("T")[0];
-                    if (navigator.onLine) {
-                        const w = await getWellnessAction(today);
-                        setWellnessData({
-                            ...w,
-                            bodyBattery: w.bodyBattery || 0,
-                            sleepScore: w.sleepScore || 0,
-                        });
-                    } else {
-                        setWellnessData({ id: "offline", bodyBattery: 80, sleepScore: 85 });
-                    }
-                } else {
-                    setWellnessData({ id: "sim", bodyBattery: 75, sleepScore: 70 });
-                }
-            } catch (err) {
-                logger.error(err, "Failed to fetch session data");
-            }
-        };
-        fetchData();
-    }, [checkingRecovery, foundRecovery]);
-
-    // --- SESSION ACTIONS ---
-    const handleRestore = () => {
-        if (!foundRecovery) return;
-        setActiveSession(foundRecovery.sessionData);
-        setHasCheckedIn(true);
-        setFoundRecovery(null);
-    };
-
-    const handleDiscard = async () => {
-        await StorageService.clearActiveSession();
-        setFoundRecovery(null);
-    };
-
-    const handleExport = async () => {
-        setExportStatus("UPLOADING");
-        try {
-            const settings = await StorageService.getState<AppSettings>("settings");
-            if (!settings) {
-                logger.error(new Error("No settings found"), "Export failed");
-                setExportStatus("ERROR");
-                return;
-            }
-
-            const type = IntegrationService.detectSessionType(activeSession);
-            const success = type === "CARDIO"
-                ? await IntegrationService.uploadToIntervals(activeSession, settings)
-                : await IntegrationService.uploadToHevy(activeSession, settings);
-
-            setExportStatus(success ? "SUCCESS" : "ERROR");
-        } catch (e) {
-            logger.error(e, "Export failed");
-            setExportStatus("ERROR");
+        const recovered = await StorageService.getActiveSession();
+        if (recovered && !completed) {
+          setFoundRecovery(recovered);
         }
+      } catch (err) {
+        logger.error(err, 'Failed to check recovery session');
+      } finally {
+        setCheckingRecovery(false);
+      }
     };
+    checkRecovery();
+  }, [completed]);
 
-    const confirmAbandon = async () => {
-        await StorageService.clearActiveSession();
-        onExit();
+  // --- LOAD HISTORY & WELLNESS ---
+  useEffect(() => {
+    const fetchData = async () => {
+      if (foundRecovery || checkingRecovery) return;
+
+      try {
+        const settings = await StorageService.getState<AppSettings>('settings');
+        if (settings?.intervalsApiKey) {
+          const today = new Date().toISOString().split('T')[0];
+          if (navigator.onLine) {
+            const w = await getWellnessAction(today);
+            setWellnessData({
+              ...w,
+              bodyBattery: w.bodyBattery || 0,
+              sleepScore: w.sleepScore || 0,
+            });
+          } else {
+            setWellnessData({ id: 'offline', bodyBattery: 80, sleepScore: 85 });
+          }
+        } else {
+          setWellnessData({ id: 'sim', bodyBattery: 75, sleepScore: 70 });
+        }
+      } catch (err) {
+        logger.error(err, 'Failed to fetch session data');
+      }
     };
+    fetchData();
+  }, [checkingRecovery, foundRecovery]);
 
-    // --- SAVE LOGIC ---
-    useEffect(() => {
-        const saveResults = async () => {
-            if (!completed || isSaving) return;
-            setIsSaving(true);
+  // --- SESSION ACTIONS ---
+  const handleRestore = () => {
+    if (!foundRecovery) return;
+    setActiveSession(foundRecovery.sessionData);
+    setHasCheckedIn(true);
+    setFoundRecovery(null);
+  };
 
-            try {
-                if (achievementContext && activeSession.id === "session_a") {
-                    achievementContext.unlockAchievement("clear_deadmines");
-                }
+  const handleDiscard = async () => {
+    await StorageService.clearActiveSession();
+    setFoundRecovery(null);
+  };
 
-                const logs: ExerciseLog[] = [];
-                const today = new Date().toISOString();
+  const handleExport = async () => {
+    setExportStatus('UPLOADING');
+    try {
+      const settings = await StorageService.getState<AppSettings>('settings');
+      if (!settings) {
+        logger.error(new Error('No settings found'), 'Export failed');
+        setExportStatus('ERROR');
+        return;
+      }
 
-                activeSession.blocks.forEach((block) => {
-                    block.exercises?.forEach((ex) => {
-                        const validSets = ex.sets.filter((s) => s.completed && s.weight);
-                        if (validSets.length > 0) {
-                            const bestSet = validSets.reduce((prev, current) =>
-                                (prev.weight || 0) > (current.weight || 0) ? prev : current
-                            );
-                            const weight = bestSet.weight || 0;
-                            const reps = bestSet.completedReps || 0;
-                            const e1rm = Math.round(weight * (1 + reps / 30));
+      const type = IntegrationService.detectSessionType(activeSession);
+      const success =
+        type === 'CARDIO'
+          ? await IntegrationService.uploadToIntervals(activeSession, settings)
+          : await IntegrationService.uploadToHevy(activeSession, settings);
 
-                            logs.push({
-                                date: today,
-                                exerciseId: ex.id,
-                                e1rm: e1rm,
-                                rpe: 9,
-                                isEpic: bestSet.rarity === "legendary",
-                            });
-                        }
-                    });
-                });
+      setExportStatus(success ? 'SUCCESS' : 'ERROR');
+    } catch (e) {
+      logger.error(e, 'Export failed');
+      setExportStatus('ERROR');
+    }
+  };
 
-                for (const log of logs) {
-                    await StorageService.saveLog(log);
-                }
+  const confirmAbandon = async () => {
+    await StorageService.clearActiveSession();
+    onExit();
+  };
 
-                await StorageService.clearActiveSession();
-            } catch (e) {
-                logger.error(e, "Failed to save session");
-            } finally {
-                setIsSaving(false);
-                onComplete?.();
+  // --- SAVE LOGIC ---
+  useEffect(() => {
+    const saveResults = async () => {
+      if (!completed || isSaving) return;
+      setIsSaving(true);
+
+      try {
+        if (achievementContext && activeSession.id === 'session_a') {
+          achievementContext.unlockAchievement('clear_deadmines');
+        }
+
+        const logs: ExerciseLog[] = [];
+        const today = new Date().toISOString();
+
+        activeSession.blocks.forEach((block) => {
+          block.exercises?.forEach((ex) => {
+            const validSets = ex.sets.filter((s) => s.completed && s.weight);
+            if (validSets.length > 0) {
+              const bestSet = validSets.reduce((prev, current) =>
+                (prev.weight || 0) > (current.weight || 0) ? prev : current
+              );
+              const weight = bestSet.weight || 0;
+              const reps = bestSet.completedReps || 0;
+              const e1rm = Math.round(weight * (1 + reps / 30));
+
+              logs.push({
+                date: today,
+                exerciseId: ex.id,
+                e1rm: e1rm,
+                rpe: 9,
+                isEpic: bestSet.rarity === 'legendary',
+              });
             }
-        };
+          });
+        });
 
-        if (completed) saveResults();
-    }, [completed, isSaving, activeSession, achievementContext, onComplete]);
+        for (const log of logs) {
+          await StorageService.saveLog(log);
+        }
 
-    return {
-        activeSession,
-        setActiveSession,
-        hasCheckedIn,
-        setHasCheckedIn,
-        completed,
-        setCompleted,
-        isSaving,
-        showAbandonConfirm,
-        setShowAbandonConfirm,
-        wellnessData,
-        exportStatus,
-        foundRecovery,
-        checkingRecovery,
-        bpm,
-        handleRestore,
-        handleDiscard,
-        handleExport,
-        confirmAbandon,
+        await StorageService.clearActiveSession();
+      } catch (e) {
+        logger.error(e, 'Failed to save session');
+      } finally {
+        setIsSaving(false);
+        onComplete?.();
+      }
     };
+
+    if (completed) saveResults();
+  }, [completed, isSaving, activeSession, achievementContext, onComplete]);
+
+  return {
+    activeSession,
+    setActiveSession,
+    hasCheckedIn,
+    setHasCheckedIn,
+    completed,
+    setCompleted,
+    isSaving,
+    showAbandonConfirm,
+    setShowAbandonConfirm,
+    wellnessData,
+    exportStatus,
+    foundRecovery,
+    checkingRecovery,
+    bpm,
+    handleRestore,
+    handleDiscard,
+    handleExport,
+    confirmAbandon,
+  };
 };

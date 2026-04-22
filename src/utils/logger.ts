@@ -1,6 +1,6 @@
-import pino from "pino";
+import pino from 'pino';
 
-const isDevelopment = process.env.NODE_ENV === "development";
+const isDevelopment = process.env.NODE_ENV === 'development';
 
 /**
  * Structured Logger
@@ -8,30 +8,29 @@ const isDevelopment = process.env.NODE_ENV === "development";
  * In production, it outputs raw JSON for log aggregators (e.g., Sentry, Coolify).
  */
 export const logger = pino({
-    level: process.env.LOG_LEVEL || "info",
-    browser: {
-        asObject: true,
-    },
-    transport: isDevelopment
-        ? {
-            target: "pino-pretty",
-            options: {
-                colorize: true,
-                ignore: "pid,hostname",
-                translateTime: "HH:MM:ss Z",
-            },
-        }
-        : undefined,
+  level: process.env.LOG_LEVEL || 'info',
+  browser: {
+    asObject: true,
+  },
+  transport: isDevelopment
+    ? {
+        target: 'pino-pretty',
+        options: {
+          colorize: true,
+          ignore: 'pid,hostname',
+          translateTime: 'HH:MM:ss Z',
+        },
+      }
+    : undefined,
 });
 
 // Helper for error logging with metadata
 export const logError = (message: string, error: unknown, metadata: object = {}) => {
-    logger.error(
-        {
-            err: error instanceof Error ? { message: error.message, stack: error.stack } : error,
-            ...metadata,
-        },
-        message
-    );
+  logger.error(
+    {
+      err: error instanceof Error ? { message: error.message, stack: error.stack } : error,
+      ...metadata,
+    },
+    message
+  );
 };
-

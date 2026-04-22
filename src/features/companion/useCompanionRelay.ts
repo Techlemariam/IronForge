@@ -1,36 +1,31 @@
-import { useEffect, useRef, useCallback, useState } from "react";
-import { createClient } from "@/utils/supabase/client";
-import { RealtimeChannel } from "@supabase/supabase-js";
+import { createClient } from '@/utils/supabase/client';
+import type { RealtimeChannel } from '@supabase/supabase-js';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 // Channel Name (Deprecated for direct session usage, but keeping if needed for default)
 // const COMPANION_CHANNEL = "iron_forge_companion_v1";
 
 // Event Types
 export type CompanionEvent =
-  | { type: "HEART_RATE"; payload: number }
-  | { type: "POWER"; payload: number }
-  | { type: "ZONE_CHANGE"; payload: number }
-  | { type: "TITAN_SPEAK"; payload: { text: string; mood: string } }
-  | { type: "COMMAND"; payload: "PAUSE" | "RESUME" | "SKIP" }
-  | { type: "SYNC"; payload: { startTime: number } };
+  | { type: 'HEART_RATE'; payload: number }
+  | { type: 'POWER'; payload: number }
+  | { type: 'ZONE_CHANGE'; payload: number }
+  | { type: 'TITAN_SPEAK'; payload: { text: string; mood: string } }
+  | { type: 'COMMAND'; payload: 'PAUSE' | 'RESUME' | 'SKIP' }
+  | { type: 'SYNC'; payload: { startTime: number } };
 
-export const useCompanionRelay = (
-  role: "CONTROLLER" | "RECEIVER",
-  sessionId?: string,
-) => {
+export const useCompanionRelay = (role: 'CONTROLLER' | 'RECEIVER', sessionId?: string) => {
   const channelRef = useRef<RealtimeChannel | null>(null);
   const [lastEvent, setLastEvent] = useState<CompanionEvent | null>(null);
   const [isConnected, setIsConnected] = useState(false);
-  const [status, setStatus] = useState<
-    "CONNECTING" | "CONNECTED" | "DISCONNECTED"
-  >("DISCONNECTED");
+  const [status, setStatus] = useState<'CONNECTING' | 'CONNECTED' | 'DISCONNECTED'>('DISCONNECTED');
 
   // Initialize Channel
   useEffect(() => {
-    if (typeof window === "undefined" || !sessionId) return;
+    if (typeof window === 'undefined' || !sessionId) return;
 
     console.log(`[Companion] Initializing as ${role} on session ${sessionId}`);
-    setStatus("CONNECTING");
+    setStatus('CONNECTING');
 
     const supabase = createClient();
     const channel = supabase.channel(`iron-companion-${sessionId}`, {
@@ -40,19 +35,19 @@ export const useCompanionRelay = (
     });
 
     channel
-      .on("broadcast", { event: "relay" }, (payload) => {
-        console.log(`[Companion] Received:`, payload.payload);
+      .on('broadcast', { event: 'relay' }, (payload) => {
+        console.log('[Companion] Received:', payload.payload);
         setLastEvent(payload.payload as CompanionEvent);
       })
       .subscribe((status) => {
-        if (status === "SUBSCRIBED") {
-          console.log(`[Companion] Connected to channel`);
+        if (status === 'SUBSCRIBED') {
+          console.log('[Companion] Connected to channel');
           setIsConnected(true);
-          setStatus("CONNECTED");
+          setStatus('CONNECTED');
         } else {
           console.log(`[Companion] Status: ${status}`);
           setIsConnected(false);
-          setStatus("DISCONNECTED");
+          setStatus('DISCONNECTED');
         }
       });
 
@@ -70,12 +65,12 @@ export const useCompanionRelay = (
       if (!channelRef.current || !sessionId) return;
 
       await channelRef.current.send({
-        type: "broadcast",
-        event: "relay",
+        type: 'broadcast',
+        event: 'relay',
         payload: event,
       });
     },
-    [sessionId],
+    [sessionId]
   );
 
   return {

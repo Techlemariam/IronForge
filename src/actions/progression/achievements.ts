@@ -1,8 +1,8 @@
-"use server";
+'use server';
 
-import { prisma } from "@/lib/prisma";
-import { ACHIEVEMENTS_DATA } from "@/data/achievements";
-import { revalidatePath } from "next/cache";
+import { ACHIEVEMENTS_DATA } from '@/data/achievements';
+import { prisma } from '@/lib/prisma';
+import { revalidatePath } from 'next/cache';
 
 /**
  * Checks and unlocks achievements based on various triggers.
@@ -40,7 +40,7 @@ export async function checkAchievementsAction(userId: string) {
   for (const ach of ACHIEVEMENTS_DATA) {
     // Check if already unlocked
     const hasIt = user.achievements.some(
-      (ua) => ua.achievementId === ach.code || ua.achievement.code === ach.code,
+      (ua) => ua.achievementId === ach.code || ua.achievement.code === ach.code
     );
     // Note: Relation might be tricky if achievementId is not code.
     // Let's assume we find Achievement by code.
@@ -49,19 +49,19 @@ export async function checkAchievementsAction(userId: string) {
 
     let qualified = false;
 
-    if (ach.condition.type === "count") {
+    if (ach.condition.type === 'count') {
       const target = ach.condition.target as number;
-      if (ach.condition.metric === "workout") {
+      if (ach.condition.metric === 'workout') {
         qualified = user._count.exerciseLogs >= target;
       }
-      if (ach.condition.metric === "cardio") {
+      if (ach.condition.metric === 'cardio') {
         qualified = user._count.cardioLogs >= target;
       }
-      if (ach.condition.metric === "boss_kill") {
+      if (ach.condition.metric === 'boss_kill') {
         qualified = user._count.unlockedMonsters >= target;
       }
-    } else if (ach.condition.type === "boolean") {
-      if (ach.condition.metric === "guild") {
+    } else if (ach.condition.type === 'boolean') {
+      if (ach.condition.metric === 'guild') {
         qualified = !!user.guildId;
       }
     }
@@ -93,7 +93,7 @@ export async function checkAchievementsAction(userId: string) {
   }
 
   if (unlockedNow.length > 0) {
-    revalidatePath("/dashboard");
+    revalidatePath('/dashboard');
     // Return unlocked for Toast
     return { newUnlocks: unlockedNow };
   }
@@ -105,7 +105,7 @@ export async function getUnlockedAchievementsAction(userId: string) {
   const data = await prisma.userAchievement.findMany({
     where: { userId },
     include: { achievement: true },
-    orderBy: { unlockedAt: "desc" },
+    orderBy: { unlockedAt: 'desc' },
   });
   return data.map((ua) => ua.achievement);
 }

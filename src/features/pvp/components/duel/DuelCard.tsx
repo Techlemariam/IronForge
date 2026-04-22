@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { Swords, Timer } from "lucide-react";
-import { motion } from "framer-motion";
-import { useState } from "react";
-import { DuelArena } from "@/features/game/DuelArena";
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { DuelArena } from '@/features/game/DuelArena';
+import { motion } from 'framer-motion';
+import { Swords, Timer } from 'lucide-react';
+import { useState } from 'react';
 
-import { ExtendedDuel } from "@/app/iron-arena/ArenaClient";
+import type { ExtendedDuel } from '@/app/iron-arena/ArenaClient';
 
 interface DuelCardProps {
   duel: ExtendedDuel;
@@ -17,37 +17,26 @@ interface DuelCardProps {
   onTaunt?: () => void;
 }
 
-
 export function DuelCard({ duel, currentUserId, onTaunt }: DuelCardProps) {
   const [showArena, setShowArena] = useState(false);
   const isChallenger = currentUserId === duel.challenger.id;
   const userScore = isChallenger ? duel.challengerScore : duel.defenderScore;
-  const opponentScore = isChallenger
-    ? duel.defenderScore
-    : duel.challengerScore;
+  const opponentScore = isChallenger ? duel.defenderScore : duel.challengerScore;
   const user = isChallenger ? duel.challenger : duel.defender;
   const opponent = isChallenger ? duel.defender : duel.challenger;
 
   // Cardio Logic
-  const isCardio =
-    duel.duelType !== "TITAN_VS_TITAN" && duel.duelType !== undefined;
-  const userDistance = isChallenger
-    ? duel.challengerDistance || 0
-    : duel.defenderDistance || 0;
-  const opponentDistance = isChallenger
-    ? duel.defenderDistance || 0
-    : duel.challengerDistance || 0;
+  const isCardio = duel.duelType !== 'TITAN_VS_TITAN' && duel.duelType !== undefined;
+  const userDistance = isChallenger ? duel.challengerDistance || 0 : duel.defenderDistance || 0;
+  const opponentDistance = isChallenger ? duel.defenderDistance || 0 : duel.challengerDistance || 0;
 
   // Calculate percentages
   let maxMetric = 100;
   if (isCardio) {
-    if (
-      duel.duelType === "DISTANCE_RACE" ||
-      duel.duelType === "ELEVATION_GRIND"
-    ) {
+    if (duel.duelType === 'DISTANCE_RACE' || duel.duelType === 'ELEVATION_GRIND') {
       // For distance/elevation race, relative scale
       maxMetric = Math.max(userDistance, opponentDistance, 1);
-    } else if (duel.duelType === "SPEED_DEMON") {
+    } else if (duel.duelType === 'SPEED_DEMON') {
       // For speed demon, target is max
       maxMetric = duel.targetDistance || 10;
     }
@@ -56,20 +45,13 @@ export function DuelCard({ duel, currentUserId, onTaunt }: DuelCardProps) {
     maxMetric = Math.max(userScore, opponentScore, 500);
   }
 
-  const userProgress = isCardio
-    ? (userDistance / maxMetric) * 100
-    : (userScore / maxMetric) * 100;
-
-
+  const userProgress = isCardio ? (userDistance / maxMetric) * 100 : (userScore / maxMetric) * 100;
 
   const daysLeft = duel.endDate
     ? Math.max(
-      0,
-      Math.ceil(
-        (new Date(duel.endDate).getTime() - Date.now()) /
-        (1000 * 60 * 60 * 24),
-      ),
-    )
+        0,
+        Math.ceil((new Date(duel.endDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24))
+      )
     : 7;
 
   return (
@@ -82,11 +64,11 @@ export function DuelCard({ duel, currentUserId, onTaunt }: DuelCardProps) {
           <div className="flex items-center gap-2 text-amber-500 font-bold tracking-wider">
             <Swords className="w-5 h-5" />
             <span>
-              {duel.duelType === "SPEED_DEMON"
-                ? "SPEED DEMON"
-                : duel.duelType === "DISTANCE_RACE"
-                  ? "DISTANCE RACE"
-                  : "ACTIVE DUEL"}
+              {duel.duelType === 'SPEED_DEMON'
+                ? 'SPEED DEMON'
+                : duel.duelType === 'DISTANCE_RACE'
+                  ? 'DISTANCE RACE'
+                  : 'ACTIVE DUEL'}
             </span>
           </div>
           <div className="flex items-center gap-2 text-slate-400 text-sm">
@@ -105,7 +87,7 @@ export function DuelCard({ duel, currentUserId, onTaunt }: DuelCardProps) {
               <Avatar className="w-16 h-16 border-2 border-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.5)]">
                 <AvatarImage src={undefined} />
                 <AvatarFallback className="bg-slate-800 text-blue-500">
-                  {user.heroName?.[0] || "U"}
+                  {user.heroName?.[0] || 'U'}
                 </AvatarFallback>
               </Avatar>
               <Badge className="absolute -bottom-2 -right-2 bg-blue-600 border-blue-400 px-1 text-[10px]">
@@ -114,7 +96,7 @@ export function DuelCard({ duel, currentUserId, onTaunt }: DuelCardProps) {
             </div>
             <div>
               <div className="font-bold text-lg truncate max-w-[100px]">
-                {user.heroName || "You"}
+                {user.heroName || 'You'}
               </div>
               <div className="text-2xl font-black text-blue-400">
                 {isCardio ? `${userDistance.toFixed(2)} km` : userScore}
@@ -133,7 +115,7 @@ export function DuelCard({ duel, currentUserId, onTaunt }: DuelCardProps) {
               <Avatar className="w-16 h-16 border-2 border-red-500 shadow-[0_0_15px_rgba(239,68,68,0.5)]">
                 <AvatarImage src={undefined} />
                 <AvatarFallback className="bg-slate-800 text-red-500">
-                  {opponent.heroName?.[0] || "O"}
+                  {opponent.heroName?.[0] || 'O'}
                 </AvatarFallback>
               </Avatar>
               <Badge className="absolute -bottom-2 -right-2 bg-red-600 border-red-400 px-1 text-[10px]">
@@ -142,7 +124,7 @@ export function DuelCard({ duel, currentUserId, onTaunt }: DuelCardProps) {
             </div>
             <div>
               <div className="font-bold text-lg truncate max-w-[100px]">
-                {opponent.heroName || "Opponent"}
+                {opponent.heroName || 'Opponent'}
               </div>
               <div className="text-2xl font-black text-red-400">
                 {isCardio ? `${opponentDistance.toFixed(2)} km` : opponentScore}
@@ -156,7 +138,7 @@ export function DuelCard({ duel, currentUserId, onTaunt }: DuelCardProps) {
           <div className="space-y-1">
             <div className="flex justify-between text-xs text-slate-400 uppercase tracking-widest font-semibold">
               <span>Dominance</span>
-              <span>{userScore > opponentScore ? "Leading" : "Trailing"}</span>
+              <span>{userScore > opponentScore ? 'Leading' : 'Trailing'}</span>
             </div>
             <div className="h-4 bg-slate-800 rounded-full overflow-hidden flex relative">
               {/* Center Marker */}
@@ -176,7 +158,7 @@ export function DuelCard({ duel, currentUserId, onTaunt }: DuelCardProps) {
                 animate={{ flex: userScore + 1 }}
                 className="bg-blue-600 h-full"
               />
-              <div className="w-1 bg-black z-10"></div>
+              <div className="w-1 bg-black z-10" />
               <motion.div
                 initial={{ flex: 1 }}
                 animate={{ flex: opponentScore + 1 }}
@@ -196,7 +178,7 @@ export function DuelCard({ duel, currentUserId, onTaunt }: DuelCardProps) {
             View Details
           </Button>
 
-          {duel.status === "ACTIVE" && (
+          {duel.status === 'ACTIVE' && (
             <Button
               className="flex-1 bg-amber-600 hover:bg-amber-500 text-white font-bold tracking-wider animate-pulse"
               size="sm"

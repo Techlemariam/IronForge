@@ -1,11 +1,11 @@
-"use server";
+'use server';
 
-import { prisma } from "@/lib/prisma";
-import { revalidatePath } from "next/cache";
-import { z } from "zod";
-import { authActionClient } from "@/lib/safe-action";
+import { prisma } from '@/lib/prisma';
+import { authActionClient } from '@/lib/safe-action';
+import { revalidatePath } from 'next/cache';
+import { z } from 'zod';
 
-type FriendStatus = "PENDING" | "ACCEPTED" | "BLOCKED";
+type FriendStatus = 'PENDING' | 'ACCEPTED' | 'BLOCKED';
 
 interface Friend {
   id: string;
@@ -38,19 +38,19 @@ export const sendFriendRequestAction = authActionClient
       });
 
       if (!targetUser) {
-        return { success: false, message: "User not found" };
+        return { success: false, message: 'User not found' };
       }
 
       if (targetUser.id === fromUserId) {
-        return { success: false, message: "Cannot add yourself" };
+        return { success: false, message: 'Cannot add yourself' };
       }
 
       console.log(`Friend request sent from ${fromUserId} to ${targetUser.id}`);
-      revalidatePath("/friends");
-      return { success: true, message: "Friend request sent!" };
+      revalidatePath('/friends');
+      return { success: true, message: 'Friend request sent!' };
     } catch (error) {
-      console.error("Error sending friend request:", error);
-      return { success: false, message: "Failed to send request" };
+      console.error('Error sending friend request:', error);
+      return { success: false, message: 'Failed to send request' };
     }
   });
 
@@ -62,10 +62,10 @@ export const acceptFriendRequestAction = authActionClient
   .action(async ({ parsedInput: requestId, ctx: { userId } }) => {
     try {
       console.log(`Accepted friend request ${requestId}`);
-      revalidatePath("/friends");
+      revalidatePath('/friends');
       return { success: true };
     } catch (error) {
-      console.error("Error accepting friend request:", error);
+      console.error('Error accepting friend request:', error);
       return { success: false };
     }
   });
@@ -78,10 +78,10 @@ export const declineFriendRequestAction = authActionClient
   .action(async ({ parsedInput: requestId, ctx: { userId } }) => {
     try {
       console.log(`Declined friend request ${requestId}`);
-      revalidatePath("/friends");
+      revalidatePath('/friends');
       return { success: true };
     } catch (error) {
-      console.error("Error declining friend request:", error);
+      console.error('Error declining friend request:', error);
       return { success: false };
     }
   });
@@ -94,10 +94,10 @@ export const removeFriendAction = authActionClient
   .action(async ({ parsedInput: friendId, ctx: { userId } }) => {
     try {
       console.log(`Removed friend ${friendId}`);
-      revalidatePath("/friends");
+      revalidatePath('/friends');
       return { success: true };
     } catch (error) {
-      console.error("Error removing friend:", error);
+      console.error('Error removing friend:', error);
       return { success: false };
     }
   });
@@ -105,55 +105,53 @@ export const removeFriendAction = authActionClient
 /**
  * Get user's friends list.
  */
-export const getFriendsListAction = authActionClient
-  .action(async ({ ctx: { userId } }) => {
-    // MVP: Return sample friends
-    return [
-      {
-        id: "f1",
-        heroName: "IronGiant",
-        level: 42,
-        isOnline: true,
-        lastActive: new Date(),
-        titanClass: "Warrior",
-        friendSince: new Date("2024-06-01"),
-      },
-      {
-        id: "f2",
-        heroName: "StormBreaker",
-        level: 38,
-        isOnline: false,
-        lastActive: new Date(Date.now() - 3600000),
-        titanClass: "Mage",
-        friendSince: new Date("2024-08-15"),
-      },
-      {
-        id: "f3",
-        heroName: "MightLord",
-        level: 55,
-        isOnline: true,
-        lastActive: new Date(),
-        titanClass: "Tank",
-        friendSince: new Date("2024-03-20"),
-      },
-    ];
-  });
+export const getFriendsListAction = authActionClient.action(async ({ ctx: { userId } }) => {
+  // MVP: Return sample friends
+  return [
+    {
+      id: 'f1',
+      heroName: 'IronGiant',
+      level: 42,
+      isOnline: true,
+      lastActive: new Date(),
+      titanClass: 'Warrior',
+      friendSince: new Date('2024-06-01'),
+    },
+    {
+      id: 'f2',
+      heroName: 'StormBreaker',
+      level: 38,
+      isOnline: false,
+      lastActive: new Date(Date.now() - 3600000),
+      titanClass: 'Mage',
+      friendSince: new Date('2024-08-15'),
+    },
+    {
+      id: 'f3',
+      heroName: 'MightLord',
+      level: 55,
+      isOnline: true,
+      lastActive: new Date(),
+      titanClass: 'Tank',
+      friendSince: new Date('2024-03-20'),
+    },
+  ];
+});
 
 /**
  * Get pending friend requests.
  */
-export const getPendingRequestsAction = authActionClient
-  .action(async ({ ctx: { userId } }) => {
-    return [
-      {
-        id: "req1",
-        fromUser: { id: "u1", heroName: "NewHero", level: 15 },
-        toUserId: userId,
-        status: "PENDING",
-        createdAt: new Date(),
-      },
-    ];
-  });
+export const getPendingRequestsAction = authActionClient.action(async ({ ctx: { userId } }) => {
+  return [
+    {
+      id: 'req1',
+      fromUser: { id: 'u1', heroName: 'NewHero', level: 15 },
+      toUserId: userId,
+      status: 'PENDING',
+      createdAt: new Date(),
+    },
+  ];
+});
 
 /**
  * Search for users to add.
@@ -164,7 +162,7 @@ export const searchUsersAction = authActionClient
     if (!query || query.length < 2) return [];
 
     return [
-      { id: "search1", heroName: "IronFist", level: 30 },
-      { id: "search2", heroName: "IronWill", level: 45 },
+      { id: 'search1', heroName: 'IronFist', level: 30 },
+      { id: 'search2', heroName: 'IronWill', level: 45 },
     ];
   });

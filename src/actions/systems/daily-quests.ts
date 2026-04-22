@@ -1,17 +1,10 @@
-"use server";
+'use server';
 
-import { prisma } from "@/lib/prisma";
-import { revalidatePath } from "next/cache";
+import { prisma } from '@/lib/prisma';
+import { revalidatePath } from 'next/cache';
 
-type QuestType =
-  | "WORKOUT"
-  | "VOLUME"
-  | "CARDIO"
-  | "STREAK"
-  | "PR"
-  | "COMBO"
-  | "SOCIAL";
-type QuestDifficulty = "EASY" | "MEDIUM" | "HARD" | "LEGENDARY";
+type QuestType = 'WORKOUT' | 'VOLUME' | 'CARDIO' | 'STREAK' | 'PR' | 'COMBO' | 'SOCIAL';
+type QuestDifficulty = 'EASY' | 'MEDIUM' | 'HARD' | 'LEGENDARY';
 
 interface DailyQuest {
   id: string;
@@ -31,41 +24,39 @@ interface DailyQuest {
 
 const DAILY_QUEST_TEMPLATES = [
   {
-    code: "DAILY_WORKOUT_1",
-    title: "First Steps",
-    description: "Complete any workout",
-    type: "DAILY",
-    criteria: { metric: "workouts", target: 1 },
+    code: 'DAILY_WORKOUT_1',
+    title: 'First Steps',
+    description: 'Complete any workout',
+    type: 'DAILY',
+    criteria: { metric: 'workouts', target: 1 },
     rewards: { xp: 100, gold: 50 },
-    difficulty: "EASY"
+    difficulty: 'EASY',
   },
   {
-    code: "DAILY_VOL_1",
-    title: "Volume Builder",
-    description: "Log 5000kg total volume",
-    type: "DAILY",
-    criteria: { metric: "volume_kg", target: 5000 },
+    code: 'DAILY_VOL_1',
+    title: 'Volume Builder',
+    description: 'Log 5000kg total volume',
+    type: 'DAILY',
+    criteria: { metric: 'volume_kg', target: 5000 },
     rewards: { xp: 150, gold: 75 },
-    difficulty: "MEDIUM"
+    difficulty: 'MEDIUM',
   },
   {
-    code: "DAILY_CARDIO_1",
-    title: "Heart Starter",
-    description: "Complete 15 min cardio",
-    type: "DAILY",
-    criteria: { metric: "duration_min", target: 15 },
+    code: 'DAILY_CARDIO_1',
+    title: 'Heart Starter',
+    description: 'Complete 15 min cardio',
+    type: 'DAILY',
+    criteria: { metric: 'duration_min', target: 15 },
     rewards: { xp: 100, gold: 50 },
-    difficulty: "EASY"
-  }
+    difficulty: 'EASY',
+  },
 ];
 
 /**
  * Generate (or fetch) daily quests for a user.
  * Now backed by DB.
  */
-export async function generateDailyQuestsAction(
-  userId: string,
-): Promise<DailyQuest[]> {
+export async function generateDailyQuestsAction(userId: string): Promise<DailyQuest[]> {
   try {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -77,11 +68,11 @@ export async function generateDailyQuestsAction(
       where: {
         userId,
         challenge: {
-          type: "DAILY",
-          endDate: { gt: new Date() } // Not expired
-        }
+          type: 'DAILY',
+          endDate: { gt: new Date() }, // Not expired
+        },
       },
-      include: { challenge: true }
+      include: { challenge: true },
     });
 
     if (existing.length > 0) {
@@ -95,38 +86,40 @@ export async function generateDailyQuestsAction(
     try {
       const user = await prisma.user.findUnique({
         where: { id: userId },
-        include: { wardensManifest: true }
+        include: { wardensManifest: true },
       });
 
-      if (user && user.wardensManifest) {
-        const phase = user.wardensManifest.phase || "BALANCED";
+      if (user?.wardensManifest) {
+        const phase = user.wardensManifest.phase || 'BALANCED';
 
-        if (phase === "DELOAD") {
+        if (phase === 'DELOAD') {
           // Filter out Volume/High-Intensity
-          templateList = templateList.filter(t => t.code !== 'DAILY_VOL_1' && t.code !== 'DAILY_WORKOUT_1');
+          templateList = templateList.filter(
+            (t) => t.code !== 'DAILY_VOL_1' && t.code !== 'DAILY_WORKOUT_1'
+          );
 
           // Add Recovery Quest
           templateList.push({
-            code: "DAILY_RECOVERY_1",
-            title: "Active Recovery",
-            description: "Log 15 min mobility or yoga",
-            type: "DAILY",
-            criteria: { metric: "duration_min", target: 15 },
+            code: 'DAILY_RECOVERY_1',
+            title: 'Active Recovery',
+            description: 'Log 15 min mobility or yoga',
+            type: 'DAILY',
+            criteria: { metric: 'duration_min', target: 15 },
             rewards: { xp: 200, gold: 0 },
-            difficulty: "EASY"
+            difficulty: 'EASY',
           });
         }
       }
     } catch (e) {
-      console.warn("GPE Quest Check failed", e);
+      console.warn('GPE Quest Check failed', e);
     }
 
     // Create/Find Templates
     const dbChallenges = [];
     for (const tpl of templateList) {
-      // Daily challenges need unique dates if we track history? 
+      // Daily challenges need unique dates if we track history?
       // Or we re-use the same "Challenge" def and just create new "UserChallenge" rows?
-      // Schema: UserChallenge has ID (userId, challengeId). 
+      // Schema: UserChallenge has ID (userId, challengeId).
       // If we reuse challengeId, we can't track history.
       // We likely need a "Active Daily Challenge" system.
       // Let's create specific Challenge rows for TODAY.
@@ -138,13 +131,13 @@ export async function generateDailyQuestsAction(
           code,
           title: tpl.title,
           description: tpl.description,
-          type: "DAILY",
+          type: 'DAILY',
           startDate: today,
           endDate: tomorrow,
           criteria: tpl.criteria,
-          rewards: tpl.rewards
+          rewards: tpl.rewards,
         },
-        update: {}
+        update: {},
       });
       dbChallenges.push(challenge);
     }
@@ -174,9 +167,8 @@ export async function generateDailyQuestsAction(
     }
 
     return [];
-
   } catch (error) {
-    console.error("Error generating daily quests:", error);
+    console.error('Error generating daily quests:', error);
     return [];
   }
 }
@@ -188,7 +180,7 @@ function mapUserChallengeToDailyQuest(uc: any): DailyQuest {
   return {
     id: c.id, // Use Challenge ID for tracking
     type: mapMetricToType(criteria.metric != null ? String(criteria.metric) : ''),
-    difficulty: "MEDIUM", // Hardcoded for simplified mapping
+    difficulty: 'MEDIUM', // Hardcoded for simplified mapping
     title: c.title,
     description: c.description,
     target: Number(criteria.target) || 0,
@@ -197,7 +189,7 @@ function mapUserChallengeToDailyQuest(uc: any): DailyQuest {
     goldReward: rewards.gold || 0,
     expiresAt: c.endDate,
     isCompleted: uc.completed,
-    isClaimed: uc.claimed
+    isClaimed: uc.claimed,
   };
 }
 
@@ -212,9 +204,7 @@ function mapMetricToType(metric: string): QuestType {
 /**
  * Get user's current daily quests.
  */
-export async function getDailyQuestsAction(
-  userId: string,
-): Promise<DailyQuest[]> {
+export async function getDailyQuestsAction(userId: string): Promise<DailyQuest[]> {
   return generateDailyQuestsAction(userId);
 }
 
@@ -225,7 +215,7 @@ export async function getDailyQuestsAction(
 export async function updateQuestProgressAction(
   _userId: string,
   _questType: QuestType,
-  _amount: number,
+  _amount: number
 ): Promise<{ questsUpdated: number; questsCompleted: string[] }> {
   // No-op, logic moved to challengeService
   return { questsUpdated: 0, questsCompleted: [] };
@@ -236,12 +226,12 @@ export async function updateQuestProgressAction(
  */
 export async function claimQuestRewardAction(
   userId: string,
-  questId: string, // actually challengeId
+  questId: string // actually challengeId
 ): Promise<{ success: boolean; xp: number; gold: number; bonus?: string }> {
   try {
     const uc = await prisma.userChallenge.findUnique({
       where: { userId_challengeId: { userId, challengeId: questId } },
-      include: { challenge: true }
+      include: { challenge: true },
     });
 
     if (!uc || !uc.completed || uc.claimed) {
@@ -253,24 +243,24 @@ export async function claimQuestRewardAction(
     const gold = rewards.gold || 0;
 
     // 1. Award
-    const { ProgressionService } = await import("@/services/progression");
+    const { ProgressionService } = await import('@/services/progression');
     if (xp > 0) await ProgressionService.addExperience(userId, xp);
     if (gold > 0) await ProgressionService.awardGold(userId, gold);
 
     // 2. Mark Claimed
     await prisma.userChallenge.update({
       where: { userId_challengeId: { userId, challengeId: questId } },
-      data: { claimed: true }
+      data: { claimed: true },
     });
 
-    revalidatePath("/daily-quests");
+    revalidatePath('/daily-quests');
     return {
       success: true,
       xp,
       gold,
     };
   } catch (error) {
-    console.error("Error claiming quest:", error);
+    console.error('Error claiming quest:', error);
     return { success: false, xp: 0, gold: 0 };
   }
 }

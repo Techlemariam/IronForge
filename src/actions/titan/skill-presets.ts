@@ -1,8 +1,8 @@
-"use server";
+'use server';
 
-import { prisma } from "@/lib/prisma";
-import { revalidatePath } from "next/cache";
-import { z } from "zod";
+import { prisma } from '@/lib/prisma';
+import { revalidatePath } from 'next/cache';
+import { z } from 'zod';
 
 const PresetSchema = z.object({
   name: z.string().min(1).max(50),
@@ -12,7 +12,7 @@ const PresetSchema = z.object({
 
 export async function saveSkillPresetAction(
   userId: string,
-  data: { name: string; skillIds: string[]; description?: string },
+  data: { name: string; skillIds: string[]; description?: string }
 ) {
   try {
     const validated = PresetSchema.parse(data);
@@ -26,11 +26,11 @@ export async function saveSkillPresetAction(
       },
     });
 
-    revalidatePath("/dashboard");
+    revalidatePath('/dashboard');
     return { success: true, preset };
   } catch (error) {
-    console.error("Error saving skill preset:", error);
-    return { success: false, error: "Failed to save preset" };
+    console.error('Error saving skill preset:', error);
+    return { success: false, error: 'Failed to save preset' };
   }
 }
 
@@ -38,12 +38,12 @@ export async function getSkillPresetsAction(userId: string) {
   try {
     const presets = await prisma.skillPreset.findMany({
       where: { userId },
-      orderBy: { createdAt: "desc" },
+      orderBy: { createdAt: 'desc' },
     });
 
     return { success: true, presets };
   } catch (error) {
-    console.error("Error fetching skill presets:", error);
+    console.error('Error fetching skill presets:', error);
     return { success: false, presets: [] };
   }
 }
@@ -55,7 +55,7 @@ export async function loadSkillPresetAction(userId: string, presetId: string) {
     });
 
     if (!preset) {
-      return { success: false, error: "Preset not found" };
+      return { success: false, error: 'Preset not found' };
     }
 
     // Reset all skills first
@@ -73,27 +73,24 @@ export async function loadSkillPresetAction(userId: string, presetId: string) {
       });
     }
 
-    revalidatePath("/dashboard");
+    revalidatePath('/dashboard');
     return { success: true, loadedSkills: preset.skillIds };
   } catch (error) {
-    console.error("Error loading skill preset:", error);
-    return { success: false, error: "Failed to load preset" };
+    console.error('Error loading skill preset:', error);
+    return { success: false, error: 'Failed to load preset' };
   }
 }
 
-export async function deleteSkillPresetAction(
-  userId: string,
-  presetId: string,
-) {
+export async function deleteSkillPresetAction(userId: string, presetId: string) {
   try {
     await prisma.skillPreset.deleteMany({
       where: { id: presetId, userId },
     });
 
-    revalidatePath("/dashboard");
+    revalidatePath('/dashboard');
     return { success: true };
   } catch (error) {
-    console.error("Error deleting skill preset:", error);
-    return { success: false, error: "Failed to delete preset" };
+    console.error('Error deleting skill preset:', error);
+    return { success: false, error: 'Failed to delete preset' };
   }
 }

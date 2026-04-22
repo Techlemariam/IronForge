@@ -1,7 +1,7 @@
-"use server";
+'use server';
 
-import { revalidatePath } from "next/cache";
-import { z } from "zod";
+import { revalidatePath } from 'next/cache';
+import { z } from 'zod';
 
 const TemplateExerciseSchema = z.object({
   exerciseId: z.string(),
@@ -18,16 +18,7 @@ const TemplateExerciseSchema = z.object({
 const WorkoutTemplateSchema = z.object({
   name: z.string().min(1).max(100),
   description: z.string().max(500).optional(),
-  category: z.enum([
-    "PUSH",
-    "PULL",
-    "LEGS",
-    "UPPER",
-    "LOWER",
-    "FULL_BODY",
-    "CARDIO",
-    "CUSTOM",
-  ]),
+  category: z.enum(['PUSH', 'PULL', 'LEGS', 'UPPER', 'LOWER', 'FULL_BODY', 'CARDIO', 'CUSTOM']),
   exercises: z.array(TemplateExerciseSchema).min(1).max(20),
   estimatedMinutes: z.number().min(5).max(180).optional(),
   tags: z.array(z.string()).max(5).optional(),
@@ -52,7 +43,7 @@ interface WorkoutTemplate {
  */
 export async function createWorkoutTemplateAction(
   userId: string,
-  data: z.infer<typeof WorkoutTemplateSchema>,
+  data: z.infer<typeof WorkoutTemplateSchema>
 ): Promise<{ success: boolean; templateId?: string; error?: string }> {
   try {
     const validated = WorkoutTemplateSchema.parse(data);
@@ -60,18 +51,16 @@ export async function createWorkoutTemplateAction(
     // In production, save to database
     const templateId = `template-${userId}-${Date.now()}`;
 
-    console.log(
-      `Created template: ${validated.name} with ${validated.exercises.length} exercises`,
-    );
+    console.log(`Created template: ${validated.name} with ${validated.exercises.length} exercises`);
 
-    revalidatePath("/templates");
+    revalidatePath('/templates');
     return { success: true, templateId };
   } catch (error) {
     if (error instanceof z.ZodError) {
       return { success: false, error: error.issues[0].message };
     }
-    console.error("Error creating template:", error);
-    return { success: false, error: "Failed to create template" };
+    console.error('Error creating template:', error);
+    return { success: false, error: 'Failed to create template' };
   }
 }
 
@@ -80,100 +69,100 @@ export async function createWorkoutTemplateAction(
  */
 export async function getWorkoutTemplatesAction(
   userId: string,
-  category?: string,
+  category?: string
 ): Promise<WorkoutTemplate[]> {
   try {
     // MVP: Return sample templates
     return [
       {
-        id: "template-push-day",
+        id: 'template-push-day',
         userId,
-        name: "Push Day A",
-        description: "Chest, shoulders, and triceps focus",
-        category: "PUSH",
+        name: 'Push Day A',
+        description: 'Chest, shoulders, and triceps focus',
+        category: 'PUSH',
         exercises: [
           {
-            exerciseId: "bench-press",
-            exerciseName: "Barbell Bench Press",
+            exerciseId: 'bench-press',
+            exerciseName: 'Barbell Bench Press',
             sets: 4,
             repsRange: { min: 6, max: 8 },
           },
           {
-            exerciseId: "ohp",
-            exerciseName: "Overhead Press",
+            exerciseId: 'ohp',
+            exerciseName: 'Overhead Press',
             sets: 3,
             repsRange: { min: 8, max: 10 },
           },
           {
-            exerciseId: "incline-db",
-            exerciseName: "Incline Dumbbell Press",
+            exerciseId: 'incline-db',
+            exerciseName: 'Incline Dumbbell Press',
             sets: 3,
             repsRange: { min: 10, max: 12 },
           },
           {
-            exerciseId: "lateral-raise",
-            exerciseName: "Lateral Raises",
+            exerciseId: 'lateral-raise',
+            exerciseName: 'Lateral Raises',
             sets: 3,
             repsRange: { min: 12, max: 15 },
           },
           {
-            exerciseId: "tricep-pushdown",
-            exerciseName: "Tricep Pushdowns",
+            exerciseId: 'tricep-pushdown',
+            exerciseName: 'Tricep Pushdowns',
             sets: 3,
             repsRange: { min: 12, max: 15 },
           },
         ],
         estimatedMinutes: 60,
-        tags: ["chest", "shoulders", "triceps"],
+        tags: ['chest', 'shoulders', 'triceps'],
         usageCount: 12,
         createdAt: new Date(),
       },
       {
-        id: "template-pull-day",
+        id: 'template-pull-day',
         userId,
-        name: "Pull Day A",
-        description: "Back and biceps focus",
-        category: "PULL",
+        name: 'Pull Day A',
+        description: 'Back and biceps focus',
+        category: 'PULL',
         exercises: [
           {
-            exerciseId: "deadlift",
-            exerciseName: "Deadlift",
+            exerciseId: 'deadlift',
+            exerciseName: 'Deadlift',
             sets: 4,
             repsRange: { min: 5, max: 6 },
           },
           {
-            exerciseId: "pullup",
-            exerciseName: "Pull-ups",
+            exerciseId: 'pullup',
+            exerciseName: 'Pull-ups',
             sets: 4,
             repsRange: { min: 6, max: 10 },
           },
           {
-            exerciseId: "bb-row",
-            exerciseName: "Barbell Row",
+            exerciseId: 'bb-row',
+            exerciseName: 'Barbell Row',
             sets: 3,
             repsRange: { min: 8, max: 10 },
           },
           {
-            exerciseId: "face-pull",
-            exerciseName: "Face Pulls",
+            exerciseId: 'face-pull',
+            exerciseName: 'Face Pulls',
             sets: 3,
             repsRange: { min: 15, max: 20 },
           },
           {
-            exerciseId: "bicep-curl",
-            exerciseName: "Bicep Curls",
+            exerciseId: 'bicep-curl',
+            exerciseName: 'Bicep Curls',
             sets: 3,
             repsRange: { min: 10, max: 12 },
           },
         ],
         estimatedMinutes: 65,
-        tags: ["back", "biceps"],
+        tags: ['back', 'biceps'],
         usageCount: 10,
         createdAt: new Date(),
       },
     ].filter((t) => !category || t.category === category);
   } catch (error) {
-    console.error("Error getting templates:", error);
+    console.error('Error getting templates:', error);
     return [];
   }
 }
@@ -182,8 +171,8 @@ export async function getWorkoutTemplatesAction(
  * Start workout from template.
  */
 export async function startWorkoutFromTemplateAction(
-  userId: string,
-  templateId: string,
+  _userId: string,
+  templateId: string
 ): Promise<{ success: boolean; workoutId?: string }> {
   try {
     // In production:
@@ -196,7 +185,7 @@ export async function startWorkoutFromTemplateAction(
     const workoutId = `workout-${Date.now()}`;
     return { success: true, workoutId };
   } catch (error) {
-    console.error("Error starting from template:", error);
+    console.error('Error starting from template:', error);
     return { success: false };
   }
 }
@@ -205,15 +194,15 @@ export async function startWorkoutFromTemplateAction(
  * Delete a template.
  */
 export async function deleteWorkoutTemplateAction(
-  userId: string,
-  templateId: string,
+  _userId: string,
+  templateId: string
 ): Promise<{ success: boolean }> {
   try {
     console.log(`Deleted template: ${templateId}`);
-    revalidatePath("/templates");
+    revalidatePath('/templates');
     return { success: true };
   } catch (error) {
-    console.error("Error deleting template:", error);
+    console.error('Error deleting template:', error);
     return { success: false };
   }
 }
@@ -224,15 +213,15 @@ export async function deleteWorkoutTemplateAction(
 export async function duplicateTemplateAction(
   userId: string,
   templateId: string,
-  _newName: string,
+  _newName: string
 ): Promise<{ success: boolean; newTemplateId?: string }> {
   try {
     const newTemplateId = `template-${userId}-${Date.now()}`;
     console.log(`Duplicated template: ${templateId} -> ${newTemplateId}`);
-    revalidatePath("/templates");
+    revalidatePath('/templates');
     return { success: true, newTemplateId };
   } catch (error) {
-    console.error("Error duplicating template:", error);
+    console.error('Error duplicating template:', error);
     return { success: false };
   }
 }

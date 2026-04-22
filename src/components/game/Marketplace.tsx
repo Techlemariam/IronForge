@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { ShoppingBag, X, Zap, Shield, Heart, Skull } from "lucide-react";
-import {
-  getProgressionAction,
-  awardGoldAction,
-} from "@/actions/progression/core";
-import { StorageService } from "../../services/storage";
-import { playSound } from "../../utils";
+import { awardGoldAction, getProgressionAction } from '@/actions/progression/core';
+import { Heart, Shield, ShoppingBag, Skull, X, Zap } from 'lucide-react';
+import type React from 'react';
+import { useEffect, useState } from 'react';
+import { StorageService } from '../../services/storage';
+import { playSound } from '../../utils';
 
 interface MarketplaceProps {
   onClose: () => void;
@@ -22,36 +20,36 @@ interface ShopItem {
 
 const SHOP_ITEMS: ShopItem[] = [
   {
-    id: "potion_health",
-    name: "Vitality Elixir",
-    description: "Instantly restores 50 HP in the Battle Arena.",
+    id: 'potion_health',
+    name: 'Vitality Elixir',
+    description: 'Instantly restores 50 HP in the Battle Arena.',
     cost: 50,
     icon: <Heart className="w-6 h-6 text-red-500" />,
-    effect: "Heal 50 HP",
+    effect: 'Heal 50 HP',
   },
   {
-    id: "scroll_strength",
-    name: "Scroll of Strength",
-    description: "Permanently increases Arena Strength by 1.",
+    id: 'scroll_strength',
+    name: 'Scroll of Strength',
+    description: 'Permanently increases Arena Strength by 1.',
     cost: 200,
     icon: <Zap className="w-6 h-6 text-yellow-500" />,
-    effect: "+1 STR",
+    effect: '+1 STR',
   },
   {
-    id: "skin_shadow",
-    name: "Shadow Form",
-    description: "Unlocks the Shadow avatar skin.",
+    id: 'skin_shadow',
+    name: 'Shadow Form',
+    description: 'Unlocks the Shadow avatar skin.',
     cost: 1000,
     icon: <Skull className="w-6 h-6 text-purple-500" />,
-    effect: "Cosmetic",
+    effect: 'Cosmetic',
   },
   {
-    id: "shield_iron",
-    name: "Iron Plating",
-    description: "Reduces damage taken in the Arena by 5% (Passive).",
+    id: 'shield_iron',
+    name: 'Iron Plating',
+    description: 'Reduces damage taken in the Arena by 5% (Passive).',
     cost: 500,
     icon: <Shield className="w-6 h-6 text-slate-400" />,
-    effect: "Passive Def",
+    effect: 'Passive Def',
   },
 ];
 
@@ -66,8 +64,7 @@ const Marketplace: React.FC<MarketplaceProps> = ({ onClose }) => {
       if (state) {
         setGold(state.gold);
       }
-      const currentInv =
-        (await StorageService.getState<string[]>("inventory")) || [];
+      const currentInv = (await StorageService.getState<string[]>('inventory')) || [];
       setInventory(currentInv);
     };
     loadEconomy();
@@ -83,18 +80,18 @@ const Marketplace: React.FC<MarketplaceProps> = ({ onClose }) => {
         // Add to Inventory (Hypothetical) - Only if deduction succeeded
         const currentInv = [...inventory, item.id];
         setInventory(currentInv);
-        await StorageService.saveState("inventory", currentInv);
+        await StorageService.saveState('inventory', currentInv);
 
-        playSound("ding");
+        playSound('ding');
         setMessage(`Purchased ${item.name}!`);
       } else {
-        playSound("fail");
-        setMessage("Transaction failed at the counter.");
+        playSound('fail');
+        setMessage('Transaction failed at the counter.');
       }
       setTimeout(() => setMessage(null), 3000);
     } else {
-      playSound("fail");
-      setMessage("Not enough Gold!");
+      playSound('fail');
+      setMessage('Not enough Gold!');
       setTimeout(() => setMessage(null), 3000);
     }
   };
@@ -117,12 +114,8 @@ const Marketplace: React.FC<MarketplaceProps> = ({ onClose }) => {
           </div>
           <div className="flex items-center gap-6">
             <div className="text-right">
-              <div className="text-xs text-zinc-500 uppercase tracking-widest">
-                Your Purse
-              </div>
-              <div className="text-2xl font-mono text-yellow-400 font-bold">
-                {gold} G
-              </div>
+              <div className="text-xs text-zinc-500 uppercase tracking-widest">Your Purse</div>
+              <div className="text-2xl font-mono text-yellow-400 font-bold">{gold} G</div>
             </div>
             <button
               onClick={onClose}
@@ -148,7 +141,7 @@ const Marketplace: React.FC<MarketplaceProps> = ({ onClose }) => {
                 key={item.id}
                 className="bg-zinc-950 border border-zinc-800 p-6 rounded-lg group hover:border-yellow-600 transition-all duration-300 relative overflow-hidden"
               >
-                <div className="absolute top-0 right-0 w-24 h-24 bg-yellow-500/5 rounded-full blur-2xl group-hover:bg-yellow-500/10 transition-all"></div>
+                <div className="absolute top-0 right-0 w-24 h-24 bg-yellow-500/5 rounded-full blur-2xl group-hover:bg-yellow-500/10 transition-all" />
 
                 <div className="flex justify-between items-start mb-4">
                   <div className="p-3 bg-zinc-900 rounded-lg border border-zinc-700 group-hover:border-yellow-500/50 transition-all">
@@ -156,30 +149,27 @@ const Marketplace: React.FC<MarketplaceProps> = ({ onClose }) => {
                   </div>
                   <div className="text-right">
                     <span
-                      className={`text-xl font-bold font-mono ${gold >= item.cost ? "text-white" : "text-red-500"}`}
+                      className={`text-xl font-bold font-mono ${gold >= item.cost ? 'text-white' : 'text-red-500'}`}
                     >
                       {item.cost} G
                     </span>
                   </div>
                 </div>
 
-                <h3 className="text-lg font-bold text-white mb-2">
-                  {item.name}
-                </h3>
-                <p className="text-zinc-400 text-sm mb-6 h-10">
-                  {item.description}
-                </p>
+                <h3 className="text-lg font-bold text-white mb-2">{item.name}</h3>
+                <p className="text-zinc-400 text-sm mb-6 h-10">{item.description}</p>
 
                 <button
                   onClick={() => handleBuy(item)}
                   disabled={gold < item.cost}
                   className={`w-full py-3 rounded font-bold uppercase tracking-wider text-sm transition-all
-                                        ${gold >= item.cost
-                      ? "bg-yellow-700 hover:bg-yellow-600 text-white shadow-lg"
-                      : "bg-zinc-800 text-zinc-600 cursor-not-allowed"
-                    }`}
+                                        ${
+                                          gold >= item.cost
+                                            ? 'bg-yellow-700 hover:bg-yellow-600 text-white shadow-lg'
+                                            : 'bg-zinc-800 text-zinc-600 cursor-not-allowed'
+                                        }`}
                 >
-                  {gold >= item.cost ? "Purchase" : "Insuf. Funds"}
+                  {gold >= item.cost ? 'Purchase' : 'Insuf. Funds'}
                 </button>
               </div>
             ))}

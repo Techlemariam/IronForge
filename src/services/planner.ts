@@ -1,10 +1,10 @@
-import prisma from "../lib/prisma";
-import { runFullAudit } from "@/services/auditorOrchestrator";
-import { OracleService } from "./oracle";
-import { getWellness } from "../lib/intervals";
-import { AnalyticsService } from "./analytics";
-import { TrainingPath, IntervalsActivity, ExerciseLog } from "../types";
-import { WellnessData } from "../lib/intervals";
+import { runFullAudit } from '@/services/auditorOrchestrator';
+import { getWellness } from '../lib/intervals';
+import type { WellnessData } from '../lib/intervals';
+import prisma from '../lib/prisma';
+import type { ExerciseLog, IntervalsActivity, TrainingPath } from '../types';
+import { AnalyticsService } from './analytics';
+import { OracleService } from './oracle';
 
 // Note: Hevy integration removed per data-source-reconciliation.md
 // Strength data now comes from IronForge internal logs only.
@@ -12,7 +12,7 @@ import { WellnessData } from "../lib/intervals";
 /**
  * Server-Side Planner Service
  * Orchestrates data from DB and Intervals to generate weekly plans.
- * 
+ *
  * DATA SOURCES:
  * - Strength: IronForge PostgreSQL (internal logs from IronMines)
  * - Cardio: Garmin -> Intervals.icu
@@ -47,7 +47,7 @@ export const PlannerService = {
       },
     });
 
-    if (!user) throw new Error("User not found");
+    if (!user) throw new Error('User not found');
 
     // 2. Fetch Strength Data (IronForge internal logs)
     // runFullAudit now uses userId to fetch from IronForge DB
@@ -59,7 +59,7 @@ export const PlannerService = {
       ctl: 0,
       atl: 0,
       tsb: 0,
-      id: "unknown",
+      id: 'unknown',
       hrv: null,
       restingHR: null,
       readiness: null,
@@ -88,12 +88,8 @@ export const PlannerService = {
       steps: null,
     };
     if (user.intervalsApiKey && user.intervalsAthleteId) {
-      const today = new Date().toISOString().split("T")[0];
-      const w = await getWellness(
-        today,
-        user.intervalsApiKey,
-        user.intervalsAthleteId,
-      );
+      const today = new Date().toISOString().split('T')[0];
+      const w = await getWellness(today, user.intervalsApiKey, user.intervalsAthleteId);
       if (w && !Array.isArray(w)) wellness = w;
     }
 
@@ -111,37 +107,37 @@ export const PlannerService = {
     // Prisma types are compatible with Analytics requirements
     // We map to ExerciseLog[] locally to adding defaults for missing fields if needed
     // Analytics Service expects e1rm and rpe for calculation
-    const exerciseLogs: ExerciseLog[] = user.exerciseLogs.map(log => ({
+    const exerciseLogs: ExerciseLog[] = user.exerciseLogs.map((log) => ({
       ...log,
       date: log.date.toISOString(), // Convert Date to string
-      sets: log.sets as unknown as import("@/types").Set[], // JsonValue to expected type
+      sets: log.sets as unknown as import('@/types').Set[], // JsonValue to expected type
       e1rm: 0, // Defaulting to 0 as Prisma model lacks this column? Checked schema: it's missing.
-      rpe: 0,   // Defaulting to 0
+      rpe: 0, // Defaulting to 0
       isEpic: log.isPersonalRecord, // Mapping isPersonalRecord to isEpic? Wait, check definitions.
-      archetype: log.archetype as unknown as import("@/types").Archetype // Prisma Enum vs Internal Enum mismatch prevention
+      archetype: log.archetype as unknown as import('@/types').Archetype, // Prisma Enum vs Internal Enum mismatch prevention
     }));
 
     // Ensure wellness matches the shape expected by Analytics (WellnessData is compatible)
     const ttb = AnalyticsService.calculateTTB(
       exerciseLogs,
       activities,
-      wellness as unknown as import("@/types").IntervalsWellness
+      wellness as unknown as import('@/types').IntervalsWellness
     );
 
     // If auditor says we are neglecting something, that becomes lowest TTB
     if (auditReport.highestPriorityGap) {
-      ttb.lowest = "strength"; // Weakness found
+      ttb.lowest = 'strength'; // Weakness found
     }
 
     // 6. Generate Plan via Oracle
     const recommendation = await OracleService.consult(
-      wellness as unknown as import("@/types").IntervalsWellness,
+      wellness as unknown as import('@/types').IntervalsWellness,
       ttb,
       [], // events
       auditReport,
       undefined, // titanAnalysis
       null, // recoveryAnalysis
-      (user.activePath as TrainingPath) || "HYBRID_WARDEN",
+      (user.activePath as TrainingPath) || 'HYBRID_WARDEN'
     );
 
     // Wrap recommendation into a week plan structure
@@ -165,7 +161,7 @@ export const PlannerService = {
       data: {
         userId: user.id,
         weekStart: new Date(plan.weekStart),
-        plan: plan.days as unknown as import("@/types/prisma").Prisma.InputJsonValue,
+        plan: plan.days as unknown as import('@/types/prisma').Prisma.InputJsonValue,
       },
     });
 

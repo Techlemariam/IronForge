@@ -1,12 +1,12 @@
-"use server";
+'use server';
 
-import { createClient } from "@/utils/supabase/server";
-import { revalidatePath } from "next/cache";
-import prisma from "@/lib/prisma";
-import { Faction  } from "@/types/prisma";
+import prisma from '@/lib/prisma';
+import type { Faction } from '@/types/prisma';
+import { createClient } from '@/utils/supabase/server';
+import { revalidatePath } from 'next/cache';
 
 export async function updateFactionAction(
-  faction: Faction,
+  faction: Faction
 ): Promise<{ success: boolean; error?: string }> {
   const supabase = await createClient();
   const {
@@ -14,7 +14,7 @@ export async function updateFactionAction(
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return { success: false, error: "Not authenticated" };
+    return { success: false, error: 'Not authenticated' };
   }
 
   try {
@@ -23,16 +23,16 @@ export async function updateFactionAction(
       data: { faction },
     });
 
-    revalidatePath("/", "layout");
+    revalidatePath('/', 'layout');
     return { success: true };
   } catch (error) {
-    console.error("Failed to update faction:", error);
-    return { success: false, error: "Failed to update faction" };
+    console.error('Failed to update faction:', error);
+    return { success: false, error: 'Failed to update faction' };
   }
 }
 
 export async function updateArchetypeAction(
-  archetype: any, // using any to avoid import issues if prisma client not fully regenned in scope
+  archetype: any // using any to avoid import issues if prisma client not fully regenned in scope
 ): Promise<{ success: boolean; error?: string }> {
   const supabase = await createClient();
   const {
@@ -40,7 +40,7 @@ export async function updateArchetypeAction(
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return { success: false, error: "Not authenticated" };
+    return { success: false, error: 'Not authenticated' };
   }
 
   try {
@@ -49,15 +49,18 @@ export async function updateArchetypeAction(
       data: { archetype },
     });
 
-    revalidatePath("/", "layout");
+    revalidatePath('/', 'layout');
     return { success: true };
   } catch (error) {
-    console.error("Failed to update archetype:", error);
-    return { success: false, error: "Failed to update archetype" };
+    console.error('Failed to update archetype:', error);
+    return { success: false, error: 'Failed to update archetype' };
   }
 }
 
-export async function ensureUserAction(id: string, email?: string): Promise<{ success: boolean; data?: any; error?: string }> {
+export async function ensureUserAction(
+  id: string,
+  email?: string
+): Promise<{ success: boolean; data?: any; error?: string }> {
   try {
     const existing = await prisma.user.findUnique({ where: { id } });
     if (existing) return { success: true, data: existing };
@@ -69,14 +72,14 @@ export async function ensureUserAction(id: string, email?: string): Promise<{ su
         gold: 0,
         level: 1,
         totalExperience: 0,
-        faction: "HORDE", // Default
+        faction: 'HORDE', // Default
       },
     });
 
-    revalidatePath("/", "layout");
+    revalidatePath('/', 'layout');
     return { success: true, data: newUser };
   } catch (error) {
-    console.error("Failed to ensure user:", error);
-    return { success: false, error: "Failed to ensure user" };
+    console.error('Failed to ensure user:', error);
+    return { success: false, error: 'Failed to ensure user' };
   }
 }

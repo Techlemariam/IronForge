@@ -1,21 +1,16 @@
+import { ACHIEVEMENTS, SESSIONS, SKILL_TREE, TITAN_RANKS } from '../data/static';
 import {
-  Session,
-  Block,
-  Exercise,
-  Set as WorkoutSet,
+  type Block,
+  type Exercise,
   ExerciseLogic,
-  Rarity,
-  SkillNode,
-  IntervalsWellness,
-  TitanAttributes,
-  MeditationLog,
-} from "../types";
-import {
-  ACHIEVEMENTS,
-  TITAN_RANKS,
-  SKILL_TREE,
-  SESSIONS,
-} from "../data/static";
+  type IntervalsWellness,
+  type MeditationLog,
+  type Rarity,
+  type Session,
+  type SkillNode,
+  type TitanAttributes,
+  type Set as WorkoutSet,
+} from '../types';
 
 // Cache for Max TMs to avoid iterating sessions constantly
 let _maxTmCache: Record<string, number> | null = null;
@@ -27,7 +22,7 @@ export const getMaxTM = (exerciseId: string): number => {
       session.blocks.forEach((block) => {
         block.exercises?.forEach((ex) => {
           if (ex.logic === ExerciseLogic.TM_PERCENT && ex.trainingMax) {
-            const current = _maxTmCache![ex.id] || 0;
+            const current = _maxTmCache?.[ex.id] || 0;
             _maxTmCache![ex.id] = Math.max(current, ex.trainingMax);
           }
         });
@@ -40,40 +35,31 @@ export const getMaxTM = (exerciseId: string): number => {
 /**
  * Checks if the Gate requirements for a specific rank are met.
  */
-export const checkGate = (
-  rankId: number,
-  unlockedIds: Set<string>,
-): boolean => {
+export const checkGate = (rankId: number, unlockedIds: Set<string>): boolean => {
   // Rank 1: Novice - No Gate
   if (rankId === 1) return true;
 
   // Rank 2: Ascendant - 1 Dungeon, 1 Profession, 1 Cardio
   if (rankId === 2) {
-    const hasDungeon = ACHIEVEMENTS.some(
-      (a) => a.category === "dungeons" && unlockedIds.has(a.id),
-    );
+    const hasDungeon = ACHIEVEMENTS.some((a) => a.category === 'dungeons' && unlockedIds.has(a.id));
     const hasProfession = ACHIEVEMENTS.some(
-      (a) => a.category === "professions" && unlockedIds.has(a.id),
+      (a) => a.category === 'professions' && unlockedIds.has(a.id)
     );
-    const hasCardio = ACHIEVEMENTS.some(
-      (a) => a.category === "cardio" && unlockedIds.has(a.id),
-    );
+    const hasCardio = ACHIEVEMENTS.some((a) => a.category === 'cardio' && unlockedIds.has(a.id));
     return hasDungeon && hasProfession && hasCardio;
   }
 
   // Rank 3: Warrior - 3 Feats of Strength
   if (rankId === 3) {
     const featsCount = ACHIEVEMENTS.filter(
-      (a) => a.category === "feats" && unlockedIds.has(a.id),
+      (a) => a.category === 'feats' && unlockedIds.has(a.id)
     ).length;
     return featsCount >= 3;
   }
 
   // Rank 4: Windrunner - 2 Brick Workouts
   if (rankId === 4) {
-    const brickCount = ["brick_novice", "brick_master"].filter((id) =>
-      unlockedIds.has(id),
-    ).length;
+    const brickCount = ['brick_novice', 'brick_master'].filter((id) => unlockedIds.has(id)).length;
     return brickCount >= 2;
   }
 
@@ -81,10 +67,8 @@ export const checkGate = (
   if (rankId === 5) {
     // Must have completed a key Raid and a key Cardio feat
     const hasRaidMastery =
-      unlockedIds.has("defender_ironforge") ||
-      unlockedIds.has("clear_deadmines");
-    const hasCardioMastery =
-      unlockedIds.has("shattered_limits") || unlockedIds.has("the_70_club");
+      unlockedIds.has('defender_ironforge') || unlockedIds.has('clear_deadmines');
+    const hasCardioMastery = unlockedIds.has('shattered_limits') || unlockedIds.has('the_70_club');
     return hasRaidMastery && hasCardioMastery;
   }
 
@@ -97,11 +81,11 @@ export const checkGate = (
 export const calculateTitanRank = (unlockedIds: Set<string>) => {
   // 1. Calculate Resources based on Achievement Categories
   const talentPoints = ACHIEVEMENTS.filter(
-    (a) => unlockedIds.has(a.id) && a.category !== "cardio",
+    (a) => unlockedIds.has(a.id) && a.category !== 'cardio'
   ).reduce((acc, a) => acc + a.points, 0);
 
   const kineticShards = ACHIEVEMENTS.filter(
-    (a) => unlockedIds.has(a.id) && a.category === "cardio",
+    (a) => unlockedIds.has(a.id) && a.category === 'cardio'
   ).reduce((acc, a) => acc + a.points * 10, 0); // 1 point = 10 shards
 
   // 2. Iterate ranks (Highest ID first) to find the current rank
@@ -115,15 +99,13 @@ export const calculateTitanRank = (unlockedIds: Set<string>) => {
     return meetsTp && meetsKs && meetsGate;
   }) || {
     id: 0,
-    name: "Unranked",
+    name: 'Unranked',
     minTp: 0,
     minKs: 0,
-    gateDescription: "Complete quests to earn rank.",
+    gateDescription: 'Complete quests to earn rank.',
   };
 
-  const currentRankIndex = TITAN_RANKS.findIndex(
-    (r) => r.id === currentRank.id,
-  );
+  const currentRankIndex = TITAN_RANKS.findIndex((r) => r.id === currentRank.id);
 
   // 3. Determine next rank
   let nextRank = null;
@@ -158,7 +140,7 @@ export const calculateTitanAttributes = (
   unlockedIds: Set<string>,
   wellness: IntervalsWellness | null,
   purchasedSkills: Set<string>,
-  meditationLogs: MeditationLog[] = [],
+  meditationLogs: MeditationLog[] = []
 ): TitanAttributes => {
   // Helper to normalize counts to 1-20 scale
   const normalize = (val: number, max: number) => {
@@ -170,26 +152,22 @@ export const calculateTitanAttributes = (
   // 1. MAX STRENGTH (P-Max)
   // Based on Push/Legs Tree & 1RM feats
   const strengthTalents = SKILL_TREE.filter(
-    (n) => n.category === "push" || n.category === "legs",
+    (n) => n.category === 'push' || n.category === 'legs'
   ).length;
   const strengthUnlocked = SKILL_TREE.filter(
-    (n) =>
-      (n.category === "push" || n.category === "legs") &&
-      purchasedSkills.has(n.id),
+    (n) => (n.category === 'push' || n.category === 'legs') && purchasedSkills.has(n.id)
   ).length;
   // Strength Calculation - Phase 1 starts low
   const strengthScore = normalize(strengthUnlocked, strengthTalents + 5);
 
   // 2. ENDURANCE (Aerobic/Anaerobic Cap)
   // Based on Endurance Tree + VO2 Max
-  const endTalents = SKILL_TREE.filter(
-    (n) => n.category === "endurance",
-  ).length;
+  const endTalents = SKILL_TREE.filter((n) => n.category === 'endurance').length;
   const endUnlocked = SKILL_TREE.filter(
-    (n) => n.category === "endurance" && purchasedSkills.has(n.id),
+    (n) => n.category === 'endurance' && purchasedSkills.has(n.id)
   ).length;
   let vo2Bonus = 0;
-  if (wellness && wellness.vo2max) {
+  if (wellness?.vo2max) {
     vo2Bonus = Math.max(0, (wellness.vo2max - 30) / 5); // 30=0, 55=5pts
   }
   const enduranceScore = normalize(endUnlocked + vo2Bonus, endTalents + 8);
@@ -197,7 +175,7 @@ export const calculateTitanAttributes = (
   // 3. HYPERTROPHY (Muscular Endurance)
   // Based on Pull Tree + Total Achievement Volume
   const pullSkills = SKILL_TREE.filter(
-    (n) => n.category === "pull" && purchasedSkills.has(n.id),
+    (n) => n.category === 'pull' && purchasedSkills.has(n.id)
   ).length;
   const totalCheevos = unlockedIds.size;
   const hypScore = normalize(pullSkills * 2 + totalCheevos / 2, 25);
@@ -216,10 +194,7 @@ export const calculateTitanAttributes = (
 
   // Mental Calculation: Level (0-10) + Mindfulness (0-10)
   // 60 minutes of meditation per week = 5 points
-  const mindfulnessBonus = Math.min(
-    10,
-    Math.ceil(recentMeditationMinutes / 12),
-  );
+  const mindfulnessBonus = Math.min(10, Math.ceil(recentMeditationMinutes / 12));
   const mentalScore = Math.min(20, normalize(level, 10) + mindfulnessBonus);
 
   // 5. RECOVERY (Biological State)
@@ -240,10 +215,10 @@ export const calculateTitanAttributes = (
   // 6. TECHNIQUE (Form/Setup)
   // Based on Professions (Setup speed, nutrition) + Core
   const techCheevos = ACHIEVEMENTS.filter(
-    (a) => a.category === "professions" && unlockedIds.has(a.id),
+    (a) => a.category === 'professions' && unlockedIds.has(a.id)
   ).length;
   const coreSkills = SKILL_TREE.filter(
-    (n) => n.category === "core" && purchasedSkills.has(n.id),
+    (n) => n.category === 'core' && purchasedSkills.has(n.id)
   ).length;
   const techScore = normalize(techCheevos + coreSkills, 10);
 
@@ -261,10 +236,7 @@ export const calculateTitanAttributes = (
  * Calculates the adaptive cost of a skill node based on wellness state.
  * Uses a granular Readiness Score (0-100).
  */
-export const calculateAdaptiveCost = (
-  node: SkillNode,
-  wellness: IntervalsWellness | null,
-) => {
+export const calculateAdaptiveCost = (node: SkillNode, wellness: IntervalsWellness | null) => {
   if (!wellness) return { cost: node.cost, modifier: 0 };
 
   // Calculate Composite Readiness Score (0-100)
@@ -283,14 +255,14 @@ export const calculateAdaptiveCost = (
   if (readiness > 80) {
     // High Readiness: Discount intense physical trees to encourage capitalization
     // "Strike while the iron is hot"
-    if (["push", "legs", "endurance"].includes(node.category)) {
+    if (['push', 'legs', 'endurance'].includes(node.category)) {
       modifier = -0.2; // 20% discount
     }
   } else if (readiness < 40) {
     // Low Readiness: Tax intense stuff to discourage injury risk
-    if (["push", "legs", "endurance"].includes(node.category)) {
+    if (['push', 'legs', 'endurance'].includes(node.category)) {
       modifier = 0.25; // 25% Cost Penalty (Discourage High CNS Load)
-    } else if (["core"].includes(node.category)) {
+    } else if (['core'].includes(node.category)) {
       // Core is considered Active Recovery / Stability work
       // Discount this to encourage "recovery" behavior
       modifier = -0.15; // 15% discount
@@ -305,11 +277,7 @@ export const calculateAdaptiveCost = (
 /**
  * Calculates plates needed for a target weight.
  */
-export const calculatePlates = (
-  targetWeight: number,
-  barWeight = 20,
-  isSingleLoaded = false,
-) => {
+export const calculatePlates = (targetWeight: number, barWeight = 20, isSingleLoaded = false) => {
   let remaining = Math.max(0, targetWeight - barWeight);
 
   if (!isSingleLoaded) {
@@ -337,48 +305,37 @@ export const roundToPlates = (weight: number) => {
  * Determines loot rarity based on intensity relative to TM.
  * Upgraded to consider actual performance (reps > target).
  */
-export const calculateRarity = (
-  set: WorkoutSet,
-  exLogic: ExerciseLogic,
-): Rarity => {
+export const calculateRarity = (set: WorkoutSet, exLogic: ExerciseLogic): Rarity => {
   // 1. PR Zones are always Epic initially
   if (set.isPrZone) {
     // If completed reps far exceed expectations, upgrade to Legendary
     // Assumption: For AMRAP 1+, getting 10+ is legendary
-    if (
-      typeof set.reps === "string" &&
-      set.completedReps &&
-      set.completedReps >= 10
-    ) {
-      return "legendary";
+    if (typeof set.reps === 'string' && set.completedReps && set.completedReps >= 10) {
+      return 'legendary';
     }
-    return "epic";
+    return 'epic';
   }
 
   // 2. Performance Upgrades (Did you do more than asked?)
-  if (
-    typeof set.reps === "number" &&
-    set.completedReps &&
-    set.completedReps > set.reps
-  ) {
+  if (typeof set.reps === 'number' && set.completedReps && set.completedReps > set.reps) {
     // Exceeding fixed reps usually implies accessory work, so Rare
-    return "rare";
+    return 'rare';
   }
 
   // 3. Weight Percentage Logic
   if (set.weightPct) {
-    if (set.weightPct < 0.5) return "poor";
-    if (set.weightPct < 0.7) return "common";
-    if (set.weightPct < 0.85) return "uncommon";
-    if (set.weightPct >= 0.85) return "rare";
+    if (set.weightPct < 0.5) return 'poor';
+    if (set.weightPct < 0.7) return 'common';
+    if (set.weightPct < 0.85) return 'uncommon';
+    if (set.weightPct >= 0.85) return 'rare';
   }
 
   // Fixed reps usually accessory
   if (exLogic === ExerciseLogic.FIXED_REPS) {
-    return "common";
+    return 'common';
   }
 
-  return "common";
+  return 'common';
 };
 
 /**
@@ -390,9 +347,8 @@ class AudioController {
   private masterGain: GainNode | null = null;
 
   private getContext(): AudioContext | null {
-    if (!this.ctx && typeof window !== "undefined") {
-      const AudioCtxClass =
-        window.AudioContext || (window as any).webkitAudioContext;
+    if (!this.ctx && typeof window !== 'undefined') {
+      const AudioCtxClass = window.AudioContext || (window as any).webkitAudioContext;
       if (AudioCtxClass) {
         this.ctx = new AudioCtxClass();
         this.masterGain = this.ctx.createGain();
@@ -400,7 +356,7 @@ class AudioController {
         this.masterGain.gain.value = 0.5; // Master volume
       }
     }
-    if (this.ctx && this.ctx.state === "suspended") {
+    if (this.ctx && this.ctx.state === 'suspended') {
       this.ctx.resume();
     }
     return this.ctx;
@@ -408,16 +364,16 @@ class AudioController {
 
   public play(
     type:
-      | "ding"
-      | "quest_accept"
-      | "fail"
-      | "loot_epic"
-      | "achievement"
-      | "mystery_alert"
-      | "ui_click"
-      | "ui_hover"
-      | "ui_error"
-      | "heartbeat",
+      | 'ding'
+      | 'quest_accept'
+      | 'fail'
+      | 'loot_epic'
+      | 'achievement'
+      | 'mystery_alert'
+      | 'ui_click'
+      | 'ui_hover'
+      | 'ui_error'
+      | 'heartbeat'
   ) {
     const ctx = this.getContext();
     if (!ctx || !this.masterGain) return;
@@ -430,8 +386,8 @@ class AudioController {
     const now = ctx.currentTime;
 
     switch (type) {
-      case "ding": // Level Up / Completion
-        osc.type = "triangle";
+      case 'ding': // Level Up / Completion
+        osc.type = 'triangle';
         osc.frequency.setValueAtTime(523.25, now); // C5
         osc.frequency.setValueAtTime(659.25, now + 0.1); // E5
         osc.frequency.setValueAtTime(783.99, now + 0.2); // G5
@@ -442,8 +398,8 @@ class AudioController {
         osc.stop(now + 1.0);
         break;
 
-      case "quest_accept": // Paper/Scroll sound metaphor (Low thud + swish)
-        osc.type = "sine";
+      case 'quest_accept': // Paper/Scroll sound metaphor (Low thud + swish)
+        osc.type = 'sine';
         osc.frequency.setValueAtTime(100, now);
         osc.frequency.exponentialRampToValueAtTime(300, now + 0.1);
         gain.gain.setValueAtTime(0.5, now);
@@ -452,8 +408,8 @@ class AudioController {
         osc.stop(now + 0.3);
         break;
 
-      case "loot_epic": // High shimmering sound
-        osc.type = "sawtooth";
+      case 'loot_epic': // High shimmering sound
+        osc.type = 'sawtooth';
         osc.frequency.setValueAtTime(880, now);
         osc.frequency.linearRampToValueAtTime(1760, now + 0.1);
         // Tremolo effect simulation
@@ -463,8 +419,8 @@ class AudioController {
         osc.stop(now + 1.0);
         break;
 
-      case "fail": // Aggro sound
-        osc.type = "sawtooth";
+      case 'fail': // Aggro sound
+        osc.type = 'sawtooth';
         osc.frequency.setValueAtTime(150, now);
         osc.frequency.linearRampToValueAtTime(100, now + 0.3);
         gain.gain.setValueAtTime(0.5, now);
@@ -473,7 +429,8 @@ class AudioController {
         osc.stop(now + 0.3);
         break;
 
-      case "achievement": // Orchestral Snare Hit + Major Chord
+      case 'achievement': {
+        // Orchestral Snare Hit + Major Chord
         // 1. The Drum Hit
         const noise = ctx.createBufferSource();
         const bufferSize = ctx.sampleRate * 0.5; // 0.5 seconds
@@ -494,7 +451,7 @@ class AudioController {
         freqs.forEach((f) => {
           const o = ctx.createOscillator();
           const g = ctx.createGain();
-          o.type = "triangle";
+          o.type = 'triangle';
           o.frequency.value = f;
 
           g.gain.setValueAtTime(0, now);
@@ -506,9 +463,10 @@ class AudioController {
           o.stop(now + 2.0);
         });
         break;
+      }
 
-      case "mystery_alert":
-        osc.type = "sine";
+      case 'mystery_alert':
+        osc.type = 'sine';
         osc.frequency.setValueAtTime(440, now);
         osc.frequency.linearRampToValueAtTime(880, now + 0.1);
         gain.gain.setValueAtTime(0.5, now);
@@ -517,8 +475,8 @@ class AudioController {
         osc.stop(now + 0.5);
         break;
 
-      case "ui_click":
-        osc.type = "sine";
+      case 'ui_click':
+        osc.type = 'sine';
         osc.frequency.setValueAtTime(800, now);
         osc.frequency.exponentialRampToValueAtTime(400, now + 0.05);
         gain.gain.setValueAtTime(0.3, now);
@@ -527,8 +485,8 @@ class AudioController {
         osc.stop(now + 0.05);
         break;
 
-      case "ui_hover":
-        osc.type = "sine";
+      case 'ui_hover':
+        osc.type = 'sine';
         osc.frequency.setValueAtTime(1200, now);
         gain.gain.setValueAtTime(0.05, now);
         gain.gain.exponentialRampToValueAtTime(0.001, now + 0.02);
@@ -536,8 +494,8 @@ class AudioController {
         osc.stop(now + 0.02);
         break;
 
-      case "ui_error":
-        osc.type = "sawtooth";
+      case 'ui_error':
+        osc.type = 'sawtooth';
         osc.frequency.setValueAtTime(120, now);
         osc.frequency.linearRampToValueAtTime(80, now + 0.2);
         gain.gain.setValueAtTime(0.4, now);
@@ -546,9 +504,9 @@ class AudioController {
         osc.stop(now + 0.2);
         break;
 
-      case "heartbeat":
+      case 'heartbeat':
         // Low drum-like thud
-        osc.type = "sine";
+        osc.type = 'sine';
         osc.frequency.setValueAtTime(60, now);
         osc.frequency.exponentialRampToValueAtTime(40, now + 0.1);
         gain.gain.setValueAtTime(0.8, now); // Louder start
@@ -565,16 +523,16 @@ export const audioController = new AudioController();
 // Wrapper for backward compatibility
 export const playSound = (
   type:
-    | "ding"
-    | "quest_accept"
-    | "fail"
-    | "loot_epic"
-    | "achievement"
-    | "mystery_alert"
-    | "ui_click"
-    | "ui_hover"
-    | "ui_error"
-    | "heartbeat",
+    | 'ding'
+    | 'quest_accept'
+    | 'fail'
+    | 'loot_epic'
+    | 'achievement'
+    | 'mystery_alert'
+    | 'ui_click'
+    | 'ui_hover'
+    | 'ui_error'
+    | 'heartbeat'
 ) => {
   audioController.play(type);
 };
@@ -583,24 +541,22 @@ export const playSound = (
  * P2: Haptic Feedback for mobile devices
  * Uses navigator.vibrate() API when available
  */
-export const triggerHaptic = (
-  type: "light" | "medium" | "heavy" | "success" | "error",
-) => {
-  if (typeof navigator !== "undefined" && "vibrate" in navigator) {
+export const triggerHaptic = (type: 'light' | 'medium' | 'heavy' | 'success' | 'error') => {
+  if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
     switch (type) {
-      case "light":
+      case 'light':
         navigator.vibrate(10);
         break;
-      case "medium":
+      case 'medium':
         navigator.vibrate(25);
         break;
-      case "heavy":
+      case 'heavy':
         navigator.vibrate([50, 30, 50]);
         break;
-      case "success":
+      case 'success':
         navigator.vibrate([30, 20, 30, 20, 50]);
         break;
-      case "error":
+      case 'error':
         navigator.vibrate([100, 50, 100]);
         break;
     }
@@ -609,18 +565,18 @@ export const triggerHaptic = (
 
 export const fireConfetti = () => {
   // Re-using existing confetti but maybe we call it "Loot Explosion" conceptually
-  const colors = ["#a335ee", "#0070dd", "#1eff00", "#ff8000"]; // Rarity colors
-  const canvas = document.createElement("canvas");
-  canvas.style.position = "fixed";
-  canvas.style.top = "0";
-  canvas.style.left = "0";
-  canvas.style.width = "100%";
-  canvas.style.height = "100%";
-  canvas.style.pointerEvents = "none";
-  canvas.style.zIndex = "9999";
+  const colors = ['#a335ee', '#0070dd', '#1eff00', '#ff8000']; // Rarity colors
+  const canvas = document.createElement('canvas');
+  canvas.style.position = 'fixed';
+  canvas.style.top = '0';
+  canvas.style.left = '0';
+  canvas.style.width = '100%';
+  canvas.style.height = '100%';
+  canvas.style.pointerEvents = 'none';
+  canvas.style.zIndex = '9999';
   document.body.appendChild(canvas);
 
-  const ctx = canvas.getContext("2d")!;
+  const ctx = canvas.getContext('2d')!;
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 
@@ -661,13 +617,13 @@ export const autoRegulateSession = (session: Session): Session => {
   const newSession = JSON.parse(JSON.stringify(session));
 
   newSession.blocks.forEach((block: Block) => {
-    if (block.type === "station" && block.exercises) {
+    if (block.type === 'station' && block.exercises) {
       block.exercises.forEach((ex: Exercise) => {
         if (ex.logic === ExerciseLogic.TM_PERCENT) {
           ex.name = `[FATIGUED] ${ex.name}`;
           ex.instructions = [
-            "Debuff Active: -40% Intensity.",
-            "Objective: Survive.",
+            'Debuff Active: -40% Intensity.',
+            'Objective: Survive.',
             ...(ex.instructions || []),
           ];
 
@@ -677,7 +633,7 @@ export const autoRegulateSession = (session: Session): Session => {
               const newSet = { ...set };
               if (newSet.weightPct && newSet.weightPct > 0.6) {
                 newSet.weightPct = 0.6;
-                newSet.rarity = "poor"; // Grey quality items
+                newSet.rarity = 'poor'; // Grey quality items
               }
               if (newSet.isPrZone) {
                 newSet.isPrZone = false;
@@ -692,6 +648,6 @@ export const autoRegulateSession = (session: Session): Session => {
     }
   });
 
-  newSession.name += " (Volume Cap)";
+  newSession.name += ' (Volume Cap)';
   return newSession;
 };

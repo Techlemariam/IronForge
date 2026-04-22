@@ -1,31 +1,29 @@
-import React, { useState, useEffect, useMemo } from "react";
-import { SESSIONS } from "../../../data/static";
+import AttributeRadar from '@/features/titan/components/AttributeRadar';
+import { TitanXPBar } from '@/features/titan/components/TitanXPBar';
 import {
-  ExerciseLog,
-  MeditationLog,
-} from "../../../types";
-import {
-  X,
-  Shield,
-  Swords,
-  Zap,
   Activity,
   Brain,
-  User,
-  TrendingUp,
-  Heart,
-  Target,
   Calendar,
-  Skull,
-  ScrollText,
+  Heart,
   History,
-} from "lucide-react";
-import { TitanXPBar } from "@/features/titan/components/TitanXPBar";
-import { calculateTitanRank, calculateTitanAttributes } from "../../../utils";
-import { useSkills } from "../../../context/SkillContext";
-import { StorageService } from "../../../services/storage";
-import { IntervalsWellness } from "../../../types";
-import AttributeRadar from "@/features/titan/components/AttributeRadar";
+  ScrollText,
+  Shield,
+  Skull,
+  Swords,
+  Target,
+  TrendingUp,
+  User,
+  X,
+  Zap,
+} from 'lucide-react';
+import type React from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { useSkills } from '../../../context/SkillContext';
+import { SESSIONS } from '../../../data/static';
+import { StorageService } from '../../../services/storage';
+import type { ExerciseLog, MeditationLog } from '../../../types';
+import type { IntervalsWellness } from '../../../types';
+import { calculateTitanAttributes, calculateTitanRank } from '../../../utils';
 
 // Pre-compute exercise map for O(1) lookups
 const EXERCISE_MAP = new Map<string, string>();
@@ -45,14 +43,14 @@ interface CharacterSheetProps {
   meditationLogs?: MeditationLog[];
 }
 
-type TabType = "attributes" | "contract" | "history";
+type TabType = 'attributes' | 'contract' | 'history';
 
 const CharacterSheet: React.FC<CharacterSheetProps> = ({
   unlockedIds,
   onClose,
   meditationLogs = [],
 }) => {
-  const [activeTab, setActiveTab] = useState<TabType>("attributes");
+  const [activeTab, setActiveTab] = useState<TabType>('attributes');
   const [wellness] = useState<IntervalsWellness | null>(null);
   const [historyLogs, setHistoryLogs] = useState<ExerciseLog[]>([]);
   const [isLoadingHistory, setIsLoadingHistory] = useState(false);
@@ -67,7 +65,7 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({
     unlockedIds,
     wellness,
     purchasedSkillIds,
-    meditationLogs,
+    meditationLogs
   );
 
   const totalXP = talentPoints * 10 + (kineticShards / 10) * 2;
@@ -76,7 +74,7 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({
 
   // --- LOAD HISTORY ON TAB CHANGE ---
   useEffect(() => {
-    if (activeTab === "history") {
+    if (activeTab === 'history') {
       setIsLoadingHistory(true);
       StorageService.getHistory()
         .then((logs: ExerciseLog[]) => setHistoryLogs(logs))
@@ -88,13 +86,13 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({
   const groupedHistory = useMemo(() => {
     const groups: Record<string, ExerciseLog[]> = {};
     historyLogs.forEach((log) => {
-      const dateKey = log.date.split("T")[0];
+      const dateKey = log.date.split('T')[0];
       if (!groups[dateKey]) groups[dateKey] = [];
       groups[dateKey].push(log);
     });
     // Sort dates descending
     return Object.entries(groups).sort(
-      (a, b) => new Date(b[0]).getTime() - new Date(a[0]).getTime(),
+      (a, b) => new Date(b[0]).getTime() - new Date(a[0]).getTime()
     );
   }, [historyLogs]);
 
@@ -102,16 +100,16 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({
     const name = EXERCISE_MAP.get(id);
     if (name !== undefined) return name;
     // Fallback for warmup exercises or unknown IDs
-    return id.replace("ex_", "").replace(/_/g, " ");
+    return id.replace('ex_', '').replace(/_/g, ' ');
   };
 
   const formatDate = (dateString: string) => {
     try {
       return new Date(dateString).toLocaleDateString(undefined, {
-        weekday: "short",
-        year: "numeric",
-        month: "short",
-        day: "numeric",
+        weekday: 'short',
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
       });
     } catch {
       return dateString;
@@ -119,16 +117,16 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({
   };
 
   // --- WOW THEME CONSTANTS ---
-  const WOW_GOLD = "text-gold";
-  const WOW_GREEN = "text-venom";
-  const WOW_GREY = "text-zinc-500";
+  const WOW_GOLD = 'text-gold';
+  const WOW_GREEN = 'text-venom';
+  const WOW_GREY = 'text-zinc-500';
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 font-serif">
       {/* MAIN FRAME - The "C" Menu */}
       <div className="relative w-full max-w-4xl bg-armor border-[3px] border-steel rounded-lg shadow-[0_0_50px_rgba(0,0,0,0.8)] flex flex-col max-h-[90vh] overflow-hidden">
         {/* TEXTURE OVERLAY */}
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/dark-leather.png')] opacity-50 pointer-events-none"></div>
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/dark-leather.png')] opacity-50 pointer-events-none" />
 
         {/* --- HEADER --- */}
         <div className="relative h-12 bg-gradient-to-b from-steel/20 to-armor border-b border-steel/50 flex items-center justify-between px-4 shrink-0 z-10">
@@ -136,9 +134,7 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({
             <div className="w-6 h-6 rounded-full bg-gradient-to-br from-gold to-gold/60 border border-white/20 flex items-center justify-center shadow-inner">
               <User className="w-4 h-4 text-black" />
             </div>
-            <span
-              className={`font-bold tracking-wide ${WOW_GOLD} text-shadow-sm`}
-            >
+            <span className={`font-bold tracking-wide ${WOW_GOLD} text-shadow-sm`}>
               Character Info
             </span>
           </div>
@@ -163,9 +159,7 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({
               <div className="text-sm font-sans font-bold text-white flex justify-center gap-2 items-center">
                 <span className={WOW_GOLD}>Level {level}</span>
                 <span className={WOW_GREY}>|</span>
-                <span className={isElite ? "text-warp" : "text-pulse"}>
-                  {currentRank.name}
-                </span>
+                <span className={isElite ? 'text-warp' : 'text-pulse'}>{currentRank.name}</span>
                 <span className={WOW_GREY}>|</span>
                 <span className="text-zinc-400">IronForge Guild</span>
               </div>
@@ -175,31 +169,15 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({
             <div className="flex-1 relative flex flex-col sm:flex-row justify-between px-4 py-2 overflow-y-auto sm:overflow-hidden">
               {/* Left Slots (Upper on mobile) */}
               <div className="flex sm:flex-col flex-row flex-wrap justify-center gap-2 pt-4">
-                <GearSlot
-                  icon={<Brain className="w-5 h-5" />}
-                  rarity="epic"
-                  label="Head"
-                />
-                <GearSlot
-                  icon={<Shield className="w-5 h-5" />}
-                  rarity="rare"
-                  label="Neck"
-                />
+                <GearSlot icon={<Brain className="w-5 h-5" />} rarity="epic" label="Head" />
+                <GearSlot icon={<Shield className="w-5 h-5" />} rarity="rare" label="Neck" />
                 <GearSlot
                   icon={<Zap className="w-5 h-5" />}
-                  rarity={attributes.strength > 15 ? "epic" : "uncommon"}
+                  rarity={attributes.strength > 15 ? 'epic' : 'uncommon'}
                   label="Shoulders"
                 />
-                <GearSlot
-                  icon={<Heart className="w-5 h-5" />}
-                  rarity="rare"
-                  label="Chest"
-                />
-                <GearSlot
-                  icon={<User className="w-5 h-5" />}
-                  rarity="common"
-                  label="Shirt"
-                />
+                <GearSlot icon={<Heart className="w-5 h-5" />} rarity="rare" label="Chest" />
+                <GearSlot icon={<User className="w-5 h-5" />} rarity="common" label="Shirt" />
                 <GearSlot
                   icon={<Activity className="w-5 h-5" />}
                   rarity="uncommon"
@@ -210,12 +188,12 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({
               {/* Center Model (Placeholder) */}
               <div className="flex-1 flex items-center justify-center relative min-h-48 sm:min-h-0">
                 {/* Background Glow behind character */}
-                <div className="absolute w-48 h-48 bg-blue-500/10 rounded-full blur-[50px]"></div>
+                <div className="absolute w-48 h-48 bg-blue-500/10 rounded-full blur-[50px]" />
 
                 <div className="relative w-32 h-48 sm:w-40 sm:h-64 bg-zinc-900/50 border border-zinc-700/50 rounded-lg flex flex-col items-center justify-center group overflow-hidden">
                   {/* Render a 3D-ish looking silhouette or the user icon */}
                   <User
-                    className={`w-16 h-16 sm:w-24 sm:h-24 ${isElite ? "text-gold" : "text-zinc-500"} drop-shadow-2xl`}
+                    className={`w-16 h-16 sm:w-24 sm:h-24 ${isElite ? 'text-gold' : 'text-zinc-500'} drop-shadow-2xl`}
                   />
                   <div className="absolute bottom-2 text-[8px] sm:text-[10px] text-zinc-500 font-sans uppercase tracking-widest group-hover:text-white transition-colors">
                     Model Viewer
@@ -225,36 +203,16 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({
 
               {/* Right Slots (Lower on mobile) */}
               <div className="flex sm:flex-col flex-row flex-wrap justify-center gap-2 pb-4 sm:pt-4">
-                <GearSlot
-                  icon={<Swords className="w-5 h-5" />}
-                  rarity="rare"
-                  label="Hands"
-                />
-                <GearSlot
-                  icon={<TrendingUp className="w-5 h-5" />}
-                  rarity="epic"
-                  label="Waist"
-                />
+                <GearSlot icon={<Swords className="w-5 h-5" />} rarity="rare" label="Hands" />
+                <GearSlot icon={<TrendingUp className="w-5 h-5" />} rarity="epic" label="Waist" />
                 <GearSlot
                   icon={<Activity className="w-5 h-5" />}
-                  rarity={attributes.endurance > 15 ? "epic" : "rare"}
+                  rarity={attributes.endurance > 15 ? 'epic' : 'rare'}
                   label="Legs"
                 />
-                <GearSlot
-                  icon={<Zap className="w-5 h-5" />}
-                  rarity="uncommon"
-                  label="Feet"
-                />
-                <GearSlot
-                  icon={<Zap className="w-5 h-5" />}
-                  rarity="rare"
-                  label="Ring 1"
-                />
-                <GearSlot
-                  icon={<Zap className="w-5 h-5" />}
-                  rarity="epic"
-                  label="Trinket"
-                />
+                <GearSlot icon={<Zap className="w-5 h-5" />} rarity="uncommon" label="Feet" />
+                <GearSlot icon={<Zap className="w-5 h-5" />} rarity="rare" label="Ring 1" />
+                <GearSlot icon={<Zap className="w-5 h-5" />} rarity="epic" label="Trinket" />
               </div>
             </div>
 
@@ -266,21 +224,16 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({
                   {Math.floor(currentXP)} / {maxXP}
                 </span>
               </div>
-              <TitanXPBar
-                currentXP={currentXP}
-                maxXP={maxXP}
-                level={level}
-                isElite={isElite}
-              />
+              <TitanXPBar currentXP={currentXP} maxXP={maxXP} level={level} isElite={isElite} />
             </div>
           </div>
 
           {/* RIGHT PANEL: TABS CONTENT */}
           <div className="w-full md:w-7/12 bg-void/50 p-0 overflow-y-auto custom-scrollbar relative flex flex-col">
-            <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10 pointer-events-none"></div>
+            <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10 pointer-events-none" />
 
             {/* TAB: ATTRIBUTES */}
-            {activeTab === "attributes" && (
+            {activeTab === 'attributes' && (
               <>
                 {/* RADAR CHART HERO */}
                 <div className="p-6 bg-void border-b border-steel/50 relative">
@@ -297,25 +250,18 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({
                       <StatRow
                         label="Consistency"
                         value={attributes.mental}
-                        color={
-                          attributes.mental > 10 ? WOW_GREEN : "text-white"
-                        }
+                        color={attributes.mental > 10 ? WOW_GREEN : 'text-white'}
                         subtext="Streak + Meditation"
                       />
                       <StatRow
                         label="Recovery"
                         value={attributes.recovery}
-                        color={
-                          attributes.recovery > 12 ? WOW_GREEN : "text-white"
-                        }
+                        color={attributes.recovery > 12 ? WOW_GREEN : 'text-white'}
                         subtext="Sleep > 70 required"
                       />
                       <StatRow
                         label="Resilience (CTL)"
-                        value={Math.max(
-                          3,
-                          Math.floor(attributes.endurance * 0.8),
-                        )}
+                        value={Math.max(3, Math.floor(attributes.endurance * 0.8))}
                         color="text-zinc-400"
                         subtext="Ramp Rate: +4"
                       />
@@ -333,25 +279,13 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({
                       <Activity className="w-3 h-3" /> Physical Capacity
                     </h4>
                     <div className="space-y-1">
-                      <StatRow
-                        label="Aerobic (VO2)"
-                        value={Math.floor(attributes.endurance)}
-                      />
+                      <StatRow label="Aerobic (VO2)" value={Math.floor(attributes.endurance)} />
                       <StatRow
                         label="Anaerobic (W')"
-                        value={Math.max(
-                          4,
-                          Math.floor(attributes.strength * 0.6),
-                        )}
+                        value={Math.max(4, Math.floor(attributes.strength * 0.6))}
                       />
-                      <StatRow
-                        label="Max Strength"
-                        value={attributes.strength}
-                      />
-                      <StatRow
-                        label="Muscular End."
-                        value={attributes.hypertrophy}
-                      />
+                      <StatRow label="Max Strength" value={attributes.strength} />
+                      <StatRow label="Muscular End." value={attributes.hypertrophy} />
                     </div>
                   </div>
 
@@ -362,16 +296,10 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({
                     </h4>
                     <div className="space-y-1">
                       <StatRow label="Stability" value={attributes.technique} />
-                      <StatRow
-                        label="Form (RIR)"
-                        value={Math.min(20, attributes.technique + 2)}
-                      />
+                      <StatRow label="Form (RIR)" value={Math.min(20, attributes.technique + 2)} />
                       <StatRow
                         label="Balance"
-                        value={Math.max(
-                          5,
-                          Math.floor(attributes.technique * 0.8),
-                        )}
+                        value={Math.max(5, Math.floor(attributes.technique * 0.8))}
                       />
                     </div>
                   </div>
@@ -380,7 +308,7 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({
             )}
 
             {/* TAB: HISTORY */}
-            {activeTab === "history" && (
+            {activeTab === 'history' && (
               <div className="flex-1 p-6 space-y-4">
                 <h2 className="text-xl font-black text-zinc-500 uppercase tracking-tighter mb-6 flex items-center gap-3">
                   <History className="w-6 h-6" />
@@ -394,9 +322,7 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({
                 ) : groupedHistory.length === 0 ? (
                   <div className="text-center p-10 border-2 border-dashed border-zinc-800 rounded-lg">
                     <ScrollText className="w-12 h-12 text-zinc-700 mx-auto mb-3" />
-                    <p className="text-zinc-500 font-serif">
-                      No quests recorded yet.
-                    </p>
+                    <p className="text-zinc-500 font-serif">No quests recorded yet.</p>
                   </div>
                 ) : (
                   groupedHistory.map(([date, logs]) => (
@@ -422,7 +348,7 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({
                             className="flex justify-between items-center text-sm border-b border-zinc-800/50 pb-2 last:border-0 last:pb-0"
                           >
                             <span
-                              className={`font-serif capitalize ${log.isEpic ? "text-rarity-epic font-bold" : "text-zinc-400"}`}
+                              className={`font-serif capitalize ${log.isEpic ? 'text-rarity-epic font-bold' : 'text-zinc-400'}`}
                             >
                               {getExerciseName(log.exerciseId)}
                             </span>
@@ -431,10 +357,8 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({
                                 <Skull className="w-3 h-3 text-rarity-epic animate-pulse" />
                               )}
                               <span className="font-mono font-bold text-zinc-200">
-                                {log.e1rm}kg{" "}
-                                <span className="text-[9px] text-zinc-600 font-normal">
-                                  e1RM
-                                </span>
+                                {log.e1rm}kg{' '}
+                                <span className="text-[9px] text-zinc-600 font-normal">e1RM</span>
                               </span>
                             </div>
                           </div>
@@ -447,15 +371,14 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({
             )}
 
             {/* TAB: CONTRACT */}
-            {activeTab === "contract" && (
+            {activeTab === 'contract' && (
               <div className="flex-1 p-6 flex flex-col items-center justify-center text-center">
                 <ScrollText className="w-16 h-16 text-zinc-700 mb-4" />
                 <h3 className="text-lg font-bold text-zinc-500 uppercase tracking-widest">
                   No Active Contracts
                 </h3>
                 <p className="text-sm text-zinc-600 font-serif mt-2 max-w-xs">
-                  Check back later for special weekly challenges and elite
-                  bounties.
+                  Check back later for special weekly challenges and elite bounties.
                 </p>
               </div>
             )}
@@ -466,18 +389,18 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({
         <div className="h-10 bg-armor border-t border-steel flex items-center justify-center gap-2 px-4 z-10">
           <TabButton
             label="Attributes"
-            active={activeTab === "attributes"}
-            onClick={() => setActiveTab("attributes")}
+            active={activeTab === 'attributes'}
+            onClick={() => setActiveTab('attributes')}
           />
           <TabButton
             label="Contract"
-            active={activeTab === "contract"}
-            onClick={() => setActiveTab("contract")}
+            active={activeTab === 'contract'}
+            onClick={() => setActiveTab('contract')}
           />
           <TabButton
             label="History"
-            active={activeTab === "history"}
-            onClick={() => setActiveTab("history")}
+            active={activeTab === 'history'}
+            onClick={() => setActiveTab('history')}
           />
         </div>
       </div>
@@ -494,46 +417,41 @@ const GearSlot: React.FC<{
 }> = ({ icon, rarity, label }) => {
   const getBorderColor = () => {
     switch (rarity) {
-      case "epic":
-        return "border-warp";
-      case "rare":
-        return "border-pulse";
-      case "uncommon":
-        return "border-venom";
-      case "common":
-        return "border-steel";
+      case 'epic':
+        return 'border-warp';
+      case 'rare':
+        return 'border-pulse';
+      case 'uncommon':
+        return 'border-venom';
+      case 'common':
+        return 'border-steel';
     }
   };
 
   return (
     <div className="group relative w-10 h-10 bg-armor border border-steel rounded-sm flex items-center justify-center cursor-pointer hover:brightness-125 transition-all">
-      <div
-        className={`absolute inset-0 border-2 opacity-50 ${getBorderColor()}`}
-      ></div>
-      <div className="text-zinc-500 group-hover:text-white transition-colors">
-        {icon}
-      </div>
+      <div className={`absolute inset-0 border-2 opacity-50 ${getBorderColor()}`} />
+      <div className="text-zinc-500 group-hover:text-white transition-colors">{icon}</div>
 
       {/* Tooltip */}
       <div className="absolute left-12 top-0 hidden group-hover:block z-50 w-48 bg-void border border-steel rounded p-2 pointer-events-none shadow-xl">
         <div
-          className={`font-bold text-sm ${rarity === "epic"
-            ? "text-warp"
-            : rarity === "rare"
-              ? "text-pulse"
-              : rarity === "uncommon"
-                ? "text-venom"
-                : "text-white"
-            }`}
+          className={`font-bold text-sm ${
+            rarity === 'epic'
+              ? 'text-warp'
+              : rarity === 'rare'
+                ? 'text-pulse'
+                : rarity === 'uncommon'
+                  ? 'text-venom'
+                  : 'text-white'
+          }`}
         >
           {label} Slot
         </div>
         <div className="text-[10px] text-white mt-1">
           Item Level {Math.floor(Math.random() * 100) + 200}
         </div>
-        <div className="text-[10px] text-gold mt-1">
-          &lt;Right Click to Equip&gt;
-        </div>
+        <div className="text-[10px] text-gold mt-1">&lt;Right Click to Equip&gt;</div>
       </div>
     </div>
   );
@@ -545,14 +463,14 @@ const StatRow: React.FC<{
   color?: string;
   tooltip?: string;
   subtext?: string;
-}> = ({ label, value, color: _color = "text-white", tooltip, subtext }) => {
-  const numericValue = typeof value === "number" ? value : 0;
+}> = ({ label, value, color: _color = 'text-white', tooltip, subtext }) => {
+  const numericValue = typeof value === 'number' ? value : 0;
 
   // FM Coloring: 16-20 Gold, 11-15 Green, 6-10 White, 1-5 Grey
-  let valueColor = "text-zinc-500";
-  if (numericValue > 15) valueColor = "text-gold";
-  else if (numericValue > 10) valueColor = "text-venom";
-  else if (numericValue > 5) valueColor = "text-white";
+  let valueColor = 'text-zinc-500';
+  if (numericValue > 15) valueColor = 'text-gold';
+  else if (numericValue > 10) valueColor = 'text-venom';
+  else if (numericValue > 5) valueColor = 'text-white';
 
   return (
     <div className="flex justify-between items-center text-sm group relative cursor-help border-b border-steel/20 py-1 last:border-0 hover:bg-armor px-2 rounded">
@@ -560,9 +478,7 @@ const StatRow: React.FC<{
         <span className="text-zinc-400 group-hover:text-white transition-colors text-xs uppercase font-bold tracking-wider">
           {label}
         </span>
-        {subtext && (
-          <span className="text-[9px] text-zinc-600 font-sans">{subtext}</span>
-        )}
+        {subtext && <span className="text-[9px] text-zinc-600 font-sans">{subtext}</span>}
       </div>
       <span
         className={`font-mono font-bold text-sm ${valueColor} bg-void px-2 py-0.5 rounded border border-steel/30`}
@@ -587,10 +503,11 @@ const TabButton: React.FC<{
     <button
       onClick={onClick}
       className={`px-4 py-1 rounded-t-lg text-xs font-bold transition-all
-            ${active
-          ? "bg-armor text-white border-x border-t border-steel -mb-1 pb-2"
-          : "bg-void text-zinc-500 hover:text-zinc-300 hover:bg-armor"
-        }
+            ${
+              active
+                ? 'bg-armor text-white border-x border-t border-steel -mb-1 pb-2'
+                : 'bg-void text-zinc-500 hover:text-zinc-300 hover:bg-armor'
+            }
         `}
     >
       {label}

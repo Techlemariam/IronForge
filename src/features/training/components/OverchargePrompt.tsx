@@ -1,6 +1,6 @@
-import React from "react";
-import { m } from "framer-motion";
-import { Crown, ArrowUpCircle, XCircle } from "lucide-react";
+import { m } from 'framer-motion';
+import { ArrowUpCircle, Crown, XCircle } from 'lucide-react';
+import type React from 'react';
 
 interface OverchargePromptProps {
   onAccept: () => void;
@@ -29,18 +29,14 @@ const OverchargePrompt: React.FC<OverchargePromptProps> = ({
             <h3 className="text-yellow-400 font-bold uppercase tracking-widest text-sm">
               Opportunity Detected
             </h3>
-            <p className="text-zinc-400 text-xs">
-              That last set was too easy...
-            </p>
+            <p className="text-zinc-400 text-xs">That last set was too easy...</p>
           </div>
         </div>
 
         <div className="bg-black/50 p-3 rounded mb-4 border border-zinc-800">
           <p className="text-zinc-200 text-sm font-serif italic text-center">
-            &quot;The Iron Gods demand a true challenge. Increase load to{" "}
-            <span className="text-yellow-400 font-bold">
-              {suggestedWeight}kg
-            </span>
+            &quot;The Iron Gods demand a true challenge. Increase load to{' '}
+            <span className="text-yellow-400 font-bold">{suggestedWeight}kg</span>
             ?&quot;
           </p>
           <div className="mt-2 text-[10px] text-center uppercase tracking-widest text-yellow-600 font-bold">

@@ -1,5 +1,5 @@
-import React from "react";
-import { TTBIndices } from "../types";
+import type React from 'react';
+import type { TTBIndices } from '../types';
 
 interface TTBCompassProps {
   indices: TTBIndices;
@@ -12,7 +12,7 @@ const TTBCompass: React.FC<TTBCompassProps> = ({ indices }) => {
 
   const degToRad = (deg: number) => (deg * Math.PI) / 180;
 
-  const getCoords = (angle: number, score: number, maxScore: number = 100) => {
+  const getCoords = (angle: number, score: number, maxScore = 100) => {
     const r = (score / maxScore) * radius;
     const x = center + r * Math.cos(degToRad(angle));
     const y = center + r * Math.sin(degToRad(angle));
@@ -30,27 +30,21 @@ const TTBCompass: React.FC<TTBCompassProps> = ({ indices }) => {
   const healthPercentage = indices.wellness;
   const healthStatus =
     healthPercentage > 85
-      ? "FRESH"
+      ? 'FRESH'
       : healthPercentage > 60
-        ? "STABLE"
+        ? 'STABLE'
         : healthPercentage > 30
-          ? "FATIGUED"
-          : "DEPLETED";
+          ? 'FATIGUED'
+          : 'DEPLETED';
   const healthColor =
-    healthPercentage > 70
-      ? "bg-venom"
-      : healthPercentage > 40
-        ? "bg-gold"
-        : "bg-plasma";
+    healthPercentage > 70 ? 'bg-venom' : healthPercentage > 40 ? 'bg-gold' : 'bg-plasma';
 
   return (
     <div className="bg-armor border-2 border-clay/30 rounded-lg shadow-2xl relative overflow-hidden group p-4">
-      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/dark-matter.png')] opacity-10"></div>
+      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/dark-matter.png')] opacity-10" />
       <div className="relative z-10">
         <div className="flex justify-between items-baseline mb-2">
-          <h3 className="font-serif text-sm uppercase tracking-widest text-clay">
-            Sys. Vitality
-          </h3>
+          <h3 className="font-serif text-sm uppercase tracking-widest text-clay">Sys. Vitality</h3>
           <span className="text-xs font-mono bg-void text-cyan px-2 py-1 rounded shadow-[0_0_10px_rgba(6,182,212,0.3)]">
             TSB-S
           </span>
@@ -62,14 +56,7 @@ const TTBCompass: React.FC<TTBCompassProps> = ({ indices }) => {
               className="w-full h-full drop-shadow-2xl overflow-visible"
             >
               <defs>
-                <radialGradient
-                  id="radarGradient"
-                  cx="50%"
-                  cy="50%"
-                  r="50%"
-                  fx="50%"
-                  fy="50%"
-                >
+                <radialGradient id="radarGradient" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
                   <stop offset="0%" stopColor="var(--color-gold)" stopOpacity="0.1" />
                   <stop offset="100%" stopColor="var(--color-gold)" stopOpacity="0.3" />
                 </radialGradient>
@@ -129,12 +116,7 @@ const TTBCompass: React.FC<TTBCompassProps> = ({ indices }) => {
               {/* Vertices */}
               <circle cx={pWellness.x} cy={pWellness.y} r="3" fill="var(--color-gold)" />
               <circle cx={pStrength.x} cy={pStrength.y} r="3" fill="var(--color-gold)" />
-              <circle
-                cx={pEndurance.x}
-                cy={pEndurance.y}
-                r="3"
-                fill="var(--color-gold)"
-              />
+              <circle cx={pEndurance.x} cy={pEndurance.y} r="3" fill="var(--color-gold)" />
 
               {/* Labels */}
               <text
@@ -175,18 +157,14 @@ const TTBCompass: React.FC<TTBCompassProps> = ({ indices }) => {
 
           <div className="w-full px-2 mt-2">
             <div className="flex justify-between items-center mb-1">
-              <span className="text-xs font-serif text-steel">
-                SYST. HEALTH
-              </span>
-              <span className="text-[10px] font-bold text-clay uppercase">
-                {healthStatus}
-              </span>
+              <span className="text-xs font-serif text-steel">SYST. HEALTH</span>
+              <span className="text-[10px] font-bold text-clay uppercase">{healthStatus}</span>
             </div>
             <div className="w-full bg-steel/20 rounded-full h-1.5">
               <div
                 className={`${healthColor} h-1.5 rounded-full transition-all duration-1000 shadow-[0_0_10px_rgba(var(--color-gold),0.3)]`}
                 style={{ width: `${healthPercentage}%` }}
-              ></div>
+              />
             </div>
           </div>
         </div>

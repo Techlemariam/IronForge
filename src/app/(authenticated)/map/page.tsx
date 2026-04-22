@@ -1,5 +1,5 @@
-import React from "react";
-import WorldMap from "@/features/game/WorldMap";
+import WorldMap from '@/features/game/WorldMap';
+import React from 'react';
 
 export default function MapPage() {
   return (

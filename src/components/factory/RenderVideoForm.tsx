@@ -1,22 +1,23 @@
-
-"use client";
+'use client';
 
 import { useState } from 'react';
-
-
 
 import { RenderVideoPresenter } from './RenderVideoPresenter';
 
 const defaultProps = {
-  username: "TestUser",
+  username: 'TestUser',
   weekNumber: 1,
-  strengthGains: 100
+  strengthGains: 100,
 };
 
 export function RenderVideoForm() {
   const [propsJson, setPropsJson] = useState(JSON.stringify(defaultProps, null, 2));
   const [isLoading, setIsLoading] = useState(false);
-  const [result, setResult] = useState<{ message: string; videoPath?: string; error?: string } | null>(null);
+  const [result, setResult] = useState<{
+    message: string;
+    videoPath?: string;
+    error?: string;
+  } | null>(null);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -48,7 +49,6 @@ export function RenderVideoForm() {
       }
 
       setResult({ message: data.message, videoPath: data.videoPath });
-
     } catch (error: any) {
       setResult({ message: 'Fel vid anrop till API:', error: error.message });
     } finally {

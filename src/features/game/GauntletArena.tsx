@@ -1,10 +1,11 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect, useRef, useCallback } from "react";
-import { motion } from "framer-motion";
-import { Heart, Zap, Skull, Trophy, Timer } from "lucide-react";
-import { playSound } from "@/utils";
-import { logGauntletRunAction, GauntletResult } from "@/actions/training/gauntlet";
+import { type GauntletResult, logGauntletRunAction } from '@/actions/training/gauntlet';
+import { playSound } from '@/utils';
+import { motion } from 'framer-motion';
+import { Heart, Skull, Timer, Trophy, Zap } from 'lucide-react';
+import type React from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 interface GauntletArenaProps {
   userLevel: number;
@@ -34,9 +35,7 @@ export const GauntletArena: React.FC<GauntletArenaProps> = ({
   const [wave, setWave] = useState(1);
   const [_score, setScore] = useState(0);
   const [hp, setHp] = useState(100);
-  const [status, setStatus] = useState<"ACTIVE" | "VICTORY" | "DEFEAT">(
-    "ACTIVE",
-  );
+  const [status, setStatus] = useState<'ACTIVE' | 'VICTORY' | 'DEFEAT'>('ACTIVE');
   const [enemy, setEnemy] = useState<Enemy | null>(null);
   const [rewards, setRewards] = useState<{
     xp: number;
@@ -79,8 +78,8 @@ export const GauntletArena: React.FC<GauntletArenaProps> = ({
   }, []);
 
   const handleDefeat = useCallback(async () => {
-    setStatus("DEFEAT");
-    playSound("fail");
+    setStatus('DEFEAT');
+    playSound('fail');
     if (attackInterval.current) clearInterval(attackInterval.current);
 
     const duration = Math.floor((Date.now() - startTimeRef.current) / 1000);
@@ -97,12 +96,12 @@ export const GauntletArena: React.FC<GauntletArenaProps> = ({
         setRewards(resp.rewards);
       }
     } catch (e) {
-      console.error("Failed to save run", e);
+      console.error('Failed to save run', e);
     }
   }, []);
 
   const handleWaveClear = useCallback(() => {
-    playSound("achievement");
+    playSound('achievement');
     setWave((prev) => {
       const nextWave = prev + 1;
       spawnEnemy(nextWave);
@@ -114,7 +113,7 @@ export const GauntletArena: React.FC<GauntletArenaProps> = ({
   // Initial Spawn
   useEffect(() => {
     spawnEnemy(1);
-    playSound("quest_accept");
+    playSound('quest_accept');
 
     return () => {
       if (attackInterval.current) clearInterval(attackInterval.current);
@@ -123,7 +122,7 @@ export const GauntletArena: React.FC<GauntletArenaProps> = ({
 
   // Auto-Attack Logic (Player attacks Enemy based on Watts)
   useEffect(() => {
-    if (status !== "ACTIVE" || !enemy) return;
+    if (status !== 'ACTIVE' || !enemy) return;
 
     const interval = setInterval(() => {
       const intensity = currentWatts / (userFtp || 200);
@@ -150,7 +149,7 @@ export const GauntletArena: React.FC<GauntletArenaProps> = ({
 
   // Enemy Attack Logic
   useEffect(() => {
-    if (status !== "ACTIVE" || !enemy) {
+    if (status !== 'ACTIVE' || !enemy) {
       if (attackInterval.current) clearInterval(attackInterval.current);
       return;
     }
@@ -163,7 +162,7 @@ export const GauntletArena: React.FC<GauntletArenaProps> = ({
             handleDefeat();
             return 0;
           }
-          playSound("ui_error");
+          playSound('ui_error');
           return newHp;
         });
       }, 3000); // Enemy attacks every 3s
@@ -189,14 +188,13 @@ export const GauntletArena: React.FC<GauntletArenaProps> = ({
           <Heart className="w-6 h-6 fill-current" /> {hp}%
         </div>
         <div className="text-xl text-blue-400 flex items-center gap-2">
-          <Timer className="w-6 h-6" />{" "}
-          {Math.floor((Date.now() - startTimeRef.current) / 1000)}s
+          <Timer className="w-6 h-6" /> {Math.floor((Date.now() - startTimeRef.current) / 1000)}s
         </div>
       </div>
 
       {/* Arena Content */}
       <div className="relative w-full max-w-4xl h-[60vh] flex items-center justify-center">
-        {status === "ACTIVE" && enemy && (
+        {status === 'ACTIVE' && enemy && (
           <motion.div
             initial={{ scale: 0.5, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -213,16 +211,14 @@ export const GauntletArena: React.FC<GauntletArenaProps> = ({
                 />
               </div>
             </div>
-            <h2 className="mt-8 text-2xl font-bold text-red-400">
-              {enemy.name}
-            </h2>
+            <h2 className="mt-8 text-2xl font-bold text-red-400">{enemy.name}</h2>
             <div className="mt-2 text-red-300">
               HP: {enemy.hp} / {enemy.maxHp}
             </div>
           </motion.div>
         )}
 
-        {status === "DEFEAT" && (
+        {status === 'DEFEAT' && (
           <div className="bg-gray-900 border-2 border-red-600 p-8 rounded-xl max-w-md w-full text-center shadow-2xl">
             <h2 className="text-4xl font-bold text-red-500 mb-4">DEFEATED</h2>
             <p className="text-xl mb-6">You survived {wave - 1} Waves</p>
@@ -243,9 +239,7 @@ export const GauntletArena: React.FC<GauntletArenaProps> = ({
                 </div>
               </div>
             ) : (
-              <p className="text-gray-400 animate-pulse">
-                Calculating Rewards...
-              </p>
+              <p className="text-gray-400 animate-pulse">Calculating Rewards...</p>
             )}
 
             <button

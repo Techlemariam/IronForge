@@ -1,7 +1,7 @@
-"use server";
+'use server';
 
-import { cookies } from "next/headers";
-import { createServerClient } from "@supabase/ssr";
+import { createServerClient } from '@supabase/ssr';
+import { cookies } from 'next/headers';
 
 /**
  * Server-side auth helper for Server Actions
@@ -18,13 +18,19 @@ export async function getSession() {
         getAll() {
           return cookieStore.getAll();
         },
-        setAll(cookiesToSet: { name: string; value: string; options: Parameters<typeof cookieStore.set>[2] }[]) {
+        setAll(
+          cookiesToSet: {
+            name: string;
+            value: string;
+            options: Parameters<typeof cookieStore.set>[2];
+          }[]
+        ) {
           cookiesToSet.forEach(({ name, value, options }) => {
             cookieStore.set(name, value, options as Parameters<typeof cookieStore.set>[2]);
           });
         },
       },
-    },
+    }
   );
 
   const {

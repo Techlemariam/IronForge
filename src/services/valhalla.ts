@@ -1,5 +1,5 @@
-import { ValhallaPayload, ValhallaSyncResult } from "../types";
-import { getSupabase } from "../lib/supabase";
+import { getSupabase } from '../lib/supabase';
+import type { ValhallaPayload, ValhallaSyncResult } from '../types';
 
 /**
  * VALHALLA SERVICE (PRODUCTION)
@@ -11,31 +11,26 @@ export const ValhallaService = {
    * "Bind Soul" - Register/Login via Supabase Auth (Anonymous or Magic Link)
    * For MVP 10/10, we upsert into a 'profiles' table.
    */
-  bindSoul: async (
-    heroName: string,
-  ): Promise<{ success: boolean; id: string }> => {
+  bindSoul: async (heroName: string): Promise<{ success: boolean; id: string }> => {
     const supabase = await getSupabase();
 
     if (!supabase) {
       // Fallback to local simulation if no cloud keys
       return new Promise((resolve) => {
-        setTimeout(
-          () => resolve({ success: true, id: `local_${Date.now()}` }),
-          1000,
-        );
+        setTimeout(() => resolve({ success: true, id: `local_${Date.now()}` }), 1000);
       });
     }
 
     // Upsert hero into profiles
     // We use heroName as ID for simplicity in this demo, but usually UUID
     const { data, error } = await supabase
-      .from("profiles")
+      .from('profiles')
       .upsert({ username: heroName, last_login: new Date().toISOString() })
-      .select("id")
+      .select('id')
       .single();
 
     if (error) {
-      console.error("Valhalla Bind Error:", error);
+      console.error('Valhalla Bind Error:', error);
       // Fallback to allow app usage
       return { success: true, id: `offline_${heroName}` };
     }
@@ -46,38 +41,33 @@ export const ValhallaService = {
   /**
    * "Engrave Records" - Sync Data to Cloud
    */
-  engraveRecords: async (
-    payload: ValhallaPayload,
-  ): Promise<ValhallaSyncResult> => {
+  engraveRecords: async (payload: ValhallaPayload): Promise<ValhallaSyncResult> => {
     const supabase = await getSupabase();
 
     if (!supabase) {
       // Local Simulation Fallback
-      localStorage.setItem(
-        `valhalla_remote_${payload.heroName}`,
-        JSON.stringify(payload),
-      );
+      localStorage.setItem(`valhalla_remote_${payload.heroName}`, JSON.stringify(payload));
       return {
         success: true,
-        message: "Engraved to Local Holocron (Offline).",
+        message: 'Engraved to Local Holocron (Offline).',
         timestamp: new Date().toISOString(),
       };
     }
 
     // 1. Sync Profile Stats
     const { error: profileError } = await supabase
-      .from("profiles")
+      .from('profiles')
       .update({
         level: payload.level,
         achievements_count: payload.achievements.length,
         last_sync: new Date().toISOString(),
       })
-      .eq("username", payload.heroName);
+      .eq('username', payload.heroName);
 
-    if (profileError) console.error("Profile Sync Error", profileError);
+    if (profileError) console.error('Profile Sync Error', profileError);
 
     // 2. Sync JSON blob for detailed restore (Achievements/Skills)
-    const { error: blobError } = await supabase.from("save_states").upsert({
+    const { error: blobError } = await supabase.from('save_states').upsert({
       username: payload.heroName,
       data: payload,
     });
@@ -85,14 +75,14 @@ export const ValhallaService = {
     if (blobError) {
       return {
         success: false,
-        message: "Cloud Rejection: " + blobError.message,
+        message: `Cloud Rejection: ${blobError.message}`,
         timestamp: new Date().toISOString(),
       };
     }
 
     return {
       success: true,
-      message: "Soul Data Engraved in the Halls of Valhalla (Supabase).",
+      message: 'Soul Data Engraved in the Halls of Valhalla (Supabase).',
       timestamp: new Date().toISOString(),
     };
   },
@@ -109,9 +99,9 @@ export const ValhallaService = {
     }
 
     const { data, error } = await supabase
-      .from("save_states")
-      .select("data")
-      .eq("username", heroName)
+      .from('save_states')
+      .select('data')
+      .eq('username', heroName)
       .single();
 
     if (error || !data) return null;

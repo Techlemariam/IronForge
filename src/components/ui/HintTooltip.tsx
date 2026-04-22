@@ -1,29 +1,25 @@
-"use client";
+'use client';
 
-import React from "react";
+import type React from 'react';
 
 interface HintTooltipProps {
   hint: string;
   visible: boolean;
-  position?: "top" | "bottom" | "left" | "right";
+  position?: 'top' | 'bottom' | 'left' | 'right';
 }
 
 /**
  * Final Push: Contextual Hint Tooltip
  * Shows adaptive hints based on user behavior
  */
-export const HintTooltip: React.FC<HintTooltipProps> = ({
-  hint,
-  visible,
-  position = "top",
-}) => {
+export const HintTooltip: React.FC<HintTooltipProps> = ({ hint, visible, position = 'top' }) => {
   if (!visible) return null;
 
   const positionClasses = {
-    top: "bottom-full left-1/2 -translate-x-1/2 mb-2",
-    bottom: "top-full left-1/2 -translate-x-1/2 mt-2",
-    left: "right-full top-1/2 -translate-y-1/2 mr-2",
-    right: "left-full top-1/2 -translate-y-1/2 ml-2",
+    top: 'bottom-full left-1/2 -translate-x-1/2 mb-2',
+    bottom: 'top-full left-1/2 -translate-x-1/2 mt-2',
+    left: 'right-full top-1/2 -translate-y-1/2 mr-2',
+    right: 'left-full top-1/2 -translate-y-1/2 ml-2',
   };
 
   return (
@@ -47,10 +43,10 @@ export const HintTooltip: React.FC<HintTooltipProps> = ({
 // Preset hints for common scenarios
 export const CONTEXTUAL_HINTS = {
   forge_unused: "You haven't visited The Forge in a while. New recipes await!",
-  combat_low_hp: "Your HP is low! Consider using a Heal action.",
-  streak_warning: "Keep your streak alive! Train today.",
-  new_feature: "New feature unlocked! Check it out.",
-  level_up_ready: "You have unspent Talent Points!",
+  combat_low_hp: 'Your HP is low! Consider using a Heal action.',
+  streak_warning: 'Keep your streak alive! Train today.',
+  new_feature: 'New feature unlocked! Check it out.',
+  level_up_ready: 'You have unspent Talent Points!',
 };
 
 export default HintTooltip;

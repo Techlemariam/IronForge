@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { Book, Skull, Scroll, Sword, LogOut } from "lucide-react";
-import { getBestiaryAction } from "@/actions/systems/world";
+import { getBestiaryAction } from '@/actions/systems/world';
+import { motion } from 'framer-motion';
+import { Book, LogOut, Scroll, Skull, Sword } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 
-type Tab = "bestiary" | "legends";
+type Tab = 'bestiary' | 'legends';
 
 interface BestiaryEntry {
   id: string;
@@ -22,7 +22,7 @@ interface GrimoireProps {
 }
 
 export default function Grimoire({ onClose }: GrimoireProps) {
-  const [activeTab, setActiveTab] = useState<Tab>("bestiary");
+  const [activeTab, setActiveTab] = useState<Tab>('bestiary');
   const [entries, setEntries] = useState<BestiaryEntry[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -32,7 +32,7 @@ export default function Grimoire({ onClose }: GrimoireProps) {
         const { monsters } = await getBestiaryAction();
         setEntries(monsters as BestiaryEntry[]);
       } catch (error) {
-        console.error("Failed to open Grimoire", error);
+        console.error('Failed to open Grimoire', error);
       } finally {
         setLoading(false);
       }
@@ -65,14 +65,14 @@ export default function Grimoire({ onClose }: GrimoireProps) {
         {/* Tabs */}
         <div className="flex gap-4 mt-6">
           <button
-            onClick={() => setActiveTab("bestiary")}
-            className={`px-4 py-2 rounded uppercase text-xs font-bold tracking-widest transition-colors ${activeTab === "bestiary" ? "bg-purple-900/50 text-purple-300 border border-purple-500" : "bg-zinc-900 text-zinc-600 hover:text-zinc-400"}`}
+            onClick={() => setActiveTab('bestiary')}
+            className={`px-4 py-2 rounded uppercase text-xs font-bold tracking-widest transition-colors ${activeTab === 'bestiary' ? 'bg-purple-900/50 text-purple-300 border border-purple-500' : 'bg-zinc-900 text-zinc-600 hover:text-zinc-400'}`}
           >
             Bestiary
           </button>
           <button
-            onClick={() => setActiveTab("legends")}
-            className={`px-4 py-2 rounded uppercase text-xs font-bold tracking-widest transition-colors ${activeTab === "legends" ? "bg-amber-900/50 text-amber-300 border border-amber-500" : "bg-zinc-900 text-zinc-600 hover:text-zinc-400"}`}
+            onClick={() => setActiveTab('legends')}
+            className={`px-4 py-2 rounded uppercase text-xs font-bold tracking-widest transition-colors ${activeTab === 'legends' ? 'bg-amber-900/50 text-amber-300 border border-amber-500' : 'bg-zinc-900 text-zinc-600 hover:text-zinc-400'}`}
           >
             Legends
           </button>
@@ -82,12 +82,10 @@ export default function Grimoire({ onClose }: GrimoireProps) {
       {/* Content Content */}
       <div className="flex-1 overflow-y-auto p-6">
         {loading ? (
-          <div className="text-center text-zinc-600 animate-pulse mt-10">
-            Deciphering Runes...
-          </div>
+          <div className="text-center text-zinc-600 animate-pulse mt-10">Deciphering Runes...</div>
         ) : (
           <>
-            {activeTab === "bestiary" && (
+            {activeTab === 'bestiary' && (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {entries.map((monster) => (
                   <motion.div
@@ -96,10 +94,11 @@ export default function Grimoire({ onClose }: GrimoireProps) {
                     animate={{ opacity: 1, scale: 1 }}
                     className={`
                                             relative h-64 border rounded-xl overflow-hidden group
-                                            ${monster.isDiscovered
-                        ? "bg-zinc-900 border-zinc-800 hover:border-purple-500/50 transition-colors"
-                        : "bg-black border-zinc-900"
-                      }
+                                            ${
+                                              monster.isDiscovered
+                                                ? 'bg-zinc-900 border-zinc-800 hover:border-purple-500/50 transition-colors'
+                                                : 'bg-black border-zinc-900'
+                                            }
                                         `}
                   >
                     {/* Image / Silhouette */}
@@ -114,9 +113,7 @@ export default function Grimoire({ onClose }: GrimoireProps) {
                     <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black via-black/90 to-transparent">
                       {monster.isDiscovered ? (
                         <>
-                          <h3 className="text-xl font-bold text-zinc-200">
-                            {monster.name}
-                          </h3>
+                          <h3 className="text-xl font-bold text-zinc-200">{monster.name}</h3>
                           <p className="text-zinc-500 text-xs line-clamp-2 mt-1">
                             {monster.description}
                           </p>
@@ -127,9 +124,7 @@ export default function Grimoire({ onClose }: GrimoireProps) {
                         </>
                       ) : (
                         <div className="flex flex-col items-center text-center">
-                          <div className="text-zinc-700 text-4xl font-black">
-                            ? ? ?
-                          </div>
+                          <div className="text-zinc-700 text-4xl font-black">? ? ?</div>
                           <div className="text-zinc-600 text-[10px] uppercase tracking-widest mt-2">
                             Undiscovered Entity
                           </div>
@@ -144,7 +139,7 @@ export default function Grimoire({ onClose }: GrimoireProps) {
               </div>
             )}
 
-            {activeTab === "legends" && (
+            {activeTab === 'legends' && (
               <div className="flex flex-col items-center justify-center h-full text-zinc-600">
                 <Scroll className="w-12 h-12 mb-4 opacity-20" />
                 <p>The scrolls are empty. Only time will tell your story.</p>

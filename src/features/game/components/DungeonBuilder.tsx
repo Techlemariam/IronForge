@@ -1,42 +1,25 @@
-import React, { useState } from "react";
-import {
-  Session,
-  Block,
-  BlockType,
-  Exercise,
-  ExerciseLogic,
-} from "@/types";
-import {
-  Plus,
-  Trash2,
-  Save,
-  Dumbbell,
-  ArrowDown,
-  ChevronUp,
-  ChevronDown,
-} from "lucide-react";
+import { type Block, BlockType, type Exercise, ExerciseLogic, type Session } from '@/types';
+import { ArrowDown, ChevronDown, ChevronUp, Dumbbell, Plus, Save, Trash2 } from 'lucide-react';
+import type React from 'react';
+import { useState } from 'react';
 
 interface DungeonBuilderProps {
   onSave: (session: Session) => void;
   onCancel: () => void;
 }
 
-const DungeonBuilder: React.FC<DungeonBuilderProps> = ({
-  onSave,
-  onCancel,
-}) => {
-  const [name, setName] = useState("");
-  const [zoneName, setZoneName] = useState("");
+const DungeonBuilder: React.FC<DungeonBuilderProps> = ({ onSave, onCancel }) => {
+  const [name, setName] = useState('');
+  const [zoneName, setZoneName] = useState('');
   const [blocks, setBlocks] = useState<Block[]>([]);
 
   const addBlock = (type: BlockType) => {
     const newBlock: Block = {
       id: `blk_${Date.now()}`,
-      name: type === BlockType.TRANSITION ? "Transition Area" : "New Station",
+      name: type === BlockType.TRANSITION ? 'Transition Area' : 'New Station',
       type,
       exercises: type === BlockType.STATION ? [] : undefined,
-      setupInstructions:
-        type === BlockType.TRANSITION ? ["Setup instruction 1"] : undefined,
+      setupInstructions: type === BlockType.TRANSITION ? ['Setup instruction 1'] : undefined,
     };
     setBlocks([...blocks, newBlock]);
   };
@@ -45,12 +28,12 @@ const DungeonBuilder: React.FC<DungeonBuilderProps> = ({
     setBlocks(blocks.filter((_, i) => i !== index));
   };
 
-  const moveBlock = (index: number, direction: "UP" | "DOWN") => {
-    if (direction === "UP" && index === 0) return;
-    if (direction === "DOWN" && index === blocks.length - 1) return;
+  const moveBlock = (index: number, direction: 'UP' | 'DOWN') => {
+    if (direction === 'UP' && index === 0) return;
+    if (direction === 'DOWN' && index === blocks.length - 1) return;
 
     const newBlocks = [...blocks];
-    const targetIndex = direction === "UP" ? index - 1 : index + 1;
+    const targetIndex = direction === 'UP' ? index - 1 : index + 1;
     const temp = newBlocks[targetIndex];
     newBlocks[targetIndex] = newBlocks[index];
     newBlocks[index] = temp;
@@ -60,44 +43,38 @@ const DungeonBuilder: React.FC<DungeonBuilderProps> = ({
   const addExercise = (blockIndex: number) => {
     const newEx: Exercise = {
       id: `ex_${Date.now()}`,
-      name: "New Exercise",
+      name: 'New Exercise',
       logic: ExerciseLogic.FIXED_REPS,
       sets: [
         { id: `s_${Date.now()}_1`, reps: 10, completed: false },
         { id: `s_${Date.now()}_2`, reps: 10, completed: false },
         { id: `s_${Date.now()}_3`, reps: 10, completed: false },
       ],
-      instructions: ["Perform with perfect form."],
+      instructions: ['Perform with perfect form.'],
     };
 
     const updatedBlocks = [...blocks];
-    if (!updatedBlocks[blockIndex].exercises)
-      updatedBlocks[blockIndex].exercises = [];
-    updatedBlocks[blockIndex].exercises!.push(newEx);
+    if (!updatedBlocks[blockIndex].exercises) updatedBlocks[blockIndex].exercises = [];
+    updatedBlocks[blockIndex].exercises?.push(newEx);
     setBlocks(updatedBlocks);
   };
 
-  const updateExercise = (
-    bIdx: number,
-    eIdx: number,
-    field: keyof Exercise,
-    value: any,
-  ) => {
+  const updateExercise = (bIdx: number, eIdx: number, field: keyof Exercise, value: any) => {
     const updatedBlocks = [...blocks];
     updatedBlocks[bIdx].exercises![eIdx] = {
-      ...updatedBlocks[bIdx].exercises![eIdx],
+      ...updatedBlocks[bIdx].exercises?.[eIdx],
       [field]: value,
     };
     setBlocks(updatedBlocks);
   };
 
   const handleSave = () => {
-    if (!name) return alert("Dungeon must have a name!");
+    if (!name) return alert('Dungeon must have a name!');
     const session: Session = {
       id: `custom_${Date.now()}`,
       name,
-      zoneName: zoneName || "The Player Realm",
-      difficulty: "Normal",
+      zoneName: zoneName || 'The Player Realm',
+      difficulty: 'Normal',
       blocks,
       isCustom: true,
     };
@@ -145,20 +122,20 @@ const DungeonBuilder: React.FC<DungeonBuilderProps> = ({
           >
             <div className="absolute top-2 right-2 flex gap-1">
               <button
-                onClick={() => moveBlock(bIdx, "UP")}
+                onClick={() => moveBlock(bIdx, 'UP')}
                 disabled={bIdx === 0}
                 className="p-1 text-zinc-600 hover:text-white disabled:opacity-30 disabled:hover:text-zinc-600"
               >
                 <ChevronUp className="w-4 h-4" />
               </button>
               <button
-                onClick={() => moveBlock(bIdx, "DOWN")}
+                onClick={() => moveBlock(bIdx, 'DOWN')}
                 disabled={bIdx === blocks.length - 1}
                 className="p-1 text-zinc-600 hover:text-white disabled:opacity-30 disabled:hover:text-zinc-600"
               >
                 <ChevronDown className="w-4 h-4" />
               </button>
-              <div className="w-px h-4 bg-zinc-700 mx-1 self-center"></div>
+              <div className="w-px h-4 bg-zinc-700 mx-1 self-center" />
               <button
                 onClick={() => removeBlock(bIdx)}
                 className="p-1 text-zinc-600 hover:text-red-500"
@@ -190,9 +167,7 @@ const DungeonBuilder: React.FC<DungeonBuilderProps> = ({
                       <Dumbbell className="w-4 h-4 text-zinc-500" />
                       <input
                         value={ex.name}
-                        onChange={(e) =>
-                          updateExercise(bIdx, eIdx, "name", e.target.value)
-                        }
+                        onChange={(e) => updateExercise(bIdx, eIdx, 'name', e.target.value)}
                         className="bg-[#111] border border-zinc-700 p-1 rounded text-sm w-full"
                       />
                     </div>
@@ -221,11 +196,10 @@ const DungeonBuilder: React.FC<DungeonBuilderProps> = ({
               <textarea
                 className="w-full bg-[#111] text-xs text-zinc-400 p-2 rounded"
                 placeholder="Setup instructions..."
-                value={block.setupInstructions?.join("\n")}
+                value={block.setupInstructions?.join('\n')}
                 onChange={(e) => {
                   const newBlocks = [...blocks];
-                  newBlocks[bIdx].setupInstructions =
-                    e.target.value.split("\n");
+                  newBlocks[bIdx].setupInstructions = e.target.value.split('\n');
                   setBlocks(newBlocks);
                 }}
               />
@@ -250,10 +224,7 @@ const DungeonBuilder: React.FC<DungeonBuilderProps> = ({
       </div>
 
       <div className="mt-8 flex gap-4 sticky bottom-0 bg-[#050505] py-4 border-t border-zinc-900">
-        <button
-          onClick={onCancel}
-          className="flex-1 py-3 text-zinc-500 hover:text-white"
-        >
+        <button onClick={onCancel} className="flex-1 py-3 text-zinc-500 hover:text-white">
           Cancel
         </button>
         <button

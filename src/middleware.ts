@@ -1,5 +1,5 @@
-import { type NextRequest } from "next/server";
-import { updateSession } from "@/utils/supabase/middleware";
+import { updateSession } from '@/utils/supabase/middleware';
+import type { NextRequest } from 'next/server';
 
 export async function middleware(request: NextRequest) {
   return await updateSession(request);
@@ -17,6 +17,6 @@ export const config = {
      * Let's exclude them for now to avoid breaking the sync during transition.
      * Feel free to remove "api" from exclusion if you want global protection.
      */
-    "/((?!_next/static|_next/image|favicon.ico|api/|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    '/((?!_next/static|_next/image|favicon.ico|api/|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 };

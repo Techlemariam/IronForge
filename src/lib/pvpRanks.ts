@@ -3,7 +3,7 @@
  * Ranks 1-14 with faction-specific titles
  */
 
-export type Faction = "ALLIANCE" | "HORDE";
+export type Faction = 'ALLIANCE' | 'HORDE';
 
 export interface PvpRank {
   rank: number;
@@ -20,86 +20,86 @@ export interface PvpRank {
 export const PVP_RANKS: PvpRank[] = [
   {
     rank: 1,
-    allianceTitle: "Private",
-    hordeTitle: "Scout",
+    allianceTitle: 'Private',
+    hordeTitle: 'Scout',
     minRankScore: 1000,
   },
   {
     rank: 2,
-    allianceTitle: "Corporal",
-    hordeTitle: "Grunt",
+    allianceTitle: 'Corporal',
+    hordeTitle: 'Grunt',
     minRankScore: 1050,
   },
   {
     rank: 3,
-    allianceTitle: "Sergeant",
-    hordeTitle: "Sergeant",
+    allianceTitle: 'Sergeant',
+    hordeTitle: 'Sergeant',
     minRankScore: 1100,
   },
   {
     rank: 4,
-    allianceTitle: "Master Sergeant",
-    hordeTitle: "Senior Sergeant",
+    allianceTitle: 'Master Sergeant',
+    hordeTitle: 'Senior Sergeant',
     minRankScore: 1150,
   },
   {
     rank: 5,
-    allianceTitle: "Sergeant Major",
-    hordeTitle: "First Sergeant",
+    allianceTitle: 'Sergeant Major',
+    hordeTitle: 'First Sergeant',
     minRankScore: 1200,
   },
   {
     rank: 6,
-    allianceTitle: "Knight",
-    hordeTitle: "Stone Guard",
+    allianceTitle: 'Knight',
+    hordeTitle: 'Stone Guard',
     minRankScore: 1300,
   },
   {
     rank: 7,
-    allianceTitle: "Knight-Lieutenant",
-    hordeTitle: "Blood Guard",
+    allianceTitle: 'Knight-Lieutenant',
+    hordeTitle: 'Blood Guard',
     minRankScore: 1400,
   },
   {
     rank: 8,
-    allianceTitle: "Knight-Captain",
-    hordeTitle: "Legionnaire",
+    allianceTitle: 'Knight-Captain',
+    hordeTitle: 'Legionnaire',
     minRankScore: 1500,
   },
   {
     rank: 9,
-    allianceTitle: "Knight-Champion",
-    hordeTitle: "Centurion",
+    allianceTitle: 'Knight-Champion',
+    hordeTitle: 'Centurion',
     minRankScore: 1600,
   },
   {
     rank: 10,
-    allianceTitle: "Lieutenant Commander",
-    hordeTitle: "Champion",
+    allianceTitle: 'Lieutenant Commander',
+    hordeTitle: 'Champion',
     minRankScore: 1700,
   },
   {
     rank: 11,
-    allianceTitle: "Commander",
-    hordeTitle: "Lieutenant General",
+    allianceTitle: 'Commander',
+    hordeTitle: 'Lieutenant General',
     minRankScore: 1850,
   },
   {
     rank: 12,
-    allianceTitle: "Marshal",
-    hordeTitle: "General",
+    allianceTitle: 'Marshal',
+    hordeTitle: 'General',
     minRankScore: 2000,
   },
   {
     rank: 13,
-    allianceTitle: "Field Marshal",
-    hordeTitle: "Warlord",
+    allianceTitle: 'Field Marshal',
+    hordeTitle: 'Warlord',
     minRankScore: 2200,
   },
   {
     rank: 14,
-    allianceTitle: "Grand Marshal",
-    hordeTitle: "High Warlord",
+    allianceTitle: 'Grand Marshal',
+    hordeTitle: 'High Warlord',
     minRankScore: 2500,
   },
 ];
@@ -127,7 +127,7 @@ export function getPvpRank(rankScore: number): PvpRank {
  */
 export function getRankTitle(rankScore: number, faction: Faction): string {
   const rank = getPvpRank(rankScore);
-  return faction === "ALLIANCE" ? rank.allianceTitle : rank.hordeTitle;
+  return faction === 'ALLIANCE' ? rank.allianceTitle : rank.hordeTitle;
 }
 
 /**

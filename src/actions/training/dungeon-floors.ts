@@ -1,10 +1,10 @@
-"use server";
+'use server';
 
-import { revalidatePath } from "next/cache";
-import { ActionState } from '@/lib/create-safe-action';
+import type { ActionState } from '@/lib/create-safe-action';
+import { revalidatePath } from 'next/cache';
 
-type FloorType = "NORMAL" | "ELITE" | "BOSS" | "TREASURE" | "REST";
-type FloorTheme = "MINES" | "CAVES" | "FORTRESS" | "ABYSS" | "VOLCANIC";
+type FloorType = 'NORMAL' | 'ELITE' | 'BOSS' | 'TREASURE' | 'REST';
+type FloorTheme = 'MINES' | 'CAVES' | 'FORTRESS' | 'ABYSS' | 'VOLCANIC';
 
 interface DungeonFloor {
   id: string;
@@ -30,13 +30,11 @@ interface FloorEnemy {
 }
 
 interface FloorReward {
-  type: "XP" | "GOLD" | "CRATE" | "EQUIPMENT" | "MATERIAL";
+  type: 'XP' | 'GOLD' | 'CRATE' | 'EQUIPMENT' | 'MATERIAL';
   amount: number;
   guaranteed: boolean;
   dropChance: number;
 }
-
-
 
 // Floor generation templates
 const _FLOOR_TEMPLATES: Record<FloorType, Partial<DungeonFloor>> = {
@@ -50,9 +48,7 @@ const _FLOOR_TEMPLATES: Record<FloorType, Partial<DungeonFloor>> = {
 /**
  * Get dungeon progress for user.
  */
-export async function getDungeonProgressAction(
-  _userId: string,
-): Promise<ActionState<any>> {
+export async function getDungeonProgressAction(_userId: string): Promise<ActionState<any>> {
   return {
     data: {
       currentFloor: 15,
@@ -60,7 +56,7 @@ export async function getDungeonProgressAction(
       totalClears: 145,
       currentRunFloors: 5,
       runActive: true,
-    }
+    },
   };
 }
 
@@ -68,23 +64,19 @@ export async function getDungeonProgressAction(
  * Get floor details.
  */
 export async function getFloorDetailsAction(
-  userId: string,
-  floorNumber: number,
+  _userId: string,
+  floorNumber: number
 ): Promise<DungeonFloor> {
   const type: FloorType =
-    floorNumber % 10 === 0
-      ? "BOSS"
-      : floorNumber % 5 === 0
-        ? "ELITE"
-        : "NORMAL";
+    floorNumber % 10 === 0 ? 'BOSS' : floorNumber % 5 === 0 ? 'ELITE' : 'NORMAL';
   const theme: FloorTheme =
     floorNumber <= 10
-      ? "MINES"
+      ? 'MINES'
       : floorNumber <= 20
-        ? "CAVES"
+        ? 'CAVES'
         : floorNumber <= 30
-          ? "FORTRESS"
-          : "ABYSS";
+          ? 'FORTRESS'
+          : 'ABYSS';
 
   return {
     id: `floor - ${floorNumber} `,
@@ -96,28 +88,28 @@ export async function getFloorDetailsAction(
     difficulty: Math.min(10, Math.ceil(floorNumber / 5)),
     enemies: [
       {
-        id: "e1",
-        name: "Iron Golem",
+        id: 'e1',
+        name: 'Iron Golem',
         level: floorNumber,
         hp: 100 + floorNumber * 20,
         damage: 10 + floorNumber * 2,
-        isBoss: type === "BOSS",
+        isBoss: type === 'BOSS',
       },
     ],
     rewards: [
       {
-        type: "XP",
+        type: 'XP',
         amount: 50 * floorNumber,
         guaranteed: true,
         dropChance: 100,
       },
       {
-        type: "GOLD",
+        type: 'GOLD',
         amount: 25 * floorNumber,
         guaranteed: true,
         dropChance: 100,
       },
-      { type: "MATERIAL", amount: 1, guaranteed: false, dropChance: 30 },
+      { type: 'MATERIAL', amount: 1, guaranteed: false, dropChance: 30 },
     ],
     isCleared: floorNumber <= 23,
   };
@@ -127,10 +119,10 @@ export async function getFloorDetailsAction(
  * Start a dungeon run.
  */
 export async function startDungeonRunAction(
-  userId: string,
+  userId: string
 ): Promise<{ success: boolean; startingFloor: number }> {
   console.log(`Starting dungeon run for ${userId}`);
-  revalidatePath("/dungeon");
+  revalidatePath('/dungeon');
   return { success: true, startingFloor: 1 };
 }
 
@@ -138,14 +130,14 @@ export async function startDungeonRunAction(
  * Clear a floor and progress.
  */
 export async function clearFloorAction(
-  userId: string,
+  _userId: string,
   floorNumber: number,
-  clearTimeMs: number,
+  clearTimeMs: number
 ): Promise<{ success: boolean; rewards: FloorReward[]; nextFloor: number }> {
   const rewards: FloorReward[] = [
-    { type: "XP", amount: 50 * floorNumber, guaranteed: true, dropChance: 100 },
+    { type: 'XP', amount: 50 * floorNumber, guaranteed: true, dropChance: 100 },
     {
-      type: "GOLD",
+      type: 'GOLD',
       amount: 25 * floorNumber,
       guaranteed: true,
       dropChance: 100,
@@ -153,7 +145,7 @@ export async function clearFloorAction(
   ];
 
   console.log(`Cleared floor ${floorNumber} in ${clearTimeMs} ms`);
-  revalidatePath("/dungeon");
+  revalidatePath('/dungeon');
   return { success: true, rewards, nextFloor: floorNumber + 1 };
 }
 
@@ -161,15 +153,15 @@ export async function clearFloorAction(
  * End dungeon run.
  */
 export async function endDungeonRunAction(
-  userId: string,
+  userId: string
 ): Promise<{ floorsCleared: number; totalRewards: FloorReward[] }> {
   console.log(`Ending dungeon run for ${userId}`);
-  revalidatePath("/dungeon");
+  revalidatePath('/dungeon');
   return {
     floorsCleared: 5,
     totalRewards: [
-      { type: "XP", amount: 1500, guaranteed: true, dropChance: 100 },
-      { type: "GOLD", amount: 750, guaranteed: true, dropChance: 100 },
+      { type: 'XP', amount: 1500, guaranteed: true, dropChance: 100 },
+      { type: 'GOLD', amount: 750, guaranteed: true, dropChance: 100 },
     ],
   };
 }

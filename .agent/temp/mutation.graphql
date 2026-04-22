@@ -7,6 +7,8 @@ mutation {
       value: { singleSelectOptionId: "47fc9ee4" }
     }
   ) {
-    projectV2Item { id }
+    projectV2Item {
+      id
+    }
   }
 }

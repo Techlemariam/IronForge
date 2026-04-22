@@ -1,100 +1,104 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
 import * as periodizationActions from '@/actions/training/periodization';
 import prisma from '@/lib/prisma';
-import {
-    calculateVolumeL3,
-    wellnessToRecoveryFactor
-} from '@/utils/volumeCalculatorEnhanced';
+import { calculateVolumeL3, wellnessToRecoveryFactor } from '@/utils/volumeCalculatorEnhanced';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Mock Utils
 vi.mock('@/utils/volumeCalculatorEnhanced', () => ({
-    calculateVolumeL3: vi.fn(),
-    wellnessToRecoveryFactor: vi.fn()
+  calculateVolumeL3: vi.fn(),
+  wellnessToRecoveryFactor: vi.fn(),
 }));
 
 describe('Periodization Actions', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
 
-    beforeEach(() => {
-        vi.clearAllMocks();
+  describe('generatePeriodizationPlanAction', () => {
+    it('should generate plan for HYPERTROPHY week 1', async () => {
+      vi.mocked(prisma.user.findUnique).mockResolvedValue({ titan: { level: 5 } } as any); // Beginner
+      vi.mocked(calculateVolumeL3).mockReturnValue({ optimal: 10 } as any);
+
+      const result = await periodizationActions.generatePeriodizationPlanAction(
+        'u1',
+        'HYPERTROPHY',
+        1
+      );
+
+      expect(result.currentPhase).toBe('ACCUMULATION');
+      expect(result.weekInPhase).toBe(1);
+      // Hypertrophy AccMultiplier is 1.2. 10 * 1.2 = 12
+      expect(result.recommendations.targetVolume.chest).toBe(12);
     });
 
-    describe('generatePeriodizationPlanAction', () => {
-        it('should generate plan for HYPERTROPHY week 1', async () => {
-            vi.mocked(prisma.user.findUnique).mockResolvedValue({ titan: { level: 5 } } as any); // Beginner
-            vi.mocked(calculateVolumeL3).mockReturnValue({ optimal: 10 } as any);
+    it('should resolve correct phase for later weeks', async () => {
+      // Hypertrophy: Acc (4w), Int (3w). Week 5 should be Intensification Week 1.
+      vi.mocked(prisma.user.findUnique).mockResolvedValue({ titan: { level: 20 } } as any);
+      vi.mocked(calculateVolumeL3).mockReturnValue({ optimal: 10 } as any);
 
-            const result = await periodizationActions.generatePeriodizationPlanAction('u1', 'HYPERTROPHY', 1);
+      const result = await periodizationActions.generatePeriodizationPlanAction(
+        'u1',
+        'HYPERTROPHY',
+        5
+      );
 
-            expect(result.currentPhase).toBe('ACCUMULATION');
-            expect(result.weekInPhase).toBe(1);
-            // Hypertrophy AccMultiplier is 1.2. 10 * 1.2 = 12
-            expect(result.recommendations.targetVolume['chest']).toBe(12);
-        });
+      expect(result.currentPhase).toBe('INTENSIFICATION');
+      expect(result.weekInPhase).toBe(1);
+      // IntMultiplier is 1.0. 10 * 1.0 = 10
+      expect(result.recommendations.targetVolume.chest).toBe(10);
+    });
+  });
 
-        it('should resolve correct phase for later weeks', async () => {
-            // Hypertrophy: Acc (4w), Int (3w). Week 5 should be Intensification Week 1.
-            vi.mocked(prisma.user.findUnique).mockResolvedValue({ titan: { level: 20 } } as any);
-            vi.mocked(calculateVolumeL3).mockReturnValue({ optimal: 10 } as any);
+  describe('adaptPlanToWellnessAction', () => {
+    it('should reduce volume on low recovery', async () => {
+      vi.mocked(wellnessToRecoveryFactor).mockReturnValue(0.7);
 
-            const result = await periodizationActions.generatePeriodizationPlanAction('u1', 'HYPERTROPHY', 5);
+      const startPlan: any = {
+        recommendations: {
+          targetVolume: { chest: 10 },
+          targetRpe: 8,
+          notes: [],
+        },
+      };
 
-            expect(result.currentPhase).toBe('INTENSIFICATION');
-            expect(result.weekInPhase).toBe(1);
-            // IntMultiplier is 1.0. 10 * 1.0 = 10
-            expect(result.recommendations.targetVolume['chest']).toBe(10);
-        });
+      const result = await periodizationActions.adaptPlanToWellnessAction('u1', startPlan, 50, 80);
+
+      // 10 * 0.7 = 7
+      expect(result.recommendations.targetVolume.chest).toBe(7);
+      expect(result.recommendations.targetRpe).toBe(7); // 8 - 1
+      expect(result.recommendations.notes[0]).toContain('Low wellness');
     });
 
-    describe('adaptPlanToWellnessAction', () => {
-        it('should reduce volume on low recovery', async () => {
-            vi.mocked(wellnessToRecoveryFactor).mockReturnValue(0.7);
+    it('should keep plan on neutral recovery', async () => {
+      vi.mocked(wellnessToRecoveryFactor).mockReturnValue(1.0);
 
-            const startPlan: any = {
-                recommendations: {
-                    targetVolume: { chest: 10 },
-                    targetRpe: 8,
-                    notes: []
-                }
-            };
+      const startPlan: any = {
+        recommendations: {
+          targetVolume: { chest: 10 },
+          targetRpe: 8,
+          notes: [],
+        },
+      };
 
-            const result = await periodizationActions.adaptPlanToWellnessAction('u1', startPlan, 50, 80);
+      const result = await periodizationActions.adaptPlanToWellnessAction('u1', startPlan, 80, 50);
 
-            // 10 * 0.7 = 7
-            expect(result.recommendations.targetVolume['chest']).toBe(7);
-            expect(result.recommendations.targetRpe).toBe(7); // 8 - 1
-            expect(result.recommendations.notes[0]).toContain('Low wellness');
-        });
+      expect(result.recommendations.targetVolume.chest).toBe(10);
+      expect(result.recommendations.targetRpe).toBe(8);
+      expect(result.recommendations.notes).toHaveLength(0);
+    });
+  });
 
-        it('should keep plan on neutral recovery', async () => {
-            vi.mocked(wellnessToRecoveryFactor).mockReturnValue(1.0);
-
-            const startPlan: any = {
-                recommendations: {
-                    targetVolume: { chest: 10 },
-                    targetRpe: 8,
-                    notes: []
-                }
-            };
-
-            const result = await periodizationActions.adaptPlanToWellnessAction('u1', startPlan, 80, 50);
-
-            expect(result.recommendations.targetVolume['chest']).toBe(10);
-            expect(result.recommendations.targetRpe).toBe(8);
-            expect(result.recommendations.notes).toHaveLength(0);
-        });
+  describe('getRecommendedGoalAction', () => {
+    it('should return HYPERTROPHY for beginners', async () => {
+      vi.mocked(prisma.user.findUnique).mockResolvedValue({ titan: { level: 10 } } as any);
+      const result = await periodizationActions.getRecommendedGoalAction('u1');
+      expect(result).toBe('HYPERTROPHY');
     });
 
-    describe('getRecommendedGoalAction', () => {
-        it('should return HYPERTROPHY for beginners', async () => {
-            vi.mocked(prisma.user.findUnique).mockResolvedValue({ titan: { level: 10 } } as any);
-            const result = await periodizationActions.getRecommendedGoalAction('u1');
-            expect(result).toBe('HYPERTROPHY');
-        });
-
-        it('should return STRENGTH for intermediates', async () => {
-            vi.mocked(prisma.user.findUnique).mockResolvedValue({ titan: { level: 25 } } as any);
-            const result = await periodizationActions.getRecommendedGoalAction('u1');
-            expect(result).toBe('STRENGTH');
-        });
+    it('should return STRENGTH for intermediates', async () => {
+      vi.mocked(prisma.user.findUnique).mockResolvedValue({ titan: { level: 25 } } as any);
+      const result = await periodizationActions.getRecommendedGoalAction('u1');
+      expect(result).toBe('STRENGTH');
     });
+  });
 });

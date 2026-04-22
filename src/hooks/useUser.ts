@@ -1,69 +1,73 @@
-import { useState, useEffect } from "react";
-import { createClient } from "@/utils/supabase/client";
-import { getUserStatsAction } from "@/actions/guild/core";
+import { getUserStatsAction } from '@/actions/guild/core';
+import { createClient } from '@/utils/supabase/client';
+import { useEffect, useState } from 'react';
 
 export interface IronUser {
-    id: string;
-    heroName: string | null;
-    email?: string;
-    kineticEnergy?: number;
+  id: string;
+  heroName: string | null;
+  email?: string;
+  kineticEnergy?: number;
 }
 
 export function useUser() {
-    // Lazy init to synchronously pick up E2E mocks
-    const [user, setUser] = useState<IronUser | null>(() => {
-        if (typeof window !== 'undefined') {
-            const mock = (window as any).__mockUser;
-            console.log("[useUser] Checking mock user:", { mock });
-            if (mock) return mock;
-        }
-        return null;
-    });
+  // Lazy init to synchronously pick up E2E mocks
+  const [user, setUser] = useState<IronUser | null>(() => {
+    if (typeof window !== 'undefined') {
+      const mock = (window as any).__mockUser;
+      console.log('[useUser] Checking mock user:', { mock });
+      if (mock) return mock;
+    }
+    return null;
+  });
 
-    const [loading, setLoading] = useState(() => {
+  const [loading, setLoading] = useState(() => {
+    if (typeof window !== 'undefined' && (window as any).__mockUser) {
+      return false;
+    }
+    return true;
+  });
+
+  useEffect(() => {
+    let mounted = true;
+
+    async function load() {
+      try {
+        // E2E Mock Override - Return early if already handled by lazy init
         if (typeof window !== 'undefined' && (window as any).__mockUser) {
-            return false;
+          return;
         }
-        return true;
-    });
 
-    useEffect(() => {
-        let mounted = true;
+        const supabase = createClient();
 
-        async function load() {
-            try {
-                // E2E Mock Override - Return early if already handled by lazy init
-                if (typeof window !== 'undefined' && (window as any).__mockUser) {
-                    return;
-                }
+        const {
+          data: { user: authUser },
+        } = await supabase.auth.getUser();
 
-                const supabase = createClient();
+        if (authUser && mounted) {
+          // Fetch stats (heroName) from server action
+          // Note: getUserStatsAction internal logic uses authUser.id to find public.User
+          const res = await getUserStatsAction();
+          const stats = res?.data;
 
-                const { data: { user: authUser } } = await supabase.auth.getUser();
-
-                if (authUser && mounted) {
-                    // Fetch stats (heroName) from server action
-                    // Note: getUserStatsAction internal logic uses authUser.id to find public.User
-                    const res = await getUserStatsAction();
-                    const stats = res?.data;
-
-                    setUser({
-                        id: authUser.id,
-                        heroName: stats?.heroName || "Hero",
-                        email: authUser.email,
-                        kineticEnergy: stats?.kineticEnergy || 0
-                    });
-                }
-            } catch (e) {
-                console.error("Failed to load user", e);
-            } finally {
-                if (mounted) setLoading(false);
-            }
+          setUser({
+            id: authUser.id,
+            heroName: stats?.heroName || 'Hero',
+            email: authUser.email,
+            kineticEnergy: stats?.kineticEnergy || 0,
+          });
         }
-        load();
+      } catch (e) {
+        console.error('Failed to load user', e);
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    }
+    load();
 
-        return () => { mounted = false; };
-    }, []);
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
-    return { user, loading };
+  return { user, loading };
 }

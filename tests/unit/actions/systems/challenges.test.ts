@@ -1,11 +1,11 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { getActiveChallengesAction, claimChallengeAction } from "@/actions/systems/challenges";
+import { claimChallengeAction, getActiveChallengesAction } from '@/actions/systems/challenges';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-vi.mock("next/cache", () => ({
+vi.mock('next/cache', () => ({
   revalidatePath: vi.fn(),
 }));
 
-vi.mock("next/headers", () => ({
+vi.mock('next/headers', () => ({
   cookies: vi.fn(() => ({
     get: vi.fn(),
     set: vi.fn(),
@@ -13,7 +13,7 @@ vi.mock("next/headers", () => ({
   })),
 }));
 
-vi.mock("@/utils/supabase/server", () => ({
+vi.mock('@/utils/supabase/server', () => ({
   createClient: vi.fn(() => ({
     auth: {
       getSession: vi.fn(),
@@ -21,7 +21,7 @@ vi.mock("@/utils/supabase/server", () => ({
   })),
 }));
 
-vi.mock("@/lib/prisma", () => {
+vi.mock('@/lib/prisma', () => {
   const mockPrismaClient = {
     user: {
       findUnique: vi.fn(),
@@ -57,14 +57,13 @@ vi.mock("@/lib/prisma", () => {
 });
 
 // We need to access these mocks in tests, so we can re-import or expect on the module
-// But since we need to set return values in tests, we rely on the fact that 
+// But since we need to set return values in tests, we rely on the fact that
 // importing '@/lib/prisma' returns the SAME mock object.
 
+import prisma from '@/lib/prisma';
+import { createClient } from '@/utils/supabase/server';
 
-import { createClient } from "@/utils/supabase/server";
-import prisma from "@/lib/prisma";
-
-describe("Challenges Server Actions", () => {
+describe('Challenges Server Actions', () => {
   const mockSupabase = {
     auth: {
       getSession: vi.fn(),
@@ -76,25 +75,25 @@ describe("Challenges Server Actions", () => {
     (createClient as any).mockResolvedValue(mockSupabase);
   });
 
-  describe("getActiveChallengesAction", () => {
-    it("should return active challenges with user progress", async () => {
+  describe('getActiveChallengesAction', () => {
+    it('should return active challenges with user progress', async () => {
       mockSupabase.auth.getSession.mockResolvedValue({
-        data: { session: { user: { email: "test@example.com" } } },
+        data: { session: { user: { email: 'test@example.com' } } },
       });
 
       (prisma.user.findUnique as any).mockResolvedValue({
-        id: "user-1",
-        email: "test@example.com",
+        id: 'user-1',
+        email: 'test@example.com',
       });
 
       (prisma.challenge.count as any).mockResolvedValue(2);
       (prisma.challenge.findMany as any).mockResolvedValue([
         {
-          id: "challenge-1",
-          code: "WEEKLY_VOL_1",
-          title: "Heavy Lifter",
-          type: "WEEKLY",
-          criteria: { metric: "volume_kg", target: 10000 },
+          id: 'challenge-1',
+          code: 'WEEKLY_VOL_1',
+          title: 'Heavy Lifter',
+          type: 'WEEKLY',
+          criteria: { metric: 'volume_kg', target: 10000 },
           rewards: { xp: 500, gold: 100, kinetic: 50 },
           endDate: new Date(Date.now() + 86400000),
         },
@@ -102,7 +101,7 @@ describe("Challenges Server Actions", () => {
 
       (prisma.userChallenge.findMany as any).mockResolvedValue([
         {
-          challengeId: "challenge-1",
+          challengeId: 'challenge-1',
           progress: 5000,
           completed: false,
           claimed: false,
@@ -112,18 +111,18 @@ describe("Challenges Server Actions", () => {
       const result = await getActiveChallengesAction();
 
       expect(result).toHaveLength(1);
-      expect(result[0].title).toBe("Heavy Lifter");
+      expect(result[0].title).toBe('Heavy Lifter');
       expect(result[0].userStatus.progress).toBe(5000);
     });
 
-    it("should seed challenges if none exist", async () => {
+    it('should seed challenges if none exist', async () => {
       mockSupabase.auth.getSession.mockResolvedValue({
-        data: { session: { user: { email: "test@example.com" } } },
+        data: { session: { user: { email: 'test@example.com' } } },
       });
 
       (prisma.user.findUnique as any).mockResolvedValue({
-        id: "user-1",
-        email: "test@example.com",
+        id: 'user-1',
+        email: 'test@example.com',
       });
 
       // No challenges exist
@@ -137,29 +136,29 @@ describe("Challenges Server Actions", () => {
       expect(prisma.challenge.upsert).toHaveBeenCalled();
     });
 
-    it("should throw error if not authenticated", async () => {
+    it('should throw error if not authenticated', async () => {
       mockSupabase.auth.getSession.mockResolvedValue({
         data: { session: null },
       });
 
-      await expect(getActiveChallengesAction()).rejects.toThrow("Unauthorized");
+      await expect(getActiveChallengesAction()).rejects.toThrow('Unauthorized');
     });
   });
 
-  describe("claimChallengeAction", () => {
-    it("should claim rewards for completed challenge", async () => {
+  describe('claimChallengeAction', () => {
+    it('should claim rewards for completed challenge', async () => {
       mockSupabase.auth.getSession.mockResolvedValue({
-        data: { session: { user: { email: "test@example.com" } } },
+        data: { session: { user: { email: 'test@example.com' } } },
       });
 
       (prisma.user.findUnique as any).mockResolvedValue({
-        id: "user-1",
-        email: "test@example.com",
+        id: 'user-1',
+        email: 'test@example.com',
       });
 
       (prisma.userChallenge.findUnique as any).mockResolvedValue({
-        userId: "user-1",
-        challengeId: "challenge-1",
+        userId: 'user-1',
+        challengeId: 'challenge-1',
         completed: true,
         claimed: false,
         challenge: {
@@ -167,61 +166,54 @@ describe("Challenges Server Actions", () => {
         },
       });
 
-      (prisma.$transaction as any).mockResolvedValue([
-        { claimed: true },
-        { gold: 200 },
-      ]);
+      (prisma.$transaction as any).mockResolvedValue([{ claimed: true }, { gold: 200 }]);
 
-      const result = await claimChallengeAction("challenge-1");
+      const result = await claimChallengeAction('challenge-1');
 
       expect(result.success).toBe(true);
       expect(result.newGold).toBe(200);
     });
 
-    it("should throw error if challenge not completed", async () => {
+    it('should throw error if challenge not completed', async () => {
       mockSupabase.auth.getSession.mockResolvedValue({
-        data: { session: { user: { email: "test@example.com" } } },
+        data: { session: { user: { email: 'test@example.com' } } },
       });
 
       (prisma.user.findUnique as any).mockResolvedValue({
-        id: "user-1",
-        email: "test@example.com",
+        id: 'user-1',
+        email: 'test@example.com',
       });
 
       (prisma.userChallenge.findUnique as any).mockResolvedValue({
-        userId: "user-1",
-        challengeId: "challenge-1",
+        userId: 'user-1',
+        challengeId: 'challenge-1',
         completed: false,
         claimed: false,
         challenge: {},
       });
 
-      await expect(claimChallengeAction("challenge-1")).rejects.toThrow(
-        "Challenge not completed",
-      );
+      await expect(claimChallengeAction('challenge-1')).rejects.toThrow('Challenge not completed');
     });
 
-    it("should throw error if already claimed", async () => {
+    it('should throw error if already claimed', async () => {
       mockSupabase.auth.getSession.mockResolvedValue({
-        data: { session: { user: { email: "test@example.com" } } },
+        data: { session: { user: { email: 'test@example.com' } } },
       });
 
       (prisma.user.findUnique as any).mockResolvedValue({
-        id: "user-1",
-        email: "test@example.com",
+        id: 'user-1',
+        email: 'test@example.com',
       });
 
       (prisma.userChallenge.findUnique as any).mockResolvedValue({
-        userId: "user-1",
-        challengeId: "challenge-1",
+        userId: 'user-1',
+        challengeId: 'challenge-1',
         completed: true,
         claimed: true,
         challenge: {},
       });
 
-      await expect(claimChallengeAction("challenge-1")).rejects.toThrow(
-        "Already claimed",
-      );
+      await expect(claimChallengeAction('challenge-1')).rejects.toThrow('Already claimed');
     });
   });
 });

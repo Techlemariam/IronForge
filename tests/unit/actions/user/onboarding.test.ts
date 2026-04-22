@@ -1,11 +1,11 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { completeOnboardingAction } from "@/actions/user/onboarding";
+import { completeOnboardingAction } from '@/actions/user/onboarding';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-vi.mock("next/cache", () => ({
+vi.mock('next/cache', () => ({
   revalidatePath: vi.fn(),
 }));
 
-vi.mock("@/utils/supabase/server", () => ({
+vi.mock('@/utils/supabase/server', () => ({
   createClient: vi.fn(() => ({
     auth: {
       getUser: vi.fn(),
@@ -13,14 +13,14 @@ vi.mock("@/utils/supabase/server", () => ({
   })),
 }));
 
-vi.mock("@/services/progression", () => ({
+vi.mock('@/services/progression', () => ({
   ProgressionService: {
     awardAchievement: vi.fn(),
     getProgressionState: vi.fn(),
   },
 }));
 
-vi.mock("@/lib/prisma", () => ({
+vi.mock('@/lib/prisma', () => ({
   default: {
     user: {
       update: vi.fn(),
@@ -28,11 +28,11 @@ vi.mock("@/lib/prisma", () => ({
   },
 }));
 
-import { createClient } from "@/utils/supabase/server";
-import { ProgressionService } from "@/services/progression";
-import prisma from "@/lib/prisma";
+import prisma from '@/lib/prisma';
+import { ProgressionService } from '@/services/progression';
+import { createClient } from '@/utils/supabase/server';
 
-describe("Onboarding Server Actions", () => {
+describe('Onboarding Server Actions', () => {
   const mockSupabase = {
     auth: {
       getUser: vi.fn(),
@@ -45,19 +45,19 @@ describe("Onboarding Server Actions", () => {
     (prisma.user.update as any).mockResolvedValue({});
   });
 
-  describe("completeOnboardingAction", () => {
-    it("should return error if not authenticated", async () => {
+  describe('completeOnboardingAction', () => {
+    it('should return error if not authenticated', async () => {
       mockSupabase.auth.getUser.mockResolvedValue({ data: { user: null } });
 
       const result = await completeOnboardingAction();
 
       expect(result.success).toBe(false);
-      expect(result.message).toBe("Unauthorized");
+      expect(result.message).toBe('Unauthorized');
     });
 
-    it("should award achievement and return new state", async () => {
+    it('should award achievement and return new state', async () => {
       mockSupabase.auth.getUser.mockResolvedValue({
-        data: { user: { id: "user-1", email: "test@test.com" } },
+        data: { user: { id: 'user-1', email: 'test@test.com' } },
       });
 
       (ProgressionService.awardAchievement as any).mockResolvedValue({});
@@ -74,11 +74,11 @@ describe("Onboarding Server Actions", () => {
 
       expect(result.success).toBe(true);
       expect(ProgressionService.awardAchievement).toHaveBeenCalledWith(
-        "user-1",
-        "ONBOARDING_COMPLETED",
+        'user-1',
+        'ONBOARDING_COMPLETED'
       );
       expect(prisma.user.update).toHaveBeenCalledWith({
-        where: { id: "user-1" },
+        where: { id: 'user-1' },
         data: { hasCompletedOnboarding: true },
       });
       expect(result.newState).toEqual({
@@ -88,19 +88,17 @@ describe("Onboarding Server Actions", () => {
       });
     });
 
-    it("should handle progression service errors gracefully", async () => {
+    it('should handle progression service errors gracefully', async () => {
       mockSupabase.auth.getUser.mockResolvedValue({
-        data: { user: { id: "user-1" } },
+        data: { user: { id: 'user-1' } },
       });
 
-      (ProgressionService.awardAchievement as any).mockRejectedValue(
-        new Error("DB Error"),
-      );
+      (ProgressionService.awardAchievement as any).mockRejectedValue(new Error('DB Error'));
 
       const result = await completeOnboardingAction();
 
       expect(result.success).toBe(false);
-      expect(result.message).toBe("Failed to record completion");
+      expect(result.message).toBe('Failed to record completion');
     });
   });
 });

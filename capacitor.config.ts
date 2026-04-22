@@ -13,7 +13,7 @@ const config: CapacitorConfig = {
     // END: Development configuration
 
     // PRODUCTION: Uncomment below and comment above for store release
-    // url: 'https://your-production-url.com', 
+    // url: 'https://your-production-url.com',
   },
   plugins: {
     Keyboard: {
@@ -25,4 +25,3 @@ const config: CapacitorConfig = {
 };
 
 export default config;
-

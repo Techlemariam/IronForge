@@ -1,7 +1,7 @@
 export interface CombatStats {
   damage: number;
   isCritical: boolean;
-  type: "standard" | "critical" | "special";
+  type: 'standard' | 'critical' | 'special';
   description: string;
 }
 
@@ -18,7 +18,7 @@ export const calculateDamage = (
   weight: number,
   reps: number,
   rpe: number,
-  isPr: boolean,
+  isPr: boolean
 ): CombatStats => {
   // Base damage is total volume
   let damage = weight * reps;
@@ -29,26 +29,26 @@ export const calculateDamage = (
   }
 
   let isCritical = false;
-  let type: CombatStats["type"] = "standard";
-  let description = "Standard Attack";
+  let type: CombatStats['type'] = 'standard';
+  let description = 'Standard Attack';
 
   // RPE Multipliers (Intensity Bonus)
   if (rpe >= 9 && rpe < 10) {
     damage *= 1.2; // 20% bonus for high intensity
-    description = "Heavy Strike";
+    description = 'Heavy Strike';
   } else if (rpe === 10) {
     damage *= 1.5; // 50% bonus for maximum effort
     isCritical = true;
-    type = "critical";
-    description = "Limit Break";
+    type = 'critical';
+    description = 'Limit Break';
   }
 
   // PR Bonus
   if (isPr) {
     damage *= 2.0; // Double damage for PRs!
     isCritical = true;
-    type = "critical";
-    description = "Legendary Strike";
+    type = 'critical';
+    description = 'Legendary Strike';
   }
 
   return {
@@ -65,11 +65,11 @@ export const calculateDamage = (
 export const detectSpecialMove = (
   reps: number,
   isDropSet: boolean,
-  isAmrap: boolean,
+  isAmrap: boolean
 ): string | null => {
-  if (isDropSet) return "Berserker Rage";
-  if (isAmrap && reps > 10) return "Flurry of Blows";
-  if (reps >= 20) return "Endurance Assault";
+  if (isDropSet) return 'Berserker Rage';
+  if (isAmrap && reps > 10) return 'Flurry of Blows';
+  if (reps >= 20) return 'Endurance Assault';
   return null;
 };
 
@@ -80,7 +80,7 @@ export const detectSpecialMove = (
 export const detectJokerOpportunity = (
   rpe: number,
   setIndex: number,
-  _totalSets: number,
+  _totalSets: number
 ): boolean => {
   // Only offer on final sets or heavy sets that felt too light
   // Currently simple logic: if it felt easy (RPE < 7) on a working set

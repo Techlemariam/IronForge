@@ -4,17 +4,17 @@
  * Contains all static configuration for the Training Resource Management system.
  */
 
-import {
-  TrainingPath,
+import type {
+  BuildVolumeTargets,
+  LayerBonuses,
+  LayerLevel,
+  MuscleGroup,
   PathInfo,
   PathModifiers,
-  LayerLevel,
-  LayerBonuses,
-  VolumeLandmarks,
-  MuscleGroup,
   RewardConfig,
-  BuildVolumeTargets,
-} from "../types/training";
+  TrainingPath,
+  VolumeLandmarks,
+} from '../types/training';
 
 // =============================================================================
 // PATH DEFINITIONS
@@ -25,31 +25,31 @@ import {
  */
 export const PATH_INFO: Record<TrainingPath, PathInfo> = {
   JUGGERNAUT: {
-    id: "JUGGERNAUT",
-    name: "The Iron Juggernaut",
-    description: "Maximal strength and power. Inspired by 5/3/1 and Sheiko.",
-    icon: "⚔️",
-    color: "text-red-500",
-    strengthLevel: "MRV",
-    cardioLevel: "MV",
+    id: 'JUGGERNAUT',
+    name: 'The Iron Juggernaut',
+    description: 'Maximal strength and power. Inspired by 5/3/1 and Sheiko.',
+    icon: '⚔️',
+    color: 'text-red-500',
+    strengthLevel: 'MRV',
+    cardioLevel: 'MV',
   },
   PATHFINDER: {
-    id: "PATHFINDER",
-    name: "The Pathfinder",
-    description: "Elite VO2max and endurance. Polarized 80/20 training.",
-    icon: "💨",
-    color: "text-cyan-500",
-    strengthLevel: "MV",
-    cardioLevel: "MRV",
+    id: 'PATHFINDER',
+    name: 'The Pathfinder',
+    description: 'Elite VO2max and endurance. Polarized 80/20 training.',
+    icon: '💨',
+    color: 'text-cyan-500',
+    strengthLevel: 'MV',
+    cardioLevel: 'MRV',
   },
   WARDEN: {
-    id: "WARDEN",
-    name: "The Hybrid Warden",
-    description: "Balanced strength and cardio. Alex Viada methodology.",
-    icon: "⚖️",
-    color: "text-purple-500",
-    strengthLevel: "MAV",
-    cardioLevel: "MAV",
+    id: 'WARDEN',
+    name: 'The Hybrid Warden',
+    description: 'Balanced strength and cardio. Alex Viada methodology.',
+    icon: '⚖️',
+    color: 'text-purple-500',
+    strengthLevel: 'MAV',
+    cardioLevel: 'MAV',
   },
 };
 
@@ -106,14 +106,11 @@ export const RECOVERY_LAYER_BONUSES: Record<LayerLevel, LayerBonuses> = {
 /**
  * Requirements to reach each layer level
  */
-export const LAYER_REQUIREMENTS: Record<
-  LayerLevel,
-  { sessions: number; description: string }
-> = {
-  NONE: { sessions: 0, description: "No progress yet" },
-  BRONZE: { sessions: 10, description: "10 ATG/Recovery sessions" },
-  SILVER: { sessions: 30, description: "30 ATG/Recovery sessions" },
-  GOLD: { sessions: 60, description: "60 ATG/Recovery sessions" },
+export const LAYER_REQUIREMENTS: Record<LayerLevel, { sessions: number; description: string }> = {
+  NONE: { sessions: 0, description: 'No progress yet' },
+  BRONZE: { sessions: 10, description: '10 ATG/Recovery sessions' },
+  SILVER: { sessions: 30, description: '30 ATG/Recovery sessions' },
+  GOLD: { sessions: 60, description: '60 ATG/Recovery sessions' },
 };
 
 // =============================================================================
@@ -210,10 +207,7 @@ export const BUILD_VOLUME_TARGETS: Record<TrainingPath, BuildVolumeTargets> = {
  * Path-specific volume modifiers (Physical Simulator)
  * Scales Muscle Group landmarks based on active Path to account for interference effect.
  */
-export const PATH_VOLUME_MODIFIERS: Record<
-  TrainingPath,
-  Partial<Record<MuscleGroup, number>>
-> = {
+export const PATH_VOLUME_MODIFIERS: Record<TrainingPath, Partial<Record<MuscleGroup, number>>> = {
   PATHFINDER: {
     QUADS: 0.7,
     HAMS: 0.7,

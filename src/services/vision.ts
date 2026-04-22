@@ -1,7 +1,4 @@
-import {
-  PoseLandmarker,
-  FilesetResolver,
-} from "@mediapipe/tasks-vision";
+import { FilesetResolver, PoseLandmarker } from '@mediapipe/tasks-vision';
 
 /**
  * TITAN VISION ENGINE 2.0 (GHOST SPOTTER)
@@ -10,19 +7,19 @@ import {
 
 export class VisionService {
   private poseLandmarker: PoseLandmarker | null = null;
-  private runningMode: "IMAGE" | "VIDEO" = "VIDEO";
-  private lastY: number = 0;
-  private lastTime: number = 0;
+  private runningMode: 'IMAGE' | 'VIDEO' = 'VIDEO';
+  private lastY = 0;
+  private lastTime = 0;
 
   // State for Rep Counting logic
-  private state: "ECCENTRIC" | "CONCENTRIC" | "TOP" | "BOTTOM" = "TOP";
-  private repCount: number = 0;
-  private depthHit: boolean = false;
+  private state: 'ECCENTRIC' | 'CONCENTRIC' | 'TOP' | 'BOTTOM' = 'TOP';
+  private repCount = 0;
+  private depthHit = false;
 
   // Singleton instance
   private static instance: VisionService;
 
-  private constructor() { }
+  private constructor() {}
 
   public static getInstance(): VisionService {
     if (!VisionService.instance) {
@@ -35,18 +32,19 @@ export class VisionService {
     if (this.poseLandmarker) return;
 
     const vision = await FilesetResolver.forVisionTasks(
-      "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0/wasm",
+      'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0/wasm'
     );
 
     this.poseLandmarker = await PoseLandmarker.createFromOptions(vision, {
       baseOptions: {
-        modelAssetPath: `https://storage.googleapis.com/mediapipe-models/pose/pose_landmarker/float16/1/pose_landmarker.task`,
-        delegate: "GPU",
+        modelAssetPath:
+          'https://storage.googleapis.com/mediapipe-models/pose/pose_landmarker/float16/1/pose_landmarker.task',
+        delegate: 'GPU',
       },
       runningMode: this.runningMode,
       numPoses: 1,
     });
-    console.log("Titan Vision Engine: Online");
+    console.log('Titan Vision Engine: Online');
   }
 
   /**
@@ -86,22 +84,18 @@ export class VisionService {
       // 3. REP LOGIC (Simplified State Machine)
       let repDetected = false;
 
-      if (this.state === "TOP" && velocity > 0.08 && shoulderY > this.lastY) {
-        this.state = "ECCENTRIC";
-      } else if (this.state === "ECCENTRIC" && isBelowParallel) {
-        this.state = "BOTTOM";
+      if (this.state === 'TOP' && velocity > 0.08 && shoulderY > this.lastY) {
+        this.state = 'ECCENTRIC';
+      } else if (this.state === 'ECCENTRIC' && isBelowParallel) {
+        this.state = 'BOTTOM';
         this.depthHit = true;
+      } else if (this.state === 'BOTTOM' && !isBelowParallel && velocity > 0.12) {
+        this.state = 'CONCENTRIC';
       } else if (
-        this.state === "BOTTOM" &&
-        !isBelowParallel &&
-        velocity > 0.12
-      ) {
-        this.state = "CONCENTRIC";
-      } else if (
-        this.state === "CONCENTRIC" &&
+        this.state === 'CONCENTRIC' &&
         (velocity < 0.04 || shoulderY < this.lastY - 0.02)
       ) {
-        this.state = "TOP";
+        this.state = 'TOP';
         if (this.depthHit) {
           this.repCount++;
           repDetected = true;

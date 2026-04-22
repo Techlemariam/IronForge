@@ -1,25 +1,25 @@
-import { NextRequest, NextResponse } from "next/server";
-import prisma from "@/lib/prisma";
-import { PlannerService } from "@/services/planner";
+import prisma from '@/lib/prisma';
+import { PlannerService } from '@/services/planner';
+import { type NextRequest, NextResponse } from 'next/server';
 
 export const maxDuration = 300; // 5 minutes max for Cron Jobs (Pro plan limits apply)
-export const dynamic = "force-dynamic";
+export const dynamic = 'force-dynamic';
 
-import * as Sentry from "@sentry/nextjs";
+import * as Sentry from '@sentry/nextjs';
 
 export async function GET(request: NextRequest) {
-  return await Sentry.withMonitor("generate-plans", async () => {
+  return await Sentry.withMonitor('generate-plans', async () => {
     // 1. Authenticate Cron Request
-    const authHeader = request.headers.get("authorization");
+    const authHeader = request.headers.get('authorization');
     if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
       // Allow local testing without secret if strictly needed, or stick to strict auth
       // For now, strict auth.
       // Return 401
-      return new NextResponse("Unauthorized", { status: 401 });
+      return new NextResponse('Unauthorized', { status: 401 });
     }
 
     try {
-      console.log("Cron: Starting Weekly Plan Generation...");
+      console.log('Cron: Starting Weekly Plan Generation...');
 
       // 2. Fetch Eligible Users
       // Ideally only users with active subscriptions or who have logged in recently
@@ -58,7 +58,7 @@ export async function GET(request: NextRequest) {
         errors,
       });
     } catch (error: any) {
-      console.error("Cron: Critical failure:", error);
+      console.error('Cron: Critical failure:', error);
       return new NextResponse(`Internal Error: ${error.message}`, {
         status: 500,
       });

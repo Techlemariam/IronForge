@@ -1,23 +1,21 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import { motion } from "framer-motion";
-import { TrainingPath } from "@/types/training";
-import { PATH_INFO, PATH_MODIFIERS } from "@/data/builds";
-import { updateActivePathAction } from "@/actions/training/core";
-import { toast } from "sonner";
-import { Sword, Wind, Shield, CheckCircle2 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { updateActivePathAction } from '@/actions/training/core';
+import { PATH_INFO, PATH_MODIFIERS } from '@/data/builds';
+import { cn } from '@/lib/utils';
+import type { TrainingPath } from '@/types/training';
+import { motion } from 'framer-motion';
+import { CheckCircle2, Shield, Sword, Wind } from 'lucide-react';
+import type React from 'react';
+import { useState } from 'react';
+import { toast } from 'sonner';
 
 interface PathSelectorProps {
   initialPath: TrainingPath;
   onUpdate?: (path: TrainingPath) => void;
 }
 
-export const PathSelector: React.FC<PathSelectorProps> = ({
-  initialPath,
-  onUpdate,
-}) => {
+export const PathSelector: React.FC<PathSelectorProps> = ({ initialPath, onUpdate }) => {
   const [selectedPath, setSelectedPath] = useState<TrainingPath>(initialPath);
   const [, setIsUpdating] = useState(false);
 
@@ -30,11 +28,11 @@ export const PathSelector: React.FC<PathSelectorProps> = ({
         toast.success(`Path updated to ${PATH_INFO[path].name}`);
         if (onUpdate) onUpdate(path);
       } else {
-        toast.error("Failed to update path");
+        toast.error('Failed to update path');
       }
     } catch (e) {
       console.error(e);
-      toast.error("An error occurred");
+      toast.error('An error occurred');
     } finally {
       setIsUpdating(false);
     }
@@ -54,42 +52,33 @@ export const PathSelector: React.FC<PathSelectorProps> = ({
               role="button"
               tabIndex={0}
               onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  handleSelect(pathId)
+                if (e.key === 'Enter' || e.key === ' ') {
+                  handleSelect(pathId);
                 }
               }}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => handleSelect(pathId)}
               className={cn(
-                "cursor-pointer rounded-xl border-2 p-4 transition-all relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-zinc-900 focus:ring-white",
+                'cursor-pointer rounded-xl border-2 p-4 transition-all relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-zinc-900 focus:ring-white',
                 isSelected
-                  ? `border-${info.color.split("-")[1]}-500 bg-zinc-900 shadow-[0_0_15px_rgba(0,0,0,0.5)]`
-                  : "border-zinc-800 bg-zinc-900/50 hover:bg-zinc-800",
+                  ? `border-${info.color.split('-')[1]}-500 bg-zinc-900 shadow-[0_0_15px_rgba(0,0,0,0.5)]`
+                  : 'border-zinc-800 bg-zinc-900/50 hover:bg-zinc-800'
               )}
             >
               {/* Background Glow for Selected */}
               {isSelected && (
-                <div
-                  className={`absolute inset-0 bg-${info.color.split("-")[1]}-500/10 z-0`}
-                />
+                <div className={`absolute inset-0 bg-${info.color.split('-')[1]}-500/10 z-0`} />
               )}
 
               <div className="relative z-10 flex flex-col h-full">
                 {/* Header */}
                 <div className="flex items-start justify-between mb-3">
                   <div className="text-3xl">{info.icon}</div>
-                  {isSelected && (
-                    <CheckCircle2 className={`w-5 h-5 ${info.color}`} />
-                  )}
+                  {isSelected && <CheckCircle2 className={`w-5 h-5 ${info.color}`} />}
                 </div>
 
-                <h3
-                  className={cn(
-                    "font-bold uppercase tracking-wider text-sm mb-1",
-                    info.color,
-                  )}
-                >
+                <h3 className={cn('font-bold uppercase tracking-wider text-sm mb-1', info.color)}>
                   {info.name}
                 </h3>
                 <p className="text-xs text-zinc-400 mb-4 flex-grow line-clamp-3">
@@ -122,9 +111,7 @@ export const PathSelector: React.FC<PathSelectorProps> = ({
                         <Shield className="w-3 h-3" />
                         <span>Dodge</span>
                       </div>
-                      <span className="text-green-400">
-                        {formatModifier(modifiers.dodge)}
-                      </span>
+                      <span className="text-green-400">{formatModifier(modifiers.dodge)}</span>
                     </div>
                   )}
                 </div>
@@ -143,7 +130,7 @@ function formatModifier(value: number): string {
 }
 
 function getModifierClass(value: number): string {
-  if (value > 1.0) return "text-green-400 font-bold";
-  if (value < 1.0) return "text-red-400";
-  return "text-zinc-500";
+  if (value > 1.0) return 'text-green-400 font-bold';
+  if (value < 1.0) return 'text-red-400';
+  return 'text-zinc-500';
 }

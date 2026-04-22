@@ -1,27 +1,27 @@
-import React from "react";
-import { motion } from "framer-motion";
-import { LootDrop as LootDropType, Rarity } from "../../types/loot";
+import { motion } from 'framer-motion';
+import type React from 'react';
+import { type LootDrop as LootDropType, Rarity } from '../../types/loot';
 
 interface LootDropProps {
   drops: LootDropType[];
 }
 
 const rarityColors: Record<Rarity, string> = {
-  [Rarity.COMMON]: "border-gray-500 text-gray-300 bg-gray-900/50",
-  [Rarity.UNCOMMON]: "border-green-500 text-green-300 bg-green-900/50",
-  [Rarity.RARE]: "border-blue-500 text-blue-300 bg-blue-900/50",
-  [Rarity.EPIC]: "border-purple-500 text-purple-300 bg-purple-900/50",
-  [Rarity.LEGENDARY]: "border-orange-500 text-orange-300 bg-orange-900/50",
-  [Rarity.MYTHIC]: "border-red-600 text-red-400 bg-red-900/50",
+  [Rarity.COMMON]: 'border-gray-500 text-gray-300 bg-gray-900/50',
+  [Rarity.UNCOMMON]: 'border-green-500 text-green-300 bg-green-900/50',
+  [Rarity.RARE]: 'border-blue-500 text-blue-300 bg-blue-900/50',
+  [Rarity.EPIC]: 'border-purple-500 text-purple-300 bg-purple-900/50',
+  [Rarity.LEGENDARY]: 'border-orange-500 text-orange-300 bg-orange-900/50',
+  [Rarity.MYTHIC]: 'border-red-600 text-red-400 bg-red-900/50',
 };
 
 const rarityGlow: Record<Rarity, string> = {
-  [Rarity.COMMON]: "shadow-[0_0_10px_rgba(107,114,128,0.3)]",
-  [Rarity.UNCOMMON]: "shadow-[0_0_15px_rgba(34,197,94,0.4)]",
-  [Rarity.RARE]: "shadow-[0_0_20px_rgba(59,130,246,0.5)]",
-  [Rarity.EPIC]: "shadow-[0_0_25px_rgba(168,85,247,0.6)]",
-  [Rarity.LEGENDARY]: "shadow-[0_0_30px_rgba(249,115,22,0.7)]",
-  [Rarity.MYTHIC]: "shadow-[0_0_40px_rgba(220,38,38,0.8)]",
+  [Rarity.COMMON]: 'shadow-[0_0_10px_rgba(107,114,128,0.3)]',
+  [Rarity.UNCOMMON]: 'shadow-[0_0_15px_rgba(34,197,94,0.4)]',
+  [Rarity.RARE]: 'shadow-[0_0_20px_rgba(59,130,246,0.5)]',
+  [Rarity.EPIC]: 'shadow-[0_0_25px_rgba(168,85,247,0.6)]',
+  [Rarity.LEGENDARY]: 'shadow-[0_0_30px_rgba(249,115,22,0.7)]',
+  [Rarity.MYTHIC]: 'shadow-[0_0_40px_rgba(220,38,38,0.8)]',
 };
 
 const LootDropNotification: React.FC<LootDropProps> = ({ drops }) => {
@@ -37,7 +37,7 @@ const LootDropNotification: React.FC<LootDropProps> = ({ drops }) => {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{
             delay: index * 0.2,
-            type: "spring",
+            type: 'spring',
             stiffness: 120,
           }}
           className={`

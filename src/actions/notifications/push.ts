@@ -1,8 +1,8 @@
-"use server";
+'use server';
 
-import { createClient } from "@/utils/supabase/server";
-import prisma from "@/lib/prisma";
-import { z } from "zod";
+import prisma from '@/lib/prisma';
+import { createClient } from '@/utils/supabase/server';
+import { z } from 'zod';
 
 const pushSubscriptionSchema = z.object({
   endpoint: z.string(),
@@ -12,9 +12,7 @@ const pushSubscriptionSchema = z.object({
   }),
 });
 
-export type SubscribePushResult =
-  | { success: true }
-  | { success: false; error: string };
+export type SubscribePushResult = { success: true } | { success: false; error: string };
 
 export async function subscribeToPushNotificationsAction(
   subscription: z.infer<typeof pushSubscriptionSchema>
@@ -25,12 +23,12 @@ export async function subscribeToPushNotificationsAction(
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return { success: false, error: "Unauthorized" };
+    return { success: false, error: 'Unauthorized' };
   }
 
   const parsed = pushSubscriptionSchema.safeParse(subscription);
   if (!parsed.success) {
-    return { success: false, error: "Invalid subscription data" };
+    return { success: false, error: 'Invalid subscription data' };
   }
 
   try {
@@ -50,7 +48,7 @@ export async function subscribeToPushNotificationsAction(
 
     return { success: true };
   } catch (error) {
-    console.error("[Push Subscribe] Error:", error);
-    return { success: false, error: "Failed to save subscription" };
+    console.error('[Push Subscribe] Error:', error);
+    return { success: false, error: 'Failed to save subscription' };
   }
 }

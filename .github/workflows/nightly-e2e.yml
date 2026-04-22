@@ -15,7 +15,7 @@ env:
 jobs:
   nightly-e2e:
     name: 🎭 Execute Nightly E2E
-    runs-on: [self-hosted, IronForge-VPS]
+    runs-on: [self-hosted, IronForge-Local]
     outputs:
       e2e_failed: ${{ steps.run-tests.outputs.failed }}
     steps:

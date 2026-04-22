@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from "react";
-import {
-  getHevyRoutinesAction,
-} from "@/actions/integrations/hevy";
-import { HevyRoutine } from "../../types/hevy";
-import { LoadingSpinner } from "../../components/ui/LoadingSpinner";
-import { motion, AnimatePresence } from "framer-motion";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { getHevyRoutinesAction } from '@/actions/integrations/hevy';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { AnimatePresence, motion } from 'framer-motion';
+import type React from 'react';
+import { useEffect, useState } from 'react';
+import { LoadingSpinner } from '../../components/ui/LoadingSpinner';
+import type { HevyRoutine } from '../../types/hevy';
 
 // --- Mission Briefing Modal ---
 const MissionBriefing: React.FC<{
@@ -14,13 +13,13 @@ const MissionBriefing: React.FC<{
   exerciseNameMap: Map<string, string>;
   onInitiate: (routine: HevyRoutine) => void;
   onCancel: () => void;
-  mode?: "start" | "import";
-}> = ({ routine, exerciseNameMap, onInitiate, onCancel, mode = "start" }) => {
+  mode?: 'start' | 'import';
+}> = ({ routine, exerciseNameMap, onInitiate, onCancel, mode = 'start' }) => {
   return (
     <motion.div
-      initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
-      animate={{ opacity: 1, backdropFilter: "blur(8px)" }}
-      exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
+      initial={{ opacity: 0, backdropFilter: 'blur(0px)' }}
+      animate={{ opacity: 1, backdropFilter: 'blur(8px)' }}
+      exit={{ opacity: 0, backdropFilter: 'blur(0px)' }}
       className="fixed inset-0 bg-black/50 z-40 flex items-center justify-center p-4"
       onClick={onCancel}
     >
@@ -49,14 +48,8 @@ const MissionBriefing: React.FC<{
                   const name =
                     exerciseNameMap.get(ex.exercise_template_id) ||
                     ex.exercise_template?.title ||
-                    "Unknown Exercise";
-                  return (
-                    <li
-                      key={`${ex.exercise_template_id || "unknown"}-${index}`}
-                    >
-                      {name}
-                    </li>
-                  );
+                    'Unknown Exercise';
+                  return <li key={`${ex.exercise_template_id || 'unknown'}-${index}`}>{name}</li>;
                 })}
               </ul>
             </div>
@@ -76,7 +69,7 @@ const MissionBriefing: React.FC<{
             <Button variant="default" onClick={onCancel}>
               Cancel
             </Button>
-            {mode === "import" ? (
+            {mode === 'import' ? (
               <Button variant="magma" onClick={() => onInitiate(routine)}>
                 Import Blueprint
               </Button>
@@ -96,23 +89,23 @@ const MissionBriefing: React.FC<{
 const RoutineSelector: React.FC<{
   exerciseNameMap: Map<string, string>;
   onSelectRoutine: (routine: HevyRoutine) => void;
-  mode?: "start" | "import";
-}> = ({ exerciseNameMap, onSelectRoutine, mode = "start" }) => {
+  mode?: 'start' | 'import';
+}> = ({ exerciseNameMap, onSelectRoutine, mode = 'start' }) => {
   const [routines, setRoutines] = useState<HevyRoutine[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const [selected, setSelected] = useState<HevyRoutine | null>(null);
 
   useEffect(() => {
     const fetchRoutines = async () => {
       try {
-        const apiKey = localStorage.getItem("hevy_api_key");
-        if (!apiKey) throw new Error("API Key Missing");
+        const apiKey = localStorage.getItem('hevy_api_key');
+        if (!apiKey) throw new Error('API Key Missing');
         const data = await getHevyRoutinesAction(apiKey);
         setRoutines(data.routines || []);
       } catch (err) {
         console.error(err);
-        setError("Hevy Uplink Failed. Check API Key & Proxy.");
+        setError('Hevy Uplink Failed. Check API Key & Proxy.');
       } finally {
         setLoading(false);
       }
@@ -142,7 +135,7 @@ const RoutineSelector: React.FC<{
             exerciseNameMap={exerciseNameMap}
             onCancel={() => setSelected(null)}
             onInitiate={async (r) => {
-              if (mode === "import") {
+              if (mode === 'import') {
                 // Verify we want to do this here or let parent handle?
                 // The prompt said "flytta", implying the action happens.
                 // Let's assume parent passes a handler that DOES the action, OR we do it here.
@@ -185,11 +178,11 @@ const RoutineSelector: React.FC<{
               }}
               className="w-full"
             >
-              <button
-                className="w-full text-left"
-                onClick={() => setSelected(routine)}
-              >
-                <Card variant="glass" className="group relative border-l-4 border-l-magma transition-all duration-300 hover:border-magma hover:shadow-glow-magma transform hover:-translate-y-1">
+              <button className="w-full text-left" onClick={() => setSelected(routine)}>
+                <Card
+                  variant="glass"
+                  className="group relative border-l-4 border-l-magma transition-all duration-300 hover:border-magma hover:shadow-glow-magma transform hover:-translate-y-1"
+                >
                   <div>
                     <h3 className="font-heading text-lg text-white group-hover:text-magma mb-2 transition-colors duration-300">
                       {routine.title}
@@ -205,13 +198,13 @@ const RoutineSelector: React.FC<{
         </motion.div>
 
         {routines.length === 0 && !loading && (
-          <Card variant="glass" className="text-center p-10 font-mono text-forge-muted border-dashed mt-8">
-            <h3 className="text-lg font-heading text-white mb-2">
-              No Missions Found
-            </h3>
+          <Card
+            variant="glass"
+            className="text-center p-10 font-mono text-forge-muted border-dashed mt-8"
+          >
+            <h3 className="text-lg font-heading text-white mb-2">No Missions Found</h3>
             <p className="text-sm">
-              The War Room is empty. Create routines in Hevy to plan your
-              incursions.
+              The War Room is empty. Create routines in Hevy to plan your incursions.
             </p>
           </Card>
         )}
@@ -221,5 +214,3 @@ const RoutineSelector: React.FC<{
 };
 
 export default RoutineSelector;
-
-

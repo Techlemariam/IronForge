@@ -1,9 +1,9 @@
-"use server";
+'use server';
 
-import { createClient } from "@/utils/supabase/server";
-import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
-import prisma from "@/lib/prisma";
+import prisma from '@/lib/prisma';
+import { createClient } from '@/utils/supabase/server';
+import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 
 export async function deleteAccountAction(): Promise<{
   success: boolean;
@@ -15,7 +15,7 @@ export async function deleteAccountAction(): Promise<{
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return { success: false, error: "Not authenticated" };
+    return { success: false, error: 'Not authenticated' };
   }
 
   try {
@@ -28,13 +28,13 @@ export async function deleteAccountAction(): Promise<{
     // so we just sign out and let Supabase handle user deletion via their dashboard/policy)
     await supabase.auth.signOut();
 
-    revalidatePath("/", "layout");
+    revalidatePath('/', 'layout');
     return { success: true };
   } catch (error) {
-    console.error("Failed to delete account:", error);
+    console.error('Failed to delete account:', error);
     return {
       success: false,
-      error: "Failed to delete account. Please contact support.",
+      error: 'Failed to delete account. Please contact support.',
     };
   }
 }
@@ -42,6 +42,6 @@ export async function deleteAccountAction(): Promise<{
 export async function signOutAction(): Promise<void> {
   const supabase = await createClient();
   await supabase.auth.signOut();
-  revalidatePath("/", "layout");
-  redirect("/login");
+  revalidatePath('/', 'layout');
+  redirect('/login');
 }

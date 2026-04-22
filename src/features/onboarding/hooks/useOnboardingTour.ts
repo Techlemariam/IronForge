@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { useState, useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from 'react';
 
 interface TourStep {
   id: string;
   target: string; // CSS selector
   title: string;
   content: string;
-  placement: "top" | "bottom" | "left" | "right";
+  placement: 'top' | 'bottom' | 'left' | 'right';
   action?: () => void;
   requiredAction?: string;
 }
@@ -20,61 +20,57 @@ interface TourConfig {
 }
 
 const MAIN_TOUR: TourConfig = {
-  id: "main-onboarding",
-  name: "Welcome to IronForge!",
+  id: 'main-onboarding',
+  name: 'Welcome to IronForge!',
   steps: [
     {
-      id: "welcome",
+      id: 'welcome',
       target: '[data-tour="dashboard"]',
-      title: "Welcome, Titan!",
+      title: 'Welcome, Titan!',
       content:
-        "This is your command center. Here you can see your progress, quests, and Titan status.",
-      placement: "bottom",
+        'This is your command center. Here you can see your progress, quests, and Titan status.',
+      placement: 'bottom',
     },
     {
-      id: "titan-status",
+      id: 'titan-status',
       target: '[data-tour="titan-card"]',
-      title: "Your Titan",
-      content:
-        "This is your Titan avatar. It grows stronger as you train in the real world!",
-      placement: "right",
+      title: 'Your Titan',
+      content: 'This is your Titan avatar. It grows stronger as you train in the real world!',
+      placement: 'right',
     },
     {
-      id: "workout",
+      id: 'workout',
       target: '[data-tour="start-workout"]',
-      title: "Start Training",
-      content:
-        "Tap here to begin logging your workout. Every set earns XP for your Titan.",
-      placement: "bottom",
+      title: 'Start Training',
+      content: 'Tap here to begin logging your workout. Every set earns XP for your Titan.',
+      placement: 'bottom',
     },
     {
-      id: "combat",
+      id: 'combat',
       target: '[data-tour="combat"]',
-      title: "Enter Combat",
+      title: 'Enter Combat',
       content:
-        "Fight monsters and bosses in the Iron Mines. Your fitness data powers your attacks!",
-      placement: "left",
+        'Fight monsters and bosses in the Iron Mines. Your fitness data powers your attacks!',
+      placement: 'left',
     },
     {
-      id: "quests",
+      id: 'quests',
       target: '[data-tour="quests"]',
-      title: "Daily Quests",
-      content:
-        "Complete daily quests for bonus XP and rewards. New quests appear every day!",
-      placement: "top",
+      title: 'Daily Quests',
+      content: 'Complete daily quests for bonus XP and rewards. New quests appear every day!',
+      placement: 'top',
     },
     {
-      id: "guild",
+      id: 'guild',
       target: '[data-tour="guild"]',
-      title: "Join a Guild",
-      content:
-        "Team up with other Titans for group challenges and shared rewards.",
-      placement: "right",
+      title: 'Join a Guild',
+      content: 'Team up with other Titans for group challenges and shared rewards.',
+      placement: 'right',
     },
   ],
 };
 
-const STORAGE_KEY = "ironforge_completed_tours";
+const STORAGE_KEY = 'ironforge_completed_tours';
 
 /**
  * Hook for managing onboarding tours.
@@ -91,7 +87,7 @@ export function useOnboardingTour(tourConfig: TourConfig = MAIN_TOUR) {
       try {
         setCompletedTours(JSON.parse(stored));
       } catch (e) {
-        console.error("Error loading tour state:", e);
+        console.error('Error loading tour state:', e);
       }
     }
   }, []);
@@ -131,12 +127,11 @@ export function useOnboardingTour(tourConfig: TourConfig = MAIN_TOUR) {
     setCurrentStep(0);
   }, []);
 
-
   const isTourCompleted = useCallback(
     (tourId: string) => {
       return completedTours.includes(tourId);
     },
-    [completedTours],
+    [completedTours]
   );
 
   const resetTours = useCallback(() => {

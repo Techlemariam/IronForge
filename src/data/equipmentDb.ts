@@ -4,14 +4,14 @@
  */
 
 export enum EquipmentType {
-  BODYWEIGHT = "bodyweight",
-  BARBELL = "barbell",
-  DUMBBELL = "dumbbell",
-  CABLE = "cable",
-  MACHINE = "machine",
-  KETTLEBELL = "kettlebell",
-  BAND = "band",
-  HYPER_PRO = "hyper_pro", // Freak Athlete Hyper Pro 10-in-1
+  BODYWEIGHT = 'bodyweight',
+  BARBELL = 'barbell',
+  DUMBBELL = 'dumbbell',
+  CABLE = 'cable',
+  MACHINE = 'machine',
+  KETTLEBELL = 'kettlebell',
+  BAND = 'band',
+  HYPER_PRO = 'hyper_pro', // Freak Athlete Hyper Pro 10-in-1
 }
 
 export interface EquipmentRequirement {
@@ -23,240 +23,186 @@ export interface EquipmentRequirement {
 // Map exercise names (must match muscleMap.ts / Hevy titles) to requirements
 export const exerciseEquipmentMap = new Map<string, EquipmentRequirement>([
   // --- CHEST ---
+  ['Bench Press (Barbell)', { types: [EquipmentType.BARBELL], isHyperProCompatible: false }],
+  ['Bench Press (Dumbbell)', { types: [EquipmentType.DUMBBELL], isHyperProCompatible: false }],
   [
-    "Bench Press (Barbell)",
+    'Incline Bench Press (Barbell)',
     { types: [EquipmentType.BARBELL], isHyperProCompatible: false },
   ],
   [
-    "Bench Press (Dumbbell)",
+    'Incline Bench Press (Dumbbell)',
     { types: [EquipmentType.DUMBBELL], isHyperProCompatible: false },
   ],
   [
-    "Incline Bench Press (Barbell)",
-    { types: [EquipmentType.BARBELL], isHyperProCompatible: false },
-  ],
-  [
-    "Incline Bench Press (Dumbbell)",
-    { types: [EquipmentType.DUMBBELL], isHyperProCompatible: false },
-  ],
-  [
-    "Push Up",
+    'Push Up',
     {
       types: [EquipmentType.BODYWEIGHT],
       isHyperProCompatible: true,
-      hyperProMode: "Flat/Incline (Bench)",
+      hyperProMode: 'Flat/Incline (Bench)',
     },
   ],
   [
-    "Dips",
+    'Dips',
     {
       types: [EquipmentType.BODYWEIGHT],
       isHyperProCompatible: true,
-      hyperProMode: "Dip Station",
+      hyperProMode: 'Dip Station',
     },
   ],
-  [
-    "Chest Fly",
-    { types: [EquipmentType.DUMBBELL], isHyperProCompatible: false },
-  ],
-  ["Cable Fly", { types: [EquipmentType.CABLE], isHyperProCompatible: false }],
+  ['Chest Fly', { types: [EquipmentType.DUMBBELL], isHyperProCompatible: false }],
+  ['Cable Fly', { types: [EquipmentType.CABLE], isHyperProCompatible: false }],
 
   // --- BACK ---
+  ['Pull Up', { types: [EquipmentType.BODYWEIGHT], isHyperProCompatible: false }], // Needs pullup bar (Hyper Pro doesn't have high bar)
+  ['Chin Up', { types: [EquipmentType.BODYWEIGHT], isHyperProCompatible: false }],
+  ['Barbell Row', { types: [EquipmentType.BARBELL], isHyperProCompatible: false }],
+  ['Pendlay Row', { types: [EquipmentType.BARBELL], isHyperProCompatible: false }],
+  ['Dumbbell Row', { types: [EquipmentType.DUMBBELL], isHyperProCompatible: false }],
   [
-    "Pull Up",
-    { types: [EquipmentType.BODYWEIGHT], isHyperProCompatible: false },
-  ], // Needs pullup bar (Hyper Pro doesn't have high bar)
-  [
-    "Chin Up",
-    { types: [EquipmentType.BODYWEIGHT], isHyperProCompatible: false },
-  ],
-  [
-    "Barbell Row",
-    { types: [EquipmentType.BARBELL], isHyperProCompatible: false },
-  ],
-  [
-    "Pendlay Row",
-    { types: [EquipmentType.BARBELL], isHyperProCompatible: false },
-  ],
-  [
-    "Dumbbell Row",
-    { types: [EquipmentType.DUMBBELL], isHyperProCompatible: false },
-  ],
-  [
-    "45° Back Extension",
+    '45° Back Extension',
     {
       types: [EquipmentType.MACHINE],
       isHyperProCompatible: true,
-      hyperProMode: "45° Extension",
+      hyperProMode: '45° Extension',
     },
   ],
   [
-    "90° Back Extension",
+    '90° Back Extension',
     {
       types: [EquipmentType.MACHINE],
       isHyperProCompatible: true,
-      hyperProMode: "90° Extension",
+      hyperProMode: '90° Extension',
     },
   ],
-  [
-    "Rack Pull",
-    { types: [EquipmentType.BARBELL], isHyperProCompatible: false },
-  ],
+  ['Rack Pull', { types: [EquipmentType.BARBELL], isHyperProCompatible: false }],
 
   // --- SHOULDERS ---
-  [
-    "Overhead Press (Barbell)",
-    { types: [EquipmentType.BARBELL], isHyperProCompatible: false },
-  ],
-  [
-    "Lateral Raises",
-    { types: [EquipmentType.DUMBBELL], isHyperProCompatible: false },
-  ],
-  ["Face Pull", { types: [EquipmentType.CABLE], isHyperProCompatible: false }],
-  [
-    "Rear Delt Fly",
-    { types: [EquipmentType.DUMBBELL], isHyperProCompatible: false },
-  ],
-  [
-    "Lu Raises",
-    { types: [EquipmentType.DUMBBELL], isHyperProCompatible: false },
-  ],
+  ['Overhead Press (Barbell)', { types: [EquipmentType.BARBELL], isHyperProCompatible: false }],
+  ['Lateral Raises', { types: [EquipmentType.DUMBBELL], isHyperProCompatible: false }],
+  ['Face Pull', { types: [EquipmentType.CABLE], isHyperProCompatible: false }],
+  ['Rear Delt Fly', { types: [EquipmentType.DUMBBELL], isHyperProCompatible: false }],
+  ['Lu Raises', { types: [EquipmentType.DUMBBELL], isHyperProCompatible: false }],
 
   // --- LEGS (QUADS) ---
+  ['Back Squat (Barbell)', { types: [EquipmentType.BARBELL], isHyperProCompatible: false }],
+  ['Front Squat (Barbell)', { types: [EquipmentType.BARBELL], isHyperProCompatible: false }],
   [
-    "Back Squat (Barbell)",
-    { types: [EquipmentType.BARBELL], isHyperProCompatible: false },
-  ],
-  [
-    "Front Squat (Barbell)",
-    { types: [EquipmentType.BARBELL], isHyperProCompatible: false },
-  ],
-  [
-    "Goblet Squat",
+    'Goblet Squat',
     {
       types: [EquipmentType.DUMBBELL, EquipmentType.KETTLEBELL],
       isHyperProCompatible: true,
-      hyperProMode: "Slant Board Squat",
+      hyperProMode: 'Slant Board Squat',
     },
   ],
   [
-    "Bulgarian Split Squat",
+    'Bulgarian Split Squat',
     {
       types: [EquipmentType.DUMBBELL, EquipmentType.BODYWEIGHT],
       isHyperProCompatible: true,
-      hyperProMode: "Split Squat Stand",
+      hyperProMode: 'Split Squat Stand',
     },
   ],
   [
-    "Leg Extension",
+    'Leg Extension',
     {
       types: [EquipmentType.MACHINE],
       isHyperProCompatible: true,
-      hyperProMode: "Leg Extension Attachment",
+      hyperProMode: 'Leg Extension Attachment',
     },
   ],
   [
-    "Sissy Squat",
+    'Sissy Squat',
     {
       types: [EquipmentType.BODYWEIGHT],
       isHyperProCompatible: true,
-      hyperProMode: "Sissy Squat Station",
+      hyperProMode: 'Sissy Squat Station',
     },
   ],
   [
-    "Reverse Nordic",
+    'Reverse Nordic',
     {
       types: [EquipmentType.BODYWEIGHT],
       isHyperProCompatible: true,
-      hyperProMode: "Floor/Pad",
+      hyperProMode: 'Floor/Pad',
     },
   ],
   [
-    "KOT Squat",
+    'KOT Squat',
     {
       types: [EquipmentType.BODYWEIGHT],
       isHyperProCompatible: true,
-      hyperProMode: "Slant Board",
+      hyperProMode: 'Slant Board',
     },
   ],
 
   // --- LEGS (HAMSTRINGS/GLUTES) ---
+  ['Deadlift (Barbell)', { types: [EquipmentType.BARBELL], isHyperProCompatible: false }],
+  ['Romanian Deadlift (Barbell)', { types: [EquipmentType.BARBELL], isHyperProCompatible: false }],
   [
-    "Deadlift (Barbell)",
-    { types: [EquipmentType.BARBELL], isHyperProCompatible: false },
-  ],
-  [
-    "Romanian Deadlift (Barbell)",
-    { types: [EquipmentType.BARBELL], isHyperProCompatible: false },
-  ],
-  [
-    "Nordic Curl",
+    'Nordic Curl',
     {
       types: [EquipmentType.BODYWEIGHT],
       isHyperProCompatible: true,
-      hyperProMode: "Nordic Station",
+      hyperProMode: 'Nordic Station',
     },
   ],
   [
-    "Glute Ham Raise",
+    'Glute Ham Raise',
     {
       types: [EquipmentType.BODYWEIGHT],
       isHyperProCompatible: true,
-      hyperProMode: "GHD",
+      hyperProMode: 'GHD',
     },
   ],
   [
-    "Hamstring Curl (Lying)",
+    'Hamstring Curl (Lying)',
     {
       types: [EquipmentType.MACHINE],
       isHyperProCompatible: true,
-      hyperProMode: "Leg Curl Attachment",
+      hyperProMode: 'Leg Curl Attachment',
     },
   ],
   [
-    "Reverse Hyper",
+    'Reverse Hyper',
     {
       types: [EquipmentType.MACHINE],
       isHyperProCompatible: true,
-      hyperProMode: "Reverse Hyper Attachment",
+      hyperProMode: 'Reverse Hyper Attachment',
     },
   ],
+  ['Hip Thrust (Barbell)', { types: [EquipmentType.BARBELL], isHyperProCompatible: false }],
   [
-    "Hip Thrust (Barbell)",
-    { types: [EquipmentType.BARBELL], isHyperProCompatible: false },
-  ],
-  [
-    "45° Back Extension",
+    '45° Back Extension',
     {
       types: [EquipmentType.MACHINE],
       isHyperProCompatible: true,
-      hyperProMode: "45° Extension (Glute Bias)",
+      hyperProMode: '45° Extension (Glute Bias)',
     },
   ],
 
   // --- CORE ---
   [
-    "GHD Sit-Up",
+    'GHD Sit-Up',
     {
       types: [EquipmentType.BODYWEIGHT],
       isHyperProCompatible: true,
-      hyperProMode: "GHD",
+      hyperProMode: 'GHD',
     },
   ],
   [
-    "Dragon Flag",
+    'Dragon Flag',
     {
       types: [EquipmentType.BODYWEIGHT],
       isHyperProCompatible: true,
-      hyperProMode: "Bench Handle",
+      hyperProMode: 'Bench Handle',
     },
   ],
   [
-    "Decline Sit Up",
+    'Decline Sit Up',
     {
       types: [EquipmentType.BODYWEIGHT],
       isHyperProCompatible: true,
-      hyperProMode: "Decline Bench",
+      hyperProMode: 'Decline Bench',
     },
   ],
 ]);
@@ -270,7 +216,7 @@ export const exerciseEquipmentMap = new Map<string, EquipmentRequirement>([
 export const canPerformExercise = (
   exerciseName: string,
   ownedEquipment: EquipmentType[],
-  prioritizeHyperPro: boolean = false,
+  prioritizeHyperPro = false
 ): boolean => {
   const req = exerciseEquipmentMap.get(exerciseName);
 

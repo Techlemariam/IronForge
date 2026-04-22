@@ -1,20 +1,20 @@
-"use client";
+'use client';
 
-export const dynamic = "force-dynamic";
+export const dynamic = 'force-dynamic';
 
-import { createClient } from "@/utils/supabase/client";
-import { useState, useEffect } from "react";
-import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
-import { Database, Key, Mail, ShieldAlert, CheckCircle2 } from "lucide-react";
-import { m, AnimatePresence } from "framer-motion";
+import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
+import { createClient } from '@/utils/supabase/client';
+import { AnimatePresence, m } from 'framer-motion';
+import { CheckCircle2, Database, Key, Mail, ShieldAlert } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [isPasswordLogin, setIsPasswordLogin] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<{
-    type: "error" | "success";
+    type: 'error' | 'success';
     text: string;
   } | null>(null);
 
@@ -30,7 +30,7 @@ export default function LoginPage() {
 
     try {
       const { error } = await supabase.auth.signInWithOAuth({
-        provider: "google",
+        provider: 'google',
         options: {
           redirectTo: `${location.origin}/auth/callback`,
         },
@@ -38,8 +38,8 @@ export default function LoginPage() {
       if (error) throw error;
     } catch (error: any) {
       setMessage({
-        type: "error",
-        text: error.message || "Google Auth failed.",
+        type: 'error',
+        text: error.message || 'Google Auth failed.',
       });
       setLoading(false);
     }
@@ -60,7 +60,7 @@ export default function LoginPage() {
         });
         if (error) throw error;
         // Redirect is handled automatically by middleware or client state change
-        window.location.href = "/dashboard";
+        window.location.href = '/dashboard';
       } else {
         const { error } = await supabase.auth.signInWithOtp({
           email,
@@ -70,14 +70,14 @@ export default function LoginPage() {
         });
         if (error) throw error;
         setMessage({
-          type: "success",
-          text: "Secure Link dispatched to your email coordinates.",
+          type: 'success',
+          text: 'Secure Link dispatched to your email coordinates.',
         });
       }
     } catch (error: any) {
       setMessage({
-        type: "error",
-        text: error.message || "Authentication protocol failed.",
+        type: 'error',
+        text: error.message || 'Authentication protocol failed.',
       });
     } finally {
       setLoading(false);
@@ -86,9 +86,7 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-forge-950 flex items-center justify-center p-4 bg-noise">
-      <div
-        className="w-full max-w-md bg-forge-900 border border-forge-border p-8 rounded-lg shadow-[0_0_50px_rgba(0,0,0,0.5)] relative overflow-hidden"
-      >
+      <div className="w-full max-w-md bg-forge-900 border border-forge-border p-8 rounded-lg shadow-[0_0_50px_rgba(0,0,0,0.5)] relative overflow-hidden">
         {/* Decorative Elements */}
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-warrior to-transparent opacity-50" />
 
@@ -96,7 +94,7 @@ export default function LoginPage() {
           <m.div
             initial={{ scale: 0.8 }}
             animate={{ scale: 1 }}
-            transition={{ type: "spring", stiffness: 200, damping: 15 }}
+            transition={{ type: 'spring', stiffness: 200, damping: 15 }}
             className="w-16 h-16 bg-warrior/10 rounded-full flex items-center justify-center border border-warrior/30"
           >
             <Database className="w-8 h-8 text-warrior" />
@@ -146,9 +144,7 @@ export default function LoginPage() {
               <div className="w-full border-t border-forge-border/50" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-forge-900 px-2 text-forge-muted">
-                Or continue with email
-              </span>
+              <span className="bg-forge-900 px-2 text-forge-muted">Or continue with email</span>
             </div>
           </div>
         </div>
@@ -176,7 +172,7 @@ export default function LoginPage() {
             {isPasswordLogin && (
               <m.div
                 initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
+                animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
                 transition={{ duration: 0.2 }}
               >
@@ -209,12 +205,12 @@ export default function LoginPage() {
               {loading ? (
                 <>
                   <LoadingSpinner size="sm" color="text-black" />
-                  {isPasswordLogin ? "Authenticating..." : "Sending Signal..."}
+                  {isPasswordLogin ? 'Authenticating...' : 'Sending Signal...'}
                 </>
               ) : isPasswordLogin ? (
-                "Initialize Uplink"
+                'Initialize Uplink'
               ) : (
-                "Send Magic Link"
+                'Send Magic Link'
               )}
             </span>
           </button>
@@ -225,9 +221,7 @@ export default function LoginPage() {
               onClick={() => setIsPasswordLogin(!isPasswordLogin)}
               className="text-sm text-zinc-400 hover:text-white transition-colors font-mono uppercase tracking-wide border-b border-zinc-700 hover:border-white pb-0.5"
             >
-              {isPasswordLogin
-                ? "← Use Magic Link"
-                : "Login with Password →"}
+              {isPasswordLogin ? '← Use Magic Link' : 'Login with Password →'}
             </button>
           </div>
         </form>
@@ -238,12 +232,13 @@ export default function LoginPage() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              className={`mt-6 p-4 rounded text-sm flex items-center gap-3 border ${message.type === "error"
-                ? "bg-red-950/40 text-red-200 border-red-900/50"
-                : "bg-green-950/40 text-green-200 border-green-900/50"
-                }`}
+              className={`mt-6 p-4 rounded text-sm flex items-center gap-3 border ${
+                message.type === 'error'
+                  ? 'bg-red-950/40 text-red-200 border-red-900/50'
+                  : 'bg-green-950/40 text-green-200 border-green-900/50'
+              }`}
             >
-              {message.type === "error" ? (
+              {message.type === 'error' ? (
                 <ShieldAlert className="w-5 h-5 shrink-0" />
               ) : (
                 <CheckCircle2 className="w-5 h-5 shrink-0" />

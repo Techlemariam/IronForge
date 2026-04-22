@@ -1,8 +1,12 @@
-import { getDuelStatusAction } from "@/actions/pvp/duel";
-import { getLeagueInfoAction, getCurrentSeasonAction, getLeagueLeaderboardAction } from "@/actions/pvp/leagues";
-import { getSession } from "@/lib/auth";
-import { ArenaClient } from "./ArenaClient";
-import { DuelLeaderboard } from "@/features/pvp/components/duel/DuelLeaderboard";
+import { getDuelStatusAction } from '@/actions/pvp/duel';
+import {
+  getCurrentSeasonAction,
+  getLeagueInfoAction,
+  getLeagueLeaderboardAction,
+} from '@/actions/pvp/leagues';
+import { DuelLeaderboard } from '@/features/pvp/components/duel/DuelLeaderboard';
+import { getSession } from '@/lib/auth';
+import { ArenaClient } from './ArenaClient';
 
 export default async function IronArenaPage() {
   const session = await getSession();
@@ -13,13 +17,13 @@ export default async function IronArenaPage() {
   const [duelStatus, leagueInfo, seasonInfo] = await Promise.all([
     getDuelStatusAction(),
     getLeagueInfoAction(session.user.id),
-    getCurrentSeasonAction()
+    getCurrentSeasonAction(),
   ]);
 
   const activeDuel = duelStatus.success ? (duelStatus.duel ?? null) : null;
 
   // Fetch leaderboard for the user's current league (or default to Bronze)
-  const currentLeagueId = leagueInfo?.tier.id || "bronze";
+  const currentLeagueId = leagueInfo?.tier.id || 'bronze';
   const leaderboard = await getLeagueLeaderboardAction(currentLeagueId, 10);
 
   return (
@@ -28,9 +32,7 @@ export default async function IronArenaPage() {
         <h1 className="text-3xl font-bold bg-gradient-to-r from-amber-500 to-red-600 bg-clip-text text-transparent">
           Iron Arena
         </h1>
-        <p className="text-slate-400">
-          Ranked Seasons are live! Prove your dominance.
-        </p>
+        <p className="text-slate-400">Ranked Seasons are live! Prove your dominance.</p>
       </header>
 
       <ArenaClient

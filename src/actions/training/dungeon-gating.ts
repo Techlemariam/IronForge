@@ -1,6 +1,6 @@
-"use server";
+'use server';
 
-import { prisma } from "@/lib/prisma";
+import { prisma } from '@/lib/prisma';
 
 interface DungeonRequirement {
   dungeonId: string;
@@ -17,42 +17,42 @@ interface DungeonRequirement {
   unlockMessage: string;
 }
 
-const DUNGEON_GATES: Omit<DungeonRequirement, "isUnlocked" | "progress">[] = [
+const DUNGEON_GATES: Omit<DungeonRequirement, 'isUnlocked' | 'progress'>[] = [
   {
-    dungeonId: "deadmines",
-    name: "The Dead Mines",
+    dungeonId: 'deadmines',
+    name: 'The Dead Mines',
     requiredLevel: 1,
     requiredBossKills: 0,
-    unlockMessage: "Available to all Titans.",
+    unlockMessage: 'Available to all Titans.',
   },
   {
-    dungeonId: "iron_halls",
-    name: "Iron Halls",
+    dungeonId: 'iron_halls',
+    name: 'Iron Halls',
     requiredLevel: 5,
     requiredBossKills: 1,
-    unlockMessage: "Defeat 1 boss to unlock.",
+    unlockMessage: 'Defeat 1 boss to unlock.',
   },
   {
-    dungeonId: "zone_2_cardio",
-    name: "The Cardio Crucible",
+    dungeonId: 'zone_2_cardio',
+    name: 'The Cardio Crucible',
     requiredLevel: 3,
     requiredBossKills: 0,
     requiredCardioSessions: 5,
-    unlockMessage: "Complete 5 cardio sessions to unlock Zone 2 training.",
+    unlockMessage: 'Complete 5 cardio sessions to unlock Zone 2 training.',
   },
   {
-    dungeonId: "shadow_forge",
-    name: "Shadow Forge",
+    dungeonId: 'shadow_forge',
+    name: 'Shadow Forge',
     requiredLevel: 10,
     requiredBossKills: 5,
-    unlockMessage: "Reach level 10 and defeat 5 bosses.",
+    unlockMessage: 'Reach level 10 and defeat 5 bosses.',
   },
   {
-    dungeonId: "titan_trials",
-    name: "Titan Trials",
+    dungeonId: 'titan_trials',
+    name: 'Titan Trials',
     requiredLevel: 20,
     requiredBossKills: 15,
-    unlockMessage: "Only the strongest Titans may enter.",
+    unlockMessage: 'Only the strongest Titans may enter.',
   },
 ];
 
@@ -61,7 +61,7 @@ const DUNGEON_GATES: Omit<DungeonRequirement, "isUnlocked" | "progress">[] = [
  */
 export async function checkDungeonUnlockAction(
   userId: string,
-  dungeonId: string,
+  dungeonId: string
 ): Promise<DungeonRequirement | null> {
   try {
     const [user, titan] = await Promise.all([
@@ -94,8 +94,7 @@ export async function checkDungeonUnlockAction(
     const isUnlocked =
       currentLevel >= gate.requiredLevel &&
       currentBossKills >= gate.requiredBossKills &&
-      (!gate.requiredCardioSessions ||
-        currentCardioSessions >= gate.requiredCardioSessions);
+      (!gate.requiredCardioSessions || currentCardioSessions >= gate.requiredCardioSessions);
 
     return {
       ...gate,
@@ -107,7 +106,7 @@ export async function checkDungeonUnlockAction(
       },
     };
   } catch (error) {
-    console.error("Error checking dungeon unlock:", error);
+    console.error('Error checking dungeon unlock:', error);
     return null;
   }
 }
@@ -115,9 +114,7 @@ export async function checkDungeonUnlockAction(
 /**
  * Get all dungeons with unlock status.
  */
-export async function getAllDungeonsAction(
-  userId: string,
-): Promise<DungeonRequirement[]> {
+export async function getAllDungeonsAction(userId: string): Promise<DungeonRequirement[]> {
   try {
     const [user, titan] = await Promise.all([
       prisma.user.findUnique({
@@ -148,8 +145,7 @@ export async function getAllDungeonsAction(
       isUnlocked:
         currentLevel >= gate.requiredLevel &&
         currentBossKills >= gate.requiredBossKills &&
-        (!gate.requiredCardioSessions ||
-          currentCardioSessions >= gate.requiredCardioSessions),
+        (!gate.requiredCardioSessions || currentCardioSessions >= gate.requiredCardioSessions),
       progress: {
         currentLevel,
         currentBossKills,
@@ -157,7 +153,7 @@ export async function getAllDungeonsAction(
       },
     }));
   } catch (error) {
-    console.error("Error getting all dungeons:", error);
+    console.error('Error getting all dungeons:', error);
     return [];
   }
 }

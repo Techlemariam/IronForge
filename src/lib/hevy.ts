@@ -1,7 +1,7 @@
-import { z } from "zod";
-import type { HevyWorkout, HevyExerciseTemplate } from "@/types/hevy";
+import type { HevyExerciseTemplate, HevyWorkout } from '@/types/hevy';
+import { z } from 'zod';
 
-const EXTERNAL_BASE_URL = "https://api.hevyapp.com/v1";
+const EXTERNAL_BASE_URL = 'https://api.hevyapp.com/v1';
 
 // --- ZOD SCHEMAS ---
 
@@ -50,8 +50,8 @@ const HevyTemplatesResponseSchema = z.object({
  */
 export const getHevyWorkouts = async (
   apiKey: string,
-  page: number = 1,
-  pageSize: number = 10,
+  page = 1,
+  pageSize = 10
 ): Promise<{ workouts: HevyWorkout[]; page_count: number }> => {
   const effectivePageSize = Math.min(pageSize, 10);
   const url = `${EXTERNAL_BASE_URL}/workouts?page=${page}&pageSize=${effectivePageSize}`;
@@ -59,15 +59,15 @@ export const getHevyWorkouts = async (
   try {
     const response = await fetch(url, {
       headers: {
-        "api-key": apiKey,
-        accept: "application/json",
+        'api-key': apiKey,
+        accept: 'application/json',
       },
     });
 
     if (!response.ok) {
       const errorText = await response.text();
       throw new Error(
-        `Hevy API Error [Workouts]: ${response.status} ${response.statusText} - ${errorText}`,
+        `Hevy API Error [Workouts]: ${response.status} ${response.statusText} - ${errorText}`
       );
     }
 
@@ -77,7 +77,7 @@ export const getHevyWorkouts = async (
     const result = HevyWorkoutsResponseSchema.safeParse(data);
 
     if (!result.success) {
-      console.warn("Hevy Validation Warning (Workouts):", result.error);
+      console.warn('Hevy Validation Warning (Workouts):', result.error);
       // We throw here to ensure data integrity for Oracle analysis
       throw new Error(`Hevy Data Invalid: ${result.error.message}`);
     }
@@ -87,7 +87,10 @@ export const getHevyWorkouts = async (
       page_count: result.data.page_count || 1,
     };
   } catch (error: unknown) {
-    console.error("getHevyWorkouts library error:", error instanceof Error ? error.message : String(error));
+    console.error(
+      'getHevyWorkouts library error:',
+      error instanceof Error ? error.message : String(error)
+    );
     throw error;
   }
 };
@@ -95,11 +98,9 @@ export const getHevyWorkouts = async (
 /**
  * Fetches all exercise templates from the external Hevy API (handles pagination).
  */
-export const getHevyTemplates = async (
-  apiKey: string,
-): Promise<HevyExerciseTemplate[]> => {
+export const getHevyTemplates = async (apiKey: string): Promise<HevyExerciseTemplate[]> => {
   const url = `${EXTERNAL_BASE_URL}/exercise_templates`;
-  let allExercises: HevyExerciseTemplate[] = [];
+  const allExercises: HevyExerciseTemplate[] = [];
   let page = 1;
   let keepFetching = true;
 
@@ -107,8 +108,8 @@ export const getHevyTemplates = async (
     while (keepFetching) {
       const response = await fetch(`${url}?per_page=100&page=${page}`, {
         headers: {
-          "api-key": apiKey,
-          accept: "application/json",
+          'api-key': apiKey,
+          accept: 'application/json',
         },
       });
 
@@ -120,7 +121,7 @@ export const getHevyTemplates = async (
         }
         const errorText = await response.text();
         throw new Error(
-          `Hevy API Error [Templates]: ${response.status} ${response.statusText} - ${errorText}`,
+          `Hevy API Error [Templates]: ${response.status} ${response.statusText} - ${errorText}`
         );
       }
 
@@ -145,8 +146,10 @@ export const getHevyTemplates = async (
 
     return allExercises;
   } catch (error: unknown) {
-    console.error("getHevyTemplates library error:", error instanceof Error ? error.message : String(error));
+    console.error(
+      'getHevyTemplates library error:',
+      error instanceof Error ? error.message : String(error)
+    );
     throw error;
   }
 };
-

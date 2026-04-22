@@ -1,10 +1,10 @@
-"use server";
+'use server';
 
-import { prisma } from "@/lib/prisma";
-import { createClient } from "@/utils/supabase/server";
-import { revalidatePath } from "next/cache";
-import { z } from "zod";
-import { authActionClient } from "@/lib/safe-action";
+import { prisma } from '@/lib/prisma';
+import { authActionClient } from '@/lib/safe-action';
+import { createClient } from '@/utils/supabase/server';
+import { revalidatePath } from 'next/cache';
+import { z } from 'zod';
 
 // Schema for duel creation
 const _DuelChallengeSchema = z.object({
@@ -19,14 +19,16 @@ const _DuelChallengeSchema = z.object({
 type DuelChallengeInput = z.infer<typeof _DuelChallengeSchema>;
 
 export const createDuelChallengeAction = authActionClient
-  .schema(z.object({
-    targetUserId: z.string(),
-    options: _DuelChallengeSchema.partial().optional()
-  }))
+  .schema(
+    z.object({
+      targetUserId: z.string(),
+      options: _DuelChallengeSchema.partial().optional(),
+    })
+  )
   .action(async ({ parsedInput: { targetUserId, options }, ctx: { userId: challengerId } }) => {
     try {
       if (challengerId === targetUserId) {
-        return { success: false, error: "Cannot duel yourself" };
+        return { success: false, error: 'Cannot duel yourself' };
       }
 
       // Check if there is already an active or pending duel between these two
@@ -36,14 +38,14 @@ export const createDuelChallengeAction = authActionClient
             { challengerId: challengerId, defenderId: targetUserId },
             { challengerId: targetUserId, defenderId: challengerId },
           ],
-          status: { in: ["PENDING", "ACTIVE"] },
+          status: { in: ['PENDING', 'ACTIVE'] },
         },
       });
 
       if (existingDuel) {
         return {
           success: false,
-          error: "A duel is already active or pending between you.",
+          error: 'A duel is already active or pending between you.',
         };
       }
 
@@ -52,8 +54,8 @@ export const createDuelChallengeAction = authActionClient
         data: {
           challengerId,
           defenderId: targetUserId,
-          status: "PENDING",
-          duelType: options?.duelType || "TITAN_VS_TITAN",
+          status: 'PENDING',
+          duelType: options?.duelType || 'TITAN_VS_TITAN',
           activityType: options?.activityType,
           durationMinutes: options?.durationMinutes,
           wkgTier: options?.wkgTier,
@@ -61,11 +63,11 @@ export const createDuelChallengeAction = authActionClient
         },
       });
 
-      revalidatePath("/iron-arena");
+      revalidatePath('/iron-arena');
       return { success: true, duelId: challenge.id };
     } catch (error) {
-      console.error("Error creating duel challenge:", error);
-      return { success: false, error: "Failed to create challenge" };
+      console.error('Error creating duel challenge:', error);
+      return { success: false, error: 'Failed to create challenge' };
     }
   });
 
@@ -77,11 +79,10 @@ export const acceptDuelChallengeAction = authActionClient
         where: { id: challengeId },
       });
 
-      if (!duel) return { success: false, error: "Duel not found" };
+      if (!duel) return { success: false, error: 'Duel not found' };
       if (duel.defenderId !== userId)
-        return { success: false, error: "Not your challenge to accept" };
-      if (duel.status !== "PENDING")
-        return { success: false, error: "Duel is not pending" };
+        return { success: false, error: 'Not your challenge to accept' };
+      if (duel.status !== 'PENDING') return { success: false, error: 'Duel is not pending' };
 
       const startDate = new Date();
       const endDate = new Date();
@@ -90,17 +91,17 @@ export const acceptDuelChallengeAction = authActionClient
       await prisma.duelChallenge.update({
         where: { id: challengeId },
         data: {
-          status: "ACTIVE",
+          status: 'ACTIVE',
           startDate,
           endDate,
         },
       });
 
-      revalidatePath("/iron-arena");
+      revalidatePath('/iron-arena');
       return { success: true };
     } catch (error) {
-      console.error("Error accepting duel:", error);
-      return { success: false, error: "Failed to accept duel" };
+      console.error('Error accepting duel:', error);
+      return { success: false, error: 'Failed to accept duel' };
     }
   });
 
@@ -112,20 +113,20 @@ export const declineDuelChallengeAction = authActionClient
         where: { id: challengeId },
       });
 
-      if (!duel) return { success: false, error: "Duel not found" };
+      if (!duel) return { success: false, error: 'Duel not found' };
       if (duel.defenderId !== userId)
-        return { success: false, error: "Not your challenge to decline" };
+        return { success: false, error: 'Not your challenge to decline' };
 
       await prisma.duelChallenge.update({
         where: { id: challengeId },
-        data: { status: "DECLINED" },
+        data: { status: 'DECLINED' },
       });
 
-      revalidatePath("/iron-arena");
+      revalidatePath('/iron-arena');
       return { success: true };
     } catch (error) {
-      console.error("Error declining duel:", error);
-      return { success: false, error: "Failed to decline duel" };
+      console.error('Error declining duel:', error);
+      return { success: false, error: 'Failed to decline duel' };
     }
   });
 
@@ -135,13 +136,13 @@ export async function getDuelStatusAction() {
     const {
       data: { user },
     } = await supabase.auth.getUser();
-    if (!user) throw new Error("Unauthorized");
+    if (!user) throw new Error('Unauthorized');
     const userId = user.id;
 
     const activeDuel = await prisma.duelChallenge.findFirst({
       where: {
         OR: [{ challengerId: userId }, { defenderId: userId }],
-        status: "ACTIVE",
+        status: 'ACTIVE',
       },
       include: {
         challenger: {
@@ -158,7 +159,7 @@ export async function getDuelStatusAction() {
     const pendingChallenges = await prisma.duelChallenge.findMany({
       where: {
         defenderId: userId,
-        status: "PENDING",
+        status: 'PENDING',
       },
       include: {
         challenger: { select: { id: true, heroName: true, level: true, faction: true } },
@@ -167,8 +168,8 @@ export async function getDuelStatusAction() {
 
     return { success: true, duel: null, pending: pendingChallenges };
   } catch (error) {
-    console.error("Error fetching duel status:", error);
-    return { success: false, error: "Failed to fetch status" };
+    console.error('Error fetching duel status:', error);
+    return { success: false, error: 'Failed to fetch status' };
   }
 }
 
@@ -178,50 +179,63 @@ export async function updateCardioDuelProgressInternalWithUser(
   duelId: string,
   userId: string,
   distanceKm: number,
-  durationMinutes: number = 0,
-  elevationMeters: number = 0
+  durationMinutes = 0,
+  elevationMeters = 0
 ) {
   const duel = await prisma.duelChallenge.findUnique({
     where: { id: duelId },
   });
-  if (!duel || duel.status !== "ACTIVE")
-    return { success: false, error: "Duel not active" };
+  if (!duel || duel.status !== 'ACTIVE') return { success: false, error: 'Duel not active' };
 
   const isChallenger = duel.challengerId === userId;
   const isDefender = duel.defenderId === userId;
 
-  if (!isChallenger && !isDefender)
-    return { success: false, error: "Not participant" };
+  if (!isChallenger && !isDefender) return { success: false, error: 'Not participant' };
 
   // Accumulate distance, duration, and elevation
-  const newDistance = (isChallenger ? duel.challengerDistance || 0 : duel.defenderDistance || 0) + distanceKm;
-  const newDuration = (isChallenger ? duel.challengerDuration || 0 : duel.defenderDuration || 0) + durationMinutes;
-  const newElevation = (isChallenger ? duel.challengerElevation || 0 : duel.defenderElevation || 0) + elevationMeters;
+  const newDistance =
+    (isChallenger ? duel.challengerDistance || 0 : duel.defenderDistance || 0) + distanceKm;
+  const newDuration =
+    (isChallenger ? duel.challengerDuration || 0 : duel.defenderDuration || 0) + durationMinutes;
+  const newElevation =
+    (isChallenger ? duel.challengerElevation || 0 : duel.defenderElevation || 0) + elevationMeters;
 
   // Update progress with all metrics
   await prisma.duelChallenge.update({
     where: { id: duelId },
     data: isChallenger
-      ? { challengerDistance: newDistance, challengerDuration: newDuration, challengerElevation: newElevation }
-      : { defenderDistance: newDistance, defenderDuration: newDuration, defenderElevation: newElevation },
+      ? {
+          challengerDistance: newDistance,
+          challengerDuration: newDuration,
+          challengerElevation: newElevation,
+        }
+      : {
+          defenderDistance: newDistance,
+          defenderDuration: newDuration,
+          defenderElevation: newElevation,
+        },
   });
 
   // Check Win Conditions
   let winnerId: string | null = null;
   let isFinished = false;
 
-  if (duel.duelType === "DISTANCE_RACE") {
+  if (duel.duelType === 'DISTANCE_RACE') {
     // Distance Race: First to reach target distance wins immediately
     if (duel.targetDistance && newDistance >= duel.targetDistance) {
       winnerId = userId;
       isFinished = true;
     }
-  } else if (duel.duelType === "SPEED_DEMON") {
+  } else if (duel.duelType === 'SPEED_DEMON') {
     // Speed Demon: Both must complete target distance, fastest time wins
     if (duel.targetDistance && newDistance >= duel.targetDistance) {
       // Check if opponent has already finished
-      const opponentDistance = isChallenger ? duel.defenderDistance || 0 : duel.challengerDistance || 0;
-      const opponentDuration = isChallenger ? duel.defenderDuration || 0 : duel.challengerDuration || 0;
+      const opponentDistance = isChallenger
+        ? duel.defenderDistance || 0
+        : duel.challengerDistance || 0;
+      const opponentDuration = isChallenger
+        ? duel.defenderDuration || 0
+        : duel.challengerDuration || 0;
 
       if (opponentDistance >= duel.targetDistance) {
         // Both have finished - compare times
@@ -236,9 +250,9 @@ export async function updateCardioDuelProgressInternalWithUser(
         // Winner determined when opponent finishes or time expires
       }
     }
-  } else if (duel.duelType === "ELEVATION_GRIND") {
+  } else if (duel.duelType === 'ELEVATION_GRIND') {
     // Elevation Grind: First to gain target elevation wins
-    const targetElevation = (duel.targetDistance || 1000); // Target in meters (reusing targetDistance field)
+    const targetElevation = duel.targetDistance || 1000; // Target in meters (reusing targetDistance field)
     if (newElevation >= targetElevation) {
       winnerId = userId;
       isFinished = true;
@@ -248,11 +262,13 @@ export async function updateCardioDuelProgressInternalWithUser(
   if (isFinished && winnerId) {
     // Determine Loser
     const loserId = isChallenger ? duel.defenderId : duel.challengerId;
-    const winnerScore = isChallenger ? newDistance : (isChallenger ? duel.defenderDistance : duel.challengerDistance) || 0;
-    const loserScore = isChallenger ? (duel.defenderDistance || 0) : newDistance;
+    const winnerScore = isChallenger
+      ? newDistance
+      : (isChallenger ? duel.defenderDistance : duel.challengerDistance) || 0;
+    const loserScore = isChallenger ? duel.defenderDistance || 0 : newDistance;
 
     // Calculate dynamic rewards using DuelRewardsService
-    const { DuelRewardsService } = await import("@/services/pvp/DuelRewardsService");
+    const { DuelRewardsService } = await import('@/services/pvp/DuelRewardsService');
 
     // Winner Rewards
     const winnerRewards = await DuelRewardsService.calculateRewards(
@@ -273,11 +289,11 @@ export async function updateCardioDuelProgressInternalWithUser(
     await prisma.duelChallenge.update({
       where: { id: duelId },
       data: {
-        status: "COMPLETED",
+        status: 'COMPLETED',
         winnerId: winnerId,
         endDate: new Date(),
         // Store reward summary in metadata if we had a column, for now we just apply
-      }
+      },
     });
 
     // Award Loot to Winner
@@ -286,8 +302,8 @@ export async function updateCardioDuelProgressInternalWithUser(
       data: {
         totalExperience: { increment: winnerRewards.xp },
         gold: { increment: winnerRewards.gold },
-        kineticEnergy: { increment: winnerRewards.kineticEnergy }
-      }
+        kineticEnergy: { increment: winnerRewards.kineticEnergy },
+      },
     });
 
     // Award Loot to Loser
@@ -297,8 +313,8 @@ export async function updateCardioDuelProgressInternalWithUser(
         totalExperience: { increment: loserRewards.xp },
         gold: { increment: loserRewards.gold },
         // Loser doesn't typically get KE unless lucky, but service handles base 5
-        kineticEnergy: { increment: loserRewards.kineticEnergy }
-      }
+        kineticEnergy: { increment: loserRewards.kineticEnergy },
+      },
     });
   }
 
@@ -308,29 +324,36 @@ export async function updateCardioDuelProgressInternalWithUser(
 const cardioProgressSchema = z.object({
   duelId: z.string(),
   distanceKm: z.number().min(0).max(10000), // Max 10,000km arbitrary cap to prevent huge number overflows
-  durationMinutes: z.number().min(0).max(10000)
+  durationMinutes: z.number().min(0).max(10000),
 });
 
 export const updateCardioDuelProgressAction = authActionClient
   .schema(cardioProgressSchema)
   .action(async ({ parsedInput: { duelId, distanceKm, durationMinutes }, ctx: { userId } }) => {
     try {
-      const result = await updateCardioDuelProgressInternalWithUser(duelId, userId, distanceKm, durationMinutes);
-      revalidatePath("/iron-arena");
+      const result = await updateCardioDuelProgressInternalWithUser(
+        duelId,
+        userId,
+        distanceKm,
+        durationMinutes
+      );
+      revalidatePath('/iron-arena');
       return result;
     } catch (error) {
-      console.error("Error updating cardio progress:", error);
-      return { success: false, error: "Failed update" };
+      console.error('Error updating cardio progress:', error);
+      return { success: false, error: 'Failed update' };
     }
   });
 
-export async function sendTauntAction(duelId: string, message: string = "Prepare to be crushed!") {
+export async function sendTauntAction(duelId: string, message = 'Prepare to be crushed!') {
   // In a real app, this would create a notification or chat message
   // For now, we'll just log it and maybe simulate a delay
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) throw new Error("Unauthorized");
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) throw new Error('Unauthorized');
 
     console.log(`Taunt sent in duel ${duelId} from ${user.id}: ${message}`);
 
@@ -338,16 +361,18 @@ export async function sendTauntAction(duelId: string, message: string = "Prepare
 
     return { success: true };
   } catch (error) {
-    console.error("Error sending taunt:", error);
-    return { success: false, error: "Failed to send taunt" };
+    console.error('Error sending taunt:', error);
+    return { success: false, error: 'Failed to send taunt' };
   }
 }
 
 export async function getPotentialOpponentsAction() {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) throw new Error("Unauthorized");
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) throw new Error('Unauthorized');
 
     // Fetch own Power Rating
     const currentUser = await prisma.user.findUnique({
@@ -364,13 +389,13 @@ export async function getPotentialOpponentsAction() {
         titan: {
           powerRating: {
             gte: Math.max(0, myRating - 100),
-            lte: myRating + 100
-          }
-        }
+            lte: myRating + 100,
+          },
+        },
       },
       take: 20,
       orderBy: {
-        titan: { powerRating: 'desc' }
+        titan: { powerRating: 'desc' },
       },
       select: {
         id: true,
@@ -379,15 +404,15 @@ export async function getPotentialOpponentsAction() {
         faction: true,
         archetype: true,
         titan: {
-          select: { powerRating: true }
-        }
-      }
+          select: { powerRating: true },
+        },
+      },
     });
 
     return { success: true, opponents };
   } catch (error) {
-    console.error("Error fetching opponents:", error);
-    return { success: false, error: "Failed to fetch opponents" };
+    console.error('Error fetching opponents:', error);
+    return { success: false, error: 'Failed to fetch opponents' };
   }
 }
 
@@ -397,7 +422,7 @@ export async function getDuelArenaStateAction(duelId: string) {
     const {
       data: { user },
     } = await supabase.auth.getUser();
-    if (!user) throw new Error("Unauthorized");
+    if (!user) throw new Error('Unauthorized');
 
     const duel = await prisma.duelChallenge.findUnique({
       where: { id: duelId },
@@ -411,12 +436,12 @@ export async function getDuelArenaStateAction(duelId: string) {
       },
     });
 
-    if (!duel) return { success: false, error: "Duel not found" };
+    if (!duel) return { success: false, error: 'Duel not found' };
 
     return { success: true, duel };
   } catch (error) {
-    console.error("Error fetching arena state:", error);
-    return { success: false, error: "Failed to fetch arena state" };
+    console.error('Error fetching arena state:', error);
+    return { success: false, error: 'Failed to fetch arena state' };
   }
 }
 
@@ -425,35 +450,41 @@ export async function processUserCardioActivity(
   activityType: string,
   distanceKm: number,
   durationMinutes: number,
-  elevationMeters: number = 0
+  elevationMeters = 0
 ) {
   try {
-    console.log(`Processing cardio for user ${userId}: ${activityType} ${distanceKm}km ${elevationMeters}m elevation`);
+    console.log(
+      `Processing cardio for user ${userId}: ${activityType} ${distanceKm}km ${elevationMeters}m elevation`
+    );
 
     const activeDuels = await prisma.duelChallenge.findMany({
       where: {
-        status: "ACTIVE",
-        OR: [
-          { challengerId: userId },
-          { defenderId: userId }
-        ],
-        duelType: { not: "TITAN_VS_TITAN" }
-      }
+        status: 'ACTIVE',
+        OR: [{ challengerId: userId }, { defenderId: userId }],
+        duelType: { not: 'TITAN_VS_TITAN' },
+      },
     });
 
     for (const duel of activeDuels) {
       let match = false;
       const type = activityType.toLowerCase();
       // Loose matching for MVP
-      if (duel.activityType === "CYCLING" && (type.includes("ride") || type.includes("cycle"))) match = true;
-      if (duel.activityType === "RUNNING" && (type.includes("run") || type.includes("walk"))) match = true;
+      if (duel.activityType === 'CYCLING' && (type.includes('ride') || type.includes('cycle')))
+        match = true;
+      if (duel.activityType === 'RUNNING' && (type.includes('run') || type.includes('walk')))
+        match = true;
 
       if (match) {
-        await updateCardioDuelProgressInternalWithUser(duel.id, userId, distanceKm, durationMinutes, elevationMeters);
+        await updateCardioDuelProgressInternalWithUser(
+          duel.id,
+          userId,
+          distanceKm,
+          durationMinutes,
+          elevationMeters
+        );
       }
     }
-
   } catch (e) {
-    console.error("Failed to process cardio for duels", e);
+    console.error('Failed to process cardio for duels', e);
   }
 }

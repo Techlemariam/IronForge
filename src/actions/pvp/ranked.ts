@@ -1,225 +1,222 @@
-"use server";
+'use server';
 
-import { prisma } from "@/lib/prisma";
-import { Prisma } from "@/types/prisma";
-import { z } from "zod";
-import { authActionClient } from "@/lib/safe-action";
+import { prisma } from '@/lib/prisma';
+import { authActionClient } from '@/lib/safe-action';
+import type { Prisma } from '@/types/prisma';
+import { z } from 'zod';
 // import { revalidatePath } from "next/cache";
 
 const SEASON_DURATION_DAYS = 28;
 
 export interface PlayerRating {
-    rating: number;
-    peakRating: number;
-    wins: number;
-    losses: number;
-    rank: string;
+  rating: number;
+  peakRating: number;
+  wins: number;
+  losses: number;
+  rank: string;
 }
 
 export interface RankedOpponent {
-    userId: string;
-    name: string | null;
-    rating: number;
-    rank: string;
-    image: string | null;
-    className?: string; // e.g. "Warrior"
+  userId: string;
+  name: string | null;
+  rating: number;
+  rank: string;
+  image: string | null;
+  className?: string; // e.g. "Warrior"
 }
 
 // Get or Create Active Season
 export async function getCurrentSeasonAction() {
-    const now = new Date();
-    let season = await prisma.pvpSeason.findFirst({
-        where: {
-            startDate: { lte: now },
-            endDate: { gte: now },
-            isActive: true,
+  const now = new Date();
+  let season = await prisma.pvpSeason.findFirst({
+    where: {
+      startDate: { lte: now },
+      endDate: { gte: now },
+      isActive: true,
+    },
+  });
+
+  if (!season) {
+    // Check if we need to bootstrap Season 1
+    const count = await prisma.pvpSeason.count();
+    if (count === 0) {
+      season = await prisma.pvpSeason.create({
+        data: {
+          name: 'Season 1: Genesis',
+          startDate: now,
+          endDate: new Date(now.getTime() + SEASON_DURATION_DAYS * 24 * 60 * 60 * 1000),
+          isActive: true,
+          rewards: [],
         },
-    });
-
-    if (!season) {
-        // Check if we need to bootstrap Season 1
-        const count = await prisma.pvpSeason.count();
-        if (count === 0) {
-            season = await prisma.pvpSeason.create({
-                data: {
-                    name: "Season 1: Genesis",
-                    startDate: now,
-                    endDate: new Date(now.getTime() + SEASON_DURATION_DAYS * 24 * 60 * 60 * 1000),
-                    isActive: true,
-                    rewards: [],
-                },
-            });
-        }
+      });
     }
+  }
 
-    return season;
+  return season;
 }
 
 // Get current user rating
 export async function getPlayerRatingAction(userId: string): Promise<PlayerRating> {
-    const season = await getCurrentSeasonAction();
-    if (!season) return { rating: 1200, peakRating: 1200, wins: 0, losses: 0, rank: "UNRANKED" };
+  const season = await getCurrentSeasonAction();
+  if (!season) return { rating: 1200, peakRating: 1200, wins: 0, losses: 0, rank: 'UNRANKED' };
 
-    let rating = await prisma.pvpRating.findUnique({
-        where: { userId_seasonId: { userId, seasonId: season.id } },
+  let rating = await prisma.pvpRating.findUnique({
+    where: { userId_seasonId: { userId, seasonId: season.id } },
+  });
+
+  if (!rating) {
+    rating = await prisma.pvpRating.create({
+      data: {
+        userId,
+        seasonId: season.id,
+        rating: 1200,
+        peakRating: 1200,
+      },
     });
+  }
 
-    if (!rating) {
-        rating = await prisma.pvpRating.create({
-            data: {
-                userId,
-                seasonId: season.id,
-                rating: 1200,
-                peakRating: 1200,
-            },
-        });
-    }
-
-    return {
-        rating: rating.rating,
-        peakRating: rating.peakRating,
-        wins: rating.wins,
-        losses: rating.losses,
-        rank: rating.rank,
-    };
+  return {
+    rating: rating.rating,
+    peakRating: rating.peakRating,
+    wins: rating.wins,
+    losses: rating.losses,
+    rank: rating.rank,
+  };
 }
 
 // Find opponent
-export const findRankedOpponentAction = authActionClient
-    .action(async ({ ctx: { userId } }) => {
-        const season = await getCurrentSeasonAction();
-        if (!season) return null;
+export const findRankedOpponentAction = authActionClient.action(async ({ ctx: { userId } }) => {
+  const season = await getCurrentSeasonAction();
+  if (!season) return null;
 
-        const myRating = await getPlayerRatingAction(userId);
-        const range = 200; // Search range
+  const myRating = await getPlayerRatingAction(userId);
+  const range = 200; // Search range
 
-        // Find candidates
-        const candidates = await prisma.pvpRating.findMany({
-            where: {
-                seasonId: season.id,
-                userId: { not: userId },
-                rating: {
-                    gte: myRating.rating - range,
-                    lte: myRating.rating + range,
-                },
-            },
-            include: {
-                user: {
-                    select: { id: true, heroName: true, activeTitle: true },
-                },
-            },
-            take: 10,
-        });
+  // Find candidates
+  const candidates = await prisma.pvpRating.findMany({
+    where: {
+      seasonId: season.id,
+      userId: { not: userId },
+      rating: {
+        gte: myRating.rating - range,
+        lte: myRating.rating + range,
+      },
+    },
+    include: {
+      user: {
+        select: { id: true, heroName: true, activeTitle: true },
+      },
+    },
+    take: 10,
+  });
 
-        if (candidates.length === 0) {
-            // Expanded search (any activity)
-            const anyCandidate = await prisma.pvpRating.findFirst({
-                where: { seasonId: season.id, userId: { not: userId } },
-                include: { user: { select: { id: true, heroName: true } } },
-                orderBy: { rating: 'desc' }
-            });
-
-            if (!anyCandidate) return null;
-
-            return {
-                userId: anyCandidate.userId,
-                name: anyCandidate.user.heroName,
-                rating: anyCandidate.rating,
-                rank: anyCandidate.rank,
-                image: null,
-            };
-        }
-
-        // Random pick from candidates
-        const opponent = candidates[Math.floor(Math.random() * candidates.length)];
-        return {
-            userId: opponent.userId,
-            name: opponent.user.heroName,
-            rating: opponent.rating,
-            rank: opponent.rank,
-            image: null,
-        };
+  if (candidates.length === 0) {
+    // Expanded search (any activity)
+    const anyCandidate = await prisma.pvpRating.findFirst({
+      where: { seasonId: season.id, userId: { not: userId } },
+      include: { user: { select: { id: true, heroName: true } } },
+      orderBy: { rating: 'desc' },
     });
+
+    if (!anyCandidate) return null;
+
+    return {
+      userId: anyCandidate.userId,
+      name: anyCandidate.user.heroName,
+      rating: anyCandidate.rating,
+      rank: anyCandidate.rank,
+      image: null,
+    };
+  }
+
+  // Random pick from candidates
+  const opponent = candidates[Math.floor(Math.random() * candidates.length)];
+  return {
+    userId: opponent.userId,
+    name: opponent.user.heroName,
+    rating: opponent.rating,
+    rank: opponent.rank,
+    image: null,
+  };
+});
 
 // Submit Result
 const submitMatchSchema = z.object({
-    opponentId: z.string(),
-    result: z.enum(["WIN", "LOSS"]),
+  opponentId: z.string(),
+  result: z.enum(['WIN', 'LOSS']),
 });
 
 export const submitMatchResultAction = authActionClient
-    .schema(submitMatchSchema)
-    .action(async ({ parsedInput: input, ctx: { userId: myId } }) => {
-        const season = await getCurrentSeasonAction();
-        if (!season) throw new Error("No active season");
+  .schema(submitMatchSchema)
+  .action(async ({ parsedInput: input, ctx: { userId: myId } }) => {
+    const season = await getCurrentSeasonAction();
+    if (!season) throw new Error('No active season');
 
-        const oppId = input.opponentId;
+    const oppId = input.opponentId;
 
-        return await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
-            // Re-fetch ratings for safety
-            const p1 = await tx.pvpRating.findUniqueOrThrow({
-                where: { userId_seasonId: { userId: myId, seasonId: season.id } }
-            });
-            const p2 = await tx.pvpRating.findUniqueOrThrow({
-                where: { userId_seasonId: { userId: oppId, seasonId: season.id } }
-            });
+    return await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
+      // Re-fetch ratings for safety
+      const p1 = await tx.pvpRating.findUniqueOrThrow({
+        where: { userId_seasonId: { userId: myId, seasonId: season.id } },
+      });
+      const p2 = await tx.pvpRating.findUniqueOrThrow({
+        where: { userId_seasonId: { userId: oppId, seasonId: season.id } },
+      });
 
-            // ELO Calc
-            const expectedP1 = 1 / (1 + Math.pow(10, (p2.rating - p1.rating) / 400));
-            const actualP1 = input.result === "WIN" ? 1 : 0;
+      // ELO Calc
+      const expectedP1 = 1 / (1 + 10 ** ((p2.rating - p1.rating) / 400));
+      const actualP1 = input.result === 'WIN' ? 1 : 0;
 
-            // K-Factor Dynamic
-            const K = p1.rating < 2000 ? 32 : 16;
-            const ratingChange = Math.round(K * (actualP1 - expectedP1));
+      // K-Factor Dynamic
+      const K = p1.rating < 2000 ? 32 : 16;
+      const ratingChange = Math.round(K * (actualP1 - expectedP1));
 
-            // Update P1
-            const p1NewRating = p1.rating + ratingChange;
-            await tx.pvpRating.update({
-                where: { id: p1.id },
-                data: {
-                    rating: p1NewRating,
-                    peakRating: Math.max(p1.peakRating, p1NewRating),
-                    wins: input.result === "WIN" ? { increment: 1 } : p1.wins,
-                    losses: input.result === "LOSS" ? { increment: 1 } : p1.losses,
-                    // rank: getRankForRating(p1NewRating),
-                }
-            });
+      // Update P1
+      const p1NewRating = p1.rating + ratingChange;
+      await tx.pvpRating.update({
+        where: { id: p1.id },
+        data: {
+          rating: p1NewRating,
+          peakRating: Math.max(p1.peakRating, p1NewRating),
+          wins: input.result === 'WIN' ? { increment: 1 } : p1.wins,
+          losses: input.result === 'LOSS' ? { increment: 1 } : p1.losses,
+          // rank: getRankForRating(p1NewRating),
+        },
+      });
 
-            // Update P2 (Opponent)
-            const p2NewRating = p2.rating - ratingChange;
-            await tx.pvpRating.update({
-                where: { id: p2.id },
-                data: {
-                    rating: p2NewRating,
-                    peakRating: Math.max(p2.peakRating, p2NewRating),
-                    wins: input.result === "LOSS" ? { increment: 1 } : p2.wins,
-                    losses: input.result === "WIN" ? { increment: 1 } : p2.losses,
-                    // rank: getRankForRating(p2NewRating),
-                }
-            });
+      // Update P2 (Opponent)
+      const p2NewRating = p2.rating - ratingChange;
+      await tx.pvpRating.update({
+        where: { id: p2.id },
+        data: {
+          rating: p2NewRating,
+          peakRating: Math.max(p2.peakRating, p2NewRating),
+          wins: input.result === 'LOSS' ? { increment: 1 } : p2.wins,
+          losses: input.result === 'WIN' ? { increment: 1 } : p2.losses,
+          // rank: getRankForRating(p2NewRating),
+        },
+      });
 
-            // Create Match Record
-            await tx.pvpMatch.create({
-                data: {
-                    seasonId: season.id,
-                    player1Id: myId,
-                    player2Id: oppId,
-                    winnerId: input.result === "WIN" ? myId : oppId,
-                    player1Rating: p1.rating,
-                    player2Rating: p2.rating,
-                    ratingChange: ratingChange,
-                }
-            });
+      // Create Match Record
+      await tx.pvpMatch.create({
+        data: {
+          seasonId: season.id,
+          player1Id: myId,
+          player2Id: oppId,
+          winnerId: input.result === 'WIN' ? myId : oppId,
+          player1Rating: p1.rating,
+          player2Rating: p2.rating,
+          ratingChange: ratingChange,
+        },
+      });
 
-            return {
-                newRating: p1NewRating,
-                change: ratingChange,
-                opponentName: p2.rank // placeholder
-            };
-        });
+      return {
+        newRating: p1NewRating,
+        change: ratingChange,
+        opponentName: p2.rank, // placeholder
+      };
     });
-
-
+  });
 
 // Use getPvpRank from @/lib/pvpRanks for rank calculation
 // Returns rank number as string for DB storage

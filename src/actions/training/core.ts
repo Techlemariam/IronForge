@@ -1,13 +1,13 @@
-"use server";
+'use server';
 
-import { createClient } from "@/utils/supabase/server";
-import prisma from "@/lib/prisma";
-import { revalidatePath } from "next/cache";
-import { TrainingPath } from "@/types/training";
-import { processWorkoutLog } from "@/services/challengeService";
-import { addBattlePassXpAction } from "@/actions/systems/battle-pass";
-import { TrainingService } from "@/services/game/TrainingService";
-import { mutateTitanXp, mutateTitanEconomy } from "@/services/titan-mutations";
+import { addBattlePassXpAction } from '@/actions/systems/battle-pass';
+import prisma from '@/lib/prisma';
+import { processWorkoutLog } from '@/services/challengeService';
+import { TrainingService } from '@/services/game/TrainingService';
+import { mutateTitanEconomy, mutateTitanXp } from '@/services/titan-mutations';
+import type { TrainingPath } from '@/types/training';
+import { createClient } from '@/utils/supabase/server';
+import { revalidatePath } from 'next/cache';
 
 export type TitanLogResult = {
   success: boolean;
@@ -21,7 +21,7 @@ export async function logTitanSet(
   exerciseId: string,
   reps: number,
   weight: number,
-  rpe: number,
+  rpe: number
 ): Promise<TitanLogResult> {
   const supabase = await createClient();
   const {
@@ -29,7 +29,7 @@ export async function logTitanSet(
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return { success: false, message: "User not authenticated" };
+    return { success: false, message: 'User not authenticated' };
   }
 
   try {
@@ -48,12 +48,12 @@ export async function logTitanSet(
       mutateTitanXp({
         userId: user.id,
         amount: xpGained,
-        source: "WORKOUT",
+        source: 'WORKOUT',
       }),
       mutateTitanEconomy({
         userId: user.id,
         changes: { kineticEnergy: energyGained },
-        source: "WORKOUT",
+        source: 'WORKOUT',
       }),
     ]);
 
@@ -66,31 +66,31 @@ export async function logTitanSet(
       const bpXp = Math.max(5, Math.ceil(xpGained / 2));
       await addBattlePassXpAction(user.id, bpXp);
     } catch (e) {
-      console.error("Challenge Sync Failed", e);
+      console.error('Challenge Sync Failed', e);
     }
 
-    revalidatePath("/"); // Refresh dashboard
+    revalidatePath('/'); // Refresh dashboard
 
     const newLevel =
-      xpResult.success && typeof xpResult.newValue === "object"
+      xpResult.success && typeof xpResult.newValue === 'object'
         ? (xpResult.newValue as { level: number }).level
         : undefined;
 
     return {
       success: true,
-      message: xpResult.levelUp ? "Level Up!" : "Set Logged",
+      message: xpResult.levelUp ? 'Level Up!' : 'Set Logged',
       newLevel,
       xpGained,
       energyGained,
     };
   } catch (error) {
-    console.error("Titan Log Error:", error);
-    return { success: false, message: "Failed to log set" };
+    console.error('Titan Log Error:', error);
+    return { success: false, message: 'Failed to log set' };
   }
 }
 
 export async function updateActivePathAction(
-  path: TrainingPath,
+  path: TrainingPath
 ): Promise<{ success: boolean; message: string }> {
   const supabase = await createClient();
   const {
@@ -98,7 +98,7 @@ export async function updateActivePathAction(
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return { success: false, message: "User not authenticated" };
+    return { success: false, message: 'User not authenticated' };
   }
 
   try {
@@ -106,10 +106,10 @@ export async function updateActivePathAction(
       where: { id: user.id },
       data: { activePath: path },
     });
-    revalidatePath("/");
-    return { success: true, message: "Path updated" };
+    revalidatePath('/');
+    return { success: true, message: 'Path updated' };
   } catch (error) {
-    console.error("Update Path Error:", error);
-    return { success: false, message: "Failed to update path" };
+    console.error('Update Path Error:', error);
+    return { success: false, message: 'Failed to update path' };
   }
 }

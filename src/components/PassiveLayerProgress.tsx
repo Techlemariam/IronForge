@@ -1,15 +1,10 @@
-"use client";
+'use client';
 
-import React from "react";
-import { LayerLevel } from "@/types/training";
-import {
-  MOBILITY_LAYER_BONUSES,
-  RECOVERY_LAYER_BONUSES,
-  LAYER_REQUIREMENTS,
-} from "@/data/builds";
-import { Zap, Moon, Info } from "lucide-react";
-import { motion } from "framer-motion";
-
+import { LAYER_REQUIREMENTS, MOBILITY_LAYER_BONUSES, RECOVERY_LAYER_BONUSES } from '@/data/builds';
+import type { LayerLevel } from '@/types/training';
+import { motion } from 'framer-motion';
+import { Info, Moon, Zap } from 'lucide-react';
+import type React from 'react';
 
 interface PassiveLayerProgressProps {
   mobilityLevel: LayerLevel;
@@ -68,21 +63,13 @@ interface LayerCardProps {
   color: string;
 }
 
-const LayerCard: React.FC<LayerCardProps> = ({
-  title,
-  level,
-  sessions,
-  icon,
-  bonuses,
-  color,
-}) => {
+const LayerCard: React.FC<LayerCardProps> = ({ title, level, sessions, icon, bonuses, color }) => {
   // Calculate progress to next level
   let nextLevelReq = 0;
 
-  if (level === "NONE") nextLevelReq = LAYER_REQUIREMENTS.BRONZE.sessions;
-  else if (level === "BRONZE")
-    nextLevelReq = LAYER_REQUIREMENTS.SILVER.sessions;
-  else if (level === "SILVER") nextLevelReq = LAYER_REQUIREMENTS.GOLD.sessions;
+  if (level === 'NONE') nextLevelReq = LAYER_REQUIREMENTS.BRONZE.sessions;
+  else if (level === 'BRONZE') nextLevelReq = LAYER_REQUIREMENTS.SILVER.sessions;
+  else if (level === 'SILVER') nextLevelReq = LAYER_REQUIREMENTS.GOLD.sessions;
   else nextLevelReq = sessions; // Cap if GOLD
 
   const progressPercent = Math.min((sessions / nextLevelReq) * 100, 100);
@@ -91,16 +78,12 @@ const LayerCard: React.FC<LayerCardProps> = ({
     <div className="bg-black/20 border border-white/5 rounded-xl p-4 relative overflow-hidden group backdrop-blur-sm hover:bg-black/30 transition-all">
       <div className="flex justify-between items-start mb-2 relative z-10">
         <div className="flex items-center gap-3">
-          <div
-            className={`p-2 rounded bg-${color}-500/10 border border-${color}-500/20`}
-          >
+          <div className={`p-2 rounded bg-${color}-500/10 border border-${color}-500/20`}>
             {icon}
           </div>
           <div>
             <h4 className="font-bold text-sm text-zinc-200">{title}</h4>
-            <div className={`text-xs font-mono font-bold text-${color}-400`}>
-              {level} TIER
-            </div>
+            <div className={`text-xs font-mono font-bold text-${color}-400`}>{level} TIER</div>
           </div>
         </div>
         <div className="text-right">
@@ -122,28 +105,24 @@ const LayerCard: React.FC<LayerCardProps> = ({
 
       {/* Active Bonuses */}
       <div className="space-y-1">
-        <p className="text-xs text-zinc-500 uppercase font-bold mb-1">
-          Active Bonuses
-        </p>
+        <p className="text-xs text-zinc-500 uppercase font-bold mb-1">Active Bonuses</p>
         {Object.entries(bonuses).map(([key, value]) => {
           const val = value as number;
           if (val === 0) return null;
           return (
             <div key={key} className="flex justify-between text-xs">
               <span className="text-zinc-400 capitalize">
-                {key.replace(/([A-Z])/g, " $1").trim()}
+                {key.replace(/([A-Z])/g, ' $1').trim()}
               </span>
               <span className="text-zinc-200 font-mono">
-                {val > 0 ? "+" : ""}
+                {val > 0 ? '+' : ''}
                 {Math.round(val * 100)}%
               </span>
             </div>
           );
         })}
         {Object.values(bonuses).every((v) => v === 0) && (
-          <span className="text-xs text-zinc-600 italic">
-            No active bonuses. Train to unlock.
-          </span>
+          <span className="text-xs text-zinc-600 italic">No active bonuses. Train to unlock.</span>
         )}
       </div>
     </div>

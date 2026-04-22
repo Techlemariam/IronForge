@@ -1,15 +1,15 @@
-import { DashboardState, DashboardAction } from "../types";
-import { mapHevyToQuest } from "@/utils/hevyAdapter";
-import { mapSessionToQuest } from "@/utils/typeMappers";
+import { mapHevyToQuest } from '@/utils/hevyAdapter';
+import { mapSessionToQuest } from '@/utils/typeMappers';
+import type { DashboardAction, DashboardState } from '../types';
 
 export const dashboardReducer = (
   state: DashboardState,
-  action: DashboardAction,
+  action: DashboardAction
 ): DashboardState => {
   switch (action.type) {
-    case "INITIAL_DATA_LOAD_START":
+    case 'INITIAL_DATA_LOAD_START':
       return { ...state, isCodexLoading: true };
-    case "INITIAL_DATA_LOAD_SUCCESS":
+    case 'INITIAL_DATA_LOAD_SUCCESS':
       return {
         ...state,
         isCodexLoading: false,
@@ -24,91 +24,111 @@ export const dashboardReducer = (
         events: action.payload.events,
         titanAnalysis: action.payload.titanAnalysis,
       };
-    case "INITIAL_DATA_LOAD_FAILURE":
+    case 'INITIAL_DATA_LOAD_FAILURE':
       return { ...state, isCodexLoading: false };
-    case "SELECT_ROUTINE":
+    case 'SELECT_ROUTINE':
       return {
         ...state,
         questTitle: action.payload.routine.title,
-        activeQuest: mapHevyToQuest(
-          action.payload.routine,
-          action.payload.nameMap,
-        ),
+        activeQuest: mapHevyToQuest(action.payload.routine, action.payload.nameMap),
         startTime: new Date(),
-        currentView: "iron_mines",
+        currentView: 'iron_mines',
       };
-    case "COMPLETE_QUEST":
-      return { ...state, currentView: "quest_completion" };
-    case "SAVE_WORKOUT":
-    case "ABORT_QUEST":
+    case 'COMPLETE_QUEST':
+      return { ...state, currentView: 'quest_completion' };
+    case 'SAVE_WORKOUT':
+    case 'ABORT_QUEST':
       return {
         ...state,
         activeQuest: null,
-        questTitle: "",
+        questTitle: '',
         startTime: null,
-        currentView: "citadel",
+        currentView: 'citadel',
       };
-    case "SET_VIEW":
+    case 'SET_VIEW':
       return { ...state, currentView: action.payload };
-    case "START_COMBAT":
+    case 'START_COMBAT':
       return {
         ...state,
-        currentView: "combat_arena",
+        currentView: 'combat_arena',
         activeBossId: action.payload,
       };
 
-    case "START_GENERATED_QUEST":
+    case 'START_GENERATED_QUEST':
       return {
         ...state,
         questTitle: action.payload.name,
-        activeQuest: mapSessionToQuest(
-          action.payload.blocks.flatMap((b) => b.exercises || []),
-        ),
+        activeQuest: mapSessionToQuest(action.payload.blocks.flatMap((b) => b.exercises || [])),
         startTime: new Date(),
-        currentView: "iron_mines",
+        currentView: 'iron_mines',
       };
-    case "RECALCULATE_PROGRESSION":
+    case 'RECALCULATE_PROGRESSION':
       return { ...state, level: action.payload.level };
-    case "TOGGLE_COACH":
+    case 'TOGGLE_COACH':
       return { ...state, isCoachOpen: !state.isCoachOpen };
-    case "UPDATE_PATH":
+    case 'UPDATE_PATH':
       return { ...state, activePath: action.payload };
-    case "SET_CARDIO_MODE":
+    case 'SET_CARDIO_MODE':
       return {
         ...state,
         cardioMode: action.payload,
-        currentView: "cardio_studio",
+        currentView: 'cardio_studio',
         returnView: state.currentView,
       };
-    case "START_CODEX_WORKOUT":
+    case 'START_CODEX_WORKOUT': {
       const { workout } = action.payload;
-      if (workout.type === "RUN" || workout.type === "BIKE") {
+      if (workout.type === 'RUN' || workout.type === 'BIKE') {
         return {
           ...state,
           activeWorkout: workout,
-          cardioMode: workout.type === "RUN" ? "running" : "cycling",
-          currentView: "cardio_studio",
-          returnView: "training_center",
-        };
-      } else {
-        return {
-          ...state,
-          activeWorkout: workout,
-          questTitle: workout.name,
-          activeQuest: null,
-          startTime: new Date(),
-          currentView: "iron_mines",
+          cardioMode: workout.type === 'RUN' ? 'running' : 'cycling',
+          currentView: 'cardio_studio',
+          returnView: 'training_center',
         };
       }
-    case "RETURN_TO_PREVIOUS":
       return {
         ...state,
-        currentView: state.returnView || "citadel",
+        activeWorkout: workout,
+        questTitle: workout.name,
+        activeQuest: null,
+        startTime: new Date(),
+        currentView: 'iron_mines',
+      };
+    }
+    case 'RETURN_TO_PREVIOUS':
+      return {
+        ...state,
+        currentView: state.returnView || 'citadel',
         returnView: null,
         activeWorkout: undefined,
       };
-    case "UPDATE_CHALLENGES":
+    case 'UPDATE_CHALLENGES':
       return { ...state, challenges: action.payload };
+    case 'LAUNCH_MISSION': {
+      // Decision Offloading Logic
+      const rec = state.oracleRecommendation;
+      if (!rec) return state;
+
+      if (rec.type === 'STRENGTH' || rec.type === 'MOBILITY') {
+        // Simple safety: if we have a routine recommended, start it
+        return {
+          ...state,
+          questTitle: rec.title || "Titan's Selection",
+          startTime: new Date(),
+          currentView: 'iron_mines',
+        };
+      }
+
+      if (rec.type === 'CARDIO') {
+        return {
+          ...state,
+          currentView: 'cardio_studio',
+          cardioMode: 'cycling', // Default to cycling for Titan T80
+        };
+      }
+
+      return state;
+    }
     default:
       return state;
   }

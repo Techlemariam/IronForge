@@ -7,14 +7,14 @@ export interface ApreSuggestion {
   adjustment: number; // e.g., +2.5 or -5
   newWeight: number;
   reason: string;
-  type: "INCREASE" | "DECREASE" | "KEEP";
+  type: 'INCREASE' | 'DECREASE' | 'KEEP';
 }
 
 export const calculateApre = (
   currentWeight: number,
-  repsPerformed: number,
+  _repsPerformed: number,
   rpe: number,
-  targetRpe: number = 8,
+  targetRpe = 8
 ): ApreSuggestion | null => {
   // 1. Calculate Estimated 1RM from this set
   // Epley Formula: w * (1 + r/30)
@@ -28,8 +28,8 @@ export const calculateApre = (
   if (Math.abs(diff) < 1) return null; // Accurate enough
 
   let adjustment = 0;
-  let reason = "";
-  let type: "INCREASE" | "DECREASE" | "KEEP" = "KEEP";
+  let reason = '';
+  let type: 'INCREASE' | 'DECREASE' | 'KEEP' = 'KEEP';
 
   // Simplistic Linear Adjustment based on RPE points
   // Typically 1 RPE point ~= 2-3% load change.
@@ -46,10 +46,10 @@ export const calculateApre = (
 
   if (adjustment > 0) {
     reason = `RPE ${rpe} was too easy (Target ${targetRpe}).`;
-    type = "INCREASE";
+    type = 'INCREASE';
   } else {
     reason = `RPE ${rpe} was too high (Target ${targetRpe}).`;
-    type = "DECREASE";
+    type = 'DECREASE';
   }
 
   return {

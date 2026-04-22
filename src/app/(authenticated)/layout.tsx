@@ -1,8 +1,8 @@
-import React from "react";
-import { createClient } from "@/utils/supabase/server";
-import { redirect } from "next/navigation";
-import prisma from "@/lib/prisma";
-import { QuickStatsHeader } from "@/components/layout/QuickStatsHeader";
+import { QuickStatsHeader } from '@/components/layout/QuickStatsHeader';
+import prisma from '@/lib/prisma';
+import { createClient } from '@/utils/supabase/server';
+import { redirect } from 'next/navigation';
+import type React from 'react';
 
 export default async function AuthenticatedLayout({
   children,
@@ -17,7 +17,7 @@ export default async function AuthenticatedLayout({
   } = await supabase.auth.getUser();
 
   if (error || !user) {
-    redirect("/login");
+    redirect('/login');
   }
 
   // Fetch User Data for Header
@@ -31,7 +31,7 @@ export default async function AuthenticatedLayout({
   });
 
   if (!dbUser) {
-    redirect("/login");
+    redirect('/login');
   }
 
   // Calculate XP for next level (using same formula as progression service)

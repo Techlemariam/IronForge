@@ -1,10 +1,10 @@
-"use server";
+'use server';
 
 // import { prisma } from "@/lib/prisma";
-import { revalidatePath } from "next/cache";
+import { revalidatePath } from 'next/cache';
 
-type CompanionType = "WOLF" | "PHOENIX" | "GOLEM" | "DRAGON" | "SPIRIT";
-type CompanionRarity = "COMMON" | "UNCOMMON" | "RARE" | "EPIC" | "LEGENDARY";
+type CompanionType = 'WOLF' | 'PHOENIX' | 'GOLEM' | 'DRAGON' | 'SPIRIT';
+type CompanionRarity = 'COMMON' | 'UNCOMMON' | 'RARE' | 'EPIC' | 'LEGENDARY';
 
 interface Companion {
   id: string;
@@ -44,94 +44,94 @@ const COMPANION_TEMPLATES: Record<
   { name: string; baseStats: CompanionStats; abilities: CompanionAbility[] }
 > = {
   WOLF: {
-    name: "Iron Wolf",
+    name: 'Iron Wolf',
     baseStats: { hp: 80, attack: 25, defense: 15, speed: 30 },
     abilities: [
       {
-        id: "wolf-1",
-        name: "Pack Bonus",
-        description: "+5% XP gain",
-        effect: { type: "XP_BOOST", value: 5 },
+        id: 'wolf-1',
+        name: 'Pack Bonus',
+        description: '+5% XP gain',
+        effect: { type: 'XP_BOOST', value: 5 },
         unlockedAtLevel: 1,
         isUnlocked: true,
       },
       {
-        id: "wolf-2",
-        name: "Howl",
-        description: "+10% damage for 3 turns",
-        effect: { type: "DAMAGE_BOOST", value: 10 },
+        id: 'wolf-2',
+        name: 'Howl',
+        description: '+10% damage for 3 turns',
+        effect: { type: 'DAMAGE_BOOST', value: 10 },
         unlockedAtLevel: 10,
         isUnlocked: false,
       },
       {
-        id: "wolf-3",
-        name: "Alpha Strike",
-        description: "Guaranteed crit",
-        effect: { type: "CRIT", value: 100 },
+        id: 'wolf-3',
+        name: 'Alpha Strike',
+        description: 'Guaranteed crit',
+        effect: { type: 'CRIT', value: 100 },
         unlockedAtLevel: 25,
         isUnlocked: false,
       },
     ],
   },
   PHOENIX: {
-    name: "Ember Phoenix",
+    name: 'Ember Phoenix',
     baseStats: { hp: 60, attack: 35, defense: 10, speed: 25 },
     abilities: [
       {
-        id: "phoenix-1",
-        name: "Rebirth",
-        description: "Revive once per battle",
-        effect: { type: "REVIVE", value: 50 },
+        id: 'phoenix-1',
+        name: 'Rebirth',
+        description: 'Revive once per battle',
+        effect: { type: 'REVIVE', value: 50 },
         unlockedAtLevel: 1,
         isUnlocked: true,
       },
       {
-        id: "phoenix-2",
-        name: "Flame Shield",
-        description: "Absorb damage",
-        effect: { type: "SHIELD", value: 20 },
+        id: 'phoenix-2',
+        name: 'Flame Shield',
+        description: 'Absorb damage',
+        effect: { type: 'SHIELD', value: 20 },
         unlockedAtLevel: 15,
         isUnlocked: false,
       },
     ],
   },
   GOLEM: {
-    name: "Stone Golem",
+    name: 'Stone Golem',
     baseStats: { hp: 150, attack: 15, defense: 35, speed: 10 },
     abilities: [
       {
-        id: "golem-1",
-        name: "Fortify",
-        description: "+20% defense",
-        effect: { type: "DEFENSE_BOOST", value: 20 },
+        id: 'golem-1',
+        name: 'Fortify',
+        description: '+20% defense',
+        effect: { type: 'DEFENSE_BOOST', value: 20 },
         unlockedAtLevel: 1,
         isUnlocked: true,
       },
     ],
   },
   DRAGON: {
-    name: "Storm Dragon",
+    name: 'Storm Dragon',
     baseStats: { hp: 100, attack: 40, defense: 20, speed: 20 },
     abilities: [
       {
-        id: "dragon-1",
+        id: 'dragon-1',
         name: "Dragon's Fury",
-        description: "+25% damage",
-        effect: { type: "DAMAGE_BOOST", value: 25 },
+        description: '+25% damage',
+        effect: { type: 'DAMAGE_BOOST', value: 25 },
         unlockedAtLevel: 1,
         isUnlocked: true,
       },
     ],
   },
   SPIRIT: {
-    name: "Ancient Spirit",
+    name: 'Ancient Spirit',
     baseStats: { hp: 70, attack: 20, defense: 20, speed: 35 },
     abilities: [
       {
-        id: "spirit-1",
-        name: "Wisdom",
-        description: "+15% XP",
-        effect: { type: "XP_BOOST", value: 15 },
+        id: 'spirit-1',
+        name: 'Wisdom',
+        description: '+15% XP',
+        effect: { type: 'XP_BOOST', value: 15 },
         unlockedAtLevel: 1,
         isUnlocked: true,
       },
@@ -142,16 +142,14 @@ const COMPANION_TEMPLATES: Record<
 /**
  * Get user's active companion.
  */
-export async function getActiveCompanionAction(
-  _userId: string,
-): Promise<Companion | null> {
+export async function getActiveCompanionAction(_userId: string): Promise<Companion | null> {
   // MVP: Return sample companion
   const template = COMPANION_TEMPLATES.WOLF;
   return {
-    id: "companion-wolf-1",
-    type: "WOLF",
-    rarity: "RARE",
-    name: "Shadow",
+    id: 'companion-wolf-1',
+    type: 'WOLF',
+    rarity: 'RARE',
+    name: 'Shadow',
     level: 15,
     xp: 1200,
     xpToNextLevel: 2000,
@@ -166,18 +164,16 @@ export async function getActiveCompanionAction(
       defense: template.baseStats.defense + 15,
       speed: template.baseStats.speed + 15,
     },
-    appearance: "wolf-shadow",
+    appearance: 'wolf-shadow',
     isActive: true,
-    obtainedAt: new Date("2024-06-01"),
+    obtainedAt: new Date('2024-06-01'),
   };
 }
 
 /**
  * Get all user's companions.
  */
-export async function getAllCompanionsAction(
-  userId: string,
-): Promise<Companion[]> {
+export async function getAllCompanionsAction(userId: string): Promise<Companion[]> {
   const active = await getActiveCompanionAction(userId);
   return active ? [active] : [];
 }
@@ -186,12 +182,12 @@ export async function getAllCompanionsAction(
  * Feed companion to increase bond.
  */
 export async function feedCompanionAction(
-  userId: string,
+  _userId: string,
   companionId: string,
-  foodType: string,
+  foodType: string
 ): Promise<{ success: boolean; newBond: number }> {
   console.log(`Fed companion ${companionId} with ${foodType}`);
-  revalidatePath("/companion");
+  revalidatePath('/companion');
   return { success: true, newBond: 80 };
 }
 
@@ -199,11 +195,11 @@ export async function feedCompanionAction(
  * Train companion to gain XP.
  */
 export async function trainCompanionAction(
-  userId: string,
-  companionId: string,
+  _userId: string,
+  companionId: string
 ): Promise<{ success: boolean; xpGained: number; leveledUp: boolean }> {
   console.log(`Trained companion ${companionId}`);
-  revalidatePath("/companion");
+  revalidatePath('/companion');
   return { success: true, xpGained: 100, leveledUp: false };
 }
 
@@ -211,11 +207,11 @@ export async function trainCompanionAction(
  * Set active companion.
  */
 export async function setActiveCompanionAction(
-  userId: string,
-  companionId: string,
+  _userId: string,
+  companionId: string
 ): Promise<{ success: boolean }> {
   console.log(`Set active companion: ${companionId}`);
-  revalidatePath("/companion");
+  revalidatePath('/companion');
   return { success: true };
 }
 
@@ -223,18 +219,12 @@ export async function setActiveCompanionAction(
  * Summon new companion (gacha-style).
  */
 export async function summonCompanionAction(
-  _userId: string,
+  _userId: string
 ): Promise<{ success: boolean; companion?: Companion }> {
-  const types: CompanionType[] = [
-    "WOLF",
-    "PHOENIX",
-    "GOLEM",
-    "DRAGON",
-    "SPIRIT",
-  ];
+  const types: CompanionType[] = ['WOLF', 'PHOENIX', 'GOLEM', 'DRAGON', 'SPIRIT'];
   const randomType = types[Math.floor(Math.random() * types.length)];
   // In production, implement gacha rates
   console.log(`Summoned new ${randomType} companion`);
-  revalidatePath("/companion");
+  revalidatePath('/companion');
   return { success: true };
 }

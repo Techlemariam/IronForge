@@ -1,8 +1,8 @@
-"use server";
+'use server';
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath } from 'next/cache';
 
-type UpgradeRarity = "COMMON" | "UNCOMMON" | "RARE" | "EPIC" | "LEGENDARY";
+type UpgradeRarity = 'COMMON' | 'UNCOMMON' | 'RARE' | 'EPIC' | 'LEGENDARY';
 
 interface EquipmentItem {
   id: string;
@@ -34,42 +34,42 @@ const UPGRADE_COSTS: Record<number, UpgradeCost> = {
   2: { gold: 250, materials: [], successRate: 95 },
   3: {
     gold: 500,
-    materials: [{ name: "Iron Ingot", amount: 2 }],
+    materials: [{ name: 'Iron Ingot', amount: 2 }],
     successRate: 90,
   },
   4: {
     gold: 1000,
-    materials: [{ name: "Steel Ingot", amount: 2 }],
+    materials: [{ name: 'Steel Ingot', amount: 2 }],
     successRate: 80,
   },
   5: {
     gold: 2000,
-    materials: [{ name: "Mithril Ingot", amount: 1 }],
+    materials: [{ name: 'Mithril Ingot', amount: 1 }],
     successRate: 70,
   },
   6: {
     gold: 4000,
-    materials: [{ name: "Mithril Ingot", amount: 3 }],
+    materials: [{ name: 'Mithril Ingot', amount: 3 }],
     successRate: 60,
   },
   7: {
     gold: 8000,
-    materials: [{ name: "Dragon Scale", amount: 1 }],
+    materials: [{ name: 'Dragon Scale', amount: 1 }],
     successRate: 50,
   },
   8: {
     gold: 15000,
-    materials: [{ name: "Dragon Scale", amount: 2 }],
+    materials: [{ name: 'Dragon Scale', amount: 2 }],
     successRate: 40,
   },
   9: {
     gold: 30000,
-    materials: [{ name: "Titan Essence", amount: 1 }],
+    materials: [{ name: 'Titan Essence', amount: 1 }],
     successRate: 30,
   },
   10: {
     gold: 50000,
-    materials: [{ name: "Titan Essence", amount: 3 }],
+    materials: [{ name: 'Titan Essence', amount: 3 }],
     successRate: 20,
   },
 };
@@ -92,8 +92,8 @@ const STAT_MULTIPLIERS: Record<number, number> = {
  * Get upgrade cost for next level.
  */
 export async function getUpgradeCostAction(
-  itemId: string,
-  currentLevel: number,
+  _itemId: string,
+  currentLevel: number
 ): Promise<UpgradeCost | null> {
   const nextLevel = currentLevel + 1;
   return UPGRADE_COSTS[nextLevel] || null;
@@ -103,8 +103,8 @@ export async function getUpgradeCostAction(
  * Attempt to upgrade equipment.
  */
 export async function upgradeEquipmentAction(
-  userId: string,
-  itemId: string,
+  _userId: string,
+  itemId: string
 ): Promise<{ success: boolean; newLevel?: number; message: string }> {
   try {
     // In production, validate item ownership and resources
@@ -112,7 +112,7 @@ export async function upgradeEquipmentAction(
     const cost = UPGRADE_COSTS[currentLevel + 1];
 
     if (!cost) {
-      return { success: false, message: "Item is already at max level" };
+      return { success: false, message: 'Item is already at max level' };
     }
 
     // Simulate upgrade attempt
@@ -122,22 +122,21 @@ export async function upgradeEquipmentAction(
     if (succeeded) {
       const newLevel = currentLevel + 1;
       console.log(`Upgrade success: ${itemId} -> Level ${newLevel}`);
-      revalidatePath("/inventory");
+      revalidatePath('/inventory');
       return {
         success: true,
         newLevel,
         message: `Upgrade successful! Item is now level ${newLevel}`,
       };
-    } else {
-      console.log(`Upgrade failed: ${itemId}`);
-      return {
-        success: false,
-        message: "Upgrade failed. Materials were consumed.",
-      };
     }
+    console.log(`Upgrade failed: ${itemId}`);
+    return {
+      success: false,
+      message: 'Upgrade failed. Materials were consumed.',
+    };
   } catch (error) {
-    console.error("Error upgrading equipment:", error);
-    return { success: false, message: "An error occurred" };
+    console.error('Error upgrading equipment:', error);
+    return { success: false, message: 'An error occurred' };
   }
 }
 
@@ -146,7 +145,7 @@ export async function upgradeEquipmentAction(
  */
 export function calculateUpgradedStats(
   baseStats: Record<string, number>,
-  level: number,
+  level: number
 ): Record<string, number> {
   const multiplier = STAT_MULTIPLIERS[level] || 1.0;
   const result: Record<string, number> = {};
@@ -161,24 +160,22 @@ export function calculateUpgradedStats(
 /**
  * Get user's upgradeable equipment.
  */
-export async function getUpgradeableEquipmentAction(
-  _userId: string,
-): Promise<EquipmentItem[]> {
+export async function getUpgradeableEquipmentAction(_userId: string): Promise<EquipmentItem[]> {
   // MVP: Return sample equipment
   return [
     {
-      id: "item-sword-1",
-      name: "Iron Sword",
-      rarity: "UNCOMMON",
+      id: 'item-sword-1',
+      name: 'Iron Sword',
+      rarity: 'UNCOMMON',
       level: 3,
       maxLevel: 10,
       stats: { damage: 50, critChance: 5 },
       upgradeHistory: [],
     },
     {
-      id: "item-armor-1",
-      name: "Steel Plate",
-      rarity: "RARE",
+      id: 'item-armor-1',
+      name: 'Steel Plate',
+      rarity: 'RARE',
       level: 5,
       maxLevel: 10,
       stats: { defense: 80, hp: 100 },

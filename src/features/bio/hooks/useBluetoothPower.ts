@@ -1,9 +1,9 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 // FTMS UUIDs
-const FTMS_SERVICE_UUID = "00001826-0000-1000-8000-00805f9b34fb";
-const FTMS_CONTROL_POINT_UUID = "00002ad9-0000-1000-8000-00805f9b34fb";
-const FTMS_INDOOR_BIKE_DATA_UUID = "00002ad2-0000-1000-8000-00805f9b34fb";
+const FTMS_SERVICE_UUID = '00001826-0000-1000-8000-00805f9b34fb';
+const FTMS_CONTROL_POINT_UUID = '00002ad9-0000-1000-8000-00805f9b34fb';
+const FTMS_INDOOR_BIKE_DATA_UUID = '00002ad2-0000-1000-8000-00805f9b34fb';
 
 interface PowerData {
   watts: number;
@@ -23,9 +23,7 @@ export const useBluetoothPower = () => {
   // Refs
   const deviceRef = useRef<BluetoothDevice | null>(null);
   const serverRef = useRef<BluetoothRemoteGATTServer | null>(null);
-  const controlPointRef = useRef<BluetoothRemoteGATTCharacteristic | null>(
-    null,
-  );
+  const controlPointRef = useRef<BluetoothRemoteGATTCharacteristic | null>(null);
 
   // Helper to write to control point
   const writeControl = useCallback(async (bytes: number[]) => {
@@ -33,7 +31,7 @@ export const useBluetoothPower = () => {
     try {
       await controlPointRef.current.writeValue(new Uint8Array(bytes));
     } catch (e) {
-      console.error("FTMS Write Error:", e);
+      console.error('FTMS Write Error:', e);
     }
   }, []);
 
@@ -146,23 +144,18 @@ export const useBluetoothPower = () => {
       });
 
       deviceRef.current = device;
-      device.addEventListener("gattserverdisconnected", disconnect);
+      device.addEventListener('gattserverdisconnected', disconnect);
 
       const server = await device.gatt?.connect();
-      if (!server) throw new Error("Could not connect to GATT Server");
+      if (!server) throw new Error('Could not connect to GATT Server');
       serverRef.current = server;
 
       const service = await server.getPrimaryService(FTMS_SERVICE_UUID);
 
       // Setup Notifications for Data
-      const dataChar = await service.getCharacteristic(
-        FTMS_INDOOR_BIKE_DATA_UUID,
-      );
+      const dataChar = await service.getCharacteristic(FTMS_INDOOR_BIKE_DATA_UUID);
       await dataChar.startNotifications();
-      dataChar.addEventListener(
-        "characteristicvaluechanged",
-        handleDataChanged,
-      );
+      dataChar.addEventListener('characteristicvaluechanged', handleDataChanged);
 
       // Setup Control Point
       const cpChar = await service.getCharacteristic(FTMS_CONTROL_POINT_UUID);
@@ -174,7 +167,7 @@ export const useBluetoothPower = () => {
       setIsConnected(true);
     } catch (e: any) {
       console.error(e);
-      setError(e.message || "Connection failed");
+      setError(e.message || 'Connection failed');
       disconnect();
     }
   };

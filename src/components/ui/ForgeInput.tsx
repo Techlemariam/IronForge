@@ -1,19 +1,15 @@
-import React from "react";
-import { twMerge } from "tailwind-merge";
+import type React from 'react';
+import { twMerge } from 'tailwind-merge';
 
 interface ForgeInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
 }
 
-const ForgeInput: React.FC<ForgeInputProps> = ({
-  label,
-  className,
-  ...props
-}) => {
+const ForgeInput: React.FC<ForgeInputProps> = ({ label, className, ...props }) => {
   const inputClasses = twMerge(
-    "font-mono bg-transparent w-full text-white placeholder:text-forge-muted focus:outline-none",
-    "border-b-2 border-forge-border focus:border-magma transition-colors duration-300 py-2",
-    className,
+    'font-mono bg-transparent w-full text-white placeholder:text-forge-muted focus:outline-none',
+    'border-b-2 border-forge-border focus:border-magma transition-colors duration-300 py-2',
+    className
   );
 
   return (

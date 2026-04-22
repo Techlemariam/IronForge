@@ -1,8 +1,8 @@
-"use server";
+'use server';
 
-import { prisma } from "@/lib/prisma";
-import { revalidatePath } from "next/cache";
-import { z } from "zod";
+import { prisma } from '@/lib/prisma';
+import { revalidatePath } from 'next/cache';
+import { z } from 'zod';
 
 // ============================================
 // BATTLE PASS ACTIONS
@@ -38,11 +38,11 @@ export async function getActiveSeasonAction() {
   try {
     const season = await prisma.battlePassSeason.findFirst({
       where: { isActive: true },
-      include: { tiers: { orderBy: { tierLevel: "asc" } } },
+      include: { tiers: { orderBy: { tierLevel: 'asc' } } },
     });
     return season;
   } catch (error) {
-    console.error("Error fetching active season:", error);
+    console.error('Error fetching active season:', error);
     return null;
   }
 }
@@ -51,7 +51,7 @@ export async function getActiveSeasonAction() {
  * Get a user's progress for the active season.
  */
 export async function getUserBattlePassProgressAction(
-  userId: string,
+  userId: string
 ): Promise<BattlePassProgress | null> {
   try {
     const season = await getActiveSeasonAction();
@@ -80,12 +80,12 @@ export async function getUserBattlePassProgressAction(
 
     // Map tiers and claims
     const tiers = season.tiers.map((tier) => {
-      const isUnlocked = userPass!.seasonXp >= tier.requiredXp;
-      const freeClaim = userPass!.claims.find(
-        (c) => c.tierLevel === tier.tierLevel && !c.isPremium,
+      const isUnlocked = userPass?.seasonXp >= tier.requiredXp;
+      const freeClaim = userPass?.claims.find(
+        (c) => c.tierLevel === tier.tierLevel && !c.isPremium
       );
-      const premiumClaim = userPass!.claims.find(
-        (c) => c.tierLevel === tier.tierLevel && c.isPremium,
+      const premiumClaim = userPass?.claims.find(
+        (c) => c.tierLevel === tier.tierLevel && c.isPremium
       );
 
       return {
@@ -111,7 +111,7 @@ export async function getUserBattlePassProgressAction(
       tiers,
     };
   } catch (error) {
-    console.error("Error fetching battle pass progress:", error);
+    console.error('Error fetching battle pass progress:', error);
     return null;
   }
 }
@@ -123,7 +123,7 @@ export async function getUserBattlePassProgressAction(
 export async function addBattlePassXpAction(userId: string, amount: number) {
   try {
     const season = await getActiveSeasonAction();
-    if (!season) return { success: false, message: "No active season" };
+    if (!season) return { success: false, message: 'No active season' };
 
     // Transaction to ensure atomicity
     await prisma.$transaction(async (tx) => {
@@ -144,7 +144,7 @@ export async function addBattlePassXpAction(userId: string, amount: number) {
       // Assuming we fetch all tiers. For optimization, might cache this or fetch relevant ones.
       const tiers = await tx.battlePassTier.findMany({
         where: { seasonId: season.id },
-        orderBy: { tierLevel: "asc" },
+        orderBy: { tierLevel: 'asc' },
       });
 
       // Find highest unlocked tier
@@ -167,11 +167,11 @@ export async function addBattlePassXpAction(userId: string, amount: number) {
       });
     });
 
-    revalidatePath("/battle-pass");
+    revalidatePath('/battle-pass');
     return { success: true, message: `Added ${amount} Season XP` };
   } catch (error) {
-    console.error("Error adding Battle Pass XP:", error);
-    return { success: false, message: "Failed to add XP" };
+    console.error('Error adding Battle Pass XP:', error);
+    return { success: false, message: 'Failed to add XP' };
   }
 }
 
@@ -181,19 +181,18 @@ export async function addBattlePassXpAction(userId: string, amount: number) {
 export async function claimBattlePassRewardAction(
   userId: string,
   tierLevel: number,
-  isPremium: boolean,
+  isPremium: boolean
 ) {
   try {
     const season = await getActiveSeasonAction();
-    if (!season) return { success: false, message: "No active season" };
+    if (!season) return { success: false, message: 'No active season' };
 
     const userPass = await prisma.userBattlePass.findUnique({
       where: { userId_seasonId: { userId, seasonId: season.id } },
       include: { claims: true },
     });
 
-    if (!userPass)
-      return { success: false, message: "Battle Pass not initialized" };
+    if (!userPass) return { success: false, message: 'Battle Pass not initialized' };
 
     // Check if unlocked
     // We need to fetch the tier requirement
@@ -206,32 +205,32 @@ export async function claimBattlePassRewardAction(
       },
     });
 
-    if (!tier) return { success: false, message: "Tier not found" };
+    if (!tier) return { success: false, message: 'Tier not found' };
 
     if (userPass.seasonXp < tier.requiredXp) {
-      return { success: false, message: "Tier not yet unlocked" };
+      return { success: false, message: 'Tier not yet unlocked' };
     }
 
     // Check premium
     if (isPremium && !userPass.hasPremium) {
-      return { success: false, message: "Premium Pass required" };
+      return { success: false, message: 'Premium Pass required' };
     }
 
     // Check availability of reward data (don't claim empty tiers if that's a thing)
     if (isPremium && !tier.premiumRewardId && !tier.premiumRewardData) {
-      return { success: false, message: "No reward to claim" };
+      return { success: false, message: 'No reward to claim' };
     }
     if (!isPremium && !tier.freeRewardId && !tier.freeRewardData) {
-      return { success: false, message: "No reward to claim" };
+      return { success: false, message: 'No reward to claim' };
     }
 
     // Check if already claimed
     const existingClaim = userPass.claims.find(
-      (c) => c.tierLevel === tierLevel && c.isPremium === isPremium,
+      (c) => c.tierLevel === tierLevel && c.isPremium === isPremium
     );
 
     if (existingClaim) {
-      return { success: false, message: "Already claimed" };
+      return { success: false, message: 'Already claimed' };
     }
 
     // Process Reward Logic
@@ -244,14 +243,14 @@ export async function claimBattlePassRewardAction(
         titleId?: string;
       };
 
-      if (data.type === "GOLD" && data.amount) {
+      if (data.type === 'GOLD' && data.amount) {
         await prisma.user.update({
           where: { id: userId },
           data: { gold: { increment: data.amount } },
         });
       }
 
-      if (data.type === "ITEM" && data.itemId) {
+      if (data.type === 'ITEM' && data.itemId) {
         // Add item to equipment
         await prisma.userEquipment.upsert({
           where: { userId_equipmentId: { userId, equipmentId: data.itemId } },
@@ -260,7 +259,7 @@ export async function claimBattlePassRewardAction(
         });
       }
 
-      if (data.type === "TITLE" && data.titleId) {
+      if (data.type === 'TITLE' && data.titleId) {
         // Unlock title
         await prisma.userTitle.upsert({
           where: { userId_titleId: { userId, titleId: data.titleId } },
@@ -280,11 +279,11 @@ export async function claimBattlePassRewardAction(
       },
     });
 
-    revalidatePath("/battle-pass");
-    return { success: true, message: "Reward claimed!" };
+    revalidatePath('/battle-pass');
+    return { success: true, message: 'Reward claimed!' };
   } catch (error) {
-    console.error("Error claiming reward:", error);
-    return { success: false, message: "Failed to claim reward" };
+    console.error('Error claiming reward:', error);
+    return { success: false, message: 'Failed to claim reward' };
   }
 }
 
@@ -295,7 +294,7 @@ export async function claimBattlePassRewardAction(
 export async function upgradeToPremiumAction(userId: string) {
   try {
     const season = await getActiveSeasonAction();
-    if (!season) return { success: false, message: "No active season" };
+    if (!season) return { success: false, message: 'No active season' };
 
     // Check user balance (Mocking cost: 1000 Gold)
     // ideally unrelated to gold, but for now let's make it free or check functionality
@@ -311,11 +310,11 @@ export async function upgradeToPremiumAction(userId: string) {
       update: { hasPremium: true },
     });
 
-    revalidatePath("/battle-pass");
-    revalidatePath("/dashboard");
-    return { success: true, message: "Upgraded to Premium!" };
+    revalidatePath('/battle-pass');
+    revalidatePath('/dashboard');
+    return { success: true, message: 'Upgraded to Premium!' };
   } catch (error) {
-    console.error("Upgrade error:", error);
-    return { success: false, message: "Failed to upgrade" };
+    console.error('Upgrade error:', error);
+    return { success: false, message: 'Failed to upgrade' };
   }
 }

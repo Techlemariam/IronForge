@@ -1,6 +1,6 @@
-import { defineConfig } from 'vitest/config';
-import path from 'path';
+import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { defineConfig } from 'vitest/config';
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -12,14 +12,23 @@ export default defineConfig({
     mockReset: true,
     alias: {
       '@': path.resolve(dirname, './src'),
-      '@clerk/nextjs/server': path.resolve(dirname, './tests/mocks/clerk.ts')
+      '@clerk/nextjs/server': path.resolve(dirname, './tests/mocks/clerk.ts'),
     },
-    exclude: ['**/node_modules/**', '**/tests/e2e/**', '**/tests/integration/**', '**/*.stories.tsx', '**/*.stories.ts', '**/build/**', '**/dist/**', '**/tmp/**'],
+    exclude: [
+      '**/node_modules/**',
+      '**/tests/e2e/**',
+      '**/tests/integration/**',
+      '**/*.stories.tsx',
+      '**/*.stories.ts',
+      '**/build/**',
+      '**/dist/**',
+      '**/tmp/**',
+    ],
 
     setupFiles: ['./vitest.setup.ts'],
     coverage: {
       provider: 'v8',
-      reporter: ['text', 'json-summary', 'html', 'lcov']
-    }
-  }
+      reporter: ['text', 'json-summary', 'html', 'lcov'],
+    },
+  },
 });
