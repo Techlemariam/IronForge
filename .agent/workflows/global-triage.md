@@ -1,41 +1,32 @@
-# 🌐 Workflow: Global Brotherhood Triage
+﻿# 🌐 Workflow: Global Brotherhood Triage (v1.1.0)
 
-This workflow is designed to give a high-level overview of all projects in the workspace and help the agent/user decide where to focus.
+This workflow provides a high-level operational overview of the Brotherhood ecosystem.
 
 ## 🏁 Purpose
-- Get a "birds-eye view" of all git repositories.
-- Identify which projects have uncommitted changes or are out of sync with remote.
-- Facilitate switching between projects using standard domain sessions.
+- Real-time visibility into branch status, dirty/clean states, and project health.
+- Alignment on active domains and ChatId ownership to prevent conflicts.
 
 ## 🛠️ Execution Steps
 
-1. **Run Global Status**:
-   Execute the global status script to see the state of all projects.
-   ```powershell
+1. **Run Global Triage**:
+   `powershell
    pwsh c:\Users\alexa\Workspaces\git-status-all.ps1
-   ```
+   `
 
-2. **Analyze Output**:
-   - Identify **DIRTY** projects that need attention.
-   - Check for **Ahead/Behind** status to ensure code is pushed/pulled.
-   - Look for specific files changed to guess the current "context" of work.
+2. **Verify Branch Guard**:
+   Before starting work, ensure you are in the correct worktree and have "claimed" the session:
+   `powershell
+   pwsh c:\Users\alexa\Workspaces\verify-branch-guard.ps1 -ExpectedChatId "YOUR_CHAT_ID"
+   `
 
-3. **Provide Recommendation**:
-   Based on the status, suggest the next step.
-   - Example: *"Ligan is DIRTY with 5 files changed. Should we continue there?"*
-   - Example: *"IronForge is behind remote. Should we pull and sync?"*
+3. **Update Dashboard**:
+   After a task or domain switch, update your status:
+   `powershell
+   pwsh c:\Users\alexa\Workspaces\update-agent-status.ps1 -Domain "YOUR_DOMAIN" -Health "pass" -ChatId "YOUR_CHAT_ID"
+   `
 
-4. **Context Switch**:
-   Once a project is chosen, the agent should:
-   - Navigate to the project directory.
-   - Run the relevant `/domain-session`.
-
-## 📢 Output format
-When this workflow is invoked, the agent should present a summary table of the triage results.
-
-| Project | Branch | Status | Remote |
-| :--- | :--- | :--- | :--- |
-| <NAME> | <BRANCH> | <CLEAN/DIRTY> | <AHEAD/BEHIND> |
+## 📊 Dashboard Reference
+The dashboard is maintained at: c:\Users\alexa\Workspaces\BROTHERHOOD.md
 
 ---
-*Standardization v1.0.0*
+*Brotherhood Operational Maturity - 10/10 Standardization*
