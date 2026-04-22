@@ -117,8 +117,8 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({
   };
 
   // --- WOW THEME CONSTANTS ---
-  const WOW_GOLD = 'text-gold';
-  const WOW_GREEN = 'text-venom';
+  const WOW_GOLD = 'text-rarity-gold';
+  const WOW_GREEN = 'text-rarity-uncommon';
   const WOW_GREY = 'text-zinc-500';
 
   return (
@@ -131,7 +131,7 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({
         {/* --- HEADER --- */}
         <div className="relative h-12 bg-gradient-to-b from-steel/20 to-armor border-b border-steel/50 flex items-center justify-between px-4 shrink-0 z-10">
           <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded-full bg-gradient-to-br from-gold to-gold/60 border border-white/20 flex items-center justify-center shadow-inner">
+            <div className="w-6 h-6 rounded-full bg-gradient-to-br from-rarity-gold to-gold/60 border border-white/20 flex items-center justify-center shadow-inner">
               <User className="w-4 h-4 text-black" />
             </div>
             <span className={`font-bold tracking-wide ${WOW_GOLD} text-shadow-sm`}>
@@ -159,7 +159,9 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({
               <div className="text-sm font-sans font-bold text-white flex justify-center gap-2 items-center">
                 <span className={WOW_GOLD}>Level {level}</span>
                 <span className={WOW_GREY}>|</span>
-                <span className={isElite ? 'text-warp' : 'text-pulse'}>{currentRank.name}</span>
+                <span className={isElite ? 'text-rarity-epic' : 'text-rarity-rare'}>
+                  {currentRank.name}
+                </span>
                 <span className={WOW_GREY}>|</span>
                 <span className="text-zinc-400">IronForge Guild</span>
               </div>
@@ -193,7 +195,7 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({
                 <div className="relative w-32 h-48 sm:w-40 sm:h-64 bg-zinc-900/50 border border-zinc-700/50 rounded-lg flex flex-col items-center justify-center group overflow-hidden">
                   {/* Render a 3D-ish looking silhouette or the user icon */}
                   <User
-                    className={`w-16 h-16 sm:w-24 sm:h-24 ${isElite ? 'text-gold' : 'text-zinc-500'} drop-shadow-2xl`}
+                    className={`w-16 h-16 sm:w-24 sm:h-24 ${isElite ? 'text-rarity-gold' : 'text-zinc-500'} drop-shadow-2xl`}
                   />
                   <div className="absolute bottom-2 text-[8px] sm:text-[10px] text-zinc-500 font-sans uppercase tracking-widest group-hover:text-white transition-colors">
                     Model Viewer
@@ -418,11 +420,11 @@ const GearSlot: React.FC<{
   const getBorderColor = () => {
     switch (rarity) {
       case 'epic':
-        return 'border-warp';
+        return 'border-rarity-epic';
       case 'rare':
-        return 'border-pulse';
+        return 'border-rarity-rare';
       case 'uncommon':
-        return 'border-venom';
+        return 'border-rarity-uncommon';
       case 'common':
         return 'border-steel';
     }
@@ -438,11 +440,11 @@ const GearSlot: React.FC<{
         <div
           className={`font-bold text-sm ${
             rarity === 'epic'
-              ? 'text-warp'
+              ? 'text-rarity-epic'
               : rarity === 'rare'
-                ? 'text-pulse'
+                ? 'text-rarity-rare'
                 : rarity === 'uncommon'
-                  ? 'text-venom'
+                  ? 'text-rarity-uncommon'
                   : 'text-white'
           }`}
         >
@@ -451,7 +453,7 @@ const GearSlot: React.FC<{
         <div className="text-[10px] text-white mt-1">
           Item Level {Math.floor(Math.random() * 100) + 200}
         </div>
-        <div className="text-[10px] text-gold mt-1">&lt;Right Click to Equip&gt;</div>
+        <div className="text-[10px] text-rarity-gold mt-1">&lt;Right Click to Equip&gt;</div>
       </div>
     </div>
   );
@@ -468,8 +470,8 @@ const StatRow: React.FC<{
 
   // FM Coloring: 16-20 Gold, 11-15 Green, 6-10 White, 1-5 Grey
   let valueColor = 'text-zinc-500';
-  if (numericValue > 15) valueColor = 'text-gold';
-  else if (numericValue > 10) valueColor = 'text-venom';
+  if (numericValue > 15) valueColor = 'text-rarity-gold';
+  else if (numericValue > 10) valueColor = 'text-rarity-uncommon';
   else if (numericValue > 5) valueColor = 'text-white';
 
   return (

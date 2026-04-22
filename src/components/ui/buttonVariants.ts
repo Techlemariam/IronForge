@@ -19,20 +19,20 @@ export const buttonVariants = cva(
 
         // --- FORGE SPECIFIC (Sci-Fi) ---
         plasma:
-          'bg-gradient-to-r from-orange-600 to-orange-500 text-white border border-orange-400/20 hover:shadow-[0_0_20px_rgba(249,115,22,0.4)] hover:brightness-110',
+          'bg-rarity-legendary text-white border border-rarity-legendary/20 hover:shadow-[0_0_20px_rgba(255,128,0,0.4)] hover:brightness-110',
         magma:
-          'bg-gradient-to-r from-orange-600 to-orange-500 text-white border border-orange-400/20 hover:shadow-[0_0_20px_rgba(249,115,22,0.4)] hover:brightness-110', // Legacy mapping
+          'bg-rarity-legendary text-white border border-rarity-legendary/20 hover:shadow-[0_0_20px_rgba(255,128,0,0.4)] hover:brightness-110', // Legacy mapping
 
         pulse:
-          'bg-gradient-to-r from-sky-600 to-sky-500 text-white border border-sky-400/20 hover:shadow-[0_0_20px_rgba(14,165,233,0.4)] hover:brightness-110',
-        rune: 'bg-gradient-to-r from-sky-600 to-sky-500 text-white border border-sky-400/20 hover:shadow-[0_0_20px_rgba(14,165,233,0.4)] hover:brightness-110', // Legacy mapping
+          'bg-rarity-rare text-white border border-rarity-rare/20 hover:shadow-[0_0_20px_rgba(0,112,221,0.4)] hover:brightness-110',
+        rune: 'bg-rarity-rare text-white border border-rarity-rare/20 hover:shadow-[0_0_20px_rgba(0,112,221,0.4)] hover:brightness-110', // Legacy mapping
 
-        gold: 'bg-gradient-to-r from-yellow-600 to-yellow-500 text-white border border-yellow-400/20 hover:shadow-[0_0_20px_rgba(234,179,8,0.4)] hover:brightness-110',
-        cyan: 'bg-gradient-to-r from-cyan-600 to-cyan-500 text-white border border-cyan-400/20 hover:shadow-[0_0_20px_rgba(6,182,212,0.4)] hover:brightness-110',
+        gold: 'bg-rarity-gold text-black border border-rarity-gold/20 hover:shadow-[0_0_20px_rgba(255,215,0,0.4)] hover:brightness-110',
+        cyan: 'bg-cyan-600 text-white border border-cyan-400/20 hover:shadow-[0_0_20px_rgba(6,182,212,0.4)] hover:brightness-110',
         venom:
-          'bg-gradient-to-r from-green-600 to-green-500 text-white border border-green-400/20 hover:shadow-[0_0_20px_rgba(34,197,94,0.4)] hover:brightness-110',
+          'bg-rarity-uncommon text-black border border-rarity-uncommon/20 hover:shadow-[0_0_20px_rgba(30,255,0,0.4)] hover:brightness-110',
         beast:
-          'bg-gradient-to-r from-red-900 to-red-800 text-white border border-red-500/20 hover:shadow-[0_0_20px_rgba(239,68,68,0.2)] hover:border-red-500/50',
+          'bg-rarity-legendary text-white border border-rarity-legendary/20 hover:shadow-[0_0_20px_rgba(255,128,0,0.4)] hover:border-rarity-legendary/50',
       },
       size: {
         default: 'h-10 px-6 py-2 text-sm',

@@ -151,7 +151,7 @@ const PreWorkoutCheck: React.FC<PreWorkoutCheckProps> = ({ session, onProceed, o
               <Zap className="w-10 h-10 text-zinc-600" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold uppercase text-gold">Check Vitality</h1>
+              <h1 className="text-2xl font-bold uppercase text-rarity-gold">Check Vitality</h1>
               <p className="text-zinc-500 text-sm max-w-xs mx-auto mt-2 font-sans">
                 Scan recovery metrics to determine XP bonus and fatigue state.
               </p>
@@ -159,7 +159,7 @@ const PreWorkoutCheck: React.FC<PreWorkoutCheckProps> = ({ session, onProceed, o
             <div className="flex flex-col gap-2 mt-4">
               <button
                 onClick={() => runScan(false)}
-                className="px-8 py-3 bg-gold text-void border border-void font-bold uppercase tracking-widest rounded hover:brightness-110 transition-all shadow-lg"
+                className="px-8 py-3 bg-rarity-gold text-void border border-void font-bold uppercase tracking-widest rounded hover:brightness-110 transition-all shadow-lg"
               >
                 Cast Scan
               </button>
@@ -219,7 +219,7 @@ const PreWorkoutCheck: React.FC<PreWorkoutCheckProps> = ({ session, onProceed, o
 
             <div className="grid grid-cols-2 gap-4">
               <div
-                className={`p-4 rounded border-2 bg-zinc-900 ${bodyBattery < 30 ? 'border-red-900 text-red-500' : 'border-zinc-800 text-venom'}`}
+                className={`p-4 rounded border-2 bg-zinc-900 ${bodyBattery < 30 ? 'border-red-900 text-red-500' : 'border-zinc-800 text-rarity-uncommon'}`}
               >
                 <div className="flex items-center gap-2 mb-2 text-zinc-500">
                   <Battery className="w-4 h-4" />
@@ -228,7 +228,7 @@ const PreWorkoutCheck: React.FC<PreWorkoutCheckProps> = ({ session, onProceed, o
                 <span className="text-3xl font-black">{bodyBattery}</span>
               </div>
               <div
-                className={`p-4 rounded border-2 bg-zinc-900 ${sleepScore < 50 ? 'border-red-900 text-red-500' : 'border-zinc-800 text-venom'}`}
+                className={`p-4 rounded border-2 bg-zinc-900 ${sleepScore < 50 ? 'border-red-900 text-red-500' : 'border-zinc-800 text-rarity-uncommon'}`}
               >
                 <div className="flex items-center gap-2 mb-2 text-zinc-500">
                   <Moon className="w-4 h-4" />
@@ -273,7 +273,7 @@ const PreWorkoutCheck: React.FC<PreWorkoutCheckProps> = ({ session, onProceed, o
                     playSound('quest_accept');
                     onProceed(session);
                   }}
-                  className="w-full py-4 bg-gold hover:bg-gold/80 text-void border-2 border-void font-bold uppercase tracking-widest rounded flex items-center justify-center gap-2 transition-all shadow-xl active:scale-95"
+                  className="w-full py-4 bg-rarity-gold hover:bg-rarity-gold/80 text-void border-2 border-void font-bold uppercase tracking-widest rounded flex items-center justify-center gap-2 transition-all shadow-xl active:scale-95"
                 >
                   Accept Quest
                 </button>

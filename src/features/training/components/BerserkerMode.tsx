@@ -46,11 +46,11 @@ const BerserkerMode: React.FC<BerserkerModeProps> = ({ lastExerciseName, onCompl
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
-      <Card variant="glass" className="w-full max-w-md text-center border-blood shadow-glow-blood">
-        <h2 className="font-heading text-4xl text-blood animate-pulse tracking-widest">
+      <Card variant="glass" className="w-full max-w-md text-center border-rarity-legendary shadow-[0_0_20px_rgba(255,128,0,0.3)]">
+        <h2 className="font-heading text-4xl text-rarity-legendary animate-pulse tracking-widest">
           BERSERKER MODE
         </h2>
-        <p className="font-mono text-rune mt-2">Final set of {lastExerciseName}.</p>
+        <p className="font-mono text-rarity-rare mt-2">Final set of {lastExerciseName}.</p>
         <p className="text-white text-lg mt-1">As Many Reps As Possible!</p>
 
         <div className="my-8">
@@ -66,7 +66,7 @@ const BerserkerMode: React.FC<BerserkerModeProps> = ({ lastExerciseName, onCompl
                 cy="50"
               />
               <m.circle
-                className="text-blood"
+                className="text-rarity-legendary"
                 strokeWidth="5"
                 strokeDasharray={2 * Math.PI * 45}
                 strokeDashoffset={2 * Math.PI * 45 * (1 - progressPercentage / 100)}
@@ -87,7 +87,7 @@ const BerserkerMode: React.FC<BerserkerModeProps> = ({ lastExerciseName, onCompl
               {isTimerActive ? timeLeft : '0'}
             </span>
           </div>
-          <p className="font-mono text-sm text-rune mt-2">TIME REMAINING</p>
+          <p className="font-mono text-sm text-rarity-rare mt-2">TIME REMAINING</p>
         </div>
 
         {isTimerActive ? (
@@ -105,9 +105,9 @@ const BerserkerMode: React.FC<BerserkerModeProps> = ({ lastExerciseName, onCompl
               value={reps}
               onChange={(e) => setReps(e.target.value)}
               placeholder="Enter Your Reps"
-              className="w-48 text-center bg-black border-2 border-gray-600 rounded-md p-2 text-2xl mb-4 focus:border-blood focus:outline-none"
+              className="w-48 text-center bg-black border-2 border-gray-600 rounded-md p-2 text-2xl mb-4 focus:border-rarity-legendary focus:outline-none"
             />
-            <Button onClick={handleComplete} variant="magma" className="px-10">
+            <Button onClick={handleComplete} variant="legendary" className="px-10">
               Log Fury
             </Button>
           </m.div>

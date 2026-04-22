@@ -22,20 +22,18 @@
   /* Pathfinder */
   --color-clay: #c79c6e;
   /* Classic UI / Parchment */
-  --color-warp: #a335ee;
-  /* Warp / Epic (Purple) */
-  --color-legend: #ff8000;
-  /* Solar / Legendary (Orange) */
+  --color-warp: var(--color-rarity-epic);
+  --color-legend: var(--color-rarity-legendary);
 
   /* ITEM RARITY PROTOCOL (WoW-Inspired) */
-  --color-uncommon: #1eff00;
-  /* Green / Uncommon */
-  --color-rare: #0070dd;
-  /* Blue / Rare */
-  --color-gold-bright: #ffd700;
-  /* Gold / UI Highlight */
-  --color-gold-dark: #b8860b;
-  /* Dark Gold / Muted Tier */
+  --color-rarity-poor: #9d9d9d;
+  --color-rarity-common: #ffffff;
+  --color-rarity-uncommon: #1eff00;
+  --color-rarity-rare: #0070dd;
+  --color-rarity-epic: #a335ee;
+  --color-rarity-legendary: #ff8000;
+  --color-rarity-artifact: #e6cc80;
+  --color-rarity-gold: #ffd700;
 
   /* TEXT PROTOCOL */
   --color-text-primary: #f3f4f6;

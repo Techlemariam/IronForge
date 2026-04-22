@@ -184,7 +184,7 @@ const QuestLog: React.FC<QuestLogProps> = ({
 
                     {/* Rewards / Difficulty */}
                     <div className="flex items-center gap-4 mt-3 text-[10px] text-zinc-400 font-mono uppercase">
-                      <span className="flex items-center gap-1 text-gold">
+                      <span className="flex items-center gap-1 text-rarity-gold">
                         <Star className="w-3 h-3 fill-current" />
                         XP: High
                       </span>

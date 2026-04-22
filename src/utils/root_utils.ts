@@ -563,9 +563,12 @@ export const triggerHaptic = (type: 'light' | 'medium' | 'heavy' | 'success' | '
   }
 };
 
+import { RARITY_HEX_ARRAY } from '../config/rarity';
+
 export const fireConfetti = () => {
   // Re-using existing confetti but maybe we call it "Loot Explosion" conceptually
-  const colors = ['#a335ee', '#0070dd', '#1eff00', '#ff8000']; // Rarity colors
+  const colors = RARITY_HEX_ARRAY; // Rarity colors
+
   const canvas = document.createElement('canvas');
   canvas.style.position = 'fixed';
   canvas.style.top = '0';

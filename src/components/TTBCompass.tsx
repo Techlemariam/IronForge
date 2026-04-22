@@ -37,7 +37,7 @@ const TTBCompass: React.FC<TTBCompassProps> = ({ indices }) => {
           ? 'FATIGUED'
           : 'DEPLETED';
   const healthColor =
-    healthPercentage > 70 ? 'bg-venom' : healthPercentage > 40 ? 'bg-gold' : 'bg-plasma';
+    healthPercentage > 70 ? 'bg-venom' : healthPercentage > 40 ? 'bg-rarity-gold' : 'bg-plasma';
 
   return (
     <div className="bg-armor border-2 border-clay/30 rounded-lg shadow-2xl relative overflow-hidden group p-4">

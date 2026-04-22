@@ -14,9 +14,9 @@ const getTierDetails = (score: number) => {
   if (score >= 2000)
     return {
       name: 'Titan',
-      color: 'text-gold',
-      bg: 'bg-gold/10',
-      border: 'border-gold',
+      color: 'text-rarity-gold',
+      bg: 'bg-rarity-gold/10',
+      border: 'border-rarity-gold',
       icon: Crown,
     };
   if (score >= 1500)

@@ -29,7 +29,7 @@ const Stopwatch: React.FC<StopwatchProps> = ({ startTime }) => {
     return () => clearInterval(interval);
   }, [startTime]);
 
-  return <div className="font-mono text-xl text-rune tracking-widest">{elapsedTime}</div>;
+  return <div className="font-mono text-xl text-rarity-rare tracking-widest">{elapsedTime}</div>;
 };
 
 export default Stopwatch;

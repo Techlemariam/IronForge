@@ -3,6 +3,7 @@ import { DrawingUtils, PoseLandmarker } from '@mediapipe/tasks-vision';
 import { ArrowDown, X } from 'lucide-react';
 import type React from 'react';
 import { useEffect, useRef, useState } from 'react';
+import { RARITY_COLORS } from '@/config/rarity';
 
 interface VisionRepCounterProps {
   isActive: boolean;
@@ -86,7 +87,7 @@ const VisionRepCounter: React.FC<VisionRepCounterProps> = ({ isActive, onRepCoun
       // Draw Skeleton
       drawingUtils.drawLandmarks(result.landmarks, {
         radius: (data) => DrawingUtils.lerp(data.from?.z, -0.15, 0.1, 5, 1),
-        color: result.metrics.isBelowParallel ? '#1eff00' : '#00e5ff',
+        color: result.metrics.isBelowParallel ? RARITY_COLORS.UNCOMMON : '#00e5ff',
       });
 
       drawingUtils.drawConnectors(result.landmarks, PoseLandmarker.POSE_CONNECTIONS, {

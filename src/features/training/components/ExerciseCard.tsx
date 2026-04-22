@@ -41,13 +41,13 @@ const SetItem: React.FC<SetItemProps> = ({ set, index, isActive, calculateTarget
   const getRarityStyles = (rarity?: string) => {
     switch (rarity) {
       case 'legendary':
-        return 'bg-gradient-to-r from-zinc-950 to-legend/10 border-legend text-legend shadow-[0_0_20px_rgba(255,128,0,0.3)]';
+        return 'bg-gradient-to-r from-zinc-950 to-rarity-legendary/10 border-rarity-legendary text-rarity-legendary shadow-[0_0_20px_rgba(255,128,0,0.3)]';
       case 'epic':
-        return 'bg-gradient-to-r from-zinc-950 to-warp/10 border-warp text-warp shadow-[0_0_15px_rgba(163,53,238,0.2)]';
+        return 'bg-gradient-to-r from-zinc-950 to-rarity-epic/10 border-rarity-epic text-rarity-epic shadow-[0_0_15px_rgba(163,53,238,0.2)]';
       case 'rare':
-        return 'border-pulse text-pulse shadow-[0_0_10px_rgba(0,112,221,0.1)]';
+        return 'border-rarity-rare text-rarity-rare shadow-[0_0_10px_rgba(0,112,221,0.1)]';
       case 'uncommon':
-        return 'border-venom text-venom';
+        return 'border-rarity-uncommon text-rarity-uncommon';
       default:
         return 'border-zinc-800 text-zinc-600';
     }
@@ -78,7 +78,7 @@ const SetItem: React.FC<SetItemProps> = ({ set, index, isActive, calculateTarget
               <>
                 <span>{set.completedReps} reps</span>
                 {set.rarity === 'legendary' && (
-                  <span className="text-[9px] bg-legend text-black px-1 rounded font-black animate-pulse">
+                  <span className="text-[9px] bg-rarity-legendary text-black px-1 rounded font-black animate-pulse">
                     PR
                   </span>
                 )}
@@ -213,7 +213,7 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({
     return (
       <div className="group transition-all duration-500 opacity-60 hover:opacity-100 hover:scale-[1.01]">
         <div className="flex items-center gap-3 mb-2">
-          <div className="w-8 h-8 flex items-center justify-center rounded border-2 border-venom/30 bg-venom/10 text-venom transform rotate-45 shadow-[0_0_10px_rgba(34,197,94,0.2)]">
+          <div className="w-8 h-8 flex items-center justify-center rounded border-2 border-rarity-uncommon/30 bg-rarity-uncommon/10 text-rarity-uncommon transform rotate-45 shadow-[0_0_10px_rgba(34,197,94,0.2)]">
             <CheckCircle2 className="w-5 h-5 transform -rotate-45" />
           </div>
           <h2 className="text-xl font-bold uppercase tracking-tight text-steel group-hover:text-white transition-colors">
@@ -221,7 +221,7 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({
           </h2>
         </div>
 
-        <div className="bg-armor/50 border-l-4 border-venom p-4 rounded ml-4 relative overflow-hidden group-hover:bg-armor transition-colors">
+        <div className="bg-armor/50 border-l-4 border-rarity-uncommon p-4 rounded ml-4 relative overflow-hidden group-hover:bg-armor transition-colors">
           <div className="relative z-10 flex items-center gap-6 text-xs text-steel font-mono">
             <div className="flex items-center gap-2">
               <Dumbbell className="w-3 h-3 text-steel/60 group-hover:text-steel" />
@@ -232,7 +232,7 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({
               <span>Peak Load: {maxWeight}kg</span>
             </div>
             <div className="flex items-center gap-2 ml-auto">
-              <span className="text-venom font-bold tracking-widest text-[10px] uppercase">
+              <span className="text-rarity-uncommon font-bold tracking-widest text-[10px] uppercase">
                 Quest Complete
               </span>
             </div>

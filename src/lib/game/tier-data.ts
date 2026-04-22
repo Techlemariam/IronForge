@@ -1,10 +1,12 @@
+import { RARITY_COLORS } from '@/config/rarity';
+
 export const LEAGUE_TIERS = [
   {
     id: 'bronze',
     name: 'Bronze League',
     minRating: 0,
     maxRating: 1199,
-    color: '#cd7f32',
+    color: RARITY_COLORS.BRONZE,
     icon: '🥉',
   },
   {
@@ -12,7 +14,7 @@ export const LEAGUE_TIERS = [
     name: 'Silver League',
     minRating: 1200,
     maxRating: 1399,
-    color: '#c0c0c0',
+    color: RARITY_COLORS.SILVER,
     icon: '🥈',
   },
   {
@@ -20,7 +22,7 @@ export const LEAGUE_TIERS = [
     name: 'Gold League',
     minRating: 1400,
     maxRating: 1599,
-    color: 'var(--color-gold-bright)',
+    color: RARITY_COLORS.GOLD,
     icon: '🥇',
   },
   {
@@ -28,7 +30,7 @@ export const LEAGUE_TIERS = [
     name: 'Platinum League',
     minRating: 1600,
     maxRating: 1799,
-    color: '#e5e4e2',
+    color: RARITY_COLORS.PLATINUM,
     icon: '💎',
   },
   {
@@ -36,7 +38,7 @@ export const LEAGUE_TIERS = [
     name: 'Diamond League',
     minRating: 1800,
     maxRating: 1999,
-    color: '#b9f2ff',
+    color: RARITY_COLORS.DIAMOND,
     icon: '💠',
   },
   {
@@ -44,7 +46,7 @@ export const LEAGUE_TIERS = [
     name: 'Master League',
     minRating: 2000,
     maxRating: 2199,
-    color: 'var(--color-warp)',
+    color: RARITY_COLORS.EPIC,
     icon: '🏆',
   },
   {
@@ -52,7 +54,7 @@ export const LEAGUE_TIERS = [
     name: 'Grandmaster',
     minRating: 2200,
     maxRating: 2399,
-    color: 'var(--color-legend)',
+    color: RARITY_COLORS.LEGENDARY,
     icon: '👑',
   },
   {
@@ -60,7 +62,7 @@ export const LEAGUE_TIERS = [
     name: 'Iron Legend',
     minRating: 2400,
     maxRating: Number.POSITIVE_INFINITY,
-    color: '#e6cc80',
+    color: RARITY_COLORS.ARTIFACT,
     icon: '⚔️',
   },
 ] as const;

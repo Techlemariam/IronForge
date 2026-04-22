@@ -19,10 +19,11 @@ const SetRow: React.FC<SetRowProps> = ({ set, setNumber }) => {
   // Dynamic classes based on rarity
   const rarityStyles: { [key: string]: string } = {
     common: 'bg-void/40',
-    uncommon: 'bg-green-600/10 border-l-2 border-green-500',
-    rare: 'bg-blue-600/10 border-l-2 border-blue-500',
-    epic: 'bg-purple-600/10 border-l-2 border-purple-500',
-    legendary: 'bg-orange-500/10 border-l-2 border-orange-400 shadow-glow-orange/30',
+    uncommon: 'bg-rarity-uncommon/10 border-l-2 border-rarity-uncommon',
+    rare: 'bg-rarity-rare/10 border-l-2 border-rarity-rare',
+    epic: 'bg-rarity-epic/10 border-l-2 border-rarity-epic',
+    legendary:
+      'bg-rarity-legendary/10 border-l-2 border-rarity-legendary shadow-[0_0_15px_rgba(255,128,0,0.2)]',
   };
 
   const rowClass = twMerge(
@@ -47,7 +48,10 @@ const SetRow: React.FC<SetRowProps> = ({ set, setNumber }) => {
     >
       <div className="flex items-center space-x-2">
         {completed ? (
-          <Check size={16} className={`text-${rarity === 'legendary' ? 'orange-400' : 'magma'}`} />
+          <Check
+            size={16}
+            className={`text-${rarity === 'legendary' ? 'rarity-legendary' : 'plasma'}`}
+          />
         ) : (
           <div className="w-4 h-4 border-2 border-forge-border rounded-full" />
         )}
@@ -62,7 +66,7 @@ const SetRow: React.FC<SetRowProps> = ({ set, setNumber }) => {
             {isPr && <Crown size={14} className="text-yellow-400 mr-1" />}
             <span className="opacity-80">@{rpe}</span>
           </div>
-          <div className="flex items-center justify-end space-x-1 text-rune">
+          <div className="flex items-center justify-end space-x-1 text-rarity-rare">
             <Zap size={14} />
             <span>{Math.round(e1rm || 0)}</span>
           </div>

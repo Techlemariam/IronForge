@@ -3,6 +3,7 @@
 import { playSound, triggerHaptic } from '@/utils';
 import confetti from 'canvas-confetti';
 import { useCallback } from 'react';
+import { RARITY_COLORS } from '@/config/rarity';
 
 /**
  * Final Push: Micro-Celebration Hook
@@ -17,7 +18,13 @@ export const useCelebration = () => {
       particleCount: 150,
       spread: 70,
       origin: options?.origin ?? { y: 0.6, x: 0.5 },
-      colors: ['#ffd700', '#ff8000', '#a335ee', '#0070dd', '#1eff00'],
+      colors: [
+        RARITY_COLORS.GOLD,
+        RARITY_COLORS.LEGENDARY,
+        RARITY_COLORS.EPIC,
+        RARITY_COLORS.RARE,
+        RARITY_COLORS.UNCOMMON,
+      ],
       shapes: ['star', 'circle'],
       scalar: 1.2,
     });
@@ -53,7 +60,7 @@ export const useCelebration = () => {
       particleCount: count,
       spread: 60,
       origin: { y: 0.7, x: 0.5 },
-      colors: ['#ffd700', '#ffec8b', '#daa520'],
+      colors: [RARITY_COLORS.GOLD, RARITY_COLORS.GOLD_LIGHT, RARITY_COLORS.GOLD_DARK],
       shapes: ['circle'],
       gravity: 1.2,
       scalar: 0.8,

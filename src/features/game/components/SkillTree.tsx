@@ -80,9 +80,9 @@ const CustomSkillNode = ({ data, selected }: NodeProps<CustomNodeData>) => {
   if (tier === 'notable') borderStyle = 'border-3';
 
   if (isMastered) {
-    borderClass = isEndurance ? 'border-cyan' : 'border-gold';
+    borderClass = isEndurance ? 'border-cyan' : 'border-rarity-gold';
     bgClass = isEndurance ? 'bg-cyan-950' : 'bg-yellow-950/50';
-    iconColor = isEndurance ? 'text-cyan-400' : 'text-gold';
+    iconColor = isEndurance ? 'text-cyan-400' : 'text-rarity-gold';
     glow = isEndurance
       ? 'shadow-[0_0_30px_rgba(6,182,212,0.6)]'
       : 'shadow-[0_0_30px_rgba(255,215,0,0.6)]';

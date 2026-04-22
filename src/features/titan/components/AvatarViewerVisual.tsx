@@ -6,6 +6,7 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import type React from 'react';
 import { useRef } from 'react';
 import * as THREE from 'three';
+import { RARITY_COLORS } from '@/config/rarity';
 
 interface AvatarViewerVisualProps {
   attributes: TitanAttributes;
@@ -68,7 +69,7 @@ const TitanMesh: React.FC<{
     }
   });
 
-  const baseColor = isElite ? '#ffd700' : '#c79c6e';
+  const baseColor = isElite ? RARITY_COLORS.GOLD : '#c79c6e';
 
   const getColor = (muscleName: string) => {
     const fatigue = heatmap[muscleName] || 0;
@@ -149,7 +150,7 @@ const AvatarViewerVisual: React.FC<AvatarViewerVisualProps> = ({
         penumbra={1}
         intensity={2}
         castShadow
-        color={isElite ? '#ffd700' : '#c79c6e'}
+        color={isElite ? RARITY_COLORS.GOLD : '#c79c6e'}
       />
       <pointLight position={[-10, 5, -10]} intensity={1} color="#00e5ff" />
 

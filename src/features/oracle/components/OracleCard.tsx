@@ -31,11 +31,11 @@ const OracleCard: React.FC<OracleCardProps> = ({ recommendation, onAccept }) => 
       break;
     case 'PR_ATTEMPT':
       theme = {
-        border: 'border-gold',
+        border: 'border-rarity-gold',
         bg: 'bg-gradient-to-br from-yellow-950/40 to-black',
-        icon: <Skull className="w-6 h-6 text-gold" />,
-        accent: 'text-gold',
-        button: 'bg-gold text-black font-bold hover:bg-yellow-400',
+        icon: <Skull className="w-6 h-6 text-rarity-gold" />,
+        accent: 'text-rarity-gold',
+        button: 'bg-rarity-gold text-black font-bold hover:bg-yellow-400',
         glow: 'shadow-[0_0_20px_rgba(255,215,0,0.25)] animate-pulse-slow',
       };
       break;

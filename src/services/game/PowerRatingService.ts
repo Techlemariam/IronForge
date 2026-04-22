@@ -1,3 +1,4 @@
+import { RARITY_COLORS } from '@/config/rarity';
 import { calculatePowerRating } from '@/lib/powerRating';
 import prisma from '@/lib/prisma';
 
@@ -187,10 +188,10 @@ export class PowerRatingService {
    * Get tier details based on power rating.
    */
   static getTierDetails(powerRating: number) {
-    if (powerRating >= 1000) return { name: 'Diamond', color: '#B9F2FF' };
-    if (powerRating >= 750) return { name: 'Platinum', color: '#E5E4E2' };
-    if (powerRating >= 500) return { name: 'Gold', color: 'var(--color-gold-bright)' };
-    if (powerRating >= 250) return { name: 'Silver', color: '#C0C0C0' };
-    return { name: 'Bronze', color: '#CD7F32' };
+    if (powerRating >= 1000) return { name: 'Diamond', color: RARITY_COLORS.DIAMOND };
+    if (powerRating >= 750) return { name: 'Platinum', color: RARITY_COLORS.PLATINUM };
+    if (powerRating >= 500) return { name: 'Gold', color: RARITY_COLORS.GOLD };
+    if (powerRating >= 250) return { name: 'Silver', color: RARITY_COLORS.SILVER };
+    return { name: 'Bronze', color: RARITY_COLORS.BRONZE };
   }
 }

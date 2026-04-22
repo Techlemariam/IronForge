@@ -16,11 +16,11 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ current, total, label }) => {
         <span className="font-mono text-xs uppercase text-forge-muted tracking-widest">
           {label}
         </span>
-        <span className="font-mono text-xs text-rune">{`${current} / ${total}`}</span>
+        <span className="font-mono text-xs text-rarity-rare">{`${current} / ${total}`}</span>
       </div>
       <div className="w-full h-2 bg-black border border-t-transparent border-b-white/10 rounded-full overflow-hidden">
         <motion.div
-          className="h-full bg-gradient-to-r from-blood to-magma rounded-full"
+          className="h-full bg-gradient-to-r from-rarity-legendary to-rarity-gold rounded-full"
           initial={{ width: '0%' }}
           animate={{ width: `${percentage}%` }}
           transition={{ duration: 0.5, ease: 'easeInOut' }}

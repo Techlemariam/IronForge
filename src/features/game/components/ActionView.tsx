@@ -907,7 +907,7 @@ const ActionView: React.FC<ActionViewProps> = ({
         <div className="fixed inset-0 z-[60] flex items-center justify-center pointer-events-none">
           <div className="flex flex-col items-center animate-scale-bounce">
             <div
-              className="text-6xl font-black italic text-gold uppercase tracking-tighter shadow-glow-gold stroke-black"
+              className="text-6xl font-black italic text-rarity-gold uppercase tracking-tighter shadow-glow-gold stroke-black"
               style={{ WebkitTextStroke: '2px black' }}
             >
               Critical Hit!

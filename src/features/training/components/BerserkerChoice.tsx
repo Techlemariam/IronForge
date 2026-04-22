@@ -26,7 +26,7 @@ const BerserkerChoice: React.FC<BerserkerChoiceProps> = ({ onAccept, onDecline }
           You are on the verge of victory, but a final test of will remains. Do you have the
           strength to unleash your inner fury for a final, all-out set?
         </p>
-        <p className="font-mono text-rune mb-6">Succeed, and a Legendary reward is guaranteed.</p>
+        <p className="font-mono text-rarity-rare mb-6">Succeed, and a Legendary reward is guaranteed.</p>
 
         <div className="flex justify-center space-x-4">
           <Button onClick={onDecline} variant="default">

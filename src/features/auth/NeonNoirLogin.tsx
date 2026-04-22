@@ -119,7 +119,7 @@ export const NeonNoirLogin: React.FC = () => {
           {/* Footer Links */}
           <div className="mt-6 flex items-center justify-between text-xs text-muted-foreground">
             <button className="hover:text-cyan transition-colors">Forgot password?</button>
-            <button className="hover:text-pulse transition-colors">Request Access</button>
+            <button className="hover:text-rarity-rare transition-colors">Request Access</button>
           </div>
 
           {/* Social Login Divider */}

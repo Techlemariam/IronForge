@@ -114,7 +114,7 @@ const TheForge: React.FC<TheForgeProps> = ({ onClose }) => {
         variant="glass"
         className="mb-8 p-4 flex items-center gap-6 overflow-x-auto bg-black/40 border-forge-border"
       >
-        <div className="flex items-center gap-2 text-gold font-mono border-r border-forge-border pr-6">
+        <div className="flex items-center gap-2 text-rarity-gold font-mono border-r border-forge-border pr-6">
           <Coins className="w-5 h-5" />
           <span className="text-xl">{inventory.gold}</span>
         </div>
@@ -163,7 +163,7 @@ const TheForge: React.FC<TheForgeProps> = ({ onClose }) => {
                     <h3 className="font-heading text-lg text-white group-hover:text-magma transition-colors">
                       {recipe.name}
                     </h3>
-                    <div className="flex items-center gap-1 text-gold text-xs font-mono">
+                    <div className="flex items-center gap-1 text-rarity-gold text-xs font-mono">
                       <Coins className="w-3 h-3" /> {recipe.goldCost}
                     </div>
                   </div>

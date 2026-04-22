@@ -96,8 +96,8 @@ export const PRCelebration: React.FC<PRCelebrationProps> = ({
             onClick={(e) => e.stopPropagation()}
           >
             <m.div initial={{ y: -20 }} animate={{ y: 0 }} className="relative mb-6">
-              <Trophy className="w-24 h-24 text-gold mx-auto drop-shadow-[0_0_30px_rgba(234,179,8,0.5)]" />
-              <Sparkles className="w-8 h-8 text-gold/80 absolute -top-2 -right-2 animate-pulse" />
+              <Trophy className="w-24 h-24 text-rarity-gold mx-auto drop-shadow-[0_0_30px_rgba(234,179,8,0.5)]" />
+              <Sparkles className="w-8 h-8 text-rarity-gold/80 absolute -top-2 -right-2 animate-pulse" />
             </m.div>
 
             <m.h1
@@ -124,7 +124,7 @@ export const PRCelebration: React.FC<PRCelebrationProps> = ({
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ delay: 0.2, type: 'spring' }}
-              className="text-7xl md:text-8xl font-black text-gold mb-4 drop-shadow-[0_0_20px_rgba(234,179,8,0.3)]"
+              className="text-7xl md:text-8xl font-black text-rarity-gold mb-4 drop-shadow-[0_0_20px_rgba(234,179,8,0.3)]"
             >
               {newReps}
             </m.div>
@@ -134,7 +134,7 @@ export const PRCelebration: React.FC<PRCelebrationProps> = ({
                 initial={{ y: 10, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.3 }}
-                className="text-2xl font-bold text-venom"
+                className="text-2xl font-bold text-rarity-uncommon"
               >
                 +{delta} reps!
               </m.div>

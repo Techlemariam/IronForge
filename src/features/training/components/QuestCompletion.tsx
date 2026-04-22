@@ -31,7 +31,7 @@ const QuestCompletion: React.FC<QuestCompletionProps> = ({ onSave, onCancel }) =
         <h1 className="font-heading text-3xl md:text-4xl text-white tracking-widest">
           PROTOCOL COMPLETE
         </h1>
-        <p className="font-mono text-rune mt-2 mb-6">
+        <p className="font-mono text-rarity-rare mt-2 mb-6">
           The trial is over. Log the results in the Archive.
         </p>
 
