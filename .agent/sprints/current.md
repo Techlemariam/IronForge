@@ -28,7 +28,7 @@
 
 ### Priority: Medium (Infrastructure)
 
-- [ ] **Structured Logging** <!-- agent: /infrastructure | estimate: 2h | source: roadmap | blocked: false -->
+- [/] **Structured Logging** 📌 `chore/S-02-structured-logging` <!-- agent: /infrastructure | estimate: 2h | source: roadmap | blocked: false -->
   - Replace `console.log` with Pino/Winston
   - Standardize log format (level, correlation ID)
 
