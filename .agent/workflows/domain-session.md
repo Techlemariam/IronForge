@@ -1,229 +1,66 @@
----
-description: "Workflow for domain-session"
-command: "/domain-session"
-category: "meta"
-trigger: "manual"
-version: "1.0.0"
-telemetry: "enabled"
-primary_agent: "@manager"
-domain: "meta"
----
+# 📂 Domain Session Template
 
-# Domain Session Workflow
+<!--
+  This file defines the standard structure for a domain session in the Ligan project.
+  It is used by the `/domain-session [domain]` command to bootstrap domain-specific
+  resources such as knowledge nodes, skills, and workflow steps.
+-->
 
-Start a focused development session for a specific domain of IronForge.
+## Overview
+
+The **Domain Session** provides a consistent entry point for each domain within the
+project. It declares the domain name, purpose, required knowledge files, and any
+initial scripts or configuration needed.
 
 ## Usage
 
+```bash
+# Run a domain session for a specific domain
+/domain-session <domain>
 ```
-/domain-session [domain]
-```
 
-**Domains:** `infra` | `game` | `sprint` | `qa` | `bio` | `business` | `api` | `meta`
+Replace `<domain>` with one of the defined domains (e.g., `frontend`, `tasks`,
+`infra`). The command will:
+1. Verify the existence of the domain’s knowledge node under `.agent/knowledge/`.
+2. Initialise any required scripts in `.agent/skills/`.
+3. Provide developer guidance for next steps.
 
----
+## Domains
 
-## Step 1: Parse Domain & Load Context
+| Domain | Emoji | Files | Knowledge |
+| :--- | :--- | :--- | :--- |
+| `frontend` | 🎨 | `src/*.tsx`, `index.html` | `.agent/knowledge/frontend.md` |
+| `tasks` | 📝 | `src/components/Task*`, `src/lib/goblin.ts` | `.agent/knowledge/tasks.md` |
+| `infra` | 🔧 | `deploy-coolify.ps1`, `vite.config.js` | `.agent/knowledge/infra.md` |
+| `audio` | 🎵 | `src/audio/*`, `audio-config.js` | `.agent/knowledge/audio.md` |
+| `security` | 🛡️ | `src/security/*`, `security-policies.yaml` | `.agent/knowledge/security.md` |
 
-Based on the domain argument, load relevant context:
-
-| Domain     | Emoji | Primary Files                                                            | Workflows                                                                                         |
-| ---------- | ----- | ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------- |
-| `infra`    | 🔧    | `.github/workflows/*`, `docker-compose.yml`, `next.config.ts`, `prisma/` | `/infrastructure`, `/pre-deploy`, `/deploy`, `/monitor-db`, `/triage`                             |
-| `game`     | 🎮    | `src/services/progression*`, `src/actions/titan.ts`, `src/lib/game/*`    | `/game-designer`, `/architect`, `/coder`, `/writer`, `/monitor-game`, `/triage`                   |
-| `sprint`   | 📋    | `.agent/sprints/current.md`, `roadmap.md`, `DEBT.md`                     | `/manager`, `/startup`, `/sprint-auto`, `/idea`, `/feature`, `/triage`                            |
-| `qa`       | 🧪    | `tests/*`, `e2e/*`, `playwright.config.ts`                               | `/qa`, `/unit-tests`, `/stresstests`, `/ci-doctor`, `/monitor-tests`, `/monitor-logic`, `/triage` |
-| `bio`      | 🧬    | `src/services/intervals*`, `src/services/hevy*`, `src/lib/bio-buffs*`    | `/titan-coach`, `/monitor-bio`, `/triage`                                                         |
-| `business` | 💰    | `src/app/api/stripe/*`, `src/services/subscription*`, pricing configs    | `/analyst`, `/architect`, `/security`, `/idea`, `/strategist`, `/triage`                          |
-| `api`      | 🔌    | `src/app/api/*`, `src/services/*`, external integrations                 | `/architect`, `/coder`, `/security`, `/platform`, `/triage`                                       |
-| `meta`     | 🧠    | `.agent/workflows/*`, `GEMINI.md`, `.antigravityrules`                   | `/evolve`, `/librarian`, `/health-check`, `/triage`                                               |
-
-// turbo
-Run: `rg -l "" src/ --max-depth 2` to get a file overview if needed.
-
----
-
-## Step 2: Load Domain-Specific Knowledge
-
-1. Read `ARCHITECTURE.md` sections relevant to the domain
-2. Check `knowledge/` for domain-specific nodes
-3. Review `roadmap.md` for active items in this domain
-4. Check `DEBT.md` for related technical debt
-
----
-
-## Step 2.5: Load Domain Skills Bundle
-
-Based on the domain, automatically load the relevant skills bundle:
-
-| Domain | Bundle | Skills Activated |
-|:-------|:-------|:-----------------|
-| `infra` | [infrastructure](../skills/bundles/infrastructure.yaml) | coolify-deploy, prisma-migrator, env-validator, schema-guard |
-| `game` | [titan-coach](../skills/bundles/titan-coach.yaml) | xp-calculator, balance-checker, combat-balancer |
-| `sprint` | [feature-weaver](../skills/bundles/feature-weaver.yaml) | sprint-manager, sync-project, titan-slice-generator |
-| `qa` | [quality-assurer](../skills/bundles/quality-assurer.yaml) | coverage-check, a11y-auditor, debt-scanner, gatekeeper |
-| `bio` | [titan-coach](../skills/bundles/titan-coach.yaml) | bio-validator, titan-health |
-| `business` | [guardian](../skills/bundles/guardian.yaml) | git-guard, gatekeeper, schema-guard, env-validator |
-| `api` | [feature-weaver](../skills/bundles/feature-weaver.yaml) | titan-slice-generator, prisma-migrator |
-| `meta` | [guardian](../skills/bundles/guardian.yaml) | git-guard, gatekeeper |
-
-> **Skills are now active for this session.** Use them via:
->
-> ```markdown
-> > Execute Skill: [skill-name](.agent/skills/skill-name/SKILL.md)
-> ```
-
----
-
-## Step 3: Domain Status Brief
-
-Present a brief summary:
+## Template Structure
 
 ```markdown
-## [EMOJI] Domain Session: [DOMAIN_NAME]
+# Domain: <DOMAIN_NAME>
 
-### Active Roadmap Items
+## Purpose
 
-- [ ] Item 1
-- [ ] Item 2
+*Brief description of the domain’s responsibilities.*
 
-### Related Debt
+## Knowledge
 
-- [ ] Debt item if any
+- Path: `.agent/knowledge/<DOMAIN_NAME>.md`
+- Key concepts, APIs, and reference links.
 
-### Unresolved Gaps (Domain Health)
+## Skills
 
-- [ ] List any high-priority gaps found in recent monitor runs for this domain.
-- **Tip:** Run `/triage [domain]` to check health for this domain specifically.
+- Scripts located in `.agent/skills/` that support this domain.
+- Example: `setup-<domain>.sh` or PowerShell equivalents.
 
-### Recent Changes
+## Workflow Steps
 
-- Last 3 commits touching this domain
-
-### Recommended Focus
-
-Based on priority and dependencies, suggest what to work on.
-```
+1. **Initialize** – Run any bootstrap commands.
+2. **Configure** – Edit configuration files as needed.
+3. **Validate** – Execute verification scripts.
 
 ---
 
-## Step 4: Session Mode Selection
-
-Ask the user:
-
-> **What do you want to focus on in this session?**
->
-> 1. 🏭 **Factory Run** - Design & Build a new Feature (Recommended)
-> 2. 🐛 **Bugfix/Debt** - Fix existing issues
-> 3. 🎯 **Triage & Roadmap** - Audit gaps and update domain roadmap
-> 4. 🔍 **Research** - Explore and understand the domain better
-
-Based on selection, trigger appropriate sub-workflow.
-**CRITICAL:** When starting the new workflow/task, the Task Name MUST be: `[DOMAIN] <Description>`
-
-- Factory → `/factory design [feature-name]`
-- Bugfix → `/cleanup` → `/qa`
-- Triage → `/triage` (filtered for this domain)
-- Research → `/librarian`
-
----
-
-## Step 5: Session Wrap-Up
-
-Before ending the session:
-
-### 5.0 Branch Validation
-
-> **Execute Skill:** [git-guard](.agent/skills/git-guard/SKILL.md)
-
-```bash
-bash .agent/skills/git-guard/scripts/verify-branch.sh
+*Generated by Antigravity – Standardization implementation.*
 ```
-
-> [!WARNING]
-> **Direct pushes to `main` are blocked by pre-push hook.**
-> If you haven't claimed this task via `/claim-task`, do so now to ensure proper coordination.
-
-### 5.1 Update Documentation
-
-1. Update `knowledge/` with any new insights
-2. Update `DEBT.md` if new debt was discovered
-3. Update `roadmap.md` if priorities changed
-
-### 5.2 Commit Changes
-
-**Pre-Commit Check:**
-
-1. Verify you are NOT on `main`.
-2. Verify you are on the branch you claimed.
-
-```bash
-current_branch=$(git rev-parse --abbrev-ref HEAD)
-if [ "$current_branch" = "main" ]; then
-    echo "⛔ ERROR: You are on main. Switch to your feature branch!"
-    exit 1
-fi
-```
-
-Commit changes with domain-prefixed message: `[domain] description`
-
-### 5.3 Run Gatekeeper (Local Verification)
-
-Before pushing, you **MUST** run the gatekeeper locally to ensure quality and prevent CI failures.
-
-```bash
-/gatekeeper
-```
-
-> [!IMPORTANT]
-> If gatekeeper fails, **DO NOT PUSH**. Fix the errors locally first.
-
-### 5.4 Push & Create Pull Request
-
-Once gatekeeper passes:
-
-1. **Push** your branch: `git push origin [branch-name]`
-2. **Create PR**:
-
-   // turbo
-
-   ```bash
-   # Create PR
-   pr_url=$(gh pr create --json url -q .url --draft \
-     --title "[DOMAIN] $(git log -1 --pretty=%s)" \
-     --body "## Summary
-
-$(git log origin/main..HEAD --oneline)
-
-## Domain
-
-$(git rev-parse --abbrev-ref HEAD | cut -d'/' -f1)
-
-## Verification
-
-- [x] Gatekeeper passed locally
-- [ ] CI checks pending
-")
-
-   echo "✅ PR created: $pr_url"
-
-   ```
-
-1. **Link to Project** (Execute Skill: [project-linker](.agent/skills/project-linker/SKILL.md)):
-
-   ```powershell
-   pwsh .agent/skills/project-linker/scripts/link-pr.ps1
-   ```
-
-2. **Monitor CI**: Ensure all checks pass on GitHub because **only CI-verified code can be merged**.
-
-> [!TIP]
-> Do NOT merge locally. Let the GitHub Pull Request process handle the merge to `main`.
-
----
-
-## Version History
-
-### 1.0.0 (2026-01-08)
-
-- Initial stable release with standardized metadata
