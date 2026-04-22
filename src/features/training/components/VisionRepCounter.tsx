@@ -86,7 +86,7 @@ const VisionRepCounter: React.FC<VisionRepCounterProps> = ({ isActive, onRepCoun
     if (result) {
       // Draw Skeleton
       drawingUtils.drawLandmarks(result.landmarks, {
-        radius: (data) => DrawingUtils.lerp(data.from?.z, -0.15, 0.1, 5, 1),
+        radius: (data) => DrawingUtils.lerp(data.from?.z || 0, -0.15, 0.1, 5, 1),
         color: result.metrics.isBelowParallel ? RARITY_COLORS.UNCOMMON : '#00e5ff',
       });
 

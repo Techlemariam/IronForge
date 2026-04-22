@@ -17,6 +17,14 @@ export const buttonVariants = cva(
         ghost: 'hover:bg-accent hover:text-accent-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
 
+        // --- RARITY VARIANTS ---
+        common: 'bg-rarity-common text-black border border-rarity-common/20 hover:shadow-[0_0_20px_rgba(255,255,255,0.4)] hover:brightness-110',
+        uncommon: 'bg-rarity-uncommon text-black border border-rarity-uncommon/20 hover:shadow-[0_0_20px_rgba(30,255,0,0.4)] hover:brightness-110',
+        rare: 'bg-rarity-rare text-white border border-rarity-rare/20 hover:shadow-[0_0_20px_rgba(0,112,221,0.4)] hover:brightness-110',
+        epic: 'bg-rarity-epic text-white border border-rarity-epic/20 hover:shadow-[0_0_20px_rgba(163,53,238,0.4)] hover:brightness-110',
+        legendary: 'bg-rarity-legendary text-white border border-rarity-legendary/20 hover:shadow-[0_0_20px_rgba(255,128,0,0.4)] hover:brightness-110',
+        artifact: 'bg-rarity-artifact text-black border border-rarity-artifact/20 hover:shadow-[0_0_20px_rgba(230,204,128,0.4)] hover:brightness-110',
+
         // --- FORGE SPECIFIC (Sci-Fi) ---
         plasma:
           'bg-rarity-legendary text-white border border-rarity-legendary/20 hover:shadow-[0_0_20px_rgba(255,128,0,0.4)] hover:brightness-110',
