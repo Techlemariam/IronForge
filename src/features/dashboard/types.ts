@@ -62,6 +62,8 @@ export interface DashboardData {
   weeklyMastery?: WeeklyMastery;
   activeDuel?: any;
   trainingContext?: TrainingContext;
+  /** Oracle 3.0 Power Rating — sourced from Titan DB record */
+  powerRating?: number;
 }
 
 export interface DashboardClientProps {
@@ -115,6 +117,8 @@ export interface DashboardState {
   challenges: ChallengeWithStatus[];
   activeDuel?: any;
   trainingContext?: TrainingContext;
+  /** Oracle 3.0 Power Rating — drives tier-based coaching and PersistentHeader badge */
+  powerRating: number;
 }
 
 export type DashboardAction =

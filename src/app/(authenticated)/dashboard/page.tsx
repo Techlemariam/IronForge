@@ -216,6 +216,21 @@ export default async function Page() {
   const titanRes = await ensureTitanAction();
   const titanState = titanRes?.data?.success ? titanRes.data.data : null;
 
+  // 4b-ii. Oracle 3.0: Fetch Power Rating from Titan record
+  // We read directly from the DB to get the most authoritative value.
+  // PowerRatingService.syncPowerRating is only called by the cron job (weekly decay)
+  // or after a workout is saved. Here we just read the persisted value.
+  let titanPowerRating = 0;
+  try {
+    const titanRecord = await prisma.titan.findUnique({
+      where: { userId: user.id },
+      select: { powerRating: true },
+    });
+    titanPowerRating = titanRecord?.powerRating ?? 0;
+  } catch (_e) {
+    // Non-fatal: badge will show 0 until cron runs
+  }
+
   // 4c. Fetch Active Duel Status
   const { getDuelStatusAction } = await import('@/actions/pvp/duel');
   const duelRes = await getDuelStatusAction();
@@ -230,7 +245,8 @@ export default async function Page() {
     recoveryAnalysis,
     activePath,
     undefined, // weeklyMastery
-    undefined // titanState - decree handled at Titan level
+    undefined, // titanState - decree handled at Titan level
+    titanPowerRating // Oracle 3.0: Power Rating for tier-based coaching
   );
 
   // 4d. Fetch Bio-Logic Context (New Multi-Metric Payload)
@@ -288,7 +304,8 @@ export default async function Page() {
     weeklyMastery,
     activeDuel,
     trainingContext,
-    // We can add history here if needed directly
+    // Oracle 3.0 — Power Rating from Titan record
+    powerRating: titanPowerRating,
   };
 
   const hasCompletedOnboarding = !!(dbUser as any)?.hasCompletedOnboarding;

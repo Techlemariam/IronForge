@@ -23,6 +23,8 @@ export const dashboardReducer = (
         forecast: action.payload.forecast,
         events: action.payload.events,
         titanAnalysis: action.payload.titanAnalysis,
+        // Oracle 3.0: hydrate Power Rating from server payload
+        powerRating: action.payload.powerRating ?? state.powerRating,
       };
     case 'INITIAL_DATA_LOAD_FAILURE':
       return { ...state, isCodexLoading: false };
@@ -109,8 +111,8 @@ export const dashboardReducer = (
       const rec = state.oracleRecommendation;
       if (!rec) return state;
 
-      if (rec.type === 'STRENGTH' || rec.type === 'MOBILITY') {
-        // Simple safety: if we have a routine recommended, start it
+      // Strength / mobility path — PR_ATTEMPT or default GRIND
+      if (rec.type === 'PR_ATTEMPT' || rec.type === 'GRIND') {
         return {
           ...state,
           questTitle: rec.title || "Titan's Selection",
@@ -119,7 +121,8 @@ export const dashboardReducer = (
         };
       }
 
-      if (rec.type === 'CARDIO') {
+      // Cardio path
+      if (rec.type === 'CARDIO_VALIDATION') {
         return {
           ...state,
           currentView: 'cardio_studio',

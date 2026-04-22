@@ -82,15 +82,16 @@ export const ViewRouter: React.FC<ViewRouterProps> = ({
   switch (state.currentView) {
     case 'mission_control': {
       const rec = state.oracleRecommendation;
+      const recAny = rec as any;
       return (
         <TodaysMission
           missionTitle={rec?.title || 'BATTLE READY'}
           missionTime={new Date().toLocaleTimeString('sv-SE', {
-            hour: '2d-digit',
-            minute: '2d-digit',
+            hour: '2-digit',
+            minute: '2-digit',
           })}
-          exerciseName={rec?.primaryFocus || 'Conditioning'}
-          equipmentSetup={rec?.equipmentId || 'Standard'}
+          exerciseName={recAny?.primaryFocus || 'Conditioning'}
+          equipmentSetup={recAny?.equipmentId || 'Standard'}
           onLaunch={() => dispatch({ type: 'LAUNCH_MISSION' })}
           onToggleMode={() => dispatch({ type: 'SET_VIEW', payload: 'citadel' })}
         />

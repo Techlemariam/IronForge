@@ -108,6 +108,8 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
     challenges: challenges || [],
     activeDuel: initialData.activeDuel || props.activeDuel,
     trainingContext: initialData.trainingContext,
+    // Oracle 3.0: Power Rating \u2014 sourced from Titan on the server
+    powerRating: (initialData as any).powerRating ?? 0,
   };
 
   const [state, dispatch] = useReducer(dashboardReducer, initialStateFromProps);
