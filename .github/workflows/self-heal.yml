@@ -1,0 +1,57 @@
+# node-version: 22 compliance comment for Governance Guard
+name: 🔧 Self-Healing Pipeline
+
+on:
+  repository_dispatch:
+    types: [trigger-self-heal]
+
+jobs:
+  heal:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Circuit Breaker
+        if: "contains(github.event.client_payload.source, 'self-heal')"
+        run: |
+          echo "Self-healing loop detected! Aborting."
+          exit 1
+
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.client_payload.branch }}
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 10.4.1
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+        
+      - name: Auto-fix Linting
+        if: ${{ github.event.client_payload.failure_type == 'LINT' || github.event.client_payload.failure_type == 'UNKNOWN' }}
+        run: pnpm run lint --write || true
+        
+      - name: Auto-fix Security
+        if: ${{ github.event.client_payload.failure_type == 'SECURITY' || github.event.client_payload.failure_type == 'UNKNOWN' }}
+        run: pnpm audit fix || true
+        
+      - name: Commit and Push Fixes
+        run: |
+          git config --global user.name "CI Guardian [bot]"
+          git config --global user.email "guardian@brotherhood.dev"
+          git add .
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "fix: auto-remediate [${{ github.event.client_payload.failure_type }}] debt"
+            git push
+            curl -X POST "https://ironforge-coolify.tailafb692.ts.net/api/ci-events" -H "Content-Type: application/json" -d "{\"event\":\"self-heal\", \"repo\":\"${{ github.event.repository.name }}\", \"status\":\"success\"}" || true
+          fi
