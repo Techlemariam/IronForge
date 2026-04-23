@@ -66,6 +66,12 @@ export default defineConfig({
       },
       dependencies: ['setup'],
     },
+    {
+      name: 'smoke',
+      use: {
+        ...devices['Desktop Chrome'],
+      },
+    },
   ],
 
   /* Run your local dev server before starting the tests */

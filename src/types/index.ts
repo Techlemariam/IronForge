@@ -299,6 +299,8 @@ export interface OracleRecommendation {
   generatedSession?: Session;
   sessionId?: string;
   targetExercise?: string;
+  primaryFocus?: string;
+  equipmentId?: string;
 }
 
 /**

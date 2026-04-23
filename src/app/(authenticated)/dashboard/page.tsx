@@ -230,7 +230,7 @@ export default async function Page() {
     recoveryAnalysis,
     activePath,
     undefined, // weeklyMastery
-    undefined // titanState - decree handled at Titan level
+    titanState ? { powerRating: titanState.powerRating } : undefined
   );
 
   // 4d. Fetch Bio-Logic Context (New Multi-Metric Payload)
@@ -288,6 +288,7 @@ export default async function Page() {
     weeklyMastery,
     activeDuel,
     trainingContext,
+    powerRating: titanState?.powerRating ?? 0,
     // We can add history here if needed directly
   };
 

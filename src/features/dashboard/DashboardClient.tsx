@@ -108,6 +108,7 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
     challenges: challenges || [],
     activeDuel: initialData.activeDuel || props.activeDuel,
     trainingContext: initialData.trainingContext,
+    powerRating: initialData.powerRating || 0,
   };
 
   const [state, dispatch] = useReducer(dashboardReducer, initialStateFromProps);

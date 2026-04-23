@@ -23,6 +23,7 @@ export const dashboardReducer = (
         forecast: action.payload.forecast,
         events: action.payload.events,
         titanAnalysis: action.payload.titanAnalysis,
+        powerRating: action.payload.powerRating,
       };
     case 'INITIAL_DATA_LOAD_FAILURE':
       return { ...state, isCodexLoading: false };
@@ -109,7 +110,7 @@ export const dashboardReducer = (
       const rec = state.oracleRecommendation;
       if (!rec) return state;
 
-      if (rec.type === 'STRENGTH' || rec.type === 'MOBILITY') {
+      if (rec.type === 'PR_ATTEMPT' || rec.type === 'GRIND' || rec.type === 'RECOVERY') {
         // Simple safety: if we have a routine recommended, start it
         return {
           ...state,
@@ -119,7 +120,7 @@ export const dashboardReducer = (
         };
       }
 
-      if (rec.type === 'CARDIO') {
+      if (rec.type === 'CARDIO_VALIDATION') {
         return {
           ...state,
           currentView: 'cardio_studio',
