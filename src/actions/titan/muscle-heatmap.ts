@@ -1,6 +1,7 @@
 'use server';
 
 import { prisma } from '@/lib/prisma';
+import { logger, logError } from '@/lib/logger';
 
 type IntensityLevel = 'NONE' | 'LOW' | 'MEDIUM' | 'HIGH' | 'VERY_HIGH';
 
@@ -119,7 +120,7 @@ export async function getMuscleHeatMapAction(userId: string): Promise<FullBodyHe
         recommendations.length > 0 ? recommendations : ['Training is well balanced!'],
     };
   } catch (error) {
-    console.error('Error getting muscle heat map:', error);
+    logError('Error getting muscle heat map:', error);
     return {
       muscles: [],
       overallBalance: 0,

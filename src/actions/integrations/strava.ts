@@ -19,6 +19,7 @@ import { TerritoryService } from '@/services/game/TerritoryService';
 import { createClient } from '@/utils/supabase/server';
 import axios from 'axios';
 import { revalidatePath } from 'next/cache';
+import { logger, logError } from '@/lib/logger';
 
 // Constants removed for lazy evaluation
 // const STRAVA_CLIENT_ID = process.env.STRAVA_CLIENT_ID;
@@ -100,9 +101,9 @@ export async function exchangeStravaTokenAction(code: string) {
     return { success: true };
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
-      console.error('Strava Token Exchange Error:', error.response?.data || error.message);
+      logError('Strava Token Exchange Error:', error.response?.data || error.message);
     } else {
-      console.error('Strava Token Exchange Error:', error);
+      logError('Strava Token Exchange Error:', error);
     }
     return { success: false, error: 'Failed to exchange token with Strava' };
   }
@@ -178,7 +179,7 @@ async function getValidAccessToken(userId: string) {
 
       return access_token;
     } catch (error) {
-      console.error('RefreshToken Error:', error);
+      logError('RefreshToken Error:', error);
       return null;
     }
   }
@@ -274,7 +275,7 @@ export async function syncStravaActivitiesAction() {
     revalidatePath('/');
     return { success: true, count: syncedCount };
   } catch (error: unknown) {
-    console.error('Sync Error:', error);
+    logError('Sync Error:', error);
     const message = error instanceof Error ? error.message : 'Sync failed';
     return { success: false, error: message };
   }
@@ -334,7 +335,7 @@ export async function uploadToStravaAction(formData: FormData) {
     const result = await response.json();
     return { success: true, uploadId: result.id, status: result.status };
   } catch (error: any) {
-    console.error('Upload Error:', error);
+    logError('Upload Error:', error);
     return { success: false, error: error.message };
   }
 }

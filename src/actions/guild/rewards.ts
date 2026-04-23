@@ -2,6 +2,7 @@
 
 import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
+import { logger, logError } from '@/lib/logger';
 
 interface SharedRewardConfig {
   bonusType: 'XP' | 'GOLD' | 'BOTH';
@@ -84,7 +85,7 @@ export async function calculateGuildBonusAction(userId: string): Promise<{
       bonusDescription: applicableBonus.description,
     };
   } catch (error) {
-    console.error('Error calculating guild bonus:', error);
+    logError('Error calculating guild bonus:', error);
     return {
       hasGuild: false,
       bonusMultiplier: 1.0,
@@ -127,7 +128,7 @@ export async function awardGuildSharedRewardAction(
     revalidatePath('/guild');
     return { success: true, membersRewarded: rewarded };
   } catch (error) {
-    console.error('Error awarding guild rewards:', error);
+    logError('Error awarding guild rewards:', error);
     return { success: false, membersRewarded: 0 };
   }
 }
@@ -183,7 +184,7 @@ export async function getGuildActivitySummaryAction(guildId: string): Promise<{
         : null,
     };
   } catch (error) {
-    console.error('Error getting guild activity:', error);
+    logError('Error getting guild activity:', error);
     return {
       weeklyWorkouts: 0,
       weeklyVolume: 0,

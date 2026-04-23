@@ -1,3 +1,5 @@
+
+import { logger } from '@/lib/logger';
 'use server';
 
 // import { prisma } from "@/lib/prisma";
@@ -117,7 +119,7 @@ export async function likeActivityAction(
   userId: string,
   activityId: string
 ): Promise<{ success: boolean; newLikes: number }> {
-  console.log(`User ${userId} liked activity ${activityId}`);
+  logger.info(`User ${userId} liked activity ${activityId}`);
   return { success: true, newLikes: 13 };
 }
 
@@ -128,7 +130,7 @@ export async function unlikeActivityAction(
   userId: string,
   activityId: string
 ): Promise<{ success: boolean; newLikes: number }> {
-  console.log(`User ${userId} unliked activity ${activityId}`);
+  logger.info(`User ${userId} unliked activity ${activityId}`);
   return { success: true, newLikes: 11 };
 }
 
@@ -140,7 +142,7 @@ export async function commentOnActivityAction(
   activityId: string,
   content: string
 ): Promise<{ success: boolean; commentId?: string }> {
-  console.log(`User ${userId} commented on ${activityId}: ${content}`);
+  logger.info(`User ${userId} commented on ${activityId}: ${content}`);
   return { success: true, commentId: `comment-${Date.now()}` };
 }
 

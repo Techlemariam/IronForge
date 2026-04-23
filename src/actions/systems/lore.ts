@@ -1,3 +1,5 @@
+
+import { logger } from '@/lib/logger';
 'use server';
 
 type LoreCategory = 'WORLD' | 'CHARACTER' | 'HISTORY' | 'BESTIARY' | 'ARTIFACT';
@@ -142,7 +144,7 @@ export async function unlockLoreEntryAction(
   const entry = LORE_DATABASE.find((l) => l.id === loreId);
   if (!entry) return { success: false };
 
-  console.log(`Unlocked lore: ${entry.title}`);
+  logger.info(`Unlocked lore: ${entry.title}`);
   return {
     success: true,
     entry: { ...entry, isUnlocked: true, unlockedAt: new Date() },

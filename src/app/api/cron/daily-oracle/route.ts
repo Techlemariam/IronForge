@@ -4,6 +4,7 @@ import { PushNotificationService } from '@/services/PushNotificationService';
 import { OracleService } from '@/services/oracle';
 import { revalidatePath } from 'next/cache';
 import { type NextRequest, NextResponse } from 'next/server';
+import { logger, logError } from '@/lib/logger';
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 60; // Allow up to 60s for processing multiple users
@@ -28,7 +29,7 @@ const handler = async (request: NextRequest) => {
       select: { userId: true, name: true },
     });
 
-    console.log(`[Oracle Cron] Processing ${titans.length} Titans...`);
+    logger.info(`[Oracle Cron] Processing ${titans.length} Titans...`);
 
     let processed = 0;
     let decreesIssued = 0;
@@ -76,7 +77,7 @@ const handler = async (request: NextRequest) => {
               url: '/citadel', // Link to Oracle/Citadel page
             });
           } catch (pushErr) {
-            console.error(`[Oracle Cron] Push failed for ${titan.userId}:`, pushErr);
+            logError(`[Oracle Cron] Push failed for ${titan.userId}:`, pushErr);
           }
 
           decreesIssued++;
@@ -86,7 +87,7 @@ const handler = async (request: NextRequest) => {
       } catch (err) {
         const errorMsg = err instanceof Error ? err.message : String(err);
         errors.push(`User ${titan.userId}: ${errorMsg}`);
-        console.error(`[Oracle Cron] Error for ${titan.userId}:`, err);
+        logError(`[Oracle Cron] Error for ${titan.userId}:`, err);
       }
     }
 
@@ -102,7 +103,7 @@ const handler = async (request: NextRequest) => {
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    console.error('[Oracle Cron] Critical Error:', error);
+    logError('[Oracle Cron] Critical Error:', error);
     return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 });
   }
 };

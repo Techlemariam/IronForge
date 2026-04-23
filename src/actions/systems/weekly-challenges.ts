@@ -1,6 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
+import { logger, logError } from '@/lib/logger';
 
 type WeeklyChallengeType = 'COMMUNITY' | 'GUILD' | 'GLOBAL';
 
@@ -121,11 +122,11 @@ export async function contributeToWeeklyChallengeAction(
   amount: number
 ): Promise<{ success: boolean; newProgress: number; tierReached?: number }> {
   try {
-    console.log(`User ${userId} contributed ${amount} to ${challengeId}`);
+    logger.info(`User ${userId} contributed ${amount} to ${challengeId}`);
     revalidatePath('/weekly-challenges');
     return { success: true, newProgress: 7250000 + amount };
   } catch (error) {
-    console.error('Error contributing:', error);
+    logError('Error contributing:', error);
     return { success: false, newProgress: 0 };
   }
 }
@@ -143,11 +144,11 @@ export async function claimWeeklyChallengeRewardsAction(
       { type: 'GOLD', name: 'Bonus Gold', value: 250, tier: 2 },
     ];
 
-    console.log(`Claimed rewards for ${challengeId}`);
+    logger.info(`Claimed rewards for ${challengeId}`);
     revalidatePath('/weekly-challenges');
     return { success: true, rewards };
   } catch (error) {
-    console.error('Error claiming rewards:', error);
+    logError('Error claiming rewards:', error);
     return { success: false, rewards: [] };
   }
 }

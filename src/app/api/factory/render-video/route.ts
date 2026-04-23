@@ -1,6 +1,7 @@
 import { spawn } from 'node:child_process';
 import path from 'node:path';
 import { NextResponse } from 'next/server';
+import { logger, logError } from '@/lib/logger';
 
 // This API route provides an endpoint to trigger Remotion video rendering.
 export async function POST(request: Request) {
@@ -15,7 +16,7 @@ export async function POST(request: Request) {
     const propsBase64 = Buffer.from(propsJson).toString('base64');
 
     const scriptPath = [process.cwd(), 'scripts', 'render-video.mjs'].join('/');
-    console.log(`[API] Executing render script at: ${scriptPath}`);
+    logger.info(`[API] Executing render script at: ${scriptPath}`);
 
     // We use spawn to have better control over the process and its output.
     const child = spawn('node', [scriptPath, propsBase64], {
@@ -27,11 +28,11 @@ export async function POST(request: Request) {
 
     for await (const chunk of child.stdout) {
       stdout += chunk;
-      console.log(`[Render Script STDOUT]: ${chunk}`);
+      logger.info(`[Render Script STDOUT]: ${chunk}`);
     }
     for await (const chunk of child.stderr) {
       stderr += chunk;
-      console.error(`[Render Script STDERR]: ${chunk}`);
+      logError(`[Render Script STDERR]: ${chunk}`, new Error('Script Stderr Error'));
     }
 
     const code = await new Promise((resolve) => {
@@ -39,7 +40,7 @@ export async function POST(request: Request) {
     });
 
     if (code !== 0) {
-      console.error(`[API] Render script failed with code ${code}.`);
+      logError(`[API] Render script failed with code ${code}.`, new Error('Exit Code Non-Zero'));
       return NextResponse.json(
         {
           error: 'Video rendering failed.',
@@ -70,7 +71,7 @@ export async function POST(request: Request) {
       { status: 200 }
     );
   } catch (error) {
-    console.error('[API] An unexpected error occurred:', error);
+    logError('[API] An unexpected error occurred:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

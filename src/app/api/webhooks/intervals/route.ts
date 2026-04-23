@@ -1,4 +1,4 @@
-import { logger } from '@/lib/logger';
+import { logger, logError } from '@/lib/logger';
 import prisma from '@/lib/prisma';
 import { type NextRequest, NextResponse } from 'next/server';
 
@@ -149,7 +149,7 @@ export async function POST(request: NextRequest) {
       { status: 200 }
     );
   } catch (error: any) {
-    logger.error({ err: error }, `[Intervals Webhook] Error: ${error.message}`);
+    logError(`[Intervals Webhook] Error: ${error.message}`, error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

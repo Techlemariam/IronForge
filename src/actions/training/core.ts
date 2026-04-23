@@ -8,6 +8,7 @@ import { mutateTitanEconomy, mutateTitanXp } from '@/services/titan-mutations';
 import type { TrainingPath } from '@/types/training';
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
+import { logger, logError } from '@/lib/logger';
 
 export type TitanLogResult = {
   success: boolean;
@@ -66,7 +67,7 @@ export async function logTitanSet(
       const bpXp = Math.max(5, Math.ceil(xpGained / 2));
       await addBattlePassXpAction(user.id, bpXp);
     } catch (e) {
-      console.error('Challenge Sync Failed', e);
+      logError('Challenge Sync Failed', e);
     }
 
     revalidatePath('/'); // Refresh dashboard
@@ -84,7 +85,7 @@ export async function logTitanSet(
       energyGained,
     };
   } catch (error) {
-    console.error('Titan Log Error:', error);
+    logError('Titan Log Error:', error);
     return { success: false, message: 'Failed to log set' };
   }
 }
@@ -109,7 +110,7 @@ export async function updateActivePathAction(
     revalidatePath('/');
     return { success: true, message: 'Path updated' };
   } catch (error) {
-    console.error('Update Path Error:', error);
+    logError('Update Path Error:', error);
     return { success: false, message: 'Failed to update path' };
   }
 }

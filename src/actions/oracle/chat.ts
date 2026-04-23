@@ -5,6 +5,7 @@ import { TrainingContextService } from '@/services/data/TrainingContextService';
 import { GeminiService } from '@/services/gemini';
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
+import { logger, logError } from '@/lib/logger';
 
 /**
  * Sends a message to the Oracle (Gemini) and persists the interaction.
@@ -61,7 +62,7 @@ export async function chatWithOracleAction(message: string) {
     revalidatePath('/oracle');
     return { success: true, message: oracleResponse };
   } catch (error) {
-    console.error('Oracle Chat Error:', error);
+    logError('Oracle Chat Error:', error);
     return { success: false, message: 'The Oracle is silent.' };
   }
 }

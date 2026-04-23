@@ -3,6 +3,7 @@
 import prisma from '@/lib/prisma';
 import { createClient } from '@/utils/supabase/server';
 import axios from 'axios';
+import { logger, logError } from '@/lib/logger';
 // import { revalidatePath } from "next/cache";
 
 // Placeholder for now as we don't have Segment DB
@@ -18,7 +19,7 @@ export async function createSegmentBattleAction(segmentId: string, opponentId: s
   // Create a record of the challenge
   // For now, we don't have a "PvPChallenge" table fully defined for Segments in the artifacts I've seen,
   // so I will mock this success or log it.
-  console.log(`User ${user.id} challenged ${opponentId} on segment ${segmentId}`);
+  logger.info(`User ${user.id} challenged ${opponentId} on segment ${segmentId}`);
 
   return { success: true, message: 'Challenge sent via carrier pigeon!' };
 }
@@ -76,7 +77,7 @@ export async function resolveSegmentBattleAction(uploadId: number) {
       message: 'Upload not yet fully processed by Strava.',
     };
   } catch (error: any) {
-    console.error('PvP Resolution Error:', error);
+    logError('PvP Resolution Error:', error);
     return { success: false, error: error.message };
   }
 }

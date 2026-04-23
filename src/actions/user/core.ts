@@ -4,6 +4,7 @@ import prisma from '@/lib/prisma';
 import type { Faction } from '@/types/prisma';
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
+import { logger, logError } from '@/lib/logger';
 
 export async function updateFactionAction(
   faction: Faction
@@ -26,7 +27,7 @@ export async function updateFactionAction(
     revalidatePath('/', 'layout');
     return { success: true };
   } catch (error) {
-    console.error('Failed to update faction:', error);
+    logError('Failed to update faction:', error);
     return { success: false, error: 'Failed to update faction' };
   }
 }
@@ -52,7 +53,7 @@ export async function updateArchetypeAction(
     revalidatePath('/', 'layout');
     return { success: true };
   } catch (error) {
-    console.error('Failed to update archetype:', error);
+    logError('Failed to update archetype:', error);
     return { success: false, error: 'Failed to update archetype' };
   }
 }
@@ -79,7 +80,7 @@ export async function ensureUserAction(
     revalidatePath('/', 'layout');
     return { success: true, data: newUser };
   } catch (error) {
-    console.error('Failed to ensure user:', error);
+    logError('Failed to ensure user:', error);
     return { success: false, error: 'Failed to ensure user' };
   }
 }

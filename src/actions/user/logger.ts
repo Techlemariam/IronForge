@@ -6,6 +6,7 @@ import { GameContextService } from '@/services/game/GameContextService';
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
+import { logger, logError } from '@/lib/logger';
 
 // --- Validation Schemas ---
 
@@ -45,7 +46,7 @@ export async function searchExercisesAction(query: string) {
     });
     return exercises;
   } catch (error) {
-    console.error('Search Exercises Error:', error);
+    logError('Search Exercises Error:', error);
     return [];
   }
 }
@@ -85,7 +86,7 @@ export async function createExerciseAction(data: z.input<typeof CreateExerciseSc
 
     return { success: true, exercise: newExercise };
   } catch (error: any) {
-    console.error('Create Exercise Error:', error);
+    logError('Create Exercise Error:', error);
     return { success: false, error: error.message };
   }
 }
@@ -171,7 +172,7 @@ export async function logExerciseSetsAction(data: z.infer<typeof LogSetSchema>) 
         };
       }
     } catch (e) {
-      console.error('Combat Logic Error:', e);
+      logError('Combat Logic Error:', e);
       // Don't fail the log if combat fails
     }
 
@@ -206,7 +207,7 @@ export async function logExerciseSetsAction(data: z.infer<typeof LogSetSchema>) 
       oracleBuff: diffMessage,
     };
   } catch (error: any) {
-    console.error('Log Sets Error:', error);
+    logError('Log Sets Error:', error);
     return { success: false, error: error.message };
   }
 }
@@ -230,7 +231,7 @@ export async function getRecentLogsAction(limit = 5) {
     });
     return logs;
   } catch (error) {
-    console.error('Get Recent Logs Error:', error);
+    logError('Get Recent Logs Error:', error);
     return [];
   }
 }

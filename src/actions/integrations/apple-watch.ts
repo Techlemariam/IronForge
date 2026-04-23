@@ -1,3 +1,5 @@
+
+import { logger, logError } from '@/lib/logger';
 'use server';
 
 /**
@@ -49,7 +51,7 @@ export async function syncWatchDataAction(
   payload: WatchSyncPayload
 ): Promise<{ success: boolean; processed: number }> {
   try {
-    console.log(`Watch sync: user=${payload.userId}, workouts=${payload.workouts.length}`);
+    logger.info(`Watch sync: user=${payload.userId}, workouts=${payload.workouts.length}`);
 
     // In production:
     // 1. Store workout data
@@ -60,18 +62,18 @@ export async function syncWatchDataAction(
     let processed = 0;
     for (const workout of payload.workouts) {
       // Process each workout
-      console.log(`Processing ${workout.workoutType} workout: ${workout.activeMinutes}min`);
+      logger.info(`Processing ${workout.workoutType} workout: ${workout.activeMinutes}min`);
       processed++;
     }
 
     // Update health data
     if (payload.healthData.hrv) {
-      console.log(`HRV update: ${payload.healthData.hrv}ms`);
+      logger.info(`HRV update: ${payload.healthData.hrv}ms`);
     }
 
     return { success: true, processed };
   } catch (error) {
-    console.error('Error syncing watch data:', error);
+    logError('Error syncing watch data:', error);
     return { success: false, processed: 0 };
   }
 }
@@ -89,7 +91,7 @@ export async function getComplicationDataAction(_userId: string): Promise<Compli
       titanMood: '💪',
     };
   } catch (error) {
-    console.error('Error getting complication data:', error);
+    logError('Error getting complication data:', error);
     return {
       currentStreak: 0,
       todaysXp: 0,
@@ -107,10 +109,10 @@ export async function pushWatchUpdateAction(
 ): Promise<{ success: boolean }> {
   try {
     // In production, push via WatchConnectivity or push notifications
-    console.log(`Push to watch: user=${userId}, data=${JSON.stringify(data)}`);
+    logger.info(`Push to watch: user=${userId}, data=${JSON.stringify(data)}`);
     return { success: true };
   } catch (error) {
-    console.error('Error pushing to watch:', error);
+    logError('Error pushing to watch:', error);
     return { success: false };
   }
 }
@@ -128,10 +130,10 @@ export async function configureWatchAction(
   }
 ): Promise<{ success: boolean }> {
   try {
-    console.log(`Watch config: user=${userId}, config=${JSON.stringify(config)}`);
+    logger.info(`Watch config: user=${userId}, config=${JSON.stringify(config)}`);
     return { success: true };
   } catch (error) {
-    console.error('Error configuring watch:', error);
+    logError('Error configuring watch:', error);
     return { success: false };
   }
 }

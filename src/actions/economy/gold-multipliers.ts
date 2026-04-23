@@ -1,3 +1,5 @@
+
+import { logger } from '@/lib/logger';
 'use server';
 
 interface GoldMultiplier {
@@ -136,6 +138,6 @@ export async function applyGoldBoostAction(
   durationHours: number
 ): Promise<{ success: boolean; expiresAt: Date }> {
   const expiresAt = new Date(Date.now() + durationHours * 60 * 60 * 1000);
-  console.log(`Applied ${boostPercent}% gold boost for ${durationHours} hours`);
+  logger.info(`Applied ${boostPercent}% gold boost for ${durationHours} hours`);
   return { success: true, expiresAt };
 }

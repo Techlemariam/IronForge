@@ -3,6 +3,7 @@
 import { checkOvertrainingStatusAction } from '@/actions/training/overtraining';
 import { getStreakStatusAction } from '@/actions/user/streak';
 import { prisma } from '@/lib/prisma';
+import { logger, logError } from '@/lib/logger';
 
 interface XpMultiplierResult {
   baseMultiplier: number;
@@ -99,7 +100,7 @@ export async function calculateXpMultiplierAction(
       breakdown,
     };
   } catch (error) {
-    console.error('Error calculating XP multiplier:', error);
+    logError('Error calculating XP multiplier:', error);
     return {
       baseMultiplier: 1.0,
       streakBonus: 0,

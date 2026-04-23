@@ -2,6 +2,7 @@
 
 import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
+import { logger, logError } from '@/lib/logger';
 
 interface StreakResult {
   success: boolean;
@@ -89,7 +90,7 @@ export async function checkAndIncrementStreakAction(
               message: `Your ${user.loginStreak}-day streak has been broken! Your Titan's mood dropped to DEPRESSED, reducing XP gains. Get back to work to recover.`,
             });
           } catch (err) {
-            console.error('Failed to apply streak penalty', err);
+            logError('Failed to apply streak penalty', err);
           }
         }
 
@@ -125,7 +126,7 @@ export async function checkAndIncrementStreakAction(
       // Execute in background
       PhysicalSkillService.evaluateAndUnlockSkills(userId).catch(console.error);
     } catch (err) {
-      console.error('Failed to load PhysicalSkillService', err);
+      logError('Failed to load PhysicalSkillService', err);
     }
 
     revalidatePath('/dashboard');
@@ -138,7 +139,7 @@ export async function checkAndIncrementStreakAction(
       bonusXp: bonusXp > 0 ? bonusXp : undefined,
     };
   } catch (error) {
-    console.error('Error updating streak:', error);
+    logError('Error updating streak:', error);
     return {
       success: false,
       currentStreak: 0,
@@ -185,7 +186,7 @@ export async function getStreakStatusAction(userId: string) {
       isAtRisk,
     };
   } catch (error) {
-    console.error('Error fetching streak:', error);
+    logError('Error fetching streak:', error);
     return {
       success: false,
       currentStreak: 0,

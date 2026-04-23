@@ -1,6 +1,7 @@
 'use server';
 
 import { prisma } from '@/lib/prisma';
+import { logger, logError } from '@/lib/logger';
 
 interface TrainingDNA {
   id: string;
@@ -100,7 +101,7 @@ export async function extractTrainingDnaAction(
       machineVsFreeWeight: 70, // Default
     };
   } catch (error) {
-    console.error('Error extracting training DNA:', error);
+    logError('Error extracting training DNA:', error);
     return null;
   }
 }
@@ -128,11 +129,11 @@ export async function exportTrainingDnaAction(
     const shareUrl = `/marketplace/dna/${dnaId}`;
 
     // In production, save to database
-    console.log(`Exported DNA: ${name} by ${user?.heroName}`);
+    logger.info(`Exported DNA: ${name} by ${user?.heroName}`);
 
     return { success: true, dnaId, shareUrl };
   } catch (error) {
-    console.error('Error exporting training DNA:', error);
+    logError('Error exporting training DNA:', error);
     return { success: false };
   }
 }
@@ -146,14 +147,14 @@ export async function importTrainingDnaAction(
 ): Promise<{ success: boolean; message: string }> {
   try {
     // In production, fetch DNA from database and apply to user's programs
-    console.log(`Imported DNA ${dnaId} for user ${userId}`);
+    logger.info(`Imported DNA ${dnaId} for user ${userId}`);
 
     return {
       success: true,
       message: 'Training methodology imported! Check your programs.',
     };
   } catch (error) {
-    console.error('Error importing training DNA:', error);
+    logError('Error importing training DNA:', error);
     return { success: false, message: 'Failed to import DNA' };
   }
 }

@@ -6,6 +6,7 @@ import { TitanService } from '@/services/game/TitanService';
 import { IntervalsWellness } from '@/types';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
+import { logger, logError } from '@/lib/logger';
 
 // --- Types ---
 export type TitanState = {
@@ -41,7 +42,7 @@ export const getTitanAction = authActionClient.action(async ({ ctx: { userId } }
     const titan = await TitanService.getTitan(userId);
     return { success: true, data: titan };
   } catch (error) {
-    console.error('Error fetching titan:', error);
+    logError('Error fetching titan:', error);
     return { success: false, error: 'Failed to fetch Titan' };
   }
 });
@@ -51,7 +52,7 @@ export const ensureTitanAction = authActionClient.action(async ({ ctx: { userId 
     const titan = await TitanService.ensureTitan(userId);
     return { success: true, data: titan };
   } catch (error) {
-    console.error('Error ensuring titan:', error);
+    logError('Error ensuring titan:', error);
     return { success: false, error: 'Failed to create or fetch Titan' };
   }
 });
@@ -69,7 +70,7 @@ export async function updateTitanAction(userId: string, data: z.infer<typeof upd
     revalidatePath('/citadel');
     return { success: true, data: titan };
   } catch (error) {
-    console.error('Error updating titan:', error);
+    logError('Error updating titan:', error);
     return { success: false, error: 'Failed to update Titan' };
   }
 }
@@ -83,7 +84,7 @@ export const modifyTitanHealthAction = authActionClient
       const updated = await TitanService.modifyHealth(userId, delta, reason);
       return { success: true, data: updated };
     } catch (error: any) {
-      console.error('Error modifying health:', error);
+      logError('Error modifying health:', error);
       return { success: false, error: error.message };
     }
   });
@@ -95,7 +96,7 @@ export const awardTitanXpAction = authActionClient
       const { titan, leveledUp } = await TitanService.awardXp(userId, amount, source);
       return { success: true, data: titan, leveledUp };
     } catch (error: any) {
-      console.error('Error awarding XP:', error);
+      logError('Error awarding XP:', error);
       return { success: false, error: error.message };
     }
   });
@@ -118,7 +119,7 @@ export const syncTitanStateWithWellness = authActionClient
       await TitanService.syncWellness(userId, wellness);
       return { success: true };
     } catch (error) {
-      console.error('Sync Titan/Wellness failed:', error);
+      logError('Sync Titan/Wellness failed:', error);
       return { success: false };
     }
   });
@@ -130,7 +131,7 @@ export const checkAndIncrementStreakAction = authActionClient
       const result = await TitanService.updateStreak(userId, timezone);
       return { success: true, ...result };
     } catch (error: any) {
-      console.error('Streak update failed:', error);
+      logError('Streak update failed:', error);
       return { success: false, error: error.message };
     }
   });

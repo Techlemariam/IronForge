@@ -2,6 +2,7 @@
 
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
+import { logger } from '@/lib/logger';
 
 /**
  * Verifies the authenticated session user matches the requested userId.
@@ -115,7 +116,7 @@ export async function getExerciseMasteryAction(
   exerciseId: string
 ): Promise<ExerciseMastery | null> {
   if (!(await verifyMasteryAuth(userId))) {
-    console.warn('Mastery: Unauthorized access attempt blocked.');
+    logger.warn('Mastery: Unauthorized access attempt blocked.');
     return null;
   }
   return buildExerciseMastery(exerciseId);
@@ -127,7 +128,7 @@ export async function getExerciseMasteryAction(
  */
 export async function getAllMasteriesAction(userId: string): Promise<ExerciseMastery[]> {
   if (!(await verifyMasteryAuth(userId))) {
-    console.warn('Mastery: Unauthorized access attempt blocked.');
+    logger.warn('Mastery: Unauthorized access attempt blocked.');
     return [];
   }
   const exercises = ['bench-press', 'squat', 'deadlift', 'overhead-press', 'barbell-row'];
@@ -148,10 +149,10 @@ export async function addMasteryXpAction(
   newPerk?: MasteryPerk;
 } | null> {
   if (!(await verifyMasteryAuth(userId))) {
-    console.warn('Mastery: Unauthorized access attempt blocked.');
+    logger.warn('Mastery: Unauthorized access attempt blocked.');
     return null;
   }
-  console.log(`Added ${xpGained} mastery XP for exercise ${exerciseId}`);
+  logger.info(`Added ${xpGained} mastery XP for exercise ${exerciseId}`);
   revalidatePath('/mastery');
 
   // In production, calculate actual level up

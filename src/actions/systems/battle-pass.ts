@@ -3,6 +3,7 @@
 import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
+import { logger, logError } from '@/lib/logger';
 
 // ============================================
 // BATTLE PASS ACTIONS
@@ -42,7 +43,7 @@ export async function getActiveSeasonAction() {
     });
     return season;
   } catch (error) {
-    console.error('Error fetching active season:', error);
+    logError('Error fetching active season:', error);
     return null;
   }
 }
@@ -111,7 +112,7 @@ export async function getUserBattlePassProgressAction(
       tiers,
     };
   } catch (error) {
-    console.error('Error fetching battle pass progress:', error);
+    logError('Error fetching battle pass progress:', error);
     return null;
   }
 }
@@ -170,7 +171,7 @@ export async function addBattlePassXpAction(userId: string, amount: number) {
     revalidatePath('/battle-pass');
     return { success: true, message: `Added ${amount} Season XP` };
   } catch (error) {
-    console.error('Error adding Battle Pass XP:', error);
+    logError('Error adding Battle Pass XP:', error);
     return { success: false, message: 'Failed to add XP' };
   }
 }
@@ -282,7 +283,7 @@ export async function claimBattlePassRewardAction(
     revalidatePath('/battle-pass');
     return { success: true, message: 'Reward claimed!' };
   } catch (error) {
-    console.error('Error claiming reward:', error);
+    logError('Error claiming reward:', error);
     return { success: false, message: 'Failed to claim reward' };
   }
 }
@@ -314,7 +315,7 @@ export async function upgradeToPremiumAction(userId: string) {
     revalidatePath('/dashboard');
     return { success: true, message: 'Upgraded to Premium!' };
   } catch (error) {
-    console.error('Upgrade error:', error);
+    logError('Upgrade error:', error);
     return { success: false, message: 'Failed to upgrade' };
   }
 }

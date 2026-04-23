@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma';
 import { PvpCombatService } from '@/services/pvp/PvpCombatService';
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
+import { logger, logError } from '@/lib/logger';
 
 /**
  * Execute a combat turn in a Titan vs Titan duel.
@@ -68,7 +69,7 @@ export async function executeTitanCombatTurnAction(duelId: string) {
       },
     };
   } catch (error) {
-    console.error('Combat turn error:', error);
+    logError('Combat turn error:', error);
     return { success: false, error: 'Failed to execute combat turn' };
   }
 }
@@ -112,7 +113,7 @@ export async function getTitanDuelStateAction(duelId: string) {
       },
     };
   } catch (error) {
-    console.error('Get duel state error:', error);
+    logError('Get duel state error:', error);
     return { success: false, error: 'Failed to fetch duel state' };
   }
 }

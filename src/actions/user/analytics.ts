@@ -5,6 +5,7 @@
 'use server';
 
 import { prisma } from '@/lib/prisma';
+import { logger, logError } from '@/lib/logger';
 
 interface ExerciseSet {
   weight: number;
@@ -200,7 +201,7 @@ export async function getAnalyticsDashboardAction(
       },
     };
   } catch (error) {
-    console.error('Error getting analytics dashboard:', error);
+    logError('Error getting analytics dashboard:', error);
     return {
       totalWorkouts: 0,
       totalSets: 0,
@@ -271,7 +272,7 @@ export async function getExerciseAnalyticsAction(
       lastPerformed: logs.length > 0 ? new Date(logs[logs.length - 1].date) : null,
     };
   } catch (error) {
-    console.error('Error getting exercise analytics:', error);
+    logError('Error getting exercise analytics:', error);
     return {
       totalSets: 0,
       volumeHistory: [],

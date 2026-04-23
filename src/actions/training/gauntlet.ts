@@ -3,6 +3,7 @@
 import prisma from '@/lib/prisma';
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
+import { logger, logError } from '@/lib/logger';
 
 export interface GauntletResult {
   wavesCleared: number;
@@ -70,7 +71,7 @@ export async function logGauntletRunAction(result: GauntletResult) {
       rewards: { xp: xpReward, gold: goldReward, kinetic: kineticReward },
     };
   } catch (error: any) {
-    console.error('Gauntlet Log Error:', error);
+    logError('Gauntlet Log Error:', error);
     throw new Error(`Failed to log gauntlet run: ${error.message}`);
   }
 }

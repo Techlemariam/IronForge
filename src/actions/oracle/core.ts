@@ -4,6 +4,7 @@ import prisma from '@/lib/prisma';
 import { OracleService } from '@/services/oracle';
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
+import { logger, logError } from '@/lib/logger';
 
 export async function generateDailyDecreeAction() {
   try {
@@ -39,7 +40,7 @@ export async function generateDailyDecreeAction() {
 
     return { success: true, data: decree };
   } catch (error: any) {
-    console.error('Failed to generate Oracle Decree:', error.message);
+    logError('Failed to generate Oracle Decree:', error.message);
     return { success: false, error: error.message };
   }
 }

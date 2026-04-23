@@ -1,6 +1,7 @@
 'use server';
 
 import { prisma } from '@/lib/prisma';
+import { logger, logError } from '@/lib/logger';
 
 // WoW-inspired PvP ranks
 const PVP_RANKS = [
@@ -48,7 +49,7 @@ export async function getPvpRankAction(userId: string): Promise<PvpRankInfo | nu
     const rating = profile?.duelElo || 1000;
     return calculatePvpRank(rating);
   } catch (error) {
-    console.error('Error fetching PvP rank:', error);
+    logError('Error fetching PvP rank:', error);
     return null;
   }
 }
@@ -139,7 +140,7 @@ export async function getPvpLadderAction(limit = 100): Promise<{
       }),
     };
   } catch (error) {
-    console.error('Error fetching PvP ladder:', error);
+    logError('Error fetching PvP ladder:', error);
     return { entries: [] };
   }
 }

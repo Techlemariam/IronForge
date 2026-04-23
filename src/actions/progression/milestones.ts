@@ -1,6 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
+import { logger } from '@/lib/logger';
 
 type MilestoneType = 'LEVEL' | 'WORKOUT' | 'VOLUME' | 'PR' | 'STREAK' | 'DUNGEON';
 
@@ -204,7 +205,7 @@ export async function claimMilestoneAction(
     return { success: false, rewards: [] };
   }
 
-  console.log(`Claimed milestone: ${milestone.name}`);
+  logger.info(`Claimed milestone: ${milestone.name}`);
   revalidatePath('/milestones');
   return { success: true, rewards: milestone.rewards };
 }

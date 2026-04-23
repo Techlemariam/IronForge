@@ -1,6 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
+import { logger, logError } from '@/lib/logger';
 
 type UpgradeRarity = 'COMMON' | 'UNCOMMON' | 'RARE' | 'EPIC' | 'LEGENDARY';
 
@@ -121,7 +122,7 @@ export async function upgradeEquipmentAction(
 
     if (succeeded) {
       const newLevel = currentLevel + 1;
-      console.log(`Upgrade success: ${itemId} -> Level ${newLevel}`);
+      logger.info(`Upgrade success: ${itemId} -> Level ${newLevel}`);
       revalidatePath('/inventory');
       return {
         success: true,
@@ -129,13 +130,13 @@ export async function upgradeEquipmentAction(
         message: `Upgrade successful! Item is now level ${newLevel}`,
       };
     }
-    console.log(`Upgrade failed: ${itemId}`);
+    logger.info(`Upgrade failed: ${itemId}`);
     return {
       success: false,
       message: 'Upgrade failed. Materials were consumed.',
     };
   } catch (error) {
-    console.error('Error upgrading equipment:', error);
+    logError('Error upgrading equipment:', error);
     return { success: false, message: 'An error occurred' };
   }
 }

@@ -2,6 +2,7 @@
 
 // import { prisma } from "@/lib/prisma";
 import { revalidatePath } from 'next/cache';
+import { logger, logError } from '@/lib/logger';
 
 type LiftType = 'SQUAT' | 'BENCH' | 'DEADLIFT';
 type BracketSize = 8 | 16 | 32 | 64;
@@ -81,12 +82,12 @@ export async function createTournamentAction(
     // For MVP, return generated ID
     const tournamentId = `tournament-${liftType.toLowerCase()}-${Date.now()}`;
 
-    console.log(`Created tournament: ${name}, ${liftType}, ${weightClass}, size ${bracketSize}`);
+    logger.info(`Created tournament: ${name}, ${liftType}, ${weightClass}, size ${bracketSize}`);
 
     revalidatePath('/tournaments');
     return { success: true, tournamentId };
   } catch (error) {
-    console.error('Error creating tournament:', error);
+    logError('Error creating tournament:', error);
     return { success: false };
   }
 }
@@ -104,11 +105,11 @@ export async function registerForTournamentAction(
     // For MVP, simulate registration
     const seed = Math.floor(Math.random() * 32) + 1;
 
-    console.log(`Registered: user=${userId}, tournament=${tournamentId}, lift=${qualifyingLift}kg`);
+    logger.info(`Registered: user=${userId}, tournament=${tournamentId}, lift=${qualifyingLift}kg`);
 
     return { success: true, seed };
   } catch (error) {
-    console.error('Error registering for tournament:', error);
+    logError('Error registering for tournament:', error);
     return { success: false };
   }
 }
@@ -123,14 +124,14 @@ export async function submitMatchLiftAction(
 ): Promise<{ success: boolean; isWinner?: boolean }> {
   try {
     // In production, update match with lift result
-    console.log(`Submitted lift: match=${matchId}, user=${userId}, weight=${liftWeight}kg`);
+    logger.info(`Submitted lift: match=${matchId}, user=${userId}, weight=${liftWeight}kg`);
 
     // For MVP, randomly determine if winner (in real app, compare lifts)
     const isWinner = Math.random() > 0.5;
 
     return { success: true, isWinner };
   } catch (error) {
-    console.error('Error submitting match lift:', error);
+    logError('Error submitting match lift:', error);
     return { success: false };
   }
 }

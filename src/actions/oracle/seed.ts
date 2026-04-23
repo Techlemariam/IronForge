@@ -3,6 +3,7 @@
 import { checkOvertrainingStatusAction } from '@/actions/training/overtraining';
 import { getStreakStatusAction } from '@/actions/user/streak';
 import { prisma } from '@/lib/prisma';
+import { logger, logError } from '@/lib/logger';
 
 /**
  * The Oracle Seed - Central AI Intelligence Layer
@@ -222,7 +223,7 @@ export async function getOracleRecommendationAction(
       estimatedXpMultiplier: context.overtrainingStatus.xpMultiplier,
     };
   } catch (error) {
-    console.error('Error generating Oracle recommendation:', error);
+    logError('Error generating Oracle recommendation:', error);
     return {
       verdict: 'TRAIN_NORMAL',
       confidence: 50,

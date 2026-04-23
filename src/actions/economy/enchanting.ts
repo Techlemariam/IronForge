@@ -1,6 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
+import { logger, logError } from '@/lib/logger';
 
 type EnchantType = 'FIRE' | 'ICE' | 'LIGHTNING' | 'HOLY' | 'SHADOW' | 'NATURE';
 type EnchantRarity = 'MINOR' | 'MAJOR' | 'SUPERIOR' | 'LEGENDARY';
@@ -159,7 +160,7 @@ export async function enchantItemAction(
       };
     }
 
-    console.log(`Enchanted item ${itemId} with ${enchant.name}`);
+    logger.info(`Enchanted item ${itemId} with ${enchant.name}`);
     revalidatePath('/inventory');
 
     return {
@@ -175,7 +176,7 @@ export async function enchantItemAction(
       message: `Successfully applied ${enchant.name}!`,
     };
   } catch (error) {
-    console.error('Error enchanting item:', error);
+    logError('Error enchanting item:', error);
     return {
       success: false,
       item: {
@@ -198,7 +199,7 @@ export async function removeEnchantmentAction(
   itemId: string,
   enchantSlot: number
 ): Promise<{ success: boolean; message: string }> {
-  console.log(`Removed enchantment from slot ${enchantSlot} of item ${itemId}`);
+  logger.info(`Removed enchantment from slot ${enchantSlot} of item ${itemId}`);
   revalidatePath('/inventory');
   return { success: true, message: 'Enchantment removed' };
 }

@@ -1,6 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
+import { logger, logError } from '@/lib/logger';
 
 export async function recalculatePowerRatingAction(userId: string) {
   try {
@@ -14,7 +15,7 @@ export async function recalculatePowerRatingAction(userId: string) {
 
     return { success: true, data: result.titan };
   } catch (error: any) {
-    console.error('Error recalculating Power Rating:', error);
+    logError('Error recalculating Power Rating:', error);
     return { success: false, error: error.message };
   }
 }

@@ -1,6 +1,7 @@
 'use server';
 
 import { checkOvertrainingStatusAction } from '@/actions/training/overtraining';
+import { logger, logError } from '@/lib/logger';
 
 /**
  * Volume Calculator Level 4: Recovery-State Modulated MRV
@@ -172,7 +173,7 @@ export async function calculateVolumeL4Action(
       reasoning,
     };
   } catch (error) {
-    console.error('Error calculating L4 volume:', error);
+    logError('Error calculating L4 volume:', error);
     const baseMrv = BASE_MRV[muscleGroup.toLowerCase()] || 16;
     return {
       muscleGroup,

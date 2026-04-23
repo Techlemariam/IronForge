@@ -109,7 +109,7 @@ export const DashboardPresenter: React.FC<DashboardPresenterProps> = (props) => 
         xp={state.totalExperience}
         gold={userData?.gold || 0}
         faction={state.faction}
-        powerRating={titanState?.powerRating || 0}
+        powerRating={state.powerRating}
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">

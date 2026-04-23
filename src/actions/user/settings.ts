@@ -2,6 +2,7 @@
 
 import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
+import { logger, logError } from '@/lib/logger';
 
 export interface UserPreferences {
   liteMode?: boolean;
@@ -28,7 +29,7 @@ export async function updateUserPreferencesAction(userId: string, preferences: U
     revalidatePath('/dashboard');
     return { success: true };
   } catch (error) {
-    console.error('Error updating user preferences:', error);
+    logError('Error updating user preferences:', error);
     return { success: false, error: 'Failed to update preferences' };
   }
 }
@@ -41,7 +42,7 @@ export async function getUserPreferencesAction(userId: string): Promise<UserPref
     });
     return (user?.preferences as UserPreferences) || {};
   } catch (error) {
-    console.error('Error getting user preferences:', error);
+    logError('Error getting user preferences:', error);
     return {};
   }
 }

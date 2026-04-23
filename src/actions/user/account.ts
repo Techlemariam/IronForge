@@ -4,6 +4,7 @@ import prisma from '@/lib/prisma';
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
+import { logger, logError } from '@/lib/logger';
 
 export async function deleteAccountAction(): Promise<{
   success: boolean;
@@ -31,7 +32,7 @@ export async function deleteAccountAction(): Promise<{
     revalidatePath('/', 'layout');
     return { success: true };
   } catch (error) {
-    console.error('Failed to delete account:', error);
+    logError('Failed to delete account:', error);
     return {
       success: false,
       error: 'Failed to delete account. Please contact support.',

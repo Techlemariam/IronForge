@@ -3,6 +3,7 @@
 import { TerritoryService } from '@/services/game/TerritoryService';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
+import { logger, logError } from '@/lib/logger';
 
 // --- Schemas ---
 
@@ -27,7 +28,7 @@ export async function getTerritoriesAction() {
   try {
     return await TerritoryService.getMapData();
   } catch (error: any) {
-    console.error('[TerritoryActions] getTerritories error:', error.message);
+    logError('[TerritoryActions] getTerritories error:', error.message);
     throw new Error('Failed to fetch territories');
   }
 }
@@ -47,7 +48,7 @@ export async function claimTerritoryAction(guildId: string, territoryId: string,
     revalidatePath('/dashboard');
     return result;
   } catch (error: any) {
-    console.error('[TerritoryActions] claimTerritory error:', error.message);
+    logError('[TerritoryActions] claimTerritory error:', error.message);
     throw new Error(error.message || 'Failed to claim territory');
   }
 }
@@ -71,7 +72,7 @@ export async function contestTerritoryAction(
     revalidatePath('/dashboard');
     return result;
   } catch (error: any) {
-    console.error('[TerritoryActions] contestTerritory error:', error.message);
+    logError('[TerritoryActions] contestTerritory error:', error.message);
     throw new Error(error.message || 'Failed to initiate contest');
   }
 }
@@ -87,7 +88,7 @@ export async function resolveExpiredContestsAction() {
     revalidatePath('/dashboard');
     return { success: true };
   } catch (error: any) {
-    console.error('[TerritoryActions] resolveExpiredContests error:', error.message);
+    logError('[TerritoryActions] resolveExpiredContests error:', error.message);
     throw new Error('Failed to resolve contests');
   }
 }

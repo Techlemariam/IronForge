@@ -1,5 +1,6 @@
 import { TerritoryService } from '@/services/game/TerritoryService';
 import { type NextRequest, NextResponse } from 'next/server';
+import { logger, logError } from '@/lib/logger';
 
 /**
  * Weekly Territory Resolution Cron
@@ -22,7 +23,7 @@ export async function GET(req: NextRequest) {
       timestamp: new Date().toISOString(),
     });
   } catch (error: any) {
-    console.error('Territory Cron Error:', error);
+    logError('Territory Cron Error:', error);
     return NextResponse.json(
       {
         success: false,

@@ -2,6 +2,7 @@
 
 import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
+import { logger, logError } from '@/lib/logger';
 
 type QuestType = 'WORKOUT' | 'VOLUME' | 'CARDIO' | 'STREAK' | 'PR' | 'COMBO' | 'SOCIAL';
 type QuestDifficulty = 'EASY' | 'MEDIUM' | 'HARD' | 'LEGENDARY';
@@ -111,7 +112,7 @@ export async function generateDailyQuestsAction(userId: string): Promise<DailyQu
         }
       }
     } catch (e) {
-      console.warn('GPE Quest Check failed', e);
+      logger.warn('GPE Quest Check failed', e);
     }
 
     // Create/Find Templates
@@ -168,7 +169,7 @@ export async function generateDailyQuestsAction(userId: string): Promise<DailyQu
 
     return [];
   } catch (error) {
-    console.error('Error generating daily quests:', error);
+    logError('Error generating daily quests:', error);
     return [];
   }
 }
@@ -260,7 +261,7 @@ export async function claimQuestRewardAction(
       gold,
     };
   } catch (error) {
-    console.error('Error claiming quest:', error);
+    logError('Error claiming quest:', error);
     return { success: false, xp: 0, gold: 0 };
   }
 }

@@ -3,6 +3,7 @@
 import { MOBILITY_EXERCISES, calculateSessionCost } from '@/data/mobilityExercises';
 import { prisma } from '@/lib/prisma';
 import { createClient } from '@/utils/supabase/server';
+import { logger, logError } from '@/lib/logger';
 
 /**
  * Logs a mobility session for the user.
@@ -90,7 +91,7 @@ export async function logMobilitySession(exerciseId: string, durationSecs: numbe
       },
     };
   } catch (error) {
-    console.error('Failed to log mobility session:', error);
+    logError('Failed to log mobility session:', error);
     return { success: false, error: 'Failed to log mobility session' };
   }
 }
@@ -137,7 +138,7 @@ export async function getWeeklyMobilityLogs() {
       },
     };
   } catch (error) {
-    console.error('Failed to fetch mobility logs:', error);
+    logError('Failed to fetch mobility logs:', error);
     return { success: false, error: 'Failed to fetch mobility logs' };
   }
 }

@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma';
 import { authActionClient } from '@/lib/safe-action';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
+import { logger, logError } from '@/lib/logger';
 
 type FriendStatus = 'PENDING' | 'ACCEPTED' | 'BLOCKED';
 
@@ -45,11 +46,11 @@ export const sendFriendRequestAction = authActionClient
         return { success: false, message: 'Cannot add yourself' };
       }
 
-      console.log(`Friend request sent from ${fromUserId} to ${targetUser.id}`);
+      logger.info(`Friend request sent from ${fromUserId} to ${targetUser.id}`);
       revalidatePath('/friends');
       return { success: true, message: 'Friend request sent!' };
     } catch (error) {
-      console.error('Error sending friend request:', error);
+      logError('Error sending friend request:', error);
       return { success: false, message: 'Failed to send request' };
     }
   });
@@ -61,11 +62,11 @@ export const acceptFriendRequestAction = authActionClient
   .schema(z.string())
   .action(async ({ parsedInput: requestId, ctx: { userId } }) => {
     try {
-      console.log(`Accepted friend request ${requestId}`);
+      logger.info(`Accepted friend request ${requestId}`);
       revalidatePath('/friends');
       return { success: true };
     } catch (error) {
-      console.error('Error accepting friend request:', error);
+      logError('Error accepting friend request:', error);
       return { success: false };
     }
   });
@@ -77,11 +78,11 @@ export const declineFriendRequestAction = authActionClient
   .schema(z.string())
   .action(async ({ parsedInput: requestId, ctx: { userId } }) => {
     try {
-      console.log(`Declined friend request ${requestId}`);
+      logger.info(`Declined friend request ${requestId}`);
       revalidatePath('/friends');
       return { success: true };
     } catch (error) {
-      console.error('Error declining friend request:', error);
+      logError('Error declining friend request:', error);
       return { success: false };
     }
   });
@@ -93,11 +94,11 @@ export const removeFriendAction = authActionClient
   .schema(z.string())
   .action(async ({ parsedInput: friendId, ctx: { userId } }) => {
     try {
-      console.log(`Removed friend ${friendId}`);
+      logger.info(`Removed friend ${friendId}`);
       revalidatePath('/friends');
       return { success: true };
     } catch (error) {
-      console.error('Error removing friend:', error);
+      logError('Error removing friend:', error);
       return { success: false };
     }
   });

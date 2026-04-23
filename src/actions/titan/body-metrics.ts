@@ -1,6 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
+import { logger, logError } from '@/lib/logger';
 
 interface BodyMetrics {
   id: string;
@@ -43,13 +44,13 @@ export async function logBodyMetricsAction(
   try {
     const metricsId = `metrics-${userId}-${Date.now()}`;
 
-    console.log(`Logged body metrics: weight=${data.weight}kg, bf=${data.bodyFat}%`);
+    logger.info(`Logged body metrics: weight=${data.weight}kg, bf=${data.bodyFat}%`);
 
     // In production, save to database
     revalidatePath('/body-metrics');
     return { success: true, metricsId };
   } catch (error) {
-    console.error('Error logging body metrics:', error);
+    logError('Error logging body metrics:', error);
     return { success: false };
   }
 }
@@ -85,7 +86,7 @@ export async function getBodyMetricsHistoryAction(
 
     return history;
   } catch (error) {
-    console.error('Error getting body metrics history:', error);
+    logError('Error getting body metrics history:', error);
     return [];
   }
 }
@@ -136,7 +137,7 @@ export async function getMetricsTrendsAction(userId: string): Promise<MetricsTre
 
     return trends;
   } catch (error) {
-    console.error('Error getting metrics trends:', error);
+    logError('Error getting metrics trends:', error);
     return [];
   }
 }

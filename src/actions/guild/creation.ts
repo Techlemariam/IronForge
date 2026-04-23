@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma';
 import { authActionClient } from '@/lib/safe-action';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
+import { logger, logError } from '@/lib/logger';
 
 const GuildCreateSchema = z.object({
   name: z.string().min(3).max(30),
@@ -98,7 +99,7 @@ export const createGuildAction = authActionClient
       revalidatePath('/guild');
       return { success: true, guildId: guild.id };
     } catch (error) {
-      console.error('Error creating guild:', error);
+      logError('Error creating guild:', error);
       return { success: false, error: 'Failed to create guild.' };
     }
   });
@@ -150,7 +151,7 @@ export const joinGuildAction = authActionClient
       revalidatePath('/guild');
       return { success: true };
     } catch (error) {
-      console.error('Error joining guild:', error);
+      logError('Error joining guild:', error);
       return { success: false, error: 'Failed to join guild.' };
     }
   });
@@ -186,7 +187,7 @@ export const leaveGuildAction = authActionClient.action(async ({ ctx: { userId }
     revalidatePath('/guild');
     return { success: true };
   } catch (error) {
-    console.error('Error leaving guild:', error);
+    logError('Error leaving guild:', error);
     return { success: false, error: 'Failed to leave guild.' };
   }
 });
@@ -223,7 +224,7 @@ export const getGuildInfoAction = authActionClient
         minLevel: guild.minLevel || 1,
       };
     } catch (error) {
-      console.error('Error getting guild info:', error);
+      logError('Error getting guild info:', error);
       return null;
     }
   });
@@ -271,7 +272,7 @@ export const searchGuildsAction = authActionClient
         minLevel: g.minLevel || 1,
       }));
     } catch (error) {
-      console.error('Error searching guilds:', error);
+      logError('Error searching guilds:', error);
       return [];
     }
   });

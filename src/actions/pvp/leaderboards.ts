@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma';
 // import { getSession } from "@/lib/auth";
 // import { getPvpRank } from "@/lib/pvpRanks";
 import { getCurrentSeasonAction } from './ranked';
+import { logger, logError } from '@/lib/logger';
 
 export type LeaderboardType = 'PVP' | 'DUEL' | 'STRENGTH' | 'GUILD';
 
@@ -232,7 +233,7 @@ export async function getUserRankingsAction(userId: string): Promise<{
       medalCount: { gold, silver, bronze },
     };
   } catch (error) {
-    console.error('Error fetching user rankings:', error);
+    logError('Error fetching user rankings:', error);
     return { globalRanks: [], medalCount: { gold: 0, silver: 0, bronze: 0 } };
   }
 }

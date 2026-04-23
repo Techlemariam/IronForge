@@ -3,6 +3,7 @@
 import prisma from '@/lib/prisma';
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
+import { logger, logError } from '@/lib/logger';
 
 export type LootResult = {
   success: boolean;
@@ -26,7 +27,7 @@ export async function simulateLootDrop(): Promise<LootResult> {
   }
 
   try {
-    console.log(`🎰 Simulating Drop for ${user.id}...`);
+    logger.info(`🎰 Simulating Drop for ${user.id}...`);
 
     // --- Inlined Loot Logic ---
     const dropChance = 95; // Fixed high chance for testing
@@ -85,7 +86,7 @@ export async function simulateLootDrop(): Promise<LootResult> {
       },
     };
   } catch (error) {
-    console.error('Loot Action Error:', error);
+    logError('Loot Action Error:', error);
     return { success: false, message: 'System malfunction.' };
   }
 }

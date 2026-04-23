@@ -1,6 +1,7 @@
 'use server';
 
 import { prisma } from '@/lib/prisma';
+import { logger, logError } from '@/lib/logger';
 
 interface TitanStats {
   userId: string;
@@ -92,7 +93,7 @@ async function getTitanStats(userId: string): Promise<TitanStats | null> {
       },
     };
   } catch (error) {
-    console.error('Error getting titan stats:', error);
+    logError('Error getting titan stats:', error);
     return null;
   }
 }
@@ -178,7 +179,7 @@ export async function compareTitansAction(
       overallScore: { user: userScore, opponent: opponentScore },
     };
   } catch (error) {
-    console.error('Error comparing titans:', error);
+    logError('Error comparing titans:', error);
     return null;
   }
 }

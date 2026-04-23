@@ -1,6 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
+import { logger, logError } from '@/lib/logger';
 
 interface ReferralReward {
   type: 'REFERRER' | 'REFERRED';
@@ -45,7 +46,7 @@ export async function getReferralStatsAction(_userId: string): Promise<{
       },
     };
   } catch (error) {
-    console.error('Error getting referral stats:', error);
+    logError('Error getting referral stats:', error);
     return {
       code: '',
       referralCount: 0,
@@ -73,7 +74,7 @@ export async function applyReferralCodeAction(
     }
 
     // In production, look up referrer and validate
-    console.log(`Applied referral code ${referralCode} for user ${newUserId}`);
+    logger.info(`Applied referral code ${referralCode} for user ${newUserId}`);
 
     const referrerReward: ReferralReward = {
       type: 'REFERRER',
@@ -92,7 +93,7 @@ export async function applyReferralCodeAction(
       referredReward,
     };
   } catch (error) {
-    console.error('Error applying referral code:', error);
+    logError('Error applying referral code:', error);
     return { success: false };
   }
 }

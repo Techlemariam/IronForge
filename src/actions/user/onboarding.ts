@@ -4,6 +4,7 @@ import prisma from '@/lib/prisma';
 import { ProgressionService } from '@/services/progression';
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
+import { logger, logError } from '@/lib/logger';
 
 export async function completeOnboardingAction() {
   const supabase = await createClient();
@@ -28,7 +29,7 @@ export async function completeOnboardingAction() {
     revalidatePath('/'); // Refresh page to update client state if needed
     return { success: true, newState };
   } catch (error) {
-    console.error('Failed to complete onboarding:', error);
+    logError('Failed to complete onboarding:', error);
     return { success: false, message: 'Failed to record completion' };
   }
 }

@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { NotificationService } from '@/services/notifications';
 import * as Sentry from '@sentry/nextjs';
+import { logger, logError } from '@/lib/logger';
 
 export async function GET(request: Request) {
   return await Sentry.withMonitor('titan-heartbeat', async () => {
@@ -76,7 +77,7 @@ export async function GET(request: Request) {
         recoveredCount: recovered.count,
       });
     } catch (error) {
-      console.error('Heartbeat Error:', error);
+      logError('Heartbeat Error:', error);
       return NextResponse.json(
         { success: false, error: 'Heartbeat skipped a beat' },
         { status: 500 }

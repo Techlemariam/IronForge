@@ -2,6 +2,7 @@ import { prisma } from '@/lib/prisma';
 import { PocketCastsClient } from '@/services/pocketcasts';
 import { createClient } from '@/utils/supabase/server';
 import { type NextRequest, NextResponse } from 'next/server';
+import { logger, logError } from '@/lib/logger';
 
 export async function POST(req: NextRequest) {
   const supabase = await createClient();
@@ -33,7 +34,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ success: true });
   } catch (error: any) {
-    console.error('[Podcast Login Error]:', error.message);
+    logError('[Podcast Login Error]:', error.message);
     return NextResponse.json(
       { error: error.message || 'Failed to log in to Pocket Casts' },
       { status: 500 }

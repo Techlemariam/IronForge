@@ -1,6 +1,7 @@
 import { authActionClient } from '@/lib/safe-action';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
+import { logger, logError } from '@/lib/logger';
 
 type MaterialRarity = 'COMMON' | 'UNCOMMON' | 'RARE' | 'EPIC' | 'LEGENDARY';
 type RecipeCategory = 'WEAPON' | 'ARMOR' | 'CONSUMABLE' | 'MATERIAL' | 'COSMETIC';
@@ -196,7 +197,7 @@ export const craftItemAction = authActionClient
       }
 
       const criticalSuccess = Math.random() < 0.1;
-      console.log(`Crafted ${recipe.name}${criticalSuccess ? ' (CRITICAL!)' : ''}`);
+      logger.info(`Crafted ${recipe.name}${criticalSuccess ? ' (CRITICAL!)' : ''}`);
       revalidatePath('/crafting');
 
       return {
@@ -209,7 +210,7 @@ export const craftItemAction = authActionClient
           : `Successfully crafted ${recipe.name}`,
       };
     } catch (error) {
-      console.error('Error crafting:', error);
+      logError('Error crafting:', error);
       return { success: false, message: 'Crafting failed' };
     }
   });

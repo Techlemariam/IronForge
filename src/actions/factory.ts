@@ -17,18 +17,18 @@ async function verifyFactoryAuth() {
   } = await supabase.auth.getUser();
 
   if (error) {
-    console.error('Factory Auth Error:', error.message);
+    logError('Factory Auth Error:', error.message);
     return false;
   }
 
   if (!user?.id || !user.email) {
-    console.warn('Factory Auth: No valid user session found');
+    logger.warn('Factory Auth: No valid user session found');
     return false;
   }
 
   const adminEmailsEnv = process.env.ADMIN_EMAILS;
   if (!adminEmailsEnv) {
-    console.warn('Factory Auth: ADMIN_EMAILS env var is not set. Denying all factory operations.');
+    logger.warn('Factory Auth: ADMIN_EMAILS env var is not set. Denying all factory operations.');
     return false;
   }
 
@@ -36,13 +36,14 @@ async function verifyFactoryAuth() {
   const isAuthorized = user.email.endsWith('@ironforge.rpg') || adminEmails.includes(user.email);
 
   if (!isAuthorized) {
-    console.warn('Factory Auth: User is not authorized for factory operations');
+    logger.warn('Factory Auth: User is not authorized for factory operations');
   }
 
   return isAuthorized;
 }
 
 import type { FactoryStatusData } from '@/lib/schemas/factory';
+import { logger, logError } from '@/lib/logger';
 
 /**
  * Fetches the current status of all factory stations.
@@ -98,14 +99,14 @@ export async function getFactoryStatus(): Promise<(FactoryStatusData & { costSEK
             const fileContent = await fs.readFile(filePath, 'utf8');
             stationStatusFiles[stationName] = JSON.parse(fileContent) as Record<string, unknown>;
           } catch (e: any) {
-            console.error(`Failed to read or parse status file ${filePath}:`, e);
+            logError(`Failed to read or parse status file ${filePath}:`, e);
           }
         }
       }
     } catch (e: any) {
       // The factory directory might not exist, which is not a critical error.
       if (e.code !== 'ENOENT') {
-        console.error('Failed to read factory status directory:', e);
+        logError('Failed to read factory status directory:', e);
       }
     }
 
@@ -132,7 +133,7 @@ export async function getFactoryStatus(): Promise<(FactoryStatusData & { costSEK
       };
     });
   } catch (error) {
-    console.error('Failed to fetch factory status:', error);
+    logError('Failed to fetch factory status:', error);
     return [];
   }
 }
@@ -153,7 +154,7 @@ export async function updateFactoryRecovery(data: any | null) {
     });
     return { success: true };
   } catch (error) {
-    console.error('Failed to update factory recovery:', error);
+    logError('Failed to update factory recovery:', error);
     return { success: false, error };
   }
 }
@@ -168,7 +169,7 @@ export async function getFactoryTasks(): Promise<any[]> {
       take: 20,
     });
   } catch (error) {
-    console.error('Failed to fetch factory tasks:', error);
+    logError('Failed to fetch factory tasks:', error);
     return [];
   }
 }
@@ -187,7 +188,7 @@ export async function addFactoryTask(description: string, source = 'DISCORD', me
     });
     return { success: true, task };
   } catch (error) {
-    console.error('Failed to add factory task:', error);
+    logError('Failed to add factory task:', error);
     return { success: false, error };
   }
 }
@@ -228,7 +229,7 @@ export async function getFactoryStatsAction() {
 
     return { success: true, stats: { ...stats, activeTasks } };
   } catch (error) {
-    console.error('Failed to fetch factory stats:', error);
+    logError('Failed to fetch factory stats:', error);
     return { success: false, error: 'Failed to fetch stats' };
   }
 }
@@ -239,7 +240,7 @@ export async function getBacklogItemsAction() {
     const items = await BacklogService.getItems();
     return { success: true, items };
   } catch (error) {
-    console.error('Failed to fetch backlog items:', error);
+    logError('Failed to fetch backlog items:', error);
     return { success: false, error: 'Failed to fetch backlog' };
   }
 }
@@ -251,7 +252,7 @@ export async function startBacklogTaskAction(itemTitle: string, source: string) 
       type: 'BACKLOG_PROMOTION',
     });
   } catch (error) {
-    console.error('Failed to start backlog task:', error);
+    logError('Failed to start backlog task:', error);
     return { success: false, error: 'Failed to start task' };
   }
 }

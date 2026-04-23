@@ -1,6 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
+import { logger } from '@/lib/logger';
 
 interface PrestigeLevel {
   level: number;
@@ -133,7 +134,7 @@ export async function performPrestigeAction(userId: string): Promise<{
   const newLevel = status.currentPrestige + 1;
   const newPrestige = PRESTIGE_LEVELS.find((p) => p.level === newLevel);
 
-  console.log(`User ${userId} prestiged to level ${newLevel}`);
+  logger.info(`User ${userId} prestiged to level ${newLevel}`);
   revalidatePath('/prestige');
 
   return {

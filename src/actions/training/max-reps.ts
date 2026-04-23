@@ -3,6 +3,7 @@
 
 import { getSession } from '@/lib/auth';
 import { MaxRepsService } from '@/services/game/MaxRepsService';
+import { logger, logError } from '@/lib/logger';
 
 interface MaxRepsResult {
   success: boolean;
@@ -34,7 +35,7 @@ export async function getMaxRepsAction(
 
     return { success: true, maxReps };
   } catch (error) {
-    console.error('Failed to get max reps:', error);
+    logError('Failed to get max reps:', error);
     return { success: false, error: 'Failed to fetch PR' };
   }
 }
@@ -59,7 +60,7 @@ export async function checkPRAction(
 
     return { success: true, isPR, previousMax };
   } catch (error) {
-    console.error('Failed to check PR:', error);
+    logError('Failed to check PR:', error);
     return { success: false, error: 'Failed to check PR' };
   }
 }
@@ -78,7 +79,7 @@ export async function getPRHistoryAction(exerciseId: string, weight?: number) {
 
     return { success: true, history };
   } catch (error) {
-    console.error('Failed to get PR history:', error);
+    logError('Failed to get PR history:', error);
     return { success: false, error: 'Failed to fetch history' };
   }
 }

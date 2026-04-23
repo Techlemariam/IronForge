@@ -2,6 +2,7 @@
 
 import { prisma } from '@/lib/prisma';
 import { calculateVolumeL3, wellnessToRecoveryFactor } from '@/utils/volumeCalculatorEnhanced';
+import { logger, logError } from '@/lib/logger';
 
 type TrainingPhase = 'ACCUMULATION' | 'INTENSIFICATION' | 'REALIZATION' | 'DELOAD';
 type ProgramGoal = 'HYPERTROPHY' | 'STRENGTH' | 'PEAKING' | 'MAINTENANCE';
@@ -192,7 +193,7 @@ export async function generatePeriodizationPlanAction(
       recommendations,
     };
   } catch (error) {
-    console.error('Error generating periodization plan:', error);
+    logError('Error generating periodization plan:', error);
     throw error;
   }
 }

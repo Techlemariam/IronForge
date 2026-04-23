@@ -1,6 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import { TerritoryService } from '@/services/game/TerritoryService';
 import { type NextRequest, NextResponse } from 'next/server';
+import { logger, logError } from '@/lib/logger';
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 300; // 5 minutes for weekly heavy tasks
@@ -84,7 +85,7 @@ export async function GET(request: NextRequest) {
         }
         recalculated++;
       } catch (e) {
-        console.error(`Power rating failed for ${titan.userId}`, e);
+        logError(`Power rating failed for ${titan.userId}`, e);
       }
     }
     report.tasks.powerRating = { success: true, processed: titans.length, recalculated };

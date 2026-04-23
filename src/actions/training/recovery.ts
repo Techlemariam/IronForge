@@ -1,6 +1,7 @@
 'use server';
 
 import { checkOvertrainingStatusAction } from '@/actions/training/overtraining';
+import { logger, logError } from '@/lib/logger';
 
 interface RecoveryLockStatus {
   isLocked: boolean;
@@ -92,7 +93,7 @@ export async function checkRecoveryLockAction(userId: string): Promise<RecoveryL
       recommendations: recommendations.length > 0 ? recommendations : ['Train freely!'],
     };
   } catch (error) {
-    console.error('Error checking recovery lock:', error);
+    logError('Error checking recovery lock:', error);
     return {
       isLocked: false,
       canOverride: true,
@@ -111,7 +112,7 @@ export async function overrideRecoveryLockAction(
 ): Promise<{ success: boolean; message: string }> {
   try {
     // Log the override
-    console.log(`Recovery lock override: userId=${userId}, reason=${reason}`);
+    logger.info(`Recovery lock override: userId=${userId}, reason=${reason}`);
 
     // In production, you might want to:
     // 1. Store this in a log table
@@ -123,7 +124,7 @@ export async function overrideRecoveryLockAction(
       message: 'Lock overridden. Please train responsibly.',
     };
   } catch (error) {
-    console.error('Error overriding recovery lock:', error);
+    logError('Error overriding recovery lock:', error);
     return {
       success: false,
       message: 'Failed to override lock.',

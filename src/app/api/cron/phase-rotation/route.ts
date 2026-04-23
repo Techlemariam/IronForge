@@ -1,6 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import { WardensService } from '@/services/WardensService';
 import { type NextRequest, NextResponse } from 'next/server';
+import { logger, logError } from '@/lib/logger';
 
 export const dynamic = 'force-dynamic'; // static by default, unless reading the request
 
@@ -57,14 +58,14 @@ export async function GET(req: NextRequest) {
         // Full rotation logic typically requires Wellness Data which we don't have here efficiently.
         // So we strictly maintain the "Phase Clock".
       } catch (e) {
-        console.error(`Failed to rotate user ${record.userId}`, e);
+        logError(`Failed to rotate user ${record.userId}`, e);
         report.errors++;
       }
     }
 
     return NextResponse.json({ success: true, report });
   } catch (error) {
-    console.error('Cron job failed', error);
+    logError('Cron job failed', error);
     return new NextResponse('Internal Server Error', { status: 500 });
   }
 }

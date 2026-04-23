@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { NextResponse } from 'next/server';
+import { logger, logError } from '@/lib/logger';
 
 function getHevyApiKey(request: Request) {
   return request.headers.get('x-hevy-api-key');
@@ -41,7 +42,7 @@ export async function GET(request: Request) {
     }
     return NextResponse.json({ exercise_templates: allExercises });
   } catch (error: any) {
-    console.error('Hevy Codex Assembly Error:', error.response?.data || error.message);
+    logError('Hevy Codex Assembly Error:', error.response?.data || error.message);
     return NextResponse.json(
       {
         error: 'Could not assemble the Exercise Codex.',

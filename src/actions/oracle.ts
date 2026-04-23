@@ -3,6 +3,7 @@
 import prisma from '@/lib/prisma';
 import { GeminiService } from '@/services/gemini';
 import { revalidatePath } from 'next/cache';
+import { logger, logError } from '@/lib/logger';
 
 // --- Types ---
 
@@ -73,7 +74,7 @@ export async function chatWithOracleAction(userId: string, message: string) {
     revalidatePath('/oracle');
     return { success: true, response: responseText };
   } catch (error: any) {
-    console.error('Oracle Chat Error:', error);
+    logError('Oracle Chat Error:', error);
     return { success: false, error: error.message };
   }
 }

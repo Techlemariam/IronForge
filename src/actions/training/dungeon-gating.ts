@@ -1,6 +1,7 @@
 'use server';
 
 import { prisma } from '@/lib/prisma';
+import { logger, logError } from '@/lib/logger';
 
 interface DungeonRequirement {
   dungeonId: string;
@@ -106,7 +107,7 @@ export async function checkDungeonUnlockAction(
       },
     };
   } catch (error) {
-    console.error('Error checking dungeon unlock:', error);
+    logError('Error checking dungeon unlock:', error);
     return null;
   }
 }
@@ -153,7 +154,7 @@ export async function getAllDungeonsAction(userId: string): Promise<DungeonRequi
       },
     }));
   } catch (error) {
-    console.error('Error getting all dungeons:', error);
+    logError('Error getting all dungeons:', error);
     return [];
   }
 }

@@ -2,6 +2,7 @@
 
 import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
+import { logger, logError } from '@/lib/logger';
 
 export interface CardioSessionData {
   type: 'RUN' | 'CYCLE' | 'HIIT';
@@ -14,7 +15,7 @@ export interface CardioSessionData {
 
 export async function saveCardioSessionAction(userId: string, data: CardioSessionData) {
   try {
-    console.log('Saving Cardio Session:', data);
+    logger.info('Saving Cardio Session:', data);
 
     // 1. Generic "Cardio Layout" Exercise Mapping
     // In a real system, we'd look up "Treadmill Run" or "Zwift Cycle"
@@ -76,7 +77,7 @@ export async function saveCardioSessionAction(userId: string, data: CardioSessio
       const bpXp = Math.ceil(totalXp * 0.5);
       if (bpXp > 0) await addBattlePassXpAction(userId, bpXp);
     } catch (e) {
-      console.error('BP Error', e);
+      logError('BP Error', e);
     }
 
     // 6. Refill Kinetic (Energy)
@@ -88,7 +89,7 @@ export async function saveCardioSessionAction(userId: string, data: CardioSessio
     revalidatePath('/dashboard');
     return { success: true, xp: totalXp, gold: goldEarned };
   } catch (error) {
-    console.error('Save Cardio Failed:', error);
+    logError('Save Cardio Failed:', error);
     return { success: false, error: 'Failed to save session' };
   }
 }

@@ -2,6 +2,7 @@
 
 // import { prisma } from "@/lib/prisma";
 import { revalidatePath } from 'next/cache';
+import { logger } from '@/lib/logger';
 
 type CompanionType = 'WOLF' | 'PHOENIX' | 'GOLEM' | 'DRAGON' | 'SPIRIT';
 type CompanionRarity = 'COMMON' | 'UNCOMMON' | 'RARE' | 'EPIC' | 'LEGENDARY';
@@ -186,7 +187,7 @@ export async function feedCompanionAction(
   companionId: string,
   foodType: string
 ): Promise<{ success: boolean; newBond: number }> {
-  console.log(`Fed companion ${companionId} with ${foodType}`);
+  logger.info(`Fed companion ${companionId} with ${foodType}`);
   revalidatePath('/companion');
   return { success: true, newBond: 80 };
 }
@@ -198,7 +199,7 @@ export async function trainCompanionAction(
   _userId: string,
   companionId: string
 ): Promise<{ success: boolean; xpGained: number; leveledUp: boolean }> {
-  console.log(`Trained companion ${companionId}`);
+  logger.info(`Trained companion ${companionId}`);
   revalidatePath('/companion');
   return { success: true, xpGained: 100, leveledUp: false };
 }
@@ -210,7 +211,7 @@ export async function setActiveCompanionAction(
   _userId: string,
   companionId: string
 ): Promise<{ success: boolean }> {
-  console.log(`Set active companion: ${companionId}`);
+  logger.info(`Set active companion: ${companionId}`);
   revalidatePath('/companion');
   return { success: true };
 }
@@ -224,7 +225,7 @@ export async function summonCompanionAction(
   const types: CompanionType[] = ['WOLF', 'PHOENIX', 'GOLEM', 'DRAGON', 'SPIRIT'];
   const randomType = types[Math.floor(Math.random() * types.length)];
   // In production, implement gacha rates
-  console.log(`Summoned new ${randomType} companion`);
+  logger.info(`Summoned new ${randomType} companion`);
   revalidatePath('/companion');
   return { success: true };
 }

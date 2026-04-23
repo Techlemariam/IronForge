@@ -2,6 +2,7 @@
 
 import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
+import { logger, logError } from '@/lib/logger';
 
 type QuestType = 'TOTAL_WORKOUTS' | 'TOTAL_VOLUME' | 'BOSS_KILLS' | 'COMBINED_STREAK';
 
@@ -86,7 +87,7 @@ export async function generateGuildQuestsAction(guildId: string): Promise<GuildQ
 
     return quests;
   } catch (error) {
-    console.error('Error generating guild quests:', error);
+    logError('Error generating guild quests:', error);
     return [];
   }
 }
@@ -103,14 +104,14 @@ export async function updateQuestProgressAction(
   try {
     // In production, this would update the database
     // For MVP, we'll return a simulated response
-    console.log(
+    logger.info(
       `Quest progress: guild=${guildId}, quest=${questId}, user=${userId}, +${contribution}`
     );
 
     revalidatePath('/guild');
     return { success: true, questCompleted: false };
   } catch (error) {
-    console.error('Error updating quest progress:', error);
+    logError('Error updating quest progress:', error);
     return { success: false, questCompleted: false };
   }
 }
@@ -124,7 +125,7 @@ export async function getGuildQuestsAction(guildId: string): Promise<GuildQuest[
     // For MVP, return sample quests
     return generateGuildQuestsAction(guildId);
   } catch (error) {
-    console.error('Error fetching guild quests:', error);
+    logError('Error fetching guild quests:', error);
     return [];
   }
 }
@@ -158,7 +159,7 @@ export async function claimQuestRewardsAction(
       message: `Rewards distributed to ${members.length} members!`,
     };
   } catch (error) {
-    console.error('Error claiming quest rewards:', error);
+    logError('Error claiming quest rewards:', error);
     return { success: false, message: 'Failed to claim rewards' };
   }
 }

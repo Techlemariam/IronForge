@@ -3,7 +3,7 @@ description: "Unified Brotherhood Status Dashboard (Level 10)"
 command: "/status"
 category: "monitoring"
 trigger: "manual"
-version: "10.0.0"
+version: "11.0.0"
 telemetry: "enabled"
 primary_agent: "@manager"
 domain: "meta"
@@ -12,7 +12,7 @@ domain: "meta"
 # 🏥 Panopticon: System Status (IronForge)
 
 **Role:** The Observer.
-**Goal:** 360° Visibility across Local, Remote, and Autonomous layers.
+**Goal:** 360° Visibility across Local, Remote, Autonomous, and Factory layers.
 
 ---
 
@@ -63,6 +63,17 @@ curl -I https://ironforge-app.sslip.io/api/health
 doppler run -- pwsh scripts/ci/test-discord-webhook.ps1
 ```
 
+### 5. 🏭 Factory Health (The Assembly Line)
+Live status of the Antigravity Factory — mode, active fabrication, queue, and debt.
+
+```powershell
+# // turbo
+powershell scripts/factory-manager.ps1 STATUS
+```
+
+> [!TIP]
+> For full factory operations (design, fabrication, verify, ship), use `/factory`.
+
 ---
 
 ## 🩺 Triage Logic
@@ -70,3 +81,6 @@ doppler run -- pwsh scripts/ci/test-discord-webhook.ps1
 - If **Local Health < 100/100** -> Block `/deploy`.
 - If **Remote CI Failing** -> Run `/ci-doctor`.
 - If **Jules Stale** -> Run `/jules-status --cleanup`.
+- If **Factory Mode = OFF** -> Investigate or run `factory-manager.ps1 SET-MODE MANUAL`.
+- If **Open Debt > 10** -> Prioritize `/debt-attack`.
+

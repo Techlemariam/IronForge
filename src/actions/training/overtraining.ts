@@ -1,6 +1,7 @@
 'use server';
 
 import { prisma } from '@/lib/prisma';
+import { logger, logError } from '@/lib/logger';
 
 // Constants for overtraining detection
 const DAILY_XP_CAP = 2000;
@@ -90,7 +91,7 @@ export async function checkOvertrainingStatusAction(userId: string): Promise<Ove
       warnings,
     };
   } catch (error) {
-    console.error('Error checking overtraining status:', error);
+    logError('Error checking overtraining status:', error);
     return {
       isCapped: false,
       isFatigued: false,

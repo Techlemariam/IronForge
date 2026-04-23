@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma';
 import { mapStravaActivityToCardioLog } from '@/lib/strava';
 import axios from 'axios';
 import { type NextRequest, NextResponse } from 'next/server';
+import { logger, logError } from '@/lib/logger';
 
 // Constants
 const STRAVA_VERIFY_TOKEN = process.env.STRAVA_VERIFY_TOKEN || 'IRONFORGE_STRAVA_VERIFY';
@@ -20,7 +21,7 @@ export async function GET(req: NextRequest) {
   const challenge = searchParams.get('hub.challenge');
 
   if (mode === 'subscribe' && token === STRAVA_VERIFY_TOKEN) {
-    console.log('Strava Webhook Verified');
+    logger.info('Strava Webhook Verified');
     return NextResponse.json({ 'hub.challenge': challenge });
   }
 
@@ -34,7 +35,7 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     const event = await req.json();
-    console.log('Strava Webhook Event:', event);
+    logger.info('Strava Webhook Event:', event);
 
     // event structure: { object_type: 'activity', object_id: 123, aspect_type: 'create', owner_id: 12345, updates: {} }
 
@@ -77,7 +78,7 @@ export async function POST(req: NextRequest) {
               },
             });
           } catch (e) {
-            console.error('Failed to refresh token in webhook', e);
+            logError('Failed to refresh token in webhook', e);
             return NextResponse.json({ status: 'ok' }); // Ack anyway
           }
         }
@@ -122,7 +123,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ status: 'ok' });
   } catch (error) {
-    console.error('Webhook Handler Error:', error);
+    logError('Webhook Handler Error:', error);
     return new NextResponse('Internal Server Error', { status: 500 });
   }
 }

@@ -3,6 +3,7 @@
 import { getSession } from '@/lib/auth';
 import { PowerRatingService } from '@/services/game/PowerRatingService';
 import { revalidatePath } from 'next/cache';
+import { logger, logError } from '@/lib/logger';
 
 /**
  * Recalculate the user's Power Score.
@@ -26,7 +27,7 @@ export async function recalculatePowerScoreAction() {
       tier: PowerRatingService.getTierDetails(result.powerRating).name,
     };
   } catch (error: any) {
-    console.error('Failed to recalculate power score:', error);
+    logError('Failed to recalculate power score:', error);
     return { success: false, error: error.message || 'Failed to recalculate power score' };
   }
 }

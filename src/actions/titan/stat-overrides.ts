@@ -3,6 +3,7 @@
 import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
+import { logger, logError } from '@/lib/logger';
 
 const StatOverrideSchema = z.object({
   currentHp: z.number().min(0).max(1000).optional(),
@@ -79,7 +80,7 @@ export async function overrideTitanStatsAction(
     });
 
     // Log the override for audit trail
-    console.log(`Stat override: userId=${userId}, changes=${JSON.stringify(updateData)}`);
+    logger.info(`Stat override: userId=${userId}, changes=${JSON.stringify(updateData)}`);
 
     revalidatePath('/dashboard');
 
@@ -93,7 +94,7 @@ export async function overrideTitanStatsAction(
     if (error instanceof z.ZodError) {
       return { success: false, message: `Validation error: ${error.message}` };
     }
-    console.error('Error overriding stats:', error);
+    logError('Error overriding stats:', error);
     return { success: false, message: 'Failed to override stats' };
   }
 }
@@ -138,7 +139,7 @@ export async function resetTitanStatsAction(userId: string): Promise<OverrideRes
       },
     };
   } catch (error) {
-    console.error('Error resetting titan:', error);
+    logError('Error resetting titan:', error);
     return { success: false, message: 'Failed to reset titan' };
   }
 }

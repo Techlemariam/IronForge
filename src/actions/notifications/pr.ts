@@ -1,6 +1,7 @@
 'use server';
 
 import { prisma } from '@/lib/prisma';
+import { logger, logError } from '@/lib/logger';
 
 interface PrNotification {
   type: 'NEW_PR' | 'APPROACHING_PR' | 'PR_STREAK' | 'MILESTONE_PR';
@@ -83,7 +84,7 @@ export async function checkForPrNotificationsAction(
 
     return null;
   } catch (error) {
-    console.error('Error checking for PR notifications:', error);
+    logError('Error checking for PR notifications:', error);
     return null;
   }
 }
@@ -110,7 +111,7 @@ export async function getRecentPrsAction(userId: string, limit = 10): Promise<Pr
       };
     });
   } catch (error) {
-    console.error('Error getting recent PRs:', error);
+    logError('Error getting recent PRs:', error);
     return [];
   }
 }
@@ -123,7 +124,7 @@ export async function sendPrPushNotificationAction(
   notification: PrNotification
 ): Promise<{ success: boolean }> {
   try {
-    console.log(`Push notification: user=${userId}, message=${notification.message}`);
+    logger.info(`Push notification: user=${userId}, message=${notification.message}`);
 
     // In production:
     // 1. Get user's push token
@@ -132,7 +133,7 @@ export async function sendPrPushNotificationAction(
 
     return { success: true };
   } catch (error) {
-    console.error('Error sending PR notification:', error);
+    logError('Error sending PR notification:', error);
     return { success: false };
   }
 }
@@ -169,7 +170,7 @@ export async function getPrStatsAction(userId: string): Promise<{
       exerciseWithMostPrs: 'Bench Press', // Would aggregate from history
     };
   } catch (error) {
-    console.error('Error getting PR stats:', error);
+    logError('Error getting PR stats:', error);
     return {
       totalPrs: 0,
       prsThisWeek: 0,

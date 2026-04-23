@@ -2,6 +2,7 @@
 
 import { getSession } from '@/lib/auth';
 import { GarminService, type GarminWellnessData } from '@/services/bio/GarminService';
+import { logger, logError } from '@/lib/logger';
 
 export async function getGarminWellnessAction(): Promise<GarminWellnessData | null> {
   try {
@@ -10,7 +11,7 @@ export async function getGarminWellnessAction(): Promise<GarminWellnessData | nu
 
     return await GarminService.getTitanWellness(session.user.id);
   } catch (error) {
-    console.error('Error in getGarminWellnessAction:', error);
+    logError('Error in getGarminWellnessAction:', error);
     return null;
   }
 }

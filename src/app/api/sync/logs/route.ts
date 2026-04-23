@@ -1,6 +1,7 @@
 import { getOrCreateUserAction } from '@/actions/user-actions';
 import { LogService } from '@/services/server/LogService';
 import { NextResponse } from 'next/server';
+import { logger, logError } from '@/lib/logger';
 
 export async function POST(request: Request) {
   try {
@@ -32,7 +33,7 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: 'Invalid action' }, { status: 400 });
     }
   } catch (error) {
-    console.error('Log API Error:', error);
+    logError('Log API Error:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

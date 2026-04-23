@@ -1,5 +1,6 @@
 import { SeasonService } from '@/services/pvp/SeasonService';
 import { type NextRequest, NextResponse } from 'next/server';
+import { logger, logError } from '@/lib/logger';
 
 export const dynamic = 'force-dynamic';
 
@@ -35,7 +36,7 @@ export async function GET(request: NextRequest) {
       message: 'Season transitioned successfully',
     });
   } catch (error) {
-    console.error('Season transition error:', error);
+    logError('Season transition error:', error);
     return NextResponse.json(
       { success: false, message: 'Season transition failed' },
       { status: 500 }

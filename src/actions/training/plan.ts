@@ -3,6 +3,7 @@
 import { PlannerService } from '@/services/planner';
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
+import { logger, logError } from '@/lib/logger';
 
 /**
  * Server Action to manually trigger weekly plan generation for the current user.
@@ -18,13 +19,13 @@ export async function generateWeeklyPlanAction() {
   }
 
   try {
-    console.log(`Action: Triggering plan generation for ${user.id}`);
+    logger.info(`Action: Triggering plan generation for ${user.id}`);
     const plan = await PlannerService.triggerWeeklyPlanGeneration(user.id);
 
     revalidatePath('/dashboard');
     return { success: true, plan };
   } catch (error: any) {
-    console.error('Failed to generate plan:', error);
+    logError('Failed to generate plan:', error);
     return { success: false, error: error.message };
   }
 }

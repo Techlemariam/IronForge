@@ -2,6 +2,7 @@
 
 import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
+import { logger, logError } from '@/lib/logger';
 
 interface DailyReward {
   day: number;
@@ -103,7 +104,7 @@ export async function getLoginRewardStatusAction(userId: string): Promise<LoginR
       upcomingRewards,
     };
   } catch (error) {
-    console.error('Error getting login reward status:', error);
+    logError('Error getting login reward status:', error);
     return {
       currentStreak: 0,
       longestStreak: 0,
@@ -148,7 +149,7 @@ export async function claimLoginRewardAction(userId: string): Promise<{
       },
     });
 
-    console.log(`Claimed login reward: day ${newStreak}, +${reward.xp} XP, +${reward.gold} Gold`);
+    logger.info(`Claimed login reward: day ${newStreak}, +${reward.xp} XP, +${reward.gold} Gold`);
     revalidatePath('/');
 
     return {
@@ -160,7 +161,7 @@ export async function claimLoginRewardAction(userId: string): Promise<{
         : `Day ${newStreak} reward claimed!`,
     };
   } catch (error) {
-    console.error('Error claiming login reward:', error);
+    logError('Error claiming login reward:', error);
     return { success: false, message: 'Failed to claim reward' };
   }
 }

@@ -1,5 +1,6 @@
 import { addFactoryTask } from '@/actions/factory';
 import { NextResponse } from 'next/server';
+import { logger, logError } from '@/lib/logger';
 
 export async function POST(request: Request) {
   const authHeader = request.headers.get('authorization');
@@ -20,7 +21,7 @@ export async function POST(request: Request) {
     const result = await addFactoryTask(description, source || 'DISCORD', metadata);
     return NextResponse.json(result);
   } catch (error) {
-    console.error('API Error in /api/factory/tasks:', error);
+    logError('API Error in /api/factory/tasks:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

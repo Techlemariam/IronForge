@@ -1,6 +1,7 @@
 'use server';
 
 import { prisma } from '@/lib/prisma';
+import { logger, logError } from '@/lib/logger';
 
 type ExportFormat = 'CSV' | 'JSON';
 
@@ -83,7 +84,7 @@ export async function exportWorkoutHistoryAction(
 
     return { success: true, data, filename };
   } catch (error) {
-    console.error('Error exporting workout history:', error);
+    logError('Error exporting workout history:', error);
     return { success: false, error: 'Failed to export data.' };
   }
 }
@@ -140,7 +141,7 @@ export async function getExportPreviewAction(
 
     return { rows, totalCount: count };
   } catch (error) {
-    console.error('Error getting export preview:', error);
+    logError('Error getting export preview:', error);
     return { rows: [], totalCount: 0 };
   }
 }
@@ -191,7 +192,7 @@ export async function exportFullAccountDataAction(
       data: JSON.stringify(fullExport, null, 2),
     };
   } catch (error) {
-    console.error('Error exporting full account:', error);
+    logError('Error exporting full account:', error);
     return { success: false, error: 'Failed to export account data.' };
   }
 }

@@ -6,6 +6,7 @@ export const maxDuration = 300; // 5 minutes max for Cron Jobs (Pro plan limits 
 export const dynamic = 'force-dynamic';
 
 import * as Sentry from '@sentry/nextjs';
+import { logger, logError } from '@/lib/logger';
 
 export async function GET(request: NextRequest) {
   return await Sentry.withMonitor('generate-plans', async () => {
@@ -19,7 +20,7 @@ export async function GET(request: NextRequest) {
     }
 
     try {
-      console.log('Cron: Starting Weekly Plan Generation...');
+      logger.info('Cron: Starting Weekly Plan Generation...');
 
       // 2. Fetch Eligible Users
       // Ideally only users with active subscriptions or who have logged in recently
@@ -31,7 +32,7 @@ export async function GET(request: NextRequest) {
         select: { id: true, heroName: true },
       });
 
-      console.log(`Cron: Found ${users.length} users to process.`);
+      logger.info(`Cron: Found ${users.length} users to process.`);
 
       const results = [];
       const errors = [];
@@ -42,11 +43,11 @@ export async function GET(request: NextRequest) {
       // Sequential is safer for rate limits.
       for (const user of users) {
         try {
-          console.log(`Cron: Processing user ${user.heroName} (${user.id})...`);
+          logger.info(`Cron: Processing user ${user.heroName} (${user.id})...`);
           await PlannerService.triggerWeeklyPlanGeneration(user.id);
           results.push(user.id);
         } catch (e: any) {
-          console.error(`Cron: Failed for user ${user.id}:`, e);
+          logError(`Cron: Failed for user ${user.id}:`, e);
           errors.push({ userId: user.id, error: e.message });
         }
       }
@@ -58,7 +59,7 @@ export async function GET(request: NextRequest) {
         errors,
       });
     } catch (error: any) {
-      console.error('Cron: Critical failure:', error);
+      logError('Cron: Critical failure:', error);
       return new NextResponse(`Internal Error: ${error.message}`, {
         status: 500,
       });

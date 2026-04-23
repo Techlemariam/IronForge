@@ -1,6 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
+import { logger } from '@/lib/logger';
 
 type ResourceType = 'GOLD' | 'ENERGY' | 'MATERIALS' | 'XP';
 
@@ -114,7 +115,7 @@ export async function collectResourcesAction(
   amountCollected: number;
   resourceType: ResourceType;
 }> {
-  console.log(`Collected resources from ${generatorId}`);
+  logger.info(`Collected resources from ${generatorId}`);
   revalidatePath('/resources');
 
   return {
@@ -130,7 +131,7 @@ export async function collectResourcesAction(
 export async function collectAllResourcesAction(
   userId: string
 ): Promise<Record<ResourceType, number>> {
-  console.log(`Collected all resources for ${userId}`);
+  logger.info(`Collected all resources for ${userId}`);
   revalidatePath('/resources');
 
   return {
@@ -148,7 +149,7 @@ export async function upgradeGeneratorAction(
   _userId: string,
   generatorId: string
 ): Promise<{ success: boolean; newLevel: number; newProduction: number }> {
-  console.log(`Upgraded generator ${generatorId}`);
+  logger.info(`Upgraded generator ${generatorId}`);
   revalidatePath('/resources');
 
   return {

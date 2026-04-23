@@ -1,6 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
+import { logger, logError } from '@/lib/logger';
 
 interface WorkoutTag {
   id: string;
@@ -42,13 +43,13 @@ export async function addWorkoutNoteAction(
   try {
     const noteId = `note-${userId}-${Date.now()}`;
 
-    console.log(`Added workout note: ${note.substring(0, 50)}... tags: ${tags.join(', ')}`);
+    logger.info(`Added workout note: ${note.substring(0, 50)}... tags: ${tags.join(', ')}`);
 
     // In production, save to database
     revalidatePath('/workout-history');
     return { success: true, noteId };
   } catch (error) {
-    console.error('Error adding workout note:', error);
+    logError('Error adding workout note:', error);
     return { success: false };
   }
 }
@@ -74,11 +75,11 @@ export async function createWorkoutTagAction(
 ): Promise<{ success: boolean; tagId?: string }> {
   try {
     const tagId = `tag-${userId}-${Date.now()}`;
-    console.log(`Created tag: ${name} (${color})`);
+    logger.info(`Created tag: ${name} (${color})`);
     revalidatePath('/settings');
     return { success: true, tagId };
   } catch (error) {
-    console.error('Error creating tag:', error);
+    logError('Error creating tag:', error);
     return { success: false };
   }
 }
@@ -107,7 +108,7 @@ export async function searchWorkoutsByTagAction(
       },
     ];
   } catch (error) {
-    console.error('Error searching workouts:', error);
+    logError('Error searching workouts:', error);
     return [];
   }
 }
@@ -130,7 +131,7 @@ export async function getWorkoutNotesAction(
       createdAt: new Date(),
     };
   } catch (error) {
-    console.error('Error getting workout notes:', error);
+    logError('Error getting workout notes:', error);
     return null;
   }
 }
@@ -144,11 +145,11 @@ export async function updateWorkoutNoteAction(
   _updates: Partial<Pick<WorkoutNote, 'content' | 'tags' | 'mood'>>
 ): Promise<{ success: boolean }> {
   try {
-    console.log(`Updated note ${noteId}`);
+    logger.info(`Updated note ${noteId}`);
     revalidatePath('/workout-history');
     return { success: true };
   } catch (error) {
-    console.error('Error updating note:', error);
+    logError('Error updating note:', error);
     return { success: false };
   }
 }

@@ -2,6 +2,7 @@
 
 // import { prisma } from "@/lib/prisma";
 import { revalidatePath } from 'next/cache';
+import { logger, logError } from '@/lib/logger';
 
 type ChallengeType = 'VOLUME' | 'REPS' | 'WEIGHT' | 'STREAK' | 'XP' | 'CUSTOM';
 type ChallengeStatus = 'PENDING' | 'ACTIVE' | 'COMPLETED' | 'DECLINED' | 'EXPIRED';
@@ -80,11 +81,11 @@ export async function createFriendChallengeAction(
     const challengeId = `challenge-${Date.now()}`;
     const _deadline = new Date(Date.now() + durationDays * 24 * 60 * 60 * 1000);
 
-    console.log(`Created challenge ${type} from ${challengerId} to ${challengedId}`);
+    logger.info(`Created challenge ${type} from ${challengerId} to ${challengedId}`);
     revalidatePath('/challenges');
     return { success: true, challengeId };
   } catch (error) {
-    console.error('Error creating challenge:', error);
+    logError('Error creating challenge:', error);
     return { success: false };
   }
 }
@@ -97,11 +98,11 @@ export async function acceptChallengeAction(
   challengeId: string
 ): Promise<{ success: boolean }> {
   try {
-    console.log(`Accepted challenge ${challengeId}`);
+    logger.info(`Accepted challenge ${challengeId}`);
     revalidatePath('/challenges');
     return { success: true };
   } catch (error) {
-    console.error('Error accepting challenge:', error);
+    logError('Error accepting challenge:', error);
     return { success: false };
   }
 }
@@ -114,11 +115,11 @@ export async function declineChallengeAction(
   challengeId: string
 ): Promise<{ success: boolean }> {
   try {
-    console.log(`Declined challenge ${challengeId}`);
+    logger.info(`Declined challenge ${challengeId}`);
     revalidatePath('/challenges');
     return { success: true };
   } catch (error) {
-    console.error('Error declining challenge:', error);
+    logError('Error declining challenge:', error);
     return { success: false };
   }
 }

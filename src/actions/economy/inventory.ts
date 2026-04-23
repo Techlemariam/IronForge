@@ -12,13 +12,14 @@ export const getInventoryAction = authActionClient.action(async ({ ctx: { userId
     });
     return { success: true, inventory };
   } catch (error) {
-    console.error('Error fetching inventory:', error);
+    logError('Error fetching inventory:', error);
     return { success: false, error: 'Failed to load inventory' };
   }
 });
 
 import { authActionClient } from '@/lib/safe-action';
 import { z } from 'zod';
+import { logger, logError } from '@/lib/logger';
 
 const toggleEquipSchema = z.object({
   equipmentId: z.string().min(1),
@@ -45,7 +46,7 @@ export const toggleEquipAction = authActionClient
 
       return { success: true };
     } catch (error) {
-      console.error('Error toggling equip:', error);
+      logError('Error toggling equip:', error);
       return { success: false, error: 'Failed to update equipment' };
     }
   });

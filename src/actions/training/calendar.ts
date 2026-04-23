@@ -1,6 +1,7 @@
 'use server';
 
 import { prisma } from '@/lib/prisma';
+import { logger, logError } from '@/lib/logger';
 
 interface CalendarDay {
   date: string;
@@ -122,7 +123,7 @@ export async function getWorkoutCalendarAction(
       prsThisMonth,
     };
   } catch (error) {
-    console.error('Error getting workout calendar:', error);
+    logError('Error getting workout calendar:', error);
     return {
       year,
       month,
@@ -175,7 +176,7 @@ export async function getWorkoutDayDetailsAction(
       prs: logs.filter((l) => l.isPersonalRecord).map((l) => l.exerciseId),
     };
   } catch (error) {
-    console.error('Error getting day details:', error);
+    logError('Error getting day details:', error);
     return { strengthExercises: [], cardioSessions: [], prs: [] };
   }
 }

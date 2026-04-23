@@ -2,6 +2,7 @@
 
 import { getSession } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
+import { logger, logError } from '@/lib/logger';
 
 export async function getDuelLeaderboardAction(limit = 50) {
   try {
@@ -55,7 +56,7 @@ export async function getDuelLeaderboardAction(limit = 50) {
       userRank,
     };
   } catch (error) {
-    console.error('Error fetching duel leaderboard:', error);
+    logError('Error fetching duel leaderboard:', error);
     return { success: false, error: 'Failed to fetch leaderboard' };
   }
 }
@@ -84,11 +85,11 @@ export async function sendDuelTauntAction(duelId: string, message: string) {
     }
 
     // For MVP, we'll just log this. In production, use ChatMessage model or DuelTaunt model
-    console.log(`[TAUNT] User ${session.user.id} in duel ${duelId}: ${message}`);
+    logger.info(`[TAUNT] User ${session.user.id} in duel ${duelId}: ${message}`);
 
     return { success: true, message: 'Taunt sent successfully!' };
   } catch (error) {
-    console.error('Error sending taunt:', error);
+    logError('Error sending taunt:', error);
     return { success: false, error: 'Failed to send taunt' };
   }
 }

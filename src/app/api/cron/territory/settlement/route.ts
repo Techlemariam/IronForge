@@ -1,5 +1,6 @@
 import { TerritoryService } from '@/services/game/TerritoryService';
 import { type NextRequest, NextResponse } from 'next/server';
+import { logger, logError } from '@/lib/logger';
 
 export const dynamic = 'force-dynamic';
 
@@ -15,7 +16,7 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    console.log('[Cron: Territory Settlement] Starting weekly settlement...');
+    logger.info('[Cron: Territory Settlement] Starting weekly settlement...');
     const result = await TerritoryService.runWeeklySettlement();
     return NextResponse.json({
       success: true,
@@ -23,7 +24,7 @@ export async function GET(request: NextRequest) {
       stats: result,
     });
   } catch (error) {
-    console.error('[Cron: Territory Settlement] Error:', error);
+    logError('[Cron: Territory Settlement] Error:', error);
     return NextResponse.json({ success: false, error: String(error) }, { status: 500 });
   }
 }

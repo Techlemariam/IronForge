@@ -1,5 +1,6 @@
 import { TerritoryService } from '@/services/game/TerritoryService';
 import { type NextRequest, NextResponse } from 'next/server';
+import { logger, logError } from '@/lib/logger';
 
 export const dynamic = 'force-dynamic';
 
@@ -15,11 +16,11 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    console.log('[Cron: Territory Income] Starting distribution...');
+    logger.info('[Cron: Territory Income] Starting distribution...');
     await TerritoryService.distributeDailyIncome();
     return NextResponse.json({ success: true, message: 'Income distributed' });
   } catch (error) {
-    console.error('[Cron: Territory Income] Error:', error);
+    logError('[Cron: Territory Income] Error:', error);
     return NextResponse.json({ success: false, error: String(error) }, { status: 500 });
   }
 }

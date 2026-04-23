@@ -3,6 +3,7 @@
 import { getSession } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { SubscriptionTier } from '@/types/prisma';
+import { logger, logError } from '@/lib/logger';
 
 // ============================================
 // Types
@@ -83,7 +84,7 @@ export async function getAvailableEmotesAction(): Promise<{
 
     return { success: true, data: emotesWithUnlock };
   } catch (error) {
-    console.error('Failed to get emotes:', error);
+    logError('Failed to get emotes:', error);
     return { success: false, error: 'Failed to load emotes' };
   }
 }
@@ -162,12 +163,12 @@ export async function sendBattleEmoteAction(
         },
       });
     } else {
-      console.warn('Missing Supabase credentials for realtime broadcast');
+      logger.warn('Missing Supabase credentials for realtime broadcast');
     }
 
     return { success: true };
   } catch (error) {
-    console.error('Failed to send emote:', error);
+    logError('Failed to send emote:', error);
     return { success: false, error: 'Failed to send emote' };
   }
 }
@@ -199,7 +200,7 @@ export async function getMatchEmoteHistoryAction(matchId: string): Promise<{
 
     return { success: true, data: logs };
   } catch (error) {
-    console.error('Failed to get emote history:', error);
+    logError('Failed to get emote history:', error);
     return { success: false, error: 'Failed to load emote history' };
   }
 }

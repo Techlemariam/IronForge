@@ -3,6 +3,7 @@
 import prisma from '@/lib/prisma';
 import { createClient } from '@/utils/supabase/server';
 import { z } from 'zod';
+import { logger, logError } from '@/lib/logger';
 
 const pushSubscriptionSchema = z.object({
   endpoint: z.string(),
@@ -48,7 +49,7 @@ export async function subscribeToPushNotificationsAction(
 
     return { success: true };
   } catch (error) {
-    console.error('[Push Subscribe] Error:', error);
+    logError('[Push Subscribe] Error:', error);
     return { success: false, error: 'Failed to save subscription' };
   }
 }

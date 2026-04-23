@@ -3,6 +3,7 @@
 import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
+import { logger, logError } from '@/lib/logger';
 
 // --- Types & Schemas ---
 
@@ -99,7 +100,7 @@ export async function logSetAction(userId: string, exerciseId: string, set: SetD
         newAchievements = result.newUnlocks;
       }
     } catch (e) {
-      console.error('Achievement check failed:', e);
+      logError('Achievement check failed:', e);
     }
 
     // 6. Guild Raid Integration (Boss Eraser)
@@ -116,7 +117,7 @@ export async function logSetAction(userId: string, exerciseId: string, set: SetD
           }
         }
       } catch (e) {
-        console.error('Guild Raid contribution failed:', e);
+        logError('Guild Raid contribution failed:', e);
       }
     }
 
@@ -127,12 +128,12 @@ export async function logSetAction(userId: string, exerciseId: string, set: SetD
       // processWorkoutLog handles "Volume" and "Workout" quest counts via logic updates
       await processWorkoutLog(userId, validatedSet.weight, validatedSet.reps);
     } catch (e) {
-      console.error('Challenge update failed:', e);
+      logError('Challenge update failed:', e);
     }
 
     return { success: true, logId, sets: currentSets, newAchievements, raidDamageDealt };
   } catch (error) {
-    console.error('Error logging set:', error);
+    logError('Error logging set:', error);
     return { success: false, error: 'Failed to log set' };
   }
 }
@@ -199,7 +200,7 @@ export async function finishWorkoutAction(userId: string, logIds: string[]) {
           await addBattlePassXpAction(userId, bpXp);
         }
       } catch (e) {
-        console.error('Battle Pass update failed:', e);
+        logError('Battle Pass update failed:', e);
       }
     }
 
@@ -215,7 +216,7 @@ export async function finishWorkoutAction(userId: string, logIds: string[]) {
     revalidatePath('/dashboard');
     return { success: true, xpEarned: xpAward, goldEarned: 100 };
   } catch (error) {
-    console.error('Finish Workout Error:', error);
+    logError('Finish Workout Error:', error);
     return { success: false, error: 'Failed to finish workout' };
   }
 }

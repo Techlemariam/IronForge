@@ -3,6 +3,7 @@ import { TerritoryService } from '@/services/game/TerritoryService';
 import { OracleService } from '@/services/oracle';
 import { revalidatePath } from 'next/cache';
 import { type NextRequest, NextResponse } from 'next/server';
+import { logger, logError } from '@/lib/logger';
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 120; // 2 minutes for daily maintenance
@@ -64,7 +65,7 @@ export async function GET(request: NextRequest) {
           }
         }
       } catch (e) {
-        console.error(`Oracle failed for ${titan.userId}`, e);
+        logError(`Oracle failed for ${titan.userId}`, e);
       }
     }
     report.tasks.oracle = { success: true, processed: titans.length, decreesIssued };

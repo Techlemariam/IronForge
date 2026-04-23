@@ -1,6 +1,7 @@
 'use server';
 
 import { prisma } from '@/lib/prisma';
+import { logger, logError } from '@/lib/logger';
 
 // Constants for anti-grind system
 const OPTIMAL_DAILY_WORKOUTS = 1;
@@ -75,7 +76,7 @@ export async function calculateDiminishingReturnsAction(
       isRecommendedToStop: true,
     };
   } catch (error) {
-    console.error('Error calculating diminishing returns:', error);
+    logError('Error calculating diminishing returns:', error);
     return {
       workoutNumber: 1,
       xpMultiplier: 1.0,

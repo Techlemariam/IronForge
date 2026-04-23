@@ -1,5 +1,6 @@
 import { authActionClient } from '@/lib/safe-action';
 import { z } from 'zod';
+import { logger, logError } from '@/lib/logger';
 // import { prisma } from "@/lib/prisma";
 
 interface FeedItem {
@@ -105,7 +106,7 @@ export const getSocialFeedAction = authActionClient
         },
       ];
     } catch (error) {
-      console.error('Error getting social feed:', error);
+      logError('Error getting social feed:', error);
       return [];
     }
   });
@@ -117,10 +118,10 @@ export const likeFeedItemAction = authActionClient
   .schema(z.string())
   .action(async ({ parsedInput: feedItemId, ctx: { userId } }) => {
     try {
-      console.log(`User ${userId} liked feed item ${feedItemId}`);
+      logger.info(`User ${userId} liked feed item ${feedItemId}`);
       return { success: true, newCount: 14 }; // Mock
     } catch (error) {
-      console.error('Error liking feed item:', error);
+      logError('Error liking feed item:', error);
       return { success: false, newCount: 0 };
     }
   });
@@ -132,10 +133,10 @@ export const unlikeFeedItemAction = authActionClient
   .schema(z.string())
   .action(async ({ parsedInput: feedItemId, ctx: { userId } }) => {
     try {
-      console.log(`User ${userId} unliked feed item ${feedItemId}`);
+      logger.info(`User ${userId} unliked feed item ${feedItemId}`);
       return { success: true, newCount: 12 };
     } catch (error) {
-      console.error('Error unliking feed item:', error);
+      logError('Error unliking feed item:', error);
       return { success: false, newCount: 0 };
     }
   });
@@ -156,10 +157,10 @@ export const commentOnFeedItemAction = authActionClient
         return { success: false };
       }
 
-      console.log(`Comment on ${feedItemId}: ${comment}`);
+      logger.info(`Comment on ${feedItemId}: ${comment}`);
       return { success: true, commentId: `comment-${Date.now()}` };
     } catch (error) {
-      console.error('Error commenting:', error);
+      logError('Error commenting:', error);
       return { success: false };
     }
   });
@@ -176,10 +177,10 @@ export const shareWorkoutToFeedAction = authActionClient
   )
   .action(async ({ parsedInput: { workoutId, message }, ctx: { userId } }) => {
     try {
-      console.log(`User ${userId} shared workout ${workoutId} with message: ${message}`);
+      logger.info(`User ${userId} shared workout ${workoutId} with message: ${message}`);
       return { success: true, feedItemId: `feed-${Date.now()}` };
     } catch (error) {
-      console.error('Error sharing workout:', error);
+      logError('Error sharing workout:', error);
       return { success: false };
     }
   });

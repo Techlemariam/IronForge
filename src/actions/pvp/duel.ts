@@ -5,6 +5,7 @@ import { authActionClient } from '@/lib/safe-action';
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
+import { logger, logError } from '@/lib/logger';
 
 // Schema for duel creation
 const _DuelChallengeSchema = z.object({
@@ -66,7 +67,7 @@ export const createDuelChallengeAction = authActionClient
       revalidatePath('/iron-arena');
       return { success: true, duelId: challenge.id };
     } catch (error) {
-      console.error('Error creating duel challenge:', error);
+      logError('Error creating duel challenge:', error);
       return { success: false, error: 'Failed to create challenge' };
     }
   });
@@ -100,7 +101,7 @@ export const acceptDuelChallengeAction = authActionClient
       revalidatePath('/iron-arena');
       return { success: true };
     } catch (error) {
-      console.error('Error accepting duel:', error);
+      logError('Error accepting duel:', error);
       return { success: false, error: 'Failed to accept duel' };
     }
   });
@@ -125,7 +126,7 @@ export const declineDuelChallengeAction = authActionClient
       revalidatePath('/iron-arena');
       return { success: true };
     } catch (error) {
-      console.error('Error declining duel:', error);
+      logError('Error declining duel:', error);
       return { success: false, error: 'Failed to decline duel' };
     }
   });
@@ -168,7 +169,7 @@ export async function getDuelStatusAction() {
 
     return { success: true, duel: null, pending: pendingChallenges };
   } catch (error) {
-    console.error('Error fetching duel status:', error);
+    logError('Error fetching duel status:', error);
     return { success: false, error: 'Failed to fetch status' };
   }
 }
@@ -340,7 +341,7 @@ export const updateCardioDuelProgressAction = authActionClient
       revalidatePath('/iron-arena');
       return result;
     } catch (error) {
-      console.error('Error updating cardio progress:', error);
+      logError('Error updating cardio progress:', error);
       return { success: false, error: 'Failed update' };
     }
   });
@@ -355,13 +356,13 @@ export async function sendTauntAction(duelId: string, message = 'Prepare to be c
     } = await supabase.auth.getUser();
     if (!user) throw new Error('Unauthorized');
 
-    console.log(`Taunt sent in duel ${duelId} from ${user.id}: ${message}`);
+    logger.info(`Taunt sent in duel ${duelId} from ${user.id}: ${message}`);
 
     // Potential future expansion: Insert into a DuelEvents table
 
     return { success: true };
   } catch (error) {
-    console.error('Error sending taunt:', error);
+    logError('Error sending taunt:', error);
     return { success: false, error: 'Failed to send taunt' };
   }
 }
@@ -411,7 +412,7 @@ export async function getPotentialOpponentsAction() {
 
     return { success: true, opponents };
   } catch (error) {
-    console.error('Error fetching opponents:', error);
+    logError('Error fetching opponents:', error);
     return { success: false, error: 'Failed to fetch opponents' };
   }
 }
@@ -440,7 +441,7 @@ export async function getDuelArenaStateAction(duelId: string) {
 
     return { success: true, duel };
   } catch (error) {
-    console.error('Error fetching arena state:', error);
+    logError('Error fetching arena state:', error);
     return { success: false, error: 'Failed to fetch arena state' };
   }
 }
@@ -453,7 +454,7 @@ export async function processUserCardioActivity(
   elevationMeters = 0
 ) {
   try {
-    console.log(
+    logger.info(
       `Processing cardio for user ${userId}: ${activityType} ${distanceKm}km ${elevationMeters}m elevation`
     );
 
@@ -485,6 +486,6 @@ export async function processUserCardioActivity(
       }
     }
   } catch (e) {
-    console.error('Failed to process cardio for duels', e);
+    logError('Failed to process cardio for duels', e);
   }
 }

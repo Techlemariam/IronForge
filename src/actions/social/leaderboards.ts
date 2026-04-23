@@ -3,6 +3,7 @@
 import { prisma } from '@/lib/prisma';
 import { authActionClient } from '@/lib/safe-action';
 import { z } from 'zod';
+import { logger, logError } from '@/lib/logger';
 
 export interface LeaderboardEntry {
   rank: number;
@@ -38,7 +39,7 @@ export const getStrengthLeaderboardAction = authActionClient
         value: t.strengthIndex,
       }));
     } catch (error) {
-      console.error('Error fetching strength leaderboard:', error);
+      logError('Error fetching strength leaderboard:', error);
       return [];
     }
   });
@@ -65,7 +66,7 @@ export const getLevelLeaderboardAction = authActionClient
         value: t.level,
       }));
     } catch (error) {
-      console.error('Error fetching level leaderboard:', error);
+      logError('Error fetching level leaderboard:', error);
       return [];
     }
   });

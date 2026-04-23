@@ -1,6 +1,7 @@
 'use server';
 
 import { prisma } from '@/lib/prisma';
+import { logger, logError } from '@/lib/logger';
 
 interface BackupData {
   version: string;
@@ -96,7 +97,7 @@ export async function createBackupAction(userId: string): Promise<BackupData | n
 
     return backup;
   } catch (error) {
-    console.error('Error creating backup:', error);
+    logError('Error creating backup:', error);
     return null;
   }
 }
@@ -120,8 +121,8 @@ export async function restoreBackupAction(
     }
 
     // In production, restore data to database
-    console.log(`Restoring backup for ${userId} from ${backup.createdAt}`);
-    console.log(`Workouts to restore: ${backup.workoutHistory.length}`);
+    logger.info(`Restoring backup for ${userId} from ${backup.createdAt}`);
+    logger.info(`Workouts to restore: ${backup.workoutHistory.length}`);
 
     return {
       success: true,
@@ -133,7 +134,7 @@ export async function restoreBackupAction(
       },
     };
   } catch (error) {
-    console.error('Error restoring backup:', error);
+    logError('Error restoring backup:', error);
     return {
       success: false,
       message: error instanceof Error ? error.message : 'Failed to parse backup file',

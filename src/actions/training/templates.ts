@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
+import { logger, logError } from '@/lib/logger';
 
 const TemplateExerciseSchema = z.object({
   exerciseId: z.string(),
@@ -51,7 +52,7 @@ export async function createWorkoutTemplateAction(
     // In production, save to database
     const templateId = `template-${userId}-${Date.now()}`;
 
-    console.log(`Created template: ${validated.name} with ${validated.exercises.length} exercises`);
+    logger.info(`Created template: ${validated.name} with ${validated.exercises.length} exercises`);
 
     revalidatePath('/templates');
     return { success: true, templateId };
@@ -59,7 +60,7 @@ export async function createWorkoutTemplateAction(
     if (error instanceof z.ZodError) {
       return { success: false, error: error.issues[0].message };
     }
-    console.error('Error creating template:', error);
+    logError('Error creating template:', error);
     return { success: false, error: 'Failed to create template' };
   }
 }
@@ -162,7 +163,7 @@ export async function getWorkoutTemplatesAction(
       },
     ].filter((t) => !category || t.category === category);
   } catch (error) {
-    console.error('Error getting templates:', error);
+    logError('Error getting templates:', error);
     return [];
   }
 }
@@ -180,12 +181,12 @@ export async function startWorkoutFromTemplateAction(
     // 2. Create new workout session
     // 3. Pre-populate exercises
 
-    console.log(`Starting workout from template: ${templateId}`);
+    logger.info(`Starting workout from template: ${templateId}`);
 
     const workoutId = `workout-${Date.now()}`;
     return { success: true, workoutId };
   } catch (error) {
-    console.error('Error starting from template:', error);
+    logError('Error starting from template:', error);
     return { success: false };
   }
 }
@@ -198,11 +199,11 @@ export async function deleteWorkoutTemplateAction(
   templateId: string
 ): Promise<{ success: boolean }> {
   try {
-    console.log(`Deleted template: ${templateId}`);
+    logger.info(`Deleted template: ${templateId}`);
     revalidatePath('/templates');
     return { success: true };
   } catch (error) {
-    console.error('Error deleting template:', error);
+    logError('Error deleting template:', error);
     return { success: false };
   }
 }
@@ -217,11 +218,11 @@ export async function duplicateTemplateAction(
 ): Promise<{ success: boolean; newTemplateId?: string }> {
   try {
     const newTemplateId = `template-${userId}-${Date.now()}`;
-    console.log(`Duplicated template: ${templateId} -> ${newTemplateId}`);
+    logger.info(`Duplicated template: ${templateId} -> ${newTemplateId}`);
     revalidatePath('/templates');
     return { success: true, newTemplateId };
   } catch (error) {
-    console.error('Error duplicating template:', error);
+    logError('Error duplicating template:', error);
     return { success: false };
   }
 }

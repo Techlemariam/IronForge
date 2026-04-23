@@ -7,6 +7,7 @@ import {
 import { getSession } from '@/lib/auth';
 import { NextResponse } from 'next/server';
 import { SyncRequestBodySchema } from './schemas';
+import { logger, logError } from '@/lib/logger';
 
 export async function POST(request: Request) {
   try {
@@ -64,7 +65,7 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: 'Invalid action' }, { status: 400 });
     }
   } catch (error) {
-    console.error('Sync API Error:', error);
+    logError('Sync API Error:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

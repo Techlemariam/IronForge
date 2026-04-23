@@ -4,6 +4,7 @@ import { getActivities, getAthleteSettings, getEvents, getWellness } from '@/lib
 import prisma from '@/lib/prisma';
 import type { IntervalsActivity, IntervalsEvent, IntervalsWellness } from '@/types';
 import { createClient } from '@/utils/supabase/server';
+import { logger, logError } from '@/lib/logger';
 
 async function getIntervalsCredentials() {
   const supabase = await createClient();
@@ -54,7 +55,7 @@ export async function getWellnessAction(date: string): Promise<IntervalsWellness
       ramp_rate: data?.rampRate,
     } as IntervalsWellness;
   } catch (error: any) {
-    console.warn('Server Action Intervals Wellness Error:', error.message);
+    logger.warn('Server Action Intervals Wellness Error:', error.message);
     return {} as IntervalsWellness;
   }
 }
@@ -86,7 +87,7 @@ export async function getWellnessRangeAction(
         }) as IntervalsWellness
     );
   } catch (error: any) {
-    console.error('Server Action Intervals Wellness Range Error:', error.message);
+    logError('Server Action Intervals Wellness Range Error:', error.message);
     return [];
   }
 }
@@ -100,7 +101,7 @@ export async function getActivitiesAction(
     const data = await getActivities(startDate, endDate, apiKey, athleteId);
     return data as unknown as IntervalsActivity[];
   } catch (error: any) {
-    console.error('Server Action Intervals Activities Error:', error.message);
+    logError('Server Action Intervals Activities Error:', error.message);
     return [];
   }
 }
@@ -124,7 +125,7 @@ export async function getAthleteSettingsAction() {
     const data = await getAthleteSettings(apiKey, athleteId);
     return data;
   } catch (error: any) {
-    console.error('Server Action Intervals Settings Error:', error.message);
+    logError('Server Action Intervals Settings Error:', error.message);
     return null;
   }
 }

@@ -131,22 +131,32 @@ The "Line" begins here. The Agent (@coder) enters "Factory Mode" - high focus, l
 
 **Command:** `/factory status`
 
-```text
-┌─────────────────────────────────────────────┐
-| 🏭 FACTORY STATUS                           |
-├─────────────────────────────────────────────┤
-| 🔴 BUSY: [Generic UI Components]            |
-| Station: 2 (Fabrication)                    |
-| Error Rate: 0%                              |
-├─────────────────────────────────────────────┤
-| 🟢 QUEUE:                                   |
-| 1. [Guild Territories]                      |
-| 2. [Combat Balance v2]                      |
-└─────────────────────────────────────────────┘
+Run the live status dashboard to see factory mode, active fabrication, queue, debt, and CI health:
+
+```powershell
+# // turbo
+powershell scripts/factory-manager.ps1 STATUS
 ```
 
+The dashboard displays:
+- **Mode** — ON (auto-flow), OFF (halted), MANUAL (step-by-step)
+- **Git** — Current branch + uncommitted changes
+- **CI** — Latest GitHub Actions run status
+- **Active** — Features currently in fabrication (`[/]` in roadmap)
+- **Queue** — Next high/critical priority features (`[ ]` in roadmap)
+- **Inventory** — Spec count + open debt items
+
+> [!TIP]
+> This same data is available in `/status` under the **Factory Health** module.
+
 ## Version History
+
+### 2.0.0 (2026-04-22)
+
+- Added live `/factory status` dashboard via `factory-manager.ps1 STATUS`.
+- Integrated factory health into `/status` workflow.
 
 ### 1.0.0 (2026-02-12)
 
 - Initial release replacing Sprint System.
+

@@ -1,4 +1,4 @@
-import { logger } from '@/lib/logger';
+import { logger, logError } from '@/lib/logger';
 import { applyDecay } from '@/lib/powerRating';
 import { prisma } from '@/lib/prisma';
 import { withCronMonitor } from '@/lib/sentry-cron';
@@ -70,7 +70,7 @@ const handler = async (request: NextRequest) => {
       } catch (err) {
         const errorMsg = err instanceof Error ? err.message : String(err);
         errors.push(`User ${titan.userId}: ${errorMsg}`);
-        logger.error({ userId: titan.userId, err }, '[Power Rating Cron] Error processing user');
+        logError('[Power Rating Cron] Error processing user', err, { userId: titan.userId });
       }
     }
 
@@ -88,7 +88,7 @@ const handler = async (request: NextRequest) => {
       timestamp: now.toISOString(),
     });
   } catch (error) {
-    logger.error({ err: error }, '[Power Rating Cron] Critical Error');
+    logError('[Power Rating Cron] Critical Error', error);
     return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 });
   }
 };

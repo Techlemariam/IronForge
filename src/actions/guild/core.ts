@@ -4,6 +4,7 @@ import prisma from '@/lib/prisma';
 import { authActionClient } from '@/lib/safe-action';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
+import { logger, logError } from '@/lib/logger';
 
 export const sendChatAction = authActionClient
   .schema(z.string().min(1).max(255))
@@ -174,7 +175,7 @@ export const contributeGuildDamageAction = authActionClient
         damageDealt: damage,
       };
     } catch (error) {
-      console.error('Guild Raid Error:', error);
+      logError('Guild Raid Error:', error);
       return { success: false, error: 'Failed to contribute damage' };
     }
   });

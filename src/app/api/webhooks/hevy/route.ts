@@ -1,4 +1,4 @@
-import { logger } from '@/lib/logger';
+import { logger, logError } from '@/lib/logger';
 import prisma from '@/lib/prisma';
 import { ProgressionService } from '@/services/progression';
 import axios from 'axios';
@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
     // We need the full details (exercises, sets, weight) to update our DB.
     const hevyApiKey = process.env.HEVY_API_KEY;
     if (!hevyApiKey) {
-      logger.error('HEVY_API_KEY not configured on server.');
+      logError('HEVY_API_KEY not configured on server.', new Error('Configuration Missing'));
       return NextResponse.json({ error: 'Server Configuration Error' }, { status: 500 });
     }
 
@@ -64,7 +64,7 @@ export async function POST(request: NextRequest) {
     // A. Identify User (Single Tenant Assumption for now, or use Auth Header to match User)
     const user = await prisma.user.findFirst();
     if (!user) {
-      logger.error('No user found in database to attach workout to.');
+      logError('No user found in database to attach workout to.', new Error('User Missing'));
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
@@ -135,7 +135,7 @@ export async function POST(request: NextRequest) {
       { status: 200 }
     );
   } catch (error: any) {
-    logger.error({ err: error.response?.data || error }, '[Hevy Webhook] Error');
+    logError('[Hevy Webhook] Error', error.response?.data || error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

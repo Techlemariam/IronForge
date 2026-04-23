@@ -2,6 +2,7 @@
 
 import { NotificationService } from '@/services/notifications';
 import { createClient } from '@/utils/supabase/server';
+import { logger, logError } from '@/lib/logger';
 
 export async function getUnreadNotificationsAction() {
   const supabase = await createClient();
@@ -15,7 +16,7 @@ export async function getUnreadNotificationsAction() {
     const notifications = await NotificationService.getUnread(user.id);
     return { success: true, notifications };
   } catch (error) {
-    console.error('Failed to fetch notifications:', error);
+    logError('Failed to fetch notifications:', error);
     return { success: false, notifications: [] };
   }
 }
@@ -32,7 +33,7 @@ export async function markNotificationReadAction(notificationId: string) {
     await NotificationService.markAsRead(notificationId);
     return { success: true };
   } catch (error) {
-    console.error('Failed to mark notification as read:', error);
+    logError('Failed to mark notification as read:', error);
     return { success: false };
   }
 }
@@ -49,7 +50,7 @@ export async function markAllNotificationsReadAction() {
     await NotificationService.markAllAsRead(user.id);
     return { success: true };
   } catch (error) {
-    console.error('Failed to mark all notifications as read:', error);
+    logError('Failed to mark all notifications as read:', error);
     return { success: false };
   }
 }

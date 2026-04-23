@@ -3,6 +3,7 @@
 import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
+import { logger, logError } from '@/lib/logger';
 
 const _NotificationPreferencesSchema = z.object({
   // Workout reminders
@@ -66,7 +67,7 @@ export async function getNotificationPreferencesAction(
 
     return DEFAULT_PREFERENCES;
   } catch (error) {
-    console.error('Error getting notification preferences:', error);
+    logError('Error getting notification preferences:', error);
     return DEFAULT_PREFERENCES;
   }
 }
@@ -90,7 +91,7 @@ export async function updateNotificationPreferencesAction(
     revalidatePath('/settings');
     return { success: true };
   } catch (error) {
-    console.error('Error updating notification preferences:', error);
+    logError('Error updating notification preferences:', error);
     return { success: false, error: 'Failed to update preferences' };
   }
 }

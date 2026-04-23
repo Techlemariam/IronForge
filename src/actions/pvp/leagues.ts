@@ -3,6 +3,7 @@
 import { LEAGUE_TIERS, type LeagueInfo } from '@/lib/game/tier-data';
 import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
+import { logger, logError } from '@/lib/logger';
 
 export interface SeasonInfo {
   id: string;
@@ -75,7 +76,7 @@ export async function getLeagueInfoAction(userId: string): Promise<LeagueInfo | 
       pointsToNextTier: nextTier ? nextTier.minRating - rating : undefined,
     };
   } catch (error) {
-    console.error('Error fetching league info:', error);
+    logError('Error fetching league info:', error);
     return null;
   }
 }
@@ -135,7 +136,7 @@ export async function getLeagueLeaderboardAction(
       totalPlayers,
     };
   } catch (error) {
-    console.error('Error fetching league leaderboard:', error);
+    logError('Error fetching league leaderboard:', error);
     return { entries: [], totalPlayers: 0 };
   }
 }
@@ -172,7 +173,7 @@ export async function awardSeasonRewardsAction(): Promise<{
     revalidatePath('/iron-arena');
     return { success: true, rewarded };
   } catch (error) {
-    console.error('Error awarding season rewards:', error);
+    logError('Error awarding season rewards:', error);
     return { success: false, rewarded: 0 };
   }
 }

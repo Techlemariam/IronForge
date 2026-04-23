@@ -5,6 +5,7 @@ import { authActionClient } from '@/lib/safe-action';
 import type { UserInventory } from '@/types/game';
 import { CraftItemSchema } from '@/types/schemas';
 import { revalidatePath } from 'next/cache';
+import { logger, logError } from '@/lib/logger';
 
 /**
  * Mock Inventory for MVP (until DB schema is finalized)
@@ -33,7 +34,7 @@ export const getInventoryAction = authActionClient.action(async ({ ctx: { userId
     const inventory = await getInventory(userId);
     return { success: true, data: inventory };
   } catch (error) {
-    console.error('Failed to fetch inventory:', error);
+    logError('Failed to fetch inventory:', error);
     return { success: false, message: 'Failed to load inventory' };
   }
 });
@@ -86,7 +87,7 @@ export const craftItem = authActionClient
       }
 
       // 6. Save (Mock)
-      console.log(`[Forge] Crafted ${recipe.name} for ${userId}`);
+      logger.info(`[Forge] Crafted ${recipe.name} for ${userId}`);
 
       revalidatePath('/dashboard');
       return {
@@ -95,7 +96,7 @@ export const craftItem = authActionClient
         inventory,
       };
     } catch (error) {
-      console.error('Crafting error:', error);
+      logError('Crafting error:', error);
       return { success: false, message: 'Server error during crafting' };
     }
   });

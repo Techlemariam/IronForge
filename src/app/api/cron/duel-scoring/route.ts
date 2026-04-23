@@ -32,6 +32,7 @@ function calculateEloChange(
 }
 
 import * as Sentry from '@sentry/nextjs';
+import { logger, logError } from '@/lib/logger';
 
 export async function GET(request: NextRequest) {
   return await Sentry.withMonitor('duel-scoring', async () => {
@@ -243,7 +244,7 @@ export async function GET(request: NextRequest) {
         weeklyReset: dayOfWeek === 0,
       });
     } catch (error) {
-      console.error('Duel scoring cron error:', error);
+      logError('Duel scoring cron error:', error);
       return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
     }
   });

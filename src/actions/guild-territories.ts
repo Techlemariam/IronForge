@@ -2,6 +2,7 @@
 
 import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
+import { logger, logError } from '@/lib/logger';
 
 /**
  * Allows a Guild Leader to set a specific territory as their active target
@@ -78,7 +79,7 @@ export async function setGuildTerritoryTarget(
       message: `Successfully set ${territory.name} as your target for this week.`,
     };
   } catch (error) {
-    console.error('Failed to set territory target:', error);
+    logError('Failed to set territory target:', error);
     return { success: false, error: 'An internal error occurred.' };
   }
 }

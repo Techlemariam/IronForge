@@ -2,6 +2,7 @@
 
 import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
+import { logger, logError } from '@/lib/logger';
 
 type SubscriptionTier = 'FREE' | 'COACH' | 'PRO' | 'ELITE';
 
@@ -100,7 +101,7 @@ export async function getSubscriptionAction(userId: string): Promise<Subscriptio
       isActive,
     };
   } catch (error) {
-    console.error('Error getting subscription:', error);
+    logError('Error getting subscription:', error);
     return { tier: 'FREE', features: [], isActive: true };
   }
 }
@@ -118,7 +119,7 @@ export async function hasFeatureAccessAction(
 
     return TIER_FEATURES[subscription.tier][feature];
   } catch (error) {
-    console.error('Error checking feature access:', error);
+    logError('Error checking feature access:', error);
     return false;
   }
 }
@@ -135,14 +136,14 @@ export async function upgradeSubscriptionAction(
     // In production, create Stripe checkout session
     const price = billingPeriod === 'YEARLY' ? TIER_PRICES[tier].yearly : TIER_PRICES[tier].monthly;
 
-    console.log(`Upgrade request: user=${userId}, tier=${tier}, price=${price}`);
+    logger.info(`Upgrade request: user=${userId}, tier=${tier}, price=${price}`);
 
     // Mock checkout URL
     const checkoutUrl = `/checkout?tier=${tier}&period=${billingPeriod}`;
 
     return { success: true, checkoutUrl };
   } catch (error) {
-    console.error('Error upgrading subscription:', error);
+    logError('Error upgrading subscription:', error);
     return { success: false, error: 'Failed to start upgrade' };
   }
 }
@@ -155,7 +156,7 @@ export async function cancelSubscriptionAction(
 ): Promise<{ success: boolean; message: string }> {
   try {
     // In production, cancel via Stripe and update DB
-    console.log(`Cancellation request: user=${userId}`);
+    logger.info(`Cancellation request: user=${userId}`);
 
     revalidatePath('/settings');
     return {
@@ -163,7 +164,7 @@ export async function cancelSubscriptionAction(
       message: "Subscription cancelled. You'll retain access until the end of the billing period.",
     };
   } catch (error) {
-    console.error('Error cancelling subscription:', error);
+    logError('Error cancelling subscription:', error);
     return { success: false, message: 'Failed to cancel subscription' };
   }
 }

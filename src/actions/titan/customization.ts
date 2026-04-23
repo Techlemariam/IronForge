@@ -2,6 +2,7 @@
 
 import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
+import { logger, logError } from '@/lib/logger';
 
 type SkinTone = 'PALE' | 'FAIR' | 'MEDIUM' | 'TAN' | 'DARK' | 'EBONY';
 type HairStyle = 'BALD' | 'SHORT' | 'MEDIUM' | 'LONG' | 'MOHAWK' | 'BRAIDED';
@@ -78,7 +79,7 @@ export async function getTitanCustomizationAction(userId: string): Promise<Titan
       frame: 'basic',
     };
   } catch (error) {
-    console.error('Error getting titan customization:', error);
+    logError('Error getting titan customization:', error);
     return { appearance: DEFAULT_APPEARANCE, equipment: [] };
   }
 }
@@ -91,11 +92,11 @@ export async function updateTitanAppearanceAction(
   updates: Partial<TitanAppearance>
 ): Promise<{ success: boolean }> {
   try {
-    console.log(`Updated titan appearance for ${userId}:`, updates);
+    logger.info(`Updated titan appearance for ${userId}:`, updates);
     revalidatePath('/titan');
     return { success: true };
   } catch (error) {
-    console.error('Error updating appearance:', error);
+    logError('Error updating appearance:', error);
     return { success: false };
   }
 }
@@ -109,11 +110,11 @@ export async function equipItemAction(
   slot: ArmorSlot
 ): Promise<{ success: boolean; unequipped?: string }> {
   try {
-    console.log(`Equipped ${itemId} to ${slot} for ${userId}`);
+    logger.info(`Equipped ${itemId} to ${slot} for ${userId}`);
     revalidatePath('/titan');
     return { success: true };
   } catch (error) {
-    console.error('Error equipping item:', error);
+    logError('Error equipping item:', error);
     return { success: false };
   }
 }
@@ -126,11 +127,11 @@ export async function unequipItemAction(
   slot: ArmorSlot
 ): Promise<{ success: boolean }> {
   try {
-    console.log(`Unequipped ${slot} for ${userId}`);
+    logger.info(`Unequipped ${slot} for ${userId}`);
     revalidatePath('/titan');
     return { success: true };
   } catch (error) {
-    console.error('Error unequipping item:', error);
+    logError('Error unequipping item:', error);
     return { success: false };
   }
 }
@@ -143,11 +144,11 @@ export async function setTitanTitleAction(
   titleId: string
 ): Promise<{ success: boolean }> {
   try {
-    console.log(`Set title for ${userId}: ${titleId}`);
+    logger.info(`Set title for ${userId}: ${titleId}`);
     revalidatePath('/titan');
     return { success: true };
   } catch (error) {
-    console.error('Error setting title:', error);
+    logError('Error setting title:', error);
     return { success: false };
   }
 }

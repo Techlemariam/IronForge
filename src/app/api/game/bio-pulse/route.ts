@@ -1,4 +1,4 @@
-import { logger } from '@/lib/logger';
+import { logger, logError } from '@/lib/logger';
 import { BioPulseService } from '@/services/game/BioPulseService';
 import { NextResponse } from 'next/server';
 
@@ -33,7 +33,7 @@ export async function POST(request: Request) {
       details: result,
     });
   } catch (error) {
-    logger.error({ err: error }, 'API Error in /api/game/bio-pulse');
+    logError('API Error in /api/game/bio-pulse', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

@@ -4,6 +4,7 @@ import prisma from '@/lib/prisma';
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
+import { logger, logError } from '@/lib/logger';
 
 // --- Types & Schemas ---
 const CreateGuildSchema = z.object({
@@ -71,7 +72,7 @@ export async function joinGuildAction(guildId: string) {
     revalidatePath('/dashboard');
     return { success: true };
   } catch (e) {
-    console.error(e);
+    logError('Failed to join guild', e);
     return { success: false, error: 'Failed to join guild' };
   }
 }
@@ -146,7 +147,7 @@ export async function startRaidAction(
     revalidatePath('/dashboard');
     return { success: true, raid };
   } catch (_error) {
-    console.error('Failed to start raid:', _error);
+    logError('Failed to start raid', _error);
     return { success: false, error: 'Failed to start raid' };
   }
 }
@@ -204,7 +205,7 @@ export async function contributeToRaidAction(raidId: string, damage: number) {
     revalidatePath('/dashboard');
     return { success: true, damageDealt: damage, bossDead: newHp === 0 };
   } catch (e) {
-    console.error(e);
+    logError('Attack failed', e);
     return { success: false, error: 'Attack failed' };
   }
 }

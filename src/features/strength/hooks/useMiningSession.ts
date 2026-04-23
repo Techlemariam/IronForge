@@ -4,7 +4,7 @@ import { useBluetoothHeartRate } from '@/features/bio/hooks/useBluetoothHeartRat
 import { IntegrationService } from '@/services/integration';
 import { type ActiveSessionState, StorageService } from '@/services/storage';
 import type { AppSettings, ExerciseLog, IntervalsWellness, Session } from '@/types';
-import { logger } from '@/utils/logger';
+import { logger } from '@/lib/logger';
 import { useContext, useEffect, useState } from 'react';
 
 interface UseMiningSessionProps {

@@ -3,6 +3,7 @@
 import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
+import { logger, logError } from '@/lib/logger';
 
 const PresetSchema = z.object({
   name: z.string().min(1).max(50),
@@ -29,7 +30,7 @@ export async function saveSkillPresetAction(
     revalidatePath('/dashboard');
     return { success: true, preset };
   } catch (error) {
-    console.error('Error saving skill preset:', error);
+    logError('Error saving skill preset:', error);
     return { success: false, error: 'Failed to save preset' };
   }
 }
@@ -43,7 +44,7 @@ export async function getSkillPresetsAction(userId: string) {
 
     return { success: true, presets };
   } catch (error) {
-    console.error('Error fetching skill presets:', error);
+    logError('Error fetching skill presets:', error);
     return { success: false, presets: [] };
   }
 }
@@ -76,7 +77,7 @@ export async function loadSkillPresetAction(userId: string, presetId: string) {
     revalidatePath('/dashboard');
     return { success: true, loadedSkills: preset.skillIds };
   } catch (error) {
-    console.error('Error loading skill preset:', error);
+    logError('Error loading skill preset:', error);
     return { success: false, error: 'Failed to load preset' };
   }
 }
@@ -90,7 +91,7 @@ export async function deleteSkillPresetAction(userId: string, presetId: string) 
     revalidatePath('/dashboard');
     return { success: true };
   } catch (error) {
-    console.error('Error deleting skill preset:', error);
+    logError('Error deleting skill preset:', error);
     return { success: false, error: 'Failed to delete preset' };
   }
 }

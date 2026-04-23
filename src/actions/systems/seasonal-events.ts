@@ -2,6 +2,7 @@
 
 // import { prisma } from "@/lib/prisma";
 import { revalidatePath } from 'next/cache';
+import { logger, logError } from '@/lib/logger';
 
 type EventType = 'SEASONAL' | 'HOLIDAY' | 'COMPETITION' | 'COMMUNITY';
 
@@ -195,11 +196,11 @@ export async function purchaseEventCosmeticAction(
   cosmeticId: string
 ): Promise<{ success: boolean; newBalance?: number }> {
   try {
-    console.log(`Purchased cosmetic ${cosmeticId} from event ${eventId}`);
+    logger.info(`Purchased cosmetic ${cosmeticId} from event ${eventId}`);
     revalidatePath('/events');
     return { success: true, newBalance: 350 };
   } catch (error) {
-    console.error('Error purchasing cosmetic:', error);
+    logError('Error purchasing cosmetic:', error);
     return { success: false };
   }
 }
@@ -213,11 +214,11 @@ export async function claimEventRewardAction(
   rewardId: string
 ): Promise<{ success: boolean; message: string }> {
   try {
-    console.log(`Claimed reward ${rewardId} from event ${eventId}`);
+    logger.info(`Claimed reward ${rewardId} from event ${eventId}`);
     revalidatePath('/events');
     return { success: true, message: 'Reward claimed!' };
   } catch (error) {
-    console.error('Error claiming reward:', error);
+    logError('Error claiming reward:', error);
     return { success: false, message: 'Failed to claim reward' };
   }
 }

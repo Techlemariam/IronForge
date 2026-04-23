@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma';
 import { authActionClient } from '@/lib/safe-action';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
+import { logger, logError } from '@/lib/logger';
 
 /**
  * Valid items for purchase in the Gold Shop.
@@ -97,7 +98,7 @@ export const purchaseShopItemAction = authActionClient
       revalidatePath('/dashboard');
       return result;
     } catch (error: any) {
-      console.error('Purchase failed:', error);
+      logError('Purchase failed:', error);
       return { success: false, error: error.message || 'Transaction failed' };
     }
   });

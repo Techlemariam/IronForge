@@ -3,6 +3,7 @@
 import { ProgressionService } from '@/services/progression';
 import { AwardGoldSchema } from '@/types/schemas';
 import { createClient } from '@/utils/supabase/server';
+import { logger, logError } from '@/lib/logger';
 
 export async function getProgressionAction() {
   try {
@@ -14,7 +15,7 @@ export async function getProgressionAction() {
 
     return await ProgressionService.getProgressionState(user.id);
   } catch (e) {
-    console.error('Progression Action Error:', e);
+    logError('Progression Action Error:', e);
     return null;
   }
 }
@@ -30,7 +31,7 @@ export async function awardGoldAction(amount: number) {
     const validated = AwardGoldSchema.parse({ amount });
     return await ProgressionService.awardGold(user.id, validated.amount);
   } catch (e) {
-    console.error('Award Gold Action Error:', e);
+    logError('Award Gold Action Error:', e);
     return null;
   }
 }

@@ -1,6 +1,7 @@
 'use server';
 
 import { prisma } from '@/lib/prisma';
+import { logger, logError } from '@/lib/logger';
 
 /**
  * Retrieves IronForge-native strength logs for the GPE.
@@ -26,7 +27,7 @@ export async function getIronForgeStrengthLogs(userId: string, startDate: Date, 
 
     return { success: true, data: logs };
   } catch (error) {
-    console.error('Failed to fetch usage logs:', error);
+    logError('Failed to fetch usage logs:', error);
     return { success: false, error: 'Failed to fetch strength logs' };
   }
 }

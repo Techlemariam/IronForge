@@ -2,6 +2,7 @@
 
 import type { ActionState } from '@/lib/create-safe-action';
 import { revalidatePath } from 'next/cache';
+import { logger } from '@/lib/logger';
 
 type FloorType = 'NORMAL' | 'ELITE' | 'BOSS' | 'TREASURE' | 'REST';
 type FloorTheme = 'MINES' | 'CAVES' | 'FORTRESS' | 'ABYSS' | 'VOLCANIC';
@@ -121,7 +122,7 @@ export async function getFloorDetailsAction(
 export async function startDungeonRunAction(
   userId: string
 ): Promise<{ success: boolean; startingFloor: number }> {
-  console.log(`Starting dungeon run for ${userId}`);
+  logger.info(`Starting dungeon run for ${userId}`);
   revalidatePath('/dungeon');
   return { success: true, startingFloor: 1 };
 }
@@ -144,7 +145,7 @@ export async function clearFloorAction(
     },
   ];
 
-  console.log(`Cleared floor ${floorNumber} in ${clearTimeMs} ms`);
+  logger.info(`Cleared floor ${floorNumber} in ${clearTimeMs} ms`);
   revalidatePath('/dungeon');
   return { success: true, rewards, nextFloor: floorNumber + 1 };
 }
@@ -155,7 +156,7 @@ export async function clearFloorAction(
 export async function endDungeonRunAction(
   userId: string
 ): Promise<{ floorsCleared: number; totalRewards: FloorReward[] }> {
-  console.log(`Ending dungeon run for ${userId}`);
+  logger.info(`Ending dungeon run for ${userId}`);
   revalidatePath('/dungeon');
   return {
     floorsCleared: 5,

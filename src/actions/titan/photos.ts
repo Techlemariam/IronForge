@@ -1,6 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
+import { logger, logError } from '@/lib/logger';
 
 interface ProgressPhoto {
   id: string;
@@ -48,13 +49,13 @@ export async function uploadProgressPhotoAction(
   try {
     const photoId = `photo-${userId}-${Date.now()}`;
 
-    console.log(`Uploaded progress photo: ${photoId}`);
+    logger.info(`Uploaded progress photo: ${photoId}`);
 
     // In production, save to database
     revalidatePath('/progress');
     return { success: true, photoId };
   } catch (error) {
-    console.error('Error uploading progress photo:', error);
+    logError('Error uploading progress photo:', error);
     return { success: false };
   }
 }
@@ -104,7 +105,7 @@ export async function getProgressTimelineAction(
       },
     ];
   } catch (error) {
-    console.error('Error getting progress timeline:', error);
+    logError('Error getting progress timeline:', error);
     return [];
   }
 }
@@ -139,7 +140,7 @@ export async function compareProgressPhotosAction(
       },
     };
   } catch (error) {
-    console.error('Error comparing photos:', error);
+    logError('Error comparing photos:', error);
     return null;
   }
 }
@@ -152,11 +153,11 @@ export async function deleteProgressPhotoAction(
   photoId: string
 ): Promise<{ success: boolean }> {
   try {
-    console.log(`Deleted progress photo: ${photoId}`);
+    logger.info(`Deleted progress photo: ${photoId}`);
     revalidatePath('/progress');
     return { success: true };
   } catch (error) {
-    console.error('Error deleting photo:', error);
+    logError('Error deleting photo:', error);
     return { success: false };
   }
 }
@@ -170,11 +171,11 @@ export async function updatePhotoVisibilityAction(
   visibility: ProgressPhoto['visibility']
 ): Promise<{ success: boolean }> {
   try {
-    console.log(`Updated visibility: ${photoId} -> ${visibility}`);
+    logger.info(`Updated visibility: ${photoId} -> ${visibility}`);
     revalidatePath('/progress');
     return { success: true };
   } catch (error) {
-    console.error('Error updating visibility:', error);
+    logError('Error updating visibility:', error);
     return { success: false };
   }
 }

@@ -1,6 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
+import { logger, logError } from '@/lib/logger';
 
 type CrateRarity = 'COMMON' | 'UNCOMMON' | 'RARE' | 'EPIC' | 'LEGENDARY';
 type RewardType = 'XP' | 'GOLD' | 'EQUIPMENT' | 'COSMETIC' | 'BOOST' | 'SKILL_POINT';
@@ -228,7 +229,7 @@ export async function getUserCratesAction(_userId: string): Promise<RewardCrate[
       },
     ];
   } catch (error) {
-    console.error('Error getting crates:', error);
+    logError('Error getting crates:', error);
     return [];
   }
 }
@@ -254,7 +255,7 @@ export async function openCrateAction(
       rewards.push(reward);
     }
 
-    console.log(`Opened crate ${crateId}: ${rewards.map((r) => r.name).join(', ')}`);
+    logger.info(`Opened crate ${crateId}: ${rewards.map((r) => r.name).join(', ')}`);
     revalidatePath('/inventory');
 
     return {
@@ -263,7 +264,7 @@ export async function openCrateAction(
       animation: `crate-open-${rarity.toLowerCase()}`,
     };
   } catch (error) {
-    console.error('Error opening crate:', error);
+    logError('Error opening crate:', error);
     return { success: false, rewards: [] };
   }
 }
@@ -278,11 +279,11 @@ export async function awardCrateAction(
 ): Promise<{ success: boolean; crateId?: string }> {
   try {
     const crateId = `crate-${userId}-${Date.now()}`;
-    console.log(`Awarded ${rarity} crate to ${userId} from ${source}`);
+    logger.info(`Awarded ${rarity} crate to ${userId} from ${source}`);
     revalidatePath('/inventory');
     return { success: true, crateId };
   } catch (error) {
-    console.error('Error awarding crate:', error);
+    logError('Error awarding crate:', error);
     return { success: false };
   }
 }

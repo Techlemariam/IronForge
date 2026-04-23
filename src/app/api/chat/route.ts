@@ -2,6 +2,7 @@ import { OracleService } from '@/services/oracle';
 import type { SystemMetrics, WardensManifest } from '@/types/goals';
 import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import { streamText } from 'ai';
+import { logger, logError } from '@/lib/logger';
 
 // Configure Google Provider with existing project API Key
 const google = createGoogleGenerativeAI({
@@ -16,7 +17,7 @@ export async function POST(req: Request) {
   try {
     body = await req.json();
   } catch (e) {
-    console.error('Chat API: Failed to parse request JSON:', e);
+    logError('Chat API: Failed to parse request JSON:', e);
     return new Response(JSON.stringify({ error: 'Invalid JSON input' }), { status: 400 });
   }
 
@@ -55,7 +56,7 @@ export async function POST(req: Request) {
       const strategy = OracleService.generateTrainingStrategy(manifest, metrics);
       strategySummary = strategy.contextSummary;
     } catch (error) {
-      console.error('Oracle GPE Error:', error);
+      logError('Oracle GPE Error:', error);
       strategySummary = `Error generating strategy: ${(error as Error).message}`;
     }
   }

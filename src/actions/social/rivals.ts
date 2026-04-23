@@ -2,6 +2,7 @@
 
 // import { prisma } from "@/lib/prisma";
 import { revalidatePath } from 'next/cache';
+import { logger, logError } from '@/lib/logger';
 
 interface Rival {
   id: string;
@@ -104,11 +105,11 @@ export async function addRivalAction(
   rivalId: string
 ): Promise<{ success: boolean }> {
   try {
-    console.log(`Added rival ${rivalId} for user ${userId}`);
+    logger.info(`Added rival ${rivalId} for user ${userId}`);
     revalidatePath('/rivals');
     return { success: true };
   } catch (error) {
-    console.error('Error adding rival:', error);
+    logError('Error adding rival:', error);
     return { success: false };
   }
 }
@@ -121,11 +122,11 @@ export async function removeRivalAction(
   rivalId: string
 ): Promise<{ success: boolean }> {
   try {
-    console.log(`Removed rival ${rivalId}`);
+    logger.info(`Removed rival ${rivalId}`);
     revalidatePath('/rivals');
     return { success: true };
   } catch (error) {
-    console.error('Error removing rival:', error);
+    logError('Error removing rival:', error);
     return { success: false };
   }
 }
@@ -138,11 +139,11 @@ export async function toggleFavoriteRivalAction(
   rivalId: string
 ): Promise<{ success: boolean; isFavorite: boolean }> {
   try {
-    console.log(`Toggled favorite rival ${rivalId}`);
+    logger.info(`Toggled favorite rival ${rivalId}`);
     revalidatePath('/rivals');
     return { success: true, isFavorite: true };
   } catch (error) {
-    console.error('Error toggling favorite:', error);
+    logError('Error toggling favorite:', error);
     return { success: false, isFavorite: false };
   }
 }

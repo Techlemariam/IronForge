@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { NextResponse } from 'next/server';
+import { logger, logError } from '@/lib/logger';
 
 export async function GET(request: Request) {
   const hevyApiKey = request.headers.get('x-hevy-api-key');
@@ -17,7 +18,7 @@ export async function GET(request: Request) {
     });
     return NextResponse.json(response.data);
   } catch (error: any) {
-    console.error('Failed to fetch Hevy routines:', error.response?.data || error.message);
+    logError('Failed to fetch Hevy routines:', error.response?.data || error.message);
     return NextResponse.json(
       {
         error: 'Could not fetch Battle Plans.',

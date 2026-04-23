@@ -1,4 +1,4 @@
-import { logger } from '@/lib/logger';
+import { logger, logError } from '@/lib/logger';
 import prisma from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 
@@ -12,7 +12,7 @@ export async function GET() {
       { status: 200 }
     );
   } catch (error) {
-    logger.error({ err: error }, 'Health check failed');
+    logError('Health check failed', error);
     return NextResponse.json({ status: 'error', message: 'Database unreachable' }, { status: 503 });
   }
 }

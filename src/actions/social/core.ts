@@ -37,6 +37,7 @@ export async function unfollowUser(targetId: string) {
 }
 
 import { getLeaderboard as getUnifiedLeaderboard } from '@/lib/leaderboard';
+import { logger, logError } from '@/lib/logger';
 
 // ...
 
@@ -132,7 +133,7 @@ export async function getFactionStatsAction() {
 
     return { success: true, data: result };
   } catch (error) {
-    console.error('Faction Stats Error:', error);
+    logError('Faction Stats Error:', error);
     return { success: false, error: 'Failed to fetch faction stats' };
   }
 }

@@ -1,6 +1,7 @@
 'use server';
 
 import { prisma } from '@/lib/prisma';
+import { logger, logError } from '@/lib/logger';
 
 export async function seedBattlePassSeasonAction() {
   try {
@@ -69,7 +70,7 @@ export async function seedBattlePassSeasonAction() {
       message: `Created Season 1 with ${tiers.length} tiers.`,
     };
   } catch (error) {
-    console.error('Seeding error:', error);
+    logError('Seeding error:', error);
     return { success: false, message: 'Failed to seed season' };
   }
 }
