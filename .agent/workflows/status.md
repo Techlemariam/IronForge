@@ -1,9 +1,9 @@
 ---
-description: "Unified Brotherhood Status Dashboard (Level 10)"
+description: "Unified Brotherhood Status Dashboard (Level 12)"
 command: "/status"
 category: "monitoring"
 trigger: "manual"
-version: "10.0.0"
+version: "12.0.0"
 telemetry: "enabled"
 primary_agent: "@manager"
 domain: "meta"
@@ -12,7 +12,7 @@ domain: "meta"
 # 🏥 Panopticon: System Status (IronForge)
 
 **Role:** The Observer.
-**Goal:** 360° Visibility across Local, Remote, and Autonomous layers.
+**Goal:** 360° Visibility across Local, Remote, Autonomous, and Global Factory layers.
 
 ---
 
@@ -52,15 +52,20 @@ Monitors active AI sessions and n8n background tasks.
 doppler run -- pwsh scripts/check-n8n-cron.ps1
 ```
 
-### 4. Infrastructure (Production Vitals)
-Checks Coolify health and Discord triage connectivity.
+### 4. 🏭 Project Factory Health
+Live status of the Antigravity Factory for **this project**.
 
 ```powershell
-# Smoke test production endpoint
-curl -I https://ironforge-app.sslip.io/api/health
+# // turbo
+powershell scripts/factory-manager.ps1 STATUS
+```
 
-# Discord Connectivity Test
-doppler run -- pwsh scripts/ci/test-discord-webhook.ps1
+### 5. 🌎 Brotherhood Context (Global)
+Aggregated status of the entire Factory ecosystem.
+
+```powershell
+# // turbo
+powershell ..\factory-status-all.ps1 -Detailed
 ```
 
 ---
@@ -69,4 +74,5 @@ doppler run -- pwsh scripts/ci/test-discord-webhook.ps1
 
 - If **Local Health < 100/100** -> Block `/deploy`.
 - If **Remote CI Failing** -> Run `/ci-doctor`.
-- If **Jules Stale** -> Run `/jules-status --cleanup`.
+- If **Factory Mode = OFF** -> Run `scripts/factory-manager.ps1 SET-MODE MANUAL`.
+- If **Global Alerts > 0** -> Check other workspaces for blocking debt/failures.

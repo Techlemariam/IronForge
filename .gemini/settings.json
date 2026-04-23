@@ -101,6 +101,21 @@
       "env": {
         "PERPLEXITY_API_KEY": "${env:PERPLEXITY_API_KEY}"
       }
+    },
+    "garmin": {
+      "command": "doppler",
+      "args": [
+        "run",
+        "--project",
+        "ironforge",
+        "--config",
+        "dev",
+        "--silent",
+        "--",
+        "npx",
+        "-y",
+        "garmin-connect-mcp"
+      ]
     }
   }
 }

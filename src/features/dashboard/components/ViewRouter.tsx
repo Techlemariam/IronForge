@@ -86,8 +86,8 @@ export const ViewRouter: React.FC<ViewRouterProps> = ({
         <TodaysMission
           missionTitle={rec?.title || 'BATTLE READY'}
           missionTime={new Date().toLocaleTimeString('sv-SE', {
-            hour: '2d-digit',
-            minute: '2d-digit',
+            hour: '2-digit',
+            minute: '2-digit',
           })}
           exerciseName={rec?.primaryFocus || 'Conditioning'}
           equipmentSetup={rec?.equipmentId || 'Standard'}

@@ -62,6 +62,7 @@ export interface DashboardData {
   weeklyMastery?: WeeklyMastery;
   activeDuel?: any;
   trainingContext?: TrainingContext;
+  powerRating: number;
 }
 
 export interface DashboardClientProps {
@@ -115,6 +116,7 @@ export interface DashboardState {
   challenges: ChallengeWithStatus[];
   activeDuel?: any;
   trainingContext?: TrainingContext;
+  powerRating: number;
 }
 
 export type DashboardAction =
