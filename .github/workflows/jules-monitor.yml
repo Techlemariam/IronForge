@@ -49,7 +49,7 @@ jobs:
 
       - name: Fetch Secrets
         run: |
-          doppler secrets download --no-file --format env-no-quotes --project ironforge --config dev > $GITHUB_ENV
+          doppler secrets download --no-file --format env-no-quotes --project ironforge --config prd > $GITHUB_ENV
         env:
           DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
 
