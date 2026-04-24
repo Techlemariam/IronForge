@@ -110,7 +110,7 @@ export const StorageService = {
     await this.ensureInit();
     if (!this.db) throw new Error('StorageService: Database not initialized');
     return new Promise((resolve, reject) => {
-      const transaction = this.db!.transaction(['logs'], 'readwrite');
+      const transaction = this.db?.transaction(['logs'], 'readwrite');
       const store = transaction.objectStore('logs');
       const request = store.add(log);
       request.onsuccess = () => {
@@ -125,7 +125,7 @@ export const StorageService = {
     await this.ensureInit();
     if (!this.db) throw new Error('StorageService: Database not initialized');
     return new Promise((resolve, reject) => {
-      const transaction = this.db!.transaction(['meditation'], 'readwrite');
+      const transaction = this.db?.transaction(['meditation'], 'readwrite');
       const store = transaction.objectStore('meditation');
       const request = store.add(log);
       request.onsuccess = () => {
@@ -140,7 +140,7 @@ export const StorageService = {
     await this.ensureInit();
     if (!this.db) return [];
     return new Promise((resolve, reject) => {
-      const transaction = this.db!.transaction(['meditation'], 'readonly');
+      const transaction = this.db?.transaction(['meditation'], 'readonly');
       const store = transaction.objectStore('meditation');
       const request = store.getAll();
       request.onsuccess = () => {
@@ -156,7 +156,7 @@ export const StorageService = {
     await this.ensureInit();
     if (!this.db) return [];
     return new Promise((resolve, reject) => {
-      const transaction = this.db!.transaction(['logs'], 'readonly');
+      const transaction = this.db?.transaction(['logs'], 'readonly');
       const store = transaction.objectStore('logs');
       const request = store.getAll();
       request.onsuccess = () => {
@@ -184,7 +184,7 @@ export const StorageService = {
     await this.ensureInit();
     if (!this.db) throw new Error('StorageService: Database not initialized');
     return new Promise((resolve, reject) => {
-      const transaction = this.db!.transaction(['state'], 'readwrite');
+      const transaction = this.db?.transaction(['state'], 'readwrite');
       const store = transaction.objectStore('state');
       const request = store.put({ key, value: data });
       request.onsuccess = () => {
@@ -212,7 +212,7 @@ export const StorageService = {
     await this.ensureInit();
     if (!this.db) return null;
     return new Promise((resolve, reject) => {
-      const transaction = this.db!.transaction(['state'], 'readonly');
+      const transaction = this.db?.transaction(['state'], 'readonly');
       const store = transaction.objectStore('state');
       const request = store.get(key);
       request.onsuccess = () => resolve(request.result ? (request.result.value as T) : null);
@@ -256,7 +256,7 @@ export const StorageService = {
     if (!this.db) throw new Error('StorageService: Database not initialized');
 
     return new Promise((resolve, reject) => {
-      const transaction = this.db!.transaction(['auditor_reports'], 'readwrite');
+      const transaction = this.db?.transaction(['auditor_reports'], 'readwrite');
       const store = transaction.objectStore('auditor_reports');
       const request = store.add(report);
       request.onsuccess = () => resolve();
@@ -269,7 +269,7 @@ export const StorageService = {
     if (!this.db) return null;
 
     return new Promise((resolve, reject) => {
-      const transaction = this.db!.transaction(['auditor_reports'], 'readonly');
+      const transaction = this.db?.transaction(['auditor_reports'], 'readonly');
       const store = transaction.objectStore('auditor_reports');
       const index = store.index('timestamp');
       const request = index.openCursor(null, 'prev'); // Get latest by timestamp
@@ -286,7 +286,7 @@ export const StorageService = {
     await this.ensureInit();
     if (!this.db) throw new Error('StorageService: Database not initialized');
     return new Promise((resolve, reject) => {
-      const transaction = this.db!.transaction(['active_session'], 'readwrite');
+      const transaction = this.db?.transaction(['active_session'], 'readwrite');
       const store = transaction.objectStore('active_session');
       const request = store.put({ key: 'current', ...state });
       request.onsuccess = () => resolve();
@@ -298,7 +298,7 @@ export const StorageService = {
     await this.ensureInit();
     if (!this.db) return null;
     return new Promise((resolve, reject) => {
-      const transaction = this.db!.transaction(['active_session'], 'readonly');
+      const transaction = this.db?.transaction(['active_session'], 'readonly');
       const store = transaction.objectStore('active_session');
       const request = store.get('current');
       request.onsuccess = () => resolve(request.result || null);
@@ -310,7 +310,7 @@ export const StorageService = {
     await this.ensureInit();
     if (!this.db) throw new Error('StorageService: Database not initialized');
     return new Promise((resolve, reject) => {
-      const transaction = this.db!.transaction(['active_session'], 'readwrite');
+      const transaction = this.db?.transaction(['active_session'], 'readwrite');
       const store = transaction.objectStore('active_session');
       const request = store.delete('current');
       request.onsuccess = () => resolve();
@@ -323,7 +323,7 @@ export const StorageService = {
     await this.ensureInit();
     if (!this.db) return [];
     return new Promise((resolve, reject) => {
-      const transaction = this.db!.transaction(['grimoire'], 'readonly');
+      const transaction = this.db?.transaction(['grimoire'], 'readonly');
       const store = transaction.objectStore('grimoire');
       const request = store.getAll();
       request.onsuccess = () => {
@@ -339,7 +339,7 @@ export const StorageService = {
     await this.ensureInit();
     if (!this.db) throw new Error('StorageService: Database not initialized');
     return new Promise((resolve, reject) => {
-      const transaction = this.db!.transaction(['grimoire'], 'readwrite');
+      const transaction = this.db?.transaction(['grimoire'], 'readwrite');
       const store = transaction.objectStore('grimoire');
       const request = store.put(entry);
       request.onsuccess = () => resolve();
