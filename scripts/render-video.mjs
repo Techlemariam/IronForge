@@ -1,6 +1,5 @@
-
-import { spawn } from 'child_process';
-import path from 'path';
+import { spawn } from 'node:child_process';
+import path from 'node:path';
 
 // This script is designed to be called by the agent to render a Remotion video.
 // It takes a Base64 encoded JSON string as an argument, which contains the props for the video.
@@ -16,7 +15,7 @@ function runCommand(command, args) {
       }
     });
     proc.on('error', (err) => {
-        reject(err);
+      reject(err);
     });
   });
 }
@@ -32,18 +31,18 @@ async function main() {
   try {
     propsJson = Buffer.from(propsBase64, 'base64').toString('utf-8');
   } catch (e) {
-    console.error("Error: Invalid Base64 props string.", e);
+    console.error('Error: Invalid Base64 props string.', e);
     process.exit(1);
   }
-  
+
   const props = JSON.parse(propsJson);
   const compositionId = 'ProgressVideo';
   const outputDir = 'public/videos';
-  
+
   // Ensure the output directory exists
   // Note: This part is simple, for a real app, consider more robust directory creation
-  const fs = await import('fs');
-  if (!fs.existsSync(outputDir)){
+  const fs = await import('node:fs');
+  if (!fs.existsSync(outputDir)) {
     fs.mkdirSync(outputDir, { recursive: true });
   }
 
@@ -60,16 +59,15 @@ async function main() {
       compositionId,
       outputPath,
       `--props=${propsJson}`,
-      '--log-level=verbose'
+      '--log-level=verbose',
     ]);
 
-    console.log(`✅ Video rendered successfully!`);
+    console.log('✅ Video rendered successfully!');
     // This specific line is what the agent's workflow (`factory.md`) expects to parse.
     console.log(`outputPath: ${outputPath}`);
-
   } catch (err) {
-      console.error('Video rendering failed during execution:', err);
-      process.exit(1);
+    console.error('Video rendering failed during execution:', err);
+    process.exit(1);
   }
 }
 

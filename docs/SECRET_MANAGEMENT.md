@@ -44,6 +44,31 @@ All MCP servers must reference secrets via Doppler environment variables in `mcp
 }
 ```
 
+## 🤖 n8n Secrets
+
+The following secrets are required by `scripts/n8n-api.ps1` (shared helper dot-sourced by all n8n scripts):
+
+| Doppler Key | Description |
+| --- | --- |
+| `N8N_API_KEY` | n8n API token — Settings → API → Create API key |
+| `N8N_HOST` | Base URL of the n8n instance, e.g. `https://n8n.ironforge.internal` |
+| `N8N_SKIP_TLS` | Set to `"true"` to skip TLS validation (dev/internal only, default: unset) |
+| `N8N_COOLIFY_SERVICE_UUID` | Coolify service UUID for the n8n service (used in upgrade/status scripts) |
+| `N8N_CI_TRIAGE_WEBHOOK_URL` | Webhook URL of the CI Triage Router workflow (populated after first deploy) |
+
+Add these via Doppler:
+
+```bash
+doppler secrets set N8N_API_KEY="<your-key>" N8N_HOST="https://n8n.ironforge.internal"
+```
+
+## 🛳️ Coolify Secrets
+
+| Doppler Key | Description |
+| --- | --- |
+| `COOLIFY_HOST` | Coolify base URL, e.g. `http://ironforge-coolify.tailafb692.ts.net:8000` |
+| `COOLIFY_API_TOKEN` | Coolify API token — Coolify Dashboard → Settings → API |
+
 ## 📚 References
 
 - [Doppler Dashboard](https://dashboard.doppler.com/workplace/ironforge)

@@ -37,10 +37,7 @@ on:
         default: false
         type: boolean
 
-permissions:
-  contents: write
-  pull-requests: write
-  issues: write
+permissions: read-all
 
 env:
   NODE_VERSION: "22"
@@ -58,7 +55,7 @@ jobs:
       workflow: ${{ steps.check.outputs.workflow }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Check conditions
         id: check
@@ -94,7 +91,10 @@ jobs:
     name: 🔧 Run Maintenance
     needs: preflight
     if: needs.preflight.outputs.should_run == 'true'
-    runs-on: [self-hosted, IronForge-VPS]
+    runs-on: [self-hosted, IronForge-Local]
+    permissions:
+      contents: write
+      pull-requests: write
     container:
       image: ghcr.io/techlemariam/ironforge/ironforge-agent:latest
       credentials:
@@ -106,7 +106,7 @@ jobs:
       summary: ${{ steps.summary.outputs.summary }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0
 
@@ -218,7 +218,7 @@ jobs:
 
       - name: 💾 Commit Changes
         id: changes
-        uses: stefanzweifel/git-auto-commit-action@v7
+        uses: stefanzweifel/git-auto-commit-action@e348103e9026cc0eee72ae06630dbe30c8bf7a79 # v5.1.0
         with:
           commit_message: "chore: nightly maintenance updates [skip ci]"
           branch: ${{ env.BRANCH }}
@@ -237,9 +237,11 @@ jobs:
       needs.maintenance.outputs.changes_made == 'true' && 
       inputs.skip_pr != true
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Create Pull Request
         run: |
@@ -263,9 +265,11 @@ jobs:
     needs: [preflight, maintenance]
     if: failure()
     runs-on: ubuntu-latest
+    permissions:
+      issues: write
     steps:
       - name: Create failure issue
-        uses: actions/github-script@v8
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         with:
           script: |
             const title = `🌙 Night Shift Failed: ${new Date().toISOString().split('T')[0]}`;

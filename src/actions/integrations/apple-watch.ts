@@ -1,4 +1,4 @@
-"use server";
+'use server';
 
 /**
  * Apple Watch Integration
@@ -8,7 +8,7 @@
  */
 
 interface WatchWorkoutData {
-  workoutType: "STRENGTH" | "CARDIO" | "HIIT";
+  workoutType: 'STRENGTH' | 'CARDIO' | 'HIIT';
   startTime: Date;
   endTime: Date;
   heartRateData: {
@@ -46,12 +46,10 @@ interface ComplicationData {
  * Receive workout data from Apple Watch.
  */
 export async function syncWatchDataAction(
-  payload: WatchSyncPayload,
+  payload: WatchSyncPayload
 ): Promise<{ success: boolean; processed: number }> {
   try {
-    console.log(
-      `Watch sync: user=${payload.userId}, workouts=${payload.workouts.length}`,
-    );
+    console.log(`Watch sync: user=${payload.userId}, workouts=${payload.workouts.length}`);
 
     // In production:
     // 1. Store workout data
@@ -62,9 +60,7 @@ export async function syncWatchDataAction(
     let processed = 0;
     for (const workout of payload.workouts) {
       // Process each workout
-      console.log(
-        `Processing ${workout.workoutType} workout: ${workout.activeMinutes}min`,
-      );
+      console.log(`Processing ${workout.workoutType} workout: ${workout.activeMinutes}min`);
       processed++;
     }
 
@@ -75,7 +71,7 @@ export async function syncWatchDataAction(
 
     return { success: true, processed };
   } catch (error) {
-    console.error("Error syncing watch data:", error);
+    console.error('Error syncing watch data:', error);
     return { success: false, processed: 0 };
   }
 }
@@ -83,23 +79,21 @@ export async function syncWatchDataAction(
 /**
  * Get data for Watch complication display.
  */
-export async function getComplicationDataAction(
-  _userId: string,
-): Promise<ComplicationData> {
+export async function getComplicationDataAction(_userId: string): Promise<ComplicationData> {
   try {
     // In production, fetch real data
     return {
       currentStreak: 7,
       todaysXp: 450,
-      nextWorkout: "Push Day",
-      titanMood: "💪",
+      nextWorkout: 'Push Day',
+      titanMood: '💪',
     };
   } catch (error) {
-    console.error("Error getting complication data:", error);
+    console.error('Error getting complication data:', error);
     return {
       currentStreak: 0,
       todaysXp: 0,
-      titanMood: "😴",
+      titanMood: '😴',
     };
   }
 }
@@ -109,14 +103,14 @@ export async function getComplicationDataAction(
  */
 export async function pushWatchUpdateAction(
   userId: string,
-  data: Partial<ComplicationData>,
+  data: Partial<ComplicationData>
 ): Promise<{ success: boolean }> {
   try {
     // In production, push via WatchConnectivity or push notifications
     console.log(`Push to watch: user=ID:[REDACTED], data=${JSON.stringify(data)}`);
     return { success: true };
   } catch (error) {
-    console.error("Error pushing to watch:", error);
+    console.error('Error pushing to watch:', error);
     return { success: false };
   }
 }
@@ -130,16 +124,14 @@ export async function configureWatchAction(
     showHeartRate: boolean;
     hapticAlerts: boolean;
     autoStartWorkout: boolean;
-    syncFrequency: "REALTIME" | "HOURLY" | "MANUAL";
-  },
+    syncFrequency: 'REALTIME' | 'HOURLY' | 'MANUAL';
+  }
 ): Promise<{ success: boolean }> {
   try {
-    console.log(
-      `Watch config: user=${userId}, config=${JSON.stringify(config)}`,
-    );
+    console.log(`Watch config: user=${userId}, config=${JSON.stringify(config)}`);
     return { success: true };
   } catch (error) {
-    console.error("Error configuring watch:", error);
+    console.error('Error configuring watch:', error);
     return { success: false };
   }
 }

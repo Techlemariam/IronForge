@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from "react";
-import { contributeGuildDamageAction } from "@/actions/guild/core";
+import { contributeGuildDamageAction } from '@/actions/guild/core';
+import { useEffect, useRef, useState } from 'react';
 
 interface UseGuildContributionProps {
   userId?: string;
@@ -31,7 +31,7 @@ export const useGuildContribution = ({
     pendingDamage: 0,
     bossHp: 0,
     bossTotalHp: 0,
-    bossName: "Unknown",
+    bossName: 'Unknown',
   });
 
   const pendingDamageRef = useRef(0);
@@ -100,7 +100,7 @@ export const useGuildContribution = ({
             }));
           }
         } catch (e) {
-          console.error("Guild Sync Failed", e);
+          console.error('Guild Sync Failed', e);
         }
       }
     }, 30000);

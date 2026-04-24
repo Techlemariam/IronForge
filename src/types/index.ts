@@ -1,41 +1,35 @@
 // Re-exports from sibling type files
-export type { AuditReport } from "./auditor";
-export type { TrainingPath, WeeklyMastery } from "./training";
+export type { AuditReport } from './auditor';
+export type { TrainingPath, WeeklyMastery } from './training';
 
 // Local imports for internal use
-import type { AuditReport } from "./auditor";
-import type { TrainingPath, WeeklyMastery } from "./training";
+import type { AuditReport } from './auditor';
+import type { TrainingPath, WeeklyMastery } from './training';
 
 export enum BlockType {
-  WARMUP = "warmup",
-  STATION = "station",
-  TRANSITION = "transition",
-  COOLDOWN = "cooldown",
+  WARMUP = 'warmup',
+  STATION = 'station',
+  TRANSITION = 'transition',
+  COOLDOWN = 'cooldown',
 }
 
 export enum Archetype {
-  JUGGERNAUT = "JUGGERNAUT",
-  PATHFINDER = "PATHFINDER",
-  WARDEN = "WARDEN",
+  JUGGERNAUT = 'JUGGERNAUT',
+  PATHFINDER = 'PATHFINDER',
+  WARDEN = 'WARDEN',
 }
 
 export enum ExerciseLogic {
-  FIXED_REPS = "fixed_reps",
-  TM_PERCENT = "531_tm_percent",
+  FIXED_REPS = 'fixed_reps',
+  TM_PERCENT = '531_tm_percent',
 }
 
-export type Rarity =
-  | "poor"
-  | "common"
-  | "uncommon"
-  | "rare"
-  | "epic"
-  | "legendary";
+export type Rarity = 'poor' | 'common' | 'uncommon' | 'rare' | 'epic' | 'legendary';
 
 export enum SubscriptionTier {
-  FREE = "FREE",
-  PRO = "PRO",
-  LIFETIME = "LIFETIME",
+  FREE = 'FREE',
+  PRO = 'PRO',
+  LIFETIME = 'LIFETIME',
 }
 
 export interface User {
@@ -61,7 +55,7 @@ export interface Set {
   e1rm?: number; // Calculated estimated 1RM for this set performance
   rpe?: number; // Rate of Perceived Exertion
   type?: string;
-  setType?: "normal" | "failure" | "dropset" | "warmup" | "myoreps";
+  setType?: 'normal' | 'failure' | 'dropset' | 'warmup' | 'myoreps';
   isWarmup?: boolean;
   completedAt?: string;
 }
@@ -91,7 +85,7 @@ export interface Block {
   estimatedDurationSec?: number;
 }
 
-export type QuestDifficulty = "Normal" | "Heroic" | "Mythic";
+export type QuestDifficulty = 'Normal' | 'Heroic' | 'Mythic';
 
 export interface Session {
   id: string;
@@ -105,13 +99,7 @@ export interface Session {
 }
 
 // --- EQUIPMENT / ARMORY ---
-export type EquipmentCategory =
-  | "Barbell"
-  | "Weights"
-  | "Machine"
-  | "Cardio"
-  | "Accessory"
-  | "Rack";
+export type EquipmentCategory = 'Barbell' | 'Weights' | 'Machine' | 'Cardio' | 'Accessory' | 'Rack';
 
 export interface Equipment {
   id: string;
@@ -143,34 +131,34 @@ export interface ChatMessage {
   userName: string;
   message: string;
   timestamp: string;
-  type: "CHAT" | "LOG";
+  type: 'CHAT' | 'LOG';
 }
 
 // --- SKILLS & TALENTS ---
 export enum SkillStatus {
-  LOCKED = "LOCKED",
-  UNLOCKED = "UNLOCKED",
-  MASTERED = "MASTERED",
+  LOCKED = 'LOCKED',
+  UNLOCKED = 'UNLOCKED',
+  MASTERED = 'MASTERED',
 }
 
 export type SkillCategory =
   // Legacy categories (deprecated, kept for backward compatibility)
-  | "push"
-  | "pull"
-  | "legs"
-  | "core"
+  | 'push'
+  | 'pull'
+  | 'legs'
+  | 'core'
   // New Path-aligned categories
-  | "strength" // Juggernaut alignment (merged push + legs)
-  | "hypertrophy" // Titan alignment
-  | "endurance" // Engine alignment
-  | "hybrid" // Warden alignment
-  | "utility"; // Renamed from 'core' (all paths)
+  | 'strength' // Juggernaut alignment (merged push + legs)
+  | 'hypertrophy' // Titan alignment
+  | 'endurance' // Engine alignment
+  | 'hybrid' // Warden alignment
+  | 'utility'; // Renamed from 'core' (all paths)
 
 export interface SkillRequirement {
-  type: "achievement_count" | "vo2max_value" | "1rm_weight" | "rep_count";
+  type: 'achievement_count' | 'vo2max_value' | '1rm_weight' | 'rep_count';
   exercise_id: string; // 'any' or specific ID
   value: number;
-  comparison: "gte" | "lte";
+  comparison: 'gte' | 'lte';
 }
 
 export interface SkillNode {
@@ -181,18 +169,13 @@ export interface SkillNode {
   parents: string[];
   x: number;
   y: number;
-  currency: "talent_point" | "kinetic_shard";
+  currency: 'talent_point' | 'kinetic_shard';
   cost: number;
   requirements: SkillRequirement[];
 }
 
 // --- ACHIEVEMENTS ---
-export type AchievementCategory =
-  | "general"
-  | "dungeons"
-  | "professions"
-  | "cardio"
-  | "feats";
+export type AchievementCategory = 'general' | 'dungeons' | 'professions' | 'cardio' | 'feats';
 
 export interface Achievement {
   id: string;
@@ -224,7 +207,7 @@ export interface MeditationLog {
   id?: number;
   date: string;
   durationMinutes: number;
-  source: "Headspace" | "Calm" | "Other";
+  source: 'Headspace' | 'Calm' | 'Other';
 }
 
 export interface IntervalsWellness {
@@ -242,7 +225,7 @@ export interface IntervalsWellness {
 }
 
 // --- INTERVALS.ICU ---
-export type { IntervalsActivity, IntervalsEvent } from "@/lib/intervals";
+export type { IntervalsActivity, IntervalsEvent } from '@/lib/intervals';
 
 export interface AthleteSettings {
   id: string;
@@ -281,10 +264,10 @@ export interface TitanAttributes {
 
 export interface WeaknessAudit {
   detected: boolean;
-  type: "NONE" | "AEROBIC_INTERFERENCE" | "RECOVERY_DEBT";
+  type: 'NONE' | 'AEROBIC_INTERFERENCE' | 'RECOVERY_DEBT';
   message: string;
   confidence: number;
-  correlationData?: { metric: string; trend: "UP" | "DOWN" };
+  correlationData?: { metric: string; trend: 'UP' | 'DOWN' };
 }
 
 export interface TSBForecast {
@@ -297,7 +280,7 @@ export interface TTBIndices {
   strength: number;
   endurance: number;
   wellness: number;
-  lowest: "strength" | "endurance" | "wellness";
+  lowest: 'strength' | 'endurance' | 'wellness';
 }
 
 export interface TitanLoadCalculation {
@@ -309,19 +292,15 @@ export interface TitanLoadCalculation {
 }
 
 export interface OracleRecommendation {
-  type:
-  | "RECOVERY"
-  | "PR_ATTEMPT"
-  | "CARDIO_VALIDATION"
-  | "GRIND"
-  | "TAPER"
-  | "COMPETITION_PREP";
+  type: 'RECOVERY' | 'PR_ATTEMPT' | 'CARDIO_VALIDATION' | 'GRIND' | 'TAPER' | 'COMPETITION_PREP';
   title: string;
   rationale: string;
   priorityScore: number;
   generatedSession?: Session;
   sessionId?: string;
   targetExercise?: string;
+  primaryFocus?: string;
+  equipmentId?: string;
 }
 
 /**
@@ -356,7 +335,7 @@ export interface PlanContext {
 export interface InAppWorkoutLog {
   id: string;
   date: string;
-  type: "STRENGTH" | "CARDIO";
+  type: 'STRENGTH' | 'CARDIO';
   durationMin: number;
   setsCompleted?: number;
   tssEstimate?: number;
@@ -378,24 +357,18 @@ export interface ValhallaSyncResult {
 }
 
 // --- BESTIARY ---
-export type MonsterType =
-  | "Giant"
-  | "Beast"
-  | "Undead"
-  | "Elemental"
-  | "Construct"
-  | "Dragon";
+export type MonsterType = 'Giant' | 'Beast' | 'Undead' | 'Elemental' | 'Construct' | 'Dragon';
 
 export type MonsterElement =
-  | "Physical"
-  | "Fire"
-  | "Ice"
-  | "Lightning"
-  | "Earth"
-  | "Shadow"
-  | "Holy";
+  | 'Physical'
+  | 'Fire'
+  | 'Ice'
+  | 'Lightning'
+  | 'Earth'
+  | 'Shadow'
+  | 'Holy';
 
-export type BossTier = "STORY" | "HEROIC" | "TITAN_SLAYER";
+export type BossTier = 'STORY' | 'HEROIC' | 'TITAN_SLAYER';
 
 export interface Monster {
   id: string;
@@ -422,16 +395,16 @@ export interface Zone {
   coordinates: { x: number; y: number }; // Percentage for placement on map
   icon: string;
   isDiscovered: boolean;
-  region: "Foundry" | "Wilderness" | "Ethereal";
+  region: 'Foundry' | 'Wilderness' | 'Ethereal';
 }
 
 // --- GRIMOIRE ---
 export type GrimoireEntryType =
-  | "ACHIEVEMENT"
-  | "PR"
-  | "LEVEL_UP"
-  | "BOSS_DEFEAT"
-  | "METRIC_MILESTONE";
+  | 'ACHIEVEMENT'
+  | 'PR'
+  | 'LEVEL_UP'
+  | 'BOSS_DEFEAT'
+  | 'METRIC_MILESTONE';
 
 export interface GrimoireEntry {
   id: string;

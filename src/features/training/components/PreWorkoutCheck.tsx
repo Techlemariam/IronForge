@@ -1,20 +1,10 @@
-import React, { useState } from "react";
-import {
-  Activity,
-  Battery,
-  ShieldAlert,
-  Moon,
-  RefreshCw,
-  Zap,
-  Wifi,
-  Wind,
-  X,
-} from "lucide-react";
-import { Session, AppSettings } from "@/types";
-import { autoRegulateSession, playSound } from "@/utils";
-import { getWellnessAction } from "@/actions/integrations/intervals";
-import { useSkills } from "@/context/SkillContext";
-import { StorageService } from "@/services/storage";
+import { getWellnessAction } from '@/actions/integrations/intervals';
+import { useSkills } from '@/context/SkillContext';
+import { StorageService } from '@/services/storage';
+import type { AppSettings, Session } from '@/types';
+import { autoRegulateSession, playSound } from '@/utils';
+import { Activity, Battery, Moon, RefreshCw, ShieldAlert, Wifi, Wind, X, Zap } from 'lucide-react';
+import React, { useState } from 'react';
 
 interface PreWorkoutCheckProps {
   session: Session;
@@ -22,62 +12,53 @@ interface PreWorkoutCheckProps {
   onCancel: () => void;
 }
 
-const PreWorkoutCheck: React.FC<PreWorkoutCheckProps> = ({
-  session,
-  onProceed,
-  onCancel,
-}) => {
-  const [status, setStatus] = useState<"IDLE" | "SCANNING" | "COMPLETE">(
-    "IDLE",
-  );
+const PreWorkoutCheck: React.FC<PreWorkoutCheckProps> = ({ session, onProceed, onCancel }) => {
+  const [status, setStatus] = useState<'IDLE' | 'SCANNING' | 'COMPLETE'>('IDLE');
   const [bodyBattery, setBodyBattery] = useState<number | null>(null);
   const [sleepScore, setSleepScore] = useState<number | null>(null);
   const [isCompromised, setIsCompromised] = useState(false);
   const [isRested, setIsRested] = useState(false);
   const [showOverrideConfirm, setShowOverrideConfirm] = useState(false);
 
-  const [dataSource, setDataSource] = useState<"SIMULATION" | "INTERVALS">(
-    "SIMULATION",
-  );
+  const [dataSource, setDataSource] = useState<'SIMULATION' | 'INTERVALS'>('SIMULATION');
 
   // --- RPG SKILLS ---
   const { purchasedSkillIds } = useSkills();
-  const hasFatigueShroud = purchasedSkillIds.has("wind_1"); // 10% tolerance buff
+  const hasFatigueShroud = purchasedSkillIds.has('wind_1'); // 10% tolerance buff
 
   // E2E Mock Bypass
   React.useEffect(() => {
-    if (typeof window !== "undefined" && (window as any).__mockAutoCheckIn) {
-      console.log("[E2E-DEBUG] PreWorkoutCheck auto-bypassed via mock");
+    if (typeof window !== 'undefined' && (window as any).__mockAutoCheckIn) {
+      console.log('[E2E-DEBUG] PreWorkoutCheck auto-bypassed via mock');
       onProceed(session);
     }
   }, [session, onProceed]);
 
   const runScan = async (forceLow = false) => {
-    setStatus("SCANNING");
-    playSound("quest_accept");
+    setStatus('SCANNING');
+    playSound('quest_accept');
 
     let realData = null;
 
     try {
       // Use StorageService to get settings (Async)
-      await StorageService.getState<AppSettings>("settings");
+      await StorageService.getState<AppSettings>('settings');
 
       if (navigator.onLine) {
-        const today = new Date().toISOString().split("T")[0];
+        const today = new Date().toISOString().split('T')[0];
         const wellness = await getWellnessAction(today);
         realData = {
           bodyBattery: wellness.bodyBattery || 0,
           sleepScore: wellness.sleepScore || 0,
         };
-        if (realData.bodyBattery && realData.sleepScore)
-          setDataSource("INTERVALS"); // Simple check if data is valid
+        if (realData.bodyBattery && realData.sleepScore) setDataSource('INTERVALS'); // Simple check if data is valid
       }
     } catch (e) {
-      console.error("Scan failed or settings not found", e);
+      console.error('Scan failed or settings not found', e);
     }
 
     if (!realData) {
-      setDataSource("SIMULATION");
+      setDataSource('SIMULATION');
       // Artificial delay for "Scanning" effect feel
       await new Promise((r) => setTimeout(r, 1500));
 
@@ -91,20 +72,18 @@ const PreWorkoutCheck: React.FC<PreWorkoutCheckProps> = ({
 
     // RESTED LOGIC
     // BodyBattery > 80 AND Sleep > 85
-    const rested =
-      (realData.bodyBattery || 0) > 80 && (realData.sleepScore || 0) > 85;
+    const rested = (realData.bodyBattery || 0) > 80 && (realData.sleepScore || 0) > 85;
     setIsRested(rested);
-    if (rested) playSound("ding");
+    if (rested) playSound('ding');
 
     // FATIGUED LOGIC WITH SKILL MODIFIER
     // Base Threshold: 30. With Shroud: 20.
     const fatigueThreshold = hasFatigueShroud ? 20 : 30;
     const compromised =
-      (realData.bodyBattery || 0) < fatigueThreshold ||
-      (realData.sleepScore || 0) < 50;
+      (realData.bodyBattery || 0) < fatigueThreshold || (realData.sleepScore || 0) < 50;
 
     setIsCompromised(compromised);
-    setStatus("COMPLETE");
+    setStatus('COMPLETE');
   };
 
   const handleOverrideClick = () => {
@@ -129,8 +108,8 @@ const PreWorkoutCheck: React.FC<PreWorkoutCheckProps> = ({
               <h2 className="text-xl font-bold uppercase">Critical Warning</h2>
             </div>
             <p className="text-zinc-400 mb-6 leading-relaxed font-sans text-sm">
-              Your fatigue levels suggest high injury risk. Are you sure you
-              want to proceed without volume regulation?
+              Your fatigue levels suggest high injury risk. Are you sure you want to proceed without
+              volume regulation?
             </p>
             <div className="space-y-3">
               <button
@@ -166,15 +145,13 @@ const PreWorkoutCheck: React.FC<PreWorkoutCheckProps> = ({
       </div>
 
       <div className="flex-1 flex flex-col items-center justify-center p-6 space-y-8">
-        {status === "IDLE" && (
+        {status === 'IDLE' && (
           <div className="text-center space-y-4">
             <div className="w-24 h-24 rounded-full border-2 border-zinc-800 flex items-center justify-center mx-auto bg-zinc-900">
               <Zap className="w-10 h-10 text-zinc-600" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold uppercase text-gold">
-                Check Vitality
-              </h1>
+              <h1 className="text-2xl font-bold uppercase text-gold">Check Vitality</h1>
               <p className="text-zinc-500 text-sm max-w-xs mx-auto mt-2 font-sans">
                 Scan recovery metrics to determine XP bonus and fatigue state.
               </p>
@@ -196,118 +173,114 @@ const PreWorkoutCheck: React.FC<PreWorkoutCheckProps> = ({
           </div>
         )}
 
-        {status === "SCANNING" && (
+        {status === 'SCANNING' && (
           <div className="text-center space-y-6">
             <div className="relative w-32 h-32 mx-auto flex items-center justify-center">
-              <div className="absolute inset-0 border-4 border-blue-500/20 rounded-full animate-ping"></div>
-              <div className="absolute inset-0 border-4 border-t-blue-500 rounded-full animate-spin"></div>
+              <div className="absolute inset-0 border-4 border-blue-500/20 rounded-full animate-ping" />
+              <div className="absolute inset-0 border-4 border-t-blue-500 rounded-full animate-spin" />
               <RefreshCw className="w-10 h-10 text-blue-500 animate-pulse" />
             </div>
             <div className="space-y-1 font-serif text-xs uppercase text-blue-400">
               <p>Communing with Spirits...</p>
-              <p className="text-[10px] text-zinc-600 font-sans">
-                Connecting to Intervals.icu...
-              </p>
+              <p className="text-[10px] text-zinc-600 font-sans">Connecting to Intervals.icu...</p>
             </div>
           </div>
         )}
 
-        {status === "COMPLETE" &&
-          bodyBattery !== null &&
-          sleepScore !== null && (
-            <div className="w-full max-w-md space-y-6 animate-fade-in">
-              <div className="flex justify-center">
-                <div
-                  className={`flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest border ${dataSource === "INTERVALS" ? "bg-blue-900/20 border-blue-500 text-blue-400" : "bg-zinc-900 border-zinc-700 text-zinc-500"}`}
-                >
-                  <Wifi className="w-3 h-3" />
-                  Source: {dataSource}
-                </div>
+        {status === 'COMPLETE' && bodyBattery !== null && sleepScore !== null && (
+          <div className="w-full max-w-md space-y-6 animate-fade-in">
+            <div className="flex justify-center">
+              <div
+                className={`flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest border ${dataSource === 'INTERVALS' ? 'bg-blue-900/20 border-blue-500 text-blue-400' : 'bg-zinc-900 border-zinc-700 text-zinc-500'}`}
+              >
+                <Wifi className="w-3 h-3" />
+                Source: {dataSource}
               </div>
+            </div>
 
-              {/* SKILL PROC VISUALIZATION */}
-              {hasFatigueShroud && (
-                <div className="flex items-center justify-center gap-2 text-cyan-400 text-xs font-bold uppercase tracking-wider animate-pulse">
-                  <Wind className="w-4 h-4" />
-                  Fatigue Shroud Active (+10% Tol.)
-                </div>
-              )}
-
-              {isRested && (
-                <div className="bg-blue-900/20 border border-blue-500/50 p-4 rounded text-center">
-                  <h3 className="text-blue-400 font-bold uppercase text-lg tracking-widest animate-pulse">
-                    Rested State Active
-                  </h3>
-                  <p className="text-blue-200/60 text-xs font-sans mt-1">
-                    XP Gain increased by 200% for this quest.
-                  </p>
-                </div>
-              )}
-
-              <div className="grid grid-cols-2 gap-4">
-                <div
-                  className={`p-4 rounded border-2 bg-zinc-900 ${bodyBattery < 30 ? "border-red-900 text-red-500" : "border-zinc-800 text-venom"}`}
-                >
-                  <div className="flex items-center gap-2 mb-2 text-zinc-500">
-                    <Battery className="w-4 h-4" />
-                    <span className="text-xs font-bold uppercase">Stamina</span>
-                  </div>
-                  <span className="text-3xl font-black">{bodyBattery}</span>
-                </div>
-                <div
-                  className={`p-4 rounded border-2 bg-zinc-900 ${sleepScore < 50 ? "border-red-900 text-red-500" : "border-zinc-800 text-venom"}`}
-                >
-                  <div className="flex items-center gap-2 mb-2 text-zinc-500">
-                    <Moon className="w-4 h-4" />
-                    <span className="text-xs font-bold uppercase">Rest</span>
-                  </div>
-                  <span className="text-3xl font-black">{sleepScore}</span>
-                </div>
+            {/* SKILL PROC VISUALIZATION */}
+            {hasFatigueShroud && (
+              <div className="flex items-center justify-center gap-2 text-cyan-400 text-xs font-bold uppercase tracking-wider animate-pulse">
+                <Wind className="w-4 h-4" />
+                Fatigue Shroud Active (+10% Tol.)
               </div>
+            )}
 
-              {isCompromised ? (
-                <div className="bg-armor p-4 rounded border border-red-900/50">
-                  <h3 className="flex items-center gap-2 text-red-500 font-bold uppercase text-sm mb-3">
-                    <ShieldAlert className="w-4 h-4" />
-                    Debuff: Exhaustion
-                  </h3>
-                  <p className="text-zinc-400 text-sm mb-4 leading-relaxed font-sans">
-                    Vitality is critically low. Recommended action is to
-                    downgrade quest difficulty to &apos;Survival&apos;.
-                  </p>
-                  <div className="space-y-3">
-                    <button
-                      onClick={engageProtocol}
-                      className="w-full py-4 bg-red-900 hover:bg-red-800 text-white font-bold uppercase tracking-widest rounded border border-red-950 shadow-lg"
-                    >
-                      Accept Debuff (Volume Cap)
-                    </button>
-                    <button
-                      onClick={handleOverrideClick}
-                      className="w-full py-3 text-red-700 hover:text-red-500 font-sans text-xs font-bold uppercase"
-                    >
-                      Ignore Warning
-                    </button>
-                  </div>
+            {isRested && (
+              <div className="bg-blue-900/20 border border-blue-500/50 p-4 rounded text-center">
+                <h3 className="text-blue-400 font-bold uppercase text-lg tracking-widest animate-pulse">
+                  Rested State Active
+                </h3>
+                <p className="text-blue-200/60 text-xs font-sans mt-1">
+                  XP Gain increased by 200% for this quest.
+                </p>
+              </div>
+            )}
+
+            <div className="grid grid-cols-2 gap-4">
+              <div
+                className={`p-4 rounded border-2 bg-zinc-900 ${bodyBattery < 30 ? 'border-red-900 text-red-500' : 'border-zinc-800 text-venom'}`}
+              >
+                <div className="flex items-center gap-2 mb-2 text-zinc-500">
+                  <Battery className="w-4 h-4" />
+                  <span className="text-xs font-bold uppercase">Stamina</span>
                 </div>
-              ) : (
-                <div className="space-y-4">
-                  <p className="text-center text-zinc-500 font-sans text-sm">
-                    Your spirit is willing. Proceed to the quest.
-                  </p>
+                <span className="text-3xl font-black">{bodyBattery}</span>
+              </div>
+              <div
+                className={`p-4 rounded border-2 bg-zinc-900 ${sleepScore < 50 ? 'border-red-900 text-red-500' : 'border-zinc-800 text-venom'}`}
+              >
+                <div className="flex items-center gap-2 mb-2 text-zinc-500">
+                  <Moon className="w-4 h-4" />
+                  <span className="text-xs font-bold uppercase">Rest</span>
+                </div>
+                <span className="text-3xl font-black">{sleepScore}</span>
+              </div>
+            </div>
+
+            {isCompromised ? (
+              <div className="bg-armor p-4 rounded border border-red-900/50">
+                <h3 className="flex items-center gap-2 text-red-500 font-bold uppercase text-sm mb-3">
+                  <ShieldAlert className="w-4 h-4" />
+                  Debuff: Exhaustion
+                </h3>
+                <p className="text-zinc-400 text-sm mb-4 leading-relaxed font-sans">
+                  Vitality is critically low. Recommended action is to downgrade quest difficulty to
+                  &apos;Survival&apos;.
+                </p>
+                <div className="space-y-3">
                   <button
-                    onClick={() => {
-                      playSound("quest_accept");
-                      onProceed(session);
-                    }}
-                    className="w-full py-4 bg-gold hover:bg-gold/80 text-void border-2 border-void font-bold uppercase tracking-widest rounded flex items-center justify-center gap-2 transition-all shadow-xl active:scale-95"
+                    onClick={engageProtocol}
+                    className="w-full py-4 bg-red-900 hover:bg-red-800 text-white font-bold uppercase tracking-widest rounded border border-red-950 shadow-lg"
                   >
-                    Accept Quest
+                    Accept Debuff (Volume Cap)
+                  </button>
+                  <button
+                    onClick={handleOverrideClick}
+                    className="w-full py-3 text-red-700 hover:text-red-500 font-sans text-xs font-bold uppercase"
+                  >
+                    Ignore Warning
                   </button>
                 </div>
-              )}
-            </div>
-          )}
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <p className="text-center text-zinc-500 font-sans text-sm">
+                  Your spirit is willing. Proceed to the quest.
+                </p>
+                <button
+                  onClick={() => {
+                    playSound('quest_accept');
+                    onProceed(session);
+                  }}
+                  className="w-full py-4 bg-gold hover:bg-gold/80 text-void border-2 border-void font-bold uppercase tracking-widest rounded flex items-center justify-center gap-2 transition-all shadow-xl active:scale-95"
+                >
+                  Accept Quest
+                </button>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

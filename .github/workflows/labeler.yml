@@ -1,18 +1,21 @@
 name: "🏷️ PR Labeler"
+# Security: Using pull_request (not pull_request_target) to prevent
+# untrusted fork code from running with write permissions to secrets.
+# See: https://securitylab.github.com/research/github-actions-preventing-pwn-requests/
 on:
-  pull_request_target:
+  pull_request:
     types: [opened, synchronize, reopened]
 
-permissions:
-  contents: read
-  pull-requests: write
+permissions: read-all
 
 jobs:
   triage:
-    runs-on: [self-hosted, IronForge-VPS]
+    runs-on: [self-hosted, IronForge-Local]
+    permissions:
+      pull-requests: write
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/labeler@v5
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/labeler@634933edcd8ababfe52f92936142cc22ac488b1b # v6.0.1
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           sync-labels: true

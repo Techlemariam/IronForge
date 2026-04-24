@@ -1,17 +1,10 @@
-"use client";
+'use client';
 
-type HapticPattern =
-  | "light"
-  | "medium"
-  | "heavy"
-  | "success"
-  | "error"
-  | "warning"
-  | "selection";
+type HapticPattern = 'light' | 'medium' | 'heavy' | 'success' | 'error' | 'warning' | 'selection';
 
 interface HapticConfig {
   enabled: boolean;
-  intensity: "low" | "medium" | "high";
+  intensity: 'low' | 'medium' | 'high';
 }
 
 const HAPTIC_PATTERNS: Record<HapticPattern, number[]> = {
@@ -26,14 +19,14 @@ const HAPTIC_PATTERNS: Record<HapticPattern, number[]> = {
 
 let hapticConfig: HapticConfig = {
   enabled: true,
-  intensity: "medium",
+  intensity: 'medium',
 };
 
 /**
  * Check if haptic feedback is available.
  */
 export function isHapticAvailable(): boolean {
-  return typeof navigator !== "undefined" && "vibrate" in navigator;
+  return typeof navigator !== 'undefined' && 'vibrate' in navigator;
 }
 
 /**
@@ -48,9 +41,9 @@ export function configureHaptics(config: Partial<HapticConfig>): void {
  */
 function getIntensityMultiplier(): number {
   switch (hapticConfig.intensity) {
-    case "low":
+    case 'low':
       return 0.5;
-    case "high":
+    case 'high':
       return 1.5;
     default:
       return 1;
@@ -60,7 +53,7 @@ function getIntensityMultiplier(): number {
 /**
  * Trigger haptic feedback.
  */
-export function triggerHaptic(pattern: HapticPattern = "medium"): boolean {
+export function triggerHaptic(pattern: HapticPattern = 'medium'): boolean {
   if (!hapticConfig.enabled || !isHapticAvailable()) return false;
 
   try {
@@ -70,7 +63,7 @@ export function triggerHaptic(pattern: HapticPattern = "medium"): boolean {
 
     return navigator.vibrate(adjustedPattern);
   } catch (error) {
-    console.warn("Haptic feedback failed:", error);
+    console.warn('Haptic feedback failed:', error);
     return false;
   }
 }
@@ -79,35 +72,35 @@ export function triggerHaptic(pattern: HapticPattern = "medium"): boolean {
  * Haptic for button press.
  */
 export function hapticPress(): boolean {
-  return triggerHaptic("light");
+  return triggerHaptic('light');
 }
 
 /**
  * Haptic for successful action.
  */
 export function hapticSuccess(): boolean {
-  return triggerHaptic("success");
+  return triggerHaptic('success');
 }
 
 /**
  * Haptic for error/invalid action.
  */
 export function hapticError(): boolean {
-  return triggerHaptic("error");
+  return triggerHaptic('error');
 }
 
 /**
  * Haptic for warning.
  */
 export function hapticWarning(): boolean {
-  return triggerHaptic("warning");
+  return triggerHaptic('warning');
 }
 
 /**
  * Haptic for selection change.
  */
 export function hapticSelection(): boolean {
-  return triggerHaptic("selection");
+  return triggerHaptic('selection');
 }
 
 /**

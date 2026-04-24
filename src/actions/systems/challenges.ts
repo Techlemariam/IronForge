@@ -1,4 +1,4 @@
-"use server";
+'use server';
 
 /**
  * Challenges Server Actions
@@ -8,15 +8,15 @@
  *
  * @module actions/challenges
  */
-import { addBattlePassXpAction } from "@/actions/systems/battle-pass";
-import { createClient } from "@/utils/supabase/server";
+import { addBattlePassXpAction } from '@/actions/systems/battle-pass';
 // import { cookies } from "next/headers";
-import prisma from "@/lib/prisma";
-import { ChallengeType } from "@/types/prisma";
-import { revalidatePath } from "next/cache";
+import prisma from '@/lib/prisma';
+import { ChallengeType } from '@/types/prisma';
+import { createClient } from '@/utils/supabase/server';
+import { revalidatePath } from 'next/cache';
 
 export interface ChallengeCriteria {
-  metric: "volume_kg" | "workouts" | "distance_km" | "duration_min";
+  metric: 'volume_kg' | 'workouts' | 'distance_km' | 'duration_min';
   target: number;
   unit?: string;
 }
@@ -29,19 +29,19 @@ export interface ChallengeRewards {
 
 const DEFAULT_CHALLENGES = [
   {
-    code: "WEEKLY_VOL_1",
-    title: "Heavy Lifter",
-    description: "Lift 10,000 kg total volume this week",
+    code: 'WEEKLY_VOL_1',
+    title: 'Heavy Lifter',
+    description: 'Lift 10,000 kg total volume this week',
     type: ChallengeType.WEEKLY,
-    criteria: { metric: "volume_kg", target: 10000, unit: "kg" },
+    criteria: { metric: 'volume_kg', target: 10000, unit: 'kg' },
     rewards: { xp: 500, gold: 100, kinetic: 50 },
   },
   {
-    code: "DAILY_WORKOUT_1",
-    title: "Daily Grinder",
-    description: "Complete 1 workout today",
+    code: 'DAILY_WORKOUT_1',
+    title: 'Daily Grinder',
+    description: 'Complete 1 workout today',
     type: ChallengeType.DAILY,
-    criteria: { metric: "workouts", target: 1 },
+    criteria: { metric: 'workouts', target: 1 },
     rewards: { xp: 100, gold: 20, kinetic: 10 },
   },
 ];
@@ -51,7 +51,7 @@ async function getSession() {
   const {
     data: { session },
   } = await supabase.auth.getSession();
-  if (!session) throw new Error("Unauthorized");
+  if (!session) throw new Error('Unauthorized');
   return session;
 }
 
@@ -100,7 +100,7 @@ export async function getActiveChallengesAction() {
   const user = await prisma.user.findUnique({
     where: { email: session.user.email! },
   });
-  if (!user) throw new Error("User not found");
+  if (!user) throw new Error('User not found');
 
   // Lazy Seed
   const count = await prisma.challenge.count({
@@ -154,16 +154,16 @@ export async function claimChallengeAction(challengeId: string) {
   const user = await prisma.user.findUnique({
     where: { email: session.user.email! },
   });
-  if (!user) throw new Error("User not found");
+  if (!user) throw new Error('User not found');
 
   const record = await prisma.userChallenge.findUnique({
     where: { userId_challengeId: { userId: user.id, challengeId } },
     include: { challenge: true },
   });
 
-  if (!record) throw new Error("Challenge not started");
-  if (!record.completed) throw new Error("Challenge not completed");
-  if (record.claimed) throw new Error("Already claimed");
+  if (!record) throw new Error('Challenge not started');
+  if (!record.completed) throw new Error('Challenge not completed');
+  if (record.claimed) throw new Error('Already claimed');
 
   const rewards = record.challenge.rewards as unknown as ChallengeRewards;
 
@@ -184,8 +184,8 @@ export async function claimChallengeAction(challengeId: string) {
   ]);
 
   // Award BP XP
-  await addBattlePassXpAction({ amount: 50 });
+  await addBattlePassXpAction(user.id, 50);
 
-  revalidatePath("/dashboard");
+  revalidatePath('/dashboard');
   return { success: true, newGold: result[1].gold };
 }

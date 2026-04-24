@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useState, useEffect, createContext, useContext } from "react";
+import { createContext, useContext, useEffect, useState } from 'react';
 
-const STORAGE_KEY = "ironforge_reduced_motion";
+const STORAGE_KEY = 'ironforge_reduced_motion';
 
 interface MotionPreference {
   reducedMotion: boolean;
@@ -25,12 +25,12 @@ export function MotionPreferenceProvider({
     // Check localStorage first
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored !== null) {
-      setReducedMotionState(stored === "true");
+      setReducedMotionState(stored === 'true');
       return;
     }
 
     // Fall back to system preference
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     setReducedMotionState(mediaQuery.matches);
 
     const handler = (e: MediaQueryListEvent) => {
@@ -39,8 +39,8 @@ export function MotionPreferenceProvider({
       }
     };
 
-    mediaQuery.addEventListener("change", handler);
-    return () => mediaQuery.removeEventListener("change", handler);
+    mediaQuery.addEventListener('change', handler);
+    return () => mediaQuery.removeEventListener('change', handler);
   }, []);
 
   const setReducedMotion = (value: boolean) => {

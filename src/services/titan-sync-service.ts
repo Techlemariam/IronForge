@@ -1,9 +1,9 @@
-"use server";
+'use server';
 
-import { prisma } from "@/lib/prisma";
-import { revalidatePath } from "next/cache";
-import { TitanState } from "@/types/schemas";
-import { getAuthoritativeTitanState } from "./titan-state-schema";
+import { prisma } from '@/lib/prisma';
+import type { TitanState } from '@/types/schemas';
+import { revalidatePath } from 'next/cache';
+import { getAuthoritativeTitanState } from './titan-state-schema';
 
 // ============================================
 // UNIFIED TITAN SOUL - SYNC SERVICE
@@ -22,7 +22,7 @@ interface SyncConflict {
   field: string;
   serverValue: unknown;
   clientValue: unknown;
-  resolution: "SERVER_WINS" | "CLIENT_WINS" | "MERGED";
+  resolution: 'SERVER_WINS' | 'CLIENT_WINS' | 'MERGED';
 }
 
 interface SyncRequest {
@@ -56,10 +56,7 @@ function incrementVersion(userId: string): number {
 /**
  * Pull latest Titan state from server.
  */
-export async function pullTitanState(
-  userId: string,
-  clientVersion?: number,
-): Promise<SyncResult> {
+export async function pullTitanState(userId: string, clientVersion?: number): Promise<SyncResult> {
   try {
     const serverVersion = await getTitanVersion(userId);
 
@@ -83,7 +80,7 @@ export async function pullTitanState(
       lastSyncedAt: new Date(),
     };
   } catch (error) {
-    console.error("Pull sync failed:", error);
+    console.error('Pull sync failed:', error);
     return {
       success: false,
       state: null,
@@ -96,11 +93,8 @@ export async function pullTitanState(
 /**
  * Push client changes to server.
  */
-export async function pushTitanState(
-  request: SyncRequest,
-): Promise<SyncResult> {
-  const { userId, deviceId, clientVersion, clientState } =
-    request;
+export async function pushTitanState(request: SyncRequest): Promise<SyncResult> {
+  const { userId, deviceId, clientVersion, clientState } = request;
 
   try {
     const serverVersion = await getTitanVersion(userId);
@@ -130,10 +124,8 @@ export async function pushTitanState(
     await applyStateChanges(userId, clientState);
     const newVersion = incrementVersion(userId);
 
-    console.log(
-      `Sync complete for ${userId} from device ${deviceId}, version ${newVersion}`,
-    );
-    revalidatePath("/dashboard");
+    console.log(`Sync complete for ${userId} from device ${deviceId}, version ${newVersion}`);
+    revalidatePath('/dashboard');
 
     return {
       success: true,
@@ -142,7 +134,7 @@ export async function pushTitanState(
       lastSyncedAt: new Date(),
     };
   } catch (error) {
-    console.error("Push sync failed:", error);
+    console.error('Push sync failed:', error);
     return {
       success: false,
       state: null,
@@ -157,28 +149,25 @@ export async function pushTitanState(
  */
 function detectConflicts(
   serverState: TitanState | null,
-  clientState: Partial<TitanState>,
+  clientState: Partial<TitanState>
 ): SyncConflict[] {
   const conflicts: SyncConflict[] = [];
 
   if (!serverState) return conflicts;
 
   // Check critical fields for conflicts
-  const criticalFields = ["level", "stats", "resources", "economy"];
+  const criticalFields = ['level', 'stats', 'resources', 'economy'];
 
   for (const field of criticalFields) {
     const serverVal = (serverState as Record<string, unknown>)[field];
     const clientVal = (clientState as Record<string, unknown>)[field];
 
-    if (
-      clientVal !== undefined &&
-      JSON.stringify(serverVal) !== JSON.stringify(clientVal)
-    ) {
+    if (clientVal !== undefined && JSON.stringify(serverVal) !== JSON.stringify(clientVal)) {
       conflicts.push({
         field,
         serverValue: serverVal,
         clientValue: clientVal,
-        resolution: "SERVER_WINS",
+        resolution: 'SERVER_WINS',
       });
     }
   }
@@ -192,41 +181,30 @@ function detectConflicts(
 function resolveConflicts(
   serverState: TitanState | null,
   clientState: Partial<TitanState>,
-  conflicts: SyncConflict[],
+  conflicts: SyncConflict[]
 ): Partial<TitanState> {
   const resolved = { ...clientState };
 
   for (const conflict of conflicts) {
     // Server wins for economy to prevent exploits
-    if (conflict.field === "economy") {
-      (resolved as Record<string, unknown>)[conflict.field] =
-        conflict.serverValue;
-      conflict.resolution = "SERVER_WINS";
+    if (conflict.field === 'economy') {
+      (resolved as Record<string, unknown>)[conflict.field] = conflict.serverValue;
+      conflict.resolution = 'SERVER_WINS';
     }
     // Merge stats - take higher values
-    else if (conflict.field === "stats" && serverState) {
+    else if (conflict.field === 'stats' && serverState) {
       const serverStats = serverState.stats;
-      const clientStats = (clientState as Record<string, unknown>)
-        .stats as typeof serverStats;
+      const clientStats = (clientState as Record<string, unknown>).stats as typeof serverStats;
       if (clientStats) {
         (resolved as Record<string, unknown>).stats = {
           strength: Math.max(serverStats.strength, clientStats.strength || 0),
           vitality: Math.max(serverStats.vitality, clientStats.vitality || 0),
-          endurance: Math.max(
-            serverStats.endurance,
-            clientStats.endurance || 0,
-          ),
+          endurance: Math.max(serverStats.endurance, clientStats.endurance || 0),
           agility: Math.max(serverStats.agility, clientStats.agility || 0),
-          willpower: Math.max(
-            serverStats.willpower,
-            clientStats.willpower || 0,
-          ),
-          intelligence: Math.max(
-            serverStats.intelligence,
-            clientStats.intelligence || 0,
-          ),
+          willpower: Math.max(serverStats.willpower, clientStats.willpower || 0),
+          intelligence: Math.max(serverStats.intelligence, clientStats.intelligence || 0),
         };
-        conflict.resolution = "MERGED";
+        conflict.resolution = 'MERGED';
       }
     }
   }
@@ -237,10 +215,7 @@ function resolveConflicts(
 /**
  * Apply state changes to database.
  */
-async function applyStateChanges(
-  userId: string,
-  changes: Partial<TitanState>,
-): Promise<void> {
+async function applyStateChanges(userId: string, changes: Partial<TitanState>): Promise<void> {
   const user = await prisma.user.findUnique({
     where: { id: userId },
     include: { titan: true },

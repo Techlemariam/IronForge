@@ -1,14 +1,17 @@
-# CodeRabbit Configuration
-# Documentation: https://docs.coderabbit.ai/configuration/usage
+# CodeRabbit Configuration for IronForge
+# Optimized for Backend Architecture & Security
 
 language: "sv-SE"
 
 reviews:
   profile: "chill"
   high_level_summary: true
-  auto_review:
-    enabled: true
-    ignore_title_keywords: ["WIP", "v0.0."]
-
-chat:
-  auto_reply: true
+  instructions: |
+    Du granskar IronForge - ekosystemets orkestrering och backend.
+    
+    Prioritera:
+    1. **Säkerhet**: Doppler-integration och korrekt hantering av secrets.
+    2. **Resiliens**: Felhantering i API-lager och CI/CD-pipelines.
+    3. **Standardisering**: Att koden följer "Zero Hell" CI/CD-principerna.
+    
+    Håll kommentarerna tekniska och koncisa.

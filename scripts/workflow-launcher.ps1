@@ -111,15 +111,19 @@ function Log-Usage {
 
 Set-Location $WORKSPACE
 
-$EnvFile = Join-Path $WORKSPACE ".env"
-if (Test-Path $EnvFile) {
-  $envContent = Get-Content $EnvFile
-  foreach ($line in $envContent) {
-    if ($line -match "^(GEMINI_API_KEY|TOKEN_DAILY_LIMIT|TOKEN_MONTHLY_LIMIT)=(.*)$") {
-      $key = $matches[1]; $val = $matches[2].Trim()
-      $val = $val -replace "^['""]", "" -replace "['""]$", ""
-      [System.Environment]::SetEnvironmentVariable($key, $val, "Process")
-      Write-Log "Loaded $key from .env"
+# ── Resolve secrets from Doppler ──────────────────────────────────────────────
+$dopplerSecrets = @("GEMINI_API_KEY", "TOKEN_DAILY_LIMIT", "TOKEN_MONTHLY_LIMIT")
+foreach ($secret in $dopplerSecrets) {
+  if (-not [System.Environment]::GetEnvironmentVariable($secret)) {
+    try {
+      $val = doppler secrets get $secret --project ironforge --config dev --plain 2>$null
+      if ($val) {
+        [System.Environment]::SetEnvironmentVariable($secret, $val, "Process")
+        Write-Log "Loaded $secret from Doppler"
+      }
+    }
+    catch {
+      Write-Log "Warning: Could not load $secret from Doppler — $_"
     }
   }
 }

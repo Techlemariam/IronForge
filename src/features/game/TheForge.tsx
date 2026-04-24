@@ -1,14 +1,15 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from "react";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
-import { ITEMS, RECIPES } from "@/data/gameData";
-import { UserInventory, CraftingRecipe } from "@/types/game";
-import { craftItem, getInventoryAction } from "@/actions/economy/forge";
-import { toast } from "@/components/ui/GameToast";
-import { Hammer, Anvil, Coins } from "lucide-react";
+import { craftItem, getInventoryAction } from '@/actions/economy/forge';
+import { toast } from '@/components/ui/GameToast';
+import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { ITEMS, RECIPES } from '@/data/gameData';
+import type { CraftingRecipe, UserInventory } from '@/types/game';
+import { Anvil, Coins, Hammer } from 'lucide-react';
+import type React from 'react';
+import { useEffect, useState } from 'react';
 
 interface TheForgeProps {
   onClose: () => void;
@@ -28,7 +29,7 @@ const TheForge: React.FC<TheForgeProps> = ({ onClose }) => {
       if (res?.data?.success && res.data.data) {
         setInventory(res.data.data);
       } else {
-        toast.error(res?.data?.message || res?.serverError || "Failed to access the Armory");
+        toast.error(res?.data?.message || res?.serverError || 'Failed to access the Armory');
       }
     }
     load();
@@ -41,7 +42,7 @@ const TheForge: React.FC<TheForgeProps> = ({ onClose }) => {
     try {
       const res = await craftItem({ recipeId: recipe.id });
       if (res?.data?.success && res.data.inventory) {
-        const inventoryData = res.data.inventory;
+        const _inventoryData = res.data.inventory;
         // Manual Optimistic Update for MVP fluidity:
         const newItems = [...inventory.items];
 
@@ -58,9 +59,7 @@ const TheForge: React.FC<TheForgeProps> = ({ onClose }) => {
         });
 
         // Add
-        const resIdx = newItems.findIndex(
-          (i) => i.itemId === recipe.resultItemId,
-        );
+        const resIdx = newItems.findIndex((i) => i.itemId === recipe.resultItemId);
         if (resIdx > -1) {
           newItems[resIdx] = {
             ...newItems[resIdx],
@@ -79,14 +78,14 @@ const TheForge: React.FC<TheForgeProps> = ({ onClose }) => {
           items: newItems,
         });
 
-        toast.success(res.data.message || "Crafted", {
-          description: "Item added to inventory.",
+        toast.success(res.data.message || 'Crafted', {
+          description: 'Item added to inventory.',
         });
       } else {
-        toast.error(res?.data?.message || res?.serverError || "Crafting failed");
+        toast.error(res?.data?.message || res?.serverError || 'Crafting failed');
       }
     } catch {
-      toast.error("The Hammer failed to strike.");
+      toast.error('The Hammer failed to strike.');
     } finally {
       setCraftingId(null);
     }
@@ -111,7 +110,10 @@ const TheForge: React.FC<TheForgeProps> = ({ onClose }) => {
       </div>
 
       {/* Inventory Bar */}
-      <Card variant="glass" className="mb-8 p-4 flex items-center gap-6 overflow-x-auto bg-black/40 border-forge-border">
+      <Card
+        variant="glass"
+        className="mb-8 p-4 flex items-center gap-6 overflow-x-auto bg-black/40 border-forge-border"
+      >
         <div className="flex items-center gap-2 text-gold font-mono border-r border-forge-border pr-6">
           <Coins className="w-5 h-5" />
           <span className="text-xl">{inventory.gold}</span>
@@ -127,13 +129,11 @@ const TheForge: React.FC<TheForgeProps> = ({ onClose }) => {
               <span className="text-xl">{item.image}</span>
               <div className="flex flex-col leading-none">
                 <span
-                  className={`text-xs uppercase font-bold text-${item.rarity === "common" ? "white" : "magma"}`}
+                  className={`text-xs uppercase font-bold text-${item.rarity === 'common' ? 'white' : 'magma'}`}
                 >
                   {item.name}
                 </span>
-                <span className="text-xs text-forge-muted font-mono">
-                  x{slot.count}
-                </span>
+                <span className="text-xs text-forge-muted font-mono">x{slot.count}</span>
               </div>
             </div>
           );
@@ -153,10 +153,7 @@ const TheForge: React.FC<TheForgeProps> = ({ onClose }) => {
             });
 
           return (
-            <Card variant="glass"
-              key={recipe.id}
-              className="relative group overflow-visible"
-            >
+            <Card variant="glass" key={recipe.id} className="relative group overflow-visible">
               <div className="flex justify-between items-start mb-4">
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 bg-forge-900 rounded-lg flex items-center justify-center text-3xl border border-forge-border shadow-inner">
@@ -174,30 +171,18 @@ const TheForge: React.FC<TheForgeProps> = ({ onClose }) => {
               </div>
 
               <div className="space-y-2 mb-6">
-                <div className="text-xs text-forge-muted uppercase tracking-wider">
-                  Requires:
-                </div>
+                <div className="text-xs text-forge-muted uppercase tracking-wider">Requires:</div>
                 <div className="space-y-1">
                   {recipe.materials.map((mat) => {
                     const matItem = ITEMS.find((i) => i.id === mat.itemId);
                     const inventoryCount =
-                      inventory.items.find((i) => i.itemId === mat.itemId)
-                        ?.count || 0;
+                      inventory.items.find((i) => i.itemId === mat.itemId)?.count || 0;
                     const hasEnough = inventoryCount >= mat.count;
 
                     return (
-                      <div
-                        key={mat.itemId}
-                        className="flex justify-between text-sm font-mono"
-                      >
-                        <span className="text-white/80">
-                          {matItem?.name || mat.itemId}
-                        </span>
-                        <span
-                          className={
-                            hasEnough ? "text-green-400" : "text-blood"
-                          }
-                        >
+                      <div key={mat.itemId} className="flex justify-between text-sm font-mono">
+                        <span className="text-white/80">{matItem?.name || mat.itemId}</span>
+                        <span className={hasEnough ? 'text-green-400' : 'text-blood'}>
                           {inventoryCount}/{mat.count}
                         </span>
                       </div>
@@ -207,7 +192,7 @@ const TheForge: React.FC<TheForgeProps> = ({ onClose }) => {
               </div>
 
               <Button
-                variant={canCraft ? "magma" : "rune"}
+                variant={canCraft ? 'magma' : 'rune'}
                 className="w-full"
                 disabled={!canCraft || craftingId === recipe.id}
                 onClick={() => handleCraft(recipe)}
@@ -231,5 +216,3 @@ const TheForge: React.FC<TheForgeProps> = ({ onClose }) => {
 };
 
 export default TheForge;
-
-

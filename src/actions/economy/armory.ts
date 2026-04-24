@@ -1,8 +1,8 @@
-"use server";
+'use server';
 
-import prisma from "@/lib/prisma";
-import { createClient } from "@/utils/supabase/server";
-import { cache } from "react";
+import prisma from '@/lib/prisma';
+import { createClient } from '@/utils/supabase/server';
+import { cache } from 'react';
 
 export type ArmoryItem = {
   id: string;
@@ -25,7 +25,7 @@ export const getArmoryData = cache(async (): Promise<ArmoryItem[]> => {
 
   // Fetch all available items
   const allItems = await prisma.item.findMany({
-    orderBy: { power: "asc" },
+    orderBy: { power: 'asc' },
   });
 
   // Fetch user's inventory

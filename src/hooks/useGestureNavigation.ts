@@ -1,4 +1,4 @@
-import { useRef, useCallback } from "react";
+import { useCallback, useRef } from 'react';
 
 interface SwipeHandlers {
   onSwipeLeft?: () => void;
@@ -65,7 +65,7 @@ export function useGestureNavigation(handlers: SwipeHandlers) {
 
       swipeState.current = null;
     },
-    [handlers],
+    [handlers]
   );
 
   return {
@@ -78,12 +78,12 @@ export function useGestureNavigation(handlers: SwipeHandlers) {
 export function useSwipeToNavigate(
   onNext: () => void,
   onPrevious: () => void,
-  direction: "horizontal" | "vertical" = "horizontal",
+  direction: 'horizontal' | 'vertical' = 'horizontal'
 ) {
   return useGestureNavigation(
-    direction === "horizontal"
+    direction === 'horizontal'
       ? { onSwipeLeft: onNext, onSwipeRight: onPrevious }
-      : { onSwipeUp: onNext, onSwipeDown: onPrevious },
+      : { onSwipeUp: onNext, onSwipeDown: onPrevious }
   );
 }
 
@@ -97,10 +97,7 @@ interface PullToRefreshOptions {
   threshold?: number;
 }
 
-export function usePullToRefresh({
-  onRefresh,
-  threshold = 80,
-}: PullToRefreshOptions) {
+export function usePullToRefresh({ onRefresh, threshold = 80 }: PullToRefreshOptions) {
   const pullStart = useRef<number | null>(null);
   const isPulling = useRef(false);
 
@@ -121,7 +118,7 @@ export function usePullToRefresh({
         isPulling.current = true;
       }
     },
-    [threshold],
+    [threshold]
   );
 
   const handleTouchEnd = useCallback(async () => {

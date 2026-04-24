@@ -1,10 +1,6 @@
-import prisma from "@/lib/prisma";
+import prisma from '@/lib/prisma';
 
-export type RecoveryState =
-  | "HIGH_RECOVERY"
-  | "NORMAL_RECOVERY"
-  | "LOW_RECOVERY"
-  | "UNKNOWN";
+export type RecoveryState = 'HIGH_RECOVERY' | 'NORMAL_RECOVERY' | 'LOW_RECOVERY' | 'UNKNOWN';
 
 interface RecoveryAnalysis {
   state: RecoveryState;
@@ -24,9 +20,9 @@ export class RecoveryService {
 
     if (!user || user.hrv === null || user.restingHr === null) {
       return {
-        state: "UNKNOWN",
+        state: 'UNKNOWN',
         score: 50,
-        reason: "Insufficient biometric data",
+        reason: 'Insufficient biometric data',
       };
     }
 
@@ -40,17 +36,17 @@ export class RecoveryService {
     // TODO: Implement proper baseline tracking in Phase 2.
 
     let score = 50;
-    let state: RecoveryState = "NORMAL_RECOVERY";
-    let reason = "Your biometrics are stable.";
+    let state: RecoveryState = 'NORMAL_RECOVERY';
+    let reason = 'Your biometrics are stable.';
 
     if (user.hrv < 40) {
-      state = "LOW_RECOVERY";
+      state = 'LOW_RECOVERY';
       score = 30;
-      reason = "HRV is critically low. Prioritize rest.";
+      reason = 'HRV is critically low. Prioritize rest.';
     } else if (user.hrv > 70) {
-      state = "HIGH_RECOVERY";
+      state = 'HIGH_RECOVERY';
       score = 90;
-      reason = "High HRV indicated! You are primed for deep work.";
+      reason = 'High HRV indicated! You are primed for deep work.';
     } else {
       score = 60 + (user.hrv - 40); // Scaling
     }

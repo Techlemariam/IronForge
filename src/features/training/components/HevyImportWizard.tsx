@@ -1,30 +1,21 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import {
-  Upload,
-  CheckCircle,
-  X,
-  ArrowRight,
-  Dumbbell,
-  Loader2,
-} from "lucide-react";
-import { toast } from "sonner";
-import { importHevyHistoryAction } from "@/actions/integrations/hevy";
+import { importHevyHistoryAction } from '@/actions/integrations/hevy';
+import { AnimatePresence, motion } from 'framer-motion';
+import { ArrowRight, CheckCircle, Dumbbell, Loader2, Upload, X } from 'lucide-react';
+import type React from 'react';
+import { useState } from 'react';
+import { toast } from 'sonner';
 
 interface HevyImportWizardProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-type Step = "INTRO" | "UPLOAD" | "PARSING" | "CONFIRM" | "IMPORTING" | "DONE";
+type Step = 'INTRO' | 'UPLOAD' | 'PARSING' | 'CONFIRM' | 'IMPORTING' | 'DONE';
 
-export const HevyImportWizard: React.FC<HevyImportWizardProps> = ({
-  isOpen,
-  onClose,
-}) => {
-  const [step, setStep] = useState<Step>("INTRO");
+export const HevyImportWizard: React.FC<HevyImportWizardProps> = ({ isOpen, onClose }) => {
+  const [step, setStep] = useState<Step>('INTRO');
   const [, setFile] = useState<File | null>(null);
   const [stats, setStats] = useState<any>(null);
   const [workoutsToImport, setWorkoutsToImport] = useState<any[]>([]);
@@ -33,7 +24,7 @@ export const HevyImportWizard: React.FC<HevyImportWizardProps> = ({
     const selectedFile = e.target.files?.[0];
     if (selectedFile) {
       setFile(selectedFile);
-      setStep("PARSING");
+      setStep('PARSING');
 
       const reader = new FileReader();
       reader.onload = (event) => {
@@ -45,8 +36,8 @@ export const HevyImportWizard: React.FC<HevyImportWizardProps> = ({
           const workouts = json.workouts || (Array.isArray(json) ? json : []);
 
           if (!workouts || workouts.length === 0) {
-            toast.error("No workouts found in JSON file.");
-            setStep("UPLOAD");
+            toast.error('No workouts found in JSON file.');
+            setStep('UPLOAD');
             return;
           }
 
@@ -68,11 +59,11 @@ export const HevyImportWizard: React.FC<HevyImportWizardProps> = ({
             sets: setCheck,
           });
           setWorkoutsToImport(workouts);
-          setStep("CONFIRM");
+          setStep('CONFIRM');
         } catch (_err) {
-          console.error("Parse error", _err);
-          toast.error("Invalid JSON file.");
-          setStep("UPLOAD");
+          console.error('Parse error', _err);
+          toast.error('Invalid JSON file.');
+          setStep('UPLOAD');
         }
       };
       reader.readAsText(selectedFile);
@@ -80,19 +71,19 @@ export const HevyImportWizard: React.FC<HevyImportWizardProps> = ({
   };
 
   const handleConfirm = async () => {
-    setStep("IMPORTING");
+    setStep('IMPORTING');
     try {
       const result = await importHevyHistoryAction(workoutsToImport);
       if (result.success) {
         toast.success(`Successfully imported ${result.logs} logs!`);
-        setStep("DONE");
+        setStep('DONE');
       } else {
-        toast.error("Import failed.");
-        setStep("CONFIRM");
+        toast.error('Import failed.');
+        setStep('CONFIRM');
       }
     } catch {
-      toast.error("An unexpected error occurred during import.");
-      setStep("CONFIRM");
+      toast.error('An unexpected error occurred during import.');
+      setStep('CONFIRM');
     }
   };
 
@@ -113,15 +104,10 @@ export const HevyImportWizard: React.FC<HevyImportWizardProps> = ({
             </div>
             <div>
               <h2 className="text-lg font-bold text-white">Import from Hevy</h2>
-              <p className="text-xs text-zinc-400">
-                Bring your workout history
-              </p>
+              <p className="text-xs text-zinc-400">Bring your workout history</p>
             </div>
           </div>
-          <button
-            onClick={onClose}
-            className="p-2 hover:bg-white/10 rounded-full text-zinc-500"
-          >
+          <button onClick={onClose} className="p-2 hover:bg-white/10 rounded-full text-zinc-500">
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -129,7 +115,7 @@ export const HevyImportWizard: React.FC<HevyImportWizardProps> = ({
         {/* Content */}
         <div className="p-6">
           <AnimatePresence mode="wait">
-            {step === "INTRO" && (
+            {step === 'INTRO' && (
               <motion.div
                 key="intro"
                 initial={{ opacity: 0 }}
@@ -138,13 +124,11 @@ export const HevyImportWizard: React.FC<HevyImportWizardProps> = ({
                 className="text-center space-y-6"
               >
                 <p className="text-zinc-300">
-                  Transfer your Hevy workout history to IronForge. Your PRs,
-                  volume, and exercise data will be merged.
+                  Transfer your Hevy workout history to IronForge. Your PRs, volume, and exercise
+                  data will be merged.
                 </p>
                 <div className="bg-orange-900/10 border border-orange-800/30 p-4 rounded-lg text-left text-sm">
-                  <h4 className="text-orange-400 font-bold mb-2">
-                    How to Export from Hevy:
-                  </h4>
+                  <h4 className="text-orange-400 font-bold mb-2">How to Export from Hevy:</h4>
                   <ol className="list-decimal list-inside text-zinc-400 space-y-1">
                     <li>Open Hevy App → Settings</li>
                     <li>Tap &quot;Account&quot; → &quot;Export Data&quot;</li>
@@ -153,7 +137,7 @@ export const HevyImportWizard: React.FC<HevyImportWizardProps> = ({
                   </ol>
                 </div>
                 <button
-                  onClick={() => setStep("UPLOAD")}
+                  onClick={() => setStep('UPLOAD')}
                   className="w-full py-4 bg-orange-600 text-white font-bold rounded-lg hover:bg-orange-500 flex items-center justify-center gap-2"
                 >
                   Get Started <ArrowRight className="w-4 h-4" />
@@ -161,7 +145,7 @@ export const HevyImportWizard: React.FC<HevyImportWizardProps> = ({
               </motion.div>
             )}
 
-            {step === "UPLOAD" && (
+            {step === 'UPLOAD' && (
               <motion.div
                 key="upload"
                 initial={{ opacity: 0 }}
@@ -171,12 +155,8 @@ export const HevyImportWizard: React.FC<HevyImportWizardProps> = ({
               >
                 <label className="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-zinc-700 rounded-xl cursor-pointer hover:border-orange-500 transition-colors">
                   <Upload className="w-12 h-12 text-zinc-500 mb-3" />
-                  <span className="text-zinc-400">
-                    Drop your Hevy export here
-                  </span>
-                  <span className="text-xs text-zinc-600 mt-1">
-                    Supports .json
-                  </span>
+                  <span className="text-zinc-400">Drop your Hevy export here</span>
+                  <span className="text-xs text-zinc-600 mt-1">Supports .json</span>
                   <input
                     type="file"
                     accept=".json"
@@ -187,7 +167,7 @@ export const HevyImportWizard: React.FC<HevyImportWizardProps> = ({
               </motion.div>
             )}
 
-            {step === "PARSING" && (
+            {step === 'PARSING' && (
               <motion.div
                 key="parsing"
                 initial={{ opacity: 0 }}
@@ -199,7 +179,7 @@ export const HevyImportWizard: React.FC<HevyImportWizardProps> = ({
               </motion.div>
             )}
 
-            {step === "CONFIRM" && stats && (
+            {step === 'CONFIRM' && stats && (
               <motion.div
                 key="confirm"
                 initial={{ opacity: 0 }}
@@ -212,25 +192,15 @@ export const HevyImportWizard: React.FC<HevyImportWizardProps> = ({
                 </div>
                 <div className="grid grid-cols-3 gap-4 text-center">
                   <div className="bg-zinc-800 p-4 rounded-lg">
-                    <div className="text-2xl font-bold text-white">
-                      {stats.workouts}
-                    </div>
-                    <div className="text-xs text-zinc-500 uppercase">
-                      Workouts
-                    </div>
+                    <div className="text-2xl font-bold text-white">{stats.workouts}</div>
+                    <div className="text-xs text-zinc-500 uppercase">Workouts</div>
                   </div>
                   <div className="bg-zinc-800 p-4 rounded-lg">
-                    <div className="text-2xl font-bold text-white">
-                      {stats.exercises}
-                    </div>
-                    <div className="text-xs text-zinc-500 uppercase">
-                      Exercises
-                    </div>
+                    <div className="text-2xl font-bold text-white">{stats.exercises}</div>
+                    <div className="text-xs text-zinc-500 uppercase">Exercises</div>
                   </div>
                   <div className="bg-zinc-800 p-4 rounded-lg">
-                    <div className="text-2xl font-bold text-yellow-400">
-                      {stats.sets}
-                    </div>
+                    <div className="text-2xl font-bold text-yellow-400">{stats.sets}</div>
                     <div className="text-xs text-zinc-500 uppercase">Sets</div>
                   </div>
                 </div>
@@ -243,7 +213,7 @@ export const HevyImportWizard: React.FC<HevyImportWizardProps> = ({
               </motion.div>
             )}
 
-            {step === "IMPORTING" && (
+            {step === 'IMPORTING' && (
               <motion.div
                 key="importing"
                 initial={{ opacity: 0 }}
@@ -251,17 +221,13 @@ export const HevyImportWizard: React.FC<HevyImportWizardProps> = ({
                 className="text-center py-12"
               >
                 <div className="w-12 h-12 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-                <div className="text-lg font-bold text-white mb-2">
-                  Importing History
-                </div>
+                <div className="text-lg font-bold text-white mb-2">Importing History</div>
                 <p className="text-zinc-400 text-sm">Forging your legacy...</p>
-                <p className="text-zinc-500 text-xs mt-2">
-                  This may take a moment.
-                </p>
+                <p className="text-zinc-500 text-xs mt-2">This may take a moment.</p>
               </motion.div>
             )}
 
-            {step === "DONE" && (
+            {step === 'DONE' && (
               <motion.div
                 key="done"
                 initial={{ opacity: 0 }}
@@ -271,9 +237,7 @@ export const HevyImportWizard: React.FC<HevyImportWizardProps> = ({
                 <div className="w-16 h-16 bg-green-900/30 rounded-full flex items-center justify-center mx-auto border-2 border-green-700">
                   <CheckCircle className="w-8 h-8 text-green-500" />
                 </div>
-                <h3 className="text-xl font-bold text-white">
-                  Import Successful!
-                </h3>
+                <h3 className="text-xl font-bold text-white">Import Successful!</h3>
                 <p className="text-zinc-400 text-sm">
                   Your history has been merged. Welcome to IronForge, Titan.
                 </p>

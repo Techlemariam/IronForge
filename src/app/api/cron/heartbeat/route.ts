@@ -1,13 +1,13 @@
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
 
-import { NotificationService } from "@/services/notifications";
-import { prisma } from "@/lib/prisma";
-import * as Sentry from "@sentry/nextjs";
+import { prisma } from '@/lib/prisma';
+import { NotificationService } from '@/services/notifications';
+import * as Sentry from '@sentry/nextjs';
 
 export async function GET(request: Request) {
-  return await Sentry.withMonitor("titan-heartbeat", async () => {
+  return await Sentry.withMonitor('titan-heartbeat', async () => {
     // 1. Auth: Verify Cron Secret (Simple check)
-    const authHeader = request.headers.get("authorization");
+    const authHeader = request.headers.get('authorization');
     if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
       // For Coolify Cron, usually separate logic, but this is a standard guard
       // return new NextResponse('Unauthorized', { status: 401 });
@@ -22,7 +22,7 @@ export async function GET(request: Request) {
       const titansToWeaken = await prisma.titan.findMany({
         where: {
           lastActive: { lt: cutoff },
-          mood: { not: "WEAKENED" },
+          mood: { not: 'WEAKENED' },
           isResting: false, // Don't decay if they are officially resting
         },
         select: {
@@ -38,7 +38,7 @@ export async function GET(request: Request) {
         await prisma.titan.update({
           where: { id: titan.id },
           data: {
-            mood: "WEAKENED",
+            mood: 'WEAKENED',
             currentEnergy: { decrement: 20 }, // Lose energy
           },
         });
@@ -46,12 +46,11 @@ export async function GET(request: Request) {
 
         // NOTIFICATION TRIGGER
         const now = new Date();
-        const hoursSinceActive =
-          (now.getTime() - titan.lastActive.getTime()) / (1000 * 60 * 60);
+        const hoursSinceActive = (now.getTime() - titan.lastActive.getTime()) / (1000 * 60 * 60);
 
         await NotificationService.create({
           userId: titan.userId,
-          type: "SYSTEM",
+          type: 'SYSTEM',
           message: `Titan Alert: Pulse Weakening - ${titan.name} feels the cold void. It has been ${hoursSinceActive.toFixed(1)} hours since your last link. Return to the Forge.`,
         });
       }
@@ -77,10 +76,10 @@ export async function GET(request: Request) {
         recoveredCount: recovered.count,
       });
     } catch (error) {
-      console.error("Heartbeat Error:", error);
+      console.error('Heartbeat Error:', error);
       return NextResponse.json(
-        { success: false, error: "Heartbeat skipped a beat" },
-        { status: 500 },
+        { success: false, error: 'Heartbeat skipped a beat' },
+        { status: 500 }
       );
     }
   });

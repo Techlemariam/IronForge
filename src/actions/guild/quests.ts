@@ -1,13 +1,9 @@
-"use server";
+'use server';
 
-import { prisma } from "@/lib/prisma";
-import { revalidatePath } from "next/cache";
+import { prisma } from '@/lib/prisma';
+import { revalidatePath } from 'next/cache';
 
-type QuestType =
-  | "TOTAL_WORKOUTS"
-  | "TOTAL_VOLUME"
-  | "BOSS_KILLS"
-  | "COMBINED_STREAK";
+type QuestType = 'TOTAL_WORKOUTS' | 'TOTAL_VOLUME' | 'BOSS_KILLS' | 'COMBINED_STREAK';
 
 interface GuildQuest {
   id: string;
@@ -27,33 +23,33 @@ interface GuildQuest {
 
 const QUEST_TEMPLATES = [
   {
-    type: "TOTAL_WORKOUTS" as QuestType,
-    name: "Iron Brotherhood",
-    description: "Complete {target} workouts as a guild",
+    type: 'TOTAL_WORKOUTS' as QuestType,
+    name: 'Iron Brotherhood',
+    description: 'Complete {target} workouts as a guild',
     targets: [50, 100, 200],
     xpPerTarget: 500,
     goldPerTarget: 200,
   },
   {
-    type: "TOTAL_VOLUME" as QuestType,
-    name: "Mountain of Iron",
-    description: "Lift {target}kg total as a guild",
+    type: 'TOTAL_VOLUME' as QuestType,
+    name: 'Mountain of Iron',
+    description: 'Lift {target}kg total as a guild',
     targets: [100000, 500000, 1000000],
     xpPerTarget: 1000,
     goldPerTarget: 400,
   },
   {
-    type: "BOSS_KILLS" as QuestType,
-    name: "Raid Night",
-    description: "Defeat {target} bosses as a guild",
+    type: 'BOSS_KILLS' as QuestType,
+    name: 'Raid Night',
+    description: 'Defeat {target} bosses as a guild',
     targets: [10, 25, 50],
     xpPerTarget: 750,
     goldPerTarget: 300,
   },
   {
-    type: "COMBINED_STREAK" as QuestType,
-    name: "Eternal Flame",
-    description: "Maintain {target} combined streak days",
+    type: 'COMBINED_STREAK' as QuestType,
+    name: 'Eternal Flame',
+    description: 'Maintain {target} combined streak days',
     targets: [100, 250, 500],
     xpPerTarget: 600,
     goldPerTarget: 250,
@@ -63,9 +59,7 @@ const QUEST_TEMPLATES = [
 /**
  * Generate weekly guild quests.
  */
-export async function generateGuildQuestsAction(
-  guildId: string,
-): Promise<GuildQuest[]> {
+export async function generateGuildQuestsAction(guildId: string): Promise<GuildQuest[]> {
   try {
     const now = new Date();
     const weekEnd = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
@@ -78,10 +72,7 @@ export async function generateGuildQuestsAction(
       id: `quest-${guildId}-${now.getTime()}-${index}`,
       guildId,
       name: template.name,
-      description: template.description.replace(
-        "{target}",
-        template.targets[0].toString(),
-      ),
+      description: template.description.replace('{target}', template.targets[0].toString()),
       type: template.type,
       targetValue: template.targets[0],
       currentProgress: 0,
@@ -95,7 +86,7 @@ export async function generateGuildQuestsAction(
 
     return quests;
   } catch (error) {
-    console.error("Error generating guild quests:", error);
+    console.error('Error generating guild quests:', error);
     return [];
   }
 }
@@ -107,19 +98,19 @@ export async function updateQuestProgressAction(
   guildId: string,
   questId: string,
   userId: string,
-  contribution: number,
+  contribution: number
 ): Promise<{ success: boolean; questCompleted: boolean }> {
   try {
     // In production, this would update the database
     // For MVP, we'll return a simulated response
     console.log(
-      `Quest progress: guild=${guildId}, quest=${questId}, user=${userId}, +${contribution}`,
+      `Quest progress: guild=${guildId}, quest=${questId}, user=${userId}, +${contribution}`
     );
 
-    revalidatePath("/guild");
+    revalidatePath('/guild');
     return { success: true, questCompleted: false };
   } catch (error) {
-    console.error("Error updating quest progress:", error);
+    console.error('Error updating quest progress:', error);
     return { success: false, questCompleted: false };
   }
 }
@@ -127,15 +118,13 @@ export async function updateQuestProgressAction(
 /**
  * Get active quests for a guild.
  */
-export async function getGuildQuestsAction(
-  guildId: string,
-): Promise<GuildQuest[]> {
+export async function getGuildQuestsAction(guildId: string): Promise<GuildQuest[]> {
   try {
     // In production, fetch from database
     // For MVP, return sample quests
     return generateGuildQuestsAction(guildId);
   } catch (error) {
-    console.error("Error fetching guild quests:", error);
+    console.error('Error fetching guild quests:', error);
     return [];
   }
 }
@@ -145,7 +134,7 @@ export async function getGuildQuestsAction(
  */
 export async function claimQuestRewardsAction(
   guildId: string,
-  _questId: string,
+  _questId: string
 ): Promise<{ success: boolean; message: string }> {
   try {
     // Get all guild members
@@ -163,13 +152,13 @@ export async function claimQuestRewardsAction(
       });
     }
 
-    revalidatePath("/guild");
+    revalidatePath('/guild');
     return {
       success: true,
       message: `Rewards distributed to ${members.length} members!`,
     };
   } catch (error) {
-    console.error("Error claiming quest rewards:", error);
-    return { success: false, message: "Failed to claim rewards" };
+    console.error('Error claiming quest rewards:', error);
+    return { success: false, message: 'Failed to claim rewards' };
   }
 }

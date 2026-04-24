@@ -3,7 +3,7 @@
  */
 import { PrismaClient } from './prisma-mock';
 
-const prisma = new PrismaClient() as any;
+const prisma = new PrismaClient() as unknown;
 
 export default prisma;
 export { prisma };

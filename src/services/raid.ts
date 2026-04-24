@@ -1,4 +1,4 @@
-import { getSupabase } from "../lib/supabase";
+import { getSupabase } from '../lib/supabase';
 
 /**
  * Raid Service for Multiplayer Sync
@@ -7,18 +7,14 @@ export const RaidService = {
   /**
    * Broadcasts damage dealt to the active Raid Boss.
    */
-  async broadcastDamage(
-    heroName: string,
-    damage: number,
-    exerciseName: string,
-  ) {
+  async broadcastDamage(heroName: string, damage: number, exerciseName: string) {
     const supabase = await getSupabase();
     if (!supabase) return;
 
     // 1. Send Transient Event (Floating Text for others)
-    await supabase.channel("guild_hall").send({
-      type: "broadcast",
-      event: "damage_dealt",
+    await supabase.channel('guild_hall').send({
+      type: 'broadcast',
+      event: 'damage_dealt',
       payload: {
         heroName,
         damage,
@@ -29,7 +25,7 @@ export const RaidService = {
 
     // 2. Persist Damage (RPC Call to Backend)
     // Assuming 'damage_boss' RPC exists in the Supabase instance
-    await supabase.rpc("damage_boss", {
+    await supabase.rpc('damage_boss', {
       boss_id: 1,
       damage_amount: damage,
     });
@@ -42,9 +38,9 @@ export const RaidService = {
     const supabase = await getSupabase();
     if (!supabase) return;
 
-    await supabase.channel("guild_hall").send({
-      type: "broadcast",
-      event: "buff_activation",
+    await supabase.channel('guild_hall').send({
+      type: 'broadcast',
+      event: 'buff_activation',
       payload: {
         heroName,
         buffName,
@@ -60,7 +56,7 @@ export const RaidService = {
     const supabase = await getSupabase();
     if (!supabase) return;
 
-    await supabase.channel("guild_hall").track({
+    await supabase.channel('guild_hall').track({
       user: heroName,
       x,
       y,

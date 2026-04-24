@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState } from "react";
-import { getWorldMapAction, WorldMapData } from "@/actions/systems/territories";
-import { TerritoryCard } from "./territory/TerritoryCard";
-import { Map as MapIcon, Loader2, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { motion } from "framer-motion";
+import { type WorldMapData, getWorldMapAction } from '@/actions/systems/territories';
+import { Button } from '@/components/ui/button';
+import { motion } from 'framer-motion';
+import { Loader2, Map as MapIcon, X } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { TerritoryCard } from './territory/TerritoryCard';
 
 interface WorldMapProps {
   userLevel?: number; // Kept for interface compatibility
@@ -23,7 +23,7 @@ export default function WorldMap({ onClose }: WorldMapProps) {
         const result = await getWorldMapAction();
         setData(result);
       } catch (error) {
-        console.error("Failed to load map:", error);
+        console.error('Failed to load map:', error);
       } finally {
         setLoading(false);
       }
@@ -33,7 +33,7 @@ export default function WorldMap({ onClose }: WorldMapProps) {
 
   // Groups territories by region if needed, but we plot them absolutely
   const filteredTerritories = selectedRegion
-    ? data?.territories.filter(t => t.region === selectedRegion)
+    ? data?.territories.filter((t) => t.region === selectedRegion)
     : data?.territories;
 
   return (
@@ -49,20 +49,23 @@ export default function WorldMap({ onClose }: WorldMapProps) {
               <MapIcon className="w-5 h-5 text-cyan-400 md:hidden" />
               World Map
             </h1>
-            <p className="text-[10px] md:text-xs text-zinc-500 font-mono tracking-wide">Territory Conquest Active • Week {getWeekNumber(new Date())}</p>
+            <p className="text-[10px] md:text-xs text-zinc-500 font-mono tracking-wide">
+              Territory Conquest Active • Week {getWeekNumber(new Date())}
+            </p>
           </div>
         </div>
 
         <div className="flex items-center gap-2 md:gap-4 overflow-x-auto max-w-[50%] md:max-w-none scrollbar-hide">
           {/* Region Filters */}
-          {data?.regions.map(region => (
+          {data?.regions.map((region) => (
             <button
               key={region}
               onClick={() => setSelectedRegion(selectedRegion === region ? null : region)}
-              className={`text-[10px] whitespace-nowrap px-3 py-1.5 rounded-full border transition-all ${selectedRegion === region
-                ? 'bg-white text-black border-white font-bold'
-                : 'bg-transparent text-zinc-500 border-zinc-800 hover:border-zinc-600'
-                }`}
+              className={`text-[10px] whitespace-nowrap px-3 py-1.5 rounded-full border transition-all ${
+                selectedRegion === region
+                  ? 'bg-white text-black border-white font-bold'
+                  : 'bg-transparent text-zinc-500 border-zinc-800 hover:border-zinc-600'
+              }`}
             >
               {region}
             </button>
@@ -70,7 +73,13 @@ export default function WorldMap({ onClose }: WorldMapProps) {
 
           <div className="w-px h-8 bg-white/10 mx-2 hidden md:block" />
 
-          <Button variant="ghost" size="icon" onClick={onClose} aria-label="Close map" className="rounded-full hover:bg-white/10 text-zinc-400 hover:text-white shrink-0">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onClose}
+            aria-label="Close map"
+            className="rounded-full hover:bg-white/10 text-zinc-400 hover:text-white shrink-0"
+          >
             <X className="w-6 h-6" />
           </Button>
         </div>
@@ -86,14 +95,21 @@ export default function WorldMap({ onClose }: WorldMapProps) {
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="flex flex-col items-center gap-4">
               <Loader2 className="w-12 h-12 text-cyan animate-spin" />
-              <p className="text-zinc-500 font-mono text-xs animate-pulse">Establishing Satellite Uplink...</p>
+              <p className="text-zinc-500 font-mono text-xs animate-pulse">
+                Establishing Satellite Uplink...
+              </p>
             </div>
           </div>
         ) : (
           <div className="relative w-full h-full md:p-20 overflow-auto">
             {/* Map Grid Lines */}
-            <div className="absolute inset-0 opacity-10 pointer-events-none"
-              style={{ backgroundImage: 'linear-gradient(var(--color-steel) 1px, transparent 1px), linear-gradient(90deg, var(--color-steel) 1px, transparent 1px)', backgroundSize: '100px 100px' }}
+            <div
+              className="absolute inset-0 opacity-10 pointer-events-none"
+              style={{
+                backgroundImage:
+                  'linear-gradient(var(--color-steel) 1px, transparent 1px), linear-gradient(90deg, var(--color-steel) 1px, transparent 1px)',
+                backgroundSize: '100px 100px',
+              }}
             />
 
             {/* Mobile: Just list them if strict map view is too hard, but let's try absolute positioning with scroll */}
@@ -103,17 +119,19 @@ export default function WorldMap({ onClose }: WorldMapProps) {
                   key={territory.id}
                   initial={{ opacity: 0, scale: 0 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  transition={{ type: "spring", stiffness: 260, damping: 20, delay: Math.random() * 0.5 }}
+                  transition={{
+                    type: 'spring',
+                    stiffness: 260,
+                    damping: 20,
+                    delay: Math.random() * 0.5,
+                  }}
                   className="absolute transform -translate-x-1/2 -translate-y-1/2 z-10 hover:z-50"
                   style={{
                     left: `${territory.coordX}%`,
                     top: `${territory.coordY}%`,
                   }}
                 >
-                  <TerritoryCard
-                    territory={territory}
-                    userGuildId={data?.userGuildId ?? null}
-                  />
+                  <TerritoryCard territory={territory} userGuildId={data?.userGuildId ?? null} />
                 </motion.div>
               ))}
             </div>
@@ -139,9 +157,7 @@ export default function WorldMap({ onClose }: WorldMapProps) {
             <span>Unclaimed</span>
           </div>
         </div>
-        <div className="hidden md:block">
-          Data updates weekly via Oracle Decree
-        </div>
+        <div className="hidden md:block">Data updates weekly via Oracle Decree</div>
       </div>
     </div>
   );
@@ -150,7 +166,7 @@ export default function WorldMap({ onClose }: WorldMapProps) {
 function getWeekNumber(d: Date) {
   d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
   d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
-  var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-  var weekNo = Math.ceil((((d.getTime() - yearStart.getTime()) / 86400000) + 1) / 7);
+  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  const weekNo = Math.ceil(((d.getTime() - yearStart.getTime()) / 86400000 + 1) / 7);
   return weekNo;
 }

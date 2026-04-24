@@ -1,8 +1,8 @@
-"use server";
+'use server';
 
-import { createClient } from "@/utils/supabase/server";
-import prisma from "@/lib/prisma";
-import { revalidatePath } from "next/cache";
+import prisma from '@/lib/prisma';
+import { createClient } from '@/utils/supabase/server';
+import { revalidatePath } from 'next/cache';
 
 export interface GauntletResult {
   wavesCleared: number;
@@ -23,7 +23,7 @@ export async function logGauntletRunAction(result: GauntletResult) {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    throw new Error("Unauthorized");
+    throw new Error('Unauthorized');
   }
 
   try {
@@ -36,7 +36,7 @@ export async function logGauntletRunAction(result: GauntletResult) {
         duration: result.duration,
         avgHeartRate: result.avgHr,
         maxHeartRate: result.maxHr,
-        difficulty: result.difficulty || "NORMAL",
+        difficulty: result.difficulty || 'NORMAL',
       },
     });
 
@@ -50,8 +50,7 @@ export async function logGauntletRunAction(result: GauntletResult) {
 
     // Kinetic Energy: Based on total damage (approx TSS proxy) or duration
     // Let's say 1 Energy per minute survived + bonus for waves
-    const kineticReward =
-      Math.floor(result.duration / 60) + result.wavesCleared;
+    const kineticReward = Math.floor(result.duration / 60) + result.wavesCleared;
 
     // 3. Update User
     await prisma.user.update({
@@ -63,7 +62,7 @@ export async function logGauntletRunAction(result: GauntletResult) {
       },
     });
 
-    revalidatePath("/training");
+    revalidatePath('/training');
 
     return {
       success: true,
@@ -71,8 +70,8 @@ export async function logGauntletRunAction(result: GauntletResult) {
       rewards: { xp: xpReward, gold: goldReward, kinetic: kineticReward },
     };
   } catch (error: any) {
-    console.error("Gauntlet Log Error:", error);
-    throw new Error("Failed to log gauntlet run: " + error.message);
+    console.error('Gauntlet Log Error:', error);
+    throw new Error(`Failed to log gauntlet run: ${error.message}`);
   }
 }
 
@@ -89,7 +88,7 @@ export async function getGauntletStatsAction() {
 
   const bestRun = await prisma.gauntletRun.findFirst({
     where: { userId: user.id },
-    orderBy: { wavesCleared: "desc" },
+    orderBy: { wavesCleared: 'desc' },
   });
 
   const totalRuns = await prisma.gauntletRun.count({

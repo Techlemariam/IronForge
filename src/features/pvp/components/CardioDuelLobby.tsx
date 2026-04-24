@@ -1,195 +1,178 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { createDuelChallengeAction, getPotentialOpponentsAction } from "@/actions/pvp/duel";
-import { toast } from "sonner";
-import { Bike, Footprints, Trophy } from "lucide-react";
+import { createDuelChallengeAction, getPotentialOpponentsAction } from '@/actions/pvp/duel';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Bike, Footprints, Trophy } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
 interface Opponent {
-    id: string;
-    heroName: string;
-    level: number;
-    titan?: { powerRating: number };
+  id: string;
+  heroName: string;
+  level: number;
+  titan?: { powerRating: number };
 }
 
 export function CardioDuelLobby() {
-    const [opponents, setOpponents] = useState<Opponent[]>([]);
-    const [selectedOpponent, setSelectedOpponent] = useState<string | null>(null);
-    const [duelType, setDuelType] = useState<"TITAN_VS_TITAN" | "DISTANCE_RACE" | "SPEED_DEMON" | "ELEVATION_GRIND">("DISTANCE_RACE");
-    const [activityType, setActivityType] = useState<"RUNNING" | "CYCLING">("RUNNING");
-    const [distance, setDistance] = useState("5");
-    const [loading, setLoading] = useState(false);
+  const [opponents, setOpponents] = useState<Opponent[]>([]);
+  const [selectedOpponent, setSelectedOpponent] = useState<string | null>(null);
+  const [duelType, _setDuelType] = useState<
+    'TITAN_VS_TITAN' | 'DISTANCE_RACE' | 'SPEED_DEMON' | 'ELEVATION_GRIND'
+  >('DISTANCE_RACE');
+  const [activityType, setActivityType] = useState<'RUNNING' | 'CYCLING'>('RUNNING');
+  const [distance, setDistance] = useState('5');
+  const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
-        loadOpponents();
-    }, []);
+  useEffect(() => {
+    loadOpponents();
+  }, []);
 
-    const loadOpponents = async () => {
-        const res = await getPotentialOpponentsAction();
-        if (res?.data?.success && res.data.opponents) {
-            // Fix: Map to ensure heroName is string (fallback for null)
-            const sanitized: Opponent[] = res.data.opponents.map((opp: any) => ({
-                id: opp.id,
-                heroName: (opp.heroName && typeof opp.heroName === 'string') ? opp.heroName : "Unknown Titan",
-                level: opp.level, // Assuming level is always present/valid based on schema, otherwise provide default
-                titan: opp.titan ? { powerRating: opp.titan.powerRating } : undefined
-            }));
-            setOpponents(sanitized);
-        }
-    };
+  const loadOpponents = async () => {
+    const res = await getPotentialOpponentsAction();
+    if (res?.success && res.opponents) {
+      // Fix: Map to ensure heroName is string (fallback for null)
+      const sanitized: Opponent[] = res.opponents.map((opp: any) => ({
+        id: opp.id,
+        heroName: opp.heroName && typeof opp.heroName === 'string' ? opp.heroName : 'Unknown Titan',
+        level: opp.level, // Assuming level is always present/valid based on schema, otherwise provide default
+        titan: opp.titan ? { powerRating: opp.titan.powerRating } : undefined,
+      }));
+      setOpponents(sanitized);
+    }
+  };
 
-    const handleCreateDuel = async () => {
-        if (!selectedOpponent) return;
-        setLoading(true);
-        try {
-            const targetDistance = duelType === "ELEVATION_GRIND"
-                // UI dropdown shows km equivalents (2,5,10,20); convert to elevation meters (×100)
-                ? parseFloat(distance) * 100
-                : parseFloat(distance);
+  const handleCreateDuel = async () => {
+    if (!selectedOpponent) return;
+    setLoading(true);
 
-            const result = await createDuelChallengeAction({
-                targetUserId: selectedOpponent,
-                options: {
-                    duelType,
-                    activityType,
-                    targetDistance,
-                }
-            });
+    const result = await createDuelChallengeAction({
+      targetUserId: selectedOpponent,
+      options: {
+        duelType,
+        activityType,
+        targetDistance: Number.parseFloat(distance),
+      },
+    });
 
-            if (result?.data?.success) {
-                toast.success("Duel Challenge Sent!");
-                setSelectedOpponent(null);
-                // Refresh the IronArena view to show the pending challenge
-                window.location.reload();
-            } else {
-                const errorMsg = result?.validationErrors
-                    ? "Invalid duel settings. Please check your inputs."
-                    : (result?.data?.error || result?.serverError || "Failed to send challenge");
-                toast.error(errorMsg);
-            }
-        } catch (err) {
-            console.error('Failed to create duel challenge:', err);
-            toast.error("An unexpected error occurred. Please try again.");
-        } finally {
-            setLoading(false);
-        }
-    };
+    if (result?.data?.success) {
+      toast.success('Duel Challenge Sent!');
+      setSelectedOpponent(null);
+      // Refresh the IronArena view to show the pending challenge
+      window.location.reload();
+    } else {
+      const errorMsg = result?.validationErrors
+        ? 'Invalid duel settings. Please check your inputs.'
+        : result?.data?.error || result?.serverError || 'Failed to send challenge';
+      toast.error(errorMsg);
+    }
+    setLoading(false);
+  };
 
-    return (
-        <div className="space-y-6">
-            <Card className="bg-slate-900 border-slate-800">
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <Trophy className="text-yellow-500" />
-                        New Cardio Duel
-                    </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-
-                    {/* Settings */}
-                    <div className="grid grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                            <label className="text-sm font-medium text-slate-400">Activity</label>
-                            <Select value={activityType} onValueChange={(v) => setActivityType(v as "RUNNING" | "CYCLING")}>
-                                <SelectTrigger>
-                                    <SelectValue />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="RUNNING">
-                                        <div className="flex items-center gap-2"><Footprints className="h-4 w-4" /> Running</div>
-                                    </SelectItem>
-                                    <SelectItem value="CYCLING">
-                                        <div className="flex items-center gap-2"><Bike className="h-4 w-4" /> Cycling</div>
-                                    </SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </div>
-
-                        <div className="space-y-2">
-                            <label className="text-sm font-medium text-slate-400">Duel Mode</label>
-                            <Select value={duelType} onValueChange={(v: any) => setDuelType(v)}>
-                                <SelectTrigger>
-                                    <SelectValue />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="DISTANCE_RACE">Distance Race (First to X)</SelectItem>
-                                    <SelectItem value="SPEED_DEMON">Speed Demon (Fastest Time)</SelectItem>
-                                    <SelectItem value="ELEVATION_GRIND">Elevation Grind (Climb X m)</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </div>
-
-                        <div className="space-y-2">
-                            <label className="text-sm font-medium text-slate-400">
-                                {duelType === "ELEVATION_GRIND" ? "Target Ascent" : "Target Distance"}
-                            </label>
-                            <Select value={distance} onValueChange={setDistance}>
-                                <SelectTrigger>
-                                    <SelectValue />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {duelType === "ELEVATION_GRIND" ? (
-                                        <>
-                                            <SelectItem value="2">200 m</SelectItem>
-                                            <SelectItem value="5">500 m</SelectItem>
-                                            <SelectItem value="10">1000 m</SelectItem>
-                                            <SelectItem value="20">2000 m</SelectItem>
-                                        </>
-                                    ) : (
-                                        <>
-                                            <SelectItem value="3">3 km</SelectItem>
-                                            <SelectItem value="5">5 km</SelectItem>
-                                            <SelectItem value="10">10 km</SelectItem>
-                                            <SelectItem value="21.1">Half Marathon</SelectItem>
-                                        </>
-                                    )}
-                                </SelectContent>
-                            </Select>
-                        </div>
+  return (
+    <div className="space-y-6">
+      <Card className="bg-slate-900 border-slate-800">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Trophy className="text-yellow-500" />
+            New Cardio Duel
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {/* Settings */}
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-slate-400">Activity</label>
+              <Select
+                value={activityType}
+                onValueChange={(v) => setActivityType(v as 'RUNNING' | 'CYCLING')}
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="RUNNING">
+                    <div className="flex items-center gap-2">
+                      <Footprints className="h-4 w-4" /> Running
                     </div>
-
-                    {/* Opponent Selection */}
-                    <div className="space-y-2">
-                        <label className="text-sm font-medium text-slate-400">Select Rival (Matched by Power Rating)</label>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-60 overflow-y-auto">
-                            {opponents.map((opp) => (
-                                <div
-                                    key={opp.id}
-                                    onClick={() => setSelectedOpponent(opp.id)}
-                                    className={`p-3 rounded-lg border cursor-pointer transition-all flex items-center justify-between ${selectedOpponent === opp.id
-                                        ? "border-emerald-500 bg-emerald-900/20"
-                                        : "border-slate-700 hover:bg-slate-800"
-                                        }`}
-                                >
-                                    <div className="flex items-center gap-3">
-                                        <Avatar className="h-8 w-8">
-                                            <AvatarFallback>{opp.heroName[0]}</AvatarFallback>
-                                        </Avatar>
-                                        <div>
-                                            <div className="font-semibold text-sm">{opp.heroName}</div>
-                                            <div className="text-xs text-slate-500">Lvl {opp.level} • PR: {Math.round(opp.titan?.powerRating || 0)}</div>
-                                        </div>
-                                    </div>
-                                    {selectedOpponent === opp.id && <div className="h-2 w-2 rounded-full bg-emerald-500" />}
-                                </div>
-                            ))}
-                        </div>
+                  </SelectItem>
+                  <SelectItem value="CYCLING">
+                    <div className="flex items-center gap-2">
+                      <Bike className="h-4 w-4" /> Cycling
                     </div>
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
 
-                    <Button
-                        className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500"
-                        disabled={!selectedOpponent || loading}
-                        onClick={handleCreateDuel}
-                    >
-                        {loading ? "Sending..." : "Send Challenge"}
-                    </Button>
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-slate-400">Target Distance</label>
+              <Select value={distance} onValueChange={setDistance}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="3">3 km</SelectItem>
+                  <SelectItem value="5">5 km</SelectItem>
+                  <SelectItem value="10">10 km</SelectItem>
+                  <SelectItem value="21.1">Half Marathon</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
 
-                </CardContent>
-            </Card>
-        </div>
-    );
+          {/* Opponent Selection */}
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-slate-400">
+              Select Rival (Matched by Power Rating)
+            </label>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-60 overflow-y-auto">
+              {opponents.map((opp) => (
+                <div
+                  key={opp.id}
+                  onClick={() => setSelectedOpponent(opp.id)}
+                  className={`p-3 rounded-lg border cursor-pointer transition-all flex items-center justify-between ${
+                    selectedOpponent === opp.id
+                      ? 'border-emerald-500 bg-emerald-900/20'
+                      : 'border-slate-700 hover:bg-slate-800'
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    <Avatar className="h-8 w-8">
+                      <AvatarFallback>{opp.heroName[0]}</AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <div className="font-semibold text-sm">{opp.heroName}</div>
+                      <div className="text-xs text-slate-500">
+                        Lvl {opp.level} • PR: {Math.round(opp.titan?.powerRating || 0)}
+                      </div>
+                    </div>
+                  </div>
+                  {selectedOpponent === opp.id && (
+                    <div className="h-2 w-2 rounded-full bg-emerald-500" />
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <Button
+            className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500"
+            disabled={!selectedOpponent || loading}
+            onClick={handleCreateDuel}
+          >
+            {loading ? 'Sending...' : 'Send Challenge'}
+          </Button>
+        </CardContent>
+      </Card>
+    </div>
+  );
 }

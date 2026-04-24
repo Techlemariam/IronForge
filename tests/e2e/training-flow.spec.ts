@@ -1,89 +1,95 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Training & Cardio Flow', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/dashboard');
 
-    test.beforeEach(async ({ page }) => {
-        await page.goto('/dashboard');
-
-        // CRITICAL: Inject API key to bypass "Configuration Required" screen
-        await page.evaluate(() => {
-            localStorage.setItem('hevy_api_key', 'e2e-dummy-key');
-        });
-
-        // Wait for page to stabilize and re-render with API key
-        await page.waitForTimeout(1500);
-
-        // If locked in Cardio Studio, exit
-        const exitButton = page.getByTitle("Close (Esc)");
-        if (await exitButton.isVisible()) {
-            await exitButton.click();
-            await page.waitForTimeout(500);
-        }
-
-        // Close onboarding modal if present (handles multiple possible button texts)
-        const onboardingButtons = page.locator('button:has-text("Skip"), button:has-text("Close"), button:has-text("Later"), button:has-text("Continue"), button:has-text("I Swear It")');
-        let attempts = 0;
-        while (await onboardingButtons.count() > 0 && attempts < 5) {
-            await onboardingButtons.first().click();
-            await page.waitForTimeout(500);
-            attempts++;
-        }
+    // CRITICAL: Inject API key to bypass "Configuration Required" screen
+    await page.evaluate(() => {
+      localStorage.setItem('hevy_api_key', 'e2e-dummy-key');
     });
 
-    test('should navigate to Cycling Studio', async ({ page }) => {
-        // Navigate through Progressive Disclosure Menu
-        const trainingOpBtn = page.getByRole('button', { name: /Training Operations/i });
-        await expect(trainingOpBtn).toBeVisible({ timeout: 30000 });
-        await expect(trainingOpBtn).toBeEnabled({ timeout: 30000 });
-        await trainingOpBtn.click();
+    // Wait for page to stabilize and re-render with API key
+    await page.waitForTimeout(1500);
 
-        const cardioFocusBtn = page.getByRole('button', { name: /Cardio Focus/i });
-        await expect(cardioFocusBtn).toBeVisible({ timeout: 30000 });
-        await cardioFocusBtn.click();
+    // If locked in Cardio Studio, exit
+    const exitButton = page.getByTitle('Close (Esc)');
+    if (await exitButton.isVisible()) {
+      await exitButton.click();
+      await page.waitForTimeout(500);
+    }
 
-        // Find and click the Ride button (formerly "Cycling Studio")
-        await page.getByRole('button', { name: 'Ride' }).click({ force: true });
+    // Close onboarding modal if present (handles multiple possible button texts)
+    const onboardingButtons = page.locator(
+      'button:has-text("Skip"), button:has-text("Close"), button:has-text("Later"), button:has-text("Continue"), button:has-text("I Swear It")'
+    );
+    let attempts = 0;
+    while ((await onboardingButtons.count()) > 0 && attempts < 5) {
+      await onboardingButtons.first().click();
+      await page.waitForTimeout(500);
+      attempts++;
+    }
+  });
 
-        // Small wait for view transition
-        await page.waitForTimeout(500);
+  test('should navigate to Cycling Studio', async ({ page }) => {
+    // Navigate through Progressive Disclosure Menu
+    const trainingOpBtn = page.getByRole('button', { name: /Training Operations/i });
+    await expect(trainingOpBtn).toBeVisible({ timeout: 30000 });
+    await expect(trainingOpBtn).toBeEnabled({ timeout: 30000 });
+    await trainingOpBtn.click();
 
-        // Check for Cardio Studio specific elements
-        await expect(page.getByText(/Cycling|Cardio|Ride/i).first()).toBeVisible({ timeout: 15000 });
+    const cardioFocusBtn = page.getByRole('button', { name: /Cardio Focus/i });
+    await expect(cardioFocusBtn).toBeVisible({ timeout: 30000 });
+    await cardioFocusBtn.click();
+
+    // Find and click the Ride button (formerly "Cycling Studio")
+    await page.getByRole('button', { name: 'Ride' }).click({ force: true });
+
+    // Small wait for view transition
+    await page.waitForTimeout(500);
+
+    // Check for Cardio Studio specific elements
+    await expect(page.getByText(/Cycling|Cardio|Ride/i).first()).toBeVisible({ timeout: 15000 });
+  });
+
+  test('should navigate to Treadmill (Running)', async ({ page }) => {
+    // Navigate to Run via Menu
+    const trainingOpBtn = page.getByRole('button', { name: /Training Operations/i });
+    await expect(trainingOpBtn).toBeVisible({ timeout: 30000 });
+    await trainingOpBtn.click();
+
+    const cardioFocusBtn = page.getByRole('button', { name: /Cardio Focus/i });
+    await expect(cardioFocusBtn).toBeVisible({ timeout: 30000 });
+    await cardioFocusBtn.click();
+
+    // Click the Run button (formerly "Treadmill")
+    await page.getByRole('button', { name: 'Run' }).click({ force: true });
+    await expect(page.getByText(/Running|Treadmill|Cardio/i).first()).toBeVisible({
+      timeout: 10000,
     });
+  });
 
-    test('should navigate to Treadmill (Running)', async ({ page }) => {
-        // Navigate to Run via Menu
-        const trainingOpBtn = page.getByRole('button', { name: /Training Operations/i });
-        await expect(trainingOpBtn).toBeVisible({ timeout: 30000 });
-        await trainingOpBtn.click();
+  test('should navigate to Training Center', async ({ page }) => {
+    // Try different possible button names for Training Path
+    await page.getByRole('button', { name: /Training Operations/i }).click();
+    const cardioBtn = page.getByRole('button', { name: /Cardio Focus/i });
+    await expect(cardioBtn).toBeVisible({ timeout: 30000 });
+    await cardioBtn.click();
 
-        const cardioFocusBtn = page.getByRole('button', { name: /Cardio Focus/i });
-        await expect(cardioFocusBtn).toBeVisible({ timeout: 30000 });
-        await cardioFocusBtn.click();
+    // Navigate to any training-related section as fallback
+    const trainingBtn = page
+      .getByRole('button', { name: /Training Path|Training Center|Path|Program/i })
+      .first();
+    if (await trainingBtn.isVisible()) {
+      await trainingBtn.click({ force: true });
+    } else {
+      // Direct navigation fallback
+      await page.goto('/training-center');
+    }
 
-        // Click the Run button (formerly "Treadmill")
-        await page.getByRole('button', { name: 'Run' }).click({ force: true });
-        await expect(page.getByText(/Running|Treadmill|Cardio/i).first()).toBeVisible({ timeout: 10000 });
-    });
-
-    test('should navigate to Training Center', async ({ page }) => {
-        // Try different possible button names for Training Path
-        await page.getByRole('button', { name: /Training Operations/i }).click();
-        const cardioBtn = page.getByRole('button', { name: /Cardio Focus/i });
-        await expect(cardioBtn).toBeVisible({ timeout: 30000 });
-        await cardioBtn.click();
-
-        // Navigate to any training-related section as fallback
-        const trainingBtn = page.getByRole('button', { name: /Training Path|Training Center|Path|Program/i }).first();
-        if (await trainingBtn.isVisible()) {
-            await trainingBtn.click({ force: true });
-        } else {
-            // Direct navigation fallback
-            await page.goto('/training-center');
-        }
-
-        // Verify Training Center/Path content loads
-        await expect(page.getByText(/Training|Path|Back to Citadel|Active|WARDEN|JUGGERNAUT/i).first()).toBeVisible({ timeout: 15000 });
-    });
-
+    // Verify Training Center/Path content loads
+    await expect(
+      page.getByText(/Training|Path|Back to Citadel|Active|WARDEN|JUGGERNAUT/i).first()
+    ).toBeVisible({ timeout: 15000 });
+  });
 });

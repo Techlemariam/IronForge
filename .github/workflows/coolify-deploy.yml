@@ -2,9 +2,13 @@
 name: 🚀 Coolify Deploy
 
 on:
+  push:
+    branches: [develop]
   release:
     types: [published]
   workflow_dispatch:
+
+permissions: read-all
 
 jobs:
   deploy:

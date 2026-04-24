@@ -1,28 +1,25 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Search, Lock } from "lucide-react";
-import type { ArmoryItem } from "@/actions/economy/armory";
+import type { ArmoryItem } from '@/actions/economy/armory';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Lock, Search } from 'lucide-react';
+import { useState } from 'react';
 
 const RARITY_COLORS: Record<string, string> = {
-  common: "border-gray-600 text-gray-300 shadow-gray-900",
-  rare: "border-blue-500 text-blue-300 shadow-blue-900",
-  epic: "border-purple-500 text-purple-300 shadow-purple-900",
-  legendary: "border-warrior text-warrior shadow-yellow-900", // Gold/Warrior
+  common: 'border-gray-600 text-gray-300 shadow-gray-900',
+  rare: 'border-blue-500 text-blue-300 shadow-blue-900',
+  epic: 'border-purple-500 text-purple-300 shadow-purple-900',
+  legendary: 'border-warrior text-warrior shadow-yellow-900', // Gold/Warrior
 };
 
 export function ItemGrid({ initialItems }: { initialItems: ArmoryItem[] }) {
-  const [filter, setFilter] = useState<"all" | "unlocked" | "locked">("all");
-  const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState<'all' | 'unlocked' | 'locked'>('all');
+  const [search, setSearch] = useState('');
   const [selectedItem, setSelectedItem] = useState<ArmoryItem | null>(null);
 
   const filteredItems = initialItems.filter((item) => {
-    const matchesFilter =
-      filter === "all" || (filter === "locked" ? item.locked : !item.locked);
-    const matchesSearch = item.name
-      .toLowerCase()
-      .includes(search.toLowerCase());
+    const matchesFilter = filter === 'all' || (filter === 'locked' ? item.locked : !item.locked);
+    const matchesSearch = item.name.toLowerCase().includes(search.toLowerCase());
     return matchesFilter && matchesSearch;
   });
 
@@ -43,20 +40,20 @@ export function ItemGrid({ initialItems }: { initialItems: ArmoryItem[] }) {
 
         <div className="flex gap-2">
           <button
-            onClick={() => setFilter("all")}
-            className={`px-4 py-2 rounded text-xs font-mono uppercase border ${filter === "all" ? "bg-warrior/10 border-warrior text-warrior" : "bg-transparent border-forge-border text-muted-foreground hover:border-muted"}`}
+            onClick={() => setFilter('all')}
+            className={`px-4 py-2 rounded text-xs font-mono uppercase border ${filter === 'all' ? 'bg-warrior/10 border-warrior text-warrior' : 'bg-transparent border-forge-border text-gray-400 hover:border-gray-500'}`}
           >
             All
           </button>
           <button
-            onClick={() => setFilter("unlocked")}
-            className={`px-4 py-2 rounded text-xs font-mono uppercase border ${filter === "unlocked" ? "bg-warrior/10 border-warrior text-warrior" : "bg-transparent border-forge-border text-muted-foreground hover:border-muted"}`}
+            onClick={() => setFilter('unlocked')}
+            className={`px-4 py-2 rounded text-xs font-mono uppercase border ${filter === 'unlocked' ? 'bg-warrior/10 border-warrior text-warrior' : 'bg-transparent border-forge-border text-gray-400 hover:border-gray-500'}`}
           >
             Unlocked
           </button>
           <button
-            onClick={() => setFilter("locked")}
-            className={`px-4 py-2 rounded text-xs font-mono uppercase border ${filter === "locked" ? "bg-warrior/10 border-warrior text-warrior" : "bg-transparent border-forge-border text-muted-foreground hover:border-muted"}`}
+            onClick={() => setFilter('locked')}
+            className={`px-4 py-2 rounded text-xs font-mono uppercase border ${filter === 'locked' ? 'bg-warrior/10 border-warrior text-warrior' : 'bg-transparent border-forge-border text-gray-400 hover:border-gray-500'}`}
           >
             Locked
           </button>
@@ -81,12 +78,14 @@ export function ItemGrid({ initialItems }: { initialItems: ArmoryItem[] }) {
             >
               {/* Rarity Glow Background */}
               <div
-                className={`absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500 bg-${item.rarity === "legendary" ? "yellow-500" : item.rarity === "epic" ? "purple-600" : "blue-600"}`}
+                className={`absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500 bg-${item.rarity === 'legendary' ? 'yellow-500' : item.rarity === 'epic' ? 'purple-600' : 'blue-600'}`}
               />
 
               <div className="flex justify-between items-start z-10">
                 <span
-                  className={`text-[10px] font-mono uppercase px-2 py-0.5 rounded border border-current bg-black/50 tracking-wider`}
+                  className={
+                    'text-[10px] font-mono uppercase px-2 py-0.5 rounded border border-current bg-black/50 tracking-wider'
+                  }
                 >
                   {item.rarity}
                 </span>
@@ -97,14 +96,14 @@ export function ItemGrid({ initialItems }: { initialItems: ArmoryItem[] }) {
                 {/* Placeholder Icon */}
                 <div className="w-16 h-16 rounded-full bg-black/30 border border-white/10 flex items-center justify-center">
                   <div
-                    className={`w-8 h-8 rounded-full ${item.locked ? "bg-gray-700" : "bg-current shadow-[0_0_10px_currentColor]"}`}
+                    className={`w-8 h-8 rounded-full ${item.locked ? 'bg-gray-700' : 'bg-current shadow-[0_0_10px_currentColor]'}`}
                   />
                 </div>
               </div>
 
               <div className="z-10">
                 <h3
-                  className={`font-serif tracking-wide text-lg ${item.locked ? "text-gray-500" : "text-white"}`}
+                  className={`font-serif tracking-wide text-lg ${item.locked ? 'text-gray-500' : 'text-white'}`}
                 >
                   {item.name}
                 </h3>
@@ -113,7 +112,7 @@ export function ItemGrid({ initialItems }: { initialItems: ArmoryItem[] }) {
                 </p>
 
                 {!item.locked && (
-                  <div className="mt-3 flex items-center gap-2 text-xs font-mono text-muted-foreground">
+                  <div className="mt-3 flex items-center gap-2 text-xs font-mono text-gray-400">
                     <div className="h-1 w-full bg-black/50 rounded-full overflow-hidden">
                       <div className="h-full bg-current w-3/4 opacity-50" />
                     </div>
@@ -163,14 +162,14 @@ export function ItemGrid({ initialItems }: { initialItems: ArmoryItem[] }) {
                 <div className="flex flex-col items-center mb-6">
                   <div className="w-24 h-24 rounded-full bg-black/50 border-2 border-white/10 flex items-center justify-center mb-4 shadow-xl relative">
                     <div
-                      className={`w-12 h-12 rounded-full ${selectedItem.locked ? "bg-gray-700" : "bg-current shadow-[0_0_20px_currentColor]"} ${selectedItem.locked ? "" : RARITY_COLORS[selectedItem.rarity].split(" ")[1]}`}
+                      className={`w-12 h-12 rounded-full ${selectedItem.locked ? 'bg-gray-700' : 'bg-current shadow-[0_0_20px_currentColor]'} ${selectedItem.locked ? '' : RARITY_COLORS[selectedItem.rarity].split(' ')[1]}`}
                     />
                   </div>
                   <h2 className="text-2xl font-serif tracking-widest uppercase text-white text-center">
                     {selectedItem.name}
                   </h2>
                   <span
-                    className={`text-xs font-mono uppercase px-3 py-1 rounded-full border border-current bg-black/50 tracking-wider mt-2 ${RARITY_COLORS[selectedItem.rarity].split(" ")[1]}`}
+                    className={`text-xs font-mono uppercase px-3 py-1 rounded-full border border-current bg-black/50 tracking-wider mt-2 ${RARITY_COLORS[selectedItem.rarity].split(' ')[1]}`}
                   >
                     {selectedItem.rarity}
                   </span>
@@ -178,9 +177,7 @@ export function ItemGrid({ initialItems }: { initialItems: ArmoryItem[] }) {
 
                 <div className="space-y-6">
                   <div className="bg-black/30 p-4 rounded border border-white/5">
-                    <h4 className="text-xs font-mono uppercase text-gray-500 mb-2">
-                      Description
-                    </h4>
+                    <h4 className="text-xs font-mono uppercase text-gray-500 mb-2">Description</h4>
                     <p className="text-gray-300 text-sm leading-relaxed">
                       {selectedItem.description}
                     </p>
@@ -188,21 +185,17 @@ export function ItemGrid({ initialItems }: { initialItems: ArmoryItem[] }) {
 
                   <div className="grid grid-cols-2 gap-4">
                     <div className="bg-black/30 p-3 rounded border border-white/5">
-                      <h4 className="text-xs font-mono uppercase text-gray-500 mb-1">
-                        Type
-                      </h4>
-                      <p className="text-white font-mono capitalize">
-                        {selectedItem.type}
-                      </p>
+                      <h4 className="text-xs font-mono uppercase text-gray-500 mb-1">Type</h4>
+                      <p className="text-white font-mono capitalize">{selectedItem.type}</p>
                     </div>
                     <div className="bg-black/30 p-3 rounded border border-white/5">
                       <h4 className="text-xs font-mono uppercase text-gray-500 mb-1">
                         Power Level
                       </h4>
                       <p
-                        className={`font-mono font-bold ${selectedItem.locked ? "text-gray-500" : "text-warrior"}`}
+                        className={`font-mono font-bold ${selectedItem.locked ? 'text-gray-500' : 'text-warrior'}`}
                       >
-                        {selectedItem.locked ? "???" : selectedItem.power}
+                        {selectedItem.locked ? '???' : selectedItem.power}
                       </p>
                     </div>
                   </div>

@@ -10,6 +10,8 @@ on:
         default: 'Identify and fix technical debt in the current branch.'
         type: string
 
+permissions: read-all
+
 jobs:
   jules-invoke:
     name: Invoke Jules
@@ -17,12 +19,12 @@ jobs:
     env:
       NODE_VERSION: '22'
     steps:
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
         with:
           node-version: 22
 
       - name: Install Doppler CLI
-        uses: dopplerhq/cli-action@v3
+        uses: dopplerhq/cli-action@b10903328e36746f3152d591df41490230694121 # v3.0.2
 
       - name: Fetch Doppler Secrets
         run: |
@@ -31,14 +33,14 @@ jobs:
           DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
 
       - name: Jules Invoke
-        uses: BeksOmega/jules-action@v1.0.0
+        uses: BeksOmega/jules-action@011e4a21fc5ca65e7dea8aa232acc99f8093fc3e # v1.0.0
         with:
           jules_api_key: ${{ env.JULES_API_KEY }}
           prompt: ${{ inputs.mission }}
 
       - name: Send Feedback to Jules
         if: always()
-        uses: BeksOmega/jules-comms@v1.0.0
+        uses: BeksOmega/jules-comms@bec2bde27e1234c9478c932a620a1c4170c3dfe6 # v1.0.0
         with:
           jules_api_key: ${{ env.JULES_API_KEY }}
           feedback_users: ${{ github.actor }}

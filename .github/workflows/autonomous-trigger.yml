@@ -39,9 +39,7 @@ on:
           - gemini-2.5-flash
           - gemini-2.5-pro
 
-permissions:
-  contents: write
-  pull-requests: write
+permissions: read-all
 
 # Prevent overlapping runs of the same autonomous workflow on the self-hosted runner
 concurrency:
@@ -52,9 +50,12 @@ jobs:
   run-autonomous-workflow:
     runs-on: self-hosted
     timeout-minutes: 120
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0
 

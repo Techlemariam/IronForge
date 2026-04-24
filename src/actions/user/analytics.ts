@@ -2,11 +2,9 @@
  * Analytics Dashboard Server Actions
  * Handles data aggregation for the Ultrathink dashboard.
  */
-"use server";
+'use server';
 
-import { prisma } from "@/lib/prisma";
-
-
+import { prisma } from '@/lib/prisma';
 
 interface ExerciseSet {
   weight: number;
@@ -57,20 +55,18 @@ interface AnalyticsDashboardData {
  */
 export async function getAnalyticsDashboardAction(
   userId: string,
-  period: "WEEK" | "MONTH" | "QUARTER" | "YEAR" = "MONTH",
+  period: 'WEEK' | 'MONTH' | 'QUARTER' | 'YEAR' = 'MONTH'
 ): Promise<AnalyticsDashboardData> {
   try {
     const periodDays = { WEEK: 7, MONTH: 30, QUARTER: 90, YEAR: 365 };
-    const startDate = new Date(
-      Date.now() - periodDays[period] * 24 * 60 * 60 * 1000,
-    );
+    const startDate = new Date(Date.now() - periodDays[period] * 24 * 60 * 60 * 1000);
 
     const logs = await prisma.exerciseLog.findMany({
       where: {
         userId,
         date: { gte: startDate.toISOString() },
       },
-      orderBy: { date: "asc" },
+      orderBy: { date: 'asc' },
     });
 
     // Calculate totals
@@ -101,7 +97,7 @@ export async function getAnalyticsDashboardAction(
         // Fallback to legacy fields
         logSets = log.reps && log.weight ? 1 : 0; // Rough assumption if legacy
         logVolume = (log.weight || 0) * (log.reps || 0);
-        if (log.sets && typeof log.sets === "number") logSets = log.sets; // If schema was different
+        if (log.sets && typeof log.sets === 'number') logSets = log.sets; // If schema was different
       }
 
       totalSets += logSets;
@@ -116,7 +112,7 @@ export async function getAnalyticsDashboardAction(
     // Volume trend by day
     const volumeByDay: Record<string, { volume: number; sets: number }> = {};
     for (const log of logs) {
-      const day = new Date(log.date).toISOString().split("T")[0];
+      const day = new Date(log.date).toISOString().split('T')[0];
       if (!volumeByDay[day]) volumeByDay[day] = { volume: 0, sets: 0 };
 
       let logVolume = 0;
@@ -166,7 +162,7 @@ export async function getAnalyticsDashboardAction(
     });
 
     // Frequency by day of week
-    const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const dayCount: Record<string, number> = {};
     for (const log of logs) {
       const day = dayNames[new Date(log.date).getDay()];
@@ -204,7 +200,7 @@ export async function getAnalyticsDashboardAction(
       },
     };
   } catch (error) {
-    console.error("Error getting analytics dashboard:", error);
+    console.error('Error getting analytics dashboard:', error);
     return {
       totalWorkouts: 0,
       totalSets: 0,
@@ -225,7 +221,7 @@ export async function getAnalyticsDashboardAction(
  */
 export async function getExerciseAnalyticsAction(
   userId: string,
-  exerciseId: string,
+  exerciseId: string
 ): Promise<{
   totalSets: number;
   volumeHistory: VolumeDataPoint[];
@@ -236,7 +232,7 @@ export async function getExerciseAnalyticsAction(
   try {
     const logs = await prisma.exerciseLog.findMany({
       where: { userId, exerciseId },
-      orderBy: { date: "asc" },
+      orderBy: { date: 'asc' },
     });
 
     return {
@@ -250,36 +246,32 @@ export async function getExerciseAnalyticsAction(
         if (Array.isArray(l.sets)) {
           const sets = l.sets as unknown as ExerciseSet[];
           setsCount = sets.length;
-          sets.forEach(
-            (s) => (vol += (Number(s.weight) || 0) * (Number(s.reps) || 0)),
-          );
+          sets.forEach((s) => (vol += (Number(s.weight) || 0) * (Number(s.reps) || 0)));
         } else {
           vol = (l.weight || 0) * (l.reps || 0);
           setsCount = l.reps && l.weight ? 1 : 0;
         }
         return {
-          date: new Date(l.date).toISOString().split("T")[0],
+          date: new Date(l.date).toISOString().split('T')[0],
           volume: vol,
           sets: setsCount,
         };
       }),
       e1rmProgression: logs.map((l) => ({
-        date: new Date(l.date).toISOString().split("T")[0],
+        date: new Date(l.date).toISOString().split('T')[0],
         e1rm: Array.isArray(l.sets)
           ? Math.max(
-            ...(l.sets as unknown as ExerciseSet[]).map(
-              (s) =>
-                (Number(s.weight) || 0) * (1 + (Number(s.reps) || 0) / 30),
-            ),
-          )
+              ...(l.sets as unknown as ExerciseSet[]).map(
+                (s) => (Number(s.weight) || 0) * (1 + (Number(s.reps) || 0) / 30)
+              )
+            )
           : (l.weight || 0) * (1 + (l.reps || 0) / 30),
       })),
       averageRpe: 7,
-      lastPerformed:
-        logs.length > 0 ? new Date(logs[logs.length - 1].date) : null,
+      lastPerformed: logs.length > 0 ? new Date(logs[logs.length - 1].date) : null,
     };
   } catch (error) {
-    console.error("Error getting exercise analytics:", error);
+    console.error('Error getting exercise analytics:', error);
     return {
       totalSets: 0,
       volumeHistory: [],

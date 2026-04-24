@@ -1,11 +1,11 @@
-import React from "react";
-import { IntervalsWellness, TTBIndices } from "@/types";
-import { TrainingPath, WeeklyMastery } from "@/types/training";
-import { BUILD_VOLUME_TARGETS } from "@/data/builds";
-import { Lock, CheckCircle2, Scroll } from "lucide-react";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/Alert";
-import { cn } from "@/lib/utils";
-import { TitanXPBar } from "@/features/titan/components/TitanXPBar";
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/Alert';
+import { BUILD_VOLUME_TARGETS } from '@/data/builds';
+import { TitanXPBar } from '@/features/titan/components/TitanXPBar';
+import { cn } from '@/lib/utils';
+import type { IntervalsWellness, TTBIndices } from '@/types';
+import type { TrainingPath, WeeklyMastery } from '@/types/training';
+import { CheckCircle2, Lock, Scroll } from 'lucide-react';
+import type React from 'react';
 
 interface CampaignTrackerProps {
   wellness: IntervalsWellness | null;
@@ -25,7 +25,7 @@ function getPhase1Gates(
   wellnessScore: number,
   level: number,
   activePath: TrainingPath,
-  strengthProgress: number,
+  strengthProgress: number
 ) {
   // Dynamic thresholds based on path
   const ctlThreshold =
@@ -35,23 +35,23 @@ function getPhase1Gates(
       WARDEN: 20,
     }[activePath] || 20;
 
-  const strengthGate = activePath === "JUGGERNAUT";
+  const strengthGate = activePath === 'JUGGERNAUT';
 
   const gates = [
     {
       label: `Establish Base Resilience (CTL > ${ctlThreshold})`,
       completed: ctl >= ctlThreshold,
       current: `${Math.round(ctl)} / ${ctlThreshold}`,
-      pathRelevant: activePath === "PATHFINDER" || activePath === "WARDEN",
+      pathRelevant: activePath === 'PATHFINDER' || activePath === 'WARDEN',
     },
     {
-      label: "Stabilize Recovery (Wellness > 80)",
+      label: 'Stabilize Recovery (Wellness > 80)',
       completed: wellnessScore >= 80,
       current: `${wellnessScore} / 80`,
       pathRelevant: true,
     },
     {
-      label: "Prove Consistency (Reach Level 5)",
+      label: 'Prove Consistency (Reach Level 5)',
       completed: level >= 5,
       current: `Lvl ${level} / 5`,
       pathRelevant: true,
@@ -60,7 +60,7 @@ function getPhase1Gates(
 
   if (strengthGate) {
     gates.unshift({
-      label: "Increase 1RM by 5%",
+      label: 'Increase 1RM by 5%',
       completed: strengthProgress >= 5,
       current: `+${strengthProgress.toFixed(1)}% / 5%`,
       pathRelevant: true,
@@ -74,7 +74,7 @@ export const CampaignTracker: React.FC<CampaignTrackerProps> = ({
   wellness,
   ttb,
   level,
-  activePath = "WARDEN",
+  activePath = 'WARDEN',
   strengthProgress = 0,
   totalExperience = 0,
   weeklyMastery,
@@ -86,24 +86,14 @@ export const CampaignTracker: React.FC<CampaignTrackerProps> = ({
     wellnessScore,
     level,
     activePath,
-    strengthProgress,
+    strengthProgress
   ).every((p) => p.completed);
-  const gates = getPhase1Gates(
-    ctl,
-    wellnessScore,
-    level,
-    activePath,
-    strengthProgress,
-  );
+  const gates = getPhase1Gates(ctl, wellnessScore, level, activePath, strengthProgress);
 
-  const cardStyle = cn(
-    "bg-forge-900 border-2 rounded-lg p-4 h-full transition-all duration-300",
-    {
-      "border-rarity-legendary shadow-legendary-glow animate-pulse-glow":
-        !isPhase1Complete,
-      "border-forge-border": isPhase1Complete,
-    },
-  );
+  const cardStyle = cn('bg-forge-900 border-2 rounded-lg p-4 h-full transition-all duration-300', {
+    'border-rarity-legendary shadow-legendary-glow animate-pulse-glow': !isPhase1Complete,
+    'border-forge-border': isPhase1Complete,
+  });
 
   return (
     <div className={cardStyle}>
@@ -116,31 +106,24 @@ export const CampaignTracker: React.FC<CampaignTrackerProps> = ({
           </h2>
         </div>
         <span
-          className={`border ${isPhase1Complete ? "border-rarity-legendary text-rarity-legendary" : "border-warrior text-warrior"} font-bold text-xs uppercase rounded px-2 py-0.5`}
+          className={`border ${isPhase1Complete ? 'border-rarity-legendary text-rarity-legendary' : 'border-warrior text-warrior'} font-bold text-xs uppercase rounded px-2 py-0.5`}
         >
-          {isPhase1Complete ? "Complete" : "Active"}
+          {isPhase1Complete ? 'Complete' : 'Active'}
         </span>
       </div>
 
       {/* Current Act Details */}
       <div className="mb-4">
-        <h3 className="text-lg font-bold text-white mb-1">
-          Act I: The Rites of Initiation
-        </h3>
+        <h3 className="text-lg font-bold text-white mb-1">Act I: The Rites of Initiation</h3>
         <p className="text-rarity-common text-xs italic max-w-xl">
-          &quot;Before a Titan can carry the weight of the world, they must
-          first master the weight of their own spirit. Build the
-          foundation.&quot;
+          &quot;Before a Titan can carry the weight of the world, they must first master the weight
+          of their own spirit. Build the foundation.&quot;
         </p>
       </div>
 
       {/* Level & XP Progress */}
       <div className="mb-6 bg-forge-800/50 p-2 rounded-lg border border-forge-border/50">
-        <TitanXPBar
-          currentXP={(totalExperience || 0) % 100}
-          maxXP={100}
-          level={level}
-        />
+        <TitanXPBar currentXP={(totalExperience || 0) % 100} maxXP={100} level={level} />
       </div>
 
       {/* Weekly Mastery (System Matrix Metrics) */}
@@ -183,23 +166,16 @@ export const CampaignTracker: React.FC<CampaignTrackerProps> = ({
         <AlertDescription>
           <div className="space-y-1.5 mt-2">
             {gates.map((req, i) => (
-              <div
-                key={i}
-                className="flex items-center justify-between text-sm"
-              >
+              <div key={i} className="flex items-center justify-between text-sm">
                 <div className="flex items-center gap-2">
                   {req.completed ? (
                     <CheckCircle2 className="w-4 h-4 text-rarity-legendary" />
                   ) : (
                     <div className="w-4 h-4 rounded-full border-2 border-rarity-common" />
                   )}
-                  <span className="text-rarity-common text-xs">
-                    {req.label}
-                  </span>
+                  <span className="text-rarity-common text-xs">{req.label}</span>
                 </div>
-                <span className="font-mono text-xs text-rarity-common">
-                  {req.current}
-                </span>
+                <span className="font-mono text-xs text-rarity-common">{req.current}</span>
               </div>
             ))}
           </div>
@@ -211,18 +187,14 @@ export const CampaignTracker: React.FC<CampaignTrackerProps> = ({
         <div className="bg-forge-800 border border-forge-border rounded p-3 flex items-center gap-3">
           <Lock className="w-5 h-5 text-rarity-common" />
           <div>
-            <h4 className="text-rarity-common font-bold uppercase text-xs">
-              Act II
-            </h4>
+            <h4 className="text-rarity-common font-bold uppercase text-xs">Act II</h4>
             <p className="font-bold text-sm text-white">The Basalt Bastion</p>
           </div>
         </div>
         <div className="bg-forge-800 border border-forge-border rounded p-3 flex items-center gap-3">
           <Lock className="w-5 h-5 text-rarity-common" />
           <div>
-            <h4 className="text-rarity-common font-bold uppercase text-xs">
-              Act III
-            </h4>
+            <h4 className="text-rarity-common font-bold uppercase text-xs">Act III</h4>
             <p className="font-bold text-sm text-white">The Elite Crucible</p>
           </div>
         </div>
@@ -257,8 +229,8 @@ const MasteryProgressBar: React.FC<MasteryProgressBarProps> = ({
       <div className="h-1.5 w-full bg-forge-700 rounded-full overflow-hidden border border-forge-border/30">
         <div
           className={cn(
-            "h-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(0,0,0,0.5)]",
-            color,
+            'h-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(0,0,0,0.5)]',
+            color
           )}
           style={{ width: `${percentage}%` }}
         />

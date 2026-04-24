@@ -1,12 +1,12 @@
-import { Dispatch, SetStateAction } from "react";
-import { Exercise } from "@/types";
-import { calculateE1RM } from "@/utils/math";
-import { determineRarity } from "@/utils/loot";
-import { playSound, fireConfetti } from "@/utils";
-import { calculateDamage } from "@/utils/combatMechanics";
-import { logTitanSet } from "@/actions/training/core";
-import { checkPRAction } from "@/actions/training/max-reps";
-import { toast } from "sonner";
+import { logTitanSet } from '@/actions/training/core';
+import { checkPRAction } from '@/actions/training/max-reps';
+import type { Exercise } from '@/types';
+import { fireConfetti, playSound } from '@/utils';
+import { calculateDamage } from '@/utils/combatMechanics';
+import { determineRarity } from '@/utils/loot';
+import { calculateE1RM } from '@/utils/math';
+import type { Dispatch, SetStateAction } from 'react';
+import { toast } from 'sonner';
 
 interface LoggingCallbacks {
   onDamage: (damage: number) => void;
@@ -20,13 +20,13 @@ export const useSetLogging = (
   exercises: Exercise[],
   setExercises: Dispatch<SetStateAction<Exercise[]>>,
   activeExIndex: number,
-  callbacks: LoggingCallbacks,
+  callbacks: LoggingCallbacks
 ) => {
   const handleSetLog = async (
     weight: number,
     reps: number,
     rpe: number,
-    overrideIndex?: number,
+    overrideIndex?: number
   ) => {
     // 1. Calculate Damage
     const combatStats = calculateDamage(weight, reps, rpe, false);
@@ -45,7 +45,7 @@ export const useSetLogging = (
       checkPRAction(currentExId, currentReps, currentWeight).then((res) => {
         if (res.success && res.isPR) {
           callbacks.onRepPR?.(currentReps, res.previousMax ?? null);
-          playSound("loot_epic"); // Distinct sound for Rep PR
+          playSound('loot_epic'); // Distinct sound for Rep PR
         }
       });
     }
@@ -79,16 +79,14 @@ export const useSetLogging = (
       targetSet.e1rm = currentE1RM;
       targetSet.isPr = isPr; // This is E1RM PR, different from Rep PR
 
-      if (isPr || rarity === "legendary") {
-        playSound("loot_epic");
+      if (isPr || rarity === 'legendary') {
+        playSound('loot_epic');
         fireConfetti();
       } else {
-        playSound("ding");
+        playSound('ding');
       }
 
-      const allSetsInExerciseComplete = currentEx.sets.every(
-        (s) => s.completed,
-      );
+      const allSetsInExerciseComplete = currentEx.sets.every((s) => s.completed);
       const isLastExercise = activeExIndex === newExercises.length - 1;
 
       if (allSetsInExerciseComplete) {
@@ -112,7 +110,7 @@ export const useSetLogging = (
             });
           }
         })
-        .catch((err) => console.error("Titan Log Failed", err));
+        .catch((err) => console.error('Titan Log Failed', err));
 
       return newExercises;
     });

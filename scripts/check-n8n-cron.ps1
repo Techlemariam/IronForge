@@ -20,7 +20,7 @@ $headers = @{ "X-N8N-API-KEY" = $n8nApiKey }
 
 # 1. Find reviewer-aggregator workflow
 Write-Host "🔍 Checking Reviewer Aggregator health..." -ForegroundColor Cyan
-$workflows = Invoke-RestMethod -Uri "$n8nHost/api/v1/workflows" -Headers $headers
+$workflows = Invoke-RestMethod -Uri "$n8nHost/api/v1/workflows" -Headers $headers -SkipCertificateCheck
 $aggregator = $workflows.data | Where-Object { $_.name -match "reviewer.aggregator" -or $_.name -match "Reviewer" }
 
 if (-not $aggregator) {
@@ -39,7 +39,7 @@ if (-not $isActive) {
 }
 
 # 2. Check last execution
-$executions = Invoke-RestMethod -Uri "$n8nHost/api/v1/executions?workflowId=$workflowId&limit=1" -Headers $headers
+$executions = Invoke-RestMethod -Uri "$n8nHost/api/v1/executions?workflowId=$workflowId&limit=1" -Headers $headers -SkipCertificateCheck
 $lastExec = $executions.data | Select-Object -First 1
 
 if (-not $lastExec) {

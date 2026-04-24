@@ -14,28 +14,25 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-# SECURITY NOTE: COOLIFY_HOST must be a fully-qualified hostname (e.g., coolify.example.com) with a
-# valid TLS certificate. Using a bare IP address with -SkipCertificateCheck is not supported.
-# Ensure your Coolify instance has a proper domain and cert before using this script.
-$coolifyHost = $env:COOLIFY_HOST
-$token = $env:COOLIFY_API_TOKEN
+. "$PSScriptRoot/coolify-api.ps1"
+$coolifyHost = $script:coolifyHost
+$headers = $script:coolifyHeaders
 $ghPat = $env:GH_PAT
-$envName = "production"
+$serverUuid = $env:COOLIFY_SERVER_UUID
+if (-not $serverUuid) { $serverUuid = "swwk0owc8sokwo80w48k48w0" }
+$projectUuid = $env:COOLIFY_RUNNERS_PROJECT_UUID
+if (-not $projectUuid) { $projectUuid = "n4w4sk0sok0s040w0w0koc8c" }
 
-if (-not $coolifyHost) { Write-Error "COOLIFY_HOST env var not set. Set it to your Coolify hostname (e.g., https://coolify.example.com)."; exit 1 }
-if (-not $token) { Write-Error "COOLIFY_API_TOKEN not set. Run via: doppler run --"; exit 1 }
-
-$headers = @{
-  "Authorization" = "Bearer $token"
-  "Accept"        = "application/json"
-  "Content-Type"  = "application/json"
+if (-not $env:GH_PAT) {
+  if ($Action -eq "create") { Write-Error "GH_PAT not set"; exit 1 }
 }
+
 
 # The UUIDs for the 3 current runner services:
 $runnerServices = @(
-  "zcwgg0gw8s8c8gwk0wcsoccs", # github-runners
-  "p8w0kcwso4w4sw484kgo0gw8", # github-runners-2
-  "z80owgk0sg8c8g44cw4cgkso"  # github-runners-3
+  "rgk0408w8oo0kswcw0g8os8k", # github-runners
+  "loksowso4gwkooo8gskw8sgw", # github-runners-2
+  "cwwwgwscwcswcggg0owkcccc"  # github-runners-3
 )
 
 function Get-RunnerStatus {
@@ -73,11 +70,11 @@ services:
       - REPO_URL=https://github.com/Techlemariam/IronForge
       - ACCESS_TOKEN=PLACEHOLDER
       - RUNNER_NAME_PREFIX=IronForge-VPS
-      - RUNNER_LABELS=self-hosted,IronForge-VPS
+      - RUNNER_LABELS=self-hosted,IronForge-Local
       - RUNNER_WORKDIR=/tmp/github-runner
       - RUNNER_GROUP=Default
       - ORG_RUNNER=false
-      - LABELS=self-hosted,IronForge-VPS
+      - LABELS=self-hosted,IronForge-Local
       - EPHEMERAL=true
       - DISABLE_AUTO_UPDATE=true
     extra_hosts:
@@ -86,30 +83,16 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
 '@
         
-    $projects = Invoke-RestMethod -Uri "$coolifyHost/api/v1/projects" -Headers $headers
-    if (-not $projects -or $projects.Count -eq 0) { Write-Error "No projects found"; exit 1 }
-    $project = $projects | Select-Object -First 1
-    $projectUuid = $project.uuid
-    
-    $envs = Invoke-RestMethod -Uri "$coolifyHost/api/v1/projects/$projectUuid/environments" -Headers $headers
-    if (-not $envs -or $envs.Count -eq 0) { Write-Error "No environments found"; exit 1 }
-    $envName = $envs[0].name
-
-    $servers = Invoke-RestMethod -Uri "$coolifyHost/api/v1/servers" -Headers $headers
-    if (-not $servers -or $servers.Count -eq 0) { Write-Error "No servers found"; exit 1 }
-    $serverUuid = $servers[0].uuid
-
     for ($i = 1; $i -le 3; $i++) {
       $name = if ($i -eq 1) { "github-runners" } else { "github-runners-$i" }
       $composeContext = $composeTemplate -replace 'REPLACEME', $name -replace 'PLACEHOLDER', $ghPat
+      $composeB64 = [Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes($composeContext))
             
-      $base64Compose = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($composeContext))
-      
       $body = @{
         server_uuid        = $serverUuid
         project_uuid       = $projectUuid
-        environment_name   = $envName
-        docker_compose_raw = $base64Compose
+        environment_name   = "production"
+        docker_compose_raw = $composeB64
         name               = $name
         description        = "Self-hosted GitHub Actions runner (ephemeral)"
         instant_deploy     = $true

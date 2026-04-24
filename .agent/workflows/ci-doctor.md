@@ -7,7 +7,7 @@ version: "5.0.0"
 telemetry: "enabled"
 primary_agent: "@infrastructure"
 domain: "ci"
-skills: ["error-analyzer", "gatekeeper", "dependabot-manager", "env-validator", "linter-fixer", "schema-guard", "qodana-linter", "performance-profiler", "zod-schema-validator", "api-mocker", "bio-validator", "prisma-migrator", "a11y-auditor", "coverage-check", "bundle-analyzer", "git-guard", "supabase-inspector", "storybook-bridge", "coolify-deploy", "doc-generator", "red-team", "clean-code-pro", "doppler", "n8n"]
+skills: ["error-analyzer", "gatekeeper", "dependabot-manager", "env-validator", "linter-fixer", "schema-guard", "qodana-linter", "performance-profiler", "zod-schema-validator", "api-mocker", "bio-validator", "prisma-migrator", "a11y-auditor", "coverage-check", "bundle-analyzer", "git-guard", "supabase-inspector", "storybook-bridge", "coolify-deploy", "doc-generator", "red-team", "clean-code-pro", "doppler", "n8n", "discord"]
 ---
 
 # 🩺 CI Doctor (Orchestrator v5.0)
@@ -201,7 +201,7 @@ Every specialist run posts a structured report on the PR with diagnostic logs.
 
 Real-time notifications for:
 
-- CI failures and specialist dispatch
+- CI failures and specialist dispatch (via `DISCORD_WEBHOOK_TRIAGE`)
 - Auto-fix success/failure
 - Runner health degradation
 

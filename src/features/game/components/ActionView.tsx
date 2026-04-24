@@ -1,60 +1,54 @@
-import React, {
-  useState,
-  useEffect,
-  useCallback,
-  useRef,
-  useContext,
-  memo,
-} from "react";
+import { AchievementContext } from '@/context/AchievementContext';
+import { useSkills } from '@/context/SkillContext';
+import HeartRateMonitor from '@/features/bio/components/HeartRateMonitor';
+import ExerciseLibrary from '@/features/strength/components/ExerciseLibrary';
+import PlateVisualizer from '@/features/strength/components/PlateVisualizer';
+import VisionRepCounter from '@/features/training/components/VisionRepCounter';
+import { useVoiceCommand } from '@/hooks/useVoiceCommand';
+import { IoTService } from '@/services/iot';
+import { NeuroService } from '@/services/neuro';
+import { RaidService } from '@/services/raid';
+import { StorageService } from '@/services/storage';
 import {
-  Block,
-  Set as WorkoutSet,
+  type AppSettings,
+  type Block,
+  type Exercise,
   ExerciseLogic,
-  IntervalsWellness,
-  AppSettings,
-  Exercise,
-} from "@/types";
+  type IntervalsWellness,
+  type Set as WorkoutSet,
+} from '@/types';
 import {
-  Check,
-  Info,
-  X,
-  Lock,
-  Zap,
-  Sword,
-  Shield,
-  Crown,
-  LogOut,
-  Flame,
-  Battery,
-  Mic,
-  Camera,
-  Waves,
-  ArrowUp,
-  ArrowDown,
-  Timer,
-  Plus,
-  Copy,
-  Ban,
-} from "lucide-react";
-import {
-  roundToPlates,
-  fireConfetti,
   calculateRarity,
-  playSound,
   calculateTitanRank,
-} from "@/utils";
-import { calculateApre, ApreSuggestion } from "@/utils/apre";
-import PlateVisualizer from "@/features/strength/components/PlateVisualizer";
-import ExerciseLibrary from "@/features/strength/components/ExerciseLibrary";
-import HeartRateMonitor from "@/features/bio/components/HeartRateMonitor";
-import VisionRepCounter from "@/features/training/components/VisionRepCounter";
-import { AchievementContext } from "@/context/AchievementContext";
-import { useSkills } from "@/context/SkillContext";
-import { IoTService } from "@/services/iot";
-import { RaidService } from "@/services/raid";
-import { NeuroService } from "@/services/neuro";
-import { StorageService } from "@/services/storage";
-import { useVoiceCommand } from "@/hooks/useVoiceCommand";
+  fireConfetti,
+  playSound,
+  roundToPlates,
+} from '@/utils';
+import { type ApreSuggestion, calculateApre } from '@/utils/apre';
+import {
+  ArrowDown,
+  ArrowUp,
+  Ban,
+  Battery,
+  Camera,
+  Check,
+  Copy,
+  Crown,
+  Flame,
+  Info,
+  Lock,
+  LogOut,
+  Mic,
+  Plus,
+  Shield,
+  Sword,
+  Timer,
+  Waves,
+  X,
+  Zap,
+} from 'lucide-react';
+import type React from 'react';
+import { memo, useCallback, useContext, useEffect, useRef, useState } from 'react';
 
 interface ActionViewProps {
   block: Block;
@@ -66,10 +60,7 @@ interface ActionViewProps {
   onBtSimulate: () => void;
   btError?: string | null;
   wellness: IntervalsWellness | null;
-  previousStats?: Record<
-    string,
-    { weight: number; reps: number; e1rm: number }
-  >;
+  previousStats?: Record<string, { weight: number; reps: number; e1rm: number }>;
   onSessionUpdate?: (exercises: Exercise[]) => void; // Persistence Callback
 }
 
@@ -109,58 +100,60 @@ const SetRow = memo(
   }: SetRowProps) => {
     const getRarityBorder = (rarity: string) => {
       switch (rarity) {
-        case "poor":
-          return "border-rarity-poor shadow-none opacity-50";
-        case "common":
-          return "border-rarity-common/50 shadow-none";
-        case "uncommon":
-          return "border-rarity-uncommon shadow-[0_0_10px_rgba(30,255,0,0.1)]";
-        case "rare":
-          return "border-rarity-rare shadow-[0_0_15px_rgba(0,112,221,0.2)]";
-        case "epic":
-          return "border-rarity-epic shadow-[0_0_20px_rgba(163,53,238,0.3)]";
-        case "legendary":
-          return "border-rarity-legendary shadow-[0_0_25px_rgba(255,128,0,0.4)]";
+        case 'poor':
+          return 'border-rarity-poor shadow-none opacity-50';
+        case 'common':
+          return 'border-rarity-common/50 shadow-none';
+        case 'uncommon':
+          return 'border-rarity-uncommon shadow-[0_0_10px_rgba(30,255,0,0.1)]';
+        case 'rare':
+          return 'border-rarity-rare shadow-[0_0_15px_rgba(0,112,221,0.2)]';
+        case 'epic':
+          return 'border-rarity-epic shadow-[0_0_20px_rgba(163,53,238,0.3)]';
+        case 'legendary':
+          return 'border-rarity-legendary shadow-[0_0_25px_rgba(255,128,0,0.4)]';
         default:
-          return "border-zinc-800";
+          return 'border-zinc-800';
       }
     };
 
     const getRarityText = (rarity: string) => {
       switch (rarity) {
-        case "poor":
-          return "text-rarity-poor";
-        case "common":
-          return "text-rarity-common";
-        case "uncommon":
-          return "text-rarity-uncommon";
-        case "rare":
-          return "text-rarity-rare";
-        case "epic":
-          return "text-rarity-epic";
-        case "legendary":
-          return "text-rarity-legendary";
+        case 'poor':
+          return 'text-rarity-poor';
+        case 'common':
+          return 'text-rarity-common';
+        case 'uncommon':
+          return 'text-rarity-uncommon';
+        case 'rare':
+          return 'text-rarity-rare';
+        case 'epic':
+          return 'text-rarity-epic';
+        case 'legendary':
+          return 'text-rarity-legendary';
         default:
-          return "text-zinc-500";
+          return 'text-zinc-500';
       }
     };
 
     const borderColor = getRarityBorder(rarity);
     const textColor = getRarityText(rarity);
-    const isAmrap = typeof set.reps === "string";
+    const isAmrap = typeof set.reps === 'string';
     const inputValue =
-      set.completedReps !== undefined
-        ? set.completedReps
-        : isAmrap
-          ? ""
-          : set.reps;
+      set.completedReps !== undefined ? set.completedReps : isAmrap ? '' : set.reps;
 
     // --- COMPACT VIEW (Completed Sets) ---
     if (set.completed) {
       return (
         <div
-          role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onToggle(exIndex, setIndex); }}
-          className={`flex items-center justify-between p-2 bg-zinc-950/50 border border-zinc-900 rounded-md opacity-70 transition-all hover:opacity-100 cursor-pointer`}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') onToggle(exIndex, setIndex);
+          }}
+          className={
+            'flex items-center justify-between p-2 bg-zinc-950/50 border border-zinc-900 rounded-md opacity-70 transition-all hover:opacity-100 cursor-pointer'
+          }
           onClick={() => onToggle(exIndex, setIndex)}
         >
           <div className="flex items-center gap-3">
@@ -172,16 +165,13 @@ const SetRow = memo(
                 Set {setIndex + 1}
               </span>
               <div className="flex items-center gap-2 text-sm font-mono text-zinc-300">
-                <span className="font-bold text-white">
-                  {set.completedReps}
-                </span>{" "}
-                reps
+                <span className="font-bold text-white">{set.completedReps}</span> reps
                 <span className="text-zinc-600">@</span>
-                <span>{displayWeight > 0 ? `${displayWeight}kg` : "BW"}</span>
+                <span>{displayWeight > 0 ? `${displayWeight}kg` : 'BW'}</span>
               </div>
             </div>
           </div>
-          {set.rarity && set.rarity !== "common" && (
+          {set.rarity && set.rarity !== 'common' && (
             <span
               className={`text-[9px] uppercase font-bold px-2 py-0.5 border rounded-full ${getRarityText(set.rarity)} border-current opacity-60`}
             >
@@ -197,20 +187,20 @@ const SetRow = memo(
       <div
         ref={activeSetRef}
         className={`group relative bg-void border-2 rounded-lg overflow-hidden transition-all duration-300 
-              ${isFocused ? `scale-[1.02] z-10 shadow-xl ${borderColor}` : `border-zinc-900 hover:border-zinc-700`}
+              ${isFocused ? `scale-[1.02] z-10 shadow-xl ${borderColor}` : 'border-zinc-900 hover:border-zinc-700'}
             `}
       >
-        <div className={`flex flex-col gap-3 ${isFocused ? "p-6" : "p-4"}`}>
+        <div className={`flex flex-col gap-3 ${isFocused ? 'p-6' : 'p-4'}`}>
           {/* Header Row */}
           <div className="flex justify-between items-start">
             <div className="flex flex-col">
               <div className="flex items-center gap-2 mb-1">
                 <span
-                  className={`text-xs font-serif uppercase font-bold ${isFocused ? "text-zinc-300" : "text-zinc-600"}`}
+                  className={`text-xs font-serif uppercase font-bold ${isFocused ? 'text-zinc-300' : 'text-zinc-600'}`}
                 >
                   Objective {setIndex + 1}
                 </span>
-                {rarity === "epic" && !set.completed && (
+                {rarity === 'epic' && !set.completed && (
                   <span className="text-[10px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider text-rarity-epic border border-rarity-epic/30 bg-rarity-epic/10 animate-pulse">
                     Epic Loot
                   </span>
@@ -222,9 +212,7 @@ const SetRow = memo(
                 {/* Previous Params Ghost */}
                 {isFocused && previous && previous.e1rm > 0 && (
                   <div className="text-[10px] text-zinc-500 font-mono flex items-center gap-2 mb-1">
-                    <span className="uppercase tracking-widest text-zinc-600">
-                      Last:
-                    </span>
+                    <span className="uppercase tracking-widest text-zinc-600">Last:</span>
                     {previous.weight > 0 ? (
                       <>
                         <span>
@@ -237,11 +225,9 @@ const SetRow = memo(
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        if (previous.weight > 0)
-                          onWeightChange(exIndex, setIndex, previous.weight);
-                        if (previous.reps > 0)
-                          onRepsChange(exIndex, setIndex, previous.reps);
-                        playSound("ding");
+                        if (previous.weight > 0) onWeightChange(exIndex, setIndex, previous.weight);
+                        if (previous.reps > 0) onRepsChange(exIndex, setIndex, previous.reps);
+                        playSound('ding');
                       }}
                       className="ml-2 p-0.5 hover:bg-zinc-800 rounded text-zinc-600 hover:text-indigo-400 transition-colors"
                       title="Copy Last Set"
@@ -266,11 +252,9 @@ const SetRow = memo(
                                 Math.max(
                                   0,
                                   (set.completedReps ||
-                                    (typeof set.reps === "number"
-                                      ? set.reps
-                                      : 0) ||
-                                    0) - 1,
-                                ),
+                                    (typeof set.reps === 'number' ? set.reps : 0) ||
+                                    0) - 1
+                                )
                               );
                             }}
                             className="w-8 h-8 rounded-full bg-zinc-800 text-zinc-400 hover:bg-zinc-700 flex items-center justify-center font-bold"
@@ -280,13 +264,9 @@ const SetRow = memo(
                           <input
                             type="number"
                             value={inputValue}
-                            placeholder={isAmrap ? "MAX" : String(set.reps)}
+                            placeholder={isAmrap ? 'MAX' : String(set.reps)}
                             onChange={(e) =>
-                              onRepsChange(
-                                exIndex,
-                                setIndex,
-                                parseInt(e.target.value) || 0,
-                              )
+                              onRepsChange(exIndex, setIndex, Number.parseInt(e.target.value) || 0)
                             }
                             onClick={(e) => e.stopPropagation()}
                             className="w-16 bg-zinc-900 border-b-2 border-zinc-500 text-white text-3xl font-serif font-bold text-center p-0 rounded-none focus:border-clay focus:outline-none placeholder-zinc-700"
@@ -298,10 +278,8 @@ const SetRow = memo(
                                 exIndex,
                                 setIndex,
                                 (set.completedReps ||
-                                  (typeof set.reps === "number"
-                                    ? set.reps
-                                    : 0) ||
-                                  0) + 1,
+                                  (typeof set.reps === 'number' ? set.reps : 0) ||
+                                  0) + 1
                               );
                             }}
                             className="w-8 h-8 rounded-full bg-zinc-800 text-zinc-400 hover:bg-zinc-700 flex items-center justify-center font-bold"
@@ -316,11 +294,9 @@ const SetRow = memo(
                     ) : (
                       <div className="flex items-baseline gap-1">
                         <span className="text-2xl font-serif font-bold text-white">
-                          {isAmrap ? "AMRAP" : set.reps}
+                          {isAmrap ? 'AMRAP' : set.reps}
                         </span>
-                        <span className="text-zinc-600 text-xs font-bold uppercase">
-                          reps
-                        </span>
+                        <span className="text-zinc-600 text-xs font-bold uppercase">reps</span>
                       </div>
                     )}
                   </div>
@@ -333,11 +309,7 @@ const SetRow = memo(
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
-                              onWeightChange(
-                                exIndex,
-                                setIndex,
-                                Math.max(0, displayWeight - 2.5),
-                              );
+                              onWeightChange(exIndex, setIndex, Math.max(0, displayWeight - 2.5));
                             }}
                             className="w-8 h-8 rounded-full bg-zinc-800 text-zinc-400 hover:bg-zinc-700 flex items-center justify-center font-bold"
                           >
@@ -350,7 +322,7 @@ const SetRow = memo(
                               onWeightChange(
                                 exIndex,
                                 setIndex,
-                                parseFloat(e.target.value) || 0,
+                                Number.parseFloat(e.target.value) || 0
                               )
                             }
                             onClick={(e) => e.stopPropagation()}
@@ -359,11 +331,7 @@ const SetRow = memo(
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
-                              onWeightChange(
-                                exIndex,
-                                setIndex,
-                                displayWeight + 2.5,
-                              );
+                              onWeightChange(exIndex, setIndex, displayWeight + 2.5);
                             }}
                             className="w-8 h-8 rounded-full bg-zinc-800 text-zinc-400 hover:bg-zinc-700 flex items-center justify-center font-bold"
                           >
@@ -377,9 +345,9 @@ const SetRow = memo(
                     ) : (
                       <div className="flex flex-col items-center ml-2">
                         <span
-                          className={`font-mono font-bold ${isFocused ? "text-2xl" : "text-lg"} ${textColor}`}
+                          className={`font-mono font-bold ${isFocused ? 'text-2xl' : 'text-lg'} ${textColor}`}
                         >
-                          {displayWeight > 0 ? `${displayWeight}` : "BW"}
+                          {displayWeight > 0 ? `${displayWeight}` : 'BW'}
                         </span>
                         <span className="text-zinc-600 text-[10px] uppercase font-bold tracking-widest">
                           Weight
@@ -397,21 +365,15 @@ const SetRow = memo(
                           max={10}
                           min={1}
                           step={0.5}
-                          value={set.rpe || ""}
+                          value={set.rpe || ''}
                           placeholder="-"
                           onChange={(e) =>
-                            onRpeChange(
-                              exIndex,
-                              setIndex,
-                              parseFloat(e.target.value),
-                            )
+                            onRpeChange(exIndex, setIndex, Number.parseFloat(e.target.value))
                           }
                           onClick={(e) => e.stopPropagation()}
                           className="w-10 bg-transparent text-center text-yellow-500 font-bold text-xl focus:outline-none"
                         />
-                        <span className="text-[8px] text-zinc-500 uppercase font-bold">
-                          RPE
-                        </span>
+                        <span className="text-[8px] text-zinc-500 uppercase font-bold">RPE</span>
                       </div>
                     </div>
                   )}
@@ -424,33 +386,27 @@ const SetRow = memo(
               onClick={() => onToggle(exIndex, setIndex)}
               disabled={isLocked}
               className={`rounded-xl flex items-center justify-center transition-all shadow-lg active:scale-95
-                          ${isLocked
-                  ? "bg-red-950/10 border-2 border-red-900/50 text-red-900 cursor-not-allowed h-12 w-12"
-                  : isFocused
-                    ? "bg-zinc-100 text-black h-16 w-16 hover:bg-white hover:scale-105 shadow-[0_0_20px_rgba(255,255,255,0.1)]" // Giant button for active
-                    : "bg-zinc-900 border border-zinc-700 text-zinc-500 h-12 w-12 hover:border-zinc-500 hover:text-zinc-300"
-                }`}
+                          ${
+                            isLocked
+                              ? 'bg-red-950/10 border-2 border-red-900/50 text-red-900 cursor-not-allowed h-12 w-12'
+                              : isFocused
+                                ? 'bg-zinc-100 text-black h-16 w-16 hover:bg-white hover:scale-105 shadow-[0_0_20px_rgba(255,255,255,0.1)]' // Giant button for active
+                                : 'bg-zinc-900 border border-zinc-700 text-zinc-500 h-12 w-12 hover:border-zinc-500 hover:text-zinc-300'
+                          }`}
             >
               {isLocked ? (
                 <Lock className="w-5 h-5 animate-pulse" />
               ) : (
-                <Shield
-                  className={`${isFocused ? "w-8 h-8 fill-current" : "w-5 h-5"}`}
-                />
+                <Shield className={`${isFocused ? 'w-8 h-8 fill-current' : 'w-5 h-5'}`} />
               )}
             </button>
           </div>
 
           {/* Footer / Visualizer */}
           <div className="mt-1">
-            {displayWeight > 20 &&
-              !isLocked &&
-              (isFocused || !set.completed) && (
-                <PlateVisualizer
-                  weight={displayWeight}
-                  isSingleLoaded={isLandmine}
-                />
-              )}
+            {displayWeight > 20 && !isLocked && (isFocused || !set.completed) && (
+              <PlateVisualizer weight={displayWeight} isSingleLoaded={isLandmine} />
+            )}
             {isLocked && (
               <div className="mt-2 p-2 bg-red-950/30 border border-red-900/50 rounded flex items-center gap-2">
                 <Ban className="w-4 h-4 text-red-500 animate-pulse" />
@@ -475,10 +431,10 @@ const SetRow = memo(
       prev.set.rpe === next.set.rpe &&
       prev.previous === next.previous
     );
-  },
+  }
 );
 
-SetRow.displayName = "SetRow";
+SetRow.displayName = 'SetRow';
 
 const ActionView: React.FC<ActionViewProps> = ({
   block,
@@ -500,17 +456,16 @@ const ActionView: React.FC<ActionViewProps> = ({
   const [criticalHit, setCriticalHit] = useState<{
     show: boolean;
     msg: string;
-  }>({ show: false, msg: "" });
-  const [apreSuggestion, setApreSuggestion] = useState<ApreSuggestion | null>(
-    null,
-  );
+  }>({ show: false, msg: '' });
+  const [apreSuggestion, setApreSuggestion] = useState<ApreSuggestion | null>(null);
 
   // Game State
   const [mana, setMana] = useState(wellness?.bodyBattery || 50);
   const maxMana = 100;
-  const [manaDrain, setManaDrain] = useState<{ show: boolean; amount: number }>(
-    { show: false, amount: 0 },
-  );
+  const [manaDrain, setManaDrain] = useState<{ show: boolean; amount: number }>({
+    show: false,
+    amount: 0,
+  });
   const [isNeuroActive, setIsNeuroActive] = useState(false);
 
   // REST TIMER STATE
@@ -521,7 +476,7 @@ const ActionView: React.FC<ActionViewProps> = ({
   const { purchasedSkillIds } = useSkills();
   const unlockedIds = achievementContext?.unlockedIds || new Set();
   const { isElite } = calculateTitanRank(unlockedIds);
-  const hasPrimalRoar = purchasedSkillIds.has("beast_1");
+  const hasPrimalRoar = purchasedSkillIds.has('beast_1');
 
   // --- NEURO LINK LOGIC ---
   useEffect(() => {
@@ -559,10 +514,10 @@ const ActionView: React.FC<ActionViewProps> = ({
     setRestTimer(0);
   };
 
-  const [heroName, setHeroName] = useState("Titan");
+  const [heroName, setHeroName] = useState('Titan');
   useEffect(() => {
     IoTService.init();
-    StorageService.getState<AppSettings>("settings").then((s) => {
+    StorageService.getState<AppSettings>('settings').then((s) => {
       if (s?.heroName) setHeroName(s.heroName);
     });
   }, []);
@@ -580,7 +535,6 @@ const ActionView: React.FC<ActionViewProps> = ({
       }
       if (found) break;
     }
-
   }, []); // Only on mount
 
   useEffect(() => {
@@ -592,20 +546,14 @@ const ActionView: React.FC<ActionViewProps> = ({
 
   useEffect(() => {
     if (criticalHit.show) {
-      const t = setTimeout(
-        () => setCriticalHit({ show: false, msg: "" }),
-        2000,
-      );
+      const t = setTimeout(() => setCriticalHit({ show: false, msg: '' }), 2000);
       return () => clearTimeout(t);
     }
   }, [criticalHit.show]);
 
   useEffect(() => {
     if (manaDrain.show) {
-      const t = setTimeout(
-        () => setManaDrain({ show: false, amount: 0 }),
-        1000,
-      );
+      const t = setTimeout(() => setManaDrain({ show: false, amount: 0 }), 1000);
       return () => clearTimeout(t);
     }
   }, [manaDrain.show]);
@@ -614,57 +562,46 @@ const ActionView: React.FC<ActionViewProps> = ({
   useEffect(() => {
     if (activeSetRef.current)
       activeSetRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
+        behavior: 'smooth',
+        block: 'center',
       });
   }, [cursor]);
 
   const isSystemOverheated = bpm !== null && bpm > 120;
-  const isBlockComplete = exercises.every((ex) =>
-    ex.sets.every((s) => s.completed),
-  );
+  const isBlockComplete = exercises.every((ex) => ex.sets.every((s) => s.completed));
   const isManaEmpty = mana <= 0;
 
-  const handleRepsChange = useCallback(
-    (exIndex: number, setIndex: number, newReps: number) => {
-      setExercises((prev) => {
-        const newExercises = [...prev];
-        const newSet = { ...newExercises[exIndex].sets[setIndex] };
-        newSet.completedReps = newReps;
-        newExercises[exIndex].sets[setIndex] = newSet;
-        return newExercises;
-      });
-    },
-    [],
-  );
+  const handleRepsChange = useCallback((exIndex: number, setIndex: number, newReps: number) => {
+    setExercises((prev) => {
+      const newExercises = [...prev];
+      const newSet = { ...newExercises[exIndex].sets[setIndex] };
+      newSet.completedReps = newReps;
+      newExercises[exIndex].sets[setIndex] = newSet;
+      return newExercises;
+    });
+  }, []);
 
-  const handleWeightChange = useCallback(
-    (exIndex: number, setIndex: number, newWeight: number) => {
-      setExercises((prev) => {
-        const newExercises = [...prev];
-        const newSet = { ...newExercises[exIndex].sets[setIndex] };
-        newSet.weight = newWeight;
-        // Also update percent if applicable, relative to TM? simpler to just set absolute weight for now
-        // If it was logic based, we might break the logic link, but user override is king.
-        newExercises[exIndex].sets[setIndex] = newSet;
-        return newExercises;
-      });
-    },
-    [],
-  );
+  const handleWeightChange = useCallback((exIndex: number, setIndex: number, newWeight: number) => {
+    setExercises((prev) => {
+      const newExercises = [...prev];
+      const newSet = { ...newExercises[exIndex].sets[setIndex] };
+      newSet.weight = newWeight;
+      // Also update percent if applicable, relative to TM? simpler to just set absolute weight for now
+      // If it was logic based, we might break the logic link, but user override is king.
+      newExercises[exIndex].sets[setIndex] = newSet;
+      return newExercises;
+    });
+  }, []);
 
-  const handleRpeChange = useCallback(
-    (exIndex: number, setIndex: number, newRpe: number) => {
-      setExercises((prev) => {
-        const newExercises = [...prev];
-        const newSet = { ...newExercises[exIndex].sets[setIndex] };
-        newSet.rpe = newRpe;
-        newExercises[exIndex].sets[setIndex] = newSet;
-        return newExercises;
-      });
-    },
-    [],
-  );
+  const handleRpeChange = useCallback((exIndex: number, setIndex: number, newRpe: number) => {
+    setExercises((prev) => {
+      const newExercises = [...prev];
+      const newSet = { ...newExercises[exIndex].sets[setIndex] };
+      newSet.rpe = newRpe;
+      newExercises[exIndex].sets[setIndex] = newSet;
+      return newExercises;
+    });
+  }, []);
 
   const handleToggleSet = useCallback(
     (exIndex: number, setIndex: number) => {
@@ -683,18 +620,14 @@ const ActionView: React.FC<ActionViewProps> = ({
         }
 
         if (!newSet.completed && isSystemOverheated) {
-          playSound("fail");
+          playSound('fail');
           return prev;
         }
 
         if (!newSet.completed) {
           // MARKING AS COMPLETE
-          if (
-            newSet.completedReps === undefined ||
-            newSet.completedReps === 0
-          ) {
-            if (typeof newSet.reps === "number")
-              newSet.completedReps = newSet.reps;
+          if (newSet.completedReps === undefined || newSet.completedReps === 0) {
+            if (typeof newSet.reps === 'number') newSet.completedReps = newSet.reps;
           }
           newSet.rarity = calculateRarity(newSet, exercise.logic);
 
@@ -711,11 +644,7 @@ const ActionView: React.FC<ActionViewProps> = ({
             ) {
               const currentSetWeight = weight;
               const rpe = 8;
-              const suggestion = calculateApre(
-                currentSetWeight,
-                newSet.completedReps || 0,
-                rpe,
-              );
+              const suggestion = calculateApre(currentSetWeight, newSet.completedReps || 0, rpe);
               if (suggestion) setApreSuggestion(suggestion);
             }
           }
@@ -731,7 +660,7 @@ const ActionView: React.FC<ActionViewProps> = ({
         if (newSet.completed) {
           let cost = 5;
           if (newSet.weightPct && newSet.weightPct > 0.8) cost = 10;
-          if (typeof newSet.reps === "string") cost = 15;
+          if (typeof newSet.reps === 'string') cost = 15;
           setMana((m) => Math.max(0, m - cost));
           setManaDrain({ show: true, amount: cost });
 
@@ -741,30 +670,28 @@ const ActionView: React.FC<ActionViewProps> = ({
           if (newSet.isPrZone) IoTService.triggerRedAlert();
           else IoTService.triggerVictory();
 
-          if (exercise.id === "ex_belt_squat" && weight >= 140)
-            achievementContext?.unlockAchievement("deep_squat_dynasty");
-          if (exercise.id === "ex_landmine_press" && weight >= 100)
-            achievementContext?.unlockAchievement("perfect_plates");
+          if (exercise.id === 'ex_belt_squat' && weight >= 140)
+            achievementContext?.unlockAchievement('deep_squat_dynasty');
+          if (exercise.id === 'ex_landmine_press' && weight >= 100)
+            achievementContext?.unlockAchievement('perfect_plates');
 
           if (
-            newSet.rarity === "legendary" ||
-            newSet.rarity === "epic" ||
-            newSet.rarity === "rare"
+            newSet.rarity === 'legendary' ||
+            newSet.rarity === 'epic' ||
+            newSet.rarity === 'rare'
           ) {
             if (
-              typeof newSet.reps === "string" ||
-              (newSet.completedReps &&
-                newSet.reps &&
-                newSet.completedReps > newSet.reps)
+              typeof newSet.reps === 'string' ||
+              (newSet.completedReps && newSet.reps && newSet.completedReps > newSet.reps)
             ) {
               setCriticalHit({
                 show: true,
                 msg: `${newSet.rarity.toUpperCase()} Performance!`,
               });
-              playSound("loot_epic");
+              playSound('loot_epic');
               fireConfetti();
-            } else playSound("ding");
-          } else playSound("ding");
+            } else playSound('ding');
+          } else playSound('ding');
         }
         return newExercises;
       });
@@ -773,12 +700,11 @@ const ActionView: React.FC<ActionViewProps> = ({
       const currentSetStatus = exercises[exIndex].sets[setIndex].completed;
       // Logic note: we are using stale state 'exercises' here, but it's OK for logic direction
       if (!currentSetStatus) {
-        if (setIndex < exercises[exIndex].sets.length - 1)
-          setCursor([exIndex, setIndex + 1]);
+        if (setIndex < exercises[exIndex].sets.length - 1) setCursor([exIndex, setIndex + 1]);
         else if (exIndex < exercises.length - 1) setCursor([exIndex + 1, 0]);
       }
     },
-    [isSystemOverheated, achievementContext, heroName, exercises],
+    [isSystemOverheated, achievementContext, heroName, exercises]
   );
 
   // --- VISION ---
@@ -787,21 +713,20 @@ const ActionView: React.FC<ActionViewProps> = ({
     const currentSet = exercises[exIndex].sets[setIndex];
     const currentReps = currentSet.completedReps || 0;
     handleRepsChange(exIndex, setIndex, currentReps + 1);
-    playSound("ding");
+    playSound('ding');
   }, [cursor, exercises, handleRepsChange]);
 
   // --- VOICE ---
   const handleVoiceCommand = useCallback(
     (type: string, value: number | string) => {
       const [exIndex, setIndex] = cursor;
-      if (type === "REPS") handleRepsChange(exIndex, setIndex, value as number);
-      else if (type === "COMPLETE") handleToggleSet(exIndex, setIndex);
+      if (type === 'REPS') handleRepsChange(exIndex, setIndex, value as number);
+      else if (type === 'COMPLETE') handleToggleSet(exIndex, setIndex);
     },
-    [cursor, handleRepsChange, handleToggleSet],
+    [cursor, handleRepsChange, handleToggleSet]
   );
 
-  const { isListening, toggleListening, lastCommand } =
-    useVoiceCommand(handleVoiceCommand);
+  const { isListening, toggleListening, lastCommand } = useVoiceCommand(handleVoiceCommand);
 
   const handleApplyApre = () => {
     if (!apreSuggestion) return;
@@ -810,9 +735,7 @@ const ActionView: React.FC<ActionViewProps> = ({
     setExercises((prev) => {
       const next = [...prev];
       const ex = next[exIdx];
-      const nextSetIdx = ex.sets.findIndex(
-        (s, i) => !s.completed && i > setIdx,
-      ); // Find next active
+      const nextSetIdx = ex.sets.findIndex((s, i) => !s.completed && i > setIdx); // Find next active
 
       if (nextSetIdx !== -1) {
         const newWeight = apreSuggestion.newWeight;
@@ -824,7 +747,7 @@ const ActionView: React.FC<ActionViewProps> = ({
       return next;
     });
     setApreSuggestion(null);
-    playSound("quest_accept");
+    playSound('quest_accept');
   };
 
   const stateRef = useRef({
@@ -856,64 +779,55 @@ const ActionView: React.FC<ActionViewProps> = ({
       } = stateRef.current;
       const [exIdx, setIdx] = currCursor;
 
-      if (e.code === "ArrowDown" || e.code === "KeyS") {
+      if (e.code === 'ArrowDown' || e.code === 'KeyS') {
         e.preventDefault();
-        if (setIdx < currExercises[exIdx].sets.length - 1)
-          setCursor([exIdx, setIdx + 1]);
+        if (setIdx < currExercises[exIdx].sets.length - 1) setCursor([exIdx, setIdx + 1]);
         else if (exIdx < currExercises.length - 1) setCursor([exIdx + 1, 0]);
-      } else if (e.code === "ArrowUp" || e.code === "KeyW") {
+      } else if (e.code === 'ArrowUp' || e.code === 'KeyW') {
         e.preventDefault();
         if (setIdx > 0) setCursor([exIdx, setIdx - 1]);
-        else if (exIdx > 0)
-          setCursor([exIdx - 1, currExercises[exIdx - 1].sets.length - 1]);
+        else if (exIdx > 0) setCursor([exIdx - 1, currExercises[exIdx - 1].sets.length - 1]);
       } else if (
-        e.code === "Space" ||
-        e.code === "Enter" ||
-        e.code === "ArrowRight" ||
-        e.code === "KeyD"
+        e.code === 'Space' ||
+        e.code === 'Enter' ||
+        e.code === 'ArrowRight' ||
+        e.code === 'KeyD'
       ) {
         e.preventDefault();
-        if (
-          e.code === "Enter" &&
-          currComplete &&
-          !currOverheated &&
-          !currManaEmpty
-        ) {
-          playSound("ding");
+        if (e.code === 'Enter' && currComplete && !currOverheated && !currManaEmpty) {
+          playSound('ding');
           onComplete();
           return;
         }
         handleToggleSet(exIdx, setIdx);
       }
     };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleToggleSet, onComplete]);
 
   const manaPct = (mana / maxMana) * 100;
-  let manaColor = "bg-blue-500";
-  if (manaPct < 30) manaColor = "bg-orange-500";
-  if (manaPct < 10) manaColor = "bg-red-600 animate-pulse";
+  let manaColor = 'bg-blue-500';
+  if (manaPct < 30) manaColor = 'bg-orange-500';
+  if (manaPct < 10) manaColor = 'bg-red-600 animate-pulse';
   const isRested = (wellness?.sleepScore || 0) > 80;
 
   const formatTime = (secs: number) => {
     const m = Math.floor(secs / 60);
     const s = secs % 60;
-    return `${m}:${s.toString().padStart(2, "0")}`;
+    return `${m}:${s.toString().padStart(2, '0')}`;
   };
 
   return (
     <div
-      className={`flex flex-col h-full bg-void transition-colors duration-500 relative ${!isSystemOverheated && bpm ? "bg-green-950/5" : ""}`}
+      className={`flex flex-col h-full bg-void transition-colors duration-500 relative ${!isSystemOverheated && bpm ? 'bg-green-950/5' : ''}`}
     >
       {/* REST TIMER HUD */}
       {isResting && (
         <div className="fixed top-24 right-4 z-50 animate-slide-left">
           <div className="bg-armor border-2 border-zinc-700 rounded-lg p-3 shadow-[0_0_20px_rgba(0,0,0,0.8)] flex items-center gap-4">
             <div className="text-center">
-              <div className="text-[10px] uppercase font-bold text-zinc-500 mb-1">
-                Rest Timer
-              </div>
+              <div className="text-[10px] uppercase font-bold text-zinc-500 mb-1">Rest Timer</div>
               <div className="text-2xl font-mono font-bold text-white flex items-center gap-2">
                 <Timer className="w-5 h-5 text-zinc-400" />
                 {formatTime(restTimer)}
@@ -936,20 +850,18 @@ const ActionView: React.FC<ActionViewProps> = ({
             <div className="flex items-center gap-2 mb-2 text-cyan-400 font-bold uppercase text-xs tracking-widest">
               <Zap className="w-4 h-4" /> Neuro-Optimization
             </div>
-            <p className="text-zinc-300 text-xs mb-3">
-              {apreSuggestion.reason}
-            </p>
+            <p className="text-zinc-300 text-xs mb-3">{apreSuggestion.reason}</p>
             <div className="flex gap-2">
               <button
                 onClick={handleApplyApre}
                 className="flex-1 bg-cyan-900/50 border border-cyan-500 text-cyan-300 hover:bg-cyan-800 text-xs font-bold py-2 rounded uppercase flex items-center justify-center gap-1"
               >
-                {apreSuggestion.type === "INCREASE" ? (
+                {apreSuggestion.type === 'INCREASE' ? (
                   <ArrowUp className="w-3 h-3" />
                 ) : (
                   <ArrowDown className="w-3 h-3" />
                 )}
-                {apreSuggestion.adjustment > 0 ? "+" : ""}
+                {apreSuggestion.adjustment > 0 ? '+' : ''}
                 {apreSuggestion.adjustment}kg
               </button>
               <button
@@ -996,7 +908,7 @@ const ActionView: React.FC<ActionViewProps> = ({
           <div className="flex flex-col items-center animate-scale-bounce">
             <div
               className="text-6xl font-black italic text-gold uppercase tracking-tighter shadow-glow-gold stroke-black"
-              style={{ WebkitTextStroke: "2px black" }}
+              style={{ WebkitTextStroke: '2px black' }}
             >
               Critical Hit!
             </div>
@@ -1011,12 +923,12 @@ const ActionView: React.FC<ActionViewProps> = ({
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span
-              className={`w-2 h-2 rotate-45 border ${isSystemOverheated ? "border-orange-500 bg-orange-900" : "border-green-500 bg-green-900"}`}
-            ></span>
+              className={`w-2 h-2 rotate-45 border ${isSystemOverheated ? 'border-orange-500 bg-orange-900' : 'border-green-500 bg-green-900'}`}
+            />
             <span
-              className={`${isSystemOverheated ? "text-orange-500" : "text-green-500"} font-serif text-xs uppercase tracking-widest`}
+              className={`${isSystemOverheated ? 'text-orange-500' : 'text-green-500'} font-serif text-xs uppercase tracking-widest`}
             >
-              {isSystemOverheated ? "Aggro High" : "Stealth Mode"}
+              {isSystemOverheated ? 'Aggro High' : 'Stealth Mode'}
             </span>
           </div>
           <h2 className="text-xl font-serif font-bold text-zinc-100 uppercase tracking-wide text-shadow-sm">
@@ -1030,32 +942,32 @@ const ActionView: React.FC<ActionViewProps> = ({
               <Battery className="w-3 h-3" /> Body Battery
             </div>
             <span
-              className={`font-mono font-bold text-lg ${manaPct < 30 ? "text-red-500" : "text-blue-400"}`}
+              className={`font-mono font-bold text-lg ${manaPct < 30 ? 'text-red-500' : 'text-blue-400'}`}
             >
               {mana} / {maxMana}
             </span>
           </div>
 
-          <div className="h-8 w-px bg-zinc-800 hidden md:block"></div>
+          <div className="h-8 w-px bg-zinc-800 hidden md:block" />
 
           <div className="flex gap-2">
             <button
               onClick={() => setIsNeuroActive(!isNeuroActive)}
-              className={`p-2 border rounded transition-colors group relative ${isNeuroActive ? "bg-purple-900/50 border-purple-500 text-purple-400" : "bg-zinc-900 border-zinc-800 text-zinc-400 hover:text-white"}`}
+              className={`p-2 border rounded transition-colors group relative ${isNeuroActive ? 'bg-purple-900/50 border-purple-500 text-purple-400' : 'bg-zinc-900 border-zinc-800 text-zinc-400 hover:text-white'}`}
               title="Neuro-Link (Binaural Beats)"
             >
               <Waves className="w-5 h-5" />
             </button>
             <button
               onClick={() => setShowVision(!showVision)}
-              className={`p-2 border rounded transition-colors group relative ${showVision ? "bg-cyan-900/50 border-cyan-500 text-cyan-400" : "bg-zinc-900 border-zinc-800 text-zinc-400 hover:text-white"}`}
+              className={`p-2 border rounded transition-colors group relative ${showVision ? 'bg-cyan-900/50 border-cyan-500 text-cyan-400' : 'bg-zinc-900 border-zinc-800 text-zinc-400 hover:text-white'}`}
               title="Titan Vision (Rep Count)"
             >
               <Camera className="w-5 h-5" />
             </button>
             <button
               onClick={toggleListening}
-              className={`p-2 border rounded transition-colors group relative ${isListening ? "bg-red-900/50 border-red-500 text-red-400 animate-pulse" : "bg-zinc-900 border-zinc-800 text-zinc-400 hover:text-white"}`}
+              className={`p-2 border rounded transition-colors group relative ${isListening ? 'bg-red-900/50 border-red-500 text-red-400 animate-pulse' : 'bg-zinc-900 border-zinc-800 text-zinc-400 hover:text-white'}`}
               title="Voice Commands"
             >
               <Mic className="w-5 h-5" />
@@ -1086,13 +998,11 @@ const ActionView: React.FC<ActionViewProps> = ({
           hasAura={isElite}
         />
 
-        <div
-          className={`grid gap-6 ${exercises.length > 1 ? "lg:grid-cols-2" : "grid-cols-1"}`}
-        >
+        <div className={`grid gap-6 ${exercises.length > 1 ? 'lg:grid-cols-2' : 'grid-cols-1'}`}>
           {exercises.map((ex, exIndex) => {
-            const isLandmine = ex.name.toLowerCase().includes("landmine");
+            const isLandmine = ex.name.toLowerCase().includes('landmine');
             const isInfoOpen = openInfoId === ex.id;
-            const isAmrapEx = ex.sets.some((s) => typeof s.reps === "string");
+            const isAmrapEx = ex.sets.some((s) => typeof s.reps === 'string');
             const showPrimalRoar = hasPrimalRoar && isAmrapEx;
 
             return (
@@ -1108,9 +1018,7 @@ const ActionView: React.FC<ActionViewProps> = ({
                       )}
                     </div>
                     <div>
-                      <h3 className="text-lg font-serif font-bold text-zinc-200">
-                        {ex.name}
-                      </h3>
+                      <h3 className="text-lg font-serif font-bold text-zinc-200">{ex.name}</h3>
                       {showPrimalRoar && (
                         <span className="text-[9px] font-bold uppercase text-red-500 tracking-wider flex items-center gap-1">
                           <Flame className="w-3 h-3" /> Primal Roar Active
@@ -1119,15 +1027,13 @@ const ActionView: React.FC<ActionViewProps> = ({
                     </div>
                     <button
                       onClick={() => setOpenInfoId(isInfoOpen ? null : ex.id)}
-                      className={`p-1 rounded hover:bg-zinc-800 transition-colors ${isInfoOpen ? "text-rarity-epic" : "text-zinc-600"}`}
+                      className={`p-1 rounded hover:bg-zinc-800 transition-colors ${isInfoOpen ? 'text-rarity-epic' : 'text-zinc-600'}`}
                     >
                       <Info className="w-5 h-5" />
                     </button>
                   </div>
                   {ex.logic === ExerciseLogic.TM_PERCENT && (
-                    <span className="text-xs font-mono text-zinc-600">
-                      TM: {ex.trainingMax}
-                    </span>
+                    <span className="text-xs font-mono text-zinc-600">TM: {ex.trainingMax}</span>
                   )}
                 </div>
 
@@ -1137,9 +1043,7 @@ const ActionView: React.FC<ActionViewProps> = ({
                       <ul className="space-y-2 mb-4">
                         {ex.instructions.map((inst, i) => (
                           <li key={i} className="flex gap-2 text-zinc-400">
-                            <span className="text-zinc-600 font-mono">
-                              0{i + 1}.
-                            </span>
+                            <span className="text-zinc-600 font-mono">0{i + 1}.</span>
                             <span className="font-serif italic">{inst}</span>
                           </li>
                         ))}
@@ -1151,22 +1055,13 @@ const ActionView: React.FC<ActionViewProps> = ({
                 <div className="space-y-3">
                   {ex.sets.map((set, setIndex) => {
                     let displayWeight = set.weight || 0;
-                    if (
-                      ex.logic === ExerciseLogic.TM_PERCENT &&
-                      ex.trainingMax &&
-                      set.weightPct
-                    ) {
-                      displayWeight = roundToPlates(
-                        ex.trainingMax * set.weightPct,
-                      );
+                    if (ex.logic === ExerciseLogic.TM_PERCENT && ex.trainingMax && set.weightPct) {
+                      displayWeight = roundToPlates(ex.trainingMax * set.weightPct);
                     }
                     const isLocked = !set.completed && isSystemOverheated;
-                    const isFocused =
-                      cursor[0] === exIndex && cursor[1] === setIndex;
+                    const isFocused = cursor[0] === exIndex && cursor[1] === setIndex;
                     const displayRarity =
-                      set.completed && set.rarity
-                        ? set.rarity
-                        : calculateRarity(set, ex.logic);
+                      set.completed && set.rarity ? set.rarity : calculateRarity(set, ex.logic);
 
                     return (
                       <SetRow
@@ -1196,7 +1091,7 @@ const ActionView: React.FC<ActionViewProps> = ({
 
         <div className="text-center text-zinc-700 text-xs font-serif uppercase tracking-widest mt-8 flex flex-col gap-3">
           <button
-            onClick={() => setOpenInfoId("ADD_EXERCISE")} // repurposed for modal
+            onClick={() => setOpenInfoId('ADD_EXERCISE')} // repurposed for modal
             className="flex items-center justify-center gap-2 py-3 px-6 bg-zinc-900 border border-zinc-800 rounded mx-auto hover:bg-zinc-800 hover:text-white transition-all text-zinc-500 font-bold w-full max-w-xs"
           >
             <Plus className="w-4 h-4" /> Add Exercise
@@ -1206,7 +1101,7 @@ const ActionView: React.FC<ActionViewProps> = ({
       </div>
 
       {/* EXERCISE LIBRARY MODAL */}
-      {openInfoId === "ADD_EXERCISE" && (
+      {openInfoId === 'ADD_EXERCISE' && (
         <div className="fixed inset-0 z-[100] animate-fade-in">
           <ExerciseLibrary
             onSelect={(exId) => {
@@ -1215,36 +1110,36 @@ const ActionView: React.FC<ActionViewProps> = ({
               // Since ExerciseLibrary has mock data, we need to map it to our Exercise type
 
               const newExercise: Exercise = {
-                id: exId + "_" + Date.now(),
-                name: "New Exercise", // Should get from library
+                id: `${exId}_${Date.now()}`,
+                name: 'New Exercise', // Should get from library
                 logic: ExerciseLogic.FIXED_REPS,
                 sets: [
                   {
-                    id: "new_set_1",
+                    id: 'new_set_1',
                     reps: 10,
                     weight: 20,
                     completed: false,
-                    type: "straight",
+                    type: 'straight',
                   },
                   {
-                    id: "new_set_2",
+                    id: 'new_set_2',
                     reps: 10,
                     weight: 20,
                     completed: false,
-                    type: "straight",
+                    type: 'straight',
                   },
                   {
-                    id: "new_set_3",
+                    id: 'new_set_3',
                     reps: 10,
                     weight: 20,
                     completed: false,
-                    type: "straight",
+                    type: 'straight',
                   },
                 ],
               };
               setExercises((prev) => [...prev, newExercise]);
               setOpenInfoId(null);
-              playSound("quest_accept");
+              playSound('quest_accept');
             }}
             onClose={() => setOpenInfoId(null)}
           />
@@ -1253,34 +1148,33 @@ const ActionView: React.FC<ActionViewProps> = ({
 
       <div className="p-6 bg-zinc-950 border-t border-zinc-900 sticky bottom-0 z-40">
         <div className="flex items-center justify-between mb-2 text-[10px] font-bold uppercase tracking-widest text-zinc-600">
-          <span>Potential XP: {isRested ? "Double (Rested)" : "Normal"}</span>
-          <span>Mana Status: {isManaEmpty ? "DEPLETED" : "Stable"}</span>
+          <span>Potential XP: {isRested ? 'Double (Rested)' : 'Normal'}</span>
+          <span>Mana Status: {isManaEmpty ? 'DEPLETED' : 'Stable'}</span>
         </div>
 
         <button
           onClick={() => {
             if (isBlockComplete && !isSystemOverheated && !isManaEmpty) {
-              playSound("ding");
+              playSound('ding');
               onComplete();
             }
           }}
           disabled={!isBlockComplete || isSystemOverheated || isManaEmpty}
           className={`w-full h-16 font-serif font-black text-xl uppercase tracking-widest rounded flex items-center justify-center gap-3 transition-all border-2 
-             ${isBlockComplete && !isSystemOverheated && !isManaEmpty
-              ? "bg-rarity-legendary/10 border-rarity-legendary text-rarity-legendary hover:bg-rarity-legendary hover:text-white shadow-[0_0_30px_rgba(255,128,0,0.2)]"
-              : "bg-zinc-900 border-zinc-800 text-zinc-600 cursor-not-allowed"
-            }`}
+             ${
+               isBlockComplete && !isSystemOverheated && !isManaEmpty
+                 ? 'bg-rarity-legendary/10 border-rarity-legendary text-rarity-legendary hover:bg-rarity-legendary hover:text-white shadow-[0_0_30px_rgba(255,128,0,0.2)]'
+                 : 'bg-zinc-900 border-zinc-800 text-zinc-600 cursor-not-allowed'
+             }`}
         >
           {isManaEmpty
-            ? "Mana Depleted - Recover!"
+            ? 'Mana Depleted - Recover!'
             : isBlockComplete
               ? isSystemOverheated
-                ? "Wait for Aggro Drop"
-                : "Complete Quest Step"
-              : "Objectives Remaining"}
-          {isBlockComplete && !isSystemOverheated && !isManaEmpty && (
-            <Crown className="w-6 h-6" />
-          )}
+                ? 'Wait for Aggro Drop'
+                : 'Complete Quest Step'
+              : 'Objectives Remaining'}
+          {isBlockComplete && !isSystemOverheated && !isManaEmpty && <Crown className="w-6 h-6" />}
         </button>
       </div>
 

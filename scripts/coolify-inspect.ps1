@@ -2,15 +2,9 @@
 # Usage: doppler run -- pwsh scripts/coolify-inspect.ps1
 # Coolify API runs on port 8000
 
-$coolifyHost = "http://ironforge-coolify.tailafb692.ts.net:8000"
-$token = $env:COOLIFY_API_TOKEN
-if (-not $token) { Write-Error "COOLIFY_API_TOKEN missing"; exit 1 }
-
-$headers = @{
-    "Authorization" = "Bearer $token"
-    "Accept"        = "application/json"
-    "Content-Type"  = "application/json"
-}
+. "$PSScriptRoot/coolify-api.ps1"
+$coolifyHost = $script:coolifyHost
+$headers = $script:coolifyHeaders
 
 Write-Host "=== PROJECTS ===" -ForegroundColor Cyan
 try {

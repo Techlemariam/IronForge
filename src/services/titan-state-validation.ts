@@ -1,6 +1,6 @@
-"use server";
+'use server';
 
-import { z } from "zod";
+import { z } from 'zod';
 
 // ============================================
 // UNIFIED TITAN SOUL - STATE VALIDATION
@@ -9,7 +9,7 @@ import { z } from "zod";
 
 // ===== Core Validation Schemas =====
 
-export const UserIdSchema = z.string().uuid().or(z.string().startsWith("cm"));
+export const UserIdSchema = z.string().uuid().or(z.string().startsWith('cm'));
 
 export const PositiveIntSchema = z.number().int().positive();
 export const NonNegativeIntSchema = z.number().int().nonnegative();
@@ -19,20 +19,14 @@ export const PercentSchema = z.number().min(0).max(100);
 
 export const TitanNameSchema = z
   .string()
-  .min(2, "Name must be at least 2 characters")
-  .max(30, "Name must be at most 30 characters")
+  .min(2, 'Name must be at least 2 characters')
+  .max(30, 'Name must be at most 30 characters')
   .regex(
     /^[a-zA-Z0-9\s-_]+$/,
-    "Name can only contain letters, numbers, spaces, hyphens, and underscores",
+    'Name can only contain letters, numbers, spaces, hyphens, and underscores'
   );
 
-export const TitanClassSchema = z.enum([
-  "WARRIOR",
-  "MAGE",
-  "RANGER",
-  "TITAN",
-  "BERSERKER",
-]);
+export const TitanClassSchema = z.enum(['WARRIOR', 'MAGE', 'RANGER', 'TITAN', 'BERSERKER']);
 
 // ===== Stats Validation =====
 
@@ -49,7 +43,7 @@ export const StatsChangeSchema = z
   })
   .refine(
     (data) => Object.values(data).some((v) => v !== undefined),
-    "At least one stat change must be provided",
+    'At least one stat change must be provided'
   );
 
 // ===== Resource Validation =====
@@ -63,7 +57,7 @@ export const ResourceChangeSchema = z
   })
   .refine(
     (data) => Object.values(data).some((v) => v !== undefined),
-    "At least one resource change must be provided",
+    'At least one resource change must be provided'
   );
 
 // ===== Economy Validation =====
@@ -78,29 +72,21 @@ export const EconomyChangeSchema = z
   })
   .refine(
     (data) => data.gold !== undefined || data.gems !== undefined,
-    "At least one economy change must be provided",
+    'At least one economy change must be provided'
   );
 
 // ===== XP Validation =====
 
 export const XpGainSchema = z.object({
   amount: z.number().int().positive().max(100000),
-  source: z.enum([
-    "WORKOUT",
-    "QUEST",
-    "COMBAT",
-    "ACHIEVEMENT",
-    "BONUS",
-    "DAILY",
-    "EVENT",
-  ]),
+  source: z.enum(['WORKOUT', 'QUEST', 'COMBAT', 'ACHIEVEMENT', 'BONUS', 'DAILY', 'EVENT']),
   multiplier: z.number().positive().max(10).optional(),
 });
 
 // ===== Combat Validation =====
 
 export const CombatActionSchema = z.object({
-  action: z.enum(["ATTACK", "DEFEND", "HEAL", "SKILL", "FLEE"]),
+  action: z.enum(['ATTACK', 'DEFEND', 'HEAL', 'SKILL', 'FLEE']),
   targetId: z.string().optional(),
   skillId: z.string().optional(),
   itemId: z.string().optional(),
@@ -108,7 +94,7 @@ export const CombatActionSchema = z.object({
 
 export const DamageSchema = z.object({
   amount: PositiveIntSchema,
-  type: z.enum(["PHYSICAL", "MAGICAL", "TRUE", "ELEMENTAL"]),
+  type: z.enum(['PHYSICAL', 'MAGICAL', 'TRUE', 'ELEMENTAL']),
   source: z.string(),
   isCritical: z.boolean().optional(),
 });
@@ -117,7 +103,7 @@ export const DamageSchema = z.object({
 
 export const EquipItemSchema = z.object({
   itemId: z.string(),
-  slot: z.enum(["weapon", "armor", "accessory1", "accessory2"]),
+  slot: z.enum(['weapon', 'armor', 'accessory1', 'accessory2']),
 });
 
 // ===== Buff/Debuff Validation =====
@@ -125,7 +111,7 @@ export const EquipItemSchema = z.object({
 export const StatusEffectSchema = z.object({
   id: z.string(),
   name: z.string(),
-  type: z.enum(["BUFF", "DEBUFF"]),
+  type: z.enum(['BUFF', 'DEBUFF']),
   stat: z.string(),
   value: z.number(),
   duration: z.number().int().positive().optional(),
@@ -135,15 +121,15 @@ export const StatusEffectSchema = z.object({
 // ===== Mutation Request Validation =====
 
 export const MutationSourceSchema = z.enum([
-  "WORKOUT",
-  "COMBAT",
-  "QUEST",
-  "PURCHASE",
-  "CRAFT",
-  "SYNC",
-  "ADMIN",
-  "SYSTEM",
-  "EVENT",
+  'WORKOUT',
+  'COMBAT',
+  'QUEST',
+  'PURCHASE',
+  'CRAFT',
+  'SYNC',
+  'ADMIN',
+  'SYSTEM',
+  'EVENT',
 ]);
 
 export const MutationRequestSchema = z.object({
@@ -168,7 +154,7 @@ export const SyncRequestSchema = z.object({
 
 export function validateMutation<T>(
   schema: z.ZodSchema<T>,
-  data: unknown,
+  data: unknown
 ): { valid: true; data: T } | { valid: false; errors: string[] } {
   const result = schema.safeParse(data);
 
@@ -178,7 +164,7 @@ export function validateMutation<T>(
 
   return {
     valid: false,
-    errors: result.error.issues.map((e) => `${e.path.join(".")}: ${e.message}`),
+    errors: result.error.issues.map((e) => `${e.path.join('.')}: ${e.message}`),
   };
 }
 

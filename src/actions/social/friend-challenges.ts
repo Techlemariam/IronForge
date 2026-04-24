@@ -1,16 +1,10 @@
-"use server";
+'use server';
 
-import { revalidatePath } from "next/cache";
-import { z } from "zod";
-import { authActionClient } from "@/lib/safe-action";
+// import { prisma } from "@/lib/prisma";
+import { revalidatePath } from 'next/cache';
 
-type ChallengeType = "VOLUME" | "REPS" | "WEIGHT" | "STREAK" | "XP" | "CUSTOM";
-type ChallengeStatus =
-  | "PENDING"
-  | "ACTIVE"
-  | "COMPLETED"
-  | "DECLINED"
-  | "EXPIRED";
+type ChallengeType = 'VOLUME' | 'REPS' | 'WEIGHT' | 'STREAK' | 'XP' | 'CUSTOM';
+type ChallengeStatus = 'PENDING' | 'ACTIVE' | 'COMPLETED' | 'DECLINED' | 'EXPIRED';
 
 interface FriendChallenge {
   id: string;
@@ -42,30 +36,30 @@ interface ChallengeTemplate {
 
 const CHALLENGE_TEMPLATES: ChallengeTemplate[] = [
   {
-    type: "VOLUME",
-    name: "Volume War",
-    description: "Most total volume wins",
+    type: 'VOLUME',
+    name: 'Volume War',
+    description: 'Most total volume wins',
     defaultTarget: 50000,
     defaultDurationDays: 7,
   },
   {
-    type: "REPS",
-    name: "Rep Battle",
-    description: "Most reps completed",
+    type: 'REPS',
+    name: 'Rep Battle',
+    description: 'Most reps completed',
     defaultTarget: 500,
     defaultDurationDays: 3,
   },
   {
-    type: "STREAK",
-    name: "Streak Showdown",
-    description: "Longest workout streak",
+    type: 'STREAK',
+    name: 'Streak Showdown',
+    description: 'Longest workout streak',
     defaultTarget: 7,
     defaultDurationDays: 14,
   },
   {
-    type: "XP",
-    name: "XP Race",
-    description: "Most XP earned",
+    type: 'XP',
+    name: 'XP Race',
+    description: 'Most XP earned',
     defaultTarget: 5000,
     defaultDurationDays: 7,
   },
@@ -74,119 +68,113 @@ const CHALLENGE_TEMPLATES: ChallengeTemplate[] = [
 /**
  * Create a challenge to a friend.
  */
-const CreateFriendChallengeSchema = z.object({
-  challengedId: z.string(),
-  type: z.enum(["VOLUME", "REPS", "WEIGHT", "STREAK", "XP", "CUSTOM"]),
-  target: z.number(),
-  durationDays: z.number(),
-  wager: z.object({ xp: z.number(), gold: z.number() }).optional(),
-});
-export const createFriendChallengeAction = authActionClient
-  .schema(CreateFriendChallengeSchema)
-  .action(async ({ parsedInput: { challengedId, type, target, durationDays, wager }, ctx: { userId: challengerId } }) => {
-    try {
-      const challengeId = `challenge-${Date.now()}`;
-      const _deadline = new Date(Date.now() + durationDays * 24 * 60 * 60 * 1000);
+export async function createFriendChallengeAction(
+  challengerId: string,
+  challengedId: string,
+  type: ChallengeType,
+  _target: number,
+  durationDays: number,
+  _wager?: { xp: number; gold: number }
+): Promise<{ success: boolean; challengeId?: string }> {
+  try {
+    const challengeId = `challenge-${Date.now()}`;
+    const _deadline = new Date(Date.now() + durationDays * 24 * 60 * 60 * 1000);
 
-      console.log(
-        `Created challenge ${type} from ${challengerId} to ${challengedId}`,
-      );
-      revalidatePath("/challenges");
-      return { success: true, challengeId };
-    } catch (error) {
-      console.error("Error creating challenge:", error);
-      return { success: false };
-    }
-  });
+    console.log(`Created challenge ${type} from ${challengerId} to ${challengedId}`);
+    revalidatePath('/challenges');
+    return { success: true, challengeId };
+  } catch (error) {
+    console.error('Error creating challenge:', error);
+    return { success: false };
+  }
+}
 
 /**
  * Accept a challenge.
  */
-export const acceptChallengeAction = authActionClient
-  .schema(z.string())
-  .action(async ({ parsedInput: challengeId, ctx: { userId } }) => {
-    try {
-      console.log(`User ID:[REDACTED] accepted challenge ${challengeId}`);
-      revalidatePath("/challenges");
-      return { success: true };
-    } catch (error) {
-      console.error("Error accepting challenge:", error);
-      return { success: false };
-    }
-  });
+export async function acceptChallengeAction(
+  _userId: string,
+  challengeId: string
+): Promise<{ success: boolean }> {
+  try {
+    console.log(`Accepted challenge ${challengeId}`);
+    revalidatePath('/challenges');
+    return { success: true };
+  } catch (error) {
+    console.error('Error accepting challenge:', error);
+    return { success: false };
+  }
+}
 
 /**
  * Decline a challenge.
  */
-export const declineChallengeAction = authActionClient
-  .schema(z.string())
-  .action(async ({ parsedInput: challengeId, ctx: { userId } }) => {
-    try {
-      console.log(`User ID:[REDACTED] declined challenge ${challengeId}`);
-      revalidatePath("/challenges");
-      return { success: true };
-    } catch (error) {
-      console.error("Error declining challenge:", error);
-      return { success: false };
-    }
-  });
+export async function declineChallengeAction(
+  _userId: string,
+  challengeId: string
+): Promise<{ success: boolean }> {
+  try {
+    console.log(`Declined challenge ${challengeId}`);
+    revalidatePath('/challenges');
+    return { success: true };
+  } catch (error) {
+    console.error('Error declining challenge:', error);
+    return { success: false };
+  }
+}
 
 /**
  * Get user's active challenges.
  */
-export const getActiveChallengesAction = authActionClient.action(
-  async ({ ctx: { userId } }) => {
-    return [
-      {
-        id: "c1",
-        type: "VOLUME" as ChallengeType,
-        name: "Volume War",
-        description: "Most total volume wins",
-        challengers: [
-          { userId, heroName: "You", progress: 32500, isChallenger: true },
-          {
-            userId: "f1",
-            heroName: "IronGiant",
-            progress: 28000,
-            isChallenger: false,
-          },
-        ],
-        target: 50000,
-        deadline: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
-        status: "ACTIVE" as ChallengeStatus,
-        wager: { xp: 500, gold: 250 },
-      },
-    ];
-  }
-);
+export async function getActiveChallengesAction(userId: string): Promise<FriendChallenge[]> {
+  return [
+    {
+      id: 'c1',
+      type: 'VOLUME',
+      name: 'Volume War',
+      description: 'Most total volume wins',
+      challengers: [
+        { userId, heroName: 'You', progress: 32500, isChallenger: true },
+        {
+          userId: 'f1',
+          heroName: 'IronGiant',
+          progress: 28000,
+          isChallenger: false,
+        },
+      ],
+      target: 50000,
+      deadline: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+      status: 'ACTIVE',
+      wager: { xp: 500, gold: 250 },
+    },
+  ];
+}
 
 /**
  * Get pending challenges (received).
  */
-export const getPendingChallengesAction = authActionClient.action(
-  async ({ ctx: { userId } }) => {
-    return [
-      {
-        id: "c2",
-        type: "STREAK" as ChallengeType,
-        name: "Streak Showdown",
-        description: "Longest workout streak",
-        challengers: [
-          {
-            userId: "f2",
-            heroName: "StormBreaker",
-            progress: 0,
-            isChallenger: true,
-          },
-          { userId, heroName: "You", progress: 0, isChallenger: false },
-        ],
-        target: 7,
-        deadline: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
-        status: "PENDING" as ChallengeStatus,
-      },
-    ];
-  }
-);
+export async function getPendingChallengesAction(userId: string): Promise<FriendChallenge[]> {
+  return [
+    {
+      id: 'c2',
+      type: 'STREAK',
+      name: 'Streak Showdown',
+      description: 'Longest workout streak',
+      challengers: [
+        {
+          userId: 'f2',
+          heroName: 'StormBreaker',
+          progress: 0,
+          isChallenger: true,
+        },
+        { userId, heroName: 'You', progress: 0, isChallenger: false },
+      ],
+      target: 7,
+      deadline: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
+      status: 'PENDING',
+    },
+  ];
+}
 
 /**
  * Get challenge templates.
@@ -198,12 +186,12 @@ export function getChallengeTemplates(): ChallengeTemplate[] {
 /**
  * Complete and finalize a challenge.
  */
-export const finalizeChallengeAction = authActionClient
-  .schema(z.string())
-  .action(async ({ parsedInput: challengeId, ctx: { userId } }) => {
-    // In production, calculate winner and distribute rewards
-    return {
-      winnerId: "user-id", // mock
-      rewards: { xp: 1000, gold: 500 },
-    };
-  });
+export async function finalizeChallengeAction(
+  _challengeId: string
+): Promise<{ winnerId: string; rewards: { xp: number; gold: number } }> {
+  // In production, calculate winner and distribute rewards
+  return {
+    winnerId: 'user-id',
+    rewards: { xp: 1000, gold: 500 },
+  };
+}

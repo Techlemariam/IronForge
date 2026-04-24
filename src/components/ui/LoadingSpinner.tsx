@@ -1,25 +1,25 @@
-import { cn } from "@/lib/utils";
-import { useState, useEffect } from "react";
+import { cn } from '@/lib/utils';
+import { useEffect, useState } from 'react';
 
 interface LoadingSpinnerProps {
-  size?: "sm" | "md" | "lg";
+  size?: 'sm' | 'md' | 'lg';
   color?: string;
   className?: string;
   showLore?: boolean;
 }
 
 const LORE_MESSAGES = [
-  "Consulting the Oracle...",
-  "Sharpening the blade...",
-  "Communing with the Titans...",
-  "Warming up the Forge...",
-  "Calculating your destiny...",
-  "Summoning ancient power...",
-  "Decrypting the Grimoire...",
+  'Consulting the Oracle...',
+  'Sharpening the blade...',
+  'Communing with the Titans...',
+  'Warming up the Forge...',
+  'Calculating your destiny...',
+  'Summoning ancient power...',
+  'Decrypting the Grimoire...',
 ];
 
 export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
-  size = "md",
+  size = 'md',
   color,
   className,
   showLore = false,
@@ -35,9 +35,9 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
   }, [showLore]);
 
   const sizeClasses = {
-    sm: "h-4 w-4 border-2",
-    md: "h-12 w-12 border-4",
-    lg: "h-16 w-16 border-4",
+    sm: 'h-4 w-4 border-2',
+    md: 'h-12 w-12 border-4',
+    lg: 'h-16 w-16 border-4',
   };
 
   return (
@@ -49,12 +49,12 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
     >
       <div
         className={cn(
-          "rounded-full animate-spin border-solid border-t-transparent",
+          'rounded-full animate-spin border-solid border-t-transparent',
           sizeClasses[size],
-          color ? color : "border-magma-DEFAULT",
-          className,
+          color ? color : 'border-magma-DEFAULT',
+          className
         )}
-      ></div>
+      />
       {showLore && (
         <p className="text-forge-muted text-sm font-mono animate-pulse">
           {LORE_MESSAGES[loreIndex]}

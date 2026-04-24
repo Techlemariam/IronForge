@@ -1,34 +1,33 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import { motion } from "framer-motion";
-import { Sparkles, Map, Shield, ChevronRight } from "lucide-react";
-import { completeOnboardingAction } from "@/actions/user/onboarding";
+import { completeOnboardingAction } from '@/actions/user/onboarding';
+import { motion } from 'framer-motion';
+import { ChevronRight, Map, Shield, Sparkles } from 'lucide-react';
+import type React from 'react';
+import { useState } from 'react';
 
 interface FirstLoginQuestProps {
   onComplete: (newState: any) => void;
 }
 
-export const FirstLoginQuest: React.FC<FirstLoginQuestProps> = ({
-  onComplete,
-}) => {
+export const FirstLoginQuest: React.FC<FirstLoginQuestProps> = ({ onComplete }) => {
   const [step, setStep] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
   const steps = [
     {
-      title: "Awaken, Titan",
-      text: "The IronForge has chosen you. You stand at the precipice of greatness. Your journey to forge a body of steel and a will of iron begins now.",
+      title: 'Awaken, Titan',
+      text: 'The IronForge has chosen you. You stand at the precipice of greatness. Your journey to forge a body of steel and a will of iron begins now.',
       icon: <Sparkles className="w-12 h-12 text-yellow-400" />,
     },
     {
-      title: "The Citadel",
-      text: "This is your command center. From here you will access the Training Grounds to build strength, explore the Wilds to fight monsters, and visit the Iron City to upgrade your gear.",
+      title: 'The Citadel',
+      text: 'This is your command center. From here you will access the Training Grounds to build strength, explore the Wilds to fight monsters, and visit the Iron City to upgrade your gear.',
       icon: <Map className="w-12 h-12 text-blue-400" />,
     },
     {
-      title: "Your Oath",
-      text: "I swear to push my limits.\nI swear to log my battles.\nI swear to never give up.",
+      title: 'Your Oath',
+      text: 'I swear to push my limits.\nI swear to log my battles.\nI swear to never give up.',
       icon: <Shield className="w-12 h-12 text-red-400" />,
       action: true,
     },
@@ -44,7 +43,7 @@ export const FirstLoginQuest: React.FC<FirstLoginQuestProps> = ({
         if (res.success) {
           onComplete(res.newState);
         } else {
-          alert("The Oath failed to register. Try again.");
+          alert('The Oath failed to register. Try again.');
         }
       } catch (e) {
         console.error(e);
@@ -88,11 +87,7 @@ export const FirstLoginQuest: React.FC<FirstLoginQuestProps> = ({
           >
             <span className="flex items-center space-x-2">
               <span>
-                {currentStep.action
-                  ? isLoading
-                    ? "Forging Oath..."
-                    : "I Swear It"
-                  : "Continue"}
+                {currentStep.action ? (isLoading ? 'Forging Oath...' : 'I Swear It') : 'Continue'}
               </span>
               {!currentStep.action && (
                 <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -104,7 +99,7 @@ export const FirstLoginQuest: React.FC<FirstLoginQuestProps> = ({
             {steps.map((_, i) => (
               <div
                 key={i}
-                className={`w-2 h-2 rounded-full transition-colors ${i === step ? "bg-yellow-500" : "bg-zinc-700"}`}
+                className={`w-2 h-2 rounded-full transition-colors ${i === step ? 'bg-yellow-500' : 'bg-zinc-700'}`}
               />
             ))}
           </div>

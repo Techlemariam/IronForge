@@ -1,9 +1,9 @@
-"use server";
+'use server';
 
-import prisma from "@/lib/prisma";
-import { revalidatePath } from "next/cache";
-import { z } from "zod";
-import { createClient } from "@/utils/supabase/server";
+import prisma from '@/lib/prisma';
+import { createClient } from '@/utils/supabase/server';
+import { revalidatePath } from 'next/cache';
+import { z } from 'zod';
 
 // --- Types & Schemas ---
 const CreateGuildSchema = z.object({
@@ -16,7 +16,7 @@ async function getAuthenticatedUser() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) throw new Error("Unauthorized");
+  if (!user) throw new Error('Unauthorized');
   return user;
 }
 
@@ -49,10 +49,10 @@ export async function createGuildAction(data: { name: string; description?: stri
       return g;
     });
 
-    revalidatePath("/dashboard");
+    revalidatePath('/dashboard');
     return { success: true, guild };
   } catch {
-    return { success: false, error: "Failed to create guild" };
+    return { success: false, error: 'Failed to create guild' };
   }
 }
 
@@ -68,11 +68,11 @@ export async function joinGuildAction(guildId: string) {
       data: { guildId },
     });
 
-    revalidatePath("/dashboard");
+    revalidatePath('/dashboard');
     return { success: true };
   } catch (e) {
     console.error(e);
-    return { success: false, error: "Failed to join guild" };
+    return { success: false, error: 'Failed to join guild' };
   }
 }
 
@@ -96,9 +96,7 @@ export async function getGuildAction() {
 
   // Find active raid
   // Simple logic: the one that ends in future
-  const activeRaid = dbUser.guild.raids.find(
-    (r) => new Date(r.endDate) > new Date(),
-  );
+  const activeRaid = dbUser.guild.raids.find((r) => new Date(r.endDate) > new Date());
 
   return {
     ...dbUser.guild,
@@ -113,7 +111,7 @@ export async function startRaidAction(
   guildId: string,
   bossName: string,
   hp: number,
-  durationDays: number = 7,
+  durationDays = 7
 ) {
   try {
     const user = await getAuthenticatedUser();
@@ -125,11 +123,11 @@ export async function startRaidAction(
     });
 
     if (!guild) {
-      return { success: false, error: "Guild not found" };
+      return { success: false, error: 'Guild not found' };
     }
 
     if (guild.leaderId !== user.id) {
-      return { success: false, error: "Unauthorized: Only guild leader can start raids" };
+      return { success: false, error: 'Unauthorized: Only guild leader can start raids' };
     }
 
     const endDate = new Date();
@@ -145,11 +143,11 @@ export async function startRaidAction(
       },
     });
 
-    revalidatePath("/dashboard");
+    revalidatePath('/dashboard');
     return { success: true, raid };
   } catch (_error) {
-    console.error("Failed to start raid:", _error);
-    return { success: false, error: "Failed to start raid" };
+    console.error('Failed to start raid:', _error);
+    return { success: false, error: 'Failed to start raid' };
   }
 }
 
@@ -162,7 +160,7 @@ export async function contributeToRaidAction(raidId: string, damage: number) {
 
     const raid = await prisma.guildRaid.findUnique({ where: { id: raidId } });
     if (!raid || Number(raid.currentHp) <= 0)
-      return { success: false, error: "Raid ended or invalid" };
+      return { success: false, error: 'Raid ended or invalid' };
 
     // Assuming currentHp is BigInt in Prisma schema?
     // In previous view it was accessed as raid.currentHp <= 0.
@@ -198,16 +196,15 @@ export async function contributeToRaidAction(raidId: string, damage: number) {
     if (newHp === 0) {
       if (raid.currentHp > 0) {
         // Boss killed logic
-        const { checkAchievementsAction } =
-          await import("@/actions/progression/achievements");
-        await checkAchievementsAction({ _trigger: "raid-boss-kill" });
+        const { checkAchievementsAction } = await import('@/actions/progression/achievements');
+        await checkAchievementsAction(user.id);
       }
     }
 
-    revalidatePath("/dashboard");
+    revalidatePath('/dashboard');
     return { success: true, damageDealt: damage, bossDead: newHp === 0 };
   } catch (e) {
     console.error(e);
-    return { success: false, error: "Attack failed" };
+    return { success: false, error: 'Attack failed' };
   }
 }

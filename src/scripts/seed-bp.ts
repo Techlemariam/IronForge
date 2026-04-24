@@ -1,8 +1,8 @@
-import { prisma } from "@/lib/prisma";
+import { prisma } from '@/lib/prisma';
 
 async function main() {
   try {
-    const seasonCode = "SEASON_1";
+    const seasonCode = 'SEASON_1';
 
     // Check if exists
     const existing = await prisma.battlePassSeason.findUnique({
@@ -10,14 +10,14 @@ async function main() {
     });
 
     if (existing) {
-      console.log("Season 1 already exists");
+      console.log('Season 1 already exists');
       return;
     }
 
     // Create Season
     const season = await prisma.battlePassSeason.create({
       data: {
-        name: "Season 1: Genesis",
+        name: 'Season 1: Genesis',
         code: seasonCode,
         startDate: new Date(), // Starts now
         endDate: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000), // +90 days
@@ -31,7 +31,7 @@ async function main() {
 
     for (let i = 1; i <= 50; i++) {
       // Simple XP Curve: 1000 * 1.05^(level-1)
-      const xpForLevel = Math.floor(1000 * Math.pow(1.05, i - 1));
+      const xpForLevel = Math.floor(1000 * 1.05 ** (i - 1));
       xpCumulative += xpForLevel;
 
       // Rewards
@@ -40,14 +40,14 @@ async function main() {
 
       // Every 5 levels: Free Gold
       if (i % 5 === 0) {
-        freeRewardData = { type: "GOLD", amount: 500 * (i / 5) };
+        freeRewardData = { type: 'GOLD', amount: 500 * (i / 5) };
       }
 
       // Every level Premium: Gold or Item placeholder
       if (i % 10 === 0) {
-        premiumRewardData = { type: "TITLE", titleId: `title_s1_tier_${i}` }; // Placeholder
+        premiumRewardData = { type: 'TITLE', titleId: `title_s1_tier_${i}` }; // Placeholder
       } else {
-        premiumRewardData = { type: "GOLD", amount: 100 * i };
+        premiumRewardData = { type: 'GOLD', amount: 100 * i };
       }
 
       tiers.push({
@@ -65,7 +65,7 @@ async function main() {
 
     console.log(`Created Season 1 with ${tiers.length} tiers.`);
   } catch (error) {
-    console.error("Seeding error:", error);
+    console.error('Seeding error:', error);
   } finally {
     await prisma.$disconnect();
   }

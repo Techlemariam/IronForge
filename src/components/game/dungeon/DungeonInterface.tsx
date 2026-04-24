@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { BioBuff } from "@/features/bio/BioBuffService";
-import { BioBuffBadge } from "@/features/bio/components/BioBuffBadge";
-import { motion, AnimatePresence } from "framer-motion";
-import { Skull, Sword } from "lucide-react";
+import type { BioBuff } from '@/features/bio/BioBuffService';
+import { BioBuffBadge } from '@/features/bio/components/BioBuffBadge';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Skull, Sword } from 'lucide-react';
+import type React from 'react';
+import { useEffect, useState } from 'react';
 
 interface DungeonInterfaceProps {
   bossName: string;
@@ -44,9 +45,7 @@ const DungeonInterface: React.FC<DungeonInterfaceProps> = ({
             <Skull className="w-6 h-6 text-red-500 animate-pulse" />
           </div>
           <div>
-            <h2 className="text-xl font-black text-white uppercase tracking-widest">
-              {bossName}
-            </h2>
+            <h2 className="text-xl font-black text-white uppercase tracking-widest">{bossName}</h2>
             <div className="flex items-center gap-2 text-[10px] font-bold uppercase text-zinc-500">
               <span className="bg-red-950 text-red-400 px-1 rounded border border-red-900">
                 Elite Boss
@@ -73,7 +72,7 @@ const DungeonInterface: React.FC<DungeonInterfaceProps> = ({
         {/* Simple visual representation of the Boss */}
         <div className="relative w-32 h-32">
           {/* Aura */}
-          <div className="absolute inset-0 bg-red-500 blur-2xl opacity-20 animate-pulse rounded-full"></div>
+          <div className="absolute inset-0 bg-red-500 blur-2xl opacity-20 animate-pulse rounded-full" />
 
           {/* Boss Model (Icon for now) */}
           <div className="absolute inset-0 flex items-center justify-center">
@@ -89,7 +88,7 @@ const DungeonInterface: React.FC<DungeonInterfaceProps> = ({
                 animate={{ opacity: 1, y: -50, scale: 1.5 }}
                 exit={{ opacity: 0 }}
                 className="absolute top-0 left-1/2 -translate-x-1/2 text-4xl font-black text-white italic stroke-black text-shadow-lg pointer-events-none"
-                style={{ textShadow: "2px 2px 0px #000" }}
+                style={{ textShadow: '2px 2px 0px #000' }}
               >
                 -{onDamage}
               </motion.div>
@@ -102,12 +101,12 @@ const DungeonInterface: React.FC<DungeonInterfaceProps> = ({
       <div className="relative w-full h-8 bg-zinc-900 rounded-full overflow-hidden border border-zinc-700 mt-2 shadow-inner">
         <motion.div
           className="h-full bg-gradient-to-r from-red-600 to-red-500 relative"
-          initial={{ width: "100%" }}
+          initial={{ width: '100%' }}
           animate={{ width: `${hpPercent}%` }}
-          transition={{ type: "spring", stiffness: 50 }}
+          transition={{ type: 'spring', stiffness: 50 }}
         >
           {/* Shine effect */}
-          <div className="absolute top-0 right-0 bottom-0 w-[1px] bg-white/50 shadow-[0_0_10px_white]"></div>
+          <div className="absolute top-0 right-0 bottom-0 w-[1px] bg-white/50 shadow-[0_0_10px_white]" />
         </motion.div>
 
         {/* Text overlay */}

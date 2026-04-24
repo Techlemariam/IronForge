@@ -1,6 +1,6 @@
-"use server";
+'use server';
 
-import { prisma } from "@/lib/prisma";
+import { prisma } from '@/lib/prisma';
 
 interface TitanStats {
   userId: string;
@@ -43,7 +43,7 @@ interface ComparisonResult {
 interface ComparisonHighlight {
   category: string;
   stat: string;
-  winner: "USER" | "OPPONENT" | "TIE";
+  winner: 'USER' | 'OPPONENT' | 'TIE';
   userValue: number;
   opponentValue: number;
   difference: number;
@@ -64,7 +64,7 @@ async function getTitanStats(userId: string): Promise<TitanStats | null> {
 
     return {
       userId: user.id,
-      heroName: user.heroName || "Unknown",
+      heroName: user.heroName || 'Unknown',
       level: user.level || 1,
       attributes: {
         strength: user.titan?.strength || 10,
@@ -92,7 +92,7 @@ async function getTitanStats(userId: string): Promise<TitanStats | null> {
       },
     };
   } catch (error) {
-    console.error("Error getting titan stats:", error);
+    console.error('Error getting titan stats:', error);
     return null;
   }
 }
@@ -102,7 +102,7 @@ async function getTitanStats(userId: string): Promise<TitanStats | null> {
  */
 export async function compareTitansAction(
   userId: string,
-  opponentId: string,
+  opponentId: string
 ): Promise<ComparisonResult | null> {
   try {
     const userStats = await getTitanStats(userId);
@@ -116,40 +116,38 @@ export async function compareTitansAction(
 
     // Compare attributes
     for (const [stat, userVal] of Object.entries(userStats.attributes)) {
-      const oppVal =
-        opponentStats.attributes[stat as keyof typeof opponentStats.attributes];
+      const oppVal = opponentStats.attributes[stat as keyof typeof opponentStats.attributes];
       const diff = userVal - oppVal;
-      const winner = diff > 0 ? "USER" : diff < 0 ? "OPPONENT" : "TIE";
+      const winner = diff > 0 ? 'USER' : diff < 0 ? 'OPPONENT' : 'TIE';
 
-      if (winner === "USER") userScore++;
-      else if (winner === "OPPONENT") opponentScore++;
+      if (winner === 'USER') userScore++;
+      else if (winner === 'OPPONENT') opponentScore++;
 
       highlights.push({
-        category: "Attributes",
+        category: 'Attributes',
         stat: stat.charAt(0).toUpperCase() + stat.slice(1),
         winner,
         userValue: userVal,
         opponentValue: oppVal,
         difference: Math.abs(diff),
-        differencePercent:
-          oppVal > 0 ? Math.round((Math.abs(diff) / oppVal) * 100) : 0,
+        differencePercent: oppVal > 0 ? Math.round((Math.abs(diff) / oppVal) * 100) : 0,
       });
     }
 
     // Compare fitness stats
     const fitnessComparisons = [
       {
-        stat: "Total Volume",
+        stat: 'Total Volume',
         uv: userStats.fitnessStats.totalVolume,
         ov: opponentStats.fitnessStats.totalVolume,
       },
       {
-        stat: "Total Workouts",
+        stat: 'Total Workouts',
         uv: userStats.fitnessStats.totalWorkouts,
         ov: opponentStats.fitnessStats.totalWorkouts,
       },
       {
-        stat: "Total PRs",
+        stat: 'Total PRs',
         uv: userStats.fitnessStats.totalPRs,
         ov: opponentStats.fitnessStats.totalPRs,
       },
@@ -157,20 +155,19 @@ export async function compareTitansAction(
 
     for (const comp of fitnessComparisons) {
       const diff = comp.uv - comp.ov;
-      const winner = diff > 0 ? "USER" : diff < 0 ? "OPPONENT" : "TIE";
+      const winner = diff > 0 ? 'USER' : diff < 0 ? 'OPPONENT' : 'TIE';
 
-      if (winner === "USER") userScore++;
-      else if (winner === "OPPONENT") opponentScore++;
+      if (winner === 'USER') userScore++;
+      else if (winner === 'OPPONENT') opponentScore++;
 
       highlights.push({
-        category: "Fitness",
+        category: 'Fitness',
         stat: comp.stat,
         winner,
         userValue: comp.uv,
         opponentValue: comp.ov,
         difference: Math.abs(diff),
-        differencePercent:
-          comp.ov > 0 ? Math.round((Math.abs(diff) / comp.ov) * 100) : 0,
+        differencePercent: comp.ov > 0 ? Math.round((Math.abs(diff) / comp.ov) * 100) : 0,
       });
     }
 
@@ -181,7 +178,7 @@ export async function compareTitansAction(
       overallScore: { user: userScore, opponent: opponentScore },
     };
   } catch (error) {
-    console.error("Error comparing titans:", error);
+    console.error('Error comparing titans:', error);
     return null;
   }
 }

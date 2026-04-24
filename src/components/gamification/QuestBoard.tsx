@@ -1,16 +1,15 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import { Challenge, UserChallenge  } from "@/types/prisma";
-import { ChallengeRewards, claimChallengeAction } from "@/actions/systems/challenges";
-import { Scroll, Trophy, Zap, Coins, CheckCircle, Lock } from "lucide-react";
-import { playSound } from "@/utils";
-import { LoadingSpinner } from "../ui/LoadingSpinner";
+import { type ChallengeRewards, claimChallengeAction } from '@/actions/systems/challenges';
+import type { Challenge, UserChallenge } from '@/types/prisma';
+import { playSound } from '@/utils';
+import { CheckCircle, Coins, Lock, Scroll, Trophy, Zap } from 'lucide-react';
+import type React from 'react';
+import { useState } from 'react';
+import { LoadingSpinner } from '../ui/LoadingSpinner';
 
-export type ChallengeWithStatus = Omit<Challenge, "criteria" | "rewards"> & {
-  userStatus:
-    | UserChallenge
-    | { progress: number; completed: boolean; claimed: boolean };
+export type ChallengeWithStatus = Omit<Challenge, 'criteria' | 'rewards'> & {
+  userStatus: UserChallenge | { progress: number; completed: boolean; claimed: boolean };
   criteria: any; // Typed in Action, but Prisma returns Json
   rewards: any;
 };
@@ -21,7 +20,7 @@ interface QuestBoardProps {
 }
 
 const RewardBadge: React.FC<{
-  type: "xp" | "gold" | "kinetic";
+  type: 'xp' | 'gold' | 'kinetic';
   value: number;
 }> = ({ type, value }) => {
   const icons = {
@@ -30,9 +29,9 @@ const RewardBadge: React.FC<{
     kinetic: <Zap className="w-3 h-3 text-blue-400" />,
   };
   const colors = {
-    xp: "text-purple-300 bg-purple-900/40 border-purple-800",
-    gold: "text-yellow-300 bg-yellow-900/40 border-yellow-800",
-    kinetic: "text-blue-300 bg-blue-900/40 border-blue-800",
+    xp: 'text-purple-300 bg-purple-900/40 border-purple-800',
+    gold: 'text-yellow-300 bg-yellow-900/40 border-yellow-800',
+    kinetic: 'text-blue-300 bg-blue-900/40 border-blue-800',
   };
 
   return (
@@ -61,20 +60,18 @@ const ChallengeCard: React.FC<{
 
   return (
     <div
-      className={`relative p-4 rounded-lg border transition-all duration-300 ${isCompleted ? "bg-gradient-to-br from-slate-900 to-green-950/20 border-green-800/50" : "bg-black/40 border-slate-800"}`}
+      className={`relative p-4 rounded-lg border transition-all duration-300 ${isCompleted ? 'bg-gradient-to-br from-slate-900 to-green-950/20 border-green-800/50' : 'bg-black/40 border-slate-800'}`}
     >
       <div className="flex justify-between items-start mb-2">
         <div>
           <h4
-            className={`font-bold uppercase tracking-wide ${isCompleted ? "text-green-400" : "text-slate-200"}`}
+            className={`font-bold uppercase tracking-wide ${isCompleted ? 'text-green-400' : 'text-slate-200'}`}
           >
             {title}
           </h4>
           <p className="text-xs text-slate-400">{description}</p>
         </div>
-        {isClaimed && (
-          <CheckCircle className="w-5 h-5 text-green-500 opacity-50" />
-        )}
+        {isClaimed && <CheckCircle className="w-5 h-5 text-green-500 opacity-50" />}
       </div>
 
       {/* Progress Bar */}
@@ -87,7 +84,7 @@ const ChallengeCard: React.FC<{
         </div>
         <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
           <div
-            className={`h-full transition-all duration-1000 ${isCompleted ? "bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.5)]" : "bg-blue-600"}`}
+            className={`h-full transition-all duration-1000 ${isCompleted ? 'bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.5)]' : 'bg-blue-600'}`}
             style={{ width: `${percent}%` }}
           />
         </div>
@@ -107,49 +104,38 @@ const ChallengeCard: React.FC<{
             disabled={isClaiming}
             className="px-3 py-1 bg-yellow-600 hover:bg-yellow-500 text-white text-xs font-bold uppercase rounded shadow-lg animate-pulse hover:animate-none transition-colors flex items-center space-x-1"
           >
-            {isClaiming ? (
-              <LoadingSpinner size="sm" />
-            ) : (
-              <span>Claim Bounty</span>
-            )}
+            {isClaiming ? <LoadingSpinner size="sm" /> : <span>Claim Bounty</span>}
           </button>
         )}
-        {isClaimed && (
-          <span className="text-xs text-green-600 font-mono uppercase">
-            Claimed
-          </span>
-        )}
+        {isClaimed && <span className="text-xs text-green-600 font-mono uppercase">Claimed</span>}
         {!isCompleted && <Lock className="w-4 h-4 text-slate-700" />}
       </div>
     </div>
   );
 };
 
-export const QuestBoard: React.FC<QuestBoardProps> = ({
-  challenges,
-  onClaimSuccess,
-}) => {
+export const QuestBoard: React.FC<QuestBoardProps> = ({ challenges, onClaimSuccess }) => {
   const [claimingId, setClaimingId] = useState<string | null>(null);
 
   const handleClaim = async (id: string) => {
     setClaimingId(id);
-    playSound("ui_click"); // Or specific claim sound
+    playSound('ui_click'); // Or specific claim sound
     try {
       const result = await claimChallengeAction(id);
       if (result.success) {
-        playSound("achievement"); // Reward sound
+        playSound('achievement'); // Reward sound
         onClaimSuccess(result.newGold);
       }
     } catch (e) {
-      console.error("Claim Failed", e);
-      playSound("ui_error");
+      console.error('Claim Failed', e);
+      playSound('ui_error');
     } finally {
       setClaimingId(null);
     }
   };
 
-  const daily = challenges.filter((c) => c.type === "DAILY");
-  const weekly = challenges.filter((c) => c.type === "WEEKLY");
+  const daily = challenges.filter((c) => c.type === 'DAILY');
+  const weekly = challenges.filter((c) => c.type === 'WEEKLY');
 
   if (challenges.length === 0) return null;
 
@@ -180,9 +166,7 @@ export const QuestBoard: React.FC<QuestBoardProps> = ({
               />
             ))
           ) : (
-            <p className="text-xs text-slate-600 italic p-2">
-              No daily bounties available.
-            </p>
+            <p className="text-xs text-slate-600 italic p-2">No daily bounties available.</p>
           )}
         </div>
 
@@ -200,9 +184,7 @@ export const QuestBoard: React.FC<QuestBoardProps> = ({
               />
             ))
           ) : (
-            <p className="text-xs text-slate-600 italic p-2">
-              No weekly objectives available.
-            </p>
+            <p className="text-xs text-slate-600 italic p-2">No weekly objectives available.</p>
           )}
         </div>
       </div>

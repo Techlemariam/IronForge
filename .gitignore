@@ -159,4 +159,11 @@ storybook-static/
 !components.json
 !audit_results.json
 audit.cjs
-test_gov.sh
+
+# Secrets
+prd.json
+dev.json
+auth.json
+doppler-secrets.json
+.env*.local
+

@@ -1,13 +1,13 @@
-import { NextResponse } from "next/server";
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from '@/utils/supabase/server';
+import { NextResponse } from 'next/server';
 
-import { prisma } from "@/lib/prisma";
+import { prisma } from '@/lib/prisma';
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
-  const code = searchParams.get("code");
+  const code = searchParams.get('code');
   // if "next" is in param, use it as the redirect URL
-  const next = searchParams.get("next") ?? "/";
+  const next = searchParams.get('next') ?? '/';
 
   if (code) {
     const supabase = await createClient();
@@ -18,7 +18,7 @@ export async function GET(request: Request) {
         data: { user },
       } = await supabase.auth.getUser();
 
-      if (user && user.email) {
+      if (user?.email) {
         // Atomic Upsert using Prisma to handle race conditions and email conflicts
         // If a user with this email exists (e.g. from E2E seeding), we MUST use the auth ID
         // Note: Prisma upsert requires a unique field. We use id.
@@ -37,7 +37,6 @@ export async function GET(request: Request) {
             where: { email: user.email },
             data: { id: user.id },
           });
-
         } else {
           await prisma.user.upsert({
             where: { id: user.id },
@@ -48,8 +47,8 @@ export async function GET(request: Request) {
             create: {
               id: user.id,
               email: user.email,
-              heroName: user.email.split("@")[0] || "Hero",
-              subscriptionTier: "FREE",
+              heroName: user.email.split('@')[0] || 'Hero',
+              subscriptionTier: 'FREE',
               updatedAt: new Date(),
             },
           });

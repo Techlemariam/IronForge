@@ -1,9 +1,9 @@
-"use server";
+'use server';
 
-import prisma from "@/lib/prisma";
-import { OracleService } from "@/services/oracle";
-import { createClient } from "@/utils/supabase/server";
-import { revalidatePath } from "next/cache";
+import prisma from '@/lib/prisma';
+import { OracleService } from '@/services/oracle';
+import { createClient } from '@/utils/supabase/server';
+import { revalidatePath } from 'next/cache';
 
 export async function generateDailyDecreeAction() {
   try {
@@ -13,7 +13,7 @@ export async function generateDailyDecreeAction() {
     } = await supabase.auth.getUser();
 
     if (!user) {
-      throw new Error("Unauthorized");
+      throw new Error('Unauthorized');
     }
 
     // Generate Decree using the Service
@@ -34,12 +34,12 @@ export async function generateDailyDecreeAction() {
       });
     }
 
-    revalidatePath("/dashboard");
-    revalidatePath("/citadel");
+    revalidatePath('/dashboard');
+    revalidatePath('/citadel');
 
     return { success: true, data: decree };
   } catch (error: any) {
-    console.error("Failed to generate Oracle Decree:", error.message);
+    console.error('Failed to generate Oracle Decree:', error.message);
     return { success: false, error: error.message };
   }
 }

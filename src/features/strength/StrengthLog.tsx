@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import { SetRow } from "./SetRow";
-import { logSetAction } from "@/actions/training/strength";
-import type { SetData } from "@/actions/training/strength";
-import { Plus, Dumbbell } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
-import { useMaxReps } from "@/hooks/useMaxReps";
-import { PRBadge } from "@/components/ui/PRBadge";
-import { PRCelebration } from "@/components/ui/PRCelebration";
-import { useUser } from "@/hooks/useUser";
+import { type SetData, logSetAction } from '@/actions/training/strength';
+import { PRBadge } from '@/components/ui/PRBadge';
+import { PRCelebration } from '@/components/ui/PRCelebration';
+import { useToast } from '@/hooks/use-toast';
+import { useMaxReps } from '@/hooks/useMaxReps';
+import { useUser } from '@/hooks/useUser';
+import { Dumbbell, Plus } from 'lucide-react';
+import type React from 'react';
+import { useState } from 'react';
+import { SetRow } from './SetRow';
 
 interface ExerciseLogProps {
   userId: string;
@@ -20,7 +20,6 @@ interface ExerciseLogProps {
 }
 
 export const StrengthLog: React.FC<ExerciseLogProps> = ({
-  userId,
   exerciseId,
   exerciseName,
   initialSets = [],
@@ -65,7 +64,7 @@ export const StrengthLog: React.FC<ExerciseLogProps> = ({
     handleSetChange(index, { completedAt: new Date().toISOString() });
 
     // Check for rep PR
-    if (set.reps && set.setType === "failure") {
+    if (set.reps && set.setType === 'failure') {
       const isPR = await checkPR(set.reps);
       if (isPR) {
         setPreviousMax(maxReps);
@@ -74,13 +73,13 @@ export const StrengthLog: React.FC<ExerciseLogProps> = ({
       }
     }
 
-    // Server Action (authActionClient — no userId param needed)
-    const result = await logSetAction({ exerciseId, set });
-    if (result?.serverError || !result?.data) {
+    // Server Action
+    const result = await logSetAction(user?.id!, exerciseId, set);
+    if (!result.success) {
       toast({
-        title: "Error",
-        description: "Failed to log set",
-        variant: "destructive",
+        title: 'Error',
+        description: 'Failed to log set',
+        variant: 'destructive',
       });
     }
   };
@@ -92,18 +91,11 @@ export const StrengthLog: React.FC<ExerciseLogProps> = ({
           <Dumbbell className="w-5 h-5 text-magma" />
           <h3 className="font-bold text-lg text-white">{exerciseName}</h3>
         </div>
-        <button className="text-xs text-zinc-500 hover:text-white">
-          History
-        </button>
+        <button className="text-xs text-zinc-500 hover:text-white">History</button>
       </div>
 
       {/* PR Badge */}
-      <PRBadge
-        maxReps={maxReps}
-        weight={currentWeight}
-        isLoading={isLoading}
-        className="mb-4"
-      />
+      <PRBadge maxReps={maxReps} weight={currentWeight} isLoading={isLoading} className="mb-4" />
 
       <div className="space-y-1">
         <div className="grid grid-cols-12 gap-2 text-xs text-zinc-500 uppercase font-bold px-2 mb-2">
@@ -111,7 +103,7 @@ export const StrengthLog: React.FC<ExerciseLogProps> = ({
           <div className="col-span-3 text-center">kg</div>
           <div className="col-span-3 text-center">Reps</div>
           <div className="col-span-3 text-center">RPE</div>
-          <div className="col-span-2"></div>
+          <div className="col-span-2" />
         </div>
 
         {sets.map((set, index) => (

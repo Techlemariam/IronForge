@@ -1,6 +1,6 @@
-import { getBuffForZone } from "../logic/buffs";
-import { Zap, Coins, Activity, Gauge, Timer } from "lucide-react";
-import { TrainingMetric } from "../logic/zones";
+import { Activity, Coins, Gauge, Timer, Zap } from 'lucide-react';
+import { getBuffForZone } from '../logic/buffs';
+import type { TrainingMetric } from '../logic/zones';
 
 interface BuffHudProps {
   currentZone: number;
@@ -26,39 +26,39 @@ const BuffHud: React.FC<BuffHudProps> = ({
   const formatTime = (sec: number) => {
     const m = Math.floor(sec / 60)
       .toString()
-      .padStart(2, "0");
-    const s = (sec % 60).toString().padStart(2, "0");
+      .padStart(2, '0');
+    const s = (sec % 60).toString().padStart(2, '0');
     return `${m}:${s}`;
   };
 
   // Configuration based on metric
   const config = {
     hr: {
-      title: "HR ZONE MONITOR",
+      title: 'HR ZONE MONITOR',
       icon: <Activity className="w-3 h-3" />,
-      simLabel: "SIMULATE INTENSITY (ZONE)",
+      simLabel: 'SIMULATE INTENSITY (ZONE)',
       min: 1,
       max: 5,
       step: 1,
-      unit: "Z",
+      unit: 'Z',
     },
     power: {
-      title: "POWER ZONE MONITOR",
+      title: 'POWER ZONE MONITOR',
       icon: <Zap className="w-3 h-3" />,
-      simLabel: "SIMULATE POWER (WATTS)",
+      simLabel: 'SIMULATE POWER (WATTS)',
       min: 0,
       max: 500,
       step: 10,
-      unit: "W",
+      unit: 'W',
     },
     pace: {
-      title: "PACE ZONE MONITOR",
+      title: 'PACE ZONE MONITOR',
       icon: <Gauge className="w-3 h-3" />,
-      simLabel: "SIMULATE SPEED (KPH)",
+      simLabel: 'SIMULATE SPEED (KPH)',
       min: 0,
       max: 30,
       step: 0.5,
-      unit: "kph",
+      unit: 'kph',
     },
   }[metric];
 
@@ -78,20 +78,16 @@ const BuffHud: React.FC<BuffHudProps> = ({
 
       {/* Active Buff Display */}
       <div
-        className={`flex items-center gap-3 mb-4 p-2 rounded-lg bg-black/40 border border-zinc-800/50`}
+        className={
+          'flex items-center gap-3 mb-4 p-2 rounded-lg bg-black/40 border border-zinc-800/50'
+        }
       >
-        <div
-          className={`p-2 rounded-full bg-zinc-800 ${activeBuff.color} animate-pulse`}
-        >
+        <div className={`p-2 rounded-full bg-zinc-800 ${activeBuff.color} animate-pulse`}>
           <Icon className="w-6 h-6" />
         </div>
         <div>
-          <h3 className={`text-sm font-bold ${activeBuff.color}`}>
-            {activeBuff.name}
-          </h3>
-          <p className="text-[10px] text-zinc-400 leading-tight">
-            {activeBuff.description}
-          </p>
+          <h3 className={`text-sm font-bold ${activeBuff.color}`}>{activeBuff.name}</h3>
+          <p className="text-[10px] text-zinc-400 leading-tight">{activeBuff.description}</p>
         </div>
       </div>
 
@@ -104,9 +100,7 @@ const BuffHud: React.FC<BuffHudProps> = ({
           </span>
         </div>
         <div className="bg-zinc-800/50 rounded p-2 flex flex-col items-center">
-          <span className="text-[10px] text-zinc-500 uppercase">
-            Gold Found
-          </span>
+          <span className="text-[10px] text-zinc-500 uppercase">Gold Found</span>
           <span className="text-sm font-bold text-yellow-500 flex items-center gap-1">
             {Math.floor(rewards.gold)} <Coins className="w-3 h-3" />
           </span>
@@ -131,7 +125,7 @@ const BuffHud: React.FC<BuffHudProps> = ({
           className="w-full h-2 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-magma"
         />
 
-        {metric === "hr" ? (
+        {metric === 'hr' ? (
           <div className="flex justify-between text-[10px] text-zinc-500 px-1 font-mono">
             <span>Z1</span>
             <span>Z2</span>

@@ -1,8 +1,8 @@
-"use server";
+'use server';
 
-import { prisma } from "@/lib/prisma";
-import { revalidatePath } from "next/cache";
-import { z } from "zod";
+import { prisma } from '@/lib/prisma';
+import { revalidatePath } from 'next/cache';
+import { z } from 'zod';
 
 const StatOverrideSchema = z.object({
   currentHp: z.number().min(0).max(1000).optional(),
@@ -28,7 +28,7 @@ interface OverrideResult {
  */
 export async function overrideTitanStatsAction(
   userId: string,
-  overrides: StatOverrideInput,
+  overrides: StatOverrideInput
 ): Promise<OverrideResult> {
   try {
     const validated = StatOverrideSchema.parse(overrides);
@@ -38,7 +38,7 @@ export async function overrideTitanStatsAction(
     });
 
     if (!titan) {
-      return { success: false, message: "Titan not found" };
+      return { success: false, message: 'Titan not found' };
     }
 
     const previousValues: Record<string, number> = {};
@@ -70,7 +70,7 @@ export async function overrideTitanStatsAction(
     }
 
     if (Object.keys(updateData).length === 0) {
-      return { success: false, message: "No valid overrides provided" };
+      return { success: false, message: 'No valid overrides provided' };
     }
 
     await prisma.titan.update({
@@ -79,11 +79,9 @@ export async function overrideTitanStatsAction(
     });
 
     // Log the override for audit trail
-    console.log(
-      `Stat override: userId=${userId}, changes=${JSON.stringify(updateData)}`,
-    );
+    console.log(`Stat override: userId=${userId}, changes=${JSON.stringify(updateData)}`);
 
-    revalidatePath("/dashboard");
+    revalidatePath('/dashboard');
 
     return {
       success: true,
@@ -95,24 +93,22 @@ export async function overrideTitanStatsAction(
     if (error instanceof z.ZodError) {
       return { success: false, message: `Validation error: ${error.message}` };
     }
-    console.error("Error overriding stats:", error);
-    return { success: false, message: "Failed to override stats" };
+    console.error('Error overriding stats:', error);
+    return { success: false, message: 'Failed to override stats' };
   }
 }
 
 /**
  * Reset Titan to default state.
  */
-export async function resetTitanStatsAction(
-  userId: string,
-): Promise<OverrideResult> {
+export async function resetTitanStatsAction(userId: string): Promise<OverrideResult> {
   try {
     const titan = await prisma.titan.findFirst({
       where: { userId },
     });
 
     if (!titan) {
-      return { success: false, message: "Titan not found" };
+      return { success: false, message: 'Titan not found' };
     }
 
     await prisma.titan.update({
@@ -127,11 +123,11 @@ export async function resetTitanStatsAction(
       },
     });
 
-    revalidatePath("/dashboard");
+    revalidatePath('/dashboard');
 
     return {
       success: true,
-      message: "Titan reset to default state",
+      message: 'Titan reset to default state',
       newValues: {
         currentHp: 100,
         maxHp: 100,
@@ -142,7 +138,7 @@ export async function resetTitanStatsAction(
       },
     };
   } catch (error) {
-    console.error("Error resetting titan:", error);
-    return { success: false, message: "Failed to reset titan" };
+    console.error('Error resetting titan:', error);
+    return { success: false, message: 'Failed to reset titan' };
   }
 }

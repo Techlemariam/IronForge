@@ -1,17 +1,36 @@
-"use server";
+'use server';
 
-import { z } from "zod";
-import { authActionClient } from "@/lib/safe-action";
-import { ProgressionService } from "@/services/progression";
-import { AwardGoldSchema } from "@/types/schemas";
+import { ProgressionService } from '@/services/progression';
+import { AwardGoldSchema } from '@/types/schemas';
+import { createClient } from '@/utils/supabase/server';
 
-export const getProgressionAction = authActionClient
-  .action(async ({ ctx: { userId } }) => {
-    return await ProgressionService.getProgressionState(userId);
-  });
+export async function getProgressionAction() {
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) throw new Error('Unauthorized');
 
-export const awardGoldAction = authActionClient
-  .schema(AwardGoldSchema)
-  .action(async ({ parsedInput: { amount }, ctx: { userId } }) => {
-    return await ProgressionService.awardGold(userId, amount);
-  });
+    return await ProgressionService.getProgressionState(user.id);
+  } catch (e) {
+    console.error('Progression Action Error:', e);
+    return null;
+  }
+}
+
+export async function awardGoldAction(amount: number) {
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) throw new Error('Unauthorized');
+
+    const validated = AwardGoldSchema.parse({ amount });
+    return await ProgressionService.awardGold(user.id, validated.amount);
+  } catch (e) {
+    console.error('Award Gold Action Error:', e);
+    return null;
+  }
+}

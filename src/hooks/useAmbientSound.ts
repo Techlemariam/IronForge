@@ -1,23 +1,20 @@
-import { useEffect, useRef } from "react";
-import { Howl } from "howler";
+import { Howl } from 'howler';
+import { useEffect, useRef } from 'react';
 
-type AmbientZone = "citadel" | "forge" | "arena" | "wilds" | "void";
+type AmbientZone = 'citadel' | 'forge' | 'arena' | 'wilds' | 'void';
 
 // Map zones to their audio files (assuming files exist or will be added)
 // For now we can use placeholder URLs or synthesized sounds if files aren't ready.
 // In a real app, these would be in /public/sounds/ambient/
 const ZONE_TRACKS: Record<AmbientZone, string[]> = {
-  citadel: ["/sounds/ambient/citadel_wind.mp3"],
-  forge: ["/sounds/ambient/forge_fire.mp3"],
-  arena: ["/sounds/ambient/arena_crowd_muffled.mp3"],
-  wilds: ["/sounds/ambient/wilds_night.mp3"],
-  void: ["/sounds/ambient/void_drone.mp3"],
+  citadel: ['/sounds/ambient/citadel_wind.mp3'],
+  forge: ['/sounds/ambient/forge_fire.mp3'],
+  arena: ['/sounds/ambient/arena_crowd_muffled.mp3'],
+  wilds: ['/sounds/ambient/wilds_night.mp3'],
+  void: ['/sounds/ambient/void_drone.mp3'],
 };
 
-export const useAmbientSound = (
-  activeZone: AmbientZone | null,
-  enabled: boolean = true,
-) => {
+export const useAmbientSound = (activeZone: AmbientZone | null, enabled = true) => {
   const currentHowlRef = useRef<Howl | null>(null);
   const currentZoneRef = useRef<AmbientZone | null>(null);
 

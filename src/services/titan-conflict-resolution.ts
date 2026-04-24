@@ -1,13 +1,13 @@
-"use server";
+'use server';
 
-import { TitanState } from "@/types/schemas";
+import type { TitanState } from '@/types/schemas';
 
 // ============================================
 // UNIFIED TITAN SOUL - CONFLICT RESOLUTION
 // Multi-device sync conflict handling
 // ============================================
 
-type ConflictStrategy = "SERVER_WINS" | "CLIENT_WINS" | "MERGE" | "LATEST_WINS";
+type ConflictStrategy = 'SERVER_WINS' | 'CLIENT_WINS' | 'MERGE' | 'LATEST_WINS';
 
 interface ConflictField {
   path: string;
@@ -34,35 +34,35 @@ interface MergeResult {
 // Field-specific conflict strategies
 const CONFLICT_STRATEGIES: Record<string, ConflictStrategy> = {
   // Economy: Always server (prevent exploits)
-  "economy.gold": "SERVER_WINS",
-  "economy.gems": "SERVER_WINS",
+  'economy.gold': 'SERVER_WINS',
+  'economy.gems': 'SERVER_WINS',
 
   // Progress: Take highest (no rollback)
-  level: "MERGE", // Max of both
-  "resources.xp": "MERGE", // Max of both
-  "progress.totalWorkouts": "MERGE",
-  "progress.totalVolume": "MERGE",
-  "progress.totalPRs": "MERGE",
+  level: 'MERGE', // Max of both
+  'resources.xp': 'MERGE', // Max of both
+  'progress.totalWorkouts': 'MERGE',
+  'progress.totalVolume': 'MERGE',
+  'progress.totalPRs': 'MERGE',
 
   // Stats: Take highest (buff priority)
-  "stats.strength": "MERGE",
-  "stats.vitality": "MERGE",
-  "stats.endurance": "MERGE",
-  "stats.agility": "MERGE",
-  "stats.willpower": "MERGE",
+  'stats.strength': 'MERGE',
+  'stats.vitality': 'MERGE',
+  'stats.endurance': 'MERGE',
+  'stats.agility': 'MERGE',
+  'stats.willpower': 'MERGE',
 
   // Resources: Latest wins (real-time state)
-  "resources.hp": "LATEST_WINS",
-  "resources.energy": "LATEST_WINS",
+  'resources.hp': 'LATEST_WINS',
+  'resources.energy': 'LATEST_WINS',
 
   // Equipment: Client wins (user intent)
-  "equipment.weapon": "CLIENT_WINS",
-  "equipment.armor": "CLIENT_WINS",
-  "equipment.accessory1": "CLIENT_WINS",
-  "equipment.accessory2": "CLIENT_WINS",
+  'equipment.weapon': 'CLIENT_WINS',
+  'equipment.armor': 'CLIENT_WINS',
+  'equipment.accessory1': 'CLIENT_WINS',
+  'equipment.accessory2': 'CLIENT_WINS',
 
   // Status effects: Merge arrays
-  statusEffects: "MERGE",
+  statusEffects: 'MERGE',
 };
 
 /**
@@ -72,7 +72,7 @@ export function detectConflicts(
   serverState: TitanState,
   clientState: Partial<TitanState>,
   serverTimestamp: Date,
-  clientTimestamp: Date,
+  clientTimestamp: Date
 ): ConflictField[] {
   const conflicts: ConflictField[] = [];
 
@@ -80,9 +80,9 @@ export function detectConflicts(
     if (client === undefined) return;
 
     if (
-      typeof server === "object" &&
+      typeof server === 'object' &&
       server !== null &&
-      typeof client === "object" &&
+      typeof client === 'object' &&
       client !== null
     ) {
       if (Array.isArray(server) && Array.isArray(client)) {
@@ -100,7 +100,7 @@ export function detectConflicts(
           compareRecursive(
             (server as Record<string, unknown>)[key],
             (client as Record<string, unknown>)[key],
-            path ? `${path}.${key}` : key,
+            path ? `${path}.${key}` : key
           );
         }
       }
@@ -115,7 +115,7 @@ export function detectConflicts(
     }
   }
 
-  compareRecursive(serverState, clientState, "");
+  compareRecursive(serverState, clientState, '');
   return conflicts;
 }
 
@@ -123,62 +123,54 @@ export function detectConflicts(
  * Resolve a single conflict.
  */
 function resolveConflict(conflict: ConflictField): ConflictResolution {
-  const strategy = CONFLICT_STRATEGIES[conflict.path] || "SERVER_WINS";
+  const strategy = CONFLICT_STRATEGIES[conflict.path] || 'SERVER_WINS';
   let resolvedValue: unknown;
   let reason: string;
 
   switch (strategy) {
-    case "SERVER_WINS":
+    case 'SERVER_WINS':
       resolvedValue = conflict.serverValue;
-      reason = "Server authority (security)";
+      reason = 'Server authority (security)';
       break;
 
-    case "CLIENT_WINS":
+    case 'CLIENT_WINS':
       resolvedValue = conflict.clientValue;
-      reason = "User intent priority";
+      reason = 'User intent priority';
       break;
 
-    case "LATEST_WINS":
+    case 'LATEST_WINS':
       if (conflict.clientTimestamp > conflict.serverTimestamp) {
         resolvedValue = conflict.clientValue;
-        reason = "Client is more recent";
+        reason = 'Client is more recent';
       } else {
         resolvedValue = conflict.serverValue;
-        reason = "Server is more recent";
+        reason = 'Server is more recent';
       }
       break;
 
-    case "MERGE":
-      if (
-        typeof conflict.serverValue === "number" &&
-        typeof conflict.clientValue === "number"
-      ) {
+    case 'MERGE':
+      if (typeof conflict.serverValue === 'number' && typeof conflict.clientValue === 'number') {
         resolvedValue = Math.max(conflict.serverValue, conflict.clientValue);
-        reason = "Merged: took maximum";
-      } else if (
-        Array.isArray(conflict.serverValue) &&
-        Array.isArray(conflict.clientValue)
-      ) {
+        reason = 'Merged: took maximum';
+      } else if (Array.isArray(conflict.serverValue) && Array.isArray(conflict.clientValue)) {
         const merged = [...conflict.serverValue];
         for (const item of conflict.clientValue) {
           const itemId = (item as Record<string, unknown>).id;
-          if (
-            !merged.some((m) => (m as Record<string, unknown>).id === itemId)
-          ) {
+          if (!merged.some((m) => (m as Record<string, unknown>).id === itemId)) {
             merged.push(item);
           }
         }
         resolvedValue = merged;
-        reason = "Merged: combined arrays";
+        reason = 'Merged: combined arrays';
       } else {
         resolvedValue = conflict.serverValue;
-        reason = "Merge fallback to server";
+        reason = 'Merge fallback to server';
       }
       break;
 
     default:
       resolvedValue = conflict.serverValue;
-      reason = "Default: server wins";
+      reason = 'Default: server wins';
   }
 
   return {
@@ -195,15 +187,10 @@ function resolveConflict(conflict: ConflictField): ConflictResolution {
 export function mergeStates(
   serverState: TitanState,
   clientState: Partial<TitanState>,
-  clientTimestamp: Date,
+  clientTimestamp: Date
 ): MergeResult {
   const serverTimestamp = serverState.lastModified;
-  const conflicts = detectConflicts(
-    serverState,
-    clientState,
-    serverTimestamp,
-    clientTimestamp,
-  );
+  const conflicts = detectConflicts(serverState, clientState, serverTimestamp, clientTimestamp);
   const resolutions: ConflictResolution[] = [];
   const warnings: string[] = [];
 
@@ -217,13 +204,8 @@ export function mergeStates(
     setNestedValue(mergedState, conflict.path, resolution.resolvedValue);
 
     // Log warnings for security-sensitive resolutions
-    if (
-      resolution.strategy === "SERVER_WINS" &&
-      conflict.path.startsWith("economy")
-    ) {
-      warnings.push(
-        `Economy conflict on ${conflict.path}: server value preserved`,
-      );
+    if (resolution.strategy === 'SERVER_WINS' && conflict.path.startsWith('economy')) {
+      warnings.push(`Economy conflict on ${conflict.path}: server value preserved`);
     }
   }
 
@@ -238,12 +220,8 @@ export function mergeStates(
 /**
  * Set a nested value by path.
  */
-function setNestedValue(
-  obj: Record<string, unknown>,
-  path: string,
-  value: unknown,
-): void {
-  const parts = path.split(".");
+function setNestedValue(obj: Record<string, unknown>, path: string, value: unknown): void {
+  const parts = path.split('.');
   let current = obj;
 
   for (let i = 0; i < parts.length - 1; i++) {
@@ -262,17 +240,12 @@ function setNestedValue(
  */
 export function areStatesCompatible(
   serverState: TitanState,
-  clientState: Partial<TitanState>,
+  clientState: Partial<TitanState>
 ): boolean {
-  const conflicts = detectConflicts(
-    serverState,
-    clientState,
-    new Date(),
-    new Date(),
-  );
+  const conflicts = detectConflicts(serverState, clientState, new Date(), new Date());
 
   // Check for critical conflicts
-  const criticalPaths = ["economy.gold", "economy.gems", "level"];
+  const criticalPaths = ['economy.gold', 'economy.gems', 'level'];
 
   for (const conflict of conflicts) {
     if (criticalPaths.includes(conflict.path)) {

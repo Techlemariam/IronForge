@@ -1,6 +1,6 @@
-"use server";
+'use server';
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath } from 'next/cache';
 
 interface ProgressPhoto {
   id: string;
@@ -18,7 +18,7 @@ interface ProgressPhoto {
     thighs?: number;
   };
   notes?: string;
-  visibility: "PRIVATE" | "FRIENDS" | "PUBLIC";
+  visibility: 'PRIVATE' | 'FRIENDS' | 'PUBLIC';
 }
 
 interface ProgressComparison {
@@ -40,10 +40,10 @@ export async function uploadProgressPhotoAction(
     photoUrl: string;
     weight?: number;
     bodyFat?: number;
-    measurements?: ProgressPhoto["measurements"];
+    measurements?: ProgressPhoto['measurements'];
     notes?: string;
-    visibility?: ProgressPhoto["visibility"];
-  },
+    visibility?: ProgressPhoto['visibility'];
+  }
 ): Promise<{ success: boolean; photoId?: string }> {
   try {
     const photoId = `photo-${userId}-${Date.now()}`;
@@ -51,10 +51,10 @@ export async function uploadProgressPhotoAction(
     console.log(`Uploaded progress photo: ${photoId}`);
 
     // In production, save to database
-    revalidatePath("/progress");
+    revalidatePath('/progress');
     return { success: true, photoId };
   } catch (error) {
-    console.error("Error uploading progress photo:", error);
+    console.error('Error uploading progress photo:', error);
     return { success: false };
   }
 }
@@ -64,47 +64,47 @@ export async function uploadProgressPhotoAction(
  */
 export async function getProgressTimelineAction(
   userId: string,
-  _limit: number = 20,
+  _limit = 20
 ): Promise<ProgressPhoto[]> {
   try {
     // MVP: Return sample data
     return [
       {
-        id: "photo-1",
+        id: 'photo-1',
         userId,
-        photoUrl: "/progress/sample1.jpg",
-        thumbnailUrl: "/progress/sample1-thumb.jpg",
+        photoUrl: '/progress/sample1.jpg',
+        thumbnailUrl: '/progress/sample1-thumb.jpg',
         date: new Date(Date.now() - 90 * 24 * 60 * 60 * 1000),
         weight: 85,
         bodyFat: 18,
         measurements: { chest: 100, waist: 85, arms: 35 },
-        visibility: "PRIVATE",
+        visibility: 'PRIVATE',
       },
       {
-        id: "photo-2",
+        id: 'photo-2',
         userId,
-        photoUrl: "/progress/sample2.jpg",
-        thumbnailUrl: "/progress/sample2-thumb.jpg",
+        photoUrl: '/progress/sample2.jpg',
+        thumbnailUrl: '/progress/sample2-thumb.jpg',
         date: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
         weight: 82,
         bodyFat: 15,
         measurements: { chest: 102, waist: 82, arms: 36 },
-        visibility: "PRIVATE",
+        visibility: 'PRIVATE',
       },
       {
-        id: "photo-3",
+        id: 'photo-3',
         userId,
-        photoUrl: "/progress/sample3.jpg",
-        thumbnailUrl: "/progress/sample3-thumb.jpg",
+        photoUrl: '/progress/sample3.jpg',
+        thumbnailUrl: '/progress/sample3-thumb.jpg',
         date: new Date(),
         weight: 80,
         bodyFat: 13,
         measurements: { chest: 104, waist: 80, arms: 37 },
-        visibility: "PRIVATE",
+        visibility: 'PRIVATE',
       },
     ];
   } catch (error) {
-    console.error("Error getting progress timeline:", error);
+    console.error('Error getting progress timeline:', error);
     return [];
   }
 }
@@ -114,11 +114,11 @@ export async function getProgressTimelineAction(
  */
 export async function compareProgressPhotosAction(
   beforeId: string,
-  afterId: string,
+  afterId: string
 ): Promise<ProgressComparison | null> {
   try {
     // In production, fetch from database
-    const timeline = await getProgressTimelineAction("user");
+    const timeline = await getProgressTimelineAction('user');
 
     const before = timeline.find((p) => p.id === beforeId);
     const after = timeline.find((p) => p.id === afterId);
@@ -126,26 +126,20 @@ export async function compareProgressPhotosAction(
     if (!before || !after) return null;
 
     const daysBetween = Math.round(
-      (after.date.getTime() - before.date.getTime()) / (1000 * 60 * 60 * 24),
+      (after.date.getTime() - before.date.getTime()) / (1000 * 60 * 60 * 24)
     );
 
     return {
       before,
       after,
       changes: {
-        weightChange:
-          before.weight && after.weight
-            ? after.weight - before.weight
-            : undefined,
-        bodyFatChange:
-          before.bodyFat && after.bodyFat
-            ? after.bodyFat - before.bodyFat
-            : undefined,
+        weightChange: before.weight && after.weight ? after.weight - before.weight : undefined,
+        bodyFatChange: before.bodyFat && after.bodyFat ? after.bodyFat - before.bodyFat : undefined,
         daysBetween,
       },
     };
   } catch (error) {
-    console.error("Error comparing photos:", error);
+    console.error('Error comparing photos:', error);
     return null;
   }
 }
@@ -154,15 +148,15 @@ export async function compareProgressPhotosAction(
  * Delete a progress photo.
  */
 export async function deleteProgressPhotoAction(
-  userId: string,
-  photoId: string,
+  _userId: string,
+  photoId: string
 ): Promise<{ success: boolean }> {
   try {
     console.log(`Deleted progress photo: ${photoId}`);
-    revalidatePath("/progress");
+    revalidatePath('/progress');
     return { success: true };
   } catch (error) {
-    console.error("Error deleting photo:", error);
+    console.error('Error deleting photo:', error);
     return { success: false };
   }
 }
@@ -171,16 +165,16 @@ export async function deleteProgressPhotoAction(
  * Update photo visibility.
  */
 export async function updatePhotoVisibilityAction(
-  userId: string,
+  _userId: string,
   photoId: string,
-  visibility: ProgressPhoto["visibility"],
+  visibility: ProgressPhoto['visibility']
 ): Promise<{ success: boolean }> {
   try {
     console.log(`Updated visibility: ${photoId} -> ${visibility}`);
-    revalidatePath("/progress");
+    revalidatePath('/progress');
     return { success: true };
   } catch (error) {
-    console.error("Error updating visibility:", error);
+    console.error('Error updating visibility:', error);
     return { success: false };
   }
 }

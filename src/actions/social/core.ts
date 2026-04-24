@@ -1,12 +1,12 @@
-"use server";
+'use server';
 
-import prisma from "@/lib/prisma";
-import { revalidatePath } from "next/cache";
+import prisma from '@/lib/prisma';
+import { revalidatePath } from 'next/cache';
 
 export async function followUser(targetId: string) {
   // Mock user for now
   const sessionUser = await prisma.user.findFirst();
-  if (!sessionUser) throw new Error("Unauthorized");
+  if (!sessionUser) throw new Error('Unauthorized');
 
   await prisma.follow.create({
     data: {
@@ -15,13 +15,13 @@ export async function followUser(targetId: string) {
     },
   });
 
-  revalidatePath("/dashboard");
+  revalidatePath('/dashboard');
   return { success: true };
 }
 
 export async function unfollowUser(targetId: string) {
   const sessionUser = await prisma.user.findFirst();
-  if (!sessionUser) throw new Error("Unauthorized");
+  if (!sessionUser) throw new Error('Unauthorized');
 
   await prisma.follow.delete({
     where: {
@@ -32,29 +32,29 @@ export async function unfollowUser(targetId: string) {
     },
   });
 
-  revalidatePath("/dashboard");
+  revalidatePath('/dashboard');
   return { success: true };
 }
 
-import { getLeaderboard as getUnifiedLeaderboard } from "@/lib/leaderboard";
+import { getLeaderboard as getUnifiedLeaderboard } from '@/lib/leaderboard';
 
 // ...
 
-export async function getLeaderboard(type: "GLOBAL" | "FRIENDS" = "GLOBAL") {
+export async function getLeaderboard(type: 'GLOBAL' | 'FRIENDS' = 'GLOBAL') {
   const sessionUser = await prisma.user.findFirst();
 
   // Global Leaderboard (By Level/XP)
-  if (type === "GLOBAL") {
+  if (type === 'GLOBAL') {
     const users = await getUnifiedLeaderboard({
-      scope: "GLOBAL",
-      type: "XP",
+      scope: 'GLOBAL',
+      type: 'XP',
       limit: 50,
     });
     return users;
   }
 
   // Friends Leaderboard
-  if (type === "FRIENDS" && sessionUser) {
+  if (type === 'FRIENDS' && sessionUser) {
     const friends = await prisma.follow.findMany({
       where: { followerId: sessionUser.id },
       select: { followingId: true },
@@ -64,8 +64,8 @@ export async function getLeaderboard(type: "GLOBAL" | "FRIENDS" = "GLOBAL") {
     friendIds.push(sessionUser.id); // Include self
 
     const leaderboard = await getUnifiedLeaderboard({
-      scope: "FRIENDS",
-      type: "XP",
+      scope: 'FRIENDS',
+      type: 'XP',
       userIds: friendIds,
       limit: 50,
     });
@@ -76,7 +76,7 @@ export async function getLeaderboard(type: "GLOBAL" | "FRIENDS" = "GLOBAL") {
   return [];
 }
 
-export async function getSocialFeed(_page: number = 1) {
+export async function getSocialFeed(_page = 1) {
   const sessionUser = await prisma.user.findFirst();
   if (!sessionUser) return [];
 
@@ -92,12 +92,12 @@ export async function getSocialFeed(_page: number = 1) {
   const workouts = await prisma.exerciseLog.findMany({
     where: { userId: { in: followingIds }, isPersonalRecord: true },
     take: 20,
-    orderBy: { date: "desc" },
+    orderBy: { date: 'desc' },
     include: { user: { select: { heroName: true, activeTitle: true } } },
   });
 
   return workouts.map((w) => ({
-    type: "WORKOUT_PR",
+    type: 'WORKOUT_PR',
     user: w.user,
     data: w,
     timestamp: w.date,
@@ -108,7 +108,7 @@ export async function getFactionStatsAction() {
   try {
     // Aggregate stats from DB
     const stats = await prisma.user.groupBy({
-      by: ["faction"],
+      by: ['faction'],
       _count: {
         id: true,
       },
@@ -123,7 +123,7 @@ export async function getFactionStatsAction() {
     };
 
     stats.forEach((group) => {
-      const faction = group.faction === "ALLIANCE" ? "alliance" : "horde";
+      const faction = group.faction === 'ALLIANCE' ? 'alliance' : 'horde';
       if (result[faction]) {
         result[faction].members = group._count.id;
         result[faction].totalXp = group._sum.totalExperience || 0;
@@ -132,7 +132,7 @@ export async function getFactionStatsAction() {
 
     return { success: true, data: result };
   } catch (error) {
-    console.error("Faction Stats Error:", error);
-    return { success: false, error: "Failed to fetch faction stats" };
+    console.error('Faction Stats Error:', error);
+    return { success: false, error: 'Failed to fetch faction stats' };
   }
 }

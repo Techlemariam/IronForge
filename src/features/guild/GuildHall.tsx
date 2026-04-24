@@ -1,15 +1,10 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect, useCallback } from "react";
-import {
-  contributeToRaidAction,
-  getGuildAction,
-  startRaidAction,
-} from "@/actions/guild/raids";
-import {
-  createGuildAction,
-} from "@/actions/guild/creation";
-import { Shield, Sword, Users, Scroll } from "lucide-react";
+import { createGuildAction } from '@/actions/guild/creation';
+import { contributeToRaidAction, getGuildAction, startRaidAction } from '@/actions/guild/raids';
+import { Scroll, Shield, Sword, Users } from 'lucide-react';
+import type React from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 interface GuildHallProps {
   userId: string;
@@ -19,7 +14,7 @@ export const GuildHall: React.FC<GuildHallProps> = ({ userId }) => {
   // Basic state handling for MVP
   const [guild, setGuild] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [createName, setCreateName] = useState("");
+  const [createName, setCreateName] = useState('');
 
   const loadGuild = useCallback(async () => {
     setLoading(true);
@@ -39,7 +34,7 @@ export const GuildHall: React.FC<GuildHallProps> = ({ userId }) => {
     await createGuildAction({
       name: createName,
       tag: createName.slice(0, 4).toUpperCase(),
-      description: "" // Or add a description if needed
+      description: '', // Or add a description if needed
     });
     loadGuild();
   };
@@ -53,24 +48,19 @@ export const GuildHall: React.FC<GuildHallProps> = ({ userId }) => {
 
   const handleStartRaid = async () => {
     if (!guild) return;
-    await startRaidAction(guild.id, "Onyxia", 10000);
+    await startRaidAction(guild.id, 'Onyxia', 10000);
     loadGuild();
   };
 
-  if (loading)
-    return <div className="text-zinc-500">Loading Guild Data...</div>;
+  if (loading) return <div className="text-zinc-500">Loading Guild Data...</div>;
 
   if (!guild) {
     // No Guild View
     return (
       <div className="bg-zinc-900 border border-white/5 p-8 rounded-xl text-center">
         <Shield className="w-12 h-12 text-zinc-600 mx-auto mb-4" />
-        <h2 className="text-2xl font-bold text-white mb-2">
-          You are Guildless
-        </h2>
-        <p className="text-zinc-400 mb-6">
-          Join a guild to fight massive Raid Bosses.
-        </p>
+        <h2 className="text-2xl font-bold text-white mb-2">You are Guildless</h2>
+        <p className="text-zinc-400 mb-6">Join a guild to fight massive Raid Bosses.</p>
 
         <div className="max-w-xs mx-auto space-y-4">
           <input
@@ -85,9 +75,7 @@ export const GuildHall: React.FC<GuildHallProps> = ({ userId }) => {
           >
             Form New Guild
           </button>
-          <div className="text-xs text-zinc-500">
-            Or wait for an invite... (Search WIP)
-          </div>
+          <div className="text-xs text-zinc-500">Or wait for an invite... (Search WIP)</div>
         </div>
       </div>
     );
@@ -150,7 +138,7 @@ export const GuildHall: React.FC<GuildHallProps> = ({ userId }) => {
               disabled={activeRaid.currentHp <= 0}
               className="mt-6 w-full bg-red-600 hover:bg-red-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-3 rounded-lg uppercase tracking-wider transition-colors shadow-lg shadow-red-900/20"
             >
-              {activeRaid.currentHp > 0 ? "Attack!" : "Boss Defeated"}
+              {activeRaid.currentHp > 0 ? 'Attack!' : 'Boss Defeated'}
             </button>
           </div>
         </div>
@@ -169,12 +157,8 @@ export const GuildHall: React.FC<GuildHallProps> = ({ userId }) => {
         <div className="space-y-2">
           {guild.members.map((m: any) => (
             <div key={m.id} className="flex justify-between text-sm">
-              <span
-                className={
-                  m.id === userId ? "text-magma font-bold" : "text-zinc-300"
-                }
-              >
-                {m.heroName || m.email || "Unknown Hero"}
+              <span className={m.id === userId ? 'text-magma font-bold' : 'text-zinc-300'}>
+                {m.heroName || m.email || 'Unknown Hero'}
               </span>
               <span className="text-zinc-500">Lvl {m.level}</span>
             </div>

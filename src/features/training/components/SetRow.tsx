@@ -1,8 +1,8 @@
-import React from "react";
-import { Check, Zap, Crown } from "lucide-react";
-import { Set as WorkoutSet } from "@/types";
-import { twMerge } from "tailwind-merge";
-import { motion } from "framer-motion";
+import type { Set as WorkoutSet } from '@/types';
+import { motion } from 'framer-motion';
+import { Check, Crown, Zap } from 'lucide-react';
+import type React from 'react';
+import { twMerge } from 'tailwind-merge';
 
 interface SetRowProps {
   set: WorkoutSet;
@@ -10,28 +10,24 @@ interface SetRowProps {
 }
 
 const SetRow: React.FC<SetRowProps> = ({ set, setNumber }) => {
-  const { completed, weight, completedReps, reps, rpe, e1rm, rarity, isPr } =
-    set;
+  const { completed, weight, completedReps, reps, rpe, e1rm, rarity, isPr } = set;
 
   const baseClasses =
-    "grid grid-cols-5 items-center font-mono text-sm p-2 rounded-md transition-all duration-300";
-  const pendingClasses = "bg-obsidian/30";
+    'grid grid-cols-5 items-center font-mono text-sm p-2 rounded-md transition-all duration-300';
+  const pendingClasses = 'bg-obsidian/30';
 
   // Dynamic classes based on rarity
   const rarityStyles: { [key: string]: string } = {
-    common: "bg-void/40",
-    uncommon: "bg-green-600/10 border-l-2 border-green-500",
-    rare: "bg-blue-600/10 border-l-2 border-blue-500",
-    epic: "bg-purple-600/10 border-l-2 border-purple-500",
-    legendary:
-      "bg-orange-500/10 border-l-2 border-orange-400 shadow-glow-orange/30",
+    common: 'bg-void/40',
+    uncommon: 'bg-green-600/10 border-l-2 border-green-500',
+    rare: 'bg-blue-600/10 border-l-2 border-blue-500',
+    epic: 'bg-purple-600/10 border-l-2 border-purple-500',
+    legendary: 'bg-orange-500/10 border-l-2 border-orange-400 shadow-glow-orange/30',
   };
 
   const rowClass = twMerge(
     baseClasses,
-    completed
-      ? rarityStyles[rarity || "common"] || pendingClasses
-      : pendingClasses,
+    completed ? rarityStyles[rarity || 'common'] || pendingClasses : pendingClasses
   );
 
   // Animation variants
@@ -45,16 +41,13 @@ const SetRow: React.FC<SetRowProps> = ({ set, setNumber }) => {
       className={rowClass}
       variants={rowVariants}
       initial="visible"
-      animate={"visible"}
+      animate={'visible'}
       transition={{ duration: 0.5 }}
       layout
     >
       <div className="flex items-center space-x-2">
         {completed ? (
-          <Check
-            size={16}
-            className={`text-${rarity === "legendary" ? "orange-400" : "magma"}`}
-          />
+          <Check size={16} className={`text-${rarity === 'legendary' ? 'orange-400' : 'magma'}`} />
         ) : (
           <div className="w-4 h-4 border-2 border-forge-border rounded-full" />
         )}
@@ -78,7 +71,7 @@ const SetRow: React.FC<SetRowProps> = ({ set, setNumber }) => {
         <>
           <span className="text-center text-forge-muted">- kg</span>
           <span className="text-center text-forge-muted">
-            {typeof reps === "string" ? reps : reps || "-"} reps
+            {typeof reps === 'string' ? reps : reps || '-'} reps
           </span>
           <span className="text-center text-forge-muted">@{rpe}</span>
           <span className="text-right text-forge-muted">-</span>

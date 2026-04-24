@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from 'react';
 
 interface LiveCombatProps {
   watts: number;
@@ -30,7 +30,7 @@ export const useLiveCombat = ({
 }: LiveCombatProps) => {
   // Ephemeral Boss for the session
   const [boss, setBoss] = useState<BossState>({
-    name: "Frost Giant",
+    name: 'Frost Giant',
     currentHp: 50000,
     maxHp: 50000,
     isDefeated: false,

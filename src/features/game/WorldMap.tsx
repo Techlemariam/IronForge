@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Lock, Map as MapIcon, Compass } from "lucide-react";
 import {
-  getWorldStateAction,
+  type WorldRegion,
   getRegionBossAction,
-  WorldRegion,
-} from "@/actions/systems/world";
+  getWorldStateAction,
+} from '@/actions/systems/world';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Compass, Lock, Map as MapIcon } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 
 interface WorldMapProps {
   userLevel?: number; // Optional if we fetch from server, but kept for interface compatibility
@@ -18,9 +18,7 @@ interface WorldMapProps {
 export default function WorldMap({ onClose, onEnterCombat }: WorldMapProps) {
   const [regions, setRegions] = useState<WorldRegion[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedRegion, setSelectedRegion] = useState<WorldRegion | null>(
-    null,
-  );
+  const [selectedRegion, setSelectedRegion] = useState<WorldRegion | null>(null);
   const [isEntering, setIsEntering] = useState(false);
 
   const handleEnterRegion = async () => {
@@ -35,12 +33,12 @@ export default function WorldMap({ onClose, onEnterCombat }: WorldMapProps) {
           onEnterCombat(boss.id);
         }, 2000);
       } else {
-        console.warn("No active boss found for this region.");
+        console.warn('No active boss found for this region.');
         setIsEntering(false);
         setSelectedRegion(null);
       }
     } catch (e) {
-      console.error("Failed to enter region", e);
+      console.error('Failed to enter region', e);
       setIsEntering(false);
     }
   };
@@ -53,7 +51,7 @@ export default function WorldMap({ onClose, onEnterCombat }: WorldMapProps) {
           setRegions(data.regions);
         }
       } catch (error) {
-        console.error("Failed to load world map", error);
+        console.error('Failed to load world map', error);
       } finally {
         setLoading(false);
       }
@@ -78,7 +76,7 @@ export default function WorldMap({ onClose, onEnterCombat }: WorldMapProps) {
         Return to Citadel
       </button>
       {/* Background Texture (Abstract Grid for now) */}
-      <div className="absolute inset-0 opacity-20 bg-grid-titan"></div>
+      <div className="absolute inset-0 opacity-20 bg-grid-titan" />
 
       {/* Title Overlay */}
       <div className="absolute top-6 left-6 z-10 pointer-events-none">
@@ -107,40 +105,42 @@ export default function WorldMap({ onClose, onEnterCombat }: WorldMapProps) {
             onClick={() => setSelectedRegion(region)}
           >
             {/* Region-Specific Particles/Aura */}
-            {region.id === "iron_forge" && region.isUnlocked && (
+            {region.id === 'iron_forge' && region.isUnlocked && (
               <div className="absolute inset-0 bg-red-500/20 blur-xl rounded-full scale-150 animate-pulse" />
             )}
-            {region.id === "shadow_realms" && region.isUnlocked && (
+            {region.id === 'shadow_realms' && region.isUnlocked && (
               <div className="absolute inset-0 bg-purple-900/40 blur-xl rounded-full scale-150 animate-pulse" />
             )}
-            {region.id === "the_void" && region.isUnlocked && (
+            {region.id === 'the_void' && region.isUnlocked && (
               <div className="absolute inset-0 bg-white/10 blur-xl rounded-full scale-150 animate-pulse" />
             )}
 
             {/* Ping / Ripple Effect if Unlocked */}
             {region.isUnlocked && (
               <div
-                className={`absolute inset-0 rounded-full animate-ping opacity-20 ${region.id === "iron_forge"
-                  ? "bg-orange-500"
-                  : region.id === "shadow_realms"
-                    ? "bg-purple-500"
-                    : "bg-white"
-                  }`}
-              ></div>
+                className={`absolute inset-0 rounded-full animate-ping opacity-20 ${
+                  region.id === 'iron_forge'
+                    ? 'bg-orange-500'
+                    : region.id === 'shadow_realms'
+                      ? 'bg-purple-500'
+                      : 'bg-white'
+                }`}
+              />
             )}
 
             {/* Node Icon */}
             <div
               className={`
                             w-10 h-10 md:w-16 md:h-16 rounded-full border-2 flex items-center justify-center shadow-lg transition-all duration-300 relative z-10
-                            ${region.isUnlocked
-                  ? region.id === "iron_forge"
-                    ? "bg-void border-plasma text-plasma hover:shadow-[0_0_30px_rgba(249,115,22,0.6)]"
-                    : region.id === "shadow_realms"
-                      ? "bg-void border-warp text-warp hover:shadow-[0_0_30px_rgba(163,53,238,0.6)]"
-                      : "bg-void border-white text-white hover:shadow-[0_0_30px_rgba(255,255,255,0.4)]"
-                  : "bg-void border-steel text-steel grayscale cursor-not-allowed"
-                }
+                            ${
+                              region.isUnlocked
+                                ? region.id === 'iron_forge'
+                                  ? 'bg-void border-plasma text-plasma hover:shadow-[0_0_30px_rgba(249,115,22,0.6)]'
+                                  : region.id === 'shadow_realms'
+                                    ? 'bg-void border-warp text-warp hover:shadow-[0_0_30px_rgba(163,53,238,0.6)]'
+                                    : 'bg-void border-white text-white hover:shadow-[0_0_30px_rgba(255,255,255,0.4)]'
+                                : 'bg-void border-steel text-steel grayscale cursor-not-allowed'
+                            }
                         `}
             >
               {region.isUnlocked ? (
@@ -154,7 +154,7 @@ export default function WorldMap({ onClose, onEnterCombat }: WorldMapProps) {
             <div
               className={`
                             absolute top-full mt-2 left-1/2 -translate-x-1/2 whitespace-nowrap px-2 py-0.5 md:px-3 md:py-1 rounded bg-void/90 border border-steel text-[8px] md:text-xs font-bold uppercase tracking-tighter md:tracking-widest backdrop-blur-sm transition-all
-                            ${region.name === "???" ? "text-steel blur-[2px]" : region.isUnlocked ? "text-zinc-300 group-hover:text-white group-hover:border-zinc-500" : "text-steel"}
+                            ${region.name === '???' ? 'text-steel blur-[2px]' : region.isUnlocked ? 'text-zinc-300 group-hover:text-white group-hover:border-zinc-500' : 'text-steel'}
                         `}
             >
               {region.name}
@@ -178,12 +178,12 @@ export default function WorldMap({ onClose, onEnterCombat }: WorldMapProps) {
                   {selectedRegion.name}
                 </h3>
                 <div className="text-xs font-mono text-[var(--color-steel)] uppercase tracking-widest">
-                  Difficulty:{" "}
+                  Difficulty:{' '}
                   {selectedRegion.levelReq >= 20
-                    ? "EXTREME"
+                    ? 'EXTREME'
                     : selectedRegion.levelReq >= 10
-                      ? "HARD"
-                      : "NORMAL"}
+                      ? 'HARD'
+                      : 'NORMAL'}
                 </div>
               </div>
               <button
@@ -201,8 +201,7 @@ export default function WorldMap({ onClose, onEnterCombat }: WorldMapProps) {
             <div className="flex items-center gap-4">
               {!selectedRegion.isUnlocked ? (
                 <div className="w-full py-3 bg-[var(--color-armor)] text-[var(--color-steel)] font-bold uppercase text-center rounded flex items-center justify-center gap-2">
-                  <Lock className="w-4 h-4" /> Requires Level{" "}
-                  {selectedRegion.levelReq}
+                  <Lock className="w-4 h-4" /> Requires Level {selectedRegion.levelReq}
                 </div>
               ) : (
                 <button

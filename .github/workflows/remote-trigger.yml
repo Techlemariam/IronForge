@@ -50,6 +50,7 @@ on:
       - moltbot-trigger
       - google-api-trigger
       - universal-trigger
+      - jules-dispatch
 
 concurrency:
   group: remote-${{ github.workflow }}-${{ github.event.inputs.workflow || github.event.client_payload.workflow || 'default' }}-${{ github.ref }}
@@ -74,6 +75,9 @@ jobs:
       branch: ${{ steps.parse.outputs.branch }}
       dry_run: ${{ steps.parse.outputs.dry_run }}
       is_valid: ${{ steps.validate.outputs.is_valid }}
+      is_jules: ${{ steps.parse.outputs.is_jules }}
+      jules_task: ${{ steps.parse.outputs.jules_task }}
+      jules_prompt: ${{ steps.parse.outputs.jules_prompt }}
     steps:
       - name: Parse Input
         id: parse
@@ -96,6 +100,18 @@ jobs:
             echo "model=$MODEL" >> $GITHUB_OUTPUT
             echo "branch=$BRANCH" >> $GITHUB_OUTPUT
             echo "dry_run=$DRY_RUN" >> $GITHUB_OUTPUT
+
+            # Jules dispatch detection
+            EVENT_TYPE="${{ github.event.action }}"
+            if [ "$EVENT_TYPE" = "jules-dispatch" ]; then
+              echo "is_jules=true" >> $GITHUB_OUTPUT
+              echo "jules_task=${{ github.event.client_payload.task_id || '' }}" >> $GITHUB_OUTPUT
+              echo "jules_prompt=${{ github.event.client_payload.prompt || '' }}" >> $GITHUB_OUTPUT
+            else
+              echo "is_jules=false" >> $GITHUB_OUTPUT
+              echo "jules_task=" >> $GITHUB_OUTPUT
+              echo "jules_prompt=" >> $GITHUB_OUTPUT
+            fi
           fi
 
       - name: Validate Token (repository_dispatch only)
@@ -172,6 +188,44 @@ jobs:
           if (!(Test-Path ".agent\tasks")) { New-Item -ItemType Directory -Path ".agent\tasks" -Force }
           Set-Content -Path ".agent\tasks\current.md" -Value $taskContent
           Write-Host "✅ Task signal written to .agent\tasks\current.md"
+
+      - name: 🤖 Jules Dispatch
+        if: needs.validate.outputs.is_jules == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          JULES_TASK: ${{ needs.validate.outputs.jules_task }}
+          JULES_PROMPT: ${{ needs.validate.outputs.jules_prompt }}
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const task = process.env.JULES_TASK || 'unknown';
+            const prompt = process.env.JULES_PROMPT || `Autonomously complete task ${task} following IronForge coding standards.`;
+
+            console.log(`🤖 Dispatching Jules for task: ${task}`);
+
+            // Trigger jules-mission.yml with the constructed prompt
+            await github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'jules-mission.yml',
+              ref: '${{ needs.validate.outputs.branch }}',
+              inputs: { mission: prompt }
+            });
+
+            console.log(`✅ Jules mission dispatched for task ${task}`);
+
+            // Write session record signal for Antigravity to pick up
+            const fs = require('fs');
+            const sessionSignal = {
+              taskId: task,
+              prompt,
+              dispatchedAt: new Date().toISOString(),
+              dispatchedBy: 'github-action',
+              branch: `jules/${task.toLowerCase().replace(/[^a-z0-9]/g, '-')}`,
+              runId: context.runId
+            };
+            fs.mkdirSync('.agent/jules', { recursive: true });
+            fs.writeFileSync('.agent/jules/pending-session.json', JSON.stringify(sessionSignal, null, 2));
 
       - name: 🔧 Direct Execution (Fallback/L3)
         if: needs.validate.outputs.mode == 'direct-execution'

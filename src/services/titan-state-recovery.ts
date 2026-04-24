@@ -1,13 +1,10 @@
-"use server";
+'use server';
 
-import { prisma } from "@/lib/prisma";
-import { revalidatePath } from "next/cache";
-import { TitanState } from "@/types/schemas";
-import { getAuthoritativeTitanState } from "./titan-state-schema";
-import {
-  recordTitanEvent,
-  replayTitanEvents,
-} from "./titan-event-sourcing";
+import { prisma } from '@/lib/prisma';
+import type { TitanState } from '@/types/schemas';
+import { revalidatePath } from 'next/cache';
+import { recordTitanEvent, replayTitanEvents } from './titan-event-sourcing';
+import { getAuthoritativeTitanState } from './titan-state-schema';
 
 // ============================================
 // UNIFIED TITAN SOUL - STATE RECOVERY
@@ -38,12 +35,12 @@ const checkpoints: RecoveryCheckpoint[] = [];
  */
 export async function createRecoveryCheckpoint(
   userId: string,
-  reason: string,
+  reason: string
 ): Promise<RecoveryCheckpoint | null> {
   const state = await getAuthoritativeTitanState(userId);
 
   if (!state) {
-    console.error("Cannot create checkpoint: no Titan state found");
+    console.error('Cannot create checkpoint: no Titan state found');
     return null;
   }
 
@@ -67,8 +64,8 @@ export async function createRecoveryCheckpoint(
   }
 
   console.log(`[RECOVERY] Checkpoint created for ${userId}: ${reason}`);
-  await recordTitanEvent(userId, "STATE_RECOVERED", {
-    action: "checkpoint_created",
+  await recordTitanEvent(userId, 'STATE_RECOVERED', {
+    action: 'checkpoint_created',
     reason,
   });
 
@@ -78,9 +75,7 @@ export async function createRecoveryCheckpoint(
 /**
  * Get available checkpoints for rollback.
  */
-export async function getAvailableCheckpoints(
-  userId: string,
-): Promise<RecoveryCheckpoint[]> {
+export async function getAvailableCheckpoints(userId: string): Promise<RecoveryCheckpoint[]> {
   return checkpoints
     .filter((c) => c.userId === userId)
     .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
@@ -91,14 +86,12 @@ export async function getAvailableCheckpoints(
  */
 export async function rollbackToCheckpoint(
   userId: string,
-  checkpointId: string,
+  checkpointId: string
 ): Promise<RecoveryResult> {
-  const checkpoint = checkpoints.find(
-    (c) => c.id === checkpointId && c.userId === userId,
-  );
+  const checkpoint = checkpoints.find((c) => c.id === checkpointId && c.userId === userId);
 
   if (!checkpoint) {
-    return { success: false, message: "Checkpoint not found" };
+    return { success: false, message: 'Checkpoint not found' };
   }
 
   const currentState = await getAuthoritativeTitanState(userId);
@@ -130,17 +123,15 @@ export async function rollbackToCheckpoint(
       },
     });
 
-    await recordTitanEvent(userId, "STATE_RECOVERED", {
-      action: "rollback",
+    await recordTitanEvent(userId, 'STATE_RECOVERED', {
+      action: 'rollback',
       checkpointId,
       checkpointDate: checkpoint.createdAt.toISOString(),
     });
 
-    revalidatePath("/dashboard");
+    revalidatePath('/dashboard');
 
-    console.log(
-      `[RECOVERY] Rolled back ${userId} to checkpoint ${checkpointId}`,
-    );
+    console.log(`[RECOVERY] Rolled back ${userId} to checkpoint ${checkpointId}`);
 
     return {
       success: true,
@@ -149,8 +140,8 @@ export async function rollbackToCheckpoint(
       message: `Rolled back to checkpoint from ${checkpoint.createdAt.toLocaleString()}`,
     };
   } catch (error) {
-    console.error("Rollback failed:", error);
-    return { success: false, message: "Rollback failed" };
+    console.error('Rollback failed:', error);
+    return { success: false, message: 'Rollback failed' };
   }
 }
 
@@ -159,7 +150,7 @@ export async function rollbackToCheckpoint(
  */
 export async function rollbackToVersion(
   userId: string,
-  targetVersion: number,
+  targetVersion: number
 ): Promise<RecoveryResult> {
   try {
     const reconstructedState = await replayTitanEvents(userId, targetVersion);
@@ -187,12 +178,12 @@ export async function rollbackToVersion(
       });
     }
 
-    await recordTitanEvent(userId, "STATE_RECOVERED", {
-      action: "version_rollback",
+    await recordTitanEvent(userId, 'STATE_RECOVERED', {
+      action: 'version_rollback',
       targetVersion,
     });
 
-    revalidatePath("/dashboard");
+    revalidatePath('/dashboard');
 
     return {
       success: true,
@@ -200,24 +191,20 @@ export async function rollbackToVersion(
       message: `Rolled back to version ${targetVersion}`,
     };
   } catch (error) {
-    console.error("Version rollback failed:", error);
-    return { success: false, message: "Version rollback failed" };
+    console.error('Version rollback failed:', error);
+    return { success: false, message: 'Version rollback failed' };
   }
 }
 
 /**
  * Recover from corruption by resetting to last known good state.
  */
-export async function recoverFromCorruption(
-  userId: string,
-): Promise<RecoveryResult> {
+export async function recoverFromCorruption(userId: string): Promise<RecoveryResult> {
   const available = await getAvailableCheckpoints(userId);
 
   if (available.length === 0) {
     // No checkpoints - reset to defaults
-    console.log(
-      `[RECOVERY] No checkpoints for ${userId}, resetting to defaults`,
-    );
+    console.log(`[RECOVERY] No checkpoints for ${userId}, resetting to defaults`);
 
     try {
       await prisma.titan.update({
@@ -234,14 +221,14 @@ export async function recoverFromCorruption(
         },
       });
 
-      await recordTitanEvent(userId, "STATE_RECOVERED", {
-        action: "reset_to_defaults",
+      await recordTitanEvent(userId, 'STATE_RECOVERED', {
+        action: 'reset_to_defaults',
       });
-      revalidatePath("/dashboard");
+      revalidatePath('/dashboard');
 
-      return { success: true, message: "Reset to default state" };
+      return { success: true, message: 'Reset to default state' };
     } catch {
-      return { success: false, message: "Recovery failed" };
+      return { success: false, message: 'Recovery failed' };
     }
   }
 
@@ -260,14 +247,14 @@ export async function validateStateIntegrity(userId: string): Promise<{
   const issues: string[] = [];
 
   if (!state) {
-    return { valid: false, issues: ["No Titan state found"] };
+    return { valid: false, issues: ['No Titan state found'] };
   }
 
   // Check for invalid values
-  if (state.level < 1) issues.push("Level below minimum");
-  if (state.resources.hp < 0) issues.push("HP is negative");
-  if (state.resources.hp > state.resources.maxHp) issues.push("HP exceeds max");
-  if (state.economy.gold < 0) issues.push("Gold is negative");
+  if (state.level < 1) issues.push('Level below minimum');
+  if (state.resources.hp < 0) issues.push('HP is negative');
+  if (state.resources.hp > state.resources.maxHp) issues.push('HP exceeds max');
+  if (state.economy.gold < 0) issues.push('Gold is negative');
 
   // Check stats
   for (const [stat, value] of Object.entries(state.stats)) {
@@ -281,29 +268,26 @@ export async function validateStateIntegrity(userId: string): Promise<{
 /**
  * Auto-heal detected integrity issues.
  */
-export async function autoHealIntegrityIssues(
-  userId: string,
-): Promise<RecoveryResult> {
+export async function autoHealIntegrityIssues(userId: string): Promise<RecoveryResult> {
   const { valid, issues } = await validateStateIntegrity(userId);
 
   if (valid) {
-    return { success: true, message: "No issues to heal" };
+    return { success: true, message: 'No issues to heal' };
   }
 
   console.log(`[RECOVERY] Auto-healing ${issues.length} issues for ${userId}`);
 
   // Create checkpoint before healing
-  await createRecoveryCheckpoint(userId, "pre-auto-heal");
+  await createRecoveryCheckpoint(userId, 'pre-auto-heal');
 
   const state = await getAuthoritativeTitanState(userId);
-  if (!state) return { success: false, message: "No state to heal" };
+  if (!state) return { success: false, message: 'No state to heal' };
 
   // Fix issues
   const fixes: Record<string, unknown> = {};
 
   if (state.resources.hp < 0) fixes.currentHp = 0;
-  if (state.resources.hp > state.resources.maxHp)
-    fixes.currentHp = state.resources.maxHp;
+  if (state.resources.hp > state.resources.maxHp) fixes.currentHp = state.resources.maxHp;
 
   if (Object.keys(fixes).length > 0) {
     await prisma.titan.update({
@@ -319,11 +303,11 @@ export async function autoHealIntegrityIssues(
     });
   }
 
-  await recordTitanEvent(userId, "STATE_RECOVERED", {
-    action: "auto_heal",
+  await recordTitanEvent(userId, 'STATE_RECOVERED', {
+    action: 'auto_heal',
     issues,
   });
-  revalidatePath("/dashboard");
+  revalidatePath('/dashboard');
 
   return { success: true, message: `Healed ${issues.length} issues` };
 }

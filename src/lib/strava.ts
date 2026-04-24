@@ -1,4 +1,4 @@
-import { CardioLog  } from "@/types/prisma";
+import type { CardioLog } from '@/types/prisma';
 
 export interface StravaTokenResponse {
   token_type: string;
@@ -45,8 +45,8 @@ export interface StravaUploadResponse {
  */
 export function mapStravaActivityToCardioLog(
   activity: StravaActivity,
-  userId: string,
-): Omit<CardioLog, "id"> {
+  userId: string
+): Omit<CardioLog, 'id'> {
   // Simple Load Calculation (TSS approximation) if suffer_score is missing
   // TSS = (sec x IntensityFactor x IntensityFactor) / (36 x 100)
   // This is a rough fallback.

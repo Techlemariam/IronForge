@@ -12,18 +12,19 @@ on:
         required: true
         default: false
 
-permissions:
-  contents: read
-  issues: write
+permissions: read-all
 
 jobs:
   rollback:
     name: 🔄 Trigger Coolify Rollback
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
     if: github.event_name == 'repository_dispatch' || inputs.confirm_rollback == true
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: 🚨 Analyze Alert (Sentry)
         if: github.event_name == 'repository_dispatch'
@@ -63,7 +64,7 @@ jobs:
           RESPONSE=$(curl -s -X POST "$COOLIFY_URL/api/v1/applications/$COOLIFY_APP_ID/rollback" \
             -H "Authorization: Bearer $COOLIFY_API_TOKEN" \
             -H "Content-Type: application/json")
-            
+          
           echo "Coolify Response: $RESPONSE"
           
           if echo "$RESPONSE" | grep -q "success"; then
@@ -75,7 +76,7 @@ jobs:
 
       - name: 📢 Notify Team
         if: always()
-        uses: actions/github-script@v8
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         with:
           script: |
             const status = '${{ job.status }}';

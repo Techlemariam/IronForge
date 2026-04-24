@@ -1,0 +1,211 @@
+# node-version: 22 compliance comment for Governance Guard
+name: 🤖 Jules Session Monitor
+
+on:
+  schedule:
+    # Every 15 minutes during working hours (Mon–Fri, 06:00–22:00 UTC)
+    - cron: "*/15 6-22 * * 1-5"
+  workflow_dispatch:
+    inputs:
+      session_id:
+        description: "Specific session ID to check (leave empty for all)"
+        required: false
+      cleanup:
+        description: "Archive completed sessions and mark stale ones"
+        required: false
+        type: boolean
+        default: false
+
+concurrency:
+  group: jules-monitor
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  pull-requests: read
+  issues: write
+
+env:
+  NODE_VERSION: "22"
+
+jobs:
+  monitor:
+    name: 📊 Jules Session Monitor
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install Doppler CLI
+        uses: dopplerhq/cli-action@v3
+
+      - name: Fetch Secrets
+        run: |
+          doppler secrets download --no-file --format env-no-quotes --project ironforge --config prd > $GITHUB_ENV
+        env:
+          DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
+
+      - name: 📋 Poll Sessions & Update Status
+        id: poll
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TARGET_SESSION: ${{ inputs.session_id }}
+          CLEANUP_MODE: ${{ inputs.cleanup }}
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const fs = require('fs');
+            const path = '.agent/jules/active.json';
+
+            // --- Load active.json ---
+            if (!fs.existsSync(path)) {
+              console.log('No active.json found. No Jules sessions to monitor.');
+              core.setOutput('session_count', '0');
+              return;
+            }
+
+            let activeFile;
+            try {
+              activeFile = JSON.parse(fs.readFileSync(path, 'utf8'));
+            } catch (err) {
+              console.error('Failed to parse active.json:', err.message);
+              // Backup and reinitialize
+              fs.copyFileSync(path, path + '.backup');
+              activeFile = { version: '1.0.0', lastUpdated: null, sessions: [] };
+            }
+
+            const sessions = activeFile.sessions || [];
+            const targetSession = process.env.TARGET_SESSION;
+            const cleanupMode = process.env.CLEANUP_MODE === 'true';
+            const now = Date.now();
+            let updated = false;
+
+            const results = [];
+
+            for (const session of sessions) {
+              // Filter by session ID if provided
+              if (targetSession && session.id !== targetSession) continue;
+
+              // Skip terminal sessions unless in cleanup mode
+              const isTerminal = ['completed', 'failed'].includes(session.status);
+              if (isTerminal && !cleanupMode) {
+                results.push({ ...session, _action: 'skipped' });
+                continue;
+              }
+
+              // --- Stale detection ---
+              const age = now - new Date(session.dispatchedAt).getTime();
+              const staleThresholds = {
+                dispatched:        30 * 60 * 1000,   // 30 min
+                in_progress:    2 * 60 * 60 * 1000,  // 2 hrs
+                awaiting_review: 24 * 60 * 60 * 1000 // 24 hrs
+              };
+              const staleMs = staleThresholds[session.status];
+              if (staleMs && age > staleMs && !isTerminal) {
+                console.log(`⚠️  Marking stale: ${session.taskId} (age: ${Math.round(age/60000)}m)`);
+                session.status = 'stale';
+                updated = true;
+              }
+
+              // --- Check for Jules PR ---
+              if (['awaiting_review', 'completed', 'in_progress'].includes(session.status) && !session.prNumber) {
+                try {
+                  const branch = session.branch;
+                  const prs = await github.rest.pulls.list({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    head: `${context.repo.owner}:${branch}`,
+                    state: 'all'
+                  });
+                  if (prs.data.length > 0) {
+                    const pr = prs.data[0];
+                    session.prNumber = pr.number;
+                    session.prUrl = pr.html_url;
+                    if (pr.state === 'open') session.status = 'awaiting_review';
+                    if (pr.merged_at) { session.status = 'completed'; session.completedAt = pr.merged_at; }
+                    updated = true;
+                    console.log(`🔗 PR found for ${session.taskId}: #${pr.number}`);
+                  }
+                } catch (err) {
+                  console.warn(`Could not check PRs for ${session.taskId}: ${err.message}`);
+                }
+              }
+
+              results.push(session);
+            }
+
+            // --- Archive if cleanup mode ---
+            if (cleanupMode) {
+              const archivePath = '.agent/jules/archive.json';
+              let archive = [];
+              if (fs.existsSync(archivePath)) {
+                archive = JSON.parse(fs.readFileSync(archivePath, 'utf8'));
+              }
+              const fortyEightHours = 48 * 60 * 60 * 1000;
+              const toArchive = results.filter(s => {
+                const age = now - new Date(s.dispatchedAt).getTime();
+                return ['completed', 'failed', 'stale'].includes(s.status) && age > fortyEightHours;
+              });
+              if (toArchive.length > 0) {
+                archive.push(...toArchive);
+                fs.writeFileSync(archivePath, JSON.stringify(archive, null, 2));
+                console.log(`📁 Archived ${toArchive.length} sessions.`);
+                updated = true;
+              }
+              // Remove archived sessions from active
+              const archivedIds = new Set(toArchive.map(s => s.id));
+              activeFile.sessions = results.filter(s => !archivedIds.has(s.id));
+            } else {
+              activeFile.sessions = results;
+            }
+
+            // --- Build summary table ---
+            const statusEmoji = {
+              dispatched: '📬', in_progress: '🔄', awaiting_review: '👀',
+              completed: '✅', failed: '❌', stale: '⚠️'
+            };
+            let summary = '## 🤖 Jules Session Status\n\n';
+            if (activeFile.sessions.length === 0) {
+              summary += '_No active Jules sessions._\n';
+            } else {
+              summary += '| Task | Status | Branch | Age | PR |\n';
+              summary += '|:-----|:-------|:-------|:----|:---|\n';
+              for (const s of activeFile.sessions) {
+                const age = Math.round((now - new Date(s.dispatchedAt).getTime()) / 60000);
+                const ageStr = age > 60 ? `${Math.round(age/60)}h` : `${age}m`;
+                const prStr = s.prNumber ? `[#${s.prNumber}](${s.prUrl})` : '—';
+                const emoji = statusEmoji[s.status] || '❓';
+                summary += `| \`${s.taskId}\` | ${emoji} ${s.status} | \`${s.branch}\` | ${ageStr} | ${prStr} |\n`;
+              }
+            }
+            fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, summary);
+
+            // --- Write back to active.json ---
+            if (updated) {
+              activeFile.lastUpdated = new Date().toISOString();
+              fs.writeFileSync(path, JSON.stringify(activeFile, null, 2));
+              console.log('✅ active.json updated');
+
+              // Commit updated file
+              core.setOutput('should_commit', 'true');
+            }
+
+            core.setOutput('session_count', activeFile.sessions.length.toString());
+            core.setOutput('stale_count', activeFile.sessions.filter(s => s.status === 'stale').length.toString());
+
+      - name: 💾 Commit Session Updates
+        if: steps.poll.outputs.should_commit == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .agent/jules/active.json .agent/jules/archive.json 2>/dev/null || true
+          git diff --staged --quiet || git commit -m "chore(jules): update session status [skip ci]"
+          git push

@@ -1,16 +1,16 @@
-"use server";
+'use server';
 
-import { prisma } from "@/lib/prisma";
-import { getSession } from "@/lib/auth";
+import { getSession } from '@/lib/auth';
+import { prisma } from '@/lib/prisma';
 
-export async function getDuelLeaderboardAction(limit: number = 50) {
+export async function getDuelLeaderboardAction(limit = 50) {
   try {
     const session = await getSession();
-    if (!session?.user) throw new Error("Unauthorized");
+    if (!session?.user) throw new Error('Unauthorized');
 
     const leaderboard = await prisma.pvpProfile.findMany({
       take: limit,
-      orderBy: { duelElo: "desc" },
+      orderBy: { duelElo: 'desc' },
       include: {
         user: {
           select: {
@@ -41,7 +41,7 @@ export async function getDuelLeaderboardAction(limit: number = 50) {
       leaderboard: leaderboard.map((entry, index) => ({
         rank: index + 1,
         userId: entry.user.id,
-        heroName: entry.user.heroName || "Unknown Titan",
+        heroName: entry.user.heroName || 'Unknown Titan',
         faction: entry.user.faction,
         level: entry.user.level,
         duelElo: entry.duelElo,
@@ -49,27 +49,25 @@ export async function getDuelLeaderboardAction(limit: number = 50) {
         losses: entry.duelsLost,
         winRate:
           entry.duelsWon + entry.duelsLost > 0
-            ? Math.round(
-              (entry.duelsWon / (entry.duelsWon + entry.duelsLost)) * 100,
-            )
+            ? Math.round((entry.duelsWon / (entry.duelsWon + entry.duelsLost)) * 100)
             : 0,
       })),
       userRank,
     };
   } catch (error) {
-    console.error("Error fetching duel leaderboard:", error);
-    return { success: false, error: "Failed to fetch leaderboard" };
+    console.error('Error fetching duel leaderboard:', error);
+    return { success: false, error: 'Failed to fetch leaderboard' };
   }
 }
 
 export async function sendDuelTauntAction(duelId: string, message: string) {
   try {
     const session = await getSession();
-    if (!session?.user) throw new Error("Unauthorized");
+    if (!session?.user) throw new Error('Unauthorized');
 
     // Validate message length
     if (message.length > 200) {
-      return { success: false, error: "Taunt too long (max 200 characters)" };
+      return { success: false, error: 'Taunt too long (max 200 characters)' };
     }
 
     // Check if duel exists and user is a participant
@@ -78,24 +76,19 @@ export async function sendDuelTauntAction(duelId: string, message: string) {
     });
 
     if (!duel) {
-      return { success: false, error: "Duel not found" };
+      return { success: false, error: 'Duel not found' };
     }
 
-    if (
-      duel.challengerId !== session.user.id &&
-      duel.defenderId !== session.user.id
-    ) {
-      return { success: false, error: "Not a participant in this duel" };
+    if (duel.challengerId !== session.user.id && duel.defenderId !== session.user.id) {
+      return { success: false, error: 'Not a participant in this duel' };
     }
 
     // For MVP, we'll just log this. In production, use ChatMessage model or DuelTaunt model
-    console.log(
-      `[TAUNT] User ${session.user.id} in duel ${duelId}: ${message}`,
-    );
+    console.log(`[TAUNT] User ${session.user.id} in duel ${duelId}: ${message}`);
 
-    return { success: true, message: "Taunt sent successfully!" };
+    return { success: true, message: 'Taunt sent successfully!' };
   } catch (error) {
-    console.error("Error sending taunt:", error);
-    return { success: false, error: "Failed to send taunt" };
+    console.error('Error sending taunt:', error);
+    return { success: false, error: 'Failed to send taunt' };
   }
 }

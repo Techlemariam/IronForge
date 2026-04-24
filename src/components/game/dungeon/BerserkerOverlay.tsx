@@ -1,5 +1,5 @@
-import React from "react";
-import { m, AnimatePresence } from "framer-motion";
+import { AnimatePresence, m } from 'framer-motion';
+import type React from 'react';
 
 interface BerserkerOverlayProps {
   isActive: boolean;
@@ -16,19 +16,19 @@ const BerserkerOverlay: React.FC<BerserkerOverlayProps> = ({ isActive }) => {
           className="fixed inset-0 pointer-events-none z-40 overflow-hidden"
         >
           {/* Red Vignette */}
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(220,38,38,0.4)_100%)] animate-pulse"></div>
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(220,38,38,0.4)_100%)] animate-pulse" />
 
           {/* Blood Particles / Rage Lines (CSS Animation) */}
-          <div className="absolute inset-0 opacity-30 mix-blend-overlay bg-[url('https://www.transparenttextures.com/patterns/diagmonds-light.png')]"></div>
+          <div className="absolute inset-0 opacity-30 mix-blend-overlay bg-[url('https://www.transparenttextures.com/patterns/diagmonds-light.png')]" />
 
           {/* Text Overlay */}
           <div className="absolute bottom-1/4 left-0 right-0 text-center">
             <m.h2
               initial={{ scale: 0.5, opacity: 0 }}
               animate={{ scale: [1, 1.2, 1], opacity: 1 }}
-              transition={{ repeat: Infinity, duration: 0.8 }}
+              transition={{ repeat: Number.POSITIVE_INFINITY, duration: 0.8 }}
               className="text-6xl font-black text-red-600 italic uppercase tracking-tighter drop-shadow-[0_0_10px_rgba(255,0,0,0.8)]"
-              style={{ WebkitTextStroke: "2px black" }}
+              style={{ WebkitTextStroke: '2px black' }}
             >
               RAGE ACTIVE
             </m.h2>

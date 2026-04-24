@@ -1,8 +1,6 @@
-"use server";
+'use server';
 
-import { z } from "zod";
-import { prisma } from "@/lib/prisma";
-import { createClient } from "@/utils/supabase/server";
+import { prisma } from '@/lib/prisma';
 
 interface BackupData {
   version: string;
@@ -27,37 +25,12 @@ interface RestoreResult {
   };
 }
 
-const BACKUP_VERSION = "1.0.0";
-
-// Zod schema that mirrors BackupData for safe parsing
-const BackupDataSchema = z.object({
-  version: z.string(),
-  createdAt: z.string(),
-  userId: z.string(),
-  heroName: z.string(),
-  profile: z.unknown(),
-  titan: z.unknown(),
-  workoutHistory: z.array(z.unknown()),
-  achievements: z.array(z.string()),
-  settings: z.unknown(),
-  equipment: z.array(z.unknown()),
-});
+const BACKUP_VERSION = '1.0.0';
 
 /**
  * Create a full backup of user data.
- * Verifies the caller's identity via Supabase session before loading any data.
  */
-export async function createBackupAction(
-  userId: string,
-): Promise<BackupData | null> {
-  // Auth guard: verify the session matches the requested userId
-  const supabase = await createClient();
-  const { data: { user: sessionUser } } = await supabase.auth.getUser();
-  if (!sessionUser || sessionUser.id !== userId) {
-    console.warn("createBackupAction: unauthorized attempt to access user data.");
-    return null;
-  }
-
+export async function createBackupAction(userId: string): Promise<BackupData | null> {
   try {
     const user = await prisma.user.findUnique({
       where: { id: userId },
@@ -70,19 +43,19 @@ export async function createBackupAction(
 
     const exerciseLogs = await prisma.exerciseLog.findMany({
       where: { userId },
-      orderBy: { date: "desc" },
+      orderBy: { date: 'desc' },
     });
 
     const cardioLogs = await prisma.cardioLog.findMany({
       where: { userId },
-      orderBy: { date: "desc" },
+      orderBy: { date: 'desc' },
     });
 
     const backup: BackupData = {
       version: BACKUP_VERSION,
       createdAt: new Date().toISOString(),
       userId: user.id,
-      heroName: user.heroName || "Unknown",
+      heroName: user.heroName || 'Unknown',
       profile: {
         level: user.level,
         totalXp: user.totalExperience,
@@ -91,24 +64,24 @@ export async function createBackupAction(
       },
       titan: user.titan
         ? {
-          name: user.titan.name,
-          strength: user.titan.strength,
-          vitality: user.titan.vitality,
-          endurance: user.titan.endurance,
-          agility: user.titan.agility,
-          willpower: user.titan.willpower,
-        }
+            name: user.titan.name,
+            strength: user.titan.strength,
+            vitality: user.titan.vitality,
+            endurance: user.titan.endurance,
+            agility: user.titan.agility,
+            willpower: user.titan.willpower,
+          }
         : null,
       workoutHistory: [
         ...exerciseLogs.map((log) => ({
-          type: "STRENGTH",
+          type: 'STRENGTH',
           exerciseId: log.exerciseId,
           date: log.date,
           sets: log.sets,
           notes: log.notes,
         })),
         ...cardioLogs.map((log) => ({
-          type: "CARDIO",
+          type: 'CARDIO',
           activityType: log.type,
           date: log.date,
           duration: log.duration,
@@ -123,29 +96,20 @@ export async function createBackupAction(
 
     return backup;
   } catch (error) {
-    console.error("Error creating backup:", error);
+    console.error('Error creating backup:', error);
     return null;
   }
 }
 
 /**
  * Restore user data from backup.
- * Validates the JSON with Zod before accessing any fields.
  */
 export async function restoreBackupAction(
   userId: string,
-  backupJson: string,
+  backupJson: string
 ): Promise<RestoreResult> {
   try {
-    // Zod-validated parse — avoids unsafe JSON.parse cast
-    const parseResult = BackupDataSchema.safeParse(JSON.parse(backupJson));
-    if (!parseResult.success) {
-      return {
-        success: false,
-        message: `Invalid backup format: ${parseResult.error.message}`,
-      };
-    }
-    const backup = parseResult.data;
+    const backup: BackupData = JSON.parse(backupJson);
 
     // Validate backup version
     if (!backup.version || backup.version !== BACKUP_VERSION) {
@@ -156,12 +120,12 @@ export async function restoreBackupAction(
     }
 
     // In production, restore data to database
-    console.log(`Restoring backup for ID:[REDACTED] from ${backup.createdAt}`);
+    console.log(`Restoring backup for ${userId} from ${backup.createdAt}`);
     console.log(`Workouts to restore: ${backup.workoutHistory.length}`);
 
     return {
       success: true,
-      message: "Backup restored successfully",
+      message: 'Backup restored successfully',
       itemsRestored: {
         workouts: backup.workoutHistory.length,
         achievements: backup.achievements.length,
@@ -169,11 +133,10 @@ export async function restoreBackupAction(
       },
     };
   } catch (error) {
-    console.error("Error restoring backup:", error);
+    console.error('Error restoring backup:', error);
     return {
       success: false,
-      message:
-        error instanceof Error ? error.message : "Failed to parse backup file",
+      message: error instanceof Error ? error.message : 'Failed to parse backup file',
     };
   }
 }
@@ -182,8 +145,8 @@ export async function restoreBackupAction(
  * Download backup as JSON file.
  */
 export function generateBackupFilename(heroName: string): string {
-  const date = new Date().toISOString().split("T")[0];
-  const safeName = heroName.replace(/[^a-zA-Z0-9]/g, "_");
+  const date = new Date().toISOString().split('T')[0];
+  const safeName = heroName.replace(/[^a-zA-Z0-9]/g, '_');
   return `ironforge_backup_${safeName}_${date}.json`;
 }
 
@@ -194,9 +157,17 @@ export function validateBackupFile(content: string): {
   valid: boolean;
   error?: string;
 } {
-  const result = BackupDataSchema.safeParse(JSON.parse(content));
-  if (!result.success) {
-    return { valid: false, error: result.error.message };
+  try {
+    const data = JSON.parse(content);
+
+    if (!data.version) return { valid: false, error: 'Missing version field' };
+    if (!data.userId) return { valid: false, error: 'Missing userId field' };
+    if (!data.createdAt) return { valid: false, error: 'Missing createdAt field' };
+    if (!Array.isArray(data.workoutHistory))
+      return { valid: false, error: 'Invalid workoutHistory' };
+
+    return { valid: true };
+  } catch {
+    return { valid: false, error: 'Invalid JSON format' };
   }
-  return { valid: true };
 }

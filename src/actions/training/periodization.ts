@@ -1,17 +1,10 @@
-"use server";
+'use server';
 
-import { prisma } from "@/lib/prisma";
-import {
-  calculateVolumeL3,
-  wellnessToRecoveryFactor,
-} from "@/utils/volumeCalculatorEnhanced";
+import { prisma } from '@/lib/prisma';
+import { calculateVolumeL3, wellnessToRecoveryFactor } from '@/utils/volumeCalculatorEnhanced';
 
-type TrainingPhase =
-  | "ACCUMULATION"
-  | "INTENSIFICATION"
-  | "REALIZATION"
-  | "DELOAD";
-type ProgramGoal = "HYPERTROPHY" | "STRENGTH" | "PEAKING" | "MAINTENANCE";
+type TrainingPhase = 'ACCUMULATION' | 'INTENSIFICATION' | 'REALIZATION' | 'DELOAD';
+type ProgramGoal = 'HYPERTROPHY' | 'STRENGTH' | 'PEAKING' | 'MAINTENANCE';
 
 interface PeriodizationPlan {
   currentPhase: TrainingPhase;
@@ -41,21 +34,21 @@ interface WeeklyRecommendation {
 const PHASE_TEMPLATES: Record<ProgramGoal, PhaseBlock[]> = {
   HYPERTROPHY: [
     {
-      phase: "ACCUMULATION",
+      phase: 'ACCUMULATION',
       weeks: 4,
       intensityRange: { min: 65, max: 75 },
       volumeMultiplier: 1.2,
       rpeTarget: 7,
     },
     {
-      phase: "INTENSIFICATION",
+      phase: 'INTENSIFICATION',
       weeks: 3,
       intensityRange: { min: 70, max: 80 },
       volumeMultiplier: 1.0,
       rpeTarget: 8,
     },
     {
-      phase: "DELOAD",
+      phase: 'DELOAD',
       weeks: 1,
       intensityRange: { min: 50, max: 60 },
       volumeMultiplier: 0.5,
@@ -64,28 +57,28 @@ const PHASE_TEMPLATES: Record<ProgramGoal, PhaseBlock[]> = {
   ],
   STRENGTH: [
     {
-      phase: "ACCUMULATION",
+      phase: 'ACCUMULATION',
       weeks: 3,
       intensityRange: { min: 70, max: 80 },
       volumeMultiplier: 1.0,
       rpeTarget: 7,
     },
     {
-      phase: "INTENSIFICATION",
+      phase: 'INTENSIFICATION',
       weeks: 3,
       intensityRange: { min: 80, max: 88 },
       volumeMultiplier: 0.85,
       rpeTarget: 8,
     },
     {
-      phase: "REALIZATION",
+      phase: 'REALIZATION',
       weeks: 2,
       intensityRange: { min: 85, max: 95 },
       volumeMultiplier: 0.6,
       rpeTarget: 9,
     },
     {
-      phase: "DELOAD",
+      phase: 'DELOAD',
       weeks: 1,
       intensityRange: { min: 50, max: 60 },
       volumeMultiplier: 0.4,
@@ -94,21 +87,21 @@ const PHASE_TEMPLATES: Record<ProgramGoal, PhaseBlock[]> = {
   ],
   PEAKING: [
     {
-      phase: "INTENSIFICATION",
+      phase: 'INTENSIFICATION',
       weeks: 2,
       intensityRange: { min: 85, max: 92 },
       volumeMultiplier: 0.7,
       rpeTarget: 8.5,
     },
     {
-      phase: "REALIZATION",
+      phase: 'REALIZATION',
       weeks: 2,
       intensityRange: { min: 90, max: 100 },
       volumeMultiplier: 0.4,
       rpeTarget: 9.5,
     },
     {
-      phase: "DELOAD",
+      phase: 'DELOAD',
       weeks: 1,
       intensityRange: { min: 40, max: 50 },
       volumeMultiplier: 0.3,
@@ -117,14 +110,14 @@ const PHASE_TEMPLATES: Record<ProgramGoal, PhaseBlock[]> = {
   ],
   MAINTENANCE: [
     {
-      phase: "ACCUMULATION",
+      phase: 'ACCUMULATION',
       weeks: 3,
       intensityRange: { min: 65, max: 75 },
       volumeMultiplier: 0.8,
       rpeTarget: 6,
     },
     {
-      phase: "DELOAD",
+      phase: 'DELOAD',
       weeks: 1,
       intensityRange: { min: 50, max: 60 },
       volumeMultiplier: 0.5,
@@ -139,7 +132,7 @@ const PHASE_TEMPLATES: Record<ProgramGoal, PhaseBlock[]> = {
 export async function generatePeriodizationPlanAction(
   userId: string,
   goal: ProgramGoal,
-  startWeek: number = 1,
+  startWeek = 1
 ): Promise<PeriodizationPlan> {
   try {
     const template = PHASE_TEMPLATES[goal];
@@ -167,43 +160,28 @@ export async function generatePeriodizationPlanAction(
 
     const experience =
       (user?.titan?.level || 1) < 10
-        ? "beginner"
+        ? 'beginner'
         : (user?.titan?.level || 1) < 30
-          ? "intermediate"
+          ? 'intermediate'
           : (user?.titan?.level || 1) < 60
-            ? "advanced"
-            : "elite";
+            ? 'advanced'
+            : 'elite';
 
     // Calculate volume recommendations per muscle
-    const muscles = [
-      "chest",
-      "back",
-      "shoulders",
-      "quadriceps",
-      "hamstrings",
-      "biceps",
-      "triceps",
-    ];
+    const muscles = ['chest', 'back', 'shoulders', 'quadriceps', 'hamstrings', 'biceps', 'triceps'];
     const targetVolume: Record<string, number> = {};
 
     for (const muscle of muscles) {
       const rec = calculateVolumeL3(muscle, experience as any, 1.0, 1.0);
-      targetVolume[muscle] = Math.round(
-        rec.optimal * currentPhase.volumeMultiplier,
-      );
+      targetVolume[muscle] = Math.round(rec.optimal * currentPhase.volumeMultiplier);
     }
 
     const recommendations: WeeklyRecommendation = {
       targetVolume,
-      targetIntensity:
-        (currentPhase.intensityRange.min + currentPhase.intensityRange.max) / 2,
+      targetIntensity: (currentPhase.intensityRange.min + currentPhase.intensityRange.max) / 2,
       targetRpe: currentPhase.rpeTarget,
-      deloadDue: currentPhase.phase === "DELOAD",
-      notes: generatePhaseNotes(
-        currentPhase.phase,
-        weekInPhase,
-        currentPhase.weeks,
-      ),
+      deloadDue: currentPhase.phase === 'DELOAD',
+      notes: generatePhaseNotes(currentPhase.phase, weekInPhase, currentPhase.weeks),
     };
 
     return {
@@ -214,36 +192,31 @@ export async function generatePeriodizationPlanAction(
       recommendations,
     };
   } catch (error) {
-    console.error("Error generating periodization plan:", error);
+    console.error('Error generating periodization plan:', error);
     throw error;
   }
 }
 
-function generatePhaseNotes(
-  phase: TrainingPhase,
-  week: number,
-  totalWeeks: number,
-): string[] {
+function generatePhaseNotes(phase: TrainingPhase, week: number, totalWeeks: number): string[] {
   const notes: string[] = [];
 
   switch (phase) {
-    case "ACCUMULATION":
-      notes.push("Focus on volume accumulation and technique work.");
-      notes.push("Keep RPE moderate to build work capacity.");
-      if (week === totalWeeks)
-        notes.push("Next phase: Intensification - intensity increases.");
+    case 'ACCUMULATION':
+      notes.push('Focus on volume accumulation and technique work.');
+      notes.push('Keep RPE moderate to build work capacity.');
+      if (week === totalWeeks) notes.push('Next phase: Intensification - intensity increases.');
       break;
-    case "INTENSIFICATION":
-      notes.push("Reduce volume, increase weight.");
-      notes.push("Focus on progressive overload with heavier loads.");
+    case 'INTENSIFICATION':
+      notes.push('Reduce volume, increase weight.');
+      notes.push('Focus on progressive overload with heavier loads.');
       break;
-    case "REALIZATION":
-      notes.push("Peak performance phase - minimal volume, max intensity.");
-      notes.push("Test new PRs if ready.");
+    case 'REALIZATION':
+      notes.push('Peak performance phase - minimal volume, max intensity.');
+      notes.push('Test new PRs if ready.');
       break;
-    case "DELOAD":
-      notes.push("Active recovery week. Reduce all training stress.");
-      notes.push("Focus on mobility, light technique work, and rest.");
+    case 'DELOAD':
+      notes.push('Active recovery week. Reduce all training stress.');
+      notes.push('Focus on mobility, light technique work, and rest.');
       break;
   }
 
@@ -254,10 +227,10 @@ function generatePhaseNotes(
  * Adapt plan based on real-time wellness data.
  */
 export async function adaptPlanToWellnessAction(
-  userId: string,
+  _userId: string,
   plan: PeriodizationPlan,
   sleepScore?: number,
-  stressLevel?: number,
+  stressLevel?: number
 ): Promise<PeriodizationPlan> {
   const recoveryFactor = wellnessToRecoveryFactor(sleepScore, stressLevel);
 
@@ -269,23 +242,16 @@ export async function adaptPlanToWellnessAction(
       Object.entries(plan.recommendations.targetVolume).map(([muscle, vol]) => [
         muscle,
         Math.round(vol * recoveryFactor),
-      ]),
+      ])
     ),
     notes: [...plan.recommendations.notes],
   };
 
   if (recoveryFactor < 0.8) {
-    adapted.recommendations.notes.unshift(
-      "⚠️ Low wellness detected. Volume reduced automatically.",
-    );
-    adapted.recommendations.targetRpe = Math.max(
-      5,
-      adapted.recommendations.targetRpe - 1,
-    );
+    adapted.recommendations.notes.unshift('⚠️ Low wellness detected. Volume reduced automatically.');
+    adapted.recommendations.targetRpe = Math.max(5, adapted.recommendations.targetRpe - 1);
   } else if (recoveryFactor > 1.1) {
-    adapted.recommendations.notes.unshift(
-      "💪 Great recovery! Consider pushing slightly harder.",
-    );
+    adapted.recommendations.notes.unshift('💪 Great recovery! Consider pushing slightly harder.');
   }
 
   return adapted;
@@ -294,9 +260,7 @@ export async function adaptPlanToWellnessAction(
 /**
  * Get recommended goal based on training history.
  */
-export async function getRecommendedGoalAction(
-  userId: string,
-): Promise<ProgramGoal> {
+export async function getRecommendedGoalAction(userId: string): Promise<ProgramGoal> {
   // Simplified logic - in production would analyze training patterns
   const user = await prisma.user.findUnique({
     where: { id: userId },
@@ -305,7 +269,7 @@ export async function getRecommendedGoalAction(
 
   const level = user?.titan?.level || 1;
 
-  if (level < 15) return "HYPERTROPHY"; // Build base
-  if (level < 40) return "STRENGTH"; // Develop strength
-  return "HYPERTROPHY"; // Default to hypertrophy for advanced
+  if (level < 15) return 'HYPERTROPHY'; // Build base
+  if (level < 40) return 'STRENGTH'; // Develop strength
+  return 'HYPERTROPHY'; // Default to hypertrophy for advanced
 }

@@ -1,8 +1,8 @@
-"use server";
+'use server';
 
-import { prisma } from "@/lib/prisma";
-import { revalidatePath } from "next/cache";
-import { LEAGUE_TIERS, LeagueInfo } from "@/lib/game/tier-data";
+import { LEAGUE_TIERS, type LeagueInfo } from '@/lib/game/tier-data';
+import { prisma } from '@/lib/prisma';
+import { revalidatePath } from 'next/cache';
 
 export interface SeasonInfo {
   id: string;
@@ -18,18 +18,10 @@ export interface SeasonInfo {
  */
 export async function getCurrentSeasonAction(): Promise<SeasonInfo> {
   const now = new Date();
-  const seasonStart = new Date(
-    now.getFullYear(),
-    Math.floor(now.getMonth() / 3) * 3,
-    1,
-  );
-  const seasonEnd = new Date(
-    seasonStart.getFullYear(),
-    seasonStart.getMonth() + 3,
-    0,
-  );
+  const seasonStart = new Date(now.getFullYear(), Math.floor(now.getMonth() / 3) * 3, 1);
+  const seasonEnd = new Date(seasonStart.getFullYear(), seasonStart.getMonth() + 3, 0);
 
-  const seasonNames = ["Winter", "Spring", "Summer", "Fall"];
+  const seasonNames = ['Winter', 'Spring', 'Summer', 'Fall'];
   const quarter = Math.floor(now.getMonth() / 3);
 
   return {
@@ -38,18 +30,14 @@ export async function getCurrentSeasonAction(): Promise<SeasonInfo> {
     startDate: seasonStart,
     endDate: seasonEnd,
     isActive: true,
-    daysRemaining: Math.ceil(
-      (seasonEnd.getTime() - now.getTime()) / (1000 * 60 * 60 * 24),
-    ),
+    daysRemaining: Math.ceil((seasonEnd.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)),
   };
 }
 
 /**
  * Get user's league info.
  */
-export async function getLeagueInfoAction(
-  userId: string,
-): Promise<LeagueInfo | null> {
+export async function getLeagueInfoAction(userId: string): Promise<LeagueInfo | null> {
   try {
     const profile = await prisma.pvpProfile.findFirst({
       where: { userId },
@@ -58,9 +46,7 @@ export async function getLeagueInfoAction(
     if (!profile) return null;
 
     const rating = profile.duelElo || 1000;
-    const tierIndex = LEAGUE_TIERS.findIndex(
-      (t) => rating >= t.minRating && rating <= t.maxRating,
-    );
+    const tierIndex = LEAGUE_TIERS.findIndex((t) => rating >= t.minRating && rating <= t.maxRating);
     const tier = LEAGUE_TIERS[tierIndex] || LEAGUE_TIERS[0];
     const nextTier = LEAGUE_TIERS[tierIndex + 1];
 
@@ -89,7 +75,7 @@ export async function getLeagueInfoAction(
       pointsToNextTier: nextTier ? nextTier.minRating - rating : undefined,
     };
   } catch (error) {
-    console.error("Error fetching league info:", error);
+    console.error('Error fetching league info:', error);
     return null;
   }
 }
@@ -99,7 +85,7 @@ export async function getLeagueInfoAction(
  */
 export async function getLeagueLeaderboardAction(
   leagueId: string,
-  limit: number = 50,
+  limit = 50
 ): Promise<{
   entries: Array<{
     rank: number;
@@ -120,7 +106,7 @@ export async function getLeagueLeaderboardAction(
       where: {
         duelElo: { gte: tier.minRating, lte: tier.maxRating },
       },
-      orderBy: { duelElo: "desc" },
+      orderBy: { duelElo: 'desc' },
       take: limit,
       include: {
         user: { select: { heroName: true } },
@@ -137,26 +123,22 @@ export async function getLeagueLeaderboardAction(
       entries: profiles.map((p, i) => ({
         rank: i + 1,
         userId: p.userId,
-        heroName: p.user.heroName || "Unknown",
+        heroName: p.user.heroName || 'Unknown',
         rating: p.duelElo || 1000,
         wins: p.duelsWon || 0,
         losses: p.duelsLost || 0,
         winRate:
           (p.duelsWon || 0) + (p.duelsLost || 0) > 0
-            ? Math.round(
-              ((p.duelsWon || 0) / ((p.duelsWon || 0) + (p.duelsLost || 0))) *
-              100,
-            )
+            ? Math.round(((p.duelsWon || 0) / ((p.duelsWon || 0) + (p.duelsLost || 0))) * 100)
             : 0,
       })),
       totalPlayers,
     };
   } catch (error) {
-    console.error("Error fetching league leaderboard:", error);
+    console.error('Error fetching league leaderboard:', error);
     return { entries: [], totalPlayers: 0 };
   }
 }
-
 
 /**
  * Award season-end rewards (to be called by cron).
@@ -173,9 +155,7 @@ export async function awardSeasonRewardsAction(): Promise<{
     let rewarded = 0;
     for (const profile of profiles) {
       const tierIndex = LEAGUE_TIERS.findIndex(
-        (t) =>
-          (profile.duelElo || 1000) >= t.minRating &&
-          (profile.duelElo || 1000) <= t.maxRating,
+        (t) => (profile.duelElo || 1000) >= t.minRating && (profile.duelElo || 1000) <= t.maxRating
       );
 
       // Award XP based on tier (higher tier = more XP)
@@ -189,10 +169,10 @@ export async function awardSeasonRewardsAction(): Promise<{
       rewarded++;
     }
 
-    revalidatePath("/iron-arena");
+    revalidatePath('/iron-arena');
     return { success: true, rewarded };
   } catch (error) {
-    console.error("Error awarding season rewards:", error);
+    console.error('Error awarding season rewards:', error);
     return { success: false, rewarded: 0 };
   }
 }

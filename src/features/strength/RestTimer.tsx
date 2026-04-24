@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import React, { useEffect } from "react";
-import { Timer, Play, Pause, RotateCcw, Plus, Minus } from "lucide-react";
-import { useRestTimer } from "@/hooks/useRestTimer";
-import { cn } from "@/lib/utils";
-import { playSound } from "@/utils"; // Ensure this exists or mock it
+import { useRestTimer } from '@/hooks/useRestTimer';
+import { cn } from '@/lib/utils';
+import { playSound } from '@/utils'; // Ensure this exists or mock it
+import { Minus, Pause, Play, Plus, RotateCcw, Timer } from 'lucide-react';
+import React, { useEffect } from 'react';
 
 interface RestTimerProps {
   className?: string;
@@ -28,7 +28,7 @@ export const RestTimer: React.FC<RestTimerProps> = ({ className }) => {
   // Sound effect on completion
   useEffect(() => {
     if (hasFinished && !hasPlayedSound) {
-      playSound("ding");
+      playSound('ding');
       setHasPlayedSound(true);
     }
     // Reset flag when timer restarts
@@ -40,7 +40,7 @@ export const RestTimer: React.FC<RestTimerProps> = ({ className }) => {
   const formatTime = (seconds: number) => {
     const m = Math.floor(seconds / 60);
     const s = seconds % 60;
-    return `${m}:${s < 10 ? "0" : ""}${s}`;
+    return `${m}:${s < 10 ? '0' : ''}${s}`;
   };
 
   if (!isActive && timeLeft === 90) {
@@ -48,26 +48,37 @@ export const RestTimer: React.FC<RestTimerProps> = ({ className }) => {
   }
 
   return (
-    <div className={cn("bg-zinc-900 border border-white/5 rounded-xl p-4 flex flex-col items-center gap-4 shadow-lg", className)}>
+    <div
+      className={cn(
+        'bg-zinc-900 border border-white/5 rounded-xl p-4 flex flex-col items-center gap-4 shadow-lg',
+        className
+      )}
+    >
       <div className="relative">
-        <div className={cn(
-          "text-6xl font-black font-mono tracking-tighter tabular-nums transition-colors",
-          isActive ? "text-magma" : "text-zinc-600"
-        )}>
+        <div
+          className={cn(
+            'text-6xl font-black font-mono tracking-tighter tabular-nums transition-colors',
+            isActive ? 'text-magma' : 'text-zinc-600'
+          )}
+        >
           {formatTime(timeLeft)}
         </div>
-        <Timer className={cn(
-          "absolute -top-2 -right-6 w-6 h-6",
-          isActive ? "text-magma animate-pulse" : "text-zinc-700"
-        )} />
+        <Timer
+          className={cn(
+            'absolute -top-2 -right-6 w-6 h-6',
+            isActive ? 'text-magma animate-pulse' : 'text-zinc-700'
+          )}
+        />
       </div>
 
       <div className="flex items-center gap-3 w-full justify-center">
         <button
-          onClick={() => isActive ? stop() : start(timeLeft > 0 ? timeLeft : 90)}
+          onClick={() => (isActive ? stop() : start(timeLeft > 0 ? timeLeft : 90))}
           className={cn(
-            "p-4 rounded-full transition-all shadow-lg active:scale-95",
-            isActive ? "bg-zinc-800 text-zinc-400 hover:text-white" : "bg-magma text-black hover:bg-magma/90"
+            'p-4 rounded-full transition-all shadow-lg active:scale-95',
+            isActive
+              ? 'bg-zinc-800 text-zinc-400 hover:text-white'
+              : 'bg-magma text-black hover:bg-magma/90'
           )}
         >
           {isActive ? (

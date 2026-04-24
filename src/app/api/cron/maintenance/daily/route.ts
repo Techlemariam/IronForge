@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
-import prisma from "@/lib/prisma";
-import { OracleService } from "@/services/oracle";
-import { TerritoryService } from "@/services/game/TerritoryService";
-import { revalidatePath } from "next/cache";
+import prisma from '@/lib/prisma';
+import { TerritoryService } from '@/services/game/TerritoryService';
+import { OracleService } from '@/services/oracle';
+import { revalidatePath } from 'next/cache';
+import { type NextRequest, NextResponse } from 'next/server';
 
-export const dynamic = "force-dynamic";
+export const dynamic = 'force-dynamic';
 export const maxDuration = 120; // 2 minutes for daily maintenance
 
 /**
@@ -13,74 +13,74 @@ export const maxDuration = 120; // 2 minutes for daily maintenance
  * - Territory Income Distribution
  */
 export async function GET(request: NextRequest) {
-    const authHeader = request.headers.get("authorization");
-    if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-        return new NextResponse("Unauthorized", { status: 401 });
-    }
+  const authHeader = request.headers.get('authorization');
+  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+    return new NextResponse('Unauthorized', { status: 401 });
+  }
 
-    const report: any = {
-        timestamp: new Date().toISOString(),
-        tasks: {}
-    };
+  const report: any = {
+    timestamp: new Date().toISOString(),
+    tasks: {},
+  };
 
-    // 1. Daily Oracle
-    try {
-        const titans = await prisma.titan.findMany({
-            where: {
-                isInjured: false,
-                user: { subscriptionTier: { not: "FREE" } }
+  // 1. Daily Oracle
+  try {
+    const titans = await prisma.titan.findMany({
+      where: {
+        isInjured: false,
+        user: { subscriptionTier: { not: 'FREE' } },
+      },
+      select: { userId: true, name: true },
+    });
+
+    let decreesIssued = 0;
+    for (const titan of titans) {
+      try {
+        const decree = await OracleService.generateDailyDecree(titan.userId);
+
+        // Always update (even NEUTRAL) if we want to show "Conditions Stable"
+        // But legacy logic skipped neutral. V3 has specific codes.
+        // Let's stick to update if it has significant actions or effect.
+        // Or simply update currentBuff with the V3 object.
+
+        if (decree.type !== 'NEUTRAL' || decree.actions.notifyUser) {
+          await prisma.titan.update({
+            where: { userId: titan.userId },
+            data: {
+              currentBuff: decree as any,
+              buffExpiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
             },
-            select: { userId: true, name: true },
-        });
+          });
+          decreesIssued++;
 
-        let decreesIssued = 0;
-        for (const titan of titans) {
-            try {
-                const decree = await OracleService.generateDailyDecree(titan.userId);
-
-                // Always update (even NEUTRAL) if we want to show "Conditions Stable"
-                // But legacy logic skipped neutral. V3 has specific codes.
-                // Let's stick to update if it has significant actions or effect.
-                // Or simply update currentBuff with the V3 object.
-
-                if (decree.type !== "NEUTRAL" || decree.actions.notifyUser) {
-                    await prisma.titan.update({
-                        where: { userId: titan.userId },
-                        data: {
-                            currentBuff: decree as any,
-                            buffExpiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
-                        },
-                    });
-                    decreesIssued++;
-
-                    // Proactive Notification
-                    if (decree.actions.notifyUser) {
-                        const { NotificationService } = await import("@/services/notifications");
-                        await NotificationService.create({
-                            userId: titan.userId,
-                            type: "ORACLE_DECREE",
-                            message: `${decree.label}: ${decree.description}`
-                        });
-                    }
-                }
-            } catch (e) {
-                console.error(`Oracle failed for ${titan.userId}`, e);
-            }
+          // Proactive Notification
+          if (decree.actions.notifyUser) {
+            const { NotificationService } = await import('@/services/notifications');
+            await NotificationService.create({
+              userId: titan.userId,
+              type: 'ORACLE_DECREE',
+              message: `${decree.label}: ${decree.description}`,
+            });
+          }
         }
-        report.tasks.oracle = { success: true, processed: titans.length, decreesIssued };
-    } catch (e) {
-        report.tasks.oracle = { success: false, error: String(e) };
+      } catch (e) {
+        console.error(`Oracle failed for ${titan.userId}`, e);
+      }
     }
+    report.tasks.oracle = { success: true, processed: titans.length, decreesIssued };
+  } catch (e) {
+    report.tasks.oracle = { success: false, error: String(e) };
+  }
 
-    // 2. Territory Income
-    try {
-        await TerritoryService.distributeDailyIncome();
-        report.tasks.territoryIncome = { success: true };
-    } catch (e) {
-        report.tasks.territoryIncome = { success: false, error: String(e) };
-    }
+  // 2. Territory Income
+  try {
+    await TerritoryService.distributeDailyIncome();
+    report.tasks.territoryIncome = { success: true };
+  } catch (e) {
+    report.tasks.territoryIncome = { success: false, error: String(e) };
+  }
 
-    revalidatePath("/dashboard");
+  revalidatePath('/dashboard');
 
-    return NextResponse.json(report);
+  return NextResponse.json(report);
 }

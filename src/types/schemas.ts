@@ -25,7 +25,7 @@ export const TitanStateSchema = z.object({
 
   // Identity
   name: z.string().min(1).max(50),
-  class: z.enum(["WARRIOR", "MAGE", "RANGER", "TITAN", "BERSERKER"]),
+  class: z.enum(['WARRIOR', 'MAGE', 'RANGER', 'TITAN', 'BERSERKER']),
   level: z.number().int().min(1).max(999),
   prestige: z.number().int().min(0).max(100),
 
@@ -79,21 +79,19 @@ export const TitanStateSchema = z.object({
     z.object({
       id: z.string(),
       name: z.string(),
-      type: z.enum(["BUFF", "DEBUFF"]),
+      type: z.enum(['BUFF', 'DEBUFF']),
       stat: z.string(),
       value: z.number(),
       expiresAt: z.date().nullable(),
       stacks: z.number().int().min(1),
-    }),
+    })
   ),
 
   // Sync metadata
   syncMetadata: z.object({
     deviceId: z.string().optional(),
     syncedAt: z.date(),
-    conflictResolution: z
-      .enum(["SERVER_WINS", "CLIENT_WINS", "MERGE"])
-      .optional(),
+    conflictResolution: z.enum(['SERVER_WINS', 'CLIENT_WINS', 'MERGE']).optional(),
   }),
 });
 
@@ -105,7 +103,7 @@ export type TitanState = z.infer<typeof TitanStateSchema>;
 export const TitanMutationSchema = z.object({
   version: z.number().int().positive(), // Optimistic locking
   changes: z.record(z.string(), z.unknown()),
-  source: z.enum(["WORKOUT", "COMBAT", "QUEST", "PURCHASE", "ADMIN", "SYNC"]),
+  source: z.enum(['WORKOUT', 'COMBAT', 'QUEST', 'PURCHASE', 'ADMIN', 'SYNC']),
   timestamp: z.date(),
 });
 
@@ -116,7 +114,7 @@ export type TitanMutation = z.infer<typeof TitanMutationSchema>;
  */
 export const StartBossFightSchema = z.object({
   bossId: z.string(),
-  tier: z.enum(["STORY", "HEROIC", "TITAN_SLAYER"]),
+  tier: z.enum(['STORY', 'HEROIC', 'TITAN_SLAYER']),
 });
 
 /**
@@ -124,7 +122,7 @@ export const StartBossFightSchema = z.object({
  */
 export const PerformCombatActionInputSchema = z.object({
   action: z.object({
-    type: z.enum(["ATTACK", "DEFEND", "HEAL", "ULTIMATE"]),
+    type: z.enum(['ATTACK', 'DEFEND', 'HEAL', 'ULTIMATE']),
     payload: z.any().optional(),
   }),
   clientState: z.any().optional(),
@@ -134,14 +132,14 @@ export const PerformCombatActionInputSchema = z.object({
  * Schema for awarding gold to a user.
  */
 export const AwardGoldSchema = z.object({
-  amount: z.number().nonnegative().max(1000000)
+  amount: z.number().nonnegative().max(1000000),
 });
 
 /**
  * Helper schema for Hevy API interactions.
  */
 export const HevyHelperSchema = z.object({
-  apiKey: z.string().min(1, "Hevy API Key is required."),
+  apiKey: z.string().min(1, 'Hevy API Key is required.'),
   page: z.number().int().positive().optional(),
   pageSize: z.number().int().positive().optional(),
   count: z.number().int().positive().optional(),
@@ -158,6 +156,8 @@ export const ImportHevyHistorySchema = z.object({
  * Schema for crafting an item.
  */
 export const CraftItemSchema = z.object({
-  recipeId: z.string().min(1).regex(/^[a-zA-Z0-9_-]+$/, "Invalid recipe format"),
+  recipeId: z
+    .string()
+    .min(1)
+    .regex(/^[a-zA-Z0-9_-]+$/, 'Invalid recipe format'),
 });
-

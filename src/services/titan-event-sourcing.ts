@@ -1,6 +1,4 @@
-"use server";
-
-
+'use server';
 
 // ============================================
 // UNIFIED TITAN SOUL - EVENT SOURCING
@@ -8,23 +6,23 @@
 // ============================================
 
 type TitanEventType =
-  | "XP_GAINED"
-  | "LEVEL_UP"
-  | "STAT_CHANGED"
-  | "RESOURCE_CHANGED"
-  | "GOLD_EARNED"
-  | "GOLD_SPENT"
-  | "ITEM_EQUIPPED"
-  | "ITEM_UNEQUIPPED"
-  | "BUFF_APPLIED"
-  | "BUFF_EXPIRED"
-  | "COMBAT_STARTED"
-  | "COMBAT_ENDED"
-  | "DUNGEON_CLEARED"
-  | "ACHIEVEMENT_UNLOCKED"
-  | "QUEST_COMPLETED"
-  | "SYNC_CONFLICT"
-  | "STATE_RECOVERED";
+  | 'XP_GAINED'
+  | 'LEVEL_UP'
+  | 'STAT_CHANGED'
+  | 'RESOURCE_CHANGED'
+  | 'GOLD_EARNED'
+  | 'GOLD_SPENT'
+  | 'ITEM_EQUIPPED'
+  | 'ITEM_UNEQUIPPED'
+  | 'BUFF_APPLIED'
+  | 'BUFF_EXPIRED'
+  | 'COMBAT_STARTED'
+  | 'COMBAT_ENDED'
+  | 'DUNGEON_CLEARED'
+  | 'ACHIEVEMENT_UNLOCKED'
+  | 'QUEST_COMPLETED'
+  | 'SYNC_CONFLICT'
+  | 'STATE_RECOVERED';
 
 interface TitanEvent {
   id: string;
@@ -54,7 +52,7 @@ export async function recordTitanEvent(
     newValue?: unknown;
     source?: string;
     deviceId?: string;
-  },
+  }
 ): Promise<TitanEvent> {
   const event: TitanEvent = {
     id: `evt-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
@@ -63,7 +61,7 @@ export async function recordTitanEvent(
     payload,
     previousValue: options?.previousValue,
     newValue: options?.newValue,
-    source: options?.source || "SYSTEM",
+    source: options?.source || 'SYSTEM',
     timestamp: new Date(),
     version: eventStore.filter((e) => e.userId === userId).length + 1,
     deviceId: options?.deviceId,
@@ -84,12 +82,12 @@ export async function getTitanEventHistory(
     limit?: number;
     eventTypes?: TitanEventType[];
     since?: Date;
-  },
+  }
 ): Promise<TitanEvent[]> {
   let events = eventStore.filter((e) => e.userId === userId);
 
   if (options?.eventTypes) {
-    events = events.filter((e) => options.eventTypes!.includes(e.eventType));
+    events = events.filter((e) => options.eventTypes?.includes(e.eventType));
   }
 
   if (options?.since) {
@@ -110,7 +108,7 @@ export async function getTitanEventHistory(
  */
 export async function replayTitanEvents(
   userId: string,
-  upToVersion: number,
+  upToVersion: number
 ): Promise<Record<string, unknown>> {
   const events = eventStore
     .filter((e) => e.userId === userId && e.version <= upToVersion)
@@ -132,26 +130,25 @@ export async function replayTitanEvents(
 
   for (const event of events) {
     switch (event.eventType) {
-      case "XP_GAINED":
+      case 'XP_GAINED':
         state.xp = (state.xp as number) + (event.payload.amount as number);
         break;
-      case "LEVEL_UP":
+      case 'LEVEL_UP':
         state.level = event.newValue as number;
         break;
-      case "STAT_CHANGED":
+      case 'STAT_CHANGED': {
         const stats = state.stats as Record<string, number>;
         const statChange = event.payload as Record<string, number>;
         for (const [key, value] of Object.entries(statChange)) {
           if (stats[key] !== undefined) stats[key] += value;
         }
         break;
-      case "GOLD_EARNED":
-        (state.economy as Record<string, number>).gold += event.payload
-          .amount as number;
+      }
+      case 'GOLD_EARNED':
+        (state.economy as Record<string, number>).gold += event.payload.amount as number;
         break;
-      case "GOLD_SPENT":
-        (state.economy as Record<string, number>).gold -= event.payload
-          .amount as number;
+      case 'GOLD_SPENT':
+        (state.economy as Record<string, number>).gold -= event.payload.amount as number;
         break;
     }
   }
@@ -164,7 +161,7 @@ export async function replayTitanEvents(
  */
 export async function getEventAuditLog(
   userId: string,
-  limit: number = 100,
+  limit = 100
 ): Promise<
   Array<{
     time: string;
@@ -185,13 +182,13 @@ export async function getEventAuditLog(
  * Check for suspicious activity patterns.
  */
 export async function detectAnomalies(
-  userId: string,
+  userId: string
 ): Promise<{ suspicious: boolean; reasons: string[] }> {
   const recentEvents = await getTitanEventHistory(userId, { limit: 50 });
   const reasons: string[] = [];
 
   // Check for impossible XP gains
-  const xpEvents = recentEvents.filter((e) => e.eventType === "XP_GAINED");
+  const xpEvents = recentEvents.filter((e) => e.eventType === 'XP_GAINED');
   const totalXpLast5Min = xpEvents
     .filter((e) => e.timestamp.getTime() > Date.now() - 5 * 60 * 1000)
     .reduce((sum, e) => sum + (e.payload.amount as number), 0);
@@ -202,10 +199,10 @@ export async function detectAnomalies(
 
   // Check for rapid gold changes
   const goldEvents = recentEvents.filter(
-    (e) => e.eventType === "GOLD_EARNED" || e.eventType === "GOLD_SPENT",
+    (e) => e.eventType === 'GOLD_EARNED' || e.eventType === 'GOLD_SPENT'
   );
   if (goldEvents.length > 20) {
-    reasons.push("High frequency of economy events");
+    reasons.push('High frequency of economy events');
   }
 
   return { suspicious: reasons.length > 0, reasons };

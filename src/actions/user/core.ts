@@ -1,77 +1,85 @@
-"use server";
+'use server';
 
-import { createClient } from "@/utils/supabase/server";
-import { revalidatePath } from "next/cache";
-import prisma from "@/lib/prisma";
-import { Faction } from "@/types/prisma";
-import { authActionClient } from "@/lib/safe-action";
-import { z } from "zod";
+import prisma from '@/lib/prisma';
+import type { Faction } from '@/types/prisma';
+import { createClient } from '@/utils/supabase/server';
+import { revalidatePath } from 'next/cache';
 
-export const updateFactionAction = authActionClient
-  .schema(z.object({ faction: z.enum(["ALLIANCE", "HORDE"]) }))
-  .action(async ({ parsedInput: { faction }, ctx: { userId } }) => {
-    try {
-      await prisma.user.update({
-        where: { id: userId },
-        data: { faction: faction as Faction },
-      });
+export async function updateFactionAction(
+  faction: Faction
+): Promise<{ success: boolean; error?: string }> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-      revalidatePath("/", "layout");
-      return { success: true };
-    } catch (error) {
-      console.error("Failed to update faction:", error);
-      throw new Error("Failed to update faction");
-    }
-  });
+  if (!user) {
+    return { success: false, error: 'Not authenticated' };
+  }
 
-export const updateArchetypeAction = authActionClient
-  .schema(z.object({ archetype: z.any() })) // Still 'any' due to lack of strict typing for archetype, but safe from crash payload
-  .action(async ({ parsedInput: { archetype }, ctx: { userId } }) => {
-    try {
-      await prisma.user.update({
-        where: { id: userId },
-        data: { archetype },
-      });
+  try {
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { faction },
+    });
 
-      revalidatePath("/", "layout");
-      return { success: true };
-    } catch (error) {
-      console.error("Failed to update archetype:", error);
-      throw new Error("Failed to update archetype");
-    }
-  });
+    revalidatePath('/', 'layout');
+    return { success: true };
+  } catch (error) {
+    console.error('Failed to update faction:', error);
+    return { success: false, error: 'Failed to update faction' };
+  }
+}
 
-const ensureUserSchema = z.object({
-  id: z.string().min(1).optional(),
-  email: z.string().email().optional()
-}).optional();
+export async function updateArchetypeAction(
+  archetype: any // using any to avoid import issues if prisma client not fully regenned in scope
+): Promise<{ success: boolean; error?: string }> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-export const ensureUserAction = authActionClient
-  .schema(ensureUserSchema)
-  .action(async ({ parsedInput, ctx: { userId, user } }) => {
-    // If not provided in input, fallback to context (preferred default behavior)
-    const id = parsedInput?.id || userId;
-    const email = parsedInput?.email || user?.email;
+  if (!user) {
+    return { success: false, error: 'Not authenticated' };
+  }
 
-    try {
-      const existing = await prisma.user.findUnique({ where: { id } });
-      if (existing) return { success: true, data: existing };
+  try {
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { archetype },
+    });
 
-      const newUser = await prisma.user.create({
-        data: {
-          id,
-          email,
-          gold: 0,
-          level: 1,
-          totalExperience: 0,
-          faction: "HORDE", // Default
-        },
-      });
+    revalidatePath('/', 'layout');
+    return { success: true };
+  } catch (error) {
+    console.error('Failed to update archetype:', error);
+    return { success: false, error: 'Failed to update archetype' };
+  }
+}
 
-      revalidatePath("/", "layout");
-      return { success: true, data: newUser };
-    } catch (error) {
-      console.error("Failed to ensure user:", error);
-      throw new Error("Failed to ensure user");
-    }
-  });
+export async function ensureUserAction(
+  id: string,
+  email?: string
+): Promise<{ success: boolean; data?: any; error?: string }> {
+  try {
+    const existing = await prisma.user.findUnique({ where: { id } });
+    if (existing) return { success: true, data: existing };
+
+    const newUser = await prisma.user.create({
+      data: {
+        id,
+        email,
+        gold: 0,
+        level: 1,
+        totalExperience: 0,
+        faction: 'HORDE', // Default
+      },
+    });
+
+    revalidatePath('/', 'layout');
+    return { success: true, data: newUser };
+  } catch (error) {
+    console.error('Failed to ensure user:', error);
+    return { success: false, error: 'Failed to ensure user' };
+  }
+}

@@ -1,6 +1,6 @@
+import { Faction } from '@/types/training';
 import type { Meta, StoryObj } from '@storybook/react';
 import { DashboardPresenter } from './components/DashboardPresenter';
-import { Faction } from '@/types/training';
 
 const meta: Meta<typeof DashboardPresenter> = {
   title: 'Features/Dashboard/DashboardPresenter',
@@ -29,15 +29,15 @@ export const Default: Story = {
   args: {
     state: mockState,
     userData: { id: 'user-123', gold: 500 },
-    dispatch: () => { },
+    dispatch: () => {},
     platform: 'desktop',
     leaderboardData: [],
     showOnboarding: false,
     pocketCastsConnected: true,
     hasCompletedOnboarding: true,
-    onSaveWorkout: async () => { },
-    onShowOnboardingComplete: () => { },
-    onToggleCoach: () => { },
+    onSaveWorkout: async () => {},
+    onShowOnboardingComplete: () => {},
+    onToggleCoach: () => {},
   },
 };
 

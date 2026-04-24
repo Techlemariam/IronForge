@@ -28,23 +28,23 @@ export interface RPVolumeStandards {
  * Weakness classification levels
  */
 export enum WeaknessLevel {
-  NONE = "none",
-  UNDERTRAINED = "undertrained",
-  ATROPHY_RISK = "atrophy",
-  OVERREACHED = "overreached",
+  NONE = 'none',
+  UNDERTRAINED = 'undertrained',
+  ATROPHY_RISK = 'atrophy',
+  OVERREACHED = 'overreached',
 }
 
 /**
  * Balance ratio analysis result
  */
 export interface BalanceRatio {
-  type: "push_pull" | "quad_ham" | "cardio_strength";
+  type: 'push_pull' | 'quad_ham' | 'cardio_strength';
   value: number;
   threshold: {
     min: number;
     max: number;
   };
-  status: "balanced" | "minor_imbalance" | "structural_risk";
+  status: 'balanced' | 'minor_imbalance' | 'structural_risk';
 }
 
 /**

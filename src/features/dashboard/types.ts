@@ -1,55 +1,53 @@
-import { Exercise } from "@/types/ironforge";
-import {
-  IntervalsWellness,
-  TTBIndices,
-  WeaknessAudit,
-  TSBForecast,
+import type { LeaderboardEntry } from '@/actions/social/leaderboards';
+import type { TitanState } from '@/actions/titan/core';
+import type { ChallengeWithStatus } from '@/components/gamification/QuestBoard';
+import type { CardioMode } from '@/features/training/CardioStudio';
+import type { TrainingContext } from '@/services/data/TrainingContextService';
+import type {
   IntervalsEvent,
-  TitanLoadCalculation,
+  IntervalsWellness,
   Session,
-} from "@/types";
-import { OracleRecommendation } from "@/types";
-import { AuditReport } from "@/types/auditor";
-import {
-  TrainingPath,
-  LayerLevel,
-  WeeklyMastery,
+  TSBForecast,
+  TTBIndices,
+  TitanLoadCalculation,
+  WeaknessAudit,
+} from '@/types';
+import type { OracleRecommendation } from '@/types';
+import type { AuditReport } from '@/types/auditor';
+import type { HevyExerciseTemplate, HevyRoutine } from '@/types/hevy';
+import type { Exercise } from '@/types/ironforge';
+import type {
   Faction,
+  LayerLevel,
+  TrainingPath,
+  WeeklyMastery,
   WorkoutDefinition,
-} from "@/types/training";
-import { CardioMode } from "@/features/training/CardioStudio";
-import { HevyExerciseTemplate, HevyRoutine } from "@/types/hevy";
-import { ChallengeWithStatus } from "@/components/gamification/QuestBoard";
-import { TitanState } from "@/actions/titan/core";
-import { TrainingContext } from "@/services/data/TrainingContextService";
-import { LeaderboardEntry } from "@/actions/social/leaderboards";
-import { EffectiveTitanStats, TitanAttributes } from "@/services/game/TitanService";
-import { StatModifier } from "@/features/neural-lattice/types";
+} from '@/types/training';
 
 export type View =
-  | "character_sheet"
-  | "citadel"
-  | "war_room"
-  | "iron_mines"
-  | "quest_completion"
-  | "armory"
-  | "bestiary"
-  | "world_map"
-  | "grimoire"
-  | "guild_hall"
-  | "arena"
-  | "marketplace"
-  | "combat_arena"
-  | "forge"
-  | "training_center"
-  | "cardio_studio"
-  | "social_hub"
-  | "item_shop"
-  | "strava_upload"
-  | "strength_log"
-  | "program_builder"
-  | "trophy_room"
-  | "import_routines";
+  | 'citadel'
+  | 'mission_control'
+  | 'war_room'
+  | 'iron_mines'
+  | 'quest_completion'
+  | 'armory'
+  | 'bestiary'
+  | 'world_map'
+  | 'grimoire'
+  | 'guild_hall'
+  | 'arena'
+  | 'marketplace'
+  | 'combat_arena'
+  | 'forge'
+  | 'training_center'
+  | 'cardio_studio'
+  | 'social_hub'
+  | 'item_shop'
+  | 'strava_upload'
+  | 'strength_log'
+  | 'program_builder'
+  | 'trophy_room'
+  | 'import_routines';
 
 export interface DashboardData {
   wellness: IntervalsWellness;
@@ -64,6 +62,7 @@ export interface DashboardData {
   weeklyMastery?: WeeklyMastery;
   activeDuel?: any;
   trainingContext?: TrainingContext;
+  powerRating: number;
 }
 
 export interface DashboardClientProps {
@@ -83,9 +82,6 @@ export interface DashboardClientProps {
   titanState?: TitanState | null;
   activeDuel?: any;
   liteMode?: boolean;
-  effectiveStats?: EffectiveTitanStats;
-  activeModifiers?: StatModifier[];
-  attributes?: TitanAttributes;
 
   leaderboardData?: LeaderboardEntry[];
 }
@@ -120,26 +116,28 @@ export interface DashboardState {
   challenges: ChallengeWithStatus[];
   activeDuel?: any;
   trainingContext?: TrainingContext;
+  powerRating: number;
 }
 
 export type DashboardAction =
-  | { type: "INITIAL_DATA_LOAD_START" }
-  | { type: "INITIAL_DATA_LOAD_SUCCESS"; payload: any }
-  | { type: "INITIAL_DATA_LOAD_FAILURE" }
+  | { type: 'INITIAL_DATA_LOAD_START' }
+  | { type: 'INITIAL_DATA_LOAD_SUCCESS'; payload: any }
+  | { type: 'INITIAL_DATA_LOAD_FAILURE' }
   | {
-    type: "SELECT_ROUTINE";
-    payload: { routine: HevyRoutine; nameMap: Map<string, string> };
-  }
-  | { type: "COMPLETE_QUEST" }
-  | { type: "SAVE_WORKOUT" }
-  | { type: "ABORT_QUEST" }
-  | { type: "SET_VIEW"; payload: View }
-  | { type: "START_COMBAT"; payload: string }
-  | { type: "START_GENERATED_QUEST"; payload: Session }
-  | { type: "RECALCULATE_PROGRESSION"; payload: { level: number } }
-  | { type: "TOGGLE_COACH" }
-  | { type: "UPDATE_PATH"; payload: TrainingPath }
-  | { type: "SET_CARDIO_MODE"; payload: CardioMode }
-  | { type: "START_CODEX_WORKOUT"; payload: { workout: WorkoutDefinition } }
-  | { type: "RETURN_TO_PREVIOUS" }
-  | { type: "UPDATE_CHALLENGES"; payload: ChallengeWithStatus[] };
+      type: 'SELECT_ROUTINE';
+      payload: { routine: HevyRoutine; nameMap: Map<string, string> };
+    }
+  | { type: 'COMPLETE_QUEST' }
+  | { type: 'SAVE_WORKOUT' }
+  | { type: 'ABORT_QUEST' }
+  | { type: 'SET_VIEW'; payload: View }
+  | { type: 'START_COMBAT'; payload: string }
+  | { type: 'START_GENERATED_QUEST'; payload: Session }
+  | { type: 'RECALCULATE_PROGRESSION'; payload: { level: number } }
+  | { type: 'TOGGLE_COACH' }
+  | { type: 'UPDATE_PATH'; payload: TrainingPath }
+  | { type: 'SET_CARDIO_MODE'; payload: CardioMode }
+  | { type: 'START_CODEX_WORKOUT'; payload: { workout: WorkoutDefinition } }
+  | { type: 'LAUNCH_MISSION' }
+  | { type: 'RETURN_TO_PREVIOUS' }
+  | { type: 'UPDATE_CHALLENGES'; payload: ChallengeWithStatus[] };

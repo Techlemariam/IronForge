@@ -1,11 +1,11 @@
-"use server";
+'use server';
 
-import { prisma } from "@/lib/prisma";
-import { revalidatePath } from "next/cache";
-import { z } from "zod";
-import { IntervalsWellness } from "@/types";
-import { TitanService } from "@/services/game/TitanService";
-import { authActionClient } from "@/lib/safe-action";
+import { prisma } from '@/lib/prisma';
+import { authActionClient } from '@/lib/safe-action';
+import { TitanService } from '@/services/game/TitanService';
+import { IntervalsWellness } from '@/types';
+import { revalidatePath } from 'next/cache';
+import { z } from 'zod';
 
 // --- Types ---
 export type TitanState = {
@@ -36,59 +36,41 @@ const updateTitanSchema = z.object({
 
 // --- Actions ---
 
-export const getTitanAction = authActionClient
-  .action(async ({ ctx: { userId } }) => {
-    try {
-      const titan = await TitanService.getTitan(userId);
-      return { success: true, data: titan };
-    } catch (error) {
-      console.error("Error fetching titan:", error);
-      return { success: false, error: "Failed to fetch Titan" };
-    }
-  });
+export const getTitanAction = authActionClient.action(async ({ ctx: { userId } }) => {
+  try {
+    const titan = await TitanService.getTitan(userId);
+    return { success: true, data: titan };
+  } catch (error) {
+    console.error('Error fetching titan:', error);
+    return { success: false, error: 'Failed to fetch Titan' };
+  }
+});
 
-export const getTitanWithModifiersAction = authActionClient
-  .action(async ({ ctx: { userId } }) => {
-    try {
-      const result = await TitanService.getTitanWithModifiers(userId);
-      if (!result) return { success: false, error: "Titan not found" };
-      return { success: true, data: result };
-    } catch (error) {
-      console.error("Error fetching titan with modifiers:", error);
-      return { success: false, error: "Failed to fetch Titan modifiers" };
-    }
-  });
-
-export const ensureTitanAction = authActionClient
-  .action(async ({ ctx: { userId } }) => {
-    try {
-      const titan = await TitanService.ensureTitan(userId);
-      return { success: true, data: titan };
-    } catch (error) {
-      console.error("Error ensuring titan:", error);
-      return { success: false, error: "Failed to create or fetch Titan" };
-    }
-  });
-
+export const ensureTitanAction = authActionClient.action(async ({ ctx: { userId } }) => {
+  try {
+    const titan = await TitanService.ensureTitan(userId);
+    return { success: true, data: titan };
+  } catch (error) {
+    console.error('Error ensuring titan:', error);
+    return { success: false, error: 'Failed to create or fetch Titan' };
+  }
+});
 
 /**
  * @deprecated UNSAFE: Clients should not dictate state directly. Use specific actions below.
  */
-export async function updateTitanAction(
-  userId: string,
-  data: z.infer<typeof updateTitanSchema>,
-) {
+export async function updateTitanAction(userId: string, data: z.infer<typeof updateTitanSchema>) {
   try {
     const validated = updateTitanSchema.parse(data);
     const titan = await prisma.titan.update({
       where: { userId },
       data: { ...validated, lastActive: new Date() },
     });
-    revalidatePath("/citadel");
+    revalidatePath('/citadel');
     return { success: true, data: titan };
   } catch (error) {
-    console.error("Error updating titan:", error);
-    return { success: false, error: "Failed to update Titan" };
+    console.error('Error updating titan:', error);
+    return { success: false, error: 'Failed to update Titan' };
   }
 }
 
@@ -101,7 +83,7 @@ export const modifyTitanHealthAction = authActionClient
       const updated = await TitanService.modifyHealth(userId, delta, reason);
       return { success: true, data: updated };
     } catch (error: any) {
-      console.error("Error modifying health:", error);
+      console.error('Error modifying health:', error);
       return { success: false, error: error.message };
     }
   });
@@ -113,7 +95,7 @@ export const awardTitanXpAction = authActionClient
       const { titan, leveledUp } = await TitanService.awardXp(userId, amount, source);
       return { success: true, data: titan, leveledUp };
     } catch (error: any) {
-      console.error("Error awarding XP:", error);
+      console.error('Error awarding XP:', error);
       return { success: false, error: error.message };
     }
   });
@@ -136,19 +118,19 @@ export const syncTitanStateWithWellness = authActionClient
       await TitanService.syncWellness(userId, wellness);
       return { success: true };
     } catch (error) {
-      console.error("Sync Titan/Wellness failed:", error);
+      console.error('Sync Titan/Wellness failed:', error);
       return { success: false };
     }
   });
 
 export const checkAndIncrementStreakAction = authActionClient
   .schema(z.object({ timezone: z.string().optional() }))
-  .action(async ({ parsedInput: { timezone = "UTC" }, ctx: { userId } }) => {
+  .action(async ({ parsedInput: { timezone = 'UTC' }, ctx: { userId } }) => {
     try {
       const result = await TitanService.updateStreak(userId, timezone);
       return { success: true, ...result };
     } catch (error: any) {
-      console.error("Streak update failed:", error);
+      console.error('Streak update failed:', error);
       return { success: false, error: error.message };
     }
   });

@@ -1,4 +1,4 @@
-export type TrainingMetric = "hr" | "power" | "pace";
+export type TrainingMetric = 'hr' | 'power' | 'pace';
 
 /**
  * Calculates the Game Zone (1-5) based on Power and FTP using 80/20 Endurance Zones.
@@ -28,10 +28,7 @@ export const calculatePowerZone = (watts: number, ftp: number): number => {
  *
  * Threshold Speed is roughly 10k race pace or FTP-equivalent speed.
  */
-export const calculatePaceZone = (
-  speedKph: number,
-  thresholdSpeedKph: number,
-): number => {
+export const calculatePaceZone = (speedKph: number, thresholdSpeedKph: number): number => {
   if (thresholdSpeedKph <= 0) return 1;
 
   const percentage = speedKph / thresholdSpeedKph;

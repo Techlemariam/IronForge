@@ -1,29 +1,29 @@
-"use server";
+'use server';
 
-import { prisma } from "@/lib/prisma";
+import { prisma } from '@/lib/prisma';
 
 // WoW-inspired PvP ranks
 const PVP_RANKS = [
-  { rank: 1, title: "Private", minRating: 0, color: "#9d9d9d" },
-  { rank: 2, title: "Corporal", minRating: 1000, color: "#ffffff" },
-  { rank: 3, title: "Sergeant", minRating: 1100, color: "var(--color-uncommon)" },
-  { rank: 4, title: "Master Sergeant", minRating: 1200, color: "var(--color-uncommon)" },
-  { rank: 5, title: "Sergeant Major", minRating: 1300, color: "var(--color-rare)" },
-  { rank: 6, title: "Knight", minRating: 1400, color: "var(--color-rare)" },
-  { rank: 7, title: "Knight-Lieutenant", minRating: 1500, color: "var(--color-rare)" },
-  { rank: 8, title: "Knight-Captain", minRating: 1600, color: "var(--color-warp)" },
-  { rank: 9, title: "Knight-Champion", minRating: 1700, color: "var(--color-warp)" },
+  { rank: 1, title: 'Private', minRating: 0, color: '#9d9d9d' },
+  { rank: 2, title: 'Corporal', minRating: 1000, color: '#ffffff' },
+  { rank: 3, title: 'Sergeant', minRating: 1100, color: 'var(--color-uncommon)' },
+  { rank: 4, title: 'Master Sergeant', minRating: 1200, color: 'var(--color-uncommon)' },
+  { rank: 5, title: 'Sergeant Major', minRating: 1300, color: 'var(--color-rare)' },
+  { rank: 6, title: 'Knight', minRating: 1400, color: 'var(--color-rare)' },
+  { rank: 7, title: 'Knight-Lieutenant', minRating: 1500, color: 'var(--color-rare)' },
+  { rank: 8, title: 'Knight-Captain', minRating: 1600, color: 'var(--color-warp)' },
+  { rank: 9, title: 'Knight-Champion', minRating: 1700, color: 'var(--color-warp)' },
   {
     rank: 10,
-    title: "Lieutenant Commander",
+    title: 'Lieutenant Commander',
     minRating: 1800,
-    color: "var(--color-warp)",
+    color: 'var(--color-warp)',
   },
-  { rank: 11, title: "Commander", minRating: 1900, color: "var(--color-legend)" },
-  { rank: 12, title: "Marshal", minRating: 2000, color: "var(--color-legend)" },
-  { rank: 13, title: "Field Marshal", minRating: 2100, color: "var(--color-legend)" },
-  { rank: 14, title: "Grand Marshal", minRating: 2200, color: "#e6cc80" },
-  { rank: 15, title: "High Warlord", minRating: 2400, color: "#e6cc80" },
+  { rank: 11, title: 'Commander', minRating: 1900, color: 'var(--color-legend)' },
+  { rank: 12, title: 'Marshal', minRating: 2000, color: 'var(--color-legend)' },
+  { rank: 13, title: 'Field Marshal', minRating: 2100, color: 'var(--color-legend)' },
+  { rank: 14, title: 'Grand Marshal', minRating: 2200, color: '#e6cc80' },
+  { rank: 15, title: 'High Warlord', minRating: 2400, color: '#e6cc80' },
 ];
 
 interface PvpRankInfo {
@@ -38,9 +38,7 @@ interface PvpRankInfo {
 /**
  * Get PvP rank info for a user based on their duel Elo.
  */
-export async function getPvpRankAction(
-  userId: string,
-): Promise<PvpRankInfo | null> {
+export async function getPvpRankAction(userId: string): Promise<PvpRankInfo | null> {
   try {
     const profile = await prisma.pvpProfile.findFirst({
       where: { userId },
@@ -50,7 +48,7 @@ export async function getPvpRankAction(
     const rating = profile?.duelElo || 1000;
     return calculatePvpRank(rating);
   } catch (error) {
-    console.error("Error fetching PvP rank:", error);
+    console.error('Error fetching PvP rank:', error);
     return null;
   }
 }
@@ -96,7 +94,7 @@ function calculatePvpRank(rating: number): PvpRankInfo {
 /**
  * Get PvP ladder with rankings.
  */
-export async function getPvpLadderAction(limit: number = 100): Promise<{
+export async function getPvpLadderAction(limit = 100): Promise<{
   entries: Array<{
     rank: number;
     userId: string;
@@ -111,7 +109,7 @@ export async function getPvpLadderAction(limit: number = 100): Promise<{
 }> {
   try {
     const profiles = await prisma.pvpProfile.findMany({
-      orderBy: { duelElo: "desc" },
+      orderBy: { duelElo: 'desc' },
       take: limit,
       include: {
         user: {
@@ -130,7 +128,7 @@ export async function getPvpLadderAction(limit: number = 100): Promise<{
         return {
           rank: index + 1,
           userId: profile.userId,
-          heroName: profile.user.heroName || "Unknown Titan",
+          heroName: profile.user.heroName || 'Unknown Titan',
           rating: profile.duelElo || 1000,
           title: rankInfo.title,
           titleColor: rankInfo.color,
@@ -141,7 +139,7 @@ export async function getPvpLadderAction(limit: number = 100): Promise<{
       }),
     };
   } catch (error) {
-    console.error("Error fetching PvP ladder:", error);
+    console.error('Error fetching PvP ladder:', error);
     return { entries: [] };
   }
 }
@@ -152,4 +150,3 @@ export async function getPvpLadderAction(limit: number = 100): Promise<{
 export function getPvpRankDefinitions() {
   return PVP_RANKS;
 }
-

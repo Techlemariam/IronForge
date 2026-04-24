@@ -2,15 +2,10 @@
 # Usage: doppler run -- pwsh scripts/coolify-deploy-n8n.ps1
 # Deploys n8n as a Docker Compose service on Coolify via the API.
 
-$coolifyHost = "https://ironforge-coolify.tailafb692.ts.net"
-$token = $env:COOLIFY_API_TOKEN
+. "$PSScriptRoot/coolify-api.ps1"
 
-if (-not $token) { Write-Error "COOLIFY_API_TOKEN missing"; exit 1 }
-
-$headers = @{
-    "Authorization" = "Bearer $token"
-    "Content-Type"  = "application/json"
-}
+$coolifyHost = $script:coolifyHost
+$headers = $script:coolifyHeaders
 
 # Step 1: List projects to find project UUID
 Write-Host "Fetching Coolify projects..." -ForegroundColor Cyan

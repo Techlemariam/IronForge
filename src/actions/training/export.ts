@@ -1,8 +1,8 @@
-"use server";
+'use server';
 
-import { prisma } from "@/lib/prisma";
+import { prisma } from '@/lib/prisma';
 
-type ExportFormat = "CSV" | "JSON";
+type ExportFormat = 'CSV' | 'JSON';
 
 interface ExportOptions {
   format: ExportFormat;
@@ -28,7 +28,7 @@ interface WorkoutExportRow {
  */
 export async function exportWorkoutHistoryAction(
   userId: string,
-  options: ExportOptions,
+  options: ExportOptions
 ): Promise<{
   success: boolean;
   data?: string;
@@ -47,13 +47,13 @@ export async function exportWorkoutHistoryAction(
 
     const logs = await prisma.exerciseLog.findMany({
       where,
-      orderBy: { date: "desc" },
+      orderBy: { date: 'desc' },
     });
 
     if (logs.length === 0) {
       return {
         success: false,
-        error: "No workout data found for the specified criteria.",
+        error: 'No workout data found for the specified criteria.',
       };
     }
 
@@ -63,17 +63,17 @@ export async function exportWorkoutHistoryAction(
         date: log.date.toISOString(),
         exerciseName: log.exerciseId,
         sets: setsCount,
-        reps: String(log.reps || ""),
-        weight: String(log.weight || ""),
+        reps: String(log.reps || ''),
+        weight: String(log.weight || ''),
         notes: log.notes || undefined,
       };
     });
 
     let data: string;
     let filename: string;
-    const dateStr = new Date().toISOString().split("T")[0];
+    const dateStr = new Date().toISOString().split('T')[0];
 
-    if (options.format === "CSV") {
+    if (options.format === 'CSV') {
       data = convertToCSV(rows);
       filename = `ironforge-export-${dateStr}.csv`;
     } else {
@@ -83,24 +83,22 @@ export async function exportWorkoutHistoryAction(
 
     return { success: true, data, filename };
   } catch (error) {
-    console.error("Error exporting workout history:", error);
-    return { success: false, error: "Failed to export data." };
+    console.error('Error exporting workout history:', error);
+    return { success: false, error: 'Failed to export data.' };
   }
 }
 
 function convertToCSV(rows: WorkoutExportRow[]): string {
-  if (rows.length === 0) return "";
+  if (rows.length === 0) return '';
 
-  const headers = Object.keys(rows[0]).join(",");
+  const headers = Object.keys(rows[0]).join(',');
   const dataRows = rows.map((row) =>
     Object.values(row)
-      .map((val) =>
-        typeof val === "string" && val.includes(",") ? `"${val}"` : (val ?? ""),
-      )
-      .join(","),
+      .map((val) => (typeof val === 'string' && val.includes(',') ? `"${val}"` : (val ?? '')))
+      .join(',')
   );
 
-  return [headers, ...dataRows].join("\n");
+  return [headers, ...dataRows].join('\n');
 }
 
 /**
@@ -108,7 +106,7 @@ function convertToCSV(rows: WorkoutExportRow[]): string {
  */
 export async function getExportPreviewAction(
   userId: string,
-  options: ExportOptions,
+  options: ExportOptions
 ): Promise<{ rows: WorkoutExportRow[]; totalCount: number }> {
   try {
     const where: any = { userId };
@@ -123,7 +121,7 @@ export async function getExportPreviewAction(
     const [logs, count] = await Promise.all([
       prisma.exerciseLog.findMany({
         where,
-        orderBy: { date: "desc" },
+        orderBy: { date: 'desc' },
         take: 10,
       }),
       prisma.exerciseLog.count({ where }),
@@ -135,14 +133,14 @@ export async function getExportPreviewAction(
         date: log.date.toISOString(),
         exerciseName: log.exerciseId,
         sets: setsCount,
-        reps: String(log.reps || ""),
-        weight: String(log.weight || ""),
+        reps: String(log.reps || ''),
+        weight: String(log.weight || ''),
       };
     });
 
     return { rows, totalCount: count };
   } catch (error) {
-    console.error("Error getting export preview:", error);
+    console.error('Error getting export preview:', error);
     return { rows: [], totalCount: 0 };
   }
 }
@@ -151,17 +149,16 @@ export async function getExportPreviewAction(
  * Export full account data (GDPR compliance).
  */
 export async function exportFullAccountDataAction(
-  userId: string,
+  userId: string
 ): Promise<{ success: boolean; data?: string; error?: string }> {
   try {
-    const [user, titan, exerciseLogs, cardioLogs, achievements] =
-      await Promise.all([
-        prisma.user.findUnique({ where: { id: userId } }),
-        prisma.titan.findFirst({ where: { userId } }),
-        prisma.exerciseLog.findMany({ where: { userId } }),
-        prisma.cardioLog.findMany({ where: { userId } }),
-        prisma.userAchievement.findMany({ where: { userId } }),
-      ]);
+    const [user, titan, exerciseLogs, cardioLogs, achievements] = await Promise.all([
+      prisma.user.findUnique({ where: { id: userId } }),
+      prisma.titan.findFirst({ where: { userId } }),
+      prisma.exerciseLog.findMany({ where: { userId } }),
+      prisma.cardioLog.findMany({ where: { userId } }),
+      prisma.userAchievement.findMany({ where: { userId } }),
+    ]);
 
     const fullExport = {
       exportDate: new Date().toISOString(),
@@ -173,11 +170,11 @@ export async function exportFullAccountDataAction(
       },
       titan: titan
         ? {
-          level: titan.level,
-          xp: titan.xp,
-          hp: titan.currentHp,
-          energy: titan.currentEnergy,
-        }
+            level: titan.level,
+            xp: titan.xp,
+            hp: titan.currentHp,
+            energy: titan.currentEnergy,
+          }
         : null,
       workoutHistory: exerciseLogs.length,
       cardioHistory: cardioLogs.length,
@@ -194,7 +191,7 @@ export async function exportFullAccountDataAction(
       data: JSON.stringify(fullExport, null, 2),
     };
   } catch (error) {
-    console.error("Error exporting full account:", error);
-    return { success: false, error: "Failed to export account data." };
+    console.error('Error exporting full account:', error);
+    return { success: false, error: 'Failed to export account data.' };
   }
 }

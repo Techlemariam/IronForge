@@ -1,41 +1,40 @@
-"use server";
+'use server';
 
-import { revalidatePath } from "next/cache";
-import { z } from "zod";
-import { prisma } from "@/lib/prisma";
-import { authActionClient } from "@/lib/safe-action";
+import { prisma } from '@/lib/prisma';
+import { authActionClient } from '@/lib/safe-action';
+import { revalidatePath } from 'next/cache';
+import { z } from 'zod';
 
 /**
  * Valid items for purchase in the Gold Shop.
  */
 const SHOP_ITEMS = [
   {
-    id: "streak_freeze",
-    name: "Streak Freeze Shield",
-    description: "Equip this to protect your streak if you miss a single day.",
+    id: 'streak_freeze',
+    name: 'Streak Freeze Shield',
+    description: 'Equip this to protect your streak if you miss a single day.',
     cost: 1500, // Gold sink
-    type: "CONSUMABLE",
+    type: 'CONSUMABLE',
   },
   {
-    id: "energy_potion",
-    name: "Titan Energy Potion",
-    description: "Instantly restores 50 Energy to your Titan.",
+    id: 'energy_potion',
+    name: 'Titan Energy Potion',
+    description: 'Instantly restores 50 Energy to your Titan.',
     cost: 500,
-    type: "CONSUMABLE",
+    type: 'CONSUMABLE',
   },
   {
-    id: "oracle_reroll",
-    name: "Oracle Decree Reroll",
+    id: 'oracle_reroll',
+    name: 'Oracle Decree Reroll',
     description: "Change today's Oracle Decree if it gave you a DEBUFF.",
     cost: 3000,
-    type: "CONSUMABLE",
-  }
+    type: 'CONSUMABLE',
+  },
 ];
 
-export const fetchShopItemsAction = authActionClient
-  .action(async () => {
-    return { success: true, items: SHOP_ITEMS };
-  });
+export const fetchShopItemsAction = authActionClient.action(async () => {
+  return { success: true, items: SHOP_ITEMS };
+});
 
 /**
  * Purchases an item from the shop using Gold.
@@ -46,7 +45,7 @@ export const purchaseShopItemAction = authActionClient
     try {
       const itemDefinition = SHOP_ITEMS.find((i) => i.id === itemId);
       if (!itemDefinition) {
-        return { success: false, error: "Item not found in shop." };
+        return { success: false, error: 'Item not found in shop.' };
       }
 
       const result = await prisma.$transaction(async (tx) => {
@@ -55,9 +54,9 @@ export const purchaseShopItemAction = authActionClient
           select: { gold: true },
         });
 
-        if (!user) throw new Error("User not found");
+        if (!user) throw new Error('User not found');
         if (user.gold < itemDefinition.cost) {
-          throw new Error("Not enough gold");
+          throw new Error('Not enough gold');
         }
 
         // Deduct Gold
@@ -67,33 +66,38 @@ export const purchaseShopItemAction = authActionClient
         });
 
         // Grant Item Effect
-        if (itemDefinition.id === "energy_potion") {
+        if (itemDefinition.id === 'energy_potion') {
           await tx.titan.update({
             where: { userId },
             data: { currentEnergy: { increment: 50 } },
           });
-        } else if (itemDefinition.id === "streak_freeze") {
+        } else if (itemDefinition.id === 'streak_freeze') {
           const systemItem = await tx.item.upsert({
-            where: { id: "item_streak_freeze" },
-            create: { id: "item_streak_freeze", name: itemDefinition.name, description: itemDefinition.description, type: "CONSUMABLE", rarity: "EPIC" },
-            update: {}
+            where: { id: 'item_streak_freeze' },
+            create: {
+              id: 'item_streak_freeze',
+              name: itemDefinition.name,
+              description: itemDefinition.description,
+              type: 'CONSUMABLE',
+              rarity: 'EPIC',
+            },
+            update: {},
           });
 
           await tx.userEquipment.upsert({
             where: { userId_equipmentId: { userId, equipmentId: systemItem.id } },
             create: { userId, equipmentId: systemItem.id, isOwned: true },
-            update: {}
+            update: {},
           });
         }
 
         return { success: true };
       });
 
-      revalidatePath("/dashboard");
+      revalidatePath('/dashboard');
       return result;
-
     } catch (error: any) {
-      console.error("Purchase failed:", error);
-      return { success: false, error: error.message || "Transaction failed" };
+      console.error('Purchase failed:', error);
+      return { success: false, error: error.message || 'Transaction failed' };
     }
   });

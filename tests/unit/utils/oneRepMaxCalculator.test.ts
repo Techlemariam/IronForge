@@ -1,14 +1,14 @@
-import { describe, it, expect } from 'vitest';
 import {
-  calculateE1rmEpley,
-  calculateE1rmBrzycki,
-  calculateE1rmLander,
   calculateE1rm,
   calculateE1rmAllFormulas,
+  calculateE1rmBrzycki,
+  calculateE1rmEpley,
+  calculateE1rmLander,
+  calculateRelativeStrength,
   calculateWeightForReps,
   generateRepTable,
-  calculateRelativeStrength,
 } from '@/utils/oneRepMaxCalculator';
+import { describe, expect, it } from 'vitest';
 
 describe('oneRepMaxCalculator', () => {
   describe('calculateE1rmEpley', () => {
@@ -68,15 +68,15 @@ describe('oneRepMaxCalculator', () => {
       const result = calculateE1rmAllFormulas(100, 15);
       expect(result.byFormula.BRZYCKI).toBe(0);
       // Min should be the smallest non-zero value
-      const values = Object.values(result.byFormula).filter(v => v > 0);
+      const values = Object.values(result.byFormula).filter((v) => v > 0);
       expect(result.min).toBe(Math.min(...values));
     });
   });
 
   describe('calculateWeightForReps', () => {
     it('should return 1RM for 0 target reps (inverse logic check)', () => {
-        // e1rm / (1 + 0/30) = e1rm / 1 = e1rm
-        expect(calculateWeightForReps(100, 0)).toBe(100);
+      // e1rm / (1 + 0/30) = e1rm / 1 = e1rm
+      expect(calculateWeightForReps(100, 0)).toBe(100);
     });
 
     it('should correctly calculate weight for target reps', () => {
@@ -90,8 +90,8 @@ describe('oneRepMaxCalculator', () => {
     });
 
     it('should round to the nearest whole number', () => {
-        // 100 / (1 + 5/30) = 100 / 1.1666 = 85.71 -> 86
-        expect(calculateWeightForReps(100, 5)).toBe(86);
+      // 100 / (1 + 5/30) = 100 / 1.1666 = 85.71 -> 86
+      expect(calculateWeightForReps(100, 5)).toBe(86);
     });
   });
 

@@ -1,7 +1,5 @@
-
-
 interface ComboStep {
-  actionType: "ATTACK" | "DEFEND" | "HEAL" | "ULTIMATE";
+  actionType: 'ATTACK' | 'DEFEND' | 'HEAL' | 'ULTIMATE';
   multiplier: number;
 }
 
@@ -17,47 +15,47 @@ interface ComboDefinition {
 // Predefined combat combos
 export const COMBAT_COMBOS: ComboDefinition[] = [
   {
-    id: "triple_strike",
-    name: "Triple Strike",
-    description: "Three consecutive attacks deal bonus damage",
+    id: 'triple_strike',
+    name: 'Triple Strike',
+    description: 'Three consecutive attacks deal bonus damage',
     sequence: [
-      { actionType: "ATTACK", multiplier: 1.0 },
-      { actionType: "ATTACK", multiplier: 1.2 },
-      { actionType: "ATTACK", multiplier: 1.5 },
+      { actionType: 'ATTACK', multiplier: 1.0 },
+      { actionType: 'ATTACK', multiplier: 1.2 },
+      { actionType: 'ATTACK', multiplier: 1.5 },
     ],
     bonusDamage: 50,
     cooldown: 3,
   },
   {
-    id: "counter_assault",
-    name: "Counter Assault",
-    description: "Defend then attack for critical damage",
+    id: 'counter_assault',
+    name: 'Counter Assault',
+    description: 'Defend then attack for critical damage',
     sequence: [
-      { actionType: "DEFEND", multiplier: 1.0 },
-      { actionType: "ATTACK", multiplier: 2.0 },
+      { actionType: 'DEFEND', multiplier: 1.0 },
+      { actionType: 'ATTACK', multiplier: 2.0 },
     ],
     bonusDamage: 30,
     cooldown: 2,
   },
   {
-    id: "berserker_rush",
-    name: "Berserker Rush",
-    description: "Attack, Attack, Ultimate for massive damage",
+    id: 'berserker_rush',
+    name: 'Berserker Rush',
+    description: 'Attack, Attack, Ultimate for massive damage',
     sequence: [
-      { actionType: "ATTACK", multiplier: 1.0 },
-      { actionType: "ATTACK", multiplier: 1.0 },
-      { actionType: "ULTIMATE", multiplier: 2.5 },
+      { actionType: 'ATTACK', multiplier: 1.0 },
+      { actionType: 'ATTACK', multiplier: 1.0 },
+      { actionType: 'ULTIMATE', multiplier: 2.5 },
     ],
     bonusDamage: 100,
     cooldown: 5,
   },
   {
-    id: "tactical_recovery",
-    name: "Tactical Recovery",
-    description: "Heal during defense for bonus healing",
+    id: 'tactical_recovery',
+    name: 'Tactical Recovery',
+    description: 'Heal during defense for bonus healing',
     sequence: [
-      { actionType: "DEFEND", multiplier: 1.0 },
-      { actionType: "HEAL", multiplier: 1.5 },
+      { actionType: 'DEFEND', multiplier: 1.0 },
+      { actionType: 'HEAL', multiplier: 1.5 },
     ],
     bonusDamage: 0,
     cooldown: 4,
@@ -110,9 +108,7 @@ export class ComboTracker {
     if (histLen < seqLen) return false;
 
     const recentActions = this.state.currentSequence.slice(-seqLen);
-    return combo.sequence.every(
-      (step, i) => step.actionType === recentActions[i],
-    );
+    return combo.sequence.every((step, i) => step.actionType === recentActions[i]);
   }
 
   advanceTurn(): void {
@@ -134,20 +130,14 @@ export class ComboTracker {
     return [...this.state.currentSequence];
   }
 
-  getProgressTowardsCombo(
-    comboId: string,
-  ): { progress: number; total: number } | null {
+  getProgressTowardsCombo(comboId: string): { progress: number; total: number } | null {
     const combo = COMBAT_COMBOS.find((c) => c.id === comboId);
     if (!combo) return null;
 
     const seq = combo.sequence;
     let matched = 0;
 
-    for (
-      let i = 0;
-      i < this.state.currentSequence.length && i < seq.length;
-      i++
-    ) {
+    for (let i = 0; i < this.state.currentSequence.length && i < seq.length; i++) {
       if (seq[i].actionType === this.state.currentSequence[i]) {
         matched++;
       } else {

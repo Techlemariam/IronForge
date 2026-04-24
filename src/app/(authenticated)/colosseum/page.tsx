@@ -1,10 +1,10 @@
-import { LeaderboardHub } from "@/features/leaderboard/components/LeaderboardHub";
-import { Swords, Users } from "lucide-react";
+import { LeaderboardHub } from '@/features/leaderboard/components/LeaderboardHub';
+import { Swords, Users } from 'lucide-react';
 
-export const dynamic = "force-dynamic";
+export const dynamic = 'force-dynamic';
 
-import { getLeaderboard } from "@/lib/leaderboard";
-import { LeaderboardScope } from "@/features/leaderboard/types";
+import type { LeaderboardScope } from '@/features/leaderboard/types';
+import { getLeaderboard } from '@/lib/leaderboard';
 
 export default async function ColosseumPage({
   searchParams,
@@ -12,23 +12,23 @@ export default async function ColosseumPage({
   searchParams: Promise<{ scope?: string; city?: string }>;
 }) {
   const { scope: scopeParam, city: cityParam } = await searchParams;
-  const scope = (scopeParam as LeaderboardScope) || "GLOBAL";
-  const city = cityParam || "Gothenburg";
+  const scope = (scopeParam as LeaderboardScope) || 'GLOBAL';
+  const city = cityParam || 'Gothenburg';
 
   const leaderboardData = await getLeaderboard({
     scope,
-    type: "PVP_RANK",
-    city: scope === "CITY" ? city : undefined,
+    type: 'PVP_RANK',
+    city: scope === 'CITY' ? city : undefined,
     limit: 50,
   });
 
   const formattedPlayers = leaderboardData;
 
-  // For Faction stats, we would ideally fetch them here. 
+  // For Faction stats, we would ideally fetch them here.
   // For now, providing a placeholder that won't show the banner if empty/null.
   const factionStats = {
     alliance: { members: 0, totalXp: 0 },
-    horde: { members: 0, totalXp: 0 }
+    horde: { members: 0, totalXp: 0 },
   };
 
   return (
@@ -40,19 +40,16 @@ export default async function ColosseumPage({
             The Iron Colosseum
           </h1>
           <p className="text-zinc-500 font-serif italic mt-2 max-w-lg">
-            &quot;Here, titles are earned in sweat and iron. Prove your strength
-            against the Titans of the Forge.&quot;
+            &quot;Here, titles are earned in sweat and iron. Prove your strength against the Titans
+            of the Forge.&quot;
           </p>
         </div>
         <div className="flex gap-4 mt-4 md:mt-0">
           <div className="text-center p-3 bg-zinc-900 border border-zinc-800 rounded-lg">
             <div className="text-2xl font-bold text-white">
-              <Users className="w-6 h-6 inline mr-2 text-zinc-500" />{" "}
-              {formattedPlayers.length}
+              <Users className="w-6 h-6 inline mr-2 text-zinc-500" /> {formattedPlayers.length}
             </div>
-            <div className="text-[10px] uppercase tracking-widest text-zinc-600">
-              Gladiators
-            </div>
+            <div className="text-[10px] uppercase tracking-widest text-zinc-600">Gladiators</div>
           </div>
         </div>
       </div>
@@ -66,9 +63,7 @@ export default async function ColosseumPage({
             <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center mb-4 group-hover:animate-pulse shadow-lg shadow-red-600/50">
               <Swords className="w-6 h-6 text-black" />
             </div>
-            <h3 className="text-2xl font-black uppercase italic text-white mb-2">
-              Find Match
-            </h3>
+            <h3 className="text-2xl font-black uppercase italic text-white mb-2">Find Match</h3>
             <p className="text-red-200 text-sm mb-4">
               Challenge a rival to an asychronous duel based on Wilks Score.
             </p>
@@ -82,12 +77,8 @@ export default async function ColosseumPage({
             <div className="absolute top-0 right-0 p-2 bg-zinc-800 text-[10px] font-bold uppercase rounded-bl text-zinc-400">
               Locked
             </div>
-            <h3 className="text-xl font-bold text-zinc-300 mb-2">
-              Weekly Raid Boss
-            </h3>
-            <p className="text-zinc-500 text-xs">
-              Target: 50,000kg Total Volume
-            </p>
+            <h3 className="text-xl font-bold text-zinc-300 mb-2">Weekly Raid Boss</h3>
+            <p className="text-zinc-500 text-xs">Target: 50,000kg Total Volume</p>
           </div>
         </div>
 
@@ -105,4 +96,3 @@ export default async function ColosseumPage({
     </div>
   );
 }
-

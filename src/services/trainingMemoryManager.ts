@@ -7,24 +7,24 @@
  */
 
 import {
-  TrainingPath,
-  MacroCycle,
-  SystemMetrics,
-  TrainingActivity,
+  MACRO_CYCLE_THRESHOLDS,
+  MOBILITY_LAYER_BONUSES,
+  PATH_MODIFIERS,
+  PATH_VOLUME_MODIFIERS,
+  RECOVERY_LAYER_BONUSES,
+  REWARD_CONFIG,
+  VOLUME_LANDMARKS,
+} from '../data/builds';
+import type {
   CapacityModifier,
   LayerLevel,
+  MacroCycle,
   MuscleGroup,
+  SystemMetrics,
+  TrainingActivity,
+  TrainingPath,
   VolumeLandmarks,
-} from "../types/training";
-import {
-  PATH_MODIFIERS,
-  MACRO_CYCLE_THRESHOLDS,
-  REWARD_CONFIG,
-  MOBILITY_LAYER_BONUSES,
-  RECOVERY_LAYER_BONUSES,
-  VOLUME_LANDMARKS,
-  PATH_VOLUME_MODIFIERS,
-} from "../data/builds";
+} from '../types/training';
 
 // Total recovery capacity (100% = fully rested)
 const TOTAL_CAPACITY = 100;
@@ -38,10 +38,7 @@ export const TrainingMemoryManager = {
    * Returns a percentage (0-100+) of total recovery capacity used.
    * Path-aware: Adjusts thresholds based on interference effects.
    */
-  getSystemLoad(
-    activities: TrainingActivity[],
-    activePath: TrainingPath = "WARDEN",
-  ): number {
+  getSystemLoad(activities: TrainingActivity[], activePath: TrainingPath = 'WARDEN'): number {
     return activities.reduce((acc, activity) => {
       // Get muscle group from activity (if available) or assume generic
       // For now, let's assume we need to find the muscle group for the activity
@@ -55,10 +52,7 @@ export const TrainingMemoryManager = {
       const muscleGroup = activity.muscleGroup;
 
       if (muscleGroup) {
-        const adjustedLandmarks = this.getAdjustedLandmarks(
-          muscleGroup,
-          activePath,
-        );
+        const adjustedLandmarks = this.getAdjustedLandmarks(muscleGroup, activePath);
         mrv = adjustedLandmarks.mrv;
       }
 
@@ -82,7 +76,7 @@ export const TrainingMemoryManager = {
    */
   canAllocateHighIntensity(
     activities: TrainingActivity[],
-    capacityModifiers: CapacityModifier[] = [],
+    capacityModifiers: CapacityModifier[] = []
   ): boolean {
     const currentLoad = this.getSystemLoad(activities);
 
@@ -93,9 +87,7 @@ export const TrainingMemoryManager = {
     }
 
     const availableCapacity = adjustedCapacity - currentLoad;
-    return (
-      availableCapacity > MACRO_CYCLE_THRESHOLDS.HIGH_INTENSITY_SAFETY_MARGIN
-    );
+    return availableCapacity > MACRO_CYCLE_THRESHOLDS.HIGH_INTENSITY_SAFETY_MARGIN;
   },
 
   /**
@@ -104,57 +96,52 @@ export const TrainingMemoryManager = {
    */
   evaluateTransition(
     metrics: SystemMetrics,
-    currentCycle: MacroCycle,
+    currentCycle: MacroCycle
   ): {
     shouldTransition: boolean;
     recommendedCycle: MacroCycle;
     reason: string;
   } {
-    const { GAMMA_TSB_THRESHOLD, BETA_CTL_THRESHOLD, BETA_TSB_THRESHOLD } =
-      MACRO_CYCLE_THRESHOLDS;
+    const { GAMMA_TSB_THRESHOLD, BETA_CTL_THRESHOLD, BETA_TSB_THRESHOLD } = MACRO_CYCLE_THRESHOLDS;
 
     // Priority 1: Emergency deload if TSB is critically low
     if (metrics.tsb < GAMMA_TSB_THRESHOLD) {
       return {
-        shouldTransition: currentCycle !== "GAMMA",
-        recommendedCycle: "GAMMA",
+        shouldTransition: currentCycle !== 'GAMMA',
+        recommendedCycle: 'GAMMA',
         reason: `TSB critically low (${metrics.tsb}). Deload required to prevent overtraining.`,
       };
     }
 
     // Priority 2: Transition from ALPHA to BETA if cardio goals met
-    if (currentCycle === "ALPHA") {
-      if (
-        metrics.ctl > BETA_CTL_THRESHOLD &&
-        metrics.tsb > BETA_TSB_THRESHOLD
-      ) {
+    if (currentCycle === 'ALPHA') {
+      if (metrics.ctl > BETA_CTL_THRESHOLD && metrics.tsb > BETA_TSB_THRESHOLD) {
         return {
           shouldTransition: true,
-          recommendedCycle: "BETA",
+          recommendedCycle: 'BETA',
           reason: `Aerobic base established (CTL: ${metrics.ctl}). Ready for strength focus.`,
         };
       }
     }
 
     // Priority 3: Transition from BETA to ALPHA if strength plateaus
-    if (currentCycle === "BETA") {
+    if (currentCycle === 'BETA') {
       if (metrics.strengthDelta <= 0 && metrics.atl > metrics.ctl) {
         return {
           shouldTransition: true,
-          recommendedCycle: "ALPHA",
-          reason:
-            "Strength plateau detected. Switching to VO2max focus for active recovery.",
+          recommendedCycle: 'ALPHA',
+          reason: 'Strength plateau detected. Switching to VO2max focus for active recovery.',
         };
       }
     }
 
     // Priority 4: Exit GAMMA if recovered
-    if (currentCycle === "GAMMA") {
+    if (currentCycle === 'GAMMA') {
       if (metrics.tsb > 0) {
         return {
           shouldTransition: true,
-          recommendedCycle: "ALPHA",
-          reason: "Recovery complete. Resuming training with aerobic focus.",
+          recommendedCycle: 'ALPHA',
+          reason: 'Recovery complete. Resuming training with aerobic focus.',
         };
       }
     }
@@ -162,7 +149,7 @@ export const TrainingMemoryManager = {
     return {
       shouldTransition: false,
       recommendedCycle: currentCycle,
-      reason: "No transition needed. Continue current cycle.",
+      reason: 'No transition needed. Continue current cycle.',
     };
   },
 
@@ -183,7 +170,7 @@ export const TrainingMemoryManager = {
       debuffs.push({
         multiplier: SLEEP_DEBUFF_MULTIPLIER,
         reason: `Poor sleep (score: ${sleepScore})`,
-        source: "SLEEP",
+        source: 'SLEEP',
       });
     }
 
@@ -191,7 +178,7 @@ export const TrainingMemoryManager = {
       debuffs.push({
         multiplier: HRV_DEBUFF_MULTIPLIER,
         reason: `Low HRV (${hrv})`,
-        source: "HRV",
+        source: 'HRV',
       });
     }
 
@@ -202,10 +189,7 @@ export const TrainingMemoryManager = {
    * Get reward multiplier for soft-lock system.
    * Quests matching user's path get bonus rewards.
    */
-  getRewardMultiplier(
-    questPath: TrainingPath | null,
-    userPath: TrainingPath,
-  ): number {
+  getRewardMultiplier(questPath: TrainingPath | null, userPath: TrainingPath): number {
     if (questPath === null) {
       // Generic quest - no multiplier
       return 1.0;
@@ -223,10 +207,7 @@ export const TrainingMemoryManager = {
   /**
    * Get difficulty multiplier for off-path content.
    */
-  getDifficultyMultiplier(
-    questPath: TrainingPath | null,
-    userPath: TrainingPath,
-  ): number {
+  getDifficultyMultiplier(questPath: TrainingPath | null, userPath: TrainingPath): number {
     if (questPath === null || questPath === userPath) {
       return 1.0;
     }
@@ -260,14 +241,10 @@ export const TrainingMemoryManager = {
    * Triggered by critical recovery status.
    * Path-aware: Engine path allows deeper TSB floor.
    */
-  shouldEnterSurvivalMode(
-    metrics: SystemMetrics,
-    path: TrainingPath = "WARDEN",
-  ): boolean {
+  shouldEnterSurvivalMode(metrics: SystemMetrics, path: TrainingPath = 'WARDEN'): boolean {
     const debuffs = this.calculateDebuffs(metrics.sleepScore, metrics.hrv);
 
-    const tsbFloor =
-      path === "PATHFINDER" ? -25 : MACRO_CYCLE_THRESHOLDS.GAMMA_TSB_THRESHOLD;
+    const tsbFloor = path === 'PATHFINDER' ? -25 : MACRO_CYCLE_THRESHOLDS.GAMMA_TSB_THRESHOLD;
 
     // If multiple debuffs active or TSB is very low, enter survival mode
     return debuffs.length >= 2 || metrics.tsb < tsbFloor;
@@ -277,10 +254,7 @@ export const TrainingMemoryManager = {
    * Get adjusted landmarks for a specific muscle group based on the active path.
    * Applies path-specific multipliers to the baseline RP landmarks.
    */
-  getAdjustedLandmarks(
-    muscleGroup: MuscleGroup,
-    path: TrainingPath,
-  ): VolumeLandmarks {
+  getAdjustedLandmarks(muscleGroup: MuscleGroup, path: TrainingPath): VolumeLandmarks {
     const base = VOLUME_LANDMARKS[muscleGroup];
     const modifier = PATH_VOLUME_MODIFIERS[path]?.[muscleGroup] ?? 1.0;
 

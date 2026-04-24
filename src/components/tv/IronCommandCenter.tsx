@@ -1,20 +1,20 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from 'framer-motion';
 import {
-  Play,
-  Pause,
-  SkipForward,
-  Volume2,
-  VolumeX,
-  Maximize,
   Clock,
   Dumbbell,
   Heart,
-  Zap,
+  Maximize,
+  Pause,
+  Play,
+  SkipForward,
   Trophy,
-} from "lucide-react";
+  Volume2,
+  VolumeX,
+  Zap,
+} from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 interface TvModeProps {
   userId: string;
@@ -46,7 +46,7 @@ export default function IronCommandCenter({ userId: _userId }: TvModeProps) {
   const [currentTime, setCurrentTime] = useState(new Date());
 
   const [workout] = useState<WorkoutDisplay>({
-    currentExercise: "Barbell Bench Press",
+    currentExercise: 'Barbell Bench Press',
     currentSet: 3,
     totalSets: 4,
     weight: 100,
@@ -87,9 +87,9 @@ export default function IronCommandCenter({ userId: _userId }: TvModeProps) {
             IRON COMMAND
           </h1>
           <span className="text-6xl font-mono text-slate-400">
-            {currentTime.toLocaleTimeString("en-US", {
-              hour: "2-digit",
-              minute: "2-digit",
+            {currentTime.toLocaleTimeString('en-US', {
+              hour: '2-digit',
+              minute: '2-digit',
             })}
           </span>
         </div>
@@ -98,13 +98,9 @@ export default function IronCommandCenter({ userId: _userId }: TvModeProps) {
           <button
             onClick={() => setIsMuted(!isMuted)}
             className="p-3 rounded-full bg-slate-800 hover:bg-slate-700 transition-colors"
-            aria-label={isMuted ? "Unmute" : "Mute"}
+            aria-label={isMuted ? 'Unmute' : 'Mute'}
           >
-            {isMuted ? (
-              <VolumeX className="w-6 h-6" />
-            ) : (
-              <Volume2 className="w-6 h-6" />
-            )}
+            {isMuted ? <VolumeX className="w-6 h-6" /> : <Volume2 className="w-6 h-6" />}
           </button>
           <button
             onClick={toggleFullscreen}
@@ -162,7 +158,7 @@ export default function IronCommandCenter({ userId: _userId }: TvModeProps) {
                 <p className="text-2xl text-amber-300 mb-2">REST</p>
                 <p className="text-9xl font-black text-amber-400">
                   {Math.floor(workout.restTimer / 60)}:
-                  {(workout.restTimer % 60).toString().padStart(2, "0")}
+                  {(workout.restTimer % 60).toString().padStart(2, '0')}
                 </p>
               </motion.div>
             )}
@@ -173,15 +169,14 @@ export default function IronCommandCenter({ userId: _userId }: TvModeProps) {
             <button
               onClick={() => setIsPaused(!isPaused)}
               className="p-6 rounded-full bg-amber-500 hover:bg-amber-400 transition-colors"
-              aria-label={isPaused ? "Play" : "Pause"}
+              aria-label={isPaused ? 'Play' : 'Pause'}
             >
-              {isPaused ? (
-                <Play className="w-10 h-10" />
-              ) : (
-                <Pause className="w-10 h-10" />
-              )}
+              {isPaused ? <Play className="w-10 h-10" /> : <Pause className="w-10 h-10" />}
             </button>
-            <button aria-label="Skip Forward" className="p-6 rounded-full bg-slate-700 hover:bg-slate-600 transition-colors">
+            <button
+              aria-label="Skip Forward"
+              className="p-6 rounded-full bg-slate-700 hover:bg-slate-600 transition-colors"
+            >
               <SkipForward className="w-10 h-10" />
             </button>
           </div>
@@ -222,9 +217,7 @@ export default function IronCommandCenter({ userId: _userId }: TvModeProps) {
                 transition={{ duration: 1 }}
               />
             </div>
-            <p className="text-right text-2xl font-bold mt-2">
-              {titan.energy}%
-            </p>
+            <p className="text-right text-2xl font-bold mt-2">{titan.energy}%</p>
           </div>
 
           {/* XP */}
@@ -233,17 +226,13 @@ export default function IronCommandCenter({ userId: _userId }: TvModeProps) {
               <Trophy className="w-8 h-8 text-purple-400" />
               <span className="text-xl text-slate-400">Session XP</span>
             </div>
-            <p className="text-5xl font-black text-purple-400">
-              +{titan.xp.toLocaleString()}
-            </p>
+            <p className="text-5xl font-black text-purple-400">+{titan.xp.toLocaleString()}</p>
           </div>
 
           {/* Streak */}
           <div className="bg-gradient-to-br from-orange-900/30 to-red-900/30 rounded-2xl p-6 border border-orange-500/50">
             <p className="text-xl text-orange-300 mb-2">🔥 Current Streak</p>
-            <p className="text-6xl font-black text-orange-400">
-              {titan.streak} days
-            </p>
+            <p className="text-6xl font-black text-orange-400">{titan.streak} days</p>
           </div>
         </div>
       </div>
