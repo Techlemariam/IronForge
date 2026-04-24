@@ -13,40 +13,45 @@ const probeExpression = `(() => {
 })()`;
 
 ws.on('open', () => {
-    console.log('Connected to CDP');
-    ws.send(JSON.stringify({
-        id: 1,
-        method: 'Runtime.evaluate',
-        params: {
-            expression: probeExpression,
-            returnByValue: true
-        }
-    }));
+  console.log('Connected to CDP');
+  ws.send(
+    JSON.stringify({
+      id: 1,
+      method: 'Runtime.evaluate',
+      params: {
+        expression: probeExpression,
+        returnByValue: true,
+      },
+    })
+  );
 });
 
 ws.on('message', (data) => {
-    let response;
-    try {
-        response = JSON.parse(data);
-    } catch (e) {
-        console.error('Invalid JSON from CDP:', e);
-        ws.close();
-        return;
-    }
-    if (response.id !== 1) return;
-    if (response.result?.exceptionDetails) {
-        console.error('Runtime.evaluate exception:', JSON.stringify(response.result.exceptionDetails, null, 2));
-        ws.close();
-        return;
-    }
-    if (response.result?.result?.value !== undefined) {
-        console.log('Probe Result:', JSON.stringify(response.result.result.value, null, 2));
-    } else {
-        console.warn('Unexpected response shape:', JSON.stringify(response, null, 2));
-    }
+  let response;
+  try {
+    response = JSON.parse(data);
+  } catch (e) {
+    console.error('Invalid JSON from CDP:', e);
     ws.close();
+    return;
+  }
+  if (response.id !== 1) return;
+  if (response.result?.exceptionDetails) {
+    console.error(
+      'Runtime.evaluate exception:',
+      JSON.stringify(response.result.exceptionDetails, null, 2)
+    );
+    ws.close();
+    return;
+  }
+  if (response.result?.result?.value !== undefined) {
+    console.log('Probe Result:', JSON.stringify(response.result.result.value, null, 2));
+  } else {
+    console.warn('Unexpected response shape:', JSON.stringify(response, null, 2));
+  }
+  ws.close();
 });
 
 ws.on('error', (err) => {
-    console.error('WS Error:', err);
+  console.error('WS Error:', err);
 });

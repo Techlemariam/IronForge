@@ -1,7 +1,7 @@
 import { prisma } from '@/lib/prisma';
-import { type NextRequest, NextResponse } from 'next/server';
 import { DuelRewardsService } from '@/services/pvp/DuelRewardsService';
 import * as Sentry from '@sentry/nextjs';
+import { type NextRequest, NextResponse } from 'next/server';
 
 // Scoring formula based on titan_duels.md analysis
 function calculateDuelScore(_userId: string, _startDate: Date, _endDate: Date): Promise<number> {
@@ -59,16 +59,8 @@ export async function GET(request: NextRequest) {
       const duelUpdatePromises = expiredDuels.map(async (duel) => {
         // Calculate final scores (placeholder - needs real aggregation)
         const [challengerScore, defenderScore] = await Promise.all([
-          calculateDuelScore(
-            duel.challengerId,
-            duel.startDate!,
-            duel.endDate!,
-          ),
-          calculateDuelScore(
-            duel.defenderId,
-            duel.startDate!,
-            duel.endDate!,
-          ),
+          calculateDuelScore(duel.challengerId, duel.startDate!, duel.endDate!),
+          calculateDuelScore(duel.defenderId, duel.startDate!, duel.endDate!),
         ]);
 
         // Determine winner
@@ -112,15 +104,17 @@ export async function GET(request: NextRequest) {
         const updates: any[] = [];
 
         // Update duel
-        updates.push(prisma.duelChallenge.update({
-          where: { id: duel.id },
-          data: {
-            status: 'COMPLETED',
-            challengerScore,
-            defenderScore,
-            winnerId,
-          },
-        }));
+        updates.push(
+          prisma.duelChallenge.update({
+            where: { id: duel.id },
+            data: {
+              status: 'COMPLETED',
+              challengerScore,
+              defenderScore,
+              winnerId,
+            },
+          })
+        );
 
         // --- Calculate Rewards ---
         // 1. Winner Rewards
@@ -135,18 +129,24 @@ export async function GET(request: NextRequest) {
             loserScore
           );
 
-          updates.push(prisma.user.update({
-            where: { id: winnerId },
-            data: {
-              totalExperience: { increment: rewards.xp },
-              gold: { increment: rewards.gold },
-              kineticEnergy: { increment: rewards.kineticEnergy }
-            }
-          }));
+          updates.push(
+            prisma.user.update({
+              where: { id: winnerId },
+              data: {
+                totalExperience: { increment: rewards.xp },
+                gold: { increment: rewards.gold },
+                kineticEnergy: { increment: rewards.kineticEnergy },
+              },
+            })
+          );
         }
 
         // 2. Loser/Draw Rewards
-        const loserId = winnerId ? (winnerId === duel.challengerId ? duel.defenderId : duel.challengerId) : null;
+        const loserId = winnerId
+          ? winnerId === duel.challengerId
+            ? duel.defenderId
+            : duel.challengerId
+          : null;
 
         if (loserId) {
           const myScore = loserId === duel.challengerId ? challengerScore : defenderScore;
@@ -159,65 +159,71 @@ export async function GET(request: NextRequest) {
             oppScore
           );
 
-          updates.push(prisma.user.update({
-            where: { id: loserId },
-            data: {
-              totalExperience: { increment: rewards.xp },
-              gold: { increment: rewards.gold },
-              kineticEnergy: { increment: rewards.kineticEnergy }
-            }
-          }));
+          updates.push(
+            prisma.user.update({
+              where: { id: loserId },
+              data: {
+                totalExperience: { increment: rewards.xp },
+                gold: { increment: rewards.gold },
+                kineticEnergy: { increment: rewards.kineticEnergy },
+              },
+            })
+          );
         } else if (!winnerId) {
           // Draw - Both participants get participation rewards
           const [challengerDrawRewards, defenderDrawRewards] = await Promise.all([
-            DuelRewardsService.calculateDrawRewards(
-              duel.challengerId, challengerScore
-            ),
-            DuelRewardsService.calculateDrawRewards(
-              duel.defenderId, defenderScore
-            )
+            DuelRewardsService.calculateDrawRewards(duel.challengerId, challengerScore),
+            DuelRewardsService.calculateDrawRewards(duel.defenderId, defenderScore),
           ]);
 
-          updates.push(prisma.user.update({
-            where: { id: duel.challengerId },
-            data: {
-              totalExperience: { increment: challengerDrawRewards.xp },
-              gold: { increment: challengerDrawRewards.gold },
-              kineticEnergy: { increment: challengerDrawRewards.kineticEnergy }
-            }
-          }));
+          updates.push(
+            prisma.user.update({
+              where: { id: duel.challengerId },
+              data: {
+                totalExperience: { increment: challengerDrawRewards.xp },
+                gold: { increment: challengerDrawRewards.gold },
+                kineticEnergy: { increment: challengerDrawRewards.kineticEnergy },
+              },
+            })
+          );
 
-          updates.push(prisma.user.update({
-            where: { id: duel.defenderId },
-            data: {
-              totalExperience: { increment: defenderDrawRewards.xp },
-              gold: { increment: defenderDrawRewards.gold },
-              kineticEnergy: { increment: defenderDrawRewards.kineticEnergy }
-            }
-          }));
+          updates.push(
+            prisma.user.update({
+              where: { id: duel.defenderId },
+              data: {
+                totalExperience: { increment: defenderDrawRewards.xp },
+                gold: { increment: defenderDrawRewards.gold },
+                kineticEnergy: { increment: defenderDrawRewards.kineticEnergy },
+              },
+            })
+          );
         }
 
         // Update PvpProfiles
         if (duel.challenger.pvpProfile) {
-          updates.push(prisma.pvpProfile.update({
-            where: { userId: duel.challengerId },
-            data: {
-              duelElo: { increment: challengerEloChange },
-              duelsWon: winnerId === duel.challengerId ? { increment: 1 } : undefined,
-              duelsLost: winnerId === duel.defenderId ? { increment: 1 } : undefined,
-            },
-          }));
+          updates.push(
+            prisma.pvpProfile.update({
+              where: { userId: duel.challengerId },
+              data: {
+                duelElo: { increment: challengerEloChange },
+                duelsWon: winnerId === duel.challengerId ? { increment: 1 } : undefined,
+                duelsLost: winnerId === duel.defenderId ? { increment: 1 } : undefined,
+              },
+            })
+          );
         }
 
         if (duel.defender.pvpProfile) {
-          updates.push(prisma.pvpProfile.update({
-            where: { userId: duel.defenderId },
-            data: {
-              duelElo: { increment: defenderEloChange },
-              duelsWon: winnerId === duel.defenderId ? { increment: 1 } : undefined,
-              duelsLost: winnerId === duel.challengerId ? { increment: 1 } : undefined,
-            },
-          }));
+          updates.push(
+            prisma.pvpProfile.update({
+              where: { userId: duel.defenderId },
+              data: {
+                duelElo: { increment: defenderEloChange },
+                duelsWon: winnerId === duel.defenderId ? { increment: 1 } : undefined,
+                duelsLost: winnerId === duel.challengerId ? { increment: 1 } : undefined,
+              },
+            })
+          );
         }
 
         return updates;
