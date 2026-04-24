@@ -33,7 +33,7 @@ async function runSequential() {
   const start = Date.now();
   let awaitPoints = 0;
 
-  for (const duel of expiredDuels) {
+  for (const _duel of expiredDuels) {
     // 1 & 2. Calculate final scores
     await calculateDuelScoreMock();
     awaitPoints++;
@@ -86,7 +86,7 @@ async function runParallel() {
     await Promise.all([calculateDuelScoreMock(), calculateDuelScoreMock()]);
 
     // Determine winner logic (sync)
-    const winnerId = duel.challengerId;
+    const _winnerId = duel.challengerId;
 
     // Parallelize rewards calculations
     await Promise.all([calculateRewardsMock(), calculateRewardsMock()]);
@@ -102,7 +102,7 @@ async function runParallel() {
   };
 
   // 1. Process all duels in parallel
-  const results = await Promise.all(expiredDuels.map(processDuel));
+  const _results = await Promise.all(expiredDuels.map(processDuel));
   awaitPoints++; // One await for all parallel processes
 
   // 2. Execute all updates in a single transaction

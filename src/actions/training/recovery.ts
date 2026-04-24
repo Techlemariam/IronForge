@@ -106,13 +106,13 @@ export async function checkRecoveryLockAction(userId: string): Promise<RecoveryL
  * Records the override for accountability.
  */
 export async function overrideRecoveryLockAction(
-  userId: string,
+  _userId: string,
   reason: string
 ): Promise<{ success: boolean; message: string }> {
   try {
     // Mask reason: truncate to prevent PII in logs
     const maskedReason =
-      reason.length > 100 ? reason.slice(0, 100) + '[truncated]' : '[reason redacted]';
+      reason.length > 100 ? `${reason.slice(0, 100)}[truncated]` : '[reason redacted]';
     console.log(`Recovery lock override: userId=ID:[REDACTED], reason=${maskedReason}`);
 
     // In production, you might want to:

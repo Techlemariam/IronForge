@@ -102,7 +102,7 @@ export async function getComplicationDataAction(_userId: string): Promise<Compli
  * Push update to Watch app.
  */
 export async function pushWatchUpdateAction(
-  userId: string,
+  _userId: string,
   data: Partial<ComplicationData>
 ): Promise<{ success: boolean }> {
   try {

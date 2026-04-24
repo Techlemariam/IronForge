@@ -1,5 +1,5 @@
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 
 const dirs = [path.join(process.cwd(), 'src/app/api'), path.join(process.cwd(), 'src/actions')];
 

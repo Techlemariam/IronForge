@@ -119,7 +119,7 @@ export async function exportTrainingDnaAction(
       return { success: false };
     }
 
-    const user = await prisma.user.findUnique({
+    const _user = await prisma.user.findUnique({
       where: { id: userId },
       include: { titan: true },
     });
@@ -142,7 +142,7 @@ export async function exportTrainingDnaAction(
  * Import training DNA to user's profile.
  */
 export async function importTrainingDnaAction(
-  userId: string,
+  _userId: string,
   dnaId: string
 ): Promise<{ success: boolean; message: string }> {
   try {

@@ -114,7 +114,7 @@ export async function getLiveActivityFeedAction(
  * Like an activity.
  */
 export async function likeActivityAction(
-  userId: string,
+  _userId: string,
   activityId: string
 ): Promise<{ success: boolean; newLikes: number }> {
   console.log(`User ID:[REDACTED] liked activity ${activityId}`);
@@ -125,7 +125,7 @@ export async function likeActivityAction(
  * Unlike an activity.
  */
 export async function unlikeActivityAction(
-  userId: string,
+  _userId: string,
   activityId: string
 ): Promise<{ success: boolean; newLikes: number }> {
   console.log(`User ID:[REDACTED] unliked activity ${activityId}`);
@@ -136,9 +136,9 @@ export async function unlikeActivityAction(
  * Post a comment on activity.
  */
 export async function commentOnActivityAction(
-  userId: string,
+  _userId: string,
   activityId: string,
-  content: string
+  _content: string
 ): Promise<{ success: boolean; commentId?: string }> {
   console.log(`User ID:[REDACTED] commented on ${activityId} (content:[REDACTED_CONTENT])`);
   return { success: true, commentId: `comment-${Date.now()}` };

@@ -2,7 +2,7 @@ import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 
-const ALLOWED_TOPICS = ['HANDOFF', 'ALERT', 'REQUEST', 'REVIEW', 'INFO', 'BLOCKED'] as const;
+const _ALLOWED_TOPICS = ['HANDOFF', 'ALERT', 'REQUEST', 'REVIEW', 'INFO', 'BLOCKED'] as const;
 
 function isAuthorized(request: Request): boolean {
   const auth = request.headers.get('authorization');

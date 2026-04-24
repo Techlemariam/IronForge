@@ -1,5 +1,5 @@
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 
 const dirs = [path.join(process.cwd(), 'src/app/api'), path.join(process.cwd(), 'src/actions')];
 
@@ -53,7 +53,7 @@ function processFile(filePath) {
         content =
           content.slice(0, lastImportIndex) + importStatement + content.slice(lastImportIndex);
       } else {
-        content = importStatement + '\n' + content;
+        content = `${importStatement}\n${content}`;
       }
     }
     fs.writeFileSync(filePath, content, 'utf-8');
