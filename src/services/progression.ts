@@ -91,7 +91,7 @@ export class ProgressionService {
     }
 
     const newTotalXp = user.totalExperience + finalAmount;
-    const newLevel = this.calculateLevelFromXP(newTotalXp);
+    const newLevel = ProgressionService.calculateLevelFromXP(newTotalXp);
 
     const updatedUser = await prisma.user.update({
       where: { id: userId },
@@ -128,8 +128,8 @@ export class ProgressionService {
     const goldReward = achievement.points * 50;
     const xpReward = achievement.points * XP_PER_ACHIEVEMENT_POINT;
 
-    await this.awardGold(userId, goldReward);
-    await this.addExperience(userId, xpReward);
+    await ProgressionService.awardGold(userId, goldReward);
+    await ProgressionService.addExperience(userId, xpReward);
   }
 
   /**
@@ -148,8 +148,8 @@ export class ProgressionService {
 
     if (!user) return null;
 
-    const currentLevelRequiredXp = this.calculateRequiredXP(user.level);
-    const nextLevelRequiredXp = this.calculateRequiredXP(user.level + 1);
+    const currentLevelRequiredXp = ProgressionService.calculateRequiredXP(user.level);
+    const nextLevelRequiredXp = ProgressionService.calculateRequiredXP(user.level + 1);
 
     const xpInCurrentLevel = user.totalExperience - currentLevelRequiredXp;
     const levelXpSpan = nextLevelRequiredXp - currentLevelRequiredXp;
@@ -190,9 +190,16 @@ export class ProgressionService {
     // 2. Find Best Lifts (e1rm)
     // We look for exercise names that distinctively match powerlifts
     // This is a naive heuristic; ideally we'd have semantic tags.
-    const bestSquat = await this.findBestLift(userId, ['Squat', 'Back Squat', 'Low Bar Squat']);
-    const bestBench = await this.findBestLift(userId, ['Bench Press', 'Flat Barbell Bench Press']);
-    const bestDeadlift = await this.findBestLift(userId, [
+    const bestSquat = await ProgressionService.findBestLift(userId, [
+      'Squat',
+      'Back Squat',
+      'Low Bar Squat',
+    ]);
+    const bestBench = await ProgressionService.findBestLift(userId, [
+      'Bench Press',
+      'Flat Barbell Bench Press',
+    ]);
+    const bestDeadlift = await ProgressionService.findBestLift(userId, [
       'Deadlift',
       'Conventional Deadlift',
       'Sumo Deadlift',

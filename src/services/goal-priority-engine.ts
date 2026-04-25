@@ -54,10 +54,10 @@ export class GoalPriorityEngineService {
    */
   public static selectPhase(manifest: WardensManifest, metrics: SystemMetrics): MacroPhase {
     // 1. Safety Override - Always check first
-    if (this.needsDeload(metrics)) return 'DELOAD';
+    if (GoalPriorityEngineService.needsDeload(metrics)) return 'DELOAD';
 
     // 2. Deadline Check - Peak if event within 2 weeks
-    const upcomingDeadline = this.getUpcomingDeadline(manifest.goals);
+    const upcomingDeadline = GoalPriorityEngineService.getUpcomingDeadline(manifest.goals);
     if (upcomingDeadline && upcomingDeadline.daysUntil <= 14) {
       return 'PEAK';
     }
@@ -70,14 +70,14 @@ export class GoalPriorityEngineService {
     // 4. Phase Rotation - Based on primary goal
     const primaryGoal = manifest.goals[0]?.goal;
 
-    if (this.isCardioGoal(primaryGoal)) {
-      return this.shouldTransition(manifest, metrics)
+    if (GoalPriorityEngineService.isCardioGoal(primaryGoal)) {
+      return GoalPriorityEngineService.shouldTransition(manifest, metrics)
         ? 'STRENGTH_BUILD' // Recovery rotation
         : 'CARDIO_BUILD';
     }
 
-    if (this.isStrengthGoal(primaryGoal)) {
-      return this.shouldTransition(manifest, metrics)
+    if (GoalPriorityEngineService.isStrengthGoal(primaryGoal)) {
+      return GoalPriorityEngineService.shouldTransition(manifest, metrics)
         ? 'CARDIO_BUILD' // Recovery rotation
         : 'STRENGTH_BUILD';
     }
@@ -150,7 +150,7 @@ export class GoalPriorityEngineService {
     metrics: SystemMetrics
   ): WeeklyTargets {
     const allocation = PHASE_ALLOCATION[phase];
-    const baseHours = this.getBaseHours(metrics); // ~6-12h/week
+    const baseHours = GoalPriorityEngineService.getBaseHours(metrics); // ~6-12h/week
 
     // Base allocation
     let strengthHours = baseHours * allocation.strength;
@@ -158,7 +158,7 @@ export class GoalPriorityEngineService {
     const mobilityHours = baseHours * allocation.mobility;
 
     // Apply bio-modifiers
-    const modifier = this.getBioModifier(metrics);
+    const modifier = GoalPriorityEngineService.getBioModifier(metrics);
     strengthHours *= modifier;
     cardioHours *= modifier; // Note: Specs says * modifier for both, let's stick to that.
 
@@ -219,7 +219,9 @@ export class GoalPriorityEngineService {
     allowBudgetOverride?: boolean
   ): WorkoutDefinition[] {
     // 1. Filter by phase priority
-    let candidates = WORKOUT_LIBRARY.filter((w) => this.matchesPhase(w, phase));
+    let candidates = WORKOUT_LIBRARY.filter((w) =>
+      GoalPriorityEngineService.matchesPhase(w, phase)
+    );
 
     // 2. Filter by preferences
     if (preferences) {
@@ -244,8 +246,8 @@ export class GoalPriorityEngineService {
     // 4. Sort by "fit score" (higher = better match)
     candidates.sort(
       (a, b) =>
-        this.calculateFitScore(b, phase, heatmap, manifest) -
-        this.calculateFitScore(a, phase, heatmap, manifest)
+        GoalPriorityEngineService.calculateFitScore(b, phase, heatmap, manifest) -
+        GoalPriorityEngineService.calculateFitScore(a, phase, heatmap, manifest)
     );
 
     // Return top 3 recommendations
@@ -290,7 +292,9 @@ export class GoalPriorityEngineService {
 
     // Bonus for filling heatmap gaps (strength workouts only)
     if (w.type === 'STRENGTH' && w.exercises && heatmap) {
-      const targetedMuscles = w.exercises.map((e) => this.getMuscleForExercise(e.id));
+      const targetedMuscles = w.exercises.map((e) =>
+        GoalPriorityEngineService.getMuscleForExercise(e.id)
+      );
 
       // Find unique muscles targeted that are in MV (Maintenance) or MEV (Min Effective)
       // We want to push them to MAV (Max Adaptive).

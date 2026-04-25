@@ -236,7 +236,11 @@ export class TrainingContextService {
     const effectiveScaleFactor = rampFactor * globalBioMod;
 
     // For now, let's pass the raw scale factor to getWeeklyVolume
-    const volume = await this.getWeeklyVolume(userId, effectiveScaleFactor, activePath);
+    const volume = await TrainingContextService.getWeeklyVolume(
+      userId,
+      effectiveScaleFactor,
+      activePath
+    );
 
     // 7. Calculate Readiness (Based on HRV/Sleep)
     let readiness: TrainingContext['readiness'] = 'HIGH';
@@ -278,7 +282,11 @@ export class TrainingContextService {
       const sets = parseSets(log.sets);
       for (const set of sets) {
         if (set.reps > 0) {
-          const cost = this.estimateCnsCost(log.exercise.name, set.rpe || 7, set.reps);
+          const cost = TrainingContextService.estimateCnsCost(
+            log.exercise.name,
+            set.rpe || 7,
+            set.reps
+          );
           _neuralLoadCount += cost === 'HIGH' ? 3 : cost === 'MEDIUM' ? 2 : 1;
         }
       }

@@ -30,7 +30,7 @@ export const TutorialTooltip: React.FC<TutorialTooltipProps> = ({
     // Check if user has dismissed this tooltip before
     const checkDismissed = async () => {
       const dismissed = await StorageService.getItem<string[]>(STORAGE_KEY);
-      if (dismissed && dismissed.includes(id)) {
+      if (dismissed?.includes(id)) {
         setIsDismissed(true);
       }
     };

@@ -49,8 +49,8 @@ export const TerritoryMap = ({ territories, userGuildId, isLeader }: TerritoryMa
     [territories, selectedTerritory]
   );
 
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+  const [nodes, _setNodes, onNodesChange] = useNodesState(initialNodes);
+  const [edges, _setEdges, _onEdgesChange] = useEdgesState([]);
 
   // Handle node click
   const onNodeClick = useCallback((_: any, node: any) => {
@@ -72,7 +72,7 @@ export const TerritoryMap = ({ territories, userGuildId, isLeader }: TerritoryMa
       } else {
         toast.error(result.error);
       }
-    } catch (e) {
+    } catch (_e) {
       toast.error('Failed to set target.');
     } finally {
       setIsSettingTarget(false);

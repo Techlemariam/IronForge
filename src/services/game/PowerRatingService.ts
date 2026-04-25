@@ -153,9 +153,9 @@ export class PowerRatingService {
     const ftp = user.ftpCycle || user.ftpRun || 200; // Default 200 if missing
 
     // 3. Fetch Activity Data (Last 7 Days)
-    const weeklyVolume = await this.getWeeklyVolume(userId);
-    const weeklyDuration = await this.getWeeklyCardioDuration(userId);
-    const streakWeeks = await this.getConsecutiveWeeks(userId);
+    const weeklyVolume = await PowerRatingService.getWeeklyVolume(userId);
+    const weeklyDuration = await PowerRatingService.getWeeklyCardioDuration(userId);
+    const streakWeeks = await PowerRatingService.getConsecutiveWeeks(userId);
 
     // 4. Calculate Power Rating (Oracle 3.0)
     const result = calculatePowerRating(wilks, weeklyVolume, ftp, weeklyDuration, streakWeeks);

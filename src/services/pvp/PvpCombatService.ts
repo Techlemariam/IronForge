@@ -58,8 +58,8 @@ export class PvpCombatService {
    * Simulate a full round (both attack each other)
    */
   public static async simulateRound(user1Id: string, user2Id: string): Promise<DuelTurnResult[]> {
-    const attack1 = await this.calculateAttack(user1Id, user2Id);
-    const attack2 = await this.calculateAttack(user2Id, user1Id);
+    const attack1 = await PvpCombatService.calculateAttack(user1Id, user2Id);
+    const attack2 = await PvpCombatService.calculateAttack(user2Id, user1Id);
     return [attack1, attack2];
   }
 }

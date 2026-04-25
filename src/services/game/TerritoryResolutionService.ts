@@ -11,7 +11,7 @@ export class TerritoryResolutionService {
 
     const now = new Date();
     // We resolve for the week that just ended
-    const weekNumber = this.getISOWeek(now);
+    const weekNumber = TerritoryResolutionService.getISOWeek(now);
     const year = now.getFullYear();
 
     try {
@@ -30,7 +30,7 @@ export class TerritoryResolutionService {
       });
 
       for (const territory of territories) {
-        await this.resolveTerritory(territory, weekNumber, year);
+        await TerritoryResolutionService.resolveTerritory(territory, weekNumber, year);
       }
 
       console.log('[TerritoryResolution] Weekly resolution completed successfully.');
@@ -93,7 +93,7 @@ export class TerritoryResolutionService {
       });
 
       // 3. Enforce 3-territory limit for the winner
-      await this.enforceTerritoryCap(newOwnerId, tx);
+      await TerritoryResolutionService.enforceTerritoryCap(newOwnerId, tx);
     });
   }
 
