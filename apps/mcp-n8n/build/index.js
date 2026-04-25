@@ -85,7 +85,7 @@ class N8nClient {
   async deactivateWorkflow(id) {
     return this.fetch(`/workflows/${id}/deactivate`, { method: 'POST' });
   }
-  async getExecutions(limit, status) {
+  async getExecutions(limit = 10, status) {
     let query = `?limit=${limit}`;
     if (status) query += `&status=${status}`;
     return this.fetch(`/executions${query}`);
