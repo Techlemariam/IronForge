@@ -45,6 +45,8 @@ const FIRST_TIME_HINTS: HintConfig[] = [
   },
 ];
 
+import { StorageService } from '@/services/storage';
+
 const STORAGE_KEY = 'ironforge_seen_hints';
 
 export function useFirstTimeHints() {
@@ -52,10 +54,13 @@ export function useFirstTimeHints() {
   const [currentHint, setCurrentHint] = useState<HintConfig | null>(null);
 
   useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) {
-      setSeenHints(new Set(JSON.parse(stored)));
-    }
+    const loadHints = async () => {
+      const stored = await StorageService.getItem<string[]>(STORAGE_KEY);
+      if (stored) {
+        setSeenHints(new Set(stored));
+      }
+    };
+    loadHints();
   }, []);
 
   const showNextHint = () => {
@@ -65,23 +70,23 @@ export function useFirstTimeHints() {
     }
   };
 
-  const dismissHint = (hintId: string) => {
+  const dismissHint = async (hintId: string) => {
     const newSeen = new Set(seenHints).add(hintId);
     setSeenHints(newSeen);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify([...newSeen]));
+    await StorageService.setItem(STORAGE_KEY, [...newSeen]);
     setCurrentHint(null);
   };
 
-  const dismissAll = () => {
+  const dismissAll = async () => {
     const allIds = new Set(FIRST_TIME_HINTS.map((h) => h.id));
     setSeenHints(allIds);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify([...allIds]));
+    await StorageService.setItem(STORAGE_KEY, [...allIds]);
     setCurrentHint(null);
   };
 
-  const resetHints = () => {
+  const resetHints = async () => {
     setSeenHints(new Set());
-    localStorage.removeItem(STORAGE_KEY);
+    await StorageService.removeItem(STORAGE_KEY);
   };
 
   return {

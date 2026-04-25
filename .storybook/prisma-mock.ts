@@ -27,7 +27,7 @@ export const Prisma = {
   PrismaClientRustPanicError: class {},
   PrismaClientInitializationError: class {},
   PrismaClientValidationError: class {},
-  InputJsonValue: {} as any,
+  InputJsonValue: {} as unknown,
 };
 
 // Mock all commonly used Prisma types and enums
@@ -79,50 +79,50 @@ export enum FriendshipStatus {
 }
 
 // Mock type interfaces (empty objects for type compatibility)
-export type User = Record<string, any>;
-export type Exercise = Record<string, any>;
-export type CardioLog = Record<string, any>;
-export type ExerciseLog = Record<string, any>;
-export type Titan = Record<string, any>;
-export type DuelChallenge = Record<string, any>;
-export type ActiveSession = Record<string, any>;
-export type SessionParticipant = Record<string, any>;
-export type PvpSeason = Record<string, any>;
-export type Challenge = Record<string, any>;
-export type UserChallenge = Record<string, any>;
-export type Monster = Record<string, any>;
-export type RaidBoss = Record<string, any>;
-export type WorldRegion = Record<string, any>;
-export type Territory = Record<string, any>;
-export type Guild = Record<string, any>;
-export type Notification = Record<string, any>;
-export type CombatSession = Record<string, any>;
-export type TitanMemory = Record<string, any>;
-export type TitanScar = Record<string, any>;
-export type Follow = Record<string, any>;
-export type Friendship = Record<string, any>;
-export type Title = Record<string, any>;
-export type UserTitle = Record<string, any>;
-export type WorkoutTemplate = Record<string, any>;
-export type BodyMetric = Record<string, any>;
-export type MeditationLog = Record<string, any>;
-export type GrimoireEntry = Record<string, any>;
-export type UnlockedMonster = Record<string, any>;
-export type UserSkill = Record<string, any>;
-export type UserAchievement = Record<string, any>;
-export type UserEquipment = Record<string, any>;
-export type Item = Record<string, any>;
-export type ChatMessage = Record<string, any>;
-export type PvpProfile = Record<string, any>;
-export type BattleLog = Record<string, any>;
-export type PvpRating = Record<string, any>;
-export type PvpMatch = Record<string, any>;
-export type WeeklyPlan = Record<string, any>;
-export type GauntletRun = Record<string, any>;
-export type GuildRaid = Record<string, any>;
-export type GuildRaidContribution = Record<string, any>;
-export type Achievement = Record<string, any>;
-export type TrainingProgram = Record<string, any>;
-export type FactoryStatus = Record<string, any>;
-export type TerritoryContestEntry = Record<string, any>;
-export type TerritoryHistory = Record<string, any>;
+export type User = Record<string, unknown>;
+export type Exercise = Record<string, unknown>;
+export type CardioLog = Record<string, unknown>;
+export type ExerciseLog = Record<string, unknown>;
+export type Titan = Record<string, unknown>;
+export type DuelChallenge = Record<string, unknown>;
+export type ActiveSession = Record<string, unknown>;
+export type SessionParticipant = Record<string, unknown>;
+export type PvpSeason = Record<string, unknown>;
+export type Challenge = Record<string, unknown>;
+export type UserChallenge = Record<string, unknown>;
+export type Monster = Record<string, unknown>;
+export type RaidBoss = Record<string, unknown>;
+export type WorldRegion = Record<string, unknown>;
+export type Territory = Record<string, unknown>;
+export type Guild = Record<string, unknown>;
+export type Notification = Record<string, unknown>;
+export type CombatSession = Record<string, unknown>;
+export type TitanMemory = Record<string, unknown>;
+export type TitanScar = Record<string, unknown>;
+export type Follow = Record<string, unknown>;
+export type Friendship = Record<string, unknown>;
+export type Title = Record<string, unknown>;
+export type UserTitle = Record<string, unknown>;
+export type WorkoutTemplate = Record<string, unknown>;
+export type BodyMetric = Record<string, unknown>;
+export type MeditationLog = Record<string, unknown>;
+export type GrimoireEntry = Record<string, unknown>;
+export type UnlockedMonster = Record<string, unknown>;
+export type UserSkill = Record<string, unknown>;
+export type UserAchievement = Record<string, unknown>;
+export type UserEquipment = Record<string, unknown>;
+export type Item = Record<string, unknown>;
+export type ChatMessage = Record<string, unknown>;
+export type PvpProfile = Record<string, unknown>;
+export type BattleLog = Record<string, unknown>;
+export type PvpRating = Record<string, unknown>;
+export type PvpMatch = Record<string, unknown>;
+export type WeeklyPlan = Record<string, unknown>;
+export type GauntletRun = Record<string, unknown>;
+export type GuildRaid = Record<string, unknown>;
+export type GuildRaidContribution = Record<string, unknown>;
+export type Achievement = Record<string, unknown>;
+export type TrainingProgram = Record<string, unknown>;
+export type FactoryStatus = Record<string, unknown>;
+export type TerritoryContestEntry = Record<string, unknown>;
+export type TerritoryHistory = Record<string, unknown>;

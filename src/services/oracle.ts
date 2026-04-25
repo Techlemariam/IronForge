@@ -4,8 +4,8 @@ import { getHevyWorkouts } from '@/lib/hevy';
 import { type WellnessData, getActivities, getWellness } from '@/lib/intervals';
 import { logger } from '@/lib/logger';
 import prisma from '@/lib/prisma';
-import { GoalPriorityEngine } from '@/services/GoalPriorityEngine';
 import { EquipmentService } from '@/services/game/EquipmentService';
+import { GoalPriorityEngineService } from '@/services/goal-priority-engine';
 import type {
   AuditReport,
   IntervalsActivity,
@@ -57,7 +57,7 @@ export class OracleService {
   /**
    * Main entry point: Generates specific guidance for the Titan based on bio-data.
    */
-  static async generateDailyDecree(userId: string): Promise<OracleDecree> {
+  public static async generateDailyDecree(userId: string): Promise<OracleDecree> {
     // 1. Fetch Context (Enhanced with Power Rating)
     const user = await prisma.user.findUnique({
       where: { id: userId },
@@ -197,7 +197,7 @@ export class OracleService {
     const getKey = (d: Date | string) => new Date(d).toISOString().split('T')[0];
 
     // Process Local Cardio
-    localCardio.forEach((log) => {
+    for (const log of localCardio) {
       const key = getKey(log.date);
       const entry = loads.get(key) || {
         date: new Date(log.date),
@@ -206,32 +206,11 @@ export class OracleService {
       };
       entry.cardioLoad += log.load || 0;
       loads.set(key, entry);
-    });
+    }
 
     // Process Remote Cardio (Intervals) - Dedup
-    remoteCardio.forEach((activity) => {
-      // Check for duplicate: time match +/- 30m
-      // Actually Intervals activity has `start_date_local`.
-      // We need to parse it.
-      // In types/index.ts IntervalsActivity has `id`.
-      // For now, let's assume if we extracted it, it might just be a date string in the simplified type.
-      // But usually it has a timestamp.
-      // Simplified logic: If we have local cardio on this day with similar Load, skip?
-      // Or precise timestamp match.
-      // Let's rely on date-based aggregation for now + simple ID check if available.
-
-      // For this Implementation: We Aggressively Add remote if not strictly matching local ID
-      // But wait, duplication logic required fuzzy match.
-      // Checking timestamps is hard without precise start times on Local logs (default @now known?).
-
-      // SIMPLIFIED DEDUP: If Local Cardio exists for this DAY, ignore Remote?
-      // No, multiple workouts possible.
-      // Safe bet for Prototype: Use Local as Truth. Add Remote only if NO Local log exists for that day?
-      // User requested explicit handling.
-      // Let's imply: If Remote Time matches Local Time +/- 30m.
-      // Since Local `CardioLog` has `date`, let's compare.
-
-      const actDate = new Date(activity.start_date_local || new Date()); // Assuming start_date_local exists on real object
+    for (const activity of remoteCardio) {
+      const actDate = new Date(activity.start_date_local || new Date());
       const isDupe = localCardio.some(
         (l: CardioLog) => Math.abs(new Date(l.date).getTime() - actDate.getTime()) < DUPE_WINDOW_MS
       );
@@ -243,32 +222,27 @@ export class OracleService {
           cardioLoad: 0,
           strengthVolume: 0,
         };
-        // Load/TSS from intervals? Type says `icu_intensity`? Usually `load` or `icu_training_load`.
-        // Let's assume `icu_intensity` is a proxy or 0 if missing.
-        // Really we need `load`. Types might be incomplete. using 0 safe fallback.
         entry.cardioLoad += activity.icu_training_load || 0;
         loads.set(key, entry);
       }
-    });
+    }
 
     // Process Local Strength (Volume)
-    localStrength.forEach((log) => {
+    for (const log of localStrength) {
       const key = getKey(log.date);
       const entry = loads.get(key) || {
         date: new Date(log.date),
         cardioLoad: 0,
         strengthVolume: 0,
       };
-      // Calculate volume (sets * reps * weight)
-      // sets is Json, need to cast
       const sets = log.sets as unknown as PrismaSet[];
       const vol = sets.reduce((acc, s) => acc + (s.reps || 0) * (s.weight || 0), 0);
       entry.strengthVolume += vol;
       loads.set(key, entry);
-    });
+    }
 
     // Process Remote Strength (Hevy) - Dedup
-    remoteStrength.forEach((workout: HevyWorkout) => {
+    for (const workout of remoteStrength) {
       const startTime = new Date(workout.start_time);
       const isDupe = localStrength.some(
         (l: ExerciseLogWithExercise) =>
@@ -284,16 +258,20 @@ export class OracleService {
         };
 
         let vol = 0;
-        workout.exercises?.forEach((ex) => {
-          ex.sets?.forEach((s) => {
-            vol += (s.reps || 0) * (s.weight_kg || 0);
-          });
-        });
+        if (workout.exercises) {
+          for (const ex of workout.exercises) {
+            if (ex.sets) {
+              for (const s of ex.sets) {
+                vol += (s.reps || 0) * (s.weight_kg || 0);
+              }
+            }
+          }
+        }
 
         entry.strengthVolume += vol;
         loads.set(key, entry);
       }
-    });
+    }
 
     return loads;
   }
@@ -302,9 +280,6 @@ export class OracleService {
     const sorted = Array.from(dailyLoads.values()).sort(
       (a, b) => a.date.getTime() - b.date.getTime()
     );
-
-    // Calculate Moving Averages (Exponential typically, simple for now)
-    // Acute (7d), Chronic (42d)
 
     let acuteCardioSum = 0;
     let chronicCardioSum = 0;
@@ -317,7 +292,7 @@ export class OracleService {
     const chronicStart = new Date();
     chronicStart.setDate(now.getDate() - HISTORY_WINDOW_DAYS);
 
-    sorted.forEach((d) => {
+    for (const d of sorted) {
       if (d.date >= acuteStart) {
         acuteCardioSum += d.cardioLoad;
         acuteVolSum += d.strengthVolume;
@@ -326,7 +301,7 @@ export class OracleService {
         chronicCardioSum += d.cardioLoad;
         chronicVolSum += d.strengthVolume;
       }
-    });
+    }
 
     const acuteCardioAvg = acuteCardioSum / ACUTE_WINDOW_DAYS;
     const chronicCardioAvg = chronicCardioSum / HISTORY_WINDOW_DAYS;
@@ -334,7 +309,6 @@ export class OracleService {
     const acuteVolAvg = acuteVolSum / ACUTE_WINDOW_DAYS;
     const chronicVolAvg = chronicVolSum / HISTORY_WINDOW_DAYS;
 
-    // Detect Sharp Spikes (>30% jump over baseline)
     const cardioRatio = chronicCardioAvg > 0 ? acuteCardioAvg / chronicCardioAvg : 0;
     const volumeRatio = chronicVolAvg > 0 ? acuteVolAvg / chronicVolAvg : 0;
     const isVolumeSpike = cardioRatio > 1.3 || volumeRatio > 1.3;
@@ -350,18 +324,13 @@ export class OracleService {
    * Generates a deterministic training strategy based on the user's current metrics and goals.
    * This "Grounds" the LLM with hard data from the GoalPriorityEngine.
    */
-  static generateTrainingStrategy(
+  public static generateTrainingStrategy(
     manifest: WardensManifest,
     metrics: SystemMetrics
   ): CoachingStrategy {
-    // 1. Determine optimal phase
-    const phase = GoalPriorityEngine.selectPhase(manifest, metrics);
-
-    // 2. Identify primary goal
+    const phase = GoalPriorityEngineService.selectPhase(manifest, metrics);
     const primaryFocus = manifest.goals[0]?.goal || 'FITNESS';
-
-    // 3. Select top 3 workouts
-    const readinessFactor = Math.max(0.5, Math.min(1.2, (metrics.tsb + 30) / 60)); // -30 TSB = 0.5, +30 TSB = 1.0 (approx)
+    const readinessFactor = Math.max(0.5, Math.min(1.2, (metrics.tsb + 30) / 60));
 
     const budget = {
       cns: 50 * readinessFactor,
@@ -369,16 +338,15 @@ export class OracleService {
       metabolic: 50 * readinessFactor,
     };
 
-    const recommendedWorkouts = GoalPriorityEngine.selectWorkout(
+    const recommendedWorkouts = GoalPriorityEngineService.selectWorkout(
       manifest,
       phase,
       budget,
-      undefined, // No heatmap for now
-      undefined, // No prefs
-      true // Allow budget override for recommendations (aspirational)
+      undefined,
+      undefined,
+      true
     );
 
-    // 4. Generate Context Summary for the LLM
     const contextSummary = `
 TRAINING STRATEGY (Generated by GoalPriorityEngine):
 - Current Phase: ${phase}
@@ -406,12 +374,10 @@ TRAINING STRATEGY (Generated by GoalPriorityEngine):
     activeDuel: Partial<DuelChallenge> | null = null,
     manifest?: WardensManifest
   ): OracleDecree {
-    // 0. Construct GPE Metrics & Phase
-    // Create metrics from available data to feed the Engine
     const metrics: SystemMetrics = {
       ctl: (titan.cardioIndex || 0) + (titan.strengthIndex || 0),
-      atl: analysis.isVolumeSpike ? 100 : 50, // rough proxy from spike analysis
-      tsb: wellness.bodyBattery ? (wellness.bodyBattery - 50) * 1.5 : 0, // Proxy TSB
+      atl: analysis.isVolumeSpike ? 100 : 50,
+      tsb: wellness.bodyBattery ? (wellness.bodyBattery - 50) * 1.5 : 0,
       hrvBaseline: (titan as unknown as { hrvBaseline?: number }).hrvBaseline || 60,
       soreness: (wellness as unknown as { soreness?: number }).soreness || 5,
       sleepScore: wellness.sleepScore || 70,
@@ -424,10 +390,9 @@ TRAINING STRATEGY (Generated by GoalPriorityEngine):
 
     let gpePhase: MacroPhase = 'BALANCED';
     if (manifest) {
-      gpePhase = GoalPriorityEngine.selectPhase(manifest, metrics);
+      gpePhase = GoalPriorityEngineService.selectPhase(manifest, metrics);
     }
 
-    // --- PRIORITY 1: SAFETY (INJURY / SEVERE FATIGUE) ---
     if (titan.isInjured) {
       return {
         type: 'DEBUFF',
@@ -444,7 +409,6 @@ TRAINING STRATEGY (Generated by GoalPriorityEngine):
       };
     }
 
-    // GPE DELOAD or Critical Recovery take precedence
     if (gpePhase === 'DELOAD' || (wellness.bodyBattery && wellness.bodyBattery < 30)) {
       return {
         type: 'DEBUFF',
@@ -464,13 +428,11 @@ TRAINING STRATEGY (Generated by GoalPriorityEngine):
       };
     }
 
-    // --- PRIORITY 2: PVP CRISIS ---
     if (activeDuel) {
       const daysLeft = activeDuel.endDate
         ? (new Date(activeDuel.endDate).getTime() - Date.now()) / (1000 * 3600 * 24)
         : 7;
 
-      // ... (Existing PvP Logic) ...
       const isChallenger = activeDuel.challengerId === userId;
       const userDist =
         (isChallenger ? activeDuel.challengerDistance : activeDuel.defenderDistance) ?? 0;
@@ -493,9 +455,6 @@ TRAINING STRATEGY (Generated by GoalPriorityEngine):
       }
     }
 
-    // --- PRIORITY 3: TRAINING PHASE DECREES (Based on GPE) ---
-    // Instead of generic "Baseline", we now output Phase-specific context if significant
-
     if (gpePhase === 'PEAK') {
       return {
         type: 'BUFF',
@@ -508,18 +467,16 @@ TRAINING STRATEGY (Generated by GoalPriorityEngine):
     }
 
     if (gpePhase === 'CARDIO_BUILD' && metrics.tsb > 10) {
-      // Only if fresh
       return {
-        type: 'NEUTRAL', // Or BUFF? Let's keep Neutral to avoid spam unless truly special
+        type: 'NEUTRAL',
         code: 'CARDIO_FOCUS',
         label: 'Decree of Endurance',
         description: 'Focus on aerobic base building.',
-        actions: { notifyUser: false, urgency: 'LOW' }, // Silent update
+        actions: { notifyUser: false, urgency: 'LOW' },
         effect: { xpMultiplier: 1.0 },
       };
     }
 
-    // Fallback
     return {
       type: 'NEUTRAL',
       code: 'BASELINE_GRIND',
@@ -529,11 +486,12 @@ TRAINING STRATEGY (Generated by GoalPriorityEngine):
       effect: { xpMultiplier: 1.0 },
     };
   }
+
   /**
    * Legacy/Core Consultation: Returns a specific workout recommendation.
    * Integrates with the new Decree system.
    */
-  static async consult(
+  public static async consult(
     wellness: IntervalsWellness,
     _ttb: TTBIndices,
     _events: IntervalsEvent[] = [],
@@ -544,15 +502,11 @@ TRAINING STRATEGY (Generated by GoalPriorityEngine):
     _weeklyMastery?: WeeklyMastery,
     titanState?: { dailyDecree?: OracleDecree | null; powerRating?: number } | null
   ): Promise<OracleRecommendation> {
-    // 1. Get the Decree (or use cached one from titanState if available)
-    // For efficiency, we assume generateDailyDecree is heavy (fetches DB).
-    // We'll trust the inputs or do a lightweight check.
-
     const recommendation: OracleRecommendation = {
-      type: 'GRIND', // Default type
+      type: 'GRIND',
       title: 'Daily Training',
       rationale: 'Based on your current status...',
-      priorityScore: 50, // Default priority
+      priorityScore: 50,
       generatedSession: undefined,
       primaryFocus: 'Strength & Conditioning',
       equipmentId: 'Standard Gym',
@@ -560,7 +514,6 @@ TRAINING STRATEGY (Generated by GoalPriorityEngine):
 
     const recovery = wellness.bodyBattery || 0;
 
-    // Mobility Audit Check
     if (_auditReport?.mobility && _auditReport.mobility.neglectedRegions.length > 0) {
       const topNeglected = _auditReport.mobility.neglectedRegions[0];
       const recommended = _auditReport.mobility.recommendedExercises[0];
@@ -571,12 +524,10 @@ TRAINING STRATEGY (Generated by GoalPriorityEngine):
         recommendation.primaryFocus = 'Mobility';
         recommendation.equipmentId = 'Bodyweight';
         recommendation.rationale = `Your ${topNeglected} mobility is lagging. Try ${recommended.exerciseName}. ${_auditReport.mobility.insight}`;
-        recommendation.priorityScore = 60; // Moderate priority integration
-        // Ideally we would map this to a Session object, but for now rationale is enough to guide the user
+        recommendation.priorityScore = 60;
       }
     }
 
-    // Path Logic
     if (activePath === 'PATHFINDER') {
       recommendation.type = 'CARDIO_VALIDATION';
       recommendation.title = 'Engine Builder';
@@ -601,21 +552,19 @@ TRAINING STRATEGY (Generated by GoalPriorityEngine):
       }
     }
 
-    // Recovery Override
     if (recovery < 30 || (recoveryAnalysis && recoveryAnalysis.state === 'RECOVERY')) {
       recommendation.type = 'RECOVERY';
       recommendation.title = 'Active Recovery';
       recommendation.primaryFocus = 'Recovery';
       recommendation.equipmentId = 'None / Mobility';
       recommendation.rationale = 'System fatigue detected. Prioritize mobility and light movement.';
-      recommendation.priorityScore = 90; // High priority for recovery
+      recommendation.priorityScore = 90;
       const recoveryWorkouts = WORKOUT_LIBRARY.filter((w) => w.intensity === 'LOW');
       if (recoveryWorkouts.length > 0) {
         recommendation.generatedSession = mapDefinitionToSession(recoveryWorkouts[0]);
       }
     }
 
-    // Titan Decree Override
     if (titanState?.dailyDecree?.type === 'DEBUFF') {
       recommendation.type = 'TAPER';
       recommendation.title = 'Tactical Retreat';
@@ -623,7 +572,6 @@ TRAINING STRATEGY (Generated by GoalPriorityEngine):
       recommendation.priorityScore = 95;
     }
 
-    // Power Rating Insights
     if (titanState?.powerRating) {
       const pr = titanState.powerRating;
       if (pr >= 750) {

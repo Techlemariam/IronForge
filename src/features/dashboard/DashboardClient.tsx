@@ -10,6 +10,7 @@ import { saveWorkoutAction } from '@/actions/integrations/hevy';
 import { mapQuestToHevyPayload } from '@/utils/hevyAdapter';
 
 import { getProgressionAction } from '@/actions/progression/core';
+import { StorageService } from '@/services/storage';
 
 import type { Faction } from '@/types/training';
 
@@ -125,7 +126,7 @@ const DashboardClient: React.FC<DashboardClientProps> = (props) => {
   const handleSaveWorkout = async (isPrivate: boolean) => {
     if (!state.activeQuest || !state.startTime) return;
 
-    const apiKey = userData?.hevyApiKey || localStorage.getItem('hevy_api_key');
+    const apiKey = userData?.hevyApiKey || (await StorageService.getItem<string>('hevy_api_key'));
     if (!apiKey) {
       toast.error('Access Denied', {
         description: 'You need a Hevy API Key to save quests.',

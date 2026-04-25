@@ -4,6 +4,8 @@ import { Info, X } from 'lucide-react';
 import type React from 'react';
 import { useEffect, useState } from 'react';
 
+import { StorageService } from '@/services/storage';
+
 interface TutorialTooltipProps {
   id: string; // Unique identifier for this tooltip
   title: string;
@@ -11,6 +13,8 @@ interface TutorialTooltipProps {
   position?: 'top' | 'bottom' | 'left' | 'right';
   children: React.ReactNode;
 }
+
+const STORAGE_KEY = 'dismissedTooltips';
 
 export const TutorialTooltip: React.FC<TutorialTooltipProps> = ({
   id,
@@ -24,25 +28,24 @@ export const TutorialTooltip: React.FC<TutorialTooltipProps> = ({
 
   useEffect(() => {
     // Check if user has dismissed this tooltip before
-    const dismissedTooltips = localStorage.getItem('dismissedTooltips');
-    if (dismissedTooltips) {
-      const dismissed = JSON.parse(dismissedTooltips);
-      if (dismissed.includes(id)) {
+    const checkDismissed = async () => {
+      const dismissed = await StorageService.getItem<string[]>(STORAGE_KEY);
+      if (dismissed && dismissed.includes(id)) {
         setIsDismissed(true);
       }
-    }
+    };
+    checkDismissed();
   }, [id]);
 
-  const handleDismiss = () => {
+  const handleDismiss = async () => {
     setIsVisible(false);
 
-    // Save to localStorage
-    const dismissedTooltips = localStorage.getItem('dismissedTooltips');
-    const dismissed = dismissedTooltips ? JSON.parse(dismissedTooltips) : [];
+    // Save to StorageService
+    const dismissed = (await StorageService.getItem<string[]>(STORAGE_KEY)) || [];
 
     if (!dismissed.includes(id)) {
       dismissed.push(id);
-      localStorage.setItem('dismissedTooltips', JSON.stringify(dismissed));
+      await StorageService.setItem(STORAGE_KEY, dismissed);
     }
 
     setIsDismissed(true);

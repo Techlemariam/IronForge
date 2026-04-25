@@ -1,75 +1,59 @@
 import { expect, test } from '@playwright/test';
+import { DashboardPage } from './pages/dashboard.page';
+import { TVModePage } from './pages/tv-mode.page';
 
-// NOTE: These tests are flaky due to overlay intercepts blocking keyboard events.
-// The CardioStudio overlay sometimes captures focus differently.
-// Skipping entire suite until selector/overlay stability is improved.
-test.describe.skip('TV Mode (Iron Command Center)', () => {
+test.describe('TV Mode (Iron Command Center)', () => {
+  let dashboard: DashboardPage;
+  let tvMode: TVModePage;
+
   test.beforeEach(async ({ page }) => {
-    // Navigate to the dashboard
-    await page.goto('/');
+    dashboard = new DashboardPage(page);
+    tvMode = new TVModePage(page);
 
-    // Wait for any onboarding overlay to settle (dismiss if present)
-    await page.waitForTimeout(1000);
-
-    // Close onboarding modal if present
-    const closeButton = page.locator(
-      'button:has-text("Skip"), button:has-text("Close"), button:has-text("Later")'
-    );
-    if ((await closeButton.count()) > 0) {
-      await closeButton.first().click();
-      await page.waitForTimeout(500);
-    }
-
-    // Open Cycling Studio to access TV mode (use force to bypass overlays)
-    await page.getByRole('button', { name: 'Cycling Studio' }).click({ force: true });
-    await expect(page.getByText('Cycling Studio')).toBeVisible({ timeout: 10000 });
+    await dashboard.goto();
+    // Navigate to Cycling Studio (Ride)
+    await dashboard.startRide();
+    await expect(page.getByText(/Cycling|Ride/i).first()).toBeVisible({ timeout: 10000 });
   });
 
   test('should launch TV Mode via keyboard shortcut', async ({ page }) => {
-    // Press 'T' to launch TV Mode
-    await page.keyboard.press('t');
-
-    // Check if TV Mode container is visible
-    const tvContainer = page.locator('.fixed.inset-0.bg-black');
-    await expect(tvContainer).toBeVisible();
-
-    // Check for HUD elements
+    await tvMode.launch();
+    await expect(tvMode.tvContainer).toBeVisible();
     await expect(page.getByText('Zone 1')).toBeVisible();
-    await expect(page.getByText('Guild Raid Target')).toBeVisible();
+    await expect(tvMode.raidTarget).toBeVisible();
   });
 
   test('should toggle HUD visibility with Spacebar', async ({ page }) => {
-    await page.keyboard.press('t');
-    await expect(page.locator('.fixed.inset-0.bg-black')).toBeVisible();
+    await tvMode.launch();
+    await expect(tvMode.tvContainer).toBeVisible();
 
     // Press Space to hide HUD
-    await page.keyboard.press('Space');
-    await expect(page.getByText('Guild Raid Target')).not.toBeVisible();
+    await tvMode.toggleHUD();
+    await expect(tvMode.raidTarget).not.toBeVisible();
 
     // Press Space to show HUD
-    await page.keyboard.press('Space');
-    await expect(page.getByText('Guild Raid Target')).toBeVisible();
+    await tvMode.toggleHUD();
+    await expect(tvMode.raidTarget).toBeVisible();
   });
 
   test('should open Sensor Manager', async ({ page }) => {
-    await page.keyboard.press('t');
-    await page.locator('button:has(.lucide-bluetooth-off)').click();
+    await tvMode.launch();
+    await tvMode.openSensorManager();
 
-    await expect(page.getByText('Connect Sensors')).toBeVisible();
     await expect(page.getByText('Heart Rate')).toBeVisible();
     await expect(page.getByText('Smart Trainer')).toBeVisible();
 
     // Close it
     await page.getByText('Done').click();
-    await expect(page.getByText('Connect Sensors')).not.toBeVisible();
+    await expect(tvMode.sensorManager).not.toBeVisible();
   });
 
   test('should exit TV Mode with Escape', async ({ page }) => {
-    await page.keyboard.press('t');
+    await tvMode.launch();
     await page.waitForTimeout(500);
-    await expect(page.locator('.fixed.inset-0.bg-black')).toBeVisible({ timeout: 5000 });
+    await expect(tvMode.tvContainer).toBeVisible({ timeout: 5000 });
 
-    await page.keyboard.press('Escape');
-    await expect(page.locator('.fixed.inset-0.bg-black')).not.toBeVisible({ timeout: 5000 });
+    await tvMode.exit();
+    await expect(tvMode.tvContainer).not.toBeVisible({ timeout: 5000 });
   });
 });

@@ -12,16 +12,16 @@ import type {
  * The Ultrathink Analytics Engine
  * Processes biometrics and log data to generate predictive insights.
  */
-export const AnalyticsService = {
+export class AnalyticsService {
   /**
    * Calculates Total Training Balance (TTB) Indices.
    * This drives The Oracle 2.0 Logic.
    */
-  calculateTTB: (
+  public static calculateTTB(
     history: ExerciseLog[],
     activities: IntervalsActivity[],
     wellness: IntervalsWellness
-  ): TTBIndices => {
+  ): TTBIndices {
     // 1. STRENGTH INDEX
     // Driven by recency of Epic Sets or PRs.
     // Logic: If last Epic set was < 3 days ago: 100. Decays by 10 per day after.
@@ -65,12 +65,12 @@ export const AnalyticsService = {
     let lowest: keyof typeof scores = 'strength';
     let minVal = 999;
 
-    (Object.keys(scores) as Array<keyof typeof scores>).forEach((key) => {
+    for (const key of Object.keys(scores) as Array<keyof typeof scores>) {
       if (scores[key] < minVal) {
         minVal = scores[key];
         lowest = key;
       }
-    });
+    }
 
     return {
       strength: Math.round(strengthScore),
@@ -78,7 +78,7 @@ export const AnalyticsService = {
       wellness: Math.round(wellnessScore),
       lowest,
     };
-  },
+  }
 
   /**
    * Generates a 7-day TSB (Form) forecast based on current state and planned future loads.
@@ -86,10 +86,10 @@ export const AnalyticsService = {
    * @param startWellness Current wellness snapshot (CTL/ATL start point)
    * @param plannedDailyLoad Array of predicted TSS for the next 7 days (index 0 = today)
    */
-  calculateTSBForecast: (
+  public static calculateTSBForecast(
     startWellness: IntervalsWellness,
     plannedDailyLoad: number[] = []
-  ): TSBForecast[] => {
+  ): TSBForecast[] {
     const forecast: TSBForecast[] = [];
 
     // Defaults if data is missing
@@ -129,18 +129,18 @@ export const AnalyticsService = {
     }
 
     return forecast;
-  },
+  }
 
   /**
    * Calculates "Titan Load" (Strength-based TSS) and contrasts it with HR-based TSS.
    * Standard HR TSS often underestimates heavy lifting (low HR, high CNS load).
    */
-  calculateTitanLoad: (
+  public static calculateTitanLoad(
     volumeLoad: number,
     avgIntensityPct: number,
     durationMinutes: number,
     multiplier = 1.0
-  ): TitanLoadCalculation => {
+  ): TitanLoadCalculation {
     // 1. Estimate HR-based TSS (Standard)
     // Assumption: Strength training averages Zone 2 HR (IF 0.6)
     const hrIF = 0.6;
@@ -169,16 +169,16 @@ export const AnalyticsService = {
           : 'HR and Strength Load align. Standard recovery applies.',
       appliedMultiplier: multiplier,
     };
-  },
+  }
 
   /**
    * Analyzes recent strength logs against cardio trends to find bottlenecks.
    * Returns a "Weakness Audit".
    */
-  auditWeakness: (
+  public static auditWeakness(
     strengthLogs: ExerciseLog[],
     currentWellness: IntervalsWellness
-  ): WeaknessAudit => {
+  ): WeaknessAudit {
     // 1. Check for Strength Plateau (Flat e1RM over last 3 logs)
     // Needs at least 3 logs to establish a trend
     if (strengthLogs.length < 3) {
@@ -246,12 +246,12 @@ export const AnalyticsService = {
       message: 'Plateau detected, but cause is indeterminate.',
       confidence: 40,
     };
-  },
+  }
 
   /**
    * Generates mock history data for the demo since we don't have a real DB.
    */
-  getMockHistory: (): ExerciseLog[] => {
+  public static getMockHistory(): ExerciseLog[] {
     return [
       {
         date: '2023-10-01',
@@ -279,5 +279,5 @@ export const AnalyticsService = {
         rpe: 9.5,
       }, // Stagnation + Higher RPE
     ];
-  },
-};
+  }
+}

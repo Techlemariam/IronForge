@@ -1,5 +1,7 @@
 'use server';
 
+import { z } from 'zod';
+
 import { processUserCardioActivity } from '@/actions/pvp/duel';
 import prisma from '@/lib/prisma';
 import {
@@ -8,6 +10,11 @@ import {
   mapStravaActivityToCardioLog,
 } from '@/lib/strava';
 import { TerritoryService } from '@/services/game/TerritoryService';
+import {
+  StravaActivitySchema,
+  StravaTokenResponseSchema,
+  StravaUploadResponseSchema,
+} from '@/types/schemas';
 /**
  * Strava Integration Server Actions
  *
@@ -77,14 +84,16 @@ export async function exchangeStravaTokenAction(code: string) {
   if (!user) return { success: false, error: 'Unauthorized' };
 
   try {
-    const response = await axios.post<StravaTokenResponse>('https://www.strava.com/oauth/token', {
+    const response = await axios.post('https://www.strava.com/oauth/token', {
       client_id: STRAVA_CLIENT_ID,
       client_secret: STRAVA_CLIENT_SECRET,
       code,
       grant_type: 'authorization_code',
     });
 
-    const { access_token, refresh_token, expires_at, athlete } = response.data;
+    const { access_token, refresh_token, expires_at, athlete } = StravaTokenResponseSchema.parse(
+      response.data
+    );
 
     await prisma.user.update({
       where: { id: user.id },
@@ -99,12 +108,14 @@ export async function exchangeStravaTokenAction(code: string) {
     revalidatePath('/settings');
     return { success: true };
   } catch (error: unknown) {
+    let message = 'Unknown error';
     if (axios.isAxiosError(error)) {
-      console.error('Strava Token Exchange Error:', error.response?.data || error.message);
-    } else {
-      console.error('Strava Token Exchange Error:', error);
+      message = error.response?.data?.message || error.message;
+    } else if (error instanceof Error) {
+      message = error.message;
     }
-    return { success: false, error: 'Failed to exchange token with Strava' };
+    console.error('Strava Token Exchange Error:', message);
+    return { success: false, error: `Failed to exchange token: ${message}` };
   }
 }
 
@@ -142,12 +153,13 @@ export async function disconnectStravaAction() {
 
     revalidatePath('/settings');
     return { success: true };
-  } catch (error: any) {
-    return { success: false, error: error.message };
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Unknown error';
+    return { success: false, error: message };
   }
 }
 
-async function getValidAccessToken(userId: string) {
+async function getValidAccessToken(userId: string): Promise<string | null> {
   const user = await prisma.user.findUnique({ where: { id: userId } });
   if (!user || !user.stravaAccessToken) return null;
 
@@ -158,14 +170,16 @@ async function getValidAccessToken(userId: string) {
     if (!user.stravaRefreshToken) return null;
 
     try {
-      const response = await axios.post<StravaTokenResponse>('https://www.strava.com/oauth/token', {
+      const response = await axios.post('https://www.strava.com/oauth/token', {
         client_id: process.env.STRAVA_CLIENT_ID,
         client_secret: process.env.STRAVA_CLIENT_SECRET,
         grant_type: 'refresh_token',
         refresh_token: user.stravaRefreshToken,
       });
 
-      const { access_token, refresh_token, expires_at } = response.data;
+      const { access_token, refresh_token, expires_at } = StravaTokenResponseSchema.parse(
+        response.data
+      );
 
       await prisma.user.update({
         where: { id: userId },
@@ -177,8 +191,13 @@ async function getValidAccessToken(userId: string) {
       });
 
       return access_token;
-    } catch (error) {
-      console.error('RefreshToken Error:', error);
+    } catch (error: unknown) {
+      const message = axios.isAxiosError(error)
+        ? error.response?.data?.message || error.message
+        : error instanceof Error
+          ? error.message
+          : 'Unknown error';
+      console.error('RefreshToken Error:', message);
       return null;
     }
   }
@@ -207,15 +226,12 @@ export async function syncStravaActivitiesAction() {
 
   try {
     // Fetch last 30 activities
-    const response = await axios.get<StravaActivity[]>(
-      'https://www.strava.com/api/v3/athlete/activities',
-      {
-        headers: { Authorization: `Bearer ${token}` },
-        params: { per_page: 30 },
-      }
-    );
+    const response = await axios.get('https://www.strava.com/api/v3/athlete/activities', {
+      headers: { Authorization: `Bearer ${token}` },
+      params: { per_page: 30 },
+    });
 
-    const activities = response.data;
+    const activities = z.array(StravaActivitySchema).parse(response.data);
     let syncedCount = 0;
 
     for (const activity of activities) {
@@ -233,17 +249,11 @@ export async function syncStravaActivitiesAction() {
         });
 
         // Trigger Duel Updates
-        // distance is in meters in logData? mapStravaActivityToCardioLog likely returns it.
-        // Assuming logData structure matches CardioLog which doesn't have distance?
-        // Wait, CardioLog schema doesn't have distance column (only type, duration, load).
-        // Let me check schema again. CardioLog has duration. Duel needs distance.
-        // I need to fetch distance from activity.
         const distanceKm = activity.distance / 1000;
         const durationMin = activity.moving_time / 60;
         await processUserCardioActivity(user.id, activity.type, distanceKm, durationMin);
 
         // Award Rewards (Simple: 1 XP per minute, 1 Gold per minute)
-        // This logic should ideally be centralized in a 'RewardService'
         const minutes = Math.floor(logData.duration / 60);
         if (minutes > 0) {
           await prisma.user.update({
@@ -274,9 +284,14 @@ export async function syncStravaActivitiesAction() {
     revalidatePath('/');
     return { success: true, count: syncedCount };
   } catch (error: unknown) {
-    console.error('Sync Error:', error);
-    const message = error instanceof Error ? error.message : 'Sync failed';
-    return { success: false, error: message };
+    let message = 'Unknown error';
+    if (axios.isAxiosError(error)) {
+      message = error.response?.data?.message || error.message;
+    } else if (error instanceof Error) {
+      message = error.message;
+    }
+    console.error('Sync Error:', message);
+    return { success: false, error: `Sync failed: ${message}` };
   }
 }
 
@@ -299,21 +314,6 @@ export async function uploadToStravaAction(formData: FormData) {
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
-    // Append raw data. Note: In Node environment with axios + form-data,
-    // passing a buffer often requires a filename.
-    // But since we are using native FormData in Next.js Server Actions (Node 18+),
-    // we might need to handle the axios post carefully.
-    // Actually, let's use standard fetch for the upload to handle FormData natively if possible,
-    // or construct properly for axios.
-
-    // Simpler approach with Axios:
-    const form = new FormData();
-    form.append('file', new Blob([buffer]), file.name);
-    form.append('data_type', file.name.endsWith('.fit') ? 'fit' : 'gpx');
-
-    // NOTE: Node's FormData (undici) might behave differently with axios.
-    // Let's use the native fetch which Next.js polyfills/supports well.
-
     const stravaFormData = new FormData();
     stravaFormData.append('file', new Blob([buffer]), file.name);
     stravaFormData.append('data_type', file.name.endsWith('.fit') ? 'fit' : 'gpx');
@@ -331,10 +331,12 @@ export async function uploadToStravaAction(formData: FormData) {
       throw new Error(err.message || 'Upload failed');
     }
 
-    const result = await response.json();
+    const uploadData = await response.json();
+    const result = StravaUploadResponseSchema.parse(uploadData);
     return { success: true, uploadId: result.id, status: result.status };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Upload Error:', error);
-    return { success: false, error: error.message };
+    const message = error instanceof Error ? error.message : 'Upload failed';
+    return { success: false, error: message };
   }
 }

@@ -4,7 +4,7 @@ import { type NextRequest, NextResponse } from 'next/server';
 
 import { processUserCardioActivity } from '@/actions/pvp/duel';
 import { TerritoryService } from '@/services/game/TerritoryService';
-import { ProgressionService } from '@/services/progression';
+import { Progression } from '@/services/progression';
 
 // Defines the shape of an Intervals.icu Activity Event
 // Reference: https://intervals.icu/api/v1/athlete/{id}/activities
@@ -138,8 +138,8 @@ export async function POST(request: NextRequest) {
 
     // 5. Award Rewards
     if (user) {
-      await ProgressionService.awardGold(user.id, 15);
-      await ProgressionService.addExperience(user.id, 100);
+      await Progression.awardGold(user.id, 15);
+      await Progression.addExperience(user.id, 100);
       logger.info(`[Intervals Webhook] Rewards awarded to ${user.id}: 15g, 100xp`);
     }
 

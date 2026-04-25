@@ -32,8 +32,16 @@ export const PRCelebration: React.FC<PRCelebrationProps> = ({
   username,
   onClose,
 }) => {
-  const [videoState, setVideoState] = useState<VideoState>('idle');
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
+  const [videoState, setVideoState] = useState<VideoState>('idle');
+
+  const getSafeVideoUrl = (path: string | null): string => {
+    if (!path) return '#';
+    // Restricted set of characters, no protocols allowed
+    const sanitized = path.replace(/[^a-zA-Z0-9\/\-_\.]/g, '');
+    if (sanitized.toLowerCase().includes('javascript:')) return '#';
+    return `/${sanitized}`;
+  };
 
   useEffect(() => {
     if (isVisible) {
@@ -67,7 +75,12 @@ export const PRCelebration: React.FC<PRCelebrationProps> = ({
         throw new Error(data.error || 'Server rendering error.');
       }
 
-      setVideoUrl(data.videoPath);
+      // Basic sanitization: only allow characters common in file paths
+      const sanitizedPath = data.videoPath
+        .replace(/[^a-zA-Z0-9\/\-_\.]/g, '')
+        .replace(/^[\\\/]+/, '');
+
+      setVideoUrl(sanitizedPath);
       setVideoState('success');
     } catch (error) {
       console.error('Video generation failed:', error);
@@ -159,7 +172,7 @@ export const PRCelebration: React.FC<PRCelebrationProps> = ({
                 </Button>
               )}
               {videoState === 'success' && videoUrl && (
-                <a href={`/${videoUrl}`} target="_blank" rel="noopener noreferrer">
+                <a href={getSafeVideoUrl(videoUrl)} target="_blank" rel="noopener noreferrer">
                   <Button className="w-full bg-green-600 hover:bg-green-700" size="lg">
                     <CheckCircle className="mr-2 h-5 w-5" />
                     Visa video

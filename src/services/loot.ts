@@ -21,11 +21,11 @@ const LOOT_TABLE = [
   { weight: 7.4, type: 'NOTHING' }, // 7.4% chance of nothing
 ];
 
-export const LootService = {
+export class LootService {
   /**
    * Rolls on the drop table and awards the user
    */
-  async rollWorkoutLoot(userId: string): Promise<LootDrop> {
+  static async rollWorkoutLoot(userId: string): Promise<LootDrop> {
     const totalWeight = LOOT_TABLE.reduce((sum, item) => sum + item.weight, 0);
     let randomNum = Math.random() * totalWeight;
 
@@ -106,5 +106,5 @@ export const LootService = {
     }
 
     return { type: 'NOTHING', message: 'No extra loot this time.' };
-  },
-};
+  }
+}

@@ -64,10 +64,10 @@ export async function saveCardioSessionAction(userId: string, data: CardioSessio
     });
 
     // 4. Update Progression (Main RPG)
-    const { ProgressionService } = await import('@/services/progression');
+    const { Progression } = await import('@/services/progression');
     if (totalXp > 0) {
-      await ProgressionService.addExperience(userId, totalXp);
-      await ProgressionService.awardGold(userId, goldEarned);
+      await Progression.addExperience(userId, totalXp);
+      await Progression.awardGold(userId, goldEarned);
     }
 
     // 5. Update Battle Pass

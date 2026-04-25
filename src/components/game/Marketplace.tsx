@@ -1,8 +1,8 @@
 import { awardGoldAction, getProgressionAction } from '@/actions/progression/core';
+import { StorageService as Storage } from '@/services/storage';
 import { Heart, Shield, ShoppingBag, Skull, X, Zap } from 'lucide-react';
 import type React from 'react';
 import { useEffect, useState } from 'react';
-import { StorageService } from '../../services/storage';
 import { playSound } from '../../utils';
 
 interface MarketplaceProps {
@@ -64,7 +64,7 @@ const Marketplace: React.FC<MarketplaceProps> = ({ onClose }) => {
       if (state) {
         setGold(state.gold);
       }
-      const currentInv = (await StorageService.getState<string[]>('inventory')) || [];
+      const currentInv = (await Storage.getState<string[]>('inventory')) || [];
       setInventory(currentInv);
     };
     loadEconomy();
@@ -80,7 +80,7 @@ const Marketplace: React.FC<MarketplaceProps> = ({ onClose }) => {
         // Add to Inventory (Hypothetical) - Only if deduction succeeded
         const currentInv = [...inventory, item.id];
         setInventory(currentInv);
-        await StorageService.saveState('inventory', currentInv);
+        await Storage.saveState('inventory', currentInv);
 
         playSound('ding');
         setMessage(`Purchased ${item.name}!`);

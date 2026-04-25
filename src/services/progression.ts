@@ -9,36 +9,36 @@ import { ACHIEVEMENTS } from '../data/static';
 
 const XP_PER_ACHIEVEMENT_POINT = 100;
 
-export const ProgressionService = {
+export class ProgressionService {
   /**
    * Calculates required XP for a specific level using an exponential curve.
    * e.g. Lvl 1: 1000, Lvl 2: ~2828, Lvl 3: ~5196
    */
-  calculateRequiredXP(level: number) {
+  static calculateRequiredXP(level: number) {
     return Math.floor(1000 * level ** 1.5);
-  },
+  }
 
   /**
    * Derives current level from total XP using the inverse curve.
    */
-  calculateLevelFromXP(totalXp: number) {
+  static calculateLevelFromXP(totalXp: number) {
     if (totalXp < 1000) return 1;
     return Math.floor((totalXp / 1000) ** (2 / 3));
-  },
+  }
   /**
    * Awards Gold to a user.
    */
-  async awardGold(userId: string, amount: number) {
+  static async awardGold(userId: string, amount: number) {
     return prisma.user.update({
       where: { id: userId },
       data: { gold: { increment: amount } },
     });
-  },
+  }
 
   /**
    * Awards Experience to a user and handles leveling.
    */
-  async addExperience(userId: string, amount: number, triggerLoot = false) {
+  static async addExperience(userId: string, amount: number, triggerLoot = false) {
     const user = await prisma.user.findUnique({
       where: { id: userId },
       select: { totalExperience: true, level: true, titan: true, guildId: true },
@@ -108,12 +108,12 @@ export const ProgressionService = {
     }
 
     return { user: updatedUser, lootDrop };
-  },
+  }
 
   /**
    * Awards an achievement and its associated rewards.
    */
-  async awardAchievement(userId: string, achievementId: string) {
+  static async awardAchievement(userId: string, achievementId: string) {
     const achievement = ACHIEVEMENTS.find((a) => a.id === achievementId);
     if (!achievement) return;
 
@@ -130,12 +130,12 @@ export const ProgressionService = {
 
     await this.awardGold(userId, goldReward);
     await this.addExperience(userId, xpReward);
-  },
+  }
 
   /**
    * Gets the full progression state for a user.
    */
-  async getProgressionState(userId: string) {
+  static async getProgressionState(userId: string) {
     const user = await prisma.user.findUnique({
       where: { id: userId },
       select: {
@@ -173,12 +173,12 @@ export const ProgressionService = {
       gold: user.gold,
       kineticEnergy: user.kineticEnergy,
     };
-  },
+  }
 
   /**
    * Calculates and updates the user's Wilks Score based on best lifts.
    */
-  async updateWilksScore(userId: string) {
+  static async updateWilksScore(userId: string) {
     // 1. Get User Bodyweight
     const user = await prisma.user.findUnique({
       where: { id: userId },
@@ -225,13 +225,13 @@ export const ProgressionService = {
     });
 
     return wilks;
-  },
+  }
 
   /**
    * Helper to find max e1rm for a set of exercise names.
    * Calculates e1rm from the sets JSON (Epley formula: weight * (1 + reps/30))
    */
-  async findBestLift(userId: string, exerciseNames: string[]): Promise<number> {
+  static async findBestLift(userId: string, exerciseNames: string[]): Promise<number> {
     // Fetch all logs for matching exercises
     const logs = await prisma.exerciseLog.findMany({
       where: {
@@ -259,7 +259,7 @@ export const ProgressionService = {
     }
 
     return maxE1rm;
-  },
+  }
 
   /**
    * Calculates the XP multiplier based on Streak, Mood, and Subscription.
@@ -268,7 +268,7 @@ export const ProgressionService = {
    * @param subscriptionTier User subscription (FREE, PRO, LIFETIME)
    * @param decreeType Oracle Decree type (BUFF, NEUTRAL, DEBUFF)
    */
-  calculateMultiplier(
+  static calculateMultiplier(
     streak: number,
     mood: string,
     subscriptionTier: string,
@@ -302,5 +302,7 @@ export const ProgressionService = {
     }
 
     return Number.parseFloat(mult.toFixed(2));
-  },
-};
+  }
+}
+
+export { ProgressionService as Progression };

@@ -1,16 +1,16 @@
 import { type AppSettings, BlockType, type Session } from '../types';
 
-export const IntegrationService = {
+export class IntegrationService {
   /**
    * Determines if a session is primarily Cardio (Intervals) or Strength (Hevy)
    */
-  detectSessionType: (session: Session): 'CARDIO' | 'STRENGTH' => {
+  static detectSessionType(session: Session): 'CARDIO' | 'STRENGTH' {
     let cardioScore = 0;
     let strengthScore = 0;
 
-    session.blocks.forEach((block) => {
+    for (const block of session.blocks) {
       if (block.type === BlockType.STATION && block.exercises) {
-        block.exercises.forEach((ex) => {
+        for (const ex of block.exercises) {
           // Check if reps are time-based (string containing 'min' or 'sec')
           const isTimeBased = ex.sets.some(
             (s) => typeof s.reps === 'string' && (s.reps.includes('min') || s.reps.includes('sec'))
@@ -23,47 +23,52 @@ export const IntegrationService = {
 
           if (isTimeBased || isZone) cardioScore++;
           else strengthScore++;
-        });
+        }
       }
-    });
+    }
 
     return cardioScore > strengthScore ? 'CARDIO' : 'STRENGTH';
-  },
+  }
 
   /**
    * Uploads the completed session to Intervals.icu as a structured workout.
    */
-  async uploadToIntervals(session: Session, settings: AppSettings): Promise<boolean> {
+  static async uploadToIntervals(session: Session, settings: AppSettings): Promise<boolean> {
     if (!settings.intervalsApiKey || !settings.intervalsAthleteId)
       throw new Error('Missing Intervals Credentials');
 
     // 1. Build Workout Text (Intervals.icu Markup)
     let workoutText = '';
 
-    session.blocks.forEach((block) => {
+    for (const block of session.blocks) {
       if (block.type === BlockType.WARMUP) {
         workoutText += 'Warmup\n';
-        block.exercises?.forEach((ex) => {
-          // Default warmup assumption: 50% intensity
-          workoutText += `- 10m 50% ${ex.name}\n`;
-        });
+        if (block.exercises) {
+          for (const ex of block.exercises) {
+            // Default warmup assumption: 50% intensity
+            workoutText += `- 10m 50% ${ex.name}\n`;
+          }
+        }
         workoutText += '\n';
       } else if (block.type === BlockType.STATION) {
         workoutText += 'Main Set\n';
-        block.exercises?.forEach((ex) => {
-          ex.sets.forEach((set, i) => {
-            // Parse reps: "4 min" -> "4m"
-            let duration = '5m'; // Default
-            if (typeof set.reps === 'string') {
-              if (set.reps.includes('min')) duration = set.reps.replace(' min', 'm');
-            }
+        if (block.exercises) {
+          for (const ex of block.exercises) {
+            for (let i = 0; i < ex.sets.length; i++) {
+              const set = ex.sets[i];
+              // Parse reps: "4 min" -> "4m"
+              let duration = '5m'; // Default
+              if (typeof set.reps === 'string') {
+                if (set.reps.includes('min')) duration = set.reps.replace(' min', 'm');
+              }
 
-            workoutText += `- ${duration} Z3 ${ex.name} (Set ${i + 1})\n`;
-          });
-        });
+              workoutText += `- ${duration} Z3 ${ex.name} (Set ${i + 1})\n`;
+            }
+          }
+        }
         workoutText += '\n';
       }
-    });
+    }
 
     // 2. Prepare Payload
     const payload = {
@@ -95,12 +100,12 @@ export const IntegrationService = {
       console.error(e);
       return false;
     }
-  },
+  }
 
   /**
    * Uploads the completed session to Hevy (Simulated / API Structure).
    */
-  async uploadToHevy(session: Session, settings: AppSettings): Promise<boolean> {
+  static async uploadToHevy(session: Session, settings: AppSettings): Promise<boolean> {
     if (!settings.hevyApiKey) throw new Error('Missing Hevy Credentials');
 
     // Map Internal Session to Hevy Payload Structure
@@ -151,5 +156,5 @@ export const IntegrationService = {
     // Simulate network delay and success
     await new Promise((r) => setTimeout(r, 1000));
     return true;
-  },
-};
+  }
+}

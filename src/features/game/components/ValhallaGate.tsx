@@ -1,5 +1,5 @@
 import { useSkills } from '@/context/SkillContext';
-import { ValhallaService } from '@/services/valhalla';
+import { Valhalla } from '@/services/valhalla';
 import type { ValhallaPayload } from '@/types';
 import { playSound } from '@/utils';
 import { CheckCircle2, Cloud, RefreshCw, Server, Shield, Wifi, X } from 'lucide-react';
@@ -54,7 +54,7 @@ const ValhallaGate: React.FC<ValhallaGateProps> = ({
     setStep('SYNCING');
     addLog('Initiating Soul Bind Protocol...');
 
-    const res = await ValhallaService.bindSoul(inputName);
+    const res = await Valhalla.bindSoul(inputName);
 
     if (res.success) {
       playSound('quest_accept');
@@ -72,7 +72,7 @@ const ValhallaGate: React.FC<ValhallaGateProps> = ({
     addLog('Opening Bifrost Gate...');
     addLog('Compressing Soul Data...');
 
-    const res = await ValhallaService.engraveRecords(finalPayload);
+    const res = await Valhalla.engraveRecords(finalPayload);
 
     if (res.success) {
       playSound('achievement');

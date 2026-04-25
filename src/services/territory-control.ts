@@ -14,13 +14,13 @@ export interface TerritoryMapState {
   }[];
 }
 
-export class TerritoryControlService {
+export namespace TerritoryControl {
   /**
    * Returns the current state of all territories for map rendering.
    */
-  static async getMapState(): Promise<TerritoryMapState> {
+  export async function getMapState(): Promise<TerritoryMapState> {
     const now = new Date();
-    const weekNumber = TerritoryControlService.getISOWeek(now);
+    const weekNumber = getISOWeek(now);
     const year = now.getFullYear();
 
     const territories = await prisma.territory.findMany({
@@ -52,13 +52,13 @@ export class TerritoryControlService {
       });
 
       // Build map: TerritoryId -> Influence Score of Controller
-      entries.forEach((e) => {
+      for (const e of entries) {
         const territory = territories.find((t) => t.id === e.territoryId);
         // Only count the influence if this entry belongs to the current controller
         if (territory && territory.controlledById === e.guildId) {
           influenceMap.set(territory.id, e.totalVolume + e.xpEarned);
         }
-      });
+      }
     }
 
     return {
@@ -79,9 +79,9 @@ export class TerritoryControlService {
   /**
    * Calculates the total influence a guild has over a territory for the current week.
    */
-  static async calculateInfluence(guildId: string, territoryId: string): Promise<number> {
+  export async function calculateInfluence(guildId: string, territoryId: string): Promise<number> {
     const now = new Date();
-    const weekNumber = TerritoryControlService.getISOWeek(now);
+    const weekNumber = getISOWeek(now);
     const year = now.getFullYear();
 
     const entry = await prisma.territoryContestEntry.findUnique({
@@ -104,9 +104,9 @@ export class TerritoryControlService {
   /**
    * Processes conquest for a territory. Awards control to the guild with the highest influence.
    */
-  static async processConquest(territoryId: string): Promise<void> {
+  export async function processConquest(territoryId: string): Promise<void> {
     const now = new Date();
-    const weekNumber = TerritoryControlService.getISOWeek(now);
+    const weekNumber = getISOWeek(now);
     const year = now.getFullYear();
 
     // Get all contest entries for this territory this week
@@ -146,11 +146,7 @@ export class TerritoryControlService {
     });
 
     // Notify Guild Members (New Owner)
-    await TerritoryControlService.notifyGuildMembers(
-      winner.guildId,
-      'VICTORY',
-      'Our guild has conquered territory!'
-    );
+    await notifyGuildMembers(winner.guildId, 'VICTORY', 'Our guild has conquered territory!');
 
     // Notify Previous Owner Members (if any)
     // Note: We need to know previous owner. Since we already updated, this is tricky unless we fetched before.
@@ -161,7 +157,7 @@ export class TerritoryControlService {
    * Calculates active bonuses for a user based on their guild's controlled territories.
    * Returns a composite bonus object.
    */
-  static async getActiveTerritoryBonuses(
+  export async function getActiveTerritoryBonuses(
     userId: string
   ): Promise<{ xpMultiplier: number; goldMultiplier: number }> {
     const user = await prisma.user.findUnique({
@@ -201,7 +197,7 @@ export class TerritoryControlService {
     };
   }
 
-  private static async notifyGuildMembers(guildId: string, _type: string, message: string) {
+  async function notifyGuildMembers(guildId: string, _type: string, message: string) {
     // Fetch all members
     const members = await prisma.user.findMany({
       where: { guildId },
@@ -226,7 +222,7 @@ export class TerritoryControlService {
   /**
    * Helper: Get ISO week number.
    */
-  private static getISOWeek(date: Date): number {
+  function getISOWeek(date: Date): number {
     const target = new Date(date.valueOf());
     const dayNr = (date.getDay() + 6) % 7;
     target.setDate(target.getDate() - dayNr + 3);

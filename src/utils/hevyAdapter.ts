@@ -52,27 +52,30 @@ export const mapQuestToHevyPayload = (
     .map((ex) => {
       const completedSets = ex.sets
         .filter(
-          (set) =>
-            set.completed === true && set.weight !== undefined && set.completedReps !== undefined
+          (set): set is WorkoutSet & { weight: number; completedReps: number } =>
+            set.completed === true &&
+            typeof set.weight === 'number' &&
+            typeof set.completedReps === 'number'
         )
         .map((set) => ({
           type: 'normal',
           weight_kg: set.weight,
           reps: set.completedReps,
-          rpe: set.targetRPE, // Using targetRPE as the logged RPE value
-          distance_meters: null,
-          duration_seconds: null,
+          rpe: set.targetRPE,
         }));
 
       if (completedSets.length === 0) {
-        return null; // This exercise won't be included if no sets were logged
+        return null;
       }
 
       return {
         exercise_template_id: ex.hevyId,
-        superset_id: null,
-        notes: null,
+        exercise_template: {
+          id: ex.hevyId,
+          title: ex.name,
+        },
         sets: completedSets,
+        notes: ex.notes || undefined,
       };
     })
     .filter((ex): ex is NonNullable<typeof ex> => ex !== null); // Filter out exercises with no logged sets
@@ -80,8 +83,8 @@ export const mapQuestToHevyPayload = (
   return {
     workout: {
       title: questTitle,
-      start_time: startTime.toISOString(),
-      end_time: endTime.toISOString(),
+      start_time: startTime,
+      end_time: endTime,
       is_private: isPrivate,
       exercises: hevyExercises,
     },

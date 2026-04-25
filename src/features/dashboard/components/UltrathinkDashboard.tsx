@@ -2,9 +2,9 @@ import TTBCompass from '@/components/TTBCompass';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/Alert';
 import { JargonTooltip } from '@/components/ui/JargonTooltip';
 import { Skeleton } from '@/components/ui/Skeleton';
-import { AnalyticsWorkerService } from '@/services/analyticsWorker';
-import { StorageService } from '@/services/storage';
-import { TrainingMemoryManager } from '@/services/trainingMemoryManager';
+import { AnalyticsWorker } from '@/services/analyticsWorker';
+import { StorageService as Storage } from '@/services/storage';
+import { TrainingMemoryManager } from '@/services/training-memory-manager';
 import type {
   IntervalsEvent,
   IntervalsWellness,
@@ -58,9 +58,9 @@ const UltrathinkDashboard: React.FC<UltrathinkDashboardProps> = ({
   // --- WORKER COMPUTATION ---
   useEffect(() => {
     const runHeavyMath = async () => {
-      const history = await StorageService.getHistory();
+      const history = await Storage.getHistory();
       if (history && wellness) {
-        const res = await AnalyticsWorkerService.computeAdvancedStats(history, wellness);
+        const res = await AnalyticsWorker.computeAdvancedStats(history, wellness);
         setAcwrData({
           acwr: res.acwr,
           acute: res.acuteLoad,
@@ -154,7 +154,7 @@ const UltrathinkDashboard: React.FC<UltrathinkDashboardProps> = ({
             </h3>
             <p className="text-xs text-red-400 mt-1">
               System integrity critical. All anabolic protocols suspended. Active Debuffs:{' '}
-              {debuffs.map((d) => d.reason).join(', ') || 'Low TSB'}.
+              {debuffs.map((d: any) => d.reason).join(', ') || 'Low TSB'}.
             </p>
           </div>
         </div>
@@ -167,7 +167,8 @@ const UltrathinkDashboard: React.FC<UltrathinkDashboardProps> = ({
           <div className="flex-1">
             <h3 className="text-xs font-bold text-orange-500 uppercase">Capacity Reduced</h3>
             <p className="text-[10px] text-orange-400">
-              {debuffs.map((d) => d.reason).join(' + ')} detected. High intensity load restricted.
+              {debuffs.map((d: any) => d.reason).join(' + ')} detected. High intensity load
+              restricted.
             </p>
           </div>
         </div>

@@ -1,6 +1,6 @@
 import { getActivities, getWellness } from '@/lib/intervals';
 import prisma from '@/lib/prisma';
-import { OracleService } from '@/services/oracle';
+import { Oracle } from '@/services/oracle';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Mock dependencies
@@ -24,12 +24,12 @@ vi.mock('@/lib/hevy', () => ({
 }));
 
 vi.mock('@/services/game/EquipmentService', () => ({
-  EquipmentService: {
+  Equipment: {
     getUserCapabilities: vi.fn().mockResolvedValue(['BARBELL', 'MACHINE']),
   },
 }));
 
-describe('OracleService V3', () => {
+describe('Oracle V3', () => {
   const mockUser = {
     id: 'u1',
     intervalsApiKey: 'key',
@@ -49,7 +49,7 @@ describe('OracleService V3', () => {
 
   it('should return V3 structure with codes', async () => {
     (getWellness as any).mockResolvedValue({ bodyBattery: 50, sleepScore: 50 });
-    const decree = await OracleService.generateDailyDecree('u1');
+    const decree = await Oracle.generateDailyDecree('u1');
     expect(decree.code).toBeDefined();
     expect(decree.actions).toBeDefined();
     expect(decree.code).toBe('BASELINE_GRIND');
@@ -61,7 +61,7 @@ describe('OracleService V3', () => {
       titan: { isInjured: true },
     });
 
-    const decree = await OracleService.generateDailyDecree('u1');
+    const decree = await Oracle.generateDailyDecree('u1');
 
     expect(decree.code).toBe('INJURY_PRESERVATION');
     expect(decree.actions.lockFeatures).toContain('HEAVY_LIFT');
@@ -70,7 +70,7 @@ describe('OracleService V3', () => {
 
   it('should return REST_FORCED if bio-metrics are critical', async () => {
     (getWellness as any).mockResolvedValue({ bodyBattery: 20 }); // Low
-    const decree = await OracleService.generateDailyDecree('u1');
+    const decree = await Oracle.generateDailyDecree('u1');
 
     expect(decree.code).toBe('REST_FORCED');
     expect(decree.actions.lockFeatures).toContain('HEAVY_LIFT');
@@ -89,7 +89,7 @@ describe('OracleService V3', () => {
       challengerId: 'u1',
     });
 
-    const decree = await OracleService.generateDailyDecree('u1');
+    const decree = await Oracle.generateDailyDecree('u1');
 
     expect(decree.code).toBe('PVP_CRISIS');
     expect(decree.actions.urgency).toBe('HIGH');

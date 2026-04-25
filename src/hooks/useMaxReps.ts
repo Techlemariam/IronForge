@@ -2,6 +2,7 @@
 'use client';
 
 import { checkPRAction, getMaxRepsAction } from '@/actions/training/max-reps';
+import { StorageService as Storage } from '@/services/storage';
 import { useCallback, useEffect, useState } from 'react';
 
 interface UseMaxRepsResult {
@@ -16,7 +17,7 @@ const PR_CACHE_PREFIX = 'ironforge_pr_';
 
 /**
  * Client hook for fetching and caching rep PRs.
- * Uses localStorage for offline support.
+ * Uses StorageService (IndexedDB) for offline support.
  */
 export const useMaxReps = (exerciseId: string, weight?: number): UseMaxRepsResult => {
   const [maxReps, setMaxReps] = useState<number | null>(null);
@@ -29,19 +30,16 @@ export const useMaxReps = (exerciseId: string, weight?: number): UseMaxRepsResul
     setIsLoading(true);
     try {
       // Try cache first (offline support)
-      const cached = localStorage.getItem(cacheKey);
-      if (cached) {
-        const parsed = JSON.parse(cached);
-        if (parsed.maxReps !== undefined) {
-          setMaxReps(parsed.maxReps);
-        }
+      const cached = await Storage.getItem<{ maxReps: number }>(cacheKey);
+      if (cached && cached.maxReps !== undefined) {
+        setMaxReps(cached.maxReps);
       }
 
       // Fetch fresh from server
       const result = await getMaxRepsAction(exerciseId, weight);
       if (result.success && result.maxReps !== undefined) {
         setMaxReps(result.maxReps);
-        localStorage.setItem(cacheKey, JSON.stringify({ maxReps: result.maxReps }));
+        Storage.setItem(cacheKey, { maxReps: result.maxReps });
       }
     } catch (error) {
       console.error('Failed to fetch max reps:', error);
@@ -62,7 +60,7 @@ export const useMaxReps = (exerciseId: string, weight?: number): UseMaxRepsResul
           setIsNewPR(true);
           setMaxReps(reps);
           // Update cache
-          localStorage.setItem(cacheKey, JSON.stringify({ maxReps: reps }));
+          Storage.setItem(cacheKey, { maxReps: reps });
           return true;
         }
         return false;

@@ -1,6 +1,6 @@
 import { getWellnessAction } from '@/actions/integrations/intervals';
 import { useSkills } from '@/context/SkillContext';
-import { StorageService } from '@/services/storage';
+import { StorageService as Storage } from '@/services/storage';
 import type { AppSettings, Session } from '@/types';
 import { autoRegulateSession, playSound } from '@/utils';
 import { Activity, Battery, Moon, RefreshCw, ShieldAlert, Wifi, Wind, X, Zap } from 'lucide-react';
@@ -41,8 +41,8 @@ const PreWorkoutCheck: React.FC<PreWorkoutCheckProps> = ({ session, onProceed, o
     let realData = null;
 
     try {
-      // Use StorageService to get settings (Async)
-      await StorageService.getState<AppSettings>('settings');
+      // Use Storage to get settings (Async)
+      await Storage.getState<AppSettings>('settings');
 
       if (navigator.onLine) {
         const today = new Date().toISOString().split('T')[0];

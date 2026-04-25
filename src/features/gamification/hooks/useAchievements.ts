@@ -1,5 +1,5 @@
 import { ACHIEVEMENTS } from '@/data/static';
-import { StorageService } from '@/services/storage';
+import { StorageService as Storage } from '@/services/storage';
 import type { Achievement } from '@/types';
 import { playSound } from '@/utils';
 import { useCallback, useEffect, useState } from 'react';
@@ -13,14 +13,14 @@ export const useAchievements = () => {
   useEffect(() => {
     const loadData = async () => {
       try {
-        await StorageService.init();
-        const saved = await StorageService.getState<string[]>('achievements');
+        await Storage.init();
+        const saved = await Storage.getState<string[]>('achievements');
         if (saved) {
           setUnlockedIds(new Set(saved));
         } else {
           // Fallback migration check
-          await StorageService.migrateFromLocalStorage();
-          const migrated = await StorageService.getState<string[]>('achievements');
+          await Storage.migrateFromLocalStorage();
+          const migrated = await Storage.getState<string[]>('achievements');
           if (migrated) setUnlockedIds(new Set(migrated));
         }
       } catch (e) {
@@ -41,7 +41,7 @@ export const useAchievements = () => {
 
       // Persist Async
       const arrayData = Array.from(next);
-      StorageService.saveState('achievements', arrayData).catch(console.error);
+      Storage.saveState('achievements', arrayData).catch(console.error);
 
       // Trigger Sound & Toast
       const achievement = ACHIEVEMENTS.find((a) => a.id === id);

@@ -1,4 +1,4 @@
-import { runFullAudit } from '@/services/auditorOrchestrator';
+import { runFullAudit } from '@/services/auditor-orchestrator';
 import { getWellness } from '../lib/intervals';
 import type { WellnessData } from '../lib/intervals';
 import prisma from '../lib/prisma';

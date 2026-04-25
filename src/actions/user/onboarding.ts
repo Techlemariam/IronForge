@@ -1,7 +1,7 @@
 'use server';
 
 import prisma from '@/lib/prisma';
-import { ProgressionService } from '@/services/progression';
+import { Progression } from '@/services/progression';
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
 
@@ -16,7 +16,7 @@ export async function completeOnboardingAction() {
   }
 
   try {
-    await ProgressionService.awardAchievement(user.id, 'ONBOARDING_COMPLETED');
+    await Progression.awardAchievement(user.id, 'ONBOARDING_COMPLETED');
 
     // Explicitly persist onboarding state
     await prisma.user.update({
@@ -24,7 +24,7 @@ export async function completeOnboardingAction() {
       data: { hasCompletedOnboarding: true },
     });
 
-    const newState = await ProgressionService.getProgressionState(user.id);
+    const newState = await Progression.getProgressionState(user.id);
     revalidatePath('/'); // Refresh page to update client state if needed
     return { success: true, newState };
   } catch (error) {

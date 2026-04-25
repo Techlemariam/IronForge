@@ -104,7 +104,7 @@ export class CombatEngine {
       state.playerHp = Math.min(state.playerMaxHp, state.playerHp + playerHeal);
       events.push(`You concentrated and recovered ${playerHeal} HP.`);
     } else {
-      const { damage, isCrit } = CombatEngine.calculatePlayerDamage(playerAttributes, action.type);
+      const { damage, isCrit } = this.calculatePlayerDamage(playerAttributes, action.type);
       playerDamage = damage;
       state.bossHp = Math.max(0, state.bossHp - damage);
       events.push(
@@ -128,11 +128,7 @@ export class CombatEngine {
 
     // 3. Boss Turn
     const isPlayerDefending = action.type === 'DEFEND';
-    const { damage: bDmg } = CombatEngine.calculateBossDamage(
-      boss,
-      playerAttributes,
-      isPlayerDefending
-    );
+    const { damage: bDmg } = this.calculateBossDamage(boss, playerAttributes, isPlayerDefending);
     bossDamage = bDmg;
     state.playerHp = Math.max(0, state.playerHp - bossDamage);
 

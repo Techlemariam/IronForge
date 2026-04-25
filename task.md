@@ -1,0 +1,23 @@
+- [x] Refactor `src/services/storage.ts` (Standardized to `Storage` namespace)
+- [x] Implement `getIronForgeStrengthLogs` in `src/services/auditor-orchestrator.ts`
+- [x] Global Refactor: Replace `StorageService` with `Storage` in all components/hooks
+    - [x] `src/features/dashboard/components/UltrathinkDashboard.tsx`
+    - [x] `src/features/titan/components/CharacterSheet.tsx`
+    - [x] `src/features/strength/hooks/useMiningSession.ts`
+    - [x] `src/features/strength/components/EquipmentArmory.tsx`
+    - [x] `src/features/settings/components/EquipmentArmory.tsx`
+    - [x] `src/features/settings/components/MigrationTool.tsx`
+    - [x] `src/features/gamification/hooks/useAchievements.ts`
+    - [x] `src/features/game/components/ActionView.tsx`
+    - [x] `src/context/SkillContext.tsx`
+    - [x] `src/components/MindfulnessModal.tsx`
+    - [x] `src/components/game/Marketplace.tsx`
+    - [x] `src/components/game/Grimoire.tsx`
+    - [x] `src/components/game/Bestiary.tsx`
+    - [x] `src/components/game/Arena.tsx`
+- [x] Final Verification (lint & build)
+    - [x] pnpm lint (0 errors in `src/`)
+    - [x] pnpm build (Successful compilation and static generation)
+    - [x] Snyk Security Scan (Remediated PRCelebration XSS with safe whitelist)
+- [ ] Season 2: Guild Territories (#75)
+- [ ] Season 2: Oracle 3.0 Phase 2 (#76)

@@ -2,7 +2,7 @@
 
 import { addBattlePassXpAction } from '@/actions/systems/battle-pass';
 import prisma from '@/lib/prisma';
-import { processWorkoutLog } from '@/services/challengeService';
+import { Challenges } from '@/services/challenges';
 import { TrainingService } from '@/services/game/TrainingService';
 import { mutateTitanEconomy, mutateTitanXp } from '@/services/titan-mutations';
 import type { TrainingPath } from '@/types/training';
@@ -60,7 +60,7 @@ export async function logTitanSet(
     // 4. Side Effects (Fire and Forget or Awaited based on UX)
     // We do not await this to keep UI snappy, or we await if we want data consistency.
     try {
-      await processWorkoutLog(user.id, weight, reps);
+      await Challenges.processWorkoutLog(user.id, weight, reps);
 
       // Award Battle Pass XP (50% of Titan XP, min 5)
       const bpXp = Math.max(5, Math.ceil(xpGained / 2));

@@ -2,26 +2,35 @@
 
 import prisma from '@/lib/prisma';
 import { AppSettings, Equipment } from '@/types';
+import type { SafeUser } from '@/types/schemas';
+import type { User } from '@prisma/client';
 import { z } from 'zod';
 
 // --- Schemas ---
 
 const emailSchema = z.string().email().optional();
 
-function sanitizeUser(user: any) {
-  if (!user) return user;
-  const safeUser = { ...user };
-  safeUser.intervalsApiKey = undefined;
-  safeUser.intervalsAthleteId = undefined;
-  safeUser.hevyApiKey = undefined;
-  safeUser.stravaAccessToken = undefined;
-  safeUser.stravaRefreshToken = undefined;
-  safeUser.garminAccessToken = undefined;
-  safeUser.garminRefreshToken = undefined;
-  safeUser.garminUserSecret = undefined;
-  safeUser.garminUserToken = undefined;
-  safeUser.pocketCastsToken = undefined;
-  return safeUser;
+function sanitizeUser(user: User | null): SafeUser | null {
+  if (!user) return null;
+
+  // Use destructuring to omit sensitive fields
+  const {
+    intervalsApiKey,
+    intervalsAthleteId,
+    hevyApiKey,
+    stravaAccessToken,
+    stravaRefreshToken,
+    stravaExpiresAt,
+    stravaAthleteId,
+    garminAccessToken,
+    garminRefreshToken,
+    garminUserSecret,
+    garminUserToken,
+    pocketCastsToken,
+    ...safeUser
+  } = user;
+
+  return safeUser as SafeUser;
 }
 
 const appSettingsSchema = z.object({

@@ -150,8 +150,10 @@ export const CampaignTracker: React.FC<CampaignTrackerProps> = ({
           />
           <MasteryProgressBar
             label="Mobility Sessions"
-            current={weeklyMastery?.mobilitySets || 0}
-            target={(BUILD_VOLUME_TARGETS[activePath] || BUILD_VOLUME_TARGETS.WARDEN).mobilitySets}
+            current={weeklyMastery?.mobilitySessions || 0}
+            target={
+              (BUILD_VOLUME_TARGETS[activePath] || BUILD_VOLUME_TARGETS.WARDEN).mobilitySessions
+            }
             color="bg-amber-500"
           />
         </div>

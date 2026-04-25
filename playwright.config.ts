@@ -29,10 +29,9 @@ export default defineConfig({
     baseURL: process.env.NEXT_PUBLIC_APP_URL || 'http://127.0.0.1:3001',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
+    trace: 'retain-on-failure',
   },
 
-  // ... imports kept same
   /* Configure projects for major browsers */
   projects: [
     {
@@ -43,7 +42,6 @@ export default defineConfig({
       name: 'desktop',
       use: {
         ...devices['Desktop Chrome'],
-        // Use prepared auth state.
         storageState: 'playwright/.auth/user.json',
       },
       dependencies: ['setup'],
@@ -57,7 +55,16 @@ export default defineConfig({
       dependencies: ['setup'],
     },
     {
+      name: 'iphone',
+      use: {
+        ...devices['iPhone 13'],
+        storageState: 'playwright/.auth/user.json',
+      },
+      dependencies: ['setup'],
+    },
+    {
       name: 'tv',
+
       use: {
         viewport: { width: 1920, height: 1080 },
         hasTouch: false,

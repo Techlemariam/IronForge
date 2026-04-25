@@ -21,27 +21,18 @@ export async function getHevyTemplatesAction(apiKey: string) {
       total_pages: 1,
       total_records: allExercises.length,
     };
-  } catch (error: any) {
-    console.error('Server Action Hevy Error:', error.message);
-    // If it's a ZodError, we might want to format it, but for now just passing message is fine if we want to match the test,
-    // BUT ZodError.message is a JSON string array.
-    // The test expects "Hevy API Key is required."
-    // We should explicitly check validation first and throw custom error if we want that specific message,
-    // OR update the test to accept Zod's error.
-    // Let's update the test to be more robust, but first let's see if we can just fix the code.
-    if (error.issues) {
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Unknown error';
+    console.error('Server Action Hevy Error:', message);
+    if (error && typeof error === 'object' && 'issues' in error) {
       throw new Error('Hevy API Key is required.');
     }
-    throw new Error(`Failed to fetch Hevy templates: ${error.message}`);
+    throw new Error(`Failed to fetch Hevy templates: ${message}`);
   }
 }
 
 export async function getHevyRoutinesAction(apiKey: string, page = 1, pageSize = 10) {
-  const {
-    apiKey: _key,
-    page: _p,
-    pageSize: _ps,
-  } = HevyHelperSchema.pick({ apiKey: true, page: true, pageSize: true }).parse({
+  HevyHelperSchema.pick({ apiKey: true, page: true, pageSize: true }).parse({
     apiKey,
     page,
     pageSize,
@@ -57,16 +48,20 @@ export async function getHevyRoutinesAction(apiKey: string, page = 1, pageSize =
       page_count: number;
       routines: HevyRoutine[];
     };
-  } catch (error: any) {
-    console.error('Server Action Hevy Routines Error:', error.message);
-    throw new Error(
-      `Failed to fetch Hevy routines: ${error.response?.data?.error || error.message}`
-    );
+  } catch (error: unknown) {
+    let message = 'Unknown error';
+    if (axios.isAxiosError(error)) {
+      message = error.response?.data?.error || error.message;
+    } else if (error instanceof Error) {
+      message = error.message;
+    }
+    console.error('Server Action Hevy Routines Error:', message);
+    throw new Error(`Failed to fetch Hevy routines: ${message}`);
   }
 }
 
 export async function getHevyWorkoutHistoryAction(apiKey: string, count = 30) {
-  const { apiKey: _key, count: _c } = HevyHelperSchema.pick({
+  HevyHelperSchema.pick({
     apiKey: true,
     count: true,
   }).parse({ apiKey, count });
@@ -94,20 +89,23 @@ export async function getHevyWorkoutHistoryAction(apiKey: string, count = 30) {
       }
     }
     return { workouts: allWorkouts.slice(0, count) };
-  } catch (error: any) {
-    console.error('Server Action Hevy History Error:', error.message);
-    throw new Error(
-      `Failed to fetch Hevy history: ${error.response?.data?.error || error.message}`
-    );
+  } catch (error: unknown) {
+    let message = 'Unknown error';
+    if (axios.isAxiosError(error)) {
+      message = error.response?.data?.error || error.message;
+    } else if (error instanceof Error) {
+      message = error.message;
+    }
+    console.error('Server Action Hevy History Error:', message);
+    throw new Error(`Failed to fetch Hevy history: ${message}`);
   }
 }
 
-export async function saveWorkoutAction(apiKey: string, payload: any) {
-  const { apiKey: _validatedKey } = HevyHelperSchema.pick({
+export async function saveWorkoutAction(apiKey: string, payload: { workout?: HevyWorkout }) {
+  HevyHelperSchema.pick({
     apiKey: true,
   }).parse({ apiKey });
-  // Note: payload validation is tricky as strict Hevy schema might reject valid calls if our types are incomplete.
-  // Ideally we validate payload too, but for now we secure the API key.
+
   const supabase = await createClient();
   const {
     data: { user },
@@ -126,7 +124,6 @@ export async function saveWorkoutAction(apiKey: string, payload: any) {
       const exercises = payload.workout.exercises || [];
       let totalVolume = 0;
       for (const ex of exercises) {
-        // Hevy sets: { weight_kg, reps }
         if (ex.sets) {
           for (const s of ex.sets) {
             totalVolume += (s.weight_kg || 0) * (s.reps || 0);
@@ -134,22 +131,19 @@ export async function saveWorkoutAction(apiKey: string, payload: any) {
         }
       }
 
-      // Calculation: 1 Energy per 100kg volume. Min 10.
       const energyGain = Math.max(10, Math.floor(totalVolume / 100));
 
       await prisma.user.update({
         where: { id: user.id },
         data: {
           kineticEnergy: { increment: energyGain },
-          totalExperience: { increment: energyGain * 2 }, // Also give XP?
+          totalExperience: { increment: energyGain * 2 },
         },
       });
 
-      // --- POWER RATING UPDATE ---
       const { recalculatePowerRatingAction } = await import('@/actions/titan/power-rating');
       await recalculatePowerRatingAction(user.id);
 
-      // --- GUILD TERRITORIES ---
       const dbUser = await prisma.user.findUnique({
         where: { id: user.id },
         select: { guildId: true },
@@ -159,19 +153,23 @@ export async function saveWorkoutAction(apiKey: string, payload: any) {
         await TerritoryService.recordGuildActivity(dbUser.guildId, totalVolume);
       }
 
-      // We could notify user here but let's stick to API response augmentation
       response.data.rewards = { energy: energyGain };
     }
 
     return response.data;
-  } catch (error: any) {
-    console.error('Server Action Hevy Save Error:', error.message);
-    throw new Error(`Failed to save workout: ${error.response?.data?.error || error.message}`);
+  } catch (error: unknown) {
+    let message = 'Unknown error';
+    if (axios.isAxiosError(error)) {
+      message = error.response?.data?.error || error.message;
+    } else if (error instanceof Error) {
+      message = error.message;
+    }
+    console.error('Server Action Hevy Save Error:', message);
+    throw new Error(`Failed to save workout: ${message}`);
   }
 }
 
-export async function importHevyHistoryAction(workouts: any[]) {
-  // Validate strict structure
+export async function importHevyHistoryAction(workouts: unknown[]) {
   const { workouts: validatedWorkouts } = ImportHevyHistorySchema.parse({
     workouts,
   });
@@ -185,10 +183,9 @@ export async function importHevyHistoryAction(workouts: any[]) {
   }
 
   try {
-    const logsToCreate: any[] = [];
+    const logsToCreate: any[] = []; // Keeping any[] for batch create compatibility with Prisma types if not explicitly imported
     let importedCount = 0;
 
-    // Cache known exercises to reduce DB calls
     const existingExercises = await prisma.exercise.findMany({
       select: { id: true, name: true },
     });
@@ -198,20 +195,15 @@ export async function importHevyHistoryAction(workouts: any[]) {
       const date = new Date(workout.start_time);
 
       for (const exercise of workout.exercises) {
-        // Resolution:
-        // 1. Try Hevy Template ID if we eventually sync that.
-        // 2. Try Name Match (Case insensitive)
-        // 3. Create New Exercise
-        const title = exercise.title || 'Unknown Exercise';
+        const title = exercise.exercise_template.title || 'Unknown Exercise';
         let exerciseId = exerciseMap.get(title.toLowerCase());
 
         if (!exerciseId) {
-          // Create new
           const newExercise = await prisma.exercise.create({
             data: {
               name: title,
-              muscleGroup: 'Other', // Default
-              equipment: 'Grid', // Default
+              muscleGroup: 'Other',
+              equipment: 'Grid',
               secondaryMuscles: [],
             },
           });
@@ -219,7 +211,6 @@ export async function importHevyHistoryAction(workouts: any[]) {
           exerciseMap.set(title.toLowerCase(), exerciseId);
         }
 
-        // Calculate Best e1rm for this session
         let bestE1rm = 0;
 
         if (exercise.sets && Array.isArray(exercise.sets)) {
@@ -240,15 +231,14 @@ export async function importHevyHistoryAction(workouts: any[]) {
             exerciseId: exerciseId,
             sets: exercise.sets || [],
             e1rm: bestE1rm,
-            rpe: 8, // Default RPE
-            isPersonalRecord: bestE1rm > 100, // Arbitrary threshold, logic needs refinement later
+            rpe: 8,
+            isPersonalRecord: bestE1rm > 100,
           });
         }
       }
       importedCount++;
     }
 
-    // Batch insert
     if (logsToCreate.length > 0) {
       await prisma.exerciseLog.createMany({
         data: logsToCreate,
@@ -257,13 +247,14 @@ export async function importHevyHistoryAction(workouts: any[]) {
     }
 
     return { success: true, count: importedCount, logs: logsToCreate.length };
-  } catch (error: any) {
-    console.error('Server Action Hevy Import Error:', error.message);
-    throw new Error(`Failed to import history: ${error.message}`);
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Unknown error';
+    console.error('Server Action Hevy Import Error:', message);
+    throw new Error(`Failed to import history: ${message}`);
   }
 }
 
-export async function importHevyRoutineToTemplateAction(routine: any) {
+export async function importHevyRoutineToTemplateAction(routine: HevyRoutine) {
   const supabase = await createClient();
   const {
     data: { user },
@@ -274,17 +265,17 @@ export async function importHevyRoutineToTemplateAction(routine: any) {
   }
 
   try {
-    // Map Hevy exercises to our JSON structure
-    const mappedExercises = routine.exercises.map((ex: any) => ({
-      name: ex.exercise_template.title,
-      exerciseId: ex.exercise_template_id, // Store Hevy ID for reference? Or find local ID
-      sets: ex.sets.map((s: any) => ({
-        reps: s.reps,
-        weight: s.weight_kg,
-        type: s.type || 'normal',
-      })),
-      notes: ex.notes,
-    }));
+    const mappedExercises =
+      routine.exercises?.map((ex) => ({
+        name: ex.exercise_template.title,
+        exerciseId: ex.exercise_template_id,
+        sets: ex.sets.map((s) => ({
+          reps: s.reps,
+          weight: s.weight_kg,
+          type: s.type || 'normal',
+        })),
+        notes: ex.notes,
+      })) || [];
 
     const template = await prisma.workoutTemplate.create({
       data: {
@@ -295,8 +286,9 @@ export async function importHevyRoutineToTemplateAction(routine: any) {
     });
 
     return { success: true, templateId: template.id };
-  } catch (error: any) {
-    console.error('Server Action Hevy Import Routine Error:', error.message);
-    throw new Error(`Failed to import routine: ${error.message}`);
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Unknown error';
+    console.error('Server Action Hevy Import Routine Error:', message);
+    throw new Error(`Failed to import routine: ${message}`);
   }
 }

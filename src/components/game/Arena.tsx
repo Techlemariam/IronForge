@@ -1,8 +1,8 @@
 import { awardGoldAction, getProgressionAction } from '@/actions/progression/core';
+import { StorageService as Storage } from '@/services/storage';
 import { Skull, Swords, Trophy, User } from 'lucide-react';
 import type React from 'react';
 import { useEffect, useState } from 'react';
-import { StorageService } from '../../services/storage';
 import { playSound } from '../../utils';
 
 interface Fighter {
@@ -37,7 +37,7 @@ const Arena: React.FC<ArenaProps> = ({ onClose }) => {
       const startHp = 100 + playerLevel * 10;
 
       // Load Inventory for Stats
-      const inventory = (await StorageService.getState<string[]>('inventory')) || [];
+      const inventory = (await Storage.getState<string[]>('inventory')) || [];
 
       let damageBonus = 0;
       let defenseBonus = 0;

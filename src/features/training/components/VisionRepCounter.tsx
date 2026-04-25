@@ -25,7 +25,7 @@ const VisionRepCounter: React.FC<VisionRepCounterProps> = ({ isActive, onRepCoun
   useEffect(() => {
     if (isActive) {
       const init = async () => {
-        await VisionService.getInstance().init();
+        await VisionService.init();
         setEngineReady(true);
         startCamera();
       };
@@ -78,7 +78,7 @@ const VisionRepCounter: React.FC<VisionRepCounterProps> = ({ isActive, onRepCoun
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
 
-    const result = VisionService.getInstance().detect(video, performance.now());
+    const result = VisionService.detect(video, performance.now());
 
     ctx?.clearRect(0, 0, canvas.width, canvas.height);
 

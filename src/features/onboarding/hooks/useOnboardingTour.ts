@@ -70,6 +70,8 @@ const MAIN_TOUR: TourConfig = {
   ],
 };
 
+import { StorageService } from '@/services/storage';
+
 const STORAGE_KEY = 'ironforge_completed_tours';
 
 /**
@@ -82,14 +84,13 @@ export function useOnboardingTour(tourConfig: TourConfig = MAIN_TOUR) {
 
   useEffect(() => {
     // Load completed tours from storage
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) {
-      try {
-        setCompletedTours(JSON.parse(stored));
-      } catch (e) {
-        console.error('Error loading tour state:', e);
+    const loadTours = async () => {
+      const stored = await StorageService.getItem<string[]>(STORAGE_KEY);
+      if (stored) {
+        setCompletedTours(stored);
       }
-    }
+    };
+    loadTours();
   }, []);
 
   const startTour = useCallback(() => {
@@ -97,13 +98,13 @@ export function useOnboardingTour(tourConfig: TourConfig = MAIN_TOUR) {
     setIsActive(true);
   }, []);
 
-  const completeTour = useCallback(() => {
+  const completeTour = useCallback(async () => {
     setIsActive(false);
     setCurrentStep(0);
 
     const updated = [...completedTours, tourConfig.id];
     setCompletedTours(updated);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+    await StorageService.setItem(STORAGE_KEY, updated);
 
     tourConfig.onComplete?.();
   }, [completedTours, tourConfig]);
@@ -134,9 +135,9 @@ export function useOnboardingTour(tourConfig: TourConfig = MAIN_TOUR) {
     [completedTours]
   );
 
-  const resetTours = useCallback(() => {
+  const resetTours = useCallback(async () => {
     setCompletedTours([]);
-    localStorage.removeItem(STORAGE_KEY);
+    await StorageService.removeItem(STORAGE_KEY);
   }, []);
 
   const shouldShowTour = !completedTours.includes(tourConfig.id);

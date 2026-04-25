@@ -1,5 +1,12 @@
 import type { ExerciseLog, IntervalsWellness } from '../types';
 
+export interface AdvancedStats {
+  acwr: number;
+  acuteLoad: number;
+  chronicLoad: number;
+  heatmap: Record<string, number>;
+}
+
 const workerCode = `
 self.onmessage = function(e) {
     const { history, wellness } = e.data;
@@ -12,12 +19,12 @@ self.onmessage = function(e) {
     const loadMap = new Map();
 
     // Populate Load from Logs (Volume * Intensity Proxy)
-    history.forEach(log => {
+    for (const log of history) {
         const dateStr = log.date.split('T')[0];
         const load = (log.e1rm * log.rpe) / 10; // Simplified Load Proxy
         const current = loadMap.get(dateStr) || 0;
         loadMap.set(dateStr, current + load);
-    });
+    }
 
     // 2. Calculate ACWR (Acute:Chronic Workload Ratio)
     let acuteSum = 0;
@@ -48,11 +55,11 @@ self.onmessage = function(e) {
 
     const recoveryHeatmap = {};
     
-    history.forEach(log => {
+    for (const log of history) {
         const muscles = muscleMap[log.exerciseId] || [];
         const daysSince = (now.getTime() - new Date(log.date).getTime()) / oneDay;
         
-        muscles.forEach(m => {
+        for (const m of muscles) {
             // Recovery Curve: 0 days = 0%, 3 days = 100%
             // We want "Fatigue", so 0 days = 1.0 (High Fatigue)
             let fatigue = Math.max(0, 1 - (daysSince / 3)); 
@@ -61,8 +68,8 @@ self.onmessage = function(e) {
             if (!recoveryHeatmap[m] || fatigue > recoveryHeatmap[m]) {
                 recoveryHeatmap[m] = fatigue;
             }
-        });
-    });
+        }
+    }
 
     self.postMessage({
         acwr: parseFloat(acwr.toFixed(2)),
@@ -73,41 +80,44 @@ self.onmessage = function(e) {
 };
 `;
 
-export const AnalyticsWorkerService = {
-  worker: null as Worker | null,
+export namespace AnalyticsWorker {
+  let worker: Worker | null = null;
 
-  init() {
-    if (typeof window !== 'undefined' && !this.worker) {
+  export function init() {
+    if (typeof window !== 'undefined' && !worker) {
       const blob = new Blob([workerCode], { type: 'application/javascript' });
-      this.worker = new Worker(URL.createObjectURL(blob));
+      worker = new Worker(URL.createObjectURL(blob));
     }
-  },
+  }
 
-  computeAdvancedStats(history: ExerciseLog[], wellness: IntervalsWellness): Promise<any> {
+  export function computeAdvancedStats(
+    history: ExerciseLog[],
+    wellness: IntervalsWellness
+  ): Promise<AdvancedStats> {
     return new Promise((resolve, reject) => {
-      if (!this.worker) this.init();
+      if (!worker) init();
 
-      if (!this.worker) {
+      if (!worker) {
         reject('Worker init failed');
         return;
       }
 
-      this.worker.onmessage = (e) => {
+      worker.onmessage = (e) => {
         resolve(e.data);
       };
 
-      this.worker.onerror = (e) => {
+      worker.onerror = (e) => {
         reject(e);
       };
 
-      this.worker.postMessage({ history, wellness });
+      worker.postMessage({ history, wellness });
     });
-  },
+  }
 
-  terminate() {
-    if (this.worker) {
-      this.worker.terminate();
-      this.worker = null;
+  export function terminate() {
+    if (worker) {
+      worker.terminate();
+      worker = null;
     }
-  },
-};
+  }
+}

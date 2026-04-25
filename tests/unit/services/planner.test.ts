@@ -36,7 +36,7 @@ vi.mock('@/lib/intervals', () => ({
   getWellness: vi.fn().mockResolvedValue({ tsb: 0, ctl: 50, atl: 50 }),
 }));
 vi.mock('@/services/analytics', () => ({
-  AnalyticsService: {
+  Analytics: {
     calculateTTB: vi.fn().mockReturnValue({
       strength: 50,
       endurance: 50,
@@ -46,7 +46,7 @@ vi.mock('@/services/analytics', () => ({
   },
 }));
 vi.mock('@/services/oracle', () => ({
-  OracleService: {
+  Oracle: {
     consult: vi.fn().mockResolvedValue({
       id: 'mock-rec',
       title: 'mock-title',

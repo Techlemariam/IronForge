@@ -122,10 +122,10 @@ export async function logSetAction(userId: string, exerciseId: string, set: SetD
 
     // 7. Challenge & Quest Updates
     try {
-      const { processWorkoutLog } = await import('@/services/challengeService');
+      const { Challenges } = await import('@/services/challenges');
       // We log volume (Weight * Reps) and Reps.
-      // processWorkoutLog handles "Volume" and "Workout" quest counts via logic updates
-      await processWorkoutLog(userId, validatedSet.weight, validatedSet.reps);
+      // Challenges.processWorkoutLog handles "Volume" and "Workout" quest counts via logic updates
+      await Challenges.processWorkoutLog(userId, validatedSet.weight, validatedSet.reps);
     } catch (e) {
       console.error('Challenge update failed:', e);
     }
@@ -169,7 +169,7 @@ export async function finishWorkoutAction(userId: string, logIds: string[]) {
 
     let weightedVolume = 0;
 
-    logs.forEach((log) => {
+    for (const log of logs) {
       const sets = (log.sets as unknown as SetData[]) || [];
       const muscle = muscleMap.get(log.exerciseId)?.toUpperCase() || 'OTHER';
 
@@ -178,18 +178,18 @@ export async function finishWorkoutAction(userId: string, logIds: string[]) {
       else if (TIER_2_MUSCLES.includes(muscle)) multiplier = 1.0;
       else if (TIER_3_MUSCLES.includes(muscle)) multiplier = 0.8;
 
-      sets.forEach((set) => {
+      for (const set of sets) {
         weightedVolume += set.weight * set.reps * multiplier;
-      });
-    });
+      }
+    }
 
     const xpAward = Math.floor(weightedVolume * 0.01);
 
     // 3. Execute Progression Updates
-    const { ProgressionService } = await import('@/services/progression');
+    const { Progression } = await import('@/services/progression');
 
     if (xpAward > 0) {
-      await ProgressionService.addExperience(userId, xpAward);
+      await Progression.addExperience(userId, xpAward);
 
       // 3b. Award Battle Pass XP (50% of Base XP)
       try {
@@ -204,13 +204,51 @@ export async function finishWorkoutAction(userId: string, logIds: string[]) {
     }
 
     // 4. Award Completion Gold (Fixed 100g)
-    await ProgressionService.awardGold(userId, 100);
+    await Progression.awardGold(userId, 100);
 
-    // 5. Refill Kinetic Energy (Guild Battery) - Part of Phase 2 but convenient here
+    // 5. Refill Kinetic Energy (Guild Battery)
     await prisma.user.update({
       where: { id: userId },
       data: { kineticEnergy: { increment: 10 } },
     });
+
+    // 6. Territory Contest Integration
+    try {
+      const userWithGuild = await prisma.user.findUnique({
+        where: { id: userId },
+        select: { guildId: true },
+      });
+
+      if (userWithGuild?.guildId) {
+        const guild = await prisma.guild.findUnique({
+          where: { id: userWithGuild.guildId },
+          select: { targetTerritoryId: true },
+        });
+
+        if (guild?.targetTerritoryId) {
+          // Sum actual volume for the territory
+          let actualVolume = 0;
+          for (const log of logs) {
+            const sets = (log.sets as unknown as SetData[]) || [];
+            for (const set of sets) {
+              actualVolume += set.weight * set.reps;
+            }
+          }
+
+          const { GuildTerritoryService } = await import('@/services/game/GuildTerritoryService');
+          await GuildTerritoryService.recordActivity(
+            userWithGuild.guildId,
+            guild.targetTerritoryId,
+            {
+              volume: actualVolume,
+              xp: xpAward,
+            }
+          );
+        }
+      }
+    } catch (e) {
+      console.error('Territory activity recording failed:', e);
+    }
 
     revalidatePath('/dashboard');
     return { success: true, xpEarned: xpAward, goldEarned: 100 };

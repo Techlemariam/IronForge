@@ -2,7 +2,7 @@ import { getWellnessAction } from '@/actions/integrations/intervals';
 import { AchievementContext } from '@/context/AchievementContext';
 import { useBluetoothHeartRate } from '@/features/bio/hooks/useBluetoothHeartRate';
 import { IntegrationService } from '@/services/integration';
-import { type ActiveSessionState, StorageService } from '@/services/storage';
+import { type ActiveSessionState, StorageService as Storage } from '@/services/storage';
 import type { AppSettings, ExerciseLog, IntervalsWellness, Session } from '@/types';
 import { logger } from '@/utils/logger';
 import { useContext, useEffect, useState } from 'react';
@@ -50,7 +50,7 @@ export const useMiningSession = ({ initialSession, onComplete, onExit }: UseMini
           return;
         }
 
-        const recovered = await StorageService.getActiveSession();
+        const recovered = await Storage.getActiveSession();
         if (recovered && !completed) {
           setFoundRecovery(recovered);
         }
@@ -69,7 +69,7 @@ export const useMiningSession = ({ initialSession, onComplete, onExit }: UseMini
       if (foundRecovery || checkingRecovery) return;
 
       try {
-        const settings = await StorageService.getState<AppSettings>('settings');
+        const settings = await Storage.getState<AppSettings>('settings');
         if (settings?.intervalsApiKey) {
           const today = new Date().toISOString().split('T')[0];
           if (navigator.onLine) {
@@ -101,14 +101,14 @@ export const useMiningSession = ({ initialSession, onComplete, onExit }: UseMini
   };
 
   const handleDiscard = async () => {
-    await StorageService.clearActiveSession();
+    await Storage.clearActiveSession();
     setFoundRecovery(null);
   };
 
   const handleExport = async () => {
     setExportStatus('UPLOADING');
     try {
-      const settings = await StorageService.getState<AppSettings>('settings');
+      const settings = await Storage.getState<AppSettings>('settings');
       if (!settings) {
         logger.error(new Error('No settings found'), 'Export failed');
         setExportStatus('ERROR');
@@ -129,7 +129,7 @@ export const useMiningSession = ({ initialSession, onComplete, onExit }: UseMini
   };
 
   const confirmAbandon = async () => {
-    await StorageService.clearActiveSession();
+    await Storage.clearActiveSession();
     onExit();
   };
 
@@ -170,10 +170,10 @@ export const useMiningSession = ({ initialSession, onComplete, onExit }: UseMini
         });
 
         for (const log of logs) {
-          await StorageService.saveLog(log);
+          await Storage.saveLog(log);
         }
 
-        await StorageService.clearActiveSession();
+        await Storage.clearActiveSession();
       } catch (e) {
         logger.error(e, 'Failed to save session');
       } finally {

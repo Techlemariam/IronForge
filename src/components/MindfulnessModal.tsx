@@ -1,7 +1,7 @@
 import { Brain, Cloud, Sparkles, X } from 'lucide-react';
 import type React from 'react';
 import { useState } from 'react';
-import { StorageService } from '../services/storage';
+import { StorageService as Storage } from '../services/storage';
 import type { MeditationLog } from '../types';
 import { playSound } from '../utils';
 
@@ -22,7 +22,7 @@ const MindfulnessModal: React.FC<MindfulnessModalProps> = ({ onClose, onSave }) 
       source: source,
     };
 
-    await StorageService.saveMeditation(log);
+    await Storage.saveMeditation(log);
     playSound('quest_accept'); // Sound effect
     setIsSaved(true);
 

@@ -592,6 +592,9 @@ model Guild {
   attackerContests TerritoryContest[] @relation("AttackerRelation")
   defenderContests TerritoryContest[] @relation("DefenderRelation")
   wonContests      TerritoryContest[] @relation("WinnerRelation")
+  targetTerritoryId String?
+  targetTerritory   Territory? @relation("GuildTarget", fields: [targetTerritoryId], references: [id])
+  territoryContestEntries TerritoryContestEntry[]
 }
 
 model Territory {
@@ -610,6 +613,7 @@ model Territory {
   contestEntries TerritoryContestEntry[]
   history        TerritoryHistory[]
   activeContests TerritoryContest[]      @relation("ContestTerritory")
+  targetedBy     Guild[]                 @relation("GuildTarget")
 
   @@index([region])
   @@index([controlledById])
@@ -648,6 +652,7 @@ model TerritoryContestEntry {
   xpEarned     Int       @default(0)
   memberCount  Int       @default(0)
   territory    Territory @relation(fields: [territoryId], references: [id])
+  guild        Guild     @relation(fields: [guildId], references: [id])
 
   @@unique([territoryId, guildId, weekNumber, year])
   @@index([territoryId, weekNumber, year])
@@ -661,6 +666,9 @@ model TerritoryHistory {
   lostAt      DateTime?
   weekNumber  Int
   year        Int
+  totalXp     Int       @default(0)
+  totalVolume Float     @default(0)
+  result      String?   // CAPTURED, DEFENDED, FORFEITED
   territory   Territory @relation(fields: [territoryId], references: [id])
 }
 

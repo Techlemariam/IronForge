@@ -85,6 +85,8 @@ const MissionBriefing: React.FC<{
   );
 };
 
+import { StorageService } from '@/services/storage';
+
 // --- Main Component: The War Room ---
 const RoutineSelector: React.FC<{
   exerciseNameMap: Map<string, string>;
@@ -99,7 +101,7 @@ const RoutineSelector: React.FC<{
   useEffect(() => {
     const fetchRoutines = async () => {
       try {
-        const apiKey = localStorage.getItem('hevy_api_key');
+        const apiKey = await StorageService.getItem<string>('hevy_api_key');
         if (!apiKey) throw new Error('API Key Missing');
         const data = await getHevyRoutinesAction(apiKey);
         setRoutines(data.routines || []);

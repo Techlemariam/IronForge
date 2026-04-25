@@ -46,6 +46,8 @@ import { type TrainingMetric, calculatePaceZone, calculatePowerZone } from './lo
 // @ts-ignore - React 19 type mismatch
 const ReactPlayer = dynamic(() => import('react-player'), { ssr: false }) as any;
 
+import { StorageService } from '@/services/storage';
+
 export type CardioMode = 'cycling' | 'running' | 'gauntlet' | 'chase';
 
 interface CardioStudioProps {
@@ -465,48 +467,47 @@ function CardioCockpit({
     };
   }, [mode]);
 
-  // Load from localStorage on mount or mode change
+  // Load from StorageService on mount or mode change
   useEffect(() => {
-    try {
-      const savedUrl = localStorage.getItem(STORAGE_KEYS.VIDEO_URL);
-      const savedLayout = localStorage.getItem(STORAGE_KEYS.LAYOUT) as LayoutMode | null;
+    const loadSettings = async () => {
+      try {
+        const savedUrl = await StorageService.getItem<string>(STORAGE_KEYS.VIDEO_URL);
+        const savedLayout = await StorageService.getItem<LayoutMode>(STORAGE_KEYS.LAYOUT);
 
-      if (savedUrl) {
-        setInputUrl(savedUrl);
-        setVideoUrl(savedUrl);
-      } else {
-        setInputUrl('');
-        setVideoUrl('');
-      }
+        if (savedUrl) {
+          setInputUrl(savedUrl);
+          setVideoUrl(savedUrl);
+        } else {
+          setInputUrl('');
+          setVideoUrl('');
+        }
 
-      if (savedLayout && ['split', 'video-pip', 'zwift-pip'].includes(savedLayout)) {
-        setLayoutMode(savedLayout);
-      } else {
-        setLayoutMode('split');
+        if (savedLayout && ['split', 'video-pip', 'zwift-pip'].includes(savedLayout)) {
+          setLayoutMode(savedLayout);
+        } else {
+          setLayoutMode('split');
+        }
+      } catch (e) {
+        console.warn('Failed to load cardio studio settings:', e);
       }
-    } catch (e) {
-      console.warn('Failed to load cardio studio settings:', e);
-    }
+    };
+    loadSettings();
   }, [STORAGE_KEYS]);
 
-  // Persist videoUrl to localStorage
+  // Persist videoUrl to StorageService
   useEffect(() => {
     if (videoUrl) {
-      try {
-        localStorage.setItem(STORAGE_KEYS.VIDEO_URL, videoUrl);
-      } catch (e) {
-        console.warn('Failed to save video URL:', e);
-      }
+      StorageService.setItem(STORAGE_KEYS.VIDEO_URL, videoUrl).catch((e) =>
+        console.warn('Failed to save video URL:', e)
+      );
     }
   }, [videoUrl, STORAGE_KEYS]);
 
-  // Persist layout to localStorage
+  // Persist layout to StorageService
   useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEYS.LAYOUT, layoutMode);
-    } catch (e) {
-      console.warn('Failed to save layout:', e);
-    }
+    StorageService.setItem(STORAGE_KEYS.LAYOUT, layoutMode).catch((e) =>
+      console.warn('Failed to save layout:', e)
+    );
   }, [layoutMode, STORAGE_KEYS]);
 
   // Handle Stream attachment
@@ -647,11 +648,9 @@ function CardioCockpit({
   const handleClearVideo = useCallback(() => {
     setVideoUrl('');
     setInputUrl('');
-    try {
-      localStorage.removeItem(STORAGE_KEYS.VIDEO_URL);
-    } catch (e) {
-      console.warn('Failed to clear video URL:', e);
-    }
+    StorageService.removeItem(STORAGE_KEYS.VIDEO_URL).catch((e) =>
+      console.warn('Failed to clear video URL:', e)
+    );
   }, [STORAGE_KEYS]);
 
   // Handle Exit with Save

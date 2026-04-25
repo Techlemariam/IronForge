@@ -16,10 +16,10 @@ import DashboardClient from '@/features/dashboard/DashboardClient';
 import { calculateSkillEffects } from '@/features/game/hooks/useSkillEffects';
 import prisma from '@/lib/prisma';
 import { AnalyticsService } from '@/services/analytics';
-import { runFullAudit } from '@/services/auditorOrchestrator';
+import { runFullAudit } from '@/services/auditor-orchestrator';
 import { RecoveryService } from '@/services/bio/RecoveryService';
 import { OracleService } from '@/services/oracle';
-import { ProgressionService } from '@/services/progression';
+import { Progression } from '@/services/progression';
 // Force Rebuild
 import { createClient } from '@/utils/supabase/server';
 import { cookies } from 'next/headers';
@@ -35,7 +35,9 @@ import type {
 } from '@/types';
 // Types
 import type { AuditReport } from '@/types/auditor';
+import type { DashboardInitialData, ExtendedUser } from '@/types/dashboard';
 import type { HevyExerciseTemplate, HevyRoutine, HevyWorkout } from '@/types/hevy';
+import type { TrainingPath } from '@/types/training';
 
 // Force dynamic rendering since this page requires authentication
 export const dynamic = 'force-dynamic';
@@ -54,10 +56,10 @@ export default async function Page() {
 
   // 0b. Fetch DB User & Config
   await ensureUserAction(user.id, user.email);
-  const dbUser = await prisma.user.findUnique({
+  const dbUser = (await prisma.user.findUnique({
     where: { id: user.id },
     include: { achievements: true, skills: true },
-  });
+  })) as ExtendedUser | null;
 
   // --- DEMO MODE CHECK ---
   const cookieStore = await cookies();
@@ -119,11 +121,6 @@ export default async function Page() {
           .split('T')[0];
         const nextWeek = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
 
-        // Note: The actions might not require keys if they use the session user,
-        // but our previous check confirms keys exist on the user.
-        // The actions `getWellnessAction` etc internally fetch keys from DB user based on session.
-        // So we just pass dates.
-
         const [w, acts, evts] = await Promise.all([
           getWellnessAction(today),
           getActivitiesAction(lastMonth, today),
@@ -161,13 +158,9 @@ export default async function Page() {
   // 2. Audit
   let report: AuditReport | null = null;
   try {
-    // Note: history from Hevy is now deprecated. Using prefetched for demo/legacy only.
-    // For production, runFullAudit will use userId to fetch from IronForge DB.
     if (history.length > 0) {
-      // Legacy: pass prefetched history for demo mode
       report = await runFullAudit(false, user.id, history);
     } else {
-      // Production: use userId to fetch internal logs
       report = await runFullAudit(false, user.id);
     }
   } catch (e) {
@@ -197,19 +190,16 @@ export default async function Page() {
   }
 
   // 4. Progression & Oracle
-  const progression = await ProgressionService.getProgressionState(user.id);
+  const progression = await Progression.getProgressionState(user.id);
   if (!progression) {
     // Should ideally create one if missing
-    // throw new Error("Could not load progression");
   }
 
   const recoveryAnalysis = await RecoveryService.analyzeRecovery(user.id);
 
-  // Cast to any to bypass stale Prisma types in IDE
-  const activePath =
-    ((dbUser as any)?.activePath as import('@/types/training').TrainingPath) || 'WARDEN';
+  const activePath = (dbUser?.activePath as TrainingPath) || 'WARDEN';
 
-  // 4b. Fetch Titan State (Moved up for Oracle Dependency)
+  // 4b. Fetch Titan State
   if (wellness) {
     await syncTitanStateWithWellness(wellness);
   }
@@ -233,8 +223,7 @@ export default async function Page() {
     titanState ? { powerRating: titanState.powerRating } : undefined
   );
 
-  // 4d. Fetch Bio-Logic Context (New Multi-Metric Payload)
-  // Ensure we import the service at top of file
+  // 4d. Fetch Bio-Logic Context
   const trainingContext = await import('@/services/data/TrainingContextService').then((mod) =>
     mod.TrainingContextService.getTrainingContext(user.id)
   );
@@ -270,12 +259,12 @@ export default async function Page() {
     strengthSets: weeklyStrengthSets,
     cardioTss: Math.round(weeklyCardioTss),
     mobilitySessions: weeklyMobilitySessions,
-    mobilityLevel: (dbUser as any)?.mobilityLevel || 'I',
-    recoveryLevel: (dbUser as any)?.recoveryLevel || 'I',
+    mobilityLevel: dbUser?.mobilityLevel || 'I',
+    recoveryLevel: dbUser?.recoveryLevel || 'I',
   };
 
   // 6. Initial Data Construction
-  const initialData = {
+  const initialData: DashboardInitialData = {
     wellness,
     activities,
     events,
@@ -289,39 +278,33 @@ export default async function Page() {
     activeDuel,
     trainingContext,
     powerRating: titanState?.powerRating ?? 0,
-    // We can add history here if needed directly
   };
 
-  const hasCompletedOnboarding = !!(dbUser as any)?.hasCompletedOnboarding;
+  const hasCompletedOnboarding = !!dbUser?.hasCompletedOnboarding;
 
   const challenges = await getActiveChallengesAction().catch((e) => {
     console.error('Failed to fetch challenges', e);
     return [];
   });
 
-  // 5b. Fetch Titan State (Server-Side)
-  // Moved up
-  // const titanState = titanRes.success ? titanRes.data : null;
-
   const liteMode = !!(dbUser?.preferences as any)?.liteMode;
 
-  // New: Fetch Leaderboard Statically (ISG-ish)
   const strengthLeaderboardRes = await getStrengthLeaderboardAction(5).catch(() => null);
   const strengthLeaderboard = strengthLeaderboardRes?.data ?? [];
 
   return (
     <DashboardClient
-      initialData={initialData as any}
-      userData={dbUser as any} // Cast to UI User type
-      dbUser={dbUser as any}
-      titanState={titanState} // Pass server-side state
-      isMobile={false} // Would need UA check
+      initialData={initialData}
+      userData={dbUser}
+      dbUser={dbUser}
+      titanState={titanState}
+      isMobile={false}
       hevyTemplates={hevyTemplates}
       hevyRoutines={hevyRoutines}
       intervalsConnected={!!(dbUser?.intervalsApiKey && dbUser?.intervalsAthleteId)}
-      stravaConnected={!!(dbUser as any)?.stravaAccessToken}
-      pocketCastsConnected={!!(dbUser as any)?.pocketCastsEnabled}
-      faction={(dbUser as any)?.faction || 'HORDE'}
+      stravaConnected={!!dbUser?.stravaAccessToken}
+      pocketCastsConnected={!!dbUser?.pocketCastsEnabled}
+      faction={dbUser?.faction || 'HORDE'}
       hasCompletedOnboarding={hasCompletedOnboarding}
       isDemoMode={isDemoMode}
       challenges={challenges}

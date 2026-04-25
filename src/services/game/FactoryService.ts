@@ -28,17 +28,17 @@ export interface AssemblyLineTask {
 }
 
 export class FactoryService {
-  private static USAGE_PATH = path.join(process.cwd(), '.agent/usage.json');
-  private static RATE_PER_MILLION_USD = 0.15;
-  private static USD_TO_SEK = 10.5;
+  private static readonly USAGE_PATH = path.join(process.cwd(), '.agent/usage.json');
+  private static readonly RATE_PER_MILLION_USD = 0.15;
+  private static readonly USD_TO_SEK = 10.5;
 
-  static async getStats(): Promise<FactoryStats> {
+  public static async getStats(): Promise<FactoryStats> {
     let totalTokensToday = 0;
     const today = new Date().toISOString().split('T')[0];
 
-    if (fs.existsSync(FactoryService.USAGE_PATH)) {
+    if (fs.existsSync(this.USAGE_PATH)) {
       try {
-        const content = fs.readFileSync(FactoryService.USAGE_PATH, 'utf-8').replace(/^\uFEFF/, '');
+        const content = fs.readFileSync(this.USAGE_PATH, 'utf-8').replace(/^\uFEFF/, '');
         const data = JSON.parse(content);
         if (data.history) {
           for (const entry of data.history) {
@@ -52,10 +52,7 @@ export class FactoryService {
       }
     }
 
-    const costSekToday =
-      (totalTokensToday / 1000000) *
-      FactoryService.RATE_PER_MILLION_USD *
-      FactoryService.USD_TO_SEK;
+    const costSekToday = (totalTokensToday / 1000000) * this.RATE_PER_MILLION_USD * this.USD_TO_SEK;
 
     // Mock Quotas for now as requested (Image reference)
     const quotas: ModelQuota[] = [
@@ -74,7 +71,7 @@ export class FactoryService {
     };
   }
 
-  static async getAssemblyLineTasks(): Promise<AssemblyLineTask[]> {
+  public static async getAssemblyLineTasks(): Promise<AssemblyLineTask[]> {
     const { prisma } = await import('@/lib/prisma');
     const tasks = await prisma.factoryTask.findMany({
       where: {

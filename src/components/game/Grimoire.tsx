@@ -1,8 +1,8 @@
+import { StorageService as Storage } from '@/services/storage';
 import { Book, ChevronRight, History, Sparkles, TrendingUp, Trophy } from 'lucide-react';
 import type React from 'react';
 import { useEffect, useState } from 'react';
 import { ACHIEVEMENTS } from '../../data/static';
-import { StorageService } from '../../services/storage';
 import type { GrimoireEntry, GrimoireEntryType } from '../../types';
 import { LoadingSpinner } from '../ui/LoadingSpinner';
 
@@ -19,13 +19,12 @@ export const Grimoire: React.FC<GrimoireProps> = ({ onClose }) => {
       setIsLoading(true);
       try {
         // 1. Fetch persistent entries
-        let grimoireEntries = await StorageService.getGrimoireEntries();
+        let grimoireEntries = await Storage.getGrimoireEntries();
 
         // 2. Backfill if empty but we have achievements (Migration Logic)
         if (grimoireEntries.length === 0) {
-          const unlockedAchievementIds =
-            (await StorageService.getState<string[]>('achievements')) || [];
-          const history = await StorageService.getHistory();
+          const unlockedAchievementIds = (await Storage.getState<string[]>('achievements')) || [];
+          const history = await Storage.getHistory();
 
           const newEntries: GrimoireEntry[] = [];
 
@@ -61,7 +60,7 @@ export const Grimoire: React.FC<GrimoireProps> = ({ onClose }) => {
 
           if (newEntries.length > 0) {
             // Batch save (await all)
-            await Promise.all(newEntries.map((e) => StorageService.saveGrimoireEntry(e)));
+            await Promise.all(newEntries.map((e) => Storage.saveGrimoireEntry(e)));
             grimoireEntries = newEntries;
           }
         }

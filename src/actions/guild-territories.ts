@@ -56,19 +56,25 @@ export async function setGuildTerritoryTarget(
     // Optional: We can enforce a limit on how many territories a guild can target per week.
     // For now, let's keep it simple.
 
-    // 5. Create the Commitment Entry
-    await prisma.territoryContestEntry.create({
-      data: {
-        territoryId,
-        guildId,
-        weekNumber,
-        year,
-        totalVolume: 0,
-        workoutCount: 0,
-        xpEarned: 0,
-        memberCount: 0,
-      },
-    });
+    // 5. Update Guild Target and Create the Commitment Entry
+    await prisma.$transaction([
+      prisma.guild.update({
+        where: { id: guildId },
+        data: { targetTerritoryId: territoryId },
+      }),
+      prisma.territoryContestEntry.create({
+        data: {
+          territoryId,
+          guildId,
+          weekNumber,
+          year,
+          totalVolume: 0,
+          workoutCount: 0,
+          xpEarned: 0,
+          memberCount: 0,
+        },
+      }),
+    ]);
 
     revalidatePath('/map');
     revalidatePath('/guild');

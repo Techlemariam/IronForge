@@ -19,11 +19,11 @@ export class AutoSpecEngine {
    * Uses "Hysteresis" to prevent flip-flopping (requires 3 consecutive stalls).
    */
   static evaluateTransition(currentPhase: MacroCycle, metrics: SystemMetrics): MacroCycle {
-    console.log(`AutoSpec: Evaluating transition from ${currentPhase}`, metrics);
+    console.log(`AutoSpecEngine: Evaluating transition from ${currentPhase}`, metrics);
 
     // 1. Parenting / Safety Fail-safe
     if (metrics.hrv < 40 || metrics.tsb < -40) {
-      console.warn('AutoSpec: CRITICAL STRESS. FORCE DELOAD.');
+      console.warn('AutoSpecEngine: CRITICAL STRESS. FORCE DELOAD.');
       return 'GAMMA';
     }
 
@@ -47,7 +47,7 @@ export class AutoSpecEngine {
     if (currentPhase === 'BETA') {
       // HYSTERESIS: Require 3 consecutive weeks of stalls
       if (metrics.consecutiveStalls >= 3) {
-        console.log('AutoSpec: 3 weeks of stagnation. Switching to Alpha.');
+        console.log('AutoSpecEngine: 3 weeks of stagnation. Switching to Alpha.');
         return 'ALPHA';
       }
       // Or excessive fatigue
@@ -77,7 +77,7 @@ export class AutoSpecEngine {
 
     // If Gamma, everything is minimal (50%)
     if (phase === 'GAMMA') {
-      return AutoSpecEngine.applyModifiers(baseTargets, 0.5);
+      return this.applyModifiers(baseTargets, 0.5);
     }
 
     // --- BIO-MODIFIERS ---
@@ -92,29 +92,29 @@ export class AutoSpecEngine {
     // 3. Interference Penalty
     if (phase === 'BETA' && currentCardioTss > baseTargets.cardioTss * 1.5) {
       globalModifier *= 0.8;
-      console.warn('AutoSpec: Heavy Interference. Penalizing Strength.');
+      console.warn('AutoSpecEngine: Heavy Interference. Penalizing Strength.');
     }
 
     // 4. Nutrition Blindspot
-    globalModifier *= AutoSpecEngine.getNutritionModifier(metrics.nutritionMode);
+    globalModifier *= this.getNutritionModifier(metrics.nutritionMode);
 
     // 5. Sleep Debt
-    globalModifier *= AutoSpecEngine.getSleepDebtModifier(metrics.sleepDebt);
+    globalModifier *= this.getSleepDebtModifier(metrics.sleepDebt);
 
     // 6. ACWR Danger Zone
     if (metrics.acwr > 1.5) {
       globalModifier *= 0.6; // Dramatic cut to prevent snap city
-      console.warn('AutoSpec: ACWR > 1.5. Danger Zone Protocol Activated.');
+      console.warn('AutoSpecEngine: ACWR > 1.5. Danger Zone Protocol Activated.');
     }
 
-    return AutoSpecEngine.applyModifiers(baseTargets, globalModifier);
+    return this.applyModifiers(baseTargets, globalModifier);
   }
 
   static applyModifiers(targets: BuildVolumeTargets, factor: number): BuildVolumeTargets {
     return {
       strengthSets: Math.floor(targets.strengthSets * factor),
       cardioTss: Math.floor(targets.cardioTss * factor), // Cardio usually scales too
-      mobilitySets: targets.mobilitySets, // Mobility stays high
+      mobilitySessions: targets.mobilitySessions, // Mobility stays high
     };
   }
 

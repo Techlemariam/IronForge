@@ -59,12 +59,10 @@ const MRV_DEFAULTS: Record<string, number> = {
 
 export class TrainingContextService {
   /**
-     * Aggregates weekly volume from DB and calculates status.
-    /**
-     * Aggregates weekly volume from DB and calculates status.
-     * @param mrvScaleFactor Modifier for volume ramps (e.g. 0.7 for first week of block)
-     * @param activePath Optional path to apply specific MRV modifiers (e.g. Engine Quads = 0.7)
-     */
+   * Aggregates weekly volume from DB and calculates status.
+   * @param mrvScaleFactor Modifier for volume ramps (e.g. 0.7 for first week of block)
+   * @param activePath Optional path to apply specific MRV modifiers (e.g. Engine Quads = 0.7)
+   */
   static async getWeeklyVolume(
     userId: string,
     mrvScaleFactor = 1.0,
@@ -83,7 +81,7 @@ export class TrainingContextService {
 
     const volumeMap: Record<string, number> = {};
 
-    logs.forEach((log) => {
+    for (const log of logs) {
       // 1. Try explicit muscle group from Exercise
       let muscle = log.exercise.muscleGroup?.toUpperCase() || 'UNKNOWN';
 
@@ -97,7 +95,7 @@ export class TrainingContextService {
       const sets = parseSets(log.sets);
       const validSets = sets.filter((s) => s.reps > 0).length;
       volumeMap[muscle] = (volumeMap[muscle] || 0) + validSets;
-    });
+    }
 
     // Build Status Objects
     const result: Record<string, VolumeStatus> = {};
@@ -167,7 +165,7 @@ export class TrainingContextService {
     const yesterdayStr = yesterday.toISOString().split('T')[0];
     const recentActivities = await getActivitiesAction(yesterdayStr, today);
 
-    const totalTss = recentActivities.reduce((acc, act) => acc + (act.icu_intensity || 0), 0); // using intensity as proxy if TSS missing, actually we need TSS field.
+    const _totalTss = recentActivities.reduce((acc, act) => acc + (act.icu_intensity || 0), 0); // using intensity as proxy if TSS missing, actually we need TSS field.
 
     // 4. Auto-Spec Evaluation
     const currentPhase = (user?.currentMacroCycle as MacroCycle) || 'ALPHA';
@@ -216,15 +214,13 @@ export class TrainingContextService {
       activePath,
       currentPhase,
       weeksInPhase,
-      totalTss,
+      0, // totalTss placeholder
       metrics
     );
 
     // 6. Fetch Volume (Pass dynamic MRV scale factor)
     // We use strengthSets target as a proxy for "Global MRV Scale" or calculate explicitly.
     // INTEGRAL FIX: MRV must scale with Bio-State, not just Ramp-up.
-
-    const _junkMilePercent = 0; // Calculate from cardio analysis
 
     const nutritionMod = AutoSpecEngine.getNutritionModifier(nutritionMode);
     const sleepMod = AutoSpecEngine.getSleepDebtModifier(sleepDebt);
@@ -240,11 +236,7 @@ export class TrainingContextService {
     const effectiveScaleFactor = rampFactor * globalBioMod;
 
     // For now, let's pass the raw scale factor to getWeeklyVolume
-    const volume = await TrainingContextService.getWeeklyVolume(
-      userId,
-      effectiveScaleFactor,
-      activePath
-    );
+    const volume = await this.getWeeklyVolume(userId, effectiveScaleFactor, activePath);
 
     // 7. Calculate Readiness (Based on HRV/Sleep)
     let readiness: TrainingContext['readiness'] = 'HIGH';
@@ -263,10 +255,11 @@ export class TrainingContextService {
 
     // 8. Calculate Cardio Stress (TSS)
     let cardioStress: TrainingContext['cardioStress'] = 'LOW';
-    if (totalTss > 250) {
+    const totalTssAcute = recentActivities.reduce((acc, act) => acc + (act.icu_intensity || 0), 0);
+    if (totalTssAcute > 250) {
       cardioStress = 'HIGH';
       warnings.push('High cardio fatigue detected (Long session detected).');
-    } else if (totalTss > 100) {
+    } else if (totalTssAcute > 100) {
       cardioStress = 'MODERATE';
     }
     // 4b. Path-Specific Metrics Calculation
@@ -280,38 +273,34 @@ export class TrainingContextService {
       include: { exercise: true },
     });
 
-    let _neuralLoad = 0;
-    recentLogs.forEach((log) => {
+    let _neuralLoadCount = 0;
+    for (const log of recentLogs) {
       const sets = parseSets(log.sets);
-      sets.forEach((set) => {
+      for (const set of sets) {
         if (set.reps > 0) {
-          const cost = TrainingContextService.estimateCnsCost(
-            log.exercise.name,
-            set.rpe || 7,
-            set.reps
-          );
-          _neuralLoad += cost === 'HIGH' ? 3 : cost === 'MEDIUM' ? 2 : 1;
+          const cost = this.estimateCnsCost(log.exercise.name, set.rpe || 7, set.reps);
+          _neuralLoadCount += cost === 'HIGH' ? 3 : cost === 'MEDIUM' ? 2 : 1;
         }
-      });
-    });
+      }
+    }
 
     // Impact Load (Engine) - Run TSS
-    const _impactLoad = recentActivities
+    const _impactLoadCount = recentActivities
       .filter((a) => a.type === 'Run')
       .reduce((acc, a) => acc + (a.icu_intensity || 0), 0);
 
     // Interference (Warden)
-    let _interferenceEvents = 0;
+    let _interferenceEventsCount = 0;
     // Group by date
     const cardiosByDate = new Map<string, Date[]>();
-    recentActivities.forEach((a) => {
+    for (const a of recentActivities) {
       const dateStr = new Date(a.start_date_local).toISOString().split('T')[0];
       const time = new Date(a.start_date_local);
       if (!cardiosByDate.has(dateStr)) cardiosByDate.set(dateStr, []);
       cardiosByDate.get(dateStr)?.push(time);
-    });
+    }
 
-    recentLogs.forEach((log) => {
+    for (const log of recentLogs) {
       const dateStr = log.date.toISOString().split('T')[0];
       const strengthTime = log.date;
       if (cardiosByDate.has(dateStr)) {
@@ -320,27 +309,27 @@ export class TrainingContextService {
         for (const cTime of cardioTimes) {
           const diffHours = Math.abs(cTime.getTime() - strengthTime.getTime()) / 3600000;
           if (diffHours < 6) {
-            _interferenceEvents++;
+            _interferenceEventsCount++;
             warnings.push(
               `Interference Detected: Strength & Cardio within ${diffHours.toFixed(1)}h on ${dateStr} `
             );
           }
         }
       }
-    });
+    }
 
     // Titan Gatekeeper Check
     if (user?.activePath === 'TITAN') {
       let junkSets = 0;
-      let totalSets = 0;
-      recentLogs.forEach((log) => {
+      let totalSetsCount = 0;
+      for (const log of recentLogs) {
         const sets = parseSets(log.sets);
-        sets.forEach((set) => {
-          totalSets++;
+        for (const set of sets) {
+          totalSetsCount++;
           if ((set.rpe || 0) < 7) junkSets++;
-        });
-      });
-      if (totalSets > 0 && junkSets / totalSets > 0.3) {
+        }
+      }
+      if (totalSetsCount > 0 && junkSets / totalSetsCount > 0.3) {
         warnings.push(
           `Titan Alert: ${junkSets} sets were 'Junk Volume'(RPE < 7).Intensity needed!`
         );
@@ -348,32 +337,31 @@ export class TrainingContextService {
 
       // 5. Frequency Violation
       const muscleLastSeen = new Map<string, Date>();
-      recentLogs
-        .sort((a, b) => a.date.getTime() - b.date.getTime())
-        .forEach((log) => {
-          const muscle = log.exercise.muscleGroup || 'UNKNOWN';
-          if (muscleLastSeen.has(muscle)) {
-            const last = muscleLastSeen.get(muscle)!;
-            const diffHours = (log.date.getTime() - last.getTime()) / 3600000;
-            if (diffHours < 40) {
-              // < 40h allows some wiggle room for "48h" if logging times vary
-              warnings.push(
-                `Frequency Violation: ${muscle} trained twice within ${Math.round(diffHours)} h.Hypertrophy requires rest.`
-              );
-            }
+      const sortedLogs = [...recentLogs].sort((a, b) => a.date.getTime() - b.date.getTime());
+      for (const log of sortedLogs) {
+        const muscle = log.exercise.muscleGroup || 'UNKNOWN';
+        if (muscleLastSeen.has(muscle)) {
+          const last = muscleLastSeen.get(muscle)!;
+          const diffHours = (log.date.getTime() - last.getTime()) / 3600000;
+          if (diffHours < 40) {
+            // < 40h allows some wiggle room for "48h" if logging times vary
+            warnings.push(
+              `Frequency Violation: ${muscle} trained twice within ${Math.round(diffHours)} h.Hypertrophy requires rest.`
+            );
           }
-          muscleLastSeen.set(muscle, log.date);
-        });
+        }
+        muscleLastSeen.set(muscle, log.date);
+      }
 
       // 6. Rep Range Mismatch
-      let lowRepSets = 0;
-      recentLogs.forEach((log) => {
+      let lowRepSetsCount = 0;
+      for (const log of recentLogs) {
         const sets = parseSets(log.sets);
-        sets.forEach((set) => {
-          if (set.reps < 5) lowRepSets++;
-        });
-      });
-      if (totalSets > 0 && lowRepSets / totalSets > 0.5) {
+        for (const set of sets) {
+          if (set.reps < 5) lowRepSetsCount++;
+        }
+      }
+      if (totalSetsCount > 0 && lowRepSetsCount / totalSetsCount > 0.5) {
         warnings.push(
           'Titan Mismatch: > 50 % of volume is < 5 reps.Leave the powerlifting to Juggernaut.'
         );

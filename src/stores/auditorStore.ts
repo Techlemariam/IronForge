@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { runFullAudit } from '../services/auditorOrchestrator';
+import { runFullAudit } from '../services/auditor-orchestrator';
 import type { AuditReport } from '../types/auditor';
 
 interface AuditorState {

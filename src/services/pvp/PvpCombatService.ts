@@ -1,7 +1,3 @@
-/**
- * @fileoverview PvpCombatService - Handles Titan vs Titan combat logic
- */
-
 import { GameContextService } from '../game/GameContextService';
 
 export interface DuelTurnResult {
@@ -16,7 +12,10 @@ export class PvpCombatService {
   /**
    * Calculates the outcome of a single combat interaction (Attacker hits Defender)
    */
-  static async calculateAttack(attackerId: string, defenderId: string): Promise<DuelTurnResult> {
+  public static async calculateAttack(
+    attackerId: string,
+    defenderId: string
+  ): Promise<DuelTurnResult> {
     const [attackerContext, defenderContext] = await Promise.all([
       GameContextService.getPlayerContext(attackerId),
       GameContextService.getPlayerContext(defenderId),
@@ -33,7 +32,6 @@ export class PvpCombatService {
 
     // 3. Calculate Mitigation based on Defender's Stats
     // Simple armor reduction: Damage = Damage * (100 / (100 + Defense))
-    // This is a standard MMO formula where defense has diminishing returns
     const defense = defenderContext.combat.effectiveDefense;
     const mitigation = 100 / (100 + defense);
 
@@ -47,9 +45,6 @@ export class PvpCombatService {
       message = `CRITICAL HIT! ${attackerContext.identity.titanName} creates a sonic boom, dealing ${finalDamage} damage!`;
     }
 
-    // PvP Specific interaction (e.g. Archetype advantages) could go here
-    // rock-paper-scissors logic for archetypes?
-
     return {
       attackerId,
       defenderId,
@@ -62,9 +57,9 @@ export class PvpCombatService {
   /**
    * Simulate a full round (both attack each other)
    */
-  static async simulateRound(user1Id: string, user2Id: string): Promise<DuelTurnResult[]> {
-    const attack1 = await PvpCombatService.calculateAttack(user1Id, user2Id);
-    const attack2 = await PvpCombatService.calculateAttack(user2Id, user1Id);
+  public static async simulateRound(user1Id: string, user2Id: string): Promise<DuelTurnResult[]> {
+    const attack1 = await this.calculateAttack(user1Id, user2Id);
+    const attack2 = await this.calculateAttack(user2Id, user1Id);
     return [attack1, attack2];
   }
 }

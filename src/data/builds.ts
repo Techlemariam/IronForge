@@ -183,16 +183,16 @@ export const MACRO_CYCLE_THRESHOLDS = {
  */
 export const BUILD_VOLUME_TARGETS_ALPHA: Record<TrainingPath, BuildVolumeTargets> = {
   // Alpha: Focus VO2max/Endurance Peak
-  JUGGERNAUT: { strengthSets: 15, cardioTss: 150, mobilitySets: 4 }, // Maintenance Strength
-  PATHFINDER: { strengthSets: 4, cardioTss: 600, mobilitySets: 8 }, // PEAK CARDIO (MRV)
-  WARDEN: { strengthSets: 8, cardioTss: 450, mobilitySets: 10 }, // 80% Cardio / 20% Strength
+  JUGGERNAUT: { strengthSets: 15, cardioTss: 150, mobilitySessions: 4 }, // Maintenance Strength
+  PATHFINDER: { strengthSets: 4, cardioTss: 600, mobilitySessions: 8 }, // PEAK CARDIO (MRV)
+  WARDEN: { strengthSets: 8, cardioTss: 450, mobilitySessions: 10 }, // 80% Cardio / 20% Strength
 };
 
 export const BUILD_VOLUME_TARGETS_BETA: Record<TrainingPath, BuildVolumeTargets> = {
   // Beta: Focus Strength/Hypertrophy Peak
-  JUGGERNAUT: { strengthSets: 25, cardioTss: 50, mobilitySets: 4 }, // PEAK STRENGTH (MRV)
-  PATHFINDER: { strengthSets: 6, cardioTss: 350, mobilitySets: 8 }, // Maintenance Cardio
-  WARDEN: { strengthSets: 16, cardioTss: 250, mobilitySets: 10 }, // 60% Strength / 40% Cardio
+  JUGGERNAUT: { strengthSets: 25, cardioTss: 50, mobilitySessions: 4 }, // PEAK STRENGTH (MRV)
+  PATHFINDER: { strengthSets: 6, cardioTss: 350, mobilitySessions: 8 }, // Maintenance Cardio
+  WARDEN: { strengthSets: 16, cardioTss: 250, mobilitySessions: 10 }, // 60% Strength / 40% Cardio
 };
 
 // Default export for backward compatibility (defaults to Balanced/Hybrid view or Beta for Juggernaut?)
@@ -200,7 +200,7 @@ export const BUILD_VOLUME_TARGETS_BETA: Record<TrainingPath, BuildVolumeTargets>
 export const BUILD_VOLUME_TARGETS: Record<TrainingPath, BuildVolumeTargets> = {
   JUGGERNAUT: BUILD_VOLUME_TARGETS_BETA.JUGGERNAUT,
   PATHFINDER: BUILD_VOLUME_TARGETS_ALPHA.PATHFINDER,
-  WARDEN: { strengthSets: 12, cardioTss: 350, mobilitySets: 10 }, // Balanced
+  WARDEN: { strengthSets: 12, cardioTss: 350, mobilitySessions: 10 }, // Balanced
 };
 
 /**

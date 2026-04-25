@@ -1,3 +1,4 @@
+import { StorageService as Storage } from '@/services/storage';
 import { Info, Lock, Shield, Skull, TrendingUp, Zap } from 'lucide-react';
 import React from 'react';
 import { MONSTERS } from '../../data/gameData';
@@ -33,9 +34,7 @@ export const Bestiary: React.FC<BestiaryProps> = ({ userLevel, onClose }) => {
 
   React.useEffect(() => {
     const loadUnlocks = async () => {
-      const ids = await import('../../services/storage').then((m) =>
-        m.StorageService.getUnlockedMonsters()
-      );
+      const ids = await Storage.getUnlockedMonsters();
       setUnlockedIds(ids);
     };
     loadUnlocks();

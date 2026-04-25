@@ -1,6 +1,6 @@
 import { logger } from '@/lib/logger';
 import prisma from '@/lib/prisma';
-import { ProgressionService } from '@/services/progression';
+import { Progression } from '@/services/progression';
 import axios from 'axios';
 import { type NextRequest, NextResponse } from 'next/server';
 
@@ -117,10 +117,9 @@ export async function POST(request: NextRequest) {
 
     // 5. Award Rewards (Manager automation)
     // Fixed reward: 25 Gold per workout session + 50 XP per exercise
-    await ProgressionService.awardGold(user.id, 25);
-    await ProgressionService.addExperience(user.id, logsCreated * 50);
-
-    const newWilks = await ProgressionService.updateWilksScore(user.id);
+    await Progression.awardGold(user.id, 25);
+    await Progression.addExperience(user.id, logsCreated * 50);
+    const newWilks = await Progression.updateWilksScore(user.id);
 
     logger.info(
       `[Hevy Webhook] Automated rewards granted: 25g, ${logsCreated * 50}xp. New Wilks: ${newWilks.toFixed(2)}`

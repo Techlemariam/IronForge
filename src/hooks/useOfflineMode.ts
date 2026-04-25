@@ -1,5 +1,6 @@
 'use client';
 
+import { StorageService as Storage } from '@/services/storage';
 import { useCallback, useEffect, useState } from 'react';
 
 interface OfflineAction {
@@ -36,15 +37,13 @@ export function useOfflineMode() {
     window.addEventListener('offline', handleOffline);
 
     // Load pending actions from storage
-    const stored = localStorage.getItem(OFFLINE_STORAGE_KEY);
-    if (stored) {
-      try {
-        const actions = JSON.parse(stored) as OfflineAction[];
-        setPendingActions(actions.filter((a) => !a.synced));
-      } catch (e) {
-        console.error('Error loading offline queue:', e);
+    const loadPending = async () => {
+      const stored = await Storage.getItem<OfflineAction[]>(OFFLINE_STORAGE_KEY);
+      if (stored) {
+        setPendingActions(stored.filter((a) => !a.synced));
       }
-    }
+    };
+    loadPending();
 
     return () => {
       window.removeEventListener('online', handleOnline);
@@ -63,7 +62,7 @@ export function useOfflineMode() {
 
     setPendingActions((prev) => {
       const updated = [...prev, action];
-      localStorage.setItem(OFFLINE_STORAGE_KEY, JSON.stringify(updated));
+      Storage.setItem(OFFLINE_STORAGE_KEY, updated);
       return updated;
     });
 
@@ -89,7 +88,7 @@ export function useOfflineMode() {
     const remaining = pendingActions.filter((a) => !a.synced);
 
     setPendingActions(remaining);
-    localStorage.setItem(OFFLINE_STORAGE_KEY, JSON.stringify(remaining));
+    Storage.setItem(OFFLINE_STORAGE_KEY, remaining);
     setLastSyncTime(new Date());
 
     console.log(`Synced ${synced.length} actions, ${remaining.length} remaining`);
@@ -97,7 +96,7 @@ export function useOfflineMode() {
 
   const clearQueue = useCallback(() => {
     setPendingActions([]);
-    localStorage.removeItem(OFFLINE_STORAGE_KEY);
+    Storage.removeItem(OFFLINE_STORAGE_KEY);
   }, []);
 
   const getOfflineState = useCallback(

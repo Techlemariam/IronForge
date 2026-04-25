@@ -1,7 +1,7 @@
 import prisma from '@/lib/prisma';
 import { withCronMonitor } from '@/lib/sentry-cron';
-import { PushNotificationService } from '@/services/PushNotificationService';
 import { OracleService } from '@/services/oracle';
+import { PushNotifications } from '@/services/push-notifications';
 import { revalidatePath } from 'next/cache';
 import { type NextRequest, NextResponse } from 'next/server';
 
@@ -70,7 +70,7 @@ const handler = async (request: NextRequest) => {
 
           // NEW: Send Push Notification (Oracle 3.0)
           try {
-            await PushNotificationService.sendToUser(titan.userId, {
+            await PushNotifications.sendToUser(titan.userId, {
               title: `Oracle Decree: ${decree.label}`,
               body: decree.description,
               url: '/citadel', // Link to Oracle/Citadel page

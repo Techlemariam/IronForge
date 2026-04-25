@@ -6,29 +6,17 @@ import { FilesetResolver, PoseLandmarker } from '@mediapipe/tasks-vision';
  */
 
 export class VisionService {
-  private poseLandmarker: PoseLandmarker | null = null;
-  private runningMode: 'IMAGE' | 'VIDEO' = 'VIDEO';
-  private lastY = 0;
-  private lastTime = 0;
+  private static poseLandmarker: PoseLandmarker | null = null;
+  private static runningMode: 'IMAGE' | 'VIDEO' = 'VIDEO';
+  private static lastY = 0;
+  private static lastTime = 0;
 
   // State for Rep Counting logic
-  private state: 'ECCENTRIC' | 'CONCENTRIC' | 'TOP' | 'BOTTOM' = 'TOP';
-  private repCount = 0;
-  private depthHit = false;
+  private static state: 'ECCENTRIC' | 'CONCENTRIC' | 'TOP' | 'BOTTOM' = 'TOP';
+  private static repCount = 0;
+  private static depthHit = false;
 
-  // Singleton instance
-  private static instance: VisionService;
-
-  private constructor() {}
-
-  public static getInstance(): VisionService {
-    if (!VisionService.instance) {
-      VisionService.instance = new VisionService();
-    }
-    return VisionService.instance;
-  }
-
-  async init() {
+  static async init() {
     if (this.poseLandmarker) return;
 
     const vision = await FilesetResolver.forVisionTasks(
@@ -51,7 +39,7 @@ export class VisionService {
    * Analyzes a video frame for skeletal data.
    * Calculates velocity and checks squat depth (Hip < Knee).
    */
-  detect(video: HTMLVideoElement, timestamp: number) {
+  static detect(video: HTMLVideoElement, timestamp: number) {
     if (!this.poseLandmarker) return null;
 
     const result = this.poseLandmarker.detectForVideo(video, timestamp);

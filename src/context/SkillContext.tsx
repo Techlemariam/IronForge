@@ -12,7 +12,7 @@ import {
 import type React from 'react';
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { getNodeById } from '../data/skill-tree-v2';
-import { StorageService } from '../services/storage';
+import { StorageService as Storage } from '../services/storage';
 import { Archetype, type IntervalsWellness } from '../types';
 import { type CalculatedEffects, type SkillRequirement, SkillStatus } from '../types/skills';
 import { calculateTitanRank, getMaxTM, playSound } from '../utils';
@@ -132,24 +132,24 @@ export const SkillProvider: React.FC<SkillProviderProps> = ({
   useEffect(() => {
     const loadSkills = async () => {
       try {
-        await StorageService.init();
-        const saved = await StorageService.getState<string[]>('skills_v2');
+        await Storage.init();
+        const saved = await Storage.getState<string[]>('skills_v2');
         if (saved) {
           setPurchasedSkillIds(new Set(saved));
         } else {
           // Try loading V1 and migrating
-          const v1Saved = await StorageService.getState<string[]>('skills');
+          const v1Saved = await Storage.getState<string[]>('skills');
           if (v1Saved) {
             // Basic migration: keep IDs that exist in V2
             const validV2Ids = v1Saved.filter((id) => getNodeById(id));
             setPurchasedSkillIds(new Set(validV2Ids));
             // Save to V2 key
-            await StorageService.saveState('skills_v2', validV2Ids);
+            await Storage.saveState('skills_v2', validV2Ids);
           }
         }
 
         // Load active keystone
-        const savedKeystone = await StorageService.getState<string>('active_keystone');
+        const savedKeystone = await Storage.getState<string>('active_keystone');
         if (savedKeystone) {
           setSelectedKeystoneId(savedKeystone);
         }
@@ -309,7 +309,7 @@ export const SkillProvider: React.FC<SkillProviderProps> = ({
       setPurchasedSkillIds((prev) => {
         const next = new Set(prev);
         next.add(skillId);
-        StorageService.saveState('skills_v2', Array.from(next)).catch(console.error);
+        Storage.saveState('skills_v2', Array.from(next)).catch(console.error);
         return next;
       });
 
@@ -349,7 +349,7 @@ export const SkillProvider: React.FC<SkillProviderProps> = ({
       setPurchasedSkillIds((prev) => {
         const next = new Set(prev);
         next.delete(skillId);
-        StorageService.saveState('skills_v2', Array.from(next)).catch(console.error);
+        Storage.saveState('skills_v2', Array.from(next)).catch(console.error);
         return next;
       });
 
@@ -360,7 +360,7 @@ export const SkillProvider: React.FC<SkillProviderProps> = ({
 
   const setActiveKeystone = useCallback((keystoneId: string | null) => {
     setSelectedKeystoneId(keystoneId);
-    StorageService.saveState('active_keystone', keystoneId).catch(console.error);
+    Storage.saveState('active_keystone', keystoneId).catch(console.error);
     if (keystoneId) playSound('ui_click');
   }, []);
 
