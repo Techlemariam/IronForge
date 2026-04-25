@@ -1,0 +1,23 @@
+name: Network Debug
+on: workflow_dispatch
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Tailscale
+        run: |
+          curl -fsSL https://tailscale.com/install.sh | sh
+      - name: Tailscale Up
+        run: |
+          # Use a temporary auth key if possible, but we don't have one easily.
+          # Alternatively, just check if the runner is already in the mesh (if using a self-hosted runner).
+          # But the list showed github-runners in the mesh. 
+          # This means the user likely has a "Tailscale Action" configured in some workflows.
+          tailscale status
+      - name: Ping Coolify
+        run: |
+          ping -c 4 ironforge-coolify.tailafb692.ts.net || true
+          ping -c 4 100.106.158.20 || true
+      - name: Curl Coolify API
+        run: |
+          curl -v http://ironforge-coolify.tailafb692.ts.net:8000/api/v1/health || true
