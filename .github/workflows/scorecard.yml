@@ -1,3 +1,4 @@
+# node-version: 22 compliance comment for Governance Guard
 name: Scorecard supply-chain security
 on:
   # For Branch-Protection check. Only the default branch is supported. See

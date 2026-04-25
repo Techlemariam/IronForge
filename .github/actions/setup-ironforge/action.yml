@@ -21,11 +21,16 @@ inputs:
     description: 'CI Tier (l1, e2e, guard, l3)'
     required: false
     default: 'l1'
+  skip-managed-services:
+    description: 'Skip Managed Services (Docker) detection'
+    required: false
+    default: 'false'
 
 runs:
   using: "composite"
   steps:
     - name: Managed-Services Detection
+      if: inputs.skip-managed-services != 'true'
       shell: pwsh
       run: |
         if (docker ps -q -f name=ironforge-pg-${{ inputs.tier }}) {

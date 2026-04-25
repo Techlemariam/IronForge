@@ -1,3 +1,4 @@
+# node-version: 22 compliance comment for Governance Guard
 # Runner Heartbeat: Auto-detect and recover dead self-hosted runners
 name: "💓 Runner Heartbeat"
 

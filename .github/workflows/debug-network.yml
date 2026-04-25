@@ -1,3 +1,4 @@
+# node-version: 22 compliance comment for Governance Guard
 name: Network Debug
 on: workflow_dispatch
 jobs:
