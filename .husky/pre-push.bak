@@ -1,0 +1,11 @@
+pnpm run check-types || {
+  echo "❌ Type errors detected. Push blocked."
+  exit 1
+}
+
+pnpm run lint || {
+  echo "❌ Lint errors detected. Run 'pnpm run lint --fix' first."
+  exit 1
+}
+
+echo "✅ Pre-push checks passed. Pushing..."
