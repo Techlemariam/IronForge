@@ -1,17 +1,18 @@
 import { getSupabase } from '../lib/supabase';
 import type { ValhallaPayload, ValhallaSyncResult } from '../types';
+import { StorageService as Storage } from './storage';
 
 /**
  * VALHALLA SERVICE (PRODUCTION)
  * Interfaces with Supabase to provide true cloud persistence.
  */
 
-export const ValhallaService = {
+export namespace Valhalla {
   /**
    * "Bind Soul" - Register/Login via Supabase Auth (Anonymous or Magic Link)
    * For MVP 10/10, we upsert into a 'profiles' table.
    */
-  bindSoul: async (heroName: string): Promise<{ success: boolean; id: string }> => {
+  export async function bindSoul(heroName: string): Promise<{ success: boolean; id: string }> {
     const supabase = await getSupabase();
 
     if (!supabase) {
@@ -36,17 +37,17 @@ export const ValhallaService = {
     }
 
     return { success: true, id: data?.id || heroName };
-  },
+  }
 
   /**
    * "Engrave Records" - Sync Data to Cloud
    */
-  engraveRecords: async (payload: ValhallaPayload): Promise<ValhallaSyncResult> => {
+  export async function engraveRecords(payload: ValhallaPayload): Promise<ValhallaSyncResult> {
     const supabase = await getSupabase();
 
     if (!supabase) {
       // Local Simulation Fallback
-      localStorage.setItem(`valhalla_remote_${payload.heroName}`, JSON.stringify(payload));
+      Storage.setItem(`valhalla_remote_${payload.heroName}`, payload);
       return {
         success: true,
         message: 'Engraved to Local Holocron (Offline).',
@@ -85,17 +86,17 @@ export const ValhallaService = {
       message: 'Soul Data Engraved in the Halls of Valhalla (Supabase).',
       timestamp: new Date().toISOString(),
     };
-  },
+  }
 
   /**
    * "Consult Stones" - Check if data exists in cloud
    */
-  consultStones: async (heroName: string): Promise<ValhallaPayload | null> => {
+  export async function consultStones(heroName: string): Promise<ValhallaPayload | null> {
     const supabase = await getSupabase();
 
     if (!supabase) {
-      const local = localStorage.getItem(`valhalla_remote_${heroName}`);
-      return local ? JSON.parse(local) : null;
+      const local = await Storage.getItem<ValhallaPayload>(`valhalla_remote_${heroName}`);
+      return local || null;
     }
 
     const { data, error } = await supabase
@@ -106,5 +107,5 @@ export const ValhallaService = {
 
     if (error || !data) return null;
     return data.data as ValhallaPayload;
-  },
-};
+  }
+}

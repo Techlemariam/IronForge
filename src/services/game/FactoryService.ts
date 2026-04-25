@@ -28,11 +28,11 @@ export interface AssemblyLineTask {
 }
 
 export class FactoryService {
-  private static USAGE_PATH = path.join(process.cwd(), '.agent/usage.json');
-  private static RATE_PER_MILLION_USD = 0.15;
-  private static USD_TO_SEK = 10.5;
+  private static readonly USAGE_PATH = path.join(process.cwd(), '.agent/usage.json');
+  private static readonly RATE_PER_MILLION_USD = 0.15;
+  private static readonly USD_TO_SEK = 10.5;
 
-  static async getStats(): Promise<FactoryStats> {
+  public static async getStats(): Promise<FactoryStats> {
     let totalTokensToday = 0;
     const today = new Date().toISOString().split('T')[0];
 
@@ -74,7 +74,7 @@ export class FactoryService {
     };
   }
 
-  static async getAssemblyLineTasks(): Promise<AssemblyLineTask[]> {
+  public static async getAssemblyLineTasks(): Promise<AssemblyLineTask[]> {
     const { prisma } = await import('@/lib/prisma');
     const tasks = await prisma.factoryTask.findMany({
       where: {

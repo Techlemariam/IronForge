@@ -37,7 +37,7 @@ export default async function SettingsRoute() {
   }
 
   const isDemoMode = await getDemoModeStatus();
-  const preferences = await getUserPreferencesAction(dbUser.id);
+  const preferences = await getUserPreferencesAction(user.id);
 
   return (
     <SettingsPage

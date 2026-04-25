@@ -20,7 +20,7 @@ import type React from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import { useSkills } from '../../../context/SkillContext';
 import { SESSIONS } from '../../../data/static';
-import { StorageService } from '../../../services/storage';
+import { StorageService as Storage } from '../../../services/storage';
 import type { ExerciseLog, MeditationLog } from '../../../types';
 import type { IntervalsWellness } from '../../../types';
 import { calculateTitanAttributes, calculateTitanRank } from '../../../utils';
@@ -76,7 +76,7 @@ const CharacterSheet: React.FC<CharacterSheetProps> = ({
   useEffect(() => {
     if (activeTab === 'history') {
       setIsLoadingHistory(true);
-      StorageService.getHistory()
+      Storage.getHistory()
         .then((logs: ExerciseLog[]) => setHistoryLogs(logs))
         .finally(() => setIsLoadingHistory(false));
     }

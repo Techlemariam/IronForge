@@ -1,6 +1,6 @@
 'use server';
 
-import { GoalPriorityEngine } from '@/services/GoalPriorityEngine';
+import { GoalPriorityEngineService } from '@/services/goal-priority-engine';
 import type { WardensManifest } from '@/types/goals'; // Ensure you have this type or equivalent
 import { createClient } from '@/utils/supabase/server';
 
@@ -39,13 +39,13 @@ export async function getTitanChoiceAction(userId: string) {
   };
 
   // 3. Select Phase (Dynamic)
-  const phase = GoalPriorityEngine.selectPhase(manifest, metrics);
+  const phase = GoalPriorityEngineService.selectPhase(manifest, metrics);
 
   // 4. Budget (Standard 60 min for quick play)
   const budget = { cns: 50, muscular: 50, metabolic: 50, timeMin: 60 };
 
   // 5. Select Workout
-  const recommendations = GoalPriorityEngine.selectWorkout(manifest, phase, budget);
+  const recommendations = GoalPriorityEngineService.selectWorkout(manifest, phase, budget);
 
   if (recommendations.length === 0) return null;
 

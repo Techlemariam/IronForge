@@ -119,16 +119,17 @@ export async function exportTrainingDnaAction(
       return { success: false };
     }
 
-    const user = await prisma.user.findUnique({
+    const _user = await prisma.user.findUnique({
       where: { id: userId },
       include: { titan: true },
     });
 
-    const dnaId = `dna-${userId}-${Date.now()}`;
+    // Use a random UUID so userId is never embedded in the public dnaId or shareUrl
+    const dnaId = `dna-${crypto.randomUUID()}`;
     const shareUrl = `/marketplace/dna/${dnaId}`;
 
     // In production, save to database
-    console.log(`Exported DNA: ${name} by ${user?.heroName}`);
+    console.log(`Exported DNA: ${name} by [heroName redacted]`);
 
     return { success: true, dnaId, shareUrl };
   } catch (error) {
@@ -141,12 +142,12 @@ export async function exportTrainingDnaAction(
  * Import training DNA to user's profile.
  */
 export async function importTrainingDnaAction(
-  userId: string,
+  _userId: string,
   dnaId: string
 ): Promise<{ success: boolean; message: string }> {
   try {
     // In production, fetch DNA from database and apply to user's programs
-    console.log(`Imported DNA ${dnaId} for user ${userId}`);
+    console.log(`Imported DNA ${dnaId} for user ID:[REDACTED]`);
 
     return {
       success: true,

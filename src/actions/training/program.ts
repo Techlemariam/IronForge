@@ -4,6 +4,7 @@ import { getWellness } from '@/lib/intervals';
 import prisma from '@/lib/prisma';
 import { AnalyticsService } from '@/services/analytics';
 import { GeminiService } from '@/services/gemini';
+import type { Prisma } from '@prisma/client';
 
 import { getSession } from '@/lib/auth';
 import { EquipmentService } from '@/services/game/EquipmentService';
@@ -36,7 +37,7 @@ export async function generateProgramAction(preferences: {
   if (sessionUser.intervalsApiKey && sessionUser.intervalsAthleteId) {
     const today = new Date().toISOString().split('T')[0];
     const w = await getWellness(today, sessionUser.intervalsApiKey, sessionUser.intervalsAthleteId);
-    if (w) wellness = w as any;
+    if (w) wellness = w as typeof wellness;
   }
 
   // 3. Fetch real TTB Analysis
@@ -55,7 +56,7 @@ export async function generateProgramAction(preferences: {
 
   // Map Prisma logs to Analytics format
   const history = dbLogs.map((log) => {
-    const sets = (log.sets as any[]) || [];
+    const sets = (log.sets as { weight?: number; reps?: number; rpe?: number }[]) || [];
     const bestE1rm =
       sets.length > 0
         ? Math.max(...sets.map((s) => (s.weight || 0) * (1 + (s.reps || 0) / 30)))
@@ -78,7 +79,7 @@ export async function generateProgramAction(preferences: {
     start_date_local: c.date.toISOString(),
   }));
 
-  const ttb = AnalyticsService.calculateTTB(history as any, activities as any, wellness as any);
+  const ttb = AnalyticsService.calculateTTB(history, activities as any, wellness);
 
   // 4. Fetch Capabilities & Status
   const [capabilities, titan] = await Promise.all([
@@ -98,7 +99,7 @@ export async function generateProgramAction(preferences: {
       injuries: injuries,
     },
     {
-      wellness: wellness as any,
+      wellness: wellness,
       ttb,
       intent: preferences.intent,
       daysPerWeek: preferences.daysPerWeek,
@@ -108,7 +109,7 @@ export async function generateProgramAction(preferences: {
   return { success: true, plan };
 }
 
-export async function saveProgramAction(plan: any) {
+export async function saveProgramAction(plan: Record<string, unknown>) {
   const session = await getSession();
   if (!session?.user) throw new Error('Unauthorized');
 
@@ -120,7 +121,7 @@ export async function saveProgramAction(plan: any) {
     data: {
       userId: sessionUser.id,
       weekStart: getNextMonday(),
-      plan: plan,
+      plan: plan as Prisma.InputJsonValue,
     },
   });
 

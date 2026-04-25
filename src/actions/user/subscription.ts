@@ -151,11 +151,11 @@ export async function upgradeSubscriptionAction(
  * Cancel subscription.
  */
 export async function cancelSubscriptionAction(
-  userId: string
+  _userId: string
 ): Promise<{ success: boolean; message: string }> {
   try {
     // In production, cancel via Stripe and update DB
-    console.log(`Cancellation request: user=${userId}`);
+    console.log('Cancellation request: user=ID:[REDACTED]');
 
     revalidatePath('/settings');
     return {

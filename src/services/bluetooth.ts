@@ -9,46 +9,43 @@ export interface BioData {
 
 type BioDataCallback = (data: BioData) => void;
 
-export class BluetoothService {
-  private device: BluetoothDevice | null = null;
-  private server: BluetoothRemoteGATTServer | null = null;
-  private characteristic: BluetoothRemoteGATTCharacteristic | null = null;
-  private onDataCallback: BioDataCallback | null = null;
+export namespace Bluetooth {
+  let device: BluetoothDevice | null = null;
+  let server: BluetoothRemoteGATTServer | null = null;
+  let characteristic: BluetoothRemoteGATTCharacteristic | null = null;
+  let onDataCallback: BioDataCallback | null = null;
 
   /**
    * Request a Bluetooth device with Heart Rate service
    */
-  async connect(onData: BioDataCallback): Promise<void> {
-    this.onDataCallback = onData;
+  export async function connect(onData: BioDataCallback): Promise<void> {
+    onDataCallback = onData;
 
     try {
       console.log('Requesting Bluetooth Device...');
-      this.device = await navigator.bluetooth.requestDevice({
+      device = await navigator.bluetooth.requestDevice({
         filters: [{ services: ['heart_rate'] }],
         optionalServices: ['battery_service'],
       });
 
-      this.device.addEventListener('gattserverdisconnected', this.onDisconnected);
+      device.addEventListener('gattserverdisconnected', onDisconnected);
 
       console.log('Connecting to GATT Server...');
-      if (!this.device.gatt) {
+      if (!device.gatt) {
         throw new Error('Device has no GATT server');
       }
-      this.server = await this.device.gatt.connect();
+      server = await device.gatt.connect();
 
       console.log('Getting Heart Rate Service...');
-      const service = await this.server.getPrimaryService('heart_rate');
+      const service = await server.getPrimaryService('heart_rate');
 
       console.log('Getting Heart Rate Measurement Characteristic...');
-      this.characteristic = await service.getCharacteristic('heart_rate_measurement');
+      characteristic = await service.getCharacteristic('heart_rate_measurement');
 
       console.log('Starting Notifications...');
-      await this.characteristic.startNotifications();
+      await characteristic.startNotifications();
 
-      this.characteristic.addEventListener(
-        'characteristicvaluechanged',
-        this.handleHeartRateMeasurement
-      );
+      characteristic.addEventListener('characteristicvaluechanged', handleHeartRateMeasurement);
 
       console.log('Bluetooth Connected!');
     } catch (error) {
@@ -57,38 +54,38 @@ export class BluetoothService {
     }
   }
 
-  disconnect(): void {
-    if (this.device) {
-      if (this.device.gatt?.connected) {
-        this.device.gatt.disconnect();
+  export function disconnect(): void {
+    if (device) {
+      if (device.gatt?.connected) {
+        device.gatt.disconnect();
       }
       console.log('Device disconnected manually');
     }
   }
 
-  private onDisconnected = (event: Event) => {
+  function onDisconnected(event: Event) {
     const device = event.target as BluetoothDevice;
     console.log(`Device ${device.name} is disconnected.`);
     // Optionally implement auto-reconnect logic here
-  };
+  }
 
   /**
    * Parse Heart Rate Measurement Data
    * See: https://www.bluetooth.com/specifications/specs/heart-rate-service-1-0/
    */
-  private handleHeartRateMeasurement = (event: Event) => {
+  function handleHeartRateMeasurement(event: Event) {
     const characteristic = event.target as BluetoothRemoteGATTCharacteristic;
     const value = characteristic.value;
     if (!value) return;
 
-    const data = this.parseHeartRate(value);
+    const data = parseHeartRate(value);
 
-    if (this.onDataCallback) {
-      this.onDataCallback(data);
+    if (onDataCallback) {
+      onDataCallback(data);
     }
-  };
+  }
 
-  private parseHeartRate(value: DataView): BioData {
+  function parseHeartRate(value: DataView): BioData {
     const flags = value.getUint8(0);
 
     // Bit 0: Heart Rate Format (0 = UINT8, 1 = UINT16)
@@ -138,5 +135,3 @@ export class BluetoothService {
     };
   }
 }
-
-export const bluetoothService = new BluetoothService();

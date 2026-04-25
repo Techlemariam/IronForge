@@ -17,7 +17,7 @@ export class PowerRatingService {
   /**
    * Get Weekly Volume (kg) for the last 7 days.
    */
-  static async getWeeklyVolume(userId: string): Promise<number> {
+  public static async getWeeklyVolume(userId: string): Promise<number> {
     const sevenDaysAgo = new Date();
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
@@ -50,7 +50,7 @@ export class PowerRatingService {
   /**
    * Get Weekly Cardio Duration (hours) for the last 7 days.
    */
-  static async getWeeklyCardioDuration(userId: string): Promise<number> {
+  public static async getWeeklyCardioDuration(userId: string): Promise<number> {
     const sevenDaysAgo = new Date();
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
@@ -70,7 +70,7 @@ export class PowerRatingService {
    * Get Consecutive Active Weeks Streak.
    * Counts how many consecutive calendar weeks the user has recorded at least one log.
    */
-  static async getConsecutiveWeeks(userId: string): Promise<number> {
+  public static async getConsecutiveWeeks(userId: string): Promise<number> {
     const { startOfWeek, subWeeks, getISOWeek, getISOWeekYear } = await import('date-fns');
 
     // Caching week-year keys for performance. Streak bonus caps at 10, so we only need ~15 weeks of data maximum
@@ -97,8 +97,8 @@ export class PowerRatingService {
       logWeeksSet.add(`${year}-W${week}`);
     };
 
-    exerciseLogs.forEach((l) => appendToSet(l.date));
-    cardioLogs.forEach((l) => appendToSet(l.date));
+    for (const l of exerciseLogs) appendToSet(l.date);
+    for (const l of cardioLogs) appendToSet(l.date);
 
     if (logWeeksSet.size === 0) return 0;
 
@@ -134,7 +134,7 @@ export class PowerRatingService {
   /**
    * Full recalculation of a user's Power Rating using live data.
    */
-  static async syncPowerRating(userId: string) {
+  public static async syncPowerRating(userId: string) {
     // 1. Fetch User Data
     const user = await prisma.user.findUnique({
       where: { id: userId },
@@ -186,7 +186,7 @@ export class PowerRatingService {
   /**
    * Get tier details based on power rating.
    */
-  static getTierDetails(powerRating: number) {
+  public static getTierDetails(powerRating: number) {
     if (powerRating >= 1000) return { name: 'Diamond', color: '#B9F2FF' };
     if (powerRating >= 750) return { name: 'Platinum', color: '#E5E4E2' };
     if (powerRating >= 500) return { name: 'Gold', color: 'var(--color-gold-bright)' };

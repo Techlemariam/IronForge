@@ -243,9 +243,9 @@ export async function claimQuestRewardAction(
     const gold = rewards.gold || 0;
 
     // 1. Award
-    const { ProgressionService } = await import('@/services/progression');
-    if (xp > 0) await ProgressionService.addExperience(userId, xp);
-    if (gold > 0) await ProgressionService.awardGold(userId, gold);
+    const { Progression } = await import('@/services/progression');
+    if (xp > 0) await Progression.addExperience(userId, xp);
+    if (gold > 0) await Progression.awardGold(userId, gold);
 
     // 2. Mark Claimed
     await prisma.userChallenge.update({

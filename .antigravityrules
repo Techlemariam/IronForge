@@ -31,3 +31,11 @@
 - **Artifacts**: Document cross-project learnings in Knowledge Items (KIs) via `bdistill-knowledge-extraction`.
 - **Standards**: NO deviations from the Unified `ship.ps1`, Biome, and pnpm standards.
 
+
+
+## ⚡ Token-Aware Delegation (Brotherhood V2.4)
+- **Calculation:** Always use the formula: Effective Entropy = [Project Score] + [Task Weight].
+- **Weights:** Consult [SKILL_ENTROPY_WEIGHTS.md](file:///c:/Users/alexa/Workspaces/SKILL_ENTROPY_WEIGHTS.md).
+- **Session Choice:** Use /local or /entropy to set the mode **for the current chat**.
+- **Priority:** Session overrides > Global mode > Entropy Radar.
+- **Workflows:** Access via .agent/workflows/ or VS Code Tasks (Ctrl+Shift+P).

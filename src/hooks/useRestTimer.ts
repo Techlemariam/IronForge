@@ -1,8 +1,9 @@
 // src/hooks/useRestTimer.ts
 'use client';
 
+import { StorageService } from '@/services/storage';
 import { create } from 'zustand';
-import { createJSONStorage, persist } from 'zustand/middleware';
+import { type StateStorage, createJSONStorage, persist } from 'zustand/middleware';
 
 interface RestTimerState {
   isActive: boolean;
@@ -17,6 +18,19 @@ interface RestTimerState {
   timeLeft: number;
   hasFinished: boolean;
 }
+
+const asyncStorage: StateStorage = {
+  getItem: async (name: string): Promise<string | null> => {
+    const value = await StorageService.getItem(name);
+    return value ? JSON.stringify(value) : null;
+  },
+  setItem: async (name: string, value: string): Promise<void> => {
+    await StorageService.setItem(name, JSON.parse(value));
+  },
+  removeItem: async (name: string): Promise<void> => {
+    await StorageService.removeItem(name);
+  },
+};
 
 export const useRestTimer = create<RestTimerState>()(
   persist(
@@ -75,7 +89,7 @@ export const useRestTimer = create<RestTimerState>()(
     }),
     {
       name: 'ironforge-rest-timer',
-      storage: createJSONStorage(() => localStorage),
+      storage: createJSONStorage(() => asyncStorage),
       // Only persist essential state to restore
       partialize: (state) => ({
         isActive: state.isActive,

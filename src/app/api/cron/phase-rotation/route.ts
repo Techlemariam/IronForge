@@ -1,5 +1,5 @@
 import { prisma } from '@/lib/prisma';
-import { WardensService } from '@/services/WardensService';
+import { Wardens } from '@/services/wardens';
 import { type NextRequest, NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic'; // static by default, unless reading the request
@@ -31,7 +31,7 @@ export async function GET(req: NextRequest) {
       report.processed++;
 
       try {
-        const manifest = await WardensService.getManifest(record.userId);
+        const manifest = await Wardens.getManifest(record.userId);
         if (!manifest) continue;
 
         // Check Phase Duration
@@ -47,7 +47,7 @@ export async function GET(req: NextRequest) {
 
         if (calculatedWeek > currentStoredWeek) {
           // Just increment week
-          await WardensService.updatePhase(record.userId, manifest.phase, calculatedWeek);
+          await Wardens.updatePhase(record.userId, manifest.phase, calculatedWeek);
         }
 
         // Logic for Phase Rotation (End of Block)

@@ -61,10 +61,13 @@ const DungeonBuilder: React.FC<DungeonBuilderProps> = ({ onSave, onCancel }) => 
 
   const updateExercise = (bIdx: number, eIdx: number, field: keyof Exercise, value: any) => {
     const updatedBlocks = [...blocks];
+    const exercise = updatedBlocks[bIdx].exercises?.[eIdx];
+    if (!exercise) return;
+
     updatedBlocks[bIdx].exercises![eIdx] = {
-      ...updatedBlocks[bIdx].exercises?.[eIdx],
+      ...exercise,
       [field]: value,
-    };
+    } as Exercise;
     setBlocks(updatedBlocks);
   };
 

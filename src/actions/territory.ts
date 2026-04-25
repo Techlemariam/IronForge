@@ -1,10 +1,10 @@
 'use server';
 
-import { TerritoryControlService } from '@/services/TerritoryControlService';
+import { TerritoryControl } from '@/services/territory-control';
 
 export async function getTerritoryMapAction() {
   try {
-    const mapState = await TerritoryControlService.getMapState();
+    const mapState = await TerritoryControl.getMapState();
     return { success: true, data: mapState };
   } catch (error) {
     console.error('getTerritoryMapAction error:', error);

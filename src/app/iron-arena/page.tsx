@@ -20,7 +20,7 @@ export default async function IronArenaPage() {
     getCurrentSeasonAction(),
   ]);
 
-  const activeDuel = duelStatus.success ? (duelStatus.duel ?? null) : null;
+  const activeDuel = duelStatus?.success ? (duelStatus.duel ?? null) : null;
 
   // Fetch leaderboard for the user's current league (or default to Bronze)
   const currentLeagueId = leagueInfo?.tier.id || 'bronze';

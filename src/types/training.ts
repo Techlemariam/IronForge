@@ -214,7 +214,7 @@ export interface WorkoutDefinition {
 export interface BuildVolumeTargets {
   strengthSets: number;
   cardioTss: number;
-  mobilitySets: number;
+  mobilitySessions: number;
 }
 
 /**
@@ -223,5 +223,7 @@ export interface BuildVolumeTargets {
 export interface WeeklyMastery {
   strengthSets: number;
   cardioTss: number;
-  mobilitySets: number;
+  mobilitySessions: number;
+  mobilityLevel: string;
+  recoveryLevel: string;
 }

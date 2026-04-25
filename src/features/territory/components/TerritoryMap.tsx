@@ -115,10 +115,12 @@ export const TerritoryMap: React.FC<TerritoryMapProps> = ({ tiles, homeLocation 
 
       // Pointer cursor on hover
       map.current?.on('mouseenter', 'territory-tiles-layer', () => {
-        map.current?.getCanvas().style.cursor = 'pointer';
+        const canvas = map.current?.getCanvas();
+        if (canvas) canvas.style.cursor = 'pointer';
       });
       map.current?.on('mouseleave', 'territory-tiles-layer', () => {
-        map.current?.getCanvas().style.cursor = '';
+        const canvas = map.current?.getCanvas();
+        if (canvas) canvas.style.cursor = '';
       });
     });
 

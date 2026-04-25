@@ -32,13 +32,16 @@ const TOTAL_CAPACITY = 100;
 /**
  * Training Memory Manager Service
  */
-export const TrainingMemoryManager = {
+export namespace TrainingMemoryManager {
   /**
    * Calculate total system load from all active training activities.
    * Returns a percentage (0-100+) of total recovery capacity used.
    * Path-aware: Adjusts thresholds based on interference effects.
    */
-  getSystemLoad(activities: TrainingActivity[], activePath: TrainingPath = 'WARDEN'): number {
+  export function getSystemLoad(
+    activities: TrainingActivity[],
+    activePath: TrainingPath = 'WARDEN'
+  ): number {
     return activities.reduce((acc, activity) => {
       // Get muscle group from activity (if available) or assume generic
       // For now, let's assume we need to find the muscle group for the activity
@@ -52,7 +55,7 @@ export const TrainingMemoryManager = {
       const muscleGroup = activity.muscleGroup;
 
       if (muscleGroup) {
-        const adjustedLandmarks = this.getAdjustedLandmarks(muscleGroup, activePath);
+        const adjustedLandmarks = getAdjustedLandmarks(muscleGroup, activePath);
         mrv = adjustedLandmarks.mrv;
       }
 
@@ -68,17 +71,17 @@ export const TrainingMemoryManager = {
 
       return acc + volumeUsage * intensityMultiplier;
     }, 0);
-  },
+  }
 
   /**
    * Check if user has capacity for high-intensity work (Zone 5 / heavy lifting).
    * Uses a safety margin to account for life factors (parenting, stress, etc.)
    */
-  canAllocateHighIntensity(
+  export function canAllocateHighIntensity(
     activities: TrainingActivity[],
     capacityModifiers: CapacityModifier[] = []
   ): boolean {
-    const currentLoad = this.getSystemLoad(activities);
+    const currentLoad = getSystemLoad(activities);
 
     // Apply debuffs to total capacity
     let adjustedCapacity = TOTAL_CAPACITY;
@@ -88,13 +91,13 @@ export const TrainingMemoryManager = {
 
     const availableCapacity = adjustedCapacity - currentLoad;
     return availableCapacity > MACRO_CYCLE_THRESHOLDS.HIGH_INTENSITY_SAFETY_MARGIN;
-  },
+  }
 
   /**
    * Evaluate whether a macro-cycle transition should occur.
    * Uses TSB, CTL, and strength progress to determine optimal phase.
    */
-  evaluateTransition(
+  export function evaluateTransition(
     metrics: SystemMetrics,
     currentCycle: MacroCycle
   ): {
@@ -151,13 +154,13 @@ export const TrainingMemoryManager = {
       recommendedCycle: currentCycle,
       reason: 'No transition needed. Continue current cycle.',
     };
-  },
+  }
 
   /**
    * Calculate capacity modifiers based on external factors.
    * Returns debuffs that reduce total training capacity.
    */
-  calculateDebuffs(sleepScore: number, hrv: number): CapacityModifier[] {
+  export function calculateDebuffs(sleepScore: number, hrv: number): CapacityModifier[] {
     const debuffs: CapacityModifier[] = [];
     const {
       SLEEP_DEBUFF_THRESHOLD,
@@ -183,13 +186,16 @@ export const TrainingMemoryManager = {
     }
 
     return debuffs;
-  },
+  }
 
   /**
    * Get reward multiplier for soft-lock system.
    * Quests matching user's path get bonus rewards.
    */
-  getRewardMultiplier(questPath: TrainingPath | null, userPath: TrainingPath): number {
+  export function getRewardMultiplier(
+    questPath: TrainingPath | null,
+    userPath: TrainingPath
+  ): number {
     if (questPath === null) {
       // Generic quest - no multiplier
       return 1.0;
@@ -202,30 +208,33 @@ export const TrainingMemoryManager = {
     // Off-path content doesn't get a reward bonus
     // (difficulty increase is handled separately)
     return 1.0;
-  },
+  }
 
   /**
    * Get difficulty multiplier for off-path content.
    */
-  getDifficultyMultiplier(questPath: TrainingPath | null, userPath: TrainingPath): number {
+  export function getDifficultyMultiplier(
+    questPath: TrainingPath | null,
+    userPath: TrainingPath
+  ): number {
     if (questPath === null || questPath === userPath) {
       return 1.0;
     }
 
     return REWARD_CONFIG.outsidePathDifficulty;
-  },
+  }
 
   /**
    * Get combat modifiers for a given path.
    */
-  getCombatModifiers(path: TrainingPath) {
+  export function getCombatModifiers(path: TrainingPath) {
     return PATH_MODIFIERS[path];
-  },
+  }
 
   /**
    * Get combined layer bonuses for a user.
    */
-  getLayerBonuses(mobilityLevel: LayerLevel, recoveryLevel: LayerLevel) {
+  export function getLayerBonuses(mobilityLevel: LayerLevel, recoveryLevel: LayerLevel) {
     const mobility = MOBILITY_LAYER_BONUSES[mobilityLevel];
     const recovery = RECOVERY_LAYER_BONUSES[recoveryLevel];
 
@@ -234,27 +243,33 @@ export const TrainingMemoryManager = {
       romBonus: mobility.romBonus + recovery.romBonus,
       recoveryBoost: mobility.recoveryBoost + recovery.recoveryBoost,
     };
-  },
+  }
 
   /**
    * Determine if user should be in "Survival Mode" (minimum volume across all activities).
    * Triggered by critical recovery status.
    * Path-aware: Engine path allows deeper TSB floor.
    */
-  shouldEnterSurvivalMode(metrics: SystemMetrics, path: TrainingPath = 'WARDEN'): boolean {
-    const debuffs = this.calculateDebuffs(metrics.sleepScore, metrics.hrv);
+  export function shouldEnterSurvivalMode(
+    metrics: SystemMetrics,
+    path: TrainingPath = 'WARDEN'
+  ): boolean {
+    const debuffs = calculateDebuffs(metrics.sleepScore, metrics.hrv);
 
     const tsbFloor = path === 'PATHFINDER' ? -25 : MACRO_CYCLE_THRESHOLDS.GAMMA_TSB_THRESHOLD;
 
     // If multiple debuffs active or TSB is very low, enter survival mode
     return debuffs.length >= 2 || metrics.tsb < tsbFloor;
-  },
+  }
 
   /**
    * Get adjusted landmarks for a specific muscle group based on the active path.
    * Applies path-specific multipliers to the baseline RP landmarks.
    */
-  getAdjustedLandmarks(muscleGroup: MuscleGroup, path: TrainingPath): VolumeLandmarks {
+  export function getAdjustedLandmarks(
+    muscleGroup: MuscleGroup,
+    path: TrainingPath
+  ): VolumeLandmarks {
     const base = VOLUME_LANDMARKS[muscleGroup];
     const modifier = PATH_VOLUME_MODIFIERS[path]?.[muscleGroup] ?? 1.0;
 
@@ -264,5 +279,5 @@ export const TrainingMemoryManager = {
       mav: base.mav * modifier,
       mrv: base.mrv * modifier,
     };
-  },
-};
+  }
+}

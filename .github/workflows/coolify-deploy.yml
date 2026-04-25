@@ -8,6 +8,8 @@ on:
     types: [published]
   workflow_dispatch:
 
+permissions: read-all
+
 jobs:
   deploy:
     runs-on: self-hosted

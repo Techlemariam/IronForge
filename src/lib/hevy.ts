@@ -5,33 +5,7 @@ const EXTERNAL_BASE_URL = 'https://api.hevyapp.com/v1';
 
 // --- ZOD SCHEMAS ---
 
-const HevySetSchema = z.object({
-  weight_kg: z.number(),
-  reps: z.number(),
-  index: z.number().optional(),
-  type: z.string().optional(),
-});
-
-const HevyExerciseTemplateSchema = z.object({
-  id: z.string(),
-  title: z.string(),
-  primary_muscle_group: z.string().optional(),
-});
-
-const HevyExerciseSchema = z.object({
-  exercise_template_id: z.string(),
-  exercise_template: HevyExerciseTemplateSchema,
-  sets: z.array(HevySetSchema),
-  notes: z.string().optional(),
-});
-
-const HevyWorkoutSchema = z.object({
-  id: z.string(),
-  title: z.string(),
-  start_time: z.string(),
-  duration_seconds: z.number(),
-  exercises: z.array(HevyExerciseSchema),
-});
+import { HevyExerciseTemplateSchema, HevyWorkoutSchema } from '@/types/schemas';
 
 const HevyWorkoutsResponseSchema = z.object({
   workouts: z.array(HevyWorkoutSchema),

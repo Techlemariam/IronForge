@@ -1,5 +1,6 @@
 'use client';
 
+import { StorageService as Storage } from '@/services/storage';
 import { createContext, useContext, useEffect, useState } from 'react';
 
 const STORAGE_KEY = 'ironforge_reduced_motion';
@@ -22,29 +23,33 @@ export function MotionPreferenceProvider({
   const [reducedMotion, setReducedMotionState] = useState(false);
 
   useEffect(() => {
-    // Check localStorage first
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored !== null) {
-      setReducedMotionState(stored === 'true');
-      return;
-    }
-
-    // Fall back to system preference
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setReducedMotionState(mediaQuery.matches);
-
-    const handler = (e: MediaQueryListEvent) => {
-      if (localStorage.getItem(STORAGE_KEY) === null) {
-        setReducedMotionState(e.matches);
+    // Check Storage first
+    const loadPreference = async () => {
+      const stored = await Storage.getItem<string>(STORAGE_KEY);
+      if (stored !== null) {
+        setReducedMotionState(stored === 'true');
+        return;
       }
-    };
 
-    mediaQuery.addEventListener('change', handler);
-    return () => mediaQuery.removeEventListener('change', handler);
+      // Fall back to system preference
+      const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+      setReducedMotionState(mediaQuery.matches);
+
+      const handler = async (e: MediaQueryListEvent) => {
+        const currentStored = await Storage.getItem(STORAGE_KEY);
+        if (currentStored === null) {
+          setReducedMotionState(e.matches);
+        }
+      };
+
+      mediaQuery.addEventListener('change', handler);
+      return () => mediaQuery.removeEventListener('change', handler);
+    };
+    loadPreference();
   }, []);
 
   const setReducedMotion = (value: boolean) => {
-    localStorage.setItem(STORAGE_KEY, String(value));
+    Storage.setItem(STORAGE_KEY, String(value));
     setReducedMotionState(value);
   };
 

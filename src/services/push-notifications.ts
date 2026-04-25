@@ -16,16 +16,16 @@ interface PushSubscriptionKeys {
   auth: string;
 }
 
-export class PushNotificationService {
+export namespace PushNotifications {
   /**
    * Sends a push notification to all subscriptions of a specific user.
    */
-  static async sendToUser(
+  export async function sendToUser(
     userId: string,
     payload: { title: string; body: string; icon?: string; url?: string }
   ) {
     if (!VAPID_PUBLIC_KEY || !VAPID_PRIVATE_KEY) {
-      console.warn('PushNotificationService: VAPID keys missing. Skipping push.');
+      console.warn('PushNotifications: VAPID keys missing. Skipping push.');
       return;
     }
 
@@ -64,13 +64,11 @@ export class PushNotificationService {
 
           // If the subscription is no longer valid, delete it
           if (statusCode === 404 || statusCode === 410) {
-            console.log(
-              `PushNotificationService: Cleaning up expired subscription for user ${userId}`
-            );
+            console.log(`PushNotifications: Cleaning up expired subscription for user ${userId}`);
             await prisma.pushSubscription.delete({ where: { id: sub.id } });
           } else {
             console.error(
-              `PushNotificationService: Error sending to ${sub.endpoint}`,
+              `PushNotifications: Error sending to ${sub.endpoint}`,
               error instanceof Error ? error.message : String(error)
             );
           }

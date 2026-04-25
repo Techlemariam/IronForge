@@ -23,6 +23,9 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+# Declare default permissions as read-all for security hardening
+permissions: read-all
+
 env:
   DATABASE_URL: ${{ secrets.DATABASE_URL }}
   DIRECT_URL: ${{ secrets.DIRECT_URL }}
@@ -64,7 +67,7 @@ jobs:
     runs-on: [self-hosted, IronForge-Local] # Target specific local runner
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0 # Required for turbo comparison
       - uses: ./.github/actions/setup-ironforge
@@ -78,7 +81,7 @@ jobs:
           # Managed-services assumes DB is already healthy (0s wait)
           npx prisma db push
       - name: Cache Turbo
-        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         with:
           path: .turbo
           key: turbo-l1-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
@@ -122,10 +125,10 @@ jobs:
     if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/fix/')
     runs-on: [self-hosted, IronForge-Local] # Target specific local runner
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - uses: ./.github/actions/setup-ironforge
       - name: Cache Turbo L2
-        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         with:
           path: .turbo
           key: turbo-l2-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
@@ -165,9 +168,9 @@ jobs:
     if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/fix/')
     runs-on: [self-hosted, IronForge-Local]
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd # v4.0.0
       - name: Build Production Image
         run: |
           docker buildx build -t ironforge-app:latest --target runner --load .
@@ -200,12 +203,12 @@ jobs:
     if: (github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch') && github.actor != 'dependabot[bot]'
     runs-on: [self-hosted, IronForge-Local] # Target specific local runner
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - uses: ./.github/actions/setup-ironforge
         with:
           tier: 'e2e'
       - name: Cache Playwright Browsers
-        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         id: playwright-cache
         with:
           path: ~/.cache/ms-playwright
@@ -276,12 +279,12 @@ jobs:
       DIRECT_URL: postgresql://postgres:postgres@localhost:5437/ironforge_test?schema=public
       NEXT_PUBLIC_APP_URL: http://localhost:3000
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - uses: ./.github/actions/setup-ironforge
         with:
           tier: 'l2'
       - name: Cache Playwright
-        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         with:
           path: ~/.cache/ms-playwright
           key: ${{ runner.os }}-playwright-${{ hashFiles('pnpm-lock.yaml') }}
@@ -320,7 +323,7 @@ jobs:
       DATABASE_URL: postgresql://postgres:postgres@localhost:5433/ironforge_test?schema=public
       DIRECT_URL: postgresql://postgres:postgres@localhost:5433/ironforge_test?schema=public
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - uses: ./.github/actions/setup-ironforge
       - name: Setup Chrome
         run: npx playwright install chrome
@@ -355,7 +358,7 @@ jobs:
     if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/fix/')
     runs-on: [self-hosted, IronForge-Local] # Target specific local runner
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - uses: ./.github/actions/setup-ironforge
         with:
           tier: 'l2'
@@ -418,20 +421,20 @@ jobs:
       contents: read
       packages: write
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Log in to GHCR
-        uses: docker/login-action@v3
+        uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121 # v4.1.0
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd # v4.0.0
 
       - name: Build and push
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f # v7.1.0
         with:
           context: .
           target: runner

@@ -10,10 +10,7 @@ concurrency:
   group: jules-qa-${{ github.head_ref }}
   cancel-in-progress: true
 
-permissions:
-  contents: read
-  pull-requests: write
-  checks: write
+permissions: read-all
 
 env:
   NODE_VERSION: "22"
@@ -27,11 +24,12 @@ jobs:
     steps:
       - name: Check if Jules PR
         id: check
+        env:
+          HEAD_REF: ${{ github.head_ref }}
         run: |
-          BRANCH="${{ github.head_ref }}"
-          if [[ "$BRANCH" == jules/* ]]; then
+          if [[ "$HEAD_REF" == jules/* ]]; then
             echo "is_jules=true" >> $GITHUB_OUTPUT
-            echo "✅ Jules PR detected: $BRANCH"
+            echo "✅ Jules PR detected: $HEAD_REF"
           else
             echo "is_jules=false" >> $GITHUB_OUTPUT
             echo "⏭️ Not a Jules PR, skipping"
@@ -42,9 +40,14 @@ jobs:
     needs: detect-jules
     if: needs.detect-jules.outputs.is_jules == 'true'
     runs-on: self-hosted
+    permissions:
+      contents: read
+      pull-requests: write
+      checks: write
+      issues: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4.2.2
         with:
           ref: ${{ github.head_ref }}
           fetch-depth: 0
@@ -113,7 +116,7 @@ jobs:
 
       - name: 📋 QA Summary
         if: always()
-        uses: actions/github-script@v8
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v7.0.1
         with:
           script: |
             const { owner, repo } = context.repo;
@@ -147,9 +150,10 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
+      issues: write
     steps:
       - name: Add Jules labels
-        uses: actions/github-script@v8
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v7.0.1
         with:
           script: |
             const { owner, repo } = context.repo;

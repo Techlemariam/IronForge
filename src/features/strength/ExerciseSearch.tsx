@@ -33,8 +33,8 @@ export const ExerciseSearch: React.FC<ExerciseSearchProps> = ({ onSelect }) => {
       }
       setLoading(true);
       try {
-        const data = await searchExercisesAction(debouncedQuery);
-        setResults(data);
+        const res = await searchExercisesAction(debouncedQuery);
+        setResults(res ?? []);
       } catch (e) {
         console.error(e);
       } finally {

@@ -26,13 +26,12 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3001',
+    baseURL: process.env.NEXT_PUBLIC_APP_URL || 'http://127.0.0.1:3001',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
+    trace: 'retain-on-failure',
   },
 
-  // ... imports kept same
   /* Configure projects for major browsers */
   projects: [
     {
@@ -43,7 +42,6 @@ export default defineConfig({
       name: 'desktop',
       use: {
         ...devices['Desktop Chrome'],
-        // Use prepared auth state.
         storageState: 'playwright/.auth/user.json',
       },
       dependencies: ['setup'],
@@ -57,7 +55,16 @@ export default defineConfig({
       dependencies: ['setup'],
     },
     {
+      name: 'iphone',
+      use: {
+        ...devices['iPhone 13'],
+        storageState: 'playwright/.auth/user.json',
+      },
+      dependencies: ['setup'],
+    },
+    {
       name: 'tv',
+
       use: {
         viewport: { width: 1920, height: 1080 },
         hasTouch: false,
@@ -76,8 +83,8 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'npm run dev -- -p 3001',
-    url: 'http://localhost:3001',
+    command: 'npm run dev -- -p 3001 -H 127.0.0.1',
+    url: 'http://127.0.0.1:3001',
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000,
   },

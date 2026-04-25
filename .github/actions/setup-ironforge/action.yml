@@ -63,7 +63,8 @@ runs:
           
           Write-Host "🚀 Exported DATABASE_URL and ADMIN_DATABASE_URL (Port $Port)" -ForegroundColor Cyan
         } else {
-          Write-Host "⚠️ Managed Service not found for tier: ${{ inputs.tier }}. Falling back to ephemeral service." -ForegroundColor Yellow
+          Write-Error "❌ Managed Service not found for tier: ${{ inputs.tier }}. Cannot set DATABASE_URL. Aborting."
+          exit 1
         }
 
     - name: Validate Secrets (Fast-Track)

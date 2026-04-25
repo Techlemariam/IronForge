@@ -1,5 +1,6 @@
 'use client';
 
+import { StorageService as Storage } from '@/services/storage';
 import { type ReactNode, createContext, useContext, useEffect, useState } from 'react';
 
 type Theme = 'dark' | 'light' | 'system';
@@ -21,10 +22,13 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     // Load saved preference
-    const saved = localStorage.getItem(STORAGE_KEY) as Theme | null;
-    if (saved && ['dark', 'light', 'system'].includes(saved)) {
-      setThemeState(saved);
-    }
+    const loadSavedTheme = async () => {
+      const saved = await Storage.getItem<Theme>(STORAGE_KEY);
+      if (saved && ['dark', 'light', 'system'].includes(saved)) {
+        setThemeState(saved);
+      }
+    };
+    loadSavedTheme();
   }, []);
 
   useEffect(() => {
@@ -63,7 +67,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   const setTheme = (newTheme: Theme) => {
     setThemeState(newTheme);
-    localStorage.setItem(STORAGE_KEY, newTheme);
+    Storage.setItem(STORAGE_KEY, newTheme);
   };
 
   const toggleTheme = () => {

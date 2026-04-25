@@ -12,21 +12,26 @@ on:
       - doctor-meta
 
 concurrency:
-  group: active-handover-${{ github.event.client_payload.pr_number || github.run_id }}
-  cancel-in-progress: false
+  group: handover-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions: read-all
 
 jobs:
   dispatch:
     name: "🩺 ${{ github.event.action }} Specialist"
     runs-on: [self-hosted, IronForge-Local]
     timeout-minutes: 15
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           ref: ${{ github.event.client_payload.branch || 'main' }}
           fetch-depth: 0
 
-      - uses: ./.github/actions/setup-ironforge
+      - uses: ./.github/actions/setup-ironforge@183c509623e8093d93822d05713437517c5b6510 # v1
         with:
           tier: 'l1'
 
@@ -168,7 +173,7 @@ jobs:
 
       - name: "📤 Upload Diagnostics"
         if: always()
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        uses: actions/upload-artifact@834a144ee9880628373854199c0861110b64d0c9 # v4.1.0
         with:
           name: doctor-${{ github.event.action }}-diagnostics
           path: .agent/tasks/*.log

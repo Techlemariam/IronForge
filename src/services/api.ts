@@ -1,24 +1,30 @@
 import axios from 'axios';
+import { StorageService } from './storage';
 
 const api = axios.create();
 
 // This interceptor runs before each request
 api.interceptors.request.use(
-  (config) => {
-    // Get the latest api key from localStorage if in browser environment
+  async (config) => {
+    // Get the latest api key from storage
     let apiKey: string | null = null;
-    if (typeof window !== 'undefined') {
-      apiKey = localStorage.getItem('hevy_api_key');
-      console.log('[API Interceptor] Retrieved Key:', apiKey ? 'FOUND' : 'MISSING');
+
+    try {
+      apiKey = await StorageService.getItem<string>('hevy_api_key');
+      if (apiKey) {
+        console.log('[API Interceptor] Retrieved Key: FOUND');
+      }
+    } catch (error) {
+      console.error('[API Interceptor] Error retrieving Hevy API Key:', error);
     }
 
     if (apiKey) {
       // Add the key to a custom header to be used by the backend proxy
       config.headers['X-Hevy-API-Key'] = apiKey;
     } else {
-      // If on client, warn. If on server, maybe we are calling a public endpoint or passing it differently.
+      // Log warning if key is missing
       if (typeof window !== 'undefined') {
-        console.warn("Hevy API Key ('hevy_api_key') is not set in localStorage.");
+        console.warn("Hevy API Key ('hevy_api_key') is not set in StorageService.");
       }
     }
 

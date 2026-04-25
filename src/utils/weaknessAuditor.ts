@@ -28,13 +28,13 @@ export const auditWeaknesses = (volumes: MuscleGroupVolume[]): AuditReport => {
   const muscleAudits: MuscleAudit[] = [];
 
   // 1. Analyze each muscle group
-  volumes.forEach((vol) => {
+  for (const vol of volumes) {
     const standards = getStandardsForMuscle(vol.muscleGroup);
-    if (!standards) return;
+    if (!standards) continue;
 
     const audit = analyzeMuscle(vol, standards);
     muscleAudits.push(audit);
-  });
+  }
 
   // 2. Calculate Ratios
   const ratios = calculateRatios(muscleAudits);
@@ -170,17 +170,17 @@ const calculateOverallScore = (audits: MuscleAudit[], ratios: BalanceRatio[]): n
   let score = 100;
 
   // Deduct for weaknesses
-  audits.forEach((a) => {
+  for (const a of audits) {
     if (a.level === WeaknessLevel.ATROPHY_RISK) score -= 10;
     if (a.level === WeaknessLevel.UNDERTRAINED) score -= 5;
     if (a.level === WeaknessLevel.OVERREACHED) score -= 5;
-  });
+  }
 
   // Deduct for imbalances
-  ratios.forEach((r) => {
+  for (const r of ratios) {
     if (r.status === 'structural_risk') score -= 15;
     if (r.status === 'minor_imbalance') score -= 5;
-  });
+  }
 
   return Math.max(0, Math.round(score));
 };

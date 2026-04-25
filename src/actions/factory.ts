@@ -5,6 +5,7 @@ import path from 'node:path';
 import { prisma } from '@/lib/prisma';
 import { type AssemblyLineTask, FactoryService } from '@/services/game/FactoryService';
 import { createClient } from '@/utils/supabase/server';
+import { type FactoryTask, Prisma } from '@prisma/client';
 
 const COST_SEK_PER_ACTIVE_STATION = 0.042;
 
@@ -97,14 +98,14 @@ export async function getFactoryStatus(): Promise<(FactoryStatusData & { costSEK
           try {
             const fileContent = await fs.readFile(filePath, 'utf8');
             stationStatusFiles[stationName] = JSON.parse(fileContent) as Record<string, unknown>;
-          } catch (e: any) {
+          } catch (e: unknown) {
             console.error(`Failed to read or parse status file ${filePath}:`, e);
           }
         }
       }
-    } catch (e: any) {
+    } catch (e: unknown) {
       // The factory directory might not exist, which is not a critical error.
-      if (e.code !== 'ENOENT') {
+      if (e instanceof Error && (e as any).code !== 'ENOENT') {
         console.error('Failed to read factory status directory:', e);
       }
     }
@@ -114,8 +115,11 @@ export async function getFactoryStatus(): Promise<(FactoryStatusData & { costSEK
       let health = s.health;
 
       const stationFileData = stationStatusFiles[s.station];
-      const dbMetadata = s.metadata as any;
-      const activityData = stationFileData || dbMetadata;
+      const dbMetadata = s.metadata as Record<string, unknown> | null;
+      const activityData = (stationFileData || dbMetadata) as {
+        branch?: string;
+        runId?: string;
+      } | null;
 
       if (activityData?.branch) {
         const isFailure = s.station === 'debug';
@@ -141,12 +145,12 @@ export async function getFactoryStatus(): Promise<(FactoryStatusData & { costSEK
  * Updates the recovery status in the database.
  * This can be called from local scripts to sync local CI failures to the remote dashboard.
  */
-export async function updateFactoryRecovery(data: any | null) {
+export async function updateFactoryRecovery(data: Record<string, unknown> | null) {
   try {
     await prisma.factoryStatus.update({
       where: { station: 'recovery' },
       data: {
-        metadata: data || null,
+        metadata: (data as Prisma.InputJsonValue) || Prisma.JsonNull,
         health: data ? 50 : 100,
         updatedAt: new Date(),
       },
@@ -161,7 +165,7 @@ export async function updateFactoryRecovery(data: any | null) {
 /**
  * Fetches all recent factory tasks, primarily from external sources like Discord.
  */
-export async function getFactoryTasks(): Promise<any[]> {
+export async function getFactoryTasks(): Promise<FactoryTask[]> {
   try {
     return await prisma.factoryTask.findMany({
       orderBy: { createdAt: 'desc' },
@@ -176,13 +180,17 @@ export async function getFactoryTasks(): Promise<any[]> {
 /**
  * Adds a new task to the factory board.
  */
-export async function addFactoryTask(description: string, source = 'DISCORD', metadata: any = {}) {
+export async function addFactoryTask(
+  description: string,
+  source = 'DISCORD',
+  metadata: Record<string, unknown> = {}
+) {
   try {
     const task = await prisma.factoryTask.create({
       data: {
         description,
         source,
-        metadata: metadata || {},
+        metadata: (metadata as Prisma.InputJsonValue) || {},
       },
     });
     return { success: true, task };
@@ -192,7 +200,7 @@ export async function addFactoryTask(description: string, source = 'DISCORD', me
   }
 }
 
-export async function getFactoryTasksAction() {
+export async function getFactoryTasksAction(): Promise<FactoryTask[]> {
   return await getFactoryTasks();
 }
 

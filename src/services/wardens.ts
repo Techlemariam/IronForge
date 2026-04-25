@@ -2,12 +2,12 @@ import { prisma } from '@/lib/prisma';
 import type { GoalPriority, MacroPhase, WardensManifest } from '@/types/goals';
 import type { Prisma } from '@/types/prisma';
 
-export class WardensService {
+export namespace Wardens {
   /**
    * Retrieves the Warden's Manifest for a user.
    * Transforms Prisma JSON types back to domain types.
    */
-  static async getManifest(userId: string): Promise<WardensManifest | null> {
+  export async function getManifest(userId: string): Promise<WardensManifest | null> {
     const record = await prisma.wardensManifest.findUnique({
       where: { userId },
     });
@@ -31,7 +31,7 @@ export class WardensService {
   /**
    * Creates or updates the manifest.
    */
-  static async upsertManifest(
+  export async function upsertManifest(
     userId: string,
     data: Partial<WardensManifest>
   ): Promise<WardensManifest> {
@@ -85,7 +85,7 @@ export class WardensService {
   /**
    * Updates only the phase and week (e.g., during auto-rotation).
    */
-  static async updatePhase(userId: string, phase: MacroPhase, week = 1): Promise<void> {
+  export async function updatePhase(userId: string, phase: MacroPhase, week = 1): Promise<void> {
     await prisma.wardensManifest.update({
       where: { userId },
       data: {

@@ -1,7 +1,7 @@
 import { Toggle } from '@/components/ui/Toggle'; // Assuming we have or will create a Toggle component, otherwise use checkbox
 import { Card } from '@/components/ui/card';
 import { EquipmentType } from '@/data/equipmentDb';
-import { StorageService } from '@/services/storage';
+import { StorageService as Storage } from '@/services/storage';
 import type React from 'react';
 import { useEffect, useState } from 'react';
 
@@ -21,7 +21,7 @@ const BattleGearSection: React.FC = () => {
 
   useEffect(() => {
     const loadInv = async () => {
-      const inv = (await StorageService.getState<string[]>('inventory')) || [];
+      const inv = (await Storage.getState<string[]>('inventory')) || [];
       setInventory(inv);
     };
     loadInv();
@@ -67,8 +67,8 @@ const EquipmentArmory: React.FC = () => {
 
   useEffect(() => {
     const loadSettings = async () => {
-      const eq = (await StorageService.getOwnedEquipment()) || [EquipmentType.BODYWEIGHT];
-      const hp = await StorageService.getHyperProPriority();
+      const eq = (await Storage.getOwnedEquipment()) || [EquipmentType.BODYWEIGHT];
+      const hp = await Storage.getHyperProPriority();
       setOwned(eq as EquipmentType[]);
       setHyperProMode(hp);
       setLoading(false);
@@ -80,7 +80,7 @@ const EquipmentArmory: React.FC = () => {
     const newOwned = owned.includes(type) ? owned.filter((t) => t !== type) : [...owned, type];
 
     setOwned(newOwned);
-    await StorageService.saveOwnedEquipment(newOwned as any);
+    await Storage.saveOwnedEquipment(newOwned as any);
   };
 
   // const toggleHyperProMode = async () => { ... }
@@ -117,7 +117,7 @@ const EquipmentArmory: React.FC = () => {
                 checked={hyperProMode}
                 onCheckedChange={(val) => {
                   setHyperProMode(val);
-                  StorageService.saveHyperProPriority(val);
+                  Storage.saveHyperProPriority(val);
                 }}
                 ariaLabel="Toggle Hyper Pro Protocol"
               />
@@ -168,7 +168,7 @@ const EquipmentArmory: React.FC = () => {
 
         <div className="flex justify-center mt-12">
           <p className="text-xs font-mono text-forge-muted opacity-50">
-            ID: {StorageService.db ? 'DB_CONNECTED' : 'DB_OFFLINE'} {/* v1.2.0 */}
+            ID: {Storage.db ? 'DB_CONNECTED' : 'DB_OFFLINE'} {/* v1.2.0 */}
           </p>
         </div>
       </div>

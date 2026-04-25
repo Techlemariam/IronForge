@@ -1,6 +1,6 @@
 import { GoogleGenAI, Type } from '@google/genai';
 import type { IntervalsWellness, Session, TTBIndices } from '../types';
-import { StorageService } from './storage';
+import { StorageService as Storage } from './storage';
 
 // The Spirit Guide Service
 // Uses Gemini to act as an AI Coach with RAG context
@@ -16,7 +16,7 @@ export const GeminiService = {
     }
 
     // --- RAG STEP: Retrieve Context ---
-    const history = await StorageService.getHistory();
+    const history = await Storage.getHistory();
     const recentLogs = history
       .slice(-20)
       .map((h) => `Date: ${h.date.split('T')[0]}, Exercise: ${h.exerciseId}, e1RM: ${h.e1rm}kg`)

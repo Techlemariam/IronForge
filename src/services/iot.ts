@@ -1,5 +1,5 @@
 import type { AppSettings } from '../types';
-import { StorageService } from './storage';
+import { StorageService as Storage } from './storage';
 
 /**
  * IoT Service for "The Smart Gym" (Philips Hue & Atmosphere)
@@ -10,7 +10,7 @@ export const IoTService = {
   lastZone: 'REST' as 'REST' | 'WORK' | 'LIMIT',
 
   async init() {
-    const settings = await StorageService.getState<AppSettings>('settings');
+    const settings = await Storage.getState<AppSettings>('settings');
     if (settings?.hueBridgeIp && settings?.hueUsername) {
       this.bridgeIp = settings.hueBridgeIp;
       this.username = settings.hueUsername;

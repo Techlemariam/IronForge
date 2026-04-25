@@ -75,7 +75,7 @@ export const MOCK_HEVY_WORKOUTS: HevyWorkout[] = [
     id: 'mock-w-1',
     title: 'Upper Body Power',
     // description: 'Heavy pushing day', // HevyWorkout interface doesn't have description? Check types/hevy.ts. It doesn't.
-    start_time: new Date(Date.now() - 86400000 * 1).toISOString(),
+    start_time: new Date(Date.now() - 86400000 * 1),
     duration_seconds: 3600,
     // end_time not in HevyWorkout
     exercises: [
@@ -101,7 +101,7 @@ export const MOCK_HEVY_WORKOUTS: HevyWorkout[] = [
   {
     id: 'mock-w-2',
     title: 'Lower Body Hypertrophy',
-    start_time: new Date(Date.now() - 86400000 * 3).toISOString(),
+    start_time: new Date(Date.now() - 86400000 * 3),
     duration_seconds: 4500,
     exercises: [
       {
@@ -122,7 +122,7 @@ export const MOCK_HEVY_WORKOUTS: HevyWorkout[] = [
   {
     id: 'mock-w-3',
     title: 'Full Body Tempo',
-    start_time: new Date(Date.now() - 86400000 * 5).toISOString(),
+    start_time: new Date(Date.now() - 86400000 * 5),
     duration_seconds: 3000,
     exercises: [
       {

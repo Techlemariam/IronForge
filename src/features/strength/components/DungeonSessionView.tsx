@@ -21,6 +21,7 @@ import { BiometricsHUD } from '@/features/strength/components/BiometricsHUD';
 import { CardiacDriftWarning } from '@/features/strength/components/CardiacDriftWarning';
 import { useHRRecoveryTimer } from '@/features/strength/hooks/useHRRecoveryTimer';
 import { SupersetGroup } from '@/features/training/components/SupersetView';
+import { StorageService } from '@/services/storage';
 
 import BerserkerOverlay from '@/components/game/dungeon/BerserkerOverlay';
 // --- DUNGEON MODE IMPORTS ---
@@ -52,42 +53,43 @@ const DungeonSessionView: React.FC<IronMinesProps> = ({
   hrvBaseline = 50,
 }) => {
   const { user } = useUser(); // Hook for Guild Damage
-  const [exercises, setExercises] = useState<Exercise[]>(() => {
-    // Try to load from local storage first
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('iron_mines_session');
-      if (saved) {
-        try {
-          return JSON.parse(saved);
-        } catch (e) {
-          console.error('Failed to parse saved session', e);
-        }
-      }
-    }
-    return initialData;
-  });
+  const [exercises, setExercises] = useState<Exercise[]>(initialData);
+  const [activeExIndex, setActiveExIndex] = useState(0);
+  const [isLoaded, setIsLoaded] = useState(false);
 
-  const [activeExIndex, setActiveExIndex] = useState(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('iron_mines_index');
-      return saved ? Number.parseInt(saved, 10) : 0;
-    }
-    return 0;
-  });
+  useEffect(() => {
+    const loadSession = async () => {
+      try {
+        const savedSession = await StorageService.getItem<Exercise[]>('iron_mines_session');
+        const savedIndex = await StorageService.getItem<number>('iron_mines_index');
+
+        if (savedSession) setExercises(savedSession);
+        if (savedIndex !== null) setActiveExIndex(savedIndex);
+      } catch (e) {
+        console.error('Failed to load session', e);
+      } finally {
+        setIsLoaded(true);
+      }
+    };
+    loadSession();
+  }, []);
 
   // Persist Changes
   useEffect(() => {
-    localStorage.setItem('iron_mines_session', JSON.stringify(exercises));
-  }, [exercises]);
+    if (isLoaded) {
+      StorageService.setItem('iron_mines_session', exercises).catch(console.error);
+    }
+  }, [exercises, isLoaded]);
 
   useEffect(() => {
-    localStorage.setItem('iron_mines_index', activeExIndex.toString());
+    if (activeExIndex > 0) {
+      StorageService.setItem('iron_mines_index', activeExIndex).catch(console.error);
+    }
   }, [activeExIndex]);
 
-  // Clear on complete/abort
-  const clearSession = () => {
-    localStorage.removeItem('iron_mines_session');
-    localStorage.removeItem('iron_mines_index');
+  const clearSession = async () => {
+    await StorageService.removeItem('iron_mines_session');
+    await StorageService.removeItem('iron_mines_index');
   };
 
   const [activeBuffs, setActiveBuffs] = useState<BioBuff[]>([]);
@@ -341,8 +343,8 @@ const DungeonSessionView: React.FC<IronMinesProps> = ({
     return lastSet.type === 'AMRAP' && lastSet.completed;
   }, [exercises, questOver]);
 
-  const handleButtonClick = () => {
-    clearSession();
+  const handleButtonClick = async () => {
+    await clearSession();
     if (isQuestFullyCompleted) {
       onComplete();
     } else {

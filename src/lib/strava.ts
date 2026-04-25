@@ -1,43 +1,7 @@
 import type { CardioLog } from '@/types/prisma';
+import type { StravaActivity, StravaTokenResponse } from '@/types/schemas';
 
-export interface StravaTokenResponse {
-  token_type: string;
-  access_token: string;
-  expires_at: number;
-  expires_in: number;
-  refresh_token: string;
-  athlete: {
-    id: number;
-    username: string;
-    firstname: string;
-    lastname: string;
-  };
-}
-
-export interface StravaActivity {
-  id: number;
-  name: string;
-  distance: number; // meters
-  moving_time: number; // seconds
-  elapsed_time: number; // seconds
-  total_elevation_gain: number; // meters
-  type: string;
-  start_date: string; // ISO 8601
-  average_speed: number; // m/s
-  max_speed: number; // m/s
-  average_heartrate?: number;
-  max_heartrate?: number;
-  suffer_score?: number;
-}
-
-export interface StravaUploadResponse {
-  id: number;
-  id_str: string;
-  external_id: string;
-  error: string | null;
-  status: string;
-  activity_id: number | null;
-}
+export type { StravaActivity, StravaTokenResponse, StravaUploadResponse } from '@/types/schemas';
 
 /**
  * Maps a Strava activity to the IronForge CardioLog format.

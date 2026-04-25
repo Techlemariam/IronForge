@@ -1,16 +1,20 @@
-import { processWeeklyTerritoryClaimsAction } from '@/actions/systems/territories';
-import { type NextRequest, NextResponse } from 'next/server';
+import { TerritoryResolutionService } from '@/services/game/TerritoryResolutionService';
+import { NextResponse } from 'next/server';
 
-export async function POST(req: NextRequest) {
-  const authHeader = req.headers.get('authorization');
-  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+export const dynamic = 'force-dynamic';
+
+export async function GET(request: Request) {
+  // Simple auth check for CRON_SECRET if available
+  const authHeader = request.headers.get('authorization');
+  if (process.env.CRON_SECRET && authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+    return new NextResponse('Unauthorized', { status: 401 });
   }
 
   try {
-    const results = await processWeeklyTerritoryClaimsAction();
-    return NextResponse.json({ success: true, results });
-  } catch (error: any) {
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    const result = await TerritoryResolutionService.resolveWeeklyCycle();
+    return NextResponse.json(result);
+  } catch (error) {
+    console.error('Cron: Territory Resolution Failed:', error);
+    return NextResponse.json({ success: false, error: 'Internal Server Error' }, { status: 500 });
   }
 }

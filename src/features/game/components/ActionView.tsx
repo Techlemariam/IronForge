@@ -8,7 +8,7 @@ import { useVoiceCommand } from '@/hooks/useVoiceCommand';
 import { IoTService } from '@/services/iot';
 import { NeuroService } from '@/services/neuro';
 import { RaidService } from '@/services/raid';
-import { StorageService } from '@/services/storage';
+import { StorageService as Storage } from '@/services/storage';
 import {
   type AppSettings,
   type Block,
@@ -517,7 +517,7 @@ const ActionView: React.FC<ActionViewProps> = ({
   const [heroName, setHeroName] = useState('Titan');
   useEffect(() => {
     IoTService.init();
-    StorageService.getState<AppSettings>('settings').then((s) => {
+    Storage.getState<AppSettings>('settings').then((s) => {
       if (s?.heroName) setHeroName(s.heroName);
     });
   }, []);

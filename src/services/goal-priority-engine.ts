@@ -48,16 +48,16 @@ const PHASE_ALLOCATION: Record<
   },
 };
 
-export class GoalPriorityEngine {
+export class GoalPriorityEngineService {
   /**
    * Determines optimal phase based on goal priorities and current state.
    */
-  static selectPhase(manifest: WardensManifest, metrics: SystemMetrics): MacroPhase {
+  public static selectPhase(manifest: WardensManifest, metrics: SystemMetrics): MacroPhase {
     // 1. Safety Override - Always check first
-    if (GoalPriorityEngine.needsDeload(metrics)) return 'DELOAD';
+    if (GoalPriorityEngineService.needsDeload(metrics)) return 'DELOAD';
 
     // 2. Deadline Check - Peak if event within 2 weeks
-    const upcomingDeadline = GoalPriorityEngine.getUpcomingDeadline(manifest.goals);
+    const upcomingDeadline = GoalPriorityEngineService.getUpcomingDeadline(manifest.goals);
     if (upcomingDeadline && upcomingDeadline.daysUntil <= 14) {
       return 'PEAK';
     }
@@ -70,14 +70,14 @@ export class GoalPriorityEngine {
     // 4. Phase Rotation - Based on primary goal
     const primaryGoal = manifest.goals[0]?.goal;
 
-    if (GoalPriorityEngine.isCardioGoal(primaryGoal)) {
-      return GoalPriorityEngine.shouldTransition(manifest, metrics)
+    if (GoalPriorityEngineService.isCardioGoal(primaryGoal)) {
+      return GoalPriorityEngineService.shouldTransition(manifest, metrics)
         ? 'STRENGTH_BUILD' // Recovery rotation
         : 'CARDIO_BUILD';
     }
 
-    if (GoalPriorityEngine.isStrengthGoal(primaryGoal)) {
-      return GoalPriorityEngine.shouldTransition(manifest, metrics)
+    if (GoalPriorityEngineService.isStrengthGoal(primaryGoal)) {
+      return GoalPriorityEngineService.shouldTransition(manifest, metrics)
         ? 'CARDIO_BUILD' // Recovery rotation
         : 'STRENGTH_BUILD';
     }
@@ -89,14 +89,14 @@ export class GoalPriorityEngine {
    * Hysteresis-based transition logic.
    * Requires 4+ weeks in phase AND progress stall.
    */
-  static shouldTransition(manifest: WardensManifest, metrics: SystemMetrics): boolean {
+  public static shouldTransition(manifest: WardensManifest, metrics: SystemMetrics): boolean {
     if (manifest.phaseWeek < 4) return false; // Minimum phase duration
     if (metrics.consecutiveStalls >= 3) return true; // Plateau detected
     if (metrics.atl > metrics.ctl * 1.3) return true; // Overreaching
     return false;
   }
 
-  static needsDeload(metrics: SystemMetrics): boolean {
+  public static needsDeload(metrics: SystemMetrics): boolean {
     // Fallback: If critical data missing, use subjective fail-safes
     if (
       metrics.hrv === null ||
@@ -116,11 +116,11 @@ export class GoalPriorityEngine {
     return isCrashing || isTanked || isSpiked;
   }
 
-  static isCardioGoal(goal: TrainingGoal): boolean {
+  public static isCardioGoal(goal: TrainingGoal): boolean {
     return ['VO2MAX', 'FTP_BIKE', 'FTP_RUN', 'ENDURANCE', 'FITNESS'].includes(goal);
   }
 
-  static isStrengthGoal(goal: TrainingGoal): boolean {
+  public static isStrengthGoal(goal: TrainingGoal): boolean {
     return ['STRENGTH', 'HYPERTROPHY', 'BODY_COMP'].includes(goal);
   }
 
@@ -144,13 +144,13 @@ export class GoalPriorityEngine {
   /**
    * Calculates concrete weekly targets based on phase and goals.
    */
-  static calculateWeeklyTargets(
+  public static calculateWeeklyTargets(
     manifest: WardensManifest,
     phase: MacroPhase,
     metrics: SystemMetrics
   ): WeeklyTargets {
     const allocation = PHASE_ALLOCATION[phase];
-    const baseHours = GoalPriorityEngine.getBaseHours(metrics); // ~6-12h/week
+    const baseHours = GoalPriorityEngineService.getBaseHours(metrics); // ~6-12h/week
 
     // Base allocation
     let strengthHours = baseHours * allocation.strength;
@@ -158,7 +158,7 @@ export class GoalPriorityEngine {
     const mobilityHours = baseHours * allocation.mobility;
 
     // Apply bio-modifiers
-    const modifier = GoalPriorityEngine.getBioModifier(metrics);
+    const modifier = GoalPriorityEngineService.getBioModifier(metrics);
     strengthHours *= modifier;
     cardioHours *= modifier; // Note: Specs says * modifier for both, let's stick to that.
 
@@ -206,7 +206,7 @@ export class GoalPriorityEngine {
   /**
    * Selects the optimal workout from the library based on phase, budget, and muscle gaps.
    */
-  static selectWorkout(
+  public static selectWorkout(
     manifest: WardensManifest,
     phase: MacroPhase,
     budget: DailyResourceBudget,
@@ -219,7 +219,9 @@ export class GoalPriorityEngine {
     allowBudgetOverride?: boolean
   ): WorkoutDefinition[] {
     // 1. Filter by phase priority
-    let candidates = WORKOUT_LIBRARY.filter((w) => GoalPriorityEngine.matchesPhase(w, phase));
+    let candidates = WORKOUT_LIBRARY.filter((w) =>
+      GoalPriorityEngineService.matchesPhase(w, phase)
+    );
 
     // 2. Filter by preferences
     if (preferences) {
@@ -244,8 +246,8 @@ export class GoalPriorityEngine {
     // 4. Sort by "fit score" (higher = better match)
     candidates.sort(
       (a, b) =>
-        GoalPriorityEngine.calculateFitScore(b, phase, heatmap, manifest) -
-        GoalPriorityEngine.calculateFitScore(a, phase, heatmap, manifest)
+        GoalPriorityEngineService.calculateFitScore(b, phase, heatmap, manifest) -
+        GoalPriorityEngineService.calculateFitScore(a, phase, heatmap, manifest)
     );
 
     // Return top 3 recommendations
@@ -290,19 +292,21 @@ export class GoalPriorityEngine {
 
     // Bonus for filling heatmap gaps (strength workouts only)
     if (w.type === 'STRENGTH' && w.exercises && heatmap) {
-      const targetedMuscles = w.exercises.map((e) => GoalPriorityEngine.getMuscleForExercise(e.id));
+      const targetedMuscles = w.exercises.map((e) =>
+        GoalPriorityEngineService.getMuscleForExercise(e.id)
+      );
 
       // Find unique muscles targeted that are in MV (Maintenance) or MEV (Min Effective)
       // We want to push them to MAV (Max Adaptive).
       const uniqueMuscles = Array.from(new Set(targetedMuscles)).filter(Boolean) as MuscleGroup[];
 
       let gapFillScore = 0;
-      uniqueMuscles.forEach((m) => {
+      for (const m of uniqueMuscles) {
         const status = heatmap[m]?.status;
         if (status === 'MV' || status === 'MEV') {
           gapFillScore += 10;
         }
-      });
+      }
       score += gapFillScore;
     }
 

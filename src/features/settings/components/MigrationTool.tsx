@@ -1,6 +1,6 @@
 'use client';
 
-import { StorageService } from '@/services/storage';
+import { StorageService as Storage } from '@/services/storage';
 import { CheckCircle, Database, RefreshCw } from 'lucide-react';
 import React, { useState } from 'react';
 
@@ -18,31 +18,31 @@ export const MigrationTool = () => {
     try {
       // 1. Sync User State
       addLog('Migrating User State (Settings, Gold, Equipment)...');
-      const settings = await StorageService.getState('settings');
-      const gold = await StorageService.getState('gold');
-      const equipment = await StorageService.getOwnedEquipment();
+      const settings = await Storage.getState('settings');
+      const gold = await Storage.getState('gold');
+      const equipment = await Storage.getOwnedEquipment();
 
       if (settings) {
-        await StorageService.syncToServer('user', 'UPDATE_SETTINGS', settings);
+        await Storage.syncToServer('user', 'UPDATE_SETTINGS', settings);
         addLog('✅ Settings synced.');
       }
       if (gold !== null) {
-        await StorageService.syncToServer('user', 'UPDATE_GOLD', gold);
+        await Storage.syncToServer('user', 'UPDATE_GOLD', gold);
         addLog('✅ Gold synced.');
       }
       if (equipment) {
-        await StorageService.syncToServer('user', 'UPDATE_EQUIPMENT', equipment);
+        await Storage.syncToServer('user', 'UPDATE_EQUIPMENT', equipment);
         addLog('✅ Equipment synced.');
       }
 
       // 2. Sync Logs
       addLog('Migrating Exercise History...');
-      const history = await StorageService.getHistory();
+      const history = await Storage.getHistory();
       if (history && history.length > 0) {
         let successCount = 0;
         // Batch this in reality, but for now simple loop
         for (const log of history) {
-          await StorageService.syncToServer('logs', 'SAVE_LOG', log);
+          await Storage.syncToServer('logs', 'SAVE_LOG', log);
           successCount++;
         }
         addLog(`✅ Synced ${successCount} exercise logs.`);
@@ -51,10 +51,10 @@ export const MigrationTool = () => {
       }
 
       addLog('Migrating Meditation History...');
-      const meditation = await StorageService.getMeditationHistory();
+      const meditation = await Storage.getMeditationHistory();
       if (meditation && meditation.length > 0) {
         for (const log of meditation) {
-          await StorageService.syncToServer('logs', 'SAVE_MEDITATION', log);
+          await Storage.syncToServer('logs', 'SAVE_MEDITATION', log);
         }
         addLog('✅ Meditation history synced.');
       }

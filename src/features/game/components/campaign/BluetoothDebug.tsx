@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { type BioData, bluetoothService } from '@/services/BluetoothService';
+import { type BioData, Bluetooth } from '@/services/bluetooth';
 import { Activity, Heart } from 'lucide-react';
 import React, { useState } from 'react';
 
@@ -15,7 +15,7 @@ const BluetoothDebug = () => {
   const handleConnect = async () => {
     try {
       setError(null);
-      await bluetoothService.connect((newData) => {
+      await Bluetooth.connect((newData) => {
         setData(newData);
         setHistory((prev) => [...prev.slice(-19), newData.heartRate]); // Keep last 20
       });
@@ -27,7 +27,7 @@ const BluetoothDebug = () => {
   };
 
   const handleDisconnect = () => {
-    bluetoothService.disconnect();
+    Bluetooth.disconnect();
     setIsConnected(false);
     setData(null);
   };

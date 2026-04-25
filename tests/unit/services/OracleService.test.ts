@@ -1,8 +1,8 @@
-import { OracleService } from '@/services/oracle';
+import { Oracle } from '@/services/oracle';
 import type { SystemMetrics, WardensManifest } from '@/types/goals';
 import { describe, expect, it } from 'vitest';
 
-describe('OracleService', () => {
+describe('Oracle', () => {
   describe('generateTrainingStrategy', () => {
     it('should generate strategy with DELOAD phase when metrics indicate fatigue', () => {
       const manifest: WardensManifest = {
@@ -28,7 +28,7 @@ describe('OracleService', () => {
         consecutiveStalls: 0,
       };
 
-      const strategy = OracleService.generateTrainingStrategy(manifest, metrics);
+      const strategy = Oracle.generateTrainingStrategy(manifest, metrics);
 
       expect(strategy.phase).toBe('DELOAD');
       expect(strategy.contextSummary).toContain('DELOAD');
@@ -58,7 +58,7 @@ describe('OracleService', () => {
         consecutiveStalls: 0,
       };
 
-      const strategy = OracleService.generateTrainingStrategy(manifest, metrics);
+      const strategy = Oracle.generateTrainingStrategy(manifest, metrics);
 
       expect(strategy.phase).toBe('STRENGTH_BUILD');
       expect(strategy.recommendedWorkouts).toBeDefined();

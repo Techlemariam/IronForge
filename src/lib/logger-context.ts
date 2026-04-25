@@ -12,10 +12,7 @@ export const loggerContext = new AsyncLocalStorage<LoggerContextType>();
  * Runs a callback within a logger context, automatically attaching context fields
  * to all logs generated within the callback execution scope.
  */
-export function runWithLoggerContext<R>(
-  context: LoggerContextType,
-  callback: () => R
-): R {
+export function runWithLoggerContext<R>(context: LoggerContextType, callback: () => R): R {
   return loggerContext.run(context, callback);
 }
 

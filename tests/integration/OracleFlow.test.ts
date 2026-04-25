@@ -1,13 +1,13 @@
 import { GET } from '@/app/api/cron/maintenance/daily/route';
 import prisma from '@/lib/prisma';
 import { NotificationService } from '@/services/notifications';
-import { OracleService } from '@/services/oracle';
+import { Oracle } from '@/services/oracle';
 import { NextRequest } from 'next/server';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Mock Services
 vi.mock('@/services/oracle', () => ({
-  OracleService: { generateDailyDecree: vi.fn() },
+  Oracle: { generateDailyDecree: vi.fn() },
 }));
 
 vi.mock('@/services/game/TerritoryService', () => ({
@@ -65,7 +65,7 @@ describe('Oracle Flow Integration', () => {
     (prisma.titan.findMany as any).mockResolvedValue([{ userId: 'u1' }]);
 
     // Mock Oracle returning HIGH urgency decree
-    (OracleService.generateDailyDecree as any).mockResolvedValue({
+    (Oracle.generateDailyDecree as any).mockResolvedValue({
       type: 'DEBUFF',
       code: 'INJURY_PRESERVATION',
       label: 'Preserve',

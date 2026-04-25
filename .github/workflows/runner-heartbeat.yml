@@ -9,6 +9,7 @@ on:
 concurrency:
   group: runner-heartbeat
   cancel-in-progress: true
+permissions: read-all
 
 jobs:
   heartbeat:
@@ -16,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest  # Must run on hosted runner (can't rely on self-hosted being alive)
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: "🔍 Check Self-Hosted Runners"
         id: check
         env:

@@ -1,4 +1,4 @@
-import { StorageService } from '@/services/storage';
+import { StorageService as Storage } from '@/services/storage';
 import type { Equipment, EquipmentCategory } from '@/types';
 import { playSound } from '@/utils';
 import {
@@ -46,7 +46,7 @@ const EquipmentArmory: React.FC<EquipmentArmoryProps> = ({ onClose }) => {
 
   useEffect(() => {
     const load = async () => {
-      const data = await StorageService.getState<Equipment[]>('equipment');
+      const data = await Storage.getState<Equipment[]>('equipment');
       if (data) setInventory(data);
     };
     load();
@@ -54,7 +54,7 @@ const EquipmentArmory: React.FC<EquipmentArmoryProps> = ({ onClose }) => {
 
   const saveInventory = async (newInventory: Equipment[]) => {
     setInventory(newInventory);
-    await StorageService.saveState('equipment', newInventory);
+    await Storage.saveState('equipment', newInventory);
   };
 
   const addEquipment = (item: Partial<Equipment>) => {

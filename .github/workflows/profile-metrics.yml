@@ -11,13 +11,15 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
   
+permissions: read-all
+
 jobs:
   github-metrics:
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
-      - uses: lowlighter/metrics@latest
+      - uses: lowlighter/metrics@366f8b9dfe3a59656c67d5dcad9950f59c9bc96d # latest
         with:
           # Your GitHub token
           # The following scopes are required:
