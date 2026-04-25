@@ -39,12 +39,12 @@ export const PRCelebration: React.FC<PRCelebrationProps> = ({
     if (!path) return '#';
     // Strict sanitization: alphanumeric, slashes, dashes, underscores, and dots only
     const sanitized = path.replace(/[^a-zA-Z0-9\/\-_\.]/g, '');
-    
+
     // Explicitly block any string that looks like a protocol (e.g., javascript:, data:, http:)
     if (/^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(sanitized)) {
       return '#';
     }
-    
+
     // Ensure it's a relative path starting with a single slash
     const pathWithoutLeadingSlashes = sanitized.replace(/^\/+/, '');
     return `/${pathWithoutLeadingSlashes}`;
