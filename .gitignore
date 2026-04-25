@@ -155,6 +155,7 @@ storybook-static/
 !package.json
 !package-lock.json
 !tsconfig.json
+!biome.json
 !next-env.d.ts
 !components.json
 !audit_results.json
