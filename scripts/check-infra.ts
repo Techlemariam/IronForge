@@ -1,5 +1,4 @@
-// Bypass self-signed certificate issues for Tailscale/Coolify internal checks
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+// Certificates should be validated for production and staging endpoints.
 
 const TARGETS = [
   { name: 'Production App', url: 'https://ironforge.app/api/health' },

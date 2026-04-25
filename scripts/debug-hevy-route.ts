@@ -1,5 +1,5 @@
 async function debugRoute() {
-  const API_KEY = '643d13fc-7935-450c-b228-aa98cecc7973';
+  const API_KEY = process.env.HEVY_API_KEY || '';
   const URL = 'http://localhost:3002/api/hevy/workouts?page=1&pageSize=1';
 
   console.log(`Debugging local route: ${URL}`);
