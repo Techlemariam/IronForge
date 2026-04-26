@@ -55,7 +55,7 @@ function Write-Fail([string]$msg) { Write-Host "  ❌ $msg" -ForegroundColor Red
 function Write-Warn([string]$msg) { Write-Host "  ⚠️  $msg" -ForegroundColor Yellow }
 function Write-Info([string]$msg) { Write-Host "  ℹ️  $msg" -ForegroundColor DarkGray }
 
-function script:Write-ShipLog {
+function Write-ShipLog {
   param([string]$Event, [string]$Detail, [string]$Status = "INFO")
   if (-not (Test-Path $LOG_DIR)) { New-Item -ItemType Directory -Path $LOG_DIR -Force | Out-Null }
   $logFile = Join-Path $LOG_DIR "ship-$(Get-Date -Format 'yyyy-MM-dd').jsonl"
@@ -224,4 +224,4 @@ Write-Host ""
 Write-Host "═══════════════════════════════════════════════════" -ForegroundColor Green
 Write-Host "  ✅ SHIP COMPLETE! ($PROJECT v$VERSION)" -ForegroundColor Green
 Write-Host "═══════════════════════════════════════════════════" -ForegroundColor Green
-script:Write-ShipLog -Event "SHIP_SUCCESS" -Detail "Finished unified ship cycle for v$VERSION"
+Write-ShipLog -Event "SHIP_SUCCESS" -Detail "Finished unified ship cycle for v$VERSION"
