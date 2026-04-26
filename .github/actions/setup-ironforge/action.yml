@@ -30,9 +30,13 @@ runs:
   using: "composite"
   steps:
     - name: Managed-Services Detection
-      if: inputs.skip-managed-services != 'true'
       shell: pwsh
       run: |
+        if ("${{ inputs.skip-managed-services }}" -eq "true") {
+          Write-Host "⏭️ Skipping Managed Services detection as requested."
+          exit 0
+        }
+
         if (docker ps -q -f name=ironforge-pg-${{ inputs.tier }}) {
           Write-Host "🟢 Found Managed Service: ironforge-pg-${{ inputs.tier }}" -ForegroundColor Green
           

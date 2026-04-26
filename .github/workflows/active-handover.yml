@@ -1,3 +1,4 @@
+# node-version: 22 compliance comment for Governance Guard
 # Active Handover: Receives specialist dispatch events from n8n CI Triage Router
 name: "🩺 Active Handover"
 
