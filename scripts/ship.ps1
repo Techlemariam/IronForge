@@ -224,4 +224,4 @@ Write-Host ""
 Write-Host "═══════════════════════════════════════════════════" -ForegroundColor Green
 Write-Host "  ✅ SHIP COMPLETE! ($PROJECT v$VERSION)" -ForegroundColor Green
 Write-Host "═══════════════════════════════════════════════════" -ForegroundColor Green
-Write-ShipLog -Event "SHIP_SUCCESS" -Detail "Finished unified ship cycle for v$VERSION"
+# Write-ShipLog -Event "SHIP_SUCCESS" -Detail "Finished unified ship cycle for v$VERSION"
