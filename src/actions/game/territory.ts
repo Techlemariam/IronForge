@@ -21,39 +21,57 @@ const contestTerritorySchema = z.object({
 // --- Actions ---
 
 /**
- * Fetch all territories with contest data.
+ * Fetch all territories (Zones) with contest data.
  */
 export async function getTerritoriesAction() {
   try {
-    return await TerritoryService.getMapData();
+    const data = await TerritoryService.getMapData();
+    return { success: true, data };
   } catch (error: any) {
     console.error('[TerritoryActions] getTerritories error:', error.message);
-    throw new Error('Failed to fetch territories');
+    return { success: false, error: 'Failed to fetch territories' };
   }
 }
 
 /**
- * Claim an unclaimed territory.
+ * Get solo territory app data (Tiles, Stats, Home Zone).
+ */
+export async function getTerritoryAppDataAction() {
+  try {
+    const { getSession } = await import('@/lib/auth');
+    const session = await getSession();
+    if (!session?.user?.id) throw new Error('Unauthorized');
+
+    const data = await TerritoryService.getSoloMapData(session.user.id);
+    return { success: true, data };
+  } catch (error: any) {
+    console.error('[TerritoryActions] getTerritoryAppData error:', error.message);
+    return { success: false, error: error.message };
+  }
+}
+
+/**
+ * Claim an unclaimed territory (Zone).
  */
 export async function claimTerritoryAction(guildId: string, territoryId: string, userId: string) {
   const parsed = claimTerritorySchema.safeParse({ guildId, territoryId, userId });
   if (!parsed.success) {
-    throw new Error('Invalid input');
+    return { success: false, error: 'Invalid input' };
   }
 
   try {
-    const result = await TerritoryService.claimTerritory(guildId, territoryId, userId);
+    const data = await TerritoryService.claimTerritory(guildId, territoryId, userId);
     revalidatePath('/citadel');
     revalidatePath('/dashboard');
-    return result;
+    return { success: true, data };
   } catch (error: any) {
     console.error('[TerritoryActions] claimTerritory error:', error.message);
-    throw new Error(error.message || 'Failed to claim territory');
+    return { success: false, error: error.message || 'Failed to claim territory' };
   }
 }
 
 /**
- * Initiate a contest for an owned territory.
+ * Initiate a contest for an owned territory (Zone).
  */
 export async function contestTerritoryAction(
   attackerId: string,
@@ -62,17 +80,17 @@ export async function contestTerritoryAction(
 ) {
   const parsed = contestTerritorySchema.safeParse({ attackerId, territoryId, userId });
   if (!parsed.success) {
-    throw new Error('Invalid input');
+    return { success: false, error: 'Invalid input' };
   }
 
   try {
-    const result = await TerritoryService.contestTerritory(attackerId, territoryId, userId);
+    const data = await TerritoryService.contestTerritory(attackerId, territoryId, userId);
     revalidatePath('/citadel');
     revalidatePath('/dashboard');
-    return result;
+    return { success: true, data };
   } catch (error: any) {
     console.error('[TerritoryActions] contestTerritory error:', error.message);
-    throw new Error(error.message || 'Failed to initiate contest');
+    return { success: false, error: error.message || 'Failed to initiate contest' };
   }
 }
 
@@ -81,13 +99,12 @@ export async function contestTerritoryAction(
  */
 export async function resolveExpiredContestsAction() {
   try {
-    // In a real app, we'd check for admin role here
     await TerritoryService.resolveExpiredContests();
     revalidatePath('/citadel');
     revalidatePath('/dashboard');
     return { success: true };
   } catch (error: any) {
     console.error('[TerritoryActions] resolveExpiredContests error:', error.message);
-    throw new Error('Failed to resolve contests');
+    return { success: false, error: 'Failed to resolve contests' };
   }
 }

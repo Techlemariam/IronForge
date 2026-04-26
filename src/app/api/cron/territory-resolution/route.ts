@@ -1,4 +1,4 @@
-import { TerritoryResolutionService } from '@/services/game/TerritoryResolutionService';
+import { TerritoryService } from '@/services/game/TerritoryService';
 import { NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
@@ -11,7 +11,7 @@ export async function GET(request: Request) {
   }
 
   try {
-    const result = await TerritoryResolutionService.resolveWeeklyCycle();
+    const result = await TerritoryService.resolveWeeklyCycle();
     return NextResponse.json(result);
   } catch (error) {
     console.error('Cron: Territory Resolution Failed:', error);

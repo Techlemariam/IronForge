@@ -27,7 +27,7 @@ export async function GET(request: NextRequest) {
   const sixtyDaysAgo = new Date(now.getTime() - 60 * 24 * 60 * 60 * 1000);
 
   try {
-    await TerritoryService.runWeeklySettlement();
+    await TerritoryService.resolveWeeklyCycle();
     report.tasks.settlement = { success: true };
   } catch (e) {
     report.tasks.settlement = { success: false, error: String(e) };

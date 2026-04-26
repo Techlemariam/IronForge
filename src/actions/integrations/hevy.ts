@@ -150,7 +150,7 @@ export async function saveWorkoutAction(apiKey: string, payload: { workout?: Hev
       });
 
       if (dbUser?.guildId) {
-        await TerritoryService.recordGuildActivity(dbUser.guildId, totalVolume);
+        await TerritoryService.recordActivity(dbUser.guildId, '', { volume: totalVolume, xp: energyGain * 2 });
       }
 
       response.data.rewards = { energy: energyGain };

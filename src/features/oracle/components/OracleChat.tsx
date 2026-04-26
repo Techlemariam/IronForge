@@ -1,11 +1,16 @@
 'use client';
 
 import { ProgramGenerator } from '@/features/training/components/ProgramGenerator';
-import { useChat } from '@ai-sdk/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Brain, MessageSquare, Send, Sparkles, User, X } from 'lucide-react';
 import type React from 'react';
 import { useEffect, useRef, useState } from 'react';
+
+interface Message {
+  id: string;
+  role: 'user' | 'assistant';
+  content: string;
+}
 
 interface OracleChatProps {
   context?: Record<string, unknown> & { userId?: string };
@@ -14,38 +19,18 @@ interface OracleChatProps {
 export const OracleChat: React.FC<OracleChatProps> = ({ context }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [showProgramGenerator, setShowProgramGenerator] = useState(false);
-  const scrollRef = useRef<HTMLDivElement>(null);
-
-  const { messages, sendMessage, status } = useChat({
-    // @ts-ignore - api is valid at runtime but not in UseChatOptions type definition
-    api: '/api/chat',
-    body: {
-      context,
-      userId: context?.userId,
-    },
-    initialMessages: [
-      {
-        id: 'welcome',
-        role: 'assistant',
-        content:
-          'Identity confirmed. I am the Oracle. Speak, Titan, and I shall guide your evolution. What metrics weigh upon your spirit today?',
-      },
-    ],
-  });
-
   const [input, setInput] = useState('');
-  const isLoading = status === 'submitted' || status === 'streaming';
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInput(e.target.value);
-  };
-
-  const handleSubmit = async (e?: React.FormEvent) => {
-    e?.preventDefault();
-    if (!input.trim()) return;
-    await sendMessage({ role: 'user', content: input } as any);
-    setInput('');
-  };
+  const [isLoading, setIsLoading] = useState(false);
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      id: 'welcome',
+      role: 'assistant',
+      content:
+        'Identity confirmed. I am the Oracle. Speak, Titan, and I shall guide your evolution. What metrics weigh upon your spirit today?',
+    },
+  ]);
+  
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll to bottom
   useEffect(() => {
@@ -53,6 +38,77 @@ export const OracleChat: React.FC<OracleChatProps> = ({ context }) => {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages]);
+
+  const handleSubmit = async (e?: React.FormEvent) => {
+    e?.preventDefault();
+    if (!input.trim() || isLoading) return;
+
+    const userMessage: Message = {
+      id: Date.now().toString(),
+      role: 'user',
+      content: input.trim(),
+    };
+
+    setMessages((prev) => [...prev, userMessage]);
+    setInput('');
+    setIsLoading(true);
+
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          messages: [...messages, userMessage].map(m => ({ role: m.role, content: m.content })),
+          context,
+        }),
+      });
+
+      if (!response.ok) throw new Error('Oracle is unreachable');
+
+      const reader = response.body?.getReader();
+      if (!reader) throw new Error('No stream available');
+
+      const assistantMessageId = (Date.now() + 1).toString();
+      setMessages((prev) => [...prev, { id: assistantMessageId, role: 'assistant', content: '' }]);
+
+      let accumulatedResponse = '';
+      const decoder = new TextDecoder();
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        const chunk = decoder.decode(value, { stream: true });
+        
+        // Ollama /api/chat stream:true returns a sequence of JSON objects
+        const lines = chunk.split('\n').filter(Boolean);
+        
+        for (const line of lines) {
+          try {
+            const json = JSON.parse(line);
+            if (json.message?.content) {
+              accumulatedResponse += json.message.content;
+              setMessages((prev) => 
+                prev.map(m => m.id === assistantMessageId ? { ...m, content: accumulatedResponse } : m)
+              );
+            }
+          } catch (e) {
+            // Handle cases where chunk might not be a full JSON line
+            console.warn('Chunk parse error', e);
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Oracle Chat Error:', error);
+      setMessages((prev) => [...prev, { 
+        id: 'error-' + Date.now(), 
+        role: 'assistant', 
+        content: 'The connection to the Oracle is unstable. Ensure local services are active.' 
+      }]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <>
@@ -91,7 +147,7 @@ export const OracleChat: React.FC<OracleChatProps> = ({ context }) => {
                   <div className="flex items-center gap-1.5">
                     <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
                     <span className="text-[10px] text-zinc-400 uppercase tracking-widest font-bold">
-                      Whisper Mode Active
+                      Local Inference Active
                     </span>
                   </div>
                 </div>
@@ -106,7 +162,7 @@ export const OracleChat: React.FC<OracleChatProps> = ({ context }) => {
 
             {/* Messages Area */}
             <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-hide">
-              {messages.map((m: any) => (
+              {messages.map((m) => (
                 <div
                   key={m.id}
                   className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}
@@ -127,30 +183,18 @@ export const OracleChat: React.FC<OracleChatProps> = ({ context }) => {
                     </div>
                     <div
                       data-testid="oracle-message"
-                      className={`p-3 rounded-2xl text-sm leading-relaxed ${
+                      className={`p-3 rounded-2xl text-sm leading-relaxed whitespace-pre-wrap ${
                         m.role === 'user'
                           ? 'bg-indigo-600 text-white rounded-tr-none'
                           : 'bg-white/5 text-zinc-100 border border-white/5 rounded-tl-none font-medium'
                       }`}
                     >
-                      {m.role === 'assistant'
-                        ? (() => {
-                            const text = Array.isArray(m.parts)
-                              ? (m.parts as Array<{ type: string; text?: string }>)
-                                  .filter(
-                                    (p): p is { type: 'text'; text: string } => p.type === 'text'
-                                  )
-                                  .map((p) => p.text)
-                                  .join('')
-                              : '';
-                            return text || (m as { content?: string }).content || '';
-                          })()
-                        : (m as { content?: string }).content}
+                      {m.content}
                     </div>
                   </div>
                 </div>
               ))}
-              {isLoading && (
+              {isLoading && !messages[messages.length-1].content && (
                 <div className="flex justify-start">
                   <div className="flex gap-3 max-w-[85%]">
                     <div className="w-8 h-8 rounded-full bg-zinc-800 border border-white/10 flex items-center justify-center">
@@ -173,17 +217,15 @@ export const OracleChat: React.FC<OracleChatProps> = ({ context }) => {
                     const val = e.target.value;
                     if (val === '/program') {
                       setShowProgramGenerator(true);
-                      handleInputChange({
-                        ...e,
-                        target: { ...e.target, value: '' },
-                      });
+                      setInput('');
                       setIsOpen(false);
                       return;
                     }
-                    handleInputChange(e);
+                    setInput(val);
                   }}
+                  disabled={isLoading}
                   placeholder="Ask the Oracle... (/program for generator)"
-                  className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pl-4 pr-12 text-sm text-white focus:outline-none focus:border-indigo-500 transition-all placeholder:text-zinc-600"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pl-4 pr-12 text-sm text-white focus:outline-none focus:border-indigo-500 transition-all placeholder:text-zinc-600 disabled:opacity-50"
                 />
                 <button
                   type="submit"

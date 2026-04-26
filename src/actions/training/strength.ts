@@ -235,15 +235,12 @@ export async function finishWorkoutAction(userId: string, logIds: string[]) {
             }
           }
 
-          const { GuildTerritoryService } = await import('@/services/game/GuildTerritoryService');
-          await GuildTerritoryService.recordActivity(
-            userWithGuild.guildId,
-            guild.targetTerritoryId,
-            {
-              volume: actualVolume,
-              xp: xpAward,
-            }
-          );
+          const { recordTerritoryActivityAction } = await import('@/actions/systems/territories');
+          await recordTerritoryActivityAction({
+            guildId: userWithGuild.guildId,
+            volume: actualVolume,
+            xp: xpAward,
+          });
         }
       }
     } catch (e) {

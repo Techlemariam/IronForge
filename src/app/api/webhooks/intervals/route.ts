@@ -122,7 +122,7 @@ export async function POST(request: NextRequest) {
 
         // Match the guild-based system: volume = distance in meters for now
         if (user.guildId) {
-          await TerritoryService.recordGuildActivity(user.guildId, distanceMeters);
+          await TerritoryService.recordActivity(user.guildId, '', { volume: distanceMeters, xp: 0 });
           logger.info(
             `[Intervals Webhook] Recorded ${distanceMeters} volume for Guild ${user.guildId}`
           );

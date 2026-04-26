@@ -274,7 +274,7 @@ export async function syncStravaActivitiesAction() {
 
         if (dbUser?.guildId) {
           const volume = activity.distance / 1000; // volume = km for cardio
-          await TerritoryService.recordGuildActivity(dbUser.guildId, volume);
+          await TerritoryService.recordActivity(dbUser.guildId, '', { volume, xp: minutes });
         }
 
         syncedCount++;

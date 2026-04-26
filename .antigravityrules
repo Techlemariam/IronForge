@@ -1,4 +1,9 @@
-# ⚡ IRONFORGE CORE LAWS (Strict Mode)
+﻿# ⚡ IRONFORGE CORE LAWS (Strict Mode)
+
+## ðŸŽ¯ Project Identity
+- **Type:** TBD
+- **Stack:** TBD
+- **Status:** Active
 
 ## 🏁 Quality & Validation (Zero-Manual-Debt)
 - **DoD:** NO manual validation. Proof required (Pass Vitest/Playwright/Screenshot).
@@ -21,21 +26,22 @@
 ## 🏷️ Operational Domains
 `[INFRA]`, `[GAME]`, `[SPRINT]`, `[QA]`, `[BIO]`, `[BUSINESS]`, `[API]`, `[META]`
 
----
----
-**Comm Style:** Concise. Evidence-based. No fluff. Logic-first.
-
-## 📚 Brotherhood Librarian (Cross-Repo Governance)
+<!-- BEGIN BROTHERHOOD SHARED RULES -->
+## ðŸ“š Brotherhood Librarian (Cross-Repo Governance)
 - **Ruleset**: Strictly follow patterns established in sibling repos (IronForge, Panopticon, Taktpinne, Matlogistik).
 - **Drift**: Use `/librarian` to audit architectural entropy.
 - **Artifacts**: Document cross-project learnings in Knowledge Items (KIs) via `bdistill-knowledge-extraction`.
 - **Standards**: NO deviations from the Unified `ship.ps1`, Biome, and pnpm standards.
 
-
-
-## ⚡ Token-Aware Delegation (Brotherhood V2.4)
+## âš¡ Token-Aware Delegation (Brotherhood V3.0)
 - **Calculation:** Always use the formula: Effective Entropy = [Project Score] + [Task Weight].
 - **Weights:** Consult [SKILL_ENTROPY_WEIGHTS.md](file:///c:/Users/alexa/Workspaces/SKILL_ENTROPY_WEIGHTS.md).
-- **Session Choice:** Use /local or /entropy to set the mode **for the current chat**.
+- **Session Choice:** Use `/local` or `/entropy` to set the mode **for the current chat**.
 - **Priority:** Session overrides > Global mode > Entropy Radar.
-- **Workflows:** Access via .agent/workflows/ or VS Code Tasks (Ctrl+Shift+P).
+- **Workflows:** Access via `.agent/workflows/` or VS Code Tasks (Ctrl+Shift+P).
+- **Local First:** Tasks with Effective Entropy < 1.5 MUST run on Khameleon/Mini-PC.
+
+---
+**Comm Style:** Concise. Logic-first. Evidence-based. No fluff.
+<!-- END BROTHERHOOD SHARED RULES -->
+

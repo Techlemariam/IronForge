@@ -25,9 +25,14 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Managed-Services Detection
+    - name: Managed-Services Detection & Initialization
       shell: pwsh
       run: |
+        if (-not (docker ps -q -f name=ironforge-pg-${{ inputs.tier }})) {
+          Write-Host "🟡 Managed Service not found for tier: ${{ inputs.tier }}. Attempting to start..." -ForegroundColor Yellow
+          .\scripts\ci\manage-ci-services.ps1 up
+        }
+        
         if (docker ps -q -f name=ironforge-pg-${{ inputs.tier }}) {
           Write-Host "🟢 Found Managed Service: ironforge-pg-${{ inputs.tier }}" -ForegroundColor Green
           
@@ -63,7 +68,7 @@ runs:
           
           Write-Host "🚀 Exported DATABASE_URL and ADMIN_DATABASE_URL (Port $Port)" -ForegroundColor Cyan
         } else {
-          Write-Error "❌ Managed Service not found for tier: ${{ inputs.tier }}. Cannot set DATABASE_URL. Aborting."
+          Write-Error "❌ Failed to start or find Managed Service for tier: ${{ inputs.tier }}. Aborting."
           exit 1
         }
 

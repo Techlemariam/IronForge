@@ -2,6 +2,7 @@
 
 import { getSession } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
+import { TerritoryService } from '@/services/game/TerritoryService';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 
@@ -170,47 +171,23 @@ export async function recordTerritoryActivityAction(input: {
   });
 
   const validated = schema.parse(input);
-  const { week, year } = getISOWeekNumber(new Date());
 
-  // Get all territories (guild competes for all)
-  const territories = await prisma.territory.findMany({
-    select: { id: true },
+  // Get guild's target territory
+  const guild = await prisma.guild.findUnique({
+    where: { id: validated.guildId },
+    select: { targetTerritoryId: true },
   });
 
-  // Count guild members
-  const memberCount = await prisma.user.count({
-    where: { guildId: validated.guildId },
-  });
-
-  // Upsert contest entry for each territory
-  for (const territory of territories) {
-    await prisma.territoryContestEntry.upsert({
-      where: {
-        territoryId_guildId_weekNumber_year: {
-          territoryId: territory.id,
-          guildId: validated.guildId,
-          weekNumber: week,
-          year,
-        },
-      },
-      update: {
-        totalVolume: { increment: validated.volume },
-        workoutCount: { increment: 1 },
-        xpEarned: { increment: validated.xp },
-        memberCount,
-      },
-      create: {
-        territoryId: territory.id,
-        guildId: validated.guildId,
-        weekNumber: week,
-        year,
-        totalVolume: validated.volume,
-        workoutCount: 1,
-        xpEarned: validated.xp,
-        memberCount,
-      },
-    });
+  if (!guild?.targetTerritoryId) {
+    return { success: false, error: 'No territory target set for guild.' };
   }
+
+  await TerritoryService.recordActivity(validated.guildId, guild.targetTerritoryId, {
+    volume: validated.volume,
+    xp: validated.xp,
+  });
+
+  return { success: true };
 }
 
 /**
