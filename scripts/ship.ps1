@@ -55,7 +55,7 @@ function Write-Fail([string]$msg) { Write-Host "  ❌ $msg" -ForegroundColor Red
 function Write-Warn([string]$msg) { Write-Host "  ⚠️  $msg" -ForegroundColor Yellow }
 function Write-Info([string]$msg) { Write-Host "  ℹ️  $msg" -ForegroundColor DarkGray }
 
-function Write-ShipLog {
+function script:Write-ShipLog {
   param([string]$Event, [string]$Detail, [string]$Status = "INFO")
   if (-not (Test-Path $LOG_DIR)) { New-Item -ItemType Directory -Path $LOG_DIR -Force | Out-Null }
   $logFile = Join-Path $LOG_DIR "ship-$(Get-Date -Format 'yyyy-MM-dd').jsonl"
