@@ -21,6 +21,10 @@ inputs:
     description: 'CI Tier (l1, e2e, guard, l3)'
     required: false
     default: 'l1'
+  skip-managed-services:
+    description: 'Skip Managed Services (Docker) detection'
+    required: false
+    default: 'false'
 
 runs:
   using: "composite"
@@ -28,6 +32,11 @@ runs:
     - name: Managed-Services Detection
       shell: pwsh
       run: |
+        if ("${{ inputs.skip-managed-services }}" -eq "true") {
+          Write-Host "⏭️ Skipping Managed Services detection as requested."
+          exit 0
+        }
+
         if (docker ps -q -f name=ironforge-pg-${{ inputs.tier }}) {
           Write-Host "🟢 Found Managed Service: ironforge-pg-${{ inputs.tier }}" -ForegroundColor Green
           

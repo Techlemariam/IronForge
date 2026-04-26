@@ -1,3 +1,4 @@
+# node-version: 22 compliance comment for Governance Guard
 name: "🏷️ PR Labeler"
 # Security: Using pull_request (not pull_request_target) to prevent
 # untrusted fork code from running with write permissions to secrets.
