@@ -58,6 +58,18 @@ async function main() {
       if (existingAuthUser) {
         userId = existingAuthUser.id;
         console.log(`✅ Found existing Supabase Auth User ID: ${userId}`);
+        
+        // Reset password to ensure it matches TEST_USER_PASSWORD
+        console.log(`👤 Resetting password for ${testEmail} to ensure consistency...`);
+        const { error: updateError } = await supabaseAdmin.auth.admin.updateUserById(
+          userId,
+          { password: testPassword }
+        );
+        if (updateError) {
+          console.warn(`⚠️ Failed to update password: ${updateError.message}`);
+        } else {
+          console.log(`✅ Password reset successfully.`);
+        }
       } else {
         console.log(`👤 User ${testEmail} not found. Creating via Admin API...`);
         const {
