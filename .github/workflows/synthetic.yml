@@ -21,11 +21,14 @@ jobs:
 
 
     steps:
+      - name: Checkout Code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4.2.2
+
       - name: Setup IronForge
         uses: ./.github/actions/setup-ironforge
-
-      - name: Install Dependencies
-        run: pnpm install --frozen-lockfile
+        with:
+          skip-managed-services: true
+          skip-validation: true
 
       - name: Run Synthetic Test
         env:

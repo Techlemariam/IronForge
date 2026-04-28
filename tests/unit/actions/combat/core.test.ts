@@ -55,6 +55,14 @@ vi.mock('@/services/game/LootSystem', () => ({
   },
 }));
 
+vi.mock('@/services/game/TitanService', () => ({
+  TitanService: {
+    modifyHealth: vi.fn().mockResolvedValue({ currentHp: 100 }),
+    awardXp: vi.fn().mockResolvedValue({ titan: { level: 1, xp: 100 }, leveledUp: false }),
+    getTitan: vi.fn().mockResolvedValue({ id: 't1', currentHp: 100, maxHp: 100 }),
+  },
+}));
+
 vi.mock('@/utils', () => ({
   calculateTitanAttributes: vi.fn(() => ({
     strength: 10,

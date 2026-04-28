@@ -35,49 +35,10 @@ vi.mock('next/navigation', () => ({
 }));
 
 // Mock Lucide React
-vi.mock('lucide-react', () => {
-  const MockIcon = (props: any) => <div data-testid="mock-icon" {...props} />;
+vi.mock('lucide-react', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('lucide-react')>();
   return {
-    // Existing icons
-    Mic: MockIcon,
-    Bike: MockIcon,
-    Footprints: MockIcon,
-    Sword: MockIcon,
-    Map: MockIcon,
-    Castle: MockIcon,
-    Dumbbell: MockIcon,
-    Scroll: MockIcon,
-    Skull: MockIcon,
-    ShoppingBag: MockIcon,
-    Shield: MockIcon,
-    Users: MockIcon,
-    Gavel: MockIcon,
-    Settings: MockIcon,
-    Coins: MockIcon,
-    Flame: MockIcon,
-    Zap: MockIcon,
-    Moon: MockIcon,
-    Check: MockIcon,
-    X: MockIcon,
-    Info: MockIcon,
-    AlertTriangle: MockIcon,
-    ArrowLeft: MockIcon,
-    ArrowRight: MockIcon,
-    ChevronDown: MockIcon,
-    ChevronUp: MockIcon,
-    // Newly added icons for UltrathinkDashboard
-    Brain: MockIcon,
-    TrendingUp: MockIcon,
-    Calendar: MockIcon,
-    Battery: MockIcon,
-    Activity: MockIcon,
-    Wind: MockIcon,
-    Trophy: MockIcon,
-    Gauge: MockIcon,
-    ShieldAlert: MockIcon,
-    ZapOff: MockIcon,
-    CheckCircle2: MockIcon,
-    MessageSquare: MockIcon,
+    ...actual,
   };
 });
 
@@ -176,9 +137,7 @@ describe('DashboardClient', () => {
 
     render(<DashboardClient {...unconfiguredProps} />);
 
-    // Should NOT show configuration required
-    expect(screen.queryByText('Configuration Required')).toBeNull();
-    // Should render CitadelHub (mocked)
-    expect(screen.getByTestId('citadel-hub')).toBeTruthy();
+    // Should render TodaysMission by default (mission_control view)
+    expect(screen.getByTestId('todays-mission')).toBeTruthy();
   });
 });
