@@ -15,7 +15,14 @@
     - [x] `src/components/game/Grimoire.tsx`
     - [x] `src/components/game/Bestiary.tsx`
     - [x] `src/components/game/Arena.tsx`
-- [x] Final Verification (lint & build)
+- [x] Fix `lucide-react` mock in `DashboardClient.test.tsx`
+- [x] Fix `strava.test.ts` assertion failures (rebase/commit local changes)
+- [x] Fix `progression/core.test.ts` failures (rebase/commit local changes)
+- [x] Fix `onboarding.test.ts` failure (rebase/commit local changes)
+- [x] Fix `titan/core.test.ts` failures (rebase/commit local changes)
+- [x] Fix Type Errors (`tsc --noEmit`)
+- [x] Push changes to `feat/stabilize-ci`
+- [/] Re-trigger CI and verify (lint & build)
     - [x] pnpm lint (0 errors in `src/`)
     - [x] pnpm build (Successful compilation and static generation)
     - [x] Snyk Security Scan (Remediated PRCelebration XSS with safe whitelist)
