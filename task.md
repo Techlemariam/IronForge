@@ -17,7 +17,7 @@
 - [x] Fix Type Errors (`tsc --noEmit`)
 - [x] Fix `scripts/ci/validate-secrets.ps1` to respect `SKIP_ENV_VALIDATION`
 - [x] Push changes to `feat/stabilize-ci`
-- [/] Re-trigger CI and verify (waiting for runners)
-- [ ] Recover self-hosted runners (0/6 online)
+- [/] Re-trigger CI and verify (In Progress: L1 Passed, E2E Running)
+- [x] Recover self-hosted runners (3/6 online, Managed Services started)
 - [ ] Season 2: Guild Territories (#75)
 - [ ] Season 2: Oracle 3.0 Phase 2 (#76)

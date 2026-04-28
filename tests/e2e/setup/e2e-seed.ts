@@ -29,7 +29,7 @@ async function main() {
 
   // Authenticate with Supabase to get the REAL User ID
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const serviceKey = process.env.SUPABASE_SERVICE_KEY;
+  const serviceKey = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
   const testEmail = process.env.TEST_USER_EMAIL || 'alexander.teklemariam@gmail.com';
   const testPassword = process.env.TEST_USER_PASSWORD || 'IronForge2025!';
 
