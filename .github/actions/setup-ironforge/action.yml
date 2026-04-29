@@ -50,7 +50,10 @@ runs:
           }
           
           $Port = $PortMap["${{ inputs.tier }}"]
-          $DockerHost = if ("${{ runner.os }}" -eq "Windows") { "127.0.0.1" } else { "host.docker.internal" }
+          $DockerHost = "127.0.0.1"
+          if ("${{ runner.os }}" -eq "Linux") {
+            try { [System.Net.Dns]::GetHostEntry("host.docker.internal") | Out-Null; $DockerHost = "host.docker.internal" } catch { $DockerHost = "127.0.0.1" }
+          }
           $BaseURL = "postgresql://postgres:password@${DockerHost}:$Port"
           if ("${{ inputs.tier }}" -eq "e2e") { $idb = "ironforge_e2e" } else { $idb = "ironforge_test" }
           $TargetURL = "$($BaseURL)/$($idb)?schema=public"

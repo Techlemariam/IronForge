@@ -30,8 +30,13 @@ async function main() {
   // Authenticate with Supabase to get the REAL User ID
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const serviceKey = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
-  const testEmail = process.env.TEST_USER_EMAIL || 'alexander.teklemariam@gmail.com';
-  const testPassword = process.env.TEST_USER_PASSWORD || 'IronForge2025!';
+  const testEmail = process.env.TEST_USER_EMAIL;
+  const testPassword = process.env.TEST_USER_PASSWORD;
+
+  if (!testEmail || !testPassword) {
+    console.warn('⚠️ TEST_USER_EMAIL or TEST_USER_PASSWORD not set. Skipping Auth sync.');
+    return;
+  }
 
   let userId: string | undefined;
 
@@ -47,48 +52,55 @@ async function main() {
       },
     });
 
-    // Try to get existing user
-    const {
-      data: { users },
-      error: listError,
-    } = await supabaseAdmin.auth.admin.listUsers();
+    // Try to get existing user with robust error handling
+    let users: any[] = [];
+    try {
+      const response = await supabaseAdmin.auth.admin.listUsers();
+      if (response.error) {
+        throw response.error;
+      }
+      users = response.data.users;
+    } catch (err: any) {
+      console.warn(`⚠️ Failed to list users: ${err.message}`);
+      if (err.message?.includes('Unexpected token')) {
+        console.error('DEBUG: Supabase Auth returned invalid JSON. Possible HTML error page.');
+        // We can't easily get the raw body from supabase-js here without deeper interception,
+        // but we can at least flag it clearly.
+      }
+    }
 
-    if (listError) {
-      console.warn(`⚠️ Failed to list users: ${listError.message}`);
-    } else {
-      const existingAuthUser = users.find((u) => u.email === testEmail);
-      if (existingAuthUser) {
-        userId = existingAuthUser.id;
-        console.log(`✅ Found existing Supabase Auth User ID: ${userId}`);
+    const existingAuthUser = users.find((u) => u.email === testEmail);
+    if (existingAuthUser) {
+      userId = existingAuthUser.id;
+      console.log(`✅ Found existing Supabase Auth User ID: ${userId}`);
 
-        // Reset password to ensure it matches TEST_USER_PASSWORD
-        console.log(`👤 Resetting password for ${testEmail} to ensure consistency...`);
-        const { error: updateError } = await supabaseAdmin.auth.admin.updateUserById(userId, {
-          password: testPassword,
-        });
-        if (updateError) {
-          console.warn(`⚠️ Failed to update password: ${updateError.message}`);
-        } else {
-          console.log('✅ Password reset successfully.');
-        }
+      // Reset password to ensure it matches TEST_USER_PASSWORD
+      console.log(`👤 Resetting password for ${testEmail} to ensure consistency...`);
+      const { error: updateError } = await supabaseAdmin.auth.admin.updateUserById(userId, {
+        password: testPassword,
+      });
+      if (updateError) {
+        console.warn(`⚠️ Failed to update password: ${updateError.message}`);
       } else {
-        console.log(`👤 User ${testEmail} not found. Creating via Admin API...`);
-        const {
-          data: { user },
-          error: createError,
-        } = await supabaseAdmin.auth.admin.createUser({
-          email: testEmail,
-          password: testPassword,
-          email_confirm: true,
-          user_metadata: { heroName: 'E2E Hunter' },
-        });
+        console.log('✅ Password reset successfully.');
+      }
+    } else {
+      console.log(`👤 User ${testEmail} not found. Creating via Admin API...`);
+      const {
+        data: { user },
+        error: createError,
+      } = await supabaseAdmin.auth.admin.createUser({
+        email: testEmail,
+        password: testPassword,
+        email_confirm: true,
+        user_metadata: { heroName: 'E2E Hunter' },
+      });
 
-        if (createError) {
-          console.error(`❌ Failed to create auth user: ${createError.message}`);
-        } else if (user) {
-          userId = user.id;
-          console.log(`✅ Created Supabase Auth User ID: ${userId}`);
-        }
+      if (createError) {
+        console.error(`❌ Failed to create auth user: ${createError.message}`);
+      } else if (user) {
+        userId = user.id;
+        console.log(`✅ Created Supabase Auth User ID: ${userId}`);
       }
     }
   } else {
