@@ -50,6 +50,7 @@ jobs:
             await expect(page).toHaveTitle(/IronForge/i);
           });" > tests/e2e/synthetic.spec.ts
 
+          npx playwright install --with-deps chromium
           npx playwright test tests/e2e/synthetic.spec.ts --project=smoke
         
       - name: 🚨 Notify on Failure
