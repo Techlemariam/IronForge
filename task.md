@@ -17,7 +17,13 @@
 - [x] Fix Type Errors (`tsc --noEmit`)
 - [x] Fix `scripts/ci/validate-secrets.ps1` to respect `SKIP_ENV_VALIDATION`
 - [x] Push changes to `feat/stabilize-ci`
-- [/] Re-trigger CI and verify (In Progress: L1 Passed, E2E Running)
-- [x] Recover self-hosted runners (3/6 online, Managed Services started)
+- [x] Re-trigger CI and verify (L1: PASSED, Snyk: PASSED)
+- [x] Recover self-hosted runners (3 runners online, managed services integrated)
+- [x] Fix E2E Seed script (env mismatch and prisma upsert ID fix)
+- [x] Fix restart-runners.ps1 script (Integrated CI managed services)
+- [x] Fix labeler.yml (40-char SHA resolution fix)
+- [x] Resolve `setup-node` hang (v4 tag and cache disable)
+- [/] Verify E2E Smoke job health (In Progress)
+- [/] Validate Synthetic Monitoring recovery (In Progress)
 - [ ] Season 2: Guild Territories (#75)
 - [ ] Season 2: Oracle 3.0 Phase 2 (#76)

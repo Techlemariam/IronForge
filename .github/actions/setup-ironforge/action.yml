@@ -70,6 +70,14 @@ runs:
             Write-Host "🚀 Exported SHADOW_DATABASE_URL and TARGET_DB ($ShadowDB) to GITHUB_ENV" -ForegroundColor Cyan
           }
           
+          # Rewrite local Supabase URL to use DockerHost if applicable
+          $SupabaseURL = $env:NEXT_PUBLIC_SUPABASE_URL
+          if ($SupabaseURL -and ($SupabaseURL -match "127.0.0.1" -or $SupabaseURL -match "localhost")) {
+            $FixedSupabaseURL = $SupabaseURL -replace "127.0.0.1", $DockerHost -replace "localhost", $DockerHost
+            [System.IO.File]::AppendAllText($env:GITHUB_ENV, "NEXT_PUBLIC_SUPABASE_URL=$FixedSupabaseURL`n")
+            Write-Host "🔄 Rewrote NEXT_PUBLIC_SUPABASE_URL to $FixedSupabaseURL" -ForegroundColor Cyan
+          }
+          
           Write-Host "🚀 Exported DATABASE_URL and ADMIN_DATABASE_URL (Port $Port)" -ForegroundColor Cyan
         } else {
           Write-Error "❌ Managed Service not found for tier: ${{ inputs.tier }}. Cannot set DATABASE_URL. Aborting."
