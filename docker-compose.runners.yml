@@ -1,4 +1,3 @@
-version: '3.8'
 
 services:
   runner:
@@ -14,7 +13,6 @@ services:
       - ORG_RUNNER=false
       - LABELS=self-hosted,IronForge-Local
       - EPHEMERAL=true
-      - DISABLE_AUTO_UPDATE=true
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:

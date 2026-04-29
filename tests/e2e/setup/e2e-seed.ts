@@ -244,30 +244,6 @@ async function main() {
   // 3. Seed Main Test User (Hunter) to prevent Onboarding Overlay in E2E
   // Use the retrieved userId if available, otherwise let Prisma generate one (start of problem) or update existing
 
-  // First, check if user exists by email to get their existing ID if we failed to fetch from Supabase
-  let existingUser = await prisma.user.findUnique({ where: { email: testEmail } });
-
-  // If we have a Supabase ID, we MUST ensure the user record uses THAT ID.
-  // If a user exists with that email but DIFFERENT ID, we have a conflict.
-  if (userId && existingUser && existingUser.id !== userId) {
-    console.log(
-      `⚠️ User exists with email ${testEmail} but different ID (${existingUser.id} vs ${userId}). Updating ID...`
-    );
-    // We can't easily update ID in Prisma if there are foreign keys.
-    // Best approach for seeding: Delete and Recreate if safe, OR try to update if supported.
-    // Assuming cascade delete is not always safe, but for E2E user it might be.
-    // Let's try to update user ID using raw query or delete-create method if needed.
-    // Prisma update of ID is tricky.
-    // Simpler: Just delete the old record.
-    try {
-      await prisma.user.delete({ where: { email: testEmail } });
-      existingUser = null; // Forces recreate below
-      console.log('✅ Deleted mismatched ID user.');
-    } catch (e) {
-      console.error('Failed to delete mismatched user:', e);
-    }
-  }
-
   const startData = {
     email: testEmail,
     heroName: 'E2E Hunter',
@@ -291,6 +267,28 @@ async function main() {
     willpower: 20,
   };
 
+  const effectiveId = userId || 'e2e-test-user-id';
+
+  // --- USER AUTH SYNC ---
+  let existingUserByEmail = await prisma.user.findUnique({ where: { email: testEmail } });
+  let existingUserById = await prisma.user.findUnique({ where: { id: effectiveId } });
+
+  // Case 1: User with this email exists but has wrong ID
+  if (existingUserByEmail && existingUserByEmail.id !== effectiveId) {
+    console.log(`⚠️ User exists with email ${testEmail} but different ID (${existingUserByEmail.id} vs ${effectiveId}). Cleaning up...`);
+    await cleanupUser(existingUserByEmail.id);
+    existingUserByEmail = null;
+    // Re-check existingUserById in case it was the same one (though ID differed)
+    existingUserById = await prisma.user.findUnique({ where: { id: effectiveId } });
+  }
+
+  // Case 2: User with this ID exists but has wrong email
+  if (existingUserById && existingUserById.email !== testEmail) {
+    console.log(`⚠️ User exists with ID ${effectiveId} but different email (${existingUserById.email} vs ${testEmail}). Cleaning up...`);
+    await cleanupUser(existingUserById.id);
+    existingUserById = null;
+  }
+
   // Use upsert with the CORRECT ID
   // If userId is known, we want to create with that ID.
   // upsert requires 'where' to be unique. Email is unique.
@@ -302,8 +300,6 @@ async function main() {
       create: titanData,
     },
   };
-
-  const effectiveId = userId || 'e2e-test-user-id';
 
   const testUser = await prisma.user.upsert({
     where: { email: testEmail },
@@ -371,6 +367,52 @@ async function main() {
   console.log('✅ Seeded E2E territory controlled by guild.');
 
   console.log('🌱 Seeding completed successfully.');
+}
+
+/**
+ * Safely removes a user and all their associated records to satisfy FK constraints.
+ * Essential for E2E seeding when the local Supabase Auth ID changes but DB record remains.
+ */
+async function cleanupUser(id: string) {
+  console.log(`🧹 Cleaning up user ${id} and all related data...`);
+
+  // We use individual deleteMany to avoid transaction timeout on large datasets,
+  // but wrap in a sequence that respects FK order (children first).
+  // 1. Delete deeply nested Titan children
+  await prisma.titanMemory.deleteMany({ where: { titan: { userId: id } } });
+  await prisma.titanScar.deleteMany({ where: { titan: { userId: id } } });
+  
+  // 2. Delete User's primary associations
+  await prisma.titan.deleteMany({ where: { userId: id } });
+  await prisma.combatSession.deleteMany({ where: { userId: id } });
+  await prisma.pvpProfile.deleteMany({ where: { userId: id } });
+  await prisma.guildRaidContribution.deleteMany({ where: { userId: id } });
+  await prisma.unlockedMonster.deleteMany({ where: { userId: id } });
+  await prisma.userAchievement.deleteMany({ where: { userId: id } });
+  await prisma.userChallenge.deleteMany({ where: { userId: id } });
+  await prisma.userEquipment.deleteMany({ where: { userId: id } });
+  await prisma.userSkill.deleteMany({ where: { userId: id } });
+  await prisma.userTitle.deleteMany({ where: { userId: id } });
+  await prisma.weeklyPlan.deleteMany({ where: { userId: id } });
+  await prisma.workoutTemplate.deleteMany({ where: { userId: id } });
+  await prisma.exerciseLog.deleteMany({ where: { userId: id } });
+  await prisma.cardioLog.deleteMany({ where: { userId: id } });
+  await prisma.bodyMetric.deleteMany({ where: { userId: id } });
+  await prisma.meditationLog.deleteMany({ where: { userId: id } });
+  await prisma.grimoireEntry.deleteMany({ where: { userId: id } });
+  await prisma.notification.deleteMany({ where: { userId: id } });
+  await prisma.pushSubscription.deleteMany({ where: { userId: id } });
+  await prisma.pvpRating.deleteMany({ where: { userId: id } });
+  await prisma.activeSession.deleteMany({ where: { hostId: id } });
+  await prisma.sessionParticipant.deleteMany({ where: { userId: id } });
+
+  // 3. Handle Guild leadership
+  // If user is a leader, we might need to delete the guild or assign new leader.
+  // For E2E seeding, we usually delete the guild to allow fresh seeding.
+  await prisma.guild.deleteMany({ where: { leaderId: id } });
+
+  // 4. Finally delete the user
+  await prisma.user.delete({ where: { id } });
 }
 
 // Export as default for Playwright globalSetup
