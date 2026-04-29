@@ -1,5 +1,6 @@
 import { Archetype, Faction } from '@prisma/client';
 import { createClient } from '@supabase/supabase-js';
+import { Client } from 'pg';
 import { prisma } from '../../../src/lib/prisma';
 // Using global fetch (available in Node 18+)
 async function checkSupabaseHealth(url: string): Promise<boolean> {
@@ -13,6 +14,31 @@ async function checkSupabaseHealth(url: string): Promise<boolean> {
     return !!data;
   } catch (err) {
     return false;
+  }
+}
+
+async function removeLocalAuthUser(email: string): Promise<boolean> {
+  const adminDatabaseUrl = process.env.ADMIN_DATABASE_URL;
+  if (!adminDatabaseUrl) {
+    console.warn('⚠️ ADMIN_DATABASE_URL not set. Cannot clean stale local auth user.');
+    return false;
+  }
+
+  const client = new Client({ connectionString: adminDatabaseUrl });
+  try {
+    await client.connect();
+    const result = await client.query('DELETE FROM auth.users WHERE lower(email) = lower($1)', [
+      email,
+    ]);
+    console.log(`🧹 Removed ${result.rowCount ?? 0} stale local Supabase Auth user(s).`);
+    return true;
+  } catch (err) {
+    console.warn(
+      `⚠️ Failed to remove stale local auth user: ${err instanceof Error ? err.message : String(err)}`
+    );
+    return false;
+  } finally {
+    await client.end().catch(() => undefined);
   }
 }
 
@@ -54,6 +80,7 @@ async function main() {
   }
 
   let userId: string | undefined;
+  let usedPasswordAuthFallback = false;
 
   if (supabaseUrl && serviceKey) {
     console.log(
@@ -108,17 +135,36 @@ async function main() {
           },
         });
 
-        const { data: signUpData, error: signUpError } = await supabaseAuth.auth.signUp({
-          email: testEmail,
-          password: testPassword,
-          options: { data: { heroName: 'E2E Hunter' } },
-        });
+        const signUpTestUser = () =>
+          supabaseAuth.auth.signUp({
+            email: testEmail,
+            password: testPassword,
+            options: { data: { heroName: 'E2E Hunter' } },
+          });
 
-        if (signUpData.user) {
-          userId = signUpData.user.id;
+        const { data: signUpData, error: signUpError } = await signUpTestUser();
+
+        let fallbackUser = signUpData.user;
+        let fallbackError = signUpError;
+
+        if (!fallbackUser && signUpError?.message?.includes('User already registered')) {
+          console.warn(
+            '⚠️ Existing auth user has unknown password. Removing stale local auth row and retrying signup.'
+          );
+          const removed = await removeLocalAuthUser(testEmail);
+          if (removed) {
+            const { data: retryData, error: retryError } = await signUpTestUser();
+            fallbackUser = retryData.user;
+            fallbackError = retryError;
+          }
+        }
+
+        if (fallbackUser) {
+          userId = fallbackUser.id;
+          usedPasswordAuthFallback = true;
           console.log(`✅ Created Supabase Auth User ID via signup: ${userId}`);
-        } else if (signUpError) {
-          console.warn(`⚠️ Signup fallback did not create user: ${signUpError.message}`);
+        } else if (fallbackError) {
+          console.warn(`⚠️ Signup fallback did not create user: ${fallbackError.message}`);
           const { data: signInData, error: signInError } =
             await supabaseAuth.auth.signInWithPassword({
               email: testEmail,
@@ -126,10 +172,11 @@ async function main() {
             });
 
           if (signInError || !signInData.user) {
-            throw signInError || signUpError;
+            throw signInError || fallbackError;
           }
 
           userId = signInData.user.id;
+          usedPasswordAuthFallback = true;
           console.log(`✅ Found Supabase Auth User ID via signin: ${userId}`);
         }
       }
@@ -167,17 +214,21 @@ async function main() {
       console.log(`✅ Found existing Supabase Auth User ID: ${userId}`);
 
       // Reset password to ensure it matches TEST_USER_PASSWORD
-      console.log(`👤 Resetting password for ${testEmail} to ensure consistency...`);
-      const { error: updateError } = await supabaseAdmin.auth.admin.updateUserById(
-        existingAuthUser.id,
-        {
-          password: testPassword!,
-        }
-      );
-      if (updateError) {
-        console.warn(`⚠️ Failed to update password: ${updateError.message}`);
+      if (usedPasswordAuthFallback) {
+        console.log('✅ Password already set by password-auth fallback.');
       } else {
-        console.log('✅ Password reset successfully.');
+        console.log(`👤 Resetting password for ${testEmail} to ensure consistency...`);
+        const { error: updateError } = await supabaseAdmin.auth.admin.updateUserById(
+          existingAuthUser.id,
+          {
+            password: testPassword!,
+          }
+        );
+        if (updateError) {
+          console.warn(`⚠️ Failed to update password: ${updateError.message}`);
+        } else {
+          console.log('✅ Password reset successfully.');
+        }
       }
     } else {
       console.log(`👤 User ${testEmail} not found. Creating via Admin API...`);
