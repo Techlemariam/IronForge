@@ -67,7 +67,9 @@ async function main() {
           console.warn(`⚠️ Auth health check returned ${healthResp.status}. Retrying...`);
         }
       } catch (e) {
-        console.warn(`⚠️ Auth health check failed: ${e instanceof Error ? e.message : String(e)}. Retrying...`);
+        console.warn(
+          `⚠️ Auth health check failed: ${e instanceof Error ? e.message : String(e)}. Retrying...`
+        );
       }
       if (!authReady) {
         authRetries--;
@@ -75,7 +77,7 @@ async function main() {
           console.error('❌ Supabase Auth service not ready after all retries.');
           // Don't exit yet, let the admin call try and fail with better logs
         } else {
-          await new Promise(r => setTimeout(r, 3000));
+          await new Promise((r) => setTimeout(r, 3000));
         }
       }
     }
@@ -90,8 +92,8 @@ async function main() {
       users = response.data.users;
     } catch (err: any) {
       console.error(`❌ Failed to list users: ${err.message}`);
-      
-      // CRITICAL DEBUG: If we get a JSON parse error (Unexpected token <), 
+
+      // CRITICAL DEBUG: If we get a JSON parse error (Unexpected token <),
       // it means we got HTML. Let's try to see what that HTML is.
       if (err.message?.includes('Unexpected token') || err.message?.includes('JSON')) {
         console.error('DEBUG: Supabase Auth returned invalid JSON. Possible HTML error page.');
@@ -100,9 +102,9 @@ async function main() {
           const text = await debugResp.text();
           console.error(`DEBUG: Health Check Status: ${debugResp.status}`);
           console.error(`DEBUG: Health Check Body: ${text.substring(0, 1000)}`);
-          
+
           const adminResp = await fetch(`${supabaseUrl}/auth/v1/admin/users`, {
-            headers: { 'Authorization': `Bearer ${serviceKey}` }
+            headers: { Authorization: `Bearer ${serviceKey}` },
           });
           const adminText = await adminResp.text();
           console.error(`DEBUG: Admin Users Status: ${adminResp.status}`);
