@@ -44,6 +44,7 @@ async function main() {
   // Authenticate with Supabase to get the REAL User ID
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const serviceKey = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   const testEmail = process.env.TEST_USER_EMAIL;
   const testPassword = process.env.TEST_USER_PASSWORD;
 
@@ -91,27 +92,73 @@ async function main() {
     } catch (err: any) {
       console.error(`❌ Failed to list users: ${err.message}`);
 
-      // CRITICAL DEBUG: If we get a JSON parse error (Unexpected token <),
-      // it means we got HTML. Let's try to see what that HTML is.
-      if (err.message?.includes('Unexpected token') || err.message?.includes('JSON')) {
-        console.error('DEBUG: Supabase Auth returned invalid JSON. Possible HTML error page.');
-        try {
-          const debugResp = await fetch(`${supabaseUrl}/auth/v1/health`);
-          const text = await debugResp.text();
-          console.error(`DEBUG: Health Check Status: ${debugResp.status}`);
-          console.error(`DEBUG: Health Check Body: ${text.substring(0, 1000)}`);
+      if (err.code === 'bad_jwt' || err.message?.includes('invalid JWT')) {
+        console.warn(
+          '⚠️ Service role key is not valid for this local Supabase instance. Falling back to password signup/signin.'
+        );
 
-          const adminResp = await fetch(`${supabaseUrl}/auth/v1/admin/users`, {
-            headers: { Authorization: `Bearer ${serviceKey}` },
-          });
-          const adminText = await adminResp.text();
-          console.error(`DEBUG: Admin Users Status: ${adminResp.status}`);
-          console.error(`DEBUG: Admin Users Body: ${adminText.substring(0, 1000)}`);
-        } catch (debugErr) {
-          console.error(`DEBUG: Failed to fetch additional debug info: ${debugErr}`);
+        if (!anonKey) {
+          throw err;
+        }
+
+        const supabaseAuth = createClient(supabaseUrl, anonKey, {
+          auth: {
+            autoRefreshToken: false,
+            persistSession: false,
+          },
+        });
+
+        const { data: signUpData, error: signUpError } = await supabaseAuth.auth.signUp({
+          email: testEmail,
+          password: testPassword,
+          options: { data: { heroName: 'E2E Hunter' } },
+        });
+
+        if (signUpData.user) {
+          userId = signUpData.user.id;
+          console.log(`✅ Created Supabase Auth User ID via signup: ${userId}`);
+        } else if (signUpError) {
+          console.warn(`⚠️ Signup fallback did not create user: ${signUpError.message}`);
+          const { data: signInData, error: signInError } =
+            await supabaseAuth.auth.signInWithPassword({
+              email: testEmail,
+              password: testPassword,
+            });
+
+          if (signInError || !signInData.user) {
+            throw signInError || signUpError;
+          }
+
+          userId = signInData.user.id;
+          console.log(`✅ Found Supabase Auth User ID via signin: ${userId}`);
         }
       }
-      throw err; // Re-throw to fail the setup properly
+
+      if (userId) {
+        users = [{ id: userId, email: testEmail }];
+      } else {
+        // CRITICAL DEBUG: If we get a JSON parse error (Unexpected token <),
+        // it means we got HTML. Let's try to see what that HTML is.
+        if (err.message?.includes('Unexpected token') || err.message?.includes('JSON')) {
+          console.error('DEBUG: Supabase Auth returned invalid JSON. Possible HTML error page.');
+          try {
+            const debugResp = await fetch(`${supabaseUrl}/auth/v1/health`);
+            const text = await debugResp.text();
+            console.error(`DEBUG: Health Check Status: ${debugResp.status}`);
+            console.error(`DEBUG: Health Check Body: ${text.substring(0, 1000)}`);
+
+            const adminResp = await fetch(`${supabaseUrl}/auth/v1/admin/users`, {
+              headers: { Authorization: `Bearer ${serviceKey}` },
+            });
+            const adminText = await adminResp.text();
+            console.error(`DEBUG: Admin Users Status: ${adminResp.status}`);
+            console.error(`DEBUG: Admin Users Body: ${adminText.substring(0, 1000)}`);
+          } catch (debugErr) {
+            console.error(`DEBUG: Failed to fetch additional debug info: ${debugErr}`);
+          }
+        }
+        throw err; // Re-throw to fail the setup properly
+      }
     }
 
     const existingAuthUser = users.find((u) => u.email === testEmail);
