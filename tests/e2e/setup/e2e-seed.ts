@@ -244,7 +244,6 @@ async function main() {
   const testUser = await prisma.user.upsert({
     where: { email: testEmail },
     update: {
-      id: effectiveId,
       heroName: 'E2E Hunter',
       hasCompletedOnboarding: true,
       level: 10,

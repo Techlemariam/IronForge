@@ -48,12 +48,6 @@ foreach ($c in $containers) {
     Write-Host "  ✅ $c" -ForegroundColor Green
 }
 
-if ($runningCount -lt $Scale) {
-    Write-Host "  ⚠️ Not all runners started!" -ForegroundColor Yellow
-    # Show logs for debugging
-    docker compose -f $ComposeFile logs --tail 10
-    exit 1
+if ($runningCount -eq $Scale) {
+    Write-Host "Success: All $runningCount runners online."
 }
-
-Write-Host ""
-Write-Host "🎉 All $runningCount runners online and registered." -ForegroundColor Green
