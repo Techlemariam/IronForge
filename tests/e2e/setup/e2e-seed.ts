@@ -1,3 +1,4 @@
+import { mkdir, writeFile } from 'node:fs/promises';
 import { Archetype, Faction } from '@prisma/client';
 import { createClient } from '@supabase/supabase-js';
 import { Client } from 'pg';
@@ -42,6 +43,24 @@ async function removeLocalAuthUser(email: string): Promise<boolean> {
   }
 }
 
+function uniqueEmailFor(email: string): string {
+  const at = email.lastIndexOf('@');
+  const suffix = `e2e-${Date.now()}`;
+  if (at === -1) {
+    return `${email}+${suffix}@ironforge.local`;
+  }
+
+  return `${email.slice(0, at)}+${suffix}${email.slice(at)}`;
+}
+
+async function writeE2ECredentials(email: string, password: string): Promise<void> {
+  await mkdir('playwright/.auth', { recursive: true });
+  await writeFile(
+    'playwright/.auth/credentials.json',
+    `${JSON.stringify({ email, password }, null, 2)}\n`
+  );
+}
+
 async function main() {
   const redactedUrl = (process.env.DATABASE_URL || '').replace(/:[^:@]+@/, ':****@');
   console.log(`🌱 Starting E2E Database Seeding with URL: ${redactedUrl}`);
@@ -71,14 +90,15 @@ async function main() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const serviceKey = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  const testEmail = process.env.TEST_USER_EMAIL;
+  const envTestEmail = process.env.TEST_USER_EMAIL;
   const testPassword = process.env.TEST_USER_PASSWORD;
 
-  if (!testEmail || !testPassword) {
+  if (!envTestEmail || !testPassword) {
     console.warn('⚠️ TEST_USER_EMAIL or TEST_USER_PASSWORD not set. Skipping Auth sync.');
     return;
   }
 
+  let testEmail = envTestEmail;
   let userId: string | undefined;
   let usedPasswordAuthFallback = false;
 
@@ -156,12 +176,20 @@ async function main() {
             const { data: retryData, error: retryError } = await signUpTestUser();
             fallbackUser = retryData.user;
             fallbackError = retryError;
+          } else {
+            const generatedEmail = uniqueEmailFor(testEmail);
+            console.warn('⚠️ Could not remove stale auth user. Creating isolated E2E user.');
+            testEmail = generatedEmail;
+            const { data: retryData, error: retryError } = await signUpTestUser();
+            fallbackUser = retryData.user;
+            fallbackError = retryError;
           }
         }
 
         if (fallbackUser) {
           userId = fallbackUser.id;
           usedPasswordAuthFallback = true;
+          await writeE2ECredentials(testEmail, testPassword);
           console.log(`✅ Created Supabase Auth User ID via signup: ${userId}`);
         } else if (fallbackError) {
           console.warn(`⚠️ Signup fallback did not create user: ${fallbackError.message}`);
@@ -177,6 +205,7 @@ async function main() {
 
           userId = signInData.user.id;
           usedPasswordAuthFallback = true;
+          await writeE2ECredentials(testEmail, testPassword);
           console.log(`✅ Found Supabase Auth User ID via signin: ${userId}`);
         }
       }
