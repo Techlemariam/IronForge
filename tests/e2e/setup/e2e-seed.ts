@@ -2,6 +2,19 @@ import { Archetype, Faction } from '@prisma/client';
 import { createClient } from '@supabase/supabase-js';
 import { prisma } from '../../../src/lib/prisma';
 // Using global fetch (available in Node 18+)
+async function checkSupabaseHealth(url: string): Promise<boolean> {
+  try {
+    const resp = await fetch(`${url}/auth/v1/health`);
+    if (!resp.ok) {
+      console.warn(`⚠️ Auth health check failed with status: ${resp.status}`);
+      return false;
+    }
+    const data = await resp.json();
+    return !!data;
+  } catch (err) {
+    return false;
+  }
+}
 
 async function main() {
   const redactedUrl = (process.env.DATABASE_URL || '').replace(/:[^:@]+@/, ':****@');
@@ -58,24 +71,11 @@ async function main() {
     let authReady = false;
     let authRetries = 10;
     while (authRetries > 0 && !authReady) {
-      try {
-        const healthResp = await fetch(`${supabaseUrl}/auth/v1/health`);
-        if (healthResp.ok) {
-          authReady = true;
-          console.log('✅ Supabase Auth service is healthy.');
-        } else {
-          console.warn(`⚠️ Auth health check returned ${healthResp.status}. Retrying...`);
-        }
-      } catch (e) {
-        console.warn(
-          `⚠️ Auth health check failed: ${e instanceof Error ? e.message : String(e)}. Retrying...`
-        );
-      }
+      authReady = await checkSupabaseHealth(supabaseUrl);
       if (!authReady) {
         authRetries--;
         if (authRetries === 0) {
           console.error('❌ Supabase Auth service not ready after all retries.');
-          // Don't exit yet, let the admin call try and fail with better logs
         } else {
           await new Promise((r) => setTimeout(r, 3000));
         }
@@ -85,11 +85,9 @@ async function main() {
     // Try to get existing user with robust error handling
     let users: any[] = [];
     try {
-      const response = await supabaseAdmin.auth.admin.listUsers();
-      if (response.error) {
-        throw response.error;
-      }
-      users = response.data.users;
+      const { data: usersData, error: listError } = await supabaseAdmin.auth.admin.listUsers();
+      if (listError) throw listError;
+      users = usersData.users;
     } catch (err: any) {
       console.error(`❌ Failed to list users: ${err.message}`);
 
