@@ -74,7 +74,6 @@ jobs:
       - uses: ./.github/actions/setup-ironforge
         with:
           tier: 'l1'
-          is-container: 'true'
       - name: "🔮 Predictive Failure Analysis"
         run: npx tsx scripts/predict-failures.ts
         continue-on-error: true
@@ -214,7 +213,6 @@ jobs:
       - uses: ./.github/actions/setup-ironforge
         with:
           tier: 'e2e'
-          is-container: 'true'
       - name: Cache Playwright Browsers
         uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         id: playwright-cache
@@ -292,7 +290,6 @@ jobs:
       - uses: ./.github/actions/setup-ironforge
         with:
           tier: 'l2'
-          is-container: 'true'
       - name: Cache Playwright
         uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         with:
