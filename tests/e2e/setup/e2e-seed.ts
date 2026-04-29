@@ -1,6 +1,7 @@
 import { Archetype, Faction } from '@prisma/client';
 import { createClient } from '@supabase/supabase-js';
 import { prisma } from '../../../src/lib/prisma';
+import fetch from 'node-fetch'; // Ensure fetch is available if needed, or use global fetch in Node 18+
 
 async function main() {
   const redactedUrl = (process.env.DATABASE_URL || '').replace(/:[^:@]+@/, ':****@');
@@ -52,6 +53,33 @@ async function main() {
       },
     });
 
+    // 0. Wait for Auth service to be ready
+    console.log('📡 Waiting for Supabase Auth service to be ready...');
+    let authReady = false;
+    let authRetries = 10;
+    while (authRetries > 0 && !authReady) {
+      try {
+        const healthResp = await fetch(`${supabaseUrl}/auth/v1/health`);
+        if (healthResp.ok) {
+          authReady = true;
+          console.log('✅ Supabase Auth service is healthy.');
+        } else {
+          console.warn(`⚠️ Auth health check returned ${healthResp.status}. Retrying...`);
+        }
+      } catch (e) {
+        console.warn(`⚠️ Auth health check failed: ${e instanceof Error ? e.message : String(e)}. Retrying...`);
+      }
+      if (!authReady) {
+        authRetries--;
+        if (authRetries === 0) {
+          console.error('❌ Supabase Auth service not ready after all retries.');
+          // Don't exit yet, let the admin call try and fail with better logs
+        } else {
+          await new Promise(r => setTimeout(r, 3000));
+        }
+      }
+    }
+
     // Try to get existing user with robust error handling
     let users: any[] = [];
     try {
@@ -61,12 +89,29 @@ async function main() {
       }
       users = response.data.users;
     } catch (err: any) {
-      console.warn(`⚠️ Failed to list users: ${err.message}`);
-      if (err.message?.includes('Unexpected token')) {
+      console.error(`❌ Failed to list users: ${err.message}`);
+      
+      // CRITICAL DEBUG: If we get a JSON parse error (Unexpected token <), 
+      // it means we got HTML. Let's try to see what that HTML is.
+      if (err.message?.includes('Unexpected token') || err.message?.includes('JSON')) {
         console.error('DEBUG: Supabase Auth returned invalid JSON. Possible HTML error page.');
-        // We can't easily get the raw body from supabase-js here without deeper interception,
-        // but we can at least flag it clearly.
+        try {
+          const debugResp = await fetch(`${supabaseUrl}/auth/v1/health`);
+          const text = await debugResp.text();
+          console.error(`DEBUG: Health Check Status: ${debugResp.status}`);
+          console.error(`DEBUG: Health Check Body: ${text.substring(0, 1000)}`);
+          
+          const adminResp = await fetch(`${supabaseUrl}/auth/v1/admin/users`, {
+            headers: { 'Authorization': `Bearer ${serviceKey}` }
+          });
+          const adminText = await adminResp.text();
+          console.error(`DEBUG: Admin Users Status: ${adminResp.status}`);
+          console.error(`DEBUG: Admin Users Body: ${adminText.substring(0, 1000)}`);
+        } catch (debugErr) {
+          console.error(`DEBUG: Failed to fetch additional debug info: ${debugErr}`);
+        }
       }
+      throw err; // Re-throw to fail the setup properly
     }
 
     const existingAuthUser = users.find((u) => u.email === testEmail);

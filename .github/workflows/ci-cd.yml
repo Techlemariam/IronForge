@@ -249,7 +249,7 @@ jobs:
           TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
           NEXT_PUBLIC_SUPABASE_URL: ${{ env.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
-          NEXT_PUBLIC_APP_URL: http://localhost:3000
+          NEXT_PUBLIC_APP_URL: http://127.0.0.1:3001
           GOOGLE_GENERATIVE_AI_API_KEY: ${{ secrets.GOOGLE_GENERATIVE_AI_API_KEY || 'dummy_google_ai_key_for_e2e_tests' }}
       - name: "🩺 Active Handover: E2E Failure"
         if: failure()
@@ -284,7 +284,7 @@ jobs:
     env:
       DATABASE_URL: postgresql://postgres:postgres@localhost:5437/ironforge_test?schema=public
       DIRECT_URL: postgresql://postgres:postgres@localhost:5437/ironforge_test?schema=public
-      NEXT_PUBLIC_APP_URL: http://localhost:3000
+      NEXT_PUBLIC_APP_URL: http://127.0.0.1:3001
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - uses: ./.github/actions/setup-ironforge

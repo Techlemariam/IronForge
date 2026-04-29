@@ -52,7 +52,33 @@ runs:
           $Port = $PortMap["${{ inputs.tier }}"]
           $DockerHost = "127.0.0.1"
           if ("${{ runner.os }}" -eq "Linux") {
-            try { [System.Net.Dns]::GetHostEntry("host.docker.internal") | Out-Null; $DockerHost = "host.docker.internal" } catch { $DockerHost = "127.0.0.1" }
+            # 1. Try host.docker.internal (standard for Docker Desktop / some CI setups)
+            try { 
+              [System.Net.Dns]::GetHostEntry("host.docker.internal") | Out-Null
+              $DockerHost = "host.docker.internal" 
+              Write-Host "🌐 Using host.docker.internal as DockerHost" -ForegroundColor Gray
+            } catch { 
+              # 2. Try to get the gateway IP from ip route (standard for Linux containers)
+              try {
+                $Gateway = (ip route show | Select-String "default via (\d+\.\d+\.\d+\.\d+)").Matches.Groups[1].Value
+                if ($Gateway) {
+                  $DockerHost = $Gateway
+                  Write-Host "🌐 Using Gateway IP ($DockerHost) as DockerHost" -ForegroundColor Gray
+                }
+              } catch {
+                $DockerHost = "127.0.0.1"
+                Write-Host "🌐 Falling back to 127.0.0.1 as DockerHost" -ForegroundColor Gray
+              }
+            }
+          } elseif ("${{ runner.os }}" -eq "Windows") {
+             # On Windows runners, if running in a container, host.docker.internal might work
+             try { 
+               [System.Net.Dns]::GetHostEntry("host.docker.internal") | Out-Null
+               $DockerHost = "host.docker.internal"
+               Write-Host "🌐 Using host.docker.internal as DockerHost (Windows)" -ForegroundColor Gray
+             } catch {
+               $DockerHost = "127.0.0.1"
+             }
           }
           $BaseURL = "postgresql://postgres:password@${DockerHost}:$Port"
           if ("${{ inputs.tier }}" -eq "e2e") { $idb = "ironforge_e2e" } else { $idb = "ironforge_test" }
