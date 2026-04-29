@@ -1,7 +1,7 @@
 import { Archetype, Faction } from '@prisma/client';
 import { createClient } from '@supabase/supabase-js';
 import { prisma } from '../../../src/lib/prisma';
-import fetch from 'node-fetch'; // Ensure fetch is available if needed, or use global fetch in Node 18+
+// Using global fetch (available in Node 18+)
 
 async function main() {
   const redactedUrl = (process.env.DATABASE_URL || '').replace(/:[^:@]+@/, ':****@');
