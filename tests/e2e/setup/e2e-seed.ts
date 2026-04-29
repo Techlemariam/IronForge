@@ -36,7 +36,9 @@ async function main() {
   let userId: string | undefined;
 
   if (supabaseUrl && serviceKey) {
-    console.log(`🔐 Ensuring test user ${testEmail} exists in local Supabase Auth at ${supabaseUrl}...`);
+    console.log(
+      `🔐 Ensuring test user ${testEmail} exists in local Supabase Auth at ${supabaseUrl}...`
+    );
     // Use service role key to manage users without email confirmation
     const supabaseAdmin = createClient(supabaseUrl, serviceKey, {
       auth: {
