@@ -275,7 +275,9 @@ async function main() {
 
   // Case 1: User with this email exists but has wrong ID
   if (existingUserByEmail && existingUserByEmail.id !== effectiveId) {
-    console.log(`⚠️ User exists with email ${testEmail} but different ID (${existingUserByEmail.id} vs ${effectiveId}). Cleaning up...`);
+    console.log(
+      `⚠️ User exists with email ${testEmail} but different ID (${existingUserByEmail.id} vs ${effectiveId}). Cleaning up...`
+    );
     await cleanupUser(existingUserByEmail.id);
     existingUserByEmail = null;
     // Re-check existingUserById in case it was the same one (though ID differed)
@@ -284,7 +286,9 @@ async function main() {
 
   // Case 2: User with this ID exists but has wrong email
   if (existingUserById && existingUserById.email !== testEmail) {
-    console.log(`⚠️ User exists with ID ${effectiveId} but different email (${existingUserById.email} vs ${testEmail}). Cleaning up...`);
+    console.log(
+      `⚠️ User exists with ID ${effectiveId} but different email (${existingUserById.email} vs ${testEmail}). Cleaning up...`
+    );
     await cleanupUser(existingUserById.id);
     existingUserById = null;
   }
@@ -381,7 +385,7 @@ async function cleanupUser(id: string) {
   // 1. Delete deeply nested Titan children
   await prisma.titanMemory.deleteMany({ where: { titan: { userId: id } } });
   await prisma.titanScar.deleteMany({ where: { titan: { userId: id } } });
-  
+
   // 2. Delete User's primary associations
   await prisma.titan.deleteMany({ where: { userId: id } });
   await prisma.combatSession.deleteMany({ where: { userId: id } });
