@@ -76,8 +76,8 @@ async function main() {
 
       // Reset password to ensure it matches TEST_USER_PASSWORD
       console.log(`👤 Resetting password for ${testEmail} to ensure consistency...`);
-      const { error: updateError } = await supabaseAdmin.auth.admin.updateUserById(userId, {
-        password: testPassword,
+      const { error: updateError } = await supabaseAdmin.auth.admin.updateUserById(existingAuthUser.id, {
+        password: testPassword!,
       });
       if (updateError) {
         console.warn(`⚠️ Failed to update password: ${updateError.message}`);
