@@ -22,6 +22,10 @@ if (-not (Test-Path $ComposeFile)) {
     exit 1
 }
 
+# Start Managed Services (DBs)
+Write-Host "🗄️ Starting Managed Services (DBs)..."
+docker compose -f docker/ci-services.yml up -d
+
 # Stop existing runners
 Write-Host "⏹️ Stopping existing runners..."
 docker compose -f $ComposeFile down --remove-orphans 2>&1 | Out-Null
