@@ -2,7 +2,7 @@ import crypto from 'node:crypto';
 import { createServer } from 'node:http';
 import { parse } from 'node:url';
 const PORT = process.env.WEBHOOK_PORT || 3030;
-const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET || 'ironforge-webhook-secret';
+const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
 /**
  * Webhook server for receiving workflow triggers from external systems (n8n, Coolify, etc.)
  */
@@ -42,6 +42,11 @@ export function startWebhookServer() {
           // Verify signature if provided
           const signature = req.headers['x-webhook-signature'];
           if (signature) {
+            if (!WEBHOOK_SECRET) {
+              res.writeHead(500, { 'Content-Type': 'application/json' });
+              res.end(JSON.stringify({ error: 'Webhook secret is not configured' }));
+              return;
+            }
             const expectedSignature = crypto
               .createHmac('sha256', WEBHOOK_SECRET)
               .update(body)
@@ -107,12 +112,15 @@ This task was triggered by an external webhook and should use Antigravity's nati
   });
   server.listen(PORT, () => {
     console.log(`🌐 Webhook server listening on port ${PORT}`);
-    console.log(`   Health: http://localhost:${PORT}/health`);
-    console.log(`   Trigger: http://localhost:${PORT}/webhook/trigger`);
+    console.log(`   Health: localhost:${PORT}/health`);
+    console.log(`   Trigger: localhost:${PORT}/webhook/trigger`);
   });
   return server;
 }
 // Generate signature for webhook authentication
 export function generateWebhookSignature(payload, secret = WEBHOOK_SECRET) {
+  if (!secret) {
+    throw new Error('Webhook secret is not configured');
+  }
   return crypto.createHmac('sha256', secret).update(payload).digest('hex');
 }

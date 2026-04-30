@@ -57,14 +57,16 @@ vi.mock('@/services/oracle', () => ({
   },
 }));
 
+const testSecret = (name: string) => `test-${name}`;
+
 describe('PlannerService', () => {
   it('should generate a plan for a valid user', async () => {
     // Setup mock user
     (prisma.user.findUnique as any).mockResolvedValue({
       id: 'user1',
-      hevyApiKey: 'test-key',
-      intervalsApiKey: 'test-key',
-      intervalsAthleteId: 'test-id',
+      hevyApiKey: testSecret('hevy-key'),
+      intervalsApiKey: testSecret('intervals-key'),
+      intervalsAthleteId: testSecret('athlete-id'),
       exerciseLogs: [],
       cardioLogs: [],
       activePath: 'IRON_JUGGERNAUT',

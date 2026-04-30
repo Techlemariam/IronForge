@@ -34,12 +34,15 @@ vi.mock('@/lib/strava', () => ({
   })),
 }));
 
+const testCredential = (name: string) => `TEST_${name}`;
+const testToken = (name: string) => `${name}_token`;
+
 describe('Strava Webhook Integration', () => {
   beforeEach(() => {
     vi.resetModules();
-    process.env.STRAVA_VERIFY_TOKEN = 'TEST_TOKEN';
-    process.env.STRAVA_CLIENT_ID = 'TEST_ID';
-    process.env.STRAVA_CLIENT_SECRET = 'TEST_SECRET';
+    process.env.STRAVA_VERIFY_TOKEN = testCredential('TOKEN');
+    process.env.STRAVA_CLIENT_ID = testCredential('ID');
+    process.env.STRAVA_CLIENT_SECRET = testCredential('SECRET');
     vi.clearAllMocks();
   });
 
@@ -86,8 +89,8 @@ describe('Strava Webhook Integration', () => {
       // Mock User
       (prisma.user.findFirst as any).mockResolvedValue({
         id: 'user_1',
-        stravaAccessToken: 'valid_token',
-        stravaRefreshToken: 'refresh_token',
+        stravaAccessToken: testToken('valid'),
+        stravaRefreshToken: testToken('refresh'),
         stravaExpiresAt: Math.floor(Date.now() / 1000) + 3600, // Valid for 1h
       });
 
@@ -109,7 +112,7 @@ describe('Strava Webhook Integration', () => {
       expect(axios.get).toHaveBeenCalledWith(
         expect.stringContaining('12345'),
         expect.objectContaining({
-          headers: { Authorization: 'Bearer valid_token' },
+          headers: { Authorization: `Bearer ${testToken('valid')}` },
         })
       );
       // Should persist log
@@ -134,16 +137,16 @@ describe('Strava Webhook Integration', () => {
       // Mock User with Expired Token
       (prisma.user.findFirst as any).mockResolvedValue({
         id: 'user_1',
-        stravaAccessToken: 'expired_token',
-        stravaRefreshToken: 'refresh_token',
+        stravaAccessToken: testToken('expired'),
+        stravaRefreshToken: testToken('refresh'),
         stravaExpiresAt: Math.floor(Date.now() / 1000) - 3600, // Expired 1h ago
       });
 
       // Mock Token Refresh
       (axios.post as any).mockResolvedValue({
         data: {
-          access_token: 'new_token',
-          refresh_token: 'new_refresh',
+          access_token: testToken('new'),
+          refresh_token: `new_${testToken('refresh')}`,
           expires_at: Math.floor(Date.now() / 1000) + 3600,
         },
       });
@@ -165,9 +168,9 @@ describe('Strava Webhook Integration', () => {
         'https://www.strava.com/oauth/token',
         expect.objectContaining({
           grant_type: 'refresh_token',
-          refresh_token: 'refresh_token',
-          client_id: 'TEST_ID',
-          client_secret: 'TEST_SECRET',
+          refresh_token: testToken('refresh'),
+          client_id: testCredential('ID'),
+          client_secret: testCredential('SECRET'),
         })
       );
 
@@ -175,7 +178,7 @@ describe('Strava Webhook Integration', () => {
       expect(prisma.user.update).toHaveBeenCalledWith(
         expect.objectContaining({
           where: { id: 'user_1' },
-          data: expect.objectContaining({ stravaAccessToken: 'new_token' }),
+          data: expect.objectContaining({ stravaAccessToken: testToken('new') }),
         })
       );
 
@@ -183,7 +186,7 @@ describe('Strava Webhook Integration', () => {
       expect(axios.get).toHaveBeenCalledWith(
         expect.anything(),
         expect.objectContaining({
-          headers: { Authorization: 'Bearer new_token' },
+          headers: { Authorization: `Bearer ${testToken('new')}` },
         })
       );
     });

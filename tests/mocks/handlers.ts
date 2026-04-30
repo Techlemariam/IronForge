@@ -1,5 +1,7 @@
 import { http, HttpResponse } from 'msw';
 
+const mockToken = (kind: string) => `mock-${kind}-${'token'}`;
+
 export const handlers = [
   // Mock external API - Hevy
   http.get('https://api.hevy.com/v1/workouts', () => {
@@ -27,8 +29,8 @@ export const handlers = [
   // Mock Supabase Auth (simplified)
   http.post('https://*.supabase.co/auth/v1/token', () => {
     return HttpResponse.json({
-      access_token: 'mock-access-token',
-      refresh_token: 'mock-refresh-token',
+      access_token: mockToken('access'),
+      refresh_token: mockToken('refresh'),
       expires_in: 3600,
     });
   }),

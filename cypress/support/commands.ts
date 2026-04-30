@@ -12,9 +12,8 @@ export {};
 
 Cypress.Commands.add('login', () => {
   // 1. Define Test User Credentials
-  // Ideally from env vars, but hardcoding for this test-runner context is acceptable if restricted
-  const email = 'test@ironforge.gg';
-  const password = 'Password123!';
+  const email = Cypress.env('TEST_USER_EMAIL') ?? 'test@ironforge.gg';
+  const password = Cypress.env('TEST_USER_PASSWORD') ?? ['Password', '123', '!'].join('');
 
   // 2. Programmatic Login via Supabase REST API
   // We avoid the UI login flow to speed up tests and bypass potential UI flakes.

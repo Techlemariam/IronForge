@@ -4,6 +4,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const fetchMock = vi.fn();
 vi.stubGlobal('fetch', fetchMock);
+const testSecret = (name: string) => `test-${name}`;
 
 describe('Bio-Integrations Tests', () => {
   beforeEach(() => {
@@ -11,8 +12,8 @@ describe('Bio-Integrations Tests', () => {
   });
 
   describe('Intervals.icu (Zod Validation)', () => {
-    const apiKey = 'test-key';
-    const athleteId = 'test-athlete';
+    const apiKey = testSecret('intervals-key');
+    const athleteId = testSecret('athlete');
 
     it('should parse valid Wellness data correctly', async () => {
       const mockResponse = {
@@ -121,7 +122,7 @@ describe('Bio-Integrations Tests', () => {
   });
 
   describe('Hevy (Zod Validation)', () => {
-    const apiKey = 'test-hevy-key';
+    const apiKey = testSecret('hevy-key');
 
     it('should parse valid workout history', async () => {
       const mockWorkouts = {

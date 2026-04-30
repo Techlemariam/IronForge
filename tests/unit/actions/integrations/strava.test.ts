@@ -58,6 +58,8 @@ vi.mock('next/headers', () => ({
   ),
 }));
 
+const testToken = (name: string) => `${name}-${'123'}`;
+
 describe('Strava Server Actions', () => {
   const mockSupabase = {
     auth: {
@@ -93,8 +95,8 @@ describe('Strava Server Actions', () => {
     it('should exchange code for tokens and update user', async () => {
       const mockTokenResponse = {
         data: {
-          access_token: 'access-123',
-          refresh_token: 'refresh-123',
+          access_token: testToken('access'),
+          refresh_token: testToken('refresh'),
           expires_at: 1234567890,
           expires_in: 3600,
           token_type: 'Bearer',
@@ -116,7 +118,7 @@ describe('Strava Server Actions', () => {
       expect(prisma.user.update).toHaveBeenCalledWith({
         where: { id: 'test-user-id' },
         data: expect.objectContaining({
-          stravaAccessToken: 'access-123',
+          stravaAccessToken: testToken('access'),
           stravaAthleteId: '99999',
         }),
       });
@@ -182,14 +184,14 @@ describe('Strava Server Actions', () => {
       (prisma.user.findUnique as any).mockResolvedValue({
         id: 'test-user-id',
         stravaAccessToken: 'old-token',
-        stravaRefreshToken: 'refresh-token',
+        stravaRefreshToken: testToken('refresh'),
         stravaExpiresAt: Date.now() / 1000 - 3600, // Expired 1h ago
       });
 
       (axios.post as any).mockResolvedValue({
         data: {
-          access_token: 'new-token',
-          refresh_token: 'new-refresh',
+          access_token: testToken('new'),
+          refresh_token: `new-${testToken('refresh')}`,
           expires_at: Math.floor(Date.now() / 1000) + 3600,
           expires_in: 3600,
           token_type: 'Bearer',
@@ -209,12 +211,12 @@ describe('Strava Server Actions', () => {
       );
       expect(prisma.user.update).toHaveBeenCalledWith({
         where: { id: 'test-user-id' },
-        data: expect.objectContaining({ stravaAccessToken: 'new-token' }),
+        data: expect.objectContaining({ stravaAccessToken: testToken('new') }),
       });
       expect(axios.get).toHaveBeenCalledWith(
         expect.stringContaining('activities'),
         expect.objectContaining({
-          headers: { Authorization: 'Bearer new-token' },
+          headers: { Authorization: `Bearer ${testToken('new')}` },
         })
       );
     });

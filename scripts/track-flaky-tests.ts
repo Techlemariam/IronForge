@@ -53,7 +53,7 @@ function saveReport(report: StabilityReport): void {
 }
 
 function parseVitestResults(filePath: string): TestResult[] {
-  const raw = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+  const raw = JSON.parse(fs.readFileSync(resolveInputPath(filePath), 'utf-8'));
   const results: TestResult[] = [];
 
   for (const file of raw.testResults || []) {
@@ -70,7 +70,7 @@ function parseVitestResults(filePath: string): TestResult[] {
 }
 
 function parsePlaywrightResults(filePath: string): TestResult[] {
-  const raw = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+  const raw = JSON.parse(fs.readFileSync(resolveInputPath(filePath), 'utf-8'));
   const results: TestResult[] = [];
 
   for (const suite of raw.suites || []) {
@@ -86,6 +86,15 @@ function parsePlaywrightResults(filePath: string): TestResult[] {
     }
   }
   return results;
+}
+
+function resolveInputPath(filePath: string): string {
+  const resolved = path.resolve(process.cwd(), filePath);
+  const relative = path.relative(process.cwd(), resolved);
+  if (relative.startsWith('..') || path.isAbsolute(relative)) {
+    throw new Error(`Refusing to read test results outside workspace: ${filePath}`);
+  }
+  return resolved;
 }
 
 function updateReport(results: TestResult[]): StabilityReport {
