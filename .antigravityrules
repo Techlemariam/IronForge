@@ -1,33 +1,27 @@
-# ⚡ IRONFORGE CORE LAWS (Strict Mode)
+﻿# âš¡ IRONFORGE CORE LAWS (Strict Mode)
 
-## 🏁 Quality & Validation (Zero-Manual-Debt)
-- **DoD:** NO manual validation. Proof required (Pass Vitest/Playwright/Screenshot).
-- **Verify:** Always run `npm run agent:verify` before task completion.
-- **Types:** Run `npm run agent:types` if `prisma/schema.prisma` changes.
+## ðŸŽ¯ Project Identity
+- **Type:** TBD
+- **Stack:** TBD
+- **Status:** Active
 
-## 🏗️ Architecture & Style
-- **Hygiene:** NO domain components in `src/components`. Use `src/features/[domain]/components`.
-- **Naming:** Task Names & Workflows MUST use `[DOMAIN] Description`.
-- **RSC:** Server-First by default. Use `'use client'` strictly for interactive leaf nodes.
-- **Types:** Zero-Trust (Zod validation). Strict TypeScript (NO `any`).
-
-## 🧠 Process & Intelligence
-- **Source of Truth:** Adhere to `ARCHITECTURE.md` and `GEMINI.md`.
-- **Strategy:** Analyze (rg) → Plan (Implementation Artifact) → Execute (Auto-Loop) → Log (DEBT.md).
-- **Errors:** Self-heal failures. Log persistent workarounds to `DEBT.md`.
-- **API-First Rule**: ALWAYS explore if an API, CLI (Doppler), or MCP server exists before using the Browser tool. Browser is for last-resort visual verification only.
-- **Doppler First**: When an API key or secret is needed, PRIORITIZE searching Doppler (`doppler secrets`) before asking the user or searching local files.
-
-## 🏷️ Operational Domains
-`[INFRA]`, `[GAME]`, `[SPRINT]`, `[QA]`, `[BIO]`, `[BUSINESS]`, `[API]`, `[META]`
-
----
----
-**Comm Style:** Concise. Evidence-based. No fluff. Logic-first.
-
-## 📚 Brotherhood Librarian (Cross-Repo Governance)
+<!-- BEGIN BROTHERHOOD SHARED RULES -->
+## ðŸ“š Brotherhood Librarian (Cross-Repo Governance)
 - **Ruleset**: Strictly follow patterns established in sibling repos (IronForge, Panopticon, Taktpinne, Matlogistik).
 - **Drift**: Use `/librarian` to audit architectural entropy.
 - **Artifacts**: Document cross-project learnings in Knowledge Items (KIs) via `bdistill-knowledge-extraction`.
 - **Standards**: NO deviations from the Unified `ship.ps1`, Biome, and pnpm standards.
+
+## âš¡ Token-Aware Delegation (Brotherhood V3.0)
+- **Calculation:** Always use the formula: Effective Entropy = [Project Score] + [Task Weight].
+- **Weights:** Consult [SKILL_ENTROPY_WEIGHTS.md](file:///c:/Users/alexa/Workspaces/SKILL_ENTROPY_WEIGHTS.md).
+- **Session Choice:** Use `/local` or `/entropy` to set the mode **for the current chat**.
+- **Priority:** Session overrides > Global mode > Entropy Radar.
+- **Workflows:** Access via `.agent/workflows/` or VS Code Tasks (Ctrl+Shift+P).
+- **Local First:** Tasks with Effective Entropy < 1.5 MUST run on Khameleon/Mini-PC.
+
+---
+**Comm Style:** Concise. Logic-first. Evidence-based. No fluff.
+<!-- END BROTHERHOOD SHARED RULES -->
+
 

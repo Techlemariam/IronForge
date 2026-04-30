@@ -45,7 +45,9 @@
     "supabase:start": "npx supabase start",
     "supabase:stop": "npx supabase stop",
     "supabase:reset": "npx supabase db reset",
-    "supabase:status": "npx supabase status"
+    "supabase:status": "npx supabase status",
+    "ai:local": "pwsh c:/Users/alexa/Workspaces/toggle-llm.ps1 local",
+    "ai:entropy": "pwsh c:/Users/alexa/Workspaces/toggle-llm.ps1 entropy"
   },
   "dependencies": {
     "@ai-sdk/google": "^3.0.43",
