@@ -71,6 +71,14 @@ describe('oneRepMaxCalculator', () => {
       const values = Object.values(result.byFormula).filter((v) => v > 0);
       expect(result.min).toBe(Math.min(...values));
     });
+
+    it('should return zero aggregate values when all formulas return zero', () => {
+      const result = calculateE1rmAllFormulas(100, 0);
+      expect(result.average).toBe(0);
+      expect(result.min).toBe(0);
+      expect(result.max).toBe(0);
+      expect(Object.values(result.byFormula)).toEqual([0, 0, 0, 0, 0, 0, 0]);
+    });
   });
 
   describe('calculateWeightForReps', () => {
