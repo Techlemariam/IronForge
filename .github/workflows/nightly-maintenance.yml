@@ -112,6 +112,8 @@ jobs:
 
       - name: Setup IronForge
         uses: ./.github/actions/setup-ironforge
+        with:
+          is-container: 'true'
 
       - name: Create maintenance branch
         run: |

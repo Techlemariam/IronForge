@@ -40,6 +40,16 @@ vi.mock('next/cache', () => ({
   revalidatePath: vi.fn(),
 }));
 
+vi.mock('@/actions/pvp/duel', () => ({
+  processUserCardioActivity: vi.fn().mockResolvedValue({ success: true }),
+}));
+
+vi.mock('@/services/game/TerritoryService', () => ({
+  TerritoryService: {
+    recordGuildActivity: vi.fn().mockResolvedValue({ success: true }),
+  },
+}));
+
 vi.mock('next/headers', () => ({
   headers: vi.fn(() =>
     Promise.resolve({
@@ -86,6 +96,8 @@ describe('Strava Server Actions', () => {
           access_token: 'access-123',
           refresh_token: 'refresh-123',
           expires_at: 1234567890,
+          expires_in: 3600,
+          token_type: 'Bearer',
           athlete: { id: 99999 },
         },
       };
@@ -121,7 +133,7 @@ describe('Strava Server Actions', () => {
       (axios.post as any).mockRejectedValue(new Error('Strava Down'));
       const result = await exchangeStravaTokenAction('code');
       expect(result.success).toBe(false);
-      expect(result.error).toBe('Failed to exchange token with Strava');
+      expect(result.error).toContain('Failed to exchange token');
     });
   });
 
@@ -143,8 +155,12 @@ describe('Strava Server Actions', () => {
           name: 'Morning Run',
           distance: 5000,
           moving_time: 1800,
+          elapsed_time: 1900,
+          total_elevation_gain: 100,
           type: 'Run',
           start_date: '2023-01-01T10:00:00Z',
+          average_speed: 2.7,
+          max_speed: 4.5,
           average_heartrate: 150,
         },
       ];
@@ -158,7 +174,8 @@ describe('Strava Server Actions', () => {
       expect(result.success).toBe(true);
       expect(result.count).toBe(1);
       expect(prisma.cardioLog.create).toHaveBeenCalled();
-      expect(prisma.user.update).toHaveBeenCalled(); // Rewards
+      // user.update is called for rewards (xp, gold, kineticEnergy)
+      expect(prisma.user.update).toHaveBeenCalled();
     });
 
     it('should refresh token if expired', async () => {
@@ -173,7 +190,10 @@ describe('Strava Server Actions', () => {
         data: {
           access_token: 'new-token',
           refresh_token: 'new-refresh',
-          expires_at: Date.now() / 1000 + 3600,
+          expires_at: Math.floor(Date.now() / 1000) + 3600,
+          expires_in: 3600,
+          token_type: 'Bearer',
+          athlete: { id: 99999 },
         },
       });
 

@@ -35,7 +35,9 @@ export class AuthPage extends BasePage {
     await Promise.all([
       this.page.waitForURL(
         (url) => {
-          return url.pathname === '/' || url.pathname === '/welcome';
+          return (
+            url.pathname === '/' || url.pathname === '/welcome' || url.pathname === '/dashboard'
+          );
         },
         { timeout: 60000 }
       ),

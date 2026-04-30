@@ -108,3 +108,5 @@ export class LootService {
     return { type: 'NOTHING', message: 'No extra loot this time.' };
   }
 }
+
+export { LootService as Loot };

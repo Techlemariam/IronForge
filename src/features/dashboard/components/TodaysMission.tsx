@@ -24,7 +24,10 @@ export const TodaysMission: React.FC<TodaysMissionProps> = ({
   onToggleMode,
 }) => {
   return (
-    <div className="flex flex-col items-center justify-center space-y-8 py-10 animate-fade-in max-w-lg mx-auto">
+    <div
+      className="flex flex-col items-center justify-center space-y-8 py-10 animate-fade-in max-w-lg mx-auto"
+      data-testid="todays-mission"
+    >
       {/* Mechanical Header */}
       <div className="w-full border-b border-slate-800 pb-4 text-center">
         <h2 className="text-slate-500 font-mono text-xs tracking-[0.3em] uppercase mb-1">

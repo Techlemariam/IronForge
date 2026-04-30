@@ -12,7 +12,7 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
-$ComposeFile = Join-Path $PSScriptRoot ".." "docker-compose.runners.yml"
+$ComposeFile = "$PSScriptRoot\..\docker-compose.runners.yml"
 
 Write-Host "🔄 Restarting IronForge runners (scale=$Scale)..." -ForegroundColor Cyan
 
@@ -22,6 +22,10 @@ if (-not (Test-Path $ComposeFile)) {
     exit 1
 }
 
+# Start Managed Services (DBs)
+Write-Host "🗄️ Starting Managed Services (DBs)..."
+docker compose -f docker/ci-services.yml up -d
+
 # Stop existing runners
 Write-Host "⏹️ Stopping existing runners..."
 docker compose -f $ComposeFile down --remove-orphans 2>&1 | Out-Null
@@ -30,30 +34,4 @@ docker compose -f $ComposeFile down --remove-orphans 2>&1 | Out-Null
 Write-Host "▶️ Starting $Scale runners..."
 doppler run -- docker compose -f $ComposeFile up -d --scale runner=$Scale
 
-# Wait for registration
-Write-Host "⏳ Waiting 15s for GitHub registration..."
-Start-Sleep -Seconds 15
-
-# Verify
-$containers = docker ps --filter "name=ironforge-runner" --format "{{.Names}}: {{.Status}}"
-$runningCount = ($containers | Measure-Object).Count
-
-Write-Host ""
-Write-Host "================================" -ForegroundColor Cyan
-Write-Host "  💓 Runner Recovery Complete" -ForegroundColor Cyan
-Write-Host "  Running: $runningCount/$Scale" -ForegroundColor Cyan
-Write-Host "================================" -ForegroundColor Cyan
-
-foreach ($c in $containers) {
-    Write-Host "  ✅ $c" -ForegroundColor Green
-}
-
-if ($runningCount -lt $Scale) {
-    Write-Host "  ⚠️ Not all runners started!" -ForegroundColor Yellow
-    # Show logs for debugging
-    docker compose -f $ComposeFile logs --tail 10
-    exit 1
-}
-
-Write-Host ""
-Write-Host "🎉 All $runningCount runners online and registered." -ForegroundColor Green
+# Runners started.

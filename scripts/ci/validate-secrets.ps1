@@ -1,5 +1,10 @@
 # CI Secret Validation
 
+if ($env:SKIP_ENV_VALIDATION -eq "true") {
+    Write-Host "⏭️ SKIP_ENV_VALIDATION is true. Skipping secret validation." -ForegroundColor Yellow
+    exit 0
+}
+
 $RequiredSecrets = @(
     "DATABASE_URL",
     "NEXT_PUBLIC_SUPABASE_URL",

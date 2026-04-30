@@ -420,7 +420,7 @@ export const CitadelHub: React.FC<CitadelHubProps> = ({ dispatch }) => {
   };
 
   return (
-    <div className="flex flex-col space-y-4">
+    <div className="flex flex-col space-y-4" data-testid="citadel-hub">
       {(selectedCategory || trainingSubCategory) && (
         <div className="flex items-center space-x-2 animate-in slide-in-from-left-4 duration-300">
           <button

@@ -1,11 +1,25 @@
+import { readFile } from 'node:fs/promises';
 import { test as setup } from '@playwright/test';
 import { AuthPage } from './pages/auth.page';
 
 const authFile = 'playwright/.auth/user.json';
+const credentialsFile = 'playwright/.auth/credentials.json';
+
+async function readSeededCredentials() {
+  try {
+    return JSON.parse(await readFile(credentialsFile, 'utf8')) as {
+      email?: string;
+      password?: string;
+    };
+  } catch {
+    return {};
+  }
+}
 
 setup('authenticate', async ({ page }) => {
-  const testEmail = process.env.TEST_USER_EMAIL;
-  const testPassword = process.env.TEST_USER_PASSWORD;
+  const seededCredentials = await readSeededCredentials();
+  const testEmail = seededCredentials.email || process.env.TEST_USER_EMAIL;
+  const testPassword = seededCredentials.password || process.env.TEST_USER_PASSWORD;
 
   if (!testEmail || !testPassword) {
     throw new Error('E2E auth setup requires TEST_USER_EMAIL and TEST_USER_PASSWORD env vars.');

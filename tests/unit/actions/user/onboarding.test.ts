@@ -13,12 +13,16 @@ vi.mock('@/utils/supabase/server', () => ({
   })),
 }));
 
-vi.mock('@/services/progression', () => ({
-  ProgressionService: {
+vi.mock('@/services/progression', () => {
+  const mockProgression = {
     awardAchievement: vi.fn(),
     getProgressionState: vi.fn(),
-  },
-}));
+  };
+  return {
+    ProgressionService: mockProgression,
+    Progression: mockProgression,
+  };
+});
 
 vi.mock('@/lib/prisma', () => ({
   default: {

@@ -1,23 +1,29 @@
+# 🛠️ IronForge Stabilization Tasks
+
 - [x] Refactor `src/services/storage.ts` (Standardized to `Storage` namespace)
 - [x] Implement `getIronForgeStrengthLogs` in `src/services/auditor-orchestrator.ts`
 - [x] Global Refactor: Replace `StorageService` with `Storage` in all components/hooks
-    - [x] `src/features/dashboard/components/UltrathinkDashboard.tsx`
-    - [x] `src/features/titan/components/CharacterSheet.tsx`
-    - [x] `src/features/strength/hooks/useMiningSession.ts`
-    - [x] `src/features/strength/components/EquipmentArmory.tsx`
-    - [x] `src/features/settings/components/EquipmentArmory.tsx`
-    - [x] `src/features/settings/components/MigrationTool.tsx`
-    - [x] `src/features/gamification/hooks/useAchievements.ts`
-    - [x] `src/features/game/components/ActionView.tsx`
     - [x] `src/context/SkillContext.tsx`
     - [x] `src/components/MindfulnessModal.tsx`
     - [x] `src/components/game/Marketplace.tsx`
     - [x] `src/components/game/Grimoire.tsx`
     - [x] `src/components/game/Bestiary.tsx`
     - [x] `src/components/game/Arena.tsx`
-- [x] Final Verification (lint & build)
-    - [x] pnpm lint (0 errors in `src/`)
-    - [x] pnpm build (Successful compilation and static generation)
-    - [x] Snyk Security Scan (Remediated PRCelebration XSS with safe whitelist)
+- [x] Fix `lucide-react` mock in `DashboardClient.test.tsx`
+- [x] Fix `strava.test.ts` assertion failures (rebase/commit local changes)
+- [x] Fix `progression/core.test.ts` failures (rebase/commit local changes)
+- [x] Fix `onboarding.test.ts` failure (rebase/commit local changes)
+- [x] Fix `titan/core.test.ts` failures (rebase/commit local changes)
+- [x] Fix Type Errors (`tsc --noEmit`)
+- [x] Fix `scripts/ci/validate-secrets.ps1` to respect `SKIP_ENV_VALIDATION`
+- [x] Push changes to `feat/stabilize-ci`
+- [x] Re-trigger CI and verify (L1: PASSED, Snyk: PASSED)
+- [x] Recover self-hosted runners (3 runners online, managed services integrated)
+- [x] Fix E2E Seed script (env mismatch and prisma upsert ID fix)
+- [x] Fix restart-runners.ps1 script (Integrated CI managed services)
+- [x] Fix labeler.yml (40-char SHA resolution fix)
+- [x] Resolve `setup-node` hang (v4 tag and cache disable)
+- [/] Verify E2E Smoke job health (In Progress)
+- [/] Validate Synthetic Monitoring recovery (In Progress)
 - [ ] Season 2: Guild Territories (#75)
 - [ ] Season 2: Oracle 3.0 Phase 2 (#76)

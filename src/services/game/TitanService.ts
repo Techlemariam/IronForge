@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma';
 import { ProgressionService } from '@/services/progression';
 import type { IntervalsWellness } from '@/types';
 import { revalidatePath } from 'next/cache';
+import { GameContextService } from './GameContextService';
 
 export class TitanService {
   static async getTitan(userId: string) {
@@ -33,30 +34,42 @@ export class TitanService {
     });
   }
 
-  static async modifyHealth(userId: string, delta: number, _reason: string) {
-    const titan = await prisma.titan.findUnique({ where: { userId } });
+  static async getTitanWithModifiers(userId: string) {
+    const titan = await prisma.titan.findUnique({
+      where: { userId },
+    });
+
+    if (!titan) return null;
+
+    // Fetch modifiers from GameContextService for full robustness
+    const context = await GameContextService.getPlayerContext(userId);
+
+    // Apply combat stats and modifiers to the titan object
+    return {
+      ...titan,
+      maxHp: 100 + (titan as any).endurance * 10, // Base calculation
+      power: context.combat.effectiveAttack,
+      modifiers: context.modifiers,
+      activeBuffs: context.activeBuffs,
+    };
+  }
+
+  static async modifyHealth(userId: string, amount: number, _reason?: string) {
+    const titan = await TitanService.getTitanWithModifiers(userId);
     if (!titan) throw new Error('Titan not found');
 
-    let newHp = titan.currentHp + delta;
-    if (newHp > titan.maxHp) newHp = titan.maxHp;
-    if (newHp < 0) newHp = 0;
-
-    const isInjured = newHp === 0;
-    let mood = titan.mood;
-    if (isInjured) mood = 'WEAKENED';
+    const newHp = Math.max(0, Math.min(titan.currentHp + amount, titan.maxHp));
 
     const updated = await prisma.titan.update({
       where: { userId },
       data: {
         currentHp: newHp,
-        isInjured: isInjured,
-        mood: mood,
-        lastActive: new Date(),
+        isInjured: newHp === 0,
+        mood: newHp === 0 ? 'WEAKENED' : titan.mood,
       },
     });
 
     revalidatePath('/citadel');
-    revalidatePath('/dashboard');
     return updated;
   }
 

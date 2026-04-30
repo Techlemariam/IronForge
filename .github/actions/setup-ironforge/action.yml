@@ -25,6 +25,10 @@ inputs:
     description: 'Skip Managed Services (Docker) detection'
     required: false
     default: 'false'
+  is-container:
+    description: 'Whether the current job is running inside a container'
+    required: false
+    default: 'false'
 
 runs:
   using: "composite"
@@ -50,7 +54,40 @@ runs:
           }
           
           $Port = $PortMap["${{ inputs.tier }}"]
-          $DockerHost = if ("${{ runner.os }}" -eq "Windows") { "127.0.0.1" } else { "host.docker.internal" }
+          $DockerHost = "127.0.0.1"
+          if ("${{ inputs.is-container }}" -eq "true") {
+            if ("${{ runner.os }}" -eq "Linux") {
+              # 1. Try host.docker.internal (standard for Docker Desktop / some CI setups)
+              try { 
+                [System.Net.Dns]::GetHostEntry("host.docker.internal") | Out-Null
+                $DockerHost = "host.docker.internal" 
+                Write-Host "🌐 Using host.docker.internal as DockerHost" -ForegroundColor Gray
+              } catch { 
+                # 2. Try to get the gateway IP from ip route (standard for Linux containers)
+                try {
+                  $Gateway = (ip route show | Select-String "default via (\d+\.\d+\.\d+\.\d+)").Matches.Groups[1].Value
+                  if ($Gateway) {
+                    $DockerHost = $Gateway
+                    Write-Host "🌐 Using Gateway IP ($DockerHost) as DockerHost" -ForegroundColor Gray
+                  }
+                } catch {
+                  $DockerHost = "127.0.0.1"
+                  Write-Host "🌐 Falling back to 127.0.0.1 as DockerHost" -ForegroundColor Gray
+                }
+              }
+            } elseif ("${{ runner.os }}" -eq "Windows") {
+               # On Windows runners, if running in a container, host.docker.internal might work
+               try { 
+                 [System.Net.Dns]::GetHostEntry("host.docker.internal") | Out-Null
+                 $DockerHost = "host.docker.internal"
+                 Write-Host "🌐 Using host.docker.internal as DockerHost (Windows)" -ForegroundColor Gray
+               } catch {
+                 $DockerHost = "127.0.0.1"
+               }
+            }
+          } else {
+            Write-Host "🏠 Running on host (is-container=false), forcing DockerHost to 127.0.0.1" -ForegroundColor Cyan
+          }
           $BaseURL = "postgresql://postgres:password@${DockerHost}:$Port"
           if ("${{ inputs.tier }}" -eq "e2e") { $idb = "ironforge_e2e" } else { $idb = "ironforge_test" }
           $TargetURL = "$($BaseURL)/$($idb)?schema=public"
@@ -70,6 +107,14 @@ runs:
             Write-Host "🚀 Exported SHADOW_DATABASE_URL and TARGET_DB ($ShadowDB) to GITHUB_ENV" -ForegroundColor Cyan
           }
           
+          # Rewrite local Supabase URL to use DockerHost if applicable
+          $SupabaseURL = $env:NEXT_PUBLIC_SUPABASE_URL
+          if ($SupabaseURL -and ($SupabaseURL -match "127.0.0.1" -or $SupabaseURL -match "localhost")) {
+            $FixedSupabaseURL = $SupabaseURL -replace "127.0.0.1", $DockerHost -replace "localhost", $DockerHost
+            [System.IO.File]::AppendAllText($env:GITHUB_ENV, "NEXT_PUBLIC_SUPABASE_URL=$FixedSupabaseURL`n")
+            Write-Host "🔄 Rewrote NEXT_PUBLIC_SUPABASE_URL to $FixedSupabaseURL" -ForegroundColor Cyan
+          }
+          
           Write-Host "🚀 Exported DATABASE_URL and ADMIN_DATABASE_URL (Port $Port)" -ForegroundColor Cyan
         } else {
           Write-Error "❌ Managed Service not found for tier: ${{ inputs.tier }}. Cannot set DATABASE_URL. Aborting."
@@ -85,16 +130,16 @@ runs:
         NEXT_PUBLIC_SUPABASE_URL: ${{ env.NEXT_PUBLIC_SUPABASE_URL }}
         NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ env.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
     - name: Setup pnpm
-      uses: pnpm/action-setup@c5ba7f7862a0f64c1b1a05fbac13e0b8e86ba08c # v4
+      uses: pnpm/action-setup@v4
       with:
         version: ${{ inputs.pnpm-version }}
         dest: ${{ runner.temp }}/setup-pnpm
 
     - name: Setup Node.js
-      uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+      uses: actions/setup-node@v4
       with:
         node-version: ${{ inputs.node-version }}
-        cache: ${{ inputs.cache }}
+        # cache: ${{ inputs.cache }}
 
     - name: Install Dependencies
       shell: ${{ runner.os == 'Windows' && 'pwsh' || 'bash' }}

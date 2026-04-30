@@ -5,7 +5,8 @@
         "DATABASE_URL",
         "DIRECT_URL",
         "NEXT_PUBLIC_SUPABASE_URL",
-        "NEXT_PUBLIC_SUPABASE_ANON_KEY"
+        "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+        "GH_PAT"
     ],
     "tasks": {
         "build": {
@@ -19,7 +20,8 @@
             "env": [
                 "DATABASE_URL",
                 "DIRECT_URL",
-                "SKIP_ENV_VALIDATION"
+                "SKIP_ENV_VALIDATION",
+                "GH_PAT"
             ]
         },
         "test": {
@@ -52,17 +54,18 @@
             ]
         },
         "test:smoke": {
-            "dependsOn": [],
-            "outputs": [],
+            "dependsOn": [
+                "build"
+            ],
             "inputs": [
+                "tests/e2e/**/*.ts",
                 "src/**/*.tsx",
-                "src/**/*.ts",
-                "test/**/*.ts",
-                "tests/**/*.ts"
+                "src/**/*.ts"
             ],
             "env": [
                 "DATABASE_URL",
-                "DIRECT_URL"
+                "DIRECT_URL",
+                "GH_PAT"
             ]
         },
         "test:coverage": {
@@ -74,20 +77,6 @@
                 "src/**/*.tsx",
                 "src/**/*.ts",
                 "test/**/*.ts"
-            ],
-            "env": [
-                "DATABASE_URL",
-                "DIRECT_URL"
-            ]
-        },
-        "test:smoke": {
-            "dependsOn": [
-                "build"
-            ],
-            "inputs": [
-                "tests/e2e/**/*.ts",
-                "src/**/*.tsx",
-                "src/**/*.ts"
             ],
             "env": [
                 "DATABASE_URL",

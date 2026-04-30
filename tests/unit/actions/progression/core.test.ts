@@ -4,12 +4,16 @@ import { createClient } from '@/utils/supabase/server';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Mock dependencies
-vi.mock('@/services/progression', () => ({
-  ProgressionService: {
+vi.mock('@/services/progression', () => {
+  const mock = {
     getProgressionState: vi.fn(),
     awardGold: vi.fn(),
-  },
-}));
+  };
+  return {
+    ProgressionService: mock,
+    Progression: mock,
+  };
+});
 
 const mockGetUser = vi.fn();
 vi.mock('@/utils/supabase/server', () => ({

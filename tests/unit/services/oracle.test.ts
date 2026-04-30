@@ -1,6 +1,6 @@
 import { getActivities, getWellness } from '@/lib/intervals';
 import prisma from '@/lib/prisma';
-import { Oracle } from '@/services/oracle';
+import { OracleService as Oracle } from '@/services/oracle';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Mock dependencies
@@ -24,7 +24,7 @@ vi.mock('@/lib/hevy', () => ({
 }));
 
 vi.mock('@/services/game/EquipmentService', () => ({
-  Equipment: {
+  EquipmentService: {
     getUserCapabilities: vi.fn().mockResolvedValue(['BARBELL', 'MACHINE']),
   },
 }));
