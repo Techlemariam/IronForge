@@ -45,15 +45,6 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Install Doppler CLI
-        uses: dopplerhq/cli-action@b10903328e36746f3152d591df41490230694121 # v3.0.2
-
-      - name: Fetch Secrets
-        run: |
-          doppler secrets download --no-file --format env-no-quotes --project ironforge --config prd > $GITHUB_ENV
-        env:
-          DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
-
       - name: 📋 Poll Sessions & Update Status
         id: poll
         env:

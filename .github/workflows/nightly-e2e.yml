@@ -95,7 +95,7 @@ jobs:
           name: e2e-text-output
 
       - name: Install Doppler CLI
-        uses: dopplerhq/cli-action@b10903328e36746f3152d591df41490230694121 # v3.0.2
+        uses: dopplerhq/cli-action@v4
 
       - name: Fetch Doppler Secrets
         run: |
