@@ -50,6 +50,7 @@ export interface SystemMetrics {
   // Physiology
   hrv: number; // rMSSD 7d avg
   hrvBaseline: number; // 60d avg
+  restingHrBaseline?: number; // Resting HR baseline for overreaching checks
   tsb: number; // Training Stress Balance (Form)
   atl: number; // Acute Training Load (Fatigue)
   ctl: number; // Chronic Training Load (Fitness)
