@@ -58,7 +58,7 @@ export namespace BudgetCalculator {
 
     // Resting HR: Elevated resting HR = overreaching
     if (wellness.restingHR !== null && wellness.restingHR !== undefined) {
-      const baselineRHR = baseMetrics?.hrvBaseline ? 60 : 60; // TODO: Use actual baseline
+      const baselineRHR = baseMetrics?.restingHrBaseline ?? 60;
       if (wellness.restingHR > baselineRHR * 1.15) {
         cns *= 0.8;
         muscular *= 0.85;
@@ -137,7 +137,8 @@ export namespace BudgetCalculator {
 
     // === ACTIVE RECOVERY CHECK ===
 
-    // Steps: Low step count = sedentary (slight CNS boost for active day)
+    // Steps: High daily activity can lightly boost CNS readiness.
+    // Steps: Very low daily activity can reduce metabolic efficiency.
     if (wellness.steps !== null && wellness.steps !== undefined) {
       if (wellness.steps > 10000) {
         cns *= 1.05; // Light boost for active baseline

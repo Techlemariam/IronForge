@@ -17,7 +17,7 @@ const createWorkout = (date: Date, exercises: any[]): HevyWorkout => ({
     sets: [
       { index: 0, type: 'normal', weight_kg: 100, reps: 5 },
       { index: 1, type: 'normal', weight_kg: 100, reps: 5 },
-      { index: 2, type: 'warmup', weight_kg: 20, reps: 10 }, // Warmup shouldn't count
+      { index: 2, type: 'warmup', weight_kg: 20, reps: 10 }, // Warm-up set shouldn't count
     ],
   })),
 });
@@ -32,7 +32,7 @@ describe('Volume Calculator', () => {
 
     const chest = volume.find((v) => v.muscleGroup === 'Chest');
     expect(chest).toBeDefined();
-    // 3 sets total, 1 warmup -> expect 2 valid sets
+    // 3 sets total, 1 warm-up => 2 valid sets
     expect(chest?.weeklyVolume).toBe(2);
   });
 
@@ -62,5 +62,29 @@ describe('Volume Calculator', () => {
     // Assuming 'Exotic Space Lift' isn't in muscleMap, it shouldn't crash
     const totalVolume = volume.reduce((acc, curr) => acc + curr.weeklyVolume, 0);
     expect(totalVolume).toBe(0);
+  });
+
+  it('should exclude warm-up-only exercises from volume', () => {
+    const now = new Date();
+    const warmupOnly: HevyWorkout = {
+      id: 'w2',
+      title: 'Warm-up Only',
+      start_time: now.toISOString(),
+      duration_seconds: 600,
+      exercises: [
+        {
+          index: 0,
+          title: 'Bench Press (Barbell)',
+          notes: '',
+          exercise_template_id: 'bench',
+          exercise_template: { id: 'bench', title: 'Bench Press (Barbell)' },
+          sets: [{ index: 0, type: 'warmup', weight_kg: 20, reps: 10 }],
+        },
+      ],
+    };
+
+    const volume = calculateWeeklyVolume([warmupOnly], now);
+    const chest = volume.find((v) => v.muscleGroup === 'Chest');
+    expect(chest?.weeklyVolume).toBe(0);
   });
 });
