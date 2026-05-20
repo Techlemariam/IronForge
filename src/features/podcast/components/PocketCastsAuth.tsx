@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
+import { getErrorMessage } from '@/lib/error-message';
 import { useState } from 'react';
 
 interface PocketCastsAuthProps {
@@ -46,11 +47,11 @@ export function PocketCastsAuth({ onSuccess }: PocketCastsAuthProps) {
       });
 
       onSuccess?.();
-    } catch (error: any) {
+    } catch (error) {
       toast({
         variant: 'destructive',
         title: 'Connection Failed',
-        description: error.message,
+        description: getErrorMessage(error),
       });
     } finally {
       setIsLoading(false);

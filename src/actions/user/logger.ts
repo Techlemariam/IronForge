@@ -1,5 +1,6 @@
 'use server';
 
+import { getErrorMessage } from '@/lib/error-message';
 import prisma from '@/lib/prisma';
 import { TrainingContextService } from '@/services/data/TrainingContextService';
 import { GameContextService } from '@/services/game/GameContextService';
@@ -84,9 +85,9 @@ export async function createExerciseAction(data: z.input<typeof CreateExerciseSc
     });
 
     return { success: true, exercise: newExercise };
-  } catch (error: any) {
+  } catch (error) {
     console.error('Create Exercise Error:', error);
-    return { success: false, error: error.message };
+    return { success: false, error: getErrorMessage(error) };
   }
 }
 
@@ -205,9 +206,9 @@ export async function logExerciseSetsAction(data: z.infer<typeof LogSetSchema>) 
       context,
       oracleBuff: diffMessage,
     };
-  } catch (error: any) {
+  } catch (error) {
     console.error('Log Sets Error:', error);
-    return { success: false, error: error.message };
+    return { success: false, error: getErrorMessage(error) };
   }
 }
 

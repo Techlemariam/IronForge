@@ -1,5 +1,6 @@
 'use server';
 
+import { getErrorMessage } from '@/lib/error-message';
 import { getAthleteSettings, getWellness } from '@/lib/intervals';
 import prisma from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
@@ -47,8 +48,8 @@ export async function syncBiometrics(userId: string) {
 
     revalidatePath('/dashboard');
     return { success: true, synced: dataToUpdate };
-  } catch (error: any) {
-    console.error('Biometric Sync Failed:', error.message);
-    return { success: false, error: error.message };
+  } catch (error) {
+    console.error('Biometric Sync Failed:', getErrorMessage(error));
+    return { success: false, error: getErrorMessage(error) };
   }
 }

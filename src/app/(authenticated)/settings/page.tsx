@@ -28,6 +28,8 @@ export default async function SettingsRoute() {
       garminConnected: true,
       faction: true,
       archetype: true,
+      subscriptionTier: true,
+      subscriptionStatus: true,
     },
   });
 
@@ -49,6 +51,8 @@ export default async function SettingsRoute() {
       garminConnected={dbUser.garminConnected}
       initialFaction={dbUser.faction}
       initialArchetype={dbUser.archetype as any}
+      subscriptionTier={dbUser.subscriptionTier}
+      subscriptionStatus={dbUser.subscriptionStatus}
       isDemoMode={isDemoMode}
       initialLiteMode={preferences.liteMode ?? false}
     />

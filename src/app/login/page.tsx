@@ -1,5 +1,6 @@
 'use client';
 
+import { getErrorMessage } from '@/lib/error-message';
 export const dynamic = 'force-dynamic';
 
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
@@ -36,10 +37,10 @@ export default function LoginPage() {
         },
       });
       if (error) throw error;
-    } catch (error: any) {
+    } catch (error) {
       setMessage({
         type: 'error',
-        text: error.message || 'Google Auth failed.',
+        text: getErrorMessage(error) || 'Google Auth failed.',
       });
       setLoading(false);
     }
@@ -74,10 +75,10 @@ export default function LoginPage() {
           text: 'Secure Link dispatched to your email coordinates.',
         });
       }
-    } catch (error: any) {
+    } catch (error) {
       setMessage({
         type: 'error',
-        text: error.message || 'Authentication protocol failed.',
+        text: getErrorMessage(error) || 'Authentication protocol failed.',
       });
     } finally {
       setLoading(false);

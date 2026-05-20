@@ -1,5 +1,6 @@
 'use server';
 
+import { getErrorMessage } from '@/lib/error-message';
 import { getActivities, getAthleteSettings, getEvents, getWellness } from '@/lib/intervals';
 import prisma from '@/lib/prisma';
 import type { IntervalsActivity, IntervalsEvent, IntervalsWellness } from '@/types';
@@ -53,8 +54,8 @@ export async function getWellnessAction(date: string): Promise<IntervalsWellness
       tsb: data?.tsb,
       ramp_rate: data?.rampRate,
     } as IntervalsWellness;
-  } catch (error: any) {
-    console.warn('Server Action Intervals Wellness Error:', error.message);
+  } catch (error) {
+    console.warn('Server Action Intervals Wellness Error:', getErrorMessage(error));
     return {} as IntervalsWellness;
   }
 }
@@ -85,8 +86,8 @@ export async function getWellnessRangeAction(
           ramp_rate: d.rampRate,
         }) as IntervalsWellness
     );
-  } catch (error: any) {
-    console.error('Server Action Intervals Wellness Range Error:', error.message);
+  } catch (error) {
+    console.error('Server Action Intervals Wellness Range Error:', getErrorMessage(error));
     return [];
   }
 }
@@ -99,8 +100,8 @@ export async function getActivitiesAction(
     const { apiKey, athleteId } = await getIntervalsCredentials();
     const data = await getActivities(startDate, endDate, apiKey, athleteId);
     return data as unknown as IntervalsActivity[];
-  } catch (error: any) {
-    console.error('Server Action Intervals Activities Error:', error.message);
+  } catch (error) {
+    console.error('Server Action Intervals Activities Error:', getErrorMessage(error));
     return [];
   }
 }
@@ -123,8 +124,8 @@ export async function getAthleteSettingsAction() {
     const { apiKey, athleteId } = await getIntervalsCredentials();
     const data = await getAthleteSettings(apiKey, athleteId);
     return data;
-  } catch (error: any) {
-    console.error('Server Action Intervals Settings Error:', error.message);
+  } catch (error) {
+    console.error('Server Action Intervals Settings Error:', getErrorMessage(error));
     return null;
   }
 }

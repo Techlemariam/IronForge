@@ -1,5 +1,6 @@
 'use server';
 
+import { getErrorMessage } from '@/lib/error-message';
 import prisma from '@/lib/prisma';
 import { OracleService } from '@/services/oracle';
 import { createClient } from '@/utils/supabase/server';
@@ -38,8 +39,8 @@ export async function generateDailyDecreeAction() {
     revalidatePath('/citadel');
 
     return { success: true, data: decree };
-  } catch (error: any) {
-    console.error('Failed to generate Oracle Decree:', error.message);
-    return { success: false, error: error.message };
+  } catch (error) {
+    console.error('Failed to generate Oracle Decree:', getErrorMessage(error));
+    return { success: false, error: getErrorMessage(error) };
   }
 }
