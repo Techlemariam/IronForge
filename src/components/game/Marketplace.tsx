@@ -120,7 +120,7 @@ const Marketplace: React.FC<MarketplaceProps> = ({ onClose }) => {
             <button
               onClick={onClose}
               aria-label="Close marketplace"
-              className="p-2 hover:bg-white/10 rounded-full transition-colors"
+              className="p-2 hover:bg-white/10 rounded-full transition-colors focus-visible:ring-2 focus-visible:ring-plasma focus-visible:outline-none"
             >
               <X className="w-6 h-6 text-zinc-400" />
             </button>
@@ -162,7 +162,7 @@ const Marketplace: React.FC<MarketplaceProps> = ({ onClose }) => {
                 <button
                   onClick={() => handleBuy(item)}
                   disabled={gold < item.cost}
-                  className={`w-full py-3 rounded font-bold uppercase tracking-wider text-sm transition-all
+                  className={`w-full py-3 rounded font-bold uppercase tracking-wider text-sm transition-all focus-visible:ring-2 focus-visible:ring-plasma focus-visible:outline-none
                                         ${
                                           gold >= item.cost
                                             ? 'bg-yellow-700 hover:bg-yellow-600 text-white shadow-lg'

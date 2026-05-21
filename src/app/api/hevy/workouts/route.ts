@@ -1,3 +1,4 @@
+import { getErrorMessage } from '@/lib/error-message';
 import { getHevyWorkouts } from '@/lib/hevy';
 import axios from 'axios';
 import { NextResponse } from 'next/server';
@@ -15,12 +16,12 @@ export async function GET(request: Request) {
   try {
     const data = await getHevyWorkouts(hevyApiKey, page, pageSize);
     return NextResponse.json(data);
-  } catch (error: any) {
-    console.error('Failed to fetch Hevy workouts:', error.message);
+  } catch (error) {
+    console.error('Failed to fetch Hevy workouts:', getErrorMessage(error));
     return NextResponse.json(
       {
         error: 'Could not analyze past battles.',
-        message: error.message,
+        message: getErrorMessage(error),
       },
       { status: 500 }
     );
@@ -42,14 +43,15 @@ export async function POST(request: Request) {
       },
     });
     return NextResponse.json(response.data);
-  } catch (error: any) {
-    console.error('Hevy Save Error:', error.response?.data || error.message);
+  } catch (error) {
+    const response = axios.isAxiosError(error) ? error.response : undefined;
+    console.error('Hevy Save Error:', response?.data || getErrorMessage(error));
     return NextResponse.json(
       {
         error: 'Failed to save to Archive.',
-        details: error.response?.data,
+        details: response?.data,
       },
-      { status: error.response?.status || 500 }
+      { status: response?.status || 500 }
     );
   }
 }

@@ -1,3 +1,4 @@
+import { getErrorMessage } from '@/lib/error-message';
 import { TerritoryService } from '@/services/game/TerritoryService';
 import { type NextRequest, NextResponse } from 'next/server';
 
@@ -21,12 +22,12 @@ export async function GET(req: NextRequest) {
       message: 'Territory resolution completed successfully.',
       timestamp: new Date().toISOString(),
     });
-  } catch (error: any) {
+  } catch (error) {
     console.error('Territory Cron Error:', error);
     return NextResponse.json(
       {
         success: false,
-        error: error.message,
+        error: getErrorMessage(error),
       },
       { status: 500 }
     );

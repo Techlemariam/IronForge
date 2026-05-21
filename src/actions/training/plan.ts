@@ -1,5 +1,6 @@
 'use server';
 
+import { getErrorMessage } from '@/lib/error-message';
 import { PlannerService } from '@/services/planner';
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
@@ -23,8 +24,8 @@ export async function generateWeeklyPlanAction() {
 
     revalidatePath('/dashboard');
     return { success: true, plan };
-  } catch (error: any) {
+  } catch (error) {
     console.error('Failed to generate plan:', error);
-    return { success: false, error: error.message };
+    return { success: false, error: getErrorMessage(error) };
   }
 }

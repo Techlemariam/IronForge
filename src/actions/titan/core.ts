@@ -1,5 +1,6 @@
 'use server';
 
+import { getErrorMessage } from '@/lib/error-message';
 import { prisma } from '@/lib/prisma';
 import { authActionClient } from '@/lib/safe-action';
 import { TitanService } from '@/services/game/TitanService';
@@ -82,9 +83,9 @@ export const modifyTitanHealthAction = authActionClient
     try {
       const updated = await TitanService.modifyHealth(userId, delta, reason);
       return { success: true, data: updated };
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error modifying health:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: getErrorMessage(error) };
     }
   });
 
@@ -94,9 +95,9 @@ export const awardTitanXpAction = authActionClient
     try {
       const { titan, leveledUp } = await TitanService.awardXp(userId, amount, source);
       return { success: true, data: titan, leveledUp };
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error awarding XP:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: getErrorMessage(error) };
     }
   });
 
@@ -106,8 +107,8 @@ export const consumeTitanEnergyAction = authActionClient
     try {
       const updated = await TitanService.consumeEnergy(userId, amount);
       return { success: true, data: updated };
-    } catch (error: any) {
-      return { success: false, error: error.message };
+    } catch (error) {
+      return { success: false, error: getErrorMessage(error) };
     }
   });
 
@@ -129,8 +130,8 @@ export const checkAndIncrementStreakAction = authActionClient
     try {
       const result = await TitanService.updateStreak(userId, timezone);
       return { success: true, ...result };
-    } catch (error: any) {
+    } catch (error) {
       console.error('Streak update failed:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: getErrorMessage(error) };
     }
   });

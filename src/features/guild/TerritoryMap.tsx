@@ -6,6 +6,7 @@ import {
   getTerritoriesAction,
 } from '@/actions/game/territory';
 import { useToast } from '@/hooks/use-toast';
+import { getErrorMessage } from '@/lib/error-message';
 import { Loader2, RefreshCw } from 'lucide-react';
 import type React from 'react';
 import { useCallback, useEffect, useState } from 'react';
@@ -49,10 +50,10 @@ export const TerritoryMap: React.FC<TerritoryMapProps> = ({ userId, guildId }) =
       await claimTerritoryAction(guildId, id, userId);
       toast({ title: 'Success', description: 'Territory claimed for your guild!' });
       loadData();
-    } catch (err: any) {
+    } catch (err) {
       toast({
         title: 'Claim Failed',
-        description: err.message,
+        description: getErrorMessage(err),
         variant: 'destructive',
       });
     } finally {
@@ -67,10 +68,10 @@ export const TerritoryMap: React.FC<TerritoryMapProps> = ({ userId, guildId }) =
       await contestTerritoryAction(guildId, id, userId);
       toast({ title: 'Challenge Issued!', description: 'Contest started. Log workouts to win!' });
       loadData();
-    } catch (err: any) {
+    } catch (err) {
       toast({
         title: 'Contest Failed',
-        description: err.message,
+        description: getErrorMessage(err),
         variant: 'destructive',
       });
     } finally {

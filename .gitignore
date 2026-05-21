@@ -160,6 +160,7 @@ storybook-static/
 !components.json
 !audit_results.json
 audit.cjs
+fix-catch.cjs
 
 # Secrets
 prd.json

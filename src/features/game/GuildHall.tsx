@@ -253,7 +253,7 @@ export const GuildHall: React.FC<GuildHallProps> = ({ onClose }) => {
       } else if (res?.serverError || res?.data?.message) {
         spawnFloatingText('ERROR!', '#a1a1aa');
       }
-    } catch (err: any) {
+    } catch (err) {
       console.error('Attack failed', err);
       // Revert Energy on fail? Or just let it sync next time.
       spawnFloatingText('MISS!', '#a1a1aa');

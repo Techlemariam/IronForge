@@ -1,5 +1,6 @@
 'use server';
 
+import { getErrorMessage } from '@/lib/error-message';
 import { revalidatePath } from 'next/cache';
 
 export async function recalculatePowerRatingAction(userId: string) {
@@ -13,8 +14,8 @@ export async function recalculatePowerRatingAction(userId: string) {
     revalidatePath('/leaderboard');
 
     return { success: true, data: result.titan };
-  } catch (error: any) {
+  } catch (error) {
     console.error('Error recalculating Power Rating:', error);
-    return { success: false, error: error.message };
+    return { success: false, error: getErrorMessage(error) };
   }
 }

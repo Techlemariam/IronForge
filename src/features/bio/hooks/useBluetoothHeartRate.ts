@@ -56,7 +56,7 @@ export const useBluetoothHeartRate = () => {
       disconnectHandlerRef.current = handleDisconnect;
 
       device.addEventListener('gattserverdisconnected', handleDisconnect);
-    } catch (e: any) {
+    } catch (e) {
       console.error(e);
       setError('Connection failed or cancelled.');
     }

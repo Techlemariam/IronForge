@@ -1,6 +1,6 @@
 #!/bin/bash
 # IronForge Production Backup Script
-# Runs nightly via cron to backup Supabase Postgres to Hetzner Storage Box
+# Runs nightly via cron to backup Supabase Postgres
 # Usage: 0 3 * * * /root/scripts/backup-supabase.sh
 
 set -euo pipefail

@@ -1,5 +1,6 @@
 'use server';
 
+import { getErrorMessage } from '@/lib/error-message';
 import { TerritoryService } from '@/services/game/TerritoryService';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
@@ -26,8 +27,8 @@ const contestTerritorySchema = z.object({
 export async function getTerritoriesAction() {
   try {
     return await TerritoryService.getMapData();
-  } catch (error: any) {
-    console.error('[TerritoryActions] getTerritories error:', error.message);
+  } catch (error) {
+    console.error('[TerritoryActions] getTerritories error:', getErrorMessage(error));
     throw new Error('Failed to fetch territories');
   }
 }
@@ -46,9 +47,9 @@ export async function claimTerritoryAction(guildId: string, territoryId: string,
     revalidatePath('/citadel');
     revalidatePath('/dashboard');
     return result;
-  } catch (error: any) {
-    console.error('[TerritoryActions] claimTerritory error:', error.message);
-    throw new Error(error.message || 'Failed to claim territory');
+  } catch (error) {
+    console.error('[TerritoryActions] claimTerritory error:', getErrorMessage(error));
+    throw new Error(getErrorMessage(error) || 'Failed to claim territory');
   }
 }
 
@@ -70,9 +71,9 @@ export async function contestTerritoryAction(
     revalidatePath('/citadel');
     revalidatePath('/dashboard');
     return result;
-  } catch (error: any) {
-    console.error('[TerritoryActions] contestTerritory error:', error.message);
-    throw new Error(error.message || 'Failed to initiate contest');
+  } catch (error) {
+    console.error('[TerritoryActions] contestTerritory error:', getErrorMessage(error));
+    throw new Error(getErrorMessage(error) || 'Failed to initiate contest');
   }
 }
 
@@ -86,8 +87,8 @@ export async function resolveExpiredContestsAction() {
     revalidatePath('/citadel');
     revalidatePath('/dashboard');
     return { success: true };
-  } catch (error: any) {
-    console.error('[TerritoryActions] resolveExpiredContests error:', error.message);
+  } catch (error) {
+    console.error('[TerritoryActions] resolveExpiredContests error:', getErrorMessage(error));
     throw new Error('Failed to resolve contests');
   }
 }

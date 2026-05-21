@@ -1,3 +1,4 @@
+import { getErrorMessage } from '@/lib/error-message';
 import { prisma } from '@/lib/prisma';
 import { PocketCastsClient } from '@/services/pocketcasts';
 import { createClient } from '@/utils/supabase/server';
@@ -54,11 +55,11 @@ export async function GET(req: NextRequest) {
     }
 
     return NextResponse.json(data);
-  } catch (error: any) {
-    if (error.message.includes('401')) {
+  } catch (error) {
+    if (getErrorMessage(error).includes('401')) {
       return NextResponse.json({ error: 'Token expired' }, { status: 401 });
     }
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: getErrorMessage(error) }, { status: 500 });
   }
 }
 
@@ -78,7 +79,7 @@ export async function POST(req: NextRequest) {
     const client = await getClient(user.id);
     await client.updateProgress(episodeId, podcastId, position, status);
     return NextResponse.json({ success: true });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error) {
+    return NextResponse.json({ error: getErrorMessage(error) }, { status: 500 });
   }
 }

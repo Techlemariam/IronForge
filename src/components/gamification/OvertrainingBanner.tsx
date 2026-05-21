@@ -43,7 +43,7 @@ export function OvertrainingBanner({ userId, onDismiss }: OvertrainingBannerProp
         <button
           onClick={handleDismiss}
           aria-label="Dismiss overtraining banner"
-          className="absolute top-2 right-2 text-slate-400 hover:text-white"
+          className="absolute top-2 right-2 text-slate-400 hover:text-white focus-visible:ring-2 focus-visible:ring-plasma focus-visible:outline-none"
         >
           <X className="w-4 h-4" />
         </button>

@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { getErrorMessage } from '@/lib/error-message';
 import { type BioData, Bluetooth } from '@/services/bluetooth';
 import { Activity, Heart } from 'lucide-react';
 import React, { useState } from 'react';
@@ -20,8 +21,8 @@ const BluetoothDebug = () => {
         setHistory((prev) => [...prev.slice(-19), newData.heartRate]); // Keep last 20
       });
       setIsConnected(true);
-    } catch (err: any) {
-      setError(err.message || 'Failed to connect');
+    } catch (err) {
+      setError(getErrorMessage(err) || 'Failed to connect');
       setIsConnected(false);
     }
   };

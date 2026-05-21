@@ -79,7 +79,7 @@ export default function ExerciseSelector({ onSelect, capabilities }: ExerciseSel
                     else toast.error('Missing required equipment!');
                   }}
                   className={`
-                                        flex items-center gap-3 p-3 rounded-lg border transition-all text-left group
+                                        flex items-center gap-3 p-3 rounded-lg border transition-all text-left group focus-visible:ring-2 focus-visible:ring-plasma focus-visible:outline-none
                                         ${
                                           isPerformable
                                             ? 'bg-zinc-900 border-zinc-800 hover:border-magma/50 cursor-pointer'
