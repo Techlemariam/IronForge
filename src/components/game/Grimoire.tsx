@@ -93,7 +93,7 @@ export const Grimoire: React.FC<GrimoireProps> = ({ onClose }) => {
 
   return (
     <div className="h-full bg-void p-6 overflow-y-auto font-serif text-zinc-200">
-      <div className="flex justify-between items-center mb-8 border-b border-[#222] pb-6">
+      <div className="flex justify-between items-center mb-8 border-b border-steel pb-6">
         <div className="flex items-center gap-4">
           <div className="p-3 bg-zinc-900 border border-zinc-800 rounded-full">
             <Book className="w-8 h-8 text-rarity-legendary" />

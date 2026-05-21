@@ -2,6 +2,9 @@
 
 Quick reference for domain-specific context when using `/domain-session`.
 
+## 🎨 Frontend (`frontend`)
+Next.js App Router, Tailwind v4 design system ("Chromatic Lattice"), Shadcn-style UI primitives, Framer Motion animations, Storybook, PWA, multi-platform (desktop/mobile/TV).
+
 ## 🔧 Infrastructure/DevOps (`infra`)
 CI/CD pipelines, GitHub Actions, Docker, Nix, database migrations, Vercel deployment, monitoring, Sentry, build system.
 

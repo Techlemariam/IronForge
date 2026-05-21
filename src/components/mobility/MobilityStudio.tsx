@@ -91,17 +91,12 @@ export function MobilityStudio() {
               <Card
                 variant="glass"
                 key={exercise.id}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    handleStartExercise(exercise);
-                  }
-                }}
-                className={`cursor-pointer transition-all hover:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-zinc-900 focus:ring-white ${activeExercise?.id === exercise.id ? 'border-emerald-500 bg-emerald-950/20' : ''}`}
-                onClick={() => handleStartExercise(exercise)}
+                className={activeExercise?.id === exercise.id ? 'border-emerald-500 bg-emerald-950/20' : ''}
               >
-                <div className="p-3 flex items-center justify-between">
+                <button
+                  className="w-full text-left p-3 flex items-center justify-between cursor-pointer transition-all hover:border-emerald-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900 focus-visible:ring-plasma rounded-xl"
+                  onClick={() => handleStartExercise(exercise)}
+                >
                   <div>
                     <h3 className="font-semibold text-sm">{exercise.name}</h3>
                     <div className="flex gap-2 mt-1">
@@ -116,7 +111,7 @@ export function MobilityStudio() {
                   {exercise.source === 'ATG' && (
                     <Badge className="bg-blue-900/50 text-blue-200 text-[10px]">ATG</Badge>
                   )}
-                </div>
+                </button>
               </Card>
             ))}
           </div>

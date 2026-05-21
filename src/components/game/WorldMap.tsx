@@ -61,7 +61,7 @@ export default function WorldMap({ onClose }: WorldMapProps) {
             <button
               key={region}
               onClick={() => setSelectedRegion(selectedRegion === region ? null : region)}
-              className={`text-[10px] whitespace-nowrap px-3 py-1.5 rounded-full border transition-all ${
+              className={`text-[10px] whitespace-nowrap px-3 py-1.5 rounded-full border transition-all focus-visible:ring-2 focus-visible:ring-plasma focus-visible:outline-none ${
                 selectedRegion === region
                   ? 'bg-white text-black border-white font-bold'
                   : 'bg-transparent text-zinc-500 border-zinc-800 hover:border-zinc-600'

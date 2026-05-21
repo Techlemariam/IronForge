@@ -9,19 +9,19 @@ interface QuestBadgeProps {
 }
 
 const CONFIG: Record<QuestType, { label: string; color: string; icon: string; border: string }> = {
-  DAILY: { label: 'Daily Quest', color: 'text-gray-400', icon: '●', border: 'border-gray-700' },
-  RAID: { label: 'Raid', color: 'text-orange-500', icon: '☠', border: 'border-orange-500/50' },
+  DAILY: { label: 'Daily Quest', color: 'text-zinc-400', icon: '●', border: 'border-zinc-700' },
+  RAID: { label: 'Raid', color: 'text-crisis', icon: '☠', border: 'border-crisis/50' },
   EXPANSION: {
     label: 'Expansion',
-    color: 'text-purple-500',
+    color: 'text-warp',
     icon: '◈',
-    border: 'border-purple-500/50',
+    border: 'border-warp/50',
   },
   REPAIR: {
     label: 'Repair Cycle',
-    color: 'text-green-500',
+    color: 'text-venom',
     icon: '✚',
-    border: 'border-green-500/50',
+    border: 'border-venom/50',
   },
 };
 

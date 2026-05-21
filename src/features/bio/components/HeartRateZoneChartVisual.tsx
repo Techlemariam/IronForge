@@ -15,7 +15,7 @@ const HeartRateZoneChartVisual: React.FC<HeartRateZoneChartVisualProps> = ({ zon
         <YAxis
           type="category"
           dataKey="name"
-          tick={{ fill: '#a1a1aa', fontSize: 10, fontWeight: 600 }}
+          tick={{ fill: 'var(--color-slate-400)', fontSize: 10, fontWeight: 600 }}
           width={110}
           axisLine={false}
           tickLine={false}
@@ -27,7 +27,7 @@ const HeartRateZoneChartVisual: React.FC<HeartRateZoneChartVisualProps> = ({ zon
             borderColor: 'var(--color-steel)',
             borderRadius: '8px',
           }}
-          itemStyle={{ color: '#fff', fontSize: '12px' }}
+          itemStyle={{ color: 'var(--color-white)', fontSize: '12px' }}
           formatter={(value: any, _name: any, props: any) => [
             `${value} hrs`,
             props.payload.originalName || '',

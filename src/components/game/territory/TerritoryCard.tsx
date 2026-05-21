@@ -31,20 +31,16 @@ export const TerritoryCard = ({ territory, userGuildId, onClick }: TerritoryCard
     }
   };
 
+  const MotionComponent = onClick ? motion.button : motion.div;
+
   return (
-    <motion.div
+    <MotionComponent
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       whileHover={{ scale: 1.05, zIndex: 10 }}
       transition={{ duration: 0.2 }}
       onClick={onClick}
-      onKeyDown={(e) => {
-        if (onClick && (e.key === 'Enter' || e.key === ' ')) {
-          onClick();
-        }
-      }}
-      role={onClick ? 'button' : undefined}
-      tabIndex={onClick ? 0 : undefined}
+      className={cn(onClick && "focus-visible:ring-2 focus-visible:ring-plasma focus-visible:outline-none text-left rounded-xl")}
       data-testid="territory-card"
     >
       <Card
@@ -172,6 +168,6 @@ export const TerritoryCard = ({ territory, userGuildId, onClick }: TerritoryCard
           </div>
         </div>
       </Card>
-    </motion.div>
+    </MotionComponent>
   );
 };
