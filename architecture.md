@@ -43,10 +43,25 @@ We follow a **Feature-based Architecture** to prevent "Drawer Structure" (separa
 
 ```bash
 src/
+├── actions/              # ⚡ SERVER ACTIONS (The API)
+│   ├── [domain].ts       # e.g. "combat.ts", "auth.ts"
+│   └── schemas/          # Zod schemas for action inputs (CRITICAL)
+│
 ├── app/                  # Routing Layer only. Minimal logic.
 │   ├── (auth)/           # Route Groups for layout segregation
 │   ├── api/              # Webhooks only (Stripe/Cron). prefer Server Actions.
 │   └── layout.tsx        # Root Layout (Providers)
+│
+├── components/           # 🧱 GENERIC UI (Atoms/Molecules)
+│   ├── ui/               # shadcn/ui primitives (Button, Input)
+│   └── shared/           # Reusable non-domain components (Layouts, Loaders)
+│   ├── [!IMPORTANT]      # NO DOMAIN COMPONENTS HERE. Use features/[feature]/components.
+│
+├── config/               # ⚙️ GLOBAL CONFIGURATION
+│
+├── context/              # 🌐 REACT CONTEXT
+│
+├── data/                 # 💾 STATIC DATA
 │
 ├── features/             # 🧠 DOMAIN LOGIC (The Core)
 │   ├── [feature-name]/   # e.g. "combat", "training", "onboarding"
@@ -56,23 +71,32 @@ src/
 │   │   └── types.ts      # Domain-specific types
 │   │   └── index.ts      # Public API for other features
 │
-├── components/           # 🧱 GENERIC UI (Atoms/Molecules)
-│   ├── ui/               # shadcn/ui primitives (Button, Input)
-│   └── shared/           # Reusable non-domain components (Layouts, Loaders)
-│   ├── [!IMPORTANT]      # NO DOMAIN COMPONENTS HERE. Use features/[feature]/components.
-│
-├── actions/              # ⚡ SERVER ACTIONS (The API)
-│   ├── [domain].ts       # e.g. "combat.ts", "auth.ts"
-│   └── schemas/          # Zod schemas for action inputs (CRITICAL)
+├── hooks/                # 🪝 GLOBAL HOOKS
 │
 ├── lib/                  # 🔌 CORE INFRASTRUCTURE
 │   ├── prisma.ts         # Singleton DB client
 │   ├── utils.ts          # Global helpers (cn, formatters)
 │   └── auth.ts           # Authentication logic
 │
-└── services/             # 🦾 BUSINESS LOGIC / SERVICE LAYER
-    ├── [service].ts      # Pure functions, no React dependency.
-    └── adapter/          # External API Adapters (Strava/Hevy)
+├── logs/                 # 📝 LOGGING
+│
+├── providers/            # 📦 REACT PROVIDERS
+│
+├── remotion/             # 📹 PROGRAMMATIC VIDEO (Compositions)
+│
+├── scripts/              # 📜 UTILITY SCRIPTS
+│
+├── services/             # 🦾 BUSINESS LOGIC / SERVICE LAYER
+│   ├── [service].ts      # Pure functions, no React dependency.
+│   └── adapter/          # External API Adapters (Strava/Hevy)
+│
+├── stores/               # 📦 GLOBAL STATE (Zustand)
+│
+├── stories/              # 📖 STORYBOOK CONFIG
+│
+├── types/                # 🧩 GLOBAL TYPES
+│
+└── utils/                # 🛠️ GLOBAL UTILS
 ```
 
 ### 2.1 UI Architecture (Container/Presenter)
