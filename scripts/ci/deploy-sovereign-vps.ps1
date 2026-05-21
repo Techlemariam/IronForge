@@ -12,7 +12,7 @@
 #>
 
 $ErrorActionPreference = "Stop"
-$vpsHost = "root@77.42.45.229"
+$vpsHost = "root@100.108.139.108" # Panopticon LXC Node via Tailscale (previously Hetzner 77.42.45.229)
 $targetDir = "/data/ironforge-test-db"
 $dbPassword = $env:SOVEREIGN_DB_PASSWORD
 

@@ -45,7 +45,7 @@ export const JargonTooltip: React.FC<JargonTooltipProps> = ({ term, children, cl
       className={`group relative inline-block cursor-help border-b border-dotted border-zinc-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-plasma rounded-sm ${className}`}
     >
       {children}
-      <div 
+      <div
         id={tooltipId}
         role="tooltip"
         className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 rounded-md bg-zinc-900 border border-zinc-700 p-2 text-xs text-zinc-200 opacity-0 shadow-lg transition-opacity group-hover:opacity-100 group-focus:opacity-100 group-focus-within:opacity-100 z-50"

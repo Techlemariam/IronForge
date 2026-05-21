@@ -17,8 +17,8 @@ jobs:
           tailscale status
       - name: Ping Coolify
         run: |
-          ping -c 4 ironforge-coolify.tailafb692.ts.net || true
-          ping -c 4 100.106.158.20 || true
+          ping -c 4 panopticon-paas.tailafb692.ts.net || true
+          ping -c 4 100.125.172.95 || true
       - name: Curl Coolify API
         run: |
-          curl -v http://ironforge-coolify.tailafb692.ts.net:8000/api/v1/health || true
+          curl -v http://panopticon-paas.tailafb692.ts.net:8000/api/v1/health || true

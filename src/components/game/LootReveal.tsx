@@ -28,7 +28,12 @@ export function LootReveal({ item, onClose }: LootRevealProps) {
   return (
     <AnimatePresence>
       {item && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-label="Loot Reveal">
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Loot Reveal"
+        >
           {/* Backdrop */}
           <motion.button
             initial={{ opacity: 0 }}
@@ -41,10 +46,14 @@ export function LootReveal({ item, onClose }: LootRevealProps) {
 
           {/* Chest / Item Animation */}
           <motion.div
-            initial={reducedMotion ? { opacity: 0 } : { scale: 0.5, opacity: 0, y: 50, rotateX: 45 }}
+            initial={
+              reducedMotion ? { opacity: 0 } : { scale: 0.5, opacity: 0, y: 50, rotateX: 45 }
+            }
             animate={reducedMotion ? { opacity: 1 } : { scale: 1, opacity: 1, y: 0, rotateX: 0 }}
             exit={reducedMotion ? { opacity: 0 } : { scale: 0.5, opacity: 0, y: 50 }}
-            transition={reducedMotion ? { duration: 0.2 } : { type: 'spring', damping: 12, stiffness: 100 }}
+            transition={
+              reducedMotion ? { duration: 0.2 } : { type: 'spring', damping: 12, stiffness: 100 }
+            }
             className={`relative w-full max-w-sm aspect-[3/4] rounded-lg p-1 border-4 ${RARITY_COLORS[item.rarity]} shadow-[0_0_100px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col items-center justify-center gap-6 text-center`}
           >
             {/* Rays */}

@@ -91,7 +91,9 @@ export function MobilityStudio() {
               <Card
                 variant="glass"
                 key={exercise.id}
-                className={activeExercise?.id === exercise.id ? 'border-emerald-500 bg-emerald-950/20' : ''}
+                className={
+                  activeExercise?.id === exercise.id ? 'border-emerald-500 bg-emerald-950/20' : ''
+                }
               >
                 <button
                   className="w-full text-left p-3 flex items-center justify-between cursor-pointer transition-all hover:border-emerald-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900 focus-visible:ring-plasma rounded-xl"

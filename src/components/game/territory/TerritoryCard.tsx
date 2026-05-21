@@ -40,7 +40,10 @@ export const TerritoryCard = ({ territory, userGuildId, onClick }: TerritoryCard
       whileHover={{ scale: 1.05, zIndex: 10 }}
       transition={{ duration: 0.2 }}
       onClick={onClick}
-      className={cn(onClick && "focus-visible:ring-2 focus-visible:ring-plasma focus-visible:outline-none text-left rounded-xl")}
+      className={cn(
+        onClick &&
+          'focus-visible:ring-2 focus-visible:ring-plasma focus-visible:outline-none text-left rounded-xl'
+      )}
       data-testid="territory-card"
     >
       <Card
