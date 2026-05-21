@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 
+import { renderVideoAction } from '@/actions/factory/render-video';
 import { RenderVideoPresenter } from './RenderVideoPresenter';
 
 const defaultProps = {
@@ -34,21 +35,13 @@ export function RenderVideoForm() {
     }
 
     try {
-      const response = await fetch('/api/factory/render-video', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ props }),
-      });
+      const data = await renderVideoAction(props as Record<string, unknown>);
 
-      const data = await response.json();
-
-      if (!response.ok) {
+      if (!data.success) {
         throw new Error(data.error || 'Något gick fel på servern.');
       }
 
-      setResult({ message: data.message, videoPath: data.videoPath });
+      setResult({ message: data.message || '', videoPath: data.videoPath });
     } catch (error: any) {
       setResult({ message: 'Fel vid anrop till API:', error: error.message });
     } finally {

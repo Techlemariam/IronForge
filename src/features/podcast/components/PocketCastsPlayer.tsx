@@ -1,10 +1,13 @@
 'use client';
 
+import { getPodcastData } from '@/actions/integrations/podcast';
+import { loginPocketCasts } from '@/actions/integrations/podcast';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { usePodcastPlayer } from '@/features/podcast/hooks/usePodcastPlayer';
+import { useToast } from '@/hooks/use-toast';
 import type { PocketCastsEpisode } from '@/services/pocketcasts';
 import { Loader2, Pause, Play, SkipBack, SkipForward } from 'lucide-react';
 import Image from 'next/image';
@@ -34,10 +37,9 @@ export function PocketCastsPlayer() {
   const fetchQueue = useCallback(async () => {
     setIsLoading(true);
     try {
-      const res = await fetch('/api/podcast?type=queue');
-      if (!res.ok) throw new Error('Failed to fetch queue');
-      const data = await res.json();
-      setQueue(data);
+      const res = await getPodcastData('queue');
+      if (!res.success || !res.data) throw new Error(res.error || 'Failed to fetch queue');
+      setQueue(res.data as PocketCastsEpisode[]);
     } catch (err: any) {
       setError(err.message);
     } finally {

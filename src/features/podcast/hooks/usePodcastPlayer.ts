@@ -1,5 +1,6 @@
 'use client';
 
+import { updatePodcastProgress } from '@/actions/integrations/podcast';
 import type { PocketCastsEpisode } from '@/services/pocketcasts';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
@@ -122,15 +123,7 @@ export function usePodcastPlayer(playlist: PocketCastsEpisode[]) {
   const syncProgress = useCallback(
     async (episodeId: string, podcastId: string, position: number) => {
       try {
-        await fetch('/api/podcast', {
-          method: 'POST',
-          body: JSON.stringify({
-            episodeId,
-            podcastId,
-            position: Math.floor(position),
-            status: 1, // playing
-          }),
-        });
+        await updatePodcastProgress(episodeId, podcastId, position, 1);
       } catch (e) {
         console.error('[Sync Error]:', e);
       }
