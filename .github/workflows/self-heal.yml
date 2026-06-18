@@ -9,7 +9,7 @@ permissions: read-all
 
 jobs:
   heal:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, panopticon, ci, small]
     permissions:
       contents: write
       pull-requests: write
