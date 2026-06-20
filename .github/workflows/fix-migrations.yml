@@ -7,7 +7,7 @@ permissions: read-all
 
 jobs:
   fix-migrations:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, panopticon, ci, small]
     permissions:
       contents: write
     services:
