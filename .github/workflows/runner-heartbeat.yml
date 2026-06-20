@@ -15,7 +15,7 @@ permissions: read-all
 jobs:
   heartbeat:
     name: "💓 Check Runner Health"
-    runs-on: ubuntu-latest  # Must run on hosted runner (can't rely on self-hosted being alive)
+    runs-on: [self-hosted, linux, panopticon, ci, small]  # Must run on hosted runner (can't rely on self-hosted being alive)
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
