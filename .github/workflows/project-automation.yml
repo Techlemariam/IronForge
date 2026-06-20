@@ -23,7 +23,7 @@ permissions: read-all
 
 jobs:
   update_project:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, panopticon, ci, small]
     # Skip for Dependabot PRs — Dependabot token cannot access Projects V2 GraphQL API
     if: github.actor != 'dependabot[bot]'
     permissions:
