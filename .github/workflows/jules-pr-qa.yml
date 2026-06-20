@@ -18,7 +18,7 @@ env:
 jobs:
   detect-jules:
     name: 🔍 Detect Jules PR
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, panopticon, ci, small]
     outputs:
       is_jules: ${{ steps.check.outputs.is_jules }}
     steps:
@@ -147,7 +147,7 @@ jobs:
     name: 🏷️ Label Jules PR
     needs: detect-jules
     if: needs.detect-jules.outputs.is_jules == 'true'
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, panopticon, ci, small]
     permissions:
       pull-requests: write
       issues: write

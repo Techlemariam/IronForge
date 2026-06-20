@@ -84,7 +84,7 @@ jobs:
     name: 🤖 Jules Analyzer
     needs: nightly-e2e
     if: needs.nightly-e2e.outputs.e2e_failed == 'true'
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, panopticon, ci, small]
     permissions:
       contents: read
       issues: write
