@@ -7,11 +7,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ArchetypeSelector } from '@/features/settings/components/ArchetypeSelector';
 import IntegrationsPanel from '@/features/settings/components/IntegrationsPanel';
 import { MigrationTool } from '@/features/settings/components/MigrationTool';
+import { SubscriptionPanel } from '@/features/settings/components/SubscriptionPanel';
 import { HevyImportWizard } from '@/features/training/components/HevyImportWizard';
 import type { Archetype } from '@/types/index';
-import type { Faction } from '@/types/prisma';
+import type { Faction, SubscriptionTier } from '@/types/prisma';
 import { ArrowLeft, Sparkles, Upload } from 'lucide-react';
-import { Database, Dumbbell, Monitor, User as UserIcon } from 'lucide-react';
+import { CreditCard, Database, Dumbbell, Monitor, User as UserIcon } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
 
@@ -24,6 +25,8 @@ interface SettingsPageProps {
   garminConnected: boolean;
   initialFaction: Faction;
   initialArchetype: Archetype;
+  subscriptionTier: SubscriptionTier;
+  subscriptionStatus?: string | null;
   isDemoMode: boolean;
   initialLiteMode: boolean;
 }
@@ -37,6 +40,8 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
   garminConnected,
   initialFaction,
   initialArchetype,
+  subscriptionTier,
+  subscriptionStatus,
   isDemoMode,
   initialLiteMode,
 }) => {
@@ -81,7 +86,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
       {/* Content */}
       <div className="max-w-3xl mx-auto p-4 md:p-6 animate-fade-in">
         <Tabs defaultValue="neural-link" className="space-y-8">
-          <TabsList className="w-full bg-zinc-900/50 border border-white/5 h-auto p-1 grid grid-cols-2 md:grid-cols-4 gap-1">
+          <TabsList className="w-full bg-zinc-900/50 border border-white/5 h-auto p-1 grid grid-cols-2 md:grid-cols-5 gap-1">
             <TabsTrigger
               value="neural-link"
               className="data-[state=active]:bg-magma data-[state=active]:text-black py-3 flex flex-col items-center gap-1 transition-all"
@@ -109,6 +114,13 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
             >
               <Database size={18} />
               <span className="text-[10px] font-black uppercase tracking-widest">Data</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="billing"
+              className="data-[state=active]:bg-magma data-[state=active]:text-black py-3 flex flex-col items-center gap-1 transition-all"
+            >
+              <CreditCard size={18} />
+              <span className="text-[10px] font-black uppercase tracking-widest">Billing</span>
             </TabsTrigger>
           </TabsList>
 
@@ -174,6 +186,22 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
                   ariaLabel="Toggle Lite Mode"
                 />
               </div>
+            </div>
+          </TabsContent>
+
+          {/* BILLING TAB */}
+          <TabsContent value="billing" className="space-y-6">
+            <div className="bg-zinc-900/50 border border-white/5 rounded-xl p-6 shadow-xl space-y-6">
+              <div className="flex items-center gap-2 mb-2">
+                <CreditCard className="text-magma w-5 h-5" />
+                <h2 className="text-lg font-bold text-white uppercase tracking-wider">
+                  Subscription
+                </h2>
+              </div>
+              <SubscriptionPanel
+                subscriptionTier={subscriptionTier}
+                subscriptionStatus={subscriptionStatus}
+              />
             </div>
           </TabsContent>
 

@@ -1,5 +1,6 @@
 'use client';
 
+import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { AnimatePresence, motion } from 'framer-motion';
 
 type Item = {
@@ -22,37 +23,49 @@ interface LootRevealProps {
 }
 
 export function LootReveal({ item, onClose }: LootRevealProps) {
+  const { reducedMotion } = useReducedMotion();
+
   return (
     <AnimatePresence>
       {item && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Loot Reveal"
+        >
           {/* Backdrop */}
-          <motion.div
+          <motion.button
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="absolute inset-0 bg-black/90 backdrop-blur-md"
+            className="absolute inset-0 bg-black/90 backdrop-blur-md w-full h-full cursor-default"
+            aria-label="Close modal"
           />
 
           {/* Chest / Item Animation */}
           <motion.div
-            initial={{ scale: 0.5, opacity: 0, y: 50, rotateX: 45 }}
-            animate={{ scale: 1, opacity: 1, y: 0, rotateX: 0 }}
-            exit={{ scale: 0.5, opacity: 0, y: 50 }}
-            transition={{ type: 'spring', damping: 12, stiffness: 100 }}
+            initial={
+              reducedMotion ? { opacity: 0 } : { scale: 0.5, opacity: 0, y: 50, rotateX: 45 }
+            }
+            animate={reducedMotion ? { opacity: 1 } : { scale: 1, opacity: 1, y: 0, rotateX: 0 }}
+            exit={reducedMotion ? { opacity: 0 } : { scale: 0.5, opacity: 0, y: 50 }}
+            transition={
+              reducedMotion ? { duration: 0.2 } : { type: 'spring', damping: 12, stiffness: 100 }
+            }
             className={`relative w-full max-w-sm aspect-[3/4] rounded-lg p-1 border-4 ${RARITY_COLORS[item.rarity]} shadow-[0_0_100px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col items-center justify-center gap-6 text-center`}
           >
             {/* Rays */}
             <div
-              className={`absolute inset-0 animate-spin-slow opacity-30 bg-gradient-to-t from-current to-transparent bg-[length:200%_200%] ${RARITY_COLORS[item.rarity].split(' ')[1]}`}
+              className={`absolute inset-0 opacity-30 bg-gradient-to-t from-current to-transparent bg-[length:200%_200%] ${RARITY_COLORS[item.rarity].split(' ')[1]} ${reducedMotion ? '' : 'animate-spin-slow'}`}
             />
 
             <div className="z-10 relative">
               <motion.div
-                initial={{ scale: 0, rotate: -180 }}
-                animate={{ scale: 1, rotate: 0 }}
-                transition={{ delay: 0.2, type: 'spring' }}
+                initial={reducedMotion ? { opacity: 0 } : { scale: 0, rotate: -180 }}
+                animate={reducedMotion ? { opacity: 1 } : { scale: 1, rotate: 0 }}
+                transition={reducedMotion ? { duration: 0.2 } : { delay: 0.2, type: 'spring' }}
               >
                 <div
                   className={

@@ -1,5 +1,6 @@
 'use server';
 
+import { getErrorMessage } from '@/lib/error-message';
 import { prisma } from '@/lib/prisma';
 import { authActionClient } from '@/lib/safe-action';
 import { revalidatePath } from 'next/cache';
@@ -96,8 +97,8 @@ export const purchaseShopItemAction = authActionClient
 
       revalidatePath('/dashboard');
       return result;
-    } catch (error: any) {
+    } catch (error) {
       console.error('Purchase failed:', error);
-      return { success: false, error: error.message || 'Transaction failed' };
+      return { success: false, error: getErrorMessage(error) || 'Transaction failed' };
     }
   });

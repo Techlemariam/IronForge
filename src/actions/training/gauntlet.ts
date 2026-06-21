@@ -1,5 +1,6 @@
 'use server';
 
+import { getErrorMessage } from '@/lib/error-message';
 import prisma from '@/lib/prisma';
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
@@ -69,9 +70,9 @@ export async function logGauntletRunAction(result: GauntletResult) {
       runId: run.id,
       rewards: { xp: xpReward, gold: goldReward, kinetic: kineticReward },
     };
-  } catch (error: any) {
+  } catch (error) {
     console.error('Gauntlet Log Error:', error);
-    throw new Error(`Failed to log gauntlet run: ${error.message}`);
+    throw new Error(`Failed to log gauntlet run: ${getErrorMessage(error)}`);
   }
 }
 

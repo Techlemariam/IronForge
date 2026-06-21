@@ -1,3 +1,7 @@
 self-hosted-runner:
   labels:
     - IronForge-VPS
+    - IronForge-Local
+    - panopticon
+    - ci
+    - small

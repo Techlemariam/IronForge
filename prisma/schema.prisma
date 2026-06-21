@@ -45,6 +45,7 @@ model User {
   subscriptionTier        SubscriptionTier        @default(FREE)
   subscriptionStatus      String?
   subscriptionExpiry      DateTime?
+  stripeCustomerId        String?                 @unique
   city                    String?
   country                 String?
   faction                 Faction                 @default(HORDE)

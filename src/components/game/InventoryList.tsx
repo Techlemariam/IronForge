@@ -73,7 +73,7 @@ export function InventoryList({ userId, initialInventory }: InventoryListProps) 
               onClick={() => handleToggle(entry.equipmentId, entry.equipped)}
               disabled={loading === entry.equipmentId}
               className={`
-                                px-3 py-1 rounded-full text-xs font-bold transition-colors
+                                px-3 py-1 rounded-full text-xs font-bold transition-colors focus-visible:ring-2 focus-visible:ring-plasma focus-visible:outline-none
                                 ${
                                   entry.equipped
                                     ? 'bg-amber-500 text-black hover:bg-amber-400'

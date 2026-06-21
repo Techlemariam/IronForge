@@ -1,3 +1,4 @@
+import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Flame } from 'lucide-react';
 import type React from 'react';
@@ -11,6 +12,7 @@ interface BerserkerModeProps {
 
 const BerserkerMode: React.FC<BerserkerModeProps> = ({ isActive, onFinish, targetExercise }) => {
   const [combo, setCombo] = useState(0);
+  const { reducedMotion } = useReducedMotion();
 
   // Exempel på hur du kan interagera (detta skulle kopplas till set-loggning)
   useEffect(() => {
@@ -40,18 +42,29 @@ const BerserkerMode: React.FC<BerserkerModeProps> = ({ isActive, onFinish, targe
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex flex-col items-center justify-center p-8"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Berserker Rage"
         >
           {/* Röd pulserande vinjett */}
           <motion.div
             className="absolute inset-0 border-[12px] border-red-600/80 rounded-[32px] shadow-[0_0_100px_50px_rgba(220,38,38,0.5)]"
-            animate={{
-              scale: [1, 1.02, 1],
-              opacity: [0.8, 1, 0.8],
-            }}
-            transition={{
-              duration: 1.5,
-              repeat: Number.POSITIVE_INFINITY,
-            }}
+            animate={
+              reducedMotion
+                ? { opacity: 0.8 }
+                : {
+                    scale: [1, 1.02, 1],
+                    opacity: [0.8, 1, 0.8],
+                  }
+            }
+            transition={
+              reducedMotion
+                ? undefined
+                : {
+                    duration: 1.5,
+                    repeat: Number.POSITIVE_INFINITY,
+                  }
+            }
           />
 
           <motion.div
@@ -83,7 +96,7 @@ const BerserkerMode: React.FC<BerserkerModeProps> = ({ isActive, onFinish, targe
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1, transition: { delay: 1 } }}
-            className="text-zinc-400 text-sm animate-pulse"
+            className={`text-zinc-400 text-sm ${reducedMotion ? '' : 'animate-pulse'}`}
           >
             KEEP THE COMBO ALIVE
           </motion.p>
