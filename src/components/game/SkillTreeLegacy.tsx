@@ -160,20 +160,20 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onExit, unlockedIds, wellness }) 
   );
 
   return (
-    <div className="h-screen bg-[#050505] flex flex-col overflow-hidden font-sans relative select-none bg-paper bg-repeat text-zinc-900">
+    <div className="h-screen bg-void flex flex-col overflow-hidden font-sans relative select-none bg-paper bg-repeat text-zinc-900">
       {/* --- HUD --- */}
       <div className="absolute top-0 left-0 right-0 z-40 p-6 flex justify-between items-start pointer-events-none">
         <button
           onClick={onExit}
-          className="pointer-events-auto flex items-center gap-2 text-[#46321d] hover:text-black transition-colors uppercase font-serif font-bold text-xs tracking-widest bg-[#c79c6e] border-2 border-[#46321d] px-4 py-2 rounded shadow-xl"
+          className="pointer-events-auto flex items-center gap-2 text-forge-800 hover:text-black transition-colors uppercase font-serif font-bold text-xs tracking-widest bg-gold border-2 border-forge-800 px-4 py-2 rounded shadow-xl"
         >
           <ArrowLeft className="w-4 h-4" />
           <span className="hidden sm:inline">Close Neural Lattice</span>
         </button>
 
         <div className="flex flex-col items-end pointer-events-auto">
-          <div className="bg-zinc-900 border-2 border-[#c79c6e] px-4 py-2 rounded shadow-xl text-white">
-            <h1 className="text-sm font-serif font-bold text-[#c79c6e] uppercase tracking-widest flex items-center gap-2">
+          <div className="bg-zinc-900 border-2 border-forge-border px-4 py-2 rounded shadow-xl text-white">
+            <h1 className="text-sm font-serif font-bold text-gold uppercase tracking-widest flex items-center gap-2">
               <Sparkles className="w-4 h-4" />
               Talent Rank: {totalMastery}
             </h1>
@@ -184,7 +184,7 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onExit, unlockedIds, wellness }) 
       {/* --- CANVAS --- */}
       <div
         ref={containerRef}
-        className="flex-1 overflow-hidden cursor-grab active:cursor-grabbing touch-none relative bg-[#111]"
+        className="flex-1 overflow-hidden cursor-grab active:cursor-grabbing touch-none relative bg-armor"
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
@@ -197,7 +197,7 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onExit, unlockedIds, wellness }) 
             backgroundPosition: `${view.x}px ${view.y}px`,
             backgroundSize: `${40 * view.scale}px ${40 * view.scale}`,
             backgroundImage:
-              'linear-gradient(#444 1px, transparent 1px), linear-gradient(90deg, #444 1px, transparent 1px)',
+              'linear-gradient(var(--color-steel) 1px, transparent 1px), linear-gradient(90deg, var(--color-steel) 1px, transparent 1px)',
           }}
         />
 
@@ -237,8 +237,8 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onExit, unlockedIds, wellness }) 
                   d = `M ${startX} ${startY} C ${cpX} ${startY}, ${cpX} ${endY}, ${endX} ${endY}`;
                 }
 
-                const activeColor = isEndurance ? '#06b6d4' : 'var(--color-gold-bright)';
-                const lockedColor = '#333';
+                const activeColor = isEndurance ? 'var(--color-cyan)' : 'var(--color-gold-bright)';
+                const lockedColor = 'var(--color-steel)';
 
                 return (
                   <path
@@ -277,7 +277,7 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onExit, unlockedIds, wellness }) 
 
       {/* --- TOOLTIP DRAWER --- */}
       {selectedNode && (
-        <div className="absolute bottom-6 right-6 z-50 animate-slide-up w-80 bg-black/95 border-2 border-[#444] text-zinc-300 rounded-lg shadow-2xl p-6 font-sans text-sm backdrop-blur-md">
+        <div className="absolute bottom-6 right-6 z-50 animate-slide-up w-80 bg-black/95 border-2 border-steel text-zinc-300 rounded-lg shadow-2xl p-6 font-sans text-sm backdrop-blur-md">
           <div className="flex justify-between items-start mb-4">
             <div className="flex items-center gap-3">
               <div
@@ -374,7 +374,7 @@ const TalentNode: React.FC<{
 }> = ({ node, isSelected }) => {
   const isEndurance = node.currency === 'kinetic_shard';
   // Borders based on status & type
-  let borderColor = 'border-[#333] bg-[#000]';
+  let borderColor = 'border-steel bg-black';
   let shadow = '';
   let iconColor = 'text-zinc-700';
 

@@ -1,5 +1,6 @@
 'use server';
 
+import { getErrorMessage } from '@/lib/error-message';
 import { getHevyWorkouts } from '@/lib/hevy';
 import { getAthleteSettings } from '@/lib/intervals';
 import prisma from '@/lib/prisma';
@@ -20,10 +21,10 @@ export async function validateHevyApiKey(apiKey: string): Promise<ValidationResu
     // Fetch a single workout to validate the key
     await getHevyWorkouts(apiKey, 1, 1);
     return { valid: true };
-  } catch (error: any) {
+  } catch (error) {
     return {
       valid: false,
-      error: error.message || 'Invalid Hevy API Key',
+      error: getErrorMessage(error) || 'Invalid Hevy API Key',
     };
   }
 }
@@ -44,8 +45,8 @@ export async function connectHevy(userId: string, apiKey: string) {
 
     revalidatePath('/');
     return { success: true };
-  } catch (error: any) {
-    return { success: false, error: error.message };
+  } catch (error) {
+    return { success: false, error: getErrorMessage(error) };
   }
 }
 
@@ -57,8 +58,8 @@ export async function disconnectHevy(userId: string) {
     });
     revalidatePath('/');
     return { success: true };
-  } catch (error: any) {
-    return { success: false, error: error.message };
+  } catch (error) {
+    return { success: false, error: getErrorMessage(error) };
   }
 }
 
@@ -77,8 +78,8 @@ export async function validateIntervalsCredentials(
       };
     }
     return { valid: true, metadata: { name: settings.name } };
-  } catch (error: any) {
-    return { valid: false, error: error.message };
+  } catch (error) {
+    return { valid: false, error: getErrorMessage(error) };
   }
 }
 
@@ -101,8 +102,8 @@ export async function connectIntervals(userId: string, apiKey: string, athleteId
 
     revalidatePath('/');
     return { success: true };
-  } catch (error: any) {
-    return { success: false, error: error.message };
+  } catch (error) {
+    return { success: false, error: getErrorMessage(error) };
   }
 }
 
@@ -117,8 +118,8 @@ export async function disconnectIntervals(userId: string) {
     });
     revalidatePath('/');
     return { success: true };
-  } catch (error: any) {
-    return { success: false, error: error.message };
+  } catch (error) {
+    return { success: false, error: getErrorMessage(error) };
   }
 }
 
@@ -136,7 +137,7 @@ export async function disconnectGarmin(userId: string) {
     });
     revalidatePath('/');
     return { success: true };
-  } catch (error: any) {
-    return { success: false, error: error.message };
+  } catch (error) {
+    return { success: false, error: getErrorMessage(error) };
   }
 }

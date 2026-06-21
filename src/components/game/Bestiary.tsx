@@ -57,7 +57,7 @@ export const Bestiary: React.FC<BestiaryProps> = ({ userLevel, onClose }) => {
         </div>
         <button
           onClick={onClose}
-          className="bg-forge-800 border-2 border-forge-border px-4 py-2 rounded font-bold uppercase text-xs hover:bg-forge-700 transition-colors"
+          className="bg-forge-800 border-2 border-forge-border px-4 py-2 rounded font-bold uppercase text-xs hover:bg-forge-700 transition-colors focus-visible:ring-2 focus-visible:ring-plasma focus-visible:outline-none"
         >
           Back to Citadel
         </button>

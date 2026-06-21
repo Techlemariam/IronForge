@@ -1,5 +1,6 @@
 'use server';
 
+import { getErrorMessage } from '@/lib/error-message';
 import prisma from '@/lib/prisma';
 import { GeminiService } from '@/services/gemini';
 import { revalidatePath } from 'next/cache';
@@ -72,9 +73,9 @@ export async function chatWithOracleAction(userId: string, message: string) {
 
     revalidatePath('/oracle');
     return { success: true, response: responseText };
-  } catch (error: any) {
+  } catch (error) {
     console.error('Oracle Chat Error:', error);
-    return { success: false, error: error.message };
+    return { success: false, error: getErrorMessage(error) };
   }
 }
 
@@ -89,8 +90,8 @@ export async function getOracleConversationAction(userId: string, limit = 50) {
       take: limit,
     });
     return { success: true, data: messages };
-  } catch (error: any) {
-    return { success: false, error: error.message };
+  } catch (error) {
+    return { success: false, error: getErrorMessage(error) };
   }
 }
 
@@ -104,7 +105,7 @@ export async function clearOracleHistoryAction(userId: string) {
     });
     revalidatePath('/oracle');
     return { success: true };
-  } catch (error: any) {
-    return { success: false, error: error.message };
+  } catch (error) {
+    return { success: false, error: getErrorMessage(error) };
   }
 }

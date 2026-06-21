@@ -1,5 +1,6 @@
 'use server';
 
+import { getErrorMessage } from '@/lib/error-message';
 import prisma from '@/lib/prisma';
 import { createClient } from '@/utils/supabase/server';
 import axios from 'axios';
@@ -75,8 +76,8 @@ export async function resolveSegmentBattleAction(uploadId: number) {
       status: upload.status,
       message: 'Upload not yet fully processed by Strava.',
     };
-  } catch (error: any) {
+  } catch (error) {
     console.error('PvP Resolution Error:', error);
-    return { success: false, error: error.message };
+    return { success: false, error: getErrorMessage(error) };
   }
 }
