@@ -17,6 +17,7 @@ import { updateFactionAction } from '@/actions/user/core';
 import { getDemoModeStatus, toggleDemoModeAction } from '@/actions/user/demo';
 import ForgeInput from '@/components/ui/ForgeInput';
 import { Button } from '@/components/ui/button';
+import { getErrorMessage } from '@/lib/error-message';
 import type { Faction } from '@/types/prisma';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
@@ -409,9 +410,9 @@ const IntegrationsPanel: React.FC<IntegrationsPanelProps> = ({
                           if (url) {
                             window.location.href = url;
                           }
-                        } catch (e: any) {
+                        } catch (e) {
                           console.error('Strava Auth Error:', e);
-                          alert(`Failed to initiate Strava login: ${e.message}`);
+                          alert(`Failed to initiate Strava login: ${getErrorMessage(e)}`);
                         }
                       });
                     }}

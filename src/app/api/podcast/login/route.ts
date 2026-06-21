@@ -1,3 +1,4 @@
+import { getErrorMessage } from '@/lib/error-message';
 import { prisma } from '@/lib/prisma';
 import { PocketCastsClient } from '@/services/pocketcasts';
 import { createClient } from '@/utils/supabase/server';
@@ -32,10 +33,10 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json({ success: true });
-  } catch (error: any) {
-    console.error('[Podcast Login Error]:', error.message);
+  } catch (error) {
+    console.error('[Podcast Login Error]:', getErrorMessage(error));
     return NextResponse.json(
-      { error: error.message || 'Failed to log in to Pocket Casts' },
+      { error: getErrorMessage(error) || 'Failed to log in to Pocket Casts' },
       { status: 500 }
     );
   }

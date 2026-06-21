@@ -1,5 +1,6 @@
 'use client';
 
+import { getErrorMessage } from '@/lib/error-message';
 import { useState } from 'react';
 
 import { RenderVideoPresenter } from './RenderVideoPresenter';
@@ -49,8 +50,8 @@ export function RenderVideoForm() {
       }
 
       setResult({ message: data.message, videoPath: data.videoPath });
-    } catch (error: any) {
-      setResult({ message: 'Fel vid anrop till API:', error: error.message });
+    } catch (error) {
+      setResult({ message: 'Fel vid anrop till API:', error: getErrorMessage(error) });
     } finally {
       setIsLoading(false);
     }

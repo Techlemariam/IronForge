@@ -1,3 +1,4 @@
+import { getErrorMessage } from '@/lib/error-message';
 import axios from 'axios';
 import { NextResponse } from 'next/server';
 
@@ -16,14 +17,15 @@ export async function GET(request: Request) {
       params: params,
     });
     return NextResponse.json(response.data);
-  } catch (error: any) {
-    console.error('Failed to fetch Hevy routines:', error.response?.data || error.message);
+  } catch (error) {
+    const response = axios.isAxiosError(error) ? error.response : undefined;
+    console.error('Failed to fetch Hevy routines:', response?.data || getErrorMessage(error));
     return NextResponse.json(
       {
         error: 'Could not fetch Battle Plans.',
-        details: error.response?.data,
+        details: response?.data,
       },
-      { status: error.response?.status || 500 }
+      { status: response?.status || 500 }
     );
   }
 }

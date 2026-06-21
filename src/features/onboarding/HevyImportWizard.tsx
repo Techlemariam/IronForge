@@ -1,6 +1,7 @@
 'use client';
 
 import { importHevyHistoryAction } from '@/actions/integrations/hevy';
+import { getErrorMessage } from '@/lib/error-message';
 import { motion } from 'framer-motion';
 import { AlertCircle, CheckCircle, FileJson, Loader2, Upload } from 'lucide-react';
 import React, { useCallback, useState } from 'react';
@@ -79,8 +80,8 @@ export const HevyImportWizard = () => {
 
       setComplete(true);
       toast.success(`Successfully imported ${totalImported} workouts!`);
-    } catch (e: any) {
-      toast.error(`Import failed: ${e.message}`);
+    } catch (e) {
+      toast.error(`Import failed: ${getErrorMessage(e)}`);
     } finally {
       setIsUploading(false);
     }

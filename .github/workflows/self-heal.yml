@@ -55,5 +55,5 @@ jobs:
           else
             git commit -m "fix: auto-remediate [${{ github.event.client_payload.failure_type }}] debt"
             git push
-            curl -X POST "https://ironforge-coolify.tailafb692.ts.net/api/ci-events" -H "Content-Type: application/json" -d "{\"event\":\"self-heal\", \"repo\":\"${{ github.event.repository.name }}\", \"status\":\"success\"}" || true
+            curl -X POST "https://panopticon-paas.tailafb692.ts.net/api/ci-events" -H "Content-Type: application/json" -d "{\"event\":\"self-heal\", \"repo\":\"${{ github.event.repository.name }}\", \"status\":\"success\"}" || true
           fi

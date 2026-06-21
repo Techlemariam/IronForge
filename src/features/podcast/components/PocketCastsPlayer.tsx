@@ -5,6 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { usePodcastPlayer } from '@/features/podcast/hooks/usePodcastPlayer';
+import { getErrorMessage } from '@/lib/error-message';
 import type { PocketCastsEpisode } from '@/services/pocketcasts';
 import { Loader2, Pause, Play, SkipBack, SkipForward } from 'lucide-react';
 import Image from 'next/image';
@@ -38,8 +39,8 @@ export function PocketCastsPlayer() {
       if (!res.ok) throw new Error('Failed to fetch queue');
       const data = await res.json();
       setQueue(data);
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err) {
+      setError(getErrorMessage(err));
     } finally {
       setIsLoading(false);
     }

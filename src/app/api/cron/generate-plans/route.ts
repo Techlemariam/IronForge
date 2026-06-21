@@ -1,3 +1,4 @@
+import { getErrorMessage } from '@/lib/error-message';
 import prisma from '@/lib/prisma';
 import { PlannerService } from '@/services/planner';
 import { type NextRequest, NextResponse } from 'next/server';
@@ -45,9 +46,9 @@ export async function GET(request: NextRequest) {
           console.log(`Cron: Processing user ${user.heroName} (${user.id})...`);
           await PlannerService.triggerWeeklyPlanGeneration(user.id);
           results.push(user.id);
-        } catch (e: any) {
+        } catch (e) {
           console.error(`Cron: Failed for user ${user.id}:`, e);
-          errors.push({ userId: user.id, error: e.message });
+          errors.push({ userId: user.id, error: getErrorMessage(e) });
         }
       }
 
@@ -57,9 +58,9 @@ export async function GET(request: NextRequest) {
         failed: errors.length,
         errors,
       });
-    } catch (error: any) {
+    } catch (error) {
       console.error('Cron: Critical failure:', error);
-      return new NextResponse(`Internal Error: ${error.message}`, {
+      return new NextResponse(`Internal Error: ${getErrorMessage(error)}`, {
         status: 500,
       });
     }
