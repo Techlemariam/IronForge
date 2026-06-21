@@ -7,6 +7,7 @@ import {
   disconnectHevy,
   disconnectIntervals,
 } from '@/actions/integrations/core';
+import { logoutPocketCasts } from '@/actions/integrations/podcast';
 import {
   disconnectStravaAction,
   exchangeStravaTokenAction,
@@ -215,8 +216,8 @@ const IntegrationsPanel: React.FC<IntegrationsPanelProps> = ({
     if (!confirm('Disconnect Pocket Casts?')) return;
     startTransition(async () => {
       try {
-        const res = await fetch('/api/podcast/login', { method: 'DELETE' });
-        if (res.ok) {
+        const data = await logoutPocketCasts();
+        if (data.success) {
           setPocketCastsConnected(false);
           onIntegrationChanged?.();
         }

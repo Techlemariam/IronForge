@@ -1,5 +1,6 @@
 'use client';
 
+import { getPodcastData } from '@/actions/integrations/podcast';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
@@ -35,10 +36,9 @@ export function PocketCastsPlayer() {
   const fetchQueue = useCallback(async () => {
     setIsLoading(true);
     try {
-      const res = await fetch('/api/podcast?type=queue');
-      if (!res.ok) throw new Error('Failed to fetch queue');
-      const data = await res.json();
-      setQueue(data);
+      const res = await getPodcastData('queue');
+      if (!res.success || !res.data) throw new Error(res.error || 'Failed to fetch queue');
+      setQueue(res.data as PocketCastsEpisode[]);
     } catch (err) {
       setError(getErrorMessage(err));
     } finally {

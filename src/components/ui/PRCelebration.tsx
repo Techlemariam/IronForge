@@ -1,6 +1,7 @@
 // src/components/ui/PRCelebration.tsx
 'use client';
 
+import { renderVideoAction } from '@/actions/factory/render-video';
 import { fireConfetti, playSound } from '@/utils';
 import { getISOWeek } from 'date-fns';
 import { AnimatePresence, m } from 'framer-motion';
@@ -70,20 +71,14 @@ export const PRCelebration: React.FC<PRCelebrationProps> = ({
     };
 
     try {
-      const response = await fetch('/api/factory/render-video', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ props: videoProps }),
-      });
+      const data = await renderVideoAction(videoProps);
 
-      const data = await response.json();
-
-      if (!response.ok) {
+      if (!data.success) {
         throw new Error(data.error || 'Server rendering error.');
       }
 
       // Basic sanitization: only allow characters common in file paths
-      const sanitizedPath = data.videoPath
+      const sanitizedPath = (data.videoPath || '')
         .replace(/[^a-zA-Z0-9\/\-_\.]/g, '')
         .replace(/^[\\\/]+/, '');
 

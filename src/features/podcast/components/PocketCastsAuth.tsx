@@ -1,5 +1,6 @@
 'use client';
 
+import { loginPocketCasts } from '@/actions/integrations/podcast';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -29,15 +30,9 @@ export function PocketCastsAuth({ onSuccess }: PocketCastsAuthProps) {
     setIsLoading(true);
 
     try {
-      const res = await fetch('/api/podcast/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
+      const data = await loginPocketCasts(email, password);
 
-      const data = await res.json();
-
-      if (!res.ok) {
+      if (!data.success) {
         throw new Error(data.error || 'Login failed');
       }
 
