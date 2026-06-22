@@ -31,9 +31,7 @@ jobs:
       pull-requests: write
       repository-projects: write
     
-    env:
-      GITHUB_TOKEN: ${{ secrets.PROJECT_TOKEN || secrets.GITHUB_TOKEN }}
-
+    # GITHUB_TOKEN is scoped to steps requiring Project write permissions to avoid overriding checkout token.
     steps:
       - name: Checkout code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -43,6 +41,8 @@ jobs:
       - name: Move Closed Issue to Done
         if: github.event_name == 'issues' && github.event.action == 'closed'
         shell: pwsh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT || secrets.PROJECT_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           .agent/scripts/link-issue-to-project.ps1 `
             -IssueNumber ${{ github.event.issue.number }} `
@@ -52,6 +52,8 @@ jobs:
       - name: Move Reopened Issue to In Progress
         if: github.event_name == 'issues' && github.event.action == 'reopened'
         shell: pwsh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT || secrets.PROJECT_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           .agent/scripts/link-issue-to-project.ps1 `
             -IssueNumber ${{ github.event.issue.number }} `
@@ -63,6 +65,8 @@ jobs:
       - name: Link PR to Project on Open
         if: github.event_name == 'pull_request' && github.event.action == 'opened'
         shell: pwsh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT || secrets.PROJECT_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           .agent/scripts/link-pr-to-project.ps1 `
             -PRNumber ${{ github.event.pull_request.number }} `
@@ -72,6 +76,8 @@ jobs:
       - name: Move Merged PR to Done
         if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
         shell: pwsh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT || secrets.PROJECT_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           .agent/scripts/link-pr-to-project.ps1 `
             -PRNumber ${{ github.event.pull_request.number }} `
@@ -86,6 +92,8 @@ jobs:
       - name: Move Closed PR (not merged) to Backlog
         if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == false
         shell: pwsh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT || secrets.PROJECT_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           .agent/scripts/link-pr-to-project.ps1 `
             -PRNumber ${{ github.event.pull_request.number }} `
