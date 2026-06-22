@@ -14,7 +14,7 @@ permissions: read-all
 jobs:
   synthetic-check:
     name: 🏥 Prod Health Check
-    runs-on: [self-hosted, IronForge-Local]
+    runs-on: [self-hosted, linux, panopticon, ci, small]
     permissions:
       contents: read
       issues: write

@@ -17,7 +17,7 @@ permissions: read-all
 jobs:
   nightly-e2e:
     name: 🎭 Execute Nightly E2E
-    runs-on: [self-hosted, IronForge-Local]
+    runs-on: [self-hosted, linux, panopticon, ci, small]
     permissions:
       contents: read
     outputs:

@@ -15,7 +15,7 @@ permissions: read-all
 
 jobs:
   update_release_draft:
-    runs-on: [self-hosted, IronForge-Local]
+    runs-on: [self-hosted, linux, panopticon, ci, small]
     permissions:
       contents: write
       pull-requests: write

@@ -11,7 +11,7 @@ permissions: read-all
 
 jobs:
   triage:
-    runs-on: [self-hosted, IronForge-Local]
+    runs-on: [self-hosted, linux, panopticon, ci, small]
     permissions:
       pull-requests: write
     steps:
