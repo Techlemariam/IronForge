@@ -30,7 +30,7 @@ jobs:
     name: 📊 Jules Session Monitor
     runs-on: [self-hosted, linux, panopticon, ci, small]
     permissions:
-      contents: write
+      contents: read
       pull-requests: read
       issues: write
     steps:
@@ -193,11 +193,13 @@ jobs:
             core.setOutput('session_count', activeFile.sessions.length.toString());
             core.setOutput('stale_count', activeFile.sessions.filter(s => s.status === 'stale').length.toString());
 
-      - name: 💾 Commit Session Updates
+      - name: 💾 Upload Session State Snapshot
         if: steps.poll.outputs.should_commit == 'true'
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add .agent/jules/active.json .agent/jules/archive.json 2>/dev/null || true
-          git diff --staged --quiet || git commit -m "chore(jules): update session status [skip ci]"
-          git push
+        uses: actions/upload-artifact@834a144ee9880628373854199c0861110b64d0c9 # v4.1.0
+        with:
+          name: jules-session-state-${{ github.run_id }}
+          path: |
+            .agent/jules/active.json
+            .agent/jules/archive.json
+          retention-days: 14
+          if-no-files-found: ignore
