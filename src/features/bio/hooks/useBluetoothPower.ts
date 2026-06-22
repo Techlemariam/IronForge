@@ -1,3 +1,4 @@
+import { getErrorMessage } from '@/lib/error-message';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 // FTMS UUIDs
@@ -165,9 +166,9 @@ export const useBluetoothPower = () => {
       await cpChar.writeValue(new Uint8Array([0x00]));
 
       setIsConnected(true);
-    } catch (e: any) {
+    } catch (e) {
       console.error(e);
-      setError(e.message || 'Connection failed');
+      setError(getErrorMessage(e) || 'Connection failed');
       disconnect();
     }
   };

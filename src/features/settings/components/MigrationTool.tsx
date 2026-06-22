@@ -1,5 +1,6 @@
 'use client';
 
+import { getErrorMessage } from '@/lib/error-message';
 import { StorageService as Storage } from '@/services/storage';
 import { CheckCircle, Database, RefreshCw } from 'lucide-react';
 import React, { useState } from 'react';
@@ -62,10 +63,10 @@ export const MigrationTool = () => {
       // 3. Mark Complete
       setStatus('DONE');
       addLog('Migration Complete! Your data is now safe in the cloud.');
-    } catch (error: any) {
+    } catch (error) {
       console.error('Migration failed:', error);
       setStatus('ERROR');
-      addLog(`❌ ERROR: ${error.message || 'Unknown error'}`);
+      addLog(`❌ ERROR: ${getErrorMessage(error) || 'Unknown error'}`);
     }
   };
 

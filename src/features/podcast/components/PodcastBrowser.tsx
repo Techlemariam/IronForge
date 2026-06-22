@@ -1,5 +1,6 @@
 'use client';
 
+import { getPodcastData } from '@/actions/integrations/podcast';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import type { PocketCastsEpisode, PocketCastsPodcast } from '@/services/pocketcasts';
@@ -25,10 +26,9 @@ export function PodcastBrowser({ onPlayEpisode }: PodcastBrowserProps) {
   const fetchSubscriptions = async () => {
     setIsLoading(true);
     try {
-      const res = await fetch('/api/podcast?type=subscriptions');
-      const data = await res.json();
-      if (data.error) throw new Error(data.error);
-      setSubscriptions(data);
+      const res = await getPodcastData('subscriptions');
+      if (!res.success || !res.data) throw new Error(res.error || 'Failed to fetch subscriptions');
+      setSubscriptions(res.data as PocketCastsPodcast[]);
     } catch (error) {
       console.error('Failed to fetch subscriptions', error);
     } finally {
@@ -41,10 +41,9 @@ export function PodcastBrowser({ onPlayEpisode }: PodcastBrowserProps) {
     setSelectedPodcast(podcast);
     setView('episodes');
     try {
-      const res = await fetch(`/api/podcast?type=episodes&uuid=${podcast.uuid}`);
-      const data = await res.json();
-      if (data.error) throw new Error(data.error);
-      setEpisodes(data);
+      const res = await getPodcastData('episodes', podcast.uuid);
+      if (!res.success || !res.data) throw new Error(res.error || 'Failed to fetch episodes');
+      setEpisodes(res.data as PocketCastsEpisode[]);
     } catch (error) {
       console.error('Failed to fetch episodes', error);
     } finally {

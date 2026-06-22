@@ -6,10 +6,10 @@
 ## 🏗️ Architecture
 
 ### Hosting
-- **Server:** Hetzner VPS (cx23) — `77.42.45.229`
+- **Server:** panopticon-paas (Proxmox LXC) — `100.125.172.95`
 - **Orchestration:** Coolify (self-hosted PaaS)
 - **Network:** Tailscale VPN for secure access
-- **Domain:** Pending DNS migration (using sslip.io placeholder)
+- **Domain:** Pending DNS migration (using panopticon-paas.tailafb692.ts.net)
 
 ### Database
 - **Provider:** Supabase (hosted + local CLI for dev)
@@ -32,9 +32,21 @@
 
 ## 🚀 Current State
 
-| Component | Status | Notes |
-|:---|:---|:---|
-| **Production App** | ❌ Down | `http://77.42.45.229.sslip.io` not responding |
+1. **GitHub Actions** builds the image and runs Triple Gate validation.
+2. **Coolify** receives a webhook and pulls the latest Docker image.
+3. **Database** runs as an external connection configured in Coolify to `db` (or standalone Postgres containers).
+
+---
+
+## 🛠️ Typical Workflows
+
+### The "It's Down" Scenario
+If IronForge is inaccessible:
+
+| Symptom | Probable Cause | Action |
+| :--- | :--- | :--- |
+| **Coolify Dashboard** | ❌ Down | `doppler run -- pwsh .agent/scripts/debug-coolify.ps1` |
+| **Production App** | ❌ Down | `http://panopticon-paas.tailafb692.ts.net` not responding |
 | **Local Dev** | ? | Needs verification (`pnpm dev`) |
 | **Supabase (Cloud)** | ✅ Active | Supabase project exists |
 | **Supabase (Local)** | ? | Docker-based, needs `supabase start` |

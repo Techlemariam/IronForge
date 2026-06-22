@@ -102,7 +102,7 @@ const ChallengeCard: React.FC<{
           <button
             onClick={() => onClaim(challenge.id)}
             disabled={isClaiming}
-            className="px-3 py-1 bg-yellow-600 hover:bg-yellow-500 text-white text-xs font-bold uppercase rounded shadow-lg animate-pulse hover:animate-none transition-colors flex items-center space-x-1"
+            className="px-3 py-1 bg-yellow-600 hover:bg-yellow-500 text-white text-xs font-bold uppercase rounded shadow-lg animate-pulse hover:animate-none transition-colors flex items-center space-x-1 focus-visible:ring-2 focus-visible:ring-plasma focus-visible:outline-none"
           >
             {isClaiming ? <LoadingSpinner size="sm" /> : <span>Claim Bounty</span>}
           </button>

@@ -1,5 +1,6 @@
 'use client';
 
+import { loginPocketCasts } from '@/actions/integrations/podcast';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -11,6 +12,7 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
+import { getErrorMessage } from '@/lib/error-message';
 import { useState } from 'react';
 
 interface PocketCastsAuthProps {
@@ -28,15 +30,9 @@ export function PocketCastsAuth({ onSuccess }: PocketCastsAuthProps) {
     setIsLoading(true);
 
     try {
-      const res = await fetch('/api/podcast/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
+      const data = await loginPocketCasts(email, password);
 
-      const data = await res.json();
-
-      if (!res.ok) {
+      if (!data.success) {
         throw new Error(data.error || 'Login failed');
       }
 
@@ -46,11 +42,11 @@ export function PocketCastsAuth({ onSuccess }: PocketCastsAuthProps) {
       });
 
       onSuccess?.();
-    } catch (error: any) {
+    } catch (error) {
       toast({
         variant: 'destructive',
         title: 'Connection Failed',
-        description: error.message,
+        description: getErrorMessage(error),
       });
     } finally {
       setIsLoading(false);

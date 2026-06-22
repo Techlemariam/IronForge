@@ -1,5 +1,10 @@
+import { getErrorMessage } from '@/lib/error-message';
 import axios from 'axios';
 import { NextResponse } from 'next/server';
+
+type HevyErrorBody = {
+  error?: string;
+};
 
 function getHevyApiKey(request: Request) {
   return request.headers.get('x-hevy-api-key');
@@ -31,8 +36,9 @@ export async function GET(request: Request) {
         } else {
           keepFetching = false;
         }
-      } catch (error: any) {
-        if (error.response?.data && error.response.data.error === 'Page not found') {
+      } catch (error) {
+        const body = axios.isAxiosError<HevyErrorBody>(error) ? error.response?.data : undefined;
+        if (body?.error === 'Page not found') {
           keepFetching = false;
         } else {
           throw error;
@@ -40,14 +46,15 @@ export async function GET(request: Request) {
       }
     }
     return NextResponse.json({ exercise_templates: allExercises });
-  } catch (error: any) {
-    console.error('Hevy Codex Assembly Error:', error.response?.data || error.message);
+  } catch (error) {
+    const response = axios.isAxiosError(error) ? error.response : undefined;
+    console.error('Hevy Codex Assembly Error:', response?.data || getErrorMessage(error));
     return NextResponse.json(
       {
         error: 'Could not assemble the Exercise Codex.',
-        details: error.response?.data,
+        details: response?.data,
       },
-      { status: error.response?.status || 500 }
+      { status: response?.status || 500 }
     );
   }
 }

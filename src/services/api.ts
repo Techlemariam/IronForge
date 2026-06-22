@@ -1,3 +1,4 @@
+import { getActivitiesAction } from '@/actions/integrations/intervals';
 import axios from 'axios';
 import { StorageService } from './storage';
 
@@ -47,13 +48,13 @@ export interface IntervalActivity {
 
 export const getCardioHistory = async (): Promise<IntervalActivity[]> => {
   try {
-    const response = await fetch('/api/intervals/history');
+    const today = new Date().toISOString().split('T')[0];
+    const threeMonthsAgo = new Date();
+    threeMonthsAgo.setDate(threeMonthsAgo.getDate() - 90);
+    const oldest = threeMonthsAgo.toISOString().split('T')[0];
 
-    if (!response.ok) {
-      throw new Error('Failed to fetch cardio history');
-    }
-
-    return await response.json();
+    const data = await getActivitiesAction(oldest, today);
+    return data as unknown as IntervalActivity[];
   } catch (error) {
     console.error('API Error (Cardio History):', error);
     throw error;
