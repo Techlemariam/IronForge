@@ -33,7 +33,7 @@ const ZONE_GAMIFICATION = [
   {
     name: 'Tempo',
     label: 'Rhythm Flow',
-    color: '#6366f1',
+    color: 'var(--color-plasma)',
     desc: 'Aerobic power',
   }, // Z3
   {
@@ -51,7 +51,7 @@ const ZONE_GAMIFICATION = [
   {
     name: 'Anaerobic',
     label: 'Warp Drive',
-    color: '#ec4899',
+    color: 'var(--color-crisis)',
     desc: 'Anaerobic capacity',
   }, // Z6
   {

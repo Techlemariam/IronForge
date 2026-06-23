@@ -1,4 +1,5 @@
 import { getFactoryStatus } from '@/actions/factory';
+import { getErrorMessage } from '@/lib/error-message';
 import { NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
@@ -11,11 +12,11 @@ export async function GET() {
       stations: stats,
       timestamp: new Date().toISOString(),
     });
-  } catch (error: any) {
+  } catch (error) {
     return NextResponse.json(
       {
         success: false,
-        error: error.message || 'Failed to fetch factory status',
+        error: getErrorMessage(error) || 'Failed to fetch factory status',
       },
       { status: 500 }
     );

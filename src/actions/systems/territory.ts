@@ -6,6 +6,7 @@ import {
 } from '@/actions/guild-actions';
 import type { MapTile } from '@/features/territory/types';
 import { getSession } from '@/lib/auth';
+import { getErrorMessage } from '@/lib/error-message';
 import prisma from '@/lib/prisma';
 import { tileIdToCoords } from '@/lib/territory/tileUtils';
 import { TerritoryService } from '@/services/game/TerritoryService';
@@ -191,8 +192,8 @@ export async function getTerritoryMapAction() {
       },
     });
     return { success: true, data: territories };
-  } catch (error: any) {
-    return { success: false, error: error.message };
+  } catch (error) {
+    return { success: false, error: getErrorMessage(error) };
   }
 }
 
@@ -209,8 +210,8 @@ export async function contestTerritoryAction(territoryId: string, guildId: strin
 
     revalidatePath('/territory');
     return { success: true, data: result };
-  } catch (error: any) {
-    return { success: false, error: error.message };
+  } catch (error) {
+    return { success: false, error: getErrorMessage(error) };
   }
 }
 
@@ -221,7 +222,7 @@ export async function getContestLeaderboardAction(territoryId: string) {
   try {
     const leaderboard = await getContestLeaderboardInternal(territoryId);
     return { success: true, data: leaderboard };
-  } catch (error: any) {
-    return { success: false, error: error.message };
+  } catch (error) {
+    return { success: false, error: getErrorMessage(error) };
   }
 }

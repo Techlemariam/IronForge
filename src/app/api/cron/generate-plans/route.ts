@@ -45,9 +45,9 @@ export async function GET(request: NextRequest) {
           console.log(`Cron: Processing user ${user.heroName} (${user.id})...`);
           await PlannerService.triggerWeeklyPlanGeneration(user.id);
           results.push(user.id);
-        } catch (e: any) {
+        } catch (e) {
           console.error(`Cron: Failed for user ${user.id}:`, e);
-          errors.push({ userId: user.id, error: e.message });
+          errors.push({ userId: user.id, error: 'Plan generation failed' });
         }
       }
 
@@ -57,9 +57,9 @@ export async function GET(request: NextRequest) {
         failed: errors.length,
         errors,
       });
-    } catch (error: any) {
+    } catch (error) {
       console.error('Cron: Critical failure:', error);
-      return new NextResponse(`Internal Error: ${error.message}`, {
+      return new NextResponse('Internal server error', {
         status: 500,
       });
     }

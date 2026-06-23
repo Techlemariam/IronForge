@@ -1,6 +1,5 @@
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["driverAdapters"]
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -46,6 +45,7 @@ model User {
   subscriptionTier        SubscriptionTier        @default(FREE)
   subscriptionStatus      String?
   subscriptionExpiry      DateTime?
+  stripeCustomerId        String?                 @unique
   city                    String?
   country                 String?
   faction                 Faction                 @default(HORDE)

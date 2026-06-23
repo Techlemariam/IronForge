@@ -29,8 +29,8 @@ export const DemoVideoModal: React.FC<DemoVideoModalProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="bg-zinc-900 border-white/10 sm:max-w-2xl p-0 overflow-hidden">
-        <DialogHeader className="p-4 bg-zinc-900/90 backdrop-blur absolute top-0 left-0 right-0 z-10 border-b border-white/5">
+      <DialogContent className="bg-armor border-white/10 sm:max-w-2xl p-0 overflow-hidden">
+        <DialogHeader className="p-4 bg-armor/90 backdrop-blur absolute top-0 left-0 right-0 z-10 border-b border-white/5">
           <DialogTitle className="flex items-center gap-2">
             <PlayCircle className="w-5 h-5 text-magma" />
             <span className="text-white">{exerciseName} Demo</span>
@@ -48,7 +48,7 @@ export const DemoVideoModal: React.FC<DemoVideoModalProps> = ({
               controls={true}
               light={false} // Load immediately for smoother exp
               fallback={
-                <div className="flex items-center justify-center h-full w-full bg-zinc-900">
+                <div className="flex items-center justify-center h-full w-full bg-armor">
                   <Loader2 className="w-8 h-8 animate-spin text-zinc-500" />
                 </div>
               }

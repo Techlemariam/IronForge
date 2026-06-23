@@ -3,6 +3,7 @@ services:
   pg-l1:
     image: postgres:15-alpine
     container_name: ironforge-pg-l1
+    restart: always
     environment:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: ironforge
@@ -17,6 +18,7 @@ services:
   pg-e2e:
     image: postgres:15-alpine
     container_name: ironforge-pg-e2e
+    restart: always
     environment:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: ironforge
@@ -31,6 +33,7 @@ services:
   pg-guard:
     image: postgres:15-alpine
     container_name: ironforge-pg-guard
+    restart: always
     environment:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: ironforge
@@ -45,6 +48,7 @@ services:
   pg-l2:
     image: postgres:15-alpine
     container_name: ironforge-pg-l2
+    restart: always
     environment:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: ironforge
@@ -59,6 +63,7 @@ services:
   pg-l3:
     image: postgres:15-alpine
     container_name: ironforge-pg-l3
+    restart: always
     environment:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: ironforge

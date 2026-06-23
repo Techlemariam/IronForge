@@ -1,3 +1,4 @@
+import { getErrorMessage } from '@/lib/error-message';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 // UUIDs
@@ -164,9 +165,9 @@ export const useBluetoothSpeed = () => {
       } catch {
         throw new Error('Device does not support Running Speed (RSC) or Treadmill (FTMS)');
       }
-    } catch (e: any) {
+    } catch (e) {
       console.error(e);
-      setError(e.message || 'Connection failed');
+      setError(getErrorMessage(e) || 'Connection failed');
       disconnect();
     }
   };

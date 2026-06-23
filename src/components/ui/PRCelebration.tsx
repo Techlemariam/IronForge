@@ -1,6 +1,7 @@
 // src/components/ui/PRCelebration.tsx
 'use client';
 
+import { renderVideoAction } from '@/actions/factory/render-video';
 import { fireConfetti, playSound } from '@/utils';
 import { getISOWeek } from 'date-fns';
 import { AnimatePresence, m } from 'framer-motion';
@@ -70,20 +71,14 @@ export const PRCelebration: React.FC<PRCelebrationProps> = ({
     };
 
     try {
-      const response = await fetch('/api/factory/render-video', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ props: videoProps }),
-      });
+      const data = await renderVideoAction(videoProps);
 
-      const data = await response.json();
-
-      if (!response.ok) {
+      if (!data.success) {
         throw new Error(data.error || 'Server rendering error.');
       }
 
       // Basic sanitization: only allow characters common in file paths
-      const sanitizedPath = data.videoPath
+      const sanitizedPath = (data.videoPath || '')
         .replace(/[^a-zA-Z0-9\/\-_\.]/g, '')
         .replace(/^[\\\/]+/, '');
 
@@ -114,6 +109,9 @@ export const PRCelebration: React.FC<PRCelebrationProps> = ({
             transition={{ type: 'spring', damping: 15 }}
             className="text-center p-8 rounded-2xl bg-slate-900/50 border border-slate-700 w-[90%] max-w-md"
             onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="pr-title"
           >
             <m.div initial={{ y: -20 }} animate={{ y: 0 }} className="relative mb-6">
               <Trophy className="w-24 h-24 text-gold mx-auto drop-shadow-[0_0_30px_rgba(234,179,8,0.5)]" />
@@ -121,6 +119,7 @@ export const PRCelebration: React.FC<PRCelebrationProps> = ({
             </m.div>
 
             <m.h1
+              id="pr-title"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.1 }}

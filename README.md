@@ -14,7 +14,7 @@
 
 ## 🛠️ Tech Stack
 
-*   **Framework**: [Next.js 15 (App Router)](https://nextjs.org/)
+*   **Framework**: [Next.js 16 (App Router)](https://nextjs.org/)
 *   **Database**: PostgreSQL via [Prisma](https://www.prisma.io/) & [Supabase](https://supabase.com/)
 *   **AI**: Google Gemini 2.5 Flash
 *   **Styling**: Tailwind CSS & shadcn/ui
@@ -25,7 +25,7 @@
 
 1.  **Clone & Install**:
     ```bash
-    npm install
+    pnpm install
     ```
 
 2.  **Environment Setup**:
@@ -40,13 +40,15 @@
 
 3.  **Database Migration**:
     ```bash
-    npx prisma migrate dev
+    pnpm exec prisma migrate dev
     ```
 
 4.  **Launch**:
     ```bash
-    npm run dev
+    pnpm dev
     ```
+
+For a fuller local development baseline, see [docs/development.md](docs/development.md).
 
 ## 🛡️ Best Practices
 

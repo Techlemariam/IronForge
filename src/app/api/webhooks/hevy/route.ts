@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    logger.info(`[Hevy Webhook] Received request. Auth: ${authHeader}`);
+    logger.info(`[Hevy Webhook] Received request. Auth header present: ${Boolean(authHeader)}`);
 
     // 2. Parse Body to get Workout ID
     const body = await request.json();
@@ -133,8 +133,9 @@ export async function POST(request: NextRequest) {
       },
       { status: 200 }
     );
-  } catch (error: any) {
-    logger.error({ err: error.response?.data || error }, '[Hevy Webhook] Error');
+  } catch (error) {
+    const response = axios.isAxiosError(error) ? error.response : undefined;
+    logger.error({ err: response?.data || error }, '[Hevy Webhook] Error');
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

@@ -49,7 +49,7 @@ jobs:
   # ===========================================================================
   preflight:
     name: 🛫 Pre-flight Checks
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, panopticon, ci, small]
     outputs:
       should_run: ${{ steps.check.outputs.should_run }}
       workflow: ${{ steps.check.outputs.workflow }}
@@ -91,7 +91,7 @@ jobs:
     name: 🔧 Run Maintenance
     needs: preflight
     if: needs.preflight.outputs.should_run == 'true'
-    runs-on: [self-hosted, IronForge-Local]
+    runs-on: [self-hosted, linux, panopticon, ci, small]
     permissions:
       contents: write
       pull-requests: write
@@ -238,7 +238,7 @@ jobs:
     if: |
       needs.maintenance.outputs.changes_made == 'true' && 
       inputs.skip_pr != true
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, panopticon, ci, small]
     permissions:
       pull-requests: write
     steps:
@@ -266,7 +266,7 @@ jobs:
     name: 🚨 Notify Failure
     needs: [preflight, maintenance]
     if: failure()
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, panopticon, ci, small]
     permissions:
       issues: write
     steps:
