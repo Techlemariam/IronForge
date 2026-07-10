@@ -4,7 +4,7 @@ export type { TrainingPath, WeeklyMastery } from './training';
 export type { ExpectedOutcome, ActivityMatch, ActivityEvidence, MatchConfidence, MatchDecision } from './arbiter';
 export type { DoctrineProfile, DoctrineType, CoachingExplanationStyle, SafetyOverrideRules } from './doctrine';
 export type { CombatInput, CombatEffect, PvEEffect, PvPScore, CombatSafetyFlags, BossDamage, GuildContribution, LootEligibility } from './combat';
-export type { HyperProTaxonomy, HyperProPattern, HyperProLoadingStyle, FrictionLevel } from './hyperpro';
+export type { HyperProTaxonomy, HyperProPattern, HyperProLoadingStyle, FrictionLevel, HyperProProgressionStage, HyperProProgressionFamily } from './hyperpro';
 
 // Local imports for internal use
 import type { AuditReport } from './auditor';
@@ -12,7 +12,7 @@ import type { TrainingPath, WeeklyMastery } from './training';
 import type { ExpectedOutcome, ActivityMatch, ActivityEvidence, MatchConfidence, MatchDecision } from './arbiter';
 import type { DoctrineProfile, DoctrineType, CoachingExplanationStyle, SafetyOverrideRules } from './doctrine';
 import type { CombatInput, CombatEffect, PvEEffect, PvPScore, CombatSafetyFlags, BossDamage, GuildContribution, LootEligibility } from './combat';
-import type { HyperProTaxonomy, HyperProPattern, HyperProLoadingStyle, FrictionLevel } from './hyperpro';
+import type { HyperProTaxonomy, HyperProPattern, HyperProLoadingStyle, FrictionLevel, HyperProProgressionStage, HyperProProgressionFamily } from './hyperpro';
 
 export enum BlockType {
   WARMUP = 'warmup',

@@ -30,3 +30,20 @@ export interface HyperProTaxonomy {
     isPowerliftingAccessory: boolean;
   };
 }
+
+export interface HyperProProgressionStage {
+  name: string;
+  rpeGuidance: string;
+  stopCondition: string;
+  setupMode: string;
+  description: string;
+}
+
+export interface HyperProProgressionFamily {
+  id: string;
+  name: string;
+  targetPattern: HyperProPattern;
+  cautionNote: string;
+  stages: HyperProProgressionStage[]; // Ordered from regression to baseline to progression
+}
+
