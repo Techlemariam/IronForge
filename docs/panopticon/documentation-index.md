@@ -30,6 +30,7 @@ Welcome to the central documentation index for IronForge. This guide maps all av
   * **Project Manifest:** [project-manifest.json](file:///c:/Users/alexa/Workspaces/IronForge/docs/panopticon/project-manifest.json) (Ref: #371)
   * **Readiness Scorecard:** [readiness-scorecard.md](file:///c:/Users/alexa/Workspaces/IronForge/docs/panopticon/readiness-scorecard.md) (Ref: #372)
   * **Codex Operating Policy:** [codex-operating-policy.md](file:///c:/Users/alexa/Workspaces/IronForge/docs/panopticon/codex-operating-policy.md) (Ref: #374)
+  * **GitHub Hierarchy & Label Audit:** [github-hygiene-audit.md](file:///c:/Users/alexa/Workspaces/IronForge/docs/panopticon/github-hygiene-audit.md) (Ref: #375)
 
 ## 🤖 Codex Automations & Operations
 * **Codex Automations:** [CODEX_AUTOMATIONS.md](file:///c:/Users/alexa/Workspaces/IronForge/docs/CODEX_AUTOMATIONS.md)
