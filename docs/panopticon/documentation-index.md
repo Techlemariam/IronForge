@@ -31,6 +31,7 @@ Welcome to the central documentation index for IronForge. This guide maps all av
   * **Readiness Scorecard:** [readiness-scorecard.md](file:///c:/Users/alexa/Workspaces/IronForge/docs/panopticon/readiness-scorecard.md) (Ref: #372)
   * **Codex Operating Policy:** [codex-operating-policy.md](file:///c:/Users/alexa/Workspaces/IronForge/docs/panopticon/codex-operating-policy.md) (Ref: #374)
   * **GitHub Hierarchy & Label Audit:** [github-hygiene-audit.md](file:///c:/Users/alexa/Workspaces/IronForge/docs/panopticon/github-hygiene-audit.md) (Ref: #375)
+  * **Product Health Report Template:** [product-health-template.md](file:///c:/Users/alexa/Workspaces/IronForge/docs/panopticon/product-health-template.md) (Ref: #376)
 
 ## 🤖 Codex Automations & Operations
 * **Codex Automations:** [CODEX_AUTOMATIONS.md](file:///c:/Users/alexa/Workspaces/IronForge/docs/CODEX_AUTOMATIONS.md)
