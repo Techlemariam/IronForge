@@ -39,6 +39,7 @@ Welcome to the central documentation index for IronForge. This guide maps all av
   * **GitHub Hierarchy & Label Audit:** [github-hygiene-audit.md](file:///c:/Users/alexa/Workspaces/IronForge/docs/panopticon/github-hygiene-audit.md) (Ref: #375)
   * **Product Health Report Template:** [product-health-template.md](file:///c:/Users/alexa/Workspaces/IronForge/docs/panopticon/product-health-template.md) (Ref: #376)
   * **Product Control Board Summary:** [control-board-summary.json](file:///c:/Users/alexa/Workspaces/IronForge/docs/panopticon/control-board-summary.json) (Ref: #377)
+  * **Hyper Pro Equipment Audit:** [hyper-pro-equipment-audit.md](file:///c:/Users/alexa/Workspaces/IronForge/docs/reports/hyper-pro-equipment-audit.md) (Ref: #392)
 
 ## 🤖 Codex Automations & Operations
 * **Codex Automations:** [CODEX_AUTOMATIONS.md](file:///c:/Users/alexa/Workspaces/IronForge/docs/CODEX_AUTOMATIONS.md)
