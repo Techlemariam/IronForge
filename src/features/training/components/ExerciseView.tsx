@@ -5,13 +5,17 @@ import { Card } from '@/components/ui/card';
 import { SetRow } from '@/features/strength/SetRow';
 import { getExerciseHistory } from '@/features/strength/actions/history';
 import { useSetHistory } from '@/features/strength/hooks/useSetHistory';
+import {
+  getRepGoalProgress,
+  isExerciseComplete,
+  type RepGoalExercise,
+} from '@/features/strength/utils/repGoal';
 import { useMaxReps } from '@/hooks/useMaxReps';
 import { useRestTimer } from '@/hooks/useRestTimer';
 import { cn } from '@/lib/utils';
 import type { Exercise } from '@/types';
 import { type PanInfo, m, useMotionValue, useTransform } from 'framer-motion';
-import { CheckCircle, ChevronDown, ChevronsRight, PlayCircle } from 'lucide-react';
-import { BarChart2 } from 'lucide-react';
+import { BarChart2, CheckCircle, ChevronDown, ChevronsRight, PlayCircle } from 'lucide-react';
 import React, { useState } from 'react';
 import SetInput from './SetInput';
 
@@ -40,8 +44,11 @@ const ExerciseView: React.FC<ExerciseViewProps> = ({
   onNotesChange,
   onSetUpdate,
 }) => {
-  const activeSet = exercise.sets.find((s) => !s.completed);
-  const allSetsCompleted = exercise.sets.every((s) => s.completed);
+  const repGoalExercise = exercise as RepGoalExercise;
+  const repGoal = getRepGoalProgress(repGoalExercise);
+  const exerciseComplete = isExerciseComplete(repGoalExercise);
+  const activeSet = exerciseComplete ? undefined : exercise.sets.find((s) => !s.completed);
+  const allSetsCompleted = exerciseComplete;
   const [showDemo, setShowDemo] = useState(false);
   const { start } = useRestTimer();
 
@@ -68,15 +75,13 @@ const ExerciseView: React.FC<ExerciseViewProps> = ({
 
   // Gestures
   const x = useMotionValue(0);
-  const bg = useTransform(x, [0, 100], ['rgba(0,0,0,0)', 'rgba(34, 197, 94, 0.2)']); // Green tint on swipe right
+  const bg = useTransform(x, [0, 100], ['rgba(0,0,0,0)', 'rgba(34, 197, 94, 0.2)']);
 
   const handleDragEnd = (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     if (info.offset.x > 100 && isActive && activeSet) {
-      // Haptic Feedback
       if (typeof navigator !== 'undefined' && navigator.vibrate) {
         navigator.vibrate(50);
       }
-      // Swipe Right -> Complete Set
       onSetLog(
         activeSet.weight || 0,
         typeof activeSet.reps === 'number' ? activeSet.reps : 0,
@@ -91,24 +96,18 @@ const ExerciseView: React.FC<ExerciseViewProps> = ({
     return 'inactive';
   };
 
-  // Helper to determine rest time based on set type
   const getRestTime = (type?: string, isWarmup?: boolean) => {
     if (isWarmup || type === 'warmup') return 60;
     if (type === 'failure') return 120;
-    if (type === 'myoreps') return 30; // Shorter rest
-    return 90; // Normal
+    if (type === 'myoreps') return 30;
+    return 90;
   };
 
   const handleSetLogWrapper = (weight: number, reps: number, rpe: number) => {
     onSetLog(weight, reps, rpe);
 
-    // Auto-start timer if more sets remain, or even if done (cooldown)
-    // Checking remaining sets from current active index onwards
     const remainingSets = exercise.sets.filter((s) => !s.completed).length;
-
     if (remainingSets > 0) {
-      // If we just finished a set, remaining count acts weird before update?
-      // Actually activeSet is the one currently being logged.
       const restSeconds = getRestTime(activeSet?.setType, activeSet?.isWarmup);
       start(restSeconds);
     }
@@ -131,10 +130,8 @@ const ExerciseView: React.FC<ExerciseViewProps> = ({
         variant="glass"
         className={`transition-all duration-500 ${isActive ? 'border-magma/80 shadow-glow-magma/40' : 'border-white/10'}`}
       >
-        {/* Swipe Hint - only on first active set */}
         {isActive &&
           activeSet &&
-          !activeSet.completed &&
           exercise.sets.filter((s) => s.completed).length === 0 && (
             <div className="text-center text-[10px] text-zinc-500 mb-2 flex items-center justify-center gap-1 animate-pulse">
               <span>← Swipe right to complete →</span>
@@ -143,7 +140,6 @@ const ExerciseView: React.FC<ExerciseViewProps> = ({
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <h3 className="font-heading text-xl text-white tracking-wider">{exercise.name}</h3>
-            {/* Demo Button */}
             <button
               onClick={(e) => {
                 e.stopPropagation();
@@ -188,7 +184,28 @@ const ExerciseView: React.FC<ExerciseViewProps> = ({
           </div>
         </div>
 
-        {/* Notes Field */}
+        {repGoal && (
+          <div className="mb-4 rounded-lg border border-cyan-500/30 bg-cyan-500/5 p-3">
+            <div className="mb-2 flex items-center justify-between text-xs font-mono uppercase tracking-wider">
+              <span className="text-cyan-300">Rep quest</span>
+              <span className="text-white">
+                {repGoal.completedReps} / {repGoal.targetReps}
+              </span>
+            </div>
+            <div className="h-2 overflow-hidden rounded-full bg-zinc-800">
+              <div
+                className="h-full bg-cyan-400 transition-all duration-300"
+                style={{ width: `${repGoal.percentage}%` }}
+              />
+            </div>
+            <p className="mt-2 text-xs text-zinc-400">
+              {repGoal.isComplete
+                ? 'Quest complete'
+                : `${repGoal.remainingReps} reps kvar — fördela dem över återstående set.`}
+            </p>
+          </div>
+        )}
+
         {isActive && (
           <div className="mb-4 animate-fade-in">
             <textarea
@@ -200,7 +217,6 @@ const ExerciseView: React.FC<ExerciseViewProps> = ({
           </div>
         )}
 
-        {/* History Chart */}
         {showHistory && (
           <div className="mb-4 animate-fade-in">
             <ExerciseProgressChart data={chartData} isLoading={isChartLoading} />
@@ -232,7 +248,16 @@ const ExerciseView: React.FC<ExerciseViewProps> = ({
           >
             <SetInput
               onSetLog={handleSetLogWrapper}
-              targetReps={typeof activeSet.reps === 'string' ? 0 : activeSet.reps || 0}
+              targetReps={
+                repGoal
+                  ? Math.min(
+                      repGoal.remainingReps,
+                      typeof activeSet.reps === 'string' ? 0 : activeSet.reps || repGoal.remainingReps
+                    )
+                  : typeof activeSet.reps === 'string'
+                    ? 0
+                    : activeSet.reps || 0
+              }
               targetRPE={activeSet.rpe || 8}
             />
           </m.div>
