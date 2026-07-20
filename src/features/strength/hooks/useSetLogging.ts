@@ -1,5 +1,6 @@
 import { logTitanSet } from '@/actions/training/core';
 import { checkPRAction } from '@/actions/training/max-reps';
+import { isExerciseComplete, type RepGoalExercise } from '@/features/strength/utils/repGoal';
 import type { Exercise } from '@/types';
 import { fireConfetti, playSound } from '@/utils';
 import { calculateDamage } from '@/utils/combatMechanics';
@@ -86,10 +87,10 @@ export const useSetLogging = (
         playSound('ding');
       }
 
-      const allSetsInExerciseComplete = currentEx.sets.every((s) => s.completed);
-      const isLastExercise = activeExIndex === newExercises.length - 1;
+      const exerciseComplete = isExerciseComplete(currentEx as RepGoalExercise);
+      const isLastExercise = targetIndex === newExercises.length - 1;
 
-      if (allSetsInExerciseComplete) {
+      if (exerciseComplete) {
         if (isLastExercise) {
           setTimeout(() => callbacks.onWorkoutComplete(), 1000);
         } else {
