@@ -23,7 +23,9 @@ export class ProgressionService {
    */
   static calculateLevelFromXP(totalXp: number) {
     if (totalXp < 1000) return 1;
-    return Math.floor((totalXp / 1000) ** (2 / 3));
+    // Add small epsilon to handle float precision issues
+    // e.g. 2828 / 1000 ^ (2/3) might be 1.9999999999999998
+    return Math.floor((totalXp / 1000) ** (2 / 3) + 1e-9);
   }
   /**
    * Awards Gold to a user.
