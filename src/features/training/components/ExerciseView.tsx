@@ -6,9 +6,9 @@ import { SetRow } from '@/features/strength/SetRow';
 import { getExerciseHistory } from '@/features/strength/actions/history';
 import { useSetHistory } from '@/features/strength/hooks/useSetHistory';
 import {
+  type RepGoalExercise,
   getRepGoalProgress,
   isExerciseComplete,
-  type RepGoalExercise,
 } from '@/features/strength/utils/repGoal';
 import { useMaxReps } from '@/hooks/useMaxReps';
 import { useRestTimer } from '@/hooks/useRestTimer';
@@ -130,13 +130,11 @@ const ExerciseView: React.FC<ExerciseViewProps> = ({
         variant="glass"
         className={`transition-all duration-500 ${isActive ? 'border-magma/80 shadow-glow-magma/40' : 'border-white/10'}`}
       >
-        {isActive &&
-          activeSet &&
-          exercise.sets.filter((s) => s.completed).length === 0 && (
-            <div className="text-center text-[10px] text-zinc-500 mb-2 flex items-center justify-center gap-1 animate-pulse">
-              <span>← Swipe right to complete →</span>
-            </div>
-          )}
+        {isActive && activeSet && exercise.sets.filter((s) => s.completed).length === 0 && (
+          <div className="text-center text-[10px] text-zinc-500 mb-2 flex items-center justify-center gap-1 animate-pulse">
+            <span>← Swipe right to complete →</span>
+          </div>
+        )}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <h3 className="font-heading text-xl text-white tracking-wider">{exercise.name}</h3>
@@ -252,7 +250,9 @@ const ExerciseView: React.FC<ExerciseViewProps> = ({
                 repGoal
                   ? Math.min(
                       repGoal.remainingReps,
-                      typeof activeSet.reps === 'string' ? 0 : activeSet.reps || repGoal.remainingReps
+                      typeof activeSet.reps === 'string'
+                        ? 0
+                        : activeSet.reps || repGoal.remainingReps
                     )
                   : typeof activeSet.reps === 'string'
                     ? 0

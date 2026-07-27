@@ -1,6 +1,6 @@
+import { type Exercise, ExerciseLogic } from '@/types';
 import { describe, expect, it } from 'vitest';
-import { ExerciseLogic, type Exercise } from '@/types';
-import { getRepGoalProgress, isExerciseComplete, type RepGoalExercise } from './repGoal';
+import { type RepGoalExercise, getRepGoalProgress, isExerciseComplete } from './repGoal';
 
 const exercise = (completedReps: number[]): RepGoalExercise =>
   ({

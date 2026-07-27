@@ -1,9 +1,9 @@
 import { logTitanSet } from '@/actions/training/core';
 import { checkPRAction } from '@/actions/training/max-reps';
 import {
+  type RepGoalExercise,
   getRepGoalProgress,
   isExerciseComplete,
-  type RepGoalExercise,
 } from '@/features/strength/utils/repGoal';
 import type { Exercise } from '@/types';
 import { fireConfetti, playSound } from '@/utils';
