@@ -1,15 +1,28 @@
 import { ChaseEngine } from '@/services/game/ChaseEngine';
+import type { Monster } from '@/types';
 import { CHASE_DIFFICULTY_PRESETS } from '@/types/chase';
 import { describe, expect, it } from 'vitest';
-import type { Monster } from '@/types';
 
+const createMonster = (name = 'Chaser'): Monster => ({
+  id: 'm1',
+  name,
+  type: 'Beast',
+  level: 1,
+  description: 'Test chaser',
+  image: 'chaser.png',
+  hp: 100,
+  maxHp: 100,
+  weakness: ['endurance'],
+  associatedExerciseIds: [],
+  chaseSpeedKph: 10,
+});
 describe('ChaseEngine', () => {
   describe('Retrieval Methods', () => {
     it('getChaserMonsters should return only monsters with chaseSpeedKph', () => {
       const chasers = ChaseEngine.getChaserMonsters();
       // Using real data from MONSTERS
       expect(chasers.length).toBeGreaterThan(0);
-      chasers.forEach(m => {
+      chasers.forEach((m) => {
         expect(m.chaseSpeedKph).toBeDefined();
       });
     });
@@ -22,7 +35,7 @@ describe('ChaseEngine', () => {
   });
 
   describe('initializeChase', () => {
-    const mockMonster: Monster = { id: 'm1', name: 'Chaser 1', chaseSpeedKph: 10 } as any;
+    const mockMonster = createMonster('Chaser 1');
 
     it('should initialize with normal difficulty by default', () => {
       const state = ChaseEngine.initializeChase(mockMonster);
@@ -38,7 +51,7 @@ describe('ChaseEngine', () => {
   });
 
   describe('updateChase', () => {
-    const monster: Monster = { id: 'm1', name: 'Chaser', chaseSpeedKph: 10 } as any;
+    const monster = createMonster();
     const initialState = ChaseEngine.initializeChase(monster, 'normal');
 
     it('should decrease gap if player is slower than chaser', () => {
@@ -61,7 +74,7 @@ describe('ChaseEngine', () => {
   });
 
   describe('getDangerLevel', () => {
-    const monster: Monster = { id: 'm1', name: 'Chaser', chaseSpeedKph: 10 } as any;
+    const monster = createMonster();
     const state = ChaseEngine.initializeChase(monster, 'normal');
 
     it('should return 1 if caught', () => {
@@ -74,7 +87,7 @@ describe('ChaseEngine', () => {
   });
 
   describe('getStatusMessage', () => {
-    const monster: Monster = { id: 'm1', name: 'Chaser', chaseSpeedKph: 10 } as any;
+    const monster = createMonster();
     const state = ChaseEngine.initializeChase(monster, 'normal');
 
     it('should return caught message', () => {
@@ -87,7 +100,7 @@ describe('ChaseEngine', () => {
   });
 
   describe('getRequiredPace', () => {
-    const monster: Monster = { id: 'm1', name: 'Chaser', chaseSpeedKph: 10 } as any;
+    const monster = createMonster();
     const state = ChaseEngine.initializeChase(monster, 'normal');
 
     it('should return chaser speed with nightmare modifier', () => {
