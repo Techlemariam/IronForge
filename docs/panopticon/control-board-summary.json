@@ -10,16 +10,16 @@
   "readinessScores": {
     "overallProvisional": 7.9,
     "dimensions": {
-      "vision": 8.0,
-      "product": 7.0,
-      "architecture": 8.0,
-      "documentation": 8.0,
-      "githubHygiene": 9.0,
-      "aiCodex": 9.0,
-      "testability": 8.0,
-      "automation": 8.0,
-      "panopticonIntegration": 7.0,
-      "operationsRelease": 7.0
+      "vision": 8,
+      "product": 7,
+      "architecture": 8,
+      "documentation": 8,
+      "githubHygiene": 9,
+      "aiCodex": 9,
+      "testability": 8,
+      "automation": 8,
+      "panopticonIntegration": 7,
+      "operationsRelease": 7
     }
   },
   "activeEpics": [
@@ -29,22 +29,67 @@
       "status": "In Progress"
     },
     {
-      "issue": 384,
-      "title": "Epic: Combat Resolution Engine for PvE and PvP",
-      "status": "Planned"
+      "issue": 451,
+      "title": "TRACKER: Product completeness and integration gaps",
+      "status": "Open"
     },
     {
-      "issue": 383,
-      "title": "Epic: Doctrine Engine for athlete philosophy and risk profile",
-      "status": "Planned"
+      "issue": 452,
+      "title": "EPIC: Minimum complete training loop",
+      "status": "Open"
     },
     {
-      "issue": 382,
-      "title": "Epic: Activity Arbiter verification layer",
-      "status": "Planned"
+      "issue": 453,
+      "title": "EPIC: Onboarding, cold start and uncertain-data behavior",
+      "status": "Open"
+    },
+    {
+      "issue": 454,
+      "title": "EPIC: Workout data authority, provenance and synchronization",
+      "status": "Open"
+    },
+    {
+      "issue": 455,
+      "title": "EPIC: User override, correction and explanation contract",
+      "status": "Open"
+    },
+    {
+      "issue": 456,
+      "title": "EPIC: Life-load, energy modes and sustainable training policy",
+      "status": "Open"
+    },
+    {
+      "issue": 457,
+      "title": "EPIC: Interruption and return-to-training lifecycle",
+      "status": "Open"
+    },
+    {
+      "issue": 458,
+      "title": "EPIC: Product behavior scenario testing",
+      "status": "Open"
+    },
+    {
+      "issue": 459,
+      "title": "EPIC: Data lifecycle, resilience and privacy",
+      "status": "Open"
+    },
+    {
+      "issue": 460,
+      "title": "EPIC: Product identity, scope guardrails and sustainable roadmap",
+      "status": "Open"
+    },
+    {
+      "issue": 461,
+      "title": "WORKSTREAM: Reduce PR integration debt and enforce WIP limits",
+      "status": "Open"
     }
   ],
   "topRisks": [
+    {
+      "name": "Open PR integration debt",
+      "impact": "High",
+      "mitigation": "Use #461 to split mixed PRs, keep WIP limits explicit, and merge or close focused PRs only after green CI."
+    },
     {
       "name": "CI Environment Self-Hosted Runner Stability",
       "impact": "High",
@@ -56,27 +101,32 @@
       "mitigation": "Tracked in issue #88 for resolution."
     }
   ],
-  "blockedWork": [],
+  "blockedWork": [
+    {
+      "issue": 461,
+      "title": "PR integration debt reduction remains active until stale, mixed-scope, and failing PRs are resolved."
+    }
+  ],
   "nextRecommendedIssues": [
     {
-      "issue": 372,
-      "title": "Add IronForge Panopticon readiness scorecard"
+      "issue": 451,
+      "title": "Track product completeness and integration gaps"
     },
     {
-      "issue": 373,
-      "title": "Create IronForge documentation index for Panopticon"
+      "issue": 452,
+      "title": "Close the minimum complete training loop"
     },
     {
-      "issue": 374,
-      "title": "Define IronForge Codex operating policy for Panopticon"
+      "issue": 453,
+      "title": "Define onboarding and uncertain-data behavior"
     },
     {
-      "issue": 375,
-      "title": "Audit IronForge GitHub hierarchy and labels for Panopticon"
+      "issue": 454,
+      "title": "Document workout data authority and sync boundaries"
     },
     {
-      "issue": 376,
-      "title": "Add IronForge Product Health report template"
+      "issue": 461,
+      "title": "Reduce PR integration debt and enforce WIP limits"
     }
   ],
   "subsystemStatus": {
@@ -107,5 +157,6 @@
     "scorecardCreated": true,
     "policyCreated": true,
     "documentationIndexCreated": true
-  }
+  },
+  "lastReviewed": "2026-07-27"
 }

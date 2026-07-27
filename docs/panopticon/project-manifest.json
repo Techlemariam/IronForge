@@ -7,12 +7,7 @@
     "owner": "Alex",
     "timezone": "CET/CEST",
     "panopticonManaged": true,
-    "primaryDomains": [
-      "game",
-      "bio-integration",
-      "analytics",
-      "social-competitive"
-    ],
+    "primaryDomains": ["game", "bio-integration", "analytics", "social-competitive"],
     "coreSubsystems": {
       "oracle": {
         "description": "Recovery and fatigue coaching engine",
@@ -38,7 +33,18 @@
       "367": "Combat Retreat",
       "368": "Citadel Redesign",
       "369": "Tracker: Panopticon Readiness Program for IronForge",
-      "370": "Epic: IronForge Panopticon Readiness"
+      "370": "Epic: IronForge Panopticon Readiness",
+      "451": "TRACKER: Product completeness and integration gaps",
+      "452": "EPIC: Minimum complete training loop",
+      "453": "EPIC: Onboarding, cold start and uncertain-data behavior",
+      "454": "EPIC: Workout data authority, provenance and synchronization",
+      "455": "EPIC: User override, correction and explanation contract",
+      "456": "EPIC: Life-load, energy modes and sustainable training policy",
+      "457": "EPIC: Interruption and return-to-training lifecycle",
+      "458": "EPIC: Product behavior scenario testing",
+      "459": "EPIC: Data lifecycle, resilience and privacy",
+      "460": "EPIC: Product identity, scope guardrails and sustainable roadmap",
+      "461": "WORKSTREAM: Reduce PR integration debt and enforce WIP limits"
     },
     "validation": {
       "build": "pnpm build",
@@ -48,7 +54,8 @@
     },
     "riskFlags": {
       "noFeatureMonetization": "Payments deferred until Traction/Demand triggers met",
-      "ciEnvironment": "Requires self-hosted runners configuration stability"
+      "ciEnvironment": "Requires self-hosted runners configuration stability",
+      "prIntegrationDebt": "As of 2026-07-27, GitHub shows 20 open PRs: 10 draft stack PRs and 10 non-draft PRs, all merge-state unstable pending CI or external checks."
     },
     "references": {
       "readinessScorecard": "docs/panopticon/readiness-scorecard.md",
