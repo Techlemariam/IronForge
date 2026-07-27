@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import type { ChallengeDefinition, EquipmentProfile } from './domain';
 import {
+  InMemoryLiveForgeSessionRepository,
   abandonSession,
   finishSession,
-  InMemoryLiveForgeSessionRepository,
   pauseSession,
   recordSetAndAdvance,
   resumeSession,
@@ -48,7 +48,7 @@ describe('Live Forge session lifecycle', () => {
         rpe: 4,
         completedAt: '2026-07-20T18:02:00Z',
       },
-      challenge.prescriptions[1],
+      challenge.prescriptions[1]
     );
     session = pauseSession(session, '2026-07-20T18:03:00Z');
     await repository.save(session);
@@ -56,8 +56,11 @@ describe('Live Forge session lifecycle', () => {
     const restored = await repository.get(session.id);
     expect(restored?.status).toBe('PAUSED');
     expect(restored?.setHistory).toHaveLength(1);
+    if (!restored) {
+      throw new Error('Expected saved session to be restored');
+    }
 
-    session = resumeSession(restored!, '2026-07-20T18:10:00Z');
+    session = resumeSession(restored, '2026-07-20T18:10:00Z');
     session = finishSession(session, 'STANDARD_CLEAR', '2026-07-20T18:15:00Z');
 
     expect(session.status).toBe('COMPLETED');
@@ -81,7 +84,7 @@ describe('Live Forge session lifecycle', () => {
     const duplicate = recordSetAndAdvance(
       { ...recorded, currentPrescription: challenge.prescriptions[0] },
       result,
-      challenge.prescriptions[1],
+      challenge.prescriptions[1]
     );
 
     expect(duplicate.setHistory).toHaveLength(1);
@@ -95,7 +98,7 @@ describe('Live Forge session lifecycle', () => {
         equipmentProfile: equipment,
         startedAt: '2026-07-20T18:00:00Z',
       }),
-      '2026-07-20T18:05:00Z',
+      '2026-07-20T18:05:00Z'
     );
 
     expect(session.status).toBe('ABANDONED');

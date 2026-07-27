@@ -36,10 +36,7 @@ export function startSession(input: StartSessionInput): LiveForgeSession {
   };
 }
 
-export function pauseSession(
-  session: LiveForgeSession,
-  pausedAt: string,
-): LiveForgeSession {
+export function pauseSession(session: LiveForgeSession, pausedAt: string): LiveForgeSession {
   if (session.status !== 'ACTIVE') {
     throw new Error('Only active sessions can be paused');
   }
@@ -47,10 +44,7 @@ export function pauseSession(
   return { ...session, status: 'PAUSED', updatedAt: pausedAt };
 }
 
-export function resumeSession(
-  session: LiveForgeSession,
-  resumedAt: string,
-): LiveForgeSession {
+export function resumeSession(session: LiveForgeSession, resumedAt: string): LiveForgeSession {
   if (session.status !== 'PAUSED') {
     throw new Error('Only paused sessions can be resumed');
   }
@@ -61,7 +55,7 @@ export function resumeSession(
 export function recordSetAndAdvance(
   session: LiveForgeSession,
   result: SetResult,
-  nextPrescription?: SetPrescription,
+  nextPrescription?: SetPrescription
 ): LiveForgeSession {
   if (session.status !== 'ACTIVE') {
     throw new Error('Set results can only be recorded for active sessions');
@@ -90,7 +84,7 @@ export function recordSetAndAdvance(
 export function finishSession(
   session: LiveForgeSession,
   outcome: Exclude<SessionOutcome, 'ABANDONED'>,
-  finishedAt: string,
+  finishedAt: string
 ): LiveForgeSession {
   if (session.status === 'COMPLETED' || session.status === 'ABANDONED') {
     return session;
@@ -106,10 +100,7 @@ export function finishSession(
   };
 }
 
-export function abandonSession(
-  session: LiveForgeSession,
-  abandonedAt: string,
-): LiveForgeSession {
+export function abandonSession(session: LiveForgeSession, abandonedAt: string): LiveForgeSession {
   if (session.status === 'COMPLETED' || session.status === 'ABANDONED') {
     return session;
   }
@@ -124,17 +115,16 @@ export function abandonSession(
   };
 }
 
-export class InMemoryLiveForgeSessionRepository
-  implements LiveForgeSessionRepository
-{
+export class InMemoryLiveForgeSessionRepository implements LiveForgeSessionRepository {
   private readonly sessions = new Map<string, LiveForgeSession>();
 
-  async get(sessionId: string): Promise<LiveForgeSession | null> {
+  get(sessionId: string): Promise<LiveForgeSession | null> {
     const session = this.sessions.get(sessionId);
-    return session ? structuredClone(session) : null;
+    return Promise.resolve(session ? structuredClone(session) : null);
   }
 
-  async save(session: LiveForgeSession): Promise<void> {
+  save(session: LiveForgeSession): Promise<void> {
     this.sessions.set(session.id, structuredClone(session));
+    return Promise.resolve();
   }
 }
