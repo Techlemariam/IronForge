@@ -2,10 +2,10 @@ import { describe, expect, it } from 'vitest';
 
 import {
   CHEST_EXERCISE_DEFINITIONS,
+  type GoalChallengeCandidate,
   HOME_GYM_WITHOUT_PEC_FLY,
   evaluateEquipmentCompatibility,
   filterEquipmentCompatibleCandidates,
-  type GoalChallengeCandidate,
 } from './equipment';
 
 const buildChestCandidates: GoalChallengeCandidate[] = [
@@ -51,7 +51,7 @@ describe('equipment-aware goal planning', () => {
   it('keeps bench and push-up options but removes unavailable fly variations', () => {
     const result = filterEquipmentCompatibleCandidates(
       HOME_GYM_WITHOUT_PEC_FLY,
-      buildChestCandidates,
+      buildChestCandidates
     );
 
     expect(result.map((candidate) => candidate.exerciseId)).toEqual([
@@ -62,33 +62,29 @@ describe('equipment-aware goal planning', () => {
   });
 
   it('treats unknown exercise requirements as incompatible', () => {
-    const result = filterEquipmentCompatibleCandidates(
-      HOME_GYM_WITHOUT_PEC_FLY,
-      [
-        {
-          id: 'unknown',
-          exerciseId: 'unknown-machine',
-          goalId: 'BUILD_CHEST',
-          requiredCapability: 'CHEST_ADDUCTION',
-        },
-      ],
-    );
+    const result = filterEquipmentCompatibleCandidates(HOME_GYM_WITHOUT_PEC_FLY, [
+      {
+        id: 'unknown',
+        exerciseId: 'unknown-machine',
+        goalId: 'BUILD_CHEST',
+        requiredCapability: 'CHEST_ADDUCTION',
+      },
+    ]);
 
     expect(result).toEqual([]);
   });
 
   it('reports missing equipment for pec deck', () => {
     const pecDeck = CHEST_EXERCISE_DEFINITIONS.find(
-      (exercise) => exercise.exerciseId === 'pec-deck',
+      (exercise) => exercise.exerciseId === 'pec-deck'
     );
 
     expect(pecDeck).toBeDefined();
-    expect(
-      evaluateEquipmentCompatibility(
-        HOME_GYM_WITHOUT_PEC_FLY,
-        pecDeck!,
-      ),
-    ).toEqual({
+    if (!pecDeck) {
+      throw new Error('Expected pec-deck definition');
+    }
+
+    expect(evaluateEquipmentCompatibility(HOME_GYM_WITHOUT_PEC_FLY, pecDeck)).toEqual({
       compatible: false,
       missingEquipment: ['PEC_DECK'],
       reasonCode: 'MISSING_REQUIRED_EQUIPMENT',
@@ -101,7 +97,7 @@ describe('equipment-aware goal planning', () => {
         ...HOME_GYM_WITHOUT_PEC_FLY,
         temporarilyUnavailable: ['ADJUSTABLE_BENCH'],
       },
-      buildChestCandidates,
+      buildChestCandidates
     );
 
     expect(result.map((candidate) => candidate.exerciseId)).toEqual([

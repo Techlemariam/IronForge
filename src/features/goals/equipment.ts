@@ -53,12 +53,7 @@ export const CHEST_EXERCISE_DEFINITIONS: ExerciseEquipmentDefinition[] = [
   },
   {
     exerciseId: 'incline-barbell-bench-press',
-    requiredEquipment: [
-      'BARBELL',
-      'WEIGHT_PLATES',
-      'ADJUSTABLE_BENCH',
-      'RACK',
-    ],
+    requiredEquipment: ['BARBELL', 'WEIGHT_PLATES', 'ADJUSTABLE_BENCH', 'RACK'],
     stimulusCapabilities: ['CHEST_INCLINE_PRESS'],
   },
   {
@@ -92,14 +87,7 @@ export const HOME_GYM_WITHOUT_PEC_FLY: EquipmentInventoryProfile = {
   id: 'home-gym-without-pec-fly',
   name: 'Home gym',
   location: 'HOME_GYM',
-  available: [
-    'BARBELL',
-    'WEIGHT_PLATES',
-    'FLAT_BENCH',
-    'ADJUSTABLE_BENCH',
-    'RACK',
-    'SAFETY_ARMS',
-  ],
+  available: ['BARBELL', 'WEIGHT_PLATES', 'FLAT_BENCH', 'ADJUSTABLE_BENCH', 'RACK', 'SAFETY_ARMS'],
 };
 
 function activeEquipment(profile: EquipmentInventoryProfile): Set<EquipmentKind> {
@@ -109,12 +97,10 @@ function activeEquipment(profile: EquipmentInventoryProfile): Set<EquipmentKind>
 
 export function evaluateEquipmentCompatibility(
   profile: EquipmentInventoryProfile,
-  exercise: ExerciseEquipmentDefinition,
+  exercise: ExerciseEquipmentDefinition
 ): EquipmentCompatibilityResult {
   const available = activeEquipment(profile);
-  const missingEquipment = exercise.requiredEquipment.filter(
-    (item) => !available.has(item),
-  );
+  const missingEquipment = exercise.requiredEquipment.filter((item) => !available.has(item));
 
   return missingEquipment.length === 0
     ? {
@@ -132,11 +118,9 @@ export function evaluateEquipmentCompatibility(
 export function filterEquipmentCompatibleCandidates(
   profile: EquipmentInventoryProfile,
   candidates: GoalChallengeCandidate[],
-  exercises: ExerciseEquipmentDefinition[] = CHEST_EXERCISE_DEFINITIONS,
+  exercises: ExerciseEquipmentDefinition[] = CHEST_EXERCISE_DEFINITIONS
 ): GoalChallengeCandidate[] {
-  const definitions = new Map(
-    exercises.map((exercise) => [exercise.exerciseId, exercise]),
-  );
+  const definitions = new Map(exercises.map((exercise) => [exercise.exerciseId, exercise]));
 
   return candidates.filter((candidate) => {
     const exercise = definitions.get(candidate.exerciseId);
