@@ -47,20 +47,21 @@ jobs:
             echo "✅ All runners healthy"
           fi
 
-      - name: "🔄 Auto-Recovery via Tailscale"
-        if: steps.check.outputs.status == 'dead' || steps.check.outputs.status == 'degraded'
-        env:
-          GH_TOKEN: ${{ secrets.GH_PAT }}
+      - name: "📊 Check Disk Space"
+        id: disk_check
         run: |
-          echo "🔄 Attempting runner auto-recovery..."
-          echo "⚠️ Auto-recovery requires Tailscale SSH access to the host machine."
-          echo "Manual recovery: Run 'docker compose -f docker-compose.runners.yml up -d --scale runner=3' on the host."
-
-          # Flag for Discord notification
-          echo "RECOVERY_NEEDED=true" >> $GITHUB_ENV
+          DISK_USAGE=$(df / | awk 'NR==2 {print $5}' | sed 's/%//')
+          echo "disk_usage=$DISK_USAGE" >> $GITHUB_OUTPUT
+          echo "Disk Usage: $DISK_USAGE%"
+          if [ "$DISK_USAGE" -gt 85 ]; then
+            echo "status=critical" >> $GITHUB_OUTPUT
+            echo "🚨 CRITICAL DISK SPACE: $DISK_USAGE%"
+          else
+            echo "status=healthy" >> $GITHUB_OUTPUT
+          fi
 
       - name: "📢 Discord Alert"
-        if: always() && steps.check.outputs.status != 'healthy'
+        if: always() && (steps.check.outputs.status != 'healthy' || steps.disk_check.outputs.status == 'critical')
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_CI_WEBHOOK_URL }}
         run: |
@@ -70,22 +71,30 @@ jobs:
           fi
 
           STATUS="${{ steps.check.outputs.status }}"
+          DISK_STATUS="${{ steps.disk_check.outputs.status }}"
+          DISK_USAGE="${{ steps.disk_check.outputs.disk_usage }}"
           ONLINE="${{ steps.check.outputs.online_count }}"
           TOTAL="${{ steps.check.outputs.total_count }}"
 
           if [ "$STATUS" = "dead" ]; then
             COLOR=15158332  # Red
             TITLE="🚨 ALL RUNNERS DOWN"
+            DESC="**Online:** $ONLINE/$TOTAL runners\n**Action:** Manual restart required\n\`\`\`\ndocker compose -f docker-compose.runners.yml up -d --scale runner=3\n\`\`\`"
+          elif [ "$DISK_STATUS" = "critical" ]; then
+            COLOR=15158332  # Red
+            TITLE="🚨 RUNNER DISK SPACE CRITICAL"
+            DESC="**Disk Usage:** $DISK_USAGE%\n**Action:** Runner cleanup script failed to clear enough space or was not executed. Immediate intervention required."
           else
             COLOR=16776960  # Yellow
             TITLE="⚠️ Runner Degraded"
+            DESC="**Online:** $ONLINE/$TOTAL runners\n**Action:** Check offline runners."
           fi
 
           PAYLOAD=$(cat <<EOF
           {
             "embeds": [{
               "title": "$TITLE",
-              "description": "**Online:** $ONLINE/$TOTAL runners\n**Action:** Manual restart required\n\`\`\`\ndocker compose -f docker-compose.runners.yml up -d --scale runner=3\n\`\`\`",
+              "description": "$DESC",
               "color": $COLOR,
               "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
             }]
@@ -104,4 +113,5 @@ jobs:
           echo "  💓 Runner Heartbeat Summary"
           echo "  Status: ${{ steps.check.outputs.status }}"
           echo "  Online: ${{ steps.check.outputs.online_count }}/${{ steps.check.outputs.total_count }}"
+          echo "  Disk Usage: ${{ steps.disk_check.outputs.disk_usage }}% (${{ steps.disk_check.outputs.status }})"
           echo "================================"
