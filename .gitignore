@@ -159,8 +159,6 @@ storybook-static/
 !next-env.d.ts
 !components.json
 !audit_results.json
-!docs/panopticon/project-manifest.json
-!docs/panopticon/control-board-summary.json
 audit.cjs
 fix-catch.cjs
 
