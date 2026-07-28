@@ -19,6 +19,13 @@ interface RiskArea {
   matchedFiles: string[];
 }
 
+interface DatabasePreflightResult {
+  configuration: 'missing' | 'invalid' | 'valid';
+  schema: 'skipped' | 'invalid' | 'valid';
+  dns: 'skipped' | 'failed' | 'resolved';
+  tcp: 'skipped' | 'timed-out' | 'refused' | 'unreachable' | 'reachable';
+}
+
 const RISK_PATTERNS: {
   pattern: RegExp;
   specialist: string;
@@ -88,7 +95,8 @@ function getChangedFiles(): string[] {
   ]) {
     try {
       const diff = execSync(command, { encoding: 'utf-8' }).trim();
-      if (diff) return diff.split('\n').filter(Boolean);
+      if (diff) return diff.split('
+').filter(Boolean);
     } catch {
       // Try the next safe diff source.
     }
@@ -103,10 +111,10 @@ function analyzeRisks(files: string[]): RiskArea[] {
   });
 }
 
-function probeTcp(host: string, port: number): Promise<string> {
+function probeTcp(host: string, port: number): Promise<DatabasePreflightResult['tcp']> {
   return new Promise((resolve) => {
     const socket = new Socket();
-    const finish = (status: string) => {
+    const finish = (status: DatabasePreflightResult['tcp']) => {
       socket.destroy();
       resolve(status);
     };
@@ -122,8 +130,8 @@ function probeTcp(host: string, port: number): Promise<string> {
   });
 }
 
-async function databasePreflight(): Promise<string> {
-  const result = {
+async function databasePreflight(): Promise<DatabasePreflightResult> {
+  const result: DatabasePreflightResult = {
     configuration: 'missing',
     schema: 'skipped',
     dns: 'skipped',
@@ -167,17 +175,29 @@ async function databasePreflight(): Promise<string> {
     `- TCP endpoint: \`${result.tcp}\``,
     '',
     'Endpoint values, credentials, database names and raw output are intentionally omitted.',
-  ].join('\n');
+  ].join('
+');
 
   console.log(`Database preflight: ${JSON.stringify(result)}`);
   if (process.env.GITHUB_STEP_SUMMARY) {
-    appendFileSync(process.env.GITHUB_STEP_SUMMARY, `${summary}\n`, 'utf8');
+    appendFileSync(process.env.GITHUB_STEP_SUMMARY, `${summary}
+`, 'utf8');
   }
-  return result.tcp;
+  return result;
+}
+
+function isHealthyPreflight(result: DatabasePreflightResult): boolean {
+  return (
+    result.configuration === 'valid' &&
+    result.schema === 'valid' &&
+    result.dns === 'resolved' &&
+    result.tcp === 'reachable'
+  );
 }
 
 function reportRisks(files: string[]): void {
-  console.log('\n🔮 Predictive Failure Analysis');
+  console.log('
+🔮 Predictive Failure Analysis');
   console.log(`  Files changed: ${files.length}`);
 
   const risks = analyzeRisks(files);
@@ -188,7 +208,8 @@ function reportRisks(files: string[]): void {
 
   for (const risk of risks) {
     const icon = risk.risk === 'high' ? '🔴' : '🟡';
-    console.log(`\n  ${icon} ${risk.specialist}: ${risk.reason}`);
+    console.log(`
+  ${icon} ${risk.specialist}: ${risk.reason}`);
     risk.matchedFiles.forEach((file) => console.log(`     → ${file}`));
 
     if (process.env.GITHUB_ACTIONS && risk.risk === 'high') {
@@ -200,10 +221,18 @@ function reportRisks(files: string[]): void {
 }
 
 async function main(): Promise<void> {
-  await databasePreflight();
+  const preflight = await databasePreflight();
   reportRisks(getChangedFiles());
+
+  if (!isHealthyPreflight(preflight)) {
+    console.log(
+      '::warning title=Database Preflight::One or more sanitized database readiness checks failed.'
+    );
+    process.exitCode = 2;
+  }
 }
 
 main().catch(() => {
   console.log('::warning title=Database Preflight::Preflight could not complete safely.');
+  process.exitCode = 2;
 });
