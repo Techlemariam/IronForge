@@ -8,6 +8,11 @@
  */
 
 import { execSync } from 'node:child_process';
+import { appendFileSync } from 'node:fs';
+import {
+  formatDatabasePreflightSummary,
+  runDatabasePreflight,
+} from './ci/database-preflight.js';
 
 interface RiskArea {
   specialist: string;
@@ -86,7 +91,6 @@ function getChangedFiles(): string[] {
     if (!diff) return [];
     return diff.split('\n').filter(Boolean);
   } catch {
-    // Fallback: diff against main
     try {
       const diff = execSync('git diff --name-only main...HEAD', {
         encoding: 'utf-8',
@@ -103,7 +107,7 @@ function analyzeRisks(files: string[]): RiskArea[] {
   const risks: RiskArea[] = [];
 
   for (const rule of RISK_PATTERNS) {
-    const matched = files.filter((f) => rule.pattern.test(f));
+    const matched = files.filter((file) => rule.pattern.test(file));
     if (matched.length > 0) {
       risks.push({
         specialist: rule.specialist,
@@ -117,43 +121,59 @@ function analyzeRisks(files: string[]): RiskArea[] {
   return risks;
 }
 
-// Main
-const files = getChangedFiles();
-console.log('\n🔮 Predictive Failure Analysis');
-console.log(`  Files changed: ${files.length}`);
-
-if (files.length === 0) {
-  console.log('  ℹ️ No changed files detected. Skipping analysis.');
-  process.exit(0);
+function writeJobSummary(summary: string): void {
+  if (!process.env.GITHUB_STEP_SUMMARY) return;
+  appendFileSync(process.env.GITHUB_STEP_SUMMARY, `${summary}\n`, 'utf8');
 }
 
-const risks = analyzeRisks(files);
+function reportRiskAnalysis(files: string[]): void {
+  console.log('\n🔮 Predictive Failure Analysis');
+  console.log(`  Files changed: ${files.length}`);
 
-if (risks.length === 0) {
-  console.log('  ✅ No high-risk areas detected. Low failure probability.');
-  process.exit(0);
-}
+  if (files.length === 0) {
+    console.log('  ℹ️ No changed files detected. Skipping diff analysis.');
+    return;
+  }
 
-const highRisks = risks.filter((r) => r.risk === 'high');
-const mediumRisks = risks.filter((r) => r.risk === 'medium');
+  const risks = analyzeRisks(files);
+  if (risks.length === 0) {
+    console.log('  ✅ No high-risk areas detected. Low failure probability.');
+    return;
+  }
 
-console.log(`\n  🔴 High-risk areas: ${highRisks.length}`);
-console.log(`  🟡 Medium-risk areas: ${mediumRisks.length}`);
+  const highRisks = risks.filter((risk) => risk.risk === 'high');
+  const mediumRisks = risks.filter((risk) => risk.risk === 'medium');
 
-for (const risk of risks) {
-  const icon = risk.risk === 'high' ? '🔴' : '🟡';
-  console.log(`\n  ${icon} ${risk.specialist}: ${risk.reason}`);
-  risk.matchedFiles.forEach((f) => console.log(`     → ${f}`));
-}
+  console.log(`\n  🔴 High-risk areas: ${highRisks.length}`);
+  console.log(`  🟡 Medium-risk areas: ${mediumRisks.length}`);
 
-// Output for GHA annotations
-if (process.env.GITHUB_ACTIONS) {
-  for (const risk of highRisks) {
-    console.log(
-      `::warning title=Predictive Analysis::${risk.specialist}: ${risk.reason} (${risk.matchedFiles.length} files)`
-    );
+  for (const risk of risks) {
+    const icon = risk.risk === 'high' ? '🔴' : '🟡';
+    console.log(`\n  ${icon} ${risk.specialist}: ${risk.reason}`);
+    risk.matchedFiles.forEach((file) => console.log(`     → ${file}`));
+  }
+
+  if (process.env.GITHUB_ACTIONS) {
+    for (const risk of highRisks) {
+      console.log(
+        `::warning title=Predictive Analysis::${risk.specialist}: ${risk.reason} (${risk.matchedFiles.length} files)`
+      );
+    }
   }
 }
 
-// Set exit code based on risk (0 = ok, informational only)
-process.exit(0);
+async function main(): Promise<void> {
+  const databasePreflight = await runDatabasePreflight();
+  const databaseSummary = formatDatabasePreflightSummary(databasePreflight);
+
+  console.log(`\nDatabase preflight: ${databasePreflight.classification}`);
+  console.log('Database endpoint values and raw diagnostics are intentionally omitted.');
+  writeJobSummary(databaseSummary);
+
+  reportRiskAnalysis(getChangedFiles());
+}
+
+main().catch(() => {
+  console.log('::warning title=Database Preflight::Sanitized database preflight could not complete.');
+  console.log('No raw exception details were emitted.');
+});
