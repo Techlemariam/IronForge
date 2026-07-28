@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 import { spawn } from 'node:child_process';
 import { appendFileSync } from 'node:fs';
 
@@ -60,6 +58,17 @@ function selfTest() {
   console.log('Sanitized diagnostic self-test passed.');
 }
 
+function readTimeoutSeconds(args) {
+  const timeoutIndex = args.indexOf('--timeout-seconds');
+  if (timeoutIndex < 0) return 900;
+
+  const value = Number(args[timeoutIndex + 1]);
+  if (!Number.isInteger(value) || value < 1 || value > 3600) {
+    throw new Error('Invalid --timeout-seconds value');
+  }
+  return value;
+}
+
 async function main() {
   const args = process.argv.slice(2);
   if (args.includes('--self-test')) {
@@ -72,10 +81,13 @@ async function main() {
   if (separator < 0 || !args[separator + 1]) throw new Error('Command missing after --');
 
   const label = labelIndex >= 0 ? args[labelIndex + 1] : 'Sanitized Docker diagnostic';
+  const timeoutSeconds = readTimeoutSeconds(args);
   const command = args[separator + 1];
   const commandArgs = args.slice(separator + 2);
   let output = '';
   let spawnFailed = false;
+  let timedOut = false;
+  let closed = false;
 
   const child = spawn(command, commandArgs, {
     env: process.env,
@@ -96,14 +108,35 @@ async function main() {
     console.log('Docker diagnostic is still running; raw output remains withheld.');
   }, 30_000);
 
-  const exitCode = await new Promise((resolve) => child.once('close', resolve));
+  const timeout = setTimeout(() => {
+    timedOut = true;
+    child.kill('SIGTERM');
+    setTimeout(() => {
+      if (!closed) child.kill('SIGKILL');
+    }, 5_000).unref();
+  }, timeoutSeconds * 1_000);
+
+  const exitCode = await new Promise((resolve) =>
+    child.once('close', (code) => {
+      closed = true;
+      resolve(code);
+    })
+  );
   clearInterval(heartbeat);
+  clearTimeout(timeout);
 
-  const success = !spawnFailed && exitCode === 0;
-  const category = spawnFailed ? 'docker-command-unavailable' : classify(output);
-  writeSummary(label, success ? 'success' : 'failure', exitCode, category, lastStage(output));
+  const success = !spawnFailed && !timedOut && exitCode === 0;
+  const category = timedOut
+    ? 'docker-build-timeout'
+    : spawnFailed
+      ? 'docker-command-unavailable'
+      : classify(output);
+  const reportedExitCode = timedOut ? 124 : exitCode;
+  writeSummary(label, success ? 'success' : 'failure', reportedExitCode, category, lastStage(output));
 
-  if (!success) process.exitCode = typeof exitCode === 'number' && exitCode !== 0 ? exitCode : 1;
+  if (!success) {
+    process.exitCode = typeof reportedExitCode === 'number' && reportedExitCode !== 0 ? reportedExitCode : 1;
+  }
 }
 
 main().catch(() => {
