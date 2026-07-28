@@ -6,54 +6,53 @@ on:
       - '.github/workflows/**'
   workflow_dispatch:
 
-permissions: read-all
+permissions:
+  contents: read
 
 jobs:
   audit-workflows:
     name: Audit Workflow Standards
-    runs-on: [self-hosted, linux, panopticon, ci, small]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4.2.2
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
 
       - name: Check Node and pnpm Versions
         shell: bash
         run: |
-          echo "### 🛡️ Workflow Governance Audit" >> $GITHUB_STEP_SUMMARY
+          echo "### 🛡️ Workflow Governance Audit" >> "$GITHUB_STEP_SUMMARY"
           ERRORS=0
 
           for file in .github/workflows/*.yml; do
-            # Skip itself and specialized workflows that don't use Node standard runners
+            # Skip itself and specialized workflows that don't use Node standard runners.
             if [[ "$file" == *"/governance-guard.yml" || "$file" == *"/labeler.yml" || "$file" == *"/release-drafter.yml" || "$file" == *"/stale.yml" || "$file" == *"/scorecard.yml" || "$file" == *"/project-automation.yml" || "$file" == *"/dependabot-auto-merge.yml" || "$file" == *"/runner-heartbeat.yml" ]]; then continue; fi
 
             echo "Auditing $file..."
-            
-            # Check for node-version: 22
-            # We check for '22' or "22" or version used in the composite action
+
             if ! grep -qiE "node-version: ['\"]?22['\"]?|NODE_VERSION: ['\"]?22['\"]?|setup-ironforge" "$file"; then
-              echo "❌ $file: Missing node-version: 22 standardization" >> $GITHUB_STEP_SUMMARY
+              echo "❌ $file: Missing node-version: 22 standardization" >> "$GITHUB_STEP_SUMMARY"
               ERRORS=$((ERRORS + 1))
             fi
 
-            # Check for pnpm 10
             if ! grep -qE "version: ['\"]?10['\"]?|setup-ironforge" "$file"; then
-              # Some workflows might not use pnpm (governance only), so we check if setup-pnpm is used at all
               if grep -q "pnpm/action-setup" "$file"; then
-                echo "❌ $file: Uses pnpm but not version 10" >> $GITHUB_STEP_SUMMARY
+                echo "❌ $file: Uses pnpm but not version 10" >> "$GITHUB_STEP_SUMMARY"
                 ERRORS=$((ERRORS + 1))
               fi
             fi
 
-            # Check for checkout v4 or newer
             if grep -q "actions/checkout@v" "$file" && ! grep -qE "actions/checkout@v[4-9]" "$file"; then
-              echo "❌ $file: Uses outdated checkout action (use @v4+)" >> $GITHUB_STEP_SUMMARY
+              echo "❌ $file: Uses outdated checkout action (use @v4+)" >> "$GITHUB_STEP_SUMMARY"
               ERRORS=$((ERRORS + 1))
             fi
           done
 
-          if [ $ERRORS -gt 0 ]; then
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "⚠️ Found $ERRORS governance violations. Please fix them to match IronForge standards." >> $GITHUB_STEP_SUMMARY
+          if [ "$ERRORS" -gt 0 ]; then
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "⚠️ Found $ERRORS governance violations. Please fix them to match IronForge standards." >> "$GITHUB_STEP_SUMMARY"
             exit 1
-          else
-            echo "✅ All workflows meet Titan-Tier standards." >> $GITHUB_STEP_SUMMARY
           fi
+
+          echo "✅ All workflows meet Titan-Tier standards." >> "$GITHUB_STEP_SUMMARY"
