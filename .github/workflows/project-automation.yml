@@ -27,17 +27,20 @@ jobs:
     # Skip for Dependabot PRs — Dependabot token cannot access Projects V2 GraphQL API
     if: github.actor != 'dependabot[bot]'
     permissions:
+      contents: read
       issues: write
       pull-requests: write
       repository-projects: write
-    
+
     # GITHUB_TOKEN is scoped to steps requiring Project write permissions to avoid overriding checkout token.
     steps:
       - name: Checkout code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
 
       # ===== ISSUE EVENTS =====
-      
+
       - name: Move Closed Issue to Done
         if: github.event_name == 'issues' && github.event.action == 'closed'
         shell: pwsh
@@ -61,7 +64,7 @@ jobs:
             -Verbose
 
       # ===== PULL REQUEST EVENTS =====
-      
+
       - name: Link PR to Project on Open
         if: github.event_name == 'pull_request' && github.event.action == 'opened'
         shell: pwsh
@@ -83,10 +86,10 @@ jobs:
             -PRNumber ${{ github.event.pull_request.number }} `
             -Status "done" `
             -Verbose
-          
+
           # Also update linked issues if found in body (handled by script?)
           # The script currently doesn't auto-parse linked issues from PR body for status updates.
-          # TODO: Add that capability to the script for 100% parity, 
+          # TODO: Add that capability to the script for 100% parity,
           # but for now the PR status update is the critical part.
 
       - name: Move Closed PR (not merged) to Backlog
