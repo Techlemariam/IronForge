@@ -94,12 +94,18 @@ jobs:
           node scripts/ci/run-sanitized-diagnostic.mjs \
             --kind docker \
             --label "Snyk Docker build" \
+            --timeout-seconds 900 \
             -- docker build --progress=plain -t "$SNYK_IMAGE" .
 
         # Runs Snyk Container (Container and SCA) analysis and uploads result to Snyk.
       - name: Snyk Container monitor
         if: env.SNYK_TOKEN != ''
         run: snyk container monitor "$SNYK_IMAGE" --file=Dockerfile || true
+
+      - name: Remove run-scoped Snyk image
+        if: always() && env.SNYK_TOKEN != ''
+        continue-on-error: true
+        run: docker image rm --force "$SNYK_IMAGE" >/dev/null 2>&1 || true
 
         # Push the Snyk Code results into GitHub Code Scanning tab
       - name: Upload result to GitHub Code Scanning
