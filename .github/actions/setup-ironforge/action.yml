@@ -26,7 +26,7 @@ inputs:
     required: false
     default: 'false'
   is-container:
-    description: 'Whether the current job is running inside a container'
+    description: 'Whether the current job is expected to run inside a container'
     required: false
     default: 'false'
 
@@ -43,7 +43,7 @@ runs:
 
         if (docker ps -q -f name=ironforge-pg-${{ inputs.tier }}) {
           Write-Host "🟢 Found Managed Service: ironforge-pg-${{ inputs.tier }}" -ForegroundColor Green
-          
+
           # Map Ports based on Tier
           $PortMap = @{
             "l1"    = "5433"
@@ -52,70 +52,85 @@ runs:
             "guard" = "5435"
             "l3"    = "5436"
           }
-          
+
           $Port = $PortMap["${{ inputs.tier }}"]
           $DockerHost = "127.0.0.1"
-          if ("${{ inputs.is-container }}" -eq "true") {
+          $RequestedContainerRouting = "${{ inputs.is-container }}" -eq "true"
+          $RunningInContainer = $false
+
+          if ("${{ runner.os }}" -eq "Linux") {
+            $RunningInContainer = (Test-Path "/.dockerenv") -or (Test-Path "/run/.containerenv")
+          } elseif ("${{ runner.os }}" -eq "Windows") {
+            $RunningInContainer = [bool]$env:CONTAINER_SANDBOX_MOUNT_POINT
+          }
+
+          $UseContainerRouting = $RequestedContainerRouting -and $RunningInContainer
+          if ($RequestedContainerRouting -and -not $RunningInContainer) {
+            Write-Warning "is-container=true was requested, but no container runtime marker was detected. Using localhost routing."
+          }
+
+          if ($UseContainerRouting) {
             if ("${{ runner.os }}" -eq "Linux") {
-              # 1. Try host.docker.internal (standard for Docker Desktop / some CI setups)
-              try { 
+              # Prefer the explicit Docker host alias when available.
+              try {
                 [System.Net.Dns]::GetHostEntry("host.docker.internal") | Out-Null
-                $DockerHost = "host.docker.internal" 
-                Write-Host "🌐 Using host.docker.internal as DockerHost" -ForegroundColor Gray
-              } catch { 
-                # 2. Try to get the gateway IP from ip route (standard for Linux containers)
+                $DockerHost = "host.docker.internal"
+                Write-Host "🌐 Using host.docker.internal for managed services" -ForegroundColor Gray
+              } catch {
+                # Fall back to the container's default gateway without logging its value.
                 try {
                   $Gateway = (ip route show | Select-String "default via (\d+\.\d+\.\d+\.\d+)").Matches.Groups[1].Value
                   if ($Gateway) {
                     $DockerHost = $Gateway
-                    Write-Host "🌐 Using Gateway IP ($DockerHost) as DockerHost" -ForegroundColor Gray
+                    Write-Host "🌐 Using the container gateway for managed services" -ForegroundColor Gray
                   }
                 } catch {
                   $DockerHost = "127.0.0.1"
-                  Write-Host "🌐 Falling back to 127.0.0.1 as DockerHost" -ForegroundColor Gray
+                  Write-Host "🌐 Container gateway detection failed; using localhost" -ForegroundColor Gray
                 }
               }
             } elseif ("${{ runner.os }}" -eq "Windows") {
-               # On Windows runners, if running in a container, host.docker.internal might work
-               try { 
-                 [System.Net.Dns]::GetHostEntry("host.docker.internal") | Out-Null
-                 $DockerHost = "host.docker.internal"
-                 Write-Host "🌐 Using host.docker.internal as DockerHost (Windows)" -ForegroundColor Gray
-               } catch {
-                 $DockerHost = "127.0.0.1"
-               }
+              try {
+                [System.Net.Dns]::GetHostEntry("host.docker.internal") | Out-Null
+                $DockerHost = "host.docker.internal"
+                Write-Host "🌐 Using host.docker.internal for managed services" -ForegroundColor Gray
+              } catch {
+                $DockerHost = "127.0.0.1"
+                Write-Host "🌐 Container host alias unavailable; using localhost" -ForegroundColor Gray
+              }
             }
           } else {
-            Write-Host "🏠 Running on host (is-container=false), forcing DockerHost to 127.0.0.1" -ForegroundColor Cyan
+            Write-Host "🏠 Using localhost routing for managed services" -ForegroundColor Cyan
           }
+
           $BaseURL = "postgresql://postgres:password@${DockerHost}:$Port"
           if ("${{ inputs.tier }}" -eq "e2e") { $idb = "ironforge_e2e" } else { $idb = "ironforge_test" }
           $TargetURL = "$($BaseURL)/$($idb)?schema=public"
           [System.IO.File]::AppendAllText($env:GITHUB_ENV, "DATABASE_URL=$TargetURL`n")
           [System.IO.File]::AppendAllText($env:GITHUB_ENV, "DIRECT_URL=$TargetURL`n")
-          
+
           # Export Admin URL for maintenance tasks (always points to 'postgres' system DB)
           $AdminURL = "$BaseURL/postgres?schema=public"
           [System.IO.File]::AppendAllText($env:GITHUB_ENV, "ADMIN_DATABASE_URL=$AdminURL`n")
-          
+
           if ("${{ inputs.tier }}" -eq "guard" -or "${{ inputs.tier }}" -eq "l2") {
             $UniqueId = if ("${{ github.event.pull_request.number }}") { "pr_${{ github.event.pull_request.number }}" } else { "run_${{ github.run_id }}" }
             $ShadowDB = "ironforge_shadow_$UniqueId"
             $ShadowURL = "$($BaseURL)/$($ShadowDB)?schema=public"
             [System.IO.File]::AppendAllText($env:GITHUB_ENV, "SHADOW_DATABASE_URL=$ShadowURL`n")
             [System.IO.File]::AppendAllText($env:GITHUB_ENV, "TARGET_DB=$ShadowDB`n")
-            Write-Host "🚀 Exported SHADOW_DATABASE_URL and TARGET_DB ($ShadowDB) to GITHUB_ENV" -ForegroundColor Cyan
+            Write-Host "🚀 Exported run-scoped shadow database configuration" -ForegroundColor Cyan
           }
-          
-          # Rewrite local Supabase URL to use DockerHost if applicable
+
+          # Rewrite local Supabase URL to use DockerHost if applicable.
           $SupabaseURL = $env:NEXT_PUBLIC_SUPABASE_URL
           if ($SupabaseURL -and ($SupabaseURL -match "127.0.0.1" -or $SupabaseURL -match "localhost")) {
             $FixedSupabaseURL = $SupabaseURL -replace "127.0.0.1", $DockerHost -replace "localhost", $DockerHost
             [System.IO.File]::AppendAllText($env:GITHUB_ENV, "NEXT_PUBLIC_SUPABASE_URL=$FixedSupabaseURL`n")
-            Write-Host "🔄 Rewrote NEXT_PUBLIC_SUPABASE_URL to $FixedSupabaseURL" -ForegroundColor Cyan
+            Write-Host "🔄 Rewrote local Supabase URL for the selected Docker host" -ForegroundColor Cyan
           }
-          
-          Write-Host "🚀 Exported DATABASE_URL and ADMIN_DATABASE_URL (Port $Port)" -ForegroundColor Cyan
+
+          Write-Host "🚀 Exported managed-service database configuration for tier ${{ inputs.tier }}" -ForegroundColor Cyan
         } else {
           Write-Error "❌ Managed Service not found for tier: ${{ inputs.tier }}. Cannot set DATABASE_URL. Aborting."
           exit 1
