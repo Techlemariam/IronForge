@@ -21,7 +21,7 @@ name: Snyk Security
 
 on:
   push:
-    branches: ["main" ]
+    branches: ["main"]
   pull_request:
     branches: ["main"]
 
@@ -38,6 +38,7 @@ jobs:
     runs-on: [self-hosted, linux, panopticon, ci, small]
     env:
       SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      SNYK_IMAGE: ironforge-snyk-scan:${{ github.run_id }}
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4.2.2
       - name: Setup IronForge
@@ -82,14 +83,23 @@ jobs:
         if: env.SNYK_TOKEN != ''
         run: snyk iac test --report || true # || true
 
-        # Build the docker image for testing
+      - name: Validate sanitized Docker diagnostics
+        if: env.SNYK_TOKEN != ''
+        run: node scripts/ci/run-sanitized-diagnostic.mjs --self-test
+
+        # Build the docker image for testing without emitting raw runner or endpoint output.
       - name: Build a Docker image
         if: env.SNYK_TOKEN != ''
-        run: docker build -t your/image-to-test .
+        run: |
+          node scripts/ci/run-sanitized-diagnostic.mjs \
+            --kind docker \
+            --label "Snyk Docker build" \
+            -- docker build --progress=plain -t "$SNYK_IMAGE" .
+
         # Runs Snyk Container (Container and SCA) analysis and uploads result to Snyk.
       - name: Snyk Container monitor
         if: env.SNYK_TOKEN != ''
-        run: snyk container monitor your/image-to-test --file=Dockerfile || true
+        run: snyk container monitor "$SNYK_IMAGE" --file=Dockerfile || true
 
         # Push the Snyk Code results into GitHub Code Scanning tab
       - name: Upload result to GitHub Code Scanning
@@ -102,4 +112,3 @@ jobs:
       - name: Skip Snyk when token is unavailable
         if: env.SNYK_TOKEN == ''
         run: echo "SNYK_TOKEN is unavailable for this event; skipping Snyk scan."
-
