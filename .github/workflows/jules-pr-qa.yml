@@ -18,20 +18,24 @@ env:
 jobs:
   detect-jules:
     name: 🔍 Detect Jules PR
-    runs-on: [self-hosted, linux, panopticon, ci, small]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 2
+    permissions:
+      contents: read
     outputs:
       is_jules: ${{ steps.check.outputs.is_jules }}
     steps:
       - name: Check if Jules PR
         id: check
+        shell: bash
         env:
           HEAD_REF: ${{ github.head_ref }}
         run: |
           if [[ "$HEAD_REF" == jules/* ]]; then
-            echo "is_jules=true" >> $GITHUB_OUTPUT
-            echo "✅ Jules PR detected: $HEAD_REF"
+            echo "is_jules=true" >> "$GITHUB_OUTPUT"
+            echo "✅ Jules PR detected"
           else
-            echo "is_jules=false" >> $GITHUB_OUTPUT
+            echo "is_jules=false" >> "$GITHUB_OUTPUT"
             echo "⏭️ Not a Jules PR, skipping"
           fi
 
@@ -57,13 +61,11 @@ jobs:
 
       - name: 🔒 Scope Guard — Verify Jules stayed in bounds
         run: |
-          echo "## 🔒 Scope Guard" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## 🔒 Scope Guard" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
 
-          # Get list of changed files
           CHANGED=$(git diff --name-only origin/main...HEAD)
 
-          # Forbidden patterns for Jules
           FORBIDDEN_PATTERNS=(
             "prisma/migrations"
             ".github/workflows"
@@ -84,22 +86,20 @@ jobs:
           done
 
           if [ -n "$VIOLATIONS" ]; then
-            echo "### ❌ Scope Violations Found" >> $GITHUB_STEP_SUMMARY
-            echo -e "$VIOLATIONS" >> $GITHUB_STEP_SUMMARY
-            echo ""
+            echo "### ❌ Scope Violations Found" >> "$GITHUB_STEP_SUMMARY"
+            echo -e "$VIOLATIONS" >> "$GITHUB_STEP_SUMMARY"
             echo "::error::Jules modified forbidden files. Manual review required."
             exit 1
           else
-            echo "### ✅ All changes within allowed scope" >> $GITHUB_STEP_SUMMARY
+            echo "### ✅ All changes within allowed scope" >> "$GITHUB_STEP_SUMMARY"
           fi
 
-          # File count check
           FILE_COUNT=$(echo "$CHANGED" | wc -l)
           if [ "$FILE_COUNT" -gt 10 ]; then
             echo "::warning::Jules modified $FILE_COUNT files (threshold: 10). Review carefully."
-            echo "- ⚠️ $FILE_COUNT files modified (threshold: 10)" >> $GITHUB_STEP_SUMMARY
+            echo "- ⚠️ $FILE_COUNT files modified (threshold: 10)" >> "$GITHUB_STEP_SUMMARY"
           else
-            echo "- ✅ $FILE_COUNT files modified (within threshold)" >> $GITHUB_STEP_SUMMARY
+            echo "- ✅ $FILE_COUNT files modified (within threshold)" >> "$GITHUB_STEP_SUMMARY"
           fi
 
       - name: 🧹 Lint Check
@@ -147,7 +147,8 @@ jobs:
     name: 🏷️ Label Jules PR
     needs: detect-jules
     if: needs.detect-jules.outputs.is_jules == 'true'
-    runs-on: [self-hosted, linux, panopticon, ci, small]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
     permissions:
       pull-requests: write
       issues: write
@@ -159,7 +160,6 @@ jobs:
             const { owner, repo } = context.repo;
             const prNumber = context.payload.pull_request.number;
 
-            // Ensure labels exist
             const labels = ['🤖 jules', 'auto-qa'];
             for (const label of labels) {
               try {
