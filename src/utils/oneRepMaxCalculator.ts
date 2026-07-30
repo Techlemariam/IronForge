@@ -37,8 +37,12 @@ export function calculateRequiredRepsForE1rm(
   const reps = Math.max(1, rawReps);
   if (reps > maxReps) return undefined;
 
-  while (reps > 1 && calculateE1rmEpley(weight, reps - 1) >= targetE1rm) {
-    return reps - 1;
+  const previousRepCount = reps - 1;
+  if (
+    previousRepCount >= 1 &&
+    calculateE1rmEpley(weight, previousRepCount) >= targetE1rm
+  ) {
+    return previousRepCount;
   }
 
   return calculateE1rmEpley(weight, reps) >= targetE1rm ? reps : undefined;
