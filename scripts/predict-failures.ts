@@ -8,12 +8,22 @@
  */
 
 import { execSync } from 'node:child_process';
+import { lookup } from 'node:dns/promises';
+import { appendFileSync } from 'node:fs';
+import { Socket } from 'node:net';
 
 interface RiskArea {
   specialist: string;
   risk: 'high' | 'medium' | 'low';
   reason: string;
   matchedFiles: string[];
+}
+
+interface DatabasePreflightResult {
+  configuration: 'missing' | 'invalid' | 'valid';
+  schema: 'skipped' | 'invalid' | 'valid';
+  dns: 'skipped' | 'failed' | 'resolved';
+  tcp: 'skipped' | 'timed-out' | 'refused' | 'unreachable' | 'reachable';
 }
 
 const RISK_PATTERNS: {
@@ -79,81 +89,150 @@ const RISK_PATTERNS: {
 ];
 
 function getChangedFiles(): string[] {
-  try {
-    const diff = execSync('git diff --name-only HEAD~1 HEAD', {
-      encoding: 'utf-8',
-    }).trim();
-    if (!diff) return [];
-    return diff.split('\n').filter(Boolean);
-  } catch {
-    // Fallback: diff against main
+  for (const command of [
+    'git diff --name-only HEAD~1 HEAD',
+    'git diff --name-only main...HEAD',
+  ]) {
     try {
-      const diff = execSync('git diff --name-only main...HEAD', {
-        encoding: 'utf-8',
-      }).trim();
-      return diff ? diff.split('\n').filter(Boolean) : [];
+      const diff = execSync(command, { encoding: 'utf-8' }).trim();
+      if (diff) return diff.split('
+').filter(Boolean);
     } catch {
-      console.log('⚠️ Could not determine changed files');
-      return [];
+      // Try the next safe diff source.
     }
   }
+  return [];
 }
 
 function analyzeRisks(files: string[]): RiskArea[] {
-  const risks: RiskArea[] = [];
+  return RISK_PATTERNS.flatMap((rule) => {
+    const matchedFiles = files.filter((file) => rule.pattern.test(file));
+    return matchedFiles.length > 0 ? [{ ...rule, matchedFiles }] : [];
+  });
+}
 
-  for (const rule of RISK_PATTERNS) {
-    const matched = files.filter((f) => rule.pattern.test(f));
-    if (matched.length > 0) {
-      risks.push({
-        specialist: rule.specialist,
-        risk: rule.risk,
-        reason: rule.reason,
-        matchedFiles: matched,
-      });
+function probeTcp(host: string, port: number): Promise<DatabasePreflightResult['tcp']> {
+  return new Promise((resolve) => {
+    const socket = new Socket();
+    const finish = (status: DatabasePreflightResult['tcp']) => {
+      socket.destroy();
+      resolve(status);
+    };
+
+    socket.setTimeout(3_000);
+    socket.once('connect', () => finish('reachable'));
+    socket.once('timeout', () => finish('timed-out'));
+    socket.once('error', (error) => {
+      const code = 'code' in error ? String(error.code) : '';
+      finish(code === 'ECONNREFUSED' ? 'refused' : 'unreachable');
+    });
+    socket.connect(port, host);
+  });
+}
+
+async function databasePreflight(): Promise<DatabasePreflightResult> {
+  const result: DatabasePreflightResult = {
+    configuration: 'missing',
+    schema: 'skipped',
+    dns: 'skipped',
+    tcp: 'skipped',
+  };
+  const value = process.env.DATABASE_URL?.trim();
+
+  if (value) {
+    try {
+      const parsed = new URL(value);
+      if (!['postgres:', 'postgresql:'].includes(parsed.protocol) || !parsed.hostname) {
+        throw new Error('invalid');
+      }
+
+      result.configuration = 'valid';
+      try {
+        execSync('npx prisma validate', { stdio: 'ignore', timeout: 15_000 });
+        result.schema = 'valid';
+      } catch {
+        result.schema = 'invalid';
+      }
+
+      try {
+        await lookup(parsed.hostname);
+        result.dns = 'resolved';
+        result.tcp = await probeTcp(parsed.hostname, Number(parsed.port || 5432));
+      } catch {
+        result.dns = 'failed';
+      }
+    } catch {
+      result.configuration = 'invalid';
     }
   }
 
-  return risks;
+  const summary = [
+    '## Sanitized database preflight',
+    '',
+    `- DATABASE_URL: \`${result.configuration}\``,
+    `- Prisma schema: \`${result.schema}\``,
+    `- DNS resolution: \`${result.dns}\``,
+    `- TCP endpoint: \`${result.tcp}\``,
+    '',
+    'Endpoint values, credentials, database names and raw output are intentionally omitted.',
+  ].join('
+');
+
+  console.log(`Database preflight: ${JSON.stringify(result)}`);
+  if (process.env.GITHUB_STEP_SUMMARY) {
+    appendFileSync(process.env.GITHUB_STEP_SUMMARY, `${summary}
+`, 'utf8');
+  }
+  return result;
 }
 
-// Main
-const files = getChangedFiles();
-console.log('\n🔮 Predictive Failure Analysis');
-console.log(`  Files changed: ${files.length}`);
-
-if (files.length === 0) {
-  console.log('  ℹ️ No changed files detected. Skipping analysis.');
-  process.exit(0);
+function isHealthyPreflight(result: DatabasePreflightResult): boolean {
+  return (
+    result.configuration === 'valid' &&
+    result.schema === 'valid' &&
+    result.dns === 'resolved' &&
+    result.tcp === 'reachable'
+  );
 }
 
-const risks = analyzeRisks(files);
+function reportRisks(files: string[]): void {
+  console.log('
+🔮 Predictive Failure Analysis');
+  console.log(`  Files changed: ${files.length}`);
 
-if (risks.length === 0) {
-  console.log('  ✅ No high-risk areas detected. Low failure probability.');
-  process.exit(0);
-}
+  const risks = analyzeRisks(files);
+  if (risks.length === 0) {
+    console.log('  ✅ No high-risk areas detected.');
+    return;
+  }
 
-const highRisks = risks.filter((r) => r.risk === 'high');
-const mediumRisks = risks.filter((r) => r.risk === 'medium');
+  for (const risk of risks) {
+    const icon = risk.risk === 'high' ? '🔴' : '🟡';
+    console.log(`
+  ${icon} ${risk.specialist}: ${risk.reason}`);
+    risk.matchedFiles.forEach((file) => console.log(`     → ${file}`));
 
-console.log(`\n  🔴 High-risk areas: ${highRisks.length}`);
-console.log(`  🟡 Medium-risk areas: ${mediumRisks.length}`);
-
-for (const risk of risks) {
-  const icon = risk.risk === 'high' ? '🔴' : '🟡';
-  console.log(`\n  ${icon} ${risk.specialist}: ${risk.reason}`);
-  risk.matchedFiles.forEach((f) => console.log(`     → ${f}`));
-}
-
-// Output for GHA annotations
-if (process.env.GITHUB_ACTIONS) {
-  for (const risk of highRisks) {
-    console.log(
-      `::warning title=Predictive Analysis::${risk.specialist}: ${risk.reason} (${risk.matchedFiles.length} files)`
-    );
+    if (process.env.GITHUB_ACTIONS && risk.risk === 'high') {
+      console.log(
+        `::warning title=Predictive Analysis::${risk.specialist}: ${risk.reason} (${risk.matchedFiles.length} files)`
+      );
+    }
   }
 }
 
-// Set exit code based on risk (0 = ok, informational only)
-process.exit(0);
+async function main(): Promise<void> {
+  const preflight = await databasePreflight();
+  reportRisks(getChangedFiles());
+
+  if (!isHealthyPreflight(preflight)) {
+    console.log(
+      '::warning title=Database Preflight::One or more sanitized database readiness checks failed.'
+    );
+    process.exitCode = 2;
+  }
+}
+
+main().catch(() => {
+  console.log('::warning title=Database Preflight::Preflight could not complete safely.');
+  process.exitCode = 2;
+});
