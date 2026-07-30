@@ -93,12 +93,10 @@ export const useSetLogging = (
       if (repGoal && !repGoal.isComplete && currentEx.sets.length < maxSets) {
         currentEx.sets.push({
           id: `${currentEx.id}-rep-goal-${currentEx.sets.length + 1}-${Date.now()}`,
-          reps: Math.max(
+          reps:
             currentEx.prescription?.type === 'TOTAL_REPS'
               ? (currentEx.prescription.minRepsPerSet ?? 1)
               : 1,
-            repGoal.remainingReps
-          ),
           weight,
           completed: false,
         });
