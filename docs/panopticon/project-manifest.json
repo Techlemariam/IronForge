@@ -1,0 +1,66 @@
+{
+  "project": {
+    "name": "IronForge",
+    "repository": "https://github.com/Techlemariam/IronForge",
+    "productType": "Bio-Gamified Fitness and Performance Platform",
+    "status": "active",
+    "owner": "Alex",
+    "timezone": "CET/CEST",
+    "panopticonManaged": true,
+    "primaryDomains": ["game", "bio-integration", "analytics", "social-competitive"],
+    "coreSubsystems": {
+      "oracle": {
+        "description": "Recovery and fatigue coaching engine",
+        "doc": "docs/specs/oracle-3.0.md"
+      },
+      "doctrine": {
+        "description": "Athlete philosophy and risk profile alignment",
+        "doc": "docs/analysis/adaptive_volume_landmarks.md"
+      },
+      "arbiter": {
+        "description": "Activity Arbiter verification layer",
+        "doc": "docs/analysis/intervals_api.json"
+      },
+      "rpg": {
+        "description": "Character state, prestige, inventory, bestiary, and battle pass progression",
+        "doc": "docs/specs/arena-pvp-seasons.md"
+      }
+    },
+    "activeTrackersAndEpics": {
+      "355": "Garmin Fenix 7x Adapter (via Intervals.icu)",
+      "365": "Zone-Based Buffs (Cardio Titan)",
+      "366": "Leaderboard Consolidation",
+      "367": "Combat Retreat",
+      "368": "Citadel Redesign",
+      "369": "Tracker: Panopticon Readiness Program for IronForge",
+      "370": "Epic: IronForge Panopticon Readiness",
+      "451": "TRACKER: Product completeness and integration gaps",
+      "452": "EPIC: Minimum complete training loop",
+      "453": "EPIC: Onboarding, cold start and uncertain-data behavior",
+      "454": "EPIC: Workout data authority, provenance and synchronization",
+      "455": "EPIC: User override, correction and explanation contract",
+      "456": "EPIC: Life-load, energy modes and sustainable training policy",
+      "457": "EPIC: Interruption and return-to-training lifecycle",
+      "458": "EPIC: Product behavior scenario testing",
+      "459": "EPIC: Data lifecycle, resilience and privacy",
+      "460": "EPIC: Product identity, scope guardrails and sustainable roadmap",
+      "461": "WORKSTREAM: Reduce PR integration debt and enforce WIP limits"
+    },
+    "validation": {
+      "build": "pnpm build",
+      "test": "pnpm test",
+      "typecheck": "tsc --noEmit",
+      "lint": "pnpm lint"
+    },
+    "riskFlags": {
+      "noFeatureMonetization": "Payments deferred until Traction/Demand triggers met",
+      "ciEnvironment": "Requires self-hosted runners configuration stability",
+      "prIntegrationDebt": "As of 2026-07-27, GitHub shows 20 open PRs: 10 draft stack PRs and 10 non-draft PRs, all merge-state unstable pending CI or external checks."
+    },
+    "references": {
+      "readinessScorecard": "docs/panopticon/readiness-scorecard.md",
+      "documentationIndex": "docs/panopticon/documentation-index.md",
+      "codexOperatingPolicy": "docs/panopticon/codex-operating-policy.md"
+    }
+  }
+}
