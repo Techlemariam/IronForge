@@ -1,3 +1,8 @@
+import {
+  evaluateAndSaveProgressionAction,
+  getSavedProgressionAction,
+} from '@/actions/training/progressionDecision';
+import type { SetData } from '@/actions/training/strength';
 import { ExerciseProgressChart } from '@/components/charts/ExerciseProgressChart';
 import { DemoVideoModal } from '@/components/ui/DemoVideoModal';
 import { PRBadge } from '@/components/ui/PRBadge';
@@ -13,13 +18,12 @@ import {
 import { useMaxReps } from '@/hooks/useMaxReps';
 import { useRestTimer } from '@/hooks/useRestTimer';
 import { cn } from '@/lib/utils';
+import type { ProgressionDecision, SetRole } from '@/services/training/progressionEngine';
 import type { Exercise } from '@/types';
 import { type PanInfo, m, useMotionValue, useTransform } from 'framer-motion';
 import { BarChart2, CheckCircle, ChevronDown, ChevronsRight, PlayCircle } from 'lucide-react';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import SetInput from './SetInput';
-
-import type { SetData } from '@/actions/training/strength';
 
 interface ExerciseViewProps {
   exercise: Exercise;
@@ -30,11 +34,20 @@ interface ExerciseViewProps {
   onSetUpdate?: (setIndex: number, updates: Partial<SetData>) => void;
 }
 
+type SavedDecision = ProgressionDecision & {
+  savedAt: string;
+};
+
 const cardVariants = {
   inactive: { opacity: 0.5, scale: 0.95 },
   active: { opacity: 1, scale: 1 },
   completed: { opacity: 0.35, scale: 0.92 },
 };
+
+function inferSetRole(index: number, isWarmup?: boolean): SetRole {
+  if (isWarmup) return 'WARMUP';
+  return index === 0 ? 'TOP' : 'BACKOFF';
+}
 
 const ExerciseView: React.FC<ExerciseViewProps> = ({
   exercise,
@@ -50,19 +63,93 @@ const ExerciseView: React.FC<ExerciseViewProps> = ({
   const activeSet = exerciseComplete ? undefined : exercise.sets.find((s) => !s.completed);
   const allSetsCompleted = exerciseComplete;
   const [showDemo, setShowDemo] = useState(false);
+  const [savedDecision, setSavedDecision] = useState<SavedDecision | null>(null);
+  const progressionSavedRef = useRef(false);
+  const prescriptionAppliedRef = useRef(false);
   const { start } = useRestTimer();
 
-  // PR Tracking
-  const { maxReps, isLoading: isMaxRepsLoading } = useMaxReps(
-    exercise.id,
-    activeSet?.weight // Auto-fetch when weight changes or active set changes
-  );
+  const { maxReps, isLoading: isMaxRepsLoading } = useMaxReps(exercise.id, activeSet?.weight);
 
-  // Pre-fill history
   const { history: _history } = useSetHistory(exercise.id, exercise.name);
   const [showHistory, setShowHistory] = useState(false);
   const [chartData, setChartData] = useState<any[]>([]);
   const [isChartLoading, setIsChartLoading] = useState(false);
+
+  React.useEffect(() => {
+    let cancelled = false;
+    getSavedProgressionAction(exercise.id)
+      .then((decision) => {
+        if (!cancelled) setSavedDecision(decision);
+      })
+      .catch((error) => console.error('Failed to load progression decision:', error));
+
+    return () => {
+      cancelled = true;
+    };
+  }, [exercise.id]);
+
+  React.useEffect(() => {
+    if (!savedDecision || prescriptionAppliedRef.current || !onSetUpdate) return;
+
+    savedDecision.nextPrescription.forEach((target, index) => {
+      const set = exercise.sets[index];
+      if (!set || set.completed || set.weight) return;
+      onSetUpdate(index, {
+        weight: target.targetWeight,
+        reps: target.targetReps ?? target.minimumReps,
+        rpe: target.targetRpe,
+      });
+    });
+    prescriptionAppliedRef.current = true;
+  }, [exercise.sets, onSetUpdate, savedDecision]);
+
+  React.useEffect(() => {
+    if (!allSetsCompleted || progressionSavedRef.current) return;
+
+    const completedSets = exercise.sets
+      .map((set, index) => ({
+        weight: set.weight ?? 0,
+        reps:
+          set.completedReps ??
+          (typeof set.reps === 'number' ? set.reps : Number.parseInt(set.reps, 10) || 0),
+        rpe: set.rpe,
+        setRole: inferSetRole(index, set.isWarmup),
+        isWarmup: set.isWarmup,
+      }))
+      .filter((set) => set.weight > 0 && set.reps > 0);
+
+    if (completedSets.length === 0) return;
+
+    const prescription = exercise.sets.map((set, index) => {
+      const plannedReps =
+        typeof set.reps === 'number' ? set.reps : Number.parseInt(set.reps, 10) || 1;
+      return {
+        targetWeight: set.weight ?? completedSets[index]?.weight ?? 0,
+        minimumReps: Math.max(1, plannedReps),
+        targetReps: Math.max(1, set.repGoal ?? plannedReps),
+        maximumReps: Math.max(1, set.repGoal ?? plannedReps),
+        targetRpe: set.rpe,
+        setRole: inferSetRole(index, set.isWarmup),
+      };
+    });
+
+    progressionSavedRef.current = true;
+    evaluateAndSaveProgressionAction(exercise.id, {
+      method: repGoal ? 'REP_GOAL' : 'DOUBLE_PROGRESSION',
+      prescription,
+      completedSets,
+      repGoal: repGoal?.targetReps,
+      equipment: { minimumIncrement: 2.5 },
+    })
+      .then((result) => {
+        if (result.success) setSavedDecision(result.decision);
+        else progressionSavedRef.current = false;
+      })
+      .catch((error) => {
+        progressionSavedRef.current = false;
+        console.error('Failed to save progression decision:', error);
+      });
+  }, [allSetsCompleted, exercise.id, exercise.sets, repGoal]);
 
   React.useEffect(() => {
     if (showHistory && chartData.length === 0) {
@@ -71,17 +158,14 @@ const ExerciseView: React.FC<ExerciseViewProps> = ({
         .then((data) => setChartData(data))
         .finally(() => setIsChartLoading(false));
     }
-  }, [showHistory, exercise.id]);
+  }, [showHistory, chartData.length, exercise.id]);
 
-  // Gestures
   const x = useMotionValue(0);
   const bg = useTransform(x, [0, 100], ['rgba(0,0,0,0)', 'rgba(34, 197, 94, 0.2)']);
 
   const handleDragEnd = (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     if (info.offset.x > 100 && isActive && activeSet) {
-      if (typeof navigator !== 'undefined' && navigator.vibrate) {
-        navigator.vibrate(50);
-      }
+      if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate(50);
       onSetLog(
         activeSet.weight || 0,
         typeof activeSet.reps === 'number' ? activeSet.reps : 0,
@@ -105,12 +189,8 @@ const ExerciseView: React.FC<ExerciseViewProps> = ({
 
   const handleSetLogWrapper = (weight: number, reps: number, rpe: number) => {
     onSetLog(weight, reps, rpe);
-
     const remainingSets = exercise.sets.filter((s) => !s.completed).length;
-    if (remainingSets > 0) {
-      const restSeconds = getRestTime(activeSet?.setType, activeSet?.isWarmup);
-      start(restSeconds);
-    }
+    if (remainingSets > 0) start(getRestTime(activeSet?.setType, activeSet?.isWarmup));
   };
 
   return (
@@ -204,6 +284,15 @@ const ExerciseView: React.FC<ExerciseViewProps> = ({
           </div>
         )}
 
+        {savedDecision && (
+          <div className="mb-4 rounded-lg border border-white/10 bg-black/20 p-3 text-xs">
+            <div className="font-mono uppercase tracking-wider text-zinc-300">
+              Nästa progression: {savedDecision.action}
+            </div>
+            <p className="mt-1 text-zinc-500">{savedDecision.reason}</p>
+          </div>
+        )}
+
         {isActive && (
           <div className="mb-4 animate-fade-in">
             <textarea
@@ -222,20 +311,26 @@ const ExerciseView: React.FC<ExerciseViewProps> = ({
         )}
 
         <div className="space-y-2 mb-4">
-          {exercise.sets.map((set, index) => (
-            <SetRow
-              key={`${exercise.id}-${set.id}-${index}`}
-              set={
-                {
-                  ...set,
-                  reps: typeof set.reps === 'string' ? Number.parseInt(set.reps) || 0 : set.reps,
-                  isWarmup: set.isWarmup ?? false,
-                } as any
-              }
-              setNumber={index + 1}
-              onChange={(updates) => onSetUpdate?.(index, updates)}
-            />
-          ))}
+          {exercise.sets.map((set, index) => {
+            const goal = savedDecision?.setGoals[index];
+            return (
+              <SetRow
+                key={`${exercise.id}-${set.id}-${index}`}
+                set={
+                  {
+                    ...set,
+                    reps: typeof set.reps === 'string' ? Number.parseInt(set.reps) || 0 : set.reps,
+                    isWarmup: set.isWarmup ?? false,
+                    repGoal: goal?.repGoal ?? set.repGoal,
+                    e1rmGoalReps: goal?.e1rmGoalReps ?? set.e1rmGoalReps,
+                    e1rmTarget: goal?.e1rmTarget ?? set.e1rmTarget,
+                  } as any
+                }
+                setNumber={index + 1}
+                onChange={(updates) => onSetUpdate?.(index, updates)}
+              />
+            );
+          })}
         </div>
 
         {isActive && activeSet && (
