@@ -148,15 +148,17 @@ export async function clearSavedProgressionAction(exerciseId: string): Promise<{
   });
 
   const preferences = normalizePreferences(user?.preferences);
-  const progressionStore = { ...(preferences[STORAGE_KEY] ?? {}) };
-  delete progressionStore[exerciseId];
+  const progressionStore = preferences[STORAGE_KEY] ?? {};
+  const remainingProgressionStore = Object.fromEntries(
+    Object.entries(progressionStore).filter(([storedExerciseId]) => storedExerciseId !== exerciseId)
+  );
 
   await prisma.user.update({
     where: { id: userId },
     data: {
       preferences: toJsonValue({
         ...preferences,
-        [STORAGE_KEY]: progressionStore,
+        [STORAGE_KEY]: remainingProgressionStore,
       }),
     },
   });
