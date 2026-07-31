@@ -7,6 +7,7 @@ import {
   type ProgressionDecision,
   type ProgressionInput,
 } from '@/services/training/progressionEngine';
+import type { Prisma } from '@prisma/client';
 import { z } from 'zod';
 
 const STORAGE_KEY = 'trainingProgression';
@@ -68,6 +69,15 @@ type UserPreferences = Record<string, unknown> & {
   [STORAGE_KEY]?: ProgressionPreferenceStore;
 };
 
+function normalizePreferences(value: unknown): UserPreferences {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return {};
+  return value as UserPreferences;
+}
+
+function toJsonValue(value: unknown): Prisma.InputJsonValue {
+  return JSON.parse(JSON.stringify(value)) as Prisma.InputJsonValue;
+}
+
 async function requireUserId(): Promise<string> {
   const session = await getSession();
   if (!session?.user?.id) throw new Error('Unauthorized');
@@ -95,20 +105,19 @@ export async function evaluateAndSaveProgressionAction(
     });
     if (!user) return { success: false, error: 'User not found' };
 
-    const preferences = ((user.preferences as UserPreferences | null) ?? {}) as UserPreferences;
+    const preferences = normalizePreferences(user.preferences);
     const progressionStore = preferences[STORAGE_KEY] ?? {};
+    const updatedPreferences = {
+      ...preferences,
+      [STORAGE_KEY]: {
+        ...progressionStore,
+        [exerciseId]: stored,
+      },
+    };
 
     await prisma.user.update({
       where: { id: userId },
-      data: {
-        preferences: {
-          ...preferences,
-          [STORAGE_KEY]: {
-            ...progressionStore,
-            [exerciseId]: stored,
-          },
-        },
-      },
+      data: { preferences: toJsonValue(updatedPreferences) },
     });
 
     return { success: true, decision: stored };
@@ -127,7 +136,7 @@ export async function getSavedProgressionAction(
     select: { preferences: true },
   });
 
-  const preferences = ((user?.preferences as UserPreferences | null) ?? {}) as UserPreferences;
+  const preferences = normalizePreferences(user?.preferences);
   return preferences[STORAGE_KEY]?.[exerciseId] ?? null;
 }
 
@@ -138,17 +147,17 @@ export async function clearSavedProgressionAction(exerciseId: string): Promise<{
     select: { preferences: true },
   });
 
-  const preferences = ((user?.preferences as UserPreferences | null) ?? {}) as UserPreferences;
+  const preferences = normalizePreferences(user?.preferences);
   const progressionStore = { ...(preferences[STORAGE_KEY] ?? {}) };
   delete progressionStore[exerciseId];
 
   await prisma.user.update({
     where: { id: userId },
     data: {
-      preferences: {
+      preferences: toJsonValue({
         ...preferences,
         [STORAGE_KEY]: progressionStore,
-      },
+      }),
     },
   });
 
