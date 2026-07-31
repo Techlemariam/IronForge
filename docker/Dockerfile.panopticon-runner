@@ -33,8 +33,8 @@ ENV PATH="/root/.cargo/bin:${PATH}"
 # 3. Installera Doppler CLI för säker secrets-injektion
 RUN (curl -Ls https://cli.doppler.com/install.sh || wget -qO- https://cli.doppler.com/install.sh) | sh
 
-# 4. Globala Node-verktyg och pakethanterare (inklusive snyk för säkerhet)
-RUN npm install -g pnpm@10.4.1 snyk
+# 4. Globala Node-verktyg och pakethanterare
+RUN npm install -g pnpm@10.4.1
 
 # 5. Installera alla systemnivå-beroenden för Playwright
 RUN npx playwright install-deps
