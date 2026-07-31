@@ -110,7 +110,7 @@ jobs:
             conclusion = 'failure'
             logs_summary = 'L1 Verify failed: lint, types, or tests'
           } | ConvertTo-Json -Compress
-          
+
           if ($env:N8N_WEBHOOK_URL) {
             try {
               Invoke-RestMethod -Uri $env:N8N_WEBHOOK_URL -Method Post -Body $payload -ContentType 'application/json' -SkipCertificateCheck -TimeoutSec 5
@@ -144,7 +144,7 @@ jobs:
       - name: Initialize DB (L2)
         run: npx prisma db push --accept-data-loss
       - name: Install Playwright Browsers
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install chromium
         continue-on-error: true
       - name: Turbo L2 verification
         run: pnpm run ci:l2
@@ -223,7 +223,7 @@ jobs:
           key: ${{ runner.os }}-playwright-${{ hashFiles('pnpm-lock.yaml') }}
       - name: Install Playwright Browsers
         if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: npx playwright install --with-deps
+        run: npx playwright install chromium
       - name: Initialize E2E DB
         run: |
           # Managed-services assumes DB is already healthy
@@ -269,8 +269,12 @@ jobs:
             logs_summary = 'E2E Tests failed: Playwright test suite'
           } | ConvertTo-Json -Compress
           if ($env:N8N_WEBHOOK_URL) {
-            Invoke-RestMethod -Uri $env:N8N_WEBHOOK_URL -Method Post -Body $payload -ContentType 'application/json' -SkipCertificateCheck
-            Write-Host "🩺 Dispatched E2E failure to n8n"
+            try {
+              Invoke-RestMethod -Uri $env:N8N_WEBHOOK_URL -Method Post -Body $payload -ContentType 'application/json' -SkipCertificateCheck -TimeoutSec 5
+              Write-Host "🩺 Dispatched E2E failure to n8n"
+            } catch {
+              Write-Host "⚠️ n8n dispatch failed (non-fatal): $_"
+            }
           }
 
   # ==================================================================
@@ -298,7 +302,7 @@ jobs:
         with:
           path: ~/.cache/ms-playwright
           key: ${{ runner.os }}-playwright-${{ hashFiles('pnpm-lock.yaml') }}
-      - run: npx playwright install --with-deps
+      - run: npx playwright install chromium
       - name: Initialize Smoke DB
         run: npx prisma db push --accept-data-loss --force-reset
       - name: Run Smoke E2E
@@ -454,5 +458,3 @@ jobs:
             ghcr.io/techlemariam/ironforge:sha-${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-
-
