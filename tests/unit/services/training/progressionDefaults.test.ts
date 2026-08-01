@@ -1,6 +1,7 @@
 import {
   getDefaultEquipmentConstraints,
   inferExerciseRegion,
+  resolveEquipmentConstraints,
 } from '@/services/training/progressionDefaults';
 import { describe, expect, it } from 'vitest';
 
@@ -20,5 +21,19 @@ describe('progression defaults', () => {
   it('falls back conservatively to 2.5 kg when classification is unknown', () => {
     expect(inferExerciseRegion({ name: 'Custom Forge Movement' })).toBe('UNKNOWN');
     expect(getDefaultEquipmentConstraints({ name: 'Custom Forge Movement' }).minimumIncrement).toBe(2.5);
+  });
+
+  it('allows any exercise to override its default increment', () => {
+    expect(
+      resolveEquipmentConstraints(
+        { name: 'Bench Press' },
+        { minimumIncrement: 1.25, availableLoads: [20, 21.25, 22.5] }
+      )
+    ).toEqual({ minimumIncrement: 1.25, availableLoads: [20, 21.25, 22.5] });
+
+    expect(resolveEquipmentConstraints({ name: 'Belt Squat' }, { minimumIncrement: 2.5 })).toEqual({
+      minimumIncrement: 2.5,
+      availableLoads: undefined,
+    });
   });
 });
