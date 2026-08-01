@@ -17,7 +17,7 @@
 - [x] Fix Type Errors (`tsc --noEmit`)
 - [x] Fix `scripts/ci/validate-secrets.ps1` to respect `SKIP_ENV_VALIDATION`
 - [x] Push changes to `feat/stabilize-ci`
-- [x] Re-trigger CI and verify (L1: PASSED, Snyk: PASSED)
+- [x] Re-trigger CI and verify (L1: PASSED, dependency audit: PASSED)
 - [x] Recover self-hosted runners (3 runners online, managed services integrated)
 - [x] Fix E2E Seed script (env mismatch and prisma upsert ID fix)
 - [x] Fix restart-runners.ps1 script (Integrated CI managed services)

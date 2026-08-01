@@ -234,30 +234,31 @@ IronForge implements a **Tiered CI/CD Architecture** to balance rapid developer 
 | :--- | :--- | :--- | :--- | :--- |
 | **L1: Fast Feedback** | Logic & Syntax | Pull Request | `Lint`, `Type Check`, `Unit Tests` (Differential) | < 5m |
 | **L2: Verification** | Build & Smoke | Push to `main` | `Full Build`, `E2E Smoke`, `Perf Audit`, `DB Drift` | < 15m |
-| **L3: Assurance** | Security & Depth | Nightly (Cron) | `Exhaustive E2E`, `Snyk Security Audit`, `Sentry Hygiene` | Daily |
+| **L3: Assurance** | Security & Depth | Nightly (Cron) | `Exhaustive E2E`, `Dependency Audit`, `Sentry Hygiene` | Daily |
 | **🤖 Jules Mission** | AI-Agent Coding | Manual/Push | `Remote Code Execution`, `PR Feedback`, `Autonomous Fixes` | Async |
 
-### 9.2 Security Auditing (Snyk)
+### 9.2 Security Auditing
 
-We use **Snyk** as our primary security gate in Layer 3.
+Layer 3 uses repository-native and GitHub-native controls instead of a separate external scanner integration.
 
-- **Coverage**: Scans 1st party code and 3rd party dependencies.
-- **Enforcement**: Integrated into `nightly-maintenance.yml`.
-- **Reporting**: Results are logged to the GitHub Security tab and workflow summaries.
+- **Dependency coverage**: `pnpm audit` evaluates published package advisories.
+- **Supply-chain signals**: Dependabot and OSSF Scorecard provide GitHub-native dependency and repository posture signals.
+- **Code review**: CodeQL/Qodana and manual threat-focused review are used where configured.
+- **Enforcement**: Blocking security findings remain fail-closed in their owning workflow; reporting-only checks must be explicitly marked non-blocking.
 
 ### 9.3 Deployment (Coolify)
 
-- **Production**: Publishing a GitHub Release triggers a Coolify webhook via `coolify-deploy.yml`. Manual deploys can also be triggered via `workflow_dispatch`.
-- **Infrastructure**: Hosted on Hetzner VPS (managed via Tailscale).
-- **Rollbacks**: Automated via Sentry alerts (`sentry-rollback.yml`) if error rates spike.
+- **Production**: Production deployment is manually dispatched through the protected `ironforge-production` GitHub Environment and triggers a Coolify webhook.
+- **Infrastructure**: Hosted on self-hosted infrastructure managed through Panopticon controls.
+- **Rollbacks**: Runtime rollback remains a separate operator-approved action.
 
 ### 9.4 Titan-Tier Governance (10/10)
 
 The CI/CD pipeline is **self-healing** and enforced via automated governance.
 
-- **Workflow Linter**: The `governance-guard.yml` workflow audits all PRs to ensure environment parity (Node 22, pnpm 9, `actions/checkout@v4`).
-- **Modular Setup**: All workflows use `uses: ./.github/actions/setup-ironforge` to ensure a single source of truth for repository initialization.
-- **Pre-flight Validation**: Critical flows include a `pre-flight` job (`validate-secrets.ps1`) that fails fast if required environment secrets are missing, preventing redundant runner usage.
+- **Workflow Linter**: The `governance-guard.yml` workflow audits all PRs to ensure environment parity (Node 22, pnpm 10, pinned actions).
+- **Modular Setup**: Runtime workflows use `uses: ./.github/actions/setup-ironforge` to ensure a single source of truth for repository initialization.
+- **Pre-flight Validation**: Critical flows include explicit pre-flight checks that fail fast when required runtime conditions are missing, preventing redundant runner usage.
 
 > [!IMPORTANT]
 > Always verify that `pnpm agent:verify` passes locally before pushing. This command runs a hybrid L1/L2 check.
