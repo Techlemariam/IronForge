@@ -8,7 +8,7 @@ const exactControlPlanePaths = new Set([
 ]);
 
 const controlPlanePrefixes = [
-  '.github/',
+  '.github/workflows/',
   '.agent/',
   'docs/',
   'scripts/ci/',
