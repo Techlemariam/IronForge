@@ -70,6 +70,34 @@ jobs:
       startsWith(github.ref, 'refs/heads/fix/')
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    env:
+      DATABASE_URL: ''
+      DIRECT_URL: ''
+      NEXT_PUBLIC_SUPABASE_URL: ''
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ''
+      SUPABASE_SERVICE_KEY: ''
+      SUPABASE_ACCESS_TOKEN: ''
+      GH_PAT: ''
+      INTERVALS_API_KEY: ''
+      INTERVALS_ATHLETE_ID: ''
+      FIGMA_API_KEY: ''
+      N8N_API_KEY: ''
+      N8N_HOST: ''
+      PROMPTS_CHAT_API_KEY: ''
+      COOLIFY_API_KEY: ''
+      SENTRY_AUTH_TOKEN: ''
+      SENTRY_ORG: ''
+      SENTRY_PROJECT: ''
+      PERPLEXITY_API_KEY: ''
+      STRAVA_CLIENT_ID: ''
+      STRAVA_CLIENT_SECRET: ''
+      STRAVA_REFRESH_TOKEN: ''
+      GARMIN_EMAIL: ''
+      GARMIN_PASSWORD: ''
+      DISCORD_BOT_TOKEN: ''
+      NOTION_TOKEN: ''
+      N8N_CI_TRIAGE_WEBHOOK_URL: ''
+      SKIP_ENV_VALIDATION: 'true'
     outputs:
       run-e2e: ${{ steps.e2e-impact.outputs.run-e2e }}
       classification: ${{ steps.e2e-impact.outputs.classification }}
@@ -410,7 +438,7 @@ jobs:
             pr_number = '${{ github.event.pull_request.number }}'
             branch = '${{ github.head_ref || github.ref_name }}'
             conclusion = 'failure'
-            logs_summary = 'L2 Perf Audit failed: Lighthouse regression'
+            logs_summary = 'L2 Verification failed: Lighthouse regression'
           } | ConvertTo-Json -Compress
           if ($env:N8N_WEBHOOK_URL) {
             Invoke-RestMethod -Uri $env:N8N_WEBHOOK_URL -Method Post -Body $payload -ContentType 'application/json' -SkipCertificateCheck
