@@ -3,6 +3,7 @@
 import { getSession } from '@/lib/auth';
 import { getWellness, type WellnessData } from '@/lib/intervals';
 import prisma from '@/lib/prisma';
+import { resolveEquipmentConstraints } from '@/services/training/progressionDefaults';
 import {
   decideProgression,
   type ProgressionDecision,
@@ -28,7 +29,7 @@ const ProgressionMethodSchema = z.enum([
 
 const ProgressionProfileSchema = z.object({
   method: ProgressionMethodSchema,
-  minimumIncrement: z.number().positive().default(2.5),
+  minimumIncrement: z.number().positive().optional(),
   availableLoads: z.array(z.number().min(0)).optional(),
   useRecovery: z.boolean().default(true),
 });
@@ -76,7 +77,7 @@ type StoredProgressionDecision = ProgressionDecision & {
   exerciseId: string;
   savedAt: string;
   method: ProgressionMethod;
-  profile: ProgressionProfile;
+  profile: ProgressionProfile & { minimumIncrement: number };
   recoveryApplied: boolean;
 };
 
@@ -154,19 +155,28 @@ async function loadRecoveryContext(userId: string): Promise<RecoveryContext | un
 }
 
 function resolveProfile(
+  exercise: { name: string },
   exerciseId: string,
   input: ProgressionInput,
   preferences: UserPreferences
-): ProgressionProfile {
+): ProgressionProfile & { minimumIncrement: number } {
   const stored = preferences[PROFILE_KEY]?.[exerciseId];
-  return ProgressionProfileSchema.parse(
+  const parsed = ProgressionProfileSchema.parse(
     stored ?? {
       method: input.method,
-      minimumIncrement: input.equipment.minimumIncrement,
-      availableLoads: input.equipment.availableLoads,
       useRecovery: true,
     }
   );
+  const equipment = resolveEquipmentConstraints(exercise, {
+    minimumIncrement: parsed.minimumIncrement,
+    availableLoads: parsed.availableLoads,
+  });
+
+  return {
+    ...parsed,
+    minimumIncrement: equipment.minimumIncrement,
+    availableLoads: equipment.availableLoads,
+  };
 }
 
 export async function setProgressionProfileAction(
@@ -221,14 +231,20 @@ export async function evaluateAndSaveProgressionAction(
   try {
     const userId = await requireUserId();
     const validated = ProgressionInputSchema.parse(input) as ProgressionInput;
-    const user = await prisma.user.findUnique({
-      where: { id: userId },
-      select: { preferences: true },
-    });
+    const [user, exercise] = await Promise.all([
+      prisma.user.findUnique({
+        where: { id: userId },
+        select: { preferences: true },
+      }),
+      prisma.exercise.findUnique({
+        where: { id: exerciseId },
+        select: { name: true },
+      }),
+    ]);
     if (!user) return { success: false, error: 'User not found' };
 
     const preferences = normalizePreferences(user.preferences);
-    const profile = resolveProfile(exerciseId, validated, preferences);
+    const profile = resolveProfile(exercise ?? { name: exerciseId }, exerciseId, validated, preferences);
     const recovery = profile.useRecovery ? await loadRecoveryContext(userId) : undefined;
     const enrichedInput: ProgressionInput = {
       ...validated,
