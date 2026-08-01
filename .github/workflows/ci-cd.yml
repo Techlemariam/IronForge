@@ -59,24 +59,25 @@ env:
 jobs:
 
   # ==================================================================
-  # TIER L1: FAST FEEDBACK (PR)
-  # Objective: Verify logic & syntax in < 5 minutes.
+  # PR IMPACT CLASSIFICATION (GITHUB-HOSTED)
+  # Fail closed before allocating the self-hosted runner.
   # ==================================================================
-  l1-verify:
-    name: "⚡ L1: Verify"
-    if: github.event_name == 'pull_request' || startsWith(github.ref, 'refs/heads/fix/')
-    runs-on: [self-hosted, linux, panopticon, ci, small] # Target specific local runner
-    timeout-minutes: 20
+  classify-pr-impact:
+    name: "🧭 Classify PR Impact"
+    if: >-
+      github.event_name == 'pull_request' ||
+      github.event_name == 'workflow_dispatch' ||
+      startsWith(github.ref, 'refs/heads/fix/')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
     outputs:
       run-e2e: ${{ steps.e2e-impact.outputs.run-e2e }}
+      classification: ${{ steps.e2e-impact.outputs.classification }}
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
-          fetch-depth: 0 # Required for turbo comparison
-      - uses: ./.github/actions/setup-ironforge
-        with:
-          tier: 'l1'
-          is-container: 'true'
+          fetch-depth: 0
+          persist-credentials: false
       - name: Test E2E impact classifier
         run: node --test scripts/ci/classify-e2e-impact.test.mjs
       - name: Classify E2E impact
@@ -100,11 +101,32 @@ jobs:
             exit 1
           fi
 
-          git diff --name-only --no-renames "$BASE_SHA" "$HEAD_SHA" \
+          git diff --name-only --no-renames "$BASE_SHA...$HEAD_SHA" \
             > "$RUNNER_TEMP/ironforge-e2e-impact-files.txt"
           node scripts/ci/classify-e2e-impact.mjs \
             --files-from "$RUNNER_TEMP/ironforge-e2e-impact-files.txt" \
             --github-output "$GITHUB_OUTPUT"
+
+  # ==================================================================
+  # TIER L1: FAST FEEDBACK (RUNTIME-IMPACTING PR)
+  # Objective: Verify logic & syntax in < 5 minutes.
+  # ==================================================================
+  l1-verify:
+    name: "⚡ L1: Verify"
+    needs: [classify-pr-impact]
+    if: >-
+      (github.event_name == 'pull_request' || startsWith(github.ref, 'refs/heads/fix/')) &&
+      needs.classify-pr-impact.outputs.run-e2e == 'true'
+    runs-on: [self-hosted, linux, panopticon, ci, small] # Target specific local runner
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0 # Required for turbo comparison
+      - uses: ./.github/actions/setup-ironforge
+        with:
+          tier: 'l1'
+          is-container: 'true'
       - name: "🔮 Predictive Failure Analysis"
         run: npx tsx scripts/predict-failures.ts
         continue-on-error: true
@@ -236,11 +258,11 @@ jobs:
   # 🎭 E2E VERIFICATION
   e2e:
     name: 🎭 E2E Tests
-    needs: [l1-verify]
+    needs: [classify-pr-impact, l1-verify]
     if: >-
       (github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch') &&
       github.actor != 'dependabot[bot]' &&
-      needs.l1-verify.outputs.run-e2e == 'true'
+      needs.classify-pr-impact.outputs.run-e2e == 'true'
     runs-on: [self-hosted, linux, panopticon, ci, small] # Target specific local runner
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
