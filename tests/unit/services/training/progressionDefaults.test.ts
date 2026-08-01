@@ -36,4 +36,11 @@ describe('progression defaults', () => {
       availableLoads: undefined,
     });
   });
+
+  it('ignores invalid overrides and keeps the safe default', () => {
+    expect(resolveEquipmentConstraints({ name: 'Belt Squat' }, { minimumIncrement: 0 })).toEqual({
+      minimumIncrement: 5,
+      availableLoads: undefined,
+    });
+  });
 });
