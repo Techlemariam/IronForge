@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 import { appendFileSync, readFileSync } from 'node:fs';
 
 const exactControlPlanePaths = new Set([
