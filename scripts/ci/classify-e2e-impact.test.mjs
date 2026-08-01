@@ -2,9 +2,11 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 
 import {
+  buildMergeBaseDiffRange,
   classifyE2EImpact,
   isControlPlanePath,
   normalizeRepositoryPath,
+  parseChangedPathText,
 } from './classify-e2e-impact.mjs';
 
 test('normalizes repository-relative paths', () => {
@@ -17,6 +19,22 @@ test('rejects absolute and traversal paths', () => {
   assert.equal(normalizeRepositoryPath('C:/temp/file'), null);
   assert.equal(normalizeRepositoryPath('../outside'), null);
   assert.equal(normalizeRepositoryPath('docs/../src/app.ts'), null);
+});
+
+test('parses git diff output without treating the final newline as a path', () => {
+  assert.deepEqual(
+    parseChangedPathText('.github/workflows/ci-cd.yml\ndocs/runbook.md\n'),
+    ['.github/workflows/ci-cd.yml', 'docs/runbook.md'],
+  );
+  assert.deepEqual(parseChangedPathText('\n'), []);
+});
+
+test('builds a merge-base diff range from full Git object IDs', () => {
+  const baseSha = '1'.repeat(40);
+  const headSha = 'a'.repeat(40);
+  assert.equal(buildMergeBaseDiffRange(baseSha, headSha), `${baseSha}...${headSha}`);
+  assert.throws(() => buildMergeBaseDiffRange('main', headSha));
+  assert.throws(() => buildMergeBaseDiffRange(baseSha, ''));
 });
 
 test('recognizes only explicit control-plane paths', () => {
