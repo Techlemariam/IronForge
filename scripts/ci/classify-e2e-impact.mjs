@@ -1,3 +1,4 @@
+import { execFileSync } from 'node:child_process';
 import { appendFileSync, readFileSync } from 'node:fs';
 
 const exactControlPlanePaths = new Set([
@@ -31,6 +32,26 @@ export function normalizeRepositoryPath(value) {
   }
 
   return normalized;
+}
+
+export function parseChangedPathText(value) {
+  if (typeof value !== 'string' || value.length === 0) {
+    return [];
+  }
+
+  return value
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0);
+}
+
+export function buildMergeBaseDiffRange(baseSha, headSha) {
+  const commitPattern = /^[0-9a-f]{40}(?:[0-9a-f]{24})?$/i;
+  if (!commitPattern.test(baseSha ?? '') || !commitPattern.test(headSha ?? '')) {
+    throw new Error('BASE_SHA and HEAD_SHA must be full Git object IDs');
+  }
+
+  return `${baseSha}...${headSha}`;
 }
 
 export function isControlPlanePath(value) {
@@ -120,9 +141,26 @@ function parseArguments(argv) {
   return options;
 }
 
+function resolveChangedPaths(options) {
+  const baseSha = process.env.BASE_SHA ?? '';
+  const headSha = process.env.HEAD_SHA ?? '';
+
+  if (baseSha || headSha) {
+    const diffRange = buildMergeBaseDiffRange(baseSha, headSha);
+    const output = execFileSync(
+      'git',
+      ['diff', '--name-only', '--no-renames', diffRange],
+      { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] },
+    );
+    return parseChangedPathText(output);
+  }
+
+  return parseChangedPathText(readFileSync(options.filesFrom, 'utf8'));
+}
+
 function runCli() {
   const options = parseArguments(process.argv.slice(2));
-  const changedPaths = readFileSync(options.filesFrom, 'utf8').split(/\r?\n/);
+  const changedPaths = resolveChangedPaths(options);
   const result = classifyE2EImpact(changedPaths);
 
   console.log(`IRONFORGE_E2E_IMPACT_CLASSIFICATION=${result.classification}`);
