@@ -39,6 +39,7 @@ test('builds a merge-base diff range from full Git object IDs', () => {
 
 test('recognizes only explicit control-plane paths', () => {
   assert.equal(isControlPlanePath('.github/workflows/ci-cd.yml'), true);
+  assert.equal(isControlPlanePath('.github/actions/setup-ironforge/action.yml'), false);
   assert.equal(isControlPlanePath('.agent/workflows/ci-doctor.md'), true);
   assert.equal(isControlPlanePath('docs/adr/example.md'), true);
   assert.equal(isControlPlanePath('SYSTEM_HEALTH.md'), true);
