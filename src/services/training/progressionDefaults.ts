@@ -1,5 +1,5 @@
-import type { Exercise } from '@/types';
 import type { EquipmentConstraints } from '@/services/training/progressionEngine';
+import type { Exercise } from '@/types';
 
 export type ExerciseRegion = 'UPPER' | 'LOWER' | 'FULL_BODY' | 'UNKNOWN';
 
@@ -23,13 +23,15 @@ const LOWER_BODY_TERMS = [
 
 const UPPER_BODY_TERMS = [
   'bench',
-  'press',
+  'overhead press',
+  'shoulder press',
+  'military press',
   'row',
   'pulldown',
   'pull-up',
   'chin-up',
   'curl',
-  'extension',
+  'triceps extension',
   'raise',
   'fly',
   'dip',
@@ -45,8 +47,21 @@ export function inferExerciseRegion(exercise: Pick<Exercise, 'name'>): ExerciseR
 export function getDefaultEquipmentConstraints(
   exercise: Pick<Exercise, 'name'>
 ): EquipmentConstraints {
-  const region = inferExerciseRegion(exercise);
   return {
-    minimumIncrement: region === 'LOWER' ? 5 : 2.5,
+    minimumIncrement: inferExerciseRegion(exercise) === 'LOWER' ? 5 : 2.5,
+  };
+}
+
+export function resolveEquipmentConstraints(
+  exercise: Pick<Exercise, 'name'>,
+  override?: Partial<EquipmentConstraints>
+): EquipmentConstraints {
+  const defaults = getDefaultEquipmentConstraints(exercise);
+  return {
+    minimumIncrement:
+      override?.minimumIncrement && override.minimumIncrement > 0
+        ? override.minimumIncrement
+        : defaults.minimumIncrement,
+    availableLoads: override?.availableLoads,
   };
 }
