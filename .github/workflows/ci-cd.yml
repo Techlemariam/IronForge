@@ -67,6 +67,8 @@ jobs:
     if: github.event_name == 'pull_request' || startsWith(github.ref, 'refs/heads/fix/')
     runs-on: [self-hosted, linux, panopticon, ci, small] # Target specific local runner
     timeout-minutes: 20
+    outputs:
+      run-e2e: ${{ steps.e2e-impact.outputs.run-e2e }}
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
@@ -75,6 +77,34 @@ jobs:
         with:
           tier: 'l1'
           is-container: 'true'
+      - name: Test E2E impact classifier
+        run: node --test scripts/ci/classify-e2e-impact.test.mjs
+      - name: Classify E2E impact
+        id: e2e-impact
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          if [[ "$EVENT_NAME" != 'pull_request' ]]; then
+            printf 'run-e2e=true\n' >> "$GITHUB_OUTPUT"
+            printf 'classification=non_pull_request_fail_closed\n' >> "$GITHUB_OUTPUT"
+            echo 'IRONFORGE_E2E_IMPACT_CLASSIFICATION=non_pull_request_fail_closed'
+            echo 'IRONFORGE_E2E_IMPACT_RUN_E2E=true'
+            exit 0
+          fi
+
+          if [[ -z "$BASE_SHA" || -z "$HEAD_SHA" ]]; then
+            echo 'Missing pull request base/head SHA.' >&2
+            exit 1
+          fi
+
+          git diff --name-only --no-renames "$BASE_SHA" "$HEAD_SHA" \
+            > "$RUNNER_TEMP/ironforge-e2e-impact-files.txt"
+          node scripts/ci/classify-e2e-impact.mjs \
+            --files-from "$RUNNER_TEMP/ironforge-e2e-impact-files.txt" \
+            --github-output "$GITHUB_OUTPUT"
       - name: "🔮 Predictive Failure Analysis"
         run: npx tsx scripts/predict-failures.ts
         continue-on-error: true
@@ -207,7 +237,10 @@ jobs:
   e2e:
     name: 🎭 E2E Tests
     needs: [l1-verify]
-    if: (github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch') && github.actor != 'dependabot[bot]'
+    if: >-
+      (github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch') &&
+      github.actor != 'dependabot[bot]' &&
+      needs.l1-verify.outputs.run-e2e == 'true'
     runs-on: [self-hosted, linux, panopticon, ci, small] # Target specific local runner
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
