@@ -42,6 +42,9 @@ export const SetRow: React.FC<SetRowProps> = ({
   lastPerformance,
 }) => {
   const displayIndex = setNumber || (index !== undefined ? index + 1 : 1);
+  const setIdentity = set.id ?? `set-${displayIndex}`;
+  const lastWeight = lastPerformance?.weight;
+  const lastReps = lastPerformance?.reps;
 
   const [reps, setReps] = useState(set.reps || 0);
   const [weight, setWeight] = useState(set.weight || 0);
@@ -52,15 +55,18 @@ export const SetRow: React.FC<SetRowProps> = ({
   useEffect(() => {
     setReps(set.reps);
     setWeight(set.weight);
-    if (set.setType) setSetType(set.setType as SetType);
-  }, [set]);
+    setRpe(set.rpe || 8);
+    setSetType((set.setType as SetType) || 'normal');
+  }, [set.id, set.reps, set.rpe, set.setType, set.weight]);
 
   useEffect(() => {
-    if (lastPerformance && !set.completedAt && weight === 0) {
-      setWeight(lastPerformance.weight);
-      setReps(lastPerformance.reps);
+    if (lastWeight === undefined || lastReps === undefined || set.completedAt) {
+      return;
     }
-  }, [lastPerformance, set.completedAt, weight]);
+
+    setWeight((currentWeight) => (currentWeight === 0 ? lastWeight : currentWeight));
+    setReps((currentReps) => (currentReps === 0 ? lastReps : currentReps));
+  }, [lastReps, lastWeight, set.completedAt, setIdentity]);
 
   const handleComplete = () => {
     onChange?.({ reps, weight, rpe, setType });
@@ -75,8 +81,10 @@ export const SetRow: React.FC<SetRowProps> = ({
 
   const currentTypeConfig = SET_TYPE_CONFIG[setType];
   const estimatedOneRepMax = weight > 0 && reps > 0 ? weight * (1 + reps / 30) : undefined;
+  const hasE1rmGoal = set.e1rmGoalReps !== undefined && set.e1rmTarget !== undefined;
   const { repGoalReached, e1rmGoalReached } = getProgressionGoalStatus(
     set,
+    Boolean(set.completedAt),
     reps,
     estimatedOneRepMax
   );
@@ -164,14 +172,14 @@ export const SetRow: React.FC<SetRowProps> = ({
         </div>
       </div>
 
-      {(set.repGoal !== undefined || set.e1rmGoalReps !== undefined) && (
+      {(set.repGoal !== undefined || hasE1rmGoal) && (
         <div className="flex gap-3 px-2 text-xs text-zinc-500">
           {set.repGoal !== undefined && (
             <span className={repGoalReached ? 'text-green-400' : undefined}>
               Rep goal: {set.repGoal}
             </span>
           )}
-          {set.e1rmGoalReps !== undefined && (
+          {hasE1rmGoal && (
             <span className={e1rmGoalReached ? 'text-green-400' : undefined}>
               e1RM bonus: {set.e1rmGoalReps} reps
             </span>
