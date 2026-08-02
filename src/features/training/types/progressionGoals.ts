@@ -6,9 +6,17 @@ export interface ProgressionGoalFields {
 
 export function getProgressionGoalStatus(
   goals: ProgressionGoalFields,
+  completed: boolean,
   completedReps?: number,
   e1rm?: number
 ) {
+  if (!completed) {
+    return {
+      repGoalReached: false,
+      e1rmGoalReached: false,
+    };
+  }
+
   return {
     repGoalReached:
       goals.repGoal !== undefined && completedReps !== undefined && completedReps >= goals.repGoal,
