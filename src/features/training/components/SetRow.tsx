@@ -15,8 +15,10 @@ interface SetRowProps {
 
 const SetRow: React.FC<SetRowProps> = ({ set, setNumber }) => {
   const { completed, weight, completedReps, reps, rpe, e1rm, rarity, isPr } = set;
+  const hasE1rmGoal = set.e1rmGoalReps !== undefined && set.e1rmTarget !== undefined;
   const { repGoalReached, e1rmGoalReached } = getProgressionGoalStatus(
     set,
+    completed,
     completedReps,
     e1rm
   );
@@ -87,14 +89,14 @@ const SetRow: React.FC<SetRowProps> = ({ set, setNumber }) => {
         )}
       </motion.div>
 
-      {(set.repGoal !== undefined || set.e1rmGoalReps !== undefined) && (
+      {(set.repGoal !== undefined || hasE1rmGoal) && (
         <div className="flex gap-3 px-2 text-xs text-forge-muted">
           {set.repGoal !== undefined && (
             <span className={repGoalReached ? 'text-green-400' : undefined}>
               Rep goal: {set.repGoal}
             </span>
           )}
-          {set.e1rmGoalReps !== undefined && (
+          {hasE1rmGoal && (
             <span className={e1rmGoalReached ? 'text-green-400' : undefined}>
               e1RM bonus: {set.e1rmGoalReps} reps
             </span>
