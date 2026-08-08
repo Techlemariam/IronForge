@@ -4,12 +4,7 @@ import { describe, expect, it } from 'vitest';
 describe('getProgressionGoalStatus', () => {
   it('keeps goals pending until the set is completed', () => {
     expect(
-      getProgressionGoalStatus(
-        { repGoal: 10, e1rmGoalReps: 8, e1rmTarget: 100 },
-        false,
-        12,
-        105
-      )
+      getProgressionGoalStatus({ repGoal: 10, e1rmGoalReps: 8, e1rmTarget: 100 }, false, 12)
     ).toEqual({
       repGoalReached: false,
       e1rmGoalReached: false,
@@ -23,17 +18,15 @@ describe('getProgressionGoalStatus', () => {
     });
   });
 
-  it('marks a completed e1RM bonus as reached only with its numeric target', () => {
-    expect(
-      getProgressionGoalStatus({ e1rmGoalReps: 8, e1rmTarget: 100 }, true, 8, 100)
-    ).toEqual({
+  it('marks a completed e1RM bonus as reached from the displayed bonus rep count', () => {
+    expect(getProgressionGoalStatus({ e1rmGoalReps: 8, e1rmTarget: 100 }, true, 8)).toEqual({
       repGoalReached: false,
       e1rmGoalReached: true,
     });
   });
 
-  it('does not infer e1RM success from bonus reps without an e1RM target', () => {
-    expect(getProgressionGoalStatus({ e1rmGoalReps: 8 }, true, 12, 120)).toEqual({
+  it('does not infer e1RM success when target metadata is incomplete', () => {
+    expect(getProgressionGoalStatus({ e1rmGoalReps: 8 }, true, 12)).toEqual({
       repGoalReached: false,
       e1rmGoalReached: false,
     });
