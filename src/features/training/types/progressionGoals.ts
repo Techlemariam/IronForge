@@ -21,6 +21,7 @@ export function getProgressionGoalStatus(
       goals.repGoal !== undefined && completedReps !== undefined && completedReps >= goals.repGoal,
     e1rmGoalReached:
       goals.e1rmGoalReps !== undefined &&
+      goals.e1rmTarget !== undefined &&
       completedReps !== undefined &&
       completedReps >= goals.e1rmGoalReps,
   };
