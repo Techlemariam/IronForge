@@ -27,8 +27,8 @@ interface ProgressionProfileControlProps {
 
 function parseLoads(value: string): number[] | undefined {
   const loads = value
-    .split(',')
-    .map((part) => Number.parseFloat(part.trim().replace(',', '.')))
+    .split(/[;,]/)
+    .map((part) => Number.parseFloat(part.trim()))
     .filter((value) => Number.isFinite(value) && value >= 0);
   return loads.length ? Array.from(new Set(loads)).sort((a, b) => a - b) : undefined;
 }
@@ -44,6 +44,7 @@ export function ProgressionProfileControl({ exercise }: ProgressionProfileContro
     useRecovery: true,
   });
   const [customIncrement, setCustomIncrement] = useState(false);
+  const [showCustomIncrementInput, setShowCustomIncrementInput] = useState(false);
   const [loadsText, setLoadsText] = useState('');
   const [saving, setSaving] = useState(false);
   const [status, setStatus] = useState<string | null>(null);
@@ -54,7 +55,11 @@ export function ProgressionProfileControl({ exercise }: ProgressionProfileContro
       .then((saved) => {
         if (cancelled || !saved) return;
         setProfile(saved);
-        setCustomIncrement(saved.minimumIncrement !== undefined);
+        const hasCustom = saved.minimumIncrement !== undefined;
+        setCustomIncrement(hasCustom);
+        setShowCustomIncrementInput(
+          hasCustom && ![1.25, 2.5, 5].includes(saved.minimumIncrement as number)
+        );
         setLoadsText(saved.availableLoads?.join(', ') ?? '');
       })
       .catch((error) => console.error('Failed to load progression profile:', error));
@@ -133,10 +138,13 @@ export function ProgressionProfileControl({ exercise }: ProgressionProfileContro
 
           <div className="mb-3 rounded border border-white/10 bg-black/20 p-2">
             <div className="mb-2 text-xs text-zinc-400">Viktsteg</div>
-            <div className="flex gap-1">
+            <div className="flex flex-wrap gap-1">
               <button
                 type="button"
-                onClick={() => setCustomIncrement(false)}
+                onClick={() => {
+                  setCustomIncrement(false);
+                  setShowCustomIncrementInput(false);
+                }}
                 className={`rounded px-2 py-1 text-[11px] ${!customIncrement ? 'bg-magma/20 text-magma' : 'bg-white/5 text-zinc-400'}`}
               >
                 Auto {automaticIncrement} kg
@@ -147,19 +155,34 @@ export function ProgressionProfileControl({ exercise }: ProgressionProfileContro
                   type="button"
                   onClick={() => {
                     setCustomIncrement(true);
+                    setShowCustomIncrementInput(false);
                     setProfile((current) => ({ ...current, minimumIncrement: increment }));
                   }}
-                  className={`rounded px-2 py-1 text-[11px] ${customIncrement && effectiveIncrement === increment ? 'bg-magma/20 text-magma' : 'bg-white/5 text-zinc-400'}`}
+                  className={`rounded px-2 py-1 text-[11px] ${customIncrement && !showCustomIncrementInput && effectiveIncrement === increment ? 'bg-magma/20 text-magma' : 'bg-white/5 text-zinc-400'}`}
                 >
                   {increment} kg
                 </button>
               ))}
+              <button
+                type="button"
+                onClick={() => {
+                  setCustomIncrement(true);
+                  setShowCustomIncrementInput(true);
+                  setProfile((current) => ({
+                    ...current,
+                    minimumIncrement: current.minimumIncrement ?? automaticIncrement,
+                  }));
+                }}
+                className={`rounded px-2 py-1 text-[11px] ${showCustomIncrementInput ? 'bg-magma/20 text-magma' : 'bg-white/5 text-zinc-400'}`}
+              >
+                Annat
+              </button>
             </div>
-            {customIncrement && ![1.25, 2.5, 5].includes(effectiveIncrement) && (
+            {showCustomIncrementInput && (
               <input
                 type="number"
                 min="0.1"
-                step="0.25"
+                step="0.05"
                 value={effectiveIncrement}
                 onChange={(event) =>
                   setProfile((current) => ({
