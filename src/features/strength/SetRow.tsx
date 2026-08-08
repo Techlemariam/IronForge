@@ -80,13 +80,11 @@ export const SetRow: React.FC<SetRowProps> = ({
   };
 
   const currentTypeConfig = SET_TYPE_CONFIG[setType];
-  const estimatedOneRepMax = weight > 0 && reps > 0 ? weight * (1 + reps / 30) : undefined;
   const hasE1rmGoal = set.e1rmGoalReps !== undefined && set.e1rmTarget !== undefined;
   const { repGoalReached, e1rmGoalReached } = getProgressionGoalStatus(
     set,
     Boolean(set.completedAt),
-    reps,
-    estimatedOneRepMax
+    reps
   );
 
   return (
