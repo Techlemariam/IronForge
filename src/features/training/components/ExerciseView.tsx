@@ -23,6 +23,7 @@ import type { Exercise } from '@/types';
 import { type PanInfo, m, useMotionValue, useTransform } from 'framer-motion';
 import { BarChart2, CheckCircle, ChevronDown, ChevronsRight, PlayCircle } from 'lucide-react';
 import React, { useRef, useState } from 'react';
+import { ProgressionProfileControl } from './ProgressionProfileControl';
 import SetInput from './SetInput';
 
 interface ExerciseViewProps {
@@ -241,6 +242,7 @@ const ExerciseView: React.FC<ExerciseViewProps> = ({
             >
               <BarChart2 className="w-4 h-4" />
             </button>
+            <ProgressionProfileControl exercise={exercise} />
           </div>
 
           <div className="flex items-center gap-2">
