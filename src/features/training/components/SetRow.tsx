@@ -19,8 +19,7 @@ const SetRow: React.FC<SetRowProps> = ({ set, setNumber }) => {
   const { repGoalReached, e1rmGoalReached } = getProgressionGoalStatus(
     set,
     completed,
-    completedReps,
-    e1rm
+    completedReps
   );
 
   const baseClasses =
