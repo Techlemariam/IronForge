@@ -1,4 +1,5 @@
 const DEFAULT_MAX_REPS = 30;
+const RELATIVE_COMPARISON_TOLERANCE = 1e-12;
 
 export interface RepGoalOptions {
   maxReps?: number;
@@ -41,7 +42,15 @@ export function repsRequiredForEstimatedOneRepMaxPr(
   assertPositiveInteger(maxReps, "maxReps");
 
   for (let reps = 1; reps <= maxReps; reps += 1) {
-    if (estimateOneRepMax(weightKg, reps) > currentBestEstimatedOneRepMaxKg) {
+    const estimatedOneRepMaxKg = estimateOneRepMax(weightKg, reps);
+    const comparisonTolerance =
+      Math.max(estimatedOneRepMaxKg, currentBestEstimatedOneRepMaxKg) *
+      RELATIVE_COMPARISON_TOLERANCE;
+
+    if (
+      estimatedOneRepMaxKg - currentBestEstimatedOneRepMaxKg >
+      comparisonTolerance
+    ) {
       return reps;
     }
   }
