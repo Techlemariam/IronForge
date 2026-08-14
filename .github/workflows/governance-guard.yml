@@ -87,82 +87,86 @@ jobs:
           if text.find(start_marker, start + 1) != -1:
               raise SystemExit('Multiple L1 job boundaries found; refusing to patch')
 
-          replacement = '''  l1-verify:
-    name: "⚡ L1: Verify"
-    needs: [classify-pr-impact]
-    if: >-
-      (github.event_name == 'pull_request' || startsWith(github.ref, 'refs/heads/fix/')) &&
-      needs.classify-pr-impact.outputs.run-e2e == 'true'
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    services:
-      postgres:
-        image: postgres:16-alpine
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: ironforge_test
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd "pg_isready -U postgres -d ironforge_test"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-    env:
-      DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/ironforge_test?schema=public
-      DIRECT_URL: postgresql://postgres:postgres@127.0.0.1:5432/ironforge_test?schema=public
-      NEXT_PUBLIC_SUPABASE_URL: http://127.0.0.1:54321
-      NEXT_PUBLIC_SUPABASE_ANON_KEY: ci-placeholder
-      SUPABASE_SERVICE_KEY: ''
-      SUPABASE_ACCESS_TOKEN: ''
-      GH_PAT: ''
-      INTERVALS_API_KEY: ''
-      INTERVALS_ATHLETE_ID: ''
-      FIGMA_API_KEY: ''
-      N8N_API_KEY: ''
-      N8N_HOST: ''
-      PROMPTS_CHAT_API_KEY: ''
-      COOLIFY_API_KEY: ''
-      SENTRY_AUTH_TOKEN: ''
-      SENTRY_ORG: ''
-      SENTRY_PROJECT: ''
-      PERPLEXITY_API_KEY: ''
-      STRAVA_CLIENT_ID: ''
-      STRAVA_CLIENT_SECRET: ''
-      STRAVA_REFRESH_TOKEN: ''
-      GARMIN_EMAIL: ''
-      GARMIN_PASSWORD: ''
-      DISCORD_BOT_TOKEN: ''
-      NOTION_TOKEN: ''
-      N8N_CI_TRIAGE_WEBHOOK_URL: ''
-      SKIP_ENV_VALIDATION: 'true'
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          fetch-depth: 0
-          persist-credentials: false
-      - uses: ./.github/actions/setup-ironforge
-        with:
-          tier: 'l1'
-          skip-managed-services: 'true'
-          skip-validation: 'true'
-      - name: "🔮 Predictive Failure Analysis"
-        run: npx tsx scripts/predict-failures.ts
-        continue-on-error: true
-      - name: Initialize isolated DB (L1)
-        run: npx prisma db push --accept-data-loss
-      - name: Cache Turbo
-        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
-        with:
-          path: .turbo
-          key: turbo-l1-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
-          restore-keys: |
-            turbo-l1-${{ runner.os }}-
-      - name: Turbo L1 Verify (Differential)
-        run: pnpm run ci:l1
-
-'''
+          gh_open = '$' + '{{'
+          gh_close = '}}'
+          lines = [
+              '  l1-verify:',
+              '    name: "⚡ L1: Verify"',
+              '    needs: [classify-pr-impact]',
+              '    if: >-',
+              "      (github.event_name == 'pull_request' || startsWith(github.ref, 'refs/heads/fix/')) &&",
+              "      needs.classify-pr-impact.outputs.run-e2e == 'true'",
+              '    runs-on: ubuntu-latest',
+              '    timeout-minutes: 20',
+              '    services:',
+              '      postgres:',
+              '        image: postgres:16-alpine',
+              '        env:',
+              '          POSTGRES_USER: postgres',
+              '          POSTGRES_PASSWORD: postgres',
+              '          POSTGRES_DB: ironforge_test',
+              '        ports:',
+              '          - 5432:5432',
+              '        options: >-',
+              '          --health-cmd "pg_isready -U postgres -d ironforge_test"',
+              '          --health-interval 10s',
+              '          --health-timeout 5s',
+              '          --health-retries 5',
+              '    env:',
+              '      DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/ironforge_test?schema=public',
+              '      DIRECT_URL: postgresql://postgres:postgres@127.0.0.1:5432/ironforge_test?schema=public',
+              '      NEXT_PUBLIC_SUPABASE_URL: http://127.0.0.1:54321',
+              '      NEXT_PUBLIC_SUPABASE_ANON_KEY: ci-placeholder',
+              "      SUPABASE_SERVICE_KEY: ''",
+              "      SUPABASE_ACCESS_TOKEN: ''",
+              "      GH_PAT: ''",
+              "      INTERVALS_API_KEY: ''",
+              "      INTERVALS_ATHLETE_ID: ''",
+              "      FIGMA_API_KEY: ''",
+              "      N8N_API_KEY: ''",
+              "      N8N_HOST: ''",
+              "      PROMPTS_CHAT_API_KEY: ''",
+              "      COOLIFY_API_KEY: ''",
+              "      SENTRY_AUTH_TOKEN: ''",
+              "      SENTRY_ORG: ''",
+              "      SENTRY_PROJECT: ''",
+              "      PERPLEXITY_API_KEY: ''",
+              "      STRAVA_CLIENT_ID: ''",
+              "      STRAVA_CLIENT_SECRET: ''",
+              "      STRAVA_REFRESH_TOKEN: ''",
+              "      GARMIN_EMAIL: ''",
+              "      GARMIN_PASSWORD: ''",
+              "      DISCORD_BOT_TOKEN: ''",
+              "      NOTION_TOKEN: ''",
+              "      N8N_CI_TRIAGE_WEBHOOK_URL: ''",
+              "      SKIP_ENV_VALIDATION: 'true'",
+              '    steps:',
+              '      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1',
+              '        with:',
+              '          fetch-depth: 0',
+              '          persist-credentials: false',
+              '      - uses: ./.github/actions/setup-ironforge',
+              '        with:',
+              "          tier: 'l1'",
+              "          skip-managed-services: 'true'",
+              "          skip-validation: 'true'",
+              '      - name: "🔮 Predictive Failure Analysis"',
+              '        run: npx tsx scripts/predict-failures.ts',
+              '        continue-on-error: true',
+              '      - name: Initialize isolated DB (L1)',
+              '        run: npx prisma db push --accept-data-loss',
+              '      - name: Cache Turbo',
+              '        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5',
+              '        with:',
+              '          path: .turbo',
+              '          key: turbo-l1-' + gh_open + ' runner.os ' + gh_close + '-' + gh_open + " hashFiles('pnpm-lock.yaml') " + gh_close,
+              '          restore-keys: |',
+              '            turbo-l1-' + gh_open + ' runner.os ' + gh_close + '-',
+              '      - name: Turbo L1 Verify (Differential)',
+              '        run: pnpm run ci:l1',
+              '',
+          ]
+          replacement = '\n'.join(lines) + '\n'
           path.write_text(text[:start] + replacement + text[end:])
 
       - name: Verify repair scope
