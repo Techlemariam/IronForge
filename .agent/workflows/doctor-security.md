@@ -3,7 +3,7 @@ description: "Security & Compliance Specialist (IronForge CI Doctor Branch)"
 command: "/doctor-security"
 category: "maintenance"
 trigger: "manual"
-version: "1.0.0"
+version: "1.1.0"
 primary_agent: "@security"
 domain: "security"
 skills: ["red-team", "dependabot-manager", "qodana-linter", "env-validator"]
@@ -12,7 +12,7 @@ skills: ["red-team", "dependabot-manager", "qodana-linter", "env-validator"]
 # 🩺 doctor-security
 
 **Role:** Security Auditor
-**Focus:** Dependency vulnerabilities, Secret exposure, Snyk quotas, Qodana security gates.
+**Focus:** Dependency vulnerabilities, secret exposure, GitHub-native security signals, and Qodana security gates.
 
 ## Diagnostic Protocol
 
@@ -26,18 +26,15 @@ Ensure the environment is secured and Doppler is active.
 doppler run -- echo "🔐 Doppler Protected Execution Active"
 ```
 
-### 1. External Service Limits
+### 1. Security Gate Status
 
-Check if Snyk or other external scanners are failing due to quota limits.
+Inspect failed security-related checks without relying on a third-party scanner token.
 
 // turbo
 
 ```bash
-echo "🔍 Checking Security Service Status..."
-# Look for "used your limit" or "quota exceeded" in logs
-doppler run -- gh run view --log-failed | grep -E "limit of private tests|quota exceeded" && {
-  echo "⚠️ ALERT: Security service limit reached. Please check account tier."
-}
+echo "🔍 Checking security gate status..."
+doppler run -- gh run view --log-failed | grep -Ei "security|dependency|vulnerability|secret|qodana|codeql|scorecard" || true
 ```
 
 ### 2. Secret Exposure
@@ -53,7 +50,7 @@ git grep -E "sk_|key-|secret_" -- "*.json" "*.yml" "*.ps1"
 
 ### 3. Vulnerability Audit
 
-Run a local audit to bypass CI quotas if possible.
+Run the repository-native dependency audit.
 
 // turbo
 
@@ -67,27 +64,28 @@ doppler run -- pnpm audit --audit-level high
 
 ### 1. GitGuardian Deep Dive
 
-Even if GitGuardian is green, verify that no "low-risk" signals or "sensitive data patterns" are present.
+Even if GitGuardian is green, verify that no low-risk signals or sensitive-data patterns are present.
 
 // turbo
 
 ```bash
 echo "🛡️ doctor-security: Running proactive sentinel scan..."
-# Check for common non-secret but sensitive patterns
 grep -rE "[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}" . --exclude-dir=node_modules
 ```
 
-### 2. Snyk Proactive Patching
+### 2. Dependency Remediation
 
-Check for reachable vulnerabilities that might not be breaking CI yet.
+Review outdated packages and high-severity advisories before proposing upgrades.
 
 // turbo
 
 ```bash
-doppler run -- pnpm run security:proactive
+pnpm outdated || true
+pnpm audit --audit-level high
 ```
 
 ## Remediation Pipeline
 
-- If Snyk Limit Reached -> Advise user to upgrade or skip security check for this PR.
-- If Secret Found -> Rotate secret and add to `.gitignore`.
+- If a dependency advisory is found -> identify the smallest compatible upgrade and verify with the normal CI gates.
+- If a secret is found -> stop, rotate it through the approved secrets workflow, and add the source file to the appropriate ignore policy.
+- If a GitHub-native security gate fails -> preserve fail-closed behavior and route the exact finding to the owning specialist.

@@ -59,16 +59,96 @@ env:
 jobs:
 
   # ==================================================================
-  # TIER L1: FAST FEEDBACK (PR)
+  # PR IMPACT CLASSIFICATION (GITHUB-HOSTED)
+  # Fail closed before allocating the self-hosted runner.
+  # ==================================================================
+  classify-pr-impact:
+    name: "🧭 Classify PR Impact"
+    if: >-
+      github.event_name == 'pull_request' ||
+      github.event_name == 'workflow_dispatch' ||
+      startsWith(github.ref, 'refs/heads/fix/')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      DATABASE_URL: ''
+      DIRECT_URL: ''
+      NEXT_PUBLIC_SUPABASE_URL: ''
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ''
+      SUPABASE_SERVICE_KEY: ''
+      SUPABASE_ACCESS_TOKEN: ''
+      GH_PAT: ''
+      INTERVALS_API_KEY: ''
+      INTERVALS_ATHLETE_ID: ''
+      FIGMA_API_KEY: ''
+      N8N_API_KEY: ''
+      N8N_HOST: ''
+      PROMPTS_CHAT_API_KEY: ''
+      COOLIFY_API_KEY: ''
+      SENTRY_AUTH_TOKEN: ''
+      SENTRY_ORG: ''
+      SENTRY_PROJECT: ''
+      PERPLEXITY_API_KEY: ''
+      STRAVA_CLIENT_ID: ''
+      STRAVA_CLIENT_SECRET: ''
+      STRAVA_REFRESH_TOKEN: ''
+      GARMIN_EMAIL: ''
+      GARMIN_PASSWORD: ''
+      DISCORD_BOT_TOKEN: ''
+      NOTION_TOKEN: ''
+      N8N_CI_TRIAGE_WEBHOOK_URL: ''
+      SKIP_ENV_VALIDATION: 'true'
+    outputs:
+      run-e2e: ${{ steps.e2e-impact.outputs.run-e2e }}
+      classification: ${{ steps.e2e-impact.outputs.classification }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Test E2E impact classifier
+        run: node --test scripts/ci/classify-e2e-impact.test.mjs
+      - name: Classify E2E impact
+        id: e2e-impact
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          if [[ "$EVENT_NAME" != 'pull_request' ]]; then
+            printf 'run-e2e=true\n' >> "$GITHUB_OUTPUT"
+            printf 'classification=non_pull_request_fail_closed\n' >> "$GITHUB_OUTPUT"
+            echo 'IRONFORGE_E2E_IMPACT_CLASSIFICATION=non_pull_request_fail_closed'
+            echo 'IRONFORGE_E2E_IMPACT_RUN_E2E=true'
+            exit 0
+          fi
+
+          if [[ -z "$BASE_SHA" || -z "$HEAD_SHA" ]]; then
+            echo 'Missing pull request base/head SHA.' >&2
+            exit 1
+          fi
+
+          git diff --name-only --no-renames "$BASE_SHA...$HEAD_SHA" \
+            > "$RUNNER_TEMP/ironforge-e2e-impact-files.txt"
+          node scripts/ci/classify-e2e-impact.mjs \
+            --files-from "$RUNNER_TEMP/ironforge-e2e-impact-files.txt" \
+            --github-output "$GITHUB_OUTPUT"
+
+  # ==================================================================
+  # TIER L1: FAST FEEDBACK (RUNTIME-IMPACTING PR)
   # Objective: Verify logic & syntax in < 5 minutes.
   # ==================================================================
   l1-verify:
     name: "⚡ L1: Verify"
-    if: github.event_name == 'pull_request' || startsWith(github.ref, 'refs/heads/fix/')
+    needs: [classify-pr-impact]
+    if: >-
+      (github.event_name == 'pull_request' || startsWith(github.ref, 'refs/heads/fix/')) &&
+      needs.classify-pr-impact.outputs.run-e2e == 'true'
     runs-on: [self-hosted, linux, panopticon, ci, small] # Target specific local runner
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0 # Required for turbo comparison
       - uses: ./.github/actions/setup-ironforge
@@ -132,7 +212,7 @@ jobs:
     if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/fix/')
     runs-on: [self-hosted, linux, panopticon, ci, small] # Target specific local runner
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: ./.github/actions/setup-ironforge
       - name: Cache Turbo L2
         uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
@@ -144,7 +224,7 @@ jobs:
       - name: Initialize DB (L2)
         run: npx prisma db push --accept-data-loss
       - name: Install Playwright Browsers
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install chromium
         continue-on-error: true
       - name: Turbo L2 verification
         run: pnpm run ci:l2
@@ -175,7 +255,7 @@ jobs:
     if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/fix/')
     runs-on: [self-hosted, linux, panopticon, ci, small]
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@d7f5e7f509e45cec5c76c4d5afdd7de93d0b3df5 # v4.1.0
       - name: Build Production Image
@@ -206,11 +286,14 @@ jobs:
   # 🎭 E2E VERIFICATION
   e2e:
     name: 🎭 E2E Tests
-    needs: [l1-verify]
-    if: (github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch') && github.actor != 'dependabot[bot]'
+    needs: [classify-pr-impact, l1-verify]
+    if: >-
+      (github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch') &&
+      github.actor != 'dependabot[bot]' &&
+      needs.classify-pr-impact.outputs.run-e2e == 'true'
     runs-on: [self-hosted, linux, panopticon, ci, small] # Target specific local runner
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: ./.github/actions/setup-ironforge
         with:
           tier: 'e2e'
@@ -223,7 +306,7 @@ jobs:
           key: ${{ runner.os }}-playwright-${{ hashFiles('pnpm-lock.yaml') }}
       - name: Install Playwright Browsers
         if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: npx playwright install --with-deps
+        run: npx playwright install chromium
       - name: Initialize E2E DB
         run: |
           # Managed-services assumes DB is already healthy
@@ -269,8 +352,12 @@ jobs:
             logs_summary = 'E2E Tests failed: Playwright test suite'
           } | ConvertTo-Json -Compress
           if ($env:N8N_WEBHOOK_URL) {
-            Invoke-RestMethod -Uri $env:N8N_WEBHOOK_URL -Method Post -Body $payload -ContentType 'application/json' -SkipCertificateCheck
-            Write-Host "🩺 Dispatched E2E failure to n8n"
+            try {
+              Invoke-RestMethod -Uri $env:N8N_WEBHOOK_URL -Method Post -Body $payload -ContentType 'application/json' -SkipCertificateCheck -TimeoutSec 5
+              Write-Host "🩺 Dispatched E2E failure to n8n"
+            } catch {
+              Write-Host "⚠️ n8n dispatch failed (non-fatal): $_"
+            }
           }
 
   # ==================================================================
@@ -288,7 +375,7 @@ jobs:
       DIRECT_URL: postgresql://postgres:postgres@localhost:5437/ironforge_test?schema=public
       NEXT_PUBLIC_APP_URL: http://127.0.0.1:3001
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: ./.github/actions/setup-ironforge
         with:
           tier: 'l2'
@@ -298,7 +385,7 @@ jobs:
         with:
           path: ~/.cache/ms-playwright
           key: ${{ runner.os }}-playwright-${{ hashFiles('pnpm-lock.yaml') }}
-      - run: npx playwright install --with-deps
+      - run: npx playwright install chromium
       - name: Initialize Smoke DB
         run: npx prisma db push --accept-data-loss --force-reset
       - name: Run Smoke E2E
@@ -333,7 +420,7 @@ jobs:
       DATABASE_URL: postgresql://postgres:postgres@localhost:5433/ironforge_test?schema=public
       DIRECT_URL: postgresql://postgres:postgres@localhost:5433/ironforge_test?schema=public
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: ./.github/actions/setup-ironforge
       - name: Setup Chrome
         run: npx playwright install chrome
@@ -355,7 +442,7 @@ jobs:
             pr_number = '${{ github.event.pull_request.number }}'
             branch = '${{ github.head_ref || github.ref_name }}'
             conclusion = 'failure'
-            logs_summary = 'L2 Perf Audit failed: Lighthouse regression'
+            logs_summary = 'L2 Verification failed: Lighthouse regression'
           } | ConvertTo-Json -Compress
           if ($env:N8N_WEBHOOK_URL) {
             Invoke-RestMethod -Uri $env:N8N_WEBHOOK_URL -Method Post -Body $payload -ContentType 'application/json' -SkipCertificateCheck
@@ -368,7 +455,7 @@ jobs:
     if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/fix/')
     runs-on: [self-hosted, linux, panopticon, ci, small] # Target specific local runner
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: ./.github/actions/setup-ironforge
         with:
           tier: 'l2'
@@ -431,10 +518,10 @@ jobs:
       contents: read
       packages: write
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Log in to GHCR
-        uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121 # v4.1.0
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -444,7 +531,7 @@ jobs:
         uses: docker/setup-buildx-action@d7f5e7f509e45cec5c76c4d5afdd7de93d0b3df5 # v4.1.0
 
       - name: Build and push
-        uses: docker/build-push-action@f9f3042f7e2789586610d6e8b85c8f03e5195baf # v7.2.0
+        uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
         with:
           context: .
           target: runner
@@ -454,5 +541,4 @@ jobs:
             ghcr.io/techlemariam/ironforge:sha-${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-
 
