@@ -21,7 +21,7 @@ Agenter hanterar kodändringar och leveranser via tre distinkta rutter, beroende
 ### 3. Production Zero-Hell (`main`)
 **Syfte:** Oantastlig produktionsstabilitet.
 *   **Regel:** Agenter (via `git-guard`) får ALDRIG committa direkt till `main`.
-*   **Aktion:** För att nå prod MÅSTE en PR skapas (oftast från `develop` -> `main`). 
+*   **Aktion:** För att nå prod MÅSTE en PR skapas (oftast från `develop` -> `main`).
 
 ## 🛡️ The Zero-Hell Review Gate (Produktion)
 
@@ -36,7 +36,7 @@ Agenten bryr sig inte om testernas implementation. Den anropar enbart kommandot 
 Under huven (beroende på projekt) exekverar ofta `turbo run`:
 1. **Lint/Typ-Säkerhet** (`tsc --noEmit`, `eslint`)
 2. **Unit & Logic Testing** (`vitest`, `playwright` E2E)
-3. **Security Context** (`npm audit` / `pnpm audit` / `snyk`)
+3. **Security Context** (`npm audit` / `pnpm audit` / GitHub-native security checks)
 
 ### B. Jules Review Gate
 Efter att de automatiserade testerna (Quality Gate A) gått igenom, kallas **Jules** (arkitektur & PR Agent) in i flödet.

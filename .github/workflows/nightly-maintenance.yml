@@ -55,13 +55,13 @@ jobs:
       workflow: ${{ steps.check.outputs.workflow }}
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Check conditions
         id: check
         run: |
           echo "📋 Checking pre-flight conditions..."
-          
+
           # Check for open night-shift PRs
           OPEN_PRS=$(gh pr list --label "night-shift" --state open --json number -q 'length')
           if [ "$OPEN_PRS" -gt 0 ]; then
@@ -69,7 +69,7 @@ jobs:
             echo "should_run=false" >> $GITHUB_OUTPUT
             exit 0
           fi
-          
+
           # Check if main branch CI is green
           LAST_RUN=$(gh run list --branch main --workflow "IronForge CI/CD" --limit 1 --json conclusion -q '.[0].conclusion')
           if [ "$LAST_RUN" != "success" ]; then
@@ -77,7 +77,7 @@ jobs:
             echo "should_run=false" >> $GITHUB_OUTPUT
             exit 0
           fi
-          
+
           echo "✅ All pre-flight checks passed"
           echo "should_run=true" >> $GITHUB_OUTPUT
           echo "workflow=${{ inputs.workflow || '/night-shift' }}" >> $GITHUB_OUTPUT
@@ -106,7 +106,7 @@ jobs:
       summary: ${{ steps.summary.outputs.summary }}
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
 
@@ -122,20 +122,20 @@ jobs:
           echo "BRANCH=$BRANCH" >> $GITHUB_ENV
 
       # -----------------------------------------------------------------------
-      # TASK 1: Deep Security Audit (Snyk)
+      # TASK 1: Dependency Security Audit
       # -----------------------------------------------------------------------
-      - name: "🛡️ L3: Security Audit (Snyk)"
+      - name: "🛡️ L3: Dependency Audit"
         id: security
         continue-on-error: true
         run: |
-          echo "## 🛡️ Snyk Security Audit" >> $GITHUB_STEP_SUMMARY
+          echo "## 🛡️ Dependency Security Audit" >> $GITHUB_STEP_SUMMARY
           pnpm run security 2>&1 | tee security-output.txt
-          
+
           if [ ${PIPESTATUS[0]} -eq 0 ]; then
-            echo "✅ Security audit passed" >> $GITHUB_STEP_SUMMARY
+            echo "✅ Dependency audit passed" >> $GITHUB_STEP_SUMMARY
             echo "security_clean=true" >> $GITHUB_OUTPUT
           else
-            echo "⚠️ Security vulnerabilities found" >> $GITHUB_STEP_SUMMARY
+            echo "⚠️ Dependency vulnerabilities found" >> $GITHUB_STEP_SUMMARY
             echo "security_clean=false" >> $GITHUB_OUTPUT
           fi
 
@@ -147,12 +147,12 @@ jobs:
         continue-on-error: true
         run: |
           echo "## 🧬 Dependency Evolution" >> $GITHUB_STEP_SUMMARY
-          
+
           # Update minor/patch versions
           if [ "${{ inputs.workflow }}" = "/evolve" ] || [ "${{ github.event_name }}" = "schedule" ]; then
             echo "Running dependency evolution..."
             pnpm update --latest 2>&1 | tee update-output.txt || true
-            
+
             if git diff --quiet package.json pnpm-lock.yaml; then
               echo "✅ No dependency updates available" >> $GITHUB_STEP_SUMMARY
               echo "deps_updated=false" >> $GITHUB_OUTPUT
@@ -174,7 +174,7 @@ jobs:
         run: |
           echo "## 🎭 Exhaustive E2E" >> $GITHUB_STEP_SUMMARY
           pnpm run test:exhaustive 2>&1 | tee e2e-output.txt
-          
+
           if [ ${PIPESTATUS[0]} -eq 0 ]; then
             echo "✅ Exhaustive E2E passed" >> $GITHUB_STEP_SUMMARY
             echo "e2e_clean=true" >> $GITHUB_OUTPUT
@@ -201,18 +201,18 @@ jobs:
         run: |
           SUMMARY=$(cat << 'EOF'
           ## 🌙 L3 Assurance Summary
-          
+
           | Task | Status |
           |:-----|:-------|
-          | Security (Snyk) | ${{ steps.security.outputs.security_clean == 'true' && '✅ Clean' || '⚠️ Vulnerabilities' }} |
+          | Dependency Audit | ${{ steps.security.outputs.security_clean == 'true' && '✅ Clean' || '⚠️ Vulnerabilities' }} |
           | Dependencies | ${{ steps.evolve.outputs.deps_updated == 'true' && '📦 Evolved' || '✅ Stable' }} |
           | Exhaustive E2E | ${{ steps.e2e.outputs.e2e_clean == 'true' && '✅ Passed' || '❌ Failed' }} |
-          
+
           **Tier:** L3 (Deep Assurance)
           **Run Time:** $(date -u +"%Y-%m-%d %H:%M UTC")
           EOF
           )
-          
+
           echo "$SUMMARY" >> $GITHUB_STEP_SUMMARY
           echo "summary<<EOF" >> $GITHUB_OUTPUT
           echo "$SUMMARY" >> $GITHUB_OUTPUT
@@ -220,12 +220,12 @@ jobs:
 
       - name: 💾 Commit Changes
         id: changes
-        uses: stefanzweifel/git-auto-commit-action@e348103e9026cc0eee72ae06630dbe30c8bf7a79 # v5.1.0
+        uses: stefanzweifel/git-auto-commit-action@4a55954c782fc1ea30b9056cd3e7a2b40ca8887d # v7.2.0
         with:
           commit_message: "chore: nightly maintenance updates [skip ci]"
           branch: ${{ env.BRANCH }}
           file_pattern: '.'
-          skip_dirty_check: false    
+          skip_dirty_check: false
           create_branch: true
 
 
@@ -236,19 +236,19 @@ jobs:
     name: 📬 Create PR
     needs: [preflight, maintenance]
     if: |
-      needs.maintenance.outputs.changes_made == 'true' && 
+      needs.maintenance.outputs.changes_made == 'true' &&
       inputs.skip_pr != true
     runs-on: [self-hosted, linux, panopticon, ci, small]
     permissions:
       pull-requests: write
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Create Pull Request
         run: |
           BRANCH="night-shift/$(date +%Y-%m-%d)"
-          
+
           gh pr create \
             --base main \
             --head "$BRANCH" \
@@ -277,15 +277,15 @@ jobs:
             const title = `🌙 Night Shift Failed: ${new Date().toISOString().split('T')[0]}`;
             const body = `
             ## Night Shift Workflow Failed
-            
+
             **Run:** [${context.runId}](${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})
             **Time:** ${new Date().toISOString()}
-            
+
             Please investigate and fix any issues.
-            
+
             /cc @${context.repo.owner}
             `;
-            
+
             await github.rest.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,

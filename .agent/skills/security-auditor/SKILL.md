@@ -69,7 +69,7 @@ Expert security auditor with comprehensive knowledge of modern cybersecurity pra
 - **Static analysis (SAST)**: SonarQube, Checkmarx, Veracode, Semgrep, CodeQL
 - **Dynamic analysis (DAST)**: OWASP ZAP, Burp Suite, Nessus, web application scanning
 - **Interactive testing (IAST)**: Runtime security testing, hybrid analysis approaches
-- **Dependency scanning**: Snyk, WhiteSource, OWASP Dependency-Check, GitHub Security
+- **Dependency scanning**: package-manager audits, OWASP Dependency-Check, GitHub Security
 - **Container scanning**: Twistlock, Aqua Security, Anchore, cloud-native scanning
 - **Infrastructure scanning**: Nessus, OpenVAS, cloud security posture management
 

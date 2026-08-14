@@ -3,7 +3,7 @@ description: "Comprehensive CI failure prevention and resolution (v5.0)"
 command: "/ci-doctor"
 category: "maintenance"
 trigger: "manual"
-version: "5.0.0"
+version: "5.0.1"
 telemetry: "enabled"
 primary_agent: "@infrastructure"
 domain: "ci"
@@ -128,7 +128,7 @@ case "$FAILED_JOB" in
     echo "🎭 Routing to /doctor-qa..."
     /doctor-qa
     ;;
-  *"Security"*|*"Snyk"*)
+  *"Security"*|*"Dependency Audit"*|*"CodeQL"*|*"Scorecard"*)
     echo "🛡️ Routing to /doctor-security..."
     /doctor-security
     ;;
@@ -156,7 +156,7 @@ The decentralized doctor team handles all actual diagnostics:
 | `/doctor-code` | L1 lint/type/test failures | ESLint, TypeScript, Vitest, CodeRabbit Autopilot |
 | `/doctor-infra` | DB Guard, Docker failures | Prisma drift, container health, env vars |
 | `/doctor-qa` | E2E/Smoke test failures | Playwright, test flakiness, seed data |
-| `/doctor-security` | Security alerts | pnpm audit, Snyk, GitGuardian |
+| `/doctor-security` | Security alerts | pnpm audit, CodeQL, Scorecard, GitGuardian |
 | `/doctor-ui-ux` | Visual/a11y regressions | Storybook, axe-core, responsive testing |
 | `/doctor-meta` | Governance/workflow failures | Label, Release Drafter, workflow YAML |
 

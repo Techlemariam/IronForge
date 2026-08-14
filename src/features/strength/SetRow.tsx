@@ -1,18 +1,18 @@
 'use client';
 
 import type { SetData } from '@/actions/training/strength';
+import {
+  getProgressionGoalStatus,
+  type ProgressionGoalFields,
+} from '@/features/training/types/progressionGoals';
 import { cn } from '@/lib/utils';
-import { CheckCircle, Circle, Crown, Target } from 'lucide-react';
+import { CheckCircle, Circle } from 'lucide-react';
 import type React from 'react';
 import { useEffect, useState } from 'react';
 
 export type SetType = 'normal' | 'failure' | 'dropset' | 'warmup' | 'myoreps';
 
-type ProgressionGoalFields = {
-  repGoal?: number;
-  e1rmGoalReps?: number;
-  e1rmTarget?: number;
-};
+type GoalAwareSetData = SetData & ProgressionGoalFields;
 
 const SET_TYPE_CONFIG: Record<SetType, { label: string; icon: string; color: string }> = {
   normal: { label: 'Normal', icon: '', color: 'text-zinc-400' },
@@ -25,8 +25,8 @@ const SET_TYPE_CONFIG: Record<SetType, { label: string; icon: string; color: str
 interface SetRowProps {
   index?: number;
   setNumber?: number;
-  set: SetData & ProgressionGoalFields;
-  onChange?: (updates: Partial<SetData>) => void;
+  set: GoalAwareSetData;
+  onChange?: (updates: Partial<GoalAwareSetData>) => void;
   onDelete?: () => void;
   onComplete?: () => void;
   lastPerformance?: { weight: number; reps: number } | null;
@@ -42,6 +42,9 @@ export const SetRow: React.FC<SetRowProps> = ({
   lastPerformance,
 }) => {
   const displayIndex = setNumber || (index !== undefined ? index + 1 : 1);
+  const setIdentity = set.id ?? `set-${displayIndex}`;
+  const lastWeight = lastPerformance?.weight;
+  const lastReps = lastPerformance?.reps;
 
   const [reps, setReps] = useState(set.reps || 0);
   const [weight, setWeight] = useState(set.weight || 0);
@@ -52,15 +55,18 @@ export const SetRow: React.FC<SetRowProps> = ({
   useEffect(() => {
     setReps(set.reps);
     setWeight(set.weight);
-    if (set.setType) setSetType(set.setType as SetType);
-  }, [set]);
+    setRpe(set.rpe || 8);
+    setSetType((set.setType as SetType) || 'normal');
+  }, [set.id, set.reps, set.rpe, set.setType, set.weight]);
 
   useEffect(() => {
-    if (lastPerformance && !set.completedAt && weight === 0) {
-      setWeight(lastPerformance.weight);
-      setReps(lastPerformance.reps);
+    if (lastWeight === undefined || lastReps === undefined || set.completedAt) {
+      return;
     }
-  }, [lastPerformance, set.completedAt, weight]);
+
+    setWeight((currentWeight) => (currentWeight === 0 ? lastWeight : currentWeight));
+    setReps((currentReps) => (currentReps === 0 ? lastReps : currentReps));
+  }, [lastReps, lastWeight, set.completedAt, setIdentity]);
 
   const handleComplete = () => {
     onChange?.({ reps, weight, rpe, setType });
@@ -74,8 +80,12 @@ export const SetRow: React.FC<SetRowProps> = ({
   };
 
   const currentTypeConfig = SET_TYPE_CONFIG[setType];
-  const repGoalReached = set.repGoal !== undefined && reps >= set.repGoal;
-  const e1rmGoalReached = set.e1rmGoalReps !== undefined && reps >= set.e1rmGoalReps;
+  const hasE1rmGoal = set.e1rmGoalReps !== undefined && set.e1rmTarget !== undefined;
+  const { repGoalReached, e1rmGoalReached } = getProgressionGoalStatus(
+    set,
+    Boolean(set.completedAt),
+    reps
+  );
 
   return (
     <div className="space-y-1">
@@ -118,7 +128,7 @@ export const SetRow: React.FC<SetRowProps> = ({
           <input
             type="number"
             value={weight || ''}
-            onChange={(e) => setWeight(Number.parseFloat(e.target.value) || 0)}
+            onChange={(event) => setWeight(Number.parseFloat(event.target.value) || 0)}
             placeholder={lastPerformance ? `${lastPerformance.weight}kg` : 'kg'}
             className="w-full bg-transparent border-b border-white/10 text-center focus:border-magma focus:outline-none font-mono relative z-10"
           />
@@ -128,7 +138,7 @@ export const SetRow: React.FC<SetRowProps> = ({
           <input
             type="number"
             value={reps || ''}
-            onChange={(e) => setReps(Number.parseFloat(e.target.value) || 0)}
+            onChange={(event) => setReps(Number.parseFloat(event.target.value) || 0)}
             placeholder={lastPerformance ? `${lastPerformance.reps}` : 'reps'}
             className={cn(
               'w-full bg-transparent border-b border-white/10 text-center focus:border-magma focus:outline-none font-mono',
@@ -141,7 +151,7 @@ export const SetRow: React.FC<SetRowProps> = ({
           <input
             type="number"
             value={rpe || ''}
-            onChange={(e) => setRpe(Number.parseFloat(e.target.value) || 0)}
+            onChange={(event) => setRpe(Number.parseFloat(event.target.value) || 0)}
             placeholder="RPE"
             className="w-full bg-transparent border-b border-white/10 text-center focus:border-magma focus:outline-none font-mono text-xs text-zinc-400"
           />
@@ -160,20 +170,16 @@ export const SetRow: React.FC<SetRowProps> = ({
         </div>
       </div>
 
-      {(set.repGoal !== undefined || set.e1rmGoalReps !== undefined) && (
-        <div className="flex flex-wrap gap-x-3 gap-y-1 px-2 text-[11px] font-mono text-zinc-500">
+      {(set.repGoal !== undefined || hasE1rmGoal) && (
+        <div className="flex gap-3 px-2 text-xs text-zinc-500">
           {set.repGoal !== undefined && (
             <span className={repGoalReached ? 'text-green-400' : undefined}>
-              <Target className="mr-1 inline h-3 w-3" />
-              Mål: {set.repGoal} reps{repGoalReached ? ' ✓' : ''}
+              Rep goal: {set.repGoal}
             </span>
           )}
-          {set.e1rmGoalReps !== undefined && (
-            <span className={e1rmGoalReached ? 'text-yellow-400' : undefined}>
-              <Crown className="mr-1 inline h-3 w-3" />
-              Bonus: {set.e1rmGoalReps} reps
-              {set.e1rmTarget !== undefined ? ` för ${Math.round(set.e1rmTarget)} e1RM` : ''}
-              {e1rmGoalReached ? ' ✓' : ''}
+          {hasE1rmGoal && (
+            <span className={e1rmGoalReached ? 'text-green-400' : undefined}>
+              e1RM bonus: {set.e1rmGoalReps} reps
             </span>
           )}
         </div>
