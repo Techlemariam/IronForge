@@ -49,7 +49,7 @@
 **Stale Dependabot PRs:**
 1. `actions/github-script` 7.0.1 → 9.0.0
 2. `actions/checkout` 4.2.2 → 6.0.2
-3. `snyk/actions` — hash bump
+3. Security scanner action — hash bump
 4. `dependabot/fetch-metadata` 2.3.0 → 3.1.0
 5. `actions/labeler` 5.0.0 → 6.0.1
 
@@ -68,7 +68,7 @@
 ### 2.1 Technical Debt (`/monitor-debt`) — ⚠️ Score: 45/100
 
 | Marker | Count | Status |
-|:---|:---|:---|
+|:---|:---|
 | **Type Bypasses** (`: any`, `as any`) | **82+ files** | ❌ Critical |
 | **Suppressions** (`@ts-ignore`, `eslint-disable`) | **3 files** | ✅ Acceptable |
 | **TODO/FIXME/HACK** | **9 files** | ⚠️ Moderate |
@@ -104,7 +104,7 @@
 ### 2.4 UI Health (`/monitor-ui`) — ⚠️ Score: 65/100
 
 | Metric | Value | Status |
-|:---|:---|:---|
+|:---|:---|
 | **UI Components** (`src/components/ui`) | **44 files** | ✅ Good library |
 | **Lite/Simple Mode** | 8 files reference it | ✅ In progress |
 | **Dark Mode** | Referenced in DEBT.md as In Progress | 🟡 Partial |

@@ -1,0 +1,34 @@
+{
+  "cases": [
+    {
+      "name": "local and Hevy represent the same workout",
+      "local": {
+        "sessionId": "local-2026-07-31-strength",
+        "normalizedStartTime": "2026-07-31T06:00:00+02:00",
+        "durationMinutes": 45
+      },
+      "provider": {
+        "source": "HEVY",
+        "externalId": "hevy-workout-001",
+        "normalizedStartTime": "2026-07-31T06:03:00+02:00",
+        "durationMinutes": 43
+      },
+      "expected": "SAME_ACTIVITY"
+    },
+    {
+      "name": "separate sessions on the same day",
+      "local": {
+        "sessionId": "local-2026-07-31-strength",
+        "normalizedStartTime": "2026-07-31T06:00:00+02:00",
+        "durationMinutes": 45
+      },
+      "provider": {
+        "source": "INTERVALS_ICU",
+        "externalId": "intervals-ride-002",
+        "normalizedStartTime": "2026-07-31T18:00:00+02:00",
+        "durationMinutes": 60
+      },
+      "expected": "DISTINCT_ACTIVITY"
+    }
+  ]
+}
