@@ -100,6 +100,7 @@ jobs:
       SKIP_ENV_VALIDATION: 'true'
     outputs:
       run-e2e: ${{ steps.e2e-impact.outputs.run-e2e }}
+      run-l1: ${{ steps.e2e-impact.outputs.run-l1 }}
       classification: ${{ steps.e2e-impact.outputs.classification }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -118,9 +119,11 @@ jobs:
         run: |
           if [[ "$EVENT_NAME" != 'pull_request' ]]; then
             printf 'run-e2e=true\n' >> "$GITHUB_OUTPUT"
+            printf 'run-l1=true\n' >> "$GITHUB_OUTPUT"
             printf 'classification=non_pull_request_fail_closed\n' >> "$GITHUB_OUTPUT"
             echo 'IRONFORGE_E2E_IMPACT_CLASSIFICATION=non_pull_request_fail_closed'
             echo 'IRONFORGE_E2E_IMPACT_RUN_E2E=true'
+            echo 'IRONFORGE_L1_IMPACT_RUN_L1=true'
             exit 0
           fi
 
@@ -135,6 +138,15 @@ jobs:
             --files-from "$RUNNER_TEMP/ironforge-e2e-impact-files.txt" \
             --github-output "$GITHUB_OUTPUT"
 
+          if grep -Fxq 'run-e2e=true' "$GITHUB_OUTPUT" || \
+             grep -Fxq '.github/workflows/ci-cd.yml' "$RUNNER_TEMP/ironforge-e2e-impact-files.txt"; then
+            printf 'run-l1=true\n' >> "$GITHUB_OUTPUT"
+            echo 'IRONFORGE_L1_IMPACT_RUN_L1=true'
+          else
+            printf 'run-l1=false\n' >> "$GITHUB_OUTPUT"
+            echo 'IRONFORGE_L1_IMPACT_RUN_L1=false'
+          fi
+
   # ==================================================================
   # TIER L1: FAST FEEDBACK (RUNTIME-IMPACTING PR)
   # Objective: Verify logic & syntax in < 5 minutes.
@@ -144,7 +156,7 @@ jobs:
     needs: [classify-pr-impact]
     if: >-
       (github.event_name == 'pull_request' || startsWith(github.ref, 'refs/heads/fix/')) &&
-      needs.classify-pr-impact.outputs.run-e2e == 'true'
+      needs.classify-pr-impact.outputs.run-l1 == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
