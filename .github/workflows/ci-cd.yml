@@ -100,6 +100,7 @@ jobs:
       SKIP_ENV_VALIDATION: 'true'
     outputs:
       run-e2e: ${{ steps.e2e-impact.outputs.run-e2e }}
+      run-l1: ${{ steps.e2e-impact.outputs.run-l1 }}
       classification: ${{ steps.e2e-impact.outputs.classification }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -118,9 +119,11 @@ jobs:
         run: |
           if [[ "$EVENT_NAME" != 'pull_request' ]]; then
             printf 'run-e2e=true\n' >> "$GITHUB_OUTPUT"
+            printf 'run-l1=true\n' >> "$GITHUB_OUTPUT"
             printf 'classification=non_pull_request_fail_closed\n' >> "$GITHUB_OUTPUT"
             echo 'IRONFORGE_E2E_IMPACT_CLASSIFICATION=non_pull_request_fail_closed'
             echo 'IRONFORGE_E2E_IMPACT_RUN_E2E=true'
+            echo 'IRONFORGE_L1_IMPACT_RUN_L1=true'
             exit 0
           fi
 
@@ -135,6 +138,15 @@ jobs:
             --files-from "$RUNNER_TEMP/ironforge-e2e-impact-files.txt" \
             --github-output "$GITHUB_OUTPUT"
 
+          if grep -Fxq 'run-e2e=true' "$GITHUB_OUTPUT" || \
+             grep -Fxq '.github/workflows/ci-cd.yml' "$RUNNER_TEMP/ironforge-e2e-impact-files.txt"; then
+            printf 'run-l1=true\n' >> "$GITHUB_OUTPUT"
+            echo 'IRONFORGE_L1_IMPACT_RUN_L1=true'
+          else
+            printf 'run-l1=false\n' >> "$GITHUB_OUTPUT"
+            echo 'IRONFORGE_L1_IMPACT_RUN_L1=false'
+          fi
+
   # ==================================================================
   # TIER L1: FAST FEEDBACK (RUNTIME-IMPACTING PR)
   # Objective: Verify logic & syntax in < 5 minutes.
@@ -144,24 +156,66 @@ jobs:
     needs: [classify-pr-impact]
     if: >-
       (github.event_name == 'pull_request' || startsWith(github.ref, 'refs/heads/fix/')) &&
-      needs.classify-pr-impact.outputs.run-e2e == 'true'
-    runs-on: [self-hosted, linux, panopticon, ci, small] # Target specific local runner
+      needs.classify-pr-impact.outputs.run-l1 == 'true'
+    runs-on: ubuntu-latest
     timeout-minutes: 20
+    env:
+      DATABASE_URL: postgresql://postgres@127.0.0.1:5432/ironforge_test?schema=public
+      DIRECT_URL: postgresql://postgres@127.0.0.1:5432/ironforge_test?schema=public
+      NEXT_PUBLIC_SUPABASE_URL: http://127.0.0.1:54421
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: local-ci-placeholder
+      SUPABASE_SERVICE_KEY: ''
+      SUPABASE_ACCESS_TOKEN: ''
+      GH_PAT: ''
+      INTERVALS_API_KEY: ''
+      INTERVALS_ATHLETE_ID: ''
+      FIGMA_API_KEY: ''
+      N8N_API_KEY: ''
+      N8N_HOST: ''
+      PROMPTS_CHAT_API_KEY: ''
+      COOLIFY_API_KEY: ''
+      SENTRY_AUTH_TOKEN: ''
+      SENTRY_ORG: ''
+      SENTRY_PROJECT: ''
+      PERPLEXITY_API_KEY: ''
+      STRAVA_CLIENT_ID: ''
+      STRAVA_CLIENT_SECRET: ''
+      STRAVA_REFRESH_TOKEN: ''
+      GARMIN_EMAIL: ''
+      GARMIN_PASSWORD: ''
+      DISCORD_BOT_TOKEN: ''
+      NOTION_TOKEN: ''
+      N8N_CI_TRIAGE_WEBHOOK_URL: ''
+      SKIP_ENV_VALIDATION: 'true'
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: ironforge_test
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d ironforge_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0 # Required for turbo comparison
+          persist-credentials: false
       - uses: ./.github/actions/setup-ironforge
         with:
           tier: 'l1'
-          is-container: 'true'
+          skip-managed-services: 'true'
+          skip-validation: 'true'
       - name: "🔮 Predictive Failure Analysis"
         run: npx tsx scripts/predict-failures.ts
         continue-on-error: true
       - name: Initialize DB (L1)
-        run: |
-          # Managed-services assumes DB is already healthy (0s wait)
-          npx prisma db push --accept-data-loss
+        run: npx prisma db push --accept-data-loss
       - name: Cache Turbo
         uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         with:
@@ -541,4 +595,3 @@ jobs:
             ghcr.io/techlemariam/ironforge:sha-${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-
