@@ -14,6 +14,7 @@ permissions:
 jobs:
   triage:
     name: "PR labeling deferred (trusted-write required)"
+    if: github.event.pull_request.head.repo.full_name == github.repository
     runs-on: [self-hosted, linux, panopticon, ci, small]
     timeout-minutes: 5
     steps:

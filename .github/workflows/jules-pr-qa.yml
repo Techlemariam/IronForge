@@ -19,7 +19,9 @@ env:
 jobs:
   qa-gate:
     name: 🧪 Jules QA Gate
-    if: startsWith(github.head_ref, 'jules/')
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      startsWith(github.head_ref, 'jules/')
     runs-on: [self-hosted, linux, panopticon, ci, small]
     timeout-minutes: 20
     permissions:
