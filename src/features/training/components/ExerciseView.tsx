@@ -159,18 +159,19 @@ function useApplySavedPrescription(
   const prescriptionAppliedRef = useRef(false);
 
   React.useEffect(() => {
-    if (!savedDecision || prescriptionAppliedRef.current || !onSetUpdate) return;
-
-    savedDecision.nextPrescription.forEach((target, index) => {
-      const set = exercise.sets[index];
-      if (!set || set.completed || set.weight) return;
-      onSetUpdate(index, {
-        weight: target.targetWeight,
-        reps: target.targetReps ?? target.minimumReps,
-        rpe: target.targetRpe,
+    if (savedDecision && !prescriptionAppliedRef.current && onSetUpdate) {
+      savedDecision.nextPrescription.forEach((target, index) => {
+        const set = exercise.sets[index];
+        if (set && !set.completed && !set.weight) {
+          onSetUpdate(index, {
+            weight: target.targetWeight,
+            reps: target.targetReps ?? target.minimumReps,
+            rpe: target.targetRpe,
+          });
+        }
       });
-    });
-    prescriptionAppliedRef.current = true;
+      prescriptionAppliedRef.current = true;
+    }
   }, [exercise.sets, onSetUpdate, savedDecision]);
 }
 
@@ -183,27 +184,27 @@ function useSaveCompletedProgression(
   const progressionSavedRef = useRef(false);
 
   React.useEffect(() => {
-    if (!allSetsCompleted || progressionSavedRef.current) return;
-
-    const completedSets = buildCompletedSets(exercise.sets);
-    if (completedSets.length === 0) return;
-
-    progressionSavedRef.current = true;
-    evaluateAndSaveProgressionAction(exercise.id, {
-      method: repGoal ? 'REP_GOAL' : 'DOUBLE_PROGRESSION',
-      prescription: buildPrescription(exercise.sets, completedSets),
-      completedSets,
-      repGoal: repGoal?.targetReps,
-      equipment: { minimumIncrement: 2.5 },
-    })
-      .then((result) => {
-        if (result.success) setSavedDecision(result.decision);
-        else progressionSavedRef.current = false;
-      })
-      .catch((error) => {
-        progressionSavedRef.current = false;
-        console.error('Failed to save progression decision:', error);
-      });
+    if (allSetsCompleted && !progressionSavedRef.current) {
+      const completedSets = buildCompletedSets(exercise.sets);
+      if (completedSets.length > 0) {
+        progressionSavedRef.current = true;
+        evaluateAndSaveProgressionAction(exercise.id, {
+          method: repGoal ? 'REP_GOAL' : 'DOUBLE_PROGRESSION',
+          prescription: buildPrescription(exercise.sets, completedSets),
+          completedSets,
+          repGoal: repGoal?.targetReps,
+          equipment: { minimumIncrement: 2.5 },
+        })
+          .then((result) => {
+            if (result.success) setSavedDecision(result.decision);
+            else progressionSavedRef.current = false;
+          })
+          .catch((error) => {
+            progressionSavedRef.current = false;
+            console.error('Failed to save progression decision:', error);
+          });
+      }
+    }
   }, [allSetsCompleted, exercise.id, exercise.sets, repGoal, setSavedDecision]);
 }
 
@@ -212,12 +213,12 @@ function useExerciseChart(exerciseId: string, showHistory: boolean) {
   const [isChartLoading, setIsChartLoading] = useState(false);
 
   React.useEffect(() => {
-    if (!showHistory || chartData.length > 0) return;
-
-    setIsChartLoading(true);
-    getExerciseHistory(exerciseId)
-      .then((data) => setChartData(data))
-      .finally(() => setIsChartLoading(false));
+    if (showHistory && chartData.length === 0) {
+      setIsChartLoading(true);
+      getExerciseHistory(exerciseId)
+        .then((data) => setChartData(data))
+        .finally(() => setIsChartLoading(false));
+    }
   }, [showHistory, chartData.length, exerciseId]);
 
   return { chartData, isChartLoading };
