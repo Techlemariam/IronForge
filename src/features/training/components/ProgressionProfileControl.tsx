@@ -336,6 +336,14 @@ export function ProgressionProfileControl({ exercise }: ProgressionProfileContro
     setOpen((value) => !value);
   };
 
+  const requestSave = () => {
+    save().catch((error) => {
+      console.error('Unexpected profile save failure:', error);
+      setStatus('Kunde inte spara');
+      setSaving(false);
+    });
+  };
+
   return (
     <div className="relative">
       <button
@@ -405,9 +413,7 @@ export function ProgressionProfileControl({ exercise }: ProgressionProfileContro
             <button
               type="button"
               disabled={editingDisabled}
-              onClick={() => {
-                void save();
-              }}
+              onClick={requestSave}
               className="rounded bg-magma/20 px-3 py-1.5 text-xs text-magma disabled:opacity-50"
             >
               {saving ? 'Sparar…' : 'Spara'}
