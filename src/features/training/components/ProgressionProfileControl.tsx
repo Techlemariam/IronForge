@@ -405,7 +405,9 @@ export function ProgressionProfileControl({ exercise }: ProgressionProfileContro
             <button
               type="button"
               disabled={editingDisabled}
-              onClick={save}
+              onClick={() => {
+                void save();
+              }}
               className="rounded bg-magma/20 px-3 py-1.5 text-xs text-magma disabled:opacity-50"
             >
               {saving ? 'Sparar…' : 'Spara'}
