@@ -216,6 +216,7 @@ function useExerciseChart(exerciseId: string, showHistory: boolean) {
       setIsChartLoading(true);
       getExerciseHistory(exerciseId)
         .then((data) => setChartData(data))
+        .catch((error) => console.error('Failed to load exercise history:', error))
         .finally(() => setIsChartLoading(false));
     }
   }, [showHistory, chartData.length, exerciseId]);
