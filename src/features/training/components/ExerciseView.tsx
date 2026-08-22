@@ -215,7 +215,7 @@ function useExerciseChart(exerciseId: string) {
   const loadChartData = () => {
     if (chartData.length === 0 && !isChartLoading) {
       setIsChartLoading(true);
-      void getExerciseHistory(exerciseId)
+      getExerciseHistory(exerciseId)
         .then((data) => setChartData(data))
         .catch((error) => console.error('Failed to load exercise history:', error))
         .finally(() => setIsChartLoading(false));
