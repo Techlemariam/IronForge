@@ -208,21 +208,21 @@ function useSaveCompletedProgression(
   }, [allSetsCompleted, exercise.id, exercise.sets, repGoal, setSavedDecision]);
 }
 
-function useExerciseChart(exerciseId: string, showHistory: boolean) {
+function useExerciseChart(exerciseId: string) {
   const [chartData, setChartData] = useState<HistoryPoint[]>([]);
   const [isChartLoading, setIsChartLoading] = useState(false);
 
-  React.useEffect(() => {
-    if (showHistory && chartData.length === 0) {
+  const loadChartData = () => {
+    if (chartData.length === 0 && !isChartLoading) {
       setIsChartLoading(true);
-      getExerciseHistory(exerciseId)
+      void getExerciseHistory(exerciseId)
         .then((data) => setChartData(data))
         .catch((error) => console.error('Failed to load exercise history:', error))
         .finally(() => setIsChartLoading(false));
     }
-  }, [showHistory, chartData.length, exerciseId]);
+  };
 
-  return { chartData, isChartLoading };
+  return { chartData, isChartLoading, loadChartData };
 }
 
 function ExerciseStatusIcon({
@@ -314,7 +314,7 @@ const ExerciseView: React.FC<ExerciseViewProps> = ({
   const { start } = useRestTimer();
   const { maxReps, isLoading: isMaxRepsLoading } = useMaxReps(exercise.id, activeSet?.weight);
   useSetHistory(exercise.id, exercise.name);
-  const { chartData, isChartLoading } = useExerciseChart(exercise.id, showHistory);
+  const { chartData, isChartLoading, loadChartData } = useExerciseChart(exercise.id);
 
   useApplySavedPrescription(exercise, savedDecision, onSetUpdate);
   useSaveCompletedProgression(exercise, allSetsCompleted, repGoal, setSavedDecision);
@@ -380,6 +380,7 @@ const ExerciseView: React.FC<ExerciseViewProps> = ({
               type="button"
               onClick={(event) => {
                 event.stopPropagation();
+                if (!showHistory) loadChartData();
                 setShowHistory((value) => !value);
               }}
               className={cn(
