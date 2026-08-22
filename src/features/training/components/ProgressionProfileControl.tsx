@@ -233,31 +233,32 @@ export function ProgressionProfileControl({ exercise }: ProgressionProfileContro
   const [status, setStatus] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!open) return;
-
     let cancelled = false;
-    setLoading(true);
-    setLoaded(false);
-    setStatus(null);
 
-    getProgressionProfileAction(exercise.id)
-      .then((saved) => {
-        if (cancelled) return null;
-        setEditor(createEditorState(saved, defaultMethod));
-        setLoaded(true);
-        return null;
-      })
-      .catch((error) => {
-        if (cancelled) return null;
-        console.error('Failed to load progression profile:', error);
-        setStatus('Kunde inte läsa profil');
-        return null;
-      })
-      .finally(() => {
-        if (cancelled) return null;
-        setLoading(false);
-        return null;
-      });
+    if (open) {
+      setLoading(true);
+      setLoaded(false);
+      setStatus(null);
+
+      getProgressionProfileAction(exercise.id)
+        .then((saved) => {
+          if (cancelled) return null;
+          setEditor(createEditorState(saved, defaultMethod));
+          setLoaded(true);
+          return null;
+        })
+        .catch((error) => {
+          if (cancelled) return null;
+          console.error('Failed to load progression profile:', error);
+          setStatus('Kunde inte läsa profil');
+          return null;
+        })
+        .finally(() => {
+          if (cancelled) return null;
+          setLoading(false);
+          return null;
+        });
+    }
 
     return () => {
       cancelled = true;
