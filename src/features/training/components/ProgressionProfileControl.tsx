@@ -242,21 +242,19 @@ export function ProgressionProfileControl({ exercise }: ProgressionProfileContro
 
       getProgressionProfileAction(exercise.id)
         .then((saved) => {
-          if (cancelled) return null;
-          setEditor(createEditorState(saved, defaultMethod));
-          setLoaded(true);
-          return null;
+          if (!cancelled) {
+            setEditor(createEditorState(saved, defaultMethod));
+            setLoaded(true);
+          }
         })
         .catch((error) => {
-          if (cancelled) return null;
-          console.error('Failed to load progression profile:', error);
-          setStatus('Kunde inte läsa profil');
-          return null;
+          if (!cancelled) {
+            console.error('Failed to load progression profile:', error);
+            setStatus('Kunde inte läsa profil');
+          }
         })
         .finally(() => {
-          if (cancelled) return null;
-          setLoading(false);
-          return null;
+          if (!cancelled) setLoading(false);
         });
     }
 
