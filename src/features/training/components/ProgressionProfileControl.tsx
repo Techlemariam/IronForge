@@ -278,30 +278,30 @@ export function ProgressionProfileControl({ exercise }: ProgressionProfileContro
   };
 
   const save = async () => {
-    if (!loaded || saving) return;
+    if (loaded && !saving) {
+      setSaving(true);
+      setStatus(null);
+      const next: ProgressionProfile = {
+        method: editor.profile.method,
+        useRecovery: editor.profile.useRecovery,
+        minimumIncrement: editor.customIncrement ? effectiveIncrement : undefined,
+        availableLoads: parseLoads(editor.loadsText),
+      };
 
-    setSaving(true);
-    setStatus(null);
-    const next: ProgressionProfile = {
-      method: editor.profile.method,
-      useRecovery: editor.profile.useRecovery,
-      minimumIncrement: editor.customIncrement ? effectiveIncrement : undefined,
-      availableLoads: parseLoads(editor.loadsText),
-    };
-
-    try {
-      const result = await setProgressionProfileAction(exercise.id, next);
-      if (result.success) {
-        setEditor(createEditorState(result.profile, defaultMethod));
-        setStatus('Sparat');
-      } else {
+      try {
+        const result = await setProgressionProfileAction(exercise.id, next);
+        if (result.success) {
+          setEditor(createEditorState(result.profile, defaultMethod));
+          setStatus('Sparat');
+        } else {
+          setStatus('Kunde inte spara');
+        }
+      } catch (error) {
+        console.error('Failed to save progression profile:', error);
         setStatus('Kunde inte spara');
+      } finally {
+        setSaving(false);
       }
-    } catch (error) {
-      console.error('Failed to save progression profile:', error);
-      setStatus('Kunde inte spara');
-    } finally {
-      setSaving(false);
     }
   };
 
