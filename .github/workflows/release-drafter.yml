@@ -1,12 +1,12 @@
 # node-version: 22 compliance comment for Governance Guard
 name: Release Drafter
 
+# Release drafting is a repository-write lane. Do not schedule it for PR-head
+# execution until the dedicated ci-trusted-github-write pool is commissioned.
 on:
   push:
     branches:
       - main
-  pull_request:
-    types: [opened, reopened, synchronize]
   workflow_dispatch:
 
 permissions: read-all
