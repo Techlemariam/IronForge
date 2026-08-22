@@ -347,8 +347,11 @@ export function ProgressionProfileControl({ exercise }: ProgressionProfileContro
 
       {open && (
         <div
+          role="dialog"
+          aria-label="Progressionsinställningar"
           className="absolute left-0 top-6 z-50 w-72 rounded-lg border border-white/10 bg-zinc-950 p-3 shadow-2xl"
           onClick={(event) => event.stopPropagation()}
+          onKeyDown={(event) => event.stopPropagation()}
         >
           <div className="mb-3 flex items-center justify-between">
             <div>
