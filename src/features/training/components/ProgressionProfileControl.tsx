@@ -239,10 +239,6 @@ export function ProgressionProfileControl({ exercise }: ProgressionProfileContro
     const isCurrentLoad = () => profileLoadGeneration.current === generation;
 
     if (open) {
-      setLoading(true);
-      setLoaded(false);
-      setStatus(null);
-
       getProgressionProfileAction(exercise.id)
         .then((saved) => {
           if (isCurrentLoad()) {
@@ -331,13 +327,22 @@ export function ProgressionProfileControl({ exercise }: ProgressionProfileContro
     }));
   };
 
+  const toggleEditor = () => {
+    if (!open) {
+      setLoading(true);
+      setLoaded(false);
+      setStatus(null);
+    }
+    setOpen((value) => !value);
+  };
+
   return (
     <div className="relative">
       <button
         type="button"
         onClick={(event) => {
           event.stopPropagation();
-          setOpen((value) => !value);
+          toggleEditor();
         }}
         className="text-zinc-500 transition-colors hover:text-magma"
         title="Progressionsinställningar"
