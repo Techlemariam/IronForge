@@ -1,22 +1,29 @@
 # node-version: 22 compliance comment for Governance Guard
 name: "🏷️ PR Labeler"
-# Security: Using pull_request (not pull_request_target) to prevent
-# untrusted fork code from running with write permissions to secrets.
-# See: https://securitylab.github.com/research/github-actions-preventing-pwn-requests/
+
+# Label mutation requires pull-requests: write. Until the dedicated
+# ci-trusted-github-write pool is commissioned, keep the PR signal visible but
+# execute only a read-only deferred marker on the Panopticon PR runner.
 on:
   pull_request:
     types: [opened, synchronize, reopened]
 
 permissions:
   contents: read
-  pull-requests: write
 
 jobs:
   triage:
-    runs-on: ubuntu-24.04
+    name: "PR labeling deferred (trusted-write required)"
+    runs-on: [self-hosted, linux, panopticon, ci, small]
     timeout-minutes: 5
     steps:
-      - uses: actions/labeler@634933edcd8ababfe52f92936142cc22ac488b1b # v6.0.1
-        with:
-          repo-token: "${{ github.token }}"
-          sync-labels: true
+      - name: Record deferred label mutation
+        shell: bash
+        run: |
+          {
+            echo '## PR labeling deferred'
+            echo
+            echo 'Automatic label mutation requires the dedicated ci-trusted-github-write runner profile.'
+            echo 'No labels were changed by this read-only PR job.'
+          } >> "$GITHUB_STEP_SUMMARY"
+          echo 'IRONFORGE_PR_LABELER_STATUS=DEFERRED_TRUSTED_WRITE_REQUIRED'
