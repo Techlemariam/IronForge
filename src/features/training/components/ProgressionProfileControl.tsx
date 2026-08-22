@@ -10,7 +10,7 @@ import { getDefaultEquipmentConstraints } from '@/services/training/progressionD
 import type { ProgressionMethod } from '@/services/training/progressionEngine';
 import type { Exercise } from '@/types';
 import { Settings2, X } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 const METHODS: Array<{ value: ProgressionMethod; label: string }> = [
   { value: 'DOUBLE_PROGRESSION', label: 'Dubbel progression' },
@@ -231,9 +231,12 @@ export function ProgressionProfileControl({ exercise }: ProgressionProfileContro
   const [loaded, setLoaded] = useState(false);
   const [saving, setSaving] = useState(false);
   const [status, setStatus] = useState<string | null>(null);
+  const profileLoadGeneration = useRef(0);
 
   useEffect(() => {
-    let cancelled = false;
+    const generation = profileLoadGeneration.current + 1;
+    profileLoadGeneration.current = generation;
+    const isCurrentLoad = () => profileLoadGeneration.current === generation;
 
     if (open) {
       setLoading(true);
@@ -242,25 +245,21 @@ export function ProgressionProfileControl({ exercise }: ProgressionProfileContro
 
       getProgressionProfileAction(exercise.id)
         .then((saved) => {
-          if (!cancelled) {
+          if (isCurrentLoad()) {
             setEditor(createEditorState(saved, defaultMethod));
             setLoaded(true);
           }
         })
         .catch((error) => {
-          if (!cancelled) {
+          if (isCurrentLoad()) {
             console.error('Failed to load progression profile:', error);
             setStatus('Kunde inte läsa profil');
           }
         })
         .finally(() => {
-          if (!cancelled) setLoading(false);
+          if (isCurrentLoad()) setLoading(false);
         });
     }
-
-    return () => {
-      cancelled = true;
-    };
   }, [defaultMethod, exercise.id, open]);
 
   const effectiveIncrement = editor.customIncrement
