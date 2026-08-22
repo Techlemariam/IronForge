@@ -5,6 +5,7 @@ import {
   setProgressionProfileAction,
   type ProgressionProfile,
 } from '@/actions/training/progressionDecision';
+import type { RepGoalExercise } from '@/features/strength/utils/repGoal';
 import { getDefaultEquipmentConstraints } from '@/services/training/progressionDefaults';
 import type { ProgressionMethod } from '@/services/training/progressionEngine';
 import type { Exercise } from '@/types';
@@ -21,73 +22,311 @@ const METHODS: Array<{ value: ProgressionMethod; label: string }> = [
   { value: 'MANUAL', label: 'Manuell' },
 ];
 
+const PRESET_INCREMENTS = [1.25, 2.5, 5] as const;
+
+type ProfileExercise = Pick<Exercise, 'id' | 'name'> & {
+  prescription?: RepGoalExercise['prescription'];
+};
+
 interface ProgressionProfileControlProps {
-  exercise: Pick<Exercise, 'id' | 'name'>;
+  exercise: ProfileExercise;
+}
+
+interface EditorState {
+  profile: ProgressionProfile;
+  customIncrement: boolean;
+  showCustomIncrementInput: boolean;
+  loadsText: string;
+}
+
+function getDefaultMethod(exercise: ProfileExercise): ProgressionMethod {
+  return exercise.prescription?.type === 'TOTAL_REPS' ? 'REP_GOAL' : 'DOUBLE_PROGRESSION';
+}
+
+function createDefaultProfile(method: ProgressionMethod): ProgressionProfile {
+  return { method, useRecovery: true };
+}
+
+function createEditorState(
+  saved: ProgressionProfile | null,
+  defaultMethod: ProgressionMethod
+): EditorState {
+  const profile = saved ?? createDefaultProfile(defaultMethod);
+  const customIncrement = profile.minimumIncrement !== undefined;
+  const showCustomIncrementInput =
+    customIncrement &&
+    profile.minimumIncrement !== undefined &&
+    !PRESET_INCREMENTS.includes(profile.minimumIncrement as (typeof PRESET_INCREMENTS)[number]);
+
+  return {
+    profile,
+    customIncrement,
+    showCustomIncrementInput,
+    loadsText: profile.availableLoads?.join(', ') ?? '',
+  };
 }
 
 function parseLoads(value: string): number[] | undefined {
   const loads = value
     .split(/[;,]/)
     .map((part) => Number.parseFloat(part.trim()))
-    .filter((value) => Number.isFinite(value) && value >= 0);
+    .filter((load) => Number.isFinite(load) && load >= 0);
   return loads.length ? Array.from(new Set(loads)).sort((a, b) => a - b) : undefined;
 }
 
+function MethodField({
+  method,
+  disabled,
+  onChange,
+}: {
+  method: ProgressionMethod;
+  disabled: boolean;
+  onChange: (method: ProgressionMethod) => void;
+}) {
+  return (
+    <label className="mb-3 block text-xs text-zinc-400">
+      Metod
+      <select
+        value={method}
+        disabled={disabled}
+        onChange={(event) => onChange(event.target.value as ProgressionMethod)}
+        className="mt-1 w-full rounded border border-white/10 bg-black/30 px-2 py-1.5 text-xs text-white disabled:opacity-50"
+      >
+        {METHODS.map((candidate) => (
+          <option key={candidate.value} value={candidate.value}>
+            {candidate.label}
+          </option>
+        ))}
+      </select>
+    </label>
+  );
+}
+
+interface IncrementFieldProps {
+  automaticIncrement: number;
+  effectiveIncrement: number;
+  customIncrement: boolean;
+  showCustomIncrementInput: boolean;
+  disabled: boolean;
+  onAuto: () => void;
+  onPreset: (increment: number) => void;
+  onCustom: () => void;
+  onCustomValue: (increment: number) => void;
+}
+
+function IncrementField({
+  automaticIncrement,
+  effectiveIncrement,
+  customIncrement,
+  showCustomIncrementInput,
+  disabled,
+  onAuto,
+  onPreset,
+  onCustom,
+  onCustomValue,
+}: IncrementFieldProps) {
+  return (
+    <div className="mb-3 rounded border border-white/10 bg-black/20 p-2">
+      <div className="mb-2 text-xs text-zinc-400">Viktsteg</div>
+      <div className="flex flex-wrap gap-1">
+        <button
+          type="button"
+          disabled={disabled}
+          onClick={onAuto}
+          className={`rounded px-2 py-1 text-[11px] disabled:opacity-50 ${!customIncrement ? 'bg-magma/20 text-magma' : 'bg-white/5 text-zinc-400'}`}
+        >
+          Auto {automaticIncrement} kg
+        </button>
+        {PRESET_INCREMENTS.map((increment) => (
+          <button
+            key={increment}
+            type="button"
+            disabled={disabled}
+            onClick={() => onPreset(increment)}
+            className={`rounded px-2 py-1 text-[11px] disabled:opacity-50 ${customIncrement && !showCustomIncrementInput && effectiveIncrement === increment ? 'bg-magma/20 text-magma' : 'bg-white/5 text-zinc-400'}`}
+          >
+            {increment} kg
+          </button>
+        ))}
+        <button
+          type="button"
+          disabled={disabled}
+          onClick={onCustom}
+          className={`rounded px-2 py-1 text-[11px] disabled:opacity-50 ${showCustomIncrementInput ? 'bg-magma/20 text-magma' : 'bg-white/5 text-zinc-400'}`}
+        >
+          Annat
+        </button>
+      </div>
+      {showCustomIncrementInput && (
+        <input
+          type="number"
+          min="0.1"
+          step="0.05"
+          disabled={disabled}
+          value={effectiveIncrement}
+          onChange={(event) =>
+            onCustomValue(Math.max(0.1, Number.parseFloat(event.target.value) || automaticIncrement))
+          }
+          className="mt-2 w-full rounded border border-white/10 bg-black/30 px-2 py-1 text-xs text-white disabled:opacity-50"
+        />
+      )}
+    </div>
+  );
+}
+
+function LoadsField({
+  value,
+  disabled,
+  onChange,
+}: {
+  value: string;
+  disabled: boolean;
+  onChange: (value: string) => void;
+}) {
+  return (
+    <label className="mb-3 block text-xs text-zinc-400">
+      Tillgängliga vikter, valfritt
+      <input
+        value={value}
+        disabled={disabled}
+        onChange={(event) => onChange(event.target.value)}
+        placeholder="t.ex. 70, 75, 80, 85"
+        className="mt-1 w-full rounded border border-white/10 bg-black/30 px-2 py-1.5 text-xs text-white disabled:opacity-50"
+      />
+    </label>
+  );
+}
+
+function RecoveryField({
+  checked,
+  disabled,
+  onChange,
+}: {
+  checked: boolean;
+  disabled: boolean;
+  onChange: (checked: boolean) => void;
+}) {
+  return (
+    <label className="mb-3 flex items-center justify-between text-xs text-zinc-400">
+      <span>Ta hänsyn till återhämtning</span>
+      <input
+        type="checkbox"
+        checked={checked}
+        disabled={disabled}
+        onChange={(event) => onChange(event.target.checked)}
+      />
+    </label>
+  );
+}
+
 export function ProgressionProfileControl({ exercise }: ProgressionProfileControlProps) {
+  const defaultMethod = getDefaultMethod(exercise);
   const automaticIncrement = useMemo(
     () => getDefaultEquipmentConstraints(exercise).minimumIncrement,
     [exercise]
   );
   const [open, setOpen] = useState(false);
-  const [profile, setProfile] = useState<ProgressionProfile>({
-    method: 'DOUBLE_PROGRESSION',
-    useRecovery: true,
-  });
-  const [customIncrement, setCustomIncrement] = useState(false);
-  const [showCustomIncrementInput, setShowCustomIncrementInput] = useState(false);
-  const [loadsText, setLoadsText] = useState('');
+  const [editor, setEditor] = useState<EditorState>(() => createEditorState(null, defaultMethod));
+  const [loading, setLoading] = useState(false);
+  const [loaded, setLoaded] = useState(false);
   const [saving, setSaving] = useState(false);
   const [status, setStatus] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!open) return;
+
     let cancelled = false;
+    setLoading(true);
+    setLoaded(false);
+    setStatus(null);
+
     getProgressionProfileAction(exercise.id)
       .then((saved) => {
-        if (cancelled || !saved) return;
-        setProfile(saved);
-        const hasCustom = saved.minimumIncrement !== undefined;
-        setCustomIncrement(hasCustom);
-        setShowCustomIncrementInput(
-          hasCustom && ![1.25, 2.5, 5].includes(saved.minimumIncrement as number)
-        );
-        setLoadsText(saved.availableLoads?.join(', ') ?? '');
+        if (cancelled) return;
+        setEditor(createEditorState(saved, defaultMethod));
+        setLoaded(true);
       })
-      .catch((error) => console.error('Failed to load progression profile:', error));
+      .catch((error) => {
+        if (cancelled) return;
+        console.error('Failed to load progression profile:', error);
+        setStatus('Kunde inte läsa profil');
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+
     return () => {
       cancelled = true;
     };
-  }, [exercise.id]);
+  }, [defaultMethod, exercise.id, open]);
 
-  const effectiveIncrement = customIncrement ? profile.minimumIncrement ?? automaticIncrement : automaticIncrement;
+  const effectiveIncrement = editor.customIncrement
+    ? editor.profile.minimumIncrement ?? automaticIncrement
+    : automaticIncrement;
+  const editingDisabled = loading || !loaded || saving;
+
+  const updateProfile = (updates: Partial<ProgressionProfile>) => {
+    setEditor((current) => ({
+      ...current,
+      profile: { ...current.profile, ...updates },
+    }));
+  };
 
   const save = async () => {
+    if (!loaded || saving) return;
+
     setSaving(true);
     setStatus(null);
-    const availableLoads = parseLoads(loadsText);
     const next: ProgressionProfile = {
-      method: profile.method,
-      useRecovery: profile.useRecovery,
-      minimumIncrement: customIncrement ? effectiveIncrement : undefined,
-      availableLoads,
+      method: editor.profile.method,
+      useRecovery: editor.profile.useRecovery,
+      minimumIncrement: editor.customIncrement ? effectiveIncrement : undefined,
+      availableLoads: parseLoads(editor.loadsText),
     };
-    const result = await setProgressionProfileAction(exercise.id, next);
-    setSaving(false);
-    if (result.success) {
-      setProfile(result.profile);
-      setStatus('Sparat');
-    } else {
+
+    try {
+      const result = await setProgressionProfileAction(exercise.id, next);
+      if (result.success) {
+        setEditor(createEditorState(result.profile, defaultMethod));
+        setStatus('Sparat');
+      } else {
+        setStatus('Kunde inte spara');
+      }
+    } catch (error) {
+      console.error('Failed to save progression profile:', error);
       setStatus('Kunde inte spara');
+    } finally {
+      setSaving(false);
     }
+  };
+
+  const chooseAutomaticIncrement = () => {
+    setEditor((current) => ({
+      ...current,
+      customIncrement: false,
+      showCustomIncrementInput: false,
+    }));
+  };
+
+  const choosePresetIncrement = (increment: number) => {
+    setEditor((current) => ({
+      ...current,
+      customIncrement: true,
+      showCustomIncrementInput: false,
+      profile: { ...current.profile, minimumIncrement: increment },
+    }));
+  };
+
+  const chooseCustomIncrement = () => {
+    setEditor((current) => ({
+      ...current,
+      customIncrement: true,
+      showCustomIncrementInput: true,
+      profile: {
+        ...current.profile,
+        minimumIncrement: current.profile.minimumIncrement ?? automaticIncrement,
+      },
+    }));
   };
 
   return (
@@ -119,108 +358,43 @@ export function ProgressionProfileControl({ exercise }: ProgressionProfileContro
             </button>
           </div>
 
-          <label className="mb-3 block text-xs text-zinc-400">
-            Metod
-            <select
-              value={profile.method}
-              onChange={(event) =>
-                setProfile((current) => ({ ...current, method: event.target.value as ProgressionMethod }))
-              }
-              className="mt-1 w-full rounded border border-white/10 bg-black/30 px-2 py-1.5 text-xs text-white"
-            >
-              {METHODS.map((method) => (
-                <option key={method.value} value={method.value}>
-                  {method.label}
-                </option>
-              ))}
-            </select>
-          </label>
+          {loading && <div className="mb-3 text-xs text-zinc-500">Laddar profil…</div>}
 
-          <div className="mb-3 rounded border border-white/10 bg-black/20 p-2">
-            <div className="mb-2 text-xs text-zinc-400">Viktsteg</div>
-            <div className="flex flex-wrap gap-1">
-              <button
-                type="button"
-                onClick={() => {
-                  setCustomIncrement(false);
-                  setShowCustomIncrementInput(false);
-                }}
-                className={`rounded px-2 py-1 text-[11px] ${!customIncrement ? 'bg-magma/20 text-magma' : 'bg-white/5 text-zinc-400'}`}
-              >
-                Auto {automaticIncrement} kg
-              </button>
-              {[1.25, 2.5, 5].map((increment) => (
-                <button
-                  key={increment}
-                  type="button"
-                  onClick={() => {
-                    setCustomIncrement(true);
-                    setShowCustomIncrementInput(false);
-                    setProfile((current) => ({ ...current, minimumIncrement: increment }));
-                  }}
-                  className={`rounded px-2 py-1 text-[11px] ${customIncrement && !showCustomIncrementInput && effectiveIncrement === increment ? 'bg-magma/20 text-magma' : 'bg-white/5 text-zinc-400'}`}
-                >
-                  {increment} kg
-                </button>
-              ))}
-              <button
-                type="button"
-                onClick={() => {
-                  setCustomIncrement(true);
-                  setShowCustomIncrementInput(true);
-                  setProfile((current) => ({
-                    ...current,
-                    minimumIncrement: current.minimumIncrement ?? automaticIncrement,
-                  }));
-                }}
-                className={`rounded px-2 py-1 text-[11px] ${showCustomIncrementInput ? 'bg-magma/20 text-magma' : 'bg-white/5 text-zinc-400'}`}
-              >
-                Annat
-              </button>
-            </div>
-            {showCustomIncrementInput && (
-              <input
-                type="number"
-                min="0.1"
-                step="0.05"
-                value={effectiveIncrement}
-                onChange={(event) =>
-                  setProfile((current) => ({
-                    ...current,
-                    minimumIncrement: Math.max(0.1, Number.parseFloat(event.target.value) || automaticIncrement),
-                  }))
-                }
-                className="mt-2 w-full rounded border border-white/10 bg-black/30 px-2 py-1 text-xs text-white"
-              />
-            )}
-          </div>
+          <MethodField
+            method={editor.profile.method}
+            disabled={editingDisabled}
+            onChange={(method) => updateProfile({ method })}
+          />
 
-          <label className="mb-3 block text-xs text-zinc-400">
-            Tillgängliga vikter, valfritt
-            <input
-              value={loadsText}
-              onChange={(event) => setLoadsText(event.target.value)}
-              placeholder="t.ex. 70, 75, 80, 85"
-              className="mt-1 w-full rounded border border-white/10 bg-black/30 px-2 py-1.5 text-xs text-white"
-            />
-          </label>
+          <IncrementField
+            automaticIncrement={automaticIncrement}
+            effectiveIncrement={effectiveIncrement}
+            customIncrement={editor.customIncrement}
+            showCustomIncrementInput={editor.showCustomIncrementInput}
+            disabled={editingDisabled}
+            onAuto={chooseAutomaticIncrement}
+            onPreset={choosePresetIncrement}
+            onCustom={chooseCustomIncrement}
+            onCustomValue={(minimumIncrement) => updateProfile({ minimumIncrement })}
+          />
 
-          <label className="mb-3 flex items-center justify-between text-xs text-zinc-400">
-            <span>Ta hänsyn till återhämtning</span>
-            <input
-              type="checkbox"
-              checked={profile.useRecovery}
-              onChange={(event) =>
-                setProfile((current) => ({ ...current, useRecovery: event.target.checked }))
-              }
-            />
-          </label>
+          <LoadsField
+            value={editor.loadsText}
+            disabled={editingDisabled}
+            onChange={(loadsText) => setEditor((current) => ({ ...current, loadsText }))}
+          />
+
+          <RecoveryField
+            checked={editor.profile.useRecovery}
+            disabled={editingDisabled}
+            onChange={(useRecovery) => updateProfile({ useRecovery })}
+          />
 
           <div className="flex items-center justify-between">
             <span className="text-[10px] text-zinc-500">{status}</span>
             <button
               type="button"
-              disabled={saving}
+              disabled={editingDisabled}
               onClick={save}
               className="rounded bg-magma/20 px-3 py-1.5 text-xs text-magma disabled:opacity-50"
             >
