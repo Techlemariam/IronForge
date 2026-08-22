@@ -313,7 +313,7 @@ const ExerciseView: React.FC<ExerciseViewProps> = ({
   const { savedDecision, setSavedDecision } = useSavedProgression(exercise.id);
   const { start } = useRestTimer();
   const { maxReps, isLoading: isMaxRepsLoading } = useMaxReps(exercise.id, activeSet?.weight);
-  const { history: _history } = useSetHistory(exercise.id, exercise.name);
+  useSetHistory(exercise.id, exercise.name);
   const { chartData, isChartLoading } = useExerciseChart(exercise.id, showHistory);
 
   useApplySavedPrescription(exercise, savedDecision, onSetUpdate);
