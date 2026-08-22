@@ -254,7 +254,9 @@ export function ProgressionProfileControl({ exercise }: ProgressionProfileContro
         return null;
       })
       .finally(() => {
-        if (!cancelled) setLoading(false);
+        if (cancelled) return null;
+        setLoading(false);
+        return null;
       });
 
     return () => {
