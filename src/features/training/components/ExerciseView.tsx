@@ -366,6 +366,7 @@ const ExerciseView: React.FC<ExerciseViewProps> = ({
           <div className="flex items-center gap-2">
             <h3 className="font-heading text-xl text-white tracking-wider">{exercise.name}</h3>
             <button
+              type="button"
               onClick={(event) => {
                 event.stopPropagation();
                 setShowDemo(true);
@@ -376,6 +377,7 @@ const ExerciseView: React.FC<ExerciseViewProps> = ({
               <PlayCircle className="w-4 h-4" />
             </button>
             <button
+              type="button"
               onClick={(event) => {
                 event.stopPropagation();
                 setShowHistory((value) => !value);
