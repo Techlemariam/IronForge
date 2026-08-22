@@ -59,8 +59,8 @@ env:
 jobs:
 
   # ==================================================================
-  # PR IMPACT CLASSIFICATION (GITHUB-HOSTED)
-  # Fail closed before allocating the self-hosted runner.
+  # PR IMPACT CLASSIFICATION (PANOPTICON READ-ONLY)
+  # Fail closed before allocating DB/service-backed verification.
   # ==================================================================
   classify-pr-impact:
     name: "🧭 Classify PR Impact"
@@ -68,7 +68,7 @@ jobs:
       github.event_name == 'pull_request' ||
       github.event_name == 'workflow_dispatch' ||
       startsWith(github.ref, 'refs/heads/fix/')
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, panopticon, ci, small]
     timeout-minutes: 5
     env:
       DATABASE_URL: ''
