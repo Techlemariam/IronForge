@@ -1,7 +1,7 @@
 # =============================================================================
 # NIGHTLY MAINTENANCE WORKFLOW
 # =============================================================================
-# Autonomous nightly maintenance triggered by cron or manual dispatch.
+# Autonomous nightly maintenance triggered by cron or default-branch dispatch.
 # Integrates with Antigravity Auto Wake-up configuration.
 #
 # Schedule: Monday, Wednesday, Friday at 02:00 CET (01:00 UTC)
@@ -14,28 +14,8 @@ on:
   schedule:
     # 01:00 UTC = 02:00 CET (Europe/Stockholm)
     - cron: "0 1 * * 1,3,5"
-  workflow_dispatch:
-    inputs:
-      workflow:
-        description: "Workflow to run"
-        required: true
-        default: "/night-shift"
-        type: choice
-        options:
-          - "/night-shift"
-          - "/health-check"
-          - "/monitor-debt"
-          - "/evolve"
-      dry_run:
-        description: "Dry run (no commits)"
-        required: false
-        default: false
-        type: boolean
-      skip_pr:
-        description: "Skip PR creation"
-        required: false
-        default: false
-        type: boolean
+  repository_dispatch:
+    types: [nightly-maintenance]
 
 permissions: read-all
 
@@ -57,6 +37,8 @@ jobs:
     outputs:
       should_run: ${{ steps.check.outputs.should_run }}
       workflow: ${{ steps.check.outputs.workflow }}
+      dry_run: ${{ steps.check.outputs.dry_run }}
+      skip_pr: ${{ steps.check.outputs.skip_pr }}
     steps:
       - name: Check conditions
         id: check
@@ -65,8 +47,45 @@ jobs:
           script: |
             core.info('📋 Checking pre-flight conditions...');
 
-            const requestedWorkflow = context.payload.inputs?.workflow || '/night-shift';
+            const allowedWorkflows = new Set([
+              '/night-shift',
+              '/health-check',
+              '/monitor-debt',
+              '/evolve',
+            ]);
+            const payload = context.payload.client_payload || {};
+            const requestedWorkflow =
+              context.eventName === 'repository_dispatch'
+                ? payload.workflow || '/night-shift'
+                : '/night-shift';
+
+            if (!allowedWorkflows.has(requestedWorkflow)) {
+              throw new Error(`Unsupported maintenance workflow: ${requestedWorkflow}`);
+            }
+
+            const parseBoolean = (value, fallback) => {
+              if (typeof value === 'boolean') return value;
+              if (value === 'true') return true;
+              if (value === 'false') return false;
+              return fallback;
+            };
+            // Manual/API dispatch defaults to dry-run. A mutating dispatch must
+            // explicitly send { "dry_run": false } in client_payload.
+            const dryRun =
+              context.eventName === 'repository_dispatch'
+                ? parseBoolean(payload.dry_run, true)
+                : false;
+            const skipPr =
+              context.eventName === 'repository_dispatch'
+                ? parseBoolean(payload.skip_pr, false)
+                : false;
+
             core.setOutput('workflow', requestedWorkflow);
+            core.setOutput('dry_run', String(dryRun));
+            core.setOutput('skip_pr', String(skipPr));
+            core.info(
+              `Requested workflow=${requestedWorkflow}, dry_run=${dryRun}, skip_pr=${skipPr}`
+            );
 
             // Keep the workflow idempotent without depending on gh being installed.
             const openPulls = await github.paginate(github.rest.pulls.list, {
@@ -246,7 +265,7 @@ jobs:
 
       - name: 💾 Commit Changes
         id: changes
-        if: inputs.dry_run != true
+        if: needs.preflight.outputs.dry_run != 'true'
         uses: stefanzweifel/git-auto-commit-action@4a55954c782fc1ea30b9056cd3e7a2b40ca8887d # v7.2.0
         with:
           commit_message: "chore: nightly maintenance updates [skip ci]"
@@ -263,7 +282,7 @@ jobs:
     needs: [preflight, maintenance]
     if: |
       needs.maintenance.outputs.changes_made == 'true' &&
-      inputs.skip_pr != true
+      needs.preflight.outputs.skip_pr != 'true'
     runs-on: [self-hosted, linux, panopticon, ci, small]
     permissions:
       pull-requests: write
