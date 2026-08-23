@@ -12,6 +12,22 @@ describe('progression defaults', () => {
     expect(getDefaultEquipmentConstraints({ name: 'Romanian Deadlift' }).minimumIncrement).toBe(5);
   });
 
+  it('prefers exercise muscle-group metadata over ambiguous names', () => {
+    expect(inferExerciseRegion({ name: 'Glute Ham Raise', muscleGroup: 'HAMSTRINGS' })).toBe('LOWER');
+    expect(inferExerciseRegion({ name: 'Nordic Hamstrings Curls', muscleGroup: 'HAMSTRINGS' })).toBe(
+      'LOWER'
+    );
+    expect(inferExerciseRegion({ name: 'Hip Abduction (Machine)', muscleGroup: 'GLUTES' })).toBe(
+      'LOWER'
+    );
+  });
+
+  it('keeps lower-body catalog fallbacks safe when metadata is unavailable', () => {
+    expect(getDefaultEquipmentConstraints({ name: 'Glute Ham Raise' }).minimumIncrement).toBe(5);
+    expect(getDefaultEquipmentConstraints({ name: 'Nordic Hamstrings Curls' }).minimumIncrement).toBe(5);
+    expect(getDefaultEquipmentConstraints({ name: 'Hip Abduction (Machine)' }).minimumIncrement).toBe(5);
+  });
+
   it('uses 2.5 kg increments for upper-body exercises', () => {
     expect(inferExerciseRegion({ name: 'Bench Press' })).toBe('UPPER');
     expect(getDefaultEquipmentConstraints({ name: 'Bench Press' }).minimumIncrement).toBe(2.5);
