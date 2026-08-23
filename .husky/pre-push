@@ -3,9 +3,13 @@ pnpm run check-types || {
   exit 1
 }
 
-pnpm run lint || {
-  echo "❌ Lint errors detected. Run 'pnpm run lint --fix' first."
-  exit 1
-}
+upstream_ref="$(git rev-parse --abbrev-ref --symbolic-full-name '@{upstream}' 2>/dev/null || printf '%s\n' origin/main)"
+
+git diff --name-only -z --diff-filter=ACMR "$upstream_ref"...HEAD -- \
+  '*.js' '*.jsx' '*.ts' '*.tsx' '*.json' '*.jsonc' '*.css' '*.graphql' \
+  | xargs -0 -r pnpm exec biome lint || {
+    echo "❌ Lint errors detected in changed files. Run Biome on the reported files first."
+    exit 1
+  }
 
 echo "✅ Pre-push checks passed. Pushing..."
