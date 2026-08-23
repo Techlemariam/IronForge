@@ -17,6 +17,7 @@ import { z } from 'zod';
 const STORAGE_KEY = 'trainingProgression';
 const PROFILE_KEY = 'trainingProgressionProfiles';
 const PREFERENCE_WRITE_RETRIES = 3;
+const PROGRESSION_EVALUATION_RETRIES = 3;
 
 const ProgressionMethodSchema = z.enum([
   'FIXED',
@@ -89,6 +90,16 @@ type UserPreferences = Record<string, unknown> & {
   [STORAGE_KEY]?: ProgressionPreferenceStore;
   [PROFILE_KEY]?: ProgressionProfileStore;
 };
+
+type ResolvedProgressionProfile = ProgressionProfile & { minimumIncrement: number };
+type ExerciseIdentity = { name: string; muscleGroup?: string | null };
+
+class ProgressionProfileChangedError extends Error {
+  constructor() {
+    super('Progression profile changed during evaluation');
+    this.name = 'ProgressionProfileChangedError';
+  }
+}
 
 function normalizePreferences(value: unknown): UserPreferences {
   if (!value || typeof value !== 'object' || Array.isArray(value)) return {};
@@ -201,11 +212,11 @@ async function loadRecoveryContext(userId: string): Promise<RecoveryContext | un
 }
 
 function resolveProfile(
-  exercise: { name: string; muscleGroup?: string | null },
+  exercise: ExerciseIdentity,
   exerciseId: string,
   input: ProgressionInput,
   preferences: UserPreferences
-): ProgressionProfile & { minimumIncrement: number } {
+): ResolvedProgressionProfile {
   const stored = preferences[PROFILE_KEY]?.[exerciseId];
   const parsed = ProgressionProfileSchema.parse(
     stored ?? {
@@ -223,6 +234,35 @@ function resolveProfile(
     minimumIncrement: equipment.minimumIncrement,
     availableLoads: equipment.availableLoads,
   };
+}
+
+function profilesEqual(
+  left: ResolvedProgressionProfile,
+  right: ResolvedProgressionProfile
+): boolean {
+  const leftLoads = left.availableLoads ?? [];
+  const rightLoads = right.availableLoads ?? [];
+  return (
+    left.method === right.method &&
+    left.minimumIncrement === right.minimumIncrement &&
+    left.useRecovery === right.useRecovery &&
+    leftLoads.length === rightLoads.length &&
+    leftLoads.every((load, index) => load === rightLoads[index])
+  );
+}
+
+async function loadResolvedProfile(
+  userId: string,
+  exercise: ExerciseIdentity,
+  exerciseId: string,
+  input: ProgressionInput
+): Promise<ResolvedProgressionProfile> {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { preferences: true },
+  });
+  if (!user) throw new Error('User not found');
+  return resolveProfile(exercise, exerciseId, input, normalizePreferences(user.preferences));
 }
 
 export async function setProgressionProfileAction(
@@ -268,58 +308,82 @@ export async function evaluateAndSaveProgressionAction(
   try {
     const userId = await requireUserId();
     const validated = ProgressionInputSchema.parse(input) as ProgressionInput;
-    const [user, exercise] = await Promise.all([
-      prisma.user.findUnique({
-        where: { id: userId },
-        select: { preferences: true },
-      }),
-      prisma.exercise.findUnique({
-        where: { id: exerciseId },
-        select: { name: true, muscleGroup: true },
-      }),
-    ]);
-    if (!user) return { success: false, error: 'User not found' };
-
-    const preferences = normalizePreferences(user.preferences);
-    const profile = resolveProfile(exercise ?? { name: exerciseId }, exerciseId, validated, preferences);
-    const recovery = profile.useRecovery ? await loadRecoveryContext(userId) : undefined;
-    const enrichedInput: ProgressionInput = {
-      ...validated,
-      method: profile.method,
-      equipment: {
-        minimumIncrement: profile.minimumIncrement,
-        availableLoads: profile.availableLoads,
-      },
-      recovery: recovery
-        ? {
-            ...recovery,
-            systemicFailures: validated.recovery?.systemicFailures,
-          }
-        : validated.recovery,
-    };
-
-    const decision = decideProgression(enrichedInput);
-    const stored: StoredProgressionDecision = {
-      ...decision,
-      exerciseId,
-      method: profile.method,
-      profile,
-      recoveryApplied: Boolean(recovery),
-      savedAt: new Date().toISOString(),
-    };
-
-    await mergeUserPreferences(userId, (latestPreferences) => {
-      const progressionStore = latestPreferences[STORAGE_KEY] ?? {};
-      return {
-        ...latestPreferences,
-        [STORAGE_KEY]: {
-          ...progressionStore,
-          [exerciseId]: stored,
-        },
-      };
+    const storedExercise = await prisma.exercise.findUnique({
+      where: { id: exerciseId },
+      select: { name: true, muscleGroup: true },
     });
+    const exercise: ExerciseIdentity = storedExercise ?? { name: exerciseId };
 
-    return { success: true, decision: stored };
+    for (let attempt = 0; attempt < PROGRESSION_EVALUATION_RETRIES; attempt += 1) {
+      const profileBeforeRecovery = await loadResolvedProfile(
+        userId,
+        exercise,
+        exerciseId,
+        validated
+      );
+      let recovery = profileBeforeRecovery.useRecovery ? await loadRecoveryContext(userId) : undefined;
+      let profile = await loadResolvedProfile(userId, exercise, exerciseId, validated);
+
+      // If recovery was enabled while the first provider request window was open,
+      // fetch it now and re-read once more before deciding. If it was disabled,
+      // discard any recovery data fetched under the old profile.
+      if (profile.useRecovery && !profileBeforeRecovery.useRecovery) {
+        recovery = await loadRecoveryContext(userId);
+        profile = await loadResolvedProfile(userId, exercise, exerciseId, validated);
+      }
+      if (!profile.useRecovery) recovery = undefined;
+
+      const enrichedInput: ProgressionInput = {
+        ...validated,
+        method: profile.method,
+        equipment: {
+          minimumIncrement: profile.minimumIncrement,
+          availableLoads: profile.availableLoads,
+        },
+        recovery: recovery
+          ? {
+              ...recovery,
+              systemicFailures: validated.recovery?.systemicFailures,
+            }
+          : validated.recovery,
+      };
+
+      const decision = decideProgression(enrichedInput);
+      const stored: StoredProgressionDecision = {
+        ...decision,
+        exerciseId,
+        method: profile.method,
+        profile,
+        recoveryApplied: Boolean(recovery),
+        savedAt: new Date().toISOString(),
+      };
+
+      try {
+        await mergeUserPreferences(userId, (latestPreferences) => {
+          const latestProfile = resolveProfile(exercise, exerciseId, validated, latestPreferences);
+          if (!profilesEqual(latestProfile, profile)) {
+            throw new ProgressionProfileChangedError();
+          }
+
+          const progressionStore = latestPreferences[STORAGE_KEY] ?? {};
+          return {
+            ...latestPreferences,
+            [STORAGE_KEY]: {
+              ...progressionStore,
+              [exerciseId]: stored,
+            },
+          };
+        });
+        return { success: true, decision: stored };
+      } catch (error) {
+        if (error instanceof ProgressionProfileChangedError && attempt + 1 < PROGRESSION_EVALUATION_RETRIES) {
+          continue;
+        }
+        throw error;
+      }
+    }
+
+    return { success: false, error: 'Progression profile changed repeatedly; retry the operation' };
   } catch (error) {
     console.error('Failed to evaluate and save progression:', error);
     return { success: false, error: 'Failed to save progression decision' };
