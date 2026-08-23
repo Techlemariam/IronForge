@@ -30,29 +30,15 @@ jobs:
     if: >-
       github.event_name != 'pull_request' ||
       github.event.pull_request.head.repo.full_name == github.repository
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, panopticon, ci, small]
     timeout-minutes: 20
     env:
-      DATABASE_URL: postgresql://postgres@127.0.0.1:5432/ironforge_test?schema=public
-      DIRECT_URL: postgresql://postgres@127.0.0.1:5432/ironforge_test?schema=public
+      DATABASE_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_test?schema=public
+      DIRECT_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_test?schema=public
       NEXT_PUBLIC_SUPABASE_URL: http://127.0.0.1:54421
       NEXT_PUBLIC_SUPABASE_ANON_KEY: local-ci-placeholder
       SKIP_ENV_VALIDATION: 'true'
       DEEPSOURCE_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
-    services:
-      postgres:
-        image: postgres:16-alpine
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_DB: ironforge_test
-          POSTGRES_HOST_AUTH_METHOD: trust
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd "pg_isready -U postgres -d ironforge_test"
-          --health-interval 5s
-          --health-timeout 5s
-          --health-retries 10
     steps:
       - name: Checkout exact commit
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -66,9 +52,6 @@ jobs:
           tier: 'l1'
           skip-managed-services: 'true'
           skip-validation: 'true'
-
-      - name: Initialize coverage database
-        run: npx prisma db push --accept-data-loss
 
       - name: Generate LCOV coverage
         run: pnpm test:coverage
