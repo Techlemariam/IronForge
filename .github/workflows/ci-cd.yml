@@ -11,7 +11,7 @@ on:
       - '.agent/**'
       - '.vscode/**'
   pull_request:
-    branches: [main, release, fix/*, feat/*]
+    branches: [main, release, fix/*, feat/*, 'ci/**', 'agent/**']
     paths-ignore:
       - '**.md'
       - 'docs/**'
@@ -60,12 +60,13 @@ jobs:
 
   # ==================================================================
   # PR IMPACT CLASSIFICATION (GITHUB-HOSTED)
-  # Fail closed before allocating the self-hosted runner.
+  # Fail closed before allocating DB/service-backed verification.
   # ==================================================================
   classify-pr-impact:
     name: "🧭 Classify PR Impact"
     if: >-
-      github.event_name == 'pull_request' ||
+      (github.event_name == 'pull_request' &&
+       github.event.pull_request.head.repo.full_name == github.repository) ||
       github.event_name == 'workflow_dispatch' ||
       startsWith(github.ref, 'refs/heads/fix/')
     runs-on: ubuntu-latest

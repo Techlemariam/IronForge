@@ -10,54 +10,35 @@ concurrency:
   group: jules-qa-${{ github.head_ref }}
   cancel-in-progress: true
 
-permissions: read-all
+permissions:
+  contents: read
 
 env:
   NODE_VERSION: "22"
 
 jobs:
-  detect-jules:
-    name: 🔍 Detect Jules PR
-    runs-on: ubuntu-24.04
-    timeout-minutes: 2
-    permissions:
-      contents: read
-    outputs:
-      is_jules: ${{ steps.check.outputs.is_jules }}
-    steps:
-      - name: Check if Jules PR
-        id: check
-        shell: bash
-        env:
-          HEAD_REF: ${{ github.head_ref }}
-        run: |
-          if [[ "$HEAD_REF" == jules/* ]]; then
-            echo "is_jules=true" >> "$GITHUB_OUTPUT"
-            echo "✅ Jules PR detected"
-          else
-            echo "is_jules=false" >> "$GITHUB_OUTPUT"
-            echo "⏭️ Not a Jules PR, skipping"
-          fi
-
   qa-gate:
     name: 🧪 Jules QA Gate
-    needs: detect-jules
-    if: needs.detect-jules.outputs.is_jules == 'true'
-    runs-on: self-hosted
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      startsWith(github.head_ref, 'jules/')
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
     permissions:
       contents: read
-      pull-requests: write
-      checks: write
-      issues: write
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ github.head_ref }}
           fetch-depth: 0
+          persist-credentials: false
 
       - name: Setup IronForge
         uses: ./.github/actions/setup-ironforge
+        with:
+          skip-managed-services: 'true'
+          skip-validation: 'true'
 
       - name: 🔒 Scope Guard — Verify Jules stayed in bounds
         run: |
@@ -90,9 +71,9 @@ jobs:
             echo -e "$VIOLATIONS" >> "$GITHUB_STEP_SUMMARY"
             echo "::error::Jules modified forbidden files. Manual review required."
             exit 1
-          else
-            echo "### ✅ All changes within allowed scope" >> "$GITHUB_STEP_SUMMARY"
           fi
+
+          echo "### ✅ All changes within allowed scope" >> "$GITHUB_STEP_SUMMARY"
 
           FILE_COUNT=$(echo "$CHANGED" | wc -l)
           if [ "$FILE_COUNT" -gt 10 ]; then
@@ -116,65 +97,19 @@ jobs:
 
       - name: 📋 QA Summary
         if: always()
-        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v7.0.1
-        with:
-          script: |
-            const { owner, repo } = context.repo;
-            const prNumber = context.payload.pull_request.number;
-            const branch = context.payload.pull_request.head.ref;
-            const taskId = branch.replace('jules/', '').split('-').slice(0, 2).join('-');
-
-            const body = [
-              '## 🤖 Jules Auto-QA Report',
-              '',
-              `| Check | Status |`,
-              `|:------|:-------|`,
-              `| Scope Guard | ${{ steps.*.outcome == 'failure' && '❌ Failed' || '✅ Passed' }} |`,
-              `| Lint | ${{ job.status }} |`,
-              `| Types | ${{ job.status }} |`,
-              `| Tests | ${{ job.status }} |`,
-              '',
-              `> Task: \`${taskId}\` — Branch: \`${branch}\``,
-              '',
-              '*This PR was created by Jules and auto-validated by the QA pipeline.*',
-            ].join('\n');
-
-            await github.rest.issues.createComment({
-              owner, repo, issue_number: prNumber, body
-            });
-
-  label-jules-pr:
-    name: 🏷️ Label Jules PR
-    needs: detect-jules
-    if: needs.detect-jules.outputs.is_jules == 'true'
-    runs-on: ubuntu-24.04
-    timeout-minutes: 5
-    permissions:
-      pull-requests: write
-      issues: write
-    steps:
-      - name: Add Jules labels
-        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v7.0.1
-        with:
-          script: |
-            const { owner, repo } = context.repo;
-            const prNumber = context.payload.pull_request.number;
-
-            const labels = ['🤖 jules', 'auto-qa'];
-            for (const label of labels) {
-              try {
-                await github.rest.issues.getLabel({ owner, repo, name: label });
-              } catch {
-                await github.rest.issues.createLabel({
-                  owner, repo, name: label,
-                  color: label === '🤖 jules' ? '7c3aed' : '0ea5e9',
-                  description: label === '🤖 jules'
-                    ? 'PR created by Jules autonomous worker'
-                    : 'Automatically QA validated'
-                });
-              }
-            }
-
-            await github.rest.issues.addLabels({
-              owner, repo, issue_number: prNumber, labels
-            });
+        shell: bash
+        env:
+          BRANCH: ${{ github.head_ref }}
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          {
+            echo "## 🤖 Jules Auto-QA Report"
+            echo ""
+            echo "| Check | Status |"
+            echo "|:------|:-------|"
+            echo "| QA gate | $JOB_STATUS |"
+            echo ""
+            echo "> Branch: \`$BRANCH\`"
+            echo ""
+            echo "Read-only PR validation: this job does not comment, label, merge, deploy, or mutate GitHub state."
+          } >> "$GITHUB_STEP_SUMMARY"
