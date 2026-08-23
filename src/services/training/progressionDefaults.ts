@@ -67,11 +67,15 @@ const UPPER_BODY_TERMS = [
 export function inferExerciseRegion(exercise: ExerciseClassificationInput): ExerciseRegion {
   const muscleGroup = exercise.muscleGroup?.trim().toUpperCase();
   if (muscleGroup === 'FULL_BODY') return 'FULL_BODY';
-  if (muscleGroup && LOWER_BODY_MUSCLE_GROUPS.has(muscleGroup)) return 'LOWER';
-  if (muscleGroup && UPPER_BODY_MUSCLE_GROUPS.has(muscleGroup)) return 'UPPER';
 
   const name = exercise.name.toLowerCase();
+  // Movement identity wins over ambiguous catalog metadata such as Deadlift -> Back.
+  // Lower-body terms also need to win over generic upper-body substrings such as
+  // "raise" and "curl" in Glute Ham Raise / Nordic Hamstrings Curls.
   if (LOWER_BODY_TERMS.some((term) => name.includes(term))) return 'LOWER';
+
+  if (muscleGroup && LOWER_BODY_MUSCLE_GROUPS.has(muscleGroup)) return 'LOWER';
+  if (muscleGroup && UPPER_BODY_MUSCLE_GROUPS.has(muscleGroup)) return 'UPPER';
   if (UPPER_BODY_TERMS.some((term) => name.includes(term))) return 'UPPER';
   return 'UNKNOWN';
 }
