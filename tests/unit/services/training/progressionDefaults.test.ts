@@ -12,6 +12,13 @@ describe('progression defaults', () => {
     expect(getDefaultEquipmentConstraints({ name: 'Romanian Deadlift' }).minimumIncrement).toBe(5);
   });
 
+  it('lets lower-body movement identity override ambiguous catalog metadata', () => {
+    expect(inferExerciseRegion({ name: 'Deadlift', muscleGroup: 'Back' })).toBe('LOWER');
+    expect(getDefaultEquipmentConstraints({ name: 'Deadlift', muscleGroup: 'Back' }).minimumIncrement).toBe(
+      5
+    );
+  });
+
   it('prefers exercise muscle-group metadata over ambiguous names', () => {
     expect(inferExerciseRegion({ name: 'Glute Ham Raise', muscleGroup: 'HAMSTRINGS' })).toBe('LOWER');
     expect(inferExerciseRegion({ name: 'Nordic Hamstrings Curls', muscleGroup: 'HAMSTRINGS' })).toBe(
