@@ -1,7 +1,7 @@
 'use server';
 
 import { getSession } from '@/lib/auth';
-import { getWellness, type WellnessData } from '@/lib/intervals';
+import { getAthleteSettings, getWellness, type WellnessData } from '@/lib/intervals';
 import prisma from '@/lib/prisma';
 import { resolveEquipmentConstraints } from '@/services/training/progressionDefaults';
 import {
@@ -16,6 +16,7 @@ import { z } from 'zod';
 
 const STORAGE_KEY = 'trainingProgression';
 const PROFILE_KEY = 'trainingProgressionProfiles';
+const PREFERENCE_WRITE_RETRIES = 3;
 
 const ProgressionMethodSchema = z.enum([
   'FIXED',
@@ -104,6 +105,29 @@ async function requireUserId(): Promise<string> {
   return session.user.id;
 }
 
+async function mergeUserPreferences(
+  userId: string,
+  merge: (preferences: UserPreferences) => UserPreferences
+): Promise<void> {
+  for (let attempt = 0; attempt < PREFERENCE_WRITE_RETRIES; attempt += 1) {
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { preferences: true, updatedAt: true },
+    });
+    if (!user) throw new Error('User not found');
+
+    const nextPreferences = merge(normalizePreferences(user.preferences));
+    const result = await prisma.user.updateMany({
+      where: { id: userId, updatedAt: user.updatedAt },
+      data: { preferences: toJsonValue(nextPreferences) },
+    });
+
+    if (result.count === 1) return;
+  }
+
+  throw new Error('Preferences changed concurrently; retry the operation');
+}
+
 function inferHrvTrend(today?: number | null, yesterday?: number | null): RecoveryContext['hrvTrend'] {
   if (!today || !yesterday) return undefined;
   const change = (today - yesterday) / yesterday;
@@ -115,6 +139,28 @@ function inferHrvTrend(today?: number | null, yesterday?: number | null): Recove
 function asWellness(value: WellnessData | WellnessData[] | null): WellnessData | null {
   if (!value) return null;
   return Array.isArray(value) ? value[value.length - 1] ?? null : value;
+}
+
+function dateKeyInTimeZone(value: Date, timeZone: string): string {
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).formatToParts(value);
+  const year = parts.find((part) => part.type === 'year')?.value;
+  const month = parts.find((part) => part.type === 'month')?.value;
+  const day = parts.find((part) => part.type === 'day')?.value;
+
+  if (!year || !month || !day) throw new Error(`Unable to derive date in timezone ${timeZone}`);
+  return `${year}-${month}-${day}`;
+}
+
+function previousDateKey(dateKey: string): string {
+  const [year, month, day] = dateKey.split('-').map(Number);
+  const value = new Date(Date.UTC(year, month - 1, day));
+  value.setUTCDate(value.getUTCDate() - 1);
+  return value.toISOString().slice(0, 10);
 }
 
 async function loadRecoveryContext(userId: string): Promise<RecoveryContext | undefined> {
@@ -129,14 +175,14 @@ async function loadRecoveryContext(userId: string): Promise<RecoveryContext | un
   if (!user?.intervalsApiKey || !user.intervalsAthleteId) return undefined;
 
   try {
-    const today = new Date();
-    const yesterday = new Date(today);
-    yesterday.setDate(today.getDate() - 1);
-    const date = (value: Date) => value.toISOString().split('T')[0];
+    const athlete = await getAthleteSettings(user.intervalsApiKey, user.intervalsAthleteId);
+    if (!athlete?.timezone) return undefined;
 
+    const today = dateKeyInTimeZone(new Date(), athlete.timezone);
+    const yesterday = previousDateKey(today);
     const [todayData, yesterdayData] = await Promise.all([
-      getWellness(date(today), user.intervalsApiKey, user.intervalsAthleteId),
-      getWellness(date(yesterday), user.intervalsApiKey, user.intervalsAthleteId),
+      getWellness(today, user.intervalsApiKey, user.intervalsAthleteId),
+      getWellness(yesterday, user.intervalsApiKey, user.intervalsAthleteId),
     ]);
 
     const current = asWellness(todayData);
@@ -155,7 +201,7 @@ async function loadRecoveryContext(userId: string): Promise<RecoveryContext | un
 }
 
 function resolveProfile(
-  exercise: { name: string },
+  exercise: { name: string; muscleGroup?: string | null },
   exerciseId: string,
   input: ProgressionInput,
   preferences: UserPreferences
@@ -186,22 +232,13 @@ export async function setProgressionProfileAction(
   try {
     const userId = await requireUserId();
     const validated = ProgressionProfileSchema.parse(profile);
-    const user = await prisma.user.findUnique({
-      where: { id: userId },
-      select: { preferences: true },
-    });
-    if (!user) return { success: false, error: 'User not found' };
 
-    const preferences = normalizePreferences(user.preferences);
-    const profiles = preferences[PROFILE_KEY] ?? {};
-    await prisma.user.update({
-      where: { id: userId },
-      data: {
-        preferences: toJsonValue({
-          ...preferences,
-          [PROFILE_KEY]: { ...profiles, [exerciseId]: validated },
-        }),
-      },
+    await mergeUserPreferences(userId, (preferences) => {
+      const profiles = preferences[PROFILE_KEY] ?? {};
+      return {
+        ...preferences,
+        [PROFILE_KEY]: { ...profiles, [exerciseId]: validated },
+      };
     });
 
     return { success: true, profile: validated };
@@ -238,7 +275,7 @@ export async function evaluateAndSaveProgressionAction(
       }),
       prisma.exercise.findUnique({
         where: { id: exerciseId },
-        select: { name: true },
+        select: { name: true, muscleGroup: true },
       }),
     ]);
     if (!user) return { success: false, error: 'User not found' };
@@ -271,18 +308,15 @@ export async function evaluateAndSaveProgressionAction(
       savedAt: new Date().toISOString(),
     };
 
-    const progressionStore = preferences[STORAGE_KEY] ?? {};
-    const updatedPreferences = {
-      ...preferences,
-      [STORAGE_KEY]: {
-        ...progressionStore,
-        [exerciseId]: stored,
-      },
-    };
-
-    await prisma.user.update({
-      where: { id: userId },
-      data: { preferences: toJsonValue(updatedPreferences) },
+    await mergeUserPreferences(userId, (latestPreferences) => {
+      const progressionStore = latestPreferences[STORAGE_KEY] ?? {};
+      return {
+        ...latestPreferences,
+        [STORAGE_KEY]: {
+          ...progressionStore,
+          [exerciseId]: stored,
+        },
+      };
     });
 
     return { success: true, decision: stored };
@@ -307,25 +341,17 @@ export async function getSavedProgressionAction(
 
 export async function clearSavedProgressionAction(exerciseId: string): Promise<{ success: true }> {
   const userId = await requireUserId();
-  const user = await prisma.user.findUnique({
-    where: { id: userId },
-    select: { preferences: true },
-  });
 
-  const preferences = normalizePreferences(user?.preferences);
-  const progressionStore = preferences[STORAGE_KEY] ?? {};
-  const remainingProgressionStore = Object.fromEntries(
-    Object.entries(progressionStore).filter(([storedExerciseId]) => storedExerciseId !== exerciseId)
-  );
+  await mergeUserPreferences(userId, (preferences) => {
+    const progressionStore = preferences[STORAGE_KEY] ?? {};
+    const remainingProgressionStore = Object.fromEntries(
+      Object.entries(progressionStore).filter(([storedExerciseId]) => storedExerciseId !== exerciseId)
+    );
 
-  await prisma.user.update({
-    where: { id: userId },
-    data: {
-      preferences: toJsonValue({
-        ...preferences,
-        [STORAGE_KEY]: remainingProgressionStore,
-      }),
-    },
+    return {
+      ...preferences,
+      [STORAGE_KEY]: remainingProgressionStore,
+    };
   });
 
   return { success: true };
