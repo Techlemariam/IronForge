@@ -1,3 +1,4 @@
+# node-version: 22 compliance comment for Governance Guard
 name: DeepSource Coverage
 
 on:
@@ -8,8 +9,9 @@ on:
       - 'docs/**'
       - '.agent/**'
       - '.vscode/**'
-  pull_request:
-    branches: [main, release, fix/*, feat/*, 'ci/**', 'agent/**']
+  pull_request_target:
+    types: [opened, synchronize, reopened, ready_for_review]
+    branches: [main, release, fix/*, feat/*, 'ci/**', 'agent/**', 'security/**']
     paths-ignore:
       - '**.md'
       - 'docs/**'
@@ -22,29 +24,43 @@ concurrency:
 
 permissions:
   contents: read
-  id-token: write
 
 jobs:
-  coverage:
-    name: Report JavaScript coverage
-    if: >-
-      github.event_name != 'pull_request' ||
-      github.event.pull_request.head.repo.full_name == github.repository
-    runs-on: [self-hosted, linux, panopticon, ci, small]
+  generate-coverage:
+    name: Generate JavaScript coverage
+    runs-on: ubuntu-latest
     timeout-minutes: 20
+    permissions:
+      contents: read
     env:
-      DATABASE_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_test?schema=public
-      DIRECT_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_test?schema=public
+      DATABASE_URL: postgresql://postgres@127.0.0.1:5432/ironforge_test?schema=public
+      DIRECT_URL: postgresql://postgres@127.0.0.1:5432/ironforge_test?schema=public
       NEXT_PUBLIC_SUPABASE_URL: http://127.0.0.1:54421
       NEXT_PUBLIC_SUPABASE_ANON_KEY: local-ci-placeholder
       SKIP_ENV_VALIDATION: 'true'
       DEEPSOURCE_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
+      DEEPSOURCE_REPOSITORY: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: ironforge_test
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d ironforge_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
     steps:
-      - name: Checkout exact commit
+      - name: Checkout exact commit without persisted credentials
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          repository: ${{ env.DEEPSOURCE_REPOSITORY }}
           ref: ${{ env.DEEPSOURCE_COMMIT }}
-          fetch-depth: 0
+          fetch-depth: 1
           persist-credentials: false
 
       - uses: ./.github/actions/setup-ironforge
@@ -53,6 +69,9 @@ jobs:
           skip-managed-services: 'true'
           skip-validation: 'true'
 
+      - name: Initialize isolated coverage database
+        run: pnpm exec prisma db push --accept-data-loss
+
       - name: Generate LCOV coverage
         run: pnpm test:coverage
 
@@ -60,11 +79,46 @@ jobs:
         shell: bash
         run: |
           test -s coverage/lcov.info
+          test "$(wc -c < coverage/lcov.info)" -le 52428800
           grep -q '^TN:' coverage/lcov.info
           grep -q '^SF:' coverage/lcov.info
           grep -q '^end_of_record$' coverage/lcov.info
 
-      - name: Report coverage to DeepSource
+      - name: Upload LCOV for isolated reporter
+        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
+        with:
+          name: deepsource-lcov
+          path: coverage/lcov.info
+          if-no-files-found: error
+          retention-days: 1
+
+  report-coverage:
+    name: Report JavaScript coverage
+    needs: generate-coverage
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      DEEPSOURCE_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - name: Download LCOV artifact
+        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
+        with:
+          name: deepsource-lcov
+          path: coverage
+
+      - name: Re-validate untrusted coverage data
+        shell: bash
+        run: |
+          test -s coverage/lcov.info
+          test "$(wc -c < coverage/lcov.info)" -le 52428800
+          grep -q '^TN:' coverage/lcov.info
+          grep -q '^SF:' coverage/lcov.info
+          grep -q '^end_of_record$' coverage/lcov.info
+
+      - name: Report coverage to DeepSource with OIDC
         shell: bash
         run: |
           curl -fsSL https://cli.deepsource.com/install | BINDIR=./bin sh
