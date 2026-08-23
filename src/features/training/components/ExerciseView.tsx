@@ -315,7 +315,6 @@ const ExerciseView: React.FC<ExerciseViewProps> = ({
   const { maxReps, isLoading: isMaxRepsLoading } = useMaxReps(exercise.id, activeSet?.weight);
   useSetHistory(exercise.id, exercise.name);
   const { chartData, isChartLoading, loadChartData } = useExerciseChart(exercise.id);
-
   useApplySavedPrescription(exercise, savedDecision, onSetUpdate);
   useSaveCompletedProgression(exercise, allSetsCompleted, repGoal, setSavedDecision);
 
@@ -356,16 +355,21 @@ const ExerciseView: React.FC<ExerciseViewProps> = ({
         variant="glass"
         className={`transition-all duration-500 ${isActive ? 'border-magma/80 shadow-glow-magma/40' : 'border-white/10'}`}
       >
-        {isActive && activeSet && exercise.sets.every((set) => !set.completed) && (
-          <div className="text-center text-[10px] text-zinc-500 mb-2 flex items-center justify-center gap-1 animate-pulse">
-            <span>← Swipe right to complete →</span>
-          </div>
-        )}
+        <SwipePrompt
+          visible={
+            isActive &&
+            activeSet &&
+            exercise.sets.every((set) => !set.completed)
+          }
+        />
 
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2">
-            <h3 className="font-heading text-xl text-white tracking-wider">{exercise.name}</h3>
-            <button
+        <ExerciseHeader
+          name={exercise.name}
+          isActive={isActive}
+          activeSet={activeSet}
+        />
+
+        <button
               type="button"
               onClick={(event) => {
                 event.stopPropagation();
