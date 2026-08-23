@@ -4,6 +4,8 @@ on:
   pull_request:
     paths:
       - '.github/workflows/**'
+      - 'scripts/ci/pr-e2e-trust-boundary.test.mjs'
+      - 'playwright.config.ts'
   workflow_dispatch:
 
 permissions:
@@ -18,6 +20,9 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+
+      - name: Verify PR E2E trust boundary
+        run: node --test scripts/ci/pr-e2e-trust-boundary.test.mjs
 
       - name: Check Node and pnpm Versions
         shell: bash
@@ -55,4 +60,5 @@ jobs:
             exit 1
           fi
 
+          echo "✅ All workflows meet Titan-Tier standards."
           echo "✅ All workflows meet Titan-Tier standards." >> "$GITHUB_STEP_SUMMARY"
