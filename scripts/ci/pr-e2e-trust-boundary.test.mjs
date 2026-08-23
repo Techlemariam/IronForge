@@ -37,12 +37,14 @@ test('PR public smoke is base-controlled, hosted and secretless', () => {
   assert.doesNotMatch(publicSmokeWorkflow, /SUPABASE_SERVICE_(?:KEY|ROLE_KEY)/);
 });
 
-test('credential-backed E2E is main-only manual and cannot run from pull_request', () => {
+test('credential-backed E2E is post-merge main-only and cannot run from PR or dispatch', () => {
   const block = fullE2EBlock();
 
-  assert.match(block, /github\.event_name == 'workflow_dispatch'/);
+  assert.match(block, /github\.event_name == 'push'/);
   assert.match(block, /github\.ref == 'refs\/heads\/main'/);
   assert.doesNotMatch(block, /github\.event_name == 'pull_request'/);
+  assert.doesNotMatch(block, /github\.event_name == 'workflow_dispatch'/);
+  assert.doesNotMatch(block, /needs:\s*\[classify-pr-impact/);
   assert.match(block, /runs-on:\s*\[self-hosted, linux, panopticon, ci, small\]/);
   assert.match(block, /persist-credentials:\s*false/);
 });
