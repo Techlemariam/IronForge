@@ -315,7 +315,6 @@ const ExerciseView: React.FC<ExerciseViewProps> = ({
   const { maxReps, isLoading: isMaxRepsLoading } = useMaxReps(exercise.id, activeSet?.weight);
   useSetHistory(exercise.id, exercise.name);
   const { chartData, isChartLoading, loadChartData } = useExerciseChart(exercise.id);
-
   useApplySavedPrescription(exercise, savedDecision, onSetUpdate);
   useSaveCompletedProgression(exercise, allSetsCompleted, repGoal, setSavedDecision);
 
@@ -362,10 +361,9 @@ const ExerciseView: React.FC<ExerciseViewProps> = ({
           </div>
         )}
 
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2">
-            <h3 className="font-heading text-xl text-white tracking-wider">{exercise.name}</h3>
-            <button
+        <div className="flex items-center justify-between mb-4 gap-2">
+          <h3 className="font-heading text-xl text-white tracking-wider">{exercise.name}</h3>
+          <button
               type="button"
               onClick={(event) => {
                 event.stopPropagation();
