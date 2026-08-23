@@ -1,0 +1,76 @@
+name: DeepSource Coverage
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - '.agent/**'
+      - '.vscode/**'
+  pull_request:
+    branches: [main, release, fix/*, feat/*, 'ci/**', 'agent/**']
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - '.agent/**'
+      - '.vscode/**'
+
+concurrency:
+  group: deepsource-coverage-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  coverage:
+    name: Report JavaScript coverage
+    if: >-
+      github.event_name != 'pull_request' ||
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: [self-hosted, linux, panopticon, ci, small]
+    timeout-minutes: 20
+    env:
+      DATABASE_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_test?schema=public
+      DIRECT_URL: postgresql://postgres:password@127.0.0.1:5432/ironforge_test?schema=public
+      NEXT_PUBLIC_SUPABASE_URL: http://127.0.0.1:54421
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: local-ci-placeholder
+      SKIP_ENV_VALIDATION: 'true'
+      DEEPSOURCE_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - name: Checkout exact commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ env.DEEPSOURCE_COMMIT }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - uses: ./.github/actions/setup-ironforge
+        with:
+          tier: 'l1'
+          skip-managed-services: 'true'
+          skip-validation: 'true'
+
+      - name: Generate LCOV coverage
+        run: pnpm test:coverage
+
+      - name: Verify LCOV artifact
+        shell: bash
+        run: |
+          test -s coverage/lcov.info
+          grep -q '^TN:' coverage/lcov.info
+          grep -q '^SF:' coverage/lcov.info
+          grep -q '^end_of_record$' coverage/lcov.info
+
+      - name: Report coverage to DeepSource
+        shell: bash
+        run: |
+          curl -fsSL https://cli.deepsource.com/install | BINDIR=./bin sh
+          ./bin/deepsource report \
+            --analyzer=test-coverage \
+            --key=javascript \
+            --value-file=coverage/lcov.info \
+            --commit="$DEEPSOURCE_COMMIT" \
+            --use-oidc
