@@ -28,6 +28,7 @@ import type { Exercise } from '@/types';
 import { type PanInfo, m, useMotionValue, useTransform } from 'framer-motion';
 import { BarChart2, CheckCircle, ChevronDown, ChevronsRight, PlayCircle } from 'lucide-react';
 import React, { useRef, useState } from 'react';
+import { ProgressionProfileControl } from './ProgressionProfileControl';
 import SetInput from './SetInput';
 
 interface ExerciseViewProps {
@@ -314,7 +315,6 @@ const ExerciseView: React.FC<ExerciseViewProps> = ({
   const { maxReps, isLoading: isMaxRepsLoading } = useMaxReps(exercise.id, activeSet?.weight);
   useSetHistory(exercise.id, exercise.name);
   const { chartData, isChartLoading, loadChartData } = useExerciseChart(exercise.id);
-
   useApplySavedPrescription(exercise, savedDecision, onSetUpdate);
   useSaveCompletedProgression(exercise, allSetsCompleted, repGoal, setSavedDecision);
 
@@ -361,38 +361,37 @@ const ExerciseView: React.FC<ExerciseViewProps> = ({
           </div>
         )}
 
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2">
-            <h3 className="font-heading text-xl text-white tracking-wider">{exercise.name}</h3>
-            <button
-              type="button"
-              onClick={(event) => {
-                event.stopPropagation();
-                setShowDemo(true);
-              }}
-              className="text-zinc-500 hover:text-magma transition-colors"
-              title="Watch Demo"
-            >
-              <PlayCircle className="w-4 h-4" />
-            </button>
-            <button
-              type="button"
-              onClick={(event) => {
-                event.stopPropagation();
-                if (!showHistory) loadChartData();
-                setShowHistory((value) => !value);
-              }}
-              className={cn(
-                'transition-colors',
-                showHistory ? 'text-magma' : 'text-zinc-500 hover:text-magma'
-              )}
-              title="View Progress"
-            >
-              <BarChart2 className="w-4 h-4" />
-            </button>
-          </div>
+        <div className="flex items-center mb-4 gap-2">
+          <h3 className="font-heading text-xl text-white tracking-wider">{exercise.name}</h3>
+          <button
+            type="button"
+            onClick={(event) => {
+              event.stopPropagation();
+              setShowDemo(true);
+            }}
+            className="text-zinc-500 hover:text-magma transition-colors"
+            title="Watch Demo"
+          >
+            <PlayCircle className="w-4 h-4" />
+          </button>
+          <button
+            type="button"
+            onClick={(event) => {
+              event.stopPropagation();
+              if (!showHistory) loadChartData();
+              setShowHistory((value) => !value);
+            }}
+            className={cn(
+              'transition-colors',
+              showHistory ? 'text-magma' : 'text-zinc-500 hover:text-magma'
+            )}
+            title="View Progress"
+          >
+            <BarChart2 className="w-4 h-4" />
+          </button>
+          <ProgressionProfileControl exercise={exercise} />
 
-          <div className="flex items-center gap-2">
+          <div className="ml-auto flex items-center gap-2">
             {isActive && activeSet && (
               <PRBadge
                 maxReps={maxReps}
