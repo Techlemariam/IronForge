@@ -47,6 +47,9 @@ permissions:
 
 jobs:
   Trigger_EthicalCheck:
+    # SARIF upload requires security-events: write. Keep this trusted-write
+    # integration outside pull-request heads and the ci-pr-readonly pool.
+    if: github.event_name != 'pull_request'
     permissions:
       security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
       actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
