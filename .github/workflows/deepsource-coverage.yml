@@ -96,12 +96,15 @@ jobs:
     name: Report JavaScript coverage
     needs: generate-coverage
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 8
     permissions:
       contents: read
       id-token: write
     env:
       DEEPSOURCE_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
+      DEEPSOURCE_CLI_VERSION: v0.10.1
+      GOPROXY: https://proxy.golang.org
+      GOSUMDB: sum.golang.org
     steps:
       - name: Download LCOV artifact
         uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
@@ -118,13 +121,27 @@ jobs:
           grep -q '^SF:' coverage/lcov.info
           grep -q '^end_of_record$' coverage/lcov.info
 
-      - name: Report coverage to DeepSource with OIDC
+      - name: Setup Go for pinned DeepSource CLI
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: '1.21.x'
+          cache: false
+
+      - name: Build pinned DeepSource CLI through checksum-verified module proxy
         shell: bash
         run: |
-          curl -fsSL https://cli.deepsource.com/install | BINDIR=./bin sh
-          ./bin/deepsource report \
+          mkdir -p "$RUNNER_TEMP/deepsource-bin"
+          GOBIN="$RUNNER_TEMP/deepsource-bin" \
+            go install "github.com/deepsourcelabs/cli/cmd/deepsource@${DEEPSOURCE_CLI_VERSION}"
+          test -x "$RUNNER_TEMP/deepsource-bin/deepsource"
+
+      - name: Report coverage to DeepSource with OIDC
+        shell: bash
+        env:
+          GIT_COMMIT_SHA: ${{ env.DEEPSOURCE_COMMIT }}
+        run: |
+          "$RUNNER_TEMP/deepsource-bin/deepsource" report \
             --analyzer=test-coverage \
             --key=javascript \
             --value-file=coverage/lcov.info \
-            --commit="$DEEPSOURCE_COMMIT" \
             --use-oidc
