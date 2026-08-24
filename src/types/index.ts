@@ -58,6 +58,9 @@ export interface Set {
   setType?: 'normal' | 'failure' | 'dropset' | 'warmup' | 'myoreps';
   isWarmup?: boolean;
   completedAt?: string;
+  repGoal?: number;
+  e1rmGoalReps?: number;
+  e1rmTarget?: number;
 }
 
 export interface Exercise {
@@ -358,7 +361,6 @@ export interface ValhallaSyncResult {
 
 // --- BESTIARY ---
 export type MonsterType = 'Giant' | 'Beast' | 'Undead' | 'Elemental' | 'Construct' | 'Dragon';
-
 export type MonsterElement =
   | 'Physical'
   | 'Fire'
