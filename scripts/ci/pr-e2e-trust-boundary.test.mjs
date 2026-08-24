@@ -24,6 +24,7 @@ test('PR public smoke is base-controlled, hosted and secretless', () => {
   assert.match(publicSmokeWorkflow, /repository:\s*\$\{\{ github\.event\.pull_request\.head\.repo\.full_name \}\}/);
   assert.match(publicSmokeWorkflow, /ref:\s*\$\{\{ github\.event\.pull_request\.head\.sha \}\}/);
   assert.match(publicSmokeWorkflow, /persist-credentials:\s*false/);
+  assert.match(publicSmokeWorkflow, /package-manager-cache:\s*false/);
   assert.match(
     publicSmokeWorkflow,
     /playwright test tests\/e2e\/critical-path\.spec\.ts --project=smoke/
@@ -32,6 +33,7 @@ test('PR public smoke is base-controlled, hosted and secretless', () => {
   assert.doesNotMatch(publicSmokeWorkflow, /\$\{\{\s*secrets\./);
   assert.doesNotMatch(publicSmokeWorkflow, /self-hosted/);
   assert.doesNotMatch(publicSmokeWorkflow, /actions\/cache/);
+  assert.doesNotMatch(publicSmokeWorkflow, /^\s*cache:\s*['"]?(?:npm|yarn|pnpm)['"]?\s*$/m);
   assert.doesNotMatch(publicSmokeWorkflow, /:\s*write\s*$/m);
   assert.doesNotMatch(publicSmokeWorkflow, /TEST_USER_(?:EMAIL|PASSWORD)/);
   assert.doesNotMatch(publicSmokeWorkflow, /SUPABASE_SERVICE_(?:KEY|ROLE_KEY)/);
