@@ -100,7 +100,7 @@ function buildSetGoals(
     .reduce((best, set) => Math.max(best, calculateE1rmEpley(set.weight, set.reps)), 0);
 
   return prescription.map((set) => ({
-    repGoal: set.targetReps ?? set.minimumReps,
+    repGoal: set.targetReps ?? set.maximumReps ?? set.minimumReps,
     e1rmTarget: bestHistoricalE1rm || undefined,
     e1rmGoalReps:
       bestHistoricalE1rm > 0
