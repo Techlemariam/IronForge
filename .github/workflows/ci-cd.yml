@@ -59,7 +59,7 @@ env:
 jobs:
 
   # ==================================================================
-  # PR IMPACT CLASSIFICATION (GITHUB-HOSTED)
+  # PR IMPACT CLASSIFICATION (CI-PR-READONLY RUNNER POOL)
   # Fail closed before allocating DB/service-backed verification.
   # ==================================================================
   classify-pr-impact:
