@@ -15,7 +15,7 @@ jobs:
     if: >-
       github.event_name != 'pull_request' ||
       github.event.pull_request.head.repo.full_name == github.repository
-    runs-on: [self-hosted, linux, panopticon, ci, small]
+    runs-on: [self-hosted, linux, panopticon, ci, small, "${{ github.event_name == 'pull_request' && 'pr-readonly' || 'trusted-github-write' }}"]
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -29,6 +29,11 @@ jobs:
           ERRORS=0
 
           for file in .github/workflows/*.yml; do
+            if grep -E "^[[:space:]]*runs-on:.*self-hosted" "$file" | grep -qvE "pr-readonly|trusted-github-write|live-approved"; then
+              echo "❌ $file: Self-hosted job is missing a runner trust-class label" >> "$GITHUB_STEP_SUMMARY"
+              ERRORS=$((ERRORS + 1))
+            fi
+
             # Skip itself and specialized workflows that don't use Node standard runners.
             if [[ "$file" == *"/governance-guard.yml" || "$file" == *"/labeler.yml" || "$file" == *"/release-drafter.yml" || "$file" == *"/stale.yml" || "$file" == *"/scorecard.yml" || "$file" == *"/project-automation.yml" || "$file" == *"/dependabot-auto-merge.yml" || "$file" == *"/runner-heartbeat.yml" ]]; then continue; fi
 

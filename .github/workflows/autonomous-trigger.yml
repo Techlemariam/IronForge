@@ -48,7 +48,7 @@ concurrency:
 
 jobs:
   run-autonomous-workflow:
-    runs-on: self-hosted
+    runs-on: [self-hosted, linux, panopticon, ci, small, live-approved]
     timeout-minutes: 120
     permissions:
       contents: write

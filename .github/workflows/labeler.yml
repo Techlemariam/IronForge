@@ -17,7 +17,7 @@ jobs:
   triage:
     name: "PR labeling deferred (trusted-write required)"
     if: github.event.pull_request.head.repo.full_name == github.repository
-    runs-on: [self-hosted, linux, panopticon, ci, small]
+    runs-on: [self-hosted, linux, panopticon, ci, small, pr-readonly]
     timeout-minutes: 5
     steps:
       - name: Record deferred label mutation
