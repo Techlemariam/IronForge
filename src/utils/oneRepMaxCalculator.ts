@@ -17,8 +17,35 @@ interface MultiFormulaResult {
  */
 export function calculateE1rmEpley(weight: number, reps: number): number {
   if (reps === 1) return weight;
-  if (reps <= 0) return 0;
+  if (weight <= 0 || reps <= 0) return 0;
   return Math.round(weight * (1 + reps / 30));
+}
+
+/**
+ * Return the minimum whole-number reps required at a given load to match or exceed a target e1RM.
+ * Returns undefined for invalid inputs or targets that cannot reasonably be represented within maxReps.
+ */
+export function calculateRequiredRepsForE1rm(
+  weight: number,
+  targetE1rm: number,
+  maxReps = 30
+): number | undefined {
+  if (weight <= 0 || targetE1rm <= 0 || maxReps < 1) return undefined;
+  if (weight >= targetE1rm) return 1;
+
+  const rawReps = Math.ceil(30 * (targetE1rm / weight - 1));
+  const reps = Math.max(1, rawReps);
+  if (reps > maxReps) return undefined;
+
+  const previousRepCount = reps - 1;
+  if (
+    previousRepCount >= 1 &&
+    calculateE1rmEpley(weight, previousRepCount) >= targetE1rm
+  ) {
+    return previousRepCount;
+  }
+
+  return calculateE1rmEpley(weight, reps) >= targetE1rm ? reps : undefined;
 }
 
 /**
@@ -26,7 +53,7 @@ export function calculateE1rmEpley(weight: number, reps: number): number {
  */
 export function calculateE1rmBrzycki(weight: number, reps: number): number {
   if (reps === 1) return weight;
-  if (reps <= 0 || reps > 12) return 0;
+  if (weight <= 0 || reps <= 0 || reps > 12) return 0;
   return Math.round(weight * (36 / (37 - reps)));
 }
 
@@ -35,7 +62,7 @@ export function calculateE1rmBrzycki(weight: number, reps: number): number {
  */
 export function calculateE1rmLander(weight: number, reps: number): number {
   if (reps === 1) return weight;
-  if (reps <= 0) return 0;
+  if (weight <= 0 || reps <= 0) return 0;
   return Math.round((100 * weight) / (101.3 - 2.67123 * reps));
 }
 
@@ -44,7 +71,7 @@ export function calculateE1rmLander(weight: number, reps: number): number {
  */
 export function calculateE1rmLombardi(weight: number, reps: number): number {
   if (reps === 1) return weight;
-  if (reps <= 0) return 0;
+  if (weight <= 0 || reps <= 0) return 0;
   return Math.round(weight * reps ** 0.1);
 }
 
@@ -53,7 +80,7 @@ export function calculateE1rmLombardi(weight: number, reps: number): number {
  */
 export function calculateE1rmMayhew(weight: number, reps: number): number {
   if (reps === 1) return weight;
-  if (reps <= 0) return 0;
+  if (weight <= 0 || reps <= 0) return 0;
   return Math.round((100 * weight) / (52.2 + 41.9 * Math.exp(-0.055 * reps)));
 }
 
@@ -62,7 +89,7 @@ export function calculateE1rmMayhew(weight: number, reps: number): number {
  */
 export function calculateE1rmOConner(weight: number, reps: number): number {
   if (reps === 1) return weight;
-  if (reps <= 0) return 0;
+  if (weight <= 0 || reps <= 0) return 0;
   return Math.round(weight * (1 + reps / 40));
 }
 
@@ -71,7 +98,7 @@ export function calculateE1rmOConner(weight: number, reps: number): number {
  */
 export function calculateE1rmWathan(weight: number, reps: number): number {
   if (reps === 1) return weight;
-  if (reps <= 0) return 0;
+  if (weight <= 0 || reps <= 0) return 0;
   return Math.round((100 * weight) / (48.8 + 53.8 * Math.exp(-0.075 * reps)));
 }
 

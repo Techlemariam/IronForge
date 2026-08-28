@@ -12,22 +12,16 @@ Welcome to the central documentation index for IronForge. This guide maps all av
 * **Privacy Policy:** [privacy-policy.md](file:///c:/Users/alexa/Workspaces/IronForge/docs/privacy-policy.md)
 
 ## 🏗️ Architecture & Subsystems
-* **Product Architecture Overview:** [product-architecture.md](file:///c:/Users/alexa/Workspaces/IronForge/docs/vision/product-architecture.md) (Ref: #380)
 * **System Architecture:** [architecture.md](file:///c:/Users/alexa/Workspaces/IronForge/architecture.md)
   * Outlines Next.js app router structure, real-time database syncing, and client-server boundaries.
 * **Architectural Decision Records (ADRs):**
   * [ADR 001: Standardized Panopticon Runner](file:///c:/Users/alexa/Workspaces/IronForge/docs/adr/001-standardized-panopticon-runner.md)
-* **Subsystem Design Documents & Vision:**
-  * **The Oracle:** [oracle.md](file:///c:/Users/alexa/Workspaces/IronForge/docs/vision/oracle.md) (Ref: #381)
-  * **MicroForge:** [microforge.md](file:///c:/Users/alexa/Workspaces/IronForge/docs/vision/microforge.md) (Ref: #381)
-  * **Activity Arbiter:** [activity-arbiter.md](file:///c:/Users/alexa/Workspaces/IronForge/docs/vision/activity-arbiter.md) (Ref: #381)
-  * **Doctrine Engine:** [doctrine-engine.md](file:///c:/Users/alexa/Workspaces/IronForge/docs/vision/doctrine-engine.md) (Ref: #388)
-  * **Combat Resolution:** [combat-resolution.md](file:///c:/Users/alexa/Workspaces/IronForge/docs/vision/combat-resolution.md) (Ref: #388)
+* **Subsystem Design Documents:**
   * **Oracle 3.0 (Coaching Engine):** [oracle-3.0.md](file:///c:/Users/alexa/Workspaces/IronForge/specs/oracle-3.0.md)
-  * **Doctrine Volume Spec:** [adaptive_volume_landmarks.md](file:///c:/Users/alexa/Workspaces/IronForge/docs/analysis/adaptive_volume_landmarks.md)
+  * **Doctrine Engine:** [adaptive_volume_landmarks.md](file:///c:/Users/alexa/Workspaces/IronForge/docs/analysis/adaptive_volume_landmarks.md)
   * **RPG/Progression:** [arena-pvp-seasons.md](file:///c:/Users/alexa/Workspaces/IronForge/specs/arena-pvp-seasons.md)
   * **Cardio PvP Duels:** [cardio-duels.md](file:///c:/Users/alexa/Workspaces/IronForge/specs/cardio-duels.md)
-  * **Activity Arbiter Data:** [intervals_api.json](file:///c:/Users/alexa/Workspaces/IronForge/docs/intervals_api.json)
+  * **Activity Arbiter:** [intervals_api.json](file:///c:/Users/alexa/Workspaces/IronForge/docs/intervals_api.json)
 
 ## 🩺 System Health & Readiness Reports
 * **Overall System Health:** [SYSTEM_HEALTH.md](file:///c:/Users/alexa/Workspaces/IronForge/SYSTEM_HEALTH.md)
@@ -39,7 +33,6 @@ Welcome to the central documentation index for IronForge. This guide maps all av
   * **GitHub Hierarchy & Label Audit:** [github-hygiene-audit.md](file:///c:/Users/alexa/Workspaces/IronForge/docs/panopticon/github-hygiene-audit.md) (Ref: #375)
   * **Product Health Report Template:** [product-health-template.md](file:///c:/Users/alexa/Workspaces/IronForge/docs/panopticon/product-health-template.md) (Ref: #376)
   * **Product Control Board Summary:** [control-board-summary.json](file:///c:/Users/alexa/Workspaces/IronForge/docs/panopticon/control-board-summary.json) (Ref: #377)
-  * **Hyper Pro Equipment Audit:** [hyper-pro-equipment-audit.md](file:///c:/Users/alexa/Workspaces/IronForge/docs/reports/hyper-pro-equipment-audit.md) (Ref: #392)
 
 ## 🤖 Codex Automations & Operations
 * **Codex Automations:** [CODEX_AUTOMATIONS.md](file:///c:/Users/alexa/Workspaces/IronForge/docs/CODEX_AUTOMATIONS.md)

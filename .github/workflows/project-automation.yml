@@ -19,30 +19,48 @@ env:
   STATUS_MERGED_STAGING: 3ac5a295
   STATUS_DONE: 98236657
 
-permissions: read-all
+permissions:
+  contents: read
 
 jobs:
   update_project:
-    runs-on: [self-hosted, linux, panopticon, ci, small]
-    # Skip for Dependabot PRs — Dependabot token cannot access Projects V2 GraphQL API
-    if: github.actor != 'dependabot[bot]'
+    name: Best-effort Project V2 sync
+    runs-on: [self-hosted, linux, panopticon, ci, small, trusted-github-write]
+    timeout-minutes: 5
+    # Skip for Dependabot PRs — Dependabot cannot receive repository secrets.
+    if: >-
+      github.actor != 'dependabot[bot]' &&
+      (github.event_name != 'pull_request' ||
+       github.event.pull_request.head.repo.full_name == github.repository)
     permissions:
-      issues: write
-      pull-requests: write
-      repository-projects: write
-    
-    # GITHUB_TOKEN is scoped to steps requiring Project write permissions to avoid overriding checkout token.
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      contents: read
 
-      # ===== ISSUE EVENTS =====
-      
-      - name: Move Closed Issue to Done
-        if: github.event_name == 'issues' && github.event.action == 'closed'
+    steps:
+      - name: Checkout automation scripts
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Validate dedicated project token
+        id: project_token
+        continue-on-error: true
         shell: pwsh
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT || secrets.PROJECT_TOKEN || secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.PROJECT_TOKEN }}
+        run: |
+          if (-not $env:GH_TOKEN) {
+            throw "PROJECT_TOKEN is not configured. Project V2 sync is degraded."
+          }
+
+      # ===== ISSUE EVENTS =====
+
+      - name: Move Closed Issue to Done
+        id: close_issue
+        continue-on-error: true
+        if: steps.project_token.outcome == 'success' && github.event_name == 'issues' && github.event.action == 'closed'
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.PROJECT_TOKEN }}
         run: |
           .agent/scripts/link-issue-to-project.ps1 `
             -IssueNumber ${{ github.event.issue.number }} `
@@ -50,10 +68,12 @@ jobs:
             -Verbose
 
       - name: Move Reopened Issue to In Progress
-        if: github.event_name == 'issues' && github.event.action == 'reopened'
+        id: reopen_issue
+        continue-on-error: true
+        if: steps.project_token.outcome == 'success' && github.event_name == 'issues' && github.event.action == 'reopened'
         shell: pwsh
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT || secrets.PROJECT_TOKEN || secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.PROJECT_TOKEN }}
         run: |
           .agent/scripts/link-issue-to-project.ps1 `
             -IssueNumber ${{ github.event.issue.number }} `
@@ -61,12 +81,14 @@ jobs:
             -Verbose
 
       # ===== PULL REQUEST EVENTS =====
-      
+
       - name: Link PR to Project on Open
-        if: github.event_name == 'pull_request' && github.event.action == 'opened'
+        id: open_pr
+        continue-on-error: true
+        if: steps.project_token.outcome == 'success' && github.event_name == 'pull_request' && github.event.action == 'opened'
         shell: pwsh
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT || secrets.PROJECT_TOKEN || secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.PROJECT_TOKEN }}
         run: |
           .agent/scripts/link-pr-to-project.ps1 `
             -PRNumber ${{ github.event.pull_request.number }} `
@@ -74,28 +96,39 @@ jobs:
             -Verbose
 
       - name: Move Merged PR to Done
-        if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
+        id: merge_pr
+        continue-on-error: true
+        if: steps.project_token.outcome == 'success' && github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
         shell: pwsh
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT || secrets.PROJECT_TOKEN || secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.PROJECT_TOKEN }}
         run: |
           .agent/scripts/link-pr-to-project.ps1 `
             -PRNumber ${{ github.event.pull_request.number }} `
             -Status "done" `
             -Verbose
-          
-          # Also update linked issues if found in body (handled by script?)
-          # The script currently doesn't auto-parse linked issues from PR body for status updates.
-          # TODO: Add that capability to the script for 100% parity, 
-          # but for now the PR status update is the critical part.
 
-      - name: Move Closed PR (not merged) to Backlog
-        if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == false
+      - name: Move Closed PR to Backlog
+        id: close_pr
+        continue-on-error: true
+        if: steps.project_token.outcome == 'success' && github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == false
         shell: pwsh
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT || secrets.PROJECT_TOKEN || secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.PROJECT_TOKEN }}
         run: |
           .agent/scripts/link-pr-to-project.ps1 `
             -PRNumber ${{ github.event.pull_request.number }} `
             -Status "backlog" `
             -Verbose
+
+      - name: Report degraded project synchronization
+        if: always() && (steps.project_token.outcome == 'failure' || steps.close_issue.outcome == 'failure' || steps.reopen_issue.outcome == 'failure' || steps.open_pr.outcome == 'failure' || steps.merge_pr.outcome == 'failure' || steps.close_pr.outcome == 'failure')
+        shell: bash
+        run: |
+          {
+            echo "### ⚠️ Project Automation degraded"
+            echo
+            echo "The repository event completed, but Project V2 synchronization did not."
+            echo "Inspect the failed step and verify the dedicated PROJECT_TOKEN permissions."
+            echo "This auxiliary automation is intentionally non-blocking for code merges."
+          } >> "$GITHUB_STEP_SUMMARY"

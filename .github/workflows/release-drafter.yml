@@ -1,32 +1,26 @@
 # node-version: 22 compliance comment for Governance Guard
 name: Release Drafter
 
+# Release drafting is a repository-write lane. Do not schedule it for PR-head
+# execution until the dedicated ci-trusted-github-write pool is commissioned.
 on:
   push:
-    # branches to consider in the event; optional, defaults to all
     branches:
       - main
-  # pull_request event is required only for autolabeler
-  pull_request:
-    types: [opened, reopened, synchronize]
   workflow_dispatch:
 
 permissions: read-all
 
 jobs:
   update_release_draft:
-    runs-on: [self-hosted, linux, panopticon, ci, small]
+    runs-on: [self-hosted, linux, panopticon, ci, small, trusted-github-write]
+    timeout-minutes: 5
     permissions:
       contents: write
       pull-requests: write
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-        with:
-          persist-credentials: false
-
       - uses: release-drafter/release-drafter@693d20e7c1ce1a81d3a41962f85914253b518449 # v7.3.1
         with:
-          # (Optional) specify config name to use, relative to .github/. Default: release-drafter.yml
           config-name: release-drafter.yml
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}

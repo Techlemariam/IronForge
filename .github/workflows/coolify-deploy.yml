@@ -2,18 +2,36 @@
 name: 🚀 Coolify Deploy
 
 on:
-  push:
-    branches: [develop]
-  release:
-    types: [published]
   workflow_dispatch:
 
-permissions: read-all
+permissions:
+  contents: read
+
+concurrency:
+  group: ironforge-production-deploy
+  cancel-in-progress: false
 
 jobs:
   deploy:
-    runs-on: self-hosted
+    name: Trigger approved Coolify deployment
+    runs-on: [self-hosted, linux, panopticon, ci, small, live-approved]
+    environment: ironforge-production
+    timeout-minutes: 5
+    env:
+      COOLIFY_WEBHOOK: ${{ secrets.COOLIFY_WEBHOOK }}
     steps:
-      - name: Trigger Coolify Deployment
+      - name: Validate deployment credential
+        shell: bash
         run: |
-          curl "${{ secrets.COOLIFY_WEBHOOK }}"
+          if [ -z "$COOLIFY_WEBHOOK" ]; then
+            echo "COOLIFY_WEBHOOK is not configured for the protected environment." >&2
+            exit 1
+          fi
+
+      - name: Trigger Coolify deployment
+        shell: bash
+        run: |
+          curl --fail --show-error --silent \
+            --request GET \
+            "$COOLIFY_WEBHOOK" \
+            >/dev/null

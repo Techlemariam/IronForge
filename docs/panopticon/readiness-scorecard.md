@@ -2,8 +2,8 @@
 
 This document audits the readiness and maturity of the IronForge workspace across 10 core engineering and product dimensions.
 
-**Provisional Assessment Date:** 2026-07-11
-**Status:** Provisional (Self-Audited)
+**Provisional Assessment Date:** 2026-07-27
+**Status:** Updated for PR integration debt review under #461
 
 ---
 
@@ -18,10 +18,10 @@ This document audits the readiness and maturity of the IronForge workspace acros
 
 ### 2. Product Readiness
 * **Score:** 7 / 10
-* **Current Evidence:** Basic gamification loops, store systems, milestones, and prestige are implemented. Business scaling indicators (Traction, Demand, Cost) are defined in `roadmap.md`.
+* **Current Evidence:** Basic gamification loops, store systems, milestones, and prestige are implemented. The #451-#461 product-completeness tracker now captures the minimum training loop, onboarding, data authority, user override, energy modes, interruption lifecycle, scenario testing, data resilience, identity guardrails, and PR integration debt.
 * **Gap to Next Level:** Realizing the visual game art and finishing onboarding flows to increase retention.
 * **What 10/10 Means:** Stable gamification loop verified by user retention metrics above 20%.
-* **Related Issues:** #369, #370
+* **Related Issues:** #369, #370, #451, #452, #453, #454, #455, #456, #457, #458, #459, #460
 
 ### 3. Architecture Readiness
 * **Score:** 8 / 10
@@ -40,9 +40,9 @@ This document audits the readiness and maturity of the IronForge workspace acros
 ### 5. GitHub Hygiene
 * **Score:** 9 / 10
 * **Current Evidence:** Clear issue numbers, milestone naming conventions, priority tracking tags, and project board bindings.
-* **Gap to Next Level:** Regular automatic sync of local roadmap files with remote issues via `/sync-roadmap`.
+* **Gap to Next Level:** Reduce open PR integration debt under #461 and keep tracker/roadmap state synchronized with remote issue status.
 * **What 10/10 Means:** Fully automated two-way synchronization of milestones and issue updates.
-* **Related Issues:** #369, #370, #375
+* **Related Issues:** #369, #370, #375, #461
 
 ### 6. AI / Codex Readiness
 * **Score:** 9 / 10
@@ -60,10 +60,10 @@ This document audits the readiness and maturity of the IronForge workspace acros
 
 ### 8. Automation Readiness
 * **Score:** 8 / 10
-* **Current Evidence:** GitHub Actions workflows handle validation and preview deployments.
-* **Gap to Next Level:** Improve Docker-based local execution and shadow database synchronization in runner scripts.
+* **Current Evidence:** GitHub Actions workflows handle validation and preview deployments. As of 2026-07-27, the open PR queue contains 20 PRs, split between draft feature stacks and non-draft PRs that still require CI or external-check cleanup.
+* **Gap to Next Level:** Stabilize PR checks, split mixed-scope PRs, and enforce WIP limits through #461 before treating automation as merge-ready.
 * **What 10/10 Means:** Fast (under 3 min) feedback loops for lint, format, type-check, and unit testing on every commit.
-* **Related Issues:** #369, #370
+* **Related Issues:** #369, #370, #461
 
 ### 9. Panopticon Integration
 * **Score:** 7 / 10

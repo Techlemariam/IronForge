@@ -2,7 +2,7 @@
  * External Intelligence Parser for CI Doctor v3.0.
  *
  * Extracts failure targets and repair protocols from GitHub App comments
- * and status checks: CodeRabbit, Snyk, CodeFactor, Codecov, Dependabot,
+ * and status checks: CodeRabbit, CodeFactor, Codecov, Dependabot,
  * Lighthouse, Chromatic, OSSF Scorecard.
  *
  * Usage: gh pr view <PR> --json comments,statusCheckRollup | npx tsx scripts/app-intelligence.ts [--json]
@@ -59,7 +59,6 @@ function parseCodeRabbit(comments: Comment[]): Partial<IntelligenceResult> {
     if (comment.author.login !== 'coderabbitai') continue;
     const body = comment.body;
 
-    // Merge conflicts
     if (body.includes('Merge conflicts detected') || body.includes('merge conflict')) {
       protocols.add('MERGE_CONFLICT');
       const conflictMatch = body.match(/⚔️ `([^`]+)`/g);
@@ -68,7 +67,6 @@ function parseCodeRabbit(comments: Comment[]): Partial<IntelligenceResult> {
       }
     }
 
-    // AI repair suggestions — extract actionable fix prompts
     const actionableBlocks = body.match(/```suggestion[\s\S]*?```/g);
     if (actionableBlocks) {
       for (const block of actionableBlocks) {
@@ -81,45 +79,17 @@ function parseCodeRabbit(comments: Comment[]): Partial<IntelligenceResult> {
       }
     }
 
-    // File-specific feedback
     const fileRefs = body.match(/`([^`]+\.(ts|tsx|js|jsx|css|yml))`/g);
     if (fileRefs) {
       fileRefs.forEach((f) => targets.add(f.replace(/`/g, '')));
     }
 
-    // Quality issues
     if (body.includes('complexity') || body.includes('refactor')) {
       protocols.add('STATIC_ANALYSIS_FAIL');
     }
   }
 
   return { targets: [...targets], protocols: [...protocols], suggestions };
-}
-
-function parseSnyk(comments: Comment[]): Partial<IntelligenceResult> {
-  const protocols = new Set<string>();
-  const suggestions: Suggestion[] = [];
-
-  for (const comment of comments) {
-    if (!comment.author.login.includes('snyk')) continue;
-    const body = comment.body;
-
-    if (body.includes('vulnerability') || body.includes('CVE-')) {
-      protocols.add('SECURITY_BREACH');
-
-      const cveMatch = body.match(/CVE-\d{4}-\d+/g);
-      const pkgMatch = body.match(/`([^`]+)`.*?(vulnerability|critical|high)/gi);
-
-      suggestions.push({
-        source: 'Snyk',
-        type: 'warning',
-        message: `Security vulnerabilities detected: ${cveMatch?.join(', ') || 'see report'}`,
-        files: pkgMatch?.map((m) => m.match(/`([^`]+)`/)?.[1] || '').filter(Boolean) || [],
-      });
-    }
-  }
-
-  return { protocols: [...protocols], suggestions };
 }
 
 function parseCodecov(comments: Comment[]): Partial<IntelligenceResult> {
@@ -134,7 +104,6 @@ function parseCodecov(comments: Comment[]): Partial<IntelligenceResult> {
     if (body.includes('coverage')) {
       protocols.add('COVERAGE_DROP');
 
-      // Extract files with decreased coverage
       const fileMatch = body.match(/\[([^\]]+\.tsx?)\]/g);
       const uncoveredFiles: string[] = [];
       if (fileMatch) {
@@ -145,7 +114,6 @@ function parseCodecov(comments: Comment[]): Partial<IntelligenceResult> {
         });
       }
 
-      // Extract coverage percentage
       const pctMatch = body.match(/(\d+\.?\d*)%/);
       suggestions.push({
         source: 'Codecov',
@@ -221,7 +189,6 @@ function parseStatusChecks(checks: StatusCheck[]): Partial<IntelligenceResult> {
 
     if (conclusion !== 'failure' && conclusion !== 'error') continue;
 
-    // Lighthouse CI
     if (name.includes('lighthouse') || name.includes('lhci')) {
       protocols.add('PERF_DEGRADATION');
       suggestions.push({
@@ -232,7 +199,6 @@ function parseStatusChecks(checks: StatusCheck[]): Partial<IntelligenceResult> {
       });
     }
 
-    // Chromatic
     if (name.includes('chromatic')) {
       protocols.add('VISUAL_REGRESSION');
       suggestions.push({
@@ -243,7 +209,6 @@ function parseStatusChecks(checks: StatusCheck[]): Partial<IntelligenceResult> {
       });
     }
 
-    // Scorecard
     if (name.includes('scorecard') || name.includes('ossf')) {
       suggestions.push({
         source: 'OSSF Scorecard',
@@ -253,7 +218,6 @@ function parseStatusChecks(checks: StatusCheck[]): Partial<IntelligenceResult> {
       });
     }
 
-    // Qodana
     if (name.includes('qodana')) {
       protocols.add('STATIC_ANALYSIS_FAIL');
       suggestions.push({
@@ -280,7 +244,6 @@ export function parseAppIntelligence(data: PRData): IntelligenceResult {
 
   const parsers = [
     { name: 'CodeRabbit', fn: () => parseCodeRabbit(data.comments) },
-    { name: 'Snyk', fn: () => parseSnyk(data.comments) },
     { name: 'Codecov', fn: () => parseCodecov(data.comments) },
     { name: 'CodeFactor', fn: () => parseCodeFactor(data.comments) },
     { name: 'Dependabot', fn: () => parseDependabot(data.comments) },

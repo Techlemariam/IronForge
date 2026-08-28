@@ -28,7 +28,7 @@ permissions: read-all
 
 jobs:
   trigger-via-antigravity:
-    runs-on: self-hosted
+    runs-on: [self-hosted, linux, panopticon, ci, small, live-approved]
     timeout-minutes: 120
     permissions:
       actions: write
@@ -61,7 +61,7 @@ jobs:
     
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           token: ${{ env.GH_PAT }}
         
