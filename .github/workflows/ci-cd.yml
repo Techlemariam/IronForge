@@ -270,7 +270,7 @@ jobs:
        github.ref == 'refs/heads/main' ||
        startsWith(github.ref, 'refs/heads/fix/') ||
        startsWith(github.ref, 'refs/heads/feat/'))
-    runs-on: ${{ github.event_name == 'pull_request' && fromJSON('["self-hosted","linux","panopticon","ci","small","pr-readonly","repo-ironforge","pr-566"]') || fromJSON('["self-hosted","linux","panopticon","ci","small","trusted-github-write"]') }}
+    runs-on: ${{ github.event_name == 'pull_request' && fromJSON(format('["self-hosted","linux","panopticon","ci","small","pr-readonly","repo-ironforge","pr-{0}"]', github.event.pull_request.number)) || fromJSON('["self-hosted","linux","panopticon","ci","small","trusted-github-write"]') }}
     permissions:
       contents: read
     steps:
