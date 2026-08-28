@@ -15,7 +15,7 @@ jobs:
     if: >-
       github.event_name != 'pull_request' ||
       github.event.pull_request.head.repo.full_name == github.repository
-    runs-on: ${{ github.event_name == 'pull_request' && fromJSON('["self-hosted","linux","panopticon","ci","small","pr-readonly","repo-ironforge","pr-566"]') || fromJSON('["self-hosted","linux","panopticon","ci","small","trusted-github-write"]') }}
+    runs-on: ${{ github.event_name == 'pull_request' && fromJSON(format('["self-hosted","linux","panopticon","ci","small","pr-readonly","repo-ironforge","pr-{0}"]', github.event.pull_request.number)) || fromJSON('["self-hosted","linux","panopticon","ci","small","trusted-github-write"]') }}
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

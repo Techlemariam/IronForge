@@ -22,7 +22,7 @@ jobs:
     if: >-
       github.event.pull_request.head.repo.full_name == github.repository &&
       startsWith(github.head_ref, 'jules/')
-    runs-on: [self-hosted, linux, panopticon, ci, small, pr-readonly, repo-ironforge, pr-566]
+    runs-on: ${{ fromJSON(format('["self-hosted","linux","panopticon","ci","small","pr-readonly","repo-ironforge","pr-{0}"]', github.event.pull_request.number)) }}
     timeout-minutes: 20
     permissions:
       contents: read
