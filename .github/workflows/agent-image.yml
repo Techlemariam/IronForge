@@ -13,7 +13,7 @@ permissions: read-all
 
 jobs:
   build:
-    runs-on: [self-hosted, linux, panopticon, ci, small, trusted-github-write]
+    runs-on: [self-hosted, linux, panopticon, ci, small, live-approved]
     permissions:
       contents: read
       packages: write
