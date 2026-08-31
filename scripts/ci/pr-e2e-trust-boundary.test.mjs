@@ -8,6 +8,18 @@ const [ciWorkflow, publicSmokeWorkflow, playwrightConfig] = await Promise.all([
   readFile('playwright.config.ts', 'utf8'),
 ]);
 
+function classifierBlock() {
+  const start = ciWorkflow.indexOf('\n  classify-pr-impact:\n');
+  const end = ciWorkflow.indexOf(
+    '\n  # ==================================================================\n  # TIER L1:',
+    start
+  );
+
+  assert.notEqual(start, -1, 'ci-cd.yml must contain the PR impact classifier');
+  assert.notEqual(end, -1, 'ci-cd.yml must retain the L1 boundary after the classifier');
+  return ciWorkflow.slice(start, end);
+}
+
 function fullE2EBlock() {
   const start = ciWorkflow.indexOf('\n  e2e:\n');
   const end = ciWorkflow.indexOf('\n  # ==================================================================\n  # PHASE 3:', start);
@@ -16,6 +28,17 @@ function fullE2EBlock() {
   assert.notEqual(end, -1, 'ci-cd.yml must retain the PHASE 3 boundary after the e2e job');
   return ciWorkflow.slice(start, end);
 }
+
+test('PR impact classifier is hosted, read-only and cannot persist on Panopticon runners', () => {
+  const block = classifierBlock();
+
+  assert.match(block, /runs-on:\s*ubuntu-latest/);
+  assert.doesNotMatch(block, /self-hosted/);
+  assert.doesNotMatch(block, /\$\{\{\s*secrets\./);
+  assert.doesNotMatch(block, /:\s*write\s*$/m);
+  assert.match(block, /persist-credentials:\s*false/);
+  assert.match(block, /github\.event\.pull_request\.head\.repo\.full_name == github\.repository/);
+});
 
 test('PR public smoke is base-controlled, hosted and secretless', () => {
   assert.match(publicSmokeWorkflow, /^\s*pull_request_target:\s*$/m);
@@ -47,7 +70,10 @@ test('credential-backed E2E is post-merge main-only and cannot run from PR or di
   assert.doesNotMatch(block, /github\.event_name == 'pull_request'/);
   assert.doesNotMatch(block, /github\.event_name == 'workflow_dispatch'/);
   assert.doesNotMatch(block, /needs:\s*\[classify-pr-impact/);
-  assert.match(block, /runs-on:\s*\[self-hosted, linux, panopticon, ci, small\]/);
+  assert.match(
+    block,
+    /runs-on:\s*\[self-hosted, linux, panopticon, ci, small(?:, live-approved)?\]/
+  );
   assert.match(block, /persist-credentials:\s*false/);
 });
 
