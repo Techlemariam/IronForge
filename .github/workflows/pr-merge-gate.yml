@@ -20,9 +20,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     outputs:
-      run-l1: ${{ steps.classify.outputs.run-l1 }}
+      run_l1: ${{ steps.classify.outputs.run_l1 }}
       classification: ${{ steps.classify.outputs.classification }}
-      protected-control-plane-change: ${{ steps.files.outputs.protected-control-plane-change }}
+      protected_control_plane_change: ${{ steps.files.outputs.protected_control_plane_change }}
     steps:
       - name: Checkout trusted base control plane
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -69,7 +69,7 @@ jobs:
               'scripts/ci/evaluate-pr-merge-gate.test.mjs',
             ]);
             const protectedChange = names.some((name) => protectedControlPlanePaths.has(name));
-            core.setOutput('protected-control-plane-change', String(protectedChange));
+            core.setOutput('protected_control_plane_change', String(protectedChange));
             core.info(`Enumerated ${names.length} changed files; protectedChange=${protectedChange}`);
 
       - name: Test trusted classifier implementation
@@ -88,10 +88,10 @@ jobs:
 
           if grep -Fxq 'run-e2e=true' "$GITHUB_OUTPUT" || \
              grep -Fxq '.github/workflows/ci-cd.yml' "$FILES_FILE"; then
-            printf 'run-l1=true\n' >> "$GITHUB_OUTPUT"
+            printf 'run_l1=true\n' >> "$GITHUB_OUTPUT"
             echo 'IRONFORGE_PR_GATE_RUN_L1=true'
           else
-            printf 'run-l1=false\n' >> "$GITHUB_OUTPUT"
+            printf 'run_l1=false\n' >> "$GITHUB_OUTPUT"
             echo 'IRONFORGE_PR_GATE_RUN_L1=false'
           fi
 
@@ -112,7 +112,7 @@ jobs:
       - name: Block self-modification of protected merge-gate files
         shell: bash
         env:
-          PROTECTED_CHANGE: ${{ needs.classify-pr-impact.outputs.protected-control-plane-change }}
+          PROTECTED_CHANGE: ${{ needs.classify-pr-impact.outputs.protected_control_plane_change }}
         run: |
           set -euo pipefail
           if [[ "$PROTECTED_CHANGE" != 'true' && "$PROTECTED_CHANGE" != 'false' ]]; then
@@ -130,7 +130,7 @@ jobs:
   l1-verify:
     name: "⚡ Hosted L1 Verify"
     needs: classify-pr-impact
-    if: needs.classify-pr-impact.outputs.run-l1 == 'true'
+    if: needs.classify-pr-impact.outputs.run_l1 == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
@@ -217,7 +217,7 @@ jobs:
         env:
           CLASSIFY_RESULT: ${{ needs.classify-pr-impact.result }}
           POLICY_RESULT: ${{ needs.policy.result }}
-          RUN_L1: ${{ needs.classify-pr-impact.outputs.run-l1 }}
+          RUN_L1: ${{ needs.classify-pr-impact.outputs.run_l1 }}
           L1_RESULT: ${{ needs.l1-verify.result }}
         run: node trusted-base/scripts/ci/evaluate-pr-merge-gate.mjs
 
@@ -230,6 +230,6 @@ jobs:
             echo
             echo "Classifier: ${{ needs.classify-pr-impact.result }}"
             echo "Policy: ${{ needs.policy.result }}"
-            echo "Run L1: ${{ needs.classify-pr-impact.outputs.run-l1 }}"
+            echo "Run L1: ${{ needs.classify-pr-impact.outputs.run_l1 }}"
             echo "L1: ${{ needs.l1-verify.result }}"
           } >> "$GITHUB_STEP_SUMMARY"
