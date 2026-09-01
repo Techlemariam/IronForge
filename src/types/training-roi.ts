@@ -61,7 +61,7 @@ export interface TrainingRoiResult {
 }
 
 const TRAINING_ROI_REASON_ORDER = new Map<TrainingRoiReasonCode, number>(
-  TRAINING_ROI_REASON_CODES.map((reason, index) => [reason, index]),
+  TRAINING_ROI_REASON_CODES.map((reason, index) => [reason, index] as const),
 );
 
 /**
