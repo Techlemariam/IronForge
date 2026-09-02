@@ -31,7 +31,6 @@ vi.mock('@/lib/prisma', () => {
   return {
     default: client,
     prisma: client,
-    __tx: tx,
   };
 });
 
@@ -69,22 +68,6 @@ type TxMock = {
 };
 
 const transactionMock = vi.mocked(prisma.$transaction);
-
-function currentTx(): TxMock {
-  const callback = transactionMock.mock.calls.at(-1)?.[0] as ((tx: TxMock) => unknown) | undefined;
-  if (!callback) throw new Error('Expected transaction callback');
-
-  const tx: TxMock = {
-    exercise: {
-      findMany: vi.fn().mockResolvedValue([{ id: 'exercise-1', name: 'Back Extension' }]),
-      create: vi.fn(),
-    },
-    exerciseLog: {
-      createMany: vi.fn().mockResolvedValue({ count: 1 }),
-    },
-  };
-  return tx;
-}
 
 describe('importHevyHistoryAction idempotency orchestration', () => {
   let tx: TxMock;
