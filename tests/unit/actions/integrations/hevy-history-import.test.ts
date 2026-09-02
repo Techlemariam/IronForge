@@ -1,9 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 vi.mock('@/utils/supabase/server', () => ({
-  createClient: vi.fn(async () => ({
+  createClient: vi.fn(() => ({
     auth: {
-      getUser: vi.fn(async () => ({ data: { user: { id: 'user-1' } } })),
+      getUser: vi.fn(() => ({ data: { user: { id: 'user-1' } } })),
     },
   })),
 }));
