@@ -5,6 +5,7 @@ import prisma from '@/lib/prisma';
 import { TerritoryService } from '@/services/game/TerritoryService';
 import type { HevyRoutine, HevyWorkout } from '@/types/hevy';
 import { createClient } from '@/utils/supabase/server';
+import type { Prisma } from '@prisma/client';
 import axios from 'axios';
 
 import { HevyHelperSchema, ImportHevyHistorySchema } from '@/types/schemas';
@@ -183,7 +184,7 @@ export async function importHevyHistoryAction(workouts: unknown[]) {
   }
 
   try {
-    const logsToCreate: any[] = []; // Keeping any[] for batch create compatibility with Prisma types if not explicitly imported
+    const logsToCreate: Prisma.ExerciseLogCreateManyInput[] = [];
     let importedCount = 0;
 
     const existingExercises = await prisma.exercise.findMany({
@@ -227,11 +228,9 @@ export async function importHevyHistoryAction(workouts: unknown[]) {
         if (bestE1rm > 0) {
           logsToCreate.push({
             userId: user.id,
-            date: date,
-            exerciseId: exerciseId,
-            sets: exercise.sets || [],
-            e1rm: bestE1rm,
-            rpe: 8,
+            date,
+            exerciseId,
+            sets: exercise.sets as Prisma.InputJsonValue,
             isPersonalRecord: bestE1rm > 100,
           });
         }
