@@ -2,7 +2,7 @@ import { runFullAudit } from '@/services/auditor-orchestrator';
 import { getWellness } from '../lib/intervals';
 import type { WellnessData } from '../lib/intervals';
 import prisma from '../lib/prisma';
-import type { IntervalsActivity, TrainingPath } from '../types';
+import type { IntervalsActivity, IntervalsWellness, TrainingPath } from '../types';
 import { AnalyticsService } from './analytics';
 import { OracleService } from './oracle';
 
@@ -54,6 +54,9 @@ export const PlannerService = {
     const auditReport = await runFullAudit(true, userId);
 
     // 3. Fetch Intervals Wellness
+    // `wellness` retains the legacy Planner/Oracle shape for now. TTB gets a
+    // separate evidence object so these placeholders cannot masquerade as
+    // measured Intervals physiology.
     let wellness: WellnessData = {
       date: new Date().toISOString(),
       ctl: 0,
@@ -87,10 +90,16 @@ export const PlannerService = {
       soreness: null,
       steps: null,
     };
+    const ttbWellness: IntervalsWellness = {};
+
     if (user.intervalsApiKey && user.intervalsAthleteId) {
       const today = new Date().toISOString().split('T')[0];
       const w = await getWellness(today, user.intervalsApiKey, user.intervalsAthleteId);
-      if (w && !Array.isArray(w)) wellness = w;
+      if (w && !Array.isArray(w)) {
+        wellness = w;
+        if (w.hrv != null) ttbWellness.hrv = w.hrv;
+        if (w.tsb != null) ttbWellness.tsb = w.tsb;
+      }
     }
 
     // 4. Map Data for Analytics (TTB Calculation)
@@ -110,21 +119,16 @@ export const PlannerService = {
       isEpic: log.isPersonalRecord,
     }));
 
-    // Ensure wellness matches the shape expected by Analytics (WellnessData is compatible)
-    const ttb = AnalyticsService.calculateTTB(
-      strengthHistory,
-      activities,
-      wellness as unknown as import('@/types').IntervalsWellness
-    );
+    const ttb = AnalyticsService.calculateTTB(strengthHistory, activities, ttbWellness);
 
     // If auditor says we are neglecting something, that becomes lowest TTB
     if (auditReport.highestPriorityGap) {
-      ttb.lowest = 'strength'; // Weakness found
+      ttb.lowest = 'strength'; // Weakness found from explicit audit evidence
     }
 
     // 6. Generate Plan via Oracle
     const recommendation = await OracleService.consult(
-      wellness as unknown as import('@/types').IntervalsWellness,
+      wellness as unknown as IntervalsWellness,
       ttb,
       [], // events
       auditReport,
