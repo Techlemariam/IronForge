@@ -63,7 +63,7 @@ export const PlannerService = {
       hrv: null,
       restingHR: null,
       readiness: null,
-      bodyBattery: 50, // Default to 50 (Neutral) to satisfy Zod/Typescript requirements
+      bodyBattery: undefined,
       sleepScore: null,
       sleepSecs: null,
       rampRate: null,
