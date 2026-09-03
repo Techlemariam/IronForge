@@ -38,16 +38,15 @@ export async function getWellnessAction(date: string): Promise<IntervalsWellness
 
     if (!data || Array.isArray(data)) return {} as IntervalsWellness;
 
-    // Map Lib type (WellnessData) to App type (IntervalsWellness)
-    // getWellness already transforms 'readiness' to 'bodyBattery'
+    // Map Lib type (WellnessData) to App type (IntervalsWellness).
+    // Missing provider values stay missing so downstream consumers can handle uncertainty explicitly.
     return {
       id: data?.id,
       hrv: data?.hrv,
       restingHR: data?.restingHR,
       sleepScore: data?.sleepScore,
       sleepSecs: data?.sleepSecs,
-      bodyBattery: data?.bodyBattery ?? 50, // Hardened mapping: ignore raw 'readiness' here as lib handles it
-
+      bodyBattery: data?.bodyBattery,
       vo2max: data?.vo2max,
       ctl: data?.ctl,
       atl: data?.atl,
@@ -78,7 +77,7 @@ export async function getWellnessRangeAction(
           restingHR: d.restingHR,
           sleepScore: d.sleepScore,
           sleepSecs: d.sleepSecs,
-          bodyBattery: d.readiness ?? d.bodyBattery ?? 50,
+          bodyBattery: d.bodyBattery,
           vo2max: d.vo2max,
           ctl: d.ctl,
           atl: d.atl,
