@@ -205,7 +205,9 @@ function reportRisks(files: string[]): void {
   for (const risk of risks) {
     const icon = risk.risk === 'high' ? '🔴' : '🟡';
     console.log(`\n  ${icon} ${risk.specialist}: ${risk.reason}`);
-    risk.matchedFiles.forEach((file) => console.log(`     → ${file}`));
+    for (const file of risk.matchedFiles) {
+      console.log(`     → ${file}`);
+    }
 
     if (process.env.GITHUB_ACTIONS && risk.risk === 'high') {
       console.log(
