@@ -154,4 +154,52 @@ describe('generateProgramAction evidence mapping', () => {
     expect(strengthHistory?.[0]).not.toHaveProperty('e1rm');
     expect(strengthHistory?.[0]).not.toHaveProperty('rpe');
   });
+
+  it('does not treat cardio load as intensity and keeps missing heart rate unknown', async () => {
+    const firstAt = new Date('2026-09-03T06:00:00.000Z');
+    const secondAt = new Date('2026-09-02T06:00:00.000Z');
+    const thirdAt = new Date('2026-09-01T06:00:00.000Z');
+
+    vi.mocked(prisma.cardioLog.findMany).mockResolvedValue(
+      [
+        {
+          date: firstAt,
+          duration: 3600,
+          type: 'Ride',
+          load: 120,
+          averageHr: null,
+        },
+        {
+          date: secondAt,
+          duration: 1800,
+          type: 'Run',
+          load: 35,
+          averageHr: 170,
+        },
+        {
+          date: thirdAt,
+          duration: 2400,
+          type: 'Ride',
+          load: 0,
+          averageHr: 150,
+        },
+      ] as unknown as Awaited<ReturnType<typeof prisma.cardioLog.findMany>>
+    );
+
+    await generateProgramAction({ intent: 'Hybrid', daysPerWeek: 3 });
+
+    const activities = vi.mocked(AnalyticsService.calculateTTB).mock.calls[0]?.[1];
+
+    expect(activities?.[0]).toEqual({
+      moving_time: 3600,
+      type: 'Ride',
+      start_date_local: firstAt.toISOString(),
+    });
+    expect(activities?.[0]).not.toHaveProperty('icu_intensity');
+    expect(activities?.[0]).not.toHaveProperty('icu_training_load');
+
+    expect(activities?.[1]?.icu_intensity).toBe(90);
+    expect(activities?.[2]?.icu_intensity).toBe(60);
+    expect(activities?.every((activity) => !('icu_training_load' in activity))).toBe(true);
+  });
 });
