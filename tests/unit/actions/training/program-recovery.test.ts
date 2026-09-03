@@ -1,0 +1,101 @@
+import { generateProgramAction } from '@/actions/training/program';
+import { getSession } from '@/lib/auth';
+import { getWellness } from '@/lib/intervals';
+import prisma from '@/lib/prisma';
+import { AnalyticsService } from '@/services/analytics';
+import { EquipmentService } from '@/services/game/EquipmentService';
+import { GeminiService } from '@/services/gemini';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+
+vi.mock('@/lib/auth', () => ({
+  getSession: vi.fn(),
+}));
+
+vi.mock('@/lib/intervals', () => ({
+  getWellness: vi.fn(),
+}));
+
+vi.mock('@/lib/prisma', () => {
+  const mockPrisma = {
+    user: { findUnique: vi.fn() },
+    exerciseLog: { findMany: vi.fn() },
+    cardioLog: { findMany: vi.fn() },
+    titan: { findUnique: vi.fn() },
+    weeklyPlan: { create: vi.fn() },
+  };
+
+  return {
+    __esModule: true,
+    default: mockPrisma,
+    prisma: mockPrisma,
+  };
+});
+
+vi.mock('@/services/analytics', () => ({
+  AnalyticsService: {
+    calculateTTB: vi.fn(),
+  },
+}));
+
+vi.mock('@/services/game/EquipmentService', () => ({
+  EquipmentService: {
+    getUserCapabilities: vi.fn(),
+  },
+}));
+
+vi.mock('@/services/gemini', () => ({
+  GeminiService: {
+    generateWeeklyPlanAI: vi.fn(),
+  },
+}));
+
+vi.mock('next/cache', () => ({
+  revalidatePath: vi.fn(),
+}));
+
+describe('generateProgramAction recovery evidence', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+
+    vi.mocked(getSession).mockResolvedValue({
+      user: { id: 'user-1' },
+    } as Awaited<ReturnType<typeof getSession>>);
+
+    vi.mocked(prisma.user.findUnique).mockResolvedValue({
+      id: 'user-1',
+      intervalsApiKey: null,
+      intervalsAthleteId: null,
+      heroName: 'Titan',
+      level: 1,
+      activePath: 'WARDEN',
+    } as Awaited<ReturnType<typeof prisma.user.findUnique>>);
+
+    vi.mocked(prisma.exerciseLog.findMany).mockResolvedValue([]);
+    vi.mocked(prisma.cardioLog.findMany).mockResolvedValue([]);
+    vi.mocked(prisma.titan.findUnique).mockResolvedValue(null);
+    vi.mocked(EquipmentService.getUserCapabilities).mockResolvedValue([]);
+    vi.mocked(AnalyticsService.calculateTTB).mockReturnValue({
+      strength: 50,
+      endurance: 50,
+      wellness: 50,
+      lowest: 'strength',
+    });
+    vi.mocked(GeminiService.generateWeeklyPlanAI).mockResolvedValue({ days: [] });
+  });
+
+  it('keeps recovery unknown when Intervals is not connected', async () => {
+    await generateProgramAction({ intent: 'Strength', daysPerWeek: 3 });
+
+    expect(getWellness).not.toHaveBeenCalled();
+
+    const analyticsWellness = vi.mocked(AnalyticsService.calculateTTB).mock.calls[0]?.[2];
+    expect(analyticsWellness).toEqual({});
+    expect(analyticsWellness).not.toHaveProperty('bodyBattery');
+    expect(analyticsWellness).not.toHaveProperty('sleepScore');
+
+    const geminiContext = vi.mocked(GeminiService.generateWeeklyPlanAI).mock.calls[0]?.[1];
+    expect(geminiContext?.wellness).toEqual({});
+    expect(geminiContext?.wellness).not.toHaveProperty('bodyBattery');
+    expect(geminiContext?.wellness).not.toHaveProperty('sleepScore');
+  });
+});
