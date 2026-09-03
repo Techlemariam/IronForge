@@ -99,7 +99,7 @@ describe('generateProgramAction recovery evidence', () => {
     expect(geminiContext?.wellness).not.toHaveProperty('sleepScore');
   });
 
-  it('preserves measured Intervals recovery when available', async () => {
+  it('preserves measured Intervals recovery while dropping provider-only fields', async () => {
     vi.mocked(prisma.user.findUnique).mockResolvedValue({
       id: 'user-1',
       intervalsApiKey: 'intervals-key',
@@ -114,7 +114,7 @@ describe('generateProgramAction recovery evidence', () => {
       bodyBattery: 27,
       sleepScore: 62,
       hrv: 48,
-      tsb: -8,
+      tsb: 0,
     } as NonNullable<Awaited<ReturnType<typeof getWellness>>>;
     vi.mocked(getWellness).mockResolvedValue(measuredWellness);
 
@@ -122,10 +122,16 @@ describe('generateProgramAction recovery evidence', () => {
 
     expect(getWellness).toHaveBeenCalledTimes(1);
 
+    const normalizedWellness = {
+      bodyBattery: 27,
+      sleepScore: 62,
+      hrv: 48,
+      tsb: 0,
+    };
     const analyticsWellness = vi.mocked(AnalyticsService.calculateTTB).mock.calls[0]?.[2];
-    expect(analyticsWellness).toEqual(measuredWellness);
+    expect(analyticsWellness).toEqual(normalizedWellness);
 
     const geminiContext = vi.mocked(GeminiService.generateWeeklyPlanAI).mock.calls[0]?.[1];
-    expect(geminiContext?.wellness).toEqual(measuredWellness);
+    expect(geminiContext?.wellness).toEqual(normalizedWellness);
   });
 });
