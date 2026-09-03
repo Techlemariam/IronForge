@@ -31,7 +31,7 @@ export class AnalyticsService {
 
     if (lastEpicSet) {
       const daysSince =
-        (new Date().getTime() - new Date(lastEpicSet.date).getTime()) / (1000 * 3600 * 24);
+        (Date.now() - new Date(lastEpicSet.date).getTime()) / (1000 * 3600 * 24);
       strengthScore = Math.max(0, Math.min(100, 100 - (daysSince - 3) * 10));
     }
 
