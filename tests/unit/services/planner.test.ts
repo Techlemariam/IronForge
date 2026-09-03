@@ -110,4 +110,61 @@ describe('PlannerService', () => {
     expect(strengthHistory?.[0]).not.toHaveProperty('rpe');
     expect(strengthHistory?.[0]).not.toHaveProperty('e1rm');
   });
+
+  it('keeps missing cardio heart rate unknown and passes persisted load unchanged', async () => {
+    const loggedAt = new Date('2026-09-02T18:30:00.000Z');
+    findUniqueMock.mockResolvedValue({
+      id: 'user1',
+      intervalsApiKey: null,
+      intervalsAthleteId: null,
+      exerciseLogs: [],
+      cardioLogs: [
+        {
+          intervalsId: 'cardio-unknown-hr',
+          date: loggedAt,
+          type: 'Ride',
+          duration: 1800,
+          load: 0,
+          averageHr: null,
+        },
+        {
+          intervalsId: 'cardio-high-hr',
+          date: loggedAt,
+          type: 'Run',
+          duration: 1200,
+          load: 42,
+          averageHr: 170,
+        },
+        {
+          intervalsId: 'cardio-zero-hr',
+          date: loggedAt,
+          type: 'Walk',
+          duration: 600,
+          load: 5,
+          averageHr: 0,
+        },
+      ],
+      activePath: 'HYBRID_WARDEN',
+    });
+
+    await PlannerService.triggerWeeklyPlanGeneration('user1');
+
+    const calls = vi.mocked(AnalyticsService.calculateTTB).mock.calls;
+    const activities = calls[calls.length - 1]?.[1];
+
+    expect(activities?.[0]).toEqual({
+      id: 'cardio-unknown-hr',
+      start_date_local: loggedAt.toISOString(),
+      type: 'Ride',
+      moving_time: 1800,
+      icu_training_load: 0,
+    });
+    expect(activities?.[0]).not.toHaveProperty('icu_intensity');
+
+    expect(activities?.[1]?.icu_intensity).toBe(90);
+    expect(activities?.[1]?.icu_training_load).toBe(42);
+
+    expect(activities?.[2]?.icu_intensity).toBe(60);
+    expect(activities?.[2]?.icu_training_load).toBe(5);
+  });
 });

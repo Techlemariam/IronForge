@@ -99,8 +99,8 @@ export const PlannerService = {
       start_date_local: l.date.toISOString(),
       type: l.type || undefined,
       moving_time: l.duration,
-      icu_intensity: (l.averageHr || 140) > 160 ? 90 : 60,
-      icu_training_load: l.load || 0,
+      ...(l.averageHr == null ? {} : { icu_intensity: l.averageHr > 160 ? 90 : 60 }),
+      icu_training_load: l.load,
     }));
 
     // TTB only needs strength recency and Epic/PR evidence. Do not fabricate
