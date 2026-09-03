@@ -121,10 +121,8 @@ export const PlannerService = {
 
     const ttb = AnalyticsService.calculateTTB(strengthHistory, activities, ttbWellness);
 
-    // If auditor says we are neglecting something, that becomes lowest TTB
-    if (auditReport.highestPriorityGap) {
-      ttb.lowest = 'strength'; // Weakness found from explicit audit evidence
-    }
+    // Keep audit evidence separate from TTB. `lowest` only represents a
+    // complete three-domain TTB comparison; auditReport is passed independently.
 
     // 6. Generate Plan via Oracle
     const recommendation = await OracleService.consult(
