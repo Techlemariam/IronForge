@@ -1,6 +1,6 @@
 'use server';
 
-import { getWellness } from '@/lib/intervals';
+import { getWellness, type WellnessData } from '@/lib/intervals';
 import prisma from '@/lib/prisma';
 import { AnalyticsService } from '@/services/analytics';
 import { GeminiService } from '@/services/gemini';
@@ -18,6 +18,24 @@ function getNextMonday() {
   const nextMonday = new Date(d.setDate(diff));
   nextMonday.setHours(0, 0, 0, 0);
   return nextMonday;
+}
+
+function normalizeProgramWellness(source: WellnessData): IntervalsWellness {
+  const wellness: IntervalsWellness = {};
+
+  if (source.id !== undefined) wellness.id = source.id;
+  if (source.bodyBattery != null) wellness.bodyBattery = source.bodyBattery;
+  if (source.sleepScore != null) wellness.sleepScore = source.sleepScore;
+  if (source.hrv != null) wellness.hrv = source.hrv;
+  if (source.restingHR != null) wellness.restingHR = source.restingHR;
+  if (source.vo2max != null) wellness.vo2max = source.vo2max;
+  if (source.ctl != null) wellness.ctl = source.ctl;
+  if (source.atl != null) wellness.atl = source.atl;
+  if (source.tsb != null) wellness.tsb = source.tsb;
+  if (source.sleepSecs != null) wellness.sleepSecs = source.sleepSecs;
+  if (source.rampRate != null) wellness.ramp_rate = source.rampRate;
+
+  return wellness;
 }
 
 export async function generateProgramAction(preferences: {
@@ -38,7 +56,7 @@ export async function generateProgramAction(preferences: {
   if (sessionUser.intervalsApiKey && sessionUser.intervalsAthleteId) {
     const today = new Date().toISOString().split('T')[0];
     const w = await getWellness(today, sessionUser.intervalsApiKey, sessionUser.intervalsAthleteId);
-    if (w) wellness = w;
+    if (w && !Array.isArray(w)) wellness = normalizeProgramWellness(w);
   }
 
   // 3. Fetch real TTB Analysis
