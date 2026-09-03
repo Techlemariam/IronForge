@@ -98,4 +98,34 @@ describe('generateProgramAction recovery evidence', () => {
     expect(geminiContext?.wellness).not.toHaveProperty('bodyBattery');
     expect(geminiContext?.wellness).not.toHaveProperty('sleepScore');
   });
+
+  it('preserves measured Intervals recovery when available', async () => {
+    vi.mocked(prisma.user.findUnique).mockResolvedValue({
+      id: 'user-1',
+      intervalsApiKey: 'intervals-key',
+      intervalsAthleteId: 'athlete-1',
+      heroName: 'Titan',
+      level: 1,
+      activePath: 'WARDEN',
+    } as Awaited<ReturnType<typeof prisma.user.findUnique>>);
+
+    const measuredWellness = {
+      date: '2026-09-03',
+      bodyBattery: 27,
+      sleepScore: 62,
+      hrv: 48,
+      tsb: -8,
+    } as NonNullable<Awaited<ReturnType<typeof getWellness>>>;
+    vi.mocked(getWellness).mockResolvedValue(measuredWellness);
+
+    await generateProgramAction({ intent: 'Strength', daysPerWeek: 3 });
+
+    expect(getWellness).toHaveBeenCalledTimes(1);
+
+    const analyticsWellness = vi.mocked(AnalyticsService.calculateTTB).mock.calls[0]?.[2];
+    expect(analyticsWellness).toEqual(measuredWellness);
+
+    const geminiContext = vi.mocked(GeminiService.generateWeeklyPlanAI).mock.calls[0]?.[1];
+    expect(geminiContext?.wellness).toEqual(measuredWellness);
+  });
 });
