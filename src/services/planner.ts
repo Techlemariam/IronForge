@@ -1,6 +1,6 @@
+import { getWellness } from '@/lib/intervals';
+import type { WellnessData } from '@/lib/intervals';
 import { runFullAudit } from '@/services/auditor-orchestrator';
-import { getWellness } from '../lib/intervals';
-import type { WellnessData } from '../lib/intervals';
 import prisma from '../lib/prisma';
 import type { IntervalsActivity, IntervalsWellness, TrainingPath } from '../types';
 import { AnalyticsService } from './analytics';
