@@ -100,7 +100,7 @@ export const PlannerService = {
       type: l.type || undefined,
       moving_time: l.duration,
       ...(l.averageHr == null ? {} : { icu_intensity: l.averageHr > 160 ? 90 : 60 }),
-      icu_training_load: l.load,
+      ...(l.load == null ? {} : { icu_training_load: l.load }),
     }));
 
     // TTB only needs strength recency and Epic/PR evidence. Do not fabricate
