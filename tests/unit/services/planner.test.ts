@@ -1,6 +1,7 @@
 import { getWellness } from '@/lib/intervals';
 import prisma from '@/lib/prisma';
 import { AnalyticsService } from '@/services/analytics';
+import { OracleService } from '@/services/oracle';
 import { PlannerService } from '@/services/planner';
 import { describe, expect, it, vi } from 'vitest';
 
@@ -67,8 +68,20 @@ const findUniqueMock = prisma.user.findUnique as unknown as AsyncMock;
 const getWellnessMock = getWellness as unknown as AsyncMock;
 
 describe('PlannerService', () => {
-  it('should generate a plan for a valid user', async () => {
-    getWellnessMock.mockResolvedValue({ hrv: 60, tsb: 0, ctl: 50, atl: 50 });
+  it('should generate a plan for a valid user and preserve measured zero wellness evidence', async () => {
+    getWellnessMock.mockResolvedValue({
+      id: 'wellness-1',
+      bodyBattery: 0,
+      sleepScore: 0,
+      hrv: 60,
+      restingHR: 0,
+      vo2max: 0,
+      ctl: 0,
+      atl: 0,
+      tsb: 0,
+      sleepSecs: 0,
+      rampRate: 0,
+    });
 
     // Setup mock user
     findUniqueMock.mockResolvedValue({
@@ -92,6 +105,22 @@ describe('PlannerService', () => {
     expect(wellnessEvidence).toEqual({ hrv: 60, tsb: 0 });
     expect(wellnessEvidence).not.toHaveProperty('ctl');
     expect(wellnessEvidence).not.toHaveProperty('atl');
+
+    const oracleCalls = vi.mocked(OracleService.consult).mock.calls;
+    const oracleWellness = oracleCalls[oracleCalls.length - 1]?.[0];
+    expect(oracleWellness).toEqual({
+      id: 'wellness-1',
+      bodyBattery: 0,
+      sleepScore: 0,
+      hrv: 60,
+      restingHR: 0,
+      vo2max: 0,
+      ctl: 0,
+      atl: 0,
+      tsb: 0,
+      sleepSecs: 0,
+      ramp_rate: 0,
+    });
   });
 
   it('passes only real strength evidence to TTB without synthetic RPE or e1RM', async () => {
@@ -122,6 +151,10 @@ describe('PlannerService', () => {
     expect(strengthHistory?.[0]).not.toHaveProperty('rpe');
     expect(strengthHistory?.[0]).not.toHaveProperty('e1rm');
     expect(wellnessEvidence).toEqual({});
+
+    const oracleCalls = vi.mocked(OracleService.consult).mock.calls;
+    const oracleWellness = oracleCalls[oracleCalls.length - 1]?.[0];
+    expect(oracleWellness).toEqual({});
   });
 
   it('keeps unknown cardio load absent while preserving measured zero and HR evidence', async () => {
