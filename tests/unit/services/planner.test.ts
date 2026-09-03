@@ -111,7 +111,7 @@ describe('PlannerService', () => {
     expect(strengthHistory?.[0]).not.toHaveProperty('e1rm');
   });
 
-  it('keeps missing cardio heart rate unknown and passes persisted load unchanged', async () => {
+  it('keeps unknown cardio load absent while preserving measured zero and HR evidence', async () => {
     const loggedAt = new Date('2026-09-02T18:30:00.000Z');
     findUniqueMock.mockResolvedValue({
       id: 'user1',
@@ -120,10 +120,18 @@ describe('PlannerService', () => {
       exerciseLogs: [],
       cardioLogs: [
         {
-          intervalsId: 'cardio-unknown-hr',
+          intervalsId: 'cardio-unknown-load',
           date: loggedAt,
           type: 'Ride',
           duration: 1800,
+          load: null,
+          averageHr: null,
+        },
+        {
+          intervalsId: 'cardio-zero-load',
+          date: loggedAt,
+          type: 'Ride',
+          duration: 900,
           load: 0,
           averageHr: null,
         },
@@ -153,18 +161,27 @@ describe('PlannerService', () => {
     const activities = calls[calls.length - 1]?.[1];
 
     expect(activities?.[0]).toEqual({
-      id: 'cardio-unknown-hr',
+      id: 'cardio-unknown-load',
       start_date_local: loggedAt.toISOString(),
       type: 'Ride',
       moving_time: 1800,
-      icu_training_load: 0,
     });
     expect(activities?.[0]).not.toHaveProperty('icu_intensity');
+    expect(activities?.[0]).not.toHaveProperty('icu_training_load');
 
-    expect(activities?.[1]?.icu_intensity).toBe(90);
-    expect(activities?.[1]?.icu_training_load).toBe(42);
+    expect(activities?.[1]).toEqual({
+      id: 'cardio-zero-load',
+      start_date_local: loggedAt.toISOString(),
+      type: 'Ride',
+      moving_time: 900,
+      icu_training_load: 0,
+    });
+    expect(activities?.[1]).not.toHaveProperty('icu_intensity');
 
-    expect(activities?.[2]?.icu_intensity).toBe(60);
-    expect(activities?.[2]?.icu_training_load).toBe(5);
+    expect(activities?.[2]?.icu_intensity).toBe(90);
+    expect(activities?.[2]?.icu_training_load).toBe(42);
+
+    expect(activities?.[3]?.icu_intensity).toBe(60);
+    expect(activities?.[3]?.icu_training_load).toBe(5);
   });
 });
