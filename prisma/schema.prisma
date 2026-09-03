@@ -312,7 +312,7 @@ model MeditationLog {
   date            DateTime @default(now())
   durationMinutes Int
   source          String
-  user             User     @relation(fields: [userId], references: [id])
+  user            User     @relation(fields: [userId], references: [id])
 
   @@index([userId, date])
 }
@@ -337,7 +337,7 @@ model UnlockedMonster {
   kills      Int      @default(0)
   unlockedAt DateTime @default(now())
   monster    RaidBoss @relation(fields: [monsterId], references: [id])
-  user       User      @relation(fields: [userId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
 
   @@id([userId, monsterId])
 }
