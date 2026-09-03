@@ -4,6 +4,7 @@ import { getWellness } from '@/lib/intervals';
 import prisma from '@/lib/prisma';
 import { AnalyticsService } from '@/services/analytics';
 import { GeminiService } from '@/services/gemini';
+import type { IntervalsWellness } from '@/types';
 import type { Prisma } from '@prisma/client';
 
 import { getSession } from '@/lib/auth';
@@ -33,11 +34,11 @@ export async function generateProgramAction(preferences: {
   if (!sessionUser) throw new Error('User not found');
 
   // 2. Fetch Context
-  let wellness = { id: 'unknown', bodyBattery: 80, sleepScore: 80 };
+  let wellness: IntervalsWellness = {};
   if (sessionUser.intervalsApiKey && sessionUser.intervalsAthleteId) {
     const today = new Date().toISOString().split('T')[0];
     const w = await getWellness(today, sessionUser.intervalsApiKey, sessionUser.intervalsAthleteId);
-    if (w) wellness = w as typeof wellness;
+    if (w) wellness = w;
   }
 
   // 3. Fetch real TTB Analysis
