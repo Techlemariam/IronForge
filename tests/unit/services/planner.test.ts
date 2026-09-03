@@ -58,10 +58,16 @@ vi.mock('@/services/oracle', () => ({
   },
 }));
 
+type FindUniqueMock = {
+  mockResolvedValue: (value: unknown) => void;
+};
+
+const findUniqueMock = prisma.user.findUnique as unknown as FindUniqueMock;
+
 describe('PlannerService', () => {
   it('should generate a plan for a valid user', async () => {
     // Setup mock user
-    (prisma.user.findUnique as any).mockResolvedValue({
+    findUniqueMock.mockResolvedValue({
       id: 'user1',
       hevyApiKey: 'test-key',
       intervalsApiKey: 'test-key',
@@ -80,7 +86,7 @@ describe('PlannerService', () => {
 
   it('passes only real strength evidence to TTB without synthetic RPE or e1RM', async () => {
     const loggedAt = new Date('2026-09-01T18:30:00.000Z');
-    (prisma.user.findUnique as any).mockResolvedValue({
+    findUniqueMock.mockResolvedValue({
       id: 'user1',
       intervalsApiKey: null,
       intervalsAthleteId: null,
