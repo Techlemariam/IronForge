@@ -1,3 +1,4 @@
+import { getWellness } from '@/lib/intervals';
 import prisma from '@/lib/prisma';
 import { AnalyticsService } from '@/services/analytics';
 import { PlannerService } from '@/services/planner';
@@ -34,7 +35,7 @@ vi.mock('@/services/auditor-orchestrator', () => {
   };
 });
 vi.mock('@/lib/intervals', () => ({
-  getWellness: vi.fn().mockResolvedValue({ hrv: 60, tsb: 0, ctl: 50, atl: 50 }),
+  getWellness: vi.fn(),
 }));
 vi.mock('@/services/analytics', () => ({
   AnalyticsService: {
@@ -58,14 +59,17 @@ vi.mock('@/services/oracle', () => ({
   },
 }));
 
-type FindUniqueMock = {
+type AsyncMock = {
   mockResolvedValue: (value: unknown) => void;
 };
 
-const findUniqueMock = prisma.user.findUnique as unknown as FindUniqueMock;
+const findUniqueMock = prisma.user.findUnique as unknown as AsyncMock;
+const getWellnessMock = getWellness as unknown as AsyncMock;
 
 describe('PlannerService', () => {
   it('should generate a plan for a valid user', async () => {
+    getWellnessMock.mockResolvedValue({ hrv: 60, tsb: 0, ctl: 50, atl: 50 });
+
     // Setup mock user
     findUniqueMock.mockResolvedValue({
       id: 'user1',
