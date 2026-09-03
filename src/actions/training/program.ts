@@ -79,10 +79,10 @@ export async function generateProgramAction(preferences: {
   }));
 
   const activities: IntervalsActivity[] = dbCardio.map((c) => ({
-    icu_intensity: c.load, // Using load as intensity proxy for simple TTB
     moving_time: c.duration,
     type: c.type,
     start_date_local: c.date.toISOString(),
+    ...(c.averageHr != null ? { icu_intensity: c.averageHr > 160 ? 90 : 60 } : {}),
   }));
 
   const ttb = AnalyticsService.calculateTTB(history, activities, wellness);
