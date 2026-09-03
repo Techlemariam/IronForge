@@ -2,7 +2,7 @@ import { runFullAudit } from '@/services/auditor-orchestrator';
 import { getWellness } from '../lib/intervals';
 import type { WellnessData } from '../lib/intervals';
 import prisma from '../lib/prisma';
-import type { ExerciseLog, IntervalsActivity, TrainingPath } from '../types';
+import type { IntervalsActivity, TrainingPath } from '../types';
 import { AnalyticsService } from './analytics';
 import { OracleService } from './oracle';
 
@@ -103,23 +103,16 @@ export const PlannerService = {
       icu_training_load: l.load || 0,
     }));
 
-    // Use AnalyticsService for TTB
-    // Prisma types are compatible with Analytics requirements
-    // We map to ExerciseLog[] locally to adding defaults for missing fields if needed
-    // Analytics Service expects e1rm and rpe for calculation
-    const exerciseLogs: ExerciseLog[] = user.exerciseLogs.map((log) => ({
-      ...log,
-      date: log.date.toISOString(), // Convert Date to string
-      sets: log.sets as unknown as import('@/types').Set[], // JsonValue to expected type
-      e1rm: 0, // Defaulting to 0 as Prisma model lacks this column? Checked schema: it's missing.
-      rpe: 0, // Defaulting to 0
-      isEpic: log.isPersonalRecord, // Mapping isPersonalRecord to isEpic? Wait, check definitions.
-      archetype: log.archetype as unknown as import('@/types').Archetype, // Prisma Enum vs Internal Enum mismatch prevention
+    // TTB only needs strength recency and Epic/PR evidence. Do not fabricate
+    // RPE or e1RM values merely to satisfy a broader analytics type.
+    const strengthHistory = user.exerciseLogs.map((log) => ({
+      date: log.date.toISOString(),
+      isEpic: log.isPersonalRecord,
     }));
 
     // Ensure wellness matches the shape expected by Analytics (WellnessData is compatible)
     const ttb = AnalyticsService.calculateTTB(
-      exerciseLogs,
+      strengthHistory,
       activities,
       wellness as unknown as import('@/types').IntervalsWellness
     );

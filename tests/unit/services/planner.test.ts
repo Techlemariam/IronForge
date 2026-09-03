@@ -1,4 +1,5 @@
 import prisma from '@/lib/prisma';
+import { AnalyticsService } from '@/services/analytics';
 import { PlannerService } from '@/services/planner';
 import { describe, expect, it, vi } from 'vitest';
 
@@ -57,10 +58,16 @@ vi.mock('@/services/oracle', () => ({
   },
 }));
 
+type FindUniqueMock = {
+  mockResolvedValue: (value: unknown) => void;
+};
+
+const findUniqueMock = prisma.user.findUnique as unknown as FindUniqueMock;
+
 describe('PlannerService', () => {
   it('should generate a plan for a valid user', async () => {
     // Setup mock user
-    (prisma.user.findUnique as any).mockResolvedValue({
+    findUniqueMock.mockResolvedValue({
       id: 'user1',
       hevyApiKey: 'test-key',
       intervalsApiKey: 'test-key',
@@ -75,5 +82,32 @@ describe('PlannerService', () => {
     expect(plan).toBeDefined();
     expect(plan.id).toMatch(/^plan_/);
     expect(prisma.weeklyPlan.create).toHaveBeenCalled();
+  });
+
+  it('passes only real strength evidence to TTB without synthetic RPE or e1RM', async () => {
+    const loggedAt = new Date('2026-09-01T18:30:00.000Z');
+    findUniqueMock.mockResolvedValue({
+      id: 'user1',
+      intervalsApiKey: null,
+      intervalsAthleteId: null,
+      exerciseLogs: [
+        {
+          id: 'log-1',
+          date: loggedAt,
+          isPersonalRecord: true,
+        },
+      ],
+      cardioLogs: [],
+      activePath: 'HYBRID_WARDEN',
+    });
+
+    await PlannerService.triggerWeeklyPlanGeneration('user1');
+
+    const calls = vi.mocked(AnalyticsService.calculateTTB).mock.calls;
+    const strengthHistory = calls[calls.length - 1]?.[0];
+
+    expect(strengthHistory).toEqual([{ date: loggedAt.toISOString(), isEpic: true }]);
+    expect(strengthHistory?.[0]).not.toHaveProperty('rpe');
+    expect(strengthHistory?.[0]).not.toHaveProperty('e1rm');
   });
 });
