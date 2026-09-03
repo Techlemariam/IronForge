@@ -18,7 +18,7 @@ export class AnalyticsService {
    * This drives The Oracle 2.0 Logic.
    */
   public static calculateTTB(
-    history: ExerciseLog[],
+    history: Array<Pick<ExerciseLog, 'date' | 'isEpic'>>,
     activities: IntervalsActivity[],
     wellness: IntervalsWellness
   ): TTBIndices {
