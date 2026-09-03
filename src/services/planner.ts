@@ -1,5 +1,4 @@
 import { getWellness } from '@/lib/intervals';
-import type { WellnessData } from '@/lib/intervals';
 import { runFullAudit } from '@/services/auditor-orchestrator';
 import prisma from '../lib/prisma';
 import type { IntervalsActivity, IntervalsWellness, TrainingPath } from '../types';
@@ -54,49 +53,27 @@ export const PlannerService = {
     const auditReport = await runFullAudit(true, userId);
 
     // 3. Fetch Intervals Wellness
-    // `wellness` retains the legacy Planner/Oracle shape for now. TTB gets a
-    // separate evidence object so these placeholders cannot masquerade as
-    // measured Intervals physiology.
-    let wellness: WellnessData = {
-      date: new Date().toISOString(),
-      ctl: 0,
-      atl: 0,
-      tsb: 0,
-      id: 'unknown',
-      hrv: null,
-      restingHR: null,
-      readiness: null,
-      bodyBattery: undefined,
-      sleepScore: null,
-      sleepSecs: null,
-      rampRate: null,
-      vo2max: null,
-      // Phase 2 fields
-      avgSleepingHR: null,
-      sleepQuality: null,
-      hydration: null,
-      hrvSDNN: null,
-      baevskySI: null,
-      stress: null,
-      mood: null,
-      fatigue: null,
-      menstrualPhase: null,
-      menstrualPhasePredicted: null,
-      weight: null,
-      spO2: null,
-      respiration: null,
-      bloodGlucose: null,
-      injury: null,
-      soreness: null,
-      steps: null,
-    };
+    // Provider absence is not physiology: Oracle and TTB each receive only
+    // evidence that actually exists at their boundary.
+    const wellness: IntervalsWellness = {};
     const ttbWellness: IntervalsWellness = {};
 
     if (user.intervalsApiKey && user.intervalsAthleteId) {
       const today = new Date().toISOString().split('T')[0];
       const w = await getWellness(today, user.intervalsApiKey, user.intervalsAthleteId);
       if (w && !Array.isArray(w)) {
-        wellness = w;
+        if (w.id != null) wellness.id = w.id;
+        if (w.bodyBattery != null) wellness.bodyBattery = w.bodyBattery;
+        if (w.sleepScore != null) wellness.sleepScore = w.sleepScore;
+        if (w.hrv != null) wellness.hrv = w.hrv;
+        if (w.restingHR != null) wellness.restingHR = w.restingHR;
+        if (w.vo2max != null) wellness.vo2max = w.vo2max;
+        if (w.ctl != null) wellness.ctl = w.ctl;
+        if (w.atl != null) wellness.atl = w.atl;
+        if (w.tsb != null) wellness.tsb = w.tsb;
+        if (w.sleepSecs != null) wellness.sleepSecs = w.sleepSecs;
+        if (w.rampRate != null) wellness.ramp_rate = w.rampRate;
+
         if (w.hrv != null) ttbWellness.hrv = w.hrv;
         if (w.tsb != null) ttbWellness.tsb = w.tsb;
       }
@@ -126,7 +103,7 @@ export const PlannerService = {
 
     // 6. Generate Plan via Oracle
     const recommendation = await OracleService.consult(
-      wellness as unknown as IntervalsWellness,
+      wellness,
       ttb,
       [], // events
       auditReport,
