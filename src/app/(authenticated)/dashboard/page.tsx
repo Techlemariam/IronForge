@@ -25,7 +25,6 @@ import { Progression } from '@/services/progression';
 import { createClient } from '@/utils/supabase/server';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import React from 'react';
 
 import type {
   IntervalsActivity,
@@ -145,7 +144,7 @@ export default async function Page() {
 
   // Legacy dashboard/Oracle wellness fallback. This is intentionally kept
   // separate from TTB and will be cleaned up in a later bounded slice.
-  if (!wellness || !wellness.id) {
+  if (!wellness?.id) {
     wellness = {
       ctl: 0,
       ramp_rate: 0,
