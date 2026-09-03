@@ -143,7 +143,6 @@ export default async function Page() {
     wellness = {
       ctl: 0,
       ramp_rate: 0,
-      bodyBattery: 0,
       sleepScore: 0,
     } as IntervalsWellness;
   }
