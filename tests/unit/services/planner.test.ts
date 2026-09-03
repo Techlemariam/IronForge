@@ -34,7 +34,7 @@ vi.mock('@/services/auditor-orchestrator', () => {
   };
 });
 vi.mock('@/lib/intervals', () => ({
-  getWellness: vi.fn().mockResolvedValue({ tsb: 0, ctl: 50, atl: 50 }),
+  getWellness: vi.fn().mockResolvedValue({ hrv: 60, tsb: 0, ctl: 50, atl: 50 }),
 }));
 vi.mock('@/services/analytics', () => ({
   AnalyticsService: {
@@ -82,6 +82,12 @@ describe('PlannerService', () => {
     expect(plan).toBeDefined();
     expect(plan.id).toMatch(/^plan_/);
     expect(prisma.weeklyPlan.create).toHaveBeenCalled();
+
+    const calls = vi.mocked(AnalyticsService.calculateTTB).mock.calls;
+    const wellnessEvidence = calls[calls.length - 1]?.[2];
+    expect(wellnessEvidence).toEqual({ hrv: 60, tsb: 0 });
+    expect(wellnessEvidence).not.toHaveProperty('ctl');
+    expect(wellnessEvidence).not.toHaveProperty('atl');
   });
 
   it('passes only real strength evidence to TTB without synthetic RPE or e1RM', async () => {
@@ -104,11 +110,14 @@ describe('PlannerService', () => {
     await PlannerService.triggerWeeklyPlanGeneration('user1');
 
     const calls = vi.mocked(AnalyticsService.calculateTTB).mock.calls;
-    const strengthHistory = calls[calls.length - 1]?.[0];
+    const latestCall = calls[calls.length - 1];
+    const strengthHistory = latestCall?.[0];
+    const wellnessEvidence = latestCall?.[2];
 
     expect(strengthHistory).toEqual([{ date: loggedAt.toISOString(), isEpic: true }]);
     expect(strengthHistory?.[0]).not.toHaveProperty('rpe');
     expect(strengthHistory?.[0]).not.toHaveProperty('e1rm');
+    expect(wellnessEvidence).toEqual({});
   });
 
   it('keeps unknown cardio load absent while preserving measured zero and HR evidence', async () => {
