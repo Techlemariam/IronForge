@@ -171,6 +171,8 @@ export const GeminiService = {
     if (!process.env.API_KEY) throw new Error('No API Key');
 
     const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const bodyBattery = context.wellness.bodyBattery;
+    const bodyBatteryLabel = typeof bodyBattery === 'number' ? String(bodyBattery) : 'unknown';
 
     const prompt = `
             You are The Iron Oracle, creating a 7-day training program for a specific Titan.
@@ -184,13 +186,13 @@ export const GeminiService = {
             Context:
             - Intent: ${context.intent}
             - Frequency: ${context.daysPerWeek} days/week
-            - Physiology: Body Battery ${context.wellness.bodyBattery}, Strength Balance ${context.ttb.strength}
+            - Physiology: Body Battery ${bodyBatteryLabel}, Strength Balance ${context.ttb.strength}
 
             Directives:
             1. Generate a 7-day plan (Monday-Sunday).
             2. Respect the 'daysPerWeek' constraint - assign "Rest Day" to others.
             3. progressive overload principles appropriate for the '${context.intent}'.
-            4. Adjust volume based on Body Battery (if < 30, force deload).
+            4. Adjust volume from measured recovery evidence. If Body Battery is measured and < 30, force deload. If Body Battery is unknown, do not infer healthy recovery or increase load because data is missing; keep difficulty at Normal or easier and use conservative volume.
 
             Output JSON Schema:
             {
