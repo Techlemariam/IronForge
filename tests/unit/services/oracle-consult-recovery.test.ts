@@ -24,14 +24,14 @@ describe('OracleService.consult recovery evidence', () => {
     expect(result.rationale).toContain('Low Body Battery (20)');
   });
 
-  it('can choose recovery from explicit recovery analysis while Body Battery is unknown', async () => {
+  it('honors LOW_RECOVERY analysis while Body Battery is unknown', async () => {
     const result = await OracleService.consult(
       {},
       ttb,
       [],
       undefined,
       undefined,
-      { state: 'RECOVERY', reason: 'Recent local training load remains high' },
+      { state: 'LOW_RECOVERY', reason: 'Recent local training load remains high' },
     );
 
     expect(result.type).toBe('RECOVERY');
