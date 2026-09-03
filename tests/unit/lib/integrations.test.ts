@@ -68,7 +68,7 @@ describe('Bio-Integrations Tests', () => {
 
       fetchMock.mockResolvedValue({
         ok: true,
-        json: async () => mockResponse,
+        json: () => mockResponse,
       });
 
       const result = await getWellness('2024-01-01', apiKey, athleteId);
