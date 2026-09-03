@@ -204,23 +204,12 @@ async function createLegacyHevyWorkoutLogs(
       exerciseMap.set(title.toLowerCase(), exerciseId);
     }
 
-    let bestE1rm = 0;
-    for (const set of exercise.sets) {
-      const weight = set.weight_kg || 0;
-      const reps = set.reps || 0;
-      if (weight > 0 && reps > 0) {
-        const e1rm = weight * (1 + reps / 30);
-        if (e1rm > bestE1rm) bestE1rm = e1rm;
-      }
-    }
-
-    if (bestE1rm > 0) {
+    if (exercise.sets.length > 0) {
       logsToCreate.push({
         userId,
         date,
         exerciseId,
         sets: exercise.sets as Prisma.InputJsonValue,
-        isPersonalRecord: bestE1rm > 100,
       });
     }
   }
