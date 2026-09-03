@@ -19,14 +19,15 @@ const TTBCompass: React.FC<TTBCompassProps> = ({ indices }) => {
     return { x, y };
   };
 
-  const hasCompleteTtb =
-    indices.wellness !== null && indices.strength !== null && indices.endurance !== null;
+  const wellnessScore = indices.wellness;
+  const strengthScore = indices.strength;
+  const enduranceScore = indices.endurance;
 
-  if (!hasCompleteTtb) {
+  if (wellnessScore === null || strengthScore === null || enduranceScore === null) {
     const scoreRows = [
-      ['WEL', indices.wellness],
-      ['STR', indices.strength],
-      ['END', indices.endurance],
+      ['WEL', wellnessScore],
+      ['STR', strengthScore],
+      ['END', enduranceScore],
     ] as const;
 
     return (
@@ -57,15 +58,15 @@ const TTBCompass: React.FC<TTBCompassProps> = ({ indices }) => {
     );
   }
 
-  const pWellness = getCoords(-90, indices.wellness);
-  const pStrength = getCoords(30, indices.strength);
-  const pEndurance = getCoords(150, indices.endurance);
+  const pWellness = getCoords(-90, wellnessScore);
+  const pStrength = getCoords(30, strengthScore);
+  const pEndurance = getCoords(150, enduranceScore);
 
   const maxWellness = getCoords(-90, 100);
   const maxStrength = getCoords(30, 100);
   const maxEndurance = getCoords(150, 100);
 
-  const healthPercentage = indices.wellness;
+  const healthPercentage = wellnessScore;
   const healthStatus =
     healthPercentage > 85
       ? 'FRESH'
