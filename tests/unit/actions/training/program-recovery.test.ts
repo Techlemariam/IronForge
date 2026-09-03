@@ -53,7 +53,7 @@ vi.mock('next/cache', () => ({
   revalidatePath: vi.fn(),
 }));
 
-describe('generateProgramAction recovery evidence', () => {
+describe('generateProgramAction evidence mapping', () => {
   beforeEach(() => {
     vi.clearAllMocks();
 
@@ -133,5 +133,25 @@ describe('generateProgramAction recovery evidence', () => {
 
     const geminiContext = vi.mocked(GeminiService.generateWeeklyPlanAI).mock.calls[0]?.[1];
     expect(geminiContext?.wellness).toEqual(normalizedWellness);
+  });
+
+  it('passes only real strength recency and PR evidence to TTB', async () => {
+    const loggedAt = new Date('2026-09-02T18:30:00.000Z');
+    vi.mocked(prisma.exerciseLog.findMany).mockResolvedValue(
+      [
+        {
+          date: loggedAt,
+          isPersonalRecord: true,
+        },
+      ] as unknown as Awaited<ReturnType<typeof prisma.exerciseLog.findMany>>
+    );
+
+    await generateProgramAction({ intent: 'Strength', daysPerWeek: 3 });
+
+    const strengthHistory = vi.mocked(AnalyticsService.calculateTTB).mock.calls[0]?.[0];
+    expect(strengthHistory).toEqual([{ date: loggedAt.toISOString(), isEpic: true }]);
+    expect(strengthHistory?.[0]).not.toHaveProperty('exerciseId');
+    expect(strengthHistory?.[0]).not.toHaveProperty('e1rm');
+    expect(strengthHistory?.[0]).not.toHaveProperty('rpe');
   });
 });

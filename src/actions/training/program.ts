@@ -4,7 +4,7 @@ import { getWellness, type WellnessData } from '@/lib/intervals';
 import prisma from '@/lib/prisma';
 import { AnalyticsService } from '@/services/analytics';
 import { GeminiService } from '@/services/gemini';
-import type { IntervalsWellness } from '@/types';
+import type { IntervalsActivity, IntervalsWellness } from '@/types';
 import type { Prisma } from '@prisma/client';
 
 import { getSession } from '@/lib/auth';
@@ -73,32 +73,19 @@ export async function generateProgramAction(preferences: {
     }),
   ]);
 
-  // Map Prisma logs to Analytics format
-  const history = dbLogs.map((log) => {
-    const sets = (log.sets as { weight?: number; reps?: number; rpe?: number }[]) || [];
-    const bestE1rm =
-      sets.length > 0
-        ? Math.max(...sets.map((s) => (s.weight || 0) * (1 + (s.reps || 0) / 30)))
-        : 0;
-    const avgRpe =
-      sets.length > 0 ? sets.reduce((acc, s) => acc + (s.rpe || 7), 0) / sets.length : 7;
-    return {
-      date: log.date.toISOString(),
-      exerciseId: log.exerciseId,
-      e1rm: bestE1rm,
-      rpe: avgRpe,
-      isEpic: log.isPersonalRecord,
-    };
-  });
+  const history = dbLogs.map((log) => ({
+    date: log.date.toISOString(),
+    isEpic: log.isPersonalRecord,
+  }));
 
-  const activities = dbCardio.map((c) => ({
+  const activities: IntervalsActivity[] = dbCardio.map((c) => ({
     icu_intensity: c.load, // Using load as intensity proxy for simple TTB
     moving_time: c.duration,
     type: c.type,
     start_date_local: c.date.toISOString(),
   }));
 
-  const ttb = AnalyticsService.calculateTTB(history, activities as any, wellness);
+  const ttb = AnalyticsService.calculateTTB(history, activities, wellness);
 
   // 4. Fetch Capabilities & Status
   const [capabilities, titan] = await Promise.all([
