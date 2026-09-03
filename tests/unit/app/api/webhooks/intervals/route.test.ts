@@ -69,8 +69,8 @@ describe('Intervals activity webhook cardio load fidelity', () => {
     vi.mocked(prisma.cardioLog.upsert).mockResolvedValue({} as Awaited<
       ReturnType<typeof prisma.cardioLog.upsert>
     >);
-    vi.mocked(Progression.awardGold).mockResolvedValue(undefined);
-    vi.mocked(Progression.addExperience).mockResolvedValue(undefined);
+    vi.mocked(Progression.awardGold).mockResolvedValue();
+    vi.mocked(Progression.addExperience).mockResolvedValue();
   });
 
   it('persists missing provider training load as null', async () => {
