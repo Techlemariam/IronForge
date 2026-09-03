@@ -43,6 +43,7 @@ describe('Oracle V3', () => {
     (prisma.cardioLog.findMany as any).mockResolvedValue([]);
     (prisma.exerciseLog.findMany as any).mockResolvedValue([]);
     (prisma.duelChallenge.findFirst as any).mockResolvedValue(null); // Default no duel
+    (getWellness as any).mockResolvedValue({});
     (getActivities as any).mockResolvedValue([]);
     (prisma.user.findUnique as any).mockResolvedValue(mockUser);
   });
@@ -52,6 +53,12 @@ describe('Oracle V3', () => {
     const decree = await Oracle.generateDailyDecree('u1');
     expect(decree.code).toBeDefined();
     expect(decree.actions).toBeDefined();
+    expect(decree.code).toBe('BASELINE_GRIND');
+  });
+
+  it('should not force recovery when Body Battery is missing', async () => {
+    const decree = await Oracle.generateDailyDecree('u1');
+
     expect(decree.code).toBe('BASELINE_GRIND');
   });
 
@@ -66,6 +73,14 @@ describe('Oracle V3', () => {
     expect(decree.code).toBe('INJURY_PRESERVATION');
     expect(decree.actions.lockFeatures).toContain('HEAVY_LIFT');
     expect(decree.actions.urgency).toBe('HIGH');
+  });
+
+  it('should return REST_FORCED if Body Battery is measured zero', async () => {
+    (getWellness as any).mockResolvedValue({ bodyBattery: 0 });
+    const decree = await Oracle.generateDailyDecree('u1');
+
+    expect(decree.code).toBe('REST_FORCED');
+    expect(decree.actions.lockFeatures).toContain('HEAVY_LIFT');
   });
 
   it('should return REST_FORCED if bio-metrics are critical', async () => {
