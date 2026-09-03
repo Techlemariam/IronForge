@@ -94,11 +94,18 @@ export class AnalyticsService {
     startWellness: IntervalsWellness,
     plannedDailyLoad: number[] = []
   ): TSBForecast[] {
-    const forecast: TSBForecast[] = [];
+    const baselineCtl = startWellness.ctl;
+    const baselineAtl = startWellness.atl;
 
-    // Defaults if data is missing
-    let ctl = startWellness.ctl || 45;
-    let atl = startWellness.atl || 50;
+    // A forecast requires a measured CTL/ATL baseline. Provider absence should
+    // remove the forecast rather than manufacture plausible-looking defaults.
+    if (baselineCtl == null || baselineAtl == null) {
+      return [];
+    }
+
+    const forecast: TSBForecast[] = [];
+    let ctl = baselineCtl;
+    let atl = baselineAtl;
 
     // Constants for Decay (standard Coggan constants)
     const k_fitness = Math.exp(-1 / 42); // CTL decay
