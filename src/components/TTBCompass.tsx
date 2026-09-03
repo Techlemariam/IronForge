@@ -93,6 +93,7 @@ const TTBCompass: React.FC<TTBCompassProps> = ({ indices }) => {
               viewBox={`0 0 ${size} ${size}`}
               className="w-full h-full drop-shadow-2xl overflow-visible"
             >
+              <title>Total Training Balance radar</title>
               <defs>
                 <radialGradient id="radarGradient" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
                   <stop offset="0%" stopColor="var(--color-gold)" stopOpacity="0.1" />
