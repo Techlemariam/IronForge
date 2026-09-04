@@ -5,6 +5,7 @@ import {
   buildMergeBaseDiffRange,
   classifyE2EImpact,
   isControlPlanePath,
+  isDatabaseGuardPath,
   normalizeRepositoryPath,
   parseChangedPathText,
 } from './classify-e2e-impact.mjs';
@@ -51,6 +52,13 @@ test('recognizes only explicit control-plane paths', () => {
   assert.equal(isControlPlanePath('package.json'), false);
 });
 
+test('recognizes Prisma schema and migration paths as DB Guard impact', () => {
+  assert.equal(isDatabaseGuardPath('prisma/schema.prisma'), true);
+  assert.equal(isDatabaseGuardPath('prisma/migrations/20260904_example/migration.sql'), true);
+  assert.equal(isDatabaseGuardPath('src/services/planner.ts'), false);
+  assert.equal(isDatabaseGuardPath('prisma/seed.ts'), false);
+});
+
 test('classifies a workflow-only PR as control-plane-only', () => {
   const result = classifyE2EImpact([
     '.github/workflows/dependabot-auto-merge.yml',
@@ -59,6 +67,7 @@ test('classifies a workflow-only PR as control-plane-only', () => {
 
   assert.deepEqual(result, {
     runE2E: false,
+    runDbGuard: false,
     classification: 'control_plane_only',
     changedPathCount: 2,
     controlPlanePathCount: 2,
@@ -82,6 +91,7 @@ test('classifies the Snyk removal scope as control-plane-only', () => {
   ]);
 
   assert.equal(result.runE2E, false);
+  assert.equal(result.runDbGuard, false);
   assert.equal(result.classification, 'control_plane_only');
   assert.equal(result.runtimePathCount, 0);
 });
@@ -101,6 +111,24 @@ test('requires E2E for application, database, test and dependency changes', () =
   }
 });
 
+test('enables DB Guard for Prisma schema changes', () => {
+  const result = classifyE2EImpact(['prisma/schema.prisma']);
+  assert.equal(result.runDbGuard, true);
+});
+
+test('enables DB Guard for migration SQL changes', () => {
+  const result = classifyE2EImpact([
+    'prisma/migrations/20260904_add_training_context/migration.sql',
+  ]);
+  assert.equal(result.runDbGuard, true);
+});
+
+test('ordinary application-only changes keep DB Guard disabled', () => {
+  const result = classifyE2EImpact(['src/services/planner.ts']);
+  assert.equal(result.runE2E, true);
+  assert.equal(result.runDbGuard, false);
+});
+
 test('fails closed when any unknown path is mixed with control-plane paths', () => {
   const result = classifyE2EImpact([
     '.github/workflows/ci-cd.yml',
@@ -108,11 +136,13 @@ test('fails closed when any unknown path is mixed with control-plane paths', () 
   ]);
 
   assert.equal(result.runE2E, true);
+  assert.equal(result.runDbGuard, false);
   assert.equal(result.runtimePathCount, 1);
 });
 
 test('fails closed for empty or invalid input', () => {
   assert.equal(classifyE2EImpact([]).runE2E, true);
+  assert.equal(classifyE2EImpact([]).runDbGuard, false);
   assert.equal(classifyE2EImpact(['', '../outside']).runE2E, true);
 });
 
@@ -125,4 +155,5 @@ test('deduplicates normalized paths', () => {
   assert.equal(result.changedPathCount, 1);
   assert.equal(result.controlPlanePathCount, 1);
   assert.equal(result.runE2E, false);
+  assert.equal(result.runDbGuard, false);
 });
