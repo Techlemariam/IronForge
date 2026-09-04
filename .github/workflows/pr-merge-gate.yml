@@ -172,10 +172,9 @@ jobs:
               per_page: 100,
             });
             const lintable = /\.(?:js|jsx|ts|tsx|json|jsonc|css|graphql)$/i;
-            const names = files
+            const candidateNames = files
               .filter((file) => file.status !== 'removed')
-              .map((file) => file.filename)
-              .filter((name) => lintable.test(name));
+              .map((file) => file.filename);
 
             const invalidPath = (name) =>
               typeof name !== 'string' ||
@@ -186,10 +185,11 @@ jobs:
               name.includes('/../') ||
               name.includes('\0');
 
-            if (names.some(invalidPath)) {
+            if (candidateNames.some(invalidPath)) {
               throw new Error('Invalid repository path returned by GitHub API; failing closed.');
             }
 
+            const names = candidateNames.filter((name) => lintable.test(name));
             fs.writeFileSync(process.env.LINT_FILES_JSON, JSON.stringify(names), 'utf8');
             core.info(`Prepared ${names.length} changed lintable file(s).`);
 
