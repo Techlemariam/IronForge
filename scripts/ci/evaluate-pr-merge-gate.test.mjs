@@ -1,3 +1,4 @@
+// Runtime acceptance probe: any PR change to this protected gate path must be rejected by trusted policy.
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
