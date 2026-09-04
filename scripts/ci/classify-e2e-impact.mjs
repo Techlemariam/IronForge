@@ -14,6 +14,9 @@ const controlPlanePrefixes = [
   'scripts/ci/',
 ];
 
+const exactDatabasePaths = new Set(['prisma/schema.prisma']);
+const databasePrefixes = ['prisma/migrations/'];
+
 export function normalizeRepositoryPath(value) {
   if (typeof value !== 'string') {
     return null;
@@ -71,6 +74,18 @@ export function isControlPlanePath(value) {
   return controlPlanePrefixes.some((prefix) => repositoryPath.startsWith(prefix));
 }
 
+export function isDatabaseGuardPath(value) {
+  const repositoryPath = normalizeRepositoryPath(value);
+  if (!repositoryPath) {
+    return false;
+  }
+
+  return (
+    exactDatabasePaths.has(repositoryPath) ||
+    databasePrefixes.some((prefix) => repositoryPath.startsWith(prefix))
+  );
+}
+
 export function classifyE2EImpact(values) {
   const normalizedPaths = [];
   let invalidPathCount = 0;
@@ -90,6 +105,7 @@ export function classifyE2EImpact(values) {
   if (normalizedPaths.length === 0) {
     return {
       runE2E: true,
+      runDbGuard: false,
       classification: invalidPathCount > 0 ? 'invalid_or_empty_fail_closed' : 'empty_fail_closed',
       changedPathCount: 0,
       controlPlanePathCount: 0,
@@ -101,9 +117,11 @@ export function classifyE2EImpact(values) {
     normalizedPaths.filter((repositoryPath) => !isControlPlanePath(repositoryPath)).length +
     invalidPathCount;
   const controlPlanePathCount = normalizedPaths.length - (runtimePathCount - invalidPathCount);
+  const runDbGuard = normalizedPaths.some((repositoryPath) => isDatabaseGuardPath(repositoryPath));
 
   return {
     runE2E: runtimePathCount > 0,
+    runDbGuard,
     classification: runtimePathCount > 0 ? 'runtime_or_unknown' : 'control_plane_only',
     changedPathCount: normalizedPaths.length + invalidPathCount,
     controlPlanePathCount,
@@ -168,12 +186,14 @@ function runCli() {
   console.log(`IRONFORGE_E2E_IMPACT_CONTROL_PLANE_PATH_COUNT=${result.controlPlanePathCount}`);
   console.log(`IRONFORGE_E2E_IMPACT_RUNTIME_PATH_COUNT=${result.runtimePathCount}`);
   console.log(`IRONFORGE_E2E_IMPACT_RUN_E2E=${String(result.runE2E)}`);
+  console.log(`IRONFORGE_DB_GUARD_RUN_DB_GUARD=${String(result.runDbGuard)}`);
 
   if (options.githubOutput) {
     appendFileSync(
       options.githubOutput,
       [
         `run-e2e=${String(result.runE2E)}`,
+        `run-db-guard=${String(result.runDbGuard)}`,
         `classification=${result.classification}`,
         `changed-path-count=${result.changedPathCount}`,
         `runtime-path-count=${result.runtimePathCount}`,
