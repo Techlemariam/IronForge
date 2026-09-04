@@ -177,7 +177,16 @@ jobs:
               .map((file) => file.filename)
               .filter((name) => lintable.test(name));
 
-            if (names.some((name) => name.startsWith('/') || name.includes('\0'))) {
+            const invalidPath = (name) =>
+              typeof name !== 'string' ||
+              name.length === 0 ||
+              name.startsWith('/') ||
+              name === '..' ||
+              name.startsWith('../') ||
+              name.includes('/../') ||
+              name.includes('\0');
+
+            if (names.some(invalidPath)) {
               throw new Error('Invalid repository path returned by GitHub API; failing closed.');
             }
 
@@ -227,7 +236,16 @@ jobs:
           const { spawnSync } = require('node:child_process');
 
           const files = JSON.parse(fs.readFileSync(process.env.LINT_FILES_JSON, 'utf8'));
-          if (!Array.isArray(files) || files.some((file) => typeof file !== 'string')) {
+          const invalidPath = (file) =>
+            typeof file !== 'string' ||
+            file.length === 0 ||
+            file.startsWith('/') ||
+            file === '..' ||
+            file.startsWith('../') ||
+            file.includes('/../') ||
+            file.includes('\0');
+
+          if (!Array.isArray(files) || files.some(invalidPath)) {
             console.error('Invalid trusted lint-file manifest; failing closed.');
             process.exit(1);
           }
@@ -238,7 +256,7 @@ jobs:
           }
 
           for (let index = 0; index < files.length; index += 100) {
-            const batch = files.slice(index, index + 100);
+            const batch = files.slice(index, index + 100).map((file) => `./${file}`);
             const result = spawnSync('pnpm', ['exec', 'biome', 'lint', ...batch], {
               stdio: 'inherit',
               shell: false,
