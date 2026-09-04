@@ -1,0 +1,93 @@
+name: IronForge PR DB Guard
+
+on:
+  pull_request:
+    branches: [main, release, fix/*, feat/*, 'ci/**', 'agent/**']
+    paths:
+      - 'prisma/schema.prisma'
+      - 'prisma/migrations/**'
+
+permissions:
+  contents: read
+
+jobs:
+  classify-db-impact:
+    name: "🧭 Classify DB Impact"
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      run-db-guard: ${{ steps.impact.outputs.run-db-guard }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Test PR impact classifier
+        run: node --test scripts/ci/classify-e2e-impact.test.mjs
+      - name: Classify Prisma impact
+        id: impact
+        shell: bash
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          if [[ -z "$BASE_SHA" || -z "$HEAD_SHA" ]]; then
+            echo 'Missing pull request base/head SHA.' >&2
+            exit 1
+          fi
+
+          git diff --name-only --no-renames "$BASE_SHA...$HEAD_SHA" \
+            > "$RUNNER_TEMP/ironforge-db-impact-files.txt"
+          node scripts/ci/classify-e2e-impact.mjs \
+            --files-from "$RUNNER_TEMP/ironforge-db-impact-files.txt" \
+            --github-output "$GITHUB_OUTPUT"
+
+          if ! grep -Fxq 'run-db-guard=true' "$GITHUB_OUTPUT"; then
+            echo 'Prisma-path workflow triggered but classifier did not require DB Guard.' >&2
+            exit 1
+          fi
+
+  db-guard:
+    name: "🗄️ PR: DB Guard"
+    needs: classify-db-impact
+    if: needs.classify-db-impact.outputs.run-db-guard == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      DATABASE_URL: postgresql://postgres@127.0.0.1:5432/ironforge_test?schema=public
+      DIRECT_URL: postgresql://postgres@127.0.0.1:5432/ironforge_test?schema=public
+      ADMIN_DATABASE_URL: postgresql://postgres@127.0.0.1:5432/postgres?schema=public
+      SHADOW_DATABASE_URL: postgresql://postgres@127.0.0.1:5432/ironforge_shadow_pr_${{ github.event.pull_request.number }}?schema=public
+      TARGET_DB: ironforge_shadow_pr_${{ github.event.pull_request.number }}
+      NEXT_PUBLIC_SUPABASE_URL: http://127.0.0.1:54421
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: local-ci-placeholder
+      SKIP_ENV_VALIDATION: 'true'
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: ironforge_test
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d ironforge_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/setup-ironforge
+        with:
+          tier: 'guard'
+          skip-managed-services: 'true'
+          skip-validation: 'true'
+      - name: Create run-scoped shadow database
+        run: pnpm exec tsx scripts/ci/setup-db.ts
+      - name: Validate Prisma schema
+        run: pnpm exec prisma validate
+      - name: Verify Prisma migration drift
+        run: pnpm exec prisma migrate diff --from-migrations prisma/migrations --to-schema prisma/schema.prisma --exit-code
